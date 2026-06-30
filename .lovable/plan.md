@@ -1,25 +1,27 @@
-Three small, scoped changes — homepage only.
+# Scroll-Gated ComparisonBar
 
-## 1. `ComparisonBar` — fade out when table leaves viewport
-File: `src/components/compare/ComparisonBar.tsx`
+Make the floating comparison bar hidden by default and only fade in once the user scrolls down to the live comparison table section. Fade it back out once they scroll past it. Then verify a clean production build.
 
-- Replace the current "sticky-true once observed" logic with a live observer that toggles `hasReached` based on whether the comparison section is intersecting.
-- Observe `#comparison-anchor` with `rootMargin: "0px 0px -20% 0px"` (reveal as table enters) AND a new bottom sentinel `#comparison-end` (hide once user scrolls past).
-- `hasReached = anchorVisibleOrPassed && !endPassed`. Implementation: track both via two observers; bar shows after anchor first intersects and hides once end sentinel's `boundingClientRect.bottom < 0` (passed above viewport).
-- Keep early-return `setHasReached(true)` when `#comparison-anchor` is absent (non-home pages unchanged).
-- Strengthen the hidden state to fully off-screen: change `translate-y-4` → `translate-y-full` in `revealClass`. Empty-state ghost strip now starts off-page and slides up as user scrolls down to the comparison section, and slides back down once the table is scrolled past.
+## Changes
 
-## 2. `Index.tsx` — add end sentinel
-File: `src/pages/Index.tsx`
+### 1. `src/components/compare/ComparisonBar.tsx`
+- Add `hasReached` state, default `false`.
+- Add `IntersectionObserver` watching a `#comparison-anchor` sentinel: set `hasReached = true` when it enters viewport.
+- Add a second observer on `#comparison-end` sentinel: set `hasReached = false` once the table scrolls out of view below the fold.
+- Wrap the root in a transition layer:
+  - Hidden: `opacity-0 translate-y-full pointer-events-none`
+  - Visible: `opacity-100 translate-y-0`
+  - Transition: `transition-all duration-300 ease-out`
 
-- Add `<div id="comparison-end" aria-hidden="true" />` directly **after** the `ProviderComparisonTable` `LazyMount`. (`#comparison-anchor` already exists directly before it.)
+### 2. `src/pages/Index.tsx`
+- Insert `<div id="comparison-anchor" aria-hidden="true" />` immediately above `<ProviderComparisonTable />`.
+- Insert `<div id="comparison-end" aria-hidden="true" />` immediately below it.
 
-## 3. Hero image flush to viewport bottom (desktop/tablet)
-File: `src/components/sections/HeroMasthead.tsx`
+### 3. Build verification
+- Run `bun run build` and fix any TypeScript / bundler errors that surface.
 
-- Bump the hero `<section>` minimum height so the image area (flex-1) reaches the bottom edge of the viewport on tablet/desktop. Change `min-h-[84svh] sm:min-h-[96svh]` → `min-h-[84svh] sm:min-h-[100svh]`.
-- No other layout changes; mobile preserved at 84svh.
+## Notes
 
-## Out of scope
-- Non-home routes (no anchors present → bar stays visible as today).
-- No visual/colour changes to bar contents, hero typography, or section ordering.
+- Existing comparison persistence logic (selected tests, clear, compare CTA) is untouched — only visibility gating changes.
+- Sentinels are zero-height divs so they don't affect layout.
+- Two-way fade so the bar disappears again on other parts of the page.
