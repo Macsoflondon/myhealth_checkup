@@ -617,6 +617,54 @@ export type Database = {
         }
         Relationships: []
       }
+      biomarker_knowledge_hub: {
+        Row: {
+          category: string
+          clinical_description: string
+          created_at: string | null
+          effective_date_time: string | null
+          embedding: string
+          id: string
+          last_updated: string | null
+          loinc_code: string | null
+          name: string
+          reference_range_json: Json | null
+          related_symptoms: string[] | null
+          snomed_code: string | null
+          status: string
+        }
+        Insert: {
+          category?: string
+          clinical_description: string
+          created_at?: string | null
+          effective_date_time?: string | null
+          embedding: string
+          id?: string
+          last_updated?: string | null
+          loinc_code?: string | null
+          name: string
+          reference_range_json?: Json | null
+          related_symptoms?: string[] | null
+          snomed_code?: string | null
+          status?: string
+        }
+        Update: {
+          category?: string
+          clinical_description?: string
+          created_at?: string | null
+          effective_date_time?: string | null
+          embedding?: string
+          id?: string
+          last_updated?: string | null
+          loinc_code?: string | null
+          name?: string
+          reference_range_json?: Json | null
+          related_symptoms?: string[] | null
+          snomed_code?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
       biomarker_readings: {
         Row: {
           appointment_id: string | null
@@ -3098,6 +3146,54 @@ export type Database = {
           url_verified?: boolean | null
           url_verified_at?: string | null
           who_should_test?: string | null
+        }
+        Relationships: []
+      }
+      recommendation_history: {
+        Row: {
+          completed_at: string | null
+          consent_given: boolean
+          created_at: string | null
+          data_retention_expiry: string | null
+          final_recommendations: Json
+          id: string
+          input_summary: string
+          matched_biomarker_names: string[] | null
+          matched_biomarkers: string[] | null
+          processing_time_ms: number | null
+          request_method: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          consent_given?: boolean
+          created_at?: string | null
+          data_retention_expiry?: string | null
+          final_recommendations?: Json
+          id?: string
+          input_summary: string
+          matched_biomarker_names?: string[] | null
+          matched_biomarkers?: string[] | null
+          processing_time_ms?: number | null
+          request_method?: string | null
+          status?: string
+          user_id?: string
+        }
+        Update: {
+          completed_at?: string | null
+          consent_given?: boolean
+          created_at?: string | null
+          data_retention_expiry?: string | null
+          final_recommendations?: Json
+          id?: string
+          input_summary?: string
+          matched_biomarker_names?: string[] | null
+          matched_biomarkers?: string[] | null
+          processing_time_ms?: number | null
+          request_method?: string | null
+          status?: string
+          user_id?: string
         }
         Relationships: []
       }

@@ -30,33 +30,60 @@ export const ComparisonBar = ({
   }, [selectedTests]);
 
   // Scroll-gated visibility: on pages with a #comparison-anchor sentinel
-  // (currently the homepage), keep the bar hidden until the user scrolls to
-  // the live comparison table. Other pages reveal immediately.
+  // (currently the homepage), keep the bar hidden until the comparison
+  // section is in view, and hide it again once scrolled past #comparison-end.
   React.useEffect(() => {
     const anchor = document.getElementById("comparison-anchor");
+    const end = document.getElementById("comparison-end");
     if (!anchor) {
       setHasReached(true);
       return;
     }
-    const observer = new IntersectionObserver(
+
+    let anchorReached = false;
+    let endPassed = false;
+    const update = () => setHasReached(anchorReached && !endPassed);
+
+    const anchorObs = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            setHasReached(true);
-            observer.disconnect();
-            break;
+            anchorReached = true;
+          } else if (entry.boundingClientRect.top > 0) {
+            // anchor scrolled back below viewport (user scrolled up past it)
+            anchorReached = false;
           }
         }
+        update();
       },
       { rootMargin: "0px 0px -20% 0px" }
     );
-    observer.observe(anchor);
-    return () => observer.disconnect();
+    anchorObs.observe(anchor);
+
+    let endObs: IntersectionObserver | undefined;
+    if (end) {
+      endObs = new IntersectionObserver(
+        (entries) => {
+          for (const entry of entries) {
+            endPassed = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+          }
+          update();
+        },
+        { rootMargin: "0px 0px 0px 0px" }
+      );
+      endObs.observe(end);
+    }
+
+    return () => {
+      anchorObs.disconnect();
+      endObs?.disconnect();
+    };
   }, []);
 
   const revealClass = hasReached
     ? "opacity-100 translate-y-0"
-    : "opacity-0 translate-y-4 pointer-events-none";
+    : "opacity-0 translate-y-full pointer-events-none";
+
 
 
   const { onDragStart, onDragEnd, onDragOver, onDrop, draggedOverIndex } = useDraggable({
