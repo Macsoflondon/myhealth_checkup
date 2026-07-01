@@ -200,15 +200,25 @@ export default function BrowseByCategoryBar({
                   })}
                 </div>
               </nav>
-              <div className="border-t border-[#081129]/10 px-4 py-3 flex items-center justify-between gap-2 bg-white">
-                <span className="text-xs font-semibold uppercase tracking-wider text-[#081129]/60 font-[Montserrat]">
-                  Account
-                </span>
-                <div className="flex items-center gap-1">
-                  <LanguageSwitcher variant="glass" />
-                  <UserMenu variant="glass" />
+              <div className="border-t border-[#081129]/10 px-4 py-4 bg-white space-y-3">
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#081129]/60 font-[Montserrat]">
+                    Language
+                  </span>
+                  <div className="scale-110 origin-right">
+                    <LanguageSwitcher variant="glass" />
+                  </div>
+                </div>
+                <div className="flex items-center justify-between gap-3">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-[#081129]/60 font-[Montserrat]">
+                    Account
+                  </span>
+                  <div className="scale-110 origin-right">
+                    <UserMenu variant="glass" />
+                  </div>
                 </div>
               </div>
+
             </SheetContent>
           </Sheet>
         </div>
