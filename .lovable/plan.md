@@ -1,45 +1,44 @@
-# Plan: CI Security Gate + Verification Re-Scan
 
-## 1. New GitHub Actions workflow — `.github/workflows/security-scan.yml`
+## Mobile toolbar redesign
 
-Runs on every PR to `main`, on push to `main`, and weekly (Mon 05:00 UTC).
+On mobile (`<md`), replace the current busy pill layout in `BrowseByCategoryBar` with a clean navy bar that mirrors the reference:
 
-Jobs:
+```text
+[ myhealth checkup logo ]              [ ☰ ]
+```
 
-- **supabase-advisor-snapshot** — invokes the existing `security-scan-snapshot` edge function using `SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` repo secrets via `curl`. Parses the JSON response and fails the job if `error_count > 0` or if `diff.added_count > 0` (regression gate; warnings tolerated but reported). Uploads the response JSON as a build artifact.
-- **rls-grants-lint** — small Node script (`scripts/check-rls-grants.mjs`) that scans `supabase/migrations/*.sql` for any `CREATE TABLE public.<x>` not followed by a matching `GRANT` and `ENABLE ROW LEVEL SECURITY` block in the same file. Fails on violation. Catches the most common future regression class (the exact one we keep fixing).
-- **dependency-audit** — already exists in `.github/workflows/dependency-audit.yml`; leave untouched, just reference it as part of the security pipeline in docs.
-- **secret-scan** — runs the existing `scripts/check-secrets.sh` (already in repo). Add to this workflow so it runs on every PR, not just locally.
+Desktop (`md+`) layout stays exactly as it is today.
 
-## 2. Production build hook — `package.json`
+### Changes to `src/components/layout/BrowseByCategoryBar.tsx`
 
-Add `"prebuild": "bash scripts/check-secrets.sh && node scripts/check-rls-grants.mjs"` so `bun run build` (used by Vercel/Lovable prod) refuses to build if either check fails. Keeps local + CI in sync.
+1. **Mobile container**
+   - Full-width navy bar: `bg-[#081129]`, no rounded card, no light background, no border.
+   - Height ~56px, horizontal padding `px-4`.
+   - Sticky behaviour unchanged.
+   - `flush` and `card` variants both render the same navy bar on mobile.
 
-## 3. New script — `scripts/check-rls-grants.mjs`
+2. **Left — brand**
+   - Render `myhealth checkup` wordmark (import `AnimatedLogo` from `@/components/header/AnimatedLogo`, wrapped in a `Link to="/"`).
+   - Height ~28–32px, white/logo on navy.
+   - Replaces the current mobile "Browse" pill.
 
-~40 lines. For each `.sql` file under `supabase/migrations/`:
-- Find every `CREATE TABLE public.<name>` (regex, case-insensitive).
-- For each, assert the same file contains both `GRANT ... ON public.<name>` and `ALTER TABLE public.<name> ENABLE ROW LEVEL SECURITY`.
-- Print violations and exit 1 if any.
+3. **Right — hamburger only**
+   - Single icon button: circular/rounded, transparent or subtle white/10 background, white `Menu` icon.
+   - Opens the existing `Sheet`.
+   - Remove the mobile pink pill cluster containing `LanguageSwitcher` + `UserMenu` from the bar itself.
 
-## 4. Docs — append to `docs/CYBER_ESSENTIALS.md`
+4. **Sheet contents (mobile)**
+   - Keep the category list.
+   - Append a divider and a new section at the bottom containing `LanguageSwitcher` and `UserMenu` (glass variant) so login + language live inside the dropdown as requested.
 
-One short section listing the new gates, what fails the build, and how to re-run locally (`bun run prebuild`).
+5. **Desktop untouched**
+   - The `hidden md:flex` pill strip, More dropdown, and right-side language/user cluster stay as-is.
+   - The scrollable pill strip stays `hidden md:flex`, so it does not render on mobile.
 
-## 5. Verification re-scan (runs in this same turn after build mode)
+### Files touched
+- `src/components/layout/BrowseByCategoryBar.tsx` (only)
 
-Call `security--run_security_scan` and report status of the previously fixed `internal_id`s:
-- `resolve_canonical_anon`
-- `ai_operation_logs_public_insert`
-- `funnel_events_public_insert`
-- `realtime_user_data_tables`
-- `recommendation_history_no_insert_restriction`
-
-Output a short table: id → previous severity → current state (cleared / still present). If any reappear, surface immediately rather than re-marking fixed.
-
-## Out of scope
-- No changes to RLS policies or edge function logic.
-- No new secrets required beyond the existing `SUPABASE_SERVICE_ROLE_KEY` GitHub repo secret (user must confirm it's set; otherwise the snapshot job will be skipped with a warning, not fail).
-
-## Confirm before I build
-Is `SUPABASE_SERVICE_ROLE_KEY` already in GitHub Actions repo secrets, or should the supabase-advisor-snapshot job degrade to warn-only until you add it?
+### Verification
+- Manual check at 390px viewport: navy bar, logo left, hamburger right, nothing else.
+- Open sheet: categories + language + login present.
+- Desktop ≥768px unchanged.

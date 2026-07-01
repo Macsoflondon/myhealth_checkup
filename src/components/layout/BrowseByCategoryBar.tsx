@@ -22,6 +22,7 @@ import {
 import { MoreDropdownMenu } from "@/components/header/MoreDropdownMenu";
 import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
 import { UserMenu } from "@/components/header/UserMenu";
+import { AnimatedLogo } from "@/components/header/AnimatedLogo";
 import {
   Sheet,
   SheetContent,
