@@ -154,11 +154,12 @@ export default function BrowseByCategoryBar({
                 data-testid="category-hamburger"
                 aria-label="Open menu"
                 aria-expanded={mobileOpen}
-                className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white"
+                className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/25 transition-colors text-white touch-manipulation"
               >
-                <Menu className="w-5 h-5" strokeWidth={2.25} />
+                <Menu className="w-6 h-6" strokeWidth={2.25} />
               </button>
             </SheetTrigger>
+
             <SheetContent
               side="right"
               className="w-[85vw] max-w-[340px] bg-[#f7f7f8] border-l border-[#081129]/10 p-0 flex flex-col"
