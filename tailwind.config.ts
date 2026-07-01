@@ -190,22 +190,45 @@ export default {
     		},
     		borderRadius: {
     			none: '0',
-    			sm: '4px',
-    			DEFAULT: '8px',
-    			md: '8px',
-    			lg: '12px',
-    			xl: '16px',
-    			'2xl': '20px',
-    			'3xl': '24px',
+    			sm: 'var(--radius-sm)',
+    			DEFAULT: 'var(--radius-md)',
+    			md: 'var(--radius-md)',
+    			lg: 'var(--radius-lg)',
+    			xl: 'var(--radius-xl)',
+    			'2xl': 'var(--radius-2xl)',
+    			'3xl': '32px',
+    			pill: 'var(--radius-pill)',
     			full: '9999px'
     		},
+    		spacing: {
+    			'section-y': 'var(--space-section-y)',
+    			'section-y-tight': 'var(--space-section-y-tight)',
+    			'block-y': 'var(--space-block-y)',
+    			'gutter': 'var(--space-gutter)'
+    		},
     		transitionDuration: {
+    			'instant': 'var(--duration-instant)',
+    			'quick': 'var(--duration-quick)',
+    			'standard': 'var(--duration-standard)',
+    			'moderate': 'var(--duration-moderate)',
+    			'slow': 'var(--duration-slow)',
+    			'reveal': 'var(--duration-reveal)',
     			'280': '280ms'
     		},
     		transitionTimingFunction: {
-    			material: 'cubic-bezier(0.4, 0, 0.2, 1)'
+    			emphasized: 'var(--ease-emphasized)',
+    			standard: 'var(--ease-standard)',
+    			decelerate: 'var(--ease-decelerate)',
+    			accelerate: 'var(--ease-accelerate)',
+    			material: 'var(--ease-standard)'
     		},
     		boxShadow: {
+    			'e0': 'var(--elevation-0)',
+    			'e1': 'var(--elevation-1)',
+    			'e2': 'var(--elevation-2)',
+    			'e3': 'var(--elevation-3)',
+    			'e4': 'var(--elevation-4)',
+    			'e5': 'var(--elevation-5)',
     			'elevation-0': 'var(--elevation-0)',
     			'elevation-1': 'var(--elevation-1)',
     			'elevation-2': 'var(--elevation-2)',

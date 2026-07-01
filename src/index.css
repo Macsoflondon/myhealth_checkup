@@ -20,28 +20,73 @@ html, body {
   display: none;
 }
 
-/* Material Design Elevation System */
+/* ============================================================
+   DESIGN TOKENS — single source of truth (Phase 1 foundation)
+   Elevation, motion, spacing, radius. Consumed by Tailwind
+   utilities (shadow-e1, duration-standard, ease-emphasized, etc.)
+   Legacy aliases (--easing-*) retained below for back-compat.
+   ============================================================ */
 :root {
   --elevation-0: none;
-  --elevation-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  --elevation-2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  --elevation-3: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-  --elevation-4: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-  --elevation-5: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+  --elevation-1: 0 1px 2px hsl(224 67% 10% / 0.04), 0 1px 3px hsl(224 67% 10% / 0.06);
+  --elevation-2: 0 2px 4px hsl(224 67% 10% / 0.05), 0 4px 8px hsl(224 67% 10% / 0.08);
+  --elevation-3: 0 4px 8px hsl(224 67% 10% / 0.06), 0 12px 24px hsl(224 67% 10% / 0.10);
+  --elevation-4: 0 8px 16px hsl(224 67% 10% / 0.08), 0 20px 40px hsl(224 67% 10% / 0.12);
+  --elevation-5: 0 12px 24px hsl(224 67% 10% / 0.10), 0 32px 64px hsl(224 67% 10% / 0.16);
+
+  --duration-instant: 50ms;
+  --duration-quick: 120ms;
+  --duration-standard: 200ms;
+  --duration-moderate: 280ms;
+  --duration-slow: 400ms;
+  --duration-reveal: 600ms;
+
+  --ease-emphasized: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  /* Legacy aliases (do not remove — used by older components) */
+  --easing-emphasized: var(--ease-standard);
+  --easing-emphasized-decelerate: var(--ease-decelerate);
+  --easing-emphasized-accelerate: var(--ease-accelerate);
+  --easing-standard: var(--ease-emphasized);
+
+  --space-section-y: clamp(3rem, 6vw, 5.5rem);
+  --space-section-y-tight: clamp(2rem, 4vw, 3.5rem);
+  --space-block-y: clamp(1.5rem, 3vw, 2.5rem);
+  --space-gutter: clamp(1rem, 4vw, 2rem);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-pill: 9999px;
 }
 
-/* Material Motion Tokens */
-:root {
-  --duration-instant: 50ms;
-  --duration-quick: 100ms;
-  --duration-standard: 250ms;
-  --duration-moderate: 300ms;
-  --duration-slow: 400ms;
-
-  --easing-emphasized: cubic-bezier(0.4, 0, 0.2, 1);
-  --easing-emphasized-decelerate: cubic-bezier(0, 0, 0.2, 1);
-  --easing-emphasized-accelerate: cubic-bezier(0.4, 0, 1, 1);
-  --easing-standard: cubic-bezier(0.2, 0, 0, 1);
+/* ============================================================
+   REVEAL-ON-SCROLL — CSS-only primitive (JS toggles data-reveal)
+   Used by <Reveal> component. Respects prefers-reduced-motion.
+   ============================================================ */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 16px, 0);
+  transition:
+    opacity var(--duration-reveal) var(--ease-emphasized),
+    transform var(--duration-reveal) var(--ease-emphasized);
+  will-change: opacity, transform;
+}
+[data-reveal="visible"] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  will-change: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
 }
 
 @layer base {
