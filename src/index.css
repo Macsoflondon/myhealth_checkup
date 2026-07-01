@@ -66,19 +66,36 @@ html, body {
 
 /* ============================================================
    REVEAL-ON-SCROLL — CSS-only primitive (JS toggles data-reveal)
-   Used by <Reveal> component. Respects prefers-reduced-motion.
+   Used by <Reveal>. Direction via data-reveal-variant, stagger via
+   --reveal-delay. Respects prefers-reduced-motion globally.
    ============================================================ */
 [data-reveal] {
   opacity: 0;
-  transform: translate3d(0, 16px, 0);
   transition:
     opacity var(--duration-reveal) var(--ease-emphasized),
     transform var(--duration-reveal) var(--ease-emphasized);
+  transition-delay: var(--reveal-delay, 0ms);
   will-change: opacity, transform;
+}
+[data-reveal="hidden"][data-reveal-variant="rise"],
+[data-reveal="hidden"]:not([data-reveal-variant]) {
+  transform: translate3d(0, 16px, 0);
+}
+[data-reveal="hidden"][data-reveal-variant="fade"] {
+  transform: none;
+}
+[data-reveal="hidden"][data-reveal-variant="slide-left"] {
+  transform: translate3d(-24px, 0, 0);
+}
+[data-reveal="hidden"][data-reveal-variant="slide-right"] {
+  transform: translate3d(24px, 0, 0);
+}
+[data-reveal="hidden"][data-reveal-variant="zoom"] {
+  transform: scale(0.96);
 }
 [data-reveal="visible"] {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0) scale(1);
   will-change: auto;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -87,7 +104,17 @@ html, body {
     transform: none;
     transition: none;
   }
+  /* Global safety net — kill non-essential motion for RM users. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }
+
 
 @layer base {
   :root {
