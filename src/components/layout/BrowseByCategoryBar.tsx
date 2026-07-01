@@ -22,6 +22,7 @@ import {
 import { MoreDropdownMenu } from "@/components/header/MoreDropdownMenu";
 import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
 import { UserMenu } from "@/components/header/UserMenu";
+import { AnimatedLogo } from "@/components/header/AnimatedLogo";
 import {
   Sheet,
   SheetContent,
@@ -138,101 +139,89 @@ export default function BrowseByCategoryBar({
   return (
     <>
       <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
-      <div className={`sticky top-0 z-40 ${wrapperClass}`} data-testid="browse-by-category-bar">
+
+      {/* MOBILE: navy bar with logo + hamburger only */}
+      <div className="md:hidden sticky top-0 z-40" data-testid="browse-by-category-bar-mobile">
+        <div className="bg-[#081129] px-4 h-14 flex items-center justify-between">
+          <Link to="/" aria-label="myhealth checkup home" className="flex items-center h-8">
+            <AnimatedLogo className="h-8" />
+          </Link>
+
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild>
+              <button
+                type="button"
+                data-testid="category-hamburger"
+                aria-label="Open menu"
+                aria-expanded={mobileOpen}
+                className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 transition-colors text-white"
+              >
+                <Menu className="w-5 h-5" strokeWidth={2.25} />
+              </button>
+            </SheetTrigger>
+            <SheetContent
+              side="right"
+              className="w-[85vw] max-w-[340px] bg-[#f7f7f8] border-l border-[#081129]/10 p-0 flex flex-col"
+            >
+              <SheetHeader className="px-4 py-4 border-b border-[#081129]/10 text-left">
+                <SheetTitle className="text-[#081129] text-base font-[Montserrat] font-semibold">
+                  Browse categories
+                </SheetTitle>
+              </SheetHeader>
+              <nav
+                aria-label="Browse categories"
+                className="px-3 py-4 overflow-y-auto flex-1"
+                data-testid="mobile-category-sheet"
+              >
+                <div className="grid grid-cols-1 gap-2">
+                  {items.map((item) => {
+                    const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
+                    return (
+                      <Link
+                        key={item.name}
+                        to={item.path}
+                        data-testid="mobile-category-pill"
+                        data-category={item.name}
+                        onClick={() => setMobileOpen(false)}
+                        className="group flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white border-[1.5px] border-[#081129]/10 transition-all duration-200 no-underline"
+                      >
+                        <span
+                          className="w-8 h-8 rounded-full inline-flex items-center justify-center shrink-0"
+                          style={{ background: `${color}1a` }}
+                        >
+                          <Icon className="w-4 h-4" style={{ color }} strokeWidth={2} />
+                        </span>
+                        <span className="text-sm font-semibold text-[#081129] font-[Montserrat]">
+                          {item.name}
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </div>
+              </nav>
+              <div className="border-t border-[#081129]/10 px-4 py-3 flex items-center justify-between gap-2 bg-white">
+                <span className="text-xs font-semibold uppercase tracking-wider text-[#081129]/60 font-[Montserrat]">
+                  Account
+                </span>
+                <div className="flex items-center gap-1">
+                  <LanguageSwitcher variant="glass" />
+                  <UserMenu variant="glass" />
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
+
+      {/* DESKTOP: existing pill card layout */}
+      <div className={`hidden md:block sticky top-0 z-40 ${wrapperClass}`} data-testid="browse-by-category-bar">
         <div
           className={`${compact ? "px-3 py-3 sm:py-4" : "px-2 sm:px-3 py-2.5 sm:py-3"} transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
         >
-
           <div className={`flex items-center gap-2 flex-nowrap ${compact ? "justify-center" : ""}`}>
-            {/* Mobile: hamburger that opens a category sheet */}
-            <div className="flex md:hidden items-center shrink-0">
-              <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-                <SheetTrigger asChild>
-                  <button
-                    type="button"
-                    data-testid="category-hamburger"
-                    aria-label="Browse categories"
-                    aria-expanded={mobileOpen}
-                    className={`inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200 ${
-                      compact ? "gap-1 pl-1 pr-1.5 py-0.5" : "gap-1.5 pl-1.5 pr-2 py-1"
-                    }`}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = PINK;
-                      e.currentTarget.style.boxShadow = `0 8px 20px ${PINK}26`;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "rgba(8,17,41,0.1)";
-                      e.currentTarget.style.boxShadow = "0 1px 2px rgba(8,17,41,0.04)";
-                    }}
-                  >
-                    <span
-                      className={`rounded-full inline-flex items-center justify-center shrink-0 ${
-                        compact ? "w-[16px] h-[16px]" : "w-[18px] h-[18px]"
-                      }`}
-                      style={{ background: `${PINK}1a` }}
-                    >
-                      <Menu className={`${compact ? "w-[10px] h-[10px]" : "w-[11px] h-[11px]"}`} style={{ color: PINK }} strokeWidth={2} />
-                    </span>
-                    <span className={`font-semibold text-[#081129] font-[Montserrat] ${compact ? "text-[10px]" : "text-[11px]"}`}>
-                      Browse
-                    </span>
-                  </button>
-                </SheetTrigger>
-                <SheetContent
-                  side="left"
-                  className="w-[85vw] max-w-[320px] bg-[#f7f7f8] border-r border-[#081129]/10 p-0"
-                >
-                  <SheetHeader className="px-4 py-4 border-b border-[#081129]/10 text-left">
-                    <SheetTitle className="text-[#081129] text-base font-[Montserrat] font-semibold">
-                      Browse categories
-                    </SheetTitle>
-                  </SheetHeader>
-                  <nav
-                    aria-label="Browse categories"
-                    className="px-3 py-4 overflow-y-auto max-h-[calc(100dvh-80px)]"
-                    data-testid="mobile-category-sheet"
-                  >
-                    <div className="grid grid-cols-1 gap-2">
-                      {items.map((item) => {
-                        const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
-                        return (
-                          <Link
-                            key={item.name}
-                            to={item.path}
-                            data-testid="mobile-category-pill"
-                            data-category={item.name}
-                            onClick={() => setMobileOpen(false)}
-                            className="group flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200 no-underline"
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.borderColor = color;
-                              e.currentTarget.style.boxShadow = `0 8px 20px ${color}26`;
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.borderColor = "rgba(8,17,41,0.1)";
-                              e.currentTarget.style.boxShadow = "0 1px 2px rgba(8,17,41,0.04)";
-                            }}
-                          >
-                            <span
-                              className="w-8 h-8 rounded-full inline-flex items-center justify-center shrink-0"
-                              style={{ background: `${color}1a` }}
-                            >
-                              <Icon className="w-4 h-4" style={{ color }} strokeWidth={2} />
-                            </span>
-                            <span className="text-sm font-semibold text-[#081129] font-[Montserrat]">
-                              {item.name}
-                            </span>
-                          </Link>
-                        );
-                      })}
-                    </div>
-                  </nav>
-                </SheetContent>
-              </Sheet>
-            </div>
-
-            {/* Scrollable pill strip — only this zone scrolls (desktop only) */}
+            {/* Scrollable pill strip */}
             <div
-              className={`hidden md:flex min-w-0 overflow-x-auto scrollbar-none items-center flex-nowrap ${compact ? "gap-2 justify-center" : "flex-1 gap-1.5"}`}
+              className={`flex min-w-0 overflow-x-auto scrollbar-none items-center flex-nowrap ${compact ? "gap-2 justify-center" : "flex-1 gap-1.5"}`}
               style={{
                 WebkitMaskImage:
                   "linear-gradient(to right, #000 0, #000 calc(100% - 16px), transparent 100%)",
@@ -277,7 +266,7 @@ export default function BrowseByCategoryBar({
               })}
             </div>
 
-            {/* More dropdown — pinned, never scrolls away */}
+            {/* More dropdown */}
             <div ref={moreRef} className="relative shrink-0">
               <button
                 type="button"
@@ -320,21 +309,9 @@ export default function BrowseByCategoryBar({
               )}
             </div>
 
-            {/* Right cluster — mobile: unified soft-pink glass pill; desktop: existing bordered chips */}
+            {/* Right cluster — desktop */}
             <div
-              data-testid="category-bar-right-cluster"
-              className={`md:hidden flex items-center bg-[#e70d69]/5 border border-[#e70d69]/10 rounded-full shrink-0 ml-1 ${compact ? "p-[1px]" : "p-0.5"}`}
-            >
-              <div className={compact ? "scale-90 origin-center" : ""}>
-                <LanguageSwitcher variant="glass" />
-              </div>
-              <div className={`bg-[#e70d69]/20 mx-0.5 ${compact ? "w-px h-3" : "w-px h-4"}`} aria-hidden="true" />
-              <div className={compact ? "scale-90 origin-center" : ""}>
-                <UserMenu variant="glass" />
-              </div>
-            </div>
-            <div
-              className={`hidden md:flex items-center shrink-0 pl-2 border-l border-[#081129]/10 ${compact ? "gap-0.5" : "gap-1"}`}
+              className={`flex items-center shrink-0 pl-2 border-l border-[#081129]/10 ${compact ? "gap-0.5" : "gap-1"}`}
             >
               <div className={compact ? "scale-90 origin-center" : ""}>
                 <LanguageSwitcher />
