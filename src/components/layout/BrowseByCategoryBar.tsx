@@ -22,7 +22,7 @@ import {
 import { MoreDropdownMenu } from "@/components/header/MoreDropdownMenu";
 import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
 import { UserMenu } from "@/components/header/UserMenu";
-import { AnimatedLogo } from "@/components/header/AnimatedLogo";
+
 import {
   Sheet,
   SheetContent,
@@ -69,9 +69,28 @@ export default function BrowseByCategoryBar({
 } = {}) {
   const [moreOpen, setMoreOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const [stuck, setStuck] = useState(false);
+
+  // Performant scroll detection using rAF; toggles mobile header colour theme.
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        setScrolled(window.scrollY > 8);
+        ticking = false;
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+
 
 
   // Observe a sentinel placed immediately above the bar to detect stuck state.
@@ -140,11 +159,29 @@ export default function BrowseByCategoryBar({
     <>
       <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
 
-      {/* MOBILE: navy bar with logo + hamburger only */}
+      {/* MOBILE: wordmark bar that morphs white → navy on scroll */}
       <div className="md:hidden sticky top-0 z-40" data-testid="browse-by-category-bar-mobile">
-        <div className="bg-[#081129] px-4 h-14 flex items-center justify-between">
-          <Link to="/" aria-label="myhealth checkup home" className="flex items-center h-8">
-            <AnimatedLogo className="h-8" />
+        <div
+          data-scrolled={scrolled}
+          className={`px-4 h-14 flex items-center justify-between transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b ${
+            scrolled
+              ? "bg-[#081129] border-[#081129] shadow-[0_2px_10px_rgba(8,17,41,0.18)]"
+              : "bg-white border-[#081129]/10"
+          }`}
+        >
+          <Link
+            to="/"
+            aria-label="myhealth checkup home"
+            className="flex items-center h-8 no-underline font-[Montserrat] font-extrabold tracking-tight text-[22px] leading-none"
+          >
+            <span
+              className={`transition-colors duration-300 ease-out ${
+                scrolled ? "text-white" : "text-[#081129]"
+              }`}
+            >
+              myhealth
+            </span>
+            <span className="text-[#e70d69]">checkup</span>
           </Link>
 
           <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
@@ -154,11 +191,16 @@ export default function BrowseByCategoryBar({
                 data-testid="category-hamburger"
                 aria-label="Open menu"
                 aria-expanded={mobileOpen}
-                className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/25 transition-colors text-white touch-manipulation"
+                className={`inline-flex items-center justify-center w-11 h-11 rounded-full transition-colors duration-300 ease-out touch-manipulation focus:outline-none focus-visible:ring-2 focus-visible:ring-[#22c0d4] focus-visible:ring-offset-2 ${
+                  scrolled
+                    ? "bg-white/10 hover:bg-white/20 active:bg-white/25 text-[#22c0d4] focus-visible:ring-offset-[#081129]"
+                    : "bg-[#081129]/5 hover:bg-[#081129]/10 active:bg-[#081129]/15 text-[#22c0d4] focus-visible:ring-offset-white"
+                }`}
               >
                 <Menu className="w-6 h-6" strokeWidth={2.25} />
               </button>
             </SheetTrigger>
+
 
             <SheetContent
               side="right"
