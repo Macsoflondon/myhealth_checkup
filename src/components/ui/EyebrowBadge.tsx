@@ -69,7 +69,13 @@ const toneClasses: Record<EyebrowBadgeTone, string> = {
 export const EyebrowBadge = React.forwardRef<HTMLElement, EyebrowBadgeProps>(
   (
     {
-      label = "Accredited & Verified",
+      label = (
+        <>
+          <span className="block sm:inline">Accredited</span>
+          <span className="block sm:inline sm:mx-1">&amp;</span>
+          <span className="block sm:inline">Verified</span>
+        </>
+      ),
       size = "sm",
       tone = "onLight",
       as = "div",
