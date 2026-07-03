@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { FALLBACK_LABELS, getFallbackLabel } from '@/i18n/fallbackLabels';
+
 
 /**
  * Global DOM auto-translator — tuned for zero-perceived-latency.
