@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 
 const COMPARE_HREF_BY_NAME: Record<string, string> = {
   "Bowel Cancer Screening": "/tests/cancer",
@@ -325,11 +326,8 @@ export default function FeaturedPartnerWheel({
       <style>{`@keyframes gbpop{from{transform:translate(-50%,14px)}to{transform:translate(-50%,0)}}@keyframes gbpopc{from{transform:translateY(10px) scale(.985)}to{transform:translateY(0) scale(1)}}`}</style>
 
       <section style={{ position: "relative", width: "100%", overflow: "hidden", padding: "54px 24px 48px", display: "flex", flexDirection: "column", alignItems: "center", backgroundColor: "#081129" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16 }}>
-          <span style={{ width: 34, height: 2, background: "#E70D69", display: "block", borderRadius: 2 }} />
-          <span style={{ fontFamily: HEAD, fontWeight: 800, fontSize: 20, letterSpacing: ".2em", textTransform: "uppercase", color: "#22C0D4" }}>{eyebrow}</span>
-          <span style={{ width: 34, height: 2, background: "#E70D69", display: "block", borderRadius: 2 }} />
-        </div>
+        <EyebrowBadge label={eyebrow} size="md" tone="onDark" />
+
 
         <h2 style={{ margin: "22px 0 0", fontFamily: SERIF, fontWeight: 600, fontSize: 60, lineHeight: 1.04, color: "#f7f7f8", textAlign: "center", letterSpacing: "-.01em" }}>{partnerName}</h2>
 
