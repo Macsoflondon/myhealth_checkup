@@ -256,11 +256,14 @@ const Index = () => {
           <LazyMount minHeight={600}>
             <Suspense fallback={<SectionFallback />}>
               <SectionReveal>
-                <ProviderComparisonTable />
+                <div className="hidden md:block">
+                  <ProviderComparisonTable />
+                </div>
               </SectionReveal>
             </Suspense>
           </LazyMount>
           <div id="comparison-end" aria-hidden="true" />
+
 
 
         </div>
