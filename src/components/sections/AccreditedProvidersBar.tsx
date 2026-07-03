@@ -1,87 +1,67 @@
 import React from "react";
+import { ShieldCheck, BadgeCheck, FlaskConical, Lock, Tag, Stethoscope, type LucideIcon } from "lucide-react";
+import { Reveal } from "@/components/primitives/Reveal";
 
 interface TrustItem {
-  icon: string;
+  icon: LucideIcon;
   label: string;
 }
 
 const trustItems: TrustItem[] = [
-  { icon: "✓", label: "UKAS-Accredited Labs" },
-  { icon: "✓", label: "CQC-Regulated Clinics" },
-  { icon: "✓", label: "ISO 15189 Certification" },
-  { icon: "✓", label: "GDPR Compliant" },
-  { icon: "✓", label: "Transparent Pricing" },
-  { icon: "✓", label: "No GP Referral Needed" },
+  { icon: FlaskConical, label: "UKAS-Accredited Labs" },
+  { icon: ShieldCheck, label: "CQC-Regulated Clinics" },
+  { icon: BadgeCheck, label: "ISO 15189 Certification" },
+  { icon: Lock, label: "GDPR Compliant" },
+  { icon: Tag, label: "Transparent Pricing" },
+  { icon: Stethoscope, label: "No GP Referral Needed" },
 ];
 
+/**
+ * Trust signals bar — unified provider-standards strip shown across the site.
+ * Icons alternate between the turquoise/pink brand accents using design tokens.
+ * Uses Reveal for a subtle staggered entrance.
+ */
 const AccreditedProvidersBar: React.FC = () => {
   return (
-    <div
-      style={{
-        backgroundColor: "#f5f8fc",
-        borderBottom: "1px solid #eef1f6",
-        padding: "12px 16px",
-      }}
+    <section
+      aria-label="Accredited provider standards"
+      className="bg-muted/40 border-b border-border/60"
     >
-      <div className="mx-auto" style={{ maxWidth: "1280px" }}>
-        {/* Top label */}
-        <div
-          className="w-full text-center font-sans font-bold uppercase"
-          style={{
-            fontSize: "11px",
-            letterSpacing: "0.14em",
-            color: "#4b5566",
-            marginBottom: "12px",
-          }}
-        >
-          All listed providers meet every one of the following standards
-        </div>
+      <div className="container mx-auto px-4 py-3 md:py-4">
+        <Reveal variant="fade">
+          <p className="text-center font-sans font-bold uppercase tracking-[0.14em] text-[11px] text-muted-foreground mb-3">
+            All listed providers meet every one of the following standards
+          </p>
+        </Reveal>
 
-        {/* Items row */}
-        <div
-          className="flex items-center justify-center flex-wrap"
-          style={{ gap: "12px 24px" }}
-        >
+        <ul className="flex items-center justify-center flex-wrap gap-x-6 gap-y-3">
           {trustItems.map((item, index) => {
-            const isOdd = (index + 1) % 2 === 1;
-            const iconBg = isOdd
-              ? "rgba(34,192,212,0.12)"
-              : "rgba(231,13,105,0.1)";
-            const iconColor = isOdd ? "#22c0d4" : "#e70d69";
-
+            const isOdd = index % 2 === 0;
+            const Icon = item.icon;
             return (
-              <div
-                key={item.label}
-                className="flex items-center whitespace-nowrap"
-                style={{ gap: "10px" }}
-              >
-                <div
-                  aria-hidden="true"
-                  className="flex items-center justify-center"
-                  style={{
-                    width: "40px",
-                    height: "40px",
-                    borderRadius: "9999px",
-                    backgroundColor: iconBg,
-                    color: iconColor,
-                    fontSize: "18px",
-                    flexShrink: 0,
-                  }}
-                >
-                  {item.icon}
+              <Reveal key={item.label} as="li" delay={index * 60} variant="rise">
+                <div className="flex items-center gap-2.5 whitespace-nowrap">
+                  <span
+                    aria-hidden="true"
+                    className={[
+                      "flex items-center justify-center rounded-full w-9 h-9 shrink-0 transition-colors duration-standard",
+                      isOdd
+                        ? "bg-[hsl(var(--turquoise)/0.12)] text-[hsl(var(--turquoise))]"
+                        : "bg-[hsl(var(--pink)/0.1)] text-[hsl(var(--pink))]",
+                    ].join(" ")}
+                  >
+                    <Icon className="w-[18px] h-[18px]" strokeWidth={2.25} />
+                  </span>
+                  <span className="font-sans font-bold text-[13px] text-foreground">
+                    {item.label}
+                  </span>
                 </div>
-                <span
-                  className="font-sans font-bold"
-                  style={{ fontSize: "13px", color: "#081129" }}
-                >
-                  {item.label}
-                </span>
-              </div>
+              </Reveal>
             );
           })}
-        </div>
+        </ul>
       </div>
-    </div>
+    </section>
   );
 };
 
