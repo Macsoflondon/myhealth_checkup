@@ -33,7 +33,7 @@ const STORAGE_KEY = 'mhc:i18n:cache:v1';
 
 const SKIP_TAGS = new Set([
   'SCRIPT', 'STYLE', 'NOSCRIPT', 'CODE', 'PRE', 'KBD', 'SAMP',
-  'SVG', 'PATH', 'CANVAS', 'IFRAME', 'INPUT', 'TEXTAREA',
+  'SVG', 'PATH', 'CANVAS', 'IFRAME',
 ]);
 
 const ATTR_KEYS = ['alt', 'aria-label', 'title', 'placeholder'] as const;
