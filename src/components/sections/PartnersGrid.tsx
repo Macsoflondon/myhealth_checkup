@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { providers, getProviderLogoSrcSet } from "@/constants/providers";
 import { SectionHeading } from "@/components/ui/section-heading";
+import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 
 const PartnersGrid = () => {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -77,13 +78,8 @@ const PartnersGrid = () => {
 
       <div className="container mx-auto px-4 sm:px-6 relative">
         {/* Section label */}
-        <div className="flex items-center justify-center gap-3 mb-3">
-          <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-          <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
-            Accredited & Verified
-          </span>
-          <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-        </div>
+        <EyebrowBadge size="md" tone="onDark" className="mb-3" />
+
 
         <SectionHeading 
           title="Our Trusted" 
