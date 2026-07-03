@@ -19,7 +19,7 @@ const categories = [
     tag: "Cancer Screening",
     tagVariant: "pink" as const,
     count: "40 Screens",
-    title: "Private Cancer Screening",
+    title: "Cancer Screening",
     description:
       "Multi-cancer early detection tests, tumour markers, and targeted screening for bowel, prostate, ovarian, and other cancers from regulated UK clinics.",
     link: "/tests/cancer",
