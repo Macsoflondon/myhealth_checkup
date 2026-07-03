@@ -324,7 +324,7 @@ export default function FeaturedPartnerWheel({
     <div style={{ fontFamily: BODY }}>
       <style>{`@keyframes gbpop{from{transform:translate(-50%,14px)}to{transform:translate(-50%,0)}}@keyframes gbpopc{from{transform:translateY(10px) scale(.985)}to{transform:translateY(0) scale(1)}}`}</style>
 
-      <section style={{ position: "relative", width: "100%", minHeight: 860, overflow: "hidden", padding: "54px 24px 0", display: "flex", flexDirection: "column", alignItems: "center", backgroundColor: "#081129" }}>
+      <section style={{ position: "relative", width: "100%", overflow: "hidden", padding: "54px 24px 48px", display: "flex", flexDirection: "column", alignItems: "center", backgroundColor: "#081129" }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 16 }}>
           <span style={{ width: 34, height: 2, background: "#E70D69", display: "block", borderRadius: 2 }} />
           <span style={{ fontFamily: HEAD, fontWeight: 800, fontSize: 20, letterSpacing: ".2em", textTransform: "uppercase", color: "#22C0D4" }}>{eyebrow}</span>
@@ -363,15 +363,7 @@ export default function FeaturedPartnerWheel({
           <NavButton side="left" onClick={() => step(-1)} />
           <NavButton side="right" onClick={() => step(1)} />
 
-          {/* partner blurb (crossfades out while previewing) */}
-          <div style={{ position: "absolute", left: "50%", bottom: 54, transform: "translateX(-50%)", width: 540, maxWidth: "84%", textAlign: "center", zIndex: 4, transition: "opacity .3s ease", opacity: preview ? 0 : 1, pointerEvents: preview ? "none" : "auto" }}>
-            <p style={{ margin: 0, fontFamily: SERIF, fontStyle: "italic", fontWeight: 500, fontSize: 23, lineHeight: 1.4, color: "#f7f7f8" }}>{blurbItalic}</p>
-            <p style={{ margin: "14px 0 0", fontSize: 15.5, lineHeight: 1.6, color: "#d1d5db" }}>{blurb}</p>
-            <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 20, flexWrap: "wrap" }}>
-              <Link to={GOODBODY_CATALOG_HREF} style={{ display: "inline-block", textDecoration: "none", fontFamily: HEAD, fontWeight: 700, fontSize: 14, padding: "13px 26px", borderRadius: 999, border: "none", color: "#fff", cursor: "pointer", boxShadow: "0 10px 24px -10px rgba(8,17,41,.5)", backgroundColor: "#22c0d4", whiteSpace: "nowrap" }}>Explore the range</Link>
-              <Link to={GOODBODY_PROFILE_HREF} style={{ display: "inline-block", textDecoration: "none", fontFamily: HEAD, fontWeight: 700, fontSize: 14, padding: "13px 26px", borderRadius: 999, border: "1px solid #d4dbe4", background: "#fff", color: "#081129", cursor: "pointer", whiteSpace: "nowrap" }}>Visit Goodbody</Link>
-            </div>
-          </div>
+          {/* blurb moved out of the wheel container — see below section */}
 
           {/* hover preview */}
           {preview && (
@@ -393,6 +385,16 @@ export default function FeaturedPartnerWheel({
               </div>
             </div>
           )}
+        </div>
+
+        {/* partner blurb + CTAs — now in normal flow below the wheel */}
+        <div style={{ marginTop: 32, width: 640, maxWidth: "100%", textAlign: "center", padding: "0 8px" }}>
+          <p style={{ margin: 0, fontFamily: SERIF, fontStyle: "italic", fontWeight: 500, fontSize: "clamp(18px, 4.5vw, 23px)", lineHeight: 1.4, color: "#f7f7f8" }}>{blurbItalic}</p>
+          <p style={{ margin: "14px 0 0", fontSize: "clamp(14px, 3.6vw, 15.5px)", lineHeight: 1.6, color: "#d1d5db" }}>{blurb}</p>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 22, flexWrap: "wrap" }}>
+            <Link to={GOODBODY_CATALOG_HREF} style={{ display: "inline-block", textDecoration: "none", fontFamily: HEAD, fontWeight: 700, fontSize: 14, padding: "13px 26px", borderRadius: 999, border: "none", color: "#fff", cursor: "pointer", boxShadow: "0 10px 24px -10px rgba(8,17,41,.5)", backgroundColor: "#22c0d4", whiteSpace: "nowrap" }}>Explore the range</Link>
+            <Link to={GOODBODY_PROFILE_HREF} style={{ display: "inline-block", textDecoration: "none", fontFamily: HEAD, fontWeight: 700, fontSize: 14, padding: "13px 26px", borderRadius: 999, border: "1px solid #d4dbe4", background: "#fff", color: "#081129", cursor: "pointer", whiteSpace: "nowrap" }}>Visit Goodbody</Link>
+          </div>
         </div>
       </section>
 
