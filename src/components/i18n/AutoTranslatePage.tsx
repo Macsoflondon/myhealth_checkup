@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
+import { flushSync } from 'react-dom';
 import { supabase } from '@/integrations/supabase/client';
 
 /**
@@ -36,6 +37,7 @@ const SKIP_TAGS = new Set([
 ]);
 
 const ATTR_KEYS = ['alt', 'aria-label', 'title', 'placeholder'] as const;
+const FOLLOW_UP_SWEEPS_MS = [250, 900, 1800];
 
 // ── Persistent cache ────────────────────────────────────────────────────────
 const cache = new Map<string, string>();
@@ -115,6 +117,7 @@ function collectPending(root: Node, lang: string): Pending[] {
   let node: Node | null;
   while ((node = walker.nextNode())) {
     const textNode = node as Text;
+    if (textNode.parentElement?.closest('[data-translating="true"]')) continue;
     const original =
       (textNode as any).__i18nOriginal ?? (textNode.nodeValue ?? '');
     (textNode as any).__i18nOriginal = original;
@@ -126,7 +129,8 @@ function collectPending(root: Node, lang: string): Pending[] {
 
     const cached = cache.get(`${lang}::${core}`);
     if (cached) {
-      textNode.nodeValue = leading + cached + trailing;
+      const nextValue = leading + cached + trailing;
+      if (textNode.nodeValue !== nextValue) textNode.nodeValue = nextValue;
       continue;
     }
     const parent = textNode.parentElement;
@@ -159,7 +163,7 @@ function collectPending(root: Node, lang: string): Pending[] {
 
       const cached = cache.get(`${lang}::${core}`);
       if (cached) {
-        el.setAttribute(attr, cached);
+        if (el.getAttribute(attr) !== cached) el.setAttribute(attr, cached);
         continue;
       }
       pending.push({
@@ -244,9 +248,15 @@ export function AutoTranslatePage() {
     let disposed = false;
 
     const applyChunkResults = (pending: Pending[]) => {
-      pending.forEach((p) => {
-        const tr = cache.get(`${lang}::${p.text}`);
-        if (tr) p.apply(tr);
+      flushSync(() => {
+        document.body.dataset.translating = 'true';
+        pending.forEach((p) => {
+          const tr = cache.get(`${lang}::${p.text}`);
+          if (tr) p.apply(tr);
+        });
+        window.setTimeout(() => {
+          delete document.body.dataset.translating;
+        }, 0);
       });
     };
 
@@ -331,10 +341,12 @@ export function AutoTranslatePage() {
     // Initial pass — NO debounce. Synchronously applies cached translations,
     // then network-fetches the rest with viewport priority.
     run();
+    const followUpTimers = FOLLOW_UP_SWEEPS_MS.map((ms) => window.setTimeout(run, ms));
 
     return () => {
       disposed = true;
       if (timerRef.current) window.clearTimeout(timerRef.current);
+      followUpTimers.forEach((timer) => window.clearTimeout(timer));
       observer.disconnect();
       observerRef.current = null;
     };
