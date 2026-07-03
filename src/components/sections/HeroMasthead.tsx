@@ -122,7 +122,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
       />
 
       <div className="flex items-center justify-between gap-3 border-b border-[#081129]/10 pb-2 pt-4 sm:pt-7">
-        <Wordmark />
+        <div className="hidden sm:block"><Wordmark /></div>
         <nav className="hidden sm:flex gap-6 text-xs sm:text-sm md:text-base font-bold uppercase tracking-[0.18em] font-[Montserrat]">
           <Link to="/compare" className="text-brand-navy hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5">Compare</Link>
           <Link to="/test-categories" className="text-brand-navy hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5">Categories</Link>
