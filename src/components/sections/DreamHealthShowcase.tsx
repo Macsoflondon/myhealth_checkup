@@ -329,7 +329,7 @@ const DreamHealthShowcase = () => {
                     <button
                       type="button"
                       onClick={open}
-                      className="aspect-[4/3] overflow-hidden bg-[#f6f7f9] block flex-shrink-0 w-full"
+                      className="relative aspect-[4/3] overflow-hidden bg-[#f6f7f9] block flex-shrink-0 w-full"
                       aria-label={`View details for ${cleanName(t.test_name)}`}
                     >
                       <img
@@ -346,6 +346,12 @@ const DreamHealthShowcase = () => {
                         }}
                         className="w-full h-full object-contain p-4"
                       />
+                      {t.provider_id === "randox" && (
+                        <span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute top-3 right-3 h-10 w-20 rounded-md bg-[#f6f7f9]"
+                        />
+                      )}
                     </button>
                     <div className="p-5 flex flex-col flex-1">
                       <p className="text-[11px] font-semibold tracking-wide uppercase text-[#22c0d4]">
