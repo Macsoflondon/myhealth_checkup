@@ -6,7 +6,7 @@ import fingerprickAsset from "@/assets/at-home-fingerprick.jpg.asset.json";
 const categories = [
   {
     tag: "Blood Testing",
-    tagVariant: "teal" as const,
+    tagVariant: "pink" as const,
     count: "1,400+ Tests",
     title: "Blood Tests & Panels",
     description:
@@ -17,7 +17,7 @@ const categories = [
   },
   {
     tag: "Cancer Screening",
-    tagVariant: "pink" as const,
+    tagVariant: "teal" as const,
     count: "40 Screens",
     title: "Cancer Screening",
     description:
@@ -28,9 +28,10 @@ const categories = [
   },
   {
     tag: "Wellness",
-    tagVariant: "teal" as const,
+    tagVariant: "pink" as const,
     count: "600+ Panels",
     title: "Wellness & Longevity",
+    centerTitle: true,
     description:
       "Advanced diagnostics for health optimisation. Biological age testing, hormones, cardiovascular risk, and micronutrient status.",
     link: "/test-categories",
@@ -50,6 +51,7 @@ const categories = [
 
   },
 ];
+
 
 const TestCategoriesSection = () => {
   return (
@@ -124,7 +126,7 @@ const TestCategoriesSection = () => {
                   {cat.tag}
                 </span>
 
-                <h3 className="font-heading font-bold text-white text-5xl sm:text-6xl leading-tight mb-6 group-hover:text-brand-turquoise transition-colors duration-200">
+                <h3 className={`font-heading font-bold text-white text-5xl sm:text-6xl leading-tight mb-6 group-hover:text-brand-turquoise transition-colors duration-200 ${cat.centerTitle ? "text-center" : ""}`}>
                   {cat.title}
                 </h3>
                 <p className="text-xl sm:text-2xl text-white/[0.7] leading-relaxed mb-10">
