@@ -495,11 +495,15 @@ export type Database = {
         Row: {
           action: string
           created_at: string
+          data_classification: string | null
           id: string
           ip_address: unknown
           new_data: Json | null
           old_data: Json | null
+          purpose: string | null
+          reason_code: string | null
           record_id: string | null
+          siem_exported_at: string | null
           table_name: string
           user_agent: string | null
           user_id: string
@@ -507,11 +511,15 @@ export type Database = {
         Insert: {
           action: string
           created_at?: string
+          data_classification?: string | null
           id?: string
           ip_address?: unknown
           new_data?: Json | null
           old_data?: Json | null
+          purpose?: string | null
+          reason_code?: string | null
           record_id?: string | null
+          siem_exported_at?: string | null
           table_name: string
           user_agent?: string | null
           user_id: string
@@ -519,11 +527,15 @@ export type Database = {
         Update: {
           action?: string
           created_at?: string
+          data_classification?: string | null
           id?: string
           ip_address?: unknown
           new_data?: Json | null
           old_data?: Json | null
+          purpose?: string | null
+          reason_code?: string | null
           record_id?: string | null
+          siem_exported_at?: string | null
           table_name?: string
           user_agent?: string | null
           user_id?: string
@@ -1574,6 +1586,50 @@ export type Database = {
           triggered_by?: string | null
         }
         Relationships: []
+      }
+      encryption_keys: {
+        Row: {
+          activated_at: string | null
+          alg: string
+          created_at: string
+          kid: string
+          notes: string | null
+          purpose: string
+          retired_at: string | null
+          rotated_from: string | null
+          status: string
+        }
+        Insert: {
+          activated_at?: string | null
+          alg?: string
+          created_at?: string
+          kid: string
+          notes?: string | null
+          purpose: string
+          retired_at?: string | null
+          rotated_from?: string | null
+          status?: string
+        }
+        Update: {
+          activated_at?: string | null
+          alg?: string
+          created_at?: string
+          kid?: string
+          notes?: string | null
+          purpose?: string
+          retired_at?: string | null
+          rotated_from?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "encryption_keys_rotated_from_fkey"
+            columns: ["rotated_from"]
+            isOneToOne: false
+            referencedRelation: "encryption_keys"
+            referencedColumns: ["kid"]
+          },
+        ]
       }
       favorites: {
         Row: {
@@ -3877,6 +3933,33 @@ export type Database = {
         }
         Relationships: []
       }
+      siem_export_cursor: {
+        Row: {
+          last_batch_size: number | null
+          last_error: string | null
+          last_exported_at: string
+          last_exported_id: string | null
+          last_run_at: string | null
+          source: string
+        }
+        Insert: {
+          last_batch_size?: number | null
+          last_error?: string | null
+          last_exported_at?: string
+          last_exported_id?: string | null
+          last_run_at?: string | null
+          source: string
+        }
+        Update: {
+          last_batch_size?: number | null
+          last_error?: string | null
+          last_exported_at?: string
+          last_exported_id?: string | null
+          last_run_at?: string | null
+          source?: string
+        }
+        Relationships: []
+      }
       sync_heartbeat: {
         Row: {
           created_at: string | null
@@ -5030,6 +5113,16 @@ export type Database = {
         Returns: boolean
       }
       is_current_user_admin: { Args: never; Returns: boolean }
+      log_data_access_with_reason: {
+        Args: {
+          _classification?: string
+          _purpose?: string
+          _reason_code: string
+          _record_id: string
+          _table_name: string
+        }
+        Returns: string
+      }
       lov_tables_without_policies: {
         Args: never
         Returns: {
