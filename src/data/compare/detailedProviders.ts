@@ -38,7 +38,7 @@ export const detailedProviders = [
   {
     id: "randox",
     name: "Randox Health",
-    website: "https://www.randoxhealth.com/",
+    website: "https://randoxhealth.com/en-GB/",
     phone: "0800 254 5130",
     locations: "50+ clinics across the UK & Ireland",
     accreditation: "UKAS accredited and FDA approved",

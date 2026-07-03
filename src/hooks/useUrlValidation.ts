@@ -66,7 +66,7 @@ export function getProviderFallbackUrl(providerId: string): string {
     'goodbody-clinic': 'https://goodbody.co.uk/blood-tests',
     
     'thriva': 'https://thriva.co/blood-tests',
-    'randox': 'https://randoxhealth.com/tests',
+    'randox': 'https://randoxhealth.com/en-GB',
     'london-medical-laboratory': 'https://www.londonmedicallaboratory.com/tests',
   };
   

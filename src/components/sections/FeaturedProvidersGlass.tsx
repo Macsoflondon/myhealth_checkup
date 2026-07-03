@@ -65,7 +65,7 @@ const PROVIDERS: ProviderEntry[] = [
     description:
       "Global diagnostics provider offering advanced health checks across UKAS-accredited and FDA-approved facilities.",
     tags: ["UKAS Accredited", "FDA Approved", "Advanced Diagnostics"],
-    website: "randoxhealth.com",
+    website: "randoxhealth.com/en-GB",
     glow: "#2D4BA0",
     glowRgb: "45,75,160",
   },
