@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
+import { FALLBACK_LABELS, getFallbackLabel } from '@/i18n/fallbackLabels';
+
 
 /**
  * Global DOM auto-translator — tuned for zero-perceived-latency.
@@ -38,29 +40,11 @@ const SKIP_TAGS = new Set([
 const ATTR_KEYS = ['alt', 'aria-label', 'title', 'placeholder'] as const;
 const FOLLOW_UP_SWEEPS_MS = [250, 900, 1800];
 
-const LOCAL_TRANSLATIONS: Record<string, Record<string, string>> = {
-  es: {
-    Compare: 'Comparar',
-    Book: 'Reservar',
-    Enquire: 'Consultar',
-    Added: 'Añadido',
-    'In Compare': 'En comparación',
-    '+ Compare': '+ Comparar',
-    'Compare this test': 'Comparar esta prueba',
-    'Add to compare': 'Añadir para comparar',
-    'Remove from compare': 'Quitar de la comparación',
-    'View details': 'Ver detalles',
-  },
-  fr: { Compare: 'Comparer', Book: 'Réserver', Enquire: 'Demander', Added: 'Ajouté', 'View details': 'Voir les détails' },
-  de: { Compare: 'Vergleichen', Book: 'Buchen', Enquire: 'Anfragen', Added: 'Hinzugefügt', 'View details': 'Details anzeigen' },
-  it: { Compare: 'Confronta', Book: 'Prenota', Enquire: 'Richiedi', Added: 'Aggiunto', 'View details': 'Vedi dettagli' },
-  pt: { Compare: 'Comparar', Book: 'Reservar', Enquire: 'Consultar', Added: 'Adicionado', 'View details': 'Ver detalhes' },
-  nl: { Compare: 'Vergelijken', Book: 'Boeken', Enquire: 'Aanvragen', Added: 'Toegevoegd', 'View details': 'Details bekijken' },
-  pl: { Compare: 'Porównaj', Book: 'Zarezerwuj', Enquire: 'Zapytaj', Added: 'Dodano', 'View details': 'Zobacz szczegóły' },
-  ar: { Compare: 'قارن', Book: 'احجز', Enquire: 'استفسر', Added: 'تمت الإضافة', 'View details': 'عرض التفاصيل' },
-  zh: { Compare: '比较', Book: '预订', Enquire: '咨询', Added: '已添加', 'View details': '查看详情' },
-  ja: { Compare: '比較', Book: '予約', Enquire: '問い合わせ', Added: '追加済み', 'View details': '詳細を見る' },
-};
+// Sourced from a shared module (see `src/i18n/fallbackLabels.ts`) so
+// tests/audits and i18next's `parseMissingKeyHandler` share the same
+// dictionary. Do not inline additions here — add them in that module.
+const LOCAL_TRANSLATIONS = FALLBACK_LABELS;
+
 
 // ── Persistent cache ────────────────────────────────────────────────────────
 const cache = new Map<string, string>();
@@ -124,8 +108,9 @@ function isElementInViewport(el: Element): boolean {
 }
 
 function localTranslation(lang: string, text: string): string | undefined {
-  return LOCAL_TRANSLATIONS[lang]?.[text.trim()];
+  return getFallbackLabel(text, lang) ?? undefined;
 }
+
 
 function collectPending(root: Node, lang: string): Pending[] {
   const pending: Pending[] = [];
