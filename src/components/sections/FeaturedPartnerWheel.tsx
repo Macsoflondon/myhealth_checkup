@@ -331,7 +331,7 @@ export default function FeaturedPartnerWheel({
 
         <h2 style={{ margin: "22px 0 0", fontFamily: SERIF, fontWeight: 600, fontSize: 60, lineHeight: 1.04, color: "#f7f7f8", textAlign: "center", letterSpacing: "-.01em" }}>{partnerName}</h2>
 
-        <div style={{ position: "relative", width: 1160, maxWidth: "100%", height: 642, marginTop: 2 }}>
+        <div style={{ position: "relative", width: 1160, maxWidth: "100%", height: "clamp(340px, 55vw, 642px)", marginTop: 2 }}>
           {/* drag-capture backdrop */}
           <div onPointerDown={(e) => startDrag(e, null)} style={{ position: "absolute", inset: 0, zIndex: 0, cursor: "grab", touchAction: "pan-y" }} />
 
