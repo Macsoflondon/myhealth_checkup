@@ -148,12 +148,12 @@ const FeaturedProvidersGlass = () => {
             }}
           />
 
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <span className="h-px w-10 bg-[#e70d69]" />
-            <span className="text-[11px] md:text-xs font-bold tracking-[0.3em] text-[#22c0d4] uppercase">
+          <div className="flex items-center justify-center gap-2 sm:gap-4 mb-4">
+            <span className="h-px w-6 sm:w-10 bg-[#e70d69] shrink-0" />
+            <span className="text-[10px] sm:text-[11px] md:text-xs font-bold tracking-[0.18em] sm:tracking-[0.3em] text-[#22c0d4] uppercase whitespace-nowrap">
               Accredited &amp; Verified
             </span>
-            <span className="h-px w-10 bg-[#e70d69]" />
+            <span className="h-px w-6 sm:w-10 bg-[#e70d69] shrink-0" />
           </div>
 
           <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-[#081129] leading-tight tracking-tight">
