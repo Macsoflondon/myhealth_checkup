@@ -16,18 +16,25 @@ describe('fallbackLabels', () => {
     },
   );
 
+  // Subset of keys whose localised label MUST differ from English —
+  // cognates like "Biomarkers" / "Provider" are allowed to match across
+  // some Germanic languages so they're excluded from this stricter check.
+  const MUST_DIFFER_FROM_ENGLISH = [
+    'Compare', 'Book', 'Enquire', 'Added', 'View details', 'Book now',
+    'Add to compare', 'Learn more', 'Read more', 'Loading',
+  ] as const;
+
   it.each(NON_ENGLISH_LANGUAGES)(
-    'never returns a raw English critical label for %s',
+    'never returns a raw English CTA for %s',
     (lang) => {
-      for (const key of CRITICAL_LABEL_KEYS) {
+      for (const key of MUST_DIFFER_FROM_ENGLISH) {
         const translated = getFallbackLabel(key, lang);
         expect(translated, `missing ${key} for ${lang}`).toBeTruthy();
-        // Coverage rule: the localised label must NOT be identical to the
-        // English key — otherwise the "translated" UI is just English.
         expect(translated, `${lang} -> ${key} is still English`).not.toBe(key as string);
       }
     },
   );
+
 
 
   it('returns null for English or unknown languages', () => {
