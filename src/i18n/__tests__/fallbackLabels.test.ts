@@ -24,17 +24,11 @@ describe('fallbackLabels', () => {
         expect(translated, `missing ${key} for ${lang}`).toBeTruthy();
         // Coverage rule: the localised label must NOT be identical to the
         // English key — otherwise the "translated" UI is just English.
-        // Allow numeric/short exceptions (day/days for some CJK collapse).
-        if (
-          key !== 'Biomarkers' &&
-          key !== 'Provider' &&
-          !(lang === 'nl' && key === 'Biomarkers')
-        ) {
-          expect(translated, `${lang} -> ${key} is still English`).not.toBe(key);
-        }
+        expect(translated, `${lang} -> ${key} is still English`).not.toBe(key as string);
       }
     },
   );
+
 
   it('returns null for English or unknown languages', () => {
     expect(getFallbackLabel('Compare', 'en')).toBeNull();
