@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { ArrowRight, Sparkles } from "lucide-react";
+import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const FinalCTA = () => {
@@ -8,11 +9,8 @@ const FinalCTA = () => {
     <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14 bg-white border-t border-gray-200">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="max-w-3xl mx-auto text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#081129]/10 border border-[#081129]/20 mb-4 sm:mb-6">
-            <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#22c0d4]" />
-            <span className="text-xs sm:text-sm font-medium text-[#081129]">Start Your Journey Today</span>
-          </div>
+          <EyebrowBadge label="Start Your Journey" size="sm" tone="onLight" className="mb-4 sm:mb-6" />
+
 
           <SectionHeading 
             title="Take Control of Your" 
