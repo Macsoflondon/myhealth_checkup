@@ -220,10 +220,10 @@ const CancerBiomarkersReferencePage = () => {
             Educational Resource
           </Badge>
           <div className="flex flex-col sm:flex-row gap-3 justify-center mt-6">
-            <Button size="lg" className="bg-primary hover:bg-primary/90" asChild>
+            <Button size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90 whitespace-nowrap" asChild>
               <Link to="/cancer-screening-compare">Compare Cancer Tests</Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10" asChild>
+            <Button size="lg" variant="outline" className="w-full sm:w-auto border-white/30 text-white hover:bg-white/10 whitespace-nowrap" asChild>
               <Link to="/tests/cancer">View Cancer Screening</Link>
             </Button>
           </div>
@@ -493,7 +493,7 @@ const CancerBiomarkersReferencePage = () => {
                 for your needs with transparent pricing and clear biomarker information.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="bg-primary hover:bg-primary/90" asChild>
+                <Button size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90 whitespace-nowrap" asChild>
                   <Link to="/cancer-screening-compare">Compare Cancer Tests</Link>
                 </Button>
               </div>

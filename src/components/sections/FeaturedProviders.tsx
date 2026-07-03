@@ -171,27 +171,27 @@ const FeaturedProviders = () => {
                     <Button
                       variant="default"
                       size="sm"
-                      className="flex-1 text-white"
+                      className="flex-1 min-w-0 text-white whitespace-nowrap"
                       style={brand ? { backgroundColor: brand.primary } : undefined}
                       asChild
                     >
                       <Link to={getProviderProfileRoute(provider.id)}>
-                        View Profile
+                        <span className="truncate">View Profile</span>
                       </Link>
                     </Button>
-                    <Button variant="secondary" size="sm" className="flex-1" asChild>
+                    <Button variant="secondary" size="sm" className="flex-1 min-w-0 whitespace-nowrap" asChild>
                       <Link to={getProviderRoute(provider.id)}>
-                        Browse Tests
-                        <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                        <span className="truncate">Browse Tests</span>
+                        <ArrowRight className="w-3.5 h-3.5 ml-1 shrink-0" />
                       </Link>
                     </Button>
-                    <Button variant="outline" size="sm" className="flex-1" asChild>
+                    <Button variant="outline" size="sm" className="flex-1 min-w-0 whitespace-nowrap" asChild>
                       <a
                         href={buildProviderWebsiteUrl(`https://${provider.website}`, provider.id)}
                         {...externalLinkProps}
                       >
-                        Visit Site
-                        <ExternalLink className="w-3.5 h-3.5 ml-1" />
+                        <span className="truncate">Visit Site</span>
+                        <ExternalLink className="w-3.5 h-3.5 ml-1 shrink-0" />
                       </a>
                     </Button>
                   </div>

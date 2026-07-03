@@ -161,9 +161,9 @@ export default function CancerComparisonPage() {
                       variant={isActive ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCancerTypeChange(type.id)}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 whitespace-nowrap shrink-0"
                     >
-                      <Icon className="h-4 w-4" />
+                      <Icon className="h-4 w-4 shrink-0" />
                       {type.name}
                     </Button>
                   );
@@ -214,7 +214,7 @@ export default function CancerComparisonPage() {
                           Clear
                         </Button>
                         {selectedTests.length >= 2 && (
-                          <Button size="sm" onClick={() => setActiveTab('compare')}>
+                          <Button size="sm" className="whitespace-nowrap" onClick={() => setActiveTab('compare')}>
                             Compare {selectedTests.length} Tests
                           </Button>
                         )}
