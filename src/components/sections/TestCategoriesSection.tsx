@@ -126,9 +126,6 @@ const TestCategoriesSection = () => {
                   {cat.tag}
                 </span>
 
-                <h3 className={`font-heading font-bold text-white text-5xl sm:text-6xl leading-tight mb-6 group-hover:text-brand-turquoise transition-colors duration-200 ${cat.centerTitle ? "text-center" : ""}`}>
-                  {cat.title}
-                </h3>
                 <p className="text-xl sm:text-2xl text-white/[0.7] leading-relaxed mb-10">
                   {cat.description}
                 </p>
