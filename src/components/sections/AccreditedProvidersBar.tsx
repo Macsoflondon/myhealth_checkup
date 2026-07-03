@@ -102,7 +102,15 @@ const AccreditedProvidersBar: React.FC = () => {
           </p>
         </Reveal>
 
-        <div className="relative space-y-1.5 sm:space-y-2">
+        {/* Desktop & tablet: single static row, evenly distributed */}
+        <div className="hidden md:flex items-center justify-between gap-4 lg:gap-6">
+          {trustItems.map((item, i) => (
+            <BadgePill key={item.label} item={item} tone={i % 2 === 0 ? "turquoise" : "pink"} />
+          ))}
+        </div>
+
+        {/* Mobile: two-row marquee (unchanged) */}
+        <div className="relative space-y-1.5 sm:space-y-2 md:hidden">
           <MarqueeRow items={rowA} tone="turquoise" duration={28} offset="0%" />
           <MarqueeRow items={rowB} tone="pink" duration={34} reverse offset="-12%" />
 
