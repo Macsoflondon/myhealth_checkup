@@ -386,6 +386,16 @@ export default function FeaturedPartnerWheel({
             </div>
           )}
         </div>
+
+        {/* partner blurb + CTAs — now in normal flow below the wheel */}
+        <div style={{ marginTop: 32, width: 640, maxWidth: "100%", textAlign: "center", padding: "0 8px" }}>
+          <p style={{ margin: 0, fontFamily: SERIF, fontStyle: "italic", fontWeight: 500, fontSize: "clamp(18px, 4.5vw, 23px)", lineHeight: 1.4, color: "#f7f7f8" }}>{blurbItalic}</p>
+          <p style={{ margin: "14px 0 0", fontSize: "clamp(14px, 3.6vw, 15.5px)", lineHeight: 1.6, color: "#d1d5db" }}>{blurb}</p>
+          <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 22, flexWrap: "wrap" }}>
+            <Link to={GOODBODY_CATALOG_HREF} style={{ display: "inline-block", textDecoration: "none", fontFamily: HEAD, fontWeight: 700, fontSize: 14, padding: "13px 26px", borderRadius: 999, border: "none", color: "#fff", cursor: "pointer", boxShadow: "0 10px 24px -10px rgba(8,17,41,.5)", backgroundColor: "#22c0d4", whiteSpace: "nowrap" }}>Explore the range</Link>
+            <Link to={GOODBODY_PROFILE_HREF} style={{ display: "inline-block", textDecoration: "none", fontFamily: HEAD, fontWeight: 700, fontSize: 14, padding: "13px 26px", borderRadius: 999, border: "1px solid #d4dbe4", background: "#fff", color: "#081129", cursor: "pointer", whiteSpace: "nowrap" }}>Visit Goodbody</Link>
+          </div>
+        </div>
       </section>
 
       {/* info modal */}
