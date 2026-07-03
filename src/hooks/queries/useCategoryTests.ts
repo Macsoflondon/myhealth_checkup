@@ -88,6 +88,7 @@ export function useCategoryTests(canonicalCategory: string) {
 
         return {
           id: row.id,
+          providerId: row.provider_id,
           popular: !!row.is_popular,
           badge: row.source_section_label || row.category || undefined,
           badgeColor,
