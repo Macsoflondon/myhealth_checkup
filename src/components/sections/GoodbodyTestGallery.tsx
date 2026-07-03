@@ -411,19 +411,20 @@ const GoodbodyTestGallery = () => {
                   </div>
 
                   {/* CTA Buttons */}
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 flex-wrap sm:flex-nowrap">
                     <a
                       href={bookUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-1 inline-flex items-center justify-center gap-2 text-white font-semibold py-3 px-6 rounded-xl text-sm transition-colors duration-200 hover:opacity-90"
+                      className="flex-1 min-w-0 inline-flex items-center justify-center gap-2 text-white font-semibold py-3 px-4 sm:px-6 rounded-xl text-sm transition-colors duration-200 hover:opacity-90 whitespace-nowrap"
                       style={{ backgroundColor: BRAND_COLOR }}
                     >
-                      Book with Goodbody Clinic →
+                      <span className="truncate">Book with Goodbody Clinic</span>
+                      <span aria-hidden className="shrink-0">→</span>
                     </a>
                     <Link
                       to={`/compare?test=${encodeURIComponent(testName)}`}
-                      className="inline-flex items-center justify-center font-semibold py-3 px-5 rounded-xl text-sm border border-gray-200 text-foreground hover:bg-gray-50 transition-colors"
+                      className="shrink-0 inline-flex items-center justify-center font-semibold py-3 px-5 rounded-xl text-sm border border-gray-200 text-foreground hover:bg-gray-50 transition-colors whitespace-nowrap"
                     >
                       + Compare
                     </Link>
