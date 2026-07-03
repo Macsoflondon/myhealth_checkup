@@ -229,12 +229,12 @@ export const ComparisonBar = ({
               onClick={onCompare}
               disabled={orderedTests.length < 2}
               className={cn(
-                "gap-2 bg-brand-navy hover:bg-brand-navy/90 text-white font-heading font-bold",
+                "gap-2 bg-brand-navy hover:bg-brand-navy/90 text-white font-heading font-bold whitespace-nowrap",
                 orderedTests.length < 2 && "opacity-50 cursor-not-allowed"
               )}
             >
               Compare Now
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4 shrink-0" />
             </Button>
           </div>
         </div>
