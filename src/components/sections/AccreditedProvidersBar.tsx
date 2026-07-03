@@ -46,8 +46,8 @@ const AccreditedProvidersBar: React.FC = () => {
                     className={[
                       "flex items-center justify-center rounded-full w-9 h-9 shrink-0 transition-colors duration-standard",
                       isOdd
-                        ? "bg-[hsl(var(--brand-turquoise)/0.12)] text-[hsl(var(--brand-turquoise))]"
-                        : "bg-[hsl(var(--brand-pink)/0.1)] text-[hsl(var(--brand-pink))]",
+                        ? "bg-[hsl(var(--turquoise)/0.12)] text-[hsl(var(--turquoise))]"
+                        : "bg-[hsl(var(--pink)/0.1)] text-[hsl(var(--pink))]",
                     ].join(" ")}
                   >
                     <Icon className="w-[18px] h-[18px]" strokeWidth={2.25} />
