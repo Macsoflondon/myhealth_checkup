@@ -198,7 +198,7 @@ export const SEED_TESTS: TestRecord[] = [
     goal_tags: ["symptom_investigation", "condition_monitoring"],
     condition_tags: ["female_hormones", "gynaecology", "menopause_hrt"],
     sex_restriction: "female_only",
-    source_url: "https://www.randoxhealth.com",
+    source_url: "https://randoxhealth.com/en-GB/",
     verification: {
       price: "needs_verification",
       biomarkers: "needs_verification",

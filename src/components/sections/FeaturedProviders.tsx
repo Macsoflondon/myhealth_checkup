@@ -50,7 +50,7 @@ const FeaturedProviders = () => {
     description: "Global diagnostics company offering comprehensive health checks with UKAS accredited and FDA approved testing",
     location: "UK Wide",
     tags: ["FDA Approved", "UKAS Accredited", "Health Checks", "Global Company"],
-    website: "randoxhealth.com"
+    website: "randoxhealth.com/en-GB"
   }, {
     id: "london-medical-laboratory",
     name: "London Medical Laboratory",
