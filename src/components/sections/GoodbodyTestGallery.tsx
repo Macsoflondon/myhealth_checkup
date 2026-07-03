@@ -297,7 +297,7 @@ const GoodbodyTestGallery = () => {
 
       {/* View Profile Button */}
       <div className="flex justify-center mt-8 pb-[10px]">
-        <Button asChild>
+        <Button asChild className="whitespace-nowrap">
           <Link to="/provider/goodbody-clinic">
             View Goodbody Profile
           </Link>
