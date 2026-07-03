@@ -6,6 +6,7 @@ import { useSavedProviders } from "@/hooks/useSavedProviders";
 import { getProviderRoute, getProviderProfileRoute } from "@/utils/providerRoutes";
 import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
 import { getProviderRating } from "@/constants/providerRatings";
+import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 
 interface ProviderEntry {
   id: string;
@@ -148,14 +149,8 @@ const FeaturedProvidersGlass = () => {
             }}
           />
 
-          <div className="flex items-center justify-center gap-3 sm:gap-4 mb-4 px-4">
-            <span className="h-px w-6 sm:w-10 bg-[#e70d69] shrink-0" />
-            <span className="text-[11px] sm:text-xs font-bold tracking-[0.2em] sm:tracking-[0.3em] text-[#22c0d4] uppercase shrink-0 text-center leading-tight">
-              <span className="block sm:inline">Accredited</span>
-              <span className="block sm:inline sm:ml-2">&amp; Verified</span>
-            </span>
-            <span className="h-px w-6 sm:w-10 bg-[#e70d69] shrink-0" />
-          </div>
+          <EyebrowBadge size="sm" tone="onLight" className="mb-4" />
+
 
 
           <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-[#081129] leading-tight tracking-tight">
