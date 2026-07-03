@@ -64,6 +64,17 @@ i18n
     supportedLngs: ['en', 'fr', 'es', 'de', 'it', 'pt', 'nl', 'pl', 'ar', 'zh', 'ja'],
     debug: false,
 
+    // When a key is missing from the locale JSON, look it up in the
+    // centralised fallback dictionary before returning the raw key. This
+    // stops English field labels from leaking through when a translation
+    // file is out of date.
+    parseMissingKeyHandler: (key: string) => {
+      const lang = i18n.language || 'en';
+      const fallback = getFallbackLabel(key, lang);
+      return fallback ?? key;
+    },
+
+
     interpolation: {
       escapeValue: false, // React already does escaping
     },
