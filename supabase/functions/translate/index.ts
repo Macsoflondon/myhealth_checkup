@@ -111,7 +111,7 @@ Deno.serve(async (req) => {
         'Lovable-API-Key': apiKey,
       },
       body: JSON.stringify({
-        model: 'google/gemini-3-flash-preview',
+        model: 'google/gemini-2.5-flash-lite',
         messages: [
           { role: 'system', content: 'You are a precise translator. Output JSON only.' },
           { role: 'user', content: prompt },
