@@ -55,7 +55,7 @@ const GeneralHealthTestPage = () => {
       {
         name: "Randox Health",
         price: 75,
-        url: "https://www.randoxhealth.com/?utm_source=myhealthcheckup&utm_medium=referral&utm_campaign=general-health",
+        url: "https://randoxhealth.com/en-GB/?utm_source=myhealthcheckup&utm_medium=referral&utm_campaign=general-health",
         features: ["24 data points", "Next day results", "At-home kit"]
       },
       {
