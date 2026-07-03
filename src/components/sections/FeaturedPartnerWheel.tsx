@@ -357,9 +357,8 @@ export default function FeaturedPartnerWheel({
             })}
           </div>
 
-          {/* arrows */}
-          <NavButton side="left" onClick={() => step(-1)} />
-          <NavButton side="right" onClick={() => step(1)} />
+          {/* arrows removed */}
+
 
           {/* blurb moved out of the wheel container — see below section */}
 
