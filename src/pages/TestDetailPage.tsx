@@ -12,7 +12,7 @@ import { getProviderRating } from "@/constants/providerRatings";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { TestProviderPriceTable } from "@/components/compare/TestProviderPriceTable";
 import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
-import { getProviderLogo, PROVIDER_TURNAROUND_TIMES, PROVIDER_COLLECTION_METHODS } from "@/constants/providers";
+import { getProviderLogo, normalizeProviderId, PROVIDER_TURNAROUND_TIMES, PROVIDER_COLLECTION_METHODS } from "@/constants/providers";
 import { logger } from "@/lib/logger";
 
 interface TestDetail {
@@ -42,14 +42,15 @@ interface ProviderTestOption {
 
 const TestDetailPage = () => {
   const { providerId, testId } = useParams();
+  const canonicalProviderId = normalizeProviderId(providerId || '');
   const [test, setTest] = useState<TestDetail | null>(null);
   const [otherProviders, setOtherProviders] = useState<ProviderTestOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const provider = detailedProviders.find(p => 
-    p.id.toLowerCase() === providerId?.toLowerCase() ||
-    p.id.toLowerCase().startsWith(providerId?.toLowerCase() + '-')
+    p.id.toLowerCase() === canonicalProviderId ||
+    p.id.toLowerCase().startsWith(canonicalProviderId + '-')
   );
 
   // Provider ratings now imported from shared constants
@@ -169,8 +170,8 @@ const TestDetailPage = () => {
     );
   }
 
-  const currentProviderRating = getProviderRating(providerId || '');
-  const bookingUrl = test.url ? buildProviderBookingUrl(test.url, providerId || '', test.test_name) : null;
+  const currentProviderRating = getProviderRating(canonicalProviderId);
+  const bookingUrl = test.url ? buildProviderBookingUrl(test.url, canonicalProviderId, test.test_name) : null;
 
   return (
     <div className="min-h-screen bg-background">
@@ -269,7 +270,7 @@ const TestDetailPage = () => {
                   
                   <div className="flex items-center gap-3 p-3 bg-secondary/20 rounded-lg">
                     <Clock className="w-5 h-5 text-secondary flex-shrink-0" />
-                    <span className="text-sm font-medium">{PROVIDER_TURNAROUND_TIMES[providerId || ''] || '2-5 days'}</span>
+                      <span className="text-sm font-medium">{PROVIDER_TURNAROUND_TIMES[canonicalProviderId] || '2-5 days'}</span>
                   </div>
                   
                   <div className="flex items-center gap-3 p-3 bg-green-500/10 rounded-lg">
@@ -353,8 +354,8 @@ const TestDetailPage = () => {
                     providerId: providerId || '',
                     providerName: provider.name,
                     price: test.price || 0,
-                    turnaroundTime: PROVIDER_TURNAROUND_TIMES[providerId || ''] || '2-5 days',
-                    collectionMethod: PROVIDER_COLLECTION_METHODS[providerId || ''] || 'Varies',
+                    turnaroundTime: PROVIDER_TURNAROUND_TIMES[canonicalProviderId] || '2-5 days',
+                    collectionMethod: PROVIDER_COLLECTION_METHODS[canonicalProviderId] || 'Varies',
                     biomarkerCount: test.biomarker_count || undefined,
                     url: test.url || undefined,
                     rating: currentProviderRating.rating,
@@ -411,7 +412,7 @@ const TestDetailPage = () => {
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center gap-2">
                       <img 
-                        src={getProviderLogo(providerId || '')} 
+                        src={getProviderLogo(canonicalProviderId)} 
                         alt={provider.name}
                         loading="lazy"
                         decoding="async"

@@ -16,9 +16,11 @@ export const PROVIDER_LOGOS: Record<string, string> = {
   'medichecks': '/lovable-uploads/provider-medichecks-light.png',
   'thriva': '/lovable-uploads/provider-thriva.png',
   'randox': '/lovable-uploads/provider-randox.png',
+  'randox-health': '/lovable-uploads/provider-randox.png',
   'london-medical-laboratory': '/lovable-uploads/provider-london-medical.png',
   'lola-health': '/lovable-uploads/provider-lola-health.png',
   'goodbody-clinic': '/lovable-uploads/74b36cff-95b5-4bfc-8ad8-61b4512fd92f.png',
+  'goodbody': '/lovable-uploads/74b36cff-95b5-4bfc-8ad8-61b4512fd92f.png',
   'london-health-company': '/lovable-uploads/provider-london-health-company.png',
   'medical-diagnosis': '/lovable-uploads/provider-medical-diagnosis.png',
   'clinilabs': '/lovable-uploads/provider-clinilabs.png',
@@ -28,9 +30,11 @@ export const PROVIDER_NAMES: Record<string, string> = {
   'medichecks': 'Medichecks',
   'thriva': 'Thriva',
   'randox': 'Randox Health',
+  'randox-health': 'Randox Health',
   'london-medical-laboratory': 'London Medical Laboratory',
   'lola-health': 'Lola Health',
   'goodbody-clinic': 'GoodBody Clinic',
+  'goodbody': 'GoodBody Clinic',
   'london-health-company': 'London Health Company',
   'medical-diagnosis': 'Medical Diagnosis',
   'clinilabs': 'Clinilabs',
@@ -47,6 +51,16 @@ export const PROVIDER_WEBSITES: Record<string, string> = {
   'medical-diagnosis': 'https://www.medical-diagnosis.co.uk',
   'clinilabs': 'https://www.clinilabs.co.uk',
 };
+
+const PROVIDER_ALIASES: Record<string, string> = {
+  'randox-health': 'randox',
+  'goodbody': 'goodbody-clinic',
+};
+
+export function normalizeProviderId(providerId: string): string {
+  const key = (providerId || '').toLowerCase().trim().replace(/\s+/g, '-');
+  return PROVIDER_ALIASES[key] || key;
+}
 
 export const PROVIDER_DETAILS: Record<string, Provider> = {
   'goodbody-clinic': {
@@ -164,7 +178,8 @@ export const providers: Provider[] = [
 ];
 
 export function getProviderLogo(providerId: string): string {
-  return PROVIDER_LOGOS[providerId] || '/placeholder.svg';
+  const normalizedId = normalizeProviderId(providerId);
+  return PROVIDER_LOGOS[normalizedId] || PROVIDER_LOGOS[providerId] || '/placeholder.svg';
 }
 
 /**
@@ -179,9 +194,10 @@ const PROVIDERS_WITH_RESPONSIVE_LOGOS = new Set<string>([
 ]);
 
 export function getProviderLogoSrcSet(providerId: string): { src: string; srcSet?: string } {
-  const fallback = getProviderLogo(providerId);
-  if (!PROVIDERS_WITH_RESPONSIVE_LOGOS.has(providerId)) return { src: fallback };
-  const base = `/lovable-uploads/providers/${providerId}`;
+  const normalizedId = normalizeProviderId(providerId);
+  const fallback = getProviderLogo(normalizedId);
+  if (!PROVIDERS_WITH_RESPONSIVE_LOGOS.has(normalizedId)) return { src: fallback };
+  const base = `/lovable-uploads/providers/${normalizedId}`;
   return {
     src: `${base}@160.png`,
     srcSet: `${base}@160.png 1x, ${base}@320.png 2x, ${base}@480.png 3x`,
@@ -189,15 +205,18 @@ export function getProviderLogoSrcSet(providerId: string): { src: string; srcSet
 }
 
 export function getProviderName(providerId: string): string {
-  return PROVIDER_NAMES[providerId] || providerId;
+  const normalizedId = normalizeProviderId(providerId);
+  return PROVIDER_NAMES[normalizedId] || PROVIDER_NAMES[providerId] || providerId;
 }
 
 export function getProviderWebsite(providerId: string): string {
-  return PROVIDER_WEBSITES[providerId] || '';
+  const normalizedId = normalizeProviderId(providerId);
+  return PROVIDER_WEBSITES[normalizedId] || PROVIDER_WEBSITES[providerId] || '';
 }
 
 export function getProviderDetails(providerId: string): Provider | null {
-  return PROVIDER_DETAILS[providerId] || null;
+  const normalizedId = normalizeProviderId(providerId);
+  return PROVIDER_DETAILS[normalizedId] || PROVIDER_DETAILS[providerId] || null;
 }
 
 export function getAllProviders(): Provider[] {

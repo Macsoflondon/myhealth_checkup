@@ -32,10 +32,35 @@ const STORAGE_KEY = 'mhc:i18n:cache:v1';
 
 const SKIP_TAGS = new Set([
   'SCRIPT', 'STYLE', 'NOSCRIPT', 'CODE', 'PRE', 'KBD', 'SAMP',
-  'SVG', 'PATH', 'CANVAS', 'IFRAME', 'INPUT', 'TEXTAREA',
+  'SVG', 'PATH', 'CANVAS', 'IFRAME',
 ]);
 
 const ATTR_KEYS = ['alt', 'aria-label', 'title', 'placeholder'] as const;
+const FOLLOW_UP_SWEEPS_MS = [250, 900, 1800];
+
+const LOCAL_TRANSLATIONS: Record<string, Record<string, string>> = {
+  es: {
+    Compare: 'Comparar',
+    Book: 'Reservar',
+    Enquire: 'Consultar',
+    Added: 'Añadido',
+    'In Compare': 'En comparación',
+    '+ Compare': '+ Comparar',
+    'Compare this test': 'Comparar esta prueba',
+    'Add to compare': 'Añadir para comparar',
+    'Remove from compare': 'Quitar de la comparación',
+    'View details': 'Ver detalles',
+  },
+  fr: { Compare: 'Comparer', Book: 'Réserver', Enquire: 'Demander', Added: 'Ajouté', 'View details': 'Voir les détails' },
+  de: { Compare: 'Vergleichen', Book: 'Buchen', Enquire: 'Anfragen', Added: 'Hinzugefügt', 'View details': 'Details anzeigen' },
+  it: { Compare: 'Confronta', Book: 'Prenota', Enquire: 'Richiedi', Added: 'Aggiunto', 'View details': 'Vedi dettagli' },
+  pt: { Compare: 'Comparar', Book: 'Reservar', Enquire: 'Consultar', Added: 'Adicionado', 'View details': 'Ver detalhes' },
+  nl: { Compare: 'Vergelijken', Book: 'Boeken', Enquire: 'Aanvragen', Added: 'Toegevoegd', 'View details': 'Details bekijken' },
+  pl: { Compare: 'Porównaj', Book: 'Zarezerwuj', Enquire: 'Zapytaj', Added: 'Dodano', 'View details': 'Zobacz szczegóły' },
+  ar: { Compare: 'قارن', Book: 'احجز', Enquire: 'استفسر', Added: 'تمت الإضافة', 'View details': 'عرض التفاصيل' },
+  zh: { Compare: '比较', Book: '预订', Enquire: '咨询', Added: '已添加', 'View details': '查看详情' },
+  ja: { Compare: '比較', Book: '予約', Enquire: '問い合わせ', Added: '追加済み', 'View details': '詳細を見る' },
+};
 
 // ── Persistent cache ────────────────────────────────────────────────────────
 const cache = new Map<string, string>();
@@ -98,6 +123,10 @@ function isElementInViewport(el: Element): boolean {
   return r.bottom > 0 && r.right > 0 && r.top < vh && r.left < vw;
 }
 
+function localTranslation(lang: string, text: string): string | undefined {
+  return LOCAL_TRANSLATIONS[lang]?.[text.trim()];
+}
+
 function collectPending(root: Node, lang: string): Pending[] {
   const pending: Pending[] = [];
 
@@ -115,6 +144,7 @@ function collectPending(root: Node, lang: string): Pending[] {
   let node: Node | null;
   while ((node = walker.nextNode())) {
     const textNode = node as Text;
+    if (textNode.parentElement?.closest('[data-translating="true"]')) continue;
     const original =
       (textNode as any).__i18nOriginal ?? (textNode.nodeValue ?? '');
     (textNode as any).__i18nOriginal = original;
@@ -124,9 +154,16 @@ function collectPending(root: Node, lang: string): Pending[] {
     const core = original.trim();
     if (!core) continue;
 
+    const local = localTranslation(lang, core);
+    if (local) {
+      textNode.nodeValue = leading + local + trailing;
+      continue;
+    }
+
     const cached = cache.get(`${lang}::${core}`);
     if (cached) {
-      textNode.nodeValue = leading + cached + trailing;
+      const nextValue = leading + cached + trailing;
+      if (textNode.nodeValue !== nextValue) textNode.nodeValue = nextValue;
       continue;
     }
     const parent = textNode.parentElement;
@@ -157,9 +194,15 @@ function collectPending(root: Node, lang: string): Pending[] {
       const core = original.trim();
       if (!isTranslatable(core)) continue;
 
+      const local = localTranslation(lang, core);
+      if (local) {
+        if (el.getAttribute(attr) !== local) el.setAttribute(attr, local);
+        continue;
+      }
+
       const cached = cache.get(`${lang}::${core}`);
       if (cached) {
-        el.setAttribute(attr, cached);
+        if (el.getAttribute(attr) !== cached) el.setAttribute(attr, cached);
         continue;
       }
       pending.push({
@@ -331,10 +374,12 @@ export function AutoTranslatePage() {
     // Initial pass — NO debounce. Synchronously applies cached translations,
     // then network-fetches the rest with viewport priority.
     run();
+    const followUpTimers = FOLLOW_UP_SWEEPS_MS.map((ms) => window.setTimeout(run, ms));
 
     return () => {
       disposed = true;
       if (timerRef.current) window.clearTimeout(timerRef.current);
+      followUpTimers.forEach((timer) => window.clearTimeout(timer));
       observer.disconnect();
       observerRef.current = null;
     };

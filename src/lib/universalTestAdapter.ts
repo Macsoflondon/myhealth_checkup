@@ -77,7 +77,7 @@ export function fromMedichecksTest(t: {
 export function fromCategoryTestItem(t: CategoryTestItem): UniversalTestData {
   return {
     id: String(t.id),
-    provider_id: (t.provider || "").toLowerCase().replace(/\s+/g, "-"),
+    provider_id: t.providerId || (t.provider || "").toLowerCase().replace(/\s+/g, "-"),
     test_name: t.title,
     category: t.tag,
     description: t.desc,

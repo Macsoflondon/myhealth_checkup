@@ -19,6 +19,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useUrlValidation, getProviderFallbackUrl } from "@/hooks/useUrlValidation";
 import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
 import { seo } from "@/lib/seo";
+import { getProviderLogo } from "@/constants/providers";
 
 export interface ProviderTestData {
   id: string;
@@ -366,6 +367,7 @@ export default function ProviderTestDetailTemplate({
   };
 
   const hasDiscount = test.original_price && test.original_price > (test.price || 0);
+  const providerLogo = providerConfig.logo || getProviderLogo(providerConfig.id);
 
   return (
     <>
@@ -392,11 +394,15 @@ export default function ProviderTestDetailTemplate({
           {/* Provider Badge */}
           <div className="mb-6">
             <img 
-              src={providerConfig.logo} 
+              src={providerLogo} 
               alt={providerConfig.name} 
               loading="lazy"
               decoding="async"
               className="h-12 mb-4"
+              onError={(event) => {
+                const fallback = getProviderLogo(providerConfig.id);
+                if (event.currentTarget.src !== fallback) event.currentTarget.src = fallback;
+              }}
             />
             <div className="flex flex-wrap gap-2 mb-2">
               <Badge variant="secondary">{providerConfig.badgeText}</Badge>

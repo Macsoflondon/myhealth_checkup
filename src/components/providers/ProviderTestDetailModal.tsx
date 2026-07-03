@@ -10,6 +10,7 @@ import type { ProviderTestCardData } from "./ProviderTestCard";
 import { formatTestPrice } from "@/lib/utils";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import type { CompareTestData } from "@/types";
+import { getProviderLogo } from "@/constants/providers";
 
 
 interface ProviderTestDetailModalProps {
@@ -180,6 +181,7 @@ export default function ProviderTestDetailModal({
     : null;
 
   const collectionLabel = getCollectionLabel(goodbodyStatic?.sampleType || test.sample_type, collectionOptions);
+  const providerLogo = getProviderLogo(test.provider_id);
 
   const handleCompare = () => {
     const compareTest: CompareTestData = {
@@ -214,10 +216,18 @@ export default function ProviderTestDetailModal({
         <div className="bg-[#081129] text-white p-6 pb-7 pr-14">
           <div className="flex items-start gap-4">
             <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center shrink-0 shadow-md">
-              <span
-                className="text-xl font-bold"
-                style={{ color: brandColor }}
-              >
+              <img
+                src={providerLogo}
+                alt={providerName}
+                loading="lazy"
+                decoding="async"
+                className="max-h-10 max-w-12 object-contain"
+                onError={(event) => {
+                  event.currentTarget.style.display = "none";
+                  event.currentTarget.nextElementSibling?.removeAttribute("hidden");
+                }}
+              />
+              <span hidden className="text-xl font-bold" style={{ color: brandColor }}>
                 {getProviderInitial(providerName)}
               </span>
             </div>

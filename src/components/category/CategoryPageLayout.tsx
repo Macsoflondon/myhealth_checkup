@@ -15,6 +15,7 @@ const isFromPriceLabel = (value: string) => /^from\s+/i.test(value.trim());
 /* ───────── Types ───────── */
 export interface CategoryTestItem {
   id: string | number;
+  providerId?: string;
   popular?: boolean;
   badge?: string;
   badgeColor: string;
@@ -267,7 +268,7 @@ export function CategoryPageLayout({
                     className="w-full h-full"
                     testDetails={{
                       id: String(test.id),
-                      provider_id: (test.provider || "").toLowerCase().replace(/\s+/g, "-"),
+                      provider_id: test.providerId || (test.provider || "").toLowerCase().replace(/\s+/g, "-"),
                       test_name: test.title,
                       description: test.desc ?? null,
                       price: test.priceNum ?? null,
