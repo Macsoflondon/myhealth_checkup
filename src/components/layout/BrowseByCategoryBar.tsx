@@ -172,7 +172,7 @@ export default function BrowseByCategoryBar({
           <Link
             to="/"
             aria-label="myhealth checkup home"
-            className="flex items-center h-12 no-underline font-[Montserrat] font-extrabold tracking-tight text-[38px] leading-none"
+            className="flex items-center h-10 no-underline font-[Montserrat] font-extrabold tracking-tight text-[30px] leading-none"
           >
             <span
               className={`transition-colors duration-300 ease-out ${
