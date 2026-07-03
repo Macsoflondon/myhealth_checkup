@@ -4,29 +4,31 @@ import { useLocation } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 
 /**
- * Global DOM auto-translator.
+ * Global DOM auto-translator — tuned for zero-perceived-latency.
  *
  * When the active language is not English, this walks the rendered DOM and
  * translates:
  *   - visible text nodes
  *   - alt, aria-label, title, placeholder attributes
  *
- * Translations are routed through the existing `translate` edge function
- * (Lovable AI Gateway + Supabase cache), batched, and applied in place. The
- * original English is stashed on each node so switching back to English
- * restores it instantly with no network call.
- *
- * Re-runs on: language change, route change, and DOM mutations (debounced).
+ * Speed strategy:
+ *   1. **localStorage cache** — cached translations apply synchronously with
+ *      no network call. Repeat visits / language flips are instant.
+ *   2. **Viewport-first pass** — elements currently in view are translated in
+ *      the first batch so the user sees translated content immediately.
+ *   3. **Parallel batches** — remaining strings are translated with bounded
+ *      concurrency (6 in flight) instead of sequentially.
+ *   4. **No debounce on language switch** — initial run fires immediately;
+ *      only DOM mutations are debounced.
+ *   5. **English restore is synchronous** — stashed originals swap back with
+ *      no network call.
  */
 
-const BATCH_SIZE = 40;        // edge function caps at 50
+const BATCH_SIZE = 48;           // edge function caps at 50
 const MAX_LEN = 2000;
-const DEBOUNCE_MS = 350;
-
-// Persistent cache: `${lang}::${text}` -> translated
-const cache = new Map<string, string>();
-// Strings currently being fetched, so we don't enqueue duplicates
-const inflight = new Set<string>();
+const MUTATION_DEBOUNCE_MS = 120; // was 350
+const MAX_PARALLEL = 6;
+const STORAGE_KEY = 'mhc:i18n:cache:v1';
 
 const SKIP_TAGS = new Set([
   'SCRIPT', 'STYLE', 'NOSCRIPT', 'CODE', 'PRE', 'KBD', 'SAMP',
@@ -35,6 +37,34 @@ const SKIP_TAGS = new Set([
 
 const ATTR_KEYS = ['alt', 'aria-label', 'title', 'placeholder'] as const;
 
+// ── Persistent cache ────────────────────────────────────────────────────────
+const cache = new Map<string, string>();
+const inflight = new Set<string>();
+let persistTimer: number | null = null;
+
+function loadCache() {
+  if (cache.size > 0) return;
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw) as [string, string][];
+    parsed.forEach(([k, v]) => cache.set(k, v));
+  } catch { /* ignore */ }
+}
+
+function schedulePersist() {
+  if (persistTimer) return;
+  persistTimer = window.setTimeout(() => {
+    persistTimer = null;
+    try {
+      // Cap to last ~5000 entries to avoid runaway growth
+      const entries = Array.from(cache.entries()).slice(-5000);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+    } catch { /* quota exceeded — ignore */ }
+  }, 1000);
+}
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
 function shouldSkipNode(el: Element | null): boolean {
   let cur: Element | null = el;
   while (cur) {
@@ -49,10 +79,8 @@ function shouldSkipNode(el: Element | null): boolean {
 function isTranslatable(text: string): boolean {
   const trimmed = text.trim();
   if (trimmed.length < 2 || trimmed.length > MAX_LEN) return false;
-  // Skip numbers, pure symbols, URLs, currency-only
   if (/^[\d\s.,£$€%+\-/:()×x]+$/.test(trimmed)) return false;
   if (/^https?:\/\//.test(trimmed)) return false;
-  // Must contain at least one letter
   if (!/[a-zA-Z]/.test(trimmed)) return false;
   return true;
 }
@@ -60,6 +88,14 @@ function isTranslatable(text: string): boolean {
 interface Pending {
   text: string;
   apply: (translated: string) => void;
+  inViewport: boolean;
+}
+
+function isElementInViewport(el: Element): boolean {
+  const r = el.getBoundingClientRect();
+  const vh = window.innerHeight || document.documentElement.clientHeight;
+  const vw = window.innerWidth || document.documentElement.clientWidth;
+  return r.bottom > 0 && r.right > 0 && r.top < vh && r.left < vw;
 }
 
 function collectPending(root: Node, lang: string): Pending[] {
@@ -79,8 +115,6 @@ function collectPending(root: Node, lang: string): Pending[] {
   let node: Node | null;
   while ((node = walker.nextNode())) {
     const textNode = node as Text;
-    // Use the original English (stashed once) as the cache key, so flipping
-    // languages always translates from the canonical source.
     const original =
       (textNode as any).__i18nOriginal ?? (textNode.nodeValue ?? '');
     (textNode as any).__i18nOriginal = original;
@@ -95,8 +129,10 @@ function collectPending(root: Node, lang: string): Pending[] {
       textNode.nodeValue = leading + cached + trailing;
       continue;
     }
+    const parent = textNode.parentElement;
     pending.push({
       text: core,
+      inViewport: parent ? isElementInViewport(parent) : false,
       apply: (translated) => {
         textNode.nodeValue = leading + translated + trailing;
       },
@@ -128,6 +164,7 @@ function collectPending(root: Node, lang: string): Pending[] {
       }
       pending.push({
         text: core,
+        inViewport: isElementInViewport(el),
         apply: (translated) => el.setAttribute(attr, translated),
       });
     }
@@ -137,7 +174,6 @@ function collectPending(root: Node, lang: string): Pending[] {
 }
 
 function restoreEnglish(root: Node) {
-  // Text nodes
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   let node: Node | null;
   while ((node = walker.nextNode())) {
@@ -145,7 +181,6 @@ function restoreEnglish(root: Node) {
     const original = (t as any).__i18nOriginal;
     if (typeof original === 'string') t.nodeValue = original;
   }
-  // Attributes
   const elements =
     root instanceof Element
       ? [root, ...Array.from(root.querySelectorAll('*'))]
@@ -171,6 +206,22 @@ async function translateBatch(texts: string[], lang: string): Promise<Record<str
   }
 }
 
+// Bounded-parallel processor
+async function runChunks<T>(
+  items: T[][],
+  worker: (chunk: T[]) => Promise<void>,
+  concurrency: number,
+) {
+  let idx = 0;
+  const runners = Array.from({ length: Math.min(concurrency, items.length) }, async () => {
+    while (idx < items.length) {
+      const my = idx++;
+      await worker(items[my]);
+    }
+  });
+  await Promise.all(runners);
+}
+
 export function AutoTranslatePage() {
   const { i18n } = useTranslation();
   const location = useLocation();
@@ -179,7 +230,8 @@ export function AutoTranslatePage() {
   const observerRef = useRef<MutationObserver | null>(null);
 
   useEffect(() => {
-    // English: restore originals and stop observing
+    loadCache();
+
     if (lang === 'en') {
       observerRef.current?.disconnect();
       observerRef.current = null;
@@ -189,49 +241,73 @@ export function AutoTranslatePage() {
 
     let running = false;
     let rerun = false;
+    let disposed = false;
+
+    const applyChunkResults = (pending: Pending[]) => {
+      pending.forEach((p) => {
+        const tr = cache.get(`${lang}::${p.text}`);
+        if (tr) p.apply(tr);
+      });
+    };
 
     const run = async () => {
       if (running) { rerun = true; return; }
       running = true;
       try {
-        // Pause observer while we read + write, so our own writes don't retrigger us
         observerRef.current?.disconnect();
 
         const pending = collectPending(document.body, lang);
-        if (pending.length === 0) {
-          reattach();
-          return;
-        }
+        if (pending.length === 0) return;
 
-        const uniqueTexts = Array.from(
-          new Set(pending.map((p) => p.text).filter((t) => !inflight.has(`${lang}::${t}`))),
-        );
-        uniqueTexts.forEach((t) => inflight.add(`${lang}::${t}`));
+        // Split into viewport-first + rest so users see translated content
+        // for the section they're looking at immediately.
+        const viewport: Pending[] = [];
+        const rest: Pending[] = [];
+        pending.forEach((p) => (p.inViewport ? viewport : rest).push(p));
 
-        // Chunk and run sequentially to avoid hammering the gateway
-        const chunks: string[][] = [];
-        for (let i = 0; i < uniqueTexts.length; i += BATCH_SIZE) {
-          chunks.push(uniqueTexts.slice(i, i + BATCH_SIZE));
-        }
-        for (const chunk of chunks) {
-          const result = await translateBatch(chunk, lang);
-          Object.entries(result).forEach(([src, tr]) => cache.set(`${lang}::${src}`, tr));
-        }
-        uniqueTexts.forEach((t) => inflight.delete(`${lang}::${t}`));
+        const uniqueOf = (arr: Pending[]) =>
+          Array.from(
+            new Set(arr.map((p) => p.text).filter((t) => !inflight.has(`${lang}::${t}`))),
+          );
 
-        pending.forEach((p) => {
-          const tr = cache.get(`${lang}::${p.text}`);
-          if (tr) p.apply(tr);
-        });
+        const dispatch = async (bucket: Pending[]) => {
+          const unique = uniqueOf(bucket);
+          if (unique.length === 0) {
+            applyChunkResults(bucket);
+            return;
+          }
+          unique.forEach((t) => inflight.add(`${lang}::${t}`));
+
+          const chunks: string[][] = [];
+          for (let i = 0; i < unique.length; i += BATCH_SIZE) {
+            chunks.push(unique.slice(i, i + BATCH_SIZE));
+          }
+
+          await runChunks(chunks, async (chunk) => {
+            const result = await translateBatch(chunk, lang);
+            Object.entries(result).forEach(([src, tr]) => {
+              cache.set(`${lang}::${src}`, tr);
+            });
+            // Apply as each chunk arrives — progressive rendering
+            if (!disposed) applyChunkResults(bucket);
+          }, MAX_PARALLEL);
+
+          unique.forEach((t) => inflight.delete(`${lang}::${t}`));
+          schedulePersist();
+        };
+
+        // Fire viewport first, then background — but don't await viewport
+        // before starting rest; parallel is faster.
+        await Promise.all([dispatch(viewport), dispatch(rest)]);
       } finally {
         reattach();
         running = false;
-        if (rerun) { rerun = false; debouncedRun(); }
+        if (rerun && !disposed) { rerun = false; debouncedRun(); }
       }
     };
 
     const reattach = () => {
-      if (!observerRef.current) return;
+      if (!observerRef.current || disposed) return;
       observerRef.current.observe(document.body, {
         childList: true,
         subtree: true,
@@ -241,7 +317,7 @@ export function AutoTranslatePage() {
 
     const debouncedRun = () => {
       if (timerRef.current) window.clearTimeout(timerRef.current);
-      timerRef.current = window.setTimeout(run, DEBOUNCE_MS);
+      timerRef.current = window.setTimeout(run, MUTATION_DEBOUNCE_MS);
     };
 
     const observer = new MutationObserver(() => debouncedRun());
@@ -252,10 +328,12 @@ export function AutoTranslatePage() {
       characterData: true,
     });
 
-    // Initial pass
+    // Initial pass — NO debounce. Synchronously applies cached translations,
+    // then network-fetches the rest with viewport priority.
     run();
 
     return () => {
+      disposed = true;
       if (timerRef.current) window.clearTimeout(timerRef.current);
       observer.disconnect();
       observerRef.current = null;
