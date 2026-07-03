@@ -39,9 +39,12 @@ const PLACEHOLDER_PATTERNS = [
 ];
 
 const PROVIDER_FALLBACK_IMAGES: Partial<Record<PopularTest["provider_id"], string>> = {
-  "randox": "/lovable-uploads/randox-thyroid-health.png",
+  // Only use provider fallbacks that are NOT product-specific.
+  // A Randox thyroid-kit image would misrepresent every other Randox test,
+  // so we intentionally omit it — tests without a real image are filtered out.
   "london-medical-laboratory": "https://www.londonmedicallaboratory.com/build/images/site/banners/homepage-banner-mobile.jpg",
 };
+
 
 const normalizeImageUrl = (url?: string | null, providerId?: string, pageUrl?: string | null) => {
   if (!url) return null;
