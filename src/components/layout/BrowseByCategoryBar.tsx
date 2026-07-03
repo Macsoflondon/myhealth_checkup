@@ -163,7 +163,7 @@ export default function BrowseByCategoryBar({
       <div className="md:hidden sticky top-0 z-40" data-testid="browse-by-category-bar-mobile">
         <div
           data-scrolled={scrolled}
-          className={`px-4 h-14 flex items-center justify-between transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b ${
+          className={`px-4 h-20 flex items-center justify-between transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b ${
             scrolled
               ? "bg-[#081129] border-[#081129] shadow-[0_2px_10px_rgba(8,17,41,0.18)]"
               : "bg-white border-[#081129]/10"
@@ -172,7 +172,7 @@ export default function BrowseByCategoryBar({
           <Link
             to="/"
             aria-label="myhealth checkup home"
-            className="flex items-center h-8 no-underline font-[Montserrat] font-extrabold tracking-tight text-[22px] leading-none"
+            className="flex items-center h-12 no-underline font-[Montserrat] font-extrabold tracking-tight text-[38px] leading-none"
           >
             <span
               className={`transition-colors duration-300 ease-out ${
