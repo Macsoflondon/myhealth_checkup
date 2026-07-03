@@ -1,5 +1,7 @@
 // Provider utility functions
 
+import { getProviderLogo as getCanonicalProviderLogo, getProviderName } from "@/constants/providers";
+
 export const providerLogos: Record<string, string> = {
   "medichecks": "https://www.medichecks.com/static/version1720697605/frontend/Medichecks/default/en_GB/images/logo.svg",
   "thriva": "/lovable-uploads/64eb7ed4-e166-41c0-9a8c-d61d1f9fc7f7.png",
@@ -24,10 +26,10 @@ export const providerDisplayNames: Record<string, string> = {
 
 export const getProviderLogo = (providerId: string): string => {
   const normalised = providerId.toLowerCase().replace(/\s+/g, "-");
-  return providerLogos[normalised] || `/lovable-uploads/providers/${normalised}.png`;
+  return providerLogos[normalised] || getCanonicalProviderLogo(normalised);
 };
 
 export const getProviderDisplayName = (providerId: string): string => {
   const normalised = providerId.toLowerCase().replace(/\s+/g, "-");
-  return providerDisplayNames[normalised] || providerId.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+  return providerDisplayNames[normalised] || getProviderName(normalised) || providerId.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
 };

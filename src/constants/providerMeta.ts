@@ -1,3 +1,5 @@
+import { getProviderLogo, normalizeProviderId } from "@/constants/providers";
+
 export const PROVIDER_META: Record<string, {
   displayName: string;
   logo: string;
@@ -71,9 +73,9 @@ export const PROVIDER_META: Record<string, {
 };
 
 export const getProviderMeta = (providerId: string) =>
-  PROVIDER_META[providerId] ?? {
+  PROVIDER_META[normalizeProviderId(providerId)] ?? {
     displayName: providerId,
-    logo: "",
+    logo: getProviderLogo(providerId),
     color: "#081129",
     ukas: false,
     cqc: false,
