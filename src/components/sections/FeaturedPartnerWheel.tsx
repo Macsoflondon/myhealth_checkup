@@ -364,7 +364,7 @@ export default function FeaturedPartnerWheel({
 
           {/* hover preview */}
           {preview && (
-            <div style={{ position: "absolute", left: "50%", bottom: 40, width: 660, maxWidth: "92%", transform: "translateX(-50%)", zIndex: 7, pointerEvents: "none", animation: "gbpop .26s cubic-bezier(.4,0,.2,1) both" }}>
+            <div style={{ position: "absolute", left: "50%", bottom: 40, width: 660, maxWidth: "92%", transform: "translateX(-50%)", zIndex: 20000, pointerEvents: "none", animation: "gbpop .26s cubic-bezier(.4,0,.2,1) both" }}>
               <div style={{ display: "flex", gap: 22, alignItems: "center", background: "rgba(255,255,255,0.97)", borderRadius: 22, padding: "22px 26px", boxShadow: "0 30px 70px -22px rgba(0,0,0,.7)", border: "1px solid rgba(34,192,212,.25)" }}>
                 <div style={{ flex: "none", width: 88, height: 119, borderRadius: 14, overflow: "hidden", boxShadow: "0 8px 20px -10px rgba(8,17,41,.45)" }}>
                   <KitFace name={preview.name} sample={preview.sample!} accent={preview.accent} texture={faceTexture} />
