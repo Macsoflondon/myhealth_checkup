@@ -108,8 +108,9 @@ function isElementInViewport(el: Element): boolean {
 }
 
 function localTranslation(lang: string, text: string): string | undefined {
-  return LOCAL_TRANSLATIONS[lang]?.[text.trim()];
+  return getFallbackLabel(text, lang) ?? undefined;
 }
+
 
 function collectPending(root: Node, lang: string): Pending[] {
   const pending: Pending[] = [];
