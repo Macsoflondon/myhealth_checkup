@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 
 const COMPARE_HREF_BY_NAME: Record<string, string> = {
   "Bowel Cancer Screening": "/tests/cancer",
