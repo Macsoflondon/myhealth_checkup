@@ -331,7 +331,7 @@ export default function FeaturedPartnerWheel({
 
         <h2 style={{ margin: "22px 0 0", fontFamily: SERIF, fontWeight: 600, fontSize: 60, lineHeight: 1.04, color: "#f7f7f8", textAlign: "center", letterSpacing: "-.01em" }}>{partnerName}</h2>
 
-        <div style={{ position: "relative", width: 1160, maxWidth: "100%", height: 642, marginTop: 2 }}>
+        <div style={{ position: "relative", width: 1160, maxWidth: "100%", height: "clamp(340px, 55vw, 642px)", marginTop: 2 }}>
           {/* drag-capture backdrop */}
           <div onPointerDown={(e) => startDrag(e, null)} style={{ position: "absolute", inset: 0, zIndex: 0, cursor: "grab", touchAction: "pan-y" }} />
 
@@ -386,7 +386,7 @@ export default function FeaturedPartnerWheel({
         </div>
 
         {/* partner blurb + CTAs — now in normal flow below the wheel */}
-        <div style={{ marginTop: 32, width: 640, maxWidth: "100%", textAlign: "center", padding: "0 8px" }}>
+        <div style={{ marginTop: 8, width: 640, maxWidth: "100%", textAlign: "center", padding: "0 8px" }}>
           <p style={{ margin: 0, fontFamily: SERIF, fontStyle: "italic", fontWeight: 500, fontSize: "clamp(18px, 4.5vw, 23px)", lineHeight: 1.4, color: "#f7f7f8" }}>{blurbItalic}</p>
           <p style={{ margin: "14px 0 0", fontSize: "clamp(14px, 3.6vw, 15.5px)", lineHeight: 1.6, color: "#d1d5db" }}>{blurb}</p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 22, flexWrap: "wrap" }}>
