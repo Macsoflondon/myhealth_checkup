@@ -68,17 +68,18 @@ const MarqueeRow: React.FC<MarqueeRowProps> = ({
   const loop = [...items, ...items, ...items, ...items];
   return (
     <div className="overflow-hidden" data-testid="accreditors-row">
-      <div
-        className="flex w-max items-center animate-marquee-x"
-        style={{
-          animationDuration: `${duration}s`,
-          animationDirection: reverse ? "reverse" : "normal",
-          transform: `translateX(${offset})`,
-        }}
-      >
-        {loop.map((item, i) => (
-          <BadgePill key={`${item.label}-${i}`} item={item} tone={tone} />
-        ))}
+      <div style={{ transform: `translateX(${offset})` }}>
+        <div
+          className="flex w-max items-center animate-marquee"
+          style={{
+            animationDuration: `${duration}s`,
+            animationDirection: reverse ? "reverse" : "normal",
+          }}
+        >
+          {loop.map((item, i) => (
+            <BadgePill key={`${item.label}-${i}`} item={item} tone={tone} />
+          ))}
+        </div>
       </div>
     </div>
   );
