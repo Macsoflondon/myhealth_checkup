@@ -367,9 +367,9 @@ export default function FeaturedPartnerWheel({
           <div style={{ position: "absolute", left: "50%", bottom: 54, transform: "translateX(-50%)", width: 540, maxWidth: "84%", textAlign: "center", zIndex: 4, transition: "opacity .3s ease", opacity: preview ? 0 : 1, pointerEvents: preview ? "none" : "auto" }}>
             <p style={{ margin: 0, fontFamily: SERIF, fontStyle: "italic", fontWeight: 500, fontSize: 23, lineHeight: 1.4, color: "#f7f7f8" }}>{blurbItalic}</p>
             <p style={{ margin: "14px 0 0", fontSize: 15.5, lineHeight: 1.6, color: "#d1d5db" }}>{blurb}</p>
-            <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 20 }}>
-              <Link to={GOODBODY_CATALOG_HREF} style={{ display: "inline-block", textDecoration: "none", fontFamily: HEAD, fontWeight: 700, fontSize: 14, padding: "13px 26px", borderRadius: 999, border: "none", color: "#fff", cursor: "pointer", boxShadow: "0 10px 24px -10px rgba(8,17,41,.5)", backgroundColor: "#22c0d4" }}>Explore the range</Link>
-              <Link to={GOODBODY_PROFILE_HREF} style={{ display: "inline-block", textDecoration: "none", fontFamily: HEAD, fontWeight: 700, fontSize: 14, padding: "13px 26px", borderRadius: 999, border: "1px solid #d4dbe4", background: "#fff", color: "#081129", cursor: "pointer" }}>Visit Goodbody</Link>
+            <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 20, flexWrap: "wrap" }}>
+              <Link to={GOODBODY_CATALOG_HREF} style={{ display: "inline-block", textDecoration: "none", fontFamily: HEAD, fontWeight: 700, fontSize: 14, padding: "13px 26px", borderRadius: 999, border: "none", color: "#fff", cursor: "pointer", boxShadow: "0 10px 24px -10px rgba(8,17,41,.5)", backgroundColor: "#22c0d4", whiteSpace: "nowrap" }}>Explore the range</Link>
+              <Link to={GOODBODY_PROFILE_HREF} style={{ display: "inline-block", textDecoration: "none", fontFamily: HEAD, fontWeight: 700, fontSize: 14, padding: "13px 26px", borderRadius: 999, border: "1px solid #d4dbe4", background: "#fff", color: "#081129", cursor: "pointer", whiteSpace: "nowrap" }}>Visit Goodbody</Link>
             </div>
           </div>
 
