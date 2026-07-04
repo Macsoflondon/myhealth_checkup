@@ -45,9 +45,14 @@ function unb64(s: string): Uint8Array {
   return out;
 }
 
+function bs(u: Uint8Array): BufferSource {
+  // Workaround for TS lib.dom's ArrayBufferLike / ArrayBuffer mismatch under strict mode.
+  return u as unknown as BufferSource;
+}
+
 async function importKey(rawKey: Uint8Array): Promise<CryptoKey> {
   if (rawKey.byteLength !== 32) throw new Error('DEK must be 32 bytes');
-  return crypto.subtle.importKey('raw', rawKey, { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']);
+  return crypto.subtle.importKey('raw', bs(rawKey), { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']);
 }
 
 export interface SealOpts {
@@ -62,9 +67,9 @@ export async function seal(plaintext: string, opts: SealOpts): Promise<Envelope>
   const buf = new TextEncoder().encode(plaintext);
   const cipherWithTag = new Uint8Array(
     await crypto.subtle.encrypt(
-      { name: 'AES-GCM', iv, additionalData: opts.aad, tagLength: 128 },
+      { name: 'AES-GCM', iv: bs(iv), additionalData: opts.aad ? bs(opts.aad) : undefined, tagLength: 128 },
       key,
-      buf,
+      bs(buf),
     ),
   );
   const tag = cipherWithTag.slice(cipherWithTag.byteLength - 16);
@@ -93,9 +98,9 @@ export async function open(env: Envelope, opts: OpenOpts): Promise<string> {
   combined.set(ct, 0);
   combined.set(tag, ct.byteLength);
   const plain = await crypto.subtle.decrypt(
-    { name: 'AES-GCM', iv: unb64(env.iv), additionalData: opts.aad, tagLength: 128 },
+    { name: 'AES-GCM', iv: bs(unb64(env.iv)), additionalData: opts.aad ? bs(opts.aad) : undefined, tagLength: 128 },
     key,
-    combined,
+    bs(combined),
   );
   return new TextDecoder().decode(plain);
 }
