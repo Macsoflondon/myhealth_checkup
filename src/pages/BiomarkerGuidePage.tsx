@@ -60,11 +60,21 @@ const BiomarkerGuidePage = () => {
       <Helmet>
         <title>{`${guide.title} | myhealth checkup`}</title>
         <meta name="description" content={guide.description} />
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <link rel="canonical" href={canonicalUrl} />
+        <link rel="alternate" hrefLang="en-gb" href={canonicalUrl} />
+        <link rel="alternate" hrefLang="x-default" href={canonicalUrl} />
         <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="myhealth checkup" />
+        <meta property="og:locale" content="en_GB" />
         <meta property="og:title" content={guide.title} />
         <meta property="og:description" content={guide.description} />
         <meta property="og:url" content={canonicalUrl} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:site" content="@myhealthcheckup" />
+        <meta name="twitter:title" content={guide.title} />
+        <meta name="twitter:description" content={guide.description} />
+        <meta name="article:section" content={guide.category} />
         <script type="application/ld+json">{JSON.stringify(articleJsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
