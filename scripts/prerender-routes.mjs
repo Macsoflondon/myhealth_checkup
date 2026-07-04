@@ -135,4 +135,5 @@ export const STATIC_ROUTES = [
   "/guides/autoimmune-blood-test",
   "/guides/finger-prick-blood-test",
   "/guides/female-hormone-test",
+  "/guides/globulins",
 ];
