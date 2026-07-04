@@ -504,6 +504,58 @@ export const biomarkerGuides: BiomarkerGuide[] = [
     compareHref: "/tests/womens-health",
     category: "Hormones",
   },
+  {
+    slug: "globulins",
+    keyword: "Globulin Blood Test",
+    title: "Globulin Blood Test UK — What Globulins Are & How to Test",
+    description:
+      "Understand globulin levels on a UK blood test. What alpha, beta and gamma globulins measure, why they matter for liver, kidney and immune health, and where to test privately.",
+    strapline: "Alpha, beta and gamma globulins — what they measure and what the numbers typically suggest.",
+    intro:
+      "Globulins are a group of proteins made by your liver and immune system that circulate in your blood alongside albumin. On a UK private blood test, globulin is usually reported as total globulin (calculated from total protein minus albumin) and as an albumin/globulin (A/G) ratio, with specialist panels also breaking it down into alpha-1, alpha-2, beta and gamma fractions through serum protein electrophoresis.",
+    biomarkers: [
+      { name: "Total globulin", what: "The combined level of all non-albumin proteins in serum. Calculated as total protein minus albumin." },
+      { name: "Albumin/globulin (A/G) ratio", what: "The balance between albumin and globulin. A shift up or down can point to liver, kidney or immune system changes." },
+      { name: "Alpha-1 & alpha-2 globulins", what: "Acute-phase proteins that rise with inflammation, infection or tissue injury." },
+      { name: "Beta globulins", what: "Includes transferrin (iron transport) and complement proteins involved in immune response." },
+      { name: "Gamma globulins (immunoglobulins)", what: "Antibodies produced by the immune system — IgG, IgA, IgM. Reported individually on immunoglobulin panels." },
+    ],
+    whyItMatters: [
+      "Low globulin can suggest reduced protein production by the liver or protein loss through the kidneys or gut.",
+      "High globulin is often linked to chronic inflammation, infection or immune-related conditions — a doctor will usually request protein electrophoresis to look closer.",
+      "The A/G ratio adds context that either marker misses on its own — it is one reason globulin is reported on most liver function and general health panels.",
+      "Results should always be interpreted by a qualified clinician alongside your symptoms, medications and other markers.",
+    ],
+    howItWorks: [
+      "Order a general health, liver function or comprehensive wellness panel from a CQC-regulated provider — most include total protein, albumin and globulin as standard.",
+      "Provide a venous blood sample at a clinic or via a home phlebotomy visit. Finger-prick kits can measure total protein and albumin but are less commonly used for detailed protein studies.",
+      "UKAS-accredited labs typically return results in 2–5 working days with a clinician-reviewed report showing your levels against the laboratory reference range.",
+    ],
+    faqs: [
+      {
+        q: "What are globulins in a blood test?",
+        a: "Globulins are a family of blood proteins made by the liver and immune system. They include transport proteins, acute-phase proteins and antibodies (immunoglobulins). On a standard UK blood test, globulin is reported as a single total figure derived from total protein minus albumin.",
+      },
+      {
+        q: "What is a normal globulin level?",
+        a: "UK laboratories typically use a reference range of around 20–35 g/L for total globulin in adults, with an A/G ratio of roughly 1.0–2.5. Ranges vary by laboratory, age and sex — always read your result against the range printed on your report.",
+      },
+      {
+        q: "What causes high globulin levels?",
+        a: "Persistently raised globulin is most often linked to chronic inflammation, chronic infection or immune-related conditions. A clinician will usually arrange serum protein electrophoresis to see which fraction is elevated before drawing conclusions.",
+      },
+      {
+        q: "What causes low globulin levels?",
+        a: "Low globulin can point to reduced production by the liver, protein loss through the kidneys or digestive tract, or immune deficiency. It is uncommon in isolation and is always interpreted alongside albumin, liver enzymes and clinical history.",
+      },
+      {
+        q: "Which private blood tests include globulin?",
+        a: "Globulin is included in most UK liver function tests, general health MOTs and comprehensive wellness panels from providers such as Medichecks, Thriva, Randox Health and London Medical Laboratory. Compare prices and biomarkers on our comparison hub before booking.",
+      },
+    ],
+    compareHref: "/compare?category=liver",
+    category: "Organ Health",
+  },
 ];
 
 export const guidesBySlug = (slug: string) =>
