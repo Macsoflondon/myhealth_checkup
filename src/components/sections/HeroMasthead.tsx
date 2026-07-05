@@ -96,7 +96,7 @@ interface HeroMastheadProps {
 
 const Wordmark = () => (
   <span className="inline-flex items-center leading-[1.1] min-w-0 py-1">
-    <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(1.75rem,7vw,4rem)]">
+    <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(1.75rem,7vw,4rem)] lg:text-8xl">
       <span className="text-brand-navy">myhealth</span>
       <span className="text-brand-pink">checkup</span>
     </span>
