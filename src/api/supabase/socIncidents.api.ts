@@ -171,10 +171,27 @@ async function addNote(incidentId: string, note: string): Promise<ApiResponse<In
   return { data: data ?? null, error };
 }
 
-async function triggerCluster(): Promise<ApiResponse<{ incidents_created: number; incidents_updated: number; signals_scanned: number }>> {
+async function triggerCluster(): Promise<ApiResponse<{ incidents_created: number; incidents_updated: number; signals_scanned: number; anomalies?: number; patterns?: number }>> {
   const { data, error } = await supabase.functions.invoke("soc-cluster", { body: {} });
   if (error) return { data: null, error };
-  return { data: data as { incidents_created: number; incidents_updated: number; signals_scanned: number }, error: null };
+  return { data: data as { incidents_created: number; incidents_updated: number; signals_scanned: number; anomalies?: number; patterns?: number }, error: null };
+}
+
+export type SocReversibleAction =
+  | "acknowledge_scraper_alerts_for_entity"
+  | "resolve_operational_alerts_for_entity"
+  | "reverse_acknowledge_scraper_alerts_for_entity"
+  | "reverse_resolve_operational_alerts_for_entity";
+
+async function executeAction(
+  incidentId: string,
+  action: SocReversibleAction,
+): Promise<ApiResponse<{ ok: boolean; affected: number; action: string }>> {
+  const { data, error } = await supabase.functions.invoke("soc-action", {
+    body: { incident_id: incidentId, action },
+  });
+  if (error) return { data: null, error };
+  return { data: data as { ok: boolean; affected: number; action: string }, error: null };
 }
 
 function subscribeToChanges(onChange: () => void): () => void {
@@ -201,5 +218,7 @@ export const socIncidentsApi = {
   suppress,
   addNote,
   triggerCluster,
+  executeAction,
   subscribeToChanges,
 };
+

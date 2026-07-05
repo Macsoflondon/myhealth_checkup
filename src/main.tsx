@@ -32,3 +32,7 @@ if (rootElement.hasChildNodes()) {
 } else {
   createRoot(rootElement).render(tree);
 }
+
+// Web Vitals RUM reporter — no-op in dev, dynamic import in prod.
+void import("./lib/webVitals").then((m) => m.installWebVitals());
+

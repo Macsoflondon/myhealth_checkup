@@ -172,3 +172,15 @@ verify_jwt = false
 # Cyber Essentials Operational Alerts (called by Postgres trigger and CI scripts)
 [functions.security-alert-notify]
 verify_jwt = false
+
+# SOC clustering + baselines + patterns (called by pg_cron)
+[functions.soc-cluster]
+verify_jwt = false
+
+# SOC reversible admin actions (validates admin in-code)
+[functions.soc-action]
+verify_jwt = false
+
+# Web Vitals RUM ingest (browser beacon, no auth)
+[functions.web-vitals-ingest]
+verify_jwt = false

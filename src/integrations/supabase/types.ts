@@ -4977,6 +4977,45 @@ export type Database = {
         }
         Relationships: []
       }
+      web_vitals: {
+        Row: {
+          connection_type: string | null
+          created_at: string
+          device_type: string | null
+          id: string
+          metric: string
+          navigation_type: string | null
+          rating: string | null
+          route: string | null
+          session_hash: string | null
+          value: number
+        }
+        Insert: {
+          connection_type?: string | null
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          metric: string
+          navigation_type?: string | null
+          rating?: string | null
+          route?: string | null
+          session_hash?: string | null
+          value: number
+        }
+        Update: {
+          connection_type?: string | null
+          created_at?: string
+          device_type?: string | null
+          id?: string
+          metric?: string
+          navigation_type?: string | null
+          rating?: string | null
+          route?: string | null
+          session_hash?: string | null
+          value?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       provider_image_audit_latest: {
