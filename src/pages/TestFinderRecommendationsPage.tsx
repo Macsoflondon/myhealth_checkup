@@ -16,7 +16,7 @@ const TestFinderRecommendationsPage = () => {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-[#081129] text-white">
+      <div className="min-h-screen bg-white text-[#081129]">
         <Header />
         <main className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-semibold mb-4">No quiz results yet</h1>
