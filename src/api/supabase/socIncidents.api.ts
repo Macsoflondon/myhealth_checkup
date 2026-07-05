@@ -156,16 +156,18 @@ async function addNote(incidentId: string, note: string): Promise<ApiResponse<In
   if (trimmed.length < 1) return { data: null, error: new Error("Note cannot be empty") };
   const actor = await currentUserId();
   if (!actor) return { data: null, error: new Error("Not authenticated") };
+  const detail: Json = { note: trimmed };
   const { data, error } = await supabase
     .from("soc_incident_events")
     .insert({
       incident_id: incidentId,
       actor_id: actor,
       event_type: "note",
-      detail: { note: trimmed },
+      detail,
     })
     .select()
     .single();
+
   return { data: data ?? null, error };
 }
 
