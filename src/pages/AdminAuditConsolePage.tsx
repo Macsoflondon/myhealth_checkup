@@ -45,9 +45,14 @@ const SOURCE_VARIANT: Record<Exclude<Source, "all">, "default" | "secondary" | "
 };
 
 function csvEscape(v: unknown): string {
-  const s = v == null ? "" : typeof v === "string" ? v : JSON.stringify(v);
+  let s = v == null ? "" : typeof v === "string" ? v : JSON.stringify(v);
+  // Strip control chars (incl. newlines, tabs) that would break CSV rows or hint CSV injection.
+  s = s.replace(/[\u0000-\u001f\u007f]/g, " ");
+  // Neutralise leading formula characters that Excel would evaluate.
+  if (/^[=+\-@]/.test(s)) s = "'" + s;
   return `"${s.replace(/"/g, '""')}"`;
 }
+
 
 const AdminAuditConsolePage = () => {
   const [source, setSource] = useState<Source>("all");
@@ -132,20 +137,39 @@ const AdminAuditConsolePage = () => {
     );
   }, [rows, search]);
 
-  const exportCsv = () => {
+  const exportCsv = async () => {
+    const CAP = 10_000;
+    const capped = filtered.slice(0, CAP);
+    if (filtered.length > CAP) {
+      // eslint-disable-next-line no-alert
+      const ok = confirm(`Export is capped at ${CAP.toLocaleString()} rows (you have ${filtered.length.toLocaleString()}). Continue with the first ${CAP.toLocaleString()}?`);
+      if (!ok) return;
+    }
     const header = ["timestamp", "source", "actor", "action", "target", "status", "ip", "detail"];
     const lines = [header.join(",")];
-    for (const r of filtered) {
+    for (const r of capped) {
       lines.push([r.at, r.source, r.actor ?? "", r.action, r.target, r.status ?? "", r.ip ?? "", r.detail].map(csvEscape).join(","));
     }
     const blob = new Blob([lines.join("\n")], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
+    const stamp = new Date().toISOString().replace(/[:.]/g, "-");
     const a = document.createElement("a");
     a.href = url;
-    a.download = `audit-${source}-${window}-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.download = `audit-${source}-${window}-${stamp}.csv`;
     a.click();
     URL.revokeObjectURL(url);
+    // Audit the export itself so the console reflects its own use.
+    const { data: user } = await supabase.auth.getUser();
+    await supabase.from("admin_activity_log").insert({
+      admin_user_id: user.user?.id ?? null,
+      action: "audit_console_export",
+      resource_type: "audit_logs",
+      resource_name: `${source}/${window}`,
+      new_value: { rows_exported: capped.length, filter_search: search || null },
+      success: true,
+    });
   };
+
 
   const counts = useMemo(() => {
     const c: Record<string, number> = {};
