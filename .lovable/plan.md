@@ -1,17 +1,12 @@
 ## Change
 
-Increase the hero wordmark ("myhealthcheckup") on desktop by two Tailwind size steps, leaving mobile/tablet untouched.
+In `src/pages/TestFinderRecommendationsPage.tsx`, switch the recommendations page shell to a white background with navy header text. The dark test cards stay unchanged (they render nicely on white).
 
-**File:** `src/components/sections/HeroMasthead.tsx` (line 99)
+**Edits:**
+- Outer wrapper (line 50, and the empty-state wrapper line 19): `bg-[#081129] text-white` → `bg-white text-[#081129]`.
+- `h1 "Your recommended tests"` (line 55): keep `text-3xl sm:text-4xl font-bold`, colour inherits navy from wrapper.
+- Subtitle `<p>` (line 56): `text-white/65` → `text-[#081129]/70`.
+- Restart quiz button (line 65): `text-white/70 hover:text-white border-white/15` → `text-[#081129]/80 hover:text-[#081129] border-[#081129]/20`.
+- Empty-state "No matches" panel (line 80): keep dark card styling as-is (it sits inside the section and reads fine on white, matching the other cards).
 
-Current: `text-[clamp(1.75rem,7vw,4rem)]` (max 4rem / 64px on desktop, ~text-6xl).
-
-New: keep the fluid clamp for mobile, but bump the desktop cap two steps to **text-8xl (6rem / 96px)** via a responsive override:
-
-```tsx
-className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(1.75rem,7vw,4rem)] lg:text-8xl"
-```
-
-This preserves the existing mobile fluid scaling and only enlarges the wordmark at `lg` (≥1024px) and up — two Tailwind steps above the current 6xl-equivalent cap.
-
-No other components, colours, or layout tokens change.
+Compare top 3 (pink) button and all test cards are left untouched.
