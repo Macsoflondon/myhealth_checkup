@@ -36,6 +36,7 @@ export const MainLayout = ({
 }: MainLayoutProps) => {
   const { pathname } = useLocation();
   const isHome = pathname === "/";
+  const isCompare = pathname === "/compare";
   const navigate = useNavigate();
   const compareItems = useCompareItems();
 
@@ -52,15 +53,17 @@ export const MainLayout = ({
       {!hideHeader && !isHome && (
         <>
           <BrowseByCategoryBar variant="flush" />
-          <Suspense fallback={<div className="min-h-[60px]" aria-hidden="true" />}>
-            <AccreditedProvidersBar />
-          </Suspense>
+          {!isCompare && (
+            <Suspense fallback={<div className="min-h-[60px]" aria-hidden="true" />}>
+              <AccreditedProvidersBar />
+            </Suspense>
+          )}
         </>
       )}
 
 
       <main id="main-content" className={mainClassName} tabIndex={-1}>
-        <SiteBreadcrumb />
+        {!isCompare && <SiteBreadcrumb />}
         {children}
       </main>
       {!hideFooter && <Footer />}

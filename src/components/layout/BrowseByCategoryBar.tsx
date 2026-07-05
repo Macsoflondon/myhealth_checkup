@@ -271,15 +271,15 @@ export default function BrowseByCategoryBar({
         <div
           className={`${compact ? "px-3 py-3 sm:py-4" : "px-2 sm:px-3 py-2.5 sm:py-3"} transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
         >
-          <div className={`flex items-center gap-2 flex-nowrap ${compact ? "justify-center" : ""}`}>
+          <div className="flex items-center gap-2 flex-nowrap justify-center">
             {/* Scrollable pill strip */}
             <div
-              className={`flex min-w-0 overflow-x-auto scrollbar-none items-center flex-nowrap ${compact ? "gap-2 justify-center" : "flex-1 gap-1.5"}`}
+              className={`flex min-w-0 overflow-x-auto scrollbar-none items-center flex-nowrap justify-center ${compact ? "gap-2" : "gap-1.5"}`}
               style={{
                 WebkitMaskImage:
-                  "linear-gradient(to right, #000 0, #000 calc(100% - 16px), transparent 100%)",
+                  "linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%)",
                 maskImage:
-                  "linear-gradient(to right, #000 0, #000 calc(100% - 16px), transparent 100%)",
+                  "linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%)",
               }}
               data-testid="category-pill-strip"
             >
