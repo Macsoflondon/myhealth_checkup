@@ -21,6 +21,15 @@ Both were resolved on 2026-07-05 with a metadata-only migration that updated `sc
 
 In addition, **18 remote-only "orphan" migrations** (applied out-of-band via CLI or dashboard) were backfilled as no-op marker files in the repo. Their original DDL remains in `supabase_migrations.schema_migrations.statements`.
 
+### 2026-07-05 (second pass)
+
+Two additional +1s-drifted pairs added during that day's security-fix and reconciliation turns were realigned the same way (metadata-only, snapshot in `supabase_migrations.schema_migrations_backup_20260705_v2`). Aligned pairs after this pass: **251**.
+
+### Known residual: trailing +1s drift on the newest migration
+
+Every `supabase--migration` call recorded via the Lovable/Supabase CLI stamps the remote `version` roughly 1 second *before* the repo filename is saved. Fixing this with another metadata update immediately reintroduces the same 1s gap on the fix migration itself — the pattern is asymptotic. We therefore accept a **single trailing pair** where the newest remote `version` is exactly `filename_prefix + 1s`. The CI parity check in `.github/workflows/migration-parity.yml` explicitly tolerates this single-row case and fails on any other drift. As soon as another migration is pushed, the previous trailing drift is fixed by the next reconciliation.
+
+
 ## Rules going forward
 
 ### 1. Never edit a migration file after it has been pushed
