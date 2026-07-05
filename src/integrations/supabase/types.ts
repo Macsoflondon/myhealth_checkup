@@ -659,7 +659,7 @@ export type Database = {
           clinical_description: string
           created_at: string | null
           effective_date_time: string | null
-          embedding: string
+          embedding: string | null
           id: string
           last_updated: string | null
           loinc_code: string | null
@@ -671,10 +671,10 @@ export type Database = {
         }
         Insert: {
           category?: string
-          clinical_description: string
+          clinical_description?: string
           created_at?: string | null
           effective_date_time?: string | null
-          embedding: string
+          embedding?: string | null
           id?: string
           last_updated?: string | null
           loinc_code?: string | null
@@ -689,7 +689,7 @@ export type Database = {
           clinical_description?: string
           created_at?: string | null
           effective_date_time?: string | null
-          embedding?: string
+          embedding?: string | null
           id?: string
           last_updated?: string | null
           loinc_code?: string | null
@@ -844,57 +844,66 @@ export type Database = {
       blood_tests: {
         Row: {
           biomarker_count: number | null
-          biomarkers: string[] | null
+          biomarkers_included: string[] | null
           categories: string[] | null
           collection_fee_amount: number | null
           collection_method: string | null
+          created_at: string | null
+          gender_specific: string | null
           goals: string[] | null
           id: string
           last_validated: string | null
+          method: string | null
+          name: string
           price: number | null
           provider: string
           sample_type: string | null
-          snomed_mapping_status: string | null
           sub_goals: string[] | null
-          test_name: string
           test_url: string | null
           total_expected_cost: number | null
+          updated_at: string | null
         }
         Insert: {
           biomarker_count?: number | null
-          biomarkers?: string[] | null
+          biomarkers_included?: string[] | null
           categories?: string[] | null
           collection_fee_amount?: number | null
           collection_method?: string | null
+          created_at?: string | null
+          gender_specific?: string | null
           goals?: string[] | null
           id?: string
           last_validated?: string | null
+          method?: string | null
+          name: string
           price?: number | null
           provider: string
           sample_type?: string | null
-          snomed_mapping_status?: string | null
           sub_goals?: string[] | null
-          test_name: string
           test_url?: string | null
           total_expected_cost?: number | null
+          updated_at?: string | null
         }
         Update: {
           biomarker_count?: number | null
-          biomarkers?: string[] | null
+          biomarkers_included?: string[] | null
           categories?: string[] | null
           collection_fee_amount?: number | null
           collection_method?: string | null
+          created_at?: string | null
+          gender_specific?: string | null
           goals?: string[] | null
           id?: string
           last_validated?: string | null
+          method?: string | null
+          name?: string
           price?: number | null
           provider?: string
           sample_type?: string | null
-          snomed_mapping_status?: string | null
           sub_goals?: string[] | null
-          test_name?: string
           test_url?: string | null
           total_expected_cost?: number | null
+          updated_at?: string | null
         }
         Relationships: []
       }
@@ -3052,6 +3061,51 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_metadata: {
+        Row: {
+          accreditations: string[] | null
+          api_endpoint: string | null
+          coverage_areas: string[] | null
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          last_scraped_at: string | null
+          metadata: Json | null
+          provider_name: string
+          supported_methods: string[] | null
+          updated_at: string | null
+          website_url: string | null
+        }
+        Insert: {
+          accreditations?: string[] | null
+          api_endpoint?: string | null
+          coverage_areas?: string[] | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_scraped_at?: string | null
+          metadata?: Json | null
+          provider_name: string
+          supported_methods?: string[] | null
+          updated_at?: string | null
+          website_url?: string | null
+        }
+        Update: {
+          accreditations?: string[] | null
+          api_endpoint?: string | null
+          coverage_areas?: string[] | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          last_scraped_at?: string | null
+          metadata?: Json | null
+          provider_name?: string
+          supported_methods?: string[] | null
+          updated_at?: string | null
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       provider_metrics: {
         Row: {
           active_products: number | null
@@ -4270,27 +4324,33 @@ export type Database = {
       sync_heartbeat: {
         Row: {
           created_at: string | null
-          errors: string | null
+          error_message: string | null
           id: string
-          provider: string | null
-          status: string | null
-          tests_synced: number | null
+          last_sync_at: string | null
+          metadata: Json | null
+          records_processed: number | null
+          service_name: string
+          status: string
         }
         Insert: {
           created_at?: string | null
-          errors?: string | null
+          error_message?: string | null
           id?: string
-          provider?: string | null
-          status?: string | null
-          tests_synced?: number | null
+          last_sync_at?: string | null
+          metadata?: Json | null
+          records_processed?: number | null
+          service_name: string
+          status?: string
         }
         Update: {
           created_at?: string | null
-          errors?: string | null
+          error_message?: string | null
           id?: string
-          provider?: string | null
-          status?: string | null
-          tests_synced?: number | null
+          last_sync_at?: string | null
+          metadata?: Json | null
+          records_processed?: number | null
+          service_name?: string
+          status?: string
         }
         Relationships: []
       }
