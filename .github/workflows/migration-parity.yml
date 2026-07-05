@@ -29,6 +29,16 @@ jobs:
           LOCAL=$(ls supabase/migrations/*.sql | xargs -n1 basename | cut -c1-14 | sort -u)
           MISSING_LOCAL=$(comm -23 <(echo "$REMOTE") <(echo "$LOCAL"))
           MISSING_REMOTE=$(comm -13 <(echo "$REMOTE") <(echo "$LOCAL"))
+          # Tolerate the single most-recent trailing +1s Lovable/Supabase CLI drift
+          # (file saved 1s after the version stamp on the newest migration).
+          # See docs/MIGRATION_HISTORY.md.
+          if [ "$(echo -n "$MISSING_LOCAL" | grep -c .)" = "1" ] && [ "$(echo -n "$MISSING_REMOTE" | grep -c .)" = "1" ]; then
+            R="$MISSING_LOCAL"; L="$MISSING_REMOTE"
+            if [ "$R" = "$(printf '%014d' $((10#$L + 1)))" ] && [ "$R" = "$(echo "$REMOTE" | tail -1)" ]; then
+              echo "✓ Migration sets align (ignoring known trailing +1s CLI drift: repo=$L, remote=$R)."
+              exit 0
+            fi
+          fi
           if [ -n "$MISSING_LOCAL" ] || [ -n "$MISSING_REMOTE" ]; then
             echo "::error::Migration history drift detected"
             [ -n "$MISSING_LOCAL" ]  && { echo "In remote, missing repo file:"; echo "$MISSING_LOCAL"; }
