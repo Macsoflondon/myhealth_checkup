@@ -22,6 +22,7 @@ const AdminAuth = () => {
     recordFailedAttempt,
     recordSuccessfulLogin,
     canAttemptLogin,
+    clearLockout,
   } = useAccountLockout();
 
   const [email, setEmail] = useState("");
@@ -275,14 +276,24 @@ const AdminAuth = () => {
           </Button>
         </form>
 
-        <div className="mt-4 text-center">
+        <div className="mt-4 flex items-center justify-between text-xs">
           <button
             type="button"
             onClick={handleForgotPassword}
             disabled={loading || isLocked}
-            className="text-white/60 hover:text-white text-xs transition-colors disabled:opacity-50"
+            className="text-white/60 hover:text-white transition-colors disabled:opacity-50"
           >
             Forgot password?
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              clearLockout();
+              toast.success("Lockout cleared. You can try signing in again.");
+            }}
+            className="text-white/60 hover:text-white transition-colors"
+          >
+            Clear lockout
           </button>
         </div>
 
