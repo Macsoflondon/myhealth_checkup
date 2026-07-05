@@ -124,6 +124,14 @@ export function useAccountLockout() {
     setAttempts(0);
   }, []);
 
+  // Manually clear the lockout state (UX only)
+  const clearLockout = useCallback(() => {
+    clearStoredData();
+    setIsLocked(false);
+    setRemainingTime(0);
+    setAttempts(0);
+  }, []);
+
   // Check if login is allowed
   const canAttemptLogin = useCallback((): boolean => {
     const data = getStoredData();
