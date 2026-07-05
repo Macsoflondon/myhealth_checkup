@@ -194,7 +194,10 @@ export function SocIncidentsPanel() {
             No incidents match these filters. Try widening the status, or trigger clustering to scan the last 24h.
           </div>
         ) : (
-          <Table>
+          <div className="space-y-4">
+            <SocIncidentHeatmap incidents={incidents} />
+            <Table>
+
             <TableHeader>
               <TableRow>
                 <TableHead>Severity</TableHead>
