@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { usersApi } from "@/api/supabase/users.api";
+import { FhirExportPanel } from "@/components/portal/FhirExportPanel";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Card } from "@/components/ui/card";
@@ -310,6 +311,9 @@ export default function ClientPortal() {
                   </div>
                 </div>
               </Card>
+              <div className="mt-6">
+                <FhirExportPanel />
+              </div>
             </TabsContent>
           </Tabs>
         </main>
