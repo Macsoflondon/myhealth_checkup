@@ -174,6 +174,7 @@ export function useAccountLockout() {
     recordFailedAttempt,
     recordSuccessfulLogin,
     canAttemptLogin,
+    clearLockout,
     maxAttempts: MAX_ATTEMPTS,
   };
 }
