@@ -16,7 +16,7 @@ const TestFinderRecommendationsPage = () => {
 
   if (!profile) {
     return (
-      <div className="min-h-screen bg-[#081129] text-white">
+      <div className="min-h-screen bg-white text-[#081129]">
         <Header />
         <main className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-2xl font-semibold mb-4">No quiz results yet</h1>
@@ -47,13 +47,13 @@ const TestFinderRecommendationsPage = () => {
         />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/find-test/recommendations" />
       </Helmet>
-      <div className="min-h-screen bg-[#081129] text-white">
+      <div className="min-h-screen bg-white text-[#081129]">
         <Header />
         <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold">Your recommended tests</h1>
-              <p className="text-white/65 mt-2 text-sm sm:text-base">
+              <h1 className="text-3xl sm:text-4xl font-bold text-[#081129]">Your recommended tests</h1>
+              <p className="text-[#081129]/70 mt-2 text-sm sm:text-base">
                 {recs.length > 0
                   ? `Top ${recs.length} matches ranked by relevance to your profile. Add the ones you'd like to compare.`
                   : "No clear matches yet — try restarting the quiz with broader preferences."}
@@ -62,7 +62,7 @@ const TestFinderRecommendationsPage = () => {
             <div className="flex gap-2">
               <button
                 onClick={() => navigate("/find-test")}
-                className="flex items-center gap-2 text-sm text-white/70 hover:text-white border border-white/15 px-4 py-2 rounded-full"
+                className="flex items-center gap-2 text-sm text-[#081129]/80 hover:text-[#081129] border border-[#081129]/20 px-4 py-2 rounded-full"
               >
                 <RefreshCw className="w-4 h-4" /> Restart quiz
               </button>
