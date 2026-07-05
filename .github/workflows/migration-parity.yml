@@ -1,0 +1,38 @@
+name: Migration parity
+
+on:
+  pull_request:
+    paths:
+      - "supabase/migrations/**"
+      - "scripts/check-migration-parity.mjs"
+      - ".github/workflows/migration-parity.yml"
+
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: "20" }
+      - name: Local filesystem parity
+        run: node scripts/check-migration-parity.mjs
+      - name: Remote parity (repo ↔ supabase_migrations.schema_migrations)
+        if: ${{ secrets.SUPABASE_DB_URL != '' }}
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          set -euo pipefail
+          sudo apt-get update && sudo apt-get install -y postgresql-client
+          REMOTE=$(psql "$SUPABASE_DB_URL" -At -c \
+            "SELECT version FROM supabase_migrations.schema_migrations ORDER BY version;" \
+            | sort -u)
+          LOCAL=$(ls supabase/migrations/*.sql | xargs -n1 basename | cut -c1-14 | sort -u)
+          MISSING_LOCAL=$(comm -23 <(echo "$REMOTE") <(echo "$LOCAL"))
+          MISSING_REMOTE=$(comm -13 <(echo "$REMOTE") <(echo "$LOCAL"))
+          if [ -n "$MISSING_LOCAL" ] || [ -n "$MISSING_REMOTE" ]; then
+            echo "::error::Migration history drift detected"
+            [ -n "$MISSING_LOCAL" ]  && { echo "In remote, missing repo file:"; echo "$MISSING_LOCAL"; }
+            [ -n "$MISSING_REMOTE" ] && { echo "In repo, not applied remote:"; echo "$MISSING_REMOTE"; }
+            exit 1
+          fi
+          echo "✓ Repo and remote migration sets are identical."
