@@ -38,7 +38,7 @@ const TestFinderComparePage = () => {
       </Helmet>
       <div className="min-h-screen bg-[#081129] text-white">
         <Header />
-        <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <main className="w-full px-4 sm:px-6 lg:px-10 xl:px-16 py-8 sm:py-12">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
             <div>
               <button
