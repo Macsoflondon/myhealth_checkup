@@ -331,7 +331,10 @@ export function SocWatchDashboard({ embedded = false }: SocWatchDashboardProps) 
                 </Card>
               </aside>
             </section>
+              </TabsContent>
+            </Tabs>
           </>
+
         ) : (
           <Alert variant="destructive">
             <AlertTriangle className="h-4 w-4" />
