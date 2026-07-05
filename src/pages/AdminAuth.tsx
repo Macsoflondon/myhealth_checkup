@@ -22,6 +22,7 @@ const AdminAuth = () => {
     recordFailedAttempt,
     recordSuccessfulLogin,
     canAttemptLogin,
+    clearLockout,
   } = useAccountLockout();
 
   const [email, setEmail] = useState("");
