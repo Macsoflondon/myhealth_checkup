@@ -84,6 +84,7 @@ export function AppRoutes() {
         <Route path="/admin/performance" element={wrapAdmin(AdminPerformancePage)} />
         <Route path="/admin/audit-console" element={wrapAdmin(AdminAuditConsolePage)} />
         <Route path="/admin/alert-routing" element={wrapAdmin(AdminAlertRoutingPage)} />
+        <Route path="/admin/data-sharing" element={wrapAdmin(AdminDataSharingPage)} />
 
 
         {/* Operations Control Centre */}
