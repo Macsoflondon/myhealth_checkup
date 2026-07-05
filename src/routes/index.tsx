@@ -31,6 +31,7 @@ const AdminSecurityDiffPage = lazy(() => import("@/pages/AdminSecurityDiffPage")
 const AdminBiomarkerAuditPage = lazy(() => import("@/pages/AdminBiomarkerAuditPage"));
 const AdminBiomarkerValidationPage = lazy(() => import("@/pages/AdminBiomarkerValidationPage"));
 const AdminSocWatchPage = lazy(() => import("@/pages/AdminSocWatchPage"));
+const AdminClinicalSafetyPage = lazy(() => import("@/pages/AdminClinicalSafetyPage"));
 const AdminOpsPage = lazy(() => import("@/pages/AdminOpsPage"));
 const AdminChangeLogPage = lazy(() => import("@/pages/AdminChangeLogPage"));
 const AdminPerformancePage = lazy(() => import("@/pages/AdminPerformancePage"));
@@ -76,6 +77,7 @@ export function AppRoutes() {
         <Route path="/admin/biomarker-audit" element={wrapAdmin(AdminBiomarkerAuditPage)} />
         <Route path="/admin/biomarker-validation" element={wrapAdmin(AdminBiomarkerValidationPage)} />
         <Route path="/admin/soc-watch" element={wrapAdmin(AdminSocWatchPage)} />
+        <Route path="/admin/clinical-safety" element={wrapAdmin(AdminClinicalSafetyPage)} />
         <Route path="/admin/ops" element={wrapAdmin(AdminOpsPage)} />
         <Route path="/admin/change-log" element={wrapAdmin(AdminChangeLogPage)} />
         <Route path="/admin/performance" element={wrapAdmin(AdminPerformancePage)} />
