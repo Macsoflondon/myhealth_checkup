@@ -91,7 +91,12 @@ const AdminAlertRoutingPage = () => {
   };
 
   const onSubmit = async (values: FormValues) => {
-    const payload = { ...values, label: values.label ?? null };
+    const payload = {
+      email: values.email,
+      label: values.label ?? null,
+      alert_types: values.alert_types,
+      enabled: values.enabled,
+    };
     const { error } = editing
       ? await alertRecipientsApi.update(editing.id, payload)
       : await alertRecipientsApi.create(payload);
@@ -103,6 +108,7 @@ const AdminAlertRoutingPage = () => {
     setDialogOpen(false);
     load();
   };
+
 
   const onToggle = async (row: AlertRecipient, enabled: boolean) => {
     const { error } = await alertRecipientsApi.toggle(row.id, enabled);

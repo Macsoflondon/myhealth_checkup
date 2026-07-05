@@ -88,15 +88,16 @@ async function toggle(id: string, enabled: boolean): Promise<ApiResponse<AlertRe
 
 async function logChange(action: string, resourceId: string | null, value: Record<string, unknown>): Promise<void> {
   const { data: user } = await supabase.auth.getUser();
-  await supabase.from("admin_activity_log").insert({
+  await supabase.from("admin_activity_log").insert([{
     admin_user_id: user.user?.id ?? null,
     action: `alert_recipient_${action}`,
     resource_type: "security_alert_recipients",
     resource_id: resourceId,
     resource_name: (value.email as string) ?? null,
-    new_value: value,
+    new_value: value as never,
     success: true,
-  });
+  }]);
 }
+
 
 export const alertRecipientsApi = { list, create, update, remove, toggle };
