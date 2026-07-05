@@ -18,6 +18,7 @@ import {
   Search,
   Download,
   Gauge,
+  Siren,
 } from "lucide-react";
 
 export type SectionStatus = "live" | "beta" | "stub";
@@ -29,7 +30,7 @@ export interface ControlSection {
   description: string;
   icon: ComponentType<{ className?: string }>;
   status: SectionStatus;
-  component: LazyExoticComponent<ComponentType<any>>;
+  component: LazyExoticComponent<ComponentType>;
 }
 
 export const CONTROL_SECTIONS: ControlSection[] = [
@@ -104,6 +105,15 @@ export const CONTROL_SECTIONS: ControlSection[] = [
     icon: Bell,
     status: "live",
     component: lazy(() => import("./sections/NotificationsSection")),
+  },
+  {
+    slug: "soc-watch",
+    title: "SOC Watch",
+    short: "SOC Watch",
+    description: "Read-only security operations monitoring and signal correlation.",
+    icon: Siren,
+    status: "live",
+    component: lazy(() => import("./sections/SocWatchSection")),
   },
   {
     slug: "analytics",
