@@ -23,8 +23,8 @@ async function currentUserId(): Promise<string | null> {
 
 async function logEvent(
   incidentId: string,
-  eventType: IncidentEventRow["event_type"],
-  detail: Record<string, unknown> = {},
+  eventType: string,
+  detail: Json = {},
 ): Promise<void> {
   const actor = await currentUserId();
   if (!actor) return;
@@ -35,6 +35,7 @@ async function logEvent(
     detail,
   });
 }
+
 
 async function list(filters: SocIncidentListFilters = {}): Promise<ApiResponse<IncidentRow[]>> {
   let query = supabase
