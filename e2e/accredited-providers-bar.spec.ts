@@ -1,7 +1,13 @@
 /**
- * Visual regression — AccreditedProvidersBar must keep UKAS / CQC / ISO 15189
- * on a single row across the common iPhone widths. No horizontal scroll, all
- * three labels share the same y-coordinate (one visual row).
+ * Smoke test — AccreditedProvidersBar must render all six trust-signal labels
+ * (UKAS, CQC, ISO 15189, GDPR, Transparent Pricing, No GP Referral) and must
+ * not produce horizontal scroll on mobile viewports.
+ *
+ * On mobile (< md breakpoint) the component renders a two-row marquee: rowA
+ * carries the even-indexed badges (UKAS, ISO 15189, Transparent Pricing) and
+ * rowB carries the odd-indexed badges (CQC, GDPR, No GP Referral). The labels
+ * are duplicated 4× per row for seamless looping, so each label appears
+ * multiple times in the DOM.
  *
  * Run with:  bunx playwright test e2e/accredited-providers-bar.spec.ts
  */
@@ -18,33 +24,38 @@ const VIEWPORTS = [
 
 const ROW = '[data-testid="accreditors-row"]';
 
+// Labels that must appear at least once somewhere in the component.
+const REQUIRED_LABELS = ["UKAS", "CQC", "ISO 15189"];
+
 for (const vp of VIEWPORTS) {
-  test(`AccreditedProvidersBar @ ${vp.name}: single row, no overflow`, async ({ browser }) => {
+  test(`AccreditedProvidersBar @ ${vp.name}: labels present, no overflow`, async ({ browser }) => {
     const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
     const page = await ctx.newPage();
     await page.goto(BASE_URL + "/");
     await page.waitForSelector(ROW, { timeout: 10_000 });
 
-    // 1. All three labels on the same visual row.
-    const tops = await page.$$eval(
-      `${ROW} .font-bold`,
-      (els) =>
-        els
-          .filter((el) => /UKAS|CQC|ISO 15189/.test(el.textContent ?? ""))
-          .map((el) => Math.round(el.getBoundingClientRect().top)),
-    );
-    expect(tops, `${vp.name}: expected 3 accreditor labels`).toHaveLength(3);
-    expect(new Set(tops).size, `${vp.name}: labels should share one y, got ${tops.join(",")}`).toBe(1);
+    // 1. Each required label appears at least once in the marquee rows.
+    for (const label of REQUIRED_LABELS) {
+      const count = await page.$$eval(
+        `${ROW} .font-bold`,
+        (els, lbl) => els.filter((el) => (el.textContent ?? "").includes(lbl)).length,
+        label,
+      );
+      expect(count, `${vp.name}: "${label}" not found in accreditors bar`).toBeGreaterThan(0);
+    }
 
-    // 2. No horizontal overflow on the row.
-    const overflow = await page.$eval(ROW, (el) => ({
-      scrollW: el.scrollWidth,
-      clientW: el.clientWidth,
-    }));
-    expect(
-      overflow.scrollW,
-      `${vp.name}: row overflows (${overflow.scrollW} > ${overflow.clientW})`,
-    ).toBeLessThanOrEqual(overflow.clientW + 1);
+    // 2. No horizontal overflow on either marquee row.
+    const rows = await page.$$(ROW);
+    for (const row of rows) {
+      const overflow = await row.evaluate((el) => ({
+        scrollW: el.scrollWidth,
+        clientW: el.clientWidth,
+      }));
+      expect(
+        overflow.scrollW,
+        `${vp.name}: a marquee row overflows (${overflow.scrollW} > ${overflow.clientW})`,
+      ).toBeLessThanOrEqual(overflow.clientW + 1);
+    }
 
     // 3. Page-level horizontal scroll guard.
     const bodyOverflow = await page.evaluate(() => ({

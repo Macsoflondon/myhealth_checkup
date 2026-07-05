@@ -1,6 +1,58 @@
 
 -- C1: Unified audit view + retention policy
 
+-- Ensure out-of-band production tables exist for preview environments.
+-- These tables are created directly on production and are not in any migration file.
+-- CREATE TABLE IF NOT EXISTS is idempotent and safe to run when the real table already exists.
+CREATE TABLE IF NOT EXISTS public.admin_activity_log (
+  id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at  timestamptz NOT NULL DEFAULT now(),
+  admin_user_id uuid,
+  action      text,
+  resource_type text,
+  resource_id text,
+  resource_name text,
+  old_value   jsonb,
+  new_value   jsonb,
+  success     boolean DEFAULT true,
+  error_message text,
+  session_id  text,
+  ip_address  text,
+  user_agent  text
+);
+
+CREATE TABLE IF NOT EXISTS public.edge_function_logs (
+  id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at    timestamptz NOT NULL DEFAULT now(),
+  function_name text,
+  invocation_id text,
+  status        text,
+  http_status   integer,
+  duration_ms   integer,
+  memory_mb     numeric,
+  error_message text,
+  triggered_by  text
+);
+
+CREATE TABLE IF NOT EXISTS public.ai_operation_logs (
+  id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  created_at      timestamptz NOT NULL DEFAULT now(),
+  user_id         uuid,
+  job_type        text,
+  entity_type     text,
+  entity_id       text,
+  model           text,
+  prompt_version  text,
+  input_tokens    integer,
+  output_tokens   integer,
+  latency_ms      integer,
+  cost_usd        numeric,
+  success         boolean DEFAULT true,
+  cache_hit       boolean,
+  error_message   text,
+  metadata        jsonb
+);
+
 CREATE TABLE IF NOT EXISTS public.audit_retention_policy (
   source text PRIMARY KEY,
   retention_days integer NOT NULL CHECK (retention_days > 0),

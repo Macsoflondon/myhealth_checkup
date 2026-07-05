@@ -1,41 +1,75 @@
 
 -- 1. Restrict INSERT policies on analytics/log tables to service_role only
-DROP POLICY IF EXISTS svc_insert_ai_logs ON public.ai_operation_logs;
-CREATE POLICY svc_insert_ai_logs ON public.ai_operation_logs
-  FOR INSERT TO service_role WITH CHECK (true);
+-- These tables are created out-of-band on production and may not exist in preview DBs.
+DO $$ BEGIN
+  DROP POLICY IF EXISTS svc_insert_ai_logs ON public.ai_operation_logs;
+  CREATE POLICY svc_insert_ai_logs ON public.ai_operation_logs
+    FOR INSERT TO service_role WITH CHECK (true);
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
-DROP POLICY IF EXISTS svc_insert_funnel ON public.funnel_events;
-CREATE POLICY svc_insert_funnel ON public.funnel_events
-  FOR INSERT TO service_role WITH CHECK (true);
+DO $$ BEGIN
+  DROP POLICY IF EXISTS svc_insert_funnel ON public.funnel_events;
+  CREATE POLICY svc_insert_funnel ON public.funnel_events
+    FOR INSERT TO service_role WITH CHECK (true);
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
-DROP POLICY IF EXISTS svc_insert_events ON public.user_events;
-CREATE POLICY svc_insert_events ON public.user_events
-  FOR INSERT TO service_role WITH CHECK (true);
+DO $$ BEGIN
+  DROP POLICY IF EXISTS svc_insert_events ON public.user_events;
+  CREATE POLICY svc_insert_events ON public.user_events
+    FOR INSERT TO service_role WITH CHECK (true);
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
-DROP POLICY IF EXISTS svc_insert_platform_met ON public.platform_metrics;
-CREATE POLICY svc_insert_platform_met ON public.platform_metrics
-  FOR INSERT TO service_role WITH CHECK (true);
+DO $$ BEGIN
+  DROP POLICY IF EXISTS svc_insert_platform_met ON public.platform_metrics;
+  CREATE POLICY svc_insert_platform_met ON public.platform_metrics
+    FOR INSERT TO service_role WITH CHECK (true);
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
 -- Also revoke direct table grants from anon for these tables (defense in depth)
-REVOKE INSERT ON public.ai_operation_logs FROM anon, authenticated;
-REVOKE INSERT ON public.funnel_events FROM anon, authenticated;
-REVOKE INSERT ON public.user_events FROM anon, authenticated;
-REVOKE INSERT ON public.platform_metrics FROM anon, authenticated;
+DO $$ BEGIN
+  REVOKE INSERT ON public.ai_operation_logs FROM anon, authenticated;
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  REVOKE INSERT ON public.funnel_events FROM anon, authenticated;
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  REVOKE INSERT ON public.user_events FROM anon, authenticated;
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  REVOKE INSERT ON public.platform_metrics FROM anon, authenticated;
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
 -- 2. recommendation_history: explicit service-role-only access, revoke public grants
-REVOKE ALL ON public.recommendation_history FROM anon, authenticated;
-GRANT ALL ON public.recommendation_history TO service_role;
+DO $$ BEGIN
+  REVOKE ALL ON public.recommendation_history FROM anon, authenticated;
+  GRANT ALL ON public.recommendation_history TO service_role;
 
-DROP POLICY IF EXISTS svc_all_recommendation_history ON public.recommendation_history;
-CREATE POLICY svc_all_recommendation_history ON public.recommendation_history
-  FOR ALL TO service_role USING (true) WITH CHECK (true);
+  DROP POLICY IF EXISTS svc_all_recommendation_history ON public.recommendation_history;
+  CREATE POLICY svc_all_recommendation_history ON public.recommendation_history
+    FOR ALL TO service_role USING (true) WITH CHECK (true);
 
-DROP POLICY IF EXISTS admin_recommendation_history ON public.recommendation_history;
-CREATE POLICY admin_recommendation_history ON public.recommendation_history
-  FOR SELECT TO authenticated USING (public.has_role(auth.uid(), 'admin'::app_role));
+  DROP POLICY IF EXISTS admin_recommendation_history ON public.recommendation_history;
+  CREATE POLICY admin_recommendation_history ON public.recommendation_history
+    FOR SELECT TO authenticated USING (public.has_role(auth.uid(), 'admin'::app_role));
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
 -- 3. resolve_canonical_category: lock down anon access + add caller guard
-REVOKE EXECUTE ON FUNCTION public.resolve_canonical_category(text, text) FROM PUBLIC, anon;
+DO $$ BEGIN
+  REVOKE EXECUTE ON FUNCTION public.resolve_canonical_category(text, text) FROM PUBLIC, anon;
+EXCEPTION WHEN undefined_function OR undefined_object THEN NULL;
+END $$;
 
 CREATE OR REPLACE FUNCTION public.resolve_canonical_category(_provider_id text, _source_section text)
  RETURNS text
@@ -77,15 +111,63 @@ GRANT EXECUTE ON FUNCTION public.resolve_canonical_category(text, text) TO authe
 -- 4. Drop sensitive user/health tables from the supabase_realtime publication.
 -- App uses postgres_changes via service-role/edge functions where needed; broadcasting
 -- these tables to clients via Realtime is not required and expands the attack surface.
-ALTER PUBLICATION supabase_realtime DROP TABLE public.user_profiles;
-ALTER PUBLICATION supabase_realtime DROP TABLE public.user_health_data;
-ALTER PUBLICATION supabase_realtime DROP TABLE public.biomarker_readings;
-ALTER PUBLICATION supabase_realtime DROP TABLE public.clinical_patient_uploads;
-ALTER PUBLICATION supabase_realtime DROP TABLE public.clinical_fhir_bundles;
-ALTER PUBLICATION supabase_realtime DROP TABLE public.clinical_gp_notifications;
-ALTER PUBLICATION supabase_realtime DROP TABLE public.notification_history;
-ALTER PUBLICATION supabase_realtime DROP TABLE public.saved_comparisons;
-ALTER PUBLICATION supabase_realtime DROP TABLE public.saved_providers;
-ALTER PUBLICATION supabase_realtime DROP TABLE public.favorites;
-ALTER PUBLICATION supabase_realtime DROP TABLE public.health_queries;
-ALTER PUBLICATION supabase_realtime DROP TABLE public.recommendation_history;
+-- Each statement is guarded against: table not existing OR table not being in the publication.
+DO $$ BEGIN
+  ALTER PUBLICATION supabase_realtime DROP TABLE public.user_profiles;
+EXCEPTION WHEN undefined_table OR undefined_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  ALTER PUBLICATION supabase_realtime DROP TABLE public.user_health_data;
+EXCEPTION WHEN undefined_table OR undefined_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  ALTER PUBLICATION supabase_realtime DROP TABLE public.biomarker_readings;
+EXCEPTION WHEN undefined_table OR undefined_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  ALTER PUBLICATION supabase_realtime DROP TABLE public.clinical_patient_uploads;
+EXCEPTION WHEN undefined_table OR undefined_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  ALTER PUBLICATION supabase_realtime DROP TABLE public.clinical_fhir_bundles;
+EXCEPTION WHEN undefined_table OR undefined_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  ALTER PUBLICATION supabase_realtime DROP TABLE public.clinical_gp_notifications;
+EXCEPTION WHEN undefined_table OR undefined_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  ALTER PUBLICATION supabase_realtime DROP TABLE public.notification_history;
+EXCEPTION WHEN undefined_table OR undefined_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  ALTER PUBLICATION supabase_realtime DROP TABLE public.saved_comparisons;
+EXCEPTION WHEN undefined_table OR undefined_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  ALTER PUBLICATION supabase_realtime DROP TABLE public.saved_providers;
+EXCEPTION WHEN undefined_table OR undefined_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  ALTER PUBLICATION supabase_realtime DROP TABLE public.favorites;
+EXCEPTION WHEN undefined_table OR undefined_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  ALTER PUBLICATION supabase_realtime DROP TABLE public.health_queries;
+EXCEPTION WHEN undefined_table OR undefined_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+  ALTER PUBLICATION supabase_realtime DROP TABLE public.recommendation_history;
+EXCEPTION WHEN undefined_table OR undefined_object THEN NULL;
+END $$;
