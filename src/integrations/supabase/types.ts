@@ -542,6 +542,30 @@ export type Database = {
         }
         Relationships: []
       }
+      audit_retention_policy: {
+        Row: {
+          notes: string | null
+          retention_days: number
+          source: string
+          time_column: string
+          updated_at: string
+        }
+        Insert: {
+          notes?: string | null
+          retention_days: number
+          source: string
+          time_column?: string
+          updated_at?: string
+        }
+        Update: {
+          notes?: string | null
+          retention_days?: number
+          source?: string
+          time_column?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       biomarker_audit_runs: {
         Row: {
           approved: boolean
@@ -4867,6 +4891,22 @@ export type Database = {
         }
         Relationships: []
       }
+      unified_audit_log: {
+        Row: {
+          action: string | null
+          actor_id: string | null
+          event_time: string | null
+          id: string | null
+          ip_address: string | null
+          payload: Json | null
+          severity: string | null
+          source: string | null
+          target_id: string | null
+          target_table: string | null
+          user_agent: string | null
+        }
+        Relationships: []
+      }
       unified_provider_tests: {
         Row: {
           biomarker_count: number | null
@@ -5071,6 +5111,13 @@ export type Database = {
       }
     }
     Functions: {
+      apply_audit_retention: {
+        Args: never
+        Returns: {
+          rows_deleted: number
+          source: string
+        }[]
+      }
       call_edge_with_automations: {
         Args: { p_body?: Json; p_url: string }
         Returns: number
