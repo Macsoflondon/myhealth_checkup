@@ -77,6 +77,7 @@ export function AppRoutes() {
         <Route path="/admin/biomarker-audit" element={wrapAdmin(AdminBiomarkerAuditPage)} />
         <Route path="/admin/biomarker-validation" element={wrapAdmin(AdminBiomarkerValidationPage)} />
         <Route path="/admin/soc-watch" element={wrapAdmin(AdminSocWatchPage)} />
+        <Route path="/admin/clinical-safety" element={wrapAdmin(AdminClinicalSafetyPage)} />
         <Route path="/admin/ops" element={wrapAdmin(AdminOpsPage)} />
         <Route path="/admin/change-log" element={wrapAdmin(AdminChangeLogPage)} />
         <Route path="/admin/performance" element={wrapAdmin(AdminPerformancePage)} />
