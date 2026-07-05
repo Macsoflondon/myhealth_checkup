@@ -65,7 +65,7 @@ const AdminAuditConsolePage = () => {
       const since = new Date(Date.now() - ms).toISOString();
       const per = 500;
 
-      const queries: Promise<UnifiedRow[]>[] = [];
+      const queries: PromiseLike<UnifiedRow[]>[] = [];
       const includeAudit = source === "all" || source === "audit_logs";
       const includeAdmin = source === "all" || source === "admin_activity_log";
       const includeRole = source === "all" || source === "role_audit_log";
