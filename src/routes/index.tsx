@@ -31,6 +31,7 @@ const AdminSecurityDiffPage = lazy(() => import("@/pages/AdminSecurityDiffPage")
 const AdminBiomarkerAuditPage = lazy(() => import("@/pages/AdminBiomarkerAuditPage"));
 const AdminBiomarkerValidationPage = lazy(() => import("@/pages/AdminBiomarkerValidationPage"));
 const AdminSocWatchPage = lazy(() => import("@/pages/AdminSocWatchPage"));
+const AdminClinicalSafetyPage = lazy(() => import("@/pages/AdminClinicalSafetyPage"));
 const AdminOpsPage = lazy(() => import("@/pages/AdminOpsPage"));
 const AdminChangeLogPage = lazy(() => import("@/pages/AdminChangeLogPage"));
 const AdminPerformancePage = lazy(() => import("@/pages/AdminPerformancePage"));
