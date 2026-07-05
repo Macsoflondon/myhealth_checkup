@@ -135,9 +135,17 @@ export function SocIncidentsPanel() {
       setNoteDialog(null);
     },
   });
+  const actionMutation = useMutation({
+    mutationFn: ({ id, action }: { id: string; action: SocReversibleAction }) => socIncidentsApi.executeAction(id, action),
+    onSuccess: (r) => {
+      if (r.error) return toast.error(r.error.message);
+      toast.success(`Action executed — ${r.data?.affected ?? 0} row${r.data?.affected === 1 ? "" : "s"} affected`);
+    },
+  });
 
   const incidents = listQuery.data ?? [];
   const activeCount = useMemo(() => incidents.filter((i) => i.status === "open" || i.status === "acknowledged").length, [incidents]);
+
 
   return (
     <>
