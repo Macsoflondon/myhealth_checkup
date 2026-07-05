@@ -60,17 +60,21 @@ export async function executePipeline(
 
   await record("INIT", "ok", `Skill ${parsed.skill} · scope: ${parsed.scope} · parser: ${parsed.parser}`);
 
-  if (def.writes && parsed.skill !== "UNFREEZE" && parsed.scope !== "unspecified") {
+  if (def.writes && parsed.skill !== "UNFREEZE") {
+    // Honour global emergency freeze ("*") first, then scoped freeze.
+    const paths = parsed.scope === "unspecified" ? ["*"] : ["*", parsed.scope];
     const { data: frozen } = await supabase
       .from("engine_freezes")
       .select("path, reason")
       .eq("active", true)
-      .eq("path", parsed.scope)
+      .in("path", paths)
+      .limit(1)
       .maybeSingle();
     if (frozen) {
-      await record("ANALYSE", "fail", `Target frozen: ${frozen.path} — ${frozen.reason}. Refusing per skill contract.`);
+      const label = frozen.path === "*" ? "GLOBAL EMERGENCY FREEZE" : `Target frozen: ${frozen.path}`;
+      await record("ANALYSE", "fail", `${label} — ${frozen.reason}. Refusing per skill contract.`);
       await updateRun(runId, { status: "blocked", completed_at: new Date().toISOString() });
-      return { runId, status: "blocked", stages, finalMessage: "Blocked: frozen target." };
+      return { runId, status: "blocked", stages, finalMessage: `Blocked: ${label.toLowerCase()}.` };
     }
   }
 
