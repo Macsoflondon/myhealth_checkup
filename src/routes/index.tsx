@@ -32,6 +32,8 @@ const AdminBiomarkerValidationPage = lazy(() => import("@/pages/AdminBiomarkerVa
 const AdminSocWatchPage = lazy(() => import("@/pages/AdminSocWatchPage"));
 const AdminOpsPage = lazy(() => import("@/pages/AdminOpsPage"));
 const AdminChangeLogPage = lazy(() => import("@/pages/AdminChangeLogPage"));
+const AdminPerformancePage = lazy(() => import("@/pages/AdminPerformancePage"));
+const AdminAuditConsolePage = lazy(() => import("@/pages/AdminAuditConsolePage"));
 const ControlPage = lazy(() => import("@/pages/ControlPage"));
 
 
@@ -70,6 +72,8 @@ export function AppRoutes() {
         <Route path="/admin/soc-watch" element={wrapAdmin(AdminSocWatchPage)} />
         <Route path="/admin/ops" element={wrapAdmin(AdminOpsPage)} />
         <Route path="/admin/change-log" element={wrapAdmin(AdminChangeLogPage)} />
+        <Route path="/admin/performance" element={wrapAdmin(AdminPerformancePage)} />
+        <Route path="/admin/audit-console" element={wrapAdmin(AdminAuditConsolePage)} />
 
 
         {/* Operations Control Centre */}
