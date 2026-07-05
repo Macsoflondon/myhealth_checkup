@@ -3984,6 +3984,110 @@ export type Database = {
         }
         Relationships: []
       }
+      soc_incident_events: {
+        Row: {
+          actor_id: string | null
+          created_at: string
+          detail: Json
+          event_type: string
+          id: string
+          incident_id: string
+        }
+        Insert: {
+          actor_id?: string | null
+          created_at?: string
+          detail?: Json
+          event_type: string
+          id?: string
+          incident_id: string
+        }
+        Update: {
+          actor_id?: string | null
+          created_at?: string
+          detail?: Json
+          event_type?: string
+          id?: string
+          incident_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "soc_incident_events_incident_id_fkey"
+            columns: ["incident_id"]
+            isOneToOne: false
+            referencedRelation: "soc_incidents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      soc_incidents: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          assignee_id: string | null
+          cluster_key: string
+          created_at: string
+          entity: string | null
+          first_seen_at: string
+          id: string
+          last_seen_at: string
+          resolution_note: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          sample_signal_ids: string[]
+          severity: string
+          signal_count: number
+          source: string
+          status: string
+          summary: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          assignee_id?: string | null
+          cluster_key: string
+          created_at?: string
+          entity?: string | null
+          first_seen_at?: string
+          id?: string
+          last_seen_at?: string
+          resolution_note?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          sample_signal_ids?: string[]
+          severity?: string
+          signal_count?: number
+          source: string
+          status?: string
+          summary?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          assignee_id?: string | null
+          cluster_key?: string
+          created_at?: string
+          entity?: string | null
+          first_seen_at?: string
+          id?: string
+          last_seen_at?: string
+          resolution_note?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          sample_signal_ids?: string[]
+          severity?: string
+          signal_count?: number
+          source?: string
+          status?: string
+          summary?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       sync_heartbeat: {
         Row: {
           created_at: string | null
