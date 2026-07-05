@@ -316,7 +316,9 @@ export function SocIncidentsPanel() {
               })}
             </TableBody>
           </Table>
+          </div>
         )}
+
       </Card>
 
       <Dialog open={!!resolveDialog} onOpenChange={(open) => !open && setResolveDialog(null)}>
