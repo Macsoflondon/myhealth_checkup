@@ -14,6 +14,9 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SocIncidentsPanel } from "@/components/admin/soc-incidents-panel";
+
 
 interface SocWatchDashboardProps {
   embedded?: boolean;
@@ -185,7 +188,17 @@ export function SocWatchDashboard({ embedded = false }: SocWatchDashboardProps) 
               <MetricCard label="Total signals" value={dashboard.summary.totalSignals} hint={`Updated ${formatSocDateTime(dashboard.summary.lastUpdatedAt)}`} icon={Gauge} />
             </section>
 
+            <Tabs defaultValue="signals" className="w-full">
+              <TabsList>
+                <TabsTrigger value="signals">Signals</TabsTrigger>
+                <TabsTrigger value="incidents">Incidents</TabsTrigger>
+              </TabsList>
+              <TabsContent value="incidents" className="mt-4">
+                <SocIncidentsPanel />
+              </TabsContent>
+              <TabsContent value="signals" className="mt-4">
             <section className="grid gap-4 lg:grid-cols-[1fr_360px]">
+
               <Card variant="outlined" className="p-4 bg-card/95">
                 <div className="mb-4 flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
                   <div>
@@ -318,7 +331,10 @@ export function SocWatchDashboard({ embedded = false }: SocWatchDashboardProps) 
                 </Card>
               </aside>
             </section>
+              </TabsContent>
+            </Tabs>
           </>
+
         ) : (
           <Alert variant="destructive">
             <AlertTriangle className="h-4 w-4" />
