@@ -311,8 +311,9 @@ export default function ClientPortal() {
                   </div>
                 </div>
               </Card>
-              <div className="mt-6">
+              <div className="mt-6 space-y-6">
                 <FhirExportPanel />
+                <DataSharingGrantsPanel />
               </div>
             </TabsContent>
           </Tabs>
