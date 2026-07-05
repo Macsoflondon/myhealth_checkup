@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { usersApi } from "@/api/supabase/users.api";
 import { FhirExportPanel } from "@/components/portal/FhirExportPanel";
+import { DataSharingGrantsPanel } from "@/components/portal/DataSharingGrantsPanel";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Card } from "@/components/ui/card";
