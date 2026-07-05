@@ -1,6 +1,7 @@
 import { supabase } from "@/integrations/supabase/client";
-import type { Database } from "@/integrations/supabase/types";
+import type { Database, Json } from "@/integrations/supabase/types";
 import type { ApiResponse } from "./base";
+
 
 type IncidentRow = Database["public"]["Tables"]["soc_incidents"]["Row"];
 type IncidentEventRow = Database["public"]["Tables"]["soc_incident_events"]["Row"];
