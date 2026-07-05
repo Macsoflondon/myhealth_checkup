@@ -1,101 +1,67 @@
-# SOC Batch 1 — Incident Clustering + Lifecycle
+All five original SOC/perf batches shipped. This plan covers the three remaining follow-ups so the new admin surfaces are discoverable, configurable, and tested.
 
-Shipping COR-1 and IR-1 together because they share the `soc_incidents` table.
+## 1. Admin nav integration
 
-## What's already done
+The new admin pages (`/admin/soc-watch`, `/admin/ops`, `/admin/change-log`, `/admin/performance`, `/admin/audit-console`) currently only work by direct URL. Add a shared admin shell so they're discoverable.
 
-Migration applied — two new admin-only tables:
-- `soc_incidents` — clustered incidents (cluster_key, source, entity, severity, status open/acknowledged/resolved/suppressed, first/last seen, signal_count, sample_signal_ids, assignee, resolution note). Partial unique index enforces one active incident per cluster.
-- `soc_incident_events` — append-only lifecycle log (created, signal_added, acknowledged, assigned, resolved, reopened, note).
+- New `src/components/admin/AdminShell.tsx` using shadcn `Sidebar` (`collapsible="icon"`) with grouped links:
+  - **Security & ops**: SOC Watch, Ops, Performance, Audit console, Change log
+  - **Data**: Test dashboard, Scrapers, Test mapper, Biomarker audit, Biomarker validation, Data refresh, Test upload
+  - **System**: Encryption status, Security diff
+- Highlight active route via `useLocation`; keep parent group open when a child is active.
+- Wrap all `/admin/*` routes (except `/admin/login`, `/admin/recovery`) with the shell in `src/routes/index.tsx`. Existing page bodies unchanged.
+- Persistent `SidebarTrigger` in the header so collapsed state is recoverable.
 
-RLS: admin-only via `public.has_role(auth.uid(), 'admin')`. Service role full access for the background job.
+## 2. Alert routing config UI (IR-3 follow-up)
 
-## Remaining work this batch
+`security_alert_recipients` is currently DB-only. Add a management page so admins can control who gets paged.
 
-### 1. Clustering edge function — `supabase/functions/soc-cluster/index.ts`
+- New `/admin/alert-routing` page + `src/api/supabase/alertRecipients.api.ts` service layer.
+- Table with columns: email, severities (multi-select: critical/high/medium/low), sources (multi-select: soc/cron/scraper/csp/all), active toggle, notes, last updated.
+- Add/edit dialog with zod-validated form; delete with confirm.
+- Uses existing RLS (admin-only). No schema change — reads existing `security_alert_recipients` columns.
+- Optional "Send test alert" button that invokes `security-alert-notify` with a dry-run payload so admins can verify routing without waiting for a real incident.
 
-Scans the last 24h of SOC-relevant tables (`protected_call_log` denied, `scraper_alerts` unacknowledged, `operational_alerts` unresolved, `edge_function_logs` errors/5xx, `cron_run_log` errors, `csp_reports`). Groups by `(source, entity, hour-bucket)` cluster key. For each cluster:
+## 3. Tests + hardening
 
-- If an active incident exists with that `cluster_key` → append new signal IDs, bump `signal_count`, raise `severity` to max, extend `last_seen_at`, log `signal_added` event.
-- Else insert a new `open` incident, log `created` event.
+- **Deno tests** under `supabase/functions/*/index_test.ts` for:
+  - `soc-cluster`: signal ingestion → incident creation, anomaly threshold, pattern rule (role-grant burst), dedupe by `cluster_key`.
+  - `soc-action`: reversible ack + resolve happy path, unauthorised caller rejected, unknown action rejected.
+  - `web-vitals-ingest`: valid CLS/LCP/INP accepted, invalid metric rejected, oversized payload rejected, rate-limit sanity check.
+- **RLS review** for `web_vitals`:
+  - Ensure only `service_role` can `SELECT`; `anon` gets `INSERT` only (public beacon).
+  - Migration adds explicit `REVOKE SELECT ... FROM anon, authenticated` if missing, plus admin `SELECT` policy via `has_role`.
+- **CSV export guardrails** in `AdminAuditConsolePage`:
+  - Cap at 10k rows; warn above.
+  - Strip embedded newlines/control chars beyond the existing quote escape.
+  - Filename includes ISO timestamp + source + window (already partly there).
+- **Audit trail**: log CSV exports and alert-routing changes into `admin_activity_log` via the existing service so the audit console reflects its own use.
 
-Service-role client, no user input. Returns `{ signals_scanned, clusters, incidents_created, incidents_updated }`.
+## Technical notes
 
-### 2. Cron schedule (via `supabase--insert` since it embeds project URL + key)
+- Sidebar uses shadcn `Sidebar` primitives already installed (`src/components/ui/sidebar.tsx`).
+- Alert routing form uses `react-hook-form` + `zod` — same pattern as existing admin forms.
+- Deno tests run via `supabase--test_edge_functions`; each test file uses `Deno.test` + `std/assert` and mocks Supabase via a lightweight fetch stub (no live DB writes).
+- RLS migration follows the mandatory GRANT-then-ENABLE-RLS-then-POLICY order.
+- No changes to public/user-facing routes.
 
-```sql
-select cron.schedule(
-  'soc-cluster-every-5-min',
-  '*/5 * * * *',
-  $$
-  select public.call_edge_with_service_role(
-    'https://clvuioagsgfadynuvodj.supabase.co/functions/v1/soc-cluster'
-  );
-  $$
-);
+```text
+src/
+├── components/admin/AdminShell.tsx            (new — sidebar + header)
+├── pages/AdminAlertRoutingPage.tsx            (new)
+├── api/supabase/alertRecipients.api.ts        (new)
+├── pages/AdminAuditConsolePage.tsx            (edit — export guardrails)
+└── routes/index.tsx                           (edit — wrap admin routes, add route)
+
+supabase/
+├── functions/soc-cluster/index_test.ts        (new)
+├── functions/soc-action/index_test.ts         (new)
+├── functions/web-vitals-ingest/index_test.ts  (new)
+└── migrations/<ts>_web_vitals_rls_lockdown.sql (new)
 ```
 
-### 3. API layer — `src/api/supabase/socIncidents.api.ts`
+## Out of scope
 
-Typed wrappers over `soc_incidents` + `soc_incident_events`:
-- `list({ status?, severity?, source?, limit })`
-- `get(id)` — incident + events
-- `acknowledge(id)` — update status + log event
-- `assign(id, userId | null)` — assign to self / clear / assign to another admin
-- `resolve(id, note)` — status='resolved', set `resolved_at`/`resolved_by`, log event
-- `reopen(id, reason)`
-- `addNote(id, note)`
-- `triggerCluster()` — POST to `soc-cluster` for manual refresh
-
-All lifecycle writes also insert into `soc_incident_events` with `actor_id = auth.uid()` (enforced by RLS check policy).
-
-### 4. UI panel — `src/components/admin/soc-incidents-panel.tsx`
-
-New tab in `soc-watch-dashboard.tsx`:
-
-```
-[ Signals ] [ Incidents (12 open) ]
-```
-
-Incidents tab:
-- Filters: status (default open+acknowledged), severity, source
-- Table: severity badge · title · source · entity · signals · first seen · last seen · assignee · status
-- Row expansion → summary, sample signal IDs, lifecycle timeline from `soc_incident_events`
-- Actions per row: **Ack**, **Assign to me**, **Resolve** (dialog with note), **Reopen** (if resolved), **Add note**
-- Header: "Refresh clustering" button → `triggerCluster()`
-- Realtime subscription on `soc_incidents` — invalidate query on any change
-
-### 5. Route/types
-
-- `src/integrations/supabase/types.ts` regenerated by migration (automatic).
-- No new route — panel embedded in existing `/admin/soc-watch`.
-
-## Files touched
-
-Create:
-- `supabase/functions/soc-cluster/index.ts`
-- `src/api/supabase/socIncidents.api.ts`
-- `src/components/admin/soc-incidents-panel.tsx`
-
-Edit:
-- `src/components/admin/soc-watch-dashboard.tsx` — add tab switcher, render incidents panel
-
-DB (via `supabase--insert`):
-- pg_cron schedule for `soc-cluster-every-5-min`
-
-## Non-goals (deferred to later batches)
-
-- Anomaly baselines / z-scores → **Batch 2 (COR-2)**
-- Pattern-rule detectors → **Batch 2 (COR-4)**
-- Heatmap UI → **Batch 3 (COR-3)**
-- Playbooks / reversible actions → **Batch 3 (IR-2, IR-4)**
-- Notification routing on incident create → **Batch 4 (IR-3)**
-
-## Verification
-
-After build:
-1. Manually invoke `soc-cluster` — expect `incidents_created > 0` if there's recent denied protected-call / scraper-alert data.
-2. Load `/admin/soc-watch` → Incidents tab → confirm incidents render.
-3. Ack an incident → confirm status changes and a `soc_incident_events` row appears.
-4. Resolve with note → confirm `resolved_at`, `resolved_by`, `resolution_note`.
-5. Wait 5min for cron tick or re-trigger; confirm existing incident's `signal_count` grows rather than duplicate rows.
+- No new SOC detection rules (COR-2/COR-4 already shipped).
+- No user-facing UI changes.
+- No changes to auth, RLS on existing tables other than `web_vitals`.
