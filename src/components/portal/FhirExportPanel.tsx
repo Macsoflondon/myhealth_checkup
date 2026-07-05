@@ -99,10 +99,24 @@ export function FhirExportPanel() {
         </div>
         <Switch checked={consented} disabled={loading || busy} onCheckedChange={toggleConsent} />
       </div>
-      <Button onClick={download} disabled={!consented || busy} className="gap-2">
-        <Download className="h-4 w-4" />
-        Download FHIR bundle
-      </Button>
+      <div className="flex flex-wrap gap-2">
+        <Button onClick={download} disabled={!consented || busy} className="gap-2">
+          <Download className="h-4 w-4" />
+          Download FHIR bundle
+        </Button>
+        <Button onClick={asyncExport} disabled={!consented || busy} variant="outline" className="gap-2">
+          <Zap className="h-4 w-4" />
+          Async $export (bulk data)
+        </Button>
+        <a
+          className="inline-flex items-center text-xs text-muted-foreground underline self-center ml-1"
+          href={`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/fhir-export/metadata`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          View CapabilityStatement
+        </a>
+      </div>
     </Card>
   );
 }
