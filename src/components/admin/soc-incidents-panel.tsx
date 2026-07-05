@@ -1,7 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CheckCircle2, ClipboardList, Loader2, MessageSquarePlus, RefreshCw, ShieldAlert, UserPlus, Undo2 } from "lucide-react";
-import { socIncidentsApi, type SocIncident, type SocIncidentSeverity, type SocIncidentStatus } from "@/api/supabase/socIncidents.api";
+import { BookOpen, CheckCircle2, ClipboardList, Loader2, MessageSquarePlus, PlayCircle, RefreshCw, ShieldAlert, UserPlus, Undo2 } from "lucide-react";
+import { socIncidentsApi, type SocIncident, type SocIncidentSeverity, type SocIncidentStatus, type SocReversibleAction } from "@/api/supabase/socIncidents.api";
+import { SocIncidentHeatmap } from "@/components/admin/soc-incident-heatmap";
+import { playbookForSource } from "@/components/admin/soc-playbooks";
+
 import { formatSocDateTime } from "@/lib/socWatchUtils";
 import { cn } from "@/lib/utils";
 import { Alert, AlertDescription } from "@/components/ui/alert";
