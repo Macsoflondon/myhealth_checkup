@@ -1,44 +1,101 @@
+# SOC Batch 1 — Incident Clustering + Lifecycle
 
-## Mobile toolbar redesign
+Shipping COR-1 and IR-1 together because they share the `soc_incidents` table.
 
-On mobile (`<md`), replace the current busy pill layout in `BrowseByCategoryBar` with a clean navy bar that mirrors the reference:
+## What's already done
 
-```text
-[ myhealth checkup logo ]              [ ☰ ]
+Migration applied — two new admin-only tables:
+- `soc_incidents` — clustered incidents (cluster_key, source, entity, severity, status open/acknowledged/resolved/suppressed, first/last seen, signal_count, sample_signal_ids, assignee, resolution note). Partial unique index enforces one active incident per cluster.
+- `soc_incident_events` — append-only lifecycle log (created, signal_added, acknowledged, assigned, resolved, reopened, note).
+
+RLS: admin-only via `public.has_role(auth.uid(), 'admin')`. Service role full access for the background job.
+
+## Remaining work this batch
+
+### 1. Clustering edge function — `supabase/functions/soc-cluster/index.ts`
+
+Scans the last 24h of SOC-relevant tables (`protected_call_log` denied, `scraper_alerts` unacknowledged, `operational_alerts` unresolved, `edge_function_logs` errors/5xx, `cron_run_log` errors, `csp_reports`). Groups by `(source, entity, hour-bucket)` cluster key. For each cluster:
+
+- If an active incident exists with that `cluster_key` → append new signal IDs, bump `signal_count`, raise `severity` to max, extend `last_seen_at`, log `signal_added` event.
+- Else insert a new `open` incident, log `created` event.
+
+Service-role client, no user input. Returns `{ signals_scanned, clusters, incidents_created, incidents_updated }`.
+
+### 2. Cron schedule (via `supabase--insert` since it embeds project URL + key)
+
+```sql
+select cron.schedule(
+  'soc-cluster-every-5-min',
+  '*/5 * * * *',
+  $$
+  select public.call_edge_with_service_role(
+    'https://clvuioagsgfadynuvodj.supabase.co/functions/v1/soc-cluster'
+  );
+  $$
+);
 ```
 
-Desktop (`md+`) layout stays exactly as it is today.
+### 3. API layer — `src/api/supabase/socIncidents.api.ts`
 
-### Changes to `src/components/layout/BrowseByCategoryBar.tsx`
+Typed wrappers over `soc_incidents` + `soc_incident_events`:
+- `list({ status?, severity?, source?, limit })`
+- `get(id)` — incident + events
+- `acknowledge(id)` — update status + log event
+- `assign(id, userId | null)` — assign to self / clear / assign to another admin
+- `resolve(id, note)` — status='resolved', set `resolved_at`/`resolved_by`, log event
+- `reopen(id, reason)`
+- `addNote(id, note)`
+- `triggerCluster()` — POST to `soc-cluster` for manual refresh
 
-1. **Mobile container**
-   - Full-width navy bar: `bg-[#081129]`, no rounded card, no light background, no border.
-   - Height ~56px, horizontal padding `px-4`.
-   - Sticky behaviour unchanged.
-   - `flush` and `card` variants both render the same navy bar on mobile.
+All lifecycle writes also insert into `soc_incident_events` with `actor_id = auth.uid()` (enforced by RLS check policy).
 
-2. **Left — brand**
-   - Render `myhealth checkup` wordmark (import `AnimatedLogo` from `@/components/header/AnimatedLogo`, wrapped in a `Link to="/"`).
-   - Height ~28–32px, white/logo on navy.
-   - Replaces the current mobile "Browse" pill.
+### 4. UI panel — `src/components/admin/soc-incidents-panel.tsx`
 
-3. **Right — hamburger only**
-   - Single icon button: circular/rounded, transparent or subtle white/10 background, white `Menu` icon.
-   - Opens the existing `Sheet`.
-   - Remove the mobile pink pill cluster containing `LanguageSwitcher` + `UserMenu` from the bar itself.
+New tab in `soc-watch-dashboard.tsx`:
 
-4. **Sheet contents (mobile)**
-   - Keep the category list.
-   - Append a divider and a new section at the bottom containing `LanguageSwitcher` and `UserMenu` (glass variant) so login + language live inside the dropdown as requested.
+```
+[ Signals ] [ Incidents (12 open) ]
+```
 
-5. **Desktop untouched**
-   - The `hidden md:flex` pill strip, More dropdown, and right-side language/user cluster stay as-is.
-   - The scrollable pill strip stays `hidden md:flex`, so it does not render on mobile.
+Incidents tab:
+- Filters: status (default open+acknowledged), severity, source
+- Table: severity badge · title · source · entity · signals · first seen · last seen · assignee · status
+- Row expansion → summary, sample signal IDs, lifecycle timeline from `soc_incident_events`
+- Actions per row: **Ack**, **Assign to me**, **Resolve** (dialog with note), **Reopen** (if resolved), **Add note**
+- Header: "Refresh clustering" button → `triggerCluster()`
+- Realtime subscription on `soc_incidents` — invalidate query on any change
 
-### Files touched
-- `src/components/layout/BrowseByCategoryBar.tsx` (only)
+### 5. Route/types
 
-### Verification
-- Manual check at 390px viewport: navy bar, logo left, hamburger right, nothing else.
-- Open sheet: categories + language + login present.
-- Desktop ≥768px unchanged.
+- `src/integrations/supabase/types.ts` regenerated by migration (automatic).
+- No new route — panel embedded in existing `/admin/soc-watch`.
+
+## Files touched
+
+Create:
+- `supabase/functions/soc-cluster/index.ts`
+- `src/api/supabase/socIncidents.api.ts`
+- `src/components/admin/soc-incidents-panel.tsx`
+
+Edit:
+- `src/components/admin/soc-watch-dashboard.tsx` — add tab switcher, render incidents panel
+
+DB (via `supabase--insert`):
+- pg_cron schedule for `soc-cluster-every-5-min`
+
+## Non-goals (deferred to later batches)
+
+- Anomaly baselines / z-scores → **Batch 2 (COR-2)**
+- Pattern-rule detectors → **Batch 2 (COR-4)**
+- Heatmap UI → **Batch 3 (COR-3)**
+- Playbooks / reversible actions → **Batch 3 (IR-2, IR-4)**
+- Notification routing on incident create → **Batch 4 (IR-3)**
+
+## Verification
+
+After build:
+1. Manually invoke `soc-cluster` — expect `incidents_created > 0` if there's recent denied protected-call / scraper-alert data.
+2. Load `/admin/soc-watch` → Incidents tab → confirm incidents render.
+3. Ack an incident → confirm status changes and a `soc_incident_events` row appears.
+4. Resolve with note → confirm `resolved_at`, `resolved_by`, `resolution_note`.
+5. Wait 5min for cron tick or re-trigger; confirm existing incident's `signal_count` grows rather than duplicate rows.
