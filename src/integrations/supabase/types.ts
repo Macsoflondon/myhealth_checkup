@@ -1655,6 +1655,164 @@ export type Database = {
           },
         ]
       }
+      engine_audit_log: {
+        Row: {
+          actor: string | null
+          created_at: string
+          id: string
+          message: string | null
+          metadata: Json | null
+          run_id: string | null
+          scope: string | null
+          skill: string
+          stage: string
+          status: string
+        }
+        Insert: {
+          actor?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          metadata?: Json | null
+          run_id?: string | null
+          scope?: string | null
+          skill: string
+          stage: string
+          status: string
+        }
+        Update: {
+          actor?: string | null
+          created_at?: string
+          id?: string
+          message?: string | null
+          metadata?: Json | null
+          run_id?: string | null
+          scope?: string | null
+          skill?: string
+          stage?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "engine_audit_log_run_id_fkey"
+            columns: ["run_id"]
+            isOneToOne: false
+            referencedRelation: "engine_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      engine_checkpoints: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          files: Json
+          id: string
+          note: string
+          snapshot: Json | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          files?: Json
+          id: string
+          note: string
+          snapshot?: Json | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          files?: Json
+          id?: string
+          note?: string
+          snapshot?: Json | null
+        }
+        Relationships: []
+      }
+      engine_freezes: {
+        Row: {
+          active: boolean
+          created_at: string
+          created_by: string | null
+          id: string
+          path: string
+          reason: string
+          unfreeze_reason: string | null
+          unfrozen_at: string | null
+          unfrozen_by: string | null
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          path: string
+          reason: string
+          unfreeze_reason?: string | null
+          unfrozen_at?: string | null
+          unfrozen_by?: string | null
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          path?: string
+          reason?: string
+          unfreeze_reason?: string | null
+          unfrozen_at?: string | null
+          unfrozen_by?: string | null
+        }
+        Relationships: []
+      }
+      engine_runs: {
+        Row: {
+          command: string
+          completed_at: string | null
+          created_by: string | null
+          current_stage: string
+          id: string
+          notes: string | null
+          parser: string
+          result: Json | null
+          scope: string | null
+          skill: string
+          stages: Json
+          started_at: string
+          status: string
+        }
+        Insert: {
+          command: string
+          completed_at?: string | null
+          created_by?: string | null
+          current_stage?: string
+          id?: string
+          notes?: string | null
+          parser?: string
+          result?: Json | null
+          scope?: string | null
+          skill: string
+          stages?: Json
+          started_at?: string
+          status?: string
+        }
+        Update: {
+          command?: string
+          completed_at?: string | null
+          created_by?: string | null
+          current_stage?: string
+          id?: string
+          notes?: string | null
+          parser?: string
+          result?: Json | null
+          scope?: string | null
+          skill?: string
+          stages?: Json
+          started_at?: string
+          status?: string
+        }
+        Relationships: []
+      }
       favorites: {
         Row: {
           category: string
@@ -2690,6 +2848,27 @@ export type Database = {
           provider_test_id?: string
           quality_score?: number | null
           seo_score?: number | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          display_name: string | null
+          email: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string | null
+          email?: string | null
+          id?: string
         }
         Relationships: []
       }
