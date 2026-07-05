@@ -30,7 +30,10 @@ const AdminSecurityDiffPage = lazy(() => import("@/pages/AdminSecurityDiffPage")
 const AdminBiomarkerAuditPage = lazy(() => import("@/pages/AdminBiomarkerAuditPage"));
 const AdminBiomarkerValidationPage = lazy(() => import("@/pages/AdminBiomarkerValidationPage"));
 const AdminSocWatchPage = lazy(() => import("@/pages/AdminSocWatchPage"));
+const AdminOpsPage = lazy(() => import("@/pages/AdminOpsPage"));
+const AdminChangeLogPage = lazy(() => import("@/pages/AdminChangeLogPage"));
 const ControlPage = lazy(() => import("@/pages/ControlPage"));
+
 
 const PageFallback = () => (
   <div className="flex items-center justify-center min-h-screen text-muted-foreground">Loading…</div>
