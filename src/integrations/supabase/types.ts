@@ -1572,6 +1572,63 @@ export type Database = {
         }
         Relationships: []
       }
+      data_sharing_grants: {
+        Row: {
+          access_count: number
+          access_token_hash: string
+          created_at: string
+          expires_at: string
+          granted_at: string
+          id: string
+          last_accessed_at: string | null
+          purpose: string
+          recipient_email: string
+          recipient_org: string | null
+          revoked_at: string | null
+          revoked_reason: string | null
+          scope: Json
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          access_count?: number
+          access_token_hash: string
+          created_at?: string
+          expires_at?: string
+          granted_at?: string
+          id?: string
+          last_accessed_at?: string | null
+          purpose: string
+          recipient_email: string
+          recipient_org?: string | null
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          scope?: Json
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          access_count?: number
+          access_token_hash?: string
+          created_at?: string
+          expires_at?: string
+          granted_at?: string
+          id?: string
+          last_accessed_at?: string | null
+          purpose?: string
+          recipient_email?: string
+          recipient_org?: string | null
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          scope?: Json
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       edge_function_logs: {
         Row: {
           created_at: string
@@ -1851,6 +1908,48 @@ export type Database = {
           price?: number | null
           provider?: string
           test_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      fhir_export_jobs: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          expires_at: string
+          id: string
+          output: Json | null
+          request_params: Json
+          requested_at: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          expires_at?: string
+          id?: string
+          output?: Json | null
+          request_params?: Json
+          requested_at?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          expires_at?: string
+          id?: string
+          output?: Json | null
+          request_params?: Json
+          requested_at?: string
+          status?: string
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
