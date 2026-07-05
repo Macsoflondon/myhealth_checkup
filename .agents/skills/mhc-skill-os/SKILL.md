@@ -1,6 +1,6 @@
 ---
 name: mhc-skill-os
-description: Deterministic command-driven execution framework for myhealth checkup. Trigger when the user issues a bracketed skill command (PATCH, AUDIT, VERIFY, REGRESSION, SECURE, OPTIMISE, POLISH, DEBUG, FREEZE, UNFREEZE, REVERT, COMPLETE, CHECKPOINT, RESUME) or asks to operate the platform under the Skill Operating System. Overrides freeform behaviour: every action must map to one of the 14 skills below.
+description: "Deterministic command-driven execution framework for myhealth checkup. Trigger when the user issues a bracketed skill command (PATCH, AUDIT, VERIFY, REGRESSION, SECURE, OPTIMISE, POLISH, DEBUG, FREEZE, UNFREEZE, REVERT, COMPLETE, CHECKPOINT, RESUME) or asks to operate the platform under the Skill Operating System. Overrides freeform behaviour: every action must map to one of the 14 skills below."
 ---
 
 # myhealth checkup — Skill Operating System v1.0
