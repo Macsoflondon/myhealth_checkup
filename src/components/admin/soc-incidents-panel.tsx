@@ -263,52 +263,83 @@ export function SocIncidentsPanel() {
                     {isExpanded && (
                       <TableRow key={`${inc.id}-expand`}>
                         <TableCell colSpan={7} className="bg-muted/30 py-4">
-                          <div className="grid gap-4 lg:grid-cols-2">
-                            <div>
-                              <h4 className="mb-2 text-xs font-semibold uppercase text-muted-foreground">Summary</h4>
-                              <p className="text-sm text-foreground">{inc.summary ?? "—"}</p>
-                              <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
-                                <div><span className="font-semibold">First seen:</span> {formatSocDateTime(inc.first_seen_at)}</div>
-                                <div><span className="font-semibold">Cluster:</span> <code className="text-xs">{inc.cluster_key}</code></div>
-                                {inc.acknowledged_at && <div><span className="font-semibold">Ack:</span> {formatSocDateTime(inc.acknowledged_at)}</div>}
-                                {inc.resolved_at && <div><span className="font-semibold">Resolved:</span> {formatSocDateTime(inc.resolved_at)}</div>}
-                                {inc.resolution_note && <div className="col-span-2"><span className="font-semibold">Note:</span> {inc.resolution_note}</div>}
-                              </div>
-                              {inc.sample_signal_ids?.length > 0 && (
-                                <div className="mt-3">
-                                  <h4 className="mb-1 text-xs font-semibold uppercase text-muted-foreground">Sample signal IDs</h4>
-                                  <div className="max-h-24 overflow-y-auto rounded bg-background/50 p-2 font-mono text-xs">
-                                    {inc.sample_signal_ids.slice(0, 20).join(", ")}
+                          {(() => {
+                            const playbook = playbookForSource(inc.source);
+                            return (
+                              <div className="grid gap-4 lg:grid-cols-3">
+                                <div>
+                                  <h4 className="mb-2 text-xs font-semibold uppercase text-muted-foreground">Summary</h4>
+                                  <p className="text-sm text-foreground">{inc.summary ?? "—"}</p>
+                                  <div className="mt-3 grid grid-cols-2 gap-2 text-xs text-muted-foreground">
+                                    <div><span className="font-semibold">First seen:</span> {formatSocDateTime(inc.first_seen_at)}</div>
+                                    <div><span className="font-semibold">Cluster:</span> <code className="text-xs">{inc.cluster_key}</code></div>
+                                    {inc.acknowledged_at && <div><span className="font-semibold">Ack:</span> {formatSocDateTime(inc.acknowledged_at)}</div>}
+                                    {inc.resolved_at && <div><span className="font-semibold">Resolved:</span> {formatSocDateTime(inc.resolved_at)}</div>}
+                                    {inc.resolution_note && <div className="col-span-2"><span className="font-semibold">Note:</span> {inc.resolution_note}</div>}
                                   </div>
-                                </div>
-                              )}
-                            </div>
-                            <div>
-                              <h4 className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase text-muted-foreground">
-                                <ClipboardList className="h-3 w-3" />Timeline
-                              </h4>
-                              {eventsQuery.isLoading ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                              ) : (eventsQuery.data ?? []).length === 0 ? (
-                                <p className="text-sm text-muted-foreground">No lifecycle events.</p>
-                              ) : (
-                                <ul className="space-y-1 text-xs">
-                                  {(eventsQuery.data ?? []).map((ev) => (
-                                    <li key={ev.id} className="border-l-2 border-primary/30 pl-2">
-                                      <div className="flex items-center gap-2">
-                                        <Badge variant="outline" className="capitalize">{ev.event_type.replace(/_/g, " ")}</Badge>
-                                        <span className="text-muted-foreground">{formatSocDateTime(ev.created_at)}</span>
+                                  {inc.sample_signal_ids?.length > 0 && (
+                                    <div className="mt-3">
+                                      <h4 className="mb-1 text-xs font-semibold uppercase text-muted-foreground">Sample signal IDs</h4>
+                                      <div className="max-h-24 overflow-y-auto rounded bg-background/50 p-2 font-mono text-xs">
+                                        {inc.sample_signal_ids.slice(0, 20).join(", ")}
                                       </div>
-                                      {ev.detail && Object.keys(ev.detail as object).length > 0 && (
-                                        <pre className="mt-1 max-h-20 overflow-y-auto text-xs text-muted-foreground">{JSON.stringify(ev.detail, null, 2)}</pre>
-                                      )}
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
-                            </div>
-                          </div>
+                                    </div>
+                                  )}
+                                </div>
+                                <div>
+                                  <h4 className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase text-muted-foreground">
+                                    <BookOpen className="h-3 w-3" />{playbook.title}
+                                  </h4>
+                                  <ol className="list-decimal space-y-1 pl-4 text-xs text-foreground">
+                                    {playbook.steps.map((step, idx) => <li key={idx}>{step}</li>)}
+                                  </ol>
+                                  {playbook.actions.length > 0 && (
+                                    <div className="mt-3 space-y-2">
+                                      <h5 className="text-[11px] font-semibold uppercase text-muted-foreground">Reversible actions</h5>
+                                      {playbook.actions.map((act) => (
+                                        <div key={act.key} className="rounded border border-border/60 bg-background/40 p-2">
+                                          <div className="mb-1 flex items-center justify-between gap-2">
+                                            <span className={cn("text-xs font-medium", act.destructive && "text-error")}>{act.label}</span>
+                                            <Button size="sm" variant={act.destructive ? "outline" : "default"} disabled={actionMutation.isPending}
+                                              onClick={() => actionMutation.mutate({ id: inc.id, action: act.key })}>
+                                              <PlayCircle className="mr-1 h-3 w-3" />Run
+                                            </Button>
+                                          </div>
+                                          <p className="text-[11px] text-muted-foreground">{act.description}</p>
+                                        </div>
+                                      ))}
+                                    </div>
+                                  )}
+                                </div>
+                                <div>
+                                  <h4 className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase text-muted-foreground">
+                                    <ClipboardList className="h-3 w-3" />Timeline
+                                  </h4>
+                                  {eventsQuery.isLoading ? (
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                  ) : (eventsQuery.data ?? []).length === 0 ? (
+                                    <p className="text-sm text-muted-foreground">No lifecycle events.</p>
+                                  ) : (
+                                    <ul className="space-y-1 text-xs">
+                                      {(eventsQuery.data ?? []).map((ev) => (
+                                        <li key={ev.id} className="border-l-2 border-primary/30 pl-2">
+                                          <div className="flex items-center gap-2">
+                                            <Badge variant="outline" className="capitalize">{ev.event_type.replace(/_/g, " ")}</Badge>
+                                            <span className="text-muted-foreground">{formatSocDateTime(ev.created_at)}</span>
+                                          </div>
+                                          {ev.detail && Object.keys(ev.detail as object).length > 0 && (
+                                            <pre className="mt-1 max-h-20 overflow-y-auto text-xs text-muted-foreground">{JSON.stringify(ev.detail, null, 2)}</pre>
+                                          )}
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })()}
                         </TableCell>
+
                       </TableRow>
                     )}
                   </>
