@@ -8,6 +8,7 @@ import { lazy, Suspense } from "react";
 // Index stays eager — it's the LCP route. Everything else is code-split.
 import Index from "@/pages/Index";
 import { AdminRoute } from "@/components/auth/AdminRoute";
+import { AdminShell } from "@/components/admin/AdminShell";
 import { authRoutes } from "./authRoutes";
 import { testRoutes } from "./testRoutes";
 import { complianceRoutes } from "./complianceRoutes";
@@ -34,6 +35,7 @@ const AdminOpsPage = lazy(() => import("@/pages/AdminOpsPage"));
 const AdminChangeLogPage = lazy(() => import("@/pages/AdminChangeLogPage"));
 const AdminPerformancePage = lazy(() => import("@/pages/AdminPerformancePage"));
 const AdminAuditConsolePage = lazy(() => import("@/pages/AdminAuditConsolePage"));
+const AdminAlertRoutingPage = lazy(() => import("@/pages/AdminAlertRoutingPage"));
 const ControlPage = lazy(() => import("@/pages/ControlPage"));
 
 
@@ -43,7 +45,9 @@ const PageFallback = () => (
 
 const wrapAdmin = (Component: React.ComponentType) => (
   <AdminRoute>
-    <Component />
+    <AdminShell>
+      <Component />
+    </AdminShell>
   </AdminRoute>
 );
 
@@ -74,6 +78,7 @@ export function AppRoutes() {
         <Route path="/admin/change-log" element={wrapAdmin(AdminChangeLogPage)} />
         <Route path="/admin/performance" element={wrapAdmin(AdminPerformancePage)} />
         <Route path="/admin/audit-console" element={wrapAdmin(AdminAuditConsolePage)} />
+        <Route path="/admin/alert-routing" element={wrapAdmin(AdminAlertRoutingPage)} />
 
 
         {/* Operations Control Centre */}
