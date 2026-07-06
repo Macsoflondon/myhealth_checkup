@@ -32,14 +32,43 @@ export interface UniversalTestData {
   is_popular?: boolean;
   home_kit_available?: boolean;
   clinic_visit_available?: boolean;
+  /** Raw collection_options from provider_tests — parsed per provider */
+  collection_options?: unknown;
 }
 
-// ─── Collection add-ons (shared across all cards) ────────────────────────────
-const COLLECTION_ADDONS: { label: string; description?: string; price: number }[] = [
-  { label: "At Home Phlebotomist", description: "A professional phlebotomist comes to your home", price: 80 },
-  { label: "In Clinic Blood Draw", price: 35 },
-  { label: "Third-party blood draw (e.g. Royal Mail kit)", price: 3.99 },
-];
+// ─── Collection add-on parsing ───────────────────────────────────────────────
+interface CollectionAddon {
+  label: string;
+  description?: string;
+  price: number;
+}
+
+function parseCollectionAddons(raw: unknown): CollectionAddon[] {
+  if (!Array.isArray(raw)) return [];
+  const out: CollectionAddon[] = [];
+  for (const item of raw) {
+    if (!item || typeof item !== "object") continue;
+    const r = item as Record<string, unknown>;
+    const label = (r.method ?? r.label ?? r.name) as string | undefined;
+    const priceRaw = (r.price_modifier ?? r.price ?? r.additional_cost) as number | string | undefined;
+    if (!label || priceRaw == null) continue;
+    const price = typeof priceRaw === "string" ? parseFloat(priceRaw) : priceRaw;
+    if (!Number.isFinite(price) || price <= 0) continue;
+    out.push({
+      label: String(label),
+      description: (r.description ?? r.note) ? String(r.description ?? r.note) : undefined,
+      price,
+    });
+  }
+  return out;
+}
+
+function isFingerPrickOnly(sampleType?: string | null): boolean {
+  if (!sampleType) return false;
+  const s = sampleType.toLowerCase();
+  return s.includes("finger") && !s.includes("venous") && !s.includes("clinic");
+}
+
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 function normalizeBiomarkers(list: UniversalTestData["biomarkers_list"]): string[] {
@@ -157,25 +186,32 @@ export const UniversalTestDetailModal: React.FC<{
         </div>
 
         <div style={{ padding: "24px", display: "flex", flexDirection: "column", gap: 20 }}>
-          <div>
-            <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: UTC_NAVY, marginBottom: 8 }}>Additional Collection Options</div>
-            <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, color: "#64748b", marginBottom: 10 }}>
-              Base price covers the standard collection method. Optional collection methods are available at additional cost:
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              {COLLECTION_ADDONS.map((a) => (
-                <div key={a.label} style={{ background: UTC_TINT, borderRadius: 8, padding: "8px 12px" }}>
-                  <div className="flex items-center justify-between">
-                    <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 13, color: UTC_NAVY }}>{a.label}</span>
-                    <span style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 13, color: UTC_PINK }}>+£{a.price.toFixed(2)}</span>
-                  </div>
-                  {a.description && (
-                    <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#94a3b8", marginTop: 2 }}>{a.description}</div>
-                  )}
+          {(() => {
+            const addons = parseCollectionAddons(test.collection_options);
+            if (addons.length === 0 || isFingerPrickOnly(test.sample_type)) return null;
+            return (
+              <div>
+                <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: UTC_NAVY, marginBottom: 8 }}>Additional Collection Options</div>
+                <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 12, color: "#64748b", marginBottom: 10 }}>
+                  Base price covers the standard collection method. Optional collection methods are available at additional cost:
+                </p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  {addons.map((a) => (
+                    <div key={a.label} style={{ background: UTC_TINT, borderRadius: 8, padding: "8px 12px" }}>
+                      <div className="flex items-center justify-between">
+                        <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 13, color: UTC_NAVY }}>{a.label}</span>
+                        <span style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 13, color: UTC_PINK }}>+£{a.price.toFixed(2)}</span>
+                      </div>
+                      {a.description && (
+                        <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#94a3b8", marginTop: 2 }}>{a.description}</div>
+                      )}
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </div>
+              </div>
+            );
+          })()}
+
 
           {test.description && (
             <div>

@@ -33,6 +33,7 @@ export interface CategoryTestItem {
   tag: string;
   collection?: string;
   url?: string;
+  collectionOptions?: unknown;
 }
 
 interface BenefitItem {
@@ -279,7 +280,7 @@ export function CategoryPageLayout({
                       biomarkers_list: (test.biomarkers as any) ?? null,
                       turnaround_days_text: test.turnaround ?? null,
                       base_price: null,
-                      collection_options: null,
+                      collection_options: (test.collectionOptions as any) ?? null,
                     }}
                   />
                 ))}
