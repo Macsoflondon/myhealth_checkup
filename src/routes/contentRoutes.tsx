@@ -12,7 +12,7 @@ const HealthBlogPage = lazy(() => import("@/pages/HealthBlogPage"));
 const SitemapPage = lazy(() => import("@/pages/SitemapPage"));
 const ConditionsPage = lazy(() => import("@/pages/ConditionsPage"));
 const TrustedProvidersPage = lazy(() => import("@/pages/TrustedProvidersPage"));
-const TypographyShowcasePage = lazy(() => import("@/pages/TypographyShowcasePage"));
+
 const BiomarkerDatabasePage = lazy(() => import("@/pages/BiomarkerDatabasePage"));
 const BiomarkerGuidesIndexPage = lazy(() => import("@/pages/BiomarkerGuidesIndexPage"));
 const BiomarkerGuidePage = lazy(() => import("@/pages/BiomarkerGuidePage"));
