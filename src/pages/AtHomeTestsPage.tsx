@@ -134,7 +134,7 @@ const AtHomeTestsPage: React.FC = () => {
         popular: t.is_popular,
         badge: tag,
         badgeColor: branding?.primary || "#e70d69",
-        provider: branding?.name || t.provider_id,
+        provider: t.provider_id,
         priceNum,
         price: `£${priceNum}`,
         turnaround: t.turnaround_days_text || "2–5 days",
