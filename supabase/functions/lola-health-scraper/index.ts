@@ -25,7 +25,7 @@ function extractCollectionBasePrice(product: any): number | null {
   return Math.min(...numericPrices);
 }
 
-async function fetchLolaCollectionProducts() {
+async function fetchLolaCollectionProducts(): Promise<any[]> {
   const response = await fetch(LOLA_COLLECTION_PRODUCTS_URL, {
     headers: {
       'User-Agent': 'Mozilla/5.0 (compatible; LovableBot/1.0; +https://lovable.dev)',
@@ -36,6 +36,44 @@ async function fetchLolaCollectionProducts() {
   if (!response.ok) throw new Error(`Lola collection fetch failed: ${response.status}`);
   const data = await response.json();
   return Array.isArray(data?.products) ? data.products : [];
+}
+
+/**
+ * Firecrawl HTML fallback: when Shopify's /products.json 503s, scrape the
+ * collection page (rendered HTML) via Firecrawl and extract product handles.
+ * Returns lightweight product stubs compatible with collectionByHandle
+ * (handle + best-effort image_url; price left null so the markdown parser wins).
+ */
+async function fetchLolaCollectionViaFirecrawl(apiKey: string): Promise<any[]> {
+  const result = await firecrawlScrape(
+    'https://lolahealth.com/collections/blood-tests',
+    apiKey,
+    { formats: ['html', 'markdown'], onlyMainContent: false, waitFor: 2000, timeout: 60000, proxy: 'stealth' },
+  );
+  if (!result.success || !result.data) return [];
+
+  const html: string = result.data.html || '';
+  const markdown: string = result.data.markdown || '';
+  const handles = new Set<string>();
+
+  for (const m of html.matchAll(/\/products\/([a-z0-9-]+)(?:["'?#/]|$)/gi)) handles.add(m[1]);
+  for (const m of markdown.matchAll(/\/products\/([a-z0-9-]+)/gi)) handles.add(m[1]);
+
+  const stubs: any[] = [];
+  for (const handle of handles) {
+    if (handle.includes('subscription')) continue;
+    // Best-effort image extraction: nearest <img src=""> after the handle in HTML
+    const imgRe = new RegExp(`/products/${handle}[^"']*["'][^>]*>[\\s\\S]{0,400}?<img[^>]+src=["']([^"']+)`, 'i');
+    const imgMatch = html.match(imgRe);
+    stubs.push({
+      handle,
+      variants: [],
+      image: imgMatch ? { src: imgMatch[1] } : null,
+      images: imgMatch ? [{ src: imgMatch[1] }] : [],
+    });
+  }
+  console.log(`[fallback] Firecrawl collection scrape recovered ${stubs.length} product handles`);
+  return stubs;
 }
 
 function determineCategory(title: string, description: string): string {
