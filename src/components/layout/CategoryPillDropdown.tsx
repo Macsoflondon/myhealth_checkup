@@ -133,7 +133,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact }: Props) {
         )}
       </Link>
 
-      {open && anchor && hasDropdown && (
+      {open && anchor && hasDropdown && createPortal(
         <div
           role="menu"
           aria-label={`${item.name} subcategories`}
@@ -166,9 +166,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact }: Props) {
                     aria-current={active ? "page" : undefined}
                     onClick={() => setOpen(false)}
                     className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] font-medium font-[Montserrat] no-underline transition-colors ${
-                      active
-                        ? "bg-[#e70d69]/8 text-[#e70d69]"
-                        : "text-[#081129] hover:bg-[#081129]/5"
+                      active ? "text-[#e70d69]" : "text-[#081129] hover:bg-[#081129]/5"
                     } ${isViewAll ? "mt-1 border-t border-[#081129]/10 pt-2.5 rounded-t-none" : ""}`}
                     style={active ? { backgroundColor: `${PINK}14` } : undefined}
                   >
@@ -182,7 +180,8 @@ export function CategoryPillDropdown({ item, color, Icon, compact }: Props) {
               );
             })}
           </ul>
-        </div>
+        </div>,
+        document.body,
       )}
     </div>
   );
