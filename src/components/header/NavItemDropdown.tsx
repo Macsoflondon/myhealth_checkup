@@ -24,6 +24,8 @@ export const NavItemDropdown: React.FC<NavItemDropdownProps> = ({
   isMobile = false,
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentHref = `${location.pathname}${location.search}`;
 
   const { containerRef } = useDropdownAccessibility({
     isOpen: true,
