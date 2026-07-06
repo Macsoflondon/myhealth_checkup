@@ -147,6 +147,7 @@ const MostPopularTestsPage = () => {
         tag,
         collection: t.sample_type || 'Blood sample',
         url: t.url || undefined,
+        collectionOptions: t.collection_options,
       } satisfies CategoryTestItem;
     });
   }, [popularTests]);
