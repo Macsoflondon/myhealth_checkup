@@ -199,10 +199,12 @@ const AtHomeTestsPage: React.FC = () => {
 
   return (
     <CategoryPageLayout
-      seoTitle={SEO.title}
-      seoDescription={SEO.description}
+      seoTitle={sub ? `${sub.label} — At Home Health Tests | myhealth checkup` : SEO.title}
+      seoDescription={sub
+        ? `Compare ${sub.label.toLowerCase()} — at-home finger-prick kits from UKAS-accredited UK labs.`
+        : SEO.description}
       seoKeywords={SEO.keywords}
-      canonicalUrl={SEO.canonical}
+      canonicalUrl={sub ? `${SEO.canonical}?subcategory=${sub.slug}` : SEO.canonical}
       pillLabel={sub ? sub.label : "At Home"}
       headline={sub ? sub.label : "At Home Health Tests"}
       subtitle="Compare at-home testing kits from the UK's most trusted providers. Analysed in accredited labs, results delivered securely online."
