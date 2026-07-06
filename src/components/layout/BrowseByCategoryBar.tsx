@@ -221,25 +221,65 @@ export default function BrowseByCategoryBar({
                 <div className="grid grid-cols-1 gap-2">
                   {items.map((item) => {
                     const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
+                    const hasSubs = Boolean(item.hasDropdown && item.dropdownItems?.length);
+                    const isExpanded = mobileExpanded === item.name;
+
                     return (
-                      <Link
-                        key={item.name}
-                        to={item.path}
-                        data-testid="mobile-category-pill"
-                        data-category={item.name}
-                        onClick={() => setMobileOpen(false)}
-                        className="group flex items-center gap-3 px-3 py-2.5 rounded-xl bg-white border-[1.5px] border-[#081129]/10 transition-all duration-200 no-underline"
-                      >
-                        <span
-                          className="w-8 h-8 rounded-full inline-flex items-center justify-center shrink-0"
-                          style={{ background: `${color}1a` }}
-                        >
-                          <Icon className="w-4 h-4" style={{ color }} strokeWidth={2} />
-                        </span>
-                        <span className="text-sm font-semibold text-[#081129] font-[Montserrat]">
-                          {item.name}
-                        </span>
-                      </Link>
+                      <div key={item.name} className="rounded-xl bg-white border-[1.5px] border-[#081129]/10 overflow-hidden">
+                        <div className="flex items-stretch">
+                          <Link
+                            to={item.path}
+                            data-testid="mobile-category-pill"
+                            data-category={item.name}
+                            onClick={() => setMobileOpen(false)}
+                            className="group flex items-center gap-3 px-3 py-2.5 flex-1 min-w-0 no-underline"
+                          >
+                            <span
+                              className="w-8 h-8 rounded-full inline-flex items-center justify-center shrink-0"
+                              style={{ background: `${color}1a` }}
+                            >
+                              <Icon className="w-4 h-4" style={{ color }} strokeWidth={2} />
+                            </span>
+                            <span className="text-sm font-semibold text-[#081129] font-[Montserrat] truncate">
+                              {item.name}
+                            </span>
+                          </Link>
+                          {hasSubs && (
+                            <button
+                              type="button"
+                              aria-label={`${isExpanded ? "Collapse" : "Expand"} ${item.name} subcategories`}
+                              aria-expanded={isExpanded}
+                              onClick={() =>
+                                setMobileExpanded((cur) => (cur === item.name ? null : item.name))
+                              }
+                              className="shrink-0 px-3 flex items-center justify-center border-l border-[#081129]/10 text-[#081129]/60 hover:text-[#081129] transition-colors"
+                            >
+                              <ChevronDown
+                                className={`w-4 h-4 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                              />
+                            </button>
+                          )}
+                        </div>
+                        {hasSubs && isExpanded && (
+                          <ul className="border-t border-[#081129]/10 bg-[#f7f7f8] py-1">
+                            {item.dropdownItems!.map((sub) => (
+                              <li key={sub.path + sub.name}>
+                                <Link
+                                  to={sub.path}
+                                  onClick={() => setMobileOpen(false)}
+                                  className="flex items-center gap-2.5 pl-14 pr-3 py-2 text-[13px] font-medium text-[#081129] font-[Montserrat] no-underline hover:bg-white transition-colors"
+                                >
+                                  <span
+                                    className="w-1.5 h-1.5 rounded-full shrink-0"
+                                    style={{ background: color }}
+                                  />
+                                  <span className="truncate">{sub.name}</span>
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
                     );
                   })}
                 </div>
