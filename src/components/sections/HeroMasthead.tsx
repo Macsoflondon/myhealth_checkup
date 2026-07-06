@@ -96,7 +96,7 @@ interface HeroMastheadProps {
 
 const Wordmark = () => (
   <span className="inline-flex items-center leading-[1.1] min-w-0 py-1">
-    <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(1.25rem,4.5vw,2rem)] lg:text-[4rem]">
+    <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(1.1rem,3vw,1.6rem)] lg:text-[4rem]">
       <span className="text-brand-navy">myhealth</span>
       <span className="text-brand-pink">checkup</span>
     </span>
@@ -124,10 +124,10 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
 
       <div className="flex items-center justify-between gap-3 border-b border-[#081129]/10 pb-2 pt-4 sm:pt-7">
         <div className="hidden sm:block"><Wordmark /></div>
-        <nav className="hidden sm:flex gap-6 text-xs sm:text-sm md:text-base font-bold uppercase tracking-[0.18em] font-[Montserrat]">
-          <Link to="/compare" className="text-brand-navy hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5">Compare</Link>
-          <Link to="/test-categories" className="text-brand-navy hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5">Categories</Link>
-          <Link to="/find-test" className="text-brand-pink hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5">Find Your Test</Link>
+        <nav className="hidden sm:flex items-center gap-3 md:gap-4 lg:gap-6 text-xs sm:text-[13px] md:text-sm lg:text-base font-bold uppercase tracking-[0.14em] md:tracking-[0.18em] font-[Montserrat]">
+          <Link to="/compare" className="whitespace-nowrap text-brand-navy hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5">Compare</Link>
+          <Link to="/test-categories" className="whitespace-nowrap text-brand-navy hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5">Categories</Link>
+          <Link to="/find-test" className="whitespace-nowrap text-brand-pink hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5">Find Your Test</Link>
         </nav>
       </div>
 
