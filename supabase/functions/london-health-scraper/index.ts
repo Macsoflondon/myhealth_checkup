@@ -80,7 +80,7 @@ Deno.serve(async (req) => {
 
     let productUrls: string[] = [];
     try {
-      productUrls = await firecrawlMap(BASE_URL, firecrawlApiKey);
+      productUrls = await mapLondonHealth(BASE_URL, firecrawlApiKey);
       console.log(`Map discovered ${productUrls.length} URLs`);
     } catch (e) {
       console.error('Map failed:', (e instanceof Error ? e.message : String(e)));
@@ -88,7 +88,9 @@ Deno.serve(async (req) => {
 
     if (productUrls.length < 5) {
       try {
-        const homeResult = await firecrawlScrape(BASE_URL, firecrawlApiKey);
+        const homeResult = await firecrawlScrape(BASE_URL, firecrawlApiKey, {
+          formats: ['markdown'], onlyMainContent: true, waitFor: 5000, timeout: 90000, proxy: 'stealth',
+        });
         if (homeResult.success && homeResult.data?.markdown) {
           const urlMatches = homeResult.data.markdown.matchAll(/\((https?:\/\/[^)]+)\)/g);
           for (const m of urlMatches) {
@@ -106,52 +108,50 @@ Deno.serve(async (req) => {
     console.log(`Total URLs: ${productUrls.length}`);
 
     const products: any[] = [];
-    for (const url of productUrls.slice(0, 50)) {
-      try {
-        const slug = new URL(url).pathname.split('/').filter(Boolean).pop() || '';
-        console.log(`Scraping: ${slug}`);
-        const result = await firecrawlScrape(url, firecrawlApiKey);
-        if (!result.success || !result.data) continue;
+    // Batch mode, concurrency 4
+    await runInChunks(productUrls.slice(0, 50), 4, async (url) => {
+      const slug = new URL(url).pathname.split('/').filter(Boolean).pop() || '';
+      console.log(`Scraping: ${slug}`);
+      const result = await firecrawlScrape(url, firecrawlApiKey, {
+        formats: ['markdown'], onlyMainContent: true, waitFor: 5000, timeout: 90000, proxy: 'stealth',
+      });
+      if (!result.success || !result.data) return;
 
-        const markdown = result.data.markdown || '';
-        const metadata = result.data.metadata || {};
+      const markdown = result.data.markdown || '';
+      const metadata = result.data.metadata || {};
 
-        let title = metadata.title?.replace(/\s*[–|]\s*London\s*Health.*$/i, '').trim() || '';
-        if (!title) {
-          const h1 = markdown.match(/^#\s+(.+)$/m);
-          title = h1 ? h1[1].trim() : '';
-        }
-        if (!title || title.length < 3) continue;
-
-        const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
-        const price = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : null;
-
-        const bioCountMatch = markdown.match(/(\d+)\s*(?:biomarkers?|tests?|markers?)/i);
-        const biomarkerCount = bioCountMatch ? parseInt(bioCountMatch[1]) : null;
-
-        products.push({
-          test_name: title,
-          provider_id: PROVIDER_ID,
-          provider_test_id: `lhc-${slug}`,
-          category: determineCategory(title, metadata.description || ''),
-          price,
-          description: metadata.description || `${title} from London Health Company.`,
-          url,
-          is_active: true,
-          biomarker_count: biomarkerCount,
-          sample_type: 'Venous blood',
-          clinic_visit_available: true,
-          home_kit_available: false,
-          scraped_at: new Date().toISOString(),
-          url_verified: true,
-          url_verified_at: new Date().toISOString(),
-        });
-        console.log(`✓ ${title} - £${price ?? 'N/A'}`);
-        await new Promise(r => setTimeout(r, 500));
-      } catch (e) {
-        console.error(`✗ ${(e instanceof Error ? e.message : String(e))}`);
+      let title = metadata.title?.replace(/\s*[–|]\s*London\s*Health.*$/i, '').trim() || '';
+      if (!title) {
+        const h1 = markdown.match(/^#\s+(.+)$/m);
+        title = h1 ? h1[1].trim() : '';
       }
-    }
+      if (!title || title.length < 3) return;
+
+      const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
+      const price = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : null;
+
+      const bioCountMatch = markdown.match(/(\d+)\s*(?:biomarkers?|tests?|markers?)/i);
+      const biomarkerCount = bioCountMatch ? parseInt(bioCountMatch[1]) : null;
+
+      products.push({
+        test_name: title,
+        provider_id: PROVIDER_ID,
+        provider_test_id: `lhc-${slug}`,
+        category: determineCategory(title, metadata.description || ''),
+        price,
+        description: metadata.description || `${title} from London Health Company.`,
+        url,
+        is_active: true,
+        biomarker_count: biomarkerCount,
+        sample_type: 'Venous blood',
+        clinic_visit_available: true,
+        home_kit_available: false,
+        scraped_at: new Date().toISOString(),
+        url_verified: true,
+        url_verified_at: new Date().toISOString(),
+      });
+      console.log(`✓ ${title} - £${price ?? 'N/A'}`);
+    });
 
     // Dedupe by test_name to avoid the partial unique index (provider_id, test_name) WHERE is_active.
     // Keep the first occurrence (most relevant slug appears earlier in productUrls).
