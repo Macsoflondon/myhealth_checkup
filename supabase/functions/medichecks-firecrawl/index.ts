@@ -1,5 +1,6 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
 import { getErrorMessage } from '../_shared/errors.ts';
+import { firecrawlScrape, firecrawlMap, runInChunks } from '../_shared/firecrawl-helpers.ts';
 
 // Derive a stable provider_test_id from the Medichecks product URL slug.
 // Example: https://www.medichecks.com/products/testosterone-blood-test -> "testosterone-blood-test"
