@@ -39,7 +39,7 @@ const AdminAuditConsolePage = lazy(() => import("@/pages/AdminAuditConsolePage")
 const AdminAlertRoutingPage = lazy(() => import("@/pages/AdminAlertRoutingPage"));
 const AdminDataSharingPage = lazy(() => import("@/pages/AdminDataSharingPage"));
 const ControlPage = lazy(() => import("@/pages/ControlPage"));
-const CardDemo = lazy(() => import("@/pages/CardDemo"));
+
 
 
 const PageFallback = () => (
