@@ -1,482 +1,126 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import { wellnessCategories } from "@/data/wellnessCategories";
+import { useMemo } from "react";
+import { Shield, FlaskConical, Scale } from "lucide-react";
+import { CategoryPageLayout } from "@/components/category/CategoryPageLayout";
+import {
+  CategoryStatusShell,
+  CategoryLoadingSkeleton,
+  CategoryErrorState,
+  CategoryEmptyState,
+} from "@/components/category/CategoryStatusStates";
+import { useAllTests } from "@/hooks/queries/useAllTests";
 
-const categories = wellnessCategories.map((wc, i) => ({
-  id: i + 1,
-  name: wc.name,
-  count: wc.testCount,
-  desc: wc.description,
-  icon: wc.icon,
-  accent: wc.colorHex,
-  tag: getCategoryTag(wc.id),
-  link: `/tests/${wc.id}`,
-}));
-
-function getCategoryTag(id: string): string {
-  const map: Record<string, string> = {
-    "longevity-tests": "PREVENTIVE",
-    "iron-tests": "ESSENTIAL",
-    "heart-health": "CRITICAL",
-    "energy-tests": "WELLNESS",
-    "nutrition-tests": "WELLNESS",
-    "allergy-testing": "IMMUNE",
-    "sexual-health": "SPECIALIST",
-    "gp-monitoring": "ROUTINE",
-    "antibody-tests": "IMMUNE",
-    "infection-tests": "SPECIALIST",
-    "immunity-tests": "IMMUNE",
-    "autoimmunity-tests": "SPECIALIST",
-    "liver-health": "ORGAN",
-    "kidney-health": "ORGAN",
-  };
-  return map[id] || "GENERAL";
-}
-
-const tagColors: Record<string, string> = {
-  PREVENTIVE: "#00d4c8",
-  ESSENTIAL: "#e70d69",
-  CRITICAL: "#ff4d6d",
-  WELLNESS: "#00c896",
-  IMMUNE: "#9b59b6",
-  SPECIALIST: "#5b9bd5",
-  ROUTINE: "#00b4d8",
-  ORGAN: "#ff7043",
+const SEO = {
+  title: "Test Categories | myhealth checkup",
+  description:
+    "Browse every clinically validated private health test from trusted UK providers. Filter by category and compare prices, biomarkers, and turnaround times.",
+  keywords:
+    "test categories, private blood tests, health screening, compare tests UK, UKAS accredited",
+  canonical: "https://myhealthcheckup.co.uk/test-categories",
 };
 
-const TestCategoriesPage = () => {
-  const [hovered, setHovered] = useState<number | null>(null);
-  const [filter, setFilter] = useState("ALL");
+const BENEFITS = [
+  {
+    icon: Shield,
+    title: "UKAS-Accredited Labs",
+    description: "Every listed test is processed by an accredited UK laboratory",
+  },
+  {
+    icon: FlaskConical,
+    title: "Transparent Pricing",
+    description: "Full biomarker lists and total costs shown up front — no hidden fees",
+  },
+  {
+    icon: Scale,
+    title: "Editorially Independent",
+    description: "Comparison ranking is never influenced by provider commercials",
+  },
+] as const;
 
-  const tags = ["ALL", ...new Set(categories.map((c) => c.tag))];
-  const filtered =
-    filter === "ALL" ? categories : categories.filter((c) => c.tag === filter);
+const BENEFITS_TUPLE: [typeof BENEFITS[0], typeof BENEFITS[1], typeof BENEFITS[2]] = [
+  BENEFITS[0],
+  BENEFITS[1],
+  BENEFITS[2],
+];
+
+const PILL_LABEL = "All Test Categories";
+const BENEFITS_TITLE = "Why Compare Through myhealth checkup?";
+
+const TestCategoriesPage = () => {
+  const { data: tests, isLoading, isFetching, error, refetch } = useAllTests();
+
+  const filters = useMemo(() => {
+    if (!tests) return ["All"];
+    const unique = Array.from(new Set(tests.map((t) => t.tag))).filter(Boolean).sort();
+    return ["All", ...unique];
+  }, [tests]);
+
+  if (isLoading || (isFetching && !tests)) {
+    return (
+      <CategoryStatusShell
+        seoTitle={SEO.title}
+        seoDescription={SEO.description}
+        canonicalUrl={SEO.canonical}
+        pillLabel={PILL_LABEL}
+        benefits={BENEFITS_TUPLE}
+        benefitsTitle={BENEFITS_TITLE}
+      >
+        <CategoryLoadingSkeleton />
+      </CategoryStatusShell>
+    );
+  }
+
+  if (error) {
+    return (
+      <CategoryStatusShell
+        seoTitle={SEO.title}
+        seoDescription={SEO.description}
+        canonicalUrl={SEO.canonical}
+        pillLabel={PILL_LABEL}
+        benefits={BENEFITS_TUPLE}
+        benefitsTitle={BENEFITS_TITLE}
+      >
+        <CategoryErrorState onRetry={() => refetch()} title="Couldn't load test categories" />
+      </CategoryStatusShell>
+    );
+  }
+
+  if (!tests || tests.length === 0) {
+    return (
+      <CategoryStatusShell
+        seoTitle={SEO.title}
+        seoDescription={SEO.description}
+        canonicalUrl={SEO.canonical}
+        pillLabel={PILL_LABEL}
+        benefits={BENEFITS_TUPLE}
+        benefitsTitle={BENEFITS_TITLE}
+      >
+        <CategoryEmptyState title="No tests available yet" />
+      </CategoryStatusShell>
+    );
+  }
 
   return (
-    <>
-      <Helmet>
-        <title>Test Categories | myhealth checkup</title>
-        <meta
-          name="description"
-          content="Browse all health test categories. Compare blood tests, cancer screening, heart health, hormone tests, and more from trusted UK providers."
-        />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/test-categories" />
-      </Helmet>
-
-      <Header />
-
-      <div
-        style={{
-          fontFamily: "'Montserrat', sans-serif",
-          background: "#ffffff",
-          minHeight: "100vh",
-          padding: "40px 16px",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        {/* Background grid */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, rgba(8,17,41,0.06) 1px, transparent 0)",
-            backgroundSize: "40px 40px",
-            pointerEvents: "none",
-          }}
-        />
-
-        {/* Ambient glow orbs */}
-        <div
-          style={{
-            position: "absolute",
-            top: "-10%",
-            left: "-5%",
-            width: 500,
-            height: 500,
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(233,30,140,0.07) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: "10%",
-            right: "-5%",
-            width: 400,
-            height: 400,
-            borderRadius: "50%",
-            background: "radial-gradient(circle, rgba(0,212,200,0.06) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }}
-        />
-
-        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
-          {/* Breadcrumb */}
-
-          {/* Header */}
-          <div style={{ textAlign: "center", marginBottom: 16 }}>
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                background: "rgba(233,30,140,0.1)",
-                border: "1px solid rgba(233,30,140,0.25)",
-                borderRadius: 100,
-                padding: "6px 18px",
-                marginBottom: 24,
-              }}
-            >
-              <span
-                style={{
-                  width: 6,
-                  height: 6,
-                  borderRadius: "50%",
-                  background: "#e70d69",
-                  display: "inline-block",
-                  boxShadow: "0 0 8px #e70d69",
-                }}
-              />
-              <span
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: "0.12em",
-                  color: "#e70d69",
-                  textTransform: "uppercase",
-                }}
-              >
-                {categories.length} Test Categories
-              </span>
-            </div>
-
-            <h1
-              style={{
-                fontSize: "clamp(32px, 4vw, 52px)",
-                fontWeight: 800,
-                color: "#081129",
-                margin: "0 0 16px",
-                letterSpacing: "-0.02em",
-                lineHeight: 1.1,
-              }}
-            >
-              Browse Tests by{" "}
-              <span
-                style={{
-                  background: "linear-gradient(135deg, #00d4c8, #e70d69)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                Category
-              </span>
-            </h1>
-
-            <p
-              style={{
-                fontSize: 17,
-                color: "rgba(8,17,41,0.7)",
-                margin: "0 auto 48px",
-                maxWidth: 520,
-                lineHeight: 1.6,
-              }}
-            >
-              Choose from our comprehensive range of clinically validated wellness
-              testing categories
-            </p>
-          </div>
-
-          {/* Filter pills */}
-          <h2 style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap", border: 0 }}>
-            Filter categories
-          </h2>
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 8,
-              justifyContent: "center",
-              marginBottom: 56,
-            }}
-          >
-            {tags.map((tag) => {
-              const active = filter === tag;
-              const color = tag === "ALL" ? "#00d4c8" : tagColors[tag];
-              return (
-                <button
-                  key={tag}
-                  onClick={() => setFilter(tag)}
-                  style={{
-                    padding: "7px 20px",
-                    borderRadius: 100,
-                    border: active
-                      ? `1.5px solid ${color}`
-                      : "1.5px solid rgba(8,17,41,0.15)",
-                    background: active
-                      ? `${color}18`
-                      : "rgba(8,17,41,0.02)",
-                    color: active ? color : "rgba(8,17,41,0.5)",
-                    fontSize: 12,
-                    fontWeight: 700,
-                    letterSpacing: "0.1em",
-                    cursor: "pointer",
-                    transition: "all 0.2s ease",
-                    outline: "none",
-                  }}
-                >
-                  {tag}
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Cards grid */}
-          <h2 style={{ position: "absolute", width: 1, height: 1, padding: 0, margin: -1, overflow: "hidden", clip: "rect(0,0,0,0)", whiteSpace: "nowrap", border: 0 }}>
-            Test categories
-          </h2>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(min(300px, 100%), 1fr))",
-              gap: 20,
-            }}
-          >
-            {filtered.map((cat, i) => {
-              const isHov = hovered === cat.id;
-              const IconComp = cat.icon;
-              return (
-                <Link
-                  to={cat.link}
-                  key={cat.id}
-                  onMouseEnter={() => setHovered(cat.id)}
-                  onMouseLeave={() => setHovered(null)}
-                  style={{
-                    position: "relative",
-                    background: isHov
-                      ? "rgba(8,17,41,0.98)"
-                      : "#081129",
-                    border: isHov
-                      ? `1px solid ${cat.accent}50`
-                      : "1px solid rgba(255,255,255,0.08)",
-                    borderRadius: 20,
-                    padding: "28px 28px 24px",
-                    cursor: "pointer",
-                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-                    transform: isHov ? "translateY(-4px)" : "translateY(0)",
-                    boxShadow: isHov
-                      ? `0 20px 60px rgba(0,0,0,0.4), 0 0 0 1px ${cat.accent}20, inset 0 1px 0 rgba(255,255,255,0.08)`
-                      : "0 4px 20px rgba(0,0,0,0.2)",
-                    backdropFilter: "blur(12px)",
-                    overflow: "hidden",
-                    textDecoration: "none",
-                    display: "block",
-                  }}
-                >
-                  {/* Accent glow on hover */}
-                  {isHov && (
-                    <div
-                      style={{
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        height: 1,
-                        background: `linear-gradient(90deg, transparent, ${cat.accent}80, transparent)`,
-                      }}
-                    />
-                  )}
-
-                  {/* Top row */}
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "flex-start",
-                      marginBottom: 20,
-                    }}
-                  >
-                    {/* Icon */}
-                    <div
-                      style={{
-                        width: 48,
-                        height: 48,
-                        borderRadius: 14,
-                        background: `${cat.accent}15`,
-                        border: `1px solid ${cat.accent}30`,
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        transition: "all 0.3s ease",
-                        transform: isHov ? "scale(1.05)" : "scale(1)",
-                      }}
-                    >
-                      <IconComp style={{ width: 22, height: 22, color: cat.accent }} />
-                    </div>
-
-                    {/* Tag + count */}
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6 }}>
-                      <span
-                        style={{
-                          fontSize: 10,
-                          fontWeight: 700,
-                          letterSpacing: "0.12em",
-                          color: tagColors[cat.tag],
-                          background: `${tagColors[cat.tag]}15`,
-                          padding: "3px 10px",
-                          borderRadius: 100,
-                          border: `1px solid ${tagColors[cat.tag]}30`,
-                        }}
-                      >
-                        {cat.tag}
-                      </span>
-                      <span
-                        style={{
-                          fontSize: 12,
-                          color: "rgba(255,255,255,0.5)",
-                          fontWeight: 500,
-                        }}
-                      >
-                        {cat.count} {cat.count === 1 ? "test" : "tests"}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Name */}
-                  <h3
-                    style={{
-                      fontSize: 20,
-                      fontWeight: 700,
-                      color: "#ffffff",
-                      margin: "0 0 10px",
-                      letterSpacing: "-0.02em",
-                      lineHeight: 1.2,
-                    }}
-                  >
-                    {cat.name}
-                  </h3>
-
-                  {/* Description */}
-                  <p
-                    style={{
-                      fontSize: 14,
-                      color: "rgba(255,255,255,0.7)",
-                      margin: "0 0 24px",
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {cat.desc}
-                  </p>
-
-                  {/* CTA */}
-                  <div
-                    style={{
-                      width: "100%",
-                      padding: "12px 0",
-                      borderRadius: 12,
-                      border: `1px solid ${isHov ? cat.accent : 'rgba(255,255,255,0.25)'}`,
-                      background: isHov
-                        ? `linear-gradient(135deg, ${cat.accent}25, ${cat.accent}10)`
-                        : "transparent",
-                      color: isHov ? cat.accent : "rgba(255,255,255,0.9)",
-                      fontSize: 13,
-                      fontWeight: 700,
-                      letterSpacing: "0.06em",
-                      transition: "all 0.3s ease",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: 8,
-                    }}
-                  >
-                    View Tests
-                    <span
-                      style={{
-                        display: "inline-block",
-                        transform: isHov ? "translateX(3px)" : "translateX(0)",
-                        transition: "transform 0.3s ease",
-                      }}
-                    >
-                      →
-                    </span>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-
-          {/* Bottom CTA bar */}
-          <div
-            style={{
-              marginTop: 72,
-              padding: "32px 20px",
-              borderRadius: 24,
-              background: "linear-gradient(135deg, rgba(233,30,140,0.08), rgba(0,212,200,0.08))",
-              border: "1px solid rgba(255,255,255,0.08)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              gap: 24,
-            }}
-          >
-            <div>
-              <p
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  letterSpacing: "0.1em",
-                  color: "#00d4c8",
-                  textTransform: "uppercase",
-                  margin: "0 0 8px",
-                }}
-              >
-                Not sure where to start?
-              </p>
-              <h2
-                style={{
-                  fontSize: 24,
-                  fontWeight: 800,
-                  color: "#081129",
-                  margin: 0,
-                  letterSpacing: "-0.02em",
-                }}
-              >
-                Find the Right Health Test for You
-              </h2>
-            </div>
-            <div style={{ display: "flex", gap: 12 }}>
-              <Link
-                to="/compare"
-                style={{
-                  padding: "14px 32px",
-                  borderRadius: 12,
-                  border: "none",
-                  background: "linear-gradient(135deg, #e70d69, #e70d69)",
-                  color: "#fff",
-                  fontSize: 14,
-                  fontWeight: 700,
-                  cursor: "pointer",
-                  letterSpacing: "0.02em",
-                  boxShadow: "0 8px 24px rgba(233,30,140,0.3)",
-                  textDecoration: "none",
-                  display: "inline-block",
-                }}
-              >
-                Browse All Tests →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <Footer />
-    </>
+    <CategoryPageLayout
+      seoTitle={SEO.title}
+      seoDescription={SEO.description}
+      seoKeywords={SEO.keywords}
+      canonicalUrl={SEO.canonical}
+      pillLabel={PILL_LABEL}
+      headline="Browse Tests by Category"
+      subtitle="Every clinically validated test from our trusted UK providers, filterable by category."
+      searchPlaceholder="Search by test name, biomarker, or category…"
+      trustStats={[
+        { value: "50,000+", label: "Tests Compared" },
+        { value: "4.8★", label: "Average Rating" },
+        { value: "9+", label: "Trusted Providers" },
+      ]}
+      filters={filters}
+      tests={tests}
+      benefitsTitle={BENEFITS_TITLE}
+      benefits={BENEFITS_TUPLE}
+      breadcrumbs={[{ label: "Home", href: "/" }, { label: "Test Categories" }]}
+      compareUrl="/compare"
+    />
   );
 };
 
