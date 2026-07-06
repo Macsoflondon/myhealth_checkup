@@ -50,14 +50,21 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-function extractBiomarkerCount(text: string): number | null {
-  const m = text.match(/(\d{1,3})\s*(?:biomarkers?|tests?|markers?|analytes?)/i);
+function extractBiomarkerCount(text: string, title = ''): number | null {
+  const m = text.match(/(\d{1,3})\s*(?:biomarkers?|tests?|markers?|analytes?|parameters?)/i);
   if (m) {
     const n = parseInt(m[1], 10);
     if (n > 0 && n < 500) return n;
   }
-  return null;
+  // Fallback: single-analyte tests default to 1, unless the title indicates a multi-marker panel.
+  const t = title.toLowerCase();
+  if (/\b(profile|panel|screening|screen\b|health check|full check|mot|comprehensive|advanced|ultimate|complete|well[\s-]?(man|woman|being)|hormone check|fertility|check[\s-]?up|essential|premium)\b/.test(t)) {
+    return null;
+  }
+  return 1;
 }
+
+
 
 async function fetchShopifyPage(page: number): Promise<ShopifyProduct[]> {
   const url = `${SHOPIFY_BASE}/products.json?limit=250&page=${page}`;
@@ -114,7 +121,7 @@ Deno.serve(async (req) => {
       const originalPrice = variant?.compare_at_price ? parseFloat(variant.compare_at_price) : null;
       const cleanDesc = stripHtml(p.body_html || '').slice(0, 1000);
       const category = determineCategory(p.title, cleanDesc, p.tags || []);
-      const biomarkerCount = extractBiomarkerCount(cleanDesc);
+      const biomarkerCount = extractBiomarkerCount(cleanDesc, p.title);
 
       return {
         provider_id: PROVIDER_ID,

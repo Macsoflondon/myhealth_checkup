@@ -30,6 +30,7 @@ interface ScrapedProduct {
   description: string | null;
   biomarker_count: number | null;
   sample_type: string | null;
+  image_url: string | null;
 }
 
 // Collection pages to discover all products (Shopify-style)
@@ -232,6 +233,31 @@ function extractBiomarkerCount(markdown: string, html: string): number | null {
   return null;
 }
 
+function extractImageUrl(html: string, metadataOgImage?: string | null): string | null {
+  if (metadataOgImage && typeof metadataOgImage === 'string' && metadataOgImage.length > 0) {
+    let url = metadataOgImage;
+    if (url.startsWith('//')) url = 'https:' + url;
+    else if (url.startsWith('/')) url = 'https://www.medichecks.com' + url;
+    return url;
+  }
+  const patterns = [
+    /property="og:image"\s+content="([^"]+)"/i,
+    /content="([^"]+)"\s+property="og:image"/i,
+    /src="(https:\/\/[^"]+\.(?:jpg|jpeg|png|webp)[^"]*)"/i,
+  ];
+  for (const pattern of patterns) {
+    const match = html.match(pattern);
+    if (match && match[1]) {
+      let url = match[1];
+      if (url.startsWith('//')) url = 'https:' + url;
+      else if (url.startsWith('/')) url = 'https://www.medichecks.com' + url;
+      return url;
+    }
+  }
+  return null;
+}
+
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
@@ -325,6 +351,7 @@ Deno.serve(async (req) => {
       const { current: price, original: originalPrice } = extractPrice(html || '', markdown || '');
       const biomarkerCount = extractBiomarkerCount(markdown || '', html || '');
       const category = determineCategory(title, description || '', url);
+      const imageUrl = extractImageUrl(html || '', metadata?.ogImage);
 
       scrapedProducts.push({
         test_name: title,
@@ -335,7 +362,9 @@ Deno.serve(async (req) => {
         description,
         biomarker_count: biomarkerCount,
         sample_type: 'Finger-prick or Venous',
+        image_url: imageUrl,
       });
+
 
       console.log(`Scraped: ${title} - £${price ?? 'N/A'} - ${biomarkerCount || 0} biomarkers`);
     });
@@ -368,6 +397,7 @@ Deno.serve(async (req) => {
         category: product.category,
         description: product.description,
         biomarker_count: product.biomarker_count,
+        image_url: product.image_url,
         sample_type: product.sample_type,
         is_active: true,
         scraped_at: new Date().toISOString(),
