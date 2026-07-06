@@ -10,6 +10,26 @@ type VaultSecretRow = {
   key_id: string | null;
 };
 
+type TriggeredFunction = {
+  provider: string;
+  functionName: string;
+  requestId: string;
+};
+
+type HttpResponseRow = {
+  id: string;
+  status_code: number | null;
+  content: string | null;
+  timed_out: boolean | null;
+  error_msg: string | null;
+};
+
+const scraperTargets = [
+  { provider: "clinilabs", functionName: "clinilabs-scraper" },
+  { provider: "medichecks", functionName: "medichecks-firecrawl" },
+  { provider: "lola-health", functionName: "lola-health-scraper" },
+] as const;
+
 const getErrorMessage = (error: unknown): string => {
   if (error instanceof Error) return error.message;
   return String(error);
@@ -68,7 +88,37 @@ serve(async (req) => {
         ],
       );
 
-      return new Response(JSON.stringify({ ok: true, action: "updated" }), {
+      const triggered: TriggeredFunction[] = [];
+      for (const target of scraperTargets) {
+        const result = await client.queryObject<{ request_id: string }>(
+          `SELECT public.call_edge_with_service_role($1::text, '{}'::jsonb)::text AS request_id`,
+          [`https://clvuioagsgfadynuvodj.supabase.co/functions/v1/${target.functionName}`],
+        );
+        triggered.push({
+          provider: target.provider,
+          functionName: target.functionName,
+          requestId: result.rows[0]?.request_id ?? "",
+        });
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 6000));
+      const responseIds = triggered.map((trigger) => trigger.requestId).filter((id) => id.length > 0);
+      const responses = responseIds.length > 0
+        ? await client.queryObject<HttpResponseRow>(
+          `SELECT id::text, status_code, content, timed_out, error_msg
+           FROM net._http_response
+           WHERE id = ANY($1::bigint[])
+           ORDER BY created DESC`,
+          [responseIds],
+        )
+        : { rows: [] };
+
+      return new Response(JSON.stringify({
+        ok: true,
+        action: "updated",
+        triggered,
+        responses: responses.rows,
+      }), {
         status: 200,
         headers: jsonHeaders,
       });
@@ -79,7 +129,32 @@ serve(async (req) => {
       [serviceRoleKey, "service_role_key", "Synced from Edge runtime SUPABASE_SERVICE_ROLE_KEY"],
     );
 
-    return new Response(JSON.stringify({ ok: true, action: "created" }), {
+    const triggered: TriggeredFunction[] = [];
+    for (const target of scraperTargets) {
+      const result = await client.queryObject<{ request_id: string }>(
+        `SELECT public.call_edge_with_service_role($1::text, '{}'::jsonb)::text AS request_id`,
+        [`https://clvuioagsgfadynuvodj.supabase.co/functions/v1/${target.functionName}`],
+      );
+      triggered.push({
+        provider: target.provider,
+        functionName: target.functionName,
+        requestId: result.rows[0]?.request_id ?? "",
+      });
+    }
+
+    await new Promise((resolve) => setTimeout(resolve, 6000));
+    const responseIds = triggered.map((trigger) => trigger.requestId).filter((id) => id.length > 0);
+    const responses = responseIds.length > 0
+      ? await client.queryObject<HttpResponseRow>(
+        `SELECT id::text, status_code, content, timed_out, error_msg
+         FROM net._http_response
+         WHERE id = ANY($1::bigint[])
+         ORDER BY created DESC`,
+        [responseIds],
+      )
+      : { rows: [] };
+
+    return new Response(JSON.stringify({ ok: true, action: "created", triggered, responses }), {
       status: 200,
       headers: jsonHeaders,
     });
