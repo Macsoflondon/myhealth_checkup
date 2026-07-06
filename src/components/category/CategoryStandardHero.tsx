@@ -29,9 +29,9 @@ export function CategoryStandardHero({
 }: CategoryStandardHeroProps) {
   return (
     <section
+      className="px-4 sm:px-8 md:px-10 pt-10 sm:pt-12 md:pt-14 pb-6 sm:pb-8"
       style={{
         background: "#081129",
-        padding: "56px 40px 32px",
         position: "relative",
         overflow: "hidden",
       }}
