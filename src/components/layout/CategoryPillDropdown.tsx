@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, useLocation } from "react-router-dom";
 import { ChevronDown } from "lucide-react";
 import type { PrimaryNavItem } from "@/components/header/NavigationItems";
