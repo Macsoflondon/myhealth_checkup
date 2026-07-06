@@ -25,16 +25,35 @@ export function DbCategoryPage({ canonicalCategory, fallbackTests = [], ...rest 
   const tests = (data && data.length > 0) ? data : (isLoading ? [] : fallbackTests);
 
   const layoutProps: CategoryPageLayoutProps = sub
-    ? {
-        ...rest,
-        pillLabel: sub.label,
-        headline: sub.label,
-        breadcrumbs: [
-          ...rest.breadcrumbs.filter((b) => b.label !== sub.label),
-          { label: sub.label },
-        ],
-        tests,
-      }
+    ? (() => {
+        // Derive parent path from the provided canonicalUrl (strip host + query).
+        const parentPath = (() => {
+          try {
+            return new URL(rest.canonicalUrl).pathname.replace(/\/$/, "") || "/";
+          } catch {
+            return rest.canonicalUrl;
+          }
+        })();
+        const canonicalUrl = `https://myhealthcheckup.co.uk${parentPath}?subcategory=${sub.slug}`;
+        const parentTitleRoot = rest.seoTitle.split("|")[0].trim();
+        return {
+          ...rest,
+          seoTitle: `${sub.label} — ${parentTitleRoot} | myhealth checkup`,
+          seoDescription: `Compare ${sub.label.toLowerCase()} from UKAS-accredited UK providers. ${rest.seoDescription}`,
+          canonicalUrl,
+          pillLabel: sub.label,
+          headline: sub.label,
+          breadcrumbs: [
+            ...rest.breadcrumbs.filter((b) => b.label !== sub.label).map((b) =>
+              b.href === undefined && b.label !== "Home"
+                ? { ...b, href: parentPath }
+                : b
+            ),
+            { label: sub.label },
+          ],
+          tests,
+        };
+      })()
     : { ...rest, tests };
 
   return <CategoryPageLayout {...layoutProps} />;
