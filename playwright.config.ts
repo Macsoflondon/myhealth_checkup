@@ -11,7 +11,24 @@ export default defineConfig({
     trace: "retain-on-failure",
   },
   projects: [
-    { name: "chromium-desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 900 } } },
-    { name: "chromium-mobile", use: { ...devices["Pixel 5"] } },
+    {
+      name: "chromium-desktop",
+      use: {
+        ...devices["Desktop Chrome"],
+        viewport: { width: 1280, height: 900 },
+        launchOptions: process.env.PLAYWRIGHT_CHROMIUM_PATH
+          ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH }
+          : undefined,
+      },
+    },
+    {
+      name: "chromium-mobile",
+      use: {
+        ...devices["Pixel 5"],
+        launchOptions: process.env.PLAYWRIGHT_CHROMIUM_PATH
+          ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH }
+          : undefined,
+      },
+    },
   ],
 });
