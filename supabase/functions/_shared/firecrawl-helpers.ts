@@ -11,9 +11,47 @@ export interface FirecrawlScrapeOpts {
 
 const V2 = 'https://api.firecrawl.dev/v2';
 
+const RETRY_STATUS = new Set([408, 425, 429, 500, 502, 503, 504, 522, 524]);
+const MAX_ATTEMPTS = 5;
+
+function backoffDelay(attempt: number, retryAfterHeader?: string | null): number {
+  if (retryAfterHeader) {
+    const secs = Number(retryAfterHeader);
+    if (!Number.isNaN(secs) && secs > 0) return Math.min(secs * 1000, 30_000);
+  }
+  // exp backoff: 1s, 2s, 4s, 8s, 16s + jitter (max ~20s)
+  const base = Math.min(1000 * 2 ** (attempt - 1), 16_000);
+  return base + Math.floor(Math.random() * 500);
+}
+
+async function fetchWithRetry(
+  url: string,
+  init: RequestInit,
+  label: string,
+): Promise<Response> {
+  let lastErr: unknown;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    try {
+      const res = await fetch(url, init);
+      if (res.ok) return res;
+      if (!RETRY_STATUS.has(res.status) || attempt === MAX_ATTEMPTS) return res;
+      const delay = backoffDelay(attempt, res.headers.get('retry-after'));
+      console.warn(`[firecrawl:${label}] ${res.status} — retry ${attempt}/${MAX_ATTEMPTS - 1} in ${delay}ms`);
+      await new Promise((r) => setTimeout(r, delay));
+    } catch (e) {
+      lastErr = e;
+      if (attempt === MAX_ATTEMPTS) throw e;
+      const delay = backoffDelay(attempt);
+      console.warn(`[firecrawl:${label}] network err — retry ${attempt}/${MAX_ATTEMPTS - 1} in ${delay}ms: ${e instanceof Error ? e.message : String(e)}`);
+      await new Promise((r) => setTimeout(r, delay));
+    }
+  }
+  throw lastErr ?? new Error(`firecrawl:${label} exhausted retries`);
+}
+
 /**
  * Scrape a single URL with sensible defaults for hard targets (Cloudflare/JS-heavy).
- * Retries once on 408/5xx.
+ * Auto-retries with exponential backoff on 408/425/429/5xx (up to 5 attempts).
  */
 export async function firecrawlScrape(
   url: string,
@@ -29,24 +67,21 @@ export async function firecrawlScrape(
     proxy: opts.proxy ?? 'stealth',
   };
 
-  const attempt = async (): Promise<Response> =>
-    fetch(`${V2}/scrape`, {
+  const res = await fetchWithRetry(
+    `${V2}/scrape`,
+    {
       method: 'POST',
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
-    });
+    },
+    `scrape ${new URL(url).hostname}`,
+  );
 
-  let res = await attempt();
-  if (!res.ok && (res.status === 408 || res.status >= 500)) {
-    await new Promise((r) => setTimeout(r, 1500));
-    res = await attempt();
-  }
   if (!res.ok) {
     const text = await res.text().catch(() => '');
     throw new Error(`Firecrawl scrape ${res.status}: ${text.slice(0, 200)}`);
   }
   const json = await res.json();
-  // v2 returns { success, data: { markdown, html, metadata } } — normalize so callers can use both shapes
   if (json?.data && !json.markdown) {
     return { success: json.success, data: json.data, ...json.data };
   }
@@ -58,19 +93,22 @@ export async function firecrawlMap(
   apiKey: string,
   opts: { search?: string; limit?: number; includeSubdomains?: boolean } = {},
 ): Promise<string[]> {
-  const res = await fetch(`${V2}/map`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      url,
-      search: opts.search,
-      limit: opts.limit ?? 200,
-      includeSubdomains: opts.includeSubdomains ?? false,
-    }),
-  });
+  const res = await fetchWithRetry(
+    `${V2}/map`,
+    {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        url,
+        search: opts.search,
+        limit: opts.limit ?? 200,
+        includeSubdomains: opts.includeSubdomains ?? false,
+      }),
+    },
+    `map ${new URL(url).hostname}`,
+  );
   if (!res.ok) throw new Error(`Firecrawl map ${res.status}`);
   const data = await res.json();
-  // v2 returns { success, links: [{ url, title? }] } — normalize to string[]
   const rawLinks = data.links ?? data.data?.links ?? [];
   return rawLinks
     .map((l: unknown) => (typeof l === 'string' ? l : (l as { url?: string })?.url))
