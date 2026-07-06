@@ -297,6 +297,15 @@ const AdminScraperDashboardPage: React.FC = () => {
                 <Play className="h-4 w-4 mr-2" />
                 Run All Scrapers
               </Button>
+              <Button
+                variant="secondary"
+                onClick={smartRescrape}
+                disabled={runningScrapers.size > 0}
+                title="Retry only providers that failed, are stuck, or returned no data"
+              >
+                <Wand2 className="h-4 w-4 mr-2" />
+                Smart Re-scrape ({getSmartRescrapeTargets().length})
+              </Button>
             </div>
           </div>
 
