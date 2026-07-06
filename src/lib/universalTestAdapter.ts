@@ -22,6 +22,7 @@ export function fromAtHomeTest(t: AtHomeTest): UniversalTestData {
     is_popular: t.is_popular,
     home_kit_available: t.home_kit_available,
     clinic_visit_available: t.clinic_visit_available,
+    collection_options: t.collection_options,
   };
 }
 
@@ -42,8 +43,10 @@ export function fromProviderTest(t: ProviderTestCardData): UniversalTestData {
     is_popular: !!t.is_popular,
     home_kit_available: t.home_kit_available ?? undefined,
     clinic_visit_available: t.clinic_visit_available ?? undefined,
+    collection_options: t.collection_options,
   };
 }
+
 
 /** Adapter: Medichecks card props → UniversalTestData */
 export function fromMedichecksTest(t: {
