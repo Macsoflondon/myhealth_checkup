@@ -176,6 +176,58 @@ const AdminScraperDashboardPage: React.FC = () => {
     }
   };
 
+  const getSmartRescrapeTargets = (): Provider[] => {
+    return PROVIDERS.filter((provider) => {
+      const job = jobs.find((j) => j.provider_id === provider.id);
+      const count = testCounts[provider.id] ?? 0;
+      // Retry when: never run, failed, still running (likely stuck), or completed but empty/partial
+      if (!job) return true;
+      if (job.status !== 'completed') return true;
+      if (count === 0) return true;
+      return false;
+    });
+  };
+
+  const smartRescrape = async () => {
+    const targets = getSmartRescrapeTargets();
+    if (targets.length === 0) {
+      toast({
+        title: "Nothing to re-scrape",
+        description: "All providers completed successfully with data.",
+      });
+      return;
+    }
+
+    setRunningScrapers(new Set(targets.map((p) => p.id)));
+
+    try {
+      const { data, error } = await supabase.functions.invoke('run-all-scrapers', {
+        body: { providerIds: targets.map((p) => p.id) },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: `Smart re-scrape: ${targets.length} provider(s)`,
+        description:
+          data?.message ||
+          `Retrying: ${targets.map((p) => p.name).join(', ')}`,
+      });
+
+      await fetchJobs();
+      await fetchTestCounts();
+    } catch (error) {
+      console.error('Smart re-scrape failed:', error);
+      toast({
+        title: "Smart re-scrape failed",
+        description: error instanceof Error ? error.message : 'Unknown error',
+        variant: "destructive",
+      });
+    } finally {
+      setRunningScrapers(new Set());
+    }
+  };
+
   const refreshPopularTests = async () => {
     setIsRefreshingPopular(true);
     setPopularResult(null);
