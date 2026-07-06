@@ -56,9 +56,9 @@ function extractBiomarkerCount(text: string, title = ''): number | null {
     const n = parseInt(m[1], 10);
     if (n > 0 && n < 500) return n;
   }
-  // Fallback: single-analyte tests default to 1, unless the title indicates a multi-marker panel.
-  const t = title.toLowerCase();
-  if (/\b(profile|panel|screening|screen\b|health check|full check|mot|comprehensive|advanced|ultimate|complete|well[\s-]?(man|woman|being)|hormone check|fertility|check[\s-]?up|essential|premium)\b/.test(t)) {
+  // Fallback: single-analyte tests default to 1, unless the title/description indicates a multi-marker panel.
+  const panelText = `${title} ${text}`.toLowerCase();
+  if (/\b(profile|panel|screen(?:ing)?|check|mot)\b/i.test(panelText)) {
     return null;
   }
   return 1;
