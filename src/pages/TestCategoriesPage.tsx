@@ -71,7 +71,7 @@ const TestCategoriesPage = () => {
       <div
         style={{
           fontFamily: "'Montserrat', sans-serif",
-          background: "linear-gradient(160deg, #060b18 0%, #0a1120 50%, #060b18 100%)",
+          background: "#ffffff",
           minHeight: "100vh",
           padding: "40px 16px",
           position: "relative",
@@ -84,7 +84,7 @@ const TestCategoriesPage = () => {
             position: "absolute",
             inset: 0,
             backgroundImage:
-              "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)",
+              "radial-gradient(circle at 1px 1px, rgba(8,17,41,0.06) 1px, transparent 0)",
             backgroundSize: "40px 40px",
             pointerEvents: "none",
           }}
@@ -160,7 +160,7 @@ const TestCategoriesPage = () => {
               style={{
                 fontSize: "clamp(32px, 4vw, 52px)",
                 fontWeight: 800,
-                color: "#fff",
+                color: "#081129",
                 margin: "0 0 16px",
                 letterSpacing: "-0.02em",
                 lineHeight: 1.1,
@@ -181,7 +181,7 @@ const TestCategoriesPage = () => {
             <p
               style={{
                 fontSize: 17,
-                color: "rgba(255,255,255,0.65)",
+                color: "rgba(8,17,41,0.7)",
                 margin: "0 auto 48px",
                 maxWidth: 520,
                 lineHeight: 1.6,
