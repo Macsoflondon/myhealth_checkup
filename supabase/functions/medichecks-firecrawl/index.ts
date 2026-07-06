@@ -296,60 +296,49 @@ Deno.serve(async (req) => {
     const scrapedProducts: ScrapedProduct[] = [];
     const urlsToScrape = productUrls.slice(0, 120); // Increased limit to 120 products
     
-    for (const url of urlsToScrape) {
-      try {
-        console.log(`Scraping: ${url}`);
-        
-        const result = await scrapeWithFirecrawl(url, firecrawlApiKey);
-        
-        if (!result.success || !result.data) {
-          console.log(`No data for ${url}, skipping`);
-          continue;
-        }
-        
-        const { markdown, html, metadata } = result.data;
-        
-        // Extract title from metadata or markdown
-        let title = metadata?.title || '';
-        if (!title && markdown) {
-          const titleMatch = markdown.match(/^#\s+(.+)$/m);
-          if (titleMatch) {
-            title = titleMatch[1];
-          }
-        }
-        title = title.replace(/\s*\|\s*Medichecks.*$/i, '').trim();
-        
-        if (!title) {
-          console.log(`No title found for ${url}, skipping`);
-          continue;
-        }
-        
-        // Extract data
-        const description = metadata?.description || null;
-        const { current: price, original: originalPrice } = extractPrice(html || '', markdown || '');
-        const biomarkerCount = extractBiomarkerCount(markdown || '', html || '');
-        const category = determineCategory(title, description || '', url);
-        
-        scrapedProducts.push({
-          test_name: title,
-          price,
-          original_price: originalPrice,
-          url,
-          category,
-          description,
-          biomarker_count: biomarkerCount,
-          sample_type: 'Finger-prick or Venous',
-        });
-        
-        console.log(`Scraped: ${title} - £${price ?? 'N/A'} - ${biomarkerCount || 0} biomarkers`);
-        
-        // Rate limiting
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-      } catch (error) {
-        console.error(`Failed to scrape ${url}:`, getErrorMessage(error));
+    // Batch mode, concurrency 4
+    await runInChunks(urlsToScrape, 4, async (url) => {
+      console.log(`Scraping: ${url}`);
+
+      const result = await scrapeWithFirecrawl(url, firecrawlApiKey);
+
+      if (!result.success || !result.data) {
+        console.log(`No data for ${url}, skipping`);
+        return;
       }
-    }
+
+      const { markdown, html, metadata } = result.data;
+
+      let title = metadata?.title || '';
+      if (!title && markdown) {
+        const titleMatch = markdown.match(/^#\s+(.+)$/m);
+        if (titleMatch) title = titleMatch[1];
+      }
+      title = title.replace(/\s*\|\s*Medichecks.*$/i, '').trim();
+
+      if (!title) {
+        console.log(`No title found for ${url}, skipping`);
+        return;
+      }
+
+      const description = metadata?.description || null;
+      const { current: price, original: originalPrice } = extractPrice(html || '', markdown || '');
+      const biomarkerCount = extractBiomarkerCount(markdown || '', html || '');
+      const category = determineCategory(title, description || '', url);
+
+      scrapedProducts.push({
+        test_name: title,
+        price,
+        original_price: originalPrice,
+        url,
+        category,
+        description,
+        biomarker_count: biomarkerCount,
+        sample_type: 'Finger-prick or Venous',
+      });
+
+      console.log(`Scraped: ${title} - £${price ?? 'N/A'} - ${biomarkerCount || 0} biomarkers`);
+    });
 
     console.log(`Successfully scraped ${scrapedProducts.length} products`);
 
