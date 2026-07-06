@@ -120,10 +120,12 @@ const EmptyState: React.FC = () => (
 
 const AtHomeTestsPage: React.FC = () => {
   const { data: atHomeTests, isLoading, error, refetch, isFetching } = useAtHomeTests();
+  const [params] = useSearchParams();
+  const sub = findSubcategory("at-home", params.get("subcategory"));
 
   const tests: CategoryTestItem[] = useMemo(() => {
     if (!atHomeTests) return [];
-    return atHomeTests.map((t) => {
+    const mapped = atHomeTests.map((t) => {
       const branding = getBranding(t.provider_id);
       const providerRating = getProviderRating(t.provider_id);
       const tag = t.category || "General Health";
@@ -154,7 +156,17 @@ const AtHomeTestsPage: React.FC = () => {
         collectionOptions: t.collection_options,
       } satisfies CategoryTestItem;
     });
-  }, [atHomeTests]);
+
+    if (!sub) return mapped;
+    return mapped.filter((t) =>
+      testMatchesSubcategory(sub, {
+        title: t.title,
+        biomarkers: t.biomarkers,
+        tag: t.tag,
+        desc: t.desc,
+      })
+    );
+  }, [atHomeTests, sub]);
 
   const filters = useMemo(() => {
     const unique = Array.from(new Set(tests.map((t) => t.tag))).filter(Boolean);
