@@ -101,7 +101,7 @@ Deno.serve(async (req) => {
     if (productUrls.length === 0) {
       try {
         const collResult = await firecrawlScrape('https://lolahealth.com/collections/blood-tests', firecrawlApiKey, {
-          formats: ['markdown'], onlyMainContent: true, waitFor: 5000, timeout: 90000, proxy: 'stealth',
+          formats: ['markdown'], onlyMainContent: true, waitFor: 1500, timeout: 60000, proxy: 'stealth',
         });
         if (collResult.success && collResult.data?.markdown) {
           const urlMatches = collResult.data.markdown.matchAll(/\(https:\/\/lolahealth\.com\/products\/([^)]+)\)/g);
@@ -132,11 +132,11 @@ Deno.serve(async (req) => {
       'haemoglobin', 'platelet', 'psa', 'thyroid', 'shbg', 'prolactin'];
 
     // Batch mode, concurrency 4
-    await runInChunks(productUrls, 4, async (url) => {
+    await runInChunks(productUrls, 8, async (url) => {
       const slug = url.split('/products/').pop() || '';
       console.log(`Scraping: ${slug}`);
       const result = await firecrawlScrape(url, firecrawlApiKey, {
-        formats: ['markdown'], onlyMainContent: true, waitFor: 5000, timeout: 90000, proxy: 'stealth',
+        formats: ['markdown'], onlyMainContent: true, waitFor: 1500, timeout: 60000, proxy: 'stealth',
       });
       if (!result.success || !result.data) return;
 

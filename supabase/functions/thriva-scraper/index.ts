@@ -85,13 +85,13 @@ Deno.serve(async (req) => {
 
     // Step 2: Scrape each product (batch mode, concurrency 4)
     const tests: any[] = [];
-    await runInChunks(productUrls, 4, async (url) => {
+    await runInChunks(productUrls, 8, async (url) => {
       const slug = url.split('/').pop() || '';
       const knownProduct = KNOWN_PRODUCTS.find(p => p.slug === slug);
       console.log(`Scraping: ${slug}`);
 
       const result = await firecrawlScrape(url, firecrawlApiKey, {
-        formats: ['markdown'], onlyMainContent: true, waitFor: 5000, timeout: 90000, proxy: 'stealth',
+        formats: ['markdown'], onlyMainContent: true, waitFor: 1500, timeout: 60000, proxy: 'stealth',
       });
       if (!result.success || !result.data) return;
 

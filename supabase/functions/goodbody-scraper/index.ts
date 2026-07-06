@@ -226,11 +226,11 @@ Deno.serve(async (req) => {
 
     // Step 2: Scrape each product page (batch mode, concurrency 4)
     const products: any[] = [];
-    await runInChunks(productUrls, 4, async (url) => {
+    await runInChunks(productUrls, 8, async (url) => {
       const slug = url.split('/products/').pop() || '';
       console.log(`Scraping: ${slug}`);
       const result = await firecrawlScrape(url, firecrawlApiKey, {
-        formats: ['markdown', 'html'], onlyMainContent: false, waitFor: 5000, timeout: 90000, proxy: 'stealth',
+        formats: ['markdown', 'html'], onlyMainContent: false, waitFor: 1500, timeout: 60000, proxy: 'stealth',
       });
       if (!result.success || !result.data) { console.log(`No data for ${slug}`); return; }
 

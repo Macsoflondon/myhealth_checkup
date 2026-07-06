@@ -89,7 +89,7 @@ Deno.serve(async (req) => {
     if (productUrls.length < 5) {
       try {
         const homeResult = await firecrawlScrape(BASE_URL, firecrawlApiKey, {
-          formats: ['markdown'], onlyMainContent: true, waitFor: 5000, timeout: 90000, proxy: 'stealth',
+          formats: ['markdown'], onlyMainContent: true, waitFor: 1500, timeout: 60000, proxy: 'stealth',
         });
         if (homeResult.success && homeResult.data?.markdown) {
           const urlMatches = homeResult.data.markdown.matchAll(/\((https?:\/\/[^)]+)\)/g);
@@ -113,7 +113,7 @@ Deno.serve(async (req) => {
       const slug = new URL(url).pathname.split('/').filter(Boolean).pop() || '';
       console.log(`Scraping: ${slug}`);
       const result = await firecrawlScrape(url, firecrawlApiKey, {
-        formats: ['markdown'], onlyMainContent: true, waitFor: 5000, timeout: 90000, proxy: 'stealth',
+        formats: ['markdown'], onlyMainContent: true, waitFor: 1500, timeout: 60000, proxy: 'stealth',
       });
       if (!result.success || !result.data) return;
 

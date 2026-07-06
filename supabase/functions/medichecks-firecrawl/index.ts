@@ -297,7 +297,7 @@ Deno.serve(async (req) => {
     const urlsToScrape = productUrls.slice(0, 120); // Increased limit to 120 products
     
     // Batch mode, concurrency 4
-    await runInChunks(urlsToScrape, 4, async (url) => {
+    await runInChunks(urlsToScrape, 8, async (url) => {
       console.log(`Scraping: ${url}`);
 
       const result = await scrapeWithFirecrawl(url, firecrawlApiKey);
