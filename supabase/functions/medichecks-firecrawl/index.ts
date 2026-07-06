@@ -131,56 +131,18 @@ function determineCategory(title: string, description: string, url: string): str
 }
 
 async function scrapeWithFirecrawl(url: string, apiKey: string): Promise<any> {
-  const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      url,
-      formats: ['markdown', 'html'],
-      onlyMainContent: false,
-      waitFor: 2000,
-    }),
+  return firecrawlScrape(url, apiKey, {
+    formats: ['markdown', 'html'],
+    onlyMainContent: false,
+    waitFor: 5000,
+    timeout: 90000,
+    proxy: 'stealth',
   });
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Firecrawl API error: ${response.status} - ${error}`);
-  }
-
-  return response.json();
 }
 
 async function mapWebsiteUrls(baseUrl: string, apiKey: string): Promise<string[]> {
-  const response = await fetch('https://api.firecrawl.dev/v1/map', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      url: baseUrl,
-      search: 'blood test',
-      limit: 200,
-      includeSubdomains: false,
-    }),
-  });
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Firecrawl map error: ${response.status} - ${error}`);
-  }
-
-  const data = await response.json();
-  
-  // Filter to only product URLs
-  const productUrls = (data.links || []).filter((link: string) => 
-    link.includes('/products/') && !link.includes('?')
-  );
-  
-  return productUrls;
+  const links = await firecrawlMap(baseUrl, apiKey, { search: 'blood test', limit: 200 });
+  return links.filter((link) => link.includes('/products/') && !link.includes('?'));
 }
 
 function extractPrice(html: string, markdown: string): { current: number | null; original: number | null } {
