@@ -1,74 +1,45 @@
-## What happened
+## Problem
 
-The dropdown entries still exist in `src/components/header/NavigationItems.tsx`, but at some point their `path`s were rerouted to `/compare?category=…` (a generic comparison page). The original scaffolding — sub-category items pointing at their **parent category page** (e.g. `/womens-health?subcategory=menopause`) and being filtered in-place — was never wired into `DbCategoryPage` / `useCategoryTests`. So even before the paths changed, there was no code on `/womens-health`, `/wellness`, `/mens-health`, `/sports-performance`, `/fertility-tests`, `/at-home-tests`, `/tests/cancer` that read a subcategory param and narrowed the results.
+Subcategory routing, breadcrumbs and dropdowns in the header `NavigationMenu` are wired up — but the **Browse-by-category bar** (`src/components/layout/BrowseByCategoryBar.tsx`), which is the sticky pill toolbar users actually see on every page, only renders a flat `<Link>` per parent. There is no way to reach a subcategory from that toolbar. The mobile sheet has the same limitation.
 
-Result: clicking Menopause / Fertility / Thyroid / etc. either dumps users onto `/compare` or loads the parent page unfiltered.
+## Plan
 
-## Plan — reinstate the sub-category mapping + filtering
+Wire the existing `dropdownItems` from `primaryNavigationItems` into the toolbar. No changes to routes, data, or breadcrumb logic — those already work.
 
-### 1. Canonical subcategory map (new file)
-`src/config/subcategoryMap.ts` — single source of truth. For every parent canonical category, list its subcategory slugs plus the name-pattern aliases used to match `test_name` / `source_section_label` / `biomarkers_list`.
+### 1. Desktop pill hover dropdown
 
-```ts
-export type SubcategoryDef = {
-  slug: string;          // URL slug, e.g. "menopause"
-  label: string;         // Human label for pill + heading
-  matchAny: RegExp[];    // ilike-style patterns against test_name / biomarkers
-  siblingCategories?: string[]; // optional: pull from other canonical categories (e.g. Women's → thyroid)
-};
+In `BrowseByCategoryBar.tsx`, wrap each pill in a hover-triggered container that opens a small panel of its `dropdownItems`.
 
-export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
-  "womens-health": [
-    { slug: "hormones",  label: "Female Hormone Tests",  matchAny: [/hormone/i, /oestrogen/i, /progesterone/i, /fsh/i, /lh/i] },
-    { slug: "fertility", label: "Female Fertility Tests", matchAny: [/fertility/i, /amh/i, /ovarian reserve/i] },
-    { slug: "menopause", label: "Menopause Tests",        matchAny: [/menopaus/i, /perimenopaus/i] },
-    { slug: "pcos",      label: "PCOS Tests",             matchAny: [/pcos/i, /polycystic/i] },
-    { slug: "thyroid",   label: "Thyroid Tests",          matchAny: [/thyroid/i, /tsh/i, /t3/i, /t4/i], siblingCategories: ["thyroid"] },
-  ],
-  "mens-health": [ /* male-hormones, male-fertility, testosterone, prostate */ ],
-  "wellness":    [ /* heart-health, cholesterol, diabetes, iron-anaemia, liver, kidney, vitamins, allergy, thyroid */ ],
-  "sports-performance": [ /* hormones, testosterone, energy */ ],
-  "fertility":   [ /* female-fertility, male-fertility, amh, prenatal, pregnancy */ ],
-  "at-home":     [ /* womens, mens, general, allergy */ ],
-  "cancer-screening": [ /* bowel, prostate, cervical, lung */ ],
-};
-```
+- Trigger: `onMouseEnter` on the pill wrapper opens; `onMouseLeave` on the wrapper (with a ~120ms close delay so the cursor can travel into the panel) closes. Also close on `Escape` and on route change.
+- Chevron: append a small `ChevronDown` inside the pill when `item.hasDropdown`, rotating when open.
+- Clicking the pill body still navigates to the parent (`item.path`) — keeps current behaviour.
+- Panel: absolutely positioned under the pill, `min-w-[240px]`, white card, `rounded-2xl`, same shadow/border tokens the "More" dropdown uses. Each row is a `<Link to={sub.path}>` styled like the existing dropdown rows in `MoreDropdownMenu`. First and last "View All …" entries render with the accent colour of that category (from the `ICONS` map).
+- Active state: if `location.pathname + location.search` matches the sub's path, apply the pink border + `aria-current="page"` (same pattern already used in `NavItemDropdown`).
+- Keep the horizontal-scroll pill strip intact; the dropdown renders via `position: absolute` so it can overflow the strip. The pill strip's `WebkitMaskImage` clips overflow — remove masking only on the pill container when its dropdown is open (or lift the panel into a portal). Simpler: render the panel inside the pill wrapper but with `position: fixed` anchored to the pill's bounding rect (measured on open), so masking doesn't clip it.
 
-### 2. Point dropdown links at the parent page with `?subcategory=`
-`src/components/header/NavigationItems.tsx` — rewrite every sub-item path from `/compare?category=xxx` to the parent page with `?subcategory=<slug>`, using the slugs in `SUBCATEGORY_MAP`. Example:
+### 2. Mobile sheet nested subcategories
 
-```
-{ name: "Menopause Tests", path: "/womens-health?subcategory=menopause" }
-```
+In the mobile `<Sheet>` list, replace each parent `<Link>` with a collapsible row:
 
-### 3. Filter results in `useCategoryTests`
-`src/hooks/queries/useCategoryTests.ts` — accept an optional `subcategory` argument. When present:
-- Look up `SUBCATEGORY_MAP[canonicalCategory].find(s => s.slug === subcategory)`.
-- Extend the Supabase query to also OR-in `siblingCategories` (e.g. Women's → `hormones`, `thyroid`).
-- After fetch, filter rows client-side where `matchAny.some(rx => rx.test(test_name) || biomarkers.some(rx.test))`.
-- Include the subcategory slug in the react-query key so results cache per-subcategory.
+- Row renders the icon + parent name and a chevron toggle on the right.
+- Tapping the row body still navigates to the parent and closes the sheet.
+- Tapping the chevron toggles a nested `<ul>` of `dropdownItems` below it (accordion, one open at a time). Nested items are indented, use the parent's accent colour for their bullet dot, and close the sheet on tap.
+- Categories without `dropdownItems` render as a plain link (current behaviour).
 
-### 4. Wire the param through `DbCategoryPage`
-`src/components/category/DbCategoryPage.tsx`:
-- Read `useSearchParams()` → `subcategory`.
-- Pass to `useCategoryTests(canonicalCategory, subcategory)`.
-- Forward `subcategoryLabel` (from the map) into `CategoryPageLayout` so the hero pill/heading and breadcrumb reflect the active subcategory (e.g. "Women's Health › Menopause Tests").
+### 3. No other files change
 
-### 5. Layout affordances
-`src/components/category/CategoryPageLayout.tsx` (light touch, presentation only):
-- If a `subcategoryLabel` is passed, prepend it to the pill or breadcrumb and highlight the matching filter pill by default.
-- Add a "Clear filter" chip that links back to the base category route.
+- `NavigationItems.tsx`, `NavItemDropdown.tsx`, `DbCategoryPage.tsx`, `CategoryPageLayout.tsx`, `AtHomeTestsPage.tsx`, and `subcategoryMap.ts` stay as-is.
+- Not touching pricing, category, or scraper logic.
 
-### 6. At-Home & Cancer pages
-- `AtHomeTestsPage.tsx` + `CancerScreeningPage.tsx`: same treatment — read `?subcategory=`, resolve via `SUBCATEGORY_MAP["at-home"]` / `["cancer-screening"]`, filter the mapped `CategoryTestItem[]` list in-place (they don't use `useCategoryTests` directly).
+### Technical notes
 
-### 7. Verify
-Playwright pass on desktop + mobile:
-- Hover **Women's Health → Menopause Tests** → URL becomes `/womens-health?subcategory=menopause`, hero shows "Menopause Tests", grid narrows to menopause matches only.
-- Repeat one item per parent dropdown (Wellness → Thyroid, Men's → Prostate, Sports → Testosterone, Fertility → AMH, At Home → Women's, Cancer → Prostate PSA).
-- Confirm "View All …" entries still land on the unfiltered parent page.
+- New small component `CategoryPillDropdown` colocated in `BrowseByCategoryBar.tsx` (or split to `src/components/layout/CategoryPillDropdown.tsx` if it exceeds ~80 lines) to keep the main file readable.
+- Use `useLocation()` from `react-router-dom` for active matching.
+- Use `useRef` + `getBoundingClientRect()` to anchor the fixed panel; recompute on `resize`/`scroll` while open.
+- Close the open dropdown on `location` change via a `useEffect` dependency on `location.key`.
+- Keyboard: `Tab` into the pill focuses it; `ArrowDown` opens the panel and focuses the first item; `Escape` closes and returns focus to the pill.
 
-### Out of scope
-- No DB migration; matching is regex over existing fields.
-- No changes to `/compare` behaviour.
-- Card design + hero spacing (already handled last turn) untouched.
+### Verification
+
+- Playwright: hover each pill on desktop, screenshot the open panel, click a sub link, confirm URL becomes `/{parent}?subcategory={slug}` and the breadcrumb on the destination page contains the parent + subcategory segments.
+- Mobile viewport (390×844): open the sheet, expand "Women's Health", tap "Menopause Tests", confirm navigation + sheet closes.
