@@ -61,7 +61,7 @@ export function AppRoutes() {
         {/* Home */}
         <Route path="/" element={<Index />} />
         <Route path="/test-categories" element={<TestCategoriesPage />} />
-        <Route path="/card-demo" element={<CardDemo />} />
+        
 
         {/* Admin Auth */}
         <Route path="/admin/login" element={<AdminAuth />} />
