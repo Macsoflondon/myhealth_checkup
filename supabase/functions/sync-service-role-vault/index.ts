@@ -154,7 +154,7 @@ serve(async (req) => {
       )
       : { rows: [] };
 
-    return new Response(JSON.stringify({ ok: true, action: "created", triggered, responses }), {
+    return new Response(JSON.stringify({ ok: true, action: "created", triggered, responses: responses.rows }), {
       status: 200,
       headers: jsonHeaders,
     });
