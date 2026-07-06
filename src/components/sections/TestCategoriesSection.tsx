@@ -40,7 +40,7 @@ const categories = [
   },
   {
     tag: "At Home",
-    tagVariant: "pink" as const,
+    tagVariant: "teal" as const,
     count: "300+ Kits",
     title: "At-Home Test Kits",
     description:
