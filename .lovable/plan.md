@@ -1,47 +1,30 @@
-# Standardise /test-categories to the canonical category layout
+## Problem
 
-Replace the bespoke TestCategoriesPage with the same shell every other category page uses (`CategoryPageLayout`), rendering the full aggregated test catalogue with category-based filter pills.
+`/at-home-tests` looks different from all other toolbar category pages (Most Popular, General Wellness, Women's Health, etc.) because it was built on a bespoke layout:
 
-## What changes
+- It uses `MainLayout`, which injects the `AccreditedProvidersBar` ("UKAS-Accredited Labs / CQC-Regulated Clinics / ISO 15189 / GDPR / Transparent Pricing / No GP Referral") strip at the top. None of the other category pages use `MainLayout`, so none of them show that strip.
+- It renders its own inline header, search input, category dropdown, results count, grid, and "Load more" button using `UniversalTestCard` directly — instead of the shared `CategoryPageLayout` + `CategoryStandardHero` + `CategoryPageBottom` composition every other toolbar page uses.
+- Result: different hero, different filter bar (dropdown instead of pill filters), different card component, different bottom section, plus the extra accreditation strip.
 
-**1. New hook: `src/hooks/queries/useAllTests.ts`**
+## Fix
 
-Mirror `useCategoryTests` but without the `canonical_category` filter. Same select, same active/image/url guards, same ordering (`is_popular` → `popularity_rank` → `price`). Returns `CategoryTestItem[]` using the same mapping function extracted into a shared helper `src/hooks/queries/mapProviderTest.ts` so both `useCategoryTests` and `useAllTests` map rows identically.
+Rewrite `src/pages/AtHomeTestsPage.tsx` to follow the exact `MostPopularTestsPage` pattern, so `/at-home-tests` is visually identical in structure to every other toolbar category page.
 
-The mapper adds a `tag` field derived from `canonical_category` (title-cased display label from a small map: `womens-health → Women's Health`, `mens-health → Men's Health`, `heart → Heart Health`, etc.) so the existing `CategoryFilters` pill bar can filter on it without any layout changes.
+Specifically:
 
-**2. Rewritten `src/pages/TestCategoriesPage.tsx`**
+1. **Drop `MainLayout`** — use `Header` + `Footer` directly (via `CategoryPageLayout`), which removes the `AccreditedProvidersBar` strip at the top.
+2. **Use `CategoryPageLayout`** with the same props shape as `MostPopularTestsPage`:
+   - `pillLabel="At Home"`, `headline="At Home Health Tests"`, subtitle kept from current copy.
+   - `filters` derived from the at-home categories (`['All', ...uniqueTags]`).
+   - `tests` mapped from `useAtHomeTests` results into `CategoryTestItem[]` (same mapping used in `MostPopularTestsPage`: cleanName, provider branding, rating, price, turnaround, biomarkers, tag, collection, url).
+   - `trustStats`, `benefits`, `breadcrumbs` matching the shared category-page shape (At Home themed: e.g. Delivered to your door / UKAS accredited labs / Fast results online).
+3. **Reuse the shared `StatusShell` pattern** (loading skeleton / error / empty) exactly as `MostPopularTestsPage` does, so loading/error/empty states also match.
+4. **Remove the inline trust strip** (Package / Home / Shield / Clock line under the H1) — the standard hero already carries trust content via `trustStats` and `benefits`.
+5. Keep the data source (`useAtHomeTests`, `useAtHomeCategories`) unchanged so the filtering behaviour (at-home only) is preserved; only presentation changes.
+6. SEO tags (`<Helmet>` title/description/canonical/keywords) preserved.
 
-Delete the custom hero/grid/orbs (~480 lines). Replace with the same shape as `MostPopularTestsPage`:
+No changes to routes, data hooks, or other pages.
 
-- `usePopularTestsFromDatabase` → `useAllTests()`
-- Loading / error / empty states reuse the same `StatusShell`, `LoadingSkeleton`, `ErrorState`, `EmptyState` patterns (extract them to `src/components/category/CategoryStatusStates.tsx` so both pages share them instead of duplicating).
-- Pass the full test list into `CategoryPageLayout` with filters derived from distinct `tag` values.
+### Files touched
 
-Props for the page:
-- `pillLabel`: `"All Test Categories"`
-- `headline`: `"Browse Tests by Category"`
-- `subtitle`: `"Every clinically validated test from our trusted UK providers, filterable by category."`
-- `searchPlaceholder`: `"Search by test name, biomarker, or category…"`
-- `trustStats`: `50,000+ Tests Compared`, `4.8★ Average Rating`, `9+ Trusted Providers`
-- `benefitsTitle`: `"Why Compare Through myhealth checkup?"`
-- `benefits`: three standard trust benefits (UKAS labs, transparent pricing, editorial independence)
-- `breadcrumbs`: Home → Test Categories
-- `canonicalUrl`: unchanged (`https://myhealthcheckup.co.uk/test-categories`)
-
-**3. Retired code**
-
-`wellnessCategories` category-index data and the local `getCategoryTag` / `tagColors` maps are no longer imported by this page. They stay in the repo (still used by the homepage `TestCategories` section).
-
-## Technical notes
-
-- No schema changes. Reads through `provider_tests` (write path unchanged elsewhere).
-- The tag map keeps `canonical_category` slugs as source of truth; display names are for UI only.
-- `CategoryFilters` already handles the pill selection state, so the filter behaviour becomes identical to Most Popular Tests.
-- Preserves SEO title/description shape and canonical URL; adjusts copy to match the standardised tone.
-
-## Out of scope
-
-- No change to `CategoryPageLayout`, `CategoryStandardHero`, or `CategoryPageBottom` — those stay as the single source of truth.
-- No change to homepage `TestCategories` section (still uses category tiles).
-- No route change; `/test-categories` continues to resolve to this page.
+- `src/pages/AtHomeTestsPage.tsx` — rewritten to mirror `MostPopularTestsPage` using `CategoryPageLayout`.
