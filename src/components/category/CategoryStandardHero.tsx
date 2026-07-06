@@ -77,7 +77,7 @@ export function CategoryStandardHero({
 
       <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
         {/* Pill row */}
-        <div className="flex items-center justify-center gap-3 sm:gap-4 relative mb-8 md:mb-10">
+        <div className="flex items-center justify-center gap-3 sm:gap-4 relative mb-6 sm:mb-8 md:mb-10">
           <span aria-hidden="true" className="h-px w-8 sm:w-12 bg-[#e70d69]" />
           <h1
             className="text-lg sm:text-2xl md:text-[33px] font-bold leading-none truncate m-0 text-center"
@@ -93,14 +93,7 @@ export function CategoryStandardHero({
 
         {/* Benefits row */}
         <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-            gap: 24,
-            maxWidth: 900,
-            margin: "0 auto 32px",
-            padding: "0 16px",
-          }}
+          className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 max-w-[900px] mx-auto mb-6 sm:mb-8 px-2 sm:px-4"
         >
           {benefits.map(({ icon: Icon, title, description }) => (
             <div key={title} style={{ textAlign: "center" }}>
