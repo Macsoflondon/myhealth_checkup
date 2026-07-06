@@ -1,5 +1,6 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
 import { getErrorMessage } from '../_shared/errors.ts';
+import { firecrawlScrape, firecrawlMap, runInChunks } from '../_shared/firecrawl-helpers.ts';
 
 // Derive a stable provider_test_id from the Medichecks product URL slug.
 // Example: https://www.medichecks.com/products/testosterone-blood-test -> "testosterone-blood-test"
@@ -130,56 +131,18 @@ function determineCategory(title: string, description: string, url: string): str
 }
 
 async function scrapeWithFirecrawl(url: string, apiKey: string): Promise<any> {
-  const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      url,
-      formats: ['markdown', 'html'],
-      onlyMainContent: false,
-      waitFor: 2000,
-    }),
+  return firecrawlScrape(url, apiKey, {
+    formats: ['markdown', 'html'],
+    onlyMainContent: false,
+    waitFor: 1500,
+    timeout: 60000,
+    proxy: 'stealth',
   });
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Firecrawl API error: ${response.status} - ${error}`);
-  }
-
-  return response.json();
 }
 
 async function mapWebsiteUrls(baseUrl: string, apiKey: string): Promise<string[]> {
-  const response = await fetch('https://api.firecrawl.dev/v1/map', {
-    method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      url: baseUrl,
-      search: 'blood test',
-      limit: 200,
-      includeSubdomains: false,
-    }),
-  });
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Firecrawl map error: ${response.status} - ${error}`);
-  }
-
-  const data = await response.json();
-  
-  // Filter to only product URLs
-  const productUrls = (data.links || []).filter((link: string) => 
-    link.includes('/products/') && !link.includes('?')
-  );
-  
-  return productUrls;
+  const links = await firecrawlMap(baseUrl, apiKey, { search: 'blood test', limit: 200 });
+  return links.filter((link) => link.includes('/products/') && !link.includes('?'));
 }
 
 function extractPrice(html: string, markdown: string): { current: number | null; original: number | null } {
@@ -333,60 +296,49 @@ Deno.serve(async (req) => {
     const scrapedProducts: ScrapedProduct[] = [];
     const urlsToScrape = productUrls.slice(0, 120); // Increased limit to 120 products
     
-    for (const url of urlsToScrape) {
-      try {
-        console.log(`Scraping: ${url}`);
-        
-        const result = await scrapeWithFirecrawl(url, firecrawlApiKey);
-        
-        if (!result.success || !result.data) {
-          console.log(`No data for ${url}, skipping`);
-          continue;
-        }
-        
-        const { markdown, html, metadata } = result.data;
-        
-        // Extract title from metadata or markdown
-        let title = metadata?.title || '';
-        if (!title && markdown) {
-          const titleMatch = markdown.match(/^#\s+(.+)$/m);
-          if (titleMatch) {
-            title = titleMatch[1];
-          }
-        }
-        title = title.replace(/\s*\|\s*Medichecks.*$/i, '').trim();
-        
-        if (!title) {
-          console.log(`No title found for ${url}, skipping`);
-          continue;
-        }
-        
-        // Extract data
-        const description = metadata?.description || null;
-        const { current: price, original: originalPrice } = extractPrice(html || '', markdown || '');
-        const biomarkerCount = extractBiomarkerCount(markdown || '', html || '');
-        const category = determineCategory(title, description || '', url);
-        
-        scrapedProducts.push({
-          test_name: title,
-          price,
-          original_price: originalPrice,
-          url,
-          category,
-          description,
-          biomarker_count: biomarkerCount,
-          sample_type: 'Finger-prick or Venous',
-        });
-        
-        console.log(`Scraped: ${title} - £${price ?? 'N/A'} - ${biomarkerCount || 0} biomarkers`);
-        
-        // Rate limiting
-        await new Promise(resolve => setTimeout(resolve, 500));
-        
-      } catch (error) {
-        console.error(`Failed to scrape ${url}:`, getErrorMessage(error));
+    // Batch mode, concurrency 4
+    await runInChunks(urlsToScrape, 8, async (url) => {
+      console.log(`Scraping: ${url}`);
+
+      const result = await scrapeWithFirecrawl(url, firecrawlApiKey);
+
+      if (!result.success || !result.data) {
+        console.log(`No data for ${url}, skipping`);
+        return;
       }
-    }
+
+      const { markdown, html, metadata } = result.data;
+
+      let title = metadata?.title || '';
+      if (!title && markdown) {
+        const titleMatch = markdown.match(/^#\s+(.+)$/m);
+        if (titleMatch) title = titleMatch[1];
+      }
+      title = title.replace(/\s*\|\s*Medichecks.*$/i, '').trim();
+
+      if (!title) {
+        console.log(`No title found for ${url}, skipping`);
+        return;
+      }
+
+      const description = metadata?.description || null;
+      const { current: price, original: originalPrice } = extractPrice(html || '', markdown || '');
+      const biomarkerCount = extractBiomarkerCount(markdown || '', html || '');
+      const category = determineCategory(title, description || '', url);
+
+      scrapedProducts.push({
+        test_name: title,
+        price,
+        original_price: originalPrice,
+        url,
+        category,
+        description,
+        biomarker_count: biomarkerCount,
+        sample_type: 'Finger-prick or Venous',
+      });
+
+      console.log(`Scraped: ${title} - £${price ?? 'N/A'} - ${biomarkerCount || 0} biomarkers`);
+    });
 
     console.log(`Successfully scraped ${scrapedProducts.length} products`);
 

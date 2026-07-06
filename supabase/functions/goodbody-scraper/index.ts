@@ -145,26 +145,12 @@ function extractFromMarkdown(markdown: string, url: string, html = ''): any {
   return { title, price, biomarkerCount, biomarkers, description, imageUrl };
 }
 
-async function firecrawlScrape(url: string, apiKey: string): Promise<any> {
-  const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, formats: ['markdown', 'html'], onlyMainContent: false, waitFor: 2000 }),
-  });
-  if (!response.ok) throw new Error(`Firecrawl scrape error: ${response.status}`);
-  return response.json();
-}
+// Uses shared firecrawl helper (v2, stealth proxy, 90s timeout, retry).
+import { firecrawlScrape, firecrawlMap, runInChunks } from '../_shared/firecrawl-helpers.ts';
 
-
-async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
-  const response = await fetch('https://api.firecrawl.dev/v1/map', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, search: 'blood test', limit: 200, includeSubdomains: false }),
-  });
-  if (!response.ok) throw new Error(`Firecrawl map error: ${response.status}`);
-  const data = await response.json();
-  return (data.links || []).filter((l: string) => l.includes('/products/') && !l.includes('?') && !l.includes('gift-card'));
+async function mapGoodbody(apiKey: string): Promise<string[]> {
+  const links = await firecrawlMap('https://goodbodyclinic.com/collections/all', apiKey, { search: 'blood test', limit: 200 });
+  return links.filter((l) => l.includes('/products/') && !l.includes('?') && !l.includes('gift-card'));
 }
 
 Deno.serve(async (req) => {
@@ -218,7 +204,7 @@ Deno.serve(async (req) => {
     console.log('Mapping goodbodyclinic.com for products...');
     let productUrls: string[] = [];
     try {
-      productUrls = await firecrawlMap('https://goodbodyclinic.com/collections/all', firecrawlApiKey);
+      productUrls = await mapGoodbody(firecrawlApiKey);
       console.log(`Map discovered ${productUrls.length} product URLs`);
     } catch (e) {
       console.error('Map failed, using known URLs:', (e instanceof Error ? e.message : String(e)));
@@ -238,56 +224,49 @@ Deno.serve(async (req) => {
     productUrls = [...new Set(productUrls)];
     console.log(`Total unique products to scrape: ${productUrls.length}`);
 
-    // Step 2: Scrape each product page
+    // Step 2: Scrape each product page (batch mode, concurrency 4)
     const products: any[] = [];
-    for (const url of productUrls) {
-      try {
-        const slug = url.split('/products/').pop() || '';
-        console.log(`Scraping: ${slug}`);
-        const result = await firecrawlScrape(url, firecrawlApiKey);
-        if (!result.success || !result.data) { console.log(`No data for ${slug}`); continue; }
+    await runInChunks(productUrls, 8, async (url) => {
+      const slug = url.split('/products/').pop() || '';
+      console.log(`Scraping: ${slug}`);
+      const result = await firecrawlScrape(url, firecrawlApiKey, {
+        formats: ['markdown', 'html'], onlyMainContent: false, waitFor: 1500, timeout: 60000, proxy: 'stealth',
+      });
+      if (!result.success || !result.data) { console.log(`No data for ${slug}`); return; }
 
-        const markdown = result.data.markdown || '';
-        const html = result.data.html || result.data.rawHtml || '';
-        const metadata = result.data.metadata || {};
-        const extracted = extractFromMarkdown(markdown, url, html);
+      const markdown = result.data.markdown || '';
+      const html = result.data.html || result.data.rawHtml || '';
+      const metadata = result.data.metadata || {};
+      const extracted = extractFromMarkdown(markdown, url, html);
 
+      const title = extracted.title || metadata.title?.replace(/\s*[–|]\s*Goodbody.*$/i, '').trim() || '';
+      if (!title || title === 'Unknown Test') return;
 
-        const title = extracted.title || metadata.title?.replace(/\s*[–|]\s*Goodbody.*$/i, '').trim() || '';
-        if (!title || title === 'Unknown Test') continue;
+      let imageUrl = extracted.imageUrl as string | null;
+      if (!imageUrl && metadata.ogImage) imageUrl = stripShopifySizeSuffix(metadata.ogImage);
 
-        // Image URL: prefer scraper extraction, fall back to Firecrawl metadata ogImage.
-        // Always strip Shopify size suffix so we store the master (highest-resolution) URL.
-        let imageUrl = extracted.imageUrl as string | null;
-        if (!imageUrl && metadata.ogImage) imageUrl = stripShopifySizeSuffix(metadata.ogImage);
-
-        products.push({
-          test_name: title,
-          provider_id: 'goodbody-clinic',
-          provider_test_id: slug,
-          category: determineCategory(title, extracted.description),
-          price: extracted.price || null,
-          description: metadata.description || extracted.description || `${title} from Goodbody Clinic.`,
-          url,
-          ...(imageUrl ? { image_url: imageUrl } : {}),
-          is_active: true,
-          // Biomarkers are curated manually in src/data/goodbodyTestDetails.ts —
-          // the scraper must NOT overwrite biomarkers_list / biomarker_count,
-          // otherwise wrong markers (B12, folate, etc.) get reinstated.
-          sample_type: 'Venous blood',
-          clinic_visit_available: true,
-          home_kit_available: true,
-          url_verified: true,
-          url_verified_at: new Date().toISOString(),
-          scraped_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        });
-        console.log(`✓ ${title} - £${extracted.price}`);
-        await new Promise(r => setTimeout(r, 500));
-      } catch (e) {
-        console.error(`✗ Error: ${(e instanceof Error ? e.message : String(e))}`);
-      }
-    }
+      products.push({
+        test_name: title,
+        provider_id: 'goodbody-clinic',
+        provider_test_id: slug,
+        category: determineCategory(title, extracted.description),
+        price: extracted.price || null,
+        description: metadata.description || extracted.description || `${title} from Goodbody Clinic.`,
+        url,
+        ...(imageUrl ? { image_url: imageUrl } : {}),
+        is_active: true,
+        // Biomarkers are curated manually in src/data/goodbodyTestDetails.ts —
+        // the scraper must NOT overwrite biomarkers_list / biomarker_count.
+        sample_type: 'Venous blood',
+        clinic_visit_available: true,
+        home_kit_available: true,
+        url_verified: true,
+        url_verified_at: new Date().toISOString(),
+        scraped_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+      console.log(`✓ ${title} - £${extracted.price}`);
+    });
 
     // Step 3: Upsert
     if (products.length > 0) {
