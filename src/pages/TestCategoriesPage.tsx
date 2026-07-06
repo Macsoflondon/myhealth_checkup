@@ -259,11 +259,11 @@ const TestCategoriesPage = () => {
                   style={{
                     position: "relative",
                     background: isHov
-                      ? "rgba(255,255,255,0.055)"
-                      : "rgba(255,255,255,0.03)",
+                      ? "rgba(8,17,41,0.98)"
+                      : "#081129",
                     border: isHov
                       ? `1px solid ${cat.accent}50`
-                      : "1px solid rgba(255,255,255,0.07)",
+                      : "1px solid rgba(255,255,255,0.08)",
                     borderRadius: 20,
                     padding: "28px 28px 24px",
                     cursor: "pointer",
