@@ -173,6 +173,10 @@ verify_jwt = false
 [functions.security-alert-notify]
 verify_jwt = false
 
+# Temporary maintenance utility: syncs Vault service_role_key from Edge runtime
+[functions.sync-service-role-vault]
+verify_jwt = false
+
 # SOC clustering + baselines + patterns (called by pg_cron)
 [functions.soc-cluster]
 verify_jwt = false
