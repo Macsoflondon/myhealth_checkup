@@ -91,17 +91,18 @@ Deno.serve(async (req) => {
     // Discover product URLs
     let productUrls: string[] = [];
     try {
-      productUrls = await firecrawlMap('https://lolahealth.com/collections/blood-tests', firecrawlApiKey);
+      productUrls = await mapLola(firecrawlApiKey);
       console.log(`Map discovered ${productUrls.length} URLs`);
     } catch (e) {
       console.error('Map failed:', (e instanceof Error ? e.message : String(e)));
     }
 
-    // Ensure we have the base collection URL for fallback
+    // Fallback: scrape collection page for links
     if (productUrls.length === 0) {
-      // Try scraping the collection page itself to find links
       try {
-        const collResult = await firecrawlScrape('https://lolahealth.com/collections/blood-tests', firecrawlApiKey);
+        const collResult = await firecrawlScrape('https://lolahealth.com/collections/blood-tests', firecrawlApiKey, {
+          formats: ['markdown'], onlyMainContent: true, waitFor: 5000, timeout: 90000, proxy: 'stealth',
+        });
         if (collResult.success && collResult.data?.markdown) {
           const urlMatches = collResult.data.markdown.matchAll(/\(https:\/\/lolahealth\.com\/products\/([^)]+)\)/g);
           for (const m of urlMatches) {
@@ -130,85 +131,83 @@ Deno.serve(async (req) => {
       'bilirubin', 'albumin', 'creatinine', 'urea', 'egfr', 'glucose', 'hba1c', 'crp',
       'haemoglobin', 'platelet', 'psa', 'thyroid', 'shbg', 'prolactin'];
 
-    for (const url of productUrls) {
-      try {
-        const slug = url.split('/products/').pop() || '';
-        console.log(`Scraping: ${slug}`);
-        const result = await firecrawlScrape(url, firecrawlApiKey);
-        if (!result.success || !result.data) continue;
+    // Batch mode, concurrency 4
+    await runInChunks(productUrls, 4, async (url) => {
+      const slug = url.split('/products/').pop() || '';
+      console.log(`Scraping: ${slug}`);
+      const result = await firecrawlScrape(url, firecrawlApiKey, {
+        formats: ['markdown'], onlyMainContent: true, waitFor: 5000, timeout: 90000, proxy: 'stealth',
+      });
+      if (!result.success || !result.data) return;
 
-        const markdown = result.data.markdown || '';
-        const metadata = result.data.metadata || {};
+      const markdown = result.data.markdown || '';
+      const metadata = result.data.metadata || {};
 
-        let title = metadata.title?.replace(/\s*[–|]\s*Lola\s*Health.*$/i, '').trim() || '';
-        if (!title) {
-          const h1 = markdown.match(/^#\s+(.+)$/m);
-          title = h1 ? h1[1].trim() : '';
-        }
-        if (!title) continue;
-
-        const collectionProduct = collectionByHandle.get(slug);
-        const collectionBasePrice = extractCollectionBasePrice(collectionProduct);
-        const collectionHeadlinePrice = Number.isFinite(Number(collectionProduct?.variants?.[0]?.price))
-          ? Number(collectionProduct.variants[0].price)
-          : null;
-
-        const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
-        const markdownPrice = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : null;
-        const price = collectionHeadlinePrice ?? collectionBasePrice ?? markdownPrice;
-
-        const origMatch = markdown.match(/~~£([\d,]+\.\d{2})~~/);
-        const originalPrice = origMatch ? parseFloat(origMatch[1].replace(',', '')) : null;
-
-        const discountMatch = markdown.match(/(\d+)%\s*(?:OFF|off|discount)/i);
-        const discount = discountMatch ? parseInt(discountMatch[1]) : null;
-
-        const bioCountMatch = markdown.match(/(\d+)\s*(?:Biomarkers?\s*Tested|biomarkers?)/i);
-        const biomarkerCount = bioCountMatch ? parseInt(bioCountMatch[1]) : null;
-
-        const biomarkers: string[] = [];
-        const lines = markdown.split('\n');
-        for (const line of lines) {
-          const clean = line.replace(/^[\s*•-]+/, '').trim();
-          if (clean.length > 2 && clean.length < 80 && biomarkerTerms.some(t => clean.toLowerCase().includes(t))) {
-            biomarkers.push(clean);
-          }
-        }
-
-        const isAddon = markdown.toLowerCase().includes('add-on') || markdown.toLowerCase().includes('can only be added');
-
-        products.push({
-          test_name: title,
-          provider_id: 'lola-health',
-          provider_test_id: slug,
-          category: determineCategory(title, metadata.description || ''),
-          price,
-          base_price: collectionBasePrice,
-          original_price: originalPrice,
-          discount_percentage: discount,
-          description: metadata.description || `${title} blood test from Lola Health.`,
-          url,
-          image_url:
-            normalizeUrl(collectionProduct?.image?.src, url) ||
-            normalizeUrl(collectionProduct?.featured_image, url) ||
-            normalizeUrl(collectionProduct?.images?.[0]?.src ?? collectionProduct?.images?.[0], url),
-          is_active: true,
-          is_addon: isAddon,
-          biomarkers_list: biomarkers.length > 0 ? biomarkers : null,
-          biomarker_count: biomarkerCount || biomarkers.length || null,
-          sample_type: 'Finger-prick',
-          home_kit_available: true,
-          clinic_visit_available: false,
-          scraped_at: new Date().toISOString(),
-          url_verified: true,
-          url_verified_at: new Date().toISOString(),
-        });
-        console.log(`✓ ${title} - £${price ?? 'N/A'}${isAddon ? ' (Add-on)' : ''}`);
-        await new Promise(r => setTimeout(r, 500));
-      } catch (e) {
-        console.error(`✗ ${(e instanceof Error ? e.message : String(e))}`);
+      let title = metadata.title?.replace(/\s*[–|]\s*Lola\s*Health.*$/i, '').trim() || '';
+      if (!title) {
+        const h1 = markdown.match(/^#\s+(.+)$/m);
+        title = h1 ? h1[1].trim() : '';
       }
-    }
+      if (!title) return;
+
+      const collectionProduct = collectionByHandle.get(slug);
+      const collectionBasePrice = extractCollectionBasePrice(collectionProduct);
+      const collectionHeadlinePrice = Number.isFinite(Number(collectionProduct?.variants?.[0]?.price))
+        ? Number(collectionProduct.variants[0].price)
+        : null;
+
+      const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
+      const markdownPrice = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : null;
+      const price = collectionHeadlinePrice ?? collectionBasePrice ?? markdownPrice;
+
+      const origMatch = markdown.match(/~~£([\d,]+\.\d{2})~~/);
+      const originalPrice = origMatch ? parseFloat(origMatch[1].replace(',', '')) : null;
+
+      const discountMatch = markdown.match(/(\d+)%\s*(?:OFF|off|discount)/i);
+      const discount = discountMatch ? parseInt(discountMatch[1]) : null;
+
+      const bioCountMatch = markdown.match(/(\d+)\s*(?:Biomarkers?\s*Tested|biomarkers?)/i);
+      const biomarkerCount = bioCountMatch ? parseInt(bioCountMatch[1]) : null;
+
+      const biomarkers: string[] = [];
+      const lines = markdown.split('\n');
+      for (const line of lines) {
+        const clean = line.replace(/^[\s*•-]+/, '').trim();
+        if (clean.length > 2 && clean.length < 80 && biomarkerTerms.some(t => clean.toLowerCase().includes(t))) {
+          biomarkers.push(clean);
+        }
+      }
+
+      const isAddon = markdown.toLowerCase().includes('add-on') || markdown.toLowerCase().includes('can only be added');
+
+      products.push({
+        test_name: title,
+        provider_id: 'lola-health',
+        provider_test_id: slug,
+        category: determineCategory(title, metadata.description || ''),
+        price,
+        base_price: collectionBasePrice,
+        original_price: originalPrice,
+        discount_percentage: discount,
+        description: metadata.description || `${title} blood test from Lola Health.`,
+        url,
+        image_url:
+          normalizeUrl(collectionProduct?.image?.src, url) ||
+          normalizeUrl(collectionProduct?.featured_image, url) ||
+          normalizeUrl(collectionProduct?.images?.[0]?.src ?? collectionProduct?.images?.[0], url),
+        is_active: true,
+        is_addon: isAddon,
+        biomarkers_list: biomarkers.length > 0 ? biomarkers : null,
+        biomarker_count: biomarkerCount || biomarkers.length || null,
+        sample_type: 'Finger-prick',
+        home_kit_available: true,
+        clinic_visit_available: false,
+        scraped_at: new Date().toISOString(),
+        url_verified: true,
+        url_verified_at: new Date().toISOString(),
+      });
+      console.log(`✓ ${title} - £${price ?? 'N/A'}${isAddon ? ' (Add-on)' : ''}`);
+    });
 
     if (products.length > 0) {
       const { error } = await supabase.from('provider_tests').upsert(products, {
