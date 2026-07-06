@@ -129,5 +129,6 @@ export function fromLegacyUnified(p: LegacyUnifiedProps): UniversalTestData {
     is_popular: /popular/i.test(p.badge || ""),
     home_kit_available: /home|finger|kit/i.test(p.collection || ""),
     clinic_visit_available: /clinic|venous|in-person/i.test(p.collection || ""),
+    collection_options: fromDetails?.collection_options,
   };
 }
