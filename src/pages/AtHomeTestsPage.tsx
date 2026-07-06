@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Home, Shield, Clock, AlertCircle, Inbox, RotateCw } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useAtHomeTests } from "@/hooks/queries/useAtHomeTests";
 import { getBranding } from "@/data/providerBranding";
 import { getProviderRating } from "@/constants/providerRatings";
+import { findSubcategory, testMatchesSubcategory } from "@/config/subcategoryMap";
 
 const SEO = {
   title: "At Home Health Tests | myhealth checkup",
