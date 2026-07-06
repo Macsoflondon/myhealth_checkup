@@ -114,7 +114,7 @@ describe("Auth page", () => {
     expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
     await user.type(screen.getByLabelText(/^password/i), "Abcdef1!");
     await waitFor(() =>
-      expect(screen.getByText(/password strength/i)).toBeInTheDocument(),
+      expect(screen.getByText(/weak|fair|good|strong/i)).toBeInTheDocument(),
     );
   });
 
