@@ -12,7 +12,7 @@ const BrandVideoSection = () => {
             playsInline
             preload="auto"
             className="w-full h-auto rounded-lg sm:rounded-xl"
-            aria-label="\n – Your health. Your choice. One trusted platform!"
+            aria-label="\n – YOUR HEALTH. YOUR CHOICE. ONE TRUSTED PLATFORM."
           >
             <source src={medichecksVideo} type="video/mp4" />
             Your browser does not support the video tag.
