@@ -203,12 +203,12 @@ const AtHomeTestsPage: React.FC = () => {
       seoDescription={SEO.description}
       seoKeywords={SEO.keywords}
       canonicalUrl={SEO.canonical}
-      pillLabel="At Home"
-      headline="At Home Health Tests"
+      pillLabel={sub ? sub.label : "At Home"}
+      headline={sub ? sub.label : "At Home Health Tests"}
       subtitle="Compare at-home testing kits from the UK's most trusted providers. Analysed in accredited labs, results delivered securely online."
       searchPlaceholder="Search by test name or biomarker…"
       trustStats={[
-        { value: `${tests.length}+`, label: "At-Home Tests" },
+        { value: `${tests.length}+`, label: sub ? sub.label : "At-Home Tests" },
         { value: "UKAS", label: "Accredited Labs" },
         { value: "Fast", label: "Online Results" },
       ]}
@@ -220,7 +220,9 @@ const AtHomeTestsPage: React.FC = () => {
         { icon: Shield, title: "UKAS Accredited Labs", description: "Every sample analysed by UKAS-accredited UK laboratories" },
         { icon: Clock, title: "Fast Online Results", description: "Typical turnaround in a few days, delivered securely online" },
       ]}
-      breadcrumbs={[{ label: "Home", href: "/" }, { label: "At Home Tests" }]}
+      breadcrumbs={sub
+        ? [{ label: "Home", href: "/" }, { label: "At Home Tests", href: "/at-home-tests" }, { label: sub.label }]
+        : [{ label: "Home", href: "/" }, { label: "At Home Tests" }]}
     />
   );
 };
