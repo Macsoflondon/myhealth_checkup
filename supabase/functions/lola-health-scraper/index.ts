@@ -185,11 +185,12 @@ Deno.serve(async (req) => {
       const slug = url.split('/products/').pop() || '';
       console.log(`Scraping: ${slug}`);
       const result = await firecrawlScrape(url, firecrawlApiKey, {
-        formats: ['markdown'], onlyMainContent: true, waitFor: 1500, timeout: 60000, proxy: 'stealth',
+        formats: ['markdown', 'html'], onlyMainContent: true, waitFor: 1500, timeout: 60000, proxy: 'stealth',
       });
       if (!result.success || !result.data) return;
 
       const markdown = result.data.markdown || '';
+      const html = result.data.html || '';
       const metadata = result.data.metadata || {};
 
       let title = metadata.title?.replace(/\s*[–|]\s*Lola\s*Health.*$/i, '').trim() || '';
@@ -243,7 +244,13 @@ Deno.serve(async (req) => {
         image_url:
           normalizeUrl(collectionProduct?.image?.src, url) ||
           normalizeUrl(collectionProduct?.featured_image, url) ||
-          normalizeUrl(collectionProduct?.images?.[0]?.src ?? collectionProduct?.images?.[0], url),
+          normalizeUrl(collectionProduct?.images?.[0]?.src ?? collectionProduct?.images?.[0], url) ||
+          normalizeUrl(metadata.ogImage, url) ||
+          (() => {
+            const m = html.match(/property="og:image"\s+content="([^"]+)"/i)
+              || html.match(/content="([^"]+)"\s+property="og:image"/i);
+            return m ? normalizeUrl(m[1], url) : null;
+          })(),
         is_active: true,
         is_addon: isAddon,
         biomarkers_list: biomarkers.length > 0 ? biomarkers : null,
