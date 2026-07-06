@@ -150,6 +150,7 @@ const AtHomeTestsPage: React.FC = () => {
         tag,
         collection: t.sample_type || "Finger-prick",
         url: t.url || undefined,
+        collectionOptions: t.collection_options,
       } satisfies CategoryTestItem;
     });
   }, [atHomeTests]);
