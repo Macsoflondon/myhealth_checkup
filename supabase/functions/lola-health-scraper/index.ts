@@ -56,25 +56,13 @@ function determineCategory(title: string, description: string): string {
   return 'General Health';
 }
 
-async function firecrawlScrape(url: string, apiKey: string): Promise<any> {
-  const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, formats: ['markdown'], onlyMainContent: true, waitFor: 2000 }),
-  });
-  if (!response.ok) throw new Error(`Firecrawl error: ${response.status}`);
-  return response.json();
-}
+import { firecrawlScrape, firecrawlMap, runInChunks } from '../_shared/firecrawl-helpers.ts';
 
-async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
-  const response = await fetch('https://api.firecrawl.dev/v1/map', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, search: 'blood test', limit: 200, includeSubdomains: false }),
+async function mapLola(apiKey: string): Promise<string[]> {
+  const links = await firecrawlMap('https://lolahealth.com/collections/blood-tests', apiKey, {
+    search: 'blood test', limit: 200,
   });
-  if (!response.ok) throw new Error(`Firecrawl map error: ${response.status}`);
-  const data = await response.json();
-  return (data.links || []).filter((l: string) => l.includes('/products/') && !l.includes('?') && !l.includes('subscription'));
+  return links.filter((l) => l.includes('/products/') && !l.includes('?') && !l.includes('subscription'));
 }
 
 Deno.serve(async (req) => {
