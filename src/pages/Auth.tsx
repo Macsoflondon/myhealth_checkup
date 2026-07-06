@@ -413,16 +413,16 @@ const Auth = () => {
               {loading ? "Processing..." : isSignUp ? "Sign Up" : "Sign In"}
             </Button>
 
-            <div className="relative my-4 hidden">
+            <div className="relative my-4">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-muted" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-muted-foreground">Or continue with</span>
+                <span className="bg-tertiary px-2 text-muted-foreground">Or continue with</span>
               </div>
             </div>
 
-            <div className="hidden flex-col gap-3">
+            <div className="flex flex-col gap-3">
               <GoogleSignInButton mode={isSignUp ? "signup" : "signin"} disabled={loading || (!isSignUp && isLocked)} onLoading={setLoading} />
             </div>
 
