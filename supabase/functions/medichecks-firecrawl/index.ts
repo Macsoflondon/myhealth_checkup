@@ -134,8 +134,8 @@ async function scrapeWithFirecrawl(url: string, apiKey: string): Promise<any> {
   return firecrawlScrape(url, apiKey, {
     formats: ['markdown', 'html'],
     onlyMainContent: false,
-    waitFor: 5000,
-    timeout: 90000,
+    waitFor: 1500,
+    timeout: 60000,
     proxy: 'stealth',
   });
 }
