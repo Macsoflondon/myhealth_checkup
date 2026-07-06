@@ -109,7 +109,7 @@ Deno.serve(async (req) => {
 
     const products: any[] = [];
     // Batch mode, concurrency 4
-    await runInChunks(productUrls.slice(0, 50), 4, async (url) => {
+    await runInChunks(productUrls.slice(0, 50), 8, async (url) => {
       const slug = new URL(url).pathname.split('/').filter(Boolean).pop() || '';
       console.log(`Scraping: ${slug}`);
       const result = await firecrawlScrape(url, firecrawlApiKey, {
