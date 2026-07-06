@@ -77,24 +77,27 @@ export async function firecrawlMap(
     .filter((l: unknown): l is string => typeof l === 'string' && l.length > 0);
 }
 
-/** Run `fn` over `items` with bounded concurrency (batch mode). */
+/** Worker-pool concurrency (batch mode) — N workers pull from a shared queue.
+ *  Unlike chunked Promise.all, a slow item doesn't block the rest of its chunk. */
 export async function runInChunks<T, R>(
   items: T[],
   concurrency: number,
   fn: (item: T, index: number) => Promise<R>,
 ): Promise<R[]> {
-  const results: R[] = [];
-  for (let i = 0; i < items.length; i += concurrency) {
-    const batch = items.slice(i, i + concurrency);
-    const settled = await Promise.all(
-      batch.map((item, idx) =>
-        fn(item, i + idx).catch((e) => {
-          console.error(`[runInChunks] item ${i + idx} failed:`, e instanceof Error ? e.message : String(e));
-          return undefined as unknown as R;
-        }),
-      ),
-    );
-    results.push(...settled);
-  }
+  const results: R[] = new Array(items.length);
+  let cursor = 0;
+  const worker = async () => {
+    while (true) {
+      const idx = cursor++;
+      if (idx >= items.length) return;
+      try {
+        results[idx] = await fn(items[idx], idx);
+      } catch (e) {
+        console.error(`[runInChunks] item ${idx} failed:`, e instanceof Error ? e.message : String(e));
+        results[idx] = undefined as unknown as R;
+      }
+    }
+  };
+  await Promise.all(Array.from({ length: Math.min(concurrency, items.length) }, () => worker()));
   return results;
 }
