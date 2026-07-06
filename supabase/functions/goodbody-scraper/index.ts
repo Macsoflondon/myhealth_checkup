@@ -145,26 +145,12 @@ function extractFromMarkdown(markdown: string, url: string, html = ''): any {
   return { title, price, biomarkerCount, biomarkers, description, imageUrl };
 }
 
-async function firecrawlScrape(url: string, apiKey: string): Promise<any> {
-  const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, formats: ['markdown', 'html'], onlyMainContent: false, waitFor: 2000 }),
-  });
-  if (!response.ok) throw new Error(`Firecrawl scrape error: ${response.status}`);
-  return response.json();
-}
+// Uses shared firecrawl helper (v2, stealth proxy, 90s timeout, retry).
+import { firecrawlScrape, firecrawlMap, runInChunks } from '../_shared/firecrawl-helpers.ts';
 
-
-async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
-  const response = await fetch('https://api.firecrawl.dev/v1/map', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, search: 'blood test', limit: 200, includeSubdomains: false }),
-  });
-  if (!response.ok) throw new Error(`Firecrawl map error: ${response.status}`);
-  const data = await response.json();
-  return (data.links || []).filter((l: string) => l.includes('/products/') && !l.includes('?') && !l.includes('gift-card'));
+async function mapGoodbody(apiKey: string): Promise<string[]> {
+  const links = await firecrawlMap('https://goodbodyclinic.com/collections/all', apiKey, { search: 'blood test', limit: 200 });
+  return links.filter((l) => l.includes('/products/') && !l.includes('?') && !l.includes('gift-card'));
 }
 
 Deno.serve(async (req) => {
