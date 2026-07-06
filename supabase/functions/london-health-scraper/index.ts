@@ -44,25 +44,11 @@ function determineCategory(title: string, description: string): string {
   return 'General Health';
 }
 
-async function firecrawlScrape(url: string, apiKey: string): Promise<any> {
-  const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, formats: ['markdown'], onlyMainContent: true, waitFor: 2000 }),
-  });
-  if (!response.ok) throw new Error(`Firecrawl error: ${response.status}`);
-  return response.json();
-}
+import { firecrawlScrape, firecrawlMap, runInChunks } from '../_shared/firecrawl-helpers.ts';
 
-async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
-  const response = await fetch('https://api.firecrawl.dev/v1/map', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, search: 'blood test health', limit: 200, includeSubdomains: false }),
-  });
-  if (!response.ok) throw new Error(`Firecrawl map error: ${response.status}`);
-  const data = await response.json();
-  return (data.links || []).filter((l: string) =>
+async function mapLondonHealth(baseUrl: string, apiKey: string): Promise<string[]> {
+  const links = await firecrawlMap(baseUrl, apiKey, { search: 'blood test health', limit: 200 });
+  return links.filter((l) =>
     (l.includes('/product') || l.includes('/test') || l.includes('/blood-test') || l.includes('/health'))
     && !l.includes('?') && !l.includes('#') && !l.includes('/cart') && !l.includes('/account')
     && !l.includes('/blog') && !l.includes('/contact') && !l.includes('/about')
