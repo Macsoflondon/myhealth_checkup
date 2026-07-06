@@ -33,6 +33,7 @@ export interface CategoryTestItem {
   tag: string;
   collection?: string;
   url?: string;
+  collectionOptions?: unknown;
 }
 
 interface BenefitItem {
