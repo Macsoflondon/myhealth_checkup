@@ -69,7 +69,7 @@ Deno.serve(async (req) => {
     // Step 1: Map to discover product URLs
     let productUrls: string[] = [];
     try {
-      productUrls = await firecrawlMap('https://thriva.co/shop', firecrawlApiKey);
+      productUrls = await mapThriva(firecrawlApiKey);
       console.log(`Map discovered ${productUrls.length} URLs`);
     } catch (e) {
       console.error('Map failed:', (e instanceof Error ? e.message : String(e)));
@@ -83,56 +83,53 @@ Deno.serve(async (req) => {
     productUrls = [...new Set(productUrls)];
     console.log(`Total URLs to scrape: ${productUrls.length}`);
 
-    // Step 2: Scrape each product
+    // Step 2: Scrape each product (batch mode, concurrency 4)
     const tests: any[] = [];
-    for (const url of productUrls) {
-      try {
-        const slug = url.split('/').pop() || '';
-        const knownProduct = KNOWN_PRODUCTS.find(p => p.slug === slug);
-        console.log(`Scraping: ${slug}`);
+    await runInChunks(productUrls, 4, async (url) => {
+      const slug = url.split('/').pop() || '';
+      const knownProduct = KNOWN_PRODUCTS.find(p => p.slug === slug);
+      console.log(`Scraping: ${slug}`);
 
-        const result = await firecrawlScrape(url, firecrawlApiKey);
-        if (!result.success || !result.data) continue;
+      const result = await firecrawlScrape(url, firecrawlApiKey, {
+        formats: ['markdown'], onlyMainContent: true, waitFor: 5000, timeout: 90000, proxy: 'stealth',
+      });
+      if (!result.success || !result.data) return;
 
-        const markdown = result.data.markdown || '';
-        const metadata = result.data.metadata || {};
+      const markdown = result.data.markdown || '';
+      const metadata = result.data.metadata || {};
 
-        let title = metadata.title?.replace(/\s*[–|]\s*Thriva.*$/i, '').trim() || '';
-        if (!title) {
-          const h1 = markdown.match(/^#\s+(.+)$/m);
-          title = h1 ? h1[1].trim() : '';
-        }
-        if (!title) title = knownProduct?.name || slug.replace(/-/g, ' ');
-
-        const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
-        const price = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : null;
-
-        const bioCountMatch = markdown.match(/(\d+)\s*biomarkers?/i);
-        const biomarkerCount = bioCountMatch ? parseInt(bioCountMatch[1]) : null;
-
-        tests.push({
-          provider_id: 'thriva',
-          provider_test_id: `thriva-${slug}`,
-          test_name: title,
-          description: metadata.description || '',
-          price,
-          category: inferCategory(title),
-          url,
-          is_active: true,
-          biomarker_count: biomarkerCount,
-          sample_type: 'Finger-prick',
-          home_kit_available: true,
-          clinic_visit_available: false,
-          scraped_at: new Date().toISOString(),
-          url_verified: true,
-          url_verified_at: new Date().toISOString(),
-        });
-        console.log(`✓ ${title} - £${price ?? 'N/A'}`);
-        await new Promise(r => setTimeout(r, 500));
-      } catch (e) {
-        console.error(`✗ ${(e instanceof Error ? e.message : String(e))}`);
+      let title = metadata.title?.replace(/\s*[–|]\s*Thriva.*$/i, '').trim() || '';
+      if (!title) {
+        const h1 = markdown.match(/^#\s+(.+)$/m);
+        title = h1 ? h1[1].trim() : '';
       }
-    }
+      if (!title) title = knownProduct?.name || slug.replace(/-/g, ' ');
+
+      const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
+      const price = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : null;
+
+      const bioCountMatch = markdown.match(/(\d+)\s*biomarkers?/i);
+      const biomarkerCount = bioCountMatch ? parseInt(bioCountMatch[1]) : null;
+
+      tests.push({
+        provider_id: 'thriva',
+        provider_test_id: `thriva-${slug}`,
+        test_name: title,
+        description: metadata.description || '',
+        price,
+        category: inferCategory(title),
+        url,
+        is_active: true,
+        biomarker_count: biomarkerCount,
+        sample_type: 'Finger-prick',
+        home_kit_available: true,
+        clinic_visit_available: false,
+        scraped_at: new Date().toISOString(),
+        url_verified: true,
+        url_verified_at: new Date().toISOString(),
+      });
+      console.log(`✓ ${title} - £${price ?? 'N/A'}`);
+    });
 
     if (tests.length === 0) throw new Error('No tests scraped from Thriva');
 
