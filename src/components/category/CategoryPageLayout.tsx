@@ -280,7 +280,7 @@ export function CategoryPageLayout({
                       biomarkers_list: (test.biomarkers as any) ?? null,
                       turnaround_days_text: test.turnaround ?? null,
                       base_price: null,
-                      collection_options: null,
+                      collection_options: (test.collectionOptions as any) ?? null,
                     }}
                   />
                 ))}
