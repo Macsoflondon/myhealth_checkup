@@ -36,25 +36,9 @@ function inferCategory(name: string): string {
   return 'General Health';
 }
 
-async function firecrawlScrape(url: string, apiKey: string): Promise<any> {
-  const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, formats: ['markdown'], onlyMainContent: true, waitFor: 3000 }),
-  });
-  if (!response.ok) throw new Error(`Firecrawl error: ${response.status}`);
-  return response.json();
-}
-
-async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
-  const response = await fetch('https://api.firecrawl.dev/v1/map', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, search: 'blood test', limit: 100, includeSubdomains: false }),
-  });
-  if (!response.ok) throw new Error(`Firecrawl map error: ${response.status}`);
-  const data = await response.json();
-  return (data.links || []).filter((l: string) => l.includes('/shop/blood-tests/') && !l.includes('?'));
+async function mapThriva(apiKey: string): Promise<string[]> {
+  const links = await firecrawlMap('https://thriva.co/shop', apiKey, { search: 'blood test', limit: 100 });
+  return links.filter((l) => l.includes('/shop/blood-tests/') && !l.includes('?'));
 }
 
 Deno.serve(async (req) => {
