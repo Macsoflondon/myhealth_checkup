@@ -111,8 +111,8 @@ const AccreditedProvidersBar: React.FC = () => {
 
         {/* Mobile: two-row marquee (unchanged) */}
         <div className="relative space-y-1.5 sm:space-y-2 md:hidden">
-          <MarqueeRow items={rowA} tone="turquoise" duration={28} offset="0%" />
-          <MarqueeRow items={rowB} tone="pink" duration={34} reverse offset="-12%" />
+          <MarqueeRow items={rowA} tone="turquoise" duration={56} offset="0%" />
+          <MarqueeRow items={rowB} tone="pink" duration={68} reverse offset="-12%" />
 
           {/* Edge fades on both sides */}
           <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-12 bg-gradient-to-r from-muted/60 to-transparent" />
