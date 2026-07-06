@@ -287,35 +287,13 @@ export default function BrowseByCategoryBar({
               {items.map((item) => {
                 const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
                 return (
-                  <Link
+                  <CategoryPillDropdown
                     key={item.name}
-                    to={item.path}
-                    data-testid="category-pill"
-                    data-category={item.name}
-                    className={`group inline-flex items-center rounded-full no-underline bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200 shrink-0 ${
-                      compact ? "gap-2 pl-2 pr-3 py-1.5 sm:pl-2.5 sm:pr-3.5 sm:py-2" : "gap-1.5 pl-1.5 pr-2 sm:pl-2 sm:pr-2.5 py-1 sm:py-1.5"
-                    }`}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.borderColor = color;
-                      e.currentTarget.style.boxShadow = `0 8px 20px ${color}26`;
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.borderColor = "rgba(8,17,41,0.1)";
-                      e.currentTarget.style.boxShadow = "0 1px 2px rgba(8,17,41,0.04)";
-                    }}
-                  >
-                    <span
-                      className={`rounded-full inline-flex items-center justify-center shrink-0 ${
-                        compact ? "w-[22px] h-[22px] sm:w-[26px] sm:h-[26px]" : "w-[18px] h-[18px] sm:w-[20px] sm:h-[20px]"
-                      }`}
-                      style={{ background: `${color}1a` }}
-                    >
-                      <Icon className={`${compact ? "w-[13px] h-[13px] sm:w-[15px] sm:h-[15px]" : "w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]"}`} style={{ color }} strokeWidth={2} />
-                    </span>
-                    <span className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${compact ? "text-[13px] sm:text-[15px] md:text-base" : "text-[11px] sm:text-[11.5px]"}`}>
-                      {item.name}
-                    </span>
-                  </Link>
+                    item={item}
+                    color={color}
+                    Icon={Icon}
+                    compact={compact}
+                  />
                 );
               })}
             </div>
