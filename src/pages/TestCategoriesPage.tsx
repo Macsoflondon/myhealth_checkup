@@ -217,11 +217,11 @@ const TestCategoriesPage = () => {
                     borderRadius: 100,
                     border: active
                       ? `1.5px solid ${color}`
-                      : "1.5px solid rgba(255,255,255,0.1)",
+                      : "1.5px solid rgba(8,17,41,0.15)",
                     background: active
                       ? `${color}18`
-                      : "rgba(255,255,255,0.03)",
-                    color: active ? color : "rgba(255,255,255,0.4)",
+                      : "rgba(8,17,41,0.02)",
+                    color: active ? color : "rgba(8,17,41,0.5)",
                     fontSize: 12,
                     fontWeight: 700,
                     letterSpacing: "0.1em",
@@ -338,7 +338,7 @@ const TestCategoriesPage = () => {
                       <span
                         style={{
                           fontSize: 12,
-                          color: "rgba(255,255,255,0.3)",
+                          color: "rgba(8,17,41,0.4)",
                           fontWeight: 500,
                         }}
                       >
@@ -352,7 +352,7 @@ const TestCategoriesPage = () => {
                     style={{
                       fontSize: 20,
                       fontWeight: 700,
-                      color: "#fff",
+                      color: "#081129",
                       margin: "0 0 10px",
                       letterSpacing: "-0.02em",
                       lineHeight: 1.2,
@@ -365,7 +365,7 @@ const TestCategoriesPage = () => {
                   <p
                     style={{
                       fontSize: 14,
-                      color: "rgba(255,255,255,0.65)",
+                      color: "rgba(8,17,41,0.7)",
                       margin: "0 0 24px",
                       lineHeight: 1.6,
                     }}
@@ -379,11 +379,11 @@ const TestCategoriesPage = () => {
                       width: "100%",
                       padding: "12px 0",
                       borderRadius: 12,
-                      border: `1px solid ${isHov ? cat.accent : 'rgba(255,255,255,0.6)'}`,
+                      border: `1px solid ${isHov ? cat.accent : 'rgba(8,17,41,0.25)'}`,
                       background: isHov
                         ? `linear-gradient(135deg, ${cat.accent}25, ${cat.accent}10)`
                         : "transparent",
-                      color: isHov ? cat.accent : "rgba(255,255,255,0.85)",
+                      color: isHov ? cat.accent : "rgba(8,17,41,0.85)",
                       fontSize: 13,
                       fontWeight: 700,
                       letterSpacing: "0.06em",
@@ -442,7 +442,7 @@ const TestCategoriesPage = () => {
                 style={{
                   fontSize: 24,
                   fontWeight: 800,
-                  color: "#fff",
+                  color: "#081129",
                   margin: 0,
                   letterSpacing: "-0.02em",
                 }}
