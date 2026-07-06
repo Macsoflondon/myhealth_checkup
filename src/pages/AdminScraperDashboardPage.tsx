@@ -312,7 +312,7 @@ const AdminScraperDashboardPage: React.FC = () => {
                         <Button
                           size="sm"
                           onClick={() => runScraper(provider)}
-                          disabled={isRunning || runningScrapers.size > 0}
+                          disabled={isRunning}
                         >
                           {isRunning ? (
                             <>
@@ -331,7 +331,7 @@ const AdminScraperDashboardPage: React.FC = () => {
                             <Button
                               size="sm"
                               variant="destructive"
-                              disabled={isRunning || runningScrapers.size > 0}
+                              disabled={isRunning}
                             >
                               <Trash2 className="h-4 w-4 mr-2" />
                               Purge & Re-scrape
