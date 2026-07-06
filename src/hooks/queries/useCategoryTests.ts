@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { CategoryTestItem } from "@/components/category/CategoryPageLayout";
 import { getProviderRating } from "@/constants/providerRatings";
+import { findSubcategory, testMatchesSubcategory } from "@/config/subcategoryMap";
 
 const PROVIDER_NAMES: Record<string, string> = {
   "medichecks": "Medichecks",
