@@ -75,7 +75,7 @@ export function useCategoryTests(canonicalCategory: string, subcategory?: string
 
       const badgeColor = BADGE_COLOR_BY_CATEGORY[canonicalCategory] || "#3B82F6";
 
-      return data.map((row): CategoryTestItem => {
+      const mapped = data.map((row): CategoryTestItem => {
         const providerName = PROVIDER_NAMES[row.provider_id] || row.provider_id;
         const rating = getProviderRating(row.provider_id);
         const priceNum = Number(row.price ?? row.base_price ?? 0);
@@ -115,6 +115,16 @@ export function useCategoryTests(canonicalCategory: string, subcategory?: string
           url: row.url || undefined,
         };
       });
+
+      if (!sub) return mapped;
+      return mapped.filter((t) =>
+        testMatchesSubcategory(sub, {
+          title: t.title,
+          biomarkers: t.biomarkers,
+          tag: t.tag,
+          desc: t.desc,
+        })
+      );
     },
     staleTime: 5 * 60 * 1000,
   });
