@@ -36,7 +36,5 @@ export const contentRoutes = (
     <Route path="/biomarker-database" element={<BiomarkerDatabasePage />} />
     <Route path="/guides" element={<BiomarkerGuidesIndexPage />} />
     <Route path="/guides/:slug" element={<BiomarkerGuidePage />} />
-    
-    <Route path="/typography-showcase" element={<AdminRoute><TypographyShowcasePage /></AdminRoute>} />
   </>
 );
