@@ -152,7 +152,18 @@ Deno.serve(async (req) => {
       }
     }
 
-    const collectionProducts = await fetchLolaCollectionProducts();
+    let collectionProducts: any[] = [];
+    try {
+      collectionProducts = await fetchLolaCollectionProducts();
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      console.warn(`Shopify products.json failed (${msg}) — falling back to Firecrawl HTML scrape`);
+      try {
+        collectionProducts = await fetchLolaCollectionViaFirecrawl(firecrawlApiKey);
+      } catch (fbErr) {
+        console.error('Firecrawl collection fallback also failed:', fbErr instanceof Error ? fbErr.message : String(fbErr));
+      }
+    }
     const collectionByHandle = new Map(collectionProducts.map((product: any) => [product.handle, product]));
 
     const collectionUrls = collectionProducts
