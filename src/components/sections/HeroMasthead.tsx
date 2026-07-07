@@ -25,14 +25,42 @@ const bloodTestKit = bloodTestKitAsset.url;
 
 // Per-slide focal points tuned for mobile / tablet / desktop crops
 const SLIDES = [
-  { src: joggingWoman,    label: "Stay ahead of your health",     posMobile: "30% 30%", posTablet: "center 32%", posDesktop: "center 35%" },
-  { src: clinicReception, label: "Clinics Located Nationwide",    posMobile: "60% 50%", posTablet: "center 50%", posDesktop: "center 50%" },
-  { src: seniorCouple,    label: "Active at every age",           posMobile: "50% 25%", posTablet: "center 28%", posDesktop: "center 30%" },
-  { src: benchPhone,      label: "Find. Compare. Book.",          posMobile: "55% 40%", posTablet: "center 40%", posDesktop: "center 40%" },
-  { src: bloodTestKit,    label: "Easy At Home Kits Available",   posMobile: "35% 60%", posTablet: "40% 60%", posDesktop: "50% 65%" },
+  {
+    src: joggingWoman,
+    label: "Stay ahead of your health",
+    posMobile: "30% 30%",
+    posTablet: "center 32%",
+    posDesktop: "center 35%",
+  },
+  {
+    src: clinicReception,
+    label: "Clinics Located Nationwide",
+    posMobile: "60% 50%",
+    posTablet: "center 50%",
+    posDesktop: "center 50%",
+  },
+  {
+    src: seniorCouple,
+    label: "Active at every age",
+    posMobile: "50% 25%",
+    posTablet: "center 28%",
+    posDesktop: "center 30%",
+  },
+  {
+    src: benchPhone,
+    label: "Find. Compare. Book.",
+    posMobile: "55% 40%",
+    posTablet: "center 40%",
+    posDesktop: "center 40%",
+  },
+  {
+    src: bloodTestKit,
+    label: "Easy At Home Kits Available",
+    posMobile: "35% 60%",
+    posTablet: "40% 60%",
+    posDesktop: "50% 65%",
+  },
 ];
-
-
 
 import { realTestData, type RealTestData } from "@/data/compare/realProviderData";
 
@@ -48,10 +76,10 @@ const CATEGORY_META: Record<string, { color: string; to: string }> = {
 
 // providerName in realTestData → key in PROVIDER_LOGOS
 const PROVIDER_KEY: Record<string, keyof typeof PROVIDER_LOGOS> = {
-  "Medichecks": "medichecks",
+  Medichecks: "medichecks",
   "Goodbody Clinic": "goodbody-clinic",
   "London Medical Laboratory": "london-medical-laboratory",
-  "Clinilabs": "clinilabs",
+  Clinilabs: "clinilabs",
 };
 
 // Curated rotation: provider + preferred test name + display category
@@ -65,10 +93,15 @@ const ROTATION: { provider: string; testName: string; category: string }[] = [
 ];
 
 interface Advert {
-  category: string; color: string; to: string;
-  name: string; price: number; provider: string;
+  category: string;
+  color: string;
+  to: string;
+  name: string;
+  price: number;
+  provider: string;
   providerKey: keyof typeof PROVIDER_LOGOS;
-  providerLogo: string; url: string;
+  providerLogo: string;
+  url: string;
 }
 
 function buildAdverts(): Advert[] {
@@ -80,11 +113,19 @@ function buildAdverts(): Advert[] {
     const meta = CATEGORY_META[category] ?? { color: TURQUOISE, to: "/compare" };
     const key = PROVIDER_KEY[t.Provider];
     if (!key) return [];
-    return [{
-      category, color: meta.color, to: meta.to,
-      name: t["Test Name"], price: t["Price (£)"], provider: t.Provider,
-      providerKey: key, providerLogo: PROVIDER_LOGOS[key], url: t["Test URL"],
-    }];
+    return [
+      {
+        category,
+        color: meta.color,
+        to: meta.to,
+        name: t["Test Name"],
+        price: t["Price (£)"],
+        provider: t.Provider,
+        providerKey: key,
+        providerLogo: PROVIDER_LOGOS[key],
+        url: t["Test URL"],
+      },
+    ];
   });
 }
 
@@ -96,13 +137,12 @@ interface HeroMastheadProps {
 
 const Wordmark = () => (
   <span className="inline-flex items-center leading-[1.1] min-w-0 py-1">
-    <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(1.1rem,3vw,1.6rem)] lg:text-[4rem]">
+    <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(1.5rem,3vw,2.25rem)] lg:text-[6rem]">
       <span className="text-brand-navy">myhealth</span>
       <span className="text-brand-pink">checkup</span>
     </span>
   </span>
 );
-
 
 export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   const [i, setI] = useState(0);
@@ -123,17 +163,35 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
       />
 
       <div className="flex items-center justify-between gap-3 border-b border-[#081129]/10 pb-2 pt-4 sm:pt-7">
-        <div className="hidden sm:block"><Wordmark /></div>
+        <div className="hidden sm:block">
+          <Wordmark />
+        </div>
         <nav className="hidden sm:flex items-center gap-3 md:gap-4 lg:gap-6 text-xs sm:text-[13px] md:text-sm lg:text-base font-bold uppercase tracking-[0.14em] md:tracking-[0.18em] font-[Montserrat]">
-          <Link to="/compare" className="whitespace-nowrap text-brand-navy hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5">Compare</Link>
-          <Link to="/test-categories" className="whitespace-nowrap text-brand-navy hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5">Categories</Link>
-          <Link to="/find-test" className="whitespace-nowrap text-brand-pink hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5">Find Your Test</Link>
+          <Link
+            to="/compare"
+            className="whitespace-nowrap text-brand-navy hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5"
+          >
+            Compare
+          </Link>
+          <Link
+            to="/test-categories"
+            className="whitespace-nowrap text-brand-navy hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5"
+          >
+            Categories
+          </Link>
+          <Link
+            to="/find-test"
+            className="whitespace-nowrap text-brand-pink hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5"
+          >
+            Find Your Test
+          </Link>
         </nav>
       </div>
 
       <div className="flex items-baseline justify-between gap-4 border-b border-[#081129]/10 pb-1.5 sm:pb-2 mt-4 sm:mt-6 md:mt-8">
-        <span className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-brand-navy leading-[1.1] text-[clamp(1.25rem,4.2vw,3.25rem)] whitespace-pre-line">
-          YOUR HEALTH. YOUR <span className="text-brand-turquoise">CHOICE.</span>{"\n"}ONE TRUSTED <span className="text-brand-pink">PLATFORM.</span>
+        <span className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-brand-navy leading-[1.1] text-[clamp(1.25rem,4.2vw,3.25rem)] whitespace-nowrap">
+          YOUR HEALTH. YOUR <span className="text-brand-turquoise">CHOICE.</span> ONE TRUSTED{" "}
+          <span className="text-brand-pink">PLATFORM.</span>
         </span>
       </div>
 
@@ -170,16 +228,16 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
             key={`label-${i % SLIDES.length}`}
             className="inline-flex items-center gap-1.5 sm:gap-2 px-2 py-0.5 sm:px-3 sm:py-1.5 rounded-full bg-[#081129]/45 backdrop-blur-sm border border-white/20 text-white text-[11px] sm:text-lg md:text-2xl font-semibold font-[Montserrat] animate-fade-in"
           >
-            <span className="w-1.5 h-1.5 sm:w-[7px] sm:h-[7px] rounded-full shrink-0" style={{ background: TURQUOISE }} />
+            <span
+              className="w-1.5 h-1.5 sm:w-[7px] sm:h-[7px] rounded-full shrink-0"
+              style={{ background: TURQUOISE }}
+            />
             {slide.label}
           </span>
         </div>
 
         {ad && <HeroSalesTestCard ad={ad} />}
-
       </div>
-
     </section>
-
   );
 }
