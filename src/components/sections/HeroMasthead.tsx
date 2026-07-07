@@ -48,8 +48,7 @@ const SLIDES = [
   },
   {
     src: benchPhone,
-    label: "Find the Right Test for You
-    Compare. Choose. Book.",
+    label: "Find the Right Test for You, Compare. Choose. Book.",
     posMobile: "55% 40%",
     posTablet: "center 40%",
     posDesktop: "center 40%",
