@@ -66,6 +66,7 @@ const humanise = (slug: string) =>
 
 const SiteBreadcrumb = () => {
   const { pathname } = useLocation();
+  const [searchParams] = useSearchParams();
 
   if (pathname === "/" || HIDDEN_PREFIXES.some((p) => pathname.startsWith(p))) {
     return null;
@@ -74,11 +75,26 @@ const SiteBreadcrumb = () => {
   const segments = pathname.split("/").filter(Boolean);
   if (segments.length === 0) return null;
 
-  const crumbs = segments.map((seg, idx) => ({
+  const baseCrumbs = segments.map((seg, idx) => ({
     label: humanise(seg),
     href: "/" + segments.slice(0, idx + 1).join("/"),
     isLast: idx === segments.length - 1,
   }));
+
+  // Reflect ?subcategory=<slug> as an additional trailing crumb so navigating
+  // via query-param dropdowns is visible in the breadcrumb trail.
+  const subSlug = searchParams.get("subcategory");
+  const sub = findSubcategoryBySlug(subSlug);
+  const crumbs = sub
+    ? [
+        ...baseCrumbs.map((c) => ({ ...c, isLast: false })),
+        {
+          label: sub.label,
+          href: `${baseCrumbs[baseCrumbs.length - 1].href}?subcategory=${sub.slug}`,
+          isLast: true,
+        },
+      ]
+    : baseCrumbs;
 
   const origin = typeof window !== "undefined" ? window.location.origin : "https://myhealthcheckup.co.uk";
   const jsonLd = {
