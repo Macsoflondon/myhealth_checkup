@@ -27,35 +27,36 @@ const bloodTestKit = bloodTestKitAsset.url;
 const SLIDES = [
   {
     src: joggingWoman,
-    label: "Stay ahead of your health",
+    label: "Know Your Health. Own Your Future.",
     posMobile: "30% 30%",
     posTablet: "center 32%",
     posDesktop: "center 35%",
   },
   {
     src: clinicReception,
-    label: "Clinics Located Nationwide",
+    label: "Nationwide network of CQC-regulated clinics",
     posMobile: "60% 50%",
     posTablet: "center 50%",
     posDesktop: "center 50%",
   },
   {
     src: seniorCouple,
-    label: "Active at every age",
+    label: "Proactive Health for Every Stage of Life",
     posMobile: "50% 25%",
     posTablet: "center 28%",
     posDesktop: "center 30%",
   },
   {
     src: benchPhone,
-    label: "Find. Compare. Book.",
+    label: "Find the Right Test for You
+    Compare. Choose. Book.",
     posMobile: "55% 40%",
     posTablet: "center 40%",
     posDesktop: "center 40%",
   },
   {
     src: bloodTestKit,
-    label: "Easy At Home Kits Available",
+    label: "Test from the Comfort of Home",
     posMobile: "35% 60%",
     posTablet: "40% 60%",
     posDesktop: "50% 65%",
