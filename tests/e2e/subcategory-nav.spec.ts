@@ -23,9 +23,15 @@ const SITE = "https://myhealthcheckup.co.uk";
 
 async function assertSubcategorySEO(page: Page, fx: Fixture) {
   await page.waitForURL(new RegExp(`\\${fx.parentPath}\\?subcategory=${fx.subSlug}`));
-  // Give Helmet a tick to inject.
+
+  // Wait until Helmet has applied the subcategory-specific canonical (not just
+  // the base one). This is the reliable settle signal for per-route head tags.
   await page.waitForFunction(
-    () => !!document.querySelector('link[rel="canonical"][data-rh="true"]'),
+    (expected) => {
+      const el = document.querySelector('link[rel="canonical"][data-rh="true"]') as HTMLLinkElement | null;
+      return !!el && el.href === expected;
+    },
+    `${SITE}${fx.parentPath}?subcategory=${fx.subSlug}`,
     { timeout: 10_000 },
   );
 
@@ -42,6 +48,10 @@ async function assertSubcategorySEO(page: Page, fx: Fixture) {
     .first()
     .getAttribute("content");
   expect(ogUrl).toBe(canonical);
+
+  // Visible breadcrumb reflects the subcategory.
+  const breadcrumb = page.getByTestId("site-breadcrumb");
+  await expect(breadcrumb).toContainText(fx.subLabel);
 
   // BreadcrumbList JSON-LD ends with the sub label.
   const jsonLdBlocks = await page.locator('script[type="application/ld+json"]').allTextContents();
