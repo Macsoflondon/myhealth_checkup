@@ -116,7 +116,7 @@ const SiteBreadcrumb = () => {
       <Helmet>
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
-      <nav aria-label="Breadcrumb" className="container mx-auto px-4 sm:px-6 lg:px-12 pt-4">
+      <nav aria-label="Breadcrumb" data-testid="site-breadcrumb" className="container mx-auto px-4 sm:px-6 lg:px-12 pt-4">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
