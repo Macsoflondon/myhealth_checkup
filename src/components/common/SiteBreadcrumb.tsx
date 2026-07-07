@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import {
   Breadcrumb,
@@ -8,6 +8,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { findSubcategoryBySlug } from "@/config/subcategoryMap";
 
 /**
  * Route-driven breadcrumb. Skips on the homepage and noisy admin/auth/dashboard
