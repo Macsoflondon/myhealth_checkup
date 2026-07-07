@@ -207,6 +207,20 @@ export function findSubcategory(canonicalCategory: string, slug: string | null |
   return list.find((s) => s.slug === slug) ?? null;
 }
 
+/**
+ * Find any subcategory by slug across all parents. Useful for route-agnostic
+ * consumers (e.g. the global breadcrumb) that only know the URL, not the
+ * canonical_category the page maps to.
+ */
+export function findSubcategoryBySlug(slug: string | null | undefined): SubcategoryDef | null {
+  if (!slug) return null;
+  for (const list of Object.values(SUBCATEGORY_MAP)) {
+    const hit = list.find((s) => s.slug === slug);
+    if (hit) return hit;
+  }
+  return null;
+}
+
 /** Test a CategoryTestItem-shaped object against a subcategory. */
 export function testMatchesSubcategory(
   sub: SubcategoryDef,
