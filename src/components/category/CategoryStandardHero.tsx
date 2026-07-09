@@ -128,21 +128,8 @@ export function CategoryStandardHero({
                   <Icon className="h-5 w-5 text-white" />
                 </div>
 
-                {/* Mobile two-line label */}
-                <h3
-                  className="sm:hidden font-[Montserrat] uppercase leading-[1.05] tracking-tight"
-                  style={{ fontSize: 10, color: "#F5F5F5", fontWeight: 800 }}
-                >
-                  {primary}
-                  {secondary && (
-                    <>
-                      <br />
-                      <span style={{ color: "rgba(255,255,255,0.55)", fontWeight: 600 }}>
-                        {secondary}
-                      </span>
-                    </>
-                  )}
-                </h3>
+
+
 
                 {/* Desktop title */}
                 <h3
