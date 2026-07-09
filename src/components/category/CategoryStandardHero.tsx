@@ -92,16 +92,25 @@ export function CategoryStandardHero({
         </div>
 
         {/* Benefits row */}
-        <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 sm:gap-6 max-w-[900px] mx-auto mb-6 sm:mb-8 px-2 sm:px-4">
+        <div className="flex sm:grid sm:grid-cols-3 justify-center items-start gap-6 sm:gap-6 max-w-[900px] mx-auto mb-6 sm:mb-8 px-2 sm:px-4">
           {benefits.map(({ icon: Icon, title, description }) => {
             const parts = title.trim().split(/\s+/);
             const primary = parts.length > 1 ? parts.slice(0, -1).join(" ") : title;
             const secondary = parts.length > 1 ? parts[parts.length - 1] : "";
             return (
-              <div key={title} className="text-center flex flex-col items-center">
-                {/* Mobile: refined turquoise chip */}
-                <div className="sm:hidden w-14 h-14 rounded-full flex items-center justify-center mb-3 bg-gradient-to-b from-white/[0.10] to-white/[0.02] border border-white/10 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
-                  <Icon className="h-6 w-6" strokeWidth={1.25} style={{ color: "#22c0d4" }} />
+              <div key={title} className="text-center flex flex-col items-center" title={title}>
+                {/* Mobile: premium icon-only medallion */}
+                <div className="sm:hidden relative w-16 h-16 rounded-full flex items-center justify-center bg-gradient-to-b from-white/[0.08] to-white/[0.01] border border-white/15 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.10),0_8px_24px_-12px_rgba(34,192,212,0.35)]">
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0 rounded-full"
+                    style={{
+                      background:
+                        "radial-gradient(circle at 50% 30%, rgba(34,192,212,0.18), transparent 65%)",
+                    }}
+                  />
+                  <Icon className="relative h-6 w-6" strokeWidth={1.25} style={{ color: "#22c0d4" }} />
+                  <span className="sr-only">{title}</span>
                 </div>
                 {/* Desktop: original pink circle */}
                 <div
@@ -119,21 +128,8 @@ export function CategoryStandardHero({
                   <Icon className="h-5 w-5 text-white" />
                 </div>
 
-                {/* Mobile two-line label */}
-                <h3
-                  className="sm:hidden font-[Montserrat] uppercase leading-[1.05] tracking-tight"
-                  style={{ fontSize: 10, color: "#F5F5F5", fontWeight: 800 }}
-                >
-                  {primary}
-                  {secondary && (
-                    <>
-                      <br />
-                      <span style={{ color: "rgba(255,255,255,0.55)", fontWeight: 600 }}>
-                        {secondary}
-                      </span>
-                    </>
-                  )}
-                </h3>
+
+
 
                 {/* Desktop title */}
                 <h3
