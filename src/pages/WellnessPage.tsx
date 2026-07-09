@@ -5,7 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 import { Button } from "@/components/ui/button";
-import { Heart, Activity, Shield } from "lucide-react";
+
 import PageHeading from "@/components/ui/page-heading";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { CategoryStandardHero } from "@/components/category/CategoryStandardHero";
