@@ -62,29 +62,40 @@ export function CategoryStandardHero({
       <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
         {/* Category name */}
         <div className="flex items-center justify-center gap-3 sm:gap-4 relative">
-          <span aria-hidden="true" className="h-px w-8 sm:w-12 bg-[#e70d69]" />
+          <span
+            aria-hidden="true"
+            className="flex-shrink-0 h-px w-8 sm:w-12 bg-[#e70d69]"
+          />
           <h1
-            className="text-lg sm:text-2xl md:text-[33px] font-bold leading-none truncate m-0 text-center"
+            className="font-bold text-center m-0 text-white text-xl sm:text-2xl md:text-[33px]"
             style={{
               letterSpacing: "0.04em",
-              color: "#ffffff",
+              lineHeight: 1.15,
+              // Ensures capital-letter optical baseline sits centred against the accent lines
+              paddingBlock: "0.05em",
             }}
           >
             {pillLabel}
           </h1>
-          <span aria-hidden="true" className="h-px w-8 sm:w-12 bg-[#e70d69]" />
+          <span
+            aria-hidden="true"
+            className="flex-shrink-0 h-px w-8 sm:w-12 bg-[#e70d69]"
+          />
         </div>
 
         {/* Tricolour divider */}
         <div
+          role="presentation"
+          aria-hidden="true"
+          className="mt-5 sm:mt-6"
           style={{
             height: 3,
             background: "linear-gradient(90deg, #22c0d4, #e70d69, #22c0d4)",
             borderRadius: 2,
-            marginTop: 24,
           }}
         />
       </div>
+
     </section>
   );
 }
