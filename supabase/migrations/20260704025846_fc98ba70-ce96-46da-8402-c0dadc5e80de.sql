@@ -1,18 +1,31 @@
 
 -- 1) Fix biomarker_knowledge_hub write policy: restrict to service_role grantee
-DROP POLICY IF EXISTS biomarker_write_service ON public.biomarker_knowledge_hub;
-CREATE POLICY biomarker_write_service ON public.biomarker_knowledge_hub
-  AS PERMISSIVE FOR ALL TO service_role
-  USING (true) WITH CHECK (true);
+-- Table is created out-of-band on production; guard for preview environments.
+DO $$ BEGIN
+  DROP POLICY IF EXISTS biomarker_write_service ON public.biomarker_knowledge_hub;
+  CREATE POLICY biomarker_write_service ON public.biomarker_knowledge_hub
+    AS PERMISSIVE FOR ALL TO service_role
+    USING (true) WITH CHECK (true);
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
 -- 2) Fix recommendation_history guest spoofing: require authenticated user
-DROP POLICY IF EXISTS rec_history_user_read ON public.recommendation_history;
-CREATE POLICY rec_history_user_read ON public.recommendation_history
-  AS PERMISSIVE FOR SELECT TO authenticated
-  USING (user_id = auth.uid()::text);
+-- Table is created out-of-band on production; guard for preview environments.
+DO $$ BEGIN
+  DROP POLICY IF EXISTS rec_history_user_read ON public.recommendation_history;
+  CREATE POLICY rec_history_user_read ON public.recommendation_history
+    AS PERMISSIVE FOR SELECT TO authenticated
+    USING (user_id = auth.uid()::text);
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
 -- 3) Revoke public/anon/authenticated EXECUTE on SECURITY DEFINER functions
-REVOKE EXECUTE ON FUNCTION public.match_biomarkers(extensions.vector, double precision, integer) FROM PUBLIC, anon, authenticated;
+-- match_biomarkers is created out-of-band; guard for preview environments.
+DO $$ BEGIN
+  REVOKE EXECUTE ON FUNCTION public.match_biomarkers(extensions.vector, double precision, integer) FROM PUBLIC, anon, authenticated;
+EXCEPTION WHEN undefined_function OR undefined_object THEN NULL;
+END $$;
+
 REVOKE EXECUTE ON FUNCTION public.resolve_canonical_category(text, text) FROM PUBLIC, anon, authenticated;
 
 -- 4) Encrypt date_of_birth at rest: change column type to text so encrypted

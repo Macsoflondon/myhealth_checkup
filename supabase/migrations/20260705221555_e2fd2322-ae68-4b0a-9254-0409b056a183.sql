@@ -1,12 +1,23 @@
 
 -- 1. Fix search_path + revoke execute on cleanup_expired_recommendations
-ALTER FUNCTION public.cleanup_expired_recommendations() SET search_path = public;
-REVOKE EXECUTE ON FUNCTION public.cleanup_expired_recommendations() FROM PUBLIC, anon, authenticated;
+-- Function is created out-of-band on production; guard for preview environments.
+DO $$ BEGIN
+  ALTER FUNCTION public.cleanup_expired_recommendations() SET search_path = public;
+  REVOKE EXECUTE ON FUNCTION public.cleanup_expired_recommendations() FROM PUBLIC, anon, authenticated;
+EXCEPTION WHEN undefined_function OR undefined_object THEN NULL;
+END $$;
 
 -- 2. Convert match_biomarkers to SECURITY INVOKER (removes DEFINER exec finding)
-ALTER FUNCTION public.match_biomarkers(extensions.vector, double precision, integer) SECURITY INVOKER;
+-- Function and its source table are created out-of-band; guard for preview environments.
+DO $$ BEGIN
+  ALTER FUNCTION public.match_biomarkers(extensions.vector, double precision, integer) SECURITY INVOKER;
+EXCEPTION WHEN undefined_function OR undefined_object THEN NULL;
+END $$;
 -- Ensure authenticated can still read the source table it queries
-GRANT SELECT ON public.biomarker_knowledge_hub TO authenticated;
+DO $$ BEGIN
+  GRANT SELECT ON public.biomarker_knowledge_hub TO authenticated;
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
 -- 3. Drop redundant service_role "always true" policies (service_role bypasses RLS anyway)
 -- Tables with migrations — safe to drop without guards:

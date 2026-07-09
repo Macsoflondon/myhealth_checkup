@@ -20,6 +20,9 @@ CREATE TABLE IF NOT EXISTS public.admin_activity_log (
   ip_address  text,
   user_agent  text
 );
+ALTER TABLE public.admin_activity_log ENABLE ROW LEVEL SECURITY;
+GRANT SELECT ON public.admin_activity_log TO authenticated;
+GRANT ALL ON public.admin_activity_log TO service_role;
 
 CREATE TABLE IF NOT EXISTS public.edge_function_logs (
   id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -33,6 +36,9 @@ CREATE TABLE IF NOT EXISTS public.edge_function_logs (
   error_message text,
   triggered_by  text
 );
+ALTER TABLE public.edge_function_logs ENABLE ROW LEVEL SECURITY;
+GRANT SELECT ON public.edge_function_logs TO authenticated;
+GRANT ALL ON public.edge_function_logs TO service_role;
 
 CREATE TABLE IF NOT EXISTS public.ai_operation_logs (
   id              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -52,6 +58,9 @@ CREATE TABLE IF NOT EXISTS public.ai_operation_logs (
   error_message   text,
   metadata        jsonb
 );
+ALTER TABLE public.ai_operation_logs ENABLE ROW LEVEL SECURITY;
+GRANT SELECT ON public.ai_operation_logs TO authenticated;
+GRANT ALL ON public.ai_operation_logs TO service_role;
 
 CREATE TABLE IF NOT EXISTS public.audit_retention_policy (
   source text PRIMARY KEY,

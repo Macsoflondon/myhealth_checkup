@@ -44,20 +44,9 @@ for (const vp of VIEWPORTS) {
       expect(count, `${vp.name}: "${label}" not found in accreditors bar`).toBeGreaterThan(0);
     }
 
-    // 2. No horizontal overflow on either marquee row.
-    const rows = await page.$$(ROW);
-    for (const row of rows) {
-      const overflow = await row.evaluate((el) => ({
-        scrollW: el.scrollWidth,
-        clientW: el.clientWidth,
-      }));
-      expect(
-        overflow.scrollW,
-        `${vp.name}: a marquee row overflows (${overflow.scrollW} > ${overflow.clientW})`,
-      ).toBeLessThanOrEqual(overflow.clientW + 1);
-    }
-
-    // 3. Page-level horizontal scroll guard.
+    // 2. Page-level horizontal scroll guard.
+    // (Marquee rows intentionally have scrollWidth > clientWidth — that's how they work.
+    //  We only need to confirm the page itself doesn't gain a horizontal scrollbar.)
     const bodyOverflow = await page.evaluate(() => ({
       scrollW: document.documentElement.scrollWidth,
       clientW: document.documentElement.clientWidth,
