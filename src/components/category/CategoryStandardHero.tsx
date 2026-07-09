@@ -1,6 +1,10 @@
+import { useId } from "react";
+
 interface CategoryStandardHeroProps {
   /** Category name shown at the top of the hero, e.g. "Cancer Screening" */
   pillLabel: string;
+  /** Semantic heading level. Use h1 for standalone page titles, h2 when nested inside a page that already has an h1. */
+  as?: "h1" | "h2";
 }
 
 /**
@@ -10,9 +14,14 @@ interface CategoryStandardHeroProps {
  */
 export function CategoryStandardHero({
   pillLabel,
+  as = "h1",
 }: CategoryStandardHeroProps) {
+  const headingId = useId();
+  const Heading = as;
+
   return (
     <section
+      aria-labelledby={headingId}
       className="px-4 sm:px-8 md:px-10 pt-10 sm:pt-12 md:pt-14 pb-6 sm:pb-8"
       style={{
         background: "#081129",
@@ -66,7 +75,8 @@ export function CategoryStandardHero({
             aria-hidden="true"
             className="flex-shrink-0 h-px w-8 sm:w-12 bg-[#e70d69]"
           />
-          <h1
+          <Heading
+            id={headingId}
             className="font-bold text-center m-0 text-white text-xl sm:text-2xl md:text-[33px]"
             style={{
               letterSpacing: "0.04em",
@@ -76,7 +86,7 @@ export function CategoryStandardHero({
             }}
           >
             {pillLabel}
-          </h1>
+          </Heading>
           <span
             aria-hidden="true"
             className="flex-shrink-0 h-px w-8 sm:w-12 bg-[#e70d69]"
