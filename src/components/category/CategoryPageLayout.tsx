@@ -226,7 +226,7 @@ export function CategoryPageLayout({
           style={{ paddingBottom: compared.length > 0 ? 80 : 0 }}
         >
 
-          <CategoryStandardHero pillLabel={pillLabel} benefits={benefits} />
+          <CategoryStandardHero pillLabel={pillLabel} />
 
           {/* Filter + Sort + Cards */}
           <section className="pt-6 sm:pt-8 pb-10 sm:pb-14 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white">

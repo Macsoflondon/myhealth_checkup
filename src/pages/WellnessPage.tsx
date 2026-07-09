@@ -199,14 +199,7 @@ const WellnessPage = () => {
       <Header />
 
       <main className="min-h-screen bg-background">
-        <CategoryStandardHero
-          pillLabel="General Wellness"
-          benefits={[
-            { icon: Shield, title: "Early Detection", description: "Identify issues before they become serious" },
-            { icon: Activity, title: "Optimise Performance", description: "Monitor biomarkers to enhance wellbeing" },
-            { icon: Heart, title: "Peace of Mind", description: "Confidence in your health status" },
-          ]}
-        />
+        <CategoryStandardHero pillLabel="General Wellness" />
 
         {/* Browse Tests by Category */}
         <section
