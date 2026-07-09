@@ -92,52 +92,85 @@ export function CategoryStandardHero({
         </div>
 
         {/* Benefits row */}
-        <div
-          className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 max-w-[900px] mx-auto mb-6 sm:mb-8 px-2 sm:px-4"
-        >
-          {benefits.map(({ icon: Icon, title, description }) => (
-            <div key={title} style={{ textAlign: "center" }}>
-              <div
-                style={{
-                  width: 40,
-                  height: 40,
-                  background: "#e70d69",
-                  borderRadius: "9999px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "0 auto 8px",
-                }}
-              >
-                <Icon className="h-5 w-5 text-white" />
+        <div className="grid grid-cols-3 sm:grid-cols-3 gap-2 sm:gap-6 max-w-[900px] mx-auto mb-6 sm:mb-8 px-2 sm:px-4">
+          {benefits.map(({ icon: Icon, title, description }) => {
+            const parts = title.trim().split(/\s+/);
+            const primary = parts.length > 1 ? parts.slice(0, -1).join(" ") : title;
+            const secondary = parts.length > 1 ? parts[parts.length - 1] : "";
+            return (
+              <div key={title} className="text-center flex flex-col items-center">
+                {/* Mobile: refined turquoise chip */}
+                <div className="sm:hidden w-14 h-14 rounded-full flex items-center justify-center mb-3 bg-gradient-to-b from-white/[0.10] to-white/[0.02] border border-white/10 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]">
+                  <Icon className="h-6 w-6" strokeWidth={1.25} style={{ color: "#22c0d4" }} />
+                </div>
+                {/* Desktop: original pink circle */}
+                <div
+                  className="hidden sm:flex"
+                  style={{
+                    width: 40,
+                    height: 40,
+                    background: "#e70d69",
+                    borderRadius: "9999px",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: "0 auto 8px",
+                  }}
+                >
+                  <Icon className="h-5 w-5 text-white" />
+                </div>
+
+                {/* Mobile two-line label */}
+                <h3
+                  className="sm:hidden font-[Montserrat] uppercase leading-[1.05] tracking-tight"
+                  style={{ fontSize: 10, color: "#F5F5F5", fontWeight: 800 }}
+                >
+                  {primary}
+                  {secondary && (
+                    <>
+                      <br />
+                      <span style={{ color: "rgba(255,255,255,0.55)", fontWeight: 600 }}>
+                        {secondary}
+                      </span>
+                    </>
+                  )}
+                </h3>
+
+                {/* Desktop title */}
+                <h3
+                  className="hidden sm:block"
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    lineHeight: 1.3,
+                    minHeight: 18,
+                    color: "#ffffff",
+                    marginBottom: 4,
+                  }}
+                >
+                  {title}
+                </h3>
+
+                {/* Desktop description (hidden on mobile) */}
+                <p
+                  className="hidden sm:block"
+                  style={{
+                    fontSize: 12,
+                    lineHeight: 1.4,
+                    minHeight: 32,
+                    maxWidth: 220,
+                    color: "rgba(255,255,255,0.7)",
+                    margin: "0 auto",
+                  }}
+                >
+                  {description}
+                </p>
               </div>
-              <h3
-                style={{
-                  fontSize: 14,
-                  fontWeight: 600,
-                  lineHeight: 1.3,
-                  minHeight: 18,
-                  color: "#ffffff",
-                  marginBottom: 4,
-                }}
-              >
-                {title}
-              </h3>
-              <p
-                style={{
-                  fontSize: 12,
-                  lineHeight: 1.4,
-                  minHeight: 32,
-                  maxWidth: 220,
-                  color: "rgba(255,255,255,0.7)",
-                  margin: "0 auto",
-                }}
-              >
-                {description}
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
+
+        {/* Mobile hairline accent under badge row */}
+        <div className="sm:hidden mx-auto mb-6 h-px w-24 bg-gradient-to-r from-transparent via-[#22c0d4]/50 to-transparent" />
 
         {/* Tricolour divider */}
         <div
