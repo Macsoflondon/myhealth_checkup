@@ -1,31 +1,15 @@
-import { LucideIcon } from "lucide-react";
-
-interface BenefitItem {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-}
-
 interface CategoryStandardHeroProps {
-  /** Pill label shown at the top, e.g. "GENERAL WELLNESS" */
+  /** Category name shown at the top of the hero, e.g. "Cancer Screening" */
   pillLabel: string;
-  /** Three benefit cards rendered below the pill */
-  benefits: [BenefitItem, BenefitItem, BenefitItem];
 }
 
 /**
  * CategoryStandardHero
- * Standardised top-of-page hero used across all category landing pages.
- * Mirrors the General Wellness layout:
- *   1. Coloured pill badge with category name
- *   2. Three benefit tiles (icon + title + description)
- *   3. Tricolour gradient divider
- *
- * Designed to sit directly above the filter pills row.
+ * Minimal category header used across all category landing pages.
+ * Shows only the category name on a navy background with a tricolour divider.
  */
 export function CategoryStandardHero({
   pillLabel,
-  benefits,
 }: CategoryStandardHeroProps) {
   return (
     <section
@@ -76,8 +60,8 @@ export function CategoryStandardHero({
       />
 
       <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
-        {/* Pill row */}
-        <div className="flex items-center justify-center gap-3 sm:gap-4 relative mb-6 sm:mb-8 md:mb-10">
+        {/* Category name */}
+        <div className="flex items-center justify-center gap-3 sm:gap-4 relative">
           <span aria-hidden="true" className="h-px w-8 sm:w-12 bg-[#e70d69]" />
           <h1
             className="text-lg sm:text-2xl md:text-[33px] font-bold leading-none truncate m-0 text-center"
@@ -91,89 +75,13 @@ export function CategoryStandardHero({
           <span aria-hidden="true" className="h-px w-8 sm:w-12 bg-[#e70d69]" />
         </div>
 
-        {/* Benefits row */}
-        <div className="flex sm:grid sm:grid-cols-3 justify-center items-start gap-6 sm:gap-6 max-w-[900px] mx-auto mb-6 sm:mb-8 px-2 sm:px-4">
-          {benefits.map(({ icon: Icon, title, description }) => {
-            const parts = title.trim().split(/\s+/);
-            const primary = parts.length > 1 ? parts.slice(0, -1).join(" ") : title;
-            const secondary = parts.length > 1 ? parts[parts.length - 1] : "";
-            return (
-              <div key={title} className="text-center flex flex-col items-center" title={title}>
-                {/* Mobile: premium icon-only medallion */}
-                <div className="sm:hidden relative w-16 h-16 rounded-full flex items-center justify-center bg-gradient-to-b from-white/[0.08] to-white/[0.01] border border-white/15 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.10),0_8px_24px_-12px_rgba(34,192,212,0.35)]">
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 rounded-full"
-                    style={{
-                      background:
-                        "radial-gradient(circle at 50% 30%, rgba(34,192,212,0.18), transparent 65%)",
-                    }}
-                  />
-                  <Icon className="relative h-6 w-6" strokeWidth={1.25} style={{ color: "#22c0d4" }} />
-                  <span className="sr-only">{title}</span>
-                </div>
-                {/* Desktop: original pink circle */}
-                <div
-                  className="hidden sm:flex"
-                  style={{
-                    width: 40,
-                    height: 40,
-                    background: "#e70d69",
-                    borderRadius: "9999px",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    margin: "0 auto 8px",
-                  }}
-                >
-                  <Icon className="h-5 w-5 text-white" />
-                </div>
-
-
-
-
-                {/* Desktop title */}
-                <h3
-                  className="hidden sm:block"
-                  style={{
-                    fontSize: 14,
-                    fontWeight: 600,
-                    lineHeight: 1.3,
-                    minHeight: 18,
-                    color: "#ffffff",
-                    marginBottom: 4,
-                  }}
-                >
-                  {title}
-                </h3>
-
-                {/* Desktop description (hidden on mobile) */}
-                <p
-                  className="hidden sm:block"
-                  style={{
-                    fontSize: 12,
-                    lineHeight: 1.4,
-                    minHeight: 32,
-                    maxWidth: 220,
-                    color: "rgba(255,255,255,0.7)",
-                    margin: "0 auto",
-                  }}
-                >
-                  {description}
-                </p>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Mobile hairline accent under badge row */}
-        <div className="sm:hidden mx-auto mb-6 h-px w-24 bg-gradient-to-r from-transparent via-[#22c0d4]/50 to-transparent" />
-
         {/* Tricolour divider */}
         <div
           style={{
             height: 3,
             background: "linear-gradient(90deg, #22c0d4, #e70d69, #22c0d4)",
             borderRadius: 2,
+            marginTop: 24,
           }}
         />
       </div>
