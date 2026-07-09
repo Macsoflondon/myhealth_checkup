@@ -188,10 +188,7 @@ const CompareTests = () => {
           {(() => {
             const header = getCompareHeader(effectiveCategory);
             return (
-              <CategoryStandardHero
-                pillLabel={header.title}
-                benefits={header.benefits}
-              />
+              <CategoryStandardHero pillLabel={header.title} />
             );
           })()}
 
