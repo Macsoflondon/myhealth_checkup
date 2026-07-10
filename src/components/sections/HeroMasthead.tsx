@@ -177,10 +177,12 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   const advance = useCallback(() => setI((n) => n + 1), []);
 
   // Play the active video from the start; pause the others.
+  // Reduced-motion: skip playback entirely — the poster PNG stays visible and
+  // the timer below still advances slides so the carousel remains functional.
   useEffect(() => {
     videoRefs.current.forEach((v, idx) => {
       if (!v) return;
-      if (idx === activeIndex) {
+      if (idx === activeIndex && !reducedMotion) {
         try {
           v.currentTime = 0;
         } catch {
@@ -193,7 +195,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         v.pause();
       }
     });
-  }, [activeIndex]);
+  }, [activeIndex, reducedMotion]);
 
   // Fallback timer: advances if a video fails to fire `ended` (blocked autoplay,
   // network stall) or if the user prefers reduced motion. 11s = clip length + buffer.
