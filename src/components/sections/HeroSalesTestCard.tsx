@@ -52,8 +52,8 @@ export default function HeroSalesTestCard({ ad }: Props) {
         onClick={() => setOpen(true)}
         aria-label={`Featured test: ${ad.name} from ${ad.provider}. Click for details.`}
         className="flex absolute right-2 bottom-2 sm:right-5 sm:bottom-5 lg:right-6 lg:bottom-6 z-10
-                   w-[min(94vw,280px)] sm:w-[min(92vw,480px)] flex-col text-left
-                   rounded-2xl sm:rounded-[24px] overflow-hidden bg-[#F5F5F5]
+                   w-[min(94vw,140px)] sm:w-[min(92vw,480px)] flex-col text-left
+                   rounded-xl sm:rounded-[24px] overflow-hidden bg-[#F5F5F5]
                    border border-white
                    hover:-translate-y-0.5 transition-all animate-fade-in font-[Montserrat]
                    shadow-[0_16px_32px_-12px_rgba(8,17,41,0.35)] sm:shadow-[0_24px_48px_-12px_rgba(8,17,41,0.3)]"
