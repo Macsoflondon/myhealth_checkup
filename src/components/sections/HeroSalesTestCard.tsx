@@ -51,12 +51,12 @@ export default function HeroSalesTestCard({ ad }: Props) {
         type="button"
         onClick={() => setOpen(true)}
         aria-label={`Featured test: ${ad.name} from ${ad.provider}. Click for details.`}
-        className="hidden md:flex absolute right-4 bottom-4 sm:right-5 sm:bottom-5 lg:right-6 lg:bottom-6 z-10
-                   w-[min(92vw,480px)] flex-col text-left
-                   rounded-[24px] overflow-hidden bg-[#F5F5F5]
+        className="flex absolute right-2 bottom-2 sm:right-5 sm:bottom-5 lg:right-6 lg:bottom-6 z-10
+                   w-[min(94vw,280px)] sm:w-[min(92vw,480px)] flex-col text-left
+                   rounded-2xl sm:rounded-[24px] overflow-hidden bg-[#F5F5F5]
                    border border-white
                    hover:-translate-y-0.5 transition-all animate-fade-in font-[Montserrat]
-                   shadow-[0_24px_48px_-12px_rgba(8,17,41,0.3)]"
+                   shadow-[0_16px_32px_-12px_rgba(8,17,41,0.35)] sm:shadow-[0_24px_48px_-12px_rgba(8,17,41,0.3)]"
       >
         {/* Top brand gradient */}
         <div
@@ -67,7 +67,8 @@ export default function HeroSalesTestCard({ ad }: Props) {
           aria-hidden="true"
         />
 
-        <div className="p-4 lg:p-5 flex-1 flex flex-col">
+        <div className="p-3 sm:p-4 lg:p-5 flex-1 flex flex-col">
+
           {/* Header */}
           <div className="flex justify-between items-start mb-3">
             <div className="flex items-center gap-2.5">
