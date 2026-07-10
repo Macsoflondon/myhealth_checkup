@@ -51,12 +51,12 @@ export default function HeroSalesTestCard({ ad }: Props) {
         type="button"
         onClick={() => setOpen(true)}
         aria-label={`Featured test: ${ad.name} from ${ad.provider}. Click for details.`}
-        className="hidden md:flex absolute right-4 bottom-4 sm:right-5 sm:bottom-5 lg:right-6 lg:bottom-6 z-10
-                   w-[min(92vw,480px)] flex-col text-left
-                   rounded-[24px] overflow-hidden bg-[#F5F5F5]
+        className="flex absolute right-2 bottom-2 sm:right-5 sm:bottom-5 lg:right-6 lg:bottom-6 z-10
+                   w-[min(94vw,280px)] sm:w-[min(92vw,480px)] flex-col text-left
+                   rounded-2xl sm:rounded-[24px] overflow-hidden bg-[#F5F5F5]
                    border border-white
                    hover:-translate-y-0.5 transition-all animate-fade-in font-[Montserrat]
-                   shadow-[0_24px_48px_-12px_rgba(8,17,41,0.3)]"
+                   shadow-[0_16px_32px_-12px_rgba(8,17,41,0.35)] sm:shadow-[0_24px_48px_-12px_rgba(8,17,41,0.3)]"
       >
         {/* Top brand gradient */}
         <div
@@ -67,7 +67,8 @@ export default function HeroSalesTestCard({ ad }: Props) {
           aria-hidden="true"
         />
 
-        <div className="p-4 lg:p-5 flex-1 flex flex-col">
+        <div className="p-3 sm:p-4 lg:p-5 flex-1 flex flex-col">
+
           {/* Header */}
           <div className="flex justify-between items-start mb-3">
             <div className="flex items-center gap-2.5">
@@ -115,20 +116,20 @@ export default function HeroSalesTestCard({ ad }: Props) {
           </div>
 
           {/* Title */}
-          <div className="mb-3">
+          <div className="mb-2 sm:mb-3">
             <p
               className="text-[10px] font-bold uppercase tracking-[0.18em] mb-1"
               style={{ color: TURQUOISE }}
             >
               {ad.category}
             </p>
-            <h3 className="text-[#081129] text-xl lg:text-[22px] font-extrabold leading-[1.15]">
+            <h3 className="text-[#081129] text-base sm:text-xl lg:text-[22px] font-extrabold leading-[1.15] line-clamp-2">
               {ad.name}
             </h3>
           </div>
 
-          {/* Biomarker chips */}
-          <div className="flex flex-wrap gap-1.5 mb-4">
+          {/* Biomarker chips — hidden on mobile for compact layout */}
+          <div className="hidden sm:flex flex-wrap gap-1.5 mb-4">
             {markers.map((m) => (
               <span
                 key={m}
@@ -147,35 +148,35 @@ export default function HeroSalesTestCard({ ad }: Props) {
             )}
           </div>
 
-          {/* Meta row */}
-          <div className="flex items-center gap-4 lg:gap-5 mb-4">
+          {/* Meta row — hidden on mobile for compact layout */}
+          <div className="hidden sm:flex items-center gap-4 lg:gap-5 mb-4">
             <MetaCell icon={ClipboardList} label="Analysis" value="Comprehensive" />
             <MetaCell icon={Clock} label="Results" value="Typical 2–5 days" />
             <MetaCell icon={Package} label="Collection" value="Flexible" />
           </div>
 
           {/* Footer */}
-          <div className="mt-auto flex items-end justify-between border-t border-slate-200/60 pt-4 gap-3">
-            <div className="flex flex-col">
+          <div className="mt-auto flex items-end justify-between border-t border-slate-200/60 pt-2.5 sm:pt-4 gap-2 sm:gap-3">
+            <div className="flex flex-col min-w-0">
               <span className="text-[#081129]/40 text-[9px] font-bold uppercase tracking-[0.16em] mb-0.5">
                 from
               </span>
               <span
-                className="text-2xl lg:text-[28px] font-black leading-none"
+                className="text-xl sm:text-2xl lg:text-[28px] font-black leading-none"
                 style={{ color: PINK }}
               >
                 £{ad.price.toFixed(2)}
               </span>
             </div>
-            <div className="flex gap-2 shrink-0">
+            <div className="flex gap-1.5 sm:gap-2 shrink-0">
               <span
-                className="px-4 py-2 rounded-xl border-2 text-[#081129] font-bold text-xs"
+                className="hidden sm:inline-flex px-4 py-2 rounded-xl border-2 text-[#081129] font-bold text-xs"
                 style={{ borderColor: hexToRgba(NAVY, 0.12) }}
               >
                 Compare
               </span>
               <span
-                className="px-5 py-2 rounded-xl text-white font-bold text-xs shadow-lg"
+                className="px-3 py-1.5 sm:px-5 sm:py-2 rounded-lg sm:rounded-xl text-white font-bold text-[11px] sm:text-xs shadow-lg"
                 style={{ background: NAVY, boxShadow: `0 10px 20px ${hexToRgba(NAVY, 0.25)}` }}
               >
                 View test
@@ -184,6 +185,7 @@ export default function HeroSalesTestCard({ ad }: Props) {
           </div>
         </div>
       </button>
+
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-md p-0 overflow-hidden gap-0 bg-white">
