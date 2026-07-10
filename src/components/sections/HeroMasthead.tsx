@@ -184,7 +184,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
             to="/find-test"
             className="whitespace-nowrap text-brand-pink hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5"
           >
-            Find Your Test
+            Take the health quiz
           </Link>
         </nav>
       </div>

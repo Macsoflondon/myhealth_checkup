@@ -87,7 +87,7 @@ const ConditionsPage = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/assisted-test-finder" className="w-full sm:w-auto">
                 <Button size="lg" className="w-full sm:w-auto bg-[#e70d69] hover:bg-[#e70d69]/90 text-white whitespace-nowrap">
-                  Find Your Test
+                  Take the health quiz
                 </Button>
               </Link>
               <Link to="/compare" className="w-full sm:w-auto">
