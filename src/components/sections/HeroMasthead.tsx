@@ -247,25 +247,27 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
       </div>
       <div className="relative rounded-t-[18px] overflow-hidden mt-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
         {SLIDES.map((s, n) => {
-          const active = n === i % SLIDES.length;
+          const active = n === activeIndex;
           const commonStyle = {
             opacity: active ? 1 : 0,
             ["--pos-m" as any]: s.posMobile,
             ["--pos-t" as any]: s.posTablet,
             ["--pos-d" as any]: s.posDesktop,
           };
-          if (active && s.video) {
+          if (s.video) {
             return (
               <video
                 key={n}
+                ref={(el) => {
+                  videoRefs.current[n] = el;
+                }}
                 src={s.video}
                 poster={s.src}
-                autoPlay
                 muted
-                loop
                 playsInline
-                preload="metadata"
-                className="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+                preload={n === 0 || n === (activeIndex + 1) % SLIDES.length ? "auto" : "metadata"}
+                onEnded={advance}
+                className="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
                 style={commonStyle}
               />
             );
@@ -281,7 +283,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
               loading={n === 0 ? "eager" : "lazy"}
               fetchPriority={n === 0 ? "high" : "low"}
               decoding="async"
-              className="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+              className="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
               style={commonStyle}
             />
           );
