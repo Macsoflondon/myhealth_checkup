@@ -67,7 +67,7 @@ export default function HeroSalesTestCard({ ad }: Props) {
           aria-hidden="true"
         />
 
-        <div className="p-3 sm:p-4 lg:p-5 flex-1 flex flex-col">
+        <div className="p-2 sm:p-4 lg:p-5 flex-1 flex flex-col">
 
           {/* Header */}
           <div className="flex justify-between items-start mb-3">
