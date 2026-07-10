@@ -305,19 +305,19 @@ function MetaCell({
   value: string;
 }) {
   return (
-    <div className="flex items-center gap-2.5 min-w-0">
+    <div className="flex items-center gap-2 min-w-0">
       <div
-        className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
+        className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
         style={{ background: hexToRgba(TURQUOISE, 0.12) }}
         aria-hidden="true"
       >
-        <Icon className="w-4 h-4" style={{ color: TURQUOISE }} />
+        <Icon className="w-3 h-3" style={{ color: TURQUOISE }} />
       </div>
       <div className="min-w-0">
-        <p className="text-[9px] text-[#081129]/40 uppercase font-bold tracking-[0.18em]">
+        <p className="text-[8px] text-[#081129]/40 uppercase font-bold tracking-[0.16em]">
           {label}
         </p>
-        <p className="text-[12px] font-bold text-[#081129] font-[Lato] truncate">{value}</p>
+        <p className="text-[10px] font-bold text-[#081129] font-[Lato] truncate">{value}</p>
       </div>
     </div>
   );
