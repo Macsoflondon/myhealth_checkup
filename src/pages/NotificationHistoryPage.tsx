@@ -99,6 +99,7 @@ const NotificationHistoryPage = () => {
     <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>Notifications | myhealth checkup</title>
+        <meta name="robots" content="noindex, follow" />
       </Helmet>
       <Header />
       

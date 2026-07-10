@@ -35,14 +35,46 @@ function decodeHtmlEntities(s: string): string {
   return s
     .replace(/&#8211;/g, '–')
     .replace(/&#8217;/g, '\u2019')
+    .replace(/&#038;/g, '&')
+    .replace(/&#0?38;/g, '&')
     .replace(/&amp;/g, '&')
     .replace(/&pound;/g, '£')
     .replace(/&nbsp;/g, ' ')
-    .replace(/&quot;/g, '"');
+    .replace(/&quot;/g, '"')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(parseInt(n, 10)));
 }
 
 function stripHtml(html: string): string {
   return decodeHtmlEntities(html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim());
+}
+
+/**
+ * Parse a raw scraper test name into structured fields.
+ * Medical-diagnosis WP exports many rows as "[PARAM]Parent Test!~!Biomarker Name".
+ * These are biomarker rows of a parent test, NOT standalone tests.
+ * Returns { kind: 'param', parent, biomarker } for those, or { kind: 'test', name } otherwise.
+ */
+export function parseRawTestName(raw: string): 
+  | { kind: 'param'; parent: string; biomarker: string }
+  | { kind: 'test'; name: string }
+  | { kind: 'junk' } {
+  const decoded = decodeHtmlEntities((raw ?? '').trim());
+  if (!decoded) return { kind: 'junk' };
+
+  const paramMatch = decoded.match(/^\[PARAM\](.+?)!~!(.+)$/);
+  if (paramMatch) {
+    const parent = paramMatch[1].trim().replace(/[\s\-:]+$/, '');
+    const biomarker = paramMatch[2].trim();
+    if (!parent || !biomarker) return { kind: 'junk' };
+    return { kind: 'param', parent, biomarker };
+  }
+  // Reject obvious junk patterns
+  if (/^\[?param\]?/i.test(decoded) || decoded.includes('!~!')) return { kind: 'junk' };
+  return { kind: 'test', name: decoded };
+}
+
+function slugify(s: string): string {
+  return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 80);
 }
 
 function determineCategory(title: string, description: string, cats: WooCategory[]): string {
@@ -102,6 +134,13 @@ async function fetchWooPage(page: number, perPage: number): Promise<WooProduct[]
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
+  const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
+
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
   const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
   const supabase = createClient(supabaseUrl, supabaseKey);
@@ -127,27 +166,52 @@ Deno.serve(async (req) => {
 
     console.log(`Fetched ${all.length} Medical Diagnosis products`);
 
-    const rows = all.map((p) => {
+
+
+
+    // First pass: aggregate [PARAM] biomarker rows under their parent test name.
+    const biomarkerGroups = new Map<string, { parent: string; biomarkers: Set<string>; sample?: WooProduct }>();
+    const realTests: WooProduct[] = [];
+    for (const p of all) {
+      const parsed = parseRawTestName(p.name);
+      if (parsed.kind === 'junk') continue;
+      if (parsed.kind === 'param') {
+        const key = parsed.parent.toLowerCase();
+        const g = biomarkerGroups.get(key) ?? { parent: parsed.parent, biomarkers: new Set(), sample: p };
+        g.biomarkers.add(parsed.biomarker);
+        biomarkerGroups.set(key, g);
+        continue;
+      }
+      realTests.push(p);
+    }
+
+    const rows = realTests.map((p) => {
       const cleanShort = stripHtml(p.short_description || '');
       const cleanLong = stripHtml(p.description || '');
       const desc = (cleanShort || cleanLong).slice(0, 1000);
       const price = priceFromWoo(p.prices, 'price');
       const regular = priceFromWoo(p.prices, 'regular_price');
       const category = determineCategory(p.name, desc, p.categories || []);
-      const biomarkerCount = extractBiomarkerCount(cleanShort + ' ' + cleanLong);
+      const niceName = decodeHtmlEntities(p.name);
+      // Attach aggregated biomarkers if this product matches a [PARAM] parent
+      const group = biomarkerGroups.get(niceName.toLowerCase());
+      const biomarkersList = group ? Array.from(group.biomarkers).sort() : null;
+      const biomarkerCount =
+        (biomarkersList?.length ?? null) ?? extractBiomarkerCount(cleanShort + ' ' + cleanLong);
 
       return {
         provider_id: PROVIDER_ID,
         provider_test_id: `meddiag-${p.slug}`,
-        test_name: decodeHtmlEntities(p.name),
+        test_name: niceName,
         category,
         price,
         original_price: regular && regular !== price ? regular : null,
-        description: desc || `${decodeHtmlEntities(p.name)} from Medical Diagnosis.`,
+        description: desc || `${niceName} from Medical Diagnosis.`,
         url: p.permalink,
         image_url: p.images?.[0]?.src ?? null,
-        is_active: true,
+        is_active: price !== null && price > 0,
         biomarker_count: biomarkerCount,
+        biomarkers_list: biomarkersList,
         sample_type: 'Venous blood',
         clinic_visit_available: true,
         home_kit_available: false,
@@ -157,6 +221,34 @@ Deno.serve(async (req) => {
         url_verified_at: new Date().toISOString(),
       };
     });
+
+    // Emit synthetic parent rows for [PARAM] groups that have NO matching Woo product —
+    // marked inactive (no price) so they don't appear in catalogues but biomarker data is retained.
+    const matchedKeys = new Set(realTests.map((p) => decodeHtmlEntities(p.name).toLowerCase()));
+    for (const [key, g] of biomarkerGroups) {
+      if (matchedKeys.has(key)) continue;
+      rows.push({
+        provider_id: PROVIDER_ID,
+        provider_test_id: `meddiag-parent-${slugify(g.parent)}`,
+        test_name: g.parent,
+        category: determineCategory(g.parent, '', []),
+        price: null,
+        original_price: null,
+        description: `${g.parent} – includes ${g.biomarkers.size} biomarker${g.biomarkers.size === 1 ? '' : 's'}.`,
+        url: g.sample?.permalink ?? WOO_BASE,
+        image_url: g.sample?.images?.[0]?.src ?? null,
+        is_active: false,
+        biomarker_count: g.biomarkers.size,
+        biomarkers_list: Array.from(g.biomarkers).sort(),
+        sample_type: 'Venous blood',
+        clinic_visit_available: true,
+        home_kit_available: false,
+        scraped_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+        url_verified: false,
+        url_verified_at: new Date().toISOString(),
+      });
+    }
 
     const { upsertedCount, errors: upsertErrors, finalRowCount } =
       await upsertProviderTests(supabase as unknown as SupabaseLike, PROVIDER_ID, rows, 'meddiag-');
@@ -173,7 +265,9 @@ Deno.serve(async (req) => {
     return new Response(JSON.stringify({
       success: true,
       provider: PROVIDER_ID,
-      testsScraped: rows.length,
+      productsFetched: all.length,
+      realTests: realTests.length,
+      biomarkerGroups: biomarkerGroups.size,
       testsAfterDedupe: finalRowCount,
       testsUpserted: upsertedCount,
       upsertErrors: upsertErrors.slice(0, 5),

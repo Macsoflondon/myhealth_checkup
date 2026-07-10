@@ -4,7 +4,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PageBanner from '@/components/sections/PageBanner';
 import { Card, CardContent } from '@/components/ui/card';
-import { FileText, Shield, Cookie, Users, Handshake, Scale, Award } from 'lucide-react';
+import { FileText, Shield, Cookie, Users, Handshake, Scale, Award, Accessibility, Stethoscope, MessageSquareWarning } from 'lucide-react';
 
 const legalPages = [
   { title: 'Privacy Policy', path: '/privacy-policy', icon: Shield, description: 'How we collect, use, and protect your personal data.' },
@@ -14,6 +14,9 @@ const legalPages = [
   { title: 'Affiliate Disclosure', path: '/affiliate-disclosure', icon: Handshake, description: 'How we earn revenue and maintain editorial independence.' },
   { title: 'Fair Trading Policy', path: '/fair-trading', icon: Scale, description: 'Our commitment to fair and transparent trading practices.' },
   { title: 'How We Rank', path: '/how-we-rank', icon: Award, description: 'Our methodology for ranking and comparing providers.' },
+  { title: 'Accessibility Statement', path: '/accessibility', icon: Accessibility, description: 'Our commitment to accessible, inclusive digital experiences.' },
+  { title: 'Medical Review & Editorial Standards', path: '/about/medical-review', icon: Stethoscope, description: 'Clinical content reviewed by Nathanial Smith, Registered Healthcare Professional (HCPC reg. PA43353).' },
+  { title: 'Feedback & Complaints', path: '/complaints', icon: MessageSquareWarning, description: 'How to raise a concern, give feedback, or make a complaint about our platform.' },
 ];
 
 const LegalPage = () => {
@@ -45,6 +48,35 @@ const LegalPage = () => {
               </Link>
             ))}
           </div>
+
+          {/* ========== CMA / DMCC Compliance Statement ========== */}
+          <section
+            id="cma-dmcc-compliance"
+            aria-label="CMA and DMCC compliance statement"
+            className="max-w-4xl mx-auto mt-10 bg-brand-navy text-white rounded-2xl border border-brand-turquoise/30 shadow-lg p-6 sm:p-8"
+          >
+            <h2 className="font-semibold text-brand-turquoise text-lg sm:text-xl mb-3">
+              CMA &amp; DMCC compliance
+            </h2>
+            <p className="text-sm sm:text-base leading-relaxed text-white/85">
+              myhealth checkup operates in full compliance with the UK Competition and Markets Authority (CMA)
+              and the Digital Markets, Competition and Consumers Act 2024. Prices include mandatory fees where
+              known, sponsored placements are clearly labelled, ranking criteria are disclosed, and listings are
+              refreshed regularly for accuracy. Read our{" "}
+              <Link to="/how-we-rank" className="underline hover:text-brand-turquoise transition-colors">
+                ranking methodology
+              </Link>{" "}
+              and{" "}
+              <Link to="/fair-trading" className="underline hover:text-brand-turquoise transition-colors">
+                fair trading policy
+              </Link>
+              . To raise a concern, see our{" "}
+              <Link to="/complaints" className="underline hover:text-brand-turquoise transition-colors">
+                feedback &amp; complaints process
+              </Link>
+              .
+            </p>
+          </section>
         </div>
       </main>
       <Footer />

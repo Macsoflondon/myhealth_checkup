@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, RotateCcw, Shield, Loader2, ExternalLink } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import { trackEvent } from '@/lib/analytics';
+import myhealthCheckupLogo from '@/assets/myhealth-checkup-logo.png.asset.json';
 
 type Step =
   | 'welcome'
   | 'who'
   | 'gender'
+  | 'contact-care'
   | 'age'
   | 'goal'
   | 'concerns'
@@ -80,17 +84,29 @@ const goalOptions = [
   { id: 'fitness-performance', label: 'Fitness & performance optimisation' },
 ];
 
-const concernOptions = [
+type GenderFilter = 'male' | 'female' | 'all';
+type AgeId = 'under-30' | '30-39' | '40-49' | '50-59' | '60-plus';
+
+interface FilterableOption {
+  id: string;
+  label: string;
+  gender?: GenderFilter;
+  ages?: AgeId[];
+}
+
+const concernOptions: FilterableOption[] = [
   { id: 'fatigue', label: 'Fatigue or low energy' },
   { id: 'hormones', label: 'Hormonal changes' },
   { id: 'heart', label: 'Heart & cholesterol' },
   { id: 'thyroid', label: 'Thyroid' },
-  { id: 'fertility', label: 'Fertility - Prenatal' },
+  { id: 'fertility', label: 'Fertility - Prenatal', gender: 'female', ages: ['under-30', '30-39', '40-49'] },
+  { id: 'prostate', label: 'Prostate health', gender: 'male', ages: ['40-49', '50-59', '60-plus'] },
   { id: 'vitamins', label: 'Vitamin deficiencies' },
   { id: 'digestive', label: 'Digestive issues' },
   { id: 'weight', label: 'Weight management' },
   { id: 'sexual-health', label: 'Sexual health' },
-  { id: 'cancer-screening', label: 'Cancer screening' },
+  { id: 'menopause', label: 'Menopause', gender: 'female', ages: ['40-49', '50-59', '60-plus'] },
+  { id: 'cancer-screening', label: 'Cancer screening', ages: ['30-39', '40-49', '50-59', '60-plus'] },
   { id: 'liver', label: 'Liver health' },
   { id: 'diabetes', label: 'Diabetes risk' },
   { id: 'bone-joint', label: 'Bone & joint health' },
@@ -98,11 +114,13 @@ const concernOptions = [
   { id: 'none', label: 'None — just a general check' },
 ];
 
-const symptomOptions = [
+const symptomOptions: FilterableOption[] = [
   { id: 'tiredness', label: 'Unexplained tiredness' },
   { id: 'brain-fog', label: 'Brain fog or poor concentration' },
   { id: 'hair-skin', label: 'Hair loss or skin changes' },
-  { id: 'irregular-periods', label: 'Irregular periods' },
+  { id: 'irregular-periods', label: 'Irregular periods', gender: 'female' },
+  { id: 'hot-flushes', label: 'Hot flushes or night sweats', gender: 'female', ages: ['40-49', '50-59', '60-plus'] },
+  { id: 'low-libido', label: 'Low libido or erectile issues', gender: 'male' },
   { id: 'joint-pain', label: 'Joint pain or stiffness' },
   { id: 'frequent-infections', label: 'Frequent infections' },
   { id: 'mood-anxiety', label: 'Mood changes or anxiety' },
@@ -110,6 +128,21 @@ const symptomOptions = [
   { id: 'family-history', label: 'Family history of chronic disease' },
   { id: 'none', label: 'None of the above' },
 ];
+
+const filterByProfile = (
+  options: FilterableOption[],
+  gender: string,
+  ageRange: string,
+): FilterableOption[] => {
+  return options.filter(o => {
+    if (o.gender && o.gender !== 'all') {
+      // Only enforce when user has selected a binary gender; show all when non-binary / prefer-not-to-say / empty
+      if ((gender === 'male' || gender === 'female') && o.gender !== gender) return false;
+    }
+    if (o.ages && ageRange && !o.ages.includes(ageRange as AgeId)) return false;
+    return true;
+  });
+};
 
 const sampleMethodOptions = [
   { id: 'home-kit', label: 'Home test kit' },
@@ -132,7 +165,7 @@ const speedOptions = [
 ];
 
 const providerNames: Record<string, string> = {
-  medichecks: 'Medichecks',
+  medichecks: '\n',
   goodbody: 'GOODBODY',
   thriva: 'Thriva',
   randox: 'Randox Health',
@@ -155,16 +188,68 @@ export const AssistedTestFinder = () => {
   });
   const [results, setResults] = useState<AIResults | null>(null);
   const navigate = useNavigate();
+  const startedAtRef = useRef<number | null>(null);
+  const quizIdRef = useRef<string>(
+    (typeof crypto !== 'undefined' && 'randomUUID' in crypto) ? crypto.randomUUID() : `quiz_${Date.now()}`
+  );
 
-  const currentStepIndex = stepOrder.indexOf(currentStep);
+  const effectiveStepForProgress = currentStep === 'contact-care' ? 'gender' : currentStep;
+  const currentStepIndex = stepOrder.indexOf(effectiveStepForProgress as any);
   const progressPercent = currentStepIndex >= 0 ? Math.round(((currentStepIndex + 1) / TOTAL_STEPS) * 100) : 0;
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Emit step_viewed with what was shown vs. filtered out (for completion-rate analysis).
+    if (currentStep === 'concerns' || currentStep === 'symptoms') {
+      const all = currentStep === 'concerns' ? concernOptions : symptomOptions;
+      const shown = filterByProfile(all, answers.gender, answers.ageRange);
+      const shownIds = shown.map(o => o.id);
+      const filteredOutIds = all.filter(o => !shownIds.includes(o.id)).map(o => o.id);
+      trackEvent('quiz_step_viewed', {
+        quiz_id: quizIdRef.current,
+        step: currentStep,
+        step_index: currentStepIndex + 1,
+        gender: answers.gender || 'unspecified',
+        age_range: answers.ageRange || 'unspecified',
+        shown_count: shownIds.length,
+        filtered_out_count: filteredOutIds.length,
+        shown_options: shownIds.join(','),
+        filtered_out_options: filteredOutIds.join(','),
+      });
+    } else if (currentStep !== 'welcome' && currentStep !== 'loading' && currentStep !== 'results') {
+      trackEvent('quiz_step_viewed', {
+        quiz_id: quizIdRef.current,
+        step: currentStep,
+        step_index: currentStepIndex + 1,
+      });
+    }
+  }, [currentStep]);
+
+  // Track abandonment on unmount if user left mid-quiz.
+  useEffect(() => {
+    return () => {
+      if (startedAtRef.current && currentStep !== 'results') {
+        trackEvent('quiz_abandoned', {
+          quiz_id: quizIdRef.current,
+          last_step: currentStep,
+          duration_ms: Date.now() - startedAtRef.current,
+        });
+      }
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleBack = () => {
+    if (currentStep === 'contact-care') {
+      setCurrentStep('gender');
+      return;
+    }
     if (currentStep === 'results' || currentStep === 'loading') {
       setCurrentStep('preferences');
       return;
     }
-    const idx = stepOrder.indexOf(currentStep);
+    const idx = stepOrder.indexOf(currentStep as any);
     if (idx > 0) setCurrentStep(stepOrder[idx - 1]);
     else if (idx === 0) setCurrentStep('welcome');
   };
@@ -173,12 +258,26 @@ export const AssistedTestFinder = () => {
     setCurrentStep('welcome');
     setAnswers({ who: '', gender: '', ageRange: '', goal: '', concerns: [], symptoms: [], sampleMethod: '', budget: '', speed: '' });
     setResults(null);
+    quizIdRef.current = (typeof crypto !== 'undefined' && 'randomUUID' in crypto) ? crypto.randomUUID() : `quiz_${Date.now()}`;
+    startedAtRef.current = null;
+    trackEvent('quiz_restarted', { quiz_id: quizIdRef.current });
+  };
+
+  const handleStart = () => {
+    startedAtRef.current = Date.now();
+    trackEvent('quiz_started', { quiz_id: quizIdRef.current });
+    setCurrentStep('who');
   };
 
   const handleSingleSelect = (field: keyof QuizAnswers, value: string, autoAdvance = true) => {
+    if (field === 'gender' && value === 'prefer-not-to-say') {
+      setAnswers(prev => ({ ...prev, gender: value }));
+      setCurrentStep('contact-care');
+      return;
+    }
     setAnswers(prev => ({ ...prev, [field]: value }));
     if (autoAdvance) {
-      const idx = stepOrder.indexOf(currentStep);
+      const idx = stepOrder.indexOf(currentStep as any);
       if (idx < stepOrder.length - 1) {
         setCurrentStep(stepOrder[idx + 1]);
       }
@@ -196,38 +295,86 @@ export const AssistedTestFinder = () => {
   };
 
   const handleNext = () => {
-    const idx = stepOrder.indexOf(currentStep);
+    const idx = stepOrder.indexOf(currentStep as any);
     if (idx < stepOrder.length - 1) {
       setCurrentStep(stepOrder[idx + 1]);
     }
   };
 
   const handleSubmitQuiz = async () => {
+    // Sanitise: drop any concern/symptom that isn't valid for this gender + age,
+    // so excluded male/female-related conditions can't influence ranking even if
+    // an earlier answer was retained from before a gender/age change.
+    const allowedConcernIds = new Set(
+      filterByProfile(concernOptions, answers.gender, answers.ageRange).map(o => o.id)
+    );
+    const allowedSymptomIds = new Set(
+      filterByProfile(symptomOptions, answers.gender, answers.ageRange).map(o => o.id)
+    );
+    const cleanedConcerns = answers.concerns.filter(id => allowedConcernIds.has(id) || id === 'none');
+    const cleanedSymptoms = answers.symptoms.filter(id => allowedSymptomIds.has(id) || id === 'none');
+    const droppedConcerns = answers.concerns.filter(id => !cleanedConcerns.includes(id));
+    const droppedSymptoms = answers.symptoms.filter(id => !cleanedSymptoms.includes(id));
+
+    const sanitisedAnswers: QuizAnswers = {
+      ...answers,
+      concerns: cleanedConcerns,
+      symptoms: cleanedSymptoms,
+    };
+
+    if (droppedConcerns.length || droppedSymptoms.length) {
+      trackEvent('quiz_answers_sanitised', {
+        quiz_id: quizIdRef.current,
+        dropped_concerns: droppedConcerns.join(','),
+        dropped_symptoms: droppedSymptoms.join(','),
+        gender: answers.gender,
+        age_range: answers.ageRange,
+      });
+    }
+
+    trackEvent('quiz_submitted', {
+      quiz_id: quizIdRef.current,
+      gender: answers.gender,
+      age_range: answers.ageRange,
+      goal: answers.goal,
+      concerns_count: cleanedConcerns.length,
+      symptoms_count: cleanedSymptoms.length,
+      duration_ms: startedAtRef.current ? Date.now() - startedAtRef.current : 0,
+    });
+
     setCurrentStep('loading');
     try {
       const { data, error } = await supabase.functions.invoke('quiz-recommendations', {
-        body: answers,
+        body: sanitisedAnswers,
       });
 
       if (error) {
         console.error('Quiz error:', error);
         toast.error('Failed to generate recommendations. Please try again.');
         setCurrentStep('preferences');
+        trackEvent('quiz_failed', { quiz_id: quizIdRef.current, reason: 'invoke_error' });
         return;
       }
 
       if (data?.error) {
         toast.error(data.error);
         setCurrentStep('preferences');
+        trackEvent('quiz_failed', { quiz_id: quizIdRef.current, reason: 'fn_error' });
         return;
       }
 
       setResults(data as AIResults);
       setCurrentStep('results');
+      trackEvent('quiz_completed', {
+        quiz_id: quizIdRef.current,
+        recommendations_count: (data as AIResults)?.recommendations?.length ?? 0,
+        duration_ms: startedAtRef.current ? Date.now() - startedAtRef.current : 0,
+      });
     } catch (e) {
       console.error('Quiz error:', e);
       toast.error('Something went wrong. Please try again.');
       setCurrentStep('preferences');
+      trackEvent('quiz_failed', { quiz_id: quizIdRef.current, reason: 'exception' });
     }
   };
 
@@ -235,18 +382,16 @@ export const AssistedTestFinder = () => {
     <div className="flex justify-between items-center p-6 max-w-6xl mx-auto">
       <Button
         onClick={handleBack}
-        variant="outline"
-        className="flex items-center gap-2 px-6 py-3 rounded-full border-muted-foreground/30"
+        className="flex items-center gap-2 px-6 py-3 rounded-full bg-white text-[#1B3A6B] hover:bg-[#1B3A6B]/5 border border-[#1B3A6B]"
       >
-        <ArrowLeft className="w-4 h-4" />
+        <ArrowLeft className="w-4 h-4 text-[#1B3A6B]" />
         Back
       </Button>
       <Button
         onClick={handleRestart}
-        variant="outline"
-        className="flex items-center gap-2 px-6 py-3 rounded-full border-secondary/40 text-secondary"
+        className="flex items-center gap-2 px-6 py-3 rounded-full bg-brand-pink text-white hover:bg-brand-pink/90 border-transparent"
       >
-        <RotateCcw className="w-4 h-4" />
+        <RotateCcw className="w-4 h-4 text-white" />
         Restart
       </Button>
     </div>
@@ -254,7 +399,7 @@ export const AssistedTestFinder = () => {
 
   const ProgressHeader = () => (
     <div className="max-w-2xl mx-auto px-6 pt-4 pb-2">
-      <div className="flex justify-between items-center mb-2 text-sm text-muted-foreground">
+      <div className="flex justify-between items-center mb-2 text-sm text-[#1B3A6B]">
         <span>Step {currentStepIndex + 1} of {TOTAL_STEPS}</span>
         <span>{progressPercent}%</span>
       </div>
@@ -286,39 +431,71 @@ export const AssistedTestFinder = () => {
   // === WELCOME ===
   if (currentStep === 'welcome') {
     return (
-      <div className="bg-gradient-to-b from-[hsl(187_72%_48%/0.1)] to-background min-h-[80vh]">
+      <div className="bg-white min-h-[80vh]">
         <div className="flex items-center justify-center min-h-[80vh] p-4">
           <div className="text-center max-w-2xl mx-auto">
             <div className="flex justify-center mb-6">
-              <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-                <Shield className="w-8 h-8 text-primary" />
-              </div>
+              <img
+                src={myhealthCheckupLogo.url}
+                alt="myhealth checkup — YOUR HEALTH. YOUR CHOICE. ONE TRUSTED PLATFORM."
+                className="w-full max-w-md h-auto rounded-xl"
+                loading="eager"
+              />
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 font-montserrat">
-              Find the Right Health Test for You
-            </h1>
-            <p className="text-lg text-muted-foreground mb-8 max-w-lg mx-auto">
-              Answer a few questions about your health goals and we'll recommend the most relevant tests from trusted UK providers.
-            </p>
-            <Button
-              onClick={() => setCurrentStep('who')}
-              className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-12 py-4 text-lg font-medium rounded-full transition-colors"
+
+            {/* Distinct "consultation zone" container with reassurance */}
+            <div
+              className="mx-auto mb-6 rounded-2xl p-6 text-left"
+              style={{
+                background: "linear-gradient(180deg, #FAFAF8 0%, #ffffff 100%)",
+                border: "1px solid rgba(34,192,212,0.25)",
+                boxShadow: "0 4px 24px rgba(8,17,41,0.06)",
+              }}
             >
-              Start Quiz
-            </Button>
-            <p className="text-sm text-muted-foreground mt-6">
-              🔒 Your answers are not stored. This tool does not provide medical advice.
-            </p>
+              <div className="flex items-center gap-2 mb-3">
+                <Shield className="w-5 h-5 text-secondary" />
+                <span className="text-xs font-bold uppercase tracking-wider text-secondary">
+                  AI Test Assistant
+                </span>
+              </div>
+              <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-3 font-montserrat">
+                Find the right health test for you
+              </h1>
+              <p className="text-base text-muted-foreground mb-4">
+                Answer a few short questions and we'll suggest relevant tests from accredited UK providers — based on your goals, not a diagnosis.
+              </p>
+              <ul className="space-y-1.5 text-sm text-muted-foreground mb-4">
+                <li className="flex items-start gap-2">
+                  <span className="text-secondary mt-0.5">🔒</span>
+                  <span>Your answers are <strong>anonymous</strong> and never linked to your identity.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-secondary mt-0.5">🩺</span>
+                  <span>We suggest tests to <strong>consider</strong> — we do not diagnose or replace your GP.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-secondary mt-0.5">🗑️</span>
+                  <span>Quiz inputs are <strong>not stored</strong> against your account.</span>
+                </li>
+              </ul>
+              <Button
+                onClick={handleStart}
+                className="w-full sm:w-auto bg-secondary hover:bg-secondary/90 text-secondary-foreground px-12 py-4 text-lg font-medium rounded-full transition-colors"
+              >
+                Start Quiz
+              </Button>
+            </div>
           </div>
         </div>
       </div>
     );
   }
 
+
   // === LOADING ===
   if (currentStep === 'loading') {
     return (
-      <div className="bg-gradient-to-b from-[hsl(187_72%_48%/0.1)] to-background min-h-[80vh]">
+      <div className="bg-white min-h-[80vh]">
         <div className="flex items-center justify-center min-h-[80vh] p-4">
           <div className="text-center max-w-md mx-auto">
             <Loader2 className="w-12 h-12 text-primary animate-spin mx-auto mb-6" />
@@ -337,7 +514,7 @@ export const AssistedTestFinder = () => {
   // === RESULTS ===
   if (currentStep === 'results' && results) {
     return (
-      <div className="bg-gradient-to-b from-[hsl(187_72%_48%/0.1)] to-background min-h-[80vh]">
+      <div className="bg-white min-h-[80vh]" aria-live="polite" aria-atomic="false">
         <NavigationControls />
         <div className="max-w-4xl mx-auto p-6">
           <div className="text-center mb-8">
@@ -483,7 +660,7 @@ export const AssistedTestFinder = () => {
         return (
           <StepLayout title="Do you have any specific areas of concern?" subtitle="Select all that apply.">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 max-w-3xl mx-auto">
-              {concernOptions.map(o => (
+              {filterByProfile(concernOptions, answers.gender, answers.ageRange).map(o => (
                 <OptionCard key={o.id} label={o.label} selected={answers.concerns.includes(o.id)} onClick={() => handleMultiSelect('concerns', o.id)} />
               ))}
             </div>
@@ -503,7 +680,7 @@ export const AssistedTestFinder = () => {
         return (
           <StepLayout title="Are you experiencing any of these?" subtitle="Optional — select any that apply, or skip.">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-2xl mx-auto">
-              {symptomOptions.map(o => (
+              {filterByProfile(symptomOptions, answers.gender, answers.ageRange).map(o => (
                 <OptionCard key={o.id} label={o.label} selected={answers.symptoms.includes(o.id)} onClick={() => handleMultiSelect('symptoms', o.id)} />
               ))}
             </div>
@@ -562,13 +739,42 @@ export const AssistedTestFinder = () => {
           </StepLayout>
         );
 
+      case 'contact-care':
+        return (
+          <div className="max-w-xl mx-auto pt-4">
+            <div className="bg-white rounded-3xl border border-[#081129]/10 p-8 text-center">
+              <h2 className="text-2xl md:text-3xl font-bold text-[#081129] font-montserrat mb-4">
+                We want to find the best test for you
+              </h2>
+              <p className="text-[#1B3A6B]/70 text-lg mb-8">
+                Get in touch with our customer care team and we'll assist you in the best way we can.
+              </p>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <Button
+                  onClick={() => navigate('/contact?topic=test-finder')}
+                  className="bg-[#081129] hover:bg-[#081129]/90 text-white px-8 py-3 text-lg font-medium rounded-full"
+                >
+                  Contact our customer care team
+                </Button>
+                <Button
+                  onClick={handleBack}
+                  className="flex items-center gap-2 px-6 py-3 rounded-full bg-white text-[#1B3A6B] hover:bg-[#1B3A6B]/5 border border-[#1B3A6B]"
+                >
+                  <ArrowLeft className="w-4 h-4 text-[#1B3A6B]" />
+                  Back
+                </Button>
+              </div>
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
   };
 
   return (
-    <div className="bg-gradient-to-b from-[hsl(187_72%_48%/0.1)] to-background min-h-[80vh]">
+    <div className="bg-white min-h-[80vh]">
       <NavigationControls />
       <ProgressHeader />
       <div className="p-4 pb-16">{renderStepContent()}</div>
@@ -588,8 +794,8 @@ function StepLayout({
   return (
     <div className="max-w-5xl mx-auto pt-4">
       <div className="text-center mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-foreground font-montserrat">{title}</h1>
-        {subtitle && <p className="text-muted-foreground mt-2 text-lg">{subtitle}</p>}
+        <h1 className="text-3xl md:text-4xl font-bold text-[#1B3A6B] font-montserrat">{title}</h1>
+        {subtitle && <p className="text-[#1B3A6B]/70 mt-2 text-lg">{subtitle}</p>}
       </div>
       {children}
     </div>

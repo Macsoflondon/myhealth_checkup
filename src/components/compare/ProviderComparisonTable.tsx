@@ -1,246 +1,518 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Star, Clock, ExternalLink, Home, Building2, TestTube } from "lucide-react";
-import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
-import { getProviderLogo } from "@/constants/providers";
+import React, { useMemo } from "react";
+import { Plus, Check } from "lucide-react";
+import type { CompareTestData } from "@/types";
+import { PROVIDER_LOGOS } from "@/constants/providers";
+import {
+  SAMPLE_TYPE_LABELS,
+  COLLECTION_METHOD_LABELS,
+  formatCollectionFee,
+  formatClinicalReview,
+  computeTotalExpectedCost,
+} from "@/lib/comparisonFormat";
 
-interface ProviderTestOption {
-  id: string;
-  providerId: string;
-  providerName: string;
-  price: number;
-  turnaroundTime: string;
-  collectionMethod: string;
-  biomarkerCount?: number;
-  url?: string;
-  rating?: number;
-  reviews?: string;
-}
+const PROVIDER_NAME_TO_ID: Record<string, string> = {
+  "medichecks": "medichecks",
+  "thriva": "thriva",
+  "randox": "randox",
+  "randox health": "randox",
+  "london medical laboratory": "london-medical-laboratory",
+  "london health company": "london-health-company",
+  "lola health": "lola-health",
+  "goodbody": "goodbody-clinic",
+  "goodbody clinic": "goodbody-clinic",
+  "clinilabs": "clinilabs",
+  "medical diagnosis": "medical-diagnosis",
+};
+
+const resolveLogo = (test: CompareTestData): string | undefined => {
+  if (test.providerLogo) return test.providerLogo;
+  const key = (test.provider || "").toLowerCase().trim();
+  const id = PROVIDER_NAME_TO_ID[key];
+  return id ? PROVIDER_LOGOS[id] : undefined;
+};
 
 interface ProviderComparisonTableProps {
-  testName: string;
-  providers: ProviderTestOption[];
-  className?: string;
+  tests: CompareTestData[];
 }
 
-export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = ({
-  testName,
-  providers,
-  className = ""
-}) => {
-  if (providers.length === 0) {
-    return null;
-  }
+const NAVY = "#081129";
+const TURQUOISE = "#22c0d4";
+const PINK = "#e70d69";
+const TINT = "#f0f4fa";
+const DIVIDER = "#e2e8f0";
+const MUTED = "#94a3b8";
 
-  // Sort by price ascending
-  const sortedProviders = [...providers].sort((a, b) => a.price - b.price);
-  const lowestPrice = sortedProviders[0]?.price;
+const MIN_COLS = 3;
+const MAX_COLS = 5;
+
+type Slot = CompareTestData | null;
+
+interface ParsedCollection {
+  homeKit: boolean;
+  clinic: boolean;
+  label: string;
+}
+
+const parseCollection = (collection: string): ParsedCollection => {
+  const s = (collection || "").toLowerCase();
+  const homeKit = /finger-?prick|home kit|at-?home/.test(s);
+  const clinic = /venous|clinic/.test(s);
+  let label = collection || "—";
+  if (homeKit && clinic) label = "At-home kit & venous draw";
+  else if (homeKit) label = "At-home kit";
+  else if (clinic) label = "Venous draw";
+  return { homeKit, clinic, label };
+};
+
+
+const formatPrice = (price: number): string =>
+  price == null || Number.isNaN(price) ? "—" : `£${price.toFixed(2)}`;
+
+const Dash: React.FC = () => <span style={{ color: MUTED }}>—</span>;
+
+
+const cellBase = (bg: string): React.CSSProperties => ({
+  background: bg,
+  minWidth: 160,
+  fontSize: 14,
+  fontFamily: "'DM Sans', system-ui, sans-serif",
+  padding: "14px 16px",
+  color: NAVY,
+  textAlign: "center",
+  verticalAlign: "middle",
+});
+
+interface RowProps {
+  label: string;
+  index: number;
+  slots: Slot[];
+  render: (t: CompareTestData, i: number) => React.ReactNode;
+  placeholder?: React.ReactNode;
+}
+
+const Row: React.FC<RowProps> = ({ label, index, slots, render, placeholder }) => {
+  const bg = index % 2 === 0 ? "#ffffff" : TINT;
+  return (
+    <tr style={{ borderBottom: `1px solid ${DIVIDER}` }}>
+      <th
+        scope="row"
+        className="sticky left-0 z-10 text-left"
+        style={{
+          background: NAVY,
+          color: "#ffffff",
+          fontFamily: "'Montserrat', sans-serif",
+          fontWeight: 500,
+          fontSize: 13,
+          width: 160,
+          minWidth: 160,
+          padding: "14px 16px",
+          borderBottom: `1px solid rgba(255,255,255,0.08)`,
+        }}
+      >
+        {label}
+      </th>
+      {slots.map((slot, i) => (
+        <td key={i} style={cellBase(bg)}>
+          {slot ? render(slot, i) : (placeholder ?? <Dash />)}
+        </td>
+      ))}
+    </tr>
+  );
+};
+
+const PlaceholderHeader: React.FC = () => (
+  <div
+    className="flex flex-col items-center justify-center text-center"
+    style={{
+      minHeight: 96,
+      border: "2px dashed rgba(255,255,255,0.15)",
+      borderRadius: 8,
+      padding: "12px 8px",
+    }}
+  >
+    <Plus size={20} color={TURQUOISE} />
+    <div
+      className="mt-2"
+      style={{
+        fontFamily: "'DM Sans', system-ui, sans-serif",
+        fontSize: 12,
+        color: "rgba(255,255,255,0.5)",
+      }}
+    >
+      Select a test
+    </div>
+  </div>
+);
+
+export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = ({ tests }) => {
+  const columns = useMemo(() => {
+    const seen = new Set<string>();
+    const picked: CompareTestData[] = [];
+    for (const t of tests) {
+      if (seen.has(t.provider)) continue;
+      seen.add(t.provider);
+      picked.push(t);
+    }
+    return picked.slice(0, MAX_COLS);
+  }, [tests]);
+
+  // Note: when no providers are selected, the table still renders with placeholder
+  // columns so users can see the structure they're filling in.
+
+  const colCount = Math.min(MAX_COLS, Math.max(MIN_COLS, columns.length));
+  const slots: Slot[] = Array.from({ length: colCount }, (_, i) => columns[i] ?? null);
 
   return (
-    <Card className={className}>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <TestTube className="h-5 w-5 text-primary" />
-          Compare Prices for {testName}
-        </CardTitle>
-        <p className="text-sm text-muted-foreground">
-          Compare this test across {providers.length} trusted UK providers
-        </p>
-      </CardHeader>
-      <CardContent>
-        {/* Desktop Table View */}
-        <div className="hidden md:block overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b text-left">
-                <th className="pb-3 font-medium text-muted-foreground">Provider</th>
-                <th className="pb-3 font-medium text-muted-foreground text-center">Price</th>
-                <th className="pb-3 font-medium text-muted-foreground text-center">Turnaround</th>
-                <th className="pb-3 font-medium text-muted-foreground text-center">Collection</th>
-                <th className="pb-3 font-medium text-muted-foreground text-center">Biomarkers</th>
-                <th className="pb-3 font-medium text-muted-foreground text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y">
-              {sortedProviders.map((provider) => (
-                <tr key={provider.id} className="hover:bg-muted/50 transition-colors">
-                  <td className="py-4">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage 
-                          src={getProviderLogo(provider.providerId)} 
-                          alt={provider.providerName}
-                        />
-                        <AvatarFallback>{provider.providerName.slice(0, 2).toUpperCase()}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <Link 
-                          to={`/provider/${provider.providerId}`}
-                          className="font-medium hover:text-primary transition-colors"
-                        >
-                          {provider.providerName}
-                        </Link>
-                        {provider.rating && (
-                          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                            <span>{provider.rating}</span>
-                            {provider.reviews && <span>({provider.reviews})</span>}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </td>
-                  <td className="py-4 text-center">
-                    <span className="text-lg font-bold text-primary">
-                      £{provider.price.toFixed(2)}
-                    </span>
-                    {provider.price === lowestPrice && (
-                      <Badge className="ml-2 bg-green-100 text-green-800 text-xs">
-                        Lowest
-                      </Badge>
-                    )}
-                  </td>
-                  <td className="py-4 text-center">
-                    <div className="flex items-center justify-center gap-1 text-sm">
-                      <Clock className="h-3.5 w-3.5 text-muted-foreground" />
-                      <span>{provider.turnaroundTime}</span>
-                    </div>
-                  </td>
-                  <td className="py-4 text-center">
-                    <Badge variant="outline" className="text-xs">
-                      {provider.collectionMethod.includes('home') || provider.collectionMethod.includes('Home') ? (
-                        <>
-                          <Home className="h-3 w-3 mr-1" />
-                          Home Kit
-                        </>
-                      ) : (
-                        <>
-                          <Building2 className="h-3 w-3 mr-1" />
-                          Clinic
-                        </>
-                      )}
-                    </Badge>
-                  </td>
-                  <td className="py-4 text-center">
-                    <span className="text-sm font-medium">
-                      {provider.biomarkerCount || '-'}
-                    </span>
-                  </td>
-                  <td className="py-4 text-right">
-                    {provider.url ? (
-                      <Button asChild size="sm" className="bg-primary hover:bg-primary/90">
-                        <a 
-                          href={buildProviderBookingUrl(provider.url, provider.providerId, testName)}
-                          {...externalLinkProps}
-                        >
-                          Book Now
-                          <ExternalLink className="h-3.5 w-3.5 ml-1" />
-                        </a>
-                      </Button>
-                    ) : (
-                      <Button asChild variant="outline" size="sm">
-                        <Link to={`/provider/${provider.providerId}`}>
-                          View Provider
-                        </Link>
-                      </Button>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+    <div className="w-full">
+      <style>{`
+        @media (max-width: 640px) {
+          .comparison-table th[scope="col"],
+          .comparison-table th[scope="row"],
+          .comparison-table td {
+            padding: 10px 8px !important;
+            font-size: 12px !important;
+          }
+          .comparison-table th[scope="row"],
+          .comparison-table thead th:first-child {
+            width: 108px !important;
+            min-width: 108px !important;
+          }
+          .comparison-table thead th:not(:first-child) {
+            min-width: 168px !important;
+          }
+          .comparison-table .provider-name {
+            font-size: 12px !important;
+            word-break: break-word;
+          }
+          .comparison-table .provider-test-name {
+            font-size: 11px !important;
+          }
+        }
+        .comparison-table .provider-name,
+        .comparison-table .provider-test-name {
+          overflow-wrap: anywhere;
+          word-break: break-word;
+        }
+      `}</style>
 
-        {/* Mobile Card View */}
-        <div className="md:hidden space-y-4">
-          {sortedProviders.map((provider) => (
-            <Card key={provider.id} className="relative overflow-hidden">
-              {provider.price === lowestPrice && (
-                <div className="absolute top-0 right-0 bg-green-500 text-white text-xs px-2 py-0.5 rounded-bl">
-                  Lowest Price
-                </div>
-              )}
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3 mb-3">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage 
-                      src={getProviderLogo(provider.providerId)} 
-                      alt={provider.providerName}
-                    />
-                    <AvatarFallback>{provider.providerName.slice(0, 2).toUpperCase()}</AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <Link 
-                      to={`/provider/${provider.providerId}`}
-                      className="font-medium hover:text-primary transition-colors"
+      <div
+        style={{
+          overflowX: "auto",
+          WebkitOverflowScrolling: "touch",
+          borderRadius: 12,
+          boxShadow: "0 4px 20px rgba(8,17,41,0.08)",
+          border: `1px solid ${DIVIDER}`,
+        }}
+      >
+        <table className="comparison-table" style={{ borderCollapse: "collapse", width: "100%", background: "#ffffff" }}>
+          <thead>
+            <tr>
+              <th
+                scope="col"
+                className="sticky left-0 z-20"
+                style={{
+                  background: NAVY,
+                  color: "#ffffff",
+                  width: 160,
+                  minWidth: 160,
+                  padding: "20px 16px",
+                  textAlign: "left",
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: 13,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                }}
+              >
+                Providers
+              </th>
+              {slots.map((test, i) => {
+                if (!test) {
+                  return (
+                    <th
+                      key={`ph-${i}`}
+                      scope="col"
+                      style={{
+                        background: NAVY,
+                        minWidth: 220,
+                        padding: "20px 16px",
+                        verticalAlign: "top",
+                      }}
                     >
-                      {provider.providerName}
-                    </Link>
-                    {provider.rating && (
-                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        <span>{provider.rating}</span>
+                      <PlaceholderHeader />
+                    </th>
+                  );
+                }
+                return (
+                  <th
+                    key={test.id}
+                    scope="col"
+                    style={{
+                      background: NAVY,
+                      color: "#ffffff",
+                      minWidth: 220,
+                      padding: "20px 16px",
+                      textAlign: "left",
+                      verticalAlign: "top",
+                    }}
+                  >
+                    <div className="flex items-start gap-3">
+                      <div
+                        className="rounded-lg flex-shrink-0 flex items-center justify-center"
+                        style={{ background: "#ffffff", width: 48, height: 48, padding: 5 }}
+                      >
+                        {(() => {
+                          const logo = resolveLogo(test);
+                          return logo ? (
+                            <img
+                              src={logo}
+                              alt={`${test.provider} logo`}
+                              className="max-w-full max-h-full object-contain"
+                            />
+                          ) : (
+                            <span
+                              className="font-montserrat font-bold text-xs"
+                              style={{ color: NAVY }}
+                            >
+                              {test.provider.slice(0, 2).toUpperCase()}
+                            </span>
+                          );
+                        })()}
                       </div>
-                    )}
-                  </div>
-                  <div className="ml-auto text-right">
-                    <span className="text-xl font-bold text-primary">
-                      £{provider.price.toFixed(2)}
+                      <div className="min-w-0 flex-1">
+                        <div
+                          className="provider-name"
+                          style={{
+                            fontFamily: "'Montserrat', sans-serif",
+                            fontWeight: 600,
+                            fontSize: 13,
+                            color: TURQUOISE,
+                          }}
+                        >
+                          {test.provider}
+                        </div>
+                        <div
+                          className="provider-test-name line-clamp-2 mt-0.5"
+                          style={{
+                            fontFamily: "'DM Sans', system-ui, sans-serif",
+                            fontSize: 12,
+                            color: "#ffffff",
+                            opacity: 0.85,
+                          }}
+                        >
+                          {test.name.replace(/\s*\(\d+\s+Biomarkers?\)\s*$/i, "")}
+                        </div>
+                        <div
+                          className="mt-2"
+                          style={{
+                            fontFamily: "'Montserrat', sans-serif",
+                            fontWeight: 700,
+                            fontSize: 20,
+                            color: PINK,
+                            lineHeight: 1,
+                          }}
+                        >
+                          {formatPrice(test.price)}
+                        </div>
+                      </div>
+                    </div>
+                  </th>
+                );
+              })}
+            </tr>
+          </thead>
+          <tbody>
+            <Row
+              label="Biomarkers"
+              index={0}
+              slots={slots}
+              render={(t) => <span className="font-semibold">{t.biomarkerCount ?? '—'}</span>}
+            />
+            <Row
+              label="Turnaround Time"
+              index={1}
+              slots={slots}
+              render={(t) => <span>{t.features?.turnaround || "—"}</span>}
+            />
+            <Row
+              label="Sample Type"
+              index={2}
+              slots={slots}
+              render={(t) => (
+                <span>{t.sampleTypeCode ? SAMPLE_TYPE_LABELS[t.sampleTypeCode] : <Dash />}</span>
+              )}
+            />
+            <Row
+              label="Collection Method"
+              index={3}
+              slots={slots}
+              render={(t) => {
+                if (t.collectionMethod) {
+                  return (
+                    <span className="inline-flex items-center gap-1.5">
+                      <Check size={14} color={TURQUOISE} />
+                      <span>{COLLECTION_METHOD_LABELS[t.collectionMethod]}</span>
                     </span>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-3 gap-2 text-sm mb-3">
-                  <div className="text-center p-2 bg-muted/50 rounded">
-                    <Clock className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
-                    <span className="text-xs">{provider.turnaroundTime}</span>
-                  </div>
-                  <div className="text-center p-2 bg-muted/50 rounded">
-                    {provider.collectionMethod.includes('home') || provider.collectionMethod.includes('Home') ? (
-                      <>
-                        <Home className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
-                        <span className="text-xs">Home Kit</span>
-                      </>
-                    ) : (
-                      <>
-                        <Building2 className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
-                        <span className="text-xs">Clinic</span>
-                      </>
-                    )}
-                  </div>
-                  <div className="text-center p-2 bg-muted/50 rounded">
-                    <TestTube className="h-4 w-4 mx-auto mb-1 text-muted-foreground" />
-                    <span className="text-xs">{provider.biomarkerCount || '-'} markers</span>
-                  </div>
-                </div>
-                
-                {provider.url ? (
-                  <Button asChild className="w-full bg-primary hover:bg-primary/90">
-                    <a 
-                      href={buildProviderBookingUrl(provider.url, provider.providerId, testName)}
-                      {...externalLinkProps}
-                    >
-                      Book with {provider.providerName}
-                      <ExternalLink className="h-4 w-4 ml-2" />
-                    </a>
-                  </Button>
+                  );
+                }
+                const parsed = parseCollection(t.features?.collection || "");
+                if (parsed.label && parsed.label !== "—") {
+                  return (
+                    <span className="inline-flex items-center gap-1.5">
+                      <Check size={14} color={TURQUOISE} />
+                      <span>{parsed.label}</span>
+                    </span>
+                  );
+                }
+                return <Dash />;
+              }}
+            />
+            <Row
+              label="Additional Collection Fees"
+              index={4}
+              slots={slots}
+              render={(t) => {
+                const fee = formatCollectionFee(t.collectionFeeType, t.collectionFeeAmount);
+                if (fee.isFree) {
+                  return (
+                    <span style={{ color: '#15803d', fontWeight: 600 }}>{fee.label}</span>
+                  );
+                }
+                return (
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      padding: '4px 10px',
+                      borderRadius: 999,
+                      background: '#fef3c7',
+                      color: '#92400e',
+                      fontWeight: 600,
+                      fontSize: 12,
+                    }}
+                  >
+                    {fee.label}
+                  </span>
+                );
+              }}
+            />
+            <Row
+              label="Total Expected Cost"
+              index={5}
+              slots={slots}
+              render={(t) => {
+                const total = computeTotalExpectedCost(
+                  t.price,
+                  t.collectionFeeType,
+                  t.collectionFeeAmount,
+                  t.clinicalReviewType,
+                  t.clinicalReviewFee,
+                );
+                return (
+                  <span style={{ color: NAVY, fontWeight: 800, fontSize: 16 }}>
+                    {formatPrice(total)}
+                  </span>
+                );
+              }}
+            />
+            <Row
+              label="Clinical Review"
+              index={6}
+              slots={slots}
+              render={(t) => {
+                const r = formatClinicalReview(t.clinicalReviewType, t.clinicalReviewFee);
+                if (!r.isAvailable) return <Dash />;
+                if (r.isIncluded) {
+                  return (
+                    <span className="inline-flex items-center gap-1.5" style={{ color: '#15803d', fontWeight: 600 }}>
+                      <Check size={14} /> {r.label}
+                    </span>
+                  );
+                }
+                return (
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      padding: '4px 10px',
+                      borderRadius: 999,
+                      background: '#fef3c7',
+                      color: '#92400e',
+                      fontWeight: 600,
+                      fontSize: 12,
+                    }}
+                  >
+                    {r.label}
+                  </span>
+                );
+              }}
+            />
+            <Row
+              label="Book"
+              index={7}
+              slots={slots}
+              placeholder={
+                <button
+                  type="button"
+                  disabled
+                  className="block w-full rounded-full"
+                  style={{
+                    background: "transparent",
+                    color: MUTED,
+                    padding: "10px 14px",
+                    fontSize: 13,
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontWeight: 600,
+                    border: `2px dashed ${DIVIDER}`,
+                    cursor: "not-allowed",
+                  }}
+                >
+                  Add test
+                </button>
+              }
+              render={(t) => {
+                const available = !!t.url && t.url !== "#";
+                return available ? (
+                  <a
+                    href={t.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block w-full text-center rounded-full"
+                    style={{
+                      background: PINK,
+                      color: "#ffffff",
+                      padding: "10px 14px",
+                      fontSize: 13,
+                      fontFamily: "'Montserrat', sans-serif",
+                      fontWeight: 600,
+                    }}
+                    onMouseEnter={(e) => (e.currentTarget.style.background = TURQUOISE)}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = PINK)}
+                  >
+                    Book Now
+                  </a>
                 ) : (
-                  <Button asChild variant="outline" className="w-full">
-                    <Link to={`/provider/${provider.providerId}`}>
-                      View {provider.providerName}
-                    </Link>
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+                  <button
+                    type="button"
+                    disabled
+                    className="block w-full rounded-full"
+                    style={{
+                      background: "#cbd5e1",
+                      color: "#ffffff",
+                      padding: "10px 14px",
+                      fontSize: 13,
+                      fontFamily: "'Montserrat', sans-serif",
+                      fontWeight: 600,
+                      cursor: "not-allowed",
+                    }}
+                  >
+                    Unavailable
+                  </button>
+                );
+              }}
+            />
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };
 

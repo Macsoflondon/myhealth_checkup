@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
+import { usersApi } from "@/api/supabase/users.api";
+import { FhirExportPanel } from "@/components/portal/FhirExportPanel";
+import { DataSharingGrantsPanel } from "@/components/portal/DataSharingGrantsPanel";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Card } from "@/components/ui/card";
@@ -60,11 +63,7 @@ export default function ClientPortal() {
 
       // Fetch all data in parallel for 3-4x faster loading
       const [profileData, resultsData, insightsData] = await Promise.all([
-        supabase
-          .from("user_profiles")
-          .select("first_name, last_name, date_of_birth, gender, phone_number")
-          .eq("user_id", user?.id)
-          .single(),
+        usersApi.getUserProfile(user!.id),
         supabase
           .from("test_results")
           .select("*")
@@ -79,7 +78,7 @@ export default function ClientPortal() {
       ]);
 
       if (profileData.error) throw profileData.error;
-      setProfile(profileData.data);
+      setProfile(profileData.data as unknown as UserProfile);
 
       
       if (!resultsData.error) setTestResults(resultsData.data || []);
@@ -133,6 +132,7 @@ export default function ClientPortal() {
       <Helmet>
         <title>Health Portal | myhealth checkup</title>
         <meta name="description" content="Access your test results, appointments, and health insights" />
+        <meta name="robots" content="noindex, follow" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -177,8 +177,8 @@ export default function ClientPortal() {
 
             <Card className="p-6">
               <div className="flex items-center gap-4">
-                <div className="p-3 bg-pink-500/10 rounded-lg">
-                  <Bell className="h-6 w-6 text-pink-500" />
+                <div className="p-3 bg-brand-pink/10 rounded-lg">
+                  <Bell className="h-6 w-6 text-brand-pink" />
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">New Insights</p>
@@ -312,6 +312,10 @@ export default function ClientPortal() {
                   </div>
                 </div>
               </Card>
+              <div className="mt-6 space-y-6">
+                <FhirExportPanel />
+                <DataSharingGrantsPanel />
+              </div>
             </TabsContent>
           </Tabs>
         </main>

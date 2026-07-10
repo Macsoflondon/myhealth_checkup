@@ -67,12 +67,12 @@ export const categoryColors: CategoryColor[] = [
   {
     id: "womens-health",
     name: "Women's Health & Fertility",
-    primary: "bg-pink-600",
-    light: "bg-pink-100",
-    text: "text-pink-600",
+    primary: "bg-brand-pink",
+    light: "bg-brand-pink",
+    text: "text-brand-pink",
     icon: "text-white",
-    border: "border-pink-200", 
-    pinColor: "#db2777" // pink-600
+    border: "border-brand-pink", 
+    pinColor: "#e70d69" // pink-600
   },
   {
     id: "diabetes",

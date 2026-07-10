@@ -13,8 +13,11 @@ import { useTranslation } from "react-i18next";
 interface UserMenuProps {
   isMobile?: boolean;
   onItemClick?: () => void;
+  variant?: "chip" | "glass";
 }
-export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
+export const UserMenu = ({ isMobile = false, onItemClick, variant = "chip" }: UserMenuProps) => {
+  const glassBtn =
+    "!h-9 !w-9 !min-h-0 !p-0 !text-[#081129] hover:!bg-white !bg-transparent !border-0 rounded-full transition-colors flex-shrink-0";
   const { user, signOut } = useAuth();
   const { t } = useTranslation();
   const handleSignOut = async () => {
@@ -29,7 +32,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
             <Button
               variant="ghost"
               size="sm"
-              className="!h-9 !w-9 !min-h-0 !p-0 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors flex-shrink-0"
+              className={variant === "glass" ? glassBtn : "!h-9 !w-9 !min-h-0 !p-0 !text-[#e70d69] hover:!text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors flex-shrink-0"}
               aria-label="User menu"
             >
               <User className="h-4 w-4" />
@@ -37,17 +40,12 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link to="/dashboard" className="flex items-center gap-2" onClick={onItemClick}>
+              <Link to="/health-dashboard" className="flex items-center gap-2" onClick={onItemClick}>
                 <LayoutDashboard className="h-4 w-4" />
                 Dashboard
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link to="/health-dashboard" className="flex items-center gap-2" onClick={onItemClick}>
-                <Activity className="h-4 w-4" />
-                Health Dashboard
-              </Link>
-            </DropdownMenuItem>
+
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleSignOut}>
               <LogOut className="h-4 w-4 mr-2" />
@@ -62,7 +60,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
       <Button
         variant="ghost"
         size="sm"
-        className="!h-9 !w-9 !min-h-0 !p-0 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors flex-shrink-0"
+        className={variant === "glass" ? glassBtn : "!h-9 !w-9 !min-h-0 !p-0 !text-[#e70d69] hover:!text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors flex-shrink-0"}
         aria-label="Sign in"
         asChild
       >
@@ -79,7 +77,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
           <Button
             variant="ghost"
             size="sm"
-            className="!h-9 !w-9 !min-h-0 !p-0 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors"
+            className={variant === "glass" ? glassBtn : "!h-9 !w-9 !min-h-0 !p-0 !text-[#e70d69] hover:!text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors"}
             aria-label="User menu"
           >
             <User className="h-4 w-4" />
@@ -87,17 +85,12 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem asChild>
-            <Link to="/dashboard" className="flex items-center gap-2">
+            <Link to="/health-dashboard" className="flex items-center gap-2">
               <LayoutDashboard className="h-4 w-4" />
               Dashboard
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link to="/health-dashboard" className="flex items-center gap-2">
-              <Activity className="h-4 w-4" />
-              Health Dashboard
-            </Link>
-          </DropdownMenuItem>
+
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleSignOut}>
             <LogOut className="h-4 w-4 mr-2" />
@@ -112,7 +105,7 @@ export const UserMenu = ({ isMobile = false, onItemClick }: UserMenuProps) => {
       <Button
         variant="ghost"
         size="sm"
-        className="!h-9 !w-9 !min-h-0 !p-0 text-[#e70d69] hover:text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors"
+        className={variant === "glass" ? glassBtn : "!h-9 !w-9 !min-h-0 !p-0 !text-[#e70d69] hover:!text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors"}
         aria-label="Sign in"
         asChild
       >

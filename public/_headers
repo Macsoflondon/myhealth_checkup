@@ -1,37 +1,26 @@
 /*
-  # UK Cyber Essentials Security Headers
-  
-  # Prevent clickjacking attacks (allow same-origin framing for previews/embeds)
-  X-Frame-Options: SAMEORIGIN
-  
-  # Prevent MIME-type sniffing
-  X-Content-Type-Options: nosniff
-  
-  # Enable XSS filtering
-  X-XSS-Protection: 1; mode=block
-  
-  # Referrer policy - don't leak URLs to external sites
-  Referrer-Policy: strict-origin-when-cross-origin
-  
-  # Permissions policy - disable sensitive browser features by default
-  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=()
-  
-  # Content Security Policy — REPORT-ONLY mode (monitoring phase, ~2 weeks)
-  # Captures violations without blocking. Promote to enforcing `Content-Security-Policy`
-  # after reviewing reports and confirming no legitimate breakage.
-  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.gpteng.co https://fonts.googleapis.com https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https: http:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.openai.com https://api.firecrawl.dev https://storage.googleapis.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; report-uri /csp-report; report-to csp-endpoint
-  
-  # Reporting endpoint group for CSP violations
-  Reporting-Endpoints: csp-endpoint="/csp-report"
-  
-  # Strict Transport Security (HTTPS enforcement)
-  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  # UK Cyber Essentials Plus v3.3 — security headers
 
-# Long-cache hashed build assets (audit 4.x)
+  X-Frame-Options: SAMEORIGIN
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), interest-cohort=(), browsing-topics=()
+  Cross-Origin-Opener-Policy: same-origin-allow-popups
+  Cross-Origin-Resource-Policy: same-site
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+
+  # Content Security Policy — ENFORCING.
+  # `'unsafe-eval'` removed (production code does not require it).
+  # `http:` removed from img-src so HTTPS is enforced for images too.
+  # `upgrade-insecure-requests` mitigates any third-party HTTP URL slipping in.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.gpteng.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.openai.com https://api.firecrawl.dev https://storage.googleapis.com https://nominatim.openstreetmap.org; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests; report-uri https://clvuioagsgfadynuvodj.supabase.co/functions/v1/csp-report; report-to csp-endpoint
+
+  Reporting-Endpoints: csp-endpoint="https://clvuioagsgfadynuvodj.supabase.co/functions/v1/csp-report"
+
+# Long-cache hashed build assets
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Long-cache static images & fonts
 /lovable-uploads/*
   Cache-Control: public, max-age=31536000, immutable
 
@@ -44,3 +33,19 @@
 # HTML: short cache with background revalidation
 /index.html
   Cache-Control: public, max-age=300, stale-while-revalidate=60
+
+# Long-cache other static asset types
+*.png
+  Cache-Control: public, max-age=31536000, immutable
+
+*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+
+*.svg
+  Cache-Control: public, max-age=31536000, immutable
+
+*.mp4
+  Cache-Control: public, max-age=31536000, immutable
+
+*.woff
+  Cache-Control: public, max-age=31536000, immutable

@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.provider_tests_autoclassify_upd() FROM PUBLIC, anon, authenticated;

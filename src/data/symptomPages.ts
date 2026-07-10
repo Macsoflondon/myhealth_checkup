@@ -123,10 +123,16 @@ export const symptomPages: SymptomPageData[] = [
         searchQuery: "hormone",
       },
       {
-        name: "Vitamin D & B12",
-        why: "Deficiencies in both are linked to hair thinning and slow regrowth",
-        keyBiomarkers: ["25-OH Vitamin D", "Vitamin B12"],
-        searchQuery: "vitamin",
+        name: "Vitamin D Test",
+        why: "Vitamin D deficiency is linked to hair thinning and slow regrowth",
+        keyBiomarkers: ["25-OH Vitamin D"],
+        searchQuery: "vitamin d",
+      },
+      {
+        name: "Vitamin B12 Test",
+        why: "B12 deficiency independently contributes to hair shedding and fatigue",
+        keyBiomarkers: ["Vitamin B12"],
+        searchQuery: "vitamin b12",
       },
     ],
     whenToSeeGP:

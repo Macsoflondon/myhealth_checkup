@@ -1,13 +1,22 @@
 /**
- * Shared layout component for consistent page structure
- * Includes: Header (with PromoTicker), main content area, Footer, CookieConsent
+ * Shared layout component for consistent page structure.
+ * Includes: BrowseByCategoryBar on non-home pages, main content area, Footer, CookieConsent.
  */
 
+
 import { ReactNode } from "react";
-import Header from "@/components/layout/Header";
+import { useLocation } from "react-router-dom";
+
+import { lazy, Suspense } from "react";
 import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import SiteBreadcrumb from "@/components/common/SiteBreadcrumb";
+import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
+import { ComparisonBar } from "@/components/compare/ComparisonBar";
+import { compareStore, useCompareItems } from "@/stores/compareStore";
+import { useNavigate } from "react-router-dom";
+
+const AccreditedProvidersBar = lazy(() => import("@/components/sections/AccreditedProvidersBar"));
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -25,8 +34,14 @@ export const MainLayout = ({
   hideFooter = false,
   mainClassName = "flex-1"
 }: MainLayoutProps) => {
+  const { pathname } = useLocation();
+  const isHome = pathname === "/";
+  const isCompare = pathname === "/compare";
+  const navigate = useNavigate();
+  const compareItems = useCompareItems();
+
   return (
-    <div className="min-h-screen flex flex-col bg-[hsl(224,67%,10%)]">
+    <div className="min-h-dvh flex flex-col bg-[hsl(224,67%,10%)]">
       {/* Accessibility: skip to main content */}
       <a
         href="#main-content"
@@ -34,13 +49,31 @@ export const MainLayout = ({
       >
         Skip to main content
       </a>
-      {!hideHeader && <Header />}
+
+      {!hideHeader && !isHome && (
+        <>
+          <BrowseByCategoryBar variant="flush" />
+          {!isCompare && (
+            <Suspense fallback={<div className="min-h-[60px]" aria-hidden="true" />}>
+              <AccreditedProvidersBar />
+            </Suspense>
+          )}
+        </>
+      )}
+
+
       <main id="main-content" className={mainClassName} tabIndex={-1}>
-        <SiteBreadcrumb />
+        {!isCompare && <SiteBreadcrumb />}
         {children}
       </main>
       {!hideFooter && <Footer />}
       <CookieConsent />
+      <ComparisonBar
+        selectedTests={compareItems}
+        onRemoveTest={(id) => compareStore.remove(id)}
+        onCompare={() => navigate("/compare")}
+        onClearAll={() => compareStore.clear()}
+      />
     </div>
   );
 };

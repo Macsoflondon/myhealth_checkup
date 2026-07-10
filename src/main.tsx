@@ -1,5 +1,14 @@
 import { StrictMode } from "react";
 import { createRoot, hydrateRoot } from 'react-dom/client'
+// Brand typography — self-hosted via @fontsource (no render-blocking CDN)
+import '@fontsource/montserrat/400.css'
+import '@fontsource/montserrat/500.css'
+import '@fontsource/montserrat/600.css'
+import '@fontsource/montserrat/700.css'
+import '@fontsource/montserrat/800.css'
+import '@fontsource/dm-sans/400.css'
+import '@fontsource/dm-sans/500.css'
+import '@fontsource/dm-sans/700.css'
 import App from './App.tsx'
 import './index.css'
 import './i18n/config'
@@ -23,3 +32,7 @@ if (rootElement.hasChildNodes()) {
 } else {
   createRoot(rootElement).render(tree);
 }
+
+// Web Vitals RUM reporter — no-op in dev, dynamic import in prod.
+void import("./lib/webVitals").then((m) => m.installWebVitals());
+

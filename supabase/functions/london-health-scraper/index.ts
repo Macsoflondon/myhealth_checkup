@@ -1,9 +1,28 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+// Extract a readable message from Errors, Supabase PostgrestError objects, or anything.
+// Avoids "[object Object]" being stored in scraping_jobs.error_message.
+function describeSupabaseError(err: unknown): string {
+  if (err instanceof Error) return err.message;
+  if (err && typeof err === 'object') {
+    const e = err as Record<string, unknown>;
+    const parts = [
+      typeof e.message === 'string' ? e.message : null,
+      typeof e.details === 'string' ? e.details : null,
+      typeof e.hint === 'string' ? e.hint : null,
+      typeof e.code === 'string' ? `(code ${e.code})` : null,
+    ].filter(Boolean);
+    if (parts.length) return parts.join(' — ');
+    try { return JSON.stringify(err); } catch { /* ignore */ }
+  }
+  return String(err);
+}
 
 const PROVIDER_ID = 'london-health-company';
 const BASE_URL = 'https://www.londonhealthcompany.co.uk';
@@ -26,36 +45,11 @@ function determineCategory(title: string, description: string): string {
   return 'General Health';
 }
 
+import { firecrawlScrape, firecrawlMap, runInChunks } from '../_shared/firecrawl-helpers.ts';
 
-interface FirecrawlScrapeResult {
-  success?: boolean;
-  data?: {
-    markdown?: string;
-    html?: string;
-    metadata?: { title?: string; description?: string; [k: string]: unknown };
-  };
-  [k: string]: unknown;
-}
-
-async function firecrawlScrape(url: string, apiKey: string): Promise<FirecrawlScrapeResult> {
-  const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, formats: ['markdown'], onlyMainContent: true, waitFor: 2000 }),
-  });
-  if (!response.ok) throw new Error(`Firecrawl error: ${response.status}`);
-  return response.json();
-}
-
-async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
-  const response = await fetch('https://api.firecrawl.dev/v1/map', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, search: 'blood test health', limit: 200, includeSubdomains: false }),
-  });
-  if (!response.ok) throw new Error(`Firecrawl map error: ${response.status}`);
-  const data = await response.json();
-  return (data.links || []).filter((l: string) =>
+async function mapLondonHealth(baseUrl: string, apiKey: string): Promise<string[]> {
+  const links = await firecrawlMap(baseUrl, apiKey, { search: 'blood test health', limit: 200 });
+  return links.filter((l) =>
     (l.includes('/product') || l.includes('/test') || l.includes('/blood-test') || l.includes('/health'))
     && !l.includes('?') && !l.includes('#') && !l.includes('/cart') && !l.includes('/account')
     && !l.includes('/blog') && !l.includes('/contact') && !l.includes('/about')
@@ -64,6 +58,13 @@ async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
+
+  const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
 
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -80,7 +81,7 @@ Deno.serve(async (req) => {
 
     let productUrls: string[] = [];
     try {
-      productUrls = await firecrawlMap(BASE_URL, firecrawlApiKey);
+      productUrls = await mapLondonHealth(BASE_URL, firecrawlApiKey);
       console.log(`Map discovered ${productUrls.length} URLs`);
     } catch (e) {
       console.error('Map failed:', (e instanceof Error ? e.message : String(e)));
@@ -88,7 +89,9 @@ Deno.serve(async (req) => {
 
     if (productUrls.length < 5) {
       try {
-        const homeResult = await firecrawlScrape(BASE_URL, firecrawlApiKey);
+        const homeResult = await firecrawlScrape(BASE_URL, firecrawlApiKey, {
+          formats: ['markdown'], onlyMainContent: true, waitFor: 1500, timeout: 60000, proxy: 'stealth',
+        });
         if (homeResult.success && homeResult.data?.markdown) {
           const urlMatches = homeResult.data.markdown.matchAll(/\((https?:\/\/[^)]+)\)/g);
           for (const m of urlMatches) {
@@ -105,80 +108,98 @@ Deno.serve(async (req) => {
     productUrls = [...new Set(productUrls)];
     console.log(`Total URLs: ${productUrls.length}`);
 
-    const products: Array<Record<string, unknown>> = [];
-    for (const url of productUrls.slice(0, 50)) {
-      try {
-        const slug = new URL(url).pathname.split('/').filter(Boolean).pop() || '';
-        console.log(`Scraping: ${slug}`);
-        const result = await firecrawlScrape(url, firecrawlApiKey);
-        if (!result.success || !result.data) continue;
-
-        const markdown = result.data.markdown || '';
-        const metadata = result.data.metadata || {};
-
-        let title = metadata.title?.replace(/\s*[–|]\s*London\s*Health.*$/i, '').trim() || '';
-        if (!title) {
-          const h1 = markdown.match(/^#\s+(.+)$/m);
-          title = h1 ? h1[1].trim() : '';
-        }
-        if (!title || title.length < 3) continue;
-
-        const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
-        const price = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : null;
-
-        const bioCountMatch = markdown.match(/(\d+)\s*(?:biomarkers?|tests?|markers?)/i);
-        const biomarkerCount = bioCountMatch ? parseInt(bioCountMatch[1]) : null;
-
-        products.push({
-          test_name: title,
-          provider_id: PROVIDER_ID,
-          provider_test_id: `lhc-${slug}`,
-          category: determineCategory(title, metadata.description || ''),
-          price,
-          description: metadata.description || `${title} from London Health Company.`,
-          url,
-          is_active: true,
-          biomarker_count: biomarkerCount,
-          sample_type: 'Venous blood',
-          clinic_visit_available: true,
-          home_kit_available: false,
-          scraped_at: new Date().toISOString(),
-          url_verified: true,
-          url_verified_at: new Date().toISOString(),
-        });
-        console.log(`✓ ${title} - £${price ?? 'N/A'}`);
-        await new Promise(r => setTimeout(r, 500));
-      } catch (e) {
-        console.error(`✗ ${(e instanceof Error ? e.message : String(e))}`);
-      }
-    }
-
-    if (products.length > 0) {
-      const { error } = await supabase.from('provider_tests').upsert(products, {
-        onConflict: 'provider_id,provider_test_id', ignoreDuplicates: false,
+    const products: any[] = [];
+    // Batch mode, concurrency 4
+    await runInChunks(productUrls.slice(0, 50), 8, async (url) => {
+      const slug = new URL(url).pathname.split('/').filter(Boolean).pop() || '';
+      console.log(`Scraping: ${slug}`);
+      const result = await firecrawlScrape(url, firecrawlApiKey, {
+        formats: ['markdown'], onlyMainContent: true, waitFor: 1500, timeout: 60000, proxy: 'stealth',
       });
-      if (error) throw error;
+      if (!result.success || !result.data) return;
+
+      const markdown = result.data.markdown || '';
+      const metadata = result.data.metadata || {};
+
+      let title = metadata.title?.replace(/\s*[–|]\s*London\s*Health.*$/i, '').trim() || '';
+      if (!title) {
+        const h1 = markdown.match(/^#\s+(.+)$/m);
+        title = h1 ? h1[1].trim() : '';
+      }
+      if (!title || title.length < 3) return;
+
+      const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
+      const price = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : null;
+
+      const bioCountMatch = markdown.match(/(\d+)\s*(?:biomarkers?|tests?|markers?)/i);
+      const biomarkerCount = bioCountMatch ? parseInt(bioCountMatch[1]) : null;
+
+      products.push({
+        test_name: title,
+        provider_id: PROVIDER_ID,
+        provider_test_id: `lhc-${slug}`,
+        category: determineCategory(title, metadata.description || ''),
+        price,
+        description: metadata.description || `${title} from London Health Company.`,
+        url,
+        is_active: true,
+        biomarker_count: biomarkerCount,
+        sample_type: 'Venous blood',
+        clinic_visit_available: true,
+        home_kit_available: false,
+        scraped_at: new Date().toISOString(),
+        url_verified: true,
+        url_verified_at: new Date().toISOString(),
+      });
+      console.log(`✓ ${title} - £${price ?? 'N/A'}`);
+    });
+
+    // Dedupe by test_name to avoid the partial unique index (provider_id, test_name) WHERE is_active.
+    // Keep the first occurrence (most relevant slug appears earlier in productUrls).
+    const seenNames = new Set<string>();
+    const dedupedProducts = products.filter(p => {
+      const key = (p.test_name as string).toLowerCase().trim();
+      if (seenNames.has(key)) return false;
+      seenNames.add(key);
+      return true;
+    });
+
+    const upsertErrors: string[] = [];
+    // Upsert one-by-one so a single conflict doesn't abort the whole batch.
+    for (const product of dedupedProducts) {
+      const { error } = await supabase
+        .from('provider_tests')
+        .upsert(product, { onConflict: 'provider_id,provider_test_id' });
+      if (error) {
+        const msg = describeSupabaseError(error);
+        console.error(`Upsert failed for ${product.test_name}:`, msg);
+        upsertErrors.push(`${product.provider_test_id}: ${msg}`);
+      }
     }
 
     await supabase.from('scraping_jobs').upsert({
       provider_id: PROVIDER_ID, status: 'completed',
       last_scraped: new Date().toISOString(),
       next_scrape: new Date(Date.now() + 12 * 3600000).toISOString(),
-      error_message: null,
+      error_message: upsertErrors.length ? `Partial: ${upsertErrors.length} upsert errors` : null,
     }, { onConflict: 'provider_id' });
 
     return new Response(JSON.stringify({
-      success: true, message: `Scraped ${products.length} London Health Co tests`, testsUpdated: products.length,
+      success: true,
+      message: `Scraped ${dedupedProducts.length} London Health Co tests (${upsertErrors.length} upsert errors)`,
+      testsUpdated: dedupedProducts.length - upsertErrors.length,
+      upsertErrors: upsertErrors.slice(0, 10),
     }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
 
   } catch (error) {
-    console.error('London Health scraper error:', error);
+    const msg = describeSupabaseError(error);
+    console.error('London Health scraper error:', msg);
     const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
     await supabase.from('scraping_jobs').upsert({
       provider_id: PROVIDER_ID, status: 'failed',
-      error_message: (error instanceof Error ? error.message : String(error)), last_scraped: new Date().toISOString(),
+      error_message: msg, last_scraped: new Date().toISOString(),
     }, { onConflict: 'provider_id' });
-    return new Response(JSON.stringify({ success: false, error: (error instanceof Error ? error.message : String(error)) }),
+    return new Response(JSON.stringify({ success: false, error: msg }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 });
   }
 });

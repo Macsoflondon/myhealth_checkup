@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;700&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
+/* Montserrat + DM Sans loaded via @fontsource in main.tsx */
 @import url("https://fonts.googleapis.com/css2?family=Lora&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap");
 @tailwind base;
@@ -21,29 +20,101 @@ html, body {
   display: none;
 }
 
-/* Material Design Elevation System */
+/* ============================================================
+   DESIGN TOKENS — single source of truth (Phase 1 foundation)
+   Elevation, motion, spacing, radius. Consumed by Tailwind
+   utilities (shadow-e1, duration-standard, ease-emphasized, etc.)
+   Legacy aliases (--easing-*) retained below for back-compat.
+   ============================================================ */
 :root {
   --elevation-0: none;
-  --elevation-1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-  --elevation-2: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  --elevation-3: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-  --elevation-4: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-  --elevation-5: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-}
+  --elevation-1: 0 1px 2px hsl(224 67% 10% / 0.04), 0 1px 3px hsl(224 67% 10% / 0.06);
+  --elevation-2: 0 2px 4px hsl(224 67% 10% / 0.05), 0 4px 8px hsl(224 67% 10% / 0.08);
+  --elevation-3: 0 4px 8px hsl(224 67% 10% / 0.06), 0 12px 24px hsl(224 67% 10% / 0.10);
+  --elevation-4: 0 8px 16px hsl(224 67% 10% / 0.08), 0 20px 40px hsl(224 67% 10% / 0.12);
+  --elevation-5: 0 12px 24px hsl(224 67% 10% / 0.10), 0 32px 64px hsl(224 67% 10% / 0.16);
 
-/* Material Motion Tokens */
-:root {
   --duration-instant: 50ms;
-  --duration-quick: 100ms;
-  --duration-standard: 250ms;
-  --duration-moderate: 300ms;
+  --duration-quick: 120ms;
+  --duration-standard: 200ms;
+  --duration-moderate: 280ms;
   --duration-slow: 400ms;
+  --duration-reveal: 600ms;
 
-  --easing-emphasized: cubic-bezier(0.4, 0, 0.2, 1);
-  --easing-emphasized-decelerate: cubic-bezier(0, 0, 0.2, 1);
-  --easing-emphasized-accelerate: cubic-bezier(0.4, 0, 1, 1);
-  --easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  /* Legacy aliases (do not remove — used by older components) */
+  --easing-emphasized: var(--ease-standard);
+  --easing-emphasized-decelerate: var(--ease-decelerate);
+  --easing-emphasized-accelerate: var(--ease-accelerate);
+  --easing-standard: var(--ease-emphasized);
+
+  --space-section-y: clamp(3rem, 6vw, 5.5rem);
+  --space-section-y-tight: clamp(2rem, 4vw, 3.5rem);
+  --space-block-y: clamp(1.5rem, 3vw, 2.5rem);
+  --space-gutter: clamp(1rem, 4vw, 2rem);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
+  --radius-pill: 9999px;
 }
+
+/* ============================================================
+   REVEAL-ON-SCROLL — CSS-only primitive (JS toggles data-reveal)
+   Used by <Reveal>. Direction via data-reveal-variant, stagger via
+   --reveal-delay. Respects prefers-reduced-motion globally.
+   ============================================================ */
+[data-reveal] {
+  opacity: 0;
+  transition:
+    opacity var(--duration-reveal) var(--ease-emphasized),
+    transform var(--duration-reveal) var(--ease-emphasized);
+  transition-delay: var(--reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+[data-reveal="hidden"][data-reveal-variant="rise"],
+[data-reveal="hidden"]:not([data-reveal-variant]) {
+  transform: translate3d(0, 16px, 0);
+}
+[data-reveal="hidden"][data-reveal-variant="fade"] {
+  transform: none;
+}
+[data-reveal="hidden"][data-reveal-variant="slide-left"] {
+  transform: translate3d(-24px, 0, 0);
+}
+[data-reveal="hidden"][data-reveal-variant="slide-right"] {
+  transform: translate3d(24px, 0, 0);
+}
+[data-reveal="hidden"][data-reveal-variant="zoom"] {
+  transform: scale(0.96);
+}
+[data-reveal="visible"] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  will-change: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  /* Global safety net — kill non-essential motion for RM users. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 
 @layer base {
   :root {
@@ -64,6 +135,11 @@ html, body {
     /* Navy (Brand #081129) */
     --navy: 224 67% 10%;
 
+    /* Brand aliases for hsl(var(--turquoise)) and hsl(var(--pink)) */
+    --turquoise: 187 72% 48%;
+    --pink: 335 89% 48%;
+
+
     /* Tertiary - Navy (Brand #081129) */
     --tertiary: 224 67% 10%;
     --tertiary-foreground: 0 0% 100%;
@@ -82,10 +158,10 @@ html, body {
     --background: 220 5% 97%;
     --foreground: 222.2 84% 4.9%;
 
-    --card: 220 5% 97%;
+    --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
 
-    --popover: 220 5% 97%;
+    --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
     --primary: 187 72% 48%;
@@ -138,11 +214,22 @@ html, body {
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
+    /* Additive clinical tokens (do NOT replace brand turquoise/pink/navy) */
+    --premium-gold: 43 64% 55%;            /* #D4A843 — provider-of-the-month / premium badges */
+    --premium-gold-foreground: 224 67% 10%;
+    --clinical-success: 160 84% 31%;       /* #059669 — biomarker "included" / positive states */
+    --clinical-success-foreground: 0 0% 100%;
+    --clinical-alert: 0 74% 50%;           /* #DC2626 — clinical alerts only, never decorative */
+    --clinical-alert-foreground: 0 0% 100%;
+    --surface-warm: 60 14% 98%;            /* #FAFAF8 — warm off-white surface */
+    --text-charcoal: 240 26% 14%;          /* #1A1A2E — primary text on warm surfaces */
+    --text-warm-grey: 220 9% 46%;          /* #6B7280 — secondary text */
+
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem; /* 12px — moderate clinical rounding */
 
     --sidebar-background: 220 5% 97%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -167,7 +254,8 @@ html, body {
     --easing-emphasized-decelerate: cubic-bezier(0, 0, 0.2, 1);
     --easing-emphasized-accelerate: cubic-bezier(0.4, 0, 1, 1);
     --easing-standard: cubic-bezier(0.2, 0, 0, 1);
-    --font-sans: Montserrat, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    --font-heading: Montserrat, ui-sans-serif, system-ui, sans-serif;
     --font-serif: Lora, ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
     --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
     --shadow-sm: 0px 1px 1.5px 0px hsla(223, 69%, 10%, 0.1);
@@ -262,7 +350,8 @@ html, body {
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    --font-sans: Montserrat, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+    --font-heading: Montserrat, ui-sans-serif, system-ui, sans-serif;
     --font-serif: Lora, ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
     --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
     --radius: 0.5rem;
@@ -295,16 +384,32 @@ html, body {
 
   body {
     background-color: hsl(224, 67%, 10%);
-    font-family: 'Lato', system-ui, sans-serif;
+    font-family: 'DM Sans', system-ui, sans-serif;
     color: #081129;
     font-weight: 400;
+    font-size: 16px;
+    line-height: 1.6;
     margin: 0;
     padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Brand Typography Application */
+  /* Brand Typography Application — Montserrat for all headings, weight contrast vs DM Sans body */
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Montserrat', system-ui, sans-serif;
+    font-feature-settings: "ss01", "kern";
+  }
+  h1 { font-weight: 800; letter-spacing: -0.02em; }
+  h2 { font-weight: 700; letter-spacing: -0.015em; }
+  h3, h4 { font-weight: 700; letter-spacing: -0.01em; }
+
+  /* Medical disclaimers */
+  .text-disclaimer,
+  [data-disclaimer] {
+    font-size: 14px;
+    line-height: 1.5;
+    color: hsl(var(--muted-foreground));
   }
 
   .elegant-text {
@@ -338,8 +443,12 @@ html, body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  .gradient-heading-accent:hover {
     animation: shimmer 4s ease-in-out infinite;
   }
+
 
   @media (prefers-reduced-motion: reduce) {
     .gradient-heading-accent {
@@ -369,12 +478,12 @@ html, body {
       hsl(var(--turquoise)) 100%
     );
     background-size: 200% auto;
-    animation: btn-shimmer 3s linear infinite;
   }
 
   .btn-shimmer:hover {
-    animation-duration: 1.5s;
+    animation: btn-shimmer 1.5s linear infinite;
   }
+
 
   @media (prefers-reduced-motion: reduce) {
     .btn-shimmer {
@@ -425,15 +534,13 @@ html, body {
     perspective: 1000px;
   }
 
-  /* Optimize animations for 60fps */
-  .animate-fade-in, .animate-scale-in, .transition-all {
-    will-change: transform, opacity;
-  }
+  /* Optimize animations for 60fps (selective will-change removed - avoid layer promotion on every element) */
 
   /* Remove will-change after animation completes */
   .animation-complete {
     will-change: auto;
   }
+
 
   /* Content visibility for better rendering */
   .lazy-section {
@@ -453,8 +560,7 @@ html, body {
   /* Mobile-first responsive images */
   @media (max-width: 768px) {
     img {
-      image-rendering: -webkit-optimize-contrast;
-      image-rendering: optimizeSpeed;
+      image-rendering: auto;
     }
 
     /* Mobile performance optimizations */
@@ -476,10 +582,11 @@ html, body {
 
     /* Better text rendering on mobile */
     body {
-      text-rendering: optimizeSpeed;
+      text-rendering: optimizeLegibility;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
+
   }
 
   /* Reduce motion for better performance and accessibility */
@@ -722,8 +829,8 @@ html, body {
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid hsl(var(--glass-border));
     box-shadow: var(--glass-shadow);
-    animation: float 3s ease-in-out infinite;
   }
+
 
   .glass-card-strong {
     background: hsl(var(--glass-background));
@@ -731,8 +838,8 @@ html, body {
     -webkit-backdrop-filter: blur(20px);
     border: 1px solid hsl(var(--glass-border));
     box-shadow: var(--glass-shadow);
-    animation: float 3.5s ease-in-out infinite;
   }
+
 
   /* Brand gradient overlays */
   .gradient-overlay-hero {
@@ -765,6 +872,9 @@ html, body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  .gradient-brand-text:hover {
     animation: shimmer 4s ease-in-out infinite;
   }
 
@@ -780,6 +890,9 @@ html, body {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  .shimmer-text:hover {
     animation: shimmer 4s ease-in-out infinite;
   }
 
@@ -900,3 +1013,41 @@ html, body {
     animation: none;
   }
 }
+/* Hero slide responsive focal points (per-slide via CSS vars) */
+.hero-slide { object-position: var(--pos-m, center center); }
+@media (min-width: 640px) { .hero-slide { object-position: var(--pos-t, var(--pos-m, center center)); } }
+@media (min-width: 1024px) { .hero-slide { object-position: var(--pos-d, var(--pos-t, center center)); } }
+
+/* ---------------------------------------------------------------- */
+/* Clinical spacing system — generous breathing room signals quality */
+/* ---------------------------------------------------------------- */
+@layer components {
+  /* Section vertical rhythm: 48px mobile, 64px desktop */
+  .section-y { @apply py-12 lg:py-16; }
+  .section-y-lg { @apply py-16 lg:py-24; }
+
+  /* Max content width: 1200px to prevent cognitive overload on wide screens */
+  .container-clinical {
+    @apply mx-auto w-full px-4 sm:px-6 lg:px-8;
+    max-width: 1200px;
+  }
+
+  /* Clinical card: 24px interior padding, 12px radius */
+  .card-clinical {
+    @apply rounded-xl bg-card p-6;
+  }
+
+  /* Card grid: 32px gap (not 16px) — breathing room signals premium */
+  .grid-clinical {
+    @apply grid gap-8;
+  }
+}
+
+/* Premium / clinical semantic accents (additive — do not replace brand) */
+.text-premium-gold { color: hsl(var(--premium-gold)); }
+.bg-premium-gold { background-color: hsl(var(--premium-gold)); }
+.text-clinical-success { color: hsl(var(--clinical-success)); }
+.bg-clinical-success { background-color: hsl(var(--clinical-success)); }
+.text-clinical-alert { color: hsl(var(--clinical-alert)); }
+.bg-clinical-alert { background-color: hsl(var(--clinical-alert)); }
+

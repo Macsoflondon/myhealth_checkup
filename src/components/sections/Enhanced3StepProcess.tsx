@@ -1,6 +1,6 @@
 import { TestTube, Users, CheckCircle } from "lucide-react";
 
-const Enhanced3StepProcess = (): JSX.Element | null => {
+const Enhanced3StepProcess = () => {
   const steps = [
     {
       number: "01",

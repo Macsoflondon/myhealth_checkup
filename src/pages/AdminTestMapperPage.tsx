@@ -96,7 +96,8 @@ export default function AdminTestMapperPage() {
     : 0;
 
   return (
-    <div className="min-h-screen bg-[#081129]">
+    <>
+      <div className="min-h-screen bg-[#081129]">
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
@@ -353,5 +354,6 @@ export default function AdminTestMapperPage() {
       </div>
     </div>
     </div>
+    </>
   );
 }

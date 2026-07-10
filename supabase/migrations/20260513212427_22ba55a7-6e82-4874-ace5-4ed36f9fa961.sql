@@ -1,0 +1,1 @@
+DROP POLICY IF EXISTS "Admins can only view insights they created" ON public.health_insights;

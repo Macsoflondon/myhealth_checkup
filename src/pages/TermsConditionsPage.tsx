@@ -12,6 +12,10 @@ const TermsConditionsPage = () => {
         <title>Terms & Conditions | myhealth checkup</title>
         <meta name="description" content="Terms and conditions governing your use of myhealth checkup, including booking, liability, and intellectual property." />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/terms" />
+        <meta property="og:title" content="Terms & Conditions | myhealth checkup" />
+        <meta property="og:description" content="The terms and conditions that govern your use of the myhealth checkup comparison platform." />
+        <meta property="og:url" content="https://myhealthcheckup.co.uk/terms" />
+        <meta property="og:type" content="website" />
       </Helmet>
       <Header />
       <main className="flex-grow bg-white">
@@ -129,7 +133,7 @@ const TermsConditionsPage = () => {
               <CardContent>
                 <p className="mb-4">For questions about these Terms & Conditions, please contact us:</p>
                 <div className="bg-muted p-4 rounded-lg">
-                  <p><strong>Email:</strong> legal@myhealthcheckup.co.uk</p>
+                  <p><strong>Email:</strong> support@myhealthcheckup.co.uk</p>
                   <p><strong>Address:</strong> Clapham, SW London, United Kingdom</p>
                   <p><strong>Company Registration:</strong> 16589056 (England & Wales)</p>
                 </div>

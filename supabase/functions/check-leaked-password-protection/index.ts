@@ -56,13 +56,12 @@ Deno.serve(async (req) => {
     }
 
     const admin = createClient(SUPABASE_URL, SERVICE_ROLE);
-    const { data: roleRow, error: roleErr } = await admin
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userData.user.id)
-      .eq("role", "admin")
-      .maybeSingle();
-    if (roleErr || !roleRow) {
+    // Use has_role RPC via user-scoped client so AAL2/MFA is enforced.
+    const { data: isAdmin, error: roleErr } = await userClient.rpc("has_role", {
+      _user_id: userData.user.id,
+      _role: "admin",
+    });
+    if (roleErr || !isAdmin) {
       return json({ error: "Forbidden: admin role required" }, 403);
     }
 

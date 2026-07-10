@@ -1,0 +1,44 @@
+name: Category Mapping Regression
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    # Runs ~30 min after the twice-daily scrape-and-verify cron (06:00 & 18:00 UTC)
+    - cron: "30 6 * * *"
+    - cron: "30 18 * * *"
+
+jobs:
+  category-mapping:
+    name: provider_tests canonical_category invariants
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+    env:
+      VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Fail fast if Supabase secrets are missing
+        run: |
+          if [ -z "$VITE_SUPABASE_URL" ] || [ -z "$VITE_SUPABASE_PUBLISHABLE_KEY" ]; then
+            echo "::error::VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY repo secrets are required."
+            exit 1
+          fi
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Run category mapping regression suite
+        run: bunx vitest run src/components/admin/__tests__/categoryMapping.test.ts --reporter=verbose
+
+      - name: Summarise on failure
+        if: failure()
+        run: |
+          echo "::error::Category mapping regression failed — a scraped provider_tests row is missing canonical_category or routed to the wrong page. Check the test output above and the CategoryVerificationPanel in /admin/scrapers."

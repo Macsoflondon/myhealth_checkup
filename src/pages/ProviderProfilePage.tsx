@@ -12,19 +12,22 @@ import { detailedProviders } from "@/data/compare/detailedProviders";
 import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
 import { getBranding } from "@/data/providerBranding";
 import { getProviderRating } from "@/constants/providerRatings";
+import { ProviderTestsGrid } from "@/components/providers/ProviderTestsGrid";
 
 const PROVIDER_CATALOG_ROUTES: Record<string, string> = {
   'goodbody-clinic': '/providers/goodbody-clinic',
   'medichecks': '/providers/medichecks',
   'thriva': '/providers/thriva',
-  'randox-health': '/providers/randox',
+  'randox': '/providers/randox',
   'lola-health': '/providers/lola-health',
   'london-medical-laboratory': '/providers/london-medical-laboratory',
 };
 
 const ProviderProfilePage = () => {
   const { providerId } = useParams();
-  
+
+
+
   // Match provider by exact ID first, then by partial match
   const provider = detailedProviders.find(p => {
     const lowerId = p.id.toLowerCase();
@@ -43,7 +46,7 @@ const ProviderProfilePage = () => {
               accent="Not Found" 
             />
             <p className="text-muted-foreground mb-6 mt-4">The provider you're looking for doesn't exist.</p>
-            <Button asChild>
+            <Button asChild variant="skeuomorphic">
               <Link to="/compare">Browse All Tests</Link>
             </Button>
           </div>
@@ -58,19 +61,6 @@ const ProviderProfilePage = () => {
   const providerRatingData = getProviderRating(provider.name);
   const ratingData = { rating: providerRatingData.rating, reviews: providerRatingData.reviewsFormatted };
   const websiteUrl = provider.website ? buildProviderWebsiteUrl(provider.website, provider.id) : null;
-
-  // Test categories offered by this provider
-  const testCategories = [
-    "General Health",
-    "Hormones",
-    "Vitamins & Minerals",
-    "Thyroid",
-    "Heart Health",
-    "Diabetes",
-    "Sexual Health",
-    "Fertility",
-    "Cancer Screening"
-  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -186,11 +176,11 @@ const ProviderProfilePage = () => {
                   'randox-health': {
                     mission: "Randox Health is driven by a single goal: preventing disease before it starts. Using world-leading diagnostic technology, they deliver some of the most comprehensive health checks available in the UK.",
                     whoWeAre: "Part of Randox Laboratories, a global diagnostics leader with over 40 years of innovation. Randox Health operates 50+ clinics across the UK & Ireland, offering in-depth health assessments with UKAS-accredited and FDA-approved testing. Over 22 million tests processed to date. Rated 4.7/5 on Trustpilot with over 28,400 reviews.",
-                    services: "Comprehensive health packages including full-body checks, cancer risk screening, genetic testing, and cardiovascular assessments. Health At Home test kits also available. Results in as little as 2 hours from sample, with professional consultation and personalised health recommendations included.",
+                    services: "Comprehensive health packages including full-body checks, cancer risk screening, genetic testing, and cardiovascular assessments. Health At Home test kits also available. Results typically in 2-3 days; in-clinic same-day testing available at select locations. Professional consultation and personalised health recommendations included.",
                   },
                   'lola-health': {
                     mission: "Lola Health was built on a simple idea: professional blood testing should come to you. No finger-pricks, no compromise — just accurate results from the comfort of your home or at a clinic.",
-                    whoWeAre: "Lola Health is a modern health testing platform offering at-home phlebotomy — a trained nurse visits your home to take a venous blood sample — or clinic appointments. 70+ biomarkers analysed with NHS-accredited (ISO 15189) laboratories and reviewed by qualified doctors. Rated 4.6/5 on Trustpilot with over 155 reviews.",
+                    whoWeAre: "Lola Health is a modern health testing platform offering at-home phlebotomy — a trained nurse visits your home to take a venous blood sample — or clinic appointments. 70+ biomarkers analysed with NHS-accredited (ISO 15189) laboratories and reviewed by qualified doctors. Rated 4.6/5 on Trustpilot with over 160 reviews.",
                     services: "Over 40 blood tests available, from comprehensive panels to individual biomarkers. Book a nurse visit or clinic appointment with results in 4 days. Doctor-reviewed insights delivered via the Lola Health app with health trend tracking. Tests from £120.",
                   },
                   'london-medical-laboratory': {
@@ -248,6 +238,21 @@ const ProviderProfilePage = () => {
                     whoWeAre: "The UK's largest independent pathology provider, part of Sonic Healthcare global network. UKAS-accredited and CQC-registered with over 40 years of diagnostic experience. Operating from Wimpole Street, London, with a nationwide collection network. Processing 3,000+ test types.",
                     services: "Over 3,000 diagnostic tests spanning clinical biochemistry, haematology, immunology, microbiology, genetics, and toxicology. Same-day results available for many routine tests. Venous blood draw at TDL clinics, GP surgeries, hospitals, and home visits.",
                   },
+                  'clinilabs': {
+                    mission: "Clinilabs exists to give people in the UK direct access to high-quality clinical laboratory testing without the long waits. The focus is on accurate diagnostics, fast turnaround and clear reporting so you can make informed decisions about your health alongside your GP or specialist.",
+                    whoWeAre: "Clinilabs is a private diagnostics provider operating from UKAS-accredited facilities, covering a wide spectrum of pathology from routine blood profiles to specialist diagnostics. Samples are processed by qualified biomedical scientists using validated assays on hospital-grade analysers, with results typically available within 3-6 working days and reviewed before release.",
+                    services: "General health screens, hormone profiles, thyroid panels, vitamin and mineral analysis, sexual health diagnostics, cardiovascular markers and specialist pathology requests. Tests are available via in-clinic phlebotomy at partner sites or postal sample kits where appropriate, with clinician-reviewed written reports included as standard.",
+                  },
+                  'london-health-company': {
+                    mission: "London Health Company exists to make accurate, accessible private health testing available across the capital and beyond. The focus is on convenient appointments, transparent pricing and clinician-reviewed results so customers can act on their data with confidence.",
+                    whoWeAre: "A London-based private healthcare provider partnering with UKAS-accredited laboratories. The team combines high-street accessibility with hospital-grade diagnostics, supporting individuals, families and corporate clients with preventative screening and targeted blood work across London and the wider UK.",
+                    services: "Private blood tests, hormone profiles, comprehensive wellness screens, sexual health diagnostics and travel medicals. Appointments are available at clinics across London with at-home phlebotomy options for selected tests, and results are typically returned within 4-8 working days with a written clinician review.",
+                  },
+                  'medical-diagnosis': {
+                    mission: "Medical Diagnosis exists to deliver specialist diagnostic blood testing with typically fast turnaround times, helping people and clinicians act on accurate results quickly.",
+                    whoWeAre: "A specialist diagnostics provider working with UKAS-accredited partner laboratories to offer advanced blood testing and health screening across the UK. Tests are reviewed before release and reported through clear, clinician-friendly documentation.",
+                    services: "Specialist diagnostic blood testing, advanced health screening and rapid turnaround pathology. Sample collection via clinic-based venous draw across UK partner sites, with typical results in 3-6 working days.",
+                  },
                 };
 
                 const content = structuredContent[provider.id];
@@ -281,11 +286,10 @@ const ProviderProfilePage = () => {
               
               <div className="flex flex-col sm:flex-row gap-3">
                 <Button
-                  variant="outline"
+                  variant="skeuomorphic"
                   size="providerCta"
                   asChild
                   className="min-h-[48px] w-full sm:w-auto inline-flex items-center px-[30px]"
-                  style={brand ? { borderColor: '#fff', color: '#fff', backgroundColor: 'transparent' } : { borderColor: 'hsl(var(--secondary))', color: 'hsl(var(--secondary))' }}
                 >
                   <Link to={PROVIDER_CATALOG_ROUTES[provider.id] || `/provider/${provider.id}/tests`} className="inline-flex items-center gap-2">
                     <TestTube className="w-4 h-4 flex-shrink-0" />
@@ -344,7 +348,11 @@ const ProviderProfilePage = () => {
           </div>
         </div>
 
+        {/* Live tests grid from Supabase */}
+        <ProviderTestsGrid providerSlug={provider.id} providerDisplayName={provider.name} />
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
+
           {/* Left column — narrow */}
           <div className="lg:col-span-1 flex flex-col gap-4">
             {/* Contact Information */}
@@ -385,37 +393,6 @@ const ProviderProfilePage = () => {
               </CardContent>
             </Card>
 
-            {/* Test Categories */}
-            <Card className="flex flex-col flex-1">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-2 text-lg">
-                  <TestTube className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
-                  Test Categories
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="flex-1">
-                <div className="flex flex-wrap gap-2">
-                  {testCategories.map(category => (
-                    <Link
-                      key={category}
-                      to={`/compare?category=${encodeURIComponent(category.toLowerCase().replace(/\s+/g, '-'))}`}
-                      className="inline-block"
-                    >
-                      <Badge 
-                        variant="outline" 
-                        className="transition-colors cursor-pointer"
-                        style={brand ? {
-                          borderColor: brand.primary,
-                          color: brand.primary,
-                        } : undefined}
-                      >
-                        {category}
-                      </Badge>
-                    </Link>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
           </div>
 
           {/* Right column — wide */}

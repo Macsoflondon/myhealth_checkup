@@ -10,9 +10,9 @@ import { ArrowLeft, ExternalLink, Heart, Clock, Shield, TestTube, Users, CheckCi
 import { supabase } from "@/integrations/supabase/client";
 import { getProviderRating } from "@/constants/providerRatings";
 import { detailedProviders } from "@/data/compare/detailedProviders";
-import { ProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
+import { TestProviderPriceTable } from "@/components/compare/TestProviderPriceTable";
 import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
-import { getProviderLogo, PROVIDER_TURNAROUND_TIMES, PROVIDER_COLLECTION_METHODS } from "@/constants/providers";
+import { getProviderLogo, normalizeProviderId, PROVIDER_TURNAROUND_TIMES, PROVIDER_COLLECTION_METHODS } from "@/constants/providers";
 import { logger } from "@/lib/logger";
 
 interface TestDetail {
@@ -42,14 +42,15 @@ interface ProviderTestOption {
 
 const TestDetailPage = () => {
   const { providerId, testId } = useParams();
+  const canonicalProviderId = normalizeProviderId(providerId || '');
   const [test, setTest] = useState<TestDetail | null>(null);
   const [otherProviders, setOtherProviders] = useState<ProviderTestOption[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const provider = detailedProviders.find(p => 
-    p.id.toLowerCase() === providerId?.toLowerCase() ||
-    p.id.toLowerCase().startsWith(providerId?.toLowerCase() + '-')
+    p.id.toLowerCase() === canonicalProviderId ||
+    p.id.toLowerCase().startsWith(canonicalProviderId + '-')
   );
 
   // Provider ratings now imported from shared constants
@@ -169,13 +170,13 @@ const TestDetailPage = () => {
     );
   }
 
-  const currentProviderRating = getProviderRating(providerId || '');
-  const bookingUrl = test.url ? buildProviderBookingUrl(test.url, providerId || '', test.test_name) : null;
+  const currentProviderRating = getProviderRating(canonicalProviderId);
+  const bookingUrl = test.url ? buildProviderBookingUrl(test.url, canonicalProviderId, test.test_name) : null;
 
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>{`${test.test_name} — Compare Providers & Prices in the UK | myhealth checkup`}</title>
+        <title>{`${test.test_name} | myhealth checkup`.slice(0, 60)}</title>
         <meta
           name="description"
           content={`Compare the ${test.test_name} across accredited UK providers${
@@ -187,10 +188,29 @@ const TestDetailPage = () => {
         <link rel="canonical" href={`https://myhealthcheckup.co.uk/${providerId}/${testId}`} />
         <meta property="og:type" content="product" />
         <meta property="og:site_name" content="myhealth checkup" />
-        <meta property="og:title" content={`${test.test_name} — Compare Providers & Prices in the UK | myhealth checkup`} />
+        <meta property="og:title" content={`${test.test_name} | myhealth checkup`.slice(0, 60)} />
         <meta property="og:description" content={`Compare the ${test.test_name} across accredited UK providers${test.price != null ? ` from £${test.price.toFixed(2)}` : ""}.`} />
         <meta property="og:url" content={`https://myhealthcheckup.co.uk/${providerId}/${testId}`} />
         <meta property="og:locale" content="en_GB" />
+        <script type="application/ld+json">{JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "name": test.test_name,
+          "description": test.description || `${test.test_name} private health test available from accredited UK providers.`,
+          "brand": provider?.name ? { "@type": "Brand", "name": provider.name } : undefined,
+          "image": test.image_url || "https://myhealthcheckup.co.uk/og-image.png",
+          "category": test.category || "Health Test",
+          ...(test.price != null ? {
+            "offers": {
+              "@type": "Offer",
+              "priceCurrency": "GBP",
+              "price": test.price.toFixed(2),
+              "availability": "https://schema.org/InStock",
+              "url": `https://myhealthcheckup.co.uk/${providerId}/${testId}`,
+              ...(provider?.name ? { "seller": { "@type": "Organization", "name": provider.name } } : {})
+            }
+          } : {})
+        })}</script>
       </Helmet>
 
       <Header />
@@ -250,7 +270,7 @@ const TestDetailPage = () => {
                   
                   <div className="flex items-center gap-3 p-3 bg-secondary/20 rounded-lg">
                     <Clock className="w-5 h-5 text-secondary flex-shrink-0" />
-                    <span className="text-sm font-medium">{PROVIDER_TURNAROUND_TIMES[providerId || ''] || '2-5 days'}</span>
+                      <span className="text-sm font-medium">{PROVIDER_TURNAROUND_TIMES[canonicalProviderId] || '2-5 days'}</span>
                   </div>
                   
                   <div className="flex items-center gap-3 p-3 bg-green-500/10 rounded-lg">
@@ -326,7 +346,7 @@ const TestDetailPage = () => {
 
             {/* Compare Prices Section */}
             {otherProviders.length > 0 && (
-              <ProviderComparisonTable
+              <TestProviderPriceTable
                 testName={test.test_name}
                 providers={[
                   {
@@ -334,8 +354,8 @@ const TestDetailPage = () => {
                     providerId: providerId || '',
                     providerName: provider.name,
                     price: test.price || 0,
-                    turnaroundTime: PROVIDER_TURNAROUND_TIMES[providerId || ''] || '2-5 days',
-                    collectionMethod: PROVIDER_COLLECTION_METHODS[providerId || ''] || 'Varies',
+                    turnaroundTime: PROVIDER_TURNAROUND_TIMES[canonicalProviderId] || '2-5 days',
+                    collectionMethod: PROVIDER_COLLECTION_METHODS[canonicalProviderId] || 'Varies',
                     biomarkerCount: test.biomarker_count || undefined,
                     url: test.url || undefined,
                     rating: currentProviderRating.rating,
@@ -367,7 +387,7 @@ const TestDetailPage = () => {
                   {bookingUrl ? (
                     <Button size="lg" className="w-full bg-primary hover:bg-primary/90" asChild>
                       <a href={bookingUrl} {...externalLinkProps}>
-                        Book with {provider.name}
+                        Book
                         <ExternalLink className="w-4 h-4 ml-2" />
                       </a>
                     </Button>
@@ -392,8 +412,10 @@ const TestDetailPage = () => {
                   <div className="space-y-2 text-sm">
                     <div className="flex items-center gap-2">
                       <img 
-                        src={getProviderLogo(providerId || '')} 
+                        src={getProviderLogo(canonicalProviderId)} 
                         alt={provider.name}
+                        loading="lazy"
+                        decoding="async"
                         className="h-8 w-8 object-contain"
                       />
                       <span className="font-medium">{provider.name}</span>

@@ -4,34 +4,84 @@ import { cva, type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * Button — Phase 2 design system primitive.
+ *
+ * Six canonical variants (Apple/Linear/Stripe-inspired):
+ *  - primary      (default): solid navy, high contrast
+ *  - secondary   : soft surface, low-contrast on light bg
+ *  - tertiary    : outline (formerly `outline`)
+ *  - ghost       : transparent, hover surface
+ *  - link        : inline text link
+ *  - destructive : error-toned solid
+ *
+ * Legacy aliases (`outline`, `gradient`, `shimmer`, `brandPill`, `skeuomorphic`)
+ * remain accepted for back-compat and now map to canonical variants so existing
+ * pages keep working. Prefer the canonical names in new code.
+ *
+ * Motion: scale + elevation on hover using design tokens. No ripple (removed
+ * in Phase 2 for a cleaner, premium feel). Respects prefers-reduced-motion
+ * via the global CSS layer.
+ */
 const buttonVariants = cva(
-  "state-layer relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-medium overflow-hidden border-2 border-[#081129] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transition-all duration-300 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:relative [&_svg]:z-10",
+  [
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md",
+    "font-medium select-none",
+    "transition-[transform,box-shadow,background-color,color,border-color]",
+    "duration-standard ease-emphasized",
+    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    "disabled:pointer-events-none disabled:opacity-50",
+    "[&_svg]:pointer-events-none [&_svg]:shrink-0",
+    "motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100",
+  ].join(" "),
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow-elevation-2 hover:shadow-elevation-4 hover:scale-105 active:shadow-elevation-1 active:scale-95",
-        destructive:
-          "bg-error text-error-foreground shadow-elevation-2 hover:shadow-elevation-4 hover:scale-105 active:shadow-elevation-1 active:scale-95",
-        outline:
-          "border-2 border-tertiary bg-transparent text-tertiary hover:bg-tertiary hover:text-white hover:scale-105 active:scale-95",
+        primary:
+          "bg-primary text-primary-foreground shadow-e1 hover:shadow-e3 hover:-translate-y-[1px] active:translate-y-0 active:shadow-e1",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-elevation-2 hover:shadow-elevation-4 hover:scale-105 active:shadow-elevation-1 active:scale-95",
-        ghost: "text-primary hover:bg-primary/10 hover:scale-105 active:scale-95",
-        link: "text-primary underline-offset-4 hover:underline hover:scale-105 active:scale-95",
-        gradient: "bg-gradient-to-r from-primary to-secondary text-white shadow-elevation-2 hover:shadow-elevation-4 hover:scale-105 active:scale-95",
-        shimmer: "btn-shimmer text-white shadow-elevation-2 hover:shadow-elevation-4 hover:scale-105 active:scale-95",
+          "bg-secondary text-secondary-foreground shadow-e1 hover:shadow-e2 hover:-translate-y-[1px] active:translate-y-0",
+        tertiary:
+          "border border-primary/20 bg-transparent text-primary hover:bg-primary/5 hover:border-primary/40 active:bg-primary/10",
+        ghost:
+          "bg-transparent text-primary hover:bg-primary/8 active:bg-primary/12",
+        link:
+          "h-auto p-0 text-primary underline-offset-4 hover:underline focus-visible:ring-offset-0",
+        destructive:
+          "bg-error text-error-foreground shadow-e1 hover:shadow-e3 hover:-translate-y-[1px] active:translate-y-0 active:shadow-e1",
+
+        // Legacy aliases — kept for back-compat, mapped to canonical styles.
+        default:
+          "bg-primary text-primary-foreground shadow-e1 hover:shadow-e3 hover:-translate-y-[1px] active:translate-y-0 active:shadow-e1",
+        outline:
+          "border border-primary/20 bg-transparent text-primary hover:bg-primary/5 hover:border-primary/40 active:bg-primary/10",
+        gradient:
+          "bg-gradient-to-r from-primary to-secondary text-white shadow-e1 hover:shadow-e3 hover:-translate-y-[1px] active:translate-y-0",
+        shimmer:
+          "bg-primary text-primary-foreground shadow-e1 hover:shadow-e3 hover:-translate-y-[1px] active:translate-y-0",
+        brandPill:
+          "rounded-pill bg-primary text-primary-foreground shadow-e1 hover:shadow-e3 hover:-translate-y-[1px] active:translate-y-0",
+        skeuomorphic:
+          "bg-primary text-primary-foreground shadow-e2 hover:shadow-e4 hover:-translate-y-[1px] active:translate-y-0 active:shadow-e1",
       },
       size: {
-        default: "h-12 px-8 py-2",
-        sm: "h-9 px-3",
-        lg: "h-14 px-10",
-        providerCta: "h-14",
-        icon: "h-12 w-12",
+        // Tightened 8pt scale — sm 32 / md 40 / lg 48 / xl 56.
+        sm: "h-8 px-3 text-sm [&_svg]:size-4",
+        md: "h-10 px-4 text-sm [&_svg]:size-4",
+        lg: "h-12 px-6 text-base [&_svg]:size-5",
+        xl: "h-14 px-8 text-base [&_svg]:size-5",
+        icon: "h-10 w-10 [&_svg]:size-4",
+        "icon-sm": "h-8 w-8 [&_svg]:size-4",
+        "icon-lg": "h-12 w-12 [&_svg]:size-5",
+
+        // Legacy aliases.
+        default: "h-10 px-4 text-sm [&_svg]:size-4",
+        providerCta: "h-12 px-6 text-base [&_svg]:size-5",
       },
     },
     defaultVariants: {
-      variant: "default",
-      size: "default",
+      variant: "primary",
+      size: "md",
     },
   }
 )
@@ -43,49 +93,14 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, onClick, children, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
-    
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      // Defer ripple effect to next frame to avoid forced reflow
-      requestAnimationFrame(() => {
-        const button = e.currentTarget;
-        if (!button) return;
-        
-        // Batch read: get all layout info first
-        const rect = button.getBoundingClientRect();
-        const rippleSize = Math.max(rect.width, rect.height);
-        const x = e.clientX - rect.left - rippleSize / 2;
-        const y = e.clientY - rect.top - rippleSize / 2;
-        const existingRipple = button.querySelector('.ripple-effect');
-
-        // Batch write: perform all DOM mutations together
-        if (existingRipple) {
-          existingRipple.remove();
-        }
-        
-        const ripple = document.createElement('span');
-        ripple.style.cssText = `width: ${rippleSize}px; height: ${rippleSize}px; left: ${x}px; top: ${y}px;`;
-        ripple.classList.add('ripple-effect');
-        button.appendChild(ripple);
-
-        setTimeout(() => {
-          ripple.remove();
-        }, 600);
-      });
-      
-      onClick?.(e);
-    };
-    
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
-        onClick={asChild ? onClick : handleClick}
         {...props}
-      >
-        <span className="relative z-10 text-primary-foreground">{children}</span>
-      </Comp>
+      />
     )
   }
 )

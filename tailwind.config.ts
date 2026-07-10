@@ -22,19 +22,24 @@ export default {
     	},
     	container: {
     		center: true,
-    		padding: '2rem',
+    		padding: {
+    			DEFAULT: '1rem',
+    			sm: '1.5rem',
+    			lg: '2rem',
+    			xl: '2rem'
+    		},
 		screens: {
 			sm: '640px',
 			md: '720px',
 			lg: '1024px',
-			xl: '1400px',
-			'2xl': '1536px'
+			xl: '1200px',
+			'2xl': '1200px'
 		}
     	},
     	extend: {
     		fontFamily: {
     			sans: [
-    				'Montserrat',
+    				'DM Sans',
     				'ui-sans-serif',
     				'system-ui',
     				'sans-serif',
@@ -42,6 +47,11 @@ export default {
     				'Segoe UI Emoji',
     				'Segoe UI Symbol',
     				'Noto Color Emoji'
+    			],
+    			body: [
+    				'DM Sans',
+    				'system-ui',
+    				'sans-serif'
     			],
     			heading: [
     				'Montserrat',
@@ -121,6 +131,21 @@ export default {
     			'brand-turquoise': 'hsl(187 72% 48%)',
     			'brand-pink': 'hsl(335 89% 48%)',
     			'brand-navy': 'hsl(224 67% 10%)',
+    			'premium-gold': {
+    				DEFAULT: 'hsl(var(--premium-gold))',
+    				foreground: 'hsl(var(--premium-gold-foreground))'
+    			},
+    			'clinical-success': {
+    				DEFAULT: 'hsl(var(--clinical-success))',
+    				foreground: 'hsl(var(--clinical-success-foreground))'
+    			},
+    			'clinical-alert': {
+    				DEFAULT: 'hsl(var(--clinical-alert))',
+    				foreground: 'hsl(var(--clinical-alert-foreground))'
+    			},
+    			'surface-warm': 'hsl(var(--surface-warm))',
+    			'text-charcoal': 'hsl(var(--text-charcoal))',
+    			'text-warm-grey': 'hsl(var(--text-warm-grey))',
     			health: {
     				'50': 'hsl(186 75% 97%)',
     				'100': 'hsl(186 75% 94%)',
@@ -166,22 +191,45 @@ export default {
     		},
     		borderRadius: {
     			none: '0',
-    			sm: '4px',
-    			DEFAULT: '8px',
-    			md: '8px',
-    			lg: '12px',
-    			xl: '16px',
-    			'2xl': '20px',
-    			'3xl': '24px',
+    			sm: 'var(--radius-sm)',
+    			DEFAULT: 'var(--radius-md)',
+    			md: 'var(--radius-md)',
+    			lg: 'var(--radius-lg)',
+    			xl: 'var(--radius-xl)',
+    			'2xl': 'var(--radius-2xl)',
+    			'3xl': '32px',
+    			pill: 'var(--radius-pill)',
     			full: '9999px'
     		},
+    		spacing: {
+    			'section-y': 'var(--space-section-y)',
+    			'section-y-tight': 'var(--space-section-y-tight)',
+    			'block-y': 'var(--space-block-y)',
+    			'gutter': 'var(--space-gutter)'
+    		},
     		transitionDuration: {
+    			'instant': 'var(--duration-instant)',
+    			'quick': 'var(--duration-quick)',
+    			'standard': 'var(--duration-standard)',
+    			'moderate': 'var(--duration-moderate)',
+    			'slow': 'var(--duration-slow)',
+    			'reveal': 'var(--duration-reveal)',
     			'280': '280ms'
     		},
     		transitionTimingFunction: {
-    			material: 'cubic-bezier(0.4, 0, 0.2, 1)'
+    			emphasized: 'var(--ease-emphasized)',
+    			standard: 'var(--ease-standard)',
+    			decelerate: 'var(--ease-decelerate)',
+    			accelerate: 'var(--ease-accelerate)',
+    			material: 'var(--ease-standard)'
     		},
     		boxShadow: {
+    			'e0': 'var(--elevation-0)',
+    			'e1': 'var(--elevation-1)',
+    			'e2': 'var(--elevation-2)',
+    			'e3': 'var(--elevation-3)',
+    			'e4': 'var(--elevation-4)',
+    			'e5': 'var(--elevation-5)',
     			'elevation-0': 'var(--elevation-0)',
     			'elevation-1': 'var(--elevation-1)',
     			'elevation-2': 'var(--elevation-2)',

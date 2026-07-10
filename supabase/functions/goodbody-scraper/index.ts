@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
 
 const corsHeaders = {
@@ -29,32 +30,96 @@ function determineCategory(title: string, description: string): string {
   return 'General Health';
 }
 
-interface ExtractedTest {
-  title: string;
-  price: number;
-  biomarkerCount: number | null;
-  biomarkers: string[];
-  description: string;
+function extractPriceFromHtml(html: string): number {
+  if (!html) return 0;
+
+  // 1. Shopify-style data-amount attribute (Goodbody afterpay block carries the true total)
+  const dataAmountMatches = [...html.matchAll(/data-amount=["'](\d+(?:\.\d{1,2})?)["']/gi)];
+  if (dataAmountMatches.length) {
+    const amounts = dataAmountMatches
+      .map(m => parseFloat(m[1]))
+      .filter(n => n > 10 && n < 5000);
+    if (amounts.length) return Math.max(...amounts);
+  }
+
+  // 2. JSON-LD / Shopify product JSON
+  const jsonPrice = html.match(/"price"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/i);
+  if (jsonPrice) {
+    const p = parseFloat(jsonPrice[1]);
+    if (p > 10 && p < 5000) return p;
+  }
+
+  // 3. og:price:amount meta
+  const og = html.match(/property=["']og:price:amount["'][^>]*content=["']([\d.]+)["']/i);
+  if (og) {
+    const p = parseFloat(og[1]);
+    if (p > 10 && p < 5000) return p;
+  }
+  return 0;
 }
 
-interface FirecrawlScrapeResult {
-  success?: boolean;
-  data?: {
-    markdown?: string;
-    html?: string;
-    metadata?: { title?: string; description?: string; [k: string]: unknown };
-  };
-  [k: string]: unknown;
+function stripShopifySizeSuffix(url: string): string {
+  if (!url) return url;
+  // Shopify resize: foo_600x.jpg, foo_600x600.jpg, foo_1024x1024_crop_center.jpg → strip to master
+  return url.replace(/_(\d+)x(\d+)?(?:_[a-z_]+)?(\.(?:jpe?g|png|webp|gif|avif))/i, '$3');
 }
 
-function extractFromMarkdown(markdown: string, url: string): ExtractedTest {
+function extractImageFromHtml(html: string, markdown: string): string | null {
+  if (!html && !markdown) return null;
+  const candidates: string[] = [];
+
+  // 1. og:image / twitter:image (highest priority — provider's chosen hero)
+  const og = html.match(/property=["']og:image["'][^>]*content=["']([^"']+)["']/i)
+    || html.match(/name=["']og:image["'][^>]*content=["']([^"']+)["']/i)
+    || html.match(/name=["']twitter:image["'][^>]*content=["']([^"']+)["']/i);
+  if (og) candidates.push(og[1]);
+
+  // 2. Shopify product JSON featured_image
+  const featured = html.match(/"featured_image"\s*:\s*"([^"]+\.(?:jpe?g|png|webp))"/i);
+  if (featured) candidates.push(featured[1].replace(/\\\//g, '/'));
+
+  // 3. JSON-LD image
+  const ld = html.match(/"image"\s*:\s*"([^"]+\.(?:jpe?g|png|webp)[^"]*)"/i);
+  if (ld) candidates.push(ld[1].replace(/\\\//g, '/'));
+
+  // 4. First product-gallery <img> in markdown
+  const mdImg = markdown.match(/!\[[^\]]*\]\((https?:\/\/[^)\s]+\.(?:jpe?g|png|webp)[^)\s]*)\)/i);
+  if (mdImg) candidates.push(mdImg[1]);
+
+  for (let raw of candidates) {
+    if (!raw) continue;
+    if (raw.startsWith('//')) raw = 'https:' + raw;
+    // Drop query string size hints (e.g. ?width=600), keep ?v= cache buster
+    raw = raw.replace(/([?&])width=\d+&?/gi, '$1').replace(/[?&]$/, '');
+    raw = stripShopifySizeSuffix(raw);
+    if (/^https?:\/\//i.test(raw)) return raw;
+  }
+  return null;
+}
+
+function extractFromMarkdown(markdown: string, url: string, html = ''): any {
   let title = '';
   const h1Match = markdown.match(/^#\s+(.+)$/m);
   if (h1Match) title = h1Match[1].replace(/\s*[–|]\s*Goodbody.*$/i, '').trim();
 
-  let price = 0;
-  const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
-  if (priceMatch) price = parseFloat(priceMatch[1].replace(',', ''));
+  // Prefer authoritative price from raw HTML
+  let price = extractPriceFromHtml(html);
+
+  // Detect afterpay/clearpay instalment text so we never mistake it for the headline price
+  const instalmentMatch = markdown.match(/4\s*(?:interest-free\s*)?payments?\s*of\s*£([\d,]+(?:\.\d{1,2})?)/i);
+  const instalmentValue = instalmentMatch ? parseFloat(instalmentMatch[1].replace(',', '')) : 0;
+
+  if (!price && instalmentValue > 0) {
+    price = +(instalmentValue * 4).toFixed(2);
+  }
+
+  if (!price) {
+    // Fallback: scan all £ prices in markdown, skip the instalment value, prefer the largest plausible amount
+    const all = [...markdown.matchAll(/£([\d,]+(?:\.\d{1,2})?)/g)]
+      .map(m => parseFloat(m[1].replace(',', '')))
+      .filter(n => n > 10 && n < 5000 && n !== instalmentValue);
+    if (all.length) price = Math.max(...all);
+  }
 
   let biomarkerCount: number | null = null;
   const countMatch = markdown.match(/(\d+)\s*(?:biomarkers?|tests?|markers?)/i);
@@ -76,33 +141,51 @@ function extractFromMarkdown(markdown: string, url: string): ExtractedTest {
   }
 
   const description = markdown.substring(0, 500).replace(/[#*[\]]/g, '').trim();
+  const imageUrl = extractImageFromHtml(html, markdown);
 
-  return { title, price, biomarkerCount, biomarkers, description };
+  return { title, price, biomarkerCount, biomarkers, description, imageUrl };
 }
 
-async function firecrawlScrape(url: string, apiKey: string): Promise<FirecrawlScrapeResult> {
-  const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, formats: ['markdown'], onlyMainContent: true, waitFor: 2000 }),
-  });
-  if (!response.ok) throw new Error(`Firecrawl scrape error: ${response.status}`);
-  return response.json();
-}
+// Uses shared firecrawl helper (v2, stealth proxy, 90s timeout, retry).
+import { firecrawlScrape, firecrawlMap, runInChunks } from '../_shared/firecrawl-helpers.ts';
 
-async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
-  const response = await fetch('https://api.firecrawl.dev/v1/map', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, search: 'blood test', limit: 200, includeSubdomains: false }),
-  });
-  if (!response.ok) throw new Error(`Firecrawl map error: ${response.status}`);
-  const data = await response.json();
-  return (data.links || []).filter((l: string) => l.includes('/products/') && !l.includes('?') && !l.includes('gift-card'));
+async function mapGoodbody(apiKey: string): Promise<string[]> {
+  const links = await firecrawlMap('https://goodbodyclinic.com/collections/all', apiKey, { search: 'blood test', limit: 200 });
+  return links.filter((l) => l.includes('/products/') && !l.includes('?') && !l.includes('gift-card'));
 }
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
+
+  // Auth: service role OR admin user (with AAL2 enforced server-side by has_role).
+  const authHeader = req.headers.get('Authorization') ?? '';
+  const supabaseUrlEnv = Deno.env.get('SUPABASE_URL') ?? '';
+  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  const anonKey = Deno.env.get('SUPABASE_ANON_KEY') ?? '';
+  const isServiceRole = serviceKey.length > 0 && authHeader === `Bearer ${serviceKey}`;
+
+  if (!isServiceRole) {
+    if (!authHeader || !supabaseUrlEnv || !anonKey) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    const userClient = createClient(supabaseUrlEnv, anonKey, {
+      global: { headers: { Authorization: authHeader } },
+    });
+    const { data: { user }, error: userErr } = await userClient.auth.getUser();
+    if (userErr || !user) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+    const { data: hasAdminRole } = await userClient.rpc('has_role', { _user_id: user.id, _role: 'admin' });
+    if (!hasAdminRole) {
+      return new Response(JSON.stringify({ error: 'Admin only' }), {
+        status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+  }
 
   try {
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
@@ -122,7 +205,7 @@ Deno.serve(async (req) => {
     console.log('Mapping goodbodyclinic.com for products...');
     let productUrls: string[] = [];
     try {
-      productUrls = await firecrawlMap('https://goodbodyclinic.com/collections/all', firecrawlApiKey);
+      productUrls = await mapGoodbody(firecrawlApiKey);
       console.log(`Map discovered ${productUrls.length} product URLs`);
     } catch (e) {
       console.error('Map failed, using known URLs:', (e instanceof Error ? e.message : String(e)));
@@ -142,47 +225,49 @@ Deno.serve(async (req) => {
     productUrls = [...new Set(productUrls)];
     console.log(`Total unique products to scrape: ${productUrls.length}`);
 
-    // Step 2: Scrape each product page
-    const products: Array<Record<string, unknown>> = [];
-    for (const url of productUrls) {
-      try {
-        const slug = url.split('/products/').pop() || '';
-        console.log(`Scraping: ${slug}`);
-        const result = await firecrawlScrape(url, firecrawlApiKey);
-        if (!result.success || !result.data) { console.log(`No data for ${slug}`); continue; }
+    // Step 2: Scrape each product page (batch mode, concurrency 4)
+    const products: any[] = [];
+    await runInChunks(productUrls, 8, async (url) => {
+      const slug = url.split('/products/').pop() || '';
+      console.log(`Scraping: ${slug}`);
+      const result = await firecrawlScrape(url, firecrawlApiKey, {
+        formats: ['markdown', 'html'], onlyMainContent: false, waitFor: 1500, timeout: 60000, proxy: 'stealth',
+      });
+      if (!result.success || !result.data) { console.log(`No data for ${slug}`); return; }
 
-        const markdown = result.data.markdown || '';
-        const metadata = result.data.metadata || {};
-        const extracted = extractFromMarkdown(markdown, url);
+      const markdown = result.data.markdown || '';
+      const html = result.data.html || result.data.rawHtml || '';
+      const metadata = result.data.metadata || {};
+      const extracted = extractFromMarkdown(markdown, url, html);
 
-        const title = extracted.title || metadata.title?.replace(/\s*[–|]\s*Goodbody.*$/i, '').trim() || '';
-        if (!title || title === 'Unknown Test') continue;
+      const title = extracted.title || metadata.title?.replace(/\s*[–|]\s*Goodbody.*$/i, '').trim() || '';
+      if (!title || title === 'Unknown Test') return;
 
-        products.push({
-          test_name: title,
-          provider_id: 'goodbody-clinic',
-          provider_test_id: slug,
-          category: determineCategory(title, extracted.description),
-          price: extracted.price || null,
-          description: metadata.description || extracted.description || `${title} from Goodbody Clinic.`,
-          url,
-          is_active: true,
-          biomarkers_list: extracted.biomarkers.length > 0 ? extracted.biomarkers : null,
-          biomarker_count: extracted.biomarkerCount || extracted.biomarkers.length || null,
-          sample_type: 'Venous blood',
-          clinic_visit_available: true,
-          home_kit_available: true,
-          url_verified: true,
-          url_verified_at: new Date().toISOString(),
-          scraped_at: new Date().toISOString(),
-          updated_at: new Date().toISOString(),
-        });
-        console.log(`✓ ${title} - £${extracted.price}`);
-        await new Promise(r => setTimeout(r, 500));
-      } catch (e) {
-        console.error(`✗ Error: ${(e instanceof Error ? e.message : String(e))}`);
-      }
-    }
+      let imageUrl = extracted.imageUrl as string | null;
+      if (!imageUrl && metadata.ogImage) imageUrl = stripShopifySizeSuffix(metadata.ogImage);
+
+      products.push({
+        test_name: title,
+        provider_id: 'goodbody-clinic',
+        provider_test_id: slug,
+        category: determineCategory(title, extracted.description),
+        price: extracted.price || null,
+        description: metadata.description || extracted.description || `${title} from Goodbody Clinic.`,
+        url,
+        ...(imageUrl ? { image_url: imageUrl } : {}),
+        is_active: true,
+        // Biomarkers are curated manually in src/data/goodbodyTestDetails.ts —
+        // the scraper must NOT overwrite biomarkers_list / biomarker_count.
+        sample_type: 'Venous blood',
+        clinic_visit_available: true,
+        home_kit_available: true,
+        url_verified: true,
+        url_verified_at: new Date().toISOString(),
+        scraped_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      });
+      console.log(`✓ ${title} - £${extracted.price}`);
+    });
 
     // Step 3: Upsert
     if (products.length > 0) {

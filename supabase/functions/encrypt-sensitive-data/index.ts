@@ -14,14 +14,18 @@ const SALT_LENGTH = 16;
 const ITERATIONS = 100000;
 
 /**
- * Get encryption key from environment (securely stored in edge function secrets)
- * This key is NEVER sent to the client
+ * Get encryption key from environment (securely stored in edge function secrets).
+ * This key is NEVER sent to the client.
+ *
+ * SECURITY: We deliberately do NOT read VITE_* prefixed env vars here. Vite
+ * inlines any VITE_* variable into the client JS bundle, so naming an
+ * encryption secret with that prefix would risk leaking the AES-GCM key
+ * to every browser visitor. Use ENCRYPTION_KEY only.
  */
 function getEncryptionSecret(): string {
-  // Try both secret names for backwards compatibility
-  const key = Deno.env.get('VITE_ENCRYPTION_KEY') || Deno.env.get('ENCRYPTION_KEY');
+  const key = Deno.env.get('ENCRYPTION_KEY');
   if (!key) {
-    throw new Error('Encryption key environment variable is not configured');
+    throw new Error('ENCRYPTION_KEY environment variable is not configured');
   }
   return key;
 }
@@ -193,6 +197,45 @@ serve(async (req) => {
       );
     }
 
+    // For decrypt actions we must prove the caller owns the ciphertext.
+    // We build the set of ciphertexts the authenticated user is allowed to
+    // decrypt by pulling their own rows from user_profiles + wearable_connections.
+    // Anything not in this set is rejected — preventing this endpoint from acting
+    // as a decryption oracle for stolen blobs.
+    let allowedCiphertexts: Set<string> | null = null;
+    if (action === 'decrypt' || action === 'decryptFields') {
+      const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+      const admin = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
+      allowedCiphertexts = new Set<string>();
+
+      const profileCols = SENSITIVE_USER_PROFILE_FIELDS.join(',');
+      const { data: profileRows } = await admin
+        .from('user_profiles')
+        .select(profileCols)
+        .eq('user_id', user.id);
+      for (const row of (profileRows ?? []) as Array<Record<string, unknown>>) {
+        for (const f of SENSITIVE_USER_PROFILE_FIELDS) {
+          const v = row?.[f];
+          if (typeof v === 'string' && v.startsWith('enc:')) allowedCiphertexts.add(v);
+        }
+      }
+
+      const wearableCols = SENSITIVE_WEARABLE_FIELDS.join(',');
+      const { data: wearableRows } = await admin
+        .from('wearable_connections')
+        .select(wearableCols)
+        .eq('user_id', user.id);
+      for (const row of (wearableRows ?? []) as Array<Record<string, unknown>>) {
+        for (const f of SENSITIVE_WEARABLE_FIELDS) {
+          const v = row?.[f];
+          if (typeof v === 'string' && v.startsWith('enc:')) allowedCiphertexts.add(v);
+        }
+      }
+    }
+
+    const isOwned = (v: unknown): v is string =>
+      typeof v === 'string' && (!v.startsWith('enc:') || (allowedCiphertexts?.has(v) ?? false));
+
     let result: unknown;
 
     switch (action) {
@@ -211,6 +254,12 @@ serve(async (req) => {
           return new Response(
             JSON.stringify({ error: 'Data must be a string for decrypt action' }),
             { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          );
+        }
+        if (data.startsWith('enc:') && !allowedCiphertexts!.has(data)) {
+          return new Response(
+            JSON.stringify({ error: 'Forbidden: ciphertext is not owned by the authenticated user' }),
+            { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
           );
         }
         result = await decryptField(data);
@@ -251,26 +300,30 @@ serve(async (req) => {
         for (const field of fieldsToDecrypt) {
           if (field in decrypted && decrypted[field] !== null && decrypted[field] !== undefined) {
             const value = decrypted[field];
-            if (typeof value === 'string') {
-              const decryptedValue = await decryptField(value);
-              // Try to parse as JSON array
-              try {
-                const parsed = JSON.parse(decryptedValue);
-                if (Array.isArray(parsed)) {
-                  decrypted[field] = parsed;
-                  continue;
-                }
-              } catch {
-                // Not JSON, treat as string
-              }
-              decrypted[field] = decryptedValue;
+            if (typeof value !== 'string') continue;
+            if (!isOwned(value)) {
+              // Silently drop blobs the caller doesn't own rather than leak existence.
+              decrypted[field] = null;
+              continue;
             }
+            const decryptedValue = await decryptField(value);
+            try {
+              const parsed = JSON.parse(decryptedValue);
+              if (Array.isArray(parsed)) {
+                decrypted[field] = parsed;
+                continue;
+              }
+            } catch {
+              // Not JSON, treat as string
+            }
+            decrypted[field] = decryptedValue;
           }
         }
         result = decrypted;
         break;
       }
     }
+
 
     console.log(`Encryption action '${action}' completed for user ${user.id}`);
 

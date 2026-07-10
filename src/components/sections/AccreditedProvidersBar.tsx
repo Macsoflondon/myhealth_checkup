@@ -1,91 +1,122 @@
-import { Link } from "react-router-dom";
-import { PROVIDER_DETAILS } from "@/constants/providers";
-import { SectionHeading } from "@/components/ui/section-heading";
+import React from "react";
+import { ShieldCheck, BadgeCheck, FlaskConical, Lock, Tag, Stethoscope, type LucideIcon } from "lucide-react";
+import { Reveal } from "@/components/primitives/Reveal";
 
-const FEATURED_PROVIDERS = [
-  'medichecks',
-  'goodbody-clinic',
-  'thriva',
-  'randox',
-  'london-medical-laboratory',
-  'lola-health',
+interface TrustItem {
+  icon: LucideIcon;
+  label: string;
+}
+
+const trustItems: TrustItem[] = [
+  { icon: FlaskConical, label: "UKAS-Accredited Labs" },
+  { icon: ShieldCheck, label: "CQC-Regulated Clinics" },
+  { icon: BadgeCheck, label: "ISO 15189 Certification" },
+  { icon: Lock, label: "GDPR Compliant" },
+  { icon: Tag, label: "Transparent Pricing" },
+  { icon: Stethoscope, label: "No GP Referral Needed" },
 ];
 
-const getProviderRoute = (id: string) => {
-  if (id === 'goodbody-clinic') return '/provider/goodbody';
-  return `/provider/${id}`;
+// Split into two rows so they can rotate at different offsets.
+const rowA = trustItems.filter((_, i) => i % 2 === 0);
+const rowB = trustItems.filter((_, i) => i % 2 === 1);
+
+interface BadgePillProps {
+  item: TrustItem;
+  tone: "turquoise" | "pink";
+}
+
+const BadgePill: React.FC<BadgePillProps> = ({ item, tone }) => {
+  const Icon = item.icon;
+  return (
+    <div className="flex items-center gap-2 sm:gap-2.5 whitespace-nowrap px-3">
+      <span
+        aria-hidden="true"
+        className={[
+          "flex items-center justify-center rounded-full w-7 h-7 sm:w-9 sm:h-9 shrink-0",
+          tone === "turquoise"
+            ? "bg-[hsl(var(--turquoise)/0.12)] text-[hsl(var(--turquoise))]"
+            : "bg-[hsl(var(--pink)/0.1)] text-[hsl(var(--pink))]",
+        ].join(" ")}
+      >
+        <Icon className="w-[14px] h-[14px] sm:w-[18px] sm:h-[18px]" strokeWidth={2.25} />
+      </span>
+      <span className="font-sans font-bold text-[11px] sm:text-[13px] text-foreground">
+        {item.label}
+      </span>
+    </div>
+  );
 };
 
-const ACCREDITORS = [
-  { name: "UKAS", desc: "Laboratory accreditation" },
-  { name: "CQC", desc: "Care Quality Commission" },
-  { name: "ISO 15189", desc: "Medical laboratory standard" },
-];
+interface MarqueeRowProps {
+  items: TrustItem[];
+  tone: "turquoise" | "pink";
+  /** seconds for one full loop */
+  duration: number;
+  reverse?: boolean;
+  /** horizontal offset in % so rows are staggered off-centre */
+  offset?: string;
+}
 
-const AccreditedProvidersBar = () => {
+const MarqueeRow: React.FC<MarqueeRowProps> = ({
+  items,
+  tone,
+  duration,
+  reverse = false,
+  offset = "0%",
+}) => {
+  // Duplicate the list so the -50% translate loops seamlessly.
+  const loop = [...items, ...items, ...items, ...items];
   return (
-    <section className="py-4 md:py-6 bg-tertiary" aria-label="Accreditation and partners">
-      <div className="container mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-center gap-2 mb-2">
-          <div className="h-px w-6 bg-brand-turquoise" />
-          <span className="text-brand-turquoise text-[10px] font-semibold uppercase tracking-[0.25em]">
-            Accredited & Verified
-          </span>
-          <div className="h-px w-6 bg-brand-turquoise" />
+    <div className="overflow-hidden" data-testid="accreditors-row">
+      <div style={{ transform: `translateX(${offset})` }}>
+        <div
+          className="flex w-max items-center animate-marquee"
+          style={{
+            animationDuration: `${duration}s`,
+            animationDirection: reverse ? "reverse" : "normal",
+          }}
+        >
+          {loop.map((item, i) => (
+            <BadgePill key={`${item.label}-${i}`} item={item} tone={tone} />
+          ))}
         </div>
+      </div>
+    </div>
+  );
+};
 
-        <SectionHeading
-          title="Accredited Providers"
-          gradientText="We Compare"
-          className="mb-4 md:mb-5"
-          titleClassName="text-white"
-        />
-
-        {/* Specific accreditor names — UKAS / CQC / ISO 15189 (audit 1.8) */}
-        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-5 md:mb-6">
-          <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/60">
-            Tests from providers accredited by
+/**
+ * Trust signals bar — two-row marquee. The rows scroll in opposite directions
+ * and start from staggered offsets so the badges never line up column-to-column.
+ */
+const AccreditedProvidersBar: React.FC = () => {
+  return (
+    <section
+      aria-label="Accredited provider standards"
+      className="bg-muted/40 border-b border-border/60"
+    >
+      <div className="container mx-auto px-3 sm:px-4 py-2.5 sm:py-4">
+        <Reveal variant="fade">
+          <p className="text-center font-sans font-bold uppercase tracking-[0.12em] sm:tracking-[0.14em] text-[10px] sm:text-[11px] text-muted-foreground mb-2 sm:mb-3 px-2">
+            All listed providers meet every one of the following standards
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-            {ACCREDITORS.map((a, i) => (
-              <div key={a.name} className="flex items-center gap-3">
-                <div className="text-center">
-                  <div className="text-sm font-bold text-white leading-tight">{a.name}</div>
-                  <div className="text-[10px] text-white/55 leading-tight">{a.desc}</div>
-                </div>
-                {i < ACCREDITORS.length - 1 && (
-                  <div className="hidden sm:block w-px h-7 bg-white/15" aria-hidden="true" />
-                )}
-              </div>
-            ))}
-          </div>
+        </Reveal>
+
+        {/* Desktop & tablet: single static row, evenly distributed */}
+        <div className="hidden md:flex items-center justify-between gap-4 lg:gap-6">
+          {trustItems.map((item, i) => (
+            <BadgePill key={item.label} item={item} tone={i % 2 === 0 ? "turquoise" : "pink"} />
+          ))}
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 md:gap-3 max-w-6xl mx-auto">
-          {FEATURED_PROVIDERS.map((id) => {
-            const provider = PROVIDER_DETAILS[id];
-            if (!provider) return null;
+        {/* Mobile: two-row marquee (unchanged) */}
+        <div className="relative space-y-1.5 sm:space-y-2 md:hidden">
+          <MarqueeRow items={rowA} tone="turquoise" duration={56} offset="0%" />
+          <MarqueeRow items={rowB} tone="pink" duration={68} reverse offset="-12%" />
 
-            return (
-              <Link
-                key={id}
-                to={getProviderRoute(id)}
-                className="flex flex-col items-center justify-center gap-1.5 rounded-xl bg-white/5 border border-white/10 p-3 md:p-4 transition-all duration-300 hover:bg-white/10 hover:-translate-y-0.5 cursor-pointer"
-              >
-                <div className="flex items-center justify-center h-[40px] sm:h-[50px] w-full">
-                  <img
-                    src={provider.logo}
-                    alt={`${provider.name} logo`}
-                    className="max-h-full max-w-full object-contain"
-                    loading="lazy"
-                  />
-                </div>
-                <span className="text-white text-xs font-medium text-center leading-tight">
-                  {provider.name}
-                </span>
-              </Link>
-            );
-          })}
+          {/* Edge fades on both sides */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-12 bg-gradient-to-r from-muted/60 to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-12 bg-gradient-to-l from-muted/60 to-transparent" />
         </div>
       </div>
     </section>

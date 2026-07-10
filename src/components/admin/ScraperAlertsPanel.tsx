@@ -83,7 +83,27 @@ export const ScraperAlertsPanel: React.FC = () => {
 
   useEffect(() => {
     void load();
+    const channel = supabase
+      .channel("scraper_alerts_changes")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "scraper_alerts" },
+        (payload) => {
+          const a = payload.new as ScraperAlert;
+          setAlerts((prev) => [a, ...prev]);
+          toast({
+            title: a.severity === "critical" ? "Critical scraper alert" : "New scraper alert",
+            description: `${a.provider_id}: ${a.message}`,
+            variant: a.severity === "critical" ? "destructive" : "default",
+          });
+        },
+      )
+      .subscribe();
+    return () => {
+      void supabase.removeChannel(channel);
+    };
   }, []);
+
 
   return (
     <Card>

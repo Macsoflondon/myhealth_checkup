@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { Link } from 'react-router-dom';
 import { Star, TrendingUp, Shield, AlertCircle, Inbox, RotateCw } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -8,7 +9,7 @@ import CategoryPageBottom from '@/components/sections/CategoryPageBottom';
 import { CategoryPageLayout, CategoryTestItem } from '@/components/category/CategoryPageLayout';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
-import { usePopularTestsFromDatabase } from '@/hooks/usePopularTestsFromDatabase';
+import { hasStartingPrice, usePopularTestsFromDatabase } from '@/hooks/usePopularTestsFromDatabase';
 import { getBranding } from '@/data/providerBranding';
 import { getProviderRating } from '@/constants/providerRatings';
 
@@ -49,10 +50,7 @@ const StatusShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
-        <CategoryStandardHero
-          pillLabel="Most Popular"
-          benefits={[...HERO_BENEFITS] as [typeof HERO_BENEFITS[0], typeof HERO_BENEFITS[1], typeof HERO_BENEFITS[2]]}
-        />
+        <CategoryStandardHero pillLabel="Most Popular" />
         <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-[#08122b] min-h-[60vh]">
           <div className="max-w-6xl mx-auto">{children}</div>
         </section>
@@ -78,7 +76,7 @@ const LoadingSkeleton: React.FC = () => (
       <Skeleton className="h-10 w-48 rounded-md bg-white/10" />
     </div>
     {/* Card grid skeleton */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 justify-items-center">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
       {Array.from({ length: 8 }).map((_, i) => (
         <Skeleton key={i} className="w-full max-w-[340px] h-[440px] rounded-2xl bg-white/10" />
       ))}
@@ -111,7 +109,7 @@ const EmptyState: React.FC = () => (
       We're updating our catalogue. Browse the full comparison hub to find the right test for you.
     </p>
     <Button asChild variant="secondary">
-      <a href="/compare">Browse all tests</a>
+      <Link to="/compare">Browse all tests</Link>
     </Button>
   </div>
 );
@@ -132,7 +130,7 @@ const MostPopularTestsPage = () => {
         badgeColor: branding?.primary || '#e70d69',
         provider: t.provider_name,
         priceNum: t.price,
-        price: `£${t.price}`,
+        price: hasStartingPrice(t) ? `from £${t.price}` : `£${t.price}`,
         turnaround: t.turnaround_time || '2–5 days',
         turnaroundDays: parseTurnaroundDays(t.turnaround_time || '5'),
         biomarkerCount: t.biomarker_count || 0,
@@ -146,6 +144,7 @@ const MostPopularTestsPage = () => {
         tag,
         collection: t.sample_type || 'Blood sample',
         url: t.url || undefined,
+        collectionOptions: t.collection_options,
       } satisfies CategoryTestItem;
     });
   }, [popularTests]);

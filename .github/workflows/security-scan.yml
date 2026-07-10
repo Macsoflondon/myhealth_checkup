@@ -1,0 +1,65 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 5 * * 1" # Mondays 05:00 UTC
+
+jobs:
+  static-checks:
+    name: Static checks (secrets + RLS grants)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install ripgrep
+        run: sudo apt-get update && sudo apt-get install -y ripgrep
+      - name: Secret pattern scan
+        run: bash scripts/check-secrets.sh
+      - name: RLS / GRANTS lint
+        run: node scripts/check-rls-grants.mjs
+
+  supabase-advisor:
+    name: Supabase advisor snapshot (regression gate)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Invoke security-scan-snapshot
+        id: scan
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+            echo "::warning::SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY missing — skipping advisor scan."
+            echo '{"skipped":true}' > scan.json
+            exit 0
+          fi
+          curl -sS -X POST "$SUPABASE_URL/functions/v1/security-scan-snapshot" \
+            -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            -o scan.json
+          cat scan.json
+      - name: Enforce regression gate
+        run: |
+          if grep -q '"skipped":true' scan.json; then exit 0; fi
+          node -e '
+            const r = JSON.parse(require("fs").readFileSync("scan.json","utf8"));
+            const errs = r.error_count ?? 0;
+            const added = r.diff?.added_count ?? 0;
+            console.log("errors:", errs, "added:", added, "warnings:", r.warn_count);
+            if (errs > 0) { console.error("FAIL: error-level findings present"); process.exit(1); }
+            if (added > 0) { console.error("FAIL: new findings vs previous snapshot"); process.exit(1); }
+          '
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: supabase-advisor-snapshot
+          path: scan.json
+          retention-days: 30

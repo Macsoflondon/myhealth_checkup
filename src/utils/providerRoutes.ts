@@ -17,10 +17,13 @@ export const PROVIDER_ROUTE_MAP: Record<string, string> = {
   'goodbody': '/goodbody-clinic', // Alias
   'lola-health': '/lola-health',
   'london-medical-laboratory': '/london-medical-laboratory',
+  'london-health-company': '/london-health-company',
   'medichecks': '/medichecks',
   'randox': '/randox',
   'randox-health': '/randox', // Alias
   'thriva': '/thriva',
+  'clinilabs': '/clinilabs',
+  'medical-diagnosis': '/medical-diagnosis',
 };
 
 // Provider display names
@@ -29,11 +32,38 @@ export const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
   'goodbody': 'GOODBODY',
   'lola-health': 'Lola Health',
   'london-medical-laboratory': 'London Medical Laboratory',
+  'london-health-company': 'London Health Company',
   'medichecks': 'Medichecks',
   'randox': 'Randox Health',
   'randox-health': 'Randox Health',
   'thriva': 'Thriva',
+  'clinilabs': 'Clinilabs',
+  'medical-diagnosis': 'Medical Diagnosis',
 };
+
+/**
+ * Canonical profile page route per provider.
+ * Every provider renders the same /provider/:id layout (ProviderProfilePage)
+ * to keep the experience identical across the catalogue.
+ */
+export const PROVIDER_PROFILE_ROUTE_MAP: Record<string, string> = {
+  'medichecks': '/provider/medichecks',
+  'goodbody': '/provider/goodbody-clinic',
+  'goodbody-clinic': '/provider/goodbody-clinic',
+  'thriva': '/provider/thriva',
+  'randox': '/provider/randox-health',
+  'randox-health': '/provider/randox-health',
+  'lola-health': '/provider/lola-health',
+  'london-medical-laboratory': '/provider/london-medical-laboratory',
+  'london-health-company': '/provider/london-health-company',
+  'clinilabs': '/provider/clinilabs',
+  'medical-diagnosis': '/provider/medical-diagnosis',
+};
+
+export function getProviderProfileRoute(providerId: string): string {
+  const normalizedId = providerId.toLowerCase();
+  return PROVIDER_PROFILE_ROUTE_MAP[normalizedId] || `/provider/${normalizedId}`;
+}
 
 /**
  * Get the canonical URL route for a provider

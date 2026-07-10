@@ -22,6 +22,7 @@ const AdminAuth = () => {
     recordFailedAttempt,
     recordSuccessfulLogin,
     canAttemptLogin,
+    clearLockout,
   } = useAccountLockout();
 
   const [email, setEmail] = useState("");
@@ -31,21 +32,52 @@ const AdminAuth = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-  // If already logged in, verify admin role and redirect
+  // If already logged in, check admin role passively.
+  // Do NOT sign the user out — they may simply be a regular user who landed here.
   useEffect(() => {
-    if (!authLoading && user) {
-      verifyAndRedirect(user.id);
-    }
+    if (authLoading || !user) return;
+    let cancelled = false;
+    (async () => {
+      setVerifyingRole(true);
+      try {
+        const { data: roleRow, error } = await supabase
+          .from('user_roles')
+          .select('role')
+          .eq('user_id', user.id)
+          .eq('role', 'admin')
+          .maybeSingle();
+        if (cancelled) return;
+        if (error) {
+          logger.error('Admin role check failed:', error);
+          setVerifyingRole(false);
+          return;
+        }
+        if (roleRow) {
+          navigate("/admin/test-dashboard");
+        } else {
+          // Regular user — silently send them home, keep their session intact.
+          navigate("/");
+        }
+      } catch (err) {
+        if (cancelled) return;
+        logger.error('Admin verification error:', err);
+        setVerifyingRole(false);
+      }
+    })();
+    return () => { cancelled = true; };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, authLoading]);
 
-  const verifyAndRedirect = async (userId: string) => {
+  // Used only after a fresh credential submission in handleAdminLogin.
+  const verifyAfterLogin = async (userId: string) => {
     setVerifyingRole(true);
     try {
-      const { data: hasRole, error } = await supabase.rpc('has_role', {
-        _user_id: userId,
-        _role: 'admin'
-      });
+      const { data: roleRow, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .eq('role', 'admin')
+        .maybeSingle();
 
       if (error) {
         logger.error('Admin role check failed:', error);
@@ -55,7 +87,7 @@ const AdminAuth = () => {
         return;
       }
 
-      if (!hasRole) {
+      if (!roleRow) {
         logger.warn('Non-admin attempted admin login:', { userId });
         toast.error("Access denied. This portal is for administrators only.");
         await supabase.auth.signOut();
@@ -64,7 +96,7 @@ const AdminAuth = () => {
       }
 
       toast.success("Admin access verified!");
-      navigate("/dashboard");
+      navigate("/admin/test-dashboard");
     } catch (err) {
       logger.error('Admin verification error:', err);
       toast.error("Verification failed.");
@@ -112,7 +144,7 @@ const AdminAuth = () => {
 
       // Verify admin role server-side
       if (data.user) {
-        await verifyAndRedirect(data.user.id);
+        await verifyAfterLogin(data.user.id);
       }
     } catch (err) {
       toast.error("An unexpected error occurred.");
@@ -121,19 +153,49 @@ const AdminAuth = () => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    setEmailError("");
+    if (!email) {
+      setEmailError("Enter your admin email above, then click Forgot password");
+      return;
+    }
+    if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
+      return;
+    }
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: `${window.location.origin}/reset-password`,
+      });
+      if (error) {
+        toast.error(error.message || "Failed to send reset email");
+      } else {
+        toast.success("Password reset email sent. Check your inbox.");
+      }
+    } catch {
+      toast.error("Failed to send reset email");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (authLoading || verifyingRole) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))]">
-        <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin text-[hsl(var(--primary))] mx-auto" />
-          <p className="mt-4 text-white/70 text-sm">Verifying admin access...</p>
+      <>
+        <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))]">
+          <div className="text-center">
+            <Loader2 className="h-8 w-8 animate-spin text-[hsl(var(--primary))] mx-auto" />
+            <p className="mt-4 text-white/70 text-sm">Verifying admin access...</p>
+          </div>
         </div>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))] px-4">
+    <>
+      <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))] px-4">
       <div className="max-w-sm w-full">
         {/* Shield icon */}
         <div className="flex justify-center mb-6">
@@ -214,6 +276,27 @@ const AdminAuth = () => {
           </Button>
         </form>
 
+        <div className="mt-4 flex items-center justify-between text-xs">
+          <button
+            type="button"
+            onClick={handleForgotPassword}
+            disabled={loading || isLocked}
+            className="text-white/60 hover:text-white transition-colors disabled:opacity-50"
+          >
+            Forgot password?
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              clearLockout();
+              toast.success("Lockout cleared. You can try signing in again.");
+            }}
+            className="text-white/60 hover:text-white transition-colors"
+          >
+            Clear lockout
+          </button>
+        </div>
+
         <div className="mt-8 text-center">
           <button
             type="button"
@@ -225,6 +308,7 @@ const AdminAuth = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

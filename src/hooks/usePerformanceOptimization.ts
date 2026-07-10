@@ -1,182 +1,96 @@
-import { useEffect, useCallback, useRef } from "react";
+import { useEffect } from "react";
 import { logger } from "@/lib/logger";
 
-// Enhanced performance optimization hook with mobile-specific optimizations
-interface FirstInputPerformanceEntry extends PerformanceEntry {
-  processingStart: number;
-}
-
-interface LayoutShiftPerformanceEntry extends PerformanceEntry {
-  hadRecentInput: boolean;
-  value: number;
-}
-
+/**
+ * Lightweight perf hook for the homepage / LCP route.
+ *
+ * Responsibilities:
+ *  - Dev-only Web Vitals observers (LCP / FID / CLS) for in-loop debugging.
+ *  - Defensive cleanup of stale `cache_*` localStorage entries (>10 min old).
+ *
+ * Intentionally NOT done here:
+ *  - DNS prefetch / preconnect — these belong in index.html where they take
+ *    effect before React hydrates.
+ *  - Viewport meta override — set once in index.html / per-page Helmet.
+ *  - data-src lazy-loading observer — every <img> on the platform uses native
+ *    `loading="lazy"`, which is more reliable.
+ *  - Critical-CSS injection — the broken `aspect-ratio: attr(...)` rule was
+ *    invalid (attr() only works in `content`) and the rest is in index.css.
+ */
 export function usePerformanceOptimization() {
-  // Cache mobile detection to avoid repeated reflows
-  const isMobileRef = useRef<boolean | null>(null);
-  
-  // Preload critical resources with mobile optimization - deferred to avoid reflow
-  const preloadCriticalResources = useCallback(() => {
-    // Use requestIdleCallback or setTimeout to defer non-critical work
-    const scheduleWork = window.requestIdleCallback || ((cb) => setTimeout(cb, 1));
-    
-    scheduleWork(() => {
-      // Use CSS media query check instead of innerWidth to avoid reflow
-      if (isMobileRef.current === null) {
-        isMobileRef.current = window.matchMedia('(max-width: 768px)').matches;
-      }
-      const isMobile = isMobileRef.current;
-      
-      // Enable resource hints for better performance
-      const dnsPreconnects = ['https://fonts.googleapis.com', 'https://fonts.gstatic.com'];
-      dnsPreconnects.forEach(href => {
-        const link = document.createElement('link');
-        link.rel = 'dns-prefetch';
-        link.href = href;
-        document.head.appendChild(link);
-      });
-    });
-  }, []);
+  useEffect(() => {
+    const observers: PerformanceObserver[] = [];
 
-  // Optimize viewport meta tag
-  const optimizeViewport = useCallback(() => {
-    let viewportMeta = document.querySelector('meta[name="viewport"]');
-    if (!viewportMeta) {
-      viewportMeta = document.createElement('meta');
-      viewportMeta.setAttribute('name', 'viewport');
-      document.head.appendChild(viewportMeta);
-    }
-    viewportMeta.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes');
-  }, []);
-
-  // Add performance observer for Core Web Vitals (dev-only — avoids
-  // long-running observers and unnecessary callback work in production)
-  const observePerformance = useCallback(() => {
-    if (!import.meta.env.DEV) return;
-    if ('PerformanceObserver' in window) {
+    if (import.meta.env.DEV && "PerformanceObserver" in window) {
       try {
-        // Observe LCP
-        const lcpObserver = new PerformanceObserver((entryList) => {
-          const entries = entryList.getEntries();
-          const lastEntry = entries[entries.length - 1];
-          if (lastEntry) {
-            logger.debug('LCP:', lastEntry.startTime);
-          }
+        const lcp = new PerformanceObserver((list) => {
+          const entries = list.getEntries();
+          const last = entries[entries.length - 1];
+          if (last) logger.debug("LCP:", last.startTime);
         });
-        lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+        lcp.observe({ entryTypes: ["largest-contentful-paint"] });
+        observers.push(lcp);
 
-        // Observe FID
-        const fidObserver = new PerformanceObserver((entryList) => {
-          const entries = entryList.getEntries();
-          entries.forEach(entry => {
-            const fidEntry = entry as FirstInputPerformanceEntry;
-            logger.debug('FID:', fidEntry.processingStart - fidEntry.startTime);
-          });
-        });
-        fidObserver.observe({ entryTypes: ['first-input'] });
-
-        // Observe CLS
-        const clsObserver = new PerformanceObserver((entryList) => {
-          const entries = entryList.getEntries();
-          entries.forEach(entry => {
-            const clsEntry = entry as LayoutShiftPerformanceEntry;
-            if (!clsEntry.hadRecentInput) {
-              logger.debug('CLS:', clsEntry.value);
+        const fid = new PerformanceObserver((list) => {
+          list.getEntries().forEach((e) => {
+            const entry = e as PerformanceEntry & { processingStart?: number };
+            if (entry.processingStart) {
+              logger.debug("FID:", entry.processingStart - entry.startTime);
             }
           });
         });
-        clsObserver.observe({ entryTypes: ['layout-shift'] });
-      } catch (error) {
-        // Silently handle performance observer errors
+        fid.observe({ entryTypes: ["first-input"] });
+        observers.push(fid);
+
+        const cls = new PerformanceObserver((list) => {
+          list.getEntries().forEach((e) => {
+            const entry = e as PerformanceEntry & {
+              value?: number;
+              hadRecentInput?: boolean;
+            };
+            if (!entry.hadRecentInput && typeof entry.value === "number") {
+              logger.debug("CLS:", entry.value);
+            }
+          });
+        });
+        cls.observe({ entryTypes: ["layout-shift"] });
+        observers.push(cls);
+      } catch {
+        // Observer types may be unsupported — silently ignore
       }
     }
-  }, []);
 
-  // Enhanced resource cleanup and memory optimization
-  const cleanupResources = useCallback(() => {
-    return () => {
-      // Clear cached data older than 10 minutes
-      if (typeof Storage !== 'undefined') {
+    // Drop stale localStorage cache entries on idle
+    const scheduleIdle =
+      window.requestIdleCallback ||
+      ((cb: IdleRequestCallback) =>
+        setTimeout(cb as unknown as TimerHandler, 1));
+    const idleId = scheduleIdle(() => {
+      try {
         const now = Date.now();
+        const TTL = 10 * 60 * 1000;
+        const keysToRemove: string[] = [];
         for (let i = 0; i < localStorage.length; i++) {
           const key = localStorage.key(i);
-          if (key?.startsWith('cache_')) {
-            try {
-              const item = JSON.parse(localStorage.getItem(key) || '{}');
-              if (item.timestamp && now - item.timestamp > 10 * 60 * 1000) {
-                localStorage.removeItem(key);
-              }
-            } catch (error) {
-              localStorage.removeItem(key!);
-            }
+          if (!key?.startsWith("cache_")) continue;
+          try {
+            const item = JSON.parse(localStorage.getItem(key) || "{}");
+            if (item.timestamp && now - item.timestamp > TTL) keysToRemove.push(key);
+          } catch {
+            keysToRemove.push(key);
           }
         }
+        keysToRemove.forEach((k) => localStorage.removeItem(k));
+      } catch {
+        // localStorage unavailable (privacy mode) — ignore
       }
-      
-      // Clear unused blob URLs to prevent memory leaks
-      if (window.URL && window.URL.revokeObjectURL) {
-        // This would be called when component unmounts
-        logger.debug('Cleaning up blob URLs and cached resources');
-      }
-    };
-  }, []);
+    });
 
-  // Add intersection observer for lazy loading optimization
-  const setupIntersectionObserver = useCallback(() => {
-    if ('IntersectionObserver' in window) {
-      const imageObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const img = entry.target as HTMLImageElement;
-            if (img.dataset.src) {
-              img.src = img.dataset.src;
-              img.classList.remove('lazy');
-              imageObserver.unobserve(img);
-            }
-          }
-        });
-      }, {
-        rootMargin: '50px 0px',
-        threshold: 0.01
-      });
-
-      // Observe all lazy images
-      document.querySelectorAll('img[data-src]').forEach(img => {
-        imageObserver.observe(img);
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    preloadCriticalResources();
-    optimizeViewport();
-    observePerformance();
-    setupIntersectionObserver();
-    
-    // Add critical CSS for above-the-fold content
-    const criticalCSS = document.createElement('style');
-    criticalCSS.textContent = `
-      /* Critical CSS for above-the-fold content */
-      .hero-section { will-change: transform; }
-      .hero-section img { 
-        content-visibility: auto;
-        contain: layout style paint;
-      }
-      /* Prevent layout shift */
-      img { 
-        max-width: 100%; 
-        height: auto; 
-        aspect-ratio: attr(width) / attr(height);
-      }
-    `;
-    document.head.appendChild(criticalCSS);
-    
-    const cleanup = cleanupResources();
     return () => {
-      cleanup();
-      if (criticalCSS.parentNode) {
-        document.head.removeChild(criticalCSS);
+      observers.forEach((o) => o.disconnect());
+      if (window.cancelIdleCallback && typeof idleId === "number") {
+        window.cancelIdleCallback(idleId);
       }
     };
-  }, [preloadCriticalResources, optimizeViewport, observePerformance, setupIntersectionObserver, cleanupResources]);
+  }, []);
 }

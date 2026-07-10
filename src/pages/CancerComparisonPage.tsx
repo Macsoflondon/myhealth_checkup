@@ -36,6 +36,7 @@ export default function CancerComparisonPage() {
   const [cancerTests, setCancerTests] = useState<EnhancedTestData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [activeCancerType, setActiveCancerType] = useState(searchParams.get('type') || 'all');
+  const [activeTab, setActiveTab] = useState<string>('browse');
   
   const {
     selectedTests,
@@ -134,9 +135,11 @@ export default function CancerComparisonPage() {
               <Shield className="h-4 w-4 mr-1" />
               UKAS Accredited Labs
             </Badge>
-            <Badge variant="outline" className="text-white border-white/30">
-              7 Trusted Providers
-            </Badge>
+            {filteredTests.length > 0 && (
+              <Badge variant="outline" className="text-white border-white/30">
+                {[...new Set(filteredTests.map((t) => t.providerId))].length} Trusted Providers
+              </Badge>
+            )}
             <Link to="/cancer-biomarkers-reference" className="inline-flex items-center text-sm text-primary hover:underline">
               <BookOpen className="h-4 w-4 mr-1" />
               Biomarkers Reference Guide
@@ -158,9 +161,9 @@ export default function CancerComparisonPage() {
                       variant={isActive ? 'default' : 'outline'}
                       size="sm"
                       onClick={() => handleCancerTypeChange(type.id)}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-2 whitespace-nowrap shrink-0"
                     >
-                      <Icon className="h-4 w-4" />
+                      <Icon className="h-4 w-4 shrink-0" />
                       {type.name}
                     </Button>
                   );
@@ -176,7 +179,7 @@ export default function CancerComparisonPage() {
             <CancerScreeningDisclaimer variant="full" />
           </div>
 
-          <Tabs defaultValue="browse" className="space-y-6">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
             <TabsList className="grid w-full max-w-md grid-cols-3">
               <TabsTrigger value="browse">Browse Tests</TabsTrigger>
               <TabsTrigger value="compare" disabled={selectedTests.length < 2}>
@@ -211,7 +214,7 @@ export default function CancerComparisonPage() {
                           Clear
                         </Button>
                         {selectedTests.length >= 2 && (
-                          <Button size="sm">
+                          <Button size="sm" className="whitespace-nowrap" onClick={() => setActiveTab('compare')}>
                             Compare {selectedTests.length} Tests
                           </Button>
                         )}
@@ -259,6 +262,8 @@ export default function CancerComparisonPage() {
                             <img 
                               src={getProviderLogo(test.providerId)} 
                               alt={test.provider}
+                              loading="lazy"
+                              decoding="async"
                               className="h-6 object-contain"
                             />
                             <Badge variant="secondary">

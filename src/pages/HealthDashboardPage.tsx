@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { HealthDataHub } from "@/components/dashboard/HealthDataHub";
+import { MfaEnrollment } from "@/components/auth/MfaEnrollment";
 import { useAuth } from "@/context/AuthContext";
 
 const HealthDashboardPage = () => {
@@ -31,20 +32,25 @@ const HealthDashboardPage = () => {
   return (
     <>
       <Helmet>
-        <title>Health Dashboard | myhealth checkup</title>
-        <meta 
-          name="description" 
-          content="Track your health journey with test results, biomarkers, and wellness data all in one place. Upload test results and view trends over time." 
+        <title>My Dashboard | myhealth checkup</title>
+        <meta
+          name="description"
+          content="Manage your saved tests, providers, orders, profile and health data in one place on myhealth checkup."
         />
-        <meta name="robots" content="noindex, nofollow" />
+        <link rel="canonical" href="https://myhealthcheckup.co.uk/health-dashboard" />
+        <meta name="robots" content="noindex, follow" />
       </Helmet>
 
-      <div className="min-h-screen flex flex-col">
+
+      <div className="min-h-screen flex flex-col bg-white">
         <Header />
         
         <main className="flex-1 bg-white">
-          <div className="container mx-auto px-4 py-12 max-w-6xl">
+          <div className="container mx-auto px-4 py-12 max-w-6xl space-y-8">
             <HealthDataHub />
+            <section id="security" aria-label="Account security">
+              <MfaEnrollment />
+            </section>
           </div>
         </main>
 

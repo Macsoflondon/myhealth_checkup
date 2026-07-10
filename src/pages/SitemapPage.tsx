@@ -21,7 +21,7 @@ const SitemapPage = () => {
     links: [{ name: "Privacy Policy", path: "/privacy-policy" }, { name: "Terms & Conditions", path: "/terms" }, { name: "Cookie Policy", path: "/cookies" }, { name: "Accessibility", path: "/accessibility" }]
   }, {
     title: "User Account",
-    links: [{ name: "Sign In / Register", path: "/auth" }, { name: "Dashboard", path: "/dashboard" }]
+    links: [{ name: "Sign In / Register", path: "/auth" }, { name: "Dashboard", path: "/health-dashboard" }]
   }];
 
   return <div className="min-h-screen flex flex-col">
@@ -29,6 +29,10 @@ const SitemapPage = () => {
         <title>Sitemap | myhealth checkup</title>
         <meta name="description" content="Navigate the complete myhealth checkup site structure. Find health tests, providers, and resources quickly." />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/sitemap" />
+        <meta property="og:title" content="Sitemap | myhealth checkup" />
+        <meta property="og:description" content="Browse the complete myhealth checkup site structure — every health test category, provider and resource page in one place." />
+        <meta property="og:url" content="https://myhealthcheckup.co.uk/sitemap" />
+        <meta property="og:type" content="website" />
       </Helmet>
       <Header />
       <main className="flex-grow bg-[#081129]">

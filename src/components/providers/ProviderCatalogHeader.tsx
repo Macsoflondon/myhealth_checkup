@@ -73,7 +73,7 @@ const ProviderCatalogHeader = ({
           </div>
           <div className="flex gap-3">
             <Button asChild variant="outline" className="text-white border-white/30 hover:bg-white/10">
-              <Link to="/providers">
+              <Link to="/trusted-providers">
                 ← All Providers
               </Link>
             </Button>
@@ -160,7 +160,7 @@ export const PROVIDER_FEATURES: Record<string, ProviderFeature[]> = {
   'thriva': [
     { icon: <Home className="h-4 w-4 text-secondary" />, label: "Home test kits" },
     { icon: <Smartphone className="h-4 w-4 text-secondary" />, label: "App-based tracking" },
-     { icon: <Shield className="h-4 w-4 text-secondary" />, label: "CQC Regulated" },
+     { icon: <Shield className="h-4 w-4 text-secondary" />, label: "CQC Regulated Providers" },
   ],
   'randox': [
     { icon: <Building2 className="h-4 w-4 text-secondary" />, label: "Premium clinic locations" },
@@ -180,7 +180,7 @@ export const PROVIDER_FEATURES: Record<string, ProviderFeature[]> = {
   'goodbody-clinic': [
     { icon: <Building2 className="h-4 w-4 text-secondary" />, label: "Clinic-based testing" },
     { icon: <MapPin className="h-4 w-4 text-secondary" />, label: "Locations across the UK" },
-    { icon: <Shield className="h-4 w-4 text-secondary" />, label: "CQC Regulated" },
+    { icon: <Shield className="h-4 w-4 text-secondary" />, label: "CQC Regulated Providers" },
   ],
 };
 

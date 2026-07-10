@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { Route } from "react-router-dom";
+import { Route, Navigate } from "react-router-dom";
 import { AdminRoute } from "@/components/auth/AdminRoute";
 
 const HowItWorksPage = lazy(() => import("@/pages/HowItWorksPage"));
@@ -12,8 +12,12 @@ const HealthBlogPage = lazy(() => import("@/pages/HealthBlogPage"));
 const SitemapPage = lazy(() => import("@/pages/SitemapPage"));
 const ConditionsPage = lazy(() => import("@/pages/ConditionsPage"));
 const TrustedProvidersPage = lazy(() => import("@/pages/TrustedProvidersPage"));
-const TypographyShowcasePage = lazy(() => import("@/pages/TypographyShowcasePage"));
+
 const BiomarkerDatabasePage = lazy(() => import("@/pages/BiomarkerDatabasePage"));
+const BiomarkerGuidesIndexPage = lazy(() => import("@/pages/BiomarkerGuidesIndexPage"));
+const BiomarkerGuidePage = lazy(() => import("@/pages/BiomarkerGuidePage"));
+const TestosteroneLevelsByAgePage = lazy(() => import("@/pages/TestosteroneLevelsByAgePage"));
+
 
 export const contentRoutes = (
   <>
@@ -24,11 +28,13 @@ export const contentRoutes = (
     <Route path="/contact" element={<ContactPage />} />
     <Route path="/partners" element={<PartnersPage />} />
     <Route path="/blog" element={<HealthBlogPage />} />
-    <Route path="/health-blog" element={<HealthBlogPage />} />
+    <Route path="/health-blog" element={<Navigate to="/blog" replace />} />
+    <Route path="/blog/testosterone-levels-by-age" element={<TestosteroneLevelsByAgePage />} />
     <Route path="/sitemap" element={<SitemapPage />} />
     <Route path="/conditions" element={<ConditionsPage />} />
     <Route path="/trusted-providers" element={<TrustedProvidersPage />} />
     <Route path="/biomarker-database" element={<BiomarkerDatabasePage />} />
-    <Route path="/typography-showcase" element={<AdminRoute><TypographyShowcasePage /></AdminRoute>} />
+    <Route path="/guides" element={<BiomarkerGuidesIndexPage />} />
+    <Route path="/guides/:slug" element={<BiomarkerGuidePage />} />
   </>
 );

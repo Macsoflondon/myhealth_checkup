@@ -92,7 +92,7 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
                   className="state-layer block p-2.5 rounded-lg transition-shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700 cursor-pointer"
                   onClick={(e) => handleLinkClick(e, item.path)}
                 >
-                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-pink-600 dark:hover:text-pink-500 transition-colors">
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-brand-pink dark:hover:text-brand-pink transition-colors">
                     {item.name}
                   </span>
                 </a>

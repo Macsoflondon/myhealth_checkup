@@ -53,41 +53,49 @@ const PROVIDER_CONFIGS: Record<string, ProviderCatalogConfig> = {
     providerName: "Lola Health",
     tagline: "Professional at-home phlebotomy with doctor-reviewed results",
     metaTitle: "Lola Health Blood Tests | Compare Health Tests UK",
-    metaDescription: "Browse all Lola Health blood tests. At-home nurse visits with venous blood draw and doctor-reviewed results. Compare prices and book your test.",
+    metaDescription: "Browse all Lola Health blood tests. At-home nurse visits and clinic appointments with doctor-reviewed results. Compare prices and book your test.",
   },
   "london-medical-laboratory": {
     providerId: "london-medical-laboratory",
     providerName: "London Medical Laboratory",
-    tagline: "UKAS-accredited laboratory services with next-day results",
+    tagline: "UKAS-accredited laboratory services",
     metaTitle: "London Medical Laboratory Tests | Compare Health Tests UK",
     metaDescription: "Browse London Medical Laboratory's full range of blood tests and health screenings. Compare prices, biomarkers, and turnaround times.",
   },
   "london-health-company": {
     providerId: "london-health-company",
     providerName: "London Health Company",
-    tagline: "Accessible private health testing across London",
+    tagline: "Accessible London clinic network with hospital-grade diagnostics",
     metaTitle: "London Health Company Blood Tests | Compare Health Tests UK",
-    metaDescription: "Browse all London Health Company blood tests. Private health screening with clinic and at-home options across London. Compare prices and book.",
+    metaDescription: "Browse all London Health Company blood tests. Private health testing across London clinics with UKAS-accredited laboratory analysis.",
   },
   "medical-diagnosis": {
     providerId: "medical-diagnosis",
     providerName: "Medical Diagnosis",
-    tagline: "Specialist diagnostics with fast turnaround",
+    tagline: "Specialist diagnostic blood testing with fast turnaround",
     metaTitle: "Medical Diagnosis Blood Tests | Compare Health Tests UK",
-    metaDescription: "Browse all Medical Diagnosis blood tests. Specialist diagnostic testing with UKAS-accredited partner laboratories. Compare prices and book.",
+    metaDescription: "Browse all Medical Diagnosis blood tests. Specialist diagnostic testing with UKAS-accredited partner laboratories across the UK.",
   },
   "clinilabs": {
     providerId: "clinilabs",
     providerName: "Clinilabs",
-    tagline: "Clinical-grade diagnostics from UKAS-accredited labs",
+    tagline: "UKAS-accredited clinical laboratory testing",
     metaTitle: "Clinilabs Blood Tests | Compare Health Tests UK",
-    metaDescription: "Browse all Clinilabs blood tests. UKAS-accredited clinical laboratory testing with clinician-reviewed reports. Compare prices and book.",
+    metaDescription: "Browse all Clinilabs blood tests. In-clinic phlebotomy and postal kits with clinician-reviewed results from a UKAS-accredited laboratory.",
   },
 };
 
 interface ProviderTestsCatalogPageProps {
   providerId: string;
 }
+
+const normalizeCategory = (cat: string | null | undefined): string | null => {
+  if (!cat) return null;
+  const lower = cat.toLowerCase().trim();
+  if (lower === "mens health") return "Men's Health";
+  if (lower === "womens health") return "Women's Health";
+  return cat;
+};
 
 const ProviderTestsCatalogPage = ({ providerId }: ProviderTestsCatalogPageProps) => {
   const config = PROVIDER_CONFIGS[providerId] ?? PROVIDER_CONFIGS["medichecks"]!;
@@ -111,12 +119,12 @@ const ProviderTestsCatalogPage = ({ providerId }: ProviderTestsCatalogPageProps)
 
   const categories = useMemo(() => {
     if (!tests) return [];
-    return [...new Set(tests.map((t) => t.category).filter(Boolean))].sort() as string[];
+    return [...new Set(tests.map((t) => normalizeCategory(t.category)).filter(Boolean))].sort() as string[];
   }, [tests]);
 
   const filteredTests = useMemo(() => {
     if (!tests) return [];
-    const filtered = selectedCategory === "all" ? tests : tests.filter((t) => t.category === selectedCategory);
+    const filtered = selectedCategory === "all" ? tests : tests.filter((t) => normalizeCategory(t.category) === selectedCategory);
     return sortTests(filtered, sortBy);
   }, [tests, selectedCategory, sortBy]);
 

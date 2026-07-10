@@ -154,29 +154,16 @@ class ProvidersApi {
   }
 
   /**
-   * Fetch provider test catalog with optional scraping trigger
+   * Fetch provider test catalog. Scraping is admin/cron-only and is no longer
+   * triggered automatically from the client.
    */
   async getProviderCatalog(providerId: string): Promise<ApiResponse<ProviderTestData[]>> {
-    try {
-      // First try to get existing tests
-      const existingTests = await this.getProviderTests(providerId);
-
-      // If no tests exist, trigger scraping
-      if (!existingTests.data || existingTests.data.length === 0) {
-        await this.triggerProviderScrape(providerId);
-        
-        // Fetch tests again after scraping
-        return await this.getProviderTests(providerId);
-      }
-
-      return existingTests;
-    } catch (error) {
-      return { data: null, error: error as Error };
-    }
+    return await this.getProviderTests(providerId);
   }
 
   /**
-   * Trigger provider scraper edge function
+   * Trigger provider scraper edge function. Requires service-role bearer
+   * (cron / admin invocation) — will return 401 from the browser.
    */
   async triggerProviderScrape(providerId: string): Promise<ApiResponse<unknown>> {
     try {

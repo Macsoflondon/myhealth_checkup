@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -7,20 +8,41 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-// In-memory rate limiter: 5 requests per IP per 60 seconds
+// Persistent shared rate limiter: 5 requests per client_key per 60 seconds
 const RATE_LIMIT_WINDOW_MS = 60_000;
 const RATE_LIMIT_MAX = 5;
-const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
 
-function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateLimitMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+async function checkPersistentRateLimit(
+  supabase: ReturnType<typeof createClient>,
+  endpoint: string,
+  clientKey: string,
+): Promise<boolean> {
+  const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MS).toISOString();
+  const { data, error } = await supabase
+    .from("api_rate_limits")
+    .select("id, request_count")
+    .eq("endpoint", endpoint)
+    .eq("client_key", clientKey)
+    .gte("window_start", windowStart)
+    .maybeSingle();
+  if (error) {
+    console.error("rate limit lookup error:", error);
+    return true; // fail-open to avoid breaking UX on transient lookup errors
+  }
+  if (!data) {
+    await supabase.from("api_rate_limits").insert({
+      endpoint,
+      client_key: clientKey,
+      request_count: 1,
+      window_start: new Date().toISOString(),
+    });
     return true;
   }
-  if (entry.count >= RATE_LIMIT_MAX) return false;
-  entry.count++;
+  if (data.request_count >= RATE_LIMIT_MAX) return false;
+  await supabase
+    .from("api_rate_limits")
+    .update({ request_count: data.request_count + 1 })
+    .eq("id", data.id);
   return true;
 }
 
@@ -29,14 +51,8 @@ serve(async (req) => {
     return new Response(null, { headers: corsHeaders });
   }
 
-  // Rate limiting by IP
+  // Rate limit deferred until after supabase client is created (persistent store)
   const clientIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-  if (!checkRateLimit(clientIp)) {
-    return new Response(
-      JSON.stringify({ error: "Too many requests. Please wait a minute before trying again." }),
-      { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
-  }
 
   try {
     const body = await req.json();
@@ -92,6 +108,24 @@ serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
+    // Persistent rate limit, keyed by authenticated user when present, otherwise client IP
+    let clientKey = `ip:${clientIp}`;
+    const authHeader = req.headers.get("Authorization");
+    if (authHeader?.startsWith("Bearer ")) {
+      try {
+        const { data: userData } = await supabase.auth.getUser(authHeader.replace("Bearer ", ""));
+        if (userData?.user?.id) clientKey = `user:${userData.user.id}`;
+      } catch (_) { /* fall back to IP */ }
+    }
+    const allowed = await checkPersistentRateLimit(supabase, "quiz-recommendations", clientKey);
+    if (!allowed) {
+      return new Response(
+        JSON.stringify({ error: "Too many requests. Please wait a minute before trying again." }),
+        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+
     // Fetch active provider tests with relevant fields
     const { data: tests, error: dbError } = await supabase
       .from("provider_tests")
@@ -139,6 +173,44 @@ serve(async (req) => {
       if (clinicFiltered.length >= 5) filtered = clinicFiltered;
     }
 
+    // Concern-driven prioritisation. When the user flags cancer screening,
+    // surface tests containing oncology biomarkers (PSA, AFP, CEA, CA-125,
+    // CA 19-9, CA 15-3, LDH, beta-hCG) ahead of hormone/general panels so
+    // the AI sees them first and PSA wins for males.
+    const CANCER_MARKERS = [
+      "psa", "prostate specific antigen", "afp", "alpha-fetoprotein",
+      "cea", "carcinoembryonic", "ca-125", "ca125", "ca 125",
+      "ca-19", "ca19", "ca 19", "ca-15", "ca15", "ca 15",
+      "ldh", "lactate dehydrogenase", "beta-hcg", "beta hcg",
+      "tumour marker", "tumor marker", "cancer",
+    ];
+    const wantsCancerScreening = concerns.some(
+      (c) => c === "cancer-screening" || c === "cancer" || c.toLowerCase().includes("cancer")
+    );
+
+    const isCancerTest = (t: any): boolean => {
+      const haystack = [
+        t.test_name, t.category, t.description,
+        Array.isArray(t.biomarkers_list) ? t.biomarkers_list.join(" ") : "",
+        t.who_should_test,
+      ].filter(Boolean).join(" ").toLowerCase();
+      return CANCER_MARKERS.some((m) => haystack.includes(m));
+    };
+    const hasPsa = (t: any): boolean => {
+      const hay = (t.test_name + " " + (Array.isArray(t.biomarkers_list) ? t.biomarkers_list.join(" ") : "")).toLowerCase();
+      return hay.includes("psa") || hay.includes("prostate specific antigen");
+    };
+
+    if (wantsCancerScreening) {
+      const cancerTests = filtered.filter(isCancerTest);
+      const otherTests = filtered.filter((t: any) => !isCancerTest(t));
+      if (gender === "male") {
+        // Surface PSA tests first for males
+        cancerTests.sort((a: any, b: any) => Number(hasPsa(b)) - Number(hasPsa(a)));
+      }
+      filtered = [...cancerTests, ...otherTests];
+    }
+
     // Limit to top 80 tests for AI context (sorted by relevance signals)
     const testsForAI = filtered.slice(0, 80).map((t: Record<string, unknown>) => ({
       id: t.id,
@@ -152,6 +224,7 @@ serve(async (req) => {
       clinicVisit: t.clinic_visit_available,
       description: t.description?.slice(0, 200),
       url: t.url,
+      isCancerMarkerTest: wantsCancerScreening ? isCancerTest(t) : undefined,
     }));
 
     const userProfile = {
@@ -179,6 +252,7 @@ RULES:
 6. Always recommend consulting a GP for concerning symptoms
 7. Consider age-appropriate screening (e.g. PSA for men 50+, comprehensive panels for 40+)
 8. For "preventive screening" goals, prioritise broad panels covering cardiovascular, metabolic, and nutritional markers
+9. CANCER SCREENING RULE: If the user's concerns include "cancer-screening", you MUST rank tests containing oncology biomarkers (PSA, AFP, CEA, CA-125, CA 19-9, CA 15-3, LDH, beta-hCG) above hormone, vitamin, or general wellness tests. Tests flagged with isCancerMarkerTest=true take absolute priority. For male users, a PSA-containing test MUST be the "Best Match". Never recommend a testosterone or hormone panel as the top match when cancer screening is the stated concern.
 
 RESPONSE FORMAT - Return ONLY valid JSON:
 {
@@ -273,7 +347,7 @@ Based on this profile, recommend the 3 best tests. Return ONLY the JSON object.`
   } catch (e) {
     console.error("quiz-recommendations error:", e);
     return new Response(
-      JSON.stringify({ error: e instanceof Error ? (e instanceof Error ? e.message : String(e)) : "Unknown error" }),
+      JSON.stringify({ error: "Internal server error" }),
       { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
     );
   }

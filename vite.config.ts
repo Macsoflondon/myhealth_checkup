@@ -3,10 +3,14 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { ogMetaPlugin } from "./plugins/ogMetaPlugin";
+import { visualizer } from "rollup-plugin-visualizer";
+// Touch: forces Vite dev-server restart to clear stale module graph after asset migration.
+
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
+  const analyze = mode === "analyze" || process.env.ANALYZE === "true";
   return {
     server: {
       host: "::",
@@ -16,6 +20,13 @@ export default defineConfig(({ mode }) => {
       react(),
       mode === 'development' && componentTagger(),
       mode === 'production' && ogMetaPlugin(),
+      analyze && visualizer({
+        filename: "dist/bundle-stats.html",
+        template: "treemap",
+        gzipSize: true,
+        brotliSize: true,
+        open: false,
+      }),
     ].filter(Boolean),
     resolve: {
       alias: {
@@ -47,6 +58,8 @@ export default defineConfig(({ mode }) => {
               'chart-vendor': ['recharts'],
               'i18n-vendor': ['i18next', 'react-i18next', 'i18next-browser-languagedetector'],
               'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
+              'motion-vendor': ['framer-motion'],
+              'carousel-vendor': ['embla-carousel-react', 'embla-carousel-autoplay', 'embla-carousel-fade'],
             };
             if (!id.includes('node_modules')) return undefined;
             for (const [chunk, pkgs] of Object.entries(vendorChunks)) {

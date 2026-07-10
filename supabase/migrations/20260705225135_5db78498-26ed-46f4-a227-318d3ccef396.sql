@@ -1,0 +1,2 @@
+CREATE TABLE IF NOT EXISTS supabase_migrations.schema_migrations_backup_20260705_v3 AS SELECT * FROM supabase_migrations.schema_migrations;
+UPDATE supabase_migrations.schema_migrations SET version = '20260705223538' WHERE version = '20260705223539';

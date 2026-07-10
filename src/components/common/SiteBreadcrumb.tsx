@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import {
   Breadcrumb,
@@ -8,6 +8,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { findSubcategoryBySlug } from "@/config/subcategoryMap";
 
 /**
  * Route-driven breadcrumb. Skips on the homepage and noisy admin/auth/dashboard
@@ -27,8 +28,6 @@ const SLUG_LABELS: Record<string, string> = {
   categories: "Categories",
   providers: "Providers",
   provider: "Provider",
-  clinics: "Clinics",
-  "find-clinic": "Find a Clinic",
   "health-resource-hub": "Health Resource Hub",
   blog: "Health Resource Hub",
   "biomarker-database": "Biomarker Library",
@@ -67,6 +66,7 @@ const humanise = (slug: string) =>
 
 const SiteBreadcrumb = () => {
   const { pathname } = useLocation();
+  const [searchParams] = useSearchParams();
 
   if (pathname === "/" || HIDDEN_PREFIXES.some((p) => pathname.startsWith(p))) {
     return null;
@@ -75,11 +75,26 @@ const SiteBreadcrumb = () => {
   const segments = pathname.split("/").filter(Boolean);
   if (segments.length === 0) return null;
 
-  const crumbs = segments.map((seg, idx) => ({
+  const baseCrumbs = segments.map((seg, idx) => ({
     label: humanise(seg),
     href: "/" + segments.slice(0, idx + 1).join("/"),
     isLast: idx === segments.length - 1,
   }));
+
+  // Reflect ?subcategory=<slug> as an additional trailing crumb so navigating
+  // via query-param dropdowns is visible in the breadcrumb trail.
+  const subSlug = searchParams.get("subcategory");
+  const sub = findSubcategoryBySlug(subSlug);
+  const crumbs = sub
+    ? [
+        ...baseCrumbs.map((c) => ({ ...c, isLast: false })),
+        {
+          label: sub.label,
+          href: `${baseCrumbs[baseCrumbs.length - 1].href}?subcategory=${sub.slug}`,
+          isLast: true,
+        },
+      ]
+    : baseCrumbs;
 
   const origin = typeof window !== "undefined" ? window.location.origin : "https://myhealthcheckup.co.uk";
   const jsonLd = {
@@ -101,7 +116,7 @@ const SiteBreadcrumb = () => {
       <Helmet>
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       </Helmet>
-      <nav aria-label="Breadcrumb" className="container mx-auto px-4 sm:px-6 lg:px-12 pt-4">
+      <nav aria-label="Breadcrumb" data-testid="site-breadcrumb" className="container mx-auto px-4 sm:px-6 lg:px-12 pt-4">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -114,7 +129,7 @@ const SiteBreadcrumb = () => {
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   {c.isLast ? (
-                    <BreadcrumbPage>{c.label}</BreadcrumbPage>
+                <BreadcrumbPage>{c.label}</BreadcrumbPage>
                   ) : (
                     <BreadcrumbLink asChild>
                       <Link to={c.href}>{c.label}</Link>

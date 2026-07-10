@@ -50,14 +50,21 @@ function stripHtml(html: string): string {
   return html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-function extractBiomarkerCount(text: string): number | null {
-  const m = text.match(/(\d{1,3})\s*(?:biomarkers?|tests?|markers?|analytes?)/i);
+function extractBiomarkerCount(text: string, title = ''): number | null {
+  const m = text.match(/(\d{1,3})\s*(?:biomarkers?|tests?|markers?|analytes?|parameters?)/i);
   if (m) {
     const n = parseInt(m[1], 10);
     if (n > 0 && n < 500) return n;
   }
-  return null;
+  // Fallback: single-analyte tests default to 1, unless the title/description indicates a multi-marker panel.
+  const panelText = `${title} ${text}`.toLowerCase();
+  if (/\b(profile|panel|screen(?:ing)?|check|mot)\b/i.test(panelText)) {
+    return null;
+  }
+  return 1;
 }
+
+
 
 async function fetchShopifyPage(page: number): Promise<ShopifyProduct[]> {
   const url = `${SHOPIFY_BASE}/products.json?limit=250&page=${page}`;
@@ -76,6 +83,13 @@ async function fetchShopifyPage(page: number): Promise<ShopifyProduct[]> {
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
+
+  const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+  }
 
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
   const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
@@ -107,7 +121,7 @@ Deno.serve(async (req) => {
       const originalPrice = variant?.compare_at_price ? parseFloat(variant.compare_at_price) : null;
       const cleanDesc = stripHtml(p.body_html || '').slice(0, 1000);
       const category = determineCategory(p.title, cleanDesc, p.tags || []);
-      const biomarkerCount = extractBiomarkerCount(cleanDesc);
+      const biomarkerCount = extractBiomarkerCount(cleanDesc, p.title);
 
       return {
         provider_id: PROVIDER_ID,

@@ -5,7 +5,7 @@
 
 export const CATEGORY_COLORS: Record<string, string> = {
   'blood-tests': 'bg-red-500 text-white',
-  'hormones': 'bg-pink-500 text-white',
+  'hormones': 'bg-brand-pink text-white',
   'thyroid': 'bg-emerald-500 text-white',
   'thyroid-tests': 'bg-emerald-500 text-white',
   'vitamins': 'bg-lime-500 text-white',
@@ -14,14 +14,18 @@ export const CATEGORY_COLORS: Record<string, string> = {
   'liver': 'bg-yellow-500 text-white',
   'liver-health': 'bg-yellow-500 text-white',
   'kidney-health': 'bg-navy text-white',
-  'womens-health': 'bg-pink-500 text-white',
+  'womens-health': 'bg-brand-pink text-white',
   'mens-health': 'bg-blue-500 text-white',
   'longevity-tests': 'bg-teal-600 text-white',
   'fertility': 'bg-purple-500 text-white',
   'general-health': 'bg-teal-500 text-white',
   'allergy-testing': 'bg-indigo-500 text-white',
   'cancer-screening': 'bg-gray-700 text-white',
-  'womens-health-checks': 'bg-pink-500 text-white',
+  'sexual-health': 'bg-rose-600 text-white',
+  'gut-health': 'bg-amber-600 text-white',
+  'gut': 'bg-amber-600 text-white',
+  'genetic-testing': 'bg-violet-600 text-white',
+  'womens-health-checks': 'bg-brand-pink text-white',
   'female-hormone-tests': 'bg-purple-600 text-white',
   'female-fertility-tests': 'bg-red-400 text-white',
   'sports-performance-tests': 'bg-blue-500 text-white',
@@ -31,9 +35,9 @@ export const CATEGORY_COLORS: Record<string, string> = {
   'prostate-tests': 'bg-indigo-600 text-white',
   'erectile-dysfunction-tests': 'bg-purple-500 text-white',
   'prenatal-paternity-tests': 'bg-violet-600 text-white',
-  'gender-reveal-tests': 'bg-pink-400 text-white',
+  'gender-reveal-tests': 'bg-brand-pink text-white',
   'nipt-tests': 'bg-blue-600 text-white',
-  'weight-loss-tests': 'bg-pink-500 text-white',
+  'weight-loss-tests': 'bg-brand-pink text-white',
   'diabetes-tests': 'bg-orange-500 text-white',
   'cholesterol-tests': 'bg-red-600 text-white',
   'vitamins-tests': 'bg-lime-500 text-white',
@@ -85,8 +89,114 @@ export const SLUG_TO_DB_CATEGORIES: Record<string, string[]> = {
   'immunity-tests': ['Immunology'],
   'infection-tests': ['Sexual Health'],
   'gut-health': ['Gut Health', 'Digestive Health'],
+  'gut': ['Gut Health', 'Digestive Health'],
+  'genetic-testing': ['Genetic Testing', 'Genetics'],
   'inflammation': ['Inflammation'],
 };
+
+/**
+ * Maps toolbar slugs to canonical_category values stored in provider_tests.
+ */
+export const SLUG_TO_CANONICAL_CATEGORIES: Record<string, string[]> = {
+  'hormones': ['hormones'],
+  'thyroid': ['thyroid'],
+  'thyroid-tests': ['thyroid'],
+  'vitamins': ['vitamins', 'vitamins-minerals'],
+  'diabetes': ['diabetes'],
+  'heart-health': ['heart-health', 'heart'],
+  'cancer-screening': ['cancer-screening'],
+  'fertility': ['fertility'],
+  'general-health': ['general-health'],
+  'allergy-testing': ['allergy-testing', 'allergy'],
+  'sports-performance-tests': ['sports-performance-tests', 'sports-performance'],
+  'mens-health': ['mens-health'],
+  'womens-health': ['womens-health'],
+  'sexual-health': ['sexual-health'],
+  'gut-health': ['gut-health', 'gut'],
+  'gut': ['gut', 'gut-health'],
+  'genetic-testing': ['genetic-testing'],
+  'longevity-tests': ['general-health'],
+  'weight-loss-tests': ['general-health'],
+  'liver': ['general-health'],
+  'blood-tests': ['general-health'],
+};
+
+/**
+ * Sub-category slugs that aren't a clean 1:1 with canonical_category.
+ * Narrow results by test_name pattern, optionally scoped to one or more
+ * canonical categories. Used by buildCategoryQuery to support nav items
+ * like "Menopause Tests", "Female Hormone Tests" etc.
+ */
+export interface SlugNameFilter {
+  canonicals?: string[];
+  includeNames: string[];
+  excludeNames?: string[];
+}
+
+export const SLUG_TO_NAME_FILTER: Record<string, SlugNameFilter> = {
+  'menopause': {
+    canonicals: ['womens-health', 'hormones'],
+    includeNames: ['menopause', 'perimenopause', 'hrt'],
+  },
+  'menopause-tests': {
+    canonicals: ['womens-health', 'hormones'],
+    includeNames: ['menopause', 'perimenopause', 'hrt'],
+  },
+  'female-hormones': {
+    canonicals: ['womens-health', 'hormones'],
+    includeNames: ['female hormone', 'women', 'oestrogen', 'estrogen', 'progesterone', 'fsh', 'lh'],
+    excludeNames: ['male hormone'],
+  },
+  'female-hormone-tests': {
+    canonicals: ['womens-health', 'hormones'],
+    includeNames: ['female hormone', 'women', 'oestrogen', 'estrogen', 'progesterone', 'fsh', 'lh'],
+    excludeNames: ['male hormone'],
+  },
+  'female-fertility': {
+    canonicals: ['fertility', 'womens-health'],
+    includeNames: ['female fertility', 'amh', 'ovarian reserve', 'female hormone and fertility', 'fertility hormones', 'fertility profile'],
+    excludeNames: ['male fertility', 'sperm'],
+  },
+  'female-fertility-tests': {
+    canonicals: ['fertility', 'womens-health'],
+    includeNames: ['female fertility', 'amh', 'ovarian reserve', 'female hormone and fertility', 'fertility hormones', 'fertility profile'],
+    excludeNames: ['male fertility', 'sperm'],
+  },
+  'pcos': {
+    canonicals: ['womens-health', 'hormones'],
+    includeNames: ['pcos', 'polycystic'],
+  },
+  'male-hormones': {
+    canonicals: ['mens-health', 'hormones'],
+    includeNames: ['male hormone', 'testosterone'],
+    excludeNames: ['female'],
+  },
+  'male-fertility': {
+    canonicals: ['fertility', 'mens-health'],
+    includeNames: ['male fertility', 'sperm'],
+    excludeNames: ['female'],
+  },
+  'testosterone': {
+    canonicals: ['hormones', 'mens-health'],
+    includeNames: ['testosterone'],
+  },
+  'prostate': {
+    canonicals: ['mens-health', 'cancer-screening'],
+    includeNames: ['prostate', 'psa'],
+  },
+  'amh': {
+    canonicals: ['fertility', 'womens-health'],
+    includeNames: ['amh', 'anti-müllerian', 'anti-mullerian', 'ovarian reserve'],
+  },
+};
+
+export function getNameFilterForSlug(slug: string): SlugNameFilter | undefined {
+  return SLUG_TO_NAME_FILTER[slug.toLowerCase()];
+}
+
+export function getCanonicalCategoriesForSlug(slug: string): string[] | undefined {
+  return SLUG_TO_CANONICAL_CATEGORIES[slug.toLowerCase()];
+}
 
 /**
  * Resolves a URL slug to the matching DB category values.
@@ -122,6 +232,9 @@ export const compareCategories = [
   { id: "sports-performance-tests", name: "Sports Performance Tests", description: "Athletic performance optimization and health monitoring", searchTerms: ["sports", "athletic", "performance", "fitness", "athlete testing"] },
   { id: "weight-loss-tests", name: "Weight Loss Tests", description: "Weight management and metabolic health screening", searchTerms: ["weight loss", "weight management", "metabolism", "metabolic health", "thyroid weight", "hormone weight"] },
   { id: "longevity-tests", name: "Longevity Tests", description: "Comprehensive health markers for longevity and preventive care", searchTerms: ["longevity", "preventive", "comprehensive health", "wellness screening", "life extension"] },
+  { id: "sexual-health", name: "Sexual Health", description: "STI screening and sexual wellness testing", searchTerms: ["sexual", "sti", "std", "chlamydia", "gonorrhoea", "hiv", "syphilis", "herpes"] },
+  { id: "gut-health", name: "Gut Health", description: "Digestive health, microbiome and food sensitivity testing", searchTerms: ["gut", "digestive", "microbiome", "stool", "ibs", "coeliac", "intestinal"] },
+  { id: "genetic-testing", name: "Genetic Testing", description: "DNA-based health and predisposition screening", searchTerms: ["genetic", "dna", "genome", "hereditary", "predisposition"] },
 ];
 
 // Category mapping helper function

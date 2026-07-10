@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-const FounderStory = (): JSX.Element => {
-  return;
+const FounderStory = () => {
+  return null;
 };
 export default FounderStory;

@@ -27,19 +27,21 @@ const CallToAction = ({ className }: CallToActionProps) => {
             Join thousands of customers who've discovered health insights that made a difference.
           </p>
           <div className="flex flex-row gap-2 sm:gap-3 justify-center items-center flex-wrap">
-            <Button 
-              size="sm" 
+            <Button
+              size="lg"
               onClick={() => navigate('/assisted-test-finder')}
-              className="flex-1 sm:flex-none sm:w-56 max-w-[48%] bg-[#22c0d4] hover:bg-[#e70d69] text-white font-semibold rounded-xl shadow-lg transition-colors duration-300"
+              className="inline-flex items-center justify-center gap-1.5 flex-1 sm:flex-none sm:w-64 min-w-0 px-4 bg-[#22c0d4] hover:bg-[#e70d69] text-white text-sm sm:text-base font-semibold rounded-xl shadow-lg transition-colors duration-300 whitespace-nowrap"
             >
-              Find Your Perfect Test
+              <span className="truncate">Find Your Perfect Test</span>
+              <ArrowRight className="w-4 h-4 shrink-0" />
             </Button>
-            <Button 
-              size="sm" 
+            <Button
+              size="lg"
               onClick={() => navigate('/compare')}
-              className="flex-1 sm:flex-none sm:w-56 max-w-[48%] bg-[#e70d69] hover:bg-[#22c0d4] text-white font-semibold rounded-xl shadow-lg transition-colors duration-300"
+              className="inline-flex items-center justify-center gap-1.5 flex-1 sm:flex-none sm:w-64 min-w-0 px-4 bg-[#e70d69] hover:bg-[#22c0d4] text-white text-sm sm:text-base font-semibold rounded-xl shadow-lg transition-colors duration-300 whitespace-nowrap"
             >
-              Browse All 300+ Tests
+              <span className="truncate">Browse All 200+ Tests</span>
+              <ArrowRight className="w-4 h-4 shrink-0" />
             </Button>
           </div>
         </div>

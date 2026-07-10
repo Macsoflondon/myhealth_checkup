@@ -43,7 +43,10 @@ export const useProvidersByTestType = ({ testType, category, enabled = true }: U
 
       // Optionally filter by category
       if (category) {
-        query = query.ilike("category", `%${category}%`);
+        const categorySpaced = category.replace(/-/g, " ");
+        query = query.or(
+          `canonical_category.ilike.%${category}%,category.ilike.%${categorySpaced}%`
+        );
       }
 
       const { data, error } = await query;
@@ -89,7 +92,9 @@ export const useProvidersByCategory = (category: string, enabled = true) => {
         .from("provider_tests")
         .select("*")
         .eq("is_active", true)
-        .ilike("category", `%${category}%`)
+        .or(
+          `canonical_category.ilike.%${category}%,category.ilike.%${category.replace(/-/g, " ")}%`
+        )
         .order("price", { ascending: true });
 
       if (error) {

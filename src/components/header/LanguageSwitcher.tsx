@@ -24,7 +24,7 @@ const languages = [
   { code: 'ja', name: '日本語', flag: '🇯🇵' },
 ];
 
-export const LanguageSwitcher = () => {
+export const LanguageSwitcher = ({ variant = "chip" }: { variant?: "chip" | "glass" } = {}) => {
   const { i18n, t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -47,14 +47,26 @@ export const LanguageSwitcher = () => {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="!h-9 !w-9 !min-h-0 !p-0 text-secondary hover:text-secondary-foreground hover:bg-secondary border-2 border-secondary rounded-lg transition-colors flex-shrink-0"
-          aria-label={t('language.selectLanguage', 'Select language')}
-        >
-          <span className="text-sm leading-none">{currentLanguage.flag}</span>
-        </Button>
+        {variant === "glass" ? (
+          <button
+            type="button"
+            aria-label={t('language.selectLanguage', 'Select language')}
+            className="p-1.5 rounded-full hover:bg-white transition-colors flex items-center justify-center flex-shrink-0"
+          >
+            <span className="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1 bg-white/70 rounded-[3px] shadow-sm text-[16px] leading-none">
+              {currentLanguage.flag}
+            </span>
+          </button>
+        ) : (
+          <Button
+            variant="ghost"
+            size="sm"
+            className="!h-9 !w-9 !min-h-0 !p-0 text-secondary hover:text-secondary-foreground hover:bg-secondary border-2 border-secondary rounded-lg transition-colors flex-shrink-0"
+            aria-label={t('language.selectLanguage', 'Select language')}
+          >
+            <span className="text-sm leading-none">{currentLanguage.flag}</span>
+          </Button>
+        )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56 bg-background z-[100] shadow-xl border-2">
         <div className="px-3 py-2">

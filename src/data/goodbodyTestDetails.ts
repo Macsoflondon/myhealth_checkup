@@ -4,6 +4,12 @@
  * biomarkers, preparation instructions, and booking URLs.
  */
 
+export interface GoodbodyCollectionOption {
+  method: string;
+  price: number;
+  note?: string;
+}
+
 export interface GoodbodyTestDetail {
   slug: string;
   name: string;
@@ -18,6 +24,8 @@ export interface GoodbodyTestDetail {
   category: string;
   goodbodyUrl: string;
   price: number;
+  /** Optional per-collection-method pricing tiers shown in the modal. */
+  collectionOptions?: GoodbodyCollectionOption[];
 }
 
 export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
@@ -37,7 +45,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Fasting for 8-12 hours recommended. Water is permitted.",
     sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
+    turnaround: "4-6 working days",
     category: "Vitamins & Nutrition",
     goodbodyUrl: "https://goodbodyclinic.com/products/advanced-vitamins-blood-test",
     price: 649
@@ -58,7 +66,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Fasting for 8-12 hours recommended. Take blood sample before 10am for accurate hormone levels.",
     sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
+    turnaround: "4-6 working days",
     category: "General Health",
     goodbodyUrl: "https://goodbodyclinic.com/products/advanced-well-man-blood-test",
     price: 175
@@ -67,20 +75,20 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     slug: "advanced-well-woman",
     name: "Advanced Well Woman",
     headline: "Complete Female Health Assessment",
-    description: "A comprehensive health check designed specifically for women, covering hormones, thyroid function, iron levels, vitamins, and key organ function markers.",
-    detailedDescription: "The Advanced Well Woman test provides a thorough overview of your health with over 50 biomarkers analysed. From hormone balance to cardiovascular risk, this test helps identify potential health issues before they become serious. It's particularly valuable for women experiencing symptoms like fatigue, weight changes, or mood fluctuations.",
-    biomarkers: ["Full Blood Count", "Liver Function", "Kidney Function", "Lipid Profile", "HbA1c", "Oestradiol", "FSH", "LH", "Thyroid Function", "Iron Studies", "Vitamin D", "Vitamin B12", "Folate", "Ferritin"],
+    description: "A comprehensive blood test for women evaluating hormonal balance, thyroid function, cholesterol, iron and key vitamins to give a complete picture of female health.",
+    detailedDescription: "This in-depth panel assesses the biomarkers most relevant to women's health — including reproductive hormones, thyroid markers, full blood count, liver and kidney function, lipid profile and vitamin status — supporting informed decisions about wellbeing, hormonal changes and longer-term health.",
+    biomarkers: ["Full Blood Count", "Liver Function", "Kidney Function", "Lipid Profile", "HbA1c", "Oestradiol", "FSH", "LH", "Thyroid Function", "Iron Studies", "Vitamin D", "Vitamin B12", "Folate"],
     whoShouldTake: [
       "Women over 35 seeking a comprehensive health check",
-      "Those experiencing hormonal symptoms or irregularities",
+      "Those experiencing hormonal symptoms or menstrual irregularities",
       "Women with a family history of thyroid disease or diabetes",
-      "Anyone wanting to understand their fertility status",
+      "Anyone wanting to understand their overall health status",
       "Women experiencing fatigue, weight changes, or mood swings"
     ],
-    preparation: "Fasting for 8-12 hours recommended. For accurate hormone results, take blood sample on day 2-5 of menstrual cycle if possible.",
+    preparation: "Fasting for 8-12 hours recommended. Take blood sample in the morning for accurate hormone levels; results may vary across the menstrual cycle.",
     sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
-    category: "General Health",
+    turnaround: "4-6 working days",
+    category: "Women's Health",
     goodbodyUrl: "https://goodbodyclinic.com/products/advanced-well-woman-blood-test",
     price: 175
   },
@@ -100,7 +108,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Fasting for 8-12 hours recommended for accurate iron studies.",
     sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
+    turnaround: "4-6 working days",
     category: "Haematology",
     goodbodyUrl: "https://goodbodyclinic.com/products/anaemia-blood-test",
     price: 119
@@ -121,7 +129,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "No fasting required. Can be taken at any point in your menstrual cycle.",
     sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
+    turnaround: "4-6 working days",
     category: "Fertility",
     goodbodyUrl: "https://goodbodyclinic.com/products/anti-mullerian-hormone-amh-blood-test",
     price: 109
@@ -142,7 +150,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "No fasting required.",
     sampleType: "Venous blood sample",
-    turnaround: "3-5 working days",
+    turnaround: "7-9 working days",
     category: "Autoimmune",
     goodbodyUrl: "https://goodbodyclinic.com/products/autoimmune-disease-blood-test",
     price: 229
@@ -163,7 +171,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "No fasting required.",
     sampleType: "Venous blood sample",
-    turnaround: "1-2 working days",
+    turnaround: "3-4 working days",
     category: "Haematology",
     goodbodyUrl: "https://goodbodyclinic.com/products/blood-group-blood-test",
     price: 109
@@ -184,7 +192,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Fasting for 10-14 hours recommended for accurate lipid results.",
     sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
+    turnaround: "4-6 working days",
     category: "Heart & Cardiovascular",
     goodbodyUrl: "https://goodbodyclinic.com/products/cardiac-risk-blood-test",
     price: 99
@@ -205,7 +213,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Fasting for 10-14 hours recommended for accurate results.",
     sampleType: "Venous blood sample",
-    turnaround: "1-2 working days",
+    turnaround: "3-4 working days",
     category: "Cholesterol & Lipids",
     goodbodyUrl: "https://goodbodyclinic.com/products/cholesterol-blood-test",
     price: 79
@@ -226,7 +234,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "You must be eating gluten for at least 6 weeks before the test for accurate results.",
     sampleType: "Venous blood sample",
-    turnaround: "3-5 working days",
+    turnaround: "7-9 working days",
     category: "Autoimmune",
     goodbodyUrl: "https://goodbodyclinic.com/products/coeliac-disease-blood-test",
     price: 179
@@ -247,7 +255,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "No fasting required. Antihistamines do not affect results.",
     sampleType: "Venous blood sample",
-    turnaround: "5-7 working days",
+    turnaround: "7-9 working days",
     category: "Allergy",
     goodbodyUrl: "https://goodbodyclinic.com/products/complete-allergy-blood-test",
     price: 399
@@ -268,7 +276,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Fasting for 10-14 hours recommended. Take blood sample in the morning for accurate hormone levels.",
     sampleType: "Venous blood sample",
-    turnaround: "3-5 working days",
+    turnaround: "7-9 working days",
     category: "General Health",
     goodbodyUrl: "https://goodbodyclinic.com/products/complete-wellness-blood-test",
     price: 249
@@ -289,7 +297,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Blood sample must be taken between 8-10am for accurate results. Avoid strenuous exercise and stress before the test.",
     sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
+    turnaround: "4-6 working days",
     category: "Hormones",
     goodbodyUrl: "https://goodbodyclinic.com/products/cortisol-blood-test",
     price: 16
@@ -310,7 +318,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Fasting for 8-12 hours required for accurate fasting glucose results.",
     sampleType: "Venous blood sample",
-    turnaround: "1-2 working days",
+    turnaround: "3-4 working days",
     category: "Diabetes",
     goodbodyUrl: "https://goodbodyclinic.com/products/diabetes-blood-test",
     price: 79
@@ -331,7 +339,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Fasting for 10-14 hours recommended. For hormone accuracy, test on day 2-5 of menstrual cycle if applicable.",
     sampleType: "Venous blood sample",
-    turnaround: "3-5 working days",
+    turnaround: "7-9 working days",
     category: "General Health",
     goodbodyUrl: "https://goodbodyclinic.com/products/enhanced-well-woman-rachels-test",
     price: 175
@@ -352,7 +360,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Fasting for 8-12 hours recommended. Blood sample should be taken between 8-10am for accurate testosterone levels.",
     sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
+    turnaround: "4-6 working days",
     category: "Men's Health",
     goodbodyUrl: "https://goodbodyclinic.com/products/erectile-dysfunction-blood-test",
     price: 11
@@ -373,7 +381,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "For best results, test on day 2-5 of your menstrual cycle (FSH, LH, Oestradiol) or day 21 (Progesterone). Discuss timing with your GP if unsure.",
     sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
+    turnaround: "4-6 working days",
     category: "Women's Health",
     goodbodyUrl: "https://goodbodyclinic.com/products/female-hormone-fertility-blood-test",
     price: 119
@@ -394,7 +402,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "No fasting required.",
     sampleType: "Venous blood sample",
-    turnaround: "1-2 working days",
+    turnaround: "3-4 working days",
     category: "Haematology",
     goodbodyUrl: "https://goodbodyclinic.com/products/full-blood-count-blood-test",
     price: 69
@@ -415,7 +423,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "No fasting required.",
     sampleType: "Venous blood sample",
-    turnaround: "3-5 working days",
+    turnaround: "7-9 working days",
     category: "Infectious Disease",
     goodbodyUrl: "https://goodbodyclinic.com/products/hepatitis-screening-blood-test",
     price: 129
@@ -436,7 +444,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Fasting for 8-12 hours recommended for accurate results.",
     sampleType: "Venous blood sample",
-    turnaround: "1-2 working days",
+    turnaround: "3-4 working days",
     category: "Iron Studies",
     goodbodyUrl: "https://goodbodyclinic.com/products/iron-blood-test",
     price: 79
@@ -457,7 +465,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "No fasting required. Stay well hydrated.",
     sampleType: "Venous blood sample",
-    turnaround: "1-2 working days",
+    turnaround: "3-4 working days",
     category: "Renal",
     goodbodyUrl: "https://goodbodyclinic.com/products/kidney-function-blood-test",
     price: 79
@@ -478,31 +486,43 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Fasting for 8-12 hours recommended. Avoid alcohol for 24 hours before the test.",
     sampleType: "Venous blood sample",
-    turnaround: "1-2 working days",
+    turnaround: "3-4 working days",
     category: "Liver",
     goodbodyUrl: "https://goodbodyclinic.com/products/liver-function-blood-test",
     price: 79
   },
   "male-hormone-fertility": {
     slug: "male-hormone-fertility",
-    name: "Male Hormone & Fertility",
+    name: "Male Hormone and Fertility Blood Test",
     headline: "Complete Male Hormone Panel",
-    description: "A comprehensive male hormone test measuring testosterone, FSH, LH, and other key hormones affecting fertility and wellbeing.",
+    description: "Checks the 6 key male hormones that regulate fertility, mood, energy, libido and muscle development.",
     detailedDescription: "This panel measures the key hormones that regulate male fertility and overall wellbeing. Low testosterone can cause symptoms like fatigue, low mood, and reduced libido, while hormone imbalances can affect fertility. This test provides valuable insights for men concerned about their hormonal health.",
-    biomarkers: ["Testosterone", "Free Testosterone", "SHBG", "FSH", "LH", "Prolactin", "Oestradiol"],
+    biomarkers: [
+      "Follicular Stimulating Hormone (FSH)",
+      "Free Androgen Index",
+      "Luteinizing Hormone (LH)",
+      "Prolactin",
+      "Sex Hormone Binding Globulin (SHBG)",
+      "Testosterone",
+    ],
     whoShouldTake: [
       "Men trying to conceive",
       "Those with symptoms of low testosterone",
       "Men experiencing fertility issues",
       "Anyone with low energy or reduced libido",
-      "Men wanting to optimise hormonal health"
+      "Men wanting to optimise hormonal health",
     ],
     preparation: "Blood sample must be taken between 8-10am for accurate testosterone levels.",
-    sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
+    sampleType: "Venous or finger-prick blood sample",
+    turnaround: "4-6 working days",
     category: "Men's Health",
-    goodbodyUrl: "https://goodbodyclinic.com/products/male-hormone-fertility-blood-test",
-    price: 79
+    goodbodyUrl: "https://goodbodyclinic.com/products/male-hormone-and-fertility-blood-test",
+    price: 79,
+    collectionOptions: [
+      { method: "At-home finger-prick kit", price: 79 },
+      { method: "In-clinic venous draw", price: 109 },
+      { method: "Home nurse visit", price: 129 },
+    ],
   },
   "menopause": {
     slug: "menopause",
@@ -520,7 +540,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "No fasting required. If still menstruating, test on day 2-5 of cycle for most accurate results.",
     sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
+    turnaround: "4-6 working days",
     category: "Women's Health",
     goodbodyUrl: "https://goodbodyclinic.com/products/menopause-blood-test",
     price: 119
@@ -541,7 +561,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Fasting for 8-12 hours required. Test on day 2-5 of menstrual cycle if possible.",
     sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
+    turnaround: "4-6 working days",
     category: "Women's Health",
     goodbodyUrl: "https://goodbodyclinic.com/products/polycystic-ovary-syndrome-pcos-blood-test",
     price: 129
@@ -562,7 +582,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "No fasting required.",
     sampleType: "Venous blood sample",
-    turnaround: "1-2 working days",
+    turnaround: "3-4 working days",
     category: "Women's Health",
     goodbodyUrl: "https://goodbodyclinic.com/products/pregnancy-blood-test",
     price: 79
@@ -583,7 +603,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Avoid ejaculation for 48 hours before the test. Avoid vigorous exercise and cycling for 48 hours. Do not test if you have a urinary infection.",
     sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
+    turnaround: "4-6 working days",
     category: "Men's Health",
     goodbodyUrl: "https://goodbodyclinic.com/products/prostate-psa-blood-test",
     price: 119
@@ -604,7 +624,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "No fasting required.",
     sampleType: "Venous blood sample",
-    turnaround: "3-5 working days",
+    turnaround: "7-9 working days",
     category: "Digestive Health",
     goodbodyUrl: "https://goodbodyclinic.com/products/helicobacter-pylori-blood-test",
     price: 79
@@ -625,7 +645,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Avoid intense exercise for 48 hours before the test. Fasting for 8-12 hours recommended.",
     sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
+    turnaround: "4-6 working days",
     category: "Sports Performance",
     goodbodyUrl: "https://goodbodyclinic.com/products/sports-fitness-blood-test",
     price: 199
@@ -646,7 +666,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Blood sample must be taken between 8-10am for accurate results.",
     sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
+    turnaround: "4-6 working days",
     category: "Hormones",
     goodbodyUrl: "https://goodbodyclinic.com/products/testosterone-blood-test",
     price: 79
@@ -667,7 +687,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "No fasting required. If on thyroid medication, take blood before your morning dose.",
     sampleType: "Venous blood sample",
-    turnaround: "1-2 working days",
+    turnaround: "3-4 working days",
     category: "Thyroid",
     goodbodyUrl: "https://goodbodyclinic.com/products/thyroid-function-blood-test",
     price: 79
@@ -688,7 +708,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "No fasting required. If on thyroid medication, take blood before your morning dose.",
     sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
+    turnaround: "4-6 working days",
     category: "Thyroid",
     goodbodyUrl: "https://goodbodyclinic.com/products/thyroid-with-antibodies-blood-test",
     price: 119
@@ -709,7 +729,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "Fasting for 8-12 hours recommended.",
     sampleType: "Venous blood sample",
-    turnaround: "2-3 working days",
+    turnaround: "4-6 working days",
     category: "General Health",
     goodbodyUrl: "https://goodbodyclinic.com/products/tiredness-fatigue-blood-test",
     price: 149
@@ -730,7 +750,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "No fasting required. Avoid supplements containing trace minerals for 24 hours before the test.",
     sampleType: "Venous blood sample",
-    turnaround: "5-7 working days",
+    turnaround: "7-9 working days",
     category: "Vitamins & Nutrition",
     goodbodyUrl: "https://goodbodyclinic.com/products/trace-metal-blood-test",
     price: 199
@@ -751,7 +771,7 @@ export const goodbodyTestDetails: Record<string, GoodbodyTestDetail> = {
     ],
     preparation: "No fasting required.",
     sampleType: "Venous blood sample",
-    turnaround: "1-2 working days",
+    turnaround: "3-4 working days",
     category: "Vitamins & Nutrition",
     goodbodyUrl: "https://goodbodyclinic.com/products/vitamins-blood-test",
     price: 99

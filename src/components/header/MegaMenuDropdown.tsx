@@ -2,7 +2,7 @@ import React, { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ChevronDown, Search, X } from "lucide-react";
 import { getCategoryPinColor } from "@/data/categoryColors";
-import { GoodbodyTest } from "@/data/goodbodyTests";
+import type { GoodbodyTest } from "@/data/goodbodyTests";
 import { useDropdownAccessibility } from "@/hooks/useDropdownAccessibility";
 import { PopularTest } from "@/hooks/usePopularTestsFromDatabase";
 import { formatBiomarkerCount } from "@/utils/formatBiomarkers";
@@ -151,7 +151,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                 const content = (
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-pink-600 dark:group-hover:text-pink-500 transition-colors mb-1">
+                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-brand-pink dark:group-hover:text-brand-pink transition-colors mb-1">
                         {test.test_name}
                       </h3>
                       <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
@@ -208,7 +208,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                 const content = (
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-pink-600 dark:group-hover:text-pink-500 transition-colors mb-1">
+                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-brand-pink dark:group-hover:text-brand-pink transition-colors mb-1">
                         {test.name}
                       </h3>
                       <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 mb-2">
@@ -290,7 +290,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
         <div className="mt-5 pt-4 border-t border-gray-200 dark:border-gray-700">
           <Link
             to={itemPath}
-            className="inline-flex items-center text-sm text-pink-600 hover:text-pink-700 dark:text-pink-500 dark:hover:text-pink-400 font-semibold transition-colors group"
+            className="inline-flex items-center text-sm text-brand-pink hover:text-brand-pink dark:text-brand-pink dark:hover:text-brand-pink font-semibold transition-colors group"
             onClick={handleItemClick}
           >
             View all {itemName.toLowerCase()}

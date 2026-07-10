@@ -11,7 +11,7 @@ import PageHeading from "@/components/ui/page-heading";
 
 const POPULAR_DESTINATIONS = [
   { label: "Compare blood tests", href: "/compare", icon: FlaskConical },
-  { label: "Find a clinic", href: "/find-clinic", icon: Compass },
+  
   { label: "Compare by symptom", href: "/compare/symptoms", icon: Search },
   { label: "Compare by goal", href: "/compare/goals", icon: Search },
   { label: "How it works", href: "/how-it-works", icon: Home },
@@ -19,12 +19,12 @@ const POPULAR_DESTINATIONS = [
 ];
 
 const POPULAR_CATEGORIES = [
-  { label: "General Health", href: "/category/general-health" },
-  { label: "Heart Health", href: "/category/heart-health" },
-  { label: "Hormones", href: "/category/hormones" },
-  { label: "Thyroid", href: "/category/thyroid" },
-  { label: "Diabetes", href: "/category/diabetes" },
-  { label: "Vitamins", href: "/category/vitamins" },
+  { label: "General Health", href: "/test/general-health" },
+  { label: "Heart Health", href: "/tests/heart" },
+  { label: "Hormones", href: "/hormones" },
+  { label: "Thyroid", href: "/thyroid" },
+  { label: "Diabetes", href: "/tests/diabetes" },
+  { label: "Vitamins", href: "/tests/vitamins" },
 ];
 
 const NotFound = () => {

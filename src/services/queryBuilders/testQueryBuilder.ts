@@ -1,36 +1,69 @@
 import { supabase } from "@/integrations/supabase/client";
 import { getSupportedProviderIds } from "@/constants/providers";
-import { getCategorySearchTerms } from "@/constants/categories";
+import {
+  getCategorySearchTerms,
+  getCanonicalCategoriesForSlug,
+  getNameFilterForSlug,
+} from "@/constants/categories";
+
+const COMPARE_SELECT =
+  "id, test_name, provider_id, category, canonical_category, price, description, is_active, image_url, url, biomarkers_list, biomarker_count, created_at, updated_at";
+
+const DEFAULT_LIMIT = 600;
+
+const escapeIlike = (s: string) => s.replace(/[%,()]/g, ' ').trim();
 
 /**
  * Query builder for test-related database queries
  */
 export class TestQueryBuilder {
   /**
-   * Build query for tests by category
+   * Build query for tests by category. Honours, in order:
+   *   1. SLUG_TO_NAME_FILTER (sub-categories like menopause, female-fertility)
+   *   2. SLUG_TO_CANONICAL_CATEGORIES (1:1 canonical_category match)
+   *   3. ilike fallback across category / name / description
    */
   static buildCategoryQuery(category: string, providers: string[] = ['all']) {
     let query = supabase
       .from('provider_tests')
-      .select('id, test_name, provider_id, category, price, description, is_active, image_url, url, created_at, updated_at')
+      .select(COMPARE_SELECT)
       .eq('is_active', true)
       .order('price', { ascending: true })
-      .limit(50);
+      .limit(DEFAULT_LIMIT);
 
-    // Apply category filter
-    if (category !== 'all') {
-      const categorySearchTerms = getCategorySearchTerms(category);
-      const orConditions = [
-        `category.ilike.%${category}%`,
-        `test_name.ilike.%${category}%`,
-        ...categorySearchTerms.map(term => `test_name.ilike.%${term}%`),
-        ...categorySearchTerms.map(term => `description.ilike.%${term}%`)
-      ].join(',');
-      
-      query = query.or(orConditions);
+    if (category && category !== 'all') {
+      const nameFilter = getNameFilterForSlug(category);
+      if (nameFilter) {
+        if (nameFilter.canonicals && nameFilter.canonicals.length > 0) {
+          query = query.in('canonical_category', nameFilter.canonicals);
+        }
+        const orConditions = nameFilter.includeNames
+          .map(n => `test_name.ilike.%${escapeIlike(n)}%`)
+          .join(',');
+        query = query.or(orConditions);
+        if (nameFilter.excludeNames) {
+          for (const ex of nameFilter.excludeNames) {
+            query = query.not('test_name', 'ilike', `%${escapeIlike(ex)}%`);
+          }
+        }
+      } else {
+        const canonicals = getCanonicalCategoriesForSlug(category);
+        if (canonicals && canonicals.length > 0) {
+          query = query.in('canonical_category', canonicals);
+        } else {
+          const categorySearchTerms = getCategorySearchTerms(category);
+          const orConditions = [
+            `category.ilike.%${category}%`,
+            `canonical_category.ilike.%${category}%`,
+            `test_name.ilike.%${category}%`,
+            ...categorySearchTerms.map(term => `test_name.ilike.%${term}%`),
+            ...categorySearchTerms.map(term => `description.ilike.%${term}%`),
+          ].join(',');
+          query = query.or(orConditions);
+        }
+      }
     }
 
-    // Apply provider filter
     if (!providers.includes('all')) {
       query = query.in('provider_id', providers);
     } else {
@@ -40,23 +73,45 @@ export class TestQueryBuilder {
     return query;
   }
 
+
   /**
-   * Build search query for tests
+   * Build search query for tests. Scopes to the active category (if any)
+   * and searches across name, description, category, canonical_category,
+   * and biomarkers_list.
    */
-  static buildSearchQuery(searchTerm: string, providers: string[] = ['all']) {
+  static buildSearchQuery(
+    searchTerm: string,
+    providers: string[] = ['all'],
+    category?: string,
+  ) {
     if (!searchTerm.trim()) {
       throw new Error('Search term cannot be empty');
     }
 
+    const safeTerm = searchTerm.replace(/[(),]/g, ' ').trim();
+
     let query = supabase
       .from('provider_tests')
-      .select('id, test_name, provider_id, category, price, description, is_active, image_url, url, created_at, updated_at')
+      .select(COMPARE_SELECT)
       .eq('is_active', true)
-      .or(`test_name.ilike.%${searchTerm}%, description.ilike.%${searchTerm}%, category.ilike.%${searchTerm}%`)
+      .or(
+        [
+          `test_name.ilike.%${safeTerm}%`,
+          `description.ilike.%${safeTerm}%`,
+          `category.ilike.%${safeTerm}%`,
+          `canonical_category.ilike.%${safeTerm}%`,
+        ].join(',')
+      )
       .order('price', { ascending: true })
-      .limit(50);
+      .limit(DEFAULT_LIMIT);
 
-    // Apply provider filter
+    if (category && category !== 'all') {
+      const canonicals = getCanonicalCategoriesForSlug(category);
+      if (canonicals && canonicals.length > 0) {
+        query = query.in('canonical_category', canonicals);
+      }
+    }
+
     if (!providers.includes('all')) {
       query = query.in('provider_id', providers);
     } else {
@@ -72,7 +127,7 @@ export class TestQueryBuilder {
   static buildCategoriesQuery() {
     return supabase
       .from('provider_tests')
-      .select('category')
+      .select('category, canonical_category')
       .eq('is_active', true)
       .in('provider_id', getSupportedProviderIds());
   }

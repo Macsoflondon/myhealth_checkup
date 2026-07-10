@@ -9,6 +9,7 @@ import { Save, Loader2, User, MapPin, Phone, AlertCircle } from "lucide-react";
 import { usersApi, type UserProfile } from "@/api";
 import { logger } from "@/lib/logger";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import ChangePasswordCard from "./ChangePasswordCard";
 
 const ProfileSettings = () => {
   const { user } = useAuth();
@@ -289,6 +290,8 @@ const ProfileSettings = () => {
           )}
         </Button>
       </div>
+
+      <ChangePasswordCard />
     </div>
   );
 };

@@ -31,15 +31,15 @@ const ClinicAndHelpSection = () => {
     <div>
       {/* Here to Help Section */}
       <section className="py-8 sm:py-10 md:py-12 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
+        <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-8 xl:px-16">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
               {/* Left Column */}
               <div>
-                <div className="flex items-center gap-2 mb-4 justify-center lg:justify-start">
-                  <div className="h-px w-6 bg-brand-pink" />
-                  <span className="text-brand-pink text-xs font-semibold uppercase tracking-wider">Here to Help</span>
-                  <div className="h-px w-6 bg-brand-pink" />
+                <div className="flex items-center gap-3 mb-4 justify-center lg:justify-start">
+                  <div className="h-px w-8 sm:w-12 bg-brand-pink" />
+                  <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">Here to Help</span>
+                  <div className="h-px w-8 sm:w-12 bg-brand-pink" />
                 </div>
 
                 <SectionHeading
@@ -59,7 +59,7 @@ const ClinicAndHelpSection = () => {
                   <Link
                     key={index}
                     to={resource.link}
-                    className="relative flex items-start gap-4 sm:gap-5 bg-gray-50 rounded-xl sm:rounded-2xl p-5 sm:p-6 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group border border-gray-100 hover:border-brand-turquoise/30 overflow-hidden"
+                    className="relative flex items-start gap-4 sm:gap-5 bg-[#F7F7F8] rounded-xl sm:rounded-2xl p-5 sm:p-6 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group border border-gray-100 hover:border-brand-turquoise/30 overflow-hidden"
                   >
                     <div className={`absolute top-0 left-6 right-6 h-[2px] rounded-b-full ${
                       resource.accent === "turquoise" ? "bg-brand-turquoise" : "bg-brand-pink"

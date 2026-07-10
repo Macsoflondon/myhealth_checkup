@@ -12,6 +12,7 @@ import Footer from "@/components/layout/Footer";
 import { PasswordStrengthIndicator } from "@/components/auth/PasswordStrengthIndicator";
 import { validatePassword } from "@/lib/passwordValidation";
 import { AlertCircle, CheckCircle } from "lucide-react";
+import { Helmet } from "react-helmet-async";
 
 const ResetPassword = () => {
   const { user } = useAuth();
@@ -96,9 +97,9 @@ const ResetPassword = () => {
     return (
       <div className="min-h-screen flex flex-col">
         <Header />
-        <main className="flex-grow bg-gray-50 flex items-center justify-center py-12 px-4">
-          <div className="max-w-md w-full bg-white rounded-lg drop-shadow-md p-8 text-center">
-            <p className="text-[#081129]">Verifying reset link...</p>
+        <main className="flex-grow flex items-center justify-center py-12 px-4 text-primary bg-tertiary">
+          <div className="max-w-md w-full text-center">
+            <p className="text-[#22c0d4]">Verifying reset link...</p>
           </div>
         </main>
         <Footer />
@@ -108,14 +109,18 @@ const ResetPassword = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Helmet>
+        <title>Reset Password | myhealth checkup</title>
+        <meta name="robots" content="noindex, follow" />
+      </Helmet>
       <Header />
-      <main className="flex-grow bg-gray-50 flex items-center justify-center py-12 px-4">
-        <div className="max-w-md w-full bg-white rounded-lg drop-shadow-md p-8">
+      <main className="flex-grow flex items-center justify-center py-12 px-4 text-primary bg-tertiary">
+        <div className="max-w-md w-full">
           <h2 className="text-2xl text-center mb-6 text-[#22c0d4] font-medium">
             Set New Password
           </h2>
           
-          <p className="text-sm text-[#081129] text-center mb-6">
+          <p className="text-sm text-[#22c0d4] text-center mb-6">
             Please enter your new password below.
           </p>
 
@@ -184,7 +189,7 @@ const ResetPassword = () => {
               <button
                 type="button"
                 onClick={() => navigate("/auth")}
-                className="hover:underline text-center text-base text-[#081129] font-medium"
+                className="hover:underline text-center text-base text-[#22c0d4] font-medium"
               >
                 Back to Sign In
               </button>

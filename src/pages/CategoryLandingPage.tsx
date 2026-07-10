@@ -159,6 +159,19 @@ const CategoryLandingPage: React.FC = () => {
               }
             })}
           </script>
+          {content.faqs && content.faqs.length > 0 && (
+            <script type="application/ld+json">
+              {JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": content.faqs.map((faq) => ({
+                  "@type": "Question",
+                  "name": faq.question,
+                  "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
+                }))
+              })}
+            </script>
+          )}
         </Helmet>
 
         <MainLayout>
@@ -319,22 +332,22 @@ const CategoryLandingPage: React.FC = () => {
                 Compare {content.name.toLowerCase()} from trusted UK providers. 
                 All laboratories are UKAS accredited with results reviewed by qualified professionals.
               </p>
-              <div className="flex flex-wrap gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
                 <Button 
                   size="lg"
                   variant="secondary"
-                  className="gap-2"
+                  className="w-full sm:w-auto gap-2 whitespace-nowrap"
                   asChild
                 >
                   <Link to={`/compare?category=${content.slug}`}>
-                    Compare {content.name}
-                    <ArrowRight className="h-4 w-4" />
+                    <span className="truncate">Compare {content.name}</span>
+                    <ArrowRight className="h-4 w-4 shrink-0" />
                   </Link>
                 </Button>
                 <Button 
                   size="lg"
                   variant="outline"
-                  className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+                  className="w-full sm:w-auto bg-white/10 border-white/30 text-white hover:bg-white/20 whitespace-nowrap"
                   asChild
                 >
                   <Link to="/how-it-works">

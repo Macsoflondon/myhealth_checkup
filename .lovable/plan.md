@@ -1,46 +1,35 @@
-## Goal
-Add tasteful, varied scroll-triggered animations to the landing page (`src/pages/Index.tsx`) sections. No new libraries — reuse the existing `ScrollFadeIn` component and Tailwind animation utilities (`fade-in`, `scale-in`, `slide-in-right`, `hover-scale`) already defined in the project.
+## Category header benefits — mobile redesign (v2 in brand)
 
-## Approach
-Wrap each below-the-fold landing section in `ScrollFadeIn` with **staggered delays** and **varied directions/effects** so the page feels alive without being noisy. The two tickers (PromoTicker, TestCategoryTicker) are already animated and will be left alone.
+Adopt the selected "compact badge row" direction on mobile for the three-benefit row in `CategoryStandardHero`, but pull it fully onto our brand tokens/typography instead of the prototype's mono-pink + Montserrat-only look.
 
-## Animation map (Index.tsx sections)
+### Scope
+- File: `src/components/category/CategoryStandardHero.tsx` (benefits row only, lines ~94–140).
+- Applies globally to every category page (Cancer Screening, Women's Health, Hormones, etc.) via `CategoryPageLayout`.
+- No changes to page title, pill label, description text, filters, or test cards.
+- Desktop (`sm:` and up) layout stays as-is — this is a mobile-only refinement.
 
-| Section | Effect | Delay |
-|---|---|---|
-| `MissionSection` | Fade + rise | 0ms |
-| `JourneySimplified` | Fade + rise | 100ms |
-| `PartnersGrid` | Scale-in (subtle pop) | 0ms |
-| `StartJourneySection` | Fade + rise | 150ms |
-| Gradient divider | Slide-in from left (animated width) | 0ms |
-| `PartnerShowcaseGrid` | Fade + rise | 100ms |
-| `TestimonialCarousel` | Fade only (no translate — carousel already moves) | 0ms |
-| `ClinicAndHelpSection` | Fade + rise | 100ms |
-| `AccreditedProvidersBar` | Fade only | 0ms |
-| `CallToAction` | Scale-in (emphasis) | 0ms |
-| `TrustPlatformSection` | Fade + rise | 100ms |
-| `ExpertQuotes` | Fade + rise | 150ms |
+### Design
+Mobile (`<sm`): three-column compact row (replaces current stacked 1-col list).
 
-## Implementation details
+Per benefit:
+- Circular icon chip, 56px, `bg-gradient-to-b from-white/10 to-transparent`, hairline border `border-white/10`, backdrop-blur.
+- Icon: brand turquoise `#22c0d4` stroke, 24px, `stroke-width` 1.25 (thin/premium).
+- Two-line label using brand typography:
+  - Line 1 (Montserrat 800, tight tracking, uppercase, 10px, pearl `#F5F5F5`).
+  - Line 2 (Montserrat 600, uppercase, 10px, `text-white/55`) — e.g. `Early / Detection`.
+- Description copy hidden on mobile (`hidden sm:block`) — cleaner, more premium.
+- Ambient glow: soft pink `#e70d69`/10 top-left, turquoise `#22c0d4`/8 bottom-right blurs on the hero container (behind row).
+- Bottom accent: 1px turquoise-to-transparent hairline under the row.
 
-1. **Extend `ScrollFadeIn`** with an optional `variant` prop: `"rise" | "scale" | "fade"` so we can vary effects without creating multiple components. Default stays `"rise"` (current behaviour) — fully backward-compatible.
-2. **Edit `src/pages/Index.tsx`** to wrap each lazy section in `<ScrollFadeIn variant="..." delay={...}>`. Keep `Suspense` boundary intact.
-3. **Hero & TestCategoryTicker**: untouched — above-the-fold needs to render instantly; ticker already animates.
-4. **Gradient divider**: replace the static `<div>` with a small inline animated variant that scales horizontally on enter (`origin-left scale-x-0 → scale-x-100` over 800ms via the existing Tailwind transition utilities).
-5. **Performance**: `ScrollFadeIn` already uses `IntersectionObserver` and unobserves after first reveal — no perf impact on scroll.
-6. **Accessibility**: Animations are short (≤700ms) and translate distance is small (8px). No flashing. Safe for general use.
+Desktop keeps the existing icon + title + description layout untouched.
 
-## Files to edit
-- `src/components/common/ScrollFadeIn.tsx` — add `variant` prop (rise / scale / fade)
-- `src/pages/Index.tsx` — wrap sections + animate the gradient divider
+### Two-line label derivation
+Split `title` on the last space to get `[primary, secondary]`. Single-word titles (e.g. `PCOS`) render on one line with same styling.
 
-## Out of scope
-- Hero internal animations (already polished)
-- Tickers (already animated)
-- Header / Footer
-- Any other route
+### Verification
+- `bun x tsgo --noEmit` + `bun run build`.
+- Playwright screenshots at 390×844 (mobile) and 1280×800 (desktop) on `/tests/cancer`, `/womens-health`, and one more category — confirm mobile shows compact 3-up row in brand colours, desktop unchanged.
 
-## Verification
-- Visual check in preview at desktop (1537×980) and a mobile viewport
-- Confirm sections fade in once on scroll and don't re-trigger
-- Confirm no layout shift / no console errors
+### Out of scope
+- No changes to `CategoryPageLayout` structure, benefits data model, or per-page `benefits` props.
+- No changes to typography stack or Tailwind config.

@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
+import SponsoredBadge from '@/components/compliance/SponsoredBadge';
 import {
   TrendingUp,
   MapPin,
@@ -38,7 +39,7 @@ const HowWeRank = () => {
           Last reviewed: {new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })} ·
           Reviewed by{' '}
           <Link to="/about/medical-review" className="text-primary underline underline-offset-2">
-            Nathanial Smith, Physician Associate (HCPC PA43353)
+            Nathanial Smith, Registered Healthcare Professional (HCPC reg. PA43353)
           </Link>
         </p>
       </div>
@@ -56,8 +57,8 @@ const HowWeRank = () => {
             <p>
               Comparison and biomarker explainer content is reviewed by a named, registered UK healthcare
               professional. Our current Clinical Reviewer is{' '}
-              <strong className="text-foreground">Nathanial Smith</strong>, a Physician Associate registered with
-              the Health and Care Professions Council under registration number{' '}
+              <strong className="text-foreground">Nathanial Smith</strong>, a Registered Healthcare Professional
+              registered with the Health and Care Professions Council under registration number{' '}
               <Badge variant="secondary" className="font-mono">PA43353</Badge>.
             </p>
             <p>
@@ -245,8 +246,8 @@ const HowWeRank = () => {
             <p>
               We do not accept payment to remove providers, suppress unfavourable information, or promote a
               specific test outcome. If you believe a listing is inaccurate or misleading, please contact us at{' '}
-              <a href="mailto:editorial@myhealthcheckup.co.uk" className="text-primary underline underline-offset-2">
-                editorial@myhealthcheckup.co.uk
+              <a href="mailto:support@myhealthcheckup.co.uk" className="text-primary underline underline-offset-2">
+                support@myhealthcheckup.co.uk
               </a>{' '}
               and we will investigate within five working days.
             </p>
@@ -293,6 +294,26 @@ const HowWeRank = () => {
               affiliate disclosure
             </Link>
             .
+          </p>
+
+          <div className="mt-4 pt-4 border-t border-primary/10">
+            <p className="text-sm text-muted-foreground mb-3">
+              When a placement involves a commercial arrangement we always label it visibly with one of these badges
+              and a tooltip explaining the relationship:
+            </p>
+            <div className="flex flex-wrap items-center gap-2">
+              <SponsoredBadge variant="sponsored" />
+              <SponsoredBadge variant="promoted" />
+              <SponsoredBadge variant="affiliate" />
+            </div>
+          </div>
+
+          <p className="text-sm text-muted-foreground mt-4">
+            Disagree with a ranking, a label, or a listing? Raise it via our{' '}
+            <Link to="/complaints" className="text-primary underline underline-offset-2">
+              feedback &amp; complaints process
+            </Link>{' '}
+            — we acknowledge within 2 business days and respond fully within 10.
           </p>
         </div>
       </div>

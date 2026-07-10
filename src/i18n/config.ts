@@ -1,6 +1,8 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
+import { getFallbackLabel } from './fallbackLabels';
+
 
 // Import translation files
 import enTranslations from '../locales/en.json';
@@ -57,9 +59,21 @@ i18n
   .init({
     resources,
     fallbackLng: 'en',
-    lng: 'en', // Default to GB English (en = en-GB for this platform)
+    // No hard-coded `lng` — let LanguageDetector read from localStorage so
+    // the user's choice persists across reloads.
     supportedLngs: ['en', 'fr', 'es', 'de', 'it', 'pt', 'nl', 'pl', 'ar', 'zh', 'ja'],
     debug: false,
+
+    // When a key is missing from the locale JSON, look it up in the
+    // centralised fallback dictionary before returning the raw key. This
+    // stops English field labels from leaking through when a translation
+    // file is out of date.
+    parseMissingKeyHandler: (key: string) => {
+      const lang = i18n.language || 'en';
+      const fallback = getFallbackLabel(key, lang);
+      return fallback ?? key;
+    },
+
 
     interpolation: {
       escapeValue: false, // React already does escaping

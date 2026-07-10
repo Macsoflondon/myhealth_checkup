@@ -85,13 +85,13 @@ const ConditionsPage = () => {
             subtitle="Specialised testing for specific health conditions and symptoms. Get answers and take control of your health."
           >
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/assisted-test-finder">
-                <Button size="lg" className="bg-[#e70d69] hover:bg-[#e70d69]/90 text-white">
+              <Link to="/assisted-test-finder" className="w-full sm:w-auto">
+                <Button size="lg" className="w-full sm:w-auto bg-[#e70d69] hover:bg-[#e70d69]/90 text-white whitespace-nowrap">
                   Find Your Test
                 </Button>
               </Link>
-              <Link to="/compare">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+              <Link to="/compare" className="w-full sm:w-auto">
+                <Button size="lg" variant="outline" className="w-full sm:w-auto border-white text-white hover:bg-white/10 whitespace-nowrap">
                   Compare All Tests
                 </Button>
               </Link>
@@ -138,8 +138,8 @@ const ConditionsPage = () => {
               <div className="max-w-4xl mx-auto text-center">
                 <h2 className="text-3xl font-bold mb-4 text-[#081129]">Not Sure Which Test You Need?</h2>
                 <p className="text-lg text-muted-foreground mb-8">Use our guided questionnaire to find the perfect test for your symptoms</p>
-                <Link to="/assisted-test-finder">
-                  <Button size="lg" className="bg-[#e70d69] hover:bg-[#e70d69]/90 text-white">Take Our Health Questionnaire</Button>
+                <Link to="/assisted-test-finder" className="inline-block w-full sm:w-auto">
+                  <Button size="lg" className="w-full sm:w-auto bg-[#e70d69] hover:bg-[#e70d69]/90 text-white whitespace-nowrap">Take Our Health Questionnaire</Button>
                 </Link>
               </div>
             </div>

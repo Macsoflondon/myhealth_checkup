@@ -5,7 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 import { Button } from "@/components/ui/button";
-import { Heart, Activity, Shield } from "lucide-react";
+
 import PageHeading from "@/components/ui/page-heading";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { CategoryStandardHero } from "@/components/category/CategoryStandardHero";
@@ -26,7 +26,7 @@ const wellnessCategoryCards = [
     count: 2,
     desc: "Iron levels, ferritin, and anaemia screening",
     icon: "◈",
-    accent: "#e91e8c",
+    accent: "#e70d69",
     tag: "ESSENTIAL",
   },
   {
@@ -89,7 +89,7 @@ const wellnessCategoryCards = [
     count: 2,
     desc: "Antibody screening and autoimmune disease detection",
     icon: "⋈",
-    accent: "#e91e8c",
+    accent: "#e70d69",
     tag: "IMMUNE",
   },
   {
@@ -105,7 +105,7 @@ const wellnessCategoryCards = [
     id: "immunity-tests",
     name: "Immunity Tests",
     count: 2,
-    desc: "Immune system function and defense assessment",
+    desc: "Immune system function and defence assessment",
     icon: "◬",
     accent: "#f0b429",
     tag: "IMMUNE",
@@ -116,7 +116,7 @@ const wellnessCategoryCards = [
     count: 2,
     desc: "Autoimmune condition screening and monitoring",
     icon: "◑",
-    accent: "#e91e8c",
+    accent: "#e70d69",
     tag: "SPECIALIST",
   },
   {
@@ -141,7 +141,7 @@ const wellnessCategoryCards = [
 
 const tagColors: Record<string, string> = {
   PREVENTIVE: "#00d4c8",
-  ESSENTIAL: "#e91e8c",
+  ESSENTIAL: "#e70d69",
   CRITICAL: "#ff4d6d",
   WELLNESS: "#00c896",
   IMMUNE: "#9b59b6",
@@ -199,19 +199,13 @@ const WellnessPage = () => {
       <Header />
 
       <main className="min-h-screen bg-background">
-        <CategoryStandardHero
-          pillLabel="General Wellness"
-          benefits={[
-            { icon: Shield, title: "Early Detection", description: "Identify issues before they become serious" },
-            { icon: Activity, title: "Optimise Performance", description: "Monitor biomarkers to enhance wellbeing" },
-            { icon: Heart, title: "Peace of Mind", description: "Confidence in your health status" },
-          ]}
-        />
+        <CategoryStandardHero pillLabel="General Wellness" />
 
         {/* Browse Tests by Category */}
         <section
           style={{
-            background: "#081129",
+            background: "#ffffff",
+
             padding: "32px 40px 72px",
             position: "relative",
             overflow: "hidden",
@@ -241,9 +235,10 @@ const WellnessPage = () => {
                     style={{
                       padding: "7px 20px",
                       borderRadius: 100,
-                      border: active || isHoveredTag ? `1.5px solid ${color}` : "1.5px solid rgba(255,255,255,0.4)",
-                      background: active || isHoveredTag ? `${color}18` : "rgba(6,11,24,0.3)",
-                      color: active || isHoveredTag ? color : "#ffffff",
+                      border: active || isHoveredTag ? `1.5px solid ${color}` : "1.5px solid rgba(8,17,41,0.2)",
+                      background: active || isHoveredTag ? `${color}18` : "transparent",
+                      color: active || isHoveredTag ? color : "#081129",
+
                       fontSize: 12,
                       fontWeight: 700,
                       letterSpacing: "0.1em",
@@ -472,7 +467,7 @@ const WellnessPage = () => {
                 </h2>
               </div>
               <Link
-                to="/quiz"
+                to="/find-test"
                 className="inline-block whitespace-nowrap text-center"
                 style={{
                   background: "linear-gradient(135deg, #e70d69 0%, #ff4d6d 100%)",
