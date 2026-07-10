@@ -70,9 +70,9 @@ export default function HeroSalesTestCard({ ad }: Props) {
         <div className="p-2 sm:p-4 lg:p-5 flex-1 flex flex-col">
 
           {/* Header */}
-          <div className="flex justify-between items-start mb-3">
-            <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-xl bg-white shadow-sm border border-slate-100 flex items-center justify-center overflow-hidden shrink-0">
+          <div className="flex justify-between items-start mb-2 sm:mb-3">
+            <div className="flex items-center gap-1.5 sm:gap-2.5">
+              <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white shadow-sm border border-slate-100 flex items-center justify-center overflow-hidden shrink-0">
                 {ad.providerLogo ? (
                   <img
                     src={ad.providerLogo}
@@ -82,7 +82,7 @@ export default function HeroSalesTestCard({ ad }: Props) {
                   />
                 ) : null}
               </div>
-              <div className="min-w-0">
+              <div className="min-w-0 hidden sm:block">
                 <p
                   className="text-[10px] font-bold uppercase tracking-[0.16em] truncate"
                   style={{ color: providerColor }}
@@ -105,7 +105,7 @@ export default function HeroSalesTestCard({ ad }: Props) {
               </div>
             </div>
             <span
-              className="text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-[0.14em] text-white shrink-0"
+              className="text-[7px] sm:text-[9px] font-extrabold px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-[0.14em] text-white shrink-0"
               style={{
                 background: PINK,
                 boxShadow: `0 6px 16px ${hexToRgba(PINK, 0.3)}`,
