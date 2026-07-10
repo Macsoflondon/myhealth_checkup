@@ -6,10 +6,10 @@ import "leaflet/dist/leaflet.css";
 import { Loader2 } from "lucide-react";
 import MapErrorBoundary from "@/components/clinic/MapErrorBoundary";
 
-const RMapContainer = MapContainer as any;
-const RTileLayer = TileLayer as any;
-const RMarker = Marker as any;
-const RTooltip = Tooltip as any;
+const RMapContainer = MapContainer as React.ElementType;
+const RTileLayer = TileLayer as React.ElementType;
+const RMarker = Marker as React.ElementType;
+const RTooltip = Tooltip as React.ElementType;
 
 const REGIONS: { name: string; lat: number; lng: number; slug: string }[] = [
   { name: "London", lat: 51.5074, lng: -0.1278, slug: "london" },

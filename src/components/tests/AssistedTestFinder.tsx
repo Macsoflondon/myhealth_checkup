@@ -156,7 +156,7 @@ export const AssistedTestFinder = () => {
   const [results, setResults] = useState<AIResults | null>(null);
   const navigate = useNavigate();
 
-  const currentStepIndex = stepOrder.indexOf(currentStep as any);
+  const currentStepIndex = stepOrder.indexOf(currentStep);
   const progressPercent = currentStepIndex >= 0 ? Math.round(((currentStepIndex + 1) / TOTAL_STEPS) * 100) : 0;
 
   const handleBack = () => {
@@ -164,7 +164,7 @@ export const AssistedTestFinder = () => {
       setCurrentStep('preferences');
       return;
     }
-    const idx = stepOrder.indexOf(currentStep as any);
+    const idx = stepOrder.indexOf(currentStep);
     if (idx > 0) setCurrentStep(stepOrder[idx - 1]);
     else if (idx === 0) setCurrentStep('welcome');
   };
@@ -178,7 +178,7 @@ export const AssistedTestFinder = () => {
   const handleSingleSelect = (field: keyof QuizAnswers, value: string, autoAdvance = true) => {
     setAnswers(prev => ({ ...prev, [field]: value }));
     if (autoAdvance) {
-      const idx = stepOrder.indexOf(currentStep as any);
+      const idx = stepOrder.indexOf(currentStep);
       if (idx < stepOrder.length - 1) {
         setCurrentStep(stepOrder[idx + 1]);
       }
@@ -196,7 +196,7 @@ export const AssistedTestFinder = () => {
   };
 
   const handleNext = () => {
-    const idx = stepOrder.indexOf(currentStep as any);
+    const idx = stepOrder.indexOf(currentStep);
     if (idx < stepOrder.length - 1) {
       setCurrentStep(stepOrder[idx + 1]);
     }

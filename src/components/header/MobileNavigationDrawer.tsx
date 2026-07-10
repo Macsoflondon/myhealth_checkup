@@ -450,7 +450,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                         onClick={handleLinkClick}
                         className={cn(
                           "flex items-center px-4 py-3.5 rounded-xl font-semibold text-base transition-all duration-150 touch-manipulation active:scale-[0.98] min-h-[52px]",
-                          (item as any).highlighted
+                          item.highlighted
                             ? "text-[hsl(var(--primary))] hover:bg-[hsl(var(--primary))]/10 active:bg-[hsl(var(--primary))]/15"
                             : "text-gray-900 hover:bg-gray-50 active:bg-gray-100"
                         )}

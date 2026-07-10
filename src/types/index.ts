@@ -48,7 +48,7 @@ export interface DraggableItem {
 /**
  * Drag handlers interface for drag and drop operations
  */
-export interface DragHandlers<T = any> {
+export interface DragHandlers<T = unknown> {
   onDragStart: (e: React.DragEvent, item: DraggableItem) => void;
   onDragEnd: (e: React.DragEvent) => void;
   onDragOver: (e: React.DragEvent) => void;

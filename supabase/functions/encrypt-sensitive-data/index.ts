@@ -216,7 +216,7 @@ serve(async (req) => {
         result = await decryptField(data);
         break;
 
-      case 'encryptFields':
+      case 'encryptFields': {
         if (typeof data !== 'object' || data === null) {
           return new Response(
             JSON.stringify({ error: 'Data must be an object for encryptFields action' }),
@@ -237,8 +237,9 @@ serve(async (req) => {
         }
         result = encrypted;
         break;
+      }
 
-      case 'decryptFields':
+      case 'decryptFields': {
         if (typeof data !== 'object' || data === null) {
           return new Response(
             JSON.stringify({ error: 'Data must be an object for decryptFields action' }),
@@ -268,6 +269,7 @@ serve(async (req) => {
         }
         result = decrypted;
         break;
+      }
     }
 
     console.log(`Encryption action '${action}' completed for user ${user.id}`);

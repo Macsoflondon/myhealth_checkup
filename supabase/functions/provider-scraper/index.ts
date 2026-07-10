@@ -13,7 +13,7 @@ const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
 // Enhanced provider configurations with real website data
-const providerTestData: Record<string, any[]> = {
+const providerTestData: Record<string, Array<Record<string, unknown>>> = {
   'londonmedicallab': [
     {
       test_name: 'UK Allergy Profile (295 allergens)',
@@ -237,7 +237,7 @@ const providerTestData: Record<string, any[]> = {
 };
 
 // Provider locations data
-const providerLocations: Record<string, any[]> = {
+const providerLocations: Record<string, Array<Record<string, unknown>>> = {
   'londonmedicallab': [
     {
       name: 'London Medical Laboratory - Harley Street',

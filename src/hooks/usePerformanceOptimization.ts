@@ -2,6 +2,15 @@ import { useEffect, useCallback, useRef } from "react";
 import { logger } from "@/lib/logger";
 
 // Enhanced performance optimization hook with mobile-specific optimizations
+interface FirstInputPerformanceEntry extends PerformanceEntry {
+  processingStart: number;
+}
+
+interface LayoutShiftPerformanceEntry extends PerformanceEntry {
+  hadRecentInput: boolean;
+  value: number;
+}
+
 export function usePerformanceOptimization() {
   // Cache mobile detection to avoid repeated reflows
   const isMobileRef = useRef<boolean | null>(null);
@@ -60,7 +69,7 @@ export function usePerformanceOptimization() {
         const fidObserver = new PerformanceObserver((entryList) => {
           const entries = entryList.getEntries();
           entries.forEach(entry => {
-            const fidEntry = entry as any; // Type assertion for FID entry
+            const fidEntry = entry as FirstInputPerformanceEntry;
             logger.debug('FID:', fidEntry.processingStart - fidEntry.startTime);
           });
         });
@@ -70,7 +79,7 @@ export function usePerformanceOptimization() {
         const clsObserver = new PerformanceObserver((entryList) => {
           const entries = entryList.getEntries();
           entries.forEach(entry => {
-            const clsEntry = entry as any; // Type assertion for CLS entry
+            const clsEntry = entry as LayoutShiftPerformanceEntry;
             if (!clsEntry.hadRecentInput) {
               logger.debug('CLS:', clsEntry.value);
             }

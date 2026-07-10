@@ -57,7 +57,8 @@ serve(async (req) => {
 
     function sanitize(val: unknown, maxLen = MAX_STR): string {
       if (typeof val !== "string") return "";
-      return val.slice(0, maxLen).replace(/[\x00-\x1F\x7F]/g, "").trim();
+      // eslint-disable-next-line no-control-regex -- intentionally strips control characters from user input
+  return val.slice(0, maxLen).replace(/[\x00-\x1F\x7F]/g, "").trim();
     }
     function validateEnum(val: unknown, allowed: string[]): string {
       const s = sanitize(val);
@@ -121,7 +122,7 @@ serve(async (req) => {
       };
       const max = budgetMap[budget];
       if (max) {
-        const budgetFiltered = filtered.filter((t: any) => t.price && t.price <= max);
+        const budgetFiltered = filtered.filter((t: { price?: number | null }) => t.price && t.price <= max);
         // Only apply if there are enough results
         if (budgetFiltered.length >= 5) {
           filtered = budgetFiltered;
@@ -131,15 +132,15 @@ serve(async (req) => {
 
     // Pre-filter by sample method
     if (sampleMethod === "home-kit") {
-      const homeFiltered = filtered.filter((t: any) => t.home_kit_available);
+      const homeFiltered = filtered.filter((t: { home_kit_available?: boolean | null }) => t.home_kit_available);
       if (homeFiltered.length >= 5) filtered = homeFiltered;
     } else if (sampleMethod === "clinic-visit") {
-      const clinicFiltered = filtered.filter((t: any) => t.clinic_visit_available);
+      const clinicFiltered = filtered.filter((t: { clinic_visit_available?: boolean | null }) => t.clinic_visit_available);
       if (clinicFiltered.length >= 5) filtered = clinicFiltered;
     }
 
     // Limit to top 80 tests for AI context (sorted by relevance signals)
-    const testsForAI = filtered.slice(0, 80).map((t: any) => ({
+    const testsForAI = filtered.slice(0, 80).map((t: Record<string, unknown>) => ({
       id: t.id,
       name: t.test_name,
       provider: t.provider_id,

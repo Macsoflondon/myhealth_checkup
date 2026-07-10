@@ -82,7 +82,7 @@ const CategoryLandingPage: React.FC = () => {
   );
 
   // Handle test selection for carousel
-  const handleSelectTest = (test: any) => {
+  const handleSelectTest = (test: unknown) => {
     navigate(`/compare?category=${category}`);
   };
 

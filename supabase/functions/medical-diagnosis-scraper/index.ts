@@ -1,6 +1,6 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
 import { getErrorMessage } from '../_shared/errors.ts';
-import { upsertProviderTests } from '../_shared/provider-upsert.ts';
+import { upsertProviderTests, type SupabaseLike } from '../_shared/provider-upsert.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -159,7 +159,7 @@ Deno.serve(async (req) => {
     });
 
     const { upsertedCount, errors: upsertErrors, finalRowCount } =
-      await upsertProviderTests(supabase as any, PROVIDER_ID, rows, 'meddiag-');
+      await upsertProviderTests(supabase as unknown as SupabaseLike, PROVIDER_ID, rows, 'meddiag-');
 
     await supabase.from('scraping_jobs').upsert({
       provider_id: PROVIDER_ID,

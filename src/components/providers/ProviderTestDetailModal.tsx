@@ -58,10 +58,14 @@ const formatTurnaround = (providerId: string): string => {
   return defaults[providerId.toLowerCase()] || "2–5 working days";
 };
 
-const parseBiomarkersList = (biomarkersList: any): string[] => {
+const parseBiomarkersList = (biomarkersList: unknown): string[] => {
   if (!biomarkersList) return [];
   if (Array.isArray(biomarkersList)) {
-    return biomarkersList.map((b: any) => (typeof b === "string" ? b : b.name || b.biomarker_name || String(b)));
+    return biomarkersList.map((b) => {
+      if (typeof b === "string") return b;
+      const rec = b as { name?: string; biomarker_name?: string };
+      return rec.name || rec.biomarker_name || String(b);
+    });
   }
   if (typeof biomarkersList === "object") {
     return Object.values(biomarkersList).map(String);

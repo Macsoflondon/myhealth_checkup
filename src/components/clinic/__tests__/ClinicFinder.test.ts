@@ -90,10 +90,10 @@ describe('ClinicFinder: Filter Logic', () => {
 
       if (radiusFilter !== 'all') {
         const maxDistance = parseInt(radiusFilter);
-        filtered = filtered.filter(clinic => (clinic.distance || 999) <= maxDistance);
+        filtered = filtered.filter(clinic => (clinic.distance ?? 999) <= maxDistance);
       }
 
-      filtered.sort((a, b) => (a.distance || 999) - (b.distance || 999));
+      filtered.sort((a, b) => (a.distance ?? 999) - (b.distance ?? 999));
     } else {
       filtered.sort((a, b) => a.name.localeCompare(b.name));
     }

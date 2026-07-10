@@ -12,7 +12,7 @@ export interface ProviderTestCardData {
   biomarker_count?: number | null;
   is_popular?: boolean | null;
   url?: string | null;
-  biomarkers_list?: any;
+  biomarkers_list?: unknown;
   home_kit_available?: boolean | null;
   clinic_visit_available?: boolean | null;
 }

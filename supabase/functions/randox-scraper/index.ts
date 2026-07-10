@@ -108,7 +108,7 @@ function extractTitle(html: string): string {
     if (match && match[1]) {
       const title = cleanTitle(
         match[1]
-          .replace(/\s*[\|\-]\s*Randox.*$/i, '')
+          .replace(/\s*[|-]\s*Randox.*$/i, '')
           .replace(/&amp;/g, '&')
           .replace(/&#39;/g, "'")
       );
@@ -154,7 +154,7 @@ function extractPrice(html: string): { current: number | null; original: number 
             if (item.offers?.price) { current = parseFloat(item.offers.price); break; }
           }
         }
-      } catch { }
+      } catch { /* ignore */ }
     }
   }
   

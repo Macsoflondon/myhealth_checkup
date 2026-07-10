@@ -109,11 +109,11 @@ const FindClinicPage = () => {
       try {
         const response = await fetch("/clinics_master.json");
         if (!response.ok) throw new Error("Failed to load clinics data");
-        const jsonClinics = await response.json();
+        const jsonClinics = (await response.json()) as Array<Partial<Clinic>>;
 
         const normalised: Clinic[] = jsonClinics
-          .filter((c: any) => c.latitude && c.longitude)
-          .map((clinic: any, index: number) => ({
+          .filter((c) => c.latitude && c.longitude)
+          .map((clinic, index) => ({
             id: clinic.id || `clinic-${index}`,
             name: clinic.name,
             full_address: clinic.full_address || "",
@@ -233,11 +233,11 @@ const FindClinicPage = () => {
       // Filter by radius
       if (radiusFilter !== "all") {
         const max = parseInt(radiusFilter);
-        result = result.filter((c) => (c.distance || 999) <= max);
+        result = result.filter((c) => (c.distance ?? 999) <= max);
       }
 
       // Sort by distance
-      result.sort((a, b) => (a.distance || 999) - (b.distance || 999));
+      result.sort((a, b) => (a.distance ?? 999) - (b.distance ?? 999));
     } else {
       result.sort((a, b) => a.name.localeCompare(b.name));
     }

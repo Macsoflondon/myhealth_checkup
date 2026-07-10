@@ -44,6 +44,3 @@
 # HTML: short cache with background revalidation
 /index.html
   Cache-Control: public, max-age=300, stale-while-revalidate=60
-
-/sw.js
-  Cache-Control: public, max-age=0, must-revalidate

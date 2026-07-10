@@ -95,7 +95,7 @@ function sortTests(tests: CompareTestData[], sortBy: string): CompareTestData[] 
       return sorted.sort((a, b) => b.price - a.price);
     case "turnaround":
       return sorted.sort(
-        (a, b) => (a.turnaroundDays || 999) - (b.turnaroundDays || 999)
+        (a, b) => (a.turnaroundDays ?? 999) - (b.turnaroundDays ?? 999)
       );
     case "popular":
       return sorted.sort(

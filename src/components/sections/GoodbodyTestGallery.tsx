@@ -445,7 +445,7 @@ const GoodbodyTestGallery = () => {
                   Goodbody Clinic
                 </DialogTitle>
                 <DialogDescription className="text-[#6b6459]">
-                  ​
+                  
                 </DialogDescription>
               </div>
             </div>

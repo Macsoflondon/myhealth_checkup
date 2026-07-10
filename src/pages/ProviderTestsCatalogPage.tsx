@@ -7,7 +7,7 @@ import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TestTube2 } from "lucide-react";
 import ProviderCatalogHeader, { PROVIDER_FEATURES } from "@/components/providers/ProviderCatalogHeader";
-import ProviderTestCard from "@/components/providers/ProviderTestCard";
+import ProviderTestCard, { type ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
 import CatalogSortBar, { sortTests, type CatalogSortOption } from "@/components/providers/CatalogSortBar";
 
@@ -92,7 +92,7 @@ interface ProviderTestsCatalogPageProps {
 const ProviderTestsCatalogPage = ({ providerId }: ProviderTestsCatalogPageProps) => {
   const config = PROVIDER_CONFIGS[providerId] ?? PROVIDER_CONFIGS["medichecks"]!;
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [selectedTest, setSelectedTest] = useState<any>(null);
+  const [selectedTest, setSelectedTest] = useState<ProviderTestCardData | null>(null);
   const [sortBy, setSortBy] = useState<CatalogSortOption>("name-asc");
 
   const { data: tests, isLoading } = useQuery({

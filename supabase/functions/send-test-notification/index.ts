@@ -129,7 +129,7 @@ serve(async (req: Request): Promise<Response> => {
             },
           }
         );
-      } catch (emailError: any) {
+      } catch (emailError) {
         console.error("Email send error:", emailError);
         
         // Update notification status to failed
@@ -183,7 +183,7 @@ serve(async (req: Request): Promise<Response> => {
     } else {
       throw new Error("Invalid notification type");
     }
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error in send-test-notification:", error);
     return new Response(
       JSON.stringify({ 

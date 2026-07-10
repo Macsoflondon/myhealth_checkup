@@ -56,7 +56,7 @@ function getRateLimitKey(req: Request): string {
 
 // Database-backed rate limiting (persists across cold starts)
 async function checkRateLimit(
-  supabaseClient: any, 
+  supabaseClient: ReturnType<typeof createClient>, 
   clientKey: string, 
   endpoint: string
 ): Promise<{ allowed: boolean; remaining: number }> {
@@ -115,7 +115,7 @@ async function checkRateLimit(
 }
 
 // Cleanup old rate limit entries (runs periodically)
-async function cleanupOldRateLimits(supabaseClient: any): Promise<void> {
+async function cleanupOldRateLimits(supabaseClient: ReturnType<typeof createClient>): Promise<void> {
   try {
     // Run cleanup ~10% of the time to reduce database load
     if (Math.random() < 0.1) {
@@ -213,7 +213,7 @@ serve(async (req) => {
     }
 
     // Collect and dedupe across pages
-    let all: any[] = [];
+    let all: Array<{ id?: string; name?: string; postal_code?: string; [k: string]: unknown }> = [];
     console.log(`Fetching up to ${validatedMaxPages} pages for coordinates: ${lat}, ${lon}`);
     
     for (let p = 1; p <= validatedMaxPages; p++) {
@@ -231,7 +231,7 @@ serve(async (req) => {
     }
 
     const seen = new Set<string>();
-    const dedup: any[] = [];
+    const dedup: typeof all = [];
     for (const it of all) {
       const key = it.id || `${(it.name || "").toLowerCase()}|${(it.postal_code || "").toLowerCase()}`;
       if (!seen.has(key)) {
@@ -250,7 +250,7 @@ serve(async (req) => {
         "X-RateLimit-Remaining": String(rateLimitCheck.remaining)
       },
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error("lml-nearest error:", error?.message || error, error?.stack);
     return new Response(
       JSON.stringify({ 

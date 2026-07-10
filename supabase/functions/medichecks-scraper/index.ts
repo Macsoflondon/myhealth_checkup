@@ -313,8 +313,8 @@ function extractBiomarkerCount(html: string, biomarkersList: string[] | null): n
 
 function extractSampleType(html: string): string | null {
   const patterns = [
-    /sample\s+type[:\s]+([^<,\.]+)/i,
-    /collection\s+method[:\s]+([^<,\.]+)/i,
+    /sample\s+type[:\s]+([^<,.]+)/i,
+    /collection\s+method[:\s]+([^<,.]+)/i,
     /(finger[- ]?prick|venous|blood\s+draw)/i,
   ];
   

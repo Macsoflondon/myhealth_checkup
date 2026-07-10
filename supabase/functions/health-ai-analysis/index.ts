@@ -110,7 +110,7 @@ serve(async (req) => {
     }
 
     // Group tests by provider for the AI prompt
-    const testsByProvider = (availableTests ?? []).reduce<Record<string, Array<{ name: string; price: number | null; category: string | null }>>>((acc, test: any) => {
+    const testsByProvider = (availableTests ?? []).reduce<Record<string, Array<{ name: string; price: number | null; category: string | null }>>>((acc, test: { provider_id: string; test_name: string; price: number | null; category: string | null }) => {
       const pid = test.provider_id as string;
       if (!acc[pid]) {
         acc[pid] = [];
@@ -209,11 +209,11 @@ Guidelines:
       
       // Enhance recommendations with actual database pricing
       if (analysisResult.recommendedTests) {
-        analysisResult.recommendedTests = analysisResult.recommendedTests.map((rec: any) => {
-          const dbTest = availableTests?.find((t: any) => 
+        analysisResult.recommendedTests = analysisResult.recommendedTests.map((rec: { testName: string; providerId: string; [k: string]: unknown }) => {
+          const dbTest = availableTests?.find((t: { test_name: string; provider_id: string; price?: number | null; id?: string }) => 
             t.test_name.toLowerCase().includes(rec.testName.toLowerCase()) &&
             t.provider_id === rec.providerId
-          ) as any;
+          );
           
           return {
             ...rec,

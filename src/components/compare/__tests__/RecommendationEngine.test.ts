@@ -145,7 +145,7 @@ describe('RecommendationEngine: Scoring Algorithm', () => {
 
 describe('RecommendationEngine: Test Ranking', () => {
   it('ranks multiple tests correctly based on preferences', () => {
-    const prefs: Preferences = { priceWeight: 50, speedWeight: 25, comprehensivenessWeight: 25 };
+    const prefs: Preferences = { priceWeight: 80, speedWeight: 10, comprehensivenessWeight: 10 };
     
     const tests: TestData[] = [
       { id: '1', test_name: 'Budget', price: 39, biomarker_count: 8, turnaround_time_days: 5, home_kit_available: true, clinic_visit_available: false },

@@ -129,7 +129,18 @@ function determineCategory(title: string, description: string, url: string): str
   return 'General Health';
 }
 
-async function scrapeWithFirecrawl(url: string, apiKey: string): Promise<any> {
+
+interface FirecrawlScrapeResult {
+  success?: boolean;
+  data?: {
+    markdown?: string;
+    html?: string;
+    metadata?: { title?: string; description?: string; [k: string]: unknown };
+  };
+  [k: string]: unknown;
+}
+
+async function scrapeWithFirecrawl(url: string, apiKey: string): Promise<FirecrawlScrapeResult> {
   const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
     method: 'POST',
     headers: {
@@ -216,7 +227,7 @@ function extractPrice(html: string, markdown: string): { current: number | null;
             }
           }
         }
-      } catch { }
+      } catch { /* ignore */ }
     }
   }
   

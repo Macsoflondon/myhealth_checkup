@@ -58,7 +58,7 @@ interface MasterTest {
   category: string;
   subcategory: string | null;
   description: string;
-  biomarkers: any;
+  biomarkers: unknown;
 }
 
 interface AIMapping {
@@ -102,7 +102,7 @@ const PROVIDER_PREFIXES: Record<string, string> = {
 };
 
 async function generateProviderTestId(
-  supabase: any,
+  supabase: ReturnType<typeof createClient>,
   providerId: string
 ): Promise<string> {
   const prefix = PROVIDER_PREFIXES[providerId] || 'UNK';
@@ -201,14 +201,14 @@ async function callOpenAIWithRetry(
 async function processBatch(
   providerTests: ProviderTestZ[],
   masterTests: MasterTestZ[],
-  supabase: any,
+  supabase: ReturnType<typeof createClient>,
   dryRun: boolean
 ): Promise<{
   mapped: number;
   review: number;
   skipped: number;
-  mappingsCreated: any[];
-  reviewNeeded: any[];
+  mappingsCreated: Array<Record<string, unknown>>;
+  reviewNeeded: Array<Record<string, unknown>>;
 }> {
   console.log(`Processing batch of ${providerTests.length} tests`);
   
@@ -265,8 +265,8 @@ Only include matches with confidence ≥ 60. If no good match exists, omit that 
   let mapped = 0;
   let review = 0;
   let skipped = 0;
-  const mappingsCreated: any[] = [];
-  const reviewNeeded: any[] = [];
+  const mappingsCreated: Array<Record<string, unknown>> = [];
+  const reviewNeeded: Array<Record<string, unknown>> = [];
 
   for (const mapping of aiResponse.mappings) {
     const providerTest = providerTests.find(t => t.test_name === mapping.provider_test_name);

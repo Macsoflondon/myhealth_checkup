@@ -43,7 +43,7 @@ class OrdersApi {
     try {
       const { data, error } = await supabase
         .from("orders")
-        .insert(order as any)
+        .insert(order)
         .select()
         .single();
 

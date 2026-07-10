@@ -26,7 +26,18 @@ function determineCategory(title: string, description: string): string {
   return 'General Health';
 }
 
-async function firecrawlScrape(url: string, apiKey: string): Promise<any> {
+
+interface FirecrawlScrapeResult {
+  success?: boolean;
+  data?: {
+    markdown?: string;
+    html?: string;
+    metadata?: { title?: string; description?: string; [k: string]: unknown };
+  };
+  [k: string]: unknown;
+}
+
+async function firecrawlScrape(url: string, apiKey: string): Promise<FirecrawlScrapeResult> {
   const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
@@ -94,7 +105,7 @@ Deno.serve(async (req) => {
     productUrls = [...new Set(productUrls)];
     console.log(`Total URLs: ${productUrls.length}`);
 
-    const products: any[] = [];
+    const products: Array<Record<string, unknown>> = [];
     for (const url of productUrls.slice(0, 50)) {
       try {
         const slug = new URL(url).pathname.split('/').filter(Boolean).pop() || '';

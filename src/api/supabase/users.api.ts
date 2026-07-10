@@ -1,7 +1,7 @@
 import { ApiResponse } from "./base";
 import { supabase } from "@/integrations/supabase/client";
 import { encryptSensitiveFields, decryptSensitiveFields, SENSITIVE_FIELDS } from "@/services/EncryptionService";
-import type { Json } from "@/integrations/supabase/types";
+import type { Json, TablesInsert } from "@/integrations/supabase/types";
 
 export interface UserProfile {
   id: string;
@@ -75,10 +75,10 @@ class UsersApi {
         SENSITIVE_FIELDS
       );
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       const { data, error } = await supabase
         .from("user_profiles")
-        .update(encryptedUpdates as any)
+        .update(encryptedUpdates)
         .eq("user_id", userId)
         .select()
         .single();
@@ -120,10 +120,10 @@ class UsersApi {
     updates: Partial<UserPreferences>
   ): Promise<ApiResponse<UserPreferences>> {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       const { data, error } = await supabase
         .from("user_preferences")
-        .update(updates as any)
+        .update(updates)
         .eq("user_id", userId)
         .select()
         .single();
@@ -147,10 +147,10 @@ class UsersApi {
         SENSITIVE_FIELDS
       );
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       const { data, error } = await supabase
         .from("user_profiles")
-        .insert(encryptedProfile as any)
+        .insert(encryptedProfile as TablesInsert<"user_profiles">)
         .select()
         .single();
 
@@ -173,10 +173,10 @@ class UsersApi {
     preferences: Omit<UserPreferences, "id" | "created_at" | "updated_at">
   ): Promise<ApiResponse<UserPreferences>> {
     try {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+       
       const { data, error } = await supabase
         .from("user_preferences")
-        .insert(preferences as any)
+        .insert(preferences)
         .select()
         .single();
 

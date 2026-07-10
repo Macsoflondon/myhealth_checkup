@@ -27,7 +27,7 @@ interface ScraperResult {
 }
 
 async function sendAdminNotification(
-  supabase: any,
+  supabase: ReturnType<typeof createClient>,
   subject: string,
   htmlContent: string
 ) {
@@ -54,8 +54,8 @@ async function sendAdminNotification(
     const { data: authData } = await supabase.auth.admin.listUsers();
     
     const adminEmails = authData?.users
-      ?.filter((u: any) => adminUserIds.includes(u.id))
-      ?.map((u: any) => u.email)
+      ?.filter((u: { id: string }) => adminUserIds.includes(u.id))
+      ?.map((u: { email?: string | null }) => u.email)
       ?.filter(Boolean) || [];
 
     if (adminEmails.length === 0) {
@@ -91,7 +91,7 @@ function generateEmailHtml(results: ScraperResult[], allSuccess: boolean): strin
   const statusColor = allSuccess ? '#22c0d4' : '#e70d69';
   const statusText = allSuccess ? 'All Scrapers Completed Successfully' : 'Some Scrapers Failed';
   
-  let resultsHtml = results.map(r => `
+  const resultsHtml = results.map(r => `
     <tr>
       <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">${r.provider}</td>
       <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">

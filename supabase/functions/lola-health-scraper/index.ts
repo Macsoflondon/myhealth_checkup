@@ -23,7 +23,18 @@ function determineCategory(title: string, description: string): string {
   return 'General Health';
 }
 
-async function firecrawlScrape(url: string, apiKey: string): Promise<any> {
+
+interface FirecrawlScrapeResult {
+  success?: boolean;
+  data?: {
+    markdown?: string;
+    html?: string;
+    metadata?: { title?: string; description?: string; [k: string]: unknown };
+  };
+  [k: string]: unknown;
+}
+
+async function firecrawlScrape(url: string, apiKey: string): Promise<FirecrawlScrapeResult> {
   const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
@@ -88,7 +99,7 @@ Deno.serve(async (req) => {
     productUrls = [...new Set(productUrls)];
     console.log(`Total URLs: ${productUrls.length}`);
 
-    const products: any[] = [];
+    const products: Array<Record<string, unknown>> = [];
     const biomarkerTerms = ['vitamin', 'b12', 'folate', 'iron', 'ferritin', 'calcium', 'magnesium',
       'testosterone', 'oestradiol', 'progesterone', 'fsh', 'lh', 'cortisol', 'dhea',
       'tsh', 't3', 't4', 'cholesterol', 'hdl', 'ldl', 'triglyceride', 'alt', 'ast',

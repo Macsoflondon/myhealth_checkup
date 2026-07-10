@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
+import type { Clinic } from "@/types";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+
+// Type casting for react-leaflet compatibility
+const RMapContainer = MapContainer as React.ElementType;
+const RTileLayer = TileLayer as React.ElementType;
+const RMarker = Marker as React.ElementType;
 import {
   MapPin,
   Clock,
@@ -27,7 +33,7 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
 // Fix leaflet default icon issue
-delete (L.Icon.Default.prototype as any)._getIconUrl;
+delete (L.Icon.Default.prototype as unknown as Record<string, unknown>)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
   iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
@@ -48,7 +54,7 @@ const OPENING_HOURS = [
 const ClinicDetailPage = () => {
   const { clinicId } = useParams<{ clinicId: string }>();
   const { clinics, loading } = useClinicsData();
-  const [clinic, setClinic] = useState<any>(null);
+  const [clinic, setClinic] = useState<Clinic | null>(null);
   const [showAllTests, setShowAllTests] = useState(false);
 
   useEffect(() => {
@@ -224,18 +230,15 @@ const ClinicDetailPage = () => {
               {/* Map */}
               <div className="h-64 sm:h-80 lg:h-full min-h-[300px] rounded-xl overflow-hidden border border-border shadow-lg">
                 {clinic.latitude && clinic.longitude && (
-                  <MapContainer
-                    // @ts-ignore
+                  <RMapContainer
                     center={[clinic.latitude, clinic.longitude]}
                     zoom={15}
                     style={{ height: "100%", width: "100%" }}
                   >
-                    <TileLayer
-                      // @ts-ignore
+                    <RTileLayer
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
-                    <Marker
-                      // @ts-ignore
+                    <RMarker
                       position={[clinic.latitude, clinic.longitude]}
                     >
                       <Popup>
@@ -244,8 +247,8 @@ const ClinicDetailPage = () => {
                           <p className="text-sm">{clinic.full_address}</p>
                         </div>
                       </Popup>
-                    </Marker>
-                  </MapContainer>
+                    </RMarker>
+                  </RMapContainer>
                 )}
               </div>
             </div>

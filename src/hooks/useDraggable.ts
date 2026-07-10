@@ -5,7 +5,7 @@ export interface DraggableItem {
   index: number;
 }
 
-export interface DragHandlers<T = any> {
+export interface DragHandlers<T = unknown> {
   onDragStart: (e: React.DragEvent, item: DraggableItem) => void;
   onDragEnd: (e: React.DragEvent) => void;
   onDragOver: (e: React.DragEvent) => void;

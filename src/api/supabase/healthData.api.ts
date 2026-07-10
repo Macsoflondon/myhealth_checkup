@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 import { ApiResponse } from "./base";
 
 // Storage bucket for test result files
@@ -15,7 +16,7 @@ export interface UploadedTestResult {
   test_date: string;
   uploaded_at: string;
   file_url?: string;
-  parsed_data?: any;
+  parsed_data?: Json;
   notes?: string;
   created_at: string;
   updated_at: string;

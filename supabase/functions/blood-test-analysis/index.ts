@@ -27,7 +27,7 @@ interface BiomarkerInfo {
   normal_range_male: string | null;
   normal_range_female: string | null;
   clinical_significance: string | null;
-  interpretation_guide: any;
+  interpretation_guide: unknown;
   lifestyle_factors: string[] | null;
   related_conditions: string[] | null;
 }

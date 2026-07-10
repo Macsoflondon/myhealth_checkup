@@ -55,7 +55,7 @@ const AdminQuickClinicImportPage: React.FC = () => {
 
       toast.success(`Import complete! ${successCount} clinics added.`);
 
-    } catch (error: any) {
+    } catch (error) {
       console.error('Import error:', error);
       setResult({
         success: false,

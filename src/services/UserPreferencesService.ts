@@ -66,11 +66,11 @@ export class UserPreferencesService {
   }
 
   // Saved filters operations
-  static getSavedFilters(userId: string): Record<string, any> {
+  static getSavedFilters(userId: string): Record<string, unknown> {
     return this.get(this.keys.savedFilters(userId), {});
   }
 
-  static setSavedFilters(userId: string, filters: Record<string, any>): void {
+  static setSavedFilters(userId: string, filters: Record<string, unknown>): void {
     this.set(this.keys.savedFilters(userId), filters);
   }
 

@@ -282,7 +282,7 @@ async function scrapeProviderPopularTests(
     const links = data.data?.links || [];
     
     // Look for patterns like "Test Name - £XX" or "Test Name...£XX"
-    const pricePattern = /([A-Za-z][A-Za-z0-9\s\-\(\)&,]+?)[\s\-–—]+£(\d+(?:\.\d{2})?)/g;
+    const pricePattern = /([A-Za-z][A-Za-z0-9\s\-()&,]+?)[\s\-–—]+£(\d+(?:\.\d{2})?)/g;
     let match;
     
     while ((match = pricePattern.exec(markdown)) !== null) {

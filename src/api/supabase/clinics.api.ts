@@ -96,7 +96,7 @@ class ClinicsApi {
       }
 
       // Calculate distance and sort
-      const clinicsWithDistance = (data as any[]).map((clinic) => {
+      const clinicsWithDistance = data.map((clinic) => {
         const distance = this.calculateDistance(
           latitude,
           longitude,

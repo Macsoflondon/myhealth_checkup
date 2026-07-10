@@ -28,7 +28,7 @@ export function useOrders(user: User | null) {
       toast.success("Order placed successfully!");
       navigate("/dashboard?tab=orders");
       return true;
-    } catch (error: any) {
+    } catch (error) {
       toast.error(error.message);
       return false;
     }

@@ -46,7 +46,7 @@ const Auth = () => {
   // Clear any stale lockout data and load saved email on mount
   useEffect(() => {
     // Clear lockout counter so previous failed attempts don't block login
-    try { localStorage.removeItem('login_attempts'); } catch {}
+    try { localStorage.removeItem('login_attempts'); } catch { /* storage unavailable */ }
     recordSuccessfulLogin(); // resets lockout state in the hook
 
     const savedEmail = localStorage.getItem("rememberedEmail");
@@ -83,7 +83,7 @@ const Auth = () => {
 
       toast.success("Password reset email sent! Please check your inbox.");
       setIsForgotPassword(false);
-    } catch (error: any) {
+    } catch (error) {
       toast.error("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
@@ -218,7 +218,7 @@ const Auth = () => {
         toast.success("Logged in successfully!");
         navigate("/dashboard");
       }
-    } catch (error: any) {
+    } catch (error) {
       toast.error("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);

@@ -8,9 +8,9 @@ import { Badge } from "@/components/ui/badge";
 import MapErrorBoundary from "./MapErrorBoundary";
 
 // Type casting for react-leaflet compatibility
-const RMapContainer = MapContainer as any;
-const RTileLayer = TileLayer as any;
-const RMarker = Marker as any;
+const RMapContainer = MapContainer as React.ElementType;
+const RTileLayer = TileLayer as React.ElementType;
+const RMarker = Marker as React.ElementType;
 
 // Fix Leaflet default icon
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";

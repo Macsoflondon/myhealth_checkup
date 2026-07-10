@@ -29,7 +29,25 @@ function determineCategory(title: string, description: string): string {
   return 'General Health';
 }
 
-function extractFromMarkdown(markdown: string, url: string): any {
+interface ExtractedTest {
+  title: string;
+  price: number;
+  biomarkerCount: number | null;
+  biomarkers: string[];
+  description: string;
+}
+
+interface FirecrawlScrapeResult {
+  success?: boolean;
+  data?: {
+    markdown?: string;
+    html?: string;
+    metadata?: { title?: string; description?: string; [k: string]: unknown };
+  };
+  [k: string]: unknown;
+}
+
+function extractFromMarkdown(markdown: string, url: string): ExtractedTest {
   let title = '';
   const h1Match = markdown.match(/^#\s+(.+)$/m);
   if (h1Match) title = h1Match[1].replace(/\s*[–|]\s*Goodbody.*$/i, '').trim();
@@ -57,12 +75,12 @@ function extractFromMarkdown(markdown: string, url: string): any {
     }
   }
 
-  const description = markdown.substring(0, 500).replace(/[#*\[\]]/g, '').trim();
+  const description = markdown.substring(0, 500).replace(/[#*[\]]/g, '').trim();
 
   return { title, price, biomarkerCount, biomarkers, description };
 }
 
-async function firecrawlScrape(url: string, apiKey: string): Promise<any> {
+async function firecrawlScrape(url: string, apiKey: string): Promise<FirecrawlScrapeResult> {
   const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
@@ -125,7 +143,7 @@ Deno.serve(async (req) => {
     console.log(`Total unique products to scrape: ${productUrls.length}`);
 
     // Step 2: Scrape each product page
-    const products: any[] = [];
+    const products: Array<Record<string, unknown>> = [];
     for (const url of productUrls) {
       try {
         const slug = url.split('/products/').pop() || '';

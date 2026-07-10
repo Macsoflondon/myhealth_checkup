@@ -1,6 +1,14 @@
 // Main navigation structure - primary items shown in toolbar
 // NOTE: This file now exports data only. The actual NavigationMenu component is in NavigationMenu.tsx
-export const primaryNavigationItems = [
+export interface PrimaryNavigationItem {
+  name: string;
+  path: string;
+  hasDropdown?: boolean;
+  megaMenu?: boolean;
+  highlighted?: boolean;
+}
+
+export const primaryNavigationItems: PrimaryNavigationItem[] = [
   { name: "Most Popular Tests", path: "/popular-tests", hasDropdown: false, megaMenu: false },
   { name: "General Wellness", path: "/wellness", hasDropdown: true, megaMenu: true },
   { name: "Women's Health", path: "/womens-health", hasDropdown: true, megaMenu: true },

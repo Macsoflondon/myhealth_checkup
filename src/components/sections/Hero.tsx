@@ -9,7 +9,15 @@ import heroHomeKit from "@/assets/hero/hero-home-kit.webp";
 import heroActive from "@/assets/hero/hero-active-lifestyle.webp";
 import heroCompare from "@/assets/hero/hero-compare-decide.webp";
 
-const heroSlides = [
+interface HeroSlide {
+  image: string;
+  headline: string;
+  subline: string;
+  objectPosition: string;
+  mobileObjectPosition?: string;
+}
+
+const heroSlides: HeroSlide[] = [
   {
     image: heroEmpowered,
     headline: "Your Results. Your Control.",
@@ -99,7 +107,7 @@ const Hero = () => {
             width={1920}
             height={1080}
             fetchPriority={i === 0 ? "high" : undefined}
-            style={{ objectPosition: isMobile && (s as any).mobileObjectPosition ? (s as any).mobileObjectPosition : s.objectPosition }}
+            style={{ objectPosition: isMobile && s.mobileObjectPosition ? s.mobileObjectPosition : s.objectPosition }}
             className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-1000 ease-in-out ${
               i === currentSlide ? "opacity-100" : "opacity-0"
             }`}

@@ -133,3 +133,5 @@ verify_jwt = false
 [functions.indexnow-submit]
 verify_jwt = false
 
+[functions.admin-recovery]
+verify_jwt = false

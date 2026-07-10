@@ -85,7 +85,7 @@ const ResetPassword = () => {
       // Sign out and redirect to auth page
       await supabase.auth.signOut();
       navigate("/auth");
-    } catch (error: any) {
+    } catch (error) {
       toast.error("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);

@@ -51,7 +51,7 @@ const AdminDataRefreshPage: React.FC = () => {
           details: JSON.stringify(data, null, 2),
         }
       }));
-    } catch (error: any) {
+    } catch (error) {
       setRefreshResults(prev => ({
         ...prev,
         [providerId]: {
@@ -116,7 +116,7 @@ const AdminDataRefreshPage: React.FC = () => {
           details: JSON.stringify(data, null, 2),
         }
       }));
-    } catch (error: any) {
+    } catch (error) {
       setRefreshResults(prev => ({
         ...prev,
         'all-scrapers': {

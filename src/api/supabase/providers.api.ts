@@ -17,7 +17,7 @@ export interface ProviderTestData {
   updated_at: string;
   sample_type?: string | null;
   biomarker_count?: number | null;
-  biomarkers_list?: any;
+  biomarkers_list?: unknown;
   is_popular?: boolean | null;
   home_kit_available?: boolean | null;
   clinic_visit_available?: boolean | null;
@@ -178,7 +178,7 @@ class ProvidersApi {
   /**
    * Trigger provider scraper edge function
    */
-  async triggerProviderScrape(providerId: string): Promise<ApiResponse<any>> {
+  async triggerProviderScrape(providerId: string): Promise<ApiResponse<unknown>> {
     try {
       const { data, error } = await supabase.functions.invoke('provider-scraper', {
         body: { providerId, action: 'scrape' }
