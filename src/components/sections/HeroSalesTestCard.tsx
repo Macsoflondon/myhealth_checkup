@@ -52,8 +52,8 @@ export default function HeroSalesTestCard({ ad }: Props) {
         onClick={() => setOpen(true)}
         aria-label={`Featured test: ${ad.name} from ${ad.provider}. Click for details.`}
         className="flex absolute right-2 bottom-2 sm:right-5 sm:bottom-5 lg:right-6 lg:bottom-6 z-10
-                   w-[min(94vw,280px)] sm:w-[min(92vw,480px)] flex-col text-left
-                   rounded-2xl sm:rounded-[24px] overflow-hidden bg-[#F5F5F5]
+                   w-[min(94vw,140px)] sm:w-[min(92vw,480px)] flex-col text-left
+                   rounded-xl sm:rounded-[24px] overflow-hidden bg-[#F5F5F5]
                    border border-white
                    hover:-translate-y-0.5 transition-all animate-fade-in font-[Montserrat]
                    shadow-[0_16px_32px_-12px_rgba(8,17,41,0.35)] sm:shadow-[0_24px_48px_-12px_rgba(8,17,41,0.3)]"
@@ -67,12 +67,12 @@ export default function HeroSalesTestCard({ ad }: Props) {
           aria-hidden="true"
         />
 
-        <div className="p-3 sm:p-4 lg:p-5 flex-1 flex flex-col">
+        <div className="p-2 sm:p-4 lg:p-5 flex-1 flex flex-col">
 
           {/* Header */}
-          <div className="flex justify-between items-start mb-3">
-            <div className="flex items-center gap-2.5">
-              <div className="w-10 h-10 rounded-xl bg-white shadow-sm border border-slate-100 flex items-center justify-center overflow-hidden shrink-0">
+          <div className="flex justify-between items-start mb-2 sm:mb-3">
+            <div className="flex items-center gap-1.5 sm:gap-2.5">
+              <div className="w-7 h-7 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white shadow-sm border border-slate-100 flex items-center justify-center overflow-hidden shrink-0">
                 {ad.providerLogo ? (
                   <img
                     src={ad.providerLogo}
@@ -82,7 +82,7 @@ export default function HeroSalesTestCard({ ad }: Props) {
                   />
                 ) : null}
               </div>
-              <div className="min-w-0">
+              <div className="min-w-0 hidden sm:block">
                 <p
                   className="text-[10px] font-bold uppercase tracking-[0.16em] truncate"
                   style={{ color: providerColor }}
@@ -105,7 +105,7 @@ export default function HeroSalesTestCard({ ad }: Props) {
               </div>
             </div>
             <span
-              className="text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-[0.14em] text-white shrink-0"
+              className="text-[7px] sm:text-[9px] font-extrabold px-1.5 sm:px-2.5 py-0.5 sm:py-1 rounded-full uppercase tracking-[0.14em] text-white shrink-0"
               style={{
                 background: PINK,
                 boxShadow: `0 6px 16px ${hexToRgba(PINK, 0.3)}`,
@@ -118,12 +118,12 @@ export default function HeroSalesTestCard({ ad }: Props) {
           {/* Title */}
           <div className="mb-2 sm:mb-3">
             <p
-              className="text-[10px] font-bold uppercase tracking-[0.18em] mb-1"
+              className="text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.18em] mb-1"
               style={{ color: TURQUOISE }}
             >
               {ad.category}
             </p>
-            <h3 className="text-[#081129] text-base sm:text-xl lg:text-[22px] font-extrabold leading-[1.15] line-clamp-2">
+            <h3 className="text-[#081129] text-[11px] sm:text-xl lg:text-[22px] font-extrabold leading-[1.15] line-clamp-2">
               {ad.name}
             </h3>
           </div>
@@ -156,13 +156,13 @@ export default function HeroSalesTestCard({ ad }: Props) {
           </div>
 
           {/* Footer */}
-          <div className="mt-auto flex items-end justify-between border-t border-slate-200/60 pt-2.5 sm:pt-4 gap-2 sm:gap-3">
+          <div className="mt-auto flex items-end justify-between border-t border-slate-200/60 pt-2 sm:pt-4 gap-2 sm:gap-3">
             <div className="flex flex-col min-w-0">
-              <span className="text-[#081129]/40 text-[9px] font-bold uppercase tracking-[0.16em] mb-0.5">
+              <span className="text-[#081129]/40 text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.16em] mb-0.5">
                 from
               </span>
               <span
-                className="text-xl sm:text-2xl lg:text-[28px] font-black leading-none"
+                className="text-sm sm:text-2xl lg:text-[28px] font-black leading-none"
                 style={{ color: PINK }}
               >
                 £{ad.price.toFixed(2)}
@@ -176,7 +176,7 @@ export default function HeroSalesTestCard({ ad }: Props) {
                 Compare
               </span>
               <span
-                className="px-3 py-1.5 sm:px-5 sm:py-2 rounded-lg sm:rounded-xl text-white font-bold text-[11px] sm:text-xs shadow-lg"
+                className="px-2 py-1 sm:px-5 sm:py-2 rounded-md sm:rounded-xl text-white font-bold text-[9px] sm:text-xs shadow-lg"
                 style={{ background: NAVY, boxShadow: `0 10px 20px ${hexToRgba(NAVY, 0.25)}` }}
               >
                 View test
