@@ -118,12 +118,12 @@ export default function HeroSalesTestCard({ ad }: Props) {
           {/* Title */}
           <div className="mb-2 sm:mb-3">
             <p
-              className="text-[10px] font-bold uppercase tracking-[0.18em] mb-1"
+              className="text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.18em] mb-1"
               style={{ color: TURQUOISE }}
             >
               {ad.category}
             </p>
-            <h3 className="text-[#081129] text-base sm:text-xl lg:text-[22px] font-extrabold leading-[1.15] line-clamp-2">
+            <h3 className="text-[#081129] text-[11px] sm:text-xl lg:text-[22px] font-extrabold leading-[1.15] line-clamp-2">
               {ad.name}
             </h3>
           </div>
