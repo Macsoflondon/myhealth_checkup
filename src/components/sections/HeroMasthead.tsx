@@ -67,7 +67,7 @@ const SLIDES = [
   },
   {
     src: bloodTestKit,
-    video: null,
+    video: clipKitAsset.url,
     label: "Test from the Comfort of Home",
     posMobile: "35% 60%",
     posTablet: "40% 60%",
