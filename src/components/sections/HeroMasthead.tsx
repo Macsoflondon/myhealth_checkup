@@ -177,10 +177,12 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   const advance = useCallback(() => setI((n) => n + 1), []);
 
   // Play the active video from the start; pause the others.
+  // Reduced-motion: skip playback entirely — the poster PNG stays visible and
+  // the timer below still advances slides so the carousel remains functional.
   useEffect(() => {
     videoRefs.current.forEach((v, idx) => {
       if (!v) return;
-      if (idx === activeIndex) {
+      if (idx === activeIndex && !reducedMotion) {
         try {
           v.currentTime = 0;
         } catch {
@@ -193,7 +195,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         v.pause();
       }
     });
-  }, [activeIndex]);
+  }, [activeIndex, reducedMotion]);
 
   // Fallback timer: advances if a video fails to fire `ended` (blocked autoplay,
   // network stall) or if the user prefers reduced motion. 11s = clip length + buffer.
@@ -248,35 +250,44 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
       <div className="relative rounded-t-[18px] overflow-hidden mt-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
         {SLIDES.map((s, n) => {
           const active = n === activeIndex;
+          const nextIndex = (activeIndex + 1) % SLIDES.length;
+          // Only mount videos for active + next slide; others render as poster
+          // <img> to save bandwidth and keep the network light. When reduced
+          // motion is on, never mount videos at all — posters only.
+          const shouldMountVideo = Boolean(s.video) && !reducedMotion && (active || n === nextIndex);
           const commonStyle = {
             opacity: active ? 1 : 0,
             ["--pos-m" as any]: s.posMobile,
             ["--pos-t" as any]: s.posTablet,
             ["--pos-d" as any]: s.posDesktop,
           };
-          if (s.video) {
+          if (shouldMountVideo) {
             return (
               <video
-                key={n}
+                key={`v-${n}`}
                 ref={(el) => {
                   videoRefs.current[n] = el;
                 }}
-                src={s.video}
+                src={s.video ?? undefined}
                 poster={s.src}
                 muted
                 playsInline
-                preload={n === 0 || n === (activeIndex + 1) % SLIDES.length ? "auto" : "metadata"}
+                preload={active ? "auto" : "metadata"}
                 onEnded={advance}
+                aria-hidden={!active}
                 className="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
                 style={commonStyle}
               />
             );
           }
+          // Poster fallback — also renders for slides not yet queued so they
+          // hold the layout (no CLS) and appear instantly when they become active.
           return (
             <img
-              key={n}
+              key={`i-${n}`}
               src={s.src}
-              alt={s.label}
+              alt={active ? s.label : ""}
+              aria-hidden={active ? undefined : true}
               width={1920}
               height={1080}
               sizes="100vw"
