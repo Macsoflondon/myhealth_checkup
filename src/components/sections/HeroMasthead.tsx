@@ -19,6 +19,12 @@ import seniorCoupleAsset from "@/assets/hero/hero-senior-couple.png.asset.json";
 import benchPhoneAsset from "@/assets/hero/hero-bench-phone.png.asset.json";
 import bloodTestKitAsset from "@/assets/hero/hero-blood-test-kit.png.asset.json";
 
+// ── Hero carousel videos (looping cinemagraphs) ───────────────────────
+import clipJoggingAsset from "@/assets/hero/video/clip-jogging.mp4.asset.json";
+import clipClinicAsset from "@/assets/hero/video/clip-clinic-reception.mp4.asset.json";
+import clipSeniorAsset from "@/assets/hero/video/clip-senior-couple.mp4.asset.json";
+import clipBenchAsset from "@/assets/hero/video/clip-bench-phone.mp4.asset.json";
+
 const clinicReception = clinicReceptionAsset.url;
 const seniorCouple = seniorCoupleAsset.url;
 const benchPhone = benchPhoneAsset.url;
@@ -28,6 +34,7 @@ const bloodTestKit = bloodTestKitAsset.url;
 const SLIDES = [
   {
     src: joggingWoman,
+    video: clipJoggingAsset.url,
     label: "Know Your Health. Own Your Future.",
     posMobile: "30% 30%",
     posTablet: "center 32%",
@@ -35,6 +42,7 @@ const SLIDES = [
   },
   {
     src: clinicReception,
+    video: clipClinicAsset.url,
     label: "Nationwide network of CQC-regulated clinics",
     posMobile: "60% 50%",
     posTablet: "center 50%",
@@ -42,6 +50,7 @@ const SLIDES = [
   },
   {
     src: seniorCouple,
+    video: clipSeniorAsset.url,
     label: "Proactive Health for Every Stage of Life",
     posMobile: "50% 25%",
     posTablet: "center 28%",
@@ -49,6 +58,7 @@ const SLIDES = [
   },
   {
     src: benchPhone,
+    video: clipBenchAsset.url,
     label: "Find the Right Test for You, Compare. Choose. Book.",
     posMobile: "55% 40%",
     posTablet: "center 40%",
@@ -56,12 +66,14 @@ const SLIDES = [
   },
   {
     src: bloodTestKit,
+    video: null,
     label: "Test from the Comfort of Home",
     posMobile: "35% 60%",
     posTablet: "40% 60%",
     posDesktop: "50% 65%",
   },
 ];
+
 
 import { realTestData, type RealTestData } from "@/data/compare/realProviderData";
 
@@ -197,6 +209,28 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
       <div className="relative rounded-t-[18px] overflow-hidden mt-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
         {SLIDES.map((s, n) => {
           const active = n === i % SLIDES.length;
+          const commonStyle = {
+            opacity: active ? 1 : 0,
+            ["--pos-m" as any]: s.posMobile,
+            ["--pos-t" as any]: s.posTablet,
+            ["--pos-d" as any]: s.posDesktop,
+          };
+          if (active && s.video) {
+            return (
+              <video
+                key={n}
+                src={s.video}
+                poster={s.src}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                className="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
+                style={commonStyle}
+              />
+            );
+          }
           return (
             <img
               key={n}
@@ -209,15 +243,11 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
               fetchPriority={n === 0 ? "high" : "low"}
               decoding="async"
               className="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-300"
-              style={{
-                opacity: active ? 1 : 0,
-                ["--pos-m" as any]: s.posMobile,
-                ["--pos-t" as any]: s.posTablet,
-                ["--pos-d" as any]: s.posDesktop,
-              }}
+              style={commonStyle}
             />
           );
         })}
+
 
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
