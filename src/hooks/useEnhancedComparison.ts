@@ -35,7 +35,8 @@ export function useEnhancedComparison() {
   const [isLoading, setIsLoading] = useState(false);
 
   // Transform raw test data to enhanced format
-  const transformToEnhanced = useCallback((test: RawTestRow): EnhancedTestData => {
+  const transformToEnhanced = useCallback((rawTest: RawTestRow): EnhancedTestData => {
+    const test = rawTest as RawTestRow & Record<string, any>;
     const basePrice = test.price || 0;
     const gpCost = test.gp_consultation_included ? 0 : (test.gp_consultation_cost || 0);
     const phlebCost = test.phlebotomy_included ? 0 : (test.phlebotomy_cost || 0);
