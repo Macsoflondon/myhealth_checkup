@@ -51,27 +51,27 @@ export default function HeroSalesTestCard({ ad }: Props) {
         type="button"
         onClick={() => setOpen(true)}
         aria-label={`Featured test: ${ad.name} from ${ad.provider}. Click for details.`}
-        className="hidden md:flex absolute right-4 bottom-4 sm:right-6 sm:bottom-6 z-10
-                   w-[min(92vw,630px)] flex-col text-left
-                   rounded-[32px] overflow-hidden bg-[#F5F5F5]
+        className="hidden md:flex absolute right-4 bottom-4 sm:right-5 sm:bottom-5 lg:right-6 lg:bottom-6 z-10
+                   w-[min(92vw,480px)] flex-col text-left
+                   rounded-[24px] overflow-hidden bg-[#F5F5F5]
                    border border-white
                    hover:-translate-y-0.5 transition-all animate-fade-in font-[Montserrat]
-                   shadow-[0_32px_64px_-16px_rgba(8,17,41,0.35)]"
+                   shadow-[0_24px_48px_-12px_rgba(8,17,41,0.3)]"
       >
         {/* Top brand gradient */}
         <div
-          className="h-1.5 w-full"
+          className="h-1 w-full"
           style={{
             background: `linear-gradient(90deg, ${TURQUOISE}, ${PINK}, ${TURQUOISE})`,
           }}
           aria-hidden="true"
         />
 
-        <div className="p-6 lg:p-8 flex-1 flex flex-col">
+        <div className="p-4 lg:p-5 flex-1 flex flex-col">
           {/* Header */}
-          <div className="flex justify-between items-start mb-5">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center overflow-hidden shrink-0">
+          <div className="flex justify-between items-start mb-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-10 h-10 rounded-xl bg-white shadow-sm border border-slate-100 flex items-center justify-center overflow-hidden shrink-0">
                 {ad.providerLogo ? (
                   <img
                     src={ad.providerLogo}
@@ -83,19 +83,19 @@ export default function HeroSalesTestCard({ ad }: Props) {
               </div>
               <div className="min-w-0">
                 <p
-                  className="text-[11px] font-bold uppercase tracking-[0.18em] truncate"
+                  className="text-[10px] font-bold uppercase tracking-[0.16em] truncate"
                   style={{ color: providerColor }}
                 >
                   {ad.provider}
                 </p>
-                <div className="flex items-center gap-2 mt-1">
-                  <span className="text-[#081129] font-bold text-[11px] flex items-center gap-1">
-                    <Star className="w-3 h-3 fill-amber-400 text-amber-400" aria-hidden="true" />
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <span className="text-[#081129] font-bold text-[10px] flex items-center gap-1">
+                    <Star className="w-2.5 h-2.5 fill-amber-400 text-amber-400" aria-hidden="true" />
                     {rating.toFixed(1)}
                   </span>
-                  <div className="w-px h-3 bg-slate-300" aria-hidden="true" />
+                  <div className="w-px h-2.5 bg-slate-300" aria-hidden="true" />
                   <span
-                    className="text-[9px] font-bold border px-2 py-0.5 rounded-full uppercase tracking-tight"
+                    className="text-[8px] font-bold border px-1.5 py-0.5 rounded-full uppercase tracking-tight"
                     style={{ color: TURQUOISE, borderColor: hexToRgba(TURQUOISE, 0.3) }}
                   >
                     UKAS Accredited
@@ -104,10 +104,10 @@ export default function HeroSalesTestCard({ ad }: Props) {
               </div>
             </div>
             <span
-              className="text-[10px] font-extrabold px-3 py-1.5 rounded-full uppercase tracking-[0.16em] text-white shrink-0"
+              className="text-[9px] font-extrabold px-2.5 py-1 rounded-full uppercase tracking-[0.14em] text-white shrink-0"
               style={{
                 background: PINK,
-                boxShadow: `0 8px 20px ${hexToRgba(PINK, 0.3)}`,
+                boxShadow: `0 6px 16px ${hexToRgba(PINK, 0.3)}`,
               }}
             >
               Featured
@@ -115,31 +115,31 @@ export default function HeroSalesTestCard({ ad }: Props) {
           </div>
 
           {/* Title */}
-          <div className="mb-4">
+          <div className="mb-3">
             <p
-              className="text-[11px] font-bold uppercase tracking-[0.2em] mb-1.5"
+              className="text-[10px] font-bold uppercase tracking-[0.18em] mb-1"
               style={{ color: TURQUOISE }}
             >
               {ad.category}
             </p>
-            <h3 className="text-[#081129] text-2xl lg:text-[28px] font-extrabold leading-[1.15]">
+            <h3 className="text-[#081129] text-xl lg:text-[22px] font-extrabold leading-[1.15]">
               {ad.name}
             </h3>
           </div>
 
           {/* Biomarker chips */}
-          <div className="flex flex-wrap gap-2 mb-5">
+          <div className="flex flex-wrap gap-1.5 mb-4">
             {markers.map((m) => (
               <span
                 key={m}
-                className="bg-white border border-slate-200 text-[#081129]/70 text-[11px] font-bold px-3 py-1.5 rounded-lg font-[Lato]"
+                className="bg-white border border-slate-200 text-[#081129]/70 text-[10px] font-bold px-2 py-1 rounded-md font-[Lato]"
               >
                 {m}
               </span>
             ))}
             {extraMarkers > 0 && (
               <span
-                className="text-[11px] font-bold px-3 py-1.5 rounded-lg font-[Lato]"
+                className="text-[10px] font-bold px-2 py-1 rounded-md font-[Lato]"
                 style={{ background: hexToRgba(TURQUOISE, 0.1), color: TURQUOISE }}
               >
                 +{extraMarkers} biomarkers
@@ -148,35 +148,35 @@ export default function HeroSalesTestCard({ ad }: Props) {
           </div>
 
           {/* Meta row */}
-          <div className="flex items-center gap-5 lg:gap-6 mb-6">
+          <div className="flex items-center gap-4 lg:gap-5 mb-4">
             <MetaCell icon={ClipboardList} label="Analysis" value="Comprehensive" />
             <MetaCell icon={Clock} label="Results" value="Typical 2–5 days" />
             <MetaCell icon={Package} label="Collection" value="Flexible" />
           </div>
 
           {/* Footer */}
-          <div className="mt-auto flex items-end justify-between border-t border-slate-200/60 pt-5 gap-4">
+          <div className="mt-auto flex items-end justify-between border-t border-slate-200/60 pt-4 gap-3">
             <div className="flex flex-col">
-              <span className="text-[#081129]/40 text-[10px] font-bold uppercase tracking-[0.18em] mb-0.5">
+              <span className="text-[#081129]/40 text-[9px] font-bold uppercase tracking-[0.16em] mb-0.5">
                 from
               </span>
               <span
-                className="text-3xl lg:text-4xl font-black leading-none"
+                className="text-2xl lg:text-[28px] font-black leading-none"
                 style={{ color: PINK }}
               >
                 £{ad.price.toFixed(2)}
               </span>
             </div>
-            <div className="flex gap-2.5 shrink-0">
+            <div className="flex gap-2 shrink-0">
               <span
-                className="px-5 py-3 rounded-2xl border-2 text-[#081129] font-bold text-sm"
+                className="px-4 py-2 rounded-xl border-2 text-[#081129] font-bold text-xs"
                 style={{ borderColor: hexToRgba(NAVY, 0.12) }}
               >
                 Compare
               </span>
               <span
-                className="px-6 py-3 rounded-2xl text-white font-bold text-sm shadow-lg"
-                style={{ background: NAVY, boxShadow: `0 12px 24px ${hexToRgba(NAVY, 0.25)}` }}
+                className="px-5 py-2 rounded-xl text-white font-bold text-xs shadow-lg"
+                style={{ background: NAVY, boxShadow: `0 10px 20px ${hexToRgba(NAVY, 0.25)}` }}
               >
                 View test
               </span>
@@ -305,19 +305,19 @@ function MetaCell({
   value: string;
 }) {
   return (
-    <div className="flex items-center gap-2.5 min-w-0">
+    <div className="flex items-center gap-2 min-w-0">
       <div
-        className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
+        className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
         style={{ background: hexToRgba(TURQUOISE, 0.12) }}
         aria-hidden="true"
       >
-        <Icon className="w-4 h-4" style={{ color: TURQUOISE }} />
+        <Icon className="w-3 h-3" style={{ color: TURQUOISE }} />
       </div>
       <div className="min-w-0">
-        <p className="text-[9px] text-[#081129]/40 uppercase font-bold tracking-[0.18em]">
+        <p className="text-[8px] text-[#081129]/40 uppercase font-bold tracking-[0.16em]">
           {label}
         </p>
-        <p className="text-[12px] font-bold text-[#081129] font-[Lato] truncate">{value}</p>
+        <p className="text-[10px] font-bold text-[#081129] font-[Lato] truncate">{value}</p>
       </div>
     </div>
   );
