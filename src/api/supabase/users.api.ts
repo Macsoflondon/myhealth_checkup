@@ -78,7 +78,7 @@ class UsersApi {
        
       const { data, error } = await supabase
         .from("user_profiles")
-        .update(encryptedUpdates)
+        .update(encryptedUpdates as never)
         .eq("user_id", userId)
         .select()
         .single();

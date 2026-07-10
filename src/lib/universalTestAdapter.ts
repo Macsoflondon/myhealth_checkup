@@ -38,7 +38,7 @@ export function fromProviderTest(t: ProviderTestCardData): UniversalTestData {
     turnaround_days_text: t.turnaround_days_text,
     sample_type: t.sample_type,
     biomarker_count: t.biomarker_count,
-    biomarkers_list: t.biomarkers_list,
+    biomarkers_list: t.biomarkers_list as string[] | { value: string }[] | undefined,
     url: t.url,
     is_popular: !!t.is_popular,
     home_kit_available: t.home_kit_available ?? undefined,
