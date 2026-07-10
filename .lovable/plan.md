@@ -1,75 +1,38 @@
-## Convert 4 hero images into looping 10s videos + montage
+## Fix hero videos: continuous playback, clinic re-gen, animate slide 5
 
-**Caps to know:** videogen tops out at 1080p (not 4K) and 10s per clip. I'll generate at 1080p 16:9 with realistic, cinematic prompts and use each image as the starting frame so the person/scene matches exactly (same face, same clothes, same lighting) — this is the key trick to avoid the "AI-generated look".
+### 1. Re-generate clinic reception clip
+Current clip has continuity issues (man vanishes mid-shot, receptionist mishandles paperwork). Regenerate with a tighter, more directive prompt so the AI produces one coherent take:
 
-### The four clips
+> "Live-action documentary footage, real people, no CGI, 35mm filmic grain. A couple (man and woman, both visible throughout the entire shot) walk together into a bright modern clinic reception. They approach the desk side by side. The woman hands a clipboard of paperwork to a smiling female receptionist. The receptionist takes the clipboard and neatly places it face-up into an open folder on the desk. Both the man and woman remain in frame the whole time. Warm natural lighting, shallow depth of field, stable subject identity, no morphing."
 
-Starting frames pulled from the existing hero assets:
+Use `videogen--generate_video` with `starting_frame: hero-clinic-reception.png`, `duration: 10`, `resolution: 1080p`, `aspect_ratio: 16:9`, `camera_fixed: true` (steadier framing helps identity persistence). QA the middle + last frame; regenerate once more if the man disappears again.
 
-1. **Jogger** — `src/assets/hero/hero-jogging-woman.png`
-   Prompt: continues jogging toward camera on the same path, natural arm swing, ponytail bouncing, breath visible, subtle handheld camera follow, warm golden-hour sun flare, real skin texture, shallow depth of field.
+### 2. Generate video for slide 5 (blood test kit)
+Prompt:
+> "Live-action documentary, real person, no CGI, 35mm filmic grain. A woman sits at a bright kitchen table opening an at-home finger-prick blood test kit. She smiles softly, picks up the lancet, and calmly examines it. Warm morning light through a window, shallow depth of field, natural motion, stable identity."
 
-2. **Bench + phone (booking)** — `hero-bench-phone.png`
-   Prompt: man on park bench looking down at phone, thumb scrolling and tapping, subtle smile as he confirms, slight head nod, gentle parallax push-in, ambient wind moving leaves, natural daylight.
+Same technical settings as above. Upload via `lovable-assets` to `src/assets/hero/video/clip-blood-test-kit.mp4.asset.json`.
 
-3. **Senior couple in park** — `hero-senior-couple.png`
-   Prompt: elderly couple walking arm-in-arm along path, gentle unhurried pace, brief glance and smile between them, slow dolly follow from behind-side, dappled sunlight through trees, autumn breeze in coats.
+### 3. Continuous auto-playing sequence in HeroMasthead
+Currently each slide is a separate `<video>` swapped by a `setInterval` timer, so playback restarts and can drift out of sync with the interval. Rework so the carousel feels like one continuous reel:
 
-4. **Clinic reception greeting** — `hero-clinic-reception.png`
-   Prompt: couple approaching reception desk, receptionist looks up and smiles warmly, brief handshake / clipboard handover, soft clinical lighting, quiet ambient depth-of-field, no text on signage changing.
+- Remove the fixed `rotateMs` interval-driven advance.
+- Render **all** slides as `<video>` elements stacked in the same container, each `muted playsInline preload="auto"` and `autoPlay` on the active one only (others `paused` and hidden via `opacity: 0`).
+- Advance to the next slide on the active video's `onEnded` event — this chains the 5 clips back-to-back so the user perceives one continuous, auto-playing sequence that loops (slide 5 `onEnded` → slide 0).
+- Keep the label bubble and sales card animations keyed to the same slide index.
+- Preload the next clip (`preload="auto"` on `i+1`) so transitions are seamless.
+- Keep original PNG as `poster` on each `<video>` for instant paint / LCP.
 
-Common realism directives on every prompt: *"live-action documentary footage, real people, no CGI, no morphing, natural micro-expressions, filmic grain, 35mm look, stable subject identity"*. `camera_fixed: false` for organic movement.
+Result: videos play through in order (jogger → clinic → seniors → bench → kit → loop), each auto-triggered by the previous one ending, giving a single continuous cinematic reel.
 
-### Deliverables
+### 4. Also export updated stitched montage
+Re-run ffmpeg to stitch the 5 clips (new clinic + new kit clip) into `/mnt/documents/hero-montage.mp4` with 0.5s crossfades, and surface via `<presentation-artifact>`.
 
-- 4 individual MP4s → `src/assets/hero/video/` (uploaded via `lovable-assets` so they don't bloat the repo, `.asset.json` pointers committed).
-- 1 stitched montage → `/mnt/documents/hero-montage.mp4` (four 10s clips concatenated with crossfades via ffmpeg — no re-encode of the source pixels beyond the crossfade, keeps quality).
-- Presented back with a `<presentation-artifact>` for download.
-
-### Hero carousel wiring (`src/components/sections/HeroMasthead.tsx`)
-
-Replace the `<img>` slide element with a hybrid `<video>` / `<img>` renderer:
-
-```tsx
-{active ? (
-  <video
-    src={s.videoUrl}
-    poster={s.src}
-    autoPlay muted loop playsInline preload="metadata"
-    className="hero-slide absolute inset-0 w-full h-full object-cover ..."
-    style={{ opacity: active ? 1 : 0, objectPosition: /* existing focal points */ }}
-  />
-) : (
-  <img src={s.src} .../* keeps LCP + fallback */ />
-)}
-```
-
-Details:
-- Only the active slide mounts as `<video>`; inactive slides stay as `<img>` posters. Keeps memory + bandwidth sane on the carousel rotation.
-- `poster={s.src}` = the existing PNG, so the LCP `preload` in `Index.tsx` still fires and the first paint is instant.
-- `preload="metadata"` on non-active videos.
-- Respects `prefers-reduced-motion` — if true, keep `<img>` for all slides.
-- Mobile: same treatment; `playsInline` + `muted` = auto-plays on iOS Safari.
-- 5th slide (`bloodTestKit`) stays as an image since it wasn't in the four you named. Confirm if you'd like a 5th clip too.
-
-### Technical section
-
-- `videogen--generate_video` with `starting_frame` set to each hero PNG, `resolution: "1080p"`, `duration: 10`, `aspect_ratio: "16:9"`, `camera_fixed: false`.
-- Each clip is ~8-15 MB at 1080p/10s. Uploaded via `lovable-assets create --file <mp4>` → pointer JSON committed at `src/assets/hero/video/<name>.mp4.asset.json`. Referenced in code via `videoAsset.url`.
-- Montage: `ffmpeg -i clip1 -i clip2 -i clip3 -i clip4 -filter_complex "xfade transitions with 0.5s overlap" -c:v libx264 -crf 18 -preset slow /mnt/documents/hero-montage.mp4`. Final duration ~38.5s.
-- Verify each clip visually before delivering: extract a middle frame per clip with `ffmpeg -ss 5 -i clip.mp4 -frames:v 1 /tmp/qa.jpg` and inspect. Regenerate any clip that shows morphing faces, extra limbs, or text drift.
-- No changes to `Index.tsx` preload block — the video's `poster` is the same PNG, so LCP metric is unaffected.
-- Bot/prerender path (`functions/_middleware.ts`) is unaffected since the fallback for crawlers is still the poster image.
-
-### Order of ops
-
-1. Generate 4 videos with `starting_frame` = each hero PNG.
-2. QA middle frames; regenerate any that look off.
-3. Upload each to CDN via `lovable-assets`, write `.asset.json` pointers.
-4. Stitch montage with ffmpeg → `/mnt/documents/hero-montage.mp4`.
-5. Update `HeroMasthead.tsx` `SLIDES` array with `videoUrl` field and render conditionally.
-6. Build + smoke-check autoplay behaviour.
-
-### Open question
-
-If you want the 5th hero slide (blood test kit) animated too, say so — trivial to add another 10s clip and stitch it in.
+### Technical details
+- Files touched:
+  - `src/components/sections/HeroMasthead.tsx` — replace timer-driven index with `onEnded`-chained playback; add 5th video import.
+  - New asset: `src/assets/hero/video/clip-clinic-reception.mp4.asset.json` (overwrite existing asset pointer).
+  - New asset: `src/assets/hero/video/clip-blood-test-kit.mp4.asset.json`.
+- Respect `prefers-reduced-motion`: if reduced, keep current behaviour (posters only, no autoplay chain).
+- No changes to routing, data layer, `_middleware.ts`, or `Index.tsx` preloads.
+- Verify with `bunx tsgo --noEmit` and a Playwright screenshot at 390px + 1280px to confirm slide swaps still align with label + sales card.
