@@ -78,7 +78,7 @@ export function useEnhancedComparison() {
       sampleType: (test.sample_type || 'finger-prick') as EnhancedTestData['sampleType'],
       homeKitAvailable: test.home_kit_available ?? true,
       clinicVisitAvailable: test.clinic_visit_available ?? false,
-      sampleTypeCode,
+      sampleTypeCode: sampleTypeCode as EnhancedTestData['sampleTypeCode'],
       collectionMethod,
       collectionFeeType,
       collectionFeeAmount,
