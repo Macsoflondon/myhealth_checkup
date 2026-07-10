@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Clock, FlaskConical, Package, Check } from "lucide-react";
+import { Clock, FlaskConical, Package, Check, Star, ClipboardList } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { getBranding } from "@/data/providerBranding";
 
@@ -15,6 +15,9 @@ export interface HeroSalesAd {
   provider: string;
   providerLogo: string;
   url: string;
+  markers?: string[];
+  biomarkerCount?: number;
+  rating?: number;
 }
 
 interface Props {
@@ -30,10 +33,17 @@ function hexToRgba(hex: string, alpha: number) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+const DEFAULT_MARKERS = ["Cholesterol", "Vitamin D", "Thyroid", "Liver"];
+
 export default function HeroSalesTestCard({ ad }: Props) {
   const [open, setOpen] = useState(false);
   const brand = getBranding(ad.provider);
   const providerColor = brand?.primary ?? TURQUOISE;
+
+  const markers = (ad.markers && ad.markers.length ? ad.markers : DEFAULT_MARKERS).slice(0, 4);
+  const totalMarkers = ad.biomarkerCount ?? 56;
+  const extraMarkers = Math.max(0, totalMarkers - markers.length);
+  const rating = ad.rating ?? 4.8;
 
   return (
     <>
@@ -42,77 +52,138 @@ export default function HeroSalesTestCard({ ad }: Props) {
         onClick={() => setOpen(true)}
         aria-label={`Featured test: ${ad.name} from ${ad.provider}. Click for details.`}
         className="hidden md:flex absolute right-4 bottom-4 sm:right-6 sm:bottom-6 z-10
-                   w-[210px] h-[120px] flex-col text-left
-                   rounded-2xl overflow-hidden bg-white
-                   border border-slate-100
-                   hover:-translate-y-0.5 transition-all animate-fade-in font-[Montserrat]"
-        style={{
-          boxShadow:
-            "0 30px 60px -15px rgba(0,0,0,0.1), 0 0 0 1px rgba(0,0,0,0.02)",
-        }}
+                   w-[min(92vw,630px)] flex-col text-left
+                   rounded-[32px] overflow-hidden bg-[#F5F5F5]
+                   border border-white
+                   hover:-translate-y-0.5 transition-all animate-fade-in font-[Montserrat]
+                   shadow-[0_32px_64px_-16px_rgba(8,17,41,0.35)]"
       >
+        {/* Top brand gradient */}
         <div
-          className="absolute top-0 left-0 w-full h-[3px] z-10"
+          className="h-1.5 w-full"
           style={{
-            background: providerColor,
-            boxShadow: `0 2px 10px ${hexToRgba(providerColor, 0.3)}`,
+            background: `linear-gradient(90deg, ${TURQUOISE}, ${PINK}, ${TURQUOISE})`,
           }}
-        />
-        <div
-          className="absolute left-4 top-7 w-1 h-5 rounded-full z-10"
-          style={{ background: hexToRgba(providerColor, 0.2) }}
-        />
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.04]"
-          style={{
-            backgroundImage: `radial-gradient(${providerColor} 0.5px, transparent 0.5px)`,
-            backgroundSize: "8px 8px",
-          }}
+          aria-hidden="true"
         />
 
-        <div className="flex-1 flex flex-col p-4 relative">
-          <span
-            className="text-[8px] uppercase tracking-[0.25em] font-bold mb-1 truncate"
-            style={{ color: providerColor }}
-          >
-            {ad.provider}
-          </span>
-          <h3
-            className="text-[14px] font-extrabold leading-tight line-clamp-1"
-            style={{ color: "#0f172a" }}
-          >
-            {ad.name}
-          </h3>
-
-          <div className="mt-auto flex items-end justify-between gap-1">
-            <div className="flex flex-col leading-none">
-              <span
-                className="text-[9px] uppercase tracking-wider font-bold mb-0.5"
-                style={{ color: providerColor }}
-              >
-                from
-              </span>
-              <div
-                className="text-[16px] font-black leading-none"
-                style={{ color: "#0f172a" }}
-              >
-                £{ad.price.toFixed(2)}
+        <div className="p-6 lg:p-8 flex-1 flex flex-col">
+          {/* Header */}
+          <div className="flex justify-between items-start mb-5">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-white shadow-sm border border-slate-100 flex items-center justify-center overflow-hidden shrink-0">
+                {ad.providerLogo ? (
+                  <img
+                    src={ad.providerLogo}
+                    alt=""
+                    aria-hidden="true"
+                    className="max-w-[80%] max-h-[80%] object-contain"
+                  />
+                ) : null}
+              </div>
+              <div className="min-w-0">
+                <p
+                  className="text-[11px] font-bold uppercase tracking-[0.18em] truncate"
+                  style={{ color: providerColor }}
+                >
+                  {ad.provider}
+                </p>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-[#081129] font-bold text-[11px] flex items-center gap-1">
+                    <Star className="w-3 h-3 fill-amber-400 text-amber-400" aria-hidden="true" />
+                    {rating.toFixed(1)}
+                  </span>
+                  <div className="w-px h-3 bg-slate-300" aria-hidden="true" />
+                  <span
+                    className="text-[9px] font-bold border px-2 py-0.5 rounded-full uppercase tracking-tight"
+                    style={{ color: TURQUOISE, borderColor: hexToRgba(TURQUOISE, 0.3) }}
+                  >
+                    UKAS Accredited
+                  </span>
+                </div>
               </div>
             </div>
-
             <span
-              className="inline-block text-[10px] font-bold uppercase tracking-wider underline decoration-2 underline-offset-2"
+              className="text-[10px] font-extrabold px-3 py-1.5 rounded-full uppercase tracking-[0.16em] text-white shrink-0"
               style={{
-                color: "#081129",
-                textDecorationColor: providerColor,
+                background: PINK,
+                boxShadow: `0 8px 20px ${hexToRgba(PINK, 0.3)}`,
               }}
             >
-              View Details
+              Featured
             </span>
+          </div>
+
+          {/* Title */}
+          <div className="mb-4">
+            <p
+              className="text-[11px] font-bold uppercase tracking-[0.2em] mb-1.5"
+              style={{ color: TURQUOISE }}
+            >
+              {ad.category}
+            </p>
+            <h3 className="text-[#081129] text-2xl lg:text-[28px] font-extrabold leading-[1.15]">
+              {ad.name}
+            </h3>
+          </div>
+
+          {/* Biomarker chips */}
+          <div className="flex flex-wrap gap-2 mb-5">
+            {markers.map((m) => (
+              <span
+                key={m}
+                className="bg-white border border-slate-200 text-[#081129]/70 text-[11px] font-bold px-3 py-1.5 rounded-lg font-[Lato]"
+              >
+                {m}
+              </span>
+            ))}
+            {extraMarkers > 0 && (
+              <span
+                className="text-[11px] font-bold px-3 py-1.5 rounded-lg font-[Lato]"
+                style={{ background: hexToRgba(TURQUOISE, 0.1), color: TURQUOISE }}
+              >
+                +{extraMarkers} biomarkers
+              </span>
+            )}
+          </div>
+
+          {/* Meta row */}
+          <div className="flex items-center gap-5 lg:gap-6 mb-6">
+            <MetaCell icon={ClipboardList} label="Analysis" value="Comprehensive" />
+            <MetaCell icon={Clock} label="Results" value="Typical 2–5 days" />
+            <MetaCell icon={Package} label="Collection" value="Flexible" />
+          </div>
+
+          {/* Footer */}
+          <div className="mt-auto flex items-end justify-between border-t border-slate-200/60 pt-5 gap-4">
+            <div className="flex flex-col">
+              <span className="text-[#081129]/40 text-[10px] font-bold uppercase tracking-[0.18em] mb-0.5">
+                from
+              </span>
+              <span
+                className="text-3xl lg:text-4xl font-black leading-none"
+                style={{ color: PINK }}
+              >
+                £{ad.price.toFixed(2)}
+              </span>
+            </div>
+            <div className="flex gap-2.5 shrink-0">
+              <span
+                className="px-5 py-3 rounded-2xl border-2 text-[#081129] font-bold text-sm"
+                style={{ borderColor: hexToRgba(NAVY, 0.12) }}
+              >
+                Compare
+              </span>
+              <span
+                className="px-6 py-3 rounded-2xl text-white font-bold text-sm shadow-lg"
+                style={{ background: NAVY, boxShadow: `0 12px 24px ${hexToRgba(NAVY, 0.25)}` }}
+              >
+                View test
+              </span>
+            </div>
           </div>
         </div>
       </button>
-
 
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-md p-0 overflow-hidden gap-0 bg-white">
@@ -221,6 +292,34 @@ export default function HeroSalesTestCard({ ad }: Props) {
         </DialogContent>
       </Dialog>
     </>
+  );
+}
+
+function MetaCell({
+  icon: Icon,
+  label,
+  value,
+}: {
+  icon: typeof Clock;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="flex items-center gap-2.5 min-w-0">
+      <div
+        className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
+        style={{ background: hexToRgba(TURQUOISE, 0.12) }}
+        aria-hidden="true"
+      >
+        <Icon className="w-4 h-4" style={{ color: TURQUOISE }} />
+      </div>
+      <div className="min-w-0">
+        <p className="text-[9px] text-[#081129]/40 uppercase font-bold tracking-[0.18em]">
+          {label}
+        </p>
+        <p className="text-[12px] font-bold text-[#081129] font-[Lato] truncate">{value}</p>
+      </div>
+    </div>
   );
 }
 
