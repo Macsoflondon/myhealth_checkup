@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
 
 import { PROVIDER_LOGOS } from "@/constants/providers";
@@ -24,6 +24,7 @@ import clipJoggingAsset from "@/assets/hero/video/clip-jogging.mp4.asset.json";
 import clipClinicAsset from "@/assets/hero/video/clip-clinic-reception.mp4.asset.json";
 import clipSeniorAsset from "@/assets/hero/video/clip-senior-couple.mp4.asset.json";
 import clipBenchAsset from "@/assets/hero/video/clip-bench-phone.mp4.asset.json";
+import clipKitAsset from "@/assets/hero/video/clip-blood-test-kit.mp4.asset.json";
 
 const clinicReception = clinicReceptionAsset.url;
 const seniorCouple = seniorCoupleAsset.url;
