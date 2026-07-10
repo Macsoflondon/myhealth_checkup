@@ -160,13 +160,51 @@ const Wordmark = () => (
 
 export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   const [i, setI] = useState(0);
-  useEffect(() => {
-    const id = setInterval(() => setI((n) => n + 1), Math.max(1200, rotateMs));
-    return () => clearInterval(id);
-  }, [rotateMs]);
+  const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
+  const activeIndex = i % SLIDES.length;
 
-  const slide = SLIDES[i % SLIDES.length];
-  const ad = ADVERTS.length ? ADVERTS[i % ADVERTS.length] : null;
+  // Detect reduced-motion (fallback to timer-based advance).
+  const [reducedMotion, setReducedMotion] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined" || !window.matchMedia) return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReducedMotion(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    mq.addEventListener?.("change", onChange);
+    return () => mq.removeEventListener?.("change", onChange);
+  }, []);
+
+  const advance = useCallback(() => setI((n) => n + 1), []);
+
+  // Play the active video from the start; pause the others.
+  useEffect(() => {
+    videoRefs.current.forEach((v, idx) => {
+      if (!v) return;
+      if (idx === activeIndex) {
+        try {
+          v.currentTime = 0;
+        } catch {
+          /* ignore */
+        }
+        v.play().catch(() => {
+          /* autoplay may be blocked — timer fallback below still advances */
+        });
+      } else {
+        v.pause();
+      }
+    });
+  }, [activeIndex]);
+
+  // Fallback timer: advances if a video fails to fire `ended` (blocked autoplay,
+  // network stall) or if the user prefers reduced motion. 11s = clip length + buffer.
+  useEffect(() => {
+    const ms = reducedMotion ? Math.max(1200, rotateMs) : 11000;
+    const id = setTimeout(advance, ms);
+    return () => clearTimeout(id);
+  }, [activeIndex, advance, reducedMotion, rotateMs]);
+
+  const slide = SLIDES[activeIndex];
+  const ad = ADVERTS.length ? ADVERTS[activeIndex] : null;
 
   return (
     <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#F5F5F5] border border-b-0 border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[84svh] sm:min-h-[100svh] flex flex-col">
