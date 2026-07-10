@@ -156,13 +156,13 @@ export default function HeroSalesTestCard({ ad }: Props) {
           </div>
 
           {/* Footer */}
-          <div className="mt-auto flex items-end justify-between border-t border-slate-200/60 pt-2.5 sm:pt-4 gap-2 sm:gap-3">
+          <div className="mt-auto flex items-end justify-between border-t border-slate-200/60 pt-2 sm:pt-4 gap-2 sm:gap-3">
             <div className="flex flex-col min-w-0">
-              <span className="text-[#081129]/40 text-[9px] font-bold uppercase tracking-[0.16em] mb-0.5">
+              <span className="text-[#081129]/40 text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.16em] mb-0.5">
                 from
               </span>
               <span
-                className="text-xl sm:text-2xl lg:text-[28px] font-black leading-none"
+                className="text-sm sm:text-2xl lg:text-[28px] font-black leading-none"
                 style={{ color: PINK }}
               >
                 £{ad.price.toFixed(2)}
@@ -176,7 +176,7 @@ export default function HeroSalesTestCard({ ad }: Props) {
                 Compare
               </span>
               <span
-                className="px-3 py-1.5 sm:px-5 sm:py-2 rounded-lg sm:rounded-xl text-white font-bold text-[11px] sm:text-xs shadow-lg"
+                className="px-2 py-1 sm:px-5 sm:py-2 rounded-md sm:rounded-xl text-white font-bold text-[9px] sm:text-xs shadow-lg"
                 style={{ background: NAVY, boxShadow: `0 10px 20px ${hexToRgba(NAVY, 0.25)}` }}
               >
                 View test
