@@ -62,6 +62,10 @@ export function AppRoutes() {
         {/* Home */}
         <Route path="/" element={<Index />} />
         <Route path="/test-categories" element={<TestCategoriesPage />} />
+
+        {/* Legacy /category/:slug SEO URLs — redirect to canonical route */}
+        <Route path="/category/:slug" element={<CategoryRedirect />} />
+        <Route path="/category" element={<CategoryRedirect />} />
         
 
         {/* Admin Auth */}
