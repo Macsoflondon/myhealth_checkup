@@ -17,6 +17,7 @@ import { featureRoutes } from "./featureRoutes";
 
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const TestCategoriesPage = lazy(() => import("@/pages/TestCategoriesPage"));
+const CategoryRedirect = lazy(() => import("@/components/routing/CategoryRedirect"));
 
 // Lazy-load admin pages — they're only used by admins, no need to bundle in the main chunk.
 const AdminAuth = lazy(() => import("@/pages/AdminAuth"));
