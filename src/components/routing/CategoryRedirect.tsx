@@ -35,9 +35,6 @@ const SLUG_TO_ROUTE: Record<string, string> = {
 export default function CategoryRedirect() {
   const { slug } = useParams<{ slug: string }>();
   const key = (slug ?? "").toLowerCase();
-  const target = SLUG_TO_ROUTE[key] ?? `/tests/${key}`;
-  // If unknown, /tests/:category is handled by CategoryLandingPage which itself
-  // gracefully covers unmapped slugs; empty slug falls through to compare.
-  const finalTarget = key ? target : "/compare";
-  return <Navigate to={finalTarget} replace />;
+  const target = SLUG_TO_ROUTE[key] ?? "/compare";
+  return <Navigate to={target} replace />;
 }
