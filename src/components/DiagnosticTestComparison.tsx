@@ -318,16 +318,21 @@ function ComparisonTable({ tests, bestValueId, onRemove, onClear }: {
             </tr>
           </thead>
           <tbody>
+            {/* Row 1: Biomarkers */}
             <Row label="Biomarkers" tests={tests} render={(t) => t.biomarker_count
               ? <span className="font-semibold text-slate-900">{t.biomarker_count}</span> : <NotSpec />} />
+            {/* Row 2: Turnaround Time */}
             <Row label="Turnaround Time" tests={tests} zebra render={(t) =>
               t.turnaround_days_text ? <span>{t.turnaround_days_text}</span> : <NotSpec />} />
+            {/* Row 3: Sample Type */}
             <Row label="Sample Type" tests={tests} render={(t) =>
               t.sample_type ? <span>{SAMPLE_TYPE_LABELS[t.sample_type]}</span> : <NotSpec />} />
+            {/* Row 4: Collection Method */}
             <Row label="Collection Method" tests={tests} zebra render={(t) =>
               t.collection_method
                 ? <span className="inline-flex items-center gap-1.5"><Check className="h-3.5 w-3.5 text-emerald-600" />{COLLECTION_METHOD_LABELS[t.collection_method]}</span>
                 : <NotSpec />} />
+            {/* Row 5: Additional Collection Fees — amber if > £0 */}
             <Row label="Additional Collection Fees" tests={tests} render={(t) => {
               const fee = formatCollectionFee(t.collection_fee_type, num(t.collection_fee_amount));
               if (t.collection_fee_type == null) return <NotSpec />;
@@ -335,24 +340,8 @@ function ComparisonTable({ tests, bestValueId, onRemove, onClear }: {
                 ? <span className="text-slate-600">{fee.label}</span>
                 : <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-700">{fee.label}</span>;
             }} />
-            <tr className="bg-slate-50">
-              <td className="sticky left-0 z-10 bg-slate-50 px-4 py-3 text-xs font-semibold text-slate-700">Total Expected Cost</td>
-              {tests.map((t) => {
-                const total = computeTotalExpectedCost(
-                  num(t.price) ?? 0, t.collection_fee_type, num(t.collection_fee_amount),
-                  t.clinical_review_type, num(t.clinical_review_fee));
-                const optionalNote = t.clinical_review_type === "optional" && num(t.clinical_review_fee) != null;
-                return (
-                  <td key={t.id} className="border-l border-slate-100 px-4 py-3">
-                    <span className="text-base font-bold" style={{ color: colorFor(t.provider_name) }}>{formatPrice(total)}</span>
-                    {optionalNote && (
-                      <span className="mt-0.5 block text-[10px] text-slate-400">+{formatPrice(num(t.clinical_review_fee))} if you add review</span>
-                    )}
-                  </td>
-                );
-              })}
-            </tr>
-            <Row label="Clinical Review" tests={tests} render={(t) => {
+            {/* Row 6: Clinical Review */}
+            <Row label="Clinical Review" tests={tests} zebra render={(t) => {
               if (t.clinical_review_type == null) return <NotSpec />;
               const r = formatClinicalReview(t.clinical_review_type, num(t.clinical_review_fee));
               return (
@@ -364,6 +353,25 @@ function ComparisonTable({ tests, bestValueId, onRemove, onClear }: {
                 </span>
               );
             }} />
+            {/* Row 7: TOTAL EXPECTED COST — Primary focal point */}
+            <tr className="bg-[#081129]">
+              <td className="sticky left-0 z-10 bg-[#081129] px-4 py-4 text-xs font-bold uppercase tracking-wide text-white">Total Expected Cost</td>
+              {tests.map((t) => {
+                const total = computeTotalExpectedCost(
+                  num(t.price) ?? 0, t.collection_fee_type, num(t.collection_fee_amount),
+                  t.clinical_review_type, num(t.clinical_review_fee));
+                const optionalNote = t.clinical_review_type === "optional" && num(t.clinical_review_fee) != null;
+                return (
+                  <td key={t.id} className="border-l border-slate-700 px-4 py-4">
+                    <span className="text-lg font-extrabold text-[#22c0d4]">{formatPrice(total)}</span>
+                    {optionalNote && (
+                      <span className="mt-0.5 block text-[10px] text-slate-300">+{formatPrice(num(t.clinical_review_fee))} if you add review</span>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+            {/* CTA row */}
             <tr>
               <td className="sticky left-0 z-10 bg-white px-4 py-3" />
               {tests.map((t) => (
