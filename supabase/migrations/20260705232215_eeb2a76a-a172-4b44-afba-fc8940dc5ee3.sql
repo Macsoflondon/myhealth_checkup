@@ -15,13 +15,16 @@ DROP POLICY IF EXISTS "runs read auth" ON public.engine_runs;
 CREATE POLICY "runs read admin" ON public.engine_runs
   FOR SELECT TO authenticated USING (public.has_role(auth.uid(), 'admin'::app_role));
 
--- 2) recommendation_history: drop blanket 'guest' visibility
-DROP POLICY IF EXISTS "recommendation_history_own_read" ON public.recommendation_history;
-DROP POLICY IF EXISTS "rec_history_user_read" ON public.recommendation_history;
-
-CREATE POLICY "rec_history_own_read" ON public.recommendation_history
-  FOR SELECT TO authenticated
-  USING ((auth.uid())::text = user_id);
+-- 2) recommendation_history: drop blanket 'guest' visibility (out-of-band table — guard)
+DO $$
+BEGIN
+  DROP POLICY IF EXISTS "recommendation_history_own_read" ON public.recommendation_history;
+  DROP POLICY IF EXISTS "rec_history_user_read" ON public.recommendation_history;
+  CREATE POLICY "rec_history_own_read" ON public.recommendation_history
+    FOR SELECT TO authenticated
+    USING ((auth.uid())::text = user_id);
+EXCEPTION WHEN undefined_table THEN NULL;
+END $$;
 
 -- 3) SECURITY DEFINER function search_path fix
 CREATE OR REPLACE FUNCTION public.cleanup_expired_recommendations()
@@ -36,6 +39,10 @@ BEGIN
 END;
 $$;
 
--- 4) Revoke authenticated EXECUTE on SECURITY DEFINER match_biomarkers
-REVOKE EXECUTE ON FUNCTION public.match_biomarkers(extensions.vector, double precision, integer) FROM authenticated, anon, PUBLIC;
-GRANT EXECUTE ON FUNCTION public.match_biomarkers(extensions.vector, double precision, integer) TO service_role;
+-- 4) Revoke authenticated EXECUTE on SECURITY DEFINER match_biomarkers (out-of-band function — guard)
+DO $$
+BEGIN
+  REVOKE EXECUTE ON FUNCTION public.match_biomarkers(extensions.vector, double precision, integer) FROM authenticated, anon, PUBLIC;
+  GRANT EXECUTE ON FUNCTION public.match_biomarkers(extensions.vector, double precision, integer) TO service_role;
+EXCEPTION WHEN undefined_function OR undefined_object THEN NULL;
+END $$;

@@ -3,7 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import {
   Activity, FileText, TrendingUp, Upload, Sparkles, ArrowRight,
   Heart, User, Package, Clock, PoundSterling, GripVertical,
-  Building2, ExternalLink, Loader2, Trash2,
+  Building2, ExternalLink, Loader2, Trash2, Search,
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -122,6 +122,28 @@ export const HealthDataHub = () => {
                 <Button asChild className="bg-brand-pink hover:bg-brand-pink/90">
                   <Link to="/blood-test-analysis">
                     Analyse Your Results
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+          </Card>
+
+          <Card className="p-6 border-2 border-brand-turquoise/30 bg-gradient-to-br from-brand-turquoise/5 to-transparent">
+            <div className="flex flex-col md:flex-row md:items-center gap-6">
+              <div className="flex-shrink-0">
+                <div className="w-16 h-16 bg-brand-turquoise/10 rounded-2xl flex items-center justify-center">
+                  <Search className="w-8 h-8 text-brand-turquoise" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-semibold text-brand-navy mb-2">Hidden Gap Detector</h3>
+                <p className="text-muted-foreground mb-4">
+                  Discover which preventive health screenings you may be missing. Our AI analyses your profile against NHS guidelines to identify unchecked areas before problems become symptoms.
+                </p>
+                <Button asChild className="bg-brand-turquoise hover:bg-brand-turquoise/90">
+                  <Link to="/hidden-gap-detector">
+                    Detect My Health Gaps
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>

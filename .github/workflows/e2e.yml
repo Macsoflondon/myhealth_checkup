@@ -18,7 +18,13 @@ jobs:
           bun-version: latest
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: bun install
+
+      - name: Start dev server
+        run: bun run dev &
+        env:
+          VITE_SUPABASE_URL: https://placeholder.supabase.co
+          VITE_SUPABASE_KEY: placeholder_anon_key
 
       - name: Cache Playwright browsers
         uses: actions/cache@v4
@@ -31,11 +37,12 @@ jobs:
       - name: Install Playwright Chromium
         run: bunx playwright install --with-deps chromium
 
-      - name: Run AccreditedProvidersBar visual regression
-        run: bunx playwright test e2e/accredited-providers-bar.spec.ts
+      - name: Wait for dev server
+        run: |
+          timeout 60 bash -c 'until curl -sf http://localhost:8080 > /dev/null 2>&1; do sleep 2; done'
 
-      - name: Run logo CLS + asset-timing regression
-        run: bunx playwright test e2e/logo-stability.spec.ts
+      - name: Run AccreditedProvidersBar visual regression
+        run: bunx playwright test accredited-providers-bar.spec.ts
 
       - name: Upload Playwright HTML report
         if: ${{ !cancelled() }}

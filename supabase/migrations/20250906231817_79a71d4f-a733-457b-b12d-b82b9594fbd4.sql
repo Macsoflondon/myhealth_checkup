@@ -3,7 +3,7 @@ ALTER TABLE public.clinics
 ADD COLUMN provider_id text;
 
 -- Create index on provider_id for faster filtering
-CREATE INDEX idx_clinics_provider_id ON public.clinics(provider_id);
+CREATE INDEX IF NOT EXISTS idx_clinics_provider_id ON public.clinics(provider_id);
 
 -- Create spatial index on lat/lon for faster geographic queries
 CREATE INDEX idx_clinics_location ON public.clinics USING GIST (
@@ -11,7 +11,7 @@ CREATE INDEX idx_clinics_location ON public.clinics USING GIST (
 );
 
 -- Create index on postal_code for faster postcode searches
-CREATE INDEX idx_clinics_postal_code ON public.clinics(postal_code);
+CREATE INDEX IF NOT EXISTS idx_clinics_postal_code ON public.clinics(postal_code);
 
 -- Update existing clinics with provider_id based on name patterns
 UPDATE public.clinics 

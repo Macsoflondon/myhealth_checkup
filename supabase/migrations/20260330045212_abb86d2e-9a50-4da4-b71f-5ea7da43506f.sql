@@ -1,7 +1,7 @@
 
--- Fix 1: Remove sensitive tables from Realtime publications
-ALTER PUBLICATION supabase_realtime DROP TABLE public.audit_logs;
-ALTER PUBLICATION supabase_realtime DROP TABLE public.scraping_jobs;
+-- Fix 1: Remove sensitive tables from Realtime publications (guarded — tables may not be in publication on fresh DBs)
+DO $$ BEGIN ALTER PUBLICATION supabase_realtime DROP TABLE public.audit_logs; EXCEPTION WHEN undefined_object THEN NULL; END $$;
+DO $$ BEGIN ALTER PUBLICATION supabase_realtime DROP TABLE public.scraping_jobs; EXCEPTION WHEN undefined_object THEN NULL; END $$;
 
 -- Fix 2: Consolidate user_roles SELECT policies - remove duplicate
 DROP POLICY IF EXISTS "user_roles_owner_select" ON public.user_roles;

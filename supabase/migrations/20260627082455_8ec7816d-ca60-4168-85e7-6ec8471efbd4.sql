@@ -6,14 +6,14 @@ CREATE OR REPLACE FUNCTION public.categories_set_path()
  SET search_path TO 'public', 'extensions'
 AS $function$
 DECLARE
-  parent_path extensions.ltree;
+  parent_path ltree;
   parent_level integer;
   safe_slug text;
 BEGIN
   safe_slug := regexp_replace(lower(NEW.slug), '[^a-z0-9_]+', '_', 'g');
   IF NEW.parent_id IS NULL THEN
     NEW.level := 0;
-    NEW.path := safe_slug::extensions.ltree;
+    NEW.path := safe_slug::ltree;
   ELSE
     SELECT path, level INTO parent_path, parent_level
     FROM public.categories WHERE id = NEW.parent_id;
@@ -21,7 +21,7 @@ BEGIN
       RAISE EXCEPTION 'Parent category % has no path', NEW.parent_id;
     END IF;
     NEW.level := parent_level + 1;
-    NEW.path := parent_path || safe_slug::extensions.ltree;
+    NEW.path := parent_path || safe_slug::ltree;
   END IF;
   RETURN NEW;
 END;
