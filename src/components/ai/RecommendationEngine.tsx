@@ -45,14 +45,16 @@ const RecommendationEngine = () => {
   const [symptoms, setSymptoms] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
+  const [methodPreference, setMethodPreference] = useState('');
   const [analysisResult, setAnalysisResult] = useState<AIAnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [showHistory, setShowHistory] = useState(false);
   const [queryHistory, setQueryHistory] = useState<QueryHistoryItem[]>([]);
 
+  const showDemographics = symptoms.trim().length >= 3;
+
   useEffect(() => {
-    // Check if user is authenticated
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
       if (user) {
@@ -103,12 +105,12 @@ const RecommendationEngine = () => {
     setAnalysisResult(null);
 
     try {
-      const { data, error } = await supabase.functions.invoke('health-ai-analysis', {
-        body: { 
-          query: symptoms,
-          age: age ? parseInt(age) : null,
+      const { data, error } = await supabase.functions.invoke('ai-human-context', {
+        body: {
+          query_text: symptoms,
           gender: gender || null,
-          userId: user?.id || null
+          age: age ? parseInt(age) : null,
+          method_preference: methodPreference || null,
         }
       });
 
@@ -171,7 +173,6 @@ const RecommendationEngine = () => {
         </p>
       </div>
 
-      {/* GDPR Notice for authenticated users */}
       {user && (
         <Alert className="mb-6 border-primary/20 bg-primary/5">
           <Shield className="h-4 w-4 text-primary" />
@@ -182,7 +183,6 @@ const RecommendationEngine = () => {
         </Alert>
       )}
 
-      {/* Medical Disclaimer */}
       <Alert className="mb-6 border-amber-200 bg-amber-50">
         <AlertTriangle className="h-4 w-4 text-amber-600" />
         <AlertDescription className="text-amber-800">
@@ -191,7 +191,6 @@ const RecommendationEngine = () => {
         </AlertDescription>
       </Alert>
 
-      {/* Sign-in prompt for guests */}
       {!user && (
         <Alert className="mb-6 border-primary/20 bg-primary/5">
           <Shield className="h-4 w-4 text-primary" />
@@ -202,7 +201,6 @@ const RecommendationEngine = () => {
         </Alert>
       )}
 
-      {/* Query History */}
       {user && queryHistory.length > 0 && (
         <Card className="p-4 mb-6">
           <div className="flex items-center justify-between mb-4">
@@ -247,31 +245,6 @@ const RecommendationEngine = () => {
           <Target className="h-5 w-5 text-primary" />
           Tell us about your wellness goals
         </h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div>
-            <label className="block text-sm font-medium mb-2">Age</label>
-            <Input type="number" placeholder="Enter your age" value={age} onChange={e => setAge(e.target.value)} />
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-2">Gender</label>
-            <select className="w-full p-2 border rounded-md" value={gender} onChange={e => setGender(e.target.value)}>
-              <option value="">Select gender</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Prefer not to say</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium mb-2">Lifestyle</label>
-            <select className="w-full p-2 border rounded-md">
-              <option value="">Select lifestyle</option>
-              <option value="sedentary">Sedentary</option>
-              <option value="active">Active</option>
-              <option value="very-active">Very Active</option>
-            </select>
-          </div>
-        </div>
 
         <div className="mb-6">
           <label className="block text-sm font-medium mb-2">
@@ -287,6 +260,33 @@ const RecommendationEngine = () => {
             Note: For specific symptoms or medical concerns, please consult your healthcare professional directly.
           </p>
         </div>
+
+        {showDemographics && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 animate-in fade-in slide-in-from-top-2 duration-300">
+            <div>
+              <label className="block text-sm font-medium mb-2">Age</label>
+              <Input type="number" placeholder="Enter your age" value={age} onChange={e => setAge(e.target.value)} />
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Gender</label>
+              <select className="w-full p-2 border rounded-md" value={gender} onChange={e => setGender(e.target.value)}>
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Prefer not to say</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Collection Preference</label>
+              <select className="w-full p-2 border rounded-md" value={methodPreference} onChange={e => setMethodPreference(e.target.value)}>
+                <option value="">No preference</option>
+                <option value="home">At-home kit</option>
+                <option value="clinic">Clinic visit</option>
+                <option value="either">Either</option>
+              </select>
+            </div>
+          </div>
+        )}
 
         <Button onClick={generateRecommendations} disabled={isLoading || !symptoms.trim()} className="w-full">
           {isLoading ? (
@@ -305,7 +305,6 @@ const RecommendationEngine = () => {
 
       {analysisResult && (
         <div className="space-y-6">
-          {/* AI Analysis */}
           <Card className="p-6 bg-blue-50 border-blue-200">
             <h2 className="text-xl font-semibold flex items-center gap-2 mb-4">
               <Brain className="h-5 w-5 text-primary" />
@@ -321,7 +320,6 @@ const RecommendationEngine = () => {
             )}
           </Card>
 
-          {/* Medical Guidance */}
           <Alert className="border-red-200 bg-red-50">
             <Stethoscope className="h-4 w-4 text-red-600" />
             <AlertDescription className="text-red-800">
@@ -329,7 +327,6 @@ const RecommendationEngine = () => {
             </AlertDescription>
           </Alert>
 
-          {/* Test Recommendations */}
           {analysisResult.recommendedTests.length > 0 && (
             <div className="space-y-4">
               <h2 className="text-xl font-semibold flex items-center gap-2">
@@ -386,7 +383,6 @@ const RecommendationEngine = () => {
                     </div>
                   </div>
                   
-                  {/* Medical Disclaimer for each test */}
                   <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800">
                     This test recommendation is for wellness screening purposes only. Results should be discussed with your healthcare professional.
                   </div>
@@ -395,7 +391,6 @@ const RecommendationEngine = () => {
             </div>
           )}
 
-          {/* Bottom Medical Disclaimer */}
           <Alert className="border-amber-200 bg-amber-50">
             <AlertTriangle className="h-4 w-4 text-amber-600" />
             <AlertDescription className="text-amber-800">
