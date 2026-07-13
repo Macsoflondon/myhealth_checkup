@@ -168,7 +168,7 @@ const RecommendationEngine = () => {
           <Brain className="h-8 w-8 text-primary" />
           <h2 className="text-3xl font-bold">AI Wellness Recommendations</h2>
         </div>
-        <p className="text-muted-foreground">
+        <p className="text-white">
           Get personalised wellness test recommendations from our trusted providers
         </p>
       </div>
