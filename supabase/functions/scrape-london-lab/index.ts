@@ -120,7 +120,7 @@ function extractTitle(html: string): string {
   for (const pattern of patterns) {
     const match = html.match(pattern);
     if (match && match[1]) {
-      return match[1].trim().replace(/\s*[\|\-]\s*London.*$/i, '').trim();
+      return match[1].trim().replace(/\s*[|-]\s*London.*$/i, '').trim();
     }
   }
   
@@ -172,7 +172,7 @@ function extractPrice(html: string): { current: number | null; original: number 
             }
           }
         }
-      } catch { }
+      } catch { /* ignore */ }
     }
   }
   

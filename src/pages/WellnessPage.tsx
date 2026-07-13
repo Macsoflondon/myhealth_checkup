@@ -5,7 +5,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
 import { Button } from "@/components/ui/button";
-import { Heart, Activity, Shield } from "lucide-react";
+
 import PageHeading from "@/components/ui/page-heading";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { CategoryStandardHero } from "@/components/category/CategoryStandardHero";
@@ -199,14 +199,7 @@ const WellnessPage = () => {
       <Header />
 
       <main className="min-h-screen bg-background">
-        <CategoryStandardHero
-          pillLabel="General Wellness"
-          benefits={[
-            { icon: Shield, title: "Early Detection", description: "Identify issues before they become serious" },
-            { icon: Activity, title: "Optimise Performance", description: "Monitor biomarkers to enhance wellbeing" },
-            { icon: Heart, title: "Peace of Mind", description: "Confidence in your health status" },
-          ]}
-        />
+        <CategoryStandardHero pillLabel="General Wellness" />
 
         {/* Browse Tests by Category */}
         <section

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import React, { useState, useEffect } from "react";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
@@ -176,6 +177,58 @@ const AdminScraperDashboardPage: React.FC = () => {
     }
   };
 
+  const getSmartRescrapeTargets = (): Provider[] => {
+    return PROVIDERS.filter((provider) => {
+      const job = jobs.find((j) => j.provider_id === provider.id);
+      const count = testCounts[provider.id] ?? 0;
+      // Retry when: never run, failed, still running (likely stuck), or completed but empty/partial
+      if (!job) return true;
+      if (job.status !== 'completed') return true;
+      if (count === 0) return true;
+      return false;
+    });
+  };
+
+  const smartRescrape = async () => {
+    const targets = getSmartRescrapeTargets();
+    if (targets.length === 0) {
+      toast({
+        title: "Nothing to re-scrape",
+        description: "All providers completed successfully with data.",
+      });
+      return;
+    }
+
+    setRunningScrapers(new Set(targets.map((p) => p.id)));
+
+    try {
+      const { data, error } = await supabase.functions.invoke('run-all-scrapers', {
+        body: { providerIds: targets.map((p) => p.id) },
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: `Smart re-scrape: ${targets.length} provider(s)`,
+        description:
+          data?.message ||
+          `Retrying: ${targets.map((p) => p.name).join(', ')}`,
+      });
+
+      await fetchJobs();
+      await fetchTestCounts();
+    } catch (error) {
+      console.error('Smart re-scrape failed:', error);
+      toast({
+        title: "Smart re-scrape failed",
+        description: error instanceof Error ? error.message : 'Unknown error',
+        variant: "destructive",
+      });
+    } finally {
+      setRunningScrapers(new Set());
+    }
+  };
+
   const refreshPopularTests = async () => {
     setIsRefreshingPopular(true);
     setPopularResult(null);
@@ -245,6 +298,15 @@ const AdminScraperDashboardPage: React.FC = () => {
                 <Play className="h-4 w-4 mr-2" />
                 Run All Scrapers
               </Button>
+              <Button
+                variant="secondary"
+                onClick={smartRescrape}
+                disabled={runningScrapers.size > 0}
+                title="Retry only providers that failed, are stuck, or returned no data"
+              >
+                <Wand2 className="h-4 w-4 mr-2" />
+                Smart Re-scrape ({getSmartRescrapeTargets().length})
+              </Button>
             </div>
           </div>
 
@@ -312,7 +374,7 @@ const AdminScraperDashboardPage: React.FC = () => {
                         <Button
                           size="sm"
                           onClick={() => runScraper(provider)}
-                          disabled={isRunning || runningScrapers.size > 0}
+                          disabled={isRunning}
                         >
                           {isRunning ? (
                             <>
@@ -331,7 +393,7 @@ const AdminScraperDashboardPage: React.FC = () => {
                             <Button
                               size="sm"
                               variant="destructive"
-                              disabled={isRunning || runningScrapers.size > 0}
+                              disabled={isRunning}
                             >
                               <Trash2 className="h-4 w-4 mr-2" />
                               Purge & Re-scrape

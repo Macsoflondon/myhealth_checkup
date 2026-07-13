@@ -250,7 +250,7 @@ const isCli = typeof process !== 'undefined'
 
 if (isCli) {
   const report = validateCompareData();
-  // eslint-disable-next-line no-console
+   
   console.log(formatReport(report));
   if (!report.ok) process.exit(1);
 }

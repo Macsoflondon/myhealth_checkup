@@ -31,7 +31,7 @@ export const GoogleSignInButton = ({
         onLoading?.(false);
       }
       // Don't set loading to false on success - redirect will happen
-    } catch (error: any) {
+    } catch (error) {
       toast.error("An unexpected error occurred with Google sign-in");
       onLoading?.(false);
     }

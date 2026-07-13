@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { lazy, Suspense, ComponentType } from "react";
 import { Loader2 } from "lucide-react";
 import { ErrorBoundary } from "./ErrorBoundary";

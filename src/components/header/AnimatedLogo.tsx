@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
-import logo1 from "@/assets/logo-1.svg";
-import logo2 from "@/assets/logo-2.svg";
+import logo3 from "@/assets/logo-3.svg";
 
 interface AnimatedLogoProps {
   className?: string;
   mobileClassName?: string;
 }
 
-const logos = [logo1, logo2];
+const logos = [logo3];
 
 export const AnimatedLogo = ({ className, mobileClassName }: AnimatedLogoProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);

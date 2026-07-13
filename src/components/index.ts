@@ -38,8 +38,4 @@ export { ProviderLogo } from "./providers/ProviderLogo";
 export * from "./compare";
 
 
-// Booking components (via barrel)
-export * from "./booking";
 
-// Test components (via barrel)
-export * from "./tests";

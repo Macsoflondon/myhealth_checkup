@@ -88,7 +88,7 @@ const CookiePolicyPage = () => {
                     <p className="text-sm text-muted-foreground mb-3">Use our cookie preference centre to control which types of cookies you accept.</p>
                     <Button
                       onClick={() => {
-                        try { localStorage.removeItem('cookieConsent'); } catch {}
+                        try { localStorage.removeItem('cookieConsent'); } catch { /* storage unavailable */ }
                         window.dispatchEvent(new CustomEvent('cookie-preferences:open'));
                       }}
                     >

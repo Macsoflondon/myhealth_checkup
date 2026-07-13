@@ -73,7 +73,7 @@ class FavoritesApi {
     try {
       const { data, error } = await supabase
         .from("favorites")
-        .insert(favorite as any)
+        .insert(favorite)
         .select()
         .single();
 

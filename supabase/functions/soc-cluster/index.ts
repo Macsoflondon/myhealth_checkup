@@ -403,6 +403,33 @@ Deno.serve(async (req) => {
     });
   }
 
+  // AuthN: accept cron secret header, service-role bearer, or admin JWT.
+  const cronSecret = Deno.env.get("SCRAPER_CRON_SECRET") ?? "";
+  const cronHeader = req.headers.get("x-cron-secret") ?? "";
+  const authHeader = req.headers.get("Authorization") ?? "";
+  const bearer = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : "";
+
+  let allowed = Boolean(cronSecret) && cronHeader === cronSecret;
+  if (!allowed && bearer && bearer === serviceKey) allowed = true;
+  if (!allowed && bearer) {
+    const anonKey = Deno.env.get("SUPABASE_ANON_KEY");
+    if (anonKey) {
+      const anon = createClient(url, anonKey, { global: { headers: { Authorization: authHeader } } });
+      const { data: claimsData } = await anon.auth.getClaims(bearer);
+      const uid = claimsData?.claims?.sub as string | undefined;
+      if (uid) {
+        const svc = createClient(url, serviceKey, { auth: { persistSession: false } });
+        const { data: isAdmin } = await svc.rpc("has_role", { _user_id: uid, _role: "admin" });
+        allowed = isAdmin === true;
+      }
+    }
+  }
+  if (!allowed) {
+    return new Response(JSON.stringify({ error: "unauthorized" }), {
+      status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
   const supabase = createClient(url, serviceKey, { auth: { persistSession: false } });
   const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
 

@@ -38,7 +38,7 @@ export async function logSensitiveAccess(args: LogAccessArgs): Promise<void> {
     _classification: classification,
   });
   if (error) {
-    // eslint-disable-next-line no-console
+     
     console.warn('[audit] log_data_access_with_reason failed', error.message);
   }
 }

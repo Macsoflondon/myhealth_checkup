@@ -73,6 +73,7 @@ const MAX_DESCRIPTION_LENGTH = 2000;
 function sanitizeString(str: string, maxLength: number): string {
   if (typeof str !== 'string') return '';
   // Remove potential prompt injection patterns and limit length
+  // eslint-disable-next-line no-control-regex -- intentionally strips control characters from user input
   return str.slice(0, maxLength).replace(/[\x00-\x1F\x7F]/g, '');
 }
 

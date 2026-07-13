@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 // Automated verification: for every active provider test, confirm the
 // stored image_url is present, not a placeholder, hosted by the provider,
 // reachable, and serves an image content-type. Results land in

@@ -47,6 +47,7 @@ const SOURCE_VARIANT: Record<Exclude<Source, "all">, "default" | "secondary" | "
 function csvEscape(v: unknown): string {
   let s = v == null ? "" : typeof v === "string" ? v : JSON.stringify(v);
   // Strip control chars (incl. newlines, tabs) that would break CSV rows or hint CSV injection.
+  // eslint-disable-next-line no-control-regex -- intentional: strips control chars for CSV safety
   s = s.replace(/[\u0000-\u001f\u007f]/g, " ");
   // Neutralise leading formula characters that Excel would evaluate.
   if (/^[=+\-@]/.test(s)) s = "'" + s;
@@ -141,7 +142,7 @@ const AdminAuditConsolePage = () => {
     const CAP = 10_000;
     const capped = filtered.slice(0, CAP);
     if (filtered.length > CAP) {
-      // eslint-disable-next-line no-alert
+       
       const ok = confirm(`Export is capped at ${CAP.toLocaleString()} rows (you have ${filtered.length.toLocaleString()}). Continue with the first ${CAP.toLocaleString()}?`);
       if (!ok) return;
     }

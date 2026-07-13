@@ -32,12 +32,13 @@ export function sortTests<T extends { test_name: string; price?: number | null; 
         return (b.price || 0) - (a.price || 0);
       case "biomarkers-desc":
         return (b.biomarker_count || 0) - (a.biomarker_count || 0);
-      case "popularity":
+      case "popularity": {
         // Popular first, then by popularity_rank (lower = better)
         const aPopular = a.is_popular ? 1 : 0;
         const bPopular = b.is_popular ? 1 : 0;
         if (bPopular !== aPopular) return bPopular - aPopular;
         return (a.popularity_rank || 999) - (b.popularity_rank || 999);
+      }
       default:
         return 0;
     }

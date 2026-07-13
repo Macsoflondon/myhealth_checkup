@@ -44,7 +44,7 @@ export function trackEvent(event: string, props: AnalyticsProps = {}): void {
     }
 
     if (import.meta.env.DEV) {
-      // eslint-disable-next-line no-console
+       
       console.debug("[analytics]", event, props);
     }
   } catch {

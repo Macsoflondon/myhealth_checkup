@@ -100,8 +100,8 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
     name: 'London Medical Laboratory',
     logo: PROVIDER_LOGOS['london-medical-laboratory'],
     website: PROVIDER_WEBSITES['london-medical-laboratory'],
-    description: 'Certified laboratory services',
-    accreditations: ['UKAS', 'ISO 15189'],
+    description: 'CQC-regulated laboratory services',
+    accreditations: ['CQC', 'UKAS', 'ISO 15189'],
   },
   'randox': {
     id: 'randox',

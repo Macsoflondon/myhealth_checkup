@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
@@ -436,7 +437,7 @@ export const AssistedTestFinder = () => {
             <div className="flex justify-center mb-6">
               <img
                 src={myhealthCheckupLogo.url}
-                alt="myhealth checkup — Your health. Your choice. One trusted platform."
+                alt="myhealth checkup — YOUR HEALTH. YOUR CHOICE. ONE TRUSTED PLATFORM."
                 className="w-full max-w-md h-auto rounded-xl"
                 loading="eager"
               />

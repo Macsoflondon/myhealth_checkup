@@ -12,5 +12,5 @@ export interface PaginationParams {
 }
 
 export interface FilterParams {
-  [key: string]: any;
+  [key: string]: unknown;
 }

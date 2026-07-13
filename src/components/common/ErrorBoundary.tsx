@@ -26,7 +26,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Preserve raw Error (stack) in devtools / Server Logs
-    // eslint-disable-next-line no-console
+     
     console.error("[ErrorBoundary]", error, errorInfo);
     logger.error("ErrorBoundary caught an error:", { error, errorInfo });
     this.setState({ errorInfo });

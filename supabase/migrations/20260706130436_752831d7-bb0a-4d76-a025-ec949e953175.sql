@@ -1,0 +1,1 @@
+REVOKE EXECUTE ON FUNCTION public.call_edge_with_service_role(text, jsonb) FROM authenticated;

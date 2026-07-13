@@ -15,7 +15,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 
 interface SaveComparisonDialogProps {
-  onSave: (name: string, notes?: string) => Promise<any>;
+  onSave: (name: string, notes?: string) => Promise<unknown>;
   disabled?: boolean;
   testCount: number;
 }

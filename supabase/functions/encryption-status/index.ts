@@ -191,7 +191,7 @@ serve(async (req) => {
     ];
 
     // ---- Decryption probe ----
-    let decryption_probe: {
+    const decryption_probe: {
       attempted: boolean;
       sample_table: string | null;
       sample_column: string | null;

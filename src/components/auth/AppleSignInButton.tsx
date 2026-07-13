@@ -26,7 +26,7 @@ export const AppleSignInButton = ({
         toast.error(error.message || "Failed to sign in with Apple");
         onLoading?.(false);
       }
-    } catch (error: any) {
+    } catch (error) {
       toast.error("An unexpected error occurred with Apple sign-in");
       onLoading?.(false);
     }

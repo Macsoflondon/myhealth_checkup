@@ -9,7 +9,7 @@ export interface Test {
   description: string;
   detailed_description?: string;
   test_code?: string;
-  biomarkers: any;
+  biomarkers: unknown;
   sample_type?: string;
   fasting_required?: boolean;
   typical_turnaround_days?: number;

@@ -157,7 +157,7 @@ const GoodbodyCarousel = () => {
   const onPointerUp = (e: ReactPointerEvent) => {
     if (!draggingRef.current) return;
     draggingRef.current = false;
-    try { (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId); } catch {}
+    try { (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId); } catch { /* capture already released */ }
     // amplify a little
     velocityRef.current *= 16;
   };

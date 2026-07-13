@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
 
 const corsHeaders = {
@@ -44,25 +45,11 @@ function determineCategory(title: string, description: string): string {
   return 'General Health';
 }
 
-async function firecrawlScrape(url: string, apiKey: string): Promise<any> {
-  const response = await fetch('https://api.firecrawl.dev/v1/scrape', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, formats: ['markdown'], onlyMainContent: true, waitFor: 2000 }),
-  });
-  if (!response.ok) throw new Error(`Firecrawl error: ${response.status}`);
-  return response.json();
-}
+import { firecrawlScrape, firecrawlMap, runInChunks } from '../_shared/firecrawl-helpers.ts';
 
-async function firecrawlMap(url: string, apiKey: string): Promise<string[]> {
-  const response = await fetch('https://api.firecrawl.dev/v1/map', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url, search: 'blood test health', limit: 200, includeSubdomains: false }),
-  });
-  if (!response.ok) throw new Error(`Firecrawl map error: ${response.status}`);
-  const data = await response.json();
-  return (data.links || []).filter((l: string) =>
+async function mapLondonHealth(baseUrl: string, apiKey: string): Promise<string[]> {
+  const links = await firecrawlMap(baseUrl, apiKey, { search: 'blood test health', limit: 200 });
+  return links.filter((l) =>
     (l.includes('/product') || l.includes('/test') || l.includes('/blood-test') || l.includes('/health'))
     && !l.includes('?') && !l.includes('#') && !l.includes('/cart') && !l.includes('/account')
     && !l.includes('/blog') && !l.includes('/contact') && !l.includes('/about')
@@ -94,7 +81,7 @@ Deno.serve(async (req) => {
 
     let productUrls: string[] = [];
     try {
-      productUrls = await firecrawlMap(BASE_URL, firecrawlApiKey);
+      productUrls = await mapLondonHealth(BASE_URL, firecrawlApiKey);
       console.log(`Map discovered ${productUrls.length} URLs`);
     } catch (e) {
       console.error('Map failed:', (e instanceof Error ? e.message : String(e)));
@@ -102,7 +89,9 @@ Deno.serve(async (req) => {
 
     if (productUrls.length < 5) {
       try {
-        const homeResult = await firecrawlScrape(BASE_URL, firecrawlApiKey);
+        const homeResult = await firecrawlScrape(BASE_URL, firecrawlApiKey, {
+          formats: ['markdown'], onlyMainContent: true, waitFor: 1500, timeout: 60000, proxy: 'stealth',
+        });
         if (homeResult.success && homeResult.data?.markdown) {
           const urlMatches = homeResult.data.markdown.matchAll(/\((https?:\/\/[^)]+)\)/g);
           for (const m of urlMatches) {
@@ -120,52 +109,50 @@ Deno.serve(async (req) => {
     console.log(`Total URLs: ${productUrls.length}`);
 
     const products: any[] = [];
-    for (const url of productUrls.slice(0, 50)) {
-      try {
-        const slug = new URL(url).pathname.split('/').filter(Boolean).pop() || '';
-        console.log(`Scraping: ${slug}`);
-        const result = await firecrawlScrape(url, firecrawlApiKey);
-        if (!result.success || !result.data) continue;
+    // Batch mode, concurrency 4
+    await runInChunks(productUrls.slice(0, 50), 8, async (url) => {
+      const slug = new URL(url).pathname.split('/').filter(Boolean).pop() || '';
+      console.log(`Scraping: ${slug}`);
+      const result = await firecrawlScrape(url, firecrawlApiKey, {
+        formats: ['markdown'], onlyMainContent: true, waitFor: 1500, timeout: 60000, proxy: 'stealth',
+      });
+      if (!result.success || !result.data) return;
 
-        const markdown = result.data.markdown || '';
-        const metadata = result.data.metadata || {};
+      const markdown = result.data.markdown || '';
+      const metadata = result.data.metadata || {};
 
-        let title = metadata.title?.replace(/\s*[–|]\s*London\s*Health.*$/i, '').trim() || '';
-        if (!title) {
-          const h1 = markdown.match(/^#\s+(.+)$/m);
-          title = h1 ? h1[1].trim() : '';
-        }
-        if (!title || title.length < 3) continue;
-
-        const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
-        const price = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : null;
-
-        const bioCountMatch = markdown.match(/(\d+)\s*(?:biomarkers?|tests?|markers?)/i);
-        const biomarkerCount = bioCountMatch ? parseInt(bioCountMatch[1]) : null;
-
-        products.push({
-          test_name: title,
-          provider_id: PROVIDER_ID,
-          provider_test_id: `lhc-${slug}`,
-          category: determineCategory(title, metadata.description || ''),
-          price,
-          description: metadata.description || `${title} from London Health Company.`,
-          url,
-          is_active: true,
-          biomarker_count: biomarkerCount,
-          sample_type: 'Venous blood',
-          clinic_visit_available: true,
-          home_kit_available: false,
-          scraped_at: new Date().toISOString(),
-          url_verified: true,
-          url_verified_at: new Date().toISOString(),
-        });
-        console.log(`✓ ${title} - £${price ?? 'N/A'}`);
-        await new Promise(r => setTimeout(r, 500));
-      } catch (e) {
-        console.error(`✗ ${(e instanceof Error ? e.message : String(e))}`);
+      let title = metadata.title?.replace(/\s*[–|]\s*London\s*Health.*$/i, '').trim() || '';
+      if (!title) {
+        const h1 = markdown.match(/^#\s+(.+)$/m);
+        title = h1 ? h1[1].trim() : '';
       }
-    }
+      if (!title || title.length < 3) return;
+
+      const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
+      const price = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : null;
+
+      const bioCountMatch = markdown.match(/(\d+)\s*(?:biomarkers?|tests?|markers?)/i);
+      const biomarkerCount = bioCountMatch ? parseInt(bioCountMatch[1]) : null;
+
+      products.push({
+        test_name: title,
+        provider_id: PROVIDER_ID,
+        provider_test_id: `lhc-${slug}`,
+        category: determineCategory(title, metadata.description || ''),
+        price,
+        description: metadata.description || `${title} from London Health Company.`,
+        url,
+        is_active: true,
+        biomarker_count: biomarkerCount,
+        sample_type: 'Venous blood',
+        clinic_visit_available: true,
+        home_kit_available: false,
+        scraped_at: new Date().toISOString(),
+        url_verified: true,
+        url_verified_at: new Date().toISOString(),
+      });
+      console.log(`✓ ${title} - £${price ?? 'N/A'}`);
+    });
 
     // Dedupe by test_name to avoid the partial unique index (provider_id, test_name) WHERE is_active.
     // Keep the first occurrence (most relevant slug appears earlier in productUrls).

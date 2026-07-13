@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
@@ -33,6 +34,7 @@ export interface CategoryTestItem {
   tag: string;
   collection?: string;
   url?: string;
+  collectionOptions?: unknown;
 }
 
 interface BenefitItem {
@@ -225,10 +227,10 @@ export function CategoryPageLayout({
           style={{ paddingBottom: compared.length > 0 ? 80 : 0 }}
         >
 
-          <CategoryStandardHero pillLabel={pillLabel} benefits={benefits} />
+          <CategoryStandardHero pillLabel={pillLabel} />
 
           {/* Filter + Sort + Cards */}
-          <section className="py-8 sm:py-10 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white">
+          <section className="pt-6 sm:pt-8 pb-10 sm:pb-14 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white">
             <div className="max-w-6xl mx-auto">
               <CategoryFilters
                 filters={filters}
@@ -279,7 +281,7 @@ export function CategoryPageLayout({
                       biomarkers_list: (test.biomarkers as any) ?? null,
                       turnaround_days_text: test.turnaround ?? null,
                       base_price: null,
-                      collection_options: null,
+                      collection_options: (test.collectionOptions as any) ?? null,
                     }}
                   />
                 ))}

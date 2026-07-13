@@ -172,7 +172,17 @@ function getStaticBiomarkers(testName: string, providerId: string): string[] | n
   return null;
 }
 
-function parseTestData(data: any): TestData {
+interface RawTestData {
+  test_name?: string;
+  provider_id?: string;
+  biomarkers_list?: unknown;
+  conditions?: unknown;
+  symptoms?: unknown;
+  is_addon?: boolean | null;
+  [key: string]: unknown;
+}
+
+function parseTestData(data: RawTestData): TestData {
   let biomarkers = data.biomarkers_list 
     ? (Array.isArray(data.biomarkers_list) ? data.biomarkers_list : null)
     : null;
@@ -199,5 +209,5 @@ function parseTestData(data: any): TestData {
     symptoms,
     conditions,
     is_addon: data.is_addon || false,
-  };
+  } as unknown as TestData;
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { UniversalTestCard } from "@/components/cards/UniversalTestCard";
 import { fromProviderTest } from "@/lib/universalTestAdapter";
 
@@ -12,7 +13,7 @@ export interface ProviderTestCardData {
   biomarker_count?: number | null;
   is_popular?: boolean | null;
   url?: string | null;
-  biomarkers_list?: any;
+  biomarkers_list?: unknown;
   home_kit_available?: boolean | null;
   clinic_visit_available?: boolean | null;
   turnaround_days_text?: string | null;

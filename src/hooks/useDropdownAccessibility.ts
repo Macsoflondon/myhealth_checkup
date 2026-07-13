@@ -82,7 +82,7 @@ export const useDropdownAccessibility = ({
           focusElement(elements.length - 1);
           break;
 
-        case 'Tab':
+        case 'Tab': {
           // Trap focus within dropdown
           if (elements.length === 0) return;
 
@@ -103,6 +103,7 @@ export const useDropdownAccessibility = ({
             }
           }
           break;
+        }
 
         default:
           break;

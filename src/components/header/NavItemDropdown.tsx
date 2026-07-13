@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
 import { useDropdownAccessibility } from "@/hooks/useDropdownAccessibility";
 
@@ -24,6 +24,8 @@ export const NavItemDropdown: React.FC<NavItemDropdownProps> = ({
   isMobile = false,
 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentHref = `${location.pathname}${location.search}`;
 
   const { containerRef } = useDropdownAccessibility({
     isOpen: true,
@@ -80,18 +82,28 @@ export const NavItemDropdown: React.FC<NavItemDropdownProps> = ({
 
           {/* Dropdown Items */}
           <div className="grid grid-cols-1 gap-1.5">
-            {items.map((item) => (
-              <a
-                key={item.path + item.name}
-                href={item.path}
-                className="block p-2.5 rounded-lg transition-colors border border-transparent hover:border-brand-navy/10 hover:bg-brand-navy/[0.03] cursor-pointer"
-                onClick={(e) => handleLinkClick(e, item.path)}
-              >
-                <span className="text-sm font-medium text-brand-navy hover:text-brand-pink transition-colors">
-                  {item.name}
-                </span>
-              </a>
-            ))}
+            {items.map((item) => {
+              const isActive = item.path === currentHref;
+              return (
+                <a
+                  key={item.path + item.name}
+                  href={item.path}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`block p-2.5 rounded-lg transition-colors border cursor-pointer ${
+                    isActive
+                      ? "border-brand-pink/40 bg-brand-pink/[0.06]"
+                      : "border-transparent hover:border-brand-navy/10 hover:bg-brand-navy/[0.03]"
+                  }`}
+                  onClick={(e) => handleLinkClick(e, item.path)}
+                >
+                  <span className={`text-sm font-medium transition-colors ${
+                    isActive ? "text-brand-pink" : "text-brand-navy hover:text-brand-pink"
+                  }`}>
+                    {item.name}
+                  </span>
+                </a>
+              );
+            })}
           </div>
         </div>
       </div>

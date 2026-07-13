@@ -22,3 +22,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Environment files
+.env.local
+.env.*.local
+
+# Build artifacts / CLI temp
+*.tsbuildinfo
+supabase/.temp/

@@ -26,7 +26,7 @@ export interface ProviderTestRow {
   [k: string]: unknown;
 }
 
-interface SupabaseLike {
+export interface SupabaseLike {
   from: (table: string) => {
     select: (cols: string) => {
       eq: (col: string, val: string) => {

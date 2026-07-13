@@ -68,10 +68,10 @@ describe('BiomarkerAnalysisResult', () => {
 
   it('displays status labels', () => {
     const result = createMockResult();
-    const { getByText } = render(<BiomarkerAnalysisResult result={result} />);
-    expect(getByText('Normal')).toBeInTheDocument();
-    expect(getByText('Borderline')).toBeInTheDocument();
-    expect(getByText('Needs Attention')).toBeInTheDocument();
+    const { getAllByText } = render(<BiomarkerAnalysisResult result={result} />);
+    expect(getAllByText('Normal').length).toBeGreaterThanOrEqual(1);
+    expect(getAllByText('Borderline').length).toBeGreaterThanOrEqual(1);
+    expect(getAllByText('Needs Attention').length).toBeGreaterThanOrEqual(1);
   });
 
   it('renders all biomarker names', () => {

@@ -17,6 +17,7 @@ import { featureRoutes } from "./featureRoutes";
 
 const NotFound = lazy(() => import("@/pages/NotFound"));
 const TestCategoriesPage = lazy(() => import("@/pages/TestCategoriesPage"));
+const CategoryRedirect = lazy(() => import("@/components/routing/CategoryRedirect"));
 
 // Lazy-load admin pages — they're only used by admins, no need to bundle in the main chunk.
 const AdminAuth = lazy(() => import("@/pages/AdminAuth"));
@@ -31,13 +32,15 @@ const AdminSecurityDiffPage = lazy(() => import("@/pages/AdminSecurityDiffPage")
 const AdminBiomarkerAuditPage = lazy(() => import("@/pages/AdminBiomarkerAuditPage"));
 const AdminBiomarkerValidationPage = lazy(() => import("@/pages/AdminBiomarkerValidationPage"));
 const AdminSocWatchPage = lazy(() => import("@/pages/AdminSocWatchPage"));
+const AdminClinicalSafetyPage = lazy(() => import("@/pages/AdminClinicalSafetyPage"));
 const AdminOpsPage = lazy(() => import("@/pages/AdminOpsPage"));
 const AdminChangeLogPage = lazy(() => import("@/pages/AdminChangeLogPage"));
 const AdminPerformancePage = lazy(() => import("@/pages/AdminPerformancePage"));
 const AdminAuditConsolePage = lazy(() => import("@/pages/AdminAuditConsolePage"));
 const AdminAlertRoutingPage = lazy(() => import("@/pages/AdminAlertRoutingPage"));
+const AdminDataSharingPage = lazy(() => import("@/pages/AdminDataSharingPage"));
 const ControlPage = lazy(() => import("@/pages/ControlPage"));
-const CardDemo = lazy(() => import("@/pages/CardDemo"));
+
 
 
 const PageFallback = () => (
@@ -59,7 +62,11 @@ export function AppRoutes() {
         {/* Home */}
         <Route path="/" element={<Index />} />
         <Route path="/test-categories" element={<TestCategoriesPage />} />
-        <Route path="/card-demo" element={<CardDemo />} />
+
+        {/* Legacy /category/:slug SEO URLs — redirect to canonical route */}
+        <Route path="/category/:slug" element={<CategoryRedirect />} />
+        <Route path="/category" element={<CategoryRedirect />} />
+        
 
         {/* Admin Auth */}
         <Route path="/admin/login" element={<AdminAuth />} />
@@ -76,11 +83,13 @@ export function AppRoutes() {
         <Route path="/admin/biomarker-audit" element={wrapAdmin(AdminBiomarkerAuditPage)} />
         <Route path="/admin/biomarker-validation" element={wrapAdmin(AdminBiomarkerValidationPage)} />
         <Route path="/admin/soc-watch" element={wrapAdmin(AdminSocWatchPage)} />
+        <Route path="/admin/clinical-safety" element={wrapAdmin(AdminClinicalSafetyPage)} />
         <Route path="/admin/ops" element={wrapAdmin(AdminOpsPage)} />
         <Route path="/admin/change-log" element={wrapAdmin(AdminChangeLogPage)} />
         <Route path="/admin/performance" element={wrapAdmin(AdminPerformancePage)} />
         <Route path="/admin/audit-console" element={wrapAdmin(AdminAuditConsolePage)} />
         <Route path="/admin/alert-routing" element={wrapAdmin(AdminAlertRoutingPage)} />
+        <Route path="/admin/data-sharing" element={wrapAdmin(AdminDataSharingPage)} />
 
 
         {/* Operations Control Centre */}

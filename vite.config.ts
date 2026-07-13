@@ -41,23 +41,31 @@ export default defineConfig(({ mode }) => {
     build: {
       rollupOptions: {
         output: {
-          manualChunks: {
-            'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-            'ui-vendor': [
-              '@radix-ui/react-dialog',
-              '@radix-ui/react-dropdown-menu',
-              '@radix-ui/react-tabs',
-              '@radix-ui/react-toast',
-              '@radix-ui/react-select',
-              '@radix-ui/react-accordion',
-            ],
-            'supabase-vendor': ['@supabase/supabase-js', '@tanstack/react-query'],
-            'map-vendor': ['leaflet', 'react-leaflet', 'react-leaflet-cluster'],
-            'chart-vendor': ['recharts'],
-            'i18n-vendor': ['i18next', 'react-i18next', 'i18next-browser-languagedetector'],
-            'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
-            'motion-vendor': ['framer-motion'],
-            'carousel-vendor': ['embla-carousel-react', 'embla-carousel-autoplay', 'embla-carousel-fade'],
+          // Vite 8 (Rolldown) only supports the function form of manualChunks.
+          manualChunks: (id: string) => {
+            const vendorChunks: Record<string, string[]> = {
+              'react-vendor': ['react', 'react-dom', 'react-router-dom'],
+              'ui-vendor': [
+                '@radix-ui/react-dialog',
+                '@radix-ui/react-dropdown-menu',
+                '@radix-ui/react-tabs',
+                '@radix-ui/react-toast',
+                '@radix-ui/react-select',
+                '@radix-ui/react-accordion',
+              ],
+              'supabase-vendor': ['@supabase/supabase-js', '@tanstack/react-query'],
+              'map-vendor': ['leaflet', 'react-leaflet', 'react-leaflet-cluster'],
+              'chart-vendor': ['recharts'],
+              'i18n-vendor': ['i18next', 'react-i18next', 'i18next-browser-languagedetector'],
+              'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
+              'motion-vendor': ['framer-motion'],
+              'carousel-vendor': ['embla-carousel-react', 'embla-carousel-autoplay', 'embla-carousel-fade'],
+            };
+            if (!id.includes('node_modules')) return undefined;
+            for (const [chunk, pkgs] of Object.entries(vendorChunks)) {
+              if (pkgs.some((p) => id.includes(`node_modules/${p}/`))) return chunk;
+            }
+            return undefined;
           },
         },
       },

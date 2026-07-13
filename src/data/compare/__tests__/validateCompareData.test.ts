@@ -7,7 +7,7 @@ describe('compare data validation', () => {
   it('produces a report with no errors', () => {
     if (!report.ok) {
       // Surface details in CI output for quick triage.
-      // eslint-disable-next-line no-console
+       
       console.error(formatReport(report));
     }
     expect(report.errorCount).toBe(0);

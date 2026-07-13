@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 // Cyber Essentials: CSP violation report sink.
 // Accepts application/csp-report and application/reports+json.
 // Rate-limited per IP, payload capped, never reflects input back.

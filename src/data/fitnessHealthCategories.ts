@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { Dumbbell, Activity, Zap, TrendingUp, FlaskConical, Bike, Timer, PersonStanding } from 'lucide-react';
 
 export interface FitnessCategory {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import type { User } from "@supabase/supabase-js";
 import { Brain, Sparkles, Target, Clock, TrendingUp, AlertTriangle, Stethoscope, History, Shield } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,6 +10,15 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { logger } from '@/lib/logger';
+
+interface QueryHistoryItem {
+  id?: string;
+  query_text: string;
+  age?: number | null;
+  gender?: string | null;
+  ai_response: AIAnalysisResult | null;
+  created_at?: string;
+}
 
 interface RecommendationProps {
   testName: string;
@@ -37,9 +47,9 @@ const RecommendationEngine = () => {
   const [gender, setGender] = useState('');
   const [analysisResult, setAnalysisResult] = useState<AIAnalysisResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [showHistory, setShowHistory] = useState(false);
-  const [queryHistory, setQueryHistory] = useState<any[]>([]);
+  const [queryHistory, setQueryHistory] = useState<QueryHistoryItem[]>([]);
 
   useEffect(() => {
     // Check if user is authenticated
@@ -72,7 +82,12 @@ const RecommendationEngine = () => {
         .limit(10);
 
       if (error) throw error;
-      setQueryHistory(data || []);
+      setQueryHistory(
+        (data || []).map((row) => ({
+          ...row,
+          ai_response: row.ai_response as unknown as AIAnalysisResult | null,
+        }))
+      );
     } catch (error) {
       logger.error('Error loading query history:', error);
     }
@@ -122,7 +137,7 @@ const RecommendationEngine = () => {
     }
   };
 
-  const loadPreviousQuery = (query: any) => {
+  const loadPreviousQuery = (query: QueryHistoryItem) => {
     setSymptoms(query.query_text);
     setAge(query.age?.toString() || '');
     setGender(query.gender || '');

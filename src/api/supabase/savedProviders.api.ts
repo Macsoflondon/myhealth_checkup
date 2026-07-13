@@ -45,7 +45,7 @@ class SavedProvidersApi {
           provider_id: providerId,
           provider_name: providerName,
           notes
-        } as any)
+        })
         .select()
         .single();
 

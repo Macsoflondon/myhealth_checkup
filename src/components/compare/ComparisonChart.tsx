@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -53,11 +54,12 @@ export function ComparisonChart({ tests }: ComparisonChartProps) {
         let score = 0;
         
         switch (key) {
-          case "value":
+          case "value": {
             // Value = biomarkers per pound (normalized 0-100)
             const valueRatio = test.biomarkerCount / (test.totalEstimatedCost || test.basePrice);
             score = (valueRatio / maxValueRatio) * 100;
             break;
+          }
           case "speed":
             // Speed = inverse of turnaround (lower is better)
             score = ((maxTurnaround - test.turnaroundDays + 1) / maxTurnaround) * 100;

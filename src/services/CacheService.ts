@@ -11,7 +11,7 @@ interface CacheEntry<T> {
  */
 export class CacheService {
   private static instance: CacheService;
-  private cache: Map<string, CacheEntry<any>>;
+  private cache: Map<string, CacheEntry<unknown>>;
 
   private constructor() {
     this.cache = new Map();
@@ -27,7 +27,7 @@ export class CacheService {
   /**
    * Generate a cache key from method name and parameters
    */
-  public generateKey(method: string, params: any): string {
+  public generateKey(method: string, params: unknown): string {
     return `${method}_${JSON.stringify(params)}`;
   }
 

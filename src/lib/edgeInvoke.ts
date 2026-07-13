@@ -41,7 +41,7 @@ export async function edgeInvoke<T = unknown>(
   }
 
   const err = new Error(`${name}${status ? ` [${status}]` : ""}: ${message}`);
-  // eslint-disable-next-line no-console
+   
   console.error("[edgeInvoke]", name, status, message);
   throw err;
 }

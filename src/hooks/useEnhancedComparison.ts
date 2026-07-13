@@ -7,6 +7,27 @@ import { PROVIDER_NAMES, PROVIDER_LOGOS } from '@/constants/providers';
 import { computeTotalExpectedCost } from '@/lib/comparisonFormat';
 
 
+interface RawTestRow {
+  id?: string;
+  test_name?: string;
+  category?: string | null;
+  description?: string | null;
+  price?: number | null;
+  provider_id?: string;
+  sample_type?: string | null;
+  biomarker_count?: number | null;
+  biomarkers_list?: unknown;
+  turnaround_days?: number | null;
+  home_kit_available?: boolean | null;
+  clinic_visit_available?: boolean | null;
+  gp_consultation_included?: boolean | null;
+  gp_consultation_cost?: number | null;
+  phlebotomy_included?: boolean | null;
+  phlebotomy_cost?: number | null;
+  url?: string | null;
+  updated_at?: string | null;
+}
+
 export function useEnhancedComparison() {
   const { user } = useAuth();
   const [selectedTests, setSelectedTests] = useState<EnhancedTestData[]>([]);
@@ -14,7 +35,8 @@ export function useEnhancedComparison() {
   const [isLoading, setIsLoading] = useState(false);
 
   // Transform raw test data to enhanced format
-  const transformToEnhanced = useCallback((test: any): EnhancedTestData => {
+  const transformToEnhanced = useCallback((rawTest: RawTestRow): EnhancedTestData => {
+    const test = rawTest as RawTestRow & Record<string, any>;
     const basePrice = test.price || 0;
     const gpCost = test.gp_consultation_included ? 0 : (test.gp_consultation_cost || 0);
     const phlebCost = test.phlebotomy_included ? 0 : (test.phlebotomy_cost || 0);
@@ -53,10 +75,10 @@ export function useEnhancedComparison() {
       phlebotomyCost: test.phlebotomy_cost,
       totalEstimatedCost: basePrice + gpCost + phlebCost,
       turnaroundDays: test.turnaround_days || 3,
-      sampleType: test.sample_type || 'finger-prick',
+      sampleType: (test.sample_type || 'finger-prick') as EnhancedTestData['sampleType'],
       homeKitAvailable: test.home_kit_available ?? true,
       clinicVisitAvailable: test.clinic_visit_available ?? false,
-      sampleTypeCode,
+      sampleTypeCode: sampleTypeCode as EnhancedTestData['sampleTypeCode'],
       collectionMethod,
       collectionFeeType,
       collectionFeeAmount,
@@ -64,7 +86,7 @@ export function useEnhancedComparison() {
       clinicalReviewFee,
       totalExpectedCost,
       biomarkerCount: test.biomarker_count || extractBiomarkerCount(test.description),
-      biomarkersList: test.biomarkers_list || extractBiomarkers(test.description),
+      biomarkersList: (test.biomarkers_list as string[] | null) || extractBiomarkers(test.description),
       accreditations: ['UKAS', 'CQC'],
       description: test.description || '',
       url: test.url,

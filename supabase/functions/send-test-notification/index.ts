@@ -130,7 +130,7 @@ serve(async (req: Request): Promise<Response> => {
             },
           }
         );
-      } catch (emailError: any) {
+      } catch (emailError) {
         console.error("Email send error:", emailError);
         
         // Update notification status to failed
@@ -184,7 +184,7 @@ serve(async (req: Request): Promise<Response> => {
     } else {
       throw new Error("Invalid notification type");
     }
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error in send-test-notification:", error);
     const rawMsg = error instanceof Error ? error.message : String(error);
     const isConfigError = rawMsg.includes("RESEND_API_KEY");

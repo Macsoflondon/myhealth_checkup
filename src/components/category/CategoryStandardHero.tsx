@@ -1,37 +1,30 @@
-import { LucideIcon } from "lucide-react";
-
-interface BenefitItem {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-}
+import { useId } from "react";
 
 interface CategoryStandardHeroProps {
-  /** Pill label shown at the top, e.g. "GENERAL WELLNESS" */
+  /** Category name shown at the top of the hero, e.g. "Cancer Screening" */
   pillLabel: string;
-  /** Three benefit cards rendered below the pill */
-  benefits: [BenefitItem, BenefitItem, BenefitItem];
+  /** Semantic heading level. Use h1 for standalone page titles, h2 when nested inside a page that already has an h1. */
+  as?: "h1" | "h2";
 }
 
 /**
  * CategoryStandardHero
- * Standardised top-of-page hero used across all category landing pages.
- * Mirrors the General Wellness layout:
- *   1. Coloured pill badge with category name
- *   2. Three benefit tiles (icon + title + description)
- *   3. Tricolour gradient divider
- *
- * Designed to sit directly above the filter pills row.
+ * Minimal category header used across all category landing pages.
+ * Shows only the category name on a navy background with a tricolour divider.
  */
 export function CategoryStandardHero({
   pillLabel,
-  benefits,
+  as = "h1",
 }: CategoryStandardHeroProps) {
+  const headingId = useId();
+  const Heading = as;
+
   return (
     <section
+      aria-labelledby={headingId}
+      className="px-4 sm:px-8 md:px-10 pt-10 sm:pt-12 md:pt-14 pb-6 sm:pb-8"
       style={{
         background: "#081129",
-        padding: "56px 40px 32px",
         position: "relative",
         overflow: "hidden",
       }}
@@ -76,78 +69,35 @@ export function CategoryStandardHero({
       />
 
       <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
-        {/* Pill row */}
-        <div className="flex items-center justify-center gap-3 sm:gap-4 relative mb-8 md:mb-10">
-          <span aria-hidden="true" className="h-px w-8 sm:w-12 bg-[#e70d69]" />
-          <h1
-            className="text-lg sm:text-2xl md:text-[33px] font-bold leading-none truncate m-0 text-center"
+        {/* Category name */}
+        <div className="flex items-center justify-center gap-3 sm:gap-4 relative">
+          <span
+            aria-hidden="true"
+            className="flex-shrink-0 h-px w-8 sm:w-12 bg-[#e70d69]"
+          />
+          <Heading
+            id={headingId}
+            className="font-bold text-center m-0 text-white text-xl sm:text-2xl md:text-[33px]"
             style={{
               letterSpacing: "0.04em",
-              color: "#ffffff",
+              lineHeight: 1.15,
+              // Ensures capital-letter optical baseline sits centred against the accent lines
+              paddingBlock: "0.05em",
             }}
           >
             {pillLabel}
-          </h1>
-          <span aria-hidden="true" className="h-px w-8 sm:w-12 bg-[#e70d69]" />
-        </div>
-
-        {/* Benefits row */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
-            gap: 24,
-            maxWidth: 900,
-            margin: "0 auto 32px",
-            padding: "0 16px",
-          }}
-        >
-          {benefits.map(({ icon: Icon, title, description }) => (
-            <div key={title} style={{ textAlign: "center" }}>
-              <div
-                style={{
-                  width: 40,
-                  height: 40,
-                  background: "#e70d69",
-                  borderRadius: "9999px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  margin: "0 auto 8px",
-                }}
-              >
-                <Icon className="h-5 w-5 text-white" />
-              </div>
-              <h3
-                style={{
-                  fontSize: 14,
-                  fontWeight: 600,
-                  lineHeight: 1.3,
-                  minHeight: 18,
-                  color: "#ffffff",
-                  marginBottom: 4,
-                }}
-              >
-                {title}
-              </h3>
-              <p
-                style={{
-                  fontSize: 12,
-                  lineHeight: 1.4,
-                  minHeight: 32,
-                  maxWidth: 220,
-                  color: "rgba(255,255,255,0.7)",
-                  margin: "0 auto",
-                }}
-              >
-                {description}
-              </p>
-            </div>
-          ))}
+          </Heading>
+          <span
+            aria-hidden="true"
+            className="flex-shrink-0 h-px w-8 sm:w-12 bg-[#e70d69]"
+          />
         </div>
 
         {/* Tricolour divider */}
         <div
+          role="presentation"
+          aria-hidden="true"
+          className="mt-5 sm:mt-6"
           style={{
             height: 3,
             background: "linear-gradient(90deg, #22c0d4, #e70d69, #22c0d4)",
@@ -155,6 +105,7 @@ export function CategoryStandardHero({
           }}
         />
       </div>
+
     </section>
   );
 }

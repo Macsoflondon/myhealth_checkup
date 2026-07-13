@@ -23,7 +23,7 @@ interface MappingResult {
   review_needed: Array<{
     provider: string;
     test: string;
-    suggestions: any[];
+    suggestions: Array<{ master_test_name: string; confidence_score: number; reasoning?: string }>;
   }>;
 }
 
@@ -71,7 +71,7 @@ export default function AdminTestMapperPage() {
     const csvContent = [
       ['Provider', 'Test Name', 'Suggested Master Test', 'Confidence', 'Reasoning'],
       ...result.review_needed.flatMap(item =>
-        item.suggestions.map((s: any) => [
+        item.suggestions.map((s) => [
           item.provider,
           item.test,
           s.master_test_name,
@@ -334,7 +334,7 @@ export default function AdminTestMapperPage() {
                       >
                         <div className="font-medium text-sm mb-2">{item.test}</div>
                         <div className="text-xs text-muted-foreground mb-2">Provider: {item.provider}</div>
-                        {item.suggestions.map((suggestion: any, sIdx: number) => (
+                        {item.suggestions.map((suggestion, sIdx) => (
                           <div key={sIdx} className="text-xs pl-4 border-l-2 border-yellow-400">
                             <div className="font-medium">→ {suggestion.master_test_name}</div>
                             <div className="text-muted-foreground">{suggestion.reasoning}</div>

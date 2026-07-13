@@ -45,19 +45,18 @@ describe("PromoTicker", () => {
     ) as HTMLElement;
     const utils = within(strip);
 
-    // SETS = 8, so each promo label/text should appear 8 times.
-    expect(utils.getAllByText("GOODBODY:").length).toBeGreaterThanOrEqual(2);
-    expect(utils.getAllByText("MEDICHECKS:").length).toBeGreaterThanOrEqual(2);
-    expect(utils.getAllByText("LOLA HEALTH:").length).toBeGreaterThanOrEqual(2);
-
+    // SETS = 8, so each promo label should appear once per set. Match
+    // provider names case-insensitively — the uppercasing is CSS-only
+    // (text-transform), which Testing Library does not apply. Don't assert
+    // on promo copy: it changes with marketing campaigns.
     expect(
-      utils.getAllByText("GOODBODY5").length
+      utils.getAllByText(/goodbody:/i).length
     ).toBeGreaterThanOrEqual(2);
     expect(
-      utils.getAllByText("APRIL20").length
+      utils.getAllByText(/medichecks:/i).length
     ).toBeGreaterThanOrEqual(2);
     expect(
-      utils.getAllByText("Mar20").length
+      utils.getAllByText(/lola health:/i).length
     ).toBeGreaterThanOrEqual(2);
   });
 });

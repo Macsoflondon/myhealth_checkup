@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Search, SlidersHorizontal, X, TestTube2 } from "lucide-react";
 import CatalogSortBar, { sortTests, type CatalogSortOption } from "@/components/providers/CatalogSortBar";
 import ProviderCatalogHeader, { PROVIDER_FEATURES } from "@/components/providers/ProviderCatalogHeader";
-import ProviderTestCard from "@/components/providers/ProviderTestCard";
+import ProviderTestCard, { type ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
 
 const PROVIDER_ID = "medichecks";
@@ -31,7 +31,7 @@ const MedichecksTestsCatalogPage = () => {
   const [sortBy, setSortBy] = useState<CatalogSortOption>("name-asc");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 500]);
   const [showFilters, setShowFilters] = useState(false);
-  const [selectedTest, setSelectedTest] = useState<any>(null);
+  const [selectedTest, setSelectedTest] = useState<ProviderTestCardData | null>(null);
 
   const { data: tests, isLoading } = useQuery({
     queryKey: ["medichecks-tests"],

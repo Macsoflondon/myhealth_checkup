@@ -82,7 +82,7 @@ export const TestResultUploader = ({ onUploadComplete }: TestResultUploaderProps
       setSelectedFile(null);
       
       if (onUploadComplete) onUploadComplete();
-    } catch (error: any) {
+    } catch (error) {
       toast.error(error.message || "Failed to upload test result");
     } finally {
       setUploading(false);

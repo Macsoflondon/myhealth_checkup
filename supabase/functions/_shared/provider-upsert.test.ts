@@ -16,7 +16,7 @@ import {
   assertStringIncludes,
 } from "https://deno.land/std@0.224.0/assert/mod.ts";
 
-import { upsertProviderTests } from "./provider-upsert.ts";
+import { upsertProviderTests, type SupabaseLike } from "./provider-upsert.ts";
 
 // ─── Fake Supabase client ───────────────────────────────────────────
 
@@ -109,8 +109,7 @@ Deno.test("dedupes incoming rows by slug", async () => {
     { provider_id: "p1", provider_test_id: "p1-foo", test_name: "Foo dup" },
     { provider_id: "p1", provider_test_id: "p1-bar", test_name: "Bar" },
   ];
-  // deno-lint-ignore no-explicit-any
-  const result = await upsertProviderTests(client as any, "p1", rows, "p1-");
+  const result = await upsertProviderTests(client as unknown as SupabaseLike, "p1", rows, "p1-");
   assertEquals(result.finalRowCount, 2);
   assertEquals(result.upsertedCount, 2);
   assertEquals(result.errors.length, 0);
@@ -132,8 +131,7 @@ Deno.test("disambiguates name collision against existing reserved name", async (
     // New slug arrives wanting the same name → must be renamed.
     { provider_id: "p1", provider_test_id: "p1-new", test_name: "Iron Test" },
   ];
-  // deno-lint-ignore no-explicit-any
-  const result = await upsertProviderTests(client as any, "p1", rows, "p1-");
+  const result = await upsertProviderTests(client as unknown as SupabaseLike, "p1", rows, "p1-");
   assertEquals(result.upsertedCount, 1);
   assertEquals(result.errors.length, 0);
 
@@ -161,8 +159,7 @@ Deno.test("does NOT rename when same slug already owns the name", async () => {
   const rows = [
     { provider_id: "p1", provider_test_id: "p1-iron", test_name: "Iron Test" },
   ];
-  // deno-lint-ignore no-explicit-any
-  const result = await upsertProviderTests(client as any, "p1", rows, "p1-");
+  const result = await upsertProviderTests(client as unknown as SupabaseLike, "p1", rows, "p1-");
   assertEquals(result.upsertedCount, 1);
   const sentRow = client._upsertCalls[0][0];
   assertEquals(sentRow.test_name, "Iron Test");
@@ -174,8 +171,7 @@ Deno.test("disambiguates name collision within the same incoming batch", async (
     { provider_id: "p1", provider_test_id: "p1-a", test_name: "Same Name" },
     { provider_id: "p1", provider_test_id: "p1-b", test_name: "Same Name" },
   ];
-  // deno-lint-ignore no-explicit-any
-  const result = await upsertProviderTests(client as any, "p1", rows, "p1-");
+  const result = await upsertProviderTests(client as unknown as SupabaseLike, "p1", rows, "p1-");
   assertEquals(result.upsertedCount, 2);
   assertEquals(result.errors.length, 0);
 
@@ -198,8 +194,7 @@ Deno.test("falls back to per-row upsert when chunk fails, recovering most rows",
     { provider_id: "p1", provider_test_id: "p1-a", test_name: "A" },
     { provider_id: "p1", provider_test_id: "p1-b", test_name: "B" },
   ];
-  // deno-lint-ignore no-explicit-any
-  const result = await upsertProviderTests(client as any, "p1", rows, "p1-", 2);
+  const result = await upsertProviderTests(client as unknown as SupabaseLike, "p1", rows, "p1-", 2);
   assertEquals(result.upsertedCount, 2);
   assertEquals(result.errors.length, 0);
   // 1 chunk call + 2 per-row retries = 3 total upsert calls.
@@ -228,8 +223,7 @@ Deno.test("per-row fallback retries with renamed test_name on active-name unique
     { provider_id: "p1", provider_test_id: "p1-foo", test_name: "Foo" },
     { provider_id: "p1", provider_test_id: "p1-bar", test_name: "Bar" },
   ];
-  // deno-lint-ignore no-explicit-any
-  const result = await upsertProviderTests(client as any, "p1", rows, "p1-", 10);
+  const result = await upsertProviderTests(client as unknown as SupabaseLike, "p1", rows, "p1-", 10);
   assertEquals(result.upsertedCount, 2);
   assertEquals(result.errors.length, 0);
 
@@ -256,8 +250,7 @@ Deno.test("records errors for rows that fail every retry path", async () => {
   const rows = [
     { provider_id: "p1", provider_test_id: "p1-x", test_name: "X" },
   ];
-  // deno-lint-ignore no-explicit-any
-  const result = await upsertProviderTests(client as any, "p1", rows, "p1-", 10);
+  const result = await upsertProviderTests(client as unknown as SupabaseLike, "p1", rows, "p1-", 10);
   assertEquals(result.upsertedCount, 0);
   assertEquals(result.errors.length, 1);
   assertStringIncludes(result.errors[0], "p1-x");
@@ -271,8 +264,7 @@ Deno.test("processes rows in chunks of the configured size", async () => {
     provider_test_id: `p1-${i}`,
     test_name: `T${i}`,
   }));
-  // deno-lint-ignore no-explicit-any
-  const result = await upsertProviderTests(client as any, "p1", rows, "p1-", 2);
+  const result = await upsertProviderTests(client as unknown as SupabaseLike, "p1", rows, "p1-", 2);
   assertEquals(result.upsertedCount, 5);
   // 5 rows in chunks of 2 → 3 upsert calls (2 + 2 + 1).
   assertEquals(client._upsertCalls.length, 3);
@@ -312,8 +304,7 @@ Deno.test("continues gracefully when initial reservation fetch fails", async () 
   const rows = [
     { provider_id: "p1", provider_test_id: "p1-a", test_name: "A" },
   ];
-  // deno-lint-ignore no-explicit-any
-  const result = await upsertProviderTests(client as any, "p1", rows, "p1-");
+  const result = await upsertProviderTests(client as unknown as SupabaseLike, "p1", rows, "p1-");
   assertEquals(result.upsertedCount, 1);
   assertEquals(result.errors.length, 0);
 });

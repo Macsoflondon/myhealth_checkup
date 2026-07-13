@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
 
 const corsHeaders = {
@@ -106,7 +107,7 @@ function extractBiomarkers(section: string): string[] {
   if (!section) return [];
   const out = new Set<string>();
   for (const rawLine of section.split('\n')) {
-    const line = rawLine.replace(/^[\s*•\-]+/, '').replace(/[*_`]/g, '').trim();
+    const line = rawLine.replace(/^[\s*•-]+/, '').replace(/[*_`]/g, '').trim();
     if (!line) continue;
     if (line.length < 2 || line.length > 90) continue;
     if (/^#/.test(line)) continue;

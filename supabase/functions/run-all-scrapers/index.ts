@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Resend } from "https://esm.sh/resend@2.0.0";
@@ -85,7 +86,7 @@ async function recordFailureAlerts(
 }
 
 async function sendAdminNotification(
-  supabase: any,
+  supabase: ReturnType<typeof createClient>,
   subject: string,
   htmlContent: string
 ) {
@@ -112,8 +113,8 @@ async function sendAdminNotification(
     const { data: authData } = await supabase.auth.admin.listUsers();
     
     const adminEmails = authData?.users
-      ?.filter((u: any) => adminUserIds.includes(u.id))
-      ?.map((u: any) => u.email)
+      ?.filter((u: { id: string }) => adminUserIds.includes(u.id))
+      ?.map((u: { email?: string | null }) => u.email)
       ?.filter(Boolean) || [];
 
     if (adminEmails.length === 0) {
@@ -150,7 +151,7 @@ function generateEmailHtml(results: ScraperResult[], allSuccess: boolean): strin
   const statusColor = allSuccess ? '#22c0d4' : '#e70d69';
   const statusText = allSuccess ? 'All Scrapers Completed Successfully' : 'Some Scrapers Failed';
   
-  let resultsHtml = results.map(r => `
+  const resultsHtml = results.map(r => `
     <tr>
       <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">${r.provider}</td>
       <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">
@@ -398,7 +399,7 @@ serve(async (req) => {
   const isServiceRole = serviceKey.length > 0 && presentedToken === serviceKey;
 
   let isScheduledRun = false;
-  if (Boolean(body.scheduled)) {
+  if (body.scheduled) {
     const candidates = [presentedToken, cronHeader].filter((t) => t.length > 0);
     if (candidates.some((t) => cronSecret.length > 0 && t === cronSecret)) isScheduledRun = true;
     else if (candidates.some((t) => automationsEnv.length > 0 && t === automationsEnv)) isScheduledRun = true;

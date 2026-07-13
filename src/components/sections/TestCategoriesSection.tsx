@@ -10,7 +10,7 @@ const categories = [
     count: "1,400+ Tests",
     title: "Blood Tests & Panels",
     description:
-      "Individual biomarkers to comprehensive wellness panels. At-home kits and clinic-based venepuncture from UKAS-accredited laboratories.",
+      "Individual biomarkers to comprehensive wellness panels. In-clinic or at-home phlebotomy from UKAS-accredited laboratories.",
     link: "/wellness",
     linkLabel: "Explore Tests",
     image: "https://images.unsplash.com/photo-1612277795421-9bc7706a4a34?w=1800&q=85&auto=format&fit=crop",
@@ -40,7 +40,7 @@ const categories = [
   },
   {
     tag: "At Home",
-    tagVariant: "pink" as const,
+    tagVariant: "teal" as const,
     count: "300+ Kits",
     title: "At-Home Test Kits",
     description:
@@ -79,12 +79,12 @@ const TestCategoriesSection = () => {
         </div>
 
         {/* Cards — image behind dark overlay, content at bottom */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 sm:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-9">
           {categories.map((cat) => (
             <Link
               key={cat.title}
               to={cat.link}
-              className="group relative flex flex-col justify-end min-h-[760px] sm:min-h-[940px] lg:min-h-[1040px] rounded-2xl overflow-hidden"
+              className="group relative flex flex-col justify-end min-h-[570px] sm:min-h-[705px] lg:min-h-[780px] rounded-2xl overflow-hidden"
             >
               {/* Background image */}
               <img
@@ -106,7 +106,7 @@ const TestCategoriesSection = () => {
 
 
               {/* Card content — sits at bottom above overlay */}
-              <div className="relative z-10 p-12 sm:p-16">
+              <div className="relative z-10 p-9 sm:p-12">
                 <span
                   className="inline-block font-heading font-bold text-lg uppercase tracking-[0.14em] px-5 py-2 rounded-md mb-8"
                   style={

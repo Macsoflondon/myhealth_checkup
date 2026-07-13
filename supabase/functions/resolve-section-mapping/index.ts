@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 // resolve-section-mapping
 // Admin-only: upsert a per-provider section -> canonical_category rule
 // and backfill canonical_category on existing active provider_tests rows

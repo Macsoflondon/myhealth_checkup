@@ -22,6 +22,7 @@ export function fromAtHomeTest(t: AtHomeTest): UniversalTestData {
     is_popular: t.is_popular,
     home_kit_available: t.home_kit_available,
     clinic_visit_available: t.clinic_visit_available,
+    collection_options: t.collection_options,
   };
 }
 
@@ -37,13 +38,15 @@ export function fromProviderTest(t: ProviderTestCardData): UniversalTestData {
     turnaround_days_text: t.turnaround_days_text,
     sample_type: t.sample_type,
     biomarker_count: t.biomarker_count,
-    biomarkers_list: t.biomarkers_list,
+    biomarkers_list: t.biomarkers_list as string[] | { value: string }[] | undefined,
     url: t.url,
     is_popular: !!t.is_popular,
     home_kit_available: t.home_kit_available ?? undefined,
     clinic_visit_available: t.clinic_visit_available ?? undefined,
+    collection_options: t.collection_options,
   };
 }
+
 
 /** Adapter: Medichecks card props → UniversalTestData */
 export function fromMedichecksTest(t: {
@@ -126,5 +129,6 @@ export function fromLegacyUnified(p: LegacyUnifiedProps): UniversalTestData {
     is_popular: /popular/i.test(p.badge || ""),
     home_kit_available: /home|finger|kit/i.test(p.collection || ""),
     clinic_visit_available: /clinic|venous|in-person/i.test(p.collection || ""),
+    collection_options: fromDetails?.collection_options,
   };
 }

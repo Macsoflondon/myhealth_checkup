@@ -1,11 +1,12 @@
 import { Heart, Droplet, Activity, Zap, Apple, Bug, Users, Stethoscope, Shield, TestTube2, HeartPulse, Flame } from "lucide-react";
+import type { LucideIcon } from 'lucide-react';
 
 export interface WellnessCategory {
   id: string;
   name: string;
   colorClass: string;
   colorHex: string;
-  icon: any;
+  icon: LucideIcon;
   description: string;
   testCount: number;
   tests: string[];

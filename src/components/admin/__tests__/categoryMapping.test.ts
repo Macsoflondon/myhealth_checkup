@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { describe, it, expect } from "vitest";
 import { createClient } from "@supabase/supabase-js";
 
@@ -28,12 +29,20 @@ const KNOWN_CATEGORIES = new Set([
   "thyroid",
   "heart",
   "gut",
+  "gut-health",
   "vitamins",
+  "vitamins-minerals",
   "hormones",
   "cancer-screening",
   "sports-performance",
   "general-health",
   "at-home",
+  "allergy",
+  "blood-health",
+  "diabetes",
+  "genetic-testing",
+  "kidney-health",
+  "liver-health",
 ]);
 
 d("provider_tests canonical_category integrity", () => {

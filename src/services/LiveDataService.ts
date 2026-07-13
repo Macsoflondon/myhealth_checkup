@@ -8,6 +8,15 @@ interface LiveDataCache {
   expiresAt: number;
 }
 
+interface ScrapedTestRow {
+  id?: string;
+  test_name: string;
+  category?: string | null;
+  price?: number | null;
+  description?: string | null;
+  is_active?: boolean | null;
+}
+
 export class LiveDataService {
   private static cache = new Map<string, LiveDataCache>();
   private static CACHE_DURATION = 60 * 60 * 1000; // 1 hour
@@ -82,7 +91,7 @@ export class LiveDataService {
 
       if (data?.success && data?.tests) {
         // Transform scraped data to CompareTestData format
-        return data.tests.map((test: any) => ({
+        return data.tests.map((test: ScrapedTestRow) => ({
           id: `${providerId}-${test.test_name.toLowerCase().replace(/\s+/g, '-')}`,
           category: test.category,
           name: test.test_name,
@@ -130,7 +139,7 @@ export class LiveDataService {
       return [];
     }
 
-    return (data || []).map((test: any) => ({
+    return (data || []).map((test: ScrapedTestRow) => ({
       id: test.id,
       category: test.category || 'General Health',
       name: test.test_name,

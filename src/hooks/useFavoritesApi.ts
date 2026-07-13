@@ -28,12 +28,12 @@ export function useFavoritesApi(user: User | null, category: string) {
       
       if (error) throw error;
       setFavorites(data || []);
-    } catch (error: any) {
+    } catch (error) {
       logger.error('Error fetching favorites:', error);
     }
   };
   
-  const toggleFavorite = async (testId: string, item: any) => {
+  const toggleFavorite = async (testId: string, item: { name?: string; price?: number | null; provider?: string }) => {
     if (!user) {
       toast.error("Please sign in to save favorites");
       return false;
@@ -80,7 +80,7 @@ export function useFavoritesApi(user: User | null, category: string) {
         toast.success("Added to favorites with price alert enabled");
       }
       return true;
-    } catch (error: any) {
+    } catch (error) {
       toast.error(error.message);
       return false;
     }
