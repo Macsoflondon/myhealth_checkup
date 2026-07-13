@@ -22,6 +22,8 @@ export interface UniversalTestData {
   category?: string | null;
   description?: string | null;
   price?: number | null;
+  total_expected_cost?: number | null;
+  collection_fee_amount?: number | null;
   turnaround_days_text?: string | null;
   sample_type?: string | null;
   biomarker_count?: number | null;
@@ -94,7 +96,7 @@ function toCompareData(t: UniversalTestData): CompareTestData {
     id: t.id,
     name: t.test_name,
     provider: meta.displayName,
-    price: t.price ?? 0,
+    price: t.total_expected_cost ?? t.price ?? 0,
     category: t.category || "",
     description: t.description || "",
     available: true,
@@ -121,6 +123,8 @@ export const UniversalTestDetailModal: React.FC<{
   const inCompare = compareItems.some((c) => c.id === test.id);
   const handleCompareToggle = () => compareStore.toggle(toCompareData(test));
   const isAllergy = (test.category || "").toLowerCase().includes("allerg");
+  const displayPrice = test.total_expected_cost ?? test.price;
+  const collectionFee = test.collection_fee_amount != null && test.collection_fee_amount > 0 ? test.collection_fee_amount : null;
 
   return (
     <div
@@ -153,9 +157,14 @@ export const UniversalTestDetailModal: React.FC<{
           <div className="flex flex-wrap gap-4 mt-4">
             <div>
               <div style={{ color: UTC_PINK, fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 28 }}>
-                {test.price != null ? `£${Number(test.price).toFixed(2)}` : "POA"}
+                {displayPrice != null ? `\u00a3${Number(displayPrice).toFixed(2)}` : "POA"}
               </div>
-              <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, fontFamily: "'DM Sans',sans-serif" }}>Base price</div>
+              <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, fontFamily: "'DM Sans',sans-serif" }}>Total expected cost</div>
+              {collectionFee != null && (
+                <div style={{ color: "#f59e0b", fontSize: 11, fontFamily: "'DM Sans',sans-serif", marginTop: 2 }}>
+                  incl. Collection Fee: +\u00a3{collectionFee.toFixed(2)}
+                </div>
+              )}
             </div>
             {test.turnaround_days_text && (
               <div className="flex items-center gap-1.5">
@@ -200,7 +209,7 @@ export const UniversalTestDetailModal: React.FC<{
                     <div key={a.label} style={{ background: UTC_TINT, borderRadius: 8, padding: "8px 12px" }}>
                       <div className="flex items-center justify-between">
                         <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 13, color: UTC_NAVY }}>{a.label}</span>
-                        <span style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 13, color: UTC_PINK }}>+£{a.price.toFixed(2)}</span>
+                        <span style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 13, color: UTC_PINK }}>+\u00a3{a.price.toFixed(2)}</span>
                       </div>
                       {a.description && (
                         <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#94a3b8", marginTop: 2 }}>{a.description}</div>
@@ -268,6 +277,10 @@ export const UniversalTestDetailModal: React.FC<{
               )}
               <div className="flex items-center gap-1.5">
                 <CheckCircle size={16} color={UTC_TURQUOISE} />
+                <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 13, color: "#475569" }}>Clinical Review available</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <CheckCircle size={16} color={UTC_TURQUOISE} />
                 <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 13, color: "#475569" }}>GDPR compliant</span>
               </div>
             </div>
@@ -291,7 +304,7 @@ export const UniversalTestDetailModal: React.FC<{
                 padding: "14px 24px", flex: 1, cursor: "pointer", transition: "all 150ms",
               }}
             >
-              {inCompare ? "✓ In Compare" : "+ Compare"}
+              {inCompare ? "\u2713 In Compare" : "+ Compare"}
             </button>
             {test.url && test.url !== "#" ? (
               <a
@@ -339,6 +352,8 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
   const compareItems = useCompareItems();
   const inCompare = compareItems.some((c) => c.id === test.id);
   const isAllergy = (test.category || "").toLowerCase().includes("allerg");
+  const displayPrice = test.total_expected_cost ?? test.price;
+  const collectionFee = test.collection_fee_amount != null && test.collection_fee_amount > 0 ? test.collection_fee_amount : null;
 
   const handleOpen = () => {
     if (onOpenDetail) onOpenDetail();
@@ -562,11 +577,11 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               <FlaskConical size={12} color={UTC_TURQUOISE} />
               {test.biomarker_count && test.biomarker_count > 0
                 ? `${test.biomarker_count} ${isAllergy ? "allergens" : "markers"}`
-                : "—"}
+                : "\u2014"}
             </span>
             <span className="flex items-center gap-1 flex-shrink-0">
               <Clock size={12} color={UTC_TURQUOISE} />
-              {test.turnaround_days_text || "—"}
+              {test.turnaround_days_text || "\u2014"}
             </span>
             <span className="flex items-center gap-1 flex-shrink-0 truncate">
               <Home size={12} color={UTC_TURQUOISE} />
@@ -577,21 +592,34 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
           {/* Spacer pushes price + buttons to the bottom */}
           <div className="flex-1" />
 
-          {/* Price */}
+          {/* Price — prioritise total_expected_cost */}
           <div
-            className="flex items-center justify-between pt-3 mb-3"
+            className="flex items-center justify-between pt-3 mb-1"
             style={{ borderTop: "1px solid #f1f5f9" }}
           >
-            <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 800, fontSize: 20, color: UTC_PINK }}>
-              {test.price != null ? `£${Number(test.price).toFixed(2)}` : "POA"}
+            <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 800, fontSize: 22, color: UTC_PINK }}>
+              {displayPrice != null ? `\u00a3${Number(displayPrice).toFixed(2)}` : "POA"}
             </div>
             <span
               className="truncate ml-2"
               style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#94a3b8" }}
             >
-              Base {collectionLabel(test).toLowerCase()}
+              Total cost
             </span>
           </div>
+
+          {/* Collection fee callout — amber if > \u00a30 */}
+          {collectionFee != null && (
+            <div
+              className="mb-3 flex items-center gap-1"
+              style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#d97706" }}
+            >
+              <span style={{ background: "#fef3c7", padding: "1px 6px", borderRadius: 8, fontWeight: 600 }}>
+                Collection Fee: +\u00a3{collectionFee.toFixed(2)}
+              </span>
+            </div>
+          )}
+          {!collectionFee && <div className="mb-3" />}
 
           {/* Buttons — flush bottom, identical heights */}
           <div className="grid grid-cols-2 gap-2">
