@@ -6,4 +6,6 @@ BEGIN
     '{"scheduled": false, "providers": ["medichecks","clinilabs","lola-health"]}'::jsonb
   ) INTO r;
   RAISE NOTICE 'run-all-scrapers request_id: %', r;
+EXCEPTION WHEN OTHERS THEN
+  RAISE NOTICE 'run-all-scrapers skipped (preview/migration context): %', SQLERRM;
 END $$;
