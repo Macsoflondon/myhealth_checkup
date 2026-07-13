@@ -19,8 +19,7 @@ import HeroMasthead from "@/components/sections/HeroMasthead";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 import StatsBand from "@/components/sections/StatsBand";
 
-
-
+const RecommendationEngine = lazy(() => import("@/components/ai/RecommendationEngine"));
 
 const PartnersGrid = lazy(() => import("@/components/sections/PartnersGrid"));
 const JourneySimplified = lazy(() => import("@/components/sections/JourneySimplified"));
@@ -39,6 +38,13 @@ const NewsletterSection = lazy(() => import("@/components/sections/NewsletterSec
 const ProviderComparisonTable = lazy(() => import("@/components/sections/ProviderComparisonTable"));
 
 const SectionFallback = () => <div className="min-h-[200px]" aria-hidden="true" />;
+
+const TRUST_ITEMS = [
+  { emoji: "🏥", label: "CQC Registered Providers" },
+  { emoji: "🔬", label: "UKAS Accredited Labs" },
+  { emoji: "🔒", label: "Data Never Shared" },
+  { emoji: "⭐", label: "Trusted Comparison" },
+] as const;
 
 const Index = () => {
   usePerformanceOptimization();
@@ -202,8 +208,39 @@ const Index = () => {
             <HeroMasthead />
           </div>
 
+          {/* Trust Bar — 4-item credibility strip below the hero */}
+          <div
+            className="w-full py-3 px-4"
+            style={{ background: "#081129" }}
+          >
+            <div className="mx-auto max-w-5xl flex flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:gap-x-10">
+              {TRUST_ITEMS.map((item) => (
+                <span
+                  key={item.label}
+                  className="flex items-center gap-1.5 whitespace-nowrap"
+                  style={{
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontWeight: 600,
+                    fontSize: 13,
+                    color: "#ffffff",
+                  }}
+                >
+                  <span aria-hidden="true" className="text-base">{item.emoji}</span>
+                  {item.label}
+                </span>
+              ))}
+            </div>
+          </div>
+
           {/* Toolbar now sits directly under the hero section and becomes sticky. */}
           <BrowseByCategoryBar compact placement="hero" />
+
+          {/* AI Recommendation Engine */}
+          <Suspense fallback={<SectionFallback />}>
+            <SectionReveal>
+              <RecommendationEngine />
+            </SectionReveal>
+          </Suspense>
 
           <div className="mx-0">
             <StatsBand />
