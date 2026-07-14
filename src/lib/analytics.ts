@@ -63,4 +63,29 @@ export const analytics = {
 
   testPageView: (props: { path: string; test_slug?: string; category?: string }) =>
     trackEvent("test_page_view", props),
+
+  recommendationAttempt: (props: {
+    surface: "homepage" | "recommendations_page" | string;
+    query_length: number;
+    has_age: boolean;
+    has_gender: boolean;
+    has_method_preference: boolean;
+    authenticated: boolean;
+  }) => trackEvent("recommendation_attempt", props),
+
+  recommendationSuccess: (props: {
+    surface: string;
+    latency_ms: number;
+    recommendations_count: number;
+    authenticated: boolean;
+  }) => trackEvent("recommendation_success", props),
+
+  recommendationFailure: (props: {
+    surface: string;
+    latency_ms: number;
+    failure_reason: string;
+    status_code?: number | null;
+    authenticated: boolean;
+  }) => trackEvent("recommendation_failure", props),
 };
+
