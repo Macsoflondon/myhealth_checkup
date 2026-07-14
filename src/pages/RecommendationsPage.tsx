@@ -49,7 +49,7 @@ const RecommendationsPage = () => {
       <div className="min-h-screen bg-background">
         <Header />
         <main>
-          <RecommendationEngine />
+          <RecommendationEngine surface="recommendations_page" />
         </main>
         <Footer />
       </div>
