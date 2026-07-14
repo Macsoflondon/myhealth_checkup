@@ -110,6 +110,18 @@ const RecommendationEngine = ({ surface = 'recommendations_page' }: Recommendati
     setIsLoading(true);
     setAnalysisResult(null);
 
+    const authenticated = !!user;
+    const startedAt = performance.now();
+
+    analytics.recommendationAttempt({
+      surface,
+      query_length: symptoms.trim().length,
+      has_age: !!age,
+      has_gender: !!gender,
+      has_method_preference: !!methodPreference,
+      authenticated,
+    });
+
     try {
       const { data, error } = await supabase.functions.invoke('health-ai-analysis', {
         body: {
@@ -125,12 +137,29 @@ const RecommendationEngine = ({ surface = 'recommendations_page' }: Recommendati
       }
 
       setAnalysisResult(data);
+      analytics.recommendationSuccess({
+        surface,
+        latency_ms: Math.round(performance.now() - startedAt),
+        recommendations_count: Array.isArray(data?.recommendedTests) ? data.recommendedTests.length : 0,
+        authenticated,
+      });
       if (user) {
         toast.success('Recommendation saved to your account');
         loadQueryHistory(user.id);
       }
     } catch (error) {
+      const err = error as { message?: string; status?: number; context?: { status?: number } };
+      const failureReason = err?.message || 'unknown_error';
+      const statusCode = err?.status ?? err?.context?.status ?? null;
+
       logger.error('Error getting AI recommendations:', error);
+      analytics.recommendationFailure({
+        surface,
+        latency_ms: Math.round(performance.now() - startedAt),
+        failure_reason: failureReason.slice(0, 200),
+        status_code: statusCode,
+        authenticated,
+      });
       toast.error('Unable to generate recommendations. Please try again.');
       setAnalysisResult({
         medicalDisclaimer: "This information is for educational purposes only and is not medical advice. Please consult your GP or healthcare professional regarding any health concerns or symptoms.",
@@ -144,6 +173,7 @@ const RecommendationEngine = ({ surface = 'recommendations_page' }: Recommendati
       setIsLoading(false);
     }
   };
+
 
   const loadPreviousQuery = (query: QueryHistoryItem) => {
     setSymptoms(query.query_text);
