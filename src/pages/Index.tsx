@@ -238,7 +238,7 @@ const Index = () => {
           {/* AI Recommendation Engine */}
           <Suspense fallback={<SectionFallback />}>
             <SectionReveal>
-              <RecommendationEngine />
+              <RecommendationEngine surface="homepage" />
             </SectionReveal>
           </Suspense>
 
