@@ -105,12 +105,12 @@ const RecommendationEngine = () => {
     setAnalysisResult(null);
 
     try {
-      const { data, error } = await supabase.functions.invoke('ai-human-context', {
+      const { data, error } = await supabase.functions.invoke('health-ai-analysis', {
         body: {
-          query_text: symptoms,
+          query: symptoms,
           gender: gender || null,
           age: age ? parseInt(age) : null,
-          method_preference: methodPreference || null,
+          methodPreference: methodPreference || null,
         }
       });
 
