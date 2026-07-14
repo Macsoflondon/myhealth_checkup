@@ -28,7 +28,7 @@ const MOCK_RESPONSE = {
 };
 
 async function stubEdgeFunction(page: Page) {
-  await page.route("**/functions/v1/health-ai-analysis", async (route) => {
+  await page.route("**/functions/v1/ai-human-context", async (route) => {
     await route.fulfill({
       status: 200,
       contentType: "application/json",

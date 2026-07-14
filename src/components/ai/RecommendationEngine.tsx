@@ -123,7 +123,7 @@ const RecommendationEngine = ({ surface = 'recommendations_page' }: Recommendati
     });
 
     try {
-      const { data, error } = await supabase.functions.invoke('health-ai-analysis', {
+      const { data, error } = await supabase.functions.invoke('ai-human-context', {
         body: {
           query: symptoms,
           gender: gender || null,
