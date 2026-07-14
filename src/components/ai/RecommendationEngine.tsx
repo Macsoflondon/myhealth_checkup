@@ -344,7 +344,7 @@ const RecommendationEngine = ({ surface = 'recommendations_page' }: Recommendati
       </Card>
 
       {analysisResult && (
-        <div className="space-y-6">
+        <div data-testid="ai-recommendation-results" className="space-y-6">
           <Card className="p-6 bg-blue-50 border-blue-200">
             <h2 className="text-xl font-semibold flex items-center gap-2 mb-4">
               <Brain className="h-5 w-5 text-primary" />
