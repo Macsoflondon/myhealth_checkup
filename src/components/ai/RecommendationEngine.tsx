@@ -198,7 +198,11 @@ const RecommendationEngine = ({ surface = 'recommendations_page' }: Recommendati
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div
+      data-testid="ai-recommendation-engine"
+      data-surface={surface}
+      className="max-w-4xl mx-auto p-6 bg-background text-foreground rounded-2xl"
+    >
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2 mb-4">
           <Brain className="h-8 w-8 text-primary" />
