@@ -105,12 +105,12 @@ const RecommendationEngine = () => {
     setAnalysisResult(null);
 
     try {
-      const { data, error } = await supabase.functions.invoke('ai-human-context', {
+      const { data, error } = await supabase.functions.invoke('health-ai-analysis', {
         body: {
-          query_text: symptoms,
+          query: symptoms,
           gender: gender || null,
           age: age ? parseInt(age) : null,
-          method_preference: methodPreference || null,
+          methodPreference: methodPreference || null,
         }
       });
 
@@ -166,9 +166,9 @@ const RecommendationEngine = () => {
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2 mb-4">
           <Brain className="h-8 w-8 text-primary" />
-          <h2 className="text-3xl font-bold text-white">AI Wellness Recommendations</h2>
+          <h2 className="text-3xl font-bold text-foreground">AI Wellness Recommendations</h2>
         </div>
-        <p className="text-white">
+        <p className="text-muted-foreground">
           Get personalised wellness test recommendations from our trusted providers
         </p>
       </div>
@@ -193,10 +193,10 @@ const RecommendationEngine = () => {
 
       {!user && (
         <Alert className="mb-6 border-primary/20 bg-primary/5">
-          <Shield className="h-4 w-4 text-white" />
-          <AlertDescription className="text-white">
+          <Shield className="h-4 w-4 text-primary" />
+          <AlertDescription className="text-foreground">
             <strong>Sign in to save your recommendations:</strong> Create an account to securely store 
-            your health queries and access them anytime. <a href="/auth" className="underline font-medium text-white/90 hover:text-white">Sign in now</a>
+            your health queries and access them anytime. <a href="/auth" className="underline font-medium text-primary hover:text-primary/80">Sign in now</a>
           </AlertDescription>
         </Alert>
       )}
