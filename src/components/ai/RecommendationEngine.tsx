@@ -10,6 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { logger } from '@/lib/logger';
+import { analytics } from '@/lib/analytics';
 
 interface QueryHistoryItem {
   id?: string;
@@ -41,7 +42,12 @@ interface AIAnalysisResult {
   hasRecommendations: boolean;
 }
 
-const RecommendationEngine = () => {
+interface RecommendationEngineProps {
+  /** Analytics surface identifier — differentiates homepage vs standalone page. */
+  surface?: 'homepage' | 'recommendations_page' | string;
+}
+
+const RecommendationEngine = ({ surface = 'recommendations_page' }: RecommendationEngineProps = {}) => {
   const [symptoms, setSymptoms] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
@@ -104,6 +110,18 @@ const RecommendationEngine = () => {
     setIsLoading(true);
     setAnalysisResult(null);
 
+    const authenticated = !!user;
+    const startedAt = performance.now();
+
+    analytics.recommendationAttempt({
+      surface,
+      query_length: symptoms.trim().length,
+      has_age: !!age,
+      has_gender: !!gender,
+      has_method_preference: !!methodPreference,
+      authenticated,
+    });
+
     try {
       const { data, error } = await supabase.functions.invoke('health-ai-analysis', {
         body: {
@@ -119,12 +137,29 @@ const RecommendationEngine = () => {
       }
 
       setAnalysisResult(data);
+      analytics.recommendationSuccess({
+        surface,
+        latency_ms: Math.round(performance.now() - startedAt),
+        recommendations_count: Array.isArray(data?.recommendedTests) ? data.recommendedTests.length : 0,
+        authenticated,
+      });
       if (user) {
         toast.success('Recommendation saved to your account');
         loadQueryHistory(user.id);
       }
     } catch (error) {
+      const err = error as { message?: string; status?: number; context?: { status?: number } };
+      const failureReason = err?.message || 'unknown_error';
+      const statusCode = err?.status ?? err?.context?.status ?? null;
+
       logger.error('Error getting AI recommendations:', error);
+      analytics.recommendationFailure({
+        surface,
+        latency_ms: Math.round(performance.now() - startedAt),
+        failure_reason: failureReason.slice(0, 200),
+        status_code: statusCode,
+        authenticated,
+      });
       toast.error('Unable to generate recommendations. Please try again.');
       setAnalysisResult({
         medicalDisclaimer: "This information is for educational purposes only and is not medical advice. Please consult your GP or healthcare professional regarding any health concerns or symptoms.",
@@ -138,6 +173,7 @@ const RecommendationEngine = () => {
       setIsLoading(false);
     }
   };
+
 
   const loadPreviousQuery = (query: QueryHistoryItem) => {
     setSymptoms(query.query_text);
@@ -162,7 +198,11 @@ const RecommendationEngine = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div
+      data-testid="ai-recommendation-engine"
+      data-surface={surface}
+      className="max-w-4xl mx-auto p-6 bg-background text-foreground rounded-2xl"
+    >
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2 mb-4">
           <Brain className="h-8 w-8 text-primary" />
@@ -304,7 +344,7 @@ const RecommendationEngine = () => {
       </Card>
 
       {analysisResult && (
-        <div className="space-y-6">
+        <div data-testid="ai-recommendation-results" className="space-y-6">
           <Card className="p-6 bg-blue-50 border-blue-200">
             <h2 className="text-xl font-semibold flex items-center gap-2 mb-4">
               <Brain className="h-5 w-5 text-primary" />
