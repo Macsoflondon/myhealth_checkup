@@ -42,7 +42,12 @@ interface AIAnalysisResult {
   hasRecommendations: boolean;
 }
 
-const RecommendationEngine = () => {
+interface RecommendationEngineProps {
+  /** Analytics surface identifier — differentiates homepage vs standalone page. */
+  surface?: 'homepage' | 'recommendations_page' | string;
+}
+
+const RecommendationEngine = ({ surface = 'recommendations_page' }: RecommendationEngineProps = {}) => {
   const [symptoms, setSymptoms] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
