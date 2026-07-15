@@ -52,12 +52,26 @@ export interface HealthAIAnalysisRequest {
   query: string;
   age?: number;
   gender?: string;
+  methodPreference?: string;
+}
+
+interface AiHumanContextRequest {
+  query_text: string;
+  age?: number | null;
+  gender?: string | null;
+  method_preference?: string | null;
 }
 
 export interface RecommendedTest {
   testName: string;
+  provider: string;
+  providerId: string;
+  price: number | null;
   category: string;
   reason: string;
+  urgency: 'low' | 'medium' | 'high';
+  confidence: number;
+  actualTestId?: string;
 }
 
 export interface AlternativeProvider {
@@ -67,18 +81,28 @@ export interface AlternativeProvider {
 }
 
 export interface HealthAIAnalysisResponse {
+  medicalDisclaimer: string;
   analysis: string;
   hasRecommendations: boolean;
-  recommendedTests?: RecommendedTest[];
+  recommendedTests: RecommendedTest[];
+  generalGuidance: string;
+  whenToSeeDoctor: string;
   alternativeProviders?: AlternativeProvider[];
 }
 
 export const healthAIAnalysis = (
   request: HealthAIAnalysisRequest
 ): Promise<FunctionResponse<HealthAIAnalysisResponse>> => {
-  return invokeFunction<HealthAIAnalysisResponse, HealthAIAnalysisRequest>(
+  return invokeFunction<HealthAIAnalysisResponse, AiHumanContextRequest>(
     'ai-human-context',
-    { body: request }
+    {
+      body: {
+        query_text: request.query,
+        age: request.age ?? null,
+        gender: request.gender ?? null,
+        method_preference: request.methodPreference ?? null,
+      },
+    }
   );
 };
 
@@ -95,20 +119,20 @@ export interface TestRecommendationsRequest {
   };
 }
 
-export interface TestRecommendationsResponse {
-  recommendations: Array<{
-    testId: string;
-    testName: string;
-    score: number;
-    reason: string;
-  }>;
-}
+export interface TestRecommendationsResponse extends HealthAIAnalysisResponse {}
 
 export const getTestRecommendations = (
   request: TestRecommendationsRequest
 ): Promise<FunctionResponse<TestRecommendationsResponse>> => {
-  return invokeFunction<TestRecommendationsResponse, TestRecommendationsRequest>(
+  return invokeFunction<TestRecommendationsResponse, AiHumanContextRequest>(
     'ai-human-context',
-    { body: request }
+    {
+      body: {
+        query_text: request.query,
+        age: null,
+        gender: null,
+        method_preference: null,
+      },
+    }
   );
 };
