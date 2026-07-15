@@ -125,10 +125,10 @@ const RecommendationEngine = ({ surface = 'recommendations_page' }: Recommendati
     try {
       const { data, error } = await supabase.functions.invoke('ai-human-context', {
         body: {
-          query: symptoms,
+          query_text: symptoms,
           gender: gender || null,
           age: age ? parseInt(age) : null,
-          methodPreference: methodPreference || null,
+          method_preference: methodPreference || null,
         }
       });
 
