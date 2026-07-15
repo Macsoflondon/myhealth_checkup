@@ -12,10 +12,10 @@ verify_jwt = false
 
 
 # AI Human Context API
-# Requires authentication - AI recommendations engine (single source of truth)
-# Security: JWT verification, verified userId from token, input sanitization
+# Public AI recommendations engine (single source of truth)
+# Security: optional in-code auth for saved history, input sanitisation, service-role server boundary
 [functions.ai-human-context]
-verify_jwt = true
+verify_jwt = false
 
 
 # Test Recommendations API
