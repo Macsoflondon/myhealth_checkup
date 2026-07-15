@@ -1,6 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Brain, Sparkles } from "lucide-react";
 import type {
   AgeBand,
   CollectionMethod,
@@ -8,7 +7,6 @@ import type {
   GoalTag,
   SampleType,
   Sex,
-  UserProfile,
 } from "@/types/testFinder";
 import {
   AGE_BAND_LABEL,
@@ -16,11 +14,9 @@ import {
   GOAL_LABEL,
   SAMPLE_TYPE_LABEL,
 } from "@/lib/testFinder/labels";
-import { TEST_CATALOGUE } from "@/lib/testFinder/catalogue";
-import { useTestCatalogue } from "@/lib/testFinder/useTestCatalogue";
-import { getRecommendations } from "@/lib/testFinder/recommendationService";
-import { deriveFilterState } from "@/lib/testFinder/filters";
-import { testFinderStore } from "@/stores/testFinderStore";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { RecommendationResults, type AIAnalysisResult } from "@/components/ai/RecommendationEngine";
 
 const SEXES: { id: Sex; label: string }[] = [
   { id: "male", label: "Male" },
@@ -61,7 +57,7 @@ const COLLECTION_PREFS: CollectionMethod[] = [
   "home_visit",
 ];
 
-const STEPS = ["Sex", "Age", "Goals", "Concerns", "Preferences"] as const;
+const STEPS = ["Sex", "Age", "Goals", "Concerns", "Preferences", "Specific Concerns"] as const;
 
 function toggle<T>(arr: T[], v: T): T[] {
   return arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v];
@@ -89,9 +85,51 @@ const Chip = ({
   </button>
 );
 
+/** Premium AI loading state */
+const AnalyzingState = () => {
+  const [dots, setDots] = useState(0);
+
+  // Animate the dots
+  useState(() => {
+    const id = setInterval(() => setDots((d) => (d + 1) % 4), 400);
+    return () => clearInterval(id);
+  });
+
+  return (
+    <div className="flex flex-col items-center justify-center py-16 px-6 text-center space-y-6">
+      <div className="relative">
+        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#22c0d4] to-[#e70d69] animate-pulse flex items-center justify-center">
+          <Brain className="w-10 h-10 text-white" />
+        </div>
+        <div className="absolute inset-0 w-20 h-20 rounded-full border-2 border-[#22c0d4]/30 animate-ping" />
+      </div>
+      <div>
+        <h3
+          className="text-xl font-bold text-[#081129] mb-2"
+          style={{ fontFamily: "'Montserrat', sans-serif" }}
+        >
+          Analysing 597 tests{'.'.repeat(dots)}
+        </h3>
+        <p className="text-[#081129]/60 text-sm max-w-sm mx-auto">
+          Cross-referencing your profile with our accredited provider database to find your optimal wellness panel.
+        </p>
+      </div>
+      <div className="w-64 h-1.5 bg-[#081129]/10 rounded-full overflow-hidden">
+        <div className="h-full bg-gradient-to-r from-[#22c0d4] to-[#e70d69] rounded-full animate-[shimmer_2s_ease-in-out_infinite]"
+          style={{ width: '70%', animation: 'shimmer 2s ease-in-out infinite' }}
+        />
+      </div>
+      <style>{`
+        @keyframes shimmer {
+          0%, 100% { width: 20%; margin-left: 0; }
+          50% { width: 80%; margin-left: 10%; }
+        }
+      `}</style>
+    </div>
+  );
+};
+
 export const TestFinderQuiz = () => {
-  const { data: catalogue = TEST_CATALOGUE } = useTestCatalogue();
-  const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [sex, setSex] = useState<Sex | null>(null);
   const [ageBand, setAgeBand] = useState<AgeBand | null>(null);
@@ -102,6 +140,11 @@ export const TestFinderQuiz = () => {
   const [avoidVenous, setAvoidVenous] = useState(false);
   const [noFees, setNoFees] = useState(false);
   const [reviewIncluded, setReviewIncluded] = useState(false);
+  const [specificConcerns, setSpecificConcerns] = useState("");
+
+  // AI relay state
+  const [isAnalysing, setIsAnalysing] = useState(false);
+  const [aiResult, setAiResult] = useState<AIAnalysisResult | null>(null);
 
   const canAdvance = (() => {
     if (step === 0) return !!sex;
@@ -115,28 +158,101 @@ export const TestFinderQuiz = () => {
     ...COMMON_CONCERNS,
   ];
 
+  const buildQueryText = (): string => {
+    const parts: string[] = [];
+    if (goals.length > 0) {
+      parts.push(`Goals: ${goals.map((g) => GOAL_LABEL[g]).join(", ")}`);
+    }
+    if (concerns.length > 0) {
+      parts.push(`Health areas: ${concerns.map((c) => CONDITION_LABEL[c]).join(", ")}`);
+    }
+    if (specificConcerns.trim()) {
+      parts.push(specificConcerns.trim());
+    }
+    return parts.join(". ") || "General wellness screening";
+  };
+
+  const ageBandToNumber = (band: AgeBand): number => {
+    const midpoints: Record<AgeBand, number> = {
+      "18_29": 24,
+      "30_39": 35,
+      "40_49": 45,
+      "50_59": 55,
+      "60_plus": 65,
+    };
+    return midpoints[band];
+  };
+
   const submit = async () => {
     if (!sex || !ageBand) return;
-    const profile: UserProfile = {
-      sex,
-      age_band: ageBand,
-      goals,
-      concerns,
-      preferences: {
-        preferred_sample_types: sampleTypes,
-        preferred_collection_methods: collection,
-        avoid_venous: avoidVenous,
-        prefer_no_additional_fees: noFees,
-        require_clinical_review_included: reviewIncluded,
-      },
-    };
-    const filters = deriveFilterState(profile);
-    testFinderStore.setProfile(profile, filters);
-    const recs = await getRecommendations(catalogue, profile);
-    testFinderStore.setRecommendations(recs);
-    testFinderStore.setSelected(recs.slice(0, 3).map((r) => r.id));
-    navigate("/find-test/recommendations");
+
+    setIsAnalysing(true);
+
+    try {
+      const { data, error } = await supabase.functions.invoke("ai-human-context", {
+        body: {
+          query_text: buildQueryText(),
+          gender: sex === "other" ? null : sex,
+          age: ageBandToNumber(ageBand),
+          method_preference: collection.length > 0 ? collection[0].replace("_", " ") : null,
+        },
+      });
+
+      if (error) throw error;
+
+      setAiResult(data as AIAnalysisResult);
+    } catch (err) {
+      toast.error("Unable to generate recommendations. Please try again.");
+      setIsAnalysing(false);
+    }
   };
+
+  // Show AI loading state
+  if (isAnalysing && !aiResult) {
+    return (
+      <div className="bg-white border border-[#081129]/10 rounded-2xl">
+        <AnalyzingState />
+      </div>
+    );
+  }
+
+  // Show AI results
+  if (aiResult) {
+    return (
+      <div className="space-y-6">
+        <div className="bg-white border border-[#081129]/10 rounded-2xl p-5 sm:p-8">
+          <div className="text-center mb-6">
+            <div className="flex items-center justify-center gap-2 mb-2">
+              <Sparkles className="h-5 w-5 text-[#22c0d4]" />
+              <h2
+                className="text-2xl font-bold text-[#081129]"
+                style={{ fontFamily: "'Montserrat', sans-serif" }}
+              >
+                Your Personalised Results
+              </h2>
+            </div>
+            <p className="text-[#081129]/60 text-sm">
+              Based on your health quiz answers
+            </p>
+          </div>
+          <RecommendationResults result={aiResult} />
+        </div>
+        <div className="text-center">
+          <button
+            type="button"
+            onClick={() => {
+              setAiResult(null);
+              setIsAnalysing(false);
+              setStep(0);
+            }}
+            className="text-sm text-[#081129]/60 hover:text-[#081129] underline"
+          >
+            Retake quiz
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white border border-[#081129]/10 rounded-2xl p-5 sm:p-8 space-y-6">
@@ -144,7 +260,7 @@ export const TestFinderQuiz = () => {
       <div>
         <div className="flex justify-between text-[11px] uppercase tracking-wide text-[#081129]/50 mb-2">
           <span>
-            Step {step + 1} of {STEPS.length} · {STEPS[step]}
+            Step {step + 1} of {STEPS.length} \u00b7 {STEPS[step]}
           </span>
         </div>
         <div className="h-1 bg-[#081129]/10 rounded-full overflow-hidden">
@@ -159,7 +275,7 @@ export const TestFinderQuiz = () => {
         <div className="space-y-3">
           <h2 className="text-[#081129] text-xl font-semibold">How would you describe your gender?</h2>
           <p className="text-[#081129]/60 text-sm">
-            Used only to tailor recommendations — never shown as a visible filter.
+            Used only to tailor recommendations \u2014 never shown as a visible filter.
           </p>
           <div className="flex flex-wrap gap-2 pt-2">
             {SEXES.map((s) => (
@@ -205,7 +321,7 @@ export const TestFinderQuiz = () => {
       {step === 3 && (
         <div className="space-y-3">
           <h2 className="text-[#081129] text-xl font-semibold">Any specific concerns?</h2>
-          <p className="text-[#081129]/60 text-sm">Optional — skip if nothing applies.</p>
+          <p className="text-[#081129]/60 text-sm">Optional \u2014 skip if nothing applies.</p>
           <div className="flex flex-wrap gap-2 pt-2">
             {concernOptions.map((c) => (
               <Chip
@@ -290,6 +406,21 @@ export const TestFinderQuiz = () => {
         </div>
       )}
 
+      {step === 5 && (
+        <div className="space-y-3">
+          <h2 className="text-[#081129] text-xl font-semibold">Anything else we should know?</h2>
+          <p className="text-[#081129]/60 text-sm">
+            Describe any specific symptoms, conditions, or wellness goals in your own words. This helps our AI tailor results to you.
+          </p>
+          <textarea
+            className="w-full p-4 border border-[#081129]/15 rounded-xl h-32 resize-none text-[#081129] placeholder:text-[#081129]/40 focus:outline-none focus:ring-2 focus:ring-brand-turquoise/50 focus:border-brand-turquoise"
+            placeholder="e.g. I've been feeling tired lately, want to check my iron levels and thyroid..."
+            value={specificConcerns}
+            onChange={(e) => setSpecificConcerns(e.target.value)}
+          />
+        </div>
+      )}
+
       {/* Nav */}
       <div className="flex items-center justify-between pt-4 border-t border-[#081129]/10">
         <button
@@ -313,9 +444,10 @@ export const TestFinderQuiz = () => {
           <button
             type="button"
             onClick={submit}
-            className="bg-brand-pink hover:bg-brand-pink/90 text-white font-semibold text-sm px-5 py-2.5 rounded-full"
+            className="flex items-center gap-2 bg-gradient-to-r from-[#22c0d4] to-[#e70d69] hover:opacity-90 text-white font-semibold text-sm px-6 py-2.5 rounded-full shadow-lg"
           >
-            See my recommendations
+            <Brain className="w-4 h-4" />
+            Get my AI recommendations
           </button>
         )}
       </div>
