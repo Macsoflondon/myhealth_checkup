@@ -27,7 +27,7 @@ export { ProviderDataStatus } from "./ProviderDataStatus";
 export { default as ProviderHeader } from "./ProviderHeader";
 export { default as ProviderPriceComparison } from "./ProviderPriceComparison";
 export { default as RealtimeToggle } from "./RealtimeToggle";
-export { RecommendationEngine } from "./RecommendationEngine";
+
 export { RecommendedTestsCarousel } from "./RecommendedTestsCarousel";
 export { SaveComparisonDialog } from "./SaveComparisonDialog";
 export { SavedComparisonsList } from "./SavedComparisonsList";

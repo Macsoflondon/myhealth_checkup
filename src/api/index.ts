@@ -14,18 +14,12 @@ export { usersApi } from './supabase/users.api';
 export { healthDataApi } from './supabase/healthData.api';
 export { preferencesApi } from './supabase/preferences.api';
 export { notificationHistoryApi } from './supabase/notificationHistory.api';
-export { functionsApi } from './supabase/functions.api';
 export { savedProvidersApi } from './supabase/savedProviders.api';
 
 // Re-export commonly used function helpers
-export { 
+export {
   healthAIAnalysis,
   getTestRecommendations,
-  getSportsRecommendations,
-  getPriceUpdates,
-  checkPriceAlerts,
-  mapTestWithAI,
-  sendNotification
 } from './supabase/functions.api';
 
 export type { Test, ProviderTest } from './supabase/tests.api';
