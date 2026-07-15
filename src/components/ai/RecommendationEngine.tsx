@@ -33,7 +33,7 @@ interface RecommendationProps {
   actualTestId?: string;
 }
 
-interface AIAnalysisResult {
+export interface AIAnalysisResult {
   medicalDisclaimer: string;
   analysis: string;
   recommendedTests: RecommendationProps[];
@@ -43,16 +43,166 @@ interface AIAnalysisResult {
 }
 
 interface RecommendationEngineProps {
-  /** Analytics surface identifier — differentiates homepage vs standalone page. */
   surface?: 'homepage' | 'recommendations_page' | string;
+  resultsOnly?: boolean;
+  initialResult?: AIAnalysisResult | null;
 }
 
-const RecommendationEngine = ({ surface = 'recommendations_page' }: RecommendationEngineProps = {}) => {
+const getUrgencyColor = (urgency: string) => {
+  switch (urgency) {
+    case 'high':
+      return 'bg-red-100 text-red-800';
+    case 'medium':
+      return 'bg-yellow-100 text-yellow-800';
+    case 'low':
+      return 'bg-green-100 text-green-800';
+    default:
+      return 'bg-gray-100 text-gray-800';
+  }
+};
+
+/** Results-only view \u2014 renders Wellness Analysis + Recommended Tests with total cost focal. */
+export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) => {
+  const totalCost = result.recommendedTests.reduce(
+    (sum, rec) => sum + (rec.price ?? 0),
+    0
+  );
+
+  return (
+    <div data-testid="ai-recommendation-results" className="space-y-6">
+      {/* Total Expected Cost \u2014 focal point */}
+      {result.recommendedTests.length > 0 && (
+        <div className="text-center py-6 px-4 rounded-2xl border-2 border-[#22c0d4]/30 bg-gradient-to-br from-[#081129] to-[#0F2238]">
+          <p
+            className="text-sm uppercase tracking-widest text-[#22c0d4] mb-1"
+            style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600 }}
+          >
+            Total Expected Cost
+          </p>
+          <p
+            className="text-5xl font-bold text-white"
+            style={{ fontFamily: "'Montserrat', sans-serif" }}
+          >
+            \u00a3{totalCost.toFixed(0)}
+          </p>
+          <p className="text-white/60 text-sm mt-1">
+            {result.recommendedTests.length} test{result.recommendedTests.length !== 1 ? 's' : ''} recommended
+          </p>
+        </div>
+      )}
+
+      <Card className="p-6 border-[#22c0d4]/20 bg-[#081129]/[0.03]">
+        <h2
+          className="text-xl font-semibold flex items-center gap-2 mb-4 text-[#081129]"
+          style={{ fontFamily: "'Montserrat', sans-serif" }}
+        >
+          <Brain className="h-5 w-5 text-[#22c0d4]" />
+          Wellness Analysis
+        </h2>
+        <p className="text-[#081129]/80 mb-4">{result.analysis}</p>
+
+        {result.generalGuidance && (
+          <div className="mt-4 p-4 bg-[#22c0d4]/10 border border-[#22c0d4]/20 rounded-lg">
+            <h4 className="font-medium text-[#081129] mb-2" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+              General Wellness Guidance:
+            </h4>
+            <p className="text-[#081129]/70 text-sm">{result.generalGuidance}</p>
+          </div>
+        )}
+      </Card>
+
+      <Alert className="border-red-200 bg-red-50">
+        <Stethoscope className="h-4 w-4 text-red-600" />
+        <AlertDescription className="text-red-800">
+          <strong>When to see a doctor:</strong> {result.whenToSeeDoctor}
+        </AlertDescription>
+      </Alert>
+
+      {result.recommendedTests.length > 0 && (
+        <div className="space-y-4">
+          <h2
+            className="text-xl font-semibold flex items-center gap-2 text-[#081129]"
+            style={{ fontFamily: "'Montserrat', sans-serif" }}
+          >
+            <TrendingUp className="h-5 w-5 text-[#22c0d4]" />
+            Recommended Wellness Tests
+          </h2>
+
+          {result.recommendedTests.map((rec, index) => (
+            <Card key={index} className="p-6 border-[#081129]/10">
+              <div className="flex items-start justify-between mb-4">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-2">
+                    <h3 className="text-lg font-semibold text-[#081129]" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                      {rec.testName}
+                    </h3>
+                    <Badge className={getUrgencyColor(rec.urgency)}>
+                      {rec.urgency} priority
+                    </Badge>
+                  </div>
+                  <p className="text-[#081129]/60 mb-2">{rec.provider}</p>
+                  <p className="text-sm text-[#081129]/80 mb-2">{rec.reason}</p>
+                  <Badge variant="outline" className="text-xs border-[#22c0d4]/40 text-[#22c0d4]">
+                    {rec.category}
+                  </Badge>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-[#22c0d4] mb-1" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                    {rec.price ? `\u00a3${rec.price}` : 'Price TBC'}
+                  </div>
+                  <div className="text-sm text-[#081129]/50">
+                    {rec.confidence}% match
+                  </div>
+                </div>
+              </div>
+
+              <Separator className="my-4" />
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-1">
+                    <Clock className="h-4 w-4 text-[#081129]/40" />
+                    <span className="text-sm text-[#081129]/60">2-5 working days</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Target className="h-4 w-4 text-[#081129]/40" />
+                    <span className="text-sm text-[#081129]/60">At-home collection</span>
+                  </div>
+                </div>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" className="border-[#081129]/20 text-[#081129]">
+                    Read about this test
+                  </Button>
+                  <Button size="sm" className="bg-[#22c0d4] hover:bg-[#1aa8bb] text-[#081129] font-semibold">
+                    View test details
+                  </Button>
+                </div>
+              </div>
+
+              <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800">
+                This test recommendation is for wellness screening purposes only. Results should be discussed with your healthcare professional.
+              </div>
+            </Card>
+          ))}
+        </div>
+      )}
+
+      <Alert className="border-amber-200 bg-amber-50">
+        <AlertTriangle className="h-4 w-4 text-amber-600" />
+        <AlertDescription className="text-amber-800">
+          {result.medicalDisclaimer}
+        </AlertDescription>
+      </Alert>
+    </div>
+  );
+};
+
+const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = false, initialResult = null }: RecommendationEngineProps) => {
   const [symptoms, setSymptoms] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
   const [methodPreference, setMethodPreference] = useState('');
-  const [analysisResult, setAnalysisResult] = useState<AIAnalysisResult | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<AIAnalysisResult | null>(initialResult);
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [showHistory, setShowHistory] = useState(false);
@@ -61,6 +211,7 @@ const RecommendationEngine = ({ surface = 'recommendations_page' }: Recommendati
   const showDemographics = symptoms.trim().length >= 3;
 
   useEffect(() => {
+    if (resultsOnly) return;
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
       if (user) {
@@ -78,7 +229,12 @@ const RecommendationEngine = ({ surface = 'recommendations_page' }: Recommendati
     });
 
     return () => subscription.unsubscribe();
-  }, []);
+  }, [resultsOnly]);
+
+  // Sync initialResult prop changes
+  useEffect(() => {
+    if (initialResult) setAnalysisResult(initialResult);
+  }, [initialResult]);
 
   const loadQueryHistory = async (userId: string) => {
     try {
@@ -184,18 +340,20 @@ const RecommendationEngine = ({ surface = 'recommendations_page' }: Recommendati
     toast.success('Previous query loaded');
   };
 
-  const getUrgencyColor = (urgency: string) => {
-    switch (urgency) {
-      case 'high':
-        return 'bg-red-100 text-red-800';
-      case 'medium':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'low':
-        return 'bg-green-100 text-green-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
+  // Results-only mode: skip the entire input form
+  if (resultsOnly && analysisResult) {
+    return (
+      <div
+        data-testid="ai-recommendation-engine"
+        data-surface={surface}
+        className="max-w-4xl mx-auto p-6 bg-background text-foreground rounded-2xl"
+      >
+        <RecommendationResults result={analysisResult} />
+      </div>
+    );
+  }
+
+  if (resultsOnly) return null;
 
   return (
     <div
@@ -343,102 +501,7 @@ const RecommendationEngine = ({ surface = 'recommendations_page' }: Recommendati
         </Button>
       </Card>
 
-      {analysisResult && (
-        <div data-testid="ai-recommendation-results" className="space-y-6">
-          <Card className="p-6 bg-blue-50 border-blue-200">
-            <h2 className="text-xl font-semibold flex items-center gap-2 mb-4">
-              <Brain className="h-5 w-5 text-primary" />
-              Wellness Analysis
-            </h2>
-            <p className="text-foreground mb-4">{analysisResult.analysis}</p>
-            
-            {analysisResult.generalGuidance && (
-              <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
-                <h4 className="font-medium text-green-800 mb-2">General Wellness Guidance:</h4>
-                <p className="text-green-700 text-sm">{analysisResult.generalGuidance}</p>
-              </div>
-            )}
-          </Card>
-
-          <Alert className="border-red-200 bg-red-50">
-            <Stethoscope className="h-4 w-4 text-red-600" />
-            <AlertDescription className="text-red-800">
-              <strong>When to see a doctor:</strong> {analysisResult.whenToSeeDoctor}
-            </AlertDescription>
-          </Alert>
-
-          {analysisResult.recommendedTests.length > 0 && (
-            <div className="space-y-4">
-              <h2 className="text-xl font-semibold flex items-center gap-2">
-                <TrendingUp className="h-5 w-5 text-primary" />
-                Recommended Wellness Tests
-              </h2>
-              
-              {analysisResult.recommendedTests.map((rec, index) => (
-                <Card key={index} className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="text-lg font-semibold">{rec.testName}</h3>
-                        <Badge className={getUrgencyColor(rec.urgency)}>
-                          {rec.urgency} priority
-                        </Badge>
-                      </div>
-                      <p className="text-muted-foreground mb-2">{rec.provider}</p>
-                      <p className="text-sm text-foreground mb-2">{rec.reason}</p>
-                      <Badge variant="outline" className="text-xs">
-                        {rec.category}
-                      </Badge>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-bold text-primary mb-1">
-                        {rec.price ? `£${rec.price}` : 'Price TBC'}
-                      </div>
-                      <div className="text-sm text-muted-foreground">
-                        {rec.confidence}% match
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <Separator className="my-4" />
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-1">
-                        <Clock className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm text-muted-foreground">2-5 working days</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Target className="h-4 w-4 text-muted-foreground" />
-                        <span className="text-sm text-muted-foreground">At-home collection</span>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm" aria-label={`Read about ${rec.testName} from ${rec.provider}`}>
-                        Read about this test
-                      </Button>
-                      <Button size="sm" aria-label={`View details for ${rec.testName} from ${rec.provider}`}>
-                        View test details
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800">
-                    This test recommendation is for wellness screening purposes only. Results should be discussed with your healthcare professional.
-                  </div>
-                </Card>
-              ))}
-            </div>
-          )}
-
-          <Alert className="border-amber-200 bg-amber-50">
-            <AlertTriangle className="h-4 w-4 text-amber-600" />
-            <AlertDescription className="text-amber-800">
-              {analysisResult.medicalDisclaimer}
-            </AlertDescription>
-          </Alert>
-        </div>
-      )}
+      {analysisResult && <RecommendationResults result={analysisResult} />}
     </div>
   );
 };
