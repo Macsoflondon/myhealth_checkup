@@ -1,12 +1,13 @@
 import { Helmet } from "react-helmet-async";
 import { lazy, Suspense } from "react";
+import { Link } from "react-router-dom";
 import MainLayout from "@/layouts/MainLayout";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import SectionReveal from "@/components/ui/SectionReveal";
-import ScrollFadeIn from "@/components/common/ScrollFadeIn";
 import { LazyMount } from "@/components/common/LazyMount";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
+import { Brain, ArrowRight, Shield } from "lucide-react";
 
 // Hero first-slide images — preloaded for LCP optimisation
 import heroSlide1DesktopAsset from "@/assets/hero/hero-active-lifestyle.jpg.asset.json";
@@ -18,8 +19,6 @@ const heroSlide1Mobile = heroSlide1MobileAsset.url;
 import HeroMasthead from "@/components/sections/HeroMasthead";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 import StatsBand from "@/components/sections/StatsBand";
-
-const RecommendationEngine = lazy(() => import("@/components/ai/RecommendationEngine"));
 
 const PartnersGrid = lazy(() => import("@/components/sections/PartnersGrid"));
 const JourneySimplified = lazy(() => import("@/components/sections/JourneySimplified"));
@@ -40,10 +39,10 @@ const ProviderComparisonTable = lazy(() => import("@/components/sections/Provide
 const SectionFallback = () => <div className="min-h-[200px]" aria-hidden="true" />;
 
 const TRUST_ITEMS = [
-  { emoji: "🏥", label: "CQC Registered Providers" },
-  { emoji: "🔬", label: "UKAS Accredited Labs" },
-  { emoji: "🔒", label: "Data Never Shared" },
-  { emoji: "⭐", label: "Trusted Comparison" },
+  { emoji: "\ud83c\udfe5", label: "CQC Registered Providers" },
+  { emoji: "\ud83d\udd2c", label: "UKAS Accredited Labs" },
+  { emoji: "\ud83d\udd12", label: "Data Never Shared" },
+  { emoji: "\u2b50", label: "Trusted Comparison" },
 ] as const;
 
 const Index = () => {
@@ -92,7 +91,6 @@ const Index = () => {
     },
   };
 
-  // Organisation schema — enables Knowledge Panel & sitelinks (audit 3.2)
   const organisationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -116,7 +114,6 @@ const Index = () => {
     },
   };
 
-  // WebSite schema with SearchAction — enables Sitelinks Search Box (audit 3.2)
   const websiteSchema = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -200,15 +197,12 @@ const Index = () => {
           <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
         </Helmet>
 
-        {/* Sticky scope: hero, toolbar, carousel and every section below share one
-            scroll container so the toolbar can remain pinned to the top of the
-            viewport once it reaches it. */}
         <div>
           <div className="mt-0 mx-0">
             <HeroMasthead />
           </div>
 
-          {/* Trust Bar — 4-item credibility strip below the hero */}
+          {/* Trust Bar \u2014 CQC/UKAS credibility strip */}
           <div
             className="w-full py-3 px-4"
             style={{ background: "#081129" }}
@@ -232,15 +226,45 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Toolbar now sits directly under the hero section and becomes sticky. */}
           <BrowseByCategoryBar compact placement="hero" />
 
-          {/* AI Recommendation Engine */}
-          <Suspense fallback={<SectionFallback />}>
-            <SectionReveal>
-              <RecommendationEngine surface="homepage" />
-            </SectionReveal>
-          </Suspense>
+          {/* Hero CTA \u2014 Health Quiz entry point */}
+          <section className="py-12 sm:py-16 px-4" style={{ background: "linear-gradient(135deg, #081129 0%, #0F2238 100%)" }}>
+            <div className="max-w-3xl mx-auto text-center">
+              <div className="inline-flex items-center gap-2 bg-[#22c0d4]/10 border border-[#22c0d4]/30 rounded-full px-4 py-1.5 mb-6">
+                <Brain className="w-4 h-4 text-[#22c0d4]" />
+                <span className="text-[#22c0d4] text-xs font-semibold uppercase tracking-wider" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                  AI-Powered
+                </span>
+              </div>
+              <h2
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight"
+                style={{ fontFamily: "'Montserrat', sans-serif" }}
+              >
+                Not sure which test you need?
+              </h2>
+              <p className="text-white/70 text-base sm:text-lg mb-8 max-w-xl mx-auto">
+                Answer 6 quick questions and our AI will analyse 597 accredited tests to find your perfect wellness panel \u2014 with transparent pricing.
+              </p>
+              <Link
+                to="/find-test"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-[#22c0d4] to-[#1aa8bb] hover:from-[#1aa8bb] hover:to-[#22c0d4] text-[#081129] font-bold text-base sm:text-lg px-8 py-4 rounded-full shadow-lg shadow-[#22c0d4]/25 transition-all hover:scale-[1.02]"
+                style={{ fontFamily: "'Montserrat', sans-serif" }}
+              >
+                Take the Health Quiz
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+              <div className="flex items-center justify-center gap-4 mt-6 text-white/50 text-xs">
+                <span className="flex items-center gap-1">
+                  <Shield className="w-3 h-3" /> No account required
+                </span>
+                <span>\u2022</span>
+                <span>Takes 2 minutes</span>
+                <span>\u2022</span>
+                <span>100% free</span>
+              </div>
+            </div>
+          </section>
 
           <div className="mx-0">
             <StatsBand />
