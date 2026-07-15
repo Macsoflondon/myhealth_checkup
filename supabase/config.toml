@@ -11,11 +11,12 @@ verify_jwt = false
 verify_jwt = false
 
 
-# Health AI Analysis API
-# Requires authentication - Uses OpenAI API for personalized health recommendations
+# AI Human Context API
+# Requires authentication - AI recommendations engine (single source of truth)
 # Security: JWT verification, verified userId from token, input sanitization
-[functions.health-ai-analysis]
+[functions.ai-human-context]
 verify_jwt = true
+
 
 # Test Recommendations API
 # Public access - Uses Lovable AI to recommend best tests from comparison

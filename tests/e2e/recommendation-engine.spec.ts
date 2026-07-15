@@ -29,6 +29,19 @@ const MOCK_RESPONSE = {
 
 async function stubEdgeFunction(page: Page) {
   await page.route("**/functions/v1/ai-human-context", async (route) => {
+    const request = route.request();
+    if (request.method() === "POST") {
+      const payload = request.postDataJSON() as Record<string, unknown> | null;
+      // Guard against regressions to the old key names.
+      if (payload) {
+        const keys = Object.keys(payload);
+        if (!keys.includes("query_text") || !keys.includes("method_preference")) {
+          throw new Error(
+            `ai-human-context invoked with unexpected payload keys: ${keys.join(", ")}`
+          );
+        }
+      }
+    }
     await route.fulfill({
       status: 200,
       contentType: "application/json",
