@@ -1,6 +1,6 @@
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2.51.0";
-import { generateObject } from "npm:ai";
+import { generateText } from "npm:ai";
 import { z } from "npm:zod";
 import { createLovableAiGatewayProvider } from "../_shared/ai-gateway.ts";
 
@@ -168,6 +168,10 @@ function readBiomarkers(value: unknown): string[] {
 
 function clampConfidence(value: number): number {
   return Math.max(55, Math.min(98, Math.round(value)));
+}
+
+function stripJsonFences(text: string): string {
+  return text.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
 }
 
 function scoreCandidate(row: ProviderTestRow, request: AiHumanContextRequest): CandidateTest {
@@ -385,12 +389,18 @@ Deno.serve(async (req) => {
       biomarkers: candidate.biomarkers.slice(0, 12),
     }));
 
-    const { object } = await generateObject({
+    const { text } = await generateText({
       model: gateway("google/gemini-3.5-flash"),
-      schema: aiResponseSchema,
       system: `You are Lovable AI powering myhealth checkup's AI Wellness Recommendations. myhealth checkup is a UK private diagnostics comparison platform, not a medical provider. Use British English. Never diagnose, never claim a test confirms or rules out disease, and never imply NHS integration. Recommend only tests from the supplied candidate list.`,
-      prompt: `User request:\n${JSON.stringify(body)}\n\nCandidate tests:\n${JSON.stringify(candidatesForAi)}\n\nReturn concise, educational recommendations for comparing private diagnostic tests.`,
+      prompt: `User request:\n${JSON.stringify(body)}\n\nCandidate tests:\n${JSON.stringify(candidatesForAi)}\n\nReturn ONLY a valid JSON object matching this TypeScript shape, with no markdown or commentary:\n{\n  "analysis": string,\n  "generalGuidance": string,\n  "whenToSeeDoctor": string,\n  "recommendedTests": [\n    {\n      "actualTestId": string,\n      "testName": string,\n      "provider": string,\n      "providerId": string,\n      "price": number | null,\n      "reason": string,\n      "category": string,\n      "urgency": "low" | "medium" | "high",\n      "confidence": number\n    }\n  ]\n}\n\nRecommend 1 to 3 tests.`,
+      temperature: 0.2,
     });
+
+    const parsedAi = aiResponseSchema.safeParse(JSON.parse(stripJsonFences(text)));
+    if (!parsedAi.success) {
+      throw new Error("AI response did not match recommendation schema");
+    }
+    const object = parsedAi.data;
 
     const candidateById = new Map(candidates.map((candidate) => [candidate.id, candidate]));
     const normalisedRecommendations = object.recommendedTests.map((recommendation, index) => {
