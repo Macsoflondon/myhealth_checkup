@@ -22,10 +22,7 @@ export default function StatsBand() {
           </Link>
         </div>
       </div>
-
-      <div className="pt-4 rounded-[14px] overflow-hidden">
-        <AccreditedProvidersBar />
-      </div>
     </section>
   );
 }
+
