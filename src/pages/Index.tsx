@@ -38,12 +38,6 @@ const ProviderComparisonTable = lazy(() => import("@/components/sections/Provide
 
 const SectionFallback = () => <div className="min-h-[200px]" aria-hidden="true" />;
 
-const TRUST_ITEMS = [
-  { emoji: "\ud83c\udfe5", label: "CQC Registered Providers" },
-  { emoji: "\ud83d\udd2c", label: "UKAS Accredited Labs" },
-  { emoji: "\ud83d\udd12", label: "Data Never Shared" },
-  { emoji: "\u2b50", label: "Trusted Comparison" },
-] as const;
 
 const Index = () => {
   usePerformanceOptimization();
