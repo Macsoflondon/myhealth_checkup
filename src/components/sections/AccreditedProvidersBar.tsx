@@ -66,12 +66,14 @@ const AccreditedProvidersBar: React.FC = () => {
         </Reveal>
 
         <div
-          className="relative overflow-hidden motion-reduce:overflow-x-auto"
+          className="relative overflow-hidden"
           data-testid="accreditors-carousel"
         >
           <div
-            className="flex w-max items-center animate-marquee hover:[animation-play-state:paused] motion-reduce:animate-none"
-            style={{ animationDuration: "45s" }}
+            className="flex w-max items-center hover:[animation-play-state:paused]"
+            style={{
+              animation: "marquee 45s linear infinite",
+            }}
           >
             {loop.map((item, i) => (
               <BadgePill
