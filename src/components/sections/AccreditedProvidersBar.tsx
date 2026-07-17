@@ -47,7 +47,7 @@ const BadgePill: React.FC<BadgePillProps> = ({ item, tone }) => {
 
 /**
  * Trust signals bar — single-row auto-scrolling carousel of all standards.
- * Pauses on hover and respects prefers-reduced-motion.
+ * Pauses on hover.
  */
 const AccreditedProvidersBar: React.FC = () => {
   // Duplicate items so the -50% translate loops seamlessly.
@@ -70,10 +70,7 @@ const AccreditedProvidersBar: React.FC = () => {
           data-testid="accreditors-carousel"
         >
           <div
-            className="flex w-max items-center hover:[animation-play-state:paused]"
-            style={{
-              animation: "marquee 45s linear infinite",
-            }}
+            className="mhc-standards-carousel flex w-max items-center hover:[animation-play-state:paused]"
           >
             {loop.map((item, i) => (
               <BadgePill

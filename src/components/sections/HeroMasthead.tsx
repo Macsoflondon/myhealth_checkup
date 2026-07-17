@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useState, useEffect, useRef, useCallback } from "react";
-import { Link } from "react-router-dom";
 
 import { PROVIDER_LOGOS } from "@/constants/providers";
 import HeroSalesTestCard from "@/components/sections/HeroSalesTestCard";
@@ -216,30 +215,10 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         className="bg-[#F5F5F5] border-b border-[#081129]/[0.06] -mx-3 sm:-mx-6 md:-mx-9"
       />
 
-      <div className="flex items-center justify-between gap-3 border-b border-[#081129]/10 pb-2 pt-4 sm:pt-7">
-        <div className="hidden sm:block">
+      <div className="hidden sm:flex items-center border-b border-[#081129]/10 pb-2 pt-4 sm:pt-7">
+        <div>
           <Wordmark />
         </div>
-        <nav className="hidden sm:flex items-center gap-3 md:gap-4 lg:gap-6 text-xs sm:text-[13px] md:text-sm lg:text-base font-bold uppercase tracking-[0.14em] md:tracking-[0.18em] font-[Montserrat]">
-          <Link
-            to="/compare"
-            className="whitespace-nowrap text-brand-navy hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5"
-          >
-            Compare
-          </Link>
-          <Link
-            to="/test-categories"
-            className="whitespace-nowrap text-brand-navy hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5"
-          >
-            Categories
-          </Link>
-          <Link
-            to="/find-test"
-            className="whitespace-nowrap text-brand-pink hover:text-brand-turquoise underline decoration-2 underline-offset-4 decoration-brand-turquoise hover:decoration-brand-pink transition-colors hover:-translate-y-0.5"
-          >
-            Take the health quiz
-          </Link>
-        </nav>
       </div>
       <div className="flex items-baseline justify-between gap-4 border-b border-[#081129]/10 pb-1.5 sm:pb-2 mt-4 sm:mt-6 md:mt-8">
         <span className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-brand-navy leading-[1.15] text-[clamp(0.85rem,4.2vw,3.25rem)] sm:whitespace-nowrap sm:text-[clamp(0.95rem,2.8vw,2.25rem)]">
