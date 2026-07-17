@@ -1008,9 +1008,31 @@ html, body {
   animation-play-state: paused;
 }
 
+@keyframes mhc-standards-carousel {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.mhc-standards-carousel {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+.mhc-standards-carousel:hover {
+  animation-play-state: paused;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-ticker {
     animation: none;
+  }
+
+  .mhc-standards-carousel {
+    will-change: transform;
   }
 }
 /* Hero slide responsive focal points (per-slide via CSS vars) */

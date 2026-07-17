@@ -1,18 +1,21 @@
-Replace the desktop wrapped flex layout in `src/components/sections/AccreditedProvidersBar.tsx` with a continuous marquee carousel matching the mobile behaviour, so all 8 trust badges scroll on one line at every breakpoint.
+Implement a tight homepage-only fix:
 
-## Changes
+1. **Remove the hero CTA/navigation links shown in the screenshot**
+   - In `HeroMasthead`, remove the desktop link group: `Compare`, `Categories`, and `Take the health quiz`.
+   - Keep the hero wordmark and existing hero structure intact, with spacing adjusted so the header does not look unbalanced.
 
-**`src/components/sections/AccreditedProvidersBar.tsx`**
-- Remove the `hidden md:flex flex-wrap ...` desktop block and the two-row mobile marquee.
-- Render a single `MarqueeRow` containing all 8 items, alternating turquoise/pink tones per badge.
-- Duplicate items (x2) inside the row for seamless `-50%` translate looping.
-- Duration: ~45s desktop, ~35s mobile (via responsive class or single tuned value).
-- Keep edge fade gradients (`from-[#081129]`) on both sides at all breakpoints.
-- Pause animation on hover (`hover:[animation-play-state:paused]`) for accessibility.
-- Respect `prefers-reduced-motion`: stop the animation and allow horizontal scroll instead.
-- Keep the heading, navy background, semantic `<section aria-label>`, and `BadgePill` styling unchanged.
+2. **Fix the standards carousel under the hero**
+   - The carousel currently uses `animation: "marquee 45s linear infinite"` inline, but `@keyframes marquee` is only defined in Tailwind config, not guaranteed as global CSS for inline animation.
+   - Add a real global keyframe/class for the standards carousel in `src/index.css`.
+   - Replace the inline animation with that class in `AccreditedProvidersBar`.
+   - Ensure the duplicated badge track scrolls continuously and loops seamlessly.
+   - Keep the navy background, white copy, turquoise/pink icon accents, and edge fades.
 
-## Technical notes
-- Reuse the existing `animate-marquee` keyframe already used on mobile.
-- Single row means we drop `rowA`/`rowB` splitting and the `offset` prop usage.
-- No changes to `Index.tsx` or other consumers — the component API stays the same.
+3. **Make sure it still works with the current preview settings**
+   - The global reduced-motion safety net can currently stop animations with `!important`; add a carousel-specific override so this trust carousel animates as requested.
+   - Retain hover pause on desktop.
+
+4. **Verify visually**
+   - Check desktop and mobile preview after implementation.
+   - Confirm the top hero CTA links are gone.
+   - Confirm the standards/trust badges visibly scroll under the hero without clipping or layout overflow.
