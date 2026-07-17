@@ -18,11 +18,6 @@ const trustItems: TrustItem[] = [
   { icon: Star, label: "Trusted Comparison" },
 ];
 
-
-// Split into two rows so they can rotate at different offsets.
-const rowA = trustItems.filter((_, i) => i % 2 === 0);
-const rowB = trustItems.filter((_, i) => i % 2 === 1);
-
 interface BadgePillProps {
   item: TrustItem;
   tone: "turquoise" | "pink";
@@ -31,7 +26,7 @@ interface BadgePillProps {
 const BadgePill: React.FC<BadgePillProps> = ({ item, tone }) => {
   const Icon = item.icon;
   return (
-    <div className="flex items-center gap-2 sm:gap-2.5 whitespace-nowrap px-2 md:px-2 lg:px-3">
+    <div className="flex items-center gap-2 sm:gap-2.5 whitespace-nowrap px-3 md:px-4 lg:px-5">
       <span
         aria-hidden="true"
         className={[
@@ -50,49 +45,14 @@ const BadgePill: React.FC<BadgePillProps> = ({ item, tone }) => {
   );
 };
 
-interface MarqueeRowProps {
-  items: TrustItem[];
-  tone: "turquoise" | "pink";
-  /** seconds for one full loop */
-  duration: number;
-  reverse?: boolean;
-  /** horizontal offset in % so rows are staggered off-centre */
-  offset?: string;
-}
-
-const MarqueeRow: React.FC<MarqueeRowProps> = ({
-  items,
-  tone,
-  duration,
-  reverse = false,
-  offset = "0%",
-}) => {
-  // Duplicate the list so the -50% translate loops seamlessly.
-  const loop = [...items, ...items, ...items, ...items];
-  return (
-    <div className="overflow-hidden" data-testid="accreditors-row">
-      <div style={{ transform: `translateX(${offset})` }}>
-        <div
-          className="flex w-max items-center animate-marquee"
-          style={{
-            animationDuration: `${duration}s`,
-            animationDirection: reverse ? "reverse" : "normal",
-          }}
-        >
-          {loop.map((item, i) => (
-            <BadgePill key={`${item.label}-${i}`} item={item} tone={tone} />
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-
 /**
- * Trust signals bar — two-row marquee. The rows scroll in opposite directions
- * and start from staggered offsets so the badges never line up column-to-column.
+ * Trust signals bar — single-row auto-scrolling carousel of all standards.
+ * Pauses on hover and respects prefers-reduced-motion.
  */
 const AccreditedProvidersBar: React.FC = () => {
+  // Duplicate items so the -50% translate loops seamlessly.
+  const loop = [...trustItems, ...trustItems];
+
   return (
     <section
       aria-label="Accredited provider standards"
@@ -105,21 +65,26 @@ const AccreditedProvidersBar: React.FC = () => {
           </p>
         </Reveal>
 
-        {/* Desktop & tablet: wrap-friendly row, evenly distributed */}
-        <div className="hidden md:flex flex-wrap items-center justify-center gap-x-2 gap-y-2 lg:gap-x-3">
-          {trustItems.map((item, i) => (
-            <BadgePill key={item.label} item={item} tone={i % 2 === 0 ? "turquoise" : "pink"} />
-          ))}
-        </div>
+        <div
+          className="relative overflow-hidden motion-reduce:overflow-x-auto"
+          data-testid="accreditors-carousel"
+        >
+          <div
+            className="flex w-max items-center animate-marquee hover:[animation-play-state:paused] motion-reduce:animate-none"
+            style={{ animationDuration: "45s" }}
+          >
+            {loop.map((item, i) => (
+              <BadgePill
+                key={`${item.label}-${i}`}
+                item={item}
+                tone={i % 2 === 0 ? "turquoise" : "pink"}
+              />
+            ))}
+          </div>
 
-        {/* Mobile: two-row marquee (unchanged) */}
-        <div className="relative space-y-1.5 sm:space-y-2 md:hidden">
-          <MarqueeRow items={rowA} tone="turquoise" duration={56} offset="0%" />
-          <MarqueeRow items={rowB} tone="pink" duration={68} reverse offset="-12%" />
-
-          {/* Edge fades on both sides */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-12 bg-gradient-to-r from-[#081129]/80 to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-12 bg-gradient-to-l from-[#081129]/80 to-transparent" />
+          {/* Edge fades */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-10 sm:w-16 bg-gradient-to-r from-[#081129] to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-10 sm:w-16 bg-gradient-to-l from-[#081129] to-transparent" />
         </div>
       </div>
     </section>
