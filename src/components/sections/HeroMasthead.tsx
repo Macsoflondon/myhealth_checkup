@@ -151,7 +151,7 @@ interface HeroMastheadProps {
 const Wordmark = () => (
   <span className="inline-flex items-center leading-[1.1] min-w-0 py-1">
     <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(2rem,4vw,3.75rem)] lg:text-[5rem] xl:text-[6rem]">
-      <span className="text-brand-navy">myhealth</span>
+      <span className="text-white">myhealth</span>
       <span className="text-brand-pink">checkup</span>
     </span>
   </span>
@@ -208,20 +208,20 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   const ad = ADVERTS.length ? ADVERTS[i % ADVERTS.length] : null;
 
   return (
-    <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#F5F5F5] border border-b-0 border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[84svh] sm:min-h-[100svh] flex flex-col">
+    <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border border-b-0 border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[84svh] sm:min-h-[100svh] flex flex-col">
       <h1 className="sr-only">Compare private blood tests and health screening from trusted UK providers</h1>
       <TestCategoryTicker
         variant="inline"
-        className="bg-[#F5F5F5] border-b border-[#081129]/[0.06] -mx-3 sm:-mx-6 md:-mx-9"
+        className="bg-[#081129] border-b border-white/10 -mx-3 sm:-mx-6 md:-mx-9"
       />
 
-      <div className="hidden sm:flex items-center border-b border-[#081129]/10 pb-2 pt-4 sm:pt-7">
+      <div className="hidden sm:flex items-center border-b border-white/10 pb-2 pt-4 sm:pt-7">
         <div>
           <Wordmark />
         </div>
       </div>
-      <div className="flex items-baseline justify-between gap-4 border-b border-[#081129]/10 pb-1.5 sm:pb-2 mt-4 sm:mt-6 md:mt-8">
-        <span className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-brand-navy leading-[1.15] text-[clamp(0.85rem,4.2vw,3.25rem)] sm:whitespace-nowrap sm:text-[clamp(0.95rem,2.8vw,2.25rem)]">
+      <div className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-1.5 sm:pb-2 mt-4 sm:mt-6 md:mt-8">
+        <span className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white leading-[1.15] text-[clamp(0.85rem,4.2vw,3.25rem)] sm:whitespace-nowrap sm:text-[clamp(0.95rem,2.8vw,2.25rem)]">
           YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR{" "}
           <span className="text-brand-pink">CHOICE.</span> ONE TRUSTED PLATFORM.
         </span>
