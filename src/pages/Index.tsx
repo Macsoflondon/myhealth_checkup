@@ -258,9 +258,9 @@ const Index = () => {
                 <span className="flex items-center gap-1">
                   <Shield className="w-3 h-3" /> No account required
                 </span>
-                <span>\u2022</span>
+                <span>•</span>
                 <span>Takes 2 minutes</span>
-                <span>\u2022</span>
+                <span>•</span>
                 <span>100% free</span>
               </div>
             </div>
