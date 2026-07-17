@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
-import AccreditedProvidersBar from "@/components/sections/AccreditedProvidersBar";
+
 
 export default function StatsBand() {
   return (
