@@ -37,13 +37,13 @@ const BadgePill: React.FC<BadgePillProps> = ({ item, tone }) => {
         className={[
           "flex items-center justify-center rounded-full w-7 h-7 sm:w-9 sm:h-9 shrink-0",
           tone === "turquoise"
-            ? "bg-[hsl(var(--turquoise)/0.12)] text-[hsl(var(--turquoise))]"
-            : "bg-[hsl(var(--pink)/0.1)] text-[hsl(var(--pink))]",
+            ? "bg-[hsl(var(--turquoise)/0.18)] text-[hsl(var(--turquoise))]"
+            : "bg-[hsl(var(--pink)/0.16)] text-[hsl(var(--pink))]",
         ].join(" ")}
       >
         <Icon className="w-[14px] h-[14px] sm:w-[18px] sm:h-[18px]" strokeWidth={2.25} />
       </span>
-      <span className="font-sans font-bold text-[11px] sm:text-[13px] text-foreground">
+      <span className="font-sans font-bold text-[11px] sm:text-[13px] text-white">
         {item.label}
       </span>
     </div>
@@ -96,11 +96,11 @@ const AccreditedProvidersBar: React.FC = () => {
   return (
     <section
       aria-label="Accredited provider standards"
-      className="bg-muted/40 border-b border-border/60"
+      className="bg-[#081129] border-b border-white/10"
     >
       <div className="container mx-auto px-3 sm:px-4 py-2.5 sm:py-4">
         <Reveal variant="fade">
-          <p className="text-center font-sans font-bold uppercase tracking-[0.12em] sm:tracking-[0.14em] text-[10px] sm:text-[11px] text-muted-foreground mb-2 sm:mb-3 px-2">
+          <p className="text-center font-sans font-bold uppercase tracking-[0.12em] sm:tracking-[0.14em] text-[10px] sm:text-[11px] text-white/80 mb-2 sm:mb-3 px-2">
             All listed providers meet every one of the following standards
           </p>
         </Reveal>
@@ -118,8 +118,8 @@ const AccreditedProvidersBar: React.FC = () => {
           <MarqueeRow items={rowB} tone="pink" duration={68} reverse offset="-12%" />
 
           {/* Edge fades on both sides */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-12 bg-gradient-to-r from-muted/60 to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-12 bg-gradient-to-l from-muted/60 to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-12 bg-gradient-to-r from-[#081129]/80 to-transparent" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-12 bg-gradient-to-l from-[#081129]/80 to-transparent" />
         </div>
       </div>
     </section>
