@@ -83,7 +83,7 @@ export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) 
             className="text-5xl font-bold text-white"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
-            \u00a3{totalCost.toFixed(0)}
+            £{totalCost.toFixed(0)}
           </p>
           <p className="text-white/60 text-sm mt-1">
             {result.recommendedTests.length} test{result.recommendedTests.length !== 1 ? 's' : ''} recommended
