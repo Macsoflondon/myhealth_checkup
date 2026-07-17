@@ -1018,7 +1018,7 @@ html, body {
 }
 
 .mhc-standards-carousel {
-  animation: mhc-standards-carousel 45s linear infinite;
+  transform: translate3d(0, 0, 0);
   will-change: transform;
 }
 
@@ -1032,10 +1032,7 @@ html, body {
   }
 
   .mhc-standards-carousel {
-    animation-name: mhc-standards-carousel !important;
-    animation-duration: 45s !important;
-    animation-timing-function: linear !important;
-    animation-iteration-count: infinite !important;
+    will-change: transform;
   }
 }
 /* Hero slide responsive focal points (per-slide via CSS vars) */
