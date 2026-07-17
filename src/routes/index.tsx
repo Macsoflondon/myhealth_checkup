@@ -4,7 +4,8 @@
  */
 
 import { Routes, Route } from "react-router-dom";
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
+import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 // Index stays eager — it's the LCP route. Everything else is code-split.
 import Index from "@/pages/Index";
 import { AdminRoute } from "@/components/auth/AdminRoute";
