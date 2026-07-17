@@ -37,13 +37,13 @@ const BadgePill: React.FC<BadgePillProps> = ({ item, tone }) => {
         className={[
           "flex items-center justify-center rounded-full w-7 h-7 sm:w-9 sm:h-9 shrink-0",
           tone === "turquoise"
-            ? "bg-[hsl(var(--turquoise)/0.12)] text-[hsl(var(--turquoise))]"
-            : "bg-[hsl(var(--pink)/0.1)] text-[hsl(var(--pink))]",
+            ? "bg-[hsl(var(--turquoise)/0.18)] text-[hsl(var(--turquoise))]"
+            : "bg-[hsl(var(--pink)/0.16)] text-[hsl(var(--pink))]",
         ].join(" ")}
       >
         <Icon className="w-[14px] h-[14px] sm:w-[18px] sm:h-[18px]" strokeWidth={2.25} />
       </span>
-      <span className="font-sans font-bold text-[11px] sm:text-[13px] text-foreground">
+      <span className="font-sans font-bold text-[11px] sm:text-[13px] text-white">
         {item.label}
       </span>
     </div>
