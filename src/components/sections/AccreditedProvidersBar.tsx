@@ -31,7 +31,7 @@ interface BadgePillProps {
 const BadgePill: React.FC<BadgePillProps> = ({ item, tone }) => {
   const Icon = item.icon;
   return (
-    <div className="flex items-center gap-2 sm:gap-2.5 whitespace-nowrap px-3">
+    <div className="flex items-center gap-2 sm:gap-2.5 whitespace-nowrap px-2 md:px-2 lg:px-3">
       <span
         aria-hidden="true"
         className={[
