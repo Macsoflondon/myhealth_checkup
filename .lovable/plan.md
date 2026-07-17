@@ -1,37 +1,48 @@
 ## Goal
 
-Swap the emoji-based trust strip on the homepage (🏥 CQC / 🔬 UKAS / 🔒 Data / ⭐ Trusted) for a version that uses realistic, photo-style accreditation badge images, and lock its position directly beneath the hero video (removing anything currently sitting between the hero and the strip so it reads as one unit).
+Move the "All listed providers meet every one of the following standards" bar (currently sitting further down the homepage, rendered by `StatsBand` via `AccreditedProvidersBar`) to sit **directly under the hero video**, replacing the current navy emoji trust strip. Keep the pill-icon style of that standards bar and fold the emoji-bar items into its list so nothing is lost.
 
-## What changes
+## Changes
 
-1. **Generate 4 realistic badge images** (premium PNGs, transparent background) into `src/assets/trust-badges/`:
-   - `cqc-badge.png` — circular/shield seal styled like a UK regulatory mark, "CQC Registered" engraved
-   - `ukas-badge.png` — laboratory accreditation seal, "UKAS Accredited Labs"
-   - `data-badge.png` — padlock/shield seal, "Data Never Shared / GDPR"
-   - `trusted-badge.png` — laurel/star seal, "Trusted Comparison"
-   
-   Style brief: metallic navy/turquoise/pink accents on white, embossed clinical seal aesthetic — not flat cartoon. Consistent lighting and size across the four so they read as a set.
+**1. `src/components/sections/AccreditedProvidersBar.tsx`** — extend `trustItems` with the two labels from the old emoji bar that aren't already represented. UKAS-Accredited Labs and CQC-Regulated Clinics already cover "UKAS Accredited Labs" and "CQC Registered Providers", so only two are new:
 
-2. **Rebuild the trust strip in `src/pages/Index.tsx`**:
-   - Keep the navy `#081129` background band and horizontal layout.
-   - Replace each `emoji + label` pair with `<img>` of the corresponding badge (h-10 sm:h-12) plus the existing white Montserrat label beside it.
-   - Add `alt` text matching the label; `loading="eager"` (it's above the fold), `decoding="async"`.
-   - Preserve responsive wrap and spacing.
+```ts
+const trustItems: TrustItem[] = [
+  { icon: FlaskConical, label: "UKAS-Accredited Labs" },
+  { icon: ShieldCheck,  label: "CQC-Regulated Clinics" },
+  { icon: BadgeCheck,   label: "ISO 15189 Certification" },
+  { icon: Lock,         label: "GDPR Compliant" },
+  { icon: Tag,          label: "Transparent Pricing" },
+  { icon: Stethoscope,  label: "No GP Referral Needed" },
+  { icon: ShieldLock,   label: "Data Never Shared" },    // new (uses ShieldLock or Lock alt)
+  { icon: Star,         label: "Trusted Comparison" },   // new
+];
+```
 
-3. **Position**: keep the strip immediately after `<HeroMasthead />` with zero vertical gap, and move `BrowseByCategoryBar` to render *after* the strip (it already does — no change), so the sequence is: hero video → trust strip → category bar → AI quiz. No other sections move.
+Icon choices: `Lock` is already used for GDPR — use `EyeOff` (or `ShieldOff`) for "Data Never Shared" to keep each icon distinct, and `Star` for "Trusted Comparison". Style, colours (alternating turquoise/pink pills), typography and marquee behaviour stay exactly as-is.
+
+**2. `src/pages/Index.tsx`** — delete the `TRUST_ITEMS` constant and the navy `#081129` emoji strip block. In its place, render the standards bar directly under the hero:
+
+```tsx
+<HeroMasthead />
+
+<Suspense fallback={<SectionFallback />}>
+  <AccreditedProvidersBar />
+</Suspense>
+
+<BrowseByCategoryBar compact placement="hero" />
+```
+
+The `AccreditedProvidersBar` lazy import already exists at the top of `Index.tsx` — no new import needed.
+
+**3. `src/components/sections/StatsBand.tsx`** — remove the `<AccreditedProvidersBar />` render (and its import) so the bar isn't duplicated on the page. Leave the rest of `StatsBand` untouched.
 
 ## Out of scope
 
-- No changes to `TrustBadgesSection`, `AccreditationCards`, `PersuasionTrustStrip`, or the footer trust marks.
-- No copy changes to the four labels.
-- No changes to hero video, category bar, or AI quiz block.
+- No copy edits to the heading text or the six existing item labels.
+- No changes to hero video, category bar, AI quiz section, or any section below `StatsBand`.
+- No changes to `MainLayout`'s use of `AccreditedProvidersBar` on non-home routes.
 
-## Technical notes
+## Verify
 
-- Images generated via `imagegen--generate_image` at `premium` quality (badges need legible micro-text), transparent PNG, then uploaded via `lovable-assets create` and referenced through `.asset.json` pointers per project asset conventions.
-- Badge `<img>` uses fixed height with `w-auto` to preserve aspect ratio; the flex row already handles wrap on narrow viewports.
-- No new components, no routing changes, no schema work.
-
-## Verification
-
-- Playwright screenshot at 390px and 1440px confirming: badges render crisply, labels stay on one line per item where space allows, strip sits flush under the hero with no gap.
+Playwright screenshot at 390px and 1440px confirming: hero → standards bar (with heading + 8 pill items, mobile marquee still scrolling) → category bar → AI quiz, and the bar no longer appears again inside `StatsBand`.

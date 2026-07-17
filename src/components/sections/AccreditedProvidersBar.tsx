@@ -1,5 +1,5 @@
 import React from "react";
-import { ShieldCheck, BadgeCheck, FlaskConical, Lock, Tag, Stethoscope, type LucideIcon } from "lucide-react";
+import { ShieldCheck, BadgeCheck, FlaskConical, Lock, Tag, Stethoscope, EyeOff, Star, type LucideIcon } from "lucide-react";
 import { Reveal } from "@/components/primitives/Reveal";
 
 interface TrustItem {
@@ -14,7 +14,10 @@ const trustItems: TrustItem[] = [
   { icon: Lock, label: "GDPR Compliant" },
   { icon: Tag, label: "Transparent Pricing" },
   { icon: Stethoscope, label: "No GP Referral Needed" },
+  { icon: EyeOff, label: "Data Never Shared" },
+  { icon: Star, label: "Trusted Comparison" },
 ];
+
 
 // Split into two rows so they can rotate at different offsets.
 const rowA = trustItems.filter((_, i) => i % 2 === 0);

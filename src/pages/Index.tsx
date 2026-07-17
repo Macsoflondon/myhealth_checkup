@@ -38,12 +38,6 @@ const ProviderComparisonTable = lazy(() => import("@/components/sections/Provide
 
 const SectionFallback = () => <div className="min-h-[200px]" aria-hidden="true" />;
 
-const TRUST_ITEMS = [
-  { emoji: "\ud83c\udfe5", label: "CQC Registered Providers" },
-  { emoji: "\ud83d\udd2c", label: "UKAS Accredited Labs" },
-  { emoji: "\ud83d\udd12", label: "Data Never Shared" },
-  { emoji: "\u2b50", label: "Trusted Comparison" },
-] as const;
 
 const Index = () => {
   usePerformanceOptimization();
@@ -202,29 +196,11 @@ const Index = () => {
             <HeroMasthead />
           </div>
 
-          {/* Trust Bar \u2014 CQC/UKAS credibility strip */}
-          <div
-            className="w-full py-3 px-4"
-            style={{ background: "#081129" }}
-          >
-            <div className="mx-auto max-w-5xl flex flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:gap-x-10">
-              {TRUST_ITEMS.map((item) => (
-                <span
-                  key={item.label}
-                  className="flex items-center gap-1.5 whitespace-nowrap"
-                  style={{
-                    fontFamily: "'Montserrat', sans-serif",
-                    fontWeight: 600,
-                    fontSize: 13,
-                    color: "#ffffff",
-                  }}
-                >
-                  <span aria-hidden="true" className="text-base">{item.emoji}</span>
-                  {item.label}
-                </span>
-              ))}
-            </div>
-          </div>
+          {/* Accredited standards bar — directly under hero */}
+          <Suspense fallback={<SectionFallback />}>
+            <AccreditedProvidersBar />
+          </Suspense>
+
 
           <BrowseByCategoryBar compact placement="hero" />
 
