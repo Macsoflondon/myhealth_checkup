@@ -1,48 +1,18 @@
-## Goal
-
-Move the "All listed providers meet every one of the following standards" bar (currently sitting further down the homepage, rendered by `StatsBand` via `AccreditedProvidersBar`) to sit **directly under the hero video**, replacing the current navy emoji trust strip. Keep the pill-icon style of that standards bar and fold the emoji-bar items into its list so nothing is lost.
+Replace the desktop wrapped flex layout in `src/components/sections/AccreditedProvidersBar.tsx` with a continuous marquee carousel matching the mobile behaviour, so all 8 trust badges scroll on one line at every breakpoint.
 
 ## Changes
 
-**1. `src/components/sections/AccreditedProvidersBar.tsx`** — extend `trustItems` with the two labels from the old emoji bar that aren't already represented. UKAS-Accredited Labs and CQC-Regulated Clinics already cover "UKAS Accredited Labs" and "CQC Registered Providers", so only two are new:
+**`src/components/sections/AccreditedProvidersBar.tsx`**
+- Remove the `hidden md:flex flex-wrap ...` desktop block and the two-row mobile marquee.
+- Render a single `MarqueeRow` containing all 8 items, alternating turquoise/pink tones per badge.
+- Duplicate items (x2) inside the row for seamless `-50%` translate looping.
+- Duration: ~45s desktop, ~35s mobile (via responsive class or single tuned value).
+- Keep edge fade gradients (`from-[#081129]`) on both sides at all breakpoints.
+- Pause animation on hover (`hover:[animation-play-state:paused]`) for accessibility.
+- Respect `prefers-reduced-motion`: stop the animation and allow horizontal scroll instead.
+- Keep the heading, navy background, semantic `<section aria-label>`, and `BadgePill` styling unchanged.
 
-```ts
-const trustItems: TrustItem[] = [
-  { icon: FlaskConical, label: "UKAS-Accredited Labs" },
-  { icon: ShieldCheck,  label: "CQC-Regulated Clinics" },
-  { icon: BadgeCheck,   label: "ISO 15189 Certification" },
-  { icon: Lock,         label: "GDPR Compliant" },
-  { icon: Tag,          label: "Transparent Pricing" },
-  { icon: Stethoscope,  label: "No GP Referral Needed" },
-  { icon: ShieldLock,   label: "Data Never Shared" },    // new (uses ShieldLock or Lock alt)
-  { icon: Star,         label: "Trusted Comparison" },   // new
-];
-```
-
-Icon choices: `Lock` is already used for GDPR — use `EyeOff` (or `ShieldOff`) for "Data Never Shared" to keep each icon distinct, and `Star` for "Trusted Comparison". Style, colours (alternating turquoise/pink pills), typography and marquee behaviour stay exactly as-is.
-
-**2. `src/pages/Index.tsx`** — delete the `TRUST_ITEMS` constant and the navy `#081129` emoji strip block. In its place, render the standards bar directly under the hero:
-
-```tsx
-<HeroMasthead />
-
-<Suspense fallback={<SectionFallback />}>
-  <AccreditedProvidersBar />
-</Suspense>
-
-<BrowseByCategoryBar compact placement="hero" />
-```
-
-The `AccreditedProvidersBar` lazy import already exists at the top of `Index.tsx` — no new import needed.
-
-**3. `src/components/sections/StatsBand.tsx`** — remove the `<AccreditedProvidersBar />` render (and its import) so the bar isn't duplicated on the page. Leave the rest of `StatsBand` untouched.
-
-## Out of scope
-
-- No copy edits to the heading text or the six existing item labels.
-- No changes to hero video, category bar, AI quiz section, or any section below `StatsBand`.
-- No changes to `MainLayout`'s use of `AccreditedProvidersBar` on non-home routes.
-
-## Verify
-
-Playwright screenshot at 390px and 1440px confirming: hero → standards bar (with heading + 8 pill items, mobile marquee still scrolling) → category bar → AI quiz, and the bar no longer appears again inside `StatsBand`.
+## Technical notes
+- Reuse the existing `animate-marquee` keyframe already used on mobile.
+- Single row means we drop `rowA`/`rowB` splitting and the `offset` prop usage.
+- No changes to `Index.tsx` or other consumers — the component API stays the same.
