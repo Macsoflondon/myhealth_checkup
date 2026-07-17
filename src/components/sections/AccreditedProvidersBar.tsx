@@ -105,8 +105,8 @@ const AccreditedProvidersBar: React.FC = () => {
           </p>
         </Reveal>
 
-        {/* Desktop & tablet: single static row, evenly distributed */}
-        <div className="hidden md:flex items-center justify-between gap-4 lg:gap-6">
+        {/* Desktop & tablet: wrap-friendly row, evenly distributed */}
+        <div className="hidden md:flex flex-wrap items-center justify-center gap-x-2 gap-y-2 lg:gap-x-3">
           {trustItems.map((item, i) => (
             <BadgePill key={item.label} item={item} tone={i % 2 === 0 ? "turquoise" : "pink"} />
           ))}
