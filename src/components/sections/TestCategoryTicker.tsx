@@ -42,7 +42,7 @@ const TestCategoryTicker = ({ variant = "section", className = "" }: TestCategor
 
 
   const textClass = isInline
-    ? "font-heading font-semibold text-xs sm:text-sm md:text-base tracking-wider uppercase px-3 sm:px-5 text-brand-navy"
+    ? "font-heading font-semibold text-xs sm:text-sm md:text-base tracking-wider uppercase px-3 sm:px-5 text-white"
     : "font-heading font-semibold text-xs sm:text-sm md:text-base tracking-wider uppercase px-3 sm:px-5 text-white";
 
   return (
