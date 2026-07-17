@@ -244,7 +244,7 @@ const Index = () => {
                 Not sure which test you need?
               </h2>
               <p className="text-white/70 text-base sm:text-lg mb-8 max-w-xl mx-auto">
-                Answer 6 quick questions and our AI will analyse 597 accredited tests to find your perfect wellness panel \u2014 with transparent pricing.
+                Answer 6 quick questions and our AI will analyse 597 accredited tests to find your perfect wellness panel — with transparent pricing.
               </p>
               <Link
                 to="/find-test"
