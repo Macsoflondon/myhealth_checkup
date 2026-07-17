@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 import { Route } from "react-router-dom";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 

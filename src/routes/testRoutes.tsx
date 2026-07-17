@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 import { Route, Navigate } from "react-router-dom";
 import ProviderRedirect from "@/components/routing/ProviderRedirect";
 
