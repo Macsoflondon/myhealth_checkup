@@ -229,7 +229,7 @@ const Index = () => {
           <BrowseByCategoryBar compact placement="hero" />
 
           {/* Hero CTA \u2014 Health Quiz entry point */}
-          <section className="py-12 sm:py-16 px-4" style={{ background: "linear-gradient(135deg, #081129 0%, #0F2238 100%)" }}>
+          <section className="py-12 sm:py-16 px-4 bg-white">
             <div className="max-w-3xl mx-auto text-center">
               <div className="inline-flex items-center gap-2 bg-[#22c0d4]/10 border border-[#22c0d4]/30 rounded-full px-4 py-1.5 mb-6">
                 <Brain className="w-4 h-4 text-[#22c0d4]" />
@@ -238,12 +238,12 @@ const Index = () => {
                 </span>
               </div>
               <h2
-                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight"
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#081129] mb-4 leading-tight"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
                 Not sure which test you need?
               </h2>
-              <p className="text-white/70 text-base sm:text-lg mb-8 max-w-xl mx-auto">
+              <p className="text-[#081129]/70 text-base sm:text-lg mb-8 max-w-xl mx-auto">
                 Answer 6 quick questions and our AI will analyse 597 accredited tests to find your perfect wellness panel — with transparent pricing.
               </p>
               <Link
@@ -254,7 +254,7 @@ const Index = () => {
                 Take the Health Quiz
                 <ArrowRight className="w-5 h-5" />
               </Link>
-              <div className="flex items-center justify-center gap-4 mt-6 text-white/50 text-xs">
+              <div className="flex items-center justify-center gap-4 mt-6 text-[#081129]/50 text-xs">
                 <span className="flex items-center gap-1">
                   <Shield className="w-3 h-3" /> No account required
                 </span>
