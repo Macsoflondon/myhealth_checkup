@@ -90,7 +90,18 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     expect(screen.getByText(/Weight gain, fatigue, low mood/)).toBeInTheDocument();
   });
 
-  it("calls ai-human-context with path labels on terminal node", async () => {
+  it("shows Additional Context step on terminal node before AI handover", () => {
+    render(<TestFinderQuiz />);
+    fireEvent.click(screen.getByText("Male"));
+    fireEvent.click(screen.getByText("Bowel"));
+
+    // Should show the Additional Context step
+    expect(screen.getByText("Additional Context")).toBeInTheDocument();
+    expect(screen.getByText(/Any specific concerns or details about your lifestyle/)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /See Results/ })).toBeInTheDocument();
+  });
+
+  it("calls ai-human-context with path and user context on See Results", async () => {
     mockInvoke.mockResolvedValue({
       data: {
         medicalDisclaimer: "Disclaimer",
@@ -113,15 +124,25 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     fireEvent.click(screen.getByText("No"));
     fireEvent.click(screen.getByText(/Weight gain, fatigue, low mood, sensitivity to cold/));
 
+    // Should show Additional Context step
+    expect(screen.getByText("Additional Context")).toBeInTheDocument();
+
+    // Type in specific concerns
+    const textarea = screen.getByRole("textbox");
+    fireEvent.change(textarea, { target: { value: "I have been feeling very cold and tired for 6 months" } });
+
+    // Click See Results
+    fireEvent.click(screen.getByRole("button", { name: /See Results/ }));
+
     // Should show analysing state
     await waitFor(() => {
       expect(screen.getByText(/Clinically analysing your results/)).toBeInTheDocument();
     });
 
-    // Verify call to ai-human-context with full path labels
+    // Verify call to ai-human-context with combined path and user context
     expect(mockInvoke).toHaveBeenCalledWith("ai-human-context", {
       body: {
-        query_text: "Male → Thyroid → No → Weight gain, fatigue, low mood, sensitivity to cold",
+        query_text: "Path: Male \u2192 Thyroid \u2192 No \u2192 Weight gain, fatigue, low mood, sensitivity to cold | User Context: I have been feeling very cold and tired for 6 months",
         gender: "male",
         age: null,
         method_preference: null,
@@ -135,7 +156,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     expect(screen.getByText("Thyroid Function")).toBeInTheDocument();
   });
 
-  it("handles terminal node on direct selection (e.g. Male → Bowel)", async () => {
+  it("calls ai-human-context with path only when textarea is empty", async () => {
     mockInvoke.mockResolvedValue({
       data: {
         medicalDisclaimer: "Disclaimer",
@@ -154,18 +175,40 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     fireEvent.click(screen.getByText("Male"));
     fireEvent.click(screen.getByText("Bowel"));
 
+    // Context step appears
+    expect(screen.getByText("Additional Context")).toBeInTheDocument();
+
+    // Click See Results without typing anything
+    fireEvent.click(screen.getByRole("button", { name: /See Results/ }));
+
     await waitFor(() => {
       expect(screen.getByText(/Clinically analysing your results/)).toBeInTheDocument();
     });
 
     expect(mockInvoke).toHaveBeenCalledWith("ai-human-context", {
       body: {
-        query_text: "Male → Bowel",
+        query_text: "Path: Male \u2192 Bowel",
         gender: "male",
         age: null,
         method_preference: null,
       },
     });
+  });
+
+  it("allows going back from Additional Context step", () => {
+    render(<TestFinderQuiz />);
+    fireEvent.click(screen.getByText("Male"));
+    fireEvent.click(screen.getByText("Bowel"));
+
+    // Context step
+    expect(screen.getByText("Additional Context")).toBeInTheDocument();
+
+    // Click Back
+    fireEvent.click(screen.getByText("Back"));
+
+    // Should be back at health concerns
+    expect(screen.getByText("Do you have any health concerns or areas of interest?")).toBeInTheDocument();
+    expect(screen.getByText("Bowel")).toBeInTheDocument();
   });
 
   it("shows error toast on API failure and returns from loading", async () => {
@@ -175,6 +218,9 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     render(<TestFinderQuiz />);
     fireEvent.click(screen.getByText("Male"));
     fireEvent.click(screen.getByText(/General health check/));
+
+    // Context step appears, click See Results
+    fireEvent.click(screen.getByRole("button", { name: /See Results/ }));
 
     await waitFor(() => {
       expect(toast.error).toHaveBeenCalledWith("Unable to generate recommendations. Please try again.");
@@ -197,6 +243,9 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     render(<TestFinderQuiz />);
     fireEvent.click(screen.getByText("Male"));
     fireEvent.click(screen.getByText("Prostate"));
+
+    // Context step
+    fireEvent.click(screen.getByRole("button", { name: /See Results/ }));
 
     await waitFor(() => {
       expect(screen.getByText("Your Personalised Results")).toBeInTheDocument();
@@ -229,5 +278,26 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
 
     fireEvent.click(screen.getByText("No"));
     expect(screen.getByText("49%")).toBeInTheDocument();
+  });
+
+  it("textarea preserves user input when navigating back and forward", () => {
+    render(<TestFinderQuiz />);
+    fireEvent.click(screen.getByText("Male"));
+    fireEvent.click(screen.getByText("Bowel"));
+
+    // Type in textarea
+    const textarea = screen.getByRole("textbox");
+    fireEvent.change(textarea, { target: { value: "My specific concern" } });
+    expect(textarea).toHaveValue("My specific concern");
+
+    // Go back
+    fireEvent.click(screen.getByText("Back"));
+
+    // Go forward again
+    fireEvent.click(screen.getByText("Bowel"));
+
+    // Textarea should still have the value (state persists)
+    const textareaAgain = screen.getByRole("textbox");
+    expect(textareaAgain).toHaveValue("My specific concern");
   });
 });
