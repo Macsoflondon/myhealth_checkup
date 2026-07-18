@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { RecommendationResults, type AIAnalysisResult } from "@/components/ai/RecommendationEngine";
 
-// ─── Decision Tree (Medichecks V13 Logic Map) ───────────────────────────────
+// ─── Decision Tree (Medichecks V13 Logic Map) ───────────────────────────────────────
 
 interface DecisionAnswer {
   label: string;
@@ -348,14 +348,14 @@ const DECISION_TREE: Record<string, DecisionNode> = {
   },
 };
 
-// ─── Types ──────────────────────────────────────────────────────────────────
+// ─── Types ──────────────────────────────────────────────────────────────────────
 
 interface HistoryEntry {
   nodeId: string;
   answerLabel: string;
 }
 
-// ─── Analysing State ────────────────────────────────────────────────────────
+// ─── Analysing State ────────────────────────────────────────────────────────────
 
 const AnalysingState = () => {
   const [dots, setDots] = useState(0);
@@ -399,7 +399,7 @@ const AnalysingState = () => {
   );
 };
 
-// ─── Contact Form Fallback ──────────────────────────────────────────────────
+// ─── Contact Form Fallback ──────────────────────────────────────────────────────
 
 const ContactFallback = ({ onRestart }: { onRestart: () => void }) => (
   <motion.div
@@ -434,14 +434,89 @@ const ContactFallback = ({ onRestart }: { onRestart: () => void }) => (
   </motion.div>
 );
 
-// ─── Main Quiz Component ────────────────────────────────────────────────────
+// ─── Additional Context Step ────────────────────────────────────────────────────
+
+interface AdditionalContextProps {
+  userContext: string;
+  onContextChange: (value: string) => void;
+  onSubmit: () => void;
+  onBack: () => void;
+}
+
+const AdditionalContextStep = ({ userContext, onContextChange, onSubmit, onBack }: AdditionalContextProps) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.3 }}
+    className="bg-white border border-[#081129]/10 rounded-2xl p-5 sm:p-8 space-y-6"
+  >
+    <div className="text-center space-y-2">
+      <div className="flex items-center justify-center gap-2">
+        <Sparkles className="h-5 w-5 text-[#22c0d4]" />
+        <h2
+          className="text-xl sm:text-2xl font-bold text-[#081129]"
+          style={{ fontFamily: "'Montserrat', sans-serif" }}
+        >
+          Additional Context
+        </h2>
+      </div>
+      <p className="text-[#081129]/60 text-sm max-w-md mx-auto">
+        Help our AI provide more personalised recommendations
+      </p>
+    </div>
+
+    <div className="space-y-3">
+      <label
+        htmlFor="specific-concerns"
+        className="block text-sm font-medium text-[#081129]"
+        style={{ fontFamily: "'Montserrat', sans-serif" }}
+      >
+        Any specific concerns or details about your lifestyle you would like the AI to assess? (e.g., symptoms, diet, or specific goals)
+      </label>
+      <textarea
+        id="specific-concerns"
+        value={userContext}
+        onChange={(e) => onContextChange(e.target.value)}
+        placeholder="E.g. I've been feeling fatigued for the past 3 months, I follow a vegan diet, I'm training for a marathon..."
+        className="w-full min-h-[160px] p-4 rounded-xl border-2 border-[#081129]/12 bg-white text-[#081129] text-sm placeholder:text-[#081129]/40 focus:border-[#22c0d4] focus:ring-2 focus:ring-[#22c0d4]/20 outline-none transition-all resize-y"
+        style={{ fontFamily: "'Montserrat', sans-serif" }}
+      />
+    </div>
+
+    <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+      <button
+        type="button"
+        onClick={onSubmit}
+        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#22c0d4] to-[#0a2540] hover:from-[#1aa8bb] hover:to-[#081129] text-white font-semibold text-sm px-8 py-3.5 rounded-full transition-all shadow-lg hover:shadow-xl active:scale-95"
+        style={{ fontFamily: "'Montserrat', sans-serif" }}
+      >
+        <Brain className="w-4 h-4" />
+        See Results
+      </button>
+      <button
+        type="button"
+        onClick={onBack}
+        className="flex items-center gap-1.5 text-[#081129]/60 hover:text-[#081129] text-sm transition-colors"
+      >
+        <ChevronLeft className="w-4 h-4" />
+        Back
+      </button>
+    </div>
+  </motion.div>
+);
+
+// ─── Main Quiz Component ────────────────────────────────────────────────────────
 
 export const TestFinderQuiz = () => {
   const [currentNodeId, setCurrentNodeId] = useState("gender");
   const [history, setHistory] = useState<HistoryEntry[]>([]);
-  const [direction, setDirection] = useState(1); // 1 = forward, -1 = back
+  const [direction, setDirection] = useState(1);
   const [isAnalysing, setIsAnalysing] = useState(false);
   const [aiResult, setAiResult] = useState<AIAnalysisResult | null>(null);
+  const [showContextStep, setShowContextStep] = useState(false);
+  const [userContext, setUserContext] = useState("");
+  const [pendingPathLabels, setPendingPathLabels] = useState<string[]>([]);
+  const [pendingGender, setPendingGender] = useState<string | null>(null);
 
   const currentNode = DECISION_TREE[currentNodeId];
   const stepCount = history.length + 1;
@@ -460,42 +535,67 @@ export const TestFinderQuiz = () => {
     return [...history.map((h) => h.answerLabel), finalAnswer];
   };
 
-  const handleAnswer = async (answer: DecisionAnswer) => {
+  const submitToAI = async (pathLabels: string[], gender: string | null, context: string) => {
+    setIsAnalysing(true);
+
+    const pathString = pathLabels.join(" \u2192 ");
+    const queryText = context.trim()
+      ? `Path: ${pathString} | User Context: ${context.trim()}`
+      : `Path: ${pathString}`;
+
+    try {
+      const { data, error } = await supabase.functions.invoke("ai-human-context", {
+        body: {
+          query_text: queryText,
+          gender: gender,
+          age: null,
+          method_preference: null,
+        },
+      });
+
+      if (error) throw error;
+      setAiResult(data as AIAnalysisResult);
+    } catch {
+      toast.error("Unable to generate recommendations. Please try again.");
+      setIsAnalysing(false);
+    }
+  };
+
+  const handleAnswer = (answer: DecisionAnswer) => {
     if (answer.is_terminal) {
-      // Terminal node — hand over to AI
       const pathLabels = buildPathLabels(answer.label);
       const gender = genderFromHistory() ?? (history.length === 0 && answer.label.toLowerCase() === "male" ? "male" : answer.label.toLowerCase() === "female" ? "female" : null);
 
       setHistory((prev) => [...prev, { nodeId: currentNodeId, answerLabel: answer.label }]);
-      setIsAnalysing(true);
-
-      try {
-        const { data, error } = await supabase.functions.invoke("ai-human-context", {
-          body: {
-            query_text: pathLabels.join(" \u2192 "),
-            gender: gender,
-            age: null,
-            method_preference: null,
-          },
-        });
-
-        if (error) throw error;
-        setAiResult(data as AIAnalysisResult);
-      } catch {
-        toast.error("Unable to generate recommendations. Please try again.");
-        setIsAnalysing(false);
-      }
+      setPendingPathLabels(pathLabels);
+      setPendingGender(gender);
+      setShowContextStep(true);
     } else if (answer.next_node === "o_2") {
-      // Contact form path
       setHistory((prev) => [...prev, { nodeId: currentNodeId, answerLabel: answer.label }]);
       setDirection(1);
       setCurrentNodeId("o_2");
     } else {
-      // Navigate to next question
       setHistory((prev) => [...prev, { nodeId: currentNodeId, answerLabel: answer.label }]);
       setDirection(1);
       setCurrentNodeId(answer.next_node);
     }
+  };
+
+  const handleContextSubmit = () => {
+    setShowContextStep(false);
+    submitToAI(pendingPathLabels, pendingGender, userContext);
+  };
+
+  const handleContextBack = () => {
+    setShowContextStep(false);
+    setPendingPathLabels([]);
+    setPendingGender(null);
+    // Pop the last history entry (the terminal answer) and go back
+    const prev = [...history];
+    const last = prev.pop()!;
+    setHistory(prev);
+    setDirection(-1);
+    setCurrentNodeId(last.nodeId);
   };
 
   const handleBack = () => {
@@ -513,7 +613,23 @@ export const TestFinderQuiz = () => {
     setDirection(1);
     setIsAnalysing(false);
     setAiResult(null);
+    setShowContextStep(false);
+    setUserContext("");
+    setPendingPathLabels([]);
+    setPendingGender(null);
   };
+
+  // ─── Additional Context step ───
+  if (showContextStep) {
+    return (
+      <AdditionalContextStep
+        userContext={userContext}
+        onContextChange={setUserContext}
+        onSubmit={handleContextSubmit}
+        onBack={handleContextBack}
+      />
+    );
+  }
 
   // ─── Loading state ───
   if (isAnalysing && !aiResult) {
