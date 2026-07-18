@@ -1,17 +1,17 @@
 ## Plan
 
-### 1. Update the selected hero carousel only
-- Change the `TestCategoryTicker` inline variant used at the top of `HeroMasthead` to a white background.
-- Change the inline carousel wording from white to brand navy.
-- Keep the dot separator pink.
+Swap the two bars directly below the hero in `src/pages/Index.tsx`:
 
-### 2. Preserve other carousel styles
-- Leave the full-width section ticker and trust standards carousel unchanged.
-- Keep the existing scrolling/marquee behaviour intact.
+- Move `BrowseByCategoryBar` (Most Popular Tests toolbar) to sit directly under `<HeroMasthead />`.
+- Move `AccreditedProvidersBar` (trust standards carousel) to sit below the category toolbar.
 
-### 3. Verify
-- Check the homepage at mobile and desktop widths to confirm:
-  - top hero category carousel background is white
-  - words are navy
-  - dots remain pink
-  - no spacing, wrapping, or contrast regressions
+### Change (Index.tsx, lines ~199–205)
+```tsx
+<BrowseByCategoryBar compact placement="hero" />
+
+<Suspense fallback={<SectionFallback />}>
+  <AccreditedProvidersBar />
+</Suspense>
+```
+
+No styling changes; both components keep their current appearance. Verify visually at mobile and desktop.
