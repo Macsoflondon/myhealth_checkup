@@ -212,7 +212,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
       <h1 className="sr-only">Compare private blood tests and health screening from trusted UK providers</h1>
       <TestCategoryTicker
         variant="inline"
-        className="bg-[#081129] border-b border-white/10 -mx-3 sm:-mx-6 md:-mx-9"
+        className="bg-white border-b border-brand-navy/10 -mx-3 sm:-mx-6 md:-mx-9"
       />
 
       <div className="hidden sm:flex items-center border-b border-white/10 pb-2 pt-4 sm:pt-7">
