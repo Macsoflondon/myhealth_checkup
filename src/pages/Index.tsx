@@ -196,13 +196,12 @@ const Index = () => {
             <HeroMasthead />
           </div>
 
-          {/* Accredited standards bar — directly under hero */}
+          <BrowseByCategoryBar compact placement="hero" />
+
+          {/* Accredited standards bar */}
           <Suspense fallback={<SectionFallback />}>
             <AccreditedProvidersBar />
           </Suspense>
-
-
-          <BrowseByCategoryBar compact placement="hero" />
 
           {/* Hero CTA \u2014 Health Quiz entry point */}
           <section className="py-12 sm:py-16 px-4 bg-white">
