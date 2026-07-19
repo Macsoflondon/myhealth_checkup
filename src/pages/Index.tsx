@@ -222,18 +222,16 @@ const Index = () => {
                     AI-Powered
                   </span>
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-10 items-start">
-                  <div className="text-center lg:text-left min-w-0">
-                    <h2
-                      className="text-[clamp(1.05rem,3.4vw,2.25rem)] font-bold text-white mb-4 leading-[1.1] whitespace-nowrap tracking-tight"
-                      style={{ fontFamily: "'Montserrat', sans-serif" }}
-                    >
-                      Not sure which test you need?
-                    </h2>
-                    <p className="text-white text-base sm:text-lg leading-relaxed">
-                      Answer 6 quick questions and our AI will analyse 597 accredited tests to find your perfect wellness panel — with transparent pricing.
-                    </p>
-                  </div>
+                <h2
+                  className="text-[clamp(1.35rem,4.5vw,3rem)] font-bold text-white mb-6 sm:mb-8 leading-[1.1] whitespace-nowrap tracking-tight text-center lg:text-left"
+                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                >
+                  Not sure which test you need?
+                </h2>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+                  <p className="text-white text-base sm:text-lg leading-relaxed text-center lg:text-left">
+                    Answer 6 quick questions and our AI will analyse 597 accredited tests to find your perfect wellness panel — with transparent pricing.
+                  </p>
                   <div className="flex flex-col items-center gap-5">
                     <Link
                       to="/find-test"
