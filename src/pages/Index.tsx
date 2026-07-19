@@ -198,9 +198,11 @@ const Index = () => {
 
           <BrowseByCategoryBar compact placement="hero" />
 
-          {/* Accredited standards bar */}
+          {/* Accredited standards bar — sits directly under the toolbar */}
           <Suspense fallback={<SectionFallback />}>
-            <AccreditedProvidersBar />
+            <div className="mt-2 sm:mt-3">
+              <AccreditedProvidersBar />
+            </div>
           </Suspense>
 
           {/* Hero CTA \u2014 Health Quiz entry point */}
