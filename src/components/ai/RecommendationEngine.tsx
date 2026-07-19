@@ -11,7 +11,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { logger } from '@/lib/logger';
 import { analytics } from '@/lib/analytics';
-import ProviderTestCard from '@/components/providers/ProviderTestCard';
+import { UniversalTestCard } from '@/components/cards/UniversalTestCard';
 import { useResolvedRecommendations } from '@/hooks/queries/useResolvedRecommendations';
 
 
@@ -92,9 +92,9 @@ const ResolvedRecommendationList = ({ recs }: { recs: RecommendationProps[] }) =
                 </h3>
                 <Badge className={getUrgencyColor(rec.urgency)}>{rec.urgency}</Badge>
               </div>
-              <p className="text-xs text-[#081129]/70 mb-2">{rec.provider} · {rec.confidence}% match</p>
+              <p className="text-xs text-[#081129]/70 mb-2">{rec.provider} \u00b7 {rec.confidence}% match</p>
               <p className="text-xs text-[#081129]/80">{rec.reason}</p>
-              <p className="text-[11px] text-[#081129]/50 mt-2 italic">Live details unavailable — this test may have been updated. Please browse the catalogue for the latest information.</p>
+              <p className="text-[11px] text-[#081129]/50 mt-2 italic">Live details unavailable \u2014 this test may have been updated. Please browse the catalogue for the latest information.</p>
             </Card>
           );
         }
@@ -106,7 +106,7 @@ const ResolvedRecommendationList = ({ recs }: { recs: RecommendationProps[] }) =
                 {rec.confidence}% match
               </span>
             </div>
-            <ProviderTestCard test={test} />
+            <UniversalTestCard test={test as any} />
             {rec.reason && (
               <p className="text-xs text-[#081129]/70 px-1 leading-relaxed border-l-2 border-[#22c0d4]/50 pl-2">
                 <span className="font-semibold text-[#081129]">Why:</span> {rec.reason}
@@ -141,7 +141,7 @@ export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) 
             className="text-5xl font-bold text-white"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
-            £{totalCost.toFixed(0)}
+            \u00a3{totalCost.toFixed(0)}
           </p>
           <p className="text-white/60 text-sm mt-1">
             {result.recommendedTests.length} test{result.recommendedTests.length !== 1 ? 's' : ''} recommended
@@ -188,7 +188,7 @@ export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) 
 
           <ResolvedRecommendationList recs={result.recommendedTests} />
           <p className="text-xs text-[#081129]/60 italic">
-            Tap any test card to view the full standardised details — biomarkers, collection method, turnaround and pricing — pulled directly from the provider.
+            Tap any test card to view the full standardised details \u2014 biomarkers, collection method, turnaround and pricing \u2014 pulled directly from the provider.
           </p>
         </div>
       )}
@@ -432,9 +432,9 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
                   <div className="space-y-1 w-full">
                     <p className="text-sm font-medium line-clamp-1">{query.query_text}</p>
                     <p className="text-xs text-muted-foreground">
-                      {new Date(query.created_at).toLocaleDateString()} • 
+                      {new Date(query.created_at).toLocaleDateString()} \u2022 
                       {query.age && ` Age: ${query.age}`}
-                      {query.gender && ` • ${query.gender}`}
+                      {query.gender && ` \u2022 ${query.gender}`}
                     </p>
                   </div>
                 </Button>

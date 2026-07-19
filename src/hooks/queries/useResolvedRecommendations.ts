@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
+import type { UniversalTestData } from "@/components/cards/UniversalTestCard";
 
 interface RecInput {
   actualTestId?: string;
@@ -12,10 +12,10 @@ const SELECT = `
   id, provider_id, test_name, description, price, category, sample_type,
   biomarker_count, biomarkers_list, url, home_kit_available, clinic_visit_available,
   turnaround_days_text, base_price, collection_options, is_popular,
-  collection_fee_amount, symptoms, who_should_test
+  collection_fee_amount, total_expected_cost, symptoms, who_should_test
 `;
 
-async function resolveOne(rec: RecInput): Promise<ProviderTestCardData | null> {
+async function resolveOne(rec: RecInput): Promise<UniversalTestData | null> {
   if (rec.actualTestId) {
     const { data } = await supabase
       .from("provider_tests")
@@ -23,11 +23,11 @@ async function resolveOne(rec: RecInput): Promise<ProviderTestCardData | null> {
       .eq("id", rec.actualTestId)
       .eq("is_active", true)
       .maybeSingle();
-    if (data) return data as unknown as ProviderTestCardData;
+    if (data) return data as unknown as UniversalTestData;
   }
 
   // Fallback: fuzzy match by provider + test_name (LIKE for curly apostrophes)
-  const pattern = `%${rec.testName.replace(/['']/g, "_").replace(/[%_]/g, "\\$&")}%`;
+  const pattern = `%${rec.testName.replace(/[\u2018\u2019]/g, "_").replace(/[%_]/g, "\\$&")}%`;
   const { data } = await supabase
     .from("provider_tests")
     .select(SELECT)
@@ -36,7 +36,7 @@ async function resolveOne(rec: RecInput): Promise<ProviderTestCardData | null> {
     .ilike("test_name", pattern)
     .limit(1);
 
-  return (data?.[0] as unknown as ProviderTestCardData) ?? null;
+  return (data?.[0] as unknown as UniversalTestData) ?? null;
 }
 
 export function useResolvedRecommendations(recs: RecInput[]) {
