@@ -33,6 +33,7 @@ export const contentRoutes = (
     <Route path="/health-blog" element={<Navigate to="/blog" replace />} />
     <Route path="/blog/testosterone-levels-by-age" element={<TestosteroneLevelsByAgePage />} />
     <Route path="/blog/private-blood-test-cost-guide" element={<PrivateBloodTestCostGuidePage />} />
+    <Route path="/blog/ferritin-vs-iron-comparison-guide" element={<FerritinVsIronComparisonGuidePage />} />
     <Route path="/sitemap" element={<SitemapPage />} />
     <Route path="/conditions" element={<ConditionsPage />} />
     <Route path="/trusted-providers" element={<TrustedProvidersPage />} />
