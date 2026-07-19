@@ -222,9 +222,9 @@ const Index = () => {
                     AI-Powered
                   </span>
                 </div>
-                <div className="flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8 mb-6 sm:mb-8">
+                <div className="flex flex-col sm:flex-row items-center sm:items-baseline justify-center gap-4 sm:gap-6 w-full max-w-4xl mx-auto mb-6 sm:mb-8">
                   <h2
-                    className="text-[clamp(1rem,4.3vw,3rem)] font-bold text-white leading-[1.1] whitespace-nowrap tracking-tight text-center lg:text-left"
+                    className="text-[clamp(1.1rem,3vw,2.25rem)] font-bold text-white leading-[1.1] tracking-tight text-center whitespace-normal sm:whitespace-nowrap"
                     style={{ fontFamily: "'Montserrat', sans-serif" }}
                   >
                     Not sure which test you need?
@@ -249,7 +249,7 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
-                <p className="text-white text-base sm:text-lg leading-relaxed text-center lg:text-left max-w-4xl">
+                <p className="text-white text-base sm:text-lg leading-relaxed text-center max-w-2xl mx-auto">
                   Answer 6 quick questions and our AI will analyse 597 accredited tests to find your perfect wellness panel — with transparent pricing.
                 </p>
               </div>
