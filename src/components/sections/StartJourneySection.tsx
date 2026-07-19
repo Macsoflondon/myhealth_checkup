@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import LiveComparisonCard, { DEFAULT_LIVE_COMPARISON_PANELS } from "@/components/sections/LiveComparisonCard";
+import { useEffect, useMemo, useState } from "react";
+import LiveComparisonCard, {
+  DEFAULT_LIVE_COMPARISON_PANELS,
+  type LiveComparisonPanelData,
+} from "@/components/sections/LiveComparisonCard";
+import { supabase } from "@/integrations/supabase/client";
 
-
-
-// ── Rotating test data ──────────────────────────────────────────────────────
-const TESTS = [
+// ── Hardcoded fallback (used only if DB fetch fails) ────────────────────────
+const FALLBACK_RIGHT: LiveComparisonPanelData[] = [
   {
     name: "Full Blood Count Panel",
     providers: [
@@ -16,55 +18,68 @@ const TESTS = [
       { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£155" }, { label: "Clinic-based", price: "£129" }] },
     ],
   },
-  {
-    name: "Cholesterol Panel",
-    providers: [
-      { name: "Medichecks", options: [{ label: "At-home kit", price: "£29" }, { label: "Clinic-based", price: "£55" }] },
-      { name: "Thriva", options: [{ label: "At-home kit", price: "£59" }] },
-      { name: "Randox Health", options: [{ label: "At-home kit", price: "£39" }, { label: "Clinic-based", price: "£49" }] },
-      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£45" }, { label: "Clinic-based", price: "£55" }] },
-      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£59" }] },
-      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£119" }, { label: "Clinic-based", price: "£99" }] },
-    ],
-  },
-  {
-    name: "Vitamin B12 Test",
-    providers: [
-      { name: "Medichecks", options: [{ label: "At-home kit", price: "£29" }, { label: "Clinic-based", price: "£49" }] },
-      { name: "Thriva", options: [{ label: "At-home kit", price: "£42" }] },
-      { name: "Randox Health", options: [{ label: "At-home kit", price: "£35" }, { label: "Clinic-based", price: "£45" }] },
-      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£35" }, { label: "Clinic-based", price: "£45" }] },
-      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£45" }] },
-      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£85" }, { label: "Clinic-based", price: "£69" }] },
-    ],
-  },
 ];
 
-// ── Validation: ensure no test appears in both comparison tables ───────────
-const LEFT_PANELS = DEFAULT_LIVE_COMPARISON_PANELS;
-const RIGHT_PANELS = TESTS;
 const SYNC_ROTATE_MS = 30000;
 
-(() => {
-  const leftNames = new Set(LEFT_PANELS.map((p) => p.name.toLowerCase().trim()));
-  const overlap = RIGHT_PANELS.filter((p) => leftNames.has(p.name.toLowerCase().trim())).map((p) => p.name);
-  if (overlap.length > 0) {
-    const msg = `[LiveComparison] Duplicate test(s) in both comparison tables: ${overlap.join(", ")}. Each test must appear in only one table.`;
-    if (import.meta.env.DEV) throw new Error(msg);
-    console.error(msg);
-  }
-})();
+type DbRow = { name: string; bio?: string; price: string; url?: string };
+type DbPanel = {
+  slug: string;
+  panel_name: string;
+  display_order: number;
+  rows: DbRow[] | null;
+  last_scraped_at: string | null;
+};
 
+function dbPanelToPanelData(p: DbPanel): LiveComparisonPanelData {
+  return {
+    name: p.panel_name,
+    lastScrapedAt: p.last_scraped_at,
+    providers: (p.rows ?? []).map((r) => {
+      // Extract a label from bio (e.g. "At-home kit · UKAS · 24–48h" → "At-home kit")
+      const label = (r.bio?.split("·")[0]?.trim()) || "Test";
+      return {
+        name: r.name,
+        options: [{ label, price: r.price }],
+      };
+    }),
+  };
+}
 
 const StartJourneySection = () => {
-  // Synchronized rotation: both tables advance in lock-step on the same interval.
-  const maxLen = Math.max(LEFT_PANELS.length, RIGHT_PANELS.length);
+  const [dbPanels, setDbPanels] = useState<LiveComparisonPanelData[] | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase
+        .from("live_comparison_panels")
+        .select("slug, panel_name, display_order, rows, last_scraped_at")
+        .order("display_order", { ascending: true });
+      if (cancelled || error || !data?.length) return;
+      setDbPanels((data as unknown as DbPanel[]).map(dbPanelToPanelData));
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  // Split panels evenly between the two cards; fall back to defaults.
+  const { leftPanels, rightPanels } = useMemo(() => {
+    if (dbPanels && dbPanels.length >= 2) {
+      const mid = Math.ceil(dbPanels.length / 2);
+      return { leftPanels: dbPanels.slice(0, mid), rightPanels: dbPanels.slice(mid) };
+    }
+    return { leftPanels: DEFAULT_LIVE_COMPARISON_PANELS, rightPanels: FALLBACK_RIGHT };
+  }, [dbPanels]);
+
+  const maxLen = Math.max(leftPanels.length, rightPanels.length);
   const [syncIdx, setSyncIdx] = useState(0);
   useEffect(() => {
     if (maxLen <= 1) return;
     const interval = setInterval(() => setSyncIdx((i) => (i + 1) % maxLen), SYNC_ROTATE_MS);
     return () => clearInterval(interval);
   }, [maxLen]);
+
+
 
 
   return (
