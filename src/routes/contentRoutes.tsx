@@ -18,6 +18,7 @@ const BiomarkerGuidesIndexPage = lazy(() => import("@/pages/BiomarkerGuidesIndex
 const BiomarkerGuidePage = lazy(() => import("@/pages/BiomarkerGuidePage"));
 const TestosteroneLevelsByAgePage = lazy(() => import("@/pages/TestosteroneLevelsByAgePage"));
 const PrivateBloodTestCostGuidePage = lazy(() => import("@/pages/PrivateBloodTestCostGuidePage"));
+const FerritinVsIronComparisonGuidePage = lazy(() => import("@/pages/FerritinVsIronComparisonGuidePage"));
 
 
 export const contentRoutes = (
