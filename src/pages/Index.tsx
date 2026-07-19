@@ -222,10 +222,10 @@ const Index = () => {
                     AI-Powered
                   </span>
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-                  <div className="text-center lg:text-left">
+                <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-10 items-start">
+                  <div className="text-center lg:text-left min-w-0">
                     <h2
-                      className="text-[clamp(1.35rem,4.2vw,2.75rem)] font-bold text-white mb-4 leading-tight whitespace-nowrap"
+                      className="text-[clamp(1.05rem,3.4vw,2.25rem)] font-bold text-white mb-4 leading-[1.1] whitespace-nowrap tracking-tight"
                       style={{ fontFamily: "'Montserrat', sans-serif" }}
                     >
                       Not sure which test you need?
