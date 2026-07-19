@@ -10,12 +10,13 @@ import { supabase } from "@/integrations/supabase/client";
 const FALLBACK_RIGHT: LiveComparisonPanelData[] = [
   {
     name: "Full Blood Count Panel",
+    collectionMethod: "clinic",
+    methodLabel: "In-clinic test",
     providers: [
-      { name: "Medichecks", options: [{ label: "At-home kit", price: "£59" }, { label: "Clinic-based", price: "£59" }] },
-      { name: "Randox Health", options: [{ label: "At-home kit", price: "£89" }, { label: "Clinic-based", price: "£99" }] },
-      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£59" }, { label: "Clinic-based", price: "£65" }] },
-      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£75" }] },
-      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£155" }, { label: "Clinic-based", price: "£129" }] },
+      { name: "Randox Health", options: [{ label: "In-clinic test", price: "£99" }] },
+      { name: "Goodbody Health", options: [{ label: "In-clinic test", price: "£65" }] },
+      { name: "London Medical Laboratory", options: [{ label: "In-clinic test", price: "£75" }] },
+      { name: "Lola Health", options: [{ label: "In-clinic test", price: "£129" }] },
     ],
   },
 ];
