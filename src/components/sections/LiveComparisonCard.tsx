@@ -192,7 +192,7 @@ const LiveComparisonCard = ({
 
           <div style={{ padding: "12px 20px", borderTop: "1px solid rgba(8,17,41,0.07)", background: "#fafbfc" }}>
             <p style={{ fontSize: "11px", color: "rgba(8,17,41,0.4)", textAlign: "center", margin: 0 }}>
-              Prices verified June 2026 from provider websites. Always confirm current pricing before booking.
+              {formatVerified(test.lastScrapedAt)}
             </p>
           </div>
         </div>
