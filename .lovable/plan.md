@@ -1,47 +1,49 @@
-## Plan: live comparison cards by collection method
+## Plan: fix the live comparison panels properly
 
-### What I’ll change
-- **Stop mixing collection methods** in the same live comparison panel.
-  - Each card rotation will be either **At-home test kit** or **In-clinic test** only.
-  - The method wording will be shown once at the top of the table, not repeated inconsistently per provider.
+### What I verified
+- The current live database rows are not showing duplicate providers or walk-in wording in the rows I queried, but the screenshot proves stale/mixed panel data is still reaching the UI somewhere.
+- There is still legacy comparison wording in the codebase and old seed migrations include `Walk-in UK clinics`, `Walk-in London`, and `Clinic-based` wording.
+- The live panel UI currently trusts whatever JSON is in `live_comparison_panels.rows`, so if stale rows or older panel shapes return, the UI can still render duplicate Clinilabs and forbidden wording.
 
-- **Remove wrong collection language**.
-  - Replace/normalise `Walk-in UK clinics`, `Walk-in London`, `home nurse`, and similar wording.
-  - Use only approved labels: **At-home test kit** or **In-clinic test**.
+### Fix scope
+1. **Harden the UI renderer**
+   - In `StartJourneySection.tsx`, normalise every database row before rendering.
+   - Drop duplicate providers within each panel using provider id/name.
+   - Reject panels that mix `at_home` and `clinic` rows.
+   - Convert all method wording to only:
+     - `At-home test kit`
+     - `In-clinic test`
+   - Never render `Walk-in`, `Walk-in UK clinics`, `Walk-in London`, or `Clinic-based` from database JSON.
 
-- **Fix duplicate providers inside a panel**.
-  - A provider should appear at most once per comparison panel.
-  - Where a test has multiple matching products from the same provider, keep the best-priced relevant option for that method.
+2. **Clean the live panel data source**
+   - Update `live_comparison_panels` data so every panel is method-pure.
+   - Ensure each provider appears once per panel.
+   - Prefer broader provider coverage across the nine providers where relevant, instead of repeated Clinilabs rows.
+   - Keep separate rotations for the same test type where data exists:
+     - `Thyroid Health Panel — At-home test kit`
+     - `Thyroid Health Panel — In-clinic test`
 
-- **Improve provider coverage**.
-  - Build panels from the wider `provider_tests` data rather than the current manually-seeded rows that over-repeat CliniLabs.
-  - Include the available provider spread across the platform where they actually have a comparable test and the matching method.
+3. **Add database guardrails**
+   - Add a database validation function or trigger for `live_comparison_panels.rows` so future updates cannot save:
+     - duplicate providers in one panel
+     - mixed collection methods in one panel
+     - forbidden labels containing `walk-in` or `clinic-based`
+   - This prevents the scraper or a future seed from reintroducing the exact issue.
 
-- **Preserve live verified footer**.
-  - Keep using `last_scraped_at` so the footer continues to show relative live verification, e.g. `Prices verified 19 minutes ago...`.
+4. **Update the scraper behaviour**
+   - Adjust `refresh-live-comparison-panels` so it preserves the method fields and only updates prices/timestamps.
+   - Do not allow scraper output to rewrite method labels into legacy wording.
 
-### UI behaviour
-- Add a small table-level method label/header near the top of each live comparison table:
-  - **At-home test kit** for home-only panels.
-  - **In-clinic test** for clinic-only panels.
-- Provider rows will display provider name + price cleanly, with no mixed method labels in the row list.
-- Keep the existing premium card styling and live comparison rotation.
-
-### Data/backend behaviour
-- Update the `live_comparison_panels` rows so each JSON row has consistent method wording.
-- Reseed/refresh the existing panel data from `provider_tests`, grouped by:
-  - test theme/category
-  - collection method
-  - unique provider
-- No new table is needed.
+5. **Verify in browser and database**
+   - Query every `live_comparison_panels` row for duplicate provider names, mixed methods, and forbidden wording.
+   - Check the homepage live panel DOM after load for:
+     - no visible `Walk-in`
+     - no visible `Clinic-based`
+     - no duplicated provider names within a card
+     - footer still using `last_scraped_at`
+   - Verify at mobile width matching your screenshot.
 
 ### Technical notes
-- Frontend files to update:
-  - `src/components/sections/LiveComparisonCard.tsx`
-  - `src/components/sections/StartJourneySection.tsx`
-- Database update:
-  - Clean and repopulate `public.live_comparison_panels` using existing provider data.
-- Validation:
-  - Query the table after the update to confirm no panel mixes home and clinic wording.
-  - Confirm no panel repeats the same provider.
-  - Browser-check the homepage card layout at the current viewport and mobile width.
+- Schema/config changes will go through a Supabase migration.
+- Data cleanup will use the Supabase data update tool, not a schema migration.
+- Frontend changes stay limited to the live comparison rendering path.
