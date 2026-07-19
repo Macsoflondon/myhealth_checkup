@@ -17,6 +17,7 @@ const BiomarkerDatabasePage = lazy(() => import("@/pages/BiomarkerDatabasePage")
 const BiomarkerGuidesIndexPage = lazy(() => import("@/pages/BiomarkerGuidesIndexPage"));
 const BiomarkerGuidePage = lazy(() => import("@/pages/BiomarkerGuidePage"));
 const TestosteroneLevelsByAgePage = lazy(() => import("@/pages/TestosteroneLevelsByAgePage"));
+const PrivateBloodTestCostGuidePage = lazy(() => import("@/pages/PrivateBloodTestCostGuidePage"));
 
 
 export const contentRoutes = (
@@ -30,6 +31,7 @@ export const contentRoutes = (
     <Route path="/blog" element={<HealthBlogPage />} />
     <Route path="/health-blog" element={<Navigate to="/blog" replace />} />
     <Route path="/blog/testosterone-levels-by-age" element={<TestosteroneLevelsByAgePage />} />
+    <Route path="/blog/private-blood-test-cost-guide" element={<PrivateBloodTestCostGuidePage />} />
     <Route path="/sitemap" element={<SitemapPage />} />
     <Route path="/conditions" element={<ConditionsPage />} />
     <Route path="/trusted-providers" element={<TrustedProvidersPage />} />
