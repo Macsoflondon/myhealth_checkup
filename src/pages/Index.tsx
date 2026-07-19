@@ -222,17 +222,14 @@ const Index = () => {
                     AI-Powered
                   </span>
                 </div>
-                <h2
-                  className="text-[clamp(1rem,4.3vw,3rem)] font-bold text-white mb-6 sm:mb-8 leading-[1.1] whitespace-nowrap tracking-tight text-center lg:text-left"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
-                >
-                  Not sure which test you need?
-                </h2>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-                  <p className="text-white text-base sm:text-lg leading-relaxed text-center lg:text-left">
-                    Answer 6 quick questions and our AI will analyse 597 accredited tests to find your perfect wellness panel — with transparent pricing.
-                  </p>
-                  <div className="flex flex-col items-center gap-5">
+                <div className="flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8 mb-6 sm:mb-8">
+                  <h2
+                    className="text-[clamp(1rem,4.3vw,3rem)] font-bold text-white leading-[1.1] whitespace-nowrap tracking-tight text-center lg:text-left"
+                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  >
+                    Not sure which test you need?
+                  </h2>
+                  <div className="flex flex-col items-center gap-2">
                     <Link
                       to="/find-test"
                       className="inline-flex items-center gap-2 whitespace-nowrap bg-gradient-to-r from-[#22c0d4] to-[#1aa8bb] hover:from-[#1aa8bb] hover:to-[#22c0d4] text-[#081129] font-bold text-base sm:text-lg px-8 py-4 rounded-full shadow-lg shadow-[#22c0d4]/25 transition-all hover:scale-[1.02]"
@@ -252,6 +249,9 @@ const Index = () => {
                     </div>
                   </div>
                 </div>
+                <p className="text-white text-base sm:text-lg leading-relaxed text-center lg:text-left max-w-4xl">
+                  Answer 6 quick questions and our AI will analyse 597 accredited tests to find your perfect wellness panel — with transparent pricing.
+                </p>
               </div>
             </div>
           </section>
