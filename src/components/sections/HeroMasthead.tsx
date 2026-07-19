@@ -209,7 +209,6 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
 
   return (
     <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border border-b-0 border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[84svh] sm:min-h-[100svh] flex flex-col">
-      <h1 className="sr-only">Compare private blood tests and health screening from trusted UK providers</h1>
       <TestCategoryTicker
         variant="inline"
         className="bg-white border-b border-brand-navy/10 -mx-3 sm:-mx-6 md:-mx-9"
@@ -221,10 +220,10 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         </div>
       </div>
       <div className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-1.5 sm:pb-2 mt-4 sm:mt-6 md:mt-8">
-        <span className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white leading-[1.15] text-[clamp(0.85rem,4.2vw,3.25rem)] sm:whitespace-nowrap sm:text-[clamp(0.95rem,2.8vw,2.25rem)]">
+        <h1 className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white leading-[1.15] text-[clamp(0.85rem,4.2vw,3.25rem)] sm:whitespace-nowrap sm:text-[clamp(0.95rem,2.8vw,2.25rem)] m-0">
           YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR{" "}
           <span className="text-brand-pink">CHOICE.</span> ONE TRUSTED PLATFORM.
-        </span>
+        </h1>
       </div>
       <div className="relative rounded-t-[18px] overflow-hidden mt-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
         {SLIDES.map((s, n) => {
