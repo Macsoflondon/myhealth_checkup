@@ -80,6 +80,7 @@ export const STATIC_ROUTES = [
   "/blog",
   "/blog/testosterone-levels-by-age",
   "/blog/private-blood-test-cost-guide",
+  "/blog/ferritin-vs-iron-comparison-guide",
   "/health-blog",
 
   // Legal / compliance
