@@ -1,7 +1,7 @@
 // refresh-live-comparison-panels
-// Hourly scraper that visits each provider URL in every live comparison panel,
-// extracts a £-prefixed price, and updates the panel row. Falls back to the
-// previously stored price if scraping fails.
+// Refreshes every live comparison panel from the canonical provider_tests rows.
+// Panel prices must be method-specific expected totals, not the first raw £ price
+// scraped from a provider page.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
@@ -17,8 +17,23 @@ type Row = {
   price: string;
   url?: string;
   providerId?: string;
+  sourceTestName?: string;
   method?: "at_home" | "clinic";
   methodLabel?: string;
+};
+
+type ProviderTest = {
+  provider_id: string;
+  test_name: string;
+  price: number | null;
+  url: string | null;
+  collection_method: string | null;
+  collection_fee_type: string | null;
+  collection_fee_amount: number | null;
+  clinical_review_type: string | null;
+  clinical_review_fee: number | null;
+  home_kit_available: boolean | null;
+  clinic_visit_available: boolean | null;
 };
 
 const approvedMethodLabel: Record<"at_home" | "clinic", string> = {
@@ -57,56 +72,59 @@ function sanitiseRows(rows: Row[]): Row[] {
   }).map((row) => ({ ...row, method: firstMethod, methodLabel, bio: methodLabel, badge: methodLabel }));
 }
 
-async function scrapePrice(url: string): Promise<string | null> {
-  try {
-    const res = await fetch(url, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (compatible; MyHealthCheckupBot/1.0; +https://myhealthcheckup.co.uk)",
-        Accept: "text/html,application/xhtml+xml",
-      },
-      redirect: "follow",
-    });
-    if (!res.ok) return null;
-    const html = await res.text();
+function normaliseText(value: string | null | undefined): string {
+  return (value ?? "").trim().toLowerCase();
+}
 
-    // 1. Try JSON-LD offers.price
-    const ldMatches = html.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi);
-    for (const m of ldMatches) {
-      try {
-        const data = JSON.parse(m[1].trim());
-        const nodes = Array.isArray(data) ? data : [data];
-        for (const node of nodes) {
-          const offers = node?.offers;
-          const offerArr = Array.isArray(offers) ? offers : offers ? [offers] : [];
-          for (const o of offerArr) {
-            const p = o?.price ?? o?.lowPrice;
-            if (p) {
-              const num = Number(String(p).replace(/[^0-9.]/g, ""));
-              if (num > 0 && num < 10000) return `£${Math.round(num)}`;
-            }
-          }
-        }
-      } catch { /* ignore */ }
-    }
+function normaliseUrl(value: string | null | undefined): string {
+  return normaliseText(value).replace(/\/$/, "");
+}
 
-    // 2. Try meta product:price:amount
-    const metaPrice = html.match(/<meta[^>]+property=["']product:price:amount["'][^>]+content=["']([^"']+)["']/i);
-    if (metaPrice?.[1]) {
-      const num = Number(metaPrice[1].replace(/[^0-9.]/g, ""));
-      if (num > 0 && num < 10000) return `£${Math.round(num)}`;
-    }
+function formatPrice(value: number): string {
+  const rounded = Math.round(value * 100) / 100;
+  return Number.isInteger(rounded) ? `£${rounded}` : `£${rounded.toFixed(2)}`;
+}
 
-    // 3. Regex first £ price in body (between £1 and £9999)
-    const m = html.match(/£\s?(\d{1,4})(?:\.(\d{2}))?/);
-    if (m) {
-      const num = Number(m[1]);
-      if (num > 0 && num < 10000) return `£${num}`;
-    }
-  } catch (e) {
-    console.warn("scrapePrice failed", url, e);
+function supportsMethod(test: ProviderTest, method: "at_home" | "clinic"): boolean {
+  const collectionMethod = normaliseText(test.collection_method);
+  if (method === "at_home") {
+    return test.home_kit_available === true || collectionMethod === "home_kit" || collectionMethod === "self_arranged";
   }
-  return null;
+  return test.clinic_visit_available === true || collectionMethod === "clinic_appointment" || collectionMethod === "home_visit";
+}
+
+function isMandatoryFee(type: string | null, amount: number | null): boolean {
+  return amount !== null && amount > 0 && type !== null && type !== "none" && type !== "optional";
+}
+
+function expectedTotal(test: ProviderTest, method: "at_home" | "clinic"): number | null {
+  if (test.price === null || test.price <= 0 || !supportsMethod(test, method)) return null;
+
+  let total = test.price;
+  const collectionMethod = normaliseText(test.collection_method);
+  const feeAppliesToMethod = method === "clinic"
+    ? collectionMethod === "clinic_appointment" || test.home_kit_available !== true
+    : collectionMethod === "home_kit";
+
+  if (feeAppliesToMethod && isMandatoryFee(test.collection_fee_type, test.collection_fee_amount)) {
+    total += test.collection_fee_amount ?? 0;
+  }
+  if (test.clinical_review_type === "required" && test.clinical_review_fee !== null && test.clinical_review_fee > 0) {
+    total += test.clinical_review_fee;
+  }
+  return total;
+}
+
+function findProviderTest(row: Row, tests: ProviderTest[]): ProviderTest | null {
+  const providerId = normaliseText(row.providerId);
+  if (!providerId) return null;
+  const providerTests = tests.filter((test) => normaliseText(test.provider_id) === providerId);
+  const rowUrl = normaliseUrl(row.url);
+  const rowName = normaliseText(row.sourceTestName);
+
+  return providerTests.find((test) => rowUrl !== "" && normaliseUrl(test.url) === rowUrl)
+    ?? providerTests.find((test) => rowName !== "" && normaliseText(test.test_name) === rowName)
+    ?? null;
 }
 
 Deno.serve(async (req) => {
@@ -137,20 +155,37 @@ Deno.serve(async (req) => {
     });
   }
 
-  const summary: Array<{ slug: string; updated: number; total: number }> = [];
+  const { data: tests, error: testsError } = await supabase
+    .from("provider_tests")
+    .select("provider_id, test_name, price, url, collection_method, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, home_kit_available, clinic_visit_available")
+    .eq("is_active", true)
+    .not("price", "is", null)
+    .limit(5000);
+
+  if (testsError) {
+    return new Response(JSON.stringify({ error: testsError.message }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
+
+  const providerTests = (tests ?? []) as ProviderTest[];
+  const summary: Array<{ slug: string; updated: number; total: number; removed: number }> = [];
 
   for (const panel of panels ?? []) {
     const rows = sanitiseRows((panel.rows as Row[]) ?? []);
+    const panelMethod = rows.map(normaliseMethod).find((method): method is "at_home" | "clinic" => method !== null);
     let updated = 0;
     const newRows: Row[] = [];
     for (const row of rows) {
-      if (row.url) {
-        const newPrice = await scrapePrice(row.url);
-        if (newPrice && newPrice !== row.price) {
-          updated++;
-          newRows.push({ ...row, price: newPrice });
-          continue;
-        }
+      if (!panelMethod) continue;
+      const sourceTest = findProviderTest(row, providerTests);
+      const total = sourceTest ? expectedTotal(sourceTest, panelMethod) : null;
+      if (total !== null) {
+        const price = formatPrice(total);
+        if (price !== row.price) updated++;
+        newRows.push({ ...row, price });
+        continue;
       }
       newRows.push(row);
     }
@@ -158,7 +193,7 @@ Deno.serve(async (req) => {
       .from("live_comparison_panels")
       .update({ rows: newRows, last_scraped_at: new Date().toISOString() })
       .eq("id", panel.id);
-    summary.push({ slug: panel.slug, updated, total: rows.length });
+    summary.push({ slug: panel.slug, updated, total: newRows.length, removed: rows.length - newRows.length });
   }
 
   return new Response(JSON.stringify({ success: true, summary }), {
