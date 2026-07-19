@@ -23,7 +23,19 @@ const FALLBACK_RIGHT: LiveComparisonPanelData[] = [
 
 const SYNC_ROTATE_MS = 30000;
 
-type DbRow = { name: string; bio?: string; price: string; url?: string; method?: "at_home" | "clinic"; methodLabel?: string };
+type CollectionMethod = "at_home" | "clinic";
+
+type DbRow = {
+  name?: string;
+  bio?: string;
+  badge?: string;
+  price?: string;
+  url?: string;
+  providerId?: string;
+  method?: CollectionMethod | string;
+  methodLabel?: string;
+};
+
 type DbPanel = {
   slug: string;
   panel_name: string;
@@ -32,24 +44,59 @@ type DbPanel = {
   last_scraped_at: string | null;
 };
 
+const approvedMethodLabel: Record<CollectionMethod, string> = {
+  at_home: "At-home test kit",
+  clinic: "In-clinic test",
+};
+
+function normaliseCollectionMethod(row: DbRow): CollectionMethod | null {
+  if (row.method === "at_home" || row.method === "clinic") return row.method;
+
+  const text = `${row.method ?? ""} ${row.methodLabel ?? ""} ${row.bio ?? ""} ${row.badge ?? ""}`.toLowerCase();
+  if (text.includes("at-home") || text.includes("home kit") || text.includes("home test")) return "at_home";
+  if (text.includes("in-clinic") || text.includes("clinic")) return "clinic";
+  return null;
+}
+
+function rowHasForbiddenWording(row: DbRow): boolean {
+  const text = `${row.methodLabel ?? ""} ${row.bio ?? ""} ${row.badge ?? ""}`.toLowerCase();
+  return text.includes("walk-in") || text.includes("walk in") || text.includes("clinic-based");
+}
+
+function providerKey(row: DbRow): string {
+  return (row.providerId || row.name || "").trim().toLowerCase();
+}
+
 function dbPanelToPanelData(p: DbPanel): LiveComparisonPanelData {
-  const firstRow = p.rows?.[0];
-  const collectionMethod = firstRow?.method;
-  const methodLabel = firstRow?.methodLabel ?? (collectionMethod === "at_home" ? "At-home test kit" : collectionMethod === "clinic" ? "In-clinic test" : undefined);
+  const rows = p.rows ?? [];
+  const firstMethod = rows.map(normaliseCollectionMethod).find((method): method is CollectionMethod => method !== null);
+  const seenProviders = new Set<string>();
+  const safeRows = firstMethod
+    ? rows.filter((row) => {
+        const method = normaliseCollectionMethod(row);
+        const key = providerKey(row);
+        if (method !== firstMethod || !key || !row.name || !row.price || rowHasForbiddenWording(row) || seenProviders.has(key)) {
+          return false;
+        }
+        seenProviders.add(key);
+        return true;
+      })
+    : [];
 
   return {
     name: p.panel_name,
     lastScrapedAt: p.last_scraped_at,
-    collectionMethod,
-    methodLabel,
-    providers: (p.rows ?? []).map((r) => {
-      const label = r.methodLabel ?? (r.method === "at_home" ? "At-home test kit" : r.method === "clinic" ? "In-clinic test" : "Test");
-      return {
-        name: r.name,
-        options: [{ label, price: r.price }],
-      };
-    }),
+    collectionMethod: firstMethod,
+    methodLabel: firstMethod ? approvedMethodLabel[firstMethod] : undefined,
+    providers: safeRows.map((r) => ({
+      name: r.name ?? "Provider",
+      options: [{ label: approvedMethodLabel[firstMethod], price: r.price ?? "Price on provider site" }],
+    })),
   };
+}
+
+function hasComparableProviders(panel: LiveComparisonPanelData): boolean {
+  return panel.providers.length >= 2;
 }
 
 const StartJourneySection = () => {
@@ -63,7 +110,8 @@ const StartJourneySection = () => {
         .select("slug, panel_name, display_order, rows, last_scraped_at")
         .order("display_order", { ascending: true });
       if (cancelled || error || !data?.length) return;
-      setDbPanels((data as unknown as DbPanel[]).map(dbPanelToPanelData));
+      const panels = (data as unknown as DbPanel[]).map(dbPanelToPanelData).filter(hasComparableProviders);
+      if (panels.length >= 2) setDbPanels(panels);
     })();
     return () => { cancelled = true; };
   }, []);
