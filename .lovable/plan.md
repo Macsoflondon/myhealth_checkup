@@ -1,43 +1,42 @@
-## Scope
+## Merge slogan into Health Quiz card, restructure layout
 
-Two files, presentation only.
+Combine the standalone "Your health is your greatest asset" band into the navy Health Quiz card and reflow its contents into a two-column layout on desktop.
 
-### 1. `src/components/sections/StatsBand.tsx` (image 2)
+### 1. `src/pages/Index.tsx` — Health Quiz section
 
-Remove both CTA buttons ("Find your test", "Compare tests") and their flex wrapper. Keep:
-- The pearl `#F5F5F5` outer shell
-- The navy `#081129` inner rounded card with turquoise + pink blob decorations
-- The slogan "Your **health** is your greatest **asset.**" (turquoise "health", pink "asset.")
-
-Centre the slogan horizontally and vertically now that it stands alone. Drop the `flex-wrap`/`justify-center sm:justify-end` layout — use a single centred block. Slightly reduce vertical padding since there's no CTA row.
-
-### 2. `src/pages/Index.tsx` — Health Quiz section (lines 208–244)
-
-Wrap the existing "Not sure which test you need?" block in the **same container styling as StatsBand** so both bands read as a matched pair on the page:
+New structure inside the existing navy `#081129` rounded card (same pearl shell, same blob decorations, same padding tokens):
 
 ```text
-<section> pearl F5F5F5 outer + soft shadow
-  └── navy #081129 rounded-[22px] inner card
-       ├── turquoise blob top-right, pink blob bottom-right (same positions as StatsBand)
-       └── centred content:
-             • AI-Powered pill (turquoise, unchanged treatment)
-             • H2 "Not sure which test you need?"     → white text
-             • Paragraph                                → white/70
-             • "Take the Health Quiz" CTA              → keep turquoise gradient, navy text
-             • Trust line (No account required • …)   → white/60
+[ Slogan — "Your health is your greatest asset." ]         ← full width, centred, top
+                    (thin divider / spacing)
+              [ AI-POWERED pill ]                           ← centred
+                                                           
+[ LEFT COLUMN            ]     [ RIGHT COLUMN            ]
+  H2 "Not sure which             CTA "Take the Health Quiz"
+      test you need?"            Trust line: No account · 2 min · free
+  Description paragraph
 ```
 
-All copy, the `/find-test` link, icons (Brain, Shield, ArrowRight), Montserrat font, and semantic H2 remain unchanged. Only surface colours + wrapper markup change.
+- Slogan: reuse StatsBand's exact heading markup — `font-extrabold clamp(1.9rem,7.5vw,3rem) tracking-[-0.02em] leading-[1.15] font-[Montserrat]`, white text, turquoise "health", pink "asset.", centred, max-w-4xl.
+- AI-POWERED pill: unchanged treatment, centred below slogan with `mb-8`.
+- Two-column row: `grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center` inside `max-w-5xl mx-auto`.
+  - Left: H2 (`text-left lg:text-left`, keep existing size/font) + paragraph (`text-white/70`, left-aligned on lg, centred on mobile).
+  - Right: CTA button + trust line stacked, `flex flex-col items-center lg:items-end gap-6`.
+- Mobile (< lg): everything stacks and centres — slogan, pill, heading, paragraph, CTA, trust line — preserving current mobile feel.
+- Bump inner card vertical padding slightly to accommodate the added slogan row (`py-14 sm:py-[72px]`).
+
+### 2. `src/components/sections/StatsBand.tsx` and `Index.tsx` StatsBand usage
+
+Remove the standalone StatsBand render from `Index.tsx` (the slogan now lives inside the quiz card). Delete `StatsBand.tsx` and its import.
 
 ### Not changing
 
-- `HeroMasthead`, `BrowseByCategoryBar`, `AccreditedProvidersBar` above it.
-- `FinalCTA`, `StartJourneySection`, `Hero.tsx` (different components with unrelated CTAs).
-- Routing, analytics, i18n copy.
+- Hero, category toolbar, trust carousel above.
+- Any copy, links (`/find-test`), icons (Brain, Shield, ArrowRight), analytics.
+- Card surface colours, blob positions, rounded radii, shadows.
 
 ### Technical notes
 
-- Reuse the exact blob classes from StatsBand for visual continuity: `absolute -right-[50px] -top-[60px] w-[260px] h-[260px] rounded-full bg-[#22c0d4]/[0.12]` and `absolute right-[120px] -bottom-[110px] w-[240px] h-[240px] rounded-full bg-[#e70d69]/10`, with `overflow-hidden` on the inner card.
-- Keep `rounded-[22px]` inner + `rounded-[28px]` outer to match StatsBand exactly.
-- Trust icon/text colours shift from `text-[#081129]/50` → `text-white/60`; body copy `text-[#081129]/70` → `text-white/70`; heading `text-[#081129]` → `text-white`.
-- CTA button gradient unchanged (turquoise → deeper turquoise, navy text) — reads well on navy.
+- Keep the H2 as an `<h2>` for semantic order (slogan renders as a visual `<p>` styled like a heading, or promote it and demote current H2 — recommend keeping slogan as a decorative `<p className="...heading-styles...">` since the section's semantic heading is the actionable "Not sure which test you need?").
+- Preserve `text-white`, `text-white/70`, `text-white/60` token usage; no new colours introduced.
+- Trust line: keep the `•` separators and Shield icon inline; on lg right-align via `justify-end`.
