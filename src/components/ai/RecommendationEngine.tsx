@@ -65,6 +65,60 @@ const getUrgencyColor = (urgency: string) => {
   }
 };
 
+/** Renders AI recommendations as standard platform test cards backed by real provider_tests data. */
+const ResolvedRecommendationList = ({ recs }: { recs: RecommendationProps[] }) => {
+  const { data: resolved, isLoading } = useResolvedRecommendations(recs);
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {recs.map((_, i) => (
+          <div key={i} className="h-64 rounded-2xl bg-[#081129]/5 animate-pulse" />
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {recs.map((rec, i) => {
+        const test = resolved?.[i];
+        if (!test) {
+          return (
+            <Card key={i} className="p-4 border-[#081129]/10">
+              <div className="flex items-center gap-2 mb-2">
+                <h3 className="text-sm font-semibold text-[#081129]" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                  {rec.testName}
+                </h3>
+                <Badge className={getUrgencyColor(rec.urgency)}>{rec.urgency}</Badge>
+              </div>
+              <p className="text-xs text-[#081129]/70 mb-2">{rec.provider} · {rec.confidence}% match</p>
+              <p className="text-xs text-[#081129]/80">{rec.reason}</p>
+              <p className="text-[11px] text-[#081129]/50 mt-2 italic">Live details unavailable — this test may have been updated. Please browse the catalogue for the latest information.</p>
+            </Card>
+          );
+        }
+        return (
+          <div key={test.id} className="flex flex-col gap-2">
+            <div className="flex items-center gap-2 flex-wrap px-1">
+              <Badge className={getUrgencyColor(rec.urgency)}>{rec.urgency} priority</Badge>
+              <span className="text-xs font-semibold text-[#22c0d4]" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                {rec.confidence}% match
+              </span>
+            </div>
+            <ProviderTestCard test={test} />
+            {rec.reason && (
+              <p className="text-xs text-[#081129]/70 px-1 leading-relaxed border-l-2 border-[#22c0d4]/50 pl-2">
+                <span className="font-semibold text-[#081129]">Why:</span> {rec.reason}
+              </p>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 /** Results-only view \u2014 renders Wellness Analysis + Recommended Tests with total cost focal. */
 export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) => {
   const totalCost = result.recommendedTests.reduce(
