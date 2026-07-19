@@ -1,57 +1,42 @@
-## Findings
+## What happened
 
-The live comparison price shown for CliniLabs testosterone is **not accurate as an in-clinic end price**.
+I kept triggering authorisation prompts because I split the live data correction into too many separate database write calls. That was the wrong workflow. The correction should have been batched into one operation, then verified with read-only checks.
 
-Verified current state:
-- CliniLabs’ Shopify product source for `Testosterone Blood Test` is **£19**.
-- `provider_tests` stores CliniLabs testosterone with:
-  - base price: **£19**
-  - in-clinic collection fee: **£30**
-  - expected in-clinic total: **£49**
-- `live_comparison_panels` currently displays **£19** for the in-clinic CliniLabs testosterone row.
-- This is systemic: the testosterone panels also show base prices for providers where fees exist, e.g. Medichecks and Goodbody.
+## Current fix status
 
-## Plan
+Already done:
+- Updated `refresh-live-comparison-panels` so it no longer scrapes the first visible `£` price from provider pages.
+- Deployed the edge function.
+- The function now calculates live-panel prices from `provider_tests`, including mandatory in-clinic collection fees where applicable.
+- CliniLabs testosterone should now calculate as:
+  - base test price: `£19`
+  - mandatory in-clinic collection fee: `£30`
+  - displayed in-clinic total: `£49`
 
-### 1. Fix pricing rules for live comparison panels
-- Treat panel prices as **method-specific expected totals**, not raw product/list prices.
-- For **in-clinic** rows:
-  - show `price + mandatory collection fee + mandatory clinical review fee`.
-- For **at-home test kit** rows:
-  - show the kit price unless the additional fee is mandatory for that at-home method.
-- Keep provider page URLs unchanged so users can confirm current pricing before booking.
+## Remaining work
 
-### 2. Stop the refresh job from overwriting totals with raw scraped prices
-- Update `refresh-live-comparison-panels` so it does not scrape the first `£` value from product pages and write that directly into the panel.
-- Instead, refresh panels from `provider_tests`, using:
-  - provider id
-  - source test URL/name
-  - collection method
-  - method-specific total price
-- Keep `last_scraped_at` updating only after a real refresh.
+When you approve this, I will finish in one clean pass:
 
-### 3. Rebuild affected live comparison panel rows
-- Regenerate the existing panel JSON so displayed prices use expected totals.
-- Specifically correct testosterone panels, including CliniLabs in-clinic testosterone from **£19** to **£49**.
-- Audit all panels for rows where displayed price matches base price but differs from expected total.
+1. Run one read-only audit of `live_comparison_panels`.
+2. If any rows are still wrong, run one single batched database correction only.
+3. Verify:
+   - CliniLabs in-clinic testosterone displays `£49`, not `£19`.
+   - No mixed at-home/in-clinic rows remain in a panel.
+   - No duplicate provider rows remain in a panel.
+   - No `walk-in`, `walk in`, or `clinic-based` wording remains.
+4. Verify the homepage live comparison card in the browser.
+5. Stop — no repeated DB prompts.
 
-### 4. Prevent method mixing and bad labels from coming back
-- Keep panels method-pure:
-  - one panel rotation is **At-home test kit** only
-  - another is **In-clinic test** only
-- Ensure no row uses forbidden wording like `Walk-in`, `Walk in`, or `Clinic-based`.
-- Remove provider rows whose stored collection method does not match the panel method.
+## Technical detail
 
-### 5. Run the real scraper/refresh path
-- Deploy the updated edge function.
-- Run the provider scrapers/refresh job once manually after deployment.
-- Re-query `live_comparison_panels` to confirm:
-  - CliniLabs testosterone in-clinic displays **£49**
-  - no mixed at-home/in-clinic rows
-  - no duplicate provider rows within a panel
-  - `last_scraped_at` reflects the refresh
+The root issue is that the live comparison JSON stored `row.price` as the raw product price. For in-clinic tests, that ignored required provider fees already stored in `provider_tests.collection_fee_amount`.
 
-### 6. Verify in the browser
-- Check the homepage live comparison cards on desktop and mobile.
-- Confirm the footer timestamp still says prices were verified recently.
-- Confirm rows show realistic end prices and provider/method labels remain clean.
+The correct source of truth is:
+
+```text
+provider_tests.price
++ mandatory collection fee for the selected collection method
++ required clinical review fee, if applicable
+```
+
+The edge function has been changed to use that model.
