@@ -216,11 +216,12 @@ const Index = () => {
                 >
                   Your <span className="text-[#22c0d4]">health</span> is your greatest <span className="text-[#e70d69]">asset.</span>
                 </p>
-                <div className="inline-flex items-center gap-2 bg-[#22c0d4]/10 border border-[#22c0d4]/40 rounded-full px-4 py-1.5 mb-8">
-                  <Brain className="w-4 h-4 text-[#22c0d4]" />
-                  <span className="text-[#22c0d4] text-xs font-semibold uppercase tracking-wider" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                    AI-Powered
-                  </span>
+                <div className="w-3/4 mx-auto mb-8">
+                  <div className="h-1 w-full rounded-full overflow-hidden flex" aria-hidden="true">
+                    <div className="h-full w-1/3 bg-[#081129]" />
+                    <div className="h-full w-1/3 bg-[#22c0d4]" />
+                    <div className="h-full w-1/3 bg-[#e70d69]" />
+                  </div>
                 </div>
                 <div className="flex flex-col items-center gap-4 sm:grid sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-start sm:gap-0 w-full mx-auto mb-6 sm:mb-8">
                   <h2
