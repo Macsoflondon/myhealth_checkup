@@ -1,51 +1,60 @@
 
 ## Problem
 
-Cards rendered in the AI-assisted recommendation section (`RecommendationEngine.tsx`) are a bespoke layout with hardcoded metadata:
+The two "Live Comparison" cards on the homepage are not live:
+- Prices, providers, and the "Prices verified June 2026…" footer are hardcoded in `LiveComparisonCard.tsx` / `StartJourneySection.tsx`.
+- Only 3 panels seeded in DB (`full-blood-count`, `thyroid-health`, `testosterone-check`), last scraped 13 June 2026.
+- The `refresh-live-comparison-panels-hourly` pg_cron job exists but is **inactive** (`active: false`).
+- Rotation currently only shows a handful of hardcoded tests, not the wider catalogue.
 
-- "2-5 working days" and "At-home collection" are hardcoded strings — that's why TruCheck™ shows "At-home collection" when it's actually in-clinic.
-- Clicking "View test details" / "Read about this test" does nothing (no handler wired).
-- The visual layout doesn't match the platform's standard test card.
+## Fix
 
-Everywhere else on the platform (category pages, at-home, provider catalogues, compare pages) uses `UnifiedTestCard` → `UniversalTestCard`, which owns the standard on-click details modal and pulls collection/turnaround/biomarkers from the real test record.
+### 1. Wire the UI to Supabase (no more hardcoded prices)
 
-## Goal
+- `src/components/sections/StartJourneySection.tsx`: replace `TESTS` and `LEFT_PANELS/RIGHT_PANELS` constants with a `useQuery` against `live_comparison_panels` (ordered by `display_order`). Split panels into two groups (even indexes → left card, odd → right card, or halve the ordered list) so both cards rotate through the full set in lock-step without duplicates. Keep the sync rotation interval.
+- `src/components/sections/LiveComparisonCard.tsx`:
+  - Accept panels shaped from the DB (`slug`, `panel_name`, `rows[]`, `last_scraped_at`). Adapter maps `rows` → the existing `providers[].options[]` shape (group multiple options per provider by name).
+  - Delete the `DEFAULT_LIVE_COMPARISON_PANELS` constant.
+  - Replace the hardcoded footer with dynamic copy derived from the panel's `last_scraped_at`:
+    - `< 24h` → "Prices verified today from provider websites."
+    - `< 7d` → "Prices verified {N} days ago from provider websites."
+    - else → "Prices verified {DD Mon YYYY} from provider websites."
+    - Always appended: "Always confirm current pricing before booking."
+- Keep a minimal loading skeleton (same card frame) so there's no CLS.
 
-Make cards in the AI recommendations section render with the same `UnifiedTestCard` component used everywhere else, backed by the real test data from Supabase — so click behaviour, modal, and displayed fields (collection method, turnaround, biomarker count, price, provider, URL) are identical to every other card on the platform.
+### 2. Expand seeded panels so rotation actually rotates
 
-## Approach
+Add a migration that upserts a broader panel set into `live_comparison_panels` (each row includes a real provider `url` so the scraper can fetch a price). Target set (initial):
 
-1. **Look up the canonical test record** for each AI recommendation.
-   - AI edge function returns `testName`, `provider`, `providerId`, `price`, `category`, `reason`, `urgency`, `confidence`.
-   - Resolve to a real `ProviderTestCardData` via `provider_tests` (using `providerId` + fuzzy `test_name` LIKE match, since AI names may not match exactly and curly apostrophes need LIKE per project rules).
-   - Reuse the same lookup path as `findTestByIdOrSlug` (`src/utils/testSlugLookup.ts`) so canonical categories, `sample_type`, `collection_options`, `turnaround_days_text`, `biomarker_count`, `url` all come from the database — not hardcoded strings.
-   - Fetch all recommendations in one batched query (single `provider_tests` select filtered by `provider_id in (...)` + name matching) via TanStack Query, keyed by the recommendation set.
+Male Hormone, Female Hormone, Thyroid Health, Vitamin D, Vitamin B12, Full Blood Count, Cholesterol / Lipid, HbA1c / Diabetes, Iron Studies, Liver Function, Kidney Function, PSA (Prostate).
 
-2. **Replace the bespoke card markup** in `RecommendationResults` (`src/components/ai/RecommendationEngine.tsx` lines ~131–186) with `<UnifiedTestCard>`, passing `testDetails` sourced from the resolved record. This automatically gives us:
-   - Correct collection method (in-clinic vs at-home vs both) from `sample_type` / `collection_options`.
-   - Correct turnaround from `turnaround_days_text`.
-   - Real biomarker count.
-   - The standard details modal opens on click — same modal as cancer screening / every category page.
+Each panel: 4–6 providers picked from Medichecks, Randox, Thriva, Goodbody, Lola Health, London Medical Laboratory, with the correct product URL. A background sub-agent will collect the exact URLs from `provider_tests` / provider sites before writing the migration.
 
-3. **Preserve the AI-specific chrome** (urgency badge, "% match", the AI-generated `reason` sentence, the wellness disclaimer) as a thin wrapper *around* the standard card so the AI context isn't lost, but the card itself is the platform-standard component.
+### 3. Make the scraper actually run every 6 hours
 
-4. **Fallback behaviour** when a recommendation can't be resolved to a real test row (rare, but possible if the AI hallucinates a name): render the standard card with the AI-provided fields and a subtle "details pending verification" note — never show made-up fields like "At-home collection" for a clinic-only test.
+- Reactivate + reschedule the pg_cron job via `supabase.insert` SQL (not migration — contains project-specific URL/anon key):
+  ```sql
+  select cron.unschedule('refresh-live-comparison-panels-hourly');
+  select cron.schedule(
+    'refresh-live-comparison-panels-6h',
+    '0 */6 * * *',
+    $$ select public.call_edge_with_automations(
+         'https://clvuioagsgfadynuvodj.supabase.co/functions/v1/refresh-live-comparison-panels',
+         '{}'::jsonb); $$
+  );
+  ```
+- Trigger `refresh-live-comparison-panels` once immediately after seeding so `last_scraped_at` is fresh and the UI footer reads "verified today".
+- `supabase/functions/refresh-live-comparison-panels/index.ts` is left as-is (it already scrapes `£` from each row's URL with JSON-LD → meta → regex fallbacks and preserves the last known good price on failure).
+
+### 4. Verification
+
+- Query `live_comparison_panels` after seed + scrape: confirm ≥ 10 panels, `last_scraped_at` within the last hour, prices populated.
+- Load homepage, confirm both cards rotate through all panels in lock-step with no overlap, and footer shows "verified today".
 
 ## Files touched
 
-- `src/components/ai/RecommendationEngine.tsx` — rewrite `RecommendationResults` card block to use `UnifiedTestCard`; drop hardcoded `2-5 working days` / `At-home collection` strings; keep urgency badge + reason + %match as wrapper metadata.
-- New: `src/hooks/queries/useResolvedRecommendations.ts` — TanStack Query hook that takes `RecommendationProps[]` and returns them enriched with `ProviderTestCardData` from Supabase (single batched query).
-- Possibly small helper in `src/utils/testSlugLookup.ts` — export a batched multi-lookup function if the single-lookup one isn't suitable.
-
-## Out of scope
-
-- Changing the AI edge function (`ai-human-context`) response shape.
-- Redesigning the AI recommendation section layout beyond swapping card component.
-- Touching the standard details modal itself.
-
-## Verification
-
-- Run quiz, get TruCheck™ recommendation → card shows **In-clinic collection** (not at-home), correct turnaround from DB, real biomarker count.
-- Click card → same modal as clicking TruCheck™ on the Cancer Screening category page.
-- Card visual matches the standard `UnifiedTestCard` used on `/cancer-screening`.
-- Fallback path renders when a fabricated test name is returned (mocked test).
+- `src/components/sections/LiveComparisonCard.tsx` (rewrite data source + footer)
+- `src/components/sections/StartJourneySection.tsx` (fetch from Supabase, split panels)
+- `supabase/migrations/<new>_expand_live_comparison_panels.sql` (seed panels + URLs)
+- `supabase` insert (not migration): unschedule old cron + reschedule 6-hourly + one-shot invoke
+- No changes to the scraper edge function
