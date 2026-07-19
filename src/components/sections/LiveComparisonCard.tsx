@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 export type LiveComparisonPanelData = {
   name: string;
+  collectionMethod?: "at_home" | "clinic";
+  methodLabel?: string;
   providers: {
     name: string;
     options: { label: string; price: string }[];
@@ -149,9 +151,16 @@ const LiveComparisonCard = ({
           }}
         >
           <div style={{ padding: "12px 20px", borderBottom: "1px solid rgba(8,17,41,0.07)", background: "#fafbfc" }}>
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
             <span style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.16em", color: "#22c0d4" }}>
               {test.name}
             </span>
+            {test.methodLabel && (
+              <span className="font-heading text-[11px] font-bold uppercase tracking-[0.16em] text-[#081129]">
+                {test.methodLabel}
+              </span>
+            )}
+            </div>
           </div>
 
           <div className="flex-1" style={{ padding: "0 20px" }}>
@@ -179,7 +188,7 @@ const LiveComparisonCard = ({
 
                   {provider.options.map((opt) => (
                     <div key={opt.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "2px" }}>
-                      <span style={{ fontSize: "14px", color: "rgba(8,17,41,0.55)" }}>{opt.label}</span>
+                      <span style={{ fontSize: "14px", color: "rgba(8,17,41,0.55)" }}>{test.methodLabel ? "" : opt.label}</span>
                       <span className="font-heading" style={{ fontSize: "17px", fontWeight: 800, color: "#081129" }}>
                         {opt.price}
                       </span>
