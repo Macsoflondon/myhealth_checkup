@@ -260,9 +260,6 @@ const Index = () => {
 
 
 
-          <div className="mx-0">
-            <StatsBand />
-          </div>
 
           <Suspense fallback={<SectionFallback />}>
             <SectionReveal>
