@@ -206,8 +206,8 @@ const Index = () => {
           </Suspense>
 
           {/* Hero CTA — Slogan + Health Quiz entry point */}
-          <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-6 sm:px-[30px] py-6 sm:py-8 mx-4 sm:mx-6 my-6 sm:my-8">
-            <div className="relative overflow-hidden rounded-[22px] bg-[#081129] px-6 sm:px-[34px] py-14 sm:py-[72px] text-center">
+          <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-4 sm:px-6 py-6 sm:py-8 mx-3 sm:mx-6 my-6 sm:my-8">
+            <div className="relative overflow-hidden rounded-[22px] bg-[#081129] px-4 sm:px-6 lg:px-[34px] py-14 sm:py-[72px] text-center">
               <div className="absolute -right-[50px] -top-[60px] w-[260px] h-[260px] rounded-full bg-[#22c0d4]/[0.12]" />
               <div className="absolute right-[120px] -bottom-[110px] w-[240px] h-[240px] rounded-full bg-[#e70d69]/10" />
               <div className="relative">
