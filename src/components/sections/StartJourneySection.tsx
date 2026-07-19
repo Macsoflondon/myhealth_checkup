@@ -22,7 +22,7 @@ const FALLBACK_RIGHT: LiveComparisonPanelData[] = [
 
 const SYNC_ROTATE_MS = 30000;
 
-type DbRow = { name: string; bio?: string; price: string; url?: string };
+type DbRow = { name: string; bio?: string; price: string; url?: string; method?: "at_home" | "clinic"; methodLabel?: string };
 type DbPanel = {
   slug: string;
   panel_name: string;
@@ -32,12 +32,17 @@ type DbPanel = {
 };
 
 function dbPanelToPanelData(p: DbPanel): LiveComparisonPanelData {
+  const firstRow = p.rows?.[0];
+  const collectionMethod = firstRow?.method;
+  const methodLabel = firstRow?.methodLabel ?? (collectionMethod === "at_home" ? "At-home test kit" : collectionMethod === "clinic" ? "In-clinic test" : undefined);
+
   return {
     name: p.panel_name,
     lastScrapedAt: p.last_scraped_at,
+    collectionMethod,
+    methodLabel,
     providers: (p.rows ?? []).map((r) => {
-      // Extract a label from bio (e.g. "At-home kit · UKAS · 24–48h" → "At-home kit")
-      const label = (r.bio?.split("·")[0]?.trim()) || "Test";
+      const label = r.methodLabel ?? (r.method === "at_home" ? "At-home test kit" : r.method === "clinic" ? "In-clinic test" : "Test");
       return {
         name: r.name,
         options: [{ label, price: r.price }],
