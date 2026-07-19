@@ -6,7 +6,26 @@ export type LiveComparisonPanelData = {
     name: string;
     options: { label: string; price: string }[];
   }[];
+  lastScrapedAt?: string | null;
 };
+
+function formatVerified(iso?: string | null): string {
+  if (!iso) return "Prices refreshed automatically every 6 hours from provider websites. Always confirm current pricing before booking.";
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return "Prices refreshed automatically from provider websites. Always confirm current pricing before booking.";
+  const diffMin = Math.max(0, Math.round((Date.now() - then) / 60000));
+  let rel: string;
+  if (diffMin < 1) rel = "moments ago";
+  else if (diffMin < 60) rel = `${diffMin} minute${diffMin === 1 ? "" : "s"} ago`;
+  else if (diffMin < 60 * 24) {
+    const h = Math.round(diffMin / 60);
+    rel = `${h} hour${h === 1 ? "" : "s"} ago`;
+  } else {
+    const d = Math.round(diffMin / (60 * 24));
+    rel = `${d} day${d === 1 ? "" : "s"} ago`;
+  }
+  return `Prices verified ${rel} from provider websites. Always confirm current pricing before booking.`;
+}
 
 // Default 4-panel rotation for the standalone instance.
 // Prices mirror the source-of-truth `TESTS` array in StartJourneySection.
