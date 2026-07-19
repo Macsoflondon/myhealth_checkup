@@ -188,7 +188,7 @@ const LiveComparisonCard = ({
 
                   {provider.options.map((opt) => (
                     <div key={opt.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "2px" }}>
-                      <span style={{ fontSize: "14px", color: "rgba(8,17,41,0.55)" }}>{opt.label}</span>
+                      <span style={{ fontSize: "14px", color: "rgba(8,17,41,0.55)" }}>{test.methodLabel ? "" : opt.label}</span>
                       <span className="font-heading" style={{ fontSize: "17px", fontWeight: 800, color: "#081129" }}>
                         {opt.price}
                       </span>
