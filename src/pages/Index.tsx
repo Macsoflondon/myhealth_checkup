@@ -222,14 +222,14 @@ const Index = () => {
                     AI-Powered
                   </span>
                 </div>
-                <div className="flex flex-col sm:flex-row items-center sm:items-baseline justify-center sm:justify-between gap-4 sm:gap-0 w-full max-w-4xl mx-auto mb-6 sm:mb-8">
+                <div className="flex flex-col items-center gap-4 sm:grid sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-start sm:gap-0 w-full mx-auto mb-6 sm:mb-8">
                   <h2
-                    className="text-[clamp(1.1rem,3vw,2.25rem)] font-bold text-white leading-[1.1] tracking-tight text-center whitespace-normal sm:whitespace-nowrap"
+                    className="sm:col-start-2 text-[clamp(1.1rem,3vw,2.25rem)] font-bold text-white leading-[1.1] tracking-tight text-center whitespace-normal sm:whitespace-nowrap sm:pt-3"
                     style={{ fontFamily: "'Montserrat', sans-serif" }}
                   >
                     Not sure which test you need?
                   </h2>
-                  <div className="flex flex-col items-center gap-2">
+                  <div className="sm:col-start-4 flex flex-col items-center gap-2">
                     <Link
                       to="/find-test"
                       className="inline-flex items-center gap-2 whitespace-nowrap bg-gradient-to-r from-[#22c0d4] to-[#1aa8bb] hover:from-[#1aa8bb] hover:to-[#22c0d4] text-[#081129] font-bold text-base sm:text-lg px-8 py-4 rounded-full shadow-lg shadow-[#22c0d4]/25 transition-all hover:scale-[1.02]"

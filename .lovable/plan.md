@@ -1,14 +1,34 @@
-Update the AI Health Quiz section in `src/pages/Index.tsx` (lines 208–259):
+## Plan
 
-1. **H2 header on one line, closer to the border**
-   - Force the H2 to stay on a single line with `whitespace-nowrap` and reduce horizontal padding/max-width so it sits ~1 cm closer to the section edge.
-   - Adjust the left text column’s max-width or the container padding to move the heading outward.
+Fix the AI Health Quiz header row so it matches the requested three equal spacing zones on desktop and stays clean on mobile.
 
-2. **Brighten subheading text**
-   - Change the paragraph under the H2 from `text-white/70` to `text-white` (or `text-white/95`) so it is a brighter white.
+### Changes
 
-3. **Brighten and centre helper text under the CTA**
-   - Change the helper text row under the CTA button from `text-white/60` to `text-white` (or `text-white/95`).
-   - Ensure the helper row is directly underneath the CTA button and evenly spread/centered, not offset to one side. Use `justify-center` and consistent gap/spacing so it aligns evenly under the button on all breakpoints.
+1. **Make the desktop row use a real 3-part grid**
+   - Replace the current `justify-between max-w-4xl` flex row with a full-width grid structure:
 
-No data or logic changes — purely presentational.
+```text
+[ equal empty space ] [ H2 ] [ equal space ] [ CTA ] [ equal empty space ]
+```
+
+   - Use equal `1fr` spacer columns so the left edge gutter, centre gap, and right edge gutter are mathematically identical.
+
+2. **Keep H2 and CTA visually aligned**
+   - Align both items to the same row centreline on desktop.
+   - Keep the H2 on one line at desktop widths.
+   - Keep the helper text directly beneath the CTA, centred to the button.
+
+3. **Mobile behaviour**
+   - Switch back to a clean stacked layout on small screens:
+
+```text
+Not sure which test you need?
+Take the Health Quiz
+helper text
+```
+
+   - Remove awkward side spacing on mobile while keeping text/button sizes consistent.
+
+4. **No scope creep**
+   - Only touch the AI Health Quiz section in `src/pages/Index.tsx`.
+   - No data, routing, SEO, or backend changes.
