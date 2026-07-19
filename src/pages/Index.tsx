@@ -222,7 +222,7 @@ const Index = () => {
                     AI-Powered
                   </span>
                 </div>
-                <div className="flex flex-col sm:flex-row items-center sm:items-baseline justify-center gap-4 sm:gap-6 w-full max-w-4xl mx-auto mb-6 sm:mb-8">
+                <div className="flex flex-col sm:flex-row items-center sm:items-baseline justify-center sm:justify-between gap-4 sm:gap-0 w-full max-w-4xl mx-auto mb-6 sm:mb-8">
                   <h2
                     className="text-[clamp(1.1rem,3vw,2.25rem)] font-bold text-white leading-[1.1] tracking-tight text-center whitespace-normal sm:whitespace-nowrap"
                     style={{ fontFamily: "'Montserrat', sans-serif" }}
