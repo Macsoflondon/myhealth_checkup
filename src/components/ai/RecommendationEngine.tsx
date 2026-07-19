@@ -11,6 +11,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { logger } from '@/lib/logger';
 import { analytics } from '@/lib/analytics';
+import ProviderTestCard from '@/components/providers/ProviderTestCard';
+import { useResolvedRecommendations } from '@/hooks/queries/useResolvedRecommendations';
+
+
 
 interface QueryHistoryItem {
   id?: string;
@@ -59,6 +63,60 @@ const getUrgencyColor = (urgency: string) => {
     default:
       return 'bg-gray-100 text-gray-800';
   }
+};
+
+/** Renders AI recommendations as standard platform test cards backed by real provider_tests data. */
+const ResolvedRecommendationList = ({ recs }: { recs: RecommendationProps[] }) => {
+  const { data: resolved, isLoading } = useResolvedRecommendations(recs);
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {recs.map((_, i) => (
+          <div key={i} className="h-64 rounded-2xl bg-[#081129]/5 animate-pulse" />
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {recs.map((rec, i) => {
+        const test = resolved?.[i];
+        if (!test) {
+          return (
+            <Card key={i} className="p-4 border-[#081129]/10">
+              <div className="flex items-center gap-2 mb-2">
+                <h3 className="text-sm font-semibold text-[#081129]" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                  {rec.testName}
+                </h3>
+                <Badge className={getUrgencyColor(rec.urgency)}>{rec.urgency}</Badge>
+              </div>
+              <p className="text-xs text-[#081129]/70 mb-2">{rec.provider} · {rec.confidence}% match</p>
+              <p className="text-xs text-[#081129]/80">{rec.reason}</p>
+              <p className="text-[11px] text-[#081129]/50 mt-2 italic">Live details unavailable — this test may have been updated. Please browse the catalogue for the latest information.</p>
+            </Card>
+          );
+        }
+        return (
+          <div key={test.id} className="flex flex-col gap-2">
+            <div className="flex items-center gap-2 flex-wrap px-1">
+              <Badge className={getUrgencyColor(rec.urgency)}>{rec.urgency} priority</Badge>
+              <span className="text-xs font-semibold text-[#22c0d4]" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                {rec.confidence}% match
+              </span>
+            </div>
+            <ProviderTestCard test={test} />
+            {rec.reason && (
+              <p className="text-xs text-[#081129]/70 px-1 leading-relaxed border-l-2 border-[#22c0d4]/50 pl-2">
+                <span className="font-semibold text-[#081129]">Why:</span> {rec.reason}
+              </p>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
 };
 
 /** Results-only view \u2014 renders Wellness Analysis + Recommended Tests with total cost focal. */
@@ -128,62 +186,10 @@ export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) 
             Recommended Wellness Tests
           </h2>
 
-          {result.recommendedTests.map((rec, index) => (
-            <Card key={index} className="p-6 border-[#081129]/10">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="text-lg font-semibold text-[#081129]" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                      {rec.testName}
-                    </h3>
-                    <Badge className={getUrgencyColor(rec.urgency)}>
-                      {rec.urgency} priority
-                    </Badge>
-                  </div>
-                  <p className="text-[#081129]/60 mb-2">{rec.provider}</p>
-                  <p className="text-sm text-[#081129]/80 mb-2">{rec.reason}</p>
-                  <Badge variant="outline" className="text-xs border-[#22c0d4]/40 text-[#22c0d4]">
-                    {rec.category}
-                  </Badge>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-[#22c0d4] mb-1" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                    {rec.price ? `\u00a3${rec.price}` : 'Price TBC'}
-                  </div>
-                  <div className="text-sm text-[#081129]/50">
-                    {rec.confidence}% match
-                  </div>
-                </div>
-              </div>
-
-              <Separator className="my-4" />
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-4 w-4 text-[#081129]/40" />
-                    <span className="text-sm text-[#081129]/60">2-5 working days</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Target className="h-4 w-4 text-[#081129]/40" />
-                    <span className="text-sm text-[#081129]/60">At-home collection</span>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="border-[#081129]/20 text-[#081129]">
-                    Read about this test
-                  </Button>
-                  <Button size="sm" className="bg-[#22c0d4] hover:bg-[#1aa8bb] text-[#081129] font-semibold">
-                    View test details
-                  </Button>
-                </div>
-              </div>
-
-              <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800">
-                This test recommendation is for wellness screening purposes only. Results should be discussed with your healthcare professional.
-              </div>
-            </Card>
-          ))}
+          <ResolvedRecommendationList recs={result.recommendedTests} />
+          <p className="text-xs text-[#081129]/60 italic">
+            Tap any test card to view the full standardised details — biomarkers, collection method, turnaround and pricing — pulled directly from the provider.
+          </p>
         </div>
       )}
 
