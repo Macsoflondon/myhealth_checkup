@@ -16,7 +16,46 @@ type Row = {
   variant: string;
   price: string;
   url?: string;
+  providerId?: string;
+  method?: "at_home" | "clinic";
+  methodLabel?: string;
 };
+
+const approvedMethodLabel: Record<"at_home" | "clinic", string> = {
+  at_home: "At-home test kit",
+  clinic: "In-clinic test",
+};
+
+function normaliseMethod(row: Row): "at_home" | "clinic" | null {
+  if (row.method === "at_home" || row.method === "clinic") return row.method;
+  const text = `${row.methodLabel ?? ""} ${row.bio ?? ""} ${row.badge ?? ""}`.toLowerCase();
+  if (text.includes("at-home") || text.includes("home kit") || text.includes("home test")) return "at_home";
+  if (text.includes("in-clinic") || text.includes("clinic")) return "clinic";
+  return null;
+}
+
+function hasForbiddenWording(row: Row): boolean {
+  const text = `${row.methodLabel ?? ""} ${row.bio ?? ""} ${row.badge ?? ""}`.toLowerCase();
+  return text.includes("walk-in") || text.includes("walk in") || text.includes("clinic-based");
+}
+
+function providerKey(row: Row): string {
+  return (row.providerId || row.name).trim().toLowerCase();
+}
+
+function sanitiseRows(rows: Row[]): Row[] {
+  const firstMethod = rows.map(normaliseMethod).find((method): method is "at_home" | "clinic" => method !== null);
+  if (!firstMethod) return [];
+
+  const seenProviders = new Set<string>();
+  const methodLabel = approvedMethodLabel[firstMethod];
+  return rows.filter((row) => {
+    const key = providerKey(row);
+    const keep = normaliseMethod(row) === firstMethod && key !== "" && !seenProviders.has(key) && !hasForbiddenWording(row);
+    if (keep) seenProviders.add(key);
+    return keep;
+  }).map((row) => ({ ...row, method: firstMethod, methodLabel, bio: methodLabel, badge: methodLabel }));
+}
 
 async function scrapePrice(url: string): Promise<string | null> {
   try {
@@ -101,7 +140,7 @@ Deno.serve(async (req) => {
   const summary: Array<{ slug: string; updated: number; total: number }> = [];
 
   for (const panel of panels ?? []) {
-    const rows = (panel.rows as Row[]) ?? [];
+    const rows = sanitiseRows((panel.rows as Row[]) ?? []);
     let updated = 0;
     const newRows: Row[] = [];
     for (const row of rows) {
