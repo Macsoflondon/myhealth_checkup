@@ -39,6 +39,12 @@ const rawEntries: SitemapEntry[] = [
     "priority": "0.8"
   },
   {
+    "path": "/blog/private-blood-test-cost-guide",
+    "lastmod": "2026-07-19",
+    "changefreq": "monthly",
+    "priority": "0.8"
+  },
+  {
     "path": "/",
     "lastmod": "2026-04-09",
     "changefreq": "weekly",
