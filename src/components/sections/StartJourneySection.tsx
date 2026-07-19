@@ -132,8 +132,8 @@ const StartJourneySection = () => {
         </div>
         {/* ── ROW 2 — Two Live Comparison panels ─────────────────────────── */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-          <LiveComparisonCard panels={LEFT_PANELS} panelIndex={syncIdx} />
-          <LiveComparisonCard panels={RIGHT_PANELS} panelIndex={syncIdx} />
+          <LiveComparisonCard panels={leftPanels} panelIndex={syncIdx} />
+          <LiveComparisonCard panels={rightPanels} panelIndex={syncIdx} />
 
         </div>
       </div>
