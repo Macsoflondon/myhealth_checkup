@@ -70,6 +70,7 @@ function providerKey(row: DbRow): string {
 function dbPanelToPanelData(p: DbPanel): LiveComparisonPanelData {
   const rows = p.rows ?? [];
   const firstMethod = rows.map(normaliseCollectionMethod).find((method): method is CollectionMethod => method !== null);
+  const methodLabel = firstMethod ? approvedMethodLabel[firstMethod] : undefined;
   const seenProviders = new Set<string>();
   const safeRows = firstMethod
     ? rows.filter((row) => {
@@ -87,10 +88,10 @@ function dbPanelToPanelData(p: DbPanel): LiveComparisonPanelData {
     name: p.panel_name,
     lastScrapedAt: p.last_scraped_at,
     collectionMethod: firstMethod,
-    methodLabel: firstMethod ? approvedMethodLabel[firstMethod] : undefined,
+    methodLabel,
     providers: safeRows.map((r) => ({
       name: r.name ?? "Provider",
-      options: [{ label: approvedMethodLabel[firstMethod], price: r.price ?? "Price on provider site" }],
+      options: [{ label: methodLabel ?? "Test", price: r.price ?? "Price on provider site" }],
     })),
   };
 }
