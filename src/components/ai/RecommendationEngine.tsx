@@ -10,8 +10,10 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { logger } from '@/lib/logger';
+import { analytics } from '@/lib/analytics';
 import ProviderTestCard from '@/components/providers/ProviderTestCard';
 import { useResolvedRecommendations } from '@/hooks/queries/useResolvedRecommendations';
+
 
 
 interface QueryHistoryItem {
