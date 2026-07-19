@@ -128,62 +128,10 @@ export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) 
             Recommended Wellness Tests
           </h2>
 
-          {result.recommendedTests.map((rec, index) => (
-            <Card key={index} className="p-6 border-[#081129]/10">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="text-lg font-semibold text-[#081129]" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                      {rec.testName}
-                    </h3>
-                    <Badge className={getUrgencyColor(rec.urgency)}>
-                      {rec.urgency} priority
-                    </Badge>
-                  </div>
-                  <p className="text-[#081129]/60 mb-2">{rec.provider}</p>
-                  <p className="text-sm text-[#081129]/80 mb-2">{rec.reason}</p>
-                  <Badge variant="outline" className="text-xs border-[#22c0d4]/40 text-[#22c0d4]">
-                    {rec.category}
-                  </Badge>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-[#22c0d4] mb-1" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                    {rec.price ? `\u00a3${rec.price}` : 'Price TBC'}
-                  </div>
-                  <div className="text-sm text-[#081129]/50">
-                    {rec.confidence}% match
-                  </div>
-                </div>
-              </div>
-
-              <Separator className="my-4" />
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1">
-                    <Clock className="h-4 w-4 text-[#081129]/40" />
-                    <span className="text-sm text-[#081129]/60">2-5 working days</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Target className="h-4 w-4 text-[#081129]/40" />
-                    <span className="text-sm text-[#081129]/60">At-home collection</span>
-                  </div>
-                </div>
-                <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="border-[#081129]/20 text-[#081129]">
-                    Read about this test
-                  </Button>
-                  <Button size="sm" className="bg-[#22c0d4] hover:bg-[#1aa8bb] text-[#081129] font-semibold">
-                    View test details
-                  </Button>
-                </div>
-              </div>
-
-              <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800">
-                This test recommendation is for wellness screening purposes only. Results should be discussed with your healthcare professional.
-              </div>
-            </Card>
-          ))}
+          <ResolvedRecommendationList recs={result.recommendedTests} />
+          <p className="text-xs text-[#081129]/60 italic">
+            Tap any test card to view the full standardised details — biomarkers, collection method, turnaround and pricing — pulled directly from the provider.
+          </p>
         </div>
       )}
 
