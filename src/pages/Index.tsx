@@ -206,8 +206,8 @@ const Index = () => {
           </Suspense>
 
           {/* Hero CTA — Slogan + Health Quiz entry point */}
-          <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-6 sm:px-[30px] py-6 sm:py-8 mx-4 sm:mx-6 my-6 sm:my-8">
-            <div className="relative overflow-hidden rounded-[22px] bg-[#081129] px-6 sm:px-[34px] py-14 sm:py-[72px] text-center">
+          <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-4 sm:px-6 py-6 sm:py-8 mx-3 sm:mx-6 my-6 sm:my-8">
+            <div className="relative overflow-hidden rounded-[22px] bg-[#081129] px-4 sm:px-6 lg:px-[34px] py-14 sm:py-[72px] text-center">
               <div className="absolute -right-[50px] -top-[60px] w-[260px] h-[260px] rounded-full bg-[#22c0d4]/[0.12]" />
               <div className="absolute right-[120px] -bottom-[110px] w-[240px] h-[240px] rounded-full bg-[#e70d69]/10" />
               <div className="relative">
@@ -222,19 +222,17 @@ const Index = () => {
                     AI-Powered
                   </span>
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start max-w-5xl mx-auto">
-                  <div className="text-center lg:text-left">
-                    <h2
-                      className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight"
-                      style={{ fontFamily: "'Montserrat', sans-serif" }}
-                    >
-                      Not sure which test you need?
-                    </h2>
-                    <p className="text-white/70 text-base sm:text-lg leading-relaxed">
-                      Answer 6 quick questions and our AI will analyse 597 accredited tests to find your perfect wellness panel — with transparent pricing.
-                    </p>
-                  </div>
-                  <div className="flex flex-col items-center lg:items-end gap-5">
+                <h2
+                  className="text-[clamp(1rem,4.3vw,3rem)] font-bold text-white mb-6 sm:mb-8 leading-[1.1] whitespace-nowrap tracking-tight text-center lg:text-left"
+                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                >
+                  Not sure which test you need?
+                </h2>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+                  <p className="text-white text-base sm:text-lg leading-relaxed text-center lg:text-left">
+                    Answer 6 quick questions and our AI will analyse 597 accredited tests to find your perfect wellness panel — with transparent pricing.
+                  </p>
+                  <div className="flex flex-col items-center gap-5">
                     <Link
                       to="/find-test"
                       className="inline-flex items-center gap-2 whitespace-nowrap bg-gradient-to-r from-[#22c0d4] to-[#1aa8bb] hover:from-[#1aa8bb] hover:to-[#22c0d4] text-[#081129] font-bold text-base sm:text-lg px-8 py-4 rounded-full shadow-lg shadow-[#22c0d4]/25 transition-all hover:scale-[1.02]"
@@ -243,7 +241,7 @@ const Index = () => {
                       Take the Health Quiz
                       <ArrowRight className="w-5 h-5" />
                     </Link>
-                    <div className="flex items-center justify-center lg:justify-end gap-4 text-white/60 text-xs">
+                    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-white text-xs">
                       <span className="flex items-center gap-1">
                         <Shield className="w-3 h-3" /> No account required
                       </span>
