@@ -1,44 +1,86 @@
 import { Link } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import LiveComparisonCard, {
+  DEFAULT_LIVE_COMPARISON_PANELS,
+  type LiveComparisonPanelData,
+} from "@/components/sections/LiveComparisonCard";
 import { supabase } from "@/integrations/supabase/client";
-import LiveComparisonCard from "@/components/sections/LiveComparisonCard";
-import type { LiveComparisonPanel } from "@/hooks/useLiveComparisonPanel";
+
+// ── Hardcoded fallback (used only if DB fetch fails) ────────────────────────
+const FALLBACK_RIGHT: LiveComparisonPanelData[] = [
+  {
+    name: "Full Blood Count Panel",
+    providers: [
+      { name: "Medichecks", options: [{ label: "At-home kit", price: "£59" }, { label: "Clinic-based", price: "£59" }] },
+      { name: "Randox Health", options: [{ label: "At-home kit", price: "£89" }, { label: "Clinic-based", price: "£99" }] },
+      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£59" }, { label: "Clinic-based", price: "£65" }] },
+      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£75" }] },
+      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£155" }, { label: "Clinic-based", price: "£129" }] },
+    ],
+  },
+];
 
 const SYNC_ROTATE_MS = 30000;
 
-async function fetchAllPanels(): Promise<LiveComparisonPanel[]> {
-  const { data, error } = await supabase
-    .from("live_comparison_panels")
-    .select("slug, panel_name, display_order, rows, last_scraped_at")
-    .order("display_order", { ascending: true });
-  if (error) throw error;
-  return (data ?? []) as LiveComparisonPanel[];
+type DbRow = { name: string; bio?: string; price: string; url?: string };
+type DbPanel = {
+  slug: string;
+  panel_name: string;
+  display_order: number;
+  rows: DbRow[] | null;
+  last_scraped_at: string | null;
+};
+
+function dbPanelToPanelData(p: DbPanel): LiveComparisonPanelData {
+  return {
+    name: p.panel_name,
+    lastScrapedAt: p.last_scraped_at,
+    providers: (p.rows ?? []).map((r) => {
+      // Extract a label from bio (e.g. "At-home kit · UKAS · 24–48h" → "At-home kit")
+      const label = (r.bio?.split("·")[0]?.trim()) || "Test";
+      return {
+        name: r.name,
+        options: [{ label, price: r.price }],
+      };
+    }),
+  };
 }
 
 const StartJourneySection = () => {
-  const { data: allPanels = [] } = useQuery({
-    queryKey: ["live-comparison-panels"],
-    queryFn: fetchAllPanels,
-    staleTime: 5 * 60 * 1000,
-  });
+  const [dbPanels, setDbPanels] = useState<LiveComparisonPanelData[] | null>(null);
 
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase
+        .from("live_comparison_panels")
+        .select("slug, panel_name, display_order, rows, last_scraped_at")
+        .order("display_order", { ascending: true });
+      if (cancelled || error || !data?.length) return;
+      setDbPanels((data as unknown as DbPanel[]).map(dbPanelToPanelData));
+    })();
+    return () => { cancelled = true; };
+  }, []);
+
+  // Split panels evenly between the two cards; fall back to defaults.
   const { leftPanels, rightPanels } = useMemo(() => {
-    // Interleave into two columns so both cards rotate through the full catalogue
-    // without ever showing the same test in both at once.
-    const left: LiveComparisonPanel[] = [];
-    const right: LiveComparisonPanel[] = [];
-    allPanels.forEach((p, i) => (i % 2 === 0 ? left : right).push(p));
-    return { leftPanels: left, rightPanels: right };
-  }, [allPanels]);
+    if (dbPanels && dbPanels.length >= 2) {
+      const mid = Math.ceil(dbPanels.length / 2);
+      return { leftPanels: dbPanels.slice(0, mid), rightPanels: dbPanels.slice(mid) };
+    }
+    return { leftPanels: DEFAULT_LIVE_COMPARISON_PANELS, rightPanels: FALLBACK_RIGHT };
+  }, [dbPanels]);
 
-  const maxLen = Math.max(leftPanels.length, rightPanels.length, 1);
+  const maxLen = Math.max(leftPanels.length, rightPanels.length);
   const [syncIdx, setSyncIdx] = useState(0);
   useEffect(() => {
     if (maxLen <= 1) return;
     const interval = setInterval(() => setSyncIdx((i) => (i + 1) % maxLen), SYNC_ROTATE_MS);
     return () => clearInterval(interval);
   }, [maxLen]);
+
+
+
 
   return (
     <section className="w-full bg-gradient-to-b from-slate-50 to-white py-12 sm:py-16">
@@ -47,6 +89,8 @@ const StartJourneySection = () => {
         {/* ── ROW 1 — Take Control (full width, horizontal) ─────────────── */}
         <div className="relative bg-white rounded-[2rem] border border-slate-200 shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 ring-slate-200/60 overflow-hidden mb-8 lg:mb-12 transition-transform duration-700 ease-out hover:-translate-y-1">
           <div className="p-6 sm:p-8 md:p-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-10">
+
+            {/* Left: text */}
             <div className="flex-1 text-center lg:text-left">
               <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
                 <div className="h-px w-8 sm:w-12 bg-brand-pink" />
@@ -63,6 +107,7 @@ const StartJourneySection = () => {
               </p>
             </div>
 
+            {/* Right: CTAs side-by-side */}
             <div className="flex flex-col sm:flex-row lg:flex-row gap-3 lg:flex-shrink-0 lg:max-w-[640px] w-full lg:w-auto">
               <Link
                 to="/assisted-test-finder"
@@ -85,21 +130,16 @@ const StartJourneySection = () => {
             </div>
           </div>
         </div>
-
         {/* ── ROW 2 — Two Live Comparison panels ─────────────────────────── */}
-        {allPanels.length > 0 && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-            {leftPanels.length > 0 && (
-              <LiveComparisonCard panels={leftPanels} panelIndex={syncIdx} />
-            )}
-            {rightPanels.length > 0 && (
-              <LiveComparisonCard panels={rightPanels} panelIndex={syncIdx} />
-            )}
-          </div>
-        )}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
+          <LiveComparisonCard panels={leftPanels} panelIndex={syncIdx} />
+          <LiveComparisonCard panels={rightPanels} panelIndex={syncIdx} />
+
+        </div>
       </div>
     </section>
   );
 };
 
 export default StartJourneySection;
+

@@ -1,33 +1,86 @@
 import { useEffect, useState } from "react";
-import type { LiveComparisonPanel } from "@/hooks/useLiveComparisonPanel";
 
-export type LiveComparisonPanelData = LiveComparisonPanel;
+export type LiveComparisonPanelData = {
+  name: string;
+  providers: {
+    name: string;
+    options: { label: string; price: string }[];
+  }[];
+  lastScrapedAt?: string | null;
+};
+
+function formatVerified(iso?: string | null): string {
+  if (!iso) return "Prices refreshed automatically every 6 hours from provider websites. Always confirm current pricing before booking.";
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return "Prices refreshed automatically from provider websites. Always confirm current pricing before booking.";
+  const diffMin = Math.max(0, Math.round((Date.now() - then) / 60000));
+  let rel: string;
+  if (diffMin < 1) rel = "moments ago";
+  else if (diffMin < 60) rel = `${diffMin} minute${diffMin === 1 ? "" : "s"} ago`;
+  else if (diffMin < 60 * 24) {
+    const h = Math.round(diffMin / 60);
+    rel = `${h} hour${h === 1 ? "" : "s"} ago`;
+  } else {
+    const d = Math.round(diffMin / (60 * 24));
+    rel = `${d} day${d === 1 ? "" : "s"} ago`;
+  }
+  return `Prices verified ${rel} from provider websites. Always confirm current pricing before booking.`;
+}
+
+// Default 4-panel rotation for the standalone instance.
+// Prices mirror the source-of-truth `TESTS` array in StartJourneySection.
+export const DEFAULT_LIVE_COMPARISON_PANELS: LiveComparisonPanelData[] = [
+  {
+    name: "Male Hormone Panel",
+    providers: [
+      { name: "Medichecks", options: [{ label: "At-home kit", price: "£99" }, { label: "Clinic-based", price: "£159" }] },
+      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£155" }, { label: "Clinic-based", price: "£139" }] },
+      { name: "Thriva", options: [{ label: "At-home kit", price: "£117" }] },
+      { name: "Randox Health", options: [{ label: "At-home kit", price: "£139" }, { label: "Clinic-based", price: "£169" }] },
+      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£89" }, { label: "Clinic-based", price: "£99" }] },
+    ],
+  },
+  {
+    name: "Female Hormone Panel",
+    providers: [
+      { name: "Medichecks", options: [{ label: "At-home kit", price: "£109" }, { label: "Clinic-based", price: "£169" }] },
+      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£165" }, { label: "Clinic-based", price: "£149" }] },
+      { name: "Thriva", options: [{ label: "At-home kit", price: "£127" }] },
+      { name: "Randox Health", options: [{ label: "At-home kit", price: "£149" }, { label: "Clinic-based", price: "£179" }] },
+      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£95" }, { label: "Clinic-based", price: "£109" }] },
+    ],
+  },
+  {
+    name: "Thyroid Health Panel",
+    providers: [
+      { name: "Medichecks", options: [{ label: "At-home kit", price: "£45" }, { label: "Clinic-based", price: "£89" }] },
+      { name: "Thriva", options: [{ label: "At-home kit", price: "£102" }] },
+      { name: "Randox Health", options: [{ label: "At-home kit", price: "£59" }, { label: "Clinic-based", price: "£99" }] },
+      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£55" }, { label: "Clinic-based", price: "£69" }] },
+      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£79" }] },
+      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£139" }, { label: "Clinic-based", price: "£119" }] },
+    ],
+  },
+  {
+    name: "Vitamin D Test",
+    providers: [
+      { name: "Medichecks", options: [{ label: "At-home kit", price: "£29" }, { label: "Clinic-based", price: "£49" }] },
+      { name: "Thriva", options: [{ label: "At-home kit", price: "£45" }] },
+      { name: "Randox Health", options: [{ label: "At-home kit", price: "£35" }, { label: "Clinic-based", price: "£45" }] },
+      { name: "Goodbody Health", options: [{ label: "At-home kit", price: "£39" }, { label: "Clinic-based", price: "£45" }] },
+      { name: "London Medical Laboratory", options: [{ label: "Clinic-based", price: "£49" }] },
+      { name: "Lola Health", options: [{ label: "At-home nurse visit", price: "£89" }, { label: "Clinic-based", price: "£75" }] },
+    ],
+  },
+];
 
 interface LiveComparisonCardProps {
-  panels: LiveComparisonPanel[];
+  panels: LiveComparisonPanelData[];
   rotateMs?: number;
   eyebrow?: string;
   className?: string;
   /** When provided, disables internal rotation and uses this index instead. */
   panelIndex?: number;
-}
-
-function formatVerified(iso: string | null): string {
-  if (!iso) return "Prices refreshed automatically from provider websites. Always confirm current pricing before booking.";
-  const then = new Date(iso).getTime();
-  if (Number.isNaN(then)) return "Prices refreshed automatically from provider websites. Always confirm current pricing before booking.";
-  const diffMs = Date.now() - then;
-  const hours = Math.floor(diffMs / (1000 * 60 * 60));
-  const days = Math.floor(hours / 24);
-  let when: string;
-  if (hours < 1) when = "in the last hour";
-  else if (hours < 24) when = `${hours} hour${hours === 1 ? "" : "s"} ago`;
-  else if (days === 1) when = "yesterday";
-  else if (days < 7) when = `${days} days ago`;
-  else {
-    when = new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
-  }
-  return `Prices verified ${when} from provider websites. Always confirm current pricing before booking.`;
 }
 
 const LiveComparisonCard = ({
@@ -53,6 +106,7 @@ const LiveComparisonCard = ({
     return () => clearInterval(interval);
   }, [panels.length, rotateMs, controlled]);
 
+  // Fade transition for controlled mode when panelIndex changes
   useEffect(() => {
     if (!controlled) return;
     setFading(true);
@@ -60,12 +114,10 @@ const LiveComparisonCard = ({
     return () => clearTimeout(t);
   }, [panelIndex, controlled]);
 
-  if (!panels.length) return null;
   const idx = controlled ? (panelIndex! % panels.length) : internalIdx;
-  const panel = panels[idx];
-  if (!panel) return null;
+  const test = panels[idx];
 
-  const rows = Array.isArray(panel.rows) ? panel.rows : [];
+  if (!test) return null;
 
   return (
     <div
@@ -84,7 +136,7 @@ const LiveComparisonCard = ({
           className="font-heading font-bold text-[#081129] tracking-tight text-2xl sm:text-3xl text-center mb-6 transition-all duration-500 ease-in-out"
           style={{ opacity: fading ? 0 : 1 }}
         >
-          {panel.panel_name}
+          {test.name}
         </h3>
 
         <div
@@ -98,38 +150,49 @@ const LiveComparisonCard = ({
         >
           <div style={{ padding: "12px 20px", borderBottom: "1px solid rgba(8,17,41,0.07)", background: "#fafbfc" }}>
             <span style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.16em", color: "#22c0d4" }}>
-              {panel.panel_name}
+              {test.name}
             </span>
           </div>
 
           <div className="flex-1" style={{ padding: "0 20px" }}>
-            {rows.map((row, i) => (
-              <div
-                key={`${row.name}-${i}`}
-                style={{
-                  paddingTop: "14px",
-                  paddingBottom: "14px",
-                  borderBottom: i === rows.length - 1 ? "none" : "1px solid rgba(8,17,41,0.07)",
-                }}
-              >
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "4px" }}>
-                  <span className="font-heading" style={{ fontSize: "16px", fontWeight: 700, color: "#081129" }}>
-                    {row.name}
-                  </span>
-                  <span className="font-heading" style={{ fontSize: "17px", fontWeight: 800, color: "#081129" }}>
-                    {row.price}
-                  </span>
+            {test.providers.map((provider, pi) => {
+              const multiPrice = provider.options.length > 1;
+              return (
+                <div
+                  key={provider.name}
+                  style={{
+                    paddingTop: "14px",
+                    paddingBottom: "14px",
+                    borderBottom: pi === test.providers.length - 1 ? "none" : "1px solid rgba(8,17,41,0.07)",
+                  }}
+                >
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "4px" }}>
+                    <span className="font-heading" style={{ fontSize: "16px", fontWeight: 700, color: "#081129" }}>
+                      {provider.name}
+                    </span>
+                    {multiPrice && (
+                      <span style={{ fontSize: "12px", fontWeight: 600, color: "rgba(8,17,41,0.45)", letterSpacing: "0.02em" }}>
+                        From
+                      </span>
+                    )}
+                  </div>
+
+                  {provider.options.map((opt) => (
+                    <div key={opt.label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "2px" }}>
+                      <span style={{ fontSize: "14px", color: "rgba(8,17,41,0.55)" }}>{opt.label}</span>
+                      <span className="font-heading" style={{ fontSize: "17px", fontWeight: 800, color: "#081129" }}>
+                        {opt.price}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-                {row.bio && (
-                  <div style={{ fontSize: "13px", color: "rgba(8,17,41,0.55)" }}>{row.bio}</div>
-                )}
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           <div style={{ padding: "12px 20px", borderTop: "1px solid rgba(8,17,41,0.07)", background: "#fafbfc" }}>
             <p style={{ fontSize: "11px", color: "rgba(8,17,41,0.4)", textAlign: "center", margin: 0 }}>
-              {formatVerified(panel.last_scraped_at)}
+              {formatVerified(test.lastScrapedAt)}
             </p>
           </div>
         </div>
