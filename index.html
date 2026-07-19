@@ -125,13 +125,10 @@
   </script>
   <!--
     Per-route og:title / og:description / twitter:title / twitter:description
-    are injected at runtime by react-helmet-async. They are intentionally
-    omitted here so sub-pages don't inherit homepage social-preview text.
+    are injected at runtime by react-helmet-async and baked into per-route
+    prerendered snapshots. Intentionally omitted here so non-JS social
+    crawlers hitting sub-pages don't inherit homepage social-preview text.
   -->
-  <meta property="og:title" content="Compare UK Private Blood Tests | myhealth checkup">
-  <meta name="twitter:title" content="Compare UK Private Blood Tests | myhealth checkup">
-  <meta property="og:description" content="myhealth checkup connects you with trusted UK providers for clinical-grade health tests, making proactive healthcare simple, accessible and reliable.">
-  <meta name="twitter:description" content="myhealth checkup connects you with trusted UK providers for clinical-grade health tests, making proactive healthcare simple, accessible and reliable.">
 </head>
 
   <body>
