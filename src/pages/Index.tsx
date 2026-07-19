@@ -222,19 +222,19 @@ const Index = () => {
                     AI-Powered
                   </span>
                 </div>
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start max-w-5xl mx-auto">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
                   <div className="text-center lg:text-left">
                     <h2
-                      className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight"
+                      className="text-[clamp(1.35rem,4.2vw,2.75rem)] font-bold text-white mb-4 leading-tight whitespace-nowrap"
                       style={{ fontFamily: "'Montserrat', sans-serif" }}
                     >
                       Not sure which test you need?
                     </h2>
-                    <p className="text-white/70 text-base sm:text-lg leading-relaxed">
+                    <p className="text-white text-base sm:text-lg leading-relaxed">
                       Answer 6 quick questions and our AI will analyse 597 accredited tests to find your perfect wellness panel — with transparent pricing.
                     </p>
                   </div>
-                  <div className="flex flex-col items-center lg:items-end gap-5">
+                  <div className="flex flex-col items-center gap-5">
                     <Link
                       to="/find-test"
                       className="inline-flex items-center gap-2 whitespace-nowrap bg-gradient-to-r from-[#22c0d4] to-[#1aa8bb] hover:from-[#1aa8bb] hover:to-[#22c0d4] text-[#081129] font-bold text-base sm:text-lg px-8 py-4 rounded-full shadow-lg shadow-[#22c0d4]/25 transition-all hover:scale-[1.02]"
@@ -243,7 +243,7 @@ const Index = () => {
                       Take the Health Quiz
                       <ArrowRight className="w-5 h-5" />
                     </Link>
-                    <div className="flex items-center justify-center lg:justify-end gap-4 text-white/60 text-xs">
+                    <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-white text-xs">
                       <span className="flex items-center gap-1">
                         <Shield className="w-3 h-3" /> No account required
                       </span>

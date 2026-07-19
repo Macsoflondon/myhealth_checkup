@@ -1,42 +1,14 @@
-## What happened
+Update the AI Health Quiz section in `src/pages/Index.tsx` (lines 208–259):
 
-I kept triggering authorisation prompts because I split the live data correction into too many separate database write calls. That was the wrong workflow. The correction should have been batched into one operation, then verified with read-only checks.
+1. **H2 header on one line, closer to the border**
+   - Force the H2 to stay on a single line with `whitespace-nowrap` and reduce horizontal padding/max-width so it sits ~1 cm closer to the section edge.
+   - Adjust the left text column’s max-width or the container padding to move the heading outward.
 
-## Current fix status
+2. **Brighten subheading text**
+   - Change the paragraph under the H2 from `text-white/70` to `text-white` (or `text-white/95`) so it is a brighter white.
 
-Already done:
-- Updated `refresh-live-comparison-panels` so it no longer scrapes the first visible `£` price from provider pages.
-- Deployed the edge function.
-- The function now calculates live-panel prices from `provider_tests`, including mandatory in-clinic collection fees where applicable.
-- CliniLabs testosterone should now calculate as:
-  - base test price: `£19`
-  - mandatory in-clinic collection fee: `£30`
-  - displayed in-clinic total: `£49`
+3. **Brighten and centre helper text under the CTA**
+   - Change the helper text row under the CTA button from `text-white/60` to `text-white` (or `text-white/95`).
+   - Ensure the helper row is directly underneath the CTA button and evenly spread/centered, not offset to one side. Use `justify-center` and consistent gap/spacing so it aligns evenly under the button on all breakpoints.
 
-## Remaining work
-
-When you approve this, I will finish in one clean pass:
-
-1. Run one read-only audit of `live_comparison_panels`.
-2. If any rows are still wrong, run one single batched database correction only.
-3. Verify:
-   - CliniLabs in-clinic testosterone displays `£49`, not `£19`.
-   - No mixed at-home/in-clinic rows remain in a panel.
-   - No duplicate provider rows remain in a panel.
-   - No `walk-in`, `walk in`, or `clinic-based` wording remains.
-4. Verify the homepage live comparison card in the browser.
-5. Stop — no repeated DB prompts.
-
-## Technical detail
-
-The root issue is that the live comparison JSON stored `row.price` as the raw product price. For in-clinic tests, that ignored required provider fees already stored in `provider_tests.collection_fee_amount`.
-
-The correct source of truth is:
-
-```text
-provider_tests.price
-+ mandatory collection fee for the selected collection method
-+ required clinical review fee, if applicable
-```
-
-The edge function has been changed to use that model.
+No data or logic changes — purely presentational.
