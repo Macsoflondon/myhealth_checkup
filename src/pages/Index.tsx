@@ -223,7 +223,7 @@ const Index = () => {
                   </span>
                 </div>
                 <h2
-                  className="text-[clamp(1.35rem,4.5vw,3rem)] font-bold text-white mb-6 sm:mb-8 leading-[1.1] whitespace-nowrap tracking-tight text-center lg:text-left"
+                  className="text-[clamp(0.95rem,4.2vw,3rem)] font-bold text-white mb-6 sm:mb-8 leading-[1.1] whitespace-nowrap tracking-tight text-center lg:text-left"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
                   Not sure which test you need?
