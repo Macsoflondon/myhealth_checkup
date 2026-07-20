@@ -32,7 +32,12 @@ serve(async (req) => {
   let body: { secret?: string; providerIds?: string[] } = {};
   try { body = await req.json(); } catch { /* noop */ }
 
-  if (!triggerSecret || body.secret !== triggerSecret) {
+  const authHeader = req.headers.get("authorization") ?? "";
+  const bearer = authHeader.toLowerCase().startsWith("bearer ") ? authHeader.slice(7) : "";
+  const serviceAuthed = !!serviceKey && bearer === serviceKey;
+  const secretAuthed = !!triggerSecret && body.secret === triggerSecret;
+
+  if (!serviceAuthed && !secretAuthed) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
