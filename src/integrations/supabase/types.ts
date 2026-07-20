@@ -3430,6 +3430,7 @@ export type Database = {
           created_at: string
           description: string | null
           discount_percentage: number | null
+          goals: string[] | null
           gp_consultation_cost: number | null
           gp_consultation_included: boolean | null
           home_kit_available: boolean | null
@@ -3450,8 +3451,10 @@ export type Database = {
           scraped_at: string
           source_section: string | null
           source_section_label: string | null
+          sub_goals: string[] | null
           symptoms: Json | null
           test_name: string
+          total_expected_cost: number | null
           turnaround_days_text: string | null
           updated_at: string
           url: string | null
@@ -3480,6 +3483,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           discount_percentage?: number | null
+          goals?: string[] | null
           gp_consultation_cost?: number | null
           gp_consultation_included?: boolean | null
           home_kit_available?: boolean | null
@@ -3500,8 +3504,10 @@ export type Database = {
           scraped_at?: string
           source_section?: string | null
           source_section_label?: string | null
+          sub_goals?: string[] | null
           symptoms?: Json | null
           test_name: string
+          total_expected_cost?: number | null
           turnaround_days_text?: string | null
           updated_at?: string
           url?: string | null
@@ -3530,6 +3536,7 @@ export type Database = {
           created_at?: string
           description?: string | null
           discount_percentage?: number | null
+          goals?: string[] | null
           gp_consultation_cost?: number | null
           gp_consultation_included?: boolean | null
           home_kit_available?: boolean | null
@@ -3550,8 +3557,10 @@ export type Database = {
           scraped_at?: string
           source_section?: string | null
           source_section_label?: string | null
+          sub_goals?: string[] | null
           symptoms?: Json | null
           test_name?: string
+          total_expected_cost?: number | null
           turnaround_days_text?: string | null
           updated_at?: string
           url?: string | null
