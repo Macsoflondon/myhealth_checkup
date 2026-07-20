@@ -36,7 +36,7 @@ const SLIDES = [
     src: joggingWoman,
     video: clipJoggingAsset.url,
     label: "Know Your Health. Own Your Future.",
-    posMobile: "30% 30%",
+    posMobile: "35% 55%",
     posTablet: "center 32%",
     posDesktop: "center 35%",
   },
@@ -52,7 +52,7 @@ const SLIDES = [
     src: seniorCouple,
     video: clipSeniorAsset.url,
     label: "Proactive Health for Every Stage of Life",
-    posMobile: "50% 25%",
+    posMobile: "50% 40%",
     posTablet: "center 28%",
     posDesktop: "center 30%",
   },
@@ -60,7 +60,7 @@ const SLIDES = [
     src: benchPhone,
     video: clipBenchAsset.url,
     label: "Find the Right Test for You, Compare. Choose. Book.",
-    posMobile: "55% 40%",
+    posMobile: "55% 50%",
     posTablet: "center 40%",
     posDesktop: "center 40%",
   },
@@ -68,11 +68,12 @@ const SLIDES = [
     src: bloodTestKit,
     video: clipKitAsset.url,
     label: "Test from the Comfort of Home",
-    posMobile: "35% 60%",
+    posMobile: "40% 55%",
     posTablet: "40% 60%",
     posDesktop: "50% 65%",
   },
 ];
+
 
 
 import { realTestData, type RealTestData } from "@/data/compare/realProviderData";
