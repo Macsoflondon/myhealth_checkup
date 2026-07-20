@@ -36,7 +36,7 @@ const SLIDES = [
     src: joggingWoman,
     video: clipJoggingAsset.url,
     label: "Know Your Health. Own Your Future.",
-    posMobile: "30% 30%",
+    posMobile: "35% 55%",
     posTablet: "center 32%",
     posDesktop: "center 35%",
   },
@@ -52,7 +52,7 @@ const SLIDES = [
     src: seniorCouple,
     video: clipSeniorAsset.url,
     label: "Proactive Health for Every Stage of Life",
-    posMobile: "50% 25%",
+    posMobile: "50% 40%",
     posTablet: "center 28%",
     posDesktop: "center 30%",
   },
@@ -60,7 +60,7 @@ const SLIDES = [
     src: benchPhone,
     video: clipBenchAsset.url,
     label: "Find the Right Test for You, Compare. Choose. Book.",
-    posMobile: "55% 40%",
+    posMobile: "55% 50%",
     posTablet: "center 40%",
     posDesktop: "center 40%",
   },
@@ -68,11 +68,12 @@ const SLIDES = [
     src: bloodTestKit,
     video: clipKitAsset.url,
     label: "Test from the Comfort of Home",
-    posMobile: "35% 60%",
+    posMobile: "40% 55%",
     posTablet: "40% 60%",
     posDesktop: "50% 65%",
   },
 ];
+
 
 
 import { realTestData, type RealTestData } from "@/data/compare/realProviderData";
@@ -208,7 +209,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   const ad = ADVERTS.length ? ADVERTS[i % ADVERTS.length] : null;
 
   return (
-    <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border border-b-0 border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[84svh] sm:min-h-[100svh] flex flex-col">
+    <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border border-b-0 border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[78svh] sm:min-h-[100svh] flex flex-col">
       <TestCategoryTicker
         variant="inline"
         className="bg-white border-b border-brand-navy/10 -mx-3 sm:-mx-6 md:-mx-9"
@@ -219,13 +220,14 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
           <Wordmark />
         </div>
       </div>
-      <div className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-1.5 sm:pb-2 mt-4 sm:mt-6 md:mt-8">
+      <div className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-1.5 sm:pb-2 mt-2.5 sm:mt-6 md:mt-8">
         <h1 className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white leading-[1.15] text-[clamp(0.85rem,4.2vw,3.25rem)] sm:whitespace-nowrap sm:text-[clamp(0.95rem,2.8vw,2.25rem)] m-0">
           YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR{" "}
           <span className="text-brand-pink">CHOICE.</span> ONE TRUSTED PLATFORM.
         </h1>
       </div>
-      <div className="relative rounded-t-[18px] overflow-hidden mt-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
+      <div className="relative rounded-t-[18px] overflow-hidden mt-1.5 sm:mt-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
+
         {SLIDES.map((s, n) => {
           const active = n === activeIndex;
           const nextIndex = (activeIndex + 1) % SLIDES.length;
