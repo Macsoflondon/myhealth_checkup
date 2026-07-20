@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
+import { getErrorMessage } from '../_shared/errors.ts';
+
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -133,7 +135,7 @@ Deno.serve(async (req) => {
       productUrls = await mapLola(firecrawlApiKey);
       console.log(`Map discovered ${productUrls.length} URLs`);
     } catch (e) {
-      console.error('Map failed:', (e instanceof Error ? e.message : String(e)));
+      console.error('Map failed:', getErrorMessage(e));
     }
 
     // Fallback: scrape collection page for links
@@ -149,7 +151,7 @@ Deno.serve(async (req) => {
           }
         }
       } catch (e) {
-        console.error('Collection scrape failed:', (e instanceof Error ? e.message : String(e)));
+        console.error('Collection scrape failed:', getErrorMessage(e));
       }
     }
 
@@ -157,12 +159,11 @@ Deno.serve(async (req) => {
     try {
       collectionProducts = await fetchLolaCollectionProducts();
     } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      console.warn(`Shopify products.json failed (${msg}) — falling back to Firecrawl HTML scrape`);
+      console.warn(`Shopify products.json failed (${getErrorMessage(e)}) — falling back to Firecrawl HTML scrape`);
       try {
         collectionProducts = await fetchLolaCollectionViaFirecrawl(firecrawlApiKey);
       } catch (fbErr) {
-        console.error('Firecrawl collection fallback also failed:', fbErr instanceof Error ? fbErr.message : String(fbErr));
+        console.error('Firecrawl collection fallback also failed:', getErrorMessage(fbErr));
       }
     }
     const collectionByHandle = new Map(collectionProducts.map((product: any) => [product.handle, product]));
@@ -194,14 +195,24 @@ Deno.serve(async (req) => {
       const html = result.data.html || '';
       const metadata = result.data.metadata || {};
 
-      let title = metadata.title?.replace(/\s*[–|]\s*Lola\s*Health.*$/i, '').trim() || '';
+      const collectionProduct = collectionByHandle.get(slug);
+
+      // Authoritative title comes from the Shopify collection product when we
+      // have it (unique per handle). Fall back to the scraped page metadata
+      // only when the handle isn't in the collection feed.
+      let title = '';
+      if (collectionProduct && typeof collectionProduct.title === 'string') {
+        title = collectionProduct.title.trim();
+      }
+      if (!title) {
+        title = metadata.title?.replace(/\s*[–|]\s*Lola\s*Health.*$/i, '').trim() || '';
+      }
       if (!title) {
         const h1 = markdown.match(/^#\s+(.+)$/m);
         title = h1 ? h1[1].trim() : '';
       }
       if (!title) return;
 
-      const collectionProduct = collectionByHandle.get(slug);
       const collectionBasePrice = extractCollectionBasePrice(collectionProduct);
       const collectionHeadlinePrice = Number.isFinite(Number(collectionProduct?.variants?.[0]?.price))
         ? Number(collectionProduct.variants[0].price)
@@ -266,33 +277,63 @@ Deno.serve(async (req) => {
       console.log(`✓ ${title} - £${price ?? 'N/A'}${isAddon ? ' (Add-on)' : ''}`);
     });
 
-    if (products.length > 0) {
-      const { error } = await supabase.from('provider_tests').upsert(products, {
-        onConflict: 'provider_id,provider_test_id', ignoreDuplicates: false,
-      });
-      if (error) throw error;
+    // De-duplicate by test_name (case-insensitive, trimmed), keep first occurrence.
+    // Mirrors medichecks-firecrawl to avoid tripping the partial unique index
+    // provider_tests_unique_active on (provider_id, test_name) WHERE is_active.
+    const seenNames = new Set<string>();
+    const dedupedProducts = products.filter((p) => {
+      const key = String(p.test_name ?? '').trim().toLowerCase();
+      if (!key || seenNames.has(key)) return false;
+      seenNames.add(key);
+      return true;
+    });
+    if (dedupedProducts.length !== products.length) {
+      console.log(`Deduped ${products.length - dedupedProducts.length} duplicate test_name rows`);
     }
 
+    // Per-row upsert loop: collect errors instead of throwing on first collision.
+    let upsertedCount = 0;
+    const rowErrors: string[] = [];
+    for (const row of dedupedProducts) {
+      const { error: rowErr } = await supabase.from('provider_tests').upsert([row], {
+        onConflict: 'provider_id,provider_test_id', ignoreDuplicates: false,
+      });
+      if (rowErr) {
+        rowErrors.push(`${row.provider_test_id}: ${getErrorMessage(rowErr)}`);
+      } else {
+        upsertedCount += 1;
+      }
+    }
+
+    const succeeded = upsertedCount > 0;
+    const errorSummary = rowErrors.length
+      ? `${rowErrors.length} row error(s): ${rowErrors.slice(0, 5).join('; ')}${rowErrors.length > 5 ? '…' : ''}`
+      : null;
+
     await supabase.from('scraping_jobs').upsert({
-      provider_id: 'lola-health', status: 'completed',
+      provider_id: 'lola-health',
+      status: succeeded ? 'completed' : 'failed',
       last_scraped: new Date().toISOString(),
       next_scrape: new Date(Date.now() + 12 * 3600000).toISOString(),
-      error_message: null,
+      error_message: succeeded ? null : (errorSummary ?? 'No rows upserted'),
     }, { onConflict: 'provider_id' });
 
     return new Response(JSON.stringify({
-      success: true, message: `Scraped ${products.length} Lola Health tests via Firecrawl`,
-      testsUpdated: products.length,
-    }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+      success: succeeded,
+      message: `Scraped ${dedupedProducts.length} Lola Health tests via Firecrawl (upserted ${upsertedCount})`,
+      testsUpdated: upsertedCount,
+      rowErrors: rowErrors.length ? rowErrors : undefined,
+    }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: succeeded ? 200 : 500 });
 
   } catch (error) {
-    console.error('Lola Health scraper error:', error);
+    const errMsg = getErrorMessage(error);
+    console.error('Lola Health scraper error:', errMsg);
     const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
     await supabase.from('scraping_jobs').upsert({
       provider_id: 'lola-health', status: 'failed',
-      error_message: (error instanceof Error ? error.message : String(error)), last_scraped: new Date().toISOString(),
+      error_message: errMsg, last_scraped: new Date().toISOString(),
     }, { onConflict: 'provider_id' });
-    return new Response(JSON.stringify({ success: false, error: (error instanceof Error ? error.message : String(error)) }),
+    return new Response(JSON.stringify({ success: false, error: errMsg }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 });
   }
 });
