@@ -296,7 +296,11 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         </div>
 
 
-        {ad && <HeroSalesTestCard ad={ad} />}
+        {ad && (
+          <div className="hidden sm:block">
+            <HeroSalesTestCard ad={ad} />
+          </div>
+        )}
       </div>
     </section>
   );
