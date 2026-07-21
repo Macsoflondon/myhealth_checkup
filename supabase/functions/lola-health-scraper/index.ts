@@ -314,7 +314,7 @@ Deno.serve(async (req) => {
 
     // Per-row upsert loop: collect errors instead of throwing on first collision.
     // Per-row upsert via provenance helper: writes history + change events + safety rails.
-    const runId = await startScrapeRun(supabase, 'lola-health');
+    const runId = await startScrapeRun(supabase, 'lola-health', 'lola-health-scraper');
     const counters = newCounters();
     counters.tests_seen = dedupedProducts.length;
     let upsertedCount = 0;
@@ -360,8 +360,8 @@ Deno.serve(async (req) => {
       }
     }
 
-    await finishScrapeRun(supabase, runId, upsertedCount > 0 ? 'completed' : 'failed', counters,
-      rowErrors.length ? { first: rowErrors.slice(0, 5) } : null);
+    await finishScrapeRun(supabase, runId, counters, upsertedCount > 0 ? 'success' : 'error') /*
+      */;
 
     const succeeded = upsertedCount > 0;
     const errorSummary = rowErrors.length

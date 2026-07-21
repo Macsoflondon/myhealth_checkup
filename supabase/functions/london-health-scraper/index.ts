@@ -94,7 +94,7 @@ Deno.serve(async (req) => {
   const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY');
 
   const supabase = createClient(supabaseUrl, supabaseKey);
-  const runId = await startScrapeRun(supabase, PROVIDER_ID);
+  const runId = await startScrapeRun(supabase, PROVIDER_ID, 'london-health-scraper');
   const counters = newCounters();
 
   try {
@@ -262,7 +262,7 @@ Deno.serve(async (req) => {
       error_message: errors.length ? `${errors.length} row errors` : null,
     }, { onConflict: 'provider_id' });
 
-    await finishScrapeRun(supabase, runId, 'completed', counters, errors.length ? { first: errors.slice(0, 5) } : null);
+    await finishScrapeRun(supabase, runId, counters, errors.length ? 'partial' : 'success');
 
     return new Response(JSON.stringify({
       success: true,
@@ -280,7 +280,7 @@ Deno.serve(async (req) => {
       provider_id: PROVIDER_ID, status: 'failed',
       error_message: msg, last_scraped: new Date().toISOString(),
     }, { onConflict: 'provider_id' });
-    await finishScrapeRun(supabase, runId, 'failed', counters, { message: msg });
+    await finishScrapeRun(supabase, runId, counters, 'error');
     return new Response(JSON.stringify({ success: false, error: msg }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 });
   }
