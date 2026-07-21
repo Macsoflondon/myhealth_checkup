@@ -128,6 +128,7 @@ export async function upsertWithProvenance(
       input.provider_id,
       input.provider_test_id ?? null,
       input.test_name,
+      input.url ?? input.scrape_source_url ?? null,
     );
 
     // Safety rail: refuse silent price wipes.
