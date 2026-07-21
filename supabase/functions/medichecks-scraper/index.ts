@@ -110,16 +110,39 @@ function stripHtml(s: string): string {
 }
 
 function extractTurnaroundText(text: string): string | null {
-  const patterns = [
-    /results?\s+(?:in|within|typically\s+in)\s+([^.<]{3,60})/i,
-    /turnaround[^:]{0,10}:?\s*([^.<]{3,60})/i,
-    /(\d+\s*(?:-|to)\s*\d+\s*(?:working\s+)?(?:day|hour)s?)/i,
+  // Ordered from most-specific to least-specific. Every capture group is the
+  // human-readable turnaround phrase — never the surrounding sentence.
+  const patterns: RegExp[] = [
+    // "Results in 2-3 working days", "Results within 24 hours", "Results typically in 5 days"
+    /results?\s+(?:estimated\s+)?(?:in|within|typically\s+in)\s+((?:up\s+to\s+)?\d+\s*(?:-|to|–)?\s*\d*\s*(?:working\s+)?(?:day|hour)s?)\b/i,
+    // "Turnaround: 2 working days", "Turnaround time: 24-48 hours"
+    /turnaround(?:\s+time)?[:\-]?\s*((?:up\s+to\s+)?\d+\s*(?:-|to|–)?\s*\d*\s*(?:working\s+)?(?:day|hour)s?)\b/i,
+    // "estimated 2 working days", "typically 5 working days"
+    /(?:estimated|typically|approximately|approx\.?)\s+(\d+\s*(?:-|to|–)?\s*\d*\s*(?:working\s+)?(?:day|hour)s?)\b/i,
+    // Explicit ranges: "2-5 working days", "24-48 hours"
+    /(\d+\s*(?:-|to|–)\s*\d+\s*(?:working\s+)?(?:day|hour)s?)\b/i,
+    // Bare "N working days (estimated)" — the Medichecks house style
+    /(\d+\s+working\s+days?)\s*\(?\s*estimated\s*\)?/i,
+    // Bare "N working days" / "N days" / "N hours"
+    /\b(\d+\s+working\s+days?)\b/i,
+    /\b(\d+\s+(?:business\s+)?days?)\b(?=[^a-z]|$)/i,
+    /\b(\d+\s+hours?)\b(?=[^a-z]|$)/i,
+    // Verbal same-day / next-day
     /(next\s+working\s+day)/i,
     /(same[\s-]?day)/i,
   ];
   for (const re of patterns) {
     const m = text.match(re);
-    if (m && m[1]) return m[1].trim().replace(/\s+/g, ' ');
+    if (m && m[1]) {
+      const s = m[1].trim().replace(/\s+/g, ' ');
+      // Reject nonsense (e.g. "0 days", years like "2024 days")
+      const numMatch = s.match(/(\d+)/);
+      if (numMatch) {
+        const n = parseInt(numMatch[1], 10);
+        if (n === 0 || n > 60) continue;
+      }
+      return s;
+    }
   }
   return null;
 }
