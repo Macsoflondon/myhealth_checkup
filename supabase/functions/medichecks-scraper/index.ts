@@ -509,7 +509,7 @@ Deno.serve(async (req) => {
         if (extraErr) console.warn(`[medichecks] extras update failed for ${title}:`, extraErr.message);
       }
 
-      await new Promise((r) => setTimeout(r, 250));
+      await new Promise((r) => setTimeout(r, 100));
     }
 
     await supabase
