@@ -58,15 +58,19 @@ function computeStatus(row: Record<string, unknown>): {
 }
 
 /**
- * Look up an existing row on (provider_id, provider_test_id) OR
- * (provider_id, test_name) — matches the writable table's uniqueness
- * conventions used by existing scrapers.
+ * Look up an existing row using the most stable keys first:
+ *   1. (provider_id, provider_test_id)   — canonical external id/handle
+ *   2. (provider_id, url)                 — canonical product URL
+ *   3. (provider_id, test_name)           — legacy fallback
+ * Guarantees we UPDATE rather than INSERT when either the handle or the
+ * product URL has been seen before, even if display test_name has drifted.
  */
 async function findExisting(
   supabase: SupabaseClient,
   providerId: string,
   providerTestId: string | null | undefined,
   testName: string,
+  url?: string | null,
 ): Promise<Record<string, unknown> | null> {
   if (providerTestId) {
     const { data } = await supabase
@@ -77,11 +81,22 @@ async function findExisting(
       .maybeSingle();
     if (data) return data;
   }
+  if (url) {
+    const { data } = await supabase
+      .from("provider_tests")
+      .select("*")
+      .eq("provider_id", providerId)
+      .eq("url", url)
+      .limit(1)
+      .maybeSingle();
+    if (data) return data;
+  }
   const { data } = await supabase
     .from("provider_tests")
     .select("*")
     .eq("provider_id", providerId)
     .eq("test_name", testName)
+    .limit(1)
     .maybeSingle();
   return data ?? null;
 }
@@ -113,6 +128,7 @@ export async function upsertWithProvenance(
       input.provider_id,
       input.provider_test_id ?? null,
       input.test_name,
+      input.url ?? input.scrape_source_url ?? null,
     );
 
     // Safety rail: refuse silent price wipes.
@@ -145,6 +161,7 @@ export async function upsertWithProvenance(
       collection_method: input.collection_method ?? null,
       in_stock: outOfStock ? false : (input.in_stock ?? true),
       scrape_source_url: input.scrape_source_url ?? input.url ?? null,
+      url: input.url ?? input.scrape_source_url ?? null,
       last_validated_at: new Date().toISOString(),
       price_not_stated: safePrice === null,
       biomarkers_not_stated: !Array.isArray(input.biomarkers_list) || (input.biomarkers_list as unknown[]).length === 0,
