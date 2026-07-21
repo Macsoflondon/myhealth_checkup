@@ -1,95 +1,88 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
+/**
+ * Goodbody Clinic scraper — CRUX rebuild.
+ * Firecrawl map + scrape. Clinic + optional home visit.
+ * Writes via shared provenance pipeline. Biomarkers curated manually in
+ * src/data/goodbodyTestDetails.ts — this scraper does NOT overwrite them.
+ */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
+import { getErrorMessage } from '../_shared/errors.ts';
+import { firecrawlScrape, firecrawlMap, runInChunks } from '../_shared/firecrawl-helpers.ts';
+import {
+  upsertWithProvenance,
+  parseTurnaround,
+  startScrapeRun,
+  finishScrapeRun,
+  newCounters,
+} from '../_shared/scrape/index.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+const PROVIDER_ID = 'goodbody-clinic';
+const CLINIC_VISIT_FEE = 0; // included in listed price
+const HOME_NURSE_FEE = null; // not offered as standard
+
 function determineCategory(title: string, description: string): string {
   const text = (title + ' ' + description).toLowerCase();
-  if (text.match(/cancer|tumour|tumor|psa|ca125|cea|afp|bowel screen/)) return 'Cancer Screening';
-  if (text.match(/liver/)) return 'Liver Function';
-  if (text.match(/heart|cardiovascular|cholesterol|lipid|cardiac/)) return 'Heart Health';
-  if (text.match(/fertility|amh|ovarian|egg reserve/)) return 'Fertility';
-  if (text.match(/thyroid|tsh|t3|t4/)) return 'Thyroid';
-  if (text.match(/vitamin|mineral|b12|d3|folate|nutritional/)) return 'Vitamins & Minerals';
-  if (text.match(/iron|ferritin|anaemia|anemia/)) return 'Iron & Anaemia';
-  if (text.match(/diabetes|glucose|hba1c|blood sugar/)) return 'Diabetes';
-  if (text.match(/well\s*woman|female|menopause|pcos|perimenopause/)) return "Women's Health";
-  if (text.match(/well\s*man|male|testosterone|prostate|erectile/)) return "Men's Health";
-  if (text.match(/kidney|renal/)) return 'Kidney Function';
-  if (text.match(/inflammation|crp|autoimmune/)) return 'Inflammation';
-  if (text.match(/hormone|cortisol|dhea|endocrine/)) return 'Hormones';
-  if (text.match(/blood count|fbc|cbc|haematology/)) return 'Blood Count';
-  if (text.match(/sti|std|sexual|chlamydia|gonorrhoea/)) return 'Sexual Health';
-  if (text.match(/allergy|intolerance|food sensitivity/)) return 'Allergy';
-  if (text.match(/sports|fitness|performance|athlete/)) return 'Sports & Fitness';
-  if (text.match(/fatigue|tiredness|energy/)) return 'Fatigue & Energy';
-  if (text.match(/essential|general|comprehensive|full body/)) return 'General Health';
+  if (/cancer|tumour|tumor|psa|ca125|cea|afp|bowel screen/.test(text)) return 'Cancer Screening';
+  if (/liver/.test(text)) return 'Liver Function';
+  if (/heart|cardiovascular|cholesterol|lipid|cardiac/.test(text)) return 'Heart Health';
+  if (/fertility|amh|ovarian|egg reserve/.test(text)) return 'Fertility';
+  if (/thyroid|tsh|t3|t4/.test(text)) return 'Thyroid';
+  if (/vitamin|mineral|b12|d3|folate|nutritional/.test(text)) return 'Vitamins & Minerals';
+  if (/iron|ferritin|anaemia|anemia/.test(text)) return 'Iron & Anaemia';
+  if (/diabetes|glucose|hba1c|blood sugar/.test(text)) return 'Diabetes';
+  if (/well\s*woman|female|menopause|pcos|perimenopause/.test(text)) return "Women's Health";
+  if (/well\s*man|male|testosterone|prostate|erectile/.test(text)) return "Men's Health";
+  if (/kidney|renal/.test(text)) return 'Kidney Function';
+  if (/inflammation|crp|autoimmune/.test(text)) return 'Inflammation';
+  if (/hormone|cortisol|dhea|endocrine/.test(text)) return 'Hormones';
+  if (/blood count|fbc|cbc|haematology/.test(text)) return 'Blood Count';
+  if (/sti|std|sexual|chlamydia|gonorrhoea/.test(text)) return 'Sexual Health';
+  if (/allergy|intolerance|food sensitivity/.test(text)) return 'Allergy';
+  if (/sports|fitness|performance|athlete/.test(text)) return 'Sports & Fitness';
+  if (/fatigue|tiredness|energy/.test(text)) return 'Fatigue & Energy';
   return 'General Health';
 }
 
-function extractPriceFromHtml(html: string): number {
-  if (!html) return 0;
-
-  // 1. Shopify-style data-amount attribute (Goodbody afterpay block carries the true total)
+function extractPriceFromHtml(html: string): number | null {
+  if (!html) return null;
   const dataAmountMatches = [...html.matchAll(/data-amount=["'](\d+(?:\.\d{1,2})?)["']/gi)];
   if (dataAmountMatches.length) {
-    const amounts = dataAmountMatches
-      .map(m => parseFloat(m[1]))
-      .filter(n => n > 10 && n < 5000);
+    const amounts = dataAmountMatches.map(m => parseFloat(m[1])).filter(n => n > 10 && n < 5000);
     if (amounts.length) return Math.max(...amounts);
   }
-
-  // 2. JSON-LD / Shopify product JSON
   const jsonPrice = html.match(/"price"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/i);
   if (jsonPrice) {
     const p = parseFloat(jsonPrice[1]);
     if (p > 10 && p < 5000) return p;
   }
-
-  // 3. og:price:amount meta
   const og = html.match(/property=["']og:price:amount["'][^>]*content=["']([\d.]+)["']/i);
   if (og) {
     const p = parseFloat(og[1]);
     if (p > 10 && p < 5000) return p;
   }
-  return 0;
+  return null;
 }
 
 function stripShopifySizeSuffix(url: string): string {
-  if (!url) return url;
-  // Shopify resize: foo_600x.jpg, foo_600x600.jpg, foo_1024x1024_crop_center.jpg → strip to master
   return url.replace(/_(\d+)x(\d+)?(?:_[a-z_]+)?(\.(?:jpe?g|png|webp|gif|avif))/i, '$3');
 }
 
 function extractImageFromHtml(html: string, markdown: string): string | null {
-  if (!html && !markdown) return null;
   const candidates: string[] = [];
-
-  // 1. og:image / twitter:image (highest priority — provider's chosen hero)
   const og = html.match(/property=["']og:image["'][^>]*content=["']([^"']+)["']/i)
-    || html.match(/name=["']og:image["'][^>]*content=["']([^"']+)["']/i)
     || html.match(/name=["']twitter:image["'][^>]*content=["']([^"']+)["']/i);
   if (og) candidates.push(og[1]);
-
-  // 2. Shopify product JSON featured_image
   const featured = html.match(/"featured_image"\s*:\s*"([^"]+\.(?:jpe?g|png|webp))"/i);
   if (featured) candidates.push(featured[1].replace(/\\\//g, '/'));
-
-  // 3. JSON-LD image
-  const ld = html.match(/"image"\s*:\s*"([^"]+\.(?:jpe?g|png|webp)[^"]*)"/i);
-  if (ld) candidates.push(ld[1].replace(/\\\//g, '/'));
-
-  // 4. First product-gallery <img> in markdown
   const mdImg = markdown.match(/!\[[^\]]*\]\((https?:\/\/[^)\s]+\.(?:jpe?g|png|webp)[^)\s]*)\)/i);
   if (mdImg) candidates.push(mdImg[1]);
-
   for (let raw of candidates) {
     if (!raw) continue;
     if (raw.startsWith('//')) raw = 'https:' + raw;
-    // Drop query string size hints (e.g. ?width=600), keep ?v= cache buster
     raw = raw.replace(/([?&])width=\d+&?/gi, '$1').replace(/[?&]$/, '');
     raw = stripShopifySizeSuffix(raw);
     if (/^https?:\/\//i.test(raw)) return raw;
@@ -97,57 +90,25 @@ function extractImageFromHtml(html: string, markdown: string): string | null {
   return null;
 }
 
-function extractFromMarkdown(markdown: string, url: string, html = ''): any {
-  let title = '';
-  const h1Match = markdown.match(/^#\s+(.+)$/m);
-  if (h1Match) title = h1Match[1].replace(/\s*[–|]\s*Goodbody.*$/i, '').trim();
-
-  // Prefer authoritative price from raw HTML
-  let price = extractPriceFromHtml(html);
-
-  // Detect afterpay/clearpay instalment text so we never mistake it for the headline price
-  const instalmentMatch = markdown.match(/4\s*(?:interest-free\s*)?payments?\s*of\s*£([\d,]+(?:\.\d{1,2})?)/i);
-  const instalmentValue = instalmentMatch ? parseFloat(instalmentMatch[1].replace(',', '')) : 0;
-
-  if (!price && instalmentValue > 0) {
-    price = +(instalmentValue * 4).toFixed(2);
-  }
-
-  if (!price) {
-    // Fallback: scan all £ prices in markdown, skip the instalment value, prefer the largest plausible amount
-    const all = [...markdown.matchAll(/£([\d,]+(?:\.\d{1,2})?)/g)]
-      .map(m => parseFloat(m[1].replace(',', '')))
-      .filter(n => n > 10 && n < 5000 && n !== instalmentValue);
-    if (all.length) price = Math.max(...all);
-  }
-
-  let biomarkerCount: number | null = null;
-  const countMatch = markdown.match(/(\d+)\s*(?:biomarkers?|tests?|markers?)/i);
-  if (countMatch) biomarkerCount = parseInt(countMatch[1]);
-
-  const biomarkers: string[] = [];
-  const biomarkerTerms = ['vitamin', 'b12', 'folate', 'iron', 'ferritin', 'calcium', 'magnesium',
-    'testosterone', 'oestradiol', 'progesterone', 'fsh', 'lh', 'prolactin', 'dhea', 'cortisol',
-    'tsh', 't3', 't4', 'cholesterol', 'hdl', 'ldl', 'triglyceride', 'liver', 'alt', 'ast',
-    'bilirubin', 'albumin', 'creatinine', 'urea', 'egfr', 'glucose', 'hba1c', 'crp',
-    'haemoglobin', 'platelet', 'psa', 'thyroid'];
-
-  const lines = markdown.split('\n');
-  for (const line of lines) {
-    const clean = line.replace(/^[\s*•-]+/, '').trim();
-    if (clean.length > 2 && clean.length < 80 && biomarkerTerms.some(t => clean.toLowerCase().includes(t))) {
-      biomarkers.push(clean);
+function extractTurnaround(md: string): string | null {
+  const patterns: RegExp[] = [
+    /results?\s+(?:in|within|typically\s+in)\s+((?:up\s+to\s+)?\d+\s*(?:-|to|–)?\s*\d*\s*(?:working\s+)?(?:day|hour)s?)\b/i,
+    /turnaround(?:\s+time)?[:\-]?\s*((?:up\s+to\s+)?\d+\s*(?:-|to|–)?\s*\d*\s*(?:working\s+)?(?:day|hour)s?)\b/i,
+    /(\d+\s*(?:-|to|–)\s*\d+\s*(?:working\s+)?(?:day|hour)s?)\b/i,
+    /\b(\d+\s+working\s+days?)\b/i,
+    /(next\s+working\s+day)/i,
+    /(same[\s-]?day)/i,
+  ];
+  for (const re of patterns) {
+    const m = md.match(re);
+    if (m && m[1]) {
+      const num = m[1].match(/(\d+)/);
+      if (num && (parseInt(num[1], 10) === 0 || parseInt(num[1], 10) > 60)) continue;
+      return m[1].trim();
     }
   }
-
-  const description = markdown.substring(0, 500).replace(/[#*[\]]/g, '').trim();
-  const imageUrl = extractImageFromHtml(html, markdown);
-
-  return { title, price, biomarkerCount, biomarkers, description, imageUrl };
+  return null;
 }
-
-// Uses shared firecrawl helper (v2, stealth proxy, 90s timeout, retry).
-import { firecrawlScrape, firecrawlMap, runInChunks } from '../_shared/firecrawl-helpers.ts';
 
 async function mapGoodbody(apiKey: string): Promise<string[]> {
   const links = await firecrawlMap('https://goodbodyclinic.com/collections/all', apiKey, { search: 'blood test', limit: 200 });
@@ -157,7 +118,6 @@ async function mapGoodbody(apiKey: string): Promise<string[]> {
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
-  // Auth: service role OR admin user (with AAL2 enforced server-side by has_role).
   const authHeader = req.headers.get('Authorization') ?? '';
   const supabaseUrlEnv = Deno.env.get('SUPABASE_URL') ?? '';
   const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
@@ -187,31 +147,24 @@ Deno.serve(async (req) => {
     }
   }
 
+  const supabase = createClient(supabaseUrlEnv, serviceKey);
+  const counters = newCounters();
+  const runId = await startScrapeRun(supabase, PROVIDER_ID, 'goodbody-scraper', {
+    started_at: new Date().toISOString(),
+  });
+
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY');
     if (!firecrawlApiKey) throw new Error('FIRECRAWL_API_KEY not configured');
 
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    console.log('Starting GoodBody Firecrawl scraper...');
-
     await supabase.from('scraping_jobs').upsert({
-      provider_id: 'goodbody-clinic', status: 'running',
-      last_scraped: new Date().toISOString(),
+      provider_id: PROVIDER_ID, status: 'running', last_scraped: new Date().toISOString(),
     }, { onConflict: 'provider_id' });
 
-    // Step 1: Discover product URLs via Firecrawl map
-    console.log('Mapping goodbodyclinic.com for products...');
     let productUrls: string[] = [];
-    try {
-      productUrls = await mapGoodbody(firecrawlApiKey);
-      console.log(`Map discovered ${productUrls.length} product URLs`);
-    } catch (e) {
-      console.error('Map failed, using known URLs:', (e instanceof Error ? e.message : String(e)));
+    try { productUrls = await mapGoodbody(firecrawlApiKey); } catch (e) {
+      console.error('[goodbody] map failed:', getErrorMessage(e));
     }
-
-    // Add known product slugs as fallback
     const knownSlugs = [
       'advanced-vitamins-blood-test', 'advanced-well-man-blood-test', 'advanced-well-woman-blood-test',
       'anaemia-blood-test', 'iron-blood-test', 'menopause-blood-test', 'prostate-psa-blood-test',
@@ -221,82 +174,102 @@ Deno.serve(async (req) => {
       const url = `https://goodbodyclinic.com/products/${slug}`;
       if (!productUrls.includes(url)) productUrls.push(url);
     }
-
     productUrls = [...new Set(productUrls)];
-    console.log(`Total unique products to scrape: ${productUrls.length}`);
+    counters.tests_seen = productUrls.length;
+    console.log(`[goodbody] ${productUrls.length} URLs to scrape`);
 
-    // Step 2: Scrape each product page (batch mode, concurrency 4)
-    const products: any[] = [];
-    await runInChunks(productUrls, 8, async (url) => {
+    await runInChunks(productUrls, 6, async (url) => {
       const slug = url.split('/products/').pop() || '';
-      console.log(`Scraping: ${slug}`);
       const result = await firecrawlScrape(url, firecrawlApiKey, {
         formats: ['markdown', 'html'], onlyMainContent: false, waitFor: 1500, timeout: 60000, proxy: 'stealth',
       });
-      if (!result.success || !result.data) { console.log(`No data for ${slug}`); return; }
+      if (!result.success || !result.data) return;
 
       const markdown = result.data.markdown || '';
       const html = result.data.html || result.data.rawHtml || '';
       const metadata = result.data.metadata || {};
-      const extracted = extractFromMarkdown(markdown, url, html);
 
-      const title = extracted.title || metadata.title?.replace(/\s*[–|]\s*Goodbody.*$/i, '').trim() || '';
+      let title = '';
+      const h1 = markdown.match(/^#\s+(.+)$/m);
+      if (h1) title = h1[1].replace(/\s*[–|]\s*Goodbody.*$/i, '').trim();
+      title = title || metadata.title?.replace(/\s*[–|]\s*Goodbody.*$/i, '').trim() || '';
       if (!title || title === 'Unknown Test') return;
 
-      let imageUrl = extracted.imageUrl as string | null;
-      if (!imageUrl && metadata.ogImage) imageUrl = stripShopifySizeSuffix(metadata.ogImage);
+      let price = extractPriceFromHtml(html);
+      if (!price) {
+        const instalment = markdown.match(/4\s*(?:interest-free\s*)?payments?\s*of\s*£([\d,]+(?:\.\d{1,2})?)/i);
+        const inst = instalment ? parseFloat(instalment[1].replace(',', '')) : 0;
+        if (inst > 0) price = +(inst * 4).toFixed(2);
+      }
+      const inStock = price !== null && price > 10;
+      const description = markdown.substring(0, 500).replace(/[#*[\]]/g, '').trim();
+      const category = determineCategory(title, description);
+      const turnaroundRaw = extractTurnaround(markdown);
+      const parsedTurn = parseTurnaround(turnaroundRaw);
+      const imageUrl = extractImageFromHtml(html, markdown)
+        || (metadata.ogImage ? stripShopifySizeSuffix(metadata.ogImage) : null);
 
-      products.push({
-        test_name: title,
-        provider_id: 'goodbody-clinic',
+      const upsertResult = await upsertWithProvenance(supabase, {
+        provider_id: PROVIDER_ID,
         provider_test_id: slug,
-        category: determineCategory(title, extracted.description),
-        price: extracted.price || null,
-        description: metadata.description || extracted.description || `${title} from Goodbody Clinic.`,
+        test_name: title,
         url,
-        ...(imageUrl ? { image_url: imageUrl } : {}),
-        is_active: true,
-        // Biomarkers are curated manually in src/data/goodbodyTestDetails.ts —
-        // the scraper must NOT overwrite biomarkers_list / biomarker_count.
+        price,
+        collection_fee: CLINIC_VISIT_FEE,
+        home_visit_fee: HOME_NURSE_FEE,
+        gp_review_fee: 0,
+        total_expected_cost: price,
+        // biomarkers curated manually — do NOT overwrite
+        biomarker_count: undefined,
+        biomarkers_list: undefined,
+        turnaround_raw: turnaroundRaw,
+        turnaround_hours: parsedTurn.hours,
+        turnaround_days: parsedTurn.days,
+        turnaround_unit: parsedTurn.unit,
         sample_type: 'Venous blood',
-        clinic_visit_available: true,
-        home_kit_available: true,
-        url_verified: true,
-        url_verified_at: new Date().toISOString(),
-        scraped_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      });
-      console.log(`✓ ${title} - £${extracted.price}`);
+        collection_method: 'Clinic phlebotomy; home visit on request',
+        in_stock: inStock,
+        scrape_source_url: url,
+      }, { scrapeRunId: runId, outOfStock: !inStock });
+
+      if (!upsertResult.ok) { counters.errors.push({ test: title, message: upsertResult.error ?? 'upsert failed' }); return; }
+      if (upsertResult.action === 'inserted') counters.tests_new++;
+      else if (upsertResult.action === 'updated') counters.tests_updated++;
+
+      if (upsertResult.providerTestId) {
+        const extras: Record<string, unknown> = {
+          description: metadata.description || description || `${title} from Goodbody Clinic.`,
+          category,
+          clinic_visit_available: true,
+          home_kit_available: true,
+          phlebotomy_included: true,
+          url_verified: true,
+          url_verified_at: new Date().toISOString(),
+          scraped_at: new Date().toISOString(),
+        };
+        if (imageUrl) extras.image_url = imageUrl;
+        await supabase.from('provider_tests').update(extras).eq('id', upsertResult.providerTestId);
+      }
     });
 
-    // Step 3: Upsert
-    if (products.length > 0) {
-      const { error } = await supabase.from('provider_tests').upsert(products, {
-        onConflict: 'provider_id,provider_test_id', ignoreDuplicates: false,
-      });
-      if (error) throw error;
-    }
-
-    await supabase.from('scraping_jobs').upsert({
-      provider_id: 'goodbody-clinic', status: 'completed',
-      last_scraped: new Date().toISOString(),
+    await supabase.from('scraping_jobs').update({
+      status: 'completed', error_message: null,
       next_scrape: new Date(Date.now() + 12 * 3600000).toISOString(),
-      error_message: null,
-    }, { onConflict: 'provider_id' });
+    }).eq('provider_id', PROVIDER_ID);
 
+    await finishScrapeRun(supabase, runId, counters, counters.errors.length > 0 ? 'partial' : 'success');
     return new Response(JSON.stringify({
-      success: true, message: `Scraped ${products.length} GoodBody tests via Firecrawl`,
-      testsUpdated: products.length,
+      success: true, provider: PROVIDER_ID, run_id: runId,
+      tests_seen: counters.tests_seen, tests_new: counters.tests_new, tests_updated: counters.tests_updated,
+      errors: counters.errors.slice(0, 10),
     }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
-
-  } catch (error) {
-    console.error('GoodBody scraper error:', error);
-    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
-    await supabase.from('scraping_jobs').upsert({
-      provider_id: 'goodbody-clinic', status: 'failed',
-      error_message: (error instanceof Error ? error.message : String(error)), last_scraped: new Date().toISOString(),
-    }, { onConflict: 'provider_id' });
-    return new Response(JSON.stringify({ success: false, error: (error instanceof Error ? error.message : String(error)) }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 });
+  } catch (err) {
+    const msg = getErrorMessage(err);
+    console.error('[goodbody] fatal:', msg);
+    await supabase.from('scraping_jobs').update({ status: 'failed', error_message: msg }).eq('provider_id', PROVIDER_ID);
+    await finishScrapeRun(supabase, runId, counters, 'error');
+    return new Response(JSON.stringify({ success: false, error: msg }), {
+      status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
 });
