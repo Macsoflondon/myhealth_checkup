@@ -315,7 +315,9 @@ Deno.serve(async (req) => {
         supabase,
         {
           provider_id: PROVIDER_ID,
+          provider_test_id: product.handle,
           test_name: title,
+          url: product.url,
           price: basePrice,
           was_price: wasPrice,
           collection_fee: HOME_KIT_FEE,
@@ -332,7 +334,6 @@ Deno.serve(async (req) => {
           collection_method: 'Home finger-prick kit; optional home nurse or clinic phlebotomy',
           in_stock: inStock,
           scrape_source_url: product.url,
-          url: product.url,
         },
         { scrapeRunId: runId, outOfStock: !inStock },
       );
