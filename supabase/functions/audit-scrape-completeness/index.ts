@@ -105,8 +105,12 @@ Deno.serve(async (req) => {
     // here we just backstop any active row that has never been touched by the new pipeline.
     // NB: intentionally no fabricated values — we only set data_status='not_stated' where
     // ALL required fields are absent.
-    const { error: backstopErr } = await supabase.rpc('audit_backstop_data_status').catch(() => ({ error: null }));
-    if (backstopErr) console.warn('[audit] backstop RPC not present or failed (safe to ignore):', backstopErr);
+    try {
+      const { error: backstopErr } = await supabase.rpc('audit_backstop_data_status');
+      if (backstopErr) console.warn('[audit] backstop RPC not present or failed (safe to ignore):', backstopErr);
+    } catch (e) {
+      console.warn('[audit] backstop RPC threw (safe to ignore):', e);
+    }
 
     return new Response(JSON.stringify({
       success: true,
