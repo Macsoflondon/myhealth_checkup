@@ -162,7 +162,7 @@ export const UniversalTestDetailModal: React.FC<{
               <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, fontFamily: "'DM Sans',sans-serif" }}>Total expected cost</div>
               {collectionFee != null && (
                 <div style={{ color: "#f59e0b", fontSize: 11, fontFamily: "'DM Sans',sans-serif", marginTop: 2 }}>
-                  incl. Collection Fee: +\u00a3{collectionFee.toFixed(2)}
+                  incl. Collection Fee: +£{collectionFee.toFixed(2)}
                 </div>
               )}
             </div>
