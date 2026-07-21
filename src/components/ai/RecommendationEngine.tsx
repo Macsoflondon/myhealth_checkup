@@ -92,9 +92,9 @@ const ResolvedRecommendationList = ({ recs }: { recs: RecommendationProps[] }) =
                 </h3>
                 <Badge className={getUrgencyColor(rec.urgency)}>{rec.urgency}</Badge>
               </div>
-              <p className="text-xs text-[#081129]/70 mb-2">{rec.provider} \u00b7 {rec.confidence}% match</p>
+              <p className="text-xs text-[#081129]/70 mb-2">{rec.provider} · {rec.confidence}% match</p>
               <p className="text-xs text-[#081129]/80">{rec.reason}</p>
-              <p className="text-[11px] text-[#081129]/50 mt-2 italic">Live details unavailable \u2014 this test may have been updated. Please browse the catalogue for the latest information.</p>
+              <p className="text-[11px] text-[#081129]/50 mt-2 italic">Live details unavailable — this test may have been updated. Please browse the catalogue for the latest information.</p>
             </Card>
           );
         }
@@ -119,7 +119,7 @@ const ResolvedRecommendationList = ({ recs }: { recs: RecommendationProps[] }) =
   );
 };
 
-/** Results-only view \u2014 renders Wellness Analysis + Recommended Tests with total cost focal. */
+/** Results-only view — renders Wellness Analysis + Recommended Tests with total cost focal. */
 export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) => {
   const totalCost = result.recommendedTests.reduce(
     (sum, rec) => sum + (rec.price ?? 0),
@@ -128,7 +128,7 @@ export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) 
 
   return (
     <div data-testid="ai-recommendation-results" className="space-y-6">
-      {/* Total Expected Cost \u2014 focal point */}
+      {/* Total Expected Cost — focal point */}
       {result.recommendedTests.length > 0 && (
         <div className="text-center py-6 px-4 rounded-2xl border-2 border-[#22c0d4]/30 bg-gradient-to-br from-[#081129] to-[#0F2238]">
           <p
@@ -141,7 +141,7 @@ export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) 
             className="text-5xl font-bold text-white"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
-            \u00a3{totalCost.toFixed(0)}
+            £{totalCost.toFixed(0)}
           </p>
           <p className="text-white/60 text-sm mt-1">
             {result.recommendedTests.length} test{result.recommendedTests.length !== 1 ? 's' : ''} recommended
@@ -188,7 +188,7 @@ export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) 
 
           <ResolvedRecommendationList recs={result.recommendedTests} />
           <p className="text-xs text-[#081129]/60 italic">
-            Tap any test card to view the full standardised details \u2014 biomarkers, collection method, turnaround and pricing \u2014 pulled directly from the provider.
+            Tap any test card to view the full standardised details — biomarkers, collection method, turnaround and pricing — pulled directly from the provider.
           </p>
         </div>
       )}
@@ -432,9 +432,9 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
                   <div className="space-y-1 w-full">
                     <p className="text-sm font-medium line-clamp-1">{query.query_text}</p>
                     <p className="text-xs text-muted-foreground">
-                      {new Date(query.created_at).toLocaleDateString()} \u2022 
+                      {new Date(query.created_at).toLocaleDateString()} • 
                       {query.age && ` Age: ${query.age}`}
-                      {query.gender && ` \u2022 ${query.gender}`}
+                      {query.gender && ` • ${query.gender}`}
                     </p>
                   </div>
                 </Button>
