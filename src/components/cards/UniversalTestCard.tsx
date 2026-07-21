@@ -615,7 +615,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#d97706" }}
             >
               <span style={{ background: "#fef3c7", padding: "1px 6px", borderRadius: 8, fontWeight: 600 }}>
-                Collection Fee: +\u00a3{collectionFee.toFixed(2)}
+                Collection Fee: +£{collectionFee.toFixed(2)}
               </span>
             </div>
           )}
