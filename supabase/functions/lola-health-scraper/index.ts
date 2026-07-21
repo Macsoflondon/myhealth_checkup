@@ -1,6 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
 import { getErrorMessage } from '../_shared/errors.ts';
+import {
+  parseTurnaround,
+  upsertWithProvenance,
+  startScrapeRun,
+  finishScrapeRun,
+  newCounters,
+} from '../_shared/scrape/index.ts';
+
+function extractTurnaroundText(md: string): string | null {
+  const patterns = [
+    /(?:turnaround|results?(?:\s+in)?|report(?:ed)?\s+within|delivered\s+within|available\s+within)[^.\n]{0,80}/i,
+    /(?:next\s+(?:working\s+)?day|same\s+day|24[\s-]?48\s*hours?|\d+\s*[-–]\s*\d+\s*(?:hours?|working\s+days?|days?)|\d+\s*(?:hours?|working\s+days?|days?))/i,
+  ];
+  for (const p of patterns) {
+    const m = md.match(p);
+    if (m) return m[0].trim();
+  }
+  return null;
+}
 
 
 const corsHeaders = {
@@ -241,6 +260,7 @@ Deno.serve(async (req) => {
       }
 
       const isAddon = markdown.toLowerCase().includes('add-on') || markdown.toLowerCase().includes('can only be added');
+      const turnaroundRaw = extractTurnaroundText(markdown);
 
       products.push({
         test_name: title,
@@ -270,6 +290,7 @@ Deno.serve(async (req) => {
         sample_type: 'Finger-prick',
         home_kit_available: true,
         clinic_visit_available: false,
+        turnaround_raw: turnaroundRaw,
         scraped_at: new Date().toISOString(),
         url_verified: true,
         url_verified_at: new Date().toISOString(),
@@ -292,18 +313,55 @@ Deno.serve(async (req) => {
     }
 
     // Per-row upsert loop: collect errors instead of throwing on first collision.
+    // Per-row upsert via provenance helper: writes history + change events + safety rails.
+    const runId = await startScrapeRun(supabase, 'lola-health', 'lola-health-scraper');
+    const counters = newCounters();
+    counters.tests_seen = dedupedProducts.length;
     let upsertedCount = 0;
     const rowErrors: string[] = [];
+
     for (const row of dedupedProducts) {
-      const { error: rowErr } = await supabase.from('provider_tests').upsert([row], {
-        onConflict: 'provider_id,provider_test_id', ignoreDuplicates: false,
-      });
-      if (rowErr) {
-        rowErrors.push(`${row.provider_test_id}: ${getErrorMessage(rowErr)}`);
+      const turnaround = parseTurnaround(row.turnaround_raw ?? '');
+      const res = await upsertWithProvenance(supabase, {
+        provider_id: 'lola-health',
+        provider_test_id: row.provider_test_id,
+        test_name: row.test_name,
+        price: row.price,
+        biomarker_count: row.biomarker_count,
+        biomarkers_list: row.biomarkers_list,
+        turnaround_raw: row.turnaround_raw,
+        turnaround_hours: turnaround.hours,
+        turnaround_days: turnaround.days,
+        turnaround_unit: turnaround.unit,
+        sample_type: 'Finger-prick',
+        collection_method: 'Home kit',
+        in_stock: true,
+        scrape_source_url: row.url,
+      }, { scrapeRunId: runId });
+
+      if (!res.ok) {
+        rowErrors.push(`${row.provider_test_id}: ${res.error}`);
       } else {
-        upsertedCount += 1;
+        upsertedCount++;
+        if (res.action === 'inserted') counters.tests_new++;
+        else if (res.action === 'updated') counters.tests_updated++;
+
+        // Preserve Lola-specific side fields that upsertWithProvenance doesn't own.
+        if (res.providerTestId) {
+          await supabase.from('provider_tests').update({
+            category: row.category,
+            description: row.description,
+            image_url: row.image_url,
+            home_kit_available: true,
+            clinic_visit_available: false,
+            was_price: row.original_price ?? null,
+          }).eq('id', res.providerTestId);
+        }
       }
     }
+
+    await finishScrapeRun(supabase, runId, counters, upsertedCount > 0 ? 'success' : 'error') /*
+      */;
 
     const succeeded = upsertedCount > 0;
     const errorSummary = rowErrors.length
