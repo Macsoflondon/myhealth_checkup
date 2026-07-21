@@ -218,7 +218,7 @@ const Index = () => {
                 </p>
                 <div className="w-3/4 mx-auto mb-8">
                   <div className="h-1 w-full rounded-full overflow-hidden flex" aria-hidden="true">
-                    <div className="h-full w-1/3 bg-[#081129]" />
+                    <div className="h-full w-1/3 bg-[#F5F5F5]" />
                     <div className="h-full w-1/3 bg-[#22c0d4]" />
                     <div className="h-full w-1/3 bg-[#e70d69]" />
                   </div>
