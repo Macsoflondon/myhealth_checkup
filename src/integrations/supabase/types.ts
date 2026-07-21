@@ -3313,6 +3313,115 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_test_history: {
+        Row: {
+          biomarker_count: number | null
+          biomarkers_list: Json | null
+          collection_fee: number | null
+          collection_method: string | null
+          created_at: string
+          gp_review_fee: number | null
+          home_visit_fee: number | null
+          id: string
+          in_stock: boolean | null
+          price: number | null
+          provider_id: string
+          provider_test_id: string | null
+          raw_payload: Json | null
+          sample_type: string | null
+          scrape_run_id: string | null
+          scrape_source_url: string | null
+          snapshot_at: string
+          test_name: string
+          total_expected_cost: number | null
+          trustpilot_rating: number | null
+          trustpilot_review_count: number | null
+          turnaround_days: number | null
+          turnaround_hours: number | null
+          turnaround_raw: string | null
+          turnaround_unit: string | null
+          was_price: number | null
+        }
+        Insert: {
+          biomarker_count?: number | null
+          biomarkers_list?: Json | null
+          collection_fee?: number | null
+          collection_method?: string | null
+          created_at?: string
+          gp_review_fee?: number | null
+          home_visit_fee?: number | null
+          id?: string
+          in_stock?: boolean | null
+          price?: number | null
+          provider_id: string
+          provider_test_id?: string | null
+          raw_payload?: Json | null
+          sample_type?: string | null
+          scrape_run_id?: string | null
+          scrape_source_url?: string | null
+          snapshot_at?: string
+          test_name: string
+          total_expected_cost?: number | null
+          trustpilot_rating?: number | null
+          trustpilot_review_count?: number | null
+          turnaround_days?: number | null
+          turnaround_hours?: number | null
+          turnaround_raw?: string | null
+          turnaround_unit?: string | null
+          was_price?: number | null
+        }
+        Update: {
+          biomarker_count?: number | null
+          biomarkers_list?: Json | null
+          collection_fee?: number | null
+          collection_method?: string | null
+          created_at?: string
+          gp_review_fee?: number | null
+          home_visit_fee?: number | null
+          id?: string
+          in_stock?: boolean | null
+          price?: number | null
+          provider_id?: string
+          provider_test_id?: string | null
+          raw_payload?: Json | null
+          sample_type?: string | null
+          scrape_run_id?: string | null
+          scrape_source_url?: string | null
+          snapshot_at?: string
+          test_name?: string
+          total_expected_cost?: number | null
+          trustpilot_rating?: number | null
+          trustpilot_review_count?: number | null
+          turnaround_days?: number | null
+          turnaround_hours?: number | null
+          turnaround_raw?: string | null
+          turnaround_unit?: string | null
+          was_price?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "provider_test_history_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: false
+            referencedRelation: "provider_tests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "provider_test_history_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: false
+            referencedRelation: "unified_provider_tests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "provider_test_history_scrape_run_id_fkey"
+            columns: ["scrape_run_id"]
+            isOneToOne: false
+            referencedRelation: "scrape_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       provider_test_mapping: {
         Row: {
           accreditations: string[] | null
@@ -3413,6 +3522,7 @@ export type Database = {
           base_price: number | null
           biomarker_count: number | null
           biomarkers_list: Json | null
+          biomarkers_not_stated: boolean | null
           canonical_category: string | null
           category: string | null
           category_ids: string[]
@@ -3421,6 +3531,7 @@ export type Database = {
           clinical_review_professional: string | null
           clinical_review_type: string | null
           clinical_review_verification: string | null
+          collection_fee: number | null
           collection_fee_amount: number | null
           collection_fee_type: string | null
           collection_fee_verification: string | null
@@ -3428,44 +3539,70 @@ export type Database = {
           collection_options: Json | null
           conditions: Json | null
           created_at: string
+          data_status: string | null
           description: string | null
+          description_scraped: string | null
           discount_percentage: number | null
+          field_completeness_score: number | null
+          gender_specific: string | null
           goals: string[] | null
           gp_consultation_cost: number | null
           gp_consultation_included: boolean | null
+          gp_review_fee: number | null
+          handle: string | null
           home_kit_available: boolean | null
+          home_visit_fee: number | null
           id: string
           image_url: string | null
+          in_stock: boolean | null
           is_active: boolean
           is_addon: boolean | null
           is_popular: boolean | null
+          lab_cqc_regulated: boolean | null
+          lab_iso15189: boolean | null
+          lab_ukas_accredited: boolean | null
+          last_validated_at: string | null
+          location_options: Json | null
           original_price: number | null
           phlebotomy_cost: number | null
           phlebotomy_included: boolean | null
           policy_source_url: string | null
           popularity_rank: number | null
           price: number | null
+          price_not_stated: boolean | null
           provider_id: string
           provider_test_id: string | null
           sample_type: string | null
+          scrape_source_url: string | null
           scraped_at: string
+          sku: string | null
           source_section: string | null
           source_section_label: string | null
           sub_goals: string[] | null
           symptoms: Json | null
           test_name: string
           total_expected_cost: number | null
+          trustpilot_last_checked: string | null
+          trustpilot_rating: number | null
+          trustpilot_review_count: number | null
+          turnaround_days: number | null
           turnaround_days_text: string | null
+          turnaround_hours: number | null
+          turnaround_not_stated: boolean | null
+          turnaround_raw: string | null
+          turnaround_unit: string | null
           updated_at: string
           url: string | null
           url_verified: boolean | null
           url_verified_at: string | null
+          was_price: number | null
           who_should_test: string | null
         }
         Insert: {
           base_price?: number | null
           biomarker_count?: number | null
           biomarkers_list?: Json | null
+          biomarkers_not_stated?: boolean | null
           canonical_category?: string | null
           category?: string | null
           category_ids?: string[]
@@ -3474,6 +3611,7 @@ export type Database = {
           clinical_review_professional?: string | null
           clinical_review_type?: string | null
           clinical_review_verification?: string | null
+          collection_fee?: number | null
           collection_fee_amount?: number | null
           collection_fee_type?: string | null
           collection_fee_verification?: string | null
@@ -3481,44 +3619,70 @@ export type Database = {
           collection_options?: Json | null
           conditions?: Json | null
           created_at?: string
+          data_status?: string | null
           description?: string | null
+          description_scraped?: string | null
           discount_percentage?: number | null
+          field_completeness_score?: number | null
+          gender_specific?: string | null
           goals?: string[] | null
           gp_consultation_cost?: number | null
           gp_consultation_included?: boolean | null
+          gp_review_fee?: number | null
+          handle?: string | null
           home_kit_available?: boolean | null
+          home_visit_fee?: number | null
           id?: string
           image_url?: string | null
+          in_stock?: boolean | null
           is_active?: boolean
           is_addon?: boolean | null
           is_popular?: boolean | null
+          lab_cqc_regulated?: boolean | null
+          lab_iso15189?: boolean | null
+          lab_ukas_accredited?: boolean | null
+          last_validated_at?: string | null
+          location_options?: Json | null
           original_price?: number | null
           phlebotomy_cost?: number | null
           phlebotomy_included?: boolean | null
           policy_source_url?: string | null
           popularity_rank?: number | null
           price?: number | null
+          price_not_stated?: boolean | null
           provider_id: string
           provider_test_id?: string | null
           sample_type?: string | null
+          scrape_source_url?: string | null
           scraped_at?: string
+          sku?: string | null
           source_section?: string | null
           source_section_label?: string | null
           sub_goals?: string[] | null
           symptoms?: Json | null
           test_name: string
           total_expected_cost?: number | null
+          trustpilot_last_checked?: string | null
+          trustpilot_rating?: number | null
+          trustpilot_review_count?: number | null
+          turnaround_days?: number | null
           turnaround_days_text?: string | null
+          turnaround_hours?: number | null
+          turnaround_not_stated?: boolean | null
+          turnaround_raw?: string | null
+          turnaround_unit?: string | null
           updated_at?: string
           url?: string | null
           url_verified?: boolean | null
           url_verified_at?: string | null
+          was_price?: number | null
           who_should_test?: string | null
         }
         Update: {
           base_price?: number | null
           biomarker_count?: number | null
           biomarkers_list?: Json | null
+          biomarkers_not_stated?: boolean | null
           canonical_category?: string | null
           category?: string | null
           category_ids?: string[]
@@ -3527,6 +3691,7 @@ export type Database = {
           clinical_review_professional?: string | null
           clinical_review_type?: string | null
           clinical_review_verification?: string | null
+          collection_fee?: number | null
           collection_fee_amount?: number | null
           collection_fee_type?: string | null
           collection_fee_verification?: string | null
@@ -3534,38 +3699,63 @@ export type Database = {
           collection_options?: Json | null
           conditions?: Json | null
           created_at?: string
+          data_status?: string | null
           description?: string | null
+          description_scraped?: string | null
           discount_percentage?: number | null
+          field_completeness_score?: number | null
+          gender_specific?: string | null
           goals?: string[] | null
           gp_consultation_cost?: number | null
           gp_consultation_included?: boolean | null
+          gp_review_fee?: number | null
+          handle?: string | null
           home_kit_available?: boolean | null
+          home_visit_fee?: number | null
           id?: string
           image_url?: string | null
+          in_stock?: boolean | null
           is_active?: boolean
           is_addon?: boolean | null
           is_popular?: boolean | null
+          lab_cqc_regulated?: boolean | null
+          lab_iso15189?: boolean | null
+          lab_ukas_accredited?: boolean | null
+          last_validated_at?: string | null
+          location_options?: Json | null
           original_price?: number | null
           phlebotomy_cost?: number | null
           phlebotomy_included?: boolean | null
           policy_source_url?: string | null
           popularity_rank?: number | null
           price?: number | null
+          price_not_stated?: boolean | null
           provider_id?: string
           provider_test_id?: string | null
           sample_type?: string | null
+          scrape_source_url?: string | null
           scraped_at?: string
+          sku?: string | null
           source_section?: string | null
           source_section_label?: string | null
           sub_goals?: string[] | null
           symptoms?: Json | null
           test_name?: string
           total_expected_cost?: number | null
+          trustpilot_last_checked?: string | null
+          trustpilot_rating?: number | null
+          trustpilot_review_count?: number | null
+          turnaround_days?: number | null
           turnaround_days_text?: string | null
+          turnaround_hours?: number | null
+          turnaround_not_stated?: boolean | null
+          turnaround_raw?: string | null
+          turnaround_unit?: string | null
           updated_at?: string
           url?: string | null
           url_verified?: boolean | null
           url_verified_at?: string | null
+          was_price?: number | null
           who_should_test?: string | null
         }
         Relationships: []
@@ -3778,40 +3968,53 @@ export type Database = {
         Row: {
           change_type: string
           created_at: string
+          field_name: string | null
           id: string
           new_value: Json | null
           old_value: Json | null
           provider_id: string
           provider_test_id: string | null
           scrape_operation_id: string | null
+          scrape_run_id: string | null
           severity: string | null
           test_name: string | null
         }
         Insert: {
           change_type: string
           created_at?: string
+          field_name?: string | null
           id?: string
           new_value?: Json | null
           old_value?: Json | null
           provider_id: string
           provider_test_id?: string | null
           scrape_operation_id?: string | null
+          scrape_run_id?: string | null
           severity?: string | null
           test_name?: string | null
         }
         Update: {
           change_type?: string
           created_at?: string
+          field_name?: string | null
           id?: string
           new_value?: Json | null
           old_value?: Json | null
           provider_id?: string
           provider_test_id?: string | null
           scrape_operation_id?: string | null
+          scrape_run_id?: string | null
           severity?: string | null
           test_name?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "scrape_change_events_run_fk"
+            columns: ["scrape_run_id"]
+            isOneToOne: false
+            referencedRelation: "scrape_runs"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "scrape_change_events_scrape_operation_id_fkey"
             columns: ["scrape_operation_id"]
@@ -3959,6 +4162,63 @@ export type Database = {
           tests_scraped?: number | null
           trigger_source?: string | null
           verification_failures?: number | null
+        }
+        Relationships: []
+      }
+      scrape_runs: {
+        Row: {
+          created_at: string
+          errors: Json
+          fields_not_stated: number
+          fields_populated: number
+          finished_at: string | null
+          id: string
+          metadata: Json
+          provider_id: string
+          scraper_function: string | null
+          started_at: string
+          status: string
+          tests_deactivated: number
+          tests_new: number
+          tests_seen: number
+          tests_unchanged: number
+          tests_updated: number
+        }
+        Insert: {
+          created_at?: string
+          errors?: Json
+          fields_not_stated?: number
+          fields_populated?: number
+          finished_at?: string | null
+          id?: string
+          metadata?: Json
+          provider_id: string
+          scraper_function?: string | null
+          started_at?: string
+          status?: string
+          tests_deactivated?: number
+          tests_new?: number
+          tests_seen?: number
+          tests_unchanged?: number
+          tests_updated?: number
+        }
+        Update: {
+          created_at?: string
+          errors?: Json
+          fields_not_stated?: number
+          fields_populated?: number
+          finished_at?: string | null
+          id?: string
+          metadata?: Json
+          provider_id?: string
+          scraper_function?: string | null
+          started_at?: string
+          status?: string
+          tests_deactivated?: number
+          tests_new?: number
+          tests_seen?: number
+          tests_unchanged?: number
+          tests_updated?: number
         }
         Relationships: []
       }
