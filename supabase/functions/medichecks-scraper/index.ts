@@ -360,7 +360,9 @@ Deno.serve(async (req) => {
 
   const url = new URL(req.url);
   const offset = Math.max(0, parseInt(url.searchParams.get('offset') ?? '0', 10) || 0);
-  const limit = Math.min(80, Math.max(1, parseInt(url.searchParams.get('limit') ?? '60', 10) || 60));
+  const limit = Math.min(40, Math.max(1, parseInt(url.searchParams.get('limit') ?? '20', 10) || 20));
+  const autoContinue = (url.searchParams.get('auto') ?? '1') !== '0';
+
 
   const supabase = createClient(supabaseUrl, supabaseKey);
   const counters = newCounters();
