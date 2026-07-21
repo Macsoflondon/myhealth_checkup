@@ -161,6 +161,7 @@ export async function upsertWithProvenance(
       collection_method: input.collection_method ?? null,
       in_stock: outOfStock ? false : (input.in_stock ?? true),
       scrape_source_url: input.scrape_source_url ?? input.url ?? null,
+      url: input.url ?? input.scrape_source_url ?? null,
       last_validated_at: new Date().toISOString(),
       price_not_stated: safePrice === null,
       biomarkers_not_stated: !Array.isArray(input.biomarkers_list) || (input.biomarkers_list as unknown[]).length === 0,
