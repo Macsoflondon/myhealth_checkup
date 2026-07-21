@@ -1,12 +1,28 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
+/**
+ * Thriva scraper — CRUX rebuild.
+ * Firecrawl map + scrape. Home finger-prick only; no clinic option.
+ * Writes via shared provenance pipeline.
+ */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
 import { logProtectedCall } from '../_shared/audit.ts';
+import { getErrorMessage } from '../_shared/errors.ts';
 import { firecrawlScrape, firecrawlMap, runInChunks } from '../_shared/firecrawl-helpers.ts';
+import {
+  upsertWithProvenance,
+  parseTurnaround,
+  normaliseBiomarkers,
+  startScrapeRun,
+  finishScrapeRun,
+  newCounters,
+} from '../_shared/scrape/index.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+const PROVIDER_ID = 'thriva';
+const HOME_KIT_FEE = 0; // included
 
 const KNOWN_PRODUCTS = [
   { slug: 'womens-hormones-blood-test-insights', name: "Women's Hormones Blood Test" },
@@ -26,15 +42,44 @@ const KNOWN_PRODUCTS = [
 ];
 
 function inferCategory(name: string): string {
-  const lower = name.toLowerCase();
-  if (lower.includes('women') || lower.includes('pcos') || lower.includes('menopause') || lower.includes('amh') || lower.includes('fertility')) return "Women's Health";
-  if (lower.includes("men's") || lower.includes('psa') || lower.includes('prostate')) return "Men's Health";
-  if (lower.includes('thyroid')) return 'Thyroid';
-  if (lower.includes('cardiovascular') || lower.includes('cholesterol') || lower.includes('lp(a)') || lower.includes('omega')) return 'Heart Health';
-  if (lower.includes('vitamin')) return 'Vitamins & Minerals';
-  if (lower.includes('sport') || lower.includes('performance')) return 'Sports & Fitness';
-  if (lower.includes('general') || lower.includes('health check')) return 'General Health';
+  const t = name.toLowerCase();
+  if (/women|pcos|menopause|amh|fertility/.test(t)) return "Women's Health";
+  if (/men's|psa|prostate/.test(t)) return "Men's Health";
+  if (/thyroid/.test(t)) return 'Thyroid';
+  if (/cardiovascular|cholesterol|lp\(a\)|omega/.test(t)) return 'Heart Health';
+  if (/vitamin/.test(t)) return 'Vitamins & Minerals';
+  if (/sport|performance/.test(t)) return 'Sports & Fitness';
   return 'General Health';
+}
+
+function extractTurnaround(text: string): string | null {
+  const patterns: RegExp[] = [
+    /results?\s+(?:in|within|typically\s+in)\s+((?:up\s+to\s+)?\d+\s*(?:-|to|–)?\s*\d*\s*(?:working\s+)?(?:day|hour)s?)\b/i,
+    /turnaround(?:\s+time)?[:\-]?\s*((?:up\s+to\s+)?\d+\s*(?:-|to|–)?\s*\d*\s*(?:working\s+)?(?:day|hour)s?)\b/i,
+    /(\d+\s*(?:-|to|–)\s*\d+\s*(?:working\s+)?(?:day|hour)s?)\b/i,
+    /\b(\d+\s+working\s+days?)\b/i,
+    /(next\s+working\s+day)/i,
+    /(same[\s-]?day)/i,
+  ];
+  for (const re of patterns) {
+    const m = text.match(re);
+    if (m && m[1]) {
+      const num = m[1].match(/(\d+)/);
+      if (num && (parseInt(num[1], 10) === 0 || parseInt(num[1], 10) > 60)) continue;
+      return m[1].trim();
+    }
+  }
+  return null;
+}
+
+function extractBiomarkersMd(md: string): string[] {
+  const items = new Set<string>();
+  const terms = /vitamin|b12|folate|iron|ferritin|calcium|magnesium|testosterone|oestradiol|progesterone|fsh|lh|prolactin|dhea|cortisol|tsh|t3|t4|cholesterol|hdl|ldl|triglyceride|liver|alt|ast|bilirubin|albumin|creatinine|urea|egfr|glucose|hba1c|crp|haemoglobin|platelet|psa|thyroid|omega/i;
+  for (const line of md.split('\n')) {
+    const clean = line.replace(/^[\s*•-]+/, '').trim();
+    if (clean.length > 2 && clean.length < 80 && terms.test(clean)) items.add(clean);
+  }
+  return normaliseBiomarkers(Array.from(items));
 }
 
 async function mapThriva(apiKey: string): Promise<string[]> {
@@ -44,9 +89,8 @@ async function mapThriva(apiKey: string): Promise<string[]> {
 
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
-
-  const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
-  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
+  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${serviceKey}`) {
     await logProtectedCall({ functionName: 'thriva-scraper', status: 'denied', req });
     return new Response(JSON.stringify({ error: 'Unauthorized' }), {
       status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -54,43 +98,35 @@ Deno.serve(async (req) => {
   }
   await logProtectedCall({ functionName: 'thriva-scraper', status: 'allowed', req });
 
+  const supabase = createClient(Deno.env.get('SUPABASE_URL')!, serviceKey);
+  const counters = newCounters();
+  const runId = await startScrapeRun(supabase, PROVIDER_ID, 'thriva-scraper', {
+    started_at: new Date().toISOString(),
+  });
+
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY');
     if (!firecrawlApiKey) throw new Error('FIRECRAWL_API_KEY not configured');
 
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    console.log('Starting Thriva Firecrawl scraper...');
-
     await supabase.from('scraping_jobs').upsert({
-      provider_id: 'thriva', status: 'running', last_scraped: new Date().toISOString(),
+      provider_id: PROVIDER_ID, status: 'running', last_scraped: new Date().toISOString(),
     }, { onConflict: 'provider_id' });
 
-    // Step 1: Map to discover product URLs
     let productUrls: string[] = [];
-    try {
-      productUrls = await mapThriva(firecrawlApiKey);
-      console.log(`Map discovered ${productUrls.length} URLs`);
-    } catch (e) {
-      console.error('Map failed:', (e instanceof Error ? e.message : String(e)));
+    try { productUrls = await mapThriva(firecrawlApiKey); } catch (e) {
+      console.error('[thriva] map failed:', getErrorMessage(e));
     }
-
-    // Add known products as fallback
     for (const p of KNOWN_PRODUCTS) {
       const url = `https://thriva.co/shop/blood-tests/${p.slug}`;
       if (!productUrls.includes(url)) productUrls.push(url);
     }
     productUrls = [...new Set(productUrls)];
-    console.log(`Total URLs to scrape: ${productUrls.length}`);
+    counters.tests_seen = productUrls.length;
+    console.log(`[thriva] ${productUrls.length} URLs to scrape`);
 
-    // Step 2: Scrape each product (batch mode, concurrency 4)
-    const tests: any[] = [];
-    await runInChunks(productUrls, 8, async (url) => {
+    await runInChunks(productUrls, 6, async (url) => {
       const slug = url.split('/').pop() || '';
-      const knownProduct = KNOWN_PRODUCTS.find(p => p.slug === slug);
-      console.log(`Scraping: ${slug}`);
-
+      const known = KNOWN_PRODUCTS.find(p => p.slug === slug);
       const result = await firecrawlScrape(url, firecrawlApiKey, {
         formats: ['markdown'], onlyMainContent: true, waitFor: 1500, timeout: 60000, proxy: 'stealth',
       });
@@ -98,76 +134,81 @@ Deno.serve(async (req) => {
 
       const markdown = result.data.markdown || '';
       const metadata = result.data.metadata || {};
-
       let title = metadata.title?.replace(/\s*[–|]\s*Thriva.*$/i, '').trim() || '';
       if (!title) {
         const h1 = markdown.match(/^#\s+(.+)$/m);
-        title = h1 ? h1[1].trim() : '';
+        title = h1 ? h1[1].trim() : (known?.name || slug.replace(/-/g, ' '));
       }
-      if (!title) title = knownProduct?.name || slug.replace(/-/g, ' ');
 
       const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
       const price = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : null;
+      const inStock = price !== null && price > 0;
 
+      const biomarkers = extractBiomarkersMd(markdown);
+      const biomarkersList = biomarkers.length > 0 ? biomarkers : null;
       const bioCountMatch = markdown.match(/(\d+)\s*biomarkers?/i);
-      const biomarkerCount = bioCountMatch ? parseInt(bioCountMatch[1]) : null;
+      const biomarkerCount = biomarkersList?.length ?? (bioCountMatch ? parseInt(bioCountMatch[1]) : null);
+      const turnaroundRaw = extractTurnaround(markdown);
+      const parsedTurn = parseTurnaround(turnaroundRaw);
 
-      tests.push({
-        provider_id: 'thriva',
+      const upsertResult = await upsertWithProvenance(supabase, {
+        provider_id: PROVIDER_ID,
         provider_test_id: `thriva-${slug}`,
         test_name: title,
-        description: metadata.description || '',
-        price,
-        category: inferCategory(title),
         url,
-        is_active: true,
+        price,
+        collection_fee: HOME_KIT_FEE,
+        home_visit_fee: null,
+        gp_review_fee: 0,
+        total_expected_cost: price,
         biomarker_count: biomarkerCount,
+        biomarkers_list: biomarkersList,
+        turnaround_raw: turnaroundRaw,
+        turnaround_hours: parsedTurn.hours,
+        turnaround_days: parsedTurn.days,
+        turnaround_unit: parsedTurn.unit,
         sample_type: 'Finger-prick',
-        home_kit_available: true,
-        clinic_visit_available: false,
-        scraped_at: new Date().toISOString(),
-        url_verified: true,
-        url_verified_at: new Date().toISOString(),
-      });
-      console.log(`✓ ${title} - £${price ?? 'N/A'}`);
+        collection_method: 'Home finger-prick kit',
+        in_stock: inStock,
+        scrape_source_url: url,
+      }, { scrapeRunId: runId, outOfStock: !inStock });
+
+      if (!upsertResult.ok) { counters.errors.push({ test: title, message: upsertResult.error ?? 'upsert failed' }); return; }
+      if (upsertResult.action === 'inserted') counters.tests_new++;
+      else if (upsertResult.action === 'updated') counters.tests_updated++;
+
+      if (upsertResult.providerTestId) {
+        await supabase.from('provider_tests').update({
+          description: metadata.description || '',
+          category: inferCategory(title),
+          home_kit_available: true,
+          clinic_visit_available: false,
+          phlebotomy_included: true,
+          url_verified: true,
+          url_verified_at: new Date().toISOString(),
+          scraped_at: new Date().toISOString(),
+        }).eq('id', upsertResult.providerTestId);
+      }
     });
 
-    if (tests.length === 0) throw new Error('No tests scraped from Thriva');
-
-    // Deduplicate
-    const seen = new Set<string>();
-    const unique = tests.filter(t => { if (seen.has(t.provider_test_id)) return false; seen.add(t.provider_test_id); return true; });
-
-    const { error } = await supabase.from('provider_tests').upsert(unique, {
-      onConflict: 'provider_id,provider_test_id', ignoreDuplicates: false,
-    });
-    if (error) throw error;
-
-    // Deactivate old tests
-    await supabase.from('provider_tests').update({ is_active: false })
-      .eq('provider_id', 'thriva')
-      .lt('scraped_at', new Date(Date.now() - 86400000).toISOString());
-
-    await supabase.from('scraping_jobs').upsert({
-      provider_id: 'thriva', status: 'completed',
-      last_scraped: new Date().toISOString(),
+    await supabase.from('scraping_jobs').update({
+      status: 'completed', error_message: null,
       next_scrape: new Date(Date.now() + 12 * 3600000).toISOString(),
-      error_message: null,
-    }, { onConflict: 'provider_id' });
+    }).eq('provider_id', PROVIDER_ID);
 
+    await finishScrapeRun(supabase, runId, counters, counters.errors.length > 0 ? 'partial' : 'success');
     return new Response(JSON.stringify({
-      success: true, message: `Scraped ${unique.length} Thriva tests via Firecrawl`,
-      testsUpdated: unique.length,
+      success: true, provider: PROVIDER_ID, run_id: runId,
+      tests_seen: counters.tests_seen, tests_new: counters.tests_new, tests_updated: counters.tests_updated,
+      errors: counters.errors.slice(0, 10),
     }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
-
-  } catch (error) {
-    console.error('Thriva scraper error:', error);
-    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
-    await supabase.from('scraping_jobs').upsert({
-      provider_id: 'thriva', status: 'failed',
-      error_message: (error instanceof Error ? error.message : String(error)), last_scraped: new Date().toISOString(),
-    }, { onConflict: 'provider_id' });
-    return new Response(JSON.stringify({ success: false, error: (error instanceof Error ? error.message : String(error)) }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 });
+  } catch (err) {
+    const msg = getErrorMessage(err);
+    console.error('[thriva] fatal:', msg);
+    await supabase.from('scraping_jobs').update({ status: 'failed', error_message: msg }).eq('provider_id', PROVIDER_ID);
+    await finishScrapeRun(supabase, runId, counters, 'error');
+    return new Response(JSON.stringify({ success: false, error: msg }), {
+      status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
   }
 });
