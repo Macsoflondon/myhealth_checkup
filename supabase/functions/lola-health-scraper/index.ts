@@ -1,6 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
 import { getErrorMessage } from '../_shared/errors.ts';
+import {
+  parseTurnaround,
+  upsertWithProvenance,
+  startScrapeRun,
+  finishScrapeRun,
+  newCounters,
+} from '../_shared/scrape/index.ts';
+
+function extractTurnaroundText(md: string): string | null {
+  const patterns = [
+    /(?:turnaround|results?(?:\s+in)?|report(?:ed)?\s+within|delivered\s+within|available\s+within)[^.\n]{0,80}/i,
+    /(?:next\s+(?:working\s+)?day|same\s+day|24[\s-]?48\s*hours?|\d+\s*[-–]\s*\d+\s*(?:hours?|working\s+days?|days?)|\d+\s*(?:hours?|working\s+days?|days?))/i,
+  ];
+  for (const p of patterns) {
+    const m = md.match(p);
+    if (m) return m[0].trim();
+  }
+  return null;
+}
 
 
 const corsHeaders = {
