@@ -182,9 +182,13 @@ export async function upsertWithProvenance(
     }
 
     // Fire-and-log history snapshot (never blocks the upsert result).
+    // NOTE: providerTestId is the uuid PK of provider_tests, which is what
+    // provider_test_history.provider_test_id (uuid) expects. The provider's
+    // string external id lives in row.provider_test_id — spread it FIRST so
+    // the uuid override wins.
     await writeHistorySnapshot(
       supabase,
-      { ...input, provider_test_id: providerTestId, ...row } as ProviderTestSnapshot,
+      { ...input, ...row, provider_test_id: providerTestId } as ProviderTestSnapshot,
       { scrapeRunId, previous: existing },
     );
 
