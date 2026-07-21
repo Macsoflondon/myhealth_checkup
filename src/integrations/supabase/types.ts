@@ -3526,6 +3526,7 @@ export type Database = {
           canonical_category: string | null
           category: string | null
           category_ids: string[]
+          clinic_phlebotomy_cost: number | null
           clinic_visit_available: boolean | null
           clinical_review_fee: number | null
           clinical_review_professional: string | null
@@ -3549,8 +3550,11 @@ export type Database = {
           gp_consultation_cost: number | null
           gp_consultation_included: boolean | null
           gp_review_fee: number | null
+          gp_review_included: boolean | null
           handle: string | null
           home_kit_available: boolean | null
+          home_phlebotomy_cost: number | null
+          home_phlebotomy_option: boolean | null
           home_visit_fee: number | null
           id: string
           image_url: string | null
@@ -3581,6 +3585,7 @@ export type Database = {
           sub_goals: string[] | null
           symptoms: Json | null
           test_name: string
+          test_type: string | null
           total_expected_cost: number | null
           trustpilot_last_checked: string | null
           trustpilot_rating: number | null
@@ -3606,6 +3611,7 @@ export type Database = {
           canonical_category?: string | null
           category?: string | null
           category_ids?: string[]
+          clinic_phlebotomy_cost?: number | null
           clinic_visit_available?: boolean | null
           clinical_review_fee?: number | null
           clinical_review_professional?: string | null
@@ -3629,8 +3635,11 @@ export type Database = {
           gp_consultation_cost?: number | null
           gp_consultation_included?: boolean | null
           gp_review_fee?: number | null
+          gp_review_included?: boolean | null
           handle?: string | null
           home_kit_available?: boolean | null
+          home_phlebotomy_cost?: number | null
+          home_phlebotomy_option?: boolean | null
           home_visit_fee?: number | null
           id?: string
           image_url?: string | null
@@ -3661,6 +3670,7 @@ export type Database = {
           sub_goals?: string[] | null
           symptoms?: Json | null
           test_name: string
+          test_type?: string | null
           total_expected_cost?: number | null
           trustpilot_last_checked?: string | null
           trustpilot_rating?: number | null
@@ -3686,6 +3696,7 @@ export type Database = {
           canonical_category?: string | null
           category?: string | null
           category_ids?: string[]
+          clinic_phlebotomy_cost?: number | null
           clinic_visit_available?: boolean | null
           clinical_review_fee?: number | null
           clinical_review_professional?: string | null
@@ -3709,8 +3720,11 @@ export type Database = {
           gp_consultation_cost?: number | null
           gp_consultation_included?: boolean | null
           gp_review_fee?: number | null
+          gp_review_included?: boolean | null
           handle?: string | null
           home_kit_available?: boolean | null
+          home_phlebotomy_cost?: number | null
+          home_phlebotomy_option?: boolean | null
           home_visit_fee?: number | null
           id?: string
           image_url?: string | null
@@ -3741,6 +3755,7 @@ export type Database = {
           sub_goals?: string[] | null
           symptoms?: Json | null
           test_name?: string
+          test_type?: string | null
           total_expected_cost?: number | null
           trustpilot_last_checked?: string | null
           trustpilot_rating?: number | null
