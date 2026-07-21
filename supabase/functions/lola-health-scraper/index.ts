@@ -260,6 +260,7 @@ Deno.serve(async (req) => {
       }
 
       const isAddon = markdown.toLowerCase().includes('add-on') || markdown.toLowerCase().includes('can only be added');
+      const turnaroundRaw = extractTurnaroundText(markdown);
 
       products.push({
         test_name: title,
@@ -289,6 +290,7 @@ Deno.serve(async (req) => {
         sample_type: 'Finger-prick',
         home_kit_available: true,
         clinic_visit_available: false,
+        turnaround_raw: turnaroundRaw,
         scraped_at: new Date().toISOString(),
         url_verified: true,
         url_verified_at: new Date().toISOString(),
