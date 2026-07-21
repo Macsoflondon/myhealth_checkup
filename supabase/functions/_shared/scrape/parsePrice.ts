@@ -13,16 +13,29 @@ export interface PriceParseResult {
   from: boolean;
 }
 
-function extractNumbers(text: string): number[] {
-  const cleaned = text
-    .replace(/\u00a0/g, " ")
-    .replace(/[£$€]/g, " ")
-    .replace(/gbp|usd|eur/gi, " ");
-  const matches = cleaned.match(/\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?|\d+(?:\.\d{1,2})?/g);
-  if (!matches) return [];
-  return matches
-    .map((m) => parseFloat(m.replace(/,/g, "")))
-    .filter((n) => Number.isFinite(n) && n > 0);
+/**
+ * Extract GBP-anchored numbers. Only picks numbers that are directly preceded
+ * by a £ (with optional whitespace/nbsp) OR immediately followed by "GBP".
+ * This prevents free-standing numbers like ratings ("4.8"), biomarker counts
+ * ("24 biomarkers"), phone-number fragments, or years being misread as price.
+ */
+function extractGbpNumbers(text: string): number[] {
+  const cleaned = text.replace(/\u00a0/g, " ");
+  const results: number[] = [];
+  // £ followed by number
+  const poundRe = /£\s*(\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?|\d+(?:\.\d{1,2})?)/g;
+  let m: RegExpExecArray | null;
+  while ((m = poundRe.exec(cleaned)) !== null) {
+    const n = parseFloat(m[1].replace(/,/g, ""));
+    if (Number.isFinite(n) && n > 0) results.push(n);
+  }
+  // number followed by GBP
+  const gbpRe = /(\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?|\d+(?:\.\d{1,2})?)\s*gbp\b/gi;
+  while ((m = gbpRe.exec(cleaned)) !== null) {
+    const n = parseFloat(m[1].replace(/,/g, ""));
+    if (Number.isFinite(n) && n > 0) results.push(n);
+  }
+  return results;
 }
 
 export function parsePrice(input: string | number | null | undefined): PriceParseResult {
@@ -40,23 +53,20 @@ export function parsePrice(input: string | number | null | undefined): PricePars
 
   const from = /\bfrom\b/i.test(text);
   const hasWas = /\bwas\b|\bwere\b|\brrp\b/i.test(text);
-  const nums = extractNumbers(text);
+  const nums = extractGbpNumbers(text);
 
+  // No £/GBP anchor found — never fabricate a price from arbitrary digits on the page.
   if (nums.length === 0) {
     return { price: null, wasPrice: null, currency: null, from };
   }
 
-  // Common patterns:
-  //   "£49"                 -> price=49
-  //   "was £199 now £149"   -> was=199 price=149
-  //   "Sale £49 £99"        -> price=min, was=max (heuristic only when hasWas or 2+ numbers)
   if (nums.length === 1) {
     return { price: nums[0], wasPrice: null, currency: "GBP", from };
   }
 
-  // Multiple numbers — assume the SMALLER is the current sale price,
-  // LARGER is the "was" price. Only applied when we have textual evidence
-  // (hasWas) or when the numbers differ meaningfully; otherwise take first.
+  // Multiple £-anchored numbers: if "was/rrp/were" wording present, the LOWER
+  // is the current price and the HIGHER is the previous. Otherwise take the
+  // first £-anchored occurrence (which on product pages is the primary price).
   if (hasWas) {
     const sorted = [...nums].sort((a, b) => a - b);
     return { price: sorted[0], wasPrice: sorted[sorted.length - 1], currency: "GBP", from };
