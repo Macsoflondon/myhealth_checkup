@@ -360,7 +360,9 @@ Deno.serve(async (req) => {
 
   const url = new URL(req.url);
   const offset = Math.max(0, parseInt(url.searchParams.get('offset') ?? '0', 10) || 0);
-  const limit = Math.min(80, Math.max(1, parseInt(url.searchParams.get('limit') ?? '60', 10) || 60));
+  const limit = Math.min(40, Math.max(1, parseInt(url.searchParams.get('limit') ?? '20', 10) || 20));
+  const autoContinue = (url.searchParams.get('auto') ?? '1') !== '0';
+
 
   const supabase = createClient(supabaseUrl, supabaseKey);
   const counters = newCounters();
@@ -507,15 +509,37 @@ Deno.serve(async (req) => {
         if (extraErr) console.warn(`[medichecks] extras update failed for ${title}:`, extraErr.message);
       }
 
-      await new Promise((r) => setTimeout(r, 250));
+      await new Promise((r) => setTimeout(r, 100));
     }
+
+    const nextOffset = offset + scope.length < products.length ? offset + scope.length : null;
+    const done = nextOffset === null;
 
     await supabase
       .from('scraping_jobs')
-      .update({ status: 'completed', error_message: null })
+      .update({ status: done ? 'completed' : 'running', error_message: null })
       .eq('provider_id', PROVIDER_ID);
 
     await finishScrapeRun(supabase, runId, counters, counters.errors.length > 0 ? 'partial' : 'success');
+
+    // Self-schedule the next batch so a single trigger walks the whole catalogue
+    // without exceeding the edge-runtime wall clock on any one invocation.
+    if (!done && autoContinue) {
+      const nextUrl = `${supabaseUrl}/functions/v1/medichecks-scraper?offset=${nextOffset}&limit=${limit}&auto=1`;
+      const kick = fetch(nextUrl, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: '{}',
+      }).catch((e) => console.warn('[medichecks] self-invoke failed:', getErrorMessage(e)));
+      // @ts-ignore EdgeRuntime is available in Supabase Edge runtime
+      if (typeof EdgeRuntime !== 'undefined' && EdgeRuntime.waitUntil) {
+        // @ts-ignore
+        EdgeRuntime.waitUntil(kick);
+      }
+    }
 
     return new Response(
       JSON.stringify({
@@ -526,13 +550,16 @@ Deno.serve(async (req) => {
         limit,
         catalogue_total: products.length,
         processed: scope.length,
-        next_offset: offset + scope.length < products.length ? offset + scope.length : null,
+        next_offset: nextOffset,
+        done,
+        auto_continue: !done && autoContinue,
         tests_new: counters.tests_new,
         tests_updated: counters.tests_updated,
         errors: counters.errors.slice(0, 10),
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
     );
+
   } catch (err) {
     const message = getErrorMessage(err);
     console.error('[medichecks] fatal:', message);
