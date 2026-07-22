@@ -3,7 +3,7 @@
 
 export const biomarkersChunk2 = [
   {
-    id: "total-protein", name: "Total Protein", abbr: "TP", category: "Liver & Metabolic",
+    id: "total-protein-liver", name: "Total Protein", abbr: "TP", category: "Liver & Metabolic",
     icon: "🫀",
     what: "Total protein measures the combined amount of all proteins in the blood — primarily albumin (produced by the liver) and globulins (produced by the immune system). The balance between these two is expressed as the albumin:globulin (A:G) ratio.",
     why: "High total protein may indicate dehydration, chronic infection, or elevated immunoglobulins (as in multiple myeloma or chronic inflammatory states). Low total protein reflects malnutrition, liver disease, or protein loss. The A:G ratio helps distinguish the cause of protein abnormalities.",
