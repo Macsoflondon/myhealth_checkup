@@ -50,8 +50,12 @@ export function useMarqueeTicker(itemCount: number, speedPxPerMs = 0.04) {
     const ro = new ResizeObserver(measure);
     ro.observe(track);
 
-    // Pause when offscreen — biggest mobile battery win
+    // Pause when offscreen — biggest mobile battery win.
+    // Observe the stationary parent, NOT the track: the track translates
+    // left continuously and its own bounding box eventually leaves the
+    // viewport, which would incorrectly latch the animation as paused.
     let io: IntersectionObserver | null = null;
+    const observedEl = track.parentElement ?? track;
     if (typeof IntersectionObserver !== "undefined") {
       io = new IntersectionObserver(
         ([entry]) => {
@@ -59,7 +63,7 @@ export function useMarqueeTicker(itemCount: number, speedPxPerMs = 0.04) {
         },
         { threshold: 0 }
       );
-      io.observe(track);
+      io.observe(observedEl);
     }
 
     let animationId = 0;
