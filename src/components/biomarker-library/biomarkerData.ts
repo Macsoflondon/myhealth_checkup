@@ -2,6 +2,7 @@
 // Add further chunks as they arrive and spread them into the biomarkers array.
 
 import { biomarkersChunk1 } from "./biomarkersChunk1";
+import { biomarkersChunk2 } from "./biomarkersChunk2";
 
 export const COLORS = {
   navy: "#081129",
@@ -24,6 +25,7 @@ export const COLORS = {
 
 export const biomarkers: any[] = [
   ...biomarkersChunk1,
+  ...biomarkersChunk2,
 ];
 
 export const categoryIcons: Record<string, string> = {
