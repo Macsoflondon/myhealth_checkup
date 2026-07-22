@@ -11,10 +11,8 @@ const TestFinderRecommendationsPage = lazy(() => import("@/pages/TestFinderRecom
 const TestFinderComparePage = lazy(() => import("@/pages/TestFinderComparePage"));
 // Clinic-finder routes disabled — pages removed. Legacy paths redirect to home.
 const ProviderProfilePage = lazy(() => import("@/pages/ProviderProfilePage"));
-const ProviderTestCatalogPage = lazy(() => import("@/pages/ProviderTestCatalogPage"));
 const TestDetailPage = lazy(() => import("@/pages/TestDetailPage"));
 const ProviderComparisonPage = lazy(() => import("@/pages/ProviderComparisonPage"));
-const ProviderTestsCatalogPage = lazy(() => import("@/pages/ProviderTestsCatalogPage"));
 const MedichecksTestsCatalogPage = lazy(() => import("@/pages/MedichecksTestsCatalogPage"));
 const MedichecksMensHealthPage = lazy(() => import("@/pages/MedichecksMensHealthPage"));
 const BloodTestAnalysisPage = lazy(() => import("@/pages/BloodTestAnalysisPage"));
