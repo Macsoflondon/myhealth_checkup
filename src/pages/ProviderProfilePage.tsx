@@ -6,7 +6,7 @@ import PageHeading from "@/components/ui/page-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, MapPin, Phone, Mail, ExternalLink, Shield, Award, Clock, Users, CheckCircle, TestTube, Building2 } from "lucide-react";
+import { Star, MapPin, Phone, Mail, ExternalLink, Shield, Award, Clock, Users, CheckCircle, Building2 } from "lucide-react";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
@@ -14,14 +14,6 @@ import { getBranding } from "@/data/providerBranding";
 import { getProviderRating } from "@/constants/providerRatings";
 import { ProviderTestsGrid } from "@/components/providers/ProviderTestsGrid";
 
-const PROVIDER_CATALOG_ROUTES: Record<string, string> = {
-  'goodbody-clinic': '/providers/goodbody-clinic',
-  'medichecks': '/providers/medichecks',
-  'thriva': '/providers/thriva',
-  'randox': '/providers/randox',
-  'lola-health': '/providers/lola-health',
-  'london-medical-laboratory': '/providers/london-medical-laboratory',
-};
 
 const ProviderProfilePage = () => {
   const { providerId } = useParams();
@@ -284,19 +276,6 @@ const ProviderProfilePage = () => {
                 );
               })()}
               
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button
-                  variant="skeuomorphic"
-                  size="providerCta"
-                  asChild
-                  className="min-h-[48px] w-full sm:w-auto inline-flex items-center px-[30px]"
-                >
-                  <Link to={PROVIDER_CATALOG_ROUTES[provider.id] || `/provider/${provider.id}/tests`} className="inline-flex items-center gap-2">
-                    <TestTube className="w-4 h-4 flex-shrink-0" />
-                    <span>Browse Available Tests</span>
-                  </Link>
-                </Button>
-              </div>
             </div>
           </div>
         </div>
