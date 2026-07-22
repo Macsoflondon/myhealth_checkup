@@ -8,7 +8,7 @@ export default function BiomarkerDatabasePage() {
     <>
       <Helmet>
         <title>Biomarker Library | myhealth checkup</title>
-        <meta name="description" content="Explore our comprehensive biomarker library. 610 biomarkers across 25 categories — what each test measures, reference ranges, and clinical tips." />
+        <meta name="description" content="Explore our biomarker library — what each blood test marker measures, reference ranges, and clinical tips written in plain English." />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/biomarker-database" />
       </Helmet>
       <Header />
