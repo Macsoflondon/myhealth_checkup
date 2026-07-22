@@ -32,6 +32,7 @@ export const biomarkers: any[] = [
   ...biomarkersChunk2,
   ...biomarkersChunk3,
   ...biomarkersChunk4,
+  ...biomarkersChunk5,
 ];
 
 
