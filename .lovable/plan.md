@@ -1,66 +1,46 @@
-# Full 7-Scraper Rebuild to Locked CRUX Spec
+## Problem
 
-Medichecks, London Health, Lola are already on the new pipeline. This plan ports the remaining 7 providers to the same locked field set, provenance-based upserts, history writes, and turnaround extraction.
+The hero sales card (`src/components/sections/HeroSalesTestCard.tsx`) shows the same four chips — `Cholesterol, Vitamin D, Thyroid, Liver` — and `+52 biomarkers` on every rotation slide. Those are hard-coded fallbacks:
 
-## Scope
+```ts
+const DEFAULT_MARKERS = ["Cholesterol", "Vitamin D", "Thyroid", "Liver"]; // line 36
+const totalMarkers = ad.biomarkerCount ?? 56;                              // line 44
+```
 
-Providers to rebuild (in this order, batched by similarity):
-1. **Thriva** — Shopify-based (same shape as Medichecks/Lola)
-2. **Randox Health** — custom HTML catalogue
-3. **Goodbody** — custom HTML catalogue
-4. **Bluecrest** — custom HTML catalogue
-5. **Nuffield Health** — custom HTML catalogue
-6. **Bupa** — custom HTML catalogue
-7. **Superdrug Health Clinic** — custom HTML catalogue
+`HeroMasthead.tsx` builds each ad from `realTestData` (static file) and never passes `markers` or `biomarkerCount`, so the fallbacks always win. The static `realTestData` also has a placeholder `"Biomarker Count": 4` for every row, so it's useless as a source anyway.
 
-Out of scope: Medichecks, London Health, Lola (already ported); schema changes (Stage 1 already applied); UI.
+The real, scraped biomarker names and counts already live in Supabase `provider_tests` (`biomarker_count`, `biomarkers_list`) — that's what `useAllTests` reads today.
 
-## Locked CRUX field set (per test)
+## Fix
 
-Every scraper must write:
-- `test_name`, `provider_test_id` (stable handle/SKU/URL slug), `url`
-- `base_price`, `phlebotomy_included`, `home_kit_available`, `home_nurse_cost`, `clinic_visit_cost`, `gp_review_status`, `total_expected_cost` (= base + lowest available collection fee; unavailable fee = null, never 0)
-- `biomarker_count`, `biomarker_list[]`
-- `sample_type`, `collection_method` (home | clinic — never "walk-in")
-- `turnaround_time` raw string + parsed `turnaround_days`, `turnaround_hours`, `turnaround_unit` (or `not_stated`)
-- `category`, `description`, `who_should_test`, `gender_specific`
-- Provider-level: `trustpilot_rating`, `review_count` (refreshed via `refresh-trustpilot-ratings`)
+Source the chips and count from the live scraped data for the exact rotation test, keyed by product URL. Never fabricate.
 
-## Approach per provider
+1. **Add a small hook** `useHeroAdBiomarkers(urls: string[])` (co-located in `HeroMasthead.tsx` or `src/hooks/queries/`):
+   - One `react-query` fetch: `provider_tests` where `url in (…rotation urls)` selecting `url, biomarker_count, biomarkers_list, turnaround_days_text, sample_type`.
+   - Returns a `Map<url, { markers: string[]; biomarkerCount: number|null; turnaround: string|null }>`.
+   - 10-min staleTime; matches existing query defaults.
 
-For each scraper `supabase/functions/<provider>-scraper/index.ts`:
+2. **HeroMasthead.tsx**
+   - Compute the ad URLs from `ROTATION` once, call the hook, and merge the DB row into each `Advert` before passing to the card. Pass `markers` (first 4 names from `biomarkers_list`) and `biomarkerCount` (real number, may be `null`).
 
-1. Use authoritative catalogue source:
-   - Shopify → `products.json` (Thriva)
-   - Custom → sitemap.xml or category index page for URL list
-2. For each product URL, fetch HTML, parse via `_shared/scrape/*` helpers (`parsePrice`, `parseTurnaround`, `parseBiomarkers`, `parseCollection`).
-3. Call `upsertWithProvenance` with `provider_test_id` + `url` on the FIRST call (avoid the Medichecks duplication regression).
-4. Snapshot via shared `writeHistory` on every run.
-5. Chunk large catalogues with `?offset=N&limit=50` to avoid edge timeouts.
-6. Mark `scraping_jobs` completed only when ≥1 row upserts.
+3. **HeroSalesTestCard.tsx**
+   - Remove `DEFAULT_MARKERS` and the `?? 56` fallback.
+   - Widen `HeroSalesAd`: `markers?: string[]; biomarkerCount?: number | null;`
+   - Render logic:
+     - If `markers.length === 0` and `biomarkerCount == null` → hide the whole chip row (no fake chips, no "+N biomarkers" pill).
+     - If `markers.length > 0` → render up to 4 chips; only show `+N biomarkers` pill when `biomarkerCount != null && biomarkerCount > markers.length` (value = `biomarkerCount - markers.length`).
+     - If only `biomarkerCount` is known → render a single pill "`N biomarkers`" instead of any names.
+   - Same treatment for the modal's `Metric` "Full panel / Biomarkers" — show the real count or hide the cell.
 
-## Execution order
+4. **Turnaround** — while we're touching this: swap the hard-coded `Typical 2–5 days` in `MetaCell` and modal `Metric` for the fetched `turnaround_days_text` when present; hide the cell otherwise. (Small, in the same file, prevents the same "same info every card" complaint next.)
 
-- **Sub-agent A**: Thriva (Shopify, fastest — proves the pattern)
-- **Sub-agent B**: Randox + Goodbody (parallel, both custom HTML)
-- **Sub-agent C**: Bluecrest + Nuffield (parallel)
-- **Sub-agent D**: Bupa + Superdrug (parallel)
+5. **No changes** to scrapers, DB schema, `realTestData`, or the rotation list itself.
 
-After each sub-agent lands: run scraper in chunks, then run `audit-scrape-completeness` for that provider only, and report row counts, distinct-URL parity, turnaround fill rate, `total_expected_cost` fill rate, £0 count.
+### Files touched
+- `src/components/sections/HeroMasthead.tsx` — add hook call, merge data into ads.
+- `src/components/sections/HeroSalesTestCard.tsx` — remove fallbacks, conditional chip/meta rendering, widen prop type.
+- (Optional) `src/hooks/queries/useHeroAdBiomarkers.ts` — new tiny hook file.
 
-## Guardrails (from prior lessons)
-
-- **Never** insert without `provider_test_id` — caused Medichecks 393-vs-211 duplication.
-- **Never** use greedy first-number price regex — caused LHC £1/£0 corruption. Use anchored `£`/`GBP` parser from `_shared/scrape/parsePrice.ts`.
-- **Never** invent turnaround — missing = `not_stated`.
-- **Never** emit "walk-in" as a collection method.
-- Only touch the 7 target scraper files + their shared imports. Do not modify schema, other scrapers, or UI.
-
-## Reporting
-
-Final report per provider:
-- active rows, distinct URLs, distinct PTIDs (must match)
-- turnaround filled + `not_stated` = 100%
-- `total_expected_cost` fill %
-- £0 count (should be 0)
-- history rows written this run
+### Verification
+- Playwright at `localhost:8080`: screenshot hero on desktop across 3 rotation cycles; confirm Thyroid Function slide shows real markers (TSH / FT4 / FT3 …) and correct count, Cholesterol slide shows lipid markers, Well Woman shows its panel.
+- If a rotation URL has no matching `provider_tests` row, confirm the chip row is absent rather than showing placeholder chips.
