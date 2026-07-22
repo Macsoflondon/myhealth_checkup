@@ -314,10 +314,10 @@ export default function BrowseByCategoryBar({
         <div
           className={`${compact ? "px-2 py-2 sm:px-3 sm:py-2.5" : "px-2 sm:px-3 py-2.5 sm:py-3"} transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
         >
-          <div className="flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap max-w-full">
-            {/* Scrollable pill strip */}
+          <div className="flex items-center justify-center gap-x-1.5 gap-y-2 sm:gap-x-2 flex-wrap max-w-full">
+            {/* Category pill strip participates in the same wrapping flow as More/account controls */}
             <div
-              className={`flex min-w-0 max-w-full items-center flex-wrap justify-center ${compact ? "gap-1.5 sm:gap-2" : "gap-1.5"}`}
+              className="contents"
               data-testid="category-pill-strip"
             >
               {items.map((item) => {
