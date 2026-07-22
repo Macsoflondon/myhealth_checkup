@@ -625,31 +625,55 @@ export type Database = {
       }
       biomarker_hub: {
         Row: {
+          abbreviation: string | null
           category: string | null
-          clinical_description: string | null
+          clinical_tips: string[] | null
           created_at: string | null
+          description_what: string | null
+          description_why: string | null
           embedding: string | null
+          icon: string | null
           id: string
+          legacy_description: string | null
           name: string
+          reference_ranges: Json | null
+          related_tests: string[] | null
           symptoms_linked: string[] | null
+          unit: string | null
         }
         Insert: {
+          abbreviation?: string | null
           category?: string | null
-          clinical_description?: string | null
+          clinical_tips?: string[] | null
           created_at?: string | null
+          description_what?: string | null
+          description_why?: string | null
           embedding?: string | null
+          icon?: string | null
           id?: string
+          legacy_description?: string | null
           name: string
+          reference_ranges?: Json | null
+          related_tests?: string[] | null
           symptoms_linked?: string[] | null
+          unit?: string | null
         }
         Update: {
+          abbreviation?: string | null
           category?: string | null
-          clinical_description?: string | null
+          clinical_tips?: string[] | null
           created_at?: string | null
+          description_what?: string | null
+          description_why?: string | null
           embedding?: string | null
+          icon?: string | null
           id?: string
+          legacy_description?: string | null
           name?: string
+          reference_ranges?: Json | null
+          related_tests?: string[] | null
           symptoms_linked?: string[] | null
+          unit?: string | null
         }
         Relationships: []
       }
