@@ -6,7 +6,7 @@ import PageHeading from "@/components/ui/page-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, MapPin, Phone, Mail, ExternalLink, Shield, Award, Clock, Users, CheckCircle, TestTube, Building2 } from "lucide-react";
+import { Star, MapPin, Phone, Mail, ExternalLink, Shield, Award, Clock, Users, CheckCircle, Building2 } from "lucide-react";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
@@ -14,14 +14,6 @@ import { getBranding } from "@/data/providerBranding";
 import { getProviderRating } from "@/constants/providerRatings";
 import { ProviderTestsGrid } from "@/components/providers/ProviderTestsGrid";
 
-const PROVIDER_CATALOG_ROUTES: Record<string, string> = {
-  'goodbody-clinic': '/providers/goodbody-clinic',
-  'medichecks': '/providers/medichecks',
-  'thriva': '/providers/thriva',
-  'randox': '/providers/randox',
-  'lola-health': '/providers/lola-health',
-  'london-medical-laboratory': '/providers/london-medical-laboratory',
-};
 
 const ProviderProfilePage = () => {
   const { providerId } = useParams();
