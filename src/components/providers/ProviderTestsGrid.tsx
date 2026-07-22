@@ -71,7 +71,7 @@ export const ProviderTestsGrid = ({ providerSlug, providerDisplayName, limit = 1
           <h2 className="text-2xl md:text-3xl font-heading font-bold text-[#081129]">
             Tests from {providerDisplayName}
           </h2>
-          <p className="text-muted-foreground text-sm mt-1">
+          <p className="text-white text-sm mt-1">
             {data.length} tests available
           </p>
         </div>
