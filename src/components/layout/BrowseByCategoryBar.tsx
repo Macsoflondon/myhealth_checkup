@@ -379,12 +379,12 @@ export default function BrowseByCategoryBar({
 
             {/* Right cluster — desktop */}
             <div
-              className={`flex items-center shrink-0 pl-1.5 sm:pl-2 border-l border-[#081129]/10 ${compact ? "gap-0" : "gap-1"}`}
+              className={`flex items-center shrink-0 ${compact ? "gap-0" : "gap-1"}`}
             >
-              <div className={compact ? "scale-[0.82] origin-center" : ""}>
+              <div className={compact ? "scale-[0.78] origin-center" : ""}>
                 <LanguageSwitcher />
               </div>
-              <div className={compact ? "scale-[0.82] origin-center" : ""}>
+              <div className={compact ? "scale-[0.78] origin-center" : ""}>
                 <UserMenu />
               </div>
             </div>

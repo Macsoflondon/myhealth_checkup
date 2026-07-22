@@ -83,7 +83,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact }: Props) {
         aria-current={isActiveParent ? "page" : undefined}
         aria-haspopup={hasDropdown ? "menu" : undefined}
         aria-expanded={hasDropdown ? open : undefined}
-        className={`group inline-flex max-w-[150px] items-center rounded-full no-underline bg-white border-[1.5px] hover:-translate-y-0.5 transition-all duration-200 shrink-0 md:max-w-[112px] lg:max-w-[124px] xl:max-w-[132px] 2xl:max-w-none ${
+        className={`group inline-flex max-w-[150px] items-center rounded-full no-underline bg-white border-[1.5px] hover:-translate-y-0.5 transition-all duration-200 shrink-0 md:max-w-[104px] lg:max-w-[112px] xl:max-w-[118px] 2xl:max-w-none ${
           compact
             ? "gap-1 pl-1.5 pr-2 py-0.5 sm:gap-1.5 sm:pl-2 sm:pr-2.5 sm:py-1"
             : "gap-1.5 pl-1.5 pr-2 sm:pl-2 sm:pr-2.5 py-1 sm:py-1.5"
