@@ -3,6 +3,7 @@
 
 import { biomarkersChunk1 } from "./biomarkersChunk1";
 import { biomarkersChunk2 } from "./biomarkersChunk2";
+import { biomarkersChunk3 } from "./biomarkersChunk3";
 
 export const COLORS = {
   navy: "#081129",
@@ -26,6 +27,7 @@ export const COLORS = {
 export const biomarkers: any[] = [
   ...biomarkersChunk1,
   ...biomarkersChunk2,
+  ...biomarkersChunk3,
 ];
 
 export const categoryIcons: Record<string, string> = {
