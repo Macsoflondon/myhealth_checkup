@@ -134,31 +134,46 @@ export default function HeroSalesTestCard({ ad }: Props) {
           </div>
 
           {/* Biomarker chips — hidden on mobile for compact layout */}
-          <div className="hidden sm:flex flex-wrap gap-1.5 mb-4">
-            {markers.map((m) => (
-              <span
-                key={m}
-                className="bg-white border border-slate-200 text-[#081129]/70 text-[10px] font-bold px-2 py-1 rounded-md font-[Lato]"
-              >
-                {m}
-              </span>
-            ))}
-            {extraMarkers > 0 && (
-              <span
-                className="text-[10px] font-bold px-2 py-1 rounded-md font-[Lato]"
-                style={{ background: hexToRgba(TURQUOISE, 0.1), color: TURQUOISE }}
-              >
-                +{extraMarkers} biomarkers
-              </span>
-            )}
-          </div>
+          {hasChipRow && (
+            <div className="hidden sm:flex flex-wrap gap-1.5 mb-4">
+              {markers.map((m) => (
+                <span
+                  key={m}
+                  className="bg-white border border-slate-200 text-[#081129]/70 text-[10px] font-bold px-2 py-1 rounded-md font-[Lato]"
+                >
+                  {m}
+                </span>
+              ))}
+              {markers.length > 0 && extraMarkers > 0 && (
+                <span
+                  className="text-[10px] font-bold px-2 py-1 rounded-md font-[Lato]"
+                  style={{ background: hexToRgba(TURQUOISE, 0.1), color: TURQUOISE }}
+                >
+                  +{extraMarkers} biomarkers
+                </span>
+              )}
+              {markers.length === 0 && biomarkerCount !== null && (
+                <span
+                  className="text-[10px] font-bold px-2 py-1 rounded-md font-[Lato]"
+                  style={{ background: hexToRgba(TURQUOISE, 0.1), color: TURQUOISE }}
+                >
+                  {biomarkerCount} biomarkers
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Meta row — hidden on mobile for compact layout */}
           <div className="hidden sm:flex items-center gap-4 lg:gap-5 mb-4">
-            <MetaCell icon={ClipboardList} label="Analysis" value="Comprehensive" />
-            <MetaCell icon={Clock} label="Results" value="Typical 2–5 days" />
+            {biomarkerCount !== null && (
+              <MetaCell icon={ClipboardList} label="Biomarkers" value={String(biomarkerCount)} />
+            )}
+            {turnaroundLabel && (
+              <MetaCell icon={Clock} label="Results" value={turnaroundLabel} />
+            )}
             <MetaCell icon={Package} label="Collection" value="Flexible" />
           </div>
+
 
           {/* Footer */}
           <div className="mt-auto flex items-end justify-between border-t border-slate-200/60 pt-2 sm:pt-4 gap-2 sm:gap-3">
