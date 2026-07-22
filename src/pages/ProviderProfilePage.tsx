@@ -1,7 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+import MainLayout from "@/layouts/MainLayout";
 import PageHeading from "@/components/ui/page-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -29,8 +28,7 @@ const ProviderProfilePage = () => {
   
   if (!provider) {
     return (
-      <div className="min-h-screen bg-background">
-        <Header />
+      <MainLayout>
         <main className="container mx-auto px-4 py-16">
           <div className="text-center">
             <PageHeading 
@@ -43,8 +41,7 @@ const ProviderProfilePage = () => {
             </Button>
           </div>
         </main>
-        <Footer />
-      </div>
+      </MainLayout>
     );
   }
 
@@ -55,7 +52,7 @@ const ProviderProfilePage = () => {
   const websiteUrl = provider.website ? buildProviderWebsiteUrl(provider.website, provider.id) : null;
 
   return (
-    <div className="min-h-screen bg-background">
+    <MainLayout>
       <Helmet>
         <title>{`${provider.name} Reviews & Tests | myhealth checkup`}</title>
         <meta
@@ -93,8 +90,6 @@ const ProviderProfilePage = () => {
         })}</script>
       </Helmet>
 
-      <Header />
-      
       <main className="container mx-auto px-4 py-4 md:py-8">
 
         {/* Hero Section — branded gradient when available */}
@@ -513,8 +508,7 @@ const ProviderProfilePage = () => {
         </div>
       </div>
       
-      <Footer />
-    </div>
+    </MainLayout>
   );
 };
 
