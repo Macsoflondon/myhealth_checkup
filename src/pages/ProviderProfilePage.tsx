@@ -348,9 +348,6 @@ const ProviderProfilePage = () => {
           </div>
         </div>
 
-        {/* Live tests grid from Supabase */}
-        <ProviderTestsGrid providerSlug={provider.id} providerDisplayName={provider.name} />
-
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
 
           {/* Left column — narrow */}
@@ -460,6 +457,11 @@ const ProviderProfilePage = () => {
               );
             })()}
           </div>
+        </div>
+
+        {/* Live tests grid from Supabase */}
+        <div className="mt-8">
+          <ProviderTestsGrid providerSlug={provider.id} providerDisplayName={provider.name} />
         </div>
       </main>
 
