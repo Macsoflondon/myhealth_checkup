@@ -249,10 +249,15 @@ export default function HeroSalesTestCard({ ad }: Props) {
             </div>
 
             <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-white/10">
-              <Metric icon={Clock} title="Typical 2–5 days" sub="Turnaround" />
-              <Metric icon={FlaskConical} title="Full panel" sub="Biomarkers" />
+              <Metric icon={Clock} title={turnaroundLabel ?? "See provider"} sub="Turnaround" />
+              <Metric
+                icon={FlaskConical}
+                title={biomarkerCount !== null ? `${biomarkerCount} biomarkers` : "See provider"}
+                sub="Biomarkers"
+              />
               <Metric icon={Package} title="Flexible" sub="Collection" />
             </div>
+
           </div>
 
           <div className="p-5 space-y-4 max-h-[50vh] overflow-y-auto">
