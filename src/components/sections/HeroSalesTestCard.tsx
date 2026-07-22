@@ -16,7 +16,8 @@ export interface HeroSalesAd {
   providerLogo: string;
   url: string;
   markers?: string[];
-  biomarkerCount?: number;
+  biomarkerCount?: number | null;
+  turnaround?: string | null;
   rating?: number;
 }
 
@@ -33,17 +34,21 @@ function hexToRgba(hex: string, alpha: number) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-const DEFAULT_MARKERS = ["Cholesterol", "Vitamin D", "Thyroid", "Liver"];
-
 export default function HeroSalesTestCard({ ad }: Props) {
   const [open, setOpen] = useState(false);
   const brand = getBranding(ad.provider);
   const providerColor = brand?.primary ?? TURQUOISE;
 
-  const markers = (ad.markers && ad.markers.length ? ad.markers : DEFAULT_MARKERS).slice(0, 4);
-  const totalMarkers = ad.biomarkerCount ?? 56;
-  const extraMarkers = Math.max(0, totalMarkers - markers.length);
+  const markers = (ad.markers ?? []).slice(0, 4);
+  const biomarkerCount = ad.biomarkerCount ?? null;
+  const extraMarkers =
+    biomarkerCount !== null && biomarkerCount > markers.length
+      ? biomarkerCount - markers.length
+      : 0;
+  const hasChipRow = markers.length > 0 || biomarkerCount !== null;
+  const turnaroundLabel = ad.turnaround ?? null;
   const rating = ad.rating ?? 4.8;
+
 
   return (
     <>
@@ -129,31 +134,46 @@ export default function HeroSalesTestCard({ ad }: Props) {
           </div>
 
           {/* Biomarker chips — hidden on mobile for compact layout */}
-          <div className="hidden sm:flex flex-wrap gap-1.5 mb-4">
-            {markers.map((m) => (
-              <span
-                key={m}
-                className="bg-white border border-slate-200 text-[#081129]/70 text-[10px] font-bold px-2 py-1 rounded-md font-[Lato]"
-              >
-                {m}
-              </span>
-            ))}
-            {extraMarkers > 0 && (
-              <span
-                className="text-[10px] font-bold px-2 py-1 rounded-md font-[Lato]"
-                style={{ background: hexToRgba(TURQUOISE, 0.1), color: TURQUOISE }}
-              >
-                +{extraMarkers} biomarkers
-              </span>
-            )}
-          </div>
+          {hasChipRow && (
+            <div className="hidden sm:flex flex-wrap gap-1.5 mb-4">
+              {markers.map((m) => (
+                <span
+                  key={m}
+                  className="bg-white border border-slate-200 text-[#081129]/70 text-[10px] font-bold px-2 py-1 rounded-md font-[Lato]"
+                >
+                  {m}
+                </span>
+              ))}
+              {markers.length > 0 && extraMarkers > 0 && (
+                <span
+                  className="text-[10px] font-bold px-2 py-1 rounded-md font-[Lato]"
+                  style={{ background: hexToRgba(TURQUOISE, 0.1), color: TURQUOISE }}
+                >
+                  +{extraMarkers} biomarkers
+                </span>
+              )}
+              {markers.length === 0 && biomarkerCount !== null && (
+                <span
+                  className="text-[10px] font-bold px-2 py-1 rounded-md font-[Lato]"
+                  style={{ background: hexToRgba(TURQUOISE, 0.1), color: TURQUOISE }}
+                >
+                  {biomarkerCount} biomarkers
+                </span>
+              )}
+            </div>
+          )}
 
           {/* Meta row — hidden on mobile for compact layout */}
           <div className="hidden sm:flex items-center gap-4 lg:gap-5 mb-4">
-            <MetaCell icon={ClipboardList} label="Analysis" value="Comprehensive" />
-            <MetaCell icon={Clock} label="Results" value="Typical 2–5 days" />
+            {biomarkerCount !== null && (
+              <MetaCell icon={ClipboardList} label="Biomarkers" value={String(biomarkerCount)} />
+            )}
+            {turnaroundLabel && (
+              <MetaCell icon={Clock} label="Results" value={turnaroundLabel} />
+            )}
             <MetaCell icon={Package} label="Collection" value="Flexible" />
           </div>
+
 
           {/* Footer */}
           <div className="mt-auto flex items-end justify-between border-t border-slate-200/60 pt-2 sm:pt-4 gap-2 sm:gap-3">
@@ -229,10 +249,15 @@ export default function HeroSalesTestCard({ ad }: Props) {
             </div>
 
             <div className="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-white/10">
-              <Metric icon={Clock} title="Typical 2–5 days" sub="Turnaround" />
-              <Metric icon={FlaskConical} title="Full panel" sub="Biomarkers" />
+              <Metric icon={Clock} title={turnaroundLabel ?? "See provider"} sub="Turnaround" />
+              <Metric
+                icon={FlaskConical}
+                title={biomarkerCount !== null ? `${biomarkerCount} biomarkers` : "See provider"}
+                sub="Biomarkers"
+              />
               <Metric icon={Package} title="Flexible" sub="Collection" />
             </div>
+
           </div>
 
           <div className="p-5 space-y-4 max-h-[50vh] overflow-y-auto">

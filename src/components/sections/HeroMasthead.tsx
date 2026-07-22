@@ -4,6 +4,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { PROVIDER_LOGOS } from "@/constants/providers";
 import HeroSalesTestCard from "@/components/sections/HeroSalesTestCard";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
+import { useHeroAdBiomarkers } from "@/hooks/queries/useHeroAdBiomarkers";
+
 
 // ── Brand ─────────────────────────────────────────────────────────────
 const TURQUOISE = "#22c0d4";
@@ -206,7 +208,19 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   }, [activeIndex, advance, reducedMotion, rotateMs]);
 
   const slide = SLIDES[activeIndex];
-  const ad = ADVERTS.length ? ADVERTS[i % ADVERTS.length] : null;
+  const adUrls = ADVERTS.map((a) => a.url);
+  const { data: adMetaMap } = useHeroAdBiomarkers(adUrls);
+  const baseAd = ADVERTS.length ? ADVERTS[i % ADVERTS.length] : null;
+  const meta = baseAd ? adMetaMap?.get(baseAd.url) : undefined;
+  const ad = baseAd
+    ? {
+        ...baseAd,
+        markers: meta?.markers ?? [],
+        biomarkerCount: meta?.biomarkerCount ?? null,
+        turnaround: meta?.turnaround ?? null,
+      }
+    : null;
+
 
   return (
     <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border border-b-0 border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[78svh] sm:min-h-[100svh] flex flex-col">
