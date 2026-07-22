@@ -15,7 +15,7 @@ import { findSubcategoryBySlug } from "@/config/subcategoryMap";
  * routes. Emits BreadcrumbList JSON-LD for SEO (audit item 2.7 / 3.3).
  */
 
-const HIDDEN_PREFIXES = ["/admin", "/auth", "/reset-password", "/dashboard", "/client-portal"];
+const HIDDEN_PREFIXES = ["/admin", "/auth", "/reset-password", "/dashboard", "/client-portal", "/provider", "/providers"];
 
 const SLUG_LABELS: Record<string, string> = {
   compare: "Compare Tests",
