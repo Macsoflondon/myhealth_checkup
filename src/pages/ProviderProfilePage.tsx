@@ -286,7 +286,7 @@ const ProviderProfilePage = () => {
             borderColor: 'hsl(var(--primary) / 0.2)',
           }}
         >
-          <h2 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+          <h2 className="font-semibold text-white mb-4 flex items-center gap-2">
             <Shield className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
             Trust & Accreditation
           </h2>
