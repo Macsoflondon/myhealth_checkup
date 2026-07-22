@@ -342,7 +342,7 @@ export default function BrowseByCategoryBar({
                 aria-expanded={moreOpen}
                 onClick={() => setMoreOpen((o) => !o)}
                 className={`inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200 ${
-                  compact ? "gap-0.5 pl-1 pr-1.5 py-0.5 sm:gap-1 sm:pl-1.5 sm:pr-2 sm:py-0.5" : "gap-1.5 pl-1.5 pr-2 sm:pl-2 sm:pr-2.5 py-1 sm:py-1.5"
+                  compact ? "gap-0.5 pl-1 pr-1.5 py-1 sm:gap-1 sm:pl-1.5 sm:pr-2 sm:py-1.5" : "gap-1.5 pl-2 pr-2.5 sm:pl-2.5 sm:pr-3 py-2 sm:py-2.5"
                 }`}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = PINK;
