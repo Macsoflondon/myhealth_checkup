@@ -92,37 +92,29 @@ const ProviderProfilePage = () => {
 
       <main className="container mx-auto px-4 py-4 md:py-8">
 
-        {/* Hero Section — branded gradient when available */}
-        <div
-          className="rounded-xl shadow-sm p-4 md:p-8 mb-6 md:mb-8 border"
-          style={brand ? {
-            background: `linear-gradient(135deg, ${brand.accent}, ${brand.primary})`,
-          } : undefined}
-        >
+        {/* Hero Section — white background */}
+        <div className="rounded-xl shadow-sm p-4 md:p-8 mb-6 md:mb-8 border bg-white">
           <div className="flex flex-col md:flex-row items-start gap-4 md:gap-6">
             <div
               className="w-20 h-20 md:w-24 md:h-24 rounded-xl flex items-center justify-center flex-shrink-0"
-              style={{ backgroundColor: brand ? 'rgba(255,255,255,0.95)' : 'hsl(var(--primary) / 0.1)' }}
+              style={{ backgroundColor: brand ? `${brand.primary}1A` : 'hsl(var(--primary) / 0.1)' }}
             >
               <ProviderLogo provider={provider.name} className="w-[4.5rem] h-[4.5rem] md:w-20 md:h-20 object-contain" />
             </div>
             
             <div className="flex-1 w-full">
-              <h1
-                className="text-2xl md:text-3xl lg:text-4xl font-bold mb-1"
-                style={{ color: brand ? '#ffffff' : 'hsl(var(--foreground))' }}
-              >
+              <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-1 text-foreground">
                 {provider.name}
               </h1>
               {brand && (
-                <p className="text-white/80 text-sm md:text-base italic mb-2">{brand.tagline}</p>
+                <p className="text-muted-foreground text-sm md:text-base italic mb-2">{brand.tagline}</p>
               )}
               
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-4">
                 <div className="flex items-center space-x-1">
                   <Star className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 fill-current" />
-                  <span className="font-semibold text-sm md:text-base" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>{ratingData.rating}</span>
-                  <span className="text-sm md:text-base" style={{ color: brand ? 'rgba(255,255,255,0.7)' : 'hsl(var(--muted-foreground))' }}>({ratingData.reviews} reviews)</span>
+                  <span className="font-semibold text-sm md:text-base text-foreground">{ratingData.rating}</span>
+                  <span className="text-sm md:text-base text-muted-foreground">({ratingData.reviews} reviews)</span>
                 </div>
                 
                 {provider.accreditation && (
@@ -246,20 +238,20 @@ const ProviderProfilePage = () => {
 
                 if (content) {
                   return (
-                    <div className="space-y-4 mb-6 text-sm md:text-base" style={{ color: brand ? 'rgba(255,255,255,0.85)' : 'hsl(var(--muted-foreground))' }}>
-                      <h2 className="font-bold text-xl mb-2" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>
+                    <div className="space-y-4 mb-6 text-sm md:text-base text-muted-foreground">
+                      <h2 className="font-bold text-xl mb-2 text-foreground">
                         What sets us apart
                       </h2>
                       <div>
-                        <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Our Mission</h3>
+                        <h3 className="font-bold text-lg mb-1 text-foreground">Our Mission</h3>
                         <p>{content.mission}</p>
                       </div>
                       <div>
-                        <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Who We Are</h3>
+                        <h3 className="font-bold text-lg mb-1 text-foreground">Who We Are</h3>
                         <p>{content.whoWeAre}</p>
                       </div>
                       <div>
-                        <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Our Services</h3>
+                        <h3 className="font-bold text-lg mb-1 text-foreground">Our Services</h3>
                         <p>{content.services}</p>
                       </div>
                     </div>
@@ -267,7 +259,7 @@ const ProviderProfilePage = () => {
                 }
 
                 return (
-                  <p className="text-base md:text-lg mb-6" style={{ color: brand ? 'rgba(255,255,255,0.9)' : 'hsl(var(--muted-foreground))' }}>{provider.description}</p>
+                  <p className="text-base md:text-lg mb-6 text-muted-foreground">{provider.description}</p>
                 );
               })()}
               
@@ -275,18 +267,9 @@ const ProviderProfilePage = () => {
           </div>
         </div>
 
-        {/* Trust Signals Banner — tinted with provider colour */}
-        <div
-          className="rounded-xl p-4 md:p-6 mb-6 md:mb-8 border"
-          style={brand ? {
-            backgroundColor: brand.primaryLight,
-            borderColor: `${brand.primary}33`,
-          } : {
-            backgroundColor: 'hsl(var(--primary) / 0.05)',
-            borderColor: 'hsl(var(--primary) / 0.2)',
-          }}
-        >
-          <h2 className="font-semibold text-white mb-4 flex items-center gap-2">
+        {/* Trust Signals Banner — white background */}
+        <div className="rounded-xl p-4 md:p-6 mb-6 md:mb-8 border bg-white">
+          <h2 className="font-semibold text-foreground mb-4 flex items-center gap-2">
             <Shield className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
             Trust & Accreditation
           </h2>
