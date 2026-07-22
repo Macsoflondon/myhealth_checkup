@@ -1,34 +1,31 @@
 /**
- * Medichecks scraper — CRUX rebuild (v3).
+ * Medichecks scraper — Shopify tags rebuild (v4).
  *
- * Discovers full catalogue via /products.json, then parses each product page
- * for verified fields. Writes via upsertWithProvenance for history + safety
- * rails, then a second pass writes the CRUX extras (TEC, sample options,
- * gp_review_status, turnaround_days_text).
+ * Medichecks runs on Shopify. Instead of fetching + parsing 200+ product pages
+ * (which times out on the edge runtime), we discover the full catalogue via
+ * /products.json and read structured fields from the product `tags` array
+ * plus the variant price. Total requests: ~1 per 250 products.
  *
- * Extraction patterns (verified against live product pages):
- *   - Turnaround: "Results in {N} working days (estimated)"
- *                 or "results securely online in {N} working days (estimated)"
- *   - Sample options in "How do you want to take your sample?" section:
- *       "finger-prick blood sample at home — Free"          => home kit, £0
- *       "venous draw at a clinic — Venous +£35"             => clinic £35
- *       "venous draw at home with a nurse — Venous +£59"    => nurse £59
- *       "Self-arrange a professional sample collection — Venous Free" => £0
- *   - GP review: "doctor's comments are included" => Included
- *                                (add-on wording) => Optional
- *                                                    else => None
- *   - Biomarker count: "{N} biomarker(s)"
- *   - base_price: og:price:amount meta OR Shopify variant price
+ * Verified tag scheme (22 Jul 2026):
+ *   info_biomarkers_{N}                       => biomarker_count = N
+ *   info_results_{N}                          => turnaround_days = N
+ *   info_sample_blood_sample                  => sample_type = 'Blood'
+ *   collection_method_blood_delivery          => free finger-prick home kit
+ *   collection_method_blood_in-store          => clinic phlebotomy (£35)
+ *   collection_method_blood_nurse-visit       => home nurse phlebotomy (£59)
+ *   collection_method_blood_pro               => self-arrange professional (free)
  *
- * Batching: supports ?offset=N&limit=M to stay under edge runtime limits.
+ * base_price = variants[0].price ; TEC = base_price + lowest available fee
+ * (free options make TEC == base_price). gp_review_included = true (default).
+ *
+ * Handles starting `clinic-visit` / `clinic-visits` are partner-clinic LOCATION
+ * pages, not tests — we mark those inactive and skip them.
  */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
 import { logProtectedCall } from '../_shared/audit.ts';
 import { getErrorMessage } from '../_shared/errors.ts';
 import {
   upsertWithProvenance,
-  parseTurnaround,
-  normaliseBiomarkers,
   startScrapeRun,
   finishScrapeRun,
   newCounters,
@@ -42,59 +39,60 @@ const corsHeaders = {
 const PROVIDER_ID = 'medichecks';
 const BASE = 'https://www.medichecks.com';
 
-interface ProductSummary {
+const CLINIC_PHLEBOTOMY_FEE = 35;
+const HOME_NURSE_FEE = 59;
+
+interface ShopifyProduct {
   handle: string;
   title: string;
-  url: string;
+  tags: string[];
   price: number | null;
   compareAtPrice: number | null;
   productType: string | null;
-  tags: string[];
   bodyHtml: string;
   imageUrl: string | null;
 }
 
-async function fetchShopifyProducts(): Promise<ProductSummary[]> {
-  const out: ProductSummary[] = [];
+async function fetchShopifyProducts(): Promise<ShopifyProduct[]> {
+  const out: ShopifyProduct[] = [];
   for (let page = 1; page <= 25; page++) {
     const url = `${BASE}/products.json?limit=250&page=${page}`;
-    try {
-      const res = await fetch(url, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (compatible; MyHealthCheckup/1.0)',
-          'Accept': 'application/json',
-        },
-      });
-      if (!res.ok) break;
-      const json = await res.json();
-      const products = Array.isArray(json?.products) ? json.products : [];
-      if (products.length === 0) break;
-      for (const p of products) {
-        const variant = Array.isArray(p.variants) && p.variants.length > 0 ? p.variants[0] : null;
-        const price = variant?.price ? parseFloat(variant.price) : null;
-        const compareAt = variant?.compare_at_price ? parseFloat(variant.compare_at_price) : null;
-        const firstImage = Array.isArray(p.images) && p.images.length > 0 ? p.images[0]?.src : null;
-        out.push({
-          handle: p.handle,
-          title: (p.title ?? '').trim(),
-          url: `${BASE}/products/${p.handle}`,
-          price: Number.isFinite(price) && price! > 0 ? price : null,
-          compareAtPrice: Number.isFinite(compareAt) && compareAt! > 0 ? compareAt : null,
-          productType: p.product_type ?? null,
-          tags: Array.isArray(p.tags)
-            ? p.tags
-            : typeof p.tags === 'string'
-            ? p.tags.split(',').map((t: string) => t.trim())
-            : [],
-          bodyHtml: p.body_html ?? '',
-          imageUrl: firstImage ?? null,
-        });
-      }
-      await new Promise((r) => setTimeout(r, 300));
-    } catch (err) {
-      console.warn(`[medichecks] products.json page ${page} error:`, getErrorMessage(err));
+    const res = await fetch(url, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36',
+        'Accept': 'application/json',
+      },
+    });
+    if (!res.ok) {
+      console.warn(`[medichecks] products.json page ${page} => ${res.status}`);
       break;
     }
+    const json = await res.json();
+    const products = Array.isArray(json?.products) ? json.products : [];
+    if (products.length === 0) break;
+    for (const p of products) {
+      const variant = Array.isArray(p.variants) && p.variants.length > 0 ? p.variants[0] : null;
+      const price = variant?.price ? parseFloat(variant.price) : null;
+      const compareAt = variant?.compare_at_price ? parseFloat(variant.compare_at_price) : null;
+      const firstImage = Array.isArray(p.images) && p.images.length > 0 ? p.images[0]?.src : null;
+      const tags: string[] = Array.isArray(p.tags)
+        ? p.tags
+        : typeof p.tags === 'string'
+        ? p.tags.split(',').map((t: string) => t.trim())
+        : [];
+      out.push({
+        handle: p.handle,
+        title: (p.title ?? '').trim(),
+        tags,
+        price: Number.isFinite(price) && price! > 0 ? price! : null,
+        compareAtPrice: Number.isFinite(compareAt) && compareAt! > 0 ? compareAt! : null,
+        productType: p.product_type ?? null,
+        bodyHtml: p.body_html ?? '',
+        imageUrl: firstImage ?? null,
+      });
+    }
+    if (products.length < 250) break;
+    await new Promise((r) => setTimeout(r, 150));
   }
   const seen = new Set<string>();
   return out.filter((p) => {
@@ -118,187 +116,64 @@ function stripHtml(s: string): string {
     .trim();
 }
 
-// ---------- Turnaround ----------
-function extractTurnaround(text: string): { raw: string | null; days: number | null } {
-  // Primary Medichecks house style
-  const patterns: RegExp[] = [
-    /results?\s+(?:securely\s+online\s+)?in\s+(\d+)\s+working\s+days?\s*\(?\s*estimated\s*\)?/i,
-    /results?\s+in\s+(\d+)\s+working\s+days?/i,
-    /(\d+)\s+working\s+days?\s*\(\s*estimated\s*\)/i,
-    /turnaround(?:\s+time)?[:\-\s]+(\d+)\s+working\s+days?/i,
-  ];
-  for (const re of patterns) {
-    const m = text.match(re);
-    if (m) {
-      const n = parseInt(m[1], 10);
-      if (n > 0 && n <= 60) {
-        return { raw: m[0].trim().replace(/\s+/g, ' '), days: n };
-      }
-    }
-  }
-  return { raw: null, days: null };
+function isJunkHandle(handle: string): boolean {
+  const h = handle.toLowerCase();
+  return h.startsWith('clinic-visit') || h.startsWith('clinic-visits');
 }
 
-// ---------- Sample collection options + fees ----------
-interface SampleOptions {
-  home_kit_available: boolean;
-  home_kit_fee: number | null; // £0 if free
-  home_nurse_available: boolean;
-  home_nurse_fee: number | null;
-  clinic_visit_available: boolean;
-  clinic_visit_fee: number | null;
-  self_arrange_available: boolean;
-  self_arrange_fee: number | null;
+interface ParsedTags {
+  biomarkerCount: number | null;
+  turnaroundDays: number | null;
+  sampleType: string | null;
+  homeKitAvailable: boolean;
+  clinicVisitAvailable: boolean;
+  homeNurseAvailable: boolean;
+  selfArrangeAvailable: boolean;
 }
 
-function parseFeeAfter(segment: string): number | null {
-  // Matches "+£35", "£59", "Free", "included"
-  if (/\b(free|included)\b/i.test(segment)) return 0;
-  const m = segment.match(/£\s*(\d+(?:\.\d{1,2})?)/);
-  if (m) {
-    const n = parseFloat(m[1]);
-    if (Number.isFinite(n) && n >= 0) return n;
-  }
-  return null;
-}
-
-function extractSampleOptions(text: string): SampleOptions {
-  const opts: SampleOptions = {
-    home_kit_available: false,
-    home_kit_fee: null,
-    home_nurse_available: false,
-    home_nurse_fee: null,
-    clinic_visit_available: false,
-    clinic_visit_fee: null,
-    self_arrange_available: false,
-    self_arrange_fee: null,
+function parseTags(tags: string[]): ParsedTags {
+  const out: ParsedTags = {
+    biomarkerCount: null,
+    turnaroundDays: null,
+    sampleType: null,
+    homeKitAvailable: false,
+    clinicVisitAvailable: false,
+    homeNurseAvailable: false,
+    selfArrangeAvailable: false,
   };
-
-  // Look at line-ish segments so a fee attaches to the correct option
-  const segments = text.split(/(?=(?:Collect|Book|Self-arrange|Choose|Order|Take)\s)/i);
-
-  for (const raw of segments) {
-    const seg = raw.slice(0, 300); // fee always sits near the option label
-    const lower = seg.toLowerCase();
-
-    if (/finger[-\s]?prick/.test(lower) && /\b(at\s+home|home\s+kit|your\s+own)\b/.test(lower)) {
-      opts.home_kit_available = true;
-      opts.home_kit_fee = parseFeeAfter(seg) ?? 0;
-    } else if (/nurse/.test(lower) && /\bhome\b/.test(lower)) {
-      opts.home_nurse_available = true;
-      opts.home_nurse_fee = parseFeeAfter(seg);
-    } else if (/clinic/.test(lower) && /(venous|draw|blood)/.test(lower)) {
-      opts.clinic_visit_available = true;
-      opts.clinic_visit_fee = parseFeeAfter(seg);
-    } else if (/self[-\s]?arrange/.test(lower)) {
-      opts.self_arrange_available = true;
-      opts.self_arrange_fee = parseFeeAfter(seg) ?? 0;
+  for (const raw of tags) {
+    const t = raw.trim().toLowerCase();
+    let m: RegExpMatchArray | null;
+    if ((m = t.match(/^info_biomarkers_(\d+)$/))) {
+      const n = parseInt(m[1], 10);
+      if (n > 0 && n <= 500) out.biomarkerCount = n;
+    } else if ((m = t.match(/^info_results_(\d+)$/))) {
+      const n = parseInt(m[1], 10);
+      if (n > 0 && n <= 60) out.turnaroundDays = n;
+    } else if (t === 'info_sample_blood_sample' || t.startsWith('info_sample_blood')) {
+      out.sampleType = 'Blood';
+    } else if (t === 'collection_method_blood_delivery') {
+      out.homeKitAvailable = true;
+    } else if (t === 'collection_method_blood_in-store' || t === 'collection_method_blood_in_store') {
+      out.clinicVisitAvailable = true;
+    } else if (t === 'collection_method_blood_nurse-visit' || t === 'collection_method_blood_nurse_visit') {
+      out.homeNurseAvailable = true;
+    } else if (t === 'collection_method_blood_pro') {
+      out.selfArrangeAvailable = true;
     }
   }
-
-  // Fallback: if the section wording didn't segment well, look for canonical
-  // Medichecks fees anywhere on the page.
-  if (!opts.clinic_visit_available && /venous\s*\+?\s*£\s*35\b/i.test(text)) {
-    opts.clinic_visit_available = true;
-    opts.clinic_visit_fee = 35;
-  }
-  if (!opts.home_nurse_available && /nurse[^£]{0,80}£\s*59\b/i.test(text)) {
-    opts.home_nurse_available = true;
-    opts.home_nurse_fee = 59;
-  }
-  if (!opts.home_kit_available && /finger[-\s]?prick/i.test(text)) {
-    opts.home_kit_available = true;
-    opts.home_kit_fee = 0;
-  }
-
-  return opts;
+  return out;
 }
 
-function computeTotalExpectedCost(basePrice: number | null, opts: SampleOptions): number | null {
+function computeTEC(basePrice: number | null, p: ParsedTags): number | null {
   if (basePrice === null) return null;
   const fees: number[] = [];
-  if (opts.home_kit_available && opts.home_kit_fee !== null) fees.push(opts.home_kit_fee);
-  if (opts.self_arrange_available && opts.self_arrange_fee !== null) fees.push(opts.self_arrange_fee);
-  if (opts.clinic_visit_available && opts.clinic_visit_fee !== null) fees.push(opts.clinic_visit_fee);
-  if (opts.home_nurse_available && opts.home_nurse_fee !== null) fees.push(opts.home_nurse_fee);
+  if (p.homeKitAvailable) fees.push(0);
+  if (p.selfArrangeAvailable) fees.push(0);
+  if (p.clinicVisitAvailable) fees.push(CLINIC_PHLEBOTOMY_FEE);
+  if (p.homeNurseAvailable) fees.push(HOME_NURSE_FEE);
   if (fees.length === 0) return basePrice;
   return basePrice + Math.min(...fees);
-}
-
-// ---------- GP review status ----------
-function extractGpReviewStatus(text: string): 'Included' | 'Optional' | 'None' {
-  const t = text.toLowerCase();
-  if (
-    /doctor'?s?\s+comments?\s+are\s+included/.test(t) ||
-    /includes?\s+(a\s+)?doctor'?s?\s+comments?/.test(t) ||
-    /doctor'?s?\s+report\s+included/.test(t)
-  ) {
-    return 'Included';
-  }
-  if (
-    /add[-\s]?on[^.]{0,80}(doctor|gp|review|consultation)/.test(t) ||
-    /(doctor|gp)\s+(consultation|review)[^.]{0,60}(optional|available|add)/.test(t)
-  ) {
-    return 'Optional';
-  }
-  return 'None';
-}
-
-// ---------- Base price from meta ----------
-function extractMetaPrice(html: string): number | null {
-  const m = html.match(/property="og:price:amount"\s+content="([\d.]+)"/i)
-    || html.match(/name="og:price:amount"\s+content="([\d.]+)"/i)
-    || html.match(/"price"\s*:\s*"?([\d.]+)"?/);
-  if (m) {
-    const n = parseFloat(m[1]);
-    if (Number.isFinite(n) && n > 0) return n;
-  }
-  return null;
-}
-
-// ---------- Biomarkers ----------
-function extractBiomarkerCount(text: string): number | null {
-  const m = text.match(/\b(\d+)\s+biomarkers?\b/i);
-  if (m) {
-    const n = parseInt(m[1], 10);
-    if (n > 0 && n <= 200) return n;
-  }
-  return null;
-}
-
-function extractBiomarkersFromHtml(html: string): string[] {
-  const items = new Set<string>();
-  const sectionRe = /(what['']?s\s+in\s+the\s+test|what['']?s\s+included|biomarkers?\s+tested|biomarkers?\s+included|what\s+we\s+test)[\s\S]{0,10000}/i;
-  const sectionMatch = html.match(sectionRe);
-  const searchScope = sectionMatch ? sectionMatch[0] : html;
-  const liRe = /<li[^>]*>([\s\S]*?)<\/li>/gi;
-  let m: RegExpExecArray | null;
-  while ((m = liRe.exec(searchScope)) !== null) {
-    const text = stripHtml(m[1]);
-    if (!text || text.length < 2 || text.length > 80) continue;
-    if (/\b(add to|buy|log in|sign up|reviews?|blog|shipping|delivery|privacy|cookie|basket|checkout)\b/i.test(text)) continue;
-    items.add(text);
-    if (items.size > 200) break;
-  }
-  return normaliseBiomarkers(Array.from(items));
-}
-
-function extractDescription(html: string): string | null {
-  const meta = html.match(/name="description"\s+content="([^"]+)"/i)
-    || html.match(/property="og:description"\s+content="([^"]+)"/i);
-  if (meta && meta[1]) return meta[1].trim().substring(0, 500);
-  return null;
-}
-
-function extractTitleFromHtml(html: string, fallback: string): string {
-  const ld = html.match(/"@type"\s*:\s*"Product"[\s\S]*?"name"\s*:\s*"([^"]+)"/i);
-  if (ld && ld[1]) return ld[1].replace(/\s*\|\s*Medichecks.*$/i, '').trim();
-  const h1 = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
-  if (h1 && h1[1]) {
-    const t = stripHtml(h1[1]);
-    if (t.length > 3) return t;
-  }
-  return fallback;
 }
 
 function categoryFor(text: string): string {
@@ -326,23 +201,6 @@ function genderFor(text: string): string | null {
   return null;
 }
 
-async function fetchProductHtml(url: string): Promise<string | null> {
-  try {
-    const res = await fetch(url, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml',
-        'Accept-Language': 'en-GB,en;q=0.9',
-      },
-    });
-    if (!res.ok) return null;
-    return await res.text();
-  } catch (err) {
-    console.warn(`[medichecks] fetch ${url} failed:`, getErrorMessage(err));
-    return null;
-  }
-}
-
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
@@ -358,18 +216,11 @@ Deno.serve(async (req) => {
   }
   await logProtectedCall({ functionName: 'medichecks-scraper', status: 'allowed', req });
 
-  const url = new URL(req.url);
-  const offset = Math.max(0, parseInt(url.searchParams.get('offset') ?? '0', 10) || 0);
-  const limit = Math.min(40, Math.max(1, parseInt(url.searchParams.get('limit') ?? '20', 10) || 20));
-  const autoContinue = (url.searchParams.get('auto') ?? '1') !== '0';
-
-
   const supabase = createClient(supabaseUrl, supabaseKey);
   const counters = newCounters();
   const runId = await startScrapeRun(supabase, PROVIDER_ID, 'medichecks-scraper', {
     started_at: new Date().toISOString(),
-    offset,
-    limit,
+    method: 'shopify-tags',
   });
 
   try {
@@ -387,56 +238,46 @@ Deno.serve(async (req) => {
 
     const products = await fetchShopifyProducts();
     counters.tests_seen = products.length;
-    const scope = products.slice(offset, offset + limit);
-    console.log(`[medichecks] processing ${scope.length} of ${products.length} (offset=${offset}, limit=${limit})`);
+    console.log(`[medichecks] fetched ${products.length} products from Shopify`);
 
-    for (const product of scope) {
-      const html = (await fetchProductHtml(product.url)) ?? '';
-      const bodyText = stripHtml(product.bodyHtml || '');
-      const pageText = stripHtml(html);
-      const combinedText = `${pageText} ${bodyText}`;
+    let junkSkipped = 0;
 
-      const title = product.title || extractTitleFromHtml(html, product.handle);
+    for (const product of products) {
+      if (isJunkHandle(product.handle)) {
+        junkSkipped++;
+        // Ensure any stray active row for a junk handle is marked inactive.
+        await supabase
+          .from('provider_tests')
+          .update({ is_active: false })
+          .eq('provider_id', PROVIDER_ID)
+          .eq('provider_test_id', product.handle);
+        continue;
+      }
+
+      const title = product.title;
       if (!title || title.length < 3) {
         counters.errors.push({ test: product.handle, message: 'no title' });
         continue;
       }
 
-      const metaPrice = extractMetaPrice(html);
-      const basePrice = product.price ?? metaPrice;
+      const tagInfo = parseTags(product.tags);
+      const basePrice = product.price;
       const wasPrice = product.compareAtPrice && product.compareAtPrice > (basePrice ?? 0)
         ? product.compareAtPrice
         : null;
       const inStock = basePrice !== null && basePrice > 0;
+      const tec = computeTEC(basePrice, tagInfo);
 
-      // Turnaround — always try, both page + product body
-      const { raw: turnaroundRaw, days: turnaroundDays } = extractTurnaround(combinedText);
-      const parsedTurn = turnaroundRaw
-        ? parseTurnaround(turnaroundRaw)
-        : { hours: null, days: null, unit: 'not_stated' as const, raw: null };
-      const finalTurnDays = turnaroundDays ?? parsedTurn.days;
-      const finalTurnHours = finalTurnDays !== null ? finalTurnDays * 24 : parsedTurn.hours;
-      const finalTurnUnit: 'days' | 'hours' | 'not_stated' =
-        finalTurnDays !== null ? 'days' : (parsedTurn.unit as 'days' | 'hours' | 'not_stated');
+      const turnDays = tagInfo.turnaroundDays;
+      const turnRaw = turnDays !== null
+        ? `Results in ${turnDays} working days (estimated)`
+        : null;
 
-      // Sample options + TEC
-      const sampleOpts = extractSampleOptions(combinedText);
-      const tec = computeTotalExpectedCost(basePrice, sampleOpts);
-
-      // GP review
-      const gpStatus = extractGpReviewStatus(combinedText);
-
-      // Biomarkers
-      let biomarkers = extractBiomarkersFromHtml(html);
-      if (biomarkers.length === 0 && product.bodyHtml) {
-        biomarkers = extractBiomarkersFromHtml(product.bodyHtml);
-      }
-      const biomarkersList = biomarkers.length > 0 ? biomarkers : null;
-      const declaredCount = extractBiomarkerCount(combinedText);
-      const biomarkerCount = biomarkersList ? biomarkersList.length : declaredCount;
-
-      const description = extractDescription(html) ?? (bodyText ? bodyText.substring(0, 500) : null);
-      const category = categoryFor(`${title} ${bodyText} ${product.productType ?? ''} ${(product.tags || []).join(' ')}`);
+      const bodyText = stripHtml(product.bodyHtml || '');
+      const description = bodyText ? bodyText.substring(0, 500) : null;
+      const productUrl = `${BASE}/products/${product.handle}`;
+      const categoryText = `${title} ${bodyText} ${product.productType ?? ''} ${product.tags.join(' ')}`;
+      const category = categoryFor(categoryText);
       const gender = genderFor(`${title} ${bodyText}`);
 
       const result = await upsertWithProvenance(
@@ -445,22 +286,26 @@ Deno.serve(async (req) => {
           provider_id: PROVIDER_ID,
           provider_test_id: product.handle,
           test_name: title,
-          url: product.url,
+          url: productUrl,
           price: basePrice,
           was_price: wasPrice,
-          collection_fee: sampleOpts.home_kit_fee ?? sampleOpts.self_arrange_fee ?? null,
-          home_visit_fee: sampleOpts.home_nurse_fee,
-          gp_review_fee: gpStatus === 'Included' ? 0 : null,
-          biomarker_count: biomarkerCount,
-          biomarkers_list: biomarkersList,
-          turnaround_raw: turnaroundRaw,
-          turnaround_hours: finalTurnHours,
-          turnaround_days: finalTurnDays,
-          turnaround_unit: finalTurnUnit,
-          sample_type: 'Blood',
+          collection_fee: tagInfo.homeKitAvailable
+            ? 0
+            : tagInfo.selfArrangeAvailable
+            ? 0
+            : null,
+          home_visit_fee: tagInfo.homeNurseAvailable ? HOME_NURSE_FEE : null,
+          gp_review_fee: 0,
+          biomarker_count: tagInfo.biomarkerCount,
+          biomarkers_list: null,
+          turnaround_raw: turnRaw,
+          turnaround_hours: turnDays !== null ? turnDays * 24 : null,
+          turnaround_days: turnDays,
+          turnaround_unit: turnDays !== null ? 'days' : 'not_stated',
+          sample_type: tagInfo.sampleType ?? 'Blood',
           collection_method: 'Home finger-prick kit; optional home nurse or clinic phlebotomy',
           in_stock: inStock,
-          scrape_source_url: product.url,
+          scrape_source_url: productUrl,
         },
         { scrapeRunId: runId, outOfStock: !inStock },
       );
@@ -473,9 +318,8 @@ Deno.serve(async (req) => {
       if (result.action === 'inserted') counters.tests_new++;
       else if (result.action === 'updated') counters.tests_updated++;
 
-      // Second update pass for CRUX extras + fields not tracked by upsertWithProvenance
       const extras: Record<string, unknown> = {
-        url: product.url,
+        url: productUrl,
         image_url: product.imageUrl,
         provider_test_id: product.handle,
         description,
@@ -483,16 +327,16 @@ Deno.serve(async (req) => {
         original_price: wasPrice,
         base_price: basePrice,
         total_expected_cost: tec,
-        turnaround_days_text: turnaroundRaw,
-        home_kit_available: sampleOpts.home_kit_available,
-        clinic_visit_available: sampleOpts.clinic_visit_available,
-        home_phlebotomy_option: sampleOpts.home_nurse_available,
-        home_phlebotomy_cost: sampleOpts.home_nurse_fee,
-        clinic_phlebotomy_cost: sampleOpts.clinic_visit_fee,
-        phlebotomy_cost: sampleOpts.clinic_visit_fee,
-        phlebotomy_included: sampleOpts.home_kit_available && (sampleOpts.home_kit_fee ?? 0) === 0,
-        gp_review_included: gpStatus === 'Included',
-        gp_consultation_included: gpStatus === 'Included',
+        turnaround_days_text: turnRaw,
+        home_kit_available: tagInfo.homeKitAvailable,
+        clinic_visit_available: tagInfo.clinicVisitAvailable,
+        home_phlebotomy_option: tagInfo.homeNurseAvailable,
+        home_phlebotomy_cost: tagInfo.homeNurseAvailable ? HOME_NURSE_FEE : null,
+        clinic_phlebotomy_cost: tagInfo.clinicVisitAvailable ? CLINIC_PHLEBOTOMY_FEE : null,
+        phlebotomy_cost: tagInfo.clinicVisitAvailable ? CLINIC_PHLEBOTOMY_FEE : null,
+        phlebotomy_included: tagInfo.homeKitAvailable || tagInfo.selfArrangeAvailable,
+        gp_review_included: true,
+        gp_consultation_included: true,
         gender_specific: gender,
         lab_ukas_accredited: true,
         lab_cqc_regulated: true,
@@ -500,6 +344,7 @@ Deno.serve(async (req) => {
         url_verified: true,
         url_verified_at: new Date().toISOString(),
         scraped_at: new Date().toISOString(),
+        is_active: true,
       };
       if (result.providerTestId) {
         const { error: extraErr } = await supabase
@@ -508,51 +353,23 @@ Deno.serve(async (req) => {
           .eq('id', result.providerTestId);
         if (extraErr) console.warn(`[medichecks] extras update failed for ${title}:`, extraErr.message);
       }
-
-      await new Promise((r) => setTimeout(r, 100));
     }
-
-    const nextOffset = offset + scope.length < products.length ? offset + scope.length : null;
-    const done = nextOffset === null;
 
     await supabase
       .from('scraping_jobs')
-      .update({ status: done ? 'completed' : 'running', error_message: null })
+      .update({ status: 'completed', error_message: null })
       .eq('provider_id', PROVIDER_ID);
 
     await finishScrapeRun(supabase, runId, counters, counters.errors.length > 0 ? 'partial' : 'success');
-
-    // Self-schedule the next batch so a single trigger walks the whole catalogue
-    // without exceeding the edge-runtime wall clock on any one invocation.
-    if (!done && autoContinue) {
-      const nextUrl = `${supabaseUrl}/functions/v1/medichecks-scraper?offset=${nextOffset}&limit=${limit}&auto=1`;
-      const kick = fetch(nextUrl, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${supabaseKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: '{}',
-      }).catch((e) => console.warn('[medichecks] self-invoke failed:', getErrorMessage(e)));
-      // @ts-ignore EdgeRuntime is available in Supabase Edge runtime
-      if (typeof EdgeRuntime !== 'undefined' && EdgeRuntime.waitUntil) {
-        // @ts-ignore
-        EdgeRuntime.waitUntil(kick);
-      }
-    }
 
     return new Response(
       JSON.stringify({
         success: true,
         provider: PROVIDER_ID,
         run_id: runId,
-        offset,
-        limit,
+        method: 'shopify-tags',
         catalogue_total: products.length,
-        processed: scope.length,
-        next_offset: nextOffset,
-        done,
-        auto_continue: !done && autoContinue,
+        junk_skipped: junkSkipped,
         tests_new: counters.tests_new,
         tests_updated: counters.tests_updated,
         errors: counters.errors.slice(0, 10),
