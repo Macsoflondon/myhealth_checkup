@@ -44,21 +44,21 @@ export const featureRoutes = (
     <Route path="/find-test/compare" element={<TestFinderComparePage />} />
     <Route path="/assisted-test-finder" element={<AssistedTestFinderPage />} />
     <Route path="/provider/:providerId" element={<ProviderProfilePage />} />
-    <Route path="/provider/:providerId/tests" element={<ProviderTestCatalogPage />} />
+    <Route path="/provider/:providerId/tests" element={<Navigate to=".." replace relative="path" />} />
     <Route path="/provider/:providerId/tests/:testId" element={<TestDetailPage />} />
     <Route path="/providers" element={<Navigate to="/trusted-providers" replace />} />
     <Route path="/providers/compare" element={<ProviderComparisonPage />} />
-    <Route path="/providers/goodbody-clinic" element={<ProviderTestsCatalogPage providerId="goodbody-clinic" />} />
+    <Route path="/providers/goodbody-clinic" element={<Navigate to="/provider/goodbody-clinic" replace />} />
     <Route path="/goodbody-clinic" element={<GoodbodyClinicPage />} />
     <Route path="/providers/medichecks" element={<MedichecksTestsCatalogPage />} />
     <Route path="/medichecks/mens-health" element={<MedichecksMensHealthPage />} />
-    <Route path="/providers/thriva" element={<ProviderTestsCatalogPage providerId="thriva" />} />
-    <Route path="/providers/randox" element={<ProviderTestsCatalogPage providerId="randox" />} />
-    <Route path="/providers/lola-health" element={<ProviderTestsCatalogPage providerId="lola-health" />} />
-    <Route path="/providers/london-medical-laboratory" element={<ProviderTestsCatalogPage providerId="london-medical-laboratory" />} />
-    <Route path="/providers/clinilabs" element={<ProviderTestsCatalogPage providerId="clinilabs" />} />
-    <Route path="/providers/london-health-company" element={<ProviderTestsCatalogPage providerId="london-health-company" />} />
-    <Route path="/providers/medical-diagnosis" element={<ProviderTestsCatalogPage providerId="medical-diagnosis" />} />
+    <Route path="/providers/thriva" element={<Navigate to="/provider/thriva" replace />} />
+    <Route path="/providers/randox" element={<Navigate to="/provider/randox" replace />} />
+    <Route path="/providers/lola-health" element={<Navigate to="/provider/lola-health" replace />} />
+    <Route path="/providers/london-medical-laboratory" element={<Navigate to="/provider/london-medical-laboratory" replace />} />
+    <Route path="/providers/clinilabs" element={<Navigate to="/provider/clinilabs" replace />} />
+    <Route path="/providers/london-health-company" element={<Navigate to="/provider/london-health-company" replace />} />
+    <Route path="/providers/medical-diagnosis" element={<Navigate to="/provider/medical-diagnosis" replace />} />
     <Route path="/clinilabs" element={<ClinilabsPage />} />
     <Route path="/london-medical-laboratory" element={<LondonMedicalLaboratoryPage />} />
     <Route path="/london-health-company" element={<LondonHealthCompanyPage />} />
