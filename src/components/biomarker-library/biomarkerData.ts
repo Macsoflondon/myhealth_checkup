@@ -27,6 +27,7 @@ export const COLORS = {
 export const biomarkers: any[] = [
   ...biomarkersChunk1,
   ...biomarkersChunk2,
+  ...biomarkersChunk3,
 ];
 
 export const categoryIcons: Record<string, string> = {
