@@ -30,7 +30,9 @@ export const biomarkers: any[] = [
   ...biomarkersChunk1,
   ...biomarkersChunk2,
   ...biomarkersChunk3,
+  ...biomarkersChunk4,
 ];
+
 
 export const categoryIcons: Record<string, string> = {
   All: "🧬",
