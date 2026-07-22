@@ -1,11 +1,15 @@
-## Remove "Browse Available Tests" CTA on all provider pages
+Plan: enlarge category toolbar buttons
 
-Yes — the SS1/SS2/SS3 reorder already applies to every provider. All 9 providers render through the single shared `src/pages/ProviderProfilePage.tsx` component (Goodbody, Medichecks, Randox, Thriva, Lola, LML, LHC, Clinilabs, Medical Diagnosis), so the previous reorder covers all of them. The individual `*Page.tsx` files (e.g. `GoodbodyClinicPage.tsx`, `ClinilabsPage.tsx`) just `Navigate` to `/provider/:id`.
+1. Target file: `src/components/layout/CategoryPillDropdown.tsx`
+   - Increase vertical padding so pills are roughly 2–3 text-line-heights taller than today (`py-1 sm:py-1.5` → `py-2 sm:py-2.5` or equivalent).
+   - Slightly increase horizontal padding (`pl-1.5 pr-2 sm:pl-2 sm:pr-2.5` → `pl-2 pr-2.5 sm:pl-2.5 sm:pr-3`).
+   - Keep the icon and label vertically centred; do not change font size unless required for balance.
+   - Leave `max-width` breakpoints as-is to avoid breaking the single-row fit on laptops.
 
-The "Browse Available Tests" CTA is likewise defined once, in `ProviderProfilePage.tsx` (lines 287–299), so removing it there removes it from every provider page in one edit.
+2. Target file: `src/components/layout/BrowseByCategoryBar.tsx`
+   - Increase the inner card vertical padding slightly (`py-2.5 sm:py-3` → `py-3 sm:py-3.5`) so the taller pills do not feel cramped.
+   - If the user confirms the "More" pill should match, apply the same padding increase to the More button styles.
 
-### Change
+3. Verify in browser preview at 1280 px and 1440 px widths that the bar still fits on one line and wrapping remains clean on smaller laptop screens.
 
-- `src/pages/ProviderProfilePage.tsx`: delete the `<div className="flex flex-col sm:flex-row gap-3">…</div>` block (lines 287–299) that contains the `Browse Available Tests` button. Also remove the now-unused `TestTube` and `PROVIDER_CATALOG_ROUTES` imports if nothing else in the file references them (verify with a quick grep before deleting).
-
-No other files, routes, or providers need edits — the tests grid lower on the page (SS3) already replaces the CTA's function.
+No database, route, or scraper changes. Only Tailwind class adjustments in the two layout files above.

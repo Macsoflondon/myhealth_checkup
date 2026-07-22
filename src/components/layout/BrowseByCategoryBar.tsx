@@ -312,7 +312,7 @@ export default function BrowseByCategoryBar({
       {/* DESKTOP: existing pill card layout */}
       <div className={`hidden md:block sticky top-0 z-50 ${wrapperClass}`} data-testid="browse-by-category-bar">
         <div
-          className={`${compact ? "px-2 py-2 sm:px-3 sm:py-2.5" : "px-2 sm:px-3 py-2.5 sm:py-3"} transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
+          className={`${compact ? "px-2 py-3 sm:px-3 sm:py-3.5" : "px-2 sm:px-3 py-3.5 sm:py-4"} transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
         >
           <div className="flex items-center justify-center gap-x-1.5 gap-y-2 sm:gap-x-2 flex-wrap max-w-full">
             {/* Category pill strip participates in the same wrapping flow as More/account controls */}
@@ -342,7 +342,7 @@ export default function BrowseByCategoryBar({
                 aria-expanded={moreOpen}
                 onClick={() => setMoreOpen((o) => !o)}
                 className={`inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200 ${
-                  compact ? "gap-0.5 pl-1 pr-1.5 py-0.5 sm:gap-1 sm:pl-1.5 sm:pr-2 sm:py-0.5" : "gap-1.5 pl-1.5 pr-2 sm:pl-2 sm:pr-2.5 py-1 sm:py-1.5"
+                  compact ? "gap-0.5 pl-1.5 pr-2 py-1.5 sm:gap-1 sm:pl-2 sm:pr-2.5 sm:py-2" : "gap-1.5 pl-2.5 pr-3 sm:pl-3 sm:pr-3.5 py-2.5 sm:py-3"
                 }`}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.borderColor = PINK;
