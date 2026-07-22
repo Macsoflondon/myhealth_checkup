@@ -28,7 +28,7 @@ interface Props {
   limit?: number;
 }
 
-export const ProviderTestsGrid = ({ providerSlug, providerDisplayName, limit = 12 }: Props) => {
+export const ProviderTestsGrid = ({ providerSlug, providerDisplayName, limit = 1000 }: Props) => {
   const dbId = PROVIDER_ID_DB_MAP[providerSlug] ?? providerSlug;
   const branding = getBranding(providerDisplayName);
   const rating = getProviderRating(providerDisplayName);
@@ -72,7 +72,7 @@ export const ProviderTestsGrid = ({ providerSlug, providerDisplayName, limit = 1
             Tests from {providerDisplayName}
           </h2>
           <p className="text-muted-foreground text-sm mt-1">
-            {data.length} tests available · live pricing from Supabase
+            {data.length} tests available
           </p>
         </div>
       </div>

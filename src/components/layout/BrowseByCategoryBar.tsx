@@ -163,7 +163,7 @@ export default function BrowseByCategoryBar({
       <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
 
       {/* MOBILE: wordmark bar that morphs white → navy on scroll */}
-      <div className="md:hidden sticky top-0 z-40" data-testid="browse-by-category-bar-mobile">
+      <div className="md:hidden sticky top-0 z-50" data-testid="browse-by-category-bar-mobile">
         <div
           data-scrolled={scrolled}
           className={`px-4 h-20 flex items-center justify-between transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b ${
@@ -310,7 +310,7 @@ export default function BrowseByCategoryBar({
       </div>
 
       {/* DESKTOP: existing pill card layout */}
-      <div className={`hidden md:block sticky top-0 z-40 ${wrapperClass}`} data-testid="browse-by-category-bar">
+      <div className={`hidden md:block sticky top-0 z-50 ${wrapperClass}`} data-testid="browse-by-category-bar">
         <div
           className={`${compact ? "px-2 py-2 sm:px-3 sm:py-2.5" : "px-2 sm:px-3 py-2.5 sm:py-3"} transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
         >
