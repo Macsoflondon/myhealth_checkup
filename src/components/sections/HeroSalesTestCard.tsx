@@ -16,7 +16,8 @@ export interface HeroSalesAd {
   providerLogo: string;
   url: string;
   markers?: string[];
-  biomarkerCount?: number;
+  biomarkerCount?: number | null;
+  turnaround?: string | null;
   rating?: number;
 }
 
@@ -33,17 +34,21 @@ function hexToRgba(hex: string, alpha: number) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-const DEFAULT_MARKERS = ["Cholesterol", "Vitamin D", "Thyroid", "Liver"];
-
 export default function HeroSalesTestCard({ ad }: Props) {
   const [open, setOpen] = useState(false);
   const brand = getBranding(ad.provider);
   const providerColor = brand?.primary ?? TURQUOISE;
 
-  const markers = (ad.markers && ad.markers.length ? ad.markers : DEFAULT_MARKERS).slice(0, 4);
-  const totalMarkers = ad.biomarkerCount ?? 56;
-  const extraMarkers = Math.max(0, totalMarkers - markers.length);
+  const markers = (ad.markers ?? []).slice(0, 4);
+  const biomarkerCount = ad.biomarkerCount ?? null;
+  const extraMarkers =
+    biomarkerCount !== null && biomarkerCount > markers.length
+      ? biomarkerCount - markers.length
+      : 0;
+  const hasChipRow = markers.length > 0 || biomarkerCount !== null;
+  const turnaroundLabel = ad.turnaround ?? null;
   const rating = ad.rating ?? 4.8;
+
 
   return (
     <>
