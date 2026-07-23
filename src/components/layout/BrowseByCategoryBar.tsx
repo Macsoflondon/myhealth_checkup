@@ -118,11 +118,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             </div>
           </div>
         </div>
-      </div>
-            
-          </div>
-        </div>
-      </div>
     </>
+
   );
 }
