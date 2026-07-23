@@ -1,40 +1,11 @@
-Plan:
+## Remove hero videos, keep images
 
-1. **Fix the toolbar size where it actually renders**
-   - Update the `compact` branch used by the homepage hero toolbar, not just the larger non-compact variant.
-   - Make each dropdown pill roughly **2x the current visible size** by increasing:
-     - vertical padding
-     - horizontal padding
-     - icon circle size
-     - icon size
-     - label font size
-     - dropdown chevron size
-   - Apply the same sizing to the **More** pill so the row looks consistent.
-   - Keep the toolbar on one clean row on desktop where possible, with wrapping only if the viewport genuinely cannot fit it.
+In `src/components/sections/HeroMasthead.tsx`:
 
-2. **Keep the toolbar premium and brand-aligned**
-   - Preserve the white pill style, navy text, turquoise/pink accents, Montserrat typography, and rounded capsule shape.
-   - Avoid changing the mobile drawer unless the enlarged desktop toolbar creates a direct consistency issue.
+1. Delete the 5 `clip*Asset` imports (`clipJoggingAsset`, `clipClinicAsset`, `clipSeniorAsset`, `clipBenchAsset`, `clipKitAsset`).
+2. Remove the `video` field from each entry in the `SLIDES` array.
+3. Strip video-related runtime code: `videoRefs`, the `useEffect` that plays/pauses videos on slide change, and the `shouldMountVideo` branch that renders `<video>` elements. Keep only the `<img>` branch for every slide.
+4. Keep the `reducedMotion` detection only if still needed for the rotate interval; otherwise simplify to the standard `rotateMs` timer.
+5. Delete the 5 unused video `.asset.json` pointer files under `src/assets/hero/video/` and run `lovable-assets delete` on each so the CDN objects are removed too.
 
-3. **Replace the trust carousel with a static trust row**
-   - Remove the duplicated item loop and animation logic from `AccreditedProvidersBar`.
-   - Render the eight trust standards once only:
-     - UKAS-Accredited Labs
-     - CQC-Regulated Clinics
-     - ISO 15189 Certification
-     - GDPR Compliant
-     - Transparent Pricing
-     - No GP Referral Needed
-     - Data Never Shared
-     - Trusted Comparison
-   - Display them across the navy area below the toolbar as a normal static row, not a moving carousel.
-
-4. **Responsive behaviour**
-   - Desktop/wide screens: show all trust icons across in one line.
-   - Tablet/smaller widths: allow clean wrapping into two rows rather than clipping or scrolling.
-   - Keep spacing tight enough that the section does not become too tall.
-
-5. **Verify visually**
-   - Check the homepage at the current desktop viewport.
-   - Confirm the toolbar pills are visibly double the current size.
-   - Confirm the trust icons are static and all visible at once in the blue/navy band.
+No other files or behaviour change — image slides, positions, labels, and the sales card overlay stay exactly as they are.
