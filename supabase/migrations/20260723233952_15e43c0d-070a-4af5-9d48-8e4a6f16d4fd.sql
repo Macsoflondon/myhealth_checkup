@@ -1,0 +1,1 @@
+ALTER TABLE public.user_profiles ALTER COLUMN date_of_birth TYPE text USING date_of_birth::text;
