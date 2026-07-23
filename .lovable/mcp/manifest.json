@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "sdk_version": "0.24.0",
+  "path": "/mcp",
+  "auth": {
+    "type": "oauth",
+    "issuer": "https://clvuioagsgfadynuvodj.supabase.co/auth/v1",
+    "accepted_audiences": [
+      "authenticated"
+    ]
+  },
+  "mcp": {
+    "server": {
+      "name": "myhealth-checkup-mcp",
+      "version": "0.1.0",
+      "title": "myhealth checkup"
+    },
+    "tools": [
+      {
+        "name": "search_tests",
+        "title": "Search diagnostic tests",
+        "description": "Search the myhealth checkup catalogue of private UK diagnostic tests. Filter by keyword, category, provider, and price. Returns test name, provider, price (GBP), turnaround, biomarker count, and URL.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "Keyword to match against test name or description."
+            },
+            "category": {
+              "type": "string",
+              "description": "Category slug (e.g. 'womens-health', 'cancer-screening', 'hormones')."
+            },
+            "provider": {
+              "type": "string",
+              "description": "Provider name (e.g. 'Medichecks', 'Randox', 'Goodbody')."
+            },
+            "max_price": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Maximum total expected cost in GBP."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_test",
+        "title": "Get test details",
+        "description": "Fetch the full record for a single diagnostic test by id, including biomarker list, fees, sample method and booking URL.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Test UUID returned by search_tests."
+            }
+          },
+          "required": [
+            "id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_providers",
+        "title": "List providers",
+        "description": "List all UKAS-accredited, CQC-regulated private diagnostic test providers compared on myhealth checkup, with the number of active tests each has.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_my_favourites",
+        "title": "List my saved tests",
+        "description": "Return the diagnostic tests the signed-in user has saved to their favourites on myhealth checkup.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "save_favourite",
+        "title": "Save a test to my favourites",
+        "description": "Save a diagnostic test to the signed-in user's favourites on myhealth checkup.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "test_id": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Test id (uuid from search_tests, or provider slug)."
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Test name."
+            },
+            "provider": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Provider name."
+            },
+            "category": {
+              "type": "string"
+            },
+            "price": {
+              "type": "number",
+              "minimum": 0
+            }
+          },
+          "required": [
+            "test_id",
+            "name",
+            "provider"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
