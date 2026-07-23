@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
 import { PROVIDER_LOGOS, normalizeProviderId, getProviderName } from "@/constants/providers";
+import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
+import { UserMenu } from "@/components/header/UserMenu";
 import HeroSalesTestCard from "@/components/sections/HeroSalesTestCard";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 import { useHeroPopularTests } from "@/hooks/queries/useHeroPopularTests";
