@@ -428,7 +428,7 @@ const Auth = () => {
             </div>
 
             <div className="flex flex-col gap-3">
-              <GoogleSignInButton mode={isSignUp ? "signup" : "signin"} disabled={loading || (!isSignUp && isLocked)} onLoading={setLoading} />
+              <GoogleSignInButton mode={isSignUp ? "signup" : "signin"} disabled={loading || (!isSignUp && isLocked)} onLoading={setLoading} nextPath={nextPath} />
             </div>
 
             <div className="text-center mt-2">

@@ -5,11 +5,14 @@ interface GoogleSignInButtonProps {
   mode: "signin" | "signup";
   disabled?: boolean;
   onLoading?: (loading: boolean) => void;
+  /** Same-origin relative path to return to after Google finishes. */
+  nextPath?: string;
 }
 export const GoogleSignInButton = ({
   mode,
   disabled = false,
-  onLoading
+  onLoading,
+  nextPath
 }: GoogleSignInButtonProps) => {
   const handleGoogleSignIn = async () => {
     try {
@@ -19,7 +22,9 @@ export const GoogleSignInButton = ({
       } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/dashboard`,
+          redirectTo: `${window.location.origin}${
+            nextPath && nextPath.startsWith("/") && !nextPath.startsWith("//") ? nextPath : "/dashboard"
+          }`,
           queryParams: {
             access_type: 'offline',
             prompt: 'consent'
