@@ -69,7 +69,24 @@ serve(async (req) => {
     });
 
     const body = await req.json();
-    const { age, gender, lifestyle, lastCheckupYears, existingConditions, userId } = body;
+    const { age, gender, lifestyle, lastCheckupYears, existingConditions } = body;
+
+    // Derive user id ONLY from a verified JWT; never trust a client-supplied id.
+    let verifiedUserId: string | null = null;
+    const authHeader = req.headers.get('Authorization') ?? '';
+    if (authHeader.toLowerCase().startsWith('bearer ')) {
+      const token = authHeader.slice(7).trim();
+      if (token) {
+        try {
+          const { data: userData, error: userErr } = await supabase.auth.getUser(token);
+          if (!userErr && userData?.user?.id) {
+            verifiedUserId = userData.user.id;
+          }
+        } catch (e) {
+          console.warn('hidden-gap-detector: failed to verify JWT', e);
+        }
+      }
+    }
 
     if (!age || typeof age !== 'number' || age < 18 || age > 120) {
       return new Response(
