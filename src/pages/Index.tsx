@@ -217,11 +217,10 @@ const Index = () => {
                   Your <span className="text-[#22c0d4]">health</span> is your greatest <span className="text-[#e70d69]">asset.</span>
                 </p>
                 <div className="w-3/4 mx-auto mb-8">
-                  <div className="h-1 w-full rounded-full overflow-hidden flex" aria-hidden="true">
-                    <div className="h-full w-1/3 bg-[#F5F5F5]" />
-                    <div className="h-full w-1/3 bg-[#22c0d4]" />
-                    <div className="h-full w-1/3 bg-[#e70d69]" />
-                  </div>
+                  <div
+                    className="h-[2px] w-full rounded-full bg-gradient-to-r from-[#22c0d4] via-[#e70d69] to-[#22c0d4]"
+                    aria-hidden="true"
+                  />
                 </div>
                 <div className="flex flex-col items-center gap-4 sm:grid sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-start sm:gap-0 w-full mx-auto mb-6 sm:mb-8">
                   <h2
