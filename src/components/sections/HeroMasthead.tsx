@@ -164,31 +164,12 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
       <div className="relative rounded-t-[18px] overflow-hidden mt-1.5 sm:mt-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
         {SLIDES.map((s, n) => {
           const active = n === activeIndex;
-          const nextIndex = (activeIndex + 1) % SLIDES.length;
-          const shouldMountVideo = Boolean(s.video) && !reducedMotion && (active || n === nextIndex);
           const commonStyle = {
             opacity: active ? 1 : 0,
             ["--pos-m" as string]: s.posMobile,
             ["--pos-t" as string]: s.posTablet,
             ["--pos-d" as string]: s.posDesktop,
           };
-          if (shouldMountVideo) {
-            return (
-              <video
-                key={`v-${n}`}
-                ref={(el) => { videoRefs.current[n] = el; }}
-                src={s.video ?? undefined}
-                poster={s.src}
-                muted
-                playsInline
-                preload={active ? "auto" : "metadata"}
-                onEnded={advance}
-                aria-hidden={!active}
-                className="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-                style={commonStyle}
-              />
-            );
-          }
           return (
             <img
               key={`i-${n}`}
@@ -206,6 +187,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
             />
           );
         })}
+
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
         <div className="hidden lg:block absolute left-[18px] bottom-[18px] pointer-events-none max-w-[45%]">
           <span key={`label-${i % SLIDES.length}`} className="inline-flex items-center gap-1.5 sm:gap-2 px-2 py-0.5 sm:px-3 sm:py-1.5 rounded-full bg-[#081129]/45 backdrop-blur-sm border border-white/20 text-white text-[11px] sm:text-sm md:text-base lg:text-xl font-semibold font-[Montserrat] animate-fade-in">
