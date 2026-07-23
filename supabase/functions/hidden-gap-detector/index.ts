@@ -263,11 +263,11 @@ Rules:
       }));
     }
 
-    // Store result if user is authenticated (GDPR: auto-deleted after 90 days via cleanup policy)
-    if (userId) {
+    // Store result only for the authenticated user (never a client-supplied id).
+    if (verifiedUserId) {
       try {
         await supabase.from('health_queries').insert({
-          user_id: userId,
+          user_id: verifiedUserId,
           query_text: `Hidden Gap Detector — age:${age} gender:${gender} lifestyle:${lifestyle ?? 'unknown'}`,
           age,
           gender,
