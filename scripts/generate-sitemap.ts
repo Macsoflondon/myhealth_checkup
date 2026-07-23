@@ -129,7 +129,7 @@ const rawEntries: SitemapEntry[] = [
     "priority": "0.8"
   },
   {
-    "path": "/tests/heart-health",
+    "path": "/tests/heart",
     "lastmod": "2026-04-09",
     "changefreq": "weekly",
     "priority": "0.8"
