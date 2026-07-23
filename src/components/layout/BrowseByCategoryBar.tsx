@@ -90,6 +90,13 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                   })}
                 </div>
               </nav>
+              <div className="border-t border-[#081129]/10 bg-white px-4 py-3 flex items-center justify-between gap-3">
+                <span className="text-xs font-semibold text-[#081129]/60 font-[Montserrat] uppercase tracking-wider">Account & language</span>
+                <div className="flex items-center gap-1">
+                  <LanguageSwitcher />
+                  <UserMenu />
+                </div>
+              </div>
             </SheetContent>
           </Sheet>
         </div>
