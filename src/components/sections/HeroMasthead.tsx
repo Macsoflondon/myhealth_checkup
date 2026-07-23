@@ -5,18 +5,15 @@ import HeroSalesTestCard from "@/components/sections/HeroSalesTestCard";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 import { useHeroPopularTests } from "@/hooks/queries/useHeroPopularTests";
 
-// ── Brand ────────────────────────────────────────────────────
 const TURQUOISE = "#22c0d4";
 const PINK = "#e70d69";
 
-// ── Hero carousel images ────────────────────
 import joggingWoman from "@/assets/hero/hero-jogging-woman.png";
 import clinicReceptionAsset from "@/assets/hero/hero-clinic-reception.png.asset.json";
 import seniorCoupleAsset from "@/assets/hero/hero-senior-couple.png.asset.json";
 import benchPhoneAsset from "@/assets/hero/hero-bench-phone.png.asset.json";
 import bloodTestKitAsset from "@/assets/hero/hero-blood-test-kit.png.asset.json";
 
-// ── Hero carousel videos (looping cinemagraphs) ───────
 import clipJoggingAsset from "@/assets/hero/video/clip-jogging.mp4.asset.json";
 import clipClinicAsset from "@/assets/hero/video/clip-clinic-reception.mp4.asset.json";
 import clipSeniorAsset from "@/assets/hero/video/clip-senior-couple.mp4.asset.json";
@@ -28,7 +25,6 @@ const seniorCouple = seniorCoupleAsset.url;
 const benchPhone = benchPhoneAsset.url;
 const bloodTestKit = bloodTestKitAsset.url;
 
-// Per-slide focal points tuned for mobile / tablet / desktop crops
 const SLIDES = [
   {
     src: joggingWoman,
@@ -100,10 +96,6 @@ export interface HeroAdvert {
   clinicalReviewType: string | null;
 }
 
-interface HeroMastheadProps {
-  rotateMs?: number;
-}
-
 const Wordmark = () => (
   <span className="inline-flex items-center leading-[1.1] min-w-0 py-1">
     <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(2rem,4vw,3.75rem)] lg:text-[5rem] xl:text-[6rem]">
@@ -113,12 +105,10 @@ const Wordmark = () => (
   </span>
 );
 
-export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
+export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }) {
   const [i, setI] = useState(0);
   const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const activeIndex = i % SLIDES.length;
-
-  // Detect reduced-motion (fallback to timer-based advance).
   const [reducedMotion, setReducedMotion] = useState(false);
   useEffect(() => {
     if (typeof window === "undefined" || !window.matchMedia) return;
@@ -128,38 +118,24 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
     mq.addEventListener?.("change", onChange);
     return () => mq.removeEventListener?.("change", onChange);
   }, []);
-
   const advance = useCallback(() => setI((n) => n + 1), []);
-
-  // Play the active video from the start; pause the others.
   useEffect(() => {
     videoRefs.current.forEach((v, idx) => {
       if (!v) return;
       if (idx === activeIndex && !reducedMotion) {
-        try {
-          v.currentTime = 0;
-        } catch {
-          /* ignore */
-        }
-        v.play().catch(() => {
-          /* autoplay may be blocked — timer fallback below still advances */
-        });
+        try { v.currentTime = 0; } catch { }
+        v.play().catch(() => { });
       } else {
         v.pause();
       }
     });
   }, [activeIndex, reducedMotion]);
-
-  // Fallback timer: advances if a video fails to fire `ended`.
   useEffect(() => {
     const ms = reducedMotion ? Math.max(1200, rotateMs) : 11000;
     const id = setTimeout(advance, ms);
     return () => clearTimeout(id);
   }, [activeIndex, advance, reducedMotion, rotateMs]);
-
-  // ── Live data from Supabase ────────────
   const { data: popularTests } = useHeroPopularTests();
-
   const adverts: HeroAdvert[] = useMemo(() => {
     if (!popularTests || popularTests.length === 0) return [];
     return popularTests
@@ -187,30 +163,20 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         };
       });
   }, [popularTests]);
-
   const slide = SLIDES[activeIndex];
   const ad = adverts.length ? adverts[i % adverts.length] : null;
-
   return (
     <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border border-b-0 border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[78svh] sm:min-h-[100svh] flex flex-col">
-      <TestCategoryTicker
-        variant="inline"
-        className="bg-white border-b border-brand-navy/10 -mx-3 sm:-mx-6 md:-mx-9"
-      />
-
+      <TestCategoryTicker variant="inline" className="bg-white border-b border-brand-navy/10 -mx-3 sm:-mx-6 md:-mx-9" />
       <div className="hidden sm:flex items-center border-b border-white/10 pb-2 pt-4 sm:pt-7">
-        <div>
-          <Wordmark />
-        </div>
+        <div><Wordmark /></div>
       </div>
       <div className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-1.5 sm:pb-2 mt-2.5 sm:mt-6 md:mt-8">
         <h1 className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white leading-[1.15] text-[clamp(0.85rem,4.2vw,3.25rem)] sm:whitespace-nowrap sm:text-[clamp(0.95rem,2.8vw,2.25rem)] m-0">
-          YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR{" "}
-          <span className="text-brand-pink">CHOICE.</span> ONE TRUSTED PLATFORM.
+          YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span> ONE TRUSTED PLATFORM.
         </h1>
       </div>
       <div className="relative rounded-t-[18px] overflow-hidden mt-1.5 sm:mt-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
-
         {SLIDES.map((s, n) => {
           const active = n === activeIndex;
           const nextIndex = (activeIndex + 1) % SLIDES.length;
@@ -225,9 +191,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
             return (
               <video
                 key={`v-${n}`}
-                ref={(el) => {
-                  videoRefs.current[n] = el;
-                }}
+                ref={(el) => { videoRefs.current[n] = el; }}
                 src={s.video ?? undefined}
                 poster={s.src}
                 muted
@@ -257,24 +221,13 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
             />
           );
         })}
-
-
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
-
         <div className="hidden lg:block absolute left-[18px] bottom-[18px] pointer-events-none max-w-[45%]">
-          <span
-            key={`label-${i % SLIDES.length}`}
-            className="inline-flex items-center gap-1.5 sm:gap-2 px-2 py-0.5 sm:px-3 sm:py-1.5 rounded-full bg-[#081129]/45 backdrop-blur-sm border border-white/20 text-white text-[11px] sm:text-sm md:text-base lg:text-xl font-semibold font-[Montserrat] animate-fade-in"
-          >
-            <span
-              className="w-1.5 h-1.5 sm:w-[7px] sm:h-[7px] rounded-full shrink-0"
-              style={{ background: "#22c0d4" }}
-            />
+          <span key={`label-${i % SLIDES.length}`} className="inline-flex items-center gap-1.5 sm:gap-2 px-2 py-0.5 sm:px-3 sm:py-1.5 rounded-full bg-[#081129]/45 backdrop-blur-sm border border-white/20 text-white text-[11px] sm:text-sm md:text-base lg:text-xl font-semibold font-[Montserrat] animate-fade-in">
+            <span className="w-1.5 h-1.5 sm:w-[7px] sm:h-[7px] rounded-full shrink-0" style={{ background: "#22c0d4" }} />
             {slide.label}
           </span>
         </div>
-
-
         {ad && (
           <div className="hidden sm:block">
             <HeroSalesTestCard ad={ad} />
