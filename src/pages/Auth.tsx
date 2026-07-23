@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { Button } from "@/components/ui/button";
@@ -42,6 +42,11 @@ const Auth = () => {
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  // Validate ?next= is a same-origin relative path before honouring it.
+  const rawNext = searchParams.get("next") ?? "";
+  const nextPath = rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : "";
+  const afterAuthTarget = nextPath || "/health-dashboard";
   const passwordStrength = validatePassword(password);
 
   // Clear any stale lockout data and load saved email on mount
@@ -91,12 +96,12 @@ const Auth = () => {
     }
   };
 
-  // Redirect authenticated users to dashboard
+  // Redirect authenticated users to the requested `next` target or the dashboard.
   useEffect(() => {
     if (!isLoading && user) {
-      navigate("/health-dashboard");
+      navigate(afterAuthTarget);
     }
-  }, [user, isLoading, navigate]);
+  }, [user, isLoading, navigate, afterAuthTarget]);
   const validateForm = (): boolean => {
     let isValid = true;
 
@@ -163,7 +168,7 @@ const Auth = () => {
               first_name: firstName.trim(),
               last_name: lastName.trim()
             },
-            emailRedirectTo: `${window.location.origin}/`
+            emailRedirectTo: `${window.location.origin}${afterAuthTarget}`
           }
         });
         if (error) {
@@ -233,7 +238,7 @@ const Auth = () => {
         }
         
         toast.success("Logged in successfully!");
-        navigate("/health-dashboard");
+        navigate(afterAuthTarget);
       }
     } catch (error) {
       toast.error("An unexpected error occurred. Please try again.");
@@ -423,7 +428,7 @@ const Auth = () => {
             </div>
 
             <div className="flex flex-col gap-3">
-              <GoogleSignInButton mode={isSignUp ? "signup" : "signin"} disabled={loading || (!isSignUp && isLocked)} onLoading={setLoading} />
+              <GoogleSignInButton mode={isSignUp ? "signup" : "signin"} disabled={loading || (!isSignUp && isLocked)} onLoading={setLoading} nextPath={nextPath} />
             </div>
 
             <div className="text-center mt-2">

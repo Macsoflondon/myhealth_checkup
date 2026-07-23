@@ -50,8 +50,6 @@ export function toUnifiedCardProps(
     markers: test.markers ?? [],
     url: test.url ?? undefined,
     testDetails: test,
-    is_addon: !!test.is_addon,
-    purchase_notes: test.purchase_notes ?? undefined,
     ...overrides,
   };
 }

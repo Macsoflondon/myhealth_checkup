@@ -4,6 +4,7 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { ogMetaPlugin } from "./plugins/ogMetaPlugin";
 import { visualizer } from "rollup-plugin-visualizer";
+import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/supabase/vite";
 // Touch: forces Vite dev-server restart to clear stale module graph after asset migration.
 
 
@@ -18,6 +19,7 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
+      mcpPlugin(),
       mode === 'development' && componentTagger(),
       mode === 'production' && ogMetaPlugin(),
       analyze && visualizer({
