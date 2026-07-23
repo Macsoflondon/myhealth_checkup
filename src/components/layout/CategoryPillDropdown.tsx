@@ -83,9 +83,9 @@ export function CategoryPillDropdown({ item, color, Icon, compact }: Props) {
         aria-current={isActiveParent ? "page" : undefined}
         aria-haspopup={hasDropdown ? "menu" : undefined}
         aria-expanded={hasDropdown ? open : undefined}
-        className={`group inline-flex max-w-[220px] items-center rounded-full no-underline bg-white border-[1.5px] hover:-translate-y-0.5 transition-all duration-200 shrink-0 md:max-w-[150px] lg:max-w-[170px] xl:max-w-[190px] 2xl:max-w-none ${
+        className={`group inline-flex max-w-[260px] items-center rounded-full no-underline bg-white border-[1.5px] hover:-translate-y-0.5 transition-all duration-200 shrink-0 md:max-w-[190px] lg:max-w-[210px] xl:max-w-[235px] 2xl:max-w-none ${
           compact
-            ? "gap-1 pl-2 pr-2.5 py-1.5 sm:gap-1.5 sm:pl-2.5 sm:pr-3 sm:py-2"
+            ? "gap-2 pl-4 pr-5 py-3 sm:gap-2.5 sm:pl-5 sm:pr-6 sm:py-3.5"
             : "gap-2 pl-4 pr-5 sm:pl-5 sm:pr-6 py-4 sm:py-[18px]"
         }`}
         style={{
@@ -106,20 +106,20 @@ export function CategoryPillDropdown({ item, color, Icon, compact }: Props) {
         <span
           className={`rounded-full inline-flex items-center justify-center shrink-0 ${
             compact
-              ? "w-[16px] h-[16px] sm:w-[18px] sm:h-[18px]"
+              ? "w-[30px] h-[30px] sm:w-[34px] sm:h-[34px]"
               : "w-[26px] h-[26px] sm:w-[30px] sm:h-[30px]"
           }`}
           style={{ background: `${color}1a` }}
         >
           <Icon
-            className={compact ? "w-[9px] h-[9px] sm:w-[10px] sm:h-[10px]" : "w-[16px] h-[16px] sm:w-[18px] sm:h-[18px]"}
+            className={compact ? "w-[16px] h-[16px] sm:w-[19px] sm:h-[19px]" : "w-[16px] h-[16px] sm:w-[18px] sm:h-[18px]"}
             style={{ color }}
             strokeWidth={2}
           />
         </span>
         <span
           className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${
-            compact ? "min-w-0 truncate text-[10px] sm:text-[10.5px] lg:text-[11px] 2xl:text-xs" : "min-w-0 truncate text-[15px] sm:text-[17px]"
+            compact ? "min-w-0 truncate text-[14px] sm:text-[15px] lg:text-[15.5px] 2xl:text-base" : "min-w-0 truncate text-[15px] sm:text-[17px]"
           }`}
         >
           {item.name}
@@ -127,7 +127,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact }: Props) {
         {hasDropdown && (
           <ChevronDown
             className={`text-[#081129]/60 transition-transform ${open ? "rotate-180" : ""} ${
-              compact ? "w-2.5 h-2.5 shrink-0" : "w-4 h-4 shrink-0"
+              compact ? "w-4 h-4 shrink-0" : "w-4 h-4 shrink-0"
             }`}
           />
         )}

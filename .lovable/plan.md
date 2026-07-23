@@ -1,48 +1,40 @@
-## Plan
+Plan:
 
-### 1. Replace segmented divider with true tricolour gradient
+1. **Fix the toolbar size where it actually renders**
+   - Update the `compact` branch used by the homepage hero toolbar, not just the larger non-compact variant.
+   - Make each dropdown pill roughly **2x the current visible size** by increasing:
+     - vertical padding
+     - horizontal padding
+     - icon circle size
+     - icon size
+     - label font size
+     - dropdown chevron size
+   - Apply the same sizing to the **More** pill so the row looks consistent.
+   - Keep the toolbar on one clean row on desktop where possible, with wrapping only if the viewport genuinely cannot fit it.
 
-`src/pages/Index.tsx` (lines 219–225) — inside the navy "Your health is your greatest asset" card.
+2. **Keep the toolbar premium and brand-aligned**
+   - Preserve the white pill style, navy text, turquoise/pink accents, Montserrat typography, and rounded capsule shape.
+   - Avoid changing the mobile drawer unless the enlarged desktop toolbar creates a direct consistency issue.
 
-Current: three equal solid blocks (pearl / turquoise / pink), centred at `w-3/4`.
-Target (per screenshot): a single thin horizontal line running turquoise → pink → turquoise, sitting on the navy background.
+3. **Replace the trust carousel with a static trust row**
+   - Remove the duplicated item loop and animation logic from `AccreditedProvidersBar`.
+   - Render the eight trust standards once only:
+     - UKAS-Accredited Labs
+     - CQC-Regulated Clinics
+     - ISO 15189 Certification
+     - GDPR Compliant
+     - Transparent Pricing
+     - No GP Referral Needed
+     - Data Never Shared
+     - Trusted Comparison
+   - Display them across the navy area below the toolbar as a normal static row, not a moving carousel.
 
-Replace the three-div stripe with:
+4. **Responsive behaviour**
+   - Desktop/wide screens: show all trust icons across in one line.
+   - Tablet/smaller widths: allow clean wrapping into two rows rather than clipping or scrolling.
+   - Keep spacing tight enough that the section does not become too tall.
 
-```tsx
-<div className="w-3/4 mx-auto mb-8">
-  <div
-    className="h-[2px] w-full rounded-full bg-gradient-to-r from-[#22c0d4] via-[#e70d69] to-[#22c0d4]"
-    aria-hidden="true"
-  />
-</div>
-```
-
-Matches the existing tricolour treatment used in `MissionSection.tsx` (`from-brand-turquoise via-brand-pink to-brand-turquoise`).
-
-### 2. Enlarge desktop category toolbar buttons ~50%
-
-`src/components/layout/CategoryPillDropdown.tsx` — non-compact branch (compact stays untouched, used only inside the hero stack).
-
-- Pill padding: `pl-2.5 pr-3 sm:pl-3 sm:pr-3.5 py-2.5 sm:py-3` → `pl-4 pr-5 sm:pl-5 sm:pr-6 py-4 sm:py-[18px]`
-- Icon bubble: `w-[18px] h-[18px] sm:w-[20px] sm:h-[20px]` → `w-[26px] h-[26px] sm:w-[30px] sm:h-[30px]`
-- Icon glyph: `w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]` → `w-[16px] h-[16px] sm:w-[18px] sm:h-[18px]`
-- Label: `text-[11px] sm:text-[11.5px]` → `text-[15px] sm:text-[17px]`
-- Chevron: `w-2.5 h-2.5` → `w-4 h-4`
-- Gap: `gap-1.5` → `gap-2`
-- Max-width caps: `md:max-w-[104px] lg:max-w-[112px] xl:max-w-[118px]` → `md:max-w-[150px] lg:max-w-[170px] xl:max-w-[190px]` so labels aren't over-truncated at the larger font size.
-
-`src/components/layout/BrowseByCategoryBar.tsx` — match on the "More" pill and the bar chrome (non-compact branch only):
-
-- More button padding: `pl-1.5 pr-2 sm:pl-2 sm:pr-2.5 py-1 sm:py-1.5` → `pl-4 pr-5 sm:pl-5 sm:pr-6 py-4 sm:py-[18px]`
-- More icon bubble/glyph and label bumped to the same sizes as the category pills.
-- Outer card padding: `px-2 sm:px-3 py-2.5 sm:py-3` → `px-3 sm:px-4 py-4 sm:py-5` so the taller pills breathe.
-- Language/User controls: leave default scale.
-
-### 3. Verify
-
-Playwright screenshot at 1280 and 1440 px to confirm:
-- Bar still fits on a single row (labels may wrap onto a second row on smaller laptops — acceptable, existing flex-wrap handles it).
-- Divider renders as one continuous turquoise→pink→turquoise line.
-
-No routing, data, or backend changes.
+5. **Verify visually**
+   - Check the homepage at the current desktop viewport.
+   - Confirm the toolbar pills are visibly double the current size.
+   - Confirm the trust icons are static and all visible at once in the blue/navy band.
