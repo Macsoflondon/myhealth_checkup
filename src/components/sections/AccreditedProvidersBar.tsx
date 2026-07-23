@@ -1,4 +1,3 @@
-import { useEffect, useRef } from "react";
 import { ShieldCheck, BadgeCheck, FlaskConical, Lock, Tag, Stethoscope, EyeOff, Star, type LucideIcon } from "lucide-react";
 import { Reveal } from "@/components/primitives/Reveal";
 
@@ -46,70 +45,9 @@ const BadgePill = ({ item, tone }: BadgePillProps) => {
 };
 
 /**
- * Trust signals bar — single-row auto-scrolling carousel of all standards.
- * Pauses on hover.
+ * Trust signals bar — static standards row.
  */
 const AccreditedProvidersBar = () => {
-  // Duplicate items so the -50% translate loops seamlessly.
-  const loop = [...trustItems, ...trustItems];
-  const trackRef = useRef<HTMLDivElement>(null);
-  const pausedRef = useRef(false);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-
-    let animationId = 0;
-    let lastTime = 0;
-    let position = 0;
-    let singleSetWidth = 0;
-
-    const measureSetWidth = () => {
-      singleSetWidth = Array.from(track.children)
-        .slice(0, trustItems.length)
-        .reduce((total, child) => total + (child as HTMLElement).getBoundingClientRect().width, 0);
-    };
-
-    const animate = (timestamp: number) => {
-      animationId = requestAnimationFrame(animate);
-
-      if (document.hidden || pausedRef.current) {
-        lastTime = 0;
-        return;
-      }
-
-      if (lastTime === 0) {
-        lastTime = timestamp;
-        return;
-      }
-
-      const delta = Math.min(timestamp - lastTime, 50);
-      lastTime = timestamp;
-
-      if (singleSetWidth <= 0) measureSetWidth();
-      position -= 0.045 * delta;
-
-      if (singleSetWidth > 0 && Math.abs(position) >= singleSetWidth) {
-        position += singleSetWidth;
-      }
-
-      track.style.transform = `translate3d(${position}px, 0, 0)`;
-    };
-
-    measureSetWidth();
-    document.fonts?.ready?.then(measureSetWidth).catch(() => undefined);
-
-    const resizeObserver = new ResizeObserver(measureSetWidth);
-    resizeObserver.observe(track);
-
-    animationId = requestAnimationFrame(animate);
-
-    return () => {
-      cancelAnimationFrame(animationId);
-      resizeObserver.disconnect();
-    };
-  }, []);
-
   return (
     <section
       aria-label="Accredited provider standards"
@@ -123,31 +61,16 @@ const AccreditedProvidersBar = () => {
         </Reveal>
 
         <div
-          className="relative overflow-hidden"
-          data-testid="accreditors-carousel"
+          className="flex flex-wrap items-center justify-center gap-y-3 lg:flex-nowrap"
+          data-testid="accreditors-static-row"
         >
-          <div
-            ref={trackRef}
-            className="mhc-standards-carousel flex w-max items-center"
-            onMouseEnter={() => {
-              pausedRef.current = true;
-            }}
-            onMouseLeave={() => {
-              pausedRef.current = false;
-            }}
-          >
-            {loop.map((item, i) => (
-              <BadgePill
-                key={`${item.label}-${i}`}
-                item={item}
-                tone={i % 2 === 0 ? "turquoise" : "pink"}
-              />
-            ))}
-          </div>
-
-          {/* Edge fades */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-10 sm:w-16 bg-gradient-to-r from-[#081129] to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-10 sm:w-16 bg-gradient-to-l from-[#081129] to-transparent" />
+          {trustItems.map((item, i) => (
+            <BadgePill
+              key={item.label}
+              item={item}
+              tone={i % 2 === 0 ? "turquoise" : "pink"}
+            />
+          ))}
         </div>
       </div>
     </section>
