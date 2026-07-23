@@ -248,7 +248,7 @@ export default function BrowseByCategoryBar({
                           {hasSubs && (
                             <button
                               type="button"
-                              aria-label={`${isExpanded ? "Collapse" : "Expand"} ${item.name} subcategories`}
+                              aria-label="Collapse subcategories"
                               aria-expanded={isExpanded}
                               onClick={() =>
                                 setMobileExpanded((cur) => (cur === item.name ? null : item.name))
@@ -309,13 +309,11 @@ export default function BrowseByCategoryBar({
         </div>
       </div>
 
-      {/* DESKTOP: existing pill card layout */}
       <div className={`hidden md:block sticky top-0 z-50 ${wrapperClass}`} data-testid="browse-by-category-bar">
         <div
-          className={`${compact ? "px-2 py-3 sm:px-3 sm:py-3.5" : "px-2 sm:px-3 py-3.5 sm:py-4"} transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
+          className={`${compact ? "px-2 py-2 sm:px-3 sm:py-2.5" : "px-2 sm:px-3 py-2.5 sm:py-3"} transition-[background-color,box-shadow,border-color,border-radius,backdrop-filter] duration-300 ${innerClass}`}
         >
           <div className="flex items-center justify-center gap-x-1.5 gap-y-2 sm:gap-x-2 flex-wrap max-w-full">
-            {/* Category pill strip participates in the same wrapping flow as More/account controls */}
             <div
               className="contents"
               data-testid="category-pill-strip"
@@ -334,7 +332,6 @@ export default function BrowseByCategoryBar({
               })}
             </div>
 
-            {/* More dropdown */}
             <div ref={moreRef} className="relative shrink-0">
               <button
                 type="button"
@@ -342,11 +339,11 @@ export default function BrowseByCategoryBar({
                 aria-expanded={moreOpen}
                 onClick={() => setMoreOpen((o) => !o)}
                 className={`inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 hover:-translate-y-0.5 transition-all duration-200 ${
-                  compact ? "gap-0.5 pl-1.5 pr-2 py-1.5 sm:gap-1 sm:pl-2 sm:pr-2.5 sm:py-2" : "gap-1.5 pl-2.5 pr-3 sm:pl-3 sm:pr-3.5 py-2.5 sm:py-3"
+                  compact ? "gap-0.5 pl-1 pr-1.5 py-0.5 sm:gap-1 sm:pl-1.5 sm:pr-2 sm:py-0.5" : "gap-1.5 pl-1.5 pr-2 sm:pl-2 sm:pr-2.5 py-1 sm:py-1.5"
                 }`}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.borderColor = PINK;
-                  e.currentTarget.style.boxShadow = `0 8px 20px ${PINK}26`;
+                  e.currentTarget.style.borderColor = "#e70d69";
+                  e.currentTarget.style.boxShadow = "0 8px 20px rgba(231,13,105,0.15)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.borderColor = "rgba(8,17,41,0.1)";
@@ -357,11 +354,13 @@ export default function BrowseByCategoryBar({
                   className={`rounded-full inline-flex items-center justify-center shrink-0 ${
                     compact ? "w-[15px] h-[15px] sm:w-[17px] sm:h-[17px]" : "w-[18px] h-[18px] sm:w-[20px] sm:h-[20px]"
                   }`}
-                  style={{ background: `${PINK}1a` }}
+                  style={{ background: "rgba(231,13,105,0.1)" }}
                 >
-                  <MoreHorizontal className={`${compact ? "w-[9px] h-[9px] sm:w-[10px] sm:h-[10px]" : "w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]"}`} style={{ color: PINK }} strokeWidth={2} />
+                  <MoreHorizontal className={`${compact ? "w-[9px] h-[9px] sm:w-[10px] sm:h-[10px]" : "w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]"}`} style={{ color: "#e70d69" }} strokeWidth={2} />
                 </span>
-                <span className={`font-semibold text-[#081129] font-[Montserrat] ${compact ? "text-[9.5px] sm:text-[10.5px]" : "text-[11px] sm:text-[11.5px]"}`}>
+                <span className={`font-semibold text-[#081129] font-[Montserrat] ${
+                  compact ? "text-[9.5px] sm:text-[10.5px]" : "text-[11px] sm:text-[11.5px]"
+                }`}>
                   More
                 </span>
                 <ChevronDown
@@ -377,7 +376,6 @@ export default function BrowseByCategoryBar({
               )}
             </div>
 
-            {/* Right cluster — desktop */}
             <div
               className={`flex items-center shrink-0 ${compact ? "gap-0" : "gap-1"}`}
             >
