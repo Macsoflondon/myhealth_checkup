@@ -51,7 +51,7 @@
     "@testing-library/react": "^16.3.2",
     "@types/react-helmet": "^6.1.11",
     "baseline-browser-mapping": "^2.10.42",
-    "canius-lite": "^1.0.30001803",
+    "caniuse-lite": "^1.0.30001803",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
