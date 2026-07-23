@@ -2,7 +2,7 @@ import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2.51.0";
 import { generateText } from "npm:ai";
 import { z } from "npm:zod";
-import { createLovableAiGatewayProvider } from "../_shared/ai-gateway.ts";
+import { createOpenAI } from "npm:@ai-sdk/openai";
 
 type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 type SupabaseClient = ReturnType<typeof createClient<Database>>;
@@ -299,7 +299,7 @@ async function logOperation(
     success: details.success,
     error_type: details.errorType || null,
     error_message: details.errorMessage || null,
-    model: details.model || "google/gemini-3.5-flash",
+    model: details.model || "gpt-4o-mini",
     metadata: { recommendations_count: details.recommendationsCount || 0 },
   });
 }
@@ -316,12 +316,12 @@ Deno.serve(async (req) => {
   const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
   const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") || Deno.env.get("SUPABASE_PUBLISHABLE_KEY") || "";
   const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
-  const lovableKey = Deno.env.get("LOVABLE_API_KEY") || "";
+  const openaiApiKey = Deno.env.get("OPENAI_API_KEY") || "";
 
   if (!supabaseUrl || !supabaseAnonKey || !supabaseServiceKey) {
     return jsonResponse({ error: "Recommendation service is not configured" }, 500);
   }
-  if (!lovableKey) {
+  if (!openaiApiKey) {
     return jsonResponse({ error: "AI recommendation service is not configured" }, 500);
   }
 
@@ -374,7 +374,7 @@ Deno.serve(async (req) => {
     const fallback = fallbackResult(body, candidates);
     let result = fallback;
 
-    const gateway = createLovableAiGatewayProvider(lovableKey);
+    const openai = createOpenAI({ apiKey: openaiApiKey });
     const candidatesForAi = candidates.slice(0, 30).map((candidate) => ({
       actualTestId: candidate.id,
       testName: candidate.testName,
@@ -389,44 +389,59 @@ Deno.serve(async (req) => {
       biomarkers: candidate.biomarkers.slice(0, 12),
     }));
 
-    const { text } = await generateText({
-      model: gateway("google/gemini-3.5-flash"),
-      system: `You are Lovable AI powering myhealth checkup's AI Wellness Recommendations. myhealth checkup is a UK private diagnostics comparison platform, not a medical provider. Use British English. Never diagnose, never claim a test confirms or rules out disease, and never imply NHS integration. Recommend only tests from the supplied candidate list.`,
-      prompt: `User request:\n${JSON.stringify(body)}\n\nCandidate tests:\n${JSON.stringify(candidatesForAi)}\n\nReturn ONLY a valid JSON object matching this TypeScript shape, with no markdown or commentary:\n{\n  "analysis": string,\n  "generalGuidance": string,\n  "whenToSeeDoctor": string,\n  "recommendedTests": [\n    {\n      "actualTestId": string,\n      "testName": string,\n      "provider": string,\n      "providerId": string,\n      "price": number | null,\n      "reason": string,\n      "category": string,\n      "urgency": "low" | "medium" | "high",\n      "confidence": number\n    }\n  ]\n}\n\nRecommend 1 to 3 tests.`,
-      temperature: 0.2,
-    });
+    try {
+      const { text } = await generateText({
+        model: openai("gpt-4o-mini"),
+        system: `You are an AI powering myhealth checkup's AI Wellness Recommendations. myhealth checkup is a UK private diagnostics comparison platform, not a medical provider. Use British English. Never diagnose, never claim a test confirms or rules out disease, and never imply NHS integration. Recommend only tests from the supplied candidate list.`,
+        prompt: `User request:\n${JSON.stringify(body)}\n\nCandidate tests:\n${JSON.stringify(candidatesForAi)}\n\nReturn ONLY a valid JSON object matching this TypeScript shape, with no markdown or commentary:\n{\n  "analysis": string,\n  "generalGuidance": string,\n  "whenToSeeDoctor": string,\n  "recommendedTests": [\n    {\n      "actualTestId": string,\n      "testName": string,\n      "provider": string,\n      "providerId": string,\n      "price": number | null,\n      "reason": string,\n      "category": string,\n      "urgency": "low" | "medium" | "high",\n      "confidence": number\n    }\n  ]\n}\n\nRecommend 1 to 3 tests.`,
+        temperature: 0.2,
+      });
 
-    const parsedAi = aiResponseSchema.safeParse(JSON.parse(stripJsonFences(text)));
-    if (!parsedAi.success) {
-      throw new Error("AI response did not match recommendation schema");
-    }
-    const object = parsedAi.data;
+      const parsedAi = aiResponseSchema.safeParse(JSON.parse(stripJsonFences(text)));
+      if (!parsedAi.success) {
+        console.error("[ai-human-context] AI response schema validation failed:", JSON.stringify(parsedAi.error.issues));
+        throw new Error("AI response did not match recommendation schema");
+      }
+      const object = parsedAi.data;
 
-    const candidateById = new Map(candidates.map((candidate) => [candidate.id, candidate]));
-    const normalisedRecommendations = object.recommendedTests.map((recommendation, index) => {
-      const candidate = recommendation.actualTestId ? candidateById.get(recommendation.actualTestId) : candidates[index];
-      const safeCandidate = candidate || candidates[index] || candidates[0];
-      return {
-        testName: safeCandidate.testName,
-        provider: safeCandidate.provider,
-        providerId: safeCandidate.providerId,
-        price: safeCandidate.price,
-        reason: recommendation.reason,
-        category: safeCandidate.category,
-        urgency: recommendation.urgency,
-        confidence: clampConfidence(recommendation.confidence),
-        actualTestId: safeCandidate.id,
+      const candidateById = new Map(candidates.map((candidate) => [candidate.id, candidate]));
+      const normalisedRecommendations = object.recommendedTests.map((recommendation, index) => {
+        const candidate = recommendation.actualTestId ? candidateById.get(recommendation.actualTestId) : candidates[index];
+        const safeCandidate = candidate || candidates[index] || candidates[0];
+        return {
+          testName: safeCandidate.testName,
+          provider: safeCandidate.provider,
+          providerId: safeCandidate.providerId,
+          price: safeCandidate.price,
+          reason: recommendation.reason,
+          category: safeCandidate.category,
+          urgency: recommendation.urgency,
+          confidence: clampConfidence(recommendation.confidence),
+          actualTestId: safeCandidate.id,
+        };
+      });
+
+      result = {
+        medicalDisclaimer: fallback.medicalDisclaimer,
+        analysis: object.analysis,
+        recommendedTests: normalisedRecommendations,
+        generalGuidance: object.generalGuidance,
+        whenToSeeDoctor: object.whenToSeeDoctor,
+        hasRecommendations: normalisedRecommendations.length > 0,
       };
-    });
-
-    result = {
-      medicalDisclaimer: fallback.medicalDisclaimer,
-      analysis: object.analysis,
-      recommendedTests: normalisedRecommendations,
-      generalGuidance: object.generalGuidance,
-      whenToSeeDoctor: object.whenToSeeDoctor,
-      hasRecommendations: normalisedRecommendations.length > 0,
-    };
+    } catch (aiError) {
+      const aiMessage = aiError instanceof Error ? aiError.message : "Unknown AI error";
+      console.error("[ai-human-context] AI generation failed, using fallback:", aiMessage);
+      await logOperation(serviceClient, {
+        userId,
+        latencyMs: Date.now() - startedAt,
+        success: false,
+        errorType: "ai_fallback_used",
+        errorMessage: `AI failed (${aiMessage.slice(0, 400)}), returned scoring-based fallback`,
+        model: "gpt-4o-mini",
+      });
+      result = fallback;
+    }
 
     if (userId) {
       await serviceClient.from("health_queries").insert({
@@ -448,6 +463,7 @@ Deno.serve(async (req) => {
     return jsonResponse(result);
   } catch (error) {
     const message = error instanceof Error ? error.message : "Unknown recommendation error";
+    console.error("[ai-human-context] Fatal error:", message);
     await logOperation(serviceClient, {
       userId,
       latencyMs: Date.now() - startedAt,
