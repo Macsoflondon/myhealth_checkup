@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 
 import { PROVIDER_LOGOS, normalizeProviderId, getProviderName } from "@/constants/providers";
 import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
@@ -16,12 +16,6 @@ import seniorCoupleAsset from "@/assets/hero/hero-senior-couple.png.asset.json";
 import benchPhoneAsset from "@/assets/hero/hero-bench-phone.png.asset.json";
 import bloodTestKitAsset from "@/assets/hero/hero-blood-test-kit.png.asset.json";
 
-import clipJoggingAsset from "@/assets/hero/video/clip-jogging.mp4.asset.json";
-import clipClinicAsset from "@/assets/hero/video/clip-clinic-reception.mp4.asset.json";
-import clipSeniorAsset from "@/assets/hero/video/clip-senior-couple.mp4.asset.json";
-import clipBenchAsset from "@/assets/hero/video/clip-bench-phone.mp4.asset.json";
-import clipKitAsset from "@/assets/hero/video/clip-blood-test-kit.mp4.asset.json";
-
 const clinicReception = clinicReceptionAsset.url;
 const seniorCouple = seniorCoupleAsset.url;
 const benchPhone = benchPhoneAsset.url;
@@ -30,7 +24,6 @@ const bloodTestKit = bloodTestKitAsset.url;
 const SLIDES = [
   {
     src: joggingWoman,
-    video: clipJoggingAsset.url,
     label: "Know Your Health. Own Your Future.",
     posMobile: "35% 55%",
     posTablet: "center 32%",
@@ -38,7 +31,6 @@ const SLIDES = [
   },
   {
     src: clinicReception,
-    video: clipClinicAsset.url,
     label: "Nationwide network of CQC-regulated clinics",
     posMobile: "60% 50%",
     posTablet: "center 50%",
@@ -46,7 +38,6 @@ const SLIDES = [
   },
   {
     src: seniorCouple,
-    video: clipSeniorAsset.url,
     label: "Proactive Health for Every Stage of Life",
     posMobile: "50% 40%",
     posTablet: "center 28%",
@@ -54,7 +45,6 @@ const SLIDES = [
   },
   {
     src: benchPhone,
-    video: clipBenchAsset.url,
     label: "Find the Right Test for You, Compare. Choose. Book.",
     posMobile: "55% 50%",
     posTablet: "center 40%",
@@ -62,13 +52,13 @@ const SLIDES = [
   },
   {
     src: bloodTestKit,
-    video: clipKitAsset.url,
     label: "Test from the Comfort of Home",
     posMobile: "40% 55%",
     posTablet: "40% 60%",
     posDesktop: "50% 65%",
   },
 ];
+
 
 const CATEGORY_META: Record<string, { color: string; to: string }> = {
   "general-health": { color: TURQUOISE, to: "/test/general-health" },
