@@ -41,6 +41,33 @@ serve(async (req) => {
       throw new Error('OpenAI API key not configured');
     }
 
+    // Per-IP rate limit to prevent abuse of the paid OpenAI endpoint
+    const ip =
+      req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+      req.headers.get('cf-connecting-ip') ??
+      'unknown';
+    const windowStart = new Date(
+      Date.now() - RATE_LIMIT_WINDOW_MIN * 60_000
+    ).toISOString();
+    const { count: recentCount } = await supabase
+      .from('api_rate_limits')
+      .select('*', { count: 'exact', head: true })
+      .eq('client_key', ip)
+      .eq('endpoint', 'hidden-gap-detector')
+      .gte('window_start', windowStart);
+    if ((recentCount ?? 0) >= RATE_LIMIT_MAX) {
+      return new Response(
+        JSON.stringify({ error: 'Too many requests. Please try again shortly.' }),
+        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    await supabase.from('api_rate_limits').insert({
+      client_key: ip,
+      endpoint: 'hidden-gap-detector',
+      window_start: new Date().toISOString(),
+      request_count: 1,
+    });
+
     const body = await req.json();
     const { age, gender, lifestyle, lastCheckupYears, existingConditions, userId } = body;
 
