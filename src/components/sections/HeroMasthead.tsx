@@ -99,7 +99,6 @@ const Wordmark = () => (
 
 export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }) {
   const [i, setI] = useState(0);
-  const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const activeIndex = i % SLIDES.length;
   const [reducedMotion, setReducedMotion] = useState(false);
   useEffect(() => {
@@ -112,21 +111,11 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
   }, []);
   const advance = useCallback(() => setI((n) => n + 1), []);
   useEffect(() => {
-    videoRefs.current.forEach((v, idx) => {
-      if (!v) return;
-      if (idx === activeIndex && !reducedMotion) {
-        try { v.currentTime = 0; } catch { }
-        v.play().catch(() => { });
-      } else {
-        v.pause();
-      }
-    });
-  }, [activeIndex, reducedMotion]);
-  useEffect(() => {
-    const ms = reducedMotion ? Math.max(1200, rotateMs) : 11000;
+    const ms = reducedMotion ? Math.max(1200, rotateMs) : rotateMs;
     const id = setTimeout(advance, ms);
     return () => clearTimeout(id);
   }, [activeIndex, advance, reducedMotion, rotateMs]);
+
   const { data: popularTests } = useHeroPopularTests();
   const adverts: HeroAdvert[] = useMemo(() => {
     if (!popularTests || popularTests.length === 0) return [];
