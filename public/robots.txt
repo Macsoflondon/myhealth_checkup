@@ -1,7 +1,10 @@
 # myhealth checkup — robots.txt
+# Indexing is intentionally allowed for all public pages.
+# Only auth, admin, dashboard, and account/private areas are blocked.
 
 User-agent: *
 Allow: /
+Allow: /sitemap.xml
 Disallow: /admin
 Disallow: /admin/
 Disallow: /auth
@@ -11,36 +14,64 @@ Disallow: /dashboard
 Disallow: /dashboard/
 Disallow: /health-dashboard
 Disallow: /client-portal
+Disallow: /portal
 Disallow: /notifications
 Disallow: /notification-history
+Disallow: /feedback
+Disallow: /typography-showcase
 
-# Sitemap
+# Sitemap — must remain crawlable so Googlebot can discover all public URLs.
 Sitemap: https://myhealthcheckup.co.uk/sitemap.xml
 
-# Major search bots — explicit allow
+# Major search bots — explicit allow of all public content
 User-agent: Googlebot
 Allow: /
+Allow: /sitemap.xml
 Disallow: /admin
+Disallow: /admin/
 Disallow: /auth
+Disallow: /auth/
+Disallow: /reset-password
 Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /health-dashboard
 Disallow: /client-portal
+Disallow: /portal
+Disallow: /notifications
+Disallow: /notification-history
+Disallow: /feedback
+Disallow: /typography-showcase
 
 User-agent: Bingbot
 Allow: /
+Allow: /sitemap.xml
 Disallow: /admin
+Disallow: /admin/
 Disallow: /auth
+Disallow: /auth/
+Disallow: /reset-password
 Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /health-dashboard
 Disallow: /client-portal
+Disallow: /portal
+Disallow: /notifications
+Disallow: /notification-history
+Disallow: /feedback
+Disallow: /typography-showcase
 
 # Social preview crawlers
 User-agent: Twitterbot
 Allow: /
+Allow: /sitemap.xml
 
 User-agent: facebookexternalhit
 Allow: /
+Allow: /sitemap.xml
 
 User-agent: LinkedInBot
 Allow: /
+Allow: /sitemap.xml
 
 # Throttle aggressive scrapers
 User-agent: AhrefsBot
@@ -52,57 +83,72 @@ Crawl-delay: 10
 # AI crawlers — explicit allow for citation/training discovery
 User-agent: GPTBot
 Allow: /
+Allow: /sitemap.xml
 Disallow: /admin
 Disallow: /auth
 Disallow: /dashboard
 Disallow: /client-portal
+Disallow: /portal
 
 User-agent: OAI-SearchBot
 Allow: /
+Allow: /sitemap.xml
 Disallow: /admin
 Disallow: /auth
 Disallow: /dashboard
 Disallow: /client-portal
+Disallow: /portal
 
 User-agent: ChatGPT-User
 Allow: /
+Allow: /sitemap.xml
 Disallow: /admin
 Disallow: /auth
 Disallow: /dashboard
 Disallow: /client-portal
+Disallow: /portal
 
 User-agent: ClaudeBot
 Allow: /
+Allow: /sitemap.xml
 Disallow: /admin
 Disallow: /auth
 Disallow: /dashboard
 Disallow: /client-portal
+Disallow: /portal
 
 User-agent: Claude-Web
 Allow: /
+Allow: /sitemap.xml
 Disallow: /admin
 Disallow: /auth
 Disallow: /dashboard
 Disallow: /client-portal
+Disallow: /portal
 
 User-agent: PerplexityBot
 Allow: /
+Allow: /sitemap.xml
 Disallow: /admin
 Disallow: /auth
 Disallow: /dashboard
 Disallow: /client-portal
+Disallow: /portal
 
 User-agent: Google-Extended
 Allow: /
+Allow: /sitemap.xml
 Disallow: /admin
 Disallow: /auth
 Disallow: /dashboard
 Disallow: /client-portal
+Disallow: /portal
 
 User-agent: Applebot-Extended
 Allow: /
+Allow: /sitemap.xml
 Disallow: /admin
 Disallow: /auth
 Disallow: /dashboard
 Disallow: /client-portal
-
+Disallow: /portal
