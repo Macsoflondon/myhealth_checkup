@@ -96,12 +96,12 @@ const Auth = () => {
     }
   };
 
-  // Redirect authenticated users to dashboard
+  // Redirect authenticated users to the requested `next` target or the dashboard.
   useEffect(() => {
     if (!isLoading && user) {
-      navigate("/health-dashboard");
+      navigate(afterAuthTarget);
     }
-  }, [user, isLoading, navigate]);
+  }, [user, isLoading, navigate, afterAuthTarget]);
   const validateForm = (): boolean => {
     let isValid = true;
 
