@@ -105,7 +105,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
               <button type="button" onClick={() => setMoreOpen((o) => !o)} className="inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 transition-all duration-200 gap-1 pl-2 pr-2.5 py-2 sm:gap-1.5 sm:pl-2.5 sm:pr-3 sm:py-2.5"><span className="rounded-full inline-flex items-center justify-center shrink-0 w-[20px] h-[20px] sm:w-[22px] sm:h-[22px]" style={{ background: "rgba(231,13,105,0.1)" }}><MoreHorizontal className="w-[12px] h-[12px] sm:w-[13px] sm:h-[13px]" style={{ color: "#e70d69" }} strokeWidth={2} /></span><span className="font-semibold text-[#081129] font-[Montserrat] text-[11.5px] sm:text-[12.5px] lg:text-[13px]">More</span><ChevronDown className={`text-[#081129]/60 transition-transform w-3.5 h-3.5 ${moreOpen ? "rotate-180" : ""}`} /></button>
               {moreOpen && <MoreDropdownMenu sections={moreNavigationSections} onItemClick={() => setMoreOpen(false)} onClose={() => setMoreOpen(false)} />}
             </div>
-            <div className={`flex items-center shrink-0 ${compact ? "gap-0" : "gap-1"}`}><div className={compact ? "scale-[0.78]" : ""}><LanguageSwitcher /></div><div className={compact ? "scale-[0.78]" : ""}><UserMenu /></div></div>
+            
           </div>
         </div>
       </div>
