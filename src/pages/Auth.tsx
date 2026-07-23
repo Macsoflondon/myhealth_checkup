@@ -168,7 +168,7 @@ const Auth = () => {
               first_name: firstName.trim(),
               last_name: lastName.trim()
             },
-            emailRedirectTo: `${window.location.origin}/`
+            emailRedirectTo: `${window.location.origin}${afterAuthTarget}`
           }
         });
         if (error) {
@@ -238,7 +238,7 @@ const Auth = () => {
         }
         
         toast.success("Logged in successfully!");
-        navigate("/health-dashboard");
+        navigate(afterAuthTarget);
       }
     } catch (error) {
       toast.error("An unexpected error occurred. Please try again.");
