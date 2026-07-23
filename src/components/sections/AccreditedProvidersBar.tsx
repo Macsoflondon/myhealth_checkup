@@ -61,7 +61,7 @@ const AccreditedProvidersBar = () => {
         </Reveal>
 
         <div
-          className="flex flex-wrap items-center justify-center gap-y-3 lg:flex-nowrap"
+          className="grid grid-cols-2 sm:grid-cols-4 gap-y-3 gap-x-3 justify-items-start sm:justify-items-center lg:flex lg:flex-nowrap lg:items-center lg:justify-center lg:gap-y-0"
           data-testid="accreditors-static-row"
         >
           {trustItems.map((item, i) => (
