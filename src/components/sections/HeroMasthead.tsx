@@ -1,26 +1,22 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
-import { PROVIDER_LOGOS } from "@/constants/providers";
+import { PROVIDER_LOGOS, normalizeProviderId, getProviderName } from "@/constants/providers";
 import HeroSalesTestCard from "@/components/sections/HeroSalesTestCard";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
-import { useHeroAdBiomarkers } from "@/hooks/queries/useHeroAdBiomarkers";
+import { useHeroPopularTests } from "@/hooks/queries/useHeroPopularTests";
 
-
-// ── Brand ─────────────────────────────────────────────────────────────
+// ── Brand ────────────────────────────────────────────────────
 const TURQUOISE = "#22c0d4";
 const PINK = "#e70d69";
-const NAVY = "#081129";
-const PEARL = "#F5F5F5";
 
-// ── Hero carousel images ──────────────────────────────────────────────
+// ── Hero carousel images ────────────────────
 import joggingWoman from "@/assets/hero/hero-jogging-woman.png";
 import clinicReceptionAsset from "@/assets/hero/hero-clinic-reception.png.asset.json";
 import seniorCoupleAsset from "@/assets/hero/hero-senior-couple.png.asset.json";
 import benchPhoneAsset from "@/assets/hero/hero-bench-phone.png.asset.json";
 import bloodTestKitAsset from "@/assets/hero/hero-blood-test-kit.png.asset.json";
 
-// ── Hero carousel videos (looping cinemagraphs) ───────────────────────
+// ── Hero carousel videos (looping cinemagraphs) ───────
 import clipJoggingAsset from "@/assets/hero/video/clip-jogging.mp4.asset.json";
 import clipClinicAsset from "@/assets/hero/video/clip-clinic-reception.mp4.asset.json";
 import clipSeniorAsset from "@/assets/hero/video/clip-senior-couple.mp4.asset.json";
@@ -76,76 +72,33 @@ const SLIDES = [
   },
 ];
 
-
-
-import { realTestData, type RealTestData } from "@/data/compare/realProviderData";
-
 const CATEGORY_META: Record<string, { color: string; to: string }> = {
-  "General Health": { color: TURQUOISE, to: "/test/general-health" },
-  Hormone: { color: PINK, to: "/hormones" },
-  Heart: { color: "#ef4444", to: "/tests/heart" },
-  Thyroid: { color: "#7c3aed", to: "/thyroid" },
-  Diabetes: { color: "#f59e0b", to: "/tests/diabetes" },
-  Fertility: { color: "#e70d69", to: "/fertility-tests" },
-  Vitamins: { color: "#16a34a", to: "/tests/vitamins" },
+  "general-health": { color: TURQUOISE, to: "/test/general-health" },
+  "heart": { color: "#ef4444", to: "/tests/heart" },
+  "thyroid": { color: "#7c3aed", to: "/thyroid" },
+  "diabetes": { color: "#f59e0b", to: "/tests/diabetes" },
+  "fertility": { color: PINK, to: "/fertility-tests" },
+  "vitamins": { color: "#16a34a", to: "/tests/vitamins" },
+  "cancer-screening": { color: "#dc2626", to: "/tests/cancer-screening" },
+  "hormone": { color: PINK, to: "/hormones" },
 };
 
-// providerName in realTestData → key in PROVIDER_LOGOS
-const PROVIDER_KEY: Record<string, keyof typeof PROVIDER_LOGOS> = {
-  Medichecks: "medichecks",
-  "Goodbody Clinic": "goodbody-clinic",
-  "London Medical Laboratory": "london-medical-laboratory",
-  Clinilabs: "clinilabs",
-};
-
-// Curated rotation: provider + preferred test name + display category
-const ROTATION: { provider: string; testName: string; category: string }[] = [
-  { provider: "Medichecks", testName: "Advanced Well Woman Blood Test", category: "General Health" },
-  { provider: "Goodbody Clinic", testName: "", category: "General Health" },
-  { provider: "London Medical Laboratory", testName: "", category: "General Health" },
-  { provider: "Clinilabs", testName: "", category: "General Health" },
-  { provider: "Medichecks", testName: "Cholesterol Blood Test", category: "Heart" },
-  { provider: "Medichecks", testName: "Thyroid Function Blood Test", category: "Thyroid" },
-];
-
-interface Advert {
+export interface HeroAdvert {
+  id: string;
   category: string;
   color: string;
   to: string;
   name: string;
   price: number;
   provider: string;
-  providerKey: keyof typeof PROVIDER_LOGOS;
+  providerKey: string;
   providerLogo: string;
   url: string;
+  markers: string[];
+  biomarkerCount: number | null;
+  turnaround: string | null;
+  clinicalReviewType: string | null;
 }
-
-function buildAdverts(): Advert[] {
-  return ROTATION.flatMap(({ provider, testName, category }) => {
-    const t: RealTestData | undefined =
-      (testName && realTestData.find((r) => r.Provider === provider && r["Test Name"] === testName)) ||
-      realTestData.find((r) => r.Provider === provider);
-    if (!t) return [];
-    const meta = CATEGORY_META[category] ?? { color: TURQUOISE, to: "/compare" };
-    const key = PROVIDER_KEY[t.Provider];
-    if (!key) return [];
-    return [
-      {
-        category,
-        color: meta.color,
-        to: meta.to,
-        name: t["Test Name"],
-        price: t["Price (£)"],
-        provider: t.Provider,
-        providerKey: key,
-        providerLogo: PROVIDER_LOGOS[key],
-        url: t["Test URL"],
-      },
-    ];
-  });
-}
-
-const ADVERTS: Advert[] = buildAdverts();
 
 interface HeroMastheadProps {
   rotateMs?: number;
@@ -179,8 +132,6 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
   const advance = useCallback(() => setI((n) => n + 1), []);
 
   // Play the active video from the start; pause the others.
-  // Reduced-motion: skip playback entirely — the poster PNG stays visible and
-  // the timer below still advances slides so the carousel remains functional.
   useEffect(() => {
     videoRefs.current.forEach((v, idx) => {
       if (!v) return;
@@ -199,28 +150,46 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
     });
   }, [activeIndex, reducedMotion]);
 
-  // Fallback timer: advances if a video fails to fire `ended` (blocked autoplay,
-  // network stall) or if the user prefers reduced motion. 11s = clip length + buffer.
+  // Fallback timer: advances if a video fails to fire `ended`.
   useEffect(() => {
     const ms = reducedMotion ? Math.max(1200, rotateMs) : 11000;
     const id = setTimeout(advance, ms);
     return () => clearTimeout(id);
   }, [activeIndex, advance, reducedMotion, rotateMs]);
 
-  const slide = SLIDES[activeIndex];
-  const adUrls = ADVERTS.map((a) => a.url);
-  const { data: adMetaMap } = useHeroAdBiomarkers(adUrls);
-  const baseAd = ADVERTS.length ? ADVERTS[i % ADVERTS.length] : null;
-  const meta = baseAd ? adMetaMap?.get(baseAd.url) : undefined;
-  const ad = baseAd
-    ? {
-        ...baseAd,
-        markers: meta?.markers ?? [],
-        biomarkerCount: meta?.biomarkerCount ?? null,
-        turnaround: meta?.turnaround ?? null,
-      }
-    : null;
+  // ── Live data from Supabase ────────────
+  const { data: popularTests } = useHeroPopularTests();
 
+  const adverts: HeroAdvert[] = useMemo(() => {
+    if (!popularTests || popularTests.length === 0) return [];
+    return popularTests
+      .filter((t) => t.totalExpectedCost != null && t.url)
+      .map((t) => {
+        const providerKey = normalizeProviderId(t.providerId);
+        const providerLogo = PROVIDER_LOGOS[providerKey] || "";
+        const category = t.canonicalCategory || "general-health";
+        const meta = CATEGORY_META[category] ?? { color: "#22c0d4", to: "/compare" };
+        return {
+          id: t.id,
+          category,
+          color: meta.color,
+          to: meta.to,
+          name: t.testName,
+          price: t.totalExpectedCost!,
+          provider: getProviderName(t.providerId),
+          providerKey,
+          providerLogo,
+          url: t.url!,
+          markers: t.biomarkersList,
+          biomarkerCount: t.biomarkerCount,
+          turnaround: t.turnaroundDaysText,
+          clinicalReviewType: t.clinicalReviewType,
+        };
+      });
+  }, [popularTests]);
+
+  const slide = SLIDES[activeIndex];
+  const ad = adverts.length ? adverts[i % adverts.length] : null;
 
   return (
     <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border border-b-0 border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[78svh] sm:min-h-[100svh] flex flex-col">
@@ -245,15 +214,12 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
         {SLIDES.map((s, n) => {
           const active = n === activeIndex;
           const nextIndex = (activeIndex + 1) % SLIDES.length;
-          // Only mount videos for active + next slide; others render as poster
-          // <img> to save bandwidth and keep the network light. When reduced
-          // motion is on, never mount videos at all — posters only.
           const shouldMountVideo = Boolean(s.video) && !reducedMotion && (active || n === nextIndex);
           const commonStyle = {
             opacity: active ? 1 : 0,
-            ["--pos-m" as any]: s.posMobile,
-            ["--pos-t" as any]: s.posTablet,
-            ["--pos-d" as any]: s.posDesktop,
+            ["--pos-m" as string]: s.posMobile,
+            ["--pos-t" as string]: s.posTablet,
+            ["--pos-d" as string]: s.posDesktop,
           };
           if (shouldMountVideo) {
             return (
@@ -274,8 +240,6 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
               />
             );
           }
-          // Poster fallback — also renders for slides not yet queued so they
-          // hold the layout (no CLS) and appear instantly when they become active.
           return (
             <img
               key={`i-${n}`}
@@ -297,7 +261,6 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
 
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
-        {/* Rotating slide label bubble */}
         <div className="hidden lg:block absolute left-[18px] bottom-[18px] pointer-events-none max-w-[45%]">
           <span
             key={`label-${i % SLIDES.length}`}
@@ -305,7 +268,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: HeroMastheadProps) {
           >
             <span
               className="w-1.5 h-1.5 sm:w-[7px] sm:h-[7px] rounded-full shrink-0"
-              style={{ background: TURQUOISE }}
+              style={{ background: "#22c0d4" }}
             />
             {slide.label}
           </span>
