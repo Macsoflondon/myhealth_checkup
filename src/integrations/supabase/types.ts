@@ -3600,6 +3600,7 @@ export type Database = {
           price_not_stated: boolean | null
           provider_id: string
           provider_test_id: string | null
+          purchase_notes: string | null
           sample_type: string | null
           scrape_source_url: string | null
           scraped_at: string
@@ -3685,6 +3686,7 @@ export type Database = {
           price_not_stated?: boolean | null
           provider_id: string
           provider_test_id?: string | null
+          purchase_notes?: string | null
           sample_type?: string | null
           scrape_source_url?: string | null
           scraped_at?: string
@@ -3770,6 +3772,7 @@ export type Database = {
           price_not_stated?: boolean | null
           provider_id?: string
           provider_test_id?: string | null
+          purchase_notes?: string | null
           sample_type?: string | null
           scrape_source_url?: string | null
           scraped_at?: string
