@@ -97,7 +97,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://myhealthcheckup.co.uk/tests/heart-health</loc>
+    <loc>https://myhealthcheckup.co.uk/tests/heart</loc>
     <lastmod>2026-04-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -115,7 +115,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://myhealthcheckup.co.uk/tests/cancer-screening</loc>
+    <loc>https://myhealthcheckup.co.uk/tests/cancer</loc>
     <lastmod>2026-04-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -169,7 +169,7 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://myhealthcheckup.co.uk/tests/gut-health</loc>
+    <loc>https://myhealthcheckup.co.uk/tests/gut</loc>
     <lastmod>2026-04-09</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
