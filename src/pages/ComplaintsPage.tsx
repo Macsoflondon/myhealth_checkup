@@ -50,7 +50,7 @@ const schema = z.object({
     .min(20, "Please provide at least 20 characters")
     .max(5000, "Please keep under 5000 characters"),
   consent: z.literal(true, {
-    errorMap: () => ({ message: "You must consent for us to respond" }),
+    message: "You must consent for us to respond",
   }),
 });
 
