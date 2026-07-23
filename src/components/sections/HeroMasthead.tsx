@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 
 import { PROVIDER_LOGOS, normalizeProviderId, getProviderName } from "@/constants/providers";
 import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
@@ -16,12 +16,6 @@ import seniorCoupleAsset from "@/assets/hero/hero-senior-couple.png.asset.json";
 import benchPhoneAsset from "@/assets/hero/hero-bench-phone.png.asset.json";
 import bloodTestKitAsset from "@/assets/hero/hero-blood-test-kit.png.asset.json";
 
-import clipJoggingAsset from "@/assets/hero/video/clip-jogging.mp4.asset.json";
-import clipClinicAsset from "@/assets/hero/video/clip-clinic-reception.mp4.asset.json";
-import clipSeniorAsset from "@/assets/hero/video/clip-senior-couple.mp4.asset.json";
-import clipBenchAsset from "@/assets/hero/video/clip-bench-phone.mp4.asset.json";
-import clipKitAsset from "@/assets/hero/video/clip-blood-test-kit.mp4.asset.json";
-
 const clinicReception = clinicReceptionAsset.url;
 const seniorCouple = seniorCoupleAsset.url;
 const benchPhone = benchPhoneAsset.url;
@@ -30,7 +24,6 @@ const bloodTestKit = bloodTestKitAsset.url;
 const SLIDES = [
   {
     src: joggingWoman,
-    video: clipJoggingAsset.url,
     label: "Know Your Health. Own Your Future.",
     posMobile: "35% 55%",
     posTablet: "center 32%",
@@ -38,7 +31,6 @@ const SLIDES = [
   },
   {
     src: clinicReception,
-    video: clipClinicAsset.url,
     label: "Nationwide network of CQC-regulated clinics",
     posMobile: "60% 50%",
     posTablet: "center 50%",
@@ -46,7 +38,6 @@ const SLIDES = [
   },
   {
     src: seniorCouple,
-    video: clipSeniorAsset.url,
     label: "Proactive Health for Every Stage of Life",
     posMobile: "50% 40%",
     posTablet: "center 28%",
@@ -54,7 +45,6 @@ const SLIDES = [
   },
   {
     src: benchPhone,
-    video: clipBenchAsset.url,
     label: "Find the Right Test for You, Compare. Choose. Book.",
     posMobile: "55% 50%",
     posTablet: "center 40%",
@@ -62,13 +52,13 @@ const SLIDES = [
   },
   {
     src: bloodTestKit,
-    video: clipKitAsset.url,
     label: "Test from the Comfort of Home",
     posMobile: "40% 55%",
     posTablet: "40% 60%",
     posDesktop: "50% 65%",
   },
 ];
+
 
 const CATEGORY_META: Record<string, { color: string; to: string }> = {
   "general-health": { color: TURQUOISE, to: "/test/general-health" },
@@ -109,7 +99,6 @@ const Wordmark = () => (
 
 export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }) {
   const [i, setI] = useState(0);
-  const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
   const activeIndex = i % SLIDES.length;
   const [reducedMotion, setReducedMotion] = useState(false);
   useEffect(() => {
@@ -122,21 +111,11 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
   }, []);
   const advance = useCallback(() => setI((n) => n + 1), []);
   useEffect(() => {
-    videoRefs.current.forEach((v, idx) => {
-      if (!v) return;
-      if (idx === activeIndex && !reducedMotion) {
-        try { v.currentTime = 0; } catch { }
-        v.play().catch(() => { });
-      } else {
-        v.pause();
-      }
-    });
-  }, [activeIndex, reducedMotion]);
-  useEffect(() => {
-    const ms = reducedMotion ? Math.max(1200, rotateMs) : 11000;
+    const ms = reducedMotion ? Math.max(1200, rotateMs) : rotateMs;
     const id = setTimeout(advance, ms);
     return () => clearTimeout(id);
   }, [activeIndex, advance, reducedMotion, rotateMs]);
+
   const { data: popularTests } = useHeroPopularTests();
   const adverts: HeroAdvert[] = useMemo(() => {
     if (!popularTests || popularTests.length === 0) return [];
@@ -185,31 +164,12 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
       <div className="relative rounded-t-[18px] overflow-hidden mt-1.5 sm:mt-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
         {SLIDES.map((s, n) => {
           const active = n === activeIndex;
-          const nextIndex = (activeIndex + 1) % SLIDES.length;
-          const shouldMountVideo = Boolean(s.video) && !reducedMotion && (active || n === nextIndex);
           const commonStyle = {
             opacity: active ? 1 : 0,
             ["--pos-m" as string]: s.posMobile,
             ["--pos-t" as string]: s.posTablet,
             ["--pos-d" as string]: s.posDesktop,
           };
-          if (shouldMountVideo) {
-            return (
-              <video
-                key={`v-${n}`}
-                ref={(el) => { videoRefs.current[n] = el; }}
-                src={s.video ?? undefined}
-                poster={s.src}
-                muted
-                playsInline
-                preload={active ? "auto" : "metadata"}
-                onEnded={advance}
-                aria-hidden={!active}
-                className="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
-                style={commonStyle}
-              />
-            );
-          }
           return (
             <img
               key={`i-${n}`}
@@ -227,6 +187,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
             />
           );
         })}
+
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
         <div className="hidden lg:block absolute left-[18px] bottom-[18px] pointer-events-none max-w-[45%]">
           <span key={`label-${i % SLIDES.length}`} className="inline-flex items-center gap-1.5 sm:gap-2 px-2 py-0.5 sm:px-3 sm:py-1.5 rounded-full bg-[#081129]/45 backdrop-blur-sm border border-white/20 text-white text-[11px] sm:text-sm md:text-base lg:text-xl font-semibold font-[Montserrat] animate-fade-in">
