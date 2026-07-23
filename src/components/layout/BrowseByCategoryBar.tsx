@@ -95,14 +95,14 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
         </div>
       </div>
       <div className={`hidden md:block sticky top-0 z-50 ${wrapperClass}`} data-testid="browse-by-category-bar">
-        <div className={`${compact ? "px-3 py-3 sm:px-4 sm:py-4" : "px-3 sm:px-4 py-4 sm:py-5"} transition-all duration-300 ${innerClass}`}>
-          <div className="flex items-center justify-center gap-x-2 gap-y-2.5 sm:gap-x-3 flex-wrap max-w-full">
+        <div className={`${compact ? "px-2 py-2 sm:px-3 sm:py-2.5" : "px-2 sm:px-3 py-2.5 sm:py-3"} transition-all duration-300 ${innerClass}`}>
+          <div className="flex items-center justify-center gap-x-1.5 gap-y-2 sm:gap-x-2 flex-nowrap max-w-full overflow-x-auto">
             {items.map((item) => {
               const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
               return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} />;
             })}
             <div ref={moreRef} className="relative shrink-0">
-              <button type="button" onClick={() => setMoreOpen((o) => !o)} className={`inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 transition-all duration-200 ${compact ? "gap-2 pl-4 pr-5 py-3 sm:gap-2.5 sm:pl-5 sm:pr-6 sm:py-3.5" : "gap-2 pl-4 pr-5 sm:pl-5 sm:pr-6 py-4 sm:py-[18px]"}`}><span className={`rounded-full inline-flex items-center justify-center shrink-0 ${compact ? "w-[30px] h-[30px] sm:w-[34px] sm:h-[34px]" : "w-[26px] h-[26px] sm:w-[30px] sm:h-[30px]"}`} style={{ background: "rgba(231,13,105,0.1)" }}><MoreHorizontal className={`${compact ? "w-[16px] h-[16px] sm:w-[19px] sm:h-[19px]" : "w-[16px] h-[16px] sm:w-[18px] sm:h-[18px]"}`} style={{ color: "#e70d69" }} strokeWidth={2} /></span><span className={`font-semibold text-[#081129] font-[Montserrat] ${compact ? "text-[14px] sm:text-[15px] lg:text-[15.5px] 2xl:text-base" : "text-[15px] sm:text-[17px]"}`}>More</span><ChevronDown className={`text-[#081129]/60 transition-transform ${moreOpen ? "rotate-180" : ""} ${compact ? "w-4 h-4" : "w-4 h-4"}`} /></button>
+              <button type="button" onClick={() => setMoreOpen((o) => !o)} className="inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 transition-all duration-200 gap-1 pl-2 pr-2.5 py-2 sm:gap-1.5 sm:pl-2.5 sm:pr-3 sm:py-2.5"><span className="rounded-full inline-flex items-center justify-center shrink-0 w-[20px] h-[20px] sm:w-[22px] sm:h-[22px]" style={{ background: "rgba(231,13,105,0.1)" }}><MoreHorizontal className="w-[12px] h-[12px] sm:w-[13px] sm:h-[13px]" style={{ color: "#e70d69" }} strokeWidth={2} /></span><span className="font-semibold text-[#081129] font-[Montserrat] text-[11.5px] sm:text-[12.5px] lg:text-[13px]">More</span><ChevronDown className={`text-[#081129]/60 transition-transform w-3.5 h-3.5 ${moreOpen ? "rotate-180" : ""}`} /></button>
               {moreOpen && <MoreDropdownMenu sections={moreNavigationSections} onItemClick={() => setMoreOpen(false)} onClose={() => setMoreOpen(false)} />}
             </div>
             <div className={`flex items-center shrink-0 ${compact ? "gap-0" : "gap-1"}`}><div className={compact ? "scale-[0.78]" : ""}><LanguageSwitcher /></div><div className={compact ? "scale-[0.78]" : ""}><UserMenu /></div></div>
