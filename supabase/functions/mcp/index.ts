@@ -8,7 +8,7 @@ import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.24.0";
 // src/lib/mcp/tools/search-tests.ts
 import { createClient } from "npm:@supabase/supabase-js@^2.51.0";
 import { defineTool } from "npm:@lovable.dev/mcp-js@0.24.0";
-import { z } from "npm:zod@^3.25.76";
+import { z } from "npm:zod@^4.4.3";
 function anonClient() {
   return createClient(
     process.env.SUPABASE_URL,
@@ -50,7 +50,7 @@ var search_tests_default = defineTool({
 // src/lib/mcp/tools/get-test.ts
 import { createClient as createClient2 } from "npm:@supabase/supabase-js@^2.51.0";
 import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.24.0";
-import { z as z2 } from "npm:zod@^3.25.76";
+import { z as z2 } from "npm:zod@^4.4.3";
 function anonClient2() {
   return createClient2(
     process.env.SUPABASE_URL,
@@ -142,7 +142,7 @@ var list_my_favourites_default = defineTool4({
 // src/lib/mcp/tools/save-favourite.ts
 import { createClient as createClient5 } from "npm:@supabase/supabase-js@^2.51.0";
 import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.24.0";
-import { z as z3 } from "npm:zod@^3.25.76";
+import { z as z3 } from "npm:zod@^4.4.3";
 function userClient2(ctx) {
   return createClient5(process.env.SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY, {
     global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },

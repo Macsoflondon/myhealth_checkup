@@ -26,34 +26,33 @@
           "openWorldHint": false
         },
         "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
           "type": "object",
           "properties": {
             "query": {
-              "type": "string",
-              "description": "Keyword to match against test name or description."
+              "description": "Keyword to match against test name or description.",
+              "type": "string"
             },
             "category": {
-              "type": "string",
-              "description": "Category slug (e.g. 'womens-health', 'cancer-screening', 'hormones')."
+              "description": "Category slug (e.g. 'womens-health', 'cancer-screening', 'hormones').",
+              "type": "string"
             },
             "provider": {
-              "type": "string",
-              "description": "Provider name (e.g. 'Medichecks', 'Randox', 'Goodbody')."
+              "description": "Provider name (e.g. 'Medichecks', 'Randox', 'Goodbody').",
+              "type": "string"
             },
             "max_price": {
+              "description": "Maximum total expected cost in GBP.",
               "type": "number",
-              "exclusiveMinimum": 0,
-              "description": "Maximum total expected cost in GBP."
+              "exclusiveMinimum": 0
             },
             "limit": {
+              "default": 20,
               "type": "integer",
               "minimum": 1,
-              "maximum": 50,
-              "default": 20
+              "maximum": 50
             }
-          },
-          "additionalProperties": false,
-          "$schema": "http://json-schema.org/draft-07/schema#"
+          }
         },
         "outputSchema": null
       },
@@ -67,19 +66,19 @@
           "openWorldHint": false
         },
         "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
           "type": "object",
           "properties": {
             "id": {
               "type": "string",
               "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$",
               "description": "Test UUID returned by search_tests."
             }
           },
           "required": [
             "id"
-          ],
-          "additionalProperties": false,
-          "$schema": "http://json-schema.org/draft-07/schema#"
+          ]
         },
         "outputSchema": null
       },
@@ -126,6 +125,7 @@
           "openWorldHint": false
         },
         "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
           "type": "object",
           "properties": {
             "test_id": {
@@ -155,9 +155,7 @@
             "test_id",
             "name",
             "provider"
-          ],
-          "additionalProperties": false,
-          "$schema": "http://json-schema.org/draft-07/schema#"
+          ]
         },
         "outputSchema": null
       }
