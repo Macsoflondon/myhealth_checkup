@@ -9,7 +9,6 @@ import { hasStartingPrice } from "@/hooks/usePopularTestsFromDatabase";
 import { toUnifiedCardProps } from "@/lib/unifiedCardAdapter";
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 
-// Map detailedProvider IDs (routing slug) -> DB provider_id
 const PROVIDER_ID_DB_MAP: Record<string, string> = {
   "randox-health": "randox",
   "goodbody-clinic": "goodbody-clinic",

@@ -70,24 +70,6 @@ const ProviderProfilePage = () => {
         <meta property="og:description" content={`${provider.name} private health tests reviewed and compared. Browse the full test range, prices and accreditations.`} />
         <meta property="og:url" content={`https://myhealthcheckup.co.uk/provider/${provider.id}`} />
         <meta property="og:locale" content="en_GB" />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "MedicalOrganization",
-          "name": provider.name,
-          "description": `${provider.name} private health tests reviewed and compared.`,
-          "url": `https://myhealthcheckup.co.uk/provider/${provider.id}`,
-          ...(websiteUrl ? { "sameAs": websiteUrl } : {}),
-          ...(provider.accreditation ? { "hasCredential": { "@type": "EducationalOccupationalCredential", "credentialCategory": provider.accreditation } } : {}),
-          ...(providerRatingData.rating ? { "aggregateRating": { "@type": "AggregateRating", "ratingValue": providerRatingData.rating, "bestRating": 5, "ratingCount": providerRatingData.reviews } } : {}),
-          "breadcrumb": {
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://myhealthcheckup.co.uk" },
-              { "@type": "ListItem", "position": 2, "name": "Compare Tests", "item": "https://myhealthcheckup.co.uk/compare" },
-              { "@type": "ListItem", "position": 3, "name": provider.name }
-            ]
-          }
-        })}</script>
       </Helmet>
 
       <main className="container mx-auto px-4 py-4 md:py-8">
@@ -143,134 +125,7 @@ const ProviderProfilePage = () => {
                 )}
               </div>
               
-              {(() => {
-              const structuredContent: Record<string, { mission: string; whoWeAre: string; services: string }> = {
-                  'goodbody-clinic': {
-                    mission: "You know your body better than anyone. When something doesn't feel right or you simply want to stay ahead of potential health issues, waiting months for answers isn't good enough. Goodbody Clinic exists to give you fast, reliable health insights without the long NHS waiting times.",
-                    whoWeAre: "Goodbody Clinic is a trusted private health testing provider, helping thousands of people across the UK to monitor, check, and improve their health. We offer testing through over 200+ partner clinics nationwide, or in the comfort of your own home. Rated Excellent on Trustpilot with over 3,600+ reviews.",
-                    services: "We offer one of the most comprehensive ranges of private health tests available in the UK. From Advanced Well Man and Well Woman blood tests (covering 48–51 biomarkers) to the Premium Complete Blood Test analysing 62 key biomarkers. For cancer screening, our TruCheck™ Early Cancer Screening blood test can detect markers for over 70 types of solid cancer tumours.",
-                  },
-                  'medichecks': {
-                    mission: "Medichecks believe everyone deserves access to clear, reliable health information. Their mission is to empower everyone to take charge of their health with simple, personal blood checks.",
-                    whoWeAre: "Founded in 2001, Medichecks established the UK's first direct-to-consumer blood testing service, offering over 300 tests across general health, hormones, vitamins, thyroid, sports performance, and more. All samples are analysed by UKAS-accredited laboratories. Rated 4.7/5 on Feefo with over 14,000 reviews.",
-                    services: "From convenient finger-prick home kits to venous blood draws at nationwide partner clinics or home nurse visits. Every result includes a bespoke GP-reviewed report with personalised insights, delivered through the MyMedichecks online dashboard.",
-                  },
-                  'thriva': {
-                    mission: "Thriva exists to put health tracking in your hands. By making regular blood testing as routine as checking your phone, they help you spot changes early and stay on top of what matters.",
-                    whoWeAre: "Thriva is a subscription-based health testing platform offering convenient at-home finger-prick kits with doctor-reviewed results. 75+ health markers available with painless home testing. All samples are processed in UKAS-accredited partner laboratories. Rated 4.5/5 on Trustpilot with over 3,000 reviews.",
-                    services: "Choose from a range of health tests covering heart health, liver function, diabetes risk, vitamins, and hormones. Results are delivered via the Thriva app with personalised insights and biomarker tracking over time. Subscription plans and the Compass annual health programme available for regular monitoring.",
-                  },
-                  'randox-health': {
-                    mission: "Randox Health is driven by a single goal: preventing disease before it starts. Using world-leading diagnostic technology, they deliver some of the most comprehensive health checks available in the UK.",
-                    whoWeAre: "Part of Randox Laboratories, a global diagnostics leader with over 40 years of innovation. Randox Health operates 50+ clinics across the UK & Ireland, offering in-depth health assessments with UKAS-accredited and FDA-approved testing. Over 22 million tests processed to date. Rated 4.7/5 on Trustpilot with over 28,400 reviews.",
-                    services: "Comprehensive health packages including full-body checks, cancer risk screening, genetic testing, and cardiovascular assessments. Health At Home test kits also available. Results typically in 2-3 days; in-clinic same-day testing available at select locations. Professional consultation and personalised health recommendations included.",
-                  },
-                  'lola-health': {
-                    mission: "Lola Health was built on a simple idea: professional blood testing should come to you. No finger-pricks, no compromise — just accurate results from the comfort of your home or at a clinic.",
-                    whoWeAre: "Lola Health is a modern health testing platform offering at-home phlebotomy — a trained nurse visits your home to take a venous blood sample — or clinic appointments. 70+ biomarkers analysed with NHS-accredited (ISO 15189) laboratories and reviewed by qualified doctors. Rated 4.6/5 on Trustpilot with over 160 reviews.",
-                    services: "Over 40 blood tests available, from comprehensive panels to individual biomarkers. Book a nurse visit or clinic appointment with results in 4 days. Doctor-reviewed insights delivered via the Lola Health app with health trend tracking. Tests from £120.",
-                  },
-                  'london-medical-laboratory': {
-                    mission: "London Medical Laboratory is committed to delivering fast, accurate diagnostic testing with clinical-grade precision. Their goal is to make professional laboratory services accessible to everyone, not just those with a GP referral.",
-                    whoWeAre: "A UKAS-accredited (ISO 15189) laboratory offering over 100 blood tests with next day results on most tests. At-home test kits and in-store sample collection at partner clinics across the UK. Features Humanity Age longevity analysis — interpreting blood markers in terms of biological age. Rated 4.5/5 on Trustpilot with over 3,250 reviews.",
-                    services: "Comprehensive test menu including health MOTs, hormone profiles, vitamin panels, allergy testing, fertility assessments, and longevity analysis. At-home and in-store sample collection options. Results delivered via online portal or email with expert analysis.",
-                  },
-                  'blue-horizon': {
-                    mission: "Blue Horizon exists to make professional blood testing accessible and straightforward. Their focus is on delivering reliable results with flexible collection options to fit your lifestyle.",
-                    whoWeAre: "Blue Horizon is a well-established private pathology provider offering over 150 blood tests across thyroid, fatigue, hormones, and general wellness. Tests are processed in accredited laboratories with doctor-reviewed results. Rated 4.2/5 on Trustpilot with over 320 reviews.",
-                    services: "A comprehensive range of health profiles and specialised diagnostics, with flexible sample collection via home kits, clinic visits, or home nurse appointments. Results include personalised interpretation and actionable health insights.",
-                  },
-                  'private-blood-tests-spire': {
-                    mission: "Private Blood Tests through Spire Healthcare aims to combine the accessibility of self-referral testing with the clinical standards of a leading hospital network.",
-                    whoWeAre: "Offering access to over 400 blood tests through the trusted Spire hospital network across the UK. All testing is conducted in accredited laboratory facilities with professional phlebotomy and consultant-grade reporting. Rated 4.6/5 on Trustpilot with over 200 reviews.",
-                    services: "Extensive test menu covering health screening, hormones, fatigue panels, and specialist diagnostics. Free GP referrals included with results, plus a VIP service option for priority processing and same-day appointments at Spire hospitals.",
-                  },
-                  'london-blood-tests': {
-                    mission: "London Blood Tests provides fast, convenient private blood testing in the capital — with same-day appointments and rapid results for those who need answers quickly.",
-                    whoWeAre: "A London-based blood testing service offering over 100 tests with some of the fastest turnaround times available. Professional phlebotomy at clinic locations and home visit options. Rated 4.5/5 on Trustpilot.",
-                    services: "Health screening, hormone profiles, vitamin panels, and specialist diagnostics. Same-day appointments available with results typically within 1–2 working days. Home visit options for added convenience.",
-                  },
-                  'youth-revisited': {
-                    mission: "Youth Revisited is dedicated to helping you optimise your health and wellbeing through targeted testing and personalised wellness programmes.",
-                    whoWeAre: "A wellness-focused health testing provider specialising in nutrition, men's and women's health, and mental wellbeing assessments. Clinic and home visit options available for sample collection.",
-                    services: "Wellness, nutrition, and hormone testing with personalised health packages. Results include detailed lifestyle recommendations and optimisation guidance tailored to individual health goals.",
-                  },
-                  'manual-trt': {
-                    mission: "Manual exists to give men straightforward, clinician-led access to testosterone monitoring and hormone health — removing the barriers to proper TRT management.",
-                    whoWeAre: "A digital health platform specialising in men's health, particularly Testosterone Replacement Therapy (TRT). Physician-led support with subscription-based testing for ongoing hormone optimisation. Rated 4.3/5 on Trustpilot with over 11,200 reviews.",
-                    services: "Testosterone and men's health blood testing via home kits and partner clinics. Subscription-based TRT monitoring with repeat testing, physician consultations, and personalised treatment adjustments.",
-                  },
-                  'manual-hrt': {
-                    mission: "Manual's HRT support helps women navigate menopause and hormonal changes with clinical-grade testing and expert guidance — all from home.",
-                    whoWeAre: "Part of the Manual digital health platform, offering hormone testing and menopause support through partner brands. Home-based testing with app-powered symptom tracking and ongoing monitoring. Rated 4.3/5 on Trustpilot with over 11,200 reviews.",
-                    services: "HRT monitoring, hormone profiles, and menopause symptom tracking via home kits. Results reviewed by clinicians with personalised guidance for ongoing hormonal health management.",
-                  },
-                  'functional-dx': {
-                    mission: "Functional DX provides advanced functional blood analysis to help integrative health practitioners deliver deeper, more personalised patient care.",
-                    whoWeAre: "A practitioner-only advanced testing platform offering over 100 comprehensive biomarker panels. Used by integrative medicine professionals and functional health practitioners across the UK. Clinic-based venous blood collection via practitioner referral.",
-                    services: "Advanced functional blood testing covering metabolic health, hormonal balance, nutritional status, and inflammatory markers. Comprehensive panels with functional reference ranges designed for practitioner interpretation and clinical decision-making.",
-                  },
-                  'onedaytests': {
-                    mission: "OneDayTests was founded on the belief that waiting days for health results is unnecessary. They deliver ultra-fast diagnostics from their own state-of-the-art laboratory and nationwide clinics.",
-                    whoWeAre: "A rapid-results blood testing provider operating 36 clinic locations across the UK with full-time phlebotomy staff. Own state-of-the-art laboratory where 99.2% of markers start testing within 4 hours. UKAS Medical 15189:2022 accredited with CQC registration. Trusted for 100,000+ tests and consultations per month. Rated 4.8/5 on Trustpilot with over 4,000 reviews.",
-                    services: "Health check panels, cholesterol, liver and kidney function, hormones, and rapid testing with same day or next day results on most markers. Same-day clinic appointments available. Home finger-prick test kits also offered. NHS GPs available for follow-up consultations.",
-                  },
-                  'london-laboratory': {
-                    mission: "London Laboratory delivers premium private pathology from the heart of Harley Street — combining clinical expertise with fast turnaround and a comprehensive test menu.",
-                    whoWeAre: "A UKAS-accredited (ISO 15189) laboratory based on Harley Street, London, offering comprehensive health, hormone, and allergy testing. In-clinic and home kit options with professional laboratory analysis.",
-                    services: "General health checks, vitamin panels, hormone profiles, allergy testing, and fertility assessments. In-clinic phlebotomy at the Harley Street location or home testing kits. Results typically within 1–3 working days.",
-                  },
-                  'the-doctors-laboratory': {
-                    mission: "The Doctors Laboratory (TDL) sets the gold standard for pathology in the UK — processing over 15 million tests annually with unmatched breadth and clinical rigour.",
-                    whoWeAre: "The UK's largest independent pathology provider, part of Sonic Healthcare global network. UKAS-accredited and CQC-registered with over 40 years of diagnostic experience. Operating from Wimpole Street, London, with a nationwide collection network. Processing 3,000+ test types.",
-                    services: "Over 3,000 diagnostic tests spanning clinical biochemistry, haematology, immunology, microbiology, genetics, and toxicology. Same-day results available for many routine tests. Venous blood draw at TDL clinics, GP surgeries, hospitals, and home visits.",
-                  },
-                  'clinilabs': {
-                    mission: "Clinilabs exists to give people in the UK direct access to high-quality clinical laboratory testing without the long waits. The focus is on accurate diagnostics, fast turnaround and clear reporting so you can make informed decisions about your health alongside your GP or specialist.",
-                    whoWeAre: "Clinilabs is a private diagnostics provider operating from UKAS-accredited facilities, covering a wide spectrum of pathology from routine blood profiles to specialist diagnostics. Samples are processed by qualified biomedical scientists using validated assays on hospital-grade analysers, with results typically available within 3-6 working days and reviewed before release.",
-                    services: "General health screens, hormone profiles, thyroid panels, vitamin and mineral analysis, sexual health diagnostics, cardiovascular markers and specialist pathology requests. Tests are available via in-clinic phlebotomy at partner sites or postal sample kits where appropriate, with clinician-reviewed written reports included as standard.",
-                  },
-                  'london-health-company': {
-                    mission: "London Health Company exists to make accurate, accessible private health testing available across the capital and beyond. The focus is on convenient appointments, transparent pricing and clinician-reviewed results so customers can act on their data with confidence.",
-                    whoWeAre: "A London-based private healthcare provider partnering with UKAS-accredited laboratories. The team combines high-street accessibility with hospital-grade diagnostics, supporting individuals, families and corporate clients with preventative screening and targeted blood work across London and the wider UK.",
-                    services: "Private blood tests, hormone profiles, comprehensive wellness screens, sexual health diagnostics and travel medicals. Appointments are available at clinics across London with at-home phlebotomy options for selected tests, and results are typically returned within 4-8 working days with a written clinician review.",
-                  },
-                  'medical-diagnosis': {
-                    mission: "Medical Diagnosis exists to deliver specialist diagnostic blood testing with typically fast turnaround times, helping people and clinicians act on accurate results quickly.",
-                    whoWeAre: "A specialist diagnostics provider working with UKAS-accredited partner laboratories to offer advanced blood testing and health screening across the UK. Tests are reviewed before release and reported through clear, clinician-friendly documentation.",
-                    services: "Specialist diagnostic blood testing, advanced health screening and rapid turnaround pathology. Sample collection via clinic-based venous draw across UK partner sites, with typical results in 3-6 working days.",
-                  },
-                };
-
-                const content = structuredContent[provider.id];
-
-                if (content) {
-                  return (
-                    <div className="space-y-4 mb-6 text-sm md:text-base" style={{ color: brand ? 'rgba(255,255,255,0.85)' : 'hsl(var(--muted-foreground))' }}>
-                      <h2 className="font-bold text-xl mb-2" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>
-                        What sets us apart
-                      </h2>
-                      <div>
-                        <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Our Mission</h3>
-                        <p>{content.mission}</p>
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Who We Are</h3>
-                        <p>{content.whoWeAre}</p>
-                      </div>
-                      <div>
-                        <h3 className="font-bold text-lg mb-1" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>Our Services</h3>
-                        <p>{content.services}</p>
-                      </div>
-                    </div>
-                  );
-                }
-
-                return (
-                  <p className="text-base md:text-lg mb-6" style={{ color: brand ? 'rgba(255,255,255,0.9)' : 'hsl(var(--muted-foreground))' }}>{provider.description}</p>
-                );
-              })()}
-              
+              <p className="text-base md:text-lg mb-6" style={{ color: brand ? 'rgba(255,255,255,0.9)' : 'hsl(var(--muted-foreground))' }}>{provider.description}</p>
             </div>
           </div>
         </div>
@@ -323,10 +178,7 @@ const ProviderProfilePage = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-8">
-
-          {/* Left column — narrow */}
           <div className="lg:col-span-1 flex flex-col gap-4">
-            {/* Contact Information */}
             <Card className="flex flex-col flex-1">
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg">
@@ -338,23 +190,15 @@ const ProviderProfilePage = () => {
                 {provider.website && (
                   <div className="min-h-[44px] flex flex-col justify-center">
                     <p className="font-medium text-foreground text-sm md:text-base mb-1">Website</p>
-                    <a 
-                      href={websiteUrl || provider.website} 
-                      {...externalLinkProps}
-                      className="hover:underline text-sm md:text-base break-all touch-manipulation text-green-800"
-                    >
-                      {provider.website.replace('https://', '').replace('http://', '')}
-                    </a>
+                    <a href={websiteUrl || provider.website} {...externalLinkProps} className="hover:underline text-sm md:text-base break-all touch-manipulation text-green-800">{provider.website.replace('https://', '').replace('http://', '')}</a>
                   </div>
                 )}
-                
                 {provider.phone && (
                   <div className="min-h-[44px] flex flex-col justify-center">
                     <p className="font-medium text-foreground text-sm md:text-base mb-1">Phone</p>
                     <a href={`tel:${provider.phone}`} className="text-muted-foreground text-sm md:text-base hover:text-primary touch-manipulation">{provider.phone}</a>
                   </div>
                 )}
-                
                 {provider.email && (
                   <div className="min-h-[44px] flex flex-col justify-center">
                     <p className="font-medium text-foreground text-sm md:text-base mb-1">Email</p>
@@ -363,12 +207,8 @@ const ProviderProfilePage = () => {
                 )}
               </CardContent>
             </Card>
-
           </div>
-
-          {/* Right column — wide */}
           <div className="lg:col-span-2 flex flex-col gap-4">
-            {/* Service Information */}
             <Card className="flex flex-col flex-1">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
@@ -377,139 +217,31 @@ const ProviderProfilePage = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 flex-1">
-                {provider.tests && (
-                  <div>
-                    <p className="font-medium text-foreground">Available Tests</p>
-                    <p className="text-muted-foreground">{provider.tests}</p>
-                  </div>
-                )}
-
-                {provider.sampleCollection && (
-                  <div>
-                    <p className="font-medium text-foreground">Sample Collection</p>
-                    <p className="text-muted-foreground">{provider.sampleCollection}</p>
-                  </div>
-                )}
-
-                {provider.turnaroundTime && (
-                  <div>
-                    <p className="font-medium text-foreground">Results Turnaround</p>
-                    <p className="text-muted-foreground">{provider.turnaroundTime}</p>
-                  </div>
-                )}
+                {provider.tests && (<div><p className="font-medium text-foreground">Available Tests</p><p className="text-muted-foreground">{provider.tests}</p></div>)}
+                {provider.sampleCollection && (<div><p className="font-medium text-foreground">Sample Collection</p><p className="text-muted-foreground">{provider.sampleCollection}</p></div>)}
+                {provider.turnaroundTime && (<div><p className="font-medium text-foreground">Results Turnaround</p><p className="text-muted-foreground">{provider.turnaroundTime}</p></div>)}
               </CardContent>
             </Card>
-
-            {/* Key Features */}
-            {(() => {
-              const featureColor = brand?.primary || '#16a34a';
-              const featureBg = brand ? `${brand.primary}1A` : '#f0fdf4';
-              const features = [
-                { icon: Shield, label: 'Fully Accredited Labs' },
-                { icon: MapPin, label: 'Multiple Locations' },
-                { icon: Phone, label: 'Phone Support' },
-                { icon: Mail, label: 'Email Support' },
-                { icon: Award, label: 'Doctor Reviewed Results' },
-                { icon: Clock, label: 'Fast Turnaround' },
-              ];
-              return (
-                <Card className="flex flex-col flex-1">
-                  <CardHeader>
-                    <CardTitle>Why Choose {provider.name}?</CardTitle>
-                  </CardHeader>
-                  <CardContent className="flex-1">
-                    <div className="grid md:grid-cols-2 gap-4">
-                      {features.map(({ icon: Icon, label }) => (
-                        <div key={label} className="flex items-center gap-3 p-3 rounded-lg" style={{ backgroundColor: featureBg }}>
-                          <Icon className="w-5 h-5 flex-shrink-0" style={{ color: featureColor }} />
-                          <span className="text-sm font-medium">{label}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              );
-            })()}
           </div>
         </div>
 
-        {/* Live tests grid from Supabase */}
         <div className="mt-8">
           <ProviderTestsGrid providerSlug={provider.id} providerDisplayName={provider.name} />
         </div>
       </main>
 
-      {/* Quiz CTA Banner */}
       <div className="mt-8 mb-12 px-4 sm:px-10">
-        <div
-          style={{
-            background: "linear-gradient(135deg, #e70d69, #22c0d4, #e70d69)",
-            padding: "3px",
-            borderRadius: "16px",
-          }}
-        >
-          <div
-            className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8"
-            style={{
-              background: "#0a1120",
-              padding: "32px 36px",
-              borderRadius: "13px",
-            }}
-          >
+        <div style={{ background: "linear-gradient(135deg, #e70d69, #22c0d4, #e70d69)", padding: "3px", borderRadius: "16px" }}>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8" style={{ background: "#0a1120", padding: "32px 36px", borderRadius: "13px" }}>
             <div className="text-center sm:text-left">
-              <p
-                style={{
-                  color: "#22c0d4",
-                  fontSize: "13px",
-                  fontWeight: 700,
-                  letterSpacing: "0.12em",
-                  textTransform: "uppercase",
-                  marginBottom: "8px",
-                }}
-              >
-                Not Sure Where to Start?
-              </p>
-              <h2
-                style={{
-                  color: "#ffffff",
-                  fontSize: "clamp(22px, 3vw, 28px)",
-                  fontWeight: 700,
-                  margin: 0,
-                }}
-              >
-                Find the Right Health Test for You
-              </h2>
+              <p style={{ color: "#22c0d4", fontSize: "13px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", marginBottom: "8px" }}>Not Sure Where to Start?</p>
+              <h2 style={{ color: "#ffffff", fontSize: "clamp(22px, 3vw, 28px)", fontWeight: 700, margin: 0 }}>Find the Right Health Test for You</h2>
             </div>
-            <Link
-              to="/find-test"
-              className="inline-block whitespace-nowrap text-center"
-              style={{
-                background: "linear-gradient(135deg, #e70d69 0%, #ff4d6d 100%)",
-                color: "#ffffff",
-                border: "none",
-                padding: "16px 36px",
-                fontSize: "16px",
-                fontWeight: 600,
-                borderRadius: "10px",
-                cursor: "pointer",
-                transition: "transform 0.2s ease",
-                textDecoration: "none",
-              }}
-              onMouseEnter={(e) =>
-                ((e.currentTarget as HTMLElement).style.transform = "translateY(-2px)")
-              }
-              onMouseLeave={(e) =>
-                ((e.currentTarget as HTMLElement).style.transform = "translateY(0)")
-              }
-            >
-              Start Your Quiz →
-            </Link>
+            <Link to="/find-test" className="inline-block whitespace-nowrap text-center" style={{ background: "linear-gradient(135deg, #e70d69 0%, #ff4d6d 100%)", color: "#ffffff", border: "none", padding: "16px 36px", fontSize: "16px", fontWeight: 600, borderRadius: "10px", cursor: "pointer", transition: "transform 0.2s ease", textDecoration: "none" }}>Start Your Quiz →</Link>
           </div>
         </div>
       </div>
-      
     </MainLayout>
   );
 };
-
 export default ProviderProfilePage;
