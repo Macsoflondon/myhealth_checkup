@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 
 import { PROVIDER_LOGOS, normalizeProviderId, getProviderName } from "@/constants/providers";
+import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
+import { UserMenu } from "@/components/header/UserMenu";
 import HeroSalesTestCard from "@/components/sections/HeroSalesTestCard";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 import { useHeroPopularTests } from "@/hooks/queries/useHeroPopularTests";
@@ -171,10 +173,14 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
       <div className="hidden sm:flex items-center border-b border-white/10 pb-2 pt-4 sm:pt-7">
         <div><Wordmark /></div>
       </div>
-      <div className="flex items-baseline justify-between gap-4 border-b border-white/10 pb-1.5 sm:pb-2 mt-2.5 sm:mt-6 md:mt-8">
+      <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-1.5 sm:pb-2 mt-2.5 sm:mt-6 md:mt-8">
         <h1 className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white leading-[1.15] text-[clamp(0.85rem,4.2vw,3.25rem)] sm:whitespace-nowrap sm:text-[clamp(0.95rem,2.8vw,2.25rem)] m-0">
           YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span> ONE TRUSTED PLATFORM.
         </h1>
+        <div className="hidden sm:flex items-center gap-1 shrink-0">
+          <LanguageSwitcher />
+          <UserMenu />
+        </div>
       </div>
       <div className="relative rounded-t-[18px] overflow-hidden mt-1.5 sm:mt-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
         {SLIDES.map((s, n) => {

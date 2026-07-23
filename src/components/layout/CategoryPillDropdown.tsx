@@ -83,7 +83,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact }: Props) {
         aria-current={isActiveParent ? "page" : undefined}
         aria-haspopup={hasDropdown ? "menu" : undefined}
         aria-expanded={hasDropdown ? open : undefined}
-        className={`group inline-flex items-center rounded-full no-underline bg-white border-[1.5px] hover:-translate-y-0.5 transition-all duration-200 shrink-0 gap-1 pl-2 pr-2.5 py-2 sm:gap-1.5 sm:pl-2.5 sm:pr-3 ${compact ? "sm:py-2.5" : "sm:py-2.5"}`}
+        className={`group inline-flex items-center rounded-full no-underline bg-white border-[1.5px] hover:-translate-y-0.5 transition-all duration-200 shrink-0 gap-1.5 pl-2.5 pr-3 py-2.5 sm:gap-2 sm:pl-3 sm:pr-3.5 ${compact ? "sm:py-3" : "sm:py-3"}`}
         style={{
           borderColor: isActiveParent ? PINK : "rgba(8,17,41,0.1)",
           boxShadow: isActiveParent ? `0 8px 20px ${PINK}26` : undefined,
@@ -100,16 +100,16 @@ export function CategoryPillDropdown({ item, color, Icon, compact }: Props) {
         }}
       >
         <span
-          className="rounded-full inline-flex items-center justify-center shrink-0 w-[20px] h-[20px] sm:w-[22px] sm:h-[22px]"
+          className="rounded-full inline-flex items-center justify-center shrink-0 w-[24px] h-[24px] sm:w-[26px] sm:h-[26px]"
           style={{ background: `${color}1a` }}
         >
           <Icon
-            className="w-[12px] h-[12px] sm:w-[13px] sm:h-[13px]"
+            className="w-[14px] h-[14px] sm:w-[15px] sm:h-[15px]"
             style={{ color }}
             strokeWidth={2}
           />
         </span>
-        <span className="font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap text-[11.5px] sm:text-[12.5px] lg:text-[13px]">
+        <span className="font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap text-[13px] sm:text-[14px] lg:text-[14.5px]">
           {item.name}
         </span>
         {hasDropdown && (
