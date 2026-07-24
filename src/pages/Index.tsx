@@ -198,12 +198,22 @@ const Index = () => {
 
           <BrowseByCategoryBar compact placement="hero" />
 
-          {/* Accredited standards bar — sits directly under the toolbar */}
+          {/* Brand slogan — sits between the wordmark bar and the trust icons */}
+          <div className="bg-[#081129] border-b border-white/10">
+            <div className="container mx-auto px-3 sm:px-6 py-2 sm:py-3">
+              <h1 className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white leading-[1.15] text-[clamp(0.85rem,4.2vw,1.5rem)] sm:text-[clamp(0.95rem,2.4vw,1.75rem)] text-center m-0">
+                YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span> ONE TRUSTED PLATFORM.
+              </h1>
+            </div>
+          </div>
+
+          {/* Accredited standards bar — sits directly under the slogan */}
           <Suspense fallback={<SectionFallback />}>
-            <div className="mt-2 sm:mt-3">
+            <div>
               <AccreditedProvidersBar />
             </div>
           </Suspense>
+
 
           {/* Hero CTA — Slogan + Health Quiz entry point */}
           <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-4 sm:px-6 py-6 sm:py-8 mx-3 sm:mx-6 my-6 sm:my-8">
