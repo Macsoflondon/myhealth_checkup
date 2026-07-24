@@ -202,7 +202,10 @@ const Index = () => {
           <div className="bg-[#081129] border-b border-white/10">
             <div className="container mx-auto px-3 sm:px-6 py-2 sm:py-3">
               <h1 className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white leading-[1.15] text-[clamp(0.85rem,4.2vw,1.5rem)] sm:text-[clamp(0.95rem,2.4vw,1.75rem)] text-center m-0">
-                YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span> ONE TRUSTED PLATFORM.
+                <span className="block sm:inline">
+                  YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span>
+                </span>
+                <span className="block sm:inline sm:ml-[0.4em]">ONE TRUSTED PLATFORM.</span>
               </h1>
             </div>
           </div>
