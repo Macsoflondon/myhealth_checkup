@@ -164,7 +164,7 @@ export const UniversalTestDetailModal: React.FC<{
               <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 12, fontFamily: "'DM Sans',sans-serif" }}>Total expected cost</div>
               {collectionFee != null && (
                 <div style={{ color: "#f59e0b", fontSize: 11, fontFamily: "'DM Sans',sans-serif", marginTop: 2 }}>
-                  incl. Collection Fee: +\u00a3{collectionFee.toFixed(2)}
+                  incl. Collection Fee: +£{collectionFee.toFixed(2)}
                 </div>
               )}
             </div>
@@ -211,7 +211,7 @@ export const UniversalTestDetailModal: React.FC<{
                     <div key={a.label} style={{ background: UTC_TINT, borderRadius: 8, padding: "8px 12px" }}>
                       <div className="flex items-center justify-between">
                         <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 13, color: UTC_NAVY }}>{a.label}</span>
-                        <span style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 13, color: UTC_PINK }}>+\u00a3{a.price.toFixed(2)}</span>
+                        <span style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 700, fontSize: 13, color: UTC_PINK }}>+£{a.price.toFixed(2)}</span>
                       </div>
                       {a.description && (
                         <div style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#94a3b8", marginTop: 2 }}>{a.description}</div>
@@ -636,7 +636,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#d97706" }}
             >
               <span style={{ background: "#fef3c7", padding: "1px 6px", borderRadius: 8, fontWeight: 600 }}>
-                Collection Fee: +\u00a3{collectionFee.toFixed(2)}
+                Collection Fee: +£{collectionFee.toFixed(2)}
               </span>
             </div>
           )}
@@ -653,7 +653,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                 padding: "8px 10px",
               }}
             >
-              <span style={{ color: "#d97706", fontSize: 14, flexShrink: 0, lineHeight: 1.3 }}>\u26a0\ufe0f</span>
+              <span style={{ color: "#d97706", fontSize: 14, flexShrink: 0, lineHeight: 1.3 }}>⚠️</span>
               <span
                 style={{
                   fontFamily: "'DM Sans',sans-serif",
