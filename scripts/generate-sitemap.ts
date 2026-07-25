@@ -51,6 +51,12 @@ const rawEntries: SitemapEntry[] = [
     "priority": "0.8"
   },
   {
+    "path": "/blog/total-vs-free-testosterone",
+    "lastmod": "2026-07-25",
+    "changefreq": "monthly",
+    "priority": "0.8"
+  },
+  {
     "path": "/",
     "lastmod": "2026-04-09",
     "changefreq": "weekly",

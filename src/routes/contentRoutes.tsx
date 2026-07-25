@@ -19,6 +19,7 @@ const BiomarkerGuidePage = lazy(() => import("@/pages/BiomarkerGuidePage"));
 const TestosteroneLevelsByAgePage = lazy(() => import("@/pages/TestosteroneLevelsByAgePage"));
 const PrivateBloodTestCostGuidePage = lazy(() => import("@/pages/PrivateBloodTestCostGuidePage"));
 const FerritinVsIronComparisonGuidePage = lazy(() => import("@/pages/FerritinVsIronComparisonGuidePage"));
+const TotalVsFreeTestosteroneGuidePage = lazy(() => import("@/pages/TotalVsFreeTestosteroneGuidePage"));
 
 
 export const contentRoutes = (
@@ -34,6 +35,7 @@ export const contentRoutes = (
     <Route path="/blog/testosterone-levels-by-age" element={<TestosteroneLevelsByAgePage />} />
     <Route path="/blog/private-blood-test-cost-guide" element={<PrivateBloodTestCostGuidePage />} />
     <Route path="/blog/ferritin-vs-iron-comparison-guide" element={<FerritinVsIronComparisonGuidePage />} />
+    <Route path="/blog/total-vs-free-testosterone" element={<TotalVsFreeTestosteroneGuidePage />} />
     <Route path="/sitemap" element={<SitemapPage />} />
     <Route path="/conditions" element={<ConditionsPage />} />
     <Route path="/trusted-providers" element={<TrustedProvidersPage />} />

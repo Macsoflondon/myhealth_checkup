@@ -114,6 +114,7 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/health-blog",
   "/guides",
   "/blog/testosterone-levels-by-age",
+  "/blog/total-vs-free-testosterone",
 
   // Legal
   "/legal",
