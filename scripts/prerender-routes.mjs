@@ -79,6 +79,7 @@ export const STATIC_ROUTES = [
   "/partners",
   "/blog",
   "/blog/testosterone-levels-by-age",
+  "/blog/total-vs-free-testosterone",
   "/blog/private-blood-test-cost-guide",
   "/blog/ferritin-vs-iron-comparison-guide",
   "/health-blog",
