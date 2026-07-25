@@ -1,11 +1,8 @@
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback } from "react";
 
-import { PROVIDER_LOGOS, normalizeProviderId, getProviderName } from "@/constants/providers";
 import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
 import { UserMenu } from "@/components/header/UserMenu";
-import HeroSalesTestCard from "@/components/sections/HeroSalesTestCard";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
-import { useHeroPopularTests } from "@/hooks/queries/useHeroPopularTests";
 
 const TURQUOISE = "#22c0d4";
 const PINK = "#e70d69";
@@ -60,33 +57,6 @@ const SLIDES = [
 ];
 
 
-const CATEGORY_META: Record<string, { color: string; to: string }> = {
-  "general-health": { color: TURQUOISE, to: "/test/general-health" },
-  "heart": { color: "#ef4444", to: "/tests/heart" },
-  "thyroid": { color: "#7c3aed", to: "/thyroid" },
-  "diabetes": { color: "#f59e0b", to: "/tests/diabetes" },
-  "fertility": { color: PINK, to: "/fertility-tests" },
-  "vitamins": { color: "#16a34a", to: "/tests/vitamins" },
-  "cancer-screening": { color: "#dc2626", to: "/tests/cancer-screening" },
-  "hormone": { color: PINK, to: "/hormones" },
-};
-
-export interface HeroAdvert {
-  id: string;
-  category: string;
-  color: string;
-  to: string;
-  name: string;
-  price: number;
-  provider: string;
-  providerKey: string;
-  providerLogo: string;
-  url: string;
-  markers: string[];
-  biomarkerCount: number | null;
-  turnaround: string | null;
-  clinicalReviewType: string | null;
-}
 
 const Wordmark = () => (
   <span className="inline-flex items-center leading-[1.1] min-w-0 py-1">
@@ -116,41 +86,15 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
     return () => clearTimeout(id);
   }, [activeIndex, advance, reducedMotion, rotateMs]);
 
-  const { data: popularTests } = useHeroPopularTests();
-  const adverts: HeroAdvert[] = useMemo(() => {
-    if (!popularTests || popularTests.length === 0) return [];
-    return popularTests
-      .filter((t) => t.totalExpectedCost != null && t.url)
-      .map((t) => {
-        const providerKey = normalizeProviderId(t.providerId);
-        const providerLogo = PROVIDER_LOGOS[providerKey] || "";
-        const category = t.canonicalCategory || "general-health";
-        const meta = CATEGORY_META[category] ?? { color: "#22c0d4", to: "/compare" };
-        return {
-          id: t.id,
-          category,
-          color: meta.color,
-          to: meta.to,
-          name: t.testName,
-          price: t.totalExpectedCost!,
-          provider: getProviderName(t.providerId),
-          providerKey,
-          providerLogo,
-          url: t.url!,
-          markers: t.biomarkersList,
-          biomarkerCount: t.biomarkerCount,
-          turnaround: t.turnaroundDaysText,
-          clinicalReviewType: t.clinicalReviewType,
-        };
-      });
-  }, [popularTests]);
   const slide = SLIDES[activeIndex];
-  const ad = adverts.length ? adverts[i % adverts.length] : null;
   return (
     <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border border-b-0 border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[78svh] sm:min-h-[100svh] flex flex-col">
       <TestCategoryTicker variant="inline" className="bg-white border-b border-brand-navy/10 -mx-3 sm:-mx-6 md:-mx-9" />
-      <div className="hidden sm:flex items-center border-b border-white/10 pb-2 pt-4 sm:pt-7">
+      <div className="hidden sm:flex flex-col items-center border-b border-white/10 pb-2 pt-4 sm:pt-7">
         <div><Wordmark /></div>
+        <p className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white text-[clamp(0.95rem,2.4vw,1.75rem)] leading-[1.15] mt-1">
+          YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span> ONE TRUSTED PLATFORM.
+        </p>
       </div>
       <div className="hidden sm:flex items-center justify-end gap-4 border-b border-white/10 pb-1.5 sm:pb-2 mt-2.5 sm:mt-6 md:mt-8">
         <div className="flex items-center gap-1 shrink-0">
@@ -193,11 +137,6 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
             {slide.label}
           </span>
         </div>
-        {ad && (
-          <div className="hidden sm:block">
-            <HeroSalesTestCard ad={ad} />
-          </div>
-        )}
       </div>
     </section>
   );

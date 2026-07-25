@@ -198,14 +198,14 @@ const Index = () => {
 
           <BrowseByCategoryBar compact placement="hero" />
 
-          {/* Brand slogan — sits between the wordmark bar and the trust icons */}
-          <div className="bg-[#081129] border-b border-white/10">
+          {/* Brand slogan — mobile only; desktop/tablet slogan lives in HeroMasthead */}
+          <div className="bg-[#081129] border-b border-white/10 sm:hidden">
             <div className="container mx-auto px-3 sm:px-6 py-2 sm:py-3">
-              <h1 className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white leading-[1.15] text-[clamp(0.85rem,4.2vw,1.5rem)] sm:text-[clamp(0.95rem,2.4vw,1.75rem)] text-center m-0">
-                <span className="block sm:inline">
+              <h1 className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white leading-[1.15] text-[clamp(0.85rem,4.2vw,1.5rem)] text-center m-0">
+                <span className="block">
                   YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span>
                 </span>
-                <span className="block sm:inline sm:ml-[0.4em]">ONE TRUSTED PLATFORM.</span>
+                <span className="block">ONE TRUSTED PLATFORM.</span>
               </h1>
             </div>
           </div>
