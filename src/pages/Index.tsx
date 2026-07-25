@@ -245,11 +245,12 @@ const Index = () => {
                   <div className="sm:col-start-4 flex flex-col items-center gap-2">
                     <Link
                       to="/find-test"
+                      aria-label="Take the Health Quiz — find the right private blood test"
                       className="inline-flex items-center gap-2 whitespace-nowrap bg-gradient-to-r from-[#22c0d4] to-[#1aa8bb] hover:from-[#1aa8bb] hover:to-[#22c0d4] text-[#081129] font-bold text-base sm:text-lg px-8 py-4 rounded-full shadow-lg shadow-[#22c0d4]/25 transition-all hover:scale-[1.02]"
                       style={{ fontFamily: "'Montserrat', sans-serif" }}
                     >
                       Take the Health Quiz
-                      <ArrowRight className="w-5 h-5" />
+                      <ArrowRight className="w-5 h-5" aria-hidden="true" />
                     </Link>
                     <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-white text-xs">
                       <span className="flex items-center gap-1">
