@@ -1,0 +1,24 @@
+name: Sitemap validation
+
+on:
+  pull_request:
+    paths:
+      - "src/routes/**"
+      - "public/sitemap.xml"
+      - "scripts/generate-sitemap.ts"
+      - "scripts/validate-sitemap.mjs"
+      - ".github/workflows/sitemap-validation.yml"
+  push:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci --no-audit --no-fund
+      - run: npx tsx scripts/generate-sitemap.ts
+      - run: node scripts/validate-sitemap.mjs

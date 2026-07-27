@@ -22,6 +22,9 @@ const PRIVATE_PREFIXES = [
   "/notification-history",
   "/feedback",
   "/typography-showcase",
+  "/control",
+  "/.lovable",
+  "/hidden-gap-detector",
 ];
 
 interface SitemapEntry {
@@ -651,7 +654,23 @@ const rawEntries: SitemapEntry[] = [
     "lastmod": "2026-05-31",
     "changefreq": "monthly",
     "priority": "0.8"
-  }
+  },
+  // Provider landing pages
+  { path: "/providers", changefreq: "weekly", priority: "0.8" },
+  { path: "/clinilabs", changefreq: "weekly", priority: "0.7" },
+  { path: "/providers/clinilabs", changefreq: "weekly", priority: "0.7" },
+  { path: "/london-health-company", changefreq: "weekly", priority: "0.7" },
+  { path: "/providers/london-health-company", changefreq: "weekly", priority: "0.7" },
+  { path: "/london-medical-laboratory", changefreq: "weekly", priority: "0.7" },
+  { path: "/medical-diagnosis", changefreq: "weekly", priority: "0.7" },
+  { path: "/providers/medical-diagnosis", changefreq: "weekly", priority: "0.7" },
+  // Public content / tools
+  { path: "/health-blog", changefreq: "weekly", priority: "0.7" },
+  { path: "/most-popular-tests", changefreq: "weekly", priority: "0.7" },
+  { path: "/find-test/compare", changefreq: "weekly", priority: "0.6" },
+  { path: "/find-test/recommendations", changefreq: "weekly", priority: "0.6" },
+  { path: "/trust", changefreq: "monthly", priority: "0.6" },
+  { path: "/security", changefreq: "monthly", priority: "0.6" }
 ];
 
 const isPublic = (path: string) =>

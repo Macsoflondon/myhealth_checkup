@@ -10,7 +10,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "prebuild": "bash scripts/check-secrets.sh && node scripts/check-rls-grants.mjs && npx tsx scripts/generate-sitemap.ts",
+    "prebuild": "bash scripts/check-secrets.sh && node scripts/check-rls-grants.mjs && npx tsx scripts/generate-sitemap.ts && node scripts/validate-sitemap.mjs",
+    "sitemap:validate": "node scripts/validate-sitemap.mjs",
     "seo:check": "node scripts/seo-regression.mjs",
     "security:check": "bash scripts/check-secrets.sh && node scripts/check-rls-grants.mjs"
   },

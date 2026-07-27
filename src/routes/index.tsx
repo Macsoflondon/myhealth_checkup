@@ -41,6 +41,7 @@ const AdminPerformancePage = lazy(() => import("@/pages/AdminPerformancePage"));
 const AdminAuditConsolePage = lazy(() => import("@/pages/AdminAuditConsolePage"));
 const AdminAlertRoutingPage = lazy(() => import("@/pages/AdminAlertRoutingPage"));
 const AdminDataSharingPage = lazy(() => import("@/pages/AdminDataSharingPage"));
+const AdminSeoStatusPage = lazy(() => import("@/pages/AdminSeoStatusPage"));
 const ControlPage = lazy(() => import("@/pages/ControlPage"));
 
 
@@ -95,6 +96,7 @@ export function AppRoutes() {
         <Route path="/admin/audit-console" element={wrapAdmin(AdminAuditConsolePage)} />
         <Route path="/admin/alert-routing" element={wrapAdmin(AdminAlertRoutingPage)} />
         <Route path="/admin/data-sharing" element={wrapAdmin(AdminDataSharingPage)} />
+        <Route path="/admin/seo-status" element={wrapAdmin(AdminSeoStatusPage)} />
 
 
         {/* Operations Control Centre */}
