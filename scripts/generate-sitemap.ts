@@ -22,6 +22,9 @@ const PRIVATE_PREFIXES = [
   "/notification-history",
   "/feedback",
   "/typography-showcase",
+  "/control",
+  "/.lovable",
+  "/hidden-gap-detector",
 ];
 
 interface SitemapEntry {
