@@ -90,9 +90,10 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
   return (
     <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border border-b-0 border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[78svh] sm:min-h-[100svh] flex flex-col">
       <TestCategoryTicker variant="inline" className="bg-white border-b border-brand-navy/10 -mx-3 sm:-mx-6 md:-mx-9" />
-      <div className="hidden sm:flex flex-col items-center border-b border-white/10 pb-2 pt-4 sm:pt-7">
-        <div><Wordmark /></div>
-        <p className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white text-[clamp(0.95rem,2.4vw,1.75rem)] leading-[1.15] mt-1">
+      <div className="hidden sm:flex flex-col items-start pt-4 sm:pt-7">
+        <Wordmark />
+        <div className="w-full border-t border-white/10 my-2" />
+        <p className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white text-[clamp(0.95rem,2.4vw,1.75rem)] leading-[1.15] text-left">
           YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span> ONE TRUSTED PLATFORM.
         </p>
       </div>
