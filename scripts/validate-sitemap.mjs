@@ -30,6 +30,7 @@ const PRIVATE_PREFIXES = [
   "/typography-showcase",
   "/control",
   "/.lovable",
+  "/hidden-gap-detector",
 ];
 
 // Static routes intentionally excluded from the sitemap (redirect shells, wildcards).
