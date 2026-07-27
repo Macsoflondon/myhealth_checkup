@@ -41,6 +41,7 @@ const AdminPerformancePage = lazy(() => import("@/pages/AdminPerformancePage"));
 const AdminAuditConsolePage = lazy(() => import("@/pages/AdminAuditConsolePage"));
 const AdminAlertRoutingPage = lazy(() => import("@/pages/AdminAlertRoutingPage"));
 const AdminDataSharingPage = lazy(() => import("@/pages/AdminDataSharingPage"));
+const AdminSeoStatusPage = lazy(() => import("@/pages/AdminSeoStatusPage"));
 const ControlPage = lazy(() => import("@/pages/ControlPage"));
 
 
