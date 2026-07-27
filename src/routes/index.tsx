@@ -96,6 +96,7 @@ export function AppRoutes() {
         <Route path="/admin/audit-console" element={wrapAdmin(AdminAuditConsolePage)} />
         <Route path="/admin/alert-routing" element={wrapAdmin(AdminAlertRoutingPage)} />
         <Route path="/admin/data-sharing" element={wrapAdmin(AdminDataSharingPage)} />
+        <Route path="/admin/seo-status" element={wrapAdmin(AdminSeoStatusPage)} />
 
 
         {/* Operations Control Centre */}
