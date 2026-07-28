@@ -117,15 +117,14 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
   { name: "How It Works", path: "/how-it-works" }
 ];
 
-// Additional pages for the MORE dropdown - organized by user needs
 export const moreNavigationSections = [
   {
     title: "About",
     items: [
+      { name: "Crux Control (Admin)", path: "/control" },
       { name: "About Us", path: "/about" },
       { name: "Frequently Asked Questions", path: "/faqs" }
     ]
-
   },
   {
     title: "Services",
@@ -155,10 +154,6 @@ export const moreNavigationSections = [
   }
 ];
 
-// Flattened list for backwards compatibility
 export const moreNavigationItems = moreNavigationSections.flatMap(section => section.items);
-
 export const navigationItems = primaryNavigationItems;
-
-// Re-export the new NavigationMenu component for backwards compatibility
 export { NavigationMenu as NavigationItems } from "./NavigationMenu";

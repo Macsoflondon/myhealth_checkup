@@ -4,11 +4,8 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { ogMetaPlugin } from "./plugins/ogMetaPlugin";
 import { visualizer } from "rollup-plugin-visualizer";
-import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/supabase/vite";
-// Touch: forces Vite dev-server restart to clear stale module graph after asset migration.
+// import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/supabase/vite";
 
-
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
   const analyze = mode === "analyze" || process.env.ANALYZE === "true";
@@ -19,7 +16,7 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-      mcpPlugin(),
+      // mcpPlugin(),
       mode === 'development' && componentTagger(),
       mode === 'production' && ogMetaPlugin(),
       analyze && visualizer({
@@ -43,7 +40,6 @@ export default defineConfig(({ mode }) => {
     build: {
       rollupOptions: {
         output: {
-          // Vite 8 (Rolldown) only supports the function form of manualChunks.
           manualChunks: (id: string) => {
             const vendorChunks: Record<string, string[]> = {
               'react-vendor': ['react', 'react-dom', 'react-router-dom'],
