@@ -20,6 +20,7 @@ export function CategoryStandardHero({
   const Heading = as;
 
   return (
+    <>
     <section
       aria-labelledby={headingId}
       className="px-4 sm:px-8 md:px-10 pt-10 sm:pt-12 md:pt-14 pb-6 sm:pb-8"
@@ -29,6 +30,7 @@ export function CategoryStandardHero({
         overflow: "hidden",
       }}
     >
+
       {/* Background grid */}
       <div
         style={{
@@ -107,5 +109,9 @@ export function CategoryStandardHero({
       </div>
 
     </section>
+    {/* Boundary marker: the category toolbar is portalled here so it straddles the navy/white edge */}
+    <div id="page-toolbar-anchor" />
+    </>
   );
 }
+
