@@ -202,7 +202,7 @@ const AtHomeTestsPage: React.FC = () => {
         : SEO.description}
       seoKeywords={SEO.keywords}
       canonicalUrl={sub ? `${SEO.canonical}?subcategory=${sub.slug}` : SEO.canonical}
-      pillLabel={sub ? sub.label : "At Home"}
+      pillLabel={sub ? sub.label : "At Home Test Kits"}
       headline={sub ? sub.label : "At Home Health Tests"}
       subtitle="Compare at-home testing kits from the UK's most trusted providers. Analysed in accredited labs, results delivered securely online."
       searchPlaceholder="Search by test name or biomarker…"
