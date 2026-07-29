@@ -36,7 +36,13 @@ function successRate(runs: number, errors: number): string {
 }
 
 export default function AdminOpsPage() {
-  const since = new Date(Date.now() - HOURS * 60 * 60 * 1000).toISOString();
+  // Bucket the window start to the hour so the query key is stable across renders.
+  // A fresh ISO string on every render made the keys change constantly, which left
+  // both queries permanently pending (endless loading skeletons).
+  const since = useMemo(() => {
+    const bucket = Math.floor(Date.now() / (60 * 60 * 1000)) * 60 * 60 * 1000;
+    return new Date(bucket - HOURS * 60 * 60 * 1000).toISOString();
+  }, []);
 
   const cronQuery = useQuery({
     queryKey: ["ops-cron", since],
