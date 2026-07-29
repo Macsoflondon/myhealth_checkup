@@ -118,8 +118,9 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const isFlush = variant === "flush";
   const useStraddle = isStraddle && Boolean(anchorEl);
   const straddlePositionClass = pinned
-    ? "fixed top-0 left-0 right-0 mx-4 sm:mx-8 md:mx-14 lg:mx-16"
-    : "absolute top-0 left-0 right-0 mx-4 sm:mx-8 md:mx-14 lg:mx-16 -translate-y-1/2";
+    ? "fixed top-0 left-0 right-0 mx-2 sm:mx-3 lg:mx-4"
+    : "absolute top-0 left-0 right-0 mx-2 sm:mx-3 lg:mx-4 -translate-y-1/2";
+
   const wrapperClass = useStraddle
     ? straddlePositionClass
     : placement === "hero" ? "mt-0 mx-0" : compact ? "mt-0 mx-0" : isFlush ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
