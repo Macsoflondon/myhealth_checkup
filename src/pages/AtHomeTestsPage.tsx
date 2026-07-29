@@ -53,7 +53,7 @@ const StatusShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
-        <CategoryStandardHero pillLabel="At Home" />
+        <CategoryStandardHero pillLabel="At Home Test Kits" />
         <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-[#08122b] min-h-[60vh]">
           <div className="max-w-6xl mx-auto">{children}</div>
         </section>
