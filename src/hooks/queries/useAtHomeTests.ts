@@ -83,7 +83,9 @@ export const useAtHomeCategories = () => {
         .eq("is_active", true)
         .eq("home_kit_available", true)
         .eq("is_addon", false)
-        .ilike("sample_type", "%finger%");
+        .ilike("sample_type", "%finger%")
+        .not("price", "is", null)
+        .gt("price", 0);
       if (error) throw error;
       const cats = Array.from(new Set((data || []).map((r) => r.category).filter(Boolean))).sort();
       return ["All", ...cats];
