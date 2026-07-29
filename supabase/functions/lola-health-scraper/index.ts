@@ -118,6 +118,31 @@ function determineCategory(title: string, description: string): string {
 
 import { firecrawlScrape, firecrawlMap, runInChunks } from '../_shared/firecrawl-helpers.ts';
 
+/**
+ * Lola Health is a phlebotomy service: blood panels are collected by a nurse
+ * (home visit) or in clinic — they are NOT self-collected finger-prick kits.
+ * Only the posted DNA kits (TruAge / TruHealth / Biological Kit) are home kits.
+ */
+const POSTED_KIT_PATTERN = /truage|truhealth|tru\s*diagnostic|biological\s*kit|dna/i;
+
+const collectionFor = (title: string, slug: string) => {
+  const isPostedKit = POSTED_KIT_PATTERN.test(`${title} ${slug}`);
+  return isPostedKit
+    ? {
+        sample_type: 'Finger-prick',
+        collection_method: 'Home kit',
+        home_kit_available: true,
+        clinic_visit_available: false,
+      }
+    : {
+        sample_type: 'Venous',
+        collection_method: 'Phlebotomy (nurse visit or clinic)',
+        home_kit_available: false,
+        clinic_visit_available: true,
+      };
+};
+
+
 async function mapLola(apiKey: string): Promise<string[]> {
   const links = await firecrawlMap('https://lolahealth.com/collections/blood-tests', apiKey, {
     search: 'blood test', limit: 200,
@@ -287,9 +312,7 @@ Deno.serve(async (req) => {
         is_addon: isAddon,
         biomarkers_list: biomarkers.length > 0 ? biomarkers : null,
         biomarker_count: biomarkerCount || biomarkers.length || null,
-        sample_type: 'Finger-prick',
-        home_kit_available: true,
-        clinic_visit_available: false,
+        ...collectionFor(title, slug),
         turnaround_raw: turnaroundRaw,
         scraped_at: new Date().toISOString(),
         url_verified: true,
@@ -333,8 +356,8 @@ Deno.serve(async (req) => {
         turnaround_hours: turnaround.hours,
         turnaround_days: turnaround.days,
         turnaround_unit: turnaround.unit,
-        sample_type: 'Finger-prick',
-        collection_method: 'Home kit',
+        sample_type: row.sample_type,
+        collection_method: row.collection_method,
         in_stock: true,
         scrape_source_url: row.url,
       }, { scrapeRunId: runId });
@@ -352,8 +375,8 @@ Deno.serve(async (req) => {
             category: row.category,
             description: row.description,
             image_url: row.image_url,
-            home_kit_available: true,
-            clinic_visit_available: false,
+            home_kit_available: row.home_kit_available,
+            clinic_visit_available: row.clinic_visit_available,
             was_price: row.original_price ?? null,
           }).eq('id', res.providerTestId);
         }

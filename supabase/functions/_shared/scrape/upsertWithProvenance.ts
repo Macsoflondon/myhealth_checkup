@@ -14,6 +14,7 @@
 type SupabaseClient = any;
 
 import { getErrorMessage } from "../errors.ts";
+import { isJunkTestName } from "./isJunkTestName.ts";
 import {
   writeHistorySnapshot,
   type ProviderTestSnapshot,
@@ -120,6 +121,17 @@ export async function upsertWithProvenance(
         providerTestId: null,
         warnings,
         error: "provider_id and test_name are required",
+      };
+    }
+
+    // Reject HTTP error pages / bot walls captured as products.
+    if (isJunkTestName(input.test_name)) {
+      return {
+        ok: false,
+        action: "skipped",
+        providerTestId: null,
+        warnings,
+        error: `rejected junk test_name "${input.test_name}" (looks like an error page, not a product)`,
       };
     }
 

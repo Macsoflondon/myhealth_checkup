@@ -23,6 +23,16 @@ export interface AtHomeTest {
   collection_options: Record<string, unknown> | null;
 }
 
+/**
+ * Names that indicate a scraped HTTP error page rather than a real product.
+ * Belt-and-braces: the scrape layer rejects these, this keeps any legacy rows
+ * out of the customer-facing listing.
+ */
+const isJunkTestName = (name: string): boolean =>
+  /^\s*(\d{3}\b|error\b|(page\s+)?not\s+found\b|access denied|forbidden|just a moment)/i.test(
+    name.trim()
+  ) || name.trim().length < 3;
+
 export const useAtHomeTests = (category?: string, search?: string) => {
   return useQuery({
     queryKey: ["at-home-tests", category, search],
@@ -40,6 +50,8 @@ export const useAtHomeTests = (category?: string, search?: string) => {
         .eq("home_kit_available", true)
         .eq("is_addon", false)
         .ilike("sample_type", "%finger%")
+        .not("price", "is", null)
+        .gt("price", 0)
         .order("is_popular", { ascending: false })
         .order("test_name", { ascending: true });
 
@@ -53,11 +65,13 @@ export const useAtHomeTests = (category?: string, search?: string) => {
 
       const { data, error } = await query;
       if (error) throw error;
-      return (data || []) as unknown as AtHomeTest[];
+      const rows = (data || []) as unknown as AtHomeTest[];
+      return rows.filter((row) => !isJunkTestName(row.test_name));
     },
     staleTime: 5 * 60 * 1000,
   });
 };
+
 
 export const useAtHomeCategories = () => {
   return useQuery({
@@ -69,7 +83,9 @@ export const useAtHomeCategories = () => {
         .eq("is_active", true)
         .eq("home_kit_available", true)
         .eq("is_addon", false)
-        .ilike("sample_type", "%finger%");
+        .ilike("sample_type", "%finger%")
+        .not("price", "is", null)
+        .gt("price", 0);
       if (error) throw error;
       const cats = Array.from(new Set((data || []).map((r) => r.category).filter(Boolean))).sort();
       return ["All", ...cats];
