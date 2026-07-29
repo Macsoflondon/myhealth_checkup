@@ -61,47 +61,38 @@ export async function verifyTotp(factorId: string, code: string): Promise<string
   return null;
 }
 
-/** Generate a new set of plaintext backup codes (10 × 10-char groups). */
-export function generateBackupCodes(count = 10): string[] {
-  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // no ambiguous chars
-  const buf = new Uint8Array(count * 10);
-  crypto.getRandomValues(buf);
-  const codes: string[] = [];
-  for (let i = 0; i < count; i++) {
-    let s = "";
-    for (let j = 0; j < 10; j++) s += alphabet[buf[i * 10 + j] % alphabet.length];
-    codes.push(`${s.slice(0, 5)}-${s.slice(5)}`);
+type PostgrestLikeError = { code?: string | null; message?: string | null };
+
+/**
+ * Replace the user's backup codes with a freshly generated set.
+ *
+ * Generation and storage happen entirely server-side in the SECURITY DEFINER
+ * function `regenerate_mfa_backup_codes`, which requires an aal2 JWT. The
+ * client holds no write access to `mfa_backup_codes`.
+ */
+export async function replaceBackupCodes(): Promise<string[]> {
+  const { data, error } = await supabase.rpc("regenerate_mfa_backup_codes");
+
+  if (error) {
+    const pgError = error as PostgrestLikeError;
+    if (pgError.code === "42501") {
+      throw new Error(
+        "Please complete two-step verification on this session before creating backup codes.",
+      );
+    }
+    if (pgError.code === "28000") {
+      throw new Error("Please sign in again to create backup codes.");
+    }
+    throw new Error("We couldn't create your backup codes. Please try again in a moment.");
   }
-  return codes;
+
+  if (!Array.isArray(data) || data.length === 0) {
+    throw new Error("We couldn't create your backup codes. Please try again in a moment.");
+  }
+
+  return data as string[];
 }
 
-/** SHA-256 hash of a normalised backup code. */
-export async function hashBackupCode(code: string): Promise<string> {
-  const normalised = code.replace(/[^A-Z0-9]/gi, "").toUpperCase();
-  const bytes = new TextEncoder().encode(normalised);
-  const digest = await crypto.subtle.digest("SHA-256", bytes);
-  return Array.from(new Uint8Array(digest))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-}
-
-/** Replace the user's backup codes with a freshly generated set. */
-export async function replaceBackupCodes(userId: string): Promise<string[]> {
-  const plaintext = generateBackupCodes(10);
-  const hashes = await Promise.all(plaintext.map(hashBackupCode));
-
-  const { error: delErr } = await supabase
-    .from("mfa_backup_codes")
-    .delete()
-    .eq("user_id", userId);
-  if (delErr) throw new Error(delErr.message);
-
-  const rows = hashes.map((code_hash) => ({ user_id: userId, code_hash }));
-  const { error: insErr } = await supabase.from("mfa_backup_codes").insert(rows);
-  if (insErr) throw new Error(insErr.message);
-
-  return plaintext;
-}
 
 /**
  * Attempt to redeem a backup code. Calls the `mfa-recovery` edge function,
