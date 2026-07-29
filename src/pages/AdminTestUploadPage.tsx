@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -175,7 +174,6 @@ const AdminTestUploadPage: React.FC = () => {
             </CardContent>
           </Card>
         </main>
-        <Footer />
       </div>
     </>
   );
