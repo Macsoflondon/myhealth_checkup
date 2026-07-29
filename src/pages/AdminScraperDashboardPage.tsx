@@ -462,7 +462,7 @@ const AdminScraperDashboardPage: React.FC = () => {
                       <Alert variant="destructive">
                         <AlertTriangle className="h-4 w-4" />
                         <AlertDescription className="text-sm">
-                          {job.error_message}
+                          {formatErrorMessage(job.error_message)}
                         </AlertDescription>
                       </Alert>
                     </CardContent>
