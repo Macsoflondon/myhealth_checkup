@@ -1,10 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { SectionShell, StatCard, HealthDot } from "../SectionShell";
+import { getProviderMeta } from "@/constants/providerMeta";
 import { Loader2 } from "lucide-react";
 
 interface ProviderRow {
+  providerId: string;
   provider_name: string;
   tests: number;
   lastScrapeStatus: string | null;
@@ -16,24 +17,49 @@ export default function ProvidersSection() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let cancelled = false;
     (async () => {
-      const { data: tests } = await supabase.from("provider_tests").select("provider_name").limit(5000);
+      // provider_tests keys on provider_id (there is no provider_name column);
+      // scrape outcomes live in scraping_jobs.
+      const [{ data: tests }, { data: jobs }] = await Promise.all([
+        supabase.from("provider_tests").select("provider_id").eq("is_active", true).limit(10000),
+        supabase.from("scraping_jobs").select("provider_id, status, last_scraped"),
+      ]);
+
       const counts = new Map<string, number>();
-      for (const t of tests ?? []) {
-        const k = (t as any).provider_name ?? "(unknown)";
+      for (const t of (tests ?? []) as { provider_id: string | null }[]) {
+        const k = t.provider_id ?? "(unknown)";
         counts.set(k, (counts.get(k) ?? 0) + 1);
       }
-      const merged: ProviderRow[] = Array.from(counts.entries()).map(([provider_name, tests]) => ({
-        provider_name,
-        tests,
-        lastScrapeStatus: null,
-        lastScrapeAt: null,
-      }));
+
+      const jobByProvider = new Map<string, { status: string | null; last_scraped: string | null }>();
+      for (const j of (jobs ?? []) as { provider_id: string; status: string | null; last_scraped: string | null }[]) {
+        const existing = jobByProvider.get(j.provider_id);
+        if (!existing || (j.last_scraped ?? "") > (existing.last_scraped ?? "")) {
+          jobByProvider.set(j.provider_id, { status: j.status, last_scraped: j.last_scraped });
+        }
+      }
+
+      const merged: ProviderRow[] = Array.from(counts.entries()).map(([providerId, tests]) => {
+        const job = jobByProvider.get(providerId);
+        return {
+          providerId,
+          provider_name: getProviderMeta(providerId).displayName,
+          tests,
+          lastScrapeStatus: job?.status ?? null,
+          lastScrapeAt: job?.last_scraped ?? null,
+        };
+      });
       merged.sort((a, b) => b.tests - a.tests);
+      if (cancelled) return;
       setRows(merged);
       setLoading(false);
     })();
+    return () => {
+      cancelled = true;
+    };
   }, []);
+
 
   return (
     <SectionShell title="Provider Monitoring" description="Per-provider catalog size and most recent scrape outcome." status="live">
@@ -60,7 +86,7 @@ export default function ProvidersSection() {
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.provider_name} className="border-t">
+                <tr key={r.providerId} className="border-t">
                   <td className="px-3 py-2 font-medium">{r.provider_name}</td>
                   <td className="px-3 py-2 text-right tabular-nums">{r.tests}</td>
                   <td className="px-3 py-2">
