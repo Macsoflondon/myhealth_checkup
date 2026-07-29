@@ -36,7 +36,7 @@ export const useNavigationData = () => {
           ['fitness-health', 'vitamins', 'hormones', 'general-health', 'heart-health'].includes(cat.id)
         );
 
-      case "At Home":
+      case "At Home Test Kits":
         return compareCategories.filter(cat =>
           ['blood-tests', 'vitamins', 'hormones', 'thyroid', 'diabetes', 'heart-health', 'allergy-testing', 'general-health'].includes(cat.id)
         );

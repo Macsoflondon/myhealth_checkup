@@ -43,7 +43,7 @@ const mobileNavigationItems = [
     testCount: 9
   },
   {
-    name: "At Home",
+    name: "At Home Test Kits",
     path: "/at-home-tests",
     icon: "🏠",
     categories: ["general-health", "blood-tests"],
