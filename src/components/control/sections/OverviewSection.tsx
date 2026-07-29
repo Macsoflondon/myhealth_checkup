@@ -43,7 +43,7 @@ export default function OverviewSection() {
         const lastScrapeRes = await db.from("scrape_run_log").select("started_at").order("started_at", { ascending: false }).limit(1).maybeSingle();
         if (cancelled) return;
         setData({
-          providers: providersRes.count ?? 0,
+          providers: providerCount,
           tests: testsRes.count ?? 0,
           mappings: mapRes.count ?? 0,
           recentScrapes: scrapesRes.count ?? 0,
