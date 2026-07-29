@@ -1,40 +1,21 @@
-## Goal
+Tighten the desktop category pill buttons in the browse-by-category toolbar so all category pills plus the More button fit on a single line without wrapping.
 
-Toolbar sits directly beneath the slogan and above the hero imagery, the mobile hero uses its vertical space better, and the hairline divider under the wordmark is easier to see.
+Files to change
+- `src/components/layout/CategoryPillDropdown.tsx` — the individual pill Link.
+- `src/components/layout/BrowseByCategoryBar.tsx` — the pill container row.
 
-## Changes
+Changes
+1. In `CategoryPillDropdown.tsx`:
+   - Reduce horizontal padding (`pl-2.5 pr-3` / `sm:pl-3 sm:pr-3.5` → roughly `pl-2 pr-2.5` / `sm:pl-2.5 sm:pr-3`).
+   - Reduce icon circle size (`w-[24px] h-[24px] sm:w-[26px] sm:h-[26px]` → `w-[20px] h-[20px] sm:w-[22px] sm:h-[22px]`).
+   - Reduce icon size (`w-[14px] h-[14px] sm:w-[15px] sm:h-[15px]` → `w-[12px] h-[12px] sm:w-[13px] sm:h-[13px]`).
+   - Reduce label font size (`text-[13px] sm:text-[14px] lg:text-[14.5px]` → `text-[11.5px] sm:text-[12.5px] lg:text-[13px]`).
+   - Keep text `whitespace-nowrap` and the hover/active border/box-shadow behaviour.
 
-### 1. Toolbar relocation (`src/components/sections/HeroMasthead.tsx`, `src/pages/Index.tsx`)
+2. In `BrowseByCategoryBar.tsx`:
+   - Tighten the row gap (`gap-x-1.5 gap-y-2 sm:gap-x-2` → `gap-x-1 gap-y-0 sm:gap-x-1.5`) and keep `flex-nowrap` so the row does not wrap.
+   - Apply the same compact scaling to the More pill if needed so it matches the category pills.
 
-Current order on the homepage is: hero section (ticker → wordmark/slogan → images) → category toolbar → mobile slogan → trust bar.
+3. Verify in the preview at the current desktop viewport that the toolbar no longer wraps to a second line and remains usable (hover dropdowns still open, icons and text remain legible).
 
-New order inside the hero section itself:
-
-```text
-ticker
-wordmark
-hairline divider
-slogan  (+ language / login controls on desktop)
-category toolbar   <-- moved here, full-bleed
-hero image slideshow
-```
-
-- Render the mobile-only slogan block inside `HeroMasthead` (moved out of `Index.tsx`) so both breakpoints share one slot directly above the toolbar.
-- Render `<BrowseByCategoryBar compact placement="hero" />` inside `HeroMasthead`, full-bleed with the same negative margins used by the ticker, immediately before the image container.
-- Remove the standalone toolbar and mobile slogan blocks from `Index.tsx`; the trust bar then follows the hero section as before.
-- Keep the toolbar's existing sticky/scroll behaviour and the white mobile background rule untouched; only its position in the tree changes.
-
-### 2. Mobile hero space optimisation
-
-- Trim the hero's mobile minimum height so the added toolbar doesn't push the image into a sliver — reduce the `min-h-[78svh]` mobile value and let the image container flex to fill.
-- Tighten mobile vertical rhythm: smaller slogan block padding, reduced gap between slogan, toolbar and image.
-- Guarantee a sensible image floor on mobile so the slideshow never collapses below a usable height.
-
-### 3. Divider contrast
-
-- Raise the hairline between the wordmark and slogan from `border-white/25` to a clearly visible but still restrained `border-white/45`, and keep it a 1px hairline.
-
-## Verification
-
-- Check mobile (390px) and desktop (1338px) in the preview: toolbar directly under slogan, all pills still on one line on desktop, hero image still flush with the ticker area and not squashed.
-- Confirm sticky header behaviour and mobile menu button visibility still work on scroll.
+No functional/data changes; purely presentational.
