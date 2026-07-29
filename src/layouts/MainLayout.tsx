@@ -33,7 +33,7 @@ export const MainLayout = ({
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg">Skip to main content</a>
       {!hideHeader && !isHome && (
         <>
-          <BrowseByCategoryBar variant="flush" />
+          <BrowseByCategoryBar variant="flush" placement="straddle" />
           {!isCompare && (
             <Suspense fallback={<div className="min-h-[60px]" aria-hidden="true" />}>
               <AccreditedProvidersBar />
