@@ -1,5 +1,7 @@
-import { useState, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { createPortal } from "react-dom";
+import { Link, useLocation } from "react-router-dom";
+
 import { ArrowRight, ChevronDown, Star, Heart, UserCheck, User, Dumbbell, Baby, ShieldCheck, Home, MoreHorizontal, Menu, X, Info, Phone, Users, Search, BarChart2, BookOpen, Library } from "lucide-react";
 import { primaryNavigationItems, moreNavigationSections } from "@/components/header/NavigationItems";
 import { MoreDropdownMenu } from "@/components/header/MoreDropdownMenu";
