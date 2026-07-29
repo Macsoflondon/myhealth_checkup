@@ -23,7 +23,7 @@ interface Props {
  * Panel is `position: fixed`, anchored to the pill's bounding rect on open,
  * so it isn't clipped by the pill strip's mask.
  */
-export function CategoryPillDropdown({ item, color, Icon, compact }: Props) {
+export function CategoryPillDropdown({ item, color, Icon, compact, dense = false }: Props) {
   const location = useLocation();
   const currentUrl = location.pathname + location.search;
   const hasDropdown = Boolean(item.hasDropdown && item.dropdownItems?.length);
