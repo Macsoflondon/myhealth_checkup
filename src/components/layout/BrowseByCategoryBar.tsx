@@ -201,8 +201,9 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                   {moreOpen && <div className="absolute top-full right-0 mt-2 z-[9999]"><MoreDropdownMenu sections={moreNavigationSections} onItemClick={() => setMoreOpen(false)} onClose={() => setMoreOpen(false)} /></div>}
                 </div>
                 {placement !== "hero" && (
-                  <div className={`flex items-center shrink-0 ${compact ? "gap-0" : "gap-1"}`}><div className={compact ? "scale-[0.78]" : ""}><LanguageSwitcher /></div><div className={compact ? "scale-[0.78]" : ""}><UserMenu /></div></div>
+                  <div className={`flex items-center shrink-0 ${compact ? "gap-0" : "gap-1"}`}><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><LanguageSwitcher /></div><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><UserMenu /></div></div>
                 )}
+
               </div>
             </div>
           </div>
