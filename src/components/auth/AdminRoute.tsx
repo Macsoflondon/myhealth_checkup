@@ -7,6 +7,16 @@ import { Loader2 } from "lucide-react";
 import { AdminMFAGuard } from "@/components/admin/AdminMFAGuard";
 import { logger } from "@/lib/logger";
 
+/**
+ * Cached role verification, keyed by `userId:role`. Without this every admin
+ * route mount re-queried `user_roles`; a slow/never-settling query left the
+ * guard stuck on "Verifying access...", which reads as the entire admin app
+ * freezing after a heavy page (e.g. the encryption audit) has run.
+ */
+const ROLE_CACHE_TTL_MS = 5 * 60 * 1000;
+const ROLE_QUERY_TIMEOUT_MS = 10_000;
+const roleCache = new Map<string, { authorized: boolean; at: number }>();
+
 interface AdminRouteProps {
   children: React.ReactNode;
   requiredRole?: 'admin' | 'moderator';
@@ -24,8 +34,11 @@ interface AdminRouteProps {
 export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps) => {
   const { user, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
-  const [isVerifying, setIsVerifying] = useState(true);
-  const [isAuthorized, setIsAuthorized] = useState(false);
+  const cacheKey = user ? `${user.id}:${requiredRole}` : null;
+  const cached = cacheKey ? roleCache.get(cacheKey) : undefined;
+  const cacheFresh = !!cached && Date.now() - cached.at < ROLE_CACHE_TTL_MS && cached.authorized;
+  const [isVerifying, setIsVerifying] = useState(!cacheFresh);
+  const [isAuthorized, setIsAuthorized] = useState(cacheFresh);
 
   // MFA gate (only meaningful for admins; moderators are not currently MFA-gated).
   const enforceMFA = requiredRole === 'admin';
@@ -42,13 +55,30 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
         return;
       }
 
+      const key = `${user.id}:${requiredRole}`;
+      const entry = roleCache.get(key);
+      if (entry && Date.now() - entry.at < ROLE_CACHE_TTL_MS && entry.authorized) {
+        roleCache.set(key, { authorized: true, at: Date.now() });
+        setIsAuthorized(true);
+        setIsVerifying(false);
+        return;
+      }
+
+      // Never let a wedged network call hold the admin UI hostage.
+      const timeout = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Role verification timed out')), ROLE_QUERY_TIMEOUT_MS),
+      );
+
       try {
-        const { data: roleRow, error } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .eq('role', requiredRole)
-          .maybeSingle();
+        const { data: roleRow, error } = await Promise.race([
+          supabase
+            .from('user_roles')
+            .select('role')
+            .eq('user_id', user.id)
+            .eq('role', requiredRole)
+            .maybeSingle(),
+          timeout,
+        ]);
 
         if (cancelled) return;
 
@@ -64,6 +94,7 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
           return;
         }
 
+        roleCache.set(key, { authorized: true, at: Date.now() });
         setIsAuthorized(true);
       } catch (error) {
         if (cancelled) return;
