@@ -1,18 +1,40 @@
 ## Goal
-Clean up the desktop/tablet hero header block in `src/components/sections/HeroMasthead.tsx` (mobile layout unchanged).
+
+Toolbar sits directly beneath the slogan and above the hero imagery, the mobile hero uses its vertical space better, and the hairline divider under the wordmark is easier to see.
 
 ## Changes
 
-1. **Language switcher + login on the slogan line**
-   - Remove the separate controls row (the `hidden sm:flex items-center justify-end …` block that currently sits below the slogan).
-   - Put `LanguageSwitcher` and `UserMenu` in a right-aligned group on the same flex row as the slogan: slogan left, controls right, vertically centred, with a small gap so the slogan can wrap safely on narrower tablet widths.
+### 1. Toolbar relocation (`src/components/sections/HeroMasthead.tsx`, `src/pages/Index.tsx`)
 
-2. **Reduce the gap to the hero image**
-   - Drop the now-redundant `mt-6/mt-8` spacing that came with the removed controls row, and tighten the hero image container's top margin so the picture sits closer under the slogan.
+Current order on the homepage is: hero section (ticker → wordmark/slogan → images) → category toolbar → mobile slogan → trust bar.
 
-3. **Brighten the hairline divider**
-   - The line between the wordmark and the slogan currently uses `border-white/10`. Raise it to roughly `border-white/25` so it is visible but still a hairline. The lower divider disappears with the removed row, so only the one line remains.
+New order inside the hero section itself:
 
-## Notes
-- No changes to business logic, data, or the mobile header (which keeps its own controls in `BrowseByCategoryBar`).
-- Verified after implementation by screenshotting the desktop hero in the running preview.
+```text
+ticker
+wordmark
+hairline divider
+slogan  (+ language / login controls on desktop)
+category toolbar   <-- moved here, full-bleed
+hero image slideshow
+```
+
+- Render the mobile-only slogan block inside `HeroMasthead` (moved out of `Index.tsx`) so both breakpoints share one slot directly above the toolbar.
+- Render `<BrowseByCategoryBar compact placement="hero" />` inside `HeroMasthead`, full-bleed with the same negative margins used by the ticker, immediately before the image container.
+- Remove the standalone toolbar and mobile slogan blocks from `Index.tsx`; the trust bar then follows the hero section as before.
+- Keep the toolbar's existing sticky/scroll behaviour and the white mobile background rule untouched; only its position in the tree changes.
+
+### 2. Mobile hero space optimisation
+
+- Trim the hero's mobile minimum height so the added toolbar doesn't push the image into a sliver — reduce the `min-h-[78svh]` mobile value and let the image container flex to fill.
+- Tighten mobile vertical rhythm: smaller slogan block padding, reduced gap between slogan, toolbar and image.
+- Guarantee a sensible image floor on mobile so the slideshow never collapses below a usable height.
+
+### 3. Divider contrast
+
+- Raise the hairline between the wordmark and slogan from `border-white/25` to a clearly visible but still restrained `border-white/45`, and keep it a 1px hairline.
+
+## Verification
+
+- Check mobile (390px) and desktop (1338px) in the preview: toolbar directly under slogan, all pills still on one line on desktop, hero image still flush with the ticker area and not squashed.
+- Confirm sticky header behaviour and mobile menu button visibility still work on scroll.

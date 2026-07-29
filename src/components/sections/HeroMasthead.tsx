@@ -3,6 +3,8 @@ import { useState, useEffect, useCallback } from "react";
 import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
 import { UserMenu } from "@/components/header/UserMenu";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
+import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
+
 
 const TURQUOISE = "#22c0d4";
 const PINK = "#e70d69";
@@ -88,11 +90,11 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
 
   const slide = SLIDES[activeIndex];
   return (
-    <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border border-b-0 border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[78svh] sm:min-h-[100svh] flex flex-col">
+    <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border border-b-0 border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[68svh] sm:min-h-[100svh] flex flex-col">
       <TestCategoryTicker variant="inline" className="bg-white border-b border-brand-navy/10 -mx-3 sm:-mx-6 md:-mx-9" />
       <div className="hidden sm:flex flex-col items-start pt-4 sm:pt-7">
         <Wordmark />
-        <div className="w-full border-t border-white/25 my-2" />
+        <div className="w-full border-t border-white/45 my-2" />
         <div className="w-full flex items-center justify-between gap-4">
           <p className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white text-[clamp(0.95rem,2.4vw,1.75rem)] leading-[1.15] text-left">
             YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span> ONE TRUSTED PLATFORM.
@@ -104,7 +106,25 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
         </div>
       </div>
 
-      <div className="relative rounded-t-[18px] overflow-hidden mt-1.5 sm:mt-3 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
+      {/* Brand slogan — mobile only; desktop/tablet slogan sits above */}
+      <div className="sm:hidden -mx-3 border-b border-white/10">
+        <div className="px-3 py-1.5">
+          <h1 className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white leading-[1.15] text-[clamp(0.85rem,4.2vw,1.5rem)] text-center m-0">
+            <span className="block">
+              YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span>
+            </span>
+            <span className="block">ONE TRUSTED PLATFORM.</span>
+          </h1>
+        </div>
+      </div>
+
+      {/* Category toolbar — directly under the slogan, above the imagery */}
+      <div className="-mx-3 sm:-mx-6 md:-mx-9 mt-1.5 sm:mt-3">
+        <BrowseByCategoryBar compact placement="hero" />
+      </div>
+
+      <div className="relative rounded-t-[18px] overflow-hidden mt-1.5 sm:mt-3 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[38svh] sm:min-h-0 bg-[#081129]">
+
 
         {SLIDES.map((s, n) => {
           const active = n === activeIndex;
