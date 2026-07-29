@@ -95,7 +95,9 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   }, [moreOpen]);
   const items = primaryNavigationItems.filter((i) => i.name !== "How It Works");
   const isFlush = variant === "flush";
-  const wrapperClass = placement === "hero" ? "mt-0 mx-0" : compact ? "mt-0 mx-0" : isFlush ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
+  const useStraddle = isStraddle && Boolean(anchorEl);
+  const wrapperClass = useStraddle ? "mt-0 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : placement === "hero" ? "mt-0 mx-0" : compact ? "mt-0 mx-0" : isFlush ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
+
   let innerClass = isFlush || stuck ? "rounded-[22px] bg-[#f7f7f8]/95 backdrop-blur-md border border-[#081129]/[0.08] shadow-[0_12px_30px_rgba(8,17,41,0.12)]" : "rounded-t-[22px] rounded-b-none bg-[#f7f7f8] border border-b-0 border-[#081129]/[0.06]";
   if (compact && !stuck && !isFlush) { innerClass = "rounded-none bg-[#F5F5F5] border-x border-[#081129]/[0.06]"; }
   if (className) { innerClass = `${innerClass} ${className}`; }
