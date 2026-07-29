@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
+import { decodeHtmlEntities } from "@/utils/decode-html-entities";
 
 type AuditRow = {
   id: string;
@@ -114,7 +115,7 @@ export default function AdminBiomarkerAuditPage() {
       .from("biomarker_audit_runs" as never)
       .update({ approved: true, approved_at: new Date().toISOString() } as never)
       .eq("id", row.id);
-    toast({ title: "Applied", description: `${row.test_name} updated` });
+    toast({ title: "Applied", description: `${decodeHtmlEntities(row.test_name)} updated` });
     await load();
   };
 
@@ -182,7 +183,7 @@ export default function AdminBiomarkerAuditPage() {
           <Card key={row.id} className="p-4">
             <div className="flex items-start justify-between gap-4 flex-wrap mb-3">
               <div>
-                <h3 className="font-semibold text-lg">{row.test_name}</h3>
+                <h3 className="font-semibold text-lg">{decodeHtmlEntities(row.test_name)}</h3>
                 <p className="text-xs text-muted-foreground">
                   {row.provider_id} · {new Date(row.created_at).toLocaleString()}
                 </p>
@@ -208,7 +209,7 @@ export default function AdminBiomarkerAuditPage() {
                 <p className="font-semibold mb-1">Stored ({row.stored_count ?? 0})</p>
                 <ul className="list-disc list-inside text-muted-foreground space-y-0.5">
                   {(row.stored_list ?? []).map((b, i) => (
-                    <li key={i}>{b}</li>
+                    <li key={i}>{decodeHtmlEntities(b)}</li>
                   ))}
                   {(!row.stored_list || row.stored_list.length === 0) && <li>—</li>}
                 </ul>
@@ -217,7 +218,7 @@ export default function AdminBiomarkerAuditPage() {
                 <p className="font-semibold mb-1">Scraped from provider ({row.scraped_count ?? 0})</p>
                 <ul className="list-disc list-inside text-muted-foreground space-y-0.5">
                   {(row.scraped_biomarkers ?? []).map((b, i) => (
-                    <li key={i}>{b}</li>
+                    <li key={i}>{decodeHtmlEntities(b)}</li>
                   ))}
                   {(!row.scraped_biomarkers || row.scraped_biomarkers.length === 0) && <li>—</li>}
                 </ul>
