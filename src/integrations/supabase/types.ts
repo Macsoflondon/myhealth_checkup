@@ -6009,6 +6009,7 @@ export type Database = {
           snomed_code: string
         }[]
       }
+      regenerate_mfa_backup_codes: { Args: never; Returns: string[] }
       resolve_canonical_category: {
         Args: { _provider_id: string; _source_section: string }
         Returns: string
