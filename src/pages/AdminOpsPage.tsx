@@ -178,8 +178,15 @@ export default function AdminOpsPage() {
 
           <TabsContent value="edge" className="mt-4">
             <Card variant="outlined" className="p-4">
-              {edgeQuery.isLoading ? (
+              {edgeQuery.isPending ? (
                 <div className="space-y-2">{Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-10" />)}</div>
+              ) : edgeQuery.isError ? (
+                <div className="space-y-3 py-6 text-center">
+                  <AlertTriangle className="mx-auto h-6 w-6 text-error" />
+                  <p className="text-sm text-foreground">Couldn't load edge function activity.</p>
+                  <p className="text-xs text-muted-foreground">{(edgeQuery.error as Error).message}</p>
+                  <Button variant="outline" size="sm" onClick={() => void edgeQuery.refetch()}>Try again</Button>
+                </div>
               ) : (
                 <Table>
                   <TableHeader>
