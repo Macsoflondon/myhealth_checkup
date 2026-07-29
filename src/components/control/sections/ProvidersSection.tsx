@@ -86,7 +86,7 @@ export default function ProvidersSection() {
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.provider_name} className="border-t">
+                <tr key={r.providerId} className="border-t">
                   <td className="px-3 py-2 font-medium">{r.provider_name}</td>
                   <td className="px-3 py-2 text-right tabular-nums">{r.tests}</td>
                   <td className="px-3 py-2">
