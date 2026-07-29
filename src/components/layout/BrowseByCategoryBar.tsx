@@ -19,7 +19,7 @@ const ICONS: Record<string, { Icon: any; color: string }> = {
   "Sports & Fitness": { Icon: Dumbbell, color: "#16a34a" },
   "Fertility - Prenatal": { Icon: Baby, color: "#e70d69" },
   "Cancer Screening": { Icon: ShieldCheck, color: "#0ea5e9" },
-  "At Home": { Icon: Home, color: "#f59e0b" },
+  "At Home Test Kits": { Icon: Home, color: "#f59e0b" },
 };
 const MORE_SECTION_ICONS: Record<string, { Icon: any; color: string }> = {
   "About Us": { Icon: Info, color: TURQUOISE },
@@ -190,8 +190,8 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             data-testid="browse-by-category-bar"
           >
 
-            <div className={`${compact ? "px-2 py-2 sm:px-3 sm:py-2.5" : "px-2 sm:px-3 py-2 sm:py-2.5"} transition-all duration-300 ${innerClass}`}>
-              <div className={`flex items-center justify-center gap-y-0 flex-nowrap max-w-full ${useStraddle ? "gap-x-0.5 lg:gap-x-1" : "gap-x-1 sm:gap-x-1.5"}`}>
+            <div className={`${useStraddle ? "px-1 py-2 sm:py-2.5" : compact ? "px-2 py-2 sm:px-3 sm:py-2.5" : "px-2 sm:px-3 py-2 sm:py-2.5"} transition-all duration-300 ${innerClass}`}>
+              <div className={`flex items-center justify-center gap-y-0 flex-nowrap max-w-full ${useStraddle ? "gap-x-0.5" : "gap-x-1 sm:gap-x-1.5"}`}>
                 {items.map((item) => {
                   const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
                   return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} dense={useStraddle} />;

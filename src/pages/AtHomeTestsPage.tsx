@@ -15,11 +15,11 @@ import { getProviderRating } from "@/constants/providerRatings";
 import { findSubcategory, testMatchesSubcategory } from "@/config/subcategoryMap";
 
 const SEO = {
-  title: "At Home Health Tests | myhealth checkup",
+  title: "At Home Test Kits | Compare UK Finger-Prick Tests | myhealth checkup",
   description:
-    "Compare at-home testing kits from the UK's most trusted providers. Finger-prick blood tests, delivered to your door, analysed in accredited labs.",
+    "Compare at home test kits from UKAS-accredited UK providers. Finger-prick blood tests posted to your door, with prices, biomarkers and typical turnaround times.",
   keywords:
-    "at home blood test, home testing kit, finger prick test, health test at home, private blood test UK",
+    "at home test kits, at home blood test, home testing kit, finger prick test, private blood test UK",
   canonical: "https://myhealthcheckup.co.uk/at-home-tests",
 };
 
@@ -196,18 +196,18 @@ const AtHomeTestsPage: React.FC = () => {
 
   return (
     <CategoryPageLayout
-      seoTitle={sub ? `${sub.label} — At Home Health Tests | myhealth checkup` : SEO.title}
+      seoTitle={sub ? `${sub.label} — At Home Test Kits | myhealth checkup` : SEO.title}
       seoDescription={sub
-        ? `Compare ${sub.label.toLowerCase()} — at-home finger-prick kits from UKAS-accredited UK labs.`
+        ? `Compare ${sub.label.toLowerCase()} — at home test kits from UKAS-accredited UK labs.`
         : SEO.description}
       seoKeywords={SEO.keywords}
       canonicalUrl={sub ? `${SEO.canonical}?subcategory=${sub.slug}` : SEO.canonical}
       pillLabel={sub ? sub.label : "At Home Test Kits"}
-      headline={sub ? sub.label : "At Home Health Tests"}
-      subtitle="Compare at-home testing kits from the UK's most trusted providers. Analysed in accredited labs, results delivered securely online."
+      headline={sub ? sub.label : "At Home Test Kits"}
+      subtitle="Compare at home test kits from the UK's most trusted providers. Analysed in accredited labs, results delivered securely online."
       searchPlaceholder="Search by test name or biomarker…"
       trustStats={[
-        { value: `${tests.length}+`, label: sub ? sub.label : "At-Home Tests" },
+        { value: `${tests.length}+`, label: sub ? sub.label : "At Home Test Kits" },
         { value: "UKAS", label: "Accredited Labs" },
         { value: "Fast", label: "Online Results" },
       ]}
@@ -220,8 +220,8 @@ const AtHomeTestsPage: React.FC = () => {
         { icon: Clock, title: "Fast Online Results", description: "Typical turnaround in a few days, delivered securely online" },
       ]}
       breadcrumbs={sub
-        ? [{ label: "Home", href: "/" }, { label: "At Home Tests", href: "/at-home-tests" }, { label: sub.label }]
-        : [{ label: "Home", href: "/" }, { label: "At Home Tests" }]}
+        ? [{ label: "Home", href: "/" }, { label: "At Home Test Kits", href: "/at-home-tests" }, { label: sub.label }]
+        : [{ label: "Home", href: "/" }, { label: "At Home Test Kits" }]}
     />
   );
 };

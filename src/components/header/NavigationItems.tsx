@@ -104,7 +104,7 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
     ],
   },
   {
-    name: "At Home",
+    name: "At Home Test Kits",
     path: "/at-home-tests",
     hasDropdown: true,
     megaMenu: true,

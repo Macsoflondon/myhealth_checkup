@@ -28,7 +28,7 @@ const CATEGORY_DISPLAY: Record<string, string> = {
   "cancer-screening": "Cancer Screening",
   "sports-performance": "Sports & Fitness",
   "general-health": "General Health",
-  "at-home": "At Home",
+  "at-home": "At Home Test Kits",
 };
 
 const BADGE_COLOR_BY_CATEGORY: Record<string, string> = {
