@@ -11,7 +11,10 @@ interface Props {
   color: string;
   Icon: React.ComponentType<{ className?: string; style?: React.CSSProperties; strokeWidth?: number }>;
   compact: boolean;
+  /** Tighter padding/gaps used by the straddling toolbar so the full row fits one line. */
+  dense?: boolean;
 }
+
 
 /**
  * Pill for the Browse-by-category bar. Clicking the pill navigates to the
@@ -20,7 +23,7 @@ interface Props {
  * Panel is `position: fixed`, anchored to the pill's bounding rect on open,
  * so it isn't clipped by the pill strip's mask.
  */
-export function CategoryPillDropdown({ item, color, Icon, compact }: Props) {
+export function CategoryPillDropdown({ item, color, Icon, compact, dense = false }: Props) {
   const location = useLocation();
   const currentUrl = location.pathname + location.search;
   const hasDropdown = Boolean(item.hasDropdown && item.dropdownItems?.length);
@@ -83,7 +86,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact }: Props) {
         aria-current={isActiveParent ? "page" : undefined}
         aria-haspopup={hasDropdown ? "menu" : undefined}
         aria-expanded={hasDropdown ? open : undefined}
-        className={`group inline-flex items-center rounded-full no-underline bg-white border-[1.5px] hover:-translate-y-0.5 transition-all duration-200 shrink-0 gap-1 pl-1.5 pr-2 py-1.5 sm:gap-1.5 sm:pl-2 sm:pr-2.5 ${compact ? "sm:py-2" : "sm:py-2"}`}
+        className={`group inline-flex items-center rounded-full no-underline bg-white border-[1.5px] hover:-translate-y-0.5 transition-all duration-200 shrink-0 ${dense ? "gap-1 pl-1 pr-1.5 py-1.5" : "gap-1 pl-1.5 pr-2 py-1.5 sm:gap-1.5 sm:pl-2 sm:pr-2.5"} ${compact ? "sm:py-2" : "sm:py-2"}`}
         style={{
           borderColor: isActiveParent ? PINK : "rgba(8,17,41,0.1)",
           boxShadow: isActiveParent ? `0 8px 20px ${PINK}26` : undefined,
@@ -100,18 +103,19 @@ export function CategoryPillDropdown({ item, color, Icon, compact }: Props) {
         }}
       >
         <span
-          className="rounded-full inline-flex items-center justify-center shrink-0 w-[18px] h-[18px] sm:w-[20px] sm:h-[20px]"
+          className={`rounded-full inline-flex items-center justify-center shrink-0 ${dense ? "w-[16px] h-[16px]" : "w-[18px] h-[18px] sm:w-[20px] sm:h-[20px]"}`}
           style={{ background: `${color}1a` }}
         >
           <Icon
-            className="w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]"
+            className={dense ? "w-[10px] h-[10px]" : "w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]"}
             style={{ color }}
             strokeWidth={2}
           />
         </span>
-        <span className="font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap text-[11px] sm:text-[11.5px] lg:text-[12px]">
+        <span className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${dense ? "text-[11px]" : "text-[11px] sm:text-[11.5px] lg:text-[12px]"}`}>
           {item.name}
         </span>
+
         {hasDropdown && (
           <ChevronDown className={`text-[#081129]/60 transition-transform w-3 h-3 shrink-0 ${open ? "rotate-180" : ""}`} />
         )}

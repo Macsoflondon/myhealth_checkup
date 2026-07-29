@@ -1,21 +1,37 @@
-Tighten the desktop category pill buttons in the browse-by-category toolbar so all category pills plus the More button fit on a single line without wrapping.
+## Goal
 
-Files to change
-- `src/components/layout/CategoryPillDropdown.tsx` — the individual pill Link.
-- `src/components/layout/BrowseByCategoryBar.tsx` — the pill container row.
+On every page except the homepage, the category toolbar should sit centred on the colour change — half of the bar over the navy header block, half over the white section below — full width across the page, and still stick to the top when scrolling.
 
-Changes
-1. In `CategoryPillDropdown.tsx`:
-   - Reduce horizontal padding (`pl-2.5 pr-3` / `sm:pl-3 sm:pr-3.5` → roughly `pl-2 pr-2.5` / `sm:pl-2.5 sm:pr-3`).
-   - Reduce icon circle size (`w-[24px] h-[24px] sm:w-[26px] sm:h-[26px]` → `w-[20px] h-[20px] sm:w-[22px] sm:h-[22px]`).
-   - Reduce icon size (`w-[14px] h-[14px] sm:w-[15px] sm:h-[15px]` → `w-[12px] h-[12px] sm:w-[13px] sm:h-[13px]`).
-   - Reduce label font size (`text-[13px] sm:text-[14px] lg:text-[14.5px]` → `text-[11.5px] sm:text-[12.5px] lg:text-[13px]`).
-   - Keep text `whitespace-nowrap` and the hover/active border/box-shadow behaviour.
+## Current state (verified)
 
-2. In `BrowseByCategoryBar.tsx`:
-   - Tighten the row gap (`gap-x-1.5 gap-y-2 sm:gap-x-2` → `gap-x-1 gap-y-0 sm:gap-x-1.5`) and keep `flex-nowrap` so the row does not wrap.
-   - Apply the same compact scaling to the More pill if needed so it matches the category pills.
+- `src/components/layout/BrowseByCategoryBar.tsx` renders a desktop bar with `sticky top-0 z-[1000]`.
+- Two shells render it above page content: `src/layouts/MainLayout.tsx` (`variant="flush"`, skipped on `/`) and `src/components/layout/Header.tsx` (`variant="flush"`, used by `CategoryPageLayout`).
+- The navy block is `src/components/category/CategoryStandardHero.tsx`, rendered inside page content — i.e. below the toolbar in the DOM. That's why the toolbar currently sits above the navy band instead of on its lower edge.
+- The homepage renders its own copy inside `HeroMasthead.tsx` (`compact placement="hero"`) — untouched.
 
-3. Verify in the preview at the current desktop viewport that the toolbar no longer wraps to a second line and remains usable (hover dropdowns still open, icons and text remain legible).
+## Approach
 
-No functional/data changes; purely presentational.
+Anchor the bar to the bottom edge of the navy block using a portal, keeping it in normal document flow (so sticky-on-scroll still works) and using symmetrical negative margins so it overlaps equally into navy above and white below with zero layout shift.
+
+1. **Anchor element** — `CategoryStandardHero.tsx` returns a fragment: the existing `<section>` plus, immediately after it, `<div id="page-toolbar-anchor" />`. This marks the exact navy → white boundary.
+
+2. **New `placement="straddle"` mode** in `BrowseByCategoryBar.tsx`:
+   - On mount, look up `#page-toolbar-anchor`. If found, render the desktop bar into it with `createPortal`; if not found (pages with no navy hero), fall back to today's top-of-page rendering, so nothing regresses.
+   - Straddle wrapper: `sticky top-0 z-[1000]`, full page width (no side margins), `marginTop: -h/2`, `marginBottom: -h/2` where `h` is the measured bar height via `ResizeObserver` — net zero layout shift, exactly half over each colour.
+   - Styling in this mode: flush pill-shaped/rounded card on a light background with the existing shadow, so it reads as a floating bar over the boundary rather than a full-bleed band.
+   - Mobile bar (`md:hidden` sticky header) is unchanged.
+
+3. **Wire the shells** — `MainLayout.tsx` and `Header.tsx` pass `placement="straddle"`. Both already exclude the homepage path (MainLayout skips on `/`; Header isn't used there).
+
+4. **Sticky handoff** — the existing `stuck` IntersectionObserver logic already swaps to the rounded/blurred "stuck" style; keep it so once scrolled past the hero the bar pins to the top exactly as today.
+
+## Technical notes
+
+- Portal target must exist before the bar renders: use a small `useState` + `useLayoutEffect` lookup and re-check on route change (`useLocation`) so navigating between pages re-attaches the bar.
+- `overflow: hidden` on `CategoryStandardHero`'s section is fine — the anchor is a sibling *after* the section, so the bar won't be clipped.
+- z-index stays `1000` so dropdowns still open above cards; dropdown menus keep `z-[9999]`.
+- Presentation only — no data, routing or business-logic changes.
+
+## Verification
+
+Playwright screenshots at 1367px and 1024px on `/at-home-tests` (uses `CategoryPageLayout` → `Header`) and one `MainLayout` page, checking: bar centred on the colour boundary, equal overlap, no layout jump, dropdowns open, and sticky behaviour on scroll.
