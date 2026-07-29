@@ -4,7 +4,6 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 import { ogMetaPlugin } from "./plugins/ogMetaPlugin";
 import { visualizer } from "rollup-plugin-visualizer";
-// import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/supabase/vite";
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), "");
@@ -16,7 +15,6 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [
       react(),
-      // mcpPlugin(),
       mode === 'development' && componentTagger(),
       mode === 'production' && ogMetaPlugin(),
       analyze && visualizer({
