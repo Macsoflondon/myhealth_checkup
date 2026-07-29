@@ -169,3 +169,8 @@ verify_jwt = false
 # Web Vitals RUM ingest (browser beacon, no auth)
 [functions.web-vitals-ingest]
 verify_jwt = false
+
+# MFA backup-code recovery (requires caller JWT; validates in-code)
+[functions.mfa-recovery]
+verify_jwt = true
+

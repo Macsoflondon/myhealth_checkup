@@ -13,6 +13,7 @@ import { PasswordStrengthIndicator } from "@/components/auth/PasswordStrengthInd
 import { validatePassword } from "@/lib/passwordValidation";
 import { AlertCircle, CheckCircle } from "lucide-react";
 import { Helmet } from "react-helmet-async";
+import { MfaStepUp } from "@/components/auth/MfaStepUp";
 
 const ResetPassword = () => {
   const { user } = useAuth();
@@ -22,7 +23,8 @@ const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
   const [passwordError, setPasswordError] = useState("");
   const [isRecoveryMode, setIsRecoveryMode] = useState(false);
-  
+  const [stepUpOpen, setStepUpOpen] = useState(false);
+
   const passwordStrength = validatePassword(password);
 
   // Check if user arrived via password reset link
@@ -73,6 +75,12 @@ const ResetPassword = () => {
       });
 
       if (error) {
+        const msg = error.message?.toLowerCase() ?? "";
+        if (msg.includes("aal2") || msg.includes("insufficient_aal") || msg.includes("assurance")) {
+          // User has MFA on — prompt for the 6-digit code, then retry.
+          setStepUpOpen(true);
+          return;
+        }
         if (error.message.includes('same as the old password')) {
           toast.error("New password must be different from your current password");
         } else {
@@ -82,12 +90,29 @@ const ResetPassword = () => {
       }
 
       toast.success("Password reset successfully! You can now sign in with your new password.");
-      
+
       // Sign out and redirect to auth page
       await supabase.auth.signOut();
       navigate("/auth");
     } catch (error) {
       toast.error("An unexpected error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const finishAfterStepUp = async () => {
+    setStepUpOpen(false);
+    setLoading(true);
+    try {
+      const { error } = await supabase.auth.updateUser({ password });
+      if (error) {
+        toast.error(error.message || "Failed to reset password");
+        return;
+      }
+      toast.success("Password reset successfully! You can now sign in with your new password.");
+      await supabase.auth.signOut();
+      navigate("/auth");
     } finally {
       setLoading(false);
     }
@@ -100,6 +125,29 @@ const ResetPassword = () => {
         <main className="flex-grow flex items-center justify-center py-12 px-4 text-primary bg-tertiary">
           <div className="max-w-md w-full text-center">
             <p className="text-[#22c0d4]">Verifying reset link...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (stepUpOpen) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Helmet>
+          <title>Verify identity | myhealth checkup</title>
+          <meta name="robots" content="noindex, follow" />
+        </Helmet>
+        <Header />
+        <main className="flex-grow flex items-center justify-center py-12 px-4 bg-[#081129]">
+          <div className="max-w-md w-full">
+            <MfaStepUp
+              onVerified={finishAfterStepUp}
+              onCancel={() => setStepUpOpen(false)}
+              title="Confirm it's you before setting a new password"
+              description="Two-step verification is switched on for this account. Enter the 6-digit code from your authenticator app to finish resetting your password."
+            />
           </div>
         </main>
         <Footer />
@@ -123,6 +171,7 @@ const ResetPassword = () => {
           <p className="text-sm text-[#22c0d4] text-center mb-6">
             Please enter your new password below.
           </p>
+
 
           <form onSubmit={handleResetPassword} className="space-y-4">
             <div className="space-y-2">
