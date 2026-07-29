@@ -110,7 +110,8 @@ export function CategoryStandardHero({
 
     </section>
     {/* Boundary marker: the category toolbar is portalled here so it straddles the navy/white edge */}
-    <div id="page-toolbar-anchor" />
+    <div id="page-toolbar-anchor" className="relative h-0 z-[1000]" />
+
     </>
   );
 }
