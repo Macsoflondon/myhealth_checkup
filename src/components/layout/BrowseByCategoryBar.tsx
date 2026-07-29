@@ -53,7 +53,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     const raf = requestAnimationFrame(find);
     return () => cancelAnimationFrame(raf);
   }, [isStraddle, pathname]);
-  // Measure the bar so the negative margins keep it exactly half over each colour.
+  // Measure the bar so it sits exactly half over each colour.
   useLayoutEffect(() => {
     const el = barRef.current;
     if (!el || !isStraddle) return;
@@ -63,6 +63,27 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     ro.observe(el);
     return () => ro.disconnect();
   }, [isStraddle, anchorEl]);
+  // Straddle mode: float over the boundary, then pin to the top once scrolled past it.
+  const [pinned, setPinned] = useState(false);
+  useEffect(() => {
+    if (!isStraddle || !anchorEl) { setPinned(false); return; }
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const top = anchorEl.getBoundingClientRect().top;
+        const h = barRef.current?.getBoundingClientRect().height ?? barHeight;
+        setPinned(top - h / 2 <= 0);
+        ticking = false;
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => { window.removeEventListener("scroll", onScroll); window.removeEventListener("resize", onScroll); };
+  }, [isStraddle, anchorEl, barHeight]);
+
 
   useEffect(() => {
     let ticking = false;
