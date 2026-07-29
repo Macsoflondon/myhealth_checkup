@@ -11,7 +11,10 @@ interface Props {
   color: string;
   Icon: React.ComponentType<{ className?: string; style?: React.CSSProperties; strokeWidth?: number }>;
   compact: boolean;
+  /** Tighter padding/gaps used by the straddling toolbar so the full row fits one line. */
+  dense?: boolean;
 }
+
 
 /**
  * Pill for the Browse-by-category bar. Clicking the pill navigates to the
