@@ -132,6 +132,29 @@ const ResetPassword = () => {
     );
   }
 
+  if (stepUpOpen) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Helmet>
+          <title>Verify identity | myhealth checkup</title>
+          <meta name="robots" content="noindex, follow" />
+        </Helmet>
+        <Header />
+        <main className="flex-grow flex items-center justify-center py-12 px-4 bg-[#081129]">
+          <div className="max-w-md w-full">
+            <MfaStepUp
+              onVerified={finishAfterStepUp}
+              onCancel={() => setStepUpOpen(false)}
+              title="Confirm it's you before setting a new password"
+              description="Two-step verification is switched on for this account. Enter the 6-digit code from your authenticator app to finish resetting your password."
+            />
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
@@ -148,6 +171,7 @@ const ResetPassword = () => {
           <p className="text-sm text-[#22c0d4] text-center mb-6">
             Please enter your new password below.
           </p>
+
 
           <form onSubmit={handleResetPassword} className="space-y-4">
             <div className="space-y-2">
