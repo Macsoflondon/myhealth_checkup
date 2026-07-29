@@ -3,6 +3,8 @@ import { useState, useEffect, useCallback } from "react";
 import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
 import { UserMenu } from "@/components/header/UserMenu";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
+import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
+
 
 const TURQUOISE = "#22c0d4";
 const PINK = "#e70d69";
