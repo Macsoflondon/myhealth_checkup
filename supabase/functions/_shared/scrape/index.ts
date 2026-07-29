@@ -12,6 +12,7 @@
 export { parsePrice, type PriceParseResult } from "./parsePrice.ts";
 export { parseTurnaround, type TurnaroundParseResult } from "./parseTurnaround.ts";
 export { normaliseBiomarkers } from "./normaliseBiomarkers.ts";
+export { isJunkTestName } from "./isJunkTestName.ts";
 export {
   writeHistorySnapshot,
   TRACKED_FIELDS,
