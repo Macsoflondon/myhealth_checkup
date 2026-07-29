@@ -117,7 +117,7 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
       { name: "View All Home Tests", path: "/at-home-tests" },
     ],
   },
-  { name: "How It Works", path: "/how-it-works" }
+  { name: "How It Works", path: "/how-it-works", hasDropdown: false }
 ];
 
 export const moreNavigationSections = [
