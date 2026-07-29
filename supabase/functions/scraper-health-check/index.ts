@@ -65,7 +65,15 @@ Deno.serve(async (req) => {
     const alerts: AlertRow[] = [];
 
     for (const job of jobs || []) {
+      // Skip malformed/placeholder rows (e.g. an un-interpolated ":providerId"),
+      // otherwise they generate alerts with template text instead of a provider name.
+      if (!job.provider_id || !/^[a-z0-9][a-z0-9-]*$/.test(job.provider_id)) {
+        console.warn(`Skipping invalid scraping_jobs provider_id: ${JSON.stringify(job.provider_id)}`);
+        continue;
+      }
+
       const countProviderId = PROVIDER_COUNT_MAP[job.provider_id] ?? job.provider_id;
+
 
       const { count, error: countErr } = await supabase
         .from('provider_tests')

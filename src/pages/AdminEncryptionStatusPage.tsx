@@ -98,13 +98,19 @@ const AdminEncryptionStatusPage: React.FC = () => {
     setError(null);
     // The audit scans every profile server-side; bound it so a stalled request
     // can never leave the page stuck in a permanent loading state.
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 45_000);
+    let timedOut = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const timeout = new Promise<never>((_, reject) => {
+      timer = setTimeout(() => {
+        timedOut = true;
+        reject(new Error("timeout"));
+      }, 45_000);
+    });
     try {
-      const { data: result, error: fnError } = await supabase.functions.invoke<EncryptionStatusResponse>(
-        "encryption-status",
-        { body: {}, signal: controller.signal },
-      );
+      const { data: result, error: fnError } = await Promise.race([
+        supabase.functions.invoke<EncryptionStatusResponse>("encryption-status", { body: {} }),
+        timeout,
+      ]);
       if (fnError) throw fnError;
       if (!result) throw new Error("Empty response");
       if (mountedRef.current) setData(result);
@@ -112,7 +118,7 @@ const AdminEncryptionStatusPage: React.FC = () => {
       logger.error("Encryption status fetch failed:", e);
       if (mountedRef.current) {
         setError(
-          controller.signal.aborted
+          timedOut
             ? "The audit timed out. Try re-running the check."
             : e instanceof Error
               ? e.message
@@ -120,9 +126,10 @@ const AdminEncryptionStatusPage: React.FC = () => {
         );
       }
     } finally {
-      clearTimeout(timer);
+      if (timer) clearTimeout(timer);
       if (mountedRef.current) setLoading(false);
     }
+
   }, []);
 
   useEffect(() => {
