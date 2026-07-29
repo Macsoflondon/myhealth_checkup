@@ -113,8 +113,11 @@ export function MfaEnrollment() {
     }
 
     // Generate backup codes and force acknowledgement.
+    // The RPC requires an aal2 JWT — refresh first so the token reflects the
+    // just-completed TOTP verification.
     try {
-      const codes = await replaceBackupCodes(user.id);
+      await supabase.auth.refreshSession();
+      const codes = await replaceBackupCodes();
       setBackupCodes(codes);
       setShowBackup(true);
       setSavedAck(false);
@@ -140,7 +143,7 @@ export function MfaEnrollment() {
     if (!confirm('Generate a new set of backup codes? Your old codes will stop working immediately.')) return;
     setRegenerating(true);
     try {
-      const codes = await replaceBackupCodes(user.id);
+      const codes = await replaceBackupCodes();
       setBackupCodes(codes);
       setShowBackup(true);
       setSavedAck(false);
