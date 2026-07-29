@@ -32,14 +32,38 @@ const MORE_SECTION_ICONS: Record<string, { Icon: any; color: string }> = {
   "Contact Us": { Icon: Phone, color: PINK },
   "Crux Control (Admin)": { Icon: ShieldCheck, color: TURQUOISE },
 };
-export default function BrowseByCategoryBar({ variant = "card", compact = false, placement = "card", className = "" }: { variant?: "card" | "flush"; compact?: boolean; placement?: "card" | "hero"; className?: string; } = {}) {
+export default function BrowseByCategoryBar({ variant = "card", compact = false, placement = "card", className = "" }: { variant?: "card" | "flush"; compact?: boolean; placement?: "card" | "hero" | "straddle"; className?: string; } = {}) {
   const [moreOpen, setMoreOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
   const [stuck, setStuck] = useState(false);
+  const { pathname } = useLocation();
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [barHeight, setBarHeight] = useState(0);
+  const isStraddle = placement === "straddle";
+  // Find the navy/white boundary marker rendered by the category hero.
+  useLayoutEffect(() => {
+    if (!isStraddle) { setAnchorEl(null); return; }
+    const find = () => setAnchorEl(document.getElementById("page-toolbar-anchor"));
+    find();
+    const raf = requestAnimationFrame(find);
+    return () => cancelAnimationFrame(raf);
+  }, [isStraddle, pathname]);
+  // Measure the bar so the negative margins keep it exactly half over each colour.
+  useLayoutEffect(() => {
+    const el = barRef.current;
+    if (!el || !isStraddle) return;
+    const update = () => setBarHeight(el.getBoundingClientRect().height);
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [isStraddle, anchorEl]);
+
   useEffect(() => {
     let ticking = false;
     const onScroll = () => {
