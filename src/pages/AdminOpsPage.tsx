@@ -128,8 +128,15 @@ export default function AdminOpsPage() {
 
           <TabsContent value="cron" className="mt-4">
             <Card variant="outlined" className="p-4">
-              {cronQuery.isLoading ? (
+              {cronQuery.isPending ? (
                 <div className="space-y-2">{Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-10" />)}</div>
+              ) : cronQuery.isError ? (
+                <div className="space-y-3 py-6 text-center">
+                  <AlertTriangle className="mx-auto h-6 w-6 text-error" />
+                  <p className="text-sm text-foreground">Couldn't load cron run history.</p>
+                  <p className="text-xs text-muted-foreground">{(cronQuery.error as Error).message}</p>
+                  <Button variant="outline" size="sm" onClick={() => void cronQuery.refetch()}>Try again</Button>
+                </div>
               ) : (
                 <Table>
                   <TableHeader>
