@@ -191,7 +191,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
           >
 
             <div className={`${compact ? "px-2 py-2 sm:px-3 sm:py-2.5" : "px-2 sm:px-3 py-2 sm:py-2.5"} transition-all duration-300 ${innerClass}`}>
-              <div className="flex items-center justify-center gap-x-1 gap-y-0 sm:gap-x-1.5 flex-nowrap max-w-full">
+              <div className={`flex items-center justify-center gap-y-0 flex-nowrap max-w-full ${useStraddle ? "gap-x-0.5 lg:gap-x-1" : "gap-x-1 sm:gap-x-1.5"}`}>
                 {items.map((item) => {
                   const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
                   return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} />;
