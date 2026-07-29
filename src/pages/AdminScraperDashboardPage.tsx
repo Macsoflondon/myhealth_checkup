@@ -25,9 +25,43 @@ interface ScrapingJob {
   status: string;
   last_scraped: string | null;
   next_scrape: string | null;
-  error_message: string | null;
+  error_message: unknown;
   updated_at: string;
 }
+
+/** Renders any stored error shape (string, JSON string, object) as readable text. */
+const formatErrorMessage = (raw: unknown): string => {
+  if (raw === null || raw === undefined) return "";
+  if (typeof raw === "string") {
+    const trimmed = raw.trim();
+    if (!trimmed || trimmed === "[object Object]") return "Scrape failed (no error detail recorded).";
+    if (trimmed.startsWith("{") || trimmed.startsWith("[")) {
+      try {
+        return formatErrorMessage(JSON.parse(trimmed));
+      } catch {
+        return trimmed;
+      }
+    }
+    return trimmed;
+  }
+  if (raw instanceof Error) return raw.message;
+  if (Array.isArray(raw)) return raw.map(formatErrorMessage).filter(Boolean).join(" · ");
+  if (typeof raw === "object") {
+    const e = raw as Record<string, unknown>;
+    const parts = [e.message, e.error, e.details, e.hint, e.code ? `(code ${String(e.code)})` : null]
+      .filter((p): p is string | number => typeof p === "string" || typeof p === "number")
+      .map(String)
+      .filter((p) => p.trim().length > 0);
+    if (parts.length) return parts.join(" — ");
+    try {
+      return JSON.stringify(raw);
+    } catch {
+      return "Unknown error";
+    }
+  }
+  return String(raw);
+};
+
 
 interface Provider {
   id: string;
