@@ -1,15 +1,10 @@
 /**
- * Smoke test — AccreditedProvidersBar must render all six trust-signal labels
- * (UKAS, CQC, ISO 15189, GDPR, Transparent Pricing, No GP Referral) and must
- * not produce horizontal scroll on mobile viewports.
+ * Smoke test — AccreditedProvidersBar must render all required trust-signal labels
+ * (UKAS, CQC, ISO 15189) and must not produce horizontal scroll on mobile viewports.
  *
- * On mobile (< md breakpoint) the component renders a two-row marquee: rowA
- * carries the even-indexed badges (UKAS, ISO 15189, Transparent Pricing) and
- * rowB carries the odd-indexed badges (CQC, GDPR, No GP Referral). The labels
- * are duplicated 4× per row for seamless looping, so each label appears
- * multiple times in the DOM.
+ * The component renders a static grid of badge pills (data-testid="accreditors-static-row").
  *
- * Run with:  bunx playwright test e2e/accredited-providers-bar.spec.ts
+ * Run with:  bunx playwright test tests/e2e/accredited-providers-bar.spec.ts
  */
 import { test, expect } from "@playwright/test";
 
@@ -22,7 +17,7 @@ const VIEWPORTS = [
   { name: "iPhone Plus/Max (414)", width: 414, height: 896 },
 ] as const;
 
-const ROW = '[data-testid="accreditors-row"]';
+const ROW = '[data-testid="accreditors-static-row"]';
 
 // Labels that must appear at least once somewhere in the component.
 const REQUIRED_LABELS = ["UKAS", "CQC", "ISO 15189"];
