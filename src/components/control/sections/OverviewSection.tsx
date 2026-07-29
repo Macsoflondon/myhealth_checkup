@@ -24,7 +24,17 @@ export default function OverviewSection() {
       try {
         const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
         const db = supabase as any;
-        const providersRes = await db.from("provider_tests").select("provider_name", { count: "exact", head: true });
+        // provider_tests has no provider_name column — count distinct provider_id instead.
+        const providerRowsRes = await db
+          .from("provider_tests")
+          .select("provider_id")
+          .eq("is_active", true)
+          .limit(10000);
+        const providerCount = new Set(
+          ((providerRowsRes.data ?? []) as { provider_id: string | null }[])
+            .map((r) => r.provider_id)
+            .filter(Boolean),
+        ).size;
         const testsRes = await db.from("tests_master").select("id", { count: "exact", head: true });
         const mapRes = await db.from("provider_test_mapping").select("id", { count: "exact", head: true });
         const scrapesRes = await db.from("scrape_run_log").select("id", { count: "exact", head: true }).gte("started_at", since);
