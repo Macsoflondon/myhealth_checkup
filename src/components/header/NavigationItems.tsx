@@ -1,4 +1,15 @@
-import { PrimaryNavItem } from "./NavigationItems";
+export interface NavDropdownItem {
+  name: string;
+  path: string;
+}
+
+export interface PrimaryNavItem {
+  name: string;
+  path: string;
+  hasDropdown: boolean;
+  megaMenu?: boolean;
+  dropdownItems?: NavDropdownItem[];
+}
 
 export const primaryNavigationItems: PrimaryNavItem[] = [
   { name: "Most Popular Tests", path: "/popular-tests", hasDropdown: false, megaMenu: false },
