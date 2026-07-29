@@ -103,18 +103,19 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
         }}
       >
         <span
-          className="rounded-full inline-flex items-center justify-center shrink-0 w-[18px] h-[18px] sm:w-[20px] sm:h-[20px]"
+          className={`rounded-full inline-flex items-center justify-center shrink-0 ${dense ? "w-[16px] h-[16px]" : "w-[18px] h-[18px] sm:w-[20px] sm:h-[20px]"}`}
           style={{ background: `${color}1a` }}
         >
           <Icon
-            className="w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]"
+            className={dense ? "w-[10px] h-[10px]" : "w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]"}
             style={{ color }}
             strokeWidth={2}
           />
         </span>
-        <span className="font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap text-[11px] sm:text-[11.5px] lg:text-[12px]">
+        <span className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${dense ? "text-[11px]" : "text-[11px] sm:text-[11.5px] lg:text-[12px]"}`}>
           {item.name}
         </span>
+
         {hasDropdown && (
           <ChevronDown className={`text-[#081129]/60 transition-transform w-3 h-3 shrink-0 ${open ? "rotate-180" : ""}`} />
         )}
