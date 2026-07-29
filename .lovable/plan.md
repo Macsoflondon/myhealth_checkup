@@ -1,26 +1,18 @@
-Update `src/components/sections/HeroMasthead.tsx` to match the uploaded screenshot's header treatment while keeping the language switcher and user menu in their current position.
+## Goal
+Clean up the desktop/tablet hero header block in `src/components/sections/HeroMasthead.tsx` (mobile layout unchanged).
 
-Changes (desktop/tablet only — mobile header unchanged):
+## Changes
 
-1. Wordmark row
-   - Change the wordmark container from centered to left-aligned (`items-start`, remove centering wrapper).
-   - Keep current responsive font sizing.
+1. **Language switcher + login on the slogan line**
+   - Remove the separate controls row (the `hidden sm:flex items-center justify-end …` block that currently sits below the slogan).
+   - Put `LanguageSwitcher` and `UserMenu` in a right-aligned group on the same flex row as the slogan: slogan left, controls right, vertically centred, with a small gap so the slogan can wrap safely on narrower tablet widths.
 
-2. Divider
-   - Add a thin white/10 horizontal rule directly under the wordmark, spanning the full masthead width (matching the faint line in the screenshot between "myhealthcheckup" and the slogan).
+2. **Reduce the gap to the hero image**
+   - Drop the now-redundant `mt-6/mt-8` spacing that came with the removed controls row, and tighten the hero image container's top margin so the picture sits closer under the slogan.
 
-3. Slogan row
-   - Left-align the slogan under the wordmark (remove centered alignment on `sm:` and up).
-   - Keep existing copy and brand accent colours: white base, turquoise on "HEALTH.", pink on "CHOICE.", Montserrat bold uppercase.
-   - Keep current responsive font sizing.
+3. **Brighten the hairline divider**
+   - The line between the wordmark and the slogan currently uses `border-white/10`. Raise it to roughly `border-white/25` so it is visible but still a hairline. The lower divider disappears with the removed row, so only the one line remains.
 
-4. Language switcher + user menu
-   - Leave the existing right-aligned controls row untouched (still sits below the slogan row, right-aligned, unchanged behaviour and styling).
-
-5. Mobile (`< sm`)
-   - No changes. The mobile slogan block in `src/pages/Index.tsx` stays as-is.
-
-Verification
-- Visual check at desktop/tablet: wordmark left-aligned, hairline divider beneath it, slogan left-aligned directly under the divider, language/user controls still present in their current spot.
-- Mobile view unchanged.
-- `npm run build` passes.
+## Notes
+- No changes to business logic, data, or the mobile header (which keeps its own controls in `BrowseByCategoryBar`).
+- Verified after implementation by screenshotting the desktop hero in the running preview.
