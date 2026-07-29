@@ -194,8 +194,9 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
               <div className={`flex items-center justify-center gap-y-0 flex-nowrap max-w-full ${useStraddle ? "gap-x-0.5 lg:gap-x-1" : "gap-x-1 sm:gap-x-1.5"}`}>
                 {items.map((item) => {
                   const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
-                  return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} />;
+                  return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} dense={useStraddle} />;
                 })}
+
                 <div ref={moreRef} className="relative shrink-0">
                   <button type="button" onClick={() => setMoreOpen((o) => !o)} className={`inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 transition-all duration-200 ${compact ? "gap-0.5 pl-1 pr-1.5 py-0.5" : "gap-1 pl-1.5 pr-2 py-1.5"}`}><span className={`rounded-full inline-flex items-center justify-center shrink-0 ${compact ? "w-[15px] h-[15px]" : "w-[18px] h-[18px]"}`} style={{ background: "rgba(231,13,105,0.1)" }}><MoreHorizontal className={`${compact ? "w-[9px]" : "w-[11px]"}`} style={{ color: "#e70d69" }} strokeWidth={2} /></span><span className={`font-semibold text-[#081129] font-[Montserrat] ${compact ? "text-[9.5px]" : "text-[11px]"}`}>More</span><ChevronDown className={`text-[#081129]/60 transition-transform w-3 h-3 ${moreOpen ? "rotate-180" : ""}`} /></button>
                   {moreOpen && <div className="absolute top-full right-0 mt-2 z-[9999]"><MoreDropdownMenu sections={moreNavigationSections} onItemClick={() => setMoreOpen(false)} onClose={() => setMoreOpen(false)} /></div>}
