@@ -154,24 +154,34 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
           </Sheet>
         </div>
       </div>
-      <div className={`hidden md:block sticky top-0 z-[1000] ${wrapperClass}`} data-testid="browse-by-category-bar">
-        <div className={`${compact ? "px-2 py-2 sm:px-3 sm:py-2.5" : "px-2 sm:px-3 py-2 sm:py-2.5"} transition-all duration-300 ${innerClass}`}>
-          <div className="flex items-center justify-center gap-x-1 gap-y-0 sm:gap-x-1.5 flex-nowrap max-w-full">
-            {items.map((item) => {
-              const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
-              return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} />;
-            })}
-            <div ref={moreRef} className="relative shrink-0">
-              <button type="button" onClick={() => setMoreOpen((o) => !o)} className={`inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 transition-all duration-200 ${compact ? "gap-0.5 pl-1 pr-1.5 py-0.5" : "gap-1 pl-1.5 pr-2 py-1.5"}`}><span className={`rounded-full inline-flex items-center justify-center shrink-0 ${compact ? "w-[15px] h-[15px]" : "w-[18px] h-[18px]"}`} style={{ background: "rgba(231,13,105,0.1)" }}><MoreHorizontal className={`${compact ? "w-[9px]" : "w-[11px]"}`} style={{ color: "#e70d69" }} strokeWidth={2} /></span><span className={`font-semibold text-[#081129] font-[Montserrat] ${compact ? "text-[9.5px]" : "text-[11px]"}`}>More</span><ChevronDown className={`text-[#081129]/60 transition-transform w-3 h-3 ${moreOpen ? "rotate-180" : ""}`} /></button>
-              {moreOpen && <div className="absolute top-full right-0 mt-2 z-[9999]"><MoreDropdownMenu sections={moreNavigationSections} onItemClick={() => setMoreOpen(false)} onClose={() => setMoreOpen(false)} /></div>}
+      {(() => {
+        const desktopBar = (
+          <div
+            ref={barRef}
+            className={`hidden md:block sticky top-0 z-[1000] ${wrapperClass}`}
+            data-testid="browse-by-category-bar"
+            style={useStraddle && barHeight > 0 ? { marginTop: -barHeight / 2, marginBottom: -barHeight / 2 } : undefined}
+          >
+            <div className={`${compact ? "px-2 py-2 sm:px-3 sm:py-2.5" : "px-2 sm:px-3 py-2 sm:py-2.5"} transition-all duration-300 ${innerClass}`}>
+              <div className="flex items-center justify-center gap-x-1 gap-y-0 sm:gap-x-1.5 flex-nowrap max-w-full">
+                {items.map((item) => {
+                  const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
+                  return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} />;
+                })}
+                <div ref={moreRef} className="relative shrink-0">
+                  <button type="button" onClick={() => setMoreOpen((o) => !o)} className={`inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 transition-all duration-200 ${compact ? "gap-0.5 pl-1 pr-1.5 py-0.5" : "gap-1 pl-1.5 pr-2 py-1.5"}`}><span className={`rounded-full inline-flex items-center justify-center shrink-0 ${compact ? "w-[15px] h-[15px]" : "w-[18px] h-[18px]"}`} style={{ background: "rgba(231,13,105,0.1)" }}><MoreHorizontal className={`${compact ? "w-[9px]" : "w-[11px]"}`} style={{ color: "#e70d69" }} strokeWidth={2} /></span><span className={`font-semibold text-[#081129] font-[Montserrat] ${compact ? "text-[9.5px]" : "text-[11px]"}`}>More</span><ChevronDown className={`text-[#081129]/60 transition-transform w-3 h-3 ${moreOpen ? "rotate-180" : ""}`} /></button>
+                  {moreOpen && <div className="absolute top-full right-0 mt-2 z-[9999]"><MoreDropdownMenu sections={moreNavigationSections} onItemClick={() => setMoreOpen(false)} onClose={() => setMoreOpen(false)} /></div>}
+                </div>
+                {placement !== "hero" && (
+                  <div className={`flex items-center shrink-0 ${compact ? "gap-0" : "gap-1"}`}><div className={compact ? "scale-[0.78]" : ""}><LanguageSwitcher /></div><div className={compact ? "scale-[0.78]" : ""}><UserMenu /></div></div>
+                )}
+              </div>
             </div>
-            {placement !== "hero" && (
-              <div className={`flex items-center shrink-0 ${compact ? "gap-0" : "gap-1"}`}><div className={compact ? "scale-[0.78]" : ""}><LanguageSwitcher /></div><div className={compact ? "scale-[0.78]" : ""}><UserMenu /></div></div>
-            )}
-
           </div>
-        </div>
-      </div>
+        );
+        return useStraddle && anchorEl ? createPortal(desktopBar, anchorEl) : desktopBar;
+      })()}
     </>
   );
 }
+
