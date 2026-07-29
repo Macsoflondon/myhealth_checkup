@@ -5,10 +5,11 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { HealthDataHub } from "@/components/dashboard/HealthDataHub";
 import { MfaEnrollment } from "@/components/auth/MfaEnrollment";
+import { MfaStepUp } from "@/components/auth/MfaStepUp";
 import { useAuth } from "@/context/AuthContext";
 
 const HealthDashboardPage = () => {
-  const { user, isLoading } = useAuth();
+  const { user, isLoading, mfaStepUpRequired, refreshMfaState } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,9 +26,7 @@ const HealthDashboardPage = () => {
     );
   }
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
   return (
     <>
@@ -41,17 +40,26 @@ const HealthDashboardPage = () => {
         <meta name="robots" content="noindex, follow" />
       </Helmet>
 
-
       <div className="min-h-screen flex flex-col bg-white">
         <Header />
-        
+
         <main className="flex-1 bg-white">
-          <div className="container mx-auto px-4 py-12 max-w-6xl space-y-8">
-            <HealthDataHub />
-            <section id="security" aria-label="Account security">
-              <MfaEnrollment />
-            </section>
-          </div>
+          {mfaStepUpRequired ? (
+            <div className="container mx-auto px-4 py-16 max-w-md">
+              <MfaStepUp
+                onVerified={refreshMfaState}
+                title="Verify it's you"
+                description="You have two-step verification switched on. Enter the 6-digit code from your authenticator app to open your dashboard."
+              />
+            </div>
+          ) : (
+            <div className="container mx-auto px-4 py-12 max-w-6xl space-y-8">
+              <HealthDataHub />
+              <section id="security" aria-label="Account security">
+                <MfaEnrollment />
+              </section>
+            </div>
+          )}
         </main>
 
         <Footer />

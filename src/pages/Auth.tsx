@@ -15,6 +15,8 @@ import { validatePassword, validateEmail } from "@/lib/passwordValidation";
 import { AlertCircle, Lock } from "lucide-react";
 import { useAccountLockout } from "@/hooks/useAccountLockout";
 import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
+import { MfaStepUp } from "@/components/auth/MfaStepUp";
+import { getAalStatus } from "@/lib/mfa";
 import { Helmet } from "react-helmet-async";
 
 
@@ -41,6 +43,7 @@ const Auth = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [pendingStepUp, setPendingStepUp] = useState(false);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   // Validate ?next= is a same-origin relative path before honouring it.
@@ -229,14 +232,22 @@ const Auth = () => {
         
         // Record successful login (resets lockout counter)
         recordSuccessfulLogin();
-        
+
         // Handle Remember Me
         if (rememberMe) {
           localStorage.setItem("rememberedEmail", email);
         } else {
           localStorage.removeItem("rememberedEmail");
         }
-        
+
+        // MFA step-up: if the account has TOTP enrolled, stay on this page
+        // and prompt for the 6-digit code before completing the sign-in.
+        const aal = await getAalStatus();
+        if (aal.stepUpRequired) {
+          setPendingStepUp(true);
+          return;
+        }
+
         toast.success("Logged in successfully!");
         navigate(afterAuthTarget);
       }
@@ -246,6 +257,33 @@ const Auth = () => {
       setLoading(false);
     }
   };
+  // MFA step-up view — shown after a correct password when TOTP is enrolled.
+  if (pendingStepUp) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-grow flex items-center justify-center py-12 px-4 bg-[#081129]">
+          <div className="max-w-md w-full">
+            <MfaStepUp
+              title="One more step to sign in"
+              description="Two-step verification is switched on for this account. Enter the 6-digit code from your authenticator app to finish signing in."
+              onVerified={() => {
+                setPendingStepUp(false);
+                toast.success("Logged in successfully!");
+                navigate(afterAuthTarget);
+              }}
+              onCancel={async () => {
+                await supabase.auth.signOut();
+                setPendingStepUp(false);
+              }}
+            />
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   // Forgot password view
   if (isForgotPassword) {
     return (
