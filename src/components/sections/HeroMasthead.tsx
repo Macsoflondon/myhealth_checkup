@@ -92,19 +92,20 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
       <TestCategoryTicker variant="inline" className="bg-white border-b border-brand-navy/10 -mx-3 sm:-mx-6 md:-mx-9" />
       <div className="hidden sm:flex flex-col items-start pt-4 sm:pt-7">
         <Wordmark />
-        <div className="w-full border-t border-white/10 my-2" />
-        <p className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white text-[clamp(0.95rem,2.4vw,1.75rem)] leading-[1.15] text-left">
-          YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span> ONE TRUSTED PLATFORM.
-        </p>
-      </div>
-      <div className="hidden sm:flex items-center justify-end gap-4 border-b border-white/10 pb-1.5 sm:pb-2 mt-2.5 sm:mt-6 md:mt-8">
-        <div className="flex items-center gap-1 shrink-0">
-          <LanguageSwitcher />
-          <UserMenu />
+        <div className="w-full border-t border-white/25 my-2" />
+        <div className="w-full flex items-center justify-between gap-4">
+          <p className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white text-[clamp(0.95rem,2.4vw,1.75rem)] leading-[1.15] text-left">
+            YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span> ONE TRUSTED PLATFORM.
+          </p>
+          <div className="flex items-center gap-1 shrink-0">
+            <LanguageSwitcher />
+            <UserMenu />
+          </div>
         </div>
       </div>
 
-      <div className="relative rounded-t-[18px] overflow-hidden mt-1.5 sm:mt-2 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
+      <div className="relative rounded-t-[18px] overflow-hidden mt-1.5 sm:mt-3 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-0 bg-[#081129]">
+
         {SLIDES.map((s, n) => {
           const active = n === activeIndex;
           const commonStyle = {
