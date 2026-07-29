@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
 import { Activity, AlertTriangle, CheckCircle2, Clock, RefreshCw, Zap } from "lucide-react";
@@ -35,7 +36,13 @@ function successRate(runs: number, errors: number): string {
 }
 
 export default function AdminOpsPage() {
-  const since = new Date(Date.now() - HOURS * 60 * 60 * 1000).toISOString();
+  // Bucket the window start to the hour so the query key is stable across renders.
+  // A fresh ISO string on every render made the keys change constantly, which left
+  // both queries permanently pending (endless loading skeletons).
+  const since = useMemo(() => {
+    const bucket = Math.floor(Date.now() / (60 * 60 * 1000)) * 60 * 60 * 1000;
+    return new Date(bucket - HOURS * 60 * 60 * 1000).toISOString();
+  }, []);
 
   const cronQuery = useQuery({
     queryKey: ["ops-cron", since],
@@ -121,8 +128,15 @@ export default function AdminOpsPage() {
 
           <TabsContent value="cron" className="mt-4">
             <Card variant="outlined" className="p-4">
-              {cronQuery.isLoading ? (
+              {cronQuery.isPending ? (
                 <div className="space-y-2">{Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-10" />)}</div>
+              ) : cronQuery.isError ? (
+                <div className="space-y-3 py-6 text-center">
+                  <AlertTriangle className="mx-auto h-6 w-6 text-error" />
+                  <p className="text-sm text-foreground">Couldn't load cron run history.</p>
+                  <p className="text-xs text-muted-foreground">{(cronQuery.error as Error).message}</p>
+                  <Button variant="outline" size="sm" onClick={() => void cronQuery.refetch()}>Try again</Button>
+                </div>
               ) : (
                 <Table>
                   <TableHeader>
@@ -164,8 +178,15 @@ export default function AdminOpsPage() {
 
           <TabsContent value="edge" className="mt-4">
             <Card variant="outlined" className="p-4">
-              {edgeQuery.isLoading ? (
+              {edgeQuery.isPending ? (
                 <div className="space-y-2">{Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-10" />)}</div>
+              ) : edgeQuery.isError ? (
+                <div className="space-y-3 py-6 text-center">
+                  <AlertTriangle className="mx-auto h-6 w-6 text-error" />
+                  <p className="text-sm text-foreground">Couldn't load edge function activity.</p>
+                  <p className="text-xs text-muted-foreground">{(edgeQuery.error as Error).message}</p>
+                  <Button variant="outline" size="sm" onClick={() => void edgeQuery.refetch()}>Try again</Button>
+                </div>
               ) : (
                 <Table>
                   <TableHeader>
