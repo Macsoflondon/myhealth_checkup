@@ -38,11 +38,42 @@ const readFunctionErrorBody = async (error: unknown): Promise<unknown | null> =>
   }
 };
 
+/**
+ * Cached MFA verification result, keyed by user id.
+ *
+ * Every /admin/* route mount previously re-ran the `verify-admin-mfa` edge
+ * function. If that call was slow (or never settled) the guard stayed in its
+ * loading state, which made the whole admin app look frozen: sidebar links
+ * changed the URL but only ever rendered the spinner. Caching the last known
+ * good result keeps navigation instant and resilient.
+ */
+const MFA_CACHE_TTL_MS = 5 * 60 * 1000;
+const CHECK_TIMEOUT_MS = 15_000;
+const mfaCache = new Map<string, { status: MFAVerificationResult; at: number }>();
+
+const withTimeout = async <T,>(promise: Promise<T>, ms: number): Promise<T> => {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(() => reject(new Error('MFA verification timed out')), ms);
+      }),
+    ]);
+  } finally {
+    if (timer) clearTimeout(timer);
+  }
+};
+
 export const useAdminMFA = (): UseAdminMFAResult => {
   const { user } = useAuth();
-  const [isLoading, setIsLoading] = useState(true);
+  const cached = user ? mfaCache.get(user.id) : undefined;
+  const cacheFresh = !!cached && Date.now() - cached.at < MFA_CACHE_TTL_MS;
+  const [isLoading, setIsLoading] = useState(!cacheFresh);
   const [error, setError] = useState<string | null>(null);
-  const [mfaStatus, setMfaStatus] = useState<MFAVerificationResult | null>(null);
+  const [mfaStatus, setMfaStatus] = useState<MFAVerificationResult | null>(
+    cacheFresh ? cached!.status : null,
+  );
 
   const checkMFAStatus = async () => {
     if (!user) {
@@ -64,11 +95,14 @@ export const useAdminMFA = (): UseAdminMFAResult => {
         return;
       }
 
-      const { data, error: fnError } = await supabase.functions.invoke('verify-admin-mfa', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`
-        }
-      });
+      const { data, error: fnError } = await withTimeout(
+        supabase.functions.invoke('verify-admin-mfa', {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }),
+        CHECK_TIMEOUT_MS,
+      );
 
       // The edge function returns 403 with a valid MFAVerificationResult body
       // when an admin needs to set up or step-up MFA. Supabase surfaces non-2xx
@@ -95,6 +129,7 @@ export const useAdminMFA = (): UseAdminMFAResult => {
           }
         }
 
+        mfaCache.set(user.id, { status: reconciledStatus, at: Date.now() });
         setMfaStatus(reconciledStatus);
       } else if (fnError) {
         console.error('MFA verification error:', fnError);
@@ -111,8 +146,19 @@ export const useAdminMFA = (): UseAdminMFAResult => {
   };
 
   useEffect(() => {
-    checkMFAStatus();
-  }, [user]);
+    if (!user) {
+      setIsLoading(false);
+      return;
+    }
+    const entry = mfaCache.get(user.id);
+    if (entry && Date.now() - entry.at < MFA_CACHE_TTL_MS) {
+      setMfaStatus(entry.status);
+      setIsLoading(false);
+      return;
+    }
+    void checkMFAStatus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
 
   const isVerified = mfaStatus?.isAdmin && mfaStatus?.hasMFA && mfaStatus?.mfaVerified;
   const needsMFASetup = mfaStatus?.isAdmin && !mfaStatus?.hasMFA;

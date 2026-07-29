@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
-import Footer from "@/components/layout/Footer";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -85,34 +84,56 @@ const AdminEncryptionStatusPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Guards against setting state after unmount (navigating away mid-audit).
+  const mountedRef = useRef(true);
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
   const fetchStatus = useCallback(async () => {
     setLoading(true);
     setError(null);
+    // The audit scans every profile server-side; bound it so a stalled request
+    // can never leave the page stuck in a permanent loading state.
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 45_000);
     try {
       const { data: result, error: fnError } = await supabase.functions.invoke<EncryptionStatusResponse>(
         "encryption-status",
-        { body: {} },
+        { body: {}, signal: controller.signal },
       );
       if (fnError) throw fnError;
       if (!result) throw new Error("Empty response");
-      setData(result);
+      if (mountedRef.current) setData(result);
     } catch (e) {
       logger.error("Encryption status fetch failed:", e);
-      setError(e instanceof Error ? e.message : "Failed to load encryption status");
+      if (mountedRef.current) {
+        setError(
+          controller.signal.aborted
+            ? "The audit timed out. Try re-running the check."
+            : e instanceof Error
+              ? e.message
+              : "Failed to load encryption status",
+        );
+      }
     } finally {
-      setLoading(false);
+      clearTimeout(timer);
+      if (mountedRef.current) setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchStatus();
+    void fetchStatus();
   }, [fetchStatus]);
 
   const verdict = data ? verdictMeta[data.rotation_safety] : null;
   const VerdictIcon = verdict?.icon;
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="bg-background">
       <main className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="flex items-start justify-between mb-6 gap-4 flex-wrap">
           <div>
@@ -347,7 +368,6 @@ const AdminEncryptionStatusPage: React.FC = () => {
           </>
         )}
       </main>
-      <Footer />
     </div>
   );
 };
