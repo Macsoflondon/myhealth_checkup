@@ -36,15 +36,19 @@ export default function AdminBiomarkerValidationPage() {
   const { toast } = useToast();
   const [rows, setRows] = useState<Row[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [provider, setProvider] = useState<string>("all");
   const [issue, setIssue] = useState<string>("all");
 
   const load = async () => {
     setLoading(true);
-    const { data, error } = await supabase.rpc("get_biomarker_validation_issues" as never);
-    if (error) {
-      toast({ title: "Failed to load", description: error.message, variant: "destructive" });
+    const { data, error: rpcError } = await supabase.rpc("get_biomarker_validation_issues" as never);
+    if (rpcError) {
+      setError(rpcError.message);
+      setRows([]);
+      toast({ title: "Failed to load", description: rpcError.message, variant: "destructive" });
     } else {
+      setError(null);
       setRows((data as unknown as Row[]) ?? []);
     }
     setLoading(false);
@@ -86,11 +90,24 @@ export default function AdminBiomarkerValidationPage() {
         is missing, empty, or doesn't match the stated count.
       </p>
 
+      {error && (
+        <Card className="p-4 mb-6 border-destructive bg-destructive/5">
+          <p className="font-semibold text-destructive">Couldn't load validation data</p>
+          <p className="text-sm text-muted-foreground mt-1 break-words">{error}</p>
+          <p className="text-xs text-muted-foreground mt-2">
+            Counts below are not reliable while this error persists. Sign in with an admin account and retry.
+          </p>
+          <Button variant="outline" size="sm" className="mt-3" onClick={load} disabled={loading}>
+            Retry
+          </Button>
+        </Card>
+      )}
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {(["missing_list", "empty_list", "count_mismatch", "unknown"] as const).map((k) => (
           <Card key={k} className="p-4">
             <p className="text-xs text-muted-foreground">{ISSUE_LABELS[k]}</p>
-            <p className="text-2xl font-bold">{counts[k] ?? 0}</p>
+            <p className="text-2xl font-bold">{error ? "—" : counts[k] ?? 0}</p>
           </Card>
         ))}
       </div>
@@ -160,7 +177,7 @@ export default function AdminBiomarkerValidationPage() {
             </div>
           </Card>
         ))}
-        {filtered.length === 0 && !loading && (
+        {filtered.length === 0 && !loading && !error && (
           <p className="text-muted-foreground text-center py-8">No validation issues — nice.</p>
         )}
       </div>
