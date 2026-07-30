@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom/vitest";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "@/lib/router-compat";
+import { TestProviders } from "@/test/test-providers";
 import { RecommendationResults, type AIAnalysisResult } from "../RecommendationEngine";
 
 vi.mock("@/integrations/supabase/client", () => ({
@@ -46,9 +46,7 @@ const mockResult: AIAnalysisResult = {
   hasRecommendations: true,
 };
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <MemoryRouter>{children}</MemoryRouter>
-);
+const wrapper = TestProviders;
 
 describe("RecommendationResults", () => {
   it("renders total cost as focal point", () => {
