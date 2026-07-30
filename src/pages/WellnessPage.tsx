@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "@/lib/router-compat";
+import { Link, useSearchParams } from "@/lib/router-compat";
+import { Activity, HeartPulse, ShieldCheck } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
@@ -9,12 +10,17 @@ import { Button } from "@/components/ui/button";
 import PageHeading from "@/components/ui/page-heading";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { CategoryStandardHero } from "@/components/category/CategoryStandardHero";
+import { DbCategoryPage } from "@/components/category/DbCategoryPage";
+import { findSubcategory } from "@/config/subcategoryMap";
+import {
+  useWellnessCategoryCounts,
+  type WellnessCountSpec,
+} from "@/hooks/queries/useWellnessCategoryCounts";
 
 const wellnessCategoryCards = [
   {
     id: "longevity-tests",
     name: "Longevity Tests",
-    count: 3,
     desc: "Comprehensive health markers for longevity and preventive care",
     icon: "⟳",
     accent: "#00d4c8",
@@ -23,7 +29,6 @@ const wellnessCategoryCards = [
   {
     id: "iron-tests",
     name: "Iron Tests",
-    count: 2,
     desc: "Iron levels, ferritin, and anaemia screening",
     icon: "◈",
     accent: "#e70d69",
@@ -32,7 +37,6 @@ const wellnessCategoryCards = [
   {
     id: "heart-health",
     name: "Heart Health",
-    count: 2,
     desc: "Cardiovascular risk assessment and heart health monitoring",
     icon: "♡",
     accent: "#ff4d6d",
@@ -41,7 +45,6 @@ const wellnessCategoryCards = [
   {
     id: "energy-tests",
     name: "Energy Tests",
-    count: 3,
     desc: "Fatigue, tiredness, and energy level testing",
     icon: "◎",
     accent: "#f0a500",
@@ -50,7 +53,6 @@ const wellnessCategoryCards = [
   {
     id: "nutrition-tests",
     name: "Nutrition Tests",
-    count: 2,
     desc: "Vitamin levels and nutritional deficiency screening",
     icon: "◇",
     accent: "#00c896",
@@ -59,7 +61,6 @@ const wellnessCategoryCards = [
   {
     id: "allergy-testing",
     name: "Allergy Tests",
-    count: 1,
     desc: "Allergy screening and immune response testing",
     icon: "◉",
     accent: "#ff7043",
@@ -68,7 +69,6 @@ const wellnessCategoryCards = [
   {
     id: "sexual-health",
     name: "Sexual Health",
-    count: 92,
     desc: "Comprehensive sexual health and hormone screening",
     icon: "⬡",
     accent: "#9b59b6",
@@ -77,7 +77,6 @@ const wellnessCategoryCards = [
   {
     id: "gp-monitoring",
     name: "GP Monitoring",
-    count: 4,
     desc: "Routine health checks and general practitioner monitoring",
     icon: "⊕",
     accent: "#00b4d8",
@@ -86,7 +85,6 @@ const wellnessCategoryCards = [
   {
     id: "antibody-tests",
     name: "Antibody Tests",
-    count: 2,
     desc: "Antibody screening and autoimmune disease detection",
     icon: "⋈",
     accent: "#e70d69",
@@ -95,7 +93,6 @@ const wellnessCategoryCards = [
   {
     id: "infection-tests",
     name: "Infection Tests",
-    count: 2,
     desc: "Infectious disease screening and pathogen detection",
     icon: "⬟",
     accent: "#5b9bd5",
@@ -104,7 +101,6 @@ const wellnessCategoryCards = [
   {
     id: "immunity-tests",
     name: "Immunity Tests",
-    count: 2,
     desc: "Immune system function and defence assessment",
     icon: "◬",
     accent: "#f0b429",
@@ -113,7 +109,6 @@ const wellnessCategoryCards = [
   {
     id: "autoimmunity-tests",
     name: "Autoimmunity",
-    count: 2,
     desc: "Autoimmune condition screening and monitoring",
     icon: "◑",
     accent: "#e70d69",
@@ -122,7 +117,6 @@ const wellnessCategoryCards = [
   {
     id: "liver-health",
     name: "Liver Health",
-    count: 2,
     desc: "Liver function testing and hepatic health monitoring",
     icon: "⬢",
     accent: "#ff5c5c",
@@ -131,7 +125,6 @@ const wellnessCategoryCards = [
   {
     id: "kidney-health",
     name: "Kidney Health",
-    count: 1,
     desc: "Kidney function assessment and renal health screening",
     icon: "◐",
     accent: "#00d4c8",
@@ -140,7 +133,6 @@ const wellnessCategoryCards = [
   {
     id: "gut-health",
     name: "Gut Health",
-    count: 48,
     desc: "Digestive health, microbiome and food intolerance testing",
     icon: "◍",
     accent: "#00c896",
@@ -149,13 +141,40 @@ const wellnessCategoryCards = [
   {
     id: "diabetes",
     name: "Diabetes",
-    count: 27,
     desc: "Blood glucose and HbA1c testing for diabetes risk and monitoring",
     icon: "◈",
     accent: "#00b4d8",
     tag: "ROUTINE",
   },
 ];
+
+
+/**
+ * Per-card live-count + routing spec. Cards mapped to a wellness subcategory
+ * deep-link into the filtered subcategory view on this page.
+ */
+const COUNT_SPECS: WellnessCountSpec[] = [
+  { id: "longevity-tests", categories: ["general-health"], matchAny: [/longevity|advanced well|full body|complete|ultimate/i] },
+  { id: "iron-tests", categories: ["general-health"], subSlug: "iron-anaemia" },
+  { id: "heart-health", categories: ["heart"], subSlug: "heart-health" },
+  { id: "energy-tests", categories: ["general-health"], matchAny: [/energy|fatigue|tired|\bb12\b|ferritin/i] },
+  { id: "nutrition-tests", categories: ["vitamins"], subSlug: "vitamins" },
+  { id: "allergy-testing", categories: ["general-health"], subSlug: "allergy" },
+  { id: "sexual-health", categories: ["sexual-health"] },
+  { id: "gp-monitoring", categories: ["general-health"], matchAny: [/monitor|check|profile|routine|\bgp\b/i] },
+  { id: "antibody-tests", categories: ["general-health"], matchAny: [/antibod/i] },
+  { id: "infection-tests", categories: ["general-health"], matchAny: [/infection|hepatitis|\bhiv\b|syphilis|virus/i] },
+  { id: "immunity-tests", categories: ["general-health"], matchAny: [/immun/i] },
+  { id: "autoimmunity-tests", categories: ["general-health"], matchAny: [/autoimmun|coeliac|celiac|rheumatoid|\bana\b/i] },
+  { id: "liver-health", categories: ["general-health"], subSlug: "liver" },
+  { id: "kidney-health", categories: ["general-health"], subSlug: "kidney" },
+  { id: "gut-health", categories: ["gut"], matchAny: [/gut|digest|microbiome|intoleran|stool/i] },
+  { id: "diabetes", categories: ["general-health"], subSlug: "diabetes" },
+];
+
+const SUB_SLUG_BY_CARD: Record<string, string> = Object.fromEntries(
+  COUNT_SPECS.filter((s) => s.subSlug).map((s) => [s.id, s.subSlug as string])
+);
 
 const tagColors: Record<string, string> = {
   PREVENTIVE: "#00d4c8",
@@ -169,6 +188,10 @@ const tagColors: Record<string, string> = {
 };
 
 const WellnessPage = () => {
+  const [searchParams] = useSearchParams();
+  const subSlug = searchParams.get("subcategory");
+  const sub = findSubcategory("wellness", subSlug);
+
   const [hovered, setHovered] = useState<string | null>(null);
   const [filter, setFilter] = useState("ALL");
   const [hoveredTag, setHoveredTag] = useState<string | null>(null);
@@ -184,6 +207,38 @@ const WellnessPage = () => {
         : wellnessCategoryCards.filter((c) => c.tag === filter),
     [filter]
   );
+
+  const { data: liveCounts } = useWellnessCategoryCounts(COUNT_SPECS);
+
+  if (sub) {
+    return (
+      <DbCategoryPage
+        canonicalCategory="wellness"
+        seoTitle="Wellness Tests | myhealth checkup"
+        pillLabel="General Wellness"
+        seoDescription="Compare wellness blood tests from UKAS-accredited UK providers, with clear pricing, biomarker lists and typical turnaround times."
+        seoKeywords="wellness blood tests, health screening, liver test, kidney test, cholesterol test, vitamin test"
+        canonicalUrl="https://myhealthcheckup.co.uk/wellness"
+        headline="General Wellness"
+        subtitle="Compare wellness and preventative blood tests from accredited UK providers — full biomarker lists, transparent pricing and typical turnaround times."
+        searchPlaceholder="Search by symptom or test — e.g. 'cholesterol', 'vitamin D'"
+        trustStats={[
+          { value: "50,000+", label: "Tests Compared" },
+          { value: "4.8\u2605", label: "Average Rating" },
+          { value: "6", label: "Trusted Providers" },
+        ]}
+        filters={["All"]}
+        benefitsTitle="Why Choose Wellness Testing?"
+        benefits={[
+          { icon: ShieldCheck, title: "Early Insight", description: "Spot changes in key markers before symptoms appear" },
+          { icon: Activity, title: "Track Progress", description: "Monitor how lifestyle changes affect your results over time" },
+          { icon: HeartPulse, title: "Preventative Care", description: "Build a clearer picture of your long-term health" },
+        ]}
+        breadcrumbs={[{ label: "Home", href: "/" }, { label: "General Wellness" }]}
+        compareUrl="/compare?category=wellness"
+      />
+    );
+  }
 
   return (
     <>
@@ -281,10 +336,15 @@ const WellnessPage = () => {
             >
               {filtered.map((cat) => {
                 const isHov = hovered === cat.id;
+                const cardSubSlug = SUB_SLUG_BY_CARD[cat.id];
+                const cardHref = cardSubSlug
+                  ? `/wellness?subcategory=${cardSubSlug}`
+                  : `/compare?category=${cat.id}`;
+                const count = liveCounts?.[cat.id];
                 return (
                   <Link
                     key={cat.id}
-                    to={`/compare?category=${cat.id}`}
+                    to={cardHref}
                     onMouseEnter={() => setHovered(cat.id)}
                     onMouseLeave={() => setHovered(null)}
                     style={{
@@ -373,7 +433,7 @@ const WellnessPage = () => {
                             fontWeight: 500,
                           }}
                         >
-                          {cat.count} {cat.count === 1 ? "test" : "tests"}
+                          {count === undefined ? "\u2014" : `${count} ${count === 1 ? "test" : "tests"}`}
                         </span>
                       </div>
                     </div>
