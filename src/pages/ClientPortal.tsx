@@ -26,7 +26,7 @@ interface UserProfile {
 interface TestResult {
   id: string;
   result_date: string;
-  provider_id: string;
+  provider_id: string | null;
   pdf_url: string | null;
   test_master_id: string | null;
 }
@@ -35,7 +35,7 @@ interface HealthInsight {
   id: string;
   title: string;
   description: string;
-  priority: string;
+  priority: string | null;
   created_at: string;
 }
 
@@ -67,12 +67,12 @@ export default function ClientPortal() {
         supabase
           .from("test_results")
           .select("*")
-          .eq("user_id", user?.id)
+          .eq("user_id", user?.id ?? "")
           .order("result_date", { ascending: false }),
         supabase
           .from("health_insights")
           .select("*")
-          .eq("user_id", user?.id)
+          .eq("user_id", user?.id ?? "")
           .order("created_at", { ascending: false })
           .limit(5)
       ]);
@@ -211,7 +211,7 @@ export default function ClientPortal() {
                       <div key={insight.id} className="p-4 border rounded-lg">
                         <div className="flex items-start justify-between mb-2">
                           <h3 className="font-semibold">{insight.title}</h3>
-                          <span className={`px-2 py-1 rounded text-white text-xs ${getPriorityColor(insight.priority)}`}>
+                          <span className={`px-2 py-1 rounded text-white text-xs ${getPriorityColor(insight.priority ?? '')}`}>
                             {insight.priority}
                           </span>
                         </div>
@@ -270,7 +270,7 @@ export default function ClientPortal() {
                       <div key={insight.id} className="p-6 border rounded-lg">
                         <div className="flex items-start justify-between mb-3">
                           <h3 className="font-semibold text-lg">{insight.title}</h3>
-                          <span className={`px-3 py-1 rounded text-white ${getPriorityColor(insight.priority)}`}>
+                          <span className={`px-3 py-1 rounded text-white ${getPriorityColor(insight.priority ?? '')}`}>
                             {insight.priority}
                           </span>
                         </div>

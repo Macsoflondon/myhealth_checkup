@@ -457,7 +457,7 @@ const AdminScraperDashboardPage: React.FC = () => {
                       </div>
                     </div>
                   </CardHeader>
-                  {job?.error_message && job.status === 'failed' && (
+                  {job && Boolean(job.error_message) && job.status === 'failed' && (
                     <CardContent className="pt-0">
                       <Alert variant="destructive">
                         <AlertTriangle className="h-4 w-4" />
