@@ -1,6 +1,12 @@
 name: Migration parity
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "supabase/migrations/**"
+      - "scripts/check-migration-parity.mjs"
+      - ".github/workflows/migration-parity.yml"
   pull_request:
     paths:
       - "supabase/migrations/**"
