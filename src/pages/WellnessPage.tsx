@@ -154,27 +154,33 @@ const wellnessCategoryCards = [
  * deep-link into the filtered subcategory view on this page.
  */
 const COUNT_SPECS: WellnessCountSpec[] = [
-  { id: "longevity-tests", categories: ["general-health"], matchAny: [/longevity|advanced well|full body|complete|ultimate/i] },
+  { id: "longevity-tests", categories: ["general-health"] },
   { id: "iron-tests", categories: ["general-health"], subSlug: "iron-anaemia" },
   { id: "heart-health", categories: ["heart"], subSlug: "heart-health" },
-  { id: "energy-tests", categories: ["general-health"], matchAny: [/energy|fatigue|tired|\bb12\b|ferritin/i] },
+  { id: "energy-tests", categories: ["general-health"] },
   { id: "nutrition-tests", categories: ["vitamins"], subSlug: "vitamins" },
   { id: "allergy-testing", categories: ["general-health"], subSlug: "allergy" },
   { id: "sexual-health", categories: ["sexual-health"] },
-  { id: "gp-monitoring", categories: ["general-health"], matchAny: [/monitor|check|profile|routine|\bgp\b/i] },
-  { id: "antibody-tests", categories: ["general-health"], matchAny: [/antibod/i] },
-  { id: "infection-tests", categories: ["general-health"], matchAny: [/infection|hepatitis|\bhiv\b|syphilis|virus/i] },
-  { id: "immunity-tests", categories: ["general-health"], matchAny: [/immun/i] },
-  { id: "autoimmunity-tests", categories: ["general-health"], matchAny: [/autoimmun|coeliac|celiac|rheumatoid|\bana\b/i] },
+  { id: "gp-monitoring", categories: ["general-health"] },
+  { id: "antibody-tests", categories: ["general-health"] },
+  { id: "infection-tests", categories: ["general-health"] },
+  { id: "immunity-tests", categories: ["general-health"] },
+  { id: "autoimmunity-tests", categories: ["general-health"] },
   { id: "liver-health", categories: ["general-health"], subSlug: "liver" },
   { id: "kidney-health", categories: ["general-health"], subSlug: "kidney" },
   { id: "gut-health", categories: ["gut"], matchAny: [/gut|digest|microbiome|intoleran|stool/i] },
   { id: "diabetes", categories: ["general-health"], subSlug: "diabetes" },
 ];
 
-const SUB_SLUG_BY_CARD: Record<string, string> = Object.fromEntries(
-  COUNT_SPECS.filter((s) => s.subSlug).map((s) => [s.id, s.subSlug as string])
-);
+const SUB_SLUG_BY_CARD: Record<string, string> = {
+  ...Object.fromEntries(
+    COUNT_SPECS.filter((s) => s.subSlug).map((s) => [s.id, s.subSlug as string])
+  ),
+  ...Object.fromEntries(
+    Object.entries(MAPPED_WELLNESS_CATEGORIES).map(([id, def]) => [id, def.slug])
+  ),
+};
+
 
 const tagColors: Record<string, string> = {
   PREVENTIVE: "#00d4c8",
