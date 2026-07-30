@@ -142,7 +142,8 @@ verify_jwt = false
 [functions.trigger-all-scrapers]
 verify_jwt = false
 
-# Admin Recovery - public (gated by ADMIN_RECOVERY_SECRET in body)
+# Admin Recovery - JWT verified in code: "issue" requires an authenticated
+# admin caller, "redeem" requires a short-lived single-use token.
 [functions.admin-recovery]
 verify_jwt = false
 
