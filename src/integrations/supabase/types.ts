@@ -65,6 +65,42 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_recovery_tokens: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          issued_by: string | null
+          redeemed_ip: string | null
+          target_email: string
+          target_user_id: string
+          token_hash: string
+          used_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          expires_at: string
+          id?: string
+          issued_by?: string | null
+          redeemed_ip?: string | null
+          target_email: string
+          target_user_id: string
+          token_hash: string
+          used_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          issued_by?: string | null
+          redeemed_ip?: string | null
+          target_email?: string
+          target_user_id?: string
+          token_hash?: string
+          used_at?: string | null
+        }
+        Relationships: []
+      }
       ai_operation_logs: {
         Row: {
           cache_hit: boolean | null
