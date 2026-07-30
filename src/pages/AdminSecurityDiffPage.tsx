@@ -29,6 +29,7 @@ import {
   Clock,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
+import { AdminRecoveryTokenPanel } from "@/components/admin/AdminRecoveryTokenPanel";
 import { logger } from "@/lib/logger";
 
 interface Finding {
