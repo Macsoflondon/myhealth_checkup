@@ -385,22 +385,24 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
         onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleOpen(); } }}
         className={`group cursor-pointer rounded-2xl bg-white w-full h-full flex flex-col overflow-hidden ${className || ""}`}
         style={{
-          border: `1px solid ${inCompare ? UTC_NAVY : "#e2e8f0"}`,
-          boxShadow: inCompare ? `inset 4px 0 0 ${UTC_NAVY}, 0 4px 16px rgba(8,17,41,0.10)` : "none",
+          border: `1px solid ${inCompare ? UTC_NAVY : "rgba(34,192,212,0.35)"}`,
+          boxShadow: inCompare
+            ? `inset 4px 0 0 ${UTC_NAVY}, 0 0 0 1px rgba(8,17,41,0.10), 0 6px 20px rgba(8,17,41,0.14)`
+            : "0 0 0 1px rgba(34,192,212,0.18), 0 6px 20px rgba(34,192,212,0.14)",
           transition: "border-color 200ms, box-shadow 200ms, transform 200ms",
         }}
         onMouseEnter={(e) => {
           (e.currentTarget as HTMLDivElement).style.borderColor = inCompare ? UTC_NAVY : UTC_TURQUOISE;
           (e.currentTarget as HTMLDivElement).style.boxShadow = inCompare
-            ? `inset 4px 0 0 ${UTC_NAVY}, 0 8px 24px rgba(8,17,41,0.16)`
-            : "0 8px 24px rgba(34,192,212,0.12)";
+            ? `inset 4px 0 0 ${UTC_NAVY}, 0 0 0 1px rgba(8,17,41,0.16), 0 12px 30px rgba(8,17,41,0.20)`
+            : "0 0 0 1px rgba(34,192,212,0.32), 0 12px 32px rgba(34,192,212,0.28)";
           (e.currentTarget as HTMLDivElement).style.transform = "translateY(-2px)";
         }}
         onMouseLeave={(e) => {
-          (e.currentTarget as HTMLDivElement).style.borderColor = inCompare ? UTC_NAVY : "#e2e8f0";
+          (e.currentTarget as HTMLDivElement).style.borderColor = inCompare ? UTC_NAVY : "rgba(34,192,212,0.35)";
           (e.currentTarget as HTMLDivElement).style.boxShadow = inCompare
-            ? `inset 4px 0 0 ${UTC_NAVY}, 0 4px 16px rgba(8,17,41,0.10)`
-            : "none";
+            ? `inset 4px 0 0 ${UTC_NAVY}, 0 0 0 1px rgba(8,17,41,0.10), 0 6px 20px rgba(8,17,41,0.14)`
+            : "0 0 0 1px rgba(34,192,212,0.18), 0 6px 20px rgba(34,192,212,0.14)";
           (e.currentTarget as HTMLDivElement).style.transform = "translateY(0)";
         }}
       >
@@ -410,10 +412,18 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
         {/* Body */}
         <div className="flex flex-1 flex-col p-4">
           {/* Provider row */}
-          <div className="flex items-center justify-between mb-2 h-7 flex-shrink-0">
-            <div className="flex items-center gap-2 min-w-0">
+          <div className="flex items-center justify-between mb-2 min-h-[40px] flex-shrink-0">
+            <div className="flex items-center gap-2.5 min-w-0">
               <div
-                style={{ width: 28, height: 28, background: "#f8fafc", borderRadius: 6, padding: 3, flexShrink: 0 }}
+                style={{
+                  width: 40,
+                  height: 40,
+                  background: "#ffffff",
+                  border: "1px solid #e2e8f0",
+                  borderRadius: 8,
+                  padding: 4,
+                  flexShrink: 0,
+                }}
                 className="flex items-center justify-center"
               >
                 {logo ? (
@@ -427,11 +437,19 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               </div>
               <span
                 className="truncate"
-                style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 12, color: UTC_TURQUOISE }}
+                style={{
+                  fontFamily: "'Montserrat',sans-serif",
+                  fontWeight: 700,
+                  fontSize: 14,
+                  lineHeight: 1.2,
+                  letterSpacing: "-0.01em",
+                  color: UTC_NAVY,
+                }}
               >
                 {meta.displayName}
               </span>
             </div>
+
             <div className="flex items-center gap-1.5 flex-shrink-0">
               {test.is_addon && (
                 <span
