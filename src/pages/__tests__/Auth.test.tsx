@@ -2,15 +2,28 @@ import "@testing-library/jest-dom/vitest";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "@/lib/router-compat";
+import { TestProviders } from "@/test/test-providers";
 import { HelmetProvider } from "react-helmet-async";
 import Auth from "@/pages/Auth";
 
 const navigateMock = vi.fn();
+const setSearchParamsMock = vi.fn();
 vi.mock("@/lib/router-compat", async () => {
   const actual = await vi.importActual<typeof import("@/lib/router-compat")>("@/lib/router-compat");
-  return { ...actual, useNavigate: () => navigateMock };
+  return {
+    ...actual,
+    useNavigate: () => navigateMock,
+    // No router is mounted in unit tests; stub location-derived hooks.
+    useSearchParams: () => [new URLSearchParams(), setSearchParamsMock] as const,
+    useLocation: () => ({ pathname: "/auth", search: "", hash: "", state: null, key: "/auth" }),
+    useParams: () => ({}),
+  };
 });
+
+
+vi.mock("@/lib/mfa", () => ({
+  getAalStatus: () => Promise.resolve({ stepUpRequired: false, currentLevel: "aal1", nextLevel: "aal1" }),
+}));
 
 vi.mock("@/context/AuthContext", () => ({
   useAuth: () => ({ user: null, isLoading: false, session: null, signOut: vi.fn() }),
@@ -49,9 +62,9 @@ vi.mock("sonner", () => ({
 const renderAuth = () =>
   render(
     <HelmetProvider>
-      <MemoryRouter>
+      <TestProviders>
         <Auth />
-      </MemoryRouter>
+      </TestProviders>
     </HelmetProvider>,
   );
 
@@ -83,7 +96,7 @@ describe("Auth page", () => {
       email: "test@example.com",
       password: "password123",
     }));
-    expect(navigateMock).toHaveBeenCalledWith("/health-dashboard");
+    await waitFor(() => expect(navigateMock).toHaveBeenCalledWith("/health-dashboard"));
   });
 
   it("submits form when pressing Enter in the password field", async () => {

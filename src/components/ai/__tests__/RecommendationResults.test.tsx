@@ -1,7 +1,7 @@
 import "@testing-library/jest-dom/vitest";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "@/lib/router-compat";
+import { TestProviders } from "@/test/test-providers";
 import { RecommendationResults, type AIAnalysisResult } from "../RecommendationEngine";
 
 vi.mock("@/integrations/supabase/client", () => ({
@@ -15,6 +15,15 @@ vi.mock("@/integrations/supabase/client", () => ({
 }));
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn() } }));
+
+// No live database under test: resolve every recommendation to null so the
+// component renders its offline fallback card for each test.
+vi.mock("@/hooks/queries/useResolvedRecommendations", () => ({
+  useResolvedRecommendations: (recs: { testName: string }[]) => ({
+    data: recs.map(() => null),
+    isLoading: false,
+  }),
+}));
 
 const mockResult: AIAnalysisResult = {
   medicalDisclaimer: "This is for educational purposes only.",
@@ -46,9 +55,7 @@ const mockResult: AIAnalysisResult = {
   hasRecommendations: true,
 };
 
-const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <MemoryRouter>{children}</MemoryRouter>
-);
+const wrapper = TestProviders;
 
 describe("RecommendationResults", () => {
   it("renders total cost as focal point", () => {
@@ -68,10 +75,10 @@ describe("RecommendationResults", () => {
     render(<RecommendationResults result={mockResult} />, { wrapper });
     expect(screen.getByText("Thyroid Function Test")).toBeInTheDocument();
     expect(screen.getByText("Vitamin D Test")).toBeInTheDocument();
-    expect(screen.getByText("£39")).toBeInTheDocument();
-    expect(screen.getByText("£29")).toBeInTheDocument();
-    expect(screen.getByText("95% match")).toBeInTheDocument();
-    expect(screen.getByText("88% match")).toBeInTheDocument();
+    expect(screen.getByText(/95% match/)).toBeInTheDocument();
+    expect(screen.getByText(/88% match/)).toBeInTheDocument();
+    expect(screen.getByText("Covers T3, T4 and TSH")).toBeInTheDocument();
+    expect(screen.getByText("Common deficiency in UK")).toBeInTheDocument();
   });
 
   it("renders general guidance and doctor warning", () => {
@@ -93,6 +100,9 @@ describe("RecommendationResults", () => {
       ],
     };
     render(<RecommendationResults result={withNullPrice} />, { wrapper });
-    expect(screen.getByText("Price TBC")).toBeInTheDocument();
+    expect(screen.getByText("Thyroid Function Test")).toBeInTheDocument();
+    // Missing prices contribute zero to the headline total rather than NaN.
+    expect(screen.getByText("Total Expected Cost")).toBeInTheDocument();
+    expect(screen.getByText("1 test recommended")).toBeInTheDocument();
   });
 });

@@ -2,6 +2,7 @@ import "@testing-library/jest-dom/vitest";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { TestFinderQuiz } from "../TestFinderQuiz";
+import { TestProviders } from "@/test/test-providers";
 
 // Mock framer-motion to avoid animation issues in tests
 vi.mock("framer-motion", () => ({
@@ -32,7 +33,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
   });
 
   it("renders gender question as the first step", () => {
-    render(<TestFinderQuiz />);
+    render(<TestFinderQuiz />, { wrapper: TestProviders });
     expect(screen.getByText("How would you describe your gender?")).toBeInTheDocument();
     expect(screen.getByText("Male")).toBeInTheDocument();
     expect(screen.getByText("Female")).toBeInTheDocument();
@@ -41,12 +42,12 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
   });
 
   it("shows progress bar starting at 19%", () => {
-    render(<TestFinderQuiz />);
+    render(<TestFinderQuiz />, { wrapper: TestProviders });
     expect(screen.getByText("19%")).toBeInTheDocument();
   });
 
   it("navigates Male → health concerns when Male is selected", () => {
-    render(<TestFinderQuiz />);
+    render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Male"));
     expect(screen.getByText("Do you have any health concerns or areas of interest?")).toBeInTheDocument();
     expect(screen.getByText("Hormones")).toBeInTheDocument();
@@ -55,7 +56,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
   });
 
   it("navigates Female → health concerns when Female is selected", () => {
-    render(<TestFinderQuiz />);
+    render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Female"));
     expect(screen.getByText("Do you have any health concerns or areas of interest?")).toBeInTheDocument();
     expect(screen.getByText("Hormones")).toBeInTheDocument();
@@ -65,14 +66,14 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
   });
 
   it("shows contact fallback for Neither/Prefer not to say", () => {
-    render(<TestFinderQuiz />);
+    render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Neither"));
     expect(screen.getByText(/direct you to the correct test/i)).toBeInTheDocument();
     expect(screen.getByText("Contact us")).toBeInTheDocument();
   });
 
   it("navigates back correctly", () => {
-    render(<TestFinderQuiz />);
+    render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Male"));
     expect(screen.getByText("Do you have any health concerns or areas of interest?")).toBeInTheDocument();
 
@@ -81,7 +82,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
   });
 
   it("progresses through Male → Thyroid → No → symptoms branch", () => {
-    render(<TestFinderQuiz />);
+    render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Male"));
     fireEvent.click(screen.getByText("Thyroid"));
     expect(screen.getByText("Have you been diagnosed with a thyroid condition?")).toBeInTheDocument();
@@ -92,7 +93,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
   });
 
   it("shows Additional Context step on terminal node before AI handover", () => {
-    render(<TestFinderQuiz />);
+    render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Male"));
     fireEvent.click(screen.getByText("Bowel"));
 
@@ -117,7 +118,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
       error: null,
     });
 
-    render(<TestFinderQuiz />);
+    render(<TestFinderQuiz />, { wrapper: TestProviders });
 
     // Navigate: Male → Thyroid → No → "Weight gain, fatigue..."
     fireEvent.click(screen.getByText("Male"));
@@ -154,7 +155,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     await waitFor(() => {
       expect(screen.getByText("Your Personalised Results")).toBeInTheDocument();
     });
-    expect(screen.getByText("Thyroid Function")).toBeInTheDocument();
+    expect(await screen.findByText("Thyroid Function")).toBeInTheDocument();
   });
 
   it("calls ai-human-context with path only when textarea is empty", async () => {
@@ -172,7 +173,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
       error: null,
     });
 
-    render(<TestFinderQuiz />);
+    render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Male"));
     fireEvent.click(screen.getByText("Bowel"));
 
@@ -197,7 +198,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
   });
 
   it("allows going back from Additional Context step", () => {
-    render(<TestFinderQuiz />);
+    render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Male"));
     fireEvent.click(screen.getByText("Bowel"));
 
@@ -216,7 +217,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     mockInvoke.mockResolvedValue({ data: null, error: new Error("Network error") });
     const { toast } = await import("sonner");
 
-    render(<TestFinderQuiz />);
+    render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Male"));
     fireEvent.click(screen.getByText(/General health check/));
 
@@ -241,7 +242,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
       error: null,
     });
 
-    render(<TestFinderQuiz />);
+    render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Male"));
     fireEvent.click(screen.getByText("Prostate"));
 
@@ -257,7 +258,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
   });
 
   it("navigates Female → Hormones → menopause branch correctly", () => {
-    render(<TestFinderQuiz />);
+    render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Female"));
     fireEvent.click(screen.getByText("Hormones"));
     expect(screen.getByText("Which of these most applies to you?")).toBeInTheDocument();
@@ -268,7 +269,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
   });
 
   it("increments progress by ~10% per step", () => {
-    render(<TestFinderQuiz />);
+    render(<TestFinderQuiz />, { wrapper: TestProviders });
     expect(screen.getByText("19%")).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("Male"));
@@ -282,7 +283,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
   });
 
   it("textarea preserves user input when navigating back and forward", () => {
-    render(<TestFinderQuiz />);
+    render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Male"));
     fireEvent.click(screen.getByText("Bowel"));
 
