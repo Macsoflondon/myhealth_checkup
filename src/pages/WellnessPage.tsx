@@ -13,9 +13,15 @@ import { CategoryStandardHero } from "@/components/category/CategoryStandardHero
 import { DbCategoryPage } from "@/components/category/DbCategoryPage";
 import { findSubcategory } from "@/config/subcategoryMap";
 import {
+  MAPPED_WELLNESS_CATEGORIES,
+  findMappedWellnessCategory,
+} from "@/config/mappedCategories";
+import { MappedCategoryPage } from "@/components/category/MappedCategoryPage";
+import {
   useWellnessCategoryCounts,
   type WellnessCountSpec,
 } from "@/hooks/queries/useWellnessCategoryCounts";
+
 
 const wellnessCategoryCards = [
   {
