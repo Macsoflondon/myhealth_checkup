@@ -137,6 +137,24 @@ const wellnessCategoryCards = [
     accent: "#00d4c8",
     tag: "ORGAN",
   },
+  {
+    id: "gut-health",
+    name: "Gut Health",
+    count: 48,
+    desc: "Digestive health, microbiome and food intolerance testing",
+    icon: "◍",
+    accent: "#00c896",
+    tag: "WELLNESS",
+  },
+  {
+    id: "diabetes",
+    name: "Diabetes",
+    count: 27,
+    desc: "Blood glucose and HbA1c testing for diabetes risk and monitoring",
+    icon: "◈",
+    accent: "#00b4d8",
+    tag: "ROUTINE",
+  },
 ];
 
 const tagColors: Record<string, string> = {
