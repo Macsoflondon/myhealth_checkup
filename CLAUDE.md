@@ -36,3 +36,9 @@ Requires a `.env` with `VITE_SUPABASE_URL` and `VITE_SUPABASE_KEY` (used by `src
 **Backend (`supabase/functions/`):** organized by responsibility — AI/analysis (`ai-human-context` — the single canonical AI recommendation engine, `blood-test-analysis`, `ai-test-mapper`, `quiz-recommendations`), provider scrapers (`*-scraper` per provider, e.g. `medichecks-scraper`, `randox-scraper`, plus orchestrators `run-all-scrapers`/`scrape-all-clinics`), admin/security (`admin-recovery`, `verify-admin-mfa`, `encrypt-sensitive-data`, `check-leaked-password-protection`), and notifications/marketing (`send-test-notification`, `newsletter-subscribe`, `price-alert-checker`). Several ship their own `index.test.ts` (Deno tests, see Commands above).
 
 **UI:** shadcn-ui components in `src/components/ui` (config: `components.json`, Tailwind base color `slate`, no RSC). Other component folders are domain-organized: `admin`, `auth`, `booking`, `clinic`, `compare`, `providers`, `tests`, `dashboard`, `search`, `security`, `seo`, `reviews`, `ai`.
+
+## Writing site content
+
+Apply the `stop-slop` skill to all prose written for the site: page copy, headings, meta titles and descriptions, locale strings under `src/locales/`, marketing email and newsletter copy, and any user-facing text in components.
+
+This applies to content only. Do not apply it to conversation with the user, commit messages, PR descriptions, or code comments.
