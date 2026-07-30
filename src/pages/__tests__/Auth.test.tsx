@@ -21,6 +21,10 @@ vi.mock("@/lib/router-compat", async () => {
 });
 
 
+vi.mock("@/lib/mfa", () => ({
+  getAalStatus: () => Promise.resolve({ stepUpRequired: false, currentLevel: "aal1", nextLevel: "aal1" }),
+}));
+
 vi.mock("@/context/AuthContext", () => ({
   useAuth: () => ({ user: null, isLoading: false, session: null, signOut: vi.fn() }),
 }));
