@@ -1,30 +1,19 @@
 ## Goal
 
-Two changes to the shared test card (`src/components/cards/UniversalTestCard.tsx`, which every grid, carousel and category page renders through the adapter):
+Add breathing room above and below the straddling category toolbar on all category pages, per the drawn lines.
 
-1. Provider logo and brand name become a clear, prominent brand lockup.
-2. The turquoise glow currently applied only on hover becomes permanent, with hover lifting it further.
+## Changes
 
-## 1. Provider branding
+**1. Space between the tricolour divider and the toolbar** — `src/components/category/CategoryStandardHero.tsx`
 
-Current state: a 28x28 logo tile with 12px turquoise brand name in a 28px-high row above the trust line.
+The navy section currently ends with `pb-6 sm:pb-8` right after the tricolour gradient line, so the toolbar (portalled into `#page-toolbar-anchor` at the navy/white boundary) overlaps close to it. Increase the navy section's bottom padding by roughly one text line: `pb-6 sm:pb-8` → `pb-11 sm:pb-14`. The header block grows taller, the tricolour line stays where it is relative to the heading, and the toolbar keeps straddling the boundary — just with clear navy space above it.
 
-Changes:
-- Logo tile grows to 40x40, white background with a hairline `#e2e8f0` border and 8px radius so cropped provider marks sit cleanly (matches provider-logo constraints already used elsewhere).
-- Brand name goes to 14px Montserrat, weight 700, navy `#081129` — stronger contrast than the current turquoise 12px, and consistent with brand typography.
-- Row height increases to accommodate the taller lockup; Popular / Add-on badges stay right-aligned and vertically centred against it.
-- Nothing else moves: title, category, description, chips, stats, price and buttons keep their fixed min-heights so card heights stay uniform across a grid.
+**2. Space between the toolbar and "74 tests found" / the sort dropdown** — `src/components/category/CategoryPageLayout.tsx`
 
-## 2. Permanent glow
+The white results section starts at `pt-6 sm:pt-8`, which puts the count row and "Most Popular" select directly under the toolbar's lower half. Increase to `pt-12 sm:pt-16` so the row clears the toolbar with matching whitespace.
 
-Current state: `boxShadow: "none"` at rest, turquoise glow only applied in the `onMouseEnter` handler.
+## Notes
 
-Changes:
-- Resting state gets a soft turquoise glow plus a subtle depth shadow, e.g. `0 0 0 1px rgba(34,192,212,0.18), 0 6px 20px rgba(34,192,212,0.14)`, with the border tinted turquoise rather than grey.
-- Hover intensifies the same glow (larger blur, higher opacity) and keeps the existing 2px lift, so hover still reads as interactive.
-- Compare-selected cards keep their navy inset stripe and get the navy-weighted variant of the same treatment, so the selected state stays distinguishable from the ambient glow.
-
-## Technical notes
-
-- All edits are confined to `UniversalTestCard.tsx` (the resting `style` object plus the `onMouseEnter` / `onMouseLeave` handlers, and the provider row markup). No adapter, data or query changes.
-- Grid gaps are wide enough for a 20px glow spread, so no layout reflow is expected; I will verify visually at mobile and desktop widths on a category page and the homepage popular-tests row.
+- Both values are chosen so the toolbar sits with visually even gaps above (navy) and below (white).
+- Change applies to every page using the standard category hero/layout; the homepage is untouched since it doesn't render this hero.
+- I'll verify with a browser screenshot at desktop and mobile widths that the toolbar still centres on the colour boundary and nothing collides.
