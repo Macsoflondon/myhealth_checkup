@@ -1,9 +1,132 @@
 /* Montserrat + DM Sans loaded via @fontsource in main.tsx */
-@import url("https://fonts.googleapis.com/css2?family=Lora&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap");
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Remote fonts (Lora, JetBrains Mono, EB Garamond) are loaded via <link> in src/routes/__root.tsx */
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Design tokens: maps the HSL custom properties declared on :root/.dark below
+   onto Tailwind v4 colour utilities (bg-*, text-*, border-*, from-*, …). */
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-container: hsl(var(--primary-container));
+  --color-primary-on-container: hsl(var(--primary-on-container));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-secondary-container: hsl(var(--secondary-container));
+  --color-secondary-on-container: hsl(var(--secondary-on-container));
+  --color-tertiary: hsl(var(--tertiary));
+  --color-tertiary-foreground: hsl(var(--tertiary-foreground));
+  --color-tertiary-container: hsl(var(--tertiary-container));
+  --color-tertiary-on-container: hsl(var(--tertiary-on-container));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-error: hsl(var(--error));
+  --color-error-foreground: hsl(var(--error-foreground));
+  --color-error-container: hsl(var(--error-container));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-surface: hsl(var(--surface));
+  --color-surface-variant: hsl(var(--surface-variant));
+  --color-surface-tint: hsl(var(--surface-tint));
+  --color-surface-warm: hsl(var(--surface-warm));
+  --color-section-dark: hsl(var(--section-dark));
+  --color-outline-foreground: hsl(var(--outline-foreground));
+  --color-ghost-foreground: hsl(var(--ghost-foreground));
+  --color-link-foreground: hsl(var(--link-foreground));
+
+  /* Brand */
+  --color-brand-turquoise: #22c0d4;
+  --color-brand-pink: #e70d69;
+  --color-brand-navy: #081129;
+  --color-turquoise: hsl(var(--turquoise));
+  --color-pink: hsl(var(--pink));
+  --color-navy: hsl(var(--navy));
+
+  /* Health (turquoise) scale */
+  --color-health-50: #ecfbfd;
+  --color-health-100: #d3f4f9;
+  --color-health-200: #a8e9f3;
+  --color-health-300: #7addec;
+  --color-health-400: #45cfe1;
+  --color-health-500: #22c0d4;
+  --color-health-600: #1ba4b6;
+  --color-health-700: #177f8d;
+  --color-health-800: #145f6a;
+  --color-health-900: #103f47;
+  --color-health-primary: hsl(var(--health-primary));
+  --color-health-secondary: hsl(var(--health-secondary));
+  --color-health-accent: hsl(var(--health-accent));
+  --color-health-success: hsl(var(--health-success));
+  --color-health-warning: hsl(var(--health-warning));
+  --color-health-highlight: hsl(var(--health-highlight));
+  --color-health-heading: hsl(var(--health-heading));
+  --color-health-icon: hsl(var(--health-icon));
+
+  /* Wellness (green) scale */
+  --color-wellness-50: #f0fdf5;
+  --color-wellness-100: #dcfce8;
+  --color-wellness-500: #22c55e;
+  --color-wellness-600: #16a34a;
+  --color-wellness-700: #15803c;
+
+  /* Clinical / premium additive tokens */
+  --color-premium-gold: hsl(var(--premium-gold));
+  --color-premium-gold-foreground: hsl(var(--premium-gold-foreground));
+  --color-clinical-success: hsl(var(--clinical-success));
+  --color-clinical-success-foreground: hsl(var(--clinical-success-foreground));
+  --color-clinical-alert: hsl(var(--clinical-alert));
+  --color-clinical-alert-foreground: hsl(var(--clinical-alert-foreground));
+  --color-text-charcoal: hsl(var(--text-charcoal));
+  --color-text-warm-grey: hsl(var(--text-warm-grey));
+
+  /* Sidebar */
+  --color-sidebar: hsl(var(--sidebar-background));
+  --color-sidebar-background: hsl(var(--sidebar-background));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+
+  /* Charts */
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+
+  /* Typography */
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: Montserrat, ui-sans-serif, system-ui, sans-serif;
+  --font-elegant: "EB Garamond", Georgia, serif;
+  --font-serif: Lora, ui-serif, Georgia, Cambria, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Breakpoints */
+  --breakpoint-xs: 375px;
+
+  /* Radii */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
 
 /* Prevent horizontal overflow at every breakpoint (mobile-first guard) */
 html, body {
@@ -417,7 +540,7 @@ html, body {
   }
 
   .health-gradient {
-    @apply bg-gradient-to-r from-health-600 to-wellness-600;
+    background-image: linear-gradient(to right, #22c0d4, #e70d69);
   }
 
   /* Page heading gradient accent - turquoise to navy to pink with shimmer */
