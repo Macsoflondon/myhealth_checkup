@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { findSubcategory, testMatchesSubcategory } from "@/config/subcategoryMap";
+import { findSubcategory } from "@/config/subcategoryMap";
 
 /** One card's live-count definition. */
 export interface WellnessCountSpec {

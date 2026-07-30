@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "@/lib/router-compat";
+import { Link, useSearchParams } from "@/lib/router-compat";
+import { Activity, HeartPulse, ShieldCheck } from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 
@@ -9,6 +10,12 @@ import { Button } from "@/components/ui/button";
 import PageHeading from "@/components/ui/page-heading";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { CategoryStandardHero } from "@/components/category/CategoryStandardHero";
+import { DbCategoryPage } from "@/components/category/DbCategoryPage";
+import { findSubcategory } from "@/config/subcategoryMap";
+import {
+  useWellnessCategoryCounts,
+  type WellnessCountSpec,
+} from "@/hooks/queries/useWellnessCategoryCounts";
 
 const wellnessCategoryCards = [
   {
