@@ -15,5 +15,7 @@ export default defineConfig({
   },
   vite: {
     plugins: [mcpPlugin()],
+    // react-helmet-async ships CommonJS; bundle it so named exports interop under SSR.
+    ssr: { noExternal: ["react-helmet-async"] },
   },
 });
