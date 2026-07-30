@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { Activity, AlertTriangle, Eye, Gauge, LockKeyhole, RefreshCw, Search, ShieldCheck, Siren, TimerReset, Zap } from "lucide-react";
 import { socWatchApi, type SocSignal, type SocSource } from "@/api/supabase/socWatch.api";
 import { formatSocDateTime, humaniseToken, type SocSeverity } from "@/lib/socWatchUtils";

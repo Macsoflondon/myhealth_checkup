@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -368,7 +368,7 @@ const FAQsPage = () => {
                   <div className="p-4 sm:p-6">
                     <Accordion type="single" collapsible>
                       {category.faqs.map((faq, faqIdx) => <AccordionItem key={faqIdx} value={`faq-${catIdx}-${faqIdx}`} className="border-b last:border-0">
-                          <AccordionTrigger className="text-left hover:text-primary transition-colors py-3 sm:py-4 text-gray-900 font-medium text-sm sm:text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded min-h-[44px]">
+                          <AccordionTrigger className="text-left hover:text-primary transition-colors py-3 sm:py-4 text-gray-900 font-medium text-sm sm:text-base focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded min-h-[44px]">
                             {faq.q}
                           </AccordionTrigger>
                           <AccordionContent className="text-gray-700 pb-3 sm:pb-4 leading-relaxed text-sm sm:text-base">

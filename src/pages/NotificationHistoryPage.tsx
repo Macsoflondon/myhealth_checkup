@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useAuth } from "@/context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/router-compat";
 import { notificationHistoryApi, NotificationHistory } from "@/api/supabase/notificationHistory.api";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";

@@ -29,7 +29,7 @@ const buttonVariants = cva(
     "font-medium select-none",
     "transition-[transform,box-shadow,background-color,color,border-color]",
     "duration-standard ease-emphasized",
-    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+    "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
     "disabled:pointer-events-none disabled:opacity-50",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0",
     "motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100",

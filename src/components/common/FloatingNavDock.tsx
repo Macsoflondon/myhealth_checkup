@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from '@/lib/router-compat';
 import { Home, ArrowLeft, ArrowUp } from 'lucide-react';
 
 const FloatingNavDock = () => {
@@ -25,7 +25,7 @@ const FloatingNavDock = () => {
   const goBack = () => (window.history.length > 1 ? navigate(-1) : navigate('/'));
 
   const btnBase =
-    'group/btn relative flex items-center justify-center !h-8 !w-8 sm:!h-9 sm:!w-9 rounded-lg border-2 border-[#e70d69] text-[#e70d69] bg-white/90 backdrop-blur-sm transition-all duration-300 hover:bg-[#e70d69] hover:text-white shadow-md';
+    'group/btn relative flex items-center justify-center !h-8 !w-8 sm:!h-9 sm:!w-9 rounded-lg border-2 border-[#e70d69] text-[#e70d69] bg-white/90 backdrop-blur-xs transition-all duration-300 hover:bg-[#e70d69] hover:text-white shadow-md';
 
   const labelBase =
     'absolute right-full mr-2 px-2 py-1 rounded text-[10px] font-heading font-semibold uppercase tracking-wider bg-brand-navy text-white whitespace-nowrap opacity-0 scale-90 group-hover/btn:opacity-100 group-hover/btn:scale-100 transition-all duration-200 pointer-events-none shadow-md hidden sm:block';
@@ -34,7 +34,7 @@ const FloatingNavDock = () => {
     return (
       <button
         onClick={scrollToTop}
-        className={`group/btn fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-[60] !h-8 !w-8 sm:!h-9 sm:!w-9 rounded-lg border-2 border-[#e70d69] text-[#e70d69] bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center transition-all duration-500 hover:bg-[#e70d69] hover:text-white hover:scale-110 ${
+        className={`group/btn fixed bottom-4 right-3 sm:bottom-6 sm:right-6 z-[60] !h-8 !w-8 sm:!h-9 sm:!w-9 rounded-lg border-2 border-[#e70d69] text-[#e70d69] bg-white/90 backdrop-blur-xs shadow-md flex items-center justify-center transition-all duration-500 hover:bg-[#e70d69] hover:text-white hover:scale-110 ${
           showTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
         }`}
         aria-label="Back to top"

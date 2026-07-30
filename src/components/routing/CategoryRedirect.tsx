@@ -1,4 +1,4 @@
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "@/lib/router-compat";
 
 /**
  * Maps /category/:slug legacy/SEO URLs to the canonical route for that category.

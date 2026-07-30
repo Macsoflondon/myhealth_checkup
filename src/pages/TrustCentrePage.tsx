@@ -5,7 +5,7 @@ import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ShieldCheck, Lock, Database, Cookie, UserCheck, Mail, AlertTriangle, Server } from 'lucide-react';
 import PageBanner from '@/components/sections/PageBanner';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 
 const TrustCentrePage = () => {
   return (

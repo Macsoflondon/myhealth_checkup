@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -136,7 +136,7 @@ const SimilarTestsSection = ({
           ))}
         </div>
 
-        <Button variant="outline" size="sm" className="state-layer relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-medium overflow-hidden focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transition-all duration-300 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:relative [&_svg]:z-10 border-2 bg-transparent hover:text-white hover:scale-105 active:scale-95 h-9 px-3 w-full mt-4 text-[#081129] hover:bg-[#081129]/10 relative z-10 border-primary" asChild>
+        <Button variant="outline" size="sm" className="state-layer relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-sm text-sm font-medium overflow-hidden focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transition-all duration-300 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 [&_svg]:relative [&_svg]:z-10 border-2 bg-transparent hover:text-white hover:scale-105 active:scale-95 h-9 px-3 w-full mt-4 text-[#081129] hover:bg-[#081129]/10 relative z-10 border-primary" asChild>
           <Link to={`/compare?category=${encodeURIComponent(category)}`}>
             View All {category} Tests
           </Link>

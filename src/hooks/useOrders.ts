@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/router-compat";
 import { toast } from "@/components/ui/sonner";
 import { User } from "@supabase/supabase-js";
 import { ordersApi } from "@/api";
@@ -29,7 +29,7 @@ export function useOrders(user: User | null) {
       navigate("/dashboard?tab=orders");
       return true;
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error instanceof Error ? error.message : 'Failed to place order');
       return false;
     }
   };

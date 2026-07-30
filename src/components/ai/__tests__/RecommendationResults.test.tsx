@@ -1,6 +1,7 @@
+import "@testing-library/jest-dom/vitest";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "@/lib/router-compat";
 import { RecommendationResults, type AIAnalysisResult } from "../RecommendationEngine";
 
 vi.mock("@/integrations/supabase/client", () => ({

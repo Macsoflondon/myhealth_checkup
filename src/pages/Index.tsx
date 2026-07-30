@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { lazy, Suspense } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import MainLayout from "@/layouts/MainLayout";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import SectionReveal from "@/components/ui/SectionReveal";

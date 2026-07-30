@@ -1,13 +1,14 @@
+import "@testing-library/jest-dom/vitest";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "@/lib/router-compat";
 import { HelmetProvider } from "react-helmet-async";
 import Auth from "@/pages/Auth";
 
 const navigateMock = vi.fn();
-vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual<typeof import("react-router-dom")>("react-router-dom");
+vi.mock("@/lib/router-compat", async () => {
+  const actual = await vi.importActual<typeof import("@/lib/router-compat")>("@/lib/router-compat");
   return { ...actual, useNavigate: () => navigateMock };
 });
 

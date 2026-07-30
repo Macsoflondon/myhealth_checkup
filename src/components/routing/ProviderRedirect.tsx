@@ -1,4 +1,4 @@
-import { Navigate, useParams, useLocation } from "react-router-dom";
+import { Navigate, useParams, useLocation } from "@/lib/router-compat";
 
 interface ProviderRedirectProps {
   from: string;

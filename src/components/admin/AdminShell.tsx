@@ -2,7 +2,7 @@
  * Admin app shell — collapsible sidebar + header, wraps every /admin/* route.
  */
 import { PropsWithChildren } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "@/lib/router-compat";
 import {
   Sidebar,
   SidebarContent,

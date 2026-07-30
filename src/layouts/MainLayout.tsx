@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "@/lib/router-compat";
 import { lazy, Suspense } from "react";
 import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/compliance/CookieConsent";
@@ -7,7 +7,7 @@ import SiteBreadcrumb from "@/components/common/SiteBreadcrumb";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 import { ComparisonBar } from "@/components/compare/ComparisonBar";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/router-compat";
 const AccreditedProvidersBar = lazy(() => import("@/components/sections/AccreditedProvidersBar"));
 
 interface MainLayoutProps {

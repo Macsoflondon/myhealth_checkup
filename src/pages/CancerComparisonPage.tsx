@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { useSearchParams, Link } from 'react-router-dom';
+import { useSearchParams, Link } from '@/lib/router-compat';
 import { Helmet } from 'react-helmet-async';
 import { Shield, Activity, Heart, Target, Microscope, AlertCircle, Plus, Minus, ExternalLink, BookOpen } from 'lucide-react';
 import Header from '@/components/layout/Header';

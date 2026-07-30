@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate } from "@/lib/router-compat";
 
 const LondonHealthCompanyPage = () => <Navigate to="/provider/london-health-company" replace />;
 

@@ -106,7 +106,7 @@ export const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
         isVisible ? "block" : "hidden lg:block"
       )}
     >
-      <div className="bg-card rounded-2xl p-6 border border-border sticky top-24 shadow-sm">
+      <div className="bg-card rounded-2xl p-6 border border-border sticky top-24 shadow-xs">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-semibold text-foreground">Filters</h2>
           <div className="flex items-center gap-2">

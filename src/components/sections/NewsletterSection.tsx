@@ -56,7 +56,7 @@ const NewsletterSection = () => {
                 onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                 placeholder="Your email address"
                 aria-label="Email address"
-                className="flex-1 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/35 outline-none transition-colors focus:border-brand-turquoise"
+                className="flex-1 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/35 outline-hidden transition-colors focus:border-brand-turquoise"
                 style={{
                   background: "rgba(255,255,255,0.08)",
                   border: `1.5px solid ${error ? "#e70d69" : "rgba(34,192,212,0.28)"}`,

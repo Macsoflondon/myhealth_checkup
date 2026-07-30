@@ -7,7 +7,7 @@
  * right URL per route.
  */
 import { Helmet } from "react-helmet-async";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "@/lib/router-compat";
 
 const BASE = "https://myhealthcheckup.co.uk";
 

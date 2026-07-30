@@ -228,15 +228,15 @@ const BrandTypography = () => {
 
           {/* Example 3: Stats Section */}
           <div className="grid grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+            <div className="text-center p-4 bg-white rounded-lg shadow-xs">
               <div className="text-4xl font-heading font-bold text-[#22c0d4] mb-2">93%</div>
               <div className="text-sm font-sans text-gray-600">Improved quality of life</div>
             </div>
-            <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+            <div className="text-center p-4 bg-white rounded-lg shadow-xs">
               <div className="text-4xl font-heading font-bold text-[#e70d69] mb-2">4.8/5</div>
               <div className="text-sm font-sans text-gray-600">Average rating</div>
             </div>
-            <div className="text-center p-4 bg-white rounded-lg shadow-sm">
+            <div className="text-center p-4 bg-white rounded-lg shadow-xs">
               <div className="text-4xl font-heading font-bold text-[#081129] mb-2">10k+</div>
               <div className="text-sm font-sans text-gray-600">Tests completed</div>
             </div>

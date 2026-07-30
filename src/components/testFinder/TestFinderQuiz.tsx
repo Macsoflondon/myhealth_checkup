@@ -478,7 +478,7 @@ const AdditionalContextStep = ({ userContext, onContextChange, onSubmit, onBack 
         value={userContext}
         onChange={(e) => onContextChange(e.target.value)}
         placeholder="E.g. I've been feeling fatigued for the past 3 months, I follow a vegan diet, I'm training for a marathon..."
-        className="w-full min-h-[160px] p-4 rounded-xl border-2 border-[#081129]/12 bg-white text-[#081129] text-sm placeholder:text-[#081129]/40 focus:border-[#22c0d4] focus:ring-2 focus:ring-[#22c0d4]/20 outline-none transition-all resize-y"
+        className="w-full min-h-[160px] p-4 rounded-xl border-2 border-[#081129]/12 bg-white text-[#081129] text-sm placeholder:text-[#081129]/40 focus:border-[#22c0d4] focus:ring-2 focus:ring-[#22c0d4]/20 outline-hidden transition-all resize-y"
         style={{ fontFamily: "'Montserrat', sans-serif" }}
       />
     </div>
@@ -740,7 +740,7 @@ export const TestFinderQuiz = () => {
                 key={answer.label}
                 type="button"
                 onClick={() => handleAnswer(answer)}
-                className="text-sm sm:text-base px-5 py-3 rounded-full border-2 border-[#081129]/12 bg-white text-[#081129] hover:border-[#22c0d4] hover:bg-[#22c0d4]/5 active:scale-95 transition-all duration-150 min-h-[48px] font-medium shadow-sm hover:shadow-md"
+                className="text-sm sm:text-base px-5 py-3 rounded-full border-2 border-[#081129]/12 bg-white text-[#081129] hover:border-[#22c0d4] hover:bg-[#22c0d4]/5 active:scale-95 transition-all duration-150 min-h-[48px] font-medium shadow-xs hover:shadow-md"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
                 {answer.label}

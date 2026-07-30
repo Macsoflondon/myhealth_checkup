@@ -1,4 +1,4 @@
-import { useLocation, Link, useNavigate } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "@/lib/router-compat";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Search, Home, Compass, MessageCircle, FlaskConical } from "lucide-react";
@@ -99,7 +99,7 @@ const NotFound = () => {
                 <Link
                   key={href}
                   to={href}
-                  className="group flex items-center gap-3 rounded-lg border border-border bg-card p-4 hover:border-primary hover:shadow-sm transition-all"
+                  className="group flex items-center gap-3 rounded-lg border border-border bg-card p-4 hover:border-primary hover:shadow-xs transition-all"
                 >
                   <Icon className="w-5 h-5 text-primary flex-shrink-0" />
                   <span className="font-medium text-sm sm:text-base text-foreground group-hover:text-primary">

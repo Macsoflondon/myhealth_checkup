@@ -53,9 +53,9 @@ export function useFavoritesApi(user: User | null, category: string) {
           user_id: user.id,
           test_id: testId,
           category: category,
-          provider: item.provider,
+          provider: item.provider ?? '',
           name: item.name,
-          price: item.price,
+          price: item.price ?? undefined,
         });
         
         if (error) throw error;
@@ -68,7 +68,7 @@ export function useFavoritesApi(user: User | null, category: string) {
             .insert({
               user_id: user.id,
               test_id: testId,
-              provider: item.provider,
+              provider: item.provider ?? '',
               threshold_percentage: 10,
               enabled: true,
             });
@@ -81,7 +81,7 @@ export function useFavoritesApi(user: User | null, category: string) {
       }
       return true;
     } catch (error) {
-      toast.error(error.message);
+      toast.error(error instanceof Error ? error.message : 'Something went wrong');
       return false;
     }
   };

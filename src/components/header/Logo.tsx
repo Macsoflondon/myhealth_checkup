@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "@/lib/router-compat";
 import logo from "/myhealth-logo-v3.png";
 export const Logo = () => {
   const location = useLocation();

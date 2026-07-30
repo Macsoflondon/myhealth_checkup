@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import { blogArticles } from '@/data/blogArticles';
 import type { BlogArticle } from '@/types/blog.types';
 

@@ -39,7 +39,7 @@ export const CompareFilters = ({
 }: CompareFiltersProps) => {
   return <div className="space-y-6 bg-white">
       {/* Category Selection */}
-      <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+      <Card className="bg-card/50 backdrop-blur-xs border-border/50">
         <CardContent className="p-6">
           <div className="flex items-center gap-2 mb-4">
             <Filter className="h-4 w-4 text-health-primary" />
@@ -65,7 +65,7 @@ export const CompareFilters = ({
       </Card>
 
       {/* Search and Filters */}
-      <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+      <Card className="bg-card/50 backdrop-blur-xs border-border/50">
         <CardContent className="p-6 bg-white">
           <div className="grid gap-4 md:grid-cols-4">
             {/* Search */}

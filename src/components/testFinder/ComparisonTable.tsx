@@ -95,7 +95,7 @@ export const ComparisonTable = ({ tests }: Props) => {
           {tests.map((t) => (
             <div
               key={t.id}
-              className={`bg-white rounded-2xl shadow-sm overflow-hidden ${
+              className={`bg-white rounded-2xl shadow-xs overflow-hidden ${
                 tests.length >= 3 ? "min-w-[82%] snap-start" : ""
               }`}
             >

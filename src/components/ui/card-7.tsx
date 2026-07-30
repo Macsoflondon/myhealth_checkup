@@ -73,7 +73,7 @@ export const InteractiveProductCard: React.FC<InteractiveProductCardProps> = ({
 
       {/* Glassmorphism header */}
       <div
-        className="absolute top-4 left-4 right-4 flex items-center gap-3 rounded-2xl border border-white/20 bg-white/15 backdrop-blur-md p-3 shadow-sm"
+        className="absolute top-4 left-4 right-4 flex items-center gap-3 rounded-2xl border border-white/20 bg-white/15 backdrop-blur-md p-3 shadow-xs"
         style={{ transform: "translateZ(30px)" }}
       >
         <div className="flex-1 min-w-0">

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "@/lib/router-compat";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import MainLayout from "@/layouts/MainLayout";
 

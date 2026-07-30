@@ -5,7 +5,7 @@
 
 import { useCallback, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { useLocation } from "react-router-dom";
+import { useLocation } from "@/lib/router-compat";
 import { CompareService, type CompareTestData } from "@/services/CompareService";
 import { logger } from "@/lib/logger";
 

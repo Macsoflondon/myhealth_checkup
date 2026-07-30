@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
 import { RefreshCw, ArrowRight } from "lucide-react";
 import Header from "@/components/layout/Header";

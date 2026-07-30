@@ -79,7 +79,7 @@ export const StickyCategoryBar = ({ hideUntilTriggerId }: StickyCategoryBarProps
                   aria-label={open ? "Close category menu" : "Open category menu"}
                   aria-expanded={open}
                   aria-controls="sticky-category-sheet"
-                  className="inline-flex items-center gap-2 min-h-11 min-w-11 px-3 rounded-lg text-white bg-white/10 hover:bg-white/15 active:bg-white/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 focus-visible:ring-offset-[#081129] transition"
+                  className="inline-flex items-center gap-2 min-h-11 min-w-11 px-3 rounded-lg text-white bg-white/10 hover:bg-white/15 active:bg-white/20 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 focus-visible:ring-offset-[#081129] transition"
                 >
                   {open ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
                   <span className="text-sm font-semibold">Menu</span>

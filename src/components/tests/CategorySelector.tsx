@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '@/lib/router-compat';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -36,7 +36,7 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
             <input
               type="text"
               placeholder="Find your perfect health test..."
-              className="w-full pl-12 pr-4 py-4 text-lg border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full pl-12 pr-4 py-4 text-lg border border-gray-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-primary focus:border-transparent"
             />
             <Button 
               size="lg" 

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { useEffect, useMemo, useState } from "react";
 import LiveComparisonCard, {
   DEFAULT_LIVE_COMPARISON_PANELS,
