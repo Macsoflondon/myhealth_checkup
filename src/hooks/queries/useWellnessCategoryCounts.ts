@@ -28,15 +28,17 @@ interface CountRow {
 }
 
 /**
- * Live per-card test counts for the Wellness landing grid. One query for the
- * whole catalogue, counted client-side against each card's category/pattern
- * spec so the numbers can never drift from the database.
+ * Live per-card test counts for the Wellness landing grid. Cards that have a
+ * real taxonomy row are counted from `category_test_mapping`; the remainder
+ * are counted client-side against their category/pattern spec.
  */
 export function useWellnessCategoryCounts(specs: WellnessCountSpec[]) {
   const specKey = specs.map((s) => s.id).join(",");
+  const { data: mappedCounts } = useMappedCategoryCounts(MAPPED_WELLNESS_SLUGS);
 
-  return useQuery({
+  const legacy = useQuery({
     queryKey: ["wellness-category-counts", specKey],
+
     queryFn: async (): Promise<Record<string, number>> => {
       const { data, error } = await supabase
         .from("provider_tests")
