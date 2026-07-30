@@ -1,17 +1,21 @@
+// @vitest-environment jsdom
 import "@testing-library/jest-dom/vitest";
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
 import ChangePasswordCard from "../ChangePasswordCard";
 
 // --- Mocks ---
-const signInWithPassword = vi.fn();
+const verifyCurrentPassword = vi.fn();
 const updateUser = vi.fn();
 const resetPasswordForEmail = vi.fn();
+
+vi.mock("@/lib/verify-current-password", () => ({
+  verifyCurrentPassword: (...a: unknown[]) => verifyCurrentPassword(...a),
+}));
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
     auth: {
-      signInWithPassword: (...a: unknown[]) => signInWithPassword(...a),
       updateUser: (...a: unknown[]) => updateUser(...a),
       resetPasswordForEmail: (...a: unknown[]) => resetPasswordForEmail(...a),
     },
@@ -46,8 +50,12 @@ describe("ChangePasswordCard", () => {
     vi.clearAllMocks();
   });
 
+  afterEach(() => {
+    cleanup();
+  });
+
   it("updates password on success", async () => {
-    signInWithPassword.mockResolvedValue({ error: null });
+    verifyCurrentPassword.mockResolvedValue(true);
     updateUser.mockResolvedValue({ error: null });
 
     render(<ChangePasswordCard />);
@@ -55,12 +63,12 @@ describe("ChangePasswordCard", () => {
     submit();
 
     await waitFor(() => expect(updateUser).toHaveBeenCalledWith({ password: STRONG }));
-    expect(signInWithPassword).toHaveBeenCalledWith({ email: "user@example.com", password: "OldPass123!" });
+    expect(verifyCurrentPassword).toHaveBeenCalledWith("user@example.com", "OldPass123!");
     await waitFor(() => expect(toastSuccess).toHaveBeenCalledWith("Password updated successfully."));
   });
 
   it("shows error when current password is incorrect", async () => {
-    signInWithPassword.mockResolvedValue({ error: { message: "Invalid login" } });
+    verifyCurrentPassword.mockResolvedValue(false);
 
     render(<ChangePasswordCard />);
     fillForm("WrongOld!", STRONG, STRONG);
@@ -76,7 +84,7 @@ describe("ChangePasswordCard", () => {
     submit();
 
     expect(await screen.findByText(/new passwords do not match/i)).toBeInTheDocument();
-    expect(signInWithPassword).not.toHaveBeenCalled();
+    expect(verifyCurrentPassword).not.toHaveBeenCalled();
   });
 
   it("shows error when new password equals current password", async () => {
@@ -85,7 +93,7 @@ describe("ChangePasswordCard", () => {
     submit();
 
     expect(await screen.findByText(/different from your current password/i)).toBeInTheDocument();
-    expect(signInWithPassword).not.toHaveBeenCalled();
+    expect(verifyCurrentPassword).not.toHaveBeenCalled();
   });
 
   it("shows error when new password is weak", async () => {
@@ -94,11 +102,11 @@ describe("ChangePasswordCard", () => {
     submit();
 
     expect(await screen.findByText(/does not meet security requirements/i)).toBeInTheDocument();
-    expect(signInWithPassword).not.toHaveBeenCalled();
+    expect(verifyCurrentPassword).not.toHaveBeenCalled();
   });
 
   it("surfaces updateUser errors", async () => {
-    signInWithPassword.mockResolvedValue({ error: null });
+    verifyCurrentPassword.mockResolvedValue(true);
     updateUser.mockResolvedValue({ error: { message: "Password too weak server-side" } });
 
     render(<ChangePasswordCard />);

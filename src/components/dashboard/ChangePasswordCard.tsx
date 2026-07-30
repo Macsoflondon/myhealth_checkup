@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { verifyCurrentPassword } from "@/lib/verify-current-password";
 import { toast } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -74,11 +75,11 @@ const ChangePasswordCard = () => {
 
     setIsSaving(true);
     try {
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: user.email,
-        password: currentPassword,
-      });
-      if (signInError) {
+      // Verify on a throwaway client — signing in on the shared client would
+      // replace an aal2 session with a fresh aal1 one and trip the global
+      // MFA step-up guard, unmounting this form mid-flow.
+      const verified = await verifyCurrentPassword(user.email, currentPassword);
+      if (!verified) {
         setError("Current password is incorrect.");
         return;
       }

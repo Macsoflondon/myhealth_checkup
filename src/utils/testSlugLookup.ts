@@ -189,7 +189,7 @@ function parseTestData(data: RawTestData): TestData {
   
   // Check if biomarkers are corrupted and use static data as fallback
   if (isBiomarkersCorrupted(biomarkers) || !biomarkers) {
-    const staticBiomarkers = getStaticBiomarkers(data.test_name, data.provider_id || 'goodbody-clinic');
+    const staticBiomarkers = getStaticBiomarkers(data.test_name ?? '', data.provider_id || 'goodbody-clinic');
     if (staticBiomarkers) {
       biomarkers = staticBiomarkers;
     }

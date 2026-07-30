@@ -43,7 +43,7 @@ interface MasterTestRow {
   category: string;
   sample_type: string | null;
   biomarkers: unknown;
-  is_active: boolean;
+  is_active: boolean | null;
   providers: ProviderPricing[];
 }
 
