@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,16 +8,24 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "@/components/ui/sonner";
 import { ShieldAlert, Loader2, KeyRound } from "lucide-react";
 
-const readRecoveryError = async (error: unknown) => {
+type RecoveryResponse = {
+  success?: boolean;
+  error?: string;
+  token?: string;
+  expiresInMinutes?: number;
+  message?: string;
+};
+
+const readRecoveryError = async (error: unknown): Promise<string> => {
   const response = (error as { context?: unknown })?.context;
 
   if (response instanceof Response) {
     try {
-      const body = await response.clone().json();
-      if (response.status === 401) return "Recovery secret is incorrect.";
+      const body = (await response.clone().json()) as { error?: string };
       if (typeof body?.error === "string") return body.error;
     } catch {
-      if (response.status === 401) return "Recovery secret is incorrect.";
+      if (response.status === 401) return "Recovery token is invalid, expired or already used.";
+      if (response.status === 403) return "You are not authorised to perform this action.";
     }
   }
 
@@ -27,7 +34,7 @@ const readRecoveryError = async (error: unknown) => {
 
 const AdminRecovery = () => {
   const navigate = useNavigate();
-  const [secret, setSecret] = useState("");
+  const [token, setToken] = useState("");
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirm, setConfirm] = useState("");
@@ -46,29 +53,28 @@ const AdminRecovery = () => {
     }
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke("admin-recovery", {
-        body: { secret, email, newPassword },
+      const { data, error } = await supabase.functions.invoke<RecoveryResponse>("admin-recovery", {
+        body: { action: "redeem", token, email, newPassword },
       });
       if (error) {
         toast.error(await readRecoveryError(error));
         return;
       }
-      if ((data as any)?.success) {
-        toast.success("Admin recovered. MFA cleared. You can now sign in.");
+      if (data?.success) {
+        toast.success("Account recovered. MFA cleared. You can now sign in.");
         setDone(true);
       } else {
-        toast.error((data as any)?.error || "Recovery failed.");
+        toast.error(data?.error || "Recovery failed.");
       }
-    } catch (err: any) {
-      toast.error(err?.message || "Unexpected error.");
+    } catch (err) {
+      toast.error((err as { message?: string })?.message || "Unexpected error.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <>
-      <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))] px-4">
       <div className="max-w-md w-full">
         <div className="flex justify-center mb-6">
           <div className="w-16 h-16 rounded-full bg-destructive/15 flex items-center justify-center">
@@ -76,24 +82,25 @@ const AdminRecovery = () => {
           </div>
         </div>
 
-        <h1 className="text-xl font-semibold text-white text-center mb-1">
-          Admin Recovery
-        </h1>
+        <h1 className="text-xl font-semibold text-white text-center mb-1">Admin recovery</h1>
         <p className="text-white/50 text-sm text-center mb-6">
-          Emergency access. Requires the recovery secret.
+          Requires a single-use recovery token issued by another administrator.
         </p>
 
         <Alert className="mb-4 border-amber-500/40 bg-amber-950/40">
           <AlertDescription className="text-amber-200 text-xs">
-            This will reset the password and clear all MFA factors for the
-            specified admin account. All actions are logged.
+            Recovery tokens expire after 15 minutes and can only be used once, for the
+            administrator account they were issued to. This resets that account's password and
+            clears its multi-factor devices. No account privileges are granted here, and every
+            attempt is logged.
           </AlertDescription>
         </Alert>
 
         {done ? (
           <div className="space-y-4 text-center">
             <p className="text-white/80 text-sm">
-              Account recovered. Sign in with your new password, then re-enrol MFA.
+              Account recovered. Sign in with your new password, then re-enrol multi-factor
+              authentication straight away.
             </p>
             <Button onClick={() => navigate("/admin/login")} className="w-full">
               Go to admin login
@@ -102,15 +109,15 @@ const AdminRecovery = () => {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="recovery-secret" className="text-white/70 text-sm">
-                Recovery secret
+              <Label htmlFor="recovery-token" className="text-white/70 text-sm">
+                Recovery token
               </Label>
               <Input
-                id="recovery-secret"
+                id="recovery-token"
                 type="password"
-                value={secret}
-                onChange={(e) => setSecret(e.target.value)}
-                placeholder="Paste recovery secret"
+                value={token}
+                onChange={(e) => setToken(e.target.value)}
+                placeholder="Paste the token you were issued"
                 disabled={loading}
                 autoComplete="off"
               />
@@ -133,7 +140,7 @@ const AdminRecovery = () => {
 
             <div className="space-y-2">
               <Label htmlFor="recovery-new-password" className="text-white/70 text-sm">
-                New password (min 12 chars)
+                New password (min 12 characters)
               </Label>
               <Input
                 id="recovery-new-password"
@@ -161,13 +168,19 @@ const AdminRecovery = () => {
 
             <Button
               type="submit"
-              disabled={loading || !secret || !email || !newPassword}
+              disabled={loading || !token || !email || !newPassword}
               className="w-full"
             >
               {loading ? (
-                <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Recovering…</>
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Recovering…
+                </>
               ) : (
-                <><KeyRound className="mr-2 h-4 w-4" />Reset password & clear MFA</>
+                <>
+                  <KeyRound className="mr-2 h-4 w-4" />
+                  Reset password &amp; clear MFA
+                </>
               )}
             </Button>
           </form>
@@ -184,7 +197,6 @@ const AdminRecovery = () => {
         </div>
       </div>
     </div>
-    </>
   );
 };
 
