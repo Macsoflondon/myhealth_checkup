@@ -12,7 +12,7 @@
   "mcp": {
     "server": {
       "name": "myhealth-checkup-mcp",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "title": "myhealth checkup"
     },
     "tools": [
@@ -156,6 +156,229 @@
             "name",
             "provider"
           ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_platform_health",
+        "title": "Get platform health",
+        "description": "Operational scraper and scheduled-job health: last run per provider, success and failure counts, and anything overdue or failing. Contains no patient or personal data.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "hours": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 720,
+              "default": 72,
+              "description": "Lookback window in hours."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_scraper_alerts",
+        "title": "List scraper alerts",
+        "description": "List open scraper alerts (newest first) with severity, provider and counts. Operational data only — no patient or personal data.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "include_acknowledged": {
+              "type": "boolean",
+              "default": false,
+              "description": "Include alerts already acknowledged."
+            },
+            "severity": {
+              "type": "string",
+              "description": "Filter to a single severity, e.g. 'critical'."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_catalogue_coverage",
+        "title": "Get catalogue coverage",
+        "description": "Active test counts by provider and by category, plus records whose validation is stale or missing — the freshness signal for the comparison catalogue. No patient or personal data.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "stale_after_days": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 365,
+              "default": 30,
+              "description": "Treat a test as stale when it has not been validated within this many days."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_price_movements",
+        "title": "Get price movements",
+        "description": "Recent catalogue price changes from provider test history and the price history log: what moved, by how much, and when. Commercial data only — no patient or personal data.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "days": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 365,
+              "default": 30,
+              "description": "Lookback window in days."
+            },
+            "provider": {
+              "type": "string",
+              "description": "Restrict to one provider id."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_security_posture",
+        "title": "Get security posture",
+        "description": "Latest security scan snapshot metadata, open SOC incidents by severity, and recent CSP violation counts. Counts and metadata only — no patient data, no secrets.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "days": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 90,
+              "default": 7,
+              "description": "Lookback window in days for CSP reports."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_performance_summary",
+        "title": "Get performance summary",
+        "description": "Aggregate Core Web Vitals (LCP, CLS, INP) percentiles by page route, plus the worst performing routes. Anonymous aggregates only — no patient or personal data.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "days": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 90,
+              "default": 7,
+              "description": "Lookback window in days."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20,
+              "description": "Number of routes to return."
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_business_summary",
+        "title": "Get business summary",
+        "description": "Aggregate commercial totals: order count and value, newsletter subscriber count, and total registered users as a bare number. Aggregates only — never individual records, names or email addresses.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_admin_audit_trail",
+        "title": "Get admin audit trail",
+        "description": "Recent administrative activity, role changes and audit log entries: action names, actor user IDs and timestamps only. Record payloads are deliberately omitted so no personal data is returned.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "days": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 180,
+              "default": 14,
+              "description": "Lookback window in days."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50,
+              "description": "Maximum entries per log."
+            }
+          },
           "additionalProperties": false,
           "$schema": "http://json-schema.org/draft-07/schema#"
         },

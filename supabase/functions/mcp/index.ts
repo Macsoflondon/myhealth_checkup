@@ -174,18 +174,481 @@ var save_favourite_default = defineTool5({
   }
 });
 
+// src/lib/mcp/tools/get-platform-health.ts
+import { defineTool as defineTool6 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { z as z4 } from "npm:zod@^3.23.8";
+
+// src/lib/mcp/admin-guard.ts
+import { createClient as createClient6 } from "npm:@supabase/supabase-js@^2.51.0";
+var DENIED = {
+  content: [{ type: "text", text: "You do not have permission to use this tool." }],
+  isError: true
+};
+function callerClient(ctx) {
+  return createClient6(process.env.SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY, {
+    global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
+    auth: { persistSession: false, autoRefreshToken: false }
+  });
+}
+async function requireAdmin(ctx) {
+  if (!ctx.isAuthenticated()) return null;
+  const client = callerClient(ctx);
+  const userId = ctx.getUserId();
+  if (!userId) return null;
+  const { data, error } = await client.rpc("has_role", { _user_id: userId, _role: "admin" });
+  if (error || data !== true) return null;
+  return { client, userId };
+}
+async function logAdminToolCall(session, toolName, args) {
+  try {
+    await session.client.from("admin_activity_log").insert({
+      admin_user_id: session.userId,
+      action: `mcp.${toolName}`,
+      resource_type: "mcp_tool",
+      resource_name: toolName,
+      new_value: { arguments: args ?? {}, via: "mcp" },
+      success: true
+    });
+  } catch {
+  }
+}
+function ok(payload) {
+  return {
+    content: [{ type: "text", text: JSON.stringify(payload, null, 2) }],
+    structuredContent: payload
+  };
+}
+function fail(message) {
+  return { content: [{ type: "text", text: `Error: ${message}` }], isError: true };
+}
+
+// src/lib/mcp/tools/get-platform-health.ts
+var get_platform_health_default = defineTool6({
+  name: "get_platform_health",
+  title: "Get platform health",
+  description: "Operational scraper and scheduled-job health: last run per provider, success and failure counts, and anything overdue or failing. Contains no patient or personal data.",
+  inputSchema: {
+    hours: z4.number().int().min(1).max(720).default(72).describe("Lookback window in hours.")
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async (args, ctx) => {
+    const session = await requireAdmin(ctx);
+    if (!session) return DENIED;
+    const { client } = session;
+    const since = new Date(Date.now() - args.hours * 36e5).toISOString();
+    const [runs, jobs, runLog, cron] = await Promise.all([
+      client.from("scrape_runs").select(
+        "provider_id, scraper_function, started_at, finished_at, status, tests_seen, tests_new, tests_updated, tests_deactivated, errors"
+      ).gte("started_at", since).order("started_at", { ascending: false }).limit(500),
+      client.from("scraping_jobs").select("provider_id, status, last_scraped, next_scrape, error_message, expected_min_tests, last_test_count"),
+      client.from("scrape_run_log").select("started_at, completed_at, status, providers_run, tests_scraped, tests_promoted, verification_failures, trigger_source").gte("started_at", since).order("started_at", { ascending: false }).limit(50),
+      client.from("cron_run_log").select("job_name, started_at, finished_at, status, duration_ms, rows_affected, error_message").gte("started_at", since).order("started_at", { ascending: false }).limit(200)
+    ]);
+    const firstError = runs.error ?? jobs.error ?? runLog.error ?? cron.error;
+    if (firstError) return fail(firstError.message);
+    const perProvider = /* @__PURE__ */ new Map();
+    for (const row of runs.data ?? []) {
+      const key = row.provider_id ?? "unknown";
+      const entry = perProvider.get(key) ?? { provider_id: key, last_run_at: null, last_status: null, success: 0, failure: 0 };
+      const status = (row.status ?? "").toLowerCase();
+      if (status === "success" || status === "completed" || status === "ok") entry.success += 1;
+      else if (status) entry.failure += 1;
+      if (!entry.last_run_at || (row.started_at ?? "") > entry.last_run_at) {
+        entry.last_run_at = row.started_at;
+        entry.last_status = row.status;
+      }
+      perProvider.set(key, entry);
+    }
+    const now = Date.now();
+    const overdue = (jobs.data ?? []).filter(
+      (j) => j.next_scrape != null && new Date(j.next_scrape).getTime() < now
+    );
+    const failingJobs = (jobs.data ?? []).filter(
+      (j) => (j.status ?? "").toLowerCase() === "failed" || !!j.error_message
+    );
+    const failingCron = (cron.data ?? []).filter(
+      (c) => (c.status ?? "").toLowerCase() !== "success"
+    );
+    await logAdminToolCall(session, "get_platform_health", args);
+    return ok({
+      window_hours: args.hours,
+      providers: [...perProvider.values()].sort((a, b) => (b.last_run_at ?? "").localeCompare(a.last_run_at ?? "")),
+      overdue_jobs: overdue,
+      failing_jobs: failingJobs,
+      recent_orchestrator_runs: runLog.data ?? [],
+      failing_cron_runs: failingCron,
+      cron_runs_total: cron.data?.length ?? 0
+    });
+  }
+});
+
+// src/lib/mcp/tools/list-scraper-alerts.ts
+import { defineTool as defineTool7 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { z as z5 } from "npm:zod@^3.23.8";
+var list_scraper_alerts_default = defineTool7({
+  name: "list_scraper_alerts",
+  title: "List scraper alerts",
+  description: "List open scraper alerts (newest first) with severity, provider and counts. Operational data only \u2014 no patient or personal data.",
+  inputSchema: {
+    include_acknowledged: z5.boolean().default(false).describe("Include alerts already acknowledged."),
+    severity: z5.string().trim().optional().describe("Filter to a single severity, e.g. 'critical'."),
+    limit: z5.number().int().min(1).max(200).default(50)
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async (args, ctx) => {
+    const session = await requireAdmin(ctx);
+    if (!session) return DENIED;
+    let q = session.client.from("scraper_alerts").select(
+      "id, provider_id, alert_type, severity, message, current_count, previous_count, expected_min, acknowledged, acknowledged_at, created_at"
+    ).order("created_at", { ascending: false }).limit(args.limit);
+    if (!args.include_acknowledged) q = q.eq("acknowledged", false);
+    if (args.severity) q = q.eq("severity", args.severity);
+    const { data, error } = await q;
+    if (error) return fail(error.message);
+    await logAdminToolCall(session, "list_scraper_alerts", args);
+    return ok({ count: data?.length ?? 0, alerts: data ?? [] });
+  }
+});
+
+// src/lib/mcp/tools/get-catalogue-coverage.ts
+import { defineTool as defineTool8 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { z as z6 } from "npm:zod@^3.23.8";
+var get_catalogue_coverage_default = defineTool8({
+  name: "get_catalogue_coverage",
+  title: "Get catalogue coverage",
+  description: "Active test counts by provider and by category, plus records whose validation is stale or missing \u2014 the freshness signal for the comparison catalogue. No patient or personal data.",
+  inputSchema: {
+    stale_after_days: z6.number().int().min(1).max(365).default(30).describe("Treat a test as stale when it has not been validated within this many days.")
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async (args, ctx) => {
+    const session = await requireAdmin(ctx);
+    if (!session) return DENIED;
+    const { client } = session;
+    const [tests, categories, mappings] = await Promise.all([
+      client.from("provider_tests").select("id, provider_id, canonical_category, is_active, last_validated_at").eq("is_active", true).limit(2e4),
+      client.from("categories").select("id, slug, name, is_active").eq("is_active", true),
+      client.from("category_test_mapping").select("category_id", { count: "exact", head: true })
+    ]);
+    const firstError = tests.error ?? categories.error ?? mappings.error;
+    if (firstError) return fail(firstError.message);
+    const rows = tests.data ?? [];
+    const cutoff = Date.now() - args.stale_after_days * 864e5;
+    const byProvider = /* @__PURE__ */ new Map();
+    const byCategory = /* @__PURE__ */ new Map();
+    let stale = 0;
+    let neverValidated = 0;
+    for (const row of rows) {
+      const p = row.provider_id ?? "unknown";
+      const entry = byProvider.get(p) ?? { provider_id: p, active_tests: 0, stale: 0, never_validated: 0 };
+      entry.active_tests += 1;
+      if (!row.last_validated_at) {
+        entry.never_validated += 1;
+        neverValidated += 1;
+      } else if (new Date(row.last_validated_at).getTime() < cutoff) {
+        entry.stale += 1;
+        stale += 1;
+      }
+      byProvider.set(p, entry);
+      const c = row.canonical_category ?? "uncategorised";
+      const cat = byCategory.get(c) ?? { canonical_category: c, active_tests: 0 };
+      cat.active_tests += 1;
+      byCategory.set(c, cat);
+    }
+    await logAdminToolCall(session, "get_catalogue_coverage", args);
+    return ok({
+      stale_after_days: args.stale_after_days,
+      total_active_tests: rows.length,
+      stale_tests: stale,
+      never_validated_tests: neverValidated,
+      active_categories: categories.data?.length ?? 0,
+      category_test_mappings: mappings.count ?? 0,
+      by_provider: [...byProvider.values()].sort((a, b) => b.active_tests - a.active_tests),
+      by_category: [...byCategory.values()].sort((a, b) => b.active_tests - a.active_tests)
+    });
+  }
+});
+
+// src/lib/mcp/tools/get-price-movements.ts
+import { defineTool as defineTool9 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { z as z7 } from "npm:zod@^3.23.8";
+var get_price_movements_default = defineTool9({
+  name: "get_price_movements",
+  title: "Get price movements",
+  description: "Recent catalogue price changes from provider test history and the price history log: what moved, by how much, and when. Commercial data only \u2014 no patient or personal data.",
+  inputSchema: {
+    days: z7.number().int().min(1).max(365).default(30).describe("Lookback window in days."),
+    provider: z7.string().trim().optional().describe("Restrict to one provider id."),
+    limit: z7.number().int().min(1).max(200).default(50)
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async (args, ctx) => {
+    const session = await requireAdmin(ctx);
+    if (!session) return DENIED;
+    const { client } = session;
+    const since = new Date(Date.now() - args.days * 864e5).toISOString();
+    let historyQuery = client.from("provider_test_history").select("provider_test_id, provider_id, test_name, price, was_price, total_expected_cost, snapshot_at").gte("snapshot_at", since).order("snapshot_at", { ascending: false }).limit(5e3);
+    if (args.provider) historyQuery = historyQuery.eq("provider_id", args.provider);
+    const [history, priceLog] = await Promise.all([
+      historyQuery,
+      client.from("price_history").select("test_id, provider, old_price, new_price, change_percentage, availability_changed, changed_at").gte("changed_at", since).order("changed_at", { ascending: false }).limit(args.limit)
+    ]);
+    const firstError = history.error ?? priceLog.error;
+    if (firstError) return fail(firstError.message);
+    const byTest = /* @__PURE__ */ new Map();
+    for (const row of history.data ?? []) {
+      const key = row.provider_test_id ?? `${row.provider_id}:${row.test_name}`;
+      const existing = byTest.get(key);
+      if (!existing) byTest.set(key, { newest: row, oldest: row });
+      else if ((row.snapshot_at ?? "") < (existing.oldest.snapshot_at ?? "")) existing.oldest = row;
+    }
+    const movements = [...byTest.values()].map(({ newest, oldest }) => {
+      const from = oldest.price ?? oldest.total_expected_cost;
+      const to = newest.price ?? newest.total_expected_cost;
+      if (from == null || to == null || from === to) return null;
+      return {
+        provider_id: newest.provider_id,
+        test_name: newest.test_name,
+        from_price: from,
+        to_price: to,
+        delta: Number((to - from).toFixed(2)),
+        change_percentage: from === 0 ? null : Number(((to - from) / from * 100).toFixed(2)),
+        first_seen_at: oldest.snapshot_at,
+        last_seen_at: newest.snapshot_at
+      };
+    }).filter((m) => m !== null).sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta)).slice(0, args.limit);
+    await logAdminToolCall(session, "get_price_movements", args);
+    return ok({
+      window_days: args.days,
+      movements_found: movements.length,
+      movements,
+      price_history_log: priceLog.data ?? []
+    });
+  }
+});
+
+// src/lib/mcp/tools/get-security-posture.ts
+import { defineTool as defineTool10 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { z as z8 } from "npm:zod@^3.23.8";
+var get_security_posture_default = defineTool10({
+  name: "get_security_posture",
+  title: "Get security posture",
+  description: "Latest security scan snapshot metadata, open SOC incidents by severity, and recent CSP violation counts. Counts and metadata only \u2014 no patient data, no secrets.",
+  inputSchema: {
+    days: z8.number().int().min(1).max(90).default(7).describe("Lookback window in days for CSP reports.")
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async (args, ctx) => {
+    const session = await requireAdmin(ctx);
+    if (!session) return DENIED;
+    const { client } = session;
+    const since = new Date(Date.now() - args.days * 864e5).toISOString();
+    const [snapshot, incidents, csp] = await Promise.all([
+      client.from("security_scan_snapshots").select("id, scanned_at, total_findings, error_count, warn_count, has_diff, added_findings, removed_findings, modified_findings, acknowledged_at").order("scanned_at", { ascending: false }).limit(1).maybeSingle(),
+      client.from("soc_incidents").select("id, cluster_key, source, entity, severity, status, title, signal_count, first_seen_at, last_seen_at").neq("status", "resolved").order("last_seen_at", { ascending: false }).limit(100),
+      client.from("csp_reports").select("violated_directive, blocked_uri, received_at").gte("received_at", since).limit(2e3)
+    ]);
+    const firstError = snapshot.error ?? incidents.error ?? csp.error;
+    if (firstError) return fail(firstError.message);
+    const bySeverity = /* @__PURE__ */ new Map();
+    for (const i of incidents.data ?? []) {
+      const key = i.severity ?? "unknown";
+      bySeverity.set(key, (bySeverity.get(key) ?? 0) + 1);
+    }
+    const cspByDirective = /* @__PURE__ */ new Map();
+    for (const r of csp.data ?? []) {
+      const key = r.violated_directive ?? "unknown";
+      cspByDirective.set(key, (cspByDirective.get(key) ?? 0) + 1);
+    }
+    const snap = snapshot.data;
+    await logAdminToolCall(session, "get_security_posture", args);
+    return ok({
+      window_days: args.days,
+      latest_scan: snap ? {
+        scanned_at: snap.scanned_at,
+        total_findings: snap.total_findings,
+        error_count: snap.error_count,
+        warn_count: snap.warn_count,
+        has_diff: snap.has_diff,
+        acknowledged_at: snap.acknowledged_at,
+        added_findings: Array.isArray(snap.added_findings) ? snap.added_findings.length : 0,
+        removed_findings: Array.isArray(snap.removed_findings) ? snap.removed_findings.length : 0,
+        modified_findings: Array.isArray(snap.modified_findings) ? snap.modified_findings.length : 0
+      } : null,
+      open_incidents_total: incidents.data?.length ?? 0,
+      open_incidents_by_severity: Object.fromEntries(bySeverity),
+      open_incidents: incidents.data ?? [],
+      csp_reports_total: csp.data?.length ?? 0,
+      csp_reports_by_directive: Object.fromEntries(
+        [...cspByDirective.entries()].sort((a, b) => b[1] - a[1])
+      )
+    });
+  }
+});
+
+// src/lib/mcp/tools/get-performance-summary.ts
+import { defineTool as defineTool11 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { z as z9 } from "npm:zod@^3.23.8";
+function percentile(sorted, p) {
+  if (sorted.length === 0) return null;
+  const index = Math.min(sorted.length - 1, Math.floor(p / 100 * sorted.length));
+  return Number(sorted[index].toFixed(3));
+}
+var get_performance_summary_default = defineTool11({
+  name: "get_performance_summary",
+  title: "Get performance summary",
+  description: "Aggregate Core Web Vitals (LCP, CLS, INP) percentiles by page route, plus the worst performing routes. Anonymous aggregates only \u2014 no patient or personal data.",
+  inputSchema: {
+    days: z9.number().int().min(1).max(90).default(7).describe("Lookback window in days."),
+    limit: z9.number().int().min(1).max(100).default(20).describe("Number of routes to return.")
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async (args, ctx) => {
+    const session = await requireAdmin(ctx);
+    if (!session) return DENIED;
+    const since = new Date(Date.now() - args.days * 864e5).toISOString();
+    const { data, error } = await session.client.from("web_vitals").select("metric, value, route, rating").gte("created_at", since).limit(5e4);
+    if (error) return fail(error.message);
+    const rows = data ?? [];
+    const buckets = /* @__PURE__ */ new Map();
+    const overall = /* @__PURE__ */ new Map();
+    for (const row of rows) {
+      if (row.metric == null || row.value == null) continue;
+      const metric = row.metric.toUpperCase();
+      const route = row.route ?? "unknown";
+      if (!buckets.has(route)) buckets.set(route, /* @__PURE__ */ new Map());
+      const routeBucket = buckets.get(route);
+      routeBucket.set(metric, [...routeBucket.get(metric) ?? [], row.value]);
+      overall.set(metric, [...overall.get(metric) ?? [], row.value]);
+    }
+    const summarise = (values) => {
+      const sorted = [...values].sort((a, b) => a - b);
+      return { samples: sorted.length, p50: percentile(sorted, 50), p75: percentile(sorted, 75), p95: percentile(sorted, 95) };
+    };
+    const byRoute = [...buckets.entries()].map(([route, metrics]) => ({
+      route,
+      samples: [...metrics.values()].reduce((n, v) => n + v.length, 0),
+      metrics: Object.fromEntries([...metrics.entries()].map(([m, v]) => [m, summarise(v)]))
+    })).sort((a, b) => b.samples - a.samples).slice(0, args.limit);
+    const worstBy = (metric) => [...buckets.entries()].map(([route, metrics]) => ({ route, ...summarise(metrics.get(metric) ?? []) })).filter((r) => r.samples >= 5 && r.p75 != null).sort((a, b) => (b.p75 ?? 0) - (a.p75 ?? 0)).slice(0, 5);
+    await logAdminToolCall(session, "get_performance_summary", args);
+    return ok({
+      window_days: args.days,
+      total_samples: rows.length,
+      overall: Object.fromEntries([...overall.entries()].map(([m, v]) => [m, summarise(v)])),
+      by_route: byRoute,
+      worst_lcp: worstBy("LCP"),
+      worst_cls: worstBy("CLS"),
+      worst_inp: worstBy("INP")
+    });
+  }
+});
+
+// src/lib/mcp/tools/get-business-summary.ts
+import { defineTool as defineTool12 } from "npm:@lovable.dev/mcp-js@0.25.0";
+var get_business_summary_default = defineTool12({
+  name: "get_business_summary",
+  title: "Get business summary",
+  description: "Aggregate commercial totals: order count and value, newsletter subscriber count, and total registered users as a bare number. Aggregates only \u2014 never individual records, names or email addresses.",
+  inputSchema: {},
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async (_input, ctx) => {
+    const session = await requireAdmin(ctx);
+    if (!session) return DENIED;
+    const { client } = session;
+    const [orders, subscribers, activeSubscribers, users] = await Promise.all([
+      client.from("orders").select("price, status, order_date").limit(5e4),
+      client.from("newsletter_subscribers").select("id", { count: "exact", head: true }),
+      client.from("newsletter_subscribers").select("id", { count: "exact", head: true }).eq("status", "active"),
+      client.rpc("get_registered_user_count")
+    ]);
+    const firstError = orders.error ?? subscribers.error ?? activeSubscribers.error ?? users.error;
+    if (firstError) return fail(firstError.message);
+    const rows = orders.data ?? [];
+    const totalValue = rows.reduce((sum, r) => sum + (r.price ?? 0), 0);
+    const byStatus = /* @__PURE__ */ new Map();
+    for (const r of rows) {
+      const key = r.status ?? "unknown";
+      const entry = byStatus.get(key) ?? { orders: 0, value: 0 };
+      entry.orders += 1;
+      entry.value += r.price ?? 0;
+      byStatus.set(key, entry);
+    }
+    await logAdminToolCall(session, "get_business_summary", {});
+    return ok({
+      orders_total: rows.length,
+      orders_total_value_gbp: Number(totalValue.toFixed(2)),
+      average_order_value_gbp: rows.length ? Number((totalValue / rows.length).toFixed(2)) : 0,
+      orders_by_status: Object.fromEntries(
+        [...byStatus.entries()].map(([k, v]) => [k, { orders: v.orders, value_gbp: Number(v.value.toFixed(2)) }])
+      ),
+      newsletter_subscribers_total: subscribers.count ?? 0,
+      newsletter_subscribers_active: activeSubscribers.count ?? 0,
+      registered_users_total: typeof users.data === "number" ? users.data : 0
+    });
+  }
+});
+
+// src/lib/mcp/tools/get-admin-audit-trail.ts
+import { defineTool as defineTool13 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { z as z10 } from "npm:zod@^3.23.8";
+var get_admin_audit_trail_default = defineTool13({
+  name: "get_admin_audit_trail",
+  title: "Get admin audit trail",
+  description: "Recent administrative activity, role changes and audit log entries: action names, actor user IDs and timestamps only. Record payloads are deliberately omitted so no personal data is returned.",
+  inputSchema: {
+    days: z10.number().int().min(1).max(180).default(14).describe("Lookback window in days."),
+    limit: z10.number().int().min(1).max(200).default(50).describe("Maximum entries per log.")
+  },
+  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  handler: async (args, ctx) => {
+    const session = await requireAdmin(ctx);
+    if (!session) return DENIED;
+    const { client } = session;
+    const since = new Date(Date.now() - args.days * 864e5).toISOString();
+    const [adminLog, roleLog, auditLog] = await Promise.all([
+      client.from("admin_activity_log").select("id, admin_user_id, action, resource_type, resource_id, success, error_message, created_at").gte("created_at", since).order("created_at", { ascending: false }).limit(args.limit),
+      client.from("role_audit_log").select("id, actor_id, target_user_id, role, action, created_at").gte("created_at", since).order("created_at", { ascending: false }).limit(args.limit),
+      client.from("audit_logs").select("id, user_id, action, table_name, record_id, reason_code, purpose, data_classification, created_at").gte("created_at", since).order("created_at", { ascending: false }).limit(args.limit)
+    ]);
+    const firstError = adminLog.error ?? roleLog.error ?? auditLog.error;
+    if (firstError) return fail(firstError.message);
+    await logAdminToolCall(session, "get_admin_audit_trail", args);
+    return ok({
+      window_days: args.days,
+      admin_activity_log: adminLog.data ?? [],
+      role_audit_log: roleLog.data ?? [],
+      audit_logs: auditLog.data ?? []
+    });
+  }
+});
+
 // src/lib/mcp/index.ts
 var projectRef = "clvuioagsgfadynuvodj";
 var mcp_default = defineMcp({
   name: "myhealth-checkup-mcp",
   title: "myhealth checkup",
-  version: "0.1.0",
-  instructions: "Tools for myhealth checkup \u2014 the UK private diagnostics comparison platform. Use search_tests and get_test to compare private blood tests and cancer screening across UKAS-accredited, CQC-regulated providers (prices in GBP, turnaround in days). list_providers enumerates partner labs. list_my_favourites and save_favourite act on the signed-in user's saved tests. This platform is decision infrastructure only \u2014 never present results as medical advice or diagnosis.",
+  version: "0.2.0",
+  instructions: "Tools for myhealth checkup \u2014 the UK private diagnostics comparison platform. Use search_tests and get_test to compare private blood tests and cancer screening across UKAS-accredited, CQC-regulated providers (prices in GBP, turnaround in days). list_providers enumerates partner labs. list_my_favourites and save_favourite act on the signed-in user's saved tests. The admin tools (get_platform_health, list_scraper_alerts, get_catalogue_coverage, get_price_movements, get_security_posture, get_performance_summary, get_business_summary, get_admin_audit_trail) are strictly read-only and operational or commercial in nature: scraper and job health, catalogue freshness, pricing movements, security posture metadata, anonymous performance aggregates, and aggregate business totals. They require the signed-in user to hold the admin role, every call is audit-logged, and they contain no patient data \u2014 no test results, biomarker readings, health records or personal identifiers are exposed through this server by design. This platform is decision infrastructure only \u2014 never present results as medical advice or diagnosis.",
   auth: auth.oauth.issuer({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated"
   }),
-  tools: [search_tests_default, get_test_default, list_providers_default, list_my_favourites_default, save_favourite_default]
+  tools: [
+    search_tests_default,
+    get_test_default,
+    list_providers_default,
+    list_my_favourites_default,
+    save_favourite_default,
+    get_platform_health_default,
+    list_scraper_alerts_default,
+    get_catalogue_coverage_default,
+    get_price_movements_default,
+    get_security_posture_default,
+    get_performance_summary_default,
+    get_business_summary_default,
+    get_admin_audit_trail_default
+  ]
 });
 
 // lovable-mcp-supabase-entry.ts

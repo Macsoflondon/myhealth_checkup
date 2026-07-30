@@ -41,25 +41,34 @@ export default function OAuthConsent() {
         setError("Missing authorization_id");
         return;
       }
-      const { data: sess } = await supabase.auth.getSession();
-      if (!sess.session) {
-        const next = window.location.pathname + window.location.search;
-        window.location.href = "/auth?next=" + encodeURIComponent(next);
-        return;
+      try {
+        const { data: sess } = await supabase.auth.getSession();
+        if (!sess.session) {
+          const next = window.location.pathname + window.location.search;
+          window.location.href = "/auth?next=" + encodeURIComponent(next);
+          return;
+        }
+        const oauth = (supabase.auth as unknown as { oauth: OAuthNs }).oauth;
+        const { data, error } = await oauth.getAuthorizationDetails(authorizationId);
+        if (!active) return;
+        if (error) {
+          setError(error.message);
+          return;
+        }
+        const immediate = data?.redirect_url ?? data?.redirect_to;
+        if (immediate && !data?.client) {
+          window.location.href = immediate;
+          return;
+        }
+        if (!data) {
+          setError("expired");
+          return;
+        }
+        setDetails(data);
+      } catch (err) {
+        if (!active) return;
+        setError(err instanceof Error ? err.message : "Unexpected error loading this request.");
       }
-      const oauth = (supabase.auth as unknown as { oauth: OAuthNs }).oauth;
-      const { data, error } = await oauth.getAuthorizationDetails(authorizationId);
-      if (!active) return;
-      if (error) {
-        setError(error.message);
-        return;
-      }
-      const immediate = data?.redirect_url ?? data?.redirect_to;
-      if (immediate && !data?.client) {
-        window.location.href = immediate;
-        return;
-      }
-      setDetails(data);
     })();
     return () => {
       active = false;
@@ -68,34 +77,60 @@ export default function OAuthConsent() {
 
   async function decide(approve: boolean) {
     setBusy(true);
-    const oauth = (supabase.auth as unknown as { oauth: OAuthNs }).oauth;
-    const { data, error } = approve
-      ? await oauth.approveAuthorization(authorizationId)
-      : await oauth.denyAuthorization(authorizationId);
-    if (error) {
+    try {
+      const oauth = (supabase.auth as unknown as { oauth: OAuthNs }).oauth;
+      const { data, error } = approve
+        ? await oauth.approveAuthorization(authorizationId)
+        : await oauth.denyAuthorization(authorizationId);
+      if (error) {
+        setBusy(false);
+        setError(error.message);
+        return;
+      }
+      const target = data?.redirect_url ?? data?.redirect_to;
+      if (!target) {
+        setBusy(false);
+        setError("No redirect returned by the authorization server.");
+        return;
+      }
+      window.location.href = target;
+    } catch (err) {
       setBusy(false);
-      setError(error.message);
-      return;
+      setError(err instanceof Error ? err.message : "Unexpected error completing this request.");
     }
-    const target = data?.redirect_url ?? data?.redirect_to;
-    if (!target) {
-      setBusy(false);
-      setError("No redirect returned by the authorization server.");
-      return;
-    }
-    window.location.href = target;
   }
 
   if (error) {
+    const lower = error.toLowerCase();
+    const expired =
+      lower === "expired" ||
+      lower.includes("expired") ||
+      lower.includes("not found") ||
+      lower.includes("no rows") ||
+      lower.includes("invalid authorization") ||
+      lower.includes("already");
     return (
       <main className="min-h-screen bg-[#081129] text-white flex items-center justify-center p-6">
-        <div className="max-w-md bg-white/5 border border-white/10 rounded-lg p-6">
-          <h1 className="text-xl font-semibold mb-2">Could not load this authorization request</h1>
-          <p className="text-white/80 text-sm">{error}</p>
+        <div className="max-w-md w-full bg-white/5 border border-white/10 rounded-lg p-6 space-y-4">
+          <h1 className="text-xl font-semibold">
+            {expired ? "This connection request has timed out" : "Could not load this authorization request"}
+          </h1>
+          <p className="text-white/80 text-sm">
+            {expired
+              ? "Connection requests are only valid for 10 minutes, and each one can be used once. This one has either expired or already been used. Please start the connection again from the app you were connecting."
+              : error}
+          </p>
+          <Button
+            onClick={() => window.location.assign("/")}
+            className="bg-[#22c0d4] hover:bg-[#1ba9bc] text-[#081129]"
+          >
+            Start again
+          </Button>
         </div>
       </main>
     );
   }
+
   if (!details) {
     return (
       <main className="min-h-screen bg-[#081129] text-white flex items-center justify-center">
