@@ -68,7 +68,7 @@ const wellnessCategoryCards = [
   {
     id: "sexual-health",
     name: "Sexual Health",
-    count: 2,
+    count: 92,
     desc: "Comprehensive sexual health and hormone screening",
     icon: "⬡",
     accent: "#9b59b6",
