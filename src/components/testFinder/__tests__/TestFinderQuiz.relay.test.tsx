@@ -155,7 +155,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     await waitFor(() => {
       expect(screen.getByText("Your Personalised Results")).toBeInTheDocument();
     });
-    expect(screen.getByText("Thyroid Function")).toBeInTheDocument();
+    expect(await screen.findByText("Thyroid Function")).toBeInTheDocument();
   });
 
   it("calls ai-human-context with path only when textarea is empty", async () => {

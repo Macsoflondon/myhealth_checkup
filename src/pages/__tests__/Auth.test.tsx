@@ -92,7 +92,7 @@ describe("Auth page", () => {
       email: "test@example.com",
       password: "password123",
     }));
-    expect(navigateMock).toHaveBeenCalledWith("/health-dashboard");
+    await waitFor(() => expect(navigateMock).toHaveBeenCalledWith("/health-dashboard"));
   });
 
   it("submits form when pressing Enter in the password field", async () => {

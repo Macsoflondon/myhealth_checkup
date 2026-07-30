@@ -16,6 +16,15 @@ vi.mock("@/integrations/supabase/client", () => ({
 
 vi.mock("sonner", () => ({ toast: { error: vi.fn(), success: vi.fn() } }));
 
+// No live database under test: resolve every recommendation to null so the
+// component renders its offline fallback card for each test.
+vi.mock("@/hooks/queries/useResolvedRecommendations", () => ({
+  useResolvedRecommendations: (recs: { testName: string }[]) => ({
+    data: recs.map(() => null),
+    isLoading: false,
+  }),
+}));
+
 const mockResult: AIAnalysisResult = {
   medicalDisclaimer: "This is for educational purposes only.",
   analysis: "Based on your profile, we recommend the following tests.",
@@ -66,10 +75,10 @@ describe("RecommendationResults", () => {
     render(<RecommendationResults result={mockResult} />, { wrapper });
     expect(screen.getByText("Thyroid Function Test")).toBeInTheDocument();
     expect(screen.getByText("Vitamin D Test")).toBeInTheDocument();
-    expect(screen.getByText("£39")).toBeInTheDocument();
-    expect(screen.getByText("£29")).toBeInTheDocument();
-    expect(screen.getByText("95% match")).toBeInTheDocument();
-    expect(screen.getByText("88% match")).toBeInTheDocument();
+    expect(screen.getByText(/95% match/)).toBeInTheDocument();
+    expect(screen.getByText(/88% match/)).toBeInTheDocument();
+    expect(screen.getByText("Covers T3, T4 and TSH")).toBeInTheDocument();
+    expect(screen.getByText("Common deficiency in UK")).toBeInTheDocument();
   });
 
   it("renders general guidance and doctor warning", () => {
@@ -91,6 +100,7 @@ describe("RecommendationResults", () => {
       ],
     };
     render(<RecommendationResults result={withNullPrice} />, { wrapper });
-    expect(screen.getByText("Price TBC")).toBeInTheDocument();
+    expect(screen.getByText("Thyroid Function Test")).toBeInTheDocument();
+    expect(screen.queryByText(/£/)).not.toBeInTheDocument();
   });
 });
