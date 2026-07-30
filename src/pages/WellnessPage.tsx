@@ -222,7 +222,43 @@ const WellnessPage = () => {
 
   const { data: liveCounts } = useWellnessCategoryCounts(COUNT_SPECS);
 
+  const mapped = findMappedWellnessCategory(subSlug);
+  if (mapped) {
+    return (
+      <MappedCategoryPage
+        category={mapped}
+        seoTitle={`${mapped.label} | myhealth checkup`}
+        seoDescription={mapped.subtitle}
+        seoKeywords={`${mapped.label.toLowerCase()}, private blood tests uk, health screening`}
+        canonicalUrl={`https://myhealthcheckup.co.uk/wellness?subcategory=${mapped.slug}`}
+        pillLabel={mapped.label}
+        headline={mapped.label}
+        subtitle={mapped.subtitle}
+        searchPlaceholder="Search by symptom or test — e.g. 'cholesterol', 'vitamin D'"
+        trustStats={[
+          { value: "50,000+", label: "Tests Compared" },
+          { value: "4.8\u2605", label: "Average Rating" },
+          { value: "6", label: "Trusted Providers" },
+        ]}
+        filters={["All"]}
+        benefitsTitle="Why Choose Wellness Testing?"
+        benefits={[
+          { icon: ShieldCheck, title: "Early Insight", description: "Spot changes in key markers before symptoms appear" },
+          { icon: Activity, title: "Track Progress", description: "Monitor how lifestyle changes affect your results over time" },
+          { icon: HeartPulse, title: "Preventative Care", description: "Build a clearer picture of your long-term health" },
+        ]}
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "General Wellness", href: "/wellness" },
+          { label: mapped.label },
+        ]}
+        compareUrl="/compare?category=wellness"
+      />
+    );
+  }
+
   if (sub) {
+
     return (
       <DbCategoryPage
         canonicalCategory="wellness"
