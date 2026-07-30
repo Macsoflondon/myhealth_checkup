@@ -27,7 +27,7 @@ export interface ProviderTestCardData {
   markers?: string[] | null;
   compare_selected?: boolean;
   onCompareToggle?: () => void;
-  is_addon?: boolean;
+  is_addon?: boolean | null;
   purchase_notes?: string | null;
 }
 

@@ -1,5 +1,20 @@
-import { CompareTestData, LiveTestData } from "@/types";
+import { CompareTestData } from "@/types";
 import { PROVIDER_LOGOS, PROVIDER_NAMES, PROVIDER_TURNAROUND_TIMES, PROVIDER_COLLECTION_METHODS } from "@/constants/providers";
+
+/**
+ * Minimal structural shape the transformer needs. Database rows expose these
+ * columns as nullable, so nullability is normalised here at the boundary.
+ */
+export interface LiveTestRow {
+  id: string;
+  test_name: string;
+  provider_id: string;
+  category: string | null;
+  price: number | null;
+  description: string | null;
+  is_active: boolean | null;
+  url: string | null;
+}
 
 /**
  * Transform raw test data from database into CompareTestData format
@@ -8,16 +23,17 @@ export class TestDataTransformer {
   /**
    * Transform a single test record
    */
-  static transformSingle(test: LiveTestData): CompareTestData {
+  static transformSingle(test: LiveTestRow): CompareTestData {
     const biomarkers = this.extractBioMarkers(test.description || '');
     const biomarkerCount = this.countBiomarkers(test.description || '');
-    
+    const category = test.category ?? 'General';
+
     return {
       id: test.id,
       name: test.test_name,
       provider: PROVIDER_NAMES[test.provider_id] || test.provider_id,
       price: test.price || 0,
-      category: test.category,
+      category,
       description: test.description || '',
       features: {
         turnaround: this.estimateTurnaround(test.provider_id),
@@ -25,9 +41,9 @@ export class TestDataTransformer {
         bioMarkers: biomarkers
       },
       providerLogo: PROVIDER_LOGOS[test.provider_id] || '/placeholder.svg',
-      available: test.is_active,
+      available: test.is_active ?? true,
       accreditations: this.getAccreditations(test.provider_id),
-      popularityScore: this.estimatePopularity(test.test_name, test.category),
+      popularityScore: this.estimatePopularity(test.test_name, category),
       biomarkerCount: biomarkerCount,
       turnaroundDays: this.estimateTurnaroundDays(test.provider_id),
       userRating: undefined,
@@ -38,7 +54,7 @@ export class TestDataTransformer {
   /**
    * Transform multiple test records
    */
-  static transformMultiple(tests: LiveTestData[]): CompareTestData[] {
+  static transformMultiple(tests: LiveTestRow[]): CompareTestData[] {
     return tests.map(test => this.transformSingle(test));
   }
 
