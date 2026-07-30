@@ -72,4 +72,19 @@ export function useWellnessCategoryCounts(specs: WellnessCountSpec[]) {
     },
     staleTime: 5 * 60 * 1000,
   });
+
+  // Overlay taxonomy-backed counts on top of the pattern-derived ones.
+  const merged: Record<string, number> | undefined = legacy.data || mappedCounts
+    ? {
+        ...(legacy.data ?? {}),
+        ...Object.fromEntries(
+          Object.entries(MAPPED_WELLNESS_CATEGORIES)
+            .map(([cardId, def]) => [cardId, mappedCounts?.[def.slug]] as const)
+            .filter((entry): entry is readonly [string, number] => entry[1] !== undefined)
+        ),
+      }
+    : undefined;
+
+  return { ...legacy, data: merged };
 }
+
