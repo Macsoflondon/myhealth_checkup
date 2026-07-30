@@ -103,7 +103,7 @@ export function SeoStatusDashboard() {
     const concurrency = 6;
     let idx = 0;
     async function worker() {
-      while (idx < sitemapPaths.length) {
+      while (sitemapPaths && idx < sitemapPaths.length) {
         const my = idx++;
         const path = sitemapPaths[my];
         const r = await fetchText(path);

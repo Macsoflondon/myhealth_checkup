@@ -51,7 +51,7 @@ export function MfaEnrollment() {
       toast.error('Could not load two-step verification', { description: error.message });
     } else {
       const totp = (data?.all ?? []).filter((f) => f.factor_type === 'totp');
-      setFactors(totp.map((f) => ({ id: f.id, status: f.status, friendly_name: f.friendly_name })));
+      setFactors(totp.map((f) => ({ id: f.id, status: f.status, friendly_name: f.friendly_name ?? null })));
     }
     setLoading(false);
   };

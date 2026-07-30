@@ -122,7 +122,7 @@ export const SectionMappingAuditPanel = () => {
           source_section: section,
           expected,
           actual: t.canonical_category,
-          rows: [],
+          rows: [] as TestRow[],
         };
         c.rows.push(t);
         conflictMap.set(key, c);

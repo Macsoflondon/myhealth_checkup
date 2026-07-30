@@ -23,7 +23,7 @@ export const HealthScoreCard = () => {
     loadScore();
   }, [user]);
 
-  const getScoreColor = (score?: number) => {
+  const getScoreColor = (score?: number | null) => {
     if (!score) return "bg-muted";
     if (score >= 80) return "bg-green-500";
     if (score >= 60) return "bg-[#22C0D4]";
@@ -31,7 +31,7 @@ export const HealthScoreCard = () => {
     return "bg-[#e70d69]";
   };
 
-  const getScoreLabel = (score?: number) => {
+  const getScoreLabel = (score?: number | null) => {
     if (!score) return "No data";
     if (score >= 80) return "Excellent";
     if (score >= 60) return "Good";
@@ -139,7 +139,7 @@ export const HealthScoreCard = () => {
 interface ScoreBarProps {
   icon: React.ElementType;
   label: string;
-  score?: number;
+  score?: number | null;
   color: string;
 }
 

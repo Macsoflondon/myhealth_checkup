@@ -432,7 +432,7 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
                   <div className="space-y-1 w-full">
                     <p className="text-sm font-medium line-clamp-1">{query.query_text}</p>
                     <p className="text-xs text-muted-foreground">
-                      {new Date(query.created_at).toLocaleDateString()} • 
+                      {query.created_at && new Date(query.created_at).toLocaleDateString()} • 
                       {query.age && ` Age: ${query.age}`}
                       {query.gender && ` • ${query.gender}`}
                     </p>

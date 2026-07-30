@@ -55,7 +55,7 @@ const AdminDataRefreshPage: React.FC = () => {
         ...prev,
         [providerId]: {
           success: false,
-          message: error.message || 'Error running scraper',
+          message: error instanceof Error ? error.message : 'Error running scraper',
           timestamp: new Date().toISOString(),
         }
       }));
@@ -120,7 +120,7 @@ const AdminDataRefreshPage: React.FC = () => {
         ...prev,
         'all-scrapers': {
           success: false,
-          message: error.message || 'Error running all scrapers',
+          message: error instanceof Error ? error.message : 'Error running all scrapers',
           timestamp: new Date().toISOString(),
         }
       }));
