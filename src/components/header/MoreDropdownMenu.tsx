@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/router-compat";
 import { X } from "lucide-react";
 import { useDropdownAccessibility } from "@/hooks/useDropdownAccessibility";
 

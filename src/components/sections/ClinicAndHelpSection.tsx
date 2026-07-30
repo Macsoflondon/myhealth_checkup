@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { BookOpen, HelpCircle, MessageCircle } from "lucide-react";
 import { SectionHeading } from "@/components/ui/section-heading";
 

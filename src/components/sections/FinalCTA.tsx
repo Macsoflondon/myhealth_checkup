@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 
 const FinalCTA = () => {
   return (

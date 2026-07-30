@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "@/lib/router-compat";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Input } from "@/components/ui/input";
@@ -152,7 +152,7 @@ const ProviderTestCatalogPage = () => {
               className="px-3 py-2 border border-gray-200 rounded-md bg-white text-gray-700"
             >
               {categories.map((category) => (
-                <option key={category} value={category}>
+                <option key={category ?? "uncategorized"} value={category ?? ""}>
                   {category === "all" ? "All Categories" : category}
                 </option>
               ))}

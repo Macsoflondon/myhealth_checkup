@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { providers, getProviderLogoSrcSet } from "@/constants/providers";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";

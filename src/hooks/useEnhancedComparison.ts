@@ -41,8 +41,9 @@ export function useEnhancedComparison() {
     const gpCost = test.gp_consultation_included ? 0 : (test.gp_consultation_cost || 0);
     const phlebCost = test.phlebotomy_included ? 0 : (test.phlebotomy_cost || 0);
 
-    const providerName = PROVIDER_NAMES[test.provider_id] || test.provider_id;
-    const providerLogo = PROVIDER_LOGOS[test.provider_id] || '';
+    const providerId = test.provider_id ?? '';
+    const providerName = PROVIDER_NAMES[providerId] || providerId;
+    const providerLogo = PROVIDER_LOGOS[providerId] || '';
 
     const sampleTypeCode = test.sample_type ?? null;
     const collectionMethod = test.collection_method ?? null;
@@ -62,17 +63,17 @@ export function useEnhancedComparison() {
     );
 
     return {
-      id: test.id,
-      testName: test.test_name,
+      id: test.id ?? '',
+      testName: test.test_name ?? '',
       provider: providerName,
-      providerId: test.provider_id,
+      providerId: providerId,
       providerLogo: providerLogo,
       category: test.category || 'General Health',
       basePrice,
       gpConsultationIncluded: test.gp_consultation_included || false,
-      gpConsultationCost: test.gp_consultation_cost,
+      gpConsultationCost: test.gp_consultation_cost ?? null,
       phlebotomyIncluded: test.phlebotomy_included || false,
-      phlebotomyCost: test.phlebotomy_cost,
+      phlebotomyCost: test.phlebotomy_cost ?? null,
       totalEstimatedCost: basePrice + gpCost + phlebCost,
       turnaroundDays: test.turnaround_days || 3,
       sampleType: (test.sample_type || 'finger-prick') as EnhancedTestData['sampleType'],
@@ -85,13 +86,13 @@ export function useEnhancedComparison() {
       clinicalReviewType,
       clinicalReviewFee,
       totalExpectedCost,
-      biomarkerCount: test.biomarker_count || extractBiomarkerCount(test.description),
-      biomarkersList: (test.biomarkers_list as string[] | null) || extractBiomarkers(test.description),
+      biomarkerCount: test.biomarker_count || extractBiomarkerCount(test.description ?? null),
+      biomarkersList: (test.biomarkers_list as string[] | null) || extractBiomarkers(test.description ?? null),
       accreditations: ['UKAS', 'CQC'],
       description: test.description || '',
-      url: test.url,
+      url: test.url ?? null,
       dataSource: 'database',
-      lastUpdated: test.updated_at
+      lastUpdated: test.updated_at ?? undefined
     };
   }, []);
 
@@ -227,8 +228,8 @@ export function useEnhancedComparison() {
         testIds: item.test_ids,
         category: item.category,
         notes: item.notes,
-        createdAt: item.created_at,
-        updatedAt: item.updated_at
+        createdAt: item.created_at ?? '',
+        updatedAt: item.updated_at ?? ''
       })) || []);
     } catch (error) {
       console.error('Error loading saved comparisons:', error);

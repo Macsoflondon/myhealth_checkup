@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils"
  *  - glass       Backdrop-blur translucent surface (used sparingly).
  *  - interactive Elevated + cursor + stronger lift on hover/focus.
  *
- * Hover: -2px translate + shadow e1 → e3 (Apple/Linear-style).
+ * Hover: -2px translate + shadow-sm e1 → e3 (Apple/Linear-style).
  * Respects prefers-reduced-motion via `transition-all` duration tokens.
  * Legacy `interactive` boolean prop still works (mapped to variant).
  */
@@ -27,7 +27,7 @@ const cardVariants = cva(
         glass:
           "border border-white/20 bg-white/60 backdrop-blur-xl shadow-e1 hover:shadow-e2 hover:-translate-y-0.5 supports-[not(backdrop-filter:blur(0))]:bg-white/95",
         interactive:
-          "border border-border/40 shadow-e1 cursor-pointer hover:shadow-e3 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:translate-y-0 active:shadow-e2",
+          "border border-border/40 shadow-e1 cursor-pointer hover:shadow-e3 hover:-translate-y-0.5 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:translate-y-0 active:shadow-e2",
       },
       padded: {
         true: "p-6",

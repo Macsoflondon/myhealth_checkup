@@ -196,7 +196,7 @@ export function BiomarkerAnalysisResult({ result }: BiomarkerAnalysisResultProps
                       </div>
                       <div className="relative h-2 bg-gradient-to-r from-red-200 via-green-200 to-red-200 rounded-full">
                         <div 
-                          className={`absolute w-3 h-3 rounded-full -top-0.5 ${getStatusColor(biomarker.status)} border-2 border-white shadow`}
+                          className={`absolute w-3 h-3 rounded-full -top-0.5 ${getStatusColor(biomarker.status)} border-2 border-white shadow-sm`}
                           style={{ 
                             left: biomarker.status === "normal" ? "50%" : 
                                   biomarker.status === "low" || biomarker.status === "borderline-low" ? "15%" : "85%",

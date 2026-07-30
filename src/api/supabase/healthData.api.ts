@@ -12,14 +12,14 @@ export interface UploadedTestResult {
   id: string;
   user_id: string;
   test_name: string;
-  provider_id?: string;
+  provider_id?: string | null;
   test_date: string;
-  uploaded_at: string;
-  file_url?: string;
+  uploaded_at: string | null;
+  file_url?: string | null;
   parsed_data?: Json;
-  notes?: string;
-  created_at: string;
-  updated_at: string;
+  notes?: string | null;
+  created_at: string | null;
+  updated_at: string | null;
 }
 
 export interface BiomarkerReading {
@@ -43,22 +43,22 @@ export interface UserHealthData {
   data_source: string;
   metric_type: string;
   value: number;
-  unit?: string;
+  unit?: string | null;
   recorded_at: string;
-  synced_at: string;
-  created_at: string;
+  synced_at: string | null;
+  created_at: string | null;
 }
 
 export interface HealthScore {
   id: string;
   user_id: string;
-  overall_score?: number;
-  heart_score?: number;
-  metabolic_score?: number;
-  hormonal_score?: number;
-  nutritional_score?: number;
-  calculated_at: string;
-  created_at: string;
+  overall_score?: number | null;
+  heart_score?: number | null;
+  metabolic_score?: number | null;
+  hormonal_score?: number | null;
+  nutritional_score?: number | null;
+  calculated_at: string | null;
+  created_at: string | null;
 }
 
 class HealthDataApi {

@@ -26,7 +26,7 @@ export const TestViewToggle: React.FC<TestViewToggleProps> = ({
       <ToggleGroupItem
         value="list"
         aria-label="List view"
-        className="text-white data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-sm gap-1.5 px-3"
+        className="text-white data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-xs gap-1.5 px-3"
       >
         <List className="h-4 w-4" />
         <span className="hidden sm:inline text-sm">List</span>
@@ -34,7 +34,7 @@ export const TestViewToggle: React.FC<TestViewToggleProps> = ({
       <ToggleGroupItem
         value="grouped"
         aria-label="Grouped view"
-        className="text-white data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-sm gap-1.5 px-3"
+        className="text-white data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-xs gap-1.5 px-3"
       >
         <Layers className="h-4 w-4" />
         <span className="hidden sm:inline text-sm">Grouped</span>
@@ -42,7 +42,7 @@ export const TestViewToggle: React.FC<TestViewToggleProps> = ({
       <ToggleGroupItem
         value="table"
         aria-label="Compare table view"
-        className="text-white data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-sm gap-1.5 px-3"
+        className="text-white data-[state=on]:bg-background data-[state=on]:text-foreground data-[state=on]:shadow-xs gap-1.5 px-3"
       >
         <Table2 className="h-4 w-4" />
         <span className="hidden sm:inline text-sm">Compare Table</span>

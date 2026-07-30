@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams } from "@/lib/router-compat";
 import { CategoryPageLayout, CategoryPageLayoutProps, CategoryTestItem } from "./CategoryPageLayout";
 import { useCategoryTests } from "@/hooks/queries/useCategoryTests";
 import { findSubcategory } from "@/config/subcategoryMap";

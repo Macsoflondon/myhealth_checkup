@@ -1,5 +1,5 @@
 import { BookOpen, HelpCircle, MessageCircle, Search } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { SectionHeading } from "@/components/ui/section-heading";
 
 const HereToHelp = () => {

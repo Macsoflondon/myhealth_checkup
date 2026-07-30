@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { SectionHeading } from "@/components/ui/section-heading";
 import fingerprickAsset from "@/assets/at-home-fingerprick.jpg.asset.json";
 

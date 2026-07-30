@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Star, MapPin, ArrowRight, ExternalLink } from "lucide-react";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { SaveProviderButton } from "@/components/common/SaveProviderButton";
 import { useSavedProviders } from "@/hooks/useSavedProviders";
 import { SectionHeading } from "@/components/ui/section-heading";

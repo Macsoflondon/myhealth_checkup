@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { Heart, Activity, Droplets, Dna, Apple, ArrowRight, TestTube, User, UserCheck, FlaskConical, Weight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";

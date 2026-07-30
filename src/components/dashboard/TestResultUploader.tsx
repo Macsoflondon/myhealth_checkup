@@ -83,7 +83,8 @@ export const TestResultUploader = ({ onUploadComplete }: TestResultUploaderProps
       
       if (onUploadComplete) onUploadComplete();
     } catch (error) {
-      toast.error(error.message || "Failed to upload test result");
+      const message = error instanceof Error ? error.message : "Failed to upload test result";
+      toast.error(message);
     } finally {
       setUploading(false);
     }

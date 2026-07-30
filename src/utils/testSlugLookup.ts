@@ -4,20 +4,20 @@ import { getGoodbodyTestBySlug, testNameToSlug, GoodbodyTestDetail } from "@/dat
 export interface TestData {
   id: string;
   test_name: string;
-  category: string | null;
-  description: string | null;
-  url: string | null;
+  category: string;
+  description: string;
+  url: string;
   price: number | null;
-  provider_test_id: string | null;
-  biomarkers_list: string[] | null;
-  biomarker_count: number | null;
-  image_url: string | null;
-  is_addon: boolean;
-  original_price: number | null;
-  discount_percentage: number | null;
-  symptoms: string[] | null;
-  conditions: string[] | null;
-  who_should_test: string | null;
+  provider_test_id?: string;
+  biomarkers_list?: string[] | null;
+  biomarker_count?: number | null;
+  image_url?: string | null;
+  is_addon?: boolean;
+  original_price?: number | null;
+  discount_percentage?: number | null;
+  symptoms?: string[] | null;
+  conditions?: string[] | null;
+  who_should_test?: string | null;
 }
 
 /**

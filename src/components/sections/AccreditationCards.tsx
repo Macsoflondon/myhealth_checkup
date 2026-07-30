@@ -32,7 +32,7 @@ const AccreditationCards = () => {
           {accreditations.map((item, index) => (
             <div 
               key={index} 
-              className="bg-white rounded-xl p-3 sm:p-4 flex items-center gap-3 shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 group animate-fade-in"
+              className="bg-white rounded-xl p-3 sm:p-4 flex items-center gap-3 shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 group animate-fade-in"
               style={{ animationDelay: `${index * 100}ms` }}
             >
               <div 

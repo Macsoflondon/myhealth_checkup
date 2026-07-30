@@ -140,12 +140,12 @@ export class LiveDataService {
     }
 
     return (data || []).map((test: ScrapedTestRow) => ({
-      id: test.id,
+      id: test.id ?? `${providerId}-${test.test_name.toLowerCase().replace(/\s+/g, '-')}`,
       category: test.category || 'General Health',
       name: test.test_name,
       provider: this.getProviderName(providerId),
       price: test.price || 0,
-      available: test.is_active,
+      available: test.is_active ?? false,
       description: test.description || '',
       features: {
         turnaround: this.getTurnaroundTime(providerId),

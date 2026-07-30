@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "@/lib/router-compat";
 import { ChevronDown } from "lucide-react";
 import { useNavigationData } from "@/hooks/useNavigationData";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -201,7 +201,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
       {/* Backdrop for mobile */}
       {isMobile && activeDropdown && (
         <div 
-          className="fixed inset-0 bg-black/30 backdrop-blur-sm z-[98]"
+          className="fixed inset-0 bg-black/30 backdrop-blur-xs z-[98]"
           onClick={() => setActiveDropdown(null)}
         />
       )}

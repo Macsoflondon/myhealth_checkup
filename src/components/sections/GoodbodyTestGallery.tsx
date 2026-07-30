@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { getGoodbodyTestBySlug, testNameToSlug } from "@/data/goodbodyTestDetails";
 import { HoverExpand_001 } from "@/components/ui/expand-on-hover";
 import goodbodyAdvancedVitamins from "@/assets/kits/goodbody-advanced-vitamins.png";

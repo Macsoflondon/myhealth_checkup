@@ -53,7 +53,7 @@ export const LanguageSwitcher = ({ variant = "chip" }: { variant?: "chip" | "gla
             aria-label={t('language.selectLanguage', 'Select language')}
             className="p-1.5 rounded-full hover:bg-white transition-colors flex items-center justify-center flex-shrink-0"
           >
-            <span className="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1 bg-white/70 rounded-[3px] shadow-sm text-[16px] leading-none">
+            <span className="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1 bg-white/70 rounded-[3px] shadow-xs text-[16px] leading-none">
               {currentLanguage.flag}
             </span>
           </button>

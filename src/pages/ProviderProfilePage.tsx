@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
 import PageHeading from "@/components/ui/page-heading";
@@ -76,7 +76,7 @@ const ProviderProfilePage = () => {
 
         {/* Hero Section — branded gradient when available */}
         <div
-          className="rounded-xl shadow-sm p-4 md:p-8 mb-6 md:mb-8 border"
+          className="rounded-xl shadow-xs p-4 md:p-8 mb-6 md:mb-8 border"
           style={brand ? {
             background: `linear-gradient(135deg, ${brand.accent}, ${brand.primary})`,
           } : undefined}

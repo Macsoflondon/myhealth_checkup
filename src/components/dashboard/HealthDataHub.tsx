@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "@/lib/router-compat";
 import {
   Activity, FileText, TrendingUp, Upload, Sparkles, ArrowRight,
   Heart, User, Package, Clock, PoundSterling, GripVertical,

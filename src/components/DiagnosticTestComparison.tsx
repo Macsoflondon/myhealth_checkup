@@ -189,7 +189,7 @@ export default function DiagnosticTestComparison() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search tests or providers…"
-            className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm outline-none focus:border-slate-400"
+            className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm outline-hidden focus:border-slate-400"
           />
         </div>
         <SelectFilter value={system} onChange={setSystem} label="System"
@@ -202,7 +202,7 @@ export default function DiagnosticTestComparison() {
         <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {systems.map((s) => (
             <button key={s.name} onClick={() => setSystem(s.name)}
-              className="flex flex-col items-start rounded-xl border border-slate-200 bg-white p-4 text-left transition hover:border-slate-400 hover:shadow-sm">
+              className="flex flex-col items-start rounded-xl border border-slate-200 bg-white p-4 text-left transition hover:border-slate-400 hover:shadow-xs">
               <span className="text-sm font-semibold text-slate-900">{s.name}</span>
               <span className="mt-1 whitespace-nowrap text-xs text-slate-500">{s.n} tests · {s.providers} providers</span>
               <span className="mt-2 text-xs font-medium text-slate-700">{formatPrice(s.min)}–{formatPrice(s.max)}</span>
@@ -275,7 +275,7 @@ function SelectFilter({ value, onChange, options, label }: {
     <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
       <span className="text-xs font-medium text-slate-400">{label}</span>
       <select value={value} onChange={(e) => onChange(e.target.value)}
-        className="bg-transparent text-sm font-medium text-slate-700 outline-none">
+        className="bg-transparent text-sm font-medium text-slate-700 outline-hidden">
         {options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
       </select>
     </label>

@@ -6,8 +6,8 @@ import { lazy, type ComponentType } from "react";
  * exist after a redeploy, we reload the page once to fetch fresh HTML +
  * chunk graph. Prevents the "Importing a module script failed" white-screen.
  */
-export function lazyWithRetry<T extends ComponentType<unknown>>(
-  factory: () => Promise<{ default: T }>,
+export function lazyWithRetry<P>(
+  factory: () => Promise<{ default: ComponentType<P> }>,
 ) {
   return lazy(async () => {
     const RELOAD_KEY = "__lovable_chunk_reloaded__";

@@ -1,4 +1,4 @@
-import { useParams, Link, Navigate } from "react-router-dom";
+import { useParams, Link, Navigate } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
 import { ArrowRight, CheckCircle2, Beaker, ShieldCheck } from "lucide-react";
 import { MainLayout } from "@/layouts/MainLayout";

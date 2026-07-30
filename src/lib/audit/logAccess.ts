@@ -34,7 +34,7 @@ export async function logSensitiveAccess(args: LogAccessArgs): Promise<void> {
     _table_name: tableName,
     _record_id: recordId,
     _reason_code: reason,
-    _purpose: purpose ?? null,
+    _purpose: purpose ?? undefined,
     _classification: classification,
   });
   if (error) {

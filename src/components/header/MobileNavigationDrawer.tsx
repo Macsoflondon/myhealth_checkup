@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { 
   ChevronDown, 
   ChevronRight, 
@@ -259,7 +259,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
               className={cn(
                 "flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200",
                 activeTab === 'menu' 
-                  ? "bg-white text-[hsl(var(--navy))] shadow-sm" 
+                  ? "bg-white text-[hsl(var(--navy))] shadow-xs" 
                   : "text-gray-500 hover:text-gray-700"
               )}
             >
@@ -270,7 +270,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
               className={cn(
                 "flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200",
                 activeTab === 'categories' 
-                  ? "bg-white text-[hsl(var(--navy))] shadow-sm" 
+                  ? "bg-white text-[hsl(var(--navy))] shadow-xs" 
                   : "text-gray-500 hover:text-gray-700"
               )}
             >
@@ -434,7 +434,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                         className="flex flex-col items-center gap-2 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-all duration-150 touch-manipulation active:scale-[0.97] group animate-fade-in"
                         style={{ animationDelay: `${i * 30}ms` }}
                       >
-                        <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shadow-sm", card.bg)}>
+                        <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shadow-xs", card.bg)}>
                           <Icon className="w-5 h-5 text-white" />
                         </div>
                         <span className="text-xs font-medium text-gray-700 text-center leading-tight group-hover:text-[hsl(var(--primary))]">

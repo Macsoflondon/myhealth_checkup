@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { Activity, Heart, Droplets, Zap, User, UserCheck, ShieldCheck, Link2, Settings, Ribbon, Flame, Scale, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 

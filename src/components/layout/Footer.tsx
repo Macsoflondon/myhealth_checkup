@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { supabase } from "@/integrations/supabase/client";
 
 const Footer = () => {
@@ -70,7 +70,7 @@ const StayInformedSection = () => {
   };
 
   return (
-    <div className="bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 p-4 sm:p-5">
+    <div className="bg-white/5 backdrop-blur-xs rounded-2xl border border-white/10 p-4 sm:p-5">
       {/* Two-column top: Follow Us + Copyright/Disclaimer | Stay Informed */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
         {/* Left: Follow Us + Copyright + Medical Disclaimer */}
@@ -150,7 +150,7 @@ const StayInformedSection = () => {
                 onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                 placeholder="Your email address"
                 aria-label="Email address"
-                className="w-full rounded-lg px-3 py-2.5 text-white text-sm placeholder:text-white/35 outline-none transition-colors focus:border-brand-turquoise"
+                className="w-full rounded-lg px-3 py-2.5 text-white text-sm placeholder:text-white/35 outline-hidden transition-colors focus:border-brand-turquoise"
                 style={{
                   background: "rgba(255,255,255,0.08)",
                   border: `1.5px solid ${error ? "#e70d69" : "rgba(34,192,212,0.28)"}`,

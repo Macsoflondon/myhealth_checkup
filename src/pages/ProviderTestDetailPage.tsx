@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams } from "@/lib/router-compat";
 import { useState, useEffect } from "react";
 import ProviderTestDetailTemplate, { ProviderTestData } from "@/components/templates/ProviderTestDetailTemplate";
 import { getProviderConfig } from "@/constants/providerTestPageConfig";

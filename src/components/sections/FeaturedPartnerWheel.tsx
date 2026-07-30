@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 
 const COMPARE_HREF_BY_NAME: Record<string, string> = {

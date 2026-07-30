@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { ChevronDown, Search, X } from "lucide-react";
 import { getCategoryPinColor } from "@/data/categoryColors";
 import type { GoodbodyTest } from "@/data/goodbodyTests";
@@ -118,7 +118,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
             placeholder={`Search ${itemName.toLowerCase()}...`}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-10 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink transition-colors"
+            className="w-full pl-10 pr-10 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:outline-hidden focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink transition-colors"
             onClick={(e) => e.stopPropagation()}
           />
           {searchQuery && (

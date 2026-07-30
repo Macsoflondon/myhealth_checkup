@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -69,7 +69,7 @@ const TestDetailPage = () => {
       const { data, error: fetchError } = await supabase
         .from('provider_tests')
         .select('*')
-        .eq('id', testId)
+        .eq('id', testId ?? '')
         .eq('is_active', true)
         .single();
 
@@ -86,7 +86,7 @@ const TestDetailPage = () => {
           .select('*')
           .ilike('test_name', `%${data.test_name.split(' ').slice(0, 2).join(' ')}%`)
           .eq('is_active', true)
-          .neq('id', testId)
+          .neq('id', testId ?? '')
           .limit(10);
 
         if (similarTests && similarTests.length > 0) {

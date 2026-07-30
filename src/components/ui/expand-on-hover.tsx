@@ -118,7 +118,7 @@ const MobileCarousel = ({
         <button
           onClick={goPrev}
           disabled={activeIndex === 0}
-          className="absolute left-1 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-background/90 backdrop-blur-sm border border-border flex items-center justify-center shadow-md disabled:opacity-0 transition-opacity"
+          className="absolute left-1 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-background/90 backdrop-blur-xs border border-border flex items-center justify-center shadow-md disabled:opacity-0 transition-opacity"
           aria-label="Previous"
         >
           <ChevronLeft className="h-3.5 w-3.5 text-foreground" />
@@ -128,7 +128,7 @@ const MobileCarousel = ({
         <button
           onClick={goNext}
           disabled={activeIndex >= images.length - 1}
-          className="absolute right-1 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-background/90 backdrop-blur-sm border border-border flex items-center justify-center shadow-md disabled:opacity-0 transition-opacity"
+          className="absolute right-1 top-1/2 -translate-y-1/2 z-20 w-7 h-7 rounded-full bg-background/90 backdrop-blur-xs border border-border flex items-center justify-center shadow-md disabled:opacity-0 transition-opacity"
           aria-label="Next"
         >
           <ChevronRight className="h-3.5 w-3.5 text-foreground" />
@@ -152,7 +152,7 @@ const MobileCarousel = ({
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.25, delay: Math.min(index * 0.03, 0.3) }}
-              className="relative shrink-0 snap-start overflow-hidden rounded-xl bg-white cursor-pointer shadow-sm border border-border/30 active:scale-[0.97] transition-all"
+              className="relative shrink-0 snap-start overflow-hidden rounded-xl bg-white cursor-pointer shadow-xs border border-border/30 active:scale-[0.97] transition-all"
               style={{ width: `min(${cardWidth}px, 48vw)`, height: 200 }}
               onClick={() => onTestClick?.(image)}
             >
@@ -333,7 +333,7 @@ const HoverExpand_001 = ({
                         exit={{ opacity: 0 }}
                         className="absolute bottom-4 right-4 z-10"
                       >
-                        <span className="inline-block bg-white/85 backdrop-blur-sm rounded-md px-3 py-1.5 text-xs font-bold text-brand-navy shadow-sm">
+                        <span className="inline-block bg-white/85 backdrop-blur-xs rounded-md px-3 py-1.5 text-xs font-bold text-brand-navy shadow-xs">
                           {image.code}
                         </span>
                       </motion.div>

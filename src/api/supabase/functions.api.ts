@@ -28,7 +28,7 @@ async function invokeFunction<TResponse, TBody = unknown>(
     
     const { data, error } = await supabase.functions.invoke<TResponse>(
       functionName,
-      options
+      options as { body?: string | FormData | Record<string, unknown> | ArrayBuffer | Blob | File; headers?: Record<string, string> } | undefined
     );
     
     if (error) {

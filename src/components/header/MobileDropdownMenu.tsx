@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link } from "@/lib/router-compat";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { compareCategories } from "@/constants/categories";
@@ -112,7 +112,7 @@ export const MobileDropdownMenu = ({
     <>
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[59] animate-in fade-in duration-200"
+        className="fixed inset-0 bg-black/40 backdrop-blur-xs z-[59] animate-in fade-in duration-200"
         onClick={onItemClick}
       />
       

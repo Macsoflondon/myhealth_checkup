@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@/lib/router-compat";
 import { usePopularTestsFromDatabase, type PopularTest } from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatTestPrice } from "@/lib/utils";
@@ -251,7 +251,7 @@ const DreamHealthShowcase = () => {
         <div className="mt-6 flex justify-center">
           <button
             onClick={() => navigate("/assisted-test-finder")}
-            className="text-white font-semibold px-7 py-3.5 rounded-full text-sm sm:text-base shadow-lg transition-colors bg-[#22bed3] hover:bg-brand-pink focus:outline-none focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#e70d69] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className="text-white font-semibold px-7 py-3.5 rounded-full text-sm sm:text-base shadow-lg transition-colors bg-[#22bed3] hover:bg-brand-pink focus:outline-hidden focus-visible:outline-hidden focus-visible:ring-4 focus-visible:ring-[#e70d69] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
           >
             Get my test match — 60 seconds, free
           </button>
@@ -323,7 +323,7 @@ const DreamHealthShowcase = () => {
                     className="relative flex flex-col h-full bg-white border border-black/5 shadow-lg hover:shadow-2xl transition-shadow rounded-2xl overflow-hidden"
                   >
                     {isMostChosen && (
-                      <span className="absolute top-3 left-3 z-10 text-[10px] font-semibold uppercase tracking-wider text-white bg-[#e70d69] px-2.5 py-1 rounded-full shadow">
+                      <span className="absolute top-3 left-3 z-10 text-[10px] font-semibold uppercase tracking-wider text-white bg-[#e70d69] px-2.5 py-1 rounded-full shadow-sm">
                         Most chosen
                       </span>
                     )}

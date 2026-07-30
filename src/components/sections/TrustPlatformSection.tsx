@@ -59,7 +59,7 @@ const TrustPlatformSection = ({ className, embedded = false }: TrustPlatformSect
             <div
               key={index}
               style={{ animationDelay: `${index * 100}ms` }}
-              className="relative p-5 sm:p-7 bg-white/5 backdrop-blur-sm rounded-2xl border border-white/10 hover:border-brand-turquoise/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-turquoise/5 group animate-fade-in"
+              className="relative p-5 sm:p-7 bg-white/5 backdrop-blur-xs rounded-2xl border border-white/10 hover:border-brand-turquoise/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-turquoise/5 group animate-fade-in"
             >
               <div className={`absolute top-0 left-6 right-6 h-[2px] rounded-b-full ${
                 feature.accent === "brand-turquoise" ? "bg-brand-turquoise" : "bg-brand-pink"

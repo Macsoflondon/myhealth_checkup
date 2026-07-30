@@ -1,6 +1,6 @@
 import { Suspense, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
-import { NavLink, useParams, Navigate } from "react-router-dom";
+import { NavLink, useParams, Navigate } from "@/lib/router-compat";
 import { CONTROL_SECTIONS, getSection } from "@/components/control/sectionRegistry";
 import { StatusBadge } from "@/components/control/SectionShell";
 import { Loader2, ShieldCheck } from "lucide-react";
