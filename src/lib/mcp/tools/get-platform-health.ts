@@ -1,6 +1,6 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { fail, logAdminToolCall, ok, requireAdmin } from "../admin-guard";
+import { DENIED, fail, logAdminToolCall, ok, requireAdmin } from "../admin-guard";
 
 export default defineTool({
   name: "get_platform_health",
@@ -12,9 +12,9 @@ export default defineTool({
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async (args, ctx) => {
-    const guard = await requireAdmin(ctx);
-    if (!guard.ok) return guard.result;
-    const { client } = guard.session;
+    const session = await requireAdmin(ctx);
+    if (!session) return DENIED;
+    const { client } = session;
     const since = new Date(Date.now() - args.hours * 3600_000).toISOString();
 
     const [runs, jobs, runLog, cron] = await Promise.all([
@@ -77,7 +77,7 @@ export default defineTool({
       (c: { status: string | null }) => (c.status ?? "").toLowerCase() !== "success",
     );
 
-    await logAdminToolCall(guard.session, "get_platform_health", args);
+    await logAdminToolCall(session, "get_platform_health", args);
     return ok({
       window_hours: args.hours,
       providers: [...perProvider.values()].sort((a, b) => (b.last_run_at ?? "").localeCompare(a.last_run_at ?? "")),

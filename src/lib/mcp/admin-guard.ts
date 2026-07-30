@@ -18,7 +18,7 @@ export type ToolTextResult = {
   structuredContent?: Record<string, unknown>;
 };
 
-const DENIED: ToolTextResult = {
+export const DENIED: ToolTextResult = {
   content: [{ type: "text", text: "You do not have permission to use this tool." }],
   isError: true,
 };
@@ -32,17 +32,15 @@ function callerClient(ctx: ToolContext): SupabaseClient {
   });
 }
 
-/** Returns an admin session, or a refusal result to return straight to the caller. */
-export async function requireAdmin(
-  ctx: ToolContext,
-): Promise<{ ok: true; session: AdminSession } | { ok: false; result: ToolTextResult }> {
-  if (!ctx.isAuthenticated()) return { ok: false, result: DENIED };
+/** Returns an admin session, or null when the caller is not a verified admin. */
+export async function requireAdmin(ctx: ToolContext): Promise<AdminSession | null> {
+  if (!ctx.isAuthenticated()) return null;
   const client = callerClient(ctx);
   const userId = ctx.getUserId();
-  if (!userId) return { ok: false, result: DENIED };
+  if (!userId) return null;
   const { data, error } = await client.rpc("has_role", { _user_id: userId, _role: "admin" });
-  if (error || data !== true) return { ok: false, result: DENIED };
-  return { ok: true, session: { client, userId } };
+  if (error || data !== true) return null;
+  return { client, userId };
 }
 
 /** Writes one audit row per successful admin tool call. Never throws. */
