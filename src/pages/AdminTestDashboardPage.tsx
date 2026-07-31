@@ -492,7 +492,7 @@ function AdminTestDashboardContent() {
               size="sm"
               disabled={page === 0}
               onClick={() => setPage((p) => p - 1)}
-              className="border-white/10 text-white hover:bg-white/10"
+              className="border-slate-300 text-slate-700 hover:bg-slate-100"
             >
               <ChevronLeft className="w-4 h-4" />
             </Button>
@@ -507,7 +507,7 @@ function AdminTestDashboardContent() {
                   className={
                     page === pageNum
                       ? "bg-brand-pink text-white"
-                      : "border-white/10 text-white hover:bg-white/10"
+                      : "border-slate-300 text-slate-700 hover:bg-slate-100"
                   }
                 >
                   {pageNum + 1}
@@ -519,7 +519,7 @@ function AdminTestDashboardContent() {
               size="sm"
               disabled={page >= totalPages - 1}
               onClick={() => setPage((p) => p + 1)}
-              className="border-white/10 text-white hover:bg-white/10"
+              className="border-slate-300 text-slate-700 hover:bg-slate-100"
             >
               <ChevronRight className="w-4 h-4" />
             </Button>
