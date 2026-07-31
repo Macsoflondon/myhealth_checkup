@@ -9,22 +9,26 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// `apify: true` providers are dispatched asynchronously to an Apify actor and
+// ingested later by the `apify-ingest` webhook. Their bespoke edge functions
+// remain in the repo as a fallback but are no longer referenced here.
 const SCRAPERS = [
   { id: 'lola-health', functionName: 'lola-health-scraper' },
-  { id: 'medichecks', functionName: 'medichecks-firecrawl' },
+  { id: 'medichecks', functionName: 'apify-scrape-provider', apify: true },
   { id: 'goodbody-clinic', functionName: 'goodbody-scraper' },
   { id: 'thriva', functionName: 'thriva-scraper' },
   { id: 'randox', functionName: 'randox-scraper' },
   { id: 'london-medical-laboratory', functionName: 'scrape-london-lab' },
-  { id: 'clinilabs', functionName: 'clinilabs-scraper' },
-  { id: 'medical-diagnosis', functionName: 'medical-diagnosis-scraper' },
+  { id: 'clinilabs', functionName: 'apify-scrape-provider', apify: true },
+  { id: 'medical-diagnosis', functionName: 'apify-scrape-provider', apify: true },
   { id: 'london-health-company', functionName: 'london-health-scraper' },
-];
+] as { id: string; functionName: string; apify?: boolean }[];
 
 interface ScraperResult {
   provider: string;
   success: boolean;
   message: string;
+  dispatched?: boolean;
 }
 
 interface RunAllScrapersBody {
@@ -156,7 +160,7 @@ function generateEmailHtml(results: ScraperResult[], allSuccess: boolean): strin
       <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">${r.provider}</td>
       <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">
         <span style="color: ${r.success ? '#22c0d4' : '#e70d69'}; font-weight: 600;">
-          ${r.success ? '✓ Success' : '✗ Failed'}
+          ${r.success ? (r.dispatched ? '→ Dispatched' : '✓ Success') : '✗ Failed'}
         </span>
       </td>
       <td style="padding: 8px 12px; border-bottom: 1px solid #eee; font-size: 12px; color: #666;">
@@ -256,7 +260,8 @@ async function runBatch(
   const results: ScraperResult[] = [];
 
   async function runScraper(scraper: typeof SCRAPERS[number]): Promise<ScraperResult> {
-    console.log(`[${new Date().toISOString()}] [${runId}] Running ${scraper.id} scraper...`);
+    const verb = scraper.apify ? 'Dispatching' : 'Running';
+    console.log(`[${new Date().toISOString()}] [${runId}] ${verb} ${scraper.id} scraper...`);
     try {
       const response = await fetch(`${supabaseUrl}/functions/v1/${scraper.functionName}`, {
         method: 'POST',
@@ -264,7 +269,9 @@ async function runBatch(
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${supabaseServiceKey}`,
         },
-        body: JSON.stringify({ replace: true }),
+        body: JSON.stringify(
+          scraper.apify ? { provider_id: scraper.id } : { replace: true },
+        ),
       });
 
       if (!response.ok) {
@@ -273,11 +280,15 @@ async function runBatch(
       }
 
       const data = await response.json();
-      console.log(`[${new Date().toISOString()}] [${runId}] ${scraper.id} completed: ${JSON.stringify(data)}`);
+      console.log(`[${new Date().toISOString()}] [${runId}] ${scraper.id} ${scraper.apify ? 'dispatched' : 'completed'}: ${JSON.stringify(data)}`);
+      // Apify runs finish asynchronously — report dispatch, never completion.
       return {
         provider: scraper.id,
         success: true,
-        message: data.message || 'Completed successfully',
+        dispatched: scraper.apify === true,
+        message: scraper.apify
+          ? `Dispatched to Apify (run ${data.run_id ?? 'unknown'}); results ingested via webhook`
+          : (data.message || 'Completed successfully'),
       };
     } catch (error) {
       console.error(`[${new Date().toISOString()}] [${runId}] ${scraper.id} failed:`, getErrorMessage(error));

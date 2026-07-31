@@ -527,6 +527,48 @@ export type Database = {
         }
         Relationships: []
       }
+      apify_provider_configs: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          globs: Json
+          id: string
+          link_selector: string | null
+          max_concurrency: number
+          max_pages_per_crawl: number
+          page_function: string
+          provider_id: string
+          start_urls: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          globs?: Json
+          id?: string
+          link_selector?: string | null
+          max_concurrency?: number
+          max_pages_per_crawl?: number
+          page_function: string
+          provider_id: string
+          start_urls?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          globs?: Json
+          id?: string
+          link_selector?: string | null
+          max_concurrency?: number
+          max_pages_per_crawl?: number
+          page_function?: string
+          provider_id?: string
+          start_urls?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
@@ -5727,6 +5769,18 @@ export type Database = {
       }
     }
     Views: {
+      catalogue_freshness: {
+        Row: {
+          active_tests: number | null
+          hours_since_scrape: number | null
+          last_scraped_at: string | null
+          missing_biomarkers: number | null
+          missing_total_cost: number | null
+          missing_turnaround: number | null
+          provider_name: string | null
+        }
+        Relationships: []
+      }
       provider_image_audit_latest: {
         Row: {
           category: string | null
