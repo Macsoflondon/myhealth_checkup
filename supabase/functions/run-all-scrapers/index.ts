@@ -160,7 +160,7 @@ function generateEmailHtml(results: ScraperResult[], allSuccess: boolean): strin
       <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">${r.provider}</td>
       <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">
         <span style="color: ${r.success ? '#22c0d4' : '#e70d69'}; font-weight: 600;">
-          ${r.success ? '✓ Success' : '✗ Failed'}
+          ${r.success ? (r.dispatched ? '→ Dispatched' : '✓ Success') : '✗ Failed'}
         </span>
       </td>
       <td style="padding: 8px 12px; border-bottom: 1px solid #eee; font-size: 12px; color: #666;">
