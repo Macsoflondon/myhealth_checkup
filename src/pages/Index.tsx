@@ -306,16 +306,8 @@ const Index = () => {
             </Suspense>
           </LazyMount>
 
-          <LazyMount minHeight={600}>
-            <Suspense fallback={<SectionFallback />}>
-              <SectionReveal>
-                <div className="hidden md:block">
-                  <ProviderComparisonTable />
-                </div>
-              </SectionReveal>
-            </Suspense>
-          </LazyMount>
           <div id="comparison-end" aria-hidden="true" />
+
 
 
 
