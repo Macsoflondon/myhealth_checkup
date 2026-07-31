@@ -5727,6 +5727,18 @@ export type Database = {
       }
     }
     Views: {
+      catalogue_freshness: {
+        Row: {
+          active_tests: number | null
+          hours_since_scrape: number | null
+          last_scraped_at: string | null
+          missing_biomarkers: number | null
+          missing_total_cost: number | null
+          missing_turnaround: number | null
+          provider_name: string | null
+        }
+        Relationships: []
+      }
       provider_image_audit_latest: {
         Row: {
           category: string | null
