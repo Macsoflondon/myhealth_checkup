@@ -86,7 +86,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
         aria-current={isActiveParent ? "page" : undefined}
         aria-haspopup={hasDropdown ? "menu" : undefined}
         aria-expanded={hasDropdown ? open : undefined}
-        className={`group inline-flex items-center rounded-full no-underline bg-white border-[1.5px] hover:-translate-y-0.5 transition-all duration-200 shrink-0 ${dense ? "gap-0.5 pl-1 pr-1 py-1.5" : "gap-1 pl-1.5 pr-2 py-1.5 sm:gap-1.5 sm:pl-2 sm:pr-2.5"} ${compact ? "sm:py-2" : "sm:py-2"}`}
+        className={`group inline-flex items-center rounded-full no-underline bg-white border-[1.5px] hover:-translate-y-0.5 transition-all duration-200 shrink-0 ${dense ? "gap-1 pl-1.5 pr-1.5 py-2" : "gap-1.5 pl-2 pr-2.5 py-2 sm:gap-2 sm:pl-2.5 sm:pr-3"} ${compact ? "sm:py-2.5" : "sm:py-2.5"}`}
         style={{
           borderColor: isActiveParent ? PINK : "rgba(8,17,41,0.1)",
           boxShadow: isActiveParent ? `0 8px 20px ${PINK}26` : undefined,
@@ -103,21 +103,21 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
         }}
       >
         <span
-          className={`rounded-full inline-flex items-center justify-center shrink-0 ${dense ? "w-[15px] h-[15px]" : "w-[18px] h-[18px] sm:w-[20px] sm:h-[20px]"}`}
+          className={`rounded-full inline-flex items-center justify-center shrink-0 ${dense ? "w-[19px] h-[19px]" : "w-[23px] h-[23px] sm:w-[25px] sm:h-[25px]"}`}
           style={{ background: `${color}1a` }}
         >
           <Icon
-            className={dense ? "w-[10px] h-[10px]" : "w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]"}
+            className={dense ? "w-[13px] h-[13px]" : "w-[14px] h-[14px] sm:w-[15px] sm:h-[15px]"}
             style={{ color }}
             strokeWidth={2}
           />
         </span>
-        <span className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${dense ? "text-[10px] lg:text-[10.5px] tracking-[-0.015em]" : "text-[11px] sm:text-[11.5px] lg:text-[12px]"}`}>
+        <span className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${dense ? "text-[13px] lg:text-[13.5px] tracking-[-0.015em]" : "text-[14px] sm:text-[14.5px] lg:text-[15px]"}`}>
           {item.name}
         </span>
 
         {hasDropdown && (
-          <ChevronDown className={`text-[#081129]/60 transition-transform w-3 h-3 shrink-0 ${open ? "rotate-180" : ""}`} />
+          <ChevronDown className={`text-[#081129]/60 transition-transform w-[15px] h-[15px] shrink-0 ${open ? "rotate-180" : ""}`} />
         )}
       </Link>
 

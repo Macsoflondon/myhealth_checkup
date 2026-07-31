@@ -190,15 +190,15 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             data-testid="browse-by-category-bar"
           >
 
-            <div className={`${useStraddle ? "px-1 py-2 sm:py-2.5" : compact ? "px-2 py-2 sm:px-3 sm:py-2.5" : "px-2 sm:px-3 py-2 sm:py-2.5"} transition-all duration-300 ${innerClass}`}>
-              <div className={`flex items-center justify-center gap-y-0 flex-nowrap max-w-full ${useStraddle ? "gap-x-0.5" : "gap-x-1 sm:gap-x-1.5"}`}>
+            <div className={`${useStraddle ? "px-1 py-2.5 sm:py-3" : compact ? "px-2.5 py-2.5 sm:px-3.5 sm:py-3" : "px-2.5 sm:px-3.5 py-2.5 sm:py-3"} transition-all duration-300 ${innerClass}`}>
+              <div className={`flex items-center justify-center gap-y-0 flex-nowrap max-w-full ${useStraddle ? "gap-x-1" : "gap-x-1.5 sm:gap-x-2"}`}>
                 {items.map((item) => {
                   const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
                   return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} dense={useStraddle} />;
                 })}
 
                 <div ref={moreRef} className="relative shrink-0">
-                  <button type="button" onClick={() => setMoreOpen((o) => !o)} className={`group inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 transition-all duration-200 hover:-translate-y-0.5 ${useStraddle ? "gap-0.5 pl-1 pr-1 py-1.5" : "gap-1 pl-1.5 pr-2 py-1.5 sm:gap-1.5 sm:pl-2 sm:pr-2.5"}`}><span className={`rounded-full inline-flex items-center justify-center shrink-0 ${useStraddle ? "w-[15px] h-[15px]" : "w-[18px] h-[18px] sm:w-[20px] sm:h-[20px]"}`} style={{ background: "rgba(231,13,105,0.1)" }}><MoreHorizontal className={`${useStraddle ? "w-[10px] h-[10px]" : "w-[11px] h-[11px] sm:w-[12px] sm:h-[12px]"}`} style={{ color: "#e70d69" }} strokeWidth={2} /></span><span className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${useStraddle ? "text-[10px] lg:text-[10.5px] tracking-[-0.015em]" : "text-[11px] sm:text-[11.5px] lg:text-[12px]"}`}>More</span><ChevronDown className={`text-[#081129]/60 transition-transform w-3 h-3 shrink-0 ${moreOpen ? "rotate-180" : ""}`} /></button>
+                  <button type="button" onClick={() => setMoreOpen((o) => !o)} className={`group inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 transition-all duration-200 hover:-translate-y-0.5 ${useStraddle ? "gap-1 pl-1.5 pr-1.5 py-2" : "gap-1.5 pl-2 pr-2.5 py-2 sm:gap-2 sm:pl-2.5 sm:pr-3"}`}><span className={`rounded-full inline-flex items-center justify-center shrink-0 ${useStraddle ? "w-[19px] h-[19px]" : "w-[23px] h-[23px] sm:w-[25px] sm:h-[25px]"}`} style={{ background: "rgba(231,13,105,0.1)" }}><MoreHorizontal className={`${useStraddle ? "w-[13px] h-[13px]" : "w-[14px] h-[14px] sm:w-[15px] sm:h-[15px]"}`} style={{ color: "#e70d69" }} strokeWidth={2} /></span><span className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${useStraddle ? "text-[13px] lg:text-[13.5px] tracking-[-0.015em]" : "text-[14px] sm:text-[14.5px] lg:text-[15px]"}`}>More</span><ChevronDown className={`text-[#081129]/60 transition-transform w-[15px] h-[15px] shrink-0 ${moreOpen ? "rotate-180" : ""}`} /></button>
                   {moreOpen && <div className="absolute top-full right-0 mt-2 z-[9999]"><MoreDropdownMenu sections={moreNavigationSections} onItemClick={() => setMoreOpen(false)} onClose={() => setMoreOpen(false)} /></div>}
                 </div>
                 {placement !== "hero" && (
