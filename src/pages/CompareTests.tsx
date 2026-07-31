@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
-import { useSearchParams } from "@/lib/router-compat";
+import { useSearchParams, useNavigate } from "@/lib/router-compat";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import MainLayout from "@/layouts/MainLayout";
 
@@ -29,8 +29,9 @@ const resolveCategoryColor = (test: CompareTestData): string => {
 
 const CompareTests = () => {
   const [filters, setFilters] = useState<CompareFilters>(defaultFilters);
-  const [isComparisonOpen, setIsComparisonOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
 
   const selectedTests = useCompareItems();
 
@@ -60,18 +61,15 @@ const CompareTests = () => {
     compareStore.clear();
   }, []);
 
-  const handleOpenComparison = useCallback(() => {
-    if (selectedTests.length >= 2) setIsComparisonOpen(true);
-  }, [selectedTests.length]);
-
   useEffect(() => {
-    if (searchParams.get("openCompare") === "1" && selectedTests.length >= 2) {
-      setIsComparisonOpen(true);
+    if (searchParams.get("openCompare") === "1") {
       const next = new URLSearchParams(searchParams);
       next.delete("openCompare");
       setSearchParams(next, { replace: true });
+      if (selectedTests.length >= 2) navigate("/compare/results");
     }
-  }, [searchParams, selectedTests.length, setSearchParams]);
+  }, [searchParams, selectedTests.length, setSearchParams, navigate]);
+
 
   const isSelected = useCallback(
     (id: string) => selectedTests.some(t => t.id === id),
