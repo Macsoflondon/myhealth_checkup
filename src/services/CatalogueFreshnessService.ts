@@ -50,6 +50,7 @@ const PROVIDER_ID_ALIASES: Record<string, string> = {
   lola: "lola-health",
   "london health company": "london-health-company",
   "london health co": "london-health-company",
+  "london health co.": "london-health-company",
   "london medical laboratory": "london-medical-laboratory",
   "london medical lab": "london-medical-laboratory",
   "medical diagnosis": "medical-diagnosis",
