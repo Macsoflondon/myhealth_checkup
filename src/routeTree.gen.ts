@@ -98,6 +98,7 @@ import { Route as BlogTotalVsFreeTestosteroneRouteImport } from './routes/blog.t
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as ClinilabsTestIdRouteImport } from './routes/clinilabs.$testId'
 import { Route as CompareGoalsRouteImport } from './routes/compare.goals'
+import { Route as CompareResultsRouteImport } from './routes/compare.results'
 import { Route as CompareSymptomsRouteImport } from './routes/compare.symptoms'
 import { Route as ControlSectionRouteImport } from './routes/control.$section'
 import { Route as FindTestCompareRouteImport } from './routes/find-test.compare'
@@ -598,6 +599,11 @@ const CompareGoalsRoute = CompareGoalsRouteImport.update({
   path: '/goals',
   getParentRoute: () => CompareRoute,
 } as any)
+const CompareResultsRoute = CompareResultsRouteImport.update({
+  id: '/results',
+  path: '/results',
+  getParentRoute: () => CompareRoute,
+} as any)
 const CompareSymptomsRoute = CompareSymptomsRouteImport.update({
   id: '/symptoms',
   path: '/symptoms',
@@ -936,6 +942,7 @@ export interface FileRoutesByFullPath {
   '/category/$slug': typeof CategorySlugRoute
   '/clinilabs/$testId': typeof ClinilabsTestIdRoute
   '/compare/goals': typeof CompareGoalsRouteWithChildren
+  '/compare/results': typeof CompareResultsRoute
   '/compare/symptoms': typeof CompareSymptomsRouteWithChildren
   '/control/$section': typeof ControlSectionRoute
   '/find-test/compare': typeof FindTestCompareRoute
@@ -1075,6 +1082,7 @@ export interface FileRoutesByTo {
   '/category/$slug': typeof CategorySlugRoute
   '/clinilabs/$testId': typeof ClinilabsTestIdRoute
   '/compare/goals': typeof CompareGoalsRouteWithChildren
+  '/compare/results': typeof CompareResultsRoute
   '/compare/symptoms': typeof CompareSymptomsRouteWithChildren
   '/control/$section': typeof ControlSectionRoute
   '/find-test/compare': typeof FindTestCompareRoute
@@ -1215,6 +1223,7 @@ export interface FileRoutesById {
   '/category/$slug': typeof CategorySlugRoute
   '/clinilabs/$testId': typeof ClinilabsTestIdRoute
   '/compare/goals': typeof CompareGoalsRouteWithChildren
+  '/compare/results': typeof CompareResultsRoute
   '/compare/symptoms': typeof CompareSymptomsRouteWithChildren
   '/control/$section': typeof ControlSectionRoute
   '/find-test/compare': typeof FindTestCompareRoute
@@ -1356,6 +1365,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/clinilabs/$testId'
     | '/compare/goals'
+    | '/compare/results'
     | '/compare/symptoms'
     | '/control/$section'
     | '/find-test/compare'
@@ -1495,6 +1505,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/clinilabs/$testId'
     | '/compare/goals'
+    | '/compare/results'
     | '/compare/symptoms'
     | '/control/$section'
     | '/find-test/compare'
@@ -1634,6 +1645,7 @@ export interface FileRouteTypes {
     | '/category/$slug'
     | '/clinilabs/$testId'
     | '/compare/goals'
+    | '/compare/results'
     | '/compare/symptoms'
     | '/control/$section'
     | '/find-test/compare'
@@ -2418,6 +2430,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CompareGoalsRouteImport
       parentRoute: typeof CompareRoute
     }
+    '/compare/results': {
+      id: '/compare/results'
+      path: '/results'
+      fullPath: '/compare/results'
+      preLoaderRoute: typeof CompareResultsRouteImport
+      parentRoute: typeof CompareRoute
+    }
     '/compare/symptoms': {
       id: '/compare/symptoms'
       path: '/symptoms'
@@ -2834,11 +2853,13 @@ const CompareSymptomsRouteWithChildren = CompareSymptomsRoute._addFileChildren(
 
 interface CompareRouteChildren {
   CompareGoalsRoute: typeof CompareGoalsRouteWithChildren
+  CompareResultsRoute: typeof CompareResultsRoute
   CompareSymptomsRoute: typeof CompareSymptomsRouteWithChildren
 }
 
 const CompareRouteChildren: CompareRouteChildren = {
   CompareGoalsRoute: CompareGoalsRouteWithChildren,
+  CompareResultsRoute: CompareResultsRoute,
   CompareSymptomsRoute: CompareSymptomsRouteWithChildren,
 }
 
