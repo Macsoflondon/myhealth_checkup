@@ -342,11 +342,11 @@ function AdminTestDashboardContent() {
 
         {/* Results count */}
         <div className="flex items-center justify-between mb-2">
-          <span className="text-white/50 text-sm">
+          <span className="text-slate-500 text-sm">
             {filtered.length} result{filtered.length !== 1 ? "s" : ""}
             {search || categoryFilter !== "all" || providerFilter !== "all" ? " (filtered)" : ""}
           </span>
-          <span className="text-white/50 text-sm">
+          <span className="text-slate-500 text-sm">
             Page {page + 1} of {totalPages || 1}
           </span>
         </div>
