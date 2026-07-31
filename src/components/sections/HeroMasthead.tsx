@@ -96,7 +96,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
         <Wordmark />
         <div className="w-full border-t border-white/45 my-3 sm:my-4" />
         <div className="w-full flex items-center justify-between gap-4">
-          <p className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white text-[clamp(0.95rem,2.4vw,1.75rem)] leading-[1.15] text-left">
+          <p className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white text-[clamp(1.25rem,3.2vw,2.5rem)] leading-[1.15] text-left">
             YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span> ONE TRUSTED PLATFORM.
           </p>
           <div className="flex items-center gap-1 shrink-0">
