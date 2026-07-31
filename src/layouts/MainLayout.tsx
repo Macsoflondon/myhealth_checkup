@@ -47,7 +47,7 @@ export const MainLayout = ({
       </main>
       {!hideFooter && <Footer />}
       <CookieConsent />
-      <ComparisonBar selectedTests={compareItems} onRemoveTest={(id) => compareStore.remove(id)} onCompare={() => navigate("/compare")} onClearAll={() => compareStore.clear()} />
+      <ComparisonBar selectedTests={compareItems} onRemoveTest={(id) => compareStore.remove(id)} onCompare={() => navigate("/compare/results")} onClearAll={() => compareStore.clear()} />
     </div>
   );
 };
