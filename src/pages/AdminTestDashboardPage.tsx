@@ -425,48 +425,48 @@ function AdminTestDashboardContent() {
                     const maxPrice = prices.length ? Math.max(...prices) : null;
 
                     return (
-                      <TableRow key={row.id} className="border-white/5 hover:bg-white/5">
-                        <TableCell className="text-white font-medium max-w-[200px] truncate">
+                      <TableRow key={row.id} className="border-slate-100 hover:bg-slate-50">
+                        <TableCell className="text-slate-900 font-medium max-w-[200px] truncate">
                           {row.test_name}
                         </TableCell>
                         <TableCell>
-                          <Badge variant="secondary" className="bg-brand-turquoise/20 text-brand-turquoise border-0 text-xs">
+                          <Badge variant="secondary" className="bg-brand-turquoise/10 text-brand-turquoise border-0 text-xs">
                             {row.category}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-white/70 text-sm capitalize">
+                        <TableCell className="text-slate-600 text-sm capitalize">
                           {row.sample_type || "—"}
                         </TableCell>
-                        <TableCell className="text-white/70 text-sm">
+                        <TableCell className="text-slate-600 text-sm">
                           {getBiomarkerCount(row.biomarkers)}
                         </TableCell>
                         <TableCell>
                           <Badge
                             variant={row.providers.length > 0 ? "default" : "destructive"}
                             className={row.providers.length > 0
-                              ? "bg-green-500/20 text-green-400 border-0"
-                              : "bg-red-500/20 text-red-400 border-0"
+                              ? "bg-green-100 text-green-700 border-0"
+                              : "bg-red-100 text-red-700 border-0"
                             }
                           >
                             {row.providers.length}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-white/70 text-sm font-mono">
+                        <TableCell className="text-slate-600 text-sm font-mono">
                           {formatPrice(minPrice)}
                         </TableCell>
-                        <TableCell className="text-white/70 text-sm font-mono">
+                        <TableCell className="text-slate-600 text-sm font-mono">
                           {formatPrice(maxPrice)}
                         </TableCell>
                         <TableCell className="max-w-[250px]">
                           <div className="flex flex-wrap gap-1">
                             {row.providers.length === 0 ? (
-                              <span className="text-white/30 text-xs">No providers</span>
+                              <span className="text-slate-400 text-xs">No providers</span>
                             ) : (
                               row.providers.map((p, i) => (
                                 <Badge
                                   key={`${p.provider_id}-${i}`}
                                   variant="outline"
-                                  className="text-[10px] border-white/20 text-white/60 whitespace-nowrap"
+                                  className="text-[10px] border-slate-300 text-slate-600 whitespace-nowrap"
                                 >
                                   {providerLabel(p.provider_id)}
                                   {p.price !== null ? ` £${p.price}` : ""}
