@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDynamicComparisonPanels } from "@/hooks/useDynamicComparisonPanels";
 import { useCatalogueFreshness, oldestAgeHours } from "@/hooks/queries/useCatalogueFreshness";
+import { resolveProviderId } from "@/services/CatalogueFreshnessService";
 import {
   CONFIRM_PRICING_NOTE,
   STALE_PRICE_CAUTION,
@@ -112,8 +113,13 @@ const LiveComparisonCard = ({
 
   // Single source of truth: `catalogue_freshness`, taking the OLDEST provider in
   // the panel. If the view is unreachable we make no freshness claim at all.
-  const ageHours = oldestAgeHours(freshness, test?.providerIds);
-  if (typeof window !== 'undefined') console.warn('DBG', JSON.stringify({ ids: test?.providerIds, keys: freshness ? Object.keys(freshness.byProviderId) : null, ageHours }));
+  const panelProviderIds =
+    test?.providerIds?.length
+      ? test.providerIds
+      : (test?.providers ?? [])
+          .map((p) => resolveProviderId(p.name))
+          .filter((id): id is string => id !== null);
+  const ageHours = oldestAgeHours(freshness, panelProviderIds);
   const ageLabel = formatPriceCheckedLabel(ageHours);
   const stale = isStale(ageHours);
 
