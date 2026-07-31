@@ -9,7 +9,6 @@ const FeaturedPublications = lazy(() =>
   import("@/components/sections/FeaturedPublications").then((m) => ({ default: m.FeaturedPublications }))
 );
 const DreamHealthShowcase = lazy(() => import("@/components/sections/DreamHealthShowcase"));
-const ProviderComparisonTable = lazy(() => import("@/components/sections/ProviderComparisonTable"));
 const TestCategoriesSection = lazy(() => import("@/components/sections/TestCategoriesSection"));
 const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
 

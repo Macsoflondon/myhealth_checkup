@@ -34,7 +34,6 @@ const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
 const StartJourneySection = lazy(() => import("@/components/sections/StartJourneySection"));
 
 const NewsletterSection = lazy(() => import("@/components/sections/NewsletterSection"));
-const ProviderComparisonTable = lazy(() => import("@/components/sections/ProviderComparisonTable"));
 
 const SectionFallback = () => <div className="min-h-[200px]" aria-hidden="true" />;
 
@@ -306,16 +305,8 @@ const Index = () => {
             </Suspense>
           </LazyMount>
 
-          <LazyMount minHeight={600}>
-            <Suspense fallback={<SectionFallback />}>
-              <SectionReveal>
-                <div className="hidden md:block">
-                  <ProviderComparisonTable />
-                </div>
-              </SectionReveal>
-            </Suspense>
-          </LazyMount>
           <div id="comparison-end" aria-hidden="true" />
+
 
 
 
