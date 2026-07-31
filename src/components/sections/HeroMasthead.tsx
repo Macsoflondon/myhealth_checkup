@@ -62,7 +62,7 @@ const SLIDES = [
 
 const Wordmark = () => (
   <span className="inline-flex items-center leading-[1.1] min-w-0 py-2 sm:py-3">
-    <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(4.5rem,8vw,8rem)] lg:text-[7rem] xl:text-[8rem]">
+    <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(2.25rem,12vw,4rem)] sm:text-[clamp(4.5rem,8vw,8rem)] lg:text-[7rem] xl:text-[8rem]">
       <span className="text-white">myhealth</span>
       <span className="text-brand-pink">checkup</span>
     </span>
@@ -106,14 +106,13 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
         </div>
       </div>
 
-      {/* Brand slogan — mobile only; desktop/tablet slogan sits above */}
-      <div className="sm:hidden -mx-3 border-b border-white/10">
-        <div className="px-4 py-4">
-          <h1 className="font-bold uppercase tracking-[0.05em] font-[Montserrat] text-white leading-[1.25] text-[clamp(1.15rem,5vw,1.9rem)] text-center m-0">
-            <span className="block">YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span></span>
-            <span className="block">ONE TRUSTED PLATFORM.</span>
-          </h1>
-        </div>
+      {/* Mobile header branding + slogan */}
+      <div className="sm:hidden flex flex-col items-center pt-4 pb-3 -mx-3 border-b border-white/10">
+        <Wordmark />
+        <h1 className="font-bold uppercase tracking-[0.05em] font-[Montserrat] text-white leading-[1.25] text-[clamp(1.15rem,5vw,1.9rem)] text-center m-0 mt-2">
+          <span className="block">YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span></span>
+          <span className="block">ONE TRUSTED PLATFORM.</span>
+        </h1>
       </div>
 
       {/* Category toolbar — directly under the slogan, above the imagery */}
