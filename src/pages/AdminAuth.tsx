@@ -12,6 +12,14 @@ import { validateEmail } from "@/lib/passwordValidation";
 import { useAccountLockout } from "@/hooks/useAccountLockout";
 import { logger } from "@/lib/logger";
 
+/** Safe same-origin redirect target from ?redirect=, defaults to the dashboard. */
+const getRedirectTarget = (): string => {
+  if (typeof window === "undefined") return "/admin/test-dashboard";
+  const raw = new URLSearchParams(window.location.search).get("redirect");
+  if (raw && raw.startsWith("/") && !raw.startsWith("//")) return raw;
+  return "/admin/test-dashboard";
+};
+
 const AdminAuth = () => {
   const { user, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -53,7 +61,7 @@ const AdminAuth = () => {
           return;
         }
         if (roleRow) {
-          navigate("/admin/test-dashboard");
+          navigate(getRedirectTarget());
         } else {
           // Regular user — silently send them home, keep their session intact.
           navigate("/");
@@ -96,7 +104,7 @@ const AdminAuth = () => {
       }
 
       toast.success("Admin access verified!");
-      navigate("/admin/test-dashboard");
+      navigate(getRedirectTarget());
     } catch (err) {
       logger.error('Admin verification error:', err);
       toast.error("Verification failed.");

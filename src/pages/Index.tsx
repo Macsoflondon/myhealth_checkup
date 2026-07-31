@@ -8,6 +8,8 @@ import { LazyMount } from "@/components/common/LazyMount";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 import { ArrowRight, Shield } from "lucide-react";
+import { useCatalogueFreshness } from "@/hooks/queries/useCatalogueFreshness";
+
 
 // Hero first-slide images — preloaded for LCP optimisation
 import heroSlide1DesktopAsset from "@/assets/hero/hero-active-lifestyle.jpg.asset.json";
@@ -41,6 +43,16 @@ const SectionFallback = () => <div className="min-h-[200px]" aria-hidden="true" 
 const Index = () => {
   usePerformanceOptimization();
   useMobileOptimization();
+
+  // Never hardcode the catalogue size: derive it at runtime and round down.
+  const { data: freshness } = useCatalogueFreshness();
+  const activeTests = freshness?.totalActiveTests ?? 0;
+  const catalogueClaim =
+    activeTests >= 100
+      ? `over ${Math.floor(activeTests / 50) * 50} accredited tests`
+      : "our accredited test catalogue";
+
+
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -253,7 +265,7 @@ const Index = () => {
                   </div>
                 </div>
                 <p className="text-white text-base sm:text-lg leading-relaxed text-center max-w-2xl mx-auto">
-                  Answer 6 quick questions and our AI will analyse 597 accredited tests to find your perfect wellness panel — with transparent pricing.
+                  Answer 6 quick questions and our AI will analyse {catalogueClaim} to find your perfect wellness panel — with transparent pricing.
                 </p>
               </div>
             </div>

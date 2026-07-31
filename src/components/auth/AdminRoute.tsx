@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "@/lib/router-compat";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdminMFA } from "@/hooks/useAdminMFA";
 import { Loader2 } from "lucide-react";
 import { AdminMFAGuard } from "@/components/admin/AdminMFAGuard";
 import { logger } from "@/lib/logger";
+import { AdminAccessNotice } from "@/components/auth/AdminAccessNotice";
 
 /**
  * Cached role verification, keyed by `userId:role`. Without this every admin
@@ -33,12 +33,12 @@ interface AdminRouteProps {
  */
 export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps) => {
   const { user, isLoading: authLoading } = useAuth();
-  const navigate = useNavigate();
   const cacheKey = user ? `${user.id}:${requiredRole}` : null;
   const cached = cacheKey ? roleCache.get(cacheKey) : undefined;
   const cacheFresh = !!cached && Date.now() - cached.at < ROLE_CACHE_TTL_MS && cached.authorized;
   const [isVerifying, setIsVerifying] = useState(!cacheFresh);
   const [isAuthorized, setIsAuthorized] = useState(cacheFresh);
+  const [denialReason, setDenialReason] = useState<'signed-out' | 'no-role' | 'error' | null>(null);
 
   // MFA gate (only meaningful for admins; moderators are not currently MFA-gated).
   const enforceMFA = requiredRole === 'admin';
@@ -51,7 +51,8 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
       if (authLoading) return;
 
       if (!user) {
-        navigate("/admin/login");
+        setDenialReason('signed-out');
+        setIsVerifying(false);
         return;
       }
 
@@ -84,13 +85,13 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
 
         if (error) {
           logger.error('Error verifying admin role:', error);
-          navigate("/");
+          setDenialReason('error');
           return;
         }
 
         if (!roleRow) {
           logger.warn('Unauthorized admin access attempt:', { userId: user.id, requiredRole });
-          navigate("/");
+          setDenialReason('no-role');
           return;
         }
 
@@ -99,7 +100,7 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
       } catch (error) {
         if (cancelled) return;
         logger.error('Admin verification failed:', error);
-        navigate("/");
+        setDenialReason('error');
       } finally {
         if (!cancelled) setIsVerifying(false);
       }
@@ -107,7 +108,7 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
 
     verifyAdminAccess();
     return () => { cancelled = true; };
-  }, [user, authLoading, navigate, requiredRole]);
+  }, [user, authLoading, requiredRole]);
 
   if (authLoading || isVerifying || (enforceMFA && mfa.isLoading)) {
     return (
@@ -120,7 +121,10 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
     );
   }
 
-  if (!isAuthorized) return null;
+  if (!isAuthorized) {
+    return <AdminAccessNotice reason={denialReason ?? 'no-role'} />;
+  }
+
 
   if (enforceMFA) {
     return (

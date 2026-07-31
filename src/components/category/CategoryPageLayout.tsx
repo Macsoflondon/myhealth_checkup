@@ -96,6 +96,11 @@ export function CategoryPageLayout({
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("popular");
   const [compared, setCompared] = useState<CategoryTestItem[]>([]);
+  const [completeOnly, setCompleteOnly] = useState(false);
+
+  /** A listing is complete when the provider publishes both biomarkers and turnaround. */
+  const isComplete = (t: CategoryTestItem) =>
+    t.biomarkers.length > 0 && t.turnaround.trim().length > 0;
 
   const toggleCompare = (test: CategoryTestItem) => {
     setCompared((prev) => {
@@ -108,6 +113,7 @@ export function CategoryPageLayout({
 
   const filtered = useMemo(() => {
     let list = tests;
+    if (completeOnly) list = list.filter(isComplete);
     if (activeFilter !== "All")
       list = list.filter((t) => t.tag === activeFilter);
     if (search.trim()) {
@@ -144,7 +150,12 @@ export function CategoryPageLayout({
         break;
     }
     return sorted;
-  }, [tests, activeFilter, search, sort]);
+  }, [tests, activeFilter, search, sort, completeOnly]);
+
+  const incompleteCount = useMemo(
+    () => tests.filter((t) => !isComplete(t)).length,
+    [tests],
+  );
 
   const compareItems: CompareItem[] = compared.map((t) => ({
     id: t.id,
@@ -242,6 +253,9 @@ export function CategoryPageLayout({
                 searchTerm={search || undefined}
                 compareCount={compared.length}
                 filterColors={filterColors}
+                completeOnly={completeOnly}
+                onCompleteOnlyChange={setCompleteOnly}
+                incompleteCount={incompleteCount}
               />
 
               {/* Cards grid */}

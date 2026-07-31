@@ -124,7 +124,7 @@ export const moreNavigationSections = [
   {
     title: "About",
     items: [
-      { name: "Crux Control (Admin)", path: "/control" },
+      // Crux Control is admin-only: reachable by direct URL, never advertised here.
       { name: "About Us", path: "/about" },
       { name: "Frequently Asked Questions", path: "/faqs" }
     ]

@@ -1,5 +1,13 @@
 import { useEffect, useState } from "react";
 import { useDynamicComparisonPanels } from "@/hooks/useDynamicComparisonPanels";
+import { useCatalogueFreshness, oldestAgeHours } from "@/hooks/queries/useCatalogueFreshness";
+import { resolveProviderId } from "@/services/CatalogueFreshnessService";
+import {
+  CONFIRM_PRICING_NOTE,
+  STALE_PRICE_CAUTION,
+  formatPriceCheckedLabel,
+  isStale,
+} from "@/lib/freshness";
 
 export type LiveComparisonPanelData = {
   name: string;
@@ -10,25 +18,9 @@ export type LiveComparisonPanelData = {
     options: { label: string; price: string }[];
   }[];
   lastScrapedAt?: string | null;
+  /** Provider ids shown in this panel, used to derive the real price age. */
+  providerIds?: string[];
 };
-
-function formatVerified(iso?: string | null): string {
-  if (!iso) return "Prices refreshed automatically every 6 hours from provider websites. Always confirm current pricing before booking.";
-  const then = new Date(iso).getTime();
-  if (Number.isNaN(then)) return "Prices refreshed automatically from provider websites. Always confirm current pricing before booking.";
-  const diffMin = Math.max(0, Math.round((Date.now() - then) / 60000));
-  let rel: string;
-  if (diffMin < 1) rel = "moments ago";
-  else if (diffMin < 60) rel = `${diffMin} minute${diffMin === 1 ? "" : "s"} ago`;
-  else if (diffMin < 60 * 24) {
-    const h = Math.round(diffMin / 60);
-    rel = `${h} hour${h === 1 ? "" : "s"} ago`;
-  } else {
-    const d = Math.round(diffMin / (60 * 24));
-    rel = `${d} day${d === 1 ? "" : "s"} ago`;
-  }
-  return `Prices verified ${rel} from provider websites. Always confirm current pricing before booking.`;
-}
 
 export const DEFAULT_LIVE_COMPARISON_PANELS: LiveComparisonPanelData[] = [
   {
@@ -94,6 +86,7 @@ const LiveComparisonCard = ({
   panelIndex,
 }: LiveComparisonCardProps) => {
   const { panels: dynamicPanels } = useDynamicComparisonPanels();
+  const { data: freshness } = useCatalogueFreshness();
   const panels = externalPanels && externalPanels.length > 0 ? externalPanels : dynamicPanels.length > 0 ? dynamicPanels : DEFAULT_LIVE_COMPARISON_PANELS;
   const controlled = panelIndex !== undefined;
   const [internalIdx, setInternalIdx] = useState(0);
@@ -117,6 +110,19 @@ const LiveComparisonCard = ({
 
   const idx = controlled ? (panelIndex! % panels.length) : internalIdx;
   const test = panels[idx];
+
+  // Single source of truth: `catalogue_freshness`, taking the OLDEST provider in
+  // the panel. If the view is unreachable we make no freshness claim at all.
+  const panelProviderIds =
+    test?.providerIds?.length
+      ? test.providerIds
+      : (test?.providers ?? [])
+          .map((p) => resolveProviderId(p.name))
+          .filter((id): id is string => id !== null);
+  const ageHours = oldestAgeHours(freshness, panelProviderIds);
+  const ageLabel = formatPriceCheckedLabel(ageHours);
+  const stale = isStale(ageHours);
+
   if (!test) return null;
 
   return (
@@ -152,7 +158,15 @@ const LiveComparisonCard = ({
             ))}
           </div>
           <div style={{ padding: "12px 20px", borderTop: "1px solid rgba(8,17,41,0.07)", background: "#fafbfc" }}>
-            <p style={{ fontSize: "11px", color: "rgba(8,17,41,0.4)", textAlign: "center", margin: 0 }}>{formatVerified(test.lastScrapedAt)}</p>
+            {ageLabel && (
+              <p style={{ fontSize: "11px", color: "rgba(8,17,41,0.4)", textAlign: "center", margin: 0 }}>{ageLabel}</p>
+            )}
+            {stale && (
+              <p style={{ fontSize: "11px", color: "#b45309", background: "#fef3c7", borderRadius: 8, padding: "6px 10px", textAlign: "center", margin: ageLabel ? "6px 0 0" : 0 }}>
+                {STALE_PRICE_CAUTION}
+              </p>
+            )}
+            <p style={{ fontSize: "11px", color: "rgba(8,17,41,0.4)", textAlign: "center", margin: ageLabel || stale ? "6px 0 0" : 0 }}>{CONFIRM_PRICING_NOTE}</p>
           </div>
         </div>
       </div>
