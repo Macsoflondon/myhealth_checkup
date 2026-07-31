@@ -407,14 +407,14 @@ function AdminTestDashboardContent() {
               <TableBody>
                 {isLoading ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-12 text-white/50">
+                    <TableCell colSpan={8} className="text-center py-12 text-slate-500">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-pink mx-auto mb-3" />
                       Loading test data...
                     </TableCell>
                   </TableRow>
                 ) : paginated.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-12 text-white/50">
+                    <TableCell colSpan={8} className="text-center py-12 text-slate-500">
                       No tests found matching your filters.
                     </TableCell>
                   </TableRow>
