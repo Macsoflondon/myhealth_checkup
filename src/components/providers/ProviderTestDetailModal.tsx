@@ -207,8 +207,9 @@ export default function ProviderTestDetailModal({
       compareStore.add(compareTest);
     }
     onOpenChange(false);
-    navigate("/compare?openCompare=1");
+    navigate("/compare/results");
   };
+
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
