@@ -6,6 +6,7 @@ import LiveComparisonCard, {
 } from "@/components/sections/LiveComparisonCard";
 import { supabase } from "@/integrations/supabase/client";
 import { useDynamicComparisonPanels } from "@/hooks/useDynamicComparisonPanels";
+import { resolveProviderId } from "@/services/CatalogueFreshnessService";
 
 const FALLBACK_RIGHT: LiveComparisonPanelData[] = [
   {
@@ -57,6 +58,9 @@ function dbPanelToPanelData(p: DbPanel): LiveComparisonPanelData {
   }) : [];
   return {
     name: p.panel_name, lastScrapedAt: p.last_scraped_at, collectionMethod: firstMethod, methodLabel,
+    providerIds: safeRows
+      .map((r) => resolveProviderId(r.providerId ?? r.name))
+      .filter((id): id is string => id !== null),
     providers: safeRows.map((r) => ({ name: r.name ?? "Provider", options: [{ label: methodLabel ?? "Test", price: r.price ?? "Price on provider site" }] })),
   };
 }
