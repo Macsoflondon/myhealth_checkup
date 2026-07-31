@@ -206,6 +206,7 @@ const Index = () => {
             </div>
           </Suspense>
 
+          <div id="comparison-anchor" aria-hidden="true" />
 
           {/* Hero CTA — Slogan + Health Quiz entry point */}
           <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-4 sm:px-6 py-6 sm:py-8 mx-3 sm:mx-6 my-6 sm:my-8">
@@ -305,7 +306,6 @@ const Index = () => {
             </Suspense>
           </LazyMount>
 
-          <div id="comparison-anchor" aria-hidden="true" />
           <LazyMount minHeight={600}>
             <Suspense fallback={<SectionFallback />}>
               <SectionReveal>
