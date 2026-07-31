@@ -8,6 +8,8 @@ import { LazyMount } from "@/components/common/LazyMount";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 import { ArrowRight, Shield } from "lucide-react";
+import { useCatalogueFreshness } from "@/hooks/queries/useCatalogueFreshness";
+
 
 // Hero first-slide images — preloaded for LCP optimisation
 import heroSlide1DesktopAsset from "@/assets/hero/hero-active-lifestyle.jpg.asset.json";
