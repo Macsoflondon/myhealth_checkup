@@ -286,12 +286,12 @@ function AdminTestDashboardContent() {
             { label: "Providers", value: providers.length, icon: LayoutDashboard },
             { label: "Provider Listings", value: providerTests?.length ?? 0, icon: Database },
           ].map((stat) => (
-            <div key={stat.label} className="bg-white/5 border border-white/10 rounded-lg p-3">
+            <div key={stat.label} className="bg-slate-50 border border-slate-200 rounded-lg p-3">
               <div className="flex items-center gap-2 mb-1">
                 <stat.icon className="w-4 h-4 text-brand-turquoise" />
-                <span className="text-white/60 text-xs">{stat.label}</span>
+                <span className="text-slate-500 text-xs">{stat.label}</span>
               </div>
-              <span className="text-xl font-bold text-white">{stat.value}</span>
+              <span className="text-xl font-bold text-slate-900">{stat.value}</span>
             </div>
           ))}
         </div>
