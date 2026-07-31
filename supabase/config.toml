@@ -175,3 +175,12 @@ verify_jwt = false
 [functions.mfa-recovery]
 verify_jwt = true
 
+
+# Apify dispatch — starts a cheerio-scraper run for a provider, returns immediately.
+# Security: service-role bearer or scraper cron secret required in-code.
+[functions.apify-scrape-provider]
+verify_jwt = false
+
+# Apify webhook receiver — called by Apify, authorised by shared secret in-code.
+[functions.apify-ingest]
+verify_jwt = false

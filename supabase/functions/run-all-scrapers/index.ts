@@ -260,7 +260,8 @@ async function runBatch(
   const results: ScraperResult[] = [];
 
   async function runScraper(scraper: typeof SCRAPERS[number]): Promise<ScraperResult> {
-    console.log(`[${new Date().toISOString()}] [${runId}] Running ${scraper.id} scraper...`);
+    const verb = scraper.apify ? 'Dispatching' : 'Running';
+    console.log(`[${new Date().toISOString()}] [${runId}] ${verb} ${scraper.id} scraper...`);
     try {
       const response = await fetch(`${supabaseUrl}/functions/v1/${scraper.functionName}`, {
         method: 'POST',
@@ -268,7 +269,9 @@ async function runBatch(
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${supabaseServiceKey}`,
         },
-        body: JSON.stringify({ replace: true }),
+        body: JSON.stringify(
+          scraper.apify ? { provider_id: scraper.id } : { replace: true },
+        ),
       });
 
       if (!response.ok) {
@@ -277,11 +280,15 @@ async function runBatch(
       }
 
       const data = await response.json();
-      console.log(`[${new Date().toISOString()}] [${runId}] ${scraper.id} completed: ${JSON.stringify(data)}`);
+      console.log(`[${new Date().toISOString()}] [${runId}] ${scraper.id} ${scraper.apify ? 'dispatched' : 'completed'}: ${JSON.stringify(data)}`);
+      // Apify runs finish asynchronously — report dispatch, never completion.
       return {
         provider: scraper.id,
         success: true,
-        message: data.message || 'Completed successfully',
+        dispatched: scraper.apify === true,
+        message: scraper.apify
+          ? `Dispatched to Apify (run ${data.run_id ?? 'unknown'}); results ingested via webhook`
+          : (data.message || 'Completed successfully'),
       };
     } catch (error) {
       console.error(`[${new Date().toISOString()}] [${runId}] ${scraper.id} failed:`, getErrorMessage(error));
