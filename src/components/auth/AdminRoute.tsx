@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "@/lib/router-compat";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useAdminMFA } from "@/hooks/useAdminMFA";
 import { Loader2 } from "lucide-react";
 import { AdminMFAGuard } from "@/components/admin/AdminMFAGuard";
 import { logger } from "@/lib/logger";
+import { AdminAccessNotice } from "@/components/auth/AdminAccessNotice";
 
 /**
  * Cached role verification, keyed by `userId:role`. Without this every admin
