@@ -7,7 +7,6 @@ import MainLayout from "@/layouts/MainLayout";
 import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { ProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
 import ComparisonSectionHeading from "@/components/sections/ComparisonSectionHeading";
-import ProviderComparisonSection from "@/components/sections/ProviderComparisonTable";
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
@@ -217,7 +216,6 @@ const CompareTests = () => {
           </section>
 
           {/* SECTION 2 — Side-by-side provider comparison */}
-          <ProviderComparisonSection />
         </MainLayout>
 
       </div>
