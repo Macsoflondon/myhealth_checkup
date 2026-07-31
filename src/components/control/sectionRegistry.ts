@@ -1,7 +1,7 @@
 /**
  * Modular section registry for the Operations Control Centre.
  *
- * Add a new admin/ops subsystem by appending an entry here — it will
+ * Add a new admin/ops subsystem by appending an entry here \u2014 it will
  * automatically appear in the sidebar nav and route at /control/:slug.
  */
 import type { ComponentType, LazyExoticComponent } from "react";
@@ -56,7 +56,7 @@ export const CONTROL_SECTIONS: ControlSection[] = [
     slug: "crawls",
     title: "Crawl & Scrape Centre",
     short: "Crawls",
-    description: "All provider crawlers — status, history & manual controls.",
+    description: "All provider crawlers \u2014 status, history & manual controls.",
     icon: Radar,
     status: "live",
     component: lazy(() => import("./sections/CrawlsSection")),
@@ -121,7 +121,7 @@ export const CONTROL_SECTIONS: ControlSection[] = [
     short: "Analytics",
     description: "Trend dashboards across traffic, revenue & ops.",
     icon: LineChart,
-    status: "stub",
+    status: "live",
     component: lazy(() => import("./sections/AnalyticsSection")),
   },
   {
