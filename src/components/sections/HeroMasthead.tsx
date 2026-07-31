@@ -62,7 +62,7 @@ const SLIDES = [
 
 const Wordmark = () => (
   <span className="inline-flex items-center leading-[1.1] min-w-0 py-2 sm:py-3">
-    <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(4.5rem,8vw,8rem)] lg:text-[7rem] xl:text-[8rem]">
+    <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(2.25rem,12vw,4rem)] sm:text-[clamp(4.5rem,8vw,8rem)] lg:text-[7rem] xl:text-[8rem]">
       <span className="text-white">myhealth</span>
       <span className="text-brand-pink">checkup</span>
     </span>
