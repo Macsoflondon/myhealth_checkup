@@ -29,8 +29,9 @@ const resolveCategoryColor = (test: CompareTestData): string => {
 
 const CompareTests = () => {
   const [filters, setFilters] = useState<CompareFilters>(defaultFilters);
-  const [isComparisonOpen, setIsComparisonOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
 
   const selectedTests = useCompareItems();
 
