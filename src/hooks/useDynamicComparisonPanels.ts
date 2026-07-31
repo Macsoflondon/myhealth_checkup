@@ -69,8 +69,9 @@ export function useDynamicComparisonPanels(): {
 
         if (sorted.length < 2) continue;
 
-        const latestScrape = sorted.reduce(
-          (latest, [, v]) => (v.scrapedAt > latest ? v.scrapedAt : latest),
+        // Use the OLDEST scrape in the panel — never flatter the data.
+        const oldestScrape = sorted.reduce(
+          (oldest, [, v]) => (v.scrapedAt && v.scrapedAt < oldest ? v.scrapedAt : oldest),
           sorted[0][1].scrapedAt
         );
 
@@ -78,7 +79,8 @@ export function useDynamicComparisonPanels(): {
           name: cat.displayName,
           collectionMethod: "at_home",
           methodLabel: cat.methodLabel,
-          lastScrapedAt: latestScrape,
+          lastScrapedAt: oldestScrape,
+          providerIds: sorted.map(([pid]) => pid),
           providers: sorted.map(([pid, { price }]) => ({
             name: PROVIDER_DISPLAY_NAMES[pid] || pid,
             options: [{ label: cat.methodLabel, price: `\u00a3${Math.round(price)}` }],
