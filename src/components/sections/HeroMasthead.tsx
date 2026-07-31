@@ -108,18 +108,17 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
 
       {/* Brand slogan — mobile only; desktop/tablet slogan sits above */}
       <div className="sm:hidden -mx-3 border-b border-white/10">
-        <div className="px-3 py-1.5">
-          <h1 className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white leading-[1.15] text-[clamp(0.85rem,4.2vw,1.5rem)] text-center m-0">
-            <span className="block">
-              YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span>
-            </span>
+        <div className="px-4 py-3.5">
+          <h1 className="font-bold uppercase tracking-[0.06em] font-[Montserrat] text-white leading-[1.3] text-[clamp(1rem,5vw,1.75rem)] text-center m-0">
+            <span className="block">YOUR <span className="text-brand-turquoise">HEALTH.</span></span>
+            <span className="block">YOUR <span className="text-brand-pink">CHOICE.</span></span>
             <span className="block">ONE TRUSTED PLATFORM.</span>
           </h1>
         </div>
       </div>
 
       {/* Category toolbar — directly under the slogan, above the imagery */}
-      <div className="-mx-3 sm:-mx-6 md:-mx-9 mt-3 sm:mt-5 lg:mt-6">
+      <div className="-mx-3 sm:-mx-6 md:-mx-9 mt-4 sm:mt-5 lg:mt-6">
         <BrowseByCategoryBar compact placement="hero" />
       </div>
 
