@@ -60,18 +60,15 @@ const CompareTests = () => {
     compareStore.clear();
   }, []);
 
-  const handleOpenComparison = useCallback(() => {
-    if (selectedTests.length >= 2) setIsComparisonOpen(true);
-  }, [selectedTests.length]);
-
   useEffect(() => {
-    if (searchParams.get("openCompare") === "1" && selectedTests.length >= 2) {
-      setIsComparisonOpen(true);
+    if (searchParams.get("openCompare") === "1") {
       const next = new URLSearchParams(searchParams);
       next.delete("openCompare");
       setSearchParams(next, { replace: true });
+      if (selectedTests.length >= 2) navigate("/compare/results");
     }
-  }, [searchParams, selectedTests.length, setSearchParams]);
+  }, [searchParams, selectedTests.length, setSearchParams, navigate]);
+
 
   const isSelected = useCallback(
     (id: string) => selectedTests.some(t => t.id === id),
