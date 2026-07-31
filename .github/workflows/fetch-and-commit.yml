@@ -2,21 +2,23 @@ name: Fetch and Commit Updated Files
 on: workflow_dispatch
 permissions:
   contents: write
+  pull-requests: write
 jobs:
   update-files:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
-          persist-credentials: true
-      - name: Download updated files
+      - name: Create feature branch and download files
         run: |
+          git checkout -b feat/copy-hardening-update
           curl -sL "https://customer-assets-wrfwihn1.emergentagent.net/wingman/34fb5cd2-c332-4d9f-8c63-16c782092bb4/attachments/f6d17e831adc48e180e4f5e3d2e62d61_UniversalTestCard_new.tsx" > src/components/cards/UniversalTestCard.tsx
           curl -sL "https://customer-assets-wrfwihn1.emergentagent.net/wingman/34fb5cd2-c332-4d9f-8c63-16c782092bb4/attachments/a09e026e7f1e4f489ead62fe338d8a49_TestFinderQuiz_new.tsx" > src/components/testFinder/TestFinderQuiz.tsx
-          echo "Card file size: $(wc -c < src/components/cards/UniversalTestCard.tsx)"
-          echo "Quiz file size: $(wc -c < src/components/testFinder/TestFinderQuiz.tsx)"
-      - name: Commit and push
+          echo "Card size: $(wc -c < src/components/cards/UniversalTestCard.tsx) bytes"
+          echo "Quiz size: $(wc -c < src/components/testFinder/TestFinderQuiz.tsx) bytes"
+      - name: Commit and push to feature branch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -26,4 +28,9 @@ jobs:
           git add src/components/cards/UniversalTestCard.tsx src/components/testFinder/TestFinderQuiz.tsx
           git diff --cached --stat
           git commit -m "feat: update TestFinderQuiz and UniversalTestCard with best-matched options copy hardening"
-          git push origin main
+          git push -f origin feat/copy-hardening-update
+      - name: Create Pull Request
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh pr create --title "feat: best-matched options copy hardening" --body "Automated PR: Updates TestFinderQuiz and UniversalTestCard with copy hardening changes." --base main --head feat/copy-hardening-update || echo "PR already exists"
