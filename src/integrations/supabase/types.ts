@@ -527,6 +527,48 @@ export type Database = {
         }
         Relationships: []
       }
+      apify_provider_configs: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          globs: Json
+          id: string
+          link_selector: string | null
+          max_concurrency: number
+          max_pages_per_crawl: number
+          page_function: string
+          provider_id: string
+          start_urls: Json
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          globs?: Json
+          id?: string
+          link_selector?: string | null
+          max_concurrency?: number
+          max_pages_per_crawl?: number
+          page_function: string
+          provider_id: string
+          start_urls?: Json
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          globs?: Json
+          id?: string
+          link_selector?: string | null
+          max_concurrency?: number
+          max_pages_per_crawl?: number
+          page_function?: string
+          provider_id?: string
+          start_urls?: Json
+          updated_at?: string
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           action: string
