@@ -131,12 +131,33 @@ export const useAdminMFA = (): UseAdminMFAResult => {
 
         mfaCache.set(user.id, { status: reconciledStatus, at: Date.now() });
         setMfaStatus(reconciledStatus);
-      } else if (fnError) {
-        console.error('MFA verification error:', fnError);
-        setError(fnError.message);
       } else {
-        setError('Unexpected response from MFA verification');
+        // The edge function was unreachable or returned an unparsable body.
+        // Fall back to a client-side check so the admin app never dead-ends on
+        // a blank screen: role comes from `user_roles`, MFA state from the
+        // Supabase auth client itself.
+        if (fnError) console.warn('MFA verification fell back to client check:', fnError.message);
+
+        const [{ data: roleRow }, { data: factorsData }, { data: aalData }] = await Promise.all([
+          supabase.from('user_roles').select('role').eq('user_id', user.id).eq('role', 'admin').maybeSingle(),
+          supabase.auth.mfa.listFactors(),
+          supabase.auth.mfa.getAuthenticatorAssuranceLevel(),
+        ]);
+
+        const hasMFA = (factorsData?.totp ?? []).some((f) => f.status === 'verified');
+        const fallback: MFAVerificationResult = {
+          isAdmin: !!roleRow,
+          hasMFA,
+          mfaVerified: hasMFA && aalData?.currentLevel === 'aal2',
+          requiresMFA: !!roleRow,
+          userId: user.id,
+          message: 'Resolved from client session',
+        };
+
+        mfaCache.set(user.id, { status: fallback, at: Date.now() });
+        setMfaStatus(fallback);
       }
+
     } catch (err) {
       console.error('MFA check failed:', err);
       setError(err instanceof Error ? err.message : 'Failed to verify MFA status');
