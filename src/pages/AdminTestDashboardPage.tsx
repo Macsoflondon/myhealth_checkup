@@ -253,14 +253,14 @@ function AdminTestDashboardContent() {
     id.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
 
   return (
-    <div className="min-h-screen bg-[#081129]">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="border-b border-white/10 bg-[#081129]">
+      <div className="border-b border-slate-200 bg-white">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between gap-3 mb-1 flex-wrap">
             <div className="flex items-center gap-3">
               <LayoutDashboard className="w-6 h-6 text-brand-pink" />
-              <h1 className="text-2xl font-bold text-white font-montserrat">
+              <h1 className="text-2xl font-bold text-slate-900 font-montserrat">
                 Test Catalogue Dashboard
               </h1>
             </div>
@@ -271,7 +271,7 @@ function AdminTestDashboardContent() {
               Open Biomarker Audit →
             </Link>
           </div>
-          <p className="text-white/60 text-sm">
+          <p className="text-slate-500 text-sm">
             Master catalogue with provider pricing — {combinedRows.length} master tests, {providerTests?.length ?? 0} provider listings
           </p>
         </div>
