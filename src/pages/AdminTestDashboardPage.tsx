@@ -253,14 +253,14 @@ function AdminTestDashboardContent() {
     id.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
 
   return (
-    <div className="min-h-screen bg-[#081129]">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="border-b border-white/10 bg-[#081129]">
+      <div className="border-b border-slate-200 bg-white">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between gap-3 mb-1 flex-wrap">
             <div className="flex items-center gap-3">
               <LayoutDashboard className="w-6 h-6 text-brand-pink" />
-              <h1 className="text-2xl font-bold text-white font-montserrat">
+              <h1 className="text-2xl font-bold text-slate-900 font-montserrat">
                 Test Catalogue Dashboard
               </h1>
             </div>
@@ -271,7 +271,7 @@ function AdminTestDashboardContent() {
               Open Biomarker Audit →
             </Link>
           </div>
-          <p className="text-white/60 text-sm">
+          <p className="text-slate-500 text-sm">
             Master catalogue with provider pricing — {combinedRows.length} master tests, {providerTests?.length ?? 0} provider listings
           </p>
         </div>
@@ -286,12 +286,12 @@ function AdminTestDashboardContent() {
             { label: "Providers", value: providers.length, icon: LayoutDashboard },
             { label: "Provider Listings", value: providerTests?.length ?? 0, icon: Database },
           ].map((stat) => (
-            <div key={stat.label} className="bg-white/5 border border-white/10 rounded-lg p-3">
+            <div key={stat.label} className="bg-slate-50 border border-slate-200 rounded-lg p-3">
               <div className="flex items-center gap-2 mb-1">
                 <stat.icon className="w-4 h-4 text-brand-turquoise" />
-                <span className="text-white/60 text-xs">{stat.label}</span>
+                <span className="text-slate-500 text-xs">{stat.label}</span>
               </div>
-              <span className="text-xl font-bold text-white">{stat.value}</span>
+              <span className="text-xl font-bold text-slate-900">{stat.value}</span>
             </div>
           ))}
         </div>
@@ -299,16 +299,16 @@ function AdminTestDashboardContent() {
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-3 mb-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <Input
               placeholder="Search tests, categories, providers..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(0); }}
-              className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/40"
+              className="pl-10 bg-white border-slate-300 text-slate-900 placeholder:text-slate-400"
             />
           </div>
           <Select value={categoryFilter} onValueChange={(v) => { setCategoryFilter(v); setPage(0); }}>
-            <SelectTrigger className="w-full sm:w-48 bg-white/5 border-white/10 text-white">
+            <SelectTrigger className="w-full sm:w-48 bg-white border-slate-300 text-slate-900">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
@@ -319,7 +319,7 @@ function AdminTestDashboardContent() {
             </SelectContent>
           </Select>
           <Select value={providerFilter} onValueChange={(v) => { setProviderFilter(v); setPage(0); }}>
-            <SelectTrigger className="w-full sm:w-48 bg-white/5 border-white/10 text-white">
+            <SelectTrigger className="w-full sm:w-48 bg-white border-slate-300 text-slate-900">
               <SelectValue placeholder="Provider" />
             </SelectTrigger>
             <SelectContent>
@@ -333,7 +333,7 @@ function AdminTestDashboardContent() {
             variant="outline"
             size="icon"
             onClick={exportCSV}
-            className="border-white/10 text-white hover:bg-white/10 shrink-0"
+            className="border-slate-300 text-slate-700 hover:bg-slate-100 shrink-0"
             title="Export CSV"
           >
             <Download className="w-4 h-4" />
@@ -342,21 +342,21 @@ function AdminTestDashboardContent() {
 
         {/* Results count */}
         <div className="flex items-center justify-between mb-2">
-          <span className="text-white/50 text-sm">
+          <span className="text-slate-500 text-sm">
             {filtered.length} result{filtered.length !== 1 ? "s" : ""}
             {search || categoryFilter !== "all" || providerFilter !== "all" ? " (filtered)" : ""}
           </span>
-          <span className="text-white/50 text-sm">
+          <span className="text-slate-500 text-sm">
             Page {page + 1} of {totalPages || 1}
           </span>
         </div>
 
         {/* Table */}
-        <div className="rounded-lg border border-white/10 overflow-hidden">
+        <div className="rounded-lg border border-slate-200 overflow-hidden">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow className="border-white/10 hover:bg-transparent">
+                <TableRow className="border-slate-200 hover:bg-transparent bg-slate-50">
                   {([
                     ["test_name", "Test Name"],
                     ["category", "Category"],
@@ -364,7 +364,7 @@ function AdminTestDashboardContent() {
                   ] as [SortField, string][]).map(([field, label]) => (
                     <TableHead
                       key={field}
-                      className="text-white/70 cursor-pointer select-none whitespace-nowrap"
+                      className="text-slate-600 cursor-pointer select-none whitespace-nowrap"
                       onClick={() => handleSort(field)}
                     >
                       <span className="flex items-center">
@@ -373,9 +373,9 @@ function AdminTestDashboardContent() {
                       </span>
                     </TableHead>
                   ))}
-                  <TableHead className="text-white/70 whitespace-nowrap">Biomarkers</TableHead>
+                  <TableHead className="text-slate-600 whitespace-nowrap">Biomarkers</TableHead>
                   <TableHead
-                    className="text-white/70 cursor-pointer select-none whitespace-nowrap"
+                    className="text-slate-600 cursor-pointer select-none whitespace-nowrap"
                     onClick={() => handleSort("provider_count")}
                   >
                     <span className="flex items-center">
@@ -384,7 +384,7 @@ function AdminTestDashboardContent() {
                     </span>
                   </TableHead>
                   <TableHead
-                    className="text-white/70 cursor-pointer select-none whitespace-nowrap"
+                    className="text-slate-600 cursor-pointer select-none whitespace-nowrap"
                     onClick={() => handleSort("min_price")}
                   >
                     <span className="flex items-center">
@@ -393,7 +393,7 @@ function AdminTestDashboardContent() {
                     </span>
                   </TableHead>
                   <TableHead
-                    className="text-white/70 cursor-pointer select-none whitespace-nowrap"
+                    className="text-slate-600 cursor-pointer select-none whitespace-nowrap"
                     onClick={() => handleSort("max_price")}
                   >
                     <span className="flex items-center">
@@ -401,20 +401,20 @@ function AdminTestDashboardContent() {
                       <SortIcon field="max_price" />
                     </span>
                   </TableHead>
-                  <TableHead className="text-white/70 whitespace-nowrap">Provider Breakdown</TableHead>
+                  <TableHead className="text-slate-600 whitespace-nowrap">Provider Breakdown</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {isLoading ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-12 text-white/50">
+                    <TableCell colSpan={8} className="text-center py-12 text-slate-500">
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-pink mx-auto mb-3" />
                       Loading test data...
                     </TableCell>
                   </TableRow>
                 ) : paginated.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-12 text-white/50">
+                    <TableCell colSpan={8} className="text-center py-12 text-slate-500">
                       No tests found matching your filters.
                     </TableCell>
                   </TableRow>
@@ -425,48 +425,48 @@ function AdminTestDashboardContent() {
                     const maxPrice = prices.length ? Math.max(...prices) : null;
 
                     return (
-                      <TableRow key={row.id} className="border-white/5 hover:bg-white/5">
-                        <TableCell className="text-white font-medium max-w-[200px] truncate">
+                      <TableRow key={row.id} className="border-slate-100 hover:bg-slate-50">
+                        <TableCell className="text-slate-900 font-medium max-w-[200px] truncate">
                           {row.test_name}
                         </TableCell>
                         <TableCell>
-                          <Badge variant="secondary" className="bg-brand-turquoise/20 text-brand-turquoise border-0 text-xs">
+                          <Badge variant="secondary" className="bg-brand-turquoise/10 text-brand-turquoise border-0 text-xs">
                             {row.category}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-white/70 text-sm capitalize">
+                        <TableCell className="text-slate-600 text-sm capitalize">
                           {row.sample_type || "—"}
                         </TableCell>
-                        <TableCell className="text-white/70 text-sm">
+                        <TableCell className="text-slate-600 text-sm">
                           {getBiomarkerCount(row.biomarkers)}
                         </TableCell>
                         <TableCell>
                           <Badge
                             variant={row.providers.length > 0 ? "default" : "destructive"}
                             className={row.providers.length > 0
-                              ? "bg-green-500/20 text-green-400 border-0"
-                              : "bg-red-500/20 text-red-400 border-0"
+                              ? "bg-green-100 text-green-700 border-0"
+                              : "bg-red-100 text-red-700 border-0"
                             }
                           >
                             {row.providers.length}
                           </Badge>
                         </TableCell>
-                        <TableCell className="text-white/70 text-sm font-mono">
+                        <TableCell className="text-slate-600 text-sm font-mono">
                           {formatPrice(minPrice)}
                         </TableCell>
-                        <TableCell className="text-white/70 text-sm font-mono">
+                        <TableCell className="text-slate-600 text-sm font-mono">
                           {formatPrice(maxPrice)}
                         </TableCell>
                         <TableCell className="max-w-[250px]">
                           <div className="flex flex-wrap gap-1">
                             {row.providers.length === 0 ? (
-                              <span className="text-white/30 text-xs">No providers</span>
+                              <span className="text-slate-400 text-xs">No providers</span>
                             ) : (
                               row.providers.map((p, i) => (
                                 <Badge
                                   key={`${p.provider_id}-${i}`}
                                   variant="outline"
-                                  className="text-[10px] border-white/20 text-white/60 whitespace-nowrap"
+                                  className="text-[10px] border-slate-300 text-slate-600 whitespace-nowrap"
                                 >
                                   {providerLabel(p.provider_id)}
                                   {p.price !== null ? ` £${p.price}` : ""}
@@ -492,7 +492,7 @@ function AdminTestDashboardContent() {
               size="sm"
               disabled={page === 0}
               onClick={() => setPage((p) => p - 1)}
-              className="border-white/10 text-white hover:bg-white/10"
+              className="border-slate-300 text-slate-700 hover:bg-slate-100"
             >
               <ChevronLeft className="w-4 h-4" />
             </Button>
@@ -507,7 +507,7 @@ function AdminTestDashboardContent() {
                   className={
                     page === pageNum
                       ? "bg-brand-pink text-white"
-                      : "border-white/10 text-white hover:bg-white/10"
+                      : "border-slate-300 text-slate-700 hover:bg-slate-100"
                   }
                 >
                   {pageNum + 1}
@@ -519,7 +519,7 @@ function AdminTestDashboardContent() {
               size="sm"
               disabled={page >= totalPages - 1}
               onClick={() => setPage((p) => p + 1)}
-              className="border-white/10 text-white hover:bg-white/10"
+              className="border-slate-300 text-slate-700 hover:bg-slate-100"
             >
               <ChevronRight className="w-4 h-4" />
             </Button>
