@@ -253,7 +253,7 @@ const Index = () => {
                   </div>
                 </div>
                 <p className="text-white text-base sm:text-lg leading-relaxed text-center max-w-2xl mx-auto">
-                  Answer 6 quick questions and our AI will analyse 597 accredited tests to find your perfect wellness panel — with transparent pricing.
+                  Answer 6 quick questions and our AI will analyse {catalogueClaim} to find your perfect wellness panel — with transparent pricing.
                 </p>
               </div>
             </div>
