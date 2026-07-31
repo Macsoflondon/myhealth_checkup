@@ -11,6 +11,11 @@ interface CategoryFiltersProps {
   compareCount?: number;
   /** Optional per-filter accent colors (hex). Falls back to turquoise. */
   filterColors?: Record<string, string>;
+  /** Restrict results to listings with a published biomarker list and turnaround. */
+  completeOnly?: boolean;
+  onCompleteOnlyChange?: (value: boolean) => void;
+  /** How many listings are hidden by the completeness filter. */
+  incompleteCount?: number;
 }
 
 const TURQUOISE = "#22c0d4";
@@ -25,6 +30,9 @@ export function CategoryFilters({
   searchTerm,
   compareCount = 0,
   filterColors = {},
+  completeOnly = false,
+  onCompleteOnlyChange,
+  incompleteCount = 0,
 }: CategoryFiltersProps) {
   const [hovered, setHovered] = useState<string | null>(null);
 
@@ -49,7 +57,28 @@ export function CategoryFilters({
           )}
         </div>
 
-        <select
+        <div className="flex items-center gap-3 flex-wrap">
+          {onCompleteOnlyChange && (
+            <label className="flex items-center gap-2 text-xs font-semibold cursor-pointer text-brand-navy">
+              <input
+                type="checkbox"
+                checked={completeOnly}
+                onChange={(e) => onCompleteOnlyChange(e.target.checked)}
+                className="h-4 w-4 rounded border-2 cursor-pointer"
+                style={{ accentColor: TURQUOISE, borderColor: TURQUOISE }}
+              />
+              <span>
+                Complete data only
+                {incompleteCount > 0 && (
+                  <span className="ml-1 font-normal text-muted-foreground">
+                    ({incompleteCount} listing{incompleteCount === 1 ? "" : "s"} incomplete)
+                  </span>
+                )}
+              </span>
+            </label>
+          )}
+
+          <select
           value={sort}
           onChange={(e) => onSortChange(e.target.value)}
           className="rounded-lg px-3 py-2 text-xs font-semibold cursor-pointer outline-hidden border-2"
@@ -65,7 +94,8 @@ export function CategoryFilters({
           <option value="price-desc">Price: High → Low</option>
           <option value="biomarkers">Most Biomarkers</option>
           <option value="turnaround">Fastest Results</option>
-        </select>
+          </select>
+        </div>
       </div>
     </div>
   );
