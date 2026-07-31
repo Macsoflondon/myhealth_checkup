@@ -107,20 +107,20 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
       </div>
 
       {/* Mobile header branding + slogan */}
-      <div className="sm:hidden flex flex-col items-center pt-4 pb-3 -mx-3 border-b border-white/10">
+      <div className="sm:hidden flex flex-col items-center pt-5 pb-4 -mx-3 border-b border-white/10">
         <Wordmark />
-        <h1 className="font-bold uppercase tracking-[0.05em] font-[Montserrat] text-white leading-[1.25] text-[clamp(1.15rem,5vw,1.9rem)] text-center m-0 mt-2">
+        <h1 className="font-bold uppercase tracking-[0.05em] font-[Montserrat] text-white leading-[1.25] text-[clamp(1.05rem,4.6vw,1.75rem)] text-center m-0 mt-3">
           <span className="block">YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span></span>
           <span className="block">ONE TRUSTED PLATFORM.</span>
         </h1>
       </div>
 
       {/* Category toolbar — directly under the slogan, above the imagery */}
-      <div className="-mx-3 sm:-mx-6 md:-mx-9 mt-4 sm:mt-5 lg:mt-6">
+      <div className="-mx-3 sm:-mx-6 md:-mx-9 mt-5 sm:mt-5 lg:mt-6">
         <BrowseByCategoryBar compact placement="hero" />
       </div>
 
-      <div className="relative rounded-t-[18px] overflow-hidden mt-3 sm:mt-5 lg:mt-6 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[38svh] sm:min-h-0 bg-[#081129]">
+      <div className="relative rounded-t-[18px] overflow-hidden mt-5 sm:mt-5 lg:mt-6 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129]">
 
 
         {SLIDES.map((s, n) => {
