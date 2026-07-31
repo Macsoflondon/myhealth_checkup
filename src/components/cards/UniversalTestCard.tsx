@@ -168,15 +168,15 @@ export const UniversalTestDetailModal: React.FC<{
                 </div>
               )}
             </div>
-            {test.turnaround_days_text && (
-              <div className="flex items-center gap-1.5">
-                <Clock size={14} color={UTC_TURQUOISE} />
-                <div>
-                  <div style={{ color: "#fff", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>{test.turnaround_days_text}</div>
-                  <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>Turnaround</div>
+            <div className="flex items-center gap-1.5">
+              <Clock size={14} color={UTC_TURQUOISE} />
+              <div>
+                <div style={{ color: test.turnaround_days_text ? "#fff" : "#fbbf24", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>
+                  {test.turnaround_days_text || "Not stated by this provider"}
                 </div>
+                <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>Turnaround</div>
               </div>
-            )}
+            </div>
             {test.biomarker_count != null && test.biomarker_count > 0 && (
               <div className="flex items-center gap-1.5">
                 <FlaskConical size={14} color={UTC_TURQUOISE} />
@@ -235,6 +235,17 @@ export const UniversalTestDetailModal: React.FC<{
             <div>
               <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: UTC_NAVY, marginBottom: 8 }}>Who Should Test</div>
               <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 14, color: "#475569", lineHeight: 1.6 }}>{test.who_should_test}</p>
+            </div>
+          )}
+
+          {biomarkers.length === 0 && (
+            <div>
+              <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: UTC_NAVY, marginBottom: 8 }}>
+                {isAllergy ? "Allergies Tested" : "Biomarkers Tested"}
+              </div>
+              <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 13, color: "#b45309", background: "#fff7ed", borderRadius: 8, padding: "10px 12px", margin: 0 }}>
+                Biomarker list not published by this provider. Check the provider's own listing for the full panel before booking.
+              </p>
             </div>
           )}
 
@@ -605,6 +616,21 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                 +{biomarkers.length - 3}
               </span>
             )}
+            {biomarkers.length === 0 && (
+              <span
+                className="truncate"
+                style={{
+                  background: "#fff7ed",
+                  color: "#b45309",
+                  fontFamily: "'DM Sans',sans-serif",
+                  fontSize: 11,
+                  padding: "2px 8px",
+                  borderRadius: 12,
+                }}
+              >
+                Biomarker list not published by this provider
+              </span>
+            )}
           </div>
 
           {/* Stats row */}
@@ -616,11 +642,11 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               <FlaskConical size={12} color={UTC_TURQUOISE} />
               {test.biomarker_count && test.biomarker_count > 0
                 ? `${test.biomarker_count} ${isAllergy ? "allergens" : "markers"}`
-                : "\u2014"}
+                : "Not published"}
             </span>
             <span className="flex items-center gap-1 flex-shrink-0">
               <Clock size={12} color={UTC_TURQUOISE} />
-              {test.turnaround_days_text || "\u2014"}
+              {test.turnaround_days_text || "Not stated"}
             </span>
             <span className="flex items-center gap-1 flex-shrink-0 truncate">
               <Home size={12} color={UTC_TURQUOISE} />
