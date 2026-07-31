@@ -352,11 +352,11 @@ function AdminTestDashboardContent() {
         </div>
 
         {/* Table */}
-        <div className="rounded-lg border border-white/10 overflow-hidden">
+        <div className="rounded-lg border border-slate-200 overflow-hidden">
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow className="border-white/10 hover:bg-transparent">
+                <TableRow className="border-slate-200 hover:bg-transparent bg-slate-50">
                   {([
                     ["test_name", "Test Name"],
                     ["category", "Category"],
@@ -364,7 +364,7 @@ function AdminTestDashboardContent() {
                   ] as [SortField, string][]).map(([field, label]) => (
                     <TableHead
                       key={field}
-                      className="text-white/70 cursor-pointer select-none whitespace-nowrap"
+                      className="text-slate-600 cursor-pointer select-none whitespace-nowrap"
                       onClick={() => handleSort(field)}
                     >
                       <span className="flex items-center">
@@ -373,9 +373,9 @@ function AdminTestDashboardContent() {
                       </span>
                     </TableHead>
                   ))}
-                  <TableHead className="text-white/70 whitespace-nowrap">Biomarkers</TableHead>
+                  <TableHead className="text-slate-600 whitespace-nowrap">Biomarkers</TableHead>
                   <TableHead
-                    className="text-white/70 cursor-pointer select-none whitespace-nowrap"
+                    className="text-slate-600 cursor-pointer select-none whitespace-nowrap"
                     onClick={() => handleSort("provider_count")}
                   >
                     <span className="flex items-center">
@@ -384,7 +384,7 @@ function AdminTestDashboardContent() {
                     </span>
                   </TableHead>
                   <TableHead
-                    className="text-white/70 cursor-pointer select-none whitespace-nowrap"
+                    className="text-slate-600 cursor-pointer select-none whitespace-nowrap"
                     onClick={() => handleSort("min_price")}
                   >
                     <span className="flex items-center">
@@ -393,7 +393,7 @@ function AdminTestDashboardContent() {
                     </span>
                   </TableHead>
                   <TableHead
-                    className="text-white/70 cursor-pointer select-none whitespace-nowrap"
+                    className="text-slate-600 cursor-pointer select-none whitespace-nowrap"
                     onClick={() => handleSort("max_price")}
                   >
                     <span className="flex items-center">
@@ -401,7 +401,7 @@ function AdminTestDashboardContent() {
                       <SortIcon field="max_price" />
                     </span>
                   </TableHead>
-                  <TableHead className="text-white/70 whitespace-nowrap">Provider Breakdown</TableHead>
+                  <TableHead className="text-slate-600 whitespace-nowrap">Provider Breakdown</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
