@@ -9,22 +9,26 @@ const corsHeaders = {
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
+// `apify: true` providers are dispatched asynchronously to an Apify actor and
+// ingested later by the `apify-ingest` webhook. Their bespoke edge functions
+// remain in the repo as a fallback but are no longer referenced here.
 const SCRAPERS = [
   { id: 'lola-health', functionName: 'lola-health-scraper' },
-  { id: 'medichecks', functionName: 'medichecks-firecrawl' },
+  { id: 'medichecks', functionName: 'apify-scrape-provider', apify: true },
   { id: 'goodbody-clinic', functionName: 'goodbody-scraper' },
   { id: 'thriva', functionName: 'thriva-scraper' },
   { id: 'randox', functionName: 'randox-scraper' },
   { id: 'london-medical-laboratory', functionName: 'scrape-london-lab' },
-  { id: 'clinilabs', functionName: 'clinilabs-scraper' },
-  { id: 'medical-diagnosis', functionName: 'medical-diagnosis-scraper' },
+  { id: 'clinilabs', functionName: 'apify-scrape-provider', apify: true },
+  { id: 'medical-diagnosis', functionName: 'apify-scrape-provider', apify: true },
   { id: 'london-health-company', functionName: 'london-health-scraper' },
-];
+] as { id: string; functionName: string; apify?: boolean }[];
 
 interface ScraperResult {
   provider: string;
   success: boolean;
   message: string;
+  dispatched?: boolean;
 }
 
 interface RunAllScrapersBody {
