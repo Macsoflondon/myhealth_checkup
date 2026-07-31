@@ -234,7 +234,7 @@ const Index = () => {
                   <div className="sm:col-start-4 flex flex-col items-center gap-2 w-full sm:w-auto px-1 sm:px-0">
                     <Link
                       to="/find-test"
-                      aria-label="Take the Health Quiz — find the right private blood test"
+                      aria-label="Take the Health Quiz \u2014 find the right private blood test"
                       className="inline-flex items-center justify-center gap-2 w-full sm:w-auto whitespace-nowrap bg-gradient-to-r from-[#22c0d4] to-[#1aa8bb] hover:from-[#1aa8bb] hover:to-[#22c0d4] text-[#081129] font-bold text-base sm:text-lg px-6 sm:px-8 py-3.5 sm:py-4 rounded-full shadow-lg shadow-[#22c0d4]/25 transition-all hover:scale-[1.02]"
                       style={{ fontFamily: "'Montserrat', sans-serif" }}
                     >
@@ -245,15 +245,15 @@ const Index = () => {
                       <span className="flex items-center gap-1">
                         <Shield className="w-3 h-3 shrink-0" /> No account required
                       </span>
-                      <span className="hidden sm:inline">•</span>
+                      <span className="hidden sm:inline">\u2022</span>
                       <span>Takes 2 minutes</span>
-                      <span className="hidden sm:inline">•</span>
+                      <span className="hidden sm:inline">\u2022</span>
                       <span>100% free</span>
                     </div>
                   </div>
                 </div>
                 <p className="text-white text-base sm:text-lg leading-relaxed text-center max-w-2xl mx-auto">
-                  Answer 6 quick questions and our AI will analyse 597 accredited tests to find your perfect wellness panel — with transparent pricing.
+                  Answer 6 quick questions and our AI will analyse 597 accredited tests to find your best-matched options \u2014 with transparent pricing.
                 </p>
               </div>
             </div>
