@@ -7,15 +7,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          persist-credentials: true
       - name: Download updated files
         run: |
           curl -sL "https://customer-assets-wrfwihn1.emergentagent.net/wingman/34fb5cd2-c332-4d9f-8c63-16c782092bb4/attachments/f6d17e831adc48e180e4f5e3d2e62d61_UniversalTestCard_new.tsx" > src/components/cards/UniversalTestCard.tsx
           curl -sL "https://customer-assets-wrfwihn1.emergentagent.net/wingman/34fb5cd2-c332-4d9f-8c63-16c782092bb4/attachments/a09e026e7f1e4f489ead62fe338d8a49_TestFinderQuiz_new.tsx" > src/components/testFinder/TestFinderQuiz.tsx
+          echo "Card file size: $(wc -c < src/components/cards/UniversalTestCard.tsx)"
+          echo "Quiz file size: $(wc -c < src/components/testFinder/TestFinderQuiz.tsx)"
       - name: Commit and push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config user.name "myhealth checkup"
-          git config user.email "support@myhealthcheckup.co.uk"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Macsoflondon/myhealth_checkup.git
           git add src/components/cards/UniversalTestCard.tsx src/components/testFinder/TestFinderQuiz.tsx
           git diff --cached --stat
-          git commit -m "feat: update TestFinderQuiz and UniversalTestCard with best-matched options copy hardening" || echo "No changes to commit"
-          git push
+          git commit -m "feat: update TestFinderQuiz and UniversalTestCard with best-matched options copy hardening"
+          git push origin main
