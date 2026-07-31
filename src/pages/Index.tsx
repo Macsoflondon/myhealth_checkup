@@ -42,6 +42,16 @@ const Index = () => {
   usePerformanceOptimization();
   useMobileOptimization();
 
+  // Never hardcode the catalogue size: derive it at runtime and round down.
+  const { data: freshness } = useCatalogueFreshness();
+  const activeTests = freshness?.totalActiveTests ?? 0;
+  const catalogueClaim =
+    activeTests >= 100
+      ? `over ${Math.floor(activeTests / 50) * 50} accredited tests`
+      : "our accredited test catalogue";
+
+
+
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
