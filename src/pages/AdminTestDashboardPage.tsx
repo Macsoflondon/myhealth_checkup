@@ -299,16 +299,16 @@ function AdminTestDashboardContent() {
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-3 mb-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <Input
               placeholder="Search tests, categories, providers..."
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(0); }}
-              className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/40"
+              className="pl-10 bg-white border-slate-300 text-slate-900 placeholder:text-slate-400"
             />
           </div>
           <Select value={categoryFilter} onValueChange={(v) => { setCategoryFilter(v); setPage(0); }}>
-            <SelectTrigger className="w-full sm:w-48 bg-white/5 border-white/10 text-white">
+            <SelectTrigger className="w-full sm:w-48 bg-white border-slate-300 text-slate-900">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
@@ -319,7 +319,7 @@ function AdminTestDashboardContent() {
             </SelectContent>
           </Select>
           <Select value={providerFilter} onValueChange={(v) => { setProviderFilter(v); setPage(0); }}>
-            <SelectTrigger className="w-full sm:w-48 bg-white/5 border-white/10 text-white">
+            <SelectTrigger className="w-full sm:w-48 bg-white border-slate-300 text-slate-900">
               <SelectValue placeholder="Provider" />
             </SelectTrigger>
             <SelectContent>
@@ -333,7 +333,7 @@ function AdminTestDashboardContent() {
             variant="outline"
             size="icon"
             onClick={exportCSV}
-            className="border-white/10 text-white hover:bg-white/10 shrink-0"
+            className="border-slate-300 text-slate-700 hover:bg-slate-100 shrink-0"
             title="Export CSV"
           >
             <Download className="w-4 h-4" />
