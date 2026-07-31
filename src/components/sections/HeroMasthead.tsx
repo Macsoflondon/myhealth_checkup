@@ -61,7 +61,7 @@ const SLIDES = [
 
 
 const Wordmark = () => (
-  <span className="inline-flex items-center leading-[1.1] min-w-0 py-1">
+  <span className="inline-flex items-center leading-[1.1] min-w-0 py-2 sm:py-3">
     <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(4.5rem,8vw,8rem)] lg:text-[7rem] xl:text-[8rem]">
       <span className="text-white">myhealth</span>
       <span className="text-brand-pink">checkup</span>
@@ -92,9 +92,9 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
   return (
     <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border border-b-0 border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[68svh] sm:min-h-[100svh] flex flex-col">
       <TestCategoryTicker variant="inline" className="bg-white border-b border-brand-navy/10 -mx-3 sm:-mx-6 md:-mx-9" />
-      <div className="hidden sm:flex flex-col items-start pt-4 sm:pt-7">
+      <div className="hidden sm:flex flex-col items-start pt-5 sm:pt-10 lg:pt-12">
         <Wordmark />
-        <div className="w-full border-t border-white/45 my-2" />
+        <div className="w-full border-t border-white/45 my-3 sm:my-4" />
         <div className="w-full flex items-center justify-between gap-4">
           <p className="font-bold uppercase tracking-[0.08em] font-[Montserrat] text-white text-[clamp(0.95rem,2.4vw,1.75rem)] leading-[1.15] text-left">
             YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR <span className="text-brand-pink">CHOICE.</span> ONE TRUSTED PLATFORM.
@@ -119,11 +119,11 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
       </div>
 
       {/* Category toolbar — directly under the slogan, above the imagery */}
-      <div className="-mx-3 sm:-mx-6 md:-mx-9 mt-1.5 sm:mt-3">
+      <div className="-mx-3 sm:-mx-6 md:-mx-9 mt-3 sm:mt-5 lg:mt-6">
         <BrowseByCategoryBar compact placement="hero" />
       </div>
 
-      <div className="relative rounded-t-[18px] overflow-hidden mt-1.5 sm:mt-3 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[38svh] sm:min-h-0 bg-[#081129]">
+      <div className="relative rounded-t-[18px] overflow-hidden mt-3 sm:mt-5 lg:mt-6 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[38svh] sm:min-h-0 bg-[#081129]">
 
 
         {SLIDES.map((s, n) => {
