@@ -5,7 +5,6 @@ import {
   CONFIRM_PRICING_NOTE,
   STALE_PRICE_CAUTION,
   formatPriceCheckedLabel,
-  hoursSince,
   isStale,
 } from "@/lib/freshness";
 
@@ -111,10 +110,9 @@ const LiveComparisonCard = ({
   const idx = controlled ? (panelIndex! % panels.length) : internalIdx;
   const test = panels[idx];
 
-  // Real age only: prefer the view (oldest provider in the panel), fall back to
-  // the panel's own oldest scrape timestamp. If neither is known, make no claim.
-  const viewAge = oldestAgeHours(freshness, test?.providerIds);
-  const ageHours = viewAge ?? hoursSince(test?.lastScrapedAt);
+  // Single source of truth: `catalogue_freshness`, taking the OLDEST provider in
+  // the panel. If the view is unreachable we make no freshness claim at all.
+  const ageHours = oldestAgeHours(freshness, test?.providerIds);
   const ageLabel = formatPriceCheckedLabel(ageHours);
   const stale = isStale(ageHours);
 
