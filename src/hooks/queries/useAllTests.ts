@@ -66,7 +66,6 @@ export function useAllTests() {
           "id,provider_id,test_name,description,price,base_price,url,image_url,biomarker_count,biomarkers_list,turnaround_days_text,is_popular,popularity_rank,sample_type,home_kit_available,clinic_visit_available,category,source_section_label,canonical_category"
         )
         .eq("is_active", true)
-        .not("image_url", "is", null)
         .not("url", "is", null)
         .not("canonical_category", "is", null)
         .order("is_popular", { ascending: false })
