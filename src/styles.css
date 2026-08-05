@@ -50,6 +50,12 @@
   --color-brand-turquoise: #22c0d4;
   --color-brand-pink: #e70d69;
   --color-brand-navy: #081129;
+  /* Text on dark (navy) surfaces — WCAG AA safe floors */
+  --color-on-dark: #ffffff;
+  --color-on-dark-muted: rgba(255, 255, 255, 0.9);
+  --color-on-dark-subtle: rgba(255, 255, 255, 0.78);
+  /* Lightened pink for small body text on navy (base #e70d69 is ~4.1:1) */
+  --color-brand-pink-on-dark: #ff5c9d;
   --color-turquoise: hsl(var(--turquoise));
   --color-pink: hsl(var(--pink));
   --color-navy: hsl(var(--navy));
