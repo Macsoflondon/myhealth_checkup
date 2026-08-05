@@ -191,23 +191,23 @@ const CompareTests = () => {
           })()}
 
           {/* ENTRY POINTS — goal and symptom comparison hubs */}
-          <section className="bg-white px-4 sm:px-6 pt-8 sm:pt-10">
-            <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+          <section className="bg-[#08122b] px-4 sm:px-6 lg:px-12 xl:px-16 pt-12 sm:pt-16">
+            <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <Link
                 to="/compare/goals"
-                className="group block rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-turquoise hover:shadow-md"
+                className="group block rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5 sm:p-6 transition-all hover:-translate-y-0.5 hover:border-[#22c0d4]/60 hover:bg-white/[0.08]"
               >
-                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-turquoise">
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#22c0d4]">
                   Start with an outcome
                 </span>
-                <h2 className="font-heading text-lg sm:text-xl font-bold text-[#081129] mt-2">
+                <h2 className="font-heading text-lg sm:text-xl font-bold text-white mt-2">
                   Compare by goal
                 </h2>
-                <p className="text-sm sm:text-base text-slate-600 mt-1.5">
+                <p className="text-sm sm:text-base text-white/70 mt-1.5">
                   Know what you want to achieve — longevity, performance, weight loss, prevention —
                   and see which tests get you there.
                 </p>
-                <span className="inline-flex items-center gap-1 text-sm font-semibold text-brand-turquoise mt-3">
+                <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#22c0d4] group-hover:text-[#e70d69] transition-colors mt-3">
                   Browse goals{" "}
                   <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
                 </span>
@@ -215,25 +215,26 @@ const CompareTests = () => {
 
               <Link
                 to="/compare/symptoms"
-                className="group block rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-pink hover:shadow-md"
+                className="group block rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5 sm:p-6 transition-all hover:-translate-y-0.5 hover:border-[#e70d69]/60 hover:bg-white/[0.08]"
               >
-                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-pink">
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#e70d69]">
                   Start with how you feel
                 </span>
-                <h2 className="font-heading text-lg sm:text-xl font-bold text-[#081129] mt-2">
+                <h2 className="font-heading text-lg sm:text-xl font-bold text-white mt-2">
                   Compare by symptom
                 </h2>
-                <p className="text-sm sm:text-base text-slate-600 mt-1.5">
+                <p className="text-sm sm:text-base text-white/70 mt-1.5">
                   Tired, low mood, unexplained weight change — see the tests and biomarkers commonly
                   used to investigate each symptom.
                 </p>
-                <span className="inline-flex items-center gap-1 text-sm font-semibold text-brand-pink mt-3">
+                <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#e70d69] group-hover:text-[#22c0d4] transition-colors mt-3">
                   Browse symptoms{" "}
                   <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
                 </span>
               </Link>
             </div>
           </section>
+
 
           {/* DARK BAND — recommended / search results */}
           <section className="bg-[#081129] py-16 sm:py-20 px-4 sm:px-6">
