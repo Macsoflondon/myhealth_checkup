@@ -8,6 +8,8 @@ interface LazyMountProps {
   rootMargin?: string;
   /** Optional placeholder content (defaults to an empty sized div). */
   fallback?: ReactNode;
+  /** Classes applied to the placeholder wrapper (e.g. background colour). */
+  className?: string;
 }
 
 /**
@@ -17,8 +19,9 @@ interface LazyMountProps {
 export const LazyMount = ({
   children,
   minHeight = 400,
-  rootMargin = "600px 0px",
+  rootMargin = "1200px 0px",
   fallback,
+  className,
 }: LazyMountProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
@@ -49,6 +52,7 @@ export const LazyMount = ({
   return (
     <div
       ref={ref}
+      className={className}
       style={{ minHeight: typeof minHeight === "number" ? `${minHeight}px` : minHeight }}
       aria-hidden="true"
     >

@@ -5,6 +5,7 @@ import MainLayout from "@/layouts/MainLayout";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import SectionReveal from "@/components/ui/SectionReveal";
 import { LazyMount } from "@/components/common/LazyMount";
+import { SectionSkeleton } from "@/components/common/SectionSkeleton";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 import { ArrowRight, Shield } from "lucide-react";
@@ -36,6 +37,16 @@ const StartJourneySection = lazy(() => import("@/components/sections/StartJourne
 const NewsletterSection = lazy(() => import("@/components/sections/NewsletterSection"));
 
 const SectionFallback = () => <div className="min-h-[200px]" aria-hidden="true" />;
+
+const PartnerShowcaseSkeleton = () => (
+  <SectionSkeleton tone="navy" cards={3} minHeight={800} />
+);
+const TestimonialSkeleton = () => (
+  <SectionSkeleton tone="navy" cards={3} minHeight={500} />
+);
+const ClinicHelpSkeleton = () => (
+  <SectionSkeleton tone="white" cards={2} minHeight={500} />
+);
 
 
 const Index = () => {
@@ -281,24 +292,24 @@ const Index = () => {
           </Suspense>
 
 
-          <LazyMount minHeight={800}>
-            <Suspense fallback={<SectionFallback />}>
+          <LazyMount minHeight={800} className="bg-brand-navy" fallback={<PartnerShowcaseSkeleton />}>
+            <Suspense fallback={<PartnerShowcaseSkeleton />}>
               <SectionReveal delay={0.1}>
                 <PartnerShowcaseGrid />
               </SectionReveal>
             </Suspense>
           </LazyMount>
 
-          <LazyMount minHeight={500}>
-            <Suspense fallback={<SectionFallback />}>
+          <LazyMount minHeight={500} className="bg-brand-navy" fallback={<TestimonialSkeleton />}>
+            <Suspense fallback={<TestimonialSkeleton />}>
               <SectionReveal>
                 <TestimonialCarousel />
               </SectionReveal>
             </Suspense>
           </LazyMount>
 
-          <LazyMount minHeight={500}>
-            <Suspense fallback={<SectionFallback />}>
+          <LazyMount minHeight={500} className="bg-white" fallback={<ClinicHelpSkeleton />}>
+            <Suspense fallback={<ClinicHelpSkeleton />}>
               <SectionReveal delay={0.1}>
                 <ClinicAndHelpSection />
               </SectionReveal>
