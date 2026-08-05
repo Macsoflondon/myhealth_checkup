@@ -19,21 +19,15 @@ const trustItems: TrustItem[] = [
 
 interface BadgePillProps {
   item: TrustItem;
-  tone: "turquoise" | "pink";
 }
 
-const BadgePill = ({ item, tone }: BadgePillProps) => {
+const BadgePill = ({ item }: BadgePillProps) => {
   const Icon = item.icon;
   return (
     <div className="flex items-center gap-2 sm:gap-2.5 whitespace-nowrap lg:px-5">
       <span
         aria-hidden="true"
-        className={[
-          "flex items-center justify-center rounded-full w-7 h-7 sm:w-9 sm:h-9 shrink-0",
-          tone === "turquoise"
-            ? "bg-[hsl(var(--turquoise)/0.18)] text-[hsl(var(--turquoise))]"
-            : "bg-[hsl(var(--pink)/0.16)] text-[hsl(var(--pink))]",
-        ].join(" ")}
+        className="flex items-center justify-center rounded-full w-7 h-7 sm:w-9 sm:h-9 shrink-0 bg-[hsl(var(--trust-tone)/var(--trust-tone-alpha))] text-[hsl(var(--trust-tone))]"
       >
         <Icon className="w-[14px] h-[14px] sm:w-[18px] sm:h-[18px]" strokeWidth={2.25} />
       </span>
