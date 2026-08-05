@@ -245,6 +245,8 @@ Deno.serve(async (req) => {
         await supabase.from('provider_tests').update({
           category: p.category,
           description: p.description,
+          // Customer-facing deep link must be the product page, not the homepage.
+          url: p.url,
           clinic_visit_available: true,
           home_kit_available: false,
         }).eq('id', res.providerTestId);
