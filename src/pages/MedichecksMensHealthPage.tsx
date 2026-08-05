@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
@@ -152,6 +153,11 @@ const MedichecksMensHealthPage = () => {
           </div>
         </section>
       </div>
+      <section className="bg-white py-12 px-4 sm:px-6">
+        <div className="max-w-[1280px] mx-auto">
+          <QuizCTABanner />
+        </div>
+      </section>
     </MainLayout>
   );
 };

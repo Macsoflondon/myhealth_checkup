@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { useParams, Link, useNavigate } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
@@ -357,6 +358,11 @@ const CategoryLandingPage: React.FC = () => {
               </div>
             </section>
           </div>
+      <section className="bg-white py-12 px-4 sm:px-6">
+        <div className="max-w-[1280px] mx-auto">
+          <QuizCTABanner />
+        </div>
+      </section>
         </MainLayout>
       </div>
     </ErrorBoundary>
