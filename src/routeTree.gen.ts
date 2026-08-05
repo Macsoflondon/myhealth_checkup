@@ -56,6 +56,7 @@ import { Route as PopularTestsRouteImport } from './routes/popular-tests'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as ProvidersRouteImport } from './routes/providers'
+import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as RecommendationsRouteImport } from './routes/recommendations'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ReviewsRouteImport } from './routes/reviews'
@@ -383,6 +384,11 @@ const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
 const ProvidersRoute = ProvidersRouteImport.update({
   id: '/providers',
   path: '/providers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const QuizRoute = QuizRouteImport.update({
+  id: '/quiz',
+  path: '/quiz',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RecommendationsRoute = RecommendationsRouteImport.update({
@@ -906,6 +912,7 @@ export interface FileRoutesByFullPath {
   '/portal': typeof PortalRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/providers': typeof ProvidersRouteWithChildren
+  '/quiz': typeof QuizRoute
   '/recommendations': typeof RecommendationsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/reviews': typeof ReviewsRoute
@@ -1046,6 +1053,7 @@ export interface FileRoutesByTo {
   '/portal': typeof PortalRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/providers': typeof ProvidersRouteWithChildren
+  '/quiz': typeof QuizRoute
   '/recommendations': typeof RecommendationsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/reviews': typeof ReviewsRoute
@@ -1188,6 +1196,7 @@ export interface FileRoutesById {
   '/portal': typeof PortalRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/providers': typeof ProvidersRouteWithChildren
+  '/quiz': typeof QuizRoute
   '/recommendations': typeof RecommendationsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/reviews': typeof ReviewsRoute
@@ -1331,6 +1340,7 @@ export interface FileRouteTypes {
     | '/portal'
     | '/privacy-policy'
     | '/providers'
+    | '/quiz'
     | '/recommendations'
     | '/reset-password'
     | '/reviews'
@@ -1471,6 +1481,7 @@ export interface FileRouteTypes {
     | '/portal'
     | '/privacy-policy'
     | '/providers'
+    | '/quiz'
     | '/recommendations'
     | '/reset-password'
     | '/reviews'
@@ -1612,6 +1623,7 @@ export interface FileRouteTypes {
     | '/portal'
     | '/privacy-policy'
     | '/providers'
+    | '/quiz'
     | '/recommendations'
     | '/reset-password'
     | '/reviews'
@@ -1754,6 +1766,7 @@ export interface RootRouteChildren {
   PortalRoute: typeof PortalRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ProvidersRoute: typeof ProvidersRouteWithChildren
+  QuizRoute: typeof QuizRoute
   RecommendationsRoute: typeof RecommendationsRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ReviewsRoute: typeof ReviewsRoute
@@ -2144,6 +2157,13 @@ declare module '@tanstack/react-router' {
       path: '/providers'
       fullPath: '/providers'
       preLoaderRoute: typeof ProvidersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/quiz': {
+      id: '/quiz'
+      path: '/quiz'
+      fullPath: '/quiz'
+      preLoaderRoute: typeof QuizRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recommendations': {
@@ -3072,6 +3092,7 @@ const rootRouteChildren: RootRouteChildren = {
   PortalRoute: PortalRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ProvidersRoute: ProvidersRouteWithChildren,
+  QuizRoute: QuizRoute,
   RecommendationsRoute: RecommendationsRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ReviewsRoute: ReviewsRoute,

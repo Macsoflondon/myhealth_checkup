@@ -11,14 +11,14 @@ interface CategoryPageBottomProps {
   /** e.g. "Why Choose Cancer Screening?" */
   benefitsTitle: string;
   benefits: [BenefitItem, BenefitItem, BenefitItem];
-  /** Link for the quiz CTA, defaults to /quiz */
+  /** Link for the quiz CTA, defaults to /find-test */
   quizLink?: string;
 }
 
 const CategoryPageBottom = ({
   benefitsTitle,
   benefits,
-  quizLink = "/quiz",
+  quizLink = "/find-test",
 }: CategoryPageBottomProps) => {
   return (
     <section style={{ background: "#ffffff", padding: "48px 40px" }}>
