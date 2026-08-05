@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { useSearchParams, Link } from '@/lib/router-compat';
 import { Helmet } from 'react-helmet-async';
 import { Shield, Activity, Heart, Target, Microscope, AlertCircle, Plus, Minus, ExternalLink, BookOpen } from 'lucide-react';
@@ -376,6 +377,11 @@ export default function CancerComparisonPage() {
         </div>
       </main>
 
+      <section className="bg-white py-12 px-4 sm:px-6">
+        <div className="max-w-[1280px] mx-auto">
+          <QuizCTABanner />
+        </div>
+      </section>
       <Footer />
     </>
   );

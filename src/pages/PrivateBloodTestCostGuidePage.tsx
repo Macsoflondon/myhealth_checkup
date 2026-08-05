@@ -1,4 +1,5 @@
 import { Link } from "@/lib/router-compat";
+import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { Helmet } from "react-helmet-async";
 import { ArrowRight, PoundSterling, ShieldCheck, Beaker } from "lucide-react";
 import { MainLayout } from "@/layouts/MainLayout";
@@ -365,6 +366,11 @@ export const PrivateBloodTestCostGuidePage = () => {
           platform and does not provide clinical care.
         </p>
       </article>
+      <section className="bg-white py-12 px-4 sm:px-6">
+        <div className="max-w-[1280px] mx-auto">
+          <QuizCTABanner />
+        </div>
+      </section>
     </MainLayout>
   );
 };

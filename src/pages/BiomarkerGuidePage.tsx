@@ -1,4 +1,5 @@
 import { useParams, Link, Navigate } from "@/lib/router-compat";
+import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { Helmet } from "react-helmet-async";
 import { ArrowRight, CheckCircle2, Beaker, ShieldCheck } from "lucide-react";
 import { MainLayout } from "@/layouts/MainLayout";
@@ -191,6 +192,11 @@ const BiomarkerGuidePage = () => {
           Always discuss test results with a qualified clinician.
         </p>
       </article>
+      <section className="bg-white py-12 px-4 sm:px-6">
+        <div className="max-w-[1280px] mx-auto">
+          <QuizCTABanner />
+        </div>
+      </section>
     </MainLayout>
   );
 };
