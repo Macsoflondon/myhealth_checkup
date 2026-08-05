@@ -16,12 +16,19 @@ test("adding a test from the detail modal lands on /compare/results with the ite
 }) => {
   await page.goto("/", { waitUntil: "domcontentloaded" });
 
-  // The showcase is lazily mounted below the fold.
+  // The showcase is lazily mounted once it scrolls into view.
   const detailsTrigger = page
     .getByRole("button", { name: /^View details for /i })
     .first();
+
+  for (let i = 0; i < 20 && (await detailsTrigger.count()) === 0; i++) {
+    await page.mouse.wheel(0, 1200);
+    await page.waitForTimeout(500);
+  }
+
   await detailsTrigger.scrollIntoViewIfNeeded();
   await expect(detailsTrigger).toBeVisible({ timeout: 30_000 });
+
 
   const label = (await detailsTrigger.getAttribute("aria-label")) ?? "";
   const testName = label.replace(/^View details for /i, "").trim();
