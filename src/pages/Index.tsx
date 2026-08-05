@@ -37,6 +37,16 @@ const NewsletterSection = lazy(() => import("@/components/sections/NewsletterSec
 
 const SectionFallback = () => <div className="min-h-[200px]" aria-hidden="true" />;
 
+const PartnerShowcaseSkeleton = () => (
+  <SectionSkeleton tone="navy" cards={3} minHeight={800} />
+);
+const TestimonialSkeleton = () => (
+  <SectionSkeleton tone="navy" cards={3} minHeight={500} />
+);
+const ClinicHelpSkeleton = () => (
+  <SectionSkeleton tone="white" cards={2} minHeight={500} />
+);
+
 
 const Index = () => {
   usePerformanceOptimization();
