@@ -237,8 +237,8 @@ const CompareTests = () => {
 
 
           {/* DARK BAND — recommended / search results */}
-          <section className="bg-[#081129] py-16 sm:py-20 px-4 sm:px-6">
-            <div className="max-w-7xl mx-auto">
+          <section className="bg-[#08122b] py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16">
+            <div className="max-w-6xl mx-auto">
               {showLoading ? (
                 <div className="flex gap-4 pb-4 overflow-x-auto">
                   {Array.from({ length: 4 }).map((_, i) => (
@@ -260,8 +260,12 @@ const CompareTests = () => {
             </div>
           </section>
 
-          {/* SECTION 2 — Side-by-side provider comparison */}
+          <CategoryPageBottom
+            benefitsTitle="Why compare with myhealth checkup?"
+            benefits={[COMPARE_BENEFITS[0], COMPARE_BENEFITS[1], COMPARE_BENEFITS[2]]}
+          />
         </MainLayout>
+
 
       </div>
     </ErrorBoundary>
