@@ -3693,6 +3693,7 @@ export type Database = {
           lab_ukas_accredited: boolean | null
           last_validated_at: string | null
           location_options: Json | null
+          measurement_type: string
           original_price: number | null
           phlebotomy_cost: number | null
           phlebotomy_included: boolean | null
@@ -3779,6 +3780,7 @@ export type Database = {
           lab_ukas_accredited?: boolean | null
           last_validated_at?: string | null
           location_options?: Json | null
+          measurement_type?: string
           original_price?: number | null
           phlebotomy_cost?: number | null
           phlebotomy_included?: boolean | null
@@ -3865,6 +3867,7 @@ export type Database = {
           lab_ukas_accredited?: boolean | null
           last_validated_at?: string | null
           location_options?: Json | null
+          measurement_type?: string
           original_price?: number | null
           phlebotomy_cost?: number | null
           phlebotomy_included?: boolean | null
