@@ -80,14 +80,7 @@ function isFingerPrickOnly(sampleType?: string | null): boolean {
 
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-function normalizeBiomarkers(list: UniversalTestData["biomarkers_list"]): string[] {
-  if (!list) return [];
-  if (Array.isArray(list) && list.length > 0) {
-    if (typeof list[0] === "string") return list as string[];
-    return (list as { value: string }[]).map((b) => b?.value).filter(Boolean);
-  }
-  return [];
-}
+// normalizeBiomarkers now lives in @/utils/normalize-biomarkers (shared).
 
 /** Short, honest sample/collection descriptor for the compact card. */
 function collectionLabel(t: UniversalTestData): string {
