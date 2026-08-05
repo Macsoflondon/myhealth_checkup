@@ -1,14 +1,22 @@
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 import type { UnifiedTestCardProps } from "@/components/cards/UnifiedTestCard";
 
-/** Strip trailing marketing noise from a provider test name. */
+/**
+ * Strip trailing marketing noise from a provider test name.
+ * Only removes known marketing suffixes — never truncates at the first dash,
+ * which would silently mangle legitimate names such as
+ * "TruCheck™ - Early Cancer Screening Blood Test".
+ */
 export const cleanTestName = (raw: string): string =>
   raw
-    .replace(/\s*[-–|].*$/, "")
-    .replace(/\s+Blood Test$/i, "")
+    .replace(/\s*\|\s*Book Online today.*$/i, "")
+    .replace(/\s*\|\s*Lola Health.*$/i, "")
+    .replace(/\s*[—–-]\s*\d+\s*Biomarkers?.*$/i, "")
+    .replace(/\s*[—–-]\s*A Comprehensive Blood Test.*$/i, "")
     .replace(/\s+for Enhanced Health$/i, "")
-    .replace(/\s*\| Book Online today$/i, "")
+    .replace(/\s+Blood Test$/i, "")
     .trim();
+
 
 /** Caller-supplied fields that aren't derivable from `ProviderTestCardData`. */
 export interface UnifiedCardOverrides {
