@@ -1,5 +1,6 @@
 import { CategoryTestItem } from "@/components/category/CategoryPageLayout";
 import { getProviderRating } from "@/constants/providerRatings";
+import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
 
 export const PROVIDER_NAMES: Record<string, string> = {
   "medichecks": "Medichecks",
