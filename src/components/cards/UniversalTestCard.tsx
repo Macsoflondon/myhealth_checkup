@@ -7,6 +7,7 @@ import { getProviderLogo } from "@/constants/providers";
 import { getProviderRating } from "@/constants/providerRatings";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import type { CompareTestData } from "@/types";
+import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
 
 // ─── Design tokens (kept inline to mirror AtHomeTestsPage exactly) ───────────
 export const UTC_NAVY = "#081129";
@@ -80,14 +81,7 @@ function isFingerPrickOnly(sampleType?: string | null): boolean {
 
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
-function normalizeBiomarkers(list: UniversalTestData["biomarkers_list"]): string[] {
-  if (!list) return [];
-  if (Array.isArray(list) && list.length > 0) {
-    if (typeof list[0] === "string") return list as string[];
-    return (list as { value: string }[]).map((b) => b?.value).filter(Boolean);
-  }
-  return [];
-}
+// normalizeBiomarkers now lives in @/utils/normalize-biomarkers (shared).
 
 /** Short, honest sample/collection descriptor for the compact card. */
 function collectionLabel(t: UniversalTestData): string {
