@@ -5,11 +5,14 @@ import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { ProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
 import ComparisonSectionHeading from "@/components/sections/ComparisonSectionHeading";
 import { Button } from "@/components/ui/button";
-import { compareStore, useCompareItems } from "@/stores/compareStore";
+import { Skeleton } from "@/components/ui/skeleton";
+import { compareStore } from "@/stores/compareStore";
+import { useCompareUrlSync } from "@/hooks/useCompareUrlSync";
 
 const ComparisonResultsPage = () => {
-  const selected = useCompareItems();
+  const { selected, isHydrating, missingIds } = useCompareUrlSync();
   const navigate = useNavigate();
+
 
   return (
     <ErrorBoundary>
