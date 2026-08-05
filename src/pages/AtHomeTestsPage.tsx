@@ -13,6 +13,7 @@ import { useAtHomeTests } from "@/hooks/queries/useAtHomeTests";
 import { getBranding } from "@/data/providerBranding";
 import { getProviderRating } from "@/constants/providerRatings";
 import { findSubcategory, testMatchesSubcategory } from "@/config/subcategoryMap";
+import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
 
 const SEO = {
   title: "At Home Test Kits | Compare UK Finger-Prick Tests | myhealth checkup",
