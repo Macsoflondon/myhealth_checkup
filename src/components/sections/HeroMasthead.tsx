@@ -25,6 +25,12 @@ const Wordmark = () => (
 export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }) {
   const [i, setI] = useState(0);
   const activeIndex = i % SLIDES.length;
+  const firstSlideRef = useRef<HTMLImageElement>(null);
+  const [firstLoaded, setFirstLoaded] = useState(false);
+  useEffect(() => {
+    // Cached images can finish before hydration attaches onLoad.
+    if (firstSlideRef.current?.complete) setFirstLoaded(true);
+  }, []);
   const [reducedMotion, setReducedMotion] = useState(false);
   useEffect(() => {
     if (typeof window === "undefined" || !window.matchMedia) return;
