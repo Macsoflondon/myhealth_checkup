@@ -51,8 +51,9 @@ export function toUnifiedCardProps(
     name: cleanTestName(test.test_name),
     description: test.description ?? "",
     biomarkers: test.biomarker_count ?? 0,
-    results: test.turnaround_days_text ?? "2–5 working days",
-    collection: test.sample_type ?? "Blood sample",
+    results: test.turnaround_days_text ?? "Not stated",
+    collection: test.sample_type ?? "Not stated",
+
     price: test.price ?? 0,
     priceFrom: !!test.price_from,
     markers: test.markers ?? [],
