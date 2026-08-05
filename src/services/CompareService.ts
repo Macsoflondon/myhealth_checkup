@@ -1,7 +1,9 @@
 import { logger } from "@/lib/logger";
+import { supabase } from "@/integrations/supabase/client";
 import type { CompareTestData } from "@/types";
 import { cacheService } from "./CacheService";
-import { TestDataTransformer } from "./transformers/testDataTransformer";
+import { TestDataTransformer, type LiveTestRow } from "./transformers/testDataTransformer";
+
 import { TestQueryBuilder } from "./queryBuilders/testQueryBuilder";
 import { compareCategories } from "@/constants/categories";
 import { LiveDataService } from "./LiveDataService";
