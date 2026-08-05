@@ -8,6 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "@/lib/router-compat";
 import { CompareService, type CompareTestData } from "@/services/CompareService";
 import { logger } from "@/lib/logger";
+import { isJunkTestName } from "@/utils/is-junk-test-name";
+
 
 // Query keys
 export const compareQueryKeys = {
