@@ -124,7 +124,6 @@ export const moreNavigationSections = [
   {
     title: "About",
     items: [
-      { name: "Crux Control (Admin)", path: "/control" },
       { name: "About Us", path: "/about" },
       { name: "Frequently Asked Questions", path: "/faqs" }
     ]

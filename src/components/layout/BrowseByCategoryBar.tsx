@@ -30,7 +30,6 @@ const MORE_SECTION_ICONS: Record<string, { Icon: any; color: string }> = {
   "Health Resources Hub": { Icon: BookOpen, color: "#0ea5e9" },
   "Biomarker Library": { Icon: Library, color: "#8b5cf6" },
   "Contact Us": { Icon: Phone, color: PINK },
-  "Crux Control (Admin)": { Icon: ShieldCheck, color: TURQUOISE },
 };
 export default function BrowseByCategoryBar({ variant = "card", compact = false, placement = "card", className = "" }: { variant?: "card" | "flush"; compact?: boolean; placement?: "card" | "hero" | "straddle"; className?: string; } = {}) {
   const [moreOpen, setMoreOpen] = useState(false);
