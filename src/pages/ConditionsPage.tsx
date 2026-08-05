@@ -136,15 +136,12 @@ const ConditionsPage = () => {
 
           <section className="py-12 bg-white">
             <div className="container mx-auto px-4">
-              <div className="max-w-4xl mx-auto text-center">
-                <h2 className="text-3xl font-bold mb-4 text-[#081129]">Not Sure Which Test You Need?</h2>
-                <p className="text-lg text-muted-foreground mb-8">Use our guided questionnaire to find the perfect test for your symptoms</p>
-                <Link to="/assisted-test-finder" className="inline-block w-full sm:w-auto">
-                  <Button size="lg" className="w-full sm:w-auto bg-[#e70d69] hover:bg-[#e70d69]/90 text-white whitespace-nowrap">Take Our Health Questionnaire</Button>
-                </Link>
+              <div className="max-w-[1280px] mx-auto">
+                <QuizCTABanner />
               </div>
             </div>
           </section>
+
         </main>
         
         <Footer />
