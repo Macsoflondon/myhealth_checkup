@@ -49,9 +49,10 @@ async function assertSubcategorySEO(page: Page, fx: Fixture) {
     .getAttribute("content");
   expect(ogUrl).toBe(canonical);
 
-  // Visible breadcrumb reflects the subcategory.
-  const breadcrumb = page.getByTestId("site-breadcrumb");
-  await expect(breadcrumb).toContainText(fx.subLabel);
+  // The visible breadcrumb strip is intentionally not rendered; the
+  // subcategory is reflected in the BreadcrumbList JSON-LD below instead.
+
+
 
   // BreadcrumbList JSON-LD ends with the sub label.
   const jsonLdBlocks = await page.locator('script[type="application/ld+json"]').allTextContents();

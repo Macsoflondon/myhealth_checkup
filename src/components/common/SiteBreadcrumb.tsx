@@ -1,13 +1,5 @@
-import { Link, useLocation, useSearchParams } from "@/lib/router-compat";
+import { useLocation, useSearchParams } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { findSubcategoryBySlug } from "@/config/subcategoryMap";
 
 /**
@@ -111,37 +103,11 @@ const SiteBreadcrumb = () => {
     ],
   };
 
+  // Structured data only — the visible breadcrumb strip was removed by design.
   return (
-    <>
-      <Helmet>
-        <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
-      </Helmet>
-      <nav aria-label="Breadcrumb" data-testid="site-breadcrumb" className="container mx-auto px-4 sm:px-6 lg:px-12 pt-4">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/">Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            {crumbs.map((c) => (
-              <span key={c.href} className="contents">
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  {c.isLast ? (
-                <BreadcrumbPage>{c.label}</BreadcrumbPage>
-                  ) : (
-                    <BreadcrumbLink asChild>
-                      <Link to={c.href}>{c.label}</Link>
-                    </BreadcrumbLink>
-                  )}
-                </BreadcrumbItem>
-              </span>
-            ))}
-          </BreadcrumbList>
-        </Breadcrumb>
-      </nav>
-    </>
+    <Helmet>
+      <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
+    </Helmet>
   );
 };
 
