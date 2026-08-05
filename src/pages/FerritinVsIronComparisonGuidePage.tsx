@@ -341,12 +341,11 @@ export default function FerritinVsIronComparisonGuidePage() {
                   Compare ferritin tests <ArrowRight className="ml-2 w-4 h-4" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg">
-                <Link to="/find-test">Take the health quiz</Link>
-              </Button>
             </div>
+            <QuizCTABanner className="text-left" />
           </div>
         </section>
+
       </article>
     </MainLayout>
   );
