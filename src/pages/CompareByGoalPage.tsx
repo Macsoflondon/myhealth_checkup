@@ -1,15 +1,20 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "@/lib/router-compat";
 import MainLayout from "@/layouts/MainLayout";
-import PageBanner from "@/components/sections/PageBanner";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight } from "lucide-react";
+import { CategoryStandardHero } from "@/components/category/CategoryStandardHero";
+import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
+import { ArrowRight, Target, Shield, Clock } from "lucide-react";
 import { goalPages } from "@/data/goalPages";
+
+const BENEFITS = [
+  { icon: Target, title: "Outcome-led matching", description: "Start with the goal you're working towards and see the panels that support it" },
+  { icon: Shield, title: "UKAS accredited labs", description: "Every listed provider uses UKAS-accredited UK laboratories" },
+  { icon: Clock, title: "Clear turnaround", description: "Typical result times shown alongside price and biomarker coverage" },
+] as const;
 
 const CompareByGoalPage = () => {
   return (
-    <MainLayout>
+    <MainLayout mainClassName="flex-1 bg-white">
       <Helmet>
         <title>Compare Tests by Goal | myhealth checkup</title>
         <meta
@@ -32,74 +37,55 @@ const CompareByGoalPage = () => {
         </script>
       </Helmet>
 
-      <PageBanner
-        title="Compare by"
-        accent="Goal"
-        subtitle="Know what you want to achieve? We'll show you which tests get you there."
-      />
+      <CategoryStandardHero pillLabel="Compare by Goal" />
 
-      <section className="py-12 sm:py-16">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-12">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl sm:text-3xl font-heading font-bold text-brand-navy mb-3">
-                What's your health goal?
-              </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Select a goal to see the recommended test panels, key biomarkers, and compare options from trusted providers.
-              </p>
-            </div>
+      <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-[#08122b] min-h-[60vh]">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white mb-3">
+              What's your health goal?
+            </h2>
+            <p className="text-white/70 max-w-2xl mx-auto">
+              Select a goal to see the recommended test panels, key biomarkers, and compare options from trusted providers.
+            </p>
+          </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-              {goalPages.map((goal) => (
-                <Link key={goal.slug} to={`/compare/goals/${goal.slug}`}>
-                  <Card className="group h-full hover:shadow-lg transition-all duration-300 border-border/50 hover:border-brand-turquoise/40 cursor-pointer">
-                    <CardHeader className="pb-3">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
-                          style={{ backgroundColor: `${goal.colorHex}15` }}
-                        >
-                          {goal.icon}
-                        </div>
-                        <div>
-                          <CardTitle className="text-lg font-heading text-brand-navy group-hover:text-brand-turquoise transition-colors">
-                            {goal.name}
-                          </CardTitle>
-                          <p className="text-xs text-muted-foreground mt-0.5">{goal.shortDescription}</p>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="pt-0">
-                      <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
-                        {goal.explanation.slice(0, 120)}…
-                      </p>
-                      <div className="flex items-center text-sm font-medium text-brand-turquoise group-hover:text-brand-pink transition-colors">
-                        View recommended tests
-                        <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            {goalPages.map((goal) => (
+              <Link key={goal.slug} to={`/compare/goals/${goal.slug}`} className="group block h-full">
+                <div className="h-full rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22c0d4]/60 hover:bg-white/[0.08]">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl border border-white/10"
+                      style={{ backgroundColor: `${goal.colorHex}22` }}
+                    >
+                      {goal.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-heading font-bold text-white group-hover:text-[#22c0d4] transition-colors">
+                        {goal.name}
+                      </h3>
+                      <p className="text-xs text-white/60 mt-0.5">{goal.shortDescription}</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-white/70 mb-4 line-clamp-2">
+                    {goal.explanation.slice(0, 120)}…
+                  </p>
+                  <span className="flex items-center text-sm font-semibold text-[#22c0d4] group-hover:text-[#e70d69] transition-colors">
+                    View recommended tests
+                    <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                  </span>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="py-12 bg-brand-navy">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white mb-4">
-            Need help choosing?
-          </h2>
-          <p className="text-white/80 mb-6 max-w-xl mx-auto">
-            Our guided questionnaire matches you to the right test in under 2 minutes.
-          </p>
-          <Button asChild size="lg" className="bg-brand-turquoise hover:bg-brand-pink text-white rounded-xl">
-            <Link to="/assisted-test-finder">Take the health quiz</Link>
-          </Button>
-        </div>
-      </section>
+      <CategoryPageBottom
+        benefitsTitle="Why compare by goal?"
+        benefits={[BENEFITS[0], BENEFITS[1], BENEFITS[2]]}
+      />
     </MainLayout>
   );
 };
