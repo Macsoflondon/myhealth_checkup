@@ -276,12 +276,16 @@ export const UniversalTestDetailModal: React.FC<{
           })()}
 
 
-          {test.description && (
-            <div>
-              <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: UTC_NAVY, marginBottom: 8 }}>About This Test</div>
+          <div>
+            <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: UTC_NAVY, marginBottom: 8 }}>About This Test</div>
+            {test.description ? (
               <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 14, color: "#475569", lineHeight: 1.6 }}>{test.description}</p>
-            </div>
-          )}
+            ) : (
+              <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 14, color: "#94a3b8", lineHeight: 1.6, fontStyle: "italic" }}>
+                Overview not published by this provider.
+              </p>
+            )}
+          </div>
 
           {test.who_should_test && (
             <div>
@@ -290,18 +294,27 @@ export const UniversalTestDetailModal: React.FC<{
             </div>
           )}
 
-          {biomarkers.length > 0 && (
-            <div>
-              <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: UTC_NAVY, marginBottom: 8 }}>
-                {isAllergy ? "Allergies Tested" : "Biomarkers Tested"} ({biomarkers.length})
-              </div>
+          <div>
+            <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: UTC_NAVY, marginBottom: 8 }}>
+              {(() => {
+                const noun = measurementNoun(test, isAllergy).plural;
+                const title = noun.charAt(0).toUpperCase() + noun.slice(1);
+                return biomarkers.length > 0 ? `${title} Tested (${biomarkers.length})` : `${title} Tested`;
+              })()}
+            </div>
+            {biomarkers.length > 0 ? (
               <div className="flex flex-wrap gap-2">
                 {biomarkers.map((b, i) => (
                   <span key={i} style={{ background: UTC_TINT, color: UTC_NAVY, fontFamily: "'DM Sans',sans-serif", fontSize: 12, padding: "4px 10px", borderRadius: 20 }}>{b}</span>
                 ))}
               </div>
-            </div>
-          )}
+            ) : (
+              <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 14, color: "#94a3b8", lineHeight: 1.6, fontStyle: "italic" }}>
+                {measurementNoun(test, isAllergy).plural.charAt(0).toUpperCase() + measurementNoun(test, isAllergy).plural.slice(1)} list not published by this provider.
+              </p>
+            )}
+          </div>
+
 
           {(test.symptoms || []).length > 0 && (
             <div>
