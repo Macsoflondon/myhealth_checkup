@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { BASE_URL } from "@/lib/seo";
+import QuizCTABanner from "@/components/sections/QuizCTABanner";
 
 const SLUG = "ferritin-vs-iron-comparison-guide";
 const TITLE = "Ferritin vs Iron: What's the Difference and Which Test Do You Need?";

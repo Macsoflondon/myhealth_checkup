@@ -10,6 +10,7 @@ import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
 import { getBranding } from "@/data/providerBranding";
+import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { getProviderRating } from "@/constants/providerRatings";
 import { ProviderTestsGrid } from "@/components/providers/ProviderTestsGrid";
 

@@ -8,6 +8,7 @@ import PageBanner from '@/components/sections/PageBanner';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Heart, Droplets, Activity, Brain, Bone, Shield } from 'lucide-react';
+import QuizCTABanner from '@/components/sections/QuizCTABanner';
 
 const healthConditions = [
   {
