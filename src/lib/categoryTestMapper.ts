@@ -60,9 +60,7 @@ export function mapProviderTestRow(row: ProviderTestRow, badgeColor: string): Ca
   const providerName = PROVIDER_NAMES[row.provider_id] || row.provider_id;
   const rating = getProviderRating(row.provider_id);
   const priceNum = Number(row.price ?? row.base_price ?? 0);
-  const biomarkers = Array.isArray(row.biomarkers_list)
-    ? (row.biomarkers_list as unknown[]).map(String).slice(0, 6)
-    : [];
+  const biomarkers = normalizeBiomarkers(row.biomarkers_list).slice(0, 6);
   const turnaround = row.turnaround_days_text || "Typical 3–5 days";
   const match = turnaround.match(/(\d+)/);
   const turnaroundDays = match ? parseInt(match[1], 10) : 5;
