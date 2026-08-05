@@ -292,24 +292,24 @@ const Index = () => {
           </Suspense>
 
 
-          <LazyMount minHeight={800}>
-            <Suspense fallback={<SectionFallback />}>
+          <LazyMount minHeight={800} className="bg-brand-navy" fallback={<PartnerShowcaseSkeleton />}>
+            <Suspense fallback={<PartnerShowcaseSkeleton />}>
               <SectionReveal delay={0.1}>
                 <PartnerShowcaseGrid />
               </SectionReveal>
             </Suspense>
           </LazyMount>
 
-          <LazyMount minHeight={500}>
-            <Suspense fallback={<SectionFallback />}>
+          <LazyMount minHeight={500} className="bg-brand-navy" fallback={<TestimonialSkeleton />}>
+            <Suspense fallback={<TestimonialSkeleton />}>
               <SectionReveal>
                 <TestimonialCarousel />
               </SectionReveal>
             </Suspense>
           </LazyMount>
 
-          <LazyMount minHeight={500}>
-            <Suspense fallback={<SectionFallback />}>
+          <LazyMount minHeight={500} className="bg-white" fallback={<ClinicHelpSkeleton />}>
+            <Suspense fallback={<ClinicHelpSkeleton />}>
               <SectionReveal delay={0.1}>
                 <ClinicAndHelpSection />
               </SectionReveal>
