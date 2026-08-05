@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
 import { UserMenu } from "@/components/header/UserMenu";
@@ -9,54 +9,7 @@ import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 const TURQUOISE = "#22c0d4";
 const PINK = "#e70d69";
 
-import joggingWoman from "@/assets/hero/hero-jogging-woman.png";
-import clinicReceptionAsset from "@/assets/hero/hero-clinic-reception.png.asset.json";
-import seniorCoupleAsset from "@/assets/hero/hero-senior-couple.png.asset.json";
-import benchPhoneAsset from "@/assets/hero/hero-bench-phone.png.asset.json";
-import bloodTestKitAsset from "@/assets/hero/hero-blood-test-kit.png.asset.json";
-
-const clinicReception = clinicReceptionAsset.url;
-const seniorCouple = seniorCoupleAsset.url;
-const benchPhone = benchPhoneAsset.url;
-const bloodTestKit = bloodTestKitAsset.url;
-
-const SLIDES = [
-  {
-    src: joggingWoman,
-    label: "Know Your Health. Own Your Future.",
-    posMobile: "35% 55%",
-    posTablet: "center 32%",
-    posDesktop: "center 35%",
-  },
-  {
-    src: clinicReception,
-    label: "Nationwide network of CQC-regulated clinics",
-    posMobile: "60% 50%",
-    posTablet: "center 50%",
-    posDesktop: "center 50%",
-  },
-  {
-    src: seniorCouple,
-    label: "Proactive Health for Every Stage of Life",
-    posMobile: "50% 40%",
-    posTablet: "center 28%",
-    posDesktop: "center 30%",
-  },
-  {
-    src: benchPhone,
-    label: "Find the Right Test for You, Compare. Choose. Book.",
-    posMobile: "55% 50%",
-    posTablet: "center 40%",
-    posDesktop: "center 40%",
-  },
-  {
-    src: bloodTestKit,
-    label: "Test from the Comfort of Home",
-    posMobile: "40% 55%",
-    posTablet: "40% 60%",
-    posDesktop: "50% 65%",
-  },
-];
+import { SLIDES, FIRST_SLIDE_LQIP } from "@/components/sections/hero-slides";
 
 
 
@@ -72,6 +25,12 @@ const Wordmark = () => (
 export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }) {
   const [i, setI] = useState(0);
   const activeIndex = i % SLIDES.length;
+  const firstSlideRef = useRef<HTMLImageElement>(null);
+  const [firstLoaded, setFirstLoaded] = useState(false);
+  useEffect(() => {
+    // Cached images can finish before hydration attaches onLoad.
+    if (firstSlideRef.current?.complete) setFirstLoaded(true);
+  }, []);
   const [reducedMotion, setReducedMotion] = useState(false);
   useEffect(() => {
     if (typeof window === "undefined" || !window.matchMedia) return;
@@ -120,6 +79,16 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
 
       <div className="relative rounded-t-[18px] overflow-hidden mt-5 sm:mt-5 lg:mt-6 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129]">
 
+        {/* Blurred LQIP + gradient placeholder — fades out once slide 1 paints */}
+        <div
+          aria-hidden
+          className={`absolute inset-0 scale-110 bg-cover bg-center blur-2xl transition-opacity duration-500 ${firstLoaded ? "opacity-0" : "opacity-100"}`}
+          style={{ backgroundImage: `url("${FIRST_SLIDE_LQIP}")` }}
+        />
+        <div
+          aria-hidden
+          className={`absolute inset-0 bg-gradient-to-b from-[#081129]/40 via-[#081129]/10 to-[#081129]/60 transition-opacity duration-500 ${firstLoaded ? "opacity-0" : "opacity-100"}`}
+        />
 
         {SLIDES.map((s, n) => {
           const active = n === activeIndex;
@@ -132,6 +101,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
           return (
             <img
               key={`i-${n}`}
+              ref={n === 0 ? firstSlideRef : undefined}
               src={s.src}
               alt={active ? s.label : ""}
               aria-hidden={active ? undefined : true}
@@ -141,11 +111,13 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
               loading={n === 0 ? "eager" : "lazy"}
               fetchPriority={n === 0 ? "high" : "low"}
               decoding="async"
+              onLoad={n === 0 ? () => setFirstLoaded(true) : undefined}
               className="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
               style={commonStyle}
             />
           );
         })}
+
 
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
         <div className="hidden lg:block absolute left-[18px] bottom-[18px] pointer-events-none max-w-[45%]">
