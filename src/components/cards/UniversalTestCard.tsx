@@ -26,8 +26,13 @@ export interface UniversalTestData {
   collection_fee_amount?: number | null;
   turnaround_days_text?: string | null;
   sample_type?: string | null;
+  /** Human-readable collection detail, e.g. "Venous blood draw at a Goodbody clinic" */
+  collection_method?: string | null;
+  /** What the count actually measures: biomarkers | cancers | allergens | conditions */
+  measurement_type?: string | null;
   biomarker_count?: number | null;
   biomarkers_list?: { value: string }[] | string[] | null;
+
   symptoms?: string[] | null;
   who_should_test?: string | null;
   url?: string | null;
