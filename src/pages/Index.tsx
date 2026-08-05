@@ -5,6 +5,7 @@ import MainLayout from "@/layouts/MainLayout";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import SectionReveal from "@/components/ui/SectionReveal";
 import { LazyMount } from "@/components/common/LazyMount";
+import { SectionSkeleton } from "@/components/common/SectionSkeleton";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 import { ArrowRight, Shield } from "lucide-react";
