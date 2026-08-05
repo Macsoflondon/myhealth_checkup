@@ -222,22 +222,29 @@ export const UniversalTestDetailModal: React.FC<{
                 </div>
               </div>
             )}
-            {test.biomarker_count != null && test.biomarker_count > 0 && (
-              <div className="flex items-center gap-1.5">
-                <FlaskConical size={14} color={UTC_TURQUOISE} />
-                <div>
-                  <div style={{ color: "#fff", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>{test.biomarker_count} {isAllergy ? "allergies tested" : "biomarkers"}</div>
-                  <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>{isAllergy ? "Allergens" : "Measured"}</div>
+            <div className="flex items-center gap-1.5">
+              <FlaskConical size={14} color={UTC_TURQUOISE} />
+              <div>
+                <div style={{ color: "#fff", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>
+                  {test.biomarker_count != null && test.biomarker_count > 0
+                    ? `${test.biomarker_count} ${measurementNoun(test, isAllergy).plural}`
+                    : `${measurementNoun(test, isAllergy).plural.charAt(0).toUpperCase()}${measurementNoun(test, isAllergy).plural.slice(1)} not published`}
+                </div>
+                <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>
+                  {test.biomarker_count != null && test.biomarker_count > 0
+                    ? measurementNoun(test, isAllergy).caption
+                    : "By this provider"}
                 </div>
               </div>
-            )}
+            </div>
             <div className="flex items-center gap-1.5">
               <Syringe size={14} color={UTC_TURQUOISE} />
               <div>
-                <div style={{ color: "#fff", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>{collectionLabel(test)}</div>
+                <div style={{ color: "#fff", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>{collectionDetail(test)}</div>
                 <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>Collection</div>
               </div>
             </div>
+
           </div>
         </div>
 
