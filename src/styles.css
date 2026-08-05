@@ -1202,3 +1202,40 @@ html, body {
 .text-clinical-alert { color: hsl(var(--clinical-alert)); }
 .bg-clinical-alert { background-color: hsl(var(--clinical-alert)); }
 
+
+/* Trust badge checkerboard: alternating turquoise/pink icon medallions */
+.trust-alt > * {
+  --trust-tone: var(--turquoise);
+  --trust-tone-alpha: 0.18;
+}
+/* Mobile: 2 columns -> offset every row */
+.trust-alt > *:nth-child(4n+2),
+.trust-alt > *:nth-child(4n+3) {
+  --trust-tone: var(--pink);
+  --trust-tone-alpha: 0.16;
+}
+@media (min-width: 640px) {
+  /* 4 columns -> second row shifted by one */
+  .trust-alt > * {
+    --trust-tone: var(--turquoise);
+    --trust-tone-alpha: 0.18;
+  }
+  .trust-alt > *:nth-child(8n+2),
+  .trust-alt > *:nth-child(8n+4),
+  .trust-alt > *:nth-child(8n+5),
+  .trust-alt > *:nth-child(8n+7) {
+    --trust-tone: var(--pink);
+    --trust-tone-alpha: 0.16;
+  }
+}
+@media (min-width: 1024px) {
+  /* Single row -> straight alternation */
+  .trust-alt > *:nth-child(odd) {
+    --trust-tone: var(--turquoise);
+    --trust-tone-alpha: 0.18;
+  }
+  .trust-alt > *:nth-child(even) {
+    --trust-tone: var(--pink);
+    --trust-tone-alpha: 0.16;
+  }
+}
