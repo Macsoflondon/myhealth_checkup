@@ -89,12 +89,52 @@ function normalizeBiomarkers(list: UniversalTestData["biomarkers_list"]): string
   return [];
 }
 
+/** Short, honest sample/collection descriptor for the compact card. */
 function collectionLabel(t: UniversalTestData): string {
+  const s = (t.sample_type || "").toLowerCase();
+  if (s.includes("finger")) return "Finger-prick";
+  if (s.includes("venous") || s.includes("blood draw")) return "Venous draw";
+  if (s.includes("saliva")) return "Saliva";
+  if (s.includes("urine")) return "Urine";
+  if (s.includes("swab")) return "Swab";
   if (t.home_kit_available && t.clinic_visit_available) return "Home or clinic";
   if (t.home_kit_available) return "At-home kit";
   if (t.clinic_visit_available) return "Clinic visit";
-  return "At-home kit";
+  return "Not stated";
 }
+
+/** Full collection detail for the detail modal — never guesses. */
+function collectionDetail(t: UniversalTestData): string {
+  if (t.collection_method && t.collection_method.trim()) return t.collection_method.trim();
+  const s = (t.sample_type || "").toLowerCase();
+  const sample = s.includes("finger")
+    ? "Finger-prick blood sample"
+    : s.includes("venous") || s.includes("blood draw")
+      ? "Venous blood draw"
+      : t.sample_type?.trim() || null;
+  const setting =
+    t.home_kit_available && t.clinic_visit_available
+      ? "home kit or clinic appointment"
+      : t.home_kit_available
+        ? "home kit"
+        : t.clinic_visit_available
+          ? "in-clinic appointment"
+          : null;
+  if (sample && setting) return `${sample} — ${setting}`;
+  if (sample) return sample;
+  if (setting) return setting.charAt(0).toUpperCase() + setting.slice(1);
+  return "Collection method not stated by this provider";
+}
+
+/** What the headline count actually measures, per provider data. */
+function measurementNoun(t: UniversalTestData, isAllergy: boolean): { plural: string; caption: string } {
+  const type = (t.measurement_type || "").toLowerCase();
+  if (type === "cancers") return { plural: "cancer types", caption: "Screened for" };
+  if (type === "conditions") return { plural: "conditions", caption: "Screened for" };
+  if (type === "allergens" || isAllergy) return { plural: "allergens", caption: "Allergens" };
+  return { plural: "biomarkers", caption: "Measured" };
+}
+
 
 function toCompareData(t: UniversalTestData): CompareTestData {
   const meta = getProviderMeta(t.provider_id);
