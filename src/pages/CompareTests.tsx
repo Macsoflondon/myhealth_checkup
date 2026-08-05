@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useSearchParams, useNavigate } from "@/lib/router-compat";
+import { compareResultsPath } from "@/lib/compareUrl";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import MainLayout from "@/layouts/MainLayout";
 
@@ -66,7 +67,7 @@ const CompareTests = () => {
       const next = new URLSearchParams(searchParams);
       next.delete("openCompare");
       setSearchParams(next, { replace: true });
-      if (selectedTests.length >= 2) navigate("/compare/results");
+      if (selectedTests.length >= 2) navigate(compareResultsPath(selectedTests.map((t) => t.id)));
     }
   }, [searchParams, selectedTests.length, setSearchParams, navigate]);
 
