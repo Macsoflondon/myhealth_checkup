@@ -1,8 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
-
-const CompareTests = lazy(() => import("@/pages/CompareTests"));
+import { createFileRoute, Outlet } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/compare")({
-  component: CompareTests,
+  component: () => <Outlet />,
 });
