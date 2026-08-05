@@ -282,7 +282,7 @@ export function MfaEnrollment() {
                   </Alert>
                 )}
                 <div className="flex flex-col-reverse sm:flex-row gap-2">
-                  <Button variant="ghost" onClick={cancelEnrol} className="text-white/80 hover:text-white hover:bg-white/10">
+                  <Button variant="ghost" onClick={cancelEnrol} className="text-white/90 hover:text-white hover:bg-white/10">
                     Cancel
                   </Button>
                   <Button
@@ -325,7 +325,7 @@ export function MfaEnrollment() {
                 <div className="grid grid-cols-2 gap-2 rounded bg-white/5 p-3 font-mono text-sm">
                   {backupCodes.map((c, i) => (
                     <div key={c} className="tabular-nums">
-                      <span className="text-white/40 mr-2">{String(i + 1).padStart(2, '0')}.</span>
+                      <span className="text-white/78 mr-2">{String(i + 1).padStart(2, '0')}.</span>
                       {c}
                     </div>
                   ))}

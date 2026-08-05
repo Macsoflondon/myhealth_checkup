@@ -40,7 +40,7 @@ const NewsletterSection = () => {
             titleClassName="text-white"
             gradientClassName="text-brand-turquoise"
           />
-          <p className="mt-3 mb-8 text-base sm:text-lg text-white/60 leading-relaxed">
+          <p className="mt-3 mb-8 text-base sm:text-lg text-white/78 leading-relaxed">
             Health information worth reading. No marketing. No filler. Provider updates, new biomarker guides, and platform improvements — when they matter.
           </p>
           {submitted ? (
@@ -70,7 +70,7 @@ const NewsletterSection = () => {
               </button>
             </div>
           )}
-          <p className="mt-4 text-xs text-white/30 leading-relaxed">
+          <p className="mt-4 text-xs text-white/78 leading-relaxed">
             We will never share your email. Unsubscribe at any time.
           </p>
         </div>

@@ -321,7 +321,7 @@ const AdminScraperDashboardPage: React.FC = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-2xl font-bold text-white">Scraper Dashboard</h1>
-              <p className="text-white/70">Manage and monitor provider data scrapers</p>
+              <p className="text-white/90">Manage and monitor provider data scrapers</p>
             </div>
             <div className="flex gap-2">
               <Button variant="outline" onClick={fetchJobs} disabled={isLoadingJobs}>

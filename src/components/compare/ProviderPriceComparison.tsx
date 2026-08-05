@@ -34,7 +34,7 @@ const ProviderPriceComparison = ({ providers, testName }: ProviderPriceCompariso
     if (price === highestPrice) {
       return { icon: TrendingUp, color: "text-[#e70d69]", label: "Highest", bg: "bg-[#e70d69]/10" };
     }
-    return { icon: Minus, color: "text-white/60", label: "Mid-range", bg: "bg-white/5" };
+    return { icon: Minus, color: "text-white/78", label: "Mid-range", bg: "bg-white/5" };
   };
 
   return (
@@ -56,15 +56,15 @@ const ProviderPriceComparison = ({ providers, testName }: ProviderPriceCompariso
         {/* Price Summary */}
         <div className="grid grid-cols-3 gap-3 mb-4 p-3 bg-white/5 rounded-lg">
           <div className="text-center">
-            <p className="text-xs text-white/50">Lowest</p>
+            <p className="text-xs text-white/78">Lowest</p>
             <p className="font-bold text-[#22c0d4]">£{lowestPrice}</p>
           </div>
           <div className="text-center border-x border-white/10">
-            <p className="text-xs text-white/50">Average</p>
+            <p className="text-xs text-white/78">Average</p>
             <p className="font-bold text-white">£{averagePrice.toFixed(0)}</p>
           </div>
           <div className="text-center">
-            <p className="text-xs text-white/50">Highest</p>
+            <p className="text-xs text-white/78">Highest</p>
             <p className="font-bold text-[#e70d69]">£{highestPrice}</p>
           </div>
         </div>
@@ -85,7 +85,7 @@ const ProviderPriceComparison = ({ providers, testName }: ProviderPriceCompariso
               >
                 <div className="flex items-center gap-3">
                   <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                    isLowest ? 'bg-[#22c0d4] text-white' : 'bg-white/10 text-white/60'
+                    isLowest ? 'bg-[#22c0d4] text-white' : 'bg-white/10 text-white/78'
                   }`}>
                     {index + 1}
                   </div>
@@ -98,7 +98,7 @@ const ProviderPriceComparison = ({ providers, testName }: ProviderPriceCompariso
                         </Badge>
                       )}
                     </div>
-                    <div className="flex items-center gap-3 text-xs text-white/50 mt-0.5">
+                    <div className="flex items-center gap-3 text-xs text-white/78 mt-0.5">
                       <span>{provider.biomarkers} biomarkers</span>
                       <span>•</span>
                       <span>{provider.turnaround}</span>
@@ -115,7 +115,7 @@ const ProviderPriceComparison = ({ providers, testName }: ProviderPriceCompariso
                       </span>
                     </div>
                     {!isLowest && (
-                      <span className="text-xs text-white/40">
+                      <span className="text-xs text-white/78">
                         +£{provider.price - lowestPrice} more
                       </span>
                     )}
@@ -134,7 +134,7 @@ const ProviderPriceComparison = ({ providers, testName }: ProviderPriceCompariso
 
         {/* CTA */}
         <div className="mt-4 pt-4 border-t border-white/10">
-          <p className="text-xs text-white/40 text-center">
+          <p className="text-xs text-white/78 text-center">
             Prices shown are for standard home test kits. Clinic visit costs may vary.
           </p>
         </div>

@@ -114,10 +114,10 @@ const StayInformedSection = () => {
 
           {/* Copyright + Medical Disclaimer — pushed to bottom of column */}
           <div className="mt-6 sm:mt-auto w-full space-y-2 px-1">
-            <p className="text-[10px] sm:text-[11px] text-white/60 leading-snug text-center break-words">
+            <p className="text-[10px] sm:text-[11px] text-white/78 leading-snug text-center break-words">
               © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales, Company No. 16589056. All rights reserved.
             </p>
-            <p className="text-[10px] sm:text-[11px] text-white/60 leading-snug text-center break-words">
+            <p className="text-[10px] sm:text-[11px] text-white/78 leading-snug text-center break-words">
               <span className="text-brand-pink font-semibold">Medical disclaimer:</span>{" "}
               This site provides comparison information only and does not constitute medical advice.{" "}
               <Link to="/legal" className="underline hover:text-brand-pink transition-colors">
@@ -134,7 +134,7 @@ const StayInformedSection = () => {
         {/* Right: Stay Informed */}
         <div>
           <SectionHeading title="Stay Informed" />
-          <p className="text-white/70 text-xs sm:text-sm leading-relaxed mb-4">
+          <p className="text-white/90 text-xs sm:text-sm leading-relaxed mb-4">
             New tests, new providers, straight to your inbox. Provider updates and platform improvements — when they matter.
           </p>
           {submitted ? (
@@ -168,7 +168,7 @@ const StayInformedSection = () => {
               )}
             </div>
           )}
-          <p className="mt-3 text-[10px] text-white/40 leading-relaxed">
+          <p className="mt-3 text-[10px] text-white/78 leading-relaxed">
             We will never share your email. Unsubscribe at any time.
           </p>
         </div>

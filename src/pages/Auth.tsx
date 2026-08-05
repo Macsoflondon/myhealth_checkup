@@ -481,17 +481,17 @@ const Auth = () => {
                 <button
                   type="button"
                   onClick={() => navigate("/admin/login")}
-                  className="text-xs text-white/80 hover:text-white hover:underline transition-colors"
+                  className="text-xs text-white/90 hover:text-white hover:underline transition-colors"
                 >
                   Admin
                 </button>
-                <span aria-hidden="true" className="text-xs text-white/40">
+                <span aria-hidden="true" className="text-xs text-white/78">
                   &middot;
                 </span>
                 <button
                   type="button"
                   onClick={() => navigate("/control")}
-                  className="text-xs text-white/80 hover:text-white hover:underline transition-colors"
+                  className="text-xs text-white/90 hover:text-white hover:underline transition-colors"
                 >
                   Crux Control
                 </button>

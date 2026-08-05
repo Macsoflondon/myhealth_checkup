@@ -82,7 +82,7 @@ export const CategoryErrorState: React.FC<{ onRetry: () => void; title?: string 
       <AlertCircle className="h-7 w-7 text-destructive" />
     </div>
     <h2 className="text-2xl font-bold text-white mb-2">{title}</h2>
-    <p className="text-white/70 mb-6">
+    <p className="text-white/90 mb-6">
       Something went wrong while fetching the latest tests. Please check your connection and try again.
     </p>
     <Button onClick={onRetry} variant="secondary" className="gap-2">
@@ -96,10 +96,10 @@ export const CategoryEmptyState: React.FC<{ title?: string }> = ({
 }) => (
   <div className="text-center py-20 max-w-md mx-auto">
     <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-white/10 mb-5">
-      <Inbox className="h-7 w-7 text-white/70" />
+      <Inbox className="h-7 w-7 text-white/90" />
     </div>
     <h2 className="text-2xl font-bold text-white mb-2">{title}</h2>
-    <p className="text-white/70 mb-6">
+    <p className="text-white/90 mb-6">
       We're updating our catalogue. Browse the full comparison hub to find the right test for you.
     </p>
     <Button asChild variant="secondary">

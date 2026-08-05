@@ -156,12 +156,12 @@ export const PrivateBloodTestCostGuidePage = () => {
       </Helmet>
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 text-white">
-        <nav className="text-sm text-white/60 mb-6" aria-label="Breadcrumb">
+        <nav className="text-sm text-white/78 mb-6" aria-label="Breadcrumb">
           <Link to="/" className="hover:text-white">Home</Link>
           <span className="mx-2">/</span>
           <Link to="/blog" className="hover:text-white">Health Resource Hub</Link>
           <span className="mx-2">/</span>
-          <span className="text-white/80">Private blood test cost guide</span>
+          <span className="text-white/90">Private blood test cost guide</span>
         </nav>
 
         <header className="mb-10">
@@ -169,13 +169,13 @@ export const PrivateBloodTestCostGuidePage = () => {
           <h1 className="text-4xl lg:text-5xl font-semibold tracking-tight mb-4">
             How much does a private blood test cost in the UK?
           </h1>
-          <p className="text-lg text-white/80 leading-relaxed">
+          <p className="text-lg text-white/90 leading-relaxed">
             Private blood tests in the UK range from £19 for a single marker to over £900 for
             premium executive panels. This independent 2026 guide breaks down what you actually
             pay across the major CQC-regulated providers, where hidden fees appear, and how to
             match panel depth to what you want to learn.
           </p>
-          <p className="text-sm text-white/50 mt-4">
+          <p className="text-sm text-white/78 mt-4">
             Last reviewed: 19 July 2026 · Editorially independent · Prices are typical retail rates and change frequently
           </p>
         </header>
@@ -189,7 +189,7 @@ export const PrivateBloodTestCostGuidePage = () => {
           </p>
           <div className="overflow-x-auto rounded-xl border border-white/10">
             <table className="w-full text-sm">
-              <thead className="bg-white/5 text-white/80">
+              <thead className="bg-white/5 text-white/90">
                 <tr>
                   <th className="text-left px-4 py-3 font-medium">Tier</th>
                   <th className="text-left px-4 py-3 font-medium">Typical price</th>
@@ -218,7 +218,7 @@ export const PrivateBloodTestCostGuidePage = () => {
           </p>
           <div className="overflow-x-auto rounded-xl border border-white/10">
             <table className="w-full text-sm">
-              <thead className="bg-white/5 text-white/80">
+              <thead className="bg-white/5 text-white/90">
                 <tr>
                   <th className="text-left px-4 py-3 font-medium">Provider</th>
                   <th className="text-left px-4 py-3 font-medium">Entry-level</th>
@@ -238,7 +238,7 @@ export const PrivateBloodTestCostGuidePage = () => {
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-white/50 mt-3">
+          <p className="text-xs text-white/78 mt-3">
             Prices sourced from each provider's public UK website, July 2026. Includes VAT where
             applicable. Excludes optional add-ons such as consultant review or expedited turnaround.
           </p>
@@ -256,7 +256,7 @@ export const PrivateBloodTestCostGuidePage = () => {
                 <CardHeader>
                   <CardTitle className="text-base">{h.label}</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/70">{h.detail}</CardContent>
+                <CardContent className="text-sm text-white/90">{h.detail}</CardContent>
               </Card>
             ))}
           </div>
@@ -270,7 +270,7 @@ export const PrivateBloodTestCostGuidePage = () => {
                 <PoundSterling className="w-6 h-6 mb-2 text-[#22c0d4]" />
                 <CardTitle className="text-base">Checking a single concern</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-white/70">
+              <CardContent className="text-sm text-white/90">
                 A single-marker test (vitamin D, TSH, ferritin, PSA) at £19–£45 is usually
                 enough when you already know what you want to measure.
               </CardContent>
@@ -280,7 +280,7 @@ export const PrivateBloodTestCostGuidePage = () => {
                 <Beaker className="w-6 h-6 mb-2 text-[#e70d69]" />
                 <CardTitle className="text-base">Baseline or annual review</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-white/70">
+              <CardContent className="text-sm text-white/90">
                 A general wellness panel at £99–£199 covers thyroid, liver, kidney,
                 cholesterol, iron and key vitamins — the standard MOT for most adults.
               </CardContent>
@@ -290,7 +290,7 @@ export const PrivateBloodTestCostGuidePage = () => {
                 <ShieldCheck className="w-6 h-6 mb-2 text-[#22c0d4]" />
                 <CardTitle className="text-base">Symptom investigation</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-white/70">
+              <CardContent className="text-sm text-white/90">
                 An advanced panel at £199–£399 adds hormones, inflammation and advanced
                 lipids — worth it when symptoms don't fit a single system.
               </CardContent>
@@ -334,7 +334,7 @@ export const PrivateBloodTestCostGuidePage = () => {
                 <CardHeader>
                   <CardTitle className="text-base">{f.q}</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/80">{f.a}</CardContent>
+                <CardContent className="text-sm text-white/90">{f.a}</CardContent>
               </Card>
             ))}
           </div>
@@ -342,7 +342,7 @@ export const PrivateBloodTestCostGuidePage = () => {
 
         <section className="rounded-2xl border border-white/10 bg-gradient-to-r from-[#22c0d4]/15 to-[#e70d69]/15 p-6 lg:p-8 mb-10">
           <h2 className="text-2xl font-semibold mb-2">Compare live prices across UK providers</h2>
-          <p className="text-white/80 mb-6">
+          <p className="text-white/90 mb-6">
             Independent, side-by-side price comparison across CQC-regulated UK laboratories.
             No pay-to-rank, no upselling — just what each test actually costs delivered.
           </p>
@@ -358,7 +358,7 @@ export const PrivateBloodTestCostGuidePage = () => {
           </div>
         </section>
 
-        <p className="text-xs text-white/50">
+        <p className="text-xs text-white/78">
           Editorial note: prices in this guide are typical retail rates from public provider
           websites in July 2026 and change frequently. This article is for information only and
           does not constitute medical advice. myhealth checkup is an independent comparison

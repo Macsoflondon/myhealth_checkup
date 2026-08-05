@@ -25,7 +25,7 @@ const ProviderComparisonSidebar = ({
             <div className="space-y-1">
               {provider.features.map((feature, fIndex) => <div key={fIndex} className="flex items-center gap-2 text-sm">
                   <CheckCircle className="w-4 h-4 text-[#22c0d4]" />
-                  <span className="text-white/80">{feature}</span>
+                  <span className="text-white/90">{feature}</span>
                 </div>)}
             </div>
             

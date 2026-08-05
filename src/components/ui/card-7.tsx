@@ -78,7 +78,7 @@ export const InteractiveProductCard: React.FC<InteractiveProductCardProps> = ({
       >
         <div className="flex-1 min-w-0">
           <h3 className="text-white font-semibold text-sm leading-tight truncate">{title}</h3>
-          <p className="text-white/80 text-xs leading-tight truncate">{description}</p>
+          <p className="text-white/90 text-xs leading-tight truncate">{description}</p>
         </div>
         <img
           src={logoUrl}

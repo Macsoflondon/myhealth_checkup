@@ -55,7 +55,7 @@ const AccreditedProvidersBar = () => {
     >
       <div className="container mx-auto px-3 sm:px-4 py-2.5 sm:py-4">
         <Reveal variant="fade">
-          <p className="text-center font-sans font-bold uppercase tracking-[0.12em] sm:tracking-[0.14em] text-[10px] sm:text-[11px] text-white/80 mb-2 sm:mb-3 px-2">
+          <p className="text-center font-sans font-bold uppercase tracking-[0.12em] sm:tracking-[0.14em] text-[10px] sm:text-[11px] text-white/90 mb-2 sm:mb-3 px-2">
             All listed providers meet every one of the following standards
           </p>
         </Reveal>

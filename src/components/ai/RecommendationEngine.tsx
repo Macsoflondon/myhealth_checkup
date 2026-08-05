@@ -143,7 +143,7 @@ export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) 
           >
             £{totalCost.toFixed(0)}
           </p>
-          <p className="text-white/60 text-sm mt-1">
+          <p className="text-white/78 text-sm mt-1">
             {result.recommendedTests.length} test{result.recommendedTests.length !== 1 ? 's' : ''} recommended
           </p>
         </div>

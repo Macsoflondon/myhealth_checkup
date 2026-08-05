@@ -45,7 +45,7 @@ const CompareByGoalPage = () => {
             <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white mb-3">
               What's your health goal?
             </h2>
-            <p className="text-white/70 max-w-2xl mx-auto">
+            <p className="text-white/90 max-w-2xl mx-auto">
               Select a goal to see the recommended test panels, key biomarkers, and compare options from trusted providers.
             </p>
           </div>
@@ -65,10 +65,10 @@ const CompareByGoalPage = () => {
                       <h3 className="text-lg font-heading font-bold text-white group-hover:text-[#22c0d4] transition-colors">
                         {goal.name}
                       </h3>
-                      <p className="text-xs text-white/60 mt-0.5">{goal.shortDescription}</p>
+                      <p className="text-xs text-white/78 mt-0.5">{goal.shortDescription}</p>
                     </div>
                   </div>
-                  <p className="text-sm text-white/70 mb-4 line-clamp-2">
+                  <p className="text-sm text-white/90 mb-4 line-clamp-2">
                     {goal.explanation.slice(0, 120)}…
                   </p>
                   <span className="flex items-center text-sm font-semibold text-[#22c0d4] group-hover:text-[#e70d69] transition-colors">

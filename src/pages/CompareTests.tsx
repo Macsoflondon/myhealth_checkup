@@ -240,7 +240,7 @@ const CompareTests = () => {
                   <h2 className="font-heading text-lg sm:text-xl font-bold text-white mt-2">
                     Compare by goal
                   </h2>
-                  <p className="text-sm sm:text-base text-white/70 mt-1.5">
+                  <p className="text-sm sm:text-base text-white/90 mt-1.5">
                     Know what you want to achieve — longevity, performance, weight loss, prevention —
                     and see which tests get you there.
                   </p>
@@ -260,7 +260,7 @@ const CompareTests = () => {
                   <h2 className="font-heading text-lg sm:text-xl font-bold text-white mt-2">
                     Compare by symptom
                   </h2>
-                  <p className="text-sm sm:text-base text-white/70 mt-1.5">
+                  <p className="text-sm sm:text-base text-white/90 mt-1.5">
                     Tired, low mood, unexplained weight change — see the tests and biomarkers commonly
                     used to investigate each symptom.
                   </p>
@@ -278,7 +278,7 @@ const CompareTests = () => {
             <div className="max-w-6xl mx-auto">
               {/* Toolbar — live count and search */}
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
-                <p className="text-sm text-white/70">
+                <p className="text-sm text-white/90">
                   {showLoading
                     ? "Loading tests…"
                     : `${displayTests.length} test${displayTests.length === 1 ? "" : "s"} ${
@@ -287,7 +287,7 @@ const CompareTests = () => {
                 </p>
                 <div className="relative w-full sm:w-72">
                   <Search
-                    className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/78"
                     aria-hidden="true"
                   />
                   <input
@@ -298,7 +298,7 @@ const CompareTests = () => {
                     }
                     placeholder="Search tests or providers"
                     aria-label="Search tests"
-                    className="w-full rounded-full border border-white/15 bg-white/5 py-2.5 pl-9 pr-4 text-sm text-white placeholder:text-white/40 focus:border-[#22c0d4] focus:outline-none focus:ring-1 focus:ring-[#22c0d4]"
+                    className="w-full rounded-full border border-white/15 bg-white/5 py-2.5 pl-9 pr-4 text-sm text-white placeholder:text-white/65 focus:border-[#22c0d4] focus:outline-none focus:ring-1 focus:ring-[#22c0d4]"
                   />
                 </div>
               </div>
@@ -310,7 +310,7 @@ const CompareTests = () => {
                   ))}
                 </div>
               ) : displayTests.length === 0 ? (
-                <p className="text-center text-sm text-white/60 py-12">
+                <p className="text-center text-sm text-white/78 py-12">
                   No tests found for this search.
                 </p>
               ) : (

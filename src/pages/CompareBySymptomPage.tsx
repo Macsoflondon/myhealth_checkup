@@ -45,7 +45,7 @@ const CompareBySymptomPage = () => {
             <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white mb-3">
               What are you experiencing?
             </h2>
-            <p className="text-white/70 max-w-2xl mx-auto">
+            <p className="text-white/90 max-w-2xl mx-auto">
               Select a symptom to see which blood tests are recommended, what biomarkers to check, and compare prices across providers.
             </p>
           </div>
@@ -65,7 +65,7 @@ const CompareBySymptomPage = () => {
                       {symptom.name}
                     </h3>
                   </div>
-                  <p className="text-sm text-white/70 mb-4">{symptom.shortDescription}</p>
+                  <p className="text-sm text-white/90 mb-4">{symptom.shortDescription}</p>
                   <span className="flex items-center text-sm font-semibold text-[#22c0d4] group-hover:text-[#e70d69] transition-colors">
                     View recommended tests
                     <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />

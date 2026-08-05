@@ -82,7 +82,7 @@ const Chip = ({
     className={`text-xs px-3 py-1.5 rounded-full border transition-colors ${
       active
         ? "bg-brand-turquoise text-[#081129] border-brand-turquoise font-semibold"
-        : "bg-white/5 text-white/80 border-white/10 hover:border-brand-turquoise/60"
+        : "bg-white/5 text-white/90 border-white/10 hover:border-brand-turquoise/60"
     }`}
   >
     {children}
@@ -104,13 +104,13 @@ export const FiltersPanel = ({
       <div className="flex items-center justify-between">
         <div className="text-white font-semibold text-sm">
           Filters{" "}
-          <span className="text-white/50 font-normal">({active} active)</span>
+          <span className="text-white/78 font-normal">({active} active)</span>
         </div>
         {active > 0 && (
           <button
             type="button"
             onClick={onClear}
-            className="text-xs text-white/60 hover:text-brand-pink flex items-center gap-1"
+            className="text-xs text-white/78 hover:text-brand-pink flex items-center gap-1"
           >
             <X className="w-3 h-3" /> Clear all
           </button>

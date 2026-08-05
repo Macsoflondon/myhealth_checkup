@@ -83,7 +83,7 @@ const AdminRecovery = () => {
         </div>
 
         <h1 className="text-xl font-semibold text-white text-center mb-1">Admin recovery</h1>
-        <p className="text-white/50 text-sm text-center mb-6">
+        <p className="text-white/78 text-sm text-center mb-6">
           Requires a single-use recovery token issued by another administrator.
         </p>
 
@@ -98,7 +98,7 @@ const AdminRecovery = () => {
 
         {done ? (
           <div className="space-y-4 text-center">
-            <p className="text-white/80 text-sm">
+            <p className="text-white/90 text-sm">
               Account recovered. Sign in with your new password, then re-enrol multi-factor
               authentication straight away.
             </p>
@@ -109,7 +109,7 @@ const AdminRecovery = () => {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="recovery-token" className="text-white/70 text-sm">
+              <Label htmlFor="recovery-token" className="text-white/90 text-sm">
                 Recovery token
               </Label>
               <Input
@@ -124,7 +124,7 @@ const AdminRecovery = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="recovery-email" className="text-white/70 text-sm">
+              <Label htmlFor="recovery-email" className="text-white/90 text-sm">
                 Admin email
               </Label>
               <Input
@@ -139,7 +139,7 @@ const AdminRecovery = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="recovery-new-password" className="text-white/70 text-sm">
+              <Label htmlFor="recovery-new-password" className="text-white/90 text-sm">
                 New password (min 12 characters)
               </Label>
               <Input
@@ -153,7 +153,7 @@ const AdminRecovery = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="recovery-confirm" className="text-white/70 text-sm">
+              <Label htmlFor="recovery-confirm" className="text-white/90 text-sm">
                 Confirm new password
               </Label>
               <Input
@@ -190,7 +190,7 @@ const AdminRecovery = () => {
           <button
             type="button"
             onClick={() => navigate("/admin/login")}
-            className="text-white/40 hover:text-white/70 text-xs transition-colors"
+            className="text-white/78 hover:text-white/90 text-xs transition-colors"
           >
             ← Back to admin login
           </button>

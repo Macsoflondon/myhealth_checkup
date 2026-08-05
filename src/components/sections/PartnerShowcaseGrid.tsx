@@ -49,7 +49,7 @@ const CtaSkeleton = () => (
 
 const SectionErrorFallback = ({ name }: { name: string }) => (
   <div className="container mx-auto px-4 py-6" role="alert">
-    <div className="max-w-4xl mx-auto rounded-xl border border-white/10 bg-white/5 p-4 text-center text-white/70 text-sm">
+    <div className="max-w-4xl mx-auto rounded-xl border border-white/10 bg-white/5 p-4 text-center text-white/90 text-sm">
       We couldn't load the {name} section right now. The rest of the page is unaffected.
     </div>
   </div>
