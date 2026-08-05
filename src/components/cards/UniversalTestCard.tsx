@@ -680,8 +680,9 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
             <span className="flex items-center gap-1 flex-shrink-0">
               <FlaskConical size={12} color={UTC_TURQUOISE} />
               {test.biomarker_count && test.biomarker_count > 0
-                ? `${test.biomarker_count} ${isAllergy ? "allergens" : "markers"}`
-                : "\u2014"}
+                ? `${test.biomarker_count} ${measurementNoun(test, isAllergy).plural}`
+                : "Not stated"}
+
             </span>
             <span className="flex items-center gap-1 flex-shrink-0">
               <Clock size={12} color={UTC_TURQUOISE} />
