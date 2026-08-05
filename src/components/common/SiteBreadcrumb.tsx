@@ -1,13 +1,5 @@
-import { Link, useLocation, useSearchParams } from "@/lib/router-compat";
+import { useLocation, useSearchParams } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { findSubcategoryBySlug } from "@/config/subcategoryMap";
 
 /**
