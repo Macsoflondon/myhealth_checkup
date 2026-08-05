@@ -73,6 +73,16 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
 
       <div className="relative rounded-t-[18px] overflow-hidden mt-5 sm:mt-5 lg:mt-6 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129]">
 
+        {/* Blurred LQIP + gradient placeholder — fades out once slide 1 paints */}
+        <div
+          aria-hidden
+          className={`absolute inset-0 scale-110 bg-cover bg-center blur-2xl transition-opacity duration-500 ${firstLoaded ? "opacity-0" : "opacity-100"}`}
+          style={{ backgroundImage: `url("${FIRST_SLIDE_LQIP}")` }}
+        />
+        <div
+          aria-hidden
+          className={`absolute inset-0 bg-gradient-to-b from-[#081129]/40 via-[#081129]/10 to-[#081129]/60 transition-opacity duration-500 ${firstLoaded ? "opacity-0" : "opacity-100"}`}
+        />
 
         {SLIDES.map((s, n) => {
           const active = n === activeIndex;
@@ -85,6 +95,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
           return (
             <img
               key={`i-${n}`}
+              ref={n === 0 ? firstSlideRef : undefined}
               src={s.src}
               alt={active ? s.label : ""}
               aria-hidden={active ? undefined : true}
@@ -94,11 +105,13 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
               loading={n === 0 ? "eager" : "lazy"}
               fetchPriority={n === 0 ? "high" : "low"}
               decoding="async"
+              onLoad={n === 0 ? () => setFirstLoaded(true) : undefined}
               className="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
               style={commonStyle}
             />
           );
         })}
+
 
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
         <div className="hidden lg:block absolute left-[18px] bottom-[18px] pointer-events-none max-w-[45%]">
