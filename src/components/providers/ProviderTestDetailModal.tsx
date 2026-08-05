@@ -138,7 +138,38 @@ const getCollectionLabel = (sampleType?: string | null, collectionOptions?: Coll
   if (st.includes("finger") || st.includes("home")) return "At-home kit";
   if (st.includes("clinic") || st.includes("venous")) return "In-clinic";
   if (sampleType) return sampleType;
-  return "See provider";
+  return "Not stated";
+};
+
+/** Full, honest collection detail — never guesses beyond what the provider states. */
+const getCollectionDetail = (
+  collectionMethod?: string | null,
+  sampleType?: string | null,
+  collectionOptions?: CollectionOption[] | null,
+): string => {
+  if (collectionMethod && collectionMethod.trim()) return collectionMethod.trim();
+  const st = (sampleType || "").toLowerCase();
+  const sample = st.includes("finger")
+    ? "Finger-prick blood sample"
+    : st.includes("venous") || st.includes("blood draw")
+      ? "Venous blood draw"
+      : sampleType?.trim() || null;
+  const setting = collectionOptions && collectionOptions.length > 0
+    ? collectionOptions.map((o) => o.method).join(" or ")
+    : null;
+  if (sample && setting) return `${sample} — ${setting}`;
+  if (sample) return sample;
+  if (setting) return setting;
+  return "Collection method not stated by this provider";
+};
+
+/** What the headline count actually measures, per provider data. */
+const measurementNoun = (measurementType?: string | null, category?: string | null): string => {
+  const type = (measurementType || "").toLowerCase();
+  if (type === "cancers") return "cancer types";
+  if (type === "conditions") return "conditions";
+  if (type === "allergens" || /allerg/i.test(category || "")) return "allergens";
+  return "biomarkers";
 };
 
 const getProviderInitial = (name: string) => name.charAt(0).toUpperCase();
@@ -183,6 +214,8 @@ export default function ProviderTestDetailModal({
     : null;
 
   const collectionLabel = getCollectionLabel(goodbodyStatic?.sampleType || test.sample_type, collectionOptions);
+  const collectionDetail = getCollectionDetail(test.collection_method, goodbodyStatic?.sampleType || test.sample_type, collectionOptions);
+  const countNoun = measurementNoun(test.measurement_type, test.category);
   const providerLogo = getProviderLogo(test.provider_id);
 
   const handleCompare = () => {
@@ -262,8 +295,8 @@ export default function ProviderTestDetailModal({
                   <TestTube2 className="w-4 h-4" />
                 </span>
                 <div className="leading-tight">
-                  <p className="text-sm font-semibold text-white">{displayedBiomarkerCount} biomarkers</p>
-                  <p className="text-xs text-white/60">Measured</p>
+                  <p className="text-sm font-semibold text-white">{displayedBiomarkerCount} {countNoun}</p>
+                  <p className="text-xs text-white/60">{countNoun === "biomarkers" ? "Measured" : "Screened for"}</p>
                 </div>
               </div>
             )}
@@ -273,7 +306,7 @@ export default function ProviderTestDetailModal({
                 <Home className="w-4 h-4" />
               </span>
               <div className="leading-tight">
-                <p className="text-sm font-semibold text-white">{collectionLabel}</p>
+                <p className="text-sm font-semibold text-white">{collectionDetail}</p>
                 <p className="text-xs text-white/60">Collection</p>
               </div>
             </div>
@@ -290,16 +323,30 @@ export default function ProviderTestDetailModal({
           )}
 
           {/* About */}
-          {(goodbodyStatic?.description || test.description) && (
-            <section>
-              <h4 className="text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-2">
-                About this test
-              </h4>
+          <section>
+            <h4 className="text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-2">
+              About this test
+            </h4>
+            {goodbodyStatic?.description || test.description ? (
               <p className="text-[15px] text-[#081129]/80 leading-relaxed whitespace-pre-line break-words">
                 {goodbodyStatic?.description || test.description}
               </p>
-            </section>
-          )}
+            ) : (
+              <p className="text-[15px] italic text-[#081129]/50 leading-relaxed">
+                Overview not published by this provider.
+              </p>
+            )}
+            {test.who_should_test && (
+              <>
+                <h4 className="mt-5 text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-2">
+                  Who should test
+                </h4>
+                <p className="text-[15px] text-[#081129]/80 leading-relaxed whitespace-pre-line break-words">
+                  {test.who_should_test}
+                </p>
+              </>
+            )}
+          </section>
 
           {/* Standards & accreditation */}
           <section>
@@ -346,10 +393,20 @@ export default function ProviderTestDetailModal({
           )}
 
           {/* Biomarkers */}
-          {biomarkers.length > 0 && (
+          {biomarkers.length === 0 && countNoun === "biomarkers" && (
             <section>
               <h4 className="text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-2">
                 Biomarkers Included
+              </h4>
+              <p className="text-[15px] italic text-[#081129]/50">
+                Biomarker list not published by this provider.
+              </p>
+            </section>
+          )}
+          {biomarkers.length > 0 && (
+            <section>
+              <h4 className="text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-2">
+                {countNoun === "biomarkers" ? "Biomarkers Included" : `${countNoun.charAt(0).toUpperCase()}${countNoun.slice(1)} Included`}
               </h4>
               <div className="flex flex-wrap gap-2 max-h-72 overflow-y-auto pr-1">
                 {(showAllBiomarkers ? biomarkers : biomarkers.slice(0, 24)).map((b, i) => (
