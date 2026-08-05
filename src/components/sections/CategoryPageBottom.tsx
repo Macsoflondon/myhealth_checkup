@@ -1,4 +1,4 @@
-import { Link } from "@/lib/router-compat";
+
 import { LucideIcon } from "lucide-react";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 
