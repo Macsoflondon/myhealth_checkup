@@ -112,7 +112,7 @@ const MedichecksTestsCatalogPage = () => {
         <section className="container mx-auto px-4 mb-6">
           <div className="flex flex-col sm:flex-row gap-3 mb-4">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/50" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/78" />
               <Input placeholder="Search tests..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="pl-10" />
             </div>
             <Button variant="outline" size="icon" onClick={() => setShowFilters(!showFilters)} className={showFilters ? "bg-primary text-primary-foreground" : ""} aria-label={showFilters ? "Hide filters" : "Show filters"} aria-expanded={showFilters}>
@@ -152,9 +152,9 @@ const MedichecksTestsCatalogPage = () => {
             </>
           ) : (
              <div className="text-center py-12">
-              <TestTube2 className="h-12 w-12 mx-auto text-white/50 mb-4" />
+              <TestTube2 className="h-12 w-12 mx-auto text-white/78 mb-4" />
               <h3 className="text-lg font-semibold mb-2 text-white">No tests found</h3>
-              <p className="text-white/70">{selectedCategory !== 'all' ? 'Try selecting a different category' : 'Tests from this provider will appear here soon'}</p>
+              <p className="text-white/90">{selectedCategory !== 'all' ? 'Try selecting a different category' : 'Tests from this provider will appear here soon'}</p>
             </div>
           )}
         </section>

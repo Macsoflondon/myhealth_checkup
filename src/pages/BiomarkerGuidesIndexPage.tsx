@@ -62,7 +62,7 @@ const BiomarkerGuidesIndexPage = () => {
                     <h3 className="font-semibold text-lg text-white mb-2 group-hover:text-[#22c0d4] transition">
                       {g.keyword}
                     </h3>
-                    <p className="text-sm text-white/70 mb-4 line-clamp-2">{g.strapline}</p>
+                    <p className="text-sm text-white/90 mb-4 line-clamp-2">{g.strapline}</p>
                     <span className="inline-flex items-center text-sm text-[#22c0d4]">
                       Read guide <ArrowRight className="h-4 w-4 ml-1" />
                     </span>

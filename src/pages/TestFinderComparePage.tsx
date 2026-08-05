@@ -43,7 +43,7 @@ const TestFinderComparePage = () => {
             <div>
               <button
                 onClick={() => navigate("/find-test/recommendations")}
-                className="text-xs text-white/60 hover:text-white flex items-center gap-1 mb-1"
+                className="text-xs text-white/78 hover:text-white flex items-center gap-1 mb-1"
               >
                 <ChevronLeft className="w-3 h-3" /> Back to recommendations
               </button>
@@ -51,7 +51,7 @@ const TestFinderComparePage = () => {
             </div>
             <button
               onClick={() => navigate("/find-test")}
-              className="flex items-center gap-2 text-sm text-white/70 hover:text-white border border-white/15 px-4 py-2 rounded-full self-start"
+              className="flex items-center gap-2 text-sm text-white/90 hover:text-white border border-white/15 px-4 py-2 rounded-full self-start"
             >
               <RefreshCw className="w-4 h-4" /> Restart quiz
             </button>
@@ -69,7 +69,7 @@ const TestFinderComparePage = () => {
             </aside>
             <div className="space-y-4">
               {selectedTests.length === 0 && (
-                <div className="bg-[#0F2238] border border-white/10 rounded-xl p-4 text-sm text-white/70">
+                <div className="bg-[#0F2238] border border-white/10 rounded-xl p-4 text-sm text-white/90">
                   Showing all {filtered.length} matching tests. Tick tests on the recommendations
                   page to narrow this to a side-by-side comparison.
                 </div>

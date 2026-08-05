@@ -488,7 +488,7 @@ const CancerBiomarkersReferencePage = () => {
               <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white mb-4">
                 Ready to Compare Cancer Screening Tests?
               </h2>
-              <p className="text-white/80 mb-6">
+              <p className="text-white/90 mb-6">
                 Compare cancer screening tests from trusted UK providers. Find the right test 
                 for your needs with transparent pricing and clear biomarker information.
               </p>

@@ -172,12 +172,12 @@ export default function FerritinVsIronComparisonGuidePage() {
             >
               Ferritin vs Iron: What's the Difference and Which Test Do You Need?
             </h1>
-            <p className="text-white/80 text-base sm:text-lg leading-relaxed">
+            <p className="text-white/90 text-base sm:text-lg leading-relaxed">
               An independent UK guide to two of the most commonly confused blood tests. Understand what
               each result actually means so you can choose the right test for fatigue, iron deficiency
               or ongoing monitoring — without paying for markers you don't need.
             </p>
-            <p className="text-white/50 text-sm mt-4">Last updated {UPDATED}</p>
+            <p className="text-white/78 text-sm mt-4">Last updated {UPDATED}</p>
           </div>
         </header>
 

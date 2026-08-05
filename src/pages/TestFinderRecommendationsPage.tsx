@@ -77,7 +77,7 @@ const TestFinderRecommendationsPage = () => {
           </div>
 
           {recs.length === 0 ? (
-            <div className="bg-[#0F2238] border border-white/10 rounded-2xl p-10 text-center text-white/60">
+            <div className="bg-[#0F2238] border border-white/10 rounded-2xl p-10 text-center text-white/78">
               No matches yet. Try restarting the quiz with broader preferences.
             </div>
           ) : (
@@ -103,7 +103,7 @@ const TestFinderRecommendationsPage = () => {
                           {formatGBP(t.price)}
                         </span>
                       </VerificationMark>
-                      <span className="text-xs text-white/50">
+                      <span className="text-xs text-white/78">
                         {cost.isEstimate ? "from" : "all-in"} {formatGBP(cost.total)}
                       </span>
                     </div>
@@ -130,7 +130,7 @@ const TestFinderRecommendationsPage = () => {
                         className={`flex-1 text-xs font-semibold px-3 py-2 rounded-full border transition-colors ${
                           isSelected
                             ? "bg-brand-turquoise text-[#081129] border-brand-turquoise"
-                            : "border-white/20 text-white/80 hover:border-brand-turquoise"
+                            : "border-white/20 text-white/90 hover:border-brand-turquoise"
                         }`}
                       >
                         {isSelected ? "Added to compare" : "Add to compare"}

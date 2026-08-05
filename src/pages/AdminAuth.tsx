@@ -186,7 +186,7 @@ const AdminAuth = () => {
         <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))]">
           <div className="text-center">
             <Loader2 className="h-8 w-8 animate-spin text-[hsl(var(--primary))] mx-auto" />
-            <p className="mt-4 text-white/70 text-sm">Verifying admin access...</p>
+            <p className="mt-4 text-white/90 text-sm">Verifying admin access...</p>
           </div>
         </div>
       </>
@@ -207,7 +207,7 @@ const AdminAuth = () => {
         <h1 className="text-xl font-semibold text-white text-center mb-1">
           Admin Portal
         </h1>
-        <p className="text-white/50 text-sm text-center mb-8">
+        <p className="text-white/78 text-sm text-center mb-8">
           Restricted access. Authorised personnel only.
         </p>
 
@@ -232,7 +232,7 @@ const AdminAuth = () => {
 
         <form onSubmit={handleAdminLogin} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="admin-email" className="text-white/70 text-sm">Email</Label>
+            <Label htmlFor="admin-email" className="text-white/90 text-sm">Email</Label>
             <Input
               id="admin-email"
               type="email"
@@ -240,7 +240,7 @@ const AdminAuth = () => {
               onChange={(e) => { setEmail(e.target.value); setEmailError(""); }}
               placeholder="admin@example.com"
               disabled={loading || isLocked}
-              className={`bg-white/10 border-white/20 text-white placeholder:text-white/30 ${emailError ? 'border-destructive' : ''}`}
+              className={`bg-white/10 border-white/20 text-white placeholder:text-white/65 ${emailError ? 'border-destructive' : ''}`}
             />
             {emailError && (
               <p className="text-destructive text-xs">{emailError}</p>
@@ -248,7 +248,7 @@ const AdminAuth = () => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="admin-password" className="text-white/70 text-sm">Password</Label>
+            <Label htmlFor="admin-password" className="text-white/90 text-sm">Password</Label>
             <Input
               id="admin-password"
               type="password"
@@ -256,7 +256,7 @@ const AdminAuth = () => {
               onChange={(e) => { setPassword(e.target.value); setPasswordError(""); }}
               placeholder="••••••••"
               disabled={loading || isLocked}
-              className={`bg-white/10 border-white/20 text-white placeholder:text-white/30 ${passwordError ? 'border-destructive' : ''}`}
+              className={`bg-white/10 border-white/20 text-white placeholder:text-white/65 ${passwordError ? 'border-destructive' : ''}`}
             />
             {passwordError && (
               <p className="text-destructive text-xs">{passwordError}</p>
@@ -281,7 +281,7 @@ const AdminAuth = () => {
             type="button"
             onClick={handleForgotPassword}
             disabled={loading || isLocked}
-            className="text-white/60 hover:text-white transition-colors disabled:opacity-50"
+            className="text-white/78 hover:text-white transition-colors disabled:opacity-50"
           >
             Forgot password?
           </button>
@@ -291,7 +291,7 @@ const AdminAuth = () => {
               clearLockout();
               toast.success("Lockout cleared. You can try signing in again.");
             }}
-            className="text-white/60 hover:text-white transition-colors"
+            className="text-white/78 hover:text-white transition-colors"
           >
             Clear lockout
           </button>
@@ -301,7 +301,7 @@ const AdminAuth = () => {
           <button
             type="button"
             onClick={() => navigate("/auth")}
-            className="text-white/30 hover:text-white/50 text-xs transition-colors"
+            className="text-white/78 hover:text-white/78 text-xs transition-colors"
           >
             ← Back to user sign in
           </button>

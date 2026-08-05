@@ -66,7 +66,7 @@ const GoalDetailPage = () => {
               <h2 className="text-xl sm:text-2xl font-heading font-bold text-white mb-3">
                 Why test for {goal.name.toLowerCase()}?
               </h2>
-              <p className="text-white/70 leading-relaxed">{goal.explanation}</p>
+              <p className="text-white/90 leading-relaxed">{goal.explanation}</p>
             </div>
           </div>
 
@@ -93,13 +93,13 @@ const GoalDetailPage = () => {
                     </Link>
                   </Button>
                 </div>
-                <p className="text-sm text-white/70 mb-3">{test.why}</p>
+                <p className="text-sm text-white/90 mb-3">{test.why}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {test.keyBiomarkers.map((b) => (
                     <Badge
                       key={b}
                       variant="secondary"
-                      className="text-xs font-normal bg-white/10 text-white/80 border border-white/10 hover:bg-white/15"
+                      className="text-xs font-normal bg-white/10 text-white/90 border border-white/10 hover:bg-white/15"
                     >
                       {b}
                     </Badge>

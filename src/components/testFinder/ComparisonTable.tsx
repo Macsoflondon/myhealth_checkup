@@ -72,7 +72,7 @@ export const ComparisonTable = ({ tests }: Props) => {
 
   if (!tests.length) {
     return (
-      <div className="rounded-2xl bg-[#0F2238] border border-white/10 p-10 text-center text-white/60">
+      <div className="rounded-2xl bg-[#0F2238] border border-white/10 p-10 text-center text-white/78">
         Add tests to compare from the recommendations or filters.
       </div>
     );
@@ -145,7 +145,7 @@ export const ComparisonTable = ({ tests }: Props) => {
           {rows.map((row, idx) => (
             <div key={row.label} className="contents">
               <div
-                className={`sticky left-0 z-10 bg-[#081129] text-white/70 text-xs font-semibold uppercase tracking-wide p-4 flex items-center border-b border-white/5`}
+                className={`sticky left-0 z-10 bg-[#081129] text-white/90 text-xs font-semibold uppercase tracking-wide p-4 flex items-center border-b border-white/5`}
               >
                 {row.label}
               </div>

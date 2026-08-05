@@ -203,7 +203,7 @@ const BrandTypography = () => {
             <p className="text-xl font-elegant italic mb-6 text-white/90">
               Your health is your greatest asset. Take control with confidence.
             </p>
-            <p className="text-base font-sans leading-relaxed text-white/80">
+            <p className="text-base font-sans leading-relaxed text-white/90">
               Compare private blood tests, health screenings, and wellness services from the UK's most trusted providers.
             </p>
           </div>
@@ -255,7 +255,7 @@ const BrandTypography = () => {
           <div className="grid md:grid-cols-3 gap-6">
             <div>
               <h4 className="text-xl font-heading font-bold text-[#22c0d4] mb-3">Montserrat</h4>
-              <ul className="text-sm space-y-1 text-white/80">
+              <ul className="text-sm space-y-1 text-white/90">
                 <li>✓ All headings (H1-H6)</li>
                 <li>✓ Statistics & numbers</li>
                 <li>✓ Button labels</li>
@@ -265,7 +265,7 @@ const BrandTypography = () => {
             </div>
             <div>
               <h4 className="text-xl font-heading font-bold text-[#e70d69] mb-3">Lato</h4>
-              <ul className="text-sm space-y-1 text-white/80">
+              <ul className="text-sm space-y-1 text-white/90">
                 <li>✓ Body paragraphs</li>
                 <li>✓ Descriptions</li>
                 <li>✓ Lists & captions</li>
@@ -275,7 +275,7 @@ const BrandTypography = () => {
             </div>
             <div>
               <h4 className="text-xl font-heading font-bold text-white mb-3">EB Garamond</h4>
-              <ul className="text-sm space-y-1 text-white/80">
+              <ul className="text-sm space-y-1 text-white/90">
                 <li>✓ Testimonials</li>
                 <li>✓ Quotes & pullquotes</li>
                 <li>✓ Brand taglines</li>

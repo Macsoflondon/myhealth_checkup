@@ -62,7 +62,7 @@ const TestPageTemplate = ({
                 <CardTitle className="text-white">What's Included</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="mb-4 text-white/80 font-normal">
+                <p className="mb-4 text-white/90 font-normal">
                   This comprehensive test analyzes key biomarkers that give you 
                   insight into your health status.
                 </p>
@@ -70,7 +70,7 @@ const TestPageTemplate = ({
                 <div className="grid md:grid-cols-2 gap-4 mb-6">
                   {data.biomarkerSections.map((section, index) => <div key={index} className="space-y-2">
                       <h4 className="font-semibold text-white">{section.title}</h4>
-                      <ul className="text-sm text-white/70 space-y-1">
+                      <ul className="text-sm text-white/90 space-y-1">
                         {section.markers.map((marker, markerIndex) => <li key={markerIndex}>• {marker}</li>)}
                       </ul>
                     </div>)}
@@ -81,7 +81,7 @@ const TestPageTemplate = ({
                     <h4 className="font-semibold mb-2 text-white">
                       {highlight.title}
                     </h4>
-                    <ul className="text-sm space-y-1 text-white/70">
+                    <ul className="text-sm space-y-1 text-white/90">
                       {highlight.items.map((item, itemIndex) => <li key={itemIndex}>• {item}</li>)}
                     </ul>
                   </div>)}
@@ -104,7 +104,7 @@ const TestPageTemplate = ({
                 <CardTitle className="font-medium text-white">{data.whyChooseTitle || 'Why Choose This Test?'}</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="space-y-2 text-white/70">
+                <ul className="space-y-2 text-white/90">
                   {data.whyChooseItems.map((item, index) => <li key={index}>• {item}</li>)}
                 </ul>
               </CardContent>

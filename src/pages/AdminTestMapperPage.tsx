@@ -106,7 +106,7 @@ export default function AdminTestMapperPage() {
               <Zap className="h-8 w-8 text-primary" />
               AI Test Mapper - Day 1 Launch Blitz
             </h1>
-            <p className="text-white/70">
+            <p className="text-white/90">
               Automatically map 192 unmapped provider tests to master tests using OpenAI GPT-5 semantic analysis
             </p>
           </div>

@@ -207,9 +207,9 @@ export default function OAuthConsent() {
       <main className="min-h-screen bg-[#081129] text-white flex items-center justify-center p-6">
         <div className="max-w-md w-full bg-white/5 border border-white/10 rounded-lg p-6 space-y-4">
           <h1 className="text-xl font-semibold">{heading}</h1>
-          <p className="text-white/80 text-sm">{body}</p>
+          <p className="text-white/90 text-sm">{body}</p>
           {failure.kind !== "missing_id" && failure.kind !== "expired" && (
-            <p className="text-white/50 text-xs break-words">Details: {failure.message}</p>
+            <p className="text-white/78 text-xs break-words">Details: {failure.message}</p>
           )}
           <div className="flex gap-3 pt-2">
             {authorizationId && failure.kind !== "expired" && (
@@ -250,18 +250,18 @@ export default function OAuthConsent() {
         <h1 className="text-2xl font-semibold">
           Connect {clientName} to your myhealth checkup account
         </h1>
-        <p className="text-white/80 text-sm">
+        <p className="text-white/90 text-sm">
           {clientName} is requesting access to act on your behalf. It will be able to search the
           test catalogue and read or update your saved tests as you.
         </p>
         {scopes.length > 0 && (
-          <ul className="text-white/70 text-xs list-disc pl-5 space-y-1">
+          <ul className="text-white/90 text-xs list-disc pl-5 space-y-1">
             {scopes.map((scope) => (
               <li key={scope}>{scope}</li>
             ))}
           </ul>
         )}
-        <p className="text-white/60 text-xs">
+        <p className="text-white/78 text-xs">
           You can revoke access at any time from your account settings.
         </p>
         <div className="flex gap-3 pt-2">

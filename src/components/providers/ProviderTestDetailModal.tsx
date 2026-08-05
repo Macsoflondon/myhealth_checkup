@@ -285,7 +285,7 @@ export default function ProviderTestDetailModal({
                   {priceIsFrom ? <span className="text-2xl font-bold">from </span> : null}
                   {priceFormatted}
                 </p>
-                <p className="text-xs text-white/70 mt-1.5">{collectionLabel}</p>
+                <p className="text-xs text-white/90 mt-1.5">{collectionLabel}</p>
               </div>
             )}
 
@@ -296,7 +296,7 @@ export default function ProviderTestDetailModal({
                 </span>
                 <div className="leading-tight">
                   <p className="text-sm font-semibold text-white">{displayedBiomarkerCount} {countNoun}</p>
-                  <p className="text-xs text-white/60">{countNoun === "biomarkers" ? "Measured" : "Screened for"}</p>
+                  <p className="text-xs text-white/78">{countNoun === "biomarkers" ? "Measured" : "Screened for"}</p>
                 </div>
               </div>
             )}
@@ -307,7 +307,7 @@ export default function ProviderTestDetailModal({
               </span>
               <div className="leading-tight">
                 <p className="text-sm font-semibold text-white">{collectionDetail}</p>
-                <p className="text-xs text-white/60">Collection</p>
+                <p className="text-xs text-white/78">Collection</p>
               </div>
             </div>
           </div>

@@ -81,12 +81,12 @@ const BiomarkerGuidePage = () => {
       </Helmet>
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 text-white">
-        <nav className="text-sm text-white/60 mb-6" aria-label="Breadcrumb">
+        <nav className="text-sm text-white/78 mb-6" aria-label="Breadcrumb">
           <Link to="/" className="hover:text-white">Home</Link>
           <span className="mx-2">/</span>
           <Link to="/guides" className="hover:text-white">Guides</Link>
           <span className="mx-2">/</span>
-          <span className="text-white/80">{guide.keyword}</span>
+          <span className="text-white/90">{guide.keyword}</span>
         </nav>
 
         <header className="mb-10">
@@ -94,7 +94,7 @@ const BiomarkerGuidePage = () => {
           <h1 className="font-display text-4xl lg:text-5xl font-semibold tracking-tight mb-4">
             {guide.keyword}
           </h1>
-          <p className="text-lg text-white/70">{guide.strapline}</p>
+          <p className="text-lg text-white/90">{guide.strapline}</p>
         </header>
 
         <section className="mb-10">
@@ -111,7 +111,7 @@ const BiomarkerGuidePage = () => {
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base text-white">{b.name}</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/70">{b.what}</CardContent>
+                <CardContent className="text-sm text-white/90">{b.what}</CardContent>
               </Card>
             ))}
           </div>
@@ -178,7 +178,7 @@ const BiomarkerGuidePage = () => {
                   to={`/guides/${r.slug}`}
                   className="block rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition"
                 >
-                  <div className="text-sm text-white/60 mb-1">{r.category}</div>
+                  <div className="text-sm text-white/78 mb-1">{r.category}</div>
                   <div className="font-semibold text-white">{r.keyword}</div>
                 </Link>
               ))}
@@ -186,7 +186,7 @@ const BiomarkerGuidePage = () => {
           </section>
         )}
 
-        <p className="text-xs text-white/50 mt-12">
+        <p className="text-xs text-white/78 mt-12">
           This guide is for general information only and does not constitute medical advice.
           Always discuss test results with a qualified clinician.
         </p>

@@ -86,11 +86,11 @@ export function MfaStepUp({
     <div className="space-y-5">
       <div className="space-y-1">
         <h2 className="font-[Montserrat] text-xl font-semibold text-white">{title}</h2>
-        <p className="text-sm text-white/70">{description}</p>
+        <p className="text-sm text-white/90">{description}</p>
       </div>
 
       {loadingFactor ? (
-        <div className="flex items-center gap-2 text-sm text-white/70">
+        <div className="flex items-center gap-2 text-sm text-white/90">
           <Loader2 className="h-4 w-4 animate-spin" /> Preparing secure check…
         </div>
       ) : !factorId && mode === "totp" ? (
@@ -116,7 +116,7 @@ export function MfaStepUp({
               onChange={(e) => { setCode(e.target.value.replace(/\D/g, "")); setError(null); }}
               className="h-14 text-center text-2xl tracking-[0.6em] bg-white text-[#081129] font-semibold"
             />
-            <p className="text-xs text-white/60">
+            <p className="text-xs text-white/78">
               Open your authenticator app (Google Authenticator, Authy, 1Password…) and enter the newest 6-digit code shown for myhealth checkup.
             </p>
           </div>
@@ -133,7 +133,7 @@ export function MfaStepUp({
                 type="button"
                 variant="ghost"
                 onClick={onCancel}
-                className="text-white/80 hover:text-white"
+                className="text-white/90 hover:text-white"
               >
                 Cancel
               </Button>
@@ -171,7 +171,7 @@ export function MfaStepUp({
               className="h-12 text-center tracking-widest bg-white text-[#081129] font-mono font-semibold"
               autoComplete="one-time-code"
             />
-            <p className="text-xs text-white/60">
+            <p className="text-xs text-white/78">
               Enter one of the single-use backup codes you saved when you set up two-step verification. Each code works only once — you'll be asked to re-enrol your authenticator afterwards.
             </p>
           </div>
@@ -187,7 +187,7 @@ export function MfaStepUp({
               type="button"
               variant="ghost"
               onClick={() => { setMode("totp"); setError(null); }}
-              className="text-white/80 hover:text-white"
+              className="text-white/90 hover:text-white"
             >
               Back
             </Button>

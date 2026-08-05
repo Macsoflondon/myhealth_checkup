@@ -126,12 +126,12 @@ const TotalVsFreeTestosteroneGuidePage = () => {
       </Helmet>
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 text-white">
-        <nav className="text-sm text-white/60 mb-6" aria-label="Breadcrumb">
+        <nav className="text-sm text-white/78 mb-6" aria-label="Breadcrumb">
           <Link to="/" className="hover:text-white">Home</Link>
           <span className="mx-2">/</span>
           <Link to="/blog" className="hover:text-white">Health Resource Hub</Link>
           <span className="mx-2">/</span>
-          <span className="text-white/80">Total vs Free Testosterone</span>
+          <span className="text-white/90">Total vs Free Testosterone</span>
         </nav>
 
         <header className="mb-10">
@@ -139,14 +139,14 @@ const TotalVsFreeTestosteroneGuidePage = () => {
           <h1 className="text-4xl lg:text-5xl font-semibold tracking-tight mb-4">
             Total vs free testosterone: what the numbers really mean
           </h1>
-          <p className="text-lg text-white/80 leading-relaxed">
+          <p className="text-lg text-white/90 leading-relaxed">
             If you have ever looked at a testosterone blood test result, you have probably seen
             two figures side by side: total testosterone and free testosterone. They sound
             similar, but clinically they answer different questions. This independent UK guide
             explains what each measures, why free testosterone levels often matter more than
             total, and how to choose a private test that reports both.
           </p>
-          <p className="text-sm text-white/50 mt-4">Last reviewed: 25 July 2026 · Editorially independent · Not medical advice</p>
+          <p className="text-sm text-white/78 mt-4">Last reviewed: 25 July 2026 · Editorially independent · Not medical advice</p>
         </header>
 
         <section className="mb-10 space-y-4">
@@ -166,7 +166,7 @@ const TotalVsFreeTestosteroneGuidePage = () => {
           <h2 className="text-2xl font-semibold mb-4">Side-by-side comparison</h2>
           <div className="overflow-x-auto rounded-xl border border-white/10">
             <table className="w-full text-sm">
-              <thead className="bg-white/5 text-white/80">
+              <thead className="bg-white/5 text-white/90">
                 <tr>
                   <th className="text-left px-4 py-3 font-medium"> </th>
                   <th className="text-left px-4 py-3 font-medium">Total testosterone</th>
@@ -257,7 +257,7 @@ const TotalVsFreeTestosteroneGuidePage = () => {
                 <Beaker className="w-6 h-6 mb-2 text-[#22c0d4]" />
                 <CardTitle className="text-base">Biomarkers covered</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-white/70">
+              <CardContent className="text-sm text-white/90">
                 Total testosterone, SHBG and albumin at minimum, so free testosterone can be
                 calculated. Ideally LH, FSH and oestradiol too.
               </CardContent>
@@ -267,7 +267,7 @@ const TotalVsFreeTestosteroneGuidePage = () => {
                 <Activity className="w-6 h-6 mb-2 text-[#e70d69]" />
                 <CardTitle className="text-base">Sample method</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-white/70">
+              <CardContent className="text-sm text-white/90">
                 Venous draws at a clinic remain the reference standard. At-home finger-prick
                 kits are convenient — confirm low results venously.
               </CardContent>
@@ -277,7 +277,7 @@ const TotalVsFreeTestosteroneGuidePage = () => {
                 <ShieldCheck className="w-6 h-6 mb-2 text-[#22c0d4]" />
                 <CardTitle className="text-base">Accreditation</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-white/70">
+              <CardContent className="text-sm text-white/90">
                 UKAS ISO 15189 laboratory and CQC-regulated clinic. These are non-negotiable and
                 standard across the providers we list.
               </CardContent>
@@ -293,7 +293,7 @@ const TotalVsFreeTestosteroneGuidePage = () => {
                 <CardHeader>
                   <CardTitle className="text-base">{f.q}</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/80">{f.a}</CardContent>
+                <CardContent className="text-sm text-white/90">{f.a}</CardContent>
               </Card>
             ))}
           </div>
@@ -301,7 +301,7 @@ const TotalVsFreeTestosteroneGuidePage = () => {
 
         <section className="rounded-2xl border border-white/10 bg-gradient-to-r from-[#22c0d4]/15 to-[#e70d69]/15 p-6 lg:p-8 mb-10">
           <h2 className="text-2xl font-semibold mb-2">Compare male hormone tests on myhealth checkup</h2>
-          <p className="text-white/80 mb-6">
+          <p className="text-white/90 mb-6">
             Independent, side-by-side comparison of biomarkers, sample method, typical turnaround
             and price across CQC-regulated UK providers. No upselling, no pay-to-rank.
           </p>
@@ -317,7 +317,7 @@ const TotalVsFreeTestosteroneGuidePage = () => {
           </div>
         </section>
 
-        <p className="text-xs text-white/50">
+        <p className="text-xs text-white/78">
           Editorial note: this article is for information only and does not constitute medical
           advice, diagnosis or treatment. Always discuss test results with a qualified clinician.
           myhealth checkup is an independent comparison platform and does not provide clinical

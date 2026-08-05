@@ -53,7 +53,7 @@ export function CategoryCompareDrawer({
               </span>
               <button
                 onClick={() => onRemove(item.id)}
-                className="text-white/40 hover:text-white transition-colors cursor-pointer bg-transparent border-0 p-0"
+                className="text-white/78 hover:text-white transition-colors cursor-pointer bg-transparent border-0 p-0"
                 aria-label={`Remove ${item.title}`}
               >
                 <X className="h-3.5 w-3.5" />
@@ -67,7 +67,7 @@ export function CategoryCompareDrawer({
             variant="outline"
             size="sm"
             onClick={onClear}
-            className="text-xs border-white/20 text-white/60 bg-transparent hover:bg-white/10"
+            className="text-xs border-white/20 text-white/78 bg-transparent hover:bg-white/10"
           >
             Clear
           </Button>

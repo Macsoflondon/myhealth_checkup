@@ -97,7 +97,7 @@ const ProviderProfilePage = () => {
                 {provider.name}
               </h1>
               {brand && (
-                <p className="text-white/80 text-sm md:text-base italic mb-2">{brand.tagline}</p>
+                <p className="text-white/90 text-sm md:text-base italic mb-2">{brand.tagline}</p>
               )}
               
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-4">
