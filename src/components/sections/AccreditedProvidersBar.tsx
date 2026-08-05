@@ -55,15 +55,11 @@ const AccreditedProvidersBar = () => {
         </Reveal>
 
         <div
-          className="grid grid-cols-2 sm:grid-cols-4 gap-y-3 gap-x-3 justify-items-start sm:justify-items-center lg:flex lg:flex-nowrap lg:items-center lg:justify-center lg:gap-y-0"
+          className="trust-alt grid grid-cols-2 sm:grid-cols-4 gap-y-3 gap-x-3 justify-items-start sm:justify-items-center lg:flex lg:flex-nowrap lg:items-center lg:justify-center lg:gap-y-0"
           data-testid="accreditors-static-row"
         >
-          {trustItems.map((item, i) => (
-            <BadgePill
-              key={item.label}
-              item={item}
-              tone={i % 2 === 0 ? "turquoise" : "pink"}
-            />
+          {trustItems.map((item) => (
+            <BadgePill key={item.label} item={item} />
           ))}
         </div>
       </div>
