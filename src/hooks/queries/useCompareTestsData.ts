@@ -174,9 +174,11 @@ export function useCompareTestsData(filters: CompareFilters) {
   // Apply local filters and sorting
   const processedTests = useMemo(() => {
     if (!testsQuery.data) return [];
-    const filtered = applyLocalFilters(testsQuery.data, filters);
+    const clean = testsQuery.data.filter((test) => !isJunkTestName(test.name));
+    const filtered = applyLocalFilters(clean, filters);
     return sortTests(filtered, filters.sortBy);
   }, [testsQuery.data, filters]);
+
 
   // Clear cache
   const clearCache = useCallback(() => {
