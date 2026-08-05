@@ -1,13 +1,19 @@
 import { useParams, Link } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
-import PageBanner from "@/components/sections/PageBanner";
+import { CategoryStandardHero } from "@/components/category/CategoryStandardHero";
+import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { AlertTriangle, ArrowRight, Search } from "lucide-react";
+import { AlertTriangle, ArrowRight, Search, Activity, Shield, Clock } from "lucide-react";
 import { symptomPages } from "@/data/symptomPages";
 import NotFound from "@/pages/NotFound";
+
+const BENEFITS = [
+  { icon: Activity, title: "Symptom-led matching", description: "See the tests commonly used to investigate this symptom" },
+  { icon: Shield, title: "UKAS accredited labs", description: "Every listed provider uses UKAS-accredited UK laboratories" },
+  { icon: Clock, title: "Clear turnaround", description: "Typical result times shown alongside price and biomarker coverage" },
+] as const;
 
 const SymptomDetailPage = () => {
   const { symptomSlug } = useParams<{ symptomSlug: string }>();
@@ -22,7 +28,7 @@ const SymptomDetailPage = () => {
   const pageUrl = `https://myhealthcheckup.co.uk/compare/symptoms/${symptom.slug}`;
 
   return (
-    <MainLayout>
+    <MainLayout mainClassName="flex-1 bg-white">
       <Helmet>
         <title>{pageTitle}</title>
         <meta
@@ -45,106 +51,103 @@ const SymptomDetailPage = () => {
         </script>
       </Helmet>
 
-      <PageBanner
-        title={`Tests for`}
-        accent={symptom.name}
-        subtitle={symptom.shortDescription}
-      />
+      <CategoryStandardHero pillLabel={`Tests for ${symptom.name}`} />
 
-      {/* Clinical explanation */}
-      <section className="py-10 sm:py-14">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-12">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex items-start gap-4 mb-8">
+      <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-[#08122b] min-h-[60vh]">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex items-start gap-4 mb-8">
+            <div
+              className="w-14 h-14 rounded-xl flex items-center justify-center text-3xl flex-shrink-0 border border-white/10"
+              style={{ backgroundColor: `${symptom.colorHex}22` }}
+            >
+              {symptom.icon}
+            </div>
+            <div>
+              <h2 className="text-xl sm:text-2xl font-heading font-bold text-white mb-3">
+                Why test for {symptom.name.toLowerCase()}?
+              </h2>
+              <p className="text-white/70 leading-relaxed">{symptom.clinicalExplanation}</p>
+            </div>
+          </div>
+
+          {/* Recommended tests */}
+          <h2 className="text-xl sm:text-2xl font-heading font-bold text-white mb-5">
+            Recommended tests
+          </h2>
+          <div className="space-y-4 mb-10">
+            {symptom.recommendedTests.map((test, i) => (
               <div
-                className="w-14 h-14 rounded-xl flex items-center justify-center text-3xl flex-shrink-0"
-                style={{ backgroundColor: `${symptom.colorHex}15` }}
+                key={i}
+                className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5"
               >
-                {symptom.icon}
-              </div>
-              <div>
-                <h2 className="text-xl sm:text-2xl font-heading font-bold text-brand-navy mb-3">
-                  Why test for {symptom.name.toLowerCase()}?
-                </h2>
-                <p className="text-muted-foreground leading-relaxed">
-                  {symptom.clinicalExplanation}
-                </p>
-              </div>
-            </div>
-
-            {/* Recommended tests */}
-            <h2 className="text-xl sm:text-2xl font-heading font-bold text-brand-navy mb-5">
-              Recommended tests
-            </h2>
-            <div className="space-y-4 mb-10">
-              {symptom.recommendedTests.map((test, i) => (
-                <Card key={i} className="border-border/50">
-                  <CardHeader className="pb-2">
-                    <div className="flex items-center justify-between flex-wrap gap-2">
-                      <CardTitle className="text-lg font-heading text-brand-navy">
-                        {test.name}
-                      </CardTitle>
-                      <Button
-                        asChild
-                        size="sm"
-                        className="bg-brand-turquoise hover:bg-brand-pink text-white rounded-full text-xs"
-                      >
-                        <Link to={`/compare?search=${test.searchQuery}`}>
-                          <Search className="w-3.5 h-3.5 mr-1" />
-                          Compare prices
-                        </Link>
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="pt-0">
-                    <p className="text-sm text-muted-foreground mb-3">{test.why}</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {test.keyBiomarkers.map((b) => (
-                        <Badge key={b} variant="secondary" className="text-xs font-normal">
-                          {b}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-
-            {/* When to see GP */}
-            <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 mb-10">
-              <div className="flex items-start gap-3">
-                <AlertTriangle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="font-heading font-semibold text-amber-900 mb-1">When to see your GP</h3>
-                  <p className="text-sm text-amber-800">{symptom.whenToSeeGP}</p>
+                <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+                  <h3 className="text-lg font-heading font-bold text-white">{test.name}</h3>
+                  <Button
+                    asChild
+                    size="sm"
+                    className="bg-[#22c0d4] hover:bg-[#e70d69] text-white rounded-full text-xs"
+                  >
+                    <Link to={`/compare?search=${test.searchQuery}`}>
+                      <Search className="w-3.5 h-3.5 mr-1" />
+                      Compare prices
+                    </Link>
+                  </Button>
+                </div>
+                <p className="text-sm text-white/70 mb-3">{test.why}</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {test.keyBiomarkers.map((b) => (
+                    <Badge
+                      key={b}
+                      variant="secondary"
+                      className="text-xs font-normal bg-white/10 text-white/80 border border-white/10 hover:bg-white/15"
+                    >
+                      {b}
+                    </Badge>
+                  ))}
                 </div>
               </div>
-            </div>
+            ))}
+          </div>
 
-            {/* CTA */}
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button
-                asChild
-                size="lg"
-                className="bg-brand-turquoise hover:bg-brand-pink text-white rounded-xl"
-              >
-                <Link to={`/compare?search=${symptom.recommendedTests[0]?.searchQuery || ""}`}>
-                  Compare all {symptom.name.toLowerCase()} tests
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-              </Button>
-              <Button
-                asChild
-                size="lg"
-                variant="outline"
-                className="rounded-xl"
-              >
-                <Link to="/compare/symptoms">View all symptoms</Link>
-              </Button>
+          {/* When to see GP */}
+          <div className="rounded-xl border border-[#e70d69]/30 bg-[#e70d69]/10 p-5 mb-10">
+            <div className="flex items-start gap-3">
+              <AlertTriangle className="w-5 h-5 text-[#e70d69] flex-shrink-0 mt-0.5" />
+              <div>
+                <h3 className="font-heading font-semibold text-white mb-1">When to see your GP</h3>
+                <p className="text-sm text-white/75">{symptom.whenToSeeGP}</p>
+              </div>
             </div>
+          </div>
+
+          {/* CTA */}
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Button
+              asChild
+              size="lg"
+              className="bg-[#22c0d4] hover:bg-[#e70d69] text-white rounded-xl"
+            >
+              <Link to={`/compare?search=${symptom.recommendedTests[0]?.searchQuery || ""}`}>
+                Compare all {symptom.name.toLowerCase()} tests
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
+            </Button>
+            <Button
+              asChild
+              size="lg"
+              variant="outline"
+              className="rounded-xl border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
+            >
+              <Link to="/compare/symptoms">View all symptoms</Link>
+            </Button>
           </div>
         </div>
       </section>
+
+      <CategoryPageBottom
+        benefitsTitle={`Why test for ${symptom.name.toLowerCase()}?`}
+        benefits={[BENEFITS[0], BENEFITS[1], BENEFITS[2]]}
+      />
     </MainLayout>
   );
 };
