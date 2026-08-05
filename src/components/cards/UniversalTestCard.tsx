@@ -26,8 +26,13 @@ export interface UniversalTestData {
   collection_fee_amount?: number | null;
   turnaround_days_text?: string | null;
   sample_type?: string | null;
+  /** Human-readable collection detail, e.g. "Venous blood draw at a Goodbody clinic" */
+  collection_method?: string | null;
+  /** What the count actually measures: biomarkers | cancers | allergens | conditions */
+  measurement_type?: string | null;
   biomarker_count?: number | null;
   biomarkers_list?: { value: string }[] | string[] | null;
+
   symptoms?: string[] | null;
   who_should_test?: string | null;
   url?: string | null;
@@ -84,12 +89,52 @@ function normalizeBiomarkers(list: UniversalTestData["biomarkers_list"]): string
   return [];
 }
 
+/** Short, honest sample/collection descriptor for the compact card. */
 function collectionLabel(t: UniversalTestData): string {
+  const s = (t.sample_type || "").toLowerCase();
+  if (s.includes("finger")) return "Finger-prick";
+  if (s.includes("venous") || s.includes("blood draw")) return "Venous draw";
+  if (s.includes("saliva")) return "Saliva";
+  if (s.includes("urine")) return "Urine";
+  if (s.includes("swab")) return "Swab";
   if (t.home_kit_available && t.clinic_visit_available) return "Home or clinic";
   if (t.home_kit_available) return "At-home kit";
   if (t.clinic_visit_available) return "Clinic visit";
-  return "At-home kit";
+  return "Not stated";
 }
+
+/** Full collection detail for the detail modal — never guesses. */
+function collectionDetail(t: UniversalTestData): string {
+  if (t.collection_method && t.collection_method.trim()) return t.collection_method.trim();
+  const s = (t.sample_type || "").toLowerCase();
+  const sample = s.includes("finger")
+    ? "Finger-prick blood sample"
+    : s.includes("venous") || s.includes("blood draw")
+      ? "Venous blood draw"
+      : t.sample_type?.trim() || null;
+  const setting =
+    t.home_kit_available && t.clinic_visit_available
+      ? "home kit or clinic appointment"
+      : t.home_kit_available
+        ? "home kit"
+        : t.clinic_visit_available
+          ? "in-clinic appointment"
+          : null;
+  if (sample && setting) return `${sample} — ${setting}`;
+  if (sample) return sample;
+  if (setting) return setting.charAt(0).toUpperCase() + setting.slice(1);
+  return "Collection method not stated by this provider";
+}
+
+/** What the headline count actually measures, per provider data. */
+function measurementNoun(t: UniversalTestData, isAllergy: boolean): { plural: string; caption: string } {
+  const type = (t.measurement_type || "").toLowerCase();
+  if (type === "cancers") return { plural: "cancer types", caption: "Screened for" };
+  if (type === "conditions") return { plural: "conditions", caption: "Screened for" };
+  if (type === "allergens" || isAllergy) return { plural: "allergens", caption: "Allergens" };
+  return { plural: "biomarkers", caption: "Measured" };
+}
+
 
 function toCompareData(t: UniversalTestData): CompareTestData {
   const meta = getProviderMeta(t.provider_id);
@@ -177,22 +222,29 @@ export const UniversalTestDetailModal: React.FC<{
                 </div>
               </div>
             )}
-            {test.biomarker_count != null && test.biomarker_count > 0 && (
-              <div className="flex items-center gap-1.5">
-                <FlaskConical size={14} color={UTC_TURQUOISE} />
-                <div>
-                  <div style={{ color: "#fff", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>{test.biomarker_count} {isAllergy ? "allergies tested" : "biomarkers"}</div>
-                  <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>{isAllergy ? "Allergens" : "Measured"}</div>
+            <div className="flex items-center gap-1.5">
+              <FlaskConical size={14} color={UTC_TURQUOISE} />
+              <div>
+                <div style={{ color: "#fff", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>
+                  {test.biomarker_count != null && test.biomarker_count > 0
+                    ? `${test.biomarker_count} ${measurementNoun(test, isAllergy).plural}`
+                    : `${measurementNoun(test, isAllergy).plural.charAt(0).toUpperCase()}${measurementNoun(test, isAllergy).plural.slice(1)} not published`}
+                </div>
+                <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>
+                  {test.biomarker_count != null && test.biomarker_count > 0
+                    ? measurementNoun(test, isAllergy).caption
+                    : "By this provider"}
                 </div>
               </div>
-            )}
+            </div>
             <div className="flex items-center gap-1.5">
               <Syringe size={14} color={UTC_TURQUOISE} />
               <div>
-                <div style={{ color: "#fff", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>{collectionLabel(test)}</div>
+                <div style={{ color: "#fff", fontSize: 13, fontFamily: "'DM Sans',sans-serif" }}>{collectionDetail(test)}</div>
                 <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>Collection</div>
               </div>
             </div>
+
           </div>
         </div>
 
@@ -224,12 +276,16 @@ export const UniversalTestDetailModal: React.FC<{
           })()}
 
 
-          {test.description && (
-            <div>
-              <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: UTC_NAVY, marginBottom: 8 }}>About This Test</div>
+          <div>
+            <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: UTC_NAVY, marginBottom: 8 }}>About This Test</div>
+            {test.description ? (
               <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 14, color: "#475569", lineHeight: 1.6 }}>{test.description}</p>
-            </div>
-          )}
+            ) : (
+              <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 14, color: "#94a3b8", lineHeight: 1.6, fontStyle: "italic" }}>
+                Overview not published by this provider.
+              </p>
+            )}
+          </div>
 
           {test.who_should_test && (
             <div>
@@ -238,18 +294,27 @@ export const UniversalTestDetailModal: React.FC<{
             </div>
           )}
 
-          {biomarkers.length > 0 && (
-            <div>
-              <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: UTC_NAVY, marginBottom: 8 }}>
-                {isAllergy ? "Allergies Tested" : "Biomarkers Tested"} ({biomarkers.length})
-              </div>
+          <div>
+            <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: UTC_NAVY, marginBottom: 8 }}>
+              {(() => {
+                const noun = measurementNoun(test, isAllergy).plural;
+                const title = noun.charAt(0).toUpperCase() + noun.slice(1);
+                return biomarkers.length > 0 ? `${title} Tested (${biomarkers.length})` : `${title} Tested`;
+              })()}
+            </div>
+            {biomarkers.length > 0 ? (
               <div className="flex flex-wrap gap-2">
                 {biomarkers.map((b, i) => (
                   <span key={i} style={{ background: UTC_TINT, color: UTC_NAVY, fontFamily: "'DM Sans',sans-serif", fontSize: 12, padding: "4px 10px", borderRadius: 20 }}>{b}</span>
                 ))}
               </div>
-            </div>
-          )}
+            ) : (
+              <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 14, color: "#94a3b8", lineHeight: 1.6, fontStyle: "italic" }}>
+                {measurementNoun(test, isAllergy).plural.charAt(0).toUpperCase() + measurementNoun(test, isAllergy).plural.slice(1)} list not published by this provider.
+              </p>
+            )}
+          </div>
+
 
           {(test.symptoms || []).length > 0 && (
             <div>
@@ -565,7 +630,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               minHeight: "calc(13px * 1.5 * 2)",
             }}
           >
-            {test.description || "\u00A0"}
+            {test.description || "Overview not published by this provider."}
           </p>
 
           {/* Biomarker chips */}
@@ -615,8 +680,9 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
             <span className="flex items-center gap-1 flex-shrink-0">
               <FlaskConical size={12} color={UTC_TURQUOISE} />
               {test.biomarker_count && test.biomarker_count > 0
-                ? `${test.biomarker_count} ${isAllergy ? "allergens" : "markers"}`
-                : "\u2014"}
+                ? `${test.biomarker_count} ${measurementNoun(test, isAllergy).plural}`
+                : "Not stated"}
+
             </span>
             <span className="flex items-center gap-1 flex-shrink-0">
               <Clock size={12} color={UTC_TURQUOISE} />

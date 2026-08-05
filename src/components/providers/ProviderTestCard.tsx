@@ -10,6 +10,9 @@ export interface ProviderTestCardData {
   price?: number | null;
   category?: string | null;
   sample_type?: string | null;
+  collection_method?: string | null;
+  measurement_type?: string | null;
+  who_should_test?: string | null;
   biomarker_count?: number | null;
   is_popular?: boolean | null;
   url?: string | null;
