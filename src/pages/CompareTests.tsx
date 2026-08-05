@@ -69,7 +69,7 @@ const CompareTests = () => {
       setSearchParams(next, { replace: true });
       if (selectedTests.length >= 2) navigate(compareResultsPath(selectedTests.map((t) => t.id)));
     }
-  }, [searchParams, selectedTests.length, setSearchParams, navigate]);
+  }, [searchParams, selectedTests, setSearchParams, navigate]);
 
 
   const isSelected = useCallback(
