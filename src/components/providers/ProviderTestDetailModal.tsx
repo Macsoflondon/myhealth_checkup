@@ -10,6 +10,7 @@ import { getGoodbodyTestByName } from "@/data/goodbodyTestDetails";
 import type { ProviderTestCardData } from "./ProviderTestCard";
 import { formatTestPrice } from "@/lib/utils";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
+import { compareResultsPath } from "@/lib/compareUrl";
 import type { CompareTestData } from "@/types";
 import { getProviderLogo } from "@/constants/providers";
 
@@ -207,7 +208,7 @@ export default function ProviderTestDetailModal({
       compareStore.add(compareTest);
     }
     onOpenChange(false);
-    navigate("/compare/results");
+    navigate(compareResultsPath(compareStore.getAll().map((t) => t.id)));
   };
 
 

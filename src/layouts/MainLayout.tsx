@@ -6,6 +6,7 @@ import CookieConsent from "@/components/compliance/CookieConsent";
 import SiteBreadcrumb from "@/components/common/SiteBreadcrumb";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 import { ComparisonBar } from "@/components/compare/ComparisonBar";
+import { compareResultsPath } from "@/lib/compareUrl";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import { useNavigate } from "@/lib/router-compat";
 const AccreditedProvidersBar = lazy(() => import("@/components/sections/AccreditedProvidersBar"));
@@ -47,7 +48,7 @@ export const MainLayout = ({
       </main>
       {!hideFooter && <Footer />}
       <CookieConsent />
-      <ComparisonBar selectedTests={compareItems} onRemoveTest={(id) => compareStore.remove(id)} onCompare={() => navigate("/compare/results")} onClearAll={() => compareStore.clear()} />
+      <ComparisonBar selectedTests={compareItems} onRemoveTest={(id) => compareStore.remove(id)} onCompare={() => navigate(compareResultsPath(compareItems.map((t) => t.id)))} onClearAll={() => compareStore.clear()} />
     </div>
   );
 };

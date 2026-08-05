@@ -97,6 +97,7 @@ import { Route as BlogTestosteroneLevelsByAgeRouteImport } from './routes/blog.t
 import { Route as BlogTotalVsFreeTestosteroneRouteImport } from './routes/blog.total-vs-free-testosterone'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as ClinilabsTestIdRouteImport } from './routes/clinilabs.$testId'
+import { Route as CompareIndexRouteImport } from './routes/compare.index'
 import { Route as CompareGoalsRouteImport } from './routes/compare.goals'
 import { Route as CompareResultsRouteImport } from './routes/compare.results'
 import { Route as CompareSymptomsRouteImport } from './routes/compare.symptoms'
@@ -594,6 +595,11 @@ const ClinilabsTestIdRoute = ClinilabsTestIdRouteImport.update({
   path: '/$testId',
   getParentRoute: () => ClinilabsRoute,
 } as any)
+const CompareIndexRoute = CompareIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CompareRoute,
+} as any)
 const CompareGoalsRoute = CompareGoalsRouteImport.update({
   id: '/goals',
   path: '/goals',
@@ -986,6 +992,7 @@ export interface FileRoutesByFullPath {
   '/tests/vitamins': typeof TestsVitaminsRoute
   '/tests/womens-health': typeof TestsWomensHealthRoute
   '/thriva/$testId': typeof ThrivaTestIdRoute
+  '/compare/': typeof CompareIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
@@ -1007,7 +1014,6 @@ export interface FileRoutesByTo {
   '/cancer-screening-compare': typeof CancerScreeningCompareRoute
   '/category': typeof CategoryRouteWithChildren
   '/clinilabs': typeof ClinilabsRouteWithChildren
-  '/compare': typeof CompareRouteWithChildren
   '/complaints': typeof ComplaintsRoute
   '/conditions': typeof ConditionsRoute
   '/contact': typeof ContactRoute
@@ -1126,6 +1132,7 @@ export interface FileRoutesByTo {
   '/tests/vitamins': typeof TestsVitaminsRoute
   '/tests/womens-health': typeof TestsWomensHealthRoute
   '/thriva/$testId': typeof ThrivaTestIdRoute
+  '/compare': typeof CompareIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
@@ -1267,6 +1274,7 @@ export interface FileRoutesById {
   '/tests/vitamins': typeof TestsVitaminsRoute
   '/tests/womens-health': typeof TestsWomensHealthRoute
   '/thriva/$testId': typeof ThrivaTestIdRoute
+  '/compare/': typeof CompareIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
@@ -1409,6 +1417,7 @@ export interface FileRouteTypes {
     | '/tests/vitamins'
     | '/tests/womens-health'
     | '/thriva/$testId'
+    | '/compare/'
     | '/.lovable/oauth/consent'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
@@ -1430,7 +1439,6 @@ export interface FileRouteTypes {
     | '/cancer-screening-compare'
     | '/category'
     | '/clinilabs'
-    | '/compare'
     | '/complaints'
     | '/conditions'
     | '/contact'
@@ -1549,6 +1557,7 @@ export interface FileRouteTypes {
     | '/tests/vitamins'
     | '/tests/womens-health'
     | '/thriva/$testId'
+    | '/compare'
     | '/.lovable/oauth/consent'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
@@ -1689,6 +1698,7 @@ export interface FileRouteTypes {
     | '/tests/vitamins'
     | '/tests/womens-health'
     | '/thriva/$testId'
+    | '/compare/'
     | '/.lovable/oauth/consent'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
@@ -2423,6 +2433,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClinilabsTestIdRouteImport
       parentRoute: typeof ClinilabsRoute
     }
+    '/compare/': {
+      id: '/compare/'
+      path: '/'
+      fullPath: '/compare/'
+      preLoaderRoute: typeof CompareIndexRouteImport
+      parentRoute: typeof CompareRoute
+    }
     '/compare/goals': {
       id: '/compare/goals'
       path: '/goals'
@@ -2855,12 +2872,14 @@ interface CompareRouteChildren {
   CompareGoalsRoute: typeof CompareGoalsRouteWithChildren
   CompareResultsRoute: typeof CompareResultsRoute
   CompareSymptomsRoute: typeof CompareSymptomsRouteWithChildren
+  CompareIndexRoute: typeof CompareIndexRoute
 }
 
 const CompareRouteChildren: CompareRouteChildren = {
   CompareGoalsRoute: CompareGoalsRouteWithChildren,
   CompareResultsRoute: CompareResultsRoute,
   CompareSymptomsRoute: CompareSymptomsRouteWithChildren,
+  CompareIndexRoute: CompareIndexRoute,
 }
 
 const CompareRouteWithChildren =

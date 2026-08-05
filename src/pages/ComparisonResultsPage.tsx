@@ -5,11 +5,14 @@ import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { ProviderComparisonTable } from "@/components/compare/ProviderComparisonTable";
 import ComparisonSectionHeading from "@/components/sections/ComparisonSectionHeading";
 import { Button } from "@/components/ui/button";
-import { compareStore, useCompareItems } from "@/stores/compareStore";
+import { Skeleton } from "@/components/ui/skeleton";
+import { compareStore } from "@/stores/compareStore";
+import { useCompareUrlSync } from "@/hooks/useCompareUrlSync";
 
 const ComparisonResultsPage = () => {
-  const selected = useCompareItems();
+  const { selected, isHydrating, missingIds } = useCompareUrlSync();
   const navigate = useNavigate();
+
 
   return (
     <ErrorBoundary>
@@ -28,7 +31,12 @@ const ComparisonResultsPage = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-12">
             <ComparisonSectionHeading />
 
-            {selected.length === 0 ? (
+            {isHydrating ? (
+              <div className="mt-8 space-y-3">
+                <Skeleton className="h-12 w-full rounded-xl" />
+                <Skeleton className="h-64 w-full rounded-2xl" />
+              </div>
+            ) : selected.length === 0 ? (
               <div className="mx-auto mt-8 max-w-xl rounded-2xl border border-dashed border-brand-navy/25 bg-white p-10 text-center">
                 <h2 className="font-heading text-lg font-bold text-brand-navy">
                   No tests selected yet
@@ -46,9 +54,18 @@ const ComparisonResultsPage = () => {
               </div>
             ) : (
               <>
+                {missingIds.length > 0 && (
+                  <p className="mx-auto mt-6 max-w-2xl rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-center text-sm text-amber-900">
+                    {missingIds.length === 1
+                      ? "One test from this link is no longer listed and has been left out."
+                      : `${missingIds.length} tests from this link are no longer listed and have been left out.`}
+                  </p>
+                )}
+
                 <div className="mt-8">
                   <ProviderComparisonTable tests={selected} />
                 </div>
+
 
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
                   <Button

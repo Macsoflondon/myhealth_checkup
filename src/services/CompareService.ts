@@ -1,7 +1,9 @@
 import { logger } from "@/lib/logger";
+import { supabase } from "@/integrations/supabase/client";
 import type { CompareTestData } from "@/types";
 import { cacheService } from "./CacheService";
-import { TestDataTransformer } from "./transformers/testDataTransformer";
+import { TestDataTransformer, type LiveTestRow } from "./transformers/testDataTransformer";
+
 import { TestQueryBuilder } from "./queryBuilders/testQueryBuilder";
 import { compareCategories } from "@/constants/categories";
 import { LiveDataService } from "./LiveDataService";
@@ -89,6 +91,59 @@ export class CompareService {
       return [];
     }
   }
+
+  /**
+   * Resolve a shareable list of test ids (from the URL) back into comparison rows.
+   * Results are returned in the order the ids were requested; unknown ids are dropped.
+   */
+  static async getTestsByIds(ids: string[]): Promise<CompareTestData[]> {
+    const unique = Array.from(new Set(ids.filter(Boolean)));
+    if (unique.length === 0) return [];
+
+    const cacheKey = cacheService.generateKey('getTestsByIds', { ids: [...unique].sort() });
+    const cached = cacheService.get<CompareTestData[]>(cacheKey);
+    if (cached) return this.orderByIds(cached, unique);
+
+    try {
+      const { data, error } = await supabase
+        .from('unified_provider_tests')
+        .select('id, test_name, provider_id, category_primary, price, description, url')
+        .in('id', unique);
+
+      if (error) {
+        logger.error('Error fetching tests by id:', error);
+        return [];
+      }
+
+      const rows: LiveTestRow[] = (data ?? [])
+        .filter((row) => Boolean(row.id) && Boolean(row.test_name))
+        .map((row) => ({
+          id: row.id as string,
+          test_name: row.test_name as string,
+          provider_id: row.provider_id ?? '',
+          category: row.category_primary ?? null,
+          price: row.price ?? null,
+          description: row.description ?? null,
+          is_active: true,
+          url: row.url ?? null,
+        }));
+
+      const result = TestDataTransformer.transformMultiple(rows);
+      cacheService.set(cacheKey, result);
+
+      return this.orderByIds(result, unique);
+    } catch (error) {
+      logger.error('Error in getTestsByIds:', error);
+      return [];
+    }
+  }
+
+  private static orderByIds(tests: CompareTestData[], ids: string[]): CompareTestData[] {
+    const byId = new Map(tests.map((t) => [t.id, t]));
+    return ids.map((id) => byId.get(id)).filter((t): t is CompareTestData => Boolean(t));
+  }
+
+
 
   static async searchTests(
     searchTerm: string,
