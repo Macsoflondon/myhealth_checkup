@@ -9,54 +9,7 @@ import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 const TURQUOISE = "#22c0d4";
 const PINK = "#e70d69";
 
-import joggingWoman from "@/assets/hero/hero-jogging-woman.png";
-import clinicReceptionAsset from "@/assets/hero/hero-clinic-reception.png.asset.json";
-import seniorCoupleAsset from "@/assets/hero/hero-senior-couple.png.asset.json";
-import benchPhoneAsset from "@/assets/hero/hero-bench-phone.png.asset.json";
-import bloodTestKitAsset from "@/assets/hero/hero-blood-test-kit.png.asset.json";
-
-const clinicReception = clinicReceptionAsset.url;
-const seniorCouple = seniorCoupleAsset.url;
-const benchPhone = benchPhoneAsset.url;
-const bloodTestKit = bloodTestKitAsset.url;
-
-const SLIDES = [
-  {
-    src: joggingWoman,
-    label: "Know Your Health. Own Your Future.",
-    posMobile: "35% 55%",
-    posTablet: "center 32%",
-    posDesktop: "center 35%",
-  },
-  {
-    src: clinicReception,
-    label: "Nationwide network of CQC-regulated clinics",
-    posMobile: "60% 50%",
-    posTablet: "center 50%",
-    posDesktop: "center 50%",
-  },
-  {
-    src: seniorCouple,
-    label: "Proactive Health for Every Stage of Life",
-    posMobile: "50% 40%",
-    posTablet: "center 28%",
-    posDesktop: "center 30%",
-  },
-  {
-    src: benchPhone,
-    label: "Find the Right Test for You, Compare. Choose. Book.",
-    posMobile: "55% 50%",
-    posTablet: "center 40%",
-    posDesktop: "center 40%",
-  },
-  {
-    src: bloodTestKit,
-    label: "Test from the Comfort of Home",
-    posMobile: "40% 55%",
-    posTablet: "40% 60%",
-    posDesktop: "50% 65%",
-  },
-];
+import { SLIDES, FIRST_SLIDE_LQIP } from "@/components/sections/hero-slides";
 
 
 
