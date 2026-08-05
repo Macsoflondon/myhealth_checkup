@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
 import { UserMenu } from "@/components/header/UserMenu";
