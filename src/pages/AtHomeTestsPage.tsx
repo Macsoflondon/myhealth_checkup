@@ -127,7 +127,7 @@ const AtHomeTestsPage: React.FC = () => {
       const providerRating = getProviderRating(t.provider_id);
       const tag = t.category || "General Health";
       const priceNum = t.price ?? 0;
-      const biomarkers = (t.biomarkers_list || []).map((b) => b.value).filter(Boolean);
+      const biomarkers = normalizeBiomarkers(t.biomarkers_list);
       return {
         id: t.id,
         providerId: t.provider_id,
