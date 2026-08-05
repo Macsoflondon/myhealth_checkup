@@ -90,6 +90,45 @@ export class CompareService {
     }
   }
 
+  /**
+   * Resolve a shareable list of test ids (from the URL) back into comparison rows.
+   * Results are returned in the order the ids were requested; unknown ids are dropped.
+   */
+  static async getTestsByIds(ids: string[]): Promise<CompareTestData[]> {
+    const unique = Array.from(new Set(ids.filter(Boolean)));
+    if (unique.length === 0) return [];
+
+    const cacheKey = cacheService.generateKey('getTestsByIds', { ids: [...unique].sort() });
+    const cached = cacheService.get<CompareTestData[]>(cacheKey);
+    if (cached) return this.orderByIds(cached, unique);
+
+    try {
+      const { data, error } = await supabase
+        .from('unified_provider_tests')
+        .select('id, test_name, provider_id, category, price, description, is_active, url')
+        .in('id', unique);
+
+      if (error) {
+        logger.error('Error fetching tests by id:', error);
+        return [];
+      }
+
+      const result = TestDataTransformer.transformMultiple((data ?? []) as LiveTestRow[]);
+      cacheService.set(cacheKey, result);
+      return this.orderByIds(result, unique);
+    } catch (error) {
+      logger.error('Error in getTestsByIds:', error);
+      return [];
+    }
+  }
+
+  private static orderByIds(tests: CompareTestData[], ids: string[]): CompareTestData[] {
+    const byId = new Map(tests.map((t) => [t.id, t]));
+    return ids.map((id) => byId.get(id)).filter((t): t is CompareTestData => Boolean(t));
+  }
+
+
+
   static async searchTests(
     searchTerm: string,
     providers: string[] = ['all'],
