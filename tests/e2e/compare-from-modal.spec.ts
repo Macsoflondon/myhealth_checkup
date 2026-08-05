@@ -1,12 +1,10 @@
 import { test, expect } from "@playwright/test";
 
 /**
- * End-to-end: open a provider test card's detail modal, add the test to the
- * compare list from inside the modal, and assert the user lands on
- * /compare/results with that test rendered in the comparison table.
+ * End-to-end: open a test's detail modal (ProviderTestDetailModal, rendered by
+ * the homepage provider showcase), add the test to compare from inside the
+ * modal, and assert the user lands on /compare/results with that test visible.
  */
-
-const CATALOGUE_PATH = "/providers/medichecks";
 
 test.beforeEach(async ({ page }) => {
   // Start from a clean compare selection so assertions are unambiguous.
@@ -16,40 +14,42 @@ test.beforeEach(async ({ page }) => {
 test("adding a test from the detail modal lands on /compare/results with the item visible", async ({
   page,
 }) => {
-  await page.goto(CATALOGUE_PATH, { waitUntil: "domcontentloaded" });
+  await page.goto("/", { waitUntil: "domcontentloaded" });
 
-  // Cards render asynchronously from Supabase; wait for the first one.
-  const firstCompareButton = page
-    .getByRole("button", { name: /add to compare/i })
+  // The showcase is lazily mounted below the fold.
+  const detailsTrigger = page
+    .getByRole("button", { name: /^View details for /i })
     .first();
-  await expect(firstCompareButton).toBeVisible({ timeout: 30_000 });
+  await detailsTrigger.scrollIntoViewIfNeeded();
+  await expect(detailsTrigger).toBeVisible({ timeout: 30_000 });
 
-  // Open the detail modal by clicking the card itself (not its action buttons).
-  const card = firstCompareButton.locator(
-    "xpath=ancestor::*[.//button][last()]",
-  );
-  const testName = (await card.getByRole("heading").first().innerText()).trim();
-  await card.getByRole("heading").first().click();
+  const label = (await detailsTrigger.getAttribute("aria-label")) ?? "";
+  const testName = label.replace(/^View details for /i, "").trim();
+  expect(testName.length).toBeGreaterThan(0);
+
+  await detailsTrigger.click();
 
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
-  await expect(dialog).toContainText(testName, { timeout: 10_000 });
+  await expect(dialog).toContainText(testName);
 
   await dialog.getByRole("button", { name: /compare this test/i }).click();
 
   await page.waitForURL(/\/compare\/results/);
 
-  // The selected test must be visible in the comparison table, and the empty
-  // state must not be shown.
+  // The comparison table must render the selected test, not the empty state.
   await expect(page.getByText(/no tests selected yet/i)).toHaveCount(0);
   await expect(page.getByText(testName, { exact: false }).first()).toBeVisible({
     timeout: 15_000,
   });
 
-  // The store is the source of truth for persistence across pages.
-  const stored = await page.evaluate(() =>
-    JSON.parse(window.localStorage.getItem("mhc:compare") ?? "[]"),
+  // The store backs persistence across pages — verify it holds exactly this test.
+  const stored = await page.evaluate(
+    () =>
+      JSON.parse(window.localStorage.getItem("mhc:compare") ?? "[]") as Array<{
+        name: string;
+      }>,
   );
   expect(stored).toHaveLength(1);
-  expect(String(stored[0].name)).toContain(testName.slice(0, 12));
+  expect(stored[0].name).toContain(testName.slice(0, 12));
 });
