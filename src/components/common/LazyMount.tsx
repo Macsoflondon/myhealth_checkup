@@ -52,6 +52,7 @@ export const LazyMount = ({
   return (
     <div
       ref={ref}
+      className={className}
       style={{ minHeight: typeof minHeight === "number" ? `${minHeight}px` : minHeight }}
       aria-hidden="true"
     >
