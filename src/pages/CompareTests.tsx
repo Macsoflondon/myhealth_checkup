@@ -190,6 +190,51 @@ const CompareTests = () => {
             );
           })()}
 
+          {/* ENTRY POINTS — goal and symptom comparison hubs */}
+          <section className="bg-white px-4 sm:px-6 pt-8 sm:pt-10">
+            <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              <Link
+                to="/compare/goals"
+                className="group block rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-turquoise hover:shadow-md"
+              >
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-turquoise">
+                  Start with an outcome
+                </span>
+                <h2 className="font-heading text-lg sm:text-xl font-bold text-[#081129] mt-2">
+                  Compare by goal
+                </h2>
+                <p className="text-sm sm:text-base text-slate-600 mt-1.5">
+                  Know what you want to achieve — longevity, performance, weight loss, prevention —
+                  and see which tests get you there.
+                </p>
+                <span className="inline-flex items-center gap-1 text-sm font-semibold text-brand-turquoise mt-3">
+                  Browse goals{" "}
+                  <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
+                </span>
+              </Link>
+
+              <Link
+                to="/compare/symptoms"
+                className="group block rounded-2xl border border-slate-200 bg-white p-5 sm:p-6 shadow-sm transition-all hover:-translate-y-0.5 hover:border-brand-pink hover:shadow-md"
+              >
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-brand-pink">
+                  Start with how you feel
+                </span>
+                <h2 className="font-heading text-lg sm:text-xl font-bold text-[#081129] mt-2">
+                  Compare by symptom
+                </h2>
+                <p className="text-sm sm:text-base text-slate-600 mt-1.5">
+                  Tired, low mood, unexplained weight change — see the tests and biomarkers commonly
+                  used to investigate each symptom.
+                </p>
+                <span className="inline-flex items-center gap-1 text-sm font-semibold text-brand-pink mt-3">
+                  Browse symptoms{" "}
+                  <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
+                </span>
+              </Link>
+            </div>
+          </section>
+
           {/* DARK BAND — recommended / search results */}
           <section className="bg-[#081129] py-16 sm:py-20 px-4 sm:px-6">
             <div className="max-w-7xl mx-auto">
