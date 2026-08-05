@@ -335,7 +335,7 @@ const Auth = () => {
                 <button
                   type="button"
                   onClick={() => setIsForgotPassword(false)}
-                  className="hover:underline text-center text-base text-[#081129] font-medium"
+                  className="hover:underline text-center text-base text-white font-medium"
                 >
                   Back to Sign In
                 </button>
@@ -445,7 +445,7 @@ const Auth = () => {
                 />
                 <Label
                   htmlFor="rememberMe"
-                  className="text-sm font-normal text-[#081129] cursor-pointer"
+                  className="text-sm font-normal text-white cursor-pointer"
                 >
                   Remember me
                 </Label>
@@ -461,7 +461,7 @@ const Auth = () => {
                 <span className="w-full border-t border-muted" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-tertiary px-2 text-muted-foreground">Or continue with</span>
+                <span className="bg-tertiary px-2 text-white">Or continue with</span>
               </div>
             </div>
 
@@ -470,20 +470,30 @@ const Auth = () => {
             </div>
 
             <div className="text-center mt-2">
-              <button type="button" onClick={() => setIsSignUp(!isSignUp)} className="hover:underline text-center text-base text-[#081129] font-medium">
+              <button type="button" onClick={() => setIsSignUp(!isSignUp)} className="hover:underline text-center text-base text-white font-medium">
                 {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
               </button>
             </div>
 
             {/* Subtle admin access */}
             {!isSignUp && (
-              <div className="text-center mt-1 pt-1 border-t border-gray-100">
+              <div className="mt-1 flex items-center justify-center gap-3 pt-2 border-t border-white/20">
                 <button
                   type="button"
                   onClick={() => navigate("/admin/login")}
-                  className="text-gray-600 hover:text-gray-800 text-[10px] transition-colors"
+                  className="text-xs text-white/80 hover:text-white hover:underline transition-colors"
                 >
                   Admin
+                </button>
+                <span aria-hidden="true" className="text-xs text-white/40">
+                  &middot;
+                </span>
+                <button
+                  type="button"
+                  onClick={() => navigate("/control")}
+                  className="text-xs text-white/80 hover:text-white hover:underline transition-colors"
+                >
+                  Crux Control
                 </button>
               </div>
             )}
