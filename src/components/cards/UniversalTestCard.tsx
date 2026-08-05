@@ -630,7 +630,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               minHeight: "calc(13px * 1.5 * 2)",
             }}
           >
-            {test.description || "\u00A0"}
+            {test.description || "Overview not published by this provider."}
           </p>
 
           {/* Biomarker chips */}
