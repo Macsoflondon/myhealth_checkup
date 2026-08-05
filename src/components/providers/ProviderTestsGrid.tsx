@@ -38,7 +38,7 @@ export const ProviderTestsGrid = ({ providerSlug, providerDisplayName, limit = 1
       const { data, error } = await supabase
         .from("provider_tests")
         .select(
-          "id, test_name, price, base_price, category, sample_type, url, biomarker_count, biomarkers_list, description, turnaround_days_text, collection_options, popularity_rank, is_popular, is_addon, purchase_notes"
+          "id, test_name, price, base_price, category, sample_type, collection_method, measurement_type, who_should_test, home_kit_available, clinic_visit_available, url, biomarker_count, biomarkers_list, description, turnaround_days_text, collection_options, popularity_rank, is_popular, is_addon, purchase_notes"
         )
         .eq("provider_id", dbId)
         .eq("is_active", true)
@@ -81,11 +81,15 @@ export const ProviderTestsGrid = ({ providerSlug, providerDisplayName, limit = 1
             id: t.id,
             provider_id: dbId,
             test_name: t.test_name,
-            description:
-              t.description || `Comprehensive screening from ${providerDisplayName}.`,
+            description: t.description ?? null,
             price: t.price ?? null,
             category: t.category ?? null,
             sample_type: t.sample_type ?? null,
+            collection_method: t.collection_method ?? null,
+            measurement_type: t.measurement_type ?? null,
+            who_should_test: t.who_should_test ?? null,
+            home_kit_available: t.home_kit_available ?? null,
+            clinic_visit_available: t.clinic_visit_available ?? null,
             biomarker_count: t.biomarker_count ?? null,
             url: t.url ?? null,
             biomarkers_list: (t.biomarkers_list as any) ?? null,
