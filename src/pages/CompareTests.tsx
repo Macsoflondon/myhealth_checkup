@@ -17,7 +17,17 @@ import { getProviderRating } from "@/constants/providerRatings";
 import { getCategoryPinColor } from "@/data/categoryColors";
 import { getBranding } from "@/data/providerBranding";
 import { CategoryStandardHero } from "@/components/category/CategoryStandardHero";
+import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { getCompareHeader } from "@/data/compareCategoryBenefits";
+import { Scale, Shield, Clock } from "lucide-react";
+
+const COMPARE_BENEFITS = [
+  { icon: Scale, title: "Like-for-like comparison", description: "Price, biomarker coverage and sample method side by side" },
+  { icon: Shield, title: "UKAS accredited labs", description: "Every listed provider uses UKAS-accredited UK laboratories" },
+  { icon: Clock, title: "Clear turnaround", description: "Typical result times shown on every listing" },
+] as const;
+
+
 
 const resolveCategoryColor = (test: CompareTestData): string => {
   const cat = test.category || "";
