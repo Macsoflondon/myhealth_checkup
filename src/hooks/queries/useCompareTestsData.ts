@@ -8,6 +8,8 @@ import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "@/lib/router-compat";
 import { CompareService, type CompareTestData } from "@/services/CompareService";
 import { logger } from "@/lib/logger";
+import { isJunkTestName } from "@/utils/is-junk-test-name";
+
 
 // Query keys
 export const compareQueryKeys = {
@@ -174,9 +176,11 @@ export function useCompareTestsData(filters: CompareFilters) {
   // Apply local filters and sorting
   const processedTests = useMemo(() => {
     if (!testsQuery.data) return [];
-    const filtered = applyLocalFilters(testsQuery.data, filters);
+    const clean = testsQuery.data.filter((test) => !isJunkTestName(test.name));
+    const filtered = applyLocalFilters(clean, filters);
     return sortTests(filtered, filters.sortBy);
   }, [testsQuery.data, filters]);
+
 
   // Clear cache
   const clearCache = useCallback(() => {

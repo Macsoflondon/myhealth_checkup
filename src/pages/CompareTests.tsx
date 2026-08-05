@@ -19,7 +19,7 @@ import { getBranding } from "@/data/providerBranding";
 import { CategoryStandardHero } from "@/components/category/CategoryStandardHero";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { getCompareHeader } from "@/data/compareCategoryBenefits";
-import { Scale, Shield, Clock } from "lucide-react";
+import { Scale, Shield, Clock, Search } from "lucide-react";
 
 const COMPARE_BENEFITS = [
   { icon: Scale, title: "Like-for-like comparison", description: "Price, biomarker coverage and sample method side by side" },
@@ -38,9 +38,18 @@ const resolveCategoryColor = (test: CompareTestData): string => {
   return "#e70d69";
 };
 
+const PAGE_SIZE = 24;
+
+
 const CompareTests = () => {
-  const [filters, setFilters] = useState<CompareFilters>(defaultFilters);
   const [searchParams, setSearchParams] = useSearchParams();
+  // Seed the category from the URL on first render so we never fire an
+  // unscoped "all tests" query before the effect syncs it.
+  const [filters, setFilters] = useState<CompareFilters>(() => ({
+    ...defaultFilters,
+    selectedCategory: searchParams.get("category") || "",
+  }));
+
   const navigate = useNavigate();
 
 
@@ -48,17 +57,22 @@ const CompareTests = () => {
 
   const { tests, isLoading, urlCategory } = useCompareTestsData(filters);
 
-  const effectiveCategory = filters.selectedCategory || urlCategory || "general-health";
+  // The ?category= slug drives the whole browse view; read it directly so the
+  // first render is already scoped to the category.
+  const queryCategory = searchParams.get("category") || "";
+  const effectiveCategory = filters.selectedCategory || urlCategory || queryCategory || "general-health";
   const { data: recommendedTests = [], isLoading: isLoadingRecommended } = useRecommendedTests(
     effectiveCategory,
     8
   );
 
   useEffect(() => {
-    if (urlCategory && !filters.selectedCategory) {
-      setFilters(prev => ({ ...prev, selectedCategory: urlCategory }));
+    const next = urlCategory || queryCategory;
+    if (next && filters.selectedCategory !== next) {
+      setFilters(prev => ({ ...prev, selectedCategory: next }));
     }
-  }, [urlCategory, filters.selectedCategory]);
+  }, [urlCategory, queryCategory, filters.selectedCategory]);
+
 
   const handleToggleSelect = useCallback((test: CompareTestData) => {
     compareStore.toggle(test);
@@ -88,16 +102,28 @@ const CompareTests = () => {
   );
 
   const hasSearch = filters.searchQuery.trim().length > 0;
-  const displayTests: CompareTestData[] = hasSearch
+  // A category page browses the full category; the bare /compare hub shows a curated row.
+  const isCategoryView = Boolean(
+    filters.selectedCategory || urlCategory || searchParams.get("category"),
+  );
+
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [filters.selectedCategory, filters.searchQuery, urlCategory]);
+
+
+  const displayTests: CompareTestData[] = isCategoryView || hasSearch
     ? tests
     : recommendedTests.slice(0, 8);
-  const showLoading = hasSearch ? isLoading : isLoadingRecommended;
+  const showLoading = isCategoryView || hasSearch ? isLoading : isLoadingRecommended;
 
   const renderCard = (test: CompareTestData) => {
     const selected = isSelected(test.id);
     const rating = getProviderRating(test.provider);
     return (
-      <div key={test.id} className="w-[300px] flex-shrink-0">
+      <div key={test.id} className="w-full">
+
         <UnifiedTestCard
           category={test.category || "Health"}
           categoryColor={resolveCategoryColor(test)}
@@ -200,62 +226,87 @@ const CompareTests = () => {
             );
           })()}
 
-          {/* ENTRY POINTS — goal and symptom comparison hubs */}
-          <section className="bg-[#08122b] px-4 sm:px-6 lg:px-12 xl:px-16 pt-12 sm:pt-16">
-            <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-              <Link
-                to="/compare/goals"
-                className="group block rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5 sm:p-6 transition-all hover:-translate-y-0.5 hover:border-[#22c0d4]/60 hover:bg-white/[0.08]"
-              >
-                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#22c0d4]">
-                  Start with an outcome
-                </span>
-                <h2 className="font-heading text-lg sm:text-xl font-bold text-white mt-2">
-                  Compare by goal
-                </h2>
-                <p className="text-sm sm:text-base text-white/70 mt-1.5">
-                  Know what you want to achieve — longevity, performance, weight loss, prevention —
-                  and see which tests get you there.
-                </p>
-                <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#22c0d4] group-hover:text-[#e70d69] transition-colors mt-3">
-                  Browse goals{" "}
-                  <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
-                </span>
-              </Link>
+          {/* ENTRY POINTS — goal and symptom comparison hubs (hub view only) */}
+          {!isCategoryView && (
+            <section className="bg-[#08122b] px-4 sm:px-6 lg:px-12 xl:px-16 pt-12 sm:pt-16">
+              <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                <Link
+                  to="/compare/goals"
+                  className="group block rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5 sm:p-6 transition-all hover:-translate-y-0.5 hover:border-[#22c0d4]/60 hover:bg-white/[0.08]"
+                >
+                  <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#22c0d4]">
+                    Start with an outcome
+                  </span>
+                  <h2 className="font-heading text-lg sm:text-xl font-bold text-white mt-2">
+                    Compare by goal
+                  </h2>
+                  <p className="text-sm sm:text-base text-white/70 mt-1.5">
+                    Know what you want to achieve — longevity, performance, weight loss, prevention —
+                    and see which tests get you there.
+                  </p>
+                  <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#22c0d4] group-hover:text-[#e70d69] transition-colors mt-3">
+                    Browse goals{" "}
+                    <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
+                  </span>
+                </Link>
 
-              <Link
-                to="/compare/symptoms"
-                className="group block rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5 sm:p-6 transition-all hover:-translate-y-0.5 hover:border-[#e70d69]/60 hover:bg-white/[0.08]"
-              >
-                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#e70d69]">
-                  Start with how you feel
-                </span>
-                <h2 className="font-heading text-lg sm:text-xl font-bold text-white mt-2">
-                  Compare by symptom
-                </h2>
-                <p className="text-sm sm:text-base text-white/70 mt-1.5">
-                  Tired, low mood, unexplained weight change — see the tests and biomarkers commonly
-                  used to investigate each symptom.
-                </p>
-                <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#e70d69] group-hover:text-[#22c0d4] transition-colors mt-3">
-                  Browse symptoms{" "}
-                  <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
-                </span>
-              </Link>
-            </div>
-          </section>
+                <Link
+                  to="/compare/symptoms"
+                  className="group block rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5 sm:p-6 transition-all hover:-translate-y-0.5 hover:border-[#e70d69]/60 hover:bg-white/[0.08]"
+                >
+                  <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#e70d69]">
+                    Start with how you feel
+                  </span>
+                  <h2 className="font-heading text-lg sm:text-xl font-bold text-white mt-2">
+                    Compare by symptom
+                  </h2>
+                  <p className="text-sm sm:text-base text-white/70 mt-1.5">
+                    Tired, low mood, unexplained weight change — see the tests and biomarkers commonly
+                    used to investigate each symptom.
+                  </p>
+                  <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#e70d69] group-hover:text-[#22c0d4] transition-colors mt-3">
+                    Browse symptoms{" "}
+                    <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
+                  </span>
+                </Link>
+              </div>
+            </section>
+          )}
 
-
-          {/* DARK BAND — recommended / search results */}
-          <section className="bg-[#08122b] py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16">
+          {/* DARK BAND — category browse grid / search results */}
+          <section className="bg-[#08122b] py-10 sm:py-14 px-4 sm:px-6 lg:px-12 xl:px-16">
             <div className="max-w-6xl mx-auto">
+              {/* Toolbar — live count and search */}
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
+                <p className="text-sm text-white/70">
+                  {showLoading
+                    ? "Loading tests…"
+                    : `${displayTests.length} test${displayTests.length === 1 ? "" : "s"} ${
+                        isCategoryView ? "in this category" : "shown"
+                      }`}
+                </p>
+                <div className="relative w-full sm:w-72">
+                  <Search
+                    className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40"
+                    aria-hidden="true"
+                  />
+                  <input
+                    type="search"
+                    value={filters.searchQuery}
+                    onChange={(e) =>
+                      setFilters((prev) => ({ ...prev, searchQuery: e.target.value }))
+                    }
+                    placeholder="Search tests or providers"
+                    aria-label="Search tests"
+                    className="w-full rounded-full border border-white/15 bg-white/5 py-2.5 pl-9 pr-4 text-sm text-white placeholder:text-white/40 focus:border-[#22c0d4] focus:outline-none focus:ring-1 focus:ring-[#22c0d4]"
+                  />
+                </div>
+              </div>
+
               {showLoading ? (
-                <div className="flex gap-4 pb-4 overflow-x-auto">
-                  {Array.from({ length: 4 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="w-[300px] h-[420px] bg-white/5 animate-pulse rounded-2xl flex-shrink-0"
-                    />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                  {Array.from({ length: 8 }).map((_, i) => (
+                    <div key={i} className="h-[420px] bg-white/5 animate-pulse rounded-2xl" />
                   ))}
                 </div>
               ) : displayTests.length === 0 ? (
@@ -263,12 +314,27 @@ const CompareTests = () => {
                   No tests found for this search.
                 </p>
               ) : (
-                <div className="flex gap-5 pb-4 overflow-x-auto">
-                  {displayTests.map(renderCard)}
-                </div>
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+                    {displayTests.slice(0, visibleCount).map(renderCard)}
+                  </div>
+                  {displayTests.length > visibleCount && (
+                    <div className="flex justify-center mt-8">
+                      <button
+                        type="button"
+                        onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
+                        className="rounded-full border border-[#22c0d4]/60 px-6 py-2.5 text-sm font-semibold text-[#22c0d4] transition-colors hover:bg-[#22c0d4] hover:text-[#08122b]"
+                      >
+                        Show more tests ({displayTests.length - visibleCount} remaining)
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
+
             </div>
           </section>
+
 
           <CategoryPageBottom
             benefitsTitle="Why compare with myhealth checkup?"
