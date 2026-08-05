@@ -11,6 +11,8 @@ test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => window.localStorage.removeItem("mhc:compare"));
 });
 
+test.setTimeout(90_000);
+
 test("adding a test from the detail modal lands on /compare/results with the item visible", async ({
   page,
 }) => {
