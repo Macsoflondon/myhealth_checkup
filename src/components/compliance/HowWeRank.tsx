@@ -108,10 +108,12 @@ const HowWeRank = () => {
               </li>
             </ul>
             <p className="mt-4">
-              Sponsored placements, where present, are always labelled <Badge variant="secondary">Ad</Badge> or{' '}
-              <Badge variant="secondary">Sponsored</Badge> and never re-order the default Total Price ranking
+              Sponsored placements, where present, are always labelled{' '}
+              <span className="inline-flex items-center rounded-md border border-transparent bg-secondary px-2 py-0.5 text-xs font-semibold text-secondary-foreground">Ad</span> or{' '}
+              <span className="inline-flex items-center rounded-md border border-transparent bg-secondary px-2 py-0.5 text-xs font-semibold text-secondary-foreground">Sponsored</span> and never re-order the default Total Price ranking
               silently. They are visually separated from the organic comparison.
             </p>
+
           </CardContent>
         </Card>
 
