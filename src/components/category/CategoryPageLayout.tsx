@@ -165,14 +165,10 @@ export function CategoryPageLayout({
   return (
     <>
       <Helmet>
-        <title>{seoTitle}</title>
-        <meta name="description" content={seoDescription} />
+        {/* Title, description, canonical and og:* are owned by the route head()
+            in src/routes so crawlers see them in the server-rendered HTML. */}
         {seoKeywords && <meta name="keywords" content={seoKeywords} />}
-        <link rel="canonical" href={canonicalUrl} />
-        <meta property="og:title" content={seoTitle} />
-        <meta property="og:description" content={seoDescription} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={canonicalUrl} />
+
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
