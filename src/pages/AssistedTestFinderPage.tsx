@@ -8,13 +8,7 @@ const AssistedTestFinderPage = () => {
   return (
     <>
       <Helmet>
-        <title>Find Your Health Test | myhealth checkup</title>
-        <meta name="description" content="Answer a few questions and we'll match you to private health tests that fit your goals, concerns, and preferences." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/find-test" />
-        <meta property="og:title" content="Find Your Health Test | myhealth checkup" />
-        <meta property="og:description" content="Answer a few questions and we'll match you to private health tests that fit your goals, concerns, and preferences." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/find-test" />
       </Helmet>
 
       <div className="min-h-screen bg-white text-[#081129] flex flex-col">

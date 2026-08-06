@@ -78,9 +78,6 @@ const toCategoryTestItem = (test: AtHomeTest): CategoryTestItem => {
 const StatusShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <>
     <Helmet>
-      <title>{SEO.title}</title>
-      <meta name="description" content={SEO.description} />
-      <link rel="canonical" href={SEO.canonical} />
     </Helmet>
     <div className="min-h-screen flex flex-col">
       <Header />

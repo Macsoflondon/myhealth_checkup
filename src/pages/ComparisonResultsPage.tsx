@@ -17,12 +17,6 @@ const ComparisonResultsPage = () => {
   return (
     <ErrorBoundary>
       <Helmet>
-        <title>Your test comparison | myhealth checkup</title>
-        <meta
-          name="description"
-          content="Compare your selected private blood tests side by side: price, biomarkers, sample type, collection method, fees and clinical review."
-        />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/compare/results" />
         <meta name="robots" content="noindex,follow" />
       </Helmet>
 

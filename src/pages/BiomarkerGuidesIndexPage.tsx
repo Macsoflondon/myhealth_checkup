@@ -27,12 +27,6 @@ const BiomarkerGuidesIndexPage = () => {
   return (
     <MainLayout>
       <Helmet>
-        <title>{TITLE}</title>
-        <meta name="description" content={DESCRIPTION} />
-        <link rel="canonical" href={url} />
-        <meta property="og:title" content={TITLE} />
-        <meta property="og:description" content={DESCRIPTION} />
-        <meta property="og:url" content={url} />
         <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify(itemListJsonLd)}</script>
       </Helmet>

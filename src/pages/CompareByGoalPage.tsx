@@ -16,16 +16,7 @@ const CompareByGoalPage = () => {
   return (
     <MainLayout mainClassName="flex-1 bg-white">
       <Helmet>
-        <title>Compare Tests by Goal | myhealth checkup</title>
-        <meta
-          name="description"
-          content="Choose blood tests based on your health goals. Compare tests for longevity, performance, weight loss, and preventative health from accredited UK providers."
-        />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/compare/goals" />
-        <meta property="og:title" content="Compare Tests by Goal | myhealth checkup" />
-        <meta property="og:description" content="Choose blood tests based on your health goals." />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/compare/goals" />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",

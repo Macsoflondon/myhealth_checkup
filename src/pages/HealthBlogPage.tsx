@@ -113,16 +113,7 @@ const HealthBlogPage: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Helmet>
-        <title>Health Resource Hub | myhealth checkup</title>
-        <meta
-          name="description"
-          content="Expert insights, health tips and the latest research on preventive healthcare and private health testing for UK adults."
-        />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/blog" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Health Resource Hub — preventive health guides for UK adults" />
-        <meta property="og:description" content="Independent guides on private blood testing, biomarkers, cancer screening and longevity health for UK adults." />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/blog" />
         <meta property="og:locale" content="en_GB" />
         <script type="application/ld+json">{JSON.stringify({
           '@context': 'https://schema.org',
