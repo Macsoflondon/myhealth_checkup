@@ -6,6 +6,7 @@ export interface AtHomeTest {
   provider_id: string;
   test_name: string;
   category: string;
+  canonical_category: string | null;
   price: number | null;
   sample_type: string | null;
   turnaround_days_text: string | null;
