@@ -70,6 +70,7 @@ import { Route as SitemapRouteImport } from './routes/sitemap'
 import { Route as SportsPerformanceRouteImport } from './routes/sports-performance'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TestCategoriesRouteImport } from './routes/test-categories'
+import { Route as ThrivaRouteImport } from './routes/thriva'
 import { Route as ThyroidRouteImport } from './routes/thyroid'
 import { Route as TrustRouteImport } from './routes/trust'
 import { Route as TrustedProvidersRouteImport } from './routes/trusted-providers'
@@ -458,6 +459,11 @@ const TermsRoute = TermsRouteImport.update({
 const TestCategoriesRoute = TestCategoriesRouteImport.update({
   id: '/test-categories',
   path: '/test-categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ThrivaRoute = ThrivaRouteImport.update({
+  id: '/thriva',
+  path: '/thriva',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ThyroidRoute = ThyroidRouteImport.update({
@@ -856,9 +862,9 @@ const TestsWomensHealthRoute = TestsWomensHealthRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ThrivaTestIdRoute = ThrivaTestIdRouteImport.update({
-  id: '/thriva/$testId',
-  path: '/thriva/$testId',
-  getParentRoute: () => rootRouteImport,
+  id: '/$testId',
+  path: '/$testId',
+  getParentRoute: () => ThrivaRoute,
 } as any)
 const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   id: '/.lovable/oauth/consent',
@@ -950,6 +956,7 @@ export interface FileRoutesByFullPath {
   '/sports-performance': typeof SportsPerformanceRoute
   '/terms': typeof TermsRoute
   '/test-categories': typeof TestCategoriesRoute
+  '/thriva': typeof ThrivaRouteWithChildren
   '/thyroid': typeof ThyroidRoute
   '/trust': typeof TrustRoute
   '/trusted-providers': typeof TrustedProvidersRoute
@@ -1095,6 +1102,7 @@ export interface FileRoutesByTo {
   '/sports-performance': typeof SportsPerformanceRoute
   '/terms': typeof TermsRoute
   '/test-categories': typeof TestCategoriesRoute
+  '/thriva': typeof ThrivaRouteWithChildren
   '/thyroid': typeof ThyroidRoute
   '/trust': typeof TrustRoute
   '/trusted-providers': typeof TrustedProvidersRoute
@@ -1242,6 +1250,7 @@ export interface FileRoutesById {
   '/sports-performance': typeof SportsPerformanceRoute
   '/terms': typeof TermsRoute
   '/test-categories': typeof TestCategoriesRoute
+  '/thriva': typeof ThrivaRouteWithChildren
   '/thyroid': typeof ThyroidRoute
   '/trust': typeof TrustRoute
   '/trusted-providers': typeof TrustedProvidersRoute
@@ -1390,6 +1399,7 @@ export interface FileRouteTypes {
     | '/sports-performance'
     | '/terms'
     | '/test-categories'
+    | '/thriva'
     | '/thyroid'
     | '/trust'
     | '/trusted-providers'
@@ -1535,6 +1545,7 @@ export interface FileRouteTypes {
     | '/sports-performance'
     | '/terms'
     | '/test-categories'
+    | '/thriva'
     | '/thyroid'
     | '/trust'
     | '/trusted-providers'
@@ -1681,6 +1692,7 @@ export interface FileRouteTypes {
     | '/sports-performance'
     | '/terms'
     | '/test-categories'
+    | '/thriva'
     | '/thyroid'
     | '/trust'
     | '/trusted-providers'
@@ -1828,6 +1840,7 @@ export interface RootRouteChildren {
   SportsPerformanceRoute: typeof SportsPerformanceRoute
   TermsRoute: typeof TermsRoute
   TestCategoriesRoute: typeof TestCategoriesRoute
+  ThrivaRoute: typeof ThrivaRouteWithChildren
   ThyroidRoute: typeof ThyroidRoute
   TrustRoute: typeof TrustRoute
   TrustedProvidersRoute: typeof TrustedProvidersRoute
@@ -1873,7 +1886,6 @@ export interface RootRouteChildren {
   TestsMensHealthRoute: typeof TestsMensHealthRoute
   TestsVitaminsRoute: typeof TestsVitaminsRoute
   TestsWomensHealthRoute: typeof TestsWomensHealthRoute
-  ThrivaTestIdRoute: typeof ThrivaTestIdRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
 
@@ -2304,6 +2316,13 @@ declare module '@tanstack/react-router' {
       path: '/test-categories'
       fullPath: '/test-categories'
       preLoaderRoute: typeof TestCategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/thriva': {
+      id: '/thriva'
+      path: '/thriva'
+      fullPath: '/thriva'
+      preLoaderRoute: typeof ThrivaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/thyroid': {
@@ -2847,10 +2866,10 @@ declare module '@tanstack/react-router' {
     }
     '/thriva/$testId': {
       id: '/thriva/$testId'
-      path: '/thriva/$testId'
+      path: '/$testId'
       fullPath: '/thriva/$testId'
       preLoaderRoute: typeof ThrivaTestIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ThrivaRoute
     }
     '/.lovable/oauth/consent': {
       id: '/.lovable/oauth/consent'
@@ -3121,6 +3140,17 @@ const RandoxRouteChildren: RandoxRouteChildren = {
 const RandoxRouteWithChildren =
   RandoxRoute._addFileChildren(RandoxRouteChildren)
 
+interface ThrivaRouteChildren {
+  ThrivaTestIdRoute: typeof ThrivaTestIdRoute
+}
+
+const ThrivaRouteChildren: ThrivaRouteChildren = {
+  ThrivaTestIdRoute: ThrivaTestIdRoute,
+}
+
+const ThrivaRouteWithChildren =
+  ThrivaRoute._addFileChildren(ThrivaRouteChildren)
+
 interface ProviderProviderIdTestsRouteChildren {
   ProviderProviderIdTestsTestIdRoute: typeof ProviderProviderIdTestsTestIdRoute
 }
@@ -3208,6 +3238,7 @@ const rootRouteChildren: RootRouteChildren = {
   SportsPerformanceRoute: SportsPerformanceRoute,
   TermsRoute: TermsRoute,
   TestCategoriesRoute: TestCategoriesRoute,
+  ThrivaRoute: ThrivaRouteWithChildren,
   ThyroidRoute: ThyroidRoute,
   TrustRoute: TrustRoute,
   TrustedProvidersRoute: TrustedProvidersRoute,
@@ -3253,7 +3284,6 @@ const rootRouteChildren: RootRouteChildren = {
   TestsMensHealthRoute: TestsMensHealthRoute,
   TestsVitaminsRoute: TestsVitaminsRoute,
   TestsWomensHealthRoute: TestsWomensHealthRoute,
-  ThrivaTestIdRoute: ThrivaTestIdRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
 }
 export const routeTree = rootRouteImport
