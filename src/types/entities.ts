@@ -37,6 +37,7 @@ export interface CompareTestData extends Test {
   accreditations?: string[];
   popularityScore?: number;
   biomarkerCount?: number;
+  biomarkersList?: string[];
   turnaroundDays?: number;
   userRating?: number;
   url?: string; // Provider booking URL
