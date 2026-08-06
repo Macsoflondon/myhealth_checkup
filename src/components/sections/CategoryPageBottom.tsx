@@ -34,20 +34,30 @@ const CategoryPageBottom = ({
             return (
               <div
                 key={benefit.title}
-                className="rounded-2xl border border-[#081129]/10 bg-[#f7fafc] p-6 text-center sm:text-left"
+                style={{
+                  background: "linear-gradient(135deg, #e70d69, #22c0d4, #e70d69)",
+                  padding: "3px",
+                  borderRadius: "16px",
+                }}
               >
-                <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#22c0d4]/12 text-[#22c0d4]">
-                  <Icon className="h-5 w-5" aria-hidden="true" />
-                </span>
-                <h3 className="font-heading text-base font-bold text-[#081129] mt-4">
-                  {benefit.title}
-                </h3>
-                <p className="text-sm text-[#081129]/70 mt-1.5 leading-relaxed">
-                  {benefit.description}
-                </p>
+                <div
+                  className="h-full text-center sm:text-left"
+                  style={{ background: "#0a1120", padding: "24px", borderRadius: "13px" }}
+                >
+                  <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#22c0d4]/20 text-[#22c0d4]">
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <h3 className="font-heading text-base font-bold text-white mt-4">
+                    {benefit.title}
+                  </h3>
+                  <p className="text-sm text-white/80 mt-1.5 leading-relaxed">
+                    {benefit.description}
+                  </p>
+                </div>
               </div>
             );
           })}
+
         </div>
 
         <QuizCTABanner quizLink={quizLink} />
