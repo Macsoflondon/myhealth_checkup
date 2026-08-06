@@ -35,6 +35,7 @@ import { Route as FairTradingRouteImport } from './routes/fair-trading'
 import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as FertilityTestsRouteImport } from './routes/fertility-tests'
+import { Route as FindClinicRouteImport } from './routes/find-clinic'
 import { Route as FindTestRouteImport } from './routes/find-test'
 import { Route as GoodbodyClinicRouteImport } from './routes/goodbody-clinic'
 import { Route as GuidesRouteImport } from './routes/guides'
@@ -280,6 +281,11 @@ const FeedbackRoute = FeedbackRouteImport.update({
 const FertilityTestsRoute = FertilityTestsRouteImport.update({
   id: '/fertility-tests',
   path: '/fertility-tests',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FindClinicRoute = FindClinicRouteImport.update({
+  id: '/find-clinic',
+  path: '/find-clinic',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FindTestRoute = FindTestRouteImport.update({
@@ -897,6 +903,7 @@ export interface FileRoutesByFullPath {
   '/faqs': typeof FaqsRoute
   '/feedback': typeof FeedbackRoute
   '/fertility-tests': typeof FertilityTestsRoute
+  '/find-clinic': typeof FindClinicRoute
   '/find-test': typeof FindTestRouteWithChildren
   '/goodbody-clinic': typeof GoodbodyClinicRouteWithChildren
   '/guides': typeof GuidesRouteWithChildren
@@ -1039,6 +1046,7 @@ export interface FileRoutesByTo {
   '/faqs': typeof FaqsRoute
   '/feedback': typeof FeedbackRoute
   '/fertility-tests': typeof FertilityTestsRoute
+  '/find-clinic': typeof FindClinicRoute
   '/find-test': typeof FindTestRouteWithChildren
   '/goodbody-clinic': typeof GoodbodyClinicRouteWithChildren
   '/guides': typeof GuidesRouteWithChildren
@@ -1183,6 +1191,7 @@ export interface FileRoutesById {
   '/faqs': typeof FaqsRoute
   '/feedback': typeof FeedbackRoute
   '/fertility-tests': typeof FertilityTestsRoute
+  '/find-clinic': typeof FindClinicRoute
   '/find-test': typeof FindTestRouteWithChildren
   '/goodbody-clinic': typeof GoodbodyClinicRouteWithChildren
   '/guides': typeof GuidesRouteWithChildren
@@ -1328,6 +1337,7 @@ export interface FileRouteTypes {
     | '/faqs'
     | '/feedback'
     | '/fertility-tests'
+    | '/find-clinic'
     | '/find-test'
     | '/goodbody-clinic'
     | '/guides'
@@ -1470,6 +1480,7 @@ export interface FileRouteTypes {
     | '/faqs'
     | '/feedback'
     | '/fertility-tests'
+    | '/find-clinic'
     | '/find-test'
     | '/goodbody-clinic'
     | '/guides'
@@ -1613,6 +1624,7 @@ export interface FileRouteTypes {
     | '/faqs'
     | '/feedback'
     | '/fertility-tests'
+    | '/find-clinic'
     | '/find-test'
     | '/goodbody-clinic'
     | '/guides'
@@ -1757,6 +1769,7 @@ export interface RootRouteChildren {
   FaqsRoute: typeof FaqsRoute
   FeedbackRoute: typeof FeedbackRoute
   FertilityTestsRoute: typeof FertilityTestsRoute
+  FindClinicRoute: typeof FindClinicRoute
   FindTestRoute: typeof FindTestRouteWithChildren
   GoodbodyClinicRoute: typeof GoodbodyClinicRouteWithChildren
   GuidesRoute: typeof GuidesRouteWithChildren
@@ -2023,6 +2036,13 @@ declare module '@tanstack/react-router' {
       path: '/fertility-tests'
       fullPath: '/fertility-tests'
       preLoaderRoute: typeof FertilityTestsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/find-clinic': {
+      id: '/find-clinic'
+      path: '/find-clinic'
+      fullPath: '/find-clinic'
+      preLoaderRoute: typeof FindClinicRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/find-test': {
@@ -3091,6 +3111,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaqsRoute: FaqsRoute,
   FeedbackRoute: FeedbackRoute,
   FertilityTestsRoute: FertilityTestsRoute,
+  FindClinicRoute: FindClinicRoute,
   FindTestRoute: FindTestRouteWithChildren,
   GoodbodyClinicRoute: GoodbodyClinicRouteWithChildren,
   GuidesRoute: GuidesRouteWithChildren,

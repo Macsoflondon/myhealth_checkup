@@ -18,7 +18,6 @@ methods and turnaround times.
 - [Test categories](/test-categories): Browse all blood test categories.
 - [Trusted providers](/trusted-providers): UK-accredited test provider profiles.
 - [Compare providers](/providers/compare): Compare provider ratings, range and pricing.
-- [Find a clinic](/find-clinic): Locate accredited testing clinics across the UK.
 - [Biomarker database](/biomarker-database): Reference library of every biomarker we cover.
 - [Cancer biomarkers reference](/cancer-biomarkers-reference): Tumour markers and screening biomarkers.
 - [Cancer screening compare](/cancer-screening-compare): Compare private cancer screening panels.
