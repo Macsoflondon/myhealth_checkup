@@ -158,7 +158,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
         <p hidden id="static-medical-disclaimer" data-purpose="seo-eeat">
           <strong>Medical disclaimer:</strong> This site provides comparison information only and
           does not constitute medical advice. Consult your GP for medical guidance. Clinical
-          content reviewed by Nathanial Smith, Physician Associate (HCPC PA43353).
+          content reviewed by Nathanial Smith, Registered Healthcare Professional (HCPC reg. PA43353).
         </p>
         <Scripts />
       </body>
