@@ -8,6 +8,7 @@ import { LazyMount } from "@/components/common/LazyMount";
 import { SectionSkeleton } from "@/components/common/SectionSkeleton";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
+import { useActiveTestCount } from "@/hooks/queries/useActiveTestCount";
 import { ArrowRight, Shield } from "lucide-react";
 
 // Hero first-slide images — preloaded for LCP optimisation
@@ -52,6 +53,7 @@ const ClinicHelpSkeleton = () => (
 const Index = () => {
   usePerformanceOptimization();
   useMobileOptimization();
+  const activeTestCount = useActiveTestCount();
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -248,7 +250,7 @@ const Index = () => {
                   </div>
                 </div>
                 <p className="text-white text-base sm:text-lg leading-relaxed text-center max-w-2xl mx-auto">
-                  Answer 6 quick questions and our AI will analyse 597 accredited tests to find your best-matched options \u2014 with transparent pricing.
+                  Answer 6 quick questions and our AI will analyse {activeTestCount.toLocaleString('en-GB')} accredited tests to find your best-matched options — with transparent pricing.
                 </p>
               </div>
             </div>

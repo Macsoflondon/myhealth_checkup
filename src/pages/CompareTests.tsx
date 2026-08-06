@@ -149,7 +149,7 @@ const CompareTests = () => {
             sample_type: test.features?.collection ?? null,
             biomarker_count: test.biomarkerCount ?? null,
             url: test.url ?? null,
-            biomarkers_list: null,
+            biomarkers_list: (test.biomarkersList ?? []).map((value) => ({ value })),
             turnaround_days_text: test.features?.turnaround ?? null,
             base_price: null,
             collection_options: null,
