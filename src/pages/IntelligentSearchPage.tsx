@@ -9,9 +9,6 @@ const IntelligentSearchPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Search Health Tests | myhealth checkup</title>
-        <meta name="description" content="Find the right health test for your needs. Search by symptom, biomarker, or condition across all UK providers." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/search" />
       </Helmet>
       <Header />
       <main className="flex-grow bg-gray-50">

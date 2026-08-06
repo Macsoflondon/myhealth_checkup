@@ -196,16 +196,10 @@ const CancerBiomarkersReferencePage = () => {
   return (
     <>
       <Helmet>
-        <title>Cancer Biomarkers Guide | myhealth checkup</title>
-        <meta 
-          name="description" 
-          content="Comprehensive guide to cancer biomarkers and tumour markers. Learn what PSA, CA-125, CEA, AFP and other markers measure, their clinical significance, and limitations." 
-        />
         <meta 
           name="keywords" 
           content="cancer biomarkers, tumour markers, PSA test, CA-125, CEA, AFP, CA 19-9, cancer screening markers, blood test cancer markers" 
         />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/cancer-biomarkers-reference" />
       </Helmet>
       
       

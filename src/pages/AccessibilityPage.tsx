@@ -11,9 +11,6 @@ const AccessibilityPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Accessibility | myhealth checkup</title>
-        <meta name="description" content="Our commitment to making myhealth checkup accessible to everyone. WCAG 2.1 AA compliant with screen reader support and keyboard navigation." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/accessibility" />
       </Helmet>
       <Header />
       <main className="flex-grow bg-white">

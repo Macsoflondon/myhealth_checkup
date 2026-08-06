@@ -11,15 +11,6 @@ const TrustCentrePage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Trust Centre | myhealth checkup</title>
-        <meta
-          name="description"
-          content="How myhealth checkup handles security, privacy, data protection and the controls in place to keep your information safe."
-        />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/trust" />
-        <meta property="og:title" content="Trust Centre | myhealth checkup" />
-        <meta property="og:description" content="Security, privacy and data protection controls at myhealth checkup." />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/trust" />
         <meta property="og:type" content="website" />
         <meta property="og:locale" content="en_GB" />
       </Helmet>

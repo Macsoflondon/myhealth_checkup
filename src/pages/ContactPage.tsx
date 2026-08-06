@@ -83,12 +83,6 @@ const ContactPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Contact Us | myhealth checkup</title>
-        <meta name="description" content="Get in touch with myhealth checkup. We're here to help with questions about health tests, providers, and our comparison platform." />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/contact" />
-        <meta property="og:title" content="Contact Us | myhealth checkup" />
-        <meta property="og:description" content="Get in touch with myhealth checkup for questions about private UK health tests and accredited providers." />
-        <meta property="og:url" content="https://myhealthcheckup.co.uk/contact" />
         <meta property="og:type" content="website" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",

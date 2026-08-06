@@ -52,12 +52,6 @@ const MedicalReviewPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Medical Review & Editorial Standards | myhealth checkup</title>
-        <meta
-          name="description"
-          content="Our clinical content is reviewed by a Registered Healthcare Professional (HCPC). See reviewer credentials, scope of review, and editorial standards."
-        />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/about/medical-review" />
         <script type="application/ld+json">{JSON.stringify(personSchema)}</script>
       </Helmet>
 

@@ -113,11 +113,6 @@ export default function CancerComparisonPage() {
   return (
     <>
       <Helmet>
-        <title>Compare Cancer Screening Tests | myhealth checkup</title>
-        <meta 
-          name="description" 
-          content="Compare cancer screening blood tests from trusted UK providers. Compare PSA, CA-125, CEA and other tumour markers across Medichecks, Thriva, and more." 
-        />
       </Helmet>
 
       

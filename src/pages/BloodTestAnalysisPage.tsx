@@ -142,11 +142,6 @@ export default function BloodTestAnalysisPage() {
   return (
     <>
       <Helmet>
-        <title>AI Blood Test Analysis | myhealth checkup</title>
-        <meta 
-          name="description" 
-          content="Get AI-powered analysis of your blood test results. Understand what your biomarkers mean and receive personalised health insights." 
-        />
       </Helmet>
 
       <Header />

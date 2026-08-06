@@ -163,12 +163,6 @@ const CompareTests = () => {
     <ErrorBoundary>
       <div className="min-h-screen flex flex-col">
         <Helmet>
-          <title>Compare Blood Tests | myhealth checkup</title>
-          <meta
-            name="description"
-            content="Compare private blood tests from Medichecks, Thriva, Randox, and more UK providers. Transparent pricing and inclusions from trusted UK providers."
-          />
-          <link rel="canonical" href="https://myhealthcheckup.co.uk/compare" />
           <script type="application/ld+json">{JSON.stringify({
             "@context": "https://schema.org",
             "@type": "CollectionPage",
