@@ -23,7 +23,6 @@ export const STATIC_ROUTES = [
   "/recommendations",
   "/find-test",
   "/assisted-test-finder",
-  "/find-clinic",
   "/biomarker-database",
   "/conditions",
 

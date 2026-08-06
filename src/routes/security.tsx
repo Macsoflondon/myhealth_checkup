@@ -1,8 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
-
-const TrustCentrePage = lazy(() => import("@/pages/TrustCentrePage"));
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/security")({
-  component: TrustCentrePage,
+  beforeLoad: () => {
+    throw redirect({ to: "/trust", replace: true });
+  },
 });

@@ -17,6 +17,7 @@ import { Route as AssistedTestFinderRouteImport } from './routes/assisted-test-f
 import { Route as AtHomeTestsRouteImport } from './routes/at-home-tests'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BiomarkerDatabaseRouteImport } from './routes/biomarker-database'
+import { Route as BiomarkersRouteImport } from './routes/biomarkers'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as BloodTestAnalysisRouteImport } from './routes/blood-test-analysis'
 import { Route as CancerBiomarkersReferenceRouteImport } from './routes/cancer-biomarkers-reference'
@@ -34,6 +35,7 @@ import { Route as FairTradingRouteImport } from './routes/fair-trading'
 import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as FertilityTestsRouteImport } from './routes/fertility-tests'
+import { Route as FindClinicRouteImport } from './routes/find-clinic'
 import { Route as FindTestRouteImport } from './routes/find-test'
 import { Route as GoodbodyClinicRouteImport } from './routes/goodbody-clinic'
 import { Route as GuidesRouteImport } from './routes/guides'
@@ -190,6 +192,11 @@ const BiomarkerDatabaseRoute = BiomarkerDatabaseRouteImport.update({
   path: '/biomarker-database',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BiomarkersRoute = BiomarkersRouteImport.update({
+  id: '/biomarkers',
+  path: '/biomarkers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogRoute = BlogRouteImport.update({
   id: '/blog',
   path: '/blog',
@@ -274,6 +281,11 @@ const FeedbackRoute = FeedbackRouteImport.update({
 const FertilityTestsRoute = FertilityTestsRouteImport.update({
   id: '/fertility-tests',
   path: '/fertility-tests',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FindClinicRoute = FindClinicRouteImport.update({
+  id: '/find-clinic',
+  path: '/find-clinic',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FindTestRoute = FindTestRouteImport.update({
@@ -873,6 +885,7 @@ export interface FileRoutesByFullPath {
   '/at-home-tests': typeof AtHomeTestsRoute
   '/auth': typeof AuthRoute
   '/biomarker-database': typeof BiomarkerDatabaseRoute
+  '/biomarkers': typeof BiomarkersRoute
   '/blog': typeof BlogRouteWithChildren
   '/blood-test-analysis': typeof BloodTestAnalysisRoute
   '/cancer-biomarkers-reference': typeof CancerBiomarkersReferenceRoute
@@ -890,6 +903,7 @@ export interface FileRoutesByFullPath {
   '/faqs': typeof FaqsRoute
   '/feedback': typeof FeedbackRoute
   '/fertility-tests': typeof FertilityTestsRoute
+  '/find-clinic': typeof FindClinicRoute
   '/find-test': typeof FindTestRouteWithChildren
   '/goodbody-clinic': typeof GoodbodyClinicRouteWithChildren
   '/guides': typeof GuidesRouteWithChildren
@@ -1015,6 +1029,7 @@ export interface FileRoutesByTo {
   '/at-home-tests': typeof AtHomeTestsRoute
   '/auth': typeof AuthRoute
   '/biomarker-database': typeof BiomarkerDatabaseRoute
+  '/biomarkers': typeof BiomarkersRoute
   '/blog': typeof BlogRouteWithChildren
   '/blood-test-analysis': typeof BloodTestAnalysisRoute
   '/cancer-biomarkers-reference': typeof CancerBiomarkersReferenceRoute
@@ -1031,6 +1046,7 @@ export interface FileRoutesByTo {
   '/faqs': typeof FaqsRoute
   '/feedback': typeof FeedbackRoute
   '/fertility-tests': typeof FertilityTestsRoute
+  '/find-clinic': typeof FindClinicRoute
   '/find-test': typeof FindTestRouteWithChildren
   '/goodbody-clinic': typeof GoodbodyClinicRouteWithChildren
   '/guides': typeof GuidesRouteWithChildren
@@ -1157,6 +1173,7 @@ export interface FileRoutesById {
   '/at-home-tests': typeof AtHomeTestsRoute
   '/auth': typeof AuthRoute
   '/biomarker-database': typeof BiomarkerDatabaseRoute
+  '/biomarkers': typeof BiomarkersRoute
   '/blog': typeof BlogRouteWithChildren
   '/blood-test-analysis': typeof BloodTestAnalysisRoute
   '/cancer-biomarkers-reference': typeof CancerBiomarkersReferenceRoute
@@ -1174,6 +1191,7 @@ export interface FileRoutesById {
   '/faqs': typeof FaqsRoute
   '/feedback': typeof FeedbackRoute
   '/fertility-tests': typeof FertilityTestsRoute
+  '/find-clinic': typeof FindClinicRoute
   '/find-test': typeof FindTestRouteWithChildren
   '/goodbody-clinic': typeof GoodbodyClinicRouteWithChildren
   '/guides': typeof GuidesRouteWithChildren
@@ -1301,6 +1319,7 @@ export interface FileRouteTypes {
     | '/at-home-tests'
     | '/auth'
     | '/biomarker-database'
+    | '/biomarkers'
     | '/blog'
     | '/blood-test-analysis'
     | '/cancer-biomarkers-reference'
@@ -1318,6 +1337,7 @@ export interface FileRouteTypes {
     | '/faqs'
     | '/feedback'
     | '/fertility-tests'
+    | '/find-clinic'
     | '/find-test'
     | '/goodbody-clinic'
     | '/guides'
@@ -1443,6 +1463,7 @@ export interface FileRouteTypes {
     | '/at-home-tests'
     | '/auth'
     | '/biomarker-database'
+    | '/biomarkers'
     | '/blog'
     | '/blood-test-analysis'
     | '/cancer-biomarkers-reference'
@@ -1459,6 +1480,7 @@ export interface FileRouteTypes {
     | '/faqs'
     | '/feedback'
     | '/fertility-tests'
+    | '/find-clinic'
     | '/find-test'
     | '/goodbody-clinic'
     | '/guides'
@@ -1584,6 +1606,7 @@ export interface FileRouteTypes {
     | '/at-home-tests'
     | '/auth'
     | '/biomarker-database'
+    | '/biomarkers'
     | '/blog'
     | '/blood-test-analysis'
     | '/cancer-biomarkers-reference'
@@ -1601,6 +1624,7 @@ export interface FileRouteTypes {
     | '/faqs'
     | '/feedback'
     | '/fertility-tests'
+    | '/find-clinic'
     | '/find-test'
     | '/goodbody-clinic'
     | '/guides'
@@ -1727,6 +1751,7 @@ export interface RootRouteChildren {
   AtHomeTestsRoute: typeof AtHomeTestsRoute
   AuthRoute: typeof AuthRoute
   BiomarkerDatabaseRoute: typeof BiomarkerDatabaseRoute
+  BiomarkersRoute: typeof BiomarkersRoute
   BlogRoute: typeof BlogRouteWithChildren
   BloodTestAnalysisRoute: typeof BloodTestAnalysisRoute
   CancerBiomarkersReferenceRoute: typeof CancerBiomarkersReferenceRoute
@@ -1744,6 +1769,7 @@ export interface RootRouteChildren {
   FaqsRoute: typeof FaqsRoute
   FeedbackRoute: typeof FeedbackRoute
   FertilityTestsRoute: typeof FertilityTestsRoute
+  FindClinicRoute: typeof FindClinicRoute
   FindTestRoute: typeof FindTestRouteWithChildren
   GoodbodyClinicRoute: typeof GoodbodyClinicRouteWithChildren
   GuidesRoute: typeof GuidesRouteWithChildren
@@ -1886,6 +1912,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BiomarkerDatabaseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/biomarkers': {
+      id: '/biomarkers'
+      path: '/biomarkers'
+      fullPath: '/biomarkers'
+      preLoaderRoute: typeof BiomarkersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog': {
       id: '/blog'
       path: '/blog'
@@ -2003,6 +2036,13 @@ declare module '@tanstack/react-router' {
       path: '/fertility-tests'
       fullPath: '/fertility-tests'
       preLoaderRoute: typeof FertilityTestsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/find-clinic': {
+      id: '/find-clinic'
+      path: '/find-clinic'
+      fullPath: '/find-clinic'
+      preLoaderRoute: typeof FindClinicRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/find-test': {
@@ -3053,6 +3093,7 @@ const rootRouteChildren: RootRouteChildren = {
   AtHomeTestsRoute: AtHomeTestsRoute,
   AuthRoute: AuthRoute,
   BiomarkerDatabaseRoute: BiomarkerDatabaseRoute,
+  BiomarkersRoute: BiomarkersRoute,
   BlogRoute: BlogRouteWithChildren,
   BloodTestAnalysisRoute: BloodTestAnalysisRoute,
   CancerBiomarkersReferenceRoute: CancerBiomarkersReferenceRoute,
@@ -3070,6 +3111,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaqsRoute: FaqsRoute,
   FeedbackRoute: FeedbackRoute,
   FertilityTestsRoute: FertilityTestsRoute,
+  FindClinicRoute: FindClinicRoute,
   FindTestRoute: FindTestRouteWithChildren,
   GoodbodyClinicRoute: GoodbodyClinicRouteWithChildren,
   GuidesRoute: GuidesRouteWithChildren,

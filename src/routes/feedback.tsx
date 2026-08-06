@@ -1,8 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
-
-const ComplaintsPage = lazy(() => import("@/pages/ComplaintsPage"));
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/feedback")({
-  component: ComplaintsPage,
+  beforeLoad: () => {
+    throw redirect({ to: "/complaints", replace: true });
+  },
 });
