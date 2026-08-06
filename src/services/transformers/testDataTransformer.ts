@@ -14,7 +14,27 @@ export interface LiveTestRow {
   description: string | null;
   is_active: boolean | null;
   url: string | null;
+  /** Authoritative stored biomarker total (provider_tests.biomarker_count). */
+  biomarker_count?: number | null;
+  biomarkers_list?: unknown;
 }
+
+/**
+ * Normalise the stored biomarkers_list JSON into plain strings.
+ */
+const toBiomarkerNames = (raw: unknown): string[] => {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .map((entry) => {
+      if (typeof entry === 'string') return entry;
+      if (entry && typeof entry === 'object' && 'value' in entry) {
+        const value = (entry as { value?: unknown }).value;
+        return typeof value === 'string' ? value : '';
+      }
+      return '';
+    })
+    .filter((name) => name.trim().length > 0);
+};
 
 /**
  * Transform raw test data from database into CompareTestData format
@@ -24,8 +44,12 @@ export class TestDataTransformer {
    * Transform a single test record
    */
   static transformSingle(test: LiveTestRow): CompareTestData {
-    const biomarkers = this.extractBioMarkers(test.description || '');
-    const biomarkerCount = this.countBiomarkers(test.description || '');
+    const biomarkersList = toBiomarkerNames(test.biomarkers_list);
+    // The stored count is the source of truth; never estimate it from copy.
+    const biomarkerCount =
+      typeof test.biomarker_count === 'number' && test.biomarker_count > 0
+        ? test.biomarker_count
+        : biomarkersList.length;
     const category = test.category ?? 'General';
 
     return {
@@ -38,13 +62,14 @@ export class TestDataTransformer {
       features: {
         turnaround: this.estimateTurnaround(test.provider_id),
         collection: this.getCollectionMethod(test.provider_id),
-        bioMarkers: biomarkers
+        bioMarkers: biomarkersList.slice(0, 3).join(', ') || this.extractBioMarkers(test.description || '')
       },
       providerLogo: PROVIDER_LOGOS[test.provider_id] || '/placeholder.svg',
       available: test.is_active ?? true,
       accreditations: this.getAccreditations(test.provider_id),
       popularityScore: this.estimatePopularity(test.test_name, category),
-      biomarkerCount: biomarkerCount,
+      biomarkerCount,
+      biomarkersList,
       turnaroundDays: this.estimateTurnaroundDays(test.provider_id),
       userRating: undefined,
       url: test.url || undefined
