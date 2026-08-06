@@ -17,6 +17,7 @@ import { Route as AssistedTestFinderRouteImport } from './routes/assisted-test-f
 import { Route as AtHomeTestsRouteImport } from './routes/at-home-tests'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BiomarkerDatabaseRouteImport } from './routes/biomarker-database'
+import { Route as BiomarkersRouteImport } from './routes/biomarkers'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as BloodTestAnalysisRouteImport } from './routes/blood-test-analysis'
 import { Route as CancerBiomarkersReferenceRouteImport } from './routes/cancer-biomarkers-reference'
@@ -188,6 +189,11 @@ const AuthRoute = AuthRouteImport.update({
 const BiomarkerDatabaseRoute = BiomarkerDatabaseRouteImport.update({
   id: '/biomarker-database',
   path: '/biomarker-database',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BiomarkersRoute = BiomarkersRouteImport.update({
+  id: '/biomarkers',
+  path: '/biomarkers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogRoute = BlogRouteImport.update({
@@ -873,6 +879,7 @@ export interface FileRoutesByFullPath {
   '/at-home-tests': typeof AtHomeTestsRoute
   '/auth': typeof AuthRoute
   '/biomarker-database': typeof BiomarkerDatabaseRoute
+  '/biomarkers': typeof BiomarkersRoute
   '/blog': typeof BlogRouteWithChildren
   '/blood-test-analysis': typeof BloodTestAnalysisRoute
   '/cancer-biomarkers-reference': typeof CancerBiomarkersReferenceRoute
@@ -1015,6 +1022,7 @@ export interface FileRoutesByTo {
   '/at-home-tests': typeof AtHomeTestsRoute
   '/auth': typeof AuthRoute
   '/biomarker-database': typeof BiomarkerDatabaseRoute
+  '/biomarkers': typeof BiomarkersRoute
   '/blog': typeof BlogRouteWithChildren
   '/blood-test-analysis': typeof BloodTestAnalysisRoute
   '/cancer-biomarkers-reference': typeof CancerBiomarkersReferenceRoute
@@ -1157,6 +1165,7 @@ export interface FileRoutesById {
   '/at-home-tests': typeof AtHomeTestsRoute
   '/auth': typeof AuthRoute
   '/biomarker-database': typeof BiomarkerDatabaseRoute
+  '/biomarkers': typeof BiomarkersRoute
   '/blog': typeof BlogRouteWithChildren
   '/blood-test-analysis': typeof BloodTestAnalysisRoute
   '/cancer-biomarkers-reference': typeof CancerBiomarkersReferenceRoute
@@ -1301,6 +1310,7 @@ export interface FileRouteTypes {
     | '/at-home-tests'
     | '/auth'
     | '/biomarker-database'
+    | '/biomarkers'
     | '/blog'
     | '/blood-test-analysis'
     | '/cancer-biomarkers-reference'
@@ -1443,6 +1453,7 @@ export interface FileRouteTypes {
     | '/at-home-tests'
     | '/auth'
     | '/biomarker-database'
+    | '/biomarkers'
     | '/blog'
     | '/blood-test-analysis'
     | '/cancer-biomarkers-reference'
@@ -1584,6 +1595,7 @@ export interface FileRouteTypes {
     | '/at-home-tests'
     | '/auth'
     | '/biomarker-database'
+    | '/biomarkers'
     | '/blog'
     | '/blood-test-analysis'
     | '/cancer-biomarkers-reference'
@@ -1727,6 +1739,7 @@ export interface RootRouteChildren {
   AtHomeTestsRoute: typeof AtHomeTestsRoute
   AuthRoute: typeof AuthRoute
   BiomarkerDatabaseRoute: typeof BiomarkerDatabaseRoute
+  BiomarkersRoute: typeof BiomarkersRoute
   BlogRoute: typeof BlogRouteWithChildren
   BloodTestAnalysisRoute: typeof BloodTestAnalysisRoute
   CancerBiomarkersReferenceRoute: typeof CancerBiomarkersReferenceRoute
@@ -1884,6 +1897,13 @@ declare module '@tanstack/react-router' {
       path: '/biomarker-database'
       fullPath: '/biomarker-database'
       preLoaderRoute: typeof BiomarkerDatabaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/biomarkers': {
+      id: '/biomarkers'
+      path: '/biomarkers'
+      fullPath: '/biomarkers'
+      preLoaderRoute: typeof BiomarkersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog': {
@@ -3053,6 +3073,7 @@ const rootRouteChildren: RootRouteChildren = {
   AtHomeTestsRoute: AtHomeTestsRoute,
   AuthRoute: AuthRoute,
   BiomarkerDatabaseRoute: BiomarkerDatabaseRoute,
+  BiomarkersRoute: BiomarkersRoute,
   BlogRoute: BlogRouteWithChildren,
   BloodTestAnalysisRoute: BloodTestAnalysisRoute,
   CancerBiomarkersReferenceRoute: CancerBiomarkersReferenceRoute,

@@ -92,7 +92,7 @@ const HealthResources: React.FC = () => {
 
           <div className="text-center mt-12">
             <Link
-              to="/health-resources"
+              to="/blog"
               className="inline-block rounded-full bg-white text-[#081129] hover:bg-[#f0f4fa] transition-colors"
               style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 14, fontWeight: 600, padding: '12px 32px' }}
             >
