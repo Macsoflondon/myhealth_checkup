@@ -60,6 +60,7 @@ import { Route as PortalRouteImport } from './routes/portal'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as ProvidersRouteImport } from './routes/providers'
 import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as RandoxRouteImport } from './routes/randox'
 import { Route as RecommendationsRouteImport } from './routes/recommendations'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ReviewsRouteImport } from './routes/reviews'
@@ -407,6 +408,11 @@ const ProvidersRoute = ProvidersRouteImport.update({
 const QuizRoute = QuizRouteImport.update({
   id: '/quiz',
   path: '/quiz',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RandoxRoute = RandoxRouteImport.update({
+  id: '/randox',
+  path: '/randox',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RecommendationsRoute = RecommendationsRouteImport.update({
@@ -765,9 +771,9 @@ const RandoxHealthTestIdRoute = RandoxHealthTestIdRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const RandoxTestIdRoute = RandoxTestIdRouteImport.update({
-  id: '/randox/$testId',
-  path: '/randox/$testId',
-  getParentRoute: () => rootRouteImport,
+  id: '/$testId',
+  path: '/$testId',
+  getParentRoute: () => RandoxRoute,
 } as any)
 const TestFemaleHormonesRoute = TestFemaleHormonesRouteImport.update({
   id: '/test/female-hormones',
@@ -934,6 +940,7 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/quiz': typeof QuizRoute
+  '/randox': typeof RandoxRouteWithChildren
   '/recommendations': typeof RecommendationsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/reviews': typeof ReviewsRoute
@@ -1078,6 +1085,7 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/quiz': typeof QuizRoute
+  '/randox': typeof RandoxRouteWithChildren
   '/recommendations': typeof RecommendationsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/reviews': typeof ReviewsRoute
@@ -1224,6 +1232,7 @@ export interface FileRoutesById {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/quiz': typeof QuizRoute
+  '/randox': typeof RandoxRouteWithChildren
   '/recommendations': typeof RecommendationsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/reviews': typeof ReviewsRoute
@@ -1371,6 +1380,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/providers'
     | '/quiz'
+    | '/randox'
     | '/recommendations'
     | '/reset-password'
     | '/reviews'
@@ -1515,6 +1525,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/providers'
     | '/quiz'
+    | '/randox'
     | '/recommendations'
     | '/reset-password'
     | '/reviews'
@@ -1660,6 +1671,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/providers'
     | '/quiz'
+    | '/randox'
     | '/recommendations'
     | '/reset-password'
     | '/reviews'
@@ -1806,6 +1818,7 @@ export interface RootRouteChildren {
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ProvidersRoute: typeof ProvidersRouteWithChildren
   QuizRoute: typeof QuizRoute
+  RandoxRoute: typeof RandoxRouteWithChildren
   RecommendationsRoute: typeof RecommendationsRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ReviewsRoute: typeof ReviewsRoute
@@ -1844,7 +1857,6 @@ export interface RootRouteChildren {
   LolaHealthTestIdRoute: typeof LolaHealthTestIdRoute
   ProviderProviderIdRoute: typeof ProviderProviderIdRouteWithChildren
   RandoxHealthTestIdRoute: typeof RandoxHealthTestIdRoute
-  RandoxTestIdRoute: typeof RandoxTestIdRoute
   TestFemaleHormonesRoute: typeof TestFemaleHormonesRoute
   TestGeneralHealthRoute: typeof TestGeneralHealthRoute
   TestIronProfileRoute: typeof TestIronProfileRoute
@@ -2222,6 +2234,13 @@ declare module '@tanstack/react-router' {
       path: '/quiz'
       fullPath: '/quiz'
       preLoaderRoute: typeof QuizRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/randox': {
+      id: '/randox'
+      path: '/randox'
+      fullPath: '/randox'
+      preLoaderRoute: typeof RandoxRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/recommendations': {
@@ -2709,10 +2728,10 @@ declare module '@tanstack/react-router' {
     }
     '/randox/$testId': {
       id: '/randox/$testId'
-      path: '/randox/$testId'
+      path: '/$testId'
       fullPath: '/randox/$testId'
       preLoaderRoute: typeof RandoxTestIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof RandoxRoute
     }
     '/test/female-hormones': {
       id: '/test/female-hormones'
@@ -3091,6 +3110,17 @@ const ProvidersRouteWithChildren = ProvidersRoute._addFileChildren(
   ProvidersRouteChildren,
 )
 
+interface RandoxRouteChildren {
+  RandoxTestIdRoute: typeof RandoxTestIdRoute
+}
+
+const RandoxRouteChildren: RandoxRouteChildren = {
+  RandoxTestIdRoute: RandoxTestIdRoute,
+}
+
+const RandoxRouteWithChildren =
+  RandoxRoute._addFileChildren(RandoxRouteChildren)
+
 interface ProviderProviderIdTestsRouteChildren {
   ProviderProviderIdTestsTestIdRoute: typeof ProviderProviderIdTestsTestIdRoute
 }
@@ -3168,6 +3198,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ProvidersRoute: ProvidersRouteWithChildren,
   QuizRoute: QuizRoute,
+  RandoxRoute: RandoxRouteWithChildren,
   RecommendationsRoute: RecommendationsRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ReviewsRoute: ReviewsRoute,
@@ -3206,7 +3237,6 @@ const rootRouteChildren: RootRouteChildren = {
   LolaHealthTestIdRoute: LolaHealthTestIdRoute,
   ProviderProviderIdRoute: ProviderProviderIdRouteWithChildren,
   RandoxHealthTestIdRoute: RandoxHealthTestIdRoute,
-  RandoxTestIdRoute: RandoxTestIdRoute,
   TestFemaleHormonesRoute: TestFemaleHormonesRoute,
   TestGeneralHealthRoute: TestGeneralHealthRoute,
   TestIronProfileRoute: TestIronProfileRoute,
