@@ -103,21 +103,21 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
         }}
       >
         <span
-          className={`rounded-full inline-flex items-center justify-center shrink-0 ${dense ? "w-[19px] h-[19px]" : "w-[23px] h-[23px] sm:w-[25px] sm:h-[25px]"}`}
+          className={`rounded-full inline-flex items-center justify-center shrink-0 ${dense ? "w-[19px] h-[19px]" : "w-[19px] h-[19px] 2xl:w-[25px] 2xl:h-[25px]"}`}
           style={{ background: `${color}1a` }}
         >
           <Icon
-            className={dense ? "w-[13px] h-[13px]" : "w-[14px] h-[14px] sm:w-[15px] sm:h-[15px]"}
+            className={dense ? "w-[13px] h-[13px]" : "w-[13px] h-[13px] 2xl:w-[15px] 2xl:h-[15px]"}
             style={{ color }}
             strokeWidth={2}
           />
         </span>
-        <span className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${dense ? "text-[13px] lg:text-[13.5px] tracking-[-0.015em]" : "text-[14px] sm:text-[14.5px] lg:text-[15px]"}`}>
+        <span className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${dense ? "text-[13px] lg:text-[13.5px] tracking-[-0.015em]" : "text-[12.5px] lg:text-[13px] 2xl:text-[15px] tracking-[-0.015em] 2xl:tracking-normal"}`}>
           {item.name}
         </span>
 
         {hasDropdown && (
-          <ChevronDown className={`text-[#081129]/60 transition-transform w-[15px] h-[15px] shrink-0 ${open ? "rotate-180" : ""}`} />
+          <ChevronDown className={`text-[#081129]/60 transition-transform shrink-0 w-[13px] h-[13px] 2xl:w-[15px] 2xl:h-[15px] ${open ? "rotate-180" : ""}`} />
         )}
       </Link>
 
