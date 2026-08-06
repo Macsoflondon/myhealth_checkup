@@ -120,13 +120,14 @@ const StayInformedSection = () => {
             <p className="text-[10px] sm:text-[11px] text-white/78 leading-snug text-center break-words">
               <span className="text-brand-pink font-semibold">Medical disclaimer:</span>{" "}
               This site provides comparison information only and does not constitute medical advice.{" "}
-              <Link to="/legal" className="underline hover:text-brand-pink transition-colors">
+              <Link to="/legal" className="inline-block py-1.5 underline hover:text-brand-pink transition-colors">
                 Legal Hub
               </Link>
               {" · "}
-              <Link to="/trust" className="underline hover:text-brand-pink transition-colors">
+              <Link to="/trust" className="inline-block py-1.5 underline hover:text-brand-pink transition-colors">
                 Trust &amp; Security
               </Link>
+
             </p>
           </div>
         </div>

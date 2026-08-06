@@ -167,12 +167,30 @@ export const UniversalTestDetailModal: React.FC<{
   const displayPrice = test.total_expected_cost ?? test.price;
   const collectionFee = test.collection_fee_amount != null && test.collection_fee_amount > 0 ? test.collection_fee_amount : null;
 
+  // Close on Escape and lock background scroll while the modal is open.
+  React.useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", onKey);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [onClose]);
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
       style={{ background: "rgba(8,17,41,0.7)" }}
+      role="dialog"
+      aria-modal="true"
+      aria-label={test.test_name}
       onClick={onClose}
     >
+
       <div
         className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white"
         style={{ boxShadow: "0 24px 60px rgba(8,17,41,0.3)" }}

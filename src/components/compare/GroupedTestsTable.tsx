@@ -11,14 +11,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import { 
-  Heart, 
-  ExternalLink, 
-  Check, 
+  Heart,
+  ExternalLink,
+  Check,
   X as XIcon,
   Clock,
   Beaker,
@@ -28,7 +23,7 @@ import {
   ChevronDown,
   ChevronRight,
   ArrowUpDown,
-  Users
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ProviderTestRow } from "@/hooks/queries/useProvidersByTestType";
@@ -67,7 +62,7 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
   // Group tests by normalised name
   const groupedTests = useMemo((): TestGroup[] => {
     const groups = new Map<string, ProviderTestRow[]>();
-    
+
     tests.forEach((test) => {
       // Create a normalised key for grouping similar tests
       const key = test.testName
@@ -75,30 +70,37 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
         .replace(/\s+/g, " ")
         .replace(/[^\w\s]/g, "")
         .trim();
-      
+
       if (!groups.has(key)) {
         groups.set(key, []);
       }
       groups.get(key)!.push(test);
     });
-    
+
     // Convert to array with computed stats
-    const groupArray: TestGroup[] = Array.from(groups.entries()).map(([key, providers]) => {
-      const prices = providers.map(p => p.price);
-      const biomarkers = providers.map(p => p.biomarkerCount || 0).filter(b => b > 0);
-      
-      return {
-        normalisedName: key,
-        displayName: providers[0].testName,
-        category: providers[0].category,
-        providers: providers.sort((a, b) => a.price - b.price),
-        lowestPrice: Math.min(...prices),
-        highestPrice: Math.max(...prices),
-        avgBiomarkers: biomarkers.length > 0 
-          ? Math.round(biomarkers.reduce((a, b) => a + b, 0) / biomarkers.length)
-          : 0,
-      };
-    });
+    const groupArray: TestGroup[] = Array.from(groups.entries()).map(
+      ([key, providers]) => {
+        const prices = providers.map((p) => p.price);
+        const biomarkers = providers
+          .map((p) => p.biomarkerCount || 0)
+          .filter((b) => b > 0);
+
+        return {
+          normalisedName: key,
+          displayName: providers[0].testName,
+          category: providers[0].category,
+          providers: providers.sort((a, b) => a.price - b.price),
+          lowestPrice: Math.min(...prices),
+          highestPrice: Math.max(...prices),
+          avgBiomarkers:
+            biomarkers.length > 0
+              ? Math.round(
+                  biomarkers.reduce((a, b) => a + b, 0) / biomarkers.length,
+                )
+              : 0,
+        };
+      },
+    );
 
     // Sort groups
     groupArray.sort((a, b) => {
@@ -119,7 +121,7 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
       }
       return sortDirection === "asc" ? comparison : -comparison;
     });
-    
+
     return groupArray;
   }, [tests, sortField, sortDirection]);
 
@@ -145,7 +147,7 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
   };
 
   const expandAll = () => {
-    setExpandedGroups(new Set(groupedTests.map(g => g.normalisedName)));
+    setExpandedGroups(new Set(groupedTests.map((g) => g.normalisedName)));
   };
 
   const collapseAll = () => {
@@ -153,13 +155,14 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
   };
 
   const SortIcon = ({ field }: { field: SortField }) => {
-    if (sortField !== field) return <ArrowUpDown className="h-3 w-3 ml-1 opacity-50" />;
+    if (sortField !== field)
+      return <ArrowUpDown className="h-3 w-3 ml-1 opacity-50" />;
     return (
-      <ChevronDown 
+      <ChevronDown
         className={cn(
           "h-3 w-3 ml-1 transition-transform",
-          sortDirection === "asc" && "rotate-180"
-        )} 
+          sortDirection === "asc" && "rotate-180",
+        )}
       />
     );
   };
@@ -182,7 +185,7 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
             {groupedTests.length} test types • {tests.length} total options
           </p>
         </div>
-        
+
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={expandAll}>
             Expand All
@@ -200,7 +203,7 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
             <TableHeader>
               <TableRow className="bg-muted/50 hover:bg-muted/50">
                 <TableHead className="w-[40px]"></TableHead>
-                <TableHead 
+                <TableHead
                   className="min-w-[200px] cursor-pointer hover:bg-muted/70 transition-colors"
                   onClick={() => toggleSort("name")}
                 >
@@ -209,7 +212,7 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
                     <SortIcon field="name" />
                   </span>
                 </TableHead>
-                <TableHead 
+                <TableHead
                   className="cursor-pointer hover:bg-muted/70 transition-colors"
                   onClick={() => toggleSort("providers")}
                 >
@@ -219,7 +222,7 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
                     <SortIcon field="providers" />
                   </span>
                 </TableHead>
-                <TableHead 
+                <TableHead
                   className="cursor-pointer hover:bg-muted/70 transition-colors"
                   onClick={() => toggleSort("lowestPrice")}
                 >
@@ -228,7 +231,7 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
                     <SortIcon field="lowestPrice" />
                   </span>
                 </TableHead>
-                <TableHead 
+                <TableHead
                   className="cursor-pointer hover:bg-muted/70 transition-colors"
                   onClick={() => toggleSort("biomarkers")}
                 >
@@ -246,258 +249,270 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
               {groupedTests.map((group) => {
                 const isExpanded = expandedGroups.has(group.normalisedName);
                 const cheapestProvider = group.providers[0];
-                
+
                 return (
-                  <Collapsible
-                    key={group.normalisedName}
-                    open={isExpanded}
-                    onOpenChange={() => toggleGroupExpansion(group.normalisedName)}
-                    asChild
-                  >
-                    <React.Fragment>
-                      {/* Main Row */}
-                      <CollapsibleTrigger asChild>
-                        <TableRow 
-                          className={cn(
-                            "cursor-pointer hover:bg-muted/30 transition-colors",
-                            isExpanded && "bg-muted/20"
-                          )}
-                        >
-                          <TableCell className="py-4">
-                            {isExpanded ? (
-                              <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                            ) : (
-                              <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                  <React.Fragment key={group.normalisedName}>
+                    {/* Main Row */}
+                    <TableRow
+                      role="button"
+                      tabIndex={0}
+                      aria-expanded={isExpanded}
+                      onClick={() => toggleGroupExpansion(group.normalisedName)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          toggleGroupExpansion(group.normalisedName);
+                        }
+                      }}
+                      className={cn(
+                        "cursor-pointer hover:bg-muted/30 transition-colors",
+                        isExpanded && "bg-muted/20",
+                      )}
+                    >
+                      <TableCell className="py-4">
+                        {isExpanded ? (
+                          <ChevronDown className="h-4 w-4 text-muted-foreground" />
+                        ) : (
+                          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+                        )}
+                      </TableCell>
+
+                      <TableCell className="font-medium">
+                        <div>
+                          <p className="font-semibold text-foreground">
+                            {group.displayName}
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            Click to compare {group.providers.length} provider
+                            {group.providers.length !== 1 ? "s" : ""}
+                          </p>
+                        </div>
+                      </TableCell>
+
+                      <TableCell>
+                        <div className="flex items-center gap-1">
+                          <Badge variant="secondary" className="font-semibold">
+                            {group.providers.length}
+                          </Badge>
+                          <span className="text-sm text-muted-foreground">
+                            {group.providers.length === 1
+                              ? "provider"
+                              : "providers"}
+                          </span>
+                        </div>
+                      </TableCell>
+
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <span className="font-bold text-green-600 dark:text-green-400">
+                            £{group.lowestPrice.toFixed(2)}
+                          </span>
+                          {group.providers.length > 1 &&
+                            group.lowestPrice !== group.highestPrice && (
+                              <>
+                                <span className="text-muted-foreground">-</span>
+                                <span className="text-muted-foreground">
+                                  £{group.highestPrice.toFixed(2)}
+                                </span>
+                              </>
                             )}
-                          </TableCell>
-                          
-                          <TableCell className="font-medium">
-                            <div>
-                              <p className="font-semibold text-foreground">
-                                {group.displayName}
-                              </p>
-                              <p className="text-xs text-muted-foreground mt-0.5">
-                                Click to compare {group.providers.length} provider{group.providers.length !== 1 ? 's' : ''}
-                              </p>
-                            </div>
-                          </TableCell>
-                          
-                          <TableCell>
-                            <div className="flex items-center gap-1">
-                              <Badge variant="secondary" className="font-semibold">
-                                {group.providers.length}
-                              </Badge>
-                              <span className="text-sm text-muted-foreground">
-                                {group.providers.length === 1 ? 'provider' : 'providers'}
-                              </span>
-                            </div>
-                          </TableCell>
-                          
-                          <TableCell>
-                            <div className="flex items-center gap-2">
-                              <span className="font-bold text-green-600 dark:text-green-400">
-                                £{group.lowestPrice.toFixed(2)}
-                              </span>
-                              {group.providers.length > 1 && group.lowestPrice !== group.highestPrice && (
-                                <>
-                                  <span className="text-muted-foreground">-</span>
-                                  <span className="text-muted-foreground">
-                                    £{group.highestPrice.toFixed(2)}
-                                  </span>
-                                </>
+                        </div>
+                      </TableCell>
+
+                      <TableCell>
+                        {group.avgBiomarkers > 0 ? (
+                          <span className="font-medium">
+                            {group.avgBiomarkers}
+                          </span>
+                        ) : (
+                          <span className="text-muted-foreground">-</span>
+                        )}
+                      </TableCell>
+
+                      <TableCell>
+                        {group.category && (
+                          <Badge variant="outline" className="text-xs">
+                            {group.category}
+                          </Badge>
+                        )}
+                      </TableCell>
+
+                      <TableCell className="text-right">
+                        <Button size="sm" variant="outline" className="gap-1">
+                          Compare
+                          <ChevronDown
+                            className={cn(
+                              "h-3 w-3 transition-transform",
+                              isExpanded && "rotate-180",
+                            )}
+                          />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+
+                    {/* Expanded Provider Rows */}
+                    {isExpanded &&
+                      group.providers.map((test, idx) => {
+                        const isCheapest = test.price === group.lowestPrice;
+
+                        const isFavorite = favoriteIds.includes(test.id);
+
+                        return (
+                          <TableRow
+                            key={test.id}
+                            className="bg-muted/10 hover:bg-muted/20 border-l-4 border-l-primary/30"
+                          >
+                            <TableCell></TableCell>
+
+                            <TableCell className="pl-8">
+                              <div className="flex items-center gap-3">
+                                <img
+                                  src={getProviderLogo(test.provider)}
+                                  alt={test.provider}
+                                  className="h-6 w-auto object-contain"
+                                  onError={(e) => {
+                                    e.currentTarget.style.display = "none";
+                                  }}
+                                />
+                                <span className="font-medium">
+                                  {getProviderDisplayName(test.provider)}
+                                </span>
+                                {isCheapest && group.providers.length > 1 && (
+                                  <Badge className="bg-green-600 text-xs py-0 h-5">
+                                    Best Price
+                                  </Badge>
+                                )}
+                              </div>
+                            </TableCell>
+
+                            <TableCell>
+                              <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                                <span className="flex items-center gap-1">
+                                  <Home className="h-3 w-3" />
+                                  {test.homeKitAvailable ? (
+                                    <Check className="h-3 w-3 text-green-600" />
+                                  ) : (
+                                    <XIcon className="h-3 w-3 text-muted-foreground/50" />
+                                  )}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Building2 className="h-3 w-3" />
+                                  {test.clinicVisitAvailable ? (
+                                    <Check className="h-3 w-3 text-green-600" />
+                                  ) : (
+                                    <XIcon className="h-3 w-3 text-muted-foreground/50" />
+                                  )}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Stethoscope className="h-3 w-3" />
+                                  {test.gpReviewIncluded ? (
+                                    <Check className="h-3 w-3 text-green-600" />
+                                  ) : (
+                                    <XIcon className="h-3 w-3 text-muted-foreground/50" />
+                                  )}
+                                </span>
+                              </div>
+                            </TableCell>
+
+                            <TableCell>
+                              <div className="flex items-center gap-2">
+                                <span
+                                  className={cn(
+                                    "font-bold",
+                                    isCheapest
+                                      ? "text-green-600 dark:text-green-400"
+                                      : "text-foreground",
+                                  )}
+                                >
+                                  £{test.price.toFixed(2)}
+                                </span>
+                                {test.originalPrice &&
+                                  test.originalPrice > test.price && (
+                                    <span className="text-xs text-muted-foreground line-through">
+                                      £{test.originalPrice.toFixed(2)}
+                                    </span>
+                                  )}
+                              </div>
+                            </TableCell>
+
+                            <TableCell>
+                              {test.biomarkerCount ? (
+                                <span>{test.biomarkerCount}</span>
+                              ) : (
+                                <span className="text-muted-foreground">-</span>
                               )}
-                            </div>
-                          </TableCell>
-                          
-                          <TableCell>
-                            {group.avgBiomarkers > 0 ? (
-                              <span className="font-medium">{group.avgBiomarkers}</span>
-                            ) : (
-                              <span className="text-muted-foreground">-</span>
-                            )}
-                          </TableCell>
-                          
-                          <TableCell>
-                            {group.category && (
-                              <Badge variant="outline" className="text-xs">
-                                {group.category}
-                              </Badge>
-                            )}
-                          </TableCell>
-                          
-                          <TableCell className="text-right">
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              className="gap-1"
-                            >
-                              Compare
-                              <ChevronDown className={cn(
-                                "h-3 w-3 transition-transform",
-                                isExpanded && "rotate-180"
-                              )} />
-                            </Button>
-                          </TableCell>
-                        </TableRow>
-                      </CollapsibleTrigger>
-                      
-                      {/* Expanded Provider Rows */}
-                      <CollapsibleContent asChild>
-                        <React.Fragment>
-                          {group.providers.map((test, idx) => {
-                            const isCheapest = test.price === group.lowestPrice;
-                            const isFavorite = favoriteIds.includes(test.id);
-                            
-                            return (
-                              <TableRow 
-                                key={test.id}
-                                className="bg-muted/10 hover:bg-muted/20 border-l-4 border-l-primary/30"
-                              >
-                                <TableCell></TableCell>
-                                
-                                <TableCell className="pl-8">
-                                  <div className="flex items-center gap-3">
-                                    <img
-                                      src={getProviderLogo(test.provider)}
-                                      alt={test.provider}
-                                      className="h-6 w-auto object-contain"
-                                      onError={(e) => {
-                                        e.currentTarget.style.display = 'none';
-                                      }}
-                                    />
-                                    <span className="font-medium">
-                                      {getProviderDisplayName(test.provider)}
-                                    </span>
-                                    {isCheapest && group.providers.length > 1 && (
-                                      <Badge className="bg-green-600 text-xs py-0 h-5">
-                                        Best Price
-                                      </Badge>
-                                    )}
-                                  </div>
-                                </TableCell>
-                                
-                                <TableCell>
-                                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                                    <span className="flex items-center gap-1">
-                                      <Home className="h-3 w-3" />
-                                      {test.homeKitAvailable ? (
-                                        <Check className="h-3 w-3 text-green-600" />
-                                      ) : (
-                                        <XIcon className="h-3 w-3 text-muted-foreground/50" />
-                                      )}
-                                    </span>
-                                    <span className="flex items-center gap-1">
-                                      <Building2 className="h-3 w-3" />
-                                      {test.clinicVisitAvailable ? (
-                                        <Check className="h-3 w-3 text-green-600" />
-                                      ) : (
-                                        <XIcon className="h-3 w-3 text-muted-foreground/50" />
-                                      )}
-                                    </span>
-                                    <span className="flex items-center gap-1">
-                                      <Stethoscope className="h-3 w-3" />
-                                      {test.gpReviewIncluded ? (
-                                        <Check className="h-3 w-3 text-green-600" />
-                                      ) : (
-                                        <XIcon className="h-3 w-3 text-muted-foreground/50" />
-                                      )}
-                                    </span>
-                                  </div>
-                                </TableCell>
-                                
-                                <TableCell>
-                                  <div className="flex items-center gap-2">
-                                    <span className={cn(
-                                      "font-bold",
-                                      isCheapest ? "text-green-600 dark:text-green-400" : "text-foreground"
-                                    )}>
-                                      £{test.price.toFixed(2)}
-                                    </span>
-                                    {test.originalPrice && test.originalPrice > test.price && (
-                                      <span className="text-xs text-muted-foreground line-through">
-                                        £{test.originalPrice.toFixed(2)}
-                                      </span>
-                                    )}
-                                  </div>
-                                </TableCell>
-                                
-                                <TableCell>
-                                  {test.biomarkerCount ? (
-                                    <span>{test.biomarkerCount}</span>
-                                  ) : (
-                                    <span className="text-muted-foreground">-</span>
+                            </TableCell>
+
+                            <TableCell>
+                              {test.turnaroundDays ? (
+                                <span className="text-sm flex items-center gap-1">
+                                  <Clock className="h-3 w-3" />
+                                  {test.turnaroundDays} days
+                                </span>
+                              ) : (
+                                <span className="text-sm text-muted-foreground">
+                                  2-5 days
+                                </span>
+                              )}
+                            </TableCell>
+
+                            <TableCell className="text-right">
+                              <div className="flex items-center justify-end gap-2">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    onFavorite?.(test.id);
+                                  }}
+                                  className={cn(
+                                    "h-8 w-8",
+                                    isFavorite && "text-red-500",
                                   )}
-                                </TableCell>
-                                
-                                <TableCell>
-                                  {test.turnaroundDays ? (
-                                    <span className="text-sm flex items-center gap-1">
-                                      <Clock className="h-3 w-3" />
-                                      {test.turnaroundDays} days
-                                    </span>
-                                  ) : (
-                                    <span className="text-sm text-muted-foreground">2-5 days</span>
-                                  )}
-                                </TableCell>
-                                
-                                <TableCell className="text-right">
-                                  <div className="flex items-center justify-end gap-2">
-                                    <Button
-                                      variant="ghost"
-                                      size="icon"
-                                      onClick={(e) => {
-                                        e.stopPropagation();
-                                        onFavorite?.(test.id);
-                                      }}
-                                      className={cn(
-                                        "h-8 w-8",
-                                        isFavorite && "text-red-500"
-                                      )}
+                                >
+                                  <Heart
+                                    className={cn(
+                                      "h-4 w-4",
+                                      isFavorite && "fill-current",
+                                    )}
+                                  />
+                                </Button>
+
+                                {test.url ? (
+                                  <Button
+                                    size="sm"
+                                    className="bg-primary hover:bg-primary/90 gap-1"
+                                    onClick={(e) => e.stopPropagation()}
+                                    asChild
+                                  >
+                                    <a
+                                      href={test.url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
                                     >
-                                      <Heart 
-                                        className={cn(
-                                          "h-4 w-4",
-                                          isFavorite && "fill-current"
-                                        )} 
-                                      />
-                                    </Button>
-                                    
-                                    {test.url ? (
-                                      <Button
-                                        size="sm"
-                                        className="bg-primary hover:bg-primary/90 gap-1"
-                                        onClick={(e) => e.stopPropagation()}
-                                        asChild
-                                      >
-                                        <a 
-                                          href={test.url} 
-                                          target="_blank" 
-                                          rel="noopener noreferrer"
-                                        >
-                                          Order
-                                        </a>
-                                      </Button>
-                                    ) : (
-                                      <Button
-                                        size="sm"
-                                        variant="outline"
-                                        onClick={(e) => e.stopPropagation()}
-                                        asChild
-                                      >
-                                        <a href={`/${test.provider}/${encodeURIComponent(test.testName)}`}>
-                                          View
-                                        </a>
-                                      </Button>
-                                    )}
-                                  </div>
-                                </TableCell>
-                              </TableRow>
-                            );
-                          })}
-                        </React.Fragment>
-                      </CollapsibleContent>
-                    </React.Fragment>
-                  </Collapsible>
+                                      Order
+                                    </a>
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    onClick={(e) => e.stopPropagation()}
+                                    asChild
+                                  >
+                                    <a
+                                      href={`/${test.provider}/${encodeURIComponent(test.testName)}`}
+                                    >
+                                      View
+                                    </a>
+                                  </Button>
+                                )}
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                  </React.Fragment>
                 );
               })}
             </TableBody>

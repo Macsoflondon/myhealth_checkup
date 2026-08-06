@@ -59,7 +59,7 @@ const HowWeRank = () => {
               professional. Our current Clinical Reviewer is{' '}
               <strong className="text-foreground">Nathanial Smith</strong>, a Registered Healthcare Professional
               registered with the Health and Care Professions Council under registration number{' '}
-              <Badge variant="secondary" className="font-mono">PA43353</Badge>.
+              <span className="inline-flex items-center rounded-md border border-transparent bg-secondary px-2 py-0.5 font-mono text-xs font-semibold text-secondary-foreground">PA43353</span>.
             </p>
             <p>
               Reviewer credentials, scope of review, and a link to verify registration on the HCPC public register
@@ -108,10 +108,12 @@ const HowWeRank = () => {
               </li>
             </ul>
             <p className="mt-4">
-              Sponsored placements, where present, are always labelled <Badge variant="secondary">Ad</Badge> or{' '}
-              <Badge variant="secondary">Sponsored</Badge> and never re-order the default Total Price ranking
+              Sponsored placements, where present, are always labelled{' '}
+              <span className="inline-flex items-center rounded-md border border-transparent bg-secondary px-2 py-0.5 text-xs font-semibold text-secondary-foreground">Ad</span> or{' '}
+              <span className="inline-flex items-center rounded-md border border-transparent bg-secondary px-2 py-0.5 text-xs font-semibold text-secondary-foreground">Sponsored</span> and never re-order the default Total Price ranking
               silently. They are visually separated from the organic comparison.
             </p>
+
           </CardContent>
         </Card>
 

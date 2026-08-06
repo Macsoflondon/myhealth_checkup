@@ -46,9 +46,11 @@ import { Route as HormonesRouteImport } from './routes/hormones'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as HowWeRankRouteImport } from './routes/how-we-rank'
 import { Route as LegalRouteImport } from './routes/legal'
+import { Route as LolaHealthRouteImport } from './routes/lola-health'
 import { Route as LondonHealthCompanyRouteImport } from './routes/london-health-company'
 import { Route as LondonMedicalLaboratoryRouteImport } from './routes/london-medical-laboratory'
 import { Route as MedicalDiagnosisRouteImport } from './routes/medical-diagnosis'
+import { Route as MedichecksRouteImport } from './routes/medichecks'
 import { Route as MensHealthRouteImport } from './routes/mens-health'
 import { Route as ModernSlaveryRouteImport } from './routes/modern-slavery'
 import { Route as MostPopularTestsRouteImport } from './routes/most-popular-tests'
@@ -59,6 +61,7 @@ import { Route as PortalRouteImport } from './routes/portal'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as ProvidersRouteImport } from './routes/providers'
 import { Route as QuizRouteImport } from './routes/quiz'
+import { Route as RandoxRouteImport } from './routes/randox'
 import { Route as RecommendationsRouteImport } from './routes/recommendations'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as ReviewsRouteImport } from './routes/reviews'
@@ -68,6 +71,7 @@ import { Route as SitemapRouteImport } from './routes/sitemap'
 import { Route as SportsPerformanceRouteImport } from './routes/sports-performance'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TestCategoriesRouteImport } from './routes/test-categories'
+import { Route as ThrivaRouteImport } from './routes/thriva'
 import { Route as ThyroidRouteImport } from './routes/thyroid'
 import { Route as TrustRouteImport } from './routes/trust'
 import { Route as TrustedProvidersRouteImport } from './routes/trusted-providers'
@@ -338,6 +342,11 @@ const LegalRoute = LegalRouteImport.update({
   path: '/legal',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LolaHealthRoute = LolaHealthRouteImport.update({
+  id: '/lola-health',
+  path: '/lola-health',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LondonHealthCompanyRoute = LondonHealthCompanyRouteImport.update({
   id: '/london-health-company',
   path: '/london-health-company',
@@ -351,6 +360,11 @@ const LondonMedicalLaboratoryRoute = LondonMedicalLaboratoryRouteImport.update({
 const MedicalDiagnosisRoute = MedicalDiagnosisRouteImport.update({
   id: '/medical-diagnosis',
   path: '/medical-diagnosis',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MedichecksRoute = MedichecksRouteImport.update({
+  id: '/medichecks',
+  path: '/medichecks',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MensHealthRoute = MensHealthRouteImport.update({
@@ -403,6 +417,11 @@ const QuizRoute = QuizRouteImport.update({
   path: '/quiz',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RandoxRoute = RandoxRouteImport.update({
+  id: '/randox',
+  path: '/randox',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RecommendationsRoute = RecommendationsRouteImport.update({
   id: '/recommendations',
   path: '/recommendations',
@@ -446,6 +465,11 @@ const TermsRoute = TermsRouteImport.update({
 const TestCategoriesRoute = TestCategoriesRouteImport.update({
   id: '/test-categories',
   path: '/test-categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ThrivaRoute = ThrivaRouteImport.update({
+  id: '/thriva',
+  path: '/thriva',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ThyroidRoute = ThyroidRouteImport.update({
@@ -664,9 +688,9 @@ const GuidesSlugRoute = GuidesSlugRouteImport.update({
   getParentRoute: () => GuidesRoute,
 } as any)
 const LolaHealthTestIdRoute = LolaHealthTestIdRouteImport.update({
-  id: '/lola-health/$testId',
-  path: '/lola-health/$testId',
-  getParentRoute: () => rootRouteImport,
+  id: '/$testId',
+  path: '/$testId',
+  getParentRoute: () => LolaHealthRoute,
 } as any)
 const LondonHealthCompanyTestIdRoute =
   LondonHealthCompanyTestIdRouteImport.update({
@@ -686,14 +710,14 @@ const MedicalDiagnosisTestIdRoute = MedicalDiagnosisTestIdRouteImport.update({
   getParentRoute: () => MedicalDiagnosisRoute,
 } as any)
 const MedichecksTestIdRoute = MedichecksTestIdRouteImport.update({
-  id: '/medichecks/$testId',
-  path: '/medichecks/$testId',
-  getParentRoute: () => rootRouteImport,
+  id: '/$testId',
+  path: '/$testId',
+  getParentRoute: () => MedichecksRoute,
 } as any)
 const MedichecksMensHealthRoute = MedichecksMensHealthRouteImport.update({
-  id: '/medichecks/mens-health',
-  path: '/medichecks/mens-health',
-  getParentRoute: () => rootRouteImport,
+  id: '/mens-health',
+  path: '/mens-health',
+  getParentRoute: () => MedichecksRoute,
 } as any)
 const ProviderProviderIdRoute = ProviderProviderIdRouteImport.update({
   id: '/provider/$providerId',
@@ -759,9 +783,9 @@ const RandoxHealthTestIdRoute = RandoxHealthTestIdRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const RandoxTestIdRoute = RandoxTestIdRouteImport.update({
-  id: '/randox/$testId',
-  path: '/randox/$testId',
-  getParentRoute: () => rootRouteImport,
+  id: '/$testId',
+  path: '/$testId',
+  getParentRoute: () => RandoxRoute,
 } as any)
 const TestFemaleHormonesRoute = TestFemaleHormonesRouteImport.update({
   id: '/test/female-hormones',
@@ -844,9 +868,9 @@ const TestsWomensHealthRoute = TestsWomensHealthRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const ThrivaTestIdRoute = ThrivaTestIdRouteImport.update({
-  id: '/thriva/$testId',
-  path: '/thriva/$testId',
-  getParentRoute: () => rootRouteImport,
+  id: '/$testId',
+  path: '/$testId',
+  getParentRoute: () => ThrivaRoute,
 } as any)
 const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   id: '/.lovable/oauth/consent',
@@ -914,9 +938,11 @@ export interface FileRoutesByFullPath {
   '/how-it-works': typeof HowItWorksRoute
   '/how-we-rank': typeof HowWeRankRoute
   '/legal': typeof LegalRoute
+  '/lola-health': typeof LolaHealthRouteWithChildren
   '/london-health-company': typeof LondonHealthCompanyRouteWithChildren
   '/london-medical-laboratory': typeof LondonMedicalLaboratoryRouteWithChildren
   '/medical-diagnosis': typeof MedicalDiagnosisRouteWithChildren
+  '/medichecks': typeof MedichecksRouteWithChildren
   '/mens-health': typeof MensHealthRoute
   '/modern-slavery': typeof ModernSlaveryRoute
   '/most-popular-tests': typeof MostPopularTestsRoute
@@ -927,6 +953,7 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/quiz': typeof QuizRoute
+  '/randox': typeof RandoxRouteWithChildren
   '/recommendations': typeof RecommendationsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/reviews': typeof ReviewsRoute
@@ -936,6 +963,7 @@ export interface FileRoutesByFullPath {
   '/sports-performance': typeof SportsPerformanceRoute
   '/terms': typeof TermsRoute
   '/test-categories': typeof TestCategoriesRoute
+  '/thriva': typeof ThrivaRouteWithChildren
   '/thyroid': typeof ThyroidRoute
   '/trust': typeof TrustRoute
   '/trusted-providers': typeof TrustedProvidersRoute
@@ -1057,9 +1085,11 @@ export interface FileRoutesByTo {
   '/how-it-works': typeof HowItWorksRoute
   '/how-we-rank': typeof HowWeRankRoute
   '/legal': typeof LegalRoute
+  '/lola-health': typeof LolaHealthRouteWithChildren
   '/london-health-company': typeof LondonHealthCompanyRouteWithChildren
   '/london-medical-laboratory': typeof LondonMedicalLaboratoryRouteWithChildren
   '/medical-diagnosis': typeof MedicalDiagnosisRouteWithChildren
+  '/medichecks': typeof MedichecksRouteWithChildren
   '/mens-health': typeof MensHealthRoute
   '/modern-slavery': typeof ModernSlaveryRoute
   '/most-popular-tests': typeof MostPopularTestsRoute
@@ -1070,6 +1100,7 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/quiz': typeof QuizRoute
+  '/randox': typeof RandoxRouteWithChildren
   '/recommendations': typeof RecommendationsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/reviews': typeof ReviewsRoute
@@ -1079,6 +1110,7 @@ export interface FileRoutesByTo {
   '/sports-performance': typeof SportsPerformanceRoute
   '/terms': typeof TermsRoute
   '/test-categories': typeof TestCategoriesRoute
+  '/thriva': typeof ThrivaRouteWithChildren
   '/thyroid': typeof ThyroidRoute
   '/trust': typeof TrustRoute
   '/trusted-providers': typeof TrustedProvidersRoute
@@ -1202,9 +1234,11 @@ export interface FileRoutesById {
   '/how-it-works': typeof HowItWorksRoute
   '/how-we-rank': typeof HowWeRankRoute
   '/legal': typeof LegalRoute
+  '/lola-health': typeof LolaHealthRouteWithChildren
   '/london-health-company': typeof LondonHealthCompanyRouteWithChildren
   '/london-medical-laboratory': typeof LondonMedicalLaboratoryRouteWithChildren
   '/medical-diagnosis': typeof MedicalDiagnosisRouteWithChildren
+  '/medichecks': typeof MedichecksRouteWithChildren
   '/mens-health': typeof MensHealthRoute
   '/modern-slavery': typeof ModernSlaveryRoute
   '/most-popular-tests': typeof MostPopularTestsRoute
@@ -1215,6 +1249,7 @@ export interface FileRoutesById {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/providers': typeof ProvidersRouteWithChildren
   '/quiz': typeof QuizRoute
+  '/randox': typeof RandoxRouteWithChildren
   '/recommendations': typeof RecommendationsRoute
   '/reset-password': typeof ResetPasswordRoute
   '/reviews': typeof ReviewsRoute
@@ -1224,6 +1259,7 @@ export interface FileRoutesById {
   '/sports-performance': typeof SportsPerformanceRoute
   '/terms': typeof TermsRoute
   '/test-categories': typeof TestCategoriesRoute
+  '/thriva': typeof ThrivaRouteWithChildren
   '/thyroid': typeof ThyroidRoute
   '/trust': typeof TrustRoute
   '/trusted-providers': typeof TrustedProvidersRoute
@@ -1348,9 +1384,11 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/how-we-rank'
     | '/legal'
+    | '/lola-health'
     | '/london-health-company'
     | '/london-medical-laboratory'
     | '/medical-diagnosis'
+    | '/medichecks'
     | '/mens-health'
     | '/modern-slavery'
     | '/most-popular-tests'
@@ -1361,6 +1399,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/providers'
     | '/quiz'
+    | '/randox'
     | '/recommendations'
     | '/reset-password'
     | '/reviews'
@@ -1370,6 +1409,7 @@ export interface FileRouteTypes {
     | '/sports-performance'
     | '/terms'
     | '/test-categories'
+    | '/thriva'
     | '/thyroid'
     | '/trust'
     | '/trusted-providers'
@@ -1491,9 +1531,11 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/how-we-rank'
     | '/legal'
+    | '/lola-health'
     | '/london-health-company'
     | '/london-medical-laboratory'
     | '/medical-diagnosis'
+    | '/medichecks'
     | '/mens-health'
     | '/modern-slavery'
     | '/most-popular-tests'
@@ -1504,6 +1546,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/providers'
     | '/quiz'
+    | '/randox'
     | '/recommendations'
     | '/reset-password'
     | '/reviews'
@@ -1513,6 +1556,7 @@ export interface FileRouteTypes {
     | '/sports-performance'
     | '/terms'
     | '/test-categories'
+    | '/thriva'
     | '/thyroid'
     | '/trust'
     | '/trusted-providers'
@@ -1635,9 +1679,11 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/how-we-rank'
     | '/legal'
+    | '/lola-health'
     | '/london-health-company'
     | '/london-medical-laboratory'
     | '/medical-diagnosis'
+    | '/medichecks'
     | '/mens-health'
     | '/modern-slavery'
     | '/most-popular-tests'
@@ -1648,6 +1694,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/providers'
     | '/quiz'
+    | '/randox'
     | '/recommendations'
     | '/reset-password'
     | '/reviews'
@@ -1657,6 +1704,7 @@ export interface FileRouteTypes {
     | '/sports-performance'
     | '/terms'
     | '/test-categories'
+    | '/thriva'
     | '/thyroid'
     | '/trust'
     | '/trusted-providers'
@@ -1780,9 +1828,11 @@ export interface RootRouteChildren {
   HowItWorksRoute: typeof HowItWorksRoute
   HowWeRankRoute: typeof HowWeRankRoute
   LegalRoute: typeof LegalRoute
+  LolaHealthRoute: typeof LolaHealthRouteWithChildren
   LondonHealthCompanyRoute: typeof LondonHealthCompanyRouteWithChildren
   LondonMedicalLaboratoryRoute: typeof LondonMedicalLaboratoryRouteWithChildren
   MedicalDiagnosisRoute: typeof MedicalDiagnosisRouteWithChildren
+  MedichecksRoute: typeof MedichecksRouteWithChildren
   MensHealthRoute: typeof MensHealthRoute
   ModernSlaveryRoute: typeof ModernSlaveryRoute
   MostPopularTestsRoute: typeof MostPopularTestsRoute
@@ -1793,6 +1843,7 @@ export interface RootRouteChildren {
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ProvidersRoute: typeof ProvidersRouteWithChildren
   QuizRoute: typeof QuizRoute
+  RandoxRoute: typeof RandoxRouteWithChildren
   RecommendationsRoute: typeof RecommendationsRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   ReviewsRoute: typeof ReviewsRoute
@@ -1802,6 +1853,7 @@ export interface RootRouteChildren {
   SportsPerformanceRoute: typeof SportsPerformanceRoute
   TermsRoute: typeof TermsRoute
   TestCategoriesRoute: typeof TestCategoriesRoute
+  ThrivaRoute: typeof ThrivaRouteWithChildren
   ThyroidRoute: typeof ThyroidRoute
   TrustRoute: typeof TrustRoute
   TrustedProvidersRoute: typeof TrustedProvidersRoute
@@ -1828,12 +1880,8 @@ export interface RootRouteChildren {
   AdminTestMapperRoute: typeof AdminTestMapperRoute
   AdminTestUploadRoute: typeof AdminTestUploadRoute
   GoodbodyTestIdRoute: typeof GoodbodyTestIdRoute
-  LolaHealthTestIdRoute: typeof LolaHealthTestIdRoute
-  MedichecksTestIdRoute: typeof MedichecksTestIdRoute
-  MedichecksMensHealthRoute: typeof MedichecksMensHealthRoute
   ProviderProviderIdRoute: typeof ProviderProviderIdRouteWithChildren
   RandoxHealthTestIdRoute: typeof RandoxHealthTestIdRoute
-  RandoxTestIdRoute: typeof RandoxTestIdRoute
   TestFemaleHormonesRoute: typeof TestFemaleHormonesRoute
   TestGeneralHealthRoute: typeof TestGeneralHealthRoute
   TestIronProfileRoute: typeof TestIronProfileRoute
@@ -1850,7 +1898,6 @@ export interface RootRouteChildren {
   TestsMensHealthRoute: typeof TestsMensHealthRoute
   TestsVitaminsRoute: typeof TestsVitaminsRoute
   TestsWomensHealthRoute: typeof TestsWomensHealthRoute
-  ThrivaTestIdRoute: typeof ThrivaTestIdRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
 
@@ -2115,6 +2162,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LegalRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lola-health': {
+      id: '/lola-health'
+      path: '/lola-health'
+      fullPath: '/lola-health'
+      preLoaderRoute: typeof LolaHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/london-health-company': {
       id: '/london-health-company'
       path: '/london-health-company'
@@ -2134,6 +2188,13 @@ declare module '@tanstack/react-router' {
       path: '/medical-diagnosis'
       fullPath: '/medical-diagnosis'
       preLoaderRoute: typeof MedicalDiagnosisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/medichecks': {
+      id: '/medichecks'
+      path: '/medichecks'
+      fullPath: '/medichecks'
+      preLoaderRoute: typeof MedichecksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mens-health': {
@@ -2206,6 +2267,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuizRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/randox': {
+      id: '/randox'
+      path: '/randox'
+      fullPath: '/randox'
+      preLoaderRoute: typeof RandoxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/recommendations': {
       id: '/recommendations'
       path: '/recommendations'
@@ -2267,6 +2335,13 @@ declare module '@tanstack/react-router' {
       path: '/test-categories'
       fullPath: '/test-categories'
       preLoaderRoute: typeof TestCategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/thriva': {
+      id: '/thriva'
+      path: '/thriva'
+      fullPath: '/thriva'
+      preLoaderRoute: typeof ThrivaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/thyroid': {
@@ -2565,10 +2640,10 @@ declare module '@tanstack/react-router' {
     }
     '/lola-health/$testId': {
       id: '/lola-health/$testId'
-      path: '/lola-health/$testId'
+      path: '/$testId'
       fullPath: '/lola-health/$testId'
       preLoaderRoute: typeof LolaHealthTestIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof LolaHealthRoute
     }
     '/london-health-company/$testId': {
       id: '/london-health-company/$testId'
@@ -2593,17 +2668,17 @@ declare module '@tanstack/react-router' {
     }
     '/medichecks/$testId': {
       id: '/medichecks/$testId'
-      path: '/medichecks/$testId'
+      path: '/$testId'
       fullPath: '/medichecks/$testId'
       preLoaderRoute: typeof MedichecksTestIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof MedichecksRoute
     }
     '/medichecks/mens-health': {
       id: '/medichecks/mens-health'
-      path: '/medichecks/mens-health'
+      path: '/mens-health'
       fullPath: '/medichecks/mens-health'
       preLoaderRoute: typeof MedichecksMensHealthRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof MedichecksRoute
     }
     '/provider/$providerId': {
       id: '/provider/$providerId'
@@ -2691,10 +2766,10 @@ declare module '@tanstack/react-router' {
     }
     '/randox/$testId': {
       id: '/randox/$testId'
-      path: '/randox/$testId'
+      path: '/$testId'
       fullPath: '/randox/$testId'
       preLoaderRoute: typeof RandoxTestIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof RandoxRoute
     }
     '/test/female-hormones': {
       id: '/test/female-hormones'
@@ -2810,10 +2885,10 @@ declare module '@tanstack/react-router' {
     }
     '/thriva/$testId': {
       id: '/thriva/$testId'
-      path: '/thriva/$testId'
+      path: '/$testId'
       fullPath: '/thriva/$testId'
       preLoaderRoute: typeof ThrivaTestIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof ThrivaRoute
     }
     '/.lovable/oauth/consent': {
       id: '/.lovable/oauth/consent'
@@ -2993,6 +3068,18 @@ const GuidesRouteChildren: GuidesRouteChildren = {
 const GuidesRouteWithChildren =
   GuidesRoute._addFileChildren(GuidesRouteChildren)
 
+interface LolaHealthRouteChildren {
+  LolaHealthTestIdRoute: typeof LolaHealthTestIdRoute
+}
+
+const LolaHealthRouteChildren: LolaHealthRouteChildren = {
+  LolaHealthTestIdRoute: LolaHealthTestIdRoute,
+}
+
+const LolaHealthRouteWithChildren = LolaHealthRoute._addFileChildren(
+  LolaHealthRouteChildren,
+)
+
 interface LondonHealthCompanyRouteChildren {
   LondonHealthCompanyTestIdRoute: typeof LondonHealthCompanyTestIdRoute
 }
@@ -3029,6 +3116,20 @@ const MedicalDiagnosisRouteChildren: MedicalDiagnosisRouteChildren = {
 const MedicalDiagnosisRouteWithChildren =
   MedicalDiagnosisRoute._addFileChildren(MedicalDiagnosisRouteChildren)
 
+interface MedichecksRouteChildren {
+  MedichecksTestIdRoute: typeof MedichecksTestIdRoute
+  MedichecksMensHealthRoute: typeof MedichecksMensHealthRoute
+}
+
+const MedichecksRouteChildren: MedichecksRouteChildren = {
+  MedichecksTestIdRoute: MedichecksTestIdRoute,
+  MedichecksMensHealthRoute: MedichecksMensHealthRoute,
+}
+
+const MedichecksRouteWithChildren = MedichecksRoute._addFileChildren(
+  MedichecksRouteChildren,
+)
+
 interface ProvidersRouteChildren {
   ProvidersClinilabsRoute: typeof ProvidersClinilabsRoute
   ProvidersCompareRoute: typeof ProvidersCompareRoute
@@ -3058,6 +3159,28 @@ const ProvidersRouteChildren: ProvidersRouteChildren = {
 const ProvidersRouteWithChildren = ProvidersRoute._addFileChildren(
   ProvidersRouteChildren,
 )
+
+interface RandoxRouteChildren {
+  RandoxTestIdRoute: typeof RandoxTestIdRoute
+}
+
+const RandoxRouteChildren: RandoxRouteChildren = {
+  RandoxTestIdRoute: RandoxTestIdRoute,
+}
+
+const RandoxRouteWithChildren =
+  RandoxRoute._addFileChildren(RandoxRouteChildren)
+
+interface ThrivaRouteChildren {
+  ThrivaTestIdRoute: typeof ThrivaTestIdRoute
+}
+
+const ThrivaRouteChildren: ThrivaRouteChildren = {
+  ThrivaTestIdRoute: ThrivaTestIdRoute,
+}
+
+const ThrivaRouteWithChildren =
+  ThrivaRoute._addFileChildren(ThrivaRouteChildren)
 
 interface ProviderProviderIdTestsRouteChildren {
   ProviderProviderIdTestsTestIdRoute: typeof ProviderProviderIdTestsTestIdRoute
@@ -3122,9 +3245,11 @@ const rootRouteChildren: RootRouteChildren = {
   HowItWorksRoute: HowItWorksRoute,
   HowWeRankRoute: HowWeRankRoute,
   LegalRoute: LegalRoute,
+  LolaHealthRoute: LolaHealthRouteWithChildren,
   LondonHealthCompanyRoute: LondonHealthCompanyRouteWithChildren,
   LondonMedicalLaboratoryRoute: LondonMedicalLaboratoryRouteWithChildren,
   MedicalDiagnosisRoute: MedicalDiagnosisRouteWithChildren,
+  MedichecksRoute: MedichecksRouteWithChildren,
   MensHealthRoute: MensHealthRoute,
   ModernSlaveryRoute: ModernSlaveryRoute,
   MostPopularTestsRoute: MostPopularTestsRoute,
@@ -3135,6 +3260,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ProvidersRoute: ProvidersRouteWithChildren,
   QuizRoute: QuizRoute,
+  RandoxRoute: RandoxRouteWithChildren,
   RecommendationsRoute: RecommendationsRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   ReviewsRoute: ReviewsRoute,
@@ -3144,6 +3270,7 @@ const rootRouteChildren: RootRouteChildren = {
   SportsPerformanceRoute: SportsPerformanceRoute,
   TermsRoute: TermsRoute,
   TestCategoriesRoute: TestCategoriesRoute,
+  ThrivaRoute: ThrivaRouteWithChildren,
   ThyroidRoute: ThyroidRoute,
   TrustRoute: TrustRoute,
   TrustedProvidersRoute: TrustedProvidersRoute,
@@ -3170,12 +3297,8 @@ const rootRouteChildren: RootRouteChildren = {
   AdminTestMapperRoute: AdminTestMapperRoute,
   AdminTestUploadRoute: AdminTestUploadRoute,
   GoodbodyTestIdRoute: GoodbodyTestIdRoute,
-  LolaHealthTestIdRoute: LolaHealthTestIdRoute,
-  MedichecksTestIdRoute: MedichecksTestIdRoute,
-  MedichecksMensHealthRoute: MedichecksMensHealthRoute,
   ProviderProviderIdRoute: ProviderProviderIdRouteWithChildren,
   RandoxHealthTestIdRoute: RandoxHealthTestIdRoute,
-  RandoxTestIdRoute: RandoxTestIdRoute,
   TestFemaleHormonesRoute: TestFemaleHormonesRoute,
   TestGeneralHealthRoute: TestGeneralHealthRoute,
   TestIronProfileRoute: TestIronProfileRoute,
@@ -3192,7 +3315,6 @@ const rootRouteChildren: RootRouteChildren = {
   TestsMensHealthRoute: TestsMensHealthRoute,
   TestsVitaminsRoute: TestsVitaminsRoute,
   TestsWomensHealthRoute: TestsWomensHealthRoute,
-  ThrivaTestIdRoute: ThrivaTestIdRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
 }
 export const routeTree = rootRouteImport

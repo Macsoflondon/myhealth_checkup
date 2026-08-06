@@ -82,9 +82,10 @@ const CookieConsent = () => {
                 </div>
                 <p className="text-xs sm:text-sm text-brand-navy line-clamp-2 sm:line-clamp-none">
                   We use cookies to enhance your experience and analyse traffic.
-                  <a href="/privacy-policy" className="text-health-600 underline ml-1">
+                  <a href="/privacy-policy" className="inline-block py-1.5 text-health-600 underline ml-1">
                     Privacy Policy
                   </a>
+
                 </p>
               </div>
               <div className="flex gap-1.5 sm:gap-2 flex-wrap w-full lg:w-auto">
