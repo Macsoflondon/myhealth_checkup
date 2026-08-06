@@ -120,38 +120,6 @@ export class TestDataTransformer {
   }
 
   /**
-   * Count total biomarkers in test description
-   */
-  private static countBiomarkers(description: string): number {
-    if (!description) return 0;
-    
-    const commonMarkers = [
-      'cholesterol', 'hdl', 'ldl', 'triglycerides',
-      'glucose', 'hba1c', 'insulin',
-      'tsh', 't3', 't4', 'thyroid',
-      'vitamin d', 'b12', 'folate', 'iron', 'ferritin',
-      'testosterone', 'estrogen', 'oestradiol', 'progesterone',
-      'cortisol', 'dhea', 'psa', 'liver', 'kidney',
-      'crp', 'inflammation', 'full blood count'
-    ];
-    
-    const found = commonMarkers.filter(marker => 
-      description.toLowerCase().includes(marker)
-    );
-    
-    // Estimate based on description keywords
-    if (description.toLowerCase().includes('comprehensive') || 
-        description.toLowerCase().includes('full panel')) {
-      return Math.max(found.length, 20);
-    }
-    if (description.toLowerCase().includes('advanced')) {
-      return Math.max(found.length, 15);
-    }
-    
-    return Math.max(found.length, 5);
-  }
-
-  /**
    * Get provider accreditations
    */
   private static getAccreditations(providerId: string): string[] {
