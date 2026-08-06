@@ -49,6 +49,7 @@ import { Route as LegalRouteImport } from './routes/legal'
 import { Route as LondonHealthCompanyRouteImport } from './routes/london-health-company'
 import { Route as LondonMedicalLaboratoryRouteImport } from './routes/london-medical-laboratory'
 import { Route as MedicalDiagnosisRouteImport } from './routes/medical-diagnosis'
+import { Route as MedichecksRouteImport } from './routes/medichecks'
 import { Route as MensHealthRouteImport } from './routes/mens-health'
 import { Route as ModernSlaveryRouteImport } from './routes/modern-slavery'
 import { Route as MostPopularTestsRouteImport } from './routes/most-popular-tests'
@@ -351,6 +352,11 @@ const LondonMedicalLaboratoryRoute = LondonMedicalLaboratoryRouteImport.update({
 const MedicalDiagnosisRoute = MedicalDiagnosisRouteImport.update({
   id: '/medical-diagnosis',
   path: '/medical-diagnosis',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MedichecksRoute = MedichecksRouteImport.update({
+  id: '/medichecks',
+  path: '/medichecks',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MensHealthRoute = MensHealthRouteImport.update({
@@ -686,14 +692,14 @@ const MedicalDiagnosisTestIdRoute = MedicalDiagnosisTestIdRouteImport.update({
   getParentRoute: () => MedicalDiagnosisRoute,
 } as any)
 const MedichecksTestIdRoute = MedichecksTestIdRouteImport.update({
-  id: '/medichecks/$testId',
-  path: '/medichecks/$testId',
-  getParentRoute: () => rootRouteImport,
+  id: '/$testId',
+  path: '/$testId',
+  getParentRoute: () => MedichecksRoute,
 } as any)
 const MedichecksMensHealthRoute = MedichecksMensHealthRouteImport.update({
-  id: '/medichecks/mens-health',
-  path: '/medichecks/mens-health',
-  getParentRoute: () => rootRouteImport,
+  id: '/mens-health',
+  path: '/mens-health',
+  getParentRoute: () => MedichecksRoute,
 } as any)
 const ProviderProviderIdRoute = ProviderProviderIdRouteImport.update({
   id: '/provider/$providerId',
@@ -917,6 +923,7 @@ export interface FileRoutesByFullPath {
   '/london-health-company': typeof LondonHealthCompanyRouteWithChildren
   '/london-medical-laboratory': typeof LondonMedicalLaboratoryRouteWithChildren
   '/medical-diagnosis': typeof MedicalDiagnosisRouteWithChildren
+  '/medichecks': typeof MedichecksRouteWithChildren
   '/mens-health': typeof MensHealthRoute
   '/modern-slavery': typeof ModernSlaveryRoute
   '/most-popular-tests': typeof MostPopularTestsRoute
@@ -1060,6 +1067,7 @@ export interface FileRoutesByTo {
   '/london-health-company': typeof LondonHealthCompanyRouteWithChildren
   '/london-medical-laboratory': typeof LondonMedicalLaboratoryRouteWithChildren
   '/medical-diagnosis': typeof MedicalDiagnosisRouteWithChildren
+  '/medichecks': typeof MedichecksRouteWithChildren
   '/mens-health': typeof MensHealthRoute
   '/modern-slavery': typeof ModernSlaveryRoute
   '/most-popular-tests': typeof MostPopularTestsRoute
@@ -1205,6 +1213,7 @@ export interface FileRoutesById {
   '/london-health-company': typeof LondonHealthCompanyRouteWithChildren
   '/london-medical-laboratory': typeof LondonMedicalLaboratoryRouteWithChildren
   '/medical-diagnosis': typeof MedicalDiagnosisRouteWithChildren
+  '/medichecks': typeof MedichecksRouteWithChildren
   '/mens-health': typeof MensHealthRoute
   '/modern-slavery': typeof ModernSlaveryRoute
   '/most-popular-tests': typeof MostPopularTestsRoute
@@ -1351,6 +1360,7 @@ export interface FileRouteTypes {
     | '/london-health-company'
     | '/london-medical-laboratory'
     | '/medical-diagnosis'
+    | '/medichecks'
     | '/mens-health'
     | '/modern-slavery'
     | '/most-popular-tests'
@@ -1494,6 +1504,7 @@ export interface FileRouteTypes {
     | '/london-health-company'
     | '/london-medical-laboratory'
     | '/medical-diagnosis'
+    | '/medichecks'
     | '/mens-health'
     | '/modern-slavery'
     | '/most-popular-tests'
@@ -1638,6 +1649,7 @@ export interface FileRouteTypes {
     | '/london-health-company'
     | '/london-medical-laboratory'
     | '/medical-diagnosis'
+    | '/medichecks'
     | '/mens-health'
     | '/modern-slavery'
     | '/most-popular-tests'
@@ -1783,6 +1795,7 @@ export interface RootRouteChildren {
   LondonHealthCompanyRoute: typeof LondonHealthCompanyRouteWithChildren
   LondonMedicalLaboratoryRoute: typeof LondonMedicalLaboratoryRouteWithChildren
   MedicalDiagnosisRoute: typeof MedicalDiagnosisRouteWithChildren
+  MedichecksRoute: typeof MedichecksRouteWithChildren
   MensHealthRoute: typeof MensHealthRoute
   ModernSlaveryRoute: typeof ModernSlaveryRoute
   MostPopularTestsRoute: typeof MostPopularTestsRoute
@@ -1829,8 +1842,6 @@ export interface RootRouteChildren {
   AdminTestUploadRoute: typeof AdminTestUploadRoute
   GoodbodyTestIdRoute: typeof GoodbodyTestIdRoute
   LolaHealthTestIdRoute: typeof LolaHealthTestIdRoute
-  MedichecksTestIdRoute: typeof MedichecksTestIdRoute
-  MedichecksMensHealthRoute: typeof MedichecksMensHealthRoute
   ProviderProviderIdRoute: typeof ProviderProviderIdRouteWithChildren
   RandoxHealthTestIdRoute: typeof RandoxHealthTestIdRoute
   RandoxTestIdRoute: typeof RandoxTestIdRoute
@@ -2134,6 +2145,13 @@ declare module '@tanstack/react-router' {
       path: '/medical-diagnosis'
       fullPath: '/medical-diagnosis'
       preLoaderRoute: typeof MedicalDiagnosisRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/medichecks': {
+      id: '/medichecks'
+      path: '/medichecks'
+      fullPath: '/medichecks'
+      preLoaderRoute: typeof MedichecksRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mens-health': {
@@ -2593,17 +2611,17 @@ declare module '@tanstack/react-router' {
     }
     '/medichecks/$testId': {
       id: '/medichecks/$testId'
-      path: '/medichecks/$testId'
+      path: '/$testId'
       fullPath: '/medichecks/$testId'
       preLoaderRoute: typeof MedichecksTestIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof MedichecksRoute
     }
     '/medichecks/mens-health': {
       id: '/medichecks/mens-health'
-      path: '/medichecks/mens-health'
+      path: '/mens-health'
       fullPath: '/medichecks/mens-health'
       preLoaderRoute: typeof MedichecksMensHealthRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof MedichecksRoute
     }
     '/provider/$providerId': {
       id: '/provider/$providerId'
@@ -3029,6 +3047,20 @@ const MedicalDiagnosisRouteChildren: MedicalDiagnosisRouteChildren = {
 const MedicalDiagnosisRouteWithChildren =
   MedicalDiagnosisRoute._addFileChildren(MedicalDiagnosisRouteChildren)
 
+interface MedichecksRouteChildren {
+  MedichecksTestIdRoute: typeof MedichecksTestIdRoute
+  MedichecksMensHealthRoute: typeof MedichecksMensHealthRoute
+}
+
+const MedichecksRouteChildren: MedichecksRouteChildren = {
+  MedichecksTestIdRoute: MedichecksTestIdRoute,
+  MedichecksMensHealthRoute: MedichecksMensHealthRoute,
+}
+
+const MedichecksRouteWithChildren = MedichecksRoute._addFileChildren(
+  MedichecksRouteChildren,
+)
+
 interface ProvidersRouteChildren {
   ProvidersClinilabsRoute: typeof ProvidersClinilabsRoute
   ProvidersCompareRoute: typeof ProvidersCompareRoute
@@ -3125,6 +3157,7 @@ const rootRouteChildren: RootRouteChildren = {
   LondonHealthCompanyRoute: LondonHealthCompanyRouteWithChildren,
   LondonMedicalLaboratoryRoute: LondonMedicalLaboratoryRouteWithChildren,
   MedicalDiagnosisRoute: MedicalDiagnosisRouteWithChildren,
+  MedichecksRoute: MedichecksRouteWithChildren,
   MensHealthRoute: MensHealthRoute,
   ModernSlaveryRoute: ModernSlaveryRoute,
   MostPopularTestsRoute: MostPopularTestsRoute,
@@ -3171,8 +3204,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminTestUploadRoute: AdminTestUploadRoute,
   GoodbodyTestIdRoute: GoodbodyTestIdRoute,
   LolaHealthTestIdRoute: LolaHealthTestIdRoute,
-  MedichecksTestIdRoute: MedichecksTestIdRoute,
-  MedichecksMensHealthRoute: MedichecksMensHealthRoute,
   ProviderProviderIdRoute: ProviderProviderIdRouteWithChildren,
   RandoxHealthTestIdRoute: RandoxHealthTestIdRoute,
   RandoxTestIdRoute: RandoxTestIdRoute,
