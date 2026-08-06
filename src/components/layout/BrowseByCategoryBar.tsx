@@ -190,7 +190,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
           >
 
             <div className={`${useStraddle ? "px-1 py-2.5 sm:py-3" : compact ? "px-2.5 py-2.5 sm:px-3.5 sm:py-3" : "px-2.5 sm:px-3.5 py-2.5 sm:py-3"} transition-all duration-300 ${innerClass}`}>
-              <div className={`flex items-center justify-center gap-y-0 flex-nowrap max-w-full ${useStraddle ? "gap-x-1" : "gap-x-1 2xl:gap-x-2"}`}>
+              <div className={`flex items-center justify-center gap-y-0 flex-nowrap max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${useStraddle ? "gap-x-1" : "gap-x-1 2xl:gap-x-2"}`}>
                 {items.map((item) => {
                   const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
                   return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} dense={useStraddle} />;
