@@ -86,7 +86,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
         aria-current={isActiveParent ? "page" : undefined}
         aria-haspopup={hasDropdown ? "menu" : undefined}
         aria-expanded={hasDropdown ? open : undefined}
-        className={`group inline-flex items-center rounded-full no-underline bg-white border-[1.5px] hover:-translate-y-0.5 transition-all duration-200 shrink-0 ${dense ? "gap-1 pl-1.5 pr-1.5 py-2" : "gap-1 pl-1.5 pr-2 py-2 2xl:gap-2 2xl:pl-2.5 2xl:pr-3"} ${compact ? "sm:py-2.5" : "sm:py-2.5"}`}
+        className={`group inline-flex items-center rounded-full no-underline bg-white border-[1.5px] hover:-translate-y-0.5 transition-all duration-200 shrink-0 ${dense ? "gap-1 pl-1.5 pr-1.5 py-2" : "gap-1 pl-1 pr-1.5 py-2 xl:pl-1.5 xl:pr-2 2xl:gap-2 2xl:pl-2.5 2xl:pr-3"} ${compact ? "sm:py-2.5" : "sm:py-2.5"}`}
         style={{
           borderColor: isActiveParent ? PINK : "rgba(8,17,41,0.1)",
           boxShadow: isActiveParent ? `0 8px 20px ${PINK}26` : undefined,
@@ -112,7 +112,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
             strokeWidth={2}
           />
         </span>
-        <span className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${dense ? "text-[13px] lg:text-[13.5px] tracking-[-0.015em]" : "text-[12.5px] lg:text-[13px] 2xl:text-[15px] tracking-[-0.015em] 2xl:tracking-normal"}`}>
+        <span className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${dense ? "text-[13px] lg:text-[13.5px] tracking-[-0.015em]" : "text-[11.5px] lg:text-[12.5px] xl:text-[13px] 2xl:text-[15px] tracking-[-0.015em] 2xl:tracking-normal"}`}>
           {item.name}
         </span>
 
