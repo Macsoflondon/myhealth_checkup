@@ -46,6 +46,7 @@ import { Route as HormonesRouteImport } from './routes/hormones'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as HowWeRankRouteImport } from './routes/how-we-rank'
 import { Route as LegalRouteImport } from './routes/legal'
+import { Route as LolaHealthRouteImport } from './routes/lola-health'
 import { Route as LondonHealthCompanyRouteImport } from './routes/london-health-company'
 import { Route as LondonMedicalLaboratoryRouteImport } from './routes/london-medical-laboratory'
 import { Route as MedicalDiagnosisRouteImport } from './routes/medical-diagnosis'
@@ -339,6 +340,11 @@ const HowWeRankRoute = HowWeRankRouteImport.update({
 const LegalRoute = LegalRouteImport.update({
   id: '/legal',
   path: '/legal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LolaHealthRoute = LolaHealthRouteImport.update({
+  id: '/lola-health',
+  path: '/lola-health',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LondonHealthCompanyRoute = LondonHealthCompanyRouteImport.update({
@@ -682,9 +688,9 @@ const GuidesSlugRoute = GuidesSlugRouteImport.update({
   getParentRoute: () => GuidesRoute,
 } as any)
 const LolaHealthTestIdRoute = LolaHealthTestIdRouteImport.update({
-  id: '/lola-health/$testId',
-  path: '/lola-health/$testId',
-  getParentRoute: () => rootRouteImport,
+  id: '/$testId',
+  path: '/$testId',
+  getParentRoute: () => LolaHealthRoute,
 } as any)
 const LondonHealthCompanyTestIdRoute =
   LondonHealthCompanyTestIdRouteImport.update({
@@ -932,6 +938,7 @@ export interface FileRoutesByFullPath {
   '/how-it-works': typeof HowItWorksRoute
   '/how-we-rank': typeof HowWeRankRoute
   '/legal': typeof LegalRoute
+  '/lola-health': typeof LolaHealthRouteWithChildren
   '/london-health-company': typeof LondonHealthCompanyRouteWithChildren
   '/london-medical-laboratory': typeof LondonMedicalLaboratoryRouteWithChildren
   '/medical-diagnosis': typeof MedicalDiagnosisRouteWithChildren
@@ -1078,6 +1085,7 @@ export interface FileRoutesByTo {
   '/how-it-works': typeof HowItWorksRoute
   '/how-we-rank': typeof HowWeRankRoute
   '/legal': typeof LegalRoute
+  '/lola-health': typeof LolaHealthRouteWithChildren
   '/london-health-company': typeof LondonHealthCompanyRouteWithChildren
   '/london-medical-laboratory': typeof LondonMedicalLaboratoryRouteWithChildren
   '/medical-diagnosis': typeof MedicalDiagnosisRouteWithChildren
@@ -1226,6 +1234,7 @@ export interface FileRoutesById {
   '/how-it-works': typeof HowItWorksRoute
   '/how-we-rank': typeof HowWeRankRoute
   '/legal': typeof LegalRoute
+  '/lola-health': typeof LolaHealthRouteWithChildren
   '/london-health-company': typeof LondonHealthCompanyRouteWithChildren
   '/london-medical-laboratory': typeof LondonMedicalLaboratoryRouteWithChildren
   '/medical-diagnosis': typeof MedicalDiagnosisRouteWithChildren
@@ -1375,6 +1384,7 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/how-we-rank'
     | '/legal'
+    | '/lola-health'
     | '/london-health-company'
     | '/london-medical-laboratory'
     | '/medical-diagnosis'
@@ -1521,6 +1531,7 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/how-we-rank'
     | '/legal'
+    | '/lola-health'
     | '/london-health-company'
     | '/london-medical-laboratory'
     | '/medical-diagnosis'
@@ -1668,6 +1679,7 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/how-we-rank'
     | '/legal'
+    | '/lola-health'
     | '/london-health-company'
     | '/london-medical-laboratory'
     | '/medical-diagnosis'
@@ -1816,6 +1828,7 @@ export interface RootRouteChildren {
   HowItWorksRoute: typeof HowItWorksRoute
   HowWeRankRoute: typeof HowWeRankRoute
   LegalRoute: typeof LegalRoute
+  LolaHealthRoute: typeof LolaHealthRouteWithChildren
   LondonHealthCompanyRoute: typeof LondonHealthCompanyRouteWithChildren
   LondonMedicalLaboratoryRoute: typeof LondonMedicalLaboratoryRouteWithChildren
   MedicalDiagnosisRoute: typeof MedicalDiagnosisRouteWithChildren
@@ -1867,7 +1880,6 @@ export interface RootRouteChildren {
   AdminTestMapperRoute: typeof AdminTestMapperRoute
   AdminTestUploadRoute: typeof AdminTestUploadRoute
   GoodbodyTestIdRoute: typeof GoodbodyTestIdRoute
-  LolaHealthTestIdRoute: typeof LolaHealthTestIdRoute
   ProviderProviderIdRoute: typeof ProviderProviderIdRouteWithChildren
   RandoxHealthTestIdRoute: typeof RandoxHealthTestIdRoute
   TestFemaleHormonesRoute: typeof TestFemaleHormonesRoute
@@ -2148,6 +2160,13 @@ declare module '@tanstack/react-router' {
       path: '/legal'
       fullPath: '/legal'
       preLoaderRoute: typeof LegalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lola-health': {
+      id: '/lola-health'
+      path: '/lola-health'
+      fullPath: '/lola-health'
+      preLoaderRoute: typeof LolaHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/london-health-company': {
@@ -2621,10 +2640,10 @@ declare module '@tanstack/react-router' {
     }
     '/lola-health/$testId': {
       id: '/lola-health/$testId'
-      path: '/lola-health/$testId'
+      path: '/$testId'
       fullPath: '/lola-health/$testId'
       preLoaderRoute: typeof LolaHealthTestIdRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof LolaHealthRoute
     }
     '/london-health-company/$testId': {
       id: '/london-health-company/$testId'
@@ -3049,6 +3068,18 @@ const GuidesRouteChildren: GuidesRouteChildren = {
 const GuidesRouteWithChildren =
   GuidesRoute._addFileChildren(GuidesRouteChildren)
 
+interface LolaHealthRouteChildren {
+  LolaHealthTestIdRoute: typeof LolaHealthTestIdRoute
+}
+
+const LolaHealthRouteChildren: LolaHealthRouteChildren = {
+  LolaHealthTestIdRoute: LolaHealthTestIdRoute,
+}
+
+const LolaHealthRouteWithChildren = LolaHealthRoute._addFileChildren(
+  LolaHealthRouteChildren,
+)
+
 interface LondonHealthCompanyRouteChildren {
   LondonHealthCompanyTestIdRoute: typeof LondonHealthCompanyTestIdRoute
 }
@@ -3214,6 +3245,7 @@ const rootRouteChildren: RootRouteChildren = {
   HowItWorksRoute: HowItWorksRoute,
   HowWeRankRoute: HowWeRankRoute,
   LegalRoute: LegalRoute,
+  LolaHealthRoute: LolaHealthRouteWithChildren,
   LondonHealthCompanyRoute: LondonHealthCompanyRouteWithChildren,
   LondonMedicalLaboratoryRoute: LondonMedicalLaboratoryRouteWithChildren,
   MedicalDiagnosisRoute: MedicalDiagnosisRouteWithChildren,
@@ -3265,7 +3297,6 @@ const rootRouteChildren: RootRouteChildren = {
   AdminTestMapperRoute: AdminTestMapperRoute,
   AdminTestUploadRoute: AdminTestUploadRoute,
   GoodbodyTestIdRoute: GoodbodyTestIdRoute,
-  LolaHealthTestIdRoute: LolaHealthTestIdRoute,
   ProviderProviderIdRoute: ProviderProviderIdRouteWithChildren,
   RandoxHealthTestIdRoute: RandoxHealthTestIdRoute,
   TestFemaleHormonesRoute: TestFemaleHormonesRoute,
