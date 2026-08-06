@@ -52,6 +52,7 @@ const ClinicHelpSkeleton = () => (
 const Index = () => {
   usePerformanceOptimization();
   useMobileOptimization();
+  const activeTestCount = useActiveTestCount();
 
   const structuredData = {
     "@context": "https://schema.org",
