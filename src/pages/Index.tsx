@@ -157,36 +157,20 @@ const Index = () => {
             media="(max-width: 639px)"
             fetchPriority="high"
           />
-          <title>myhealth checkup | Compare UK Health Tests</title>
-          <meta
-            name="description"
-            content="Compare UK private blood tests, hormone checks and screenings from accredited UKAS labs and CQC clinics. Free, transparent, independent."
-          />
+          {/* Title, description, canonical, og:* and twitter:* are owned by the
+              route head() in src/routes/index.tsx — single source of truth. */}
           <meta
             name="keywords"
             content="private blood tests UK, health screening comparison, blood test prices UK, hormone testing, vitamin tests, cancer screening, health MOT UK, at-home blood tests, private health tests comparison"
           />
-          <link rel="canonical" href="https://myhealthcheckup.co.uk/" />
-
-          <meta property="og:type" content="website" />
           <meta property="og:site_name" content="myhealth checkup" />
-          <meta property="og:title" content="myhealth checkup | Compare UK Health Tests" />
-          <meta
-            property="og:description"
-            content="Compare private health tests from accredited UK providers. Real-time prices, expert reviews, and transparent comparisons."
-          />
           <meta property="og:image" content="https://myhealthcheckup.co.uk/og-image.png" />
-          <meta property="og:url" content="https://myhealthcheckup.co.uk/" />
           <meta property="og:locale" content="en_GB" />
 
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:site" content="@myhealthcheckup" />
-          <meta name="twitter:title" content="myhealth checkup | Compare UK Health Tests" />
-          <meta
-            name="twitter:description"
-            content="Compare private blood tests, health screenings & wellness services. Real-time prices from accredited providers."
-          />
           <meta name="twitter:image" content="https://myhealthcheckup.co.uk/og-image.png" />
+
 
           <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
 
