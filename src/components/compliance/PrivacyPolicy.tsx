@@ -12,7 +12,7 @@ const PrivacyPolicy = () => {
           accent="Policy" 
         />
         <p className="text-gray-600 mt-4">
-          Effective Date: 01/08/2025
+          Effective Date: 06/08/2026
         </p>
       </div>
 
@@ -20,7 +20,8 @@ const PrivacyPolicy = () => {
         <p className="text-sm text-gray-700">
           <strong>Company:</strong> myhealthcheckup Ltd (trading as myhealth checkup)<br />
           <strong>Company Registration Number:</strong> 16589056<br />
-          <strong>Registered Office:</strong> Flat 2/369 Clapham Road, London, United Kingdom, SW9 9BT
+          <strong>Registered Office:</strong> Flat 2/369 Clapham Road, London, United Kingdom, SW9 9BT<br />
+          myhealthcheckup Ltd is registered with the Information Commissioner's Office (ICO) as a data controller, registration reference ZC202547.
         </p>
       </div>
 
