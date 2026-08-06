@@ -41,7 +41,7 @@ export const useAtHomeTests = (category?: string, search?: string) => {
       let query = supabase
         .from("provider_tests")
         .select(`
-          id, provider_id, test_name, category, price, sample_type,
+          id, provider_id, test_name, category, canonical_category, price, sample_type,
           turnaround_days_text, biomarker_count, biomarkers_list,
           description, who_should_test, symptoms, conditions, url,
           home_kit_available, clinic_visit_available, is_popular, is_addon,
