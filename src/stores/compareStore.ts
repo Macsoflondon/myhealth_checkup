@@ -79,10 +79,15 @@ export const compareStore = {
   },
 };
 
+// Stable empty snapshot: returning a fresh array each call makes React warn
+// about an uncached getServerSnapshot and can loop during hydration.
+const EMPTY_COMPARE: readonly CompareTestData[] = Object.freeze([]);
+
 export function useCompareItems(): CompareTestData[] {
   return useSyncExternalStore(
     (cb) => compareStore.subscribe(cb),
     () => compareStore.getAll(),
-    () => [],
+    () => EMPTY_COMPARE as CompareTestData[],
   );
 }
+
