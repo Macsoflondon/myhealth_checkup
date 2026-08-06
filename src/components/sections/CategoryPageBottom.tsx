@@ -1,7 +1,5 @@
-
 import { LucideIcon } from "lucide-react";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
-
 
 interface BenefitItem {
   icon: LucideIcon;
@@ -35,14 +33,19 @@ const CategoryPageBottom = ({
               <div
                 key={benefit.title}
                 style={{
-                  background: "linear-gradient(135deg, #e70d69, #22c0d4, #e70d69)",
+                  background:
+                    "linear-gradient(135deg, #e70d69, #22c0d4, #e70d69)",
                   padding: "3px",
                   borderRadius: "16px",
                 }}
               >
                 <div
                   className="h-full text-center sm:text-left"
-                  style={{ background: "#0a1120", padding: "24px", borderRadius: "13px" }}
+                  style={{
+                    background: "#0a1120",
+                    padding: "24px",
+                    borderRadius: "13px",
+                  }}
                 >
                   <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#22c0d4]/20 text-[#22c0d4]">
                     <Icon className="h-5 w-5" aria-hidden="true" />
@@ -57,7 +60,6 @@ const CategoryPageBottom = ({
               </div>
             );
           })}
-
         </div>
 
         <QuizCTABanner quizLink={quizLink} />
@@ -65,6 +67,5 @@ const CategoryPageBottom = ({
     </section>
   );
 };
-
 
 export default CategoryPageBottom;
