@@ -50,7 +50,7 @@ const CategoryPageBottom = ({
                   <h3 className="font-heading text-base font-bold text-white mt-4">
                     {benefit.title}
                   </h3>
-                  <p className="text-sm text-white/80 mt-1.5 leading-relaxed">
+                  <p className="text-sm text-white mt-1.5 leading-relaxed">
                     {benefit.description}
                   </p>
                 </div>
