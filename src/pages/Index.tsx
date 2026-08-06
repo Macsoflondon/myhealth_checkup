@@ -8,6 +8,7 @@ import { LazyMount } from "@/components/common/LazyMount";
 import { SectionSkeleton } from "@/components/common/SectionSkeleton";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
+import { useActiveTestCount } from "@/hooks/queries/useActiveTestCount";
 import { ArrowRight, Shield } from "lucide-react";
 
 // Hero first-slide images — preloaded for LCP optimisation
