@@ -7,12 +7,13 @@ import Footer from "@/components/layout/Footer";
 import { CategoryStandardHero } from "@/components/category/CategoryStandardHero";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { CategoryPageLayout, CategoryTestItem } from "@/components/category/CategoryPageLayout";
+import { AtHomeSectionGrid } from "@/components/athome/AtHomeSectionGrid";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { useAtHomeTests } from "@/hooks/queries/useAtHomeTests";
+import { useAtHomeTests, type AtHomeTest } from "@/hooks/queries/useAtHomeTests";
 import { getBranding } from "@/data/providerBranding";
 import { getProviderRating } from "@/constants/providerRatings";
-import { findSubcategory, testMatchesSubcategory } from "@/config/subcategoryMap";
+import { AT_HOME_SECTIONS, findAtHomeSection } from "@/config/atHomeSections";
 import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
 
 const SEO = {
@@ -30,8 +31,6 @@ const HERO_BENEFITS = [
   { icon: Clock, title: "Fast Online Results", description: "Typical turnaround in a few days, delivered securely online" },
 ] as const;
 
-const PROVIDER_ID_MAP: Record<string, string> = {};
-
 const cleanName = (name: string) =>
   name
     .replace(/\s*[-–|].*$/, "")
@@ -42,6 +41,38 @@ const cleanName = (name: string) =>
 const parseTurnaroundDays = (turnaround: string): number => {
   const match = turnaround.match(/(\d+)/);
   return match ? parseInt(match[1], 10) : 5;
+};
+
+const toCategoryTestItem = (test: AtHomeTest): CategoryTestItem => {
+  const branding = getBranding(test.provider_id);
+  const providerRating = getProviderRating(test.provider_id);
+  const tag = test.category || "General Health";
+  const priceNum = test.price ?? 0;
+  const biomarkers = normalizeBiomarkers(test.biomarkers_list);
+  return {
+    id: test.id,
+    providerId: test.provider_id,
+    popular: test.is_popular,
+    badge: tag,
+    badgeColor: branding?.primary || "#e70d69",
+    provider: test.provider_id,
+    priceNum,
+    price: `£${priceNum}`,
+    turnaround: test.turnaround_days_text || "2–5 days",
+    turnaroundDays: parseTurnaroundDays(test.turnaround_days_text || "5"),
+    biomarkerCount: test.biomarker_count || biomarkers.length || 0,
+    rating: providerRating.rating,
+    reviews: providerRating.reviews,
+    title: cleanName(test.test_name),
+    desc:
+      test.description ||
+      `At-home ${test.sample_type || "finger-prick"} test analysed by a UKAS-accredited UK lab.`,
+    biomarkers,
+    tag,
+    collection: test.sample_type || "Finger-prick",
+    url: test.url || undefined,
+    collectionOptions: test.collection_options,
+  } satisfies CategoryTestItem;
 };
 
 const StatusShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -69,21 +100,11 @@ const StatusShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 );
 
 const LoadingSkeleton: React.FC = () => (
-  <>
-    <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
-      <div className="flex flex-wrap gap-2">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Skeleton key={i} className="h-9 w-24 rounded-full bg-white/10" />
-        ))}
-      </div>
-      <Skeleton className="h-10 w-48 rounded-md bg-white/10" />
-    </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 justify-items-center">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <Skeleton key={i} className="w-full max-w-[340px] h-[440px] rounded-2xl bg-white/10" />
-      ))}
-    </div>
-  </>
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    {Array.from({ length: 9 }).map((_, i) => (
+      <Skeleton key={i} className="w-full h-[240px] rounded-2xl bg-white/10" />
+    ))}
+  </div>
 );
 
 const ErrorState: React.FC<{ onRetry: () => void }> = ({ onRetry }) => (
@@ -91,7 +112,7 @@ const ErrorState: React.FC<{ onRetry: () => void }> = ({ onRetry }) => (
     <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-destructive/15 mb-5">
       <AlertCircle className="h-7 w-7 text-destructive" />
     </div>
-    <h2 className="text-2xl font-bold text-white mb-2">Couldn't load at-home tests</h2>
+    <h2 className="text-2xl font-bold text-white mb-2">Couldn't load at-home test kits</h2>
     <p className="text-white/90 mb-6">
       Something went wrong while fetching the latest kits. Please check your connection and try again.
     </p>
@@ -106,7 +127,7 @@ const EmptyState: React.FC = () => (
     <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-white/10 mb-5">
       <Inbox className="h-7 w-7 text-white/90" />
     </div>
-    <h2 className="text-2xl font-bold text-white mb-2">No at-home tests available yet</h2>
+    <h2 className="text-2xl font-bold text-white mb-2">No at home test kits available yet</h2>
     <p className="text-white/90 mb-6">
       We're updating our catalogue. Browse the full comparison hub to find the right test for you.
     </p>
@@ -119,52 +140,27 @@ const EmptyState: React.FC = () => (
 const AtHomeTestsPage: React.FC = () => {
   const { data: atHomeTests, isLoading, error, refetch, isFetching } = useAtHomeTests();
   const [params] = useSearchParams();
-  const sub = findSubcategory("at-home", params.get("subcategory"));
+  const section = findAtHomeSection(params.get("subcategory"));
+
+  /** Live kit count per landing section. */
+  const counts = useMemo(() => {
+    const result: Record<string, number> = {};
+    for (const def of AT_HOME_SECTIONS) {
+      result[def.slug] = (atHomeTests ?? []).filter((t) =>
+        def.categories.includes(t.canonical_category ?? "")
+      ).length;
+    }
+    return result;
+  }, [atHomeTests]);
+
+  const totalKits = atHomeTests?.length ?? 0;
 
   const tests: CategoryTestItem[] = useMemo(() => {
-    if (!atHomeTests) return [];
-    const mapped = atHomeTests.map((t) => {
-      const branding = getBranding(t.provider_id);
-      const providerRating = getProviderRating(t.provider_id);
-      const tag = t.category || "General Health";
-      const priceNum = t.price ?? 0;
-      const biomarkers = normalizeBiomarkers(t.biomarkers_list);
-      return {
-        id: t.id,
-        providerId: t.provider_id,
-        popular: t.is_popular,
-        badge: tag,
-        badgeColor: branding?.primary || "#e70d69",
-        provider: t.provider_id,
-        priceNum,
-        price: `£${priceNum}`,
-        turnaround: t.turnaround_days_text || "2–5 days",
-        turnaroundDays: parseTurnaroundDays(t.turnaround_days_text || "5"),
-        biomarkerCount: t.biomarker_count || biomarkers.length || 0,
-        rating: providerRating.rating,
-        reviews: providerRating.reviews,
-        title: cleanName(t.test_name),
-        desc:
-          t.description ||
-          `At-home ${t.sample_type || "finger-prick"} test analysed by a UKAS-accredited UK lab.`,
-        biomarkers,
-        tag,
-        collection: t.sample_type || "Finger-prick",
-        url: t.url || undefined,
-        collectionOptions: t.collection_options,
-      } satisfies CategoryTestItem;
-    });
-
-    if (!sub) return mapped;
-    return mapped.filter((t) =>
-      testMatchesSubcategory(sub, {
-        title: t.title,
-        biomarkers: t.biomarkers,
-        tag: t.tag,
-        desc: t.desc,
-      })
-    );
-  }, [atHomeTests, sub]);
+    if (!atHomeTests || !section) return [];
+    return atHomeTests
+      .filter((t) => section.categories.includes(t.canonical_category ?? ""))
+      .map(toCategoryTestItem);
+  }, [atHomeTests, section]);
 
   const filters = useMemo(() => {
     const unique = Array.from(new Set(tests.map((t) => t.tag))).filter(Boolean);
@@ -187,7 +183,7 @@ const AtHomeTestsPage: React.FC = () => {
     );
   }
 
-  if (tests.length === 0) {
+  if (totalKits === 0) {
     return (
       <StatusShell>
         <EmptyState />
@@ -195,34 +191,49 @@ const AtHomeTestsPage: React.FC = () => {
     );
   }
 
+  // Landing view — category sections rather than one undifferentiated list.
+  if (!section) {
+    return (
+      <StatusShell>
+        <div className="mb-10 text-center">
+          <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white mb-3">
+            Browse at home test kits by category
+          </h2>
+          <p className="text-white/85 max-w-2xl mx-auto">
+            {totalKits} finger-prick kits from UKAS-accredited UK providers, grouped so you can go
+            straight to the area you care about. Prices, biomarkers and typical turnaround times are
+            shown on every listing.
+          </p>
+        </div>
+        <AtHomeSectionGrid counts={counts} />
+      </StatusShell>
+    );
+  }
+
   return (
     <CategoryPageLayout
-      seoTitle={sub ? `${sub.label} — At Home Test Kits | myhealth checkup` : SEO.title}
-      seoDescription={sub
-        ? `Compare ${sub.label.toLowerCase()} — at home test kits from UKAS-accredited UK labs.`
-        : SEO.description}
+      seoTitle={`${section.label} At Home Test Kits | myhealth checkup`}
+      seoDescription={`Compare ${section.label.toLowerCase()} at home test kits from UKAS-accredited UK labs, with prices, biomarkers and typical turnaround times.`}
       seoKeywords={SEO.keywords}
-      canonicalUrl={sub ? `${SEO.canonical}?subcategory=${sub.slug}` : SEO.canonical}
-      pillLabel={sub ? sub.label : "At Home Test Kits"}
-      headline={sub ? sub.label : "At Home Test Kits"}
-      subtitle="Compare at home test kits from the UK's most trusted providers. Analysed in accredited labs, results delivered securely online."
+      canonicalUrl={`${SEO.canonical}?subcategory=${section.slug}`}
+      pillLabel={`${section.label} At Home Test Kits`}
+      headline={`${section.label} At Home Test Kits`}
+      subtitle={section.desc}
       searchPlaceholder="Search by test name or biomarker…"
       trustStats={[
-        { value: `${tests.length}+`, label: sub ? sub.label : "At Home Test Kits" },
+        { value: `${tests.length}`, label: `${section.label} Kits` },
         { value: "UKAS", label: "Accredited Labs" },
         { value: "Fast", label: "Online Results" },
       ]}
       filters={filters}
       tests={tests}
       benefitsTitle="Why Choose At Home Testing?"
-      benefits={[
-        { icon: Home, title: "Delivered to Your Door", description: "Finger-prick kits shipped directly to your home across the UK" },
-        { icon: Shield, title: "UKAS Accredited Labs", description: "Every sample analysed by UKAS-accredited UK laboratories" },
-        { icon: Clock, title: "Fast Online Results", description: "Typical turnaround in a few days, delivered securely online" },
+      benefits={[HERO_BENEFITS[0], HERO_BENEFITS[1], HERO_BENEFITS[2]]}
+      breadcrumbs={[
+        { label: "Home", href: "/" },
+        { label: "At Home Test Kits", href: "/at-home-tests" },
+        { label: section.label },
       ]}
-      breadcrumbs={sub
-        ? [{ label: "Home", href: "/" }, { label: "At Home Test Kits", href: "/at-home-tests" }, { label: sub.label }]
-        : [{ label: "Home", href: "/" }, { label: "At Home Test Kits" }]}
     />
   );
 };
