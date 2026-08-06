@@ -59,7 +59,7 @@ const HowWeRank = () => {
               professional. Our current Clinical Reviewer is{' '}
               <strong className="text-foreground">Nathanial Smith</strong>, a Registered Healthcare Professional
               registered with the Health and Care Professions Council under registration number{' '}
-              <Badge variant="secondary" className="font-mono">PA43353</Badge>.
+              <span className="inline-flex items-center rounded-md border border-transparent bg-secondary px-2 py-0.5 font-mono text-xs font-semibold text-secondary-foreground">PA43353</span>.
             </p>
             <p>
               Reviewer credentials, scope of review, and a link to verify registration on the HCPC public register
