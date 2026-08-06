@@ -172,27 +172,22 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
       matchAny: [/pregnan/i, /\bhcg\b/i],
     },
   ],
+  // Keep in sync with AT_HOME_SECTIONS in src/config/atHomeSections.ts — the
+  // /at-home-tests listing filters on canonical_category, these entries only
+  // provide labels for navigation and breadcrumbs.
   "at-home": [
-    {
-      slug: "womens",
-      label: "Women's Home Tests",
-      matchAny: [/women|female|menopaus|pcos|ovarian|amh|oestrogen|estrogen|progesterone/i],
-    },
-    {
-      slug: "mens",
-      label: "Men's Home Tests",
-      matchAny: [/\bmen\b|male|prostate|\bpsa\b|testosterone/i],
-    },
-    {
-      slug: "general",
-      label: "General Health Home Tests",
-      matchAny: [/general|wellness|essential|advanced well|full body|complete/i],
-    },
-    {
-      slug: "allergy",
-      label: "Allergy Home Tests",
-      matchAny: [/allerg|intoleran|\bige\b/i],
-    },
+    { slug: "womens", label: "Women's Health Home Kits", matchAny: [/women|female|menopaus|pcos|ovarian|amh/i], siblingCategories: ["womens-health"] },
+    { slug: "mens", label: "Men's Health Home Kits", matchAny: [/\bmen\b|male|prostate|\bpsa\b|testosterone/i], siblingCategories: ["mens-health"] },
+    { slug: "general", label: "General Health Home Kits", matchAny: [/general|wellness|essential|full body|complete/i], siblingCategories: ["general-health"] },
+    { slug: "vitamins", label: "Vitamins & Nutrition Home Kits", matchAny: [/vitamin|ferritin|iron|folate|b12/i], siblingCategories: ["vitamins"] },
+    { slug: "thyroid", label: "Thyroid Home Kits", matchAny: [/thyroid|\btsh\b|\bt3\b|\bt4\b/i], siblingCategories: ["thyroid"] },
+    { slug: "heart", label: "Heart Health Home Kits", matchAny: [/heart|cholesterol|lipid|cardio/i], siblingCategories: ["heart"] },
+    { slug: "hormones", label: "Hormone Home Kits", matchAny: [/hormone|cortisol/i], siblingCategories: ["hormones"] },
+    { slug: "fertility", label: "Fertility Home Kits", matchAny: [/fertility|\bamh\b|ovarian reserve/i], siblingCategories: ["fertility"] },
+    { slug: "cancer-screening", label: "Cancer Screening Home Kits", matchAny: [/cancer|\bpsa\b|prostate/i], siblingCategories: ["cancer-screening"] },
+    { slug: "sexual-health", label: "Sexual Health Home Kits", matchAny: [/sexual|\bsti\b|\bstd\b/i], siblingCategories: ["sexual-health"] },
+    { slug: "gut", label: "Gut Health Home Kits", matchAny: [/gut|microbiome|coeliac|celiac/i], siblingCategories: ["gut"] },
+    { slug: "sports", label: "Sports & Fitness Home Kits", matchAny: [/sport|fitness|performance/i], siblingCategories: ["sports-performance"] },
   ],
   "cancer-screening": [
     { slug: "bowel", label: "Bowel Cancer Screening", matchAny: [/bowel|colorectal|\bfit\b|colon/i] },
