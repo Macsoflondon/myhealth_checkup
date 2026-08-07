@@ -37,6 +37,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
+  const moreMenuRef = useRef<HTMLDivElement>(null);
   const [moreRect, setMoreRect] = useState<DOMRect | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
