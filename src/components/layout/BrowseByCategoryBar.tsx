@@ -108,11 +108,23 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   }, []);
   useEffect(() => {
     if (!moreOpen) return;
-    const onDoc = (e: MouseEvent) => { if (!moreRef.current?.contains(e.target as Node)) setMoreOpen(false); };
+    const onDoc = (e: MouseEvent) => {
+      const t = e.target as Node;
+      if (!moreRef.current?.contains(t) && !moreMenuRef.current?.contains(t)) setMoreOpen(false);
+    };
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMoreOpen(false);
+    const sync = () => { const el = moreRef.current; if (el) setMoreRect(el.getBoundingClientRect()); };
+    sync();
     document.addEventListener("mousedown", onDoc);
     document.addEventListener("keydown", onKey);
-    return () => { document.removeEventListener("mousedown", onDoc); document.removeEventListener("keydown", onKey); };
+    window.addEventListener("scroll", sync, true);
+    window.addEventListener("resize", sync);
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("keydown", onKey);
+      window.removeEventListener("scroll", sync, true);
+      window.removeEventListener("resize", sync);
+    };
   }, [moreOpen]);
   const items = primaryNavigationItems.filter((i) => i.name !== "How It Works");
   const isFlush = variant === "flush";
