@@ -3,6 +3,6 @@ import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 
 const GoodbodyClinicPage = lazy(() => import("@/pages/GoodbodyClinicPage"));
 
-export const Route = createFileRoute("/goodbody-clinic")({
+export const Route = createFileRoute("/goodbody-clinic/")({
   component: GoodbodyClinicPage,
 });
