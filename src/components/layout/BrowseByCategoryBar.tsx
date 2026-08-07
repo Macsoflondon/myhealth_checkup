@@ -37,6 +37,8 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const moreRef = useRef<HTMLDivElement>(null);
+  const moreMenuRef = useRef<HTMLDivElement>(null);
+  const [moreRect, setMoreRect] = useState<DOMRect | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const [stuck, setStuck] = useState(false);
@@ -107,11 +109,23 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   }, []);
   useEffect(() => {
     if (!moreOpen) return;
-    const onDoc = (e: MouseEvent) => { if (!moreRef.current?.contains(e.target as Node)) setMoreOpen(false); };
+    const onDoc = (e: MouseEvent) => {
+      const t = e.target as Node;
+      if (!moreRef.current?.contains(t) && !moreMenuRef.current?.contains(t)) setMoreOpen(false);
+    };
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMoreOpen(false);
+    const sync = () => { const el = moreRef.current; if (el) setMoreRect(el.getBoundingClientRect()); };
+    sync();
     document.addEventListener("mousedown", onDoc);
     document.addEventListener("keydown", onKey);
-    return () => { document.removeEventListener("mousedown", onDoc); document.removeEventListener("keydown", onKey); };
+    window.addEventListener("scroll", sync, true);
+    window.addEventListener("resize", sync);
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("keydown", onKey);
+      window.removeEventListener("scroll", sync, true);
+      window.removeEventListener("resize", sync);
+    };
   }, [moreOpen]);
   const items = primaryNavigationItems.filter((i) => i.name !== "How It Works");
   const isFlush = variant === "flush";
@@ -198,7 +212,12 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
 
                 <div ref={moreRef} className="relative shrink-0">
                   <button type="button" onClick={() => setMoreOpen((o) => !o)} className={`group inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 transition-all duration-200 hover:-translate-y-0.5 ${useStraddle ? "gap-1 pl-1.5 pr-1.5 py-2" : "gap-0.5 pl-1 pr-1.5 py-2 2xl:gap-2 2xl:pl-2.5 2xl:pr-3"}`}><span className={`rounded-full inline-flex items-center justify-center shrink-0 ${useStraddle ? "w-[19px] h-[19px]" : "w-[19px] h-[19px] 2xl:w-[25px] 2xl:h-[25px]"}`} style={{ background: "rgba(231,13,105,0.1)" }}><MoreHorizontal className={`${useStraddle ? "w-[13px] h-[13px]" : "w-[13px] h-[13px] 2xl:w-[15px] 2xl:h-[15px]"}`} style={{ color: "#e70d69" }} strokeWidth={2} /></span><span className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${useStraddle ? "text-[13px] lg:text-[13.5px] tracking-[-0.015em]" : "text-[11.5px] lg:text-[12px] xl:text-[12px] 2xl:text-[15px] tracking-[-0.015em] 2xl:tracking-normal"}`}>More</span><ChevronDown className={`text-[#081129]/60 transition-transform shrink-0 w-[13px] h-[13px] 2xl:w-[15px] 2xl:h-[15px] ${moreOpen ? "rotate-180" : ""}`} /></button>
-                  {moreOpen && <div className="absolute top-full right-0 mt-2 z-[9999]"><MoreDropdownMenu sections={moreNavigationSections} onItemClick={() => setMoreOpen(false)} onClose={() => setMoreOpen(false)} /></div>}
+                  {moreOpen && typeof document !== "undefined" && createPortal(
+                    <div ref={moreMenuRef} className="fixed z-[9999]" style={{ top: moreRect ? moreRect.bottom + 8 : 0, right: moreRect ? Math.max(8, window.innerWidth - moreRect.right) : 8 }}>
+                      <MoreDropdownMenu sections={moreNavigationSections} onItemClick={() => setMoreOpen(false)} onClose={() => setMoreOpen(false)} />
+                    </div>,
+                    document.body,
+                  )}
                 </div>
                 {placement !== "hero" && (
                   <div className={`flex items-center shrink-0 ${compact ? "gap-0" : "gap-1"}`}><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><LanguageSwitcher /></div><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><UserMenu /></div></div>
