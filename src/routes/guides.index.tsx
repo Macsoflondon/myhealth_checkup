@@ -4,7 +4,7 @@ import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 
 const BiomarkerGuidesIndexPage = lazy(() => import("@/pages/BiomarkerGuidesIndexPage"));
 
-export const Route = createFileRoute("/guides")({
+export const Route = createFileRoute("/guides/")({
   head: () =>
     buildRouteHead({
       title: "Biomarker Guides | myhealth checkup",

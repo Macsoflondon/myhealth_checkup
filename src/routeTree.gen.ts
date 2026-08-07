@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as AccessibilityRouteImport } from './routes/accessibility'
 import { Route as AffiliateDisclosureRouteImport } from './routes/affiliate-disclosure'
 import { Route as AssistedTestFinderRouteImport } from './routes/assisted-test-finder'
@@ -18,17 +17,13 @@ import { Route as AtHomeTestsRouteImport } from './routes/at-home-tests'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BiomarkerDatabaseRouteImport } from './routes/biomarker-database'
 import { Route as BiomarkersRouteImport } from './routes/biomarkers'
-import { Route as BlogRouteImport } from './routes/blog'
 import { Route as BloodTestAnalysisRouteImport } from './routes/blood-test-analysis'
 import { Route as CancerBiomarkersReferenceRouteImport } from './routes/cancer-biomarkers-reference'
 import { Route as CancerScreeningCompareRouteImport } from './routes/cancer-screening-compare'
-import { Route as CategoryRouteImport } from './routes/category'
-import { Route as ClinilabsRouteImport } from './routes/clinilabs'
 import { Route as CompareRouteImport } from './routes/compare'
 import { Route as ComplaintsRouteImport } from './routes/complaints'
 import { Route as ConditionsRouteImport } from './routes/conditions'
 import { Route as ContactRouteImport } from './routes/contact'
-import { Route as ControlRouteImport } from './routes/control'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as FairTradingRouteImport } from './routes/fair-trading'
@@ -36,9 +31,6 @@ import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as FeedbackRouteImport } from './routes/feedback'
 import { Route as FertilityTestsRouteImport } from './routes/fertility-tests'
 import { Route as FindClinicRouteImport } from './routes/find-clinic'
-import { Route as FindTestRouteImport } from './routes/find-test'
-import { Route as GoodbodyClinicRouteImport } from './routes/goodbody-clinic'
-import { Route as GuidesRouteImport } from './routes/guides'
 import { Route as HealthBlogRouteImport } from './routes/health-blog'
 import { Route as HealthDashboardRouteImport } from './routes/health-dashboard'
 import { Route as HiddenGapDetectorRouteImport } from './routes/hidden-gap-detector'
@@ -46,9 +38,6 @@ import { Route as HormonesRouteImport } from './routes/hormones'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as HowWeRankRouteImport } from './routes/how-we-rank'
 import { Route as LegalRouteImport } from './routes/legal'
-import { Route as LondonHealthCompanyRouteImport } from './routes/london-health-company'
-import { Route as LondonMedicalLaboratoryRouteImport } from './routes/london-medical-laboratory'
-import { Route as MedicalDiagnosisRouteImport } from './routes/medical-diagnosis'
 import { Route as MensHealthRouteImport } from './routes/mens-health'
 import { Route as ModernSlaveryRouteImport } from './routes/modern-slavery'
 import { Route as MostPopularTestsRouteImport } from './routes/most-popular-tests'
@@ -57,7 +46,6 @@ import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PopularTestsRouteImport } from './routes/popular-tests'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
-import { Route as ProvidersRouteImport } from './routes/providers'
 import { Route as QuizRouteImport } from './routes/quiz'
 import { Route as RecommendationsRouteImport } from './routes/recommendations'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
@@ -73,6 +61,7 @@ import { Route as TrustRouteImport } from './routes/trust'
 import { Route as TrustedProvidersRouteImport } from './routes/trusted-providers'
 import { Route as WellnessRouteImport } from './routes/wellness'
 import { Route as WomensHealthRouteImport } from './routes/womens-health'
+import { Route as AboutIndexRouteImport } from './routes/about.index'
 import { Route as AboutMedicalReviewRouteImport } from './routes/about.medical-review'
 import { Route as AdminAlertRoutingRouteImport } from './routes/admin.alert-routing'
 import { Route as AdminAuditConsoleRouteImport } from './routes/admin.audit-console'
@@ -94,31 +83,39 @@ import { Route as AdminSocWatchRouteImport } from './routes/admin.soc-watch'
 import { Route as AdminTestDashboardRouteImport } from './routes/admin.test-dashboard'
 import { Route as AdminTestMapperRouteImport } from './routes/admin.test-mapper'
 import { Route as AdminTestUploadRouteImport } from './routes/admin.test-upload'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogFerritinVsIronComparisonGuideRouteImport } from './routes/blog.ferritin-vs-iron-comparison-guide'
 import { Route as BlogPrivateBloodTestCostGuideRouteImport } from './routes/blog.private-blood-test-cost-guide'
 import { Route as BlogTestosteroneLevelsByAgeRouteImport } from './routes/blog.testosterone-levels-by-age'
 import { Route as BlogTotalVsFreeTestosteroneRouteImport } from './routes/blog.total-vs-free-testosterone'
+import { Route as CategoryIndexRouteImport } from './routes/category.index'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
+import { Route as ClinilabsIndexRouteImport } from './routes/clinilabs.index'
 import { Route as ClinilabsTestIdRouteImport } from './routes/clinilabs.$testId'
 import { Route as CompareIndexRouteImport } from './routes/compare.index'
-import { Route as CompareGoalsRouteImport } from './routes/compare.goals'
 import { Route as CompareResultsRouteImport } from './routes/compare.results'
-import { Route as CompareSymptomsRouteImport } from './routes/compare.symptoms'
+import { Route as ControlIndexRouteImport } from './routes/control.index'
 import { Route as ControlSectionRouteImport } from './routes/control.$section'
+import { Route as FindTestIndexRouteImport } from './routes/find-test.index'
 import { Route as FindTestCompareRouteImport } from './routes/find-test.compare'
 import { Route as FindTestRecommendationsRouteImport } from './routes/find-test.recommendations'
+import { Route as GoodbodyClinicIndexRouteImport } from './routes/goodbody-clinic.index'
 import { Route as GoodbodyClinicTestIdRouteImport } from './routes/goodbody-clinic.$testId'
 import { Route as GoodbodyTestIdRouteImport } from './routes/goodbody.$testId'
+import { Route as GuidesIndexRouteImport } from './routes/guides.index'
 import { Route as GuidesSlugRouteImport } from './routes/guides.$slug'
 import { Route as LolaHealthIndexRouteImport } from './routes/lola-health.index'
 import { Route as LolaHealthTestIdRouteImport } from './routes/lola-health.$testId'
+import { Route as LondonHealthCompanyIndexRouteImport } from './routes/london-health-company.index'
 import { Route as LondonHealthCompanyTestIdRouteImport } from './routes/london-health-company.$testId'
+import { Route as LondonMedicalLaboratoryIndexRouteImport } from './routes/london-medical-laboratory.index'
 import { Route as LondonMedicalLaboratoryTestIdRouteImport } from './routes/london-medical-laboratory.$testId'
+import { Route as MedicalDiagnosisIndexRouteImport } from './routes/medical-diagnosis.index'
 import { Route as MedicalDiagnosisTestIdRouteImport } from './routes/medical-diagnosis.$testId'
 import { Route as MedichecksIndexRouteImport } from './routes/medichecks.index'
 import { Route as MedichecksTestIdRouteImport } from './routes/medichecks.$testId'
 import { Route as MedichecksMensHealthRouteImport } from './routes/medichecks.mens-health'
-import { Route as ProviderProviderIdRouteImport } from './routes/provider.$providerId'
+import { Route as ProvidersIndexRouteImport } from './routes/providers.index'
 import { Route as ProvidersClinilabsRouteImport } from './routes/providers.clinilabs'
 import { Route as ProvidersCompareRouteImport } from './routes/providers.compare'
 import { Route as ProvidersGoodbodyClinicRouteImport } from './routes/providers.goodbody-clinic'
@@ -151,19 +148,17 @@ import { Route as TestsWomensHealthRouteImport } from './routes/tests.womens-hea
 import { Route as ThrivaIndexRouteImport } from './routes/thriva.index'
 import { Route as ThrivaTestIdRouteImport } from './routes/thriva.$testId'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as CompareGoalsIndexRouteImport } from './routes/compare.goals.index'
 import { Route as CompareGoalsGoalSlugRouteImport } from './routes/compare.goals.$goalSlug'
+import { Route as CompareSymptomsIndexRouteImport } from './routes/compare.symptoms.index'
 import { Route as CompareSymptomsSymptomSlugRouteImport } from './routes/compare.symptoms.$symptomSlug'
-import { Route as ProviderProviderIdTestsRouteImport } from './routes/provider.$providerId.tests'
+import { Route as ProviderProviderIdIndexRouteImport } from './routes/provider.$providerId.index'
+import { Route as ProviderProviderIdTestsIndexRouteImport } from './routes/provider.$providerId.tests.index'
 import { Route as ProviderProviderIdTestsTestIdRouteImport } from './routes/provider.$providerId.tests.$testId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccessibilityRoute = AccessibilityRouteImport.update({
@@ -201,11 +196,6 @@ const BiomarkersRoute = BiomarkersRouteImport.update({
   path: '/biomarkers',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const BloodTestAnalysisRoute = BloodTestAnalysisRouteImport.update({
   id: '/blood-test-analysis',
   path: '/blood-test-analysis',
@@ -220,16 +210,6 @@ const CancerBiomarkersReferenceRoute =
 const CancerScreeningCompareRoute = CancerScreeningCompareRouteImport.update({
   id: '/cancer-screening-compare',
   path: '/cancer-screening-compare',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const CategoryRoute = CategoryRouteImport.update({
-  id: '/category',
-  path: '/category',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ClinilabsRoute = ClinilabsRouteImport.update({
-  id: '/clinilabs',
-  path: '/clinilabs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CompareRoute = CompareRouteImport.update({
@@ -250,11 +230,6 @@ const ConditionsRoute = ConditionsRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ControlRoute = ControlRouteImport.update({
-  id: '/control',
-  path: '/control',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CookiesRoute = CookiesRouteImport.update({
@@ -292,21 +267,6 @@ const FindClinicRoute = FindClinicRouteImport.update({
   path: '/find-clinic',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FindTestRoute = FindTestRouteImport.update({
-  id: '/find-test',
-  path: '/find-test',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GoodbodyClinicRoute = GoodbodyClinicRouteImport.update({
-  id: '/goodbody-clinic',
-  path: '/goodbody-clinic',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const GuidesRoute = GuidesRouteImport.update({
-  id: '/guides',
-  path: '/guides',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const HealthBlogRoute = HealthBlogRouteImport.update({
   id: '/health-blog',
   path: '/health-blog',
@@ -340,21 +300,6 @@ const HowWeRankRoute = HowWeRankRouteImport.update({
 const LegalRoute = LegalRouteImport.update({
   id: '/legal',
   path: '/legal',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LondonHealthCompanyRoute = LondonHealthCompanyRouteImport.update({
-  id: '/london-health-company',
-  path: '/london-health-company',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LondonMedicalLaboratoryRoute = LondonMedicalLaboratoryRouteImport.update({
-  id: '/london-medical-laboratory',
-  path: '/london-medical-laboratory',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MedicalDiagnosisRoute = MedicalDiagnosisRouteImport.update({
-  id: '/medical-diagnosis',
-  path: '/medical-diagnosis',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MensHealthRoute = MensHealthRouteImport.update({
@@ -395,11 +340,6 @@ const PortalRoute = PortalRouteImport.update({
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   id: '/privacy-policy',
   path: '/privacy-policy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProvidersRoute = ProvidersRouteImport.update({
-  id: '/providers',
-  path: '/providers',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuizRoute = QuizRouteImport.update({
@@ -477,10 +417,15 @@ const WomensHealthRoute = WomensHealthRouteImport.update({
   path: '/womens-health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutIndexRoute = AboutIndexRouteImport.update({
+  id: '/about/',
+  path: '/about/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutMedicalReviewRoute = AboutMedicalReviewRouteImport.update({
-  id: '/medical-review',
-  path: '/medical-review',
-  getParentRoute: () => AboutRoute,
+  id: '/about/medical-review',
+  path: '/about/medical-review',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAlertRoutingRoute = AdminAlertRoutingRouteImport.update({
   id: '/admin/alert-routing',
@@ -583,48 +528,58 @@ const AdminTestUploadRoute = AdminTestUploadRouteImport.update({
   path: '/admin/test-upload',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogFerritinVsIronComparisonGuideRoute =
   BlogFerritinVsIronComparisonGuideRouteImport.update({
-    id: '/ferritin-vs-iron-comparison-guide',
-    path: '/ferritin-vs-iron-comparison-guide',
-    getParentRoute: () => BlogRoute,
+    id: '/blog/ferritin-vs-iron-comparison-guide',
+    path: '/blog/ferritin-vs-iron-comparison-guide',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const BlogPrivateBloodTestCostGuideRoute =
   BlogPrivateBloodTestCostGuideRouteImport.update({
-    id: '/private-blood-test-cost-guide',
-    path: '/private-blood-test-cost-guide',
-    getParentRoute: () => BlogRoute,
+    id: '/blog/private-blood-test-cost-guide',
+    path: '/blog/private-blood-test-cost-guide',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const BlogTestosteroneLevelsByAgeRoute =
   BlogTestosteroneLevelsByAgeRouteImport.update({
-    id: '/testosterone-levels-by-age',
-    path: '/testosterone-levels-by-age',
-    getParentRoute: () => BlogRoute,
+    id: '/blog/testosterone-levels-by-age',
+    path: '/blog/testosterone-levels-by-age',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const BlogTotalVsFreeTestosteroneRoute =
   BlogTotalVsFreeTestosteroneRouteImport.update({
-    id: '/total-vs-free-testosterone',
-    path: '/total-vs-free-testosterone',
-    getParentRoute: () => BlogRoute,
+    id: '/blog/total-vs-free-testosterone',
+    path: '/blog/total-vs-free-testosterone',
+    getParentRoute: () => rootRouteImport,
   } as any)
+const CategoryIndexRoute = CategoryIndexRouteImport.update({
+  id: '/category/',
+  path: '/category/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CategorySlugRoute = CategorySlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => CategoryRoute,
+  id: '/category/$slug',
+  path: '/category/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClinilabsIndexRoute = ClinilabsIndexRouteImport.update({
+  id: '/clinilabs/',
+  path: '/clinilabs/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ClinilabsTestIdRoute = ClinilabsTestIdRouteImport.update({
-  id: '/$testId',
-  path: '/$testId',
-  getParentRoute: () => ClinilabsRoute,
+  id: '/clinilabs/$testId',
+  path: '/clinilabs/$testId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const CompareIndexRoute = CompareIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => CompareRoute,
-} as any)
-const CompareGoalsRoute = CompareGoalsRouteImport.update({
-  id: '/goals',
-  path: '/goals',
   getParentRoute: () => CompareRoute,
 } as any)
 const CompareResultsRoute = CompareResultsRouteImport.update({
@@ -632,40 +587,55 @@ const CompareResultsRoute = CompareResultsRouteImport.update({
   path: '/results',
   getParentRoute: () => CompareRoute,
 } as any)
-const CompareSymptomsRoute = CompareSymptomsRouteImport.update({
-  id: '/symptoms',
-  path: '/symptoms',
-  getParentRoute: () => CompareRoute,
+const ControlIndexRoute = ControlIndexRouteImport.update({
+  id: '/control/',
+  path: '/control/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ControlSectionRoute = ControlSectionRouteImport.update({
-  id: '/$section',
-  path: '/$section',
-  getParentRoute: () => ControlRoute,
+  id: '/control/$section',
+  path: '/control/$section',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FindTestIndexRoute = FindTestIndexRouteImport.update({
+  id: '/find-test/',
+  path: '/find-test/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const FindTestCompareRoute = FindTestCompareRouteImport.update({
-  id: '/compare',
-  path: '/compare',
-  getParentRoute: () => FindTestRoute,
+  id: '/find-test/compare',
+  path: '/find-test/compare',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const FindTestRecommendationsRoute = FindTestRecommendationsRouteImport.update({
-  id: '/recommendations',
-  path: '/recommendations',
-  getParentRoute: () => FindTestRoute,
+  id: '/find-test/recommendations',
+  path: '/find-test/recommendations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GoodbodyClinicIndexRoute = GoodbodyClinicIndexRouteImport.update({
+  id: '/goodbody-clinic/',
+  path: '/goodbody-clinic/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const GoodbodyClinicTestIdRoute = GoodbodyClinicTestIdRouteImport.update({
-  id: '/$testId',
-  path: '/$testId',
-  getParentRoute: () => GoodbodyClinicRoute,
+  id: '/goodbody-clinic/$testId',
+  path: '/goodbody-clinic/$testId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const GoodbodyTestIdRoute = GoodbodyTestIdRouteImport.update({
   id: '/goodbody/$testId',
   path: '/goodbody/$testId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GuidesIndexRoute = GuidesIndexRouteImport.update({
+  id: '/guides/',
+  path: '/guides/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GuidesSlugRoute = GuidesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => GuidesRoute,
+  id: '/guides/$slug',
+  path: '/guides/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const LolaHealthIndexRoute = LolaHealthIndexRouteImport.update({
   id: '/lola-health/',
@@ -677,22 +647,39 @@ const LolaHealthTestIdRoute = LolaHealthTestIdRouteImport.update({
   path: '/lola-health/$testId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LondonHealthCompanyIndexRoute =
+  LondonHealthCompanyIndexRouteImport.update({
+    id: '/london-health-company/',
+    path: '/london-health-company/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const LondonHealthCompanyTestIdRoute =
   LondonHealthCompanyTestIdRouteImport.update({
-    id: '/$testId',
-    path: '/$testId',
-    getParentRoute: () => LondonHealthCompanyRoute,
+    id: '/london-health-company/$testId',
+    path: '/london-health-company/$testId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const LondonMedicalLaboratoryIndexRoute =
+  LondonMedicalLaboratoryIndexRouteImport.update({
+    id: '/london-medical-laboratory/',
+    path: '/london-medical-laboratory/',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const LondonMedicalLaboratoryTestIdRoute =
   LondonMedicalLaboratoryTestIdRouteImport.update({
-    id: '/$testId',
-    path: '/$testId',
-    getParentRoute: () => LondonMedicalLaboratoryRoute,
+    id: '/london-medical-laboratory/$testId',
+    path: '/london-medical-laboratory/$testId',
+    getParentRoute: () => rootRouteImport,
   } as any)
+const MedicalDiagnosisIndexRoute = MedicalDiagnosisIndexRouteImport.update({
+  id: '/medical-diagnosis/',
+  path: '/medical-diagnosis/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MedicalDiagnosisTestIdRoute = MedicalDiagnosisTestIdRouteImport.update({
-  id: '/$testId',
-  path: '/$testId',
-  getParentRoute: () => MedicalDiagnosisRoute,
+  id: '/medical-diagnosis/$testId',
+  path: '/medical-diagnosis/$testId',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const MedichecksIndexRoute = MedichecksIndexRouteImport.update({
   id: '/medichecks/',
@@ -709,63 +696,63 @@ const MedichecksMensHealthRoute = MedichecksMensHealthRouteImport.update({
   path: '/medichecks/mens-health',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProviderProviderIdRoute = ProviderProviderIdRouteImport.update({
-  id: '/provider/$providerId',
-  path: '/provider/$providerId',
+const ProvidersIndexRoute = ProvidersIndexRouteImport.update({
+  id: '/providers/',
+  path: '/providers/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProvidersClinilabsRoute = ProvidersClinilabsRouteImport.update({
-  id: '/clinilabs',
-  path: '/clinilabs',
-  getParentRoute: () => ProvidersRoute,
+  id: '/providers/clinilabs',
+  path: '/providers/clinilabs',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProvidersCompareRoute = ProvidersCompareRouteImport.update({
-  id: '/compare',
-  path: '/compare',
-  getParentRoute: () => ProvidersRoute,
+  id: '/providers/compare',
+  path: '/providers/compare',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProvidersGoodbodyClinicRoute = ProvidersGoodbodyClinicRouteImport.update({
-  id: '/goodbody-clinic',
-  path: '/goodbody-clinic',
-  getParentRoute: () => ProvidersRoute,
+  id: '/providers/goodbody-clinic',
+  path: '/providers/goodbody-clinic',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProvidersLolaHealthRoute = ProvidersLolaHealthRouteImport.update({
-  id: '/lola-health',
-  path: '/lola-health',
-  getParentRoute: () => ProvidersRoute,
+  id: '/providers/lola-health',
+  path: '/providers/lola-health',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProvidersLondonHealthCompanyRoute =
   ProvidersLondonHealthCompanyRouteImport.update({
-    id: '/london-health-company',
-    path: '/london-health-company',
-    getParentRoute: () => ProvidersRoute,
+    id: '/providers/london-health-company',
+    path: '/providers/london-health-company',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const ProvidersLondonMedicalLaboratoryRoute =
   ProvidersLondonMedicalLaboratoryRouteImport.update({
-    id: '/london-medical-laboratory',
-    path: '/london-medical-laboratory',
-    getParentRoute: () => ProvidersRoute,
+    id: '/providers/london-medical-laboratory',
+    path: '/providers/london-medical-laboratory',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const ProvidersMedicalDiagnosisRoute =
   ProvidersMedicalDiagnosisRouteImport.update({
-    id: '/medical-diagnosis',
-    path: '/medical-diagnosis',
-    getParentRoute: () => ProvidersRoute,
+    id: '/providers/medical-diagnosis',
+    path: '/providers/medical-diagnosis',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const ProvidersMedichecksRoute = ProvidersMedichecksRouteImport.update({
-  id: '/medichecks',
-  path: '/medichecks',
-  getParentRoute: () => ProvidersRoute,
+  id: '/providers/medichecks',
+  path: '/providers/medichecks',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProvidersRandoxRoute = ProvidersRandoxRouteImport.update({
-  id: '/randox',
-  path: '/randox',
-  getParentRoute: () => ProvidersRoute,
+  id: '/providers/randox',
+  path: '/providers/randox',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProvidersThrivaRoute = ProvidersThrivaRouteImport.update({
-  id: '/thriva',
-  path: '/thriva',
-  getParentRoute: () => ProvidersRoute,
+  id: '/providers/thriva',
+  path: '/providers/thriva',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const RandoxHealthTestIdRoute = RandoxHealthTestIdRouteImport.update({
   id: '/randox-health/$testId',
@@ -877,32 +864,47 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   path: '/.lovable/oauth/consent',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CompareGoalsIndexRoute = CompareGoalsIndexRouteImport.update({
+  id: '/goals/',
+  path: '/goals/',
+  getParentRoute: () => CompareRoute,
+} as any)
 const CompareGoalsGoalSlugRoute = CompareGoalsGoalSlugRouteImport.update({
-  id: '/$goalSlug',
-  path: '/$goalSlug',
-  getParentRoute: () => CompareGoalsRoute,
+  id: '/goals/$goalSlug',
+  path: '/goals/$goalSlug',
+  getParentRoute: () => CompareRoute,
+} as any)
+const CompareSymptomsIndexRoute = CompareSymptomsIndexRouteImport.update({
+  id: '/symptoms/',
+  path: '/symptoms/',
+  getParentRoute: () => CompareRoute,
 } as any)
 const CompareSymptomsSymptomSlugRoute =
   CompareSymptomsSymptomSlugRouteImport.update({
-    id: '/$symptomSlug',
-    path: '/$symptomSlug',
-    getParentRoute: () => CompareSymptomsRoute,
+    id: '/symptoms/$symptomSlug',
+    path: '/symptoms/$symptomSlug',
+    getParentRoute: () => CompareRoute,
   } as any)
-const ProviderProviderIdTestsRoute = ProviderProviderIdTestsRouteImport.update({
-  id: '/tests',
-  path: '/tests',
-  getParentRoute: () => ProviderProviderIdRoute,
+const ProviderProviderIdIndexRoute = ProviderProviderIdIndexRouteImport.update({
+  id: '/provider/$providerId/',
+  path: '/provider/$providerId/',
+  getParentRoute: () => rootRouteImport,
 } as any)
+const ProviderProviderIdTestsIndexRoute =
+  ProviderProviderIdTestsIndexRouteImport.update({
+    id: '/provider/$providerId/tests/',
+    path: '/provider/$providerId/tests/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ProviderProviderIdTestsTestIdRoute =
   ProviderProviderIdTestsTestIdRouteImport.update({
-    id: '/$testId',
-    path: '/$testId',
-    getParentRoute: () => ProviderProviderIdTestsRoute,
+    id: '/provider/$providerId/tests/$testId',
+    path: '/provider/$providerId/tests/$testId',
+    getParentRoute: () => rootRouteImport,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRouteWithChildren
   '/accessibility': typeof AccessibilityRoute
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/assisted-test-finder': typeof AssistedTestFinderRoute
@@ -910,17 +912,13 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/biomarker-database': typeof BiomarkerDatabaseRoute
   '/biomarkers': typeof BiomarkersRoute
-  '/blog': typeof BlogRouteWithChildren
   '/blood-test-analysis': typeof BloodTestAnalysisRoute
   '/cancer-biomarkers-reference': typeof CancerBiomarkersReferenceRoute
   '/cancer-screening-compare': typeof CancerScreeningCompareRoute
-  '/category': typeof CategoryRouteWithChildren
-  '/clinilabs': typeof ClinilabsRouteWithChildren
   '/compare': typeof CompareRouteWithChildren
   '/complaints': typeof ComplaintsRoute
   '/conditions': typeof ConditionsRoute
   '/contact': typeof ContactRoute
-  '/control': typeof ControlRouteWithChildren
   '/cookies': typeof CookiesRoute
   '/dashboard': typeof DashboardRoute
   '/fair-trading': typeof FairTradingRoute
@@ -928,9 +926,6 @@ export interface FileRoutesByFullPath {
   '/feedback': typeof FeedbackRoute
   '/fertility-tests': typeof FertilityTestsRoute
   '/find-clinic': typeof FindClinicRoute
-  '/find-test': typeof FindTestRouteWithChildren
-  '/goodbody-clinic': typeof GoodbodyClinicRouteWithChildren
-  '/guides': typeof GuidesRouteWithChildren
   '/health-blog': typeof HealthBlogRoute
   '/health-dashboard': typeof HealthDashboardRoute
   '/hidden-gap-detector': typeof HiddenGapDetectorRoute
@@ -938,9 +933,6 @@ export interface FileRoutesByFullPath {
   '/how-it-works': typeof HowItWorksRoute
   '/how-we-rank': typeof HowWeRankRoute
   '/legal': typeof LegalRoute
-  '/london-health-company': typeof LondonHealthCompanyRouteWithChildren
-  '/london-medical-laboratory': typeof LondonMedicalLaboratoryRouteWithChildren
-  '/medical-diagnosis': typeof MedicalDiagnosisRouteWithChildren
   '/mens-health': typeof MensHealthRoute
   '/modern-slavery': typeof ModernSlaveryRoute
   '/most-popular-tests': typeof MostPopularTestsRoute
@@ -949,7 +941,6 @@ export interface FileRoutesByFullPath {
   '/popular-tests': typeof PopularTestsRoute
   '/portal': typeof PortalRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
-  '/providers': typeof ProvidersRouteWithChildren
   '/quiz': typeof QuizRoute
   '/recommendations': typeof RecommendationsRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -992,9 +983,7 @@ export interface FileRoutesByFullPath {
   '/blog/total-vs-free-testosterone': typeof BlogTotalVsFreeTestosteroneRoute
   '/category/$slug': typeof CategorySlugRoute
   '/clinilabs/$testId': typeof ClinilabsTestIdRoute
-  '/compare/goals': typeof CompareGoalsRouteWithChildren
   '/compare/results': typeof CompareResultsRoute
-  '/compare/symptoms': typeof CompareSymptomsRouteWithChildren
   '/control/$section': typeof ControlSectionRoute
   '/find-test/compare': typeof FindTestCompareRoute
   '/find-test/recommendations': typeof FindTestRecommendationsRoute
@@ -1007,7 +996,6 @@ export interface FileRoutesByFullPath {
   '/medical-diagnosis/$testId': typeof MedicalDiagnosisTestIdRoute
   '/medichecks/$testId': typeof MedichecksTestIdRoute
   '/medichecks/mens-health': typeof MedichecksMensHealthRoute
-  '/provider/$providerId': typeof ProviderProviderIdRouteWithChildren
   '/providers/clinilabs': typeof ProvidersClinilabsRoute
   '/providers/compare': typeof ProvidersCompareRoute
   '/providers/goodbody-clinic': typeof ProvidersGoodbodyClinicRoute
@@ -1037,20 +1025,34 @@ export interface FileRoutesByFullPath {
   '/tests/vitamins': typeof TestsVitaminsRoute
   '/tests/womens-health': typeof TestsWomensHealthRoute
   '/thriva/$testId': typeof ThrivaTestIdRoute
+  '/about/': typeof AboutIndexRoute
+  '/blog/': typeof BlogIndexRoute
+  '/category/': typeof CategoryIndexRoute
+  '/clinilabs/': typeof ClinilabsIndexRoute
   '/compare/': typeof CompareIndexRoute
+  '/control/': typeof ControlIndexRoute
+  '/find-test/': typeof FindTestIndexRoute
+  '/goodbody-clinic/': typeof GoodbodyClinicIndexRoute
+  '/guides/': typeof GuidesIndexRoute
   '/lola-health/': typeof LolaHealthIndexRoute
+  '/london-health-company/': typeof LondonHealthCompanyIndexRoute
+  '/london-medical-laboratory/': typeof LondonMedicalLaboratoryIndexRoute
+  '/medical-diagnosis/': typeof MedicalDiagnosisIndexRoute
   '/medichecks/': typeof MedichecksIndexRoute
+  '/providers/': typeof ProvidersIndexRoute
   '/randox/': typeof RandoxIndexRoute
   '/thriva/': typeof ThrivaIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
-  '/provider/$providerId/tests': typeof ProviderProviderIdTestsRouteWithChildren
+  '/compare/goals/': typeof CompareGoalsIndexRoute
+  '/compare/symptoms/': typeof CompareSymptomsIndexRoute
+  '/provider/$providerId/': typeof ProviderProviderIdIndexRoute
   '/provider/$providerId/tests/$testId': typeof ProviderProviderIdTestsTestIdRoute
+  '/provider/$providerId/tests/': typeof ProviderProviderIdTestsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRouteWithChildren
   '/accessibility': typeof AccessibilityRoute
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/assisted-test-finder': typeof AssistedTestFinderRoute
@@ -1058,16 +1060,12 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/biomarker-database': typeof BiomarkerDatabaseRoute
   '/biomarkers': typeof BiomarkersRoute
-  '/blog': typeof BlogRouteWithChildren
   '/blood-test-analysis': typeof BloodTestAnalysisRoute
   '/cancer-biomarkers-reference': typeof CancerBiomarkersReferenceRoute
   '/cancer-screening-compare': typeof CancerScreeningCompareRoute
-  '/category': typeof CategoryRouteWithChildren
-  '/clinilabs': typeof ClinilabsRouteWithChildren
   '/complaints': typeof ComplaintsRoute
   '/conditions': typeof ConditionsRoute
   '/contact': typeof ContactRoute
-  '/control': typeof ControlRouteWithChildren
   '/cookies': typeof CookiesRoute
   '/dashboard': typeof DashboardRoute
   '/fair-trading': typeof FairTradingRoute
@@ -1075,9 +1073,6 @@ export interface FileRoutesByTo {
   '/feedback': typeof FeedbackRoute
   '/fertility-tests': typeof FertilityTestsRoute
   '/find-clinic': typeof FindClinicRoute
-  '/find-test': typeof FindTestRouteWithChildren
-  '/goodbody-clinic': typeof GoodbodyClinicRouteWithChildren
-  '/guides': typeof GuidesRouteWithChildren
   '/health-blog': typeof HealthBlogRoute
   '/health-dashboard': typeof HealthDashboardRoute
   '/hidden-gap-detector': typeof HiddenGapDetectorRoute
@@ -1085,9 +1080,6 @@ export interface FileRoutesByTo {
   '/how-it-works': typeof HowItWorksRoute
   '/how-we-rank': typeof HowWeRankRoute
   '/legal': typeof LegalRoute
-  '/london-health-company': typeof LondonHealthCompanyRouteWithChildren
-  '/london-medical-laboratory': typeof LondonMedicalLaboratoryRouteWithChildren
-  '/medical-diagnosis': typeof MedicalDiagnosisRouteWithChildren
   '/mens-health': typeof MensHealthRoute
   '/modern-slavery': typeof ModernSlaveryRoute
   '/most-popular-tests': typeof MostPopularTestsRoute
@@ -1096,7 +1088,6 @@ export interface FileRoutesByTo {
   '/popular-tests': typeof PopularTestsRoute
   '/portal': typeof PortalRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
-  '/providers': typeof ProvidersRouteWithChildren
   '/quiz': typeof QuizRoute
   '/recommendations': typeof RecommendationsRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -1139,9 +1130,7 @@ export interface FileRoutesByTo {
   '/blog/total-vs-free-testosterone': typeof BlogTotalVsFreeTestosteroneRoute
   '/category/$slug': typeof CategorySlugRoute
   '/clinilabs/$testId': typeof ClinilabsTestIdRoute
-  '/compare/goals': typeof CompareGoalsRouteWithChildren
   '/compare/results': typeof CompareResultsRoute
-  '/compare/symptoms': typeof CompareSymptomsRouteWithChildren
   '/control/$section': typeof ControlSectionRoute
   '/find-test/compare': typeof FindTestCompareRoute
   '/find-test/recommendations': typeof FindTestRecommendationsRoute
@@ -1154,7 +1143,6 @@ export interface FileRoutesByTo {
   '/medical-diagnosis/$testId': typeof MedicalDiagnosisTestIdRoute
   '/medichecks/$testId': typeof MedichecksTestIdRoute
   '/medichecks/mens-health': typeof MedichecksMensHealthRoute
-  '/provider/$providerId': typeof ProviderProviderIdRouteWithChildren
   '/providers/clinilabs': typeof ProvidersClinilabsRoute
   '/providers/compare': typeof ProvidersCompareRoute
   '/providers/goodbody-clinic': typeof ProvidersGoodbodyClinicRoute
@@ -1184,21 +1172,35 @@ export interface FileRoutesByTo {
   '/tests/vitamins': typeof TestsVitaminsRoute
   '/tests/womens-health': typeof TestsWomensHealthRoute
   '/thriva/$testId': typeof ThrivaTestIdRoute
+  '/about': typeof AboutIndexRoute
+  '/blog': typeof BlogIndexRoute
+  '/category': typeof CategoryIndexRoute
+  '/clinilabs': typeof ClinilabsIndexRoute
   '/compare': typeof CompareIndexRoute
+  '/control': typeof ControlIndexRoute
+  '/find-test': typeof FindTestIndexRoute
+  '/goodbody-clinic': typeof GoodbodyClinicIndexRoute
+  '/guides': typeof GuidesIndexRoute
   '/lola-health': typeof LolaHealthIndexRoute
+  '/london-health-company': typeof LondonHealthCompanyIndexRoute
+  '/london-medical-laboratory': typeof LondonMedicalLaboratoryIndexRoute
+  '/medical-diagnosis': typeof MedicalDiagnosisIndexRoute
   '/medichecks': typeof MedichecksIndexRoute
+  '/providers': typeof ProvidersIndexRoute
   '/randox': typeof RandoxIndexRoute
   '/thriva': typeof ThrivaIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
-  '/provider/$providerId/tests': typeof ProviderProviderIdTestsRouteWithChildren
+  '/compare/goals': typeof CompareGoalsIndexRoute
+  '/compare/symptoms': typeof CompareSymptomsIndexRoute
+  '/provider/$providerId': typeof ProviderProviderIdIndexRoute
   '/provider/$providerId/tests/$testId': typeof ProviderProviderIdTestsTestIdRoute
+  '/provider/$providerId/tests': typeof ProviderProviderIdTestsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRouteWithChildren
   '/accessibility': typeof AccessibilityRoute
   '/affiliate-disclosure': typeof AffiliateDisclosureRoute
   '/assisted-test-finder': typeof AssistedTestFinderRoute
@@ -1206,17 +1208,13 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/biomarker-database': typeof BiomarkerDatabaseRoute
   '/biomarkers': typeof BiomarkersRoute
-  '/blog': typeof BlogRouteWithChildren
   '/blood-test-analysis': typeof BloodTestAnalysisRoute
   '/cancer-biomarkers-reference': typeof CancerBiomarkersReferenceRoute
   '/cancer-screening-compare': typeof CancerScreeningCompareRoute
-  '/category': typeof CategoryRouteWithChildren
-  '/clinilabs': typeof ClinilabsRouteWithChildren
   '/compare': typeof CompareRouteWithChildren
   '/complaints': typeof ComplaintsRoute
   '/conditions': typeof ConditionsRoute
   '/contact': typeof ContactRoute
-  '/control': typeof ControlRouteWithChildren
   '/cookies': typeof CookiesRoute
   '/dashboard': typeof DashboardRoute
   '/fair-trading': typeof FairTradingRoute
@@ -1224,9 +1222,6 @@ export interface FileRoutesById {
   '/feedback': typeof FeedbackRoute
   '/fertility-tests': typeof FertilityTestsRoute
   '/find-clinic': typeof FindClinicRoute
-  '/find-test': typeof FindTestRouteWithChildren
-  '/goodbody-clinic': typeof GoodbodyClinicRouteWithChildren
-  '/guides': typeof GuidesRouteWithChildren
   '/health-blog': typeof HealthBlogRoute
   '/health-dashboard': typeof HealthDashboardRoute
   '/hidden-gap-detector': typeof HiddenGapDetectorRoute
@@ -1234,9 +1229,6 @@ export interface FileRoutesById {
   '/how-it-works': typeof HowItWorksRoute
   '/how-we-rank': typeof HowWeRankRoute
   '/legal': typeof LegalRoute
-  '/london-health-company': typeof LondonHealthCompanyRouteWithChildren
-  '/london-medical-laboratory': typeof LondonMedicalLaboratoryRouteWithChildren
-  '/medical-diagnosis': typeof MedicalDiagnosisRouteWithChildren
   '/mens-health': typeof MensHealthRoute
   '/modern-slavery': typeof ModernSlaveryRoute
   '/most-popular-tests': typeof MostPopularTestsRoute
@@ -1245,7 +1237,6 @@ export interface FileRoutesById {
   '/popular-tests': typeof PopularTestsRoute
   '/portal': typeof PortalRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
-  '/providers': typeof ProvidersRouteWithChildren
   '/quiz': typeof QuizRoute
   '/recommendations': typeof RecommendationsRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -1288,9 +1279,7 @@ export interface FileRoutesById {
   '/blog/total-vs-free-testosterone': typeof BlogTotalVsFreeTestosteroneRoute
   '/category/$slug': typeof CategorySlugRoute
   '/clinilabs/$testId': typeof ClinilabsTestIdRoute
-  '/compare/goals': typeof CompareGoalsRouteWithChildren
   '/compare/results': typeof CompareResultsRoute
-  '/compare/symptoms': typeof CompareSymptomsRouteWithChildren
   '/control/$section': typeof ControlSectionRoute
   '/find-test/compare': typeof FindTestCompareRoute
   '/find-test/recommendations': typeof FindTestRecommendationsRoute
@@ -1303,7 +1292,6 @@ export interface FileRoutesById {
   '/medical-diagnosis/$testId': typeof MedicalDiagnosisTestIdRoute
   '/medichecks/$testId': typeof MedichecksTestIdRoute
   '/medichecks/mens-health': typeof MedichecksMensHealthRoute
-  '/provider/$providerId': typeof ProviderProviderIdRouteWithChildren
   '/providers/clinilabs': typeof ProvidersClinilabsRoute
   '/providers/compare': typeof ProvidersCompareRoute
   '/providers/goodbody-clinic': typeof ProvidersGoodbodyClinicRoute
@@ -1333,22 +1321,36 @@ export interface FileRoutesById {
   '/tests/vitamins': typeof TestsVitaminsRoute
   '/tests/womens-health': typeof TestsWomensHealthRoute
   '/thriva/$testId': typeof ThrivaTestIdRoute
+  '/about/': typeof AboutIndexRoute
+  '/blog/': typeof BlogIndexRoute
+  '/category/': typeof CategoryIndexRoute
+  '/clinilabs/': typeof ClinilabsIndexRoute
   '/compare/': typeof CompareIndexRoute
+  '/control/': typeof ControlIndexRoute
+  '/find-test/': typeof FindTestIndexRoute
+  '/goodbody-clinic/': typeof GoodbodyClinicIndexRoute
+  '/guides/': typeof GuidesIndexRoute
   '/lola-health/': typeof LolaHealthIndexRoute
+  '/london-health-company/': typeof LondonHealthCompanyIndexRoute
+  '/london-medical-laboratory/': typeof LondonMedicalLaboratoryIndexRoute
+  '/medical-diagnosis/': typeof MedicalDiagnosisIndexRoute
   '/medichecks/': typeof MedichecksIndexRoute
+  '/providers/': typeof ProvidersIndexRoute
   '/randox/': typeof RandoxIndexRoute
   '/thriva/': typeof ThrivaIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
-  '/provider/$providerId/tests': typeof ProviderProviderIdTestsRouteWithChildren
+  '/compare/goals/': typeof CompareGoalsIndexRoute
+  '/compare/symptoms/': typeof CompareSymptomsIndexRoute
+  '/provider/$providerId/': typeof ProviderProviderIdIndexRoute
   '/provider/$providerId/tests/$testId': typeof ProviderProviderIdTestsTestIdRoute
+  '/provider/$providerId/tests/': typeof ProviderProviderIdTestsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
     | '/accessibility'
     | '/affiliate-disclosure'
     | '/assisted-test-finder'
@@ -1356,17 +1358,13 @@ export interface FileRouteTypes {
     | '/auth'
     | '/biomarker-database'
     | '/biomarkers'
-    | '/blog'
     | '/blood-test-analysis'
     | '/cancer-biomarkers-reference'
     | '/cancer-screening-compare'
-    | '/category'
-    | '/clinilabs'
     | '/compare'
     | '/complaints'
     | '/conditions'
     | '/contact'
-    | '/control'
     | '/cookies'
     | '/dashboard'
     | '/fair-trading'
@@ -1374,9 +1372,6 @@ export interface FileRouteTypes {
     | '/feedback'
     | '/fertility-tests'
     | '/find-clinic'
-    | '/find-test'
-    | '/goodbody-clinic'
-    | '/guides'
     | '/health-blog'
     | '/health-dashboard'
     | '/hidden-gap-detector'
@@ -1384,9 +1379,6 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/how-we-rank'
     | '/legal'
-    | '/london-health-company'
-    | '/london-medical-laboratory'
-    | '/medical-diagnosis'
     | '/mens-health'
     | '/modern-slavery'
     | '/most-popular-tests'
@@ -1395,7 +1387,6 @@ export interface FileRouteTypes {
     | '/popular-tests'
     | '/portal'
     | '/privacy-policy'
-    | '/providers'
     | '/quiz'
     | '/recommendations'
     | '/reset-password'
@@ -1438,9 +1429,7 @@ export interface FileRouteTypes {
     | '/blog/total-vs-free-testosterone'
     | '/category/$slug'
     | '/clinilabs/$testId'
-    | '/compare/goals'
     | '/compare/results'
-    | '/compare/symptoms'
     | '/control/$section'
     | '/find-test/compare'
     | '/find-test/recommendations'
@@ -1453,7 +1442,6 @@ export interface FileRouteTypes {
     | '/medical-diagnosis/$testId'
     | '/medichecks/$testId'
     | '/medichecks/mens-health'
-    | '/provider/$providerId'
     | '/providers/clinilabs'
     | '/providers/compare'
     | '/providers/goodbody-clinic'
@@ -1483,20 +1471,34 @@ export interface FileRouteTypes {
     | '/tests/vitamins'
     | '/tests/womens-health'
     | '/thriva/$testId'
+    | '/about/'
+    | '/blog/'
+    | '/category/'
+    | '/clinilabs/'
     | '/compare/'
+    | '/control/'
+    | '/find-test/'
+    | '/goodbody-clinic/'
+    | '/guides/'
     | '/lola-health/'
+    | '/london-health-company/'
+    | '/london-medical-laboratory/'
+    | '/medical-diagnosis/'
     | '/medichecks/'
+    | '/providers/'
     | '/randox/'
     | '/thriva/'
     | '/.lovable/oauth/consent'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
-    | '/provider/$providerId/tests'
+    | '/compare/goals/'
+    | '/compare/symptoms/'
+    | '/provider/$providerId/'
     | '/provider/$providerId/tests/$testId'
+    | '/provider/$providerId/tests/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/accessibility'
     | '/affiliate-disclosure'
     | '/assisted-test-finder'
@@ -1504,16 +1506,12 @@ export interface FileRouteTypes {
     | '/auth'
     | '/biomarker-database'
     | '/biomarkers'
-    | '/blog'
     | '/blood-test-analysis'
     | '/cancer-biomarkers-reference'
     | '/cancer-screening-compare'
-    | '/category'
-    | '/clinilabs'
     | '/complaints'
     | '/conditions'
     | '/contact'
-    | '/control'
     | '/cookies'
     | '/dashboard'
     | '/fair-trading'
@@ -1521,9 +1519,6 @@ export interface FileRouteTypes {
     | '/feedback'
     | '/fertility-tests'
     | '/find-clinic'
-    | '/find-test'
-    | '/goodbody-clinic'
-    | '/guides'
     | '/health-blog'
     | '/health-dashboard'
     | '/hidden-gap-detector'
@@ -1531,9 +1526,6 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/how-we-rank'
     | '/legal'
-    | '/london-health-company'
-    | '/london-medical-laboratory'
-    | '/medical-diagnosis'
     | '/mens-health'
     | '/modern-slavery'
     | '/most-popular-tests'
@@ -1542,7 +1534,6 @@ export interface FileRouteTypes {
     | '/popular-tests'
     | '/portal'
     | '/privacy-policy'
-    | '/providers'
     | '/quiz'
     | '/recommendations'
     | '/reset-password'
@@ -1585,9 +1576,7 @@ export interface FileRouteTypes {
     | '/blog/total-vs-free-testosterone'
     | '/category/$slug'
     | '/clinilabs/$testId'
-    | '/compare/goals'
     | '/compare/results'
-    | '/compare/symptoms'
     | '/control/$section'
     | '/find-test/compare'
     | '/find-test/recommendations'
@@ -1600,7 +1589,6 @@ export interface FileRouteTypes {
     | '/medical-diagnosis/$testId'
     | '/medichecks/$testId'
     | '/medichecks/mens-health'
-    | '/provider/$providerId'
     | '/providers/clinilabs'
     | '/providers/compare'
     | '/providers/goodbody-clinic'
@@ -1630,20 +1618,34 @@ export interface FileRouteTypes {
     | '/tests/vitamins'
     | '/tests/womens-health'
     | '/thriva/$testId'
+    | '/about'
+    | '/blog'
+    | '/category'
+    | '/clinilabs'
     | '/compare'
+    | '/control'
+    | '/find-test'
+    | '/goodbody-clinic'
+    | '/guides'
     | '/lola-health'
+    | '/london-health-company'
+    | '/london-medical-laboratory'
+    | '/medical-diagnosis'
     | '/medichecks'
+    | '/providers'
     | '/randox'
     | '/thriva'
     | '/.lovable/oauth/consent'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
-    | '/provider/$providerId/tests'
+    | '/compare/goals'
+    | '/compare/symptoms'
+    | '/provider/$providerId'
     | '/provider/$providerId/tests/$testId'
+    | '/provider/$providerId/tests'
   id:
     | '__root__'
     | '/'
-    | '/about'
     | '/accessibility'
     | '/affiliate-disclosure'
     | '/assisted-test-finder'
@@ -1651,17 +1653,13 @@ export interface FileRouteTypes {
     | '/auth'
     | '/biomarker-database'
     | '/biomarkers'
-    | '/blog'
     | '/blood-test-analysis'
     | '/cancer-biomarkers-reference'
     | '/cancer-screening-compare'
-    | '/category'
-    | '/clinilabs'
     | '/compare'
     | '/complaints'
     | '/conditions'
     | '/contact'
-    | '/control'
     | '/cookies'
     | '/dashboard'
     | '/fair-trading'
@@ -1669,9 +1667,6 @@ export interface FileRouteTypes {
     | '/feedback'
     | '/fertility-tests'
     | '/find-clinic'
-    | '/find-test'
-    | '/goodbody-clinic'
-    | '/guides'
     | '/health-blog'
     | '/health-dashboard'
     | '/hidden-gap-detector'
@@ -1679,9 +1674,6 @@ export interface FileRouteTypes {
     | '/how-it-works'
     | '/how-we-rank'
     | '/legal'
-    | '/london-health-company'
-    | '/london-medical-laboratory'
-    | '/medical-diagnosis'
     | '/mens-health'
     | '/modern-slavery'
     | '/most-popular-tests'
@@ -1690,7 +1682,6 @@ export interface FileRouteTypes {
     | '/popular-tests'
     | '/portal'
     | '/privacy-policy'
-    | '/providers'
     | '/quiz'
     | '/recommendations'
     | '/reset-password'
@@ -1733,9 +1724,7 @@ export interface FileRouteTypes {
     | '/blog/total-vs-free-testosterone'
     | '/category/$slug'
     | '/clinilabs/$testId'
-    | '/compare/goals'
     | '/compare/results'
-    | '/compare/symptoms'
     | '/control/$section'
     | '/find-test/compare'
     | '/find-test/recommendations'
@@ -1748,7 +1737,6 @@ export interface FileRouteTypes {
     | '/medical-diagnosis/$testId'
     | '/medichecks/$testId'
     | '/medichecks/mens-health'
-    | '/provider/$providerId'
     | '/providers/clinilabs'
     | '/providers/compare'
     | '/providers/goodbody-clinic'
@@ -1778,21 +1766,35 @@ export interface FileRouteTypes {
     | '/tests/vitamins'
     | '/tests/womens-health'
     | '/thriva/$testId'
+    | '/about/'
+    | '/blog/'
+    | '/category/'
+    | '/clinilabs/'
     | '/compare/'
+    | '/control/'
+    | '/find-test/'
+    | '/goodbody-clinic/'
+    | '/guides/'
     | '/lola-health/'
+    | '/london-health-company/'
+    | '/london-medical-laboratory/'
+    | '/medical-diagnosis/'
     | '/medichecks/'
+    | '/providers/'
     | '/randox/'
     | '/thriva/'
     | '/.lovable/oauth/consent'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
-    | '/provider/$providerId/tests'
+    | '/compare/goals/'
+    | '/compare/symptoms/'
+    | '/provider/$providerId/'
     | '/provider/$providerId/tests/$testId'
+    | '/provider/$providerId/tests/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRouteWithChildren
   AccessibilityRoute: typeof AccessibilityRoute
   AffiliateDisclosureRoute: typeof AffiliateDisclosureRoute
   AssistedTestFinderRoute: typeof AssistedTestFinderRoute
@@ -1800,17 +1802,13 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   BiomarkerDatabaseRoute: typeof BiomarkerDatabaseRoute
   BiomarkersRoute: typeof BiomarkersRoute
-  BlogRoute: typeof BlogRouteWithChildren
   BloodTestAnalysisRoute: typeof BloodTestAnalysisRoute
   CancerBiomarkersReferenceRoute: typeof CancerBiomarkersReferenceRoute
   CancerScreeningCompareRoute: typeof CancerScreeningCompareRoute
-  CategoryRoute: typeof CategoryRouteWithChildren
-  ClinilabsRoute: typeof ClinilabsRouteWithChildren
   CompareRoute: typeof CompareRouteWithChildren
   ComplaintsRoute: typeof ComplaintsRoute
   ConditionsRoute: typeof ConditionsRoute
   ContactRoute: typeof ContactRoute
-  ControlRoute: typeof ControlRouteWithChildren
   CookiesRoute: typeof CookiesRoute
   DashboardRoute: typeof DashboardRoute
   FairTradingRoute: typeof FairTradingRoute
@@ -1818,9 +1816,6 @@ export interface RootRouteChildren {
   FeedbackRoute: typeof FeedbackRoute
   FertilityTestsRoute: typeof FertilityTestsRoute
   FindClinicRoute: typeof FindClinicRoute
-  FindTestRoute: typeof FindTestRouteWithChildren
-  GoodbodyClinicRoute: typeof GoodbodyClinicRouteWithChildren
-  GuidesRoute: typeof GuidesRouteWithChildren
   HealthBlogRoute: typeof HealthBlogRoute
   HealthDashboardRoute: typeof HealthDashboardRoute
   HiddenGapDetectorRoute: typeof HiddenGapDetectorRoute
@@ -1828,9 +1823,6 @@ export interface RootRouteChildren {
   HowItWorksRoute: typeof HowItWorksRoute
   HowWeRankRoute: typeof HowWeRankRoute
   LegalRoute: typeof LegalRoute
-  LondonHealthCompanyRoute: typeof LondonHealthCompanyRouteWithChildren
-  LondonMedicalLaboratoryRoute: typeof LondonMedicalLaboratoryRouteWithChildren
-  MedicalDiagnosisRoute: typeof MedicalDiagnosisRouteWithChildren
   MensHealthRoute: typeof MensHealthRoute
   ModernSlaveryRoute: typeof ModernSlaveryRoute
   MostPopularTestsRoute: typeof MostPopularTestsRoute
@@ -1839,7 +1831,6 @@ export interface RootRouteChildren {
   PopularTestsRoute: typeof PopularTestsRoute
   PortalRoute: typeof PortalRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
-  ProvidersRoute: typeof ProvidersRouteWithChildren
   QuizRoute: typeof QuizRoute
   RecommendationsRoute: typeof RecommendationsRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
@@ -1855,6 +1846,7 @@ export interface RootRouteChildren {
   TrustedProvidersRoute: typeof TrustedProvidersRoute
   WellnessRoute: typeof WellnessRoute
   WomensHealthRoute: typeof WomensHealthRoute
+  AboutMedicalReviewRoute: typeof AboutMedicalReviewRoute
   AdminAlertRoutingRoute: typeof AdminAlertRoutingRoute
   AdminAuditConsoleRoute: typeof AdminAuditConsoleRoute
   AdminBiomarkerAuditRoute: typeof AdminBiomarkerAuditRoute
@@ -1875,11 +1867,34 @@ export interface RootRouteChildren {
   AdminTestDashboardRoute: typeof AdminTestDashboardRoute
   AdminTestMapperRoute: typeof AdminTestMapperRoute
   AdminTestUploadRoute: typeof AdminTestUploadRoute
+  BlogFerritinVsIronComparisonGuideRoute: typeof BlogFerritinVsIronComparisonGuideRoute
+  BlogPrivateBloodTestCostGuideRoute: typeof BlogPrivateBloodTestCostGuideRoute
+  BlogTestosteroneLevelsByAgeRoute: typeof BlogTestosteroneLevelsByAgeRoute
+  BlogTotalVsFreeTestosteroneRoute: typeof BlogTotalVsFreeTestosteroneRoute
+  CategorySlugRoute: typeof CategorySlugRoute
+  ClinilabsTestIdRoute: typeof ClinilabsTestIdRoute
+  ControlSectionRoute: typeof ControlSectionRoute
+  FindTestCompareRoute: typeof FindTestCompareRoute
+  FindTestRecommendationsRoute: typeof FindTestRecommendationsRoute
+  GoodbodyClinicTestIdRoute: typeof GoodbodyClinicTestIdRoute
   GoodbodyTestIdRoute: typeof GoodbodyTestIdRoute
+  GuidesSlugRoute: typeof GuidesSlugRoute
   LolaHealthTestIdRoute: typeof LolaHealthTestIdRoute
+  LondonHealthCompanyTestIdRoute: typeof LondonHealthCompanyTestIdRoute
+  LondonMedicalLaboratoryTestIdRoute: typeof LondonMedicalLaboratoryTestIdRoute
+  MedicalDiagnosisTestIdRoute: typeof MedicalDiagnosisTestIdRoute
   MedichecksTestIdRoute: typeof MedichecksTestIdRoute
   MedichecksMensHealthRoute: typeof MedichecksMensHealthRoute
-  ProviderProviderIdRoute: typeof ProviderProviderIdRouteWithChildren
+  ProvidersClinilabsRoute: typeof ProvidersClinilabsRoute
+  ProvidersCompareRoute: typeof ProvidersCompareRoute
+  ProvidersGoodbodyClinicRoute: typeof ProvidersGoodbodyClinicRoute
+  ProvidersLolaHealthRoute: typeof ProvidersLolaHealthRoute
+  ProvidersLondonHealthCompanyRoute: typeof ProvidersLondonHealthCompanyRoute
+  ProvidersLondonMedicalLaboratoryRoute: typeof ProvidersLondonMedicalLaboratoryRoute
+  ProvidersMedicalDiagnosisRoute: typeof ProvidersMedicalDiagnosisRoute
+  ProvidersMedichecksRoute: typeof ProvidersMedichecksRoute
+  ProvidersRandoxRoute: typeof ProvidersRandoxRoute
+  ProvidersThrivaRoute: typeof ProvidersThrivaRoute
   RandoxHealthTestIdRoute: typeof RandoxHealthTestIdRoute
   RandoxTestIdRoute: typeof RandoxTestIdRoute
   TestFemaleHormonesRoute: typeof TestFemaleHormonesRoute
@@ -1899,11 +1914,26 @@ export interface RootRouteChildren {
   TestsVitaminsRoute: typeof TestsVitaminsRoute
   TestsWomensHealthRoute: typeof TestsWomensHealthRoute
   ThrivaTestIdRoute: typeof ThrivaTestIdRoute
+  AboutIndexRoute: typeof AboutIndexRoute
+  BlogIndexRoute: typeof BlogIndexRoute
+  CategoryIndexRoute: typeof CategoryIndexRoute
+  ClinilabsIndexRoute: typeof ClinilabsIndexRoute
+  ControlIndexRoute: typeof ControlIndexRoute
+  FindTestIndexRoute: typeof FindTestIndexRoute
+  GoodbodyClinicIndexRoute: typeof GoodbodyClinicIndexRoute
+  GuidesIndexRoute: typeof GuidesIndexRoute
   LolaHealthIndexRoute: typeof LolaHealthIndexRoute
+  LondonHealthCompanyIndexRoute: typeof LondonHealthCompanyIndexRoute
+  LondonMedicalLaboratoryIndexRoute: typeof LondonMedicalLaboratoryIndexRoute
+  MedicalDiagnosisIndexRoute: typeof MedicalDiagnosisIndexRoute
   MedichecksIndexRoute: typeof MedichecksIndexRoute
+  ProvidersIndexRoute: typeof ProvidersIndexRoute
   RandoxIndexRoute: typeof RandoxIndexRoute
   ThrivaIndexRoute: typeof ThrivaIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
+  ProviderProviderIdIndexRoute: typeof ProviderProviderIdIndexRoute
+  ProviderProviderIdTestsTestIdRoute: typeof ProviderProviderIdTestsTestIdRoute
+  ProviderProviderIdTestsIndexRoute: typeof ProviderProviderIdTestsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -1913,13 +1943,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/accessibility': {
@@ -1971,13 +1994,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BiomarkersRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/blood-test-analysis': {
       id: '/blood-test-analysis'
       path: '/blood-test-analysis'
@@ -1997,20 +2013,6 @@ declare module '@tanstack/react-router' {
       path: '/cancer-screening-compare'
       fullPath: '/cancer-screening-compare'
       preLoaderRoute: typeof CancerScreeningCompareRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/category': {
-      id: '/category'
-      path: '/category'
-      fullPath: '/category'
-      preLoaderRoute: typeof CategoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/clinilabs': {
-      id: '/clinilabs'
-      path: '/clinilabs'
-      fullPath: '/clinilabs'
-      preLoaderRoute: typeof ClinilabsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/compare': {
@@ -2039,13 +2041,6 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/control': {
-      id: '/control'
-      path: '/control'
-      fullPath: '/control'
-      preLoaderRoute: typeof ControlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cookies': {
@@ -2097,27 +2092,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FindClinicRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/find-test': {
-      id: '/find-test'
-      path: '/find-test'
-      fullPath: '/find-test'
-      preLoaderRoute: typeof FindTestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/goodbody-clinic': {
-      id: '/goodbody-clinic'
-      path: '/goodbody-clinic'
-      fullPath: '/goodbody-clinic'
-      preLoaderRoute: typeof GoodbodyClinicRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/guides': {
-      id: '/guides'
-      path: '/guides'
-      fullPath: '/guides'
-      preLoaderRoute: typeof GuidesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/health-blog': {
       id: '/health-blog'
       path: '/health-blog'
@@ -2165,27 +2139,6 @@ declare module '@tanstack/react-router' {
       path: '/legal'
       fullPath: '/legal'
       preLoaderRoute: typeof LegalRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/london-health-company': {
-      id: '/london-health-company'
-      path: '/london-health-company'
-      fullPath: '/london-health-company'
-      preLoaderRoute: typeof LondonHealthCompanyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/london-medical-laboratory': {
-      id: '/london-medical-laboratory'
-      path: '/london-medical-laboratory'
-      fullPath: '/london-medical-laboratory'
-      preLoaderRoute: typeof LondonMedicalLaboratoryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/medical-diagnosis': {
-      id: '/medical-diagnosis'
-      path: '/medical-diagnosis'
-      fullPath: '/medical-diagnosis'
-      preLoaderRoute: typeof MedicalDiagnosisRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mens-health': {
@@ -2242,13 +2195,6 @@ declare module '@tanstack/react-router' {
       path: '/privacy-policy'
       fullPath: '/privacy-policy'
       preLoaderRoute: typeof PrivacyPolicyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/providers': {
-      id: '/providers'
-      path: '/providers'
-      fullPath: '/providers'
-      preLoaderRoute: typeof ProvidersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/quiz': {
@@ -2356,12 +2302,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WomensHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about/': {
+      id: '/about/'
+      path: '/about'
+      fullPath: '/about/'
+      preLoaderRoute: typeof AboutIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about/medical-review': {
       id: '/about/medical-review'
-      path: '/medical-review'
+      path: '/about/medical-review'
       fullPath: '/about/medical-review'
       preLoaderRoute: typeof AboutMedicalReviewRouteImport
-      parentRoute: typeof AboutRoute
+      parentRoute: typeof rootRouteImport
     }
     '/admin/alert-routing': {
       id: '/admin/alert-routing'
@@ -2503,60 +2456,74 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminTestUploadRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/ferritin-vs-iron-comparison-guide': {
       id: '/blog/ferritin-vs-iron-comparison-guide'
-      path: '/ferritin-vs-iron-comparison-guide'
+      path: '/blog/ferritin-vs-iron-comparison-guide'
       fullPath: '/blog/ferritin-vs-iron-comparison-guide'
       preLoaderRoute: typeof BlogFerritinVsIronComparisonGuideRouteImport
-      parentRoute: typeof BlogRoute
+      parentRoute: typeof rootRouteImport
     }
     '/blog/private-blood-test-cost-guide': {
       id: '/blog/private-blood-test-cost-guide'
-      path: '/private-blood-test-cost-guide'
+      path: '/blog/private-blood-test-cost-guide'
       fullPath: '/blog/private-blood-test-cost-guide'
       preLoaderRoute: typeof BlogPrivateBloodTestCostGuideRouteImport
-      parentRoute: typeof BlogRoute
+      parentRoute: typeof rootRouteImport
     }
     '/blog/testosterone-levels-by-age': {
       id: '/blog/testosterone-levels-by-age'
-      path: '/testosterone-levels-by-age'
+      path: '/blog/testosterone-levels-by-age'
       fullPath: '/blog/testosterone-levels-by-age'
       preLoaderRoute: typeof BlogTestosteroneLevelsByAgeRouteImport
-      parentRoute: typeof BlogRoute
+      parentRoute: typeof rootRouteImport
     }
     '/blog/total-vs-free-testosterone': {
       id: '/blog/total-vs-free-testosterone'
-      path: '/total-vs-free-testosterone'
+      path: '/blog/total-vs-free-testosterone'
       fullPath: '/blog/total-vs-free-testosterone'
       preLoaderRoute: typeof BlogTotalVsFreeTestosteroneRouteImport
-      parentRoute: typeof BlogRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/category/': {
+      id: '/category/'
+      path: '/category'
+      fullPath: '/category/'
+      preLoaderRoute: typeof CategoryIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/category/$slug': {
       id: '/category/$slug'
-      path: '/$slug'
+      path: '/category/$slug'
       fullPath: '/category/$slug'
       preLoaderRoute: typeof CategorySlugRouteImport
-      parentRoute: typeof CategoryRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/clinilabs/': {
+      id: '/clinilabs/'
+      path: '/clinilabs'
+      fullPath: '/clinilabs/'
+      preLoaderRoute: typeof ClinilabsIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/clinilabs/$testId': {
       id: '/clinilabs/$testId'
-      path: '/$testId'
+      path: '/clinilabs/$testId'
       fullPath: '/clinilabs/$testId'
       preLoaderRoute: typeof ClinilabsTestIdRouteImport
-      parentRoute: typeof ClinilabsRoute
+      parentRoute: typeof rootRouteImport
     }
     '/compare/': {
       id: '/compare/'
       path: '/'
       fullPath: '/compare/'
       preLoaderRoute: typeof CompareIndexRouteImport
-      parentRoute: typeof CompareRoute
-    }
-    '/compare/goals': {
-      id: '/compare/goals'
-      path: '/goals'
-      fullPath: '/compare/goals'
-      preLoaderRoute: typeof CompareGoalsRouteImport
       parentRoute: typeof CompareRoute
     }
     '/compare/results': {
@@ -2566,40 +2533,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CompareResultsRouteImport
       parentRoute: typeof CompareRoute
     }
-    '/compare/symptoms': {
-      id: '/compare/symptoms'
-      path: '/symptoms'
-      fullPath: '/compare/symptoms'
-      preLoaderRoute: typeof CompareSymptomsRouteImport
-      parentRoute: typeof CompareRoute
+    '/control/': {
+      id: '/control/'
+      path: '/control'
+      fullPath: '/control/'
+      preLoaderRoute: typeof ControlIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/control/$section': {
       id: '/control/$section'
-      path: '/$section'
+      path: '/control/$section'
       fullPath: '/control/$section'
       preLoaderRoute: typeof ControlSectionRouteImport
-      parentRoute: typeof ControlRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/find-test/': {
+      id: '/find-test/'
+      path: '/find-test'
+      fullPath: '/find-test/'
+      preLoaderRoute: typeof FindTestIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/find-test/compare': {
       id: '/find-test/compare'
-      path: '/compare'
+      path: '/find-test/compare'
       fullPath: '/find-test/compare'
       preLoaderRoute: typeof FindTestCompareRouteImport
-      parentRoute: typeof FindTestRoute
+      parentRoute: typeof rootRouteImport
     }
     '/find-test/recommendations': {
       id: '/find-test/recommendations'
-      path: '/recommendations'
+      path: '/find-test/recommendations'
       fullPath: '/find-test/recommendations'
       preLoaderRoute: typeof FindTestRecommendationsRouteImport
-      parentRoute: typeof FindTestRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/goodbody-clinic/': {
+      id: '/goodbody-clinic/'
+      path: '/goodbody-clinic'
+      fullPath: '/goodbody-clinic/'
+      preLoaderRoute: typeof GoodbodyClinicIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/goodbody-clinic/$testId': {
       id: '/goodbody-clinic/$testId'
-      path: '/$testId'
+      path: '/goodbody-clinic/$testId'
       fullPath: '/goodbody-clinic/$testId'
       preLoaderRoute: typeof GoodbodyClinicTestIdRouteImport
-      parentRoute: typeof GoodbodyClinicRoute
+      parentRoute: typeof rootRouteImport
     }
     '/goodbody/$testId': {
       id: '/goodbody/$testId'
@@ -2608,12 +2589,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GoodbodyTestIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/guides/': {
+      id: '/guides/'
+      path: '/guides'
+      fullPath: '/guides/'
+      preLoaderRoute: typeof GuidesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/guides/$slug': {
       id: '/guides/$slug'
-      path: '/$slug'
+      path: '/guides/$slug'
       fullPath: '/guides/$slug'
       preLoaderRoute: typeof GuidesSlugRouteImport
-      parentRoute: typeof GuidesRoute
+      parentRoute: typeof rootRouteImport
     }
     '/lola-health/': {
       id: '/lola-health/'
@@ -2629,26 +2617,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LolaHealthTestIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/london-health-company/': {
+      id: '/london-health-company/'
+      path: '/london-health-company'
+      fullPath: '/london-health-company/'
+      preLoaderRoute: typeof LondonHealthCompanyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/london-health-company/$testId': {
       id: '/london-health-company/$testId'
-      path: '/$testId'
+      path: '/london-health-company/$testId'
       fullPath: '/london-health-company/$testId'
       preLoaderRoute: typeof LondonHealthCompanyTestIdRouteImport
-      parentRoute: typeof LondonHealthCompanyRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/london-medical-laboratory/': {
+      id: '/london-medical-laboratory/'
+      path: '/london-medical-laboratory'
+      fullPath: '/london-medical-laboratory/'
+      preLoaderRoute: typeof LondonMedicalLaboratoryIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/london-medical-laboratory/$testId': {
       id: '/london-medical-laboratory/$testId'
-      path: '/$testId'
+      path: '/london-medical-laboratory/$testId'
       fullPath: '/london-medical-laboratory/$testId'
       preLoaderRoute: typeof LondonMedicalLaboratoryTestIdRouteImport
-      parentRoute: typeof LondonMedicalLaboratoryRoute
+      parentRoute: typeof rootRouteImport
+    }
+    '/medical-diagnosis/': {
+      id: '/medical-diagnosis/'
+      path: '/medical-diagnosis'
+      fullPath: '/medical-diagnosis/'
+      preLoaderRoute: typeof MedicalDiagnosisIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/medical-diagnosis/$testId': {
       id: '/medical-diagnosis/$testId'
-      path: '/$testId'
+      path: '/medical-diagnosis/$testId'
       fullPath: '/medical-diagnosis/$testId'
       preLoaderRoute: typeof MedicalDiagnosisTestIdRouteImport
-      parentRoute: typeof MedicalDiagnosisRoute
+      parentRoute: typeof rootRouteImport
     }
     '/medichecks/': {
       id: '/medichecks/'
@@ -2671,82 +2680,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MedichecksMensHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/provider/$providerId': {
-      id: '/provider/$providerId'
-      path: '/provider/$providerId'
-      fullPath: '/provider/$providerId'
-      preLoaderRoute: typeof ProviderProviderIdRouteImport
+    '/providers/': {
+      id: '/providers/'
+      path: '/providers'
+      fullPath: '/providers/'
+      preLoaderRoute: typeof ProvidersIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/providers/clinilabs': {
       id: '/providers/clinilabs'
-      path: '/clinilabs'
+      path: '/providers/clinilabs'
       fullPath: '/providers/clinilabs'
       preLoaderRoute: typeof ProvidersClinilabsRouteImport
-      parentRoute: typeof ProvidersRoute
+      parentRoute: typeof rootRouteImport
     }
     '/providers/compare': {
       id: '/providers/compare'
-      path: '/compare'
+      path: '/providers/compare'
       fullPath: '/providers/compare'
       preLoaderRoute: typeof ProvidersCompareRouteImport
-      parentRoute: typeof ProvidersRoute
+      parentRoute: typeof rootRouteImport
     }
     '/providers/goodbody-clinic': {
       id: '/providers/goodbody-clinic'
-      path: '/goodbody-clinic'
+      path: '/providers/goodbody-clinic'
       fullPath: '/providers/goodbody-clinic'
       preLoaderRoute: typeof ProvidersGoodbodyClinicRouteImport
-      parentRoute: typeof ProvidersRoute
+      parentRoute: typeof rootRouteImport
     }
     '/providers/lola-health': {
       id: '/providers/lola-health'
-      path: '/lola-health'
+      path: '/providers/lola-health'
       fullPath: '/providers/lola-health'
       preLoaderRoute: typeof ProvidersLolaHealthRouteImport
-      parentRoute: typeof ProvidersRoute
+      parentRoute: typeof rootRouteImport
     }
     '/providers/london-health-company': {
       id: '/providers/london-health-company'
-      path: '/london-health-company'
+      path: '/providers/london-health-company'
       fullPath: '/providers/london-health-company'
       preLoaderRoute: typeof ProvidersLondonHealthCompanyRouteImport
-      parentRoute: typeof ProvidersRoute
+      parentRoute: typeof rootRouteImport
     }
     '/providers/london-medical-laboratory': {
       id: '/providers/london-medical-laboratory'
-      path: '/london-medical-laboratory'
+      path: '/providers/london-medical-laboratory'
       fullPath: '/providers/london-medical-laboratory'
       preLoaderRoute: typeof ProvidersLondonMedicalLaboratoryRouteImport
-      parentRoute: typeof ProvidersRoute
+      parentRoute: typeof rootRouteImport
     }
     '/providers/medical-diagnosis': {
       id: '/providers/medical-diagnosis'
-      path: '/medical-diagnosis'
+      path: '/providers/medical-diagnosis'
       fullPath: '/providers/medical-diagnosis'
       preLoaderRoute: typeof ProvidersMedicalDiagnosisRouteImport
-      parentRoute: typeof ProvidersRoute
+      parentRoute: typeof rootRouteImport
     }
     '/providers/medichecks': {
       id: '/providers/medichecks'
-      path: '/medichecks'
+      path: '/providers/medichecks'
       fullPath: '/providers/medichecks'
       preLoaderRoute: typeof ProvidersMedichecksRouteImport
-      parentRoute: typeof ProvidersRoute
+      parentRoute: typeof rootRouteImport
     }
     '/providers/randox': {
       id: '/providers/randox'
-      path: '/randox'
+      path: '/providers/randox'
       fullPath: '/providers/randox'
       preLoaderRoute: typeof ProvidersRandoxRouteImport
-      parentRoute: typeof ProvidersRoute
+      parentRoute: typeof rootRouteImport
     }
     '/providers/thriva': {
       id: '/providers/thriva'
-      path: '/thriva'
+      path: '/providers/thriva'
       fullPath: '/providers/thriva'
       preLoaderRoute: typeof ProvidersThrivaRouteImport
-      parentRoute: typeof ProvidersRoute
+      parentRoute: typeof rootRouteImport
     }
     '/randox-health/$testId': {
       id: '/randox-health/$testId'
@@ -2902,271 +2911,81 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/compare/goals/': {
+      id: '/compare/goals/'
+      path: '/goals'
+      fullPath: '/compare/goals/'
+      preLoaderRoute: typeof CompareGoalsIndexRouteImport
+      parentRoute: typeof CompareRoute
+    }
     '/compare/goals/$goalSlug': {
       id: '/compare/goals/$goalSlug'
-      path: '/$goalSlug'
+      path: '/goals/$goalSlug'
       fullPath: '/compare/goals/$goalSlug'
       preLoaderRoute: typeof CompareGoalsGoalSlugRouteImport
-      parentRoute: typeof CompareGoalsRoute
+      parentRoute: typeof CompareRoute
+    }
+    '/compare/symptoms/': {
+      id: '/compare/symptoms/'
+      path: '/symptoms'
+      fullPath: '/compare/symptoms/'
+      preLoaderRoute: typeof CompareSymptomsIndexRouteImport
+      parentRoute: typeof CompareRoute
     }
     '/compare/symptoms/$symptomSlug': {
       id: '/compare/symptoms/$symptomSlug'
-      path: '/$symptomSlug'
+      path: '/symptoms/$symptomSlug'
       fullPath: '/compare/symptoms/$symptomSlug'
       preLoaderRoute: typeof CompareSymptomsSymptomSlugRouteImport
-      parentRoute: typeof CompareSymptomsRoute
+      parentRoute: typeof CompareRoute
     }
-    '/provider/$providerId/tests': {
-      id: '/provider/$providerId/tests'
-      path: '/tests'
-      fullPath: '/provider/$providerId/tests'
-      preLoaderRoute: typeof ProviderProviderIdTestsRouteImport
-      parentRoute: typeof ProviderProviderIdRoute
+    '/provider/$providerId/': {
+      id: '/provider/$providerId/'
+      path: '/provider/$providerId'
+      fullPath: '/provider/$providerId/'
+      preLoaderRoute: typeof ProviderProviderIdIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/provider/$providerId/tests/': {
+      id: '/provider/$providerId/tests/'
+      path: '/provider/$providerId/tests'
+      fullPath: '/provider/$providerId/tests/'
+      preLoaderRoute: typeof ProviderProviderIdTestsIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/provider/$providerId/tests/$testId': {
       id: '/provider/$providerId/tests/$testId'
-      path: '/$testId'
+      path: '/provider/$providerId/tests/$testId'
       fullPath: '/provider/$providerId/tests/$testId'
       preLoaderRoute: typeof ProviderProviderIdTestsTestIdRouteImport
-      parentRoute: typeof ProviderProviderIdTestsRoute
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface AboutRouteChildren {
-  AboutMedicalReviewRoute: typeof AboutMedicalReviewRoute
-}
-
-const AboutRouteChildren: AboutRouteChildren = {
-  AboutMedicalReviewRoute: AboutMedicalReviewRoute,
-}
-
-const AboutRouteWithChildren = AboutRoute._addFileChildren(AboutRouteChildren)
-
-interface BlogRouteChildren {
-  BlogFerritinVsIronComparisonGuideRoute: typeof BlogFerritinVsIronComparisonGuideRoute
-  BlogPrivateBloodTestCostGuideRoute: typeof BlogPrivateBloodTestCostGuideRoute
-  BlogTestosteroneLevelsByAgeRoute: typeof BlogTestosteroneLevelsByAgeRoute
-  BlogTotalVsFreeTestosteroneRoute: typeof BlogTotalVsFreeTestosteroneRoute
-}
-
-const BlogRouteChildren: BlogRouteChildren = {
-  BlogFerritinVsIronComparisonGuideRoute:
-    BlogFerritinVsIronComparisonGuideRoute,
-  BlogPrivateBloodTestCostGuideRoute: BlogPrivateBloodTestCostGuideRoute,
-  BlogTestosteroneLevelsByAgeRoute: BlogTestosteroneLevelsByAgeRoute,
-  BlogTotalVsFreeTestosteroneRoute: BlogTotalVsFreeTestosteroneRoute,
-}
-
-const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
-
-interface CategoryRouteChildren {
-  CategorySlugRoute: typeof CategorySlugRoute
-}
-
-const CategoryRouteChildren: CategoryRouteChildren = {
-  CategorySlugRoute: CategorySlugRoute,
-}
-
-const CategoryRouteWithChildren = CategoryRoute._addFileChildren(
-  CategoryRouteChildren,
-)
-
-interface ClinilabsRouteChildren {
-  ClinilabsTestIdRoute: typeof ClinilabsTestIdRoute
-}
-
-const ClinilabsRouteChildren: ClinilabsRouteChildren = {
-  ClinilabsTestIdRoute: ClinilabsTestIdRoute,
-}
-
-const ClinilabsRouteWithChildren = ClinilabsRoute._addFileChildren(
-  ClinilabsRouteChildren,
-)
-
-interface CompareGoalsRouteChildren {
-  CompareGoalsGoalSlugRoute: typeof CompareGoalsGoalSlugRoute
-}
-
-const CompareGoalsRouteChildren: CompareGoalsRouteChildren = {
-  CompareGoalsGoalSlugRoute: CompareGoalsGoalSlugRoute,
-}
-
-const CompareGoalsRouteWithChildren = CompareGoalsRoute._addFileChildren(
-  CompareGoalsRouteChildren,
-)
-
-interface CompareSymptomsRouteChildren {
-  CompareSymptomsSymptomSlugRoute: typeof CompareSymptomsSymptomSlugRoute
-}
-
-const CompareSymptomsRouteChildren: CompareSymptomsRouteChildren = {
-  CompareSymptomsSymptomSlugRoute: CompareSymptomsSymptomSlugRoute,
-}
-
-const CompareSymptomsRouteWithChildren = CompareSymptomsRoute._addFileChildren(
-  CompareSymptomsRouteChildren,
-)
-
 interface CompareRouteChildren {
-  CompareGoalsRoute: typeof CompareGoalsRouteWithChildren
   CompareResultsRoute: typeof CompareResultsRoute
-  CompareSymptomsRoute: typeof CompareSymptomsRouteWithChildren
   CompareIndexRoute: typeof CompareIndexRoute
+  CompareGoalsGoalSlugRoute: typeof CompareGoalsGoalSlugRoute
+  CompareSymptomsSymptomSlugRoute: typeof CompareSymptomsSymptomSlugRoute
+  CompareGoalsIndexRoute: typeof CompareGoalsIndexRoute
+  CompareSymptomsIndexRoute: typeof CompareSymptomsIndexRoute
 }
 
 const CompareRouteChildren: CompareRouteChildren = {
-  CompareGoalsRoute: CompareGoalsRouteWithChildren,
   CompareResultsRoute: CompareResultsRoute,
-  CompareSymptomsRoute: CompareSymptomsRouteWithChildren,
   CompareIndexRoute: CompareIndexRoute,
+  CompareGoalsGoalSlugRoute: CompareGoalsGoalSlugRoute,
+  CompareSymptomsSymptomSlugRoute: CompareSymptomsSymptomSlugRoute,
+  CompareGoalsIndexRoute: CompareGoalsIndexRoute,
+  CompareSymptomsIndexRoute: CompareSymptomsIndexRoute,
 }
 
 const CompareRouteWithChildren =
   CompareRoute._addFileChildren(CompareRouteChildren)
 
-interface ControlRouteChildren {
-  ControlSectionRoute: typeof ControlSectionRoute
-}
-
-const ControlRouteChildren: ControlRouteChildren = {
-  ControlSectionRoute: ControlSectionRoute,
-}
-
-const ControlRouteWithChildren =
-  ControlRoute._addFileChildren(ControlRouteChildren)
-
-interface FindTestRouteChildren {
-  FindTestCompareRoute: typeof FindTestCompareRoute
-  FindTestRecommendationsRoute: typeof FindTestRecommendationsRoute
-}
-
-const FindTestRouteChildren: FindTestRouteChildren = {
-  FindTestCompareRoute: FindTestCompareRoute,
-  FindTestRecommendationsRoute: FindTestRecommendationsRoute,
-}
-
-const FindTestRouteWithChildren = FindTestRoute._addFileChildren(
-  FindTestRouteChildren,
-)
-
-interface GoodbodyClinicRouteChildren {
-  GoodbodyClinicTestIdRoute: typeof GoodbodyClinicTestIdRoute
-}
-
-const GoodbodyClinicRouteChildren: GoodbodyClinicRouteChildren = {
-  GoodbodyClinicTestIdRoute: GoodbodyClinicTestIdRoute,
-}
-
-const GoodbodyClinicRouteWithChildren = GoodbodyClinicRoute._addFileChildren(
-  GoodbodyClinicRouteChildren,
-)
-
-interface GuidesRouteChildren {
-  GuidesSlugRoute: typeof GuidesSlugRoute
-}
-
-const GuidesRouteChildren: GuidesRouteChildren = {
-  GuidesSlugRoute: GuidesSlugRoute,
-}
-
-const GuidesRouteWithChildren =
-  GuidesRoute._addFileChildren(GuidesRouteChildren)
-
-interface LondonHealthCompanyRouteChildren {
-  LondonHealthCompanyTestIdRoute: typeof LondonHealthCompanyTestIdRoute
-}
-
-const LondonHealthCompanyRouteChildren: LondonHealthCompanyRouteChildren = {
-  LondonHealthCompanyTestIdRoute: LondonHealthCompanyTestIdRoute,
-}
-
-const LondonHealthCompanyRouteWithChildren =
-  LondonHealthCompanyRoute._addFileChildren(LondonHealthCompanyRouteChildren)
-
-interface LondonMedicalLaboratoryRouteChildren {
-  LondonMedicalLaboratoryTestIdRoute: typeof LondonMedicalLaboratoryTestIdRoute
-}
-
-const LondonMedicalLaboratoryRouteChildren: LondonMedicalLaboratoryRouteChildren =
-  {
-    LondonMedicalLaboratoryTestIdRoute: LondonMedicalLaboratoryTestIdRoute,
-  }
-
-const LondonMedicalLaboratoryRouteWithChildren =
-  LondonMedicalLaboratoryRoute._addFileChildren(
-    LondonMedicalLaboratoryRouteChildren,
-  )
-
-interface MedicalDiagnosisRouteChildren {
-  MedicalDiagnosisTestIdRoute: typeof MedicalDiagnosisTestIdRoute
-}
-
-const MedicalDiagnosisRouteChildren: MedicalDiagnosisRouteChildren = {
-  MedicalDiagnosisTestIdRoute: MedicalDiagnosisTestIdRoute,
-}
-
-const MedicalDiagnosisRouteWithChildren =
-  MedicalDiagnosisRoute._addFileChildren(MedicalDiagnosisRouteChildren)
-
-interface ProvidersRouteChildren {
-  ProvidersClinilabsRoute: typeof ProvidersClinilabsRoute
-  ProvidersCompareRoute: typeof ProvidersCompareRoute
-  ProvidersGoodbodyClinicRoute: typeof ProvidersGoodbodyClinicRoute
-  ProvidersLolaHealthRoute: typeof ProvidersLolaHealthRoute
-  ProvidersLondonHealthCompanyRoute: typeof ProvidersLondonHealthCompanyRoute
-  ProvidersLondonMedicalLaboratoryRoute: typeof ProvidersLondonMedicalLaboratoryRoute
-  ProvidersMedicalDiagnosisRoute: typeof ProvidersMedicalDiagnosisRoute
-  ProvidersMedichecksRoute: typeof ProvidersMedichecksRoute
-  ProvidersRandoxRoute: typeof ProvidersRandoxRoute
-  ProvidersThrivaRoute: typeof ProvidersThrivaRoute
-}
-
-const ProvidersRouteChildren: ProvidersRouteChildren = {
-  ProvidersClinilabsRoute: ProvidersClinilabsRoute,
-  ProvidersCompareRoute: ProvidersCompareRoute,
-  ProvidersGoodbodyClinicRoute: ProvidersGoodbodyClinicRoute,
-  ProvidersLolaHealthRoute: ProvidersLolaHealthRoute,
-  ProvidersLondonHealthCompanyRoute: ProvidersLondonHealthCompanyRoute,
-  ProvidersLondonMedicalLaboratoryRoute: ProvidersLondonMedicalLaboratoryRoute,
-  ProvidersMedicalDiagnosisRoute: ProvidersMedicalDiagnosisRoute,
-  ProvidersMedichecksRoute: ProvidersMedichecksRoute,
-  ProvidersRandoxRoute: ProvidersRandoxRoute,
-  ProvidersThrivaRoute: ProvidersThrivaRoute,
-}
-
-const ProvidersRouteWithChildren = ProvidersRoute._addFileChildren(
-  ProvidersRouteChildren,
-)
-
-interface ProviderProviderIdTestsRouteChildren {
-  ProviderProviderIdTestsTestIdRoute: typeof ProviderProviderIdTestsTestIdRoute
-}
-
-const ProviderProviderIdTestsRouteChildren: ProviderProviderIdTestsRouteChildren =
-  {
-    ProviderProviderIdTestsTestIdRoute: ProviderProviderIdTestsTestIdRoute,
-  }
-
-const ProviderProviderIdTestsRouteWithChildren =
-  ProviderProviderIdTestsRoute._addFileChildren(
-    ProviderProviderIdTestsRouteChildren,
-  )
-
-interface ProviderProviderIdRouteChildren {
-  ProviderProviderIdTestsRoute: typeof ProviderProviderIdTestsRouteWithChildren
-}
-
-const ProviderProviderIdRouteChildren: ProviderProviderIdRouteChildren = {
-  ProviderProviderIdTestsRoute: ProviderProviderIdTestsRouteWithChildren,
-}
-
-const ProviderProviderIdRouteWithChildren =
-  ProviderProviderIdRoute._addFileChildren(ProviderProviderIdRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRouteWithChildren,
   AccessibilityRoute: AccessibilityRoute,
   AffiliateDisclosureRoute: AffiliateDisclosureRoute,
   AssistedTestFinderRoute: AssistedTestFinderRoute,
@@ -3174,17 +2993,13 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   BiomarkerDatabaseRoute: BiomarkerDatabaseRoute,
   BiomarkersRoute: BiomarkersRoute,
-  BlogRoute: BlogRouteWithChildren,
   BloodTestAnalysisRoute: BloodTestAnalysisRoute,
   CancerBiomarkersReferenceRoute: CancerBiomarkersReferenceRoute,
   CancerScreeningCompareRoute: CancerScreeningCompareRoute,
-  CategoryRoute: CategoryRouteWithChildren,
-  ClinilabsRoute: ClinilabsRouteWithChildren,
   CompareRoute: CompareRouteWithChildren,
   ComplaintsRoute: ComplaintsRoute,
   ConditionsRoute: ConditionsRoute,
   ContactRoute: ContactRoute,
-  ControlRoute: ControlRouteWithChildren,
   CookiesRoute: CookiesRoute,
   DashboardRoute: DashboardRoute,
   FairTradingRoute: FairTradingRoute,
@@ -3192,9 +3007,6 @@ const rootRouteChildren: RootRouteChildren = {
   FeedbackRoute: FeedbackRoute,
   FertilityTestsRoute: FertilityTestsRoute,
   FindClinicRoute: FindClinicRoute,
-  FindTestRoute: FindTestRouteWithChildren,
-  GoodbodyClinicRoute: GoodbodyClinicRouteWithChildren,
-  GuidesRoute: GuidesRouteWithChildren,
   HealthBlogRoute: HealthBlogRoute,
   HealthDashboardRoute: HealthDashboardRoute,
   HiddenGapDetectorRoute: HiddenGapDetectorRoute,
@@ -3202,9 +3014,6 @@ const rootRouteChildren: RootRouteChildren = {
   HowItWorksRoute: HowItWorksRoute,
   HowWeRankRoute: HowWeRankRoute,
   LegalRoute: LegalRoute,
-  LondonHealthCompanyRoute: LondonHealthCompanyRouteWithChildren,
-  LondonMedicalLaboratoryRoute: LondonMedicalLaboratoryRouteWithChildren,
-  MedicalDiagnosisRoute: MedicalDiagnosisRouteWithChildren,
   MensHealthRoute: MensHealthRoute,
   ModernSlaveryRoute: ModernSlaveryRoute,
   MostPopularTestsRoute: MostPopularTestsRoute,
@@ -3213,7 +3022,6 @@ const rootRouteChildren: RootRouteChildren = {
   PopularTestsRoute: PopularTestsRoute,
   PortalRoute: PortalRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
-  ProvidersRoute: ProvidersRouteWithChildren,
   QuizRoute: QuizRoute,
   RecommendationsRoute: RecommendationsRoute,
   ResetPasswordRoute: ResetPasswordRoute,
@@ -3229,6 +3037,7 @@ const rootRouteChildren: RootRouteChildren = {
   TrustedProvidersRoute: TrustedProvidersRoute,
   WellnessRoute: WellnessRoute,
   WomensHealthRoute: WomensHealthRoute,
+  AboutMedicalReviewRoute: AboutMedicalReviewRoute,
   AdminAlertRoutingRoute: AdminAlertRoutingRoute,
   AdminAuditConsoleRoute: AdminAuditConsoleRoute,
   AdminBiomarkerAuditRoute: AdminBiomarkerAuditRoute,
@@ -3249,11 +3058,35 @@ const rootRouteChildren: RootRouteChildren = {
   AdminTestDashboardRoute: AdminTestDashboardRoute,
   AdminTestMapperRoute: AdminTestMapperRoute,
   AdminTestUploadRoute: AdminTestUploadRoute,
+  BlogFerritinVsIronComparisonGuideRoute:
+    BlogFerritinVsIronComparisonGuideRoute,
+  BlogPrivateBloodTestCostGuideRoute: BlogPrivateBloodTestCostGuideRoute,
+  BlogTestosteroneLevelsByAgeRoute: BlogTestosteroneLevelsByAgeRoute,
+  BlogTotalVsFreeTestosteroneRoute: BlogTotalVsFreeTestosteroneRoute,
+  CategorySlugRoute: CategorySlugRoute,
+  ClinilabsTestIdRoute: ClinilabsTestIdRoute,
+  ControlSectionRoute: ControlSectionRoute,
+  FindTestCompareRoute: FindTestCompareRoute,
+  FindTestRecommendationsRoute: FindTestRecommendationsRoute,
+  GoodbodyClinicTestIdRoute: GoodbodyClinicTestIdRoute,
   GoodbodyTestIdRoute: GoodbodyTestIdRoute,
+  GuidesSlugRoute: GuidesSlugRoute,
   LolaHealthTestIdRoute: LolaHealthTestIdRoute,
+  LondonHealthCompanyTestIdRoute: LondonHealthCompanyTestIdRoute,
+  LondonMedicalLaboratoryTestIdRoute: LondonMedicalLaboratoryTestIdRoute,
+  MedicalDiagnosisTestIdRoute: MedicalDiagnosisTestIdRoute,
   MedichecksTestIdRoute: MedichecksTestIdRoute,
   MedichecksMensHealthRoute: MedichecksMensHealthRoute,
-  ProviderProviderIdRoute: ProviderProviderIdRouteWithChildren,
+  ProvidersClinilabsRoute: ProvidersClinilabsRoute,
+  ProvidersCompareRoute: ProvidersCompareRoute,
+  ProvidersGoodbodyClinicRoute: ProvidersGoodbodyClinicRoute,
+  ProvidersLolaHealthRoute: ProvidersLolaHealthRoute,
+  ProvidersLondonHealthCompanyRoute: ProvidersLondonHealthCompanyRoute,
+  ProvidersLondonMedicalLaboratoryRoute: ProvidersLondonMedicalLaboratoryRoute,
+  ProvidersMedicalDiagnosisRoute: ProvidersMedicalDiagnosisRoute,
+  ProvidersMedichecksRoute: ProvidersMedichecksRoute,
+  ProvidersRandoxRoute: ProvidersRandoxRoute,
+  ProvidersThrivaRoute: ProvidersThrivaRoute,
   RandoxHealthTestIdRoute: RandoxHealthTestIdRoute,
   RandoxTestIdRoute: RandoxTestIdRoute,
   TestFemaleHormonesRoute: TestFemaleHormonesRoute,
@@ -3273,11 +3106,26 @@ const rootRouteChildren: RootRouteChildren = {
   TestsVitaminsRoute: TestsVitaminsRoute,
   TestsWomensHealthRoute: TestsWomensHealthRoute,
   ThrivaTestIdRoute: ThrivaTestIdRoute,
+  AboutIndexRoute: AboutIndexRoute,
+  BlogIndexRoute: BlogIndexRoute,
+  CategoryIndexRoute: CategoryIndexRoute,
+  ClinilabsIndexRoute: ClinilabsIndexRoute,
+  ControlIndexRoute: ControlIndexRoute,
+  FindTestIndexRoute: FindTestIndexRoute,
+  GoodbodyClinicIndexRoute: GoodbodyClinicIndexRoute,
+  GuidesIndexRoute: GuidesIndexRoute,
   LolaHealthIndexRoute: LolaHealthIndexRoute,
+  LondonHealthCompanyIndexRoute: LondonHealthCompanyIndexRoute,
+  LondonMedicalLaboratoryIndexRoute: LondonMedicalLaboratoryIndexRoute,
+  MedicalDiagnosisIndexRoute: MedicalDiagnosisIndexRoute,
   MedichecksIndexRoute: MedichecksIndexRoute,
+  ProvidersIndexRoute: ProvidersIndexRoute,
   RandoxIndexRoute: RandoxIndexRoute,
   ThrivaIndexRoute: ThrivaIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
+  ProviderProviderIdIndexRoute: ProviderProviderIdIndexRoute,
+  ProviderProviderIdTestsTestIdRoute: ProviderProviderIdTestsTestIdRoute,
+  ProviderProviderIdTestsIndexRoute: ProviderProviderIdTestsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

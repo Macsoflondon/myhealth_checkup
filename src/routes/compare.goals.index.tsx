@@ -4,7 +4,7 @@ import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 
 const CompareByGoalPage = lazy(() => import("@/pages/CompareByGoalPage"));
 
-export const Route = createFileRoute("/compare/goals")({
+export const Route = createFileRoute("/compare/goals/")({
   head: () =>
     buildRouteHead({
       title: "Compare Blood Tests by Health Goal",

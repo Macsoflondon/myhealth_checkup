@@ -4,7 +4,7 @@ import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 
 const AssistedTestFinderPage = lazy(() => import("@/pages/AssistedTestFinderPage"));
 
-export const Route = createFileRoute("/find-test")({
+export const Route = createFileRoute("/find-test/")({
   head: () =>
     buildRouteHead({
       title: "AI Health Test Finder | myhealth checkup",

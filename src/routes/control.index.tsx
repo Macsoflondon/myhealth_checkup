@@ -5,7 +5,7 @@ import { AdminShell } from "@/components/admin/AdminShell";
 
 const ControlPage = lazy(() => import("@/pages/ControlPage"));
 
-export const Route = createFileRoute("/control")({
+export const Route = createFileRoute("/control/")({
   component: () => (
     <AdminRoute>
       <AdminShell>
