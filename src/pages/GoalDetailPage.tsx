@@ -24,22 +24,14 @@ const GoalDetailPage = () => {
   // soft-404 and dilutes crawl budget.
   if (!goal) return <NotFound />;
 
-  const pageTitle = `Blood Test for ${goal.name} — Compare UK Private Tests | myhealth checkup`;
   const pageUrl = `https://myhealthcheckup.co.uk/compare/goals/${goal.slug}`;
 
   return (
     <MainLayout mainClassName="flex-1 bg-white">
+      {/* Title, description, canonical and Open Graph live in the route head
+          (src/routes/compare.goals.$goalSlug.tsx) so every compare page ships
+          the same metadata shape. Only structured data is emitted here. */}
       <Helmet>
-        <title>{pageTitle}</title>
-        <meta
-          name="description"
-          content={`Compare blood tests for ${goal.name.toLowerCase()}. ${goal.shortDescription}. See recommended panels, key biomarkers, and prices from accredited UK providers.`}
-        />
-        <link rel="canonical" href={pageUrl} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={`Compare blood tests for ${goal.name.toLowerCase()}.`} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={pageUrl} />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
