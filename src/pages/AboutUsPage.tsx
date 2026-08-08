@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import PageBanner from "@/components/sections/PageBanner";
+import { StandardPageHero } from "@/components/layout/StandardPageHero";
 
 const AboutUsPage = () => {
   return (
