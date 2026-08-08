@@ -34,7 +34,7 @@ const BiomarkerCard = ({ biomarker, isExpanded, onToggle }: any) => {
         <div style={{ width: 44, height: 44, borderRadius: 12, background: COLORS.accentLight, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>{biomarker.icon}</div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-            <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, color: COLORS.navy, fontSize: 16 }}>{biomarker.name}</span>
+            <span style={{ fontFamily: "Montserrat, 'Helvetica Neue', sans-serif", fontWeight: 700, color: COLORS.navy, fontSize: 16 }}>{biomarker.name}</span>
             <span style={{ background: COLORS.navy + "12", color: COLORS.navy, borderRadius: 6, padding: "2px 8px", fontSize: 11, fontWeight: 800 }}>{biomarker.abbr}</span>
           </div>
           <div style={{ color: COLORS.muted, fontSize: 13, marginTop: 3 }}>{biomarker.category} · {biomarker.unit}</div>
@@ -220,7 +220,7 @@ export default function BiomarkerLibraryUI() {
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20, paddingBottom: 12, borderBottom: `2px solid ${COLORS.accent}30` }}>
               <div style={{ width: 40, height: 40, borderRadius: 10, background: COLORS.accentLight, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>{(categoryIcons as any)[category]}</div>
               <div>
-                <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", color: COLORS.navy, fontSize: "clamp(18px,3vw,26px)", fontWeight: 700 }}>{category}</h2>
+                <h2 style={{ fontFamily: "Montserrat, 'Helvetica Neue', sans-serif", color: COLORS.navy, fontSize: "clamp(18px,3vw,26px)", fontWeight: 700 }}>{category}</h2>
                 <span style={{ color: COLORS.muted, fontSize: 13 }}>{items.length} biomarker{items.length > 1 ? "s" : ""}</span>
               </div>
             </div>
@@ -232,7 +232,7 @@ export default function BiomarkerLibraryUI() {
         {filtered.length === 0 && (
           <div style={{ textAlign: "center", padding: "80px 20px" }}>
             <div style={{ fontSize: 56, marginBottom: 16 }}>🔬</div>
-            <h3 style={{ fontFamily: "'Playfair Display',serif", color: COLORS.navy, fontSize: 22, marginBottom: 8 }}>No biomarkers found</h3>
+            <h3 style={{ fontFamily: "Montserrat, 'Helvetica Neue', sans-serif", color: COLORS.navy, fontSize: 22, marginBottom: 8 }}>No biomarkers found</h3>
             <button onClick={() => { setSearchQuery(""); setSelectedCategory("All"); }} style={{ marginTop: 20, background: COLORS.accent, color: "#fff", border: "none", borderRadius: 10, padding: "12px 24px", fontWeight: 700, cursor: "pointer" }}>Reset Filters</button>
           </div>
         )}

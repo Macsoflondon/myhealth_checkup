@@ -22,7 +22,7 @@ const SLUG_LABELS: Record<string, string> = {
   provider: "Provider",
   "health-resource-hub": "Health Resource Hub",
   blog: "Health Resource Hub",
-  "biomarker-database": "Biomarker Library",
+  "biomarker-database": "Complete Biomarker Reference Library",
   "cancer-screening": "Cancer Screening",
   "cancer-screening-compare": "Cancer Screening Compare",
   "cancer-biomarkers-reference": "Cancer Biomarkers",

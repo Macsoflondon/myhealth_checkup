@@ -7,7 +7,7 @@ const BiomarkerDatabasePage = lazy(() => import("@/pages/BiomarkerDatabasePage")
 export const Route = createFileRoute("/biomarker-database")({
   head: () =>
     buildRouteHead({
-      title: "Biomarker Library | myhealth checkup",
+      title: "Complete Biomarker Reference Library | myhealth checkup",
       description: "A reference library of the biomarkers measured by UK private blood tests, what each one indicates and which panels include it.",
       path: "/biomarker-database",
     }),
