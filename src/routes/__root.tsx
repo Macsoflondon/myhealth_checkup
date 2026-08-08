@@ -78,11 +78,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1.0" },
-      { title: "Compare UK Private Blood Tests | myhealth checkup" },
+      { title: "Compare Private Blood Tests & Health Checks UK | myhealth checkup" },
       {
         name: "description",
         content:
-          "myhealth checkup connects you with trusted UK providers for clinical-grade health tests, making proactive healthcare simple, accessible and reliable.",
+          "Compare private blood tests and health checks from UKAS-accredited laboratories and CQC-regulated UK clinics. Clear prices, biomarkers and typical turnaround times.",
       },
       { name: "author", content: "MYHEALTHCHECKUP LTD" },
       { name: "robots", content: "index, follow" },
@@ -95,20 +95,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:image:height", content: "630" },
       { property: "og:url", content: "https://myhealthcheckup.co.uk/" },
       { property: "og:site_name", content: "myhealth checkup" },
-      { property: "og:title", content: "Compare UK Private Blood Tests | myhealth checkup" },
+      { property: "og:title", content: "Compare Private Blood Tests & Health Checks UK | myhealth checkup" },
       {
         property: "og:description",
         content:
-          "myhealth checkup connects you with trusted UK providers for clinical-grade health tests, making proactive healthcare simple, accessible and reliable.",
+          "Compare private blood tests and health checks from UKAS-accredited laboratories and CQC-regulated UK clinics. Clear prices, biomarkers and typical turnaround times.",
       },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@myhealthcheckup" },
       { name: "twitter:image", content: "https://myhealthcheckup.co.uk/og-image.png" },
-      { name: "twitter:title", content: "Compare UK Private Blood Tests | myhealth checkup" },
+      { name: "twitter:title", content: "Compare Private Blood Tests & Health Checks UK | myhealth checkup" },
       {
         name: "twitter:description",
         content:
-          "myhealth checkup connects you with trusted UK providers for clinical-grade health tests, making proactive healthcare simple, accessible and reliable.",
+          "Compare private blood tests and health checks from UKAS-accredited laboratories and CQC-regulated UK clinics. Clear prices, biomarkers and typical turnaround times.",
       },
       { name: "theme-color", content: "#081129" },
       { name: "mobile-web-app-capable", content: "yes" },
