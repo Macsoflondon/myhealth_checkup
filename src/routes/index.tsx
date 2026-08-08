@@ -7,9 +7,9 @@ import { buildRouteHead } from "@/lib/seo/route-head";
 export const Route = createFileRoute("/")({
   head: () => {
     const base = buildRouteHead({
-      title: "Compare UK Private Blood Tests | myhealth checkup",
+      title: "Compare Private Blood Tests & Health Checks UK | myhealth checkup",
       description:
-        "Compare prices, biomarkers and turnaround times for UK private blood tests from UKAS-accredited laboratories and CQC-regulated clinics.",
+        "Compare private blood tests and health checks from UKAS-accredited laboratories and CQC-regulated UK clinics. Clear prices, biomarkers and typical turnaround times.",
       path: "/",
     });
 
