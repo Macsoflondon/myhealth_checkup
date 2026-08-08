@@ -79,13 +79,19 @@ const formatDate = (dateStr: string) =>
 
 interface FeaturedCardProps {
   article: BlogArticle;
+  /** Provider images reused across many posts are swapped for varied artwork. */
+  overusedImages: Set<string>;
 }
 
-const FeaturedCard: React.FC<FeaturedCardProps> = ({ article }) => (
+const FeaturedCard: React.FC<FeaturedCardProps> = ({ article, overusedImages }) => (
   <article className="group flex flex-col bg-white rounded-2xl border border-[#e2e8f0] overflow-hidden transition-all duration-200 hover:border-[#22c0d4] hover:shadow-lg hover:-translate-y-0.5">
     <div className="relative aspect-[16/9] overflow-hidden bg-[#f0f4fa]">
       <img
-        src={article.image || fallbackImage(article)}
+        src={
+          article.image && !overusedImages.has(article.image)
+            ? article.image
+            : fallbackImage(article)
+        }
         alt={article.title}
         loading="lazy"
         onError={(e) => {
@@ -94,6 +100,7 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({ article }) => (
 
         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
       />
+
       <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,17,41,0.5)] via-transparent to-transparent" />
       <span
         className="absolute left-3 bottom-3 inline-block rounded-full bg-[#22c0d4] text-white px-2.5 py-1 uppercase"
