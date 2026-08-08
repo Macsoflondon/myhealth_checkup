@@ -84,14 +84,35 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({ article }) => (
 const PAGE_SIZE = 12;
 
 const HealthBlogPage: React.FC = () => {
-  const categories = useMemo(() => getCategories(), []);
+  const { data: liveArticles, isLoading } = useQuery({
+    queryKey: ['provider-blog-posts'],
+    queryFn: () => getAggregatedBlogArticles(),
+    staleTime: 30 * 60 * 1000,
+  });
+
+  const articles: BlogArticle[] = useMemo(
+    () => (liveArticles && liveArticles.length > 0 ? liveArticles : blogArticles),
+    [liveArticles],
+  );
+
+  const categories = useMemo(() => {
+    const set = new Set<string>(['All Articles']);
+    articles.forEach((a) => set.add(a.category));
+    return Array.from(set);
+  }, [articles]);
+
+  const allProviders = useMemo(
+    () => Array.from(new Set(articles.map((a) => a.provider))).sort(),
+    [articles],
+  );
+
   const [activeCategory, setActiveCategory] = useState<string>('All Articles');
-  const [activeProviders, setActiveProviders] = useState<string[]>([...ALL_PROVIDERS]);
+  const [excludedProviders, setExcludedProviders] = useState<string[]>([]);
   const [search, setSearch] = useState('');
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const toggleProvider = (p: string) => {
-    setActiveProviders((prev) =>
+    setExcludedProviders((prev) =>
       prev.includes(p) ? prev.filter((x) => x !== p) : [...prev, p],
     );
     setVisibleCount(PAGE_SIZE);
@@ -99,17 +120,18 @@ const HealthBlogPage: React.FC = () => {
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return blogArticles.filter((a) => {
+    return articles.filter((a) => {
       if (activeCategory !== 'All Articles' && a.category !== activeCategory) return false;
-      if (!activeProviders.includes(a.provider)) return false;
+      if (excludedProviders.includes(a.provider)) return false;
       if (q && !`${a.title} ${a.excerpt}`.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [activeCategory, activeProviders, search]);
+  }, [articles, activeCategory, excludedProviders, search]);
 
   const featured = filtered.slice(0, 3);
   const rest = filtered.slice(3);
   const visibleRest = rest.slice(0, visibleCount);
+
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
