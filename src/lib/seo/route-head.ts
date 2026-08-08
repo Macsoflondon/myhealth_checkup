@@ -33,3 +33,16 @@ export const buildRouteHead = ({ title, description, path, type = "website" }: R
     links: [{ rel: "canonical", href: url }],
   };
 };
+
+/**
+ * Head metadata for private, non-indexable routes (auth, account dashboards).
+ * These are intentionally excluded from sitemap.xml and blocked in robots.txt,
+ * so they also carry an explicit noindex directive.
+ */
+export const buildPrivateRouteHead = (title: string) => ({
+  meta: [
+    { title },
+    { name: "robots", content: "noindex, nofollow" },
+    { name: "googlebot", content: "noindex, nofollow" },
+  ],
+});
