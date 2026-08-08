@@ -159,43 +159,11 @@ export default function BiomarkerLibraryUI() {
   return (
     <div style={{ fontFamily: "'Lato','Helvetica Neue',sans-serif", background: COLORS.lightBg, minHeight: "100vh" }}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700&display=swap');`}</style>
-      <section
-        aria-label="Complete Biomarker Reference Library"
-        className="px-4 sm:px-8 md:px-10 pt-10 sm:pt-12 md:pt-14 pb-11 sm:pb-14"
-        style={{ background: COLORS.navy, position: "relative", overflow: "hidden" }}
-      >
-        <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(6,11,24,0.08) 1px, transparent 0)", backgroundSize: "40px 40px", pointerEvents: "none" }} />
-        <div aria-hidden="true" style={{ position: "absolute", top: "-10%", left: "-5%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(233,30,140,0.05) 0%, transparent 70%)", pointerEvents: "none" }} />
-        <div aria-hidden="true" style={{ position: "absolute", bottom: "10%", right: "-5%", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,212,200,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
-
-        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
-          <div className="flex items-center justify-center gap-3 sm:gap-4">
-            <span aria-hidden="true" className="flex-shrink-0 h-px w-8 sm:w-12" style={{ background: COLORS.pink }} />
-            <h1
-              className="font-bold text-center m-0 text-white text-xl sm:text-2xl md:text-[33px]"
-              style={{ fontFamily: "Montserrat, 'Helvetica Neue', sans-serif", letterSpacing: "0.04em", lineHeight: 1.15, paddingBlock: "0.05em" }}
-            >
-              Complete Biomarker Reference Library
-            </h1>
-            <span aria-hidden="true" className="flex-shrink-0 h-px w-8 sm:w-12" style={{ background: COLORS.pink }} />
-          </div>
-
-          <p className="text-center mx-auto mt-4 text-sm sm:text-base" style={{ color: "rgba(255,255,255,0.78)", maxWidth: 680, lineHeight: 1.6 }}>
-            What every blood test marker means, in plain English and grounded in clinical evidence.
-          </p>
-
-          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-            {[`${biomarkers.length} biomarkers`, `${categories.length - 1} categories`, "Sex-specific ranges", "Clinical tips"].map(stat => (
-              <span key={stat} className="inline-flex items-center gap-2 text-[13px] sm:text-sm font-semibold" style={{ color: "rgba(255,255,255,0.92)" }}>
-                <span aria-hidden="true" style={{ color: COLORS.accent }}>✓</span>
-                {stat}
-              </span>
-            ))}
-          </div>
-
-          <div role="presentation" aria-hidden="true" className="mt-6 sm:mt-7" style={{ height: 3, background: `linear-gradient(90deg, ${COLORS.accent}, ${COLORS.pink}, ${COLORS.accent})`, borderRadius: 2 }} />
-        </div>
-      </section>
+      <StandardPageHero
+        title="Complete Biomarker Reference Library"
+        strapline="What every blood test marker means, in plain English and grounded in clinical evidence."
+        stats={[`${biomarkers.length} biomarkers`, `${categories.length - 1} categories`, "Sex-specific ranges", "Clinical tips"]}
+      />
       <div style={{ background: "#fff", borderBottom: `1px solid ${COLORS.border}`, padding: "16px 24px", position: "sticky", top: 0, zIndex: 100, boxShadow: "0 2px 12px rgba(8,17,41,0.06)" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
           <div style={{ position: "relative", flex: "1 1 220px" }}>
