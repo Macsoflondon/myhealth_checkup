@@ -2,7 +2,7 @@ import { Helmet } from "react-helmet-async";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import PageBanner from "@/components/sections/PageBanner";
+import { StandardPageHero } from "@/components/layout/StandardPageHero";
 
 const AboutUsPage = () => {
   return (
@@ -14,9 +14,9 @@ const AboutUsPage = () => {
 
       <Header />
 
-      <PageBanner
-        title="About myhealth checkup"
-        subtitle="Decision infrastructure for UK private diagnostics."
+      <StandardPageHero
+        title="About Us"
+        strapline="Decision infrastructure for UK private diagnostics."
       />
 
       <main className="flex-1 bg-white">

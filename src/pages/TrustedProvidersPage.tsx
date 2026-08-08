@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import FeaturedProvidersGlass from '@/components/sections/FeaturedProvidersGlass';
+import { StandardPageHero } from '@/components/layout/StandardPageHero';
 
 const TrustedProvidersPage = () => {
   return (
@@ -36,6 +37,11 @@ const TrustedProvidersPage = () => {
       
       <div className="min-h-screen flex flex-col bg-background">
         <Header />
+        <StandardPageHero
+          title="Our Providers"
+          strapline="The UKAS-accredited laboratories and CQC-regulated clinics we compare, with their accreditations shown in full."
+          stats={["UKAS-accredited labs", "CQC regulated", "ISO 15189 where applicable"]}
+        />
         <main className="flex-1">
           <FeaturedProvidersGlass />
         </main>
