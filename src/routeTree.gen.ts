@@ -148,6 +148,7 @@ import { Route as TestsWomensHealthRouteImport } from './routes/tests.womens-hea
 import { Route as ThrivaIndexRouteImport } from './routes/thriva.index'
 import { Route as ThrivaTestIdRouteImport } from './routes/thriva.$testId'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as ApiPublicBlogAggregateRouteImport } from './routes/api/public/blog-aggregate'
 import { Route as CompareGoalsIndexRouteImport } from './routes/compare.goals.index'
 import { Route as CompareGoalsGoalSlugRouteImport } from './routes/compare.goals.$goalSlug'
 import { Route as CompareSymptomsIndexRouteImport } from './routes/compare.symptoms.index'
@@ -864,6 +865,11 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   path: '/.lovable/oauth/consent',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicBlogAggregateRoute = ApiPublicBlogAggregateRouteImport.update({
+  id: '/api/public/blog-aggregate',
+  path: '/api/public/blog-aggregate',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CompareGoalsIndexRoute = CompareGoalsIndexRouteImport.update({
   id: '/goals/',
   path: '/goals/',
@@ -1043,6 +1049,7 @@ export interface FileRoutesByFullPath {
   '/randox/': typeof RandoxIndexRoute
   '/thriva/': typeof ThrivaIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/api/public/blog-aggregate': typeof ApiPublicBlogAggregateRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
   '/compare/goals/': typeof CompareGoalsIndexRoute
@@ -1190,6 +1197,7 @@ export interface FileRoutesByTo {
   '/randox': typeof RandoxIndexRoute
   '/thriva': typeof ThrivaIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/api/public/blog-aggregate': typeof ApiPublicBlogAggregateRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
   '/compare/goals': typeof CompareGoalsIndexRoute
@@ -1339,6 +1347,7 @@ export interface FileRoutesById {
   '/randox/': typeof RandoxIndexRoute
   '/thriva/': typeof ThrivaIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/api/public/blog-aggregate': typeof ApiPublicBlogAggregateRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
   '/compare/goals/': typeof CompareGoalsIndexRoute
@@ -1489,6 +1498,7 @@ export interface FileRouteTypes {
     | '/randox/'
     | '/thriva/'
     | '/.lovable/oauth/consent'
+    | '/api/public/blog-aggregate'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
     | '/compare/goals/'
@@ -1636,6 +1646,7 @@ export interface FileRouteTypes {
     | '/randox'
     | '/thriva'
     | '/.lovable/oauth/consent'
+    | '/api/public/blog-aggregate'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
     | '/compare/goals'
@@ -1784,6 +1795,7 @@ export interface FileRouteTypes {
     | '/randox/'
     | '/thriva/'
     | '/.lovable/oauth/consent'
+    | '/api/public/blog-aggregate'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
     | '/compare/goals/'
@@ -1931,6 +1943,7 @@ export interface RootRouteChildren {
   RandoxIndexRoute: typeof RandoxIndexRoute
   ThrivaIndexRoute: typeof ThrivaIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
+  ApiPublicBlogAggregateRoute: typeof ApiPublicBlogAggregateRoute
   ProviderProviderIdIndexRoute: typeof ProviderProviderIdIndexRoute
   ProviderProviderIdTestsTestIdRoute: typeof ProviderProviderIdTestsTestIdRoute
   ProviderProviderIdTestsIndexRoute: typeof ProviderProviderIdTestsIndexRoute
@@ -2911,6 +2924,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/blog-aggregate': {
+      id: '/api/public/blog-aggregate'
+      path: '/api/public/blog-aggregate'
+      fullPath: '/api/public/blog-aggregate'
+      preLoaderRoute: typeof ApiPublicBlogAggregateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/compare/goals/': {
       id: '/compare/goals/'
       path: '/goals'
@@ -3123,6 +3143,7 @@ const rootRouteChildren: RootRouteChildren = {
   RandoxIndexRoute: RandoxIndexRoute,
   ThrivaIndexRoute: ThrivaIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
+  ApiPublicBlogAggregateRoute: ApiPublicBlogAggregateRoute,
   ProviderProviderIdIndexRoute: ProviderProviderIdIndexRoute,
   ProviderProviderIdTestsTestIdRoute: ProviderProviderIdTestsTestIdRoute,
   ProviderProviderIdTestsIndexRoute: ProviderProviderIdTestsIndexRoute,
