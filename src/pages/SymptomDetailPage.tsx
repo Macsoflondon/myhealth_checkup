@@ -24,22 +24,14 @@ const SymptomDetailPage = () => {
   // soft-404 and dilutes crawl budget.
   if (!symptom) return <NotFound />;
 
-  const pageTitle = `Blood Test for ${symptom.name} — Compare UK Private Tests | myhealth checkup`;
   const pageUrl = `https://myhealthcheckup.co.uk/compare/symptoms/${symptom.slug}`;
 
   return (
     <MainLayout mainClassName="flex-1 bg-white">
+      {/* Title, description, canonical and Open Graph live in the route head
+          (src/routes/compare.symptoms.$symptomSlug.tsx) so every compare page
+          ships the same metadata shape. Only structured data is emitted here. */}
       <Helmet>
-        <title>{pageTitle}</title>
-        <meta
-          name="description"
-          content={`Compare blood tests for ${symptom.name.toLowerCase()}. ${symptom.shortDescription}. See recommended tests, key biomarkers, and prices from accredited UK providers.`}
-        />
-        <link rel="canonical" href={pageUrl} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={`Compare blood tests for ${symptom.name.toLowerCase()}.`} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={pageUrl} />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
