@@ -139,9 +139,11 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     : placement === "hero" ? "mt-0 mx-0" : compact ? "mt-0 mx-0" : isFlush ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
 
 
-  let innerClass = isFlush || stuck ? "rounded-[22px] bg-[#f7f7f8]/95 backdrop-blur-md border border-[#081129]/[0.08] shadow-[0_12px_30px_rgba(8,17,41,0.12)]" : "rounded-t-[22px] rounded-b-none bg-[#f7f7f8] border border-b-0 border-[#081129]/[0.06]";
-  if (compact && !stuck && !isFlush) { innerClass = "rounded-none bg-[#F5F5F5] border-x border-[#081129]/[0.06]"; }
+  // Floating pill-shaped dock: frosted surface, hairline border, layered lift.
+  let innerClass =
+    "mx-auto w-fit max-w-full rounded-full bg-white/85 backdrop-blur-xl border border-white/60 ring-1 ring-[#081129]/[0.06] shadow-[0_2px_6px_rgba(8,17,41,0.06),0_16px_40px_-12px_rgba(8,17,41,0.28)]";
   if (className) { innerClass = `${innerClass} ${className}`; }
+
   return (
     <>
       <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
