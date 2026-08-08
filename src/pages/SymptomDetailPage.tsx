@@ -25,7 +25,6 @@ const SymptomDetailPage = () => {
   // soft-404 and dilutes crawl budget.
   if (!symptom) return <NotFound />;
 
-  const pageUrl = `https://myhealthcheckup.co.uk/compare/symptoms/${symptom.slug}`;
 
   return (
     <MainLayout mainClassName="flex-1 bg-white">

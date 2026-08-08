@@ -25,7 +25,6 @@ const GoalDetailPage = () => {
   // soft-404 and dilutes crawl budget.
   if (!goal) return <NotFound />;
 
-  const pageUrl = `https://myhealthcheckup.co.uk/compare/goals/${goal.slug}`;
 
   return (
     <MainLayout mainClassName="flex-1 bg-white">
