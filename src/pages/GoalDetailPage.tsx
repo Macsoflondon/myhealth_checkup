@@ -52,7 +52,7 @@ const GoalDetailPage = () => {
       </Helmet>
 
       <StandardPageHero
-        title={`Tests for {goal.name}`}
+        title={`Tests for ${goal.name}`}
         strapline={goal.shortDescription}
       />
 
