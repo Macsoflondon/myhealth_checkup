@@ -171,6 +171,20 @@ const HealthBlogPage: React.FC = () => {
     [articles],
   );
 
+  /** Any hero image reused by more than three posts is generic, not editorial. */
+  const overusedImages = useMemo(() => {
+    const counts = new Map<string, number>();
+    articles.forEach((a) => {
+      if (a.image) counts.set(a.image, (counts.get(a.image) ?? 0) + 1);
+    });
+    return new Set(
+      Array.from(counts.entries())
+        .filter(([, count]) => count > 3)
+        .map(([url]) => url),
+    );
+  }, [articles]);
+
+
   const [activeCategory, setActiveCategory] = useState<string>('All Articles');
   const [excludedProviders, setExcludedProviders] = useState<string[]>([]);
   const [search, setSearch] = useState('');
