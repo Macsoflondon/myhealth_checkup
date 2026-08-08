@@ -20,24 +20,40 @@ const heroSlide1Mobile = heroSlide1MobileAsset.url;
 // Above-the-fold: eager
 import HeroMasthead from "@/components/sections/HeroMasthead";
 
-
-
 const PartnersGrid = lazy(() => import("@/components/sections/PartnersGrid"));
-const JourneySimplified = lazy(() => import("@/components/sections/JourneySimplified"));
-const PartnerShowcaseGrid = lazy(() => import("@/components/sections/PartnerShowcaseGrid"));
+const JourneySimplified = lazy(
+  () => import("@/components/sections/JourneySimplified"),
+);
+const PartnerShowcaseGrid = lazy(
+  () => import("@/components/sections/PartnerShowcaseGrid"),
+);
 
-const AccreditedProvidersBar = lazy(() => import("@/components/sections/AccreditedProvidersBar"));
+const AccreditedProvidersBar = lazy(
+  () => import("@/components/sections/AccreditedProvidersBar"),
+);
 
-const TestimonialCarousel = lazy(() => import("@/components/sections/TestimonialCarousel"));
-const DreamHealthShowcase = lazy(() => import("@/components/sections/DreamHealthShowcase"));
-const ClinicAndHelpSection = lazy(() => import("@/components/sections/ClinicAndHelpSection"));
+const TestimonialCarousel = lazy(
+  () => import("@/components/sections/TestimonialCarousel"),
+);
+const DreamHealthShowcase = lazy(
+  () => import("@/components/sections/DreamHealthShowcase"),
+);
+const ClinicAndHelpSection = lazy(
+  () => import("@/components/sections/ClinicAndHelpSection"),
+);
 const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
 
-const StartJourneySection = lazy(() => import("@/components/sections/StartJourneySection"));
+const StartJourneySection = lazy(
+  () => import("@/components/sections/StartJourneySection"),
+);
 
-const NewsletterSection = lazy(() => import("@/components/sections/NewsletterSection"));
+const NewsletterSection = lazy(
+  () => import("@/components/sections/NewsletterSection"),
+);
 
-const SectionFallback = () => <div className="min-h-[200px]" aria-hidden="true" />;
+const SectionFallback = () => (
+  <div className="min-h-[200px]" aria-hidden="true" />
+);
 
 const PartnerShowcaseSkeleton = () => (
   <SectionSkeleton tone="navy" cards={3} minHeight={800} />
@@ -48,7 +64,6 @@ const TestimonialSkeleton = () => (
 const ClinicHelpSkeleton = () => (
   <SectionSkeleton tone="white" cards={2} minHeight={500} />
 );
-
 
 const Index = () => {
   usePerformanceOptimization();
@@ -91,7 +106,15 @@ const Index = () => {
     },
     openingHoursSpecification: {
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ],
       opens: "00:00",
       closes: "23:59",
     },
@@ -133,7 +156,8 @@ const Index = () => {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
-        urlTemplate: "https://myhealthcheckup.co.uk/compare?search={search_term_string}",
+        urlTemplate:
+          "https://myhealthcheckup.co.uk/compare?search={search_term_string}",
       },
       "query-input": "required name=search_term_string",
     },
@@ -166,34 +190,48 @@ const Index = () => {
             content="private blood tests UK, health screening comparison, blood test prices UK, hormone testing, vitamin tests, cancer screening, health MOT UK, at-home blood tests, private health tests comparison"
           />
           <meta property="og:site_name" content="myhealth checkup" />
-          <meta property="og:image" content="https://myhealthcheckup.co.uk/og-image.png" />
+          <meta
+            property="og:image"
+            content="https://myhealthcheckup.co.uk/og-image.png"
+          />
           <meta property="og:locale" content="en_GB" />
 
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:site" content="@myhealthcheckup" />
-          <meta name="twitter:image" content="https://myhealthcheckup.co.uk/og-image.png" />
+          <meta
+            name="twitter:image"
+            content="https://myhealthcheckup.co.uk/og-image.png"
+          />
 
-
-          <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+          <meta
+            name="robots"
+            content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+          />
 
           <link rel="manifest" href="/manifest.json" />
           <meta name="theme-color" content="#22c0d4" />
           <meta name="mobile-web-app-capable" content="yes" />
-          <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+          <meta
+            name="apple-mobile-web-app-status-bar-style"
+            content="default"
+          />
           <meta name="apple-mobile-web-app-title" content="myhealth checkup" />
 
-          <script type="application/ld+json">{JSON.stringify(structuredData)}</script>
-          <script type="application/ld+json">{JSON.stringify(organisationSchema)}</script>
-          <script type="application/ld+json">{JSON.stringify(websiteSchema)}</script>
+          <script type="application/ld+json">
+            {JSON.stringify(structuredData)}
+          </script>
+          <script type="application/ld+json">
+            {JSON.stringify(organisationSchema)}
+          </script>
+          <script type="application/ld+json">
+            {JSON.stringify(websiteSchema)}
+          </script>
         </Helmet>
 
         <div>
           <div className="mt-0 mx-0">
             <HeroMasthead />
           </div>
-
-
-
 
           {/* Accredited standards bar — sits directly under the slogan */}
           <Suspense fallback={<SectionFallback />}>
@@ -210,10 +248,9 @@ const Index = () => {
               <div className="absolute -right-[50px] -top-[60px] w-[260px] h-[260px] rounded-full bg-[#22c0d4]/[0.12]" />
               <div className="absolute right-[120px] -bottom-[110px] w-[240px] h-[240px] rounded-full bg-[#e70d69]/10" />
               <div className="relative">
-                <h2
-                  className="font-extrabold text-[clamp(1.9rem,7.5vw,3rem)] tracking-[-0.02em] leading-[1.15] text-white m-0 font-[Montserrat] break-words max-w-4xl mx-auto mb-8 sm:mb-10"
-                >
-                  Your <span className="text-[#22c0d4]">health</span> is your greatest <span className="text-[#e70d69]">asset.</span>
+                <h2 className="font-extrabold text-[clamp(1.9rem,7.5vw,3rem)] tracking-[-0.02em] leading-[1.15] text-white m-0 font-[Montserrat] break-words max-w-4xl mx-auto mb-8 sm:mb-10">
+                  Your <span className="text-[#22c0d4]">health</span> is your
+                  greatest <span className="text-[#e70d69]">asset.</span>
                 </h2>
 
                 <div className="w-3/4 mx-auto mb-8">
@@ -237,11 +274,15 @@ const Index = () => {
                       style={{ fontFamily: "'Montserrat', sans-serif" }}
                     >
                       Take the Health Quiz
-                      <ArrowRight className="w-5 h-5 shrink-0" aria-hidden="true" />
+                      <ArrowRight
+                        className="w-5 h-5 shrink-0"
+                        aria-hidden="true"
+                      />
                     </Link>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-y-1 gap-x-4 text-white text-xs">
                       <span className="flex items-center gap-1">
-                        <Shield className="w-3 h-3 shrink-0" /> No account required
+                        <Shield className="w-3 h-3 shrink-0" /> No account
+                        required
                       </span>
                       <span className="hidden sm:inline">\u2022</span>
                       <span>Takes 2 minutes</span>
@@ -251,14 +292,13 @@ const Index = () => {
                   </div>
                 </div>
                 <p className="text-white text-base sm:text-lg leading-relaxed text-center max-w-2xl mx-auto">
-                  Answer 6 quick questions and our AI will analyse {activeTestCount.toLocaleString('en-GB')} accredited tests to find your best-matched options — with transparent pricing.
+                  Answer 6 quick questions and our AI will analyse{" "}
+                  {activeTestCount.toLocaleString("en-GB")} accredited tests to
+                  find your best-matched options — with transparent pricing.
                 </p>
               </div>
             </div>
           </section>
-
-
-
 
           <Suspense fallback={<SectionFallback />}>
             <SectionReveal>
@@ -278,8 +318,11 @@ const Index = () => {
             </SectionReveal>
           </Suspense>
 
-
-          <LazyMount minHeight={800} className="bg-brand-navy" fallback={<PartnerShowcaseSkeleton />}>
+          <LazyMount
+            minHeight={800}
+            className="bg-brand-navy"
+            fallback={<PartnerShowcaseSkeleton />}
+          >
             <Suspense fallback={<PartnerShowcaseSkeleton />}>
               <SectionReveal delay={0.1}>
                 <PartnerShowcaseGrid />
@@ -287,7 +330,11 @@ const Index = () => {
             </Suspense>
           </LazyMount>
 
-          <LazyMount minHeight={500} className="bg-brand-navy" fallback={<TestimonialSkeleton />}>
+          <LazyMount
+            minHeight={500}
+            className="bg-brand-navy"
+            fallback={<TestimonialSkeleton />}
+          >
             <Suspense fallback={<TestimonialSkeleton />}>
               <SectionReveal>
                 <TestimonialCarousel />
@@ -295,7 +342,11 @@ const Index = () => {
             </Suspense>
           </LazyMount>
 
-          <LazyMount minHeight={500} className="bg-white" fallback={<ClinicHelpSkeleton />}>
+          <LazyMount
+            minHeight={500}
+            className="bg-white"
+            fallback={<ClinicHelpSkeleton />}
+          >
             <Suspense fallback={<ClinicHelpSkeleton />}>
               <SectionReveal delay={0.1}>
                 <ClinicAndHelpSection />
@@ -304,13 +355,7 @@ const Index = () => {
           </LazyMount>
 
           <div id="comparison-end" aria-hidden="true" />
-
-
-
-
         </div>
-
-
       </MainLayout>
     </ErrorBoundary>
   );
