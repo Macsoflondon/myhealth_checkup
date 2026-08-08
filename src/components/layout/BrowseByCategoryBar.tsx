@@ -140,9 +140,13 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
 
 
   // Floating pill-shaped dock: frosted surface, hairline border, layered lift.
-  let innerClass =
-    "mx-auto w-fit max-w-full rounded-full bg-white/85 backdrop-blur-xl border border-white/60 ring-1 ring-[#081129]/[0.06] shadow-[0_2px_6px_rgba(8,17,41,0.06),0_16px_40px_-12px_rgba(8,17,41,0.28)]";
+  let innerClass = `mx-auto w-fit max-w-full rounded-full bg-white/85 backdrop-blur-xl border border-white/60 ring-1 ring-[#081129]/[0.06] ${
+    stuck
+      ? "shadow-[0_2px_8px_rgba(8,17,41,0.08),0_20px_48px_-12px_rgba(8,17,41,0.34)]"
+      : "shadow-[0_2px_6px_rgba(8,17,41,0.06),0_16px_40px_-12px_rgba(8,17,41,0.28)]"
+  }`;
   if (className) { innerClass = `${innerClass} ${className}`; }
+
 
   return (
     <>
