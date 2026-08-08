@@ -9,8 +9,65 @@ import { blogArticles } from '@/data/blogArticles';
 import { getAggregatedBlogArticles } from '@/lib/blog/blog.functions';
 import type { BlogArticle } from '@/types/blog.types';
 
-const FALLBACK_IMAGE =
-  'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80';
+/**
+ * Category-keyed fallbacks so articles without a provider hero image do not all
+ * collapse onto one photograph.
+ */
+const CATEGORY_IMAGES: Record<string, readonly string[]> = {
+  'Heart Health': [
+    'https://images.unsplash.com/photo-1628348070889-cb656235b4eb?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?auto=format&fit=crop&w=1200&q=80',
+  ],
+  Hormones: [
+    'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?auto=format&fit=crop&w=1200&q=80',
+  ],
+  Nutrition: [
+    'https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=80',
+  ],
+  Vitamins: [
+    'https://images.unsplash.com/photo-1550572017-edd951aa8f72?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1607619056574-7b8d3ee536b2?auto=format&fit=crop&w=1200&q=80',
+  ],
+  'Cancer Screening': [
+    'https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1631815589968-fdb09a223b1e?auto=format&fit=crop&w=1200&q=80',
+  ],
+  Thyroid: [
+    'https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1200&q=80',
+  ],
+  'Gut Health': [
+    'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1543353071-873f17a7a088?auto=format&fit=crop&w=1200&q=80',
+  ],
+  Diabetes: [
+    'https://images.unsplash.com/photo-1576671081837-49000212a370?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1595079676339-1534801ad6cf?auto=format&fit=crop&w=1200&q=80',
+  ],
+  'Mental Health': [
+    'https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80',
+  ],
+  Wellness: [
+    'https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1200&q=80',
+    'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=1200&q=80',
+  ],
+};
+
+const DEFAULT_IMAGES = CATEGORY_IMAGES['Wellness'] ?? [];
+
+/** Stable per-article pick so the same card keeps the same fallback. */
+const fallbackImage = (article: Pick<BlogArticle, 'category' | 'title' | 'url'>): string => {
+  const pool = CATEGORY_IMAGES[article.category] ?? DEFAULT_IMAGES;
+  const key = `${article.url}${article.title}`;
+  let hash = 0;
+  for (let i = 0; i < key.length; i += 1) hash = (hash * 31 + key.charCodeAt(i)) >>> 0;
+  return pool[hash % pool.length] ?? DEFAULT_IMAGES[0] ?? '';
+};
+
 
 
 const formatDate = (dateStr: string) =>
@@ -22,20 +79,28 @@ const formatDate = (dateStr: string) =>
 
 interface FeaturedCardProps {
   article: BlogArticle;
+  /** Provider images reused across many posts are swapped for varied artwork. */
+  overusedImages: Set<string>;
 }
 
-const FeaturedCard: React.FC<FeaturedCardProps> = ({ article }) => (
+const FeaturedCard: React.FC<FeaturedCardProps> = ({ article, overusedImages }) => (
   <article className="group flex flex-col bg-white rounded-2xl border border-[#e2e8f0] overflow-hidden transition-all duration-200 hover:border-[#22c0d4] hover:shadow-lg hover:-translate-y-0.5">
     <div className="relative aspect-[16/9] overflow-hidden bg-[#f0f4fa]">
       <img
-        src={article.image || FALLBACK_IMAGE}
+        src={
+          article.image && !overusedImages.has(article.image)
+            ? article.image
+            : fallbackImage(article)
+        }
         alt={article.title}
         loading="lazy"
         onError={(e) => {
-          (e.currentTarget as HTMLImageElement).src = FALLBACK_IMAGE;
+          (e.currentTarget as HTMLImageElement).src = fallbackImage(article);
         }}
+
         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
       />
+
       <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,17,41,0.5)] via-transparent to-transparent" />
       <span
         className="absolute left-3 bottom-3 inline-block rounded-full bg-[#22c0d4] text-white px-2.5 py-1 uppercase"
@@ -105,6 +170,20 @@ const HealthBlogPage: React.FC = () => {
     () => Array.from(new Set(articles.map((a) => a.provider))).sort(),
     [articles],
   );
+
+  /** Any hero image reused by more than three posts is generic, not editorial. */
+  const overusedImages = useMemo(() => {
+    const counts = new Map<string, number>();
+    articles.forEach((a) => {
+      if (a.image) counts.set(a.image, (counts.get(a.image) ?? 0) + 1);
+    });
+    return new Set(
+      Array.from(counts.entries())
+        .filter(([, count]) => count > 3)
+        .map(([url]) => url),
+    );
+  }, [articles]);
+
 
   const [activeCategory, setActiveCategory] = useState<string>('All Articles');
   const [excludedProviders, setExcludedProviders] = useState<string[]>([]);
@@ -303,7 +382,7 @@ const HealthBlogPage: React.FC = () => {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {featured.map((a) => (
-                  <FeaturedCard key={a.url} article={a} />
+                  <FeaturedCard key={a.url} article={a} overusedImages={overusedImages} />
                 ))}
               </div>
 
@@ -318,7 +397,7 @@ const HealthBlogPage: React.FC = () => {
                   </h2>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {visibleRest.map((a) => (
-                      <FeaturedCard key={a.url} article={a} />
+                      <FeaturedCard key={a.url} article={a} overusedImages={overusedImages} />
                     ))}
                   </div>
                   {visibleCount < rest.length && (
