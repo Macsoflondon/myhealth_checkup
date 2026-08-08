@@ -284,7 +284,7 @@ const HealthBlogPage: React.FC = () => {
             </div>
 
             <p className="text-center mx-auto mt-4 text-sm sm:text-base" style={{ color: 'rgba(255,255,255,0.78)', maxWidth: 680, lineHeight: 1.6 }}>
-              Articles from the diagnostics providers we work with, gathered in one centralized resource hub. Each headline links straight back to the original source, so you can read more about a provider or test directly from them.
+              Articles from the diagnostics providers we work with, gathered in one centralised resource hub. Each headline links straight back to the original source, so you can read more about a provider or test directly from them.
             </p>
 
             <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
