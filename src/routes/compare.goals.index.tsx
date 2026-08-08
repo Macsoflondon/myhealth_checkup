@@ -7,8 +7,9 @@ const CompareByGoalPage = lazy(() => import("@/pages/CompareByGoalPage"));
 export const Route = createFileRoute("/compare/goals/")({
   head: () =>
     buildRouteHead({
-      title: "Compare Blood Tests by Health Goal",
-      description: "Compare private tests by goal: energy, fertility, heart health, hormone balance, longevity and sports performance.",
+      title: "Compare blood tests by goal | myhealth checkup",
+      description:
+        "Compare private blood tests by health goal — energy, fertility, heart health, hormones, longevity and performance — on price, biomarkers and turnaround.",
       path: "/compare/goals",
     }),
   component: CompareByGoalPage,
