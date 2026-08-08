@@ -1,7 +1,7 @@
 import { useParams, Link } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
-import { CategoryStandardHero } from "@/components/category/CategoryStandardHero";
+import { StandardPageHero } from "@/components/layout/StandardPageHero";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -51,37 +51,40 @@ const GoalDetailPage = () => {
         </script>
       </Helmet>
 
-      <CategoryStandardHero pillLabel={`Tests for ${goal.name}`} />
+      <StandardPageHero
+        title={`Tests for ${goal.name}`}
+        strapline={goal.shortDescription}
+      />
 
-      <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-[#08122b] min-h-[60vh]">
+      <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white min-h-[60vh]">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-start gap-4 mb-8">
             <div
-              className="w-14 h-14 rounded-xl flex items-center justify-center text-3xl flex-shrink-0 border border-white/10"
+              className="w-14 h-14 rounded-xl flex items-center justify-center text-3xl flex-shrink-0 border border-[#081129]/10"
               style={{ backgroundColor: `${goal.colorHex}22` }}
             >
               {goal.icon}
             </div>
             <div>
-              <h2 className="text-xl sm:text-2xl font-heading font-bold text-white mb-3">
+              <h2 className="text-xl sm:text-2xl font-heading font-bold text-[#081129] mb-3">
                 Why test for {goal.name.toLowerCase()}?
               </h2>
-              <p className="text-white/90 leading-relaxed">{goal.explanation}</p>
+              <p className="text-[#081129]/80 leading-relaxed">{goal.explanation}</p>
             </div>
           </div>
 
           {/* Recommended tests */}
-          <h2 className="text-xl sm:text-2xl font-heading font-bold text-white mb-5">
+          <h2 className="text-xl sm:text-2xl font-heading font-bold text-[#081129] mb-5">
             Recommended test panels
           </h2>
           <div className="space-y-4 mb-10">
             {goal.recommendedTests.map((test, i) => (
               <div
                 key={i}
-                className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5"
+                className="rounded-2xl border border-[#081129]/10 bg-white shadow-[0_2px_12px_rgba(8,17,41,0.06)] p-5"
               >
                 <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
-                  <h3 className="text-lg font-heading font-bold text-white">{test.name}</h3>
+                  <h3 className="text-lg font-heading font-bold text-[#081129]">{test.name}</h3>
                   <Button
                     asChild
                     size="sm"
@@ -93,13 +96,13 @@ const GoalDetailPage = () => {
                     </Link>
                   </Button>
                 </div>
-                <p className="text-sm text-white/90 mb-3">{test.why}</p>
+                <p className="text-sm text-[#081129]/80 mb-3">{test.why}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {test.keyBiomarkers.map((b) => (
                     <Badge
                       key={b}
                       variant="secondary"
-                      className="text-xs font-normal bg-white/10 text-white/90 border border-white/10 hover:bg-white/15"
+                      className="text-xs font-normal bg-[#081129]/5 text-[#081129]/80 border border-[#081129]/10 hover:bg-[#081129]/10"
                     >
                       {b}
                     </Badge>
@@ -114,8 +117,8 @@ const GoalDetailPage = () => {
             <div className="flex items-start gap-3">
               <Lightbulb className="w-5 h-5 text-[#22c0d4] flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-heading font-semibold text-white mb-1">Top tip</h3>
-                <p className="text-sm text-white/75">{goal.topTip}</p>
+                <h3 className="font-heading font-semibold text-[#081129] mb-1">Top tip</h3>
+                <p className="text-sm text-[#081129]/75">{goal.topTip}</p>
               </div>
             </div>
           </div>
@@ -136,7 +139,7 @@ const GoalDetailPage = () => {
               asChild
               size="lg"
               variant="outline"
-              className="rounded-xl border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
+              className="rounded-xl border-[#081129]/20 bg-transparent text-[#081129] hover:bg-[#081129]/5 hover:text-[#081129]"
             >
               <Link to="/compare/goals">View all goals</Link>
             </Button>

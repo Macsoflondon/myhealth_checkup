@@ -1,7 +1,7 @@
 import { Helmet } from "react-helmet-async";
 import { Link } from "@/lib/router-compat";
 import MainLayout from "@/layouts/MainLayout";
-import { CategoryStandardHero } from "@/components/category/CategoryStandardHero";
+import { StandardPageHero } from "@/components/layout/StandardPageHero";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { ArrowRight, Activity, Shield, Clock } from "lucide-react";
 import { symptomPages } from "@/data/symptomPages";
@@ -28,18 +28,14 @@ const CompareBySymptomPage = () => {
         </script>
       </Helmet>
 
-      <CategoryStandardHero pillLabel="Compare by Symptom" />
+      <StandardPageHero
+        title="Compare by symptom"
+        strapline="Start with what you're experiencing and see the tests and biomarkers commonly used to investigate it."
+        stats={[`${symptomPages.length} symptoms covered`, "UKAS accredited labs"]}
+      />
 
       <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white min-h-[60vh]">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl sm:text-3xl font-heading font-bold text-[#081129] mb-3">
-              What are you experiencing?
-            </h2>
-            <p className="text-[#081129]/80 max-w-2xl mx-auto">
-              Select a symptom to see which blood tests are recommended, what biomarkers to check, and compare prices across providers.
-            </p>
-          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {symptomPages.map((symptom) => (
