@@ -94,7 +94,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
         aria-haspopup={hasDropdown ? "menu" : undefined}
         aria-expanded={hasDropdown ? open : undefined}
         className={`group inline-flex items-center rounded-full no-underline transition-colors duration-200 shrink-0 ${
-          dense ? "gap-1.5 px-3 py-2" : "gap-1.5 px-2.5 py-2 2xl:gap-2 2xl:px-4 2xl:py-2.5"
+          dense ? "gap-1.5 px-2.5 py-2" : "gap-1.5 px-2.5 py-2 2xl:gap-2 2xl:px-4 2xl:py-2.5"
         } ${compact ? "sm:py-2.5" : "sm:py-2.5"} ${
           highlighted ? "" : "hover:bg-[#081129]/[0.055]"
         }`}
@@ -114,7 +114,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
             highlighted ? "font-bold" : "font-semibold"
           } ${
             dense
-              ? "text-[13px] lg:text-[13.5px] tracking-[-0.015em]"
+              ? "text-[12.5px] lg:text-[13px] tracking-[-0.02em]"
               : "text-[11.5px] lg:text-[12px] xl:text-[12px] 2xl:text-[14px] tracking-[-0.015em] 2xl:tracking-normal"
           }`}
           style={{ color: isActiveParent ? PINK : open ? "#127f8e" : "rgba(8,17,41,0.72)" }}
