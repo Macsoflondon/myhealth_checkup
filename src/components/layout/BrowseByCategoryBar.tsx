@@ -28,7 +28,7 @@ const MORE_SECTION_ICONS: Record<string, { Icon: any; color: string }> = {
   "Assisted Test Finder": { Icon: Search, color: "#16a34a" },
   "Compare Tests": { Icon: BarChart2, color: "#f59e0b" },
   "Health Resources Hub": { Icon: BookOpen, color: "#0ea5e9" },
-  "Biomarker Library": { Icon: Library, color: "#8b5cf6" },
+  "Complete Biomarker Reference Library": { Icon: Library, color: "#8b5cf6" },
   "Contact Us": { Icon: Phone, color: PINK },
 };
 export default function BrowseByCategoryBar({ variant = "card", compact = false, placement = "card", className = "" }: { variant?: "card" | "flush"; compact?: boolean; placement?: "card" | "hero" | "straddle"; className?: string; } = {}) {

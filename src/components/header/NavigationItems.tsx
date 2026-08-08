@@ -147,7 +147,7 @@ export const moreNavigationSections = [
     title: "Resources",
     items: [
       { name: "Health Resources Hub", path: "/health-blog" },
-      { name: "Biomarker Library", path: "/biomarker-database" }
+      { name: "Complete Biomarker Reference Library", path: "/biomarker-database" }
     ]
   },
   {

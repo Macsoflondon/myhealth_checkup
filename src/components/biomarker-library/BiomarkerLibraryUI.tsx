@@ -34,7 +34,7 @@ const BiomarkerCard = ({ biomarker, isExpanded, onToggle }: any) => {
         <div style={{ width: 44, height: 44, borderRadius: 12, background: COLORS.accentLight, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>{biomarker.icon}</div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-            <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontWeight: 700, color: COLORS.navy, fontSize: 16 }}>{biomarker.name}</span>
+            <span style={{ fontFamily: "Montserrat, 'Helvetica Neue', sans-serif", fontWeight: 700, color: COLORS.navy, fontSize: 16 }}>{biomarker.name}</span>
             <span style={{ background: COLORS.navy + "12", color: COLORS.navy, borderRadius: 6, padding: "2px 8px", fontSize: 11, fontWeight: 800 }}>{biomarker.abbr}</span>
           </div>
           <div style={{ color: COLORS.muted, fontSize: 13, marginTop: 3 }}>{biomarker.category} · {biomarker.unit}</div>
@@ -158,24 +158,44 @@ export default function BiomarkerLibraryUI() {
   }, [filtered]);
   return (
     <div style={{ fontFamily: "'Lato','Helvetica Neue',sans-serif", background: COLORS.lightBg, minHeight: "100vh" }}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;600;700&display=swap');`}</style>
-      <div style={{ background: `linear-gradient(135deg,${COLORS.navy} 0%,#0d2348 60%,#091a3a 100%)`, padding: "56px 24px 64px" }}>
-        <div style={{ maxWidth: 900, margin: "0 auto" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(34,192,212,0.12)", border: "1px solid rgba(34,192,212,0.25)", borderRadius: 20, padding: "5px 14px", marginBottom: 20 }}>
-            <span style={{ color: COLORS.accent, fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" }}>myhealth checkup · Biomarker Library</span>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700&display=swap');`}</style>
+      <section
+        aria-label="Complete Biomarker Reference Library"
+        className="px-4 sm:px-8 md:px-10 pt-10 sm:pt-12 md:pt-14 pb-11 sm:pb-14"
+        style={{ background: COLORS.navy, position: "relative", overflow: "hidden" }}
+      >
+        <div aria-hidden="true" style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(6,11,24,0.08) 1px, transparent 0)", backgroundSize: "40px 40px", pointerEvents: "none" }} />
+        <div aria-hidden="true" style={{ position: "absolute", top: "-10%", left: "-5%", width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(233,30,140,0.05) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div aria-hidden="true" style={{ position: "absolute", bottom: "10%", right: "-5%", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(0,212,200,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
+
+        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
+          <div className="flex items-center justify-center gap-3 sm:gap-4">
+            <span aria-hidden="true" className="flex-shrink-0 h-px w-8 sm:w-12" style={{ background: COLORS.pink }} />
+            <h1
+              className="font-bold text-center m-0 text-white text-xl sm:text-2xl md:text-[33px]"
+              style={{ fontFamily: "Montserrat, 'Helvetica Neue', sans-serif", letterSpacing: "0.04em", lineHeight: 1.15, paddingBlock: "0.05em" }}
+            >
+              Complete Biomarker Reference Library
+            </h1>
+            <span aria-hidden="true" className="flex-shrink-0 h-px w-8 sm:w-12" style={{ background: COLORS.pink }} />
           </div>
-          <h1 style={{ fontFamily: "'Playfair Display',Georgia,serif", color: "#fff", fontSize: "clamp(28px,5vw,52px)", fontWeight: 700, lineHeight: 1.15, marginBottom: 16 }}>The Complete Biomarker<br /><span style={{ color: COLORS.accent }}>Reference Library</span></h1>
-          <p style={{ color: "#8fa3bf", fontSize: "clamp(14px,2vw,18px)", lineHeight: 1.7, maxWidth: 640, marginBottom: 36 }}>Understand exactly what every blood test marker means — written in plain English, grounded in clinical evidence.</p>
-          <div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
-            {[`${biomarkers.length} Biomarkers`, `${categories.length - 1} Categories`, "Sex-Specific Ranges", "Clinical Tips"].map(stat => (
-              <div key={stat} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <span style={{ color: COLORS.accent, fontSize: 16 }}>✓</span>
-                <span style={{ color: "#c8d8e8", fontSize: 14, fontWeight: 600 }}>{stat}</span>
-              </div>
+
+          <p className="text-center mx-auto mt-4 text-sm sm:text-base" style={{ color: "rgba(255,255,255,0.78)", maxWidth: 680, lineHeight: 1.6 }}>
+            What every blood test marker means, in plain English and grounded in clinical evidence.
+          </p>
+
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+            {[`${biomarkers.length} biomarkers`, `${categories.length - 1} categories`, "Sex-specific ranges", "Clinical tips"].map(stat => (
+              <span key={stat} className="inline-flex items-center gap-2 text-[13px] sm:text-sm font-semibold" style={{ color: "rgba(255,255,255,0.92)" }}>
+                <span aria-hidden="true" style={{ color: COLORS.accent }}>✓</span>
+                {stat}
+              </span>
             ))}
           </div>
+
+          <div role="presentation" aria-hidden="true" className="mt-6 sm:mt-7" style={{ height: 3, background: `linear-gradient(90deg, ${COLORS.accent}, ${COLORS.pink}, ${COLORS.accent})`, borderRadius: 2 }} />
         </div>
-      </div>
+      </section>
       <div style={{ background: "#fff", borderBottom: `1px solid ${COLORS.border}`, padding: "16px 24px", position: "sticky", top: 0, zIndex: 100, boxShadow: "0 2px 12px rgba(8,17,41,0.06)" }}>
         <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
           <div style={{ position: "relative", flex: "1 1 220px" }}>
@@ -200,7 +220,7 @@ export default function BiomarkerLibraryUI() {
             <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20, paddingBottom: 12, borderBottom: `2px solid ${COLORS.accent}30` }}>
               <div style={{ width: 40, height: 40, borderRadius: 10, background: COLORS.accentLight, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>{(categoryIcons as any)[category]}</div>
               <div>
-                <h2 style={{ fontFamily: "'Playfair Display',Georgia,serif", color: COLORS.navy, fontSize: "clamp(18px,3vw,26px)", fontWeight: 700 }}>{category}</h2>
+                <h2 style={{ fontFamily: "Montserrat, 'Helvetica Neue', sans-serif", color: COLORS.navy, fontSize: "clamp(18px,3vw,26px)", fontWeight: 700 }}>{category}</h2>
                 <span style={{ color: COLORS.muted, fontSize: 13 }}>{items.length} biomarker{items.length > 1 ? "s" : ""}</span>
               </div>
             </div>
@@ -212,7 +232,7 @@ export default function BiomarkerLibraryUI() {
         {filtered.length === 0 && (
           <div style={{ textAlign: "center", padding: "80px 20px" }}>
             <div style={{ fontSize: 56, marginBottom: 16 }}>🔬</div>
-            <h3 style={{ fontFamily: "'Playfair Display',serif", color: COLORS.navy, fontSize: 22, marginBottom: 8 }}>No biomarkers found</h3>
+            <h3 style={{ fontFamily: "Montserrat, 'Helvetica Neue', sans-serif", color: COLORS.navy, fontSize: 22, marginBottom: 8 }}>No biomarkers found</h3>
             <button onClick={() => { setSearchQuery(""); setSelectedCategory("All"); }} style={{ marginTop: 20, background: COLORS.accent, color: "#fff", border: "none", borderRadius: 10, padding: "12px 24px", fontWeight: 700, cursor: "pointer" }}>Reset Filters</button>
           </div>
         )}
