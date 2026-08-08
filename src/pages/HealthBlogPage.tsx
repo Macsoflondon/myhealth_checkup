@@ -267,7 +267,6 @@ const HealthBlogPage: React.FC = () => {
           strapline="Articles from the diagnostics providers we work with, gathered in one centralised resource hub. Each headline links straight back to the original source, so you can read more about a provider or test directly from them."
           stats={[`${articles.length} articles`, `${allProviders.length} providers`, `${categories.length - 1} topics`, 'Updated daily']}
         />
-        </section>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
           {/* Category pills */}
