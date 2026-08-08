@@ -3211,6 +3211,57 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_blog_posts: {
+        Row: {
+          category: string
+          created_at: string
+          excerpt: string
+          id: string
+          image_url: string | null
+          last_seen_at: string
+          provider_id: string
+          provider_name: string
+          published_at: string
+          source_type: string
+          source_url: string | null
+          title: string
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          category?: string
+          created_at?: string
+          excerpt?: string
+          id?: string
+          image_url?: string | null
+          last_seen_at?: string
+          provider_id: string
+          provider_name: string
+          published_at: string
+          source_type?: string
+          source_url?: string | null
+          title: string
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          excerpt?: string
+          id?: string
+          image_url?: string | null
+          last_seen_at?: string
+          provider_id?: string
+          provider_name?: string
+          published_at?: string
+          source_type?: string
+          source_url?: string | null
+          title?: string
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
+      }
       provider_catalogue_snapshots: {
         Row: {
           created_at: string
