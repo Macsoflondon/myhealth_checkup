@@ -136,12 +136,19 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
 
   const wrapperClass = useStraddle
     ? straddlePositionClass
-    : placement === "hero" ? "mt-0 mx-0" : compact ? "mt-0 mx-0" : isFlush ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
+    : placement === "hero" ? "mt-0 mx-3 lg:mx-6" : compact ? "mt-0 mx-3 lg:mx-6" : isFlush ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
 
 
-  let innerClass = isFlush || stuck ? "rounded-[22px] bg-[#f7f7f8]/95 backdrop-blur-md border border-[#081129]/[0.08] shadow-[0_12px_30px_rgba(8,17,41,0.12)]" : "rounded-t-[22px] rounded-b-none bg-[#f7f7f8] border border-b-0 border-[#081129]/[0.06]";
-  if (compact && !stuck && !isFlush) { innerClass = "rounded-none bg-[#F5F5F5] border-x border-[#081129]/[0.06]"; }
+
+  // Floating pill-shaped dock: frosted surface, hairline border, layered lift.
+  let innerClass = `mx-auto w-fit max-w-full rounded-full bg-white/85 backdrop-blur-xl border border-white/60 ring-1 ring-[#081129]/[0.06] ${
+    stuck
+      ? "shadow-[0_2px_8px_rgba(8,17,41,0.08),0_20px_48px_-12px_rgba(8,17,41,0.34)]"
+      : "shadow-[0_2px_6px_rgba(8,17,41,0.06),0_16px_40px_-12px_rgba(8,17,41,0.28)]"
+  }`;
   if (className) { innerClass = `${innerClass} ${className}`; }
+
+
   return (
     <>
       <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
@@ -203,15 +210,18 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             data-testid="browse-by-category-bar"
           >
 
-            <div className={`${useStraddle ? "px-1 py-2.5 sm:py-3" : compact ? "px-2.5 py-2.5 sm:px-3.5 sm:py-3" : "px-2.5 sm:px-3.5 py-2.5 sm:py-3"} transition-all duration-300 ${innerClass}`}>
-              <div className={`flex items-center justify-center gap-y-0 flex-nowrap max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${useStraddle ? "gap-x-1" : "gap-x-1 2xl:gap-x-2"}`}>
-                {items.map((item) => {
-                  const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
-                  return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} dense={useStraddle} />;
-                })}
+            <div className={`p-1.5 transition-all duration-300 ${innerClass}`}>
+              <div className="flex items-center gap-1 max-w-full">
+                <div className={`flex items-center justify-start gap-y-0 flex-nowrap min-w-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [mask-image:linear-gradient(to_right,black_calc(100%-20px),transparent)] ${useStraddle ? "gap-x-0" : "gap-x-0.5 2xl:gap-x-1"}`}>
+                  {items.map((item) => {
+                    const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
+                    return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} dense={useStraddle} />;
+                  })}
+                </div>
 
                 <div ref={moreRef} className="relative shrink-0">
-                  <button type="button" onClick={() => setMoreOpen((o) => !o)} className={`group inline-flex items-center rounded-full bg-white border-[1.5px] border-[#081129]/10 transition-all duration-200 hover:-translate-y-0.5 ${useStraddle ? "gap-1 pl-1.5 pr-1.5 py-2" : "gap-0.5 pl-1 pr-1.5 py-2 2xl:gap-2 2xl:pl-2.5 2xl:pr-3"}`}><span className={`rounded-full inline-flex items-center justify-center shrink-0 ${useStraddle ? "w-[19px] h-[19px]" : "w-[19px] h-[19px] 2xl:w-[25px] 2xl:h-[25px]"}`} style={{ background: "rgba(231,13,105,0.1)" }}><MoreHorizontal className={`${useStraddle ? "w-[13px] h-[13px]" : "w-[13px] h-[13px] 2xl:w-[15px] 2xl:h-[15px]"}`} style={{ color: "#e70d69" }} strokeWidth={2} /></span><span className={`font-semibold text-[#081129] font-[Montserrat] whitespace-nowrap ${useStraddle ? "text-[13px] lg:text-[13.5px] tracking-[-0.015em]" : "text-[11.5px] lg:text-[12px] xl:text-[12px] 2xl:text-[15px] tracking-[-0.015em] 2xl:tracking-normal"}`}>More</span><ChevronDown className={`text-[#081129]/60 transition-transform shrink-0 w-[13px] h-[13px] 2xl:w-[15px] 2xl:h-[15px] ${moreOpen ? "rotate-180" : ""}`} /></button>
+                  <button type="button" onClick={() => setMoreOpen((o) => !o)} aria-expanded={moreOpen} className={`group inline-flex items-center rounded-full bg-[#081129] text-white transition-colors duration-200 hover:bg-[#0f1d3f] ${useStraddle ? "gap-1.5 px-3 py-2" : "gap-1.5 px-3 py-2 2xl:gap-2 2xl:px-4 2xl:py-2.5"}`}><MoreHorizontal className={`shrink-0 ${useStraddle ? "w-[15px] h-[15px]" : "w-[15px] h-[15px] 2xl:w-[17px] 2xl:h-[17px]"}`} strokeWidth={2} /><span className={`font-bold font-[Montserrat] whitespace-nowrap ${useStraddle ? "text-[12.5px] lg:text-[13px] tracking-[-0.02em]" : "text-[11.5px] lg:text-[12px] xl:text-[12px] 2xl:text-[14px] tracking-[-0.015em] 2xl:tracking-normal"}`}>More</span><ChevronDown className={`text-white/70 transition-transform duration-300 shrink-0 w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px] ${moreOpen ? "rotate-180" : ""}`} /></button>
+
                   {moreOpen && typeof document !== "undefined" && createPortal(
                     <div ref={moreMenuRef} className="fixed z-[9999]" style={{ top: moreRect ? moreRect.bottom + 8 : 0, right: moreRect ? Math.max(8, window.innerWidth - moreRect.right) : 8 }}>
                       <MoreDropdownMenu sections={moreNavigationSections} onItemClick={() => setMoreOpen(false)} onClose={() => setMoreOpen(false)} />
@@ -222,9 +232,9 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                 {placement !== "hero" && (
                   <div className={`flex items-center shrink-0 ${compact ? "gap-0" : "gap-1"}`}><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><LanguageSwitcher /></div><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><UserMenu /></div></div>
                 )}
-
               </div>
             </div>
+
           </div>
         );
         return useStraddle && anchorEl ? createPortal(desktopBar, anchorEl) : desktopBar;
