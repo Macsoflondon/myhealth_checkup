@@ -114,7 +114,7 @@ export default function HeroMasthead({
               key={`i-${n}`}
               ref={n === 0 ? firstSlideRef : undefined}
               src={s.src}
-              alt={active ? s.label : ""}
+              alt={s.alt}
               aria-hidden={active ? undefined : true}
               width={1920}
               height={1080}
