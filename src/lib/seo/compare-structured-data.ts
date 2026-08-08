@@ -79,7 +79,6 @@ export const buildCompareDetailStructuredData = ({
             ? { "@type": "MedicalSignOrSymptom", name }
             : { "@type": "MedicalCondition", name },
         mainEntity: { "@id": `${pageUrl}#tests` },
-        lastReviewed: undefined,
       },
       {
         "@type": "BreadcrumbList",
