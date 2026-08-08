@@ -211,13 +211,15 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
           >
 
             <div className={`p-1.5 transition-all duration-300 ${innerClass}`}>
-              <div className={`flex items-center justify-start gap-y-0 flex-nowrap max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [mask-image:linear-gradient(to_right,transparent,black_16px,black_calc(100%-16px),transparent)] ${useStraddle ? "gap-x-0.5" : "gap-x-0.5 2xl:gap-x-1"}`}>
-                {items.map((item) => {
-                  const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
-                  return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} dense={useStraddle} />;
-                })}
+              <div className="flex items-center gap-1 max-w-full">
+                <div className={`flex items-center justify-start gap-y-0 flex-nowrap min-w-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [mask-image:linear-gradient(to_right,black_calc(100%-20px),transparent)] ${useStraddle ? "gap-x-0" : "gap-x-0.5 2xl:gap-x-1"}`}>
+                  {items.map((item) => {
+                    const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
+                    return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} dense={useStraddle} />;
+                  })}
+                </div>
 
-                <div ref={moreRef} className="relative shrink-0 ml-1">
+                <div ref={moreRef} className="relative shrink-0">
                   <button type="button" onClick={() => setMoreOpen((o) => !o)} aria-expanded={moreOpen} className={`group inline-flex items-center rounded-full bg-[#081129] text-white transition-colors duration-200 hover:bg-[#0f1d3f] ${useStraddle ? "gap-1.5 px-3 py-2" : "gap-1.5 px-3 py-2 2xl:gap-2 2xl:px-4 2xl:py-2.5"}`}><MoreHorizontal className={`shrink-0 ${useStraddle ? "w-[15px] h-[15px]" : "w-[15px] h-[15px] 2xl:w-[17px] 2xl:h-[17px]"}`} strokeWidth={2} /><span className={`font-bold font-[Montserrat] whitespace-nowrap ${useStraddle ? "text-[12.5px] lg:text-[13px] tracking-[-0.02em]" : "text-[11.5px] lg:text-[12px] xl:text-[12px] 2xl:text-[14px] tracking-[-0.015em] 2xl:tracking-normal"}`}>More</span><ChevronDown className={`text-white/70 transition-transform duration-300 shrink-0 w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px] ${moreOpen ? "rotate-180" : ""}`} /></button>
 
                   {moreOpen && typeof document !== "undefined" && createPortal(
@@ -230,9 +232,9 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                 {placement !== "hero" && (
                   <div className={`flex items-center shrink-0 ${compact ? "gap-0" : "gap-1"}`}><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><LanguageSwitcher /></div><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><UserMenu /></div></div>
                 )}
-
               </div>
             </div>
+
           </div>
         );
         return useStraddle && anchorEl ? createPortal(desktopBar, anchorEl) : desktopBar;
