@@ -14,9 +14,9 @@ const AboutUsPage = () => {
 
       <Header />
 
-      <PageBanner
-        title="About myhealth checkup"
-        subtitle="Decision infrastructure for UK private diagnostics."
+      <StandardPageHero
+        title="About Us"
+        strapline="Decision infrastructure for UK private diagnostics."
       />
 
       <main className="flex-1 bg-white">
