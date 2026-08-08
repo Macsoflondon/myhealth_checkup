@@ -16,7 +16,7 @@ import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
 import { getProviderRating } from "@/constants/providerRatings";
 import { getCategoryPinColor } from "@/data/categoryColors";
 import { getBranding } from "@/data/providerBranding";
-import { CategoryStandardHero } from "@/components/category/CategoryStandardHero";
+import { StandardPageHero } from "@/components/layout/StandardPageHero";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { getCompareHeader } from "@/data/compareCategoryBenefits";
 import { Scale, Shield, Clock, Search } from "lucide-react";
@@ -216,25 +216,28 @@ const CompareTests = () => {
           {(() => {
             const header = getCompareHeader(effectiveCategory);
             return (
-              <CategoryStandardHero pillLabel={header.title} />
+              <StandardPageHero
+                title={isCategoryView ? header.title : "Compare blood tests"}
+                strapline="Compare private blood tests across UK providers by price, biomarkers included, sample method and typical turnaround."
+              />
             );
           })()}
 
           {/* ENTRY POINTS — goal and symptom comparison hubs (hub view only) */}
           {!isCategoryView && (
-            <section className="bg-[#08122b] px-4 sm:px-6 lg:px-12 xl:px-16 pt-12 sm:pt-16">
+            <section className="bg-white px-4 sm:px-6 lg:px-12 xl:px-16 pt-12 sm:pt-16">
               <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                 <Link
                   to="/compare/goals"
-                  className="group block rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5 sm:p-6 transition-all hover:-translate-y-0.5 hover:border-[#22c0d4]/60 hover:bg-white/[0.08]"
+                  className="group block rounded-2xl border border-[#081129]/10 bg-white shadow-[0_2px_12px_rgba(8,17,41,0.06)] p-5 sm:p-6 transition-all hover:-translate-y-0.5 hover:border-[#22c0d4]/60 hover:shadow-[0_8px_24px_rgba(8,17,41,0.10)]"
                 >
                   <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#22c0d4]">
                     Start with an outcome
                   </span>
-                  <h2 className="font-heading text-lg sm:text-xl font-bold text-white mt-2">
+                  <h2 className="font-heading text-lg sm:text-xl font-bold text-[#081129] mt-2">
                     Compare by goal
                   </h2>
-                  <p className="text-sm sm:text-base text-white/90 mt-1.5">
+                  <p className="text-sm sm:text-base text-[#081129]/80 mt-1.5">
                     Know what you want to achieve — longevity, performance, weight loss, prevention —
                     and see which tests get you there.
                   </p>
@@ -246,15 +249,15 @@ const CompareTests = () => {
 
                 <Link
                   to="/compare/symptoms"
-                  className="group block rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5 sm:p-6 transition-all hover:-translate-y-0.5 hover:border-[#e70d69]/60 hover:bg-white/[0.08]"
+                  className="group block rounded-2xl border border-[#081129]/10 bg-white shadow-[0_2px_12px_rgba(8,17,41,0.06)] p-5 sm:p-6 transition-all hover:-translate-y-0.5 hover:border-[#e70d69]/60 hover:shadow-[0_8px_24px_rgba(8,17,41,0.10)]"
                 >
                   <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#e70d69]">
                     Start with how you feel
                   </span>
-                  <h2 className="font-heading text-lg sm:text-xl font-bold text-white mt-2">
+                  <h2 className="font-heading text-lg sm:text-xl font-bold text-[#081129] mt-2">
                     Compare by symptom
                   </h2>
-                  <p className="text-sm sm:text-base text-white/90 mt-1.5">
+                  <p className="text-sm sm:text-base text-[#081129]/80 mt-1.5">
                     Tired, low mood, unexplained weight change — see the tests and biomarkers commonly
                     used to investigate each symptom.
                   </p>
@@ -267,12 +270,12 @@ const CompareTests = () => {
             </section>
           )}
 
-          {/* DARK BAND — category browse grid / search results */}
-          <section className="bg-[#08122b] py-10 sm:py-14 px-4 sm:px-6 lg:px-12 xl:px-16">
+          {/* Category browse grid / search results */}
+          <section className="bg-white py-10 sm:py-14 px-4 sm:px-6 lg:px-12 xl:px-16">
             <div className="max-w-6xl mx-auto">
               {/* Toolbar — live count and search */}
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 sm:mb-8">
-                <p className="text-sm text-white/90">
+                <p className="text-sm text-[#081129]/80">
                   {showLoading
                     ? "Loading tests…"
                     : `${displayTests.length} test${displayTests.length === 1 ? "" : "s"} ${
@@ -281,7 +284,7 @@ const CompareTests = () => {
                 </p>
                 <div className="relative w-full sm:w-72">
                   <Search
-                    className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/78"
+                    className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[#081129]/50"
                     aria-hidden="true"
                   />
                   <input
@@ -292,7 +295,7 @@ const CompareTests = () => {
                     }
                     placeholder="Search tests or providers"
                     aria-label="Search tests"
-                    className="w-full rounded-full border border-white/15 bg-white/5 py-2.5 pl-9 pr-4 text-sm text-white placeholder:text-white/65 focus:border-[#22c0d4] focus:outline-none focus:ring-1 focus:ring-[#22c0d4]"
+                    className="w-full rounded-full border border-[#081129]/15 bg-white py-2.5 pl-9 pr-4 text-sm text-[#081129] placeholder:text-[#081129]/50 focus:border-[#22c0d4] focus:outline-none focus:ring-1 focus:ring-[#22c0d4]"
                   />
                 </div>
               </div>
@@ -300,11 +303,11 @@ const CompareTests = () => {
               {showLoading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                   {Array.from({ length: 8 }).map((_, i) => (
-                    <div key={i} className="h-[420px] bg-white/5 animate-pulse rounded-2xl" />
+                    <div key={i} className="h-[420px] bg-[#081129]/5 animate-pulse rounded-2xl" />
                   ))}
                 </div>
               ) : displayTests.length === 0 ? (
-                <p className="text-center text-sm text-white/78 py-12">
+                <p className="text-center text-sm text-[#081129]/70 py-12">
                   No tests found for this search.
                 </p>
               ) : (
@@ -317,7 +320,7 @@ const CompareTests = () => {
                       <button
                         type="button"
                         onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
-                        className="rounded-full border border-[#22c0d4]/60 px-6 py-2.5 text-sm font-semibold text-[#22c0d4] transition-colors hover:bg-[#22c0d4] hover:text-[#08122b]"
+                        className="rounded-full border border-[#22c0d4]/60 px-6 py-2.5 text-sm font-semibold text-[#0a8fa0] transition-colors hover:bg-[#22c0d4] hover:text-white"
                       >
                         Show more tests ({displayTests.length - visibleCount} remaining)
                       </button>
