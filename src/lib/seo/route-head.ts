@@ -46,3 +46,77 @@ export const buildPrivateRouteHead = (title: string) => ({
     { name: "googlebot", content: "noindex, nofollow" },
   ],
 });
+
+interface ArticleHeadInput extends RouteHeadInput {
+  /** ISO date (YYYY-MM-DD) the article was first published. */
+  readonly datePublished: string;
+  /** ISO date (YYYY-MM-DD) the article was last reviewed. */
+  readonly dateModified?: string;
+}
+
+/**
+ * Head metadata for editorial articles: adds server-rendered Article JSON-LD
+ * on top of the standard per-route tags so rich snippets are crawlable.
+ */
+export const buildArticleHead = ({
+  title,
+  description,
+  path,
+  datePublished,
+  dateModified,
+}: ArticleHeadInput) => {
+  const base = buildRouteHead({ title, description, path, type: "article" });
+  const url = `${SITE_URL}${path}`;
+
+  return {
+    ...base,
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Article",
+          headline: title,
+          description,
+          url,
+          mainEntityOfPage: url,
+          inLanguage: "en-GB",
+          datePublished,
+          dateModified: dateModified ?? datePublished,
+          isAccessibleForFree: true,
+          author: { "@type": "Organization", name: "myhealth checkup" },
+          publisher: { "@type": "Organization", name: "MYHEALTHCHECKUP LTD", url: SITE_URL },
+        }),
+      },
+    ],
+  };
+};
+
+/**
+ * Head metadata for test category pages: adds CollectionPage JSON-LD so search
+ * engines understand the page lists comparable diagnostic products.
+ */
+export const buildCollectionHead = ({ title, description, path }: RouteHeadInput) => {
+  const base = buildRouteHead({ title, description, path });
+  const url = `${SITE_URL}${path}`;
+
+  return {
+    ...base,
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          name: title,
+          description,
+          url,
+          inLanguage: "en-GB",
+          isPartOf: { "@type": "WebSite", name: "myhealth checkup", url: SITE_URL },
+          about: { "@type": "MedicalTest", name: title },
+          provider: { "@type": "Organization", name: "MYHEALTHCHECKUP LTD", url: SITE_URL },
+        }),
+      },
+    ],
+  };
+};

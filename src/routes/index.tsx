@@ -9,7 +9,7 @@ export const Route = createFileRoute("/")({
     const base = buildRouteHead({
       title: "Compare Private Blood Tests & Health Checks UK | myhealth checkup",
       description:
-        "Compare private blood tests and health checks from UKAS-accredited laboratories and CQC-regulated UK clinics. Clear prices, biomarkers and typical turnaround times.",
+        "Compare private blood tests and health checks from UKAS-accredited labs and CQC-regulated UK clinics. Clear prices, biomarkers and turnaround times.",
       path: "/",
     });
 
