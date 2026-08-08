@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { AlertTriangle, ArrowRight, Search, Activity, Shield, Clock } from "lucide-react";
 import { symptomPages } from "@/data/symptomPages";
 import NotFound from "@/pages/NotFound";
+import { buildCompareDetailStructuredData } from "@/lib/seo/compare-structured-data";
 
 const BENEFITS = [
   { icon: Activity, title: "Symptom-led matching", description: "See the tests commonly used to investigate this symptom" },
@@ -24,7 +25,6 @@ const SymptomDetailPage = () => {
   // soft-404 and dilutes crawl budget.
   if (!symptom) return <NotFound />;
 
-  const pageUrl = `https://myhealthcheckup.co.uk/compare/symptoms/${symptom.slug}`;
 
   return (
     <MainLayout mainClassName="flex-1 bg-white">
@@ -33,13 +33,15 @@ const SymptomDetailPage = () => {
           ships the same metadata shape. Only structured data is emitted here. */}
       <Helmet>
         <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "MedicalWebPage",
-            name: `Blood Tests for ${symptom.name}`,
-            description: symptom.clinicalExplanation,
-            url: pageUrl,
-          })}
+          {JSON.stringify(
+            buildCompareDetailStructuredData({
+              kind: "symptom",
+              slug: symptom.slug,
+              name: symptom.name,
+              explanation: symptom.clinicalExplanation,
+              tests: symptom.recommendedTests,
+            }),
+          )}
         </script>
       </Helmet>
 
