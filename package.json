@@ -51,7 +51,7 @@
     "@tailwindcss/vite": "^4.2.1",
     "@tanstack/react-query": "^5.101.1",
     "@tanstack/react-router": "^1.170.18",
-    "@tanstack/react-start": "^1.168.32",
+    "@tanstack/react-start": "^1.168.40",
     "@tanstack/router-plugin": "^1.168.23",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -134,11 +134,13 @@
     "lodash": "^4.18.1",
     "@hono/node-server": "^2.0.12",
     "hono": "^4.12.34",
-    "fast-uri": "^3.1.5"
+    "fast-uri": "^3.1.5",
+    "js-yaml": "^5.2.3"
   },
   "resolutions": {
     "@hono/node-server": "^2.0.12",
     "hono": "^4.12.34",
-    "fast-uri": "^3.1.5"
+    "fast-uri": "^3.1.5",
+    "js-yaml": "^5.2.3"
   }
 }
