@@ -285,14 +285,20 @@ const absoluteUrl = (value: string, base: string): string | null => {
   }
 };
 
+/** Provider logos and placeholder banners are not article imagery. */
+const isGenericImage = (url: string): boolean =>
+  /logo|placeholder|default[-_]?(?:image|banner)|favicon|og[-_]?default/i.test(url);
+
 const applyMeta = (post: AggregatedPost, html: string): void => {
   if (!post.image_url) {
     const image =
       metaFrom(html, "og:image:secure_url") ??
       metaFrom(html, "og:image") ??
       metaFrom(html, "twitter:image");
-    if (image) post.image_url = absoluteUrl(image, post.url);
+    const resolved = image ? absoluteUrl(image, post.url) : null;
+    if (resolved && !isGenericImage(resolved)) post.image_url = resolved;
   }
+
 
   if (post.excerpt.length < 60) {
     const description = cleanSummary(
