@@ -33,10 +33,10 @@ const CompareByGoalPage = () => {
       <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white min-h-[60vh]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
-            <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white mb-3">
+            <h2 className="text-2xl sm:text-3xl font-heading font-bold text-[#081129] mb-3">
               What's your health goal?
             </h2>
-            <p className="text-white/90 max-w-2xl mx-auto">
+            <p className="text-[#081129]/80 max-w-2xl mx-auto">
               Select a goal to see the recommended test panels, key biomarkers, and compare options from trusted providers.
             </p>
           </div>
@@ -44,22 +44,22 @@ const CompareByGoalPage = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {goalPages.map((goal) => (
               <Link key={goal.slug} to={`/compare/goals/${goal.slug}`} className="group block h-full">
-                <div className="h-full rounded-2xl border border-white/10 bg-white/5 backdrop-blur-sm p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22c0d4]/60 hover:bg-white/[0.08]">
+                <div className="h-full rounded-2xl border border-[#081129]/10 bg-white shadow-[0_2px_12px_rgba(8,17,41,0.06)] p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22c0d4]/60 hover:shadow-[0_8px_24px_rgba(8,17,41,0.10)]">
                   <div className="flex items-center gap-3 mb-3">
                     <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl border border-white/10"
+                      className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl border border-[#081129]/10"
                       style={{ backgroundColor: `${goal.colorHex}22` }}
                     >
                       {goal.icon}
                     </div>
                     <div>
-                      <h3 className="text-lg font-heading font-bold text-white group-hover:text-[#22c0d4] transition-colors">
+                      <h3 className="text-lg font-heading font-bold text-[#081129] group-hover:text-[#22c0d4] transition-colors">
                         {goal.name}
                       </h3>
-                      <p className="text-xs text-white/78 mt-0.5">{goal.shortDescription}</p>
+                      <p className="text-xs text-[#081129]/65 mt-0.5">{goal.shortDescription}</p>
                     </div>
                   </div>
-                  <p className="text-sm text-white/90 mb-4 line-clamp-2">
+                  <p className="text-sm text-[#081129]/80 mb-4 line-clamp-2">
                     {goal.explanation.slice(0, 120)}…
                   </p>
                   <span className="flex items-center text-sm font-semibold text-[#22c0d4] group-hover:text-[#e70d69] transition-colors">
