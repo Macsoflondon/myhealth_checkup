@@ -153,29 +153,46 @@ const HealthBlogPage: React.FC = () => {
       </Helmet>
       <Header />
       <main className="flex-grow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-          {/* Header */}
-          <header className="mb-8">
-            <div
-              className="uppercase"
-              style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 12, letterSpacing: '0.12em', color: '#22c0d4', fontWeight: 600 }}
-            >
-              Health Resources
-            </div>
-            <h1
-              className="mt-2"
-              style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 700, color: '#081129', lineHeight: 1.15 }}
-            >
-              <span className="block text-[28px] md:text-[40px]">Expert Health Insights</span>
-            </h1>
-            <p
-              className="mt-3 max-w-2xl"
-              style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 16, color: '#64748b' }}
-            >
-              Evidence-led articles from the UK's most trusted diagnostics providers.
-            </p>
-          </header>
+        {/* Standardised navy hero */}
+        <section
+          aria-label="Health Resource Hub"
+          className="px-4 sm:px-8 md:px-10 pt-10 sm:pt-12 md:pt-14 pb-11 sm:pb-14"
+          style={{ background: '#081129', position: 'relative', overflow: 'hidden' }}
+        >
+          <div aria-hidden="true" style={{ position: 'absolute', inset: 0, backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(6,11,24,0.08) 1px, transparent 0)', backgroundSize: '40px 40px', pointerEvents: 'none' }} />
+          <div aria-hidden="true" style={{ position: 'absolute', top: '-10%', left: '-5%', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle, rgba(233,30,140,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
+          <div aria-hidden="true" style={{ position: 'absolute', bottom: '10%', right: '-5%', width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,212,200,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
+          <div style={{ maxWidth: 1280, margin: '0 auto', position: 'relative' }}>
+            <div className="flex items-center justify-center gap-3 sm:gap-4">
+              <span aria-hidden="true" className="flex-shrink-0 h-px w-8 sm:w-12" style={{ background: '#e70d69' }} />
+              <h1
+                className="font-bold text-center m-0 text-white text-xl sm:text-2xl md:text-[33px]"
+                style={{ fontFamily: "Montserrat, 'Helvetica Neue', sans-serif", letterSpacing: '0.04em', lineHeight: 1.15, paddingBlock: '0.05em' }}
+              >
+                Health Resource Hub
+              </h1>
+              <span aria-hidden="true" className="flex-shrink-0 h-px w-8 sm:w-12" style={{ background: '#e70d69' }} />
+            </div>
+
+            <p className="text-center mx-auto mt-4 text-sm sm:text-base" style={{ color: 'rgba(255,255,255,0.78)', maxWidth: 680, lineHeight: 1.6 }}>
+              Evidence-led articles gathered from the UK diagnostics providers we compare. Every headline links straight back to the original source.
+            </p>
+
+            <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+              {[`${articles.length} articles`, `${allProviders.length} providers`, `${categories.length - 1} topics`, 'Updated daily'].map((stat) => (
+                <span key={stat} className="inline-flex items-center gap-2 text-[13px] sm:text-sm font-semibold" style={{ color: 'rgba(255,255,255,0.92)' }}>
+                  <span aria-hidden="true" style={{ color: '#22c0d4' }}>✓</span>
+                  {stat}
+                </span>
+              ))}
+            </div>
+
+            <div role="presentation" aria-hidden="true" className="mt-6 sm:mt-7" style={{ height: 3, background: 'linear-gradient(90deg, #22c0d4, #e70d69, #22c0d4)', borderRadius: 2 }} />
+          </div>
+        </section>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10">
           {/* Category pills */}
           <div className="flex flex-wrap gap-2 mb-4">
             {categories.map((c) => {
@@ -216,8 +233,8 @@ const HealthBlogPage: React.FC = () => {
             <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 12, color: '#64748b' }}>
               Filter by source:
             </span>
-            {ALL_PROVIDERS.map((p) => {
-              const checked = activeProviders.includes(p);
+            {allProviders.map((p) => {
+              const checked = !excludedProviders.includes(p);
               return (
                 <button
                   key={p}
@@ -236,6 +253,16 @@ const HealthBlogPage: React.FC = () => {
               );
             })}
           </div>
+
+          {isLoading && !liveArticles ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" aria-busy="true">
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="h-72 rounded-2xl border border-[#e2e8f0] bg-[#f8fafc] animate-pulse" />
+              ))}
+            </div>
+          ) : null}
+
+
 
           {filtered.length === 0 ? (
             <div
