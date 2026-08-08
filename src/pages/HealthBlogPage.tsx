@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
+import { StandardPageHero } from "@/components/layout/StandardPageHero";
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';

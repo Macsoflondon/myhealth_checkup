@@ -4,7 +4,7 @@ import { useSearchParams } from '@/lib/router-compat';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
-import PageBanner from '@/components/sections/PageBanner';
+import { StandardPageHero } from '@/components/layout/StandardPageHero';
 import SupportSLA from '@/components/compliance/SupportSLA';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -106,7 +106,7 @@ const ContactPage = () => {
       <Header />
       <main className="flex-grow bg-[#081129] md:bg-white">
         
-        <PageBanner title="You're Never Alone on Your Health Journey" subtitle="Whether you're testing for the first time or proactively monitoring your health, we're here to support you every step of the way." />
+        <StandardPageHero title="Contact Us" strapline="Whether you're testing for the first time or proactively monitoring your health, we're here to support you every step of the way." />
         <div className="container mx-auto px-4 py-12 bg-[primary-on-container]">
           <div className="max-w-6xl mx-auto">
             {/* Row 1: Form + Provider Directory */}
