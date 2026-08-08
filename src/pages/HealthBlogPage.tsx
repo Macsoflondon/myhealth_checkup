@@ -1,16 +1,17 @@
 import React, { useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { Helmet } from 'react-helmet-async';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Search } from 'lucide-react';
-import { blogArticles, getCategories } from '@/data/blogArticles';
+import { blogArticles } from '@/data/blogArticles';
+import { getAggregatedBlogArticles } from '@/lib/blog/blog.functions';
 import type { BlogArticle } from '@/types/blog.types';
 
 const FALLBACK_IMAGE =
   'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80';
 
-const ALL_PROVIDERS = ['Lola Health', 'Medichecks', 'Goodbody Clinic'] as const;
 
 const formatDate = (dateStr: string) =>
   new Date(dateStr).toLocaleDateString('en-GB', {
