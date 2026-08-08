@@ -60,10 +60,14 @@ const assertPageLoads = async (page: Page, href: string): Promise<void> => {
   const response = await page.goto(href, { waitUntil: "domcontentloaded" });
   expect(response?.status(), `${href} returned an error status`).toBeLessThan(400);
 
-  // The app is client-rendered behind lazy routes — wait for the real heading.
-  await expect(page.locator("h1").first(), `${href} rendered no <h1>`).toBeVisible({
-    timeout: 20_000,
-  });
+  // The app is client-rendered behind lazy routes — wait for the real heading
+  // to exist in the DOM (some heroes render it visually hidden).
+  await expect
+    .poll(async () => page.locator("h1").count(), {
+      timeout: 20_000,
+      message: `${href} rendered no <h1>`,
+    })
+    .toBeGreaterThan(0);
 
   const body = (await page.locator("body").innerText()).trim();
   expect(body.length, `${href} rendered almost no content`).toBeGreaterThan(400);
@@ -76,7 +80,7 @@ test.describe("CTA routing", () => {
       test.slow();
 
       await page.goto(screen, { waitUntil: "domcontentloaded" });
-      await expect(page.locator("h1").first()).toBeVisible({ timeout: 20_000 });
+      await expect.poll(async () => page.locator("h1").count(), { timeout: 20_000 }).toBeGreaterThan(0);
 
       const ctas = await collectCtaLinks(page);
       expect(ctas.length, `no CTAs found on ${screen}`).toBeGreaterThan(0);
@@ -104,7 +108,7 @@ test.describe("Key CTA destinations", () => {
       if ((await link.count()) === 0) test.skip(true, `"${label}" not present on ${from}`);
       await link.click();
       await expect(page).toHaveURL(expected);
-      await expect(page.locator("h1").first()).toBeVisible({ timeout: 20_000 });
+      await expect.poll(async () => page.locator("h1").count(), { timeout: 20_000 }).toBeGreaterThan(0);
     });
   }
 });
@@ -121,7 +125,7 @@ test.describe("Provider shortcut redirects", () => {
     test(`${from} redirects to ${to} and loads`, async ({ page }) => {
       await page.goto(from, { waitUntil: "domcontentloaded" });
       await expect(page).toHaveURL(new RegExp(`${to}/?$`));
-      await expect(page.locator("h1").first()).toBeVisible({ timeout: 20_000 });
+      await expect.poll(async () => page.locator("h1").count(), { timeout: 20_000 }).toBeGreaterThan(0);
     });
   }
 });
