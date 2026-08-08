@@ -48,16 +48,16 @@ const SymptomDetailPage = () => {
         strapline={symptom.shortDescription}
       />
 
-      <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white min-h-[60vh]">
+      <section className="py-9 sm:py-14 lg:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white min-h-[60vh]">
         <div className="max-w-4xl mx-auto">
-          <div className="flex items-start gap-4 mb-8">
+          <div className="flex items-start gap-3 sm:gap-4 mb-8">
             <div
-              className="w-14 h-14 rounded-xl flex items-center justify-center text-3xl flex-shrink-0 border border-[#081129]/10"
+              className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-2xl sm:text-3xl shrink-0 border border-[#081129]/10"
               style={{ backgroundColor: `${symptom.colorHex}22` }}
             >
               {symptom.icon}
             </div>
-            <div>
+            <div className="min-w-0">
               <h2 className="text-xl sm:text-2xl font-heading font-bold text-[#081129] mb-3">
                 Why test for {symptom.name.toLowerCase()}?
               </h2>

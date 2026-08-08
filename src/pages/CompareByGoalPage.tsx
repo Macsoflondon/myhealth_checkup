@@ -34,7 +34,7 @@ const CompareByGoalPage = () => {
         stats={[`${goalPages.length} health goals covered`, "UKAS accredited labs"]}
       />
 
-      <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white min-h-[60vh]">
+      <section className="py-9 sm:py-14 lg:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white min-h-[60vh]">
         <div className="max-w-6xl mx-auto">
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
