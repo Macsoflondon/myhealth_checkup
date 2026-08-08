@@ -24,22 +24,14 @@ const GoalDetailPage = () => {
   // soft-404 and dilutes crawl budget.
   if (!goal) return <NotFound />;
 
-  const pageTitle = `Blood Test for ${goal.name} — Compare UK Private Tests | myhealth checkup`;
   const pageUrl = `https://myhealthcheckup.co.uk/compare/goals/${goal.slug}`;
 
   return (
     <MainLayout mainClassName="flex-1 bg-white">
+      {/* Title, description, canonical and Open Graph live in the route head
+          (src/routes/compare.goals.$goalSlug.tsx) so every compare page ships
+          the same metadata shape. Only structured data is emitted here. */}
       <Helmet>
-        <title>{pageTitle}</title>
-        <meta
-          name="description"
-          content={`Compare blood tests for ${goal.name.toLowerCase()}. ${goal.shortDescription}. See recommended panels, key biomarkers, and prices from accredited UK providers.`}
-        />
-        <link rel="canonical" href={pageUrl} />
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={`Compare blood tests for ${goal.name.toLowerCase()}.`} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={pageUrl} />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -56,16 +48,16 @@ const GoalDetailPage = () => {
         strapline={goal.shortDescription}
       />
 
-      <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white min-h-[60vh]">
+      <section className="py-9 sm:py-14 lg:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white min-h-[60vh]">
         <div className="max-w-4xl mx-auto">
-          <div className="flex items-start gap-4 mb-8">
+          <div className="flex items-start gap-3 sm:gap-4 mb-8">
             <div
-              className="w-14 h-14 rounded-xl flex items-center justify-center text-3xl flex-shrink-0 border border-[#081129]/10"
+              className="w-11 h-11 sm:w-14 sm:h-14 rounded-xl flex items-center justify-center text-2xl sm:text-3xl shrink-0 border border-[#081129]/10"
               style={{ backgroundColor: `${goal.colorHex}22` }}
             >
               {goal.icon}
             </div>
-            <div>
+            <div className="min-w-0">
               <h2 className="text-xl sm:text-2xl font-heading font-bold text-[#081129] mb-3">
                 Why test for {goal.name.toLowerCase()}?
               </h2>

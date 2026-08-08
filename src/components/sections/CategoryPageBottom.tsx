@@ -21,7 +21,7 @@ const CategoryPageBottom = ({
   quizLink = "/find-test",
 }: CategoryPageBottomProps) => {
   return (
-    <section style={{ background: "#ffffff", padding: "48px 40px" }}>
+    <section className="bg-white px-4 sm:px-8 lg:px-10 py-10 sm:py-12">
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
         <h2 className="font-heading text-center text-2xl sm:text-3xl font-bold text-[#081129] mb-8">
           {benefitsTitle}
@@ -43,7 +43,7 @@ const CategoryPageBottom = ({
                   className="h-full text-center sm:text-left"
                   style={{
                     background: "#0a1120",
-                    padding: "24px",
+                    padding: "20px",
                     borderRadius: "13px",
                   }}
                 >

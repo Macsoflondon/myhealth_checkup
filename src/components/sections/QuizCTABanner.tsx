@@ -22,14 +22,13 @@ export const QuizCTABanner = ({ quizLink = "/find-test", className }: QuizCTABan
       }}
     >
       <div
-        className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8"
+        className="flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-8 px-5 py-7 sm:px-9 sm:py-8"
         style={{
           background: "#0a1120",
-          padding: "32px 36px",
           borderRadius: "13px",
         }}
       >
-        <div className="text-center sm:text-left">
+        <div className="min-w-0 text-center sm:text-left">
           <p
             style={{
               color: "#22c0d4",
@@ -56,12 +55,11 @@ export const QuizCTABanner = ({ quizLink = "/find-test", className }: QuizCTABan
         </div>
         <Link
           to={quizLink}
-          className="inline-block whitespace-nowrap text-center transition-transform hover:-translate-y-0.5"
+          className="inline-block w-full sm:w-auto shrink-0 whitespace-nowrap text-center px-6 py-3.5 sm:px-9 sm:py-4 transition-transform hover:-translate-y-0.5"
           style={{
             background: "linear-gradient(135deg, #e70d69 0%, #ff4d6d 100%)",
             color: "#ffffff",
             border: "none",
-            padding: "16px 36px",
             fontSize: "16px",
             fontWeight: 600,
             borderRadius: "10px",
