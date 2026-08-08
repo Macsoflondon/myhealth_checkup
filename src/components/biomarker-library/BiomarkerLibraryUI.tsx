@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { biomarkers, categories, categoryIcons, COLORS } from "./biomarkerData";
+import { StandardPageHero } from "@/components/layout/StandardPageHero";
 
 const RangeBar = ({ ranges, sex = "both" }: any) => {
   const data = ranges[sex] || ranges["both"] || ranges["male"] || ranges["female"];
