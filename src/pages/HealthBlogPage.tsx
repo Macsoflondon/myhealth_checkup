@@ -84,7 +84,7 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({ article }) => (
 const PAGE_SIZE = 12;
 
 const HealthBlogPage: React.FC = () => {
-  const { data: liveArticles, isLoading } = useQuery({
+  const { data: liveArticles } = useQuery({
     queryKey: ['provider-blog-posts'],
     queryFn: () => getAggregatedBlogArticles(),
     staleTime: 30 * 60 * 1000,
@@ -253,14 +253,6 @@ const HealthBlogPage: React.FC = () => {
               );
             })}
           </div>
-
-          {isLoading && !liveArticles ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" aria-busy="true">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="h-72 rounded-2xl border border-[#e2e8f0] bg-[#f8fafc] animate-pulse" />
-              ))}
-            </div>
-          ) : null}
 
 
 
