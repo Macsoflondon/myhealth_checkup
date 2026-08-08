@@ -3,11 +3,11 @@
 // supabase function: mcp
 // Bundled from src/lib/mcp/index.ts by @lovable.dev/mcp-js.
 // src/lib/mcp/index.ts
-import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.26.1";
 
 // src/lib/mcp/tools/search-tests.ts
 import { createClient } from "npm:@supabase/supabase-js@2.111.0";
-import { defineTool } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { defineTool } from "npm:@lovable.dev/mcp-js@0.26.1";
 import { z } from "npm:zod@^3.24.2";
 function anonClient() {
   return createClient(
@@ -49,7 +49,7 @@ var search_tests_default = defineTool({
 
 // src/lib/mcp/tools/get-test.ts
 import { createClient as createClient2 } from "npm:@supabase/supabase-js@2.111.0";
-import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.26.1";
 import { z as z2 } from "npm:zod@^3.24.2";
 function anonClient2() {
   return createClient2(
@@ -79,7 +79,7 @@ var get_test_default = defineTool2({
 
 // src/lib/mcp/tools/list-providers.ts
 import { createClient as createClient3 } from "npm:@supabase/supabase-js@2.111.0";
-import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.26.1";
 function anonClient3() {
   return createClient3(
     process.env.SUPABASE_URL,
@@ -113,7 +113,7 @@ var list_providers_default = defineTool3({
 
 // src/lib/mcp/tools/list-my-favourites.ts
 import { createClient as createClient4 } from "npm:@supabase/supabase-js@2.111.0";
-import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.26.1";
 function userClient(ctx) {
   return createClient4(process.env.SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY, {
     global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
@@ -141,7 +141,7 @@ var list_my_favourites_default = defineTool4({
 
 // src/lib/mcp/tools/save-favourite.ts
 import { createClient as createClient5 } from "npm:@supabase/supabase-js@2.111.0";
-import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.26.1";
 import { z as z3 } from "npm:zod@^3.24.2";
 function userClient2(ctx) {
   return createClient5(process.env.SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY, {
@@ -175,7 +175,7 @@ var save_favourite_default = defineTool5({
 });
 
 // src/lib/mcp/tools/get-platform-health.ts
-import { defineTool as defineTool6 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { defineTool as defineTool6 } from "npm:@lovable.dev/mcp-js@0.26.1";
 import { z as z4 } from "npm:zod@^3.24.2";
 
 // src/lib/mcp/admin-guard.ts
@@ -283,7 +283,7 @@ var get_platform_health_default = defineTool6({
 });
 
 // src/lib/mcp/tools/list-scraper-alerts.ts
-import { defineTool as defineTool7 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { defineTool as defineTool7 } from "npm:@lovable.dev/mcp-js@0.26.1";
 import { z as z5 } from "npm:zod@^3.24.2";
 var list_scraper_alerts_default = defineTool7({
   name: "list_scraper_alerts",
@@ -311,7 +311,7 @@ var list_scraper_alerts_default = defineTool7({
 });
 
 // src/lib/mcp/tools/get-catalogue-coverage.ts
-import { defineTool as defineTool8 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { defineTool as defineTool8 } from "npm:@lovable.dev/mcp-js@0.26.1";
 import { z as z6 } from "npm:zod@^3.24.2";
 var get_catalogue_coverage_default = defineTool8({
   name: "get_catalogue_coverage",
@@ -370,7 +370,7 @@ var get_catalogue_coverage_default = defineTool8({
 });
 
 // src/lib/mcp/tools/get-price-movements.ts
-import { defineTool as defineTool9 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { defineTool as defineTool9 } from "npm:@lovable.dev/mcp-js@0.26.1";
 import { z as z7 } from "npm:zod@^3.24.2";
 var get_price_movements_default = defineTool9({
   name: "get_price_movements",
@@ -428,7 +428,7 @@ var get_price_movements_default = defineTool9({
 });
 
 // src/lib/mcp/tools/get-security-posture.ts
-import { defineTool as defineTool10 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { defineTool as defineTool10 } from "npm:@lovable.dev/mcp-js@0.26.1";
 import { z as z8 } from "npm:zod@^3.24.2";
 var get_security_posture_default = defineTool10({
   name: "get_security_posture",
@@ -487,7 +487,7 @@ var get_security_posture_default = defineTool10({
 });
 
 // src/lib/mcp/tools/get-performance-summary.ts
-import { defineTool as defineTool11 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { defineTool as defineTool11 } from "npm:@lovable.dev/mcp-js@0.26.1";
 import { z as z9 } from "npm:zod@^3.24.2";
 function percentile(sorted, p) {
   if (sorted.length === 0) return null;
@@ -545,7 +545,7 @@ var get_performance_summary_default = defineTool11({
 });
 
 // src/lib/mcp/tools/get-business-summary.ts
-import { defineTool as defineTool12 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { defineTool as defineTool12 } from "npm:@lovable.dev/mcp-js@0.26.1";
 var get_business_summary_default = defineTool12({
   name: "get_business_summary",
   title: "Get business summary",
@@ -590,7 +590,7 @@ var get_business_summary_default = defineTool12({
 });
 
 // src/lib/mcp/tools/get-admin-audit-trail.ts
-import { defineTool as defineTool13 } from "npm:@lovable.dev/mcp-js@0.25.0";
+import { defineTool as defineTool13 } from "npm:@lovable.dev/mcp-js@0.26.1";
 import { z as z10 } from "npm:zod@^3.24.2";
 var get_admin_audit_trail_default = defineTool13({
   name: "get_admin_audit_trail",
@@ -652,5 +652,5 @@ var mcp_default = defineMcp({
 });
 
 // lovable-mcp-supabase-entry.ts
-import { createSupabaseHandler } from "npm:@lovable.dev/mcp-js@0.25.0/stacks/supabase";
+import { createSupabaseHandler } from "npm:@lovable.dev/mcp-js@0.26.1/stacks/supabase";
 Deno.serve(createSupabaseHandler(mcp_default, { functionName: "mcp" }));
