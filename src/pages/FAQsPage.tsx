@@ -14,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, Mail, Phone, TrendingUp, Shield, FileCheck, ChevronRight, AlertCircle } from 'lucide-react';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import PageBanner from "@/components/sections/PageBanner";
+import { StandardPageHero } from "@/components/layout/StandardPageHero";
 const faqCategories = [{
   title: "Getting Started",
   icon: <TrendingUp className="h-5 w-5" />,
@@ -326,9 +326,9 @@ const FAQsPage = () => {
       <Header />
       
       <main className="flex-grow bg-background">
-        <PageBanner
+        <StandardPageHero
           title="Frequently Asked Questions"
-          subtitle={"\n"}
+          strapline="Straight answers on private testing, accreditation, pricing and what happens to your data."
         >
           {/* Search Bar */}
           <div className="max-w-xl sm:max-w-2xl mx-auto mt-6">
@@ -341,7 +341,7 @@ const FAQsPage = () => {
                 </Button>}
             </div>
           </div>
-        </PageBanner>
+        </StandardPageHero>
 
         {/* FAQ Categories */}
         <div className="container mx-auto px-4 py-8 sm:py-12 bg-white">

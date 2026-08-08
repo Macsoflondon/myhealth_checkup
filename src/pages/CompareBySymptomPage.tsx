@@ -30,7 +30,7 @@ const CompareBySymptomPage = () => {
 
       <CategoryStandardHero pillLabel="Compare by Symptom" />
 
-      <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-[#08122b] min-h-[60vh]">
+      <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white min-h-[60vh]">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-10">
             <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white mb-3">
