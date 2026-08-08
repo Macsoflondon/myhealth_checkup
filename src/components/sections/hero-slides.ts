@@ -7,6 +7,8 @@ import bloodTestKitAsset from "@/assets/hero/hero-blood-test-kit.png.asset.json"
 export type HeroSlide = {
   src: string;
   label: string;
+  /** Descriptive alt text describing the scene, not the marketing slogan. */
+  alt: string;
   posMobile: string;
   posTablet: string;
   posDesktop: string;
@@ -26,6 +28,7 @@ export const SLIDES: HeroSlide[] = [
   {
     src: joggingWoman,
     label: "Know Your Health. Own Your Future.",
+    alt: "Woman jogging along a coastal path on a bright morning",
     posMobile: "35% 55%",
     posTablet: "center 32%",
     posDesktop: "center 35%",
@@ -33,6 +36,7 @@ export const SLIDES: HeroSlide[] = [
   {
     src: clinicReceptionAsset.url,
     label: "Nationwide network of CQC-regulated clinics",
+    alt: "Reception area of a modern CQC-regulated private health clinic",
     posMobile: "60% 50%",
     posTablet: "center 50%",
     posDesktop: "center 50%",
@@ -40,6 +44,7 @@ export const SLIDES: HeroSlide[] = [
   {
     src: seniorCoupleAsset.url,
     label: "Proactive Health for Every Stage of Life",
+    alt: "Older couple walking together outdoors in the sunshine",
     posMobile: "50% 40%",
     posTablet: "center 28%",
     posDesktop: "center 30%",
@@ -47,6 +52,7 @@ export const SLIDES: HeroSlide[] = [
   {
     src: benchPhoneAsset.url,
     label: "Find the Right Test for You, Compare. Choose. Book.",
+    alt: "Man sitting on a park bench comparing health tests on his phone",
     posMobile: "55% 50%",
     posTablet: "center 40%",
     posDesktop: "center 40%",
@@ -54,6 +60,7 @@ export const SLIDES: HeroSlide[] = [
   {
     src: bloodTestKitAsset.url,
     label: "Test from the Comfort of Home",
+    alt: "At-home finger-prick blood test kit laid out on a kitchen worktop",
     posMobile: "40% 55%",
     posTablet: "40% 60%",
     posDesktop: "50% 65%",
