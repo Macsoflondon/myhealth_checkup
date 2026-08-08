@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 
 import { StandardPageHero } from '@/components/layout/StandardPageHero';
+import QuizCTABanner from '@/components/sections/QuizCTABanner';
 import SupportSLA from '@/components/compliance/SupportSLA';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -279,6 +280,11 @@ const ContactPage = () => {
           </div>
         </div>
       </main>
+      <section className="bg-white py-12 px-4 sm:px-6">
+        <div className="max-w-[1280px] mx-auto">
+          <QuizCTABanner />
+        </div>
+      </section>
       <Footer />
     </div>
   );
