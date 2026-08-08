@@ -28,7 +28,7 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({ article }) => (
   <article className="group flex flex-col bg-white rounded-2xl border border-[#e2e8f0] overflow-hidden transition-all duration-200 hover:border-[#22c0d4] hover:shadow-lg hover:-translate-y-0.5">
     <div className="relative aspect-[16/9] overflow-hidden bg-[#f0f4fa]">
       <img
-        src={article.image}
+        src={article.image || FALLBACK_IMAGE}
         alt={article.title}
         loading="lazy"
         onError={(e) => {
@@ -128,8 +128,37 @@ const HealthBlogPage: React.FC = () => {
     });
   }, [articles, activeCategory, excludedProviders, search]);
 
-  const featured = filtered.slice(0, 3);
-  const rest = filtered.slice(3);
+  /**
+   * Round-robin by provider so one prolific source cannot dominate the top of
+   * the hub, while keeping the newest article first within each provider.
+   */
+  const ordered = useMemo(() => {
+    const byProvider = new Map<string, BlogArticle[]>();
+    filtered.forEach((a) => {
+      const bucket = byProvider.get(a.provider) ?? [];
+      bucket.push(a);
+      byProvider.set(a.provider, bucket);
+    });
+    const buckets = Array.from(byProvider.values());
+    const result: BlogArticle[] = [];
+    let index = 0;
+    while (result.length < filtered.length) {
+      let placed = false;
+      for (const bucket of buckets) {
+        const item = bucket[index];
+        if (item) {
+          result.push(item);
+          placed = true;
+        }
+      }
+      if (!placed) break;
+      index += 1;
+    }
+    return result;
+  }, [filtered]);
+
+  const featured = ordered.slice(0, 3);
+  const rest = ordered.slice(3);
   const visibleRest = rest.slice(0, visibleCount);
 
 
