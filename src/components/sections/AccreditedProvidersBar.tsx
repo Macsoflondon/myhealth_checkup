@@ -56,8 +56,12 @@ const AccreditedProvidersBar = () => {
           </p>
         </Reveal>
 
+        {/* `lg:flex-nowrap` forced all eight pills onto one line, which needs ~1540px of
+            content width — at 1280 and 1440 the outer pills were clipped out of sight.
+            Wrapping lets every signal stay visible, and it still lands on one line once
+            the viewport is wide enough for it. */}
         <div
-          className="trust-alt grid grid-cols-2 sm:grid-cols-4 gap-y-3 gap-x-3 justify-items-start sm:justify-items-center lg:flex lg:flex-nowrap lg:items-center lg:justify-center lg:gap-y-0"
+          className="trust-alt grid grid-cols-2 sm:grid-cols-4 gap-y-3 gap-x-3 justify-items-start sm:justify-items-center lg:flex lg:flex-wrap lg:items-center lg:justify-center"
           data-testid="accreditors-static-row"
         >
           {trustItems.map((item) => (
