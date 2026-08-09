@@ -80,8 +80,7 @@ export default function HeroMasthead({
               <span className="text-brand-turquoise">health.</span>
               <span className="text-white"> Your </span>
               <span className="text-brand-pink">choice.</span>
-            </span>{" "}
-            <span className="block sm:inline text-white">One trusted platform.</span>
+            </span>
           </h1>
           <div className="hidden sm:flex items-center gap-1 shrink-0">
             <LanguageSwitcher />

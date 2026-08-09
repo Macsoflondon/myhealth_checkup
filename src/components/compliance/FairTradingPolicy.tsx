@@ -139,7 +139,7 @@ const FairTradingPolicy = () => {
 
         <div className="mt-8 p-6 bg-primary/5 rounded-lg border border-primary/20 text-center">
           <p className="text-lg font-semibold text-foreground mb-2 uppercase tracking-wide">
-            YOUR HEALTH. YOUR CHOICE. ONE TRUSTED PLATFORM.
+            YOUR HEALTH. YOUR CHOICE.
           </p>
           <p className="text-sm text-muted-foreground italic">
             At myhealth checkup, transparency isn't a feature — it's our foundation.
