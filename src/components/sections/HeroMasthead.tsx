@@ -62,7 +62,7 @@ export default function HeroMasthead({
       {/* Wordmark + primary heading.
           On desktop the slogan sits directly below the wordmark and above the white category bar.
           On mobile the slogan sits below the white category bar. */}
-      <div className="flex flex-col items-start pt-4 sm:pt-10 lg:pt-12 order-2 sm:order-1">
+      <div className="flex flex-col items-start pt-4 sm:pt-6 lg:pt-8 order-2 sm:order-1">
         <div className="hidden sm:block">
           <Wordmark />
         </div>
