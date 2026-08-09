@@ -1,5 +1,6 @@
 import { ShieldCheck, BadgeCheck, FlaskConical, Lock, Tag, Stethoscope, EyeOff, Star, type LucideIcon } from "lucide-react";
 import { Reveal } from "@/components/primitives/Reveal";
+import { HERO_CAPTION } from "@/components/sections/hero-slides";
 
 interface TrustItem {
   icon: LucideIcon;
