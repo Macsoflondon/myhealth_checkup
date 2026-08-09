@@ -45,6 +45,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const { pathname } = useLocation();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [barHeight, setBarHeight] = useState(0);
+  const [heroPinned, setHeroPinned] = useState(false);
   const isStraddle = placement === "straddle";
   // Find the navy/white boundary marker rendered by the category hero.
   useLayoutEffect(() => {
@@ -113,6 +114,30 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     return () => obs.disconnect();
   }, []);
   useEffect(() => {
+    if (placement !== "hero") {
+      setHeroPinned(false);
+      return;
+    }
+
+    let ticking = false;
+    const update = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        setHeroPinned((sentinelRef.current?.getBoundingClientRect().top ?? 1) <= 0);
+        ticking = false;
+      });
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, [placement]);
+  useEffect(() => {
     if (!moreOpen) return;
     const onDoc = (e: MouseEvent) => {
       const t = e.target as Node;
@@ -147,7 +172,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     : isStraddle
       ? fallbackStraddleClass
     : placement === "hero"
-      ? `${stuck ? "fixed inset-x-0 top-0 px-4" : "relative px-4"} mt-0 flex w-full min-w-0 justify-center`
+      ? `${heroPinned ? "fixed inset-x-0 top-0 px-4" : "relative px-4"} mt-0 w-full min-w-0`
       : compact ? "mt-0 mx-3 lg:mx-6" : isFlush ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
 
 
@@ -156,7 +181,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   // On the hero's white band the dock sits on white, so use a darker, tighter
   // shadow to make the white buttons pop instead of blending in.
   let innerClass = placement === "hero"
-    ? "w-fit max-w-[min(calc(100vw-2rem),108rem)] overflow-hidden rounded-full bg-white border border-[#081129]/10 ring-0 shadow-[0_3px_10px_rgba(8,17,41,0.12),0_12px_28px_-10px_rgba(8,17,41,0.22)]"
+    ? "mx-auto w-fit max-w-[min(calc(100vw-2rem),108rem)] overflow-hidden rounded-full bg-white border border-[#081129]/10 ring-0 shadow-[0_3px_10px_rgba(8,17,41,0.12),0_12px_28px_-10px_rgba(8,17,41,0.22)]"
     : `mx-auto w-fit max-w-full rounded-full bg-white/85 backdrop-blur-xl border border-white/60 ring-1 ring-[#081129]/[0.06] ${
     stuck
       ? "shadow-[0_2px_8px_rgba(8,17,41,0.08),0_20px_48px_-12px_rgba(8,17,41,0.34)]"
@@ -228,7 +253,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             className={`hidden md:block z-[1000] ${isStraddle || placement === "hero" ? "" : "sticky top-0"} ${wrapperClass}`}
             data-testid="browse-by-category-bar"
             data-placement={placement}
-            data-pinned={placement === "hero" ? stuck : pinned}
+            data-pinned={placement === "hero" ? heroPinned : pinned}
           >
 
             <div className={`p-1.5 transition-all duration-300 ${innerClass}`} data-testid="category-toolbar-dock">
