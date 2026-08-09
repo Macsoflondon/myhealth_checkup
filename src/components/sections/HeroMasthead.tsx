@@ -67,7 +67,7 @@ export default function HeroMasthead({
           <Wordmark />
         </div>
 
-        <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-1 sm:px-0 pt-0 pb-1 sm:pb-0">
+        <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-1 sm:px-0 pt-0 pb-5 sm:pb-4">
           <h1
             className="font-bold font-[Montserrat] text-white text-left m-0
               text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)]
