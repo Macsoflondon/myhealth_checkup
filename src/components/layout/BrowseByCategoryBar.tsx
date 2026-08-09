@@ -141,7 +141,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
 
   const wrapperClass = useStraddle
     ? straddlePositionClass
-    : placement === "hero" ? "mt-0" : compact ? "mt-0 mx-3 lg:mx-6" : isFlush ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
+    : placement === "hero" ? "mt-0 w-full min-w-0" : compact ? "mt-0 mx-3 lg:mx-6" : isFlush ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
 
 
 
