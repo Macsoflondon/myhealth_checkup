@@ -1,5 +1,4 @@
 import joggingWoman from "@/assets/hero/hero-jogging-woman.png";
-import clinicReceptionAsset from "@/assets/hero/hero-clinic-reception.png.asset.json";
 import seniorCoupleAsset from "@/assets/hero/hero-senior-couple.png.asset.json";
 import benchPhoneAsset from "@/assets/hero/hero-bench-phone.png.asset.json";
 import bloodTestKitAsset from "@/assets/hero/hero-blood-test-kit.png.asset.json";
@@ -36,14 +35,6 @@ export const SLIDES: HeroSlide[] = [
     posMobile: "35% 55%",
     posTablet: "center 32%",
     posDesktop: "center 35%",
-  },
-  {
-    src: clinicReceptionAsset.url,
-    label: "Nationwide network of CQC-regulated clinics",
-    alt: "Reception area of a modern CQC-regulated private health clinic",
-    posMobile: "60% 50%",
-    posTablet: "center 50%",
-    posDesktop: "center 50%",
   },
   {
     src: seniorCoupleAsset.url,
