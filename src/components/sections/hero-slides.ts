@@ -24,6 +24,10 @@ export const FIRST_SLIDE_SRC: string = joggingWoman;
 export const FIRST_SLIDE_LQIP =
   "data:image/webp;base64,UklGRrIAAABXRUJQVlA4IKYAAADwBACdASogABUAPu1cq04ppKQiMBgMATAdiWYAsOwQ8K9HyiX4F5aT3lgrt7OcrHAA/uqDRKnL5YU7cmWJ8ia6JPvg2tpXgVF0QsnGzmDF8hRV8CcPjGNzBIn08ReUQBwSA1Ey1HIn4cyRS5s6pKpTzoDBRAS/DpxFyby/9d26U7c0n6lUmar9erfa0gkbaOCI+mur9hZDz4naSj6Fx8WJHBxkoAAA";
 
+/** Single fixed caption shown over every hero slide. */
+export const HERO_CAPTION =
+  "Your trusted platform for comparing private health and screening tests.";
+
 export const SLIDES: HeroSlide[] = [
   {
     src: joggingWoman,

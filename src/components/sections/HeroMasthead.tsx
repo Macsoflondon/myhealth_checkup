@@ -8,7 +8,11 @@ import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 const TURQUOISE = "#22c0d4";
 const PINK = "#e70d69";
 
-import { SLIDES, FIRST_SLIDE_LQIP } from "@/components/sections/hero-slides";
+import {
+  SLIDES,
+  FIRST_SLIDE_LQIP,
+  HERO_CAPTION,
+} from "@/components/sections/hero-slides";
 
 const Wordmark = () => (
   <span className="inline-flex items-center leading-[1.1] min-w-0 py-2 sm:py-3">
@@ -48,8 +52,8 @@ export default function HeroMasthead({
     return () => clearTimeout(id);
   }, [activeIndex, advance, reducedMotion, rotateMs]);
 
-  const slide = SLIDES[activeIndex];
   return (
+
     <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border border-b-0 border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[68svh] sm:min-h-[100svh] flex flex-col">
       <TestCategoryTicker
         variant="inline"
@@ -130,16 +134,9 @@ export default function HeroMasthead({
         })}
 
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
-        <div className="hidden lg:block absolute left-[18px] bottom-[18px] pointer-events-none max-w-[45%]">
-          <span
-            key={`label-${i % SLIDES.length}`}
-            className="inline-flex items-center gap-1.5 sm:gap-2 px-2 py-0.5 sm:px-3 sm:py-1.5 rounded-full bg-[#081129]/45 backdrop-blur-xs border border-white/20 text-white text-[11px] sm:text-sm md:text-base lg:text-xl font-semibold font-[Montserrat] animate-fade-in"
-          >
-            <span
-              className="w-1.5 h-1.5 sm:w-[7px] sm:h-[7px] rounded-full shrink-0"
-              style={{ background: "#22c0d4" }}
-            />
-            {slide.label}
+        <div className="hidden lg:flex absolute inset-x-0 bottom-4 justify-center px-4 pointer-events-none">
+          <span className="inline-block max-w-[90%] text-center px-4 py-2 rounded-full bg-[#081129]/45 backdrop-blur-xs border border-white/20 text-white font-semibold font-[Montserrat] text-[clamp(1.05rem,4.6vw,1.75rem)] sm:text-[clamp(1.25rem,3.2vw,2.5rem)]">
+            {HERO_CAPTION}
           </span>
         </div>
       </div>
