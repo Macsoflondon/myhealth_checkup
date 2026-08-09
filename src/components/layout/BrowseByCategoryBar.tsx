@@ -139,8 +139,13 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     ? "fixed top-0 left-0 right-0 mx-2 sm:mx-3 lg:mx-4"
     : "absolute top-0 left-0 right-0 mx-2 sm:mx-3 lg:mx-4 -translate-y-1/2";
 
+  const fallbackStraddleClass = stuck
+    ? "fixed top-0 left-0 right-0 mx-2 sm:mx-3 lg:mx-4"
+    : "relative mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
   const wrapperClass = useStraddle
     ? straddlePositionClass
+    : isStraddle
+      ? fallbackStraddleClass
     : placement === "hero" ? "mt-0 w-full min-w-0" : compact ? "mt-0 mx-3 lg:mx-6" : isFlush ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
 
 
@@ -218,7 +223,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
         const desktopBar = (
           <div
             ref={barRef}
-            className={`hidden md:block z-[1000] ${useStraddle ? "" : "sticky top-0"} ${wrapperClass}`}
+            className={`hidden md:block z-[1000] ${isStraddle || placement === "hero" ? "" : "sticky top-0"} ${wrapperClass}`}
             data-testid="browse-by-category-bar"
           >
 
