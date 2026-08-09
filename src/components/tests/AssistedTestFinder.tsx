@@ -437,7 +437,7 @@ export const AssistedTestFinder = () => {
             <div className="flex justify-center mb-6">
               <img
                 src={myhealthCheckupLogo.url}
-                alt="myhealth checkup — YOUR HEALTH. YOUR CHOICE. ONE TRUSTED PLATFORM."
+                alt="myhealth checkup — YOUR HEALTH. YOUR CHOICE."
                 className="w-full max-w-md h-auto rounded-xl"
                 loading="eager"
               />
