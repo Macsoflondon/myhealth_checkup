@@ -57,6 +57,9 @@ async function verifyCentredAndPinned(page: Page, path: string): Promise<void> {
     .locator('[data-testid="browse-by-category-bar"]:visible')
     .first();
   await expect(toolbarLocator).toBeVisible();
+  await expect
+    .poll(() => page.evaluate(() => document.documentElement.dataset.hydrated))
+    .toBe("true");
 
   const initial = await toolbarGeometry(toolbarLocator);
   expectCentred(initial);
@@ -64,7 +67,10 @@ async function verifyCentredAndPinned(page: Page, path: string): Promise<void> {
 
   await page.evaluate(() => {
     document.documentElement.style.scrollBehavior = "auto";
-    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
+    window.scrollTo({
+      top: document.documentElement.scrollHeight,
+      behavior: "instant",
+    });
   });
   await page.waitForFunction(() => window.scrollY > 300);
   await expect(toolbarLocator).toHaveAttribute("data-pinned", "true");
