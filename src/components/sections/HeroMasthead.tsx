@@ -90,7 +90,7 @@ export default function HeroMasthead({
 
       {/* Category toolbar — white band with pink hairlines above and below.
           The bottom pink line is the single divider between the toolbar and the hero image. */}
-      <div className="-mx-3 sm:-mx-6 md:-mx-9 mt-0 order-1 sm:order-2 sm:bg-white sm:py-2.5 sm:border-t-2 sm:border-b-2 sm:border-[#e70d69]">
+      <div className="-mx-3 sm:-mx-6 md:-mx-9 mt-0 order-1 sm:order-2 sm:bg-white sm:pt-2.5 sm:pb-0 sm:border-t-2 sm:border-b-2 sm:border-[#e70d69]">
         <BrowseByCategoryBar compact placement="hero" />
       </div>
 
