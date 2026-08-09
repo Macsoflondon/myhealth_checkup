@@ -46,7 +46,9 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [barHeight, setBarHeight] = useState(0);
   const [heroPinned, setHeroPinned] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
   const isStraddle = placement === "straddle";
+  useEffect(() => setHydrated(true), []);
   // Find the navy/white boundary marker rendered by the category hero.
   useLayoutEffect(() => {
     if (!isStraddle) { setAnchorEl(null); return; }
@@ -245,6 +247,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             data-testid="browse-by-category-bar"
             data-placement={placement}
             data-pinned={placement === "hero" ? heroPinned : pinned}
+            data-hydrated={hydrated}
           >
 
             <div className={`p-1.5 transition-all duration-300 ${innerClass}`} data-testid="category-toolbar-dock">

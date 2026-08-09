@@ -57,9 +57,7 @@ async function verifyCentredAndPinned(page: Page, path: string): Promise<void> {
     .locator('[data-testid="browse-by-category-bar"]:visible')
     .first();
   await expect(toolbarLocator).toBeVisible();
-  await expect
-    .poll(() => page.evaluate(() => document.documentElement.dataset.hydrated))
-    .toBe("true");
+  await expect(toolbarLocator).toHaveAttribute("data-hydrated", "true");
 
   const initial = await toolbarGeometry(toolbarLocator);
   expectCentred(initial);
