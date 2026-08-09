@@ -1,4 +1,12 @@
-import { ShieldCheck, BadgeCheck, FlaskConical, Lock, Tag, Stethoscope, type LucideIcon } from "lucide-react";
+import {
+  ShieldCheck,
+  BadgeCheck,
+  FlaskConical,
+  Lock,
+  Tag,
+  Stethoscope,
+  type LucideIcon,
+} from "lucide-react";
 import { Reveal } from "@/components/primitives/Reveal";
 
 interface TrustItem {
@@ -29,7 +37,10 @@ const BadgePill = ({ item }: BadgePillProps) => {
         aria-hidden="true"
         className="flex items-center justify-center rounded-full w-7 h-7 sm:w-9 sm:h-9 shrink-0 bg-[hsl(var(--trust-tone)/var(--trust-tone-alpha))] text-[hsl(var(--trust-tone))]"
       >
-        <Icon className="w-[14px] h-[14px] sm:w-[18px] sm:h-[18px]" strokeWidth={2.25} />
+        <Icon
+          className="w-[14px] h-[14px] sm:w-[18px] sm:h-[18px]"
+          strokeWidth={2.25}
+        />
       </span>
       <span className="font-sans font-bold text-[11px] sm:text-[13px] text-white">
         {item.label}
