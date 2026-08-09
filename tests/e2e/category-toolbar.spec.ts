@@ -53,21 +53,23 @@ async function expectNoPageOverflow(page: Page): Promise<void> {
 async function verifyCentredAndPinned(page: Page, path: string): Promise<void> {
   await page.goto(path, { waitUntil: "domcontentloaded" });
 
-  const toolbar = page
+  const toolbarLocator = page
     .locator('[data-testid="browse-by-category-bar"]:visible')
     .first();
-  await expect(toolbar).toBeVisible();
+  await expect(toolbarLocator).toBeVisible();
 
-  const initial = await toolbarGeometry(toolbar);
+  const initial = await toolbarGeometry(toolbarLocator);
   expectCentred(initial);
   await expectNoPageOverflow(page);
 
-  await page.evaluate(() =>
-    window.scrollTo(0, document.documentElement.scrollHeight),
-  );
-  await expect(toolbar).toHaveAttribute("data-pinned", "true");
+  await page.evaluate(() => {
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: "instant" });
+  });
+  await page.waitForFunction(() => window.scrollY > 300);
+  await expect(toolbarLocator).toHaveAttribute("data-pinned", "true");
 
-  const pinned = await toolbarGeometry(toolbar);
+  const pinned = await toolbarGeometry(toolbarLocator);
   expectCentred(pinned);
   expect(Math.abs(pinned.top)).toBeLessThanOrEqual(PIN_TOLERANCE_PX);
   expect(Math.abs(pinned.centre - initial.centre)).toBeLessThanOrEqual(
