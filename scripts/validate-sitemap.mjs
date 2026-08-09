@@ -36,6 +36,7 @@ const PRIVATE_PREFIXES = [
 // Static routes intentionally excluded from the sitemap (redirect shells, wildcards).
 const EXPLICIT_EXCLUDES = new Set([
   "/category", // legacy redirect
+  "/compare/results", // renders the comparison the user just built; no standalone content to index
   "*",
 ]);
 
@@ -49,7 +50,10 @@ function collectRoutePaths() {
   const paths = new Set();
   for (const file of files) {
     const src = readFileSync(join(ROUTES_DIR, file), "utf8");
-    const re = /path=["']([^"']+)["']/g;
+    // Matches both `<Route path="/x">` and the object form `{ path: "/x" }`. The
+    // `path=` form alone found 0 routes in this file-based router, which left the
+    // missing-route check comparing against an empty set — it could never fail.
+    const re = /path[=:]\s*["']([^"']+)["']/g;
     let m;
     while ((m = re.exec(src)) !== null) paths.add(m[1]);
   }
