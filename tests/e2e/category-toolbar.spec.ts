@@ -34,9 +34,9 @@ async function toolbarGeometry(toolbar: Locator): Promise<ToolbarGeometry> {
 }
 
 function expectCentred(geometry: ToolbarGeometry): void {
-  expect(
-    Math.abs(geometry.centre - geometry.viewportCentre),
-  ).toBeLessThanOrEqual(CENTRE_TOLERANCE_PX);
+  expect(Math.abs(geometry.centre - geometry.viewportCentre)).toBeLessThanOrEqual(
+    CENTRE_TOLERANCE_PX,
+  );
   expect(geometry.left).toBeGreaterThan(0);
   expect(geometry.right).toBeLessThan(geometry.viewportWidth);
   expect(geometry.dockWidth).toBeLessThan(geometry.viewportWidth);
@@ -83,9 +83,10 @@ test.describe("desktop category toolbar geometry", () => {
     await verifyCentredAndPinned(page, "/");
   });
 
-  test("category-page toolbar remains centred and pinned while scrolling", async ({
-    page,
-  }) => {
-    await verifyCentredAndPinned(page, "/tests/cancer");
-  });
+  test(
+    "category-page toolbar remains centred and pinned while scrolling",
+    async ({ page }) => {
+      await verifyCentredAndPinned(page, "/tests/cancer");
+    },
+  );
 });
