@@ -57,7 +57,7 @@ for (const bp of BREAKPOINTS) {
     });
 
     test("Slogan renders at mobile size and wraps cleanly", async ({ page }) => {
-      const slogan = page.locator("text=One trusted platform").first();
+      const slogan = page.locator("text=Your choice").first();
       await expect(slogan).toBeVisible();
       const fs = px(await slogan.evaluate((el) => getComputedStyle(el).fontSize));
       expect(fs).toBeLessThanOrEqual(14); // mobile floor before sm breakpoint
