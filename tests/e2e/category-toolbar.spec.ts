@@ -63,7 +63,7 @@ async function verifyCentredAndPinned(page: Page, path: string): Promise<void> {
   await expectNoPageOverflow(page);
 
   await page.evaluate(() =>
-    window.scrollTo(0, Math.max(900, document.body.scrollHeight / 2)),
+    window.scrollTo(0, document.documentElement.scrollHeight),
   );
   await expect(toolbar).toHaveAttribute("data-pinned", "true");
 

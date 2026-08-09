@@ -41,7 +41,6 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const [moreRect, setMoreRect] = useState<DOMRect | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
-  const heroPinTopRef = useRef<number | null>(null);
   const [stuck, setStuck] = useState(false);
   const { pathname } = useLocation();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -117,32 +116,17 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   useEffect(() => {
     if (placement !== "hero") {
       setHeroPinned(false);
-      heroPinTopRef.current = null;
       return;
     }
 
-    let ticking = false;
-    const update = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        const bar = barRef.current;
-        if (heroPinTopRef.current === null && bar) {
-          heroPinTopRef.current = bar.getBoundingClientRect().top + window.scrollY;
-        }
-        const pinTop = heroPinTopRef.current;
-        setHeroPinned(pinTop !== null && window.scrollY >= pinTop);
-        ticking = false;
-      });
-    };
-
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    window.addEventListener("resize", update);
-    return () => {
-      window.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setHeroPinned(!entry.isIntersecting && entry.boundingClientRect.top < 0),
+      { threshold: 0 },
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
   }, [placement]);
   useEffect(() => {
     if (!moreOpen) return;
@@ -173,7 +157,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
 
   const fallbackStraddleClass = stuck
     ? "fixed top-0 left-0 right-0 mx-2 sm:mx-3 lg:mx-4"
-    : "relative mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
+    : "relative mt-4 mx-2 sm:mx-3 lg:mx-4";
   const wrapperClass = useStraddle
     ? straddlePositionClass
     : isStraddle
