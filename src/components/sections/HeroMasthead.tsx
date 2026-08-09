@@ -8,7 +8,11 @@ import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 const TURQUOISE = "#22c0d4";
 const PINK = "#e70d69";
 
-import { SLIDES, FIRST_SLIDE_LQIP } from "@/components/sections/hero-slides";
+import {
+  SLIDES,
+  FIRST_SLIDE_LQIP,
+  HERO_CAPTION,
+} from "@/components/sections/hero-slides";
 
 const Wordmark = () => (
   <span className="inline-flex items-center leading-[1.1] min-w-0 py-2 sm:py-3">
@@ -48,8 +52,8 @@ export default function HeroMasthead({
     return () => clearTimeout(id);
   }, [activeIndex, advance, reducedMotion, rotateMs]);
 
-  const slide = SLIDES[activeIndex];
   return (
+
     <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border border-b-0 border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[68svh] sm:min-h-[100svh] flex flex-col">
       <TestCategoryTicker
         variant="inline"
