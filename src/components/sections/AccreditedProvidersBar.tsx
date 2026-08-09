@@ -23,8 +23,10 @@ interface BadgePillProps {
 
 const BadgePill = ({ item }: BadgePillProps) => {
   const Icon = item.icon;
+  // Labels wrap below `sm` so the two-column grid fits a 320px viewport; from `sm` up
+  // they stay on one line as before.
   return (
-    <div className="flex items-center gap-2 sm:gap-2.5 whitespace-nowrap lg:px-5">
+    <div className="flex items-center gap-2 sm:gap-2.5 whitespace-normal sm:whitespace-nowrap lg:px-5">
       <span
         aria-hidden="true"
         className="flex items-center justify-center rounded-full w-7 h-7 sm:w-9 sm:h-9 shrink-0 bg-[hsl(var(--trust-tone)/var(--trust-tone-alpha))] text-[hsl(var(--trust-tone))]"
