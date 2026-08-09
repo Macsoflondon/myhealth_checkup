@@ -1,12 +1,11 @@
 name: Migration parity
 
 on:
+  # Deliberately unfiltered: every merge to main gets a real pass/fail result
+  # rather than a skipped required check. The PR trigger below keeps its paths
+  # filter so unrelated diffs don't run it.
   push:
     branches: [main]
-    paths:
-      - "supabase/migrations/**"
-      - "scripts/check-migration-parity.mjs"
-      - ".github/workflows/migration-parity.yml"
   pull_request:
     paths:
       - "supabase/migrations/**"
