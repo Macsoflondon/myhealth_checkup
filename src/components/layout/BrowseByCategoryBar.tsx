@@ -156,7 +156,9 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
 
   return (
     <>
-      <div ref={sentinelRef} aria-hidden="true" className="h-px w-full" />
+      {/* Sticky sentinel — inside the hero it must not consume flex-row width,
+          otherwise the centred dock gets pushed to one side. */}
+      <div ref={sentinelRef} aria-hidden="true" className={placement === "hero" ? "h-px w-0" : "h-px w-full"} />
       <div className="md:hidden sticky top-0 z-50" data-testid="browse-by-category-bar-mobile">
         <div data-scrolled={scrolled} className={`px-4 h-20 flex items-center justify-between transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b ${scrolled ? "bg-[#081129] border-[#081129] shadow-[0_2px_10px_rgba(8,17,41,0.18)]" : "bg-white border-[#081129]/10"}`}>
           <Link to="/" className="flex items-center h-10 no-underline font-[Montserrat] font-extrabold tracking-tight text-[30px] leading-none"><span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white" : "text-[#081129]"}`}>myhealth</span><span className="text-[#e70d69]">checkup</span></Link>
