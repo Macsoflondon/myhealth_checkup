@@ -1,7 +1,5 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 
-const BASE_URL = process.env.BASE_URL ?? "http://localhost:8080";
-const DESKTOP_VIEWPORT = { width: 1895, height: 1181 };
 const CENTRE_TOLERANCE_PX = 2;
 const PIN_TOLERANCE_PX = 2;
 
@@ -17,7 +15,9 @@ interface ToolbarGeometry {
 
 async function toolbarGeometry(toolbar: Locator): Promise<ToolbarGeometry> {
   return toolbar.evaluate((element) => {
-    const dock = element.querySelector<HTMLElement>('[data-testid="category-toolbar-dock"]');
+    const dock = element.querySelector<HTMLElement>(
+      '[data-testid="category-toolbar-dock"]',
+    );
     if (!dock) throw new Error("Category toolbar dock was not rendered");
 
     const rect = dock.getBoundingClientRect();
@@ -33,10 +33,10 @@ async function toolbarGeometry(toolbar: Locator): Promise<ToolbarGeometry> {
   });
 }
 
-async function expectCentred(geometry: ToolbarGeometry): Promise<void> {
-  expect(Math.abs(geometry.centre - geometry.viewportCentre)).toBeLessThanOrEqual(
-    CENTRE_TOLERANCE_PX,
-  );
+function expectCentred(geometry: ToolbarGeometry): void {
+  expect(
+    Math.abs(geometry.centre - geometry.viewportCentre),
+  ).toBeLessThanOrEqual(CENTRE_TOLERANCE_PX);
   expect(geometry.left).toBeGreaterThan(0);
   expect(geometry.right).toBeLessThan(geometry.viewportWidth);
   expect(geometry.dockWidth).toBeLessThan(geometry.viewportWidth);
@@ -51,20 +51,24 @@ async function expectNoPageOverflow(page: Page): Promise<void> {
 }
 
 async function verifyCentredAndPinned(page: Page, path: string): Promise<void> {
-  await page.goto(`${BASE_URL}${path}`, { waitUntil: "domcontentloaded" });
+  await page.goto(path, { waitUntil: "domcontentloaded" });
 
-  const toolbar = page.locator('[data-testid="browse-by-category-bar"]:visible').first();
+  const toolbar = page
+    .locator('[data-testid="browse-by-category-bar"]:visible')
+    .first();
   await expect(toolbar).toBeVisible();
 
   const initial = await toolbarGeometry(toolbar);
-  await expectCentred(initial);
+  expectCentred(initial);
   await expectNoPageOverflow(page);
 
-  await page.evaluate(() => window.scrollTo(0, Math.max(900, document.body.scrollHeight / 2)));
+  await page.evaluate(() =>
+    window.scrollTo(0, Math.max(900, document.body.scrollHeight / 2)),
+  );
   await expect(toolbar).toHaveAttribute("data-pinned", "true");
 
   const pinned = await toolbarGeometry(toolbar);
-  await expectCentred(pinned);
+  expectCentred(pinned);
   expect(Math.abs(pinned.top)).toBeLessThanOrEqual(PIN_TOLERANCE_PX);
   expect(Math.abs(pinned.centre - initial.centre)).toBeLessThanOrEqual(
     CENTRE_TOLERANCE_PX,
@@ -73,13 +77,15 @@ async function verifyCentredAndPinned(page: Page, path: string): Promise<void> {
 }
 
 test.describe("desktop category toolbar geometry", () => {
-  test.use({ viewport: DESKTOP_VIEWPORT });
-
-  test("homepage toolbar remains centred and pinned while scrolling", async ({ page }) => {
+  test("homepage toolbar remains centred and pinned while scrolling", async ({
+    page,
+  }) => {
     await verifyCentredAndPinned(page, "/");
   });
 
-  test("category-page toolbar remains centred and pinned while scrolling", async ({ page }) => {
+  test("category-page toolbar remains centred and pinned while scrolling", async ({
+    page,
+  }) => {
     await verifyCentredAndPinned(page, "/tests/cancer");
   });
 });
