@@ -67,7 +67,7 @@ export default function HeroMasthead({
           <Wordmark />
         </div>
 
-        <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-1 sm:px-0 pt-0 pb-1 sm:pb-0">
+        <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-1 sm:px-0 pt-0 pb-5 sm:pb-4">
           <h1
             className="font-bold font-[Montserrat] text-white text-left m-0
               text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)]
@@ -90,7 +90,7 @@ export default function HeroMasthead({
 
       {/* Category toolbar — white band with pink hairlines above and below.
           The bottom pink line is the single divider between the toolbar and the hero image. */}
-      <div className="-mx-3 sm:-mx-6 md:-mx-9 mt-0 order-1 sm:order-2 sm:bg-white sm:py-2.5 sm:border-t-2 sm:border-b-2 sm:border-[#e70d69]">
+      <div className="-mx-3 sm:-mx-6 md:-mx-9 mt-0 order-1 sm:order-2 sm:bg-white sm:pt-2.5 sm:pb-0 sm:border-t-2 sm:border-b-2 sm:border-[#e70d69]">
         <BrowseByCategoryBar compact placement="hero" />
       </div>
 
