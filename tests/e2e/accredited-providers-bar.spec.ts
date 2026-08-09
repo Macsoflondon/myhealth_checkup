@@ -6,7 +6,7 @@
  *
  * Run with:  bunx playwright test tests/e2e/accredited-providers-bar.spec.ts
  */
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 
 const BASE_URL = process.env.E2E_BASE_URL ?? "http://localhost:8080";
 
@@ -23,7 +23,7 @@ const ROW = '[data-testid="accreditors-static-row"]';
 const REQUIRED_LABELS = ["UKAS", "CQC", "ISO 15189"];
 
 // Debug helpers — capture DOM/text and a screenshot to aid CI diagnosis.
-async function dumpAccreditorsDebug(page: any, vpName: string, label: string) {
+async function dumpAccreditorsDebug(page: Page, vpName: string, label: string) {
   try {
     const firstRowHtml = await page.locator(ROW).first().innerHTML();
     const allRowTexts = await page.locator(ROW).allInnerTexts();
