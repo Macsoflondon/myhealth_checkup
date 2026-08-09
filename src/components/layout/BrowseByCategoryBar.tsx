@@ -45,7 +45,10 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const { pathname } = useLocation();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [barHeight, setBarHeight] = useState(0);
+  const [heroPinned, setHeroPinned] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
   const isStraddle = placement === "straddle";
+  useEffect(() => setHydrated(true), []);
   // Find the navy/white boundary marker rendered by the category hero.
   useLayoutEffect(() => {
     if (!isStraddle) { setAnchorEl(null); return; }
@@ -113,6 +116,21 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     return () => obs.disconnect();
   }, []);
   useEffect(() => {
+    if (placement !== "hero") {
+      setHeroPinned(false);
+      return;
+    }
+
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setHeroPinned(!entry.isIntersecting && entry.boundingClientRect.top < 0),
+      { threshold: 0 },
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [placement]);
+  useEffect(() => {
     if (!moreOpen) return;
     const onDoc = (e: MouseEvent) => {
       const t = e.target as Node;
@@ -141,12 +159,14 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
 
   const fallbackStraddleClass = stuck
     ? "fixed top-0 left-0 right-0 mx-2 sm:mx-3 lg:mx-4"
-    : "relative mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
+    : "relative mt-4 mx-2 sm:mx-3 lg:mx-4";
   const wrapperClass = useStraddle
     ? straddlePositionClass
     : isStraddle
       ? fallbackStraddleClass
-    : placement === "hero" ? "mt-0 w-full min-w-0" : compact ? "mt-0 mx-3 lg:mx-6" : isFlush ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
+    : placement === "hero"
+      ? `${heroPinned ? "fixed inset-x-0 top-0 px-4" : "relative px-4"} mt-0 w-full min-w-0`
+      : compact ? "mt-0 mx-3 lg:mx-6" : isFlush ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
 
 
 
@@ -154,7 +174,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   // On the hero's white band the dock sits on white, so use a darker, tighter
   // shadow to make the white buttons pop instead of blending in.
   let innerClass = placement === "hero"
-    ? "mx-auto w-full max-w-full overflow-hidden rounded-full bg-white border border-[#081129]/10 ring-0 shadow-[0_3px_10px_rgba(8,17,41,0.12),0_12px_28px_-10px_rgba(8,17,41,0.22)]"
+    ? "mx-auto w-fit max-w-[min(calc(100vw-2rem),108rem)] overflow-hidden rounded-full bg-white border border-[#081129]/10 ring-0 shadow-[0_3px_10px_rgba(8,17,41,0.12),0_12px_28px_-10px_rgba(8,17,41,0.22)]"
     : `mx-auto w-fit max-w-full rounded-full bg-white/85 backdrop-blur-xl border border-white/60 ring-1 ring-[#081129]/[0.06] ${
     stuck
       ? "shadow-[0_2px_8px_rgba(8,17,41,0.08),0_20px_48px_-12px_rgba(8,17,41,0.34)]"
@@ -168,7 +188,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     <>
       {/* Sticky sentinel — inside the hero it must not consume flex-row width,
           otherwise the centred dock gets pushed to one side. */}
-      <div ref={sentinelRef} aria-hidden="true" className={placement === "hero" ? "h-px w-0" : "h-px w-full"} />
+      <div ref={sentinelRef} aria-hidden="true" className={placement === "hero" ? "absolute inset-x-0 top-0 h-px" : "h-px w-full"} />
       <div className="md:hidden sticky top-0 z-50" data-testid="browse-by-category-bar-mobile">
         <div data-scrolled={scrolled} className={`px-4 h-20 flex items-center justify-between transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b ${scrolled ? "bg-[#081129] border-[#081129] shadow-[0_2px_10px_rgba(8,17,41,0.18)]" : "bg-white border-[#081129]/10"}`}>
           <Link to="/" className="flex items-center h-10 no-underline font-[Montserrat] font-extrabold tracking-tight text-[30px] leading-none"><span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white" : "text-[#081129]"}`}>myhealth</span><span className="text-[#e70d69]">checkup</span></Link>
@@ -225,18 +245,21 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             ref={barRef}
             className={`hidden md:block z-[1000] ${isStraddle || placement === "hero" ? "" : "sticky top-0"} ${wrapperClass}`}
             data-testid="browse-by-category-bar"
+            data-placement={placement}
+            data-pinned={placement === "hero" ? heroPinned : pinned}
+            data-hydrated={hydrated}
           >
 
-            <div className={`p-1.5 transition-all duration-300 ${innerClass}`}>
-              <div className={`flex items-center gap-1 max-w-full min-w-0 ${placement === "hero" ? "w-full justify-center" : ""}`}>
-                <div className={`flex items-center justify-start gap-y-0 flex-nowrap min-w-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [mask-image:linear-gradient(to_right,black_calc(100%-20px),transparent)] ${useStraddle ? "gap-x-0" : "gap-x-0.5 2xl:gap-x-1"} ${placement === "hero" ? "flex-1 justify-center" : ""}`}>
+            <div className={`p-1.5 transition-all duration-300 ${innerClass}`} data-testid="category-toolbar-dock">
+              <div className="flex w-fit max-w-full min-w-0 items-center gap-1">
+                <div className={`flex min-w-0 items-center justify-start gap-y-0 flex-nowrap overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [mask-image:linear-gradient(to_right,black_calc(100%-20px),transparent)] ${useStraddle ? "gap-x-0" : "gap-x-0.5 2xl:gap-x-1"}`} data-testid="category-pill-strip">
                   {items.map((item) => {
                     const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
                     return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} dense={useStraddle} />;
                   })}
                 </div>
 
-                <div ref={moreRef} className="relative shrink-0">
+                <div ref={moreRef} className="relative shrink-0" data-testid="category-bar-right-cluster">
                   <button type="button" onClick={() => setMoreOpen((o) => !o)} aria-expanded={moreOpen} className={`group inline-flex items-center rounded-full bg-[#081129] text-white transition-colors duration-200 hover:bg-[#0f1d3f] ${useStraddle ? "gap-1.5 px-3 py-2" : "gap-1.5 px-3 py-2 2xl:gap-2 2xl:px-4 2xl:py-2.5"}`}><MoreHorizontal className={`shrink-0 ${useStraddle ? "w-[15px] h-[15px]" : "w-[15px] h-[15px] 2xl:w-[17px] 2xl:h-[17px]"}`} strokeWidth={2} /><span className={`font-bold font-[Montserrat] whitespace-nowrap ${useStraddle ? "text-[12.5px] lg:text-[13px] tracking-[-0.02em]" : "text-xs sm:text-sm md:text-base tracking-[-0.015em] 2xl:tracking-normal"}`}>More</span><ChevronDown className={`text-white/70 transition-transform duration-300 shrink-0 w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px] ${moreOpen ? "rotate-180" : ""}`} /></button>
 
                   {moreOpen && typeof document !== "undefined" && createPortal(
