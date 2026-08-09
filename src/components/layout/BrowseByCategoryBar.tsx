@@ -41,6 +41,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const [moreRect, setMoreRect] = useState<DOMRect | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
+  const heroPinTopRef = useRef<number | null>(null);
   const [stuck, setStuck] = useState(false);
   const { pathname } = useLocation();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -116,6 +117,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   useEffect(() => {
     if (placement !== "hero") {
       setHeroPinned(false);
+      heroPinTopRef.current = null;
       return;
     }
 
@@ -124,7 +126,12 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
-        setHeroPinned((sentinelRef.current?.getBoundingClientRect().top ?? 1) <= 0);
+        const bar = barRef.current;
+        if (heroPinTopRef.current === null && bar) {
+          heroPinTopRef.current = bar.getBoundingClientRect().top + window.scrollY;
+        }
+        const pinTop = heroPinTopRef.current;
+        setHeroPinned(pinTop !== null && window.scrollY >= pinTop);
         ticking = false;
       });
     };
