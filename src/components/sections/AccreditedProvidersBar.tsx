@@ -44,16 +44,16 @@ const AccreditedProvidersBar = () => {
   return (
     <section
       aria-label="Accredited provider standards"
-      className="bg-[#081129] border-b border-white/10"
+      className="bg-white border-b border-[#081129]/10"
     >
       <div className="container mx-auto px-3 sm:px-4 py-2.5 sm:py-4">
         <Reveal variant="fade">
-          <p className="text-center font-[Montserrat] font-semibold text-white text-[clamp(1rem,4.2vw,1.65rem)] sm:text-[clamp(1.15rem,2.8vw,2rem)] leading-tight mb-2 sm:mb-3 px-4">
+          <p className="text-center font-[Montserrat] font-semibold text-[#081129] text-[clamp(1rem,4.2vw,1.65rem)] sm:text-[clamp(1.15rem,2.8vw,2rem)] leading-tight mb-2 sm:mb-3 px-4">
             {HERO_CAPTION}
           </p>
         </Reveal>
         <Reveal variant="fade">
-          <p className="text-center font-sans font-bold uppercase tracking-[0.12em] sm:tracking-[0.14em] text-[10px] sm:text-[11px] text-white/90 mb-2 sm:mb-3 px-2">
+          <p className="text-center font-sans font-bold uppercase tracking-[0.12em] sm:tracking-[0.14em] text-[10px] sm:text-[11px] text-[#081129]/90 mb-2 sm:mb-3 px-2">
             All listed providers meet every one of the following standards
           </p>
         </Reveal>
