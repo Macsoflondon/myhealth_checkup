@@ -52,7 +52,12 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     const find = () => setAnchorEl(document.getElementById("page-toolbar-anchor"));
     find();
     const raf = requestAnimationFrame(find);
-    return () => cancelAnimationFrame(raf);
+    const observer = new MutationObserver(find);
+    observer.observe(document.body, { childList: true, subtree: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      observer.disconnect();
+    };
   }, [isStraddle, pathname]);
   // Measure the bar so it sits exactly half over each colour.
   useLayoutEffect(() => {
@@ -144,7 +149,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   // On the hero's white band the dock sits on white, so use a darker, tighter
   // shadow to make the white buttons pop instead of blending in.
   let innerClass = placement === "hero"
-    ? "mx-auto w-fit max-w-full rounded-full bg-white border border-[#081129]/10 ring-0 shadow-[0_3px_10px_rgba(8,17,41,0.12),0_12px_28px_-10px_rgba(8,17,41,0.22)]"
+    ? "mx-auto w-full max-w-full overflow-hidden rounded-full bg-white border border-[#081129]/10 ring-0 shadow-[0_3px_10px_rgba(8,17,41,0.12),0_12px_28px_-10px_rgba(8,17,41,0.22)]"
     : `mx-auto w-fit max-w-full rounded-full bg-white/85 backdrop-blur-xl border border-white/60 ring-1 ring-[#081129]/[0.06] ${
     stuck
       ? "shadow-[0_2px_8px_rgba(8,17,41,0.08),0_20px_48px_-12px_rgba(8,17,41,0.34)]"
@@ -218,8 +223,8 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
           >
 
             <div className={`p-1.5 transition-all duration-300 ${innerClass}`}>
-              <div className={`flex items-center gap-1 max-w-full ${placement === "hero" ? "justify-center" : ""}`}>
-                <div className={`flex items-center justify-start gap-y-0 flex-nowrap min-w-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [mask-image:linear-gradient(to_right,black_calc(100%-20px),transparent)] ${useStraddle ? "gap-x-0" : "gap-x-0.5 2xl:gap-x-1"} ${placement === "hero" ? "justify-center" : ""}`}>
+              <div className={`flex items-center gap-1 max-w-full min-w-0 ${placement === "hero" ? "w-full justify-center" : ""}`}>
+                <div className={`flex items-center justify-start gap-y-0 flex-nowrap min-w-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [mask-image:linear-gradient(to_right,black_calc(100%-20px),transparent)] ${useStraddle ? "gap-x-0" : "gap-x-0.5 2xl:gap-x-1"} ${placement === "hero" ? "flex-1 justify-center" : ""}`}>
                   {items.map((item) => {
                     const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
                     return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} dense={useStraddle} />;
