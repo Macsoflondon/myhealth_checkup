@@ -59,8 +59,8 @@ export default function HeroMasthead({
         className="bg-white border-b border-brand-navy/10 -mx-3 sm:-mx-6 md:-mx-9"
       />
 
-      {/* Wordmark + primary heading + divider.
-          On desktop the slogan sits directly below the wordmark and above the divider.
+      {/* Wordmark + primary heading.
+          On desktop the slogan sits directly below the wordmark and above the white category bar.
           On mobile the slogan sits below the white category bar. */}
       <div className="flex flex-col items-start pt-4 sm:pt-10 lg:pt-12 order-2 sm:order-1">
         <div className="hidden sm:block">
@@ -86,12 +86,11 @@ export default function HeroMasthead({
             <UserMenu />
           </div>
         </div>
-
-        <div className="hidden sm:block w-full border-t border-[#e70d69] mt-3 sm:mt-4 mb-0" />
       </div>
 
-      {/* Category toolbar — white mobile brand bar / desktop toolbar */}
-      <div className="-mx-3 sm:-mx-6 md:-mx-9 mt-0 order-1 sm:order-2 sm:bg-white sm:py-2.5 sm:border-b sm:border-[#e70d69]">
+      {/* Category toolbar — white band with pink hairlines above and below.
+          The bottom pink line is the single divider between the toolbar and the hero image. */}
+      <div className="-mx-3 sm:-mx-6 md:-mx-9 mt-0 order-1 sm:order-2 sm:bg-white sm:py-2.5 sm:border-t-2 sm:border-b-2 sm:border-[#e70d69]">
         <BrowseByCategoryBar compact placement="hero" />
       </div>
 
