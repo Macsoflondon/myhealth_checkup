@@ -216,8 +216,8 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
           >
 
             <div className={`p-1.5 transition-all duration-300 ${innerClass}`}>
-              <div className="flex items-center gap-1 max-w-full">
-                <div className={`flex items-center justify-start gap-y-0 flex-nowrap min-w-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [mask-image:linear-gradient(to_right,black_calc(100%-20px),transparent)] ${useStraddle ? "gap-x-0" : "gap-x-0.5 2xl:gap-x-1"}`}>
+              <div className={`flex items-center gap-1 max-w-full ${placement === "hero" ? "justify-center" : ""}`}>
+                <div className={`flex items-center justify-start gap-y-0 flex-nowrap min-w-0 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [mask-image:linear-gradient(to_right,black_calc(100%-20px),transparent)] ${useStraddle ? "gap-x-0" : "gap-x-0.5 2xl:gap-x-1"} ${placement === "hero" ? "justify-center" : ""}`}>
                   {items.map((item) => {
                     const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
                     return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} dense={useStraddle} />;
