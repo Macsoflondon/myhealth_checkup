@@ -30,7 +30,7 @@ const BadgePill = ({ item }: BadgePillProps) => {
       >
         <Icon className="w-[14px] h-[14px] sm:w-[18px] sm:h-[18px]" strokeWidth={2.25} />
       </span>
-      <span className="font-sans font-bold text-[11px] sm:text-[13px] text-white">
+      <span className="font-sans font-bold text-[11px] sm:text-[13px] text-[#081129]">
         {item.label}
       </span>
     </div>
