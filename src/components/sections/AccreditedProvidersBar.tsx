@@ -1,4 +1,4 @@
-import { ShieldCheck, BadgeCheck, FlaskConical, Lock, Tag, Stethoscope, EyeOff, Star, type LucideIcon } from "lucide-react";
+import { ShieldCheck, BadgeCheck, FlaskConical, Lock, Tag, Stethoscope, type LucideIcon } from "lucide-react";
 import { Reveal } from "@/components/primitives/Reveal";
 
 interface TrustItem {
@@ -13,8 +13,6 @@ const trustItems: TrustItem[] = [
   { icon: Lock, label: "GDPR Compliant" },
   { icon: Tag, label: "Transparent Pricing" },
   { icon: Stethoscope, label: "No GP Referral Needed" },
-  { icon: EyeOff, label: "Data Never Shared" },
-  { icon: Star, label: "Trusted Comparison" },
 ];
 
 interface BadgePillProps {
@@ -26,7 +24,7 @@ const BadgePill = ({ item }: BadgePillProps) => {
   // Labels wrap below `sm` so the two-column grid fits a 320px viewport; from `sm` up
   // they stay on one line as before.
   return (
-    <div className="flex items-center gap-2 sm:gap-2.5 whitespace-normal sm:whitespace-nowrap lg:px-5">
+    <div className="flex items-center gap-2 sm:gap-2.5 whitespace-normal sm:whitespace-nowrap lg:px-2">
       <span
         aria-hidden="true"
         className="flex items-center justify-center rounded-full w-7 h-7 sm:w-9 sm:h-9 shrink-0 bg-[hsl(var(--trust-tone)/var(--trust-tone-alpha))] text-[hsl(var(--trust-tone))]"
@@ -56,10 +54,10 @@ const AccreditedProvidersBar = () => {
           </p>
         </Reveal>
 
-        {/* `lg:flex-nowrap` forced all eight pills onto one line, which needs ~1540px of
-            content width — at 1280 and 1440 the outer pills were clipped out of sight.
-            Wrapping lets every signal stay visible, and it still lands on one line once
-            the viewport is wide enough for it. */}
+        {/* Six pills fit one line from `lg` up. `flex-wrap` rather than `flex-nowrap` is
+            deliberate: nowrap clipped the outer pills out of sight when the row outgrew
+            its container, so if a label is ever added or lengthened this wraps instead of
+            silently hiding a trust signal. */}
         <div
           className="trust-alt grid grid-cols-2 sm:grid-cols-4 gap-y-3 gap-x-3 justify-items-start sm:justify-items-center lg:flex lg:flex-wrap lg:items-center lg:justify-center"
           data-testid="accreditors-static-row"
