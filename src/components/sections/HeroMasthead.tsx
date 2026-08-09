@@ -70,7 +70,7 @@ export default function HeroMasthead({
         <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-1 sm:px-0 pt-0 pb-1 sm:pb-0">
           <h1
             className="font-bold font-[Montserrat] text-white text-left m-0
-              text-[clamp(0.95rem,4.2vw,1.55rem)] sm:text-[clamp(1.1rem,2.9vw,2.15rem)]
+              text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)]
               tracking-[0.05em] sm:tracking-[0.08em]
               leading-[1.25] sm:leading-[1.15]"
           >
