@@ -60,32 +60,36 @@ export default function HeroMasthead({
         className="bg-white border-b border-brand-navy/10 -mx-3 sm:-mx-6 md:-mx-9"
       />
 
-      {/* Desktop wordmark + divider — hidden on mobile */}
-      <div className="hidden sm:flex flex-col items-start pt-5 sm:pt-10 lg:pt-12 order-1">
-        <Wordmark />
-        <div className="w-full border-t border-white/45 my-3 sm:my-4" />
-      </div>
-
-      {/* Primary page heading — visible on all screen sizes.
-          On mobile it sits below the white category bar; on desktop it sits
-          between the wordmark and the category toolbar. */}
-      <div className="order-2 sm:order-1 w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-1 sm:px-0 pt-4 sm:pt-0 pb-1 sm:pb-0">
-        <h1
-          className="font-bold uppercase font-[Montserrat] text-white text-left m-0
-            text-[clamp(1.05rem,4.6vw,1.75rem)] sm:text-[clamp(1.25rem,3.2vw,2.5rem)]
-            tracking-[0.05em] sm:tracking-[0.08em]
-            leading-[1.25] sm:leading-[1.15]"
-        >
-          <span className="block sm:inline">
-            YOUR <span className="text-brand-turquoise">HEALTH.</span> YOUR{" "}
-            <span className="text-brand-pink">CHOICE.</span>
-          </span>{" "}
-          <span className="block sm:inline">ONE TRUSTED PLATFORM.</span>
-        </h1>
-        <div className="hidden sm:flex items-center gap-1 shrink-0">
-          <LanguageSwitcher />
-          <UserMenu />
+      {/* Wordmark + primary heading + divider.
+          On desktop the slogan sits directly below the wordmark and above the divider.
+          On mobile the slogan sits below the white category bar. */}
+      <div className="flex flex-col items-start pt-4 sm:pt-10 lg:pt-12 order-2 sm:order-1">
+        <div className="hidden sm:block">
+          <Wordmark />
         </div>
+
+        <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-1 sm:px-0 pt-0 pb-1 sm:pb-0">
+          <h1
+            className="font-bold font-[Montserrat] text-white text-left m-0
+              text-[clamp(0.95rem,4.2vw,1.55rem)] sm:text-[clamp(1.1rem,2.9vw,2.15rem)]
+              tracking-[0.05em] sm:tracking-[0.08em]
+              leading-[1.25] sm:leading-[1.15]"
+          >
+            <span className="block sm:inline">
+              <span className="text-white">Your </span>
+              <span className="text-brand-turquoise">health.</span>
+              <span className="text-white"> Your </span>
+              <span className="text-brand-pink">choice.</span>
+            </span>{" "}
+            <span className="block sm:inline text-white">One trusted platform.</span>
+          </h1>
+          <div className="hidden sm:flex items-center gap-1 shrink-0">
+            <LanguageSwitcher />
+            <UserMenu />
+          </div>
+        </div>
+
+        <div className="hidden sm:block w-full border-t border-white/45 my-3 sm:my-4" />
       </div>
 
       {/* Category toolbar — white mobile brand bar / desktop toolbar */}
