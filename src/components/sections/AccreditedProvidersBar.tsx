@@ -48,7 +48,7 @@ const AccreditedProvidersBar = () => {
     >
       <div className="container mx-auto px-3 sm:px-4 py-2.5 sm:py-4">
         <Reveal variant="fade">
-          <p className="text-center font-[Montserrat] font-semibold text-[#081129] text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)] xl:text-[clamp(1.3rem,2.05vw,2rem)] xl:whitespace-nowrap leading-tight mb-2 sm:mb-3 px-4">
+          <p className="hidden md:block text-center font-[Montserrat] font-semibold text-[#081129] text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)] xl:text-[clamp(1.3rem,2.05vw,2rem)] xl:whitespace-nowrap leading-tight mb-2 sm:mb-3 px-4">
             {HERO_CAPTION}
           </p>
         </Reveal>

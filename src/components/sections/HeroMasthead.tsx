@@ -11,6 +11,7 @@ const PINK = "#e70d69";
 import {
   SLIDES,
   FIRST_SLIDE_LQIP,
+  HERO_CAPTION,
 } from "@/components/sections/hero-slides";
 
 const Wordmark = () => (
@@ -69,7 +70,7 @@ export default function HeroMasthead({
 
         <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-1 sm:px-0 pt-0 pb-5 sm:pb-4">
           <h1
-            className="font-bold font-[Montserrat] text-white text-left m-0
+            className="hidden md:block font-bold font-[Montserrat] text-white text-left m-0
               text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)]
               tracking-[0.05em] sm:tracking-[0.08em]
               leading-[1.25] sm:leading-[1.15]"
@@ -81,6 +82,13 @@ export default function HeroMasthead({
               <span className="text-brand-pink">choice.</span>
             </span>
           </h1>
+          <p
+            className="md:hidden text-center font-[Montserrat] font-semibold text-white
+              text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)]
+              leading-tight px-4 m-0"
+          >
+            {HERO_CAPTION}
+          </p>
           <div className="hidden sm:flex items-center gap-1 shrink-0">
             <LanguageSwitcher />
             <UserMenu />
