@@ -11,6 +11,7 @@ const PINK = "#e70d69";
 import {
   SLIDES,
   FIRST_SLIDE_LQIP,
+  HERO_CAPTION,
 } from "@/components/sections/hero-slides";
 
 const Wordmark = () => (
