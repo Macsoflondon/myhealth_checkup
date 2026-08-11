@@ -1,4 +1,12 @@
-import { ShieldCheck, BadgeCheck, FlaskConical, Lock, Tag, Stethoscope, type LucideIcon } from "lucide-react";
+import {
+  ShieldCheck,
+  BadgeCheck,
+  FlaskConical,
+  Lock,
+  Tag,
+  Stethoscope,
+  type LucideIcon,
+} from "lucide-react";
 import { Reveal } from "@/components/primitives/Reveal";
 import { HERO_CAPTION } from "@/components/sections/hero-slides";
 
@@ -22,13 +30,18 @@ interface BadgePillProps {
 
 const BadgePill = ({ item }: BadgePillProps) => {
   const Icon = item.icon;
+  // Labels wrap below `sm` so the two-column grid fits a 320px viewport; from `sm` up
+  // they stay on one line as before.
   return (
-    <div className="flex items-center gap-2 sm:gap-2.5 whitespace-nowrap lg:px-5">
+    <div className="flex items-center gap-2 sm:gap-2.5 whitespace-normal sm:whitespace-nowrap lg:px-2">
       <span
         aria-hidden="true"
         className="flex items-center justify-center rounded-full w-7 h-7 sm:w-9 sm:h-9 shrink-0 bg-[hsl(var(--trust-tone)/var(--trust-tone-alpha))] text-[hsl(var(--trust-tone))]"
       >
-        <Icon className="w-[14px] h-[14px] sm:w-[18px] sm:h-[18px]" strokeWidth={2.25} />
+        <Icon
+          className="w-[14px] h-[14px] sm:w-[18px] sm:h-[18px]"
+          strokeWidth={2.25}
+        />
       </span>
       <span className="font-sans font-bold text-[11px] sm:text-[13px] text-[#081129]">
         {item.label}
@@ -58,8 +71,12 @@ const AccreditedProvidersBar = () => {
           </p>
         </Reveal>
 
+        {/* Six pills fit one line from `lg` up. `flex-wrap` rather than `flex-nowrap` is
+            deliberate: nowrap clipped the outer pills out of sight when the row outgrew
+            its container, so if a label is ever added or lengthened this wraps instead of
+            silently hiding a trust signal. */}
         <div
-          className="trust-alt grid grid-cols-2 sm:grid-cols-4 gap-y-3 gap-x-3 justify-items-start sm:justify-items-center lg:flex lg:flex-nowrap lg:items-center lg:justify-center lg:gap-y-0"
+          className="trust-alt grid grid-cols-2 sm:grid-cols-4 gap-y-3 gap-x-3 justify-items-start sm:justify-items-center lg:flex lg:flex-wrap lg:items-center lg:justify-center"
           data-testid="accreditors-static-row"
         >
           {trustItems.map((item) => (

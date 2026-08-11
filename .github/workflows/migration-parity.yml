@@ -1,6 +1,9 @@
 name: Migration parity
 
 on:
+  # Deliberately unfiltered: every merge to main gets a real pass/fail result
+  # rather than a skipped required check. The PR trigger below keeps its paths
+  # filter so unrelated diffs don't run it.
   push:
     branches: [main]
   pull_request:
@@ -12,6 +15,10 @@ on:
 jobs:
   parity:
     runs-on: ubuntu-latest
+    # Job-level env: the `secrets` context is not available in a step `if`,
+    # but `env` is — so the secret is surfaced here and tested via `env` below.
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -19,9 +26,7 @@ jobs:
       - name: Local filesystem parity
         run: node scripts/check-migration-parity.mjs
       - name: Remote parity (repo ↔ supabase_migrations.schema_migrations)
-        if: ${{ secrets.SUPABASE_DB_URL != '' }}
-        env:
-          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        if: ${{ env.SUPABASE_DB_URL != '' }}
         run: |
           set -euo pipefail
           sudo apt-get update && sudo apt-get install -y postgresql-client

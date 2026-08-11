@@ -19,6 +19,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - run: npm ci --no-audit --no-fund
+      # `npm ci` requires a package-lock.json; this repo locks with bun.lock, so it
+      # failed at install on every run and the two steps below never executed.
+      - run: npm install --no-audit --no-fund
       - run: npx tsx scripts/generate-sitemap.ts
       - run: node scripts/validate-sitemap.mjs
