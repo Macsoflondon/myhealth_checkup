@@ -94,14 +94,49 @@ export const LanguageList = ({ onSelect }: { onSelect?: () => void } = {}) => {
   );
 };
 
-export const LanguageSwitcher = ({ variant = "chip", onDark = false }: { variant?: "chip" | "glass"; onDark?: boolean } = {}) => {
-  const { i18n, t } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
+/**
+ * Collapsed language row for the mobile drawer — shows only the active
+ * language until tapped, then expands the full list inline.
+ */
+export const LanguageAccordion = ({ onSelect }: { onSelect?: () => void } = {}) => {
+  const currentLanguage = useActiveLanguage();
+  const [expanded, setExpanded] = useState(false);
 
-  const currentLanguage =
-    languages.find((lang) => lang.code === i18n.language) ||
-    languages.find((lang) => lang.code === i18n.language?.split('-')[0]) ||
-    languages[0];
+  return (
+    <div className="rounded-xl bg-white border-[1.5px] border-[#081129]/10 overflow-hidden">
+      <button
+        type="button"
+        onClick={() => setExpanded((v) => !v)}
+        aria-expanded={expanded}
+        className="w-full flex items-center gap-3 px-3 py-2.5 text-left"
+      >
+        <span className="text-lg leading-none">{currentLanguage.flag}</span>
+        <span className="text-sm font-semibold text-[#081129] font-[Montserrat] flex-1 truncate">
+          {currentLanguage.name}
+        </span>
+        <ChevronDown
+          className={`w-4 h-4 text-[#081129]/60 transition-transform ${expanded ? 'rotate-180' : ''}`}
+        />
+      </button>
+      {expanded && (
+        <div className="border-t border-[#081129]/10 bg-[#f7f7f8] p-2">
+          <LanguageList
+            onSelect={() => {
+              setExpanded(false);
+              onSelect?.();
+            }}
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
+export const LanguageSwitcher = ({ variant = "chip", onDark = false }: { variant?: "chip" | "glass"; onDark?: boolean } = {}) => {
+  const { t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
+  const currentLanguage = useActiveLanguage();
+
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
