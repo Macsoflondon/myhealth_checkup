@@ -56,8 +56,8 @@ export const SLIDES: HeroSlide[] = [
     src: bloodTestKitAsset.url,
     label: "Test from the Comfort of Home",
     alt: "At-home finger-prick blood test kit laid out on a kitchen worktop",
-    posMobile: "40% 30%",
-    posTablet: "40% 45%",
-    posDesktop: "50% 55%",
+    posMobile: "40% 22%",
+    posTablet: "40% 38%",
+    posDesktop: "50% 50%",
   },
 ];
