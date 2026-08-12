@@ -14,10 +14,10 @@ interface UserMenuProps {
   isMobile?: boolean;
   onItemClick?: () => void;
   variant?: "chip" | "glass";
+  onDark?: boolean;
 }
-export const UserMenu = ({ isMobile = false, onItemClick, variant = "chip" }: UserMenuProps) => {
-  const glassBtn =
-    "!h-9 !w-9 !min-h-0 !p-0 !text-[#081129] hover:!bg-white !bg-transparent !border-0 rounded-full transition-colors flex-shrink-0";
+export const UserMenu = ({ isMobile = false, onItemClick, variant = "chip", onDark = false }: UserMenuProps) => {
+  const glassBtn = `!h-9 !w-9 !min-h-0 !p-0 ${onDark ? "!text-white hover:!bg-white/15" : "!text-[#081129] hover:!bg-[#081129]/10"} !bg-transparent !border-0 rounded-full transition-colors flex-shrink-0`;
   const { user, signOut } = useAuth();
   const { t } = useTranslation();
   const handleSignOut = async () => {
