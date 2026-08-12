@@ -187,7 +187,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   return (
     <>
       {/* Floating mobile hamburger — fixed in top-right corner on every page */}
-      <div className="md:hidden fixed top-4 right-4 z-50" data-testid="mobile-floating-menu-trigger">
+      <div className="md:hidden fixed top-16 right-4 z-50" data-testid="mobile-floating-menu-trigger">
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
           <SheetTrigger asChild>
             <button
