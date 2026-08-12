@@ -16,6 +16,8 @@ const trustItems: TrustItem[] = [
   { icon: Stethoscope, label: "No GP Referral Needed" },
 ];
 
+const underlineColors = ["#22c0d4", "#e70d69", "#081129", "#22c0d4", "#e70d69", "#081129"];
+
 interface BadgePillProps {
   item: TrustItem;
 }
