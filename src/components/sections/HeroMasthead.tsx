@@ -54,7 +54,7 @@ export default function HeroMasthead({
 
   return (
 
-    <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border border-b-0 border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[68svh] sm:min-h-[100svh] flex flex-col">
+    <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border-0 sm:border sm:border-b-0 sm:border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[68svh] sm:min-h-[100svh] flex flex-col">
       <TestCategoryTicker
         variant="inline"
         className="bg-white border-b border-brand-navy/10 -mx-3 sm:-mx-6 md:-mx-9"
@@ -146,7 +146,7 @@ export default function HeroMasthead({
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
         {/* Mobile: caption card overlapping the hero image bottom */}
-        <div className="md:hidden absolute bottom-0 left-1/2 -translate-x-1/2 w-screen max-w-none z-10 bg-[#081129] p-5 border-y-2 border-[#e70d69] shadow-[0_20px_50px_rgba(8,17,41,0.45)]">
+        <div className="md:hidden absolute bottom-0 inset-x-0 w-full max-w-none z-10 bg-[#081129] p-5 border-y-2 border-[#e70d69] shadow-[0_20px_50px_rgba(8,17,41,0.45)]">
           <p className="text-center font-[Montserrat] font-semibold text-white text-[13px] sm:text-[14px] leading-tight tracking-wide">
             {HERO_CAPTION}
           </p>
