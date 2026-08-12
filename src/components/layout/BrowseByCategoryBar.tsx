@@ -191,67 +191,75 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
       <div ref={sentinelRef} aria-hidden="true" className={placement === "hero" ? "absolute inset-x-0 top-0 h-px" : "h-px w-full"} />
       <div className="md:hidden sticky top-0 z-50 w-full shrink-0 basis-full" data-testid="browse-by-category-bar-mobile">
         <div data-scrolled={scrolled} className={`${placement === "hero" ? "flex flex-col px-4 min-h-[80px] py-3" : "flex items-center px-4 h-20"} transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b ${scrolled ? "bg-[#081129] border-[#081129] shadow-[0_2px_10px_rgba(8,17,41,0.18)]" : "bg-white border-[#081129]/10"}`}>
-          <div className="flex items-center justify-between w-full shrink-0">
-            <Link to="/" className="flex items-center h-10 no-underline font-[Montserrat] font-extrabold tracking-tight text-[30px] leading-none"><span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white" : "text-[#081129]"}`}>myhealth</span><span className="text-[#e70d69]">checkup</span></Link>
-            <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-              <SheetTrigger asChild><button type="button" aria-label="Open menu" className={`inline-flex items-center justify-center w-11 h-11 rounded-full transition-colors duration-300 ease-out focus:outline-hidden ${scrolled ? "bg-white/10 text-white hover:bg-white/20" : "bg-[#081129]/5 text-[#081129] hover:bg-[#081129]/10"}`}><Menu className="w-6 h-6" strokeWidth={2.25} /></button></SheetTrigger>
-              <SheetContent side="right" className="w-[85vw] max-w-[340px] bg-[#f7f7f8] border-l border-[#081129]/10 p-0 flex flex-col">
-                <SheetHeader className="px-4 py-4 border-b border-[#081129]/10 text-left"><SheetTitle className="text-[#081129] text-base font-[Montserrat] font-semibold">Menu</SheetTitle></SheetHeader>
-                <nav className="px-3 py-4 overflow-y-auto flex-1">
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/40 mb-3">Test Categories</h3>
-                      <div className="grid grid-cols-1 gap-2">
-                        {items.map((item) => {
-                          const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
-                          const hasSubs = Boolean(item.hasDropdown && item.dropdownItems?.length);
-                          const isExpanded = mobileExpanded === item.name;
-                          return (
-                            <div key={item.name} className="rounded-xl bg-white border-[1.5px] border-[#081129]/10 overflow-hidden">
-                              <div className="flex items-stretch">
-                                <Link to={item.path} onClick={() => setMobileOpen(false)} className="group flex items-center gap-3 px-3 py-2.5 flex-1 min-w-0 no-underline"><span className="w-8 h-8 rounded-full inline-flex items-center justify-center shrink-0" style={{ background: `${color}1a` }}><Icon className="w-4 h-4" style={{ color }} strokeWidth={2} /></span><span className="text-sm font-semibold text-[#081129] font-[Montserrat] truncate">{item.name}</span></Link>
-                                {hasSubs && (<button type="button" onClick={() => setMobileExpanded((cur) => (cur === item.name ? null : item.name))} className="shrink-0 px-3 flex items-center justify-center border-l border-[#081129]/10 text-[#081129]/60"><ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? "rotate-180" : ""}`} /></button>)}
-                              </div>
-                              {hasSubs && isExpanded && (<ul className="border-t border-[#081129]/10 bg-[#f7f7f8] py-1">{item.dropdownItems!.map((sub) => (<li key={sub.path + sub.name}><Link to={sub.path} onClick={() => setMobileOpen(false)} className="flex items-center gap-2.5 pl-14 pr-3 py-2 text-[13px] font-medium text-[#081129] font-[Montserrat] no-underline hover:bg-white transition-colors"><span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: color }} /><span className="truncate">{sub.name}</span></Link></li>))}</ul>)}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
-                    {moreNavigationSections.map((section) => (
-                      <div key={section.title}>
-                        <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/40 mb-3">{section.title}</h3>
+          <div className="flex items-start justify-between w-full shrink-0">
+            <div className="flex flex-col min-w-0">
+              <Link to="/" className="flex items-center h-10 no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] text-[30px] leading-none">
+                <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white" : "text-[#081129]"}`}>myhealth</span>
+                <span className="text-[#22c0d4]">checkup</span>
+              </Link>
+              {placement === "hero" && (
+                <h1 className="md:hidden font-[Montserrat] font-bold text-left m-0 mt-1 text-[10px] sm:text-xs uppercase tracking-[0.22em] leading-none">
+                  <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white/70" : "text-[#081129]/55"}`}>Your </span>
+                  <span className="text-[#22c0d4]">health</span>
+                  <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white/70" : "text-[#081129]/55"}`}>. Your </span>
+                  <span className="text-[#e70d69]">choice</span>
+                  <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white/70" : "text-[#081129]/55"}`}>.</span>
+                </h1>
+              )}
+            </div>
+            <div className="flex flex-col items-end gap-2 shrink-0 ml-3">
+              <div className="flex flex-col items-end gap-[5px] pt-1" aria-hidden="true">
+                <div className="h-[3px] w-9 rounded-full bg-[#081129] transition-colors duration-300 ease-out" style={{ backgroundColor: scrolled ? "#ffffff" : "#081129" }} />
+                <div className="h-[3px] w-6 rounded-full bg-[#e70d69]" />
+                <div className="h-[3px] w-10 rounded-full bg-[#22c0d4]" />
+              </div>
+              <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+                <SheetTrigger asChild><button type="button" aria-label="Open menu" className={`inline-flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-300 ease-out focus:outline-hidden ${scrolled ? "bg-white/10 text-white hover:bg-white/20" : "bg-[#081129]/5 text-[#081129] hover:bg-[#081129]/10"}`}><Menu className="w-5 h-5" strokeWidth={2.25} /></button></SheetTrigger>
+                <SheetContent side="right" className="w-[85vw] max-w-[340px] bg-[#f7f7f8] border-l border-[#081129]/10 p-0 flex flex-col">
+                  <SheetHeader className="px-4 py-4 border-b border-[#081129]/10 text-left"><SheetTitle className="text-[#081129] text-base font-[Montserrat] font-semibold">Menu</SheetTitle></SheetHeader>
+                  <nav className="px-3 py-4 overflow-y-auto flex-1">
+                    <div className="space-y-6">
+                      <div>
+                        <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/40 mb-3">Test Categories</h3>
                         <div className="grid grid-cols-1 gap-2">
-                          {section.items.map((item) => {
-                            const { Icon, color } = MORE_SECTION_ICONS[item.name] ?? { Icon: Info, color: TURQUOISE };
+                          {items.map((item) => {
+                            const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
+                            const hasSubs = Boolean(item.hasDropdown && item.dropdownItems?.length);
+                            const isExpanded = mobileExpanded === item.name;
                             return (
-                              <Link key={item.name} to={item.path} onClick={() => setMobileOpen(false)} className="rounded-xl bg-white border-[1.5px] border-[#081129]/10 group flex items-center gap-3 px-3 py-2.5 no-underline">
-                                <span className="w-8 h-8 rounded-full inline-flex items-center justify-center shrink-0" style={{ background: `${color}1a` }}><Icon className="w-4 h-4" style={{ color }} strokeWidth={2} /></span>
-                                <span className="text-sm font-semibold text-[#081129] font-[Montserrat] truncate">{item.name}</span>
-                              </Link>
+                              <div key={item.name} className="rounded-xl bg-white border-[1.5px] border-[#081129]/10 overflow-hidden">
+                                <div className="flex items-stretch">
+                                  <Link to={item.path} onClick={() => setMobileOpen(false)} className="group flex items-center gap-3 px-3 py-2.5 flex-1 min-w-0 no-underline"><span className="w-8 h-8 rounded-full inline-flex items-center justify-center shrink-0" style={{ background: `${color}1a` }}><Icon className="w-4 h-4" style={{ color }} strokeWidth={2} /></span><span className="text-sm font-semibold text-[#081129] font-[Montserrat] truncate">{item.name}</span></Link>
+                                  {hasSubs && (<button type="button" onClick={() => setMobileExpanded((cur) => (cur === item.name ? null : item.name))} className="shrink-0 px-3 flex items-center justify-center border-l border-[#081129]/10 text-[#081129]/60"><ChevronDown className={`w-4 h-4 transition-transform ${isExpanded ? "rotate-180" : ""}`} /></button>)}
+                                </div>
+                                {hasSubs && isExpanded && (<ul className="border-t border-[#081129]/10 bg-[#f7f7f8] py-1">{item.dropdownItems!.map((sub) => (<li key={sub.path + sub.name}><Link to={sub.path} onClick={() => setMobileOpen(false)} className="flex items-center gap-2.5 pl-14 pr-3 py-2 text-[13px] font-medium text-[#081129] font-[Montserrat] no-underline hover:bg-white transition-colors"><span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: color }} /><span className="truncate">{sub.name}</span></Link></li>))}</ul>)}
+                              </div>
                             );
                           })}
                         </div>
                       </div>
-                    ))}
-                  </div>
-                </nav>
-              </SheetContent>
-            </Sheet>
+                      {moreNavigationSections.map((section) => (
+                        <div key={section.title}>
+                          <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/40 mb-3">{section.title}</h3>
+                          <div className="grid grid-cols-1 gap-2">
+                            {section.items.map((item) => {
+                              const { Icon, color } = MORE_SECTION_ICONS[item.name] ?? { Icon: Info, color: TURQUOISE };
+                              return (
+                                <Link key={item.name} to={item.path} onClick={() => setMobileOpen(false)} className="rounded-xl bg-white border-[1.5px] border-[#081129]/10 group flex items-center gap-3 px-3 py-2.5 no-underline">
+                                  <span className="w-8 h-8 rounded-full inline-flex items-center justify-center shrink-0" style={{ background: `${color}1a` }}><Icon className="w-4 h-4" style={{ color }} strokeWidth={2} /></span>
+                                  <span className="text-sm font-semibold text-[#081129] font-[Montserrat] truncate">{item.name}</span>
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </nav>
+                </SheetContent>
+              </Sheet>
+            </div>
           </div>
-          {placement === "hero" && (
-            <h1
-              className="md:hidden font-bold font-[Montserrat] text-left m-0 mt-1
-                text-[clamp(1.05rem,5vw,1.9rem)]
-                tracking-[0.05em]
-                leading-[1.25]"
-            >
-              <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white" : "text-[#081129]"}`}>Your </span>
-              <span className="text-brand-turquoise">health.</span>
-              <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white" : "text-[#081129]"}`}> Your </span>
-              <span className="text-brand-pink">choice.</span>
-            </h1>
-          )}
         </div>
       </div>
       {(() => {
