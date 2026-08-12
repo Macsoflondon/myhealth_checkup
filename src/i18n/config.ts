@@ -100,8 +100,6 @@ const navigatorBestMatch = {
   },
 };
 
-LanguageDetector.type = 'languageDetector';
-
 const detector = new LanguageDetector();
 detector.addDetector(navigatorBestMatch);
 
