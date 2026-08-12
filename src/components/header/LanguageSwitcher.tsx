@@ -26,24 +26,44 @@ const languages = [
   { code: 'ja', name: '日本語', flag: '🇯🇵' },
 ];
 
-export const LanguageList = ({ onSelect }: { onSelect?: () => void } = {}) => {
-  const { i18n } = useTranslation();
+type Language = (typeof languages)[number];
 
-  const currentLanguage =
-    languages.find((lang) => lang.code === i18n.language) ||
-    languages.find((lang) => lang.code === i18n.language?.split('-')[0]) ||
-    languages[0];
+/** Resolve the active language against the shared i18next singleton. */
+const resolveLanguage = (code: string | undefined): Language =>
+  languages.find((lang) => lang.code === code) ||
+  languages.find((lang) => lang.code === code?.split('-')[0]) ||
+  languages[0];
+
+/** Subscribes to the singleton so every chunk stays in sync after a change. */
+export const useActiveLanguage = (): Language => {
+  const [code, setCode] = useState<string>(i18nInstance.language ?? 'en');
+
+  useEffect(() => {
+    const onChanged = (next: string) => setCode(next);
+    i18nInstance.on('languageChanged', onChanged);
+    setCode(i18nInstance.language ?? 'en');
+    return () => {
+      i18nInstance.off('languageChanged', onChanged);
+    };
+  }, []);
+
+  return resolveLanguage(code);
+};
+
+export const changeAppLanguage = (languageCode: string) => {
+  void i18nInstance.changeLanguage(languageCode);
+  document.documentElement.lang = languageCode === 'en' ? 'en-GB' : languageCode;
+  document.documentElement.dir = languageCode === 'ar' ? 'rtl' : 'ltr';
+};
+
+export const LanguageList = ({ onSelect }: { onSelect?: () => void } = {}) => {
+  const currentLanguage = useActiveLanguage();
 
   const handleLanguageChange = (languageCode: string) => {
-    if (languageCode === i18n.language) {
-      onSelect?.();
-      return;
-    }
-    i18n.changeLanguage(languageCode);
-    document.documentElement.lang = languageCode === 'en' ? 'en-GB' : languageCode;
-    document.documentElement.dir = languageCode === 'ar' ? 'rtl' : 'ltr';
+    if (languageCode !== currentLanguage.code) changeAppLanguage(languageCode);
     onSelect?.();
   };
+
 
   return (
     <div className="grid grid-cols-1 gap-1">
