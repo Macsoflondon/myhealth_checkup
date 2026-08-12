@@ -196,6 +196,7 @@ function RootComponent() {
           </HelmetProvider>
         </SessionSecurityProvider>
       </AuthProvider>
+      </I18nextProvider>
     </QueryClientProvider>
   );
 }
