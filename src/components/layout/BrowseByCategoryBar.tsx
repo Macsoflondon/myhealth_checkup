@@ -195,7 +195,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
               aria-controls="mobile-menu"
-              className="flex flex-col items-end justify-center gap-[5px] w-12 h-12 rounded-full bg-white/95 backdrop-blur-sm shadow-[0_4px_14px_rgba(8,17,41,0.18)] border border-[#081129]/10 p-0 focus:outline-hidden cursor-pointer"
+              className="flex flex-col items-end justify-center gap-[5px] min-w-11 min-h-11 p-2 bg-transparent border-0 shadow-none focus:outline-hidden cursor-pointer"
             >
               <div className="h-[3px] w-9 rounded-full bg-[#081129]" />
               <div className="h-[3px] w-6 rounded-full bg-[#e70d69]" />
