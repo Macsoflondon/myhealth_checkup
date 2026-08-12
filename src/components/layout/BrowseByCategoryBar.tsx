@@ -213,6 +213,9 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                 <div className="h-[3px] w-6 rounded-full bg-[#e70d69]" />
                 <div className="h-[3px] w-10 rounded-full bg-[#22c0d4]" />
               </div>
+              <div className="flex items-center gap-1">
+              <LanguageSwitcher variant="glass" onDark={scrolled} />
+              <UserMenu isMobile variant="glass" onDark={scrolled} />
               <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
                 <SheetTrigger asChild><button type="button" aria-label="Open menu" className={`inline-flex items-center justify-center w-10 h-10 rounded-full transition-colors duration-300 ease-out focus:outline-hidden ${scrolled ? "bg-white/10 text-white hover:bg-white/20" : "bg-[#081129]/5 text-[#081129] hover:bg-[#081129]/10"}`}><Menu className="w-5 h-5" strokeWidth={2.25} /></button></SheetTrigger>
                 <SheetContent side="right" className="w-[85vw] max-w-[340px] bg-[#f7f7f8] border-l border-[#081129]/10 p-0 flex flex-col">
