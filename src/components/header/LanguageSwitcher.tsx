@@ -24,7 +24,7 @@ const languages = [
   { code: 'ja', name: '日本語', flag: '🇯🇵' },
 ];
 
-export const LanguageSwitcher = ({ variant = "chip" }: { variant?: "chip" | "glass" } = {}) => {
+export const LanguageSwitcher = ({ variant = "chip", onDark = false }: { variant?: "chip" | "glass"; onDark?: boolean } = {}) => {
   const { i18n, t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
