@@ -8,7 +8,8 @@ import "@fontsource/dm-sans/400.css";
 import "@fontsource/dm-sans/500.css";
 import "@fontsource/dm-sans/700.css";
 // ported from main.tsx — i18next initialisation (module-scope, side-effect import)
-import "../i18n/config";
+import i18nInstance from "../i18n/config";
+import { I18nextProvider } from "react-i18next";
 
 import { useEffect, Suspense } from "react";
 import type { QueryClient } from "@tanstack/react-query";
@@ -171,6 +172,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <I18nextProvider i18n={i18nInstance}>
       <AuthProvider>
         <SessionSecurityProvider>
           <HelmetProvider>
@@ -194,6 +196,7 @@ function RootComponent() {
           </HelmetProvider>
         </SessionSecurityProvider>
       </AuthProvider>
+      </I18nextProvider>
     </QueryClientProvider>
   );
 }
