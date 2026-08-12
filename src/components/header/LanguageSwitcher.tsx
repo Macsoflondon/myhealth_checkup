@@ -51,7 +51,7 @@ export const LanguageSwitcher = ({ variant = "chip", onDark = false }: { variant
           <button
             type="button"
             aria-label={t('language.selectLanguage', 'Select language')}
-            className="p-1.5 rounded-full hover:bg-white transition-colors flex items-center justify-center flex-shrink-0"
+            className={`h-9 w-9 rounded-full transition-colors flex items-center justify-center flex-shrink-0 ${onDark ? "hover:bg-white/15" : "hover:bg-[#081129]/10"}`}
           >
             <span className="inline-flex items-center justify-center min-w-[22px] h-[22px] px-1 bg-white/70 rounded-[3px] shadow-xs text-[16px] leading-none">
               {currentLanguage.flag}
