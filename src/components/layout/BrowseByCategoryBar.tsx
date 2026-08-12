@@ -261,6 +261,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                   </nav>
                 </SheetContent>
               </Sheet>
+              </div>
             </div>
           </div>
         </div>
