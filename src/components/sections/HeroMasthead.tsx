@@ -102,7 +102,7 @@ export default function HeroMasthead({
         <BrowseByCategoryBar compact placement="hero" />
       </div>
 
-      <div className="relative overflow-hidden mt-5 sm:mt-0 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3">
+      <div className="relative overflow-hidden mt-5 sm:mt-0 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-0">
 
         {/* Blurred LQIP + gradient placeholder — fades out once slide 1 paints */}
         <div
@@ -144,6 +144,13 @@ export default function HeroMasthead({
         })}
 
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
+
+        {/* Mobile: caption card overlapping the hero image bottom */}
+        <div className="md:hidden absolute bottom-0 left-5 right-5 z-10 bg-[#081129] p-5 border-b-2 border-[#e70d69] shadow-[0_20px_50px_rgba(8,17,41,0.45)]">
+          <p className="text-center font-[Montserrat] font-semibold text-white text-[13px] sm:text-[14px] leading-tight tracking-wide">
+            {HERO_CAPTION}
+          </p>
+        </div>
       </div>
     </section>
   );
