@@ -1,27 +1,29 @@
-# Revert mobile menu trigger to plain three-line icon
+# Plain three-line mobile menu trigger
 
 ## Goal
-Remove the circular "dish" button styling around the mobile hamburger trigger and return to the original plain three coloured accent lines as the menu control.
+Remove all button-shaped chrome from the mobile hamburger trigger so only the three coloured accent lines remain, sitting idle at the top-right of the page.
 
 ## What will change
 
-1. **Remove the round button container**
-   - Strip `rounded-full`, `bg-white/95`, `backdrop-blur-sm`, `shadow-[...]`, and `border` classes from the floating trigger button in `src/components/layout/BrowseByCategoryBar.tsx`.
-   - Keep the three horizontal bars (navy, pink, turquoise) with their current widths/heights and right-aligned sizing.
-   - Ensure the hit area remains at least 44 × 44 px for touch accessibility without the visual dish.
+1. **Strip button styling from the trigger**
+   - In `src/components/layout/BrowseByCategoryBar.tsx`, remove `rounded-full`, `bg-white/95`, `backdrop-blur-sm`, `shadow-[...]`, `border`, and any visual padding that creates the circular dish.
+   - Keep the three horizontal bars (navy, pink, turquoise) with their current widths, heights, and colours.
+   - The lines themselves become the only visible trigger element.
 
-2. **Preserve existing behaviour**
-   - The trigger stays fixed in the top-right corner at the current `top-16 right-4` position.
-   - It continues to open the same `Sheet` drawer containing Language, Test Categories, and More sections.
-   - No changes to desktop layout, language placement, or menu content.
+2. **Maintain touch target and position**
+   - Keep the trigger fixed at the current top-right coordinate.
+   - Preserve a minimum 44 × 44 px invisible hit area around the lines so the control remains easy to tap.
+   - Keep the existing `Sheet` behaviour and drawer contents unchanged.
+
+3. **No other changes**
+   - Desktop layout, language switcher placement, and menu content all stay as they are.
 
 ## Files to touch
 
-- `src/components/layout/BrowseByCategoryBar.tsx` — restyle the `SheetTrigger` button to remove circular button chrome.
+- `src/components/layout/BrowseByCategoryBar.tsx`
 
 ## Verification
 
-- Mobile viewport (390px): the trigger renders as three plain horizontal coloured lines, not inside a white circle.
-- Tapping the lines opens the mobile menu drawer.
-- The trigger remains visible and reachable while scrolling.
-- No visual overlap with the wordmark or category ticker.
+- Mobile viewport: only the three coloured lines are visible in the top-right corner, with no circular or rectangular button background.
+- Tapping the lines opens the mobile menu.
+- Trigger remains reachable while scrolling and does not overlap the wordmark.
