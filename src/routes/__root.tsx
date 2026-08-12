@@ -172,6 +172,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <I18nextProvider i18n={i18nInstance}>
       <AuthProvider>
         <SessionSecurityProvider>
           <HelmetProvider>
