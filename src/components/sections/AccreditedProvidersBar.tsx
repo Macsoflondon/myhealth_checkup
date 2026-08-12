@@ -46,22 +46,47 @@ const AccreditedProvidersBar = () => {
   return (
     <section
       aria-label="Accredited provider standards"
-      className="bg-white border-b border-[#081129]/10"
+      className="bg-white border-b border-[#081129]/10 -mt-8 md:mt-0 pt-8 md:pt-0"
     >
-      <div className="container mx-auto px-3 sm:px-4 py-2.5 sm:py-4">
+      <div className="container mx-auto px-5 sm:px-4 py-6 sm:py-4">
         <Reveal variant="fade">
           <p className="hidden md:block text-center font-[Montserrat] font-semibold text-[#081129] text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)] xl:text-[clamp(1.3rem,2.05vw,2rem)] xl:whitespace-nowrap leading-tight mb-2 sm:mb-3 px-4">
             {HERO_CAPTION}
           </p>
         </Reveal>
+
+        {/* Mobile-only editorial standards header */}
+        <div className="flex sm:hidden flex-col items-center mb-6">
+          <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#081129]/40 mb-2">
+            Our clinical standards
+          </div>
+          <div className="w-8 h-[2px] bg-[#22c0d4]" />
+        </div>
+
         <Reveal variant="fade">
-          <p className="text-center font-sans font-bold uppercase tracking-[0.12em] sm:tracking-[0.14em] text-[10px] sm:text-[11px] text-[#081129]/90 mb-2 sm:mb-3 px-2">
+          <p className="hidden sm:block text-center font-sans font-bold uppercase tracking-[0.12em] sm:tracking-[0.14em] text-[10px] sm:text-[11px] text-[#081129]/90 mb-2 sm:mb-3 px-2">
             All listed providers meet every one of the following standards
           </p>
         </Reveal>
 
+        {/* Mobile: two-column underline grid */}
+        <div className="grid sm:hidden grid-cols-2 gap-y-6 gap-x-4" data-testid="accreditors-mobile-grid">
+          {trustItems.map((item, idx) => (
+            <div key={item.label} className="group">
+              <div
+                className="w-6 h-1.5 mb-2 rounded-full"
+                style={{ backgroundColor: underlineColors[idx % underlineColors.length] }}
+              />
+              <h3 className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#081129] leading-tight">
+                {item.label}
+              </h3>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop / sm+: icon pill row */}
         <div
-          className="trust-alt grid grid-cols-2 sm:grid-cols-4 gap-y-3 gap-x-3 justify-items-start sm:justify-items-center lg:flex lg:flex-nowrap lg:items-center lg:justify-center lg:gap-y-0"
+          className="hidden sm:grid sm:grid-cols-4 gap-y-3 gap-x-3 justify-items-center lg:flex lg:flex-nowrap lg:items-center lg:justify-center lg:gap-y-0"
           data-testid="accreditors-static-row"
         >
           {trustItems.map((item) => (
