@@ -89,7 +89,7 @@ const PartnersGrid = () => {
         />
 
         <div
-          className="relative overflow-hidden w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]"
+          className="relative overflow-hidden full-bleed"
           style={{
             maskImage: "linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)",
             WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)",
