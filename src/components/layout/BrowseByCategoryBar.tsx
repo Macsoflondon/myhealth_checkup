@@ -190,8 +190,8 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
           otherwise the centred dock gets pushed to one side. */}
       <div ref={sentinelRef} aria-hidden="true" className={placement === "hero" ? "absolute inset-x-0 top-0 h-px" : "h-px w-full"} />
       <div className="md:hidden sticky top-0 z-50 w-full shrink-0 basis-full" data-testid="browse-by-category-bar-mobile">
-        <div data-scrolled={scrolled} className={`flex flex-col px-4 min-h-[80px] py-3 transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b ${scrolled ? "bg-[#081129] border-[#081129] shadow-[0_2px_10px_rgba(8,17,41,0.18)]" : "bg-white border-[#081129]/10"}`}>
-          <div className="flex items-center justify-between w-full">
+        <div data-scrolled={scrolled} className={`${placement === "hero" ? "flex flex-col px-4 min-h-[80px] py-3" : "flex items-center px-4 h-20"} transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b ${scrolled ? "bg-[#081129] border-[#081129] shadow-[0_2px_10px_rgba(8,17,41,0.18)]" : "bg-white border-[#081129]/10"}`}>
+          <div className="flex items-center justify-between w-full shrink-0">
             <Link to="/" className="flex items-center h-10 no-underline font-[Montserrat] font-extrabold tracking-tight text-[30px] leading-none"><span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white" : "text-[#081129]"}`}>myhealth</span><span className="text-[#e70d69]">checkup</span></Link>
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
               <SheetTrigger asChild><button type="button" aria-label="Open menu" className={`inline-flex items-center justify-center w-11 h-11 rounded-full transition-colors duration-300 ease-out focus:outline-hidden ${scrolled ? "bg-white/10 text-white hover:bg-white/20" : "bg-[#081129]/5 text-[#081129] hover:bg-[#081129]/10"}`}><Menu className="w-6 h-6" strokeWidth={2.25} /></button></SheetTrigger>
@@ -239,17 +239,19 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
               </SheetContent>
             </Sheet>
           </div>
-          <h1
-            className="md:hidden font-bold font-[Montserrat] text-left m-0 mt-1
-              text-[clamp(1.05rem,5vw,1.9rem)]
-              tracking-[0.05em]
-              leading-[1.25]"
-          >
-            <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white" : "text-[#081129]"}`}>Your </span>
-            <span className="text-brand-turquoise">health.</span>
-            <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white" : "text-[#081129]"}`}> Your </span>
-            <span className="text-brand-pink">choice.</span>
-          </h1>
+          {placement === "hero" && (
+            <h1
+              className="md:hidden font-bold font-[Montserrat] text-left m-0 mt-1
+                text-[clamp(1.05rem,5vw,1.9rem)]
+                tracking-[0.05em]
+                leading-[1.25]"
+            >
+              <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white" : "text-[#081129]"}`}>Your </span>
+              <span className="text-brand-turquoise">health.</span>
+              <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white" : "text-[#081129]"}`}> Your </span>
+              <span className="text-brand-pink">choice.</span>
+            </h1>
+          )}
         </div>
       </div>
       {(() => {
