@@ -24,9 +24,8 @@ const languages = [
   { code: 'ja', name: '日本語', flag: '🇯🇵' },
 ];
 
-export const LanguageSwitcher = ({ variant = "chip", onDark = false }: { variant?: "chip" | "glass"; onDark?: boolean } = {}) => {
-  const { i18n, t } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
+export const LanguageList = ({ onSelect }: { onSelect?: () => void } = {}) => {
+  const { i18n } = useTranslation();
 
   const currentLanguage =
     languages.find((lang) => lang.code === i18n.language) ||
@@ -35,14 +34,52 @@ export const LanguageSwitcher = ({ variant = "chip", onDark = false }: { variant
 
   const handleLanguageChange = (languageCode: string) => {
     if (languageCode === i18n.language) {
-      setIsOpen(false);
+      onSelect?.();
       return;
     }
     i18n.changeLanguage(languageCode);
     document.documentElement.lang = languageCode === 'en' ? 'en-GB' : languageCode;
     document.documentElement.dir = languageCode === 'ar' ? 'rtl' : 'ltr';
-    setIsOpen(false);
+    onSelect?.();
   };
+
+  return (
+    <div className="grid grid-cols-1 gap-1">
+      {languages.map((language) => (
+        <button
+          key={language.code}
+          type="button"
+          onClick={() => handleLanguageChange(language.code)}
+          className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-left transition-colors ${
+            currentLanguage.code === language.code
+              ? 'bg-[#e70d69]/10 text-[#e70d69] font-medium'
+              : 'hover:bg-[#081129]/5 text-[#081129]'
+          }`}
+        >
+          <span className="text-lg leading-none">{language.flag}</span>
+          <span className="text-sm flex-1">{language.name}</span>
+          {language.isBase && (
+            <span className="text-[10px] text-[#081129]/50 bg-[#081129]/5 px-1.5 py-0.5 rounded">
+              Base
+            </span>
+          )}
+          {currentLanguage.code === language.code && (
+            <span className="text-[#e70d69]">✓</span>
+          )}
+        </button>
+      ))}
+    </div>
+  );
+};
+
+export const LanguageSwitcher = ({ variant = "chip", onDark = false }: { variant?: "chip" | "glass"; onDark?: boolean } = {}) => {
+  const { i18n, t } = useTranslation();
+  const [isOpen, setIsOpen] = useState(false);
+
+  const currentLanguage =
+    languages.find((lang) => lang.code === i18n.language) ||
+    languages.find((lang) => lang.code === i18n.language?.split('-')[0]) ||
+    languages[0];
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
@@ -75,28 +112,7 @@ export const LanguageSwitcher = ({ variant = "chip", onDark = false }: { variant
           </p>
         </div>
         <DropdownMenuSeparator />
-        {languages.map((language) => (
-          <DropdownMenuItem
-            key={language.code}
-            onClick={() => handleLanguageChange(language.code)}
-            className={`flex items-center gap-3 cursor-pointer py-2.5 ${
-              currentLanguage.code === language.code
-                ? 'bg-primary/10 text-primary font-medium'
-                : 'hover:bg-muted'
-            }`}
-          >
-            <span className="text-lg">{language.flag}</span>
-            <span className="text-sm flex-1">{language.name}</span>
-            {language.isBase && (
-              <span className="text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded">
-                Base
-              </span>
-            )}
-            {currentLanguage.code === language.code && (
-              <span className="text-primary">✓</span>
-            )}
-          </DropdownMenuItem>
-        ))}
+        <LanguageList onSelect={() => setIsOpen(false)} />
         <DropdownMenuSeparator />
         <div className="px-3 py-2 text-[10px] text-muted-foreground">
           Base language: British English (GB)
