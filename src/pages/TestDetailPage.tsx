@@ -307,19 +307,25 @@ const TestDetailPage = () => {
                 </p>
                 
                 <div className="grid sm:grid-cols-3 gap-3">
-                  <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg">
-                    <Shield className="w-5 h-5 text-primary flex-shrink-0" />
-                    <span className="text-sm font-medium">UKAS Accredited Lab</span>
-                  </div>
-                  
+                  {accreditationBadges.map((label) => (
+                    <div key={label} className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg">
+                      <Shield className="w-5 h-5 text-primary flex-shrink-0" />
+                      <span className="text-sm font-medium">{label}</span>
+                    </div>
+                  ))}
+
                   <div className="flex items-center gap-3 p-3 bg-secondary/20 rounded-lg">
                     <Clock className="w-5 h-5 text-secondary flex-shrink-0" />
-                      <span className="text-sm font-medium">{PROVIDER_TURNAROUND_TIMES[canonicalProviderId] || '2-5 days'}</span>
+                    <span className="text-sm font-medium">{resolveTurnaround(test, canonicalProviderId)}</span>
                   </div>
-                  
+
                   <div className="flex items-center gap-3 p-3 bg-green-500/10 rounded-lg">
-                    <Heart className="w-5 h-5 text-green-600 flex-shrink-0" />
-                    <span className="text-sm font-medium">Doctor Reviewed</span>
+                    {test.home_kit_available && !test.clinic_visit_available ? (
+                      <Home className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    ) : (
+                      <Building2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    )}
+                    <span className="text-sm font-medium">{resolveCollection(test, canonicalProviderId)}</span>
                   </div>
                 </div>
               </CardContent>
