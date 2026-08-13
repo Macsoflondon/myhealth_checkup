@@ -6,7 +6,7 @@ import Footer from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ExternalLink, Heart, Clock, Shield, TestTube, Users, CheckCircle, AlertCircle } from "lucide-react";
+import { ArrowLeft, ExternalLink, Clock, Shield, TestTube, Users, CheckCircle, AlertCircle, Home, Building2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getProviderRating } from "@/constants/providerRatings";
 import { detailedProviders } from "@/data/compare/detailedProviders";
