@@ -58,12 +58,13 @@ const mockResult: AIAnalysisResult = {
 const wrapper = TestProviders;
 
 describe("RecommendationResults", () => {
-  it("renders total cost as focal point", () => {
+  it("shows suggestion count without a combined total", () => {
     render(<RecommendationResults result={mockResult} />, { wrapper });
-    expect(screen.getByText("£68")).toBeInTheDocument();
-    expect(screen.getByText("Total Expected Cost")).toBeInTheDocument();
-    expect(screen.getByText("2 tests recommended")).toBeInTheDocument();
+    expect(screen.getByText("Suggested tests")).toBeInTheDocument();
+    expect(screen.getByText("Individual prices from £29")).toBeInTheDocument();
+    expect(screen.queryByText("£68")).not.toBeInTheDocument();
   });
+
 
   it("renders wellness analysis section", () => {
     render(<RecommendationResults result={mockResult} />, { wrapper });
