@@ -26,8 +26,9 @@ export interface CategoryTestItem {
   turnaround: string;
   turnaroundDays: number;
   biomarkerCount: number;
-  rating: number;
-  reviews: number;
+  /** Verified provider rating — omitted when no real review data exists. */
+  rating?: number;
+  reviews?: number;
   title: string;
   desc: string;
   biomarkers: string[];
