@@ -94,7 +94,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
         aria-haspopup={hasDropdown ? "menu" : undefined}
         aria-expanded={hasDropdown ? open : undefined}
         className={`group inline-flex items-center rounded-full no-underline transition-colors duration-200 shrink-0 ${
-          dense ? "gap-1.5 px-2.5 py-2" : "gap-1.5 px-2 py-2 2xl:gap-2 2xl:px-3 2xl:py-2.5"
+          dense ? "gap-1.5 px-2.5 py-2" : "gap-1 px-1.5 py-2 xl:gap-1.5 xl:px-2 2xl:gap-2 2xl:px-3 2xl:py-2.5"
         } ${compact ? "sm:py-2.5" : "sm:py-2.5"} ${
           highlighted ? "" : "hover:bg-[#081129]/[0.055]"
         }`}
@@ -105,7 +105,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
         }
       >
         <Icon
-          className={dense ? "w-[15px] h-[15px] shrink-0" : "w-[15px] h-[15px] shrink-0 2xl:w-[17px] 2xl:h-[17px]"}
+          className={dense ? "w-[15px] h-[15px] shrink-0" : "w-[14px] h-[14px] shrink-0 2xl:w-[17px] 2xl:h-[17px]"}
           style={{ color: isActiveParent ? PINK : color }}
           strokeWidth={2}
         />
@@ -115,8 +115,9 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
           } ${
             dense
               ? "text-[12.5px] lg:text-[13px] tracking-[-0.02em]"
-              : "text-xs sm:text-sm tracking-[-0.015em] 2xl:tracking-normal"
+              : "text-xs sm:text-[12.5px] tracking-[-0.02em] 2xl:text-sm 2xl:tracking-normal"
           }`}
+
           style={{ color: isActiveParent ? PINK : open ? "#127f8e" : "rgba(8,17,41,0.72)" }}
         >
           {item.name}
