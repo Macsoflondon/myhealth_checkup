@@ -49,7 +49,9 @@ const ProviderProfilePage = () => {
   const brand = getBranding(provider.name);
 
   const providerRatingData = getProviderRating(provider.name);
-  const ratingData = { rating: providerRatingData.rating, reviews: providerRatingData.reviewsFormatted };
+  const ratingData = providerRatingData
+    ? { rating: providerRatingData.rating, reviews: providerRatingData.reviewsFormatted }
+    : null;
   const websiteUrl = provider.website ? buildProviderWebsiteUrl(provider.website, provider.id) : null;
 
   return (
@@ -59,7 +61,7 @@ const ProviderProfilePage = () => {
         <meta
           name="description"
           content={`${provider.name} private health tests reviewed and compared.${
-            providerRatingData.rating
+            providerRatingData
               ? ` Rated ${providerRatingData.rating}/5 from ${providerRatingData.reviews.toLocaleString()} reviews.`
               : ""
           } Browse the full test range, prices, accreditations and turnaround times.`.slice(0, 158)}
@@ -102,11 +104,13 @@ const ProviderProfilePage = () => {
               )}
               
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-4">
-                <div className="flex items-center space-x-1">
-                  <Star className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 fill-current" />
-                  <span className="font-semibold text-sm md:text-base" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>{ratingData.rating}</span>
-                  <span className="text-sm md:text-base" style={{ color: brand ? 'rgba(255,255,255,0.7)' : 'hsl(var(--muted-foreground))' }}>({ratingData.reviews} reviews)</span>
-                </div>
+                {ratingData && (
+                  <div className="flex items-center space-x-1">
+                    <Star className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 fill-current" />
+                    <span className="font-semibold text-sm md:text-base" style={{ color: brand ? '#fff' : 'hsl(var(--foreground))' }}>{ratingData.rating}</span>
+                    <span className="text-sm md:text-base" style={{ color: brand ? 'rgba(255,255,255,0.7)' : 'hsl(var(--muted-foreground))' }}>({ratingData.reviews} reviews)</span>
+                  </div>
+                )}
                 
                 {provider.accreditation && (
                   <Badge variant="secondary" className="gap-1 text-xs bg-green-100 text-green-800">
@@ -161,13 +165,15 @@ const ProviderProfilePage = () => {
                   <p className="text-xs text-muted-foreground">{provider.clinics || 'Registered clinics'}</p>
                 </div>
               </div>
-            <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
-              <Star className="w-5 h-5 text-yellow-500 flex-shrink-0" />
-              <div>
-                <p className="text-sm font-medium">{ratingData.rating}/5 Rating</p>
-                <p className="text-xs text-muted-foreground">{ratingData.reviews} reviews</p>
+            {ratingData && (
+              <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
+                <Star className="w-5 h-5 text-yellow-500 flex-shrink-0" />
+                <div>
+                  <p className="text-sm font-medium">{ratingData.rating}/5 Rating</p>
+                  <p className="text-xs text-muted-foreground">{ratingData.reviews} reviews</p>
+                </div>
               </div>
-            </div>
+            )}
             <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
               <Clock className="w-5 h-5 flex-shrink-0" style={brand ? { color: brand.primary } : { color: 'hsl(var(--secondary))' }} />
               <div>
