@@ -454,7 +454,7 @@ export default function ProviderComparisonPage() {
                         {selectedProviders.map((providerId) => (
                           <td key={providerId} className="p-4 text-center">
                             <span className="text-sm">
-                              {PROVIDER_TURNAROUND_TIMES[providerId] || "N/A"}
+                              {providerFacts[providerId]?.turnaround || "N/A"}
                             </span>
                           </td>
                         ))}
@@ -471,7 +471,7 @@ export default function ProviderComparisonPage() {
                         {selectedProviders.map((providerId) => (
                           <td key={providerId} className="p-4 text-center">
                             <span className="text-sm">
-                              {PROVIDER_COLLECTION_METHODS[providerId] || "N/A"}
+                              {providerFacts[providerId]?.collection || "N/A"}
                             </span>
                           </td>
                         ))}
@@ -486,15 +486,19 @@ export default function ProviderComparisonPage() {
                           </div>
                         </td>
                         {selectedProviders.map((providerId) => {
-                          const details = PROVIDER_DETAILS[providerId];
+                          const accreditations = providerFacts[providerId]?.accreditations ?? [];
                           return (
                             <td key={providerId} className="p-4 text-center">
                               <div className="flex flex-wrap gap-1 justify-center">
-                                {details?.accreditations?.map((acc) => (
-                                  <Badge key={acc} variant="outline" className="text-xs">
-                                    {acc}
-                                  </Badge>
-                                )) || <span className="text-muted-foreground">N/A</span>}
+                                {accreditations.length > 0 ? (
+                                  accreditations.map((acc) => (
+                                    <Badge key={acc} variant="outline" className="text-xs">
+                                      {acc}
+                                    </Badge>
+                                  ))
+                                ) : (
+                                  <span className="text-muted-foreground">N/A</span>
+                                )}
                               </div>
                             </td>
                           );
