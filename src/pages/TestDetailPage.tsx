@@ -215,6 +215,12 @@ const TestDetailPage = () => {
   }
 
   const currentProviderRating = getProviderRating(canonicalProviderId);
+
+  const accreditationBadges: string[] = [
+    test.lab_ukas_accredited ? 'UKAS Accredited Lab' : null,
+    test.lab_cqc_regulated ? 'CQC Regulated' : null,
+    test.lab_iso15189 ? 'ISO 15189 Certified' : null,
+  ].filter((label): label is string => Boolean(label));
   const bookingUrl = test.url ? buildProviderBookingUrl(test.url, canonicalProviderId, test.test_name) : null;
 
   return (
