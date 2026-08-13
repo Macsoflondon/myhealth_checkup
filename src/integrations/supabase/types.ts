@@ -1167,6 +1167,13 @@ export type Database = {
             foreignKeyName: "category_test_mapping_provider_test_id_fkey"
             columns: ["provider_test_id"]
             isOneToOne: false
+            referencedRelation: "comparison_test_groups"
+            referencedColumns: ["provider_test_id"]
+          },
+          {
+            foreignKeyName: "category_test_mapping_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: false
             referencedRelation: "provider_tests"
             referencedColumns: ["id"]
           },
@@ -3580,6 +3587,13 @@ export type Database = {
             foreignKeyName: "provider_test_history_provider_test_id_fkey"
             columns: ["provider_test_id"]
             isOneToOne: false
+            referencedRelation: "comparison_test_groups"
+            referencedColumns: ["provider_test_id"]
+          },
+          {
+            foreignKeyName: "provider_test_history_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: false
             referencedRelation: "provider_tests"
             referencedColumns: ["id"]
           },
@@ -3621,6 +3635,7 @@ export type Database = {
           provider_id: string
           provider_test_id: string
           provider_test_name: string
+          provider_test_uuid: string | null
           provider_url: string | null
           sample_collection_method: string | null
           sample_type: string | null
@@ -3649,6 +3664,7 @@ export type Database = {
           provider_id: string
           provider_test_id: string
           provider_test_name: string
+          provider_test_uuid?: string | null
           provider_url?: string | null
           sample_collection_method?: string | null
           sample_type?: string | null
@@ -3677,6 +3693,7 @@ export type Database = {
           provider_id?: string
           provider_test_id?: string
           provider_test_name?: string
+          provider_test_uuid?: string | null
           provider_url?: string | null
           sample_collection_method?: string | null
           sample_type?: string | null
@@ -3685,6 +3702,27 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "provider_test_mapping_provider_test_uuid_fkey"
+            columns: ["provider_test_uuid"]
+            isOneToOne: false
+            referencedRelation: "comparison_test_groups"
+            referencedColumns: ["provider_test_id"]
+          },
+          {
+            foreignKeyName: "provider_test_mapping_provider_test_uuid_fkey"
+            columns: ["provider_test_uuid"]
+            isOneToOne: false
+            referencedRelation: "provider_tests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "provider_test_mapping_provider_test_uuid_fkey"
+            columns: ["provider_test_uuid"]
+            isOneToOne: false
+            referencedRelation: "unified_provider_tests"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "provider_test_mapping_test_master_id_fkey"
             columns: ["test_master_id"]
@@ -5832,6 +5870,18 @@ export type Database = {
           missing_total_cost: number | null
           missing_turnaround: number | null
           provider_name: string | null
+        }
+        Relationships: []
+      }
+      comparison_test_groups: {
+        Row: {
+          category: string | null
+          group_key: string | null
+          group_provider_count: number | null
+          group_size: number | null
+          provider_id: string | null
+          provider_test_id: string | null
+          test_name: string | null
         }
         Relationships: []
       }
