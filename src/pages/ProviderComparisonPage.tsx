@@ -557,13 +557,13 @@ export default function ProviderComparisonPage() {
                         </tr>
                       </thead>
                       <tbody>
-                        {groupedTests.map(([testName, providerTests], index) => (
-                          <tr key={testName} className={index % 2 === 0 ? 'bg-muted/20' : ''}>
+                        {groupedTests.map(([groupKey, group], index) => (
+                          <tr key={groupKey} className={index % 2 === 0 ? 'bg-muted/20' : ''}>
                             <td className="p-4">
-                              <span className="font-medium capitalize">{testName}</span>
+                              <span className="font-medium">{group.label}</span>
                             </td>
                             {selectedProviders.map((providerId) => {
-                              const test = providerTests[providerId];
+                              const test = group.byProvider[providerId];
                               return (
                                 <td key={providerId} className="p-4 text-center">
                                   {test ? (
