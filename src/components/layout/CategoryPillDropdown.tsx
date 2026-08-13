@@ -115,7 +115,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
           } ${
             dense
               ? "text-[12.5px] lg:text-[13px] tracking-[-0.02em]"
-              : "text-xs sm:text-[12.5px] tracking-[-0.02em] 2xl:text-sm 2xl:tracking-normal"
+              : "text-xs sm:text-[12px] tracking-[-0.02em] 2xl:text-sm 2xl:tracking-normal"
           }`}
 
           style={{ color: isActiveParent ? PINK : open ? "#127f8e" : "rgba(8,17,41,0.72)" }}
