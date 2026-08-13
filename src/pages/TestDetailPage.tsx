@@ -25,7 +25,35 @@ interface TestDetail {
   image_url?: string | null;
   provider_id: string;
   biomarker_count?: number | null;
+  turnaround_days_text?: string | null;
+  turnaround_raw?: string | null;
+  collection_method?: string | null;
+  sample_type?: string | null;
+  home_kit_available?: boolean | null;
+  clinic_visit_available?: boolean | null;
+  lab_ukas_accredited?: boolean | null;
+  lab_cqc_regulated?: boolean | null;
+  lab_iso15189?: boolean | null;
 }
+
+/** Row-level values win; the static provider lookup is only a last resort. */
+const resolveTurnaround = (
+  row: { turnaround_days_text?: string | null; turnaround_raw?: string | null },
+  providerId: string,
+): string =>
+  row.turnaround_days_text?.trim() ||
+  row.turnaround_raw?.trim() ||
+  PROVIDER_TURNAROUND_TIMES[providerId] ||
+  '2-5 days';
+
+const resolveCollection = (
+  row: { collection_method?: string | null; sample_type?: string | null },
+  providerId: string,
+): string =>
+  row.collection_method?.trim() ||
+  row.sample_type?.trim() ||
+  PROVIDER_COLLECTION_METHODS[providerId] ||
+  'Varies';
 
 interface ProviderTestOption {
   id: string;
