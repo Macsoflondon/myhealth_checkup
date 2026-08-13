@@ -102,8 +102,9 @@ describe("RecommendationResults", () => {
     };
     render(<RecommendationResults result={withNullPrice} />, { wrapper });
     expect(screen.getByText("Thyroid Function Test")).toBeInTheDocument();
-    // Missing prices contribute zero to the headline total rather than NaN.
-    expect(screen.getByText("Total Expected Cost")).toBeInTheDocument();
-    expect(screen.getByText("1 test recommended")).toBeInTheDocument();
+    // Missing prices fall back to a neutral message, never NaN.
+    expect(screen.getByText("Suggested tests")).toBeInTheDocument();
+    expect(screen.getByText("Individual prices shown per test")).toBeInTheDocument();
+
   });
 });
