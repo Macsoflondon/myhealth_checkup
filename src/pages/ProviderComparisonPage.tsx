@@ -48,6 +48,22 @@ interface ProviderTestData {
   biomarker_count: number | null;
   home_kit_available: boolean | null;
   clinic_visit_available: boolean | null;
+  sample_type: string | null;
+  collection_method: string | null;
+  turnaround_days_text: string | null;
+  turnaround_raw: string | null;
+  lab_ukas_accredited: boolean | null;
+  lab_cqc_regulated: boolean | null;
+  lab_iso15189: boolean | null;
+}
+
+interface ComparisonGroupRow {
+  provider_test_id: string;
+  provider_id: string;
+  test_name: string;
+  category: string | null;
+  group_key: string;
+  group_provider_count: number;
 }
 
 interface ProviderStats {
@@ -59,6 +75,18 @@ interface ProviderStats {
   avg_price: number | null;
 }
 
+/** Most frequently occurring non-empty value across a provider's live rows. */
+const modeValue = (values: Array<string | null | undefined>): string | null => {
+  const counts = new Map<string, number>();
+  values.forEach((value) => {
+    const clean = (value ?? "").trim();
+    if (!clean) return;
+    counts.set(clean, (counts.get(clean) ?? 0) + 1);
+  });
+  if (counts.size === 0) return null;
+  return [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
+};
+
 export default function ProviderComparisonPage() {
   const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
@@ -66,20 +94,46 @@ export default function ProviderComparisonPage() {
 
   const providers = getAllProviders();
 
-  // Fetch all provider tests
+  // Fetch all standalone (non add-on) provider tests
   const { data: allTests, isLoading } = useQuery({
-    queryKey: ['all-provider-tests'],
+    queryKey: ['provider-comparison-tests'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('provider_tests')
-        .select('id, provider_id, test_name, price, category, biomarker_count, home_kit_available, clinic_visit_available')
+        .select(
+          'id, provider_id, test_name, price, category, biomarker_count, home_kit_available, clinic_visit_available, sample_type, collection_method, turnaround_days_text, turnaround_raw, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189'
+        )
         .eq('is_active', true)
+        .or('is_addon.is.null,is_addon.eq.false')
         .order('test_name');
 
       if (error) throw error;
-      return data as ProviderTestData[];
+      return (data ?? []) as ProviderTestData[];
     },
   });
+
+  // Cross-provider comparable groups, computed in the database
+  const { data: comparisonGroups } = useQuery({
+    queryKey: ['comparison-test-groups'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('comparison_test_groups')
+        .select('provider_test_id, provider_id, test_name, category, group_key, group_provider_count')
+        .gte('group_provider_count', 2);
+
+      if (error) throw error;
+      return (data ?? []).filter(
+        (row): row is ComparisonGroupRow =>
+          Boolean(row.provider_test_id) && Boolean(row.provider_id) && Boolean(row.group_key)
+      );
+    },
+  });
+
+  const testsById = useMemo(() => {
+    const map = new Map<string, ProviderTestData>();
+    (allTests ?? []).forEach((test) => map.set(test.id, test));
+    return map;
+  }, [allTests]);
 
   // Calculate stats per provider
   const providerStats = useMemo(() => {
@@ -124,41 +178,84 @@ export default function ProviderComparisonPage() {
     return stats;
   }, [allTests]);
 
+  /** Real per-test values rolled up per provider, with the static list only as a fallback. */
+  const providerFacts = useMemo(() => {
+    const facts: Record<
+      string,
+      { turnaround: string; collection: string; accreditations: string[] }
+    > = {};
+
+    providers.forEach((provider) => {
+      const rows = (allTests ?? []).filter((t) => t.provider_id === provider.id);
+
+      const turnaround =
+        modeValue(rows.map((t) => t.turnaround_days_text)) ??
+        modeValue(rows.map((t) => t.turnaround_raw)) ??
+        PROVIDER_TURNAROUND_TIMES[provider.id] ??
+        "N/A";
+
+      const collection =
+        modeValue(rows.map((t) => t.collection_method)) ??
+        modeValue(rows.map((t) => t.sample_type)) ??
+        PROVIDER_COLLECTION_METHODS[provider.id] ??
+        "N/A";
+
+      const liveAccreditations: string[] = [];
+      if (rows.some((t) => t.lab_ukas_accredited)) liveAccreditations.push("UKAS accredited");
+      if (rows.some((t) => t.lab_cqc_regulated)) liveAccreditations.push("CQC Regulated");
+      if (rows.some((t) => t.lab_iso15189)) liveAccreditations.push("ISO 15189");
+
+      facts[provider.id] = {
+        turnaround,
+        collection,
+        accreditations:
+          liveAccreditations.length > 0
+            ? liveAccreditations
+            : PROVIDER_DETAILS[provider.id]?.accreditations ?? [],
+      };
+    });
+
+    return facts;
+  }, [allTests, providers]);
+
   // Get unique categories
   const categories = useMemo(() => {
     if (!allTests) return [];
     return [...new Set(allTests.map(t => t.category).filter(Boolean))] as string[];
   }, [allTests]);
 
-  // Filter tests for comparison
-  const filteredTests = useMemo(() => {
-    if (!allTests || selectedProviders.length < 2) return [];
-    
-    let tests = allTests.filter(t => selectedProviders.includes(t.provider_id));
-    
-    if (categoryFilter !== "all") {
-      tests = tests.filter(t => t.category === categoryFilter);
-    }
-    
-    return tests;
-  }, [allTests, selectedProviders, categoryFilter]);
-
-  // Group tests by name for side-by-side comparison
+  /**
+   * Build side-by-side rows from the database-side grouping, keeping only groups
+   * where at least two of the selected providers offer a comparable test.
+   */
   const groupedTests = useMemo(() => {
-    const groups: Record<string, Record<string, ProviderTestData>> = {};
-    
-    filteredTests.forEach((test) => {
-      const normalizedName = test.test_name.toLowerCase().trim();
-      if (!groups[normalizedName]) {
-        groups[normalizedName] = {};
-      }
-      groups[normalizedName][test.provider_id] = test;
+    if (!comparisonGroups || selectedProviders.length < 2) return [];
+
+    const groups = new Map<
+      string,
+      { label: string; byProvider: Record<string, ProviderTestData> }
+    >();
+
+    comparisonGroups.forEach((row) => {
+      if (!selectedProviders.includes(row.provider_id)) return;
+      const test = testsById.get(row.provider_test_id);
+      if (!test) return;
+      if (categoryFilter !== "all" && test.category !== categoryFilter) return;
+
+      const existing = groups.get(row.group_key) ?? {
+        label: row.test_name,
+        byProvider: {} as Record<string, ProviderTestData>,
+      };
+      // Prefer the shortest name in the group as the display label
+      if (row.test_name.length < existing.label.length) existing.label = row.test_name;
+      existing.byProvider[row.provider_id] = test;
+      groups.set(row.group_key, existing);
     });
-    
-    return Object.entries(groups)
-      .filter(([_, providers]) => Object.keys(providers).length >= 2)
-      .sort(([a], [b]) => a.localeCompare(b));
-  }, [filteredTests]);
+
+    return [...groups.entries()]
+      .filter(([, group]) => Object.keys(group.byProvider).length >= 2)
+      .sort(([, a], [, b]) => a.label.localeCompare(b.label));
+  }, [comparisonGroups, testsById, selectedProviders, categoryFilter]);
 
   const toggleProvider = (providerId: string) => {
     setSelectedProviders(prev => {
@@ -357,7 +454,7 @@ export default function ProviderComparisonPage() {
                         {selectedProviders.map((providerId) => (
                           <td key={providerId} className="p-4 text-center">
                             <span className="text-sm">
-                              {PROVIDER_TURNAROUND_TIMES[providerId] || "N/A"}
+                              {providerFacts[providerId]?.turnaround || "N/A"}
                             </span>
                           </td>
                         ))}
@@ -374,7 +471,7 @@ export default function ProviderComparisonPage() {
                         {selectedProviders.map((providerId) => (
                           <td key={providerId} className="p-4 text-center">
                             <span className="text-sm">
-                              {PROVIDER_COLLECTION_METHODS[providerId] || "N/A"}
+                              {providerFacts[providerId]?.collection || "N/A"}
                             </span>
                           </td>
                         ))}
@@ -389,15 +486,19 @@ export default function ProviderComparisonPage() {
                           </div>
                         </td>
                         {selectedProviders.map((providerId) => {
-                          const details = PROVIDER_DETAILS[providerId];
+                          const accreditations = providerFacts[providerId]?.accreditations ?? [];
                           return (
                             <td key={providerId} className="p-4 text-center">
                               <div className="flex flex-wrap gap-1 justify-center">
-                                {details?.accreditations?.map((acc) => (
-                                  <Badge key={acc} variant="outline" className="text-xs">
-                                    {acc}
-                                  </Badge>
-                                )) || <span className="text-muted-foreground">N/A</span>}
+                                {accreditations.length > 0 ? (
+                                  accreditations.map((acc) => (
+                                    <Badge key={acc} variant="outline" className="text-xs">
+                                      {acc}
+                                    </Badge>
+                                  ))
+                                ) : (
+                                  <span className="text-muted-foreground">N/A</span>
+                                )}
                               </div>
                             </td>
                           );
@@ -460,13 +561,13 @@ export default function ProviderComparisonPage() {
                         </tr>
                       </thead>
                       <tbody>
-                        {groupedTests.map(([testName, providerTests], index) => (
-                          <tr key={testName} className={index % 2 === 0 ? 'bg-muted/20' : ''}>
+                        {groupedTests.map(([groupKey, group], index) => (
+                          <tr key={groupKey} className={index % 2 === 0 ? 'bg-muted/20' : ''}>
                             <td className="p-4">
-                              <span className="font-medium capitalize">{testName}</span>
+                              <span className="font-medium">{group.label}</span>
                             </td>
                             {selectedProviders.map((providerId) => {
-                              const test = providerTests[providerId];
+                              const test = group.byProvider[providerId];
                               return (
                                 <td key={providerId} className="p-4 text-center">
                                   {test ? (
