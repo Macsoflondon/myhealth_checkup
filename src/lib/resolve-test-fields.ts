@@ -27,12 +27,29 @@ export interface AccreditationRowFields {
   lab_iso15189?: boolean | null;
 }
 
+/**
+ * Scraped turnaround text sometimes carries markdown link debris, e.g.
+ * "Results in 2 Working Days](https://provider.example/test". Strip anything
+ * from the first markdown link tail or bare URL onwards, plus trailing
+ * punctuation, so the comparison tables never render scrape artefacts.
+ */
+export const sanitiseTurnaroundText = (
+  value: string | null | undefined,
+): string | null => {
+  if (!value) return null;
+  const cleaned = value
+    .split(/\]\(|https?:\/\//)[0]
+    .replace(/[\s\]\[(),;|-]+$/, '')
+    .trim();
+  return cleaned.length > 0 ? cleaned : null;
+};
+
 export const resolveTurnaround = (
   row: TurnaroundRowFields,
   providerId: string,
 ): string =>
-  row.turnaround_days_text?.trim() ||
-  row.turnaround_raw?.trim() ||
+  sanitiseTurnaroundText(row.turnaround_days_text) ||
+  sanitiseTurnaroundText(row.turnaround_raw) ||
   PROVIDER_TURNAROUND_TIMES[providerId] ||
   '2-5 days';
 
