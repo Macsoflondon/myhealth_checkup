@@ -38,7 +38,7 @@ export const ProviderTestsGrid = ({ providerSlug, providerDisplayName, limit = 1
       const { data, error } = await supabase
         .from("provider_tests")
         .select(
-          "id, test_name, price, base_price, category, sample_type, collection_method, measurement_type, who_should_test, home_kit_available, clinic_visit_available, url, biomarker_count, biomarkers_list, description, turnaround_days_text, collection_options, popularity_rank, is_popular, is_addon, purchase_notes"
+          "id, test_name, price, base_price, category, sample_type, collection_method, measurement_type, who_should_test, home_kit_available, clinic_visit_available, url, biomarker_count, biomarkers_list, description, turnaround_days_text, collection_options, popularity_rank, is_popular, is_addon, purchase_notes, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189"
         )
         .eq("provider_id", dbId)
         .eq("is_active", true)
@@ -99,6 +99,9 @@ export const ProviderTestsGrid = ({ providerSlug, providerDisplayName, limit = 1
             price_from: hasStartingPrice(t),
             categoryColor: branding?.primary || "#e70d69",
             is_addon: t.is_addon ?? false,
+            lab_ukas_accredited: t.lab_ukas_accredited ?? null,
+            lab_cqc_regulated: t.lab_cqc_regulated ?? null,
+            lab_iso15189: t.lab_iso15189 ?? null,
             purchase_notes: t.purchase_notes ?? null,
           };
           return (

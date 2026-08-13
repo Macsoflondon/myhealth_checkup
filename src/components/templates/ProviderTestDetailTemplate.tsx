@@ -306,14 +306,14 @@ const ConditionsSection = ({ conditions }: { conditions: string[] | null | undef
 };
 
 // Add-on Warning Component
-const AddonWarning = () => (
+const AddonWarning = ({ providerName }: { providerName: string }) => (
   <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
     <div className="flex items-start gap-3">
       <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5 shrink-0" />
       <div>
         <p className="font-semibold text-amber-800">Add-on Only</p>
         <p className="text-sm text-amber-700">
-          This test can only be purchased when bundled with one of Lola Health's full test panels. It cannot be ordered on its own.
+          This test can only be purchased when bundled with one of {providerName}'s full test panels. It cannot be ordered on its own.
         </p>
       </div>
     </div>
@@ -420,7 +420,7 @@ export default function ProviderTestDetailTemplate({
           <p className="text-xl text-muted-foreground mb-8">{test.description}</p>
 
           {/* Add-on Warning */}
-          {test.is_addon && <AddonWarning />}
+          {test.is_addon && <AddonWarning providerName={providerConfig.name} />}
 
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             {/* Main Content */}
