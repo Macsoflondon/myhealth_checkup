@@ -119,35 +119,40 @@ const ResolvedRecommendationList = ({ recs }: { recs: RecommendationProps[] }) =
   );
 };
 
-/** Results-only view — renders Wellness Analysis + Recommended Tests with total cost focal. */
+/** Results-only view — renders Wellness Analysis + Recommended Tests. */
 export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) => {
-  const totalCost = result.recommendedTests.reduce(
-    (sum, rec) => sum + (rec.price ?? 0),
-    0
-  );
+  const prices = result.recommendedTests
+    .map((rec) => rec.price)
+    .filter((p): p is number => typeof p === "number" && p > 0);
+  const lowest = prices.length > 0 ? Math.min(...prices) : null;
 
   return (
     <div data-testid="ai-recommendation-results" className="space-y-6">
-      {/* Total Expected Cost — focal point */}
+      {/* Suggestion summary — no combined total; final cost is confirmed at checkout options */}
       {result.recommendedTests.length > 0 && (
         <div className="text-center py-6 px-4 rounded-2xl border-2 border-[#22c0d4]/30 bg-gradient-to-br from-[#081129] to-[#0F2238]">
           <p
             className="text-sm uppercase tracking-widest text-[#22c0d4] mb-1"
             style={{ fontFamily: "'Montserrat', sans-serif", fontWeight: 600 }}
           >
-            Total Expected Cost
+            Suggested tests
           </p>
           <p
             className="text-5xl font-bold text-white"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
-            £{totalCost.toFixed(0)}
+            {result.recommendedTests.length}
           </p>
           <p className="text-white/78 text-sm mt-1">
-            {result.recommendedTests.length} test{result.recommendedTests.length !== 1 ? 's' : ''} recommended
+            {lowest !== null ? `Individual prices from £${lowest.toFixed(0)}` : "Individual prices shown per test"}
+          </p>
+          <p className="text-white/60 text-xs mt-2 max-w-md mx-auto">
+            These are suggestions, not a basket. Your expected cost is confirmed once you choose a test and any
+            options such as a GP report or home phlebotomy.
           </p>
         </div>
       )}
+
 
       <Card className="p-6 border-[#22c0d4]/20 bg-[#081129]/[0.03]">
         <h2
