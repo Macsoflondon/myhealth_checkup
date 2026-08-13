@@ -1,12 +1,11 @@
 import React from 'react';
-import { Check, X, Clock, Beaker, Stethoscope, Award, TrendingDown, Zap, FlaskConical, Wallet, Calculator } from 'lucide-react';
+import { Check, X, Clock, Stethoscope, Award, TrendingDown, Zap, FlaskConical, Wallet, Calculator } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import type { ComparisonResult, EnhancedTestData } from '@/types/comparison';
 import {
-  SAMPLE_TYPE_LABELS,
   COLLECTION_METHOD_LABELS,
   formatPrice,
   formatCollectionFee,
@@ -121,21 +120,8 @@ export function EnhancedComparisonTable({ result, onRemoveTest, onBookTest }: En
             ))}
           </div>
 
-          {/* 3. Sample Type */}
+          {/* 3. Collection Method */}
           <div className="grid gap-4 items-center" style={gridCols}>
-            <div className="p-4 text-sm font-medium flex items-center gap-2">
-              <Beaker className="w-4 h-4 text-muted-foreground" />
-              Sample Type
-            </div>
-            {tests.map(test => (
-              <div key={test.id} className="p-4 text-center text-sm">
-                {test.sampleTypeCode ? SAMPLE_TYPE_LABELS[test.sampleTypeCode] : <Dash />}
-              </div>
-            ))}
-          </div>
-
-          {/* 4. Collection Method */}
-          <div className="grid gap-4 items-center bg-muted/30" style={gridCols}>
             <div className="p-4 text-sm font-medium flex items-center gap-2">
               <Check className="w-4 h-4 text-muted-foreground" />
               Collection Method
@@ -152,7 +138,7 @@ export function EnhancedComparisonTable({ result, onRemoveTest, onBookTest }: En
             ))}
           </div>
 
-          {/* 5. Additional Collection Fees */}
+          {/* 4. Additional Collection Fees */}
           <div className="grid gap-4 items-center" style={gridCols}>
             <div className="p-4 text-sm font-medium flex items-center gap-2">
               <Wallet className="w-4 h-4 text-muted-foreground" />
@@ -176,7 +162,7 @@ export function EnhancedComparisonTable({ result, onRemoveTest, onBookTest }: En
             })}
           </div>
 
-          {/* 6. Total Expected Cost — flagship row */}
+          {/* 5. Total Expected Cost — flagship row */}
           <div className="grid gap-4 items-center bg-primary/5 rounded-lg" style={gridCols}>
             <div className="p-4 text-sm font-bold flex items-center gap-2">
               <Calculator className="w-4 h-4" />
@@ -189,7 +175,7 @@ export function EnhancedComparisonTable({ result, onRemoveTest, onBookTest }: En
             ))}
           </div>
 
-          {/* 7. Clinical Review */}
+          {/* 6. Clinical Review */}
           <div className="grid gap-4 items-center bg-muted/30" style={gridCols}>
             <div className="p-4 text-sm font-medium flex items-center gap-2">
               <Stethoscope className="w-4 h-4 text-muted-foreground" />

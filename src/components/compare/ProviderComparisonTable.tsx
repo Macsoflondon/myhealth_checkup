@@ -3,7 +3,6 @@ import { Plus, Check } from "lucide-react";
 import type { CompareTestData } from "@/types";
 import { PROVIDER_LOGOS } from "@/constants/providers";
 import {
-  SAMPLE_TYPE_LABELS,
   COLLECTION_METHOD_LABELS,
   formatCollectionFee,
   formatClinicalReview,
@@ -334,16 +333,8 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
               render={(t) => <span>{t.features?.turnaround || "—"}</span>}
             />
             <Row
-              label="Sample Type"
-              index={2}
-              slots={slots}
-              render={(t) => (
-                <span>{t.sampleTypeCode ? SAMPLE_TYPE_LABELS[t.sampleTypeCode] : <Dash />}</span>
-              )}
-            />
-            <Row
               label="Collection Method"
-              index={3}
+              index={2}
               slots={slots}
               render={(t) => {
                 if (t.collectionMethod) {
@@ -368,7 +359,7 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
             />
             <Row
               label="Additional Collection Fees"
-              index={4}
+              index={3}
               slots={slots}
               render={(t) => {
                 const fee = formatCollectionFee(t.collectionFeeType, t.collectionFeeAmount);
@@ -397,7 +388,7 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
             />
             <Row
               label="Total Expected Cost"
-              index={5}
+              index={4}
               slots={slots}
               render={(t) => {
                 const total = computeTotalExpectedCost(
@@ -416,7 +407,7 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
             />
             <Row
               label="Clinical Review"
-              index={6}
+              index={5}
               slots={slots}
               render={(t) => {
                 const r = formatClinicalReview(t.clinicalReviewType, t.clinicalReviewFee);
@@ -447,7 +438,7 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
             />
             <Row
               label="Book"
-              index={7}
+              index={6}
               slots={slots}
               placeholder={
                 <button
