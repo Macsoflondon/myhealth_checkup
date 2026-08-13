@@ -6,7 +6,7 @@ import Footer from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ExternalLink, Heart, Clock, Shield, TestTube, Users, CheckCircle, AlertCircle } from "lucide-react";
+import { ArrowLeft, ExternalLink, Clock, Shield, TestTube, Users, CheckCircle, AlertCircle, Home, Building2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { getProviderRating } from "@/constants/providerRatings";
 import { detailedProviders } from "@/data/compare/detailedProviders";
@@ -25,7 +25,35 @@ interface TestDetail {
   image_url?: string | null;
   provider_id: string;
   biomarker_count?: number | null;
+  turnaround_days_text?: string | null;
+  turnaround_raw?: string | null;
+  collection_method?: string | null;
+  sample_type?: string | null;
+  home_kit_available?: boolean | null;
+  clinic_visit_available?: boolean | null;
+  lab_ukas_accredited?: boolean | null;
+  lab_cqc_regulated?: boolean | null;
+  lab_iso15189?: boolean | null;
 }
+
+/** Row-level values win; the static provider lookup is only a last resort. */
+const resolveTurnaround = (
+  row: { turnaround_days_text?: string | null; turnaround_raw?: string | null },
+  providerId: string,
+): string =>
+  row.turnaround_days_text?.trim() ||
+  row.turnaround_raw?.trim() ||
+  PROVIDER_TURNAROUND_TIMES[providerId] ||
+  '2-5 days';
+
+const resolveCollection = (
+  row: { collection_method?: string | null; sample_type?: string | null },
+  providerId: string,
+): string =>
+  row.collection_method?.trim() ||
+  row.sample_type?.trim() ||
+  PROVIDER_COLLECTION_METHODS[providerId] ||
+  'Varies';
 
 interface ProviderTestOption {
   id: string;
@@ -79,26 +107,42 @@ const TestDetailPage = () => {
 
       setTest(data);
 
-      // Try to fetch similar tests from other providers
-      if (data?.test_name) {
-        const { data: similarTests } = await supabase
-          .from('provider_tests')
-          .select('*')
-          .ilike('test_name', `%${data.test_name.split(' ').slice(0, 2).join(' ')}%`)
-          .eq('is_active', true)
-          .neq('id', testId ?? '')
-          .limit(10);
+      // Verified cross-provider matches only, via the comparison_test_groups view
+      const { data: ownGroup } = await supabase
+        .from('comparison_test_groups')
+        .select('group_key')
+        .eq('provider_test_id', testId ?? '')
+        .maybeSingle();
 
-        if (similarTests && similarTests.length > 0) {
-          const providerOptions: ProviderTestOption[] = similarTests.map(t => {
+      const groupKey = ownGroup?.group_key;
+
+      if (groupKey) {
+        const { data: siblings } = await supabase
+          .from('comparison_test_groups')
+          .select('provider_test_id, provider_id')
+          .eq('group_key', groupKey)
+          .neq('provider_test_id', testId ?? '');
+
+        const siblingIds = (siblings ?? [])
+          .map((row) => row.provider_test_id)
+          .filter((id): id is string => Boolean(id));
+
+        if (siblingIds.length > 0) {
+          const { data: siblingTests } = await supabase
+            .from('provider_tests')
+            .select('*')
+            .in('id', siblingIds)
+            .eq('is_active', true);
+
+          const providerOptions: ProviderTestOption[] = (siblingTests ?? []).map((t) => {
             const provRating = getProviderRating(t.provider_id);
             return {
               id: t.id,
               providerId: t.provider_id,
               providerName: detailedProviders.find(p => p.id === t.provider_id)?.name || t.provider_id,
               price: t.price || 0,
-              turnaroundTime: PROVIDER_TURNAROUND_TIMES[t.provider_id] || '2-5 days',
-              collectionMethod: PROVIDER_COLLECTION_METHODS[t.provider_id] || 'Varies',
+              turnaroundTime: resolveTurnaround(t, t.provider_id),
+              collectionMethod: resolveCollection(t, t.provider_id),
               biomarkerCount: t.biomarker_count || undefined,
               url: t.url || undefined,
               rating: provRating.rating,
@@ -171,6 +215,12 @@ const TestDetailPage = () => {
   }
 
   const currentProviderRating = getProviderRating(canonicalProviderId);
+
+  const accreditationBadges: string[] = [
+    test.lab_ukas_accredited ? 'UKAS Accredited Lab' : null,
+    test.lab_cqc_regulated ? 'CQC Regulated' : null,
+    test.lab_iso15189 ? 'ISO 15189 Certified' : null,
+  ].filter((label): label is string => Boolean(label));
   const bookingUrl = test.url ? buildProviderBookingUrl(test.url, canonicalProviderId, test.test_name) : null;
 
   return (
@@ -263,19 +313,25 @@ const TestDetailPage = () => {
                 </p>
                 
                 <div className="grid sm:grid-cols-3 gap-3">
-                  <div className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg">
-                    <Shield className="w-5 h-5 text-primary flex-shrink-0" />
-                    <span className="text-sm font-medium">UKAS Accredited Lab</span>
-                  </div>
-                  
+                  {accreditationBadges.map((label) => (
+                    <div key={label} className="flex items-center gap-3 p-3 bg-primary/5 rounded-lg">
+                      <Shield className="w-5 h-5 text-primary flex-shrink-0" />
+                      <span className="text-sm font-medium">{label}</span>
+                    </div>
+                  ))}
+
                   <div className="flex items-center gap-3 p-3 bg-secondary/20 rounded-lg">
                     <Clock className="w-5 h-5 text-secondary flex-shrink-0" />
-                      <span className="text-sm font-medium">{PROVIDER_TURNAROUND_TIMES[canonicalProviderId] || '2-5 days'}</span>
+                    <span className="text-sm font-medium">{resolveTurnaround(test, canonicalProviderId)}</span>
                   </div>
-                  
+
                   <div className="flex items-center gap-3 p-3 bg-green-500/10 rounded-lg">
-                    <Heart className="w-5 h-5 text-green-600 flex-shrink-0" />
-                    <span className="text-sm font-medium">Doctor Reviewed</span>
+                    {test.home_kit_available && !test.clinic_visit_available ? (
+                      <Home className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    ) : (
+                      <Building2 className="w-5 h-5 text-green-600 flex-shrink-0" />
+                    )}
+                    <span className="text-sm font-medium">{resolveCollection(test, canonicalProviderId)}</span>
                   </div>
                 </div>
               </CardContent>
@@ -354,8 +410,8 @@ const TestDetailPage = () => {
                     providerId: providerId || '',
                     providerName: provider.name,
                     price: test.price || 0,
-                    turnaroundTime: PROVIDER_TURNAROUND_TIMES[canonicalProviderId] || '2-5 days',
-                    collectionMethod: PROVIDER_COLLECTION_METHODS[canonicalProviderId] || 'Varies',
+                    turnaroundTime: resolveTurnaround(test, canonicalProviderId),
+                    collectionMethod: resolveCollection(test, canonicalProviderId),
                     biomarkerCount: test.biomarker_count || undefined,
                     url: test.url || undefined,
                     rating: currentProviderRating.rating,
