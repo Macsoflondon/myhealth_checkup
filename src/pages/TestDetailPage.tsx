@@ -13,6 +13,7 @@ import { detailedProviders } from "@/data/compare/detailedProviders";
 import { TestProviderPriceTable } from "@/components/compare/TestProviderPriceTable";
 import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
 import { getProviderLogo, normalizeProviderId, PROVIDER_TURNAROUND_TIMES, PROVIDER_COLLECTION_METHODS } from "@/constants/providers";
+import { resolveTurnaround, resolveCollection } from '@/lib/resolve-test-fields';
 import { logger } from "@/lib/logger";
 
 interface TestDetail {
@@ -37,24 +38,6 @@ interface TestDetail {
 }
 
 /** Row-level values win; the static provider lookup is only a last resort. */
-const resolveTurnaround = (
-  row: { turnaround_days_text?: string | null; turnaround_raw?: string | null },
-  providerId: string,
-): string =>
-  row.turnaround_days_text?.trim() ||
-  row.turnaround_raw?.trim() ||
-  PROVIDER_TURNAROUND_TIMES[providerId] ||
-  '2-5 days';
-
-const resolveCollection = (
-  row: { collection_method?: string | null; sample_type?: string | null },
-  providerId: string,
-): string =>
-  row.collection_method?.trim() ||
-  row.sample_type?.trim() ||
-  PROVIDER_COLLECTION_METHODS[providerId] ||
-  'Varies';
-
 interface ProviderTestOption {
   id: string;
   providerId: string;
