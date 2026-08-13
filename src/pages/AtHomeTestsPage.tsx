@@ -61,8 +61,8 @@ const toCategoryTestItem = (test: AtHomeTest): CategoryTestItem => {
     turnaround: test.turnaround_days_text || "2–5 days",
     turnaroundDays: parseTurnaroundDays(test.turnaround_days_text || "5"),
     biomarkerCount: test.biomarker_count || biomarkers.length || 0,
-    rating: providerRating.rating,
-    reviews: providerRating.reviews,
+    rating: providerRating?.rating,
+    reviews: providerRating?.reviews,
     title: cleanName(test.test_name),
     desc:
       test.description ||

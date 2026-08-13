@@ -131,8 +131,8 @@ const MostPopularTestsPage = () => {
         turnaround: t.turnaround_time || '2–5 days',
         turnaroundDays: parseTurnaroundDays(t.turnaround_time || '5'),
         biomarkerCount: t.biomarker_count || 0,
-        rating: providerRating.rating,
-        reviews: providerRating.reviews,
+        rating: providerRating?.rating,
+        reviews: providerRating?.reviews,
         title: cleanName(t.test_name),
         desc:
           t.description ||

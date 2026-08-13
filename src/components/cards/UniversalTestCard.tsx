@@ -577,10 +577,12 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                 className="flex items-center gap-2 mb-2 flex-wrap"
                 style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#64748b", minHeight: 18 }}
               >
-                <span className="flex items-center gap-0.5" aria-label={`Trustpilot rating ${rating.rating} out of 5`}>
-                  <Star size={12} color="#D4A843" fill="#D4A843" />
-                  <span style={{ fontWeight: 600, color: UTC_NAVY }}>{rating.rating.toFixed(1)}</span>
-                </span>
+                {rating && (
+                  <span className="flex items-center gap-0.5" aria-label={`Trustpilot rating ${rating.rating} out of 5`}>
+                    <Star size={12} color="#D4A843" fill="#D4A843" />
+                    <span style={{ fontWeight: 600, color: UTC_NAVY }}>{rating.rating.toFixed(1)}</span>
+                  </span>
+                )}
                 {meta.cqc && (
                   <span
                     className="flex items-center gap-0.5"

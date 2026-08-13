@@ -145,8 +145,8 @@ const TestDetailPage = () => {
               collectionMethod: resolveCollection(t, t.provider_id),
               biomarkerCount: t.biomarker_count || undefined,
               url: t.url || undefined,
-              rating: provRating.rating,
-              reviews: provRating.reviewsFormatted
+              rating: provRating?.rating,
+              reviews: provRating?.reviewsFormatted
             };
           });
           setOtherProviders(providerOptions);
@@ -414,8 +414,8 @@ const TestDetailPage = () => {
                     collectionMethod: resolveCollection(test, canonicalProviderId),
                     biomarkerCount: test.biomarker_count || undefined,
                     url: test.url || undefined,
-                    rating: currentProviderRating.rating,
-                    reviews: currentProviderRating.reviewsFormatted
+                    rating: currentProviderRating?.rating,
+                    reviews: currentProviderRating?.reviewsFormatted
                   },
                   ...otherProviders
                 ]}

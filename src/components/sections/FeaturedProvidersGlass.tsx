@@ -200,12 +200,14 @@ const FeaturedProvidersGlass = () => {
                         />
                       </div>
                       <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-1.5 bg-[#f8fafc] px-3 py-1.5 rounded-full border border-[#e2e8f0] transition-colors group-hover:border-yellow-500/40">
-                          <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-                          <span className="text-[#081129] text-xs font-bold">
-                            {canonical.rating}
-                          </span>
-                        </div>
+                        {canonical && (
+                          <div className="flex items-center gap-1.5 bg-[#f8fafc] px-3 py-1.5 rounded-full border border-[#e2e8f0] transition-colors group-hover:border-yellow-500/40">
+                            <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
+                            <span className="text-[#081129] text-xs font-bold">
+                              {canonical.rating}
+                            </span>
+                          </div>
+                        )}
                         <SaveProviderButton
                           isSaved={isProviderSaved(p.id)}
                           onToggle={() => toggleSaveProvider(p.id, p.displayName)}
@@ -229,7 +231,7 @@ const FeaturedProvidersGlass = () => {
                         {p.tagline}
                       </p>
                       <p className="text-[11px] uppercase tracking-[0.2em] text-[#94a3b8] pt-1">
-                        {canonical.reviewsFormatted} reviews · UK Wide
+                        {canonical ? `${canonical.reviewsFormatted} reviews · UK Wide` : "UK Wide"}
                       </p>
                     </div>
 
