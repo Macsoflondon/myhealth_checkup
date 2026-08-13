@@ -15,7 +15,7 @@ import ProviderTestCard, { type ProviderTestCardData } from "@/components/provid
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
 
 const PROVIDER_ID = "medichecks";
-const PROVIDER_NAME = "\n";
+const PROVIDER_NAME = "Medichecks";
 
 const normalizeCategory = (cat: string | null | undefined): string | null => {
   if (!cat) return null;
