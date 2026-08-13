@@ -1,13 +1,14 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { useQuery } from "@tanstack/react-query";
 import { Helmet } from "react-helmet-async";
-import { Link } from "@/lib/router-compat";
+import { Link, useSearchParams } from "@/lib/router-compat";
 import MainLayout from "@/layouts/MainLayout";
 import PageHeading from "@/components/ui/page-heading";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -36,7 +37,8 @@ import {
   X,
   ArrowRight,
   BarChart3,
-  List
+  List,
+  Search
 } from "lucide-react";
 
 interface ProviderTestData {
@@ -87,10 +89,51 @@ const modeValue = (values: Array<string | null | undefined>): string | null => {
   return [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
 };
 
+/** Lowercase alphanumeric tokens, so "Vitamin D (25-OH)" matches "vitamin d". */
+const searchTokens = (value: string): string[] =>
+  value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim()
+    .split(" ")
+    .filter(Boolean);
+
+/**
+ * Every token in the search term must start a word in the candidate names, so a
+ * short token like the "d" of "vitamin d" cannot match the "d" inside "blood".
+ */
+const matchesSearch = (names: string[], tokens: string[]): boolean => {
+  if (tokens.length === 0) return true;
+  const haystack = ` ${names.map((n) => searchTokens(n).join(" ")).join(" ")} `;
+  return tokens.every((token) => haystack.includes(` ${token}`));
+};
+
 export default function ProviderComparisonPage() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  // The `search` query param (used by goal/symptom "Compare prices" deep links)
+  // seeds the same filter the on-page search input drives.
+  const [searchTerm, setSearchTerm] = useState<string>(() => searchParams.get("search") ?? "");
   const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
-  const [activeTab, setActiveTab] = useState<string>("overview");
+  const [activeTab, setActiveTab] = useState<string>(() =>
+    (searchParams.get("search") ?? "").trim() ? "tests" : "overview",
+  );
+  const autoSelectedRef = useRef(false);
+
+  const searchTermTokens = useMemo(() => searchTokens(searchTerm), [searchTerm]);
+
+  const updateSearchTerm = (value: string) => {
+    setSearchTerm(value);
+    setSearchParams(
+      (prev: URLSearchParams) => {
+        const next = new URLSearchParams(prev);
+        if (value.trim()) next.set("search", value);
+        else next.delete("search");
+        return next;
+      },
+      { replace: true },
+    );
+  };
 
   const providers = getAllProviders();
 
@@ -233,7 +276,7 @@ export default function ProviderComparisonPage() {
 
     const groups = new Map<
       string,
-      { label: string; byProvider: Record<string, ProviderTestData> }
+      { label: string; names: string[]; byProvider: Record<string, ProviderTestData> }
     >();
 
     comparisonGroups.forEach((row) => {
@@ -244,18 +287,68 @@ export default function ProviderComparisonPage() {
 
       const existing = groups.get(row.group_key) ?? {
         label: row.test_name,
+        names: [] as string[],
         byProvider: {} as Record<string, ProviderTestData>,
       };
       // Prefer the shortest name in the group as the display label
       if (row.test_name.length < existing.label.length) existing.label = row.test_name;
+      existing.names.push(row.test_name);
       existing.byProvider[row.provider_id] = test;
       groups.set(row.group_key, existing);
     });
 
-    return [...groups.entries()]
+    const comparable = [...groups.entries()]
       .filter(([, group]) => Object.keys(group.byProvider).length >= 2)
       .sort(([, a], [, b]) => a.label.localeCompare(b.label));
-  }, [comparisonGroups, testsById, selectedProviders, categoryFilter]);
+
+    if (searchTermTokens.length === 0) return comparable;
+
+    const matched = comparable.filter(([, group]) => matchesSearch(group.names, searchTermTokens));
+    // No match for the search term: show the full comparable list rather than an empty page.
+    return matched.length > 0 ? matched : comparable;
+  }, [comparisonGroups, testsById, selectedProviders, categoryFilter, searchTermTokens]);
+
+  /** True when a search term is active but matched nothing, so the list is unfiltered. */
+  const searchFellBack = useMemo(() => {
+    if (searchTermTokens.length === 0 || groupedTests.length === 0) return false;
+    return !groupedTests.some(([, group]) => matchesSearch(group.names, searchTermTokens));
+  }, [groupedTests, searchTermTokens]);
+
+  /**
+   * Arriving from a goal/symptom deep link there are no providers selected yet, so
+   * the comparison would render nothing. Pick the providers that actually offer the
+   * searched-for test (up to the 4-provider maximum), once, on first data load.
+   */
+  useEffect(() => {
+    if (autoSelectedRef.current) return;
+    if (!comparisonGroups || searchTermTokens.length === 0) return;
+    if (selectedProviders.length > 0) return;
+
+    const byGroup = new Map<string, ComparisonGroupRow[]>();
+    comparisonGroups.forEach((row) => {
+      byGroup.set(row.group_key, [...(byGroup.get(row.group_key) ?? []), row]);
+    });
+
+    const tally = new Map<string, number>();
+    byGroup.forEach((rows) => {
+      if (!matchesSearch(rows.map((r) => r.test_name), searchTermTokens)) return;
+      const providerIds = new Set(rows.map((r) => r.provider_id));
+      if (providerIds.size < 2) return;
+      providerIds.forEach((id) => tally.set(id, (tally.get(id) ?? 0) + 1));
+    });
+
+    autoSelectedRef.current = true;
+    if (tally.size < 2) return;
+
+    const known = new Set(providers.map((p) => p.id));
+    const ranked = [...tally.entries()]
+      .filter(([id]) => known.has(id))
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 4)
+      .map(([id]) => id);
+
+    if (ranked.length >= 2) setSelectedProviders(ranked);
+  }, [comparisonGroups, searchTermTokens, selectedProviders.length, providers]);
 
   const toggleProvider = (providerId: string) => {
     setSelectedProviders(prev => {
@@ -525,8 +618,19 @@ export default function ProviderComparisonPage() {
 
               {/* Test-by-Test Tab */}
               <TabsContent value="tests" className="mt-6">
-                {/* Category Filter */}
-                <div className="flex items-center gap-4 mb-6">
+                {/* Search + Category Filter */}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-2">
+                  <div className="relative flex-1 max-w-sm">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input
+                      type="search"
+                      value={searchTerm}
+                      onChange={(event) => updateSearchTerm(event.target.value)}
+                      placeholder="Search tests, e.g. vitamin D"
+                      aria-label="Search tests to compare"
+                      className="pl-9"
+                    />
+                  </div>
                   <span className="font-medium text-sm">Filter by category:</span>
                   <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                     <SelectTrigger className="w-[200px]">
@@ -542,6 +646,14 @@ export default function ProviderComparisonPage() {
                     </SelectContent>
                   </Select>
                 </div>
+
+                {searchFellBack ? (
+                  <p className="text-sm text-muted-foreground mb-6">
+                    No comparable tests matched &ldquo;{searchTerm.trim()}&rdquo;, so all comparable tests are shown.
+                  </p>
+                ) : (
+                  <div className="mb-6" />
+                )}
 
                 {groupedTests.length > 0 ? (
                   <div className="overflow-x-auto">

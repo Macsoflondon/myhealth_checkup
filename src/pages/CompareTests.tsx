@@ -48,6 +48,9 @@ const CompareTests = () => {
   const [filters, setFilters] = useState<CompareFilters>(() => ({
     ...defaultFilters,
     selectedCategory: searchParams.get("category") || "",
+    // Goal/symptom "Compare prices" links arrive as /compare?search=vitamin+d,
+    // so the URL seeds the same search field the toolbar input drives.
+    searchQuery: searchParams.get("search") || "",
   }));
 
   const navigate = useNavigate();
@@ -102,6 +105,23 @@ const CompareTests = () => {
   );
 
   const hasSearch = filters.searchQuery.trim().length > 0;
+
+  // Keep the search field and the ?search= param in step, so the view stays shareable.
+  const updateSearchQuery = useCallback(
+    (value: string) => {
+      setFilters((prev) => ({ ...prev, searchQuery: value }));
+      setSearchParams(
+        (prev: URLSearchParams) => {
+          const next = new URLSearchParams(prev);
+          if (value.trim()) next.set("search", value);
+          else next.delete("search");
+          return next;
+        },
+        { replace: true },
+      );
+    },
+    [setSearchParams],
+  );
   // A category page browses the full category; the bare /compare hub shows a curated row.
   const isCategoryView = Boolean(
     filters.selectedCategory || urlCategory || searchParams.get("category"),
@@ -113,10 +133,19 @@ const CompareTests = () => {
   }, [filters.selectedCategory, filters.searchQuery, urlCategory]);
 
 
-  const displayTests: CompareTestData[] = isCategoryView || hasSearch
-    ? tests
-    : recommendedTests.slice(0, 8);
-  const showLoading = isCategoryView || hasSearch ? isLoading : isLoadingRecommended;
+  // A search that matches nothing falls back to the unfiltered list rather than
+  // stranding the user on an empty page.
+  const searchFellBack = hasSearch && !isLoading && tests.length === 0;
+  const displayTests: CompareTestData[] = searchFellBack
+    ? recommendedTests
+    : isCategoryView || hasSearch
+      ? tests
+      : recommendedTests.slice(0, 8);
+  const showLoading = searchFellBack
+    ? isLoadingRecommended
+    : isCategoryView || hasSearch
+      ? isLoading
+      : isLoadingRecommended;
 
   const renderCard = (test: CompareTestData) => {
     const selected = isSelected(test.id);
@@ -290,15 +319,19 @@ const CompareTests = () => {
                   <input
                     type="search"
                     value={filters.searchQuery}
-                    onChange={(e) =>
-                      setFilters((prev) => ({ ...prev, searchQuery: e.target.value }))
-                    }
+                    onChange={(e) => updateSearchQuery(e.target.value)}
                     placeholder="Search tests or providers"
                     aria-label="Search tests"
                     className="w-full rounded-full border border-[#081129]/15 bg-white py-2.5 pl-9 pr-4 text-sm text-[#081129] placeholder:text-[#081129]/50 focus:border-[#22c0d4] focus:outline-none focus:ring-1 focus:ring-[#22c0d4]"
                   />
                 </div>
               </div>
+
+              {searchFellBack && (
+                <p className="text-sm text-[#081129]/70 mb-6">
+                  No tests matched &ldquo;{filters.searchQuery.trim()}&rdquo;. Showing all tests instead.
+                </p>
+              )}
 
               {showLoading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
