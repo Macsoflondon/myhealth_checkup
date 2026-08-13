@@ -22,6 +22,13 @@ export interface ProviderTestData {
   home_kit_available?: boolean | null;
   clinic_visit_available?: boolean | null;
   who_should_test?: string | null;
+  is_addon?: boolean | null;
+  purchase_notes?: string | null;
+  turnaround_days_text?: string | null;
+  collection_method?: string | null;
+  lab_ukas_accredited?: boolean | null;
+  lab_cqc_regulated?: boolean | null;
+  lab_iso15189?: boolean | null;
 }
 
 export interface PriceUpdate {
