@@ -12,7 +12,7 @@ import { getProviderRating } from "@/constants/providerRatings";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { TestProviderPriceTable } from "@/components/compare/TestProviderPriceTable";
 import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
-import { getProviderLogo, normalizeProviderId, PROVIDER_TURNAROUND_TIMES, PROVIDER_COLLECTION_METHODS } from "@/constants/providers";
+import { getProviderLogo, normalizeProviderId } from "@/constants/providers";
 import { resolveTurnaround, resolveCollection } from '@/lib/resolve-test-fields';
 import { logger } from "@/lib/logger";
 
