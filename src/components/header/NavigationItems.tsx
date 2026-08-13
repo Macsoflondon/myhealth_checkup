@@ -139,6 +139,7 @@ export const moreNavigationSections = [
     title: "Compare",
     items: [
       { name: "Compare Tests", path: "/compare" },
+      { name: "Compare Providers", path: "/providers/compare" },
       { name: "Compare by Goal", path: "/compare/goals" },
       { name: "Compare by Symptom", path: "/compare/symptoms" }
     ]
