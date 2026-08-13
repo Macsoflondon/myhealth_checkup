@@ -13,6 +13,7 @@ import { compareStore, useCompareItems } from "@/stores/compareStore";
 import { compareResultsPath } from "@/lib/compareUrl";
 import type { CompareTestData } from "@/types";
 import { getProviderLogo } from "@/constants/providers";
+import { resolveAccreditationsFromRow } from "@/lib/resolve-test-fields";
 
 
 interface ProviderTestDetailModalProps {
@@ -22,7 +23,19 @@ interface ProviderTestDetailModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
-const getAccreditations = (providerId: string): string[] => {
+/**
+ * Accreditation badges. The row's real flags win; the hardcoded provider map is
+ * only used when the row states none of them.
+ */
+const getAccreditations = (
+  test: Pick<ProviderTestCardData, "provider_id" | "lab_ukas_accredited" | "lab_cqc_regulated" | "lab_iso15189">,
+): string[] => {
+  const fromRow = resolveAccreditationsFromRow(test);
+  if (fromRow) {
+    return fromRow.map((flag) => (flag === 'UKAS' ? 'UKAS accredited lab' : flag === 'CQC' ? 'CQC regulated' : flag));
+  }
+
+  const providerId = test.provider_id;
   const map: Record<string, string[]> = {
     medichecks: ["UKAS accredited lab", "ISO 15189", "CQC regulated"],
     goodbody: ["CQC regulated", "ISO 15189", "GP-reviewed"],
@@ -188,7 +201,7 @@ export default function ProviderTestDetailModal({
 
   const branding = getBranding(test.provider_id);
   const brandColor = branding?.primary || "#22c0d4";
-  const accreditations = getAccreditations(test.provider_id);
+  const accreditations = getAccreditations(test);
   const tagline = getProviderTagline(test.provider_id);
 
   const isGoodbody = test.provider_id.toLowerCase().includes("goodbody");
@@ -315,10 +328,10 @@ export default function ProviderTestDetailModal({
 
         {/* Body */}
         <div className="p-6 space-y-6 bg-[#f6f7fb]">
-          {/lola\s*health/i.test(providerName) && (
+          {test.is_addon && (
             <div className="rounded-lg border border-amber-400 bg-amber-50 p-3 text-sm text-amber-900">
               <strong className="block mb-0.5">Add-on only</strong>
-              This test can only be purchased when bundled with one of Lola Health's full test panels.
+              This test can only be purchased when bundled with one of {providerName}'s full test panels.
             </div>
           )}
 
