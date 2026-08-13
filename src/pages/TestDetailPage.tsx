@@ -107,26 +107,42 @@ const TestDetailPage = () => {
 
       setTest(data);
 
-      // Try to fetch similar tests from other providers
-      if (data?.test_name) {
-        const { data: similarTests } = await supabase
-          .from('provider_tests')
-          .select('*')
-          .ilike('test_name', `%${data.test_name.split(' ').slice(0, 2).join(' ')}%`)
-          .eq('is_active', true)
-          .neq('id', testId ?? '')
-          .limit(10);
+      // Verified cross-provider matches only, via the comparison_test_groups view
+      const { data: ownGroup } = await supabase
+        .from('comparison_test_groups')
+        .select('group_key')
+        .eq('provider_test_id', testId ?? '')
+        .maybeSingle();
 
-        if (similarTests && similarTests.length > 0) {
-          const providerOptions: ProviderTestOption[] = similarTests.map(t => {
+      const groupKey = ownGroup?.group_key;
+
+      if (groupKey) {
+        const { data: siblings } = await supabase
+          .from('comparison_test_groups')
+          .select('provider_test_id, provider_id')
+          .eq('group_key', groupKey)
+          .neq('provider_test_id', testId ?? '');
+
+        const siblingIds = (siblings ?? [])
+          .map((row) => row.provider_test_id)
+          .filter((id): id is string => Boolean(id));
+
+        if (siblingIds.length > 0) {
+          const { data: siblingTests } = await supabase
+            .from('provider_tests')
+            .select('*')
+            .in('id', siblingIds)
+            .eq('is_active', true);
+
+          const providerOptions: ProviderTestOption[] = (siblingTests ?? []).map((t) => {
             const provRating = getProviderRating(t.provider_id);
             return {
               id: t.id,
               providerId: t.provider_id,
               providerName: detailedProviders.find(p => p.id === t.provider_id)?.name || t.provider_id,
               price: t.price || 0,
-              turnaroundTime: PROVIDER_TURNAROUND_TIMES[t.provider_id] || '2-5 days',
-              collectionMethod: PROVIDER_COLLECTION_METHODS[t.provider_id] || 'Varies',
+              turnaroundTime: resolveTurnaround(t, t.provider_id),
+              collectionMethod: resolveCollection(t, t.provider_id),
               biomarkerCount: t.biomarker_count || undefined,
               url: t.url || undefined,
               rating: provRating.rating,
