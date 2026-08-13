@@ -135,7 +135,7 @@ export function CategoryPageLayout({
         sorted.sort((a, b) => a.turnaroundDays - b.turnaroundDays);
         break;
       case "rating":
-        sorted.sort((a, b) => b.rating - a.rating);
+        sorted.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
         break;
       case "popular":
       default:
@@ -197,7 +197,7 @@ export function CategoryPageLayout({
                 description: t.desc,
                 category: t.tag,
                 brand: { "@type": "Brand", name: t.provider },
-                aggregateRating: t.reviews > 0 ? {
+                aggregateRating: t.rating && t.reviews && t.reviews > 0 ? {
                   "@type": "AggregateRating",
                   ratingValue: t.rating,
                   reviewCount: t.reviews,
