@@ -20,8 +20,6 @@ export const PROVIDER_RATINGS: Record<string, ProviderRating> = {
     'the-doctors-laboratory': { rating: 1.9, reviews: 22, reviewsFormatted: '22' },
 };
 
-const DEFAULT_RATING: ProviderRating = { rating: 4.5, reviews: 100, reviewsFormatted: '100' };
-
 /** Aliases that map alternative IDs to canonical keys */
 const PROVIDER_ALIASES: Record<string, string> = {
     'goodbody': 'goodbody-clinic',
@@ -43,8 +41,13 @@ const PROVIDER_NAME_MAP: Record<string, string> = {
 /**
  * Get provider rating by ID or display name.
  * Handles aliases like 'goodbody' → 'goodbody-clinic'.
+ *
+ * Returns `null` when we hold no verified rating for that provider — callers
+ * MUST hide the rating UI rather than render a placeholder or estimated value.
+ * Never invent a fallback rating: fabricated review data breaks the honest
+ * comparison promise and UK advertising/CMA rules.
  */
-export function getProviderRating(idOrName: string): ProviderRating {
+export function getProviderRating(idOrName: string): ProviderRating | null {
     const key = idOrName.toLowerCase();
 
   // Direct match
@@ -58,5 +61,5 @@ export function getProviderRating(idOrName: string): ProviderRating {
   const nameKey = PROVIDER_NAME_MAP[idOrName];
     if (nameKey && PROVIDER_RATINGS[nameKey]) return PROVIDER_RATINGS[nameKey];
 
-  return DEFAULT_RATING;
+  return null;
 }
