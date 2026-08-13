@@ -107,7 +107,7 @@ export class CompareService {
     try {
       const { data, error } = await supabase
         .from('unified_provider_tests')
-        .select('id, test_name, provider_id, category_primary, price, description, url, biomarker_count, biomarkers_list')
+        .select('id, test_name, provider_id, category_primary, price, description, url, biomarker_count, biomarkers_list, turnaround_days_text, sample_type, collection_method')
         .in('id', unique);
 
       if (error) {
@@ -128,6 +128,9 @@ export class CompareService {
           url: row.url ?? null,
           biomarker_count: row.biomarker_count ?? null,
           biomarkers_list: row.biomarkers_list ?? null,
+          turnaround_days_text: row.turnaround_days_text ?? null,
+          sample_type: row.sample_type ?? null,
+          collection_method: row.collection_method ?? null,
         }));
 
       const result = TestDataTransformer.transformMultiple(rows);

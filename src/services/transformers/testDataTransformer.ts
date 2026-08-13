@@ -1,5 +1,10 @@
 import { CompareTestData } from "@/types";
-import { PROVIDER_LOGOS, PROVIDER_NAMES, PROVIDER_TURNAROUND_TIMES, PROVIDER_COLLECTION_METHODS } from "@/constants/providers";
+import { PROVIDER_LOGOS, PROVIDER_NAMES } from "@/constants/providers";
+import {
+  resolveTurnaround,
+  resolveCollection,
+  resolveAccreditationsFromRow,
+} from "@/lib/resolve-test-fields";
 
 /**
  * Minimal structural shape the transformer needs. Database rows expose these
@@ -17,7 +22,26 @@ export interface LiveTestRow {
   /** Authoritative stored biomarker total (provider_tests.biomarker_count). */
   biomarker_count?: number | null;
   biomarkers_list?: unknown;
+  /** Real scraped turnaround, when the provider stated one. */
+  turnaround_days_text?: string | null;
+  turnaround_raw?: string | null;
+  /** Real scraped collection info. */
+  sample_type?: string | null;
+  collection_method?: string | null;
+  /** Real accreditation flags recorded against the row's lab. */
+  lab_ukas_accredited?: boolean | null;
+  lab_cqc_regulated?: boolean | null;
+  lab_iso15189?: boolean | null;
 }
+
+/** Pull a day count out of a real turnaround string, e.g. "2-3 days" -> 3. */
+const parseTurnaroundDays = (text: string | null | undefined): number | null => {
+  if (!text) return null;
+  const numbers = text.match(/\d+/g);
+  if (!numbers || numbers.length === 0) return null;
+  const days = Number(numbers[numbers.length - 1]);
+  return Number.isFinite(days) && days > 0 ? days : null;
+};
 
 /**
  * Normalise the stored biomarkers_list JSON into plain strings.
@@ -60,17 +84,17 @@ export class TestDataTransformer {
       category,
       description: test.description || '',
       features: {
-        turnaround: this.estimateTurnaround(test.provider_id),
-        collection: this.getCollectionMethod(test.provider_id),
+        turnaround: resolveTurnaround(test, test.provider_id),
+        collection: resolveCollection(test, test.provider_id),
         bioMarkers: biomarkersList.slice(0, 3).join(', ') || this.extractBioMarkers(test.description || '')
       },
       providerLogo: PROVIDER_LOGOS[test.provider_id] || '/placeholder.svg',
       available: test.is_active ?? true,
-      accreditations: this.getAccreditations(test.provider_id),
+      accreditations: this.getAccreditations(test),
       popularityScore: this.estimatePopularity(test.test_name, category),
       biomarkerCount,
       biomarkersList,
-      turnaroundDays: this.estimateTurnaroundDays(test.provider_id),
+      turnaroundDays: this.resolveTurnaroundDays(test),
       userRating: undefined,
       url: test.url || undefined
     };
@@ -81,20 +105,6 @@ export class TestDataTransformer {
    */
   static transformMultiple(tests: LiveTestRow[]): CompareTestData[] {
     return tests.map(test => this.transformSingle(test));
-  }
-
-  /**
-   * Estimate turnaround time based on provider
-   */
-  private static estimateTurnaround(providerId: string): string {
-    return PROVIDER_TURNAROUND_TIMES[providerId] || '3-5 days';
-  }
-
-  /**
-   * Get collection method based on provider
-   */
-  private static getCollectionMethod(providerId: string): string {
-    return PROVIDER_COLLECTION_METHODS[providerId] || 'Varies';
   }
 
   /**
@@ -120,19 +130,23 @@ export class TestDataTransformer {
   }
 
   /**
-   * Get provider accreditations
+   * Accreditations: the row's real flags win; the provider-level map is only
+   * used when the row states none of them.
    */
-  private static getAccreditations(providerId: string): string[] {
+  private static getAccreditations(test: LiveTestRow): string[] {
+    const fromRow = resolveAccreditationsFromRow(test);
+    if (fromRow) return fromRow;
+
     const accreditationMap: Record<string, string[]> = {
       'medichecks': ['UKAS', 'CQC'],
       'goodbody-clinic': ['UKAS', 'ISO 15189'],
       'randox': ['UKAS', 'ISO 15189'],
       'thriva': ['CQC'],
-      'london-medical-lab': ['CQC', 'ISO 15189'],
+      'london-medical-laboratory': ['CQC', 'ISO 15189'],
       'lola-health': ['CQC']
     };
     
-    return accreditationMap[providerId] || [];
+    return accreditationMap[test.provider_id] || [];
   }
 
   /**
@@ -169,18 +183,24 @@ export class TestDataTransformer {
   }
 
   /**
-   * Estimate turnaround time in days
+   * Turnaround in days: derived from the row's real turnaround text when it
+   * states one, otherwise the provider-level estimate.
    */
-  private static estimateTurnaroundDays(providerId: string): number {
+  private static resolveTurnaroundDays(test: LiveTestRow): number {
+    const fromRow =
+      parseTurnaroundDays(test.turnaround_days_text) ??
+      parseTurnaroundDays(test.turnaround_raw);
+    if (fromRow !== null) return fromRow;
+
     const turnaroundMap: Record<string, number> = {
       'medichecks': 2,
       'goodbody-clinic': 1,
       'randox': 2,
       'thriva': 3,
-      'london-medical-lab': 1,
+      'london-medical-laboratory': 1,
       'lola-health': 2
     };
     
-    return turnaroundMap[providerId] || 3;
+    return turnaroundMap[test.provider_id] || 3;
   }
 }
