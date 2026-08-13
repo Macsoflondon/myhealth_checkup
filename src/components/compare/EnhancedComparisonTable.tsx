@@ -121,21 +121,8 @@ export function EnhancedComparisonTable({ result, onRemoveTest, onBookTest }: En
             ))}
           </div>
 
-          {/* 3. Sample Type */}
+          {/* 3. Collection Method */}
           <div className="grid gap-4 items-center" style={gridCols}>
-            <div className="p-4 text-sm font-medium flex items-center gap-2">
-              <Beaker className="w-4 h-4 text-muted-foreground" />
-              Sample Type
-            </div>
-            {tests.map(test => (
-              <div key={test.id} className="p-4 text-center text-sm">
-                {test.sampleTypeCode ? SAMPLE_TYPE_LABELS[test.sampleTypeCode] : <Dash />}
-              </div>
-            ))}
-          </div>
-
-          {/* 4. Collection Method */}
-          <div className="grid gap-4 items-center bg-muted/30" style={gridCols}>
             <div className="p-4 text-sm font-medium flex items-center gap-2">
               <Check className="w-4 h-4 text-muted-foreground" />
               Collection Method
