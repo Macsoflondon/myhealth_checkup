@@ -269,7 +269,7 @@ export const detailedProviders = [
     tests: "Wide range of clinical pathology tests across wellness, hormones and specialist diagnostics",
     sampleCollection: "In-clinic phlebotomy at partner sites and postal sample kits where appropriate",
     turnaroundTime: "3-6 working days (typical)",
-    customerReviews: "4.3/5 (120+ reviews)",
+    customerReviews: "No verified independent rating available",
     keyDifferentiators:
       "UKAS-accredited clinical laboratory, validated assays on hospital-grade analysers, clinician-reviewed reports included as standard",
     description:
@@ -285,7 +285,7 @@ export const detailedProviders = [
     tests: "Broad menu of wellness, hormone, sexual health and travel medical tests",
     sampleCollection: "Clinics across London with at-home phlebotomy options for selected tests",
     turnaroundTime: "4-8 working days (typical)",
-    customerReviews: "4.4/5 (250+ reviews)",
+    customerReviews: "No verified independent rating available",
     keyDifferentiators:
       "Accessible London clinic network, at-home phlebotomy for selected tests, clinician-reviewed digital reports",
     description:
@@ -301,7 +301,7 @@ export const detailedProviders = [
     tests: "Specialist diagnostic and health screening blood tests across the UK",
     sampleCollection: "Clinic-based venous draw across UK partner sites",
     turnaroundTime: "3-6 working days (typical)",
-    customerReviews: "4.3/5 (180+ reviews)",
+    customerReviews: "No verified independent rating available",
     keyDifferentiators:
       "Specialist diagnostics focus, typically fast turnaround, UKAS-accredited partner laboratories",
     description:

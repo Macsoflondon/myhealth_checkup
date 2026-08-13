@@ -80,8 +80,8 @@ const MostPopularTestsSection = () => {
                   key={test.id}
                   {...toUnifiedCardProps(card, {
                     provider: test.provider_name,
-                    rating: providerData.rating,
-                    reviews: providerData.reviews,
+                    rating: providerData?.rating,
+                    reviews: providerData?.reviews,
                     ctaLabel: test.url ? "View test" : "Compare",
                   })}
                 />

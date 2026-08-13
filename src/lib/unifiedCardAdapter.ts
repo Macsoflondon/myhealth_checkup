@@ -21,8 +21,8 @@ export const cleanTestName = (raw: string): string =>
 /** Caller-supplied fields that aren't derivable from `ProviderTestCardData`. */
 export interface UnifiedCardOverrides {
   provider: string;
-  rating: number;
-  reviews: number;
+  rating?: number;
+  reviews?: number;
   category?: string;
   categoryColor?: string;
   description?: string;

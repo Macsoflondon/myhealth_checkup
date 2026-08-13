@@ -106,8 +106,8 @@ export const ProviderTestsGrid = ({ providerSlug, providerDisplayName, limit = 1
               key={t.id}
               {...toUnifiedCardProps(card, {
                 provider: providerDisplayName,
-                rating: rating.rating,
-                reviews: rating.reviews,
+                rating: rating?.rating,
+                reviews: rating?.reviews,
                 ctaLabel: t.url ? "View test" : "Compare",
               })}
             />
