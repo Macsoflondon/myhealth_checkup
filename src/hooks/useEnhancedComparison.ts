@@ -17,7 +17,7 @@ interface RawTestRow {
   sample_type?: string | null;
   biomarker_count?: number | null;
   biomarkers_list?: unknown;
-  turnaround_days?: number | null;
+  turnaround_days_text?: string | null;
   home_kit_available?: boolean | null;
   clinic_visit_available?: boolean | null;
   gp_consultation_included?: boolean | null;
@@ -27,6 +27,15 @@ interface RawTestRow {
   url?: string | null;
   updated_at?: string | null;
 }
+
+/** Pull a day count out of a real turnaround string, e.g. "2-3 days" -> 3. */
+const parseTurnaroundDays = (text: string | null | undefined): number | null => {
+  if (!text) return null;
+  const numbers = text.match(/\d+/g);
+  if (!numbers || numbers.length === 0) return null;
+  const days = Number(numbers[numbers.length - 1]);
+  return Number.isFinite(days) && days > 0 ? days : null;
+};
 
 export function useEnhancedComparison() {
   const { user } = useAuth();
@@ -75,7 +84,7 @@ export function useEnhancedComparison() {
       phlebotomyIncluded: test.phlebotomy_included || false,
       phlebotomyCost: test.phlebotomy_cost ?? null,
       totalEstimatedCost: basePrice + gpCost + phlebCost,
-      turnaroundDays: test.turnaround_days || 3,
+      turnaroundDays: parseTurnaroundDays(test.turnaround_days_text) || 3,
       sampleType: (test.sample_type || 'finger-prick') as EnhancedTestData['sampleType'],
       homeKitAvailable: test.home_kit_available ?? true,
       clinicVisitAvailable: test.clinic_visit_available ?? false,
