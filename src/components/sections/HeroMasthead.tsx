@@ -151,7 +151,7 @@ export default function HeroMasthead({
               key={`i-${n}`}
               ref={n === 0 ? firstSlideRef : undefined}
               src={s.src}
-              srcSet={n === 0 ? FIRST_SLIDE_WEBP_SRCSET : undefined}
+              srcSet={s.webpSrcSet}
               alt={s.alt}
               aria-hidden={active ? undefined : true}
               width={1920}
@@ -166,23 +166,14 @@ export default function HeroMasthead({
             />
           );
 
-          if (n !== 0) return img;
-
           return (
             <picture key={`p-${n}`}>
-              <source
-                type="image/avif"
-                srcSet={FIRST_SLIDE_AVIF_SRCSET}
-                sizes="100vw"
-              />
-              <source
-                type="image/webp"
-                srcSet={FIRST_SLIDE_WEBP_SRCSET}
-                sizes="100vw"
-              />
+              <source type="image/avif" srcSet={s.avifSrcSet} sizes="100vw" />
+              <source type="image/webp" srcSet={s.webpSrcSet} sizes="100vw" />
               {img}
             </picture>
           );
+
         })}
 
 
