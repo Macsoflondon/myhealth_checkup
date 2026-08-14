@@ -1,12 +1,15 @@
-// ported from main.tsx — brand typography, self-hosted via @fontsource
-import "@fontsource/montserrat/400.css";
-import "@fontsource/montserrat/500.css";
-import "@fontsource/montserrat/600.css";
-import "@fontsource/montserrat/700.css";
-import "@fontsource/montserrat/800.css";
-import "@fontsource/dm-sans/400.css";
-import "@fontsource/dm-sans/500.css";
-import "@fontsource/dm-sans/700.css";
+// ported from main.tsx — brand typography, self-hosted via @fontsource.
+// Latin-only subsets: the default entry points ship cyrillic/vietnamese too,
+// which no page on the platform renders.
+import "@fontsource/montserrat/latin-400.css";
+import "@fontsource/montserrat/latin-500.css";
+import "@fontsource/montserrat/latin-600.css";
+import "@fontsource/montserrat/latin-700.css";
+import "@fontsource/montserrat/latin-800.css";
+import "@fontsource/dm-sans/latin-400.css";
+import "@fontsource/dm-sans/latin-500.css";
+import "@fontsource/dm-sans/latin-700.css";
+
 // ported from main.tsx — i18next initialisation (module-scope, side-effect import)
 import i18nInstance from "../i18n/config";
 import { I18nextProvider } from "react-i18next";
