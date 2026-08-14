@@ -46,17 +46,17 @@ const AccreditedProvidersBar = () => {
   return (
     <section
       aria-label="Accredited provider standards"
-      className="bg-white border-b border-[#081129]/10 -mt-8 md:mt-0 pt-8 md:pt-0"
+      className="bg-white border-b border-[#081129]/10 -mt-6 md:mt-0 pt-6 md:pt-0"
     >
-      <div className="container mx-auto px-5 sm:px-4 py-6 sm:py-4">
+      <div className="container mx-auto px-5 sm:px-4 py-4 sm:py-3">
         <Reveal variant="fade">
-          <p className="hidden md:block text-center font-[Montserrat] font-semibold text-[#081129] text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)] xl:text-[clamp(1.3rem,2.05vw,2rem)] xl:whitespace-nowrap leading-tight mb-2 sm:mb-3 px-4">
+          <p className="hidden md:block text-center font-[Montserrat] font-semibold text-[#081129] text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)] xl:text-[clamp(1.3rem,2.05vw,2rem)] xl:whitespace-nowrap leading-tight mb-1 sm:mb-2 px-4">
             {HERO_CAPTION}
           </p>
         </Reveal>
 
         {/* Mobile-only editorial standards header */}
-        <div className="flex sm:hidden flex-col items-center mb-6">
+        <div className="flex sm:hidden flex-col items-center mb-3">
           <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#081129]/40 mb-2">
             Our clinical standards
           </div>
@@ -64,7 +64,7 @@ const AccreditedProvidersBar = () => {
         </div>
 
         <Reveal variant="fade">
-          <p className="hidden sm:block text-center font-sans font-bold uppercase tracking-[0.12em] sm:tracking-[0.14em] text-[10px] sm:text-[11px] text-[#081129]/90 mb-2 sm:mb-3 px-2">
+          <p className="hidden sm:block text-center font-sans font-bold uppercase tracking-[0.12em] sm:tracking-[0.14em] text-[10px] sm:text-[11px] text-[#081129]/90 mb-1 sm:mb-2 px-2">
             All listed providers meet every one of the following standards
           </p>
         </Reveal>
