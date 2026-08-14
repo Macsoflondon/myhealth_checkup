@@ -70,7 +70,7 @@ const AccreditedProvidersBar = () => {
         </Reveal>
 
         {/* Mobile: two-column underline grid */}
-        <div className="grid sm:hidden grid-cols-2 gap-y-6 gap-x-4" data-testid="accreditors-mobile-grid">
+        <div className="grid sm:hidden grid-cols-2 gap-y-4 gap-x-4" data-testid="accreditors-mobile-grid">
           {trustItems.map((item, idx) => (
             <div key={item.label} className="group">
               <div
