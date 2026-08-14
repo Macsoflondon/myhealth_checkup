@@ -172,12 +172,15 @@ export const hasStartingPrice = (test: Pick<PopularTest, 'price' | 'base_price' 
   );
 
 const providerDisplayNames: Record<string, string> = {
-  'goodbody-clinic': 'GOODBODY',
-  'medichecks': 'Medichecks',
-  'lola-health': 'Lola Health',
-  'thriva': 'Thriva',
   'randox': 'Randox Health',
-  'london-medical-laboratory': 'London Medical Laboratory'
+  'medichecks': 'Medichecks',
+  'thriva': 'Thriva',
+  'lola-health': 'Lola Health',
+  'goodbody-clinic': 'Goodbody Clinic',
+  'london-medical-laboratory': 'London Medical Laboratory',
+  'london-health-company': 'London Health Company',
+  'medical-diagnosis': 'Medical Diagnosis',
+  'clinilabs': 'Clinilabs'
 };
 
 /** Extract clean biomarker names from the biomarkers_list JSON field */
@@ -221,7 +224,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
           price: test.price || 0,
           biomarker_count: test.biomarker_count || 0,
           category: test.category || 'General Health',
-          turnaround_time: 'Results in 2-4 days',
+          turnaround_time: test.turnaround_days_text || 'Results in 2-4 days',
           sample_type: test.sample_type || 'Blood sample',
           url: test.url || '',
           popularity_rank: test.popularity_rank || undefined,
@@ -240,7 +243,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
       // Fallback: Get diverse tests from all providers based on price
       const { data, error } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, biomarkers_list, description')
+        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, biomarkers_list, description, turnaround_days_text')
         .eq('is_active', true)
         .not('price', 'is', null)
         .order('price', { ascending: false })
@@ -273,7 +276,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
             price: test.price || 0,
             biomarker_count: test.biomarker_count || 0,
             category: test.category || 'General Health',
-            turnaround_time: 'Results in 2-4 days',
+            turnaround_time: test.turnaround_days_text || 'Results in 2-4 days',
             sample_type: test.sample_type || 'Blood sample',
             url: test.url || '',
             markers: parseMarkers(test.biomarkers_list),
@@ -302,7 +305,7 @@ export const usePopularTestsForNavigation = () => {
       // First try to get tests marked as popular
       const { data: popularData, error: popularError } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank')
+        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank, turnaround_days_text')
         .eq('is_active', true)
         .eq('is_popular', true)
         .not('price', 'is', null)
@@ -318,7 +321,7 @@ export const usePopularTestsForNavigation = () => {
           price: test.price || 0,
           biomarker_count: test.biomarker_count || 0,
           category: test.category || 'General Health',
-          turnaround_time: 'Results in 2-4 days',
+          turnaround_time: test.turnaround_days_text || 'Results in 2-4 days',
           sample_type: test.sample_type || 'Blood sample',
           url: test.url || '',
           popularity_rank: test.popularity_rank || undefined
@@ -328,7 +331,7 @@ export const usePopularTestsForNavigation = () => {
       // Fallback: Get diverse tests from all providers
       const { data, error } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count')
+        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, turnaround_days_text')
         .eq('is_active', true)
         .not('price', 'is', null)
         .order('price', { ascending: false })
@@ -361,7 +364,7 @@ export const usePopularTestsForNavigation = () => {
             price: test.price || 0,
             biomarker_count: test.biomarker_count || 0,
             category: test.category || 'General Health',
-            turnaround_time: 'Results in 2-4 days',
+            turnaround_time: test.turnaround_days_text || 'Results in 2-4 days',
             sample_type: test.sample_type || 'Blood sample',
             url: test.url || ''
           });
