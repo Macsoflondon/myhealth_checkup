@@ -50,6 +50,8 @@ export const HERO_CAPTION =
 export const SLIDES: HeroSlide[] = [
   {
     src: joggingWoman,
+    avifSrcSet: joggingWomanAvifSrcSet,
+    webpSrcSet: joggingWomanWebpSrcSet,
     label: "Know Your Health. Own Your Future.",
     alt: "Woman jogging along a coastal path on a bright morning",
     posMobile: "35% 55%",
@@ -57,7 +59,9 @@ export const SLIDES: HeroSlide[] = [
     posDesktop: "center 35%",
   },
   {
-    src: seniorCoupleAsset.url,
+    src: seniorCouple,
+    avifSrcSet: seniorCoupleAvif,
+    webpSrcSet: seniorCoupleWebp,
     label: "Proactive Health for Every Stage of Life",
     alt: "Older couple walking together outdoors in the sunshine",
     posMobile: "50% 40%",
@@ -65,7 +69,9 @@ export const SLIDES: HeroSlide[] = [
     posDesktop: "center 30%",
   },
   {
-    src: benchPhoneAsset.url,
+    src: benchPhone,
+    avifSrcSet: benchPhoneAvif,
+    webpSrcSet: benchPhoneWebp,
     label: "Find the Right Test for You, Compare. Choose. Book.",
     alt: "Man sitting on a park bench comparing health tests on his phone",
     posMobile: "55% 50%",
@@ -73,7 +79,9 @@ export const SLIDES: HeroSlide[] = [
     posDesktop: "center 40%",
   },
   {
-    src: bloodTestKitAsset.url,
+    src: bloodTestKit,
+    avifSrcSet: bloodTestKitAvif,
+    webpSrcSet: bloodTestKitWebp,
     label: "Test from the Comfort of Home",
     alt: "At-home finger-prick blood test kit laid out on a kitchen worktop",
     posMobile: "40% 15%",
@@ -81,3 +89,4 @@ export const SLIDES: HeroSlide[] = [
     posDesktop: "50% 45%",
   },
 ];
+
