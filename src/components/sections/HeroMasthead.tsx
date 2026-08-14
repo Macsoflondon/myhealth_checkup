@@ -14,6 +14,8 @@ import {
   HERO_CAPTION,
 } from "@/components/sections/hero-slides";
 
+
+
 const Wordmark = () => (
   <span className="inline-flex items-center leading-[1.1] min-w-0 py-2 sm:py-3">
     <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(2.25rem,12vw,4rem)] sm:text-[clamp(4.5rem,8vw,8rem)] lg:text-[7rem] xl:text-[8rem]">
@@ -36,6 +38,22 @@ export default function HeroMasthead({
     // Cached images can finish before hydration attaches onLoad.
     if (firstSlideRef.current?.complete) setFirstLoaded(true);
   }, []);
+
+  // Defer mounting the non-LCP slides until the browser is idle after first paint.
+  const [deferredMounted, setDeferredMounted] = useState(false);
+  useEffect(() => {
+    const schedule =
+      window.requestIdleCallback ??
+      ((cb: IdleRequestCallback) =>
+        window.setTimeout(cb as unknown as TimerHandler, 1200));
+    const id = schedule(() => setDeferredMounted(true), { timeout: 3000 });
+    return () => {
+      if (window.cancelIdleCallback && typeof id === "number") {
+        window.cancelIdleCallback(id);
+      }
+    };
+  }, []);
+
   const [reducedMotion, setReducedMotion] = useState(false);
   useEffect(() => {
     if (typeof window === "undefined" || !window.matchMedia) return;
@@ -116,6 +134,10 @@ export default function HeroMasthead({
         />
 
         {SLIDES.map((s, n) => {
+          // Slides 2..n only mount once the browser is idle after first paint,
+          // so they never compete with the LCP image for bandwidth.
+          if (n > 0 && !deferredMounted) return null;
+
           const active = n === activeIndex;
           const commonStyle = {
             opacity: active ? 1 : 0,
@@ -123,11 +145,12 @@ export default function HeroMasthead({
             ["--pos-t" as string]: s.posTablet,
             ["--pos-d" as string]: s.posDesktop,
           };
-          return (
+          const img = (
             <img
               key={`i-${n}`}
               ref={n === 0 ? firstSlideRef : undefined}
               src={s.src}
+              srcSet={s.webpSrcSet}
               alt={s.alt}
               aria-hidden={active ? undefined : true}
               width={1920}
@@ -141,7 +164,17 @@ export default function HeroMasthead({
               style={commonStyle}
             />
           );
+
+          return (
+            <picture key={`p-${n}`}>
+              <source type="image/avif" srcSet={s.avifSrcSet} sizes="100vw" />
+              <source type="image/webp" srcSet={s.webpSrcSet} sizes="100vw" />
+              {img}
+            </picture>
+          );
+
         })}
+
 
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 

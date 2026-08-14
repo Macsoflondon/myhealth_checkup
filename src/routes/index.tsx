@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 // Index stays eager — it's the LCP route. Everything else is code-split.
 import Index from "@/pages/Index";
-import { FIRST_SLIDE_SRC } from "@/components/sections/hero-slides";
+import {
+  FIRST_SLIDE_SRC,
+  FIRST_SLIDE_WEBP_SRCSET,
+} from "@/components/sections/hero-slides";
 import { buildRouteHead } from "@/lib/seo/route-head";
 
 export const Route = createFileRoute("/")({
@@ -21,6 +24,10 @@ export const Route = createFileRoute("/")({
           rel: "preload",
           as: "image",
           href: FIRST_SLIDE_SRC,
+          // Match the candidate the browser actually picks, otherwise the
+          // preload fetches a second, unused copy of the hero.
+          imageSrcSet: FIRST_SLIDE_WEBP_SRCSET,
+          imageSizes: "100vw",
           fetchPriority: "high",
         },
       ],
@@ -28,3 +35,4 @@ export const Route = createFileRoute("/")({
   },
   component: Index,
 });
+

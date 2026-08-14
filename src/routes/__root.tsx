@@ -1,12 +1,15 @@
-// ported from main.tsx — brand typography, self-hosted via @fontsource
-import "@fontsource/montserrat/400.css";
-import "@fontsource/montserrat/500.css";
-import "@fontsource/montserrat/600.css";
-import "@fontsource/montserrat/700.css";
-import "@fontsource/montserrat/800.css";
-import "@fontsource/dm-sans/400.css";
-import "@fontsource/dm-sans/500.css";
-import "@fontsource/dm-sans/700.css";
+// ported from main.tsx — brand typography, self-hosted via @fontsource.
+// Latin-only subsets: the default entry points ship cyrillic/vietnamese too,
+// which no page on the platform renders.
+import "@fontsource/montserrat/latin-400.css";
+import "@fontsource/montserrat/latin-500.css";
+import "@fontsource/montserrat/latin-600.css";
+import "@fontsource/montserrat/latin-700.css";
+import "@fontsource/montserrat/latin-800.css";
+import "@fontsource/dm-sans/latin-400.css";
+import "@fontsource/dm-sans/latin-500.css";
+import "@fontsource/dm-sans/latin-700.css";
+
 // ported from main.tsx — i18next initialisation (module-scope, side-effect import)
 import i18nInstance from "../i18n/config";
 import { I18nextProvider } from "react-i18next";
@@ -118,17 +121,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "dns-prefetch", href: "https://storage.googleapis.com" },
       {
+        // One combined request instead of three separate stylesheet round-trips.
+        // JetBrains Mono was dropped — it only appeared as a --font-mono token
+        // fallback, so the system monospace stack now covers it.
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora&display=swap",
       },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Lora&display=swap",
-      },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap",
-      },
+
     ],
     scripts: [{ type: "application/ld+json", children: ORG_JSONLD }],
   }),

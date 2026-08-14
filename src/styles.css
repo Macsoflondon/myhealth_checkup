@@ -121,7 +121,7 @@
   --font-heading: Montserrat, ui-sans-serif, system-ui, sans-serif;
   --font-elegant: "EB Garamond", Georgia, serif;
   --font-serif: Lora, ui-serif, Georgia, Cambria, serif;
-  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Breakpoints */
   --breakpoint-xs: 375px;
@@ -386,7 +386,7 @@ html, body {
     --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
     --font-heading: Montserrat, ui-sans-serif, system-ui, sans-serif;
     --font-serif: Lora, ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
-    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
     --shadow-sm: 0px 1px 1.5px 0px hsla(223, 69%, 10%, 0.1);
     --shadow: 0px 1px 3px 0px hsla(223, 69%, 10%, 0.1);
     --shadow-md: 0px 1px 4.5px 0px hsla(223, 69%, 10%, 0.1);
@@ -482,7 +482,7 @@ html, body {
     --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
     --font-heading: Montserrat, ui-sans-serif, system-ui, sans-serif;
     --font-serif: Lora, ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
-    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
     --radius: 0.5rem;
     --shadow-sm: 0px 1px 1.5px 0px hsla(223, 69%, 10%, 0.1);
     --shadow: 0px 1px 3px 0px hsla(223, 69%, 10%, 0.1);
