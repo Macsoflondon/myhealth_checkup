@@ -5924,6 +5924,7 @@ export type Database = {
           biomarkers_listed: number | null
           body_system: string | null
           category_primary: string | null
+          clinic_visit_available: boolean | null
           clinical_review_fee: number | null
           clinical_review_type: string | null
           collection_fee_amount: number | null
@@ -5931,10 +5932,15 @@ export type Database = {
           collection_method: string | null
           description: string | null
           discount_percentage: number | null
+          home_kit_available: boolean | null
           id: string | null
           image_url: string | null
           is_addon: boolean | null
           is_popular: boolean | null
+          lab_cqc_regulated: boolean | null
+          lab_iso15189: boolean | null
+          lab_ukas_accredited: boolean | null
+          location_options: Json | null
           original_price: number | null
           popularity_rank: number | null
           price: number | null
