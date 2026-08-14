@@ -1,18 +1,8 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { LiveComparisonPanelData } from "@/components/sections/LiveComparisonCard";
+import { PROVIDER_NAMES } from "@/constants/providers";
 
-const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
-  medichecks: "Medichecks",
-  thriva: "Thriva",
-  randox: "Randox Health",
-  "goodbody-clinic": "Goodbody Health",
-  "lola-health": "Lola Health",
-  "london-medical-laboratory": "London Medical Lab",
-  "london-health-company": "London Health Co",
-  "medical-diagnosis": "Medical Diagnosis",
-  clinilabs: "Clinilabs",
-};
 
 interface CategoryConfig {
   canonical: string;
@@ -80,7 +70,7 @@ export function useDynamicComparisonPanels(): {
           methodLabel: cat.methodLabel,
           lastScrapedAt: latestScrape,
           providers: sorted.map(([pid, { price }]) => ({
-            name: PROVIDER_DISPLAY_NAMES[pid] || pid,
+            name: PROVIDER_NAMES[pid] || pid,
             options: [{ label: cat.methodLabel, price: `\u00a3${Math.round(price)}` }],
           })),
         });
