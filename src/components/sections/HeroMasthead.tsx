@@ -102,7 +102,7 @@ export default function HeroMasthead({
         <BrowseByCategoryBar compact placement="hero" />
       </div>
 
-      <div className="relative overflow-hidden mt-5 sm:mt-0 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-0">
+      <div className="relative overflow-hidden mt-0 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-0">
 
         {/* Blurred LQIP + gradient placeholder — fades out once slide 1 paints */}
         <div

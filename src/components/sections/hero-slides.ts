@@ -25,7 +25,7 @@ export const FIRST_SLIDE_LQIP =
 
 /** Single fixed caption shown over every hero slide. */
 export const HERO_CAPTION =
-  "Your trusted platform for comparing private health and screening tests.";
+  "Your trusted platform for comparing private health and cancer screening tests.";
 
 export const SLIDES: HeroSlide[] = [
   {
