@@ -11,10 +11,9 @@ const PINK = "#e70d69";
 import {
   SLIDES,
   FIRST_SLIDE_LQIP,
-  FIRST_SLIDE_AVIF_SRCSET,
-  FIRST_SLIDE_WEBP_SRCSET,
   HERO_CAPTION,
 } from "@/components/sections/hero-slides";
+
 
 
 const Wordmark = () => (
