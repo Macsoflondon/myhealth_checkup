@@ -11,11 +11,9 @@ import { useMobileOptimization } from "@/hooks/use-mobile";
 import { useActiveTestCount } from "@/hooks/queries/useActiveTestCount";
 import { ArrowRight, Shield } from "lucide-react";
 
-// Hero first-slide images — preloaded for LCP optimisation
-import heroSlide1DesktopAsset from "@/assets/hero/hero-active-lifestyle.jpg.asset.json";
-import heroSlide1MobileAsset from "@/assets/hero/mobile/hero-mobile-active.jpg.asset.json";
-const heroSlide1Desktop = heroSlide1DesktopAsset.url;
-const heroSlide1Mobile = heroSlide1MobileAsset.url;
+// Hero LCP preloading is owned by the route head() in src/routes/index.tsx —
+// duplicating it here downloaded a second, unused hero image on every visit.
+
 
 // Above-the-fold: eager
 import HeroMasthead from "@/components/sections/HeroMasthead";
@@ -167,22 +165,8 @@ const Index = () => {
     <ErrorBoundary>
       <MainLayout>
         <Helmet>
-          <link
-            rel="preload"
-            as="image"
-            href={heroSlide1Desktop}
-            type="image/jpeg"
-            media="(min-width: 640px)"
-            fetchPriority="high"
-          />
-          <link
-            rel="preload"
-            as="image"
-            href={heroSlide1Mobile}
-            type="image/jpeg"
-            media="(max-width: 639px)"
-            fetchPriority="high"
-          />
+          {/* Hero preload lives in the route head() — see src/routes/index.tsx. */}
+
           {/* Title, description, canonical, og:* and twitter:* are owned by the
               route head() in src/routes/index.tsx — single source of truth. */}
           <meta

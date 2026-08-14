@@ -1,4 +1,8 @@
 import joggingWoman from "@/assets/hero/hero-jogging-woman.png";
+// Build-time responsive variants of the LCP slide (vite-imagetools).
+// A 390px phone pulls the 480w AVIF instead of the full-width original.
+import joggingWomanAvifSrcSet from "@/assets/hero/hero-jogging-woman.png?w=480;768;1200;1920&format=avif&as=srcset";
+import joggingWomanWebpSrcSet from "@/assets/hero/hero-jogging-woman.png?w=480;768;1200;1920&format=webp&as=srcset";
 import seniorCoupleAsset from "@/assets/hero/hero-senior-couple.png.asset.json";
 import benchPhoneAsset from "@/assets/hero/hero-bench-phone.png.asset.json";
 import bloodTestKitAsset from "@/assets/hero/hero-blood-test-kit.png.asset.json";
@@ -15,6 +19,11 @@ export type HeroSlide = {
 
 /** URL of the first hero slide — preloaded from the home route head(). */
 export const FIRST_SLIDE_SRC: string = joggingWoman;
+
+/** Responsive candidate sets for the first slide, widest-format first. */
+export const FIRST_SLIDE_AVIF_SRCSET: string = joggingWomanAvifSrcSet;
+export const FIRST_SLIDE_WEBP_SRCSET: string = joggingWomanWebpSrcSet;
+
 
 /**
  * Tiny blurred placeholder (32px WebP) of the first slide, shown behind the

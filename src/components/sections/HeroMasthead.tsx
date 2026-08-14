@@ -11,8 +11,11 @@ const PINK = "#e70d69";
 import {
   SLIDES,
   FIRST_SLIDE_LQIP,
+  FIRST_SLIDE_AVIF_SRCSET,
+  FIRST_SLIDE_WEBP_SRCSET,
   HERO_CAPTION,
 } from "@/components/sections/hero-slides";
+
 
 const Wordmark = () => (
   <span className="inline-flex items-center leading-[1.1] min-w-0 py-2 sm:py-3">
@@ -36,6 +39,22 @@ export default function HeroMasthead({
     // Cached images can finish before hydration attaches onLoad.
     if (firstSlideRef.current?.complete) setFirstLoaded(true);
   }, []);
+
+  // Defer mounting the non-LCP slides until the browser is idle after first paint.
+  const [deferredMounted, setDeferredMounted] = useState(false);
+  useEffect(() => {
+    const schedule =
+      window.requestIdleCallback ??
+      ((cb: IdleRequestCallback) =>
+        window.setTimeout(cb as unknown as TimerHandler, 1200));
+    const id = schedule(() => setDeferredMounted(true), { timeout: 3000 });
+    return () => {
+      if (window.cancelIdleCallback && typeof id === "number") {
+        window.cancelIdleCallback(id);
+      }
+    };
+  }, []);
+
   const [reducedMotion, setReducedMotion] = useState(false);
   useEffect(() => {
     if (typeof window === "undefined" || !window.matchMedia) return;
@@ -116,6 +135,10 @@ export default function HeroMasthead({
         />
 
         {SLIDES.map((s, n) => {
+          // Slides 2..n only mount once the browser is idle after first paint,
+          // so they never compete with the LCP image for bandwidth.
+          if (n > 0 && !deferredMounted) return null;
+
           const active = n === activeIndex;
           const commonStyle = {
             opacity: active ? 1 : 0,
@@ -123,11 +146,12 @@ export default function HeroMasthead({
             ["--pos-t" as string]: s.posTablet,
             ["--pos-d" as string]: s.posDesktop,
           };
-          return (
+          const img = (
             <img
               key={`i-${n}`}
               ref={n === 0 ? firstSlideRef : undefined}
               src={s.src}
+              srcSet={n === 0 ? FIRST_SLIDE_WEBP_SRCSET : undefined}
               alt={s.alt}
               aria-hidden={active ? undefined : true}
               width={1920}
@@ -141,7 +165,26 @@ export default function HeroMasthead({
               style={commonStyle}
             />
           );
+
+          if (n !== 0) return img;
+
+          return (
+            <picture key={`p-${n}`}>
+              <source
+                type="image/avif"
+                srcSet={FIRST_SLIDE_AVIF_SRCSET}
+                sizes="100vw"
+              />
+              <source
+                type="image/webp"
+                srcSet={FIRST_SLIDE_WEBP_SRCSET}
+                sizes="100vw"
+              />
+              {img}
+            </picture>
+          );
         })}
+
 
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
