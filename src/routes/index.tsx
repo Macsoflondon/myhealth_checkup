@@ -33,17 +33,6 @@ export const Route = createFileRoute("/")({
           imageSizes: "100vw",
           fetchPriority: "high",
         },
-        // WebP fallback preload for browsers without AVIF support; they ignore
-        // the AVIF hint above, and AVIF-capable browsers ignore this one.
-        {
-          rel: "preload",
-          as: "image",
-          type: "image/webp",
-          href: FIRST_SLIDE_SRC,
-          imageSrcSet: FIRST_SLIDE_WEBP_SRCSET,
-          imageSizes: "100vw",
-          fetchPriority: "high",
-        },
       ],
     };
   },
