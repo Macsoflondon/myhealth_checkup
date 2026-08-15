@@ -50,7 +50,8 @@ const JourneySimplified = () => {
             titleClassName="text-tertiary"
           />
           <p className="text-base font-semibold text-tertiary mx-auto leading-snug mt-2 text-center">
-            No account required. No subscription. Compare, choose, and book directly with the provider you trust — in minutes.
+            No account required. No subscription. Compare, choose, and book
+            directly with the provider you trust — in minutes.
           </p>
         </div>
 
@@ -64,7 +65,11 @@ const JourneySimplified = () => {
                 {/* Step number — large light background numeral */}
                 <div
                   className="font-heading font-black text-center leading-none mb-[-6px]"
-                  style={{ fontSize: "42px", color: "#eef1f6", letterSpacing: "-0.04em" }}
+                  style={{
+                    fontSize: "42px",
+                    color: "#eef1f6",
+                    letterSpacing: "-0.04em",
+                  }}
                   aria-hidden="true"
                 >
                   {step.number}
@@ -73,7 +78,10 @@ const JourneySimplified = () => {
                 {/* Icon badge */}
                 <div className="relative inline-flex mb-2">
                   <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-background border-2 border-brand-turquoise flex items-center justify-center shadow-md relative z-10 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-brand-turquoise/20">
-                    <step.icon className="w-6 h-6 sm:w-7 sm:h-7 text-brand-turquoise" />
+                    <step.icon
+                      className="w-6 h-6 sm:w-7 sm:h-7 text-brand-turquoise"
+                      aria-hidden="true"
+                    />
                   </div>
                 </div>
 

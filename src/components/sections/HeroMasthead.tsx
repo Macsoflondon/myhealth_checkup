@@ -14,8 +14,6 @@ import {
   HERO_CAPTION,
 } from "@/components/sections/hero-slides";
 
-
-
 const Wordmark = () => (
   <span className="inline-flex items-center leading-[1.1] min-w-0 py-2 sm:py-3">
     <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(2.25rem,12vw,4rem)] sm:text-[clamp(4.5rem,8vw,8rem)] lg:text-[7rem] xl:text-[8rem]">
@@ -71,7 +69,6 @@ export default function HeroMasthead({
   }, [activeIndex, advance, reducedMotion, rotateMs]);
 
   return (
-
     <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border-0 sm:border sm:border-b-0 sm:border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[68svh] sm:min-h-[100svh] flex flex-col">
       <TestCategoryTicker
         variant="inline"
@@ -93,12 +90,7 @@ export default function HeroMasthead({
               tracking-[0.05em] sm:tracking-[0.08em]
               leading-[1.25] sm:leading-[1.15]"
           >
-            <span className="block sm:inline">
-              <span className="text-white">Your </span>
-              <span className="text-brand-turquoise">health.</span>
-              <span className="text-white"> Your </span>
-              <span className="text-brand-pink">choice.</span>
-            </span>
+            Compare private blood tests &amp; health checks
           </h1>
           <p
             className="md:hidden text-center font-[Montserrat] font-semibold text-white
@@ -121,7 +113,6 @@ export default function HeroMasthead({
       </div>
 
       <div className="relative overflow-hidden mt-0 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-0">
-
         {/* Blurred LQIP + gradient placeholder — fades out once slide 1 paints */}
         <div
           aria-hidden
@@ -172,9 +163,7 @@ export default function HeroMasthead({
               {img}
             </picture>
           );
-
         })}
-
 
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
