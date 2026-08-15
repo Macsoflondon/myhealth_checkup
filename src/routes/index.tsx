@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import Index from "@/pages/Index";
 import {
   FIRST_SLIDE_SRC,
-  FIRST_SLIDE_WEBP_SRCSET,
+  FIRST_SLIDE_AVIF_SRCSET,
 } from "@/components/sections/hero-slides";
 import { buildRouteHead } from "@/lib/seo/route-head";
 
@@ -20,13 +20,15 @@ export const Route = createFileRoute("/")({
       ...base,
       links: [
         ...base.links,
+        // The hero <picture> lists AVIF first, so preload AVIF and tag it with
+        // type — AVIF-capable browsers match the rendered candidate, others
+        // skip this hint entirely rather than downloading an unused copy.
         {
           rel: "preload",
           as: "image",
+          type: "image/avif",
           href: FIRST_SLIDE_SRC,
-          // Match the candidate the browser actually picks, otherwise the
-          // preload fetches a second, unused copy of the hero.
-          imageSrcSet: FIRST_SLIDE_WEBP_SRCSET,
+          imageSrcSet: FIRST_SLIDE_AVIF_SRCSET,
           imageSizes: "100vw",
           fetchPriority: "high",
         },
