@@ -119,7 +119,14 @@ export class TestDataTransformer {
       biomarkersList,
       turnaroundDays: this.resolveTurnaroundDays(test),
       userRating: undefined,
-      url: test.url || undefined
+      url: test.url || undefined,
+      collectionFeeType: toCollectionFeeType(test.collection_fee_type),
+      collectionFeeAmount:
+        typeof test.collection_fee_amount === 'number' ? test.collection_fee_amount : null,
+      clinicalReviewType: toClinicalReviewType(test.clinical_review_type),
+      clinicalReviewFee:
+        typeof test.clinical_review_fee === 'number' ? test.clinical_review_fee : null
+
     };
   }
 
