@@ -8,6 +8,12 @@ import {
   formatClinicalReview,
   computeTotalExpectedCost,
 } from "@/lib/comparisonFormat";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const PROVIDER_NAME_TO_ID: Record<string, string> = {
   "medichecks": "medichecks",
