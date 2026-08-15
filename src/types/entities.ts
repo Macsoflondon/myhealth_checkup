@@ -47,6 +47,7 @@ export interface CompareTestData extends Test {
   collectionMethod?: 'home_kit' | 'clinic' | 'home_visit' | 'mobile_phleb' | 'third_party_phleb' | 'self_arranged' | 'multiple' | null;
   collectionFeeType?: 'none' | 'fixed' | 'from' | 'varies' | 'self_arranged' | null;
   collectionFeeAmount?: number | null;
+  collectionFeeNote?: string | null;
   clinicalReviewType?: 'included' | 'optional' | 'gp_included' | 'consultant_included' | 'clinician_included' | 'not_included' | 'not_available' | null;
   clinicalReviewFee?: number | null;
 }

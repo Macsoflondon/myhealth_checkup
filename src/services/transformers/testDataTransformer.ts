@@ -123,6 +123,7 @@ export class TestDataTransformer {
       collectionFeeType: toCollectionFeeType(test.collection_fee_type),
       collectionFeeAmount:
         typeof test.collection_fee_amount === 'number' ? test.collection_fee_amount : null,
+      collectionFeeNote: TestDataTransformer.resolveCollectionFeeNote(test),
       clinicalReviewType: toClinicalReviewType(test.clinical_review_type),
       clinicalReviewFee:
         typeof test.clinical_review_fee === 'number' ? test.clinical_review_fee : null
