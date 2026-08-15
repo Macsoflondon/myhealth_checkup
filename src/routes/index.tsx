@@ -3,6 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import Index from "@/pages/Index";
 import {
   FIRST_SLIDE_SRC,
+  FIRST_SLIDE_AVIF_SRCSET,
   FIRST_SLIDE_WEBP_SRCSET,
 } from "@/components/sections/hero-slides";
 import { buildRouteHead } from "@/lib/seo/route-head";
