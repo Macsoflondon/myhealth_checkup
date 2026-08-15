@@ -16,12 +16,14 @@ const listeners = new Set<() => void>();
 function load(): CompareTestData[] {
   if (typeof window === "undefined") return [];
   try {
+    window.localStorage.removeItem("mhc:compare");
     const raw = window.localStorage.getItem(STORAGE_KEY);
     return raw ? (JSON.parse(raw) as CompareTestData[]) : [];
   } catch {
     return [];
   }
 }
+
 
 function persist() {
   try {
