@@ -107,7 +107,7 @@ export class CompareService {
     try {
       const { data, error } = await supabase
         .from('unified_provider_tests')
-        .select('id, test_name, provider_id, category_primary, price, description, url, biomarker_count, biomarkers_list, turnaround_days_text, sample_type, collection_method')
+        .select('id, test_name, provider_id, category_primary, price, description, url, biomarker_count, biomarkers_list, turnaround_days_text, sample_type, collection_method, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189')
         .in('id', unique);
 
       if (error) {
@@ -131,7 +131,15 @@ export class CompareService {
           turnaround_days_text: row.turnaround_days_text ?? null,
           sample_type: row.sample_type ?? null,
           collection_method: row.collection_method ?? null,
+          collection_fee_type: row.collection_fee_type ?? null,
+          collection_fee_amount: row.collection_fee_amount ?? null,
+          clinical_review_type: row.clinical_review_type ?? null,
+          clinical_review_fee: row.clinical_review_fee ?? null,
+          lab_ukas_accredited: row.lab_ukas_accredited ?? null,
+          lab_cqc_regulated: row.lab_cqc_regulated ?? null,
+          lab_iso15189: row.lab_iso15189 ?? null,
         }));
+
 
       const result = TestDataTransformer.transformMultiple(rows);
       cacheService.set(cacheKey, result);

@@ -5,7 +5,10 @@
 import { useSyncExternalStore } from "react";
 import type { CompareTestData } from "@/types";
 
-const STORAGE_KEY = "mhc:compare";
+// Version suffix: bumping it discards older cached snapshots whose shape
+// predates the clinical review / collection fee fields.
+const STORAGE_KEY = "mhc:compare:v2";
+
 
 let items: CompareTestData[] = load();
 const listeners = new Set<() => void>();
@@ -13,12 +16,14 @@ const listeners = new Set<() => void>();
 function load(): CompareTestData[] {
   if (typeof window === "undefined") return [];
   try {
+    window.localStorage.removeItem("mhc:compare");
     const raw = window.localStorage.getItem(STORAGE_KEY);
     return raw ? (JSON.parse(raw) as CompareTestData[]) : [];
   } catch {
     return [];
   }
 }
+
 
 function persist() {
   try {

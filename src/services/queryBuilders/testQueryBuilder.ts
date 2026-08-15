@@ -7,7 +7,8 @@ import {
 } from "@/constants/categories";
 
 const COMPARE_SELECT =
-  "id, test_name, provider_id, category, canonical_category, price, description, is_active, image_url, url, biomarkers_list, biomarker_count, turnaround_days_text, turnaround_raw, sample_type, collection_method, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, created_at, updated_at";
+  "id, test_name, provider_id, category, canonical_category, price, description, is_active, image_url, url, biomarkers_list, biomarker_count, turnaround_days_text, turnaround_raw, sample_type, collection_method, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, created_at, updated_at";
+
 
 const DEFAULT_LIMIT = 600;
 
