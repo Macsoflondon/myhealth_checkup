@@ -123,6 +123,7 @@ export class TestDataTransformer {
       collectionFeeType: toCollectionFeeType(test.collection_fee_type),
       collectionFeeAmount:
         typeof test.collection_fee_amount === 'number' ? test.collection_fee_amount : null,
+      collectionFeeNote: TestDataTransformer.resolveCollectionFeeNote(test),
       clinicalReviewType: toClinicalReviewType(test.clinical_review_type),
       clinicalReviewFee:
         typeof test.clinical_review_fee === 'number' ? test.clinical_review_fee : null
@@ -232,5 +233,23 @@ export class TestDataTransformer {
     };
     
     return turnaroundMap[test.provider_id] || 3;
+  }
+
+  /**
+   * Build a plain-English disclaimer for fee cells that need extra context.
+   * Currently used for Goodbody's home-visit phlebotomy surcharge.
+   */
+  private static resolveCollectionFeeNote(test: LiveTestRow): string | null {
+    if (test.provider_id !== 'goodbody-clinic') return null;
+    if (toCollectionFeeType(test.collection_fee_type) !== 'from') return null;
+    const amount =
+      typeof test.collection_fee_amount === 'number' ? test.collection_fee_amount : null;
+    if (amount == null) return null;
+
+    const base = test.price || 0;
+    const total = base + amount;
+    const totalText = `£${total.toFixed(0)}`;
+    const feeText = `£${amount.toFixed(0)}`;
+    return `The total shown (${totalText}) includes the standard phlebotomy fee. A home-visit phlebotomy appointment costs an additional ${feeText}.`;
   }
 }
