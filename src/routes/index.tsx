@@ -21,12 +21,25 @@ export const Route = createFileRoute("/")({
       ...base,
       links: [
         ...base.links,
+        // The hero <picture> lists AVIF first, so preload AVIF and tag it with
+        // type — AVIF-capable browsers match the rendered candidate, others
+        // skip this hint entirely rather than downloading an unused copy.
         {
           rel: "preload",
           as: "image",
+          type: "image/avif",
           href: FIRST_SLIDE_SRC,
-          // Match the candidate the browser actually picks, otherwise the
-          // preload fetches a second, unused copy of the hero.
+          imageSrcSet: FIRST_SLIDE_AVIF_SRCSET,
+          imageSizes: "100vw",
+          fetchPriority: "high",
+        },
+        // WebP fallback preload for browsers without AVIF support; they ignore
+        // the AVIF hint above, and AVIF-capable browsers ignore this one.
+        {
+          rel: "preload",
+          as: "image",
+          type: "image/webp",
+          href: FIRST_SLIDE_SRC,
           imageSrcSet: FIRST_SLIDE_WEBP_SRCSET,
           imageSizes: "100vw",
           fetchPriority: "high",
