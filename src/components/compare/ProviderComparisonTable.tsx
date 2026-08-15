@@ -369,26 +369,42 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
               slots={slots}
               render={(t) => {
                 const fee = formatCollectionFee(t.collectionFeeType, t.collectionFeeAmount);
-                if (fee.isFree) {
-                  return (
-                    <span style={{ color: '#15803d', fontWeight: 600 }}>{fee.label}</span>
-                  );
-                }
-                return (
+                const label = t.collectionFeeNote ? `${fee.label}*` : fee.label;
+                const pill = (
                   <span
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
                       padding: '4px 10px',
                       borderRadius: 999,
-                      background: '#fef3c7',
-                      color: '#92400e',
+                      background: fee.isFree ? '#dcfce7' : '#fef3c7',
+                      color: fee.isFree ? '#15803d' : '#92400e',
                       fontWeight: 600,
                       fontSize: 12,
+                      cursor: t.collectionFeeNote ? 'help' : 'default',
                     }}
                   >
-                    {fee.label}
+                    {label}
                   </span>
+                );
+
+                if (!t.collectionFeeNote) {
+                  return fee.isFree ? (
+                    <span style={{ color: '#15803d', fontWeight: 600 }}>{fee.label}</span>
+                  ) : (
+                    pill
+                  );
+                }
+
+                return (
+                  <TooltipProvider delayDuration={150}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>{pill}</TooltipTrigger>
+                      <TooltipContent className="max-w-[280px] text-xs">
+                        {t.collectionFeeNote}
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 );
               }}
             />
