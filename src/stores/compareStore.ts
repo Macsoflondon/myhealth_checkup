@@ -5,7 +5,10 @@
 import { useSyncExternalStore } from "react";
 import type { CompareTestData } from "@/types";
 
-const STORAGE_KEY = "mhc:compare";
+// Version suffix: bumping it discards older cached snapshots whose shape
+// predates the clinical review / collection fee fields.
+const STORAGE_KEY = "mhc:compare:v2";
+
 
 let items: CompareTestData[] = load();
 const listeners = new Set<() => void>();
