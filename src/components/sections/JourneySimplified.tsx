@@ -73,7 +73,7 @@ const JourneySimplified = () => {
                 {/* Icon badge */}
                 <div className="relative inline-flex mb-2">
                   <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-background border-2 border-brand-turquoise flex items-center justify-center shadow-md relative z-10 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-brand-turquoise/20">
-                    <step.icon className="w-6 h-6 sm:w-7 sm:h-7 text-brand-turquoise" />
+                    <step.icon className="w-6 h-6 sm:w-7 sm:h-7 text-brand-turquoise" aria-hidden="true" />
                   </div>
                 </div>
 

@@ -93,12 +93,7 @@ export default function HeroMasthead({
               tracking-[0.05em] sm:tracking-[0.08em]
               leading-[1.25] sm:leading-[1.15]"
           >
-            <span className="block sm:inline">
-              <span className="text-white">Your </span>
-              <span className="text-brand-turquoise">health.</span>
-              <span className="text-white"> Your </span>
-              <span className="text-brand-pink">choice.</span>
-            </span>
+            Compare private blood tests &amp; health checks
           </h1>
           <p
             className="md:hidden text-center font-[Montserrat] font-semibold text-white
