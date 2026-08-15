@@ -28,11 +28,33 @@ export interface LiveTestRow {
   /** Real scraped collection info. */
   sample_type?: string | null;
   collection_method?: string | null;
+  /** Real recorded collection fee, when the provider charges one. */
+  collection_fee_type?: string | null;
+  collection_fee_amount?: number | null;
+  /** Real recorded clinical review position for this test. */
+  clinical_review_type?: string | null;
+  clinical_review_fee?: number | null;
   /** Real accreditation flags recorded against the row's lab. */
   lab_ukas_accredited?: boolean | null;
   lab_cqc_regulated?: boolean | null;
   lab_iso15189?: boolean | null;
 }
+
+const COLLECTION_FEE_TYPES = ['none', 'fixed', 'from', 'varies', 'self_arranged'] as const;
+const CLINICAL_REVIEW_TYPES = [
+  'included', 'optional', 'gp_included', 'consultant_included',
+  'clinician_included', 'not_included', 'not_available',
+] as const;
+
+type CollectionFeeType = (typeof COLLECTION_FEE_TYPES)[number];
+type ClinicalReviewType = (typeof CLINICAL_REVIEW_TYPES)[number];
+
+/** Only accept values the comparison label maps understand; never guess. */
+const toCollectionFeeType = (v: string | null | undefined): CollectionFeeType | null =>
+  v && (COLLECTION_FEE_TYPES as readonly string[]).includes(v) ? (v as CollectionFeeType) : null;
+
+const toClinicalReviewType = (v: string | null | undefined): ClinicalReviewType | null =>
+  v && (CLINICAL_REVIEW_TYPES as readonly string[]).includes(v) ? (v as ClinicalReviewType) : null;
 
 /** Pull a day count out of a real turnaround string, e.g. "2-3 days" -> 3. */
 const parseTurnaroundDays = (text: string | null | undefined): number | null => {
@@ -42,6 +64,7 @@ const parseTurnaroundDays = (text: string | null | undefined): number | null => 
   const days = Number(numbers[numbers.length - 1]);
   return Number.isFinite(days) && days > 0 ? days : null;
 };
+
 
 /**
  * Normalise the stored biomarkers_list JSON into plain strings.
