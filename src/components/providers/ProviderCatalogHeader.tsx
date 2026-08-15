@@ -160,7 +160,6 @@ export const PROVIDER_FEATURES: Record<string, ProviderFeature[]> = {
   'thriva': [
     { icon: <Home className="h-4 w-4 text-secondary" />, label: "Home test kits" },
     { icon: <Smartphone className="h-4 w-4 text-secondary" />, label: "App-based tracking" },
-     { icon: <Shield className="h-4 w-4 text-secondary" />, label: "CQC Regulated Providers" },
   ],
   'randox': [
     { icon: <Building2 className="h-4 w-4 text-secondary" />, label: "Premium clinic locations" },
@@ -170,7 +169,7 @@ export const PROVIDER_FEATURES: Record<string, ProviderFeature[]> = {
   'london-medical-laboratory': [
     { icon: <Building2 className="h-4 w-4 text-secondary" />, label: "Clinic-based testing" },
     { icon: <MapPin className="h-4 w-4 text-secondary" />, label: "Locations across the UK" },
-    { icon: <Shield className="h-4 w-4 text-secondary" />, label: "UKAS Accredited" },
+    { icon: <Shield className="h-4 w-4 text-secondary" />, label: "CQC Regulated" },
   ],
   'lola-health': [
     { icon: <Home className="h-4 w-4 text-secondary" />, label: "Home test kits" },
@@ -181,6 +180,20 @@ export const PROVIDER_FEATURES: Record<string, ProviderFeature[]> = {
     { icon: <Building2 className="h-4 w-4 text-secondary" />, label: "Clinic-based testing" },
     { icon: <MapPin className="h-4 w-4 text-secondary" />, label: "Locations across the UK" },
     { icon: <Shield className="h-4 w-4 text-secondary" />, label: "CQC Regulated Providers" },
+  ],
+  'medical-diagnosis': [
+    { icon: <Building2 className="h-4 w-4 text-secondary" />, label: "Clinic-based testing" },
+    { icon: <Microscope className="h-4 w-4 text-secondary" />, label: "Own in-house lab" },
+    { icon: <Shield className="h-4 w-4 text-secondary" />, label: "UKAS Accredited" },
+  ],
+  'clinilabs': [
+    { icon: <Building2 className="h-4 w-4 text-secondary" />, label: "Clinic-based testing" },
+    { icon: <Microscope className="h-4 w-4 text-secondary" />, label: "Own in-house lab" },
+    { icon: <Shield className="h-4 w-4 text-secondary" />, label: "UKAS Accredited" },
+  ],
+  'london-health-company': [
+    { icon: <Home className="h-4 w-4 text-secondary" />, label: "Home test kits" },
+    { icon: <Shield className="h-4 w-4 text-secondary" />, label: "CQC Regulated" },
   ],
 };
 
