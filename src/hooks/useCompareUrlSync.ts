@@ -68,6 +68,36 @@ export function useCompareUrlSync(): CompareUrlSync {
     }
   }, [urlIds, unresolvedIds, fetched, selected, storeIds]);
 
+  // Stored rows are only a fast first paint: once the selection is settled,
+  // re-fetch every id and replace the snapshot with live data so corrected
+  // biomarker counts, turnaround and clinical review always win.
+  const refreshedFor = useRef<string>("");
+  const refreshIds = useMemo(
+    () => (storeIds.length > 0 ? storeIds : []),
+    [storeIds],
+  );
+  const refreshKey = refreshIds.join(",");
+
+  const { data: refreshed } = useQuery({
+    queryKey: ["compare", "refresh", refreshKey],
+    queryFn: () => CompareService.getTestsByIds(refreshIds),
+    enabled: refreshIds.length > 0,
+    staleTime: 0,
+    gcTime: 0,
+  });
+
+  useEffect(() => {
+    if (!refreshed || refreshed.length === 0) return;
+    if (refreshedFor.current === refreshKey) return;
+    refreshedFor.current = refreshKey;
+
+    const byId = new Map(refreshed.map((t) => [t.id, t]));
+    const merged = selected.map((t) => byId.get(t.id) ?? t);
+    const changed = merged.some((t, i) => t !== selected[i]);
+    if (changed) compareStore.set(merged);
+  }, [refreshed, refreshKey, selected]);
+
+
   // Store -> URL (after hydration, or immediately when the URL carries no ids).
   useEffect(() => {
     if (urlIds.length > 0 && !hydratedFromUrl.current) return;
