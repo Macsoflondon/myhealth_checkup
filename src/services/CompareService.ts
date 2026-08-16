@@ -156,6 +156,33 @@ export class CompareService {
     return ids.map((id) => byId.get(id)).filter((t): t is CompareTestData => Boolean(t));
   }
 
+  /**
+   * Resolve every equivalent test for a live-comparison panel (canonical
+   * category slug, e.g. `fbc`), keeping the cheapest listing per provider.
+   * Used by the "Compare all providers" CTA — no new data, just a narrowed
+   * view of the existing catalogue.
+   */
+  static async getPanelTests(canonical: string, limit = 8): Promise<CompareTestData[]> {
+    const slug = canonical.trim();
+    if (!slug) return [];
+
+    const tests = await this.getTestsByCategory(slug);
+    const cheapestByProvider = new Map<string, CompareTestData>();
+
+    for (const test of tests) {
+      if (!test.price || test.price <= 0) continue;
+      const key = test.provider || test.id;
+      const current = cheapestByProvider.get(key);
+      if (!current || test.price < current.price) cheapestByProvider.set(key, test);
+    }
+
+    return Array.from(cheapestByProvider.values())
+      .sort((a, b) => a.price - b.price)
+      .slice(0, limit);
+  }
+
+
+
 
 
   static async searchTests(
