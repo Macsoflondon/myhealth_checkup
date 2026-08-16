@@ -308,8 +308,9 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             data-hydrated={hydrated}
           >
 
-            <div className={`p-1.5 transition-all duration-300 ${innerClass}`} data-testid="category-toolbar-dock">
-              <div className="flex w-fit max-w-full min-w-0 items-center gap-1">
+            <div className={`${placement === "hero" ? "px-4 sm:px-6 md:px-9 py-1.5" : "p-1.5"} transition-all duration-300 ${innerClass}`} data-testid="category-toolbar-dock">
+              <div className={`flex ${placement === "hero" ? "w-full" : "w-fit"} max-w-full min-w-0 items-center gap-1`}>
+
                 <div className={`flex min-w-0 items-center justify-start gap-y-0 flex-nowrap overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${useStraddle ? "gap-x-0" : "gap-x-0 2xl:gap-x-1"}`} data-testid="category-pill-strip">
                   {items.map((item) => {
                     const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
