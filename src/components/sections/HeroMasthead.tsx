@@ -138,12 +138,13 @@ export default function HeroMasthead({
 
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
-        {/* Mobile: caption card overlapping the hero image bottom */}
-        <div className="md:hidden absolute bottom-0 inset-x-0 w-full max-w-none z-10 bg-[#081129] p-5 border-y-2 border-[#e70d69] shadow-[0_20px_50px_rgba(8,17,41,0.45)]">
-          <p className="text-center font-[Montserrat] font-semibold text-white text-[13px] sm:text-[14px] leading-tight tracking-wide">
+        {/* Caption band pinned to the hero image bottom at every width */}
+        <div className="absolute bottom-0 inset-x-0 w-full max-w-none z-10 bg-[#081129] p-5 md:p-6 border-y-2 border-[#e70d69] shadow-[0_20px_50px_rgba(8,17,41,0.45)]">
+          <p className="text-center font-[Montserrat] font-semibold text-white text-[13px] sm:text-[14px] md:text-[17px] lg:text-[19px] leading-tight tracking-wide">
             {HERO_CAPTION}
           </p>
         </div>
+
       </div>
     </section>
   );
