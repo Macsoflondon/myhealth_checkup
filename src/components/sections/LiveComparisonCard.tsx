@@ -157,8 +157,21 @@ const LiveComparisonCard = ({
               </div>
             ))}
           </div>
+          {test.canonical && (
+            <div className="px-5 pb-4 pt-1">
+              <Link
+                to="/compare/results"
+                search={{ panel: test.canonical }}
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-brand-turquoise px-6 py-3 font-heading text-sm font-bold uppercase tracking-[0.08em] text-white shadow-[0_10px_24px_-12px_rgba(8,17,41,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2"
+              >
+                Compare all providers
+                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+            </div>
+          )}
           <div style={{ padding: "12px 20px", borderTop: "1px solid rgba(8,17,41,0.07)", background: "#fafbfc" }}>
             <p style={{ fontSize: "11px", color: "rgba(8,17,41,0.4)", textAlign: "center", margin: 0 }}>{formatVerified(test.lastScrapedAt)}</p>
+
           </div>
         </div>
       </div>
