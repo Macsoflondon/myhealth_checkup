@@ -5,6 +5,7 @@ import {
   getCanonicalCategoriesForSlug,
   getNameFilterForSlug,
 } from "@/constants/categories";
+import type { ComparePanelConfig } from "@/lib/comparePanels";
 
 const COMPARE_SELECT =
   "id, test_name, provider_id, category, canonical_category, price, description, is_active, image_url, url, biomarkers_list, biomarker_count, turnaround_days_text, turnaround_raw, sample_type, collection_method, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, created_at, updated_at";
@@ -24,17 +25,26 @@ export class TestQueryBuilder {
    *   2. SLUG_TO_CANONICAL_CATEGORIES (1:1 canonical_category match)
    *   3. ilike fallback across category / name / description
    */
-  /** Exact canonical_category match — used by live-comparison panels. */
-  static buildCanonicalCategoryQuery(canonical: string) {
-    return supabase
+  /** Panel matching: optional canonical narrowing + test-name fragments. */
+  static buildPanelQuery(panel: ComparePanelConfig) {
+    let query = supabase
       .from('provider_tests')
       .select(COMPARE_SELECT)
       .eq('is_active', true)
-      .eq('canonical_category', canonical)
-      .not('price', 'is', null)
       .gt('price', 0)
       .order('price', { ascending: true })
       .limit(DEFAULT_LIMIT);
+
+    if (panel.canonicals && panel.canonicals.length > 0) {
+      query = query.in('canonical_category', [...panel.canonicals]);
+    }
+    query = query.or(
+      panel.includeNames.map((n) => `test_name.ilike.%${escapeIlike(n)}%`).join(','),
+    );
+    for (const ex of panel.excludeNames ?? []) {
+      query = query.not('test_name', 'ilike', `%${escapeIlike(ex)}%`);
+    }
+    return query;
   }
 
   static buildCategoryQuery(category: string, providers: string[] = ['all']) {

@@ -5,6 +5,7 @@ import { cacheService } from "./CacheService";
 import { TestDataTransformer, type LiveTestRow } from "./transformers/testDataTransformer";
 
 import { TestQueryBuilder } from "./queryBuilders/testQueryBuilder";
+import { getComparePanel } from "@/lib/comparePanels";
 import { compareCategories } from "@/constants/categories";
 import { LiveDataService } from "./LiveDataService";
 
@@ -157,16 +158,16 @@ export class CompareService {
   }
 
   /**
-   * Resolve every equivalent test for a live-comparison panel (canonical
-   * category slug, e.g. `fbc`), keeping the cheapest listing per provider.
-   * Used by the "Compare all providers" CTA — no new data, just a narrowed
-   * view of the existing catalogue.
+   * Resolve every equivalent test for a live-comparison panel (see
+   * COMPARE_PANELS), keeping the cheapest listing per provider. Used by the
+   * "Compare all providers" CTA — no new data, just a narrowed view of the
+   * existing catalogue.
    */
-  static async getPanelTests(canonical: string, limit = 8): Promise<CompareTestData[]> {
-    const slug = canonical.trim();
-    if (!slug) return [];
+  static async getPanelTests(panelSlug: string, limit = 8): Promise<CompareTestData[]> {
+    const panel = getComparePanel(panelSlug.trim());
+    if (!panel) return [];
 
-    const { data, error } = await TestQueryBuilder.buildCanonicalCategoryQuery(slug);
+    const { data, error } = await TestQueryBuilder.buildPanelQuery(panel);
     if (error) {
       logger.error('Error fetching panel tests:', error);
       return [];
