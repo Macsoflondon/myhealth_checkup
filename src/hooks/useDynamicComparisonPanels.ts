@@ -6,15 +6,17 @@ import { PROVIDER_NAMES } from "@/constants/providers";
 
 interface CategoryConfig {
   canonical: string;
+  /** Slug used by the "Compare all providers" CTA (see COMPARE_PANELS). */
+  panelSlug: string;
   displayName: string;
   methodLabel: string;
 }
 
 const COMPARISON_CATEGORIES: CategoryConfig[] = [
-  { canonical: "fbc", displayName: "Full Blood Count", methodLabel: "At-home test kit" },
-  { canonical: "thyroid", displayName: "Thyroid Function", methodLabel: "At-home test kit" },
-  { canonical: "male_hormones", displayName: "Male Hormone Panel", methodLabel: "At-home test kit" },
-  { canonical: "female_hormones", displayName: "Female Hormone Panel", methodLabel: "At-home test kit" },
+  { canonical: "fbc", panelSlug: "full-blood-count", displayName: "Full Blood Count", methodLabel: "At-home test kit" },
+  { canonical: "thyroid", panelSlug: "thyroid", displayName: "Thyroid Function", methodLabel: "At-home test kit" },
+  { canonical: "male_hormones", panelSlug: "male-hormones", displayName: "Male Hormone Panel", methodLabel: "At-home test kit" },
+  { canonical: "female_hormones", panelSlug: "female-hormones", displayName: "Female Hormone Panel", methodLabel: "At-home test kit" },
 ];
 
 export function useDynamicComparisonPanels(): {
@@ -66,7 +68,7 @@ export function useDynamicComparisonPanels(): {
 
         results.push({
           name: cat.displayName,
-          canonical: cat.canonical,
+          canonical: cat.panelSlug,
           collectionMethod: "at_home",
           methodLabel: cat.methodLabel,
           lastScrapedAt: latestScrape,
