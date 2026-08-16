@@ -128,9 +128,13 @@ export function useCompareUrlSync(): CompareUrlSync {
 
 
   // Store -> URL (after hydration, or immediately when the URL carries no ids).
+  // While a panel drives the view the slug alone stays the shareable source of
+  // truth — the id list is capped at five and would truncate the panel.
   useEffect(() => {
+    if (panelSlug) return;
     if (urlIds.length > 0 && !hydratedFromUrl.current) return;
     if (sameCompareIds(storeIds, urlIds)) return;
+
 
     setSearchParams(
       (prev) => {
