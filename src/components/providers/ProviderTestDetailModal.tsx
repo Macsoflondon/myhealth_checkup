@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
-import { useState } from "react";
 import { useNavigate } from "@/lib/router-compat";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -14,6 +13,7 @@ import { compareResultsPath } from "@/lib/compareUrl";
 import type { CompareTestData } from "@/types";
 import { getProviderLogo } from "@/constants/providers";
 import { resolveAccreditationsFromRow } from "@/lib/resolve-test-fields";
+import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
 
 
 interface ProviderTestDetailModalProps {
@@ -195,7 +195,6 @@ export default function ProviderTestDetailModal({
 }: ProviderTestDetailModalProps) {
   const navigate = useNavigate();
   const compareItems = useCompareItems();
-  const [showAllBiomarkers, setShowAllBiomarkers] = useState(false);
   if (!test) return null;
   const inCompare = compareStore.has(test.id);
 
@@ -406,42 +405,14 @@ export default function ProviderTestDetailModal({
           )}
 
           {/* Biomarkers */}
-          {biomarkers.length === 0 && countNoun === "biomarkers" && (
-            <section>
-              <h4 className="text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-2">
-                Biomarkers Included
-              </h4>
-              <p className="text-[15px] italic text-[#081129]/50">
-                Biomarker list not published by this provider.
-              </p>
-            </section>
-          )}
-          {biomarkers.length > 0 && (
-            <section>
-              <h4 className="text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-2">
-                {countNoun === "biomarkers" ? "Biomarkers Included" : `${countNoun.charAt(0).toUpperCase()}${countNoun.slice(1)} Included`}
-              </h4>
-              <div className="flex flex-wrap gap-2 max-h-72 overflow-y-auto pr-1">
-                {(showAllBiomarkers ? biomarkers : biomarkers.slice(0, 24)).map((b, i) => (
-                  <span
-                    key={i}
-                    className="inline-block px-3 py-1.5 rounded-full text-sm text-[#081129]/80 bg-white border border-[#081129]/10 break-words"
-                  >
-                    {b}
-                  </span>
-                ))}
-              </div>
-              {biomarkers.length > 24 && (
-                <button
-                  type="button"
-                  onClick={() => setShowAllBiomarkers((v) => !v)}
-                  className="mt-2 text-xs font-semibold underline text-[#22c0d4]"
-                >
-                  {showAllBiomarkers ? "Show fewer" : `Show all ${biomarkers.length}`}
-                </button>
-              )}
-            </section>
-          )}
+          <section>
+            <BiomarkerChipList
+              biomarkers={biomarkers}
+              publishedCount={test.biomarker_count}
+              noun={countNoun}
+            />
+          </section>
+
 
           {/* Disclaimer */}
           <div className="border-l-4 border-[#22c0d4] bg-[#22c0d4]/10 rounded-r-lg px-4 py-3">
