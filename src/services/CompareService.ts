@@ -5,6 +5,7 @@ import { cacheService } from "./CacheService";
 import { TestDataTransformer, type LiveTestRow } from "./transformers/testDataTransformer";
 
 import { TestQueryBuilder } from "./queryBuilders/testQueryBuilder";
+import { getComparePanel } from "@/lib/comparePanels";
 import { compareCategories } from "@/constants/categories";
 import { LiveDataService } from "./LiveDataService";
 
@@ -155,6 +156,38 @@ export class CompareService {
     const byId = new Map(tests.map((t) => [t.id, t]));
     return ids.map((id) => byId.get(id)).filter((t): t is CompareTestData => Boolean(t));
   }
+
+  /**
+   * Resolve every equivalent test for a live-comparison panel (see
+   * COMPARE_PANELS), keeping the cheapest listing per provider. Used by the
+   * "Compare all providers" CTA — no new data, just a narrowed view of the
+   * existing catalogue.
+   */
+  static async getPanelTests(panelSlug: string, limit = 8): Promise<CompareTestData[]> {
+    const panel = getComparePanel(panelSlug.trim());
+    if (!panel) return [];
+
+    const { data, error } = await TestQueryBuilder.buildPanelQuery(panel);
+    if (error) {
+      logger.error('Error fetching panel tests:', error);
+      return [];
+    }
+    const tests = TestDataTransformer.transformMultiple(data ?? []);
+    const cheapestByProvider = new Map<string, CompareTestData>();
+
+    for (const test of tests) {
+      if (!test.price || test.price <= 0) continue;
+      const key = test.provider || test.id;
+      const current = cheapestByProvider.get(key);
+      if (!current || test.price < current.price) cheapestByProvider.set(key, test);
+    }
+
+    return Array.from(cheapestByProvider.values())
+      .sort((a, b) => a.price - b.price)
+      .slice(0, limit);
+  }
+
+
 
 
 

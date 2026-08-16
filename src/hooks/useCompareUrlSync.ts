@@ -12,10 +12,13 @@ import { CompareService } from "@/services/CompareService";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import {
   COMPARE_IDS_PARAM,
+  COMPARE_PANEL_PARAM,
   parseCompareIds,
+  parseComparePanel,
   sameCompareIds,
   serialiseCompareIds,
 } from "@/lib/compareUrl";
+
 import type { CompareTestData } from "@/types";
 
 interface CompareUrlSync {
@@ -51,6 +54,32 @@ export function useCompareUrlSync(): CompareUrlSync {
     enabled: shouldHydrate,
     staleTime: 5 * 60 * 1000,
   });
+
+  // Panel -> store: "Compare all providers" arrives with ?panel=<canonical>
+  // and no ids, so rebuild the equivalent-test set from the live catalogue.
+  const panelSlug = useMemo(
+    () => parseComparePanel(searchParams.get(COMPARE_PANEL_PARAM)),
+    [searchParams],
+  );
+  const panelApplied = useRef<string>("");
+  const shouldLoadPanel =
+    Boolean(panelSlug) && urlIds.length === 0 && panelApplied.current !== panelSlug;
+
+  const { data: panelTests, isFetching: isPanelFetching } = useQuery({
+    queryKey: ["compare", "panel", panelSlug],
+    queryFn: () => CompareService.getPanelTests(panelSlug as string),
+    enabled: shouldLoadPanel,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  useEffect(() => {
+    if (!panelSlug || !panelTests || panelApplied.current === panelSlug) return;
+    panelApplied.current = panelSlug;
+    hydratedFromUrl.current = true;
+    if (panelTests.length > 0) compareStore.set(panelTests);
+  }, [panelSlug, panelTests]);
+
+
 
   // URL -> store (once, on arrival with ids).
   useEffect(() => {
@@ -99,9 +128,13 @@ export function useCompareUrlSync(): CompareUrlSync {
 
 
   // Store -> URL (after hydration, or immediately when the URL carries no ids).
+  // While a panel drives the view the slug alone stays the shareable source of
+  // truth — the id list is capped at five and would truncate the panel.
   useEffect(() => {
+    if (panelSlug) return;
     if (urlIds.length > 0 && !hydratedFromUrl.current) return;
     if (sameCompareIds(storeIds, urlIds)) return;
+
 
     setSearchParams(
       (prev) => {
@@ -113,7 +146,7 @@ export function useCompareUrlSync(): CompareUrlSync {
       },
       { replace: true },
     );
-  }, [storeIds, urlIds, setSearchParams]);
+  }, [storeIds, urlIds, panelSlug, setSearchParams]);
 
   const missingIds = useMemo(
     () =>
@@ -125,7 +158,8 @@ export function useCompareUrlSync(): CompareUrlSync {
 
   return {
     selected,
-    isHydrating: shouldHydrate && isFetching,
+    isHydrating: (shouldHydrate && isFetching) || (shouldLoadPanel && isPanelFetching),
     missingIds,
   };
 }
+
