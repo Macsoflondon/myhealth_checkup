@@ -66,6 +66,7 @@ export function useDynamicComparisonPanels(): {
 
         results.push({
           name: cat.displayName,
+          canonical: cat.canonical,
           collectionMethod: "at_home",
           methodLabel: cat.methodLabel,
           lastScrapedAt: latestScrape,

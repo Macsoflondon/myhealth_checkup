@@ -3,6 +3,8 @@ import { useDynamicComparisonPanels } from "@/hooks/useDynamicComparisonPanels";
 
 export type LiveComparisonPanelData = {
   name: string;
+  /** Canonical category slug backing this panel, e.g. `fbc`. Drives the CTA. */
+  canonical?: string;
   collectionMethod?: "at_home" | "clinic";
   methodLabel?: string;
   providers: {
@@ -33,6 +35,7 @@ function formatVerified(iso?: string | null): string {
 export const DEFAULT_LIVE_COMPARISON_PANELS: LiveComparisonPanelData[] = [
   {
     name: "Full Blood Count",
+    canonical: "fbc",
     collectionMethod: "at_home",
     methodLabel: "At-home test kit",
     providers: [
@@ -44,6 +47,7 @@ export const DEFAULT_LIVE_COMPARISON_PANELS: LiveComparisonPanelData[] = [
   },
   {
     name: "Thyroid Function",
+    canonical: "thyroid",
     collectionMethod: "at_home",
     methodLabel: "At-home test kit",
     providers: [
@@ -56,6 +60,7 @@ export const DEFAULT_LIVE_COMPARISON_PANELS: LiveComparisonPanelData[] = [
   },
   {
     name: "Male Hormone Panel",
+    canonical: "male_hormones",
     collectionMethod: "at_home",
     methodLabel: "At-home test kit",
     providers: [
@@ -67,6 +72,7 @@ export const DEFAULT_LIVE_COMPARISON_PANELS: LiveComparisonPanelData[] = [
   },
   {
     name: "Female Hormone Panel",
+    canonical: "female_hormones",
     collectionMethod: "at_home",
     methodLabel: "At-home test kit",
     providers: [
