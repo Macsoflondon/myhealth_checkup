@@ -215,12 +215,12 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
         <div data-scrolled={scrolled} className={`${placement === "hero" ? "flex flex-col px-4 sm:px-6 md:px-9 min-h-[96px] md:min-h-[120px] py-3 md:py-4" : "flex items-center px-4 sm:px-6 md:px-9 h-24 md:h-[120px]"} transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b bg-white border-[#081129]/10`}>
             <div className="flex items-start w-full shrink-0">
               <div className="flex flex-col min-w-0 pr-14">
-                <Link to="/" className="flex items-center h-16 md:h-[96px] lg:h-[112px] no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] text-[52px] md:text-[76px] lg:text-[88px] leading-none">
+                <Link to="/" className="flex items-center no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] leading-none whitespace-nowrap text-[clamp(30px,8.2vw,88px)] py-1 md:py-2">
                   <span className="transition-colors duration-300 ease-out text-[#081129]">myhealth</span>
                   <span className="text-[#22c0d4]">checkup</span>
                 </Link>
                 {placement === "hero" && (
-                  <p className="font-[Montserrat] font-bold text-left m-0 mt-1 md:mt-2 text-base sm:text-lg md:text-xl uppercase tracking-[0.22em] leading-none">
+                  <p className="font-[Montserrat] font-bold text-left m-0 mt-1 md:mt-2 text-[clamp(11px,2.8vw,20px)] uppercase tracking-[0.14em] sm:tracking-[0.22em] leading-snug">
                     <span className="transition-colors duration-300 ease-out text-[#081129]/55">Your </span>
                     <span className="text-[#22c0d4]">health</span>
                     <span className="transition-colors duration-300 ease-out text-[#081129]/55">. Your </span>
@@ -229,6 +229,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                   </p>
                 )}
               </div>
+
             </div>
 
           <div className="absolute right-4 sm:right-6 md:right-9 top-1/2 -translate-y-1/2 z-50" data-testid="mobile-floating-menu-trigger">
