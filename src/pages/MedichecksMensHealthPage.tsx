@@ -136,6 +136,7 @@ const MedichecksMensHealthPage = () => {
                           ? "Venous collection"
                           : "Finger-prick collection"
                       }
+                      imageUrl={test.image_url}
                       slug={generateTestSlug(test.test_name)}
                       rating={4.0}
                       reviewCount={950}

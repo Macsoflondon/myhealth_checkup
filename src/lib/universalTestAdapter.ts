@@ -65,6 +65,7 @@ export function fromMedichecksTest(t: {
   price: number | null;
   sampleType: string | null;
   slug: string;
+  imageUrl?: string | null;
 }): UniversalTestData {
   return {
     id: t.id,
@@ -76,6 +77,7 @@ export function fromMedichecksTest(t: {
     sample_type: t.sampleType,
     biomarker_count: t.biomarkerCount,
     url: `/medichecks/${t.slug}`,
+    image_url: t.imageUrl ?? null,
     is_popular: !!t.isNew,
     home_kit_available: true,
   };
