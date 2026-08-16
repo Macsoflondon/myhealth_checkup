@@ -441,7 +441,9 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                     </span>
                   );
                 }
-                return (
+                const note = t.clinicalReviewNote;
+                const label = note ? `${r.label}*` : r.label;
+                const pill = (
                   <span
                     style={{
                       display: 'inline-flex',
@@ -451,10 +453,24 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                       color: '#92400e',
                       fontWeight: 600,
                       fontSize: 12,
+                      cursor: note ? 'help' : 'default',
                     }}
                   >
-                    {r.label}
+                    {label}
                   </span>
+                );
+
+                if (!note) return pill;
+
+                return (
+                  <TooltipProvider delayDuration={150}>
+                    <Tooltip>
+                      <TooltipTrigger asChild>{pill}</TooltipTrigger>
+                      <TooltipContent className="max-w-[280px] text-xs">
+                        {note}
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 );
               }}
             />

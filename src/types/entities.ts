@@ -50,6 +50,7 @@ export interface CompareTestData extends Test {
   collectionFeeNote?: string | null;
   clinicalReviewType?: 'included' | 'optional' | 'gp_included' | 'consultant_included' | 'clinician_included' | 'not_included' | 'not_available' | null;
   clinicalReviewFee?: number | null;
+  clinicalReviewNote?: string | null;
 }
 
 export interface UserProfile {
