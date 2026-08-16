@@ -35,6 +35,8 @@ export interface CategoryTestItem {
   tag: string;
   collection?: string;
   url?: string;
+  /** Provider product-packaging image */
+  imageUrl?: string;
   collectionOptions?: unknown;
 }
 
