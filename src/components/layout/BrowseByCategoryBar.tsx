@@ -271,32 +271,10 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             </nav>
           </SheetContent>
         </Sheet>
-      </div>
-
-      {/* Sticky sentinel — inside the hero it must not consume flex-row width,
-          otherwise the centred dock gets pushed to one side. */}
-      <div ref={sentinelRef} aria-hidden="true" className={placement === "hero" ? "absolute inset-x-0 top-0 h-px" : "h-px w-full"} />
-      <div className="md:hidden w-full shrink-0 basis-full relative" data-testid="browse-by-category-bar-mobile">
-        <div data-scrolled={scrolled} className={`${placement === "hero" ? "flex flex-col px-4 min-h-[80px] py-3" : "flex items-center px-4 h-20"} transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b ${scrolled ? "bg-[#081129] border-[#081129] shadow-[0_2px_10px_rgba(8,17,41,0.18)]" : "bg-white border-[#081129]/10"}`}>
-          <div className="flex items-start w-full shrink-0">
-            <div className="flex flex-col min-w-0 pr-14">
-              <Link to="/" className="flex items-center h-10 no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] text-[30px] leading-none">
-                <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white" : "text-[#081129]"}`}>myhealth</span>
-                <span className="text-[#22c0d4]">checkup</span>
-              </Link>
-              {placement === "hero" && (
-                <h1 className="md:hidden font-[Montserrat] font-bold text-left m-0 mt-1 text-[10px] sm:text-xs uppercase tracking-[0.22em] leading-none">
-                  <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white/70" : "text-[#081129]/55"}`}>Your </span>
-                  <span className="text-[#22c0d4]">health</span>
-                  <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white/70" : "text-[#081129]/55"}`}>. Your </span>
-                  <span className="text-[#e70d69]">choice</span>
-                  <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white/70" : "text-[#081129]/55"}`}>.</span>
-                </h1>
-              )}
-            </div>
           </div>
         </div>
       </div>
+
       {(() => {
         const desktopBar = (
           <div
