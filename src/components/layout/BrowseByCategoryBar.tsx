@@ -194,7 +194,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             <div className="flex items-start w-full shrink-0">
               <div className="flex flex-col min-w-0 pr-14">
                 <Link to="/" className="flex items-center h-16 md:h-[96px] lg:h-[112px] no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] text-[52px] md:text-[76px] lg:text-[88px] leading-none">
-                  <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white" : "text-[#081129]"}`}>myhealth</span>
+                  <span className="transition-colors duration-300 ease-out text-[#081129]">myhealth</span>
                   <span className="text-[#22c0d4]">checkup</span>
                 </Link>
                 {placement === "hero" && (
