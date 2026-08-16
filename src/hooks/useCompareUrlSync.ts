@@ -55,6 +55,32 @@ export function useCompareUrlSync(): CompareUrlSync {
     staleTime: 5 * 60 * 1000,
   });
 
+  // Panel -> store: "Compare all providers" arrives with ?panel=<canonical>
+  // and no ids, so rebuild the equivalent-test set from the live catalogue.
+  const panelSlug = useMemo(
+    () => parseComparePanel(searchParams.get(COMPARE_PANEL_PARAM)),
+    [searchParams],
+  );
+  const panelApplied = useRef<string>("");
+  const shouldLoadPanel =
+    Boolean(panelSlug) && urlIds.length === 0 && panelApplied.current !== panelSlug;
+
+  const { data: panelTests, isFetching: isPanelFetching } = useQuery({
+    queryKey: ["compare", "panel", panelSlug],
+    queryFn: () => CompareService.getPanelTests(panelSlug as string),
+    enabled: shouldLoadPanel,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  useEffect(() => {
+    if (!panelSlug || !panelTests || panelApplied.current === panelSlug) return;
+    panelApplied.current = panelSlug;
+    hydratedFromUrl.current = true;
+    if (panelTests.length > 0) compareStore.set(panelTests);
+  }, [panelSlug, panelTests]);
+
+
+
   // URL -> store (once, on arrival with ids).
   useEffect(() => {
     if (hydratedFromUrl.current || urlIds.length === 0) return;
