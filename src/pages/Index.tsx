@@ -268,9 +268,9 @@ const Index = () => {
                         <Shield className="w-3 h-3 shrink-0" /> No account
                         required
                       </span>
-                      <span className="hidden sm:inline">\u2022</span>
+                      <span className="hidden sm:inline">{"\n"}</span>
                       <span>Takes 2 minutes</span>
-                      <span className="hidden sm:inline">\u2022</span>
+                      <span className="hidden sm:inline">{"\n"}</span>
                       <span>100% free</span>
                     </div>
                   </div>
