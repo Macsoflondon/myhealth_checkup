@@ -486,8 +486,103 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
         {/* Accent stripe */}
         <div style={{ height: 4, background: meta.color || UTC_TURQUOISE, flexShrink: 0 }} />
 
+        {/* Two-state stack: product image at rest, detail card on hover/focus */}
+        <div className="relative flex flex-1 flex-col">
+          {/* Product image layer */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 z-10 flex flex-col bg-white opacity-100 transition-opacity duration-[240ms] ease-out [@media(hover:hover)]:group-hover:opacity-0 [@media(hover:hover)]:group-focus-within:opacity-0 motion-reduce:transition-none"
+          >
+            <div className="flex flex-1 items-center justify-center overflow-hidden p-4">
+              {test.image_url ? (
+                <img
+                  src={test.image_url}
+                  alt={`${test.test_name} test kit from ${meta.displayName}`}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-full w-full object-contain"
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.visibility = "hidden"; }}
+                />
+              ) : (
+                <div
+                  className="flex h-full w-full flex-col items-center justify-center gap-3 rounded-xl px-4 text-center"
+                  style={{ background: "linear-gradient(155deg, rgba(8,17,41,0.94), rgba(34,192,212,0.35))" }}
+                >
+                  {logo ? (
+                    <span className="flex h-12 w-24 items-center justify-center rounded-lg bg-white p-1.5">
+                      <img src={logo} alt="" className="h-full w-full object-contain" />
+                    </span>
+                  ) : null}
+                  <span
+                    className="line-clamp-3"
+                    style={{
+                      fontFamily: "'Montserrat',sans-serif",
+                      fontWeight: 700,
+                      fontSize: 14,
+                      lineHeight: 1.35,
+                      color: "#ffffff",
+                    }}
+                  >
+                    {test.test_name}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Caption strip */}
+            <div className="flex items-end justify-between gap-3 border-t px-4 py-3" style={{ borderColor: "#f1f5f9" }}>
+              <div className="min-w-0">
+                <div
+                  className="line-clamp-2"
+                  style={{
+                    fontFamily: "'Montserrat',sans-serif",
+                    fontWeight: 700,
+                    fontSize: 14,
+                    lineHeight: 1.3,
+                    color: UTC_NAVY,
+                  }}
+                >
+                  {test.test_name}
+                </div>
+                <div
+                  className="truncate"
+                  style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 11, color: "#94a3b8", marginTop: 2 }}
+                >
+                  {meta.displayName}
+                </div>
+              </div>
+              <div
+                className="flex-shrink-0"
+                style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 800, fontSize: 18, color: UTC_PINK }}
+              >
+                {displayPrice != null ? `\u00a3${Number(displayPrice).toFixed(2)}` : "POA"}
+              </div>
+            </div>
+          </div>
+
+          {/* "View details" affordance — the accessible route on touch devices */}
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); handleOpen(); }}
+            className="absolute right-3 top-3 z-20 transition-opacity duration-[240ms] [@media(hover:hover)]:group-hover:opacity-0 [@media(hover:hover)]:group-focus-within:opacity-0 motion-reduce:transition-none"
+            style={{
+              background: "rgba(8,17,41,0.86)",
+              color: "#ffffff",
+              fontFamily: "'Montserrat',sans-serif",
+              fontWeight: 700,
+              fontSize: 11,
+              padding: "5px 10px",
+              borderRadius: 20,
+              border: "none",
+              cursor: "pointer",
+            }}
+          >
+            View details
+          </button>
+
         {/* Body */}
-        <div className="flex flex-1 flex-col p-4">
+        <div className="relative z-0 flex flex-1 flex-col p-4 opacity-0 pointer-events-none transition-[opacity,transform] duration-[240ms] ease-out translate-y-1 [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-hover:translate-y-0 [@media(hover:hover)]:group-hover:pointer-events-auto [@media(hover:hover)]:group-focus-within:opacity-100 [@media(hover:hover)]:group-focus-within:translate-y-0 [@media(hover:hover)]:group-focus-within:pointer-events-auto [@media(hover:none)]:opacity-0 motion-reduce:transition-none">
+
           {/* Provider row */}
           <div className="flex items-center justify-between mb-2 min-h-[40px] flex-shrink-0">
             <div className="flex items-center gap-2.5 min-w-0">
