@@ -44,6 +44,7 @@ export function fromProviderTest(t: ProviderTestCardData): UniversalTestData {
     biomarker_count: t.biomarker_count,
     biomarkers_list: t.biomarkers_list as string[] | { value: string }[] | undefined,
     url: t.url,
+    image_url: t.image_url ?? null,
     is_popular: !!t.is_popular,
     home_kit_available: t.home_kit_available ?? undefined,
     clinic_visit_available: t.clinic_visit_available ?? undefined,
@@ -137,6 +138,7 @@ export function fromLegacyUnified(p: LegacyUnifiedProps): UniversalTestData {
         ? p.markers.map((v) => ({ value: v }))
         : fromDetails?.biomarkers_list) ?? [],
     url: p.url ?? fromDetails?.url ?? null,
+    image_url: fromDetails?.image_url ?? null,
     is_popular: /popular/i.test(p.badge || ""),
     home_kit_available: /home|finger|kit/i.test(p.collection || ""),
     clinic_visit_available: /clinic|venous|in-person/i.test(p.collection || ""),
