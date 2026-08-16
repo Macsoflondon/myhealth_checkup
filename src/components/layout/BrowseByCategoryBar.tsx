@@ -62,16 +62,18 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
       observer.disconnect();
     };
   }, [isStraddle, pathname]);
-  // Measure the bar so it sits exactly half over each colour.
+  // Measure the bar so it sits exactly half over each colour, and so the hero
+  // placement can reserve its height with a spacer once it pins.
   useLayoutEffect(() => {
     const el = barRef.current;
-    if (!el || !isStraddle) return;
+    if (!el || (!isStraddle && placement !== "hero")) return;
     const update = () => setBarHeight(el.getBoundingClientRect().height);
     update();
     const ro = new ResizeObserver(update);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [isStraddle, anchorEl]);
+  }, [isStraddle, placement, anchorEl]);
+
   // Straddle mode: float over the boundary, then pin to the top once scrolled past it.
   const [pinned, setPinned] = useState(false);
   useEffect(() => {
