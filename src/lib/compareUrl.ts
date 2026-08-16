@@ -6,6 +6,17 @@
 
 export const COMPARE_IDS_PARAM = "ids";
 
+/** Canonical category slug of a live-comparison panel, e.g. `fbc`. */
+export const COMPARE_PANEL_PARAM = "panel";
+
+/** Validate a panel slug from the URL (canonical category slugs only). */
+export function parseComparePanel(raw: string | null | undefined): string | null {
+  if (!raw) return null;
+  const slug = raw.trim();
+  return /^[a-z0-9_-]{1,48}$/i.test(slug) ? slug : null;
+}
+
+
 /** Maximum tests a comparison view supports. */
 export const MAX_COMPARE_IDS = 5;
 
