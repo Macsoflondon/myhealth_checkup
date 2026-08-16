@@ -14,6 +14,7 @@ import { compareResultsPath } from "@/lib/compareUrl";
 import type { CompareTestData } from "@/types";
 import { getProviderLogo } from "@/constants/providers";
 import { resolveAccreditationsFromRow } from "@/lib/resolve-test-fields";
+import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
 
 
 interface ProviderTestDetailModalProps {
@@ -195,7 +196,6 @@ export default function ProviderTestDetailModal({
 }: ProviderTestDetailModalProps) {
   const navigate = useNavigate();
   const compareItems = useCompareItems();
-  const [showAllBiomarkers, setShowAllBiomarkers] = useState(false);
   if (!test) return null;
   const inCompare = compareStore.has(test.id);
 
