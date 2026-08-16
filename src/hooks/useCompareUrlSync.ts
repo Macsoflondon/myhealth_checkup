@@ -146,7 +146,7 @@ export function useCompareUrlSync(): CompareUrlSync {
       },
       { replace: true },
     );
-  }, [storeIds, urlIds, setSearchParams]);
+  }, [storeIds, urlIds, panelSlug, setSearchParams]);
 
   const missingIds = useMemo(
     () =>
