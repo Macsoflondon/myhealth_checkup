@@ -193,12 +193,12 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
         <div data-scrolled={scrolled} className={`${placement === "hero" ? "flex flex-col px-4 sm:px-6 md:px-9 min-h-[80px] md:min-h-[104px] py-3 md:py-4" : "flex items-center px-4 sm:px-6 md:px-9 h-20 md:h-[104px]"} transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b ${scrolled ? "bg-[#081129] border-[#081129] shadow-[0_2px_10px_rgba(8,17,41,0.18)]" : "bg-white border-[#081129]/10"}`}>
             <div className="flex items-start w-full shrink-0">
               <div className="flex flex-col min-w-0 pr-14">
-                <Link to="/" className="flex items-center h-12 md:h-[72px] lg:h-[84px] no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] text-[36px] md:text-[54px] lg:text-[64px] leading-none">
+                <Link to="/" className="flex items-center h-14 md:h-[84px] lg:h-[96px] no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] text-[44px] md:text-[64px] lg:text-[76px] leading-none">
                   <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white" : "text-[#081129]"}`}>myhealth</span>
                   <span className="text-[#22c0d4]">checkup</span>
                 </Link>
                 {placement === "hero" && (
-                  <p className="font-[Montserrat] font-bold text-left m-0 mt-1 md:mt-2 text-xs sm:text-sm md:text-base uppercase tracking-[0.22em] leading-none">
+                  <p className="font-[Montserrat] font-bold text-left m-0 mt-1 md:mt-2 text-sm sm:text-base md:text-lg uppercase tracking-[0.22em] leading-none">
                     <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white/70" : "text-[#081129]/55"}`}>Your </span>
                     <span className="text-[#22c0d4]">health</span>
                     <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white/70" : "text-[#081129]/55"}`}>. Your </span>
