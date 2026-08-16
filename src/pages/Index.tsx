@@ -263,7 +263,7 @@ const Index = () => {
                         aria-hidden="true"
                       />
                     </Link>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-y-1 gap-x-4 text-white text-xs">
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-y-0 gap-x-2 text-white text-xs">
                       <span className="flex items-center gap-1">
                         <Shield className="w-3 h-3 shrink-0" /> No account
                         required
