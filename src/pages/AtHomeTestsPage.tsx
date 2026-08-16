@@ -71,6 +71,7 @@ const toCategoryTestItem = (test: AtHomeTest): CategoryTestItem => {
     tag,
     collection: test.sample_type || "Finger-prick",
     url: test.url || undefined,
+    imageUrl: test.image_url || undefined,
     collectionOptions: test.collection_options,
   } satisfies CategoryTestItem;
 };
