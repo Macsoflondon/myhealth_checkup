@@ -62,16 +62,18 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
       observer.disconnect();
     };
   }, [isStraddle, pathname]);
-  // Measure the bar so it sits exactly half over each colour.
+  // Measure the bar so it sits exactly half over each colour, and so the hero
+  // placement can reserve its height with a spacer once it pins.
   useLayoutEffect(() => {
     const el = barRef.current;
-    if (!el || !isStraddle) return;
+    if (!el || (!isStraddle && placement !== "hero")) return;
     const update = () => setBarHeight(el.getBoundingClientRect().height);
     update();
     const ro = new ResizeObserver(update);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [isStraddle, anchorEl]);
+  }, [isStraddle, placement, anchorEl]);
+
   // Straddle mode: float over the boundary, then pin to the top once scrolled past it.
   const [pinned, setPinned] = useState(false);
   useEffect(() => {
@@ -130,6 +132,18 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     observer.observe(sentinel);
     return () => observer.disconnect();
   }, [placement]);
+  // Slide the pinned bar in on the frame after it flips to fixed, so the
+  // browser has a start state to animate from instead of snapping into place.
+  const [pinEnter, setPinEnter] = useState(false);
+  useEffect(() => {
+    if (!heroPinned) {
+      setPinEnter(false);
+      return;
+    }
+    const raf = requestAnimationFrame(() => setPinEnter(true));
+    return () => cancelAnimationFrame(raf);
+  }, [heroPinned]);
+
   useEffect(() => {
     if (!moreOpen) return;
     const onDoc = (e: MouseEvent) => {
@@ -165,21 +179,29 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     : isStraddle
       ? fallbackStraddleClass
     : placement === "hero"
-      ? `${heroPinned ? "fixed inset-x-0 top-0 px-4" : "relative px-4"} mt-0 w-full min-w-0`
+      ? `${
+          heroPinned
+            ? `fixed inset-x-0 top-0 will-change-transform transition-[transform,opacity,box-shadow] duration-[260ms] ease-out motion-reduce:transition-none ${
+                pinEnter
+                  ? "translate-y-0 opacity-100 shadow-[0_6px_20px_-8px_rgba(8,17,41,0.28)]"
+                  : "-translate-y-full opacity-0 shadow-none motion-reduce:translate-y-0 motion-reduce:opacity-100"
+              }`
+            : "relative"
+        } mt-0 w-full min-w-0`
       : compact ? "mt-0 mx-3 lg:mx-6" : isFlush ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
 
 
 
-  // Floating pill-shaped dock: frosted surface, hairline border, layered lift.
-  // On the hero's white band the dock sits on white, so use a darker, tighter
-  // shadow to make the white buttons pop instead of blending in.
+  // Hero placement: a flush, full-width strip — no pill, border, or shading.
+  // Everywhere else the dock stays a floating frosted pill.
   let innerClass = placement === "hero"
-    ? "mx-auto w-fit max-w-[min(calc(100vw-2rem),108rem)] overflow-hidden rounded-full bg-white border border-[#081129]/10 ring-0 shadow-[0_3px_10px_rgba(8,17,41,0.12),0_12px_28px_-10px_rgba(8,17,41,0.22)]"
+    ? "w-full max-w-full overflow-hidden bg-white"
     : `mx-auto w-fit max-w-full rounded-full bg-white/85 backdrop-blur-xl border border-white/60 ring-1 ring-[#081129]/[0.06] ${
     stuck
       ? "shadow-[0_2px_8px_rgba(8,17,41,0.08),0_20px_48px_-12px_rgba(8,17,41,0.34)]"
       : "shadow-[0_2px_6px_rgba(8,17,41,0.06),0_16px_40px_-12px_rgba(8,17,41,0.28)]"
   }`;
+
 
   if (className) { innerClass = `${innerClass} ${className}`; }
 
@@ -286,8 +308,9 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             data-hydrated={hydrated}
           >
 
-            <div className={`p-1.5 transition-all duration-300 ${innerClass}`} data-testid="category-toolbar-dock">
-              <div className="flex w-fit max-w-full min-w-0 items-center gap-1">
+            <div className={`${placement === "hero" ? "px-4 sm:px-6 md:px-9 py-1.5" : "p-1.5"} transition-all duration-300 ${innerClass}`} data-testid="category-toolbar-dock">
+              <div className={`flex ${placement === "hero" ? "w-full" : "w-fit"} max-w-full min-w-0 items-center gap-1`}>
+
                 <div className={`flex min-w-0 items-center justify-start gap-y-0 flex-nowrap overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${useStraddle ? "gap-x-0" : "gap-x-0 2xl:gap-x-1"}`} data-testid="category-pill-strip">
                   {items.map((item) => {
                     const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
@@ -313,7 +336,17 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
 
           </div>
         );
+        if (placement === "hero") {
+          return (
+            <>
+              {desktopBar}
+              {/* Reserve the bar's height once it pins so nothing jumps. */}
+              <div aria-hidden="true" className="hidden md:block" style={{ height: heroPinned ? barHeight : 0 }} />
+            </>
+          );
+        }
         return useStraddle && anchorEl ? createPortal(desktopBar, anchorEl) : desktopBar;
+
       })()}
     </>
   );
