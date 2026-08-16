@@ -1,27 +1,14 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
-import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
-import { UserMenu } from "@/components/header/UserMenu";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 
-const TURQUOISE = "#22c0d4";
-const PINK = "#e70d69";
 
 import {
   SLIDES,
   FIRST_SLIDE_LQIP,
   HERO_CAPTION,
 } from "@/components/sections/hero-slides";
-
-const Wordmark = () => (
-  <span className="inline-flex items-center leading-[1.1] min-w-0 py-2 sm:py-3">
-    <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(2.25rem,12vw,4rem)] sm:text-[clamp(4.5rem,8vw,8rem)] lg:text-[7rem] xl:text-[8rem]">
-      <span className="text-white">myhealth</span>
-      <span className="text-brand-pink">checkup</span>
-    </span>
-  </span>
-);
 
 export default function HeroMasthead({
   rotateMs = 15000,
@@ -75,44 +62,15 @@ export default function HeroMasthead({
         className="bg-white border-b border-brand-navy/10 -mx-3 sm:-mx-6 md:-mx-9"
       />
 
-      {/* Wordmark + primary heading.
-          On desktop the slogan sits directly below the wordmark and above the white category bar.
-          On mobile the slogan sits below the white category bar. */}
-      <div className="hidden md:flex flex-col items-start pt-4 sm:pt-6 lg:pt-8 order-2 sm:order-1">
-        <div className="hidden sm:block">
-          <Wordmark />
-        </div>
-
-        <div className="w-full flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 px-1 sm:px-0 pt-0 pb-5 sm:pb-4">
-          <h1
-            className="hidden md:block font-bold font-[Montserrat] text-white text-left m-0
-              text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)]
-              tracking-[0.05em] sm:tracking-[0.08em]
-              leading-[1.25] sm:leading-[1.15]"
-          >
-            Compare private blood tests &amp; health checks
-          </h1>
-          <p
-            className="md:hidden text-center font-[Montserrat] font-semibold text-white
-              text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)]
-              leading-tight px-4 m-0"
-          >
-            {HERO_CAPTION}
-          </p>
-          <div className="hidden sm:flex items-center gap-1 shrink-0">
-            <LanguageSwitcher />
-            <UserMenu />
-          </div>
-        </div>
-      </div>
-
-      {/* Category toolbar — white band with pink hairlines above and below.
-          The bottom pink line is the single divider between the toolbar and the hero image. */}
-      <div className="relative -mx-3 sm:-mx-6 md:-mx-9 mt-0 order-1 sm:order-2 flex items-center sm:bg-white sm:py-1 sm:border-t-2 sm:border-b-2 sm:border-[#e70d69]">
+      {/* Brand bar + category toolbar. The brand bar renders at every width;
+          the pill toolbar is desktop/tablet only (mobile uses the drawer). */}
+      <h1 className="sr-only">Compare private blood tests &amp; health checks</h1>
+      <div className="relative -mx-3 sm:-mx-6 md:-mx-9 mt-0 order-1 flex flex-wrap items-center bg-white pb-0 md:pb-1 border-b-2 border-[#e70d69]">
         <BrowseByCategoryBar compact placement="hero" />
       </div>
 
-      <div className="relative overflow-hidden mt-0 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-0">
+
+      <div className="relative overflow-hidden mt-0 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-20">
         {/* Blurred LQIP + gradient placeholder — fades out once slide 1 paints */}
         <div
           aria-hidden
@@ -167,12 +125,13 @@ export default function HeroMasthead({
 
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
-        {/* Mobile: caption card overlapping the hero image bottom */}
-        <div className="md:hidden absolute bottom-0 inset-x-0 w-full max-w-none z-10 bg-[#081129] p-5 border-y-2 border-[#e70d69] shadow-[0_20px_50px_rgba(8,17,41,0.45)]">
-          <p className="text-center font-[Montserrat] font-semibold text-white text-[13px] sm:text-[14px] leading-tight tracking-wide">
+        {/* Caption band pinned to the hero image bottom at every width */}
+        <div className="absolute bottom-0 inset-x-0 w-full max-w-none z-10 bg-[#081129] p-5 md:p-6 border-y-2 border-[#e70d69] shadow-[0_20px_50px_rgba(8,17,41,0.45)]">
+          <p className="text-center font-[Montserrat] font-semibold text-white text-[13px] sm:text-[14px] md:text-[17px] lg:text-[19px] leading-tight tracking-wide">
             {HERO_CAPTION}
           </p>
         </div>
+
       </div>
     </section>
   );
