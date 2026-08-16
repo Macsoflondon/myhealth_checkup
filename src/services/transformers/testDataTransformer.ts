@@ -126,7 +126,8 @@ export class TestDataTransformer {
       collectionFeeNote: TestDataTransformer.resolveCollectionFeeNote(test),
       clinicalReviewType: toClinicalReviewType(test.clinical_review_type),
       clinicalReviewFee:
-        typeof test.clinical_review_fee === 'number' ? test.clinical_review_fee : null
+        typeof test.clinical_review_fee === 'number' ? test.clinical_review_fee : null,
+      clinicalReviewNote: TestDataTransformer.resolveClinicalReviewNote(test),
 
     };
   }
@@ -251,5 +252,18 @@ export class TestDataTransformer {
     const totalText = `£${total.toFixed(0)}`;
     const feeText = `£${amount.toFixed(0)}`;
     return `The total shown (${totalText}) includes the standard phlebotomy fee. A home-visit phlebotomy appointment costs an additional ${feeText}.`;
+  }
+
+  /**
+   * Build a plain-English disclaimer for the clinical review cell when a
+   * provider's optional add-on needs extra context.
+   * Currently used for Medical Diagnosis's Premium Report add-on.
+   */
+  private static resolveClinicalReviewNote(test: LiveTestRow): string | null {
+    if (test.provider_id !== 'medical-diagnosis') return null;
+    if (toClinicalReviewType(test.clinical_review_type) !== 'optional') return null;
+    const fee = typeof test.clinical_review_fee === 'number' ? test.clinical_review_fee : null;
+    if (fee == null) return null;
+    return `Medical Diagnosis offer a Premium Report service for an extra £${fee.toFixed(0)}.`;
   }
 }
