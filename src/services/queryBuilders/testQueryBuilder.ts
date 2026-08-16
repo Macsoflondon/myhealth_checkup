@@ -24,6 +24,19 @@ export class TestQueryBuilder {
    *   2. SLUG_TO_CANONICAL_CATEGORIES (1:1 canonical_category match)
    *   3. ilike fallback across category / name / description
    */
+  /** Exact canonical_category match — used by live-comparison panels. */
+  static buildCanonicalCategoryQuery(canonical: string) {
+    return supabase
+      .from('provider_tests')
+      .select(COMPARE_SELECT)
+      .eq('is_active', true)
+      .eq('canonical_category', canonical)
+      .not('price', 'is', null)
+      .gt('price', 0)
+      .order('price', { ascending: true })
+      .limit(DEFAULT_LIMIT);
+  }
+
   static buildCategoryQuery(category: string, providers: string[] = ['all']) {
     let query = supabase
       .from('provider_tests')

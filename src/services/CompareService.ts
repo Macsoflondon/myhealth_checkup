@@ -166,7 +166,12 @@ export class CompareService {
     const slug = canonical.trim();
     if (!slug) return [];
 
-    const tests = await this.getTestsByCategory(slug);
+    const { data, error } = await TestQueryBuilder.buildCanonicalCategoryQuery(slug);
+    if (error) {
+      logger.error('Error fetching panel tests:', error);
+      return [];
+    }
+    const tests = TestDataTransformer.transformMultiple(data ?? []);
     const cheapestByProvider = new Map<string, CompareTestData>();
 
     for (const test of tests) {
