@@ -1,43 +1,21 @@
-import { ShieldCheck, BadgeCheck, FlaskConical, Lock, Tag, Stethoscope, type LucideIcon } from "lucide-react";
 import { Reveal } from "@/components/primitives/Reveal";
 import { HERO_CAPTION } from "@/components/sections/hero-slides";
 
 interface TrustItem {
-  icon: LucideIcon;
   label: string;
 }
 
 const trustItems: TrustItem[] = [
-  { icon: FlaskConical, label: "UKAS-Accredited Labs" },
-  { icon: ShieldCheck, label: "CQC-Regulated Clinics" },
-  { icon: BadgeCheck, label: "ISO 15189 Certification" },
-  { icon: Lock, label: "GDPR Compliant" },
-  { icon: Tag, label: "Transparent Pricing" },
-  { icon: Stethoscope, label: "No GP Referral Needed" },
+  { label: "UKAS-Accredited Labs" },
+  { label: "CQC-Regulated Clinics" },
+  { label: "ISO 15189 Certification" },
+  { label: "GDPR Compliant" },
+  { label: "Transparent Pricing" },
+  { label: "No GP Referral Needed" },
 ];
 
 const underlineColors = ["#22c0d4", "#e70d69", "#081129", "#22c0d4", "#e70d69", "#081129"];
 
-interface BadgePillProps {
-  item: TrustItem;
-}
-
-const BadgePill = ({ item }: BadgePillProps) => {
-  const Icon = item.icon;
-  return (
-    <div className="flex items-center gap-2 sm:gap-2.5 whitespace-nowrap lg:px-5">
-      <span
-        aria-hidden="true"
-        className="flex items-center justify-center rounded-full w-7 h-7 sm:w-9 sm:h-9 shrink-0 bg-[hsl(var(--trust-tone)/var(--trust-tone-alpha))] text-[hsl(var(--trust-tone))]"
-      >
-        <Icon className="w-[14px] h-[14px] sm:w-[18px] sm:h-[18px]" strokeWidth={2.25} />
-      </span>
-      <span className="font-sans font-bold text-[11px] sm:text-[13px] text-[#081129]">
-        {item.label}
-      </span>
-    </div>
-  );
-};
 
 /**
  * Trust signals bar — static standards row.
