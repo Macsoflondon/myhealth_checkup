@@ -161,6 +161,7 @@ const BookingButton = ({
 const BiomarkersSection = ({ biomarkers, biomarkerCount }: { biomarkers: string[] | null | undefined; biomarkerCount: number | null | undefined }) => {
   const [biomarkerDetails, setBiomarkerDetails] = useState<Record<string, BiomarkerInfo>>({});
   const [loading, setLoading] = useState(false);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const fetchBiomarkerDetails = async () => {
@@ -194,14 +195,19 @@ const BiomarkersSection = ({ biomarkers, biomarkerCount }: { biomarkers: string[
     return null;
   }
 
-  const displayCount = biomarkerCount || biomarkers.length;
+  const incomplete = typeof biomarkerCount === 'number' && biomarkerCount > biomarkers.length;
+  const heading = incomplete
+    ? `Biomarkers tested \u2014 showing ${biomarkers.length} of ${biomarkerCount} published by the provider`
+    : `Biomarkers tested (${biomarkers.length})`;
+  const visibleBiomarkers = showAll ? biomarkers : biomarkers.slice(0, 5);
+  const hiddenCount = biomarkers.length - 5;
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <FlaskConical className="h-5 w-5 text-primary" />
-          Biomarkers Tested ({displayCount})
+          {heading}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -217,7 +223,7 @@ const BiomarkersSection = ({ biomarkers, biomarkerCount }: { biomarkers: string[
         ) : (
           <TooltipProvider>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {biomarkers.map((biomarker, index) => {
+              {visibleBiomarkers.map((biomarker, index) => {
                 const details = biomarkerDetails[biomarker.toLowerCase()];
                 
                 return (
@@ -247,6 +253,16 @@ const BiomarkersSection = ({ biomarkers, biomarkerCount }: { biomarkers: string[
               })}
             </div>
           </TooltipProvider>
+        )}
+        {hiddenCount > 0 && (
+          <button
+            type="button"
+            onClick={() => setShowAll((v) => !v)}
+            aria-expanded={showAll}
+            className="mt-3 text-xs font-semibold text-[#22c0d4] underline underline-offset-2 hover:text-[#e70d69] transition-colors"
+          >
+            {showAll ? 'Show less' : `Show ${hiddenCount} more`}
+          </button>
         )}
       </CardContent>
     </Card>
