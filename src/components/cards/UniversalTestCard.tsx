@@ -37,6 +37,9 @@ export interface UniversalTestData {
   symptoms?: string[] | null;
   who_should_test?: string | null;
   url?: string | null;
+  /** Provider product-packaging image shown as the card's resting state */
+  image_url?: string | null;
+
   is_popular?: boolean;
   home_kit_available?: boolean;
   clinic_visit_available?: boolean;
