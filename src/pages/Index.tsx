@@ -278,7 +278,7 @@ const Index = () => {
                 <p className="text-white text-base sm:text-lg leading-relaxed text-center max-w-2xl mx-auto">
                   Answer 6 quick questions and our AI will analyse{" "}
                   {activeTestCount.toLocaleString("en-GB")} accredited tests to
-                  find your best-matched options — with transparent pricing.
+                  find your best-matched options, with transparent pricing.
                 </p>
               </div>
             </div>
