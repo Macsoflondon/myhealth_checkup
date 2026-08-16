@@ -12,10 +12,13 @@ import { CompareService } from "@/services/CompareService";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import {
   COMPARE_IDS_PARAM,
+  COMPARE_PANEL_PARAM,
   parseCompareIds,
+  parseComparePanel,
   sameCompareIds,
   serialiseCompareIds,
 } from "@/lib/compareUrl";
+
 import type { CompareTestData } from "@/types";
 
 interface CompareUrlSync {
