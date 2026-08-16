@@ -14,6 +14,7 @@ export interface MedichecksTestCardProps {
   price: number | null;
   sampleType: string | null;
   slug: string;
+  imageUrl?: string | null;
 }
 
 /**

@@ -38,7 +38,7 @@ export const ProviderTestsGrid = ({ providerSlug, providerDisplayName, limit = 1
       const { data, error } = await supabase
         .from("provider_tests")
         .select(
-          "id, test_name, price, base_price, category, sample_type, collection_method, measurement_type, who_should_test, home_kit_available, clinic_visit_available, url, biomarker_count, biomarkers_list, description, turnaround_days_text, collection_options, popularity_rank, is_popular, is_addon, purchase_notes, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189"
+          "id, test_name, image_url, price, base_price, category, sample_type, collection_method, measurement_type, who_should_test, home_kit_available, clinic_visit_available, url, biomarker_count, biomarkers_list, description, turnaround_days_text, collection_options, popularity_rank, is_popular, is_addon, purchase_notes, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189"
         )
         .eq("provider_id", dbId)
         .eq("is_active", true)
@@ -92,6 +92,7 @@ export const ProviderTestsGrid = ({ providerSlug, providerDisplayName, limit = 1
             clinic_visit_available: t.clinic_visit_available ?? null,
             biomarker_count: t.biomarker_count ?? null,
             url: t.url ?? null,
+            image_url: t.image_url ?? null,
             biomarkers_list: (t.biomarkers_list as any) ?? null,
             turnaround_days_text: t.turnaround_days_text ?? null,
             base_price: t.base_price ?? null,

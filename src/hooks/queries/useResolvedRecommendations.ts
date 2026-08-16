@@ -10,7 +10,7 @@ interface RecInput {
 
 const SELECT = `
   id, provider_id, test_name, description, price, category, sample_type,
-  biomarker_count, biomarkers_list, url, home_kit_available, clinic_visit_available,
+  biomarker_count, biomarkers_list, url, image_url, home_kit_available, clinic_visit_available,
   turnaround_days_text, base_price, collection_options, is_popular,
   collection_fee_amount, total_expected_cost, symptoms, who_should_test
 `;
