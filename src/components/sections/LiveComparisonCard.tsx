@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
 import { useDynamicComparisonPanels } from "@/hooks/useDynamicComparisonPanels";
+
 
 export type LiveComparisonPanelData = {
   name: string;
