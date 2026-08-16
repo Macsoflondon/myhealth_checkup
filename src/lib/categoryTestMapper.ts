@@ -91,5 +91,6 @@ export function mapProviderTestRow(row: ProviderTestRow, badgeColor: string): Ca
     tag: "All",
     collection,
     url: row.url || undefined,
+    imageUrl: row.image_url || undefined,
   };
 }

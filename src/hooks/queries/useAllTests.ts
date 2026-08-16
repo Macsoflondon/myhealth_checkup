@@ -119,6 +119,7 @@ export function useAllTests() {
           tag,
           collection,
           url: row.url || undefined,
+          imageUrl: row.image_url || undefined,
         };
       });
     },
