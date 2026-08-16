@@ -8,7 +8,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { logger } from '@/lib/logger';
 
 /** Last verified catalogue size, used until the live count resolves. */
-export const ACTIVE_TEST_COUNT_FALLBACK = 730;
+export const ACTIVE_TEST_COUNT_FALLBACK = 714;
 
 export const activeTestCountQueryKey = ['catalogue', 'active-test-count'] as const;
 
