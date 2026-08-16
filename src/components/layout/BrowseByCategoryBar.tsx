@@ -132,6 +132,18 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     observer.observe(sentinel);
     return () => observer.disconnect();
   }, [placement]);
+  // Slide the pinned bar in on the frame after it flips to fixed, so the
+  // browser has a start state to animate from instead of snapping into place.
+  const [pinEnter, setPinEnter] = useState(false);
+  useEffect(() => {
+    if (!heroPinned) {
+      setPinEnter(false);
+      return;
+    }
+    const raf = requestAnimationFrame(() => setPinEnter(true));
+    return () => cancelAnimationFrame(raf);
+  }, [heroPinned]);
+
   useEffect(() => {
     if (!moreOpen) return;
     const onDoc = (e: MouseEvent) => {
