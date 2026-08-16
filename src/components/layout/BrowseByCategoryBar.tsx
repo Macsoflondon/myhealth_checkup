@@ -336,7 +336,17 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
 
           </div>
         );
+        if (placement === "hero") {
+          return (
+            <>
+              {desktopBar}
+              {/* Reserve the bar's height once it pins so nothing jumps. */}
+              <div aria-hidden="true" className="hidden md:block" style={{ height: heroPinned ? barHeight : 0 }} />
+            </>
+          );
+        }
         return useStraddle && anchorEl ? createPortal(desktopBar, anchorEl) : desktopBar;
+
       })()}
     </>
   );
