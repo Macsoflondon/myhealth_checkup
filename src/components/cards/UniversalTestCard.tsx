@@ -8,6 +8,7 @@ import { getProviderRating } from "@/constants/providerRatings";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import type { CompareTestData } from "@/types";
 import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
+import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
 
 // ─── Design tokens (kept inline to mirror AtHomeTestsPage exactly) ───────────
 export const UTC_NAVY = "#081129";
