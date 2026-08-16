@@ -199,11 +199,11 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                 </Link>
                 {placement === "hero" && (
                   <p className="font-[Montserrat] font-bold text-left m-0 mt-1 md:mt-2 text-base sm:text-lg md:text-xl uppercase tracking-[0.22em] leading-none">
-                    <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white/70" : "text-[#081129]/55"}`}>Your </span>
+                    <span className="transition-colors duration-300 ease-out text-[#081129]/55">Your </span>
                     <span className="text-[#22c0d4]">health</span>
-                    <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white/70" : "text-[#081129]/55"}`}>. Your </span>
+                    <span className="transition-colors duration-300 ease-out text-[#081129]/55">. Your </span>
                     <span className="text-[#e70d69]">choice</span>
-                    <span className={`transition-colors duration-300 ease-out ${scrolled ? "text-white/70" : "text-[#081129]/55"}`}>.</span>
+                    <span className="transition-colors duration-300 ease-out text-[#081129]/55">.</span>
                   </p>
                 )}
               </div>
