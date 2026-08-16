@@ -1,7 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
-import { LanguageSwitcher } from "@/components/header/LanguageSwitcher";
-import { UserMenu } from "@/components/header/UserMenu";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 
@@ -13,15 +11,6 @@ import {
   FIRST_SLIDE_LQIP,
   HERO_CAPTION,
 } from "@/components/sections/hero-slides";
-
-const Wordmark = () => (
-  <span className="inline-flex items-center leading-[1.1] min-w-0 py-2 sm:py-3">
-    <span className="font-bold tracking-[-0.02em] font-[Montserrat] whitespace-nowrap text-[clamp(2.25rem,12vw,4rem)] sm:text-[clamp(4.5rem,8vw,8rem)] lg:text-[7rem] xl:text-[8rem]">
-      <span className="text-white">myhealth</span>
-      <span className="text-brand-pink">checkup</span>
-    </span>
-  </span>
-);
 
 export default function HeroMasthead({
   rotateMs = 15000,
@@ -83,7 +72,7 @@ export default function HeroMasthead({
       </div>
 
 
-      <div className="relative overflow-hidden mt-0 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-0">
+      <div className="relative overflow-hidden mt-0 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-20">
         {/* Blurred LQIP + gradient placeholder — fades out once slide 1 paints */}
         <div
           aria-hidden
