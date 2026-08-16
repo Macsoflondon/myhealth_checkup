@@ -7,7 +7,6 @@ import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 import {
   SLIDES,
   FIRST_SLIDE_LQIP,
-  HERO_CAPTION,
 } from "@/components/sections/hero-slides";
 
 export default function HeroMasthead({
