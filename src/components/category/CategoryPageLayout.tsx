@@ -277,6 +277,8 @@ export function CategoryPageLayout({
                       sample_type: test.collection ?? null,
                       biomarker_count: test.biomarkerCount ?? null,
                       url: test.url ?? null,
+                      image_url: test.imageUrl ?? null,
+
                       biomarkers_list: (test.biomarkers as any) ?? null,
                       turnaround_days_text: test.turnaround ?? null,
                       base_price: null,
