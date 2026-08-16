@@ -3,8 +3,6 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 
-const TURQUOISE = "#22c0d4";
-const PINK = "#e70d69";
 
 import {
   SLIDES,
