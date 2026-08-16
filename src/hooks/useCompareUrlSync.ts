@@ -158,7 +158,8 @@ export function useCompareUrlSync(): CompareUrlSync {
 
   return {
     selected,
-    isHydrating: shouldHydrate && isFetching,
+    isHydrating: (shouldHydrate && isFetching) || (shouldLoadPanel && isPanelFetching),
     missingIds,
   };
 }
+
