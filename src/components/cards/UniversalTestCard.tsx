@@ -819,7 +819,9 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
             </button>
           </div>
         </div>
+        </div>
       </div>
+
 
       {internalOpen && !onOpenDetail && (
         <UniversalTestDetailModal test={test} onClose={() => setInternalOpen(false)} />
