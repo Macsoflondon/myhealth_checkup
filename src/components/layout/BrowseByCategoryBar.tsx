@@ -190,7 +190,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
 
       <div ref={sentinelRef} aria-hidden="true" className={placement === "hero" ? "absolute inset-x-0 top-0 h-px" : "h-px w-full"} />
       <div className="w-full shrink-0 basis-full relative" data-testid="browse-by-category-bar-mobile">
-        <div data-scrolled={scrolled} className={`${placement === "hero" ? "flex flex-col px-4 sm:px-6 md:px-9 min-h-[80px] md:min-h-[104px] py-3 md:py-4" : "flex items-center px-4 sm:px-6 md:px-9 h-20 md:h-[104px]"} transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b ${scrolled ? "bg-[#081129] border-[#081129] shadow-[0_2px_10px_rgba(8,17,41,0.18)]" : "bg-white border-[#081129]/10"}`}>
+        <div data-scrolled={scrolled} className={`${placement === "hero" ? "flex flex-col px-4 sm:px-6 md:px-9 min-h-[96px] md:min-h-[120px] py-3 md:py-4" : "flex items-center px-4 sm:px-6 md:px-9 h-24 md:h-[120px]"} transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b bg-white border-[#081129]/10`}>
             <div className="flex items-start w-full shrink-0">
               <div className="flex flex-col min-w-0 pr-14">
                 <Link to="/" className="flex items-center h-14 md:h-[84px] lg:h-[96px] no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] text-[44px] md:text-[64px] lg:text-[76px] leading-none">
