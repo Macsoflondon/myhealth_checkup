@@ -55,44 +55,32 @@ const AccreditedProvidersBar = () => {
           </p>
         </Reveal>
 
-        {/* Mobile-only editorial standards header */}
-        <div className="flex sm:hidden flex-col items-center mb-3">
-          <div className="text-[10px] font-bold uppercase tracking-[0.25em] text-[#081129]/40 mb-2">
+        {/* Editorial standards header */}
+        <div className="flex flex-col items-center mb-3">
+          <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-[#081129]/40 mb-2">
             Our clinical standards
           </div>
           <div className="w-8 h-[2px] bg-[#22c0d4]" />
         </div>
 
-        <Reveal variant="fade">
-          <p className="hidden sm:block text-center font-sans font-bold uppercase tracking-[0.12em] sm:tracking-[0.14em] text-[10px] sm:text-[11px] text-[#081129]/90 mb-1 sm:mb-2 px-2">
-            All listed providers meet every one of the following standards
-          </p>
-        </Reveal>
-
-        {/* Mobile: two-column underline grid */}
-        <div className="grid sm:hidden grid-cols-2 gap-y-4 gap-x-4" data-testid="accreditors-mobile-grid">
+        {/* Underline grid — same treatment at every breakpoint */}
+        <div
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-y-4 gap-x-4 sm:gap-x-6"
+          data-testid="accreditors-mobile-grid"
+        >
           {trustItems.map((item, idx) => (
             <div key={item.label} className="group">
               <div
                 className="w-6 h-1.5 mb-2 rounded-full"
                 style={{ backgroundColor: underlineColors[idx % underlineColors.length] }}
               />
-              <h3 className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#081129] leading-tight">
+              <h3 className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.14em] text-[#081129] leading-tight">
                 {item.label}
               </h3>
             </div>
           ))}
         </div>
 
-        {/* Desktop / sm+: icon pill row */}
-        <div
-          className="hidden sm:grid sm:grid-cols-4 gap-y-3 gap-x-3 justify-items-center lg:flex lg:flex-nowrap lg:items-center lg:justify-center lg:gap-y-0"
-          data-testid="accreditors-static-row"
-        >
-          {trustItems.map((item) => (
-            <BadgePill key={item.label} item={item} />
-          ))}
-        </div>
       </div>
     </section>
   );
