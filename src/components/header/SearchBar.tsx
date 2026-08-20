@@ -3,10 +3,13 @@ import { Search } from "lucide-react";
 import { useNavigate } from "@/lib/router-compat";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useActiveTestCount } from "@/hooks/queries/useActiveTestCount";
 
 export const SearchBar = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const activeTestCount = useActiveTestCount();
+  const roundedCount = Math.floor(activeTestCount / 10) * 10;
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,9 +25,9 @@ export const SearchBar = () => {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground pointer-events-none z-10" />
           <Input
             type="text"
-            placeholder="Search across 540+ tests"
+            placeholder={`Search across ${roundedCount}+ tests`}
             value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10 pr-3 h-11 w-full text-sm md:text-base bg-white text-foreground border-border focus:border-brand-turquoise focus:ring-2 focus:ring-brand-turquoise/20 rounded-r-none"
           />
         </div>
