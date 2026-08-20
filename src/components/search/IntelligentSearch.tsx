@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useSearchTestsQuery } from '@/hooks/queries/useTestsQuery';
+import { useActiveTestCount } from '@/hooks/queries/useActiveTestCount';
+import { getSupportedProviderIds, normalizeProviderId } from '@/constants/providers';
 
 const POPULAR_SEARCHES = [
   "Thyroid function",
