@@ -3,6 +3,7 @@ import { Search } from "lucide-react";
 import { useNavigate } from "@/lib/router-compat";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useActiveTestCount } from "@/hooks/queries/useActiveTestCount";
 
 export const SearchBar = () => {
   const navigate = useNavigate();
