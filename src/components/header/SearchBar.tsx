@@ -27,7 +27,7 @@ export const SearchBar = () => {
             type="text"
             placeholder={`Search across ${roundedCount}+ tests`}
             value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
+            onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10 pr-3 h-11 w-full text-sm md:text-base bg-white text-foreground border-border focus:border-brand-turquoise focus:ring-2 focus:ring-brand-turquoise/20 rounded-r-none"
           />
         </div>

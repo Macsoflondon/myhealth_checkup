@@ -1,14 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
-import React, { useState, useEffect, useMemo } from 'react';
-import { Search, Brain, TrendingUp, X } from 'lucide-react';
-import { useSearchParams } from '@/lib/router-compat';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { useSearchTestsQuery } from '@/hooks/queries/useTestsQuery';
-import { useActiveTestCount } from '@/hooks/queries/useActiveTestCount';
-import { getSupportedProviderIds, normalizeProviderId } from '@/constants/providers';
+import React, { useState, useEffect, useMemo } from "react";
+import { Search, Brain, TrendingUp, X } from "lucide-react";
+import { useSearchParams } from "@/lib/router-compat";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { useSearchTestsQuery } from "@/hooks/queries/useTestsQuery";
+import { useActiveTestCount } from "@/hooks/queries/useActiveTestCount";
+import {
+  getSupportedProviderIds,
+  normalizeProviderId,
+} from "@/constants/providers";
 
 const POPULAR_SEARCHES = [
   "Thyroid function",
@@ -21,39 +24,51 @@ const POPULAR_SEARCHES = [
   "Liver function",
 ];
 
-type SortKey = 'relevance' | 'price-low' | 'price-high';
+type SortKey = "relevance" | "price-low" | "price-high";
 
 const IntelligentSearch = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const initialQ = searchParams.get('q') ?? '';
+  const initialQ = searchParams.get("q") ?? "";
   const [searchTerm, setSearchTerm] = useState(initialQ);
   const [activeQuery, setActiveQuery] = useState(initialQ);
-  const [sortBy, setSortBy] = useState<SortKey>('relevance');
+  const [sortBy, setSortBy] = useState<SortKey>("relevance");
   const activeTestCount = useActiveTestCount();
-  const roundedTestCount = useMemo(() => Math.floor(activeTestCount / 10) * 10, [activeTestCount]);
+  const roundedTestCount = useMemo(
+    () => Math.floor(activeTestCount / 10) * 10,
+    [activeTestCount],
+  );
   const providerCount = useMemo(
-    () => new Set(getSupportedProviderIds().map((id) => normalizeProviderId(id))).size,
-    []
+    () =>
+      new Set(getSupportedProviderIds().map((id) => normalizeProviderId(id)))
+        .size,
+    [],
   );
 
   // Sync URL ?q= into the active query (covers back/forward + header nav).
   useEffect(() => {
-    const q = searchParams.get('q') ?? '';
+    const q = searchParams.get("q") ?? "";
     setSearchTerm(q);
     setActiveQuery(q);
   }, [searchParams]);
 
-  const { data: rawResults = [], isFetching } = useSearchTestsQuery(activeQuery, {
-    enabled: activeQuery.trim().length >= 2,
-  });
+  const { data: rawResults = [], isFetching } = useSearchTestsQuery(
+    activeQuery,
+    {
+      enabled: activeQuery.trim().length >= 2,
+    },
+  );
 
   const results = useMemo(() => {
     const arr = [...rawResults];
-    if (sortBy === 'price-low') {
-      return arr.sort((a: any, b: any) => (a.price ?? Infinity) - (b.price ?? Infinity));
+    if (sortBy === "price-low") {
+      return arr.sort(
+        (a: any, b: any) => (a.price ?? Infinity) - (b.price ?? Infinity),
+      );
     }
-    if (sortBy === 'price-high') {
-      return arr.sort((a: any, b: any) => (b.price ?? -Infinity) - (a.price ?? -Infinity));
+    if (sortBy === "price-high") {
+      return arr.sort(
+        (a: any, b: any) => (b.price ?? -Infinity) - (a.price ?? -Infinity),
+      );
     }
     return arr;
   }, [rawResults, sortBy]);
@@ -62,8 +77,8 @@ const IntelligentSearch = () => {
     const next = term.trim();
     setActiveQuery(next);
     const params = new URLSearchParams(searchParams);
-    if (next) params.set('q', next);
-    else params.delete('q');
+    if (next) params.set("q", next);
+    else params.delete("q");
     setSearchParams(params, { replace: true });
   };
 
@@ -73,8 +88,8 @@ const IntelligentSearch = () => {
   };
 
   const clearSearch = () => {
-    setSearchTerm('');
-    runSearch('');
+    setSearchTerm("");
+    runSearch("");
   };
 
   const isLoading = isFetching && activeQuery.length >= 2;
@@ -85,9 +100,12 @@ const IntelligentSearch = () => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold mb-4 text-navy">Find Your Perfect Health Test</h1>
+        <h1 className="text-3xl font-bold mb-4 text-navy">
+          Find Your Perfect Health Test
+        </h1>
         <p className="text-gray-600">
-          Search across {roundedTestCount}+ tests from {providerCount} UK providers — by name, biomarker, condition or category.
+          Search across {roundedTestCount}+ tests from {providerCount} UK
+          providers — by name, biomarker, condition or category.
         </p>
       </div>
 
@@ -127,7 +145,9 @@ const IntelligentSearch = () => {
         <div className="mb-8 border-2 border-[hsl(var(--navy))] rounded-lg p-4">
           <div className="flex items-center gap-2 mb-4">
             <TrendingUp className="h-5 w-5 text-health-600" />
-            <h2 className="text-lg font-semibold text-[#081129]">Popular Searches</h2>
+            <h2 className="text-lg font-semibold text-[#081129]">
+              Popular Searches
+            </h2>
           </div>
           <div className="flex flex-wrap gap-2">
             {POPULAR_SEARCHES.map((s) => (
@@ -158,7 +178,8 @@ const IntelligentSearch = () => {
         <div>
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-lg font-semibold">
-              {results.length} {results.length === 1 ? 'result' : 'results'} for "{activeQuery}"
+              {results.length} {results.length === 1 ? "result" : "results"} for
+              "{activeQuery}"
             </h2>
             <div className="flex items-center gap-2">
               <span className="text-sm text-gray-600">Sort by:</span>
@@ -183,7 +204,9 @@ const IntelligentSearch = () => {
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-2 flex-wrap">
-                      <h3 className="font-semibold text-lg text-gray-900">{r.test_name}</h3>
+                      <h3 className="font-semibold text-lg text-gray-900">
+                        {r.test_name}
+                      </h3>
                       {r.canonical_category && (
                         <Badge variant="outline" className="text-xs">
                           {r.canonical_category}
@@ -191,7 +214,11 @@ const IntelligentSearch = () => {
                       )}
                     </div>
                     <div className="flex items-center gap-3 text-sm text-gray-600 flex-wrap">
-                      {r.provider_id && <span className="capitalize">{r.provider_id.replace(/-/g, ' ')}</span>}
+                      {r.provider_id && (
+                        <span className="capitalize">
+                          {r.provider_id.replace(/-/g, " ")}
+                        </span>
+                      )}
                       {r.category && (
                         <>
                           <span>•</span>
@@ -206,19 +233,27 @@ const IntelligentSearch = () => {
                       )}
                     </div>
                     {r.description && (
-                      <p className="mt-2 text-sm text-gray-600 line-clamp-2">{r.description}</p>
+                      <p className="mt-2 text-sm text-gray-600 line-clamp-2">
+                        {r.description}
+                      </p>
                     )}
                   </div>
                   <div className="text-right shrink-0">
                     {r.price != null && (
-                      <div className="text-2xl font-bold text-health-600 mb-2">£{r.price}</div>
+                      <div className="text-2xl font-bold text-health-600 mb-2">
+                        £{r.price}
+                      </div>
                     )}
                     <Button
                       asChild
                       size="sm"
                       className="bg-brand-pink hover:bg-brand-pink/90 text-white"
                     >
-                      <a href={r.url || '#'} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={r.url || "#"}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         View Details
                       </a>
                     </Button>
@@ -233,8 +268,12 @@ const IntelligentSearch = () => {
       {noResults && (
         <div className="text-center py-8">
           <Search className="h-12 w-12 text-navy mx-auto mb-4" />
-          <h3 className="text-lg font-semibold mb-2 text-navy">No matches found</h3>
-          <p className="text-navy mb-4">Try a related term or one of these popular searches:</p>
+          <h3 className="text-lg font-semibold mb-2 text-navy">
+            No matches found
+          </h3>
+          <p className="text-navy mb-4">
+            Try a related term or one of these popular searches:
+          </p>
           <div className="flex flex-wrap gap-2 justify-center">
             {POPULAR_SEARCHES.slice(0, 4).map((s) => (
               <Button
