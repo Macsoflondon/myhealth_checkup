@@ -8,6 +8,8 @@ import { useActiveTestCount } from "@/hooks/queries/useActiveTestCount";
 export const SearchBar = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const activeTestCount = useActiveTestCount();
+  const roundedCount = Math.floor(activeTestCount / 10) * 10;
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
