@@ -87,7 +87,7 @@ const IntelligentSearch = () => {
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-4 text-navy">Find Your Perfect Health Test</h1>
         <p className="text-gray-600">
-          Search across 540+ tests from 9 UK providers — by name, biomarker, condition or category.
+          Search across {roundedTestCount}+ tests from {providerCount} UK providers — by name, biomarker, condition or category.
         </p>
       </div>
 
