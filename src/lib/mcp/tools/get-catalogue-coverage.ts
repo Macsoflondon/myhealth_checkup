@@ -81,7 +81,7 @@ export default defineTool({
       stale_tests: stale,
       never_validated_tests: neverValidated,
       active_categories: categories.data?.length ?? 0,
-      category_test_mappings: mappings.count ?? 0,
+      category_test_mappings: activeMappings.length,
       by_provider: [...byProvider.values()].sort((a, b) => b.active_tests - a.active_tests),
       by_category: [...byCategory.values()].sort((a, b) => b.active_tests - a.active_tests),
     });
