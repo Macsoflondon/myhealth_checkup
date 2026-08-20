@@ -29,6 +29,12 @@ const IntelligentSearch = () => {
   const [searchTerm, setSearchTerm] = useState(initialQ);
   const [activeQuery, setActiveQuery] = useState(initialQ);
   const [sortBy, setSortBy] = useState<SortKey>('relevance');
+  const activeTestCount = useActiveTestCount();
+  const roundedTestCount = useMemo(() => Math.floor(activeTestCount / 10) * 10, [activeTestCount]);
+  const providerCount = useMemo(
+    () => new Set(getSupportedProviderIds().map((id) => normalizeProviderId(id))).size,
+    []
+  );
 
   // Sync URL ?q= into the active query (covers back/forward + header nav).
   useEffect(() => {
