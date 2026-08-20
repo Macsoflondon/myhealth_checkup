@@ -37,13 +37,17 @@ export default defineTool({
         .eq("is_active", true)
         .limit(20000),
       client.from("categories").select("id, slug, name, is_active").eq("is_active", true),
-      client.from("category_test_mapping").select("category_id", { count: "exact", head: true }),
+      client.from("category_test_mapping").select("provider_test_id, category_id").limit(10000),
     ]);
 
     const firstError = tests.error ?? categories.error ?? mappings.error;
     if (firstError) return fail(firstError.message);
 
     const rows = (tests.data ?? []) as TestRow[];
+    const activeIds = new Set(rows.map((r) => r.id));
+    const activeMappings = ((mappings.data ?? []) as { provider_test_id: string | null }[]).filter((m) =>
+      m.provider_test_id ? activeIds.has(m.provider_test_id) : false
+    );
     const cutoff = Date.now() - args.stale_after_days * 86_400_000;
 
     const byProvider = new Map<string, { provider_id: string; active_tests: number; stale: number; never_validated: number }>();

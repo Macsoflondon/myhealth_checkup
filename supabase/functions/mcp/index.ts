@@ -328,11 +328,15 @@ var get_catalogue_coverage_default = defineTool8({
     const [tests, categories, mappings] = await Promise.all([
       client.from("provider_tests").select("id, provider_id, canonical_category, is_active, last_validated_at").eq("is_active", true).limit(2e4),
       client.from("categories").select("id, slug, name, is_active").eq("is_active", true),
-      client.from("category_test_mapping").select("category_id", { count: "exact", head: true })
+      client.from("category_test_mapping").select("provider_test_id, category_id").limit(1e4)
     ]);
     const firstError = tests.error ?? categories.error ?? mappings.error;
     if (firstError) return fail(firstError.message);
     const rows = tests.data ?? [];
+    const activeIds = new Set(rows.map((r) => r.id));
+    const activeMappings = (mappings.data ?? []).filter(
+      (m) => m.provider_test_id ? activeIds.has(m.provider_test_id) : false
+    );
     const cutoff = Date.now() - args.stale_after_days * 864e5;
     const byProvider = /* @__PURE__ */ new Map();
     const byCategory = /* @__PURE__ */ new Map();
