@@ -6153,6 +6153,7 @@ export type Database = {
       cleanup_old_rate_limits: { Args: never; Returns: undefined }
       cleanup_protected_call_log: { Args: never; Returns: undefined }
       cleanup_role_audit_log: { Args: never; Returns: undefined }
+      get_apify_token: { Args: never; Returns: string }
       get_biomarker_validation_issues: {
         Args: never
         Returns: {
