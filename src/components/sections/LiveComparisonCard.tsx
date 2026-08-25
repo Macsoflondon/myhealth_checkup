@@ -129,32 +129,32 @@ const LiveComparisonCard = ({
   if (!test) return null;
 
   return (
-    <div className={`relative bg-white rounded-[2rem] border border-slate-200 shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 ring-slate-200/60 overflow-hidden h-full transition-transform duration-700 ease-out hover:-translate-y-1 ${className}`}>
+    <div className={`relative bg-[#F8FAFC] rounded-[2rem] border border-slate-200 shadow-[0_30px_80px_-20px_rgba(8,17,41,0.22),0_8px_24px_-8px_rgba(8,17,41,0.10)] ring-1 ring-slate-200/60 overflow-hidden h-full transition-transform duration-700 ease-out hover:-translate-y-1 ${className}`}>
       <div className="p-6 sm:p-8 md:p-10 flex flex-col h-full">
         <div className="flex items-center justify-center gap-3 mb-5">
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />
           <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise">{eyebrow}</span>
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />
         </div>
-        <h3 className="font-heading font-bold text-[#081129] tracking-tight text-2xl sm:text-3xl text-center mb-6 transition-all duration-500 ease-in-out" style={{ opacity: fading ? 0 : 1 }}>{test.name}</h3>
-        <div className="flex-1 flex flex-col transition-all duration-500 ease-in-out" style={{ opacity: fading ? 0 : 1, border: "1px solid rgba(8,17,41,0.08)", borderRadius: "20px", overflow: "hidden" }}>
-          <div style={{ padding: "12px 20px", borderBottom: "1px solid rgba(8,17,41,0.07)", background: "#fafbfc" }}>
+        <h3 className="font-heading font-bold text-brand-navy tracking-tight text-2xl sm:text-3xl text-center mb-6 transition-all duration-500 ease-in-out" style={{ opacity: fading ? 0 : 1 }}>{test.name}</h3>
+        <div className="flex-1 flex flex-col transition-all duration-500 ease-in-out bg-white border border-slate-100 rounded-[20px] overflow-hidden" style={{ opacity: fading ? 0 : 1 }}>
+          <div className="px-5 py-3 border-b border-slate-100 bg-slate-50/70">
             <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-              <span style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.16em", color: "#22c0d4" }}>{test.name}</span>
-              {test.methodLabel && <span className="font-heading text-[11px] font-bold uppercase tracking-[0.16em] text-[#081129]">{test.methodLabel}</span>}
+              <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-turquoise">{test.name}</span>
+              {test.methodLabel && <span className="font-heading text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">{test.methodLabel}</span>}
             </div>
           </div>
-          <div className="flex-1" style={{ padding: "0 20px" }}>
+          <div className="flex-1 px-5">
             {test.providers.map((provider, pi) => (
-              <div key={provider.name} style={{ paddingTop: "14px", paddingBottom: "14px", borderBottom: pi === test.providers.length - 1 ? "none" : "1px solid rgba(8,17,41,0.07)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "4px" }}>
-                  <span className="font-heading" style={{ fontSize: "16px", fontWeight: 700, color: "#081129" }}>{provider.name}</span>
-                  {provider.options.length > 1 && <span style={{ fontSize: "12px", fontWeight: 600, color: "rgba(8,17,41,0.45)" }}>From</span>}
+              <div key={provider.name} className="py-3.5 border-b border-slate-100 last:border-b-0">
+                <div className="flex justify-between items-baseline mb-1">
+                  <span className="font-heading text-base font-bold text-slate-700">{provider.name}</span>
+                  {provider.options.length > 1 && <span className="text-xs font-semibold text-slate-400">From</span>}
                 </div>
                 {provider.options.map((opt) => (
-                  <div key={opt.label} style={{ display: "flex", justifyContent: test.methodLabel ? "flex-end" : "space-between", alignItems: "center", marginTop: "2px" }}>
-                    {!test.methodLabel && <span style={{ fontSize: "14px", color: "rgba(8,17,41,0.55)" }}>{opt.label}</span>}
-                    <span className="font-heading" style={{ fontSize: "17px", fontWeight: 800, color: "#081129" }}>{opt.price}</span>
+                  <div key={opt.label} className={`flex items-center mt-0.5 ${test.methodLabel ? "justify-end" : "justify-between"}`}>
+                    {!test.methodLabel && <span className="text-sm text-slate-500">{opt.label}</span>}
+                    <span className="font-heading text-[17px] font-extrabold text-brand-turquoise">{opt.price}</span>
                   </div>
                 ))}
               </div>
@@ -172,9 +172,8 @@ const LiveComparisonCard = ({
               </Link>
             </div>
           )}
-          <div style={{ padding: "12px 20px", borderTop: "1px solid rgba(8,17,41,0.07)", background: "#fafbfc" }}>
-            <p style={{ fontSize: "11px", color: "rgba(8,17,41,0.4)", textAlign: "center", margin: 0 }}>{formatVerified(test.lastScrapedAt)}</p>
-
+          <div className="px-5 py-3 border-t border-slate-100 bg-slate-50/70">
+            <p className="text-[11px] text-slate-500 text-center m-0">{formatVerified(test.lastScrapedAt)}</p>
           </div>
         </div>
       </div>
