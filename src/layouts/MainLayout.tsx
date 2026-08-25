@@ -1,6 +1,5 @@
 import { ReactNode } from "react";
 import { useLocation } from "@/lib/router-compat";
-import { lazy, Suspense } from "react";
 import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import SiteBreadcrumb from "@/components/common/SiteBreadcrumb";
@@ -9,7 +8,6 @@ import { ComparisonBar } from "@/components/compare/ComparisonBar";
 import { compareResultsPath } from "@/lib/compareUrl";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import { useNavigate } from "@/lib/router-compat";
-const AccreditedProvidersBar = lazy(() => import("@/components/sections/AccreditedProvidersBar"));
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -33,14 +31,7 @@ export const MainLayout = ({
     <div className="min-h-dvh flex flex-col bg-[hsl(224,67%,10%)]">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg">Skip to main content</a>
       {!hideHeader && !isHome && (
-        <>
-          <BrowseByCategoryBar variant="flush" placement="straddle" />
-          {!isCompare && (
-            <Suspense fallback={<div className="min-h-[60px]" aria-hidden="true" />}>
-              <AccreditedProvidersBar />
-            </Suspense>
-          )}
-        </>
+        <BrowseByCategoryBar variant="flush" placement="straddle" />
       )}
       <main id="main-content" className={mainClassName} tabIndex={-1}>
         {!isCompare && <SiteBreadcrumb />}
