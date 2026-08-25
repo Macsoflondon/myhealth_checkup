@@ -189,9 +189,9 @@ const StayInformedSection = () => {
               </span>
             </div>
             <p className="font-heading font-bold text-xs sm:text-sm md:text-base text-white">
-              Your <span className="text-brand-pink">health.</span> Your{" "}
+              Your <span className="text-brand-turquoise">health.</span> Your{" "}
               <span className="text-brand-pink">choice.</span> One{" "}
-              <span className="text-brand-turquoise">trusted</span> platform.
+              <span className="text-white">trusted</span> platform.
             </p>
           </div>
         </div>
