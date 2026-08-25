@@ -20,6 +20,20 @@ export default defineConfig({
     plugins: [imagetools(), mcpPlugin()],
     // react-helmet-async ships CommonJS; bundle it so named exports interop under SSR.
     ssr: { noExternal: ["react-helmet-async"] },
+    // react-helmet-async pulls these in lazily; without pre-bundling them up front
+    // Vite re-optimises mid-session and force-reloads the page while React is
+    // rendering, which surfaces as "resolveDispatcher().use of null" + blank screen.
+    optimizeDeps: {
+      include: [
+        "react",
+        "react-dom",
+        "react-dom/client",
+        "react-helmet-async",
+        "invariant",
+        "react-fast-compare",
+        "shallowequal",
+      ],
+    },
     build: {
       // Split rarely-changing vendor code into stable, long-cacheable chunks so a
       // product deploy doesn't invalidate the whole JS payload.
