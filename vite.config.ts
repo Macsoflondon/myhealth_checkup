@@ -6,7 +6,6 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/supabase/vite";
-import { imagetools } from "vite-imagetools";
 
 // The Vite dev server owns the Node HTTP socket, so a client navigating away
 // mid-request surfaces as an uncaught `Error: aborted` from abortIncoming in
@@ -18,9 +17,7 @@ const isClientAbortError = (error: unknown): boolean =>
     error.name === "AbortError" ||
     (error as { code?: unknown }).code === "ECONNRESET" ||
     /abortIncoming|socketOnClose/.test(error.stack ?? "") ||
-    // Stale asset id requested by a page loaded before the dev server restarted:
-    // the imagetools cache is in-memory, so the id is simply gone. Dev-only noise.
-    /vite-imagetools cannot find image with id/.test(error.message));
+    /abortIncoming|socketOnClose/.test(error.stack ?? ""));
 
 const guardFlag = "__mhcViteAbortGuard";
 if (!(process as unknown as Record<string, unknown>)[guardFlag]) {
@@ -56,9 +53,7 @@ export default defineConfig({
     server: { entry: "server" },
   },
   vite: {
-    // imagetools generates responsive AVIF/WebP variants at build time.
-    // Query params (?w=480;768;1200&format=avif&as=srcset) drive the output.
-    plugins: [imagetools(), mcpPlugin()],
+    plugins: [mcpPlugin()],
     // react-helmet-async ships CommonJS; bundle it so named exports interop under SSR.
     ssr: { noExternal: ["react-helmet-async"] },
     // react-helmet-async pulls these in lazily; without pre-bundling them up front
