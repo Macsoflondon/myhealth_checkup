@@ -8,7 +8,8 @@ const corsHeaders = {
 };
 
 const LANG_NAMES: Record<string, string> = {
-  fr: 'French', es: 'Spanish', de: 'German', it: 'Italian', pt: 'Portuguese',
+  fr: 'French', es: 'Spanish', de: 'German', it: 'Italian', pt: 'European Portuguese',
+  'pt-BR': 'Brazilian Portuguese',
   nl: 'Dutch', pl: 'Polish', ar: 'Arabic', zh: 'Simplified Chinese', ja: 'Japanese',
 };
 
