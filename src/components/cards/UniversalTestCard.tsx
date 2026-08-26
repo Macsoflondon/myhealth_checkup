@@ -9,6 +9,7 @@ import { compareStore, useCompareItems } from "@/stores/compareStore";
 import type { CompareTestData } from "@/types";
 import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
 import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
+import { resolveTestSummary } from "@/lib/test-summary";
 
 // ─── Design tokens (kept inline to mirror AtHomeTestsPage exactly) ───────────
 export const UTC_NAVY = "#081129";
@@ -49,6 +50,21 @@ export interface UniversalTestData {
   is_addon?: boolean;
   purchase_notes?: string | null;
 }
+
+/** Provider description when published, otherwise a factual generated summary. */
+const summaryFor = (test: UniversalTestData, providerName?: string): string =>
+  resolveTestSummary(test.description, {
+    testName: test.test_name,
+    providerName: providerName ?? null,
+    measurementCount: test.biomarker_count ?? null,
+    measurementType: test.measurement_type ?? null,
+    sampleType: test.sample_type ?? null,
+    collectionMethod: test.collection_method ?? null,
+    turnaroundText: test.turnaround_days_text ?? null,
+    category: test.category ?? null,
+    homeKitAvailable: test.home_kit_available ?? null,
+    clinicVisitAvailable: test.clinic_visit_available ?? null,
+  });
 
 // ─── Collection add-on parsing ───────────────────────────────────────────────
 interface CollectionAddon {
@@ -294,13 +310,9 @@ export const UniversalTestDetailModal: React.FC<{
 
           <div>
             <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: UTC_NAVY, marginBottom: 8 }}>About This Test</div>
-            {test.description ? (
-              <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 14, color: "#475569", lineHeight: 1.6 }}>{test.description}</p>
-            ) : (
-              <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 14, color: "#94a3b8", lineHeight: 1.6, fontStyle: "italic" }}>
-                Overview not published by this provider.
-              </p>
-            )}
+            <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 14, color: "#475569", lineHeight: 1.6 }}>
+              {summaryFor(test, meta.name)}
+            </p>
           </div>
 
           {test.who_should_test && (
@@ -729,7 +741,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               minHeight: "calc(13px * 1.5 * 2)",
             }}
           >
-            {test.description || "Overview not published by this provider."}
+            {summaryFor(test, meta.name)}
           </p>
 
           {/* Biomarker chips */}
