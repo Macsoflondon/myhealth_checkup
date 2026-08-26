@@ -10,6 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
+    "test:smoke": "playwright test tests/e2e/render-smoke.spec.ts --project=chromium-desktop",
     "prebuild": "bash scripts/check-secrets.sh && node scripts/check-rls-grants.mjs && npx tsx scripts/generate-sitemap.ts",
     "seo:check": "node scripts/seo-regression.mjs",
     "security:check": "bash scripts/check-secrets.sh && node scripts/check-rls-grants.mjs",
