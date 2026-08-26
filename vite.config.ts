@@ -6,54 +6,45 @@
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/supabase/vite";
+import type { IncomingMessage } from "node:http";
+import type { Plugin } from "vite";
 
-// The Vite dev server owns the Node HTTP socket, so a client navigating away
-// mid-request surfaces as an uncaught `Error: aborted` from abortIncoming in
-// this process — before any app module loads. Swallow it here, at config load,
-// so it never reaches the runtime-error reporter as a phantom crash.
 const isClientAbortError = (error: unknown): boolean =>
   error instanceof Error &&
   (/^aborted$/i.test(error.message) ||
     error.name === "AbortError" ||
     (error as { code?: unknown }).code === "ECONNRESET" ||
-    /abortIncoming|socketOnClose/.test(error.stack ?? "") ||
     /abortIncoming|socketOnClose/.test(error.stack ?? ""));
 
-const guardFlag = "__mhcViteAbortGuard";
-if (!(process as unknown as Record<string, unknown>)[guardFlag]) {
-  (process as unknown as Record<string, unknown>)[guardFlag] = true;
-  const logAbort = (error: unknown, kind: string) => {
-    const err = error as Error & { code?: string };
-    console.warn(
-      `[abort] ${JSON.stringify({
-        at: new Date().toISOString(),
-        phase: "vite-dev",
-        kind,
-        message: err?.message,
-        code: err?.code,
-        stackHead: err?.stack?.split("\n").slice(0, 4).join(" | "),
-      })}`,
-    );
+function clientAbortBoundary(): Plugin {
+  const attachErrorBoundary = (request: IncomingMessage) => {
+    request.on("error", (error) => {
+      if (isClientAbortError(error)) return;
+      console.error(error);
+    });
   };
-  process.on("uncaughtException", (error) => {
-    if (isClientAbortError(error)) return logAbort(error, "uncaughtException");
-    throw error;
-  });
-  process.on("unhandledRejection", (reason) => {
-    if (isClientAbortError(reason)) return logAbort(reason, "unhandledRejection");
-    throw reason;
-  });
-}
 
+  return {
+    name: "myhealth-client-abort-boundary",
+    configureServer(server) {
+      // Node emits abortIncoming on the IncomingMessage itself. Register before
+      // Vite's request handler so a closed browser tab cannot become an
+      // uncaught process error or a false blank-screen report.
+      server.httpServer?.prependListener("request", attachErrorBoundary);
+    },
+    configurePreviewServer(server) {
+      server.httpServer?.prependListener("request", attachErrorBoundary);
+    },
+  };
+}
 export default defineConfig({
   tanstackStart: {
-
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
   },
   vite: {
-    plugins: [mcpPlugin()],
+    plugins: [clientAbortBoundary(), mcpPlugin()],
     // react-helmet-async ships CommonJS; bundle it so named exports interop under SSR.
     ssr: { noExternal: ["react-helmet-async"] },
     // react-helmet-async pulls these in lazily; without pre-bundling them up front
@@ -77,7 +68,8 @@ export default defineConfig({
         output: {
           manualChunks(id: string) {
             if (!id.includes("node_modules")) return undefined;
-            if (id.includes("recharts") || id.includes("d3-")) return "vendor-charts";
+            if (id.includes("recharts") || id.includes("d3-"))
+              return "vendor-charts";
             if (id.includes("leaflet")) return "vendor-maps";
             if (id.includes("framer-motion")) return "vendor-motion";
             if (id.includes("@supabase")) return "vendor-supabase";
