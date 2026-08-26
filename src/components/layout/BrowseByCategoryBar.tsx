@@ -227,7 +227,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
       {/* Hamburger drawer — rendered inside the brand bar at every breakpoint */}
 
       <div ref={sentinelRef} aria-hidden="true" className={placement === "hero" ? "absolute inset-x-0 top-0 h-px" : "h-px w-full"} />
-      <div className="w-full shrink-0 basis-full relative" data-testid="browse-by-category-bar-mobile">
+      <div ref={mobileBarRef} className="w-full shrink-0 basis-full relative" data-testid="browse-by-category-bar-mobile">
         <div data-scrolled={scrolled} className={`${placement === "hero" ? "flex flex-col px-4 sm:px-6 md:px-9 min-h-[96px] md:min-h-[120px] py-3 md:py-4" : "flex items-center px-4 sm:px-6 md:px-9 h-24 md:h-[120px]"} transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b bg-white border-[#081129]/10`}>
             <div className="flex items-start w-full shrink-0">
               <div className="flex flex-col min-w-0 pr-14">
