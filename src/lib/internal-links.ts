@@ -98,7 +98,7 @@ export function getRelatedCategoryLinks(slug: string, limit = 4): InternalLink[]
     .map((related) => ({
       label: categoryLabel(related),
       to: `/tests/${related}`,
-      description: getCategoryContent(related)?.shortDescription,
+      description: getCategoryContent(related)?.heroSubtitle,
     }));
 }
 
