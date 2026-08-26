@@ -40,11 +40,13 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/admin/test-mapper",
   "/admin/test-dashboard",
   "/typography-showcase",
+  "/hidden-gap-detector",
 
   // Discovery / comparison
   "/compare",
   "/compare/symptoms",
   "/compare/goals",
+  "/compare/results",
   "/search",
   "/recommendations",
   "/reviews",
