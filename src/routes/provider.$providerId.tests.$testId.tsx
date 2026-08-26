@@ -1,24 +1,30 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 import { getProviderName } from "@/constants/providers";
-import { buildRouteHead } from "@/lib/seo/route-head";
+import { buildTestHead } from "@/lib/seo/route-head";
+import { fetchTestSeoSummary } from "@/lib/seo/test-seo.functions";
 
 const TestDetailPage = lazy(() => import("@/pages/TestDetailPage"));
 
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 const humanise = (slug: string) =>
-  decodeURIComponent(slug)
-    .replace(/-/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+  UUID_PATTERN.test(slug)
+    ? "Test details"
+    : decodeURIComponent(slug)
+        .replace(/-/g, " ")
+        .replace(/\b\w/g, (c) => c.toUpperCase());
 
 export const Route = createFileRoute("/provider/$providerId/tests/$testId")({
-  head: ({ params }) => {
-    const name = getProviderName(params.providerId);
-    const testName = humanise(params.testId);
-    return buildRouteHead({
-      title: `${testName} — ${name} | myhealth checkup`,
-      description: `Compare the ${testName} from ${name} against other accredited UK providers. Biomarkers, sample method, typical turnaround and pricing side-by-side.`,
-      path: `/provider/${params.providerId}/tests/${params.testId}`,
-    });
-  },
+  loader: ({ params }) => fetchTestSeoSummary({ data: { testId: params.testId } }),
+  head: ({ params, loaderData }) =>
+    buildTestHead({
+      providerId: params.providerId,
+      providerName: (loaderData?.providerName || getProviderName(params.providerId)),
+      testId: params.testId,
+      testName: loaderData?.testName ?? humanise(params.testId),
+      priceGbp: loaderData?.price ?? null,
+      biomarkerCount: loaderData?.biomarkerCount ?? null,
+    }),
   component: TestDetailPage,
 });
