@@ -230,7 +230,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                       <span className="text-[#e70d69]">choice.</span>
                     </span>
                     <span className="mt-1 block font-[Montserrat] font-semibold text-[clamp(11px,2.6vw,17px)] leading-snug text-[#081129]/75">
-                      Compare private blood tests and health checks across UK clinics
+                      \n
                     </span>
                   </h1>
                 )}
