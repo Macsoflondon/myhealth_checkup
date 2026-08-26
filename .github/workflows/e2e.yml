@@ -44,6 +44,9 @@ jobs:
       - name: Run AccreditedProvidersBar visual regression
         run: bunx playwright test accredited-providers-bar.spec.ts
 
+      - name: Run render smoke tests (homepage + comparison routes)
+        run: bun run test:smoke
+
       - name: Upload Playwright HTML report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
