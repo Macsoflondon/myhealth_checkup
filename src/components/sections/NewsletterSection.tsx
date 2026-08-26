@@ -1,20 +1,47 @@
 import { useState } from "react";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
+import { supabase } from "@/integrations/supabase/client";
+import { logger } from "@/lib/logger";
 
 const NewsletterSection = () => {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    if (submitting) return;
+    setErrorMessage(null);
     const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
     if (!valid) {
       setError(true);
+      setErrorMessage("Please enter a valid email address.");
       setTimeout(() => setError(false), 2500);
       return;
     }
-    setSubmitted(true);
+
+    setSubmitting(true);
+    try {
+      const { data, error: fnError } = await supabase.functions.invoke(
+        "newsletter-subscribe",
+        { body: { email: email.trim(), consent: true, source: "footer" } },
+      );
+      if (fnError) throw fnError;
+      if (data?.error) throw new Error(String(data.error));
+      setSubmitted(true);
+    } catch (err) {
+      logger.error("[newsletter] subscribe failed", err);
+      setError(true);
+      setErrorMessage(
+        err instanceof Error && err.message
+          ? err.message
+          : "We could not complete your subscription. Please try again.",
+      );
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
