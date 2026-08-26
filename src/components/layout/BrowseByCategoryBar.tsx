@@ -229,9 +229,6 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                       <span className="transition-colors duration-300 ease-out text-[#081129]"> Your </span>
                       <span className="text-[#e70d69]">choice.</span>
                     </span>
-                    <span className="mt-1 block font-[Montserrat] font-semibold text-[clamp(11px,2.6vw,17px)] leading-snug text-[#081129]/75">
-                      \n
-                    </span>
                   </h1>
                 )}
 
