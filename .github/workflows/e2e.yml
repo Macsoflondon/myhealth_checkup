@@ -27,7 +27,7 @@ jobs:
           VITE_SUPABASE_KEY: placeholder_anon_key
 
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('bun.lockb', 'package.json') }}
