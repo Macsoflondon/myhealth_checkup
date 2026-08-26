@@ -43,6 +43,8 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const [moreRect, setMoreRect] = useState<DOMRect | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
+  const mobileBarRef = useRef<HTMLDivElement>(null);
+  const [mobileBarOut, setMobileBarOut] = useState(false);
   const [stuck, setStuck] = useState(false);
   const { pathname } = useLocation();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
