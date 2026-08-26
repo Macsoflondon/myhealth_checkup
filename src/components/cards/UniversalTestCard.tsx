@@ -311,7 +311,7 @@ export const UniversalTestDetailModal: React.FC<{
           <div>
             <div style={{ fontFamily: "'Montserrat',sans-serif", fontWeight: 600, fontSize: 13, textTransform: "uppercase", letterSpacing: "0.08em", color: UTC_NAVY, marginBottom: 8 }}>About This Test</div>
             <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: 14, color: "#475569", lineHeight: 1.6 }}>
-              {summaryFor(test, meta.name)}
+              {summaryFor(test, meta.displayName)}
             </p>
           </div>
 
@@ -741,7 +741,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               minHeight: "calc(13px * 1.5 * 2)",
             }}
           >
-            {summaryFor(test, meta.name)}
+            {summaryFor(test, meta.displayName)}
           </p>
 
           {/* Biomarker chips */}

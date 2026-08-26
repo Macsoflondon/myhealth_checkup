@@ -14,6 +14,7 @@ import type { CompareTestData } from "@/types";
 import { getProviderLogo } from "@/constants/providers";
 import { resolveAccreditationsFromRow } from "@/lib/resolve-test-fields";
 import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
+import { resolveTestSummary } from "@/lib/test-summary";
 
 
 interface ProviderTestDetailModalProps {
@@ -339,15 +340,16 @@ export default function ProviderTestDetailModal({
             <h4 className="text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-2">
               About this test
             </h4>
-            {goodbodyStatic?.description || test.description ? (
-              <p className="text-[15px] text-[#081129]/80 leading-relaxed whitespace-pre-line break-words">
-                {goodbodyStatic?.description || test.description}
-              </p>
-            ) : (
-              <p className="text-[15px] italic text-[#081129]/50 leading-relaxed">
-                Overview not published by this provider.
-              </p>
-            )}
+            <p className="text-[15px] text-[#081129]/80 leading-relaxed whitespace-pre-line break-words">
+              {resolveTestSummary(goodbodyStatic?.description || test.description, {
+                testName: test.test_name,
+                providerName,
+                measurementCount: test.biomarker_count ?? null,
+                sampleType: test.sample_type ?? null,
+                turnaroundText: test.turnaround_time ?? null,
+                category: test.category ?? null,
+              })}
+            </p>
             {test.who_should_test && (
               <>
                 <h4 className="mt-5 text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-2">
