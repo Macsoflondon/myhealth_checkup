@@ -36,6 +36,7 @@ import {
   Pill
 } from "lucide-react";
 import { getCategoryContent, type CategoryContent } from "@/data/categoryContent";
+import RelatedLinks from "@/components/seo/RelatedLinks";
 import { useProvidersByCategory, type ProviderTestRow } from "@/hooks/queries/useProvidersByTestType";
 import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
 import { Loader2 } from "lucide-react";
@@ -358,6 +359,8 @@ const CategoryLandingPage: React.FC = () => {
               </div>
             </section>
           </div>
+      <RelatedLinks categorySlug={content.slug} />
+
       <section className="bg-white py-12 px-4 sm:px-6">
         <div className="max-w-[1280px] mx-auto">
           <QuizCTABanner />
