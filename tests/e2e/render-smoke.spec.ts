@@ -45,22 +45,31 @@ function collectErrors(page: Page) {
   return fatal;
 }
 
+/** Pages poll and animate, so networkidle may never fire — cap the wait. */
+async function settle(page: Page) {
+  await page.waitForLoadState("load").catch(() => {});
+  await page
+    .waitForLoadState("networkidle", { timeout: 8_000 })
+    .catch(() => {});
+  await page.waitForTimeout(800);
+}
+
+test.describe.configure({ timeout: 90_000 });
+
 for (const path of ROUTES) {
   test(`renders ${path} without a React render crash`, async ({ page }) => {
     // Warm-up pass: in dev, the first cold hit compiles the route's lazy chunks
     // on demand, which produces transient dev-only hydration noise. The measured
     // pass below runs against warm chunks so only real crashes surface.
     await page.goto(path, { waitUntil: "domcontentloaded" });
-    await page.waitForLoadState("networkidle").catch(() => {});
+    await settle(page);
 
     const fatal = collectErrors(page);
 
     const response = await page.reload({ waitUntil: "domcontentloaded" });
     expect(response?.status(), `HTTP status for ${path}`).toBeLessThan(400);
 
-    // Let hydration and lazy route chunks settle.
-    await page.waitForLoadState("networkidle").catch(() => {});
-    await page.waitForTimeout(500);
+    await settle(page);
 
     // A crashed tree leaves an empty root, so assert real content mounted.
     const bodyText = (await page.locator("body").innerText()).trim();
