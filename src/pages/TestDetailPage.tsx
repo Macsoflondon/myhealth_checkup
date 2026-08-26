@@ -208,43 +208,12 @@ const TestDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      {/* Canonical, Open Graph and JSON-LD are owned by the route head so they
+          are server-rendered once; only the client-side title is refined here. */}
       <Helmet>
         <title>{`${test.test_name} | myhealth checkup`.slice(0, 60)}</title>
-        <meta
-          name="description"
-          content={`Compare the ${test.test_name} across accredited UK providers${
-            test.price != null ? ` from £${test.price.toFixed(2)}` : ""
-          }. View biomarkers, sample method, turnaround and pricing side-by-side.${
-            provider?.name ? ` Available from ${provider.name}.` : ""
-          }`.slice(0, 158)}
-        />
-        <link rel="canonical" href={`https://myhealthcheckup.co.uk/provider/${providerId}/tests/${testId}`} />
-        <meta property="og:type" content="product" />
-        <meta property="og:site_name" content="myhealth checkup" />
-        <meta property="og:title" content={`${test.test_name} | myhealth checkup`.slice(0, 60)} />
-        <meta property="og:description" content={`Compare the ${test.test_name} across accredited UK providers${test.price != null ? ` from £${test.price.toFixed(2)}` : ""}.`} />
-        <meta property="og:url" content={`https://myhealthcheckup.co.uk/provider/${providerId}/tests/${testId}`} />
-        <meta property="og:locale" content="en_GB" />
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Product",
-          "name": test.test_name,
-          "description": test.description || `${test.test_name} private health test available from accredited UK providers.`,
-          "brand": provider?.name ? { "@type": "Brand", "name": provider.name } : undefined,
-          "image": test.image_url || "https://myhealthcheckup.co.uk/og-image.png",
-          "category": test.category || "Health Test",
-          ...(test.price != null ? {
-            "offers": {
-              "@type": "Offer",
-              "priceCurrency": "GBP",
-              "price": test.price.toFixed(2),
-              "availability": "https://schema.org/InStock",
-              "url": `https://myhealthcheckup.co.uk/provider/${providerId}/tests/${testId}`,
-              ...(provider?.name ? { "seller": { "@type": "Organization", "name": provider.name } } : {})
-            }
-          } : {})
-        })}</script>
       </Helmet>
+
 
       <Header />
       

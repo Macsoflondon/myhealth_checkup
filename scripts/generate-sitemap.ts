@@ -673,11 +673,82 @@ const rawEntries: SitemapEntry[] = [
   { path: "/security", changefreq: "monthly", priority: "0.6" }
 ];
 
+// ---- Dynamic routes (providers + test detail pages) -----------------------
+// Fetched from Supabase at build time so every indexable provider and test
+// detail page is discoverable. Capped well below publish limits.
+const MAX_DYNAMIC_ENTRIES = Number(process.env["SITEMAP_MAX_DYNAMIC"] ?? 5000);
+const SUPABASE_URL =
+  process.env["VITE_SUPABASE_URL"] ?? "https://clvuioagsgfadynuvodj.supabase.co";
+const SUPABASE_KEY =
+  process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] ?? process.env["VITE_SUPABASE_KEY"] ?? "";
+
+interface TestRow {
+  id: string;
+  provider_id: string | null;
+  updated_at: string | null;
+}
+
+async function fetchDynamicEntries(): Promise<SitemapEntry[]> {
+  if (!SUPABASE_KEY) {
+    console.warn("sitemap: no Supabase key available — dynamic routes skipped");
+    return [];
+  }
+
+  const url =
+    `${SUPABASE_URL}/rest/v1/unified_provider_tests` +
+    `?select=id,provider_id,updated_at&order=updated_at.desc&limit=${MAX_DYNAMIC_ENTRIES}`;
+
+  try {
+    const res = await fetch(url, {
+      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+    });
+    if (!res.ok) {
+      console.warn(`sitemap: dynamic fetch failed (${res.status}) — static entries only`);
+      return [];
+    }
+
+    const rows = (await res.json()) as TestRow[];
+    const providers = new Set<string>();
+    const out: SitemapEntry[] = [];
+
+    for (const row of rows) {
+      if (!row.provider_id || !row.id) continue;
+      providers.add(row.provider_id);
+      const lastmod = row.updated_at ? row.updated_at.slice(0, 10) : undefined;
+      out.push({
+        path: `/provider/${row.provider_id}/tests/${row.id}`,
+        lastmod,
+        changefreq: "weekly",
+        priority: "0.6",
+      });
+    }
+
+    for (const providerId of providers) {
+      out.push({ path: `/provider/${providerId}`, changefreq: "weekly", priority: "0.8" });
+      out.push({ path: `/provider/${providerId}/tests`, changefreq: "weekly", priority: "0.7" });
+    }
+
+    return out;
+  } catch (err) {
+    console.warn(`sitemap: dynamic fetch errored — static entries only (${String(err)})`);
+    return [];
+  }
+}
+
 const isPublic = (path: string) =>
   !PRIVATE_PREFIXES.some((p) => path === p || path.startsWith(p + "/"));
 
-const entries = rawEntries.filter((e) => isPublic(e.path));
-const dropped = rawEntries.length - entries.length;
+const dynamicEntries = await fetchDynamicEntries();
+const allEntries = [...rawEntries, ...dynamicEntries];
+
+// De-duplicate by path — a dynamic row must never emit a second <loc>.
+const seen = new Set<string>();
+const entries = allEntries.filter((e) => {
+  if (!isPublic(e.path) || seen.has(e.path)) return false;
+  seen.add(e.path);
+  return true;
+});
+const dropped = allEntries.length - entries.length;
 
 function generateSitemap(entries: SitemapEntry[]) {
   const urls = entries.map((e) =>
@@ -702,4 +773,7 @@ function generateSitemap(entries: SitemapEntry[]) {
 }
 
 writeFileSync(resolve("public/sitemap.xml"), generateSitemap(entries));
-console.log(`sitemap.xml written (${entries.length} public entries${dropped ? `, ${dropped} private filtered out` : ""})`);
+console.log(
+  `sitemap.xml written (${entries.length} public entries, ${dynamicEntries.length} dynamic` +
+    `${dropped ? `, ${dropped} private/duplicate filtered out` : ""})`,
+);

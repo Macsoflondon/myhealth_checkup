@@ -49,7 +49,11 @@ function walk(dir) {
 const allSrc = walk(resolve(ROOT, "src"));
 
 // Grep every file once for www. leaks
+// These files reference the www host only to assert it never ships.
+const WWW_GUARD_FILES = ["src/lib/seo/structured-data.ts", "src/lib/seo/route-metadata.test.ts"];
 for (const f of allSrc) {
+  const rel = f.replace(ROOT + "/", "");
+  if (WWW_GUARD_FILES.includes(rel)) continue;
   const txt = readFileSync(f, "utf8");
   if (txt.includes("www.myhealthcheckup.co.uk")) {
     warn.push(`${f.replace(ROOT + "/", "")} still references www.myhealthcheckup.co.uk`);
@@ -57,22 +61,49 @@ for (const f of allSrc) {
 }
 
 // ---- 4. Sitemap ↔ prerender coverage --------------------------------------
-const dynamicSegment = (p) => /:[A-Za-z]/.test(p);
+// Dynamic detail routes are server-rendered on demand, not prerendered.
+const DYNAMIC_PREFIXES = ["/provider/"];
+const dynamicSegment = (p) =>
+  /:[A-Za-z]/.test(p) || DYNAMIC_PREFIXES.some((prefix) => p.startsWith(prefix));
 const missingPrerender = sitemapPaths
   .filter((p) => !dynamicSegment(p))
   .filter((p) => !prerenderPaths.includes(p));
 
+// SSR renders every route on demand, so a missing prerender entry is only a
+// warm-cache gap, not a crawlability failure.
 for (const p of missingPrerender) {
-  fail.push(`sitemap has ${p} but it's not in scripts/prerender-routes.mjs — bots will see empty shell`);
+  warn.push(`sitemap has ${p} but it's not in scripts/prerender-routes.mjs (SSR still serves it)`);
 }
 
-// ---- 5. Index.html sanity --------------------------------------------------
-const indexHtml = readFileSync(resolve(ROOT, "index.html"), "utf8");
-for (const tag of ["og:title", "og:description", "og:url", "og:type"]) {
-  if (!indexHtml.includes(`property="${tag}"`)) fail.push(`index.html missing ${tag}`);
+// ---- 5. Root route sanity -------------------------------------------------
+const rootRoute = readFileSync(resolve(ROOT, "src/routes/__root.tsx"), "utf8");
+for (const tag of ["og:type", "og:site_name", "og:image"]) {
+  if (!rootRoute.includes(`"${tag}"`)) fail.push(`__root.tsx missing ${tag}`);
 }
-if (!indexHtml.includes("application/ld+json")) fail.push("index.html missing Organization JSON-LD");
-if (indexHtml.includes("www.myhealthcheckup.co.uk")) fail.push("index.html still references www.");
+if (!rootRoute.includes("application/ld+json")) fail.push("__root.tsx missing Organization JSON-LD");
+if (rootRoute.includes("www.myhealthcheckup.co.uk")) fail.push("__root.tsx still references www.");
+
+// ---- 5b. Dynamic detail routes must build metadata from the shared helpers --
+const HELPER_ROUTES = [
+  ["src/routes/provider.$providerId.index.tsx", "buildProviderHead"],
+  ["src/routes/provider.$providerId.tests.$testId.tsx", "buildTestHead"],
+];
+for (const [file, helper] of HELPER_ROUTES) {
+  const src = readFileSync(resolve(ROOT, file), "utf8");
+  if (!src.includes(helper)) {
+    fail.push(`${file} must build its head via ${helper} so canonical/og:url/JSON-LD stay in sync`);
+  }
+}
+
+// ---- 5c. Sitemap must cover provider and test detail routes ----------------
+const providerPaths = sitemapPaths.filter((p) => /^\/provider\/[^/]+$/.test(p));
+const testPaths = sitemapPaths.filter((p) => /^\/provider\/[^/]+\/tests\/[^/]+$/.test(p));
+if (providerPaths.length === 0) fail.push("sitemap.xml contains no /provider/:id routes");
+if (testPaths.length === 0) fail.push("sitemap.xml contains no /provider/:id/tests/:testId routes");
+if (new Set(sitemapPaths).size !== sitemapPaths.length) {
+  fail.push("sitemap.xml contains duplicate <loc> entries");
+}
+console.log(`Provider pages: ${providerPaths.length}, test detail pages: ${testPaths.length}`);
 
 // ---- 6. Report -------------------------------------------------------------
 console.log(`Sitemap routes: ${sitemapPaths.length}`);
