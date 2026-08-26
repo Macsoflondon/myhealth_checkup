@@ -85,6 +85,8 @@ const AdminScraperDashboardPage: React.FC = () => {
   const { toast } = useToast();
   const [jobs, setJobs] = useState<ScrapingJob[]>([]);
   const [isLoadingJobs, setIsLoadingJobs] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [countsError, setCountsError] = useState<string | null>(null);
   const [runningScrapers, setRunningScrapers] = useState<Set<string>>(new Set());
   const [testCounts, setTestCounts] = useState<Record<string, number>>({});
   const [isRefreshingPopular, setIsRefreshingPopular] = useState(false);
