@@ -67,7 +67,8 @@ console.error = (...args: unknown[]) => {
   // Client disconnects are not failures — never record or surface them.
   const abortArg = args.find((arg) => isErrorLike(arg) && isClientAbort(arg));
   if (abortArg) {
-    record(abortArg);
+    // Never record: a stale abort in lastCapturedError would make a later, real
+    // 500 look like a disconnect and return an empty body instead of an error page.
     recordAbort(abortArg, "process");
     return;
   }
@@ -97,6 +98,29 @@ if (typeof globalThis.addEventListener === "function") {
       return;
     }
     record(reason);
+  });
+}
+
+// Node raises `Error: aborted` from abortIncoming as an uncaught exception that
+// never reaches request middleware. Without this guard a single abandoned page
+// load kills the SSR process. Only present on a Node host (no-op on workerd).
+const nodeProcess = (globalThis as { process?: NodeJS.Process }).process;
+if (nodeProcess && typeof nodeProcess.on === "function") {
+  nodeProcess.on("uncaughtException", (error: unknown) => {
+    if (isClientAbort(error)) {
+      recordAbort(error, "process");
+      return;
+    }
+    record(error);
+    originalConsoleError(describeError(error));
+  });
+  nodeProcess.on("unhandledRejection", (reason: unknown) => {
+    if (isClientAbort(reason)) {
+      recordAbort(reason, "process");
+      return;
+    }
+    record(reason);
+    originalConsoleError(describeError(reason));
   });
 }
 
