@@ -40,6 +40,7 @@ interface ProviderTestStat {
 export default function CrawlsSection() {
   const [rows, setRows] = useState<ScrapeRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [runningAll, setRunningAll] = useState(false);
   const [runningProvider, setRunningProvider] = useState<string | null>(null);
   const [runningJob, setRunningJob] = useState<string | null>(null);
