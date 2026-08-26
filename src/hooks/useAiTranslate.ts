@@ -2,6 +2,12 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '@/integrations/supabase/client';
 
+/** Brazilian Portuguese targets its own translation; other tags use the base code. */
+const normaliseLang = (tag: string | undefined): string => {
+  const value = tag || 'en';
+  return value.toLowerCase() === 'pt-br' ? 'pt-BR' : value.split('-')[0];
+};
+
 const memCache = new Map<string, string>(); // `${lang}::${text}` -> translated
 
 /**
@@ -10,7 +16,7 @@ const memCache = new Map<string, string>(); // `${lang}::${text}` -> translated
  */
 export function useAiTranslate(text: string | undefined): string {
   const { i18n } = useTranslation();
-  const lang = (i18n.language || 'en').split('-')[0];
+  const lang = normaliseLang(i18n.language);
   const [value, setValue] = useState<string>(text ?? '');
   const reqId = useRef(0);
 
@@ -42,7 +48,7 @@ export function useAiTranslate(text: string | undefined): string {
 /** Batch variant — translates a list of strings, returns a map. */
 export function useAiTranslateBatch(texts: string[]): Record<string, string> {
   const { i18n } = useTranslation();
-  const lang = (i18n.language || 'en').split('-')[0];
+  const lang = normaliseLang(i18n.language);
   const [map, setMap] = useState<Record<string, string>>({});
 
   const stableKey = texts.join('|');
