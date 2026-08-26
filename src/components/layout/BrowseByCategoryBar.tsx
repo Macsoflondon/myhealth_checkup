@@ -7,6 +7,8 @@ import { primaryNavigationItems, moreNavigationSections } from "@/components/hea
 import { MoreDropdownMenu } from "@/components/header/MoreDropdownMenu";
 import { LanguageSwitcher, LanguageAccordion } from "@/components/header/LanguageSwitcher";
 import { UserMenu } from "@/components/header/UserMenu";
+import { MobileAccountLinks } from "@/components/header/MobileAccountLinks";
+
 import { CategoryPillDropdown } from "@/components/layout/CategoryPillDropdown";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 const PINK = "#e70d69";
