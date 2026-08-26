@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { readdirSync } from "node:fs";
 import { resolve } from "node:path";
-import { isKnownRoute } from "../_known-routes";
+import { isKnownRoute } from "../../../functions/_known-routes";
 
 /**
  * Guards against allow-list drift: every file-based route under src/routes must
