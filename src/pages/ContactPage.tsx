@@ -51,8 +51,10 @@ const providerContacts: { name: string; phone: string | null; liveChat?: string;
 
 const ContactPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [searchParams] = useSearchParams();
   const formCardRef = useRef<HTMLDivElement>(null);
+  const sendContact = useServerFn(submitContactMessage);
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
