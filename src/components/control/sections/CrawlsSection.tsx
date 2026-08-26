@@ -40,13 +40,14 @@ interface ProviderTestStat {
 export default function CrawlsSection() {
   const [rows, setRows] = useState<ScrapeRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
   const [runningAll, setRunningAll] = useState(false);
   const [runningProvider, setRunningProvider] = useState<string | null>(null);
   const [runningJob, setRunningJob] = useState<string | null>(null);
   const [stats, setStats] = useState<Record<string, ProviderTestStat>>({});
 
   const load = useCallback(async () => {
-    const [{ data: runs }, { data: tests }] = await Promise.all([
+    const [{ data: runs, error: runsError }, { data: tests, error: testsError }] = await Promise.all([
       supabase
         .from("scrape_run_log")
         .select("*")
@@ -58,6 +59,8 @@ export default function CrawlsSection() {
         .eq("is_active", true)
         .limit(5000),
     ]);
+    const failure = runsError ?? testsError;
+    setLoadError(failure ? failure.message : null);
     setRows((runs ?? []) as never);
     const grouped: Record<string, ProviderTestStat> = {};
     for (const t of (tests ?? []) as { provider_id: string; updated_at: string }[]) {
@@ -153,6 +156,14 @@ export default function CrawlsSection() {
         </div>
       }
     >
+      {loadError && (
+        <div
+          role="alert"
+          className="mb-6 rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+        >
+          Crawl data could not be loaded: {loadError}
+        </div>
+      )}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         <StatCard label="Runs (last 50)" value={summary.total} />
         <StatCard label="Successful" value={summary.ok} tone="good" />

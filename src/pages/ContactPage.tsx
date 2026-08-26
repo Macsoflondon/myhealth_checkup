@@ -17,6 +17,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from '@/hooks/use-toast';
 import { logger } from '@/lib/logger';
+import { serializeJsonLd } from '@/lib/seo/json-ld';
+import { useServerFn } from '@tanstack/react-start';
+import { submitContactMessage } from '@/lib/contact/contact.functions';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import {
   Form,
   FormControl,
@@ -51,8 +55,10 @@ const providerContacts: { name: string; phone: string | null; liveChat?: string;
 
 const ContactPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [searchParams] = useSearchParams();
   const formCardRef = useRef<HTMLDivElement>(null);
+  const sendContact = useServerFn(submitContactMessage);
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
@@ -70,12 +76,22 @@ const ContactPage = () => {
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
+    setSubmitError(null);
     try {
-      logger.info('Contact form submitted:', { ...data, email: data.email.substring(0, 3) + '***' });
-      toast({ title: 'Message sent', description: 'Thank you for your message. We will respond within 24 hours.' });
+      const result = await sendContact({ data: { ...data, hp: '' } });
+      toast({
+        title: 'Message sent',
+        description: `Thank you — your reference is ${result.reference}. We respond within two business days.`,
+      });
       form.reset();
     } catch (error) {
-      toast({ title: 'Error', description: 'There was a problem sending your message. Please try again.', variant: 'destructive' });
+      const description =
+        error instanceof Error && error.message
+          ? error.message
+          : 'There was a problem sending your message. Please try again.';
+      logger.error('[contact] submit failed', error);
+      setSubmitError(description);
+      toast({ title: 'Message not sent', description, variant: 'destructive' });
     } finally {
       setIsSubmitting(false);
     }
@@ -85,7 +101,7 @@ const ContactPage = () => {
     <div className="min-h-screen flex flex-col">
       <Helmet>
         <meta property="og:type" content="website" />
-        <script type="application/ld+json">{JSON.stringify({
+        <script type="application/ld+json">{serializeJsonLd({
           "@context": "https://schema.org",
           "@type": ["ContactPage", "MedicalBusiness", "LocalBusiness"],
           "name": "myhealth checkup",
@@ -165,6 +181,11 @@ const ContactPage = () => {
                           <FormMessage />
                         </FormItem>
                       )} />
+                      {submitError && (
+                        <Alert variant="destructive">
+                          <AlertDescription>{submitError}</AlertDescription>
+                        </Alert>
+                      )}
                       <Button type="submit" className="w-full" disabled={isSubmitting}>
                         {isSubmitting ? (<><Loader2 className="mr-2 h-4 w-4 animate-spin" />Sending...</>) : 'Send Message'}
                       </Button>

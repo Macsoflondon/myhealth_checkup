@@ -1,6 +1,7 @@
 import { useParams, Link, Navigate } from "@/lib/router-compat";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { Helmet } from "react-helmet-async";
+import { serializeJsonLd } from "@/lib/seo/json-ld";
 import { ArrowRight, CheckCircle2, Beaker, ShieldCheck } from "lucide-react";
 import { MainLayout } from "@/layouts/MainLayout";
 import { Button } from "@/components/ui/button";
@@ -76,9 +77,9 @@ const BiomarkerGuidePage = () => {
         <meta name="twitter:title" content={guide.title} />
         <meta name="twitter:description" content={guide.description} />
         <meta name="article:section" content={guide.category} />
-        <script type="application/ld+json">{JSON.stringify(articleJsonLd)}</script>
-        <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
-        <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
+        <script type="application/ld+json">{serializeJsonLd(articleJsonLd)}</script>
+        <script type="application/ld+json">{serializeJsonLd(faqJsonLd)}</script>
+        <script type="application/ld+json">{serializeJsonLd(breadcrumbJsonLd)}</script>
       </Helmet>
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 text-white">

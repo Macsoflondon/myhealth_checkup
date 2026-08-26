@@ -1,8 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-const TestFinderComparePage = lazy(() => import("@/pages/TestFinderComparePage"));
-
+/**
+ * Legacy quiz-comparison surface. Comparison now lives at /compare, so send
+ * visitors there instead of an empty page.
+ */
 export const Route = createFileRoute("/find-test/compare")({
-  component: TestFinderComparePage,
+  beforeLoad: () => {
+    throw redirect({ to: "/compare", replace: true });
+  },
 });
