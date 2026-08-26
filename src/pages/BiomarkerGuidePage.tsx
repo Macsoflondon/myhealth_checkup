@@ -1,6 +1,7 @@
 import { useParams, Link, Navigate } from "@/lib/router-compat";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { Helmet } from "react-helmet-async";
+import { serializeJsonLd } from "@/lib/seo/json-ld";
 import { ArrowRight, CheckCircle2, Beaker, ShieldCheck } from "lucide-react";
 import { MainLayout } from "@/layouts/MainLayout";
 import { Button } from "@/components/ui/button";

@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { StandardPageHero } from "@/components/layout/StandardPageHero";
 import { Helmet } from 'react-helmet-async';
+import { serializeJsonLd } from '@/lib/seo/json-ld';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Search } from 'lucide-react';
