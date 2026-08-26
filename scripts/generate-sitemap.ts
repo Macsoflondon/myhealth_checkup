@@ -688,8 +688,13 @@ interface TestRow {
   updated_at: string | null;
 }
 
+// Set when the database could not be reached, so the emitted sitemap can say so
+// and downstream checks warn instead of failing the build.
+let dynamicUnavailable = false;
+
 async function fetchDynamicEntries(): Promise<SitemapEntry[]> {
   if (!SUPABASE_KEY) {
+    dynamicUnavailable = true;
     console.warn("sitemap: no Supabase key available — dynamic routes skipped");
     return [];
   }
@@ -703,6 +708,7 @@ async function fetchDynamicEntries(): Promise<SitemapEntry[]> {
       headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
     });
     if (!res.ok) {
+      dynamicUnavailable = true;
       console.warn(`sitemap: dynamic fetch failed (${res.status}) — static entries only`);
       return [];
     }
@@ -730,6 +736,7 @@ async function fetchDynamicEntries(): Promise<SitemapEntry[]> {
 
     return out;
   } catch (err) {
+    dynamicUnavailable = true;
     console.warn(`sitemap: dynamic fetch errored — static entries only (${String(err)})`);
     return [];
   }
@@ -767,6 +774,7 @@ function generateSitemap(entries: SitemapEntry[]) {
   return [
     `<?xml version="1.0" encoding="UTF-8"?>`,
     `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,
+    ...(dynamicUnavailable ? [`  <!-- dynamic-routes: unavailable at build time -->`] : []),
     ...urls,
     `</urlset>`,
   ].join("\n");
