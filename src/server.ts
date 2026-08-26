@@ -3,6 +3,12 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { isClientAbort } from "./lib/is-client-abort";
+import {
+  beginRequest,
+  endRequest,
+  markResponseStarted,
+  recordAbort,
+} from "./lib/abort-diagnostics";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -47,18 +53,29 @@ function isH3SwallowedErrorBody(body: string): boolean {
 
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    const requestId = beginRequest(request);
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
+      markResponseStarted(requestId);
+      // The body may still be streaming; a cut mid-stream is a post-render abort.
+      request.signal?.addEventListener("abort", () => {
+        recordAbort(new Error("request signal aborted"), "post-render", requestId);
+      });
       return await normalizeCatastrophicSsrResponse(response);
     } catch (error) {
-      // Client went away mid-request: no error page, no log noise.
-      if (isClientAbort(error)) return new Response(null, { status: 499 });
+      // Client went away mid-request: no error page, but keep a structured trace.
+      if (isClientAbort(error)) {
+        recordAbort(error, "during-render", requestId);
+        return new Response(null, { status: 499 });
+      }
       console.error(error);
       return new Response(renderErrorPage(), {
         status: 500,
         headers: { "content-type": "text/html; charset=utf-8" },
       });
+    } finally {
+      endRequest(requestId);
     }
   },
 };
