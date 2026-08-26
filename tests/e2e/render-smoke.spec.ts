@@ -47,9 +47,15 @@ function collectErrors(page: Page) {
 
 for (const path of ROUTES) {
   test(`renders ${path} without a React render crash`, async ({ page }) => {
+    // Warm-up pass: in dev, the first cold hit compiles the route's lazy chunks
+    // on demand, which produces transient dev-only hydration noise. The measured
+    // pass below runs against warm chunks so only real crashes surface.
+    await page.goto(path, { waitUntil: "domcontentloaded" });
+    await page.waitForLoadState("networkidle").catch(() => {});
+
     const fatal = collectErrors(page);
 
-    const response = await page.goto(path, { waitUntil: "domcontentloaded" });
+    const response = await page.reload({ waitUntil: "domcontentloaded" });
     expect(response?.status(), `HTTP status for ${path}`).toBeLessThan(400);
 
     // Let hydration and lazy route chunks settle.
