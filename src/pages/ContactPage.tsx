@@ -180,6 +180,11 @@ const ContactPage = () => {
                           <FormMessage />
                         </FormItem>
                       )} />
+                      {submitError && (
+                        <Alert variant="destructive">
+                          <AlertDescription>{submitError}</AlertDescription>
+                        </Alert>
+                      )}
                       <Button type="submit" className="w-full" disabled={isSubmitting}>
                         {isSubmitting ? (<><Loader2 className="mr-2 h-4 w-4 animate-spin" />Sending...</>) : 'Send Message'}
                       </Button>
