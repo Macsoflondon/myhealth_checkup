@@ -30,6 +30,7 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/health-dashboard",
   "/notification-history",
   "/portal",
+  "/control",
 
   // Admin
   "/admin/login",
