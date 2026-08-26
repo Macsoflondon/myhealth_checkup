@@ -67,6 +67,7 @@ console.error = (...args: unknown[]) => {
   // Client disconnects are not failures — never record or surface them.
   const abortArg = args.find((arg) => isErrorLike(arg) && isClientAbort(arg));
   if (abortArg) {
+    record(abortArg);
     recordAbort(abortArg, "process");
     return;
   }
