@@ -43,6 +43,8 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const [moreRect, setMoreRect] = useState<DOMRect | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
+  const mobileBarRef = useRef<HTMLDivElement>(null);
+  const [mobileBarOut, setMobileBarOut] = useState(false);
   const [stuck, setStuck] = useState(false);
   const { pathname } = useLocation();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
@@ -119,6 +121,18 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
+  // Track when the mobile brand bar (with the in-bar hamburger) has scrolled
+  // above the viewport, so a floating trigger can take over.
+  useEffect(() => {
+    const el = mobileBarRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setMobileBarOut(!entry.isIntersecting && entry.boundingClientRect.bottom <= 0),
+      { threshold: 0 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [pathname]);
   useEffect(() => {
     if (placement !== "hero") {
       setHeroPinned(false);
@@ -213,7 +227,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
       {/* Hamburger drawer — rendered inside the brand bar at every breakpoint */}
 
       <div ref={sentinelRef} aria-hidden="true" className={placement === "hero" ? "absolute inset-x-0 top-0 h-px" : "h-px w-full"} />
-      <div className="w-full shrink-0 basis-full relative" data-testid="browse-by-category-bar-mobile">
+      <div ref={mobileBarRef} className="w-full shrink-0 basis-full relative" data-testid="browse-by-category-bar-mobile">
         <div data-scrolled={scrolled} className={`${placement === "hero" ? "flex flex-col px-4 sm:px-6 md:px-9 min-h-[96px] md:min-h-[120px] py-3 md:py-4" : "flex items-center px-4 sm:px-6 md:px-9 h-24 md:h-[120px]"} transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b bg-white border-[#081129]/10`}>
             <div className="flex items-start w-full shrink-0">
               <div className="flex flex-col min-w-0 pr-14">
@@ -305,6 +319,29 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
         </Sheet>
           </div>
         </div>
+      </div>
+
+      {/* Floating hamburger — takes over once the brand bar scrolls out of
+          view so the menu stays reachable on phones and small tablets. */}
+      <div
+        className={`fixed top-3 right-3 z-40 md:hidden transition-all duration-300 ease-out motion-reduce:transition-none ${
+          mobileBarOut && !mobileOpen
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 -translate-y-3 pointer-events-none"
+        }`}
+        data-testid="mobile-sticky-menu-trigger"
+        aria-hidden={!mobileBarOut || mobileOpen}
+      >
+        <button
+          type="button"
+          onClick={() => setMobileOpen(true)}
+          aria-label="Open menu"
+          className="flex flex-col items-end justify-center gap-[5px] min-w-11 min-h-11 p-2 rounded-xl bg-white/90 backdrop-blur-md border border-[#081129]/10 shadow-[0_8px_24px_-8px_rgba(8,17,41,0.35)] focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#e70d69] cursor-pointer"
+        >
+          <div className="h-[3px] w-9 rounded-full bg-[#081129]" />
+          <div className="h-[3px] w-6 rounded-full bg-[#e70d69]" />
+          <div className="h-[3px] w-10 rounded-full bg-[#22c0d4]" />
+        </button>
       </div>
 
       {(() => {
