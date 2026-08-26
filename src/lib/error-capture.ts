@@ -92,32 +92,6 @@ if (typeof globalThis.addEventListener === "function") {
   });
 }
 
-// Node's HTTP server raises `Error: aborted` from `abortIncoming` as an
-// uncaught exception when a client closes the socket mid-request. It never
-// reaches request middleware, so swallow it at the process level; anything
-// else is rethrown so real crashes still surface.
-const nodeProcess = (globalThis as { process?: NodeJS.Process }).process;
-if (nodeProcess?.on && !(nodeProcess as { __mhcAbortGuard?: boolean }).__mhcAbortGuard) {
-  (nodeProcess as { __mhcAbortGuard?: boolean }).__mhcAbortGuard = true;
-  nodeProcess.on("uncaughtException", (error: unknown) => {
-    if (isClientAbort(error)) {
-      recordAbort(error, "process");
-      return;
-    }
-    record(error);
-    originalConsoleError(describeError(error));
-  });
-  nodeProcess.on("unhandledRejection", (reason: unknown) => {
-    if (isClientAbort(reason)) {
-      recordAbort(reason, "process");
-      return;
-    }
-    record(reason);
-    originalConsoleError(describeError(reason));
-  });
-}
-
-
 export function consumeLastCapturedError(): unknown {
   if (!lastCapturedError) return undefined;
   if (Date.now() - lastCapturedError.at > TTL_MS) {
