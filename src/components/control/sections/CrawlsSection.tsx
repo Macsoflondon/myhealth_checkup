@@ -46,7 +46,7 @@ export default function CrawlsSection() {
   const [stats, setStats] = useState<Record<string, ProviderTestStat>>({});
 
   const load = useCallback(async () => {
-    const [{ data: runs }, { data: tests }] = await Promise.all([
+    const [{ data: runs, error: runsError }, { data: tests, error: testsError }] = await Promise.all([
       supabase
         .from("scrape_run_log")
         .select("*")
@@ -58,6 +58,8 @@ export default function CrawlsSection() {
         .eq("is_active", true)
         .limit(5000),
     ]);
+    const failure = runsError ?? testsError;
+    setLoadError(failure ? failure.message : null);
     setRows((runs ?? []) as never);
     const grouped: Record<string, ProviderTestStat> = {};
     for (const t of (tests ?? []) as { provider_id: string; updated_at: string }[]) {
