@@ -358,6 +358,15 @@ const AdminScraperDashboardPage: React.FC = () => {
             </div>
           </div>
 
+          {(loadError || countsError) && (
+            <Alert variant="destructive">
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription className="text-sm">
+                {[loadError, countsError].filter(Boolean).join(' ')}
+              </AlertDescription>
+            </Alert>
+          )}
+
           <LeakedPasswordProtectionStatus />
 
           <ScraperAlertsPanel />
