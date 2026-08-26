@@ -8,8 +8,33 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 import { mcpPlugin } from "@lovable.dev/mcp-js/stacks/supabase/vite";
 import { imagetools } from "vite-imagetools";
 
+// The Vite dev server owns the Node HTTP socket, so a client navigating away
+// mid-request surfaces as an uncaught `Error: aborted` from abortIncoming in
+// this process — before any app module loads. Swallow it here, at config load,
+// so it never reaches the runtime-error reporter as a phantom crash.
+const isClientAbortError = (error: unknown): boolean =>
+  error instanceof Error &&
+  (/^aborted$/i.test(error.message) ||
+    error.name === "AbortError" ||
+    (error as { code?: unknown }).code === "ECONNRESET" ||
+    /abortIncoming|socketOnClose/.test(error.stack ?? ""));
+
+const guardFlag = "__mhcViteAbortGuard";
+if (!(process as unknown as Record<string, unknown>)[guardFlag]) {
+  (process as unknown as Record<string, unknown>)[guardFlag] = true;
+  process.on("uncaughtException", (error) => {
+    if (isClientAbortError(error)) return;
+    throw error;
+  });
+  process.on("unhandledRejection", (reason) => {
+    if (isClientAbortError(reason)) return;
+    throw reason;
+  });
+}
+
 export default defineConfig({
   tanstackStart: {
+
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
