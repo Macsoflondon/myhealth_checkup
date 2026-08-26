@@ -154,6 +154,7 @@ import { Route as CompareGoalsGoalSlugRouteImport } from './routes/compare.goals
 import { Route as CompareSymptomsIndexRouteImport } from './routes/compare.symptoms.index'
 import { Route as CompareSymptomsSymptomSlugRouteImport } from './routes/compare.symptoms.$symptomSlug'
 import { Route as ProviderProviderIdIndexRouteImport } from './routes/provider.$providerId.index'
+import { Route as ApiPublicDiagnosticsAbortsRouteImport } from './routes/api/public/diagnostics.aborts'
 import { Route as ProviderProviderIdTestsIndexRouteImport } from './routes/provider.$providerId.tests.index'
 import { Route as ProviderProviderIdTestsTestIdRouteImport } from './routes/provider.$providerId.tests.$testId'
 
@@ -896,6 +897,12 @@ const ProviderProviderIdIndexRoute = ProviderProviderIdIndexRouteImport.update({
   path: '/provider/$providerId/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicDiagnosticsAbortsRoute =
+  ApiPublicDiagnosticsAbortsRouteImport.update({
+    id: '/api/public/diagnostics/aborts',
+    path: '/api/public/diagnostics/aborts',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ProviderProviderIdTestsIndexRoute =
   ProviderProviderIdTestsIndexRouteImport.update({
     id: '/provider/$providerId/tests/',
@@ -1055,6 +1062,7 @@ export interface FileRoutesByFullPath {
   '/compare/goals/': typeof CompareGoalsIndexRoute
   '/compare/symptoms/': typeof CompareSymptomsIndexRoute
   '/provider/$providerId/': typeof ProviderProviderIdIndexRoute
+  '/api/public/diagnostics/aborts': typeof ApiPublicDiagnosticsAbortsRoute
   '/provider/$providerId/tests/$testId': typeof ProviderProviderIdTestsTestIdRoute
   '/provider/$providerId/tests/': typeof ProviderProviderIdTestsIndexRoute
 }
@@ -1203,6 +1211,7 @@ export interface FileRoutesByTo {
   '/compare/goals': typeof CompareGoalsIndexRoute
   '/compare/symptoms': typeof CompareSymptomsIndexRoute
   '/provider/$providerId': typeof ProviderProviderIdIndexRoute
+  '/api/public/diagnostics/aborts': typeof ApiPublicDiagnosticsAbortsRoute
   '/provider/$providerId/tests/$testId': typeof ProviderProviderIdTestsTestIdRoute
   '/provider/$providerId/tests': typeof ProviderProviderIdTestsIndexRoute
 }
@@ -1353,6 +1362,7 @@ export interface FileRoutesById {
   '/compare/goals/': typeof CompareGoalsIndexRoute
   '/compare/symptoms/': typeof CompareSymptomsIndexRoute
   '/provider/$providerId/': typeof ProviderProviderIdIndexRoute
+  '/api/public/diagnostics/aborts': typeof ApiPublicDiagnosticsAbortsRoute
   '/provider/$providerId/tests/$testId': typeof ProviderProviderIdTestsTestIdRoute
   '/provider/$providerId/tests/': typeof ProviderProviderIdTestsIndexRoute
 }
@@ -1504,6 +1514,7 @@ export interface FileRouteTypes {
     | '/compare/goals/'
     | '/compare/symptoms/'
     | '/provider/$providerId/'
+    | '/api/public/diagnostics/aborts'
     | '/provider/$providerId/tests/$testId'
     | '/provider/$providerId/tests/'
   fileRoutesByTo: FileRoutesByTo
@@ -1652,6 +1663,7 @@ export interface FileRouteTypes {
     | '/compare/goals'
     | '/compare/symptoms'
     | '/provider/$providerId'
+    | '/api/public/diagnostics/aborts'
     | '/provider/$providerId/tests/$testId'
     | '/provider/$providerId/tests'
   id:
@@ -1801,6 +1813,7 @@ export interface FileRouteTypes {
     | '/compare/goals/'
     | '/compare/symptoms/'
     | '/provider/$providerId/'
+    | '/api/public/diagnostics/aborts'
     | '/provider/$providerId/tests/$testId'
     | '/provider/$providerId/tests/'
   fileRoutesById: FileRoutesById
@@ -1945,6 +1958,7 @@ export interface RootRouteChildren {
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   ApiPublicBlogAggregateRoute: typeof ApiPublicBlogAggregateRoute
   ProviderProviderIdIndexRoute: typeof ProviderProviderIdIndexRoute
+  ApiPublicDiagnosticsAbortsRoute: typeof ApiPublicDiagnosticsAbortsRoute
   ProviderProviderIdTestsTestIdRoute: typeof ProviderProviderIdTestsTestIdRoute
   ProviderProviderIdTestsIndexRoute: typeof ProviderProviderIdTestsIndexRoute
 }
@@ -2966,6 +2980,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProviderProviderIdIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/diagnostics/aborts': {
+      id: '/api/public/diagnostics/aborts'
+      path: '/api/public/diagnostics/aborts'
+      fullPath: '/api/public/diagnostics/aborts'
+      preLoaderRoute: typeof ApiPublicDiagnosticsAbortsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/provider/$providerId/tests/': {
       id: '/provider/$providerId/tests/'
       path: '/provider/$providerId/tests'
@@ -3145,6 +3166,7 @@ const rootRouteChildren: RootRouteChildren = {
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   ApiPublicBlogAggregateRoute: ApiPublicBlogAggregateRoute,
   ProviderProviderIdIndexRoute: ProviderProviderIdIndexRoute,
+  ApiPublicDiagnosticsAbortsRoute: ApiPublicDiagnosticsAbortsRoute,
   ProviderProviderIdTestsTestIdRoute: ProviderProviderIdTestsTestIdRoute,
   ProviderProviderIdTestsIndexRoute: ProviderProviderIdTestsIndexRoute,
 }
