@@ -222,12 +222,16 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                   <span className="text-[#22c0d4]">checkup</span>
                 </Link>
                 {placement === "hero" && (
-                  <h1 className="font-[Montserrat] font-bold text-left m-0 mt-1 md:mt-2 text-[clamp(11px,2.8vw,20px)] uppercase tracking-[0.14em] sm:tracking-[0.22em] leading-snug">
-                    <span className="transition-colors duration-300 ease-out text-[#081129]">Your </span>
-                    <span className="text-[#22c0d4]">health.</span>
-                    <span className="transition-colors duration-300 ease-out text-[#081129]"> Your </span>
-                    <span className="text-[#e70d69]">choice.</span>
-                    <span className="sr-only"> Compare private blood tests and health checks in the UK.</span>
+                  <h1 className="m-0 mt-1 md:mt-2 text-left">
+                    <span className="block font-[Montserrat] font-bold text-[clamp(11px,2.8vw,20px)] uppercase tracking-[0.14em] sm:tracking-[0.22em] leading-snug">
+                      <span className="transition-colors duration-300 ease-out text-[#081129]">Your </span>
+                      <span className="text-[#22c0d4]">health.</span>
+                      <span className="transition-colors duration-300 ease-out text-[#081129]"> Your </span>
+                      <span className="text-[#e70d69]">choice.</span>
+                    </span>
+                    <span className="mt-1 block font-[Montserrat] font-semibold text-[clamp(11px,2.6vw,17px)] leading-snug text-[#081129]/75">
+                      Compare private blood tests and health checks across UK clinics
+                    </span>
                   </h1>
                 )}
 
