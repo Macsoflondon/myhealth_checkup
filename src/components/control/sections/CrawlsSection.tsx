@@ -156,6 +156,14 @@ export default function CrawlsSection() {
         </div>
       }
     >
+      {loadError && (
+        <div
+          role="alert"
+          className="mb-6 rounded-xl border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+        >
+          Crawl data could not be loaded: {loadError}
+        </div>
+      )}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         <StatCard label="Runs (last 50)" value={summary.total} />
         <StatCard label="Successful" value={summary.ok} tone="good" />
