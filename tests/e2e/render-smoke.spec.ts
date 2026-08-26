@@ -84,7 +84,7 @@ test("client-side navigation between comparison routes stays stable", async ({ p
   const fatal = collectErrors(page);
 
   await page.goto("/", { waitUntil: "domcontentloaded" });
-  await page.waitForLoadState("networkidle").catch(() => {});
+  await settle(page);
 
   for (const path of ["/compare", "/compare/goals", "/compare/symptoms", "/"]) {
     await page.evaluate((target) => {
