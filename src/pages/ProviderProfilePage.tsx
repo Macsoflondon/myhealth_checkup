@@ -13,6 +13,7 @@ import { getBranding } from "@/data/providerBranding";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { getProviderRating } from "@/constants/providerRatings";
 import { ProviderTestsGrid } from "@/components/providers/ProviderTestsGrid";
+import RelatedLinks from "@/components/seo/RelatedLinks";
 
 
 const ProviderProfilePage = () => {
@@ -236,6 +237,8 @@ const ProviderProfilePage = () => {
           <ProviderTestsGrid providerSlug={provider.id} providerDisplayName={provider.name} />
         </div>
       </main>
+
+      <RelatedLinks providerId={provider.id} heading="Explore related tests and providers" />
 
       <div className="mt-8 mb-12 px-4 sm:px-10">
         <QuizCTABanner />

@@ -15,6 +15,8 @@ import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking"
 import { getProviderLogo, normalizeProviderId } from "@/constants/providers";
 import { resolveTurnaround, resolveCollection } from '@/lib/resolve-test-fields';
 import { logger } from "@/lib/logger";
+import RelatedLinks from "@/components/seo/RelatedLinks";
+import { resolveCategorySlug } from "@/lib/internal-links";
 
 interface TestDetail {
   id: string;
@@ -449,7 +451,12 @@ const TestDetailPage = () => {
           </div>
         </div>
       </main>
-      
+
+      <RelatedLinks
+        categorySlug={resolveCategorySlug(test.category)}
+        providerId={canonicalProviderId}
+      />
+
       <Footer />
     </div>
   );
