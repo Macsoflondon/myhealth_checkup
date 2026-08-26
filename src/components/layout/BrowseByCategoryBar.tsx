@@ -222,13 +222,15 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                   <span className="text-[#22c0d4]">checkup</span>
                 </Link>
                 {placement === "hero" && (
-                  <p className="font-[Montserrat] font-bold text-left m-0 mt-1 md:mt-2 text-[clamp(11px,2.8vw,20px)] uppercase tracking-[0.14em] sm:tracking-[0.22em] leading-snug">
+                  <h1 className="font-[Montserrat] font-bold text-left m-0 mt-1 md:mt-2 text-[clamp(11px,2.8vw,20px)] uppercase tracking-[0.14em] sm:tracking-[0.22em] leading-snug">
                     <span className="transition-colors duration-300 ease-out text-[#081129]">Your </span>
                     <span className="text-[#22c0d4]">health.</span>
                     <span className="transition-colors duration-300 ease-out text-[#081129]"> Your </span>
                     <span className="text-[#e70d69]">choice.</span>
-                  </p>
+                    <span className="sr-only"> Compare private blood tests and health checks in the UK.</span>
+                  </h1>
                 )}
+
               </div>
 
             </div>
