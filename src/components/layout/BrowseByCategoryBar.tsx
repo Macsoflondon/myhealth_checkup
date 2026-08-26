@@ -253,6 +253,11 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             <nav className="px-3 py-4 overflow-y-auto flex-1">
               <div className="space-y-6">
                 <div>
+                  <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/40 mb-3">Account</h3>
+                  <MobileAccountLinks onNavigate={() => setMobileOpen(false)} />
+                </div>
+                <div>
+
                   <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/40 mb-3">Language</h3>
                   <LanguageAccordion onSelect={() => setMobileOpen(false)} />
                 </div>
