@@ -1,5 +1,5 @@
 import { Link } from "@/lib/router-compat";
-import { LayoutDashboard, LogIn, LogOut, User } from "lucide-react";
+import { LayoutDashboard, LogIn, LogOut } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 
 interface MobileAccountLinksProps {
@@ -64,5 +64,3 @@ export const MobileAccountLinks = ({ onNavigate }: MobileAccountLinksProps) => {
     </div>
   );
 };
-
-export const MobileAccountIcon = () => <User className="w-4 h-4" />;
