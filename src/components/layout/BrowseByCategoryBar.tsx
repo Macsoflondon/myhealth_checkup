@@ -321,6 +321,29 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
         </div>
       </div>
 
+      {/* Floating hamburger — takes over once the brand bar scrolls out of
+          view so the menu stays reachable on phones and small tablets. */}
+      <div
+        className={`fixed top-3 right-3 z-40 md:hidden transition-all duration-300 ease-out motion-reduce:transition-none ${
+          mobileBarOut && !mobileOpen
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 -translate-y-3 pointer-events-none"
+        }`}
+        data-testid="mobile-sticky-menu-trigger"
+        aria-hidden={!mobileBarOut || mobileOpen}
+      >
+        <button
+          type="button"
+          onClick={() => setMobileOpen(true)}
+          aria-label="Open menu"
+          className="flex flex-col items-end justify-center gap-[5px] min-w-11 min-h-11 p-2 rounded-xl bg-white/90 backdrop-blur-md border border-[#081129]/10 shadow-[0_8px_24px_-8px_rgba(8,17,41,0.35)] focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#e70d69] cursor-pointer"
+        >
+          <div className="h-[3px] w-9 rounded-full bg-[#081129]" />
+          <div className="h-[3px] w-6 rounded-full bg-[#e70d69]" />
+          <div className="h-[3px] w-10 rounded-full bg-[#22c0d4]" />
+        </button>
+      </div>
+
       {(() => {
         const desktopBar = (
           <div
