@@ -17,6 +17,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from '@/hooks/use-toast';
 import { logger } from '@/lib/logger';
+import { serializeJsonLd } from '@/lib/seo/json-ld';
 import { useServerFn } from '@tanstack/react-start';
 import { submitContactMessage } from '@/lib/contact/contact.functions';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -100,7 +101,7 @@ const ContactPage = () => {
     <div className="min-h-screen flex flex-col">
       <Helmet>
         <meta property="og:type" content="website" />
-        <script type="application/ld+json">{JSON.stringify({
+        <script type="application/ld+json">{serializeJsonLd({
           "@context": "https://schema.org",
           "@type": ["ContactPage", "MedicalBusiness", "LocalBusiness"],
           "name": "myhealth checkup",

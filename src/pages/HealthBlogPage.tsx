@@ -247,7 +247,7 @@ const HealthBlogPage: React.FC = () => {
       <Helmet>
         <meta property="og:type" content="website" />
         <meta property="og:locale" content="en_GB" />
-        <script type="application/ld+json">{JSON.stringify({
+        <script type="application/ld+json">{serializeJsonLd({
           '@context': 'https://schema.org',
           '@type': 'Blog',
           name: 'myhealth checkup Health Resource Hub',

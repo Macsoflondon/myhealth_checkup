@@ -1,5 +1,6 @@
 import { Helmet } from "react-helmet-async";
 import { TestPageData } from "@/types/TestPageTypes";
+import { serializeJsonLd } from "@/lib/seo/json-ld";
 
 interface TestStructuredDataProps {
   data: TestPageData;
@@ -128,17 +129,17 @@ const TestStructuredData = ({ data, url }: TestStructuredDataProps) => {
   return (
     <Helmet>
       <script type="application/ld+json">
-        {JSON.stringify(productSchema)}
+        {serializeJsonLd(productSchema)}
       </script>
       <script type="application/ld+json">
-        {JSON.stringify(medicalTestSchema)}
+        {serializeJsonLd(medicalTestSchema)}
       </script>
       <script type="application/ld+json">
-        {JSON.stringify(breadcrumbSchema)}
+        {serializeJsonLd(breadcrumbSchema)}
       </script>
       {faqSchema && (
         <script type="application/ld+json">
-          {JSON.stringify(faqSchema)}
+          {serializeJsonLd(faqSchema)}
         </script>
       )}
     </Helmet>
