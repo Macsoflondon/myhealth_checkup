@@ -157,6 +157,26 @@ export function getCompareLinks(categorySlug?: string | null, limit = 5): Intern
   return links.filter((link) => (seen.has(link.to) ? false : (seen.add(link.to), true))).slice(0, limit);
 }
 
+/**
+ * Maps a raw provider_tests category value (e.g. "Hormone Tests") onto the
+ * canonical slug used by /tests/$category. Returns null when unmappable.
+ */
+export function resolveCategorySlug(dbCategory: string | null | undefined): LinkableCategorySlug | null {
+  if (!dbCategory) return null;
+  const normalized = dbCategory.toLowerCase().trim().replace(/[\s&]+/g, '-').replace(/-+/g, '-');
+  if (isLinkableCategory(normalized)) return normalized;
+
+  for (const [slug, dbValues] of Object.entries(SLUG_TO_DB_CATEGORIES)) {
+    if (!isLinkableCategory(slug)) continue;
+    if (dbValues.some((value) => value.toLowerCase() === dbCategory.toLowerCase())) return slug;
+  }
+
+  // Fall back to a keyword match so unmapped provider wording still links out.
+  const haystack = dbCategory.toLowerCase();
+  const found = LINKABLE_CATEGORY_SLUGS.find((slug) => haystack.includes(slug.replace(/-/g, ' ')));
+  return found ?? null;
+}
+
 export interface RelatedLinksInput {
   categorySlug?: string | null;
   providerId?: string | null;
