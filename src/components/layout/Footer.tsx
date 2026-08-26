@@ -129,6 +129,20 @@ const StayInformedSection = () => {
               </Link>
 
             </p>
+            <p className="text-[10px] sm:text-[11px] text-white/78 leading-snug text-center break-words">
+              <Link to="/auth" className="inline-block py-1.5 underline hover:text-brand-pink transition-colors">
+                Sign in
+              </Link>
+              {" · "}
+              <Link to="/admin/login" className="inline-block py-1.5 underline hover:text-brand-pink transition-colors">
+                Admin login
+              </Link>
+              {" · "}
+              <Link to="/control" className="inline-block py-1.5 underline hover:text-brand-pink transition-colors">
+                Crux Control
+              </Link>
+            </p>
+
           </div>
         </div>
 
