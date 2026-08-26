@@ -48,6 +48,8 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/recommendations",
   "/reviews",
   "/find-test",
+  "/find-test/compare",
+  "/find-test/recommendations",
   "/assisted-test-finder",
   "/biomarker-database",
   "/conditions",
