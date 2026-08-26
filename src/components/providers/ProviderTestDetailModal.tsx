@@ -346,7 +346,7 @@ export default function ProviderTestDetailModal({
                 providerName,
                 measurementCount: test.biomarker_count ?? null,
                 sampleType: test.sample_type ?? null,
-                turnaroundText: test.turnaround_time ?? null,
+                turnaroundText: test.turnaround_days_text ?? null,
                 category: test.category ?? null,
               })}
             </p>
