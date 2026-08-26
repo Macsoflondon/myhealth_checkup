@@ -1,8 +1,11 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
-const TestFinderRecommendationsPage = lazy(() => import("@/pages/TestFinderRecommendationsPage"));
-
+/**
+ * The quiz renders its recommendations inline, so this legacy standalone page
+ * has no way to be populated. Redirect rather than strand visitors.
+ */
 export const Route = createFileRoute("/find-test/recommendations")({
-  component: TestFinderRecommendationsPage,
+  beforeLoad: () => {
+    throw redirect({ to: "/find-test", replace: true });
+  },
 });
