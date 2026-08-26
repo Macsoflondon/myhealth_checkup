@@ -7,6 +7,8 @@ import { primaryNavigationItems, moreNavigationSections } from "@/components/hea
 import { MoreDropdownMenu } from "@/components/header/MoreDropdownMenu";
 import { LanguageSwitcher, LanguageAccordion } from "@/components/header/LanguageSwitcher";
 import { UserMenu } from "@/components/header/UserMenu";
+import { MobileAccountLinks } from "@/components/header/MobileAccountLinks";
+
 import { CategoryPillDropdown } from "@/components/layout/CategoryPillDropdown";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 const PINK = "#e70d69";
@@ -251,6 +253,11 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             <nav className="px-3 py-4 overflow-y-auto flex-1">
               <div className="space-y-6">
                 <div>
+                  <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/40 mb-3">Account</h3>
+                  <MobileAccountLinks onNavigate={() => setMobileOpen(false)} />
+                </div>
+                <div>
+
                   <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/40 mb-3">Language</h3>
                   <LanguageAccordion onSelect={() => setMobileOpen(false)} />
                 </div>
@@ -328,9 +335,8 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                     document.body,
                   )}
                 </div>
-                {placement !== "hero" && (
-                  <div className={`flex items-center shrink-0 ${compact ? "gap-0" : "gap-1"}`}><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><LanguageSwitcher /></div><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><UserMenu /></div></div>
-                )}
+                <div className={`flex items-center shrink-0 ml-auto ${compact ? "gap-0" : "gap-1"}`}><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><LanguageSwitcher /></div><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><UserMenu labelled /></div></div>
+
               </div>
             </div>
 
