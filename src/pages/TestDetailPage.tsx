@@ -218,12 +218,12 @@ const TestDetailPage = () => {
             provider?.name ? ` Available from ${provider.name}.` : ""
           }`.slice(0, 158)}
         />
-        <link rel="canonical" href={`https://myhealthcheckup.co.uk/${providerId}/${testId}`} />
+        <link rel="canonical" href={`https://myhealthcheckup.co.uk/provider/${providerId}/tests/${testId}`} />
         <meta property="og:type" content="product" />
         <meta property="og:site_name" content="myhealth checkup" />
         <meta property="og:title" content={`${test.test_name} | myhealth checkup`.slice(0, 60)} />
         <meta property="og:description" content={`Compare the ${test.test_name} across accredited UK providers${test.price != null ? ` from £${test.price.toFixed(2)}` : ""}.`} />
-        <meta property="og:url" content={`https://myhealthcheckup.co.uk/${providerId}/${testId}`} />
+        <meta property="og:url" content={`https://myhealthcheckup.co.uk/provider/${providerId}/tests/${testId}`} />
         <meta property="og:locale" content="en_GB" />
         <script type="application/ld+json">{JSON.stringify({
           "@context": "https://schema.org",
@@ -239,7 +239,7 @@ const TestDetailPage = () => {
               "priceCurrency": "GBP",
               "price": test.price.toFixed(2),
               "availability": "https://schema.org/InStock",
-              "url": `https://myhealthcheckup.co.uk/${providerId}/${testId}`,
+              "url": `https://myhealthcheckup.co.uk/provider/${providerId}/tests/${testId}`,
               ...(provider?.name ? { "seller": { "@type": "Organization", "name": provider.name } } : {})
             }
           } : {})
