@@ -15,7 +15,10 @@ export function isClientAbort(error: unknown): boolean {
         code === "ECONNRESET" ||
         code === "ERR_STREAM_PREMATURE_CLOSE" ||
         /^aborted$/i.test(current.message) ||
-        /aborted|socketOnClose|abortIncoming/i.test(current.stack ?? "")
+        /aborted|socketOnClose|abortIncoming/i.test(current.stack ?? "") ||
+        // Dev-only: in-memory imagetools cache lost after a dev-server restart,
+        // requested by a page that was loaded before it.
+        /vite-imagetools cannot find image with id/i.test(current.message)
       ) {
         return true;
       }

@@ -17,7 +17,10 @@ const isClientAbortError = (error: unknown): boolean =>
   (/^aborted$/i.test(error.message) ||
     error.name === "AbortError" ||
     (error as { code?: unknown }).code === "ECONNRESET" ||
-    /abortIncoming|socketOnClose/.test(error.stack ?? ""));
+    /abortIncoming|socketOnClose/.test(error.stack ?? "") ||
+    // Stale asset id requested by a page loaded before the dev server restarted:
+    // the imagetools cache is in-memory, so the id is simply gone. Dev-only noise.
+    /vite-imagetools cannot find image with id/.test(error.message));
 
 const guardFlag = "__mhcViteAbortGuard";
 if (!(process as unknown as Record<string, unknown>)[guardFlag]) {
