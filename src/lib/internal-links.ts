@@ -12,6 +12,7 @@ import { getCategoryContent } from '@/data/categoryContent';
 import { goalPages } from '@/data/goalPages';
 import { symptomPages } from '@/data/symptomPages';
 import { PROVIDER_NAMES, normalizeProviderId } from '@/constants/providers';
+import { SLUG_TO_DB_CATEGORIES } from '@/constants/categories';
 
 export interface InternalLink {
   label: string;
