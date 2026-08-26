@@ -335,9 +335,8 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                     document.body,
                   )}
                 </div>
-                {placement !== "hero" && (
-                  <div className={`flex items-center shrink-0 ${compact ? "gap-0" : "gap-1"}`}><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><LanguageSwitcher /></div><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><UserMenu /></div></div>
-                )}
+                <div className={`flex items-center shrink-0 ml-auto ${compact ? "gap-0" : "gap-1"}`}><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><LanguageSwitcher /></div><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><UserMenu labelled /></div></div>
+
               </div>
             </div>
 
