@@ -82,11 +82,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1.0" },
-      { title: "myhealth checkup | Compare UK private health testing" },
+      { title: "myhealth checkup | Private Blood Tests & Health Checks UK" },
       {
         name: "description",
         content:
-          "Independent UK comparison of private blood tests and health screening from accredited laboratories and regulated clinics.",
+          "Compare private blood tests, health checks and cancer screening from UKAS-accredited labs and CQC-regulated clinics. Transparent prices, no pay-to-rank.",
       },
       { name: "author", content: "MYHEALTHCHECKUP LTD" },
       { name: "robots", content: "index, follow" },
