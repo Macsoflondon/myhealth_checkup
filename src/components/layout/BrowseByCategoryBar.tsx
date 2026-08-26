@@ -121,6 +121,18 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
+  // Track when the mobile brand bar (with the in-bar hamburger) has scrolled
+  // above the viewport, so a floating trigger can take over.
+  useEffect(() => {
+    const el = mobileBarRef.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => setMobileBarOut(!entry.isIntersecting && entry.boundingClientRect.bottom <= 0),
+      { threshold: 0 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [pathname]);
   useEffect(() => {
     if (placement !== "hero") {
       setHeroPinned(false);
