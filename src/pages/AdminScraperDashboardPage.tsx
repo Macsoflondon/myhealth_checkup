@@ -95,24 +95,36 @@ const AdminScraperDashboardPage: React.FC = () => {
       .from('scraping_jobs')
       .select('*')
       .order('updated_at', { ascending: false });
-    
-    if (!error && data) {
-      setJobs(data);
+
+    if (error) {
+      console.error('Failed to load scraping jobs:', error);
+      setLoadError(formatErrorMessage(error));
+    } else {
+      setLoadError(null);
+      setJobs(data ?? []);
     }
     setIsLoadingJobs(false);
   };
 
   const fetchTestCounts = async () => {
     const counts: Record<string, number> = {};
+    const failures: string[] = [];
     for (const provider of PROVIDERS) {
-      const { count } = await supabase
+      const { count, error } = await supabase
         .from('provider_tests')
         .select('*', { count: 'exact', head: true })
         .eq('provider_id', provider.id)
         .eq('is_active', true);
+      if (error) {
+        console.error(`Failed to count tests for ${provider.name}:`, error);
+        failures.push(provider.name);
+      }
       counts[provider.id] = count || 0;
     }
     setTestCounts(counts);
+    setCountsError(
+      failures.length > 0 ? `Test counts unavailable for: ${failures.join(', ')}.` : null,
+    );
   };
 
   useEffect(() => {
