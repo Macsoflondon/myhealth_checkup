@@ -123,7 +123,6 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.56.1",
     "vite": "^8.1.5",
-    "vite-imagetools": "^12.0.0",
     "vitest": "^4.1.10"
   },
   "version": "0.0.0",

@@ -1,17 +1,67 @@
 import joggingWoman from "@/assets/hero/hero-jogging-woman.png";
-// Build-time responsive variants (vite-imagetools).
-// A 390px phone pulls the 480w AVIF instead of the full-width original.
-import joggingWomanAvifSrcSet from "@/assets/hero/hero-jogging-woman.png?w=480;768;1200;1920&format=avif&as=srcset";
-import joggingWomanWebpSrcSet from "@/assets/hero/hero-jogging-woman.png?w=480;768;1200;1920&format=webp&as=srcset";
 import seniorCouple from "@/assets/hero/hero-senior-couple.jpg";
-import seniorCoupleAvif from "@/assets/hero/hero-senior-couple.jpg?w=480;768;1200&format=avif&as=srcset";
-import seniorCoupleWebp from "@/assets/hero/hero-senior-couple.jpg?w=480;768;1200&format=webp&as=srcset";
 import benchPhone from "@/assets/hero/hero-bench-phone.jpg";
-import benchPhoneAvif from "@/assets/hero/hero-bench-phone.jpg?w=480;768;1200&format=avif&as=srcset";
-import benchPhoneWebp from "@/assets/hero/hero-bench-phone.jpg?w=480;768;1200&format=webp&as=srcset";
 import bloodTestKit from "@/assets/hero/hero-blood-test-kit.jpg";
-import bloodTestKitAvif from "@/assets/hero/hero-blood-test-kit.jpg?w=480;768;1200;1590&format=avif&as=srcset";
-import bloodTestKitWebp from "@/assets/hero/hero-blood-test-kit.jpg?w=480;768;1200;1590&format=webp&as=srcset";
+import joggingWoman480Avif from "@/assets/hero/generated/jogging-woman-480.avif";
+import joggingWoman768Avif from "@/assets/hero/generated/jogging-woman-768.avif";
+import joggingWoman1200Avif from "@/assets/hero/generated/jogging-woman-1200.avif";
+import joggingWoman1920Avif from "@/assets/hero/generated/jogging-woman-1920.avif";
+import joggingWoman480Webp from "@/assets/hero/generated/jogging-woman-480.webp";
+import joggingWoman768Webp from "@/assets/hero/generated/jogging-woman-768.webp";
+import joggingWoman1200Webp from "@/assets/hero/generated/jogging-woman-1200.webp";
+import joggingWoman1920Webp from "@/assets/hero/generated/jogging-woman-1920.webp";
+import seniorCouple480Avif from "@/assets/hero/generated/senior-couple-480.avif";
+import seniorCouple768Avif from "@/assets/hero/generated/senior-couple-768.avif";
+import seniorCouple1200Avif from "@/assets/hero/generated/senior-couple-1200.avif";
+import seniorCouple480Webp from "@/assets/hero/generated/senior-couple-480.webp";
+import seniorCouple768Webp from "@/assets/hero/generated/senior-couple-768.webp";
+import seniorCouple1200Webp from "@/assets/hero/generated/senior-couple-1200.webp";
+import benchPhone480Avif from "@/assets/hero/generated/bench-phone-480.avif";
+import benchPhone768Avif from "@/assets/hero/generated/bench-phone-768.avif";
+import benchPhone1200Avif from "@/assets/hero/generated/bench-phone-1200.avif";
+import benchPhone480Webp from "@/assets/hero/generated/bench-phone-480.webp";
+import benchPhone768Webp from "@/assets/hero/generated/bench-phone-768.webp";
+import benchPhone1200Webp from "@/assets/hero/generated/bench-phone-1200.webp";
+import bloodTestKit480Avif from "@/assets/hero/generated/blood-test-kit-480.avif";
+import bloodTestKit768Avif from "@/assets/hero/generated/blood-test-kit-768.avif";
+import bloodTestKit1200Avif from "@/assets/hero/generated/blood-test-kit-1200.avif";
+import bloodTestKit1590Avif from "@/assets/hero/generated/blood-test-kit-1590.avif";
+import bloodTestKit480Webp from "@/assets/hero/generated/blood-test-kit-480.webp";
+import bloodTestKit768Webp from "@/assets/hero/generated/blood-test-kit-768.webp";
+import bloodTestKit1200Webp from "@/assets/hero/generated/blood-test-kit-1200.webp";
+import bloodTestKit1590Webp from "@/assets/hero/generated/blood-test-kit-1590.webp";
+
+const srcSet = (...candidates: ReadonlyArray<readonly [string, number]>): string =>
+  candidates.map(([url, width]) => `${url} ${width}w`).join(", ");
+
+const joggingWomanAvifSrcSet = srcSet(
+  [joggingWoman480Avif, 480], [joggingWoman768Avif, 768],
+  [joggingWoman1200Avif, 1200], [joggingWoman1920Avif, 1920],
+);
+const joggingWomanWebpSrcSet = srcSet(
+  [joggingWoman480Webp, 480], [joggingWoman768Webp, 768],
+  [joggingWoman1200Webp, 1200], [joggingWoman1920Webp, 1920],
+);
+const seniorCoupleAvif = srcSet(
+  [seniorCouple480Avif, 480], [seniorCouple768Avif, 768], [seniorCouple1200Avif, 1200],
+);
+const seniorCoupleWebp = srcSet(
+  [seniorCouple480Webp, 480], [seniorCouple768Webp, 768], [seniorCouple1200Webp, 1200],
+);
+const benchPhoneAvif = srcSet(
+  [benchPhone480Avif, 480], [benchPhone768Avif, 768], [benchPhone1200Avif, 1200],
+);
+const benchPhoneWebp = srcSet(
+  [benchPhone480Webp, 480], [benchPhone768Webp, 768], [benchPhone1200Webp, 1200],
+);
+const bloodTestKitAvif = srcSet(
+  [bloodTestKit480Avif, 480], [bloodTestKit768Avif, 768],
+  [bloodTestKit1200Avif, 1200], [bloodTestKit1590Avif, 1590],
+);
+const bloodTestKitWebp = srcSet(
+  [bloodTestKit480Webp, 480], [bloodTestKit768Webp, 768],
+  [bloodTestKit1200Webp, 1200], [bloodTestKit1590Webp, 1590],
+);
 
 export type HeroSlide = {
   src: string;
