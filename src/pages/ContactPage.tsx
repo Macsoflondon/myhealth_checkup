@@ -70,12 +70,22 @@ const ContactPage = () => {
 
   const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
+    setSubmitError(null);
     try {
-      logger.info('Contact form submitted:', { ...data, email: data.email.substring(0, 3) + '***' });
-      toast({ title: 'Message sent', description: 'Thank you for your message. We will respond within 24 hours.' });
+      const result = await sendContact({ data: { ...data, hp: '' } });
+      toast({
+        title: 'Message sent',
+        description: `Thank you — your reference is ${result.reference}. We respond within two business days.`,
+      });
       form.reset();
     } catch (error) {
-      toast({ title: 'Error', description: 'There was a problem sending your message. Please try again.', variant: 'destructive' });
+      const description =
+        error instanceof Error && error.message
+          ? error.message
+          : 'There was a problem sending your message. Please try again.';
+      logger.error('[contact] submit failed', error);
+      setSubmitError(description);
+      toast({ title: 'Message not sent', description, variant: 'destructive' });
     } finally {
       setIsSubmitting(false);
     }
