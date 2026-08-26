@@ -80,7 +80,9 @@ const NewsletterSection = () => {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") void handleSubmit();
+                }}
                 placeholder="Your email address"
                 aria-label="Email address"
                 className="flex-1 rounded-xl px-4 py-3 text-white text-sm placeholder:text-white/35 outline-hidden transition-colors focus:border-brand-turquoise"
@@ -90,12 +92,18 @@ const NewsletterSection = () => {
                 }}
               />
               <button
-                onClick={handleSubmit}
-                className="bg-brand-turquoise hover:bg-[#1aa8bb] text-[#081129] font-heading font-extrabold text-xs uppercase tracking-[0.1em] px-6 py-3 rounded-xl transition-colors duration-200 whitespace-nowrap"
+                onClick={() => void handleSubmit()}
+                disabled={submitting}
+                className="bg-brand-turquoise hover:bg-[#1aa8bb] disabled:opacity-60 text-[#081129] font-heading font-extrabold text-xs uppercase tracking-[0.1em] px-6 py-3 rounded-xl transition-colors duration-200 whitespace-nowrap"
               >
-                Subscribe
+                {submitting ? "Subscribing…" : "Subscribe"}
               </button>
             </div>
+          )}
+          {!submitted && errorMessage && (
+            <p role="alert" className="mt-3 text-sm text-brand-pink">
+              {errorMessage}
+            </p>
           )}
           <p className="mt-4 text-xs text-white/78 leading-relaxed">
             We will never share your email. Unsubscribe at any time.
