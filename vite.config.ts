@@ -37,7 +37,6 @@ function clientAbortBoundary(): Plugin {
     },
   };
 }
-
 export default defineConfig({
   tanstackStart: {
 
@@ -70,7 +69,8 @@ export default defineConfig({
         output: {
           manualChunks(id: string) {
             if (!id.includes("node_modules")) return undefined;
-            if (id.includes("recharts") || id.includes("d3-")) return "vendor-charts";
+            if (id.includes("recharts") || id.includes("d3-"))
+              return "vendor-charts";
             if (id.includes("leaflet")) return "vendor-maps";
             if (id.includes("framer-motion")) return "vendor-motion";
             if (id.includes("@supabase")) return "vendor-supabase";
