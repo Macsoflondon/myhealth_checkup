@@ -11,6 +11,7 @@ import esTranslations from '../locales/es.json';
 import deTranslations from '../locales/de.json';
 import itTranslations from '../locales/it.json';
 import ptTranslations from '../locales/pt.json';
+import ptBrTranslations from '../locales/pt-BR.json';
 import nlTranslations from '../locales/nl.json';
 import plTranslations from '../locales/pl.json';
 import arTranslations from '../locales/ar.json';
@@ -36,6 +37,9 @@ const resources = {
   pt: {
     translation: ptTranslations,
   },
+  'pt-BR': {
+    translation: ptBrTranslations,
+  },
   nl: {
     translation: nlTranslations,
   },
@@ -53,7 +57,7 @@ const resources = {
   },
 };
 
-export const SUPPORTED_LANGUAGES = ['en', 'fr', 'es', 'de', 'it', 'pt', 'nl', 'pl', 'ar', 'zh', 'ja'] as const;
+export const SUPPORTED_LANGUAGES = ['en', 'fr', 'es', 'de', 'it', 'pt', 'pt-BR', 'nl', 'pl', 'ar', 'zh', 'ja'] as const;
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
 const isSupported = (code: string): code is SupportedLanguage =>
@@ -67,6 +71,8 @@ export const resolveLanguageTag = (tag: string): SupportedLanguage | null => {
   const normalised = tag.toLowerCase().trim();
   if (!normalised) return null;
   if (normalised.startsWith('en')) return 'en';
+  // Brazilian Portuguese keeps its own bundle; other pt variants fall back to pt.
+  if (normalised === 'pt-br') return 'pt-BR';
   const base = normalised.split('-')[0];
   // Chinese script/region variants (zh-Hans, zh-Hant, zh-TW, zh-HK) all map to zh
   if (base === 'zh') return 'zh';
