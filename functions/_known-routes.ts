@@ -52,7 +52,11 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/find-test/recommendations",
   "/assisted-test-finder",
   "/biomarker-database",
+  "/biomarkers",
   "/conditions",
+  "/quiz",
+  "/find-clinic",
+  "/category",
 
   // Provider hubs
   "/providers",
@@ -69,6 +73,14 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/providers/london-health-company",
   "/providers/medical-diagnosis",
   "/trusted-providers",
+  "/clinilabs",
+  "/lola-health",
+  "/london-health-company",
+  "/london-medical-laboratory",
+  "/medical-diagnosis",
+  "/medichecks",
+  "/randox",
+  "/thriva",
 
   // Tools
   "/blood-test-analysis",
@@ -117,6 +129,12 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/guides",
   "/blog/testosterone-levels-by-age",
   "/blog/total-vs-free-testosterone",
+  "/blog/ferritin-vs-iron-comparison-guide",
+  "/blog/private-blood-test-cost-guide",
+  "/complaints",
+  "/feedback",
+  "/security",
+  "/trust",
 
   // Legal
   "/legal",
@@ -140,6 +158,8 @@ const DYNAMIC_ROUTE_PATTERNS: readonly string[] = [
   "/compare/symptoms/:symptomSlug",
   "/compare/goals/:goalSlug",
   "/guides/:slug",
+  "/category/:slug",
+  "/control/:section",
 
   "/provider/:providerId",
   "/provider/:providerId/tests",
