@@ -2,6 +2,7 @@
 // when h3 has already swallowed the throw into a generic 500 Response.
 
 import { isClientAbort } from "./is-client-abort";
+import { recordAbort } from "./abort-diagnostics";
 
 let lastCapturedError: { error: unknown; at: number } | undefined;
 const TTL_MS = 5_000;
@@ -57,7 +58,11 @@ function isErrorLike(value: unknown): value is Error {
 const originalConsoleError = console.error.bind(console);
 console.error = (...args: unknown[]) => {
   // Client disconnects are not failures — never record or surface them.
-  if (args.some((arg) => isErrorLike(arg) && isClientAbort(arg))) return;
+  const abortArg = args.find((arg) => isErrorLike(arg) && isClientAbort(arg));
+  if (abortArg) {
+    recordAbort(abortArg, "process");
+    return;
+  }
   const expanded = args.map((arg) => {
     if (!isErrorLike(arg)) return arg;
     record(arg);
@@ -71,6 +76,7 @@ if (typeof globalThis.addEventListener === "function") {
     const error = (event as ErrorEvent).error ?? event;
     if (isClientAbort(error)) {
       event.preventDefault?.();
+      recordAbort(error, "process");
       return;
     }
     record(error);
@@ -79,6 +85,7 @@ if (typeof globalThis.addEventListener === "function") {
     const reason = (event as PromiseRejectionEvent).reason;
     if (isClientAbort(reason)) {
       event.preventDefault?.();
+      recordAbort(reason, "process");
       return;
     }
     record(reason);
@@ -93,12 +100,18 @@ const nodeProcess = (globalThis as { process?: NodeJS.Process }).process;
 if (nodeProcess?.on && !(nodeProcess as { __mhcAbortGuard?: boolean }).__mhcAbortGuard) {
   (nodeProcess as { __mhcAbortGuard?: boolean }).__mhcAbortGuard = true;
   nodeProcess.on("uncaughtException", (error: unknown) => {
-    if (isClientAbort(error)) return;
+    if (isClientAbort(error)) {
+      recordAbort(error, "process");
+      return;
+    }
     record(error);
     originalConsoleError(describeError(error));
   });
   nodeProcess.on("unhandledRejection", (reason: unknown) => {
-    if (isClientAbort(reason)) return;
+    if (isClientAbort(reason)) {
+      recordAbort(reason, "process");
+      return;
+    }
     record(reason);
     originalConsoleError(describeError(reason));
   });

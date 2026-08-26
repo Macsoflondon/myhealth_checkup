@@ -22,12 +22,25 @@ const isClientAbortError = (error: unknown): boolean =>
 const guardFlag = "__mhcViteAbortGuard";
 if (!(process as unknown as Record<string, unknown>)[guardFlag]) {
   (process as unknown as Record<string, unknown>)[guardFlag] = true;
+  const logAbort = (error: unknown, kind: string) => {
+    const err = error as Error & { code?: string };
+    console.warn(
+      `[abort] ${JSON.stringify({
+        at: new Date().toISOString(),
+        phase: "vite-dev",
+        kind,
+        message: err?.message,
+        code: err?.code,
+        stackHead: err?.stack?.split("\n").slice(0, 4).join(" | "),
+      })}`,
+    );
+  };
   process.on("uncaughtException", (error) => {
-    if (isClientAbortError(error)) return;
+    if (isClientAbortError(error)) return logAbort(error, "uncaughtException");
     throw error;
   });
   process.on("unhandledRejection", (reason) => {
-    if (isClientAbortError(reason)) return;
+    if (isClientAbortError(reason)) return logAbort(reason, "unhandledRejection");
     throw reason;
   });
 }
