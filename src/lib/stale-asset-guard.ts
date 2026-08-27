@@ -182,8 +182,12 @@ export const installStaleAssetGuard = (): (() => void) => {
   window.addEventListener("vite:preloadError", onPreloadError);
   window.addEventListener("unhandledrejection", onRejection);
 
-  // A load that reaches this point rendered fine: release the retry budget.
-  window.setTimeout(clearStaleAssetRetries, 5_000);
+  // Release the retry budget only when this load needed no recovery reload —
+  // clearing it unconditionally would let a persistently broken asset loop
+  // reloads every few seconds.
+  window.setTimeout(() => {
+    if (!reloadTriggeredThisLoad) clearStaleAssetRetries();
+  }, 5_000);
 
   return () => {
     window.removeEventListener("error", onResourceError, true);
