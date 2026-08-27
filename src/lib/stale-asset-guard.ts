@@ -116,6 +116,10 @@ const isAssetStale = async (url: string): Promise<boolean> => {
 const reloadWithFreshAssetMap = (): void => {
   const record = readRetryRecord();
   if (record.count >= MAX_RETRIES) return;
+  // Never wipe in-progress form input (e.g. a half-written contact message);
+  // the visitor can retry manually once they've submitted or abandoned it.
+  if (hasDirtyFormInput()) return;
+  reloadTriggeredThisLoad = true;
   writeRetryRecord({ count: record.count + 1, at: Date.now() });
 
   const target = new URL(window.location.href);
