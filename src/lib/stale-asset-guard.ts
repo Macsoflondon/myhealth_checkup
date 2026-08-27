@@ -26,6 +26,30 @@ type RetryRecord = { count: number; at: number };
 
 let installed = false;
 let checking = false;
+// Set when this page load actually triggered a recovery reload. Used to keep
+// the retry budget intact across the reload so a persistently missing asset
+// cannot bounce the visitor through an endless reload loop.
+let reloadTriggeredThisLoad = false;
+
+/** True while a form field holds user input that a reload would destroy. */
+const hasDirtyFormInput = (): boolean => {
+  if (!isBrowser()) return false;
+  const active = document.activeElement;
+  if (
+    active instanceof HTMLInputElement ||
+    active instanceof HTMLTextAreaElement
+  ) {
+    if (active.value.trim() !== "") return true;
+  }
+  // Also protect any field with user-entered content anywhere on the page.
+  const fields = document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>(
+    "input:not([type=checkbox]):not([type=radio]):not([type=hidden]), textarea",
+  );
+  for (const field of fields) {
+    if (field.value.trim() !== "") return true;
+  }
+  return false;
+};
 
 const isBrowser = () => typeof window !== "undefined";
 
