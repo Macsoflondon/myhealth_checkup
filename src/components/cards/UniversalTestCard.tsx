@@ -41,6 +41,8 @@ export interface UniversalTestData {
   url?: string | null;
   /** Provider product-packaging image shown as the card's resting state */
   image_url?: string | null;
+  /** True when image_url is an on-brand generic stock photo, not a provider product photo */
+  image_is_stock?: boolean | null;
 
   is_popular?: boolean;
   home_kit_available?: boolean;
@@ -427,6 +429,8 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
   test, onOpenDetail, className,
 }) => {
   const [internalOpen, setInternalOpen] = useState(false);
+  /** Tracks a broken/expired image link so the card degrades to the branded placeholder. */
+  const [brokenImageSrc, setBrokenImageSrc] = useState<string | null>(null);
   const meta = getProviderMeta(test.provider_id);
   const logo = getProviderLogo(test.provider_id) || meta.logo;
   const biomarkers = normalizeBiomarkers(test.biomarkers_list);
@@ -496,14 +500,14 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
             className="absolute inset-0 z-10 flex flex-col bg-white opacity-100 transition-opacity duration-[240ms] ease-out [@media(hover:hover)]:group-hover:opacity-0 [@media(hover:hover)]:group-focus-within:opacity-0 motion-reduce:transition-none"
           >
             <div className="flex flex-1 items-center justify-center overflow-hidden p-4">
-              {test.image_url ? (
+              {test.image_url && brokenImageSrc !== test.image_url ? (
                 <img
                   src={test.image_url}
                   alt={`${test.test_name} test kit from ${meta.displayName}`}
                   loading="lazy"
                   decoding="async"
                   className="h-full w-full object-contain"
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.visibility = "hidden"; }}
+                  onError={() => { setBrokenImageSrc(test.image_url ?? null); }}
                 />
               ) : (
                 <div
