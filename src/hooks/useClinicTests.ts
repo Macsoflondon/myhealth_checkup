@@ -13,6 +13,9 @@ export interface ClinicTest {
   price: number | null;
   category: string | null;
   url: string | null;
+  image_url: string | null;
+  /** True when image_url is an on-brand generic stock photo, not a provider product photo. */
+  image_is_stock: boolean | null;
 }
 
 async function fetchClinicTests(providerId: string | null): Promise<ClinicTest[]> {
@@ -23,7 +26,7 @@ async function fetchClinicTests(providerId: string | null): Promise<ClinicTest[]
   
   const { data, error } = await supabase
     .from("provider_tests")
-    .select("id, test_name, description, price, category, url")
+    .select("id, test_name, description, price, category, url, image_url, image_is_stock")
     .eq("is_active", true)
     .or(`provider_id.ilike.%${normalizedId}%,provider_id.ilike.%${providerId}%`)
     .order("category", { ascending: true })

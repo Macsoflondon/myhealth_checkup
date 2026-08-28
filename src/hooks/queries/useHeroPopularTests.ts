@@ -12,6 +12,9 @@ export interface HeroPopularTest {
   clinicalReviewType: string | null;
   biomarkersList: string[];
   turnaroundDaysText: string | null;
+  imageUrl: string | null;
+  /** True when imageUrl is an on-brand generic stock photo, not a provider product photo. */
+  imageIsStock: boolean | null;
 }
 
 function parseBiomarkersList(raw: unknown): string[] {
@@ -60,7 +63,7 @@ export function useHeroPopularTests() {
         const { data, error } = await supabase
           .from("provider_tests")
           .select(
-            "id, test_name, provider_id, total_expected_cost, biomarker_count, url, canonical_category, clinical_review_type, biomarkers_list, turnaround_days_text"
+            "id, test_name, provider_id, total_expected_cost, biomarker_count, url, canonical_category, clinical_review_type, biomarkers_list, turnaround_days_text, image_url, image_is_stock"
           )
           .eq("is_popular", true)
           .eq("is_active", true)
@@ -88,6 +91,8 @@ export function useHeroPopularTests() {
           clinicalReviewType: typeof row.clinical_review_type === "string" ? row.clinical_review_type : null,
           biomarkersList: parseBiomarkersList(row.biomarkers_list),
           turnaroundDaysText: typeof row.turnaround_days_text === "string" ? row.turnaround_days_text : null,
+          imageUrl: typeof row.image_url === "string" ? row.image_url : null,
+          imageIsStock: typeof row.image_is_stock === "boolean" ? row.image_is_stock : null,
         }));
       } catch (e) {
         console.error("[useHeroPopularTests] Unexpected error in queryFn:", e);

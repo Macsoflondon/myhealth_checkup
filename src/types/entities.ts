@@ -51,6 +51,11 @@ export interface CompareTestData extends Test {
   clinicalReviewType?: 'included' | 'optional' | 'gp_included' | 'consultant_included' | 'clinician_included' | 'not_included' | 'not_available' | null;
   clinicalReviewFee?: number | null;
   clinicalReviewNote?: string | null;
+
+  /** Provider product-packaging image shown as the card's resting state. */
+  image_url?: string | null;
+  /** True when image_url is an on-brand generic stock photo, not a provider product photo. */
+  image_is_stock?: boolean | null;
 }
 
 export interface UserProfile {
