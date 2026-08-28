@@ -276,7 +276,7 @@ const Index = () => {
                   <div className="sm:col-start-4 flex flex-col items-center gap-2 w-full sm:w-auto px-1 sm:px-0">
                     <Link
                       to="/find-test"
-                      aria-label="Take the Health Quiz \u2014 find the right private blood test"
+                      aria-label="Take the Health Quiz — find the right private blood test"
                       className="inline-flex items-center justify-center gap-2 w-full sm:w-auto whitespace-nowrap bg-gradient-to-r from-[#22c0d4] to-[#1aa8bb] hover:from-[#1aa8bb] hover:to-[#22c0d4] text-[#081129] font-bold text-base sm:text-lg px-6 sm:px-8 py-3.5 sm:py-4 rounded-full shadow-lg shadow-[#22c0d4]/25 transition-all hover:scale-[1.02]"
                       style={{ fontFamily: "'Montserrat', sans-serif" }}
                     >
