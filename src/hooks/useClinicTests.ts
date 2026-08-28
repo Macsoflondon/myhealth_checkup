@@ -8,6 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export interface ClinicTest {
   id: string;
+  provider_id: string;
   test_name: string;
   description: string | null;
   price: number | null;
@@ -26,7 +27,7 @@ async function fetchClinicTests(providerId: string | null): Promise<ClinicTest[]
   
   const { data, error } = await supabase
     .from("provider_tests")
-    .select("id, test_name, description, price, category, url, image_url, image_is_stock")
+    .select("id, provider_id, test_name, description, price, category, url, image_url, image_is_stock")
     .eq("is_active", true)
     .or(`provider_id.ilike.%${normalizedId}%,provider_id.ilike.%${providerId}%`)
     .order("category", { ascending: true })

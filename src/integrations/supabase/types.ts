@@ -10,7 +10,7 @@ export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.17"
+    PostgrestVersion: "14.5"
   }
   public: {
     Tables: {
@@ -2368,6 +2368,73 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      image_audit_results: {
+        Row: {
+          checked_at: string
+          final_url: string | null
+          http_status: number | null
+          id: string
+          image_check: string
+          name_match: boolean | null
+          name_match_ratio: number | null
+          notes: string | null
+          provider_id: string
+          provider_test_id: string
+          test_name: string
+          url_status: string
+        }
+        Insert: {
+          checked_at?: string
+          final_url?: string | null
+          http_status?: number | null
+          id?: string
+          image_check: string
+          name_match?: boolean | null
+          name_match_ratio?: number | null
+          notes?: string | null
+          provider_id: string
+          provider_test_id: string
+          test_name: string
+          url_status: string
+        }
+        Update: {
+          checked_at?: string
+          final_url?: string | null
+          http_status?: number | null
+          id?: string
+          image_check?: string
+          name_match?: boolean | null
+          name_match_ratio?: number | null
+          notes?: string | null
+          provider_id?: string
+          provider_test_id?: string
+          test_name?: string
+          url_status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "image_audit_results_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: true
+            referencedRelation: "comparison_test_groups"
+            referencedColumns: ["provider_test_id"]
+          },
+          {
+            foreignKeyName: "image_audit_results_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: true
+            referencedRelation: "provider_tests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "image_audit_results_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: true
+            referencedRelation: "unified_provider_tests"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       live_comparison_panels: {
         Row: {

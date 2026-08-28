@@ -9,7 +9,7 @@ import { SectionSkeleton } from "@/components/common/SectionSkeleton";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 import { useActiveTestCount } from "@/hooks/queries/useActiveTestCount";
-import { ArrowRight, Shield } from "lucide-react";
+import { Shield } from "lucide-react";
 
 // Hero LCP preloading is owned by the route head() in src/routes/index.tsx —
 // duplicating it here downloaded a second, unused hero image on every visit.
@@ -47,6 +47,12 @@ const StartJourneySection = lazy(
 
 const NewsletterSection = lazy(
   () => import("@/components/sections/NewsletterSection"),
+);
+
+const HeroPopularTests = lazy(
+  () => import("@/components/sections/HeroPopularTests").then((m) => ({
+    default: m.HeroPopularTests,
+  })),
 );
 
 const SectionFallback = () => (
@@ -258,10 +264,6 @@ const Index = () => {
                       style={{ fontFamily: "'Montserrat', sans-serif" }}
                     >
                       Take the Health Quiz
-                      <ArrowRight
-                        className="w-5 h-5 shrink-0"
-                        aria-hidden="true"
-                      />
                     </Link>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-y-0 gap-x-2 text-white text-xs">
                       <span className="flex items-center gap-1">
@@ -287,6 +289,12 @@ const Index = () => {
           <Suspense fallback={<SectionFallback />}>
             <SectionReveal>
               <PartnersGrid />
+            </SectionReveal>
+          </Suspense>
+
+          <Suspense fallback={<SectionFallback />}>
+            <SectionReveal delay={0.05}>
+              <HeroPopularTests />
             </SectionReveal>
           </Suspense>
 

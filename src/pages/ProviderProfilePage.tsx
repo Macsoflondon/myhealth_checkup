@@ -13,6 +13,7 @@ import { getBranding } from "@/data/providerBranding";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { getProviderRating } from "@/constants/providerRatings";
 import { ProviderTestsGrid } from "@/components/providers/ProviderTestsGrid";
+import { ClinicTestsSection } from "@/components/sections/ClinicTestsSection";
 import RelatedLinks from "@/components/seo/RelatedLinks";
 
 
@@ -235,6 +236,10 @@ const ProviderProfilePage = () => {
 
         <div className="mt-8">
           <ProviderTestsGrid providerSlug={provider.id} providerDisplayName={provider.name} />
+        </div>
+
+        <div className="mt-8">
+          <ClinicTestsSection providerId={provider.id} limit={8} />
         </div>
       </main>
 
