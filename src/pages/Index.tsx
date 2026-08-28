@@ -249,6 +249,23 @@ const Index = () => {
                     aria-hidden="true"
                   />
                 </div>
+
+                <div className="max-w-3xl mx-auto text-left space-y-4 mb-8 sm:mb-10">
+                  <p className="text-white/85 text-base sm:text-lg leading-relaxed">
+                    At myhealth checkup, we believe everyone deserves access to
+                    transparent, trustworthy health information. Our mission is
+                    to empower you to take control of your health by making it
+                    simple to compare private health tests from accredited UK
+                    providers.
+                  </p>
+                  <p className="text-white/85 text-base sm:text-lg leading-relaxed">
+                    We only feature providers that meet rigorous quality
+                    standards, including UKAS accreditation and CQC regulation.
+                    Our recommendations are based on clinical evidence and
+                    reviewed by registered healthcare professionals.
+                  </p>
+                </div>
+
                 <div className="flex flex-col items-center gap-4 sm:grid sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-start sm:gap-0 w-full mx-auto mb-6 sm:mb-8">
                   <h2
                     className="sm:col-start-2 text-[clamp(1.6rem,6.5vw,2.6rem)] font-bold text-white leading-[1.1] tracking-tight text-center whitespace-normal sm:whitespace-nowrap sm:pt-3"
