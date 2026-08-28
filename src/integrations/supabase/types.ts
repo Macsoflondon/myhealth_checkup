@@ -3772,6 +3772,7 @@ export type Database = {
           home_phlebotomy_option: boolean | null
           home_visit_fee: number | null
           id: string
+          image_is_stock: boolean
           image_url: string | null
           in_stock: boolean | null
           is_active: boolean
@@ -3859,6 +3860,7 @@ export type Database = {
           home_phlebotomy_option?: boolean | null
           home_visit_fee?: number | null
           id?: string
+          image_is_stock?: boolean
           image_url?: string | null
           in_stock?: boolean | null
           is_active?: boolean
@@ -3946,6 +3948,7 @@ export type Database = {
           home_phlebotomy_option?: boolean | null
           home_visit_fee?: number | null
           id?: string
+          image_is_stock?: boolean
           image_url?: string | null
           in_stock?: boolean | null
           is_active?: boolean

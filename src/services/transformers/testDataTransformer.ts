@@ -38,6 +38,9 @@ export interface LiveTestRow {
   lab_ukas_accredited?: boolean | null;
   lab_cqc_regulated?: boolean | null;
   lab_iso15189?: boolean | null;
+  /** Provider product-packaging image (or on-brand stock photo). */
+  image_url?: string | null;
+  image_is_stock?: boolean | null;
 }
 
 const COLLECTION_FEE_TYPES = ['none', 'fixed', 'from', 'varies', 'self_arranged'] as const;
@@ -128,7 +131,8 @@ export class TestDataTransformer {
       clinicalReviewFee:
         typeof test.clinical_review_fee === 'number' ? test.clinical_review_fee : null,
       clinicalReviewNote: TestDataTransformer.resolveClinicalReviewNote(test),
-
+      image_url: typeof test.image_url === 'string' ? test.image_url : null,
+      image_is_stock: typeof test.image_is_stock === 'boolean' ? test.image_is_stock : null,
     };
   }
 
