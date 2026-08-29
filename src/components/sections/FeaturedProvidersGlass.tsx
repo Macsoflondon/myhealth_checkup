@@ -136,17 +136,6 @@ const FeaturedProvidersGlass = () => {
               backgroundSize: "24px 24px",
             }}
           />
-
-          <EyebrowBadge size="sm" tone="onLight" className="mb-4" />
-
-
-
-          <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold text-[#081129] leading-tight tracking-tight">
-            Our Trusted Partners
-          </h1>
-          <p className="text-[#081129] text-base md:text-lg max-w-2xl mx-auto pt-6">
-            Accredited UK health testing providers — UKAS laboratories and CQC-regulated clinics with proven track records of clinical excellence.
-          </p>
         </div>
 
         {/* Grid */}
