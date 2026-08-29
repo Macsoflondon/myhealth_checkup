@@ -82,8 +82,8 @@ const PartnersGrid = () => {
 
 
         <SectionHeading 
-          title="Our Trusted" 
-          gradientText="Partners" 
+          title=" " 
+          gradientText="" 
           className="mb-8 sm:mb-10"
           titleClassName="text-white"
         />
