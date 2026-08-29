@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "@/lib/router-compat";
-import { X, LayoutDashboard, LogOut, User } from "lucide-react";
+import { X, LayoutDashboard, LogOut, User, ChevronDown } from "lucide-react";
 import { useDropdownAccessibility } from "@/hooks/useDropdownAccessibility";
+import { useActiveLanguage } from "@/components/header/LanguageSwitcher";
 
 interface MoreDropdownSection {
   title: string;
@@ -23,6 +24,13 @@ interface MoreDropdownMenuProps {
   languageList?: React.ReactNode;
 }
 
+const accountIcon = (name: string) => {
+  if (name === "Sign in") return <User className="w-4 h-4" />;
+  if (name === "Dashboard") return <LayoutDashboard className="w-4 h-4" />;
+  if (name === "Sign Out") return <LogOut className="w-4 h-4" />;
+  return null;
+};
+
 export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
   sections,
   onItemClick,
@@ -32,7 +40,9 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
   languageList,
 }) => {
   const navigate = useNavigate();
-  
+  const currentLanguage = useActiveLanguage();
+  const [langOpen, setLangOpen] = useState(false);
+
   // Accessibility hook for focus trapping and arrow key navigation
   const { containerRef } = useDropdownAccessibility({
     isOpen: true,
@@ -42,11 +52,11 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     // Close dropdown first
     onClose?.();
     onItemClick?.();
-    
+
     // Navigate after a short delay to ensure the dropdown has closed
     setTimeout(() => {
       navigate(path);
@@ -84,19 +94,27 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
           </button>
         </div>
 
-        {accountItems && accountItems.length > 0 && (
-          <>
-            <div className="mb-3">
-              <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Account
-              </h3>
-            </div>
-            <div className="grid grid-cols-1 gap-1.5 mb-4">
-              {accountItems.map((item) => (
+        {/* Pill row: language flag chip + account pills */}
+        {(languageList || (accountItems && accountItems.length > 0)) && (
+          <div className="mb-4">
+            <div className="flex items-center gap-2.5 flex-wrap">
+              {languageList && (
+                <button
+                  type="button"
+                  onClick={() => setLangOpen((v) => !v)}
+                  aria-expanded={langOpen}
+                  aria-label="Select language"
+                  className="inline-flex items-center gap-1 rounded-xl border-[1.5px] border-[#e70d69] bg-white px-2.5 py-2 transition-colors hover:bg-[#e70d69]/5"
+                >
+                  <span className="text-[16px] leading-none">{currentLanguage.flag}</span>
+                  <ChevronDown className={`w-3.5 h-3.5 text-[#e70d69] transition-transform duration-200 ${langOpen ? "rotate-180" : ""}`} />
+                </button>
+              )}
+              {accountItems?.map((item) => (
                 <a
                   key={item.name}
                   href={item.path}
-                  className="state-layer flex items-center gap-2 p-2.5 rounded-lg transition-shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700 cursor-pointer"
+                  className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-[#e70d69] bg-white px-4 py-2 no-underline transition-colors hover:bg-[#e70d69] group/acct"
                   onClick={(e) => {
                     if (item.onClick) {
                       e.preventDefault();
@@ -107,33 +125,26 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
                     }
                   }}
                 >
-                  {item.name === "Sign in" && <User className="w-4 h-4 text-[#081129]/60" />}
-                  {item.name === "Dashboard" && <LayoutDashboard className="w-4 h-4 text-[#081129]/60" />}
-                  {item.name === "Sign Out" && <LogOut className="w-4 h-4 text-[#081129]/60" />}
-                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-brand-pink dark:hover:text-brand-pink transition-colors">
+                  <span className="text-[#081129] group-hover/acct:text-white transition-colors [&>svg]:w-4 [&>svg]:h-4">
+                    {accountIcon(item.name)}
+                  </span>
+                  <span className="text-[12.5px] font-semibold font-[Montserrat] text-[#081129] group-hover/acct:text-white transition-colors whitespace-nowrap">
                     {item.name}
                   </span>
                 </a>
               ))}
             </div>
-            <div className="border-t border-gray-200 dark:border-gray-700 mb-4" />
-          </>
-        )}
 
-        {languageList && (
-          <>
-            <div className="mb-3">
-              <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                Language
-              </h3>
-            </div>
-            <div className="mb-4">
-              {languageList}
-            </div>
-            {sections.length > 0 && (
-              <div className="border-t border-gray-200 dark:border-gray-700 mb-4" />
+            {languageList && langOpen && (
+              <div className="mt-3 rounded-xl border border-[#081129]/10 bg-[#f7f7f8] p-2 max-h-[280px] overflow-y-auto">
+                {languageList}
+              </div>
             )}
-          </>
+
+            {sections.length > 0 && (
+              <div className="border-t border-gray-200 dark:border-gray-700 mt-4" />
+            )}
+          </div>
         )}
 
         {sections.map((section, sectionIndex) => (
