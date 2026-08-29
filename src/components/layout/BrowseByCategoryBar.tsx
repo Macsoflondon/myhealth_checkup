@@ -377,12 +377,22 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
 
                   {moreOpen && typeof document !== "undefined" && createPortal(
                     <div ref={moreMenuRef} className="fixed z-[9999]" style={{ top: moreRect ? moreRect.bottom + 8 : 0, right: moreRect ? Math.max(8, window.innerWidth - moreRect.right) : 8 }}>
-                      <MoreDropdownMenu sections={moreNavigationSections} onItemClick={() => setMoreOpen(false)} onClose={() => setMoreOpen(false)} />
+                      <MoreDropdownMenu
+                        sections={moreNavigationSections}
+                        onItemClick={() => setMoreOpen(false)}
+                        onClose={() => setMoreOpen(false)}
+                        accountItems={user
+                          ? [
+                              { name: "Dashboard", path: "/health-dashboard" },
+                              { name: "Sign Out", path: "#", onClick: () => { void signOut(); setMoreOpen(false); } },
+                            ]
+                          : [{ name: "Sign in", path: "/auth" }]}
+                        languageList={<LanguageList onSelect={() => setMoreOpen(false)} />}
+                      />
                     </div>,
                     document.body,
                   )}
                 </div>
-                <div className={`flex items-center shrink-0 ml-auto ${compact ? "gap-0" : "gap-1"}`}><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><LanguageSwitcher /></div><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><UserMenu labelled /></div></div>
 
               </div>
             </div>
