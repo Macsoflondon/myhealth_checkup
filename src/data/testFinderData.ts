@@ -240,6 +240,7 @@ export interface ProviderPolicy {
 }
 
 export const PROVIDER_COLORS: Record<string, string> = {
+  "Medichecks": "#15A0A0", "Lola Health": "#1F8A5B",
   "Clinilabs": "#2D9CDB", "Goodbody Clinic": "#5AAA46",
   "London Medical Laboratory": "#46566B", "London Health Company": "#2E76C9",
   "Blood Tests London": "#C0392B", "Medical Diagnosis": "#2C7BE5", "Randox Health": "#0F8A80",
