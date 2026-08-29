@@ -82,7 +82,7 @@ const V: VerificationState = "verified";
 const N: VerificationState = "needs_verification";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// TEST RECORDS — verified seed (17 hero tests across all 10 providers)
+// TEST RECORDS — verified seed (17 hero tests across all 8 providers)
 // ─────────────────────────────────────────────────────────────────────────────
 export const TEST_RECORDS: TestRecord[] = [
   { id: "medichecks-male-hormone", name: "Male Hormone Check", provider: "Medichecks", price: 99, biomarkers: 11, turnaround_label: "2–5 days", sample_type: "venous", collection_method: ["self_arranged", "clinic_appointment", "home_visit"], collection_fee_type: "range", collection_fee_amount: { min: 0, max: 59 }, clinical_review_type: "included", clinical_review_professional: "gp", clinical_review_fee: 0, goal_tags: ["symptom_investigation", "performance"], condition_tags: ["male_hormones", "fatigue_low_energy"], sex_restriction: "male_only", book_url: "https://www.medichecks.com/products/male-hormone-check-blood-test", source_url: "https://support.medichecks.com/hc/en-gb/articles/30837564263581-How-to-place-an-order-on-the-website", verification: v(N, N, V, V) },
