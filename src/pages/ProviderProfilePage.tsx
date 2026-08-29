@@ -14,8 +14,6 @@ import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { getProviderRating } from "@/constants/providerRatings";
 import { ProviderTestsGrid } from "@/components/providers/ProviderTestsGrid";
 
-import RelatedLinks from "@/components/seo/RelatedLinks";
-
 
 const ProviderProfilePage = () => {
   const { providerId } = useParams();
@@ -239,7 +237,6 @@ const ProviderProfilePage = () => {
         </div>
       </main>
 
-      <RelatedLinks providerId={provider.id} heading="Explore related tests and providers" />
 
       <div className="mt-8 mb-12 px-4 sm:px-10">
         <QuizCTABanner />
