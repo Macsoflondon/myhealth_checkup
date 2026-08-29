@@ -1,29 +1,23 @@
-# Restyle More dropdown: flag chip + Sign in pill buttons
+# Restore pink hover highlight on toolbar pills
 
-## Goal
+## Why "Most Popular Tests" doesn't highlight
 
-Match the uploaded design: inside the desktop "More" dropdown, the language selector and sign-in stop being plain text rows and become two pink-outlined pill buttons side by side:
+`Most Popular Tests` is the only toolbar pill configured with `hasDropdown: false` (`src/components/header/NavigationItems.tsx:15`). In `CategoryPillDropdown.tsx`, `highlighted = isActiveParent || open` — the pink/tinted state only ever appears when a pill's dropdown is open or you're on its page. Since Most Popular Tests has no dropdown, `open` can never become true, so on the homepage it sits in the plain state with only a barely-visible navy wash (`hover:bg-[#081129]/[0.055]`) on hover. Same story for the "More" button — same faint navy hover. The pill code hasn't changed recently; the pink was only ever the open/active state, which this pill can never reach.
 
-1. **Flag chip** — a rounded square button with a pink border showing the current language flag. Clicking it expands the language list inline *inside* the More dropdown (accordion style, not a separate menu), and picking a language closes the More dropdown.
-2. **Sign in pill** — a rounded-full pink-outlined button with the user icon and "Sign in" label. Clicking it navigates to `/auth` and closes the dropdown.
+## Fix
 
-## Changes
+Give every toolbar pill a real pink hover state so hover feedback is consistent across the whole toolbar, regardless of whether the item has a dropdown:
 
-### `src/components/header/MoreDropdownMenu.tsx`
+### `src/components/layout/CategoryPillDropdown.tsx`
 
-- Replace the current "Account" text-link rows and the always-visible "Language" list with a single row of two pills at the top of the dropdown, matching the reference image:
-  - **Language chip**: rounded-xl, `[1.5px]` pink (`#e70d69`) border, current flag centred (reuses `useActiveLanguage` from `LanguageSwitcher.tsx`). Tapping toggles the language list open/closed inline below the pill row.
-  - When signed out: **Sign in** pill — rounded-full, pink border, `User` icon + "Sign in" label, Montserrat semibold, navigates to `/auth`.
-  - When signed in: show **Dashboard** and **Sign out** pills in the same pink-outline style instead.
-- The expanded language list renders inside the dropdown below the pill row (reusing the existing `LanguageList`); selecting a language collapses the list and closes the More dropdown via the existing `onSelect`/`onClose` callbacks.
-- Keep the existing nav sections below unchanged.
+- Change the default hover from `hover:bg-[#081129]/[0.055]` to a pink wash `hover:bg-[#e70d69]/10` with the label/icon shifting to pink on hover (`group-hover:text-[#e70d69]` on the label span, and a hover colour on the icon), so any pill — dropdown or not — clearly highlights pink on hover.
+- Keep the existing open/active treatments unchanged (pink when on the active route, turquoise tint when a dropdown is open).
 
 ### `src/components/layout/BrowseByCategoryBar.tsx`
 
-- Update the props passed to `MoreDropdownMenu`: pass a compact `languageList` (or a flag if the menu renders its own accordion) so the flag chip drives expansion. No other toolbar changes — the desktop right cluster stays as it is now (More button only).
+- Update the "More" button hover to the same pink wash (`hover:bg-[#e70d69]/10`) so it matches the pills.
 
 ## Verification
 
-- Open the More dropdown at desktop width: confirm the two pink pill buttons render as in the image, the flag chip expands/collapses the language list inline, switching language updates the flag and closes the dropdown, and "Sign in" navigates to `/auth`.
-- Confirm the signed-in state shows Dashboard/Sign out pills and sign out works.
+- Hover every pill in the toolbar at desktop width: each one (including Most Popular Tests and More) shows the pink highlight; dropdown pills still show their existing open state.
 - Typecheck clean.
