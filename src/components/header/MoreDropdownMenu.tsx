@@ -27,7 +27,9 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
   sections,
   onItemClick,
   onClose,
-  isMobile = false
+  isMobile = false,
+  accountItems,
+  languageList,
 }) => {
   const navigate = useNavigate();
   
