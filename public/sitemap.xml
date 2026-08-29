@@ -511,12 +511,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://myhealthcheckup.co.uk/providers/thriva</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://myhealthcheckup.co.uk/providers/randox</loc>
     <lastmod>2026-04-20</lastmod>
     <changefreq>weekly</changefreq>
@@ -1188,54 +1182,6 @@
   </url>
   <url>
     <loc>https://myhealthcheckup.co.uk/provider/medical-diagnosis/tests/bc2cefcb-800d-4dbb-89ba-d4d80f13b5ac</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/thriva/tests/283ede1b-5d38-44f6-98e5-6699939e5a31</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/thriva/tests/76df5073-2be1-4cba-8aef-3abd637a41a4</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/thriva/tests/75b31bc8-7a8b-40db-b1a3-6fe181c0bb92</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/thriva/tests/9eeac5fe-fd65-430a-be3f-2a86cd3424a5</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/thriva/tests/7a82ef73-8802-40b9-96b8-674735323bfe</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/thriva/tests/ed98f3e7-51a7-430c-9be1-c612c0aa3f5d</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/thriva/tests/d0feec77-d096-4027-83c2-3deaf027d5c4</loc>
-    <lastmod>2026-08-26</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/thriva/tests/89fd17d2-2b04-4f36-82eb-30b9c74ca789</loc>
     <lastmod>2026-08-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -5009,42 +4955,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://myhealthcheckup.co.uk/provider/thriva/tests/5bdc5ba7-40f3-42cb-b5b7-db0ce03918f6</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/thriva/tests/60506a74-808a-4d91-b759-bd2532876a98</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/thriva/tests/c79a9448-45a6-48fc-bb9b-26a8b2bc1d4d</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/thriva/tests/f28dc875-594f-4854-a0ac-27b19fa6aedc</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/thriva/tests/720bccf9-2952-458c-adb6-878dd509d2d8</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/thriva/tests/8d912255-3b3e-4fc1-804e-e01f7bdab908</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://myhealthcheckup.co.uk/provider/medical-diagnosis</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -5061,16 +4971,6 @@
   </url>
   <url>
     <loc>https://myhealthcheckup.co.uk/provider/london-medical-laboratory/tests</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/thriva</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/thriva/tests</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

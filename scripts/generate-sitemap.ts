@@ -548,12 +548,6 @@ const rawEntries: SitemapEntry[] = [
     "priority": "0.6"
   },
   {
-    "path": "/providers/thriva",
-    "lastmod": "2026-04-20",
-    "changefreq": "weekly",
-    "priority": "0.7"
-  },
-  {
     "path": "/providers/randox",
     "lastmod": "2026-04-20",
     "changefreq": "weekly",
