@@ -701,6 +701,27 @@ export type Database = {
         }
         Relationships: []
       }
+      biomarker_category_map: {
+        Row: {
+          clinical_category: string
+          consumer_category: string
+          created_at: string
+          id: string
+        }
+        Insert: {
+          clinical_category: string
+          consumer_category: string
+          created_at?: string
+          id?: string
+        }
+        Update: {
+          clinical_category?: string
+          consumer_category?: string
+          created_at?: string
+          id?: string
+        }
+        Relationships: []
+      }
       biomarker_hub: {
         Row: {
           abbreviation: string | null
