@@ -506,7 +506,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
             className="absolute inset-0 z-10 flex flex-col bg-white opacity-100 transition-opacity duration-[240ms] ease-out [@media(hover:hover)]:group-hover:opacity-0 [@media(hover:hover)]:group-focus-within:opacity-0 motion-reduce:transition-none"
           >
             <div className="flex flex-1 items-center justify-center overflow-hidden p-4">
-              {test.image_url && brokenImageSrc !== test.image_url ? (
+              {defaultFace === "image" && test.image_url && brokenImageSrc !== test.image_url ? (
                 <img
                   src={test.image_url}
                   alt={`${test.test_name} test kit from ${meta.displayName}`}
