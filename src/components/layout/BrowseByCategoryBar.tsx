@@ -5,9 +5,9 @@ import { Link, useLocation } from "@/lib/router-compat";
 import { ArrowRight, ChevronDown, Star, Heart, UserCheck, User, Dumbbell, Baby, ShieldCheck, Home, MoreHorizontal, X, Info, Phone, Users, Search, BarChart2, BookOpen, Library } from "lucide-react";
 import { primaryNavigationItems, moreNavigationSections } from "@/components/header/NavigationItems";
 import { MoreDropdownMenu } from "@/components/header/MoreDropdownMenu";
-import { LanguageSwitcher, LanguageAccordion } from "@/components/header/LanguageSwitcher";
-import { UserMenu } from "@/components/header/UserMenu";
+import { LanguageList, LanguageAccordion } from "@/components/header/LanguageSwitcher";
 import { MobileAccountLinks } from "@/components/header/MobileAccountLinks";
+import { useAuth } from "@/context/AuthContext";
 
 import { CategoryPillDropdown } from "@/components/layout/CategoryPillDropdown";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -51,6 +51,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const [barHeight, setBarHeight] = useState(0);
   const [heroPinned, setHeroPinned] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const { user, signOut } = useAuth();
   const isStraddle = placement === "straddle";
   useEffect(() => setHydrated(true), []);
   // Find the navy/white boundary marker rendered by the category hero.
@@ -376,12 +377,22 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
 
                   {moreOpen && typeof document !== "undefined" && createPortal(
                     <div ref={moreMenuRef} className="fixed z-[9999]" style={{ top: moreRect ? moreRect.bottom + 8 : 0, right: moreRect ? Math.max(8, window.innerWidth - moreRect.right) : 8 }}>
-                      <MoreDropdownMenu sections={moreNavigationSections} onItemClick={() => setMoreOpen(false)} onClose={() => setMoreOpen(false)} />
+                      <MoreDropdownMenu
+                        sections={moreNavigationSections}
+                        onItemClick={() => setMoreOpen(false)}
+                        onClose={() => setMoreOpen(false)}
+                        accountItems={user
+                          ? [
+                              { name: "Dashboard", path: "/health-dashboard" },
+                              { name: "Sign Out", path: "#", onClick: () => { void signOut(); setMoreOpen(false); } },
+                            ]
+                          : [{ name: "Sign in", path: "/auth" }]}
+                        languageList={<LanguageList onSelect={() => setMoreOpen(false)} />}
+                      />
                     </div>,
                     document.body,
                   )}
                 </div>
-                <div className={`flex items-center shrink-0 ml-auto ${compact ? "gap-0" : "gap-1"}`}><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><LanguageSwitcher /></div><div className={compact ? "scale-[0.78]" : useStraddle ? "scale-[0.85]" : ""}><UserMenu labelled /></div></div>
 
               </div>
             </div>

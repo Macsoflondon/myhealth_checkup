@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "@/lib/router-compat";
-import { X } from "lucide-react";
+import { X, LayoutDashboard, LogOut, User } from "lucide-react";
 import { useDropdownAccessibility } from "@/hooks/useDropdownAccessibility";
 
 interface MoreDropdownSection {
@@ -8,18 +8,28 @@ interface MoreDropdownSection {
   items: Array<{ name: string; path: string }>;
 }
 
+interface AccountItem {
+  name: string;
+  path: string;
+  onClick?: () => void;
+}
+
 interface MoreDropdownMenuProps {
   sections: MoreDropdownSection[];
   onItemClick?: () => void;
   onClose?: () => void;
   isMobile?: boolean;
+  accountItems?: AccountItem[];
+  languageList?: React.ReactNode;
 }
 
 export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
   sections,
   onItemClick,
   onClose,
-  isMobile = false
+  isMobile = false,
+  accountItems,
+  languageList,
 }) => {
   const navigate = useNavigate();
   
@@ -73,6 +83,58 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
             <X className="w-4 h-4" />
           </button>
         </div>
+
+        {accountItems && accountItems.length > 0 && (
+          <>
+            <div className="mb-3">
+              <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                Account
+              </h3>
+            </div>
+            <div className="grid grid-cols-1 gap-1.5 mb-4">
+              {accountItems.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.path}
+                  className="state-layer flex items-center gap-2 p-2.5 rounded-lg transition-shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700 cursor-pointer"
+                  onClick={(e) => {
+                    if (item.onClick) {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      item.onClick();
+                    } else {
+                      handleLinkClick(e, item.path);
+                    }
+                  }}
+                >
+                  {item.name === "Sign in" && <User className="w-4 h-4 text-[#081129]/60" />}
+                  {item.name === "Dashboard" && <LayoutDashboard className="w-4 h-4 text-[#081129]/60" />}
+                  {item.name === "Sign Out" && <LogOut className="w-4 h-4 text-[#081129]/60" />}
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100 hover:text-brand-pink dark:hover:text-brand-pink transition-colors">
+                    {item.name}
+                  </span>
+                </a>
+              ))}
+            </div>
+            <div className="border-t border-gray-200 dark:border-gray-700 mb-4" />
+          </>
+        )}
+
+        {languageList && (
+          <>
+            <div className="mb-3">
+              <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                Language
+              </h3>
+            </div>
+            <div className="mb-4">
+              {languageList}
+            </div>
+            {sections.length > 0 && (
+              <div className="border-t border-gray-200 dark:border-gray-700 mb-4" />
+            )}
+          </>
+        )}
 
         {sections.map((section, sectionIndex) => (
           <div key={section.title}>
