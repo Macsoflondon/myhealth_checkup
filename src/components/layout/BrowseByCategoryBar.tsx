@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "@/lib/router-compat";
 
-import { ArrowRight, ChevronDown, Star, Heart, UserCheck, User, Dumbbell, Baby, ShieldCheck, Home, MoreHorizontal, X, Info, Phone, Users, Search, BarChart2, BookOpen, Library } from "lucide-react";
+import { ArrowRight, ChevronDown, Star, Heart, UserCheck, User, Dumbbell, Baby, ShieldCheck, Home, X, Info, Phone, Users, Search, BarChart2, BookOpen, Library } from "lucide-react";
 import { primaryNavigationItems, moreNavigationSections } from "@/components/header/NavigationItems";
 import { MoreDropdownMenu } from "@/components/header/MoreDropdownMenu";
 import { LanguageList, LanguageAccordion } from "@/components/header/LanguageSwitcher";
@@ -373,7 +373,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                 </div>
 
                 <div ref={moreRef} className="relative shrink-0" data-testid="category-bar-right-cluster">
-                  <button type="button" onClick={() => setMoreOpen((o) => !o)} aria-expanded={moreOpen} className={`group inline-flex items-center rounded-full transition-colors duration-200 hover:bg-[#081129]/[0.055] ${useStraddle ? "gap-1.5 px-2.5 py-2" : "gap-1 px-1.5 py-2 2xl:gap-2 2xl:px-4 2xl:py-2.5"}`}><MoreHorizontal className={`shrink-0 text-[#081129]/70 ${useStraddle ? "w-[15px] h-[15px]" : "w-[15px] h-[15px] 2xl:w-[17px] 2xl:h-[17px]"}`} strokeWidth={2} /><span className={`font-semibold font-[Montserrat] whitespace-nowrap text-[#081129] ${useStraddle ? "text-[12.5px] lg:text-[13px] tracking-[-0.02em]" : "text-xs sm:text-[12px] tracking-[-0.02em] 2xl:text-sm 2xl:tracking-normal"}`}>More</span><ChevronDown className={`text-[#081129]/45 transition-transform duration-300 shrink-0 w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px] ${moreOpen ? "rotate-180" : ""}`} /></button>
+                  <button type="button" onClick={() => setMoreOpen((o) => !o)} aria-expanded={moreOpen} className={`group inline-flex items-center rounded-full transition-colors duration-200 ${moreOpen ? "bg-[#081129]/[0.055]" : "hover:bg-[#081129]/[0.055]"} ${useStraddle ? "gap-1.5 px-2.5 py-2" : "gap-1 px-1.5 py-2 2xl:gap-2 2xl:px-4 2xl:py-2.5"}`}><span className={`font-semibold font-[Montserrat] whitespace-nowrap text-[#081129] ${useStraddle ? "text-[12.5px] lg:text-[13px] tracking-[-0.02em]" : "text-xs sm:text-[12px] tracking-[-0.02em] 2xl:text-sm 2xl:tracking-normal"}`}>More</span><ChevronDown className={`text-[#081129]/45 transition-transform duration-300 shrink-0 w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px] ${moreOpen ? "rotate-180" : ""}`} /></button>
 
                   {moreOpen && typeof document !== "undefined" && createPortal(
                     <div ref={moreMenuRef} className="fixed z-[9999]" style={{ top: moreRect ? moreRect.bottom + 8 : 0, right: moreRect ? Math.max(8, window.innerWidth - moreRect.right) : 8 }}>
