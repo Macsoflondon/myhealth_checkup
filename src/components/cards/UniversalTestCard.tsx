@@ -423,10 +423,16 @@ export interface UniversalTestCardProps {
   /** Optional override for the click handler. If omitted, opens the detail modal. */
   onOpenDetail?: () => void;
   className?: string;
+  /**
+   * At-rest face of the card. "image" (default) shows the provider's kit photo.
+   * "brand" always shows the branded navy-gradient tile with the provider logo
+   * and test name — used on toolbar-reached category listings.
+   */
+  defaultFace?: "image" | "brand";
 }
 
 export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
-  test, onOpenDetail, className,
+  test, onOpenDetail, className, defaultFace = "image",
 }) => {
   const [internalOpen, setInternalOpen] = useState(false);
   /** Tracks a broken/expired image link so the card degrades to the branded placeholder. */
@@ -500,7 +506,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
             className="absolute inset-0 z-10 flex flex-col bg-white opacity-100 transition-opacity duration-[240ms] ease-out [@media(hover:hover)]:group-hover:opacity-0 [@media(hover:hover)]:group-focus-within:opacity-0 motion-reduce:transition-none"
           >
             <div className="flex flex-1 items-center justify-center overflow-hidden p-4">
-              {test.image_url && brokenImageSrc !== test.image_url ? (
+              {defaultFace === "image" && test.image_url && brokenImageSrc !== test.image_url ? (
                 <img
                   src={test.image_url}
                   alt={`${test.test_name} test kit from ${meta.displayName}`}
