@@ -196,7 +196,7 @@ const CompareTests = () => {
             "@context": "https://schema.org",
             "@type": "CollectionPage",
             "name": "Compare Blood Tests",
-            "description": "Compare private blood tests from Medichecks, Thriva, Randox, and more UK providers.",
+            "description": "Compare private blood tests from Medichecks, Randox, and more UK providers.",
             "url": "https://myhealthcheckup.co.uk/compare",
             "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://myhealthcheckup.co.uk" },
             "breadcrumb": {
@@ -214,7 +214,7 @@ const CompareTests = () => {
               {
                 "@type": "Question",
                 "name": "How do I compare private blood tests in the UK?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Use myhealth checkup to compare price, biomarker coverage, sample method, and typical turnaround across UKAS-accredited providers including Medichecks, Thriva, Randox and more. Filter by category, then select up to four tests to compare side-by-side." }
+                "acceptedAnswer": { "@type": "Answer", "text": "Use myhealth checkup to compare price, biomarker coverage, sample method, and typical turnaround across UKAS-accredited providers including Medichecks, Randox and more. Filter by category, then select up to four tests to compare side-by-side." }
               },
               {
                 "@type": "Question",

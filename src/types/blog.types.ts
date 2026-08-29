@@ -12,7 +12,7 @@ export interface BlogArticle {
   url: string;
   /** External image URL from provider */
   image: string;
-  /** Provider name (e.g., "Medichecks", "Thriva") */
+  /** Provider name (e.g., "Medichecks", "Randox Health") */
   provider: string;
   /** Topic category (e.g., "Nutrition", "Heart Health") */
   category: string;

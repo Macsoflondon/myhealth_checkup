@@ -78,7 +78,6 @@ const whenToTest = [
 
 const providerSnapshot = [
   { provider: "Medichecks", ferritin: "£29 (finger-prick)", ironStudies: "£49 (Iron Status)" },
-  { provider: "Thriva", ferritin: "£39 (finger-prick)", ironStudies: "£59 (Iron)" },
   { provider: "Randox Health", ferritin: "£45 (in-clinic)", ironStudies: "£95 (Iron Profile)" },
   { provider: "Goodbody Clinic", ferritin: "£45 (in-clinic)", ironStudies: "£89 (Iron Studies)" },
   { provider: "London Medical Lab", ferritin: "£39 (finger-prick)", ironStudies: "£69 (Iron Profile)" },

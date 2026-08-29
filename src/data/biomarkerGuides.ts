@@ -1,7 +1,7 @@
 /**
  * Biomarker & test explainer guides.
  * Each entry powers a /guides/:slug page targeting a specific high-intent
- * UK search term identified in the Semrush gap analysis vs Medichecks/Thriva.
+ * UK search term identified in the Semrush gap analysis vs Medichecks and other UK providers.
  *
  * Editorial rules (per project knowledge):
  *  - British English
@@ -550,7 +550,7 @@ export const biomarkerGuides: BiomarkerGuide[] = [
       },
       {
         q: "Which private blood tests include globulin?",
-        a: "Globulin is included in most UK liver function tests, general health MOTs and comprehensive wellness panels from providers such as Medichecks, Thriva, Randox Health and London Medical Laboratory. Compare prices and biomarkers on our comparison hub before booking.",
+        a: "Globulin is included in most UK liver function tests, general health MOTs and comprehensive wellness panels from providers such as Medichecks, Randox Health and London Medical Laboratory. Compare prices and biomarkers on our comparison hub before booking.",
       },
     ],
     compareHref: "/compare?category=liver",

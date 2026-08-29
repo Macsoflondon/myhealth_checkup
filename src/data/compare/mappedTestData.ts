@@ -22,7 +22,6 @@ export interface MappedTestData {
 const providerLogos: { [key: string]: string } = {
   "Medichecks": "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
   "London Medical Laboratory": "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
-  "Thriva": "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200",
   "Randox": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&q=85&fm=jpg&crop=entropy&cs=srgb&w=200"
 };
 
@@ -97,8 +96,6 @@ const getTurnaroundTime = (provider: string): string => {
       return '2-4 days';
     case 'London Medical Laboratory':
       return '1-3 days';
-    case 'Thriva':
-      return '3-5 days';
     case 'Randox':
       return '1-2 days';
     default:
@@ -117,8 +114,6 @@ const getCollectionMethod = (provider: string, testName: string): string => {
       return 'Home kit or clinic';
     case 'London Medical Laboratory':
       return 'Clinic and home kit';
-    case 'Thriva':
-      return 'Home kit';
     case 'Randox':
       return 'Clinic only';
     default:

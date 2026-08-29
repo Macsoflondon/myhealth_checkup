@@ -117,7 +117,6 @@ test.describe("Provider shortcut redirects", () => {
   const REDIRECTS: ReadonlyArray<readonly [string, string]> = [
     ["/medichecks", "/providers/medichecks"],
     ["/randox", "/providers/randox"],
-    ["/thriva", "/providers/thriva"],
     ["/lola-health", "/providers/lola-health"],
   ];
 
