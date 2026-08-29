@@ -40,7 +40,8 @@ for (const absolutePath of files) {
 
   content.split(/\r?\n/u).forEach((line, index) => {
     for (const target of targets) {
-      if (line.includes(target)) matches.push({ file, line: index + 1, target, source: line.trim() });
+      if (line.includes(target))
+        matches.push({ file, line: index + 1, target, source: line.trim() });
     }
   });
 }
@@ -55,8 +56,11 @@ const counts = new Map();
 for (const match of matches) {
   const category = categoryFor(match.file);
   counts.set(category, (counts.get(category) ?? 0) + 1);
-  const annotation = category === "runtime/support reference" ? "warning" : "notice";
-  console.log(`::${annotation} file=${match.file},line=${match.line}::${match.target} (${category})`);
+  const annotation =
+    category === "runtime/support reference" ? "warning" : "notice";
+  console.log(
+    `::${annotation} file=${match.file},line=${match.line}::${match.target} (${category})`,
+  );
   console.log(`${match.file}:${match.line}: ${match.source}`);
 }
 
@@ -67,7 +71,9 @@ const summary = [
   "",
   "| Classification | References |",
   "| --- | ---: |",
-  ...[...counts.entries()].map(([category, count]) => `| ${category} | ${count} |`),
+  ...[...counts.entries()].map(
+    ([category, count]) => `| ${category} | ${count} |`,
+  ),
   "",
   "Runtime/support references are emitted as warnings because they may become stale when biomarker tables or `match_biomarkers` are retired. Generated types and historical migrations are reported as notices.",
   "",
