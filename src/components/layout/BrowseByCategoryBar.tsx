@@ -251,7 +251,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
 
             </div>
 
-          <div className="absolute right-4 sm:right-6 md:right-9 top-1/2 -translate-y-1/2 z-50" data-testid="mobile-floating-menu-trigger">
+          <div className="absolute right-4 sm:right-6 md:right-9 top-1/2 -translate-y-1/2 z-50 lg:hidden" data-testid="mobile-floating-menu-trigger">
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
           <SheetTrigger asChild>
             <button
@@ -327,7 +327,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
       {hydrated && typeof document !== "undefined"
         ? createPortal(
             <div
-              className={`fixed top-3 right-3 z-[1200] md:hidden transition-all duration-300 ease-out motion-reduce:transition-none ${
+              className={`fixed top-3 right-3 z-[1200] lg:hidden transition-all duration-300 ease-out motion-reduce:transition-none ${
                 mobileBarOut && !mobileOpen
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 -translate-y-3 pointer-events-none"
@@ -355,7 +355,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
         const desktopBar = (
           <div
             ref={barRef}
-            className={`hidden md:block z-[1000] ${isStraddle || placement === "hero" ? "" : "sticky top-0"} ${wrapperClass}`}
+            className={`hidden lg:block z-[1000] ${isStraddle || placement === "hero" ? "" : "sticky top-0"} ${wrapperClass}`}
             data-testid="browse-by-category-bar"
             data-placement={placement}
             data-pinned={placement === "hero" ? heroPinned : pinned}
