@@ -5,9 +5,9 @@ import { Link, useLocation } from "@/lib/router-compat";
 import { ArrowRight, ChevronDown, Star, Heart, UserCheck, User, Dumbbell, Baby, ShieldCheck, Home, MoreHorizontal, X, Info, Phone, Users, Search, BarChart2, BookOpen, Library } from "lucide-react";
 import { primaryNavigationItems, moreNavigationSections } from "@/components/header/NavigationItems";
 import { MoreDropdownMenu } from "@/components/header/MoreDropdownMenu";
-import { LanguageSwitcher, LanguageAccordion } from "@/components/header/LanguageSwitcher";
-import { UserMenu } from "@/components/header/UserMenu";
+import { LanguageList, LanguageAccordion } from "@/components/header/LanguageSwitcher";
 import { MobileAccountLinks } from "@/components/header/MobileAccountLinks";
+import { useAuth } from "@/context/AuthContext";
 
 import { CategoryPillDropdown } from "@/components/layout/CategoryPillDropdown";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
