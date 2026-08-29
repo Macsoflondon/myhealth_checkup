@@ -177,7 +177,6 @@ export class TestDataTransformer {
       'medichecks': ['UKAS', 'CQC'],
       'goodbody-clinic': ['UKAS', 'ISO 15189'],
       'randox': ['UKAS', 'ISO 15189'],
-      'thriva': ['CQC'],
       'london-medical-laboratory': ['CQC', 'ISO 15189'],
       'lola-health': ['CQC']
     };
@@ -232,7 +231,6 @@ export class TestDataTransformer {
       'medichecks': 2,
       'goodbody-clinic': 1,
       'randox': 2,
-      'thriva': 3,
       'london-medical-laboratory': 1,
       'lola-health': 2
     };

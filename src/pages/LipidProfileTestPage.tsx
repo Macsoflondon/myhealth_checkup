@@ -69,12 +69,6 @@ const LipidProfileTestPage = () => {
         features: ["Full lipid panel", "3-4 day results", "Home collection"]
       },
       {
-        name: "Thriva", 
-        price: 59,
-        url: "https://thriva.co/products/cholesterol-test",
-        features: ["Heart health insights", "App tracking", "Doctor review"]
-      },
-      {
         name: "London Medical Laboratory",
         price: 55,
         url: "https://londonmedicallaboratory.com/product/lipid-profile-test",

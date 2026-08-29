@@ -65,14 +65,6 @@ const FemaleHormonesTestPage = () => {
         biomarkers: 4
       },
       {
-        name: "Thriva",
-        price: 99,
-        url: "https://thriva.co/shop/womens-health-test-packages/womens-hormones-blood-test-insights",
-        features: ["Home finger-prick test", "GP-written report", "Nurse visit +£60"],
-        turnaround: "2-3 days",
-        biomarkers: 5
-      },
-      {
         name: "London Medical Laboratory",
         price: 99,
         url: "https://www.londonmedicallaboratory.com/product/fertility-hormones-profile",

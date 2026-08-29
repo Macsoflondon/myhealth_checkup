@@ -72,12 +72,6 @@ const WellWomanTestPage = () => {
         features: ["47 biomarkers", "3-4 day results", "Hormone analysis"]
       },
       {
-        name: "Thriva",
-        price: 149,
-        url: "https://thriva.co/products/womens-health-test",
-        features: ["Female health focus", "App tracking", "Doctor review"]
-      },
-      {
         name: "London Medical Laboratory",
         price: 169,
         url: "https://londonmedicallaboratory.com/product-category/female-health",

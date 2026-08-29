@@ -70,12 +70,6 @@ const IronProfileTestPage = () => {
         features: ["Full iron panel", "3-4 day results", "Finger-prick option"]
       },
       {
-        name: "Thriva", 
-        price: 49,
-        url: "https://thriva.co/products/iron-test",
-        features: ["Iron status markers", "App tracking", "Doctor review"]
-      },
-      {
         name: "London Medical Laboratory",
         price: 45,
         url: "https://londonmedicallaboratory.com/product/iron-profile-test",
