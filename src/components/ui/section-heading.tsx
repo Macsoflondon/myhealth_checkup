@@ -33,7 +33,7 @@ const SectionHeading = ({
         "text-2xl sm:text-3xl md:text-[2rem] font-heading font-bold leading-[1.15] tracking-tight",
         titleClassName
       )}>
-        <span>{title} </span>
+        <span>{title}</span>
         <span className={cn(gradientClassName)}>
           {gradientText}
         </span>
