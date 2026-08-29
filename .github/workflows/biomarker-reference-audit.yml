@@ -1,0 +1,17 @@
+name: Biomarker Reference Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  audit:
+    name: Report biomarker table and RPC references
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Scan for stale biomarker references
+        run: node scripts/audit-biomarker-references.mjs

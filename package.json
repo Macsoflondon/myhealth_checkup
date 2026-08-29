@@ -14,6 +14,7 @@
     "prebuild": "bash scripts/check-secrets.sh && node scripts/check-rls-grants.mjs && npx tsx scripts/generate-sitemap.ts && node scripts/seo-regression.mjs",
     "seo:check": "node scripts/seo-regression.mjs && npx tsx scripts/validate-structured-data.mjs",
     "security:check": "bash scripts/check-secrets.sh && node scripts/check-rls-grants.mjs",
+    "audit:biomarker-references": "node scripts/audit-biomarker-references.mjs",
     "format": "prettier --write .",
     "seo:structured-data": "npx tsx scripts/validate-structured-data.mjs",
     "sitemap": "npx tsx scripts/generate-sitemap.ts"
