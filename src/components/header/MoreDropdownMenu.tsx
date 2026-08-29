@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "@/lib/router-compat";
-import { X } from "lucide-react";
+import { X, LayoutDashboard, LogOut, User } from "lucide-react";
 import { useDropdownAccessibility } from "@/hooks/useDropdownAccessibility";
 
 interface MoreDropdownSection {
@@ -8,11 +8,19 @@ interface MoreDropdownSection {
   items: Array<{ name: string; path: string }>;
 }
 
+interface AccountItem {
+  name: string;
+  path: string;
+  onClick?: () => void;
+}
+
 interface MoreDropdownMenuProps {
   sections: MoreDropdownSection[];
   onItemClick?: () => void;
   onClose?: () => void;
   isMobile?: boolean;
+  accountItems?: AccountItem[];
+  languageList?: React.ReactNode;
 }
 
 export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
