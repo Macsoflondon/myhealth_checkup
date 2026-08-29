@@ -4,52 +4,6 @@ import type { TestRecord } from "@/types/testFinder";
 // against each provider's live site before launch.
 export const SEED_TESTS: TestRecord[] = [
   {
-    name: "Metabolic Health",
-    price: 96,
-    biomarkers: 19,
-    turnaround_label: "~48 hrs",
-    sample_type: "finger_prick",
-    collection_method: ["home_kit"],
-    collection_fee_type: "none",
-    collection_fee_amount: null,
-    clinical_review_type: "included",
-    clinical_review_professional: "gp",
-    clinical_review_fee: 0,
-    goal_tags: ["preventative", "longevity", "condition_monitoring"],
-    condition_tags: ["metabolic_health", "cardiovascular_risk", "diabetes", "general_health"],
-    sex_restriction: "none",
-    source_url:
-    verification: {
-      price: "needs_verification",
-      biomarkers: "verified",
-      collection_fee: "verified",
-      clinical_review: "verified",
-    },
-  },
-  {
-    name: "Cardiovascular Health",
-    price: 118,
-    biomarkers: 22,
-    turnaround_label: "~48 hrs",
-    sample_type: "finger_prick",
-    collection_method: ["home_kit"],
-    collection_fee_type: "none",
-    collection_fee_amount: null,
-    clinical_review_type: "included",
-    clinical_review_professional: "gp",
-    clinical_review_fee: 0,
-    goal_tags: ["preventative", "longevity"],
-    condition_tags: ["cardiovascular_risk", "metabolic_health", "general_health"],
-    sex_restriction: "none",
-    source_url:
-    verification: {
-      price: "needs_verification",
-      biomarkers: "verified",
-      collection_fee: "verified",
-      clinical_review: "verified",
-    },
-  },
-  {
     id: "medichecks-male-hormone",
     name: "Male Hormone Check",
     provider: "Medichecks",
