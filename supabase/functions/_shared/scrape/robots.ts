@@ -134,7 +134,6 @@ export const PROVIDER_RATE_LIMITS: Record<string, RateLimitConfig> = {
   "goodbody-clinic": { requestsPerSecond: 1, burst: 2 },
   "clinilabs": { requestsPerSecond: 1, burst: 2 },
   "randox": { requestsPerSecond: 1, burst: 2 },
-  "thriva": { requestsPerSecond: 1, burst: 2 },
 };
 
 export function getProviderRateLimit(providerId: string): RateLimitConfig {

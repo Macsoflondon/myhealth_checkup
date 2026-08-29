@@ -30,7 +30,6 @@ const PROVIDER_DOMAINS: Record<string, string> = {
   'goodbody-clinic': 'goodbodyclinic.com',
   'clinilabs': 'clinilabs.co.uk',
   'randox': 'randoxhealth.com',
-  'thriva': 'thriva.co',
 };
 
 Deno.serve(async (req) => {

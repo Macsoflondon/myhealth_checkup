@@ -2,9 +2,7 @@
  * Phase 5 — Provider catalogue adapter.
  *
  * Converts the real provider rows in `src/data/compare/realProviderData.ts`
- * (118+ products across Medichecks, London Medical Laboratory, Thriva,
- * Randox, etc.) into the canonical `TestRecord` shape used by the Assisted
- * Test Finder.
+ * into the normalised shape consumed by the Test Finder.
  *
  * Inferences (sample type, collection, fees, clinical review, goal/condition
  * tags, sex restriction) are derived heuristically from provider + test name
@@ -69,16 +67,6 @@ const PROVIDER_DEFAULTS: Record<string, ProviderDefaults> = {
     collection_fee_amount: { min: 0, max: 45 },
     clinical_review_type: "not_included",
     clinical_review_professional: null,
-    clinical_review_fee: 0,
-  },
-  Thriva: {
-    turnaround: "~48 hours",
-    sample_type: "finger_prick",
-    collection_method: ["home_kit"],
-    collection_fee_type: "none",
-    collection_fee_amount: null,
-    clinical_review_type: "included",
-    clinical_review_professional: "gp",
     clinical_review_fee: 0,
   },
   Randox: {

@@ -229,7 +229,7 @@ async function parseSitemapOg(source: BlogSource, sitemapUrl: string): Promise<A
       posts.push({
         provider_id: source.providerId,
         provider_name: source.providerName,
-        title: stripHtml(title).replace(/\s*\|\s*Thriva\s*$/i, ""),
+        title: stripHtml(title),
         excerpt,
         url: entry.loc,
         image_url: meta("og:image"),

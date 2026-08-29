@@ -79,7 +79,7 @@ function applyLocalFilters(
   // GP Review filter
   if (filters.gpReview) {
     filtered = filtered.filter(test =>
-      ["Medichecks", "Thriva", "Randox"].includes(test.provider)
+      ["Medichecks", "Randox"].includes(test.provider)
     );
   }
 

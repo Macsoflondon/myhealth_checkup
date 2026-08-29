@@ -72,7 +72,6 @@ const CATEGORY_HUBS: Record<LinkableCategorySlug, { goals: string[]; symptoms: s
 /** Providers with a public profile page worth linking to. */
 const LINKABLE_PROVIDER_IDS = [
   'medichecks',
-  'thriva',
   'randox',
   'london-medical-laboratory',
   'lola-health',

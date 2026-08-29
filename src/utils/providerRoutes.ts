@@ -8,7 +8,6 @@
  * - london-medical-laboratory
  * - medichecks
  * - randox
- * - thriva
  */
 
 // Map database provider_id to URL route path (canonical routes)
@@ -21,7 +20,6 @@ export const PROVIDER_ROUTE_MAP: Record<string, string> = {
   'medichecks': '/medichecks',
   'randox': '/randox',
   'randox-health': '/randox', // Alias
-  'thriva': '/thriva',
   'clinilabs': '/clinilabs',
   'medical-diagnosis': '/medical-diagnosis',
 };
@@ -36,7 +34,6 @@ export const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
   'medichecks': 'Medichecks',
   'randox': 'Randox Health',
   'randox-health': 'Randox Health',
-  'thriva': 'Thriva',
   'clinilabs': 'Clinilabs',
   'medical-diagnosis': 'Medical Diagnosis',
 };
@@ -50,7 +47,6 @@ export const PROVIDER_PROFILE_ROUTE_MAP: Record<string, string> = {
   'medichecks': '/provider/medichecks',
   'goodbody': '/provider/goodbody-clinic',
   'goodbody-clinic': '/provider/goodbody-clinic',
-  'thriva': '/provider/thriva',
   'randox': '/provider/randox-health',
   'randox-health': '/provider/randox-health',
   'lola-health': '/provider/lola-health',
@@ -107,7 +103,6 @@ export function normalizeProviderFromName(providerName: string): string {
   if (name.includes('medichecks')) return 'medichecks';
   if (name.includes('goodbody')) return 'goodbody-clinic';
   if (name.includes('lola')) return 'lola-health';
-  if (name.includes('thriva')) return 'thriva';
   if (name.includes('randox')) return 'randox';
   if (name.includes('london')) return 'london-medical-laboratory';
   

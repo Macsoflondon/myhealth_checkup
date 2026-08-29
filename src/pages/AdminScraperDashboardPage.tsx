@@ -74,7 +74,6 @@ const PROVIDERS: Provider[] = [
   { id: 'goodbody-clinic', name: 'GoodBody Clinic', functionName: 'goodbody-scraper' },
   { id: 'randox', name: 'Randox Health', functionName: 'randox-scraper' },
   { id: 'lola-health', name: 'Lola Health', functionName: 'lola-health-scraper' },
-  { id: 'thriva', name: 'Thriva', functionName: 'thriva-scraper' },
   { id: 'london-medical-laboratory', name: 'London Medical Lab', functionName: 'scrape-london-lab' },
   { id: 'medical-diagnosis', name: 'Medical Diagnosis', functionName: 'medical-diagnosis-scraper' },
   { id: 'clinilabs', name: 'Clinilabs', functionName: 'clinilabs-scraper' },

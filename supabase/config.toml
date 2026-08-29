@@ -6,9 +6,6 @@ project_id = "clvuioagsgfadynuvodj"
 [functions.ai-test-mapper]
 verify_jwt = false
 
-# Thriva Scraper
-[functions.thriva-scraper]
-verify_jwt = false
 
 
 # AI Human Context API

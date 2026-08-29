@@ -20,10 +20,6 @@ const PartnersPage = () => {
       specialty: "Comprehensive health testing",
       accreditation: "UKAS"
     }, {
-      name: "Thriva",
-      specialty: "Subscription health monitoring",
-      accreditation: "UKAS"
-    }, {
       name: "GoodBody Clinic",
       specialty: "Clinic-based health screening",
       accreditation: "CQC"

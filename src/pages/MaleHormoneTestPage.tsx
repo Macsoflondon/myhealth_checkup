@@ -60,12 +60,6 @@ const MaleHormoneTestPage = () => {
         url: "https://medichecks.com/products/male-hormone-blood-test",
         features: ["Testosterone panel", "3-4 day results", "Finger-prick or venous"]
       },
-      {
-        name: "Thriva",
-        price: 79,
-        url: "https://thriva.co/products/testosterone-test",
-        features: ["Comprehensive hormones", "App tracking", "Doctor review"]
-      }
     ]
   };
 

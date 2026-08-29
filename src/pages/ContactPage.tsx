@@ -50,7 +50,6 @@ const providerContacts: { name: string; phone: string | null; liveChat?: string;
   { name: 'London Health Company', phone: '020 8087 0017' },
   { name: 'Medical Diagnosis', phone: '020 8830 0503' },
   { name: 'Lola Health', phone: null, liveChat: 'https://lolahealth.com/pages/contact-us' },
-  { name: 'Thriva', phone: null, email: 'help@thriva.co' },
 ];
 
 const ContactPage = () => {

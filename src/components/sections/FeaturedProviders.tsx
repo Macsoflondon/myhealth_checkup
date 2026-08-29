@@ -34,15 +34,6 @@ const FeaturedProviders = () => {
     tags: ["GP Follow-ups", "Wellness Profiles", "CQC Regulated Providers", "Nationwide"],
     website: "health.goodbodyclinic.com"
   }, {
-    id: "thriva",
-    name: "Thriva",
-    rating: 4.4,
-    reviews: "2,800+",
-    description: "Subscription-based home testing with digital dashboard and GP advice for ongoing health monitoring",
-    location: "UK Wide",
-    tags: ["Home Testing", "Digital Dashboard", "GP Advice", "Subscription"],
-    website: "thriva.co"
-  }, {
     id: "randox",
     name: "Randox Health",
     rating: 4.6,

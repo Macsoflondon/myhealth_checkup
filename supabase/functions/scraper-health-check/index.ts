@@ -12,7 +12,6 @@ const corsHeaders = {
 const PROVIDER_COUNT_MAP: Record<string, string> = {
   'medichecks': 'medichecks',
   'medichecks-firecrawl': 'medichecks',
-  'thriva': 'thriva',
   'randox': 'randox',
   'london-medical-laboratory': 'london-medical-laboratory',
   'lola-health': 'lola-health',

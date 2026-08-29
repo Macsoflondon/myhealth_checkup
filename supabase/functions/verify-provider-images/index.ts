@@ -16,7 +16,6 @@ const PLACEHOLDER_PATTERNS = [/gb\.png/i, /flag/i, /placeholder/i, /no[-_ ]image
 const PROVIDER_HOST_ALLOWLIST: Record<string, RegExp[]> = {
   randox: [/randoxhealth\.com/i, /randox\.com/i, /blob\.core\.windows\.net/i, /azurefd\.net/i],
   medichecks: [/medichecks\.com/i, /cloudinary\.com/i],
-  thriva: [/thriva\.co/i],
   "goodbody-clinic": [/goodbodyclinic\.com/i],
   clinilabs: [/clinilabs\./i, /cdn\.shopify\.com/i],
   "lola-health": [/lola\.health/i, /lolahealth\./i],

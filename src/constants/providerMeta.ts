@@ -63,13 +63,6 @@ export const PROVIDER_META: Record<string, {
     ukas: false,
     cqc: false,
   },
-  "thriva": {
-    displayName: "Thriva",
-    logo: "/lovable-uploads/thriva-logo.png",
-    color: "#1B5E20",
-    ukas: false,
-    cqc: false,
-  },
 };
 
 export const getProviderMeta = (providerId: string) =>

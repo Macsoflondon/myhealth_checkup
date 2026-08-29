@@ -12,7 +12,6 @@ export interface ProviderRating {
 export const PROVIDER_RATINGS: Record<string, ProviderRating> = {
     'medichecks': { rating: 4.7, reviews: 14000, reviewsFormatted: '14,000+' },
     'goodbody-clinic': { rating: 4.8, reviews: 3600, reviewsFormatted: '3,600+' },
-    'thriva': { rating: 4.5, reviews: 3090, reviewsFormatted: '3,090+' },
     'randox': { rating: 4.7, reviews: 28456, reviewsFormatted: '28,400+' },
     'london-medical-laboratory': { rating: 4.1, reviews: 3266, reviewsFormatted: '3,266' },
     'lola-health': { rating: 4.6, reviews: 160, reviewsFormatted: '160+' },
@@ -30,7 +29,6 @@ const PROVIDER_ALIASES: Record<string, string> = {
 const PROVIDER_NAME_MAP: Record<string, string> = {
     'Medichecks': 'medichecks',
     'GoodBody Clinic': 'goodbody-clinic',
-    'Thriva': 'thriva',
     'Randox Health': 'randox',
     'London Medical Laboratory': 'london-medical-laboratory',
     'Lola Health': 'lola-health',

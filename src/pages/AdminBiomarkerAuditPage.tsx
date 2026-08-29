@@ -28,7 +28,6 @@ const PROVIDERS = [
   "goodbody-clinic",
   "medichecks",
   "randox",
-  "thriva",
   "lola-health",
   "london-medical-laboratory",
   "london-health-company",

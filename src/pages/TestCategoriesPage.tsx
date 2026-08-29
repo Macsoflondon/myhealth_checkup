@@ -112,7 +112,7 @@ const TestCategoriesPage = () => {
       trustStats={[
         { value: "50,000+", label: "Tests Compared" },
         { value: "4.8★", label: "Average Rating" },
-        { value: "9+", label: "Trusted Providers" },
+        { value: "8", label: "Trusted Providers" },
       ]}
       filters={filters}
       tests={tests}

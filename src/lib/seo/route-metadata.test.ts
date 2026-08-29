@@ -80,10 +80,10 @@ describe("provider page metadata", () => {
   });
 
   it("omits aggregateRating when no ratings exist", () => {
-    const bare = buildProviderHead({ providerId: "thriva", providerName: "Thriva" });
+    const bare = buildProviderHead({ providerId: "medichecks", providerName: "Medichecks" });
     const node = JSON.parse((bare.scripts ?? [])[0].children);
     expect(node.aggregateRating).toBeUndefined();
-    expect(validateJsonLd(node, { expectedUrl: `${SITE}/provider/thriva` })).toEqual([]);
+    expect(validateJsonLd(node, { expectedUrl: `${SITE}/provider/medichecks` })).toEqual([]);
   });
 });
 
@@ -114,14 +114,14 @@ describe("test detail metadata", () => {
 
   it("drops the offer when no price is known rather than shipping an empty field", () => {
     const noPrice = buildTestHead({
-      providerId: "thriva",
-      providerName: "Thriva",
+      providerId: "medichecks",
+      providerName: "Medichecks",
       testId: "abc",
       testName: "Vitamin D Test",
     });
     const node = JSON.parse((noPrice.scripts ?? [])[0].children);
     expect(node.offers).toBeUndefined();
-    expect(validateJsonLd(node, { expectedUrl: `${SITE}/provider/thriva/tests/abc` })).toEqual([]);
+    expect(validateJsonLd(node, { expectedUrl: `${SITE}/provider/medichecks/tests/abc` })).toEqual([]);
   });
 });
 
@@ -129,7 +129,7 @@ describe("metadata uniqueness across routes", () => {
   const heads = [
     buildRouteHead({ title: "Home | myhealth checkup", description: "Home page.", path: "/" }),
     buildProviderHead({ providerId: "medichecks", providerName: "Medichecks" }),
-    buildProviderHead({ providerId: "thriva", providerName: "Thriva" }),
+    buildProviderHead({ providerId: "randox", providerName: "Randox Health" }),
     buildTestHead({
       providerId: "medichecks",
       providerName: "Medichecks",

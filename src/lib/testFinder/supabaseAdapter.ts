@@ -22,7 +22,6 @@ import type {
 export type ProviderTestRow = Database["public"]["Tables"]["provider_tests"]["Row"];
 
 const PROVIDER_DISPLAY: Record<string, { name: string; logo?: string }> = {
-  thriva: { name: "Thriva" },
   medichecks: { name: "Medichecks", logo: "/lovable-uploads/provider-medichecks-new-v3.png" },
   randox: { name: "Randox Health" },
   "lola-health": { name: "Lola Health" },

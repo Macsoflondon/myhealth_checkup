@@ -50,10 +50,6 @@ const SECTION_BOUNDS: Record<string, { include: RegExp[]; stop: RegExp[] }> = {
     include: [/biomarkers/i, /what's measured/i, /what is included/i],
     stop: [/why choose medichecks/i, /how it works/i, /related/i],
   },
-  thriva: {
-    include: [/what we test/i, /biomarkers/i],
-    stop: [/why thriva/i, /how it works/i, /faqs/i],
-  },
   randox: {
     include: [/biomarkers/i, /what's tested/i, /what is tested/i, /parameters/i],
     stop: [/why randox/i, /how it works/i, /faqs/i],

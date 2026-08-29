@@ -1,10 +1,10 @@
 import { HoverExpand_001 } from "@/components/ui/expand-on-hover";
 import { SectionHeading } from "@/components/ui/section-heading";
-import thrivaKit from "@/assets/kits/randox-genetic-haemochromatosis.png";
+import advancedWellManKit from "@/assets/kits/randox-genetic-haemochromatosis.png";
 import { cn } from "@/lib/utils";
 
 const TEST_PRODUCTS = [
-  { src: thrivaKit, alt: "Advanced Well Man Blood Test", code: "Advanced Well Man", objectFit: "contain" },
+  { src: advancedWellManKit, alt: "Advanced Well Man Blood Test", code: "Advanced Well Man", objectFit: "contain" },
   { src: "/images/tests/premium-complete-blood-test.webp", alt: "Premium Complete Blood Test", code: "Premium Complete", objectFit: "contain" },
   { src: "/images/tests/early-cancer-screening.webp", alt: "Early Cancer Screening Test", code: "Cancer Screening", objectFit: "contain" },
   { src: "/images/tests/female-hormone-fertility.webp", alt: "Female Hormone & Fertility Test", code: "Hormone & Fertility", objectFit: "contain" },

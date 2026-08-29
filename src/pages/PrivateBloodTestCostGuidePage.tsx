@@ -11,7 +11,7 @@ import { BASE_URL } from "@/lib/seo";
 const SLUG = "private-blood-test-cost-guide";
 const TITLE = "How Much Does a Private Blood Test Cost in the UK?";
 const DESCRIPTION =
-  "Independent 2026 UK price guide to private blood tests. Compare entry-level, standard and comprehensive panel costs across Medichecks, Randox, Thriva, Goodbody and more.";
+  "Independent 2026 UK price guide to private blood tests. Compare entry-level, standard and comprehensive panel costs across Medichecks, Randox, Goodbody and more.";
 const CANONICAL = `${BASE_URL}/blog/${SLUG}`;
 const UPDATED = "2026-07-19";
 
@@ -46,7 +46,6 @@ const priceBands = [
 const providerSnapshot = [
   { provider: "Medichecks", entry: "£29", panel: "£99 (Ultimate Performance)", venous: "+£35" },
   { provider: "Randox Health", entry: "£45", panel: "£295 (Everyman/Everywoman)", venous: "Included in-clinic" },
-  { provider: "Thriva", entry: "£39", panel: "£109 (Advanced)", venous: "+£29" },
   { provider: "Goodbody Clinic", entry: "£45", panel: "£179 (Advanced Wellness)", venous: "Included" },
   { provider: "London Medical Lab", entry: "£39", panel: "£189 (General Health)", venous: "+£30" },
   { provider: "Bluecrest Wellness", entry: "£129", panel: "£249 (Ultimate)", venous: "Included" },

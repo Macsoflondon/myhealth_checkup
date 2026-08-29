@@ -174,7 +174,6 @@ export const hasStartingPrice = (test: Pick<PopularTest, 'price' | 'base_price' 
 const providerDisplayNames: Record<string, string> = {
   'randox': 'Randox Health',
   'medichecks': 'Medichecks',
-  'thriva': 'Thriva',
   'lola-health': 'Lola Health',
   'goodbody-clinic': 'Goodbody Clinic',
   'london-medical-laboratory': 'London Medical Laboratory',

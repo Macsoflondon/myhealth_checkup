@@ -23,7 +23,6 @@ const PROVIDERS: { id: string; label: string }[] = [
   { id: "lola-health", label: "Lola Health" },
   { id: "medichecks", label: "Medichecks" },
   { id: "goodbody-clinic", label: "Goodbody Clinic" },
-  { id: "thriva", label: "Thriva" },
   { id: "randox", label: "Randox" },
   { id: "london-medical-laboratory", label: "London Medical Laboratory" },
   { id: "clinilabs", label: "Clinilabs" },

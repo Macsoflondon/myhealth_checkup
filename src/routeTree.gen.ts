@@ -125,7 +125,6 @@ import { Route as ProvidersLondonMedicalLaboratoryRouteImport } from './routes/p
 import { Route as ProvidersMedicalDiagnosisRouteImport } from './routes/providers.medical-diagnosis'
 import { Route as ProvidersMedichecksRouteImport } from './routes/providers.medichecks'
 import { Route as ProvidersRandoxRouteImport } from './routes/providers.randox'
-import { Route as ProvidersThrivaRouteImport } from './routes/providers.thriva'
 import { Route as RandoxHealthTestIdRouteImport } from './routes/randox-health.$testId'
 import { Route as RandoxIndexRouteImport } from './routes/randox.index'
 import { Route as RandoxTestIdRouteImport } from './routes/randox.$testId'
@@ -145,8 +144,6 @@ import { Route as TestsHeartRouteImport } from './routes/tests.heart'
 import { Route as TestsMensHealthRouteImport } from './routes/tests.mens-health'
 import { Route as TestsVitaminsRouteImport } from './routes/tests.vitamins'
 import { Route as TestsWomensHealthRouteImport } from './routes/tests.womens-health'
-import { Route as ThrivaIndexRouteImport } from './routes/thriva.index'
-import { Route as ThrivaTestIdRouteImport } from './routes/thriva.$testId'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as ApiPublicBlogAggregateRouteImport } from './routes/api/public/blog-aggregate'
 import { Route as CompareGoalsIndexRouteImport } from './routes/compare.goals.index'
@@ -751,11 +748,6 @@ const ProvidersRandoxRoute = ProvidersRandoxRouteImport.update({
   path: '/providers/randox',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProvidersThrivaRoute = ProvidersThrivaRouteImport.update({
-  id: '/providers/thriva',
-  path: '/providers/thriva',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const RandoxHealthTestIdRoute = RandoxHealthTestIdRouteImport.update({
   id: '/randox-health/$testId',
   path: '/randox-health/$testId',
@@ -849,16 +841,6 @@ const TestsVitaminsRoute = TestsVitaminsRouteImport.update({
 const TestsWomensHealthRoute = TestsWomensHealthRouteImport.update({
   id: '/tests/womens-health',
   path: '/tests/womens-health',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ThrivaIndexRoute = ThrivaIndexRouteImport.update({
-  id: '/thriva/',
-  path: '/thriva/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ThrivaTestIdRoute = ThrivaTestIdRouteImport.update({
-  id: '/thriva/$testId',
-  path: '/thriva/$testId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
@@ -1018,7 +1000,6 @@ export interface FileRoutesByFullPath {
   '/providers/medical-diagnosis': typeof ProvidersMedicalDiagnosisRoute
   '/providers/medichecks': typeof ProvidersMedichecksRoute
   '/providers/randox': typeof ProvidersRandoxRoute
-  '/providers/thriva': typeof ProvidersThrivaRoute
   '/randox-health/$testId': typeof RandoxHealthTestIdRoute
   '/randox/$testId': typeof RandoxTestIdRoute
   '/test/female-hormones': typeof TestFemaleHormonesRoute
@@ -1037,7 +1018,6 @@ export interface FileRoutesByFullPath {
   '/tests/mens-health': typeof TestsMensHealthRoute
   '/tests/vitamins': typeof TestsVitaminsRoute
   '/tests/womens-health': typeof TestsWomensHealthRoute
-  '/thriva/$testId': typeof ThrivaTestIdRoute
   '/about/': typeof AboutIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/category/': typeof CategoryIndexRoute
@@ -1054,7 +1034,6 @@ export interface FileRoutesByFullPath {
   '/medichecks/': typeof MedichecksIndexRoute
   '/providers/': typeof ProvidersIndexRoute
   '/randox/': typeof RandoxIndexRoute
-  '/thriva/': typeof ThrivaIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/api/public/blog-aggregate': typeof ApiPublicBlogAggregateRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
@@ -1167,7 +1146,6 @@ export interface FileRoutesByTo {
   '/providers/medical-diagnosis': typeof ProvidersMedicalDiagnosisRoute
   '/providers/medichecks': typeof ProvidersMedichecksRoute
   '/providers/randox': typeof ProvidersRandoxRoute
-  '/providers/thriva': typeof ProvidersThrivaRoute
   '/randox-health/$testId': typeof RandoxHealthTestIdRoute
   '/randox/$testId': typeof RandoxTestIdRoute
   '/test/female-hormones': typeof TestFemaleHormonesRoute
@@ -1186,7 +1164,6 @@ export interface FileRoutesByTo {
   '/tests/mens-health': typeof TestsMensHealthRoute
   '/tests/vitamins': typeof TestsVitaminsRoute
   '/tests/womens-health': typeof TestsWomensHealthRoute
-  '/thriva/$testId': typeof ThrivaTestIdRoute
   '/about': typeof AboutIndexRoute
   '/blog': typeof BlogIndexRoute
   '/category': typeof CategoryIndexRoute
@@ -1203,7 +1180,6 @@ export interface FileRoutesByTo {
   '/medichecks': typeof MedichecksIndexRoute
   '/providers': typeof ProvidersIndexRoute
   '/randox': typeof RandoxIndexRoute
-  '/thriva': typeof ThrivaIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/api/public/blog-aggregate': typeof ApiPublicBlogAggregateRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
@@ -1318,7 +1294,6 @@ export interface FileRoutesById {
   '/providers/medical-diagnosis': typeof ProvidersMedicalDiagnosisRoute
   '/providers/medichecks': typeof ProvidersMedichecksRoute
   '/providers/randox': typeof ProvidersRandoxRoute
-  '/providers/thriva': typeof ProvidersThrivaRoute
   '/randox-health/$testId': typeof RandoxHealthTestIdRoute
   '/randox/$testId': typeof RandoxTestIdRoute
   '/test/female-hormones': typeof TestFemaleHormonesRoute
@@ -1337,7 +1312,6 @@ export interface FileRoutesById {
   '/tests/mens-health': typeof TestsMensHealthRoute
   '/tests/vitamins': typeof TestsVitaminsRoute
   '/tests/womens-health': typeof TestsWomensHealthRoute
-  '/thriva/$testId': typeof ThrivaTestIdRoute
   '/about/': typeof AboutIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/category/': typeof CategoryIndexRoute
@@ -1354,7 +1328,6 @@ export interface FileRoutesById {
   '/medichecks/': typeof MedichecksIndexRoute
   '/providers/': typeof ProvidersIndexRoute
   '/randox/': typeof RandoxIndexRoute
-  '/thriva/': typeof ThrivaIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/api/public/blog-aggregate': typeof ApiPublicBlogAggregateRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
@@ -1470,7 +1443,6 @@ export interface FileRouteTypes {
     | '/providers/medical-diagnosis'
     | '/providers/medichecks'
     | '/providers/randox'
-    | '/providers/thriva'
     | '/randox-health/$testId'
     | '/randox/$testId'
     | '/test/female-hormones'
@@ -1489,7 +1461,6 @@ export interface FileRouteTypes {
     | '/tests/mens-health'
     | '/tests/vitamins'
     | '/tests/womens-health'
-    | '/thriva/$testId'
     | '/about/'
     | '/blog/'
     | '/category/'
@@ -1506,7 +1477,6 @@ export interface FileRouteTypes {
     | '/medichecks/'
     | '/providers/'
     | '/randox/'
-    | '/thriva/'
     | '/.lovable/oauth/consent'
     | '/api/public/blog-aggregate'
     | '/compare/goals/$goalSlug'
@@ -1619,7 +1589,6 @@ export interface FileRouteTypes {
     | '/providers/medical-diagnosis'
     | '/providers/medichecks'
     | '/providers/randox'
-    | '/providers/thriva'
     | '/randox-health/$testId'
     | '/randox/$testId'
     | '/test/female-hormones'
@@ -1638,7 +1607,6 @@ export interface FileRouteTypes {
     | '/tests/mens-health'
     | '/tests/vitamins'
     | '/tests/womens-health'
-    | '/thriva/$testId'
     | '/about'
     | '/blog'
     | '/category'
@@ -1655,7 +1623,6 @@ export interface FileRouteTypes {
     | '/medichecks'
     | '/providers'
     | '/randox'
-    | '/thriva'
     | '/.lovable/oauth/consent'
     | '/api/public/blog-aggregate'
     | '/compare/goals/$goalSlug'
@@ -1769,7 +1736,6 @@ export interface FileRouteTypes {
     | '/providers/medical-diagnosis'
     | '/providers/medichecks'
     | '/providers/randox'
-    | '/providers/thriva'
     | '/randox-health/$testId'
     | '/randox/$testId'
     | '/test/female-hormones'
@@ -1788,7 +1754,6 @@ export interface FileRouteTypes {
     | '/tests/mens-health'
     | '/tests/vitamins'
     | '/tests/womens-health'
-    | '/thriva/$testId'
     | '/about/'
     | '/blog/'
     | '/category/'
@@ -1805,7 +1770,6 @@ export interface FileRouteTypes {
     | '/medichecks/'
     | '/providers/'
     | '/randox/'
-    | '/thriva/'
     | '/.lovable/oauth/consent'
     | '/api/public/blog-aggregate'
     | '/compare/goals/$goalSlug'
@@ -1919,7 +1883,6 @@ export interface RootRouteChildren {
   ProvidersMedicalDiagnosisRoute: typeof ProvidersMedicalDiagnosisRoute
   ProvidersMedichecksRoute: typeof ProvidersMedichecksRoute
   ProvidersRandoxRoute: typeof ProvidersRandoxRoute
-  ProvidersThrivaRoute: typeof ProvidersThrivaRoute
   RandoxHealthTestIdRoute: typeof RandoxHealthTestIdRoute
   RandoxTestIdRoute: typeof RandoxTestIdRoute
   TestFemaleHormonesRoute: typeof TestFemaleHormonesRoute
@@ -1938,7 +1901,6 @@ export interface RootRouteChildren {
   TestsMensHealthRoute: typeof TestsMensHealthRoute
   TestsVitaminsRoute: typeof TestsVitaminsRoute
   TestsWomensHealthRoute: typeof TestsWomensHealthRoute
-  ThrivaTestIdRoute: typeof ThrivaTestIdRoute
   AboutIndexRoute: typeof AboutIndexRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CategoryIndexRoute: typeof CategoryIndexRoute
@@ -1954,7 +1916,6 @@ export interface RootRouteChildren {
   MedichecksIndexRoute: typeof MedichecksIndexRoute
   ProvidersIndexRoute: typeof ProvidersIndexRoute
   RandoxIndexRoute: typeof RandoxIndexRoute
-  ThrivaIndexRoute: typeof ThrivaIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   ApiPublicBlogAggregateRoute: typeof ApiPublicBlogAggregateRoute
   ProviderProviderIdIndexRoute: typeof ProviderProviderIdIndexRoute
@@ -2777,13 +2738,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProvidersRandoxRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/providers/thriva': {
-      id: '/providers/thriva'
-      path: '/providers/thriva'
-      fullPath: '/providers/thriva'
-      preLoaderRoute: typeof ProvidersThrivaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/randox-health/$testId': {
       id: '/randox-health/$testId'
       path: '/randox-health/$testId'
@@ -2915,20 +2869,6 @@ declare module '@tanstack/react-router' {
       path: '/tests/womens-health'
       fullPath: '/tests/womens-health'
       preLoaderRoute: typeof TestsWomensHealthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/thriva/': {
-      id: '/thriva/'
-      path: '/thriva'
-      fullPath: '/thriva/'
-      preLoaderRoute: typeof ThrivaIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/thriva/$testId': {
-      id: '/thriva/$testId'
-      path: '/thriva/$testId'
-      fullPath: '/thriva/$testId'
-      preLoaderRoute: typeof ThrivaTestIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/.lovable/oauth/consent': {
@@ -3127,7 +3067,6 @@ const rootRouteChildren: RootRouteChildren = {
   ProvidersMedicalDiagnosisRoute: ProvidersMedicalDiagnosisRoute,
   ProvidersMedichecksRoute: ProvidersMedichecksRoute,
   ProvidersRandoxRoute: ProvidersRandoxRoute,
-  ProvidersThrivaRoute: ProvidersThrivaRoute,
   RandoxHealthTestIdRoute: RandoxHealthTestIdRoute,
   RandoxTestIdRoute: RandoxTestIdRoute,
   TestFemaleHormonesRoute: TestFemaleHormonesRoute,
@@ -3146,7 +3085,6 @@ const rootRouteChildren: RootRouteChildren = {
   TestsMensHealthRoute: TestsMensHealthRoute,
   TestsVitaminsRoute: TestsVitaminsRoute,
   TestsWomensHealthRoute: TestsWomensHealthRoute,
-  ThrivaTestIdRoute: ThrivaTestIdRoute,
   AboutIndexRoute: AboutIndexRoute,
   BlogIndexRoute: BlogIndexRoute,
   CategoryIndexRoute: CategoryIndexRoute,
@@ -3162,7 +3100,6 @@ const rootRouteChildren: RootRouteChildren = {
   MedichecksIndexRoute: MedichecksIndexRoute,
   ProvidersIndexRoute: ProvidersIndexRoute,
   RandoxIndexRoute: RandoxIndexRoute,
-  ThrivaIndexRoute: ThrivaIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   ApiPublicBlogAggregateRoute: ApiPublicBlogAggregateRoute,
   ProviderProviderIdIndexRoute: ProviderProviderIdIndexRoute,

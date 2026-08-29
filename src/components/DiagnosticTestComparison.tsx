@@ -54,7 +54,7 @@ const MAX_COMPARE = 5;
 const DASH = "—";
 
 const PROVIDER_COLOR: Record<string, string> = {
-  "Randox Health": "#2f6fd0", "Medichecks": "#10a0a0", "Thriva": "#7c5cd6",
+  "Randox Health": "#2f6fd0", "Medichecks": "#10a0a0",
   "Lola Health": "#e0533d", "Goodbody Clinic": "#3a9a52",
   "London Medical Laboratory": "#2b66b8", "London Health Company": "#2f9ac4",
   "Medical Diagnosis": "#5b6bd6", "Clinilabs": "#8a9a2e",

@@ -65,7 +65,6 @@ export function getProviderFallbackUrl(providerId: string): string {
     'medichecks': 'https://medichecks.com/collections/all-tests',
     'goodbody-clinic': 'https://goodbody.co.uk/blood-tests',
     
-    'thriva': 'https://thriva.co/blood-tests',
     'randox': 'https://randoxhealth.com/en-GB',
     'london-medical-laboratory': 'https://www.londonmedicallaboratory.com/tests',
   };

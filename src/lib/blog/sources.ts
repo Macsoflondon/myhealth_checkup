@@ -85,14 +85,6 @@ export const BLOG_SOURCES: BlogSource[] = [
     type: "rss",
     urls: ["https://www.medical-diagnosis.co.uk/feed"],
   },
-  {
-    providerId: "thriva",
-    providerName: "Thriva",
-    type: "sitemap-og",
-    urls: ["https://thriva.co/sitemap.xml"],
-    pathFilter: "/hub/",
-    maxPages: 60,
-  },
 ];
 
 /**

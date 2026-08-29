@@ -71,7 +71,7 @@ const FeaturedCard: React.FC<{ article: BlogArticle }> = ({ article }) => (
 );
 
 const HealthResources: React.FC = () => {
-  const articles = blogArticles.filter((a) => a.provider !== 'Thriva').slice(0, 3);
+  const articles = blogArticles.slice(0, 3);
 
   return (
     <section className="py-16 bg-[#081129] relative overflow-hidden">

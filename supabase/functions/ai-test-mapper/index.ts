@@ -96,7 +96,6 @@ const PROVIDER_PREFIXES: Record<string, string> = {
   'medichecks': 'MED',
   'lola-health': 'LOL',
   'goodbody-clinic': 'GOO',
-  'thriva': 'THR',
   'london-medical-laboratory': 'LML',
   'randox': 'RAN',
 };

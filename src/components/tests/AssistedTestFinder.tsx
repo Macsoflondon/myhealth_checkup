@@ -167,7 +167,6 @@ const speedOptions = [
 const providerNames: Record<string, string> = {
   medichecks: 'Medichecks',
   goodbody: 'GOODBODY',
-  thriva: 'Thriva',
   randox: 'Randox Health',
   'lola-health': 'Lola Health',
   lml: 'London Medical Laboratory',

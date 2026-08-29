@@ -256,11 +256,11 @@ Deno.test("conflict resolution: upserts rule and backfills disagreeing rows", as
 Deno.test("unmapped section: creates new rule, backfills via category fallback", async () => {
   // rows have no source_section, only category — backfill must still match via fallback
   const tests: Row[] = [
-    { id: "a", provider_id: "thriva", source_section: null,
+    { id: "a", provider_id: "medichecks", source_section: null,
       category: "Sports Performance", is_active: true, canonical_category: null },
-    { id: "b", provider_id: "thriva", source_section: null,
+    { id: "b", provider_id: "medichecks", source_section: null,
       category: "sports-performance", is_active: true, canonical_category: null },
-    { id: "c", provider_id: "thriva", source_section: null,
+    { id: "c", provider_id: "medichecks", source_section: null,
       category: "Gut Health", is_active: true, canonical_category: null },
   ];
   const recorded: Recorded = { upserts: [], updates: [] };
@@ -269,7 +269,7 @@ Deno.test("unmapped section: creates new rule, backfills via category fallback",
   const res = await buildHandler(fake)(
     post(
       {
-        provider_id: "thriva",
+        provider_id: "medichecks",
         source_section: "Sports Performance",
         canonical_category: "sports-performance",
       },

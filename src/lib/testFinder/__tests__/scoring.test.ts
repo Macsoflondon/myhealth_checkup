@@ -26,10 +26,10 @@ describe("testFinder scoring", () => {
     expect(computeMatchScore(female, baseProfile)).toBe(0);
   });
 
-  it("ranks Thriva metabolic above Blood Tests London for male/preventative/finger-prick profile", () => {
+  it("ranks London Health Company essential MOT above Blood Tests London for male/preventative/finger-prick profile", () => {
     const recs = buildRecommendations(SEED_TESTS, baseProfile);
     const ids = recs.map((r) => r.id);
-    expect(ids.indexOf("thriva-metabolic")).toBeLessThan(ids.indexOf("btl-full-vip"));
+    expect(ids.indexOf("lhc-essential-mot")).toBeLessThan(ids.indexOf("btl-full-vip"));
   });
 
   it("excludes zero-scoring tests", () => {
@@ -40,9 +40,9 @@ describe("testFinder scoring", () => {
 
 describe("testFinder cost", () => {
   it("returns price only for no-fee tests", () => {
-    const t = SEED_TESTS.find((t) => t.id === "thriva-metabolic")!;
+    const t = SEED_TESTS.find((t) => t.id === "lhc-essential-mot")!;
     const c = computeTotalCost(t);
-    expect(c.total).toBe(96);
+    expect(c.total).toBe(34);
     expect(c.isEstimate).toBe(false);
   });
 

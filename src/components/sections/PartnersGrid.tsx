@@ -99,7 +99,6 @@ const PartnersGrid = () => {
             {items.map((provider, index) => {
               const LOGO_SIZE: Record<string, string> = {
                 'goodbody-clinic': 'max-h-[88px] sm:max-h-[112px] md:max-h-[128px]',
-                'thriva': 'max-h-[64px] sm:max-h-[84px]',
                 'randox': 'max-h-[64px] sm:max-h-[84px]',
               };
               const DEFAULT_LOGO_SIZE = 'max-h-[90px] sm:max-h-[120px]';

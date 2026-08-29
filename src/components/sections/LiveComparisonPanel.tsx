@@ -17,13 +17,6 @@ const providers: ProviderRow[] = [
     price: "£29",
   },
   {
-    name: "Thriva",
-    bio: "At-home kit · Subscription option",
-    badge: "At-Home",
-    badgeType: "neutral",
-    price: "£39",
-  },
-  {
     name: "Randox Health",
     bio: "In-clinic test · UKAS · 48–72h",
     badge: "Popular",

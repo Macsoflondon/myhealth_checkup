@@ -61,12 +61,6 @@ const VitaminDTestPage = () => {
     
     providers: [
       {
-        name: "Thriva",
-        price: 29,
-        url: "https://thriva.co/products/vitamin-d-test",
-        features: ["25-OH Vitamin D", "Finger-prick test", "App tracking"]
-      },
-      {
         name: "Medichecks", 
         price: 29,
         url: "https://medichecks.com/products/vitamin-d-blood-test",

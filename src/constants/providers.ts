@@ -14,7 +14,6 @@ export interface Provider {
 
 export const PROVIDER_LOGOS: Record<string, string> = {
   'medichecks': '/lovable-uploads/provider-medichecks-light.png',
-  'thriva': '/lovable-uploads/provider-thriva.png',
   'randox': '/lovable-uploads/provider-randox.png',
   'randox-health': '/lovable-uploads/provider-randox.png',
   'london-medical-laboratory': '/lovable-uploads/provider-london-medical.png',
@@ -28,7 +27,6 @@ export const PROVIDER_LOGOS: Record<string, string> = {
 
 export const PROVIDER_NAMES: Record<string, string> = {
   'medichecks': 'Medichecks',
-  'thriva': 'Thriva',
   'randox': 'Randox Health',
   'randox-health': 'Randox Health',
   'london-medical-laboratory': 'London Medical Laboratory',
@@ -42,7 +40,6 @@ export const PROVIDER_NAMES: Record<string, string> = {
 
 export const PROVIDER_WEBSITES: Record<string, string> = {
   'medichecks': 'https://medichecks.com',
-  'thriva': 'https://thriva.co',
   'randox': 'https://randoxhealth.com/en-GB',
   'london-medical-laboratory': 'https://londonmedicallaboratory.com',
   'lola-health': 'https://referrals.lolahealth.com/myhealthcheckup',
@@ -85,14 +82,6 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
     logo: PROVIDER_LOGOS['lola-health'],
     website: PROVIDER_WEBSITES['lola-health'],
     description: 'Digital health testing platform',
-    accreditations: ['UKAS'],
-  },
-  'thriva': {
-    id: 'thriva',
-    name: 'Thriva',
-    logo: PROVIDER_LOGOS['thriva'],
-    website: PROVIDER_WEBSITES['thriva'],
-    description: 'Personalised health insights',
     accreditations: ['UKAS'],
   },
   'london-medical-laboratory': {
@@ -141,7 +130,6 @@ export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
   'goodbody-clinic': '3-5 days',
   'medichecks': '3-6 days',
   'lola-health': '4 days',
-  'thriva': '4-5 days',
   'london-medical-laboratory': 'Next day (in-store) / 3-4 days (home kit)',
   'randox': '2-3 days',
   'london-health-company': '4-8 days',
@@ -153,7 +141,6 @@ export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
   'goodbody-clinic': 'Venous (clinic)',
   'medichecks': 'Finger-prick or Venous',
   'lola-health': 'Venous (home nurse or clinic)',
-  'thriva': 'Finger-prick (home)',
   'london-medical-laboratory': 'Venous (clinic)',
   'randox': 'Venous (clinic)',
   'london-health-company': 'Finger-prick (home)',
@@ -168,7 +155,6 @@ export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
 export const providers: Provider[] = [
   PROVIDER_DETAILS['goodbody-clinic'],
   PROVIDER_DETAILS['medichecks'],
-  PROVIDER_DETAILS['thriva'],
   PROVIDER_DETAILS['randox'],
   PROVIDER_DETAILS['london-medical-laboratory'],
   PROVIDER_DETAILS['lola-health'],
@@ -188,7 +174,6 @@ export function getProviderLogo(providerId: string): string {
  * Falls back to the original logo when no responsive set exists.
  */
 const PROVIDERS_WITH_RESPONSIVE_LOGOS = new Set<string>([
-  'medichecks', 'thriva', 'randox', 'london-medical-laboratory',
   'lola-health', 'goodbody-clinic', 'london-health-company',
   'medical-diagnosis', 'clinilabs',
 ]);
