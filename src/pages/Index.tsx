@@ -261,8 +261,6 @@ const Index = () => {
                   <p className="text-white/85 text-base sm:text-lg leading-relaxed">
                     We only feature providers that meet rigorous quality
                     standards, including UKAS accreditation and CQC regulation.
-                    Our recommendations are based on clinical evidence and
-                    reviewed by registered healthcare professionals.
                   </p>
                 </div>
 
