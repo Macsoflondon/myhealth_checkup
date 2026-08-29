@@ -38,18 +38,6 @@ const ReviewSystem = () => {
       tags: ['fast-results', 'clear-explanation', 'good-value']
     },
     {
-      id: '2',
-      userName: 'David K.',
-      rating: 4,
-      date: '2024-01-10',
-      testName: 'Hormone Health Check',
-      provider: 'Thriva',
-      review: 'Good comprehensive test but slightly expensive. Results were detailed and the app interface is user-friendly.',
-      verified: true,
-      helpful: 18,
-      tags: ['comprehensive', 'expensive', 'user-friendly']
-    },
-    {
       id: '3',
       userName: 'Kristijan G.',
       rating: 5,

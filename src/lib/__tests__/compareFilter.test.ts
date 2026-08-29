@@ -3,7 +3,7 @@ import { filterAndSortCompareData, CompareItem } from '../compareFilter';
 
 const data: CompareItem[] = [
   { id: '1', category: 'blood-tests', name: 'A Test', provider: 'Medichecks', providerLogo: '', price: 50, features: {} },
-  { id: '2', category: 'blood-tests', name: 'B Test', provider: 'Thriva', providerLogo: '', price: 40, features: {} },
+  { id: '2', category: 'blood-tests', name: 'B Test', provider: 'Randox Health', providerLogo: '', price: 40, features: {} },
   { id: '3', category: 'blood-tests', name: 'C Test', provider: 'Randox', providerLogo: '', price: 60, features: {} },
   { id: '4', category: 'hormones', name: 'D Test', provider: 'Medichecks', providerLogo: '', price: 30, features: {} },
 ];
