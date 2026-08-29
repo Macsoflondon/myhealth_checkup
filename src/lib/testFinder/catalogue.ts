@@ -2,7 +2,7 @@
  * Phase 5 — Provider catalogue adapter.
  *
  * Converts the real provider rows in `src/data/compare/realProviderData.ts`
- * Test Finder.
+ * into the normalised shape consumed by the Test Finder.
  *
  * Inferences (sample type, collection, fees, clinical review, goal/condition
  * tags, sex restriction) are derived heuristically from provider + test name
