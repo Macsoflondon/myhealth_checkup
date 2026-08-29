@@ -869,6 +869,13 @@ export type Database = {
             referencedRelation: "biomarker_hub"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "biomarker_hub_canonical_id_fkey"
+            columns: ["canonical_id"]
+            isOneToOne: false
+            referencedRelation: "biomarkers_canonical"
+            referencedColumns: ["id"]
+          },
         ]
       }
       biomarker_knowledge_hub: {
@@ -1578,6 +1585,13 @@ export type Database = {
             referencedRelation: "biomarker_hub"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "clinical_loinc_mappings_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarkers_canonical"
+            referencedColumns: ["id"]
+          },
         ]
       }
       clinical_patient_uploads: {
@@ -1719,6 +1733,13 @@ export type Database = {
             columns: ["biomarker_id"]
             isOneToOne: false
             referencedRelation: "biomarker_hub"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_snomed_mappings_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarkers_canonical"
             referencedColumns: ["id"]
           },
         ]
@@ -6075,6 +6096,126 @@ export type Database = {
       }
     }
     Views: {
+      biomarkers_canonical: {
+        Row: {
+          abbreviation: string | null
+          alternate_units: Json | null
+          biomarker_code: string | null
+          biomaterial: string | null
+          body_system: string | null
+          category_clinical: string | null
+          category_consumer: string | null
+          clinical_description: string | null
+          clinical_significance: string | null
+          clinical_tips: string[] | null
+          created_at: string | null
+          icon: string | null
+          id: string | null
+          interpretation_guide: Json | null
+          last_reviewed_at: string | null
+          last_updated: string | null
+          legacy_category: string | null
+          legacy_codes: string[] | null
+          lifestyle_factors: string[] | null
+          loinc_code: string | null
+          name: string | null
+          normal_range_female: string | null
+          normal_range_male: string | null
+          reference_ranges: Json | null
+          related_articles: Json | null
+          related_conditions: string[] | null
+          related_tests: string[] | null
+          reviewed_by: string | null
+          snomed_code: string | null
+          source_systems: string[] | null
+          symptoms_linked: string[] | null
+          synonyms: string[] | null
+          unit: string | null
+          what_affects_it: string | null
+          what_it_measures: string | null
+          when_to_retest: string | null
+          why_it_matters: string | null
+        }
+        Insert: {
+          abbreviation?: string | null
+          alternate_units?: Json | null
+          biomarker_code?: string | null
+          biomaterial?: string | null
+          body_system?: string | null
+          category_clinical?: string | null
+          category_consumer?: string | null
+          clinical_description?: never
+          clinical_significance?: string | null
+          clinical_tips?: string[] | null
+          created_at?: string | null
+          icon?: string | null
+          id?: string | null
+          interpretation_guide?: Json | null
+          last_reviewed_at?: string | null
+          last_updated?: string | null
+          legacy_category?: string | null
+          legacy_codes?: string[] | null
+          lifestyle_factors?: string[] | null
+          loinc_code?: string | null
+          name?: string | null
+          normal_range_female?: string | null
+          normal_range_male?: string | null
+          reference_ranges?: Json | null
+          related_articles?: Json | null
+          related_conditions?: string[] | null
+          related_tests?: string[] | null
+          reviewed_by?: string | null
+          snomed_code?: string | null
+          source_systems?: string[] | null
+          symptoms_linked?: string[] | null
+          synonyms?: string[] | null
+          unit?: string | null
+          what_affects_it?: string | null
+          what_it_measures?: never
+          when_to_retest?: string | null
+          why_it_matters?: never
+        }
+        Update: {
+          abbreviation?: string | null
+          alternate_units?: Json | null
+          biomarker_code?: string | null
+          biomaterial?: string | null
+          body_system?: string | null
+          category_clinical?: string | null
+          category_consumer?: string | null
+          clinical_description?: never
+          clinical_significance?: string | null
+          clinical_tips?: string[] | null
+          created_at?: string | null
+          icon?: string | null
+          id?: string | null
+          interpretation_guide?: Json | null
+          last_reviewed_at?: string | null
+          last_updated?: string | null
+          legacy_category?: string | null
+          legacy_codes?: string[] | null
+          lifestyle_factors?: string[] | null
+          loinc_code?: string | null
+          name?: string | null
+          normal_range_female?: string | null
+          normal_range_male?: string | null
+          reference_ranges?: Json | null
+          related_articles?: Json | null
+          related_conditions?: string[] | null
+          related_tests?: string[] | null
+          reviewed_by?: string | null
+          snomed_code?: string | null
+          source_systems?: string[] | null
+          symptoms_linked?: string[] | null
+          synonyms?: string[] | null
+          unit?: string | null
+          what_affects_it?: string | null
+          what_it_measures?: never
+          when_to_retest?: string | null
+          why_it_matters?: never
+        }
+        Relationships: []
+      }
       catalogue_freshness: {
         Row: {
           active_tests: number | null
