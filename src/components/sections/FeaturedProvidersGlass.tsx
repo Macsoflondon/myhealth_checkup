@@ -46,14 +46,6 @@ const PROVIDERS: ProviderEntry[] = [
     glowRgb: "0,155,141",
   },
   {
-    tagline: "Track. Improve. Optimise.",
-    description:
-      "Personalised home blood tests and a digital dashboard with doctor reviews to monitor your health over time.",
-    tags: ["Home Testing", "Digital Dashboard", "GP Advice"],
-    glow: "#3D1152",
-    glowRgb: "61,17,82",
-  },
-  {
     id: "randox",
     name: "Randox Health",
     displayName: "Randox Health",

@@ -85,11 +85,6 @@ export const BLOG_SOURCES: BlogSource[] = [
     type: "rss",
     urls: ["https://www.medical-diagnosis.co.uk/feed"],
   },
-  {
-    type: "sitemap-og",
-    pathFilter: "/hub/",
-    maxPages: 60,
-  },
 ];
 
 /**

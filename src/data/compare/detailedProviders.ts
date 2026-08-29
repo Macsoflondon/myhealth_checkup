@@ -21,17 +21,6 @@ export const detailedProviders = [
       "Founded in 2001, Medichecks is the UK's leading provider of at-home blood testing services, offering over 300 comprehensive tests across general health, hormones, vitamins, thyroid function, sports performance, and specialised panels. All tests use UKAS-accredited laboratories and include doctor-reviewed results with personalised health insights delivered through an intuitive online platform.",
   },
   {
-    accreditation: "ISO 13485 certified (medical device quality)",
-    labAccreditation: "UKAS accredited partner labs (ISO 15189)",
-    coreServices: "75+ health markers: health tracking, lifestyle tests, heart, liver, diabetes, hormones, vitamins",
-    tests: "75+ health markers available",
-    sampleCollection: "At-home finger-prick kits",
-    turnaroundTime: "4-5 days (96-120 hours)",
-    customerReviews: "4.5/5 (Trustpilot, 3,000+ reviews)",
-    keyDifferentiators: "Subscription model with Compass annual health programme, personalised health insights via app, biomarker tracking over time",
-    description: "Subscription-based home testing with digital dashboard, doctor-led insights, and Compass annual health programme. 75+ health markers with painless at-home testing.",
-  },
-  {
     id: "randox",
     name: "Randox Health",
     website: "https://randoxhealth.com/en-GB/",
