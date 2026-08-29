@@ -764,6 +764,7 @@ export type Database = {
           symptoms_linked: string[] | null
           synonyms: string[] | null
           unit: string | null
+          variant_content: Json
           what_affects_it: string | null
           what_it_measures: string | null
           when_to_retest: string | null
@@ -810,6 +811,7 @@ export type Database = {
           symptoms_linked?: string[] | null
           synonyms?: string[] | null
           unit?: string | null
+          variant_content?: Json
           what_affects_it?: string | null
           what_it_measures?: string | null
           when_to_retest?: string | null
@@ -856,6 +858,7 @@ export type Database = {
           symptoms_linked?: string[] | null
           synonyms?: string[] | null
           unit?: string | null
+          variant_content?: Json
           what_affects_it?: string | null
           what_it_measures?: string | null
           when_to_retest?: string | null
@@ -873,58 +876,24 @@ export type Database = {
             foreignKeyName: "biomarker_hub_canonical_id_fkey"
             columns: ["canonical_id"]
             isOneToOne: false
+            referencedRelation: "biomarker_knowledge_hub"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "biomarker_hub_canonical_id_fkey"
+            columns: ["canonical_id"]
+            isOneToOne: false
             referencedRelation: "biomarkers_canonical"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "biomarker_hub_canonical_id_fkey"
+            columns: ["canonical_id"]
+            isOneToOne: false
+            referencedRelation: "biomarkers_library"
+            referencedColumns: ["id"]
+          },
         ]
-      }
-      biomarker_knowledge_hub: {
-        Row: {
-          category: string
-          clinical_description: string
-          created_at: string | null
-          effective_date_time: string | null
-          embedding: string | null
-          id: string
-          last_updated: string | null
-          loinc_code: string | null
-          name: string
-          reference_range_json: Json | null
-          related_symptoms: string[] | null
-          snomed_code: string | null
-          status: string
-        }
-        Insert: {
-          category?: string
-          clinical_description?: string
-          created_at?: string | null
-          effective_date_time?: string | null
-          embedding?: string | null
-          id?: string
-          last_updated?: string | null
-          loinc_code?: string | null
-          name: string
-          reference_range_json?: Json | null
-          related_symptoms?: string[] | null
-          snomed_code?: string | null
-          status?: string
-        }
-        Update: {
-          category?: string
-          clinical_description?: string
-          created_at?: string | null
-          effective_date_time?: string | null
-          embedding?: string | null
-          id?: string
-          last_updated?: string | null
-          loinc_code?: string | null
-          name?: string
-          reference_range_json?: Json | null
-          related_symptoms?: string[] | null
-          snomed_code?: string | null
-          status?: string
-        }
-        Relationships: []
       }
       biomarker_readings: {
         Row: {
@@ -978,93 +947,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      biomarkers_library: {
-        Row: {
-          alternate_units: Json | null
-          biomarker_code: string
-          biomarker_name: string
-          biomaterial: string | null
-          body_system: string | null
-          category: string
-          clinical_significance: string | null
-          created_at: string
-          description: string
-          id: string
-          interpretation_guide: Json | null
-          last_reviewed_at: string | null
-          lifestyle_factors: string[] | null
-          normal_range_female: string | null
-          normal_range_male: string | null
-          reference_ranges: Json | null
-          related_articles: Json | null
-          related_conditions: string[] | null
-          reviewed_by: string | null
-          synonyms: string[] | null
-          unit_of_measurement: string | null
-          updated_at: string
-          what_affects_it: string | null
-          what_it_measures: string | null
-          when_to_retest: string | null
-          why_it_matters: string | null
-        }
-        Insert: {
-          alternate_units?: Json | null
-          biomarker_code: string
-          biomarker_name: string
-          biomaterial?: string | null
-          body_system?: string | null
-          category: string
-          clinical_significance?: string | null
-          created_at?: string
-          description: string
-          id?: string
-          interpretation_guide?: Json | null
-          last_reviewed_at?: string | null
-          lifestyle_factors?: string[] | null
-          normal_range_female?: string | null
-          normal_range_male?: string | null
-          reference_ranges?: Json | null
-          related_articles?: Json | null
-          related_conditions?: string[] | null
-          reviewed_by?: string | null
-          synonyms?: string[] | null
-          unit_of_measurement?: string | null
-          updated_at?: string
-          what_affects_it?: string | null
-          what_it_measures?: string | null
-          when_to_retest?: string | null
-          why_it_matters?: string | null
-        }
-        Update: {
-          alternate_units?: Json | null
-          biomarker_code?: string
-          biomarker_name?: string
-          biomaterial?: string | null
-          body_system?: string | null
-          category?: string
-          clinical_significance?: string | null
-          created_at?: string
-          description?: string
-          id?: string
-          interpretation_guide?: Json | null
-          last_reviewed_at?: string | null
-          lifestyle_factors?: string[] | null
-          normal_range_female?: string | null
-          normal_range_male?: string | null
-          reference_ranges?: Json | null
-          related_articles?: Json | null
-          related_conditions?: string[] | null
-          reviewed_by?: string | null
-          synonyms?: string[] | null
-          unit_of_measurement?: string | null
-          updated_at?: string
-          what_affects_it?: string | null
-          what_it_measures?: string | null
-          when_to_retest?: string | null
-          why_it_matters?: string | null
-        }
-        Relationships: []
       }
       blood_tests: {
         Row: {
@@ -1526,6 +1408,7 @@ export type Database = {
         Row: {
           biomarker_code: string | null
           biomarker_id: string | null
+          code_source: string | null
           common_units: string[] | null
           component: string | null
           created_at: string
@@ -1535,15 +1418,22 @@ export type Database = {
           loinc_code: string
           long_name: string
           method_type: string | null
+          notes: string | null
           property: string | null
+          release_version: string | null
           scale_type: string | null
           short_name: string | null
           system: string | null
           time_aspect: string | null
+          updated_at: string
+          verification_status: string
+          verified_at: string | null
+          verified_by: string | null
         }
         Insert: {
           biomarker_code?: string | null
           biomarker_id?: string | null
+          code_source?: string | null
           common_units?: string[] | null
           component?: string | null
           created_at?: string
@@ -1553,15 +1443,22 @@ export type Database = {
           loinc_code: string
           long_name: string
           method_type?: string | null
+          notes?: string | null
           property?: string | null
+          release_version?: string | null
           scale_type?: string | null
           short_name?: string | null
           system?: string | null
           time_aspect?: string | null
+          updated_at?: string
+          verification_status?: string
+          verified_at?: string | null
+          verified_by?: string | null
         }
         Update: {
           biomarker_code?: string | null
           biomarker_id?: string | null
+          code_source?: string | null
           common_units?: string[] | null
           component?: string | null
           created_at?: string
@@ -1571,11 +1468,17 @@ export type Database = {
           loinc_code?: string
           long_name?: string
           method_type?: string | null
+          notes?: string | null
           property?: string | null
+          release_version?: string | null
           scale_type?: string | null
           short_name?: string | null
           system?: string | null
           time_aspect?: string | null
+          updated_at?: string
+          verification_status?: string
+          verified_at?: string | null
+          verified_by?: string | null
         }
         Relationships: [
           {
@@ -1589,7 +1492,21 @@ export type Database = {
             foreignKeyName: "clinical_loinc_mappings_biomarker_id_fkey"
             columns: ["biomarker_id"]
             isOneToOne: false
+            referencedRelation: "biomarker_knowledge_hub"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_loinc_mappings_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
             referencedRelation: "biomarkers_canonical"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_loinc_mappings_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarkers_library"
             referencedColumns: ["id"]
           },
         ]
@@ -1696,36 +1613,57 @@ export type Database = {
           biomarker_id: string | null
           biomarker_name: string | null
           category: string | null
+          code_source: string | null
           created_at: string
           id: string
           is_active: boolean | null
           is_primary: boolean
+          notes: string | null
           preferred_term: string
+          release_version: string | null
           snomed_concept_id: string
+          updated_at: string
+          verification_status: string
+          verified_at: string | null
+          verified_by: string | null
         }
         Insert: {
           biomarker_code?: string | null
           biomarker_id?: string | null
           biomarker_name?: string | null
           category?: string | null
+          code_source?: string | null
           created_at?: string
           id?: string
           is_active?: boolean | null
           is_primary?: boolean
+          notes?: string | null
           preferred_term: string
+          release_version?: string | null
           snomed_concept_id: string
+          updated_at?: string
+          verification_status?: string
+          verified_at?: string | null
+          verified_by?: string | null
         }
         Update: {
           biomarker_code?: string | null
           biomarker_id?: string | null
           biomarker_name?: string | null
           category?: string | null
+          code_source?: string | null
           created_at?: string
           id?: string
           is_active?: boolean | null
           is_primary?: boolean
+          notes?: string | null
           preferred_term?: string
+          release_version?: string | null
           snomed_concept_id?: string
+          updated_at?: string
+          verification_status?: string
+          verified_at?: string | null
+          verified_by?: string | null
         }
         Relationships: [
           {
@@ -1739,7 +1677,21 @@ export type Database = {
             foreignKeyName: "clinical_snomed_mappings_biomarker_id_fkey"
             columns: ["biomarker_id"]
             isOneToOne: false
+            referencedRelation: "biomarker_knowledge_hub"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_snomed_mappings_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
             referencedRelation: "biomarkers_canonical"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_snomed_mappings_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarkers_library"
             referencedColumns: ["id"]
           },
         ]
@@ -6096,6 +6048,54 @@ export type Database = {
       }
     }
     Views: {
+      biomarker_knowledge_hub: {
+        Row: {
+          category: string | null
+          clinical_description: string | null
+          created_at: string | null
+          effective_date_time: string | null
+          embedding: string | null
+          id: string | null
+          last_updated: string | null
+          loinc_code: string | null
+          name: string | null
+          reference_range_json: Json | null
+          related_symptoms: string[] | null
+          snomed_code: string | null
+          status: string | null
+        }
+        Insert: {
+          category?: never
+          clinical_description?: never
+          created_at?: string | null
+          effective_date_time?: string | null
+          embedding?: string | null
+          id?: string | null
+          last_updated?: string | null
+          loinc_code?: string | null
+          name?: string | null
+          reference_range_json?: never
+          related_symptoms?: never
+          snomed_code?: string | null
+          status?: string | null
+        }
+        Update: {
+          category?: never
+          clinical_description?: never
+          created_at?: string | null
+          effective_date_time?: string | null
+          embedding?: string | null
+          id?: string | null
+          last_updated?: string | null
+          loinc_code?: string | null
+          name?: string | null
+          reference_range_json?: never
+          related_symptoms?: never
+          snomed_code?: string | null
+          status?: string | null
+        }
+        Relationships: []
+      }
       biomarkers_canonical: {
         Row: {
           abbreviation: string | null
@@ -6209,6 +6209,93 @@ export type Database = {
           symptoms_linked?: string[] | null
           synonyms?: string[] | null
           unit?: string | null
+          what_affects_it?: string | null
+          what_it_measures?: never
+          when_to_retest?: string | null
+          why_it_matters?: never
+        }
+        Relationships: []
+      }
+      biomarkers_library: {
+        Row: {
+          alternate_units: Json | null
+          biomarker_code: string | null
+          biomarker_name: string | null
+          biomaterial: string | null
+          body_system: string | null
+          category: string | null
+          clinical_significance: string | null
+          created_at: string | null
+          description: string | null
+          id: string | null
+          interpretation_guide: Json | null
+          last_reviewed_at: string | null
+          lifestyle_factors: string[] | null
+          normal_range_female: string | null
+          normal_range_male: string | null
+          reference_ranges: Json | null
+          related_articles: Json | null
+          related_conditions: string[] | null
+          reviewed_by: string | null
+          synonyms: string[] | null
+          unit_of_measurement: string | null
+          updated_at: string | null
+          what_affects_it: string | null
+          what_it_measures: string | null
+          when_to_retest: string | null
+          why_it_matters: string | null
+        }
+        Insert: {
+          alternate_units?: Json | null
+          biomarker_code?: never
+          biomarker_name?: string | null
+          biomaterial?: string | null
+          body_system?: string | null
+          category?: never
+          clinical_significance?: string | null
+          created_at?: string | null
+          description?: never
+          id?: string | null
+          interpretation_guide?: Json | null
+          last_reviewed_at?: string | null
+          lifestyle_factors?: string[] | null
+          normal_range_female?: string | null
+          normal_range_male?: string | null
+          reference_ranges?: Json | null
+          related_articles?: Json | null
+          related_conditions?: string[] | null
+          reviewed_by?: string | null
+          synonyms?: string[] | null
+          unit_of_measurement?: string | null
+          updated_at?: string | null
+          what_affects_it?: string | null
+          what_it_measures?: never
+          when_to_retest?: string | null
+          why_it_matters?: never
+        }
+        Update: {
+          alternate_units?: Json | null
+          biomarker_code?: never
+          biomarker_name?: string | null
+          biomaterial?: string | null
+          body_system?: string | null
+          category?: never
+          clinical_significance?: string | null
+          created_at?: string | null
+          description?: never
+          id?: string | null
+          interpretation_guide?: Json | null
+          last_reviewed_at?: string | null
+          lifestyle_factors?: string[] | null
+          normal_range_female?: string | null
+          normal_range_male?: string | null
+          reference_ranges?: Json | null
+          related_articles?: Json | null
+          related_conditions?: string[] | null
+          reviewed_by?: string | null
+          synonyms?: string[] | null
+          unit_of_measurement?: string | null
+          updated_at?: string | null
           what_affects_it?: string | null
           what_it_measures?: never
           when_to_retest?: string | null
