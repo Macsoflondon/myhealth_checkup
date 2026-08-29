@@ -41,7 +41,21 @@ export function useBiomarkersLibrary(): UseBiomarkersLibraryReturn {
           .order("biomarker_name", { ascending: true });
 
         if (fetchError) throw fetchError;
-        setBiomarkers(data || []);
+        const normalised: BiomarkerDefinition[] = (data ?? []).map((row) => ({
+          id: row.id ?? "",
+          biomarker_name: row.biomarker_name ?? "",
+          biomarker_code: row.biomarker_code ?? "",
+          description: row.description ?? "",
+          category: row.category ?? "",
+          unit_of_measurement: row.unit_of_measurement ?? null,
+          normal_range_male: row.normal_range_male ?? null,
+          normal_range_female: row.normal_range_female ?? null,
+          clinical_significance: row.clinical_significance ?? null,
+          interpretation_guide: row.interpretation_guide ?? null,
+          lifestyle_factors: row.lifestyle_factors ?? null,
+          related_conditions: row.related_conditions ?? null,
+        }));
+        setBiomarkers(normalised);
       } catch (err) {
         console.error("Failed to fetch biomarkers library:", err);
         setError(err instanceof Error ? err.message : "Failed to load biomarkers");
