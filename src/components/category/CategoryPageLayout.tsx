@@ -248,6 +248,7 @@ export function CategoryPageLayout({
                 {filtered.map((test) => (
                   <UnifiedTestCard
                     key={test.id}
+                    defaultFace="brand"
                     category={test.tag}
                     categoryColor={test.badgeColor}
                     badge={test.popular ? "Most Popular" : test.badge}
