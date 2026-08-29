@@ -883,13 +883,6 @@ export type Database = {
             foreignKeyName: "biomarker_hub_canonical_id_fkey"
             columns: ["canonical_id"]
             isOneToOne: false
-            referencedRelation: "biomarker_terminology_coverage"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "biomarker_hub_canonical_id_fkey"
-            columns: ["canonical_id"]
-            isOneToOne: false
             referencedRelation: "biomarkers_canonical"
             referencedColumns: ["id"]
           },
@@ -1506,13 +1499,6 @@ export type Database = {
             foreignKeyName: "clinical_loinc_mappings_biomarker_id_fkey"
             columns: ["biomarker_id"]
             isOneToOne: false
-            referencedRelation: "biomarker_terminology_coverage"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "clinical_loinc_mappings_biomarker_id_fkey"
-            columns: ["biomarker_id"]
-            isOneToOne: false
             referencedRelation: "biomarkers_canonical"
             referencedColumns: ["id"]
           },
@@ -1692,13 +1678,6 @@ export type Database = {
             columns: ["biomarker_id"]
             isOneToOne: false
             referencedRelation: "biomarker_knowledge_hub"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "clinical_snomed_mappings_biomarker_id_fkey"
-            columns: ["biomarker_id"]
-            isOneToOne: false
-            referencedRelation: "biomarker_terminology_coverage"
             referencedColumns: ["id"]
           },
           {
@@ -6117,19 +6096,6 @@ export type Database = {
         }
         Relationships: []
       }
-      biomarker_terminology_coverage: {
-        Row: {
-          category_clinical: string | null
-          category_consumer: string | null
-          has_loinc_candidate: boolean | null
-          has_snomed_candidate: boolean | null
-          id: string | null
-          loinc_verified: boolean | null
-          name: string | null
-          snomed_verified: boolean | null
-        }
-        Relationships: []
-      }
       biomarkers_canonical: {
         Row: {
           abbreviation: string | null
@@ -6374,21 +6340,6 @@ export type Database = {
           unreachable: number | null
           wrong_host: number | null
           wrong_type: number | null
-        }
-        Relationships: []
-      }
-      terminology_verification_queue: {
-        Row: {
-          biomarker_name: string | null
-          category_clinical: string | null
-          code: string | null
-          code_source: string | null
-          code_system: string | null
-          id: string | null
-          release_version: string | null
-          term: string | null
-          updated_at: string | null
-          verification_status: string | null
         }
         Relationships: []
       }
@@ -6667,19 +6618,6 @@ export type Database = {
           _user_id: string
         }
         Returns: boolean
-      }
-      import_terminology_codes: {
-        Args: {
-          p_payload: Json
-          p_release?: string
-          p_source?: string
-          p_system: string
-        }
-        Returns: {
-          inserted: number
-          linked: number
-          unlinked: number
-        }[]
       }
       is_current_user_admin: { Args: never; Returns: boolean }
       log_data_access_with_reason: {

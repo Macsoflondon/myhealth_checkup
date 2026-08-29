@@ -177,12 +177,7 @@ const BiomarkersSection = ({ biomarkers, biomarkerCount }: { biomarkers: string[
         if (!error && data) {
           const details: Record<string, BiomarkerInfo> = {};
           data.forEach((item) => {
-            if (!item.biomarker_name) return;
-            details[item.biomarker_name.toLowerCase()] = {
-              biomarker_name: item.biomarker_name,
-              description: item.description ?? '',
-              category: item.category ?? '',
-            };
+            details[item.biomarker_name.toLowerCase()] = item;
           });
           setBiomarkerDetails(details);
         }
