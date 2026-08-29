@@ -137,7 +137,7 @@ const ProviderProfilePage = () => {
 
         {/* Trust Signals Banner — tinted with provider colour */}
         <div
-          className="rounded-xl p-4 md:p-6 mb-6 md:mb-8 border"
+          className="rounded-xl p-4 md:p-6 mb-6 md:mb-8 border shadow-[0_8px_30px_rgb(255,255,255,0.12)]"
           style={brand ? {
             backgroundColor: brand.primaryLight,
             borderColor: `${brand.primary}33`,
@@ -146,7 +146,7 @@ const ProviderProfilePage = () => {
             borderColor: 'hsl(var(--primary) / 0.2)',
           }}
         >
-          <h2 className="font-semibold text-foreground mb-4 flex items-center gap-2">
+          <h2 className="font-semibold text-white mb-4 flex items-center gap-2">
             <Shield className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
             Trust & Accreditation
           </h2>
