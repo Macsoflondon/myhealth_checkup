@@ -25,6 +25,8 @@ export interface UnifiedTestCardProps {
   onCompareToggle?: () => void;
   className?: string;
   testDetails?: ProviderTestCardData;
+  /** At-rest face: kit photo (default) or branded provider-logo tile. */
+  defaultFace?: "image" | "brand";
 }
 
 /**

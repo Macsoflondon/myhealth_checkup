@@ -423,10 +423,16 @@ export interface UniversalTestCardProps {
   /** Optional override for the click handler. If omitted, opens the detail modal. */
   onOpenDetail?: () => void;
   className?: string;
+  /**
+   * At-rest face of the card. "image" (default) shows the provider's kit photo.
+   * "brand" always shows the branded navy-gradient tile with the provider logo
+   * and test name — used on toolbar-reached category listings.
+   */
+  defaultFace?: "image" | "brand";
 }
 
 export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
-  test, onOpenDetail, className,
+  test, onOpenDetail, className, defaultFace = "image",
 }) => {
   const [internalOpen, setInternalOpen] = useState(false);
   /** Tracks a broken/expired image link so the card degrades to the branded placeholder. */
