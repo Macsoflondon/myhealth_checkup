@@ -129,7 +129,7 @@ describe("metadata uniqueness across routes", () => {
   const heads = [
     buildRouteHead({ title: "Home | myhealth checkup", description: "Home page.", path: "/" }),
     buildProviderHead({ providerId: "medichecks", providerName: "Medichecks" }),
-    buildProviderHead({ providerId: "medichecks", providerName: "Medichecks" }),
+    buildProviderHead({ providerId: "randox", providerName: "Randox Health" }),
     buildTestHead({
       providerId: "medichecks",
       providerName: "Medichecks",
