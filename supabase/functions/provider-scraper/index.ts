@@ -122,48 +122,6 @@ const providerTestData: Record<string, Array<Record<string, unknown>>> = {
       provider_test_id: 'mc-ultimate-001'
     }
   ],
-  'thriva': [
-    {
-      test_name: 'Personalised Health Test',
-      description: 'Customised blood test based on your age, lifestyle, and health goals',
-      price: 89.00,
-      category: 'Personalised Health',
-      url: 'https://thriva.co/shop/personalised-blood-test',
-      provider_test_id: 'th-personal-001'
-    },
-    {
-      test_name: 'Women\'s Hormones',
-      description: 'Check baseline hormone levels including reproductive and stress hormones',
-      price: 99.00,
-      category: 'Women\'s Health',
-      url: 'https://thriva.co/shop/womens-hormones',
-      provider_test_id: 'th-women-hor-001'
-    },
-    {
-      test_name: 'Energy & Vitality',
-      description: 'Investigate fatigue with thyroid, vitamin, and energy metabolism markers',
-      price: 79.00,
-      category: 'Energy & Fatigue',
-      url: 'https://thriva.co/shop/energy-vitality',
-      provider_test_id: 'th-energy-001'
-    },
-    {
-      test_name: 'Heart Health',
-      description: 'Comprehensive cardiovascular risk assessment including advanced lipid profile',
-      price: 89.00,
-      category: 'Heart Health',
-      url: 'https://thriva.co/shop/heart-health',
-      provider_test_id: 'th-heart-001'
-    },
-    {
-      test_name: 'Nutrition & Lifestyle',
-      description: 'Assess how your diet and lifestyle affect your health markers',
-      price: 99.00,
-      category: 'Nutrition',
-      url: 'https://thriva.co/shop/nutrition-lifestyle',
-      provider_test_id: 'th-nutrition-001'
-    }
-  ],
   'randox': [
     {
       test_name: 'Everyman Health Check',

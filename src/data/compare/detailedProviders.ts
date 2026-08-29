@@ -21,10 +21,6 @@ export const detailedProviders = [
       "Founded in 2001, Medichecks is the UK's leading provider of at-home blood testing services, offering over 300 comprehensive tests across general health, hormones, vitamins, thyroid function, sports performance, and specialised panels. All tests use UKAS-accredited laboratories and include doctor-reviewed results with personalised health insights delivered through an intuitive online platform.",
   },
   {
-    id: "thriva",
-    name: "Thriva",
-    website: "https://thriva.co/",
-    email: "hello@thriva.co",
     accreditation: "ISO 13485 certified (medical device quality)",
     labAccreditation: "UKAS accredited partner labs (ISO 15189)",
     coreServices: "75+ health markers: health tracking, lifestyle tests, heart, liver, diabetes, hormones, vitamins",

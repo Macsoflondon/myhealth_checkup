@@ -4,7 +4,6 @@ import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
 
 export const PROVIDER_NAMES: Record<string, string> = {
   "medichecks": "Medichecks",
-  "thriva": "Thriva",
   "goodbody-clinic": "GoodBody Clinic",
   "lola-health": "Lola Health",
   "randox": "Randox Health",

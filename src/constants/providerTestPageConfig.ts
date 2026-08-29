@@ -141,50 +141,6 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     canonicalBase: 'https://myhealthcheckup.co.uk/goodbody',
   },
 
-  thriva: {
-    id: 'thriva',
-    name: 'Thriva',
-    logo: '/lovable-uploads/64eb7ed4-e166-41c0-9a8c-d61d1f9fc7f7.png',
-    turnaround: '2-3 working days',
-    badgeText: 'Thriva Blood Test',
-    features: [
-      { title: 'At-Home Testing', description: 'Convenient finger-prick collection at home' },
-      { title: 'Doctor Reviewed', description: 'All results reviewed by qualified doctors' },
-      { title: 'Fast Results', description: '2-3 working days from sample receipt' },
-      { title: 'Subscription Options', description: 'Regular testing plans available' },
-    ],
-    sampleOptions: [
-      {
-        icon: 'home',
-        title: 'Home Finger-Prick Kit',
-        description: 'Convenient at-home finger-prick test kit with simple instructions. Return your sample using the prepaid envelope provided.',
-      },
-      {
-        icon: 'clinic',
-        title: 'Nurse Collection Service',
-        description: 'Optional nurse visit for venous blood collection at your home. Available in select areas for comprehensive panels.',
-      },
-    ],
-    whyChoose: {
-      title: 'Why Choose Thriva?',
-      items: [
-        { bold: 'Convenient Testing:', text: 'Test from home with easy-to-use finger-prick kits' },
-        { bold: 'Personalised Insights:', text: 'Doctor-reviewed results with health recommendations' },
-        { bold: 'Track Your Health:', text: 'Monitor biomarker trends over time with the Thriva app' },
-        { bold: 'Subscription Savings:', text: 'Save with regular testing subscription plans' },
-      ],
-    },
-    quickInfo: {
-      sampleType: 'Finger-prick blood',
-      labProcessing: 'UKAS accredited laboratories',
-      resultsDelivery: 'Thriva app with personalized insights',
-      supportEmail: 'support@thriva.co',
-    },
-    ctaText: 'Order your Thriva test kit today and take control of your health from the comfort of home. Get doctor-reviewed results with personalised recommendations.',
-    ctaButtonText: 'Book',
-    aboutText: 'at-home blood test with convenient finger-prick collection. All results are reviewed by qualified doctors with personalised health insights.',
-    canonicalBase: 'https://myhealthcheckup.co.uk/thriva',
-  },
 
   randox: {
     id: 'randox',

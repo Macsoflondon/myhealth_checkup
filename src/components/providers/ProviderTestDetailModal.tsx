@@ -43,7 +43,6 @@ const getAccreditations = (
     "goodbody-clinic": ["CQC regulated", "ISO 15189", "GP-reviewed"],
     "randox-health": ["UKAS accredited lab", "ISO 15189", "50+ UK clinics"],
     randox: ["UKAS accredited lab", "ISO 15189", "50+ UK clinics"],
-    thriva: ["ISO 13485", "CQC regulated labs", "CE-marked"],
     "lola-health": ["UKAS accredited lab", "ISO 15189", "GMC-reviewed"],
     lola: ["CQC regulated", "UKAS accredited lab"],
     "london-medical-laboratory": ["UKAS accredited lab", "ISO 15189", "GDPR compliant"],
@@ -71,7 +70,6 @@ const formatTurnaround = (providerId: string): string => {
     goodbody: "3–5 working days",
     "randox-health": "24 hours",
     randox: "24 hours",
-    thriva: "2–4 days",
     "lola-health": "3–5 working days",
     "london-medical-laboratory": "Next day (in-store)",
     "tuli-health": "Same day – 24 hrs",
@@ -116,10 +114,6 @@ const PROVIDER_DEFAULT_COLLECTION_OPTIONS: Record<string, CollectionOption[]> = 
   "randox-health": [
     { method: "In-clinic appointment", price_modifier: 0, note: "Included" },
     { method: "Home visit (selected areas)", price_modifier: 0, note: "POA" },
-  ],
-  thriva: [
-    { method: "Finger-prick home kit", price_modifier: 0, note: "Included" },
-    { method: "Venous home phlebotomist", price_modifier: 35 },
   ],
   "tuli-health": [
     { method: "In-clinic appointment", price_modifier: 0, note: "Included" },

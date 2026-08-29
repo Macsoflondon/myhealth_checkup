@@ -125,7 +125,6 @@ const aiResponseSchema = z.object({
 
 const providerNames: Record<string, string> = {
   medichecks: "Medichecks",
-  thriva: "Thriva",
   randox: "Randox Health",
   "lola-health": "Lola Health",
   "goodbody-clinic": "GOODBODY Clinic",

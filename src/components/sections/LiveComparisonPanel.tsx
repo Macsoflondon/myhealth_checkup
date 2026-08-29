@@ -17,7 +17,6 @@ const providers: ProviderRow[] = [
     price: "£29",
   },
   {
-    name: "Thriva",
     bio: "At-home kit · Subscription option",
     badge: "At-Home",
     badgeType: "neutral",

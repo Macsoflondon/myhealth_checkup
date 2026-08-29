@@ -16,7 +16,6 @@ const SCRAPERS = [
   { id: 'lola-health', functionName: 'lola-health-scraper' },
   { id: 'medichecks', functionName: 'apify-scrape-provider', apify: true },
   { id: 'goodbody-clinic', functionName: 'goodbody-scraper' },
-  { id: 'thriva', functionName: 'thriva-scraper' },
   { id: 'randox', functionName: 'randox-scraper' },
   { id: 'london-medical-laboratory', functionName: 'scrape-london-lab' },
   { id: 'clinilabs', functionName: 'apify-scrape-provider', apify: true },

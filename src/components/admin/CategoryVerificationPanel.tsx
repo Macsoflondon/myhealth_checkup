@@ -9,7 +9,6 @@ import { CheckCircle2, AlertTriangle, RefreshCw, Loader2, Download } from "lucid
 
 const PROVIDER_NAMES: Record<string, string> = {
   "medichecks": "Medichecks",
-  "thriva": "Thriva",
   "goodbody-clinic": "GoodBody Clinic",
   "lola-health": "Lola Health",
   "randox": "Randox Health",

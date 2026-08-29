@@ -21,13 +21,6 @@ export const providerBranding: Record<string, ProviderBrand> = {
     primaryLight: "#009B8D1A",
     accentLight: "#1A2B4A12",
   },
-  thriva: {
-    primary: "#3D1152",
-    accent: "#E85D75",
-    tagline: "Know your body. Own your health.",
-    primaryLight: "#3D11521A",
-    accentLight: "#E85D7512",
-  },
   randox: {
     primary: "#2D4BA0",
     accent: "#1a2d6b",
@@ -142,7 +135,6 @@ export function getBranding(nameOrId: string): ProviderBrand | null {
   const key = nameOrId.toLowerCase();
   if (key.includes("medichecks")) return providerBranding.medichecks;
   if (key.includes("goodbody")) return providerBranding.goodbody;
-  if (key.includes("thriva")) return providerBranding.thriva;
   if (key.includes("randox")) return providerBranding.randox;
   if (key.includes("lola")) return providerBranding.lola;
   if (key.includes("clinilabs")) return providerBranding.clinilabs;

@@ -34,13 +34,6 @@ const PROVIDER_CONFIGS: Record<string, ProviderCatalogConfig> = {
     metaTitle: "Medichecks Blood Tests | Compare Health Tests UK",
     metaDescription: "Browse all Medichecks blood tests. Home test kits and clinic appointments available. Compare prices and book your private health screening.",
   },
-  "thriva": {
-    providerId: "thriva",
-    providerName: "Thriva",
-    tagline: "At-home blood testing with smart health tracking",
-    metaTitle: "Thriva Blood Tests | Compare Health Tests UK",
-    metaDescription: "Browse all Thriva at-home blood tests. Subscription-based health monitoring with app tracking. Compare prices and order your test kit.",
-  },
   "randox": {
     providerId: "randox",
     providerName: "Randox Health",

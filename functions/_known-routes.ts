@@ -68,7 +68,6 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/goodbody-clinic",
   "/providers/medichecks",
   "/medichecks/mens-health",
-  "/providers/thriva",
   "/providers/randox",
   "/providers/lola-health",
   "/providers/london-medical-laboratory",
@@ -83,7 +82,6 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/medical-diagnosis",
   "/medichecks",
   "/randox",
-  "/thriva",
 
   // Tools
   "/blood-test-analysis",
@@ -171,7 +169,6 @@ const DYNAMIC_ROUTE_PATTERNS: readonly string[] = [
   "/goodbody-clinic/:testId",
   "/goodbody/:testId",
   "/medichecks/:testId",
-  "/thriva/:testId",
   "/randox/:testId",
   "/randox-health/:testId",
   "/london-medical-laboratory/:testId",

@@ -13,7 +13,6 @@ const PROVIDER_ID_DB_MAP: Record<string, string> = {
   "randox-health": "randox",
   "goodbody-clinic": "goodbody-clinic",
   "medichecks": "medichecks",
-  "thriva": "thriva",
   "lola-health": "lola-health",
   "london-medical-laboratory": "london-medical-laboratory",
   "london-health-company": "london-health-company",

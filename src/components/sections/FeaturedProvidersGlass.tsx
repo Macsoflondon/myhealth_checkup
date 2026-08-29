@@ -46,14 +46,10 @@ const PROVIDERS: ProviderEntry[] = [
     glowRgb: "0,155,141",
   },
   {
-    id: "thriva",
-    name: "Thriva",
-    displayName: "Thriva",
     tagline: "Track. Improve. Optimise.",
     description:
       "Personalised home blood tests and a digital dashboard with doctor reviews to monitor your health over time.",
     tags: ["Home Testing", "Digital Dashboard", "GP Advice"],
-    website: "thriva.co",
     glow: "#3D1152",
     glowRgb: "61,17,82",
   },

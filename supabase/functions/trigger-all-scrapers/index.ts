@@ -12,7 +12,6 @@ const SCRAPERS: Array<{ id: string; fn: string }> = [
   { id: "lola-health", fn: "lola-health-scraper" },
   { id: "medichecks", fn: "medichecks-firecrawl" },
   { id: "goodbody-clinic", fn: "goodbody-scraper" },
-  { id: "thriva", fn: "thriva-scraper" },
   { id: "randox", fn: "randox-scraper" },
   { id: "london-medical-laboratory", fn: "scrape-london-lab" },
   { id: "clinilabs", fn: "clinilabs-scraper" },

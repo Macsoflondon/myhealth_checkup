@@ -17,7 +17,6 @@ const SCRAPER_MAP: Record<string, string> = {
   "goodbody-clinic": "goodbody-scraper",
   "randox": "randox-scraper",
   "lola-health": "lola-health-scraper",
-  "thriva": "thriva-scraper",
   "london-medical-laboratory": "scrape-london-lab",
   "medical-diagnosis": "medical-diagnosis-scraper",
   "clinilabs": "clinilabs-scraper",

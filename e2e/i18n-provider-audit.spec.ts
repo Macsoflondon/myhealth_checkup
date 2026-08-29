@@ -20,7 +20,6 @@ import { FALLBACK_LABELS, NON_ENGLISH_LANGUAGES } from '../src/i18n/fallbackLabe
 
 const PROVIDER_SLUGS = [
   'medichecks',
-  'thriva',
   'randox',
   'london-medical-laboratory',
   'lola-health',

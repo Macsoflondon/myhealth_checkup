@@ -17,7 +17,6 @@ import {
 
 const PROVIDER_NAME_TO_ID: Record<string, string> = {
   "medichecks": "medichecks",
-  "thriva": "thriva",
   "randox": "randox",
   "randox health": "randox",
   "london medical laboratory": "london-medical-laboratory",

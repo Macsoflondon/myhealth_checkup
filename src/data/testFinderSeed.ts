@@ -4,9 +4,7 @@ import type { TestRecord } from "@/types/testFinder";
 // against each provider's live site before launch.
 export const SEED_TESTS: TestRecord[] = [
   {
-    id: "thriva-metabolic",
     name: "Metabolic Health",
-    provider: "Thriva",
     price: 96,
     biomarkers: 19,
     turnaround_label: "~48 hrs",
@@ -21,7 +19,6 @@ export const SEED_TESTS: TestRecord[] = [
     condition_tags: ["metabolic_health", "cardiovascular_risk", "diabetes", "general_health"],
     sex_restriction: "none",
     source_url:
-      "https://thriva.co/shop/blood-test-packages/metabolic-health-blood-test",
     verification: {
       price: "needs_verification",
       biomarkers: "verified",
@@ -30,9 +27,7 @@ export const SEED_TESTS: TestRecord[] = [
     },
   },
   {
-    id: "thriva-cardio",
     name: "Cardiovascular Health",
-    provider: "Thriva",
     price: 118,
     biomarkers: 22,
     turnaround_label: "~48 hrs",
@@ -47,7 +42,6 @@ export const SEED_TESTS: TestRecord[] = [
     condition_tags: ["cardiovascular_risk", "metabolic_health", "general_health"],
     sex_restriction: "none",
     source_url:
-      "https://thriva.co/shop/blood-test-packages/cardiovascular-health-blood-test",
     verification: {
       price: "needs_verification",
       biomarkers: "verified",

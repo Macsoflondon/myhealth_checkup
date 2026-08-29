@@ -157,10 +157,6 @@ export const PROVIDER_FEATURES: Record<string, ProviderFeature[]> = {
     { icon: <Building2 className="h-4 w-4 text-secondary" />, label: "Clinic appointments" },
     { icon: <Shield className="h-4 w-4 text-secondary" />, label: "UKAS Accredited" },
   ],
-  'thriva': [
-    { icon: <Home className="h-4 w-4 text-secondary" />, label: "Home test kits" },
-    { icon: <Smartphone className="h-4 w-4 text-secondary" />, label: "App-based tracking" },
-  ],
   'randox': [
     { icon: <Building2 className="h-4 w-4 text-secondary" />, label: "Premium clinic locations" },
     { icon: <Microscope className="h-4 w-4 text-secondary" />, label: "Advanced diagnostics" },

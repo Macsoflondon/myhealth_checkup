@@ -60,7 +60,6 @@ export const STATIC_ROUTES = [
   "/goodbody-clinic",
   "/providers/medichecks",
   "/medichecks/mens-health",
-  "/providers/thriva",
   "/providers/randox",
   "/providers/lola-health",
   "/providers/london-medical-laboratory",
