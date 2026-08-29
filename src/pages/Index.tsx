@@ -243,13 +243,6 @@ const Index = () => {
                   greatest <span className="text-[#e70d69]">asset.</span>
                 </h2>
 
-                <div className="w-3/4 mx-auto mb-8">
-                  <div
-                    className="h-[2px] w-full rounded-full bg-gradient-to-r from-[#22c0d4] via-[#e70d69] to-[#22c0d4]"
-                    aria-hidden="true"
-                  />
-                </div>
-
                 <div className="max-w-3xl mx-auto text-left space-y-4 mb-8 sm:mb-10">
                   <p className="text-white/85 text-base sm:text-lg leading-relaxed">
                     At myhealth checkup, we believe everyone deserves access to
@@ -262,6 +255,13 @@ const Index = () => {
                     We only feature providers that meet rigorous quality
                     standards, including UKAS accreditation and CQC regulation.
                   </p>
+                </div>
+
+                <div className="w-3/4 mx-auto mb-8">
+                  <div
+                    className="h-[2px] w-full rounded-full bg-gradient-to-r from-[#22c0d4] via-[#e70d69] to-[#22c0d4]"
+                    aria-hidden="true"
+                  />
                 </div>
 
                 <div className="flex flex-col items-center gap-4 sm:grid sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-start sm:gap-0 w-full mx-auto mb-6 sm:mb-8">
