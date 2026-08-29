@@ -51,6 +51,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const [barHeight, setBarHeight] = useState(0);
   const [heroPinned, setHeroPinned] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const { user, signOut } = useAuth();
   const isStraddle = placement === "straddle";
   useEffect(() => setHydrated(true), []);
   // Find the navy/white boundary marker rendered by the category hero.
