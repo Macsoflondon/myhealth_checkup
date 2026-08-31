@@ -52,9 +52,13 @@ async function checkOne(row: Row): Promise<Result> {
     return { status: "placeholder", issue: `matches placeholder pattern (${url})` };
   }
 
-  const allow = PROVIDER_HOST_ALLOWLIST[row.provider_id];
-  if (allow && !allow.some((re) => re.test(url))) {
-    return { status: "wrong_host", issue: `host not in allowlist for ${row.provider_id}` };
+  if (UNIVERSAL_STORAGE_HOST.test(url)) {
+    // Self-hosted Supabase Storage mirror — valid regardless of provider.
+  } else {
+    const allow = PROVIDER_HOST_ALLOWLIST[row.provider_id];
+    if (allow && !allow.some((re) => re.test(url))) {
+      return { status: "wrong_host", issue: `host not in allowlist for ${row.provider_id}` };
+    }
   }
 
   try {
