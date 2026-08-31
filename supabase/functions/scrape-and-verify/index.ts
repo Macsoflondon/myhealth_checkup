@@ -230,7 +230,8 @@ Deno.serve(async (req) => {
         else brokenCount++;
       }
     }
-    await Promise.all(Array.from({ length: PROVIDER_CONCURRENCY }, worker));
+    const poolSize = PROVIDER_CONCURRENCY_OVERRIDES[providerRows[0]?.provider_id ?? ""] ?? PROVIDER_CONCURRENCY;
+    await Promise.all(Array.from({ length: poolSize }, worker));
   }
 
   await Promise.all(Array.from(byProvider.values(), runProviderPool));
