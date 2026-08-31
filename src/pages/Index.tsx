@@ -264,14 +264,14 @@ const Index = () => {
                   />
                 </div>
 
-                <div className="flex flex-col items-center gap-4 sm:grid sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-start sm:gap-0 w-full mx-auto mb-6 sm:mb-8">
+                <div className="flex flex-col items-center gap-5 sm:flex-row sm:justify-center sm:items-center sm:gap-10 lg:gap-14 w-full max-w-4xl mx-auto mb-6 sm:mb-8">
                   <h2
-                    className="sm:col-start-2 text-[clamp(1.25rem,4.5vw,2.4rem)] font-bold text-white leading-[1.15] tracking-tight text-center whitespace-normal min-w-0 max-w-full px-2 sm:whitespace-nowrap sm:pt-3"
+                    className="text-[clamp(1.25rem,4.5vw,2.4rem)] font-bold text-white leading-[1.15] tracking-tight text-center sm:text-left whitespace-normal min-w-0 max-w-full px-2 sm:px-0 shrink"
                     style={{ fontFamily: "'Montserrat', sans-serif" }}
                   >
                     Not sure which test you need?
                   </h2>
-                  <div className="sm:col-start-4 flex flex-col items-center gap-2 w-full sm:w-auto px-1 sm:px-0">
+                  <div className="flex flex-col items-center gap-2 w-full sm:w-auto px-1 sm:px-0 shrink-0">
                     <Link
                       to="/find-test"
                       aria-label="Take the Health Quiz — find the right private blood test"
