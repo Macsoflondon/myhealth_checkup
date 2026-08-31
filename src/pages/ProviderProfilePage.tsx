@@ -135,19 +135,19 @@ const ProviderProfilePage = () => {
           </div>
         </div>
 
-        {/* Trust Signals Banner — tinted with provider colour */}
+        {/* Trust Signals Banner — solid provider colour so white heading remains readable */}
         <div
-          className="rounded-xl p-4 md:p-6 mb-6 md:mb-8 border shadow-[0_8px_30px_rgb(255,255,255,0.12)]"
+          className="rounded-xl p-4 md:p-6 mb-6 md:mb-8 border shadow-[0_8px_30px_rgba(255,255,255,0.2)]"
           style={brand ? {
-            backgroundColor: brand.primaryLight,
-            borderColor: `${brand.primary}33`,
+            backgroundColor: brand.primary,
+            borderColor: 'rgba(255,255,255,0.25)',
           } : {
-            backgroundColor: 'hsl(var(--primary) / 0.05)',
-            borderColor: 'hsl(var(--primary) / 0.2)',
+            backgroundColor: 'hsl(var(--primary))',
+            borderColor: 'rgba(255,255,255,0.25)',
           }}
         >
           <h2 className="font-semibold text-white mb-4 flex items-center gap-2">
-            <Shield className="w-5 h-5" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
+            <Shield className="w-5 h-5" style={{ color: '#ffffff' }} />
             Trust & Accreditation
           </h2>
           <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
@@ -159,7 +159,7 @@ const ProviderProfilePage = () => {
                 </div>
               </div>
               <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
-                <Building2 className="w-5 h-5 flex-shrink-0" style={brand ? { color: brand.primary } : { color: 'hsl(var(--primary))' }} />
+                <Building2 className="w-5 h-5 flex-shrink-0" style={brand ? { color: '#ffffff' } : { color: 'hsl(var(--primary))' }} />
                 <div>
                   <p className="text-sm font-medium">CQC Regulated</p>
                   <p className="text-xs text-muted-foreground">{provider.clinics || 'Registered clinics'}</p>
@@ -175,7 +175,7 @@ const ProviderProfilePage = () => {
               </div>
             )}
             <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
-              <Clock className="w-5 h-5 flex-shrink-0" style={brand ? { color: brand.primary } : { color: 'hsl(var(--secondary))' }} />
+              <Clock className="w-5 h-5 flex-shrink-0" style={brand ? { color: '#ffffff' } : { color: 'hsl(var(--secondary))' }} />
               <div>
                 <p className="text-sm font-medium">{provider.turnaroundTime || '2-5 days'}</p>
                 <p className="text-xs text-muted-foreground">Results turnaround</p>
