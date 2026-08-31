@@ -452,7 +452,7 @@ export default function FeaturedPartnerWheel({
             </div>
           </div>
         </div>
-      )}
+      ), document.body)}
     </div>
   );
 }
