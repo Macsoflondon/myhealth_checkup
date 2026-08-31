@@ -2623,6 +2623,24 @@ export type Database = {
           },
         ]
       }
+      known_scrape_junk_labels: {
+        Row: {
+          added_at: string
+          label: string
+          reason: string
+        }
+        Insert: {
+          added_at?: string
+          label: string
+          reason: string
+        }
+        Update: {
+          added_at?: string
+          label?: string
+          reason?: string
+        }
+        Relationships: []
+      }
       live_comparison_panels: {
         Row: {
           created_at: string
