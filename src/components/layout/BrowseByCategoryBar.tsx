@@ -185,11 +185,11 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const isFlush = variant === "flush";
   const useStraddle = isStraddle && Boolean(anchorEl);
   const straddlePositionClass = pinned
-    ? "fixed top-0 left-0 right-0 mx-2 sm:mx-3 lg:mx-4"
+    ? "fixed top-0 left-0 right-0 page-inset-x mx-2 sm:mx-3 lg:mx-4"
     : "absolute top-0 left-0 right-0 mx-2 sm:mx-3 lg:mx-4 -translate-y-1/2";
 
   const fallbackStraddleClass = stuck
-    ? "fixed top-0 left-0 right-0 mx-2 sm:mx-3 lg:mx-4"
+    ? "fixed top-0 left-0 right-0 page-inset-x mx-2 sm:mx-3 lg:mx-4"
     : "relative mt-4 mx-2 sm:mx-3 lg:mx-4";
   const wrapperClass = useStraddle
     ? straddlePositionClass
@@ -198,7 +198,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     : placement === "hero"
       ? `${
           heroPinned
-            ? `fixed inset-x-0 top-0 will-change-transform transition-[transform,opacity,box-shadow] duration-[260ms] ease-out motion-reduce:transition-none ${
+            ? `fixed inset-x-0 top-0 page-inset-x will-change-transform transition-[transform,opacity,box-shadow] duration-[260ms] ease-out motion-reduce:transition-none ${
                 pinEnter
                   ? "translate-y-0 opacity-100 shadow-[0_6px_20px_-8px_rgba(8,17,41,0.28)]"
                   : "-translate-y-full opacity-0 shadow-none motion-reduce:translate-y-0 motion-reduce:opacity-100"

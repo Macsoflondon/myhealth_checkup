@@ -1202,12 +1202,62 @@ html, body {
 :root {
   --gutter: 1rem;          /* mobile: 16px */
   --content-max: 1200px;
+  /* Breathing room between the browser edge and the page surface.
+     Mobile keeps the full width — insetting there only cramps the copy. */
+  --page-inset: 0px;
+  /* Distance over which the page surface feathers into the background. */
+  --edge-fade: 0px;
+  /* Usable page width once the inset is removed. */
+  --page-width: calc(100vw - (2 * var(--page-inset)));
 }
 @media (min-width: 640px) { :root { --gutter: 1.5rem; } }   /* 24px */
-@media (min-width: 1024px) { :root { --gutter: 2rem; } }    /* 32px */
+@media (min-width: 768px) {
+  :root { --page-inset: 1rem; --edge-fade: 48px; }
+}
+@media (min-width: 1024px) {
+  :root { --gutter: 2rem; --page-inset: 1.75rem; --edge-fade: 64px; }
+}
+@media (min-width: 1536px) {
+  :root { --page-inset: 2rem; }
+}
 
 /* Prevents any bleed band from creating horizontal scroll */
 html { overflow-x: clip; }
+
+/* The page surface: inset from the viewport, edges feathered into the
+   ambient background. No border, no radius, no shadow — the boundary is
+   perceived purely through the fade. */
+@utility page-surface {
+  padding-inline: var(--page-inset);
+}
+
+@utility page-surface-inner {
+  width: 100%;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--edge-fade),
+    #000 calc(100% - var(--edge-fade)),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    #000 var(--edge-fade),
+    #000 calc(100% - var(--edge-fade)),
+    transparent 100%
+  );
+}
+/* No fade below the tablet breakpoint — mobile stays edge to edge. */
+@media (max-width: 767.98px) {
+  .page-surface-inner { -webkit-mask-image: none; mask-image: none; }
+}
+
+/* Align a viewport-fixed element (pinned toolbar, sticky bars) with the
+   inset page surface instead of the raw browser edge. */
+@utility page-inset-x {
+  padding-inline: var(--page-inset);
+}
 
 @utility page-container {
   margin-inline: auto;
@@ -1216,12 +1266,12 @@ html { overflow-x: clip; }
   padding-inline: var(--gutter);
 }
 
-/* Band that must touch both viewport edges, whatever container it sits in.
-   Works nested at any depth and stays scrollbar-safe (100cqw/100vw fallback). */
+/* Band that must touch both edges of the page surface, whatever container it
+   sits in. Works nested at any depth and never overflows the inset. */
 @utility full-bleed {
-  width: 100vw;
-  max-width: 100vw;
-  margin-inline: calc(50% - 50vw);
+  width: var(--page-width);
+  max-width: var(--page-width);
+  margin-inline: calc(50% - (var(--page-width) / 2));
 }
 
 /* Re-apply the standard gutters to content inside a .full-bleed band */
@@ -1234,9 +1284,9 @@ html { overflow-x: clip; }
 
 /* Bleed only below the given breakpoint (mobile edge-to-edge, boxed above) */
 @utility full-bleed-mobile {
-  width: 100vw;
-  max-width: 100vw;
-  margin-inline: calc(50% - 50vw);
+  width: var(--page-width);
+  max-width: var(--page-width);
+  margin-inline: calc(50% - (var(--page-width) / 2));
 }
 @media (min-width: 768px) {
   .full-bleed-mobile { width: 100%; max-width: 100%; margin-inline: 0; }
