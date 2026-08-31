@@ -33,6 +33,12 @@ const STAGGER_MAX_MS = 4000;
 const RETRY_AFTER_CAP_MS = 5000;
 const RATE_LIMIT_FALLBACK_WAIT_MS = 2000;
 
+// Per-provider concurrency override. Most providers tolerate the default
+// pool size, but some (e.g. lola-health) reject any concurrent access.
+const PROVIDER_CONCURRENCY_OVERRIDES: Record<string, number> = {
+  "lola-health": 1,
+};
+
 interface TestRow {
   id: string;
   provider_id: string;
@@ -224,7 +230,8 @@ Deno.serve(async (req) => {
         else brokenCount++;
       }
     }
-    await Promise.all(Array.from({ length: PROVIDER_CONCURRENCY }, worker));
+    const poolSize = PROVIDER_CONCURRENCY_OVERRIDES[providerRows[0]?.provider_id ?? ""] ?? PROVIDER_CONCURRENCY;
+    await Promise.all(Array.from({ length: poolSize }, worker));
   }
 
   await Promise.all(Array.from(byProvider.values(), runProviderPool));
