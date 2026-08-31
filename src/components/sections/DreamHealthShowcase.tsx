@@ -34,6 +34,45 @@ const cleanName = (name: string) =>
     .replace(/\s*\| Book Online today$/i, "")
     .trim();
 
+/** Short, factual sample-method label for the compact card chips. */
+const sampleLabel = (t: PopularTest): string | null => {
+  const raw = (t.sample_type || "").trim();
+  if (!raw) return null;
+  const s = raw.toLowerCase();
+  if (s.includes("finger")) return "Finger-prick sample";
+  if (s.includes("venous")) return "Venous blood sample";
+  if (s.includes("saliva")) return "Saliva sample";
+  if (s.includes("urine")) return "Urine sample";
+  if (s.includes("stool") || s.includes("faecal") || s.includes("fecal"))
+    return "Stool sample";
+  return raw;
+};
+
+/** Turnaround text with non-guaranteed wording (compliance standard). */
+const turnaroundLabel = (t: PopularTest): string | null => {
+  const raw = t.turnaround_days_text?.trim();
+  if (!raw) return null;
+  return /typically|estimated|up to|~/i.test(raw) ? raw : `typically ${raw}`;
+};
+
+const markerName = (m: unknown): string =>
+  typeof m === "string" ? m : ((m as { value?: string } | null)?.value ?? "");
+
+/** Never render an empty paragraph — compose a factual line when the
+ *  provider feed has no description (e.g. Medichecks single-marker tests). */
+const descriptionFor = (t: PopularTest): string => {
+  const d = t.description?.trim();
+  if (d) return d;
+  const markers = Array.isArray(t.markers) ? t.markers : [];
+  if (t.biomarker_count === 1 && markers.length) {
+    return `Single-biomarker test — ${markerName(markers[0])}.`;
+  }
+  if (typeof t.biomarker_count === "number" && t.biomarker_count > 1) {
+    return `${t.biomarker_count}-biomarker panel.`;
+  }
+  return "See the provider page for full test details.";
+};
+
 const PLACEHOLDER_PATTERNS = [
   /\/kits\/kit-(navy|turquoise|pink|black|white|coral)\.jpg$/i,
   /lovableproject\.com\/lovable-uploads\//i,
@@ -259,7 +298,7 @@ const DreamHealthShowcase = () => {
       </div>
 
       {/* Carousel filmstrip — same mixed-provider set as the grid below */}
-      <div className="relative mt-10 sm:mt-14">
+      <div className="relative mt-8 sm:mt-10">
         <div
           className="relative overflow-hidden"
           style={{
