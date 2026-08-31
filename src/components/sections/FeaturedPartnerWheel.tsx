@@ -676,10 +676,11 @@ export default function FeaturedPartnerWheel({
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          backgroundColor: "#081129",
+          backgroundColor: "#ffffff",
         }}
       >
-        <EyebrowBadge label={eyebrow} size="md" tone="onDark" />
+        <EyebrowBadge label={eyebrow} size="md" tone="onLight" />
+
 
         <h2
           style={{
@@ -688,7 +689,8 @@ export default function FeaturedPartnerWheel({
             fontWeight: 600,
             fontSize: 60,
             lineHeight: 1.04,
-            color: "#f7f7f8",
+            color: "#081129",
+
             textAlign: "center",
             letterSpacing: "-.01em",
           }}
@@ -792,7 +794,7 @@ export default function FeaturedPartnerWheel({
                       fontSize: 13.5,
                       lineHeight: 1.2,
                       letterSpacing: ".01em",
-                      color: on ? "#22C0D4" : "#cfe9ee",
+                      color: on ? "#22C0D4" : "#081129",
                       transition: "color .2s",
                       pointerEvents: "none",
                     }}
@@ -925,7 +927,7 @@ export default function FeaturedPartnerWheel({
               fontWeight: 500,
               fontSize: "clamp(18px, 4.5vw, 23px)",
               lineHeight: 1.4,
-              color: "#f7f7f8",
+              color: "#081129",
             }}
           >
             {blurbItalic}
@@ -935,7 +937,7 @@ export default function FeaturedPartnerWheel({
               margin: "14px 0 0",
               fontSize: "clamp(14px, 3.6vw, 15.5px)",
               lineHeight: 1.6,
-              color: "#d1d5db",
+              color: "rgba(8,17,41,0.72)",
             }}
           >
             {blurb}
@@ -979,9 +981,10 @@ export default function FeaturedPartnerWheel({
                 fontSize: 14,
                 padding: "13px 26px",
                 borderRadius: 999,
-                border: "1px solid #d4dbe4",
-                background: "#fff",
+                border: "1px solid #081129",
+                background: "transparent",
                 color: "#081129",
+
                 cursor: "pointer",
                 whiteSpace: "nowrap",
               }}
