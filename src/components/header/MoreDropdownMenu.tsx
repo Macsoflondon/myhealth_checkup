@@ -1,12 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "@/lib/router-compat";
-import { X, LayoutDashboard, LogOut, User, ChevronDown } from "lucide-react";
+import { X, ChevronDown, User, LayoutDashboard, LogOut } from "lucide-react";
 import { useDropdownAccessibility } from "@/hooks/useDropdownAccessibility";
 import { useActiveLanguage } from "@/components/header/LanguageSwitcher";
+import { menuIconFor, MENU_PINK } from "@/components/header/menuIcons";
+
+interface MoreDropdownItem {
+  name: string;
+  path: string;
+  hasDropdown?: boolean;
+  dropdownItems?: Array<{ name: string; path: string }>;
+}
 
 interface MoreDropdownSection {
   title: string;
-  items: Array<{ name: string; path: string }>;
+  items: MoreDropdownItem[];
 }
 
 interface AccountItem {
@@ -31,6 +39,11 @@ const accountIcon = (name: string) => {
   return null;
 };
 
+/**
+ * Desktop "More" panel — visually identical to the mobile hamburger drawer:
+ * off-white surface, uppercase section labels, white pill cards with tinted
+ * icon chips. Anchored under the More button instead of a side drawer.
+ */
 export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
   sections,
   onItemClick,
@@ -42,6 +55,7 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
   const navigate = useNavigate();
   const currentLanguage = useActiveLanguage();
   const [langOpen, setLangOpen] = useState(false);
+  const [expandedItem, setExpandedItem] = useState<string | null>(null);
 
   // Accessibility hook for focus trapping and arrow key navigation
   const { containerRef } = useDropdownAccessibility({
@@ -74,7 +88,7 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
       aria-label="More options dropdown menu"
       onClick={(e) => e.stopPropagation()}
       onTouchStart={(e) => e.stopPropagation()}
-      className={`dropdown-content absolute top-full right-0 mt-2 bg-white border border-brand-navy rounded-lg shadow-2xl min-w-[320px] overflow-y-auto ${
+      className={`dropdown-content absolute top-full right-0 mt-2 bg-[#f7f7f8] border border-[#081129] rounded-lg shadow-2xl w-[340px] overflow-y-auto ${
         isMobile ? "max-h-[60vh]" : "max-h-[75vh]"
       }`}
       style={{
@@ -84,110 +98,149 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
         WebkitOverflowScrolling: "touch",
       }}
     >
-      <div className="p-5">
-        {/* Header with Close Button */}
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-bold text-brand-navy dark:text-gray-100">
-            More
-          </h2>
-          <button
-            onClick={onClose}
-            className="p-1.5 rounded-md text-brand-navy hover:text-brand-navy dark:text-brand-navy dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-            aria-label="Close dropdown"
-          >
-            <X className="w-4 h-4" />
-          </button>
-        </div>
+      {/* Header — matches the drawer's sheet header */}
+      <div className="flex items-center justify-between px-4 py-4 border-b border-[#081129]/10">
+        <h2 className="text-[#081129] text-base font-[Montserrat] font-semibold">
+          More
+        </h2>
+        <button
+          onClick={onClose}
+          className="p-1.5 rounded-full text-[#081129] hover:bg-[#081129]/5 transition-colors"
+          aria-label="Close dropdown"
+        >
+          <X className="w-4 h-4" />
+        </button>
+      </div>
 
-        {/* Pill row: language flag chip + account pills */}
-        {(languageList || (accountItems && accountItems.length > 0)) && (
-          <div className="mb-4">
-            <div className="flex items-center gap-2.5 flex-wrap">
-              {languageList && (
-                <button
-                  type="button"
-                  onClick={() => setLangOpen((v) => !v)}
-                  aria-expanded={langOpen}
-                  aria-label="Select language"
-                  className="inline-flex items-center gap-1 rounded-xl border-[1.5px] border-[#e70d69] bg-white px-2.5 py-2 transition-colors hover:bg-[#e70d69]/5"
-                >
-                  <span className="text-[16px] leading-none">
-                    {currentLanguage.flag}
-                  </span>
-                  <ChevronDown
-                    className={`w-3.5 h-3.5 text-[#e70d69] transition-transform duration-200 ${langOpen ? "rotate-180" : ""}`}
-                  />
-                </button>
-              )}
-              {accountItems?.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.path}
-                  className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-[#e70d69] bg-white px-4 py-2 no-underline transition-colors hover:bg-[#e70d69] group/acct"
-                  onClick={(e) => {
-                    if (item.onClick) {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      item.onClick();
-                    } else {
-                      handleLinkClick(e, item.path);
-                    }
-                  }}
-                >
-                  <span className="text-[#081129] group-hover/acct:text-white transition-colors [&>svg]:w-4 [&>svg]:h-4">
-                    {accountIcon(item.name)}
-                  </span>
-                  <span className="text-[12.5px] font-semibold font-[Montserrat] text-[#081129] group-hover/acct:text-white transition-colors whitespace-nowrap">
-                    {item.name}
-                  </span>
-                </a>
-              ))}
-            </div>
-
-            {languageList && langOpen && (
-              <div className="mt-3 rounded-xl border border-[#081129]/10 bg-[#f7f7f8] p-2 max-h-[280px] overflow-y-auto">
-                {languageList}
+      <nav className="px-3 py-4">
+        <div className="space-y-6">
+          {/* Account + language — pill row kept at the top like the drawer */}
+          {(languageList || (accountItems && accountItems.length > 0)) && (
+            <div>
+              <div className="flex items-center gap-2 flex-wrap px-1">
+                {languageList && (
+                  <button
+                    type="button"
+                    onClick={() => setLangOpen((v) => !v)}
+                    aria-expanded={langOpen}
+                    aria-label="Select language"
+                    className="inline-flex items-center gap-1 rounded-full border-[1.5px] border-[#e70d69] bg-white px-2.5 py-2 transition-colors hover:bg-[#e70d69]/5"
+                  >
+                    <span className="text-[16px] leading-none">
+                      {currentLanguage.flag}
+                    </span>
+                    <ChevronDown
+                      className={`w-3.5 h-3.5 text-[#e70d69] transition-transform duration-200 ${langOpen ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                )}
+                {accountItems?.map((item) => (
+                  <a
+                    key={item.name}
+                    href={item.path}
+                    className="inline-flex items-center gap-1.5 rounded-full border-[1.5px] border-[#e70d69] bg-white px-4 py-2 no-underline transition-colors hover:bg-[#e70d69] group/acct"
+                    onClick={(e) => {
+                      if (item.onClick) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        item.onClick();
+                      } else {
+                        handleLinkClick(e, item.path);
+                      }
+                    }}
+                  >
+                    <span className="text-[#081129] group-hover/acct:text-white transition-colors [&>svg]:w-4 [&>svg]:h-4">
+                      {accountIcon(item.name)}
+                    </span>
+                    <span className="text-[12.5px] font-semibold font-[Montserrat] text-[#081129] group-hover/acct:text-white transition-colors whitespace-nowrap">
+                      {item.name}
+                    </span>
+                  </a>
+                ))}
               </div>
-            )}
 
-            {sections.length > 0 && (
-              <div className="border-t border-brand-navy dark:border-gray-700 mt-4" />
-            )}
-          </div>
-        )}
+              {languageList && langOpen && (
+                <div className="mt-3 rounded-xl border border-[#081129]/10 bg-white p-2 max-h-[280px] overflow-y-auto">
+                  {languageList}
+                </div>
+              )}
+            </div>
+          )}
 
-        {sections.map((section, sectionIndex) => (
-          <div key={section.title}>
-            {/* Section Heading */}
-            <div className="mb-3">
-              <h3 className="text-xs font-bold text-brand-navy dark:text-brand-navy uppercase tracking-wider">
+          {sections.map((section) => (
+            <div key={section.title}>
+              <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/40 mb-3">
                 {section.title}
               </h3>
+              <div className="grid grid-cols-1 gap-2">
+                {section.items.map((item) => {
+                  const { Icon, color } = menuIconFor(item.name);
+                  const hasSubs = Boolean(item.hasDropdown && item.dropdownItems?.length);
+                  const isExpanded = expandedItem === item.name;
+                  return (
+                    <div
+                      key={item.path + item.name}
+                      className="rounded-xl bg-white border-[1.5px] border-[#081129]/10 overflow-hidden"
+                    >
+                      <div className="flex items-stretch">
+                        <a
+                          href={item.path}
+                          onClick={(e) => handleLinkClick(e, item.path)}
+                          className="group flex items-center gap-3 px-3 py-2.5 flex-1 min-w-0 no-underline"
+                        >
+                          <span
+                            className="w-8 h-8 rounded-full inline-flex items-center justify-center shrink-0"
+                            style={{ background: `${color}1a` }}
+                          >
+                            <Icon className="w-4 h-4" style={{ color }} strokeWidth={2} />
+                          </span>
+                          <span className="text-sm font-semibold text-[#081129] font-[Montserrat] truncate">
+                            {item.name}
+                          </span>
+                        </a>
+                        {hasSubs && (
+                          <button
+                            type="button"
+                            aria-expanded={isExpanded}
+                            aria-label={`Expand ${item.name}`}
+                            onClick={() =>
+                              setExpandedItem((cur) => (cur === item.name ? null : item.name))
+                            }
+                            className="shrink-0 px-3 flex items-center justify-center border-l border-[#081129]/10 text-[#081129]/60"
+                          >
+                            <ChevronDown
+                              className={`w-4 h-4 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                            />
+                          </button>
+                        )}
+                      </div>
+                      {hasSubs && isExpanded && (
+                        <ul className="border-t border-[#081129]/10 bg-[#f7f7f8] py-1">
+                          {item.dropdownItems!.map((sub) => (
+                            <li key={sub.path + sub.name}>
+                              <a
+                                href={sub.path}
+                                onClick={(e) => handleLinkClick(e, sub.path)}
+                                className="flex items-center gap-2.5 pl-14 pr-3 py-2 text-[13px] font-medium text-[#081129] font-[Montserrat] no-underline hover:bg-white transition-colors"
+                              >
+                                <span
+                                  className="w-1.5 h-1.5 rounded-full shrink-0"
+                                  style={{ background: color }}
+                                />
+                                <span className="truncate">{sub.name}</span>
+                              </a>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-
-            {/* Section Items */}
-            <div className="grid grid-cols-1 gap-1.5 mb-4">
-              {section.items.map((item) => (
-                <a
-                  key={item.path}
-                  href={item.path}
-                  className="state-layer block p-2.5 rounded-lg transition-shadow border border-transparent hover:border-brand-navy dark:hover:border-gray-700 cursor-pointer"
-                  onClick={(e) => handleLinkClick(e, item.path)}
-                >
-                  <span className="text-sm font-medium text-brand-navy dark:text-gray-100 hover:text-brand-pink dark:hover:text-brand-pink transition-colors">
-                    {item.name}
-                  </span>
-                </a>
-              ))}
-            </div>
-
-            {/* Divider between sections (except last) */}
-            {sectionIndex < sections.length - 1 && (
-              <div className="border-t border-brand-navy dark:border-gray-700 mb-4" />
-            )}
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </nav>
     </div>
   );
 };
