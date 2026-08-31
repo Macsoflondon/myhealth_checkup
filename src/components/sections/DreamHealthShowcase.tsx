@@ -68,7 +68,8 @@ const markerName = (m: unknown): string =>
  *  panels also name the biomarkers they actually measure. */
 const descriptionFor = (t: PopularTest): string => {
   const provided = t.description?.trim();
-  if (provided) return provided;
+  if (provided && !isGenericDescription(provided)) return provided;
+
 
   const markers = (Array.isArray(t.markers) ? t.markers : [])
     .map(markerName)
