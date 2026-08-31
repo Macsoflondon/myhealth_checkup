@@ -3,10 +3,7 @@ import { Link } from "@/lib/router-compat";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { SaveProviderButton } from "@/components/common/SaveProviderButton";
 import { useSavedProviders } from "@/hooks/useSavedProviders";
-import {
-  getProviderRoute,
-  getProviderProfileRoute,
-} from "@/utils/providerRoutes";
+import { getProviderProfileRoute } from "@/utils/providerRoutes";
 import {
   buildProviderWebsiteUrl,
   externalLinkProps,
