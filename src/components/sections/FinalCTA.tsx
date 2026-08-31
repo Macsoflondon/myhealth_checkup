@@ -6,7 +6,7 @@ import { Link } from "@/lib/router-compat";
 
 const FinalCTA = () => {
   return (
-    <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14 bg-white border-t border-gray-200">
+    <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14 bg-white border-t border-brand-navy">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="max-w-3xl mx-auto text-center">
           <EyebrowBadge label="Start Your Journey" size="sm" tone="onLight" className="mb-4 sm:mb-6" />
@@ -18,7 +18,7 @@ const FinalCTA = () => {
             className="mb-4 sm:mb-6"
           />
 
-          <p className="text-gray-600 font-sans text-sm sm:text-base md:text-lg mb-8 sm:mb-10 max-w-2xl mx-auto px-2">
+          <p className="text-brand-navy font-sans text-sm sm:text-base md:text-lg mb-8 sm:mb-10 max-w-2xl mx-auto px-2">
             Your health is your greatest asset. Compare trusted tests, find the right provider, and book with confidence.
           </p>
 
@@ -45,7 +45,7 @@ const FinalCTA = () => {
           </div>
 
           {/* Trust Points */}
-          <p className="text-gray-500 font-sans text-sm">
+          <p className="text-brand-navy font-sans text-sm">
             Free to use • No registration required • Fully independent
           </p>
         </div>

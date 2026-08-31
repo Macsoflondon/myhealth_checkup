@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { isJunkTestName } from "@/utils/is-junk-test-name";
 
 export interface AtHomeTest {
   id: string;
@@ -25,29 +26,21 @@ export interface AtHomeTest {
   collection_options: Record<string, unknown> | null;
 }
 
-/**
- * Names that indicate a scraped HTTP error page rather than a real product.
- * Belt-and-braces: the scrape layer rejects these, this keeps any legacy rows
- * out of the customer-facing listing.
- */
-const isJunkTestName = (name: string): boolean =>
-  /^\s*(\d{3}\b|error\b|(page\s+)?not\s+found\b|access denied|forbidden|just a moment)/i.test(
-    name.trim()
-  ) || name.trim().length < 3;
-
 export const useAtHomeTests = (category?: string, search?: string) => {
   return useQuery({
     queryKey: ["at-home-tests", category, search],
     queryFn: async () => {
       let query = supabase
         .from("provider_tests")
-        .select(`
+        .select(
+          `
           id, provider_id, test_name, category, canonical_category, price, sample_type,
           turnaround_days_text, biomarker_count, biomarkers_list,
           description, who_should_test, symptoms, conditions, url, image_url,
           home_kit_available, clinic_visit_available, is_popular, is_addon,
           collection_options
-        `)
+        `,
+        )
         .eq("is_active", true)
         .eq("home_kit_available", true)
         .eq("is_addon", false)
@@ -62,7 +55,9 @@ export const useAtHomeTests = (category?: string, search?: string) => {
       }
 
       if (search && search.trim()) {
-        query = query.or(`test_name.ilike.%${search.trim()}%,description.ilike.%${search.trim()}%`);
+        query = query.or(
+          `test_name.ilike.%${search.trim()}%,description.ilike.%${search.trim()}%`,
+        );
       }
 
       const { data, error } = await query;
@@ -73,7 +68,6 @@ export const useAtHomeTests = (category?: string, search?: string) => {
     staleTime: 5 * 60 * 1000,
   });
 };
-
 
 export const useAtHomeCategories = () => {
   return useQuery({
@@ -89,7 +83,9 @@ export const useAtHomeCategories = () => {
         .not("price", "is", null)
         .gt("price", 0);
       if (error) throw error;
-      const cats = Array.from(new Set((data || []).map((r) => r.category).filter(Boolean))).sort();
+      const cats = Array.from(
+        new Set((data || []).map((r) => r.category).filter(Boolean)),
+      ).sort();
       return ["All", ...cats];
     },
     staleTime: 10 * 60 * 1000,

@@ -20,7 +20,7 @@ const BenefitCard = ({
   isActive,
   onClick
 }: BenefitCardProps) => {
-  return <Card className={`cursor-pointer transition-all duration-300 transform hover:scale-105 ${isActive ? `border-2 ${color} shadow-lg` : 'border border-gray-200 hover:shadow-md'}`} onClick={onClick}>
+  return <Card className={`cursor-pointer transition-all duration-300 transform hover:scale-105 ${isActive ? `border-2 ${color} shadow-lg` : 'border border-brand-navy hover:shadow-md'}`} onClick={onClick}>
       <CardContent className="p-6 text-center">
         <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${isActive ? color.replace('border-', 'bg-').replace('-500', '-100') : 'bg-gray-100'}`}>
           {icon}
@@ -29,7 +29,7 @@ const BenefitCard = ({
         <div className={`text-3xl font-bold mb-3 ${color.replace('border-', 'text-')}`}>
           {statistic}
         </div>
-        <p className="text-gray-600 text-sm leading-relaxed">{description}</p>
+        <p className="text-brand-navy text-sm leading-relaxed">{description}</p>
       </CardContent>
     </Card>;
 };

@@ -35,7 +35,7 @@ const severityStyle: Record<Severity, string> = {
   critical: "bg-red-600 text-white border-red-700",
   high: "bg-orange-500 text-white border-orange-600",
   medium: "bg-amber-400 text-black border-amber-500",
-  low: "bg-slate-300 text-black border-slate-400",
+  low: "bg-slate-300 text-black border-brand-navy",
 };
 
 const errorTypeToSeverity = (t: string | null): Severity => {
@@ -284,7 +284,7 @@ export function ClinicalSafetyDashboard() {
           </CardContent>
         </Card>
 
-        <Card className={globalFreeze ? "border-slate-300" : "border-red-300"}>
+        <Card className={globalFreeze ? "border-brand-navy" : "border-red-300"}>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
               <AlertTriangle className="h-4 w-4 text-red-600" /> Emergency override

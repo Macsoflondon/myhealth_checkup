@@ -319,12 +319,12 @@ const HoverTooltip = ({ kit }: { kit: Kit }) => (
           <div className="font-bold text-sm truncate" style={{ color: kit.accent }}>{kit.name}</div>
           <div className="font-bold text-lg text-[#081129]">{kit.price}</div>
         </div>
-        <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-gray-600">
+        <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-brand-navy">
           <span className="inline-flex items-center gap-1"><Clock size={11} />{kit.turnaround}</span>
           <span className="inline-flex items-center gap-1"><Beaker size={11} />{kit.biomarkers}</span>
           <span className="inline-flex items-center gap-1"><MapPin size={11} />{kit.collection}</span>
         </div>
-        <div className="mt-1 text-[11px] text-gray-700 line-clamp-1">{kit.about}</div>
+        <div className="mt-1 text-[11px] text-brand-navy line-clamp-1">{kit.about}</div>
       </div>
     </div>
   </div>
@@ -393,7 +393,7 @@ const KitModal = ({ kit, onClose }: { kit: Kit; onClose: () => void }) => {
         <button
           onClick={onClose}
           aria-label="Close"
-          className="absolute top-4 right-4 w-9 h-9 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-500"
+          className="absolute top-4 right-4 w-9 h-9 rounded-full hover:bg-gray-100 flex items-center justify-center text-brand-navy"
         >
           <X size={20} />
         </button>
@@ -409,7 +409,7 @@ const KitModal = ({ kit, onClose }: { kit: Kit; onClose: () => void }) => {
           {kit.price}
         </div>
 
-        <p className="mt-4 text-sm text-gray-700 leading-relaxed">{kit.about}</p>
+        <p className="mt-4 text-sm text-brand-navy leading-relaxed">{kit.about}</p>
 
         <div className="mt-5 space-y-2.5 border-t border-gray-100 pt-4">
           <Row icon={<Beaker size={16} />} label="Biomarkers" value={kit.biomarkers} />
@@ -434,9 +434,9 @@ const KitModal = ({ kit, onClose }: { kit: Kit; onClose: () => void }) => {
 
 const Row = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
   <div className="flex items-start gap-3 text-sm">
-    <div className="mt-0.5 text-gray-400">{icon}</div>
+    <div className="mt-0.5 text-brand-navy">{icon}</div>
     <div className="flex-1">
-      <div className="text-[11px] uppercase tracking-wider text-gray-500 font-semibold">{label}</div>
+      <div className="text-[11px] uppercase tracking-wider text-brand-navy font-semibold">{label}</div>
       <div className="text-[#081129]">{value}</div>
     </div>
   </div>

@@ -51,7 +51,7 @@ export const ProviderLogo = ({ provider, className = "h-20 w-auto", priority = f
   if (!logoSrc) {
     return (
       <div className={`flex items-center justify-center bg-gray-100 rounded ${className}`}>
-        <span className="text-sm font-medium text-gray-600">{provider}</span>
+        <span className="text-sm font-medium text-brand-navy">{provider}</span>
       </div>
     );
   }

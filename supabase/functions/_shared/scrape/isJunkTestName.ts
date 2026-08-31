@@ -14,6 +14,11 @@ const JUNK_PATTERNS: RegExp[] = [
   /security\s+check/i,
   /site\s+(is\s+)?(unavailable|maintenance)/i,
   /^\s*untitled\s*$/i,
+  /gift\s*card|e-?gift|e-?voucher|voucher/i,
+  /collection method|nurse[- ]?visit|home phlebotomy visit/i,
+  /visit a .*partner clinic|phlebotomy\s*\([^)]*\)\s*at clinic/i,
+  /standalone collection kit|biological kit/i,
+  /\bflu vaccin(?:e|ation)\b|\bhpv vaccin(?:e|ation)\b/i,
 ];
 
 export function isJunkTestName(name: string | null | undefined): boolean {

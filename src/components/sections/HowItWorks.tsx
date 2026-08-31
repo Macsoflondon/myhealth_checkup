@@ -34,7 +34,7 @@ const HowItWorks = () => {
             description: "Receive results securely within 3-5 days",
             icon: Award
           }].map((item, index) => (
-            <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow bg-white border-gray-200">
+            <Card key={index} className="text-center p-6 hover:shadow-lg transition-shadow bg-white border-brand-navy">
               <div className="relative mb-4">
                 <div className="w-12 h-12 bg-[hsl(var(--accent))] rounded-full flex items-center justify-center mx-auto mb-3">
                   <item.icon className="h-6 w-6 text-white" />
@@ -46,7 +46,7 @@ const HowItWorks = () => {
               <h3 className="text-lg font-bold text-[hsl(var(--navy))] mb-2">
                 {item.title}
               </h3>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-brand-navy">
                 {item.description}
               </p>
             </Card>

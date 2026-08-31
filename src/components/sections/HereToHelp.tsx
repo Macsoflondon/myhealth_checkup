@@ -54,7 +54,7 @@ const HereToHelp = () => {
                 className="lg:text-left lg:[&>h2]:text-left"
               />
 
-              <p className="text-gray-600 font-sans text-sm sm:text-base md:text-lg max-w-lg mt-4 text-center lg:text-left mx-auto lg:mx-0">
+              <p className="text-brand-navy font-sans text-sm sm:text-base md:text-lg max-w-lg mt-4 text-center lg:text-left mx-auto lg:mx-0">
                 Whether you're testing for the first time or proactively monitoring your health, we're here to support you every step of the way.
               </p>
             </div>
@@ -86,7 +86,7 @@ const HereToHelp = () => {
                     <h3 className="text-base sm:text-lg font-heading font-semibold text-brand-navy mb-1">
                       {resource.title}
                     </h3>
-                    <p className="text-gray-600 font-sans text-xs sm:text-sm leading-relaxed">
+                    <p className="text-brand-navy font-sans text-xs sm:text-sm leading-relaxed">
                       {resource.description}
                     </p>
                   </div>

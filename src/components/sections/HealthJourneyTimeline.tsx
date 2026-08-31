@@ -66,7 +66,7 @@ const HealthJourneyTimeline = () => {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#081129] mb-4">
             Your Health Journey <span className="text-[#e70d69]">Simplified</span>
           </h2>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-lg sm:text-xl text-brand-navy max-w-3xl mx-auto">
             From booking to results, we make private health testing seamless and stress-free
           </p>
         </div>
@@ -101,13 +101,13 @@ const HealthJourneyTimeline = () => {
 
                     {/* Content */}
                     <div className="space-y-2">
-                      <div className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                      <div className="text-sm font-semibold text-brand-navy uppercase tracking-wider">
                         {step.title}
                       </div>
                       <h3 className="text-xl font-bold text-[#081129]">
                         {step.subtitle}
                       </h3>
-                      <p className="text-gray-600 text-sm leading-relaxed">
+                      <p className="text-brand-navy text-sm leading-relaxed">
                         {step.description}
                       </p>
                       <div className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${step.bgColor} ${step.color}`}>
@@ -125,19 +125,19 @@ const HealthJourneyTimeline = () => {
         <div className="mt-12 sm:mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           <div className="text-center p-6 bg-white rounded-xl shadow-md">
             <div className="text-3xl sm:text-4xl font-bold text-[#22c0d4] mb-2">95%</div>
-            <div className="text-sm text-gray-600">Feel more in control of their health</div>
+            <div className="text-sm text-brand-navy">Feel more in control of their health</div>
           </div>
           <div className="text-center p-6 bg-white rounded-xl shadow-md">
             <div className="text-3xl sm:text-4xl font-bold text-[#e70d69] mb-2">2-5</div>
-            <div className="text-sm text-gray-600">Days for most results</div>
+            <div className="text-sm text-brand-navy">Days for most results</div>
           </div>
           <div className="text-center p-6 bg-white rounded-xl shadow-md">
             <div className="text-3xl sm:text-4xl font-bold text-[#22c0d4] mb-2">100+</div>
-            <div className="text-sm text-gray-600">Tests available nationwide</div>
+            <div className="text-sm text-brand-navy">Tests available nationwide</div>
           </div>
           <div className="text-center p-6 bg-white rounded-xl shadow-md">
             <div className="text-3xl sm:text-4xl font-bold text-[#e70d69] mb-2">24/7</div>
-            <div className="text-sm text-gray-600">Online booking available</div>
+            <div className="text-sm text-brand-navy">Online booking available</div>
           </div>
         </div>
       </div>

@@ -285,13 +285,13 @@ html, body {
     --error-foreground: 0 0% 100%;
     --error-container: 0 100% 93%;
     --background: 220 5% 97%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 224 67% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 224 67% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 224 67% 10%;
 
     --primary: 187 72% 48%;
     --primary-foreground: 0 0% 100%;
@@ -301,7 +301,7 @@ html, body {
 
     --muted: 220 15% 95%;
     /* WCAG AA: #4A5568 (5.1:1 on white) - upgraded from 220 10% 45% (~4.4:1, borderline fail) */
-    --muted-foreground: 218 17% 35%;
+    --muted-foreground: 224 67% 10%;
 
     --accent: 335 89% 48%;
     --accent-foreground: 0 0% 100%;
@@ -354,9 +354,9 @@ html, body {
     --text-charcoal: 240 26% 14%;          /* #1A1A2E — primary text on warm surfaces */
     --text-warm-grey: 220 9% 46%;          /* #6B7280 — secondary text */
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 224 67% 10%;
+    --input: 224 67% 10%;
+    --ring: 224 67% 10%;
 
     --radius: 0.75rem; /* 12px — moderate clinical rounding */
 

@@ -153,7 +153,7 @@ export default function DiagnosticTestComparison() {
 
   if (isLoading)
     return (
-      <div className="flex items-center justify-center gap-3 py-24 text-slate-500">
+      <div className="flex items-center justify-center gap-3 py-24 text-brand-navy">
         <Loader2 className="h-5 w-5 animate-spin" /> Loading unified catalogue…
       </div>
     );
@@ -168,10 +168,10 @@ export default function DiagnosticTestComparison() {
     );
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-8 text-slate-800">
+    <div className="mx-auto max-w-7xl px-4 py-8 text-brand-navy">
       <header className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Diagnostic test comparison</h1>
-        <p className="mt-1 max-w-2xl text-sm text-slate-500">
+        <h1 className="text-2xl font-bold tracking-tight text-brand-navy">Diagnostic test comparison</h1>
+        <p className="mt-1 max-w-2xl text-sm text-brand-navy">
           Unified, live catalogue across every platform provider — one normalised source, primary
           category plus a body-system lens.
         </p>
@@ -184,12 +184,12 @@ export default function DiagnosticTestComparison() {
 
       <div className="mb-6 flex flex-wrap items-center gap-3">
         <div className="relative min-w-[220px] flex-1">
-          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-brand-navy" />
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search tests or providers…"
-            className="w-full rounded-lg border border-slate-200 bg-white py-2 pl-9 pr-3 text-sm outline-hidden focus:border-slate-400"
+            className="w-full rounded-lg border border-brand-navy bg-white py-2 pl-9 pr-3 text-sm outline-hidden focus:border-brand-navy"
           />
         </div>
         <SelectFilter value={system} onChange={setSystem} label="System"
@@ -202,21 +202,21 @@ export default function DiagnosticTestComparison() {
         <div className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {systems.map((s) => (
             <button key={s.name} onClick={() => setSystem(s.name)}
-              className="flex flex-col items-start rounded-xl border border-slate-200 bg-white p-4 text-left transition hover:border-slate-400 hover:shadow-xs">
-              <span className="text-sm font-semibold text-slate-900">{s.name}</span>
-              <span className="mt-1 whitespace-nowrap text-xs text-slate-500">{s.n} tests · {s.providers} providers</span>
-              <span className="mt-2 text-xs font-medium text-slate-700">{formatPrice(s.min)}–{formatPrice(s.max)}</span>
+              className="flex flex-col items-start rounded-xl border border-brand-navy bg-white p-4 text-left transition hover:border-brand-navy hover:shadow-xs">
+              <span className="text-sm font-semibold text-brand-navy">{s.name}</span>
+              <span className="mt-1 whitespace-nowrap text-xs text-brand-navy">{s.n} tests · {s.providers} providers</span>
+              <span className="mt-2 text-xs font-medium text-brand-navy">{formatPrice(s.min)}–{formatPrice(s.max)}</span>
             </button>
           ))}
         </div>
       )}
 
-      <div className="mb-6 overflow-hidden rounded-xl border border-slate-200 bg-white">
-        <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-          <span className="text-sm font-medium text-slate-600">
+      <div className="mb-6 overflow-hidden rounded-xl border border-brand-navy bg-white">
+        <div className="flex items-center justify-between border-b border-brand-navy px-4 py-3">
+          <span className="text-sm font-medium text-brand-navy">
             {filtered.length} {filtered.length === 1 ? "test" : "tests"}{system !== "all" ? ` · ${system}` : ""}
           </span>
-          <span className="text-xs text-slate-400">Pick up to {MAX_COMPARE} to compare</span>
+          <span className="text-xs text-brand-navy">Pick up to {MAX_COMPARE} to compare</span>
         </div>
         <ul className="divide-y divide-slate-100">
           {filtered.slice(0, 200).map((t) => {
@@ -228,10 +228,10 @@ export default function DiagnosticTestComparison() {
                   style={{ background: colorFor(t.provider_name) }}>{initials(t.provider_name)}</span>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="truncate text-sm font-semibold text-slate-900">{t.test_name}</span>
+                    <span className="truncate text-sm font-semibold text-brand-navy">{t.test_name}</span>
                     {t.is_popular && <span className="rounded bg-amber-100 px-1.5 py-0.5 text-[10px] font-semibold text-amber-700">Popular</span>}
                   </div>
-                  <div className="mt-0.5 text-xs text-slate-500">
+                  <div className="mt-0.5 text-xs text-brand-navy">
                     {t.provider_name} · {t.biomarker_count ? `${t.biomarker_count} biomarkers` : DASH} ·{" "}
                     {t.sample_type ? SAMPLE_TYPE_LABELS[t.sample_type] : "Not specified"}
                   </div>
@@ -240,8 +240,8 @@ export default function DiagnosticTestComparison() {
                 <button onClick={() => toggle(t.id)} disabled={full}
                   className={"flex-none rounded-lg border px-2.5 py-1.5 text-xs font-medium transition " +
                     (on ? "border-rose-200 bg-rose-50 text-rose-600"
-                      : full ? "cursor-not-allowed border-slate-100 text-slate-300"
-                      : "border-slate-200 text-slate-600 hover:border-slate-400")}>
+                      : full ? "cursor-not-allowed border-brand-navy text-slate-300"
+                      : "border-brand-navy text-brand-navy hover:border-brand-navy")}>
                   {on ? "Remove" : "Compare"}
                 </button>
               </li>
@@ -261,9 +261,9 @@ export default function DiagnosticTestComparison() {
 function Stat({ value, label, icon }: { value: number; label: string; icon: React.ReactNode }) {
   return (
     <div className="flex items-center gap-2">
-      <span className="text-slate-400">{icon}</span>
-      <span className="text-xl font-bold text-slate-900">{value}</span>
-      <span className="text-xs text-slate-500">{label}</span>
+      <span className="text-brand-navy">{icon}</span>
+      <span className="text-xl font-bold text-brand-navy">{value}</span>
+      <span className="text-xs text-brand-navy">{label}</span>
     </div>
   );
 }
@@ -272,10 +272,10 @@ function SelectFilter({ value, onChange, options, label }: {
   value: string; onChange: (v: string) => void; options: [string, string][]; label: string;
 }) {
   return (
-    <label className="flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
-      <span className="text-xs font-medium text-slate-400">{label}</span>
+    <label className="flex items-center gap-2 rounded-lg border border-brand-navy bg-white px-3 py-2 text-sm">
+      <span className="text-xs font-medium text-brand-navy">{label}</span>
       <select value={value} onChange={(e) => onChange(e.target.value)}
-        className="bg-transparent text-sm font-medium text-slate-700 outline-hidden">
+        className="bg-transparent text-sm font-medium text-brand-navy outline-hidden">
         {options.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
       </select>
     </label>
@@ -287,25 +287,25 @@ function ComparisonTable({ tests, bestValueId, onRemove, onClear }: {
   onRemove: (id: string) => void; onClear: () => void;
 }) {
   return (
-    <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-lg">
-      <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3">
-        <span className="text-sm font-semibold text-slate-900">Comparing {tests.length} of {MAX_COMPARE}</span>
-        <button onClick={onClear} className="text-xs font-medium text-slate-500 underline">Clear all</button>
+    <div className="mt-6 overflow-hidden rounded-2xl border border-brand-navy bg-white shadow-lg">
+      <div className="flex items-center justify-between border-b border-brand-navy px-4 py-3">
+        <span className="text-sm font-semibold text-brand-navy">Comparing {tests.length} of {MAX_COMPARE}</span>
+        <button onClick={onClear} className="text-xs font-medium text-brand-navy underline">Clear all</button>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full min-w-[640px] border-collapse text-sm">
           <thead>
             <tr>
-              <th className="sticky left-0 z-10 w-40 bg-slate-50 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-400">Provider</th>
+              <th className="sticky left-0 z-10 w-40 bg-slate-50 px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-brand-navy">Provider</th>
               {tests.map((t) => (
-                <th key={t.id} className="min-w-[210px] border-l border-slate-100 px-4 py-3 align-top">
+                <th key={t.id} className="min-w-[210px] border-l border-brand-navy px-4 py-3 align-top">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex items-center gap-2">
                       <span className="flex h-8 w-8 flex-none items-center justify-center rounded-lg text-[10px] font-extrabold text-white"
                         style={{ background: colorFor(t.provider_name) }}>{initials(t.provider_name)}</span>
                       <div className="text-left">
                         <div className="text-xs font-semibold" style={{ color: colorFor(t.provider_name) }}>{t.provider_name}</div>
-                        <div className="text-xs font-medium leading-tight text-slate-700">{t.test_name}</div>
+                        <div className="text-xs font-medium leading-tight text-brand-navy">{t.test_name}</div>
                         {t.id === bestValueId && (
                           <span className="mt-1 inline-block rounded bg-emerald-100 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-700">Best value</span>
                         )}
@@ -320,7 +320,7 @@ function ComparisonTable({ tests, bestValueId, onRemove, onClear }: {
           <tbody>
             {/* Row 1: Biomarkers */}
             <Row label="Biomarkers" tests={tests} render={(t) => t.biomarker_count
-              ? <span className="font-semibold text-slate-900">{t.biomarker_count}</span> : <NotSpec />} />
+              ? <span className="font-semibold text-brand-navy">{t.biomarker_count}</span> : <NotSpec />} />
             {/* Row 2: Turnaround Time */}
             <Row label="Turnaround Time" tests={tests} zebra render={(t) =>
               t.turnaround_days_text ? <span>{t.turnaround_days_text}</span> : <NotSpec />} />
@@ -337,7 +337,7 @@ function ComparisonTable({ tests, bestValueId, onRemove, onClear }: {
               const fee = formatCollectionFee(t.collection_fee_type, num(t.collection_fee_amount));
               if (t.collection_fee_type == null) return <NotSpec />;
               return fee.isFree
-                ? <span className="text-slate-600">{fee.label}</span>
+                ? <span className="text-brand-navy">{fee.label}</span>
                 : <span className="inline-flex items-center rounded-full bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-700">{fee.label}</span>;
             }} />
             {/* Row 6: Clinical Review */}
@@ -375,12 +375,12 @@ function ComparisonTable({ tests, bestValueId, onRemove, onClear }: {
             <tr>
               <td className="sticky left-0 z-10 bg-white px-4 py-3" />
               {tests.map((t) => (
-                <td key={t.id} className="border-l border-slate-100 px-4 py-3">
+                <td key={t.id} className="border-l border-brand-navy px-4 py-3">
                   {t.url ? (
                     <a href={t.url} target="_blank" rel="noopener noreferrer"
                       className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold text-white"
                       style={{ background: colorFor(t.provider_name) }}>Book <ExternalLink className="h-3 w-3" /></a>
-                  ) : <span className="text-xs text-slate-400">{DASH}</span>}
+                  ) : <span className="text-xs text-brand-navy">{DASH}</span>}
                 </td>
               ))}
             </tr>
@@ -396,12 +396,12 @@ function Row({ label, tests, render, zebra }: {
 }) {
   return (
     <tr className={zebra ? "bg-slate-50/60" : ""}>
-      <td className="sticky left-0 z-10 bg-inherit px-4 py-3 text-xs font-medium text-slate-500">{label}</td>
+      <td className="sticky left-0 z-10 bg-inherit px-4 py-3 text-xs font-medium text-brand-navy">{label}</td>
       {tests.map((t) => (
-        <td key={t.id} className="border-l border-slate-100 px-4 py-3 text-slate-700">{render(t)}</td>
+        <td key={t.id} className="border-l border-brand-navy px-4 py-3 text-brand-navy">{render(t)}</td>
       ))}
     </tr>
   );
 }
 
-const NotSpec = () => <span className="text-slate-400">Not specified</span>;
+const NotSpec = () => <span className="text-brand-navy">Not specified</span>;

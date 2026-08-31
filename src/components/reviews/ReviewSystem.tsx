@@ -102,7 +102,7 @@ const ReviewSystem = () => {
               <div className="flex justify-center mb-2">
                 {renderStars(Math.round(averageRating))}
               </div>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-brand-navy">
                 Based on {mockReviews.length} reviews
               </div>
             </div>
@@ -120,7 +120,7 @@ const ReviewSystem = () => {
                         style={{ width: `${percentage}%` }}
                       />
                     </div>
-                    <span className="text-sm text-gray-600 w-8">{count}</span>
+                    <span className="text-sm text-brand-navy w-8">{count}</span>
                   </div>
                 );
               })}
@@ -146,7 +146,7 @@ const ReviewSystem = () => {
         {/* Filters and Sort */}
         <div className="flex flex-wrap gap-4 mb-6">
           <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-gray-500" />
+            <Filter className="h-4 w-4 text-brand-navy" />
             <span className="text-sm font-medium">Filter by:</span>
             <select
               value={selectedFilter}
@@ -192,17 +192,17 @@ const ReviewSystem = () => {
                 </div>
                 <div className="flex items-center gap-2 mb-2">
                   <div className="flex">{renderStars(review.rating)}</div>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-sm text-brand-navy">
                     {new Date(review.date).toLocaleDateString('en-GB')}
                   </span>
                 </div>
-                <div className="text-sm text-gray-600 mb-2">
+                <div className="text-sm text-brand-navy mb-2">
                   {review.testName} - {review.provider}
                 </div>
               </div>
             </div>
             
-            <p className="text-gray-700 mb-4">{review.review}</p>
+            <p className="text-brand-navy mb-4">{review.review}</p>
             
             <div className="flex flex-wrap gap-2 mb-4">
               {review.tags.map(tag => (
@@ -215,7 +215,7 @@ const ReviewSystem = () => {
             <Separator className="my-4" />
             
             <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-brand-navy">
                 {review.helpful} people found this helpful
               </span>
               <div className="flex gap-2">

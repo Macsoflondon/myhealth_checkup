@@ -14,7 +14,7 @@ const formatDate = (dateStr: string) =>
   });
 
 const FeaturedCard: React.FC<{ article: BlogArticle }> = ({ article }) => (
-  <article className="group flex flex-col bg-white rounded-2xl border border-[#e2e8f0] overflow-hidden transition-all duration-200 hover:border-[#22c0d4] hover:shadow-lg hover:-translate-y-0.5">
+  <article className="group flex flex-col bg-white rounded-2xl border border-brand-navy overflow-hidden transition-all duration-200 hover:border-[#22c0d4] hover:shadow-lg hover:-translate-y-0.5">
     <div className="relative aspect-[16/9] overflow-hidden bg-[#f0f4fa]">
       <img
         src={article.image}

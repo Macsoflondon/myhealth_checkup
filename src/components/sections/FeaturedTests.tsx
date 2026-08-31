@@ -24,15 +24,15 @@ const TestCard = ({
   clinicOption,
   turnaround
 }: TestCardProps) => {
-  return <Card className={`border ${popular ? 'border-health-500 shadow-lg shadow-health-100/50' : 'border-gray-200'}`}>
+  return <Card className={`border ${popular ? 'border-health-500 shadow-lg shadow-health-100/50' : 'border-brand-navy'}`}>
       <CardHeader>
         {popular && <Badge className="w-fit mb-2 bg-health-600">Most Popular</Badge>}
         <CardTitle className="text-xl font-bold">{title}</CardTitle>
         <div className="flex items-baseline gap-1">
           <span className="text-2xl font-bold">£{price}</span>
-          <span className="text-gray-500 text-sm">per test</span>
+          <span className="text-brand-navy text-sm">per test</span>
         </div>
-        <p className="text-gray-600 text-sm">{description}</p>
+        <p className="text-brand-navy text-sm">{description}</p>
       </CardHeader>
       <CardContent>
         <div className="flex flex-wrap items-center gap-2 mb-4">
@@ -122,7 +122,7 @@ const FeaturedTests = () => {
             title="Featured" 
             gradientText="Health Tests" 
           />
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto mt-4">
+          <p className="text-lg text-brand-navy max-w-3xl mx-auto mt-4">
             Our most popular comprehensive health screenings, trusted by thousands of customers
           </p>
         </div>

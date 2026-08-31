@@ -103,7 +103,7 @@ const IntelligentSearch = () => {
         <h1 className="text-3xl font-bold mb-4 text-navy">
           Find Your Perfect Health Test
         </h1>
-        <p className="text-gray-600">
+        <p className="text-brand-navy">
           Search across {roundedTestCount}+ tests from {providerCount} UK
           providers — by name, biomarker, condition or category.
         </p>
@@ -117,7 +117,7 @@ const IntelligentSearch = () => {
             placeholder="Search for tests, biomarkers, symptoms or health concerns..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-24 py-6 text-lg text-gray-900 bg-white placeholder:text-gray-500 focus:ring-2 focus:ring-primary focus:shadow-lg transition-all duration-200"
+            className="pl-10 pr-24 py-6 text-lg text-brand-navy bg-white placeholder:text-brand-navy focus:ring-2 focus:ring-primary focus:shadow-lg transition-all duration-200"
           />
           {searchTerm && (
             <Button
@@ -170,7 +170,7 @@ const IntelligentSearch = () => {
       {isLoading && (
         <div className="text-center py-8">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-health-600 mx-auto mb-4" />
-          <p className="text-gray-600">Searching across active tests…</p>
+          <p className="text-brand-navy">Searching across active tests…</p>
         </div>
       )}
 
@@ -182,7 +182,7 @@ const IntelligentSearch = () => {
               "{activeQuery}"
             </h2>
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Sort by:</span>
+              <span className="text-sm text-brand-navy">Sort by:</span>
               <select
                 className="border rounded px-3 py-1 text-sm"
                 value={sortBy}
@@ -199,12 +199,12 @@ const IntelligentSearch = () => {
             {results.map((r: any) => (
               <Card
                 key={r.id}
-                className="p-4 hover:shadow-md transition-shadow bg-white border border-gray-200"
+                className="p-4 hover:shadow-md transition-shadow bg-white border border-brand-navy"
               >
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-2 flex-wrap">
-                      <h3 className="font-semibold text-lg text-gray-900">
+                      <h3 className="font-semibold text-lg text-brand-navy">
                         {r.test_name}
                       </h3>
                       {r.canonical_category && (
@@ -213,7 +213,7 @@ const IntelligentSearch = () => {
                         </Badge>
                       )}
                     </div>
-                    <div className="flex items-center gap-3 text-sm text-gray-600 flex-wrap">
+                    <div className="flex items-center gap-3 text-sm text-brand-navy flex-wrap">
                       {r.provider_id && (
                         <span className="capitalize">
                           {r.provider_id.replace(/-/g, " ")}
@@ -233,7 +233,7 @@ const IntelligentSearch = () => {
                       )}
                     </div>
                     {r.description && (
-                      <p className="mt-2 text-sm text-gray-600 line-clamp-2">
+                      <p className="mt-2 text-sm text-brand-navy line-clamp-2">
                         {r.description}
                       </p>
                     )}

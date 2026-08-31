@@ -333,10 +333,10 @@ const FAQsPage = () => {
           {/* Search Bar */}
           <div className="max-w-xl sm:max-w-2xl mx-auto mt-6">
             <div className="relative text-left">
-              <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
-              <Input type="search" placeholder="Search FAQs..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} aria-label="Search frequently asked questions" aria-describedby="search-description" className="pl-10 sm:pl-12 py-5 sm:py-6 text-base sm:text-lg bg-white text-gray-900 border-none shadow-lg focus-visible:ring-2 focus-visible:ring-white/50 rounded" />
+              <Search className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-brand-navy h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
+              <Input type="search" placeholder="Search FAQs..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} aria-label="Search frequently asked questions" aria-describedby="search-description" className="pl-10 sm:pl-12 py-5 sm:py-6 text-base sm:text-lg bg-white text-brand-navy border-none shadow-lg focus-visible:ring-2 focus-visible:ring-white/50 rounded" />
               
-              {searchQuery && <Button variant="ghost" size="sm" onClick={() => setSearchQuery('')} className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 h-8 w-8 p-0" aria-label="Clear search">
+              {searchQuery && <Button variant="ghost" size="sm" onClick={() => setSearchQuery('')} className="absolute right-2 top-1/2 transform -translate-y-1/2 text-brand-navy hover:text-brand-navy h-8 w-8 p-0" aria-label="Clear search">
                   ×
                 </Button>}
             </div>
@@ -347,7 +347,7 @@ const FAQsPage = () => {
         <div className="container mx-auto px-4 py-8 sm:py-12 bg-white">
           {filteredCategories.length > 0 ? <Accordion type="single" collapsible className="space-y-4 sm:space-y-6">
               {filteredCategories.map((category, catIdx) => <div key={catIdx} className="bg-white rounded-lg sm:rounded-xl shadow-lg overflow-hidden">
-                  <div className="from-primary/10 to-secondary/10 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 bg-[t#ransparent] bg-[#081129]">
+                  <div className="from-primary/10 to-secondary/10 px-4 sm:px-6 py-3 sm:py-4 border-b border-brand-navy bg-[t#ransparent] bg-[#081129]">
                     <div className="flex items-center gap-2 sm:gap-3">
                       <div className="bg-primary/20 p-1.5 sm:p-2 rounded-lg text-primary flex-shrink-0">
                         {category.icon}
@@ -363,10 +363,10 @@ const FAQsPage = () => {
                   <div className="p-4 sm:p-6">
                     <Accordion type="single" collapsible>
                       {category.faqs.map((faq, faqIdx) => <AccordionItem key={faqIdx} value={`faq-${catIdx}-${faqIdx}`} className="border-b last:border-0">
-                          <AccordionTrigger className="text-left hover:text-primary transition-colors py-3 sm:py-4 text-gray-900 font-medium text-sm sm:text-base focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded min-h-[44px]">
+                          <AccordionTrigger className="text-left hover:text-primary transition-colors py-3 sm:py-4 text-brand-navy font-medium text-sm sm:text-base focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded min-h-[44px]">
                             {faq.q}
                           </AccordionTrigger>
-                          <AccordionContent className="text-gray-700 pb-3 sm:pb-4 leading-relaxed text-sm sm:text-base">
+                          <AccordionContent className="text-brand-navy pb-3 sm:pb-4 leading-relaxed text-sm sm:text-base">
                             {faq.a}
                           </AccordionContent>
                         </AccordionItem>)}
@@ -378,7 +378,7 @@ const FAQsPage = () => {
                 <AlertCircle className="h-16 w-16 sm:h-20 sm:w-20 text-gray-300" />
               </div>
               <h3 className="text-xl font-bold mb-2 sm:text-2xl text-[#22c0d4]">No results found</h3>
-              <p className="text-gray-600 mb-6 text-sm sm:text-base max-w-md mx-auto">
+              <p className="text-brand-navy mb-6 text-sm sm:text-base max-w-md mx-auto">
                 We couldn't find any FAQs matching "{debouncedSearch}". Try different keywords or browse all categories.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">

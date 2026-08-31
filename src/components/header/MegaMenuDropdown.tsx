@@ -26,7 +26,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
   popularTests,
   onItemClick,
   onClose,
-  isMobile = false
+  isMobile = false,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -40,9 +40,10 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
   const filteredTests = useMemo(() => {
     if (!goodbodyTests || !searchQuery.trim()) return goodbodyTests;
     const query = searchQuery.toLowerCase();
-    return goodbodyTests.filter(test => 
-      test.name.toLowerCase().includes(query) ||
-      test.description?.toLowerCase().includes(query)
+    return goodbodyTests.filter(
+      (test) =>
+        test.name.toLowerCase().includes(query) ||
+        test.description?.toLowerCase().includes(query),
     );
   }, [goodbodyTests, searchQuery]);
 
@@ -50,9 +51,10 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
   const filteredCategories = useMemo(() => {
     if (!categories || !searchQuery.trim()) return categories;
     const query = searchQuery.toLowerCase();
-    return categories.filter(cat => 
-      cat.name.toLowerCase().includes(query) ||
-      cat.description?.toLowerCase().includes(query)
+    return categories.filter(
+      (cat) =>
+        cat.name.toLowerCase().includes(query) ||
+        cat.description?.toLowerCase().includes(query),
     );
   }, [categories, searchQuery]);
 
@@ -60,10 +62,11 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
   const filteredPopularTests = useMemo(() => {
     if (!popularTests || !searchQuery.trim()) return popularTests;
     const query = searchQuery.toLowerCase();
-    return popularTests.filter(test => 
-      test.test_name.toLowerCase().includes(query) ||
-      test.provider_name.toLowerCase().includes(query) ||
-      test.category?.toLowerCase().includes(query)
+    return popularTests.filter(
+      (test) =>
+        test.test_name.toLowerCase().includes(query) ||
+        test.provider_name.toLowerCase().includes(query) ||
+        test.category?.toLowerCase().includes(query),
     );
   }, [popularTests, searchQuery]);
 
@@ -74,36 +77,39 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
   const handleItemClick = () => {
     onClose?.();
     onItemClick?.();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const hasResults = (filteredTests && filteredTests.length > 0) || 
-                     (filteredCategories && filteredCategories.length > 0) ||
-                     (filteredPopularTests && filteredPopularTests.length > 0);
+  const hasResults =
+    (filteredTests && filteredTests.length > 0) ||
+    (filteredCategories && filteredCategories.length > 0) ||
+    (filteredPopularTests && filteredPopularTests.length > 0);
 
   return (
-    <div 
+    <div
       ref={containerRef}
       role="menu"
       aria-label={`${itemName} dropdown menu`}
-      className={`dropdown-content absolute top-full left-0 mt-2 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg shadow-2xl min-w-[320px] max-w-[90vw] overflow-y-auto ${
-        isMobile ? 'sm:max-w-[400px] max-h-[90vh]' : 'sm:min-w-[540px] sm:max-w-[640px] max-h-[90vh]'
+      className={`dropdown-content absolute top-full left-0 mt-2 bg-white border border-brand-navy rounded-lg shadow-2xl min-w-[320px] max-w-[90vw] overflow-y-auto ${
+        isMobile
+          ? "sm:max-w-[400px] max-h-[90vh]"
+          : "sm:min-w-[540px] sm:max-w-[640px] max-h-[90vh]"
       }`}
-      style={{ 
-        boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
+      style={{
+        boxShadow: "0 10px 40px rgba(0, 0, 0, 0.3)",
         zIndex: 9999,
-        position: 'absolute',
-        WebkitOverflowScrolling: 'touch'
+        position: "absolute",
+        WebkitOverflowScrolling: "touch",
       }}
       onClick={(e) => e.stopPropagation()}
     >
       <div className="p-5 sm:p-6">
         {/* Header with Close Button */}
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-sm font-bold text-gray-900 dark:text-gray-100">{itemName}</h2>
+          <h2 className="text-sm font-bold text-brand-navy">{itemName}</h2>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-md text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            className="p-1.5 rounded-md text-brand-navy hover:text-brand-pink hover:bg-brand-navy/5 transition-colors"
             aria-label="Close dropdown"
           >
             <X className="w-4 h-4" />
@@ -112,19 +118,19 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
 
         {/* Search Input */}
         <div className="relative mb-4">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-brand-navy" />
           <input
             type="text"
             placeholder={`Search ${itemName.toLowerCase()}...`}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-10 py-2.5 text-sm border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:outline-hidden focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink transition-colors"
+            className="w-full pl-10 pr-10 py-2.5 text-sm border border-brand-navy rounded-lg bg-white text-brand-navy placeholder:text-brand-navy/70 focus:outline-hidden focus:ring-2 focus:ring-brand-pink/50 focus:border-brand-pink transition-colors"
             onClick={(e) => e.stopPropagation()}
           />
           {searchQuery && (
             <button
               onClick={handleClearSearch}
-              className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center text-brand-navy hover:text-brand-navy dark:hover:text-gray-300 transition-colors"
             >
               <X className="w-4 h-4" />
             </button>
@@ -135,29 +141,35 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
         {filteredPopularTests ? (
           <div className="grid grid-cols-1 gap-2">
             <div className="mb-3">
-              <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
-                {searchQuery ? `Results for "${searchQuery}"` : 'Top Tests from All Providers'}
+              <h3 className="text-xs font-bold text-brand-navy uppercase tracking-wider mb-2">
+                {searchQuery
+                  ? `Results for "${searchQuery}"`
+                  : "Top Tests from All Providers"}
               </h3>
             </div>
             {filteredPopularTests.length > 0 ? (
               filteredPopularTests.map((test) => {
-                const isExternal = test.url && (test.url.startsWith('http://') || test.url.startsWith('https://'));
+                const isExternal =
+                  test.url &&
+                  (test.url.startsWith("http://") ||
+                    test.url.startsWith("https://"));
                 const href = test.url || `/compare?test=${test.id}`;
                 const commonProps = {
                   key: test.id,
-                  className: "state-layer group block p-3 rounded-lg transition-shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700",
+                  className:
+                    "state-layer group block p-3 rounded-lg transition-shadow border border-transparent hover:border-brand-navy dark:hover:border-gray-700",
                   onClick: handleItemClick,
                 };
                 const content = (
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-brand-pink dark:group-hover:text-brand-pink transition-colors mb-1">
+                      <h3 className="text-sm font-semibold text-brand-navy group-hover:text-brand-pink transition-colors mb-1">
                         {test.test_name}
                       </h3>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mb-2">
+                      <p className="text-xs text-brand-navy mb-2">
                         {test.provider_name}
                       </p>
-                      <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-500">
+                      <div className="flex items-center gap-2 text-xs text-brand-navy">
                         <span className="inline-flex items-center gap-1">
                           <span className="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
                           {test.category}
@@ -173,7 +185,12 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                   </div>
                 );
                 return isExternal ? (
-                  <a {...commonProps} href={href} target="_blank" rel="noopener noreferrer">
+                  <a
+                    {...commonProps}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {content}
                   </a>
                 ) : (
@@ -183,7 +200,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                 );
               })
             ) : (
-              <p className="text-sm text-gray-500 dark:text-gray-400 py-4 text-center">
+              <p className="text-sm text-brand-navy dark:text-brand-navy py-4 text-center">
                 No tests found for "{searchQuery}"
               </p>
             )}
@@ -192,30 +209,34 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
           // Show Goodbody tests for health-specific sections
           <div className="grid grid-cols-1 gap-2">
             <div className="mb-3">
-              <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
-                {searchQuery ? `Results for "${searchQuery}"` : 'Popular Tests'}
+              <h3 className="text-xs font-bold text-brand-navy dark:text-brand-navy uppercase tracking-wider mb-2">
+                {searchQuery ? `Results for "${searchQuery}"` : "Popular Tests"}
               </h3>
             </div>
             {filteredTests.length > 0 ? (
               filteredTests.map((test) => {
-                const isExternal = test.url && (test.url.startsWith('http://') || test.url.startsWith('https://'));
+                const isExternal =
+                  test.url &&
+                  (test.url.startsWith("http://") ||
+                    test.url.startsWith("https://"));
                 const href = test.url || `/book/${test.id}`;
                 const commonProps = {
                   key: test.id,
-                  className: "state-layer group block p-3 rounded-lg transition-shadow border border-transparent hover:border-gray-200 dark:hover:border-gray-700",
+                  className:
+                    "state-layer group block p-3 rounded-lg transition-shadow border border-transparent hover:border-brand-navy dark:hover:border-gray-700",
                   onClick: handleItemClick,
                 };
                 const content = (
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100 group-hover:text-brand-pink dark:group-hover:text-brand-pink transition-colors mb-1">
+                      <h3 className="text-sm font-semibold text-brand-navy dark:text-gray-100 group-hover:text-brand-pink dark:group-hover:text-brand-pink transition-colors mb-1">
                         {test.name}
                       </h3>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 mb-2">
+                      <p className="text-xs text-brand-navy dark:text-brand-navy line-clamp-2 mb-2">
                         {test.description}
                       </p>
                       {test.biomarkers && (
-                        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-500">
+                        <div className="flex items-center gap-2 text-xs text-brand-navy dark:text-brand-navy">
                           <span className="inline-flex items-center gap-1">
                             <span className="w-1.5 h-1.5 rounded-full bg-teal-500"></span>
                             {test.biomarkers} biomarkers
@@ -228,7 +249,12 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                   </div>
                 );
                 return isExternal ? (
-                  <a {...commonProps} href={href} target="_blank" rel="noopener noreferrer">
+                  <a
+                    {...commonProps}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {content}
                   </a>
                 ) : (
@@ -238,7 +264,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                 );
               })
             ) : (
-              <p className="text-sm text-gray-500 dark:text-gray-400 py-4 text-center">
+              <p className="text-sm text-brand-navy dark:text-brand-navy py-4 text-center">
                 No tests found for "{searchQuery}"
               </p>
             )}
@@ -248,7 +274,9 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
           <div>
             <div className="mb-5">
               <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-                {searchQuery ? `Results for "${searchQuery}"` : 'Browse by Category'}
+                {searchQuery
+                  ? `Results for "${searchQuery}"`
+                  : "Browse by Category"}
               </h3>
             </div>
             {filteredCategories.length > 0 ? (
@@ -262,7 +290,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                       className="state-layer group flex items-start gap-3 p-3 rounded-lg transition-shadow"
                       onClick={handleItemClick}
                     >
-                      <div 
+                      <div
                         className="w-3 h-3 rounded-full flex-shrink-0 mt-1"
                         style={{ backgroundColor: dotColor }}
                       />
@@ -279,15 +307,15 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                 })}
               </div>
             ) : (
-              <p className="text-sm text-gray-500 dark:text-gray-400 py-4 text-center">
+              <p className="text-sm text-brand-navy dark:text-brand-navy py-4 text-center">
                 No categories found for "{searchQuery}"
               </p>
             )}
           </div>
         ) : null}
-        
+
         {/* View All Link */}
-        <div className="mt-5 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="mt-5 pt-4 border-t border-brand-navy dark:border-gray-700">
           <Link
             to={itemPath}
             className="inline-flex items-center text-sm text-brand-pink hover:text-brand-pink dark:text-brand-pink dark:hover:text-brand-pink font-semibold transition-colors group"

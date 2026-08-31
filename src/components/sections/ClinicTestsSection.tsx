@@ -49,7 +49,7 @@ export function ClinicTestsSection({ providerId, limit = 8 }: ClinicTestsSection
           <h2 className="font-[Montserrat] font-bold text-2xl sm:text-3xl text-[#081129] tracking-tight">
             Tests available from {meta.displayName}
           </h2>
-          <p className="mt-2 text-sm sm:text-base text-[#64748b] max-w-2xl">
+          <p className="mt-2 text-sm sm:text-base text-brand-navy max-w-2xl">
             Browse and compare {meta.displayName} tests with transparent pricing and accreditation details.
           </p>
         </div>

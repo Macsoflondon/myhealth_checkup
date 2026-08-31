@@ -22,15 +22,15 @@ const SubscriptionPlan = ({
   features: string[];
   popular?: boolean;
 }) => {
-  return <Card className={`h-full flex flex-col ${popular ? 'border-health-500 shadow-xl' : 'border-gray-200'}`}>
+  return <Card className={`h-full flex flex-col ${popular ? 'border-health-500 shadow-xl' : 'border-brand-navy'}`}>
       <CardHeader>
         {popular && <Badge className="w-fit mb-2 bg-health-600">Most Popular</Badge>}
         <CardTitle className="text-xl font-bold">{title}</CardTitle>
         <div className="flex items-baseline gap-1">
           <span className="text-3xl font-bold">£{price}</span>
-          <span className="text-gray-500">/{period}</span>
+          <span className="text-brand-navy">/{period}</span>
         </div>
-        <p className="text-gray-600 text-sm">{description}</p>
+        <p className="text-brand-navy text-sm">{description}</p>
       </CardHeader>
       <CardContent className="flex-grow">
         <ul className="space-y-2">
@@ -53,7 +53,7 @@ const Subscriptions = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-semibold mb-4">Health Monitoring Subscriptions</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="text-brand-navy max-w-2xl mx-auto">
             Stay on top of your health with our convenient subscription plans. Regular monitoring helps catch potential issues early.
           </p>
         </div>
