@@ -175,7 +175,7 @@ const ProviderProfilePage = () => {
               </div>
             )}
             <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
-              <Clock className="w-5 h-5 flex-shrink-0" style={brand ? { color: brand.primary } : { color: 'hsl(var(--secondary))' }} />
+              <Clock className="w-5 h-5 flex-shrink-0" style={brand ? { color: '#ffffff' } : { color: 'hsl(var(--secondary))' }} />
               <div>
                 <p className="text-sm font-medium">{provider.turnaroundTime || '2-5 days'}</p>
                 <p className="text-xs text-muted-foreground">Results turnaround</p>
