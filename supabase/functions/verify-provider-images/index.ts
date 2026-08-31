@@ -25,6 +25,9 @@ const PROVIDER_HOST_ALLOWLIST: Record<string, RegExp[]> = {
   bluecrest: [/bluecrestwellness\.com/i],
 };
 
+// Self-hosted Supabase Storage mirrors are valid for every provider.
+const UNIVERSAL_STORAGE_HOST = /clvuioagsgfadynuvodj\.supabase\.co\/storage/i;
+
 interface Row {
   id: string;
   provider_id: string;
