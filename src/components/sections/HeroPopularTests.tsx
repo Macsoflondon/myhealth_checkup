@@ -1,6 +1,7 @@
 import { useHeroPopularTests } from "@/hooks/queries/useHeroPopularTests";
 import { UniversalTestCard, type UniversalTestData } from "@/components/cards/UniversalTestCard";
 import { SectionSkeleton } from "@/components/common/SectionSkeleton";
+import { SectionHeading } from "@/components/ui/section-heading";
 
 function toUniversalTest(test: import("@/hooks/queries/useHeroPopularTests").HeroPopularTest): UniversalTestData {
   return {
