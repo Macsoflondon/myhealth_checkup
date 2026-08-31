@@ -28,7 +28,8 @@ const corsHeaders = {
 
 const TIMEOUT_MS = 8000;
 const PROVIDER_CONCURRENCY = 3;
-const STAGGER_MS = 150;
+const STAGGER_START_MS = 150;
+const STAGGER_MAX_MS = 4000;
 const RETRY_AFTER_CAP_MS = 5000;
 const RATE_LIMIT_FALLBACK_WAIT_MS = 2000;
 
@@ -43,6 +44,8 @@ interface CheckResult {
   ok: boolean;
   httpStatus?: number;
   issue?: string;
+  /** True if this request saw a 429 (even if the single retry recovered). */
+  hit429?: boolean;
 }
 
 // Providers (medichecks, clinilabs) reject bare/Deno requests as bot traffic.
