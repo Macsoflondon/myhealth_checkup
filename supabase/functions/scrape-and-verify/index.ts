@@ -172,6 +172,7 @@ Deno.serve(async (req) => {
     } else {
       ok = false;
       summary[row.provider_id].broken++;
+
       await supabase.from("scraper_alerts").insert({
         provider_id: row.provider_id,
         alert_type: "broken_url",
