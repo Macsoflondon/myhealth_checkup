@@ -342,10 +342,10 @@ const DreamHealthShowcase = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center mt-10 sm:mt-14">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center mt-8 sm:mt-10">
 
         {/* 9 mixed-provider test cards — uniform sizing */}
-        <div className="mt-12 sm:mt-14">
+        <div className="mt-9 sm:mt-10">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 text-left auto-rows-fr">
             {isLoading &&
               Array.from({ length: 9 }).map((_, i) => (
@@ -404,9 +404,38 @@ const DreamHealthShowcase = () => {
                       >
                         {cleanName(t.test_name)}
                       </button>
-                      <p className="mt-2 text-sm text-[#081129]/70 leading-relaxed flex-1 line-clamp-3">
-                        {t.description || ""}
+                      <p className="mt-2 text-sm text-[#081129]/70 leading-relaxed line-clamp-3">
+                        {descriptionFor(t)}
                       </p>
+
+                      {(typeof t.biomarker_count === "number" &&
+                        t.biomarker_count > 0) ||
+                      turnaroundLabel(t) ||
+                      sampleLabel(t) ? (
+                        <div className="mt-3 flex flex-wrap items-center gap-1.5 flex-1 content-start">
+                          {typeof t.biomarker_count === "number" &&
+                            t.biomarker_count > 0 && (
+                              <span className="inline-flex items-center rounded-full bg-[#22c0d4]/10 text-[#0b6b78] border border-[#22c0d4]/30 px-2.5 py-1 text-[11px] font-semibold">
+                                {t.biomarker_count}{" "}
+                                {t.biomarker_count === 1
+                                  ? "biomarker"
+                                  : "biomarkers"}
+                              </span>
+                            )}
+                          {turnaroundLabel(t) && (
+                            <span className="inline-flex items-center rounded-full border border-black/10 bg-[#f6f7f9] px-2.5 py-1 text-[11px] font-medium text-[#081129]/70">
+                              {turnaroundLabel(t)}
+                            </span>
+                          )}
+                          {sampleLabel(t) && (
+                            <span className="inline-flex items-center rounded-full border border-black/10 bg-[#f6f7f9] px-2.5 py-1 text-[11px] font-medium text-[#081129]/70">
+                              {sampleLabel(t)}
+                            </span>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="flex-1" aria-hidden="true" />
+                      )}
 
                       <div className="mt-4 flex items-end justify-between">
                         <span className="text-xl font-bold text-[#081129] leading-none">
