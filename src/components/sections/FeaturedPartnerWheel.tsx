@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "@/lib/router-compat";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 
@@ -186,6 +187,9 @@ export default function FeaturedPartnerWheel({
   // each kit rendered exactly once around the wheel — no duplicates
   const wheel = (kits && kits.length ? kits : DEFAULT_KITS).map(norm);
 
+  // hover previews are a desktop affordance; touch taps go straight to the modal
+  const canHover = typeof window !== "undefined" && !!window.matchMedia?.("(hover: hover)").matches;
+
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [hovered, setHovered] = useState<number | null>(null);
   const [selKit, setSelKit] = useState<FeaturedKit | null>(null);
@@ -201,6 +205,7 @@ export default function FeaturedPartnerWheel({
     downX: 0,
     moved: false,
     downKit: null as FeaturedKit | null,
+    openedAt: 0,
   });
   // latest reactive state, readable inside the rAF loop
   const live = useRef({ hovered, selKit, autoRotate, autoDriftSpeed });
@@ -269,6 +274,7 @@ export default function FeaturedPartnerWheel({
       st.idleUntil = performance.now() + 4000;
       if (!st.moved && st.downKit) {
         const k = st.downKit;
+        st.openedAt = performance.now();
         setSelKit((cur) => (cur && cur.name === k.name ? null : k));
         setHovered(null);
       }
@@ -323,7 +329,17 @@ export default function FeaturedPartnerWheel({
 
   return (
     <div style={{ fontFamily: BODY }}>
-      <style>{`@keyframes gbpop{from{transform:translate(-50%,14px)}to{transform:translate(-50%,0)}}@keyframes gbpopc{from{transform:translateY(10px) scale(.985)}to{transform:translateY(0) scale(1)}}`}</style>
+      <style>{`@keyframes gbpop{from{transform:translate(-50%,14px)}to{transform:translate(-50%,0)}}@keyframes gbpopc{from{transform:translateY(10px) scale(.985)}to{transform:translateY(0) scale(1)}}
+.gbp-preview{display:flex;gap:22px;align-items:center;background:rgba(255,255,255,0.97);border-radius:22px;padding:22px 26px;box-shadow:0 30px 70px -22px rgba(0,0,0,.7);border:1px solid rgba(34,192,212,.25)}
+.gbp-face{flex:none;width:88px;height:119px;border-radius:14px;overflow:hidden;box-shadow:0 8px 20px -10px rgba(8,17,41,.45)}
+.gbp-text{flex:1;min-width:0;text-align:left}
+.gbp-side{flex:none;text-align:right;padding-left:8px;border-left:1px solid #eef2f5}
+@media (max-width:640px){
+.gbp-preview{flex-direction:column;align-items:stretch;gap:12px;padding:18px 20px}
+.gbp-face{display:none}
+.gbp-side{display:flex;align-items:baseline;justify-content:space-between;gap:12px;text-align:left;padding-left:0;border-left:none;border-top:1px solid #eef2f5;padding-top:12px}
+.gbp-side .gbp-cta{margin-top:0!important}
+}`}</style>
 
       <section style={{ position: "relative", width: "100%", overflow: "hidden", padding: "54px 24px 48px", display: "flex", flexDirection: "column", alignItems: "center", backgroundColor: "#081129" }}>
         <EyebrowBadge label={eyebrow} size="md" tone="onDark" />
@@ -343,7 +359,7 @@ export default function FeaturedPartnerWheel({
                 <div
                   key={i}
                   ref={(el) => { cardRefs.current[i] = el; }}
-                  onMouseEnter={() => { if (!selKit) setHovered(i); }}
+                  onMouseEnter={() => { if (!selKit && canHover) setHovered(i); }}
                   onMouseLeave={() => { if (!selKit) setHovered(null); }}
                   onPointerDown={(e) => startDrag(e, k)}
                   style={{ position: "absolute", left: 0, top: 0, width: CW, height: FH, marginLeft: -CW / 2, marginTop: -FH / 2, transformOrigin: "center center", willChange: "transform, opacity", backfaceVisibility: "hidden", opacity: 0 }}
@@ -365,19 +381,21 @@ export default function FeaturedPartnerWheel({
           {/* hover preview */}
           {preview && (
             <div style={{ position: "absolute", left: "50%", bottom: 40, width: 660, maxWidth: "92%", transform: "translateX(-50%)", zIndex: 20000, pointerEvents: "none", animation: "gbpop .26s cubic-bezier(.4,0,.2,1) both" }}>
-              <div style={{ display: "flex", gap: 22, alignItems: "center", background: "rgba(255,255,255,0.97)", borderRadius: 22, padding: "22px 26px", boxShadow: "0 30px 70px -22px rgba(0,0,0,.7)", border: "1px solid rgba(34,192,212,.25)" }}>
-                <div style={{ flex: "none", width: 88, height: 119, borderRadius: 14, overflow: "hidden", boxShadow: "0 8px 20px -10px rgba(8,17,41,.45)" }}>
+              <div className="gbp-preview">
+                <div className="gbp-face">
                   <KitFace name={preview.name} sample={preview.sample!} accent={preview.accent} texture={faceTexture} />
                 </div>
-                <div style={{ flex: 1, minWidth: 0, textAlign: "left" }}>
+                <div className="gbp-text">
                   <div style={{ fontFamily: HEAD, fontWeight: 700, fontSize: 11, letterSpacing: ".16em", textTransform: "uppercase", color: "#22C0D4" }}>{preview.provider}</div>
                   <div style={{ fontFamily: SERIF, fontWeight: 600, fontSize: 26, color: "#081129", lineHeight: 1.1, marginTop: 3 }}>{preview.name}</div>
                   <p style={{ margin: "8px 0 0", fontSize: 13.5, lineHeight: 1.55, color: "#5b6678" }}>{preview.about}</p>
                 </div>
-                <div style={{ flex: "none", textAlign: "right", paddingLeft: 8, borderLeft: "1px solid #eef2f5" }}>
-                  <div style={{ fontFamily: HEAD, fontWeight: 800, fontSize: 26, color: "#081129" }}>{preview.price}</div>
-                  <div style={{ fontSize: 12, color: "#8a94a3", marginTop: 2 }}>{preview.biomarkers}</div>
-                  <div style={{ marginTop: 12, fontFamily: HEAD, fontWeight: 700, fontSize: 12, letterSpacing: ".04em", color: "#22C0D4", textTransform: "uppercase" }}>Click to view ›</div>
+                <div className="gbp-side">
+                  <div>
+                    <div style={{ fontFamily: HEAD, fontWeight: 800, fontSize: 26, color: "#081129" }}>{preview.price}</div>
+                    <div style={{ fontSize: 12, color: "#8a94a3", marginTop: 2 }}>{preview.biomarkers}</div>
+                  </div>
+                  <div className="gbp-cta" style={{ marginTop: 12, fontFamily: HEAD, fontWeight: 700, fontSize: 12, letterSpacing: ".04em", color: "#22C0D4", textTransform: "uppercase", whiteSpace: "nowrap" }}>Click to view ›</div>
                 </div>
               </div>
             </div>
@@ -396,10 +414,10 @@ export default function FeaturedPartnerWheel({
         </div>
       </section>
 
-      {/* info modal */}
-      {selKit && (
-        <div onClick={() => { setSelKit(null); setHovered(null); }} style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(8,17,41,.62)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 28 }}>
-          <div onClick={(e) => e.stopPropagation()} style={{ position: "relative", width: 560, maxWidth: "100%", background: "#fff", borderRadius: 26, overflow: "hidden", boxShadow: "0 50px 120px -30px rgba(0,0,0,.7)", animation: "gbpopc .3s cubic-bezier(.4,0,.2,1) both" }}>
+      {/* info modal — portalled to <body> so transformed ancestors can't break fixed positioning */}
+      {selKit && typeof document !== "undefined" && createPortal((
+        <div onClick={() => { if (performance.now() - a.current.openedAt < 600) return; setSelKit(null); setHovered(null); }} style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(8,17,41,.62)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 28 }}>
+          <div onClick={(e) => e.stopPropagation()} style={{ position: "relative", width: 560, maxWidth: "100%", maxHeight: "calc(100dvh - 32px)", overflowY: "auto", overscrollBehavior: "contain", background: "#fff", borderRadius: 26, boxShadow: "0 50px 120px -30px rgba(0,0,0,.7)", animation: "gbpopc .3s cubic-bezier(.4,0,.2,1) both" }}>
             <button onClick={() => { setSelKit(null); setHovered(null); }} aria-label="Close" style={{ position: "absolute", top: 16, right: 16, zIndex: 3, width: 38, height: 38, borderRadius: "50%", border: "none", background: "rgba(8,17,41,.06)", color: "#081129", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
             </button>
@@ -434,7 +452,7 @@ export default function FeaturedPartnerWheel({
             </div>
           </div>
         </div>
-      )}
+      ), document.body)}
     </div>
   );
 }
