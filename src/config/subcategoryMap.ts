@@ -11,9 +11,35 @@ export type SubcategoryDef = {
   slug: string;
   label: string;
   matchAny: RegExp[];
+  /**
+   * Hard exclusions tested against the test name only. Used to keep gendered
+   * panels apart (e.g. "Advanced Female Fertility Check" must never surface
+   * under Male Fertility).
+   */
+  excludeAny?: RegExp[];
   /** Extra canonical categories to include in the DB query. */
   siblingCategories?: string[];
 };
+
+/** Terms that make a test unambiguously female-specific. */
+const FEMALE_TERMS: RegExp[] = [
+  /\bfemale\b/i,
+  /\bwomen\b|\bwoman\b|\bwomen's\b/i,
+  /menopaus|perimenopaus/i,
+  /ovarian|ovulat/i,
+  /oestrogen|estrogen|oestradiol|estradiol/i,
+  /progesterone/i,
+  /\bpcos\b|polycystic/i,
+  /\bamh\b|anti[- ]?m(ü|u)llerian/i,
+];
+
+/** Terms that make a test unambiguously male-specific. */
+const MALE_TERMS: RegExp[] = [
+  /\bmale\b/i,
+  /\bmen\b|\bman\b|\bmen's\b/i,
+  /sperm|semen/i,
+  /prostate|\bpsa\b/i,
+];
 
 export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
   "womens-health": [
@@ -27,6 +53,7 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
       slug: "fertility",
       label: "Female Fertility Tests",
       matchAny: [/fertility/i, /\bamh\b/i, /ovarian reserve/i],
+      excludeAny: MALE_TERMS,
       siblingCategories: ["fertility", "female-fertility"],
     },
     {
@@ -57,6 +84,7 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
       slug: "fertility",
       label: "Male Fertility Tests",
       matchAny: [/fertility/i, /sperm/i, /semen/i],
+      excludeAny: FEMALE_TERMS,
       siblingCategories: ["fertility", "male-fertility"],
     },
     {
@@ -149,12 +177,14 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
     {
       slug: "female-fertility",
       label: "Female Fertility Tests",
-      matchAny: [/female|women/i, /\bamh\b/i, /ovarian/i, /oestrogen|estrogen/i, /progesterone/i],
+      matchAny: FEMALE_TERMS,
+      excludeAny: MALE_TERMS,
     },
     {
       slug: "male-fertility",
       label: "Male Fertility Tests",
-      matchAny: [/male|men/i, /sperm/i, /semen/i, /testosterone/i],
+      matchAny: MALE_TERMS,
+      excludeAny: FEMALE_TERMS,
     },
     {
       slug: "amh",
@@ -176,8 +206,8 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
   // /at-home-tests listing filters on canonical_category, these entries only
   // provide labels for navigation and breadcrumbs.
   "at-home": [
-    { slug: "womens", label: "Women's Health Home Kits", matchAny: [/women|female|menopaus|pcos|ovarian|amh/i], siblingCategories: ["womens-health"] },
-    { slug: "mens", label: "Men's Health Home Kits", matchAny: [/\bmen\b|male|prostate|\bpsa\b|testosterone/i], siblingCategories: ["mens-health"] },
+    { slug: "womens", label: "Women's Health Home Kits", matchAny: [/\bwomen\b|\bwomen's\b|\bfemale\b|menopaus|pcos|ovarian|\bamh\b/i], excludeAny: MALE_TERMS, siblingCategories: ["womens-health"] },
+    { slug: "mens", label: "Men's Health Home Kits", matchAny: [/\bmen\b|\bmen's\b|\bmale\b|prostate|\bpsa\b|testosterone/i], excludeAny: FEMALE_TERMS, siblingCategories: ["mens-health"] },
     { slug: "general", label: "General Health Home Kits", matchAny: [/general|wellness|essential|full body|complete/i], siblingCategories: ["general-health"] },
     { slug: "vitamins", label: "Vitamins & Nutrition Home Kits", matchAny: [/vitamin|ferritin|iron|folate|b12/i], siblingCategories: ["vitamins"] },
     { slug: "thyroid", label: "Thyroid Home Kits", matchAny: [/thyroid|\btsh\b|\bt3\b|\bt4\b/i], siblingCategories: ["thyroid"] },
@@ -223,8 +253,12 @@ export function testMatchesSubcategory(
   sub: SubcategoryDef,
   fields: { title?: string | null; biomarkers?: string[] | null; tag?: string | null; desc?: string | null }
 ): boolean {
+  const title = fields.title ?? "";
+  // Exclusions are name-only: a description mentioning the other sex must not
+  // hide an otherwise valid panel.
+  if (sub.excludeAny?.some((rx) => rx.test(title))) return false;
   const haystack = [
-    fields.title ?? "",
+    title,
     fields.tag ?? "",
     fields.desc ?? "",
     ...(fields.biomarkers ?? []),

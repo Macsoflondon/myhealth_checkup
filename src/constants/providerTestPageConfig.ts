@@ -98,7 +98,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   'goodbody-clinic': {
     id: 'goodbody-clinic',
     name: 'GoodBody Clinic',
-    logo: '/lovable-uploads/provider-goodbody-new-v4.png',
+    logo: '/lovable-uploads/provider-goodbody-slate-2026.png',
     turnaround: '2-3 working days',
     badgeText: 'GoodBody Clinic Blood Test',
     features: [

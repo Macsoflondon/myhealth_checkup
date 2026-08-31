@@ -113,6 +113,7 @@ export const ProviderTestsGrid = ({
           return (
             <UnifiedTestCard
               key={t.id}
+              defaultFace="brand"
               {...toUnifiedCardProps(card, {
                 provider: providerDisplayName,
                 rating: rating?.rating,
