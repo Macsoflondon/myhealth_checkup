@@ -86,10 +86,12 @@ export const buildTestSummary = (input: TestSummaryInput): string => {
     .replace(/^results?\b[:,-]?\s*/i, "")
     .replace(/^(are\s+)?(typically|usually|generally|normally)\s+/i, "")
     .replace(/^(returned|available|delivered|back)\s+/i, "")
-    .replace(/^(in|within)\s+/i, "");
-  if (turnaround && /\d/.test(turnaround)) {
+    .replace(/^(in|within)\s+/i, "")
+    .replace(/\s+results?$/i, "");
+  if (turnaround && (/\d/.test(turnaround) || /next day/i.test(turnaround))) {
     sentences.push(`Results are typically returned in ${lowerFirst(turnaround)}.`);
   }
+
 
 
   // A lone opening sentence with no count or logistics adds nothing beyond the
