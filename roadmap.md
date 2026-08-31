@@ -1,9 +1,6 @@
 # Roadmap
 
-## In progress
-- [x] Platform-wide foreground system: navy on light, white on dark, navy neutral borders
-- [x] Smooth test-card hover intent and slow crossfade
-- [x] Remove and permanently block non-test catalogue rows; order Lola add-ons last
-
-## Open
-- [ ] Replace Goodbody logo with new uploaded slate logo platform-wide; increase crop/zoom so the wordmark reads at Medichecks scale
+- [x] Toolbar responsive overflow collapse (pills → More menu Categories section)
+- [ ] Tablet: hard navy side borders (no feather fade), keep 24px inset
+- [ ] More dropdown: restyle to match hamburger drawer (pill cards, icon chips)
+- [ ] Verify at 1440/1280/1024/834/390 via Playwright
