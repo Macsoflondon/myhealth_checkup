@@ -41,7 +41,7 @@ const TrustedProvidersPage = () => {
           title={`ACCREDITED
  &
  VERIFIED`}
-          strapline="The UKAS-accredited laboratories and CQC-regulated clinics we compare, with their accreditations shown in full."
+          strapline="Only UKAS-accredited laboratories and CQC-regulated clinics we compare, with their accreditations shown in full."
           stats={["UKAS-accredited labs", "CQC regulated", "ISO 15189 where applicable"]}
         />
         <main className="flex-1">
