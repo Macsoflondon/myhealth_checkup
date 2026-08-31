@@ -28,7 +28,8 @@ const corsHeaders = {
 
 const TIMEOUT_MS = 8000;
 const PROVIDER_CONCURRENCY = 3;
-const STAGGER_MS = 150;
+const STAGGER_START_MS = 150;
+const STAGGER_MAX_MS = 4000;
 const RETRY_AFTER_CAP_MS = 5000;
 const RATE_LIMIT_FALLBACK_WAIT_MS = 2000;
 
@@ -43,6 +44,8 @@ interface CheckResult {
   ok: boolean;
   httpStatus?: number;
   issue?: string;
+  /** True if this request saw a 429 (even if the single retry recovered). */
+  hit429?: boolean;
 }
 
 // Providers (medichecks, clinilabs) reject bare/Deno requests as bot traffic.
@@ -81,7 +84,9 @@ async function checkUrl(url: string): Promise<CheckResult> {
       });
     }
     // Provider rate limiting: retry exactly once after the Retry-After delay.
+    let hit429 = false;
     if (res.status === 429) {
+      hit429 = true;
       const waitMs = retryAfterMs(res.headers);
       await sleep(waitMs);
       res = await fetch(url, {
@@ -91,8 +96,8 @@ async function checkUrl(url: string): Promise<CheckResult> {
         signal: AbortSignal.timeout(TIMEOUT_MS),
       });
     }
-    if (!res.ok) return { ok: false, httpStatus: res.status, issue: `HTTP ${res.status}` };
-    return { ok: true, httpStatus: res.status };
+    if (!res.ok) return { ok: false, httpStatus: res.status, issue: `HTTP ${res.status}`, hit429 };
+    return { ok: true, httpStatus: res.status, hit429 };
   } catch (e) {
     return { ok: false, issue: (e as Error).message };
   }
@@ -154,7 +159,7 @@ Deno.serve(async (req) => {
   const summary: Record<string, { total: number; ok: number; broken: number }> = {};
   const verifiedAt = new Date().toISOString();
 
-  async function processRow(row: TestRow): Promise<boolean> {
+  async function processRow(row: TestRow): Promise<{ ok: boolean; hit429: boolean }> {
     const result = await checkUrl(row.url as string);
 
     summary[row.provider_id] ??= { total: 0, ok: 0, broken: 0 };
@@ -167,6 +172,7 @@ Deno.serve(async (req) => {
     } else {
       ok = false;
       summary[row.provider_id].broken++;
+
       await supabase.from("scraper_alerts").insert({
         provider_id: row.provider_id,
         alert_type: "broken_url",
@@ -179,13 +185,13 @@ Deno.serve(async (req) => {
       .from("provider_tests")
       .update({ url_verified: result.ok, url_verified_at: verifiedAt })
       .eq("id", row.id);
-    return ok;
+    return { ok, hit429: result.hit429 ?? false };
   }
 
   // Group rows by provider, then run each provider's rows through its own
   // worker pool. Providers run in parallel with each other, but a single
   // provider's domain never sees more than PROVIDER_CONCURRENCY requests at
-  // once, with a short stagger between request starts within the pool.
+  // once, with an adaptive stagger between request starts within the pool.
   const byProvider = new Map<string, TestRow[]>();
   for (const row of rows) {
     const group = byProvider.get(row.provider_id);
@@ -199,14 +205,22 @@ Deno.serve(async (req) => {
   async function runProviderPool(providerRows: TestRow[]) {
     let cursor = 0;
     let lastStart = 0;
+    // Adaptive per-provider stagger: starts at STAGGER_START_MS and doubles on
+    // every 429 this pool sees (capped at STAGGER_MAX_MS). Providers that never
+    // hit a 429 stay at the fast starting pace for the whole run.
+    let staggerMs = STAGGER_START_MS;
     async function worker() {
       while (cursor < providerRows.length) {
         const row = providerRows[cursor++];
         // Stagger successive request starts within this provider's pool.
-        const wait = STAGGER_MS - (Date.now() - lastStart);
+        const wait = staggerMs - (Date.now() - lastStart);
         if (wait > 0) await sleep(wait);
         lastStart = Date.now();
-        if (await processRow(row)) okCount++;
+        const result = await processRow(row);
+        if (result.hit429 && staggerMs < STAGGER_MAX_MS) {
+          staggerMs = Math.min(staggerMs * 2, STAGGER_MAX_MS);
+        }
+        if (result.ok) okCount++;
         else brokenCount++;
       }
     }
