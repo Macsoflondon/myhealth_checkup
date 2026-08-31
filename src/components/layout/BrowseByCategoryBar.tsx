@@ -71,7 +71,12 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
         ? (() => { const s = getComputedStyle(dock); return parseFloat(s.paddingLeft) + parseFloat(s.paddingRight); })()
         : 0;
       const moreW = moreRef.current?.offsetWidth ?? 0;
-      const available = bar.clientWidth - padX - moreW - 12;
+      // The straddle dock is w-fit, so bar.clientWidth can be unconstrained;
+      // clamp to the framed page width (viewport minus the 2×--page-inset frame).
+      const rootStyle = getComputedStyle(document.documentElement);
+      const inset = parseFloat(rootStyle.getPropertyValue("--page-inset")) || 0;
+      const framedWidth = document.documentElement.clientWidth - inset * 2;
+      const available = Math.min(bar.clientWidth || framedWidth, framedWidth) - padX - moreW - 12;
       const gap = parseFloat(getComputedStyle(strip).columnGap) || 0;
       let used = 0;
       let count = 0;
