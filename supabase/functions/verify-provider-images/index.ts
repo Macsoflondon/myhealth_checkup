@@ -25,6 +25,9 @@ const PROVIDER_HOST_ALLOWLIST: Record<string, RegExp[]> = {
   bluecrest: [/bluecrestwellness\.com/i],
 };
 
+// Self-hosted Supabase Storage mirrors are valid for every provider.
+const UNIVERSAL_STORAGE_HOST = /clvuioagsgfadynuvodj\.supabase\.co\/storage/i;
+
 interface Row {
   id: string;
   provider_id: string;
@@ -49,9 +52,13 @@ async function checkOne(row: Row): Promise<Result> {
     return { status: "placeholder", issue: `matches placeholder pattern (${url})` };
   }
 
-  const allow = PROVIDER_HOST_ALLOWLIST[row.provider_id];
-  if (allow && !allow.some((re) => re.test(url))) {
-    return { status: "wrong_host", issue: `host not in allowlist for ${row.provider_id}` };
+  if (UNIVERSAL_STORAGE_HOST.test(url)) {
+    // Self-hosted Supabase Storage mirror — valid regardless of provider.
+  } else {
+    const allow = PROVIDER_HOST_ALLOWLIST[row.provider_id];
+    if (allow && !allow.some((re) => re.test(url))) {
+      return { status: "wrong_host", issue: `host not in allowlist for ${row.provider_id}` };
+    }
   }
 
   try {
