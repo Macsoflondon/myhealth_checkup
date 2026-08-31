@@ -2,7 +2,6 @@ import { Link } from "@/lib/router-compat";
 import { SectionHeading } from "@/components/ui/section-heading";
 import fingerprickAsset from "@/assets/at-home-fingerprick.jpg.asset.json";
 
-
 const categories = [
   {
     tag: "Blood Testing",
@@ -13,7 +12,8 @@ const categories = [
       "Individual biomarkers to comprehensive wellness panels. In-clinic or at-home phlebotomy from UKAS-accredited laboratories.",
     link: "/wellness",
     linkLabel: "Explore Tests",
-    image: "https://images.unsplash.com/photo-1612277795421-9bc7706a4a34?w=1800&q=85&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1612277795421-9bc7706a4a34?w=1800&q=85&auto=format&fit=crop",
   },
   {
     tag: "Cancer Screening",
@@ -24,7 +24,8 @@ const categories = [
       "Multi-cancer early detection tests, tumour markers, and targeted screening for bowel, prostate, ovarian, and other cancers from regulated UK clinics.",
     link: "/tests/cancer",
     linkLabel: "Explore Screening",
-    image: "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=1800&q=85&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1530026405186-ed1f139313f8?w=1800&q=85&auto=format&fit=crop",
   },
   {
     tag: "Wellness",
@@ -36,7 +37,8 @@ const categories = [
       "Advanced diagnostics for health optimisation. Biological age testing, hormones, cardiovascular risk, and micronutrient status.",
     link: "/test-categories",
     linkLabel: "Explore Panels",
-    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1800&q=85&auto=format&fit=crop",
+    image:
+      "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1800&q=85&auto=format&fit=crop",
   },
   {
     tag: "At Home Test Kits",
@@ -48,17 +50,13 @@ const categories = [
     link: "/at-home-tests",
     linkLabel: "Explore Kits",
     image: fingerprickAsset.url,
-
   },
 ];
-
 
 const TestCategoriesSection = () => {
   return (
     <section className="bg-white pt-12 pb-14 sm:pt-16 sm:pb-16 md:pt-20 md:pb-20">
       <div className="w-full px-4 sm:px-8 lg:px-12">
-
-
         {/* Header — standardised to match other section headings */}
         <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
           <div className="flex items-center justify-center gap-3 mb-3">
@@ -103,7 +101,6 @@ const TestCategoriesSection = () => {
                     "linear-gradient(to top, rgba(8,17,41,0.97) 0%, rgba(8,17,41,0.65) 60%, rgba(8,17,41,0.15) 100%)",
                 }}
               />
-
 
               {/* Card content — sits at bottom above overlay */}
               <div className="relative z-10 p-5 sm:p-7 lg:p-8">

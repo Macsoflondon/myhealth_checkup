@@ -4,42 +4,48 @@ import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 
 const testimonials = [
   {
-    quote: "I compared five different thyroid panels in under two minutes. Prices, biomarkers, turnaround time — all in one place. I wish I had found this sooner.",
+    quote:
+      "I compared five different thyroid panels in under two minutes. Prices, biomarkers, turnaround time — all in one place. I wish I had found this sooner.",
     name: "Jackie O.",
     detail: "NW London",
     context: "Blood Tests Comparison",
     stars: 5,
   },
   {
-    quote: "Knowing every provider listed uses UKAS-accredited labs made my decision straightforward. I did not have to second-guess the quality.",
+    quote:
+      "Knowing every provider listed uses UKAS-accredited labs made my decision straightforward. I did not have to second-guess the quality.",
     name: "Tiago L.",
     detail: "NW London",
     context: "Blood Tests Comparison",
     stars: 5,
   },
   {
-    quote: "The health quiz narrowed down exactly which blood test matched my concerns. No account required, no pressure — just clear information.",
+    quote:
+      "The health quiz narrowed down exactly which blood test matched my concerns. No account required, no pressure — just clear information.",
     name: "Italo O.",
     detail: "NW London",
     context: "Health Quiz",
     stars: 5,
   },
   {
-    quote: "Other sites buried the total cost behind add-ons. Here, the pricing was upfront and honest. That transparency earned my trust.",
+    quote:
+      "Other sites buried the total cost behind add-ons. Here, the pricing was upfront and honest. That transparency earned my trust.",
     name: "Nathanial S.",
     detail: "South London",
     context: "Full Body MOT Comparison",
     stars: 5,
   },
   {
-    quote: "As a first-timer, I had no idea where to start. The side-by-side comparison made it simple to understand what each test actually covers.",
+    quote:
+      "As a first-timer, I had no idea where to start. The side-by-side comparison made it simple to understand what each test actually covers.",
     name: "Kristijan G.",
     detail: "SE London",
     context: "Hormone Panel Comparison",
     stars: 5,
   },
   {
-    quote: "Completely free, no sign-up, and genuinely independent. I have recommended it to everyone in my family.",
+    quote:
+      "Completely free, no sign-up, and genuinely independent. I have recommended it to everyone in my family.",
     name: "Liam D.",
     detail: "West London",
     context: "Vitamin Testing",
@@ -53,7 +59,12 @@ const TestimonialCarousel = () => {
   const trackRef = useRef<HTMLDivElement>(null);
 
   // Quadruple for seamless loop
-  const items = [...testimonials, ...testimonials, ...testimonials, ...testimonials];
+  const items = [
+    ...testimonials,
+    ...testimonials,
+    ...testimonials,
+    ...testimonials,
+  ];
 
   useEffect(() => {
     const track = trackRef.current;
@@ -104,7 +115,7 @@ const TestimonialCarousel = () => {
   return (
     <section className="py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden">
       <NavyDecorativeCircles />
-      
+
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative">
         {/* Section label */}
         <div className="flex items-center justify-center gap-3 mb-3">
@@ -114,21 +125,25 @@ const TestimonialCarousel = () => {
           </span>
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />
         </div>
-        
+
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight text-center mb-8 sm:mb-9">
           <span className="text-white">What people say about myhealth </span>
           <span className="text-brand-turquoise">checkup</span>
         </h2>
 
-
         <div
           className="relative overflow-hidden"
           style={{
-            maskImage: "linear-gradient(to right, transparent, black 3%, black 97%, transparent)",
-            WebkitMaskImage: "linear-gradient(to right, transparent, black 3%, black 97%, transparent)",
+            maskImage:
+              "linear-gradient(to right, transparent, black 3%, black 97%, transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent, black 3%, black 97%, transparent)",
           }}
         >
-          <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
+          <div
+            ref={trackRef}
+            className="flex whitespace-nowrap will-change-transform"
+          >
             {items.map((t, i) => (
               <div
                 key={i}
@@ -138,7 +153,7 @@ const TestimonialCarousel = () => {
                 <div className="bg-white border border-white/20 rounded-2xl p-5 sm:p-6 h-full flex flex-col hover:border-brand-turquoise/30 transition-all duration-300">
                   {/* Quote icon */}
                   <Quote className="w-6 h-6 text-brand-pink mb-3" />
-                  
+
                   {/* Stars */}
                   <div className="flex gap-0.5 mb-3">
                     {Array.from({ length: t.stars }).map((_, s) => (
@@ -148,11 +163,11 @@ const TestimonialCarousel = () => {
                       />
                     ))}
                   </div>
-                  
+
                   <p className="text-brand-navy font-sans text-sm sm:text-base leading-relaxed flex-1 mb-4 whitespace-normal">
                     "{t.quote}"
                   </p>
-                  
+
                   <div className="pt-4 border-t border-brand-pink">
                     <p className="font-heading font-semibold text-brand-navy text-sm">
                       {t.name}

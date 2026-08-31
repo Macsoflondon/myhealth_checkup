@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "@/lib/router-compat";
-import { usePopularTestsFromDatabase, type PopularTest } from "@/hooks/usePopularTestsFromDatabase";
+import {
+  usePopularTestsFromDatabase,
+  type PopularTest,
+} from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatTestPrice } from "@/lib/utils";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
@@ -24,7 +27,6 @@ const toCardData = (t: PopularTest): ProviderTestCardData => ({
   base_price: t.base_price ?? null,
   collection_options: (t.collection_options as any) ?? null,
 });
-
 
 const cleanName = (name: string) =>
   name
@@ -78,24 +80,32 @@ const PLACEHOLDER_PATTERNS = [
   /lovableproject\.com\/lovable-uploads\//i,
 ];
 
-const PROVIDER_FALLBACK_IMAGES: Partial<Record<PopularTest["provider_id"], string>> = {
+const PROVIDER_FALLBACK_IMAGES: Partial<
+  Record<PopularTest["provider_id"], string>
+> = {
   // Only use provider fallbacks that are NOT product-specific.
   // A Randox thyroid-kit image would misrepresent every other Randox test,
   // so we intentionally omit it — tests without a real image are filtered out.
-  "london-medical-laboratory": "https://www.londonmedicallaboratory.com/build/images/site/banners/homepage-banner-mobile.jpg",
+  "london-medical-laboratory":
+    "https://www.londonmedicallaboratory.com/build/images/site/banners/homepage-banner-mobile.jpg",
 };
 
-
-const normalizeImageUrl = (url?: string | null, providerId?: string, pageUrl?: string | null) => {
+const normalizeImageUrl = (
+  url?: string | null,
+  providerId?: string,
+  pageUrl?: string | null,
+) => {
   if (!url) return null;
   if (/^https?:\/\//i.test(url)) return url;
-  if (url.startsWith('//')) return `https:${url}`;
-  if (!url.startsWith('/')) return null;
+  if (url.startsWith("//")) return `https:${url}`;
+  if (!url.startsWith("/")) return null;
 
   try {
     if (pageUrl) return new URL(url, pageUrl).toString();
-    if (providerId === "lola-health") return new URL(url, "https://lolahealth.com").toString();
-    if (providerId === "london-medical-laboratory") return new URL(url, "https://www.londonmedicallaboratory.com").toString();
+    if (providerId === "lola-health")
+      return new URL(url, "https://lolahealth.com").toString();
+    if (providerId === "london-medical-laboratory")
+      return new URL(url, "https://www.londonmedicallaboratory.com").toString();
   } catch {
     return null;
   }
@@ -113,7 +123,7 @@ const isRealProviderImage = (url?: string | null): url is string =>
 const resolveImage = (t: PopularTest): string | null =>
   isRealProviderImage(normalizeImageUrl(t.image_url, t.provider_id, t.url))
     ? normalizeImageUrl(t.image_url, t.provider_id, t.url)!
-    : PROVIDER_FALLBACK_IMAGES[t.provider_id] ?? null;
+    : (PROVIDER_FALLBACK_IMAGES[t.provider_id] ?? null);
 
 const ALLOWED_PROVIDERS = [
   "lola-health",
@@ -143,12 +153,28 @@ const isDisplayablePopularTest = (t: PopularTest) =>
 
 const getPriorityScore = (t: PopularTest) => {
   const hasPopularityFlag = t.is_popular === true ? 1000 : 0;
-  const rankBoost = t.popularity_rank ? Math.max(0, 200 - t.popularity_rank) : 0;
-  const bloodTestBoost = /blood test|home test|test kit|health test|screen/i.test(t.test_name) ? 25 : 0;
-  const validPriceBoost = (typeof t.price === "number" && t.price > 0) || (typeof t.base_price === "number" && t.base_price > 0) ? 80 : 0;
+  const rankBoost = t.popularity_rank
+    ? Math.max(0, 200 - t.popularity_rank)
+    : 0;
+  const bloodTestBoost =
+    /blood test|home test|test kit|health test|screen/i.test(t.test_name)
+      ? 25
+      : 0;
+  const validPriceBoost =
+    (typeof t.price === "number" && t.price > 0) ||
+    (typeof t.base_price === "number" && t.base_price > 0)
+      ? 80
+      : 0;
   const validDescriptionBoost = t.description?.trim() ? 40 : 0;
   const validImageBoost = resolveImage(t) ? 120 : -300;
-  return hasPopularityFlag + rankBoost + bloodTestBoost + validPriceBoost + validDescriptionBoost + validImageBoost;
+  return (
+    hasPopularityFlag +
+    rankBoost +
+    bloodTestBoost +
+    validPriceBoost +
+    validDescriptionBoost +
+    validImageBoost
+  );
 };
 
 const interleaveByProvider = (tests: PopularTest[]): PopularTest[] => {
@@ -180,7 +206,6 @@ const DreamHealthShowcase = () => {
   const trackRef = useRef<HTMLDivElement>(null);
   const [selectedTest, setSelectedTest] = useState<PopularTest | null>(null);
 
-
   const orderedTests = useMemo(() => {
     if (!popularTests) return [];
     const valid = popularTests.filter(isDisplayablePopularTest);
@@ -202,8 +227,12 @@ const DreamHealthShowcase = () => {
     const sorted = [...capped].sort((a, b) => {
       const scoreDiff = getPriorityScore(b) - getPriorityScore(a);
       if (scoreDiff !== 0) return scoreDiff;
-      const priceA = Number.isFinite(a.price) ? a.price : Number.POSITIVE_INFINITY;
-      const priceB = Number.isFinite(b.price) ? b.price : Number.POSITIVE_INFINITY;
+      const priceA = Number.isFinite(a.price)
+        ? a.price
+        : Number.POSITIVE_INFINITY;
+      const priceB = Number.isFinite(b.price)
+        ? b.price
+        : Number.POSITIVE_INFINITY;
       if (priceA !== priceB) return priceA - priceB;
       return cleanName(a.test_name).localeCompare(cleanName(b.test_name));
     });
@@ -222,7 +251,9 @@ const DreamHealthShowcase = () => {
     }
 
     const remainder = interleaveByProvider(
-      ALLOWED_PROVIDERS.flatMap((providerId) => byProvider.get(providerId) ?? [])
+      ALLOWED_PROVIDERS.flatMap(
+        (providerId) => byProvider.get(providerId) ?? [],
+      ),
     );
 
     return [...guaranteedCoverage, ...remainder].slice(0, 9);
@@ -230,8 +261,13 @@ const DreamHealthShowcase = () => {
 
   const filmstripTests = orderedTests;
   const filmstripLoop = useMemo(
-    () => [...filmstripTests, ...filmstripTests, ...filmstripTests, ...filmstripTests],
-    [filmstripTests]
+    () => [
+      ...filmstripTests,
+      ...filmstripTests,
+      ...filmstripTests,
+      ...filmstripTests,
+    ],
+    [filmstripTests],
   );
 
   useEffect(() => {
@@ -302,8 +338,10 @@ const DreamHealthShowcase = () => {
         <div
           className="relative overflow-hidden"
           style={{
-            maskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
-            WebkitMaskImage: "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
+            maskImage:
+              "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent, black 5%, black 95%, transparent)",
           }}
         >
           <div
@@ -332,7 +370,8 @@ const DreamHealthShowcase = () => {
                       alt={cleanName(t.test_name)}
                       loading="lazy"
                       onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).style.display = "none";
+                        (e.currentTarget as HTMLImageElement).style.display =
+                          "none";
                       }}
                       className="w-full h-full object-contain p-4"
                     />
@@ -343,13 +382,15 @@ const DreamHealthShowcase = () => {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center mt-8 sm:mt-10">
-
         {/* 9 mixed-provider test cards — uniform sizing */}
         <div className="mt-9 sm:mt-10">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 text-left auto-rows-fr">
             {isLoading &&
               Array.from({ length: 9 }).map((_, i) => (
-                <Skeleton key={i} className="h-[420px] rounded-2xl bg-black/5" />
+                <Skeleton
+                  key={i}
+                  className="h-[420px] rounded-2xl bg-black/5"
+                />
               ))}
 
             {!isLoading &&
@@ -377,12 +418,14 @@ const DreamHealthShowcase = () => {
                         alt={t.test_name}
                         loading="lazy"
                         onError={(e) => {
-                          const fallback = PROVIDER_FALLBACK_IMAGES[t.provider_id];
+                          const fallback =
+                            PROVIDER_FALLBACK_IMAGES[t.provider_id];
                           if (fallback && e.currentTarget.src !== fallback) {
                             e.currentTarget.src = fallback;
                             return;
                           }
-                          (e.currentTarget as HTMLImageElement).style.display = "none";
+                          (e.currentTarget as HTMLImageElement).style.display =
+                            "none";
                         }}
                         className="w-full h-full object-contain p-4"
                       />
@@ -466,6 +509,5 @@ const DreamHealthShowcase = () => {
     </section>
   );
 };
-
 
 export default DreamHealthShowcase;

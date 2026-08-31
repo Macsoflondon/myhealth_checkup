@@ -80,10 +80,9 @@ const PartnersGrid = () => {
         {/* Section label */}
         <EyebrowBadge size="md" tone="onDark" className="mb-2" />
 
-
-        <SectionHeading 
-          title=" " 
-          gradientText="" 
+        <SectionHeading
+          title=" "
+          gradientText=""
           className="mb-4 sm:mb-5"
           titleClassName="text-white"
         />
@@ -91,19 +90,29 @@ const PartnersGrid = () => {
         <div
           className="relative overflow-hidden full-bleed"
           style={{
-            maskImage: "linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)",
-            WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)",
+            maskImage:
+              "linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)",
           }}
         >
-          <div ref={trackRef} className="flex whitespace-nowrap will-change-transform">
+          <div
+            ref={trackRef}
+            className="flex whitespace-nowrap will-change-transform"
+          >
             {items.map((provider, index) => {
               const LOGO_SIZE: Record<string, string> = {
-                'goodbody-clinic': 'max-h-[88px] sm:max-h-[112px] md:max-h-[128px]',
-                'randox': 'max-h-[64px] sm:max-h-[84px]',
+                "goodbody-clinic":
+                  "max-h-[88px] sm:max-h-[112px] md:max-h-[128px]",
+                randox: "max-h-[64px] sm:max-h-[84px]",
               };
-              const DEFAULT_LOGO_SIZE = 'max-h-[90px] sm:max-h-[120px]';
+              const DEFAULT_LOGO_SIZE = "max-h-[90px] sm:max-h-[120px]";
               return (
-                <div key={`${provider.id}-${index}`} className="shrink-0 px-3 sm:px-4" style={{ width: "260px" }}>
+                <div
+                  key={`${provider.id}-${index}`}
+                  className="shrink-0 px-3 sm:px-4"
+                  style={{ width: "260px" }}
+                >
                   <Link
                     to={`/provider/${provider.id}`}
                     className="group rounded-xl p-6 sm:p-8 flex items-center justify-center 
@@ -115,7 +124,9 @@ const PartnersGrid = () => {
                       hover:border-[#22c0d4]/30 bg-white"
                   >
                     {(() => {
-                      const { src, srcSet } = getProviderLogoSrcSet(provider.id);
+                      const { src, srcSet } = getProviderLogoSrcSet(
+                        provider.id,
+                      );
                       return (
                         <img
                           src={src}
