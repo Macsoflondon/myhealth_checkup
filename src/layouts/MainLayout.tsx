@@ -28,16 +28,21 @@ export const MainLayout = ({
   const navigate = useNavigate();
   const compareItems = useCompareItems();
   return (
-    <div className="min-h-dvh flex flex-col bg-[hsl(224,67%,10%)]">
+    <div className="min-h-dvh flex flex-col bg-[hsl(224,67%,10%)] page-surface">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg">Skip to main content</a>
-      {!hideHeader && !isHome && (
-        <BrowseByCategoryBar variant="flush" placement="straddle" />
-      )}
-      <main id="main-content" className={mainClassName} tabIndex={-1}>
-        {!isCompare && <SiteBreadcrumb />}
-        {children}
-      </main>
-      {!hideFooter && <Footer />}
+      {/* Page surface: inset from the viewport, left/right edges feathered into
+          the ambient background. Overlays (cookie banner, comparison bar) stay
+          outside so the mask never clips them. */}
+      <div className="page-surface-inner flex flex-1 flex-col">
+        {!hideHeader && !isHome && (
+          <BrowseByCategoryBar variant="flush" placement="straddle" />
+        )}
+        <main id="main-content" className={mainClassName} tabIndex={-1}>
+          {!isCompare && <SiteBreadcrumb />}
+          {children}
+        </main>
+        {!hideFooter && <Footer />}
+      </div>
       <CookieConsent />
       <ComparisonBar selectedTests={compareItems} onRemoveTest={(id) => compareStore.remove(id)} onCompare={() => navigate(compareResultsPath(compareItems.map((t) => t.id)))} onClearAll={() => compareStore.clear()} />
     </div>
