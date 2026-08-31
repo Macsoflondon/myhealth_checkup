@@ -11,7 +11,6 @@ import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailMo
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 import { isGenericDescription, resolveTestSummary } from "@/lib/test-summary";
 
-
 const withFrom = (s: string) => (s && !/^from\b/i.test(s) ? `from ${s}` : s);
 
 const toCardData = (t: PopularTest): ProviderTestCardData => ({
@@ -70,7 +69,6 @@ const descriptionFor = (t: PopularTest): string => {
   const provided = t.description?.trim();
   if (provided && !isGenericDescription(provided)) return provided;
 
-
   const markers = (Array.isArray(t.markers) ? t.markers : [])
     .map(markerName)
     .filter(Boolean);
@@ -100,7 +98,6 @@ const descriptionFor = (t: PopularTest): string => {
 
   return `${cleanName(t.test_name)} from ${t.provider_name}.`;
 };
-
 
 const PLACEHOLDER_PATTERNS = [
   /\/kits\/kit-(navy|turquoise|pink|black|white|coral)\.jpg$/i,

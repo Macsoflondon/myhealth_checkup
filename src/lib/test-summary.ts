@@ -34,7 +34,8 @@ const measurementLabel = (count: number, type?: string | null): string => {
   return count === 1 ? pair[0] : pair[1];
 };
 
-const tidy = (value?: string | null): string => (value ?? "").trim().replace(/\s+/g, " ");
+const tidy = (value?: string | null): string =>
+  (value ?? "").trim().replace(/\s+/g, " ");
 
 const lowerFirst = (value: string): string =>
   value.length > 1 && value.slice(1) === value.slice(1).toLowerCase()
@@ -72,11 +73,11 @@ export const buildTestSummary = (input: TestSummaryInput): string => {
     ? lowerFirst(rawCollection)
     : rawCollection
       ? `a ${lowerFirst(rawCollection)} blood sample`
-
       : "";
   const collectionOptions: string[] = [];
   if (input.homeKitAvailable) collectionOptions.push("an at-home kit");
-  if (input.clinicVisitAvailable) collectionOptions.push("a clinic appointment");
+  if (input.clinicVisitAvailable)
+    collectionOptions.push("a clinic appointment");
 
   if (collection) {
     sentences.push(
@@ -103,9 +104,6 @@ export const buildTestSummary = (input: TestSummaryInput): string => {
         : `Results are typically returned in ${lowerFirst(turnaround)}.`,
     );
   }
-
-
-
 
   // A lone opening sentence with no count or logistics adds nothing beyond the
   // card title, so treat it as no summary at all.
@@ -143,4 +141,3 @@ export const resolveTestSummary = (
   if (provided && !isGenericDescription(provided)) return provided;
   return buildTestSummary(input) || provided;
 };
-
