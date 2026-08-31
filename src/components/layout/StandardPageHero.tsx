@@ -86,7 +86,7 @@ export function StandardPageHero({
           />
           <Heading
             id={headingId}
-            className="font-bold text-center m-0 text-white text-xl sm:text-2xl md:text-[33px]"
+            className="whitespace-pre-line font-bold text-center m-0 text-white text-xl sm:text-2xl md:text-[33px]"
             style={{
               fontFamily: "Montserrat, 'Helvetica Neue', sans-serif",
               letterSpacing: "0.04em",
