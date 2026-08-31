@@ -24,7 +24,7 @@ const CategoryCard = ({
   providerCount,
   featured = false
 }: CategoryCardProps) => {
-  return <Link to={link} className={cn("group relative overflow-hidden rounded-xl sm:rounded-2xl transition-all duration-500", "bg-gradient-to-br from-white to-gray-50/50", "border border-gray-200/60 hover:border-[#FA6980]/30", "hover:shadow-2xl hover:shadow-[#FA6980]/10", "hover:-translate-y-1 sm:hover:-translate-y-2", featured && "sm:col-span-2 sm:row-span-1")}>
+  return <Link to={link} className={cn("group relative overflow-hidden rounded-xl sm:rounded-2xl transition-all duration-500", "bg-gradient-to-br from-white to-gray-50/50", "border border-brand-navy/60 hover:border-[#FA6980]/30", "hover:shadow-2xl hover:shadow-[#FA6980]/10", "hover:-translate-y-1 sm:hover:-translate-y-2", featured && "sm:col-span-2 sm:row-span-1")}>
       {/* Gradient overlay on hover */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#FA6980]/5 to-[#3A5F85]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       
@@ -43,7 +43,7 @@ const CategoryCard = ({
           {title}
         </h3>
         
-        <p className={cn("text-gray-600 leading-relaxed mb-3 sm:mb-4 md:mb-5", featured ? "text-sm sm:text-base" : "text-xs sm:text-sm")}>
+        <p className={cn("text-brand-navy leading-relaxed mb-3 sm:mb-4 md:mb-5", featured ? "text-sm sm:text-base" : "text-xs sm:text-sm")}>
           {description}
         </p>
         

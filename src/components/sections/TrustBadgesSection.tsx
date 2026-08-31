@@ -24,7 +24,7 @@ const TrustBadgesSection = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-[hsl(var(--navy))] mb-3 text-[#081129]">
             Trusted Health Comparison Platform
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto font-medium">
+          <p className="text-lg text-brand-navy max-w-2xl mx-auto font-medium">
             We only feature UKAS-accredited laboratories, CQC-regulated clinics, and ISO 15189-certified facilities to ensure you receive the highest quality care.
           </p>
         </div>
@@ -37,7 +37,7 @@ const TrustBadgesSection = () => {
               <h3 className="font-semibold text-[hsl(var(--navy))] mb-2 text-[#081129]">
                 {badge.title}
               </h3>
-              <p className="text-sm text-gray-600 font-medium">
+              <p className="text-sm text-brand-navy font-medium">
                 {badge.description}
               </p>
             </div>)}

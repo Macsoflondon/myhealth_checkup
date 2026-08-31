@@ -5,7 +5,7 @@ const TrustSignals: React.FC = () => {
   return (
     <div className="bg-white py-4 border-b">
       <div className="container mx-auto px-4">
-        <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-gray-600">
+        <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-brand-navy">
           {/* Feefo Reviews */}
           <div className="flex items-center gap-2">
             <div className="flex items-center">
@@ -29,7 +29,7 @@ const TrustSignals: React.FC = () => {
 
           {/* Fast Turnaround */}
           <div className="flex items-center gap-2">
-            <Clock className="w-5 h-5 text-gray-400" />
+            <Clock className="w-5 h-5 text-brand-navy" />
             <span>Fast turnaround time.</span>
           </div>
         </div>

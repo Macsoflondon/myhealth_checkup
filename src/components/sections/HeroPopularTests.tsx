@@ -42,7 +42,7 @@ export function HeroPopularTests() {
           <h2 className="font-[Montserrat] font-bold text-2xl sm:text-3xl text-[#081129] tracking-tight">
             Popular tests this week
           </h2>
-          <p className="mt-2 text-sm sm:text-base text-[#64748b] max-w-2xl mx-auto">
+          <p className="mt-2 text-sm sm:text-base text-brand-navy max-w-2xl mx-auto">
             Trending private blood tests and health screens chosen by our visitors.
           </p>
         </div>

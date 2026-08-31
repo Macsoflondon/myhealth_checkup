@@ -238,7 +238,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent 
         side="left" 
-        className="w-[88vw] max-w-[420px] p-0 bg-white border-r border-gray-200"
+        className="w-[88vw] max-w-[420px] p-0 bg-white border-r border-brand-navy"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -260,7 +260,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                 "flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200",
                 activeTab === 'menu' 
                   ? "bg-white text-[hsl(var(--navy))] shadow-xs" 
-                  : "text-gray-500 hover:text-gray-700"
+                  : "text-brand-navy hover:text-brand-navy"
               )}
             >
               Menu
@@ -271,7 +271,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                 "flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200",
                 activeTab === 'categories' 
                   ? "bg-white text-[hsl(var(--navy))] shadow-xs" 
-                  : "text-gray-500 hover:text-gray-700"
+                  : "text-brand-navy hover:text-brand-navy"
               )}
             >
               Test Categories
@@ -280,18 +280,18 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
           
           {/* Search Input */}
           <div className="relative mt-3">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-navy" />
             <Input
               type="text"
               placeholder="Search tests or categories..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-10 h-12 text-base rounded-xl border-gray-200 focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]/20 bg-white"
+              className="pl-10 pr-10 h-12 text-base rounded-xl border-brand-navy focus:border-[hsl(var(--primary))] focus:ring-[hsl(var(--primary))]/20 bg-white"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 rounded-full hover:bg-gray-100 transition-colors touch-manipulation active:scale-95"
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-brand-navy hover:text-brand-navy rounded-full hover:bg-gray-100 transition-colors touch-manipulation active:scale-95"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -304,7 +304,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
             {/* Search Results */}
             {filteredContent && filteredContent.length > 0 && (
               <div className="space-y-1">
-                <p className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                <p className="px-3 py-2 text-xs font-semibold text-brand-navy uppercase tracking-wider">
                   {filteredContent.length} {filteredContent.length === 1 ? 'Result' : 'Results'}
                 </p>
                 {filteredContent.map((result, index) => {
@@ -322,11 +322,11 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                         <IconComponent className="w-4 h-4 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-gray-900 group-hover:text-[hsl(var(--primary))]">
+                        <p className="text-sm font-medium text-brand-navy group-hover:text-[hsl(var(--primary))]">
                           {result.name}
                         </p>
                         {result.description && (
-                          <p className="text-xs text-gray-500 line-clamp-2 mt-0.5">
+                          <p className="text-xs text-brand-navy line-clamp-2 mt-0.5">
                             {result.description}
                           </p>
                         )}
@@ -347,10 +347,10 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
             {filteredContent && filteredContent.length === 0 && (
               <div className="px-4 py-10 text-center">
                 <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
-                  <Search className="h-7 w-7 text-gray-400" />
+                  <Search className="h-7 w-7 text-brand-navy" />
                 </div>
-                <p className="text-base font-medium text-gray-900 mb-1">No results found</p>
-                <p className="text-sm text-gray-500">
+                <p className="text-base font-medium text-brand-navy mb-1">No results found</p>
+                <p className="text-sm text-brand-navy">
                   Try searching for different tests or categories
                 </p>
               </div>
@@ -371,7 +371,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                         "w-full flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 touch-manipulation active:scale-[0.98] min-h-[52px]",
                         expandedSections.has(section.title)
                           ? "bg-[hsl(var(--secondary))]/10 text-[hsl(var(--secondary))]"
-                          : "hover:bg-gray-50 active:bg-gray-100 text-gray-900"
+                          : "hover:bg-gray-50 active:bg-gray-100 text-brand-navy"
                       )}
                     >
                       <span className="font-semibold text-base">{section.title}</span>
@@ -397,7 +397,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                             key={item.path}
                             to={item.path}
                             onClick={handleLinkClick}
-                            className="flex items-center px-3 py-3 text-sm text-gray-700 hover:text-[hsl(var(--secondary))] active:text-[hsl(var(--secondary))] hover:bg-gray-50 active:bg-gray-100 rounded-xl transition-all duration-150 touch-manipulation min-h-[48px]"
+                            className="flex items-center px-3 py-3 text-sm text-brand-navy hover:text-[hsl(var(--secondary))] active:text-[hsl(var(--secondary))] hover:bg-gray-50 active:bg-gray-100 rounded-xl transition-all duration-150 touch-manipulation min-h-[48px]"
                           >
                             {item.name}
                           </Link>
@@ -411,7 +411,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                 <Link
                   to="/how-it-works"
                   onClick={handleLinkClick}
-                  className="flex items-center px-4 py-3.5 rounded-xl font-semibold text-base text-gray-900 hover:bg-gray-50 active:bg-gray-100 transition-all duration-150 touch-manipulation active:scale-[0.98] min-h-[52px] animate-fade-in"
+                  className="flex items-center px-4 py-3.5 rounded-xl font-semibold text-base text-brand-navy hover:bg-gray-50 active:bg-gray-100 transition-all duration-150 touch-manipulation active:scale-[0.98] min-h-[52px] animate-fade-in"
                   style={{ animationDelay: `${moreNavigationSections.length * 30}ms` }}
                 >
                   How It Works
@@ -437,7 +437,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                         <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shadow-xs", card.bg)}>
                           <Icon className="w-5 h-5 text-white" />
                         </div>
-                        <span className="text-xs font-medium text-gray-700 text-center leading-tight group-hover:text-[hsl(var(--primary))]">
+                        <span className="text-xs font-medium text-brand-navy text-center leading-tight group-hover:text-[hsl(var(--primary))]">
                           {card.name}
                         </span>
                       </Link>
@@ -469,7 +469,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                   <Button
                     asChild
                     variant="outline"
-                    className="w-full justify-start h-14 text-base font-medium rounded-xl border-2 border-gray-200 hover:border-[hsl(var(--secondary))] hover:bg-[hsl(var(--secondary))]/5 active:scale-[0.98] transition-all touch-manipulation"
+                    className="w-full justify-start h-14 text-base font-medium rounded-xl border-2 border-brand-navy hover:border-[hsl(var(--secondary))] hover:bg-[hsl(var(--secondary))]/5 active:scale-[0.98] transition-all touch-manipulation"
                   >
                     <Link to="/contact" onClick={handleLinkClick}>
                       <Phone className="w-5 h-5 mr-3 text-[hsl(var(--secondary))]" />

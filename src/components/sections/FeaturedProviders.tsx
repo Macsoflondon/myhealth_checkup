@@ -97,7 +97,7 @@ const FeaturedProviders = () => {
             title="Featured" 
             gradientText="Partners" 
           />
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto mt-4">
+          <p className="text-lg text-brand-navy max-w-2xl mx-auto mt-4">
             Accredited health testing providers with proven track records
           </p>
         </div>
@@ -109,7 +109,7 @@ const FeaturedProviders = () => {
             return (
               <Card
                 key={provider.id}
-                className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-gray-200 overflow-hidden"
+                className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-brand-navy overflow-hidden"
                 style={{ borderTop: brand ? `4px solid ${brand.primary}` : undefined }}
               >
                 <CardContent className="p-8">
@@ -128,18 +128,18 @@ const FeaturedProviders = () => {
                       {canonical && (
                         <div className="flex items-center space-x-1.5">
                           <Star className="w-4 h-4 text-yellow-400 fill-current flex-shrink-0" />
-                          <span className="font-semibold text-gray-900">{canonical.rating}</span>
-                          <span className="text-sm text-gray-500">({canonical.reviewsFormatted} reviews)</span>
+                          <span className="font-semibold text-brand-navy">{canonical.rating}</span>
+                          <span className="text-sm text-brand-navy">({canonical.reviewsFormatted} reviews)</span>
                         </div>
                       )}
                     </div>
                   </div>
 
-                  <p className="text-sm text-gray-600 mb-5">
+                  <p className="text-sm text-brand-navy mb-5">
                     {provider.description}
                   </p>
 
-                  <div className="flex items-center text-sm text-gray-500 mb-5">
+                  <div className="flex items-center text-sm text-brand-navy mb-5">
                     <MapPin className="w-4 h-4 mr-1.5 flex-shrink-0" />
                     <span className="truncate">{provider.location}</span>
                   </div>

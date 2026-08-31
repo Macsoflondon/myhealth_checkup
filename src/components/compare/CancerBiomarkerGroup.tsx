@@ -18,7 +18,7 @@ const CANCER_TYPE_COLORS: Record<string, string> = {
   liver: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300',
   testicular: 'bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-300',
   pancreatic: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300',
-  lung: 'bg-slate-100 text-slate-800 dark:bg-slate-900/30 dark:text-slate-300',
+  lung: 'bg-slate-100 text-brand-navy dark:bg-slate-900/30 dark:text-slate-300',
   colorectal: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300',
 };
 

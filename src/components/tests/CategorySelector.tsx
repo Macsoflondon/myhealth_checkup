@@ -22,21 +22,21 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
     <Card className="w-full max-w-4xl mx-auto bg-white shadow-lg">
       <CardContent className="p-8">
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-3">
+          <h2 className="text-2xl font-bold text-brand-navy mb-3">
             Find your perfect test by category
           </h2>
-          <p className="text-gray-600 text-lg">
+          <p className="text-brand-navy text-lg">
             Browse tests by health category to find exactly what you need
           </p>
         </div>
 
         {showSearch && (
           <div className="relative mb-8">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-brand-navy h-5 w-5" />
             <input
               type="text"
               placeholder="Find your perfect health test..."
-              className="w-full pl-12 pr-4 py-4 text-lg border border-gray-200 rounded-xl focus:outline-hidden focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="w-full pl-12 pr-4 py-4 text-lg border border-brand-navy rounded-xl focus:outline-hidden focus:ring-2 focus:ring-primary focus:border-transparent"
             />
             <Button 
               size="lg" 
@@ -55,7 +55,7 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
                 "group p-6 rounded-xl border-2 transition-all duration-200 cursor-pointer hover:shadow-lg",
                 selectedCategory === category.id
                   ? "border-primary bg-primary/5"
-                  : "border-gray-200 hover:border-gray-300"
+                  : "border-brand-navy hover:border-brand-navy"
               )}
               onClick={() => onCategorySelect?.(category.id)}
             >
@@ -66,11 +66,11 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
                       "w-3 h-3 rounded-full",
                       getCategoryColor(category.id)
                     )} />
-                    <h3 className="text-lg font-semibold text-gray-900">
+                    <h3 className="text-lg font-semibold text-brand-navy">
                       {category.name}
                     </h3>
                   </div>
-                  <p className="text-gray-600 text-sm leading-relaxed">
+                  <p className="text-brand-navy text-sm leading-relaxed">
                     {category.description}
                   </p>
                 </div>

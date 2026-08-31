@@ -48,7 +48,7 @@ const ProactiveHealthJourney = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-semibold mb-4">Your Proactive Health Journey</h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-brand-navy max-w-3xl mx-auto">
             Transform your health with our evidence-based approach to preventive care
           </p>
         </div>
@@ -70,7 +70,7 @@ const ProactiveHealthJourney = () => {
                   {step.icon}
                 </div>
                 <h3 className="text-xl font-semibold mb-2">{step.title}</h3>
-                <p className="text-gray-600 mb-4">{step.description}</p>
+                <p className="text-brand-navy mb-4">{step.description}</p>
                 <ul className="space-y-2">
                   {step.benefits.map((benefit, idx) => (
                     <li key={idx} className="flex items-start text-sm">

@@ -1,7 +1,8 @@
 # Roadmap
 
 ## In progress
-- [ ] Platform-wide dark-background text contrast fix (audit script + card-by-card fixes + CI gate)
+- [x] Platform-wide foreground system: navy on light, white on dark, navy neutral borders
+- [x] Smooth test-card hover intent and slow crossfade
+- [x] Remove and permanently block non-test catalogue rows; order Lola add-ons last
 
 ## Open
-- [ ] Remove a non-test card and its database row — awaiting the test name/provider from the user (selection pointed at the product image in `UniversalTestCard.tsx`, which doesn't identify the row)

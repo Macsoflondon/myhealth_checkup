@@ -7,7 +7,8 @@
 const JUNK_PREFIX =
   /^\s*(\d{3}\b|error\b|(page\s+)?not\s+found\b|access denied|forbidden|just a moment)/i;
 
-const JUNK_CONTAINS = /(gift\s*card|thank you for your patience|voucher)/i;
+const JUNK_CONTAINS =
+  /(gift\s*card|e-?gift|e-?voucher|voucher|thank you for your patience|collection method|nurse[- ]?visit|home phlebotomy visit|visit a .*partner clinic|phlebotomy\s*\([^)]*\)\s*at clinic|standalone collection kit|biological kit|\bflu vaccin(?:e|ation)\b|\bhpv vaccin(?:e|ation)\b)/i;
 
 export const isJunkTestName = (name: string | null | undefined): boolean => {
   const trimmed = (name ?? "").trim();

@@ -22,7 +22,7 @@ const ISSUE_COLOURS: Record<string, string> = {
   missing_list: "bg-rose-100 text-rose-800",
   empty_list: "bg-orange-100 text-orange-800",
   count_mismatch: "bg-amber-100 text-amber-800",
-  unknown: "bg-gray-100 text-gray-800",
+  unknown: "bg-gray-100 text-brand-navy",
 };
 
 const ISSUE_LABELS: Record<string, string> = {

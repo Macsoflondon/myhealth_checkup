@@ -1,26 +1,33 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Helmet } from 'react-helmet-async';
-import { useSearchParams } from '@/lib/router-compat';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import React, { useState, useEffect, useRef } from "react";
+import { Helmet } from "react-helmet-async";
+import { useSearchParams } from "@/lib/router-compat";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
-import { StandardPageHero } from '@/components/layout/StandardPageHero';
-import QuizCTABanner from '@/components/sections/QuizCTABanner';
-import SupportSLA from '@/components/compliance/SupportSLA';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Phone, Mail, MapPin, Globe, Loader2, MessageCircle } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { toast } from '@/hooks/use-toast';
-import { logger } from '@/lib/logger';
-import { serializeJsonLd } from '@/lib/seo/json-ld';
-import { useServerFn } from '@tanstack/react-start';
-import { submitContactMessage } from '@/lib/contact/contact.functions';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { StandardPageHero } from "@/components/layout/StandardPageHero";
+import QuizCTABanner from "@/components/sections/QuizCTABanner";
+import SupportSLA from "@/components/compliance/SupportSLA";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Globe,
+  Loader2,
+  MessageCircle,
+} from "lucide-react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { toast } from "@/hooks/use-toast";
+import { logger } from "@/lib/logger";
+import { serializeJsonLd } from "@/lib/seo/json-ld";
+import { useServerFn } from "@tanstack/react-start";
+import { submitContactMessage } from "@/lib/contact/contact.functions";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Form,
   FormControl,
@@ -28,28 +35,65 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from "@/components/ui/form";
 
 const contactSchema = z.object({
-  firstName: z.string().trim().min(1, 'First name is required').max(100, 'First name must be less than 100 characters').regex(/^[a-zA-Z\s'-]+$/, 'First name contains invalid characters'),
-  lastName: z.string().trim().min(1, 'Last name is required').max(100, 'Last name must be less than 100 characters').regex(/^[a-zA-Z\s'-]+$/, 'Last name contains invalid characters'),
-  email: z.string().trim().email('Please enter a valid email address').max(255, 'Email must be less than 255 characters'),
-  phone: z.string().trim().max(20, 'Phone number must be less than 20 characters').regex(/^[\d\s+()-]*$/, 'Phone number contains invalid characters').optional().or(z.literal('')),
-  subject: z.string().trim().min(1, 'Subject is required').max(200, 'Subject must be less than 200 characters'),
-  message: z.string().trim().min(10, 'Message must be at least 10 characters').max(2000, 'Message must be less than 2000 characters'),
+  firstName: z
+    .string()
+    .trim()
+    .min(1, "First name is required")
+    .max(100, "First name must be less than 100 characters")
+    .regex(/^[a-zA-Z\s'-]+$/, "First name contains invalid characters"),
+  lastName: z
+    .string()
+    .trim()
+    .min(1, "Last name is required")
+    .max(100, "Last name must be less than 100 characters")
+    .regex(/^[a-zA-Z\s'-]+$/, "Last name contains invalid characters"),
+  email: z
+    .string()
+    .trim()
+    .email("Please enter a valid email address")
+    .max(255, "Email must be less than 255 characters"),
+  phone: z
+    .string()
+    .trim()
+    .max(20, "Phone number must be less than 20 characters")
+    .regex(/^[\d\s+()-]*$/, "Phone number contains invalid characters")
+    .optional()
+    .or(z.literal("")),
+  subject: z
+    .string()
+    .trim()
+    .min(1, "Subject is required")
+    .max(200, "Subject must be less than 200 characters"),
+  message: z
+    .string()
+    .trim()
+    .min(10, "Message must be at least 10 characters")
+    .max(2000, "Message must be less than 2000 characters"),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
-const providerContacts: { name: string; phone: string | null; liveChat?: string; email?: string }[] = [
-  { name: 'Medichecks', phone: '0345 060 0600' },
-  { name: 'GoodBody Clinic', phone: '01225 444 144' },
-  { name: 'Randox Health', phone: '028 9442 2413' },
-  { name: 'London Medical Laboratory', phone: '0207 183 6122' },
-  { name: 'Clinilabs', phone: '020 4525 8805' },
-  { name: 'London Health Company', phone: '020 8087 0017' },
-  { name: 'Medical Diagnosis', phone: '020 8830 0503' },
-  { name: 'Lola Health', phone: null, liveChat: 'https://lolahealth.com/pages/contact-us' },
+const providerContacts: {
+  name: string;
+  phone: string | null;
+  liveChat?: string;
+  email?: string;
+}[] = [
+  { name: "Medichecks", phone: "0345 060 0600" },
+  { name: "GoodBody Clinic", phone: "01225 444 144" },
+  { name: "Randox Health", phone: "028 9442 2413" },
+  { name: "London Medical Laboratory", phone: "0207 183 6122" },
+  { name: "Clinilabs", phone: "020 4525 8805" },
+  { name: "London Health Company", phone: "020 8087 0017" },
+  { name: "Medical Diagnosis", phone: "020 8830 0503" },
+  {
+    name: "Lola Health",
+    phone: null,
+    liveChat: "https://lolahealth.com/pages/contact-us",
+  },
 ];
 
 const ContactPage = () => {
@@ -61,14 +105,24 @@ const ContactPage = () => {
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
-    defaultValues: { firstName: '', lastName: '', email: '', phone: '', subject: '', message: '' },
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      subject: "",
+      message: "",
+    },
   });
 
   useEffect(() => {
-    if (searchParams.get('topic') === 'test-finder') {
-      form.setValue('subject', 'Help me find a test');
+    if (searchParams.get("topic") === "test-finder") {
+      form.setValue("subject", "Help me find a test");
       setTimeout(() => {
-        formCardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        formCardRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
       }, 100);
     }
   }, [searchParams, form]);
@@ -77,9 +131,9 @@ const ContactPage = () => {
     setIsSubmitting(true);
     setSubmitError(null);
     try {
-      const result = await sendContact({ data: { ...data, hp: '' } });
+      const result = await sendContact({ data: { ...data, hp: "" } });
       toast({
-        title: 'Message sent',
+        title: "Message sent",
         description: `Thank you — your reference is ${result.reference}. We respond within two business days.`,
       });
       form.reset();
@@ -87,10 +141,10 @@ const ContactPage = () => {
       const description =
         error instanceof Error && error.message
           ? error.message
-          : 'There was a problem sending your message. Please try again.';
-      logger.error('[contact] submit failed', error);
+          : "There was a problem sending your message. Please try again.";
+      logger.error("[contact] submit failed", error);
       setSubmitError(description);
-      toast({ title: 'Message not sent', description, variant: 'destructive' });
+      toast({ title: "Message not sent", description, variant: "destructive" });
     } finally {
       setIsSubmitting(false);
     }
@@ -100,98 +154,189 @@ const ContactPage = () => {
     <div className="min-h-screen flex flex-col">
       <Helmet>
         <meta property="og:type" content="website" />
-        <script type="application/ld+json">{serializeJsonLd({
-          "@context": "https://schema.org",
-          "@type": ["ContactPage", "MedicalBusiness", "LocalBusiness"],
-          "name": "myhealth checkup",
-          "legalName": "MYHEALTHCHECKUP LTD",
-          "description": "Independent UK platform comparing private health tests from accredited providers.",
-          "url": "https://myhealthcheckup.co.uk/contact",
-          "email": "support@myhealthcheckup.co.uk",
-          "address": {
-            "@type": "PostalAddress",
-            "streetAddress": "2/369 Clapham Road",
-            "addressLocality": "London",
-            "postalCode": "SW9 9BT",
-            "addressCountry": "GB"
-          },
-          "areaServed": "GB",
-          "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://myhealthcheckup.co.uk" }
-        })}</script>
+        <script type="application/ld+json">
+          {serializeJsonLd({
+            "@context": "https://schema.org",
+            "@type": ["ContactPage", "MedicalBusiness", "LocalBusiness"],
+            name: "myhealth checkup",
+            legalName: "MYHEALTHCHECKUP LTD",
+            description:
+              "Independent UK platform comparing private health tests from accredited providers.",
+            url: "https://myhealthcheckup.co.uk/contact",
+            email: "support@myhealthcheckup.co.uk",
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: "2/369 Clapham Road",
+              addressLocality: "London",
+              postalCode: "SW9 9BT",
+              addressCountry: "GB",
+            },
+            areaServed: "GB",
+            isPartOf: {
+              "@type": "WebSite",
+              name: "myhealth checkup",
+              url: "https://myhealthcheckup.co.uk",
+            },
+          })}
+        </script>
       </Helmet>
       <Header />
       <main className="flex-grow bg-[#081129] md:bg-white">
-        
-        <StandardPageHero title="Contact Us" strapline="Whether you're testing for the first time or proactively monitoring your health, we're here to support you every step of the way." />
-        <div className="container mx-auto px-4 py-12 bg-[primary-on-container]">
+        <StandardPageHero
+          title="Contact Us"
+          strapline="Whether you're testing for the first time or proactively monitoring your health, we're here to support you every step of the way."
+        />
+        <div className="container mx-auto px-4 py-12 bg-white">
           <div className="max-w-6xl mx-auto">
             {/* Row 1: Form + Provider Directory */}
             <div className="grid lg:grid-cols-2 gap-12">
               {/* Contact Form */}
               <div ref={formCardRef}>
                 <Card className="text-[#081129]">
-                <CardHeader>
-                  <CardTitle>Send Us a Message</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <FormField control={form.control} name="firstName" render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>First Name</FormLabel>
-                            <FormControl><Input placeholder="Enter your first name" maxLength={100} className="placeholder:text-[#22c0d4]" {...field} /></FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )} />
-                        <FormField control={form.control} name="lastName" render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Last Name</FormLabel>
-                            <FormControl><Input placeholder="Enter your last name" maxLength={100} className="placeholder:text-[#22c0d4]" {...field} /></FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )} />
-                      </div>
-                      <FormField control={form.control} name="email" render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email Address</FormLabel>
-                          <FormControl><Input type="email" placeholder="Enter your email" maxLength={255} className="placeholder:text-[#22c0d4]" {...field} /></FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )} />
-                      <FormField control={form.control} name="phone" render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Phone Number (Optional)</FormLabel>
-                          <FormControl><Input type="tel" placeholder="Enter your phone number" maxLength={20} className="placeholder:text-[#22c0d4]" {...field} /></FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )} />
-                      <FormField control={form.control} name="subject" render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Subject</FormLabel>
-                          <FormControl><Input placeholder="What's this about?" maxLength={200} className="placeholder:text-[#22c0d4]" {...field} /></FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )} />
-                      <FormField control={form.control} name="message" render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Message</FormLabel>
-                          <FormControl><Textarea placeholder="Tell us how we can help you..." className="min-h-[120px] text-base bg-white placeholder:text-[#22c0d4]" maxLength={2000} {...field} /></FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )} />
-                      {submitError && (
-                        <Alert variant="destructive">
-                          <AlertDescription>{submitError}</AlertDescription>
-                        </Alert>
-                      )}
-                      <Button type="submit" className="w-full" disabled={isSubmitting}>
-                        {isSubmitting ? (<><Loader2 className="mr-2 h-4 w-4 animate-spin" />Sending...</>) : 'Send Message'}
-                      </Button>
-                    </form>
-                  </Form>
-                </CardContent>
-              </Card>
+                  <CardHeader>
+                    <CardTitle>Send Us a Message</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <Form {...form}>
+                      <form
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="space-y-6"
+                      >
+                        <div className="grid md:grid-cols-2 gap-4">
+                          <FormField
+                            control={form.control}
+                            name="firstName"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>First Name</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    placeholder="Enter your first name"
+                                    maxLength={100}
+                                    className="placeholder:text-[#22c0d4]"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="lastName"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Last Name</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    placeholder="Enter your last name"
+                                    maxLength={100}
+                                    className="placeholder:text-[#22c0d4]"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <FormField
+                          control={form.control}
+                          name="email"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Email Address</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="email"
+                                  placeholder="Enter your email"
+                                  maxLength={255}
+                                  className="placeholder:text-[#22c0d4]"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="phone"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Phone Number (Optional)</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="tel"
+                                  placeholder="Enter your phone number"
+                                  maxLength={20}
+                                  className="placeholder:text-[#22c0d4]"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="subject"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Subject</FormLabel>
+                              <FormControl>
+                                <Input
+                                  placeholder="What's this about?"
+                                  maxLength={200}
+                                  className="placeholder:text-[#22c0d4]"
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="message"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel>Message</FormLabel>
+                              <FormControl>
+                                <Textarea
+                                  placeholder="Tell us how we can help you..."
+                                  className="min-h-[120px] text-base bg-white placeholder:text-[#22c0d4]"
+                                  maxLength={2000}
+                                  {...field}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        {submitError && (
+                          <Alert variant="destructive">
+                            <AlertDescription>{submitError}</AlertDescription>
+                          </Alert>
+                        )}
+                        <Button
+                          type="submit"
+                          className="w-full"
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? (
+                            <>
+                              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                              Sending...
+                            </>
+                          ) : (
+                            "Send Message"
+                          )}
+                        </Button>
+                      </form>
+                    </Form>
+                  </CardContent>
+                </Card>
               </div>
 
               {/* Provider Contact Directory */}
@@ -204,23 +349,40 @@ const ContactPage = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Contact our trusted providers directly for test-specific enquiries.
+                    Contact our trusted providers directly for test-specific
+                    enquiries.
                   </p>
                   <div className="space-y-3">
                     {providerContacts.map((provider) => (
-                      <div key={provider.name} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
-                        <span className="font-medium text-sm">{provider.name}</span>
+                      <div
+                        key={provider.name}
+                        className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0"
+                      >
+                        <span className="font-medium text-sm">
+                          {provider.name}
+                        </span>
                         {provider.phone ? (
-                          <a href={`tel:${provider.phone.replace(/\s/g, '')}`} className="text-sm text-[#22c0d4] hover:text-[#e70d69] font-medium transition-colors">
+                          <a
+                            href={`tel:${provider.phone.replace(/\s/g, "")}`}
+                            className="text-sm text-[#22c0d4] hover:text-[#e70d69] font-medium transition-colors"
+                          >
                             {provider.phone}
                           </a>
                         ) : provider.liveChat ? (
-                          <a href={provider.liveChat} target="_blank" rel="noopener noreferrer" className="text-sm text-[#22c0d4] hover:text-[#e70d69] font-medium transition-colors flex items-center gap-1">
+                          <a
+                            href={provider.liveChat}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-[#22c0d4] hover:text-[#e70d69] font-medium transition-colors flex items-center gap-1"
+                          >
                             <MessageCircle className="h-3 w-3" />
                             Live Support
                           </a>
                         ) : provider.email ? (
-                          <a href={`mailto:${provider.email}`} className="text-sm text-[#22c0d4] hover:text-[#e70d69] font-medium transition-colors flex items-center gap-1">
+                          <a
+                            href={`mailto:${provider.email}`}
+                            className="text-sm text-[#22c0d4] hover:text-[#e70d69] font-medium transition-colors flex items-center gap-1"
+                          >
                             <Mail className="h-3 w-3" />
                             {provider.email}
                           </a>
@@ -250,10 +412,14 @@ const ContactPage = () => {
                   <div className="space-y-3">
                     <div>
                       <p className="font-medium">All Enquiries</p>
-                      <p className="text-sm text-primary">support@myhealthcheckup.co.uk</p>
+                      <p className="text-sm text-primary">
+                        support@myhealthcheckup.co.uk
+                      </p>
                     </div>
                   </div>
-                  <p className="text-sm text-muted-foreground mt-4">Response time: Within 24 hours</p>
+                  <p className="text-sm text-muted-foreground mt-4">
+                    Response time: Within 24 hours
+                  </p>
                 </CardContent>
               </Card>
 
@@ -271,7 +437,9 @@ const ContactPage = () => {
                     <p>SW London, SW9 9BT</p>
                     <p>United Kingdom</p>
                   </address>
-                  <p className="text-sm mt-4 text-muted-foreground">Company Registration: 16589056 (England & Wales)</p>
+                  <p className="text-sm mt-4 text-muted-foreground">
+                    Company Registration: 16589056 (England & Wales)
+                  </p>
                 </CardContent>
               </Card>
             </div>
@@ -288,10 +456,13 @@ const ContactPage = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="border border-destructive/30 rounded-lg p-4 bg-destructive">
-                    <p className="font-medium mb-2 text-destructive-foreground">Important Notice</p>
+                    <p className="font-medium mb-2 text-destructive-foreground">
+                      Important Notice
+                    </p>
                     <p className="text-sm text-destructive-foreground">
-                      If you have a medical emergency, please call 999 or visit your nearest A&E department immediately.
-                      Our service is not suitable for urgent medical situations.
+                      If you have a medical emergency, please call 999 or visit
+                      your nearest A&E department immediately. Our service is
+                      not suitable for urgent medical situations.
                     </p>
                   </div>
                 </CardContent>

@@ -52,7 +52,7 @@ const Testimonials = () => {
             title="What Our Customers" 
             gradientText="Say" 
           />
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg font-elegant italic mt-4">
+          <p className="text-brand-navy max-w-2xl mx-auto text-lg font-elegant italic mt-4">
             Real stories from people who've taken control of their health with our testing services.
           </p>
         </div>
@@ -66,12 +66,12 @@ const Testimonials = () => {
                     <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                   ))}
                 </div>
-                <p className="text-xl text-gray-700 mb-6 font-elegant italic leading-relaxed">
+                <p className="text-xl text-brand-navy mb-6 font-elegant italic leading-relaxed">
                   "{testimonials[currentIndex].content}"
                 </p>
                 <div className="mb-4">
                   <h4 className="font-semibold text-lg">{testimonials[currentIndex].name}</h4>
-                  <p className="text-gray-600">{testimonials[currentIndex].role}</p>
+                  <p className="text-brand-navy">{testimonials[currentIndex].role}</p>
                 </div>
                 <Badge variant="secondary">{testimonials[currentIndex].testType}</Badge>
               </CardContent>

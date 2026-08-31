@@ -191,7 +191,7 @@ const LiveComparisonCard = ({
 
   return (
     <div
-      className={`relative bg-[#F8FAFC] rounded-[2rem] border border-slate-200 shadow-[0_30px_80px_-20px_rgba(8,17,41,0.22),0_8px_24px_-8px_rgba(8,17,41,0.10)] ring-1 ring-slate-200/60 overflow-hidden h-full transition-transform duration-700 ease-out hover:-translate-y-1 ${className}`}
+      className={`relative bg-[#F8FAFC] rounded-[2rem] border border-brand-navy shadow-[0_30px_80px_-20px_rgba(8,17,41,0.22),0_8px_24px_-8px_rgba(8,17,41,0.10)] ring-1 ring-slate-200/60 overflow-hidden h-full transition-transform duration-700 ease-out hover:-translate-y-1 ${className}`}
     >
       <div className="p-6 sm:p-8 md:p-10 flex flex-col h-full">
         <div className="flex items-center justify-center gap-3 mb-5">
@@ -208,16 +208,16 @@ const LiveComparisonCard = ({
           {test.name}
         </h3>
         <div
-          className="flex-1 flex flex-col transition-all duration-500 ease-in-out bg-white border border-slate-100 rounded-[20px] overflow-hidden"
+          className="flex-1 flex flex-col transition-all duration-500 ease-in-out bg-white border border-brand-navy rounded-[20px] overflow-hidden"
           style={{ opacity: fading ? 0 : 1 }}
         >
-          <div className="px-5 py-3 border-b border-slate-100 bg-slate-50/70">
+          <div className="px-5 py-3 border-b border-brand-navy bg-slate-50/70">
             <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
               <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-turquoise">
                 {test.name}
               </span>
               {test.methodLabel && (
-                <span className="font-heading text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
+                <span className="font-heading text-[11px] font-bold uppercase tracking-[0.16em] text-brand-navy">
                   {test.methodLabel}
                 </span>
               )}
@@ -227,14 +227,14 @@ const LiveComparisonCard = ({
             {test.providers.map((provider, pi) => (
               <div
                 key={provider.name}
-                className="py-3.5 border-b border-slate-100 last:border-b-0"
+                className="py-3.5 border-b border-brand-navy last:border-b-0"
               >
                 <div className="flex justify-between items-baseline mb-1">
-                  <span className="font-heading text-base font-bold text-slate-700">
+                  <span className="font-heading text-base font-bold text-brand-navy">
                     {provider.name}
                   </span>
                   {provider.options.length > 1 && (
-                    <span className="text-xs font-semibold text-slate-400">
+                    <span className="text-xs font-semibold text-brand-navy">
                       From
                     </span>
                   )}
@@ -245,7 +245,7 @@ const LiveComparisonCard = ({
                     className={`flex items-center mt-0.5 ${test.methodLabel ? "justify-end" : "justify-between"}`}
                   >
                     {!test.methodLabel && (
-                      <span className="text-sm text-slate-500">
+                      <span className="text-sm text-brand-navy">
                         {opt.label}
                       </span>
                     )}
@@ -269,8 +269,8 @@ const LiveComparisonCard = ({
               </Link>
             </div>
           )}
-          <div className="px-5 py-3 border-t border-slate-100 bg-slate-50/70">
-            <p className="text-[11px] text-slate-500 text-center m-0">
+          <div className="px-5 py-3 border-t border-brand-navy bg-slate-50/70">
+            <p className="text-[11px] text-brand-navy text-center m-0">
               {formatVerified(test.lastScrapedAt)}
             </p>
           </div>

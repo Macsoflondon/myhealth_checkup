@@ -86,7 +86,7 @@ interface FeaturedCardProps {
 }
 
 const FeaturedCard: React.FC<FeaturedCardProps> = ({ article, overusedImages }) => (
-  <article className="group flex flex-col bg-white rounded-2xl border border-[#e2e8f0] overflow-hidden transition-all duration-200 hover:border-[#22c0d4] hover:shadow-lg hover:-translate-y-0.5">
+  <article className="group flex flex-col bg-white rounded-2xl border border-brand-navy overflow-hidden transition-all duration-200 hover:border-[#22c0d4] hover:shadow-lg hover:-translate-y-0.5">
     <div className="relative aspect-[16/9] overflow-hidden bg-[#f0f4fa]">
       <img
         src={
@@ -295,7 +295,7 @@ const HealthBlogPage: React.FC = () => {
 
           {/* Search */}
           <div className="relative max-w-md mb-4">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#94a3b8]" size={16} />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-brand-navy" size={16} />
             <input
               type="search"
               value={search}
@@ -321,7 +321,7 @@ const HealthBlogPage: React.FC = () => {
                   className={`rounded-full border transition-colors ${
                     checked
                       ? 'bg-[#081129] text-white border-[#081129]'
-                      : 'bg-white text-[#64748b] border-[#e2e8f0] hover:border-[#081129]'
+                      : 'bg-white text-brand-navy border-brand-navy hover:border-[#081129]'
                   }`}
                   style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 12, fontWeight: 500, padding: '4px 12px' }}
                   aria-pressed={checked}

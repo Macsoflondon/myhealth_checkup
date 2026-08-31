@@ -17,7 +17,7 @@ const BrandTypography = () => {
         <h1 className="text-4xl md:text-5xl font-heading font-bold text-[#081129] mb-4">
           myhealth checkup Typography System
         </h1>
-        <p className="text-xl text-gray-600 font-elegant italic">
+        <p className="text-xl text-brand-navy font-elegant italic">
           A showcase of our three brand fonts and their application guidelines
         </p>
       </div>
@@ -37,33 +37,33 @@ const BrandTypography = () => {
             <h2 className="text-5xl font-heading font-bold text-[#081129] mb-2">
               Hero Headline
             </h2>
-            <p className="text-sm text-gray-500">font-heading font-bold text-5xl</p>
+            <p className="text-sm text-brand-navy">font-heading font-bold text-5xl</p>
           </div>
           
           <div>
             <h3 className="text-4xl font-heading font-bold text-[#081129] mb-2">
               Section Heading
             </h3>
-            <p className="text-sm text-gray-500">font-heading font-bold text-4xl</p>
+            <p className="text-sm text-brand-navy">font-heading font-bold text-4xl</p>
           </div>
           
           <div>
             <h4 className="text-3xl font-heading font-semibold text-[#081129] mb-2">
               Subsection Heading
             </h4>
-            <p className="text-sm text-gray-500">font-heading font-semibold text-3xl</p>
+            <p className="text-sm text-brand-navy">font-heading font-semibold text-3xl</p>
           </div>
           
           <div>
             <h5 className="text-2xl font-heading font-medium text-[#081129] mb-2">
               Card Title
             </h5>
-            <p className="text-sm text-gray-500">font-heading font-medium text-2xl</p>
+            <p className="text-sm text-brand-navy">font-heading font-medium text-2xl</p>
           </div>
 
           <div className="bg-gray-50 p-4 rounded-lg mt-6">
             <h6 className="font-heading font-semibold text-[#081129] mb-2">Usage Guidelines:</h6>
-            <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+            <ul className="text-sm text-brand-navy space-y-1 list-disc list-inside">
               <li>Use for all H1-H6 heading elements</li>
               <li>Weights: 400 (regular), 500 (medium), 600 (semibold), 700 (bold), 800 (extrabold)</li>
               <li>Pair with generous line-height for maximum impact</li>
@@ -86,38 +86,38 @@ const BrandTypography = () => {
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <p className="text-lg font-sans font-normal text-gray-800 leading-relaxed mb-2">
+            <p className="text-lg font-sans font-normal text-brand-navy leading-relaxed mb-2">
               This is large body text. Lato provides excellent readability for longer content sections. 
               Its clean, modern design makes it perfect for descriptive text, feature explanations, and general content.
             </p>
-            <p className="text-sm text-gray-500">font-sans font-normal text-lg leading-relaxed</p>
+            <p className="text-sm text-brand-navy">font-sans font-normal text-lg leading-relaxed</p>
           </div>
           
           <div>
-            <p className="text-base font-sans font-normal text-gray-800 leading-relaxed mb-2">
+            <p className="text-base font-sans font-normal text-brand-navy leading-relaxed mb-2">
               This is standard body text. Use this size for most content across the site. 
               Lato maintains clarity at various sizes and weights, making it versatile for different contexts.
             </p>
-            <p className="text-sm text-gray-500">font-sans font-normal text-base leading-relaxed</p>
+            <p className="text-sm text-brand-navy">font-sans font-normal text-base leading-relaxed</p>
           </div>
           
           <div>
-            <p className="text-sm font-sans font-normal text-gray-600 mb-2">
+            <p className="text-sm font-sans font-normal text-brand-navy mb-2">
               This is small body text, perfect for captions, metadata, and supplementary information.
             </p>
-            <p className="text-xs text-gray-500">font-sans font-normal text-sm</p>
+            <p className="text-xs text-brand-navy">font-sans font-normal text-sm</p>
           </div>
 
           <div>
-            <p className="text-base font-sans font-light text-gray-700 leading-relaxed mb-2">
+            <p className="text-base font-sans font-light text-brand-navy leading-relaxed mb-2">
               Use font-light (300) for elegant, airy text that needs to feel less heavy while maintaining readability.
             </p>
-            <p className="text-sm text-gray-500">font-sans font-light text-base</p>
+            <p className="text-sm text-brand-navy">font-sans font-light text-base</p>
           </div>
 
           <div className="bg-gray-50 p-4 rounded-lg mt-6">
             <h6 className="font-heading font-semibold text-[#081129] mb-2">Usage Guidelines:</h6>
-            <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+            <ul className="text-sm text-brand-navy space-y-1 list-disc list-inside">
               <li>Default font for all body content</li>
               <li>Weights: 300 (light), 400 (regular), 500 (medium), 700 (bold)</li>
               <li>Use leading-relaxed for better readability</li>
@@ -140,39 +140,39 @@ const BrandTypography = () => {
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <p className="text-2xl font-elegant italic text-gray-800 leading-relaxed mb-2">
+            <p className="text-2xl font-elegant italic text-brand-navy leading-relaxed mb-2">
               "Your health is your greatest asset. Take control with confidence."
             </p>
-            <p className="text-sm text-gray-500">font-elegant italic text-2xl leading-relaxed</p>
+            <p className="text-sm text-brand-navy">font-elegant italic text-2xl leading-relaxed</p>
           </div>
           
           <div>
-            <p className="text-xl font-elegant italic text-gray-700 leading-relaxed mb-2">
+            <p className="text-xl font-elegant italic text-brand-navy leading-relaxed mb-2">
               "At myhealth checkup, we believe in empowering you with knowledge and choice."
             </p>
-            <p className="text-sm text-gray-500">font-elegant italic text-xl leading-relaxed</p>
+            <p className="text-sm text-brand-navy">font-elegant italic text-xl leading-relaxed</p>
           </div>
           
           <div>
             <blockquote className="border-l-4 border-[#22c0d4] pl-6 py-2">
-              <p className="text-lg font-elegant italic text-gray-700 leading-relaxed mb-2">
+              <p className="text-lg font-elegant italic text-brand-navy leading-relaxed mb-2">
                 "The test revealed issues I never knew existed. Within months, I felt like a completely different person."
               </p>
-              <cite className="text-sm font-sans text-gray-600 not-italic">— Patricia R., London</cite>
+              <cite className="text-sm font-sans text-brand-navy not-italic">— Patricia R., London</cite>
             </blockquote>
-            <p className="text-sm text-gray-500 mt-2">font-elegant italic text-lg (testimonial)</p>
+            <p className="text-sm text-brand-navy mt-2">font-elegant italic text-lg (testimonial)</p>
           </div>
 
           <div>
-            <p className="text-lg font-elegant font-normal text-gray-800 leading-relaxed mb-2">
+            <p className="text-lg font-elegant font-normal text-brand-navy leading-relaxed mb-2">
               Use regular (non-italic) Garamond for premium headlines that need elegance without the formality of quotes.
             </p>
-            <p className="text-sm text-gray-500">font-elegant font-normal text-lg</p>
+            <p className="text-sm text-brand-navy">font-elegant font-normal text-lg</p>
           </div>
 
           <div className="bg-gray-50 p-4 rounded-lg mt-6">
             <h6 className="font-heading font-semibold text-[#081129] mb-2">Usage Guidelines:</h6>
-            <ul className="text-sm text-gray-700 space-y-1 list-disc list-inside">
+            <ul className="text-sm text-brand-navy space-y-1 list-disc list-inside">
               <li>Use sparingly for maximum impact</li>
               <li>Perfect for customer testimonials and quotes</li>
               <li>Ideal for taglines and brand statements</li>
@@ -209,19 +209,19 @@ const BrandTypography = () => {
           </div>
 
           {/* Example 2: Testimonial Card */}
-          <div className="border-2 border-gray-200 p-6 rounded-lg">
+          <div className="border-2 border-brand-navy p-6 rounded-lg">
             <h3 className="text-2xl font-heading font-bold text-[#081129] mb-4">
               Real Results That Matter
             </h3>
             <blockquote className="border-l-4 border-[#e70d69] pl-6 mb-4">
-              <p className="text-xl font-elegant italic text-gray-700 leading-relaxed mb-3">
+              <p className="text-xl font-elegant italic text-brand-navy leading-relaxed mb-3">
                 "I feel like a completely different person. My energy is back, I've lost the weight, and my mind is sharp again."
               </p>
-              <cite className="text-base font-sans text-gray-600 not-italic font-medium">
+              <cite className="text-base font-sans text-brand-navy not-italic font-medium">
                 — Patricia R., 42, London
               </cite>
             </blockquote>
-            <p className="text-base font-sans text-gray-600">
+            <p className="text-base font-sans text-brand-navy">
               Patricia discovered severe vitamin D deficiency through our testing. Within 3 months, all her levels normalised.
             </p>
           </div>
@@ -230,15 +230,15 @@ const BrandTypography = () => {
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center p-4 bg-white rounded-lg shadow-xs">
               <div className="text-4xl font-heading font-bold text-[#22c0d4] mb-2">93%</div>
-              <div className="text-sm font-sans text-gray-600">Improved quality of life</div>
+              <div className="text-sm font-sans text-brand-navy">Improved quality of life</div>
             </div>
             <div className="text-center p-4 bg-white rounded-lg shadow-xs">
               <div className="text-4xl font-heading font-bold text-[#e70d69] mb-2">4.8/5</div>
-              <div className="text-sm font-sans text-gray-600">Average rating</div>
+              <div className="text-sm font-sans text-brand-navy">Average rating</div>
             </div>
             <div className="text-center p-4 bg-white rounded-lg shadow-xs">
               <div className="text-4xl font-heading font-bold text-[#081129] mb-2">10k+</div>
-              <div className="text-sm font-sans text-gray-600">Tests completed</div>
+              <div className="text-sm font-sans text-brand-navy">Tests completed</div>
             </div>
           </div>
         </CardContent>

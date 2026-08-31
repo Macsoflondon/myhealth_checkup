@@ -23,7 +23,7 @@ const CookiePolicyPage = () => {
             <div className="text-center mb-8">
               <p className="text-sm text-muted-foreground">Effective Date: 01/08/2025</p>
               <div className="bg-blue-50 p-4 rounded-lg mt-4 text-left max-w-md mx-auto">
-                <p className="text-sm text-gray-700">
+                <p className="text-sm text-brand-navy">
                   <strong>Company:</strong> myhealthcheckup Ltd (trading as myhealth checkup)<br/>
                   <strong>Company Registration Number:</strong> 16589056<br/>
                   <strong>Website:</strong> myhealthcheckup.co.uk

@@ -1,0 +1,1 @@
+ALTER FUNCTION public.strip_biomarker_junk() SET search_path = public;

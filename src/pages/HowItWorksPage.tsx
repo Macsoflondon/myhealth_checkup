@@ -30,7 +30,7 @@ const HowItWorksPage = () => {
               <div className="space-y-6">
                 <div className="border-l-4 border-health-500 pl-4 sm:pl-6">
                   <h3 className="text-lg sm:text-xl font-semibold mb-2 text-[#081120]">How accurate are the tests?</h3>
-                  <p className="text-gray-600">All our partner labs are UKAS-accredited and use the same equipment and standards as NHS laboratories, ensuring hospital-grade accuracy.</p>
+                  <p className="text-brand-navy">All our partner labs are UKAS-accredited and use the same equipment and standards as NHS laboratories, ensuring hospital-grade accuracy.</p>
                 </div>
                 
                 <div className="border-l-4 border-health-500 pl-4 sm:pl-6">

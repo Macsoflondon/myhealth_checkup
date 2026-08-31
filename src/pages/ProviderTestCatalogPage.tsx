@@ -128,7 +128,7 @@ const ProviderTestCatalogPage = () => {
           <h1 className="text-3xl font-bold text-[#081129] mb-2">
             Available Tests – {provider.name}
           </h1>
-          <p className="text-gray-500">
+          <p className="text-brand-navy">
             Browse all available tests and health checks offered by {provider.name}
           </p>
         </div>
@@ -136,7 +136,7 @@ const ProviderTestCatalogPage = () => {
         {/* Search and Filter */}
         <div className="flex flex-col md:flex-row gap-4 mb-8">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-brand-navy w-4 h-4" />
             <Input
               placeholder="Search tests..."
               value={searchTerm}
@@ -145,11 +145,11 @@ const ProviderTestCatalogPage = () => {
             />
           </div>
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-gray-400" />
+            <Filter className="w-4 h-4 text-brand-navy" />
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-3 py-2 border border-gray-200 rounded-md bg-white text-gray-700"
+              className="px-3 py-2 border border-brand-navy rounded-md bg-white text-brand-navy"
             >
               {categories.map((category) => (
                 <option key={category ?? "uncategorized"} value={category ?? ""}>
@@ -164,7 +164,7 @@ const ProviderTestCatalogPage = () => {
         {loading && (
           <div className="text-center py-16">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4" />
-            <p className="text-gray-500">Loading tests...</p>
+            <p className="text-brand-navy">Loading tests...</p>
           </div>
         )}
 
@@ -179,7 +179,7 @@ const ProviderTestCatalogPage = () => {
         {/* Tests Grid */}
         {!loading && !error && (
           <>
-            <div className="mb-4 text-sm text-gray-500">
+            <div className="mb-4 text-sm text-brand-navy">
               {filteredTests.length} test{filteredTests.length !== 1 ? "s" : ""} found
             </div>
 
@@ -196,7 +196,7 @@ const ProviderTestCatalogPage = () => {
 
             {filteredTests.length === 0 && (
               <div className="text-center py-16">
-                <p className="text-gray-500">No tests found matching your criteria.</p>
+                <p className="text-brand-navy">No tests found matching your criteria.</p>
               </div>
             )}
           </>

@@ -3,8 +3,14 @@ import { Link } from "@/lib/router-compat";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { SaveProviderButton } from "@/components/common/SaveProviderButton";
 import { useSavedProviders } from "@/hooks/useSavedProviders";
-import { getProviderRoute, getProviderProfileRoute } from "@/utils/providerRoutes";
-import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
+import {
+  getProviderRoute,
+  getProviderProfileRoute,
+} from "@/utils/providerRoutes";
+import {
+  buildProviderWebsiteUrl,
+  externalLinkProps,
+} from "@/utils/urlTracking";
 import { getProviderRating } from "@/constants/providerRatings";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 
@@ -155,9 +161,7 @@ const FeaturedProvidersGlass = () => {
                   <div className="relative z-10 flex-1 space-y-6">
                     {/* Top row: logo + rating + save */}
                     <div className="flex justify-between items-start gap-3">
-                      <div
-                        className="h-16 w-32 bg-[#f8fafc] rounded-2xl flex items-center justify-center p-2.5 transition-all duration-500 ring-1 ring-[#e2e8f0] group-hover:ring-[#22c0d4]/30"
-                      >
+                      <div className="h-16 w-32 bg-[#f8fafc] rounded-2xl flex items-center justify-center p-2.5 transition-all duration-500 ring-1 ring-[#e2e8f0] group-hover:ring-[#22c0d4]/30">
                         <ProviderLogo
                           provider={p.name}
                           className="max-h-full max-w-full object-contain"
@@ -165,7 +169,7 @@ const FeaturedProvidersGlass = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         {canonical && (
-                          <div className="flex items-center gap-1.5 bg-[#f8fafc] px-3 py-1.5 rounded-full border border-[#e2e8f0] transition-colors group-hover:border-yellow-500/40">
+                          <div className="flex items-center gap-1.5 bg-[#f8fafc] px-3 py-1.5 rounded-full border border-brand-navy transition-colors group-hover:border-yellow-500/40">
                             <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
                             <span className="text-[#081129] text-xs font-bold">
                               {canonical.rating}
@@ -174,7 +178,9 @@ const FeaturedProvidersGlass = () => {
                         )}
                         <SaveProviderButton
                           isSaved={isProviderSaved(p.id)}
-                          onToggle={() => toggleSaveProvider(p.id, p.displayName)}
+                          onToggle={() =>
+                            toggleSaveProvider(p.id, p.displayName)
+                          }
                           className="!bg-transparent hover:!bg-transparent !border-0 !shadow-none !ring-0 !p-0 !h-auto !w-auto text-[#e70d69] hover:text-[#e70d69] [&_svg]:fill-[#e70d69] [&_svg]:h-5 [&_svg]:w-5"
                         />
                       </div>
@@ -194,13 +200,15 @@ const FeaturedProvidersGlass = () => {
                       >
                         {p.tagline}
                       </p>
-                      <p className="text-[11px] uppercase tracking-[0.2em] text-[#94a3b8] pt-1">
-                        {canonical ? `${canonical.reviewsFormatted} reviews · UK Wide` : "UK Wide"}
+                      <p className="text-[11px] uppercase tracking-[0.2em] text-brand-navy pt-1">
+                        {canonical
+                          ? `${canonical.reviewsFormatted} reviews · UK Wide`
+                          : "UK Wide"}
                       </p>
                     </div>
 
                     {/* Description */}
-                    <p className="text-[#64748b] leading-relaxed text-[15px] transition-colors">
+                    <p className="text-brand-navy leading-relaxed text-[15px] transition-colors">
                       {p.description}
                     </p>
 
@@ -209,7 +217,7 @@ const FeaturedProvidersGlass = () => {
                       {p.tags.map((t) => (
                         <span
                           key={t}
-                          className="px-3 py-1 rounded-lg bg-[#f0f4fa] border border-[#e2e8f0] text-[10px] uppercase font-bold tracking-wider text-[#94a3b8] transition-colors"
+                          className="px-3 py-1 rounded-lg bg-[#f0f4fa] border border-brand-navy text-[10px] uppercase font-bold tracking-wider text-brand-navy transition-colors"
                         >
                           {t}
                         </span>
@@ -232,14 +240,17 @@ const FeaturedProvidersGlass = () => {
                     <div className="grid grid-cols-2 gap-3">
                       <Link
                         to={getProviderProfileRoute(p.id)}
-                        className="py-3 px-4 rounded-xl border border-[#e2e8f0] text-[#64748b] text-xs font-semibold text-center hover:bg-[#f8fafc] hover:text-[#081129] transition-all"
+                        className="py-3 px-4 rounded-xl border border-brand-navy text-brand-navy text-xs font-semibold text-center hover:bg-brand-navy hover:text-on-dark transition-all"
                       >
                         View Profile
                       </Link>
                       <a
-                        href={buildProviderWebsiteUrl(`https://${p.website}`, p.id)}
+                        href={buildProviderWebsiteUrl(
+                          `https://${p.website}`,
+                          p.id,
+                        )}
                         {...externalLinkProps}
-                        className="py-3 px-4 rounded-xl border border-[#e2e8f0] text-[#64748b] text-xs font-semibold text-center hover:bg-[#f8fafc] hover:text-[#081129] transition-all"
+                        className="py-3 px-4 rounded-xl border border-brand-navy text-brand-navy text-xs font-semibold text-center hover:bg-brand-navy hover:text-on-dark transition-all"
                       >
                         Visit Site
                       </a>

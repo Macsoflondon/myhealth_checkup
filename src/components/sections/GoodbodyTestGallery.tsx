@@ -371,7 +371,7 @@ const GoodbodyTestGallery = () => {
                         </span>
                       )}
                       {!sampleType.toLowerCase().includes("venous") && !sampleType.toLowerCase().includes("finger") && (
-                        <span className="inline-flex items-center gap-1.5 text-sm font-medium px-3 py-1 rounded-full bg-gray-50 text-gray-600 border border-gray-100">
+                        <span className="inline-flex items-center gap-1.5 text-sm font-medium px-3 py-1 rounded-full bg-gray-50 text-brand-navy border border-gray-100">
                           <Droplet className="h-3.5 w-3.5" /> {sampleType}
                         </span>
                       )}
@@ -384,7 +384,7 @@ const GoodbodyTestGallery = () => {
                       <h4 className="text-xs font-bold uppercase tracking-wider text-foreground mb-2">Biomarkers Included</h4>
                       <div className="flex flex-wrap gap-1.5">
                         {biomarkers.map((b) => (
-                          <span key={b} className="text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-gray-700 border border-gray-200">
+                          <span key={b} className="text-xs font-medium px-2.5 py-1 rounded-full bg-gray-100 text-brand-navy border border-brand-navy">
                             {b}
                           </span>
                         ))}
@@ -424,7 +424,7 @@ const GoodbodyTestGallery = () => {
                     </a>
                     <Link
                       to={`/compare?test=${encodeURIComponent(testName)}`}
-                      className="shrink-0 inline-flex items-center justify-center font-semibold py-3 px-5 rounded-xl text-sm border border-gray-200 text-foreground hover:bg-gray-50 transition-colors whitespace-nowrap"
+                      className="shrink-0 inline-flex items-center justify-center font-semibold py-3 px-5 rounded-xl text-sm border border-brand-navy text-foreground hover:bg-gray-50 transition-colors whitespace-nowrap"
                     >
                       + Compare
                     </Link>
