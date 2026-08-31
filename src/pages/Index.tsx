@@ -264,32 +264,32 @@ const Index = () => {
                   />
                 </div>
 
-                <div className="flex flex-col items-center gap-5 sm:flex-row sm:justify-center sm:items-center sm:gap-10 lg:gap-14 w-full max-w-4xl mx-auto mb-6 sm:mb-8">
+                <div className="flex flex-col items-center gap-4 sm:gap-5 w-full max-w-3xl mx-auto mb-6 sm:mb-8">
                   <h2
-                    className="text-[clamp(1.25rem,4.5vw,2.4rem)] font-bold text-white leading-[1.15] tracking-tight text-center sm:text-left whitespace-normal min-w-0 max-w-full px-2 sm:px-0 shrink"
+                    className="text-[clamp(1.35rem,5vw,2.6rem)] font-bold text-white leading-[1.15] tracking-tight text-center px-2"
                     style={{ fontFamily: "'Montserrat', sans-serif" }}
                   >
-                    Not sure which test you need?
+                    Not sure what test you need?
                   </h2>
-                  <div className="flex flex-col items-center gap-2 w-full sm:w-auto px-1 sm:px-0 shrink-0">
-                    <Link
-                      to="/find-test"
-                      aria-label="Take the Health Quiz — find the right private blood test"
-                      className="inline-flex items-center justify-center gap-2 w-full sm:w-auto whitespace-nowrap bg-gradient-to-r from-[#22c0d4] to-[#1aa8bb] hover:from-[#1aa8bb] hover:to-[#22c0d4] text-[#081129] font-bold text-base sm:text-lg px-6 sm:px-8 py-3.5 sm:py-4 rounded-full shadow-lg shadow-[#22c0d4]/25 transition-all hover:scale-[1.02]"
-                      style={{ fontFamily: "'Montserrat', sans-serif" }}
-                    >
-                      Take the Health Quiz
-                    </Link>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-y-0 gap-x-2 text-white text-xs">
-                      <span className="flex items-center gap-1">
-                        <Shield className="w-3 h-3 shrink-0" /> No account
-                        required
-                      </span>
-                      <span className="hidden sm:inline">{"\n"}</span>
-                      <span>Takes 2 minutes</span>
-                      <span className="hidden sm:inline">{"\n"}</span>
-                      <span>100% free</span>
-                    </div>
+
+                  <Link
+                    to="/find-test"
+                    aria-label="Take the Health Quiz — find the right private blood test"
+                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-gradient-to-r from-[#22c0d4] to-[#1aa8bb] hover:from-[#1aa8bb] hover:to-[#22c0d4] text-[#081129] font-bold text-base sm:text-lg px-7 sm:px-9 py-3.5 sm:py-4 rounded-full shadow-lg shadow-[#22c0d4]/25 transition-all hover:scale-[1.02]"
+                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  >
+                    Take the Health Quiz
+                  </Link>
+
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-y-0 gap-x-2 text-white text-xs">
+                    <span className="flex items-center gap-1">
+                      <Shield className="w-3 h-3 shrink-0" /> No account
+                      required
+                    </span>
+                    <span className="hidden sm:inline">{"\n"}</span>
+                    <span>Takes 2 minutes</span>
+                    <span className="hidden sm:inline">{"\n"}</span>
+                    <span>100% free</span>
                   </div>
                 </div>
                 <p className="text-white text-base sm:text-lg leading-relaxed text-center max-w-2xl mx-auto">
