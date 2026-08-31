@@ -159,7 +159,7 @@ Deno.serve(async (req) => {
   const summary: Record<string, { total: number; ok: number; broken: number }> = {};
   const verifiedAt = new Date().toISOString();
 
-  async function processRow(row: TestRow): Promise<boolean> {
+  async function processRow(row: TestRow): Promise<{ ok: boolean; hit429: boolean }> {
     const result = await checkUrl(row.url as string);
 
     summary[row.provider_id] ??= { total: 0, ok: 0, broken: 0 };
