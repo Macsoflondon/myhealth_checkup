@@ -2,8 +2,9 @@ import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "@/lib/router-compat";
 
-import { ArrowRight, ChevronDown, Star, Heart, UserCheck, User, Dumbbell, Baby, ShieldCheck, Home, X, Info, Phone, Users, Search, BarChart2, BookOpen, Library } from "lucide-react";
+import { ChevronDown, Star, Info } from "lucide-react";
 import { primaryNavigationItems, moreNavigationSections } from "@/components/header/NavigationItems";
+import { CATEGORY_MENU_ICONS as ICONS, MORE_SECTION_ICONS, MENU_TURQUOISE as TURQUOISE, MENU_PINK as PINK } from "@/components/header/menuIcons";
 import { MoreDropdownMenu } from "@/components/header/MoreDropdownMenu";
 import { LanguageList, LanguageAccordion } from "@/components/header/LanguageSwitcher";
 import { MobileAccountLinks } from "@/components/header/MobileAccountLinks";
@@ -11,28 +12,6 @@ import { useAuth } from "@/context/AuthContext";
 
 import { CategoryPillDropdown } from "@/components/layout/CategoryPillDropdown";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-const PINK = "#e70d69";
-const TURQUOISE = "#22c0d4";
-const ICONS: Record<string, { Icon: any; color: string }> = {
-  "Most Popular Tests": { Icon: Star, color: PINK },
-  "General Wellness": { Icon: Heart, color: TURQUOISE },
-  "Women's Health": { Icon: UserCheck, color: PINK },
-  "Men's Health": { Icon: User, color: "#3a5f85" },
-  "Sports & Fitness": { Icon: Dumbbell, color: "#16a34a" },
-  "Fertility - Prenatal": { Icon: Baby, color: "#e70d69" },
-  "Cancer Screening": { Icon: ShieldCheck, color: "#0ea5e9" },
-  "At Home Test Kits": { Icon: Home, color: "#f59e0b" },
-};
-const MORE_SECTION_ICONS: Record<string, { Icon: any; color: string }> = {
-  "About Us": { Icon: Info, color: TURQUOISE },
-  "Frequently Asked Questions": { Icon: BookOpen, color: "#6366f1" },
-  "Our Providers": { Icon: Users, color: PINK },
-  "Assisted Test Finder": { Icon: Search, color: "#16a34a" },
-  "Compare Tests": { Icon: BarChart2, color: "#f59e0b" },
-  "Health Resources Hub": { Icon: BookOpen, color: "#0ea5e9" },
-  "Complete Biomarker Reference Library": { Icon: Library, color: "#8b5cf6" },
-  "Contact Us": { Icon: Phone, color: PINK },
-};
 export default function BrowseByCategoryBar({ variant = "card", compact = false, placement = "card", className = "" }: { variant?: "card" | "flush"; compact?: boolean; placement?: "card" | "hero" | "straddle"; className?: string; } = {}) {
   const [moreOpen, setMoreOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);

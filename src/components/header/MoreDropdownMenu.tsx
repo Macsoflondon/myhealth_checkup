@@ -3,7 +3,7 @@ import { useNavigate } from "@/lib/router-compat";
 import { X, ChevronDown, User, LayoutDashboard, LogOut } from "lucide-react";
 import { useDropdownAccessibility } from "@/hooks/useDropdownAccessibility";
 import { useActiveLanguage } from "@/components/header/LanguageSwitcher";
-import { menuIconFor, MENU_PINK } from "@/components/header/menuIcons";
+import { menuIconFor } from "@/components/header/menuIcons";
 
 interface MoreDropdownItem {
   name: string;
