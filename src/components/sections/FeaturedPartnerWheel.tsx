@@ -771,8 +771,9 @@ export default function FeaturedPartnerWheel({
                       cursor: "pointer",
                       transition: "box-shadow .28s",
                       boxShadow: on
-                        ? "0 38px 72px -20px rgba(0,0,0,.6),0 0 0 2px #22C0D4"
-                        : "0 28px 54px -22px rgba(0,0,0,0.5),0 0 0 1px rgba(255,255,255,0.10)",
+                        ? "0 30px 60px -24px rgba(8,17,41,.35),0 0 0 2px #22C0D4"
+                        : "0 22px 44px -26px rgba(8,17,41,.28),0 0 0 1px rgba(8,17,41,0.06)",
+
                     }}
                   >
                     <KitFace
