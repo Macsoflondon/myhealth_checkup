@@ -33,10 +33,17 @@ const STAGGER_MAX_MS = 4000;
 const RETRY_AFTER_CAP_MS = 5000;
 const RATE_LIMIT_FALLBACK_WAIT_MS = 2000;
 
-// Per-provider concurrency override. Most providers tolerate the default
-// pool size, but some (e.g. lola-health) reject any concurrent access.
-const PROVIDER_CONCURRENCY_OVERRIDES: Record<string, number> = {
-  "lola-health": 1,
+interface ProviderPoolConfig {
+  concurrency?: number;
+  /** Initial stagger between request starts for this provider (ms). */
+  staggerStartMs?: number;
+}
+
+// Per-provider pool tuning. Most providers use the defaults, but some
+// hosts are stricter (e.g. lola-health needs single concurrency and a
+// slower initial stagger to avoid tripping the limit reactively).
+const PROVIDER_CONFIG: Record<string, ProviderPoolConfig> = {
+  "lola-health": { concurrency: 1, staggerStartMs: 1500 },
 };
 
 interface TestRow {
