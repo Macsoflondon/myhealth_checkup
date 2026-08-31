@@ -61,20 +61,43 @@ const turnaroundLabel = (t: PopularTest): string | null => {
 const markerName = (m: unknown): string =>
   typeof m === "string" ? m : ((m as { value?: string } | null)?.value ?? "");
 
-/** Never render an empty paragraph — compose a factual line when the
- *  provider feed has no description (e.g. Medichecks single-marker tests). */
+/** Provider description when published, otherwise the same factual summary
+ *  the rest of the platform generates from the listing's own data. Small
+ *  panels also name the biomarkers they actually measure. */
 const descriptionFor = (t: PopularTest): string => {
-  const d = t.description?.trim();
-  if (d) return d;
-  const markers = Array.isArray(t.markers) ? t.markers : [];
-  if (t.biomarker_count === 1 && markers.length) {
-    return `Single-biomarker test — ${markerName(markers[0])}.`;
+  const provided = t.description?.trim();
+  if (provided) return provided;
+
+  const markers = (Array.isArray(t.markers) ? t.markers : [])
+    .map(markerName)
+    .filter(Boolean);
+
+  if (markers.length > 0 && markers.length <= 6) {
+    const list =
+      markers.length === 1
+        ? markers[0]
+        : `${markers.slice(0, -1).join(", ")} and ${markers[markers.length - 1]}`;
+    return `Measures ${list}.`;
   }
-  if (typeof t.biomarker_count === "number" && t.biomarker_count > 1) {
-    return `${t.biomarker_count}-biomarker panel.`;
+
+  const summary = resolveTestSummary(null, {
+    testName: cleanName(t.test_name),
+    providerName: t.provider_name ?? null,
+    measurementCount: t.biomarker_count ?? null,
+    sampleType: t.sample_type ?? null,
+    turnaroundText: t.turnaround_days_text ?? null,
+    category: t.category ?? null,
+  });
+
+  if (summary) {
+    return markers.length > 0
+      ? `${summary} Includes ${markers.slice(0, 5).join(", ")} and more.`
+      : summary;
   }
-  return "See the provider page for full test details.";
+
+  return `${cleanName(t.test_name)} from ${t.provider_name}.`;
 };
+
 
 const PLACEHOLDER_PATTERNS = [
   /\/kits\/kit-(navy|turquoise|pink|black|white|coral)\.jpg$/i,
