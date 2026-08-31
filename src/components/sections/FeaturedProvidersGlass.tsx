@@ -228,33 +228,25 @@ const FeaturedProvidersGlass = () => {
                   {/* CTAs */}
                   <div className="relative z-10 space-y-3 pt-8">
                     <Link
-                      to={getProviderRoute(p.id)}
+                      to={getProviderProfileRoute(p.id)}
                       className="block w-full py-4 px-6 rounded-2xl text-white font-bold text-sm text-center shadow-lg transition-all duration-300 active:scale-95 hover:brightness-110"
                       style={{
                         background: `linear-gradient(135deg, ${p.glow}, rgba(${p.glowRgb}, 0.78))`,
                         boxShadow: `0 10px 30px -10px rgba(${p.glowRgb}, 0.5)`,
                       }}
                     >
-                      Browse Tests
+                      View Profile
                     </Link>
-                    <div className="grid grid-cols-2 gap-3">
-                      <Link
-                        to={getProviderProfileRoute(p.id)}
-                        className="py-3 px-4 rounded-xl border border-brand-navy text-brand-navy text-xs font-semibold text-center hover:bg-brand-navy hover:text-on-dark transition-all"
-                      >
-                        View Profile
-                      </Link>
-                      <a
-                        href={buildProviderWebsiteUrl(
-                          `https://${p.website}`,
-                          p.id,
-                        )}
-                        {...externalLinkProps}
-                        className="py-3 px-4 rounded-xl border border-brand-navy text-brand-navy text-xs font-semibold text-center hover:bg-brand-navy hover:text-on-dark transition-all"
-                      >
-                        Visit Site
-                      </a>
-                    </div>
+                    <a
+                      href={buildProviderWebsiteUrl(
+                        `https://${p.website}`,
+                        p.id,
+                      )}
+                      {...externalLinkProps}
+                      className="block w-full py-3 px-4 rounded-xl border border-brand-navy text-brand-navy text-xs font-semibold text-center hover:bg-brand-navy hover:text-on-dark transition-all"
+                    >
+                      Visit Site
+                    </a>
                   </div>
                 </div>
               </article>
