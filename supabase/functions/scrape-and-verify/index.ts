@@ -1,3 +1,5 @@
+// ============= Full file contents =============
+
 // scrape-and-verify
 // URL verification only. Performs a live HTTP check of every active
 // provider_tests.url and persists the outcome to url_verified /
@@ -5,6 +7,13 @@
 //
 // It does NOT trigger scrapers or promotion — run-all-scrapers and
 // promote-provider-tests are scheduled separately every 6 hours.
+//
+// Concurrency is per-provider (per hostname in practice): each provider's
+// rows run through their own small worker pool, so a single provider's
+// domain never receives more than PROVIDER_CONCURRENCY simultaneous
+// requests, and request starts within a pool are staggered to stay under
+// provider rate limits. On HTTP 429 a row is retried once after the
+// Retry-After delay (capped) before being marked broken.
 //
 // Invocation: manual / ad-hoc POST with the service-role bearer.
 // Optional `?provider=<provider_id>` scopes the run to one provider.
@@ -18,7 +27,10 @@ const corsHeaders = {
 };
 
 const TIMEOUT_MS = 8000;
-const CONCURRENCY = 12;
+const PROVIDER_CONCURRENCY = 3;
+const STAGGER_MS = 150;
+const RETRY_AFTER_CAP_MS = 5000;
+const RATE_LIMIT_FALLBACK_WAIT_MS = 2000;
 
 interface TestRow {
   id: string;
@@ -40,6 +52,16 @@ const REQUEST_HEADERS: Record<string, string> = {
   Accept: "text/html,*/*",
 };
 
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+function retryAfterMs(headers: Headers): number {
+  const raw = headers.get("Retry-After");
+  if (!raw) return RATE_LIMIT_FALLBACK_WAIT_MS;
+  const seconds = Number(raw);
+  if (!Number.isFinite(seconds) || seconds < 0) return RATE_LIMIT_FALLBACK_WAIT_MS;
+  return Math.min(seconds * 1000, RETRY_AFTER_CAP_MS);
+}
+
 async function checkUrl(url: string): Promise<CheckResult> {
   try {
     let res = await fetch(url, {
@@ -51,6 +73,17 @@ async function checkUrl(url: string): Promise<CheckResult> {
     // Many hosts reject or mishandle HEAD behind bot filtering — retry with a
     // ranged GET on any non-2xx except genuine 404/410, which are real signal.
     if (!res.ok && res.status !== 404 && res.status !== 410) {
+      res = await fetch(url, {
+        method: "GET",
+        headers: { ...REQUEST_HEADERS, Range: "bytes=0-0" },
+        redirect: "follow",
+        signal: AbortSignal.timeout(TIMEOUT_MS),
+      });
+    }
+    // Provider rate limiting: retry exactly once after the Retry-After delay.
+    if (res.status === 429) {
+      const waitMs = retryAfterMs(res.headers);
+      await sleep(waitMs);
       res = await fetch(url, {
         method: "GET",
         headers: { ...REQUEST_HEADERS, Range: "bytes=0-0" },
@@ -119,40 +152,68 @@ Deno.serve(async (req) => {
   }
 
   const summary: Record<string, { total: number; ok: number; broken: number }> = {};
-  let okCount = 0;
-  let brokenCount = 0;
   const verifiedAt = new Date().toISOString();
 
-  let cursor = 0;
-  async function worker() {
-    while (cursor < rows.length) {
-      const row = rows[cursor++];
-      const result = await checkUrl(row.url as string);
+  async function processRow(row: TestRow): Promise<boolean> {
+    const result = await checkUrl(row.url as string);
 
-      summary[row.provider_id] ??= { total: 0, ok: 0, broken: 0 };
-      summary[row.provider_id].total++;
+    summary[row.provider_id] ??= { total: 0, ok: 0, broken: 0 };
+    summary[row.provider_id].total++;
 
-      if (result.ok) {
-        okCount++;
-        summary[row.provider_id].ok++;
-      } else {
-        brokenCount++;
-        summary[row.provider_id].broken++;
-        await supabase.from("scraper_alerts").insert({
-          provider_id: row.provider_id,
-          alert_type: "broken_url",
-          severity: "warning",
-          message: `URL check failed (${result.issue ?? "unknown error"}) for ${row.test_name ?? row.id}`,
-        });
-      }
-
-      await supabase
-        .from("provider_tests")
-        .update({ url_verified: result.ok, url_verified_at: verifiedAt })
-        .eq("id", row.id);
+    let ok: boolean;
+    if (result.ok) {
+      ok = true;
+      summary[row.provider_id].ok++;
+    } else {
+      ok = false;
+      summary[row.provider_id].broken++;
+      await supabase.from("scraper_alerts").insert({
+        provider_id: row.provider_id,
+        alert_type: "broken_url",
+        severity: "warning",
+        message: `URL check failed (${result.issue ?? "unknown error"}) for ${row.test_name ?? row.id}`,
+      });
     }
+
+    await supabase
+      .from("provider_tests")
+      .update({ url_verified: result.ok, url_verified_at: verifiedAt })
+      .eq("id", row.id);
+    return ok;
   }
-  await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+
+  // Group rows by provider, then run each provider's rows through its own
+  // worker pool. Providers run in parallel with each other, but a single
+  // provider's domain never sees more than PROVIDER_CONCURRENCY requests at
+  // once, with a short stagger between request starts within the pool.
+  const byProvider = new Map<string, TestRow[]>();
+  for (const row of rows) {
+    const group = byProvider.get(row.provider_id);
+    if (group) group.push(row);
+    else byProvider.set(row.provider_id, [row]);
+  }
+
+  let okCount = 0;
+  let brokenCount = 0;
+
+  async function runProviderPool(providerRows: TestRow[]) {
+    let cursor = 0;
+    let lastStart = 0;
+    async function worker() {
+      while (cursor < providerRows.length) {
+        const row = providerRows[cursor++];
+        // Stagger successive request starts within this provider's pool.
+        const wait = STAGGER_MS - (Date.now() - lastStart);
+        if (wait > 0) await sleep(wait);
+        lastStart = Date.now();
+        if (await processRow(row)) okCount++;
+        else brokenCount++;
+      }
+    }
+    await Promise.all(Array.from({ length: PROVIDER_CONCURRENCY }, worker));
+  }
+
+  await Promise.all(Array.from(byProvider.values(), runProviderPool));
 
   if (runId) {
     await supabase
