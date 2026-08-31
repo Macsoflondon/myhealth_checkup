@@ -80,10 +80,17 @@ export const buildTestSummary = (input: TestSummaryInput): string => {
     sentences.push(`Available via ${collectionOptions.join(" or ")}.`);
   }
 
-  const turnaround = tidy(input.turnaroundText);
-  if (turnaround) {
+  const turnaround = tidy(input.turnaroundText)
+    // Provider feeds prefix their own wording ("Results typically within 2
+    // days"), which would otherwise duplicate the sentence stem below.
+    .replace(/^results?\b[:,-]?\s*/i, "")
+    .replace(/^(are\s+)?(typically|usually|generally|normally)\s+/i, "")
+    .replace(/^(returned|available|delivered|back)\s+/i, "")
+    .replace(/^(in|within)\s+/i, "");
+  if (turnaround && /\d/.test(turnaround)) {
     sentences.push(`Results are typically returned in ${lowerFirst(turnaround)}.`);
   }
+
 
   // A lone opening sentence with no count or logistics adds nothing beyond the
   // card title, so treat it as no summary at all.
