@@ -1,0 +1,43 @@
+<svg viewBox="0 0 640 300" xmlns="http://www.w3.org/2000/svg" style="font-family: var(--font-sans)">
+  <defs>
+    <linearGradient id="fadeL" x1="0" x2="1">
+      <stop offset="0" stop-color="hsl(var(--muted))" stop-opacity="0"/>
+      <stop offset="1" stop-color="hsl(var(--muted))" stop-opacity="1"/>
+    </linearGradient>
+    <linearGradient id="fadeR" x1="1" x2="0">
+      <stop offset="0" stop-color="hsl(var(--muted))" stop-opacity="0"/>
+      <stop offset="1" stop-color="hsl(var(--muted))" stop-opacity="1"/>
+    </linearGradient>
+    <marker id="ch" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6" fill="none" stroke="hsl(var(--muted-foreground))"/>
+    </marker>
+  </defs>
+
+  <text x="12" y="20" style="font-size:12px" fill="hsl(var(--muted-foreground))">browser viewport</text>
+  <rect x="12" y="28" width="616" height="180" rx="8" fill="none" stroke="hsl(var(--border))" stroke-dasharray="4 3"/>
+
+  <!-- inset page -->
+  <rect x="44" y="44" width="552" height="148" rx="8" fill="hsl(var(--card))"/>
+  <rect x="44" y="44" width="56" height="148" fill="url(#fadeL)"/>
+  <rect x="540" y="44" width="56" height="148" fill="url(#fadeR)"/>
+
+  <!-- content greeking -->
+  <rect x="140" y="70" width="220" height="10" rx="5" fill="hsl(var(--border))"/>
+  <rect x="140" y="90" width="320" height="8" rx="4" fill="hsl(var(--border))"/>
+  <rect x="140" y="120" width="120" height="48" rx="8" fill="none" stroke="hsl(var(--muted-foreground))"/>
+  <rect x="276" y="120" width="120" height="48" rx="8" fill="none" stroke="hsl(var(--muted-foreground))"/>
+  <rect x="412" y="120" width="120" height="48" rx="8" fill="none" stroke="hsl(var(--muted-foreground))"/>
+
+  <!-- inset measures -->
+  <line x1="12" y1="216" x2="44" y2="216" stroke="hsl(var(--muted-foreground))" marker-end="url(#ch)"/>
+  <line x1="628" y1="216" x2="596" y2="216" stroke="hsl(var(--muted-foreground))" marker-end="url(#ch)"/>
+  <text x="58" y="220" style="font-size:12px" fill="hsl(var(--muted-foreground))">~28px inset (desktop) · ~16px tablet · 0 mobile</text>
+
+  <!-- pin + ledger -->
+  <circle cx="24" cy="252" r="9" fill="hsl(var(--accent))"/>
+  <text x="24" y="256" text-anchor="middle" style="font-size:11px" fill="hsl(var(--accent-foreground))">1</text>
+  <text x="42" y="256" style="font-size:12px" fill="hsl(var(--foreground))">Edges feather over ~48–64px — a mask, not a border. No line is ever drawn.</text>
+  <circle cx="24" cy="280" r="9" fill="none" stroke="hsl(var(--muted-foreground))"/>
+  <text x="24" y="284" text-anchor="middle" style="font-size:11px" fill="hsl(var(--muted-foreground))">2</text>
+  <text x="42" y="284" style="font-size:12px" fill="hsl(var(--muted-foreground))">Full-width bands still span the inset page edge to edge, then fade with it.</text>
+</svg>
