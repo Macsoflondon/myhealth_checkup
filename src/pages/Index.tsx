@@ -14,7 +14,6 @@ import { Shield } from "lucide-react";
 // Hero LCP preloading is owned by the route head() in src/routes/index.tsx —
 // duplicating it here downloaded a second, unused hero image on every visit.
 
-
 // Above-the-fold: eager
 import HeroMasthead from "@/components/sections/HeroMasthead";
 
@@ -49,8 +48,8 @@ const NewsletterSection = lazy(
   () => import("@/components/sections/NewsletterSection"),
 );
 
-const HeroPopularTests = lazy(
-  () => import("@/components/sections/HeroPopularTests").then((m) => ({
+const HeroPopularTests = lazy(() =>
+  import("@/components/sections/HeroPopularTests").then((m) => ({
     default: m.HeroPopularTests,
   })),
 );
