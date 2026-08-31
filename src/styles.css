@@ -1212,7 +1212,8 @@ html, body {
 }
 @media (min-width: 640px) { :root { --gutter: 1.5rem; } }   /* 24px */
 @media (min-width: 768px) {
-  :root { --page-inset: 1.5rem; --edge-fade: 56px; }   /* tablet: 24px */
+  /* tablet: 24px inset with the same hard navy frame as desktop */
+  :root { --page-inset: 1.5rem; --edge-fade: 0px; }
 }
 @media (min-width: 1024px) {
   /* desktop: 2.5cm of breathing room per side, framed by a hard navy line */
@@ -1250,8 +1251,8 @@ html { overflow-x: clip; }
 @media (max-width: 767.98px) {
   .page-surface-inner { -webkit-mask-image: none; mask-image: none; }
 }
-/* Desktop: replace the feathered fade with a crisp 1px navy frame line. */
-@media (min-width: 1024px) {
+/* Tablet and desktop: crisp 1px navy frame line instead of a feathered fade. */
+@media (min-width: 768px) {
   .page-surface-inner {
     -webkit-mask-image: none;
     mask-image: none;
