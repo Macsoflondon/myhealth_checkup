@@ -39,11 +39,20 @@ export function HeroPopularTests() {
   return (
     <section className="w-full py-10 sm:py-14 bg-white">
       <div className="container mx-auto px-4">
-        <div className="mb-8 text-center">
-          <h2 className="font-[Montserrat] font-bold text-2xl sm:text-3xl text-[#081129] tracking-tight">
-            Popular tests this week
-          </h2>
-          <p className="mt-2 text-sm sm:text-base text-brand-navy max-w-2xl mx-auto">
+        <div className="text-center mb-2 sm:mb-3 md:mb-4">
+          <div className="flex items-center justify-center gap-2 mb-2">
+            <div className="h-px w-6 sm:w-9 bg-brand-pink" />
+            <span className="text-sm sm:text-base font-semibold uppercase tracking-[0.22em] text-brand-turquoise">
+              Popular this week
+            </span>
+            <div className="h-px w-6 sm:w-9 bg-brand-pink" />
+          </div>
+          <SectionHeading
+            title="Trending tests"
+            gradientText="right now"
+            titleClassName="text-tertiary"
+          />
+          <p className="text-sm sm:text-base font-semibold text-tertiary mx-auto leading-snug mt-1.5 text-center max-w-2xl">
             Trending private blood tests and health screens chosen by our visitors.
           </p>
         </div>
