@@ -38,7 +38,9 @@ const TrustedProvidersPage = () => {
       <div className="min-h-screen flex flex-col bg-background">
         <Header />
         <StandardPageHero
-          title="ACCREDITED & VERIFIED"
+          title={'ACCREDITED
+ &
+ VERIFIED'}
           strapline="The UKAS-accredited laboratories and CQC-regulated clinics we compare, with their accreditations shown in full."
           stats={["UKAS-accredited labs", "CQC regulated", "ISO 15189 where applicable"]}
         />
