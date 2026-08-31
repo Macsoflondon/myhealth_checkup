@@ -341,7 +341,7 @@ export default function FeaturedPartnerWheel({
 .gbp-side .gbp-cta{margin-top:0!important}
 }`}</style>
 
-      <section style={{ position: "relative", width: "100%", overflow: "hidden", padding: "54px 24px 48px", display: "flex", flexDirection: "column", alignItems: "center", backgroundColor: "#081129" }}>
+      <section style={{ position: "relative", width: "100%", overflow: "hidden", padding: "40px 24px 48px", display: "flex", flexDirection: "column", alignItems: "center", backgroundColor: "#081129" }}>
         <EyebrowBadge label={eyebrow} size="md" tone="onDark" />
 
 

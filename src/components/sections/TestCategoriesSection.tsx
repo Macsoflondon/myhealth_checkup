@@ -55,12 +55,12 @@ const categories = [
 
 const TestCategoriesSection = () => {
   return (
-    <section className="bg-white pt-16 pb-14 sm:pt-20 sm:pb-16 md:pt-24 md:pb-20">
+    <section className="bg-white pt-12 pb-14 sm:pt-16 sm:pb-16 md:pt-20 md:pb-20">
       <div className="w-full px-4 sm:px-8 lg:px-12">
 
 
         {/* Header — standardised to match other section headings */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+        <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-10">
           <div className="flex items-center justify-center gap-3 mb-3">
             <div className="h-px w-8 sm:w-12 bg-brand-pink" />
             <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise">

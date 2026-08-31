@@ -78,13 +78,13 @@ const PartnersGrid = () => {
 
       <div className="container mx-auto px-4 sm:px-6 relative">
         {/* Section label */}
-        <EyebrowBadge size="md" tone="onDark" className="mb-3" />
+        <EyebrowBadge size="md" tone="onDark" className="mb-2" />
 
 
         <SectionHeading 
           title=" " 
           gradientText="" 
-          className="mb-8 sm:mb-10"
+          className="mb-4 sm:mb-5"
           titleClassName="text-white"
         />
 
