@@ -1212,13 +1212,15 @@ html, body {
 }
 @media (min-width: 640px) { :root { --gutter: 1.5rem; } }   /* 24px */
 @media (min-width: 768px) {
-  :root { --page-inset: 1rem; --edge-fade: 48px; }
+  :root { --page-inset: 1.5rem; --edge-fade: 56px; }   /* tablet: 24px */
 }
 @media (min-width: 1024px) {
-  :root { --gutter: 2rem; --page-inset: 1.75rem; --edge-fade: 64px; }
+  /* desktop: 40px ≈ 1.06cm of breathing room per side */
+  :root { --gutter: 2rem; --page-inset: 2.5rem; --edge-fade: 72px; }
 }
 @media (min-width: 1536px) {
-  :root { --page-inset: 2rem; }
+  /* wide desktop: 56px ≈ 1.48cm per side */
+  :root { --page-inset: 3.5rem; }
 }
 
 /* Prevents any bleed band from creating horizontal scroll */
