@@ -123,21 +123,8 @@ const FeaturedProvidersGlass = () => {
   const { isProviderSaved, toggleSaveProvider } = useSavedProviders();
 
   return (
-    <section className="relative w-full py-16 md:py-24 px-4 overflow-hidden bg-[#fafbfc]">
-
-
+    <section className="relative w-full px-4 pt-4 pb-16 md:pt-6 md:pb-24 overflow-hidden bg-[#fafbfc]">
       <div className="relative max-w-7xl mx-auto space-y-16">
-        {/* Header */}
-        <div className="relative text-center space-y-4 py-10">
-          <div
-            className="absolute inset-0 -z-10 opacity-20 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]"
-            style={{
-              backgroundImage: "radial-gradient(#22c0d4 1px, transparent 1px)",
-              backgroundSize: "24px 24px",
-            }}
-          />
-        </div>
-
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {PROVIDERS.map((p) => {
