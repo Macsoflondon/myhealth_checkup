@@ -1,37 +1,41 @@
 #!/usr/bin/env node
 /**
- * Heuristic dark-surface / dark-text contrast auditor.
+ * Dark-surface / dark-text contrast auditor.
  *
- * Walks JSX className strings, tracks the nearest enclosing dark surface by
- * brace depth, and flags descendants that set a dark foreground colour.
- * Purely static: confirm real hits visually before/after fixing.
+ * Parses each .tsx file with the TypeScript compiler API, walks the real JSX
+ * tree, tracks the nearest enclosing background surface, and reports any
+ * element that paints a dark foreground colour inside a dark surface.
+ *
+ * Usage:
+ *   node scripts/audit-contrast.mjs            # report only
+ *   CONTRAST_AUDIT_STRICT=1 node ...           # non-zero exit on findings (CI)
  */
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
+import ts from 'typescript';
 
 const ROOT = process.cwd();
 const SRC = join(ROOT, 'src');
 
 const DARK_SURFACE = [
   /\bbg-\[#0[0-9a-f]{5}\]/i,
-  /\bbg-\[#1[0-3][0-9a-f]{4}\]/i,
+  /\bbg-\[#1[0-2][0-9a-f]{4}\]/i,
   /\bbg-navy\b/,
   /\bbg-brand-navy\b/,
-  /\bbg-(?:slate|gray|zinc|neutral|stone)-(?:8|9)00\b/,
+  /\bbg-(?:slate|gray|zinc|neutral|stone)-(?:800|900|950)\b/,
   /\bbg-black\b/,
-  /\bfrom-\[#0[0-9a-f]{5}\]/i,
-  /\bfrom-navy\b/,
-  /\bfrom-brand-navy\b/,
-  /\bfrom-(?:slate|gray|zinc|neutral|stone)-(?:8|9)00\b/,
+  /\bbg-gradient-to-[a-z]{1,2}\b(?=[^"']*\bfrom-(?:\[#0|navy|brand-navy|slate-9|slate-8|gray-9|gray-8))/,
 ];
 
 const LIGHT_SURFACE = [
   /\bbg-white\b/,
-  /\bbg-(?:slate|gray|zinc|neutral|stone)-(?:50|100|200)\b/,
+  /\bbg-(?:slate|gray|zinc|neutral|stone)-(?:50|100|200|300)\b/,
   /\bbg-background\b/,
   /\bbg-card\b/,
-  /\bbg-\[#f[0-9a-f]{5}\]/i,
-  /\bbg-\[#e[0-9a-f]{5}\]/i,
+  /\bbg-popover\b/,
+  /\bbg-muted\b/,
+  /\bbg-\[#[def][0-9a-f]{5}\]/i,
+  /\bbg-\[#[A-F][0-9A-F]{5}\]/,
 ];
 
 const DARK_TEXT = [
@@ -39,69 +43,98 @@ const DARK_TEXT = [
   /\btext-navy\b/,
   /\btext-brand-navy\b/,
   /\btext-black\b/,
-  /\btext-(?:slate|gray|zinc|neutral|stone)-(?:7|8|9)00\b/,
+  /\btext-(?:slate|gray|zinc|neutral|stone)-(?:700|800|900|950)\b/,
   /\btext-foreground\b/,
   /\btext-muted-foreground\b/,
 ];
 
-const any = (patterns, s) => patterns.some((r) => r.test(s));
+const firstMatch = (patterns, s) => {
+  for (const r of patterns) {
+    const m = s.match(r);
+    if (m) return m[0];
+  }
+  return null;
+};
 
 function walkFiles(dir, out = []) {
   for (const entry of readdirSync(dir)) {
     const full = join(dir, entry);
     const st = statSync(full);
     if (st.isDirectory()) {
-      if (entry === 'node_modules' || entry === 'ui') continue;
+      if (entry === 'node_modules') continue;
       walkFiles(full, out);
-    } else if (/\.tsx$/.test(entry) && !/\.(test|spec)\.tsx$/.test(entry)) {
+    } else if (entry.endsWith('.tsx') && !/\.(test|spec)\.tsx$/.test(entry)) {
       out.push(full);
     }
   }
   return out;
 }
 
-const CLASS_RE = /class(?:Name)?\s*=\s*(?:"([^"]*)"|'([^']*)'|\{`([^`]*)`\}|\{[^}]*?"([^"]*)"[^}]*?\})/g;
+/** Collect every string literal inside a className attribute value. */
+function classNameOf(node) {
+  const attrs = ts.isJsxElement(node) ? node.openingElement.attributes : node.attributes;
+  if (!attrs) return null;
+  let out = '';
+  for (const attr of attrs.properties) {
+    if (!ts.isJsxAttribute(attr) || !attr.name) continue;
+    const name = attr.name.getText();
+    if (name !== 'className' && name !== 'class') continue;
+    const init = attr.initializer;
+    if (!init) continue;
+    const collect = (n) => {
+      if (ts.isStringLiteral(n) || ts.isNoSubstitutionTemplateLiteral(n)) out += ' ' + n.text;
+      else if (ts.isTemplateExpression(n)) {
+        out += ' ' + n.head.text;
+        for (const span of n.templateSpans) {
+          out += ' ' + span.literal.text;
+          collect(span.expression);
+        }
+      } else n.forEachChild(collect);
+    };
+    collect(init);
+  }
+  return out.trim() || null;
+}
 
 function auditFile(file) {
   const src = readFileSync(file, 'utf8');
-  const lines = src.split('\n');
+  const sf = ts.createSourceFile(file, src, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
   const findings = [];
-  /** stack of { depth, line } for open dark surfaces */
-  const darkStack = [];
-  let depth = 0;
 
-  lines.forEach((line, i) => {
-    const opens = (line.match(/</g) || []).length;
-    const closes = (line.match(/<\//g) || []).length + (line.match(/\/>/g) || []).length;
-
-    let m;
-    CLASS_RE.lastIndex = 0;
-    while ((m = CLASS_RE.exec(line)) !== null) {
-      const cls = m[1] || m[2] || m[3] || m[4] || '';
-      if (any(LIGHT_SURFACE, cls)) {
-        // a light surface closes out the dark context for this subtree
-        while (darkStack.length && darkStack[darkStack.length - 1].depth >= depth) darkStack.pop();
-        continue;
-      }
-      if (any(DARK_SURFACE, cls)) {
-        darkStack.push({ depth, line: i + 1 });
-        continue;
-      }
-      if (darkStack.length && any(DARK_TEXT, cls)) {
-        const token = DARK_TEXT.map((r) => (line.match(r) || [])[0]).filter(Boolean)[0];
-        findings.push({
-          file: relative(ROOT, file),
-          line: i + 1,
-          token,
-          surfaceLine: darkStack[darkStack.length - 1].line,
-        });
+  const visit = (node, darkSurface) => {
+    let nextDark = darkSurface;
+    if (ts.isJsxElement(node) || ts.isJsxSelfClosingElement(node)) {
+      const cls = classNameOf(node);
+      if (cls) {
+        const light = firstMatch(LIGHT_SURFACE, cls);
+        const dark = firstMatch(DARK_SURFACE, cls);
+        if (dark) {
+          const { line } = sf.getLineAndCharacterOfPosition(node.getStart());
+          nextDark = { cls: dark, line: line + 1 };
+        } else if (light) {
+          nextDark = null;
+        }
+        if (nextDark) {
+          const badText = firstMatch(DARK_TEXT, cls);
+          // white-on-dark overrides on the same element are fine
+          const hasLightText = /\btext-white\b|\btext-\[#f[0-9a-f]{5}\]/i.test(cls);
+          if (badText && !hasLightText && !(dark && badText)) {
+            const { line } = sf.getLineAndCharacterOfPosition(node.getStart());
+            findings.push({
+              file: relative(ROOT, file),
+              line: line + 1,
+              token: badText,
+              surface: nextDark.cls,
+              surfaceLine: nextDark.line,
+            });
+          }
+        }
       }
     }
+    node.forEachChild((c) => visit(c, nextDark));
+  };
 
-    depth += opens - closes;
-    while (darkStack.length && darkStack[darkStack.length - 1].depth > depth) darkStack.pop();
-  });
-
+  visit(sf, null);
   return findings;
 }
 
@@ -118,10 +151,12 @@ for (const f of all) {
   byFile.get(f.file).push(f);
 }
 
-console.log(`Contrast audit: ${all.length} potential dark-on-dark hits in ${byFile.size} files\n`);
+console.log(`Contrast audit: ${all.length} dark-on-dark hits in ${byFile.size} files\n`);
 for (const [file, hits] of [...byFile.entries()].sort((a, b) => b[1].length - a[1].length)) {
   console.log(`${file} (${hits.length})`);
-  for (const h of hits) console.log(`  ${file}:${h.line}  ${h.token}  (surface at line ${h.surfaceLine})`);
+  for (const h of hits) {
+    console.log(`  :${h.line}  ${h.token}  on  ${h.surface}  (line ${h.surfaceLine})`);
+  }
 }
 
 process.exit(process.env['CONTRAST_AUDIT_STRICT'] === '1' ? 1 : 0);
