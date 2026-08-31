@@ -681,7 +681,6 @@ export default function FeaturedPartnerWheel({
       >
         <EyebrowBadge label={eyebrow} size="md" tone="onLight" />
 
-
         <h2
           style={{
             margin: "22px 0 0",
@@ -773,7 +772,6 @@ export default function FeaturedPartnerWheel({
                       boxShadow: on
                         ? "0 30px 60px -24px rgba(8,17,41,.35),0 0 0 2px #22C0D4"
                         : "0 22px 44px -26px rgba(8,17,41,.28),0 0 0 1px rgba(8,17,41,0.06)",
-
                     }}
                   >
                     <KitFace
