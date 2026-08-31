@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import {
   Clock,
   Home,
@@ -223,9 +224,13 @@ export const UniversalTestDetailModal: React.FC<{
     };
   }, [onClose]);
 
-  return (
+  if (typeof document === "undefined") return null;
+
+  // Portalled to <body> and layered above the sticky category toolbar
+  // (z-[1000]) and the floating mobile menu chip (z-[1200]).
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-[2000] flex items-center justify-center p-4"
       style={{ background: "rgba(8,17,41,0.7)" }}
       role="dialog"
       aria-modal="true"
@@ -737,7 +742,8 @@ export const UniversalTestDetailModal: React.FC<{
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
 
