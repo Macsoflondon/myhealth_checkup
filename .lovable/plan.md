@@ -1,18 +1,22 @@
-# Update Trusted Providers hero strapline
+# Trusted Providers page hero and spacing fixes
 
 ## Goal
-Replace the current strapline under the "ACCREDITED & VERIFIED" hero on `/trusted-providers` with copy that emphasises partner vetting, UKAS accreditation, and CQC regulation.
+Tighten the `/trusted-providers` page so the hero strapline is updated and the large empty white gap below the hero divider is removed.
 
-## Current text
-"Only UKAS-accredited laboratories and CQC-regulated clinics we compare, with their accreditations shown in full."
+## Changes
 
-## Proposed new text
-"All our partners have been stringently assessed and are accredited and verified, using only UKAS-accredited laboratories and CQC-regulated clinics."
-
-## Where to change
+### 1. Update hero strapline
 - File: `src/pages/TrustedProvidersPage.tsx`
-- Prop: `strapline` on `<StandardPageHero />` (currently line 44)
+- Replace the `strapline` prop on `<StandardPageHero />` with:
+  "All our partners have been stringently assessed and are accredited and verified, using only UKAS-accredited laboratories and CQC-regulated clinics."
+
+### 2. Remove the highlighted white space
+- File: `src/components/sections/FeaturedProvidersGlass.tsx`
+- The gap is created by the section's top padding (`py-16 md:py-24`) plus an empty header div with `py-10`.
+- Reduce the section top padding to `pt-8 md:pt-10` (or remove entirely) and delete the empty header div that currently reserves vertical space.
+- Keep the provider grid and trust footer unchanged.
 
 ## Acceptance criteria
-- The hero paragraph displays the new strapline verbatim.
-- No other page content or component structure is changed.
+- The hero paragraph displays the new strapline.
+- No large blank white band appears between the hero gradient divider and the first provider card on mobile or desktop.
+- Provider cards and trust footer remain visually intact.
