@@ -33,10 +33,17 @@ const STAGGER_MAX_MS = 4000;
 const RETRY_AFTER_CAP_MS = 5000;
 const RATE_LIMIT_FALLBACK_WAIT_MS = 2000;
 
-// Per-provider concurrency override. Most providers tolerate the default
-// pool size, but some (e.g. lola-health) reject any concurrent access.
-const PROVIDER_CONCURRENCY_OVERRIDES: Record<string, number> = {
-  "lola-health": 1,
+interface ProviderPoolConfig {
+  concurrency?: number;
+  /** Initial stagger between request starts for this provider (ms). */
+  staggerStartMs?: number;
+}
+
+// Per-provider pool tuning. Most providers use the defaults, but some
+// hosts are stricter (e.g. lola-health needs single concurrency and a
+// slower initial stagger to avoid tripping the limit reactively).
+const PROVIDER_CONFIG: Record<string, ProviderPoolConfig> = {
+  "lola-health": { concurrency: 1, staggerStartMs: 1500 },
 };
 
 interface TestRow {
@@ -196,8 +203,8 @@ Deno.serve(async (req) => {
 
   // Group rows by provider, then run each provider's rows through its own
   // worker pool. Providers run in parallel with each other, but a single
-  // provider's domain never sees more than PROVIDER_CONCURRENCY requests at
-  // once, with an adaptive stagger between request starts within the pool.
+  // provider's domain never sees more than its configured concurrency at once,
+  // with an adaptive stagger between request starts within the pool.
   const byProvider = new Map<string, TestRow[]>();
   for (const row of rows) {
     const group = byProvider.get(row.provider_id);
@@ -209,12 +216,16 @@ Deno.serve(async (req) => {
   let brokenCount = 0;
 
   async function runProviderPool(providerRows: TestRow[]) {
+    const providerId = providerRows[0]?.provider_id ?? "";
+    const config = PROVIDER_CONFIG[providerId] ?? {};
+    const poolSize = config.concurrency ?? PROVIDER_CONCURRENCY;
+
     let cursor = 0;
     let lastStart = 0;
-    // Adaptive per-provider stagger: starts at STAGGER_START_MS and doubles on
-    // every 429 this pool sees (capped at STAGGER_MAX_MS). Providers that never
-    // hit a 429 stay at the fast starting pace for the whole run.
-    let staggerMs = STAGGER_START_MS;
+    // Adaptive per-provider stagger: starts at the provider-specific initial
+    // stagger and doubles on every 429 this pool sees (capped at STAGGER_MAX_MS).
+    // Providers that never hit a 429 stay at their starting pace for the whole run.
+    let staggerMs = config.staggerStartMs ?? STAGGER_START_MS;
     async function worker() {
       while (cursor < providerRows.length) {
         const row = providerRows[cursor++];
@@ -230,7 +241,6 @@ Deno.serve(async (req) => {
         else brokenCount++;
       }
     }
-    const poolSize = PROVIDER_CONCURRENCY_OVERRIDES[providerRows[0]?.provider_id ?? ""] ?? PROVIDER_CONCURRENCY;
     await Promise.all(Array.from({ length: poolSize }, worker));
   }
 
