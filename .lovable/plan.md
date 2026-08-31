@@ -1,22 +1,26 @@
-# Provider profile: colour alignment (Clinilabs)
+# Provider cards: remove Browse Tests + fix missing star ratings
 
-Goal: the "Trust & Accreditation" band on provider profiles should sit in the blue/teal family that surrounds the logo, not the orange-red. For Clinilabs specifically: mostly `#1565C0`, with `#2E7D32` used sparingly as an accent.
+## Task 1 — Retire the "Browse Tests" button
 
-## What changes
+Each provider's tests now live on their profile page, so the separate Browse Tests CTA goes away.
 
-1. **Trust & Accreditation band** (`src/pages/ProviderProfilePage.tsx`)
-   - Background switches from `brand.primary` to `brand.accent`, so it picks up the logo-side colour for every provider.
-   - Add a thin left/top rule in `brand.primary` (the small green hit for Clinilabs) so the second brand colour is still present but subordinate.
-   - Keep the heading, shield icon and clock icon white; the inner white cards stay as they are for contrast.
+- **`src/components/sections/FeaturedProvidersGlass.tsx`** (the live cards on /our-providers):
+  - Delete the large gradient "Browse Tests" button (links to `getProviderRoute`).
+  - Promote "View Profile" to the prominent full-width CTA in that gradient style. For Randox this satisfies the request directly — its View Profile already points at the Randox profile page (`getProviderProfileRoute('randox')`), which is where its tests are listed.
+  - Keep "Visit Site" as the secondary link; it becomes full-width too (or sits alone below).
+- **`src/components/sections/FeaturedProviders.tsx`** (lazily loaded variant): remove its "Browse Tests" `Button`; keep View Profile + Visit Site.
+- No routes are deleted — `getProviderRoute` may still be used elsewhere (e.g. provider profile pages link back to test grids); only the card buttons change.
 
-2. **Clinilabs brand tokens** (`src/data/providerBranding.ts`)
-   - Confirm `primary: #2E7D32`, `accent: #1565C0`, and matching `primaryLight` / `accentLight`. Already set — no change expected, verified during implementation.
+## Task 2 — Star ratings for Clinilabs, London Health Company, Medical Diagnosis
 
-3. **Provider CTA button** on the profile hero
-   - Where the provider brand exists, the primary CTA uses `brand.accent` as the fill with white text, matching the new band, rather than the previous red-leaning primary.
+Cause (confirmed): `src/constants/providerRatings.ts` deliberately returns `null` for providers with no verified rating, and the card hides the star row when `canonical` is null. These three providers simply have no entry — no bug in rendering, just missing data. The constants file explicitly forbids inventing fallback ratings (CMA/advertising rules).
 
-## Technical notes
+Approach:
+- During implementation, research the live public review scores (Trustpilot/Google/Feefo) for each of the three providers via web search.
+- Add verified entries to `PROVIDER_RATINGS` (+ `PROVIDER_NAME_MAP` entries) with real numbers and a source comment. The existing cards in `FeaturedProvidersGlass.tsx` then render stars automatically — no component change needed.
+- If a provider has no verifiable public rating online, its star row stays hidden (per the honest-comparison rule) and I'll report that back to you instead of fabricating a number.
 
-- Colours stay driven by `getBranding(provider.name)`; no hardcoded hex in the page.
-- Contrast check: white text on `#1565C0` and `#2E7D32` both clear WCAG AA at the sizes used.
-- No data, routing or business-logic changes — presentation only.
+## Notes
+
+- Presentation + data constants only; no routing, schema, or logic changes.
+- After edits: build/typecheck pass, then visual check of /our-providers on desktop and mobile widths.
