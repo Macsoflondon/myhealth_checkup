@@ -1,14 +1,14 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Star, MapPin, ArrowRight, ExternalLink } from "lucide-react";
+import { Star, MapPin, ExternalLink } from "lucide-react";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { Link } from "@/lib/router-compat";
 import { SaveProviderButton } from "@/components/common/SaveProviderButton";
 import { useSavedProviders } from "@/hooks/useSavedProviders";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getBranding } from "@/data/providerBranding";
-import { getProviderRoute, getProviderProfileRoute } from "@/utils/providerRoutes";
+import { getProviderProfileRoute } from "@/utils/providerRoutes";
 import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
 import { getProviderRating } from "@/constants/providerRatings";
 
@@ -170,12 +170,6 @@ const FeaturedProviders = () => {
                     >
                       <Link to={getProviderProfileRoute(provider.id)}>
                         <span className="truncate">View Profile</span>
-                      </Link>
-                    </Button>
-                    <Button variant="secondary" size="sm" className="flex-1 min-w-0 whitespace-nowrap" asChild>
-                      <Link to={getProviderRoute(provider.id)}>
-                        <span className="truncate">Browse Tests</span>
-                        <ArrowRight className="w-3.5 h-3.5 ml-1 shrink-0" />
                       </Link>
                     </Button>
                     <Button variant="outline" size="sm" className="flex-1 min-w-0 whitespace-nowrap" asChild>
