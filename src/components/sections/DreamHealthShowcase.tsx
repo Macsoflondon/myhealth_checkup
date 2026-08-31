@@ -53,8 +53,9 @@ const sampleLabel = (t: PopularTest): string | null => {
 /** Turnaround text with non-guaranteed wording (compliance standard). */
 const turnaroundLabel = (t: PopularTest): string | null => {
   const raw = t.turnaround_days_text?.trim();
-  if (!raw) return null;
-  return /typically|estimated|up to|~/i.test(raw) ? raw : `typically ${raw}`;
+  if (!raw || !/\d/.test(raw)) return null; // ignore junk values like "results"
+  if (/typically|estimated|up to|~/i.test(raw)) return raw;
+  return `typically ${raw.charAt(0).toLowerCase()}${raw.slice(1)}`;
 };
 
 const markerName = (m: unknown): string =>
