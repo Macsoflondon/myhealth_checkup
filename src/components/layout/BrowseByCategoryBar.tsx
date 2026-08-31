@@ -75,7 +75,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     window.addEventListener("resize", compute);
     return () => { ro.disconnect(); window.removeEventListener("resize", compute); };
   }, []);
-  const overflowNavItems = items.slice(visibleCount).map((i) => ({ name: i.name, path: i.path }));
+  const overflowNavItems = items.slice(visibleCount).map((i) => ({ name: i.name, path: i.path, hasDropdown: i.hasDropdown, dropdownItems: i.dropdownItems }));
   const moreSections = overflowNavItems.length
     ? [{ title: "Categories", items: overflowNavItems }, ...moreNavigationSections]
     : moreNavigationSections;
