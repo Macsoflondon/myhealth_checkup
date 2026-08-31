@@ -56,6 +56,15 @@ type ClinicalReviewType = (typeof CLINICAL_REVIEW_TYPES)[number];
 const toCollectionFeeType = (v: string | null | undefined): CollectionFeeType | null =>
   v && (COLLECTION_FEE_TYPES as readonly string[]).includes(v) ? (v as CollectionFeeType) : null;
 
+/**
+ * Providers that publish a home phlebotomy visit as a paid alternative to the
+ * in-clinic appointment already covered by the collection fee (GBP).
+ */
+const HOME_VISIT_FEES: Record<string, number | undefined> = {
+  'goodbody-clinic': 20,
+  'london-medical-laboratory': 80,
+};
+
 const toClinicalReviewType = (v: string | null | undefined): ClinicalReviewType | null =>
   v && (CLINICAL_REVIEW_TYPES as readonly string[]).includes(v) ? (v as ClinicalReviewType) : null;
 
@@ -243,17 +252,17 @@ export class TestDataTransformer {
    * Currently used for Goodbody's home-visit phlebotomy surcharge.
    */
   private static resolveCollectionFeeNote(test: LiveTestRow): string | null {
-    if (test.provider_id !== 'goodbody-clinic') return null;
-    if (toCollectionFeeType(test.collection_fee_type) !== 'from') return null;
+    const feeType = toCollectionFeeType(test.collection_fee_type);
+    if (feeType !== 'fixed' && feeType !== 'from') return null;
     const amount =
       typeof test.collection_fee_amount === 'number' ? test.collection_fee_amount : null;
     if (amount == null) return null;
 
-    const base = test.price || 0;
-    const total = base + amount;
-    const totalText = `£${total.toFixed(0)}`;
-    const feeText = `£${amount.toFixed(0)}`;
-    return `The total shown (${totalText}) includes the standard phlebotomy fee. A home-visit phlebotomy appointment costs an additional ${feeText}.`;
+    const homeVisitFee = HOME_VISIT_FEES[test.provider_id];
+    if (homeVisitFee == null) return null;
+
+    const total = (test.price || 0) + amount;
+    return `The total shown (£${total.toFixed(0)}) includes a £${amount.toFixed(0)} phlebotomy fee for an in-clinic appointment. A home phlebotomy visit is available instead for £${homeVisitFee.toFixed(0)}.`;
   }
 
   /**

@@ -4,10 +4,6 @@ import Footer from "@/components/layout/Footer";
 import CookieConsent from "@/components/compliance/CookieConsent";
 import SiteBreadcrumb from "@/components/common/SiteBreadcrumb";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
-import { ComparisonBar } from "@/components/compare/ComparisonBar";
-import { compareResultsPath } from "@/lib/compareUrl";
-import { compareStore, useCompareItems } from "@/stores/compareStore";
-import { useNavigate } from "@/lib/router-compat";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -25,8 +21,6 @@ export const MainLayout = ({
   const { pathname } = useLocation();
   const isHome = pathname === "/";
   const isCompare = pathname === "/compare";
-  const navigate = useNavigate();
-  const compareItems = useCompareItems();
   return (
     <div className="min-h-dvh flex flex-col bg-[hsl(224,67%,10%)] page-surface">
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg">Skip to main content</a>
@@ -44,7 +38,6 @@ export const MainLayout = ({
         {!hideFooter && <Footer />}
       </div>
       <CookieConsent />
-      <ComparisonBar selectedTests={compareItems} onRemoveTest={(id) => compareStore.remove(id)} onCompare={() => navigate(compareResultsPath(compareItems.map((t) => t.id)))} onClearAll={() => compareStore.clear()} />
     </div>
   );
 };

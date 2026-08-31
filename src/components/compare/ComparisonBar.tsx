@@ -94,7 +94,7 @@ export const ComparisonBar = ({
 
   const isEmpty = selectedTests.length === 0;
 
-  // === GHOST EMPTY STATE ===========================================
+  // === RESTING (HOLOGRAPHIC) EMPTY STATE ===========================
   if (isEmpty) {
     return (
       <div
@@ -109,19 +109,22 @@ export const ComparisonBar = ({
       >
         {/* Mobile: floating badge bottom-right */}
         <div className="sm:hidden flex justify-end px-3 pb-3">
-          <div className="pointer-events-auto inline-flex items-center gap-1.5 rounded-full border border-dashed border-brand-navy/40 bg-white/90 backdrop-blur px-3 py-1.5 shadow-md text-xs font-semibold text-brand-navy/70">
+          <div className="pointer-events-auto inline-flex items-center gap-1.5 rounded-full compare-tray-surface px-3 py-1.5 text-xs font-semibold text-brand-navy/70">
             <Scale className="h-3.5 w-3.5" aria-hidden="true" />
             0/5
           </div>
         </div>
 
-        {/* Desktop: dashed onboarding strip */}
+        {/* Desktop: frosted resting strip */}
         <div className="hidden sm:block">
-          <div className="container mx-auto max-w-7xl px-4 pb-3">
-            <div className="pointer-events-auto rounded-t-2xl border-2 border-dashed border-brand-navy/25 border-b-0 bg-white/80 backdrop-blur-xs px-5 py-3 flex items-center justify-center gap-2 text-sm text-muted-foreground animate-pulse">
-              <Scale className="h-4 w-4 text-brand-navy/60" aria-hidden="true" />
+          <div className="page-inset-x pb-3">
+            <div className="pointer-events-auto compare-tray-surface rounded-t-2xl border-b-0 px-5 py-3 flex items-center justify-center gap-2 text-sm text-brand-navy/70">
+              <Scale className="h-4 w-4 text-brand-navy/50" aria-hidden="true" />
               <span>
                 Select up to 5 tests to compare prices, biomarkers &amp; collection methods.
+              </span>
+              <span className="ml-2 rounded-full border border-brand-navy/15 bg-white/60 px-2 py-0.5 text-xs font-semibold text-brand-navy/60">
+                0/5
               </span>
             </div>
           </div>
@@ -134,7 +137,7 @@ export const ComparisonBar = ({
   return (
     <div
       className={cn(
-        "fixed bottom-0 left-0 right-0 z-40 bg-card border-t border-border shadow-2xl animate-slideUp transition-all duration-500 ease-out",
+        "fixed bottom-0 left-0 right-0 z-40 compare-tray-active animate-slideUp transition-all duration-500 ease-out",
         revealClass
       )}
 
@@ -159,7 +162,7 @@ export const ComparisonBar = ({
         </button>
       </div>
 
-      <div className={cn("container mx-auto max-w-7xl px-3 sm:px-4 py-3 sm:py-4", mobileCollapsed && "hidden sm:block")}>
+      <div className={cn("page-inset-x py-3 sm:py-4", mobileCollapsed && "hidden sm:block")}>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           {/* Left: Selected Tests */}
           <div className="flex items-center gap-3 flex-1 overflow-hidden min-w-0">
@@ -178,7 +181,7 @@ export const ComparisonBar = ({
               </button>
             </div>
 
-            <div className="flex gap-2 overflow-x-auto flex-1 scrollbar-hide -mx-1 px-1">
+            <div className="compare-tray-pills flex gap-2 overflow-x-auto flex-1 scrollbar-hide -mx-1 px-1">
               {orderedTests.map((test, index) => (
                 <div
                   key={test.id}

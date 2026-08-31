@@ -38,6 +38,7 @@ import { GlobalHreflang } from "@/components/seo/GlobalHreflang";
 import TestPageViewTracker from "@/components/analytics/TestPageViewTracker";
 import GlobalPageBackground from "@/components/layout/GlobalPageBackground";
 import { AutoTranslatePage } from "@/components/i18n/AutoTranslatePage";
+import { GlobalComparisonBar } from "@/components/compare/GlobalComparisonBar";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { reportLovableError } from "@/lib/lovable-error-reporting";
 import { lazyWithRetry } from "@/lib/lazyWithRetry";
@@ -186,6 +187,7 @@ function RootComponent() {
               <TestPageViewTracker />
               <FloatingNavDock />
               <AutoTranslatePage />
+              <GlobalComparisonBar />
               <ErrorBoundary>
                 <Suspense fallback={<PageFallback />}>
                   <Outlet />
