@@ -1215,12 +1215,8 @@ html, body {
   :root { --page-inset: 1.5rem; --edge-fade: 56px; }   /* tablet: 24px */
 }
 @media (min-width: 1024px) {
-  /* desktop: 40px ≈ 1.06cm of breathing room per side */
-  :root { --gutter: 2rem; --page-inset: 2.5rem; --edge-fade: 72px; }
-}
-@media (min-width: 1536px) {
-  /* wide desktop: 56px ≈ 1.48cm per side */
-  :root { --page-inset: 3.5rem; }
+  /* desktop: 2.5cm of breathing room per side, framed by a hard navy line */
+  :root { --gutter: 2rem; --page-inset: 2.5cm; --edge-fade: 0px; }
 }
 
 /* Prevents any bleed band from creating horizontal scroll */
