@@ -185,13 +185,13 @@ Deno.serve(async (req) => {
       .from("provider_tests")
       .update({ url_verified: result.ok, url_verified_at: verifiedAt })
       .eq("id", row.id);
-    return ok;
+    return { ok, hit429: result.hit429 ?? false };
   }
 
   // Group rows by provider, then run each provider's rows through its own
   // worker pool. Providers run in parallel with each other, but a single
   // provider's domain never sees more than PROVIDER_CONCURRENCY requests at
-  // once, with a short stagger between request starts within the pool.
+  // once, with an adaptive stagger between request starts within the pool.
   const byProvider = new Map<string, TestRow[]>();
   for (const row of rows) {
     const group = byProvider.get(row.provider_id);
@@ -205,14 +205,22 @@ Deno.serve(async (req) => {
   async function runProviderPool(providerRows: TestRow[]) {
     let cursor = 0;
     let lastStart = 0;
+    // Adaptive per-provider stagger: starts at STAGGER_START_MS and doubles on
+    // every 429 this pool sees (capped at STAGGER_MAX_MS). Providers that never
+    // hit a 429 stay at the fast starting pace for the whole run.
+    let staggerMs = STAGGER_START_MS;
     async function worker() {
       while (cursor < providerRows.length) {
         const row = providerRows[cursor++];
         // Stagger successive request starts within this provider's pool.
-        const wait = STAGGER_MS - (Date.now() - lastStart);
+        const wait = staggerMs - (Date.now() - lastStart);
         if (wait > 0) await sleep(wait);
         lastStart = Date.now();
-        if (await processRow(row)) okCount++;
+        const result = await processRow(row);
+        if (result.hit429 && staggerMs < STAGGER_MAX_MS) {
+          staggerMs = Math.min(staggerMs * 2, STAGGER_MAX_MS);
+        }
+        if (result.ok) okCount++;
         else brokenCount++;
       }
     }
