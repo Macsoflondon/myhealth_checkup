@@ -65,7 +65,14 @@ export const buildTestSummary = (input: TestSummaryInput): string => {
       : `${opening}.`,
   );
 
-  const collection = tidy(input.collectionMethod) || tidy(input.sampleType);
+  const rawCollection = tidy(input.collectionMethod) || tidy(input.sampleType);
+  // Feeds store bare tokens ("venous", "finger-prick"), which read badly in a
+  // sentence — expand them into proper sample descriptions.
+  const collection = /sample|swab|kit|visit|draw/i.test(rawCollection)
+    ? lowerFirst(rawCollection)
+    : rawCollection
+      ? `${lowerFirst(rawCollection)} blood sample`
+      : "";
   const collectionOptions: string[] = [];
   if (input.homeKitAvailable) collectionOptions.push("an at-home kit");
   if (input.clinicVisitAvailable) collectionOptions.push("a clinic appointment");
@@ -73,8 +80,8 @@ export const buildTestSummary = (input: TestSummaryInput): string => {
   if (collection) {
     sentences.push(
       collectionOptions.length > 0
-        ? `Sample collection is by ${lowerFirst(collection)}, available via ${collectionOptions.join(" or ")}.`
-        : `Sample collection is by ${lowerFirst(collection)}.`,
+        ? `Sample collection is by ${collection}, available via ${collectionOptions.join(" or ")}.`
+        : `Sample collection is by ${collection}.`,
     );
   } else if (collectionOptions.length > 0) {
     sentences.push(`Available via ${collectionOptions.join(" or ")}.`);
@@ -89,8 +96,13 @@ export const buildTestSummary = (input: TestSummaryInput): string => {
     .replace(/^(in|within)\s+/i, "")
     .replace(/\s+results?$/i, "");
   if (turnaround && (/\d/.test(turnaround) || /next day/i.test(turnaround))) {
-    sentences.push(`Results are typically returned in ${lowerFirst(turnaround)}.`);
+    sentences.push(
+      /^next day/i.test(turnaround)
+        ? "Results are typically returned the next day."
+        : `Results are typically returned in ${lowerFirst(turnaround)}.`,
+    );
   }
+
 
 
 
