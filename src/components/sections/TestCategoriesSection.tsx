@@ -84,7 +84,7 @@ const TestCategoriesSection = () => {
             <Link
               key={cat.title}
               to={cat.link}
-              className="group relative flex flex-col justify-end min-h-[570px] sm:min-h-[705px] lg:min-h-[780px] rounded-2xl overflow-hidden"
+              className="group relative flex flex-col justify-end min-h-[285px] sm:min-h-[352px] lg:min-h-[390px] rounded-2xl overflow-hidden"
             >
               {/* Background image */}
               <img
@@ -106,9 +106,9 @@ const TestCategoriesSection = () => {
 
 
               {/* Card content — sits at bottom above overlay */}
-              <div className="relative z-10 p-9 sm:p-12">
+              <div className="relative z-10 p-5 sm:p-7 lg:p-8">
                 <span
-                  className="inline-block font-heading font-bold text-lg uppercase tracking-[0.14em] px-5 py-2 rounded-md mb-8"
+                  className="inline-block font-heading font-bold text-sm uppercase tracking-[0.14em] px-3 py-1.5 rounded-md mb-3 sm:mb-4"
                   style={
                     cat.tagVariant === "teal"
                       ? {
@@ -126,10 +126,10 @@ const TestCategoriesSection = () => {
                   {cat.tag}
                 </span>
 
-                <p className="text-xl sm:text-2xl text-white/[0.7] leading-relaxed mb-10">
+                <p className="text-base sm:text-lg text-white/[0.7] leading-relaxed mb-4 sm:mb-5">
                   {cat.description}
                 </p>
-                <span className="inline-flex items-center gap-2 font-heading font-bold text-lg uppercase tracking-[0.12em] text-brand-turquoise transition-all duration-200 group-hover:gap-3">
+                <span className="inline-flex items-center gap-2 font-heading font-bold text-base uppercase tracking-[0.12em] text-brand-turquoise transition-all duration-200 group-hover:gap-3">
                   {cat.linkLabel} →
                 </span>
               </div>
