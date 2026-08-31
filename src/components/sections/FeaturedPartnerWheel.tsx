@@ -414,8 +414,8 @@ export default function FeaturedPartnerWheel({
         </div>
       </section>
 
-      {/* info modal */}
-      {selKit && (
+      {/* info modal — portalled to <body> so transformed ancestors can't break fixed positioning */}
+      {selKit && typeof document !== "undefined" && createPortal((
         <div onClick={() => { if (performance.now() - a.current.openedAt < 600) return; setSelKit(null); setHovered(null); }} style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(8,17,41,.62)", backdropFilter: "blur(4px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 28 }}>
           <div onClick={(e) => e.stopPropagation()} style={{ position: "relative", width: 560, maxWidth: "100%", background: "#fff", borderRadius: 26, overflow: "hidden", boxShadow: "0 50px 120px -30px rgba(0,0,0,.7)", animation: "gbpopc .3s cubic-bezier(.4,0,.2,1) both" }}>
             <button onClick={() => { setSelKit(null); setHovered(null); }} aria-label="Close" style={{ position: "absolute", top: 16, right: 16, zIndex: 3, width: 38, height: 38, borderRadius: "50%", border: "none", background: "rgba(8,17,41,.06)", color: "#081129", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}>
