@@ -84,7 +84,9 @@ async function checkUrl(url: string): Promise<CheckResult> {
       });
     }
     // Provider rate limiting: retry exactly once after the Retry-After delay.
+    let hit429 = false;
     if (res.status === 429) {
+      hit429 = true;
       const waitMs = retryAfterMs(res.headers);
       await sleep(waitMs);
       res = await fetch(url, {
@@ -94,8 +96,8 @@ async function checkUrl(url: string): Promise<CheckResult> {
         signal: AbortSignal.timeout(TIMEOUT_MS),
       });
     }
-    if (!res.ok) return { ok: false, httpStatus: res.status, issue: `HTTP ${res.status}` };
-    return { ok: true, httpStatus: res.status };
+    if (!res.ok) return { ok: false, httpStatus: res.status, issue: `HTTP ${res.status}`, hit429 };
+    return { ok: true, httpStatus: res.status, hit429 };
   } catch (e) {
     return { ok: false, issue: (e as Error).message };
   }
