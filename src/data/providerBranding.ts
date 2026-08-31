@@ -57,10 +57,10 @@ export const providerBranding: Record<string, ProviderBrand> = {
     accentLight: "#1A237E12",
   },
   medicaldiagnosis: {
-    primary: "#E53935",
+    primary: "#2E7D32",
     accent: "#00838F",
     tagline: "Accurate Diagnosis",
-    primaryLight: "#E539351A",
+    primaryLight: "#2E7D321A",
     accentLight: "#00838F12",
   },
   bluehorizon: {
