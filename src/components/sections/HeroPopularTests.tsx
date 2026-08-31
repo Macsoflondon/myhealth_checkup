@@ -1,9 +1,14 @@
 import { useHeroPopularTests } from "@/hooks/queries/useHeroPopularTests";
-import { UniversalTestCard, type UniversalTestData } from "@/components/cards/UniversalTestCard";
+import {
+  UniversalTestCard,
+  type UniversalTestData,
+} from "@/components/cards/UniversalTestCard";
 import { SectionSkeleton } from "@/components/common/SectionSkeleton";
 import { SectionHeading } from "@/components/ui/section-heading";
 
-function toUniversalTest(test: import("@/hooks/queries/useHeroPopularTests").HeroPopularTest): UniversalTestData {
+function toUniversalTest(
+  test: import("@/hooks/queries/useHeroPopularTests").HeroPopularTest,
+): UniversalTestData {
   return {
     id: test.id,
     provider_id: test.providerId,
@@ -53,16 +58,14 @@ export function HeroPopularTests() {
             titleClassName="text-tertiary"
           />
           <p className="text-sm sm:text-base font-semibold text-tertiary mx-auto leading-snug mt-1.5 text-center max-w-2xl">
-            Trending private blood tests and health screens chosen by our visitors.
+            Trending private blood tests and health screens chosen by our
+            visitors.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {tests.slice(0, 8).map((test) => (
-            <UniversalTestCard
-              key={test.id}
-              test={toUniversalTest(test)}
-            />
+            <UniversalTestCard key={test.id} test={toUniversalTest(test)} />
           ))}
         </div>
       </div>
