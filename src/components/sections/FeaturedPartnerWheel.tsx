@@ -204,6 +204,7 @@ export default function FeaturedPartnerWheel({
     downX: 0,
     moved: false,
     downKit: null as FeaturedKit | null,
+    openedAt: 0,
   });
   // latest reactive state, readable inside the rAF loop
   const live = useRef({ hovered, selKit, autoRotate, autoDriftSpeed });
