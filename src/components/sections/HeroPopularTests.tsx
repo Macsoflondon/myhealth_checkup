@@ -53,8 +53,8 @@ export function HeroPopularTests() {
             <div className="h-px w-6 sm:w-9 bg-brand-pink" />
           </div>
           <SectionHeading
-            title="Trending tests"
-            gradientText="right now"
+            title="Popular tests"
+            gradientText=" this week"
             titleClassName="text-tertiary"
           />
           <p className="text-sm sm:text-base font-semibold text-tertiary mx-auto leading-snug mt-1.5 text-center max-w-2xl">
