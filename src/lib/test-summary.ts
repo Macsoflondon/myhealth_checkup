@@ -71,7 +71,8 @@ export const buildTestSummary = (input: TestSummaryInput): string => {
   const collection = /sample|swab|kit|visit|draw/i.test(rawCollection)
     ? lowerFirst(rawCollection)
     : rawCollection
-      ? `${lowerFirst(rawCollection)} blood sample`
+      ? `a ${lowerFirst(rawCollection)} blood sample`
+
       : "";
   const collectionOptions: string[] = [];
   if (input.homeKitAvailable) collectionOptions.push("an at-home kit");
