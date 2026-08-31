@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 260" width="640" height="260">
+<style>
+  text { font-family: var(--font-sans); fill: hsl(var(--foreground)); font-size: 14px; }
+  .s { font-size: 12px; fill: hsl(var(--muted-foreground)); }
+</style>
+
+<text x="8" y="24" class="s">resting — no tests selected</text>
+<rect x="8" y="34" width="290" height="56" rx="8" fill="hsl(var(--muted))" stroke="hsl(var(--border))" stroke-dasharray="4 3"/>
+<rect x="26" y="54" width="130" height="8" rx="4" fill="hsl(var(--border))"/>
+<rect x="26" y="70" width="90" height="8" rx="4" fill="hsl(var(--border))"/>
+<rect x="240" y="54" width="40" height="22" rx="11" fill="none" stroke="hsl(var(--muted-foreground))"/>
+<text x="260" y="69" text-anchor="middle" class="s">0/5</text>
+
+<text x="342" y="24" class="s">active — tests selected</text>
+<rect x="342" y="34" width="290" height="56" rx="8" fill="hsl(var(--card))" stroke="hsl(var(--accent))"/>
+<rect x="342" y="34" width="290" height="3" rx="1.5" fill="hsl(var(--accent))"/>
+<rect x="358" y="52" width="72" height="24" rx="12" fill="hsl(var(--muted))"/>
+<rect x="438" y="52" width="72" height="24" rx="12" fill="hsl(var(--muted))"/>
+<rect x="518" y="52" width="98" height="24" rx="12" fill="hsl(var(--primary))"/>
+<text x="567" y="68" text-anchor="middle" font-size="11" fill="hsl(var(--primary-foreground))">Compare now</text>
+
+<line x1="8" y1="118" x2="632" y2="118" stroke="hsl(var(--border))"/>
+
+<text x="8" y="146" class="s">visibility today</text>
+<rect x="8" y="158" width="290" height="80" rx="8" fill="none" stroke="hsl(var(--muted-foreground))"/>
+<text x="24" y="182" class="s">homepage: gated by anchor sentinel</text>
+<text x="24" y="202" class="s">every other page: ungated, always on</text>
+<text x="24" y="222" class="s">result: inconsistent, reads as missing</text>
+
+<text x="342" y="146" class="s">visibility after</text>
+<rect x="342" y="158" width="290" height="80" rx="8" fill="none" stroke="hsl(var(--accent))"/>
+<text x="358" y="182" class="s">resting tray present on browse pages</text>
+<text x="358" y="202" class="s">homepage keeps its scroll gate</text>
+<text x="358" y="222" class="s">sits inside the 2.5cm page frame</text>
+</svg>
