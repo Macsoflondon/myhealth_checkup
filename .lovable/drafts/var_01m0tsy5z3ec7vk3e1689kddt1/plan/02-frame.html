@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<body style="margin:0;background:transparent;font-family:var(--font-sans);">
+<svg viewBox="0 0 640 300" width="100%" xmlns="http://www.w3.org/2000/svg">
+  <!-- browser chrome -->
+  <rect x="0" y="0" width="640" height="300" rx="10" fill="none" stroke="hsl(var(--muted-foreground))" stroke-width="1"/>
+  <rect x="0" y="0" width="640" height="24" rx="10" fill="hsl(var(--muted))"/>
+  <circle cx="14" cy="12" r="3" fill="hsl(var(--muted-foreground))"/>
+  <circle cx="26" cy="12" r="3" fill="hsl(var(--muted-foreground))"/>
+
+  <!-- framed page surface -->
+  <line x1="95" y1="24" x2="95" y2="300" stroke="hsl(var(--foreground))" stroke-width="1"/>
+  <line x1="545" y1="24" x2="545" y2="300" stroke="hsl(var(--foreground))" stroke-width="1"/>
+
+  <!-- content blocks -->
+  <rect x="95" y="40" width="450" height="34" fill="hsl(var(--muted))" rx="0"/>
+  <rect x="95" y="82" width="450" height="110" fill="hsl(var(--secondary))"/>
+  <rect x="120" y="104" width="180" height="12" rx="6" fill="hsl(var(--border))"/>
+  <rect x="120" y="126" width="120" height="8" rx="4" fill="hsl(var(--border))"/>
+  <rect x="120" y="150" width="90" height="22" rx="11" fill="hsl(var(--primary))"/>
+  <rect x="95" y="200" width="450" height="60" fill="hsl(var(--muted))"/>
+
+  <!-- measurements -->
+  <line x1="4" y1="272" x2="95" y2="272" stroke="hsl(var(--muted-foreground))" stroke-width="1" stroke-dasharray="4 3"/>
+  <line x1="545" y1="272" x2="636" y2="272" stroke="hsl(var(--muted-foreground))" stroke-width="1" stroke-dasharray="4 3"/>
+  <text x="50" y="266" text-anchor="middle" font-size="12" fill="hsl(var(--muted-foreground))">2.5cm</text>
+  <text x="590" y="266" text-anchor="middle" font-size="12" fill="hsl(var(--muted-foreground))">2.5cm</text>
+  <text x="320" y="290" text-anchor="middle" font-size="12" fill="hsl(var(--muted-foreground))">1px navy hairline · desktop only</text>
+</svg>
+</body>
+</html>
