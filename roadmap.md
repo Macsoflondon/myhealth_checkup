@@ -8,3 +8,5 @@
 - [x] Most Popular Tests cards: render biomarker/turnaround/sample chips + description fallback
 - [x] Featured partner section: white surface, navy #081129 text, outlined secondary button
 
+- [ ] Comparison tray: frosted holographic resting state + highlighted active state, page-frame width, scrolling pill row
+- [ ] Provider data corrections: Goodbody/LML biomarker counts, Clinilabs £30 collection fee, clinical review included on all four, Goodbody home-visit option
