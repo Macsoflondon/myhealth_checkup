@@ -103,11 +103,29 @@ export const buildTestSummary = (input: TestSummaryInput): string => {
  * Summary for display: the provider's own description when present, otherwise
  * a generated factual summary, otherwise an empty string.
  */
+
+/**
+ * Provider-level boilerplate that some feeds repeat verbatim across dozens of
+ * listings. It says nothing about the individual test, so we generate a
+ * factual summary from the listing's own data instead.
+ */
+const GENERIC_DESCRIPTION_PATTERNS: readonly RegExp[] = [
+  /^lola health offers home blood testing/i,
+  /^price includes the premium report\.?$/i,
+];
+
+export const isGenericDescription = (description?: string | null): boolean => {
+  const value = tidy(description);
+  if (!value) return true;
+  return GENERIC_DESCRIPTION_PATTERNS.some((re) => re.test(value));
+};
+
 export const resolveTestSummary = (
   description: string | null | undefined,
   input: TestSummaryInput,
 ): string => {
   const provided = tidy(description);
-  if (provided) return provided;
-  return buildTestSummary(input);
+  if (provided && !isGenericDescription(provided)) return provided;
+  return buildTestSummary(input) || provided;
 };
+
