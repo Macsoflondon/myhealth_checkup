@@ -505,6 +505,25 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
             aria-hidden="true"
             className="absolute inset-0 z-10 flex flex-col bg-white opacity-100 transition-opacity duration-[240ms] ease-out [@media(hover:hover)]:group-hover:opacity-0 [@media(hover:hover)]:group-focus-within:opacity-0 motion-reduce:transition-none"
           >
+            {test.is_addon && (
+              <span
+                className="absolute left-3 top-3 z-20"
+                style={{
+                  background: "#fffbeb",
+                  color: "#d97706",
+                  border: "1px solid #fbbf2480",
+                  fontFamily: "'Montserrat',sans-serif",
+                  fontSize: 10,
+                  fontWeight: 700,
+                  padding: "2px 8px",
+                  borderRadius: 20,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.06em",
+                }}
+              >
+                Add-on
+              </span>
+            )}
             <div className="flex flex-1 items-center justify-center overflow-hidden p-4">
               {defaultFace === "image" && test.image_url && brokenImageSrc !== test.image_url ? (
                 <img
