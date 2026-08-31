@@ -70,7 +70,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
       const padX = dock
         ? (() => { const s = getComputedStyle(dock); return parseFloat(s.paddingLeft) + parseFloat(s.paddingRight); })()
         : 0;
-      const moreW = moreWrapRef.current?.offsetWidth ?? 0;
+      const moreW = moreRef.current?.offsetWidth ?? 0;
       const available = bar.clientWidth - padX - moreW - 12;
       const gap = parseFloat(getComputedStyle(strip).columnGap) || 0;
       let used = 0;
