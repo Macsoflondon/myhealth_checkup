@@ -33,18 +33,27 @@ interface CheckResult {
   issue?: string;
 }
 
+// Providers (medichecks, clinilabs) reject bare/Deno requests as bot traffic.
+// Reuse the same UA the provider scrapers already send.
+const REQUEST_HEADERS: Record<string, string> = {
+  "User-Agent": "myhealthcheckup-comparison-bot/1.0 (+https://myhealthcheckup.co.uk)",
+  Accept: "text/html,*/*",
+};
+
 async function checkUrl(url: string): Promise<CheckResult> {
   try {
     let res = await fetch(url, {
       method: "HEAD",
+      headers: REQUEST_HEADERS,
       redirect: "follow",
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
-    // Some hosts reject HEAD — fall back to a ranged GET.
-    if (res.status === 405 || res.status === 403) {
+    // Many hosts reject or mishandle HEAD behind bot filtering — retry with a
+    // ranged GET on any non-2xx except genuine 404/410, which are real signal.
+    if (!res.ok && res.status !== 404 && res.status !== 410) {
       res = await fetch(url, {
         method: "GET",
-        headers: { Range: "bytes=0-0" },
+        headers: { ...REQUEST_HEADERS, Range: "bytes=0-0" },
         redirect: "follow",
         signal: AbortSignal.timeout(TIMEOUT_MS),
       });
@@ -55,6 +64,7 @@ async function checkUrl(url: string): Promise<CheckResult> {
     return { ok: false, issue: (e as Error).message };
   }
 }
+
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
