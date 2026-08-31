@@ -94,7 +94,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
         aria-haspopup={hasDropdown ? "menu" : undefined}
         aria-expanded={hasDropdown ? open : undefined}
         className={`group inline-flex items-center rounded-full no-underline transition-colors duration-200 shrink-0 ${
-          dense ? "gap-1.5 px-2.5 py-2" : "gap-1 px-1.5 py-2 xl:gap-1.5 xl:px-2 2xl:gap-2 2xl:px-3 2xl:py-2.5"
+          dense ? "gap-1.5 px-2.5 py-2" : "gap-1 px-1.5 py-2 2xl:gap-2 2xl:px-3 2xl:py-2.5"
         } ${compact ? "sm:py-2.5" : "sm:py-2.5"} ${
           highlighted ? "" : "hover:bg-brand-pink/10"
         }`}

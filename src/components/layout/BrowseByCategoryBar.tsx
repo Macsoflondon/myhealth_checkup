@@ -53,6 +53,48 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const [hydrated, setHydrated] = useState(false);
   const { user, signOut } = useAuth();
   const isStraddle = placement === "straddle";
+  const items = primaryNavigationItems.filter((i) => i.name !== "How It Works");
+  // Responsive overflow: how many category pills fit before the rest collapse
+  // into the More menu. All pills render during a measuring pass, then extras hide.
+  const stripRef = useRef<HTMLDivElement>(null);
+  const [visibleCount, setVisibleCount] = useState(items.length);
+  const [measuring, setMeasuring] = useState(true);
+  useEffect(() => {
+    const compute = () => {
+      const strip = stripRef.current;
+      const bar = barRef.current;
+      if (!strip || !bar) return;
+      // Measure against the bar itself: the dock can be w-fit, in which case
+      // the strip's own clientWidth never constrains and pills slide under More.
+      const dock = strip.parentElement?.parentElement as HTMLElement | null;
+      const padX = dock
+        ? (() => { const s = getComputedStyle(dock); return parseFloat(s.paddingLeft) + parseFloat(s.paddingRight); })()
+        : 0;
+      const moreW = moreWrapRef.current?.offsetWidth ?? 0;
+      const available = bar.clientWidth - padX - moreW - 12;
+      const gap = parseFloat(getComputedStyle(strip).columnGap) || 0;
+      let used = 0;
+      let count = 0;
+      for (const child of Array.from(strip.children) as HTMLElement[]) {
+        const next = used + child.offsetWidth + (count > 0 ? gap : 0);
+        if (next > available) break;
+        used = next;
+        count++;
+      }
+      setVisibleCount(Math.max(1, count));
+      setMeasuring(false);
+    };
+    compute();
+    document.fonts?.ready.then(compute).catch(() => {});
+    const ro = new ResizeObserver(compute);
+    if (barRef.current) ro.observe(barRef.current);
+    window.addEventListener("resize", compute);
+    return () => { ro.disconnect(); window.removeEventListener("resize", compute); };
+  }, []);
+  const overflowNavItems = items.slice(visibleCount).map((i) => ({ name: i.name, path: i.path }));
+  const moreSections = overflowNavItems.length
+    ? [{ title: "Categories", items: overflowNavItems }, ...moreNavigationSections]
+    : moreNavigationSections;
   useEffect(() => setHydrated(true), []);
   // Find the navy/white boundary marker rendered by the category hero.
   useLayoutEffect(() => {
@@ -181,7 +223,6 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
       window.removeEventListener("resize", sync);
     };
   }, [moreOpen]);
-  const items = primaryNavigationItems.filter((i) => i.name !== "How It Works");
   const isFlush = variant === "flush";
   const useStraddle = isStraddle && Boolean(anchorEl);
   const straddlePositionClass = pinned
@@ -362,13 +403,18 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             data-hydrated={hydrated}
           >
 
-            <div className={`${placement === "hero" ? "px-4 sm:px-6 md:px-9 py-1.5" : "p-1.5"} transition-all duration-300 ${innerClass}`} data-testid="category-toolbar-dock">
+            <div className={`${placement === "hero" ? "px-3 sm:px-4 py-1.5" : "p-1.5"} transition-all duration-300 ${innerClass}`} data-testid="category-toolbar-dock">
               <div className={`flex ${placement === "hero" ? "w-full" : "w-fit"} max-w-full min-w-0 items-center gap-1`}>
 
-                <div className={`flex min-w-0 items-center justify-start gap-y-0 flex-nowrap overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${useStraddle ? "gap-x-0" : "gap-x-0 2xl:gap-x-1"}`} data-testid="category-pill-strip">
-                  {items.map((item) => {
+                <div ref={stripRef} className={`flex min-w-0 items-center justify-start gap-y-0 flex-nowrap overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${useStraddle ? "gap-x-0" : "gap-x-0 2xl:gap-x-1"}`} data-testid="category-pill-strip">
+                  {items.map((item, index) => {
                     const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
-                    return <CategoryPillDropdown key={item.name} item={item} color={color} Icon={Icon} compact={compact} dense={useStraddle} />;
+                    const collapsed = !measuring && index >= visibleCount;
+                    return (
+                      <div key={item.name} className={collapsed ? "hidden" : "shrink-0"}>
+                        <CategoryPillDropdown item={item} color={color} Icon={Icon} compact={compact} dense={useStraddle} />
+                      </div>
+                    );
                   })}
                 </div>
 
@@ -378,7 +424,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                   {moreOpen && typeof document !== "undefined" && createPortal(
                     <div ref={moreMenuRef} className="fixed z-[9999]" style={{ top: moreRect ? moreRect.bottom + 8 : 0, right: moreRect ? Math.max(8, window.innerWidth - moreRect.right) : 8 }}>
                       <MoreDropdownMenu
-                        sections={moreNavigationSections}
+                        sections={moreSections}
                         onItemClick={() => setMoreOpen(false)}
                         onClose={() => setMoreOpen(false)}
                         accountItems={user
