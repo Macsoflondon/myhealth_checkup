@@ -1250,6 +1250,14 @@ html { overflow-x: clip; }
 @media (max-width: 767.98px) {
   .page-surface-inner { -webkit-mask-image: none; mask-image: none; }
 }
+/* Desktop: replace the feathered fade with a crisp 1px navy frame line. */
+@media (min-width: 1024px) {
+  .page-surface-inner {
+    -webkit-mask-image: none;
+    mask-image: none;
+    border-inline: 1px solid var(--color-brand-navy);
+  }
+}
 
 /* Align a viewport-fixed element (pinned toolbar, sticky bars) with the
    inset page surface instead of the raw browser edge. */
