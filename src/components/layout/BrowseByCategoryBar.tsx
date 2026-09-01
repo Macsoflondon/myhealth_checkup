@@ -38,6 +38,8 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const stripRef = useRef<HTMLDivElement>(null);
   const [visibleCount, setVisibleCount] = useState(items.length);
   const [measuring, setMeasuring] = useState(true);
+  const pillWidths = useRef<number[]>([]);
+
   useEffect(() => {
     const compute = () => {
       const strip = stripRef.current;
