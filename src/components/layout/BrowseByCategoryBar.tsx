@@ -232,12 +232,12 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     : placement === "hero"
       ? `${
           heroPinned
-            ? `fixed inset-x-0 top-0 page-inset-x will-change-transform transition-[transform,opacity,box-shadow] duration-[260ms] ease-out motion-reduce:transition-none ${
+            ? `fixed inset-x-0 top-0 page-inset-x will-change-transform transition-all duration-300 ease-out motion-reduce:transition-none ${
                 pinEnter
                   ? "translate-y-0 opacity-100 shadow-[0_6px_20px_-8px_rgba(8,17,41,0.28)]"
                   : "-translate-y-full opacity-0 shadow-none motion-reduce:translate-y-0 motion-reduce:opacity-100"
               }`
-            : "relative"
+            : "relative transition-all duration-300 ease-out motion-reduce:transition-none"
         } mt-0 w-full min-w-0`
       : compact ? "mt-0 mx-3 lg:mx-6" : isFlush ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
 
