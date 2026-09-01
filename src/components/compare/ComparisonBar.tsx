@@ -5,6 +5,8 @@ import { CompareTestData } from "@/services/CompareService";
 import { X, ArrowRight, GitCompare, GripVertical, ChevronDown, ChevronUp, Scale } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useDraggable } from "@/hooks";
+import { useLocation } from "@/lib/router-compat";
+
 
 interface ComparisonBarProps {
   selectedTests: CompareTestData[];
