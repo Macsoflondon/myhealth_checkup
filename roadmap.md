@@ -11,3 +11,4 @@
 - [ ] Provider data corrections: Goodbody/LML biomarker counts, Clinilabs £30 collection fee, clinical review included on all four, Goodbody home-visit option
 - [ ] Make page edging strips white
 - [ ] Condense spacing in AccreditedProvidersBar standards grid
+- [ ] Add turquoise top border to toolbar and smooth sticky transition on scroll
