@@ -1,7 +1,6 @@
 # Roadmap
 
 - [x] Toolbar responsive overflow collapse (pills → More menu Categories section)
-- [x] Tablet: hard navy side borders (no feather fade), 24px inset kept
 - [x] More dropdown restyled to match hamburger drawer (pill cards, icon chips)
 - [x] Verified at 1440/1280/1024/834/390 via Playwright
 - [ ] Homepage section-header spacing pass (Accredited & Verified, Featured Partner, What We Compare + sweep)
@@ -10,3 +9,5 @@
 
 - [ ] Comparison tray: frosted holographic resting state + highlighted active state, page-frame width, scrolling pill row
 - [ ] Provider data corrections: Goodbody/LML biomarker counts, Clinilabs £30 collection fee, clinical review included on all four, Goodbody home-visit option
+- [ ] Make page edging strips white
+- [ ] Condense spacing in AccreditedProvidersBar standards grid
