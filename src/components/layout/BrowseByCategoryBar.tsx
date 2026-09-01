@@ -38,6 +38,8 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const stripRef = useRef<HTMLDivElement>(null);
   const [visibleCount, setVisibleCount] = useState(items.length);
   const [measuring, setMeasuring] = useState(true);
+  const pillWidths = useRef<number[]>([]);
+
   useEffect(() => {
     const compute = () => {
       const strip = stripRef.current;
@@ -59,13 +61,20 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
       const gap = parseFloat(getComputedStyle(strip).columnGap) || 0;
       let used = 0;
       let count = 0;
-      for (const child of Array.from(strip.children) as HTMLElement[]) {
-        const next = used + child.offsetWidth + (count > 0 ? gap : 0);
+      const children = Array.from(strip.children) as HTMLElement[];
+      for (let i = 0; i < children.length; i++) {
+        // Collapsed pills are display:none, so offsetWidth reads 0 on re-measure.
+        // Fall back to the width cached during the last pass where it was visible.
+        const measured = children[i].offsetWidth;
+        if (measured > 0) pillWidths.current[i] = measured;
+        const width = measured > 0 ? measured : (pillWidths.current[i] ?? 0);
+        const next = used + width + (count > 0 ? gap : 0);
         if (next > available) break;
         used = next;
         count++;
       }
       setVisibleCount(Math.max(1, count));
+
       setMeasuring(false);
     };
     compute();

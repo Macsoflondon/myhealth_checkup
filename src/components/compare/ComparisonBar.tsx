@@ -5,6 +5,8 @@ import { CompareTestData } from "@/services/CompareService";
 import { X, ArrowRight, GitCompare, GripVertical, ChevronDown, ChevronUp, Scale } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useDraggable } from "@/hooks";
+import { useLocation } from "@/lib/router-compat";
+
 
 interface ComparisonBarProps {
   selectedTests: CompareTestData[];
@@ -32,6 +34,9 @@ export const ComparisonBar = ({
   // Scroll-gated visibility: on pages with a #comparison-anchor sentinel
   // (currently the homepage), keep the bar hidden until the comparison
   // section is in view, and hide it again once scrolled past #comparison-end.
+  // The tray is mounted once at app root, so this must re-run on every route
+  // change — otherwise the homepage's gate would persist on other pages.
+  const { pathname } = useLocation();
   React.useEffect(() => {
     const anchor = document.getElementById("comparison-anchor");
     const end = document.getElementById("comparison-end");
@@ -39,6 +44,8 @@ export const ComparisonBar = ({
       setHasReached(true);
       return;
     }
+    setHasReached(false);
+
 
     let anchorReached = false;
     let endPassed = false;
@@ -78,7 +85,7 @@ export const ComparisonBar = ({
       anchorObs.disconnect();
       endObs?.disconnect();
     };
-  }, []);
+  }, [pathname]);
 
   const revealClass = hasReached
     ? "opacity-100 translate-y-0"
