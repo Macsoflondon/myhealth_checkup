@@ -85,7 +85,7 @@ export const ComparisonBar = ({
       anchorObs.disconnect();
       endObs?.disconnect();
     };
-  }, []);
+  }, [pathname]);
 
   const revealClass = hasReached
     ? "opacity-100 translate-y-0"
