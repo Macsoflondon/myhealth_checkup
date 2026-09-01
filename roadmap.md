@@ -9,6 +9,6 @@
 
 - [ ] Comparison tray: frosted holographic resting state + highlighted active state, page-frame width, scrolling pill row
 - [ ] Provider data corrections: Goodbody/LML biomarker counts, Clinilabs £30 collection fee, clinical review included on all four, Goodbody home-visit option
-- [ ] Make page edging strips white
-- [ ] Condense spacing in AccreditedProvidersBar standards grid
-- [ ] Add turquoise top border to toolbar and smooth sticky transition on scroll
+- [x] Make page edging strips white
+- [x] Condense spacing in AccreditedProvidersBar standards grid
+- [x] Add turquoise top border to toolbar and smooth sticky transition on scroll
