@@ -443,7 +443,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             <>
               {desktopBar}
               {/* Reserve the bar's height once it pins so nothing jumps. */}
-              <div aria-hidden="true" className="hidden md:block" style={{ height: heroPinned ? barHeight : 0 }} />
+              <div aria-hidden="true" className="hidden md:block transition-[height] duration-300 ease-out" style={{ height: heroPinned ? barHeight : 0 }} />
             </>
           );
         }
