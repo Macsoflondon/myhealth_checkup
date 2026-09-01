@@ -26,30 +26,30 @@ const AccreditedProvidersBar = () => {
       aria-label="Accredited provider standards"
       className="bg-white border-b border-[#081129]/10 -mt-6 md:mt-0 pt-6 md:pt-0"
     >
-      <div className="container mx-auto px-5 sm:px-4 py-4 sm:py-3">
+      <div className="container mx-auto px-5 sm:px-4 py-2 sm:py-2">
         <Reveal variant="fade">
-          <p className="hidden md:block text-center font-[Montserrat] font-semibold text-[#081129] text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)] xl:text-[clamp(1.3rem,2.05vw,2rem)] xl:whitespace-nowrap leading-tight mb-1 sm:mb-2 px-4">
+          <p className="hidden md:block text-center font-[Montserrat] font-semibold text-[#081129] text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)] xl:text-[clamp(1.3rem,2.05vw,2rem)] xl:whitespace-nowrap leading-tight mb-1 sm:mb-1 px-4">
             {HERO_CAPTION}
           </p>
         </Reveal>
 
         {/* Editorial standards header */}
-        <div className="flex flex-col items-center mb-3">
-          <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-[#081129]/40 mb-2">
+        <div className="flex flex-col items-center mb-2">
+          <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-[#081129]/40 mb-1">
             Our clinical standards
           </div>
           <div className="w-8 h-[2px] bg-[#22c0d4]" />
         </div>
 
-        {/* Underline grid — same treatment at every breakpoint */}
+        {/* Underline grid — condensed spacing */}
         <div
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-y-4 gap-x-4 sm:gap-x-6"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-y-2 gap-x-3 sm:gap-x-4"
           data-testid="accreditors-mobile-grid"
         >
           {trustItems.map((item, idx) => (
             <div key={item.label} className="group">
               <div
-                className="w-6 h-1.5 mb-2 rounded-full"
+                className="w-6 h-1.5 mb-1 rounded-full"
                 style={{ backgroundColor: underlineColors[idx % underlineColors.length] }}
               />
               <h3 className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.14em] text-[#081129] leading-tight">
