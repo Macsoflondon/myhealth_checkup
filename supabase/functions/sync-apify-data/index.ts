@@ -1,3 +1,4 @@
+// sync-apify-data — manual recovery tool: re-apply a specific Apify dataset when the apify-ingest webhook is missed or fails — not part of the normal pipeline, not called from any UI.
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.42.7"
 import { applyProviderRows, type ProviderDatasetRow } from "../_shared/scrape/applyProviderRows.ts"
@@ -122,6 +123,38 @@ serve(async (req) => {
     console.log(`Syncing ${items.length} items from Apify dataset ${datasetId} for provider ${providerId}`)
 
     const result = await applyProviderRows(supabaseClient, providerId, items)
+
+    // Audit trail: mirror what apify-ingest records on success, so manual
+    // dataset re-applies show up alongside normal pipeline runs.
+    try {
+      const now = new Date().toISOString()
+      await supabaseClient.from('scrape_runs').insert({
+        provider_id: providerId,
+        scraper_function: 'sync-apify-data',
+        status: result.errors.length > 0 ? 'partial' : 'success',
+        finished_at: now,
+        tests_seen: items.length,
+        tests_updated: result.updated,
+        errors: result.errors.slice(0, 20),
+        metadata: {
+          manual_reapply: true,
+          apify_dataset_id: datasetId,
+          matched: result.matched,
+          skipped_ambiguous: result.skipped_ambiguous,
+          skipped_unmatched: result.skipped_unmatched,
+        },
+      })
+      await supabaseClient.from('scraping_jobs').upsert({
+        provider_id: providerId,
+        status: 'completed',
+        error_message: null,
+        last_scraped: now,
+        last_test_count: result.updated,
+      }, { onConflict: 'provider_id' })
+    } catch (auditError) {
+      console.error('[sync-apify-data] audit write failed:', (auditError as Error).message)
+    }
+
 
     return new Response(JSON.stringify({
       success: true,

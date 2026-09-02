@@ -1,7 +1,9 @@
+// trigger-all-scrapers — break-glass fallback: bypasses run-all-scrapers' normal auth path if it's ever broken by env/vault drift — secret-gated, not called from any UI, not part of the normal pipeline.
 // One-off admin trigger: fans out to all 9 provider scrapers using the
 // edge runtime's own SUPABASE_SERVICE_ROLE_KEY, so vault/env drift can't
 // cause an auth mismatch. Guarded by SCRAPE_TRIGGER_SECRET in the body.
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -69,6 +71,31 @@ serve(async (req) => {
       }),
     );
     console.log("[trigger-all-scrapers] complete:", JSON.stringify(results));
+
+    // Audit trail: one scrape_runs row per dispatched provider, so a
+    // break-glass run appears in the same audit trail as everything else.
+    try {
+      const supabase = createClient(url, serviceKey);
+      const finishedAt = new Date().toISOString();
+      const rows = results.map((r, i) => {
+        const target = targets[i];
+        const value = r.status === "fulfilled" ? r.value : null;
+        const ok = value?.ok === true;
+        return {
+          provider_id: target.id,
+          scraper_function: "trigger-all-scrapers",
+          status: ok ? "success" : "error",
+          finished_at: finishedAt,
+          errors: ok
+            ? []
+            : [{ message: `dispatch to ${target.fn} failed`, http_status: value?.status ?? 0 }],
+          metadata: { break_glass: true, dispatched_function: target.fn },
+        };
+      });
+      if (rows.length) await supabase.from("scrape_runs").insert(rows);
+    } catch (e) {
+      console.error("[trigger-all-scrapers] audit write failed:", e);
+    }
   };
 
   // Kick off in background so the HTTP call returns immediately.
