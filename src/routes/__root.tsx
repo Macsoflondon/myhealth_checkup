@@ -83,12 +83,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1.0" },
-      { title: "myhealth checkup | Private Blood Tests & Health Checks UK" },
-      {
-        name: "description",
-        content:
-          "Compare private blood tests, health checks and cancer screening from UKAS-accredited labs and CQC-regulated clinics. Transparent prices, no pay-to-rank.",
-      },
+      // title / description are intentionally NOT set here. TanStack Router
+      // concatenates root meta with route meta rather than merging by key, so
+      // a sitewide default would emit a second title and description on every
+      // page. Each route supplies its own via buildRouteHead().
+
       { name: "author", content: "MYHEALTHCHECKUP LTD" },
       { name: "robots", content: "index, follow" },
       { name: "google-site-verification", content: "d-S0SbPF-GVT1OxyYdzTj45dGI9dV0W5jRY76zau1GY" },
