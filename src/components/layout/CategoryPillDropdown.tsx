@@ -106,7 +106,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact, displayName, 
         }
       >
         <Icon
-          className={`${dense ? "w-[13px] h-[13px] shrink-0" : "w-[14px] h-[14px] shrink-0 2xl:w-[17px] 2xl:h-[17px]"} group-hover:!text-brand-pink`}
+          className={`${dense ? "hidden xl:block w-[13px] h-[13px] shrink-0" : "w-[14px] h-[14px] shrink-0 2xl:w-[17px] 2xl:h-[17px]"} group-hover:!text-brand-pink`}
           style={{ color: isActiveParent ? PINK : color }}
           strokeWidth={2}
         />
