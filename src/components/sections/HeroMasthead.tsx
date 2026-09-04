@@ -63,7 +63,7 @@ export default function HeroMasthead({
 
       {/* Brand bar + category toolbar. The brand bar renders at every width;
           the pill toolbar is desktop/tablet only (mobile uses the drawer). */}
-      <div className="relative -mx-3 sm:-mx-6 md:-mx-9 mt-0 order-1 flex flex-wrap items-center bg-white pb-0 md:pb-1 border-b-2 border-[#e70d69]">
+      <div className="relative -mx-3 sm:-mx-6 md:-mx-9 mt-0 order-1 flex flex-wrap items-center bg-white pb-0 md:pb-1 border-b-2 border-[#22c0d4]">
         <BrowseByCategoryBar compact placement="hero" />
       </div>
 
@@ -124,7 +124,7 @@ export default function HeroMasthead({
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
         {/* Pink section divider */}
-        <div className="absolute bottom-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#e70d69]" />
+        <div className="absolute bottom-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#22c0d4]" />
 
       </div>
     </section>
