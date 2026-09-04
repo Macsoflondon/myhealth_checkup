@@ -7,7 +7,7 @@ import { AdminShell } from "@/components/admin/AdminShell";
 const AdminSeoStatusPage = lazy(() => import("@/pages/AdminSeoStatusPage"));
 
 export const Route = createFileRoute("/admin/seo-status")({
-  head: () => buildPrivateRouteHead("Seo Status | Admin | myhealth checkup"),
+  head: () => buildPrivateRouteHead("SEO Status | Admin | myhealth checkup"),
   component: () => (
     <AdminRoute>
       <AdminShell>

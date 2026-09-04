@@ -7,7 +7,7 @@ import { AdminShell } from "@/components/admin/AdminShell";
 const AdminSocWatchPage = lazy(() => import("@/pages/AdminSocWatchPage"));
 
 export const Route = createFileRoute("/admin/soc-watch")({
-  head: () => buildPrivateRouteHead("Soc Watch | Admin | myhealth checkup"),
+  head: () => buildPrivateRouteHead("SOC Watch | Admin | myhealth checkup"),
   component: () => (
     <AdminRoute>
       <AdminShell>

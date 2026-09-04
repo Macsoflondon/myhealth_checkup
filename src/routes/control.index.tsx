@@ -7,7 +7,7 @@ import { AdminShell } from "@/components/admin/AdminShell";
 const ControlPage = lazy(() => import("@/pages/ControlPage"));
 
 export const Route = createFileRoute("/control/")({
-  head: () => buildPrivateRouteHead("Index | Control | myhealth checkup"),
+  head: () => buildPrivateRouteHead("Crux Control | myhealth checkup"),
   component: () => (
     <AdminRoute>
       <AdminShell>
