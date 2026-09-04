@@ -20,6 +20,11 @@ import { useUrlValidation, getProviderFallbackUrl } from "@/hooks/useUrlValidati
 import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
 import { seo } from "@/lib/seo";
 import { getProviderLogo } from "@/constants/providers";
+import { TestProviderPriceTable } from "@/components/compare/TestProviderPriceTable";
+import { getProviderRating } from "@/constants/providerRatings";
+import { detailedProviders } from "@/data/compare/detailedProviders";
+import RelatedLinks from "@/components/seo/RelatedLinks";
+import { resolveCategorySlug } from "@/lib/internal-links";
 
 export interface ProviderTestData {
   id: string;
@@ -44,6 +49,19 @@ interface BiomarkerInfo {
   biomarker_name: string;
   description: string;
   category: string;
+}
+
+interface ComparisonProviderOption {
+  id: string;
+  providerId: string;
+  providerName: string;
+  price: number;
+  turnaroundTime: string;
+  collectionMethod: string;
+  biomarkerCount?: number;
+  url?: string;
+  rating?: number;
+  reviews?: string;
 }
 
 interface ProviderTestDetailTemplateProps {
@@ -202,7 +220,7 @@ const BiomarkersSection = ({ biomarkers, biomarkerCount }: { biomarkers: string[
 
   const incomplete = typeof biomarkerCount === 'number' && biomarkerCount > biomarkers.length;
   const heading = incomplete
-    ? `Biomarkers tested \u2014 showing ${biomarkers.length} of ${biomarkerCount} published by the provider`
+    ? `Biomarkers tested — showing ${biomarkers.length} of ${biomarkerCount} published by the provider`
     : `Biomarkers tested (${biomarkers.length})`;
   const visibleBiomarkers = showAll ? biomarkers : biomarkers.slice(0, 5);
   const hiddenCount = biomarkers.length - 5;
@@ -349,6 +367,65 @@ export default function ProviderTestDetailTemplate({
 }: ProviderTestDetailTemplateProps) {
   const navigate = useNavigate();
 
+  const [otherProviders, setOtherProviders] = useState<ComparisonProviderOption[]>([]);
+
+  useEffect(() => {
+    if (!test?.id) return;
+    let cancelled = false;
+
+    const fetchComparisons = async () => {
+      const { data: ownGroup } = await supabase
+        .from('comparison_test_groups')
+        .select('group_key')
+        .eq('provider_test_id', test.id)
+        .maybeSingle();
+
+      const groupKey = ownGroup?.group_key;
+      if (!groupKey) return;
+
+      const { data: siblings } = await supabase
+        .from('comparison_test_groups')
+        .select('provider_test_id, provider_id')
+        .eq('group_key', groupKey)
+        .neq('provider_test_id', test.id);
+
+      const siblingIds = (siblings ?? [])
+        .map((row) => row.provider_test_id)
+        .filter((id): id is string => Boolean(id));
+
+      if (siblingIds.length === 0) return;
+
+      const { data: siblingTests } = await supabase
+        .from('provider_tests')
+        .select('*')
+        .in('id', siblingIds)
+        .eq('is_active', true);
+
+      if (cancelled) return;
+
+      const options: ComparisonProviderOption[] = (siblingTests ?? []).map((t: any) => {
+        const provRating = getProviderRating(t.provider_id);
+        return {
+          id: t.id,
+          providerId: t.provider_id,
+          providerName: detailedProviders.find(p => p.id === t.provider_id)?.name || t.provider_id,
+          price: t.price || 0,
+          turnaroundTime: t.turnaround_days_text || t.turnaround_raw || 'Contact provider',
+          collectionMethod: t.collection_method || 'Contact provider',
+          biomarkerCount: t.biomarker_count || undefined,
+          url: t.url || undefined,
+          rating: provRating?.rating,
+          reviews: provRating?.reviewsFormatted,
+        };
+      });
+
+      setOtherProviders(options);
+    };
+
+    fetchComparisons();
+    return () => { cancelled = true; };
+  }, [test?.id]);
+
   if (isLoading) {
     return <LoadingSkeleton />;
   }
@@ -410,8 +487,6 @@ export default function ProviderTestDetailTemplate({
 
       <div className="min-h-screen bg-white py-12">
         <div className="container mx-auto px-4 max-w-5xl">
-          {/* Breadcrumb with Back Button */}
-
           {/* Provider Badge */}
           <div className="mb-6">
             <img 
@@ -434,7 +509,6 @@ export default function ProviderTestDetailTemplate({
               )}
             </div>
           </div>
-
 
           {/* Test Header */}
           <h1 className="text-4xl font-bold mb-4">{test.test_name}</h1>
@@ -480,6 +554,28 @@ export default function ProviderTestDetailTemplate({
 
               {/* Conditions Section */}
               <ConditionsSection conditions={test.conditions} />
+
+              {/* Compare Across Providers */}
+              {otherProviders.length > 0 && (
+                <TestProviderPriceTable
+                  testName={test.test_name}
+                  providers={[
+                    {
+                      id: test.id,
+                      providerId: providerConfig.id,
+                      providerName: providerConfig.name,
+                      price: test.price || 0,
+                      turnaroundTime: providerConfig.turnaround,
+                      collectionMethod: providerConfig.quickInfo.sampleType,
+                      biomarkerCount: test.biomarker_count || undefined,
+                      url: test.url || undefined,
+                      rating: getProviderRating(providerConfig.id)?.rating,
+                      reviews: getProviderRating(providerConfig.id)?.reviewsFormatted,
+                    },
+                    ...otherProviders,
+                  ]}
+                />
+              )}
 
               {/* Sample Collection Options */}
               <Card>
@@ -637,6 +733,11 @@ export default function ProviderTestDetailTemplate({
           </Card>
         </div>
       </div>
+
+      <RelatedLinks
+        categorySlug={resolveCategorySlug(test.category)}
+        providerId={providerConfig.id}
+      />
     </>
   );
 }
