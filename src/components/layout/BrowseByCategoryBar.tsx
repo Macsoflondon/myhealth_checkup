@@ -21,6 +21,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const moreMenuRef = useRef<HTMLDivElement>(null);
   const [moreRect, setMoreRect] = useState<DOMRect | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const heroSentinelRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const mobileBarRef = useRef<HTMLDivElement>(null);
   const [mobileBarOut, setMobileBarOut] = useState(false);
@@ -175,7 +176,10 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
       return;
     }
 
-    const sentinel = sentinelRef.current;
+    // The hero sentinel sits immediately above the toolbar itself, so pinning
+    // flips exactly when the bar's own top edge reaches the viewport top —
+    // the hand-off from in-flow to fixed is pixel-continuous, like straddle.
+    const sentinel = heroSentinelRef.current;
     if (!sentinel) return;
     const observer = new IntersectionObserver(
       ([entry]) => setHeroPinned(!entry.isIntersecting && entry.boundingClientRect.top < 0),
@@ -184,18 +188,6 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     observer.observe(sentinel);
     return () => observer.disconnect();
   }, [placement]);
-  // Slide the pinned bar in on the frame after it flips to fixed, so the
-  // browser has a start state to animate from instead of snapping into place.
-  const [pinEnter, setPinEnter] = useState(false);
-  useEffect(() => {
-    if (!heroPinned) {
-      setPinEnter(false);
-      return;
-    }
-    const raf = requestAnimationFrame(() => setPinEnter(true));
-    return () => cancelAnimationFrame(raf);
-  }, [heroPinned]);
-
   useEffect(() => {
     if (!moreOpen) return;
     const onDoc = (e: MouseEvent) => {
@@ -232,12 +224,8 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
     : placement === "hero"
       ? `${
           heroPinned
-            ? `fixed inset-x-0 top-0 page-inset-x will-change-transform transition-all duration-300 ease-out motion-reduce:transition-none ${
-                pinEnter
-                  ? "translate-y-0 opacity-100 shadow-[0_6px_20px_-8px_rgba(8,17,41,0.28)]"
-                  : "-translate-y-full opacity-0 shadow-none motion-reduce:translate-y-0 motion-reduce:opacity-100"
-              }`
-            : "relative transition-all duration-300 ease-out motion-reduce:transition-none"
+            ? "fixed inset-x-0 top-0 page-inset-x transition-[box-shadow] duration-300 ease-out motion-reduce:transition-none shadow-[0_6px_20px_-8px_rgba(8,17,41,0.28)]"
+            : "relative transition-[box-shadow] duration-300 ease-out motion-reduce:transition-none"
         } mt-0 w-full min-w-0`
       : compact ? "mt-0 mx-3 lg:mx-6" : isFlush ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
 
@@ -441,9 +429,12 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
         if (placement === "hero") {
           return (
             <>
+              {/* Pin trigger: when this line scrolls past the viewport top, the
+                  toolbar's own top edge is exactly at 0 — pin without a jump. */}
+              <div ref={heroSentinelRef} aria-hidden="true" className="h-px w-full" />
               {desktopBar}
               {/* Reserve the bar's height once it pins so nothing jumps. */}
-              <div aria-hidden="true" className="hidden md:block transition-[height] duration-300 ease-out" style={{ height: heroPinned ? barHeight : 0 }} />
+              <div aria-hidden="true" className="hidden lg:block" style={{ height: heroPinned ? barHeight : 0 }} />
             </>
           );
         }
