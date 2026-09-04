@@ -126,7 +126,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact, displayName, 
 
         {hasDropdown && (
           <ChevronDown
-            className={`text-[#081129]/45 transition-transform duration-300 shrink-0 ${dense ? "w-[10px] h-[10px]" : "w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px]"} group-hover:text-brand-pink ${open ? "rotate-180" : ""}`}
+            className={`text-[#081129]/45 transition-transform duration-300 shrink-0 ${dense ? "hidden xl:block w-[10px] h-[10px]" : "w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px]"} group-hover:text-brand-pink ${open ? "rotate-180" : ""}`}
           />
         )}
       </Link>
