@@ -1251,12 +1251,12 @@ html { overflow-x: clip; }
 @media (max-width: 767.98px) {
   .page-surface-inner { -webkit-mask-image: none; mask-image: none; }
 }
-/* Tablet and desktop: crisp 1px white frame line instead of a feathered fade. */
+/* Tablet and desktop: crisp 1px navy frame line instead of a feathered fade. */
 @media (min-width: 768px) {
   .page-surface-inner {
     -webkit-mask-image: none;
     mask-image: none;
-    border-inline: 1px solid #ffffff;
+    border-inline: 1px solid var(--color-brand-navy);
   }
 }
 
