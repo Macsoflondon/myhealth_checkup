@@ -58,7 +58,7 @@ export default function HeroMasthead({
     <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border-0 sm:border sm:border-b-0 sm:border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[68svh] sm:min-h-[100svh] flex flex-col">
       <TestCategoryTicker
         variant="inline"
-        className="bg-white border-b border-brand-navy/10 -mx-3 sm:-mx-6 md:-mx-9"
+        className="bg-white border-b-2 border-[#22c0d4] -mx-3 sm:-mx-6 md:-mx-9"
       />
 
       {/* Brand bar + category toolbar. The brand bar renders at every width;

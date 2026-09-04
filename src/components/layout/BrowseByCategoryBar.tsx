@@ -275,7 +275,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
 
           <div className="absolute right-4 sm:right-6 md:right-9 lg:right-9 top-1/2 -translate-y-1/2 z-50" data-testid="mobile-floating-menu-trigger">
             {/* Desktop: show the hamburger icon but keep it inactive */}
-            <div className="hidden lg:flex flex-col items-end justify-center gap-[5px] min-w-11 min-h-11 p-2 opacity-40" aria-hidden="true">
+            <div className="hidden lg:flex flex-col items-end justify-center gap-[5px] min-w-11 min-h-11 p-2" aria-hidden="true">
               <div className="h-[3px] w-9 rounded-full bg-[#081129]" />
               <div className="h-[3px] w-6 rounded-full bg-[#e70d69]" />
               <div className="h-[3px] w-10 rounded-full bg-[#22c0d4]" />
@@ -393,23 +393,30 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             data-hydrated={hydrated}
           >
 
-            <div className={`${placement === "hero" ? "px-3 sm:px-4 py-1.5" : "p-1.5"} transition-all duration-300 ${innerClass}`} data-testid="category-toolbar-dock">
+            <div className={`${placement === "hero" ? "px-2 sm:px-3 py-1.5" : "p-1.5"} transition-all duration-300 ${innerClass}`} data-testid="category-toolbar-dock">
               <div className={`flex ${placement === "hero" ? "w-full" : "w-fit"} max-w-full min-w-0 items-center gap-1`}>
 
-                <div ref={stripRef} className={`flex min-w-0 items-center justify-start gap-y-0 flex-nowrap overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${useStraddle ? "gap-x-0" : "gap-x-0 2xl:gap-x-1"}`} data-testid="category-pill-strip">
+                <div ref={stripRef} className={`flex min-w-0 flex-1 items-center gap-y-0 flex-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${placement === "hero" ? "justify-between overflow-visible gap-x-0" : `justify-start overflow-x-auto ${useStraddle ? "gap-x-0" : "gap-x-0 2xl:gap-x-1"}`}`} data-testid="category-pill-strip">
                   {items.map((item, index) => {
                     const { Icon, color } = ICONS[item.name] ?? { Icon: Star, color: TURQUOISE };
-                    const collapsed = !measuring && index >= visibleCount;
+                    const collapsed = placement !== "hero" && !measuring && index >= visibleCount;
+                    const displayName = placement === "hero"
+                      ? item.name === "Most Popular Tests"
+                        ? "Most Popular"
+                        : item.name === "At Home Test Kits"
+                          ? "Home Tests"
+                          : item.name
+                      : item.name;
                     return (
                       <div key={item.name} className={collapsed ? "hidden" : "shrink-0"}>
-                        <CategoryPillDropdown item={item} color={color} Icon={Icon} compact={compact} dense={useStraddle} />
+                        <CategoryPillDropdown item={item} color={color} Icon={Icon} compact={compact} displayName={displayName} dense={placement === "hero" || useStraddle} />
                       </div>
                     );
                   })}
                 </div>
 
-                <div ref={moreRef} className="relative shrink-0" data-testid="category-bar-right-cluster">
-                  <button type="button" onClick={() => setMoreOpen((o) => !o)} aria-expanded={moreOpen} className={`group inline-flex items-center rounded-full transition-colors duration-200 ${moreOpen ? "bg-brand-pink/10" : "hover:bg-brand-pink/10"} ${useStraddle ? "gap-1.5 px-2.5 py-2" : "gap-0.5 px-1 py-2 2xl:gap-1 2xl:px-2 2xl:py-2.5"}`}><span className={`font-semibold font-[Montserrat] whitespace-nowrap text-[#081129] group-hover:text-brand-pink ${useStraddle ? "text-[12.5px] lg:text-[13px] tracking-[-0.02em]" : "text-xs sm:text-[12px] tracking-[-0.02em] 2xl:text-sm 2xl:tracking-normal"}`}>More</span><ChevronDown className={`text-[#081129]/45 transition-transform duration-300 shrink-0 w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px] group-hover:text-brand-pink ${moreOpen ? "rotate-180" : ""}`} /></button>
+                <div ref={moreRef} className={`relative shrink-0 ${placement === "hero" ? "ml-1" : ""}`} data-testid="category-bar-right-cluster">
+                  <button type="button" onClick={() => setMoreOpen((o) => !o)} aria-expanded={moreOpen} className={`group inline-flex items-center rounded-full transition-colors duration-200 ${moreOpen ? "bg-brand-pink/10" : "hover:bg-brand-pink/10"} ${placement === "hero" ? "gap-1 px-1 py-2" : useStraddle ? "gap-1.5 px-2.5 py-2" : "gap-0.5 px-1 py-2 2xl:gap-1 2xl:px-2 2xl:py-2.5"}`}><span className={`font-semibold font-[Montserrat] whitespace-nowrap text-[#081129] group-hover:text-brand-pink ${placement === "hero" ? "text-[11px] xl:text-[11.5px] tracking-[-0.02em]" : useStraddle ? "text-[12.5px] lg:text-[13px] tracking-[-0.02em]" : "text-xs sm:text-[12px] tracking-[-0.02em] 2xl:text-sm 2xl:tracking-normal"}`}>More</span><ChevronDown className={`text-[#081129]/45 transition-transform duration-300 shrink-0 ${placement === "hero" ? "w-[10px] h-[10px]" : "w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px]"} group-hover:text-brand-pink ${moreOpen ? "rotate-180" : ""}`} /></button>
 
                   {moreOpen && typeof document !== "undefined" && createPortal(
                     <div ref={moreMenuRef} className="fixed z-[9999]" style={{ top: moreRect ? moreRect.bottom + 8 : 0, right: moreRect ? Math.max(8, window.innerWidth - moreRect.right) : 8 }}>

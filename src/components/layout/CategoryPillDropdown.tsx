@@ -12,6 +12,7 @@ interface Props {
   color: string;
   Icon: React.ComponentType<{ className?: string; style?: React.CSSProperties; strokeWidth?: number }>;
   compact: boolean;
+  displayName?: string;
   /** Tighter padding/gaps used by the straddling toolbar so the full row fits one line. */
   dense?: boolean;
 }
@@ -23,7 +24,7 @@ interface Props {
  * The panel is `position: fixed` and portalled to the body so the dock's
  * horizontal scroll can never clip it.
  */
-export function CategoryPillDropdown({ item, color, Icon, compact, dense = false }: Props) {
+export function CategoryPillDropdown({ item, color, Icon, compact, displayName, dense = false }: Props) {
   const location = useLocation();
   const currentUrl = location.pathname + location.search;
   const hasDropdown = Boolean(item.hasDropdown && item.dropdownItems?.length);
@@ -94,7 +95,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
         aria-haspopup={hasDropdown ? "menu" : undefined}
         aria-expanded={hasDropdown ? open : undefined}
         className={`group inline-flex items-center rounded-full no-underline transition-colors duration-200 shrink-0 ${
-          dense ? "gap-1.5 px-2.5 py-2" : "gap-0.5 px-1 py-2 2xl:gap-1 2xl:px-2 2xl:py-2.5"
+          dense ? "gap-1 px-1 py-2" : "gap-0.5 px-1 py-2 2xl:gap-1 2xl:px-2 2xl:py-2.5"
         } ${compact ? "sm:py-2.5" : "sm:py-2.5"} ${
           highlighted ? "" : "hover:bg-brand-pink/10"
         }`}
@@ -105,7 +106,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
         }
       >
         <Icon
-          className={`${dense ? "w-[15px] h-[15px] shrink-0" : "w-[14px] h-[14px] shrink-0 2xl:w-[17px] 2xl:h-[17px]"} group-hover:!text-brand-pink`}
+          className={`${dense ? "hidden xl:block w-[13px] h-[13px] shrink-0" : "w-[14px] h-[14px] shrink-0 2xl:w-[17px] 2xl:h-[17px]"} group-hover:!text-brand-pink`}
           style={{ color: isActiveParent ? PINK : color }}
           strokeWidth={2}
         />
@@ -114,18 +115,18 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
             highlighted ? "font-bold" : "font-semibold"
           } ${
             dense
-              ? "text-[12.5px] lg:text-[13px] tracking-[-0.02em]"
+              ? "text-[11px] xl:text-[11.5px] tracking-[-0.02em]"
               : "text-xs sm:text-[12px] tracking-[-0.02em] 2xl:text-sm 2xl:tracking-normal"
           }`}
 
           style={{ color: isActiveParent ? PINK : open ? "#127f8e" : "#081129" }}
         >
-          {item.name}
+          {displayName ?? item.name}
         </span>
 
         {hasDropdown && (
           <ChevronDown
-            className={`text-[#081129]/45 transition-transform duration-300 shrink-0 w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px] group-hover:text-brand-pink ${open ? "rotate-180" : ""}`}
+            className={`text-[#081129]/45 transition-transform duration-300 shrink-0 ${dense ? "hidden xl:block w-[10px] h-[10px]" : "w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px]"} group-hover:text-brand-pink ${open ? "rotate-180" : ""}`}
           />
         )}
       </Link>
