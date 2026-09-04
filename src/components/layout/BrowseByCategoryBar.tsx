@@ -273,7 +273,15 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
 
             </div>
 
-          <div className="absolute right-4 sm:right-6 md:right-9 top-1/2 -translate-y-1/2 z-50 lg:hidden" data-testid="mobile-floating-menu-trigger">
+          <div className="absolute right-4 sm:right-6 md:right-9 lg:right-9 top-1/2 -translate-y-1/2 z-50" data-testid="mobile-floating-menu-trigger">
+            {/* Desktop: show the hamburger icon but keep it inactive */}
+            <div className="hidden lg:flex flex-col items-end justify-center gap-[5px] min-w-11 min-h-11 p-2 opacity-40" aria-hidden="true">
+              <div className="h-[3px] w-9 rounded-full bg-[#081129]" />
+              <div className="h-[3px] w-6 rounded-full bg-[#e70d69]" />
+              <div className="h-[3px] w-10 rounded-full bg-[#22c0d4]" />
+            </div>
+            {/* Mobile: functional hamburger drawer */}
+            <div className="lg:hidden">
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
           <SheetTrigger asChild>
             <button
@@ -340,6 +348,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             </nav>
           </SheetContent>
         </Sheet>
+            </div>
           </div>
         </div>
       </div>
