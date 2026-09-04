@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
-import { getProviderName } from "@/constants/providers";
+import { getProviderName, normalizeProviderId } from "@/constants/providers";
 import { buildTestHead } from "@/lib/seo/route-head";
 import { fetchTestSeoSummary } from "@/lib/seo/test-seo.functions";
 
-const TestDetailPage = lazy(() => import("@/pages/TestDetailPage"));
+const ProviderTestDetailPage = lazy(() => import("@/pages/ProviderTestDetailPage"));
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -26,5 +26,8 @@ export const Route = createFileRoute("/provider/$providerId/tests/$testId")({
       priceGbp: loaderData?.price ?? null,
       biomarkerCount: loaderData?.biomarkerCount ?? null,
     }),
-  component: TestDetailPage,
+  component: () => {
+    const { providerId } = Route.useParams();
+    return <ProviderTestDetailPage providerId={normalizeProviderId(providerId)} />;
+  },
 });
