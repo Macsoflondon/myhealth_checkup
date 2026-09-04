@@ -3,8 +3,8 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
 export const Route = createFileRoute("/randox-health/$testId")({
   beforeLoad: ({ params }) => {
     throw redirect({
-      to: "/randox/$testId",
-      params: { testId: params.testId },
+      to: "/provider/$providerId/tests/$testId",
+      params: { providerId: "randox", testId: params.testId },
       search: true,
       replace: true,
     });

@@ -1,8 +1,12 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
-
-const ProviderTestDetailPage = lazy(() => import("@/pages/ProviderTestDetailPage"));
+import { createFileRoute, redirect } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/medichecks/$testId")({
-  component: () => <ProviderTestDetailPage providerId="medichecks" />,
+  beforeLoad: ({ params }) => {
+    throw redirect({
+      to: "/provider/$providerId/tests/$testId",
+      params: { providerId: "medichecks", testId: params.testId },
+      search: true,
+      replace: true,
+    });
+  },
 });
