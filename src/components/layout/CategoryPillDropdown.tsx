@@ -12,6 +12,7 @@ interface Props {
   color: string;
   Icon: React.ComponentType<{ className?: string; style?: React.CSSProperties; strokeWidth?: number }>;
   compact: boolean;
+  displayName?: string;
   /** Tighter padding/gaps used by the straddling toolbar so the full row fits one line. */
   dense?: boolean;
 }
@@ -23,7 +24,7 @@ interface Props {
  * The panel is `position: fixed` and portalled to the body so the dock's
  * horizontal scroll can never clip it.
  */
-export function CategoryPillDropdown({ item, color, Icon, compact, dense = false }: Props) {
+export function CategoryPillDropdown({ item, color, Icon, compact, displayName, dense = false }: Props) {
   const location = useLocation();
   const currentUrl = location.pathname + location.search;
   const hasDropdown = Boolean(item.hasDropdown && item.dropdownItems?.length);
@@ -120,7 +121,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact, dense = false
 
           style={{ color: isActiveParent ? PINK : open ? "#127f8e" : "#081129" }}
         >
-          {item.name}
+          {displayName ?? item.name}
         </span>
 
         {hasDropdown && (
