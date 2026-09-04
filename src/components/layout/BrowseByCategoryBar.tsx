@@ -393,7 +393,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
             data-hydrated={hydrated}
           >
 
-            <div className={`${placement === "hero" ? "px-3 sm:px-4 py-1.5" : "p-1.5"} transition-all duration-300 ${innerClass}`} data-testid="category-toolbar-dock">
+            <div className={`${placement === "hero" ? "px-2 sm:px-3 py-1.5" : "p-1.5"} transition-all duration-300 ${innerClass}`} data-testid="category-toolbar-dock">
               <div className={`flex ${placement === "hero" ? "w-full" : "w-fit"} max-w-full min-w-0 items-center gap-1`}>
 
                 <div ref={stripRef} className={`flex min-w-0 flex-1 items-center gap-y-0 flex-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${placement === "hero" ? "justify-between overflow-visible gap-x-0" : `justify-start overflow-x-auto ${useStraddle ? "gap-x-0" : "gap-x-0 2xl:gap-x-1"}`}`} data-testid="category-pill-strip">
@@ -416,7 +416,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
                 </div>
 
                 <div ref={moreRef} className={`relative shrink-0 ${placement === "hero" ? "ml-1" : ""}`} data-testid="category-bar-right-cluster">
-                  <button type="button" onClick={() => setMoreOpen((o) => !o)} aria-expanded={moreOpen} className={`group inline-flex items-center rounded-full transition-colors duration-200 ${moreOpen ? "bg-brand-pink/10" : "hover:bg-brand-pink/10"} ${useStraddle ? "gap-1.5 px-2.5 py-2" : "gap-0.5 px-1 py-2 2xl:gap-1 2xl:px-2 2xl:py-2.5"}`}><span className={`font-semibold font-[Montserrat] whitespace-nowrap text-[#081129] group-hover:text-brand-pink ${useStraddle ? "text-[12.5px] lg:text-[13px] tracking-[-0.02em]" : "text-xs sm:text-[12px] tracking-[-0.02em] 2xl:text-sm 2xl:tracking-normal"}`}>More</span><ChevronDown className={`text-[#081129]/45 transition-transform duration-300 shrink-0 w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px] group-hover:text-brand-pink ${moreOpen ? "rotate-180" : ""}`} /></button>
+                  <button type="button" onClick={() => setMoreOpen((o) => !o)} aria-expanded={moreOpen} className={`group inline-flex items-center rounded-full transition-colors duration-200 ${moreOpen ? "bg-brand-pink/10" : "hover:bg-brand-pink/10"} ${placement === "hero" ? "gap-1 px-1 py-2" : useStraddle ? "gap-1.5 px-2.5 py-2" : "gap-0.5 px-1 py-2 2xl:gap-1 2xl:px-2 2xl:py-2.5"}`}><span className={`font-semibold font-[Montserrat] whitespace-nowrap text-[#081129] group-hover:text-brand-pink ${placement === "hero" ? "text-[11px] xl:text-[11.5px] tracking-[-0.02em]" : useStraddle ? "text-[12.5px] lg:text-[13px] tracking-[-0.02em]" : "text-xs sm:text-[12px] tracking-[-0.02em] 2xl:text-sm 2xl:tracking-normal"}`}>More</span><ChevronDown className={`text-[#081129]/45 transition-transform duration-300 shrink-0 ${placement === "hero" ? "w-[10px] h-[10px]" : "w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px]"} group-hover:text-brand-pink ${moreOpen ? "rotate-180" : ""}`} /></button>
 
                   {moreOpen && typeof document !== "undefined" && createPortal(
                     <div ref={moreMenuRef} className="fixed z-[9999]" style={{ top: moreRect ? moreRect.bottom + 8 : 0, right: moreRect ? Math.max(8, window.innerWidth - moreRect.right) : 8 }}>
