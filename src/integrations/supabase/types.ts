@@ -6875,6 +6875,10 @@ export type Database = {
         Args: { p_body?: Json; p_url: string }
         Returns: number
       }
+      call_with_publishable_key: {
+        Args: { p_body?: Json; p_timeout_ms?: number; p_url: string }
+        Returns: number
+      }
       category_text_to_canonical: {
         Args: { _category: string }
         Returns: string
