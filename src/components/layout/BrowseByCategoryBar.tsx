@@ -21,6 +21,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   const moreMenuRef = useRef<HTMLDivElement>(null);
   const [moreRect, setMoreRect] = useState<DOMRect | null>(null);
   const sentinelRef = useRef<HTMLDivElement>(null);
+  const heroSentinelRef = useRef<HTMLDivElement>(null);
   const barRef = useRef<HTMLDivElement>(null);
   const mobileBarRef = useRef<HTMLDivElement>(null);
   const [mobileBarOut, setMobileBarOut] = useState(false);
@@ -175,7 +176,10 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
       return;
     }
 
-    const sentinel = sentinelRef.current;
+    // The hero sentinel sits immediately above the toolbar itself, so pinning
+    // flips exactly when the bar's own top edge reaches the viewport top —
+    // the hand-off from in-flow to fixed is pixel-continuous, like straddle.
+    const sentinel = heroSentinelRef.current;
     if (!sentinel) return;
     const observer = new IntersectionObserver(
       ([entry]) => setHeroPinned(!entry.isIntersecting && entry.boundingClientRect.top < 0),
