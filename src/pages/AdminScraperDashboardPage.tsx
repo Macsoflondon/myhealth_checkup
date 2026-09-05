@@ -164,9 +164,14 @@ const AdminScraperDashboardPage: React.FC = () => {
         description: `${provider.name}: ${data?.message || 'Scraping is running in the background.'}`,
       });
 
-      // Refresh data
+      // Refresh data now, then again once background batches have landed so a
+      // dispatched run does not look like a silent no-op.
       await fetchJobs();
       await fetchTestCounts();
+      window.setTimeout(() => {
+        void fetchJobs();
+        void fetchTestCounts();
+      }, 15000);
     } catch (error) {
       console.error(`Error running ${provider.name} scraper:`, error);
       toast({
