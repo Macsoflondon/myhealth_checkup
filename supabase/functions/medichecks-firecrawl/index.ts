@@ -1,111 +1,76 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
+/**
+ * medichecks-firecrawl — Medichecks catalogue sync.
+ *
+ * History / why this shape:
+ * The previous implementation crawled ~120 product pages one-by-one through
+ * Firecrawl inside a single synchronous request. That routinely ran past the
+ * platform's 150 s request limit, so the caller saw HTTP 504 while the scrape
+ * was still half-finished — which, combined with a hard purge beforehand,
+ * destroyed most of the catalogue on 2026-09-05.
+ *
+ * Medichecks is a Shopify storefront, so the whole catalogue is available from
+ * `/products.json` in a handful of paginated requests. That removes both the
+ * per-page crawl and the timeout. The work still runs as a background task
+ * behind an immediate 202 so no request can ever be cut off mid-write.
+ *
+ * Descriptions stay provider-verbatim: `description_scraped` holds the raw
+ * Shopify `body_html`, `description` holds the same text with tags stripped.
+ * No LLM is involved at any point.
+ */
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
 import { getErrorMessage } from '../_shared/errors.ts';
-import { firecrawlScrape, firecrawlMap, runInChunks } from '../_shared/firecrawl-helpers.ts';
-
-// Derive a stable provider_test_id from the Medichecks product URL slug.
-// Example: https://www.medichecks.com/products/testosterone-blood-test -> "testosterone-blood-test"
-function slugFromUrl(url: string): string {
-  try {
-    const u = new URL(url);
-    const parts = u.pathname.split('/').filter(Boolean);
-    const idx = parts.indexOf('products');
-    const slug = idx >= 0 && parts[idx + 1] ? parts[idx + 1] : parts[parts.length - 1];
-    return (slug || url).toLowerCase().replace(/[^a-z0-9-]/g, '-').slice(0, 120);
-  } catch {
-    return url.toLowerCase().replace(/[^a-z0-9-]/g, '-').slice(0, 120);
-  }
-}
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-interface ScrapedProduct {
-  test_name: string;
-  price: number | null;
-  original_price: number | null;
-  url: string;
-  category: string;
-  description: string | null;
-  biomarker_count: number | null;
-  sample_type: string | null;
-  image_url: string | null;
+const FEED_BASE = 'https://www.medichecks.com/products.json';
+const MAX_FEED_PAGES = 8;
+const PAGE_SIZE = 250;
+const UPSERT_CHUNK = 25;
+
+type Supa = ReturnType<typeof createClient>;
+
+interface ShopifyImage { src?: string }
+interface ShopifyVariant { price?: string; compare_at_price?: string | null; available?: boolean }
+interface ShopifyProduct {
+  title?: string;
+  handle?: string;
+  body_html?: string | null;
+  product_type?: string | null;
+  tags?: string[] | string;
+  images?: ShopifyImage[];
+  variants?: ShopifyVariant[];
 }
 
-// Collection pages to discover all products (Shopify-style)
-const collectionUrls = [
-  'https://www.medichecks.com/collections/all',
-  'https://www.medichecks.com/collections/blood-tests',
-  'https://www.medichecks.com/collections/hormones',
-  'https://www.medichecks.com/collections/thyroid',
-  'https://www.medichecks.com/collections/vitamins',
-  'https://www.medichecks.com/collections/health-checks',
-  'https://www.medichecks.com/collections/mens-health',
-  'https://www.medichecks.com/collections/womens-health',
-  'https://www.medichecks.com/collections/sports-fitness',
-  'https://www.medichecks.com/collections/fertility',
-];
+interface CatalogueRow {
+  provider_test_id: string;
+  test_name: string;
+  url: string;
+  price: number | null;
+  original_price: number | null;
+  description: string | null;
+  description_scraped: string | null;
+  biomarker_count: number | null;
+  image_url: string | null;
+  category: string;
+}
 
-// Verified product URLs from Medichecks Shopify store
-const knownProductUrls = [
-  'https://www.medichecks.com/products/testosterone-blood-test',
-  'https://www.medichecks.com/products/male-hormone-check-blood-test',
-  'https://www.medichecks.com/products/ultimate-performance-blood-test',
-  'https://www.medichecks.com/products/advanced-thyroid-function-blood-test',
-  'https://www.medichecks.com/products/well-woman-advanced-blood-test',
-  'https://www.medichecks.com/products/well-man-advanced-blood-test',
-  'https://www.medichecks.com/products/trt-check-plus-testosterone-replacement-therapy-blood-test',
-  'https://www.medichecks.com/products/thyroid-function-blood-test',
-  'https://www.medichecks.com/products/vitamin-d-25-oh-blood-test',
-  'https://www.medichecks.com/products/female-hormone-check-blood-test',
-  'https://www.medichecks.com/products/health-and-lifestyle-check-blood-test',
-  'https://www.medichecks.com/products/thyroid-function-antibodies-blood-test',
-  'https://www.medichecks.com/products/sports-hormone-check-blood-test',
-  'https://www.medichecks.com/products/liver-check-blood-test',
-  'https://www.medichecks.com/products/optimal-health-blood-test',
-  'https://www.medichecks.com/products/psa-prostate-specific-antigen-blood-test',
-  'https://www.medichecks.com/products/iron-deficiency-check-blood-test',
-  'https://www.medichecks.com/products/essential-blood-test',
-  'https://www.medichecks.com/products/essential-blood-ultravit',
-  'https://www.medichecks.com/products/diabetes-hba1c-blood-test',
-  'https://www.medichecks.com/products/cholesterol-blood-test',
-  'https://www.medichecks.com/products/menopause-blood-test',
-  'https://www.medichecks.com/products/full-blood-count-blood-test',
-  'https://www.medichecks.com/products/vitamin-b12-active-blood-test',
-  'https://www.medichecks.com/products/vitamin-b12-folate-blood-test',
-  'https://www.medichecks.com/products/kidney-function-blood-test',
-  'https://www.medichecks.com/products/fatigue-check-blood-test',
-  'https://www.medichecks.com/products/cortisol-blood-test',
-  'https://www.medichecks.com/products/oestradiol-blood-test',
-  'https://www.medichecks.com/products/progesterone-blood-test',
-  'https://www.medichecks.com/products/dhea-sulphate-blood-test',
-  'https://www.medichecks.com/products/fsh-blood-test',
-  'https://www.medichecks.com/products/lh-blood-test',
-  'https://www.medichecks.com/products/prolactin-blood-test',
-  'https://www.medichecks.com/products/shbg-blood-test',
-  'https://www.medichecks.com/products/free-testosterone-blood-test',
-  'https://www.medichecks.com/products/amh-blood-test',
-  'https://www.medichecks.com/products/coeliac-disease-blood-test',
-  'https://www.medichecks.com/products/crp-high-sensitivity-blood-test',
-  'https://www.medichecks.com/products/homocysteine-blood-test',
-  'https://www.medichecks.com/products/ferritin-blood-test',
-  'https://www.medichecks.com/products/folate-blood-test',
-  'https://www.medichecks.com/products/magnesium-blood-test',
-  'https://www.medichecks.com/products/zinc-blood-test',
-  'https://www.medichecks.com/products/selenium-blood-test',
-  'https://www.medichecks.com/products/uric-acid-blood-test',
-  'https://www.medichecks.com/products/igf-1-blood-test',
-  'https://www.medichecks.com/products/testosterone-and-shbg-blood-test',
-  'https://www.medichecks.com/products/sports-performance-blood-test',
-  'https://www.medichecks.com/products/perimenopause-blood-test',
-  'https://www.medichecks.com/products/polycystic-ovary-syndrome-pcos-blood-test',
-];
+declare const EdgeRuntime: { waitUntil: (p: Promise<unknown>) => void } | undefined;
+const waitUntil = (p: Promise<unknown>): void => {
+  try {
+    if (typeof EdgeRuntime !== 'undefined' && EdgeRuntime?.waitUntil) {
+      EdgeRuntime.waitUntil(p);
+      return;
+    }
+  } catch { /* noop */ }
+  p.catch((err) => console.error('[medichecks] bg error:', getErrorMessage(err)));
+};
 
 function determineCategory(title: string, description: string, url: string): string {
   const text = `${title} ${description} ${url}`.toLowerCase();
-  
+
   const categoryMap: Record<string, string[]> = {
     'Thyroid': ['thyroid', 'tsh', 't3', 't4'],
     'Hormones': ['hormone', 'testosterone', 'oestrogen', 'estrogen', 'progesterone', 'dhea', 'cortisol'],
@@ -122,388 +87,203 @@ function determineCategory(title: string, description: string, url: string): str
     'Fatigue': ['fatigue', 'tiredness', 'energy', 'exhaustion'],
     'Inflammation': ['inflammation', 'crp', 'esr', 'autoimmune'],
   };
-  
+
   for (const [category, keywords] of Object.entries(categoryMap)) {
-    if (keywords.some(keyword => text.includes(keyword))) {
-      return category;
-    }
+    if (keywords.some((keyword) => text.includes(keyword))) return category;
   }
-  
   return 'General Health';
 }
 
-async function scrapeWithFirecrawl(url: string, apiKey: string): Promise<any> {
-  return firecrawlScrape(url, apiKey, {
-    formats: ['markdown', 'html'],
-    onlyMainContent: false,
-    waitFor: 1500,
-    timeout: 60000,
-    proxy: 'stealth',
-  });
+function stripHtml(html: string): string {
+  return html
+    .replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/(p|li|h[1-6]|div)>/gi, '\n')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&#39;|&rsquo;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 }
 
-async function mapWebsiteUrls(baseUrl: string, apiKey: string): Promise<string[]> {
-  const links = await firecrawlMap(baseUrl, apiKey, { search: 'blood test', limit: 200 });
-  return links.filter((link) => link.includes('/products/') && !link.includes('?'));
-}
-
-function extractPrice(html: string, markdown: string): { current: number | null; original: number | null } {
-  let current: number | null = null;
-  let original: number | null = null;
-  
-  // Combine HTML and markdown for searching
-  const text = `${html} ${markdown}`;
-  
-  // Pattern 1: Simple £ price (most common on Medichecks)
-  const simplePriceMatch = text.match(/£(\d+(?:\.\d{1,2})?)/);
-  if (simplePriceMatch) {
-    const price = parseFloat(simplePriceMatch[1]);
-    if (price > 0 && price < 2000) {
-      current = price;
-    }
-  }
-  
-  // Pattern 2: JSON-LD structured data
-  if (current === null) {
-    const jsonLdMatches = html.matchAll(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi);
-    for (const match of jsonLdMatches) {
-      try {
-        const data = JSON.parse(match[1]);
-        if (data.offers?.price) {
-          current = parseFloat(data.offers.price);
-          break;
-        }
-        if (data['@graph']) {
-          for (const item of data['@graph']) {
-            if (item.offers?.price) {
-              current = parseFloat(item.offers.price);
-              break;
-            }
-          }
-        }
-      } catch { /* ignore malformed entry */ }
-    }
-  }
-  
-  // Pattern 3: Look for price after product title context
-  if (current === null) {
-    const priceContextMatch = text.match(/(?:price|cost|from)[:\s]*£(\d+(?:\.\d{1,2})?)/i);
-    if (priceContextMatch) {
-      current = parseFloat(priceContextMatch[1]);
-    }
-  }
-  
-  // Look for original/was price
-  const originalPatterns = [
-    /<del[^>]*>[\s\S]*?£(\d+(?:\.\d{1,2})?)/i,
-    /was\s*£(\d+(?:\.\d{1,2})?)/i,
-    /"compareAtPrice"\s*:\s*"?(\d+(?:\.\d{1,2})?)"?/i,
-  ];
-  
-  for (const pattern of originalPatterns) {
-    const match = text.match(pattern);
-    if (match && match[1]) {
-      const price = parseFloat(match[1]);
-      if (price > 0 && price < 2000) {
-        original = price;
-        break;
-      }
-    }
-  }
-  
-  return { current, original };
-}
-
-function extractBiomarkerCount(markdown: string, html: string): number | null {
+function extractBiomarkerCount(text: string): number | null {
   const patterns = [
     /(\d+)\s*biomarkers?/i,
-    /tests?\s+(\d+)\s+biomarkers?/i,
     /includes?\s+(\d+)\s+biomarkers?/i,
     /measures?\s+(\d+)\s+biomarkers?/i,
   ];
-  
-  const text = `${markdown} ${html}`;
-  
   for (const pattern of patterns) {
     const match = text.match(pattern);
-    if (match && match[1]) {
-      return parseInt(match[1], 10);
-    }
+    if (match?.[1]) return parseInt(match[1], 10);
   }
-  
   return null;
 }
 
-function extractImageUrl(html: string, metadataOgImage?: string | null): string | null {
-  if (metadataOgImage && typeof metadataOgImage === 'string' && metadataOgImage.length > 0) {
-    let url = metadataOgImage;
-    if (url.startsWith('//')) url = 'https:' + url;
-    else if (url.startsWith('/')) url = 'https://www.medichecks.com' + url;
-    return url;
-  }
-  const patterns = [
-    /property="og:image"\s+content="([^"]+)"/i,
-    /content="([^"]+)"\s+property="og:image"/i,
-    /src="(https:\/\/[^"]+\.(?:jpg|jpeg|png|webp)[^"]*)"/i,
+/** Non-test storefront entries that must never appear as catalogue rows. */
+function isNotATest(title: string, handle: string): boolean {
+  const t = title.toLowerCase().trim();
+  if (t.length < 3) return true;
+  const banned = [
+    'clinic visit', 'gift card', 'nurse visit', 'phlebotomy', 'blood draw',
+    'consultation', 'shipping', 'sample kit', 'donation', '404',
   ];
-  for (const pattern of patterns) {
-    const match = html.match(pattern);
-    if (match && match[1]) {
-      let url = match[1];
-      if (url.startsWith('//')) url = 'https:' + url;
-      else if (url.startsWith('/')) url = 'https://www.medichecks.com' + url;
-      return url;
+  return banned.some((b) => t.startsWith(b) || t.includes(b)) || handle.startsWith('clinic-visit');
+}
+
+async function fetchCatalogue(): Promise<CatalogueRow[]> {
+  const rows: CatalogueRow[] = [];
+  const seenHandles = new Set<string>();
+  const seenNames = new Set<string>();
+
+  for (let page = 1; page <= MAX_FEED_PAGES; page++) {
+    const res = await fetch(`${FEED_BASE}?limit=${PAGE_SIZE}&page=${page}`, {
+      headers: { 'User-Agent': 'MyHealthCheckupBot/1.0 (+https://myhealthcheckup.co.uk)' },
+    });
+    if (!res.ok) {
+      throw new Error(`Medichecks products feed failed [${res.status}]: ${(await res.text()).slice(0, 300)}`);
     }
+    const payload = await res.json() as { products?: ShopifyProduct[] };
+    const products = Array.isArray(payload.products) ? payload.products : [];
+    if (products.length === 0) break;
+
+    for (const product of products) {
+      const title = (product.title ?? '').trim();
+      const handle = (product.handle ?? '').trim();
+      if (!title || !handle) continue;
+      if (isNotATest(title, handle)) continue;
+      if (seenHandles.has(handle)) continue;
+      const nameKey = title.toLowerCase();
+      if (seenNames.has(nameKey)) continue;
+      seenHandles.add(handle);
+      seenNames.add(nameKey);
+
+      const bodyHtml = product.body_html ?? '';
+      const plain = bodyHtml ? stripHtml(bodyHtml) : '';
+      const variant = product.variants?.[0];
+      const price = variant?.price ? Number.parseFloat(variant.price) : NaN;
+      const compareAt = variant?.compare_at_price ? Number.parseFloat(variant.compare_at_price) : NaN;
+      const url = `https://www.medichecks.com/products/${handle}`;
+
+      rows.push({
+        provider_test_id: handle.slice(0, 120),
+        test_name: title,
+        url,
+        price: Number.isFinite(price) && price > 0 ? price : null,
+        original_price: Number.isFinite(compareAt) && compareAt > 0 ? compareAt : null,
+        description: plain ? plain.slice(0, 4000) : null,
+        description_scraped: bodyHtml || null,
+        biomarker_count: extractBiomarkerCount(plain),
+        image_url: product.images?.[0]?.src ?? null,
+        category: determineCategory(title, plain, url),
+      });
+    }
+
+    if (products.length < PAGE_SIZE) break;
   }
-  return null;
+
+  return rows;
 }
 
-
-/**
- * Batched, background execution.
- *
- * The whole Medichecks catalogue (~200 product pages via Firecrawl) cannot be
- * scraped inside one synchronous request — the platform closes the connection
- * at ~150 s and the caller sees HTTP 504 mid-scrape. Instead:
- *   - the first call discovers product URLs, stores them on a `scrape_runs`
- *     row, answers 202 immediately, and processes batch 0 in the background;
- *   - each batch self-invokes the next one until the list is exhausted.
- * No request ever blocks on the full catalogue, so a 504 is impossible.
- */
-
-const BATCH_SIZE = 20;
-const MAX_PRODUCT_URLS = 220;
-
-declare const EdgeRuntime: { waitUntil: (p: Promise<unknown>) => void } | undefined;
-const waitUntil = (p: Promise<unknown>): void => {
-  try {
-    if (typeof EdgeRuntime !== 'undefined' && EdgeRuntime?.waitUntil) {
-      EdgeRuntime.waitUntil(p);
-      return;
-    }
-  } catch { /* noop */ }
-  p.catch((err) => console.error('[medichecks-firecrawl] bg error:', getErrorMessage(err)));
-};
-
-type Supa = ReturnType<typeof createClient>;
-
-interface RunMeta {
-  urls: string[];
-  scraped: number;
-  upserted: number;
-  withPrices: number;
-  errors: string[];
-}
-
-const readMeta = (raw: unknown): RunMeta => {
-  const m = (raw ?? {}) as Partial<RunMeta>;
-  return {
-    urls: Array.isArray(m.urls) ? m.urls : [],
-    scraped: Number(m.scraped ?? 0),
-    upserted: Number(m.upserted ?? 0),
-    withPrices: Number(m.withPrices ?? 0),
-    errors: Array.isArray(m.errors) ? m.errors : [],
-  };
-};
-
-async function setJob(
-  supabase: Supa,
-  status: string,
-  errorMessage: string | null,
-): Promise<void> {
+async function setJob(supabase: Supa, status: string, errorMessage: string | null): Promise<void> {
   const row = {
     status,
     error_message: errorMessage,
     last_scraped: new Date().toISOString(),
     next_scrape: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString(),
   };
-  // Canonical id first — the dashboards key off `medichecks`.
+  // Canonical id first — dashboards key off `medichecks`; the legacy alias is
+  // kept in step so the two rows never disagree again.
   await supabase.from('scraping_jobs').upsert({ provider_id: 'medichecks', ...row }, { onConflict: 'provider_id' });
   await supabase.from('scraping_jobs').upsert({ provider_id: 'medichecks-firecrawl', ...row }, { onConflict: 'provider_id' });
 }
 
-async function discoverUrls(firecrawlApiKey: string): Promise<string[]> {
-  let productUrls: string[] = [...knownProductUrls];
-  for (const collectionUrl of collectionUrls.slice(0, 5)) {
-    try {
-      const urls = await mapWebsiteUrls(collectionUrl, firecrawlApiKey);
-      const validUrls = urls.filter((url: string) => url.includes('/products/'));
-      productUrls = [...productUrls, ...validUrls];
-      console.log(`Found ${validUrls.length} products from ${collectionUrl}`);
-    } catch (error) {
-      console.error(`Failed to map ${collectionUrl}:`, getErrorMessage(error));
-    }
-  }
-  return [...new Set(productUrls)]
-    .filter((url) => url.includes('/products/'))
-    .slice(0, MAX_PRODUCT_URLS);
-}
+async function syncCatalogue(supabase: Supa, runId: string): Promise<void> {
+  const errors: string[] = [];
+  let upserted = 0;
+  let withPrices = 0;
 
-async function scrapeBatch(
-  supabase: Supa,
-  firecrawlApiKey: string,
-  runId: string,
-  offset: number,
-): Promise<void> {
-  const { data: runRow, error: runErr } = await supabase
-    .from('scrape_runs')
-    .select('metadata')
-    .eq('id', runId)
-    .maybeSingle();
-  if (runErr || !runRow) {
-    console.error(`[medichecks-firecrawl] run ${runId} not found`);
-    return;
-  }
+  try {
+    const rows = await fetchCatalogue();
+    console.log(`[medichecks] feed returned ${rows.length} test products`);
 
-  const meta = readMeta((runRow as { metadata: unknown }).metadata);
-  const slice = meta.urls.slice(offset, offset + BATCH_SIZE);
-  if (slice.length === 0) {
-    await finishRun(supabase, runId, meta);
-    return;
-  }
+    for (let i = 0; i < rows.length; i += UPSERT_CHUNK) {
+      const chunk = rows.slice(i, i + UPSERT_CHUNK);
+      const now = new Date().toISOString();
 
-  const scrapedProducts: ScrapedProduct[] = [];
-
-  await runInChunks(slice, 6, async (url) => {
-    try {
-      const result = await scrapeWithFirecrawl(url, firecrawlApiKey);
-      if (!result.success || !result.data) return;
-
-      const { markdown, html, metadata } = result.data;
-
-      let title = metadata?.title || '';
-      if (!title && markdown) {
-        const titleMatch = markdown.match(/^#\s+(.+)$/m);
-        if (titleMatch) title = titleMatch[1];
-      }
-      title = title.replace(/\s*\|\s*Medichecks.*$/i, '').trim();
-      if (!title || /^\d{3}\s/.test(title)) return; // skip empty and error pages
-
-      const description = metadata?.description || null;
-      const { current: price, original: originalPrice } = extractPrice(html || '', markdown || '');
-
-      scrapedProducts.push({
-        test_name: title,
-        price,
-        original_price: originalPrice,
-        url,
-        category: determineCategory(title, description || '', url),
-        description,
-        biomarker_count: extractBiomarkerCount(markdown || '', html || ''),
-        sample_type: 'Finger-prick or Venous',
-        image_url: extractImageUrl(html || '', metadata?.ogImage),
+      const payload = chunk.map((row) => {
+        if (row.price !== null) withPrices++;
+        return {
+          provider_id: 'medichecks',
+          provider_test_id: row.provider_test_id,
+          test_name: row.test_name,
+          url: row.url,
+          category: row.category,
+          description: row.description,
+          description_scraped: row.description_scraped,
+          description_source: 'scraped_verbatim',
+          price: row.price,
+          original_price: row.original_price,
+          biomarker_count: row.biomarker_count,
+          image_url: row.image_url,
+          sample_type: 'Finger-prick or Venous',
+          is_active: true,
+          scraped_at: now,
+          updated_at: now,
+          url_verified: true,
+          url_verified_at: now,
+        };
       });
-    } catch (error) {
-      meta.errors.push(`${url}: ${getErrorMessage(error)}`);
-    }
-  });
 
-  for (const product of scrapedProducts) {
-    const providerTestId = slugFromUrl(product.url);
+      const { error } = await supabase
+        .from('provider_tests')
+        .upsert(payload, { onConflict: 'provider_id,provider_test_id' });
 
-    const dataToUpsert: Record<string, unknown> = {
-      provider_id: 'medichecks',
-      provider_test_id: providerTestId,
-      test_name: product.test_name,
-      url: product.url,
-      category: product.category,
-      description: product.description,
-      biomarker_count: product.biomarker_count,
-      image_url: product.image_url,
-      sample_type: product.sample_type,
-      is_active: true,
-      scraped_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      url_verified: true,
-      url_verified_at: new Date().toISOString(),
-    };
+      if (error) {
+        errors.push(`chunk ${i}: ${getErrorMessage(error)}`);
+        console.error(`[medichecks] chunk ${i} failed:`, getErrorMessage(error));
+      } else {
+        upserted += payload.length;
+      }
 
-    if (product.price !== null) {
-      dataToUpsert.price = product.price;
-      dataToUpsert.original_price = product.original_price;
-      meta.withPrices++;
+      await supabase.from('scrape_runs').update({
+        tests_seen: rows.length,
+        tests_updated: upserted,
+        metadata: { source: 'shopify-products-feed', total: rows.length, upserted },
+      }).eq('id', runId);
     }
 
-    const { error } = await supabase
-      .from('provider_tests')
-      .upsert(dataToUpsert, { onConflict: 'provider_id,provider_test_id' });
+    const status = errors.length > 0 ? 'partial' : 'success';
+    await supabase.from('scrape_runs').update({
+      status,
+      finished_at: new Date().toISOString(),
+      tests_seen: rows.length,
+      tests_updated: upserted,
+      errors: errors.slice(0, 20).map((message) => ({ message })),
+      metadata: { source: 'shopify-products-feed', total: rows.length, upserted, withPrices },
+    }).eq('id', runId);
 
-    if (error) {
-      meta.errors.push(`${providerTestId}: ${getErrorMessage(error)}`);
-    } else {
-      meta.upserted++;
-    }
+    await setJob(supabase, 'completed', errors.length > 0 ? `Completed with ${errors.length} error(s)` : null);
+    console.log(`[medichecks] run ${runId} ${status}: ${upserted}/${rows.length} upserted, ${withPrices} with prices`);
+  } catch (err) {
+    const message = getErrorMessage(err);
+    console.error('[medichecks] run failed:', message);
+    await supabase.from('scrape_runs').update({
+      status: 'error',
+      finished_at: new Date().toISOString(),
+      tests_updated: upserted,
+      errors: [{ message }],
+    }).eq('id', runId);
+    await setJob(supabase, 'failed', message.slice(0, 1000));
   }
-
-  meta.scraped += scrapedProducts.length;
-  meta.errors = meta.errors.slice(-40);
-
-  const nextOffset = offset + slice.length;
-  await supabase.from('scrape_runs').update({
-    tests_seen: meta.scraped,
-    tests_updated: meta.upserted,
-    metadata: { ...meta, offset: nextOffset, total: meta.urls.length },
-  }).eq('id', runId);
-
-  console.log(
-    `[medichecks-firecrawl] batch ${offset}-${nextOffset}/${meta.urls.length}: ` +
-      `${scrapedProducts.length} scraped, ${meta.upserted} upserted so far`,
-  );
-
-  if (nextOffset >= meta.urls.length) {
-    await finishRun(supabase, runId, meta);
-    return;
-  }
-
-  // Hand the next batch to a fresh invocation so no single request runs long.
-  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-  const res = await fetch(`${supabaseUrl}/functions/v1/medichecks-firecrawl`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${serviceKey}` },
-    body: JSON.stringify({ runId, offset: nextOffset }),
-  });
-  if (!res.ok) {
-    const text = await res.text();
-    const message = `Batch chaining failed at offset ${nextOffset}: HTTP ${res.status} ${text.slice(0, 200)}`;
-    console.error(`[medichecks-firecrawl] ${message}`);
-    meta.errors.push(message);
-    await finishRun(supabase, runId, meta, 'partial');
-  }
-}
-
-async function finishRun(
-  supabase: Supa,
-  runId: string,
-  meta: RunMeta,
-  status: 'success' | 'partial' = 'success',
-): Promise<void> {
-  const finalStatus = meta.errors.length > 0 && status === 'success' ? 'partial' : status;
-  await supabase.from('scrape_runs').update({
-    status: finalStatus,
-    finished_at: new Date().toISOString(),
-    tests_seen: meta.scraped,
-    tests_updated: meta.upserted,
-    errors: meta.errors.slice(0, 20).map((message) => ({ message })),
-    metadata: { ...meta, completed: true, total: meta.urls.length },
-  }).eq('id', runId);
-
-  await setJob(
-    supabase,
-    finalStatus === 'partial' ? 'completed' : 'completed',
-    meta.errors.length > 0 ? `Completed with ${meta.errors.length} error(s)` : null,
-  );
-
-  console.log(
-    `[medichecks-firecrawl] run ${runId} ${finalStatus}: ` +
-      `${meta.upserted} tests upserted, ${meta.withPrices} with prices`,
-  );
 }
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
+  if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
 
   const json = (body: unknown, status = 200) =>
     new Response(JSON.stringify(body), {
@@ -516,27 +296,10 @@ Deno.serve(async (req) => {
     return json({ error: 'Unauthorized' }, 401);
   }
 
-  const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY');
-  if (!firecrawlApiKey) return json({ error: 'FIRECRAWL_API_KEY not configured' }, 500);
-
   const supabase = createClient(Deno.env.get('SUPABASE_URL')!, serviceKey);
-  const body = req.method === 'POST' ? await req.json().catch(() => ({})) : {};
 
   try {
-    // Continuation call: process one batch in the background, answer instantly.
-    if (typeof body?.runId === 'string' && body.runId.length > 0) {
-      const runId: string = body.runId;
-      const offset = Number.isFinite(Number(body.offset)) ? Number(body.offset) : 0;
-      waitUntil(scrapeBatch(supabase, firecrawlApiKey, runId, offset));
-      return json({ success: true, runId, offset, queued: true }, 202);
-    }
-
-    // Fresh run: discover URLs, then kick off batch 0 in the background.
-    console.log('[medichecks-firecrawl] starting new run');
     await setJob(supabase, 'running', null);
-
-    const urls = await discoverUrls(firecrawlApiKey);
-    console.log(`[medichecks-firecrawl] ${urls.length} product URLs discovered`);
 
     const { data: runRow, error: runError } = await supabase
       .from('scrape_runs')
@@ -544,33 +307,33 @@ Deno.serve(async (req) => {
         provider_id: 'medichecks',
         scraper_function: 'medichecks-firecrawl',
         status: 'running',
-        metadata: { urls, scraped: 0, upserted: 0, withPrices: 0, errors: [], offset: 0, total: urls.length },
+        metadata: { source: 'shopify-products-feed' },
       })
       .select('id')
       .single();
 
     if (runError || !runRow) {
-      await setJob(supabase, 'failed', `Could not open scrape run: ${runError?.message ?? 'unknown'}`);
-      return json({ error: `Could not open scrape run: ${runError?.message ?? 'unknown'}` }, 500);
+      const message = `Could not open scrape run: ${runError?.message ?? 'unknown'}`;
+      await setJob(supabase, 'failed', message);
+      return json({ error: message }, 500);
     }
 
     const runId = (runRow as { id: string }).id;
-    waitUntil(scrapeBatch(supabase, firecrawlApiKey, runId, 0));
+    // Respond immediately; the sync continues in the background so no caller
+    // can ever time out mid-write.
+    waitUntil(syncCatalogue(supabase, runId));
 
     return json({
       success: true,
       provider: 'medichecks',
-      method: 'firecrawl',
+      method: 'shopify-products-feed',
       runId,
-      totalUrls: urls.length,
-      batchSize: BATCH_SIZE,
-      message: `Scraping ${urls.length} Medichecks products in background batches of ${BATCH_SIZE}.`,
+      message: 'Medichecks catalogue sync running in the background.',
     }, 202);
   } catch (error) {
-    const errMsg = getErrorMessage(error);
-    console.error('[medichecks-firecrawl] fatal:', errMsg);
-    await setJob(supabase, 'failed', errMsg);
-    return json({ success: false, error: errMsg }, 500);
+    const message = getErrorMessage(error);
+    console.error('[medichecks] fatal:', message);
+    await setJob(supabase, 'failed', message);
+    return json({ success: false, error: message }, 500);
   }
 });
-
