@@ -63,9 +63,9 @@ export interface UniversalTestData {
   purchase_notes?: string | null;
 }
 
-/** Provider description when published, otherwise a factual generated summary. */
+/** Short verbatim excerpt of the provider description (or factual generated summary) for the card. */
 const summaryFor = (test: UniversalTestData, providerName?: string): string =>
-  resolveTestSummary(test.description, {
+  excerptTestDescription(test.description, {
     testName: test.test_name,
     providerName: providerName ?? null,
     measurementCount: test.biomarker_count ?? null,
