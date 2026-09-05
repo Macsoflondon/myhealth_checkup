@@ -141,3 +141,36 @@ export const resolveTestSummary = (
   if (provided && !isGenericDescription(provided)) return provided;
   return buildTestSummary(input) || provided;
 };
+
+/**
+ * Short excerpt of a provider description for space-constrained surfaces such
+ * as test cards. The text is never paraphrased or rewritten — we return the
+ * provider's own words verbatim, cut at the first sentence boundary that fits
+ * (or a word boundary with an ellipsis when no sentence fits). Falls back to
+ * the factual generated summary when there is no usable provider text.
+ */
+export const CARD_SUMMARY_MAX_LENGTH = 200;
+
+export const excerptTestDescription = (
+  description: string | null | undefined,
+  input: TestSummaryInput,
+  maxLength: number = CARD_SUMMARY_MAX_LENGTH,
+): string => {
+  const full = resolveTestSummary(description, input);
+  if (!full || full.length <= maxLength) return full;
+
+  // Prefer cutting at the end of an early sentence (verbatim excerpt).
+  const window = full.slice(0, maxLength + 1);
+  const sentenceEnd = Math.max(
+    window.lastIndexOf(". "),
+    window.lastIndexOf("! "),
+    window.lastIndexOf("? "),
+  );
+  // Require at least a third of the budget so we don't emit a fragment.
+  if (sentenceEnd >= Math.floor(maxLength / 3)) {
+    return full.slice(0, sentenceEnd + 1);
+  }
+
+  const wordEnd = window.lastIndexOf(" ");
+  return `${full.slice(0, wordEnd > 0 ? wordEnd : maxLength).trimEnd()}…`;
+};

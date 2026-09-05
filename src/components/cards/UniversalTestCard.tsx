@@ -19,7 +19,7 @@ import { compareStore, useCompareItems } from "@/stores/compareStore";
 import type { CompareTestData } from "@/types";
 import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
 import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
-import { resolveTestSummary } from "@/lib/test-summary";
+import { excerptTestDescription } from "@/lib/test-summary";
 
 // ─── Design tokens (kept inline to mirror AtHomeTestsPage exactly) ───────────
 export const UTC_NAVY = "#081129";
@@ -63,9 +63,9 @@ export interface UniversalTestData {
   purchase_notes?: string | null;
 }
 
-/** Provider description when published, otherwise a factual generated summary. */
+/** Short verbatim excerpt of the provider description (or factual generated summary) for the card. */
 const summaryFor = (test: UniversalTestData, providerName?: string): string =>
-  resolveTestSummary(test.description, {
+  excerptTestDescription(test.description, {
     testName: test.test_name,
     providerName: providerName ?? null,
     measurementCount: test.biomarker_count ?? null,
