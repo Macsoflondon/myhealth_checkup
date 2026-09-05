@@ -41,16 +41,34 @@ Deno.serve(async (req) => {
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
   const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 
-  // Cron/service-role guard
+  // Allow either the cron/service-role caller, or a signed-in admin from the
+  // admin dashboard (the "Run health check" button sends a user JWT).
   const authHeader = req.headers.get('Authorization') ?? '';
-  if (authHeader !== `Bearer ${supabaseKey}`) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
-  }
+  const token = authHeader.toLowerCase().startsWith('bearer ') ? authHeader.slice(7) : '';
 
   const supabase = createClient(supabaseUrl, supabaseKey);
+
+  if (token !== supabaseKey) {
+    const { data: userData } = await supabase.auth.getUser(token);
+    const userId = userData?.user?.id;
+    let isAdmin = false;
+    if (userId) {
+      const { data: roleRow } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .eq('role', 'admin')
+        .maybeSingle();
+      isAdmin = !!roleRow;
+    }
+    if (!isAdmin) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+  }
+
 
   try {
     console.log('Running scraper health check...');
