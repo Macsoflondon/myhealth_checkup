@@ -138,7 +138,7 @@ export const useAdminMFA = (): UseAdminMFAResult => {
         // Fall back to a client-side check so the admin app never dead-ends on
         // a blank screen: role comes from `user_roles`, MFA state from the
         // Supabase auth client itself.
-        if (fnError) console.warn('MFA verification fell back to client check:', fnError.message);
+        console.warn('MFA verification fell back to client check; status', response.status);
 
         const [{ data: roleRow }, { data: factorsData }, { data: aalData }] = await Promise.all([
           supabase.from('user_roles').select('role').eq('user_id', user.id).eq('role', 'admin').maybeSingle(),
