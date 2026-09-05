@@ -171,19 +171,14 @@ serve(async (req) => {
 
     console.log(`Admin MFA check for ${user.id}: hasMFA=${hasMFA}, mfaVerified=${mfaVerified}`);
 
-    // If admin doesn't have MFA set up or hasn't verified this session, return 403
-    if (!hasMFA || !mfaVerified) {
-      return new Response(
-        JSON.stringify(result),
-        { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      );
-    }
-
-    // Admin is fully verified
+    // Always 200: "MFA setup/step-up required" is a normal state, not an error.
+    // Returning 403 made the client treat an expected response as a failure
+    // (blank admin screen) and polluted error monitoring.
     return new Response(
       JSON.stringify(result),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
+
 
   } catch (error) {
     console.error('Error in verify-admin-mfa function:', error);
