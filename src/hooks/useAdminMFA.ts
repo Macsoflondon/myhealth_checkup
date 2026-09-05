@@ -79,9 +79,9 @@ export const useAdminMFA = (): UseAdminMFAResult => {
       setIsLoading(true);
       setError(null);
 
-      let accessToken: string | undefined;
       const { data: sessionData } = await supabase.auth.getSession();
-      accessToken = sessionData.session?.access_token;
+      const accessToken = sessionData.session?.access_token;
+
 
       if (!accessToken) {
         setError('No active session');
