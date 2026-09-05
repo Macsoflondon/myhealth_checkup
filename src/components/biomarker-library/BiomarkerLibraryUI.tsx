@@ -166,17 +166,24 @@ export default function BiomarkerLibraryUI() {
         stats={[`${biomarkers.length} biomarkers`, `${categories.length - 1} categories`, "Sex-specific ranges", "Clinical tips"]}
       />
       <div style={{ background: "#fff", borderBottom: `1px solid ${COLORS.border}`, padding: "16px 24px", position: "sticky", top: 0, zIndex: 100, boxShadow: "0 2px 12px rgba(8,17,41,0.06)" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
-          <div style={{ position: "relative", flex: "1 1 220px" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", gap: 8, alignItems: "center" }}>
+          <div style={{ position: "relative", flex: "1 1 auto", minWidth: 0 }}>
             <span style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", fontSize: 16, color: COLORS.accent }}>🔍</span>
             <input value={searchQuery} onChange={e => setSearchQuery(e.target.value)} placeholder="Search biomarkers... e.g. Haemoglobin, TSH, ALT" style={{ width: "100%", padding: "10px 12px 10px 38px", border: `1px solid ${COLORS.border}`, borderRadius: 10, fontSize: 14, outline: "none", color: COLORS.navy }} />
           </div>
-          <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-            {categories.map((cat: string) => (
-              <button key={cat} onClick={() => setSelectedCategory(cat)} style={{ background: selectedCategory === cat ? COLORS.navy : COLORS.lightBg, color: selectedCategory === cat ? "#fff" : COLORS.text, border: `1px solid ${selectedCategory === cat ? COLORS.navy : COLORS.border}`, borderRadius: 20, padding: "6px 14px", fontSize: 12, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" }}>
-                {(categoryIcons as any)[cat]} {cat}
-              </button>
-            ))}
+          <div style={{ position: "relative", flex: "0 0 auto" }}>
+            <span style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", fontSize: 14, pointerEvents: "none" }}>{(categoryIcons as any)[selectedCategory]}</span>
+            <select
+              aria-label="Filter by category"
+              value={selectedCategory}
+              onChange={e => setSelectedCategory(e.target.value)}
+              style={{ appearance: "none", WebkitAppearance: "none", maxWidth: "min(200px, 42vw)", padding: "10px 30px 10px 34px", border: `1px solid ${COLORS.border}`, borderRadius: 10, fontSize: 13, fontWeight: 600, color: COLORS.navy, background: COLORS.lightBg, cursor: "pointer", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}
+            >
+              {categories.map((cat: string) => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+            <span style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", fontSize: 10, color: COLORS.muted, pointerEvents: "none" }}>▼</span>
           </div>
         </div>
       </div>
