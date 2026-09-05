@@ -81,14 +81,6 @@ const wellnessCategoryCards = [
     tag: "SPECIALIST",
   },
   {
-    id: "gp-monitoring",
-    name: "GP Monitoring",
-    desc: "Routine health checks and general practitioner monitoring",
-    icon: "⊕",
-    accent: "#00b4d8",
-    tag: "ROUTINE",
-  },
-  {
     id: "antibody-tests",
     name: "Antibody Tests",
     desc: "Antibody screening and autoimmune disease detection",
@@ -167,7 +159,7 @@ const COUNT_SPECS: WellnessCountSpec[] = [
   { id: "nutrition-tests", categories: ["vitamins"], subSlug: "vitamins" },
   { id: "allergy-testing", categories: ["general-health"], subSlug: "allergy" },
   { id: "sexual-health", categories: ["sexual-health"] },
-  { id: "gp-monitoring", categories: ["general-health"] },
+  
   { id: "antibody-tests", categories: ["general-health"] },
   { id: "infection-tests", categories: ["general-health"] },
   { id: "immunity-tests", categories: ["general-health"] },
