@@ -75,3 +75,18 @@ export const resolveAccreditationsFromRow = (
   if (row.lab_iso15189) flags.push('ISO 15189');
   return flags.length > 0 ? flags : null;
 };
+
+/**
+ * Turnaround text fit for display. Some provider feeds captured fragments such
+ * as "results" with no actual timeframe; showing those is worse than showing
+ * nothing, so we only return text that states a real period.
+ */
+export const displayTurnaround = (
+  value: string | null | undefined,
+): string | null => {
+  const cleaned = sanitiseTurnaroundText(value);
+  if (!cleaned) return null;
+  if (/\d/.test(cleaned)) return cleaned;
+  if (/\b(same|next)\s+day\b/i.test(cleaned)) return cleaned;
+  return null;
+};
