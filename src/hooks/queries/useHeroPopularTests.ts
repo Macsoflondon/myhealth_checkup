@@ -12,6 +12,15 @@ export interface HeroPopularTest {
   clinicalReviewType: string | null;
   biomarkersList: string[];
   turnaroundDaysText: string | null;
+  description: string | null;
+  sampleType: string | null;
+  collectionMethod: string | null;
+  collectionOptions: unknown;
+  measurementType: string | null;
+  whoShouldTest: string | null;
+  homeKitAvailable: boolean | null;
+  clinicVisitAvailable: boolean | null;
+  isAddon: boolean | null;
   imageUrl: string | null;
   /** True when imageUrl is an on-brand generic stock photo, not a provider product photo. */
   imageIsStock: boolean | null;
@@ -20,15 +29,15 @@ export interface HeroPopularTest {
 function parseBiomarkersList(raw: unknown): string[] {
   try {
     if (!raw || (typeof raw === "string" && raw.trim() === "")) {
-      return ["General Health"];
+      return [];
     }
 
     if (Array.isArray(raw)) {
       const parsed = raw
         .map((x) => (typeof x === "string" ? x.trim() : ""))
         .filter(Boolean)
-        .slice(0, 4);
-      return parsed.length > 0 ? parsed : ["General Health"];
+        ;
+      return parsed;
     }
 
     if (typeof raw === "string") {
@@ -42,15 +51,15 @@ function parseBiomarkersList(raw: unknown): string[] {
         const parsed = arr
           .map((x) => (typeof x === "string" ? x.trim() : ""))
           .filter(Boolean)
-          .slice(0, 4);
-        return parsed.length > 0 ? parsed : ["General Health"];
+          ;
+        return parsed;
       }
     }
 
-    return ["General Health"];
+    return [];
   } catch (e) {
     console.error("[useHeroPopularTests] parseBiomarkersList error:", e, "raw value:", raw);
-    return ["General Health"];
+    return [];
   }
 }
 
@@ -63,7 +72,7 @@ export function useHeroPopularTests() {
         const { data, error } = await supabase
           .from("provider_tests")
           .select(
-            "id, test_name, provider_id, total_expected_cost, biomarker_count, url, canonical_category, clinical_review_type, biomarkers_list, turnaround_days_text, image_url, image_is_stock"
+            "id, test_name, provider_id, total_expected_cost, biomarker_count, url, canonical_category, clinical_review_type, biomarkers_list, turnaround_days_text, image_url, image_is_stock, description, sample_type, collection_method, collection_options, measurement_type, who_should_test, home_kit_available, clinic_visit_available, is_addon"
           )
           .eq("is_popular", true)
           .eq("is_active", true)
@@ -93,6 +102,15 @@ export function useHeroPopularTests() {
           turnaroundDaysText: typeof row.turnaround_days_text === "string" ? row.turnaround_days_text : null,
           imageUrl: typeof row.image_url === "string" ? row.image_url : null,
           imageIsStock: typeof row.image_is_stock === "boolean" ? row.image_is_stock : null,
+          description: typeof row.description === "string" ? row.description : null,
+          sampleType: typeof row.sample_type === "string" ? row.sample_type : null,
+          collectionMethod: typeof row.collection_method === "string" ? row.collection_method : null,
+          collectionOptions: row.collection_options ?? null,
+          measurementType: typeof row.measurement_type === "string" ? row.measurement_type : null,
+          whoShouldTest: typeof row.who_should_test === "string" ? row.who_should_test : null,
+          homeKitAvailable: typeof row.home_kit_available === "boolean" ? row.home_kit_available : null,
+          clinicVisitAvailable: typeof row.clinic_visit_available === "boolean" ? row.clinic_visit_available : null,
+          isAddon: typeof row.is_addon === "boolean" ? row.is_addon : null,
         }));
       } catch (e) {
         console.error("[useHeroPopularTests] Unexpected error in queryFn:", e);
