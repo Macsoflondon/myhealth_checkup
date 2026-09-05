@@ -259,80 +259,115 @@ function extractImageUrl(html: string, metadataOgImage?: string | null): string 
 }
 
 
-Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
+/**
+ * Batched, background execution.
+ *
+ * The whole Medichecks catalogue (~200 product pages via Firecrawl) cannot be
+ * scraped inside one synchronous request — the platform closes the connection
+ * at ~150 s and the caller sees HTTP 504 mid-scrape. Instead:
+ *   - the first call discovers product URLs, stores them on a `scrape_runs`
+ *     row, answers 202 immediately, and processes batch 0 in the background;
+ *   - each batch self-invokes the next one until the list is exhausted.
+ * No request ever blocks on the full catalogue, so a 504 is impossible.
+ */
 
-  const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
-  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
-  }
+const BATCH_SIZE = 20;
+const MAX_PRODUCT_URLS = 220;
 
+declare const EdgeRuntime: { waitUntil: (p: Promise<unknown>) => void } | undefined;
+const waitUntil = (p: Promise<unknown>): void => {
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY');
-    
-    if (!firecrawlApiKey) {
-      throw new Error('FIRECRAWL_API_KEY not configured');
+    if (typeof EdgeRuntime !== 'undefined' && EdgeRuntime?.waitUntil) {
+      EdgeRuntime.waitUntil(p);
+      return;
     }
-    
-    const supabase = createClient(supabaseUrl, supabaseKey);
+  } catch { /* noop */ }
+  p.catch((err) => console.error('[medichecks-firecrawl] bg error:', getErrorMessage(err)));
+};
 
-    console.log('Starting Medichecks Firecrawl scraper...');
+type Supa = ReturnType<typeof createClient>;
 
-    // Update scraping job status
-    await supabase
-      .from('scraping_jobs')
-      .upsert({
-        provider_id: 'medichecks-firecrawl',
-        status: 'running',
-        last_scraped: new Date().toISOString(),
-        next_scrape: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString(),
-      }, {
-        onConflict: 'provider_id'
-      });
+interface RunMeta {
+  urls: string[];
+  scraped: number;
+  upserted: number;
+  withPrices: number;
+  errors: string[];
+}
 
-    // Step 1: Start with known verified product URLs
-    console.log('Starting with verified product URLs...');
-    let productUrls: string[] = [...knownProductUrls];
-    
-    // Step 2: Map the website to discover additional product URLs
-    console.log('Mapping Medichecks website for additional product URLs...');
-    
-    for (const collectionUrl of collectionUrls.slice(0, 5)) {
-      try {
-        const urls = await mapWebsiteUrls(collectionUrl, firecrawlApiKey);
-        // Only add URLs with /products/ pattern
-        const validUrls = urls.filter((url: string) => url.includes('/products/'));
-        productUrls = [...productUrls, ...validUrls];
-        console.log(`Found ${validUrls.length} products from ${collectionUrl}`);
-      } catch (error) {
-        console.error(`Failed to map ${collectionUrl}:`, getErrorMessage(error));
-      }
+const readMeta = (raw: unknown): RunMeta => {
+  const m = (raw ?? {}) as Partial<RunMeta>;
+  return {
+    urls: Array.isArray(m.urls) ? m.urls : [],
+    scraped: Number(m.scraped ?? 0),
+    upserted: Number(m.upserted ?? 0),
+    withPrices: Number(m.withPrices ?? 0),
+    errors: Array.isArray(m.errors) ? m.errors : [],
+  };
+};
+
+async function setJob(
+  supabase: Supa,
+  status: string,
+  errorMessage: string | null,
+): Promise<void> {
+  const row = {
+    status,
+    error_message: errorMessage,
+    last_scraped: new Date().toISOString(),
+    next_scrape: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString(),
+  };
+  // Canonical id first — the dashboards key off `medichecks`.
+  await supabase.from('scraping_jobs').upsert({ provider_id: 'medichecks', ...row }, { onConflict: 'provider_id' });
+  await supabase.from('scraping_jobs').upsert({ provider_id: 'medichecks-firecrawl', ...row }, { onConflict: 'provider_id' });
+}
+
+async function discoverUrls(firecrawlApiKey: string): Promise<string[]> {
+  let productUrls: string[] = [...knownProductUrls];
+  for (const collectionUrl of collectionUrls.slice(0, 5)) {
+    try {
+      const urls = await mapWebsiteUrls(collectionUrl, firecrawlApiKey);
+      const validUrls = urls.filter((url: string) => url.includes('/products/'));
+      productUrls = [...productUrls, ...validUrls];
+      console.log(`Found ${validUrls.length} products from ${collectionUrl}`);
+    } catch (error) {
+      console.error(`Failed to map ${collectionUrl}:`, getErrorMessage(error));
     }
-    
-    // Deduplicate and filter to only /products/ URLs
-    productUrls = [...new Set(productUrls)].filter(url => url.includes('/products/'));
-    console.log(`Total unique product URLs: ${productUrls.length}`);
+  }
+  return [...new Set(productUrls)]
+    .filter((url) => url.includes('/products/'))
+    .slice(0, MAX_PRODUCT_URLS);
+}
 
-    // Step 3: Scrape individual product pages
-    const scrapedProducts: ScrapedProduct[] = [];
-    const urlsToScrape = productUrls.slice(0, 120); // Increased limit to 120 products
-    
-    // Batch mode, concurrency 4
-    await runInChunks(urlsToScrape, 8, async (url) => {
-      console.log(`Scraping: ${url}`);
+async function scrapeBatch(
+  supabase: Supa,
+  firecrawlApiKey: string,
+  runId: string,
+  offset: number,
+): Promise<void> {
+  const { data: runRow, error: runErr } = await supabase
+    .from('scrape_runs')
+    .select('metadata')
+    .eq('id', runId)
+    .maybeSingle();
+  if (runErr || !runRow) {
+    console.error(`[medichecks-firecrawl] run ${runId} not found`);
+    return;
+  }
 
+  const meta = readMeta((runRow as { metadata: unknown }).metadata);
+  const slice = meta.urls.slice(offset, offset + BATCH_SIZE);
+  if (slice.length === 0) {
+    await finishRun(supabase, runId, meta);
+    return;
+  }
+
+  const scrapedProducts: ScrapedProduct[] = [];
+
+  await runInChunks(slice, 6, async (url) => {
+    try {
       const result = await scrapeWithFirecrawl(url, firecrawlApiKey);
-
-      if (!result.success || !result.data) {
-        console.log(`No data for ${url}, skipping`);
-        return;
-      }
+      if (!result.success || !result.data) return;
 
       const { markdown, html, metadata } = result.data;
 
@@ -342,143 +377,200 @@ Deno.serve(async (req) => {
         if (titleMatch) title = titleMatch[1];
       }
       title = title.replace(/\s*\|\s*Medichecks.*$/i, '').trim();
-
-      if (!title) {
-        console.log(`No title found for ${url}, skipping`);
-        return;
-      }
+      if (!title || /^\d{3}\s/.test(title)) return; // skip empty and error pages
 
       const description = metadata?.description || null;
       const { current: price, original: originalPrice } = extractPrice(html || '', markdown || '');
-      const biomarkerCount = extractBiomarkerCount(markdown || '', html || '');
-      const category = determineCategory(title, description || '', url);
-      const imageUrl = extractImageUrl(html || '', metadata?.ogImage);
 
       scrapedProducts.push({
         test_name: title,
         price,
         original_price: originalPrice,
         url,
-        category,
+        category: determineCategory(title, description || '', url),
         description,
-        biomarker_count: biomarkerCount,
+        biomarker_count: extractBiomarkerCount(markdown || '', html || ''),
         sample_type: 'Finger-prick or Venous',
-        image_url: imageUrl,
+        image_url: extractImageUrl(html || '', metadata?.ogImage),
       });
+    } catch (error) {
+      meta.errors.push(`${url}: ${getErrorMessage(error)}`);
+    }
+  });
 
+  for (const product of scrapedProducts) {
+    const providerTestId = slugFromUrl(product.url);
 
-      console.log(`Scraped: ${title} - £${price ?? 'N/A'} - ${biomarkerCount || 0} biomarkers`);
-    });
+    const dataToUpsert: Record<string, unknown> = {
+      provider_id: 'medichecks',
+      provider_test_id: providerTestId,
+      test_name: product.test_name,
+      url: product.url,
+      category: product.category,
+      description: product.description,
+      biomarker_count: product.biomarker_count,
+      image_url: product.image_url,
+      sample_type: product.sample_type,
+      is_active: true,
+      scraped_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      url_verified: true,
+      url_verified_at: new Date().toISOString(),
+    };
 
-    console.log(`Successfully scraped ${scrapedProducts.length} products`);
-
-    // Dedupe by test_name to avoid partial unique index (provider_id,test_name) WHERE is_active conflicts.
-    const seenNames = new Set<string>();
-    const dedupedProducts = scrapedProducts.filter(p => {
-      const key = p.test_name.toLowerCase().trim();
-      if (seenNames.has(key)) return false;
-      seenNames.add(key);
-      return true;
-    });
-    console.log(`Deduped to ${dedupedProducts.length} unique test names`);
-
-    // Step 3: Upsert to database
-    let upsertedCount = 0;
-    let priceUpdateCount = 0;
-    const upsertErrors: string[] = [];
-    
-    for (const product of dedupedProducts) {
-      const providerTestId = slugFromUrl(product.url);
-
-      const dataToUpsert: Record<string, unknown> = {
-        provider_id: 'medichecks',
-        provider_test_id: providerTestId,
-        test_name: product.test_name,
-        url: product.url,
-        category: product.category,
-        description: product.description,
-        biomarker_count: product.biomarker_count,
-        image_url: product.image_url,
-        sample_type: product.sample_type,
-        is_active: true,
-        scraped_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        url_verified: true,
-        url_verified_at: new Date().toISOString(),
-      };
-
-      if (product.price !== null) {
-        dataToUpsert.price = product.price;
-        dataToUpsert.original_price = product.original_price;
-        priceUpdateCount++;
-      }
-
-      const { error } = await supabase
-        .from('provider_tests')
-        .upsert(dataToUpsert, {
-          onConflict: 'provider_id,provider_test_id',
-        });
-      
-      if (error) {
-        const msg = getErrorMessage(error);
-        console.error(`Failed to upsert ${product.test_name} (${providerTestId}):`, msg);
-        upsertErrors.push(`${providerTestId}: ${msg}`);
-      } else {
-        upsertedCount++;
-      }
+    if (product.price !== null) {
+      dataToUpsert.price = product.price;
+      dataToUpsert.original_price = product.original_price;
+      meta.withPrices++;
     }
 
-    // Update scraping job to completed
-    await supabase
-      .from('scraping_jobs')
-      .update({
-        status: 'completed',
-        error_message: null
+    const { error } = await supabase
+      .from('provider_tests')
+      .upsert(dataToUpsert, { onConflict: 'provider_id,provider_test_id' });
+
+    if (error) {
+      meta.errors.push(`${providerTestId}: ${getErrorMessage(error)}`);
+    } else {
+      meta.upserted++;
+    }
+  }
+
+  meta.scraped += scrapedProducts.length;
+  meta.errors = meta.errors.slice(-40);
+
+  const nextOffset = offset + slice.length;
+  await supabase.from('scrape_runs').update({
+    tests_seen: meta.scraped,
+    tests_updated: meta.upserted,
+    metadata: { ...meta, offset: nextOffset, total: meta.urls.length },
+  }).eq('id', runId);
+
+  console.log(
+    `[medichecks-firecrawl] batch ${offset}-${nextOffset}/${meta.urls.length}: ` +
+      `${scrapedProducts.length} scraped, ${meta.upserted} upserted so far`,
+  );
+
+  if (nextOffset >= meta.urls.length) {
+    await finishRun(supabase, runId, meta);
+    return;
+  }
+
+  // Hand the next batch to a fresh invocation so no single request runs long.
+  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
+  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const res = await fetch(`${supabaseUrl}/functions/v1/medichecks-firecrawl`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${serviceKey}` },
+    body: JSON.stringify({ runId, offset: nextOffset }),
+  });
+  if (!res.ok) {
+    const text = await res.text();
+    const message = `Batch chaining failed at offset ${nextOffset}: HTTP ${res.status} ${text.slice(0, 200)}`;
+    console.error(`[medichecks-firecrawl] ${message}`);
+    meta.errors.push(message);
+    await finishRun(supabase, runId, meta, 'partial');
+  }
+}
+
+async function finishRun(
+  supabase: Supa,
+  runId: string,
+  meta: RunMeta,
+  status: 'success' | 'partial' = 'success',
+): Promise<void> {
+  const finalStatus = meta.errors.length > 0 && status === 'success' ? 'partial' : status;
+  await supabase.from('scrape_runs').update({
+    status: finalStatus,
+    finished_at: new Date().toISOString(),
+    tests_seen: meta.scraped,
+    tests_updated: meta.upserted,
+    errors: meta.errors.slice(0, 20).map((message) => ({ message })),
+    metadata: { ...meta, completed: true, total: meta.urls.length },
+  }).eq('id', runId);
+
+  await setJob(
+    supabase,
+    finalStatus === 'partial' ? 'completed' : 'completed',
+    meta.errors.length > 0 ? `Completed with ${meta.errors.length} error(s)` : null,
+  );
+
+  console.log(
+    `[medichecks-firecrawl] run ${runId} ${finalStatus}: ` +
+      `${meta.upserted} tests upserted, ${meta.withPrices} with prices`,
+  );
+}
+
+Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  const json = (body: unknown, status = 200) =>
+    new Response(JSON.stringify(body), {
+      status,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    });
+
+  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
+  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${serviceKey}`) {
+    return json({ error: 'Unauthorized' }, 401);
+  }
+
+  const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY');
+  if (!firecrawlApiKey) return json({ error: 'FIRECRAWL_API_KEY not configured' }, 500);
+
+  const supabase = createClient(Deno.env.get('SUPABASE_URL')!, serviceKey);
+  const body = req.method === 'POST' ? await req.json().catch(() => ({})) : {};
+
+  try {
+    // Continuation call: process one batch in the background, answer instantly.
+    if (typeof body?.runId === 'string' && body.runId.length > 0) {
+      const runId: string = body.runId;
+      const offset = Number.isFinite(Number(body.offset)) ? Number(body.offset) : 0;
+      waitUntil(scrapeBatch(supabase, firecrawlApiKey, runId, offset));
+      return json({ success: true, runId, offset, queued: true }, 202);
+    }
+
+    // Fresh run: discover URLs, then kick off batch 0 in the background.
+    console.log('[medichecks-firecrawl] starting new run');
+    await setJob(supabase, 'running', null);
+
+    const urls = await discoverUrls(firecrawlApiKey);
+    console.log(`[medichecks-firecrawl] ${urls.length} product URLs discovered`);
+
+    const { data: runRow, error: runError } = await supabase
+      .from('scrape_runs')
+      .insert({
+        provider_id: 'medichecks',
+        scraper_function: 'medichecks-firecrawl',
+        status: 'running',
+        metadata: { urls, scraped: 0, upserted: 0, withPrices: 0, errors: [], offset: 0, total: urls.length },
       })
-      .eq('provider_id', 'medichecks-firecrawl');
+      .select('id')
+      .single();
 
-    console.log(`Firecrawl scraper completed. Upserted ${upsertedCount} tests, ${priceUpdateCount} with prices.`);
+    if (runError || !runRow) {
+      await setJob(supabase, 'failed', `Could not open scrape run: ${runError?.message ?? 'unknown'}`);
+      return json({ error: `Could not open scrape run: ${runError?.message ?? 'unknown'}` }, 500);
+    }
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        provider: 'medichecks',
-        method: 'firecrawl',
-        testsScraped: scrapedProducts.length,
-        testsUpserted: upsertedCount,
-        testsWithPrices: priceUpdateCount,
-        upsertErrors: upsertErrors.slice(0, 10),
-        upsertErrorCount: upsertErrors.length,
-        timestamp: new Date().toISOString()
-      }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200,
-      }
-    );
+    const runId = (runRow as { id: string }).id;
+    waitUntil(scrapeBatch(supabase, firecrawlApiKey, runId, 0));
 
+    return json({
+      success: true,
+      provider: 'medichecks',
+      method: 'firecrawl',
+      runId,
+      totalUrls: urls.length,
+      batchSize: BATCH_SIZE,
+      message: `Scraping ${urls.length} Medichecks products in background batches of ${BATCH_SIZE}.`,
+    }, 202);
   } catch (error) {
     const errMsg = getErrorMessage(error);
-    console.error('Error in Firecrawl scraper:', errMsg);
-
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    await supabase
-      .from('scraping_jobs')
-      .update({
-        status: 'failed',
-        error_message: errMsg,
-      })
-      .eq('provider_id', 'medichecks-firecrawl');
-
-    return new Response(
-      JSON.stringify({ success: false, error: errMsg }),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 500,
-      }
-    );
+    console.error('[medichecks-firecrawl] fatal:', errMsg);
+    await setJob(supabase, 'failed', errMsg);
+    return json({ success: false, error: errMsg }, 500);
   }
 });
+
