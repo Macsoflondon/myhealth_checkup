@@ -95,21 +95,23 @@ export const useAdminMFA = (): UseAdminMFAResult => {
         return;
       }
 
-      const { data, error: fnError } = await withTimeout(
-        supabase.functions.invoke('verify-admin-mfa', {
+      // Use fetch rather than supabase.functions.invoke: a 403 here is an
+      // expected "step-up required" response, not a failure. invoke() throws on
+      // non-2xx, which surfaced as a captured RUNTIME_ERROR and a blank screen.
+      const response = await withTimeout(
+        fetch(`${SUPABASE_FUNCTIONS_URL}/verify-admin-mfa`, {
+          method: 'POST',
           headers: {
             Authorization: `Bearer ${accessToken}`,
+            apikey: SUPABASE_ANON_KEY,
+            'Content-Type': 'application/json',
           },
         }),
         CHECK_TIMEOUT_MS,
       );
 
-      // The edge function returns 403 with a valid MFAVerificationResult body
-      // when an admin needs to set up or step-up MFA. Supabase surfaces non-2xx
-      // as fnError and may leave `data` empty, so parse the FunctionHttpError
-      // response body before treating it as a hard failure.
-      const errorBody = fnError ? await readFunctionErrorBody(fnError) : null;
-      const status = isMFAVerificationResult(data) ? data : errorBody;
+      const status: unknown = await response.json().catch(() => null);
+
 
       if (isMFAVerificationResult(status)) {
         let reconciledStatus = status;
