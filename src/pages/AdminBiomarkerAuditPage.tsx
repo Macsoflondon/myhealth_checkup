@@ -104,6 +104,7 @@ export default function AdminBiomarkerAuditPage() {
         biomarker_count: row.scraped_biomarkers.length,
         updated_at: new Date().toISOString(),
       } as never)
+      .eq("is_active", true)
       .eq("provider_id", row.provider_id)
       .eq("test_name", row.test_name);
     if (error) {
