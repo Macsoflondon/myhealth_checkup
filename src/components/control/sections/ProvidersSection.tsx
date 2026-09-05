@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { SectionShell, StatCard, HealthDot } from "../SectionShell";
 import { getProviderMeta } from "@/constants/providerMeta";
+import { normalizeProviderId } from "@/constants/providers";
 import { Loader2 } from "lucide-react";
 
 interface ProviderRow {
@@ -34,9 +35,10 @@ export default function ProvidersSection() {
 
       const jobByProvider = new Map<string, { status: string | null; last_scraped: string | null }>();
       for (const j of (jobs ?? []) as { provider_id: string; status: string | null; last_scraped: string | null }[]) {
-        const existing = jobByProvider.get(j.provider_id);
+        const canonicalId = normalizeProviderId(j.provider_id);
+        const existing = jobByProvider.get(canonicalId);
         if (!existing || (j.last_scraped ?? "") > (existing.last_scraped ?? "")) {
-          jobByProvider.set(j.provider_id, { status: j.status, last_scraped: j.last_scraped });
+          jobByProvider.set(canonicalId, { status: j.status, last_scraped: j.last_scraped });
         }
       }
 
