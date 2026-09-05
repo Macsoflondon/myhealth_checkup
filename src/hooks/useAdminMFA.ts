@@ -26,17 +26,10 @@ const isMFAVerificationResult = (value: unknown): value is MFAVerificationResult
     'isAdmin' in value && 'hasMFA' in value && 'mfaVerified' in value;
 };
 
-const readFunctionErrorBody = async (error: unknown): Promise<unknown | null> => {
-  const response = (error as { context?: unknown })?.context;
+const SUPABASE_FUNCTIONS_URL = 'https://clvuioagsgfadynuvodj.supabase.co/functions/v1';
+const SUPABASE_ANON_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdnVpb2Fnc2dmYWR5bnV2b2RqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1MDQ1MDcsImV4cCI6MjA2ODA4MDUwN30.N_ddGrc6YhEYnINwofAI-SNOtsxZr5D-dLVuA5TZEBM';
 
-  if (!(response instanceof Response)) return null;
-
-  try {
-    return await response.clone().json();
-  } catch {
-    return null;
-  }
-};
 
 /**
  * Cached MFA verification result, keyed by user id.
