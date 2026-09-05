@@ -93,16 +93,21 @@ serve(async (req) => {
     const { count: before } = await supabase
       .from("provider_tests")
       .select("*", { count: "exact", head: true })
-      .eq("provider_id", providerId);
+      .eq("provider_id", providerId)
+      .eq("is_active", true);
 
-    // 2. Hard delete all provider_tests for this provider
-    const { error: delErr } = await supabase
+    // 2. Soft purge: deactivate rather than hard delete. A re-scrape that dies
+    //    partway (previously a 504) must never be able to destroy the
+    //    catalogue — deactivated rows are reactivated by the upsert, and any
+    //    genuinely retired product simply stays inactive.
+    const { error: deactivateErr } = await supabase
       .from("provider_tests")
-      .delete()
-      .eq("provider_id", providerId);
-    if (delErr) throw delErr;
+      .update({ is_active: false, updated_at: new Date().toISOString() })
+      .eq("provider_id", providerId)
+      .eq("is_active", true);
+    if (deactivateErr) throw deactivateErr;
 
-    console.log(`[purge-and-rescrape] purged ${before ?? 0} rows for ${providerId}`);
+    console.log(`[purge-and-rescrape] deactivated ${before ?? 0} rows for ${providerId}`);
 
     // 3. Reset scraping_jobs row so dashboard reflects fresh state
     await supabase.from("scraping_jobs").upsert({
@@ -148,7 +153,7 @@ serve(async (req) => {
         providerId,
         purgedRows: before ?? 0,
         scraperDispatched: scraperFn,
-        message: `Purged ${before ?? 0} rows for ${providerId}. Re-scrape running in background.`,
+        message: `Deactivated ${before ?? 0} rows for ${providerId}. Re-scrape running in background; surviving products will be reactivated.`,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 202 },
     );
