@@ -131,8 +131,11 @@ function isNotATest(title: string, handle: string): boolean {
   const banned = [
     'clinic visit', 'gift card', 'nurse visit', 'phlebotomy', 'blood draw',
     'consultation', 'shipping', 'sample kit', 'donation', '404',
+    'collection method', 'collection kit',
   ];
-  return banned.some((b) => t.startsWith(b) || t.includes(b)) || handle.startsWith('clinic-visit');
+  return banned.some((b) => t.startsWith(b) || t.includes(b))
+    || handle.startsWith('clinic-visit')
+    || handle.startsWith('collection-method');
 }
 
 async function fetchCatalogue(): Promise<CatalogueRow[]> {
