@@ -3,7 +3,7 @@ import { Activity, Clock, TrendingUp } from "lucide-react";
 
 const DiabetesTestingPage = () => (
   <DbCategoryPage
-    canonicalCategory="general-health"
+    canonicalCategory="diabetes"
     seoTitle="Diabetes Testing | myhealth checkup"
     pillLabel="Diabetes"
     seoDescription="Compare diabetes screening and monitoring tests from UK providers — HbA1c, glucose tolerance and insulin resistance testing."
