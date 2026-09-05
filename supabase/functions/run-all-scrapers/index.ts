@@ -14,7 +14,10 @@ const corsHeaders = {
 // remain in the repo as a fallback but are no longer referenced here.
 const SCRAPERS = [
   { id: 'lola-health', functionName: 'lola-health-scraper' },
-  { id: 'medichecks', functionName: 'apify-scrape-provider', apify: true },
+  // Medichecks runs through the batched, background Firecrawl scraper. The
+  // Apify path only *updates* rows that already exist (applyProviderRows does
+  // exact matching), so it cannot rebuild a purged catalogue.
+  { id: 'medichecks', functionName: 'medichecks-firecrawl' },
   { id: 'goodbody-clinic', functionName: 'goodbody-scraper' },
   { id: 'randox', functionName: 'randox-scraper' },
   { id: 'london-medical-laboratory', functionName: 'scrape-london-lab' },
