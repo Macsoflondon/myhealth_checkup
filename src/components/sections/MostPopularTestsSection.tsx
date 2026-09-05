@@ -59,12 +59,12 @@ const MostPopularTestsSection = () => {
                 id: test.id,
                 provider_id: test.provider_id,
                 test_name: test.test_name,
-                description:
-                  test.description ||
-                  `Comprehensive health screening covering essential markers. ${test.sample_type || 'Blood sample'} collection.`,
+                description: test.description ?? null,
                 price: test.price ?? null,
                 category: test.category ?? null,
-                sample_type: test.sample_type ?? null,
+                sample_type: test.sample_type || null,
+                collection_method: test.collection_method ?? null,
+                measurement_type: test.measurement_type ?? null,
                 biomarker_count: test.biomarker_count ?? null,
                 url: test.url ?? null,
                 biomarkers_list: (test.markers as any) ?? null,
