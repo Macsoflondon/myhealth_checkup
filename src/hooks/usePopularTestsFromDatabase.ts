@@ -163,6 +163,8 @@ export interface PopularTest {
   base_price?: number;
   collection_options?: Array<{ method: string; price_modifier: number; note?: string }>;
   is_popular?: boolean;
+  collection_method?: string;
+  measurement_type?: string;
 }
 
 export const hasStartingPrice = (test: Pick<PopularTest, 'price' | 'base_price' | 'collection_options'>) =>
@@ -189,8 +191,7 @@ function parseMarkers(raw: unknown): string[] {
   return (raw as string[])
     .filter((m) => typeof m === 'string' && m.length > 1 && m.length < 50)
     .filter((m) => !/^\d+\s*Biomarkers/i.test(m))
-    .filter((m) => !/cholesterol levels|ensure that|dedicated home/i.test(m))
-    .slice(0, 8);
+    .filter((m) => !/cholesterol levels|ensure that|dedicated home/i.test(m));
 }
 
 /**
@@ -223,8 +224,10 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
           price: test.price || 0,
           biomarker_count: test.biomarker_count || 0,
           category: test.category || 'General Health',
-          turnaround_time: test.turnaround_days_text || 'Results in 2-4 days',
-          sample_type: test.sample_type || 'Blood sample',
+          turnaround_time: test.turnaround_days_text || '',
+          sample_type: test.sample_type || '',
+          collection_method: (test as any).collection_method || undefined,
+          measurement_type: (test as any).measurement_type || undefined,
           url: test.url || '',
           popularity_rank: test.popularity_rank || undefined,
           markers: parseMarkers(test.biomarkers_list),
@@ -275,8 +278,10 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
             price: test.price || 0,
             biomarker_count: test.biomarker_count || 0,
             category: test.category || 'General Health',
-            turnaround_time: test.turnaround_days_text || 'Results in 2-4 days',
-            sample_type: test.sample_type || 'Blood sample',
+            turnaround_time: test.turnaround_days_text || '',
+            sample_type: test.sample_type || '',
+          collection_method: (test as any).collection_method || undefined,
+          measurement_type: (test as any).measurement_type || undefined,
             url: test.url || '',
             markers: parseMarkers(test.biomarkers_list),
             description: test.description || undefined,
@@ -320,8 +325,10 @@ export const usePopularTestsForNavigation = () => {
           price: test.price || 0,
           biomarker_count: test.biomarker_count || 0,
           category: test.category || 'General Health',
-          turnaround_time: test.turnaround_days_text || 'Results in 2-4 days',
-          sample_type: test.sample_type || 'Blood sample',
+          turnaround_time: test.turnaround_days_text || '',
+          sample_type: test.sample_type || '',
+          collection_method: (test as any).collection_method || undefined,
+          measurement_type: (test as any).measurement_type || undefined,
           url: test.url || '',
           popularity_rank: test.popularity_rank || undefined
         }));
@@ -363,8 +370,10 @@ export const usePopularTestsForNavigation = () => {
             price: test.price || 0,
             biomarker_count: test.biomarker_count || 0,
             category: test.category || 'General Health',
-            turnaround_time: test.turnaround_days_text || 'Results in 2-4 days',
-            sample_type: test.sample_type || 'Blood sample',
+            turnaround_time: test.turnaround_days_text || '',
+            sample_type: test.sample_type || '',
+          collection_method: (test as any).collection_method || undefined,
+          measurement_type: (test as any).measurement_type || undefined,
             url: test.url || ''
           });
         }
