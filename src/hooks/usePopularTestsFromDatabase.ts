@@ -206,7 +206,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
       // Prioritise is_popular + popularity_rank, then backfill with everything else.
       const { data: popularData, error: popularError } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank, biomarkers_list, description, image_url, turnaround_days_text, base_price, collection_options, is_popular')
+        .select('id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, biomarkers_list, description, image_url, turnaround_days_text, base_price, collection_options, is_popular')
         .eq('is_active', true)
         .not('price', 'is', null)
         .not('url', 'is', null)
@@ -242,7 +242,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
       // Fallback: Get diverse tests from all providers based on price
       const { data, error } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, biomarkers_list, description, turnaround_days_text')
+        .select('id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, biomarkers_list, description, turnaround_days_text')
         .eq('is_active', true)
         .not('price', 'is', null)
         .order('price', { ascending: false })
@@ -304,7 +304,7 @@ export const usePopularTestsForNavigation = () => {
       // First try to get tests marked as popular
       const { data: popularData, error: popularError } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank, turnaround_days_text')
+        .select('id, test_name, provider_id, price, category, sample_type, collection_method, url, biomarker_count, popularity_rank, turnaround_days_text')
         .eq('is_active', true)
         .eq('is_popular', true)
         .not('price', 'is', null)
@@ -330,7 +330,7 @@ export const usePopularTestsForNavigation = () => {
       // Fallback: Get diverse tests from all providers
       const { data, error } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, turnaround_days_text')
+        .select('id, test_name, provider_id, price, category, sample_type, collection_method, url, biomarker_count, turnaround_days_text')
         .eq('is_active', true)
         .not('price', 'is', null)
         .order('price', { ascending: false })
