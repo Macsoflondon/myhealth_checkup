@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { SectionShell, StatCard, HealthDot } from "../SectionShell";
 import { getProviderMeta } from "@/constants/providerMeta";
+import { normalizeProviderId } from "@/constants/providers";
 import { Loader2 } from "lucide-react";
 
 interface ProviderRow {

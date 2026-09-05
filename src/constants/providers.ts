@@ -52,6 +52,7 @@ export const PROVIDER_WEBSITES: Record<string, string> = {
 const PROVIDER_ALIASES: Record<string, string> = {
   'randox-health': 'randox',
   'goodbody': 'goodbody-clinic',
+  'medichecks-firecrawl': 'medichecks',
 };
 
 export function normalizeProviderId(providerId: string): string {
