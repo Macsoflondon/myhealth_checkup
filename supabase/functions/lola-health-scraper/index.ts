@@ -29,6 +29,82 @@ const corsHeaders = {
 
 const LOLA_COLLECTION_PRODUCTS_URL = 'https://lolahealth.com/collections/blood-tests/products.json?limit=250';
 
+// Lola's product page publishes this as a 70-biomarker panel. Keep this
+// authoritative list explicit because loose markdown keyword matching drops
+// lipid ratios and can also duplicate ApoB labels.
+const PEAK_INSIGHTS_70_BIOMARKERS = [
+  'Albumin',
+  'Ferritin',
+  'Iron',
+  'Globulin',
+  'TIBC (Total Iron Binding Capacity)',
+  'Transferrin',
+  'Transferrin Saturation',
+  'Calcium',
+  'Corrected Calcium',
+  'Apolipoprotein B (ApoB)',
+  'Apolipoprotein A1 (ApoA1)',
+  'VLDL (Very Low-Density Lipoprotein)',
+  'ApoB : ApoA1 Ratio',
+  'Cholesterol',
+  'Chol:HDL Ratio',
+  'HDL (High-Density Lipoprotein) Cholesterol',
+  'HDL Cholesterol %',
+  'LDL (Low-Density Lipoprotein) Cholesterol',
+  'Non-HDL Cholesterol',
+  'Triglycerides',
+  'HbA1c (Glycated Haemoglobin)',
+  'Sodium',
+  'Creatinine',
+  'eGFR',
+  'Urea',
+  'Alanine Aminotransferase (ALT)',
+  'Alkaline Phosphatase (ALP)',
+  'Gamma GT (Gamma-glutamyltransferase)',
+  'Total Bilirubin',
+  'Total Protein',
+  'CK (Creatine Kinase)',
+  'Basophils',
+  'Eosinophils',
+  'Haematocrit',
+  'Haemoglobin',
+  'Lymphocytes',
+  'MCHC (Mean Corpuscular Hemoglobin Concentration)',
+  'Mean Cell Hb (Mean Corpuscular Hemoglobin)',
+  'Mean Cell Volume (MCV)',
+  'Monocytes',
+  'MPV (Mean Platelet Volume)',
+  'Neutrophils',
+  'Platelets',
+  'Red Blood Cells',
+  'Red Cell Distribution Width (RDW)',
+  'White Blood Cells',
+  'HsCRP (High-sensitivity C-reactive Protein)',
+  'Uric Acid',
+  'IgE (Total)',
+  'Follicle Stimulating Hormone (FSH)',
+  'Luteinising Hormone (LH)',
+  'Progesterone',
+  'Prolactin',
+  'Total PSA (Prostate-Specific Antigen)',
+  'DHEA-S (Dehydroepiandrosterone-Sulphate)',
+  'Oestradiol (Estradiol)',
+  'Testosterone',
+  'Free Testosterone (Calculated)',
+  'Free Androgen Index (FAI)',
+  'SHBG (Sex Hormone-Binding Globulin)',
+  'Cortisol',
+  'Anti-TPO (Anti-Thyroidperoxidase Antibodies)',
+  'Anti-TG (Anti-Thyroglobulin Antibodies)',
+  'FT3 (Free Triiodothyronine)',
+  'FT4 (Free Thyroxine)',
+  'TSH (Thyroid-Stimulating Hormone)',
+  'Active B12',
+  'Magnesium',
+  'Serum Folate (Vitamin B9)',
+  'Vitamin D',
+] as const;
+
 function normalizeUrl(url: string | null | undefined, baseUrl: string) {
   if (!url) return null;
   if (/^https?:\/\//i.test(url)) return url;
@@ -284,8 +360,17 @@ Deno.serve(async (req) => {
         }
       }
 
+      const isPeakInsights70 = slug === 'peak-insights';
+      const verifiedBiomarkers = isPeakInsights70
+        ? [...PEAK_INSIGHTS_70_BIOMARKERS]
+        : biomarkers;
+      const verifiedBiomarkerCount = isPeakInsights70
+        ? PEAK_INSIGHTS_70_BIOMARKERS.length
+        : biomarkerCount || verifiedBiomarkers.length || null;
       const isAddon = markdown.toLowerCase().includes('add-on') || markdown.toLowerCase().includes('can only be added');
-      const turnaroundRaw = extractTurnaroundText(markdown);
+      const turnaroundRaw = isPeakInsights70
+        ? 'Results in 2 Working Days'
+        : extractTurnaroundText(markdown);
 
       products.push({
         test_name: title,
@@ -310,8 +395,8 @@ Deno.serve(async (req) => {
           })(),
         is_active: true,
         is_addon: isAddon,
-        biomarkers_list: biomarkers.length > 0 ? biomarkers : null,
-        biomarker_count: biomarkerCount || biomarkers.length || null,
+        biomarkers_list: verifiedBiomarkers.length > 0 ? verifiedBiomarkers : null,
+        biomarker_count: verifiedBiomarkerCount,
         ...collectionFor(title, slug),
         turnaround_raw: turnaroundRaw,
         scraped_at: new Date().toISOString(),
