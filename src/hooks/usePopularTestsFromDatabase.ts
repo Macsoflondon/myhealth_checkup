@@ -163,6 +163,8 @@ export interface PopularTest {
   base_price?: number;
   collection_options?: Array<{ method: string; price_modifier: number; note?: string }>;
   is_popular?: boolean;
+  collection_method?: string;
+  measurement_type?: string;
 }
 
 export const hasStartingPrice = (test: Pick<PopularTest, 'price' | 'base_price' | 'collection_options'>) =>
@@ -189,8 +191,7 @@ function parseMarkers(raw: unknown): string[] {
   return (raw as string[])
     .filter((m) => typeof m === 'string' && m.length > 1 && m.length < 50)
     .filter((m) => !/^\d+\s*Biomarkers/i.test(m))
-    .filter((m) => !/cholesterol levels|ensure that|dedicated home/i.test(m))
-    .slice(0, 8);
+    .filter((m) => !/cholesterol levels|ensure that|dedicated home/i.test(m));
 }
 
 /**
@@ -206,7 +207,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
       // Prioritise is_popular + popularity_rank, then backfill with everything else.
       const { data: popularData, error: popularError } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank, biomarkers_list, description, image_url, turnaround_days_text, base_price, collection_options, is_popular')
+        .select('id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, biomarkers_list, description, image_url, turnaround_days_text, base_price, collection_options, is_popular')
         .eq('is_active', true)
         .not('price', 'is', null)
         .not('url', 'is', null)
@@ -223,8 +224,10 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
           price: test.price || 0,
           biomarker_count: test.biomarker_count || 0,
           category: test.category || 'General Health',
-          turnaround_time: test.turnaround_days_text || 'Results in 2-4 days',
-          sample_type: test.sample_type || 'Blood sample',
+          turnaround_time: test.turnaround_days_text || '',
+          sample_type: test.sample_type || '',
+          collection_method: (test as any).collection_method || undefined,
+          measurement_type: (test as any).measurement_type || undefined,
           url: test.url || '',
           popularity_rank: test.popularity_rank || undefined,
           markers: parseMarkers(test.biomarkers_list),
@@ -242,7 +245,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
       // Fallback: Get diverse tests from all providers based on price
       const { data, error } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, biomarkers_list, description, turnaround_days_text')
+        .select('id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, biomarkers_list, description, turnaround_days_text')
         .eq('is_active', true)
         .not('price', 'is', null)
         .order('price', { ascending: false })
@@ -275,8 +278,10 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
             price: test.price || 0,
             biomarker_count: test.biomarker_count || 0,
             category: test.category || 'General Health',
-            turnaround_time: test.turnaround_days_text || 'Results in 2-4 days',
-            sample_type: test.sample_type || 'Blood sample',
+            turnaround_time: test.turnaround_days_text || '',
+            sample_type: test.sample_type || '',
+          collection_method: (test as any).collection_method || undefined,
+          measurement_type: (test as any).measurement_type || undefined,
             url: test.url || '',
             markers: parseMarkers(test.biomarkers_list),
             description: test.description || undefined,
@@ -304,7 +309,7 @@ export const usePopularTestsForNavigation = () => {
       // First try to get tests marked as popular
       const { data: popularData, error: popularError } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, popularity_rank, turnaround_days_text')
+        .select('id, test_name, provider_id, price, category, sample_type, collection_method, url, biomarker_count, popularity_rank, turnaround_days_text')
         .eq('is_active', true)
         .eq('is_popular', true)
         .not('price', 'is', null)
@@ -320,8 +325,10 @@ export const usePopularTestsForNavigation = () => {
           price: test.price || 0,
           biomarker_count: test.biomarker_count || 0,
           category: test.category || 'General Health',
-          turnaround_time: test.turnaround_days_text || 'Results in 2-4 days',
-          sample_type: test.sample_type || 'Blood sample',
+          turnaround_time: test.turnaround_days_text || '',
+          sample_type: test.sample_type || '',
+          collection_method: (test as any).collection_method || undefined,
+          measurement_type: (test as any).measurement_type || undefined,
           url: test.url || '',
           popularity_rank: test.popularity_rank || undefined
         }));
@@ -330,7 +337,7 @@ export const usePopularTestsForNavigation = () => {
       // Fallback: Get diverse tests from all providers
       const { data, error } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, url, biomarker_count, turnaround_days_text')
+        .select('id, test_name, provider_id, price, category, sample_type, collection_method, url, biomarker_count, turnaround_days_text')
         .eq('is_active', true)
         .not('price', 'is', null)
         .order('price', { ascending: false })
@@ -363,8 +370,10 @@ export const usePopularTestsForNavigation = () => {
             price: test.price || 0,
             biomarker_count: test.biomarker_count || 0,
             category: test.category || 'General Health',
-            turnaround_time: test.turnaround_days_text || 'Results in 2-4 days',
-            sample_type: test.sample_type || 'Blood sample',
+            turnaround_time: test.turnaround_days_text || '',
+            sample_type: test.sample_type || '',
+          collection_method: (test as any).collection_method || undefined,
+          measurement_type: (test as any).measurement_type || undefined,
             url: test.url || ''
           });
         }

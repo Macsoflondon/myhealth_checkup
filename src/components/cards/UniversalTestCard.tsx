@@ -20,6 +20,7 @@ import type { CompareTestData } from "@/types";
 import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
 import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
 import { excerptTestDescription } from "@/lib/test-summary";
+import { displayTurnaround } from "@/lib/resolve-test-fields";
 
 // ─── Design tokens (kept inline to mirror AtHomeTestsPage exactly) ───────────
 export const UTC_NAVY = "#081129";
@@ -72,7 +73,7 @@ const summaryFor = (test: UniversalTestData, providerName?: string): string =>
     measurementType: test.measurement_type ?? null,
     sampleType: test.sample_type ?? null,
     collectionMethod: test.collection_method ?? null,
-    turnaroundText: test.turnaround_days_text ?? null,
+    turnaroundText: displayTurnaround(test.turnaround_days_text),
     category: test.category ?? null,
     homeKitAvailable: test.home_kit_available ?? null,
     clinicVisitAvailable: test.clinic_visit_available ?? null,
@@ -182,7 +183,7 @@ function toCompareData(t: UniversalTestData): CompareTestData {
     description: t.description || "",
     available: true,
     features: {
-      turnaround: t.turnaround_days_text || "",
+      turnaround: displayTurnaround(t.turnaround_days_text) ?? "",
       collection: collectionLabel(t),
       bioMarkers: t.biomarker_count ? String(t.biomarker_count) : undefined,
     },
@@ -339,7 +340,7 @@ export const UniversalTestDetailModal: React.FC<{
                 </div>
               )}
             </div>
-            {test.turnaround_days_text && (
+            {displayTurnaround(test.turnaround_days_text) && (
               <div className="flex items-center gap-1.5">
                 <Clock size={14} color={UTC_TURQUOISE} />
                 <div>
@@ -350,7 +351,7 @@ export const UniversalTestDetailModal: React.FC<{
                       fontFamily: "'DM Sans',sans-serif",
                     }}
                   >
-                    {test.turnaround_days_text}
+                    {displayTurnaround(test.turnaround_days_text)}
                   </div>
                   <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>
                     Turnaround
@@ -1264,7 +1265,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               </span>
               <span className="flex items-center gap-1 flex-shrink-0">
                 <Clock size={12} color={UTC_TURQUOISE} />
-                {test.turnaround_days_text || "\u2014"}
+                {displayTurnaround(test.turnaround_days_text) ?? "\u2014"}
               </span>
               <span className="flex items-center gap-1 flex-shrink-0 truncate">
                 <Home size={12} color={UTC_TURQUOISE} />

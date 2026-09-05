@@ -21,6 +21,15 @@ function toUniversalTest(
     biomarkers_list: test.biomarkersList,
     image_url: test.imageUrl,
     image_is_stock: test.imageIsStock,
+    description: test.description,
+    sample_type: test.sampleType,
+    collection_method: test.collectionMethod,
+    collection_options: test.collectionOptions,
+    measurement_type: test.measurementType,
+    who_should_test: test.whoShouldTest,
+    home_kit_available: test.homeKitAvailable ?? undefined,
+    clinic_visit_available: test.clinicVisitAvailable ?? undefined,
+    is_addon: test.isAddon ?? undefined,
   };
 }
 
