@@ -22,8 +22,8 @@ export default function SearchSection() {
     try {
       const [tests, providers, logs] = await Promise.all([
         supabase.from("tests_master").select("id,test_name,category").ilike("test_name", `%${q}%`).limit(10),
-        supabase.from("provider_tests").select("id,provider_name,test_name").ilike("test_name", `%${q}%`).limit(10),
-        supabase.from("audit_logs").select("id,action,resource_type,created_at").ilike("action", `%${q}%`).limit(10),
+        supabase.from("provider_tests").select("id,provider_id,test_name").ilike("test_name", `%${q}%`).limit(10),
+        supabase.from("audit_logs").select("id,action,table_name,created_at").ilike("action", `%${q}%`).limit(10),
       ]);
       setResults([
         { table: "tests_master", rows: tests.data ?? [] },
