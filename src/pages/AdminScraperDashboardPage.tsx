@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +18,7 @@ import { NormalizeCategoriesCard } from "@/components/admin/NormalizeCategoriesC
 import { ScrapeRunLogPanel } from "@/components/admin/ScrapeRunLogPanel";
 import { CategoryVerificationPanel } from "@/components/admin/CategoryVerificationPanel";
 import { SectionMappingAuditPanel } from "@/components/admin/SectionMappingAuditPanel";
+import { normalizeProviderId } from "@/constants/providers";
 
 interface ScrapingJob {
   id: string;
@@ -90,6 +91,21 @@ const AdminScraperDashboardPage: React.FC = () => {
   const [testCounts, setTestCounts] = useState<Record<string, number>>({});
   const [isRefreshingPopular, setIsRefreshingPopular] = useState(false);
   const [popularResult, setPopularResult] = useState<string | null>(null);
+
+  const jobByProvider = useMemo(() => {
+    const map = new Map<string, ScrapingJob>();
+    for (const j of jobs) {
+      const key = normalizeProviderId(j.provider_id);
+      const existing = map.get(key);
+      if (
+        !existing ||
+        new Date(j.last_scraped || 0).getTime() > new Date(existing.last_scraped || 0).getTime()
+      ) {
+        map.set(key, j);
+      }
+    }
+    return map;
+  }, [jobs]);
 
   const fetchJobs = async () => {
     const { data, error } = await supabase
@@ -226,7 +242,7 @@ const AdminScraperDashboardPage: React.FC = () => {
 
   const getSmartRescrapeTargets = (): Provider[] => {
     return PROVIDERS.filter((provider) => {
-      const job = jobs.find((j) => j.provider_id === provider.id);
+      const job = jobByProvider.get(normalizeProviderId(provider.id));
       const count = testCounts[provider.id] ?? 0;
       // Retry when: never run, failed, still running (likely stuck), or completed but empty/partial
       if (!job) return true;
@@ -300,7 +316,7 @@ const AdminScraperDashboardPage: React.FC = () => {
   };
 
   const getJobForProvider = (providerId: string) => {
-    return jobs.find(j => j.provider_id === providerId);
+    return jobByProvider.get(normalizeProviderId(providerId));
   };
 
   const getStatusBadge = (status: string | undefined) => {

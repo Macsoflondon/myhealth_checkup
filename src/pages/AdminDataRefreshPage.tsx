@@ -21,7 +21,7 @@ const AdminDataRefreshPage: React.FC = () => {
     { id: 'medichecks', name: 'Medichecks', hasLiveScraper: true, scraperFunction: 'medichecks-scraper' },
     { id: 'medichecks-firecrawl', name: 'Medichecks (Firecrawl)', hasLiveScraper: true, scraperFunction: 'medichecks-firecrawl' },
     { id: 'london-medical-laboratory', name: 'London Medical Laboratory', hasLiveScraper: true, scraperFunction: 'scrape-london-lab' },
-    { id: 'goodbody', name: 'Goodbody Clinic', hasLiveScraper: true, scraperFunction: 'goodbody-scraper' },
+    { id: 'goodbody-clinic', name: 'Goodbody Clinic', hasLiveScraper: true, scraperFunction: 'goodbody-scraper' },
     { id: 'randox', name: 'Randox Health', hasLiveScraper: true, scraperFunction: 'randox-scraper' },
     { id: 'lola-health', name: 'Lola Health', hasLiveScraper: true, scraperFunction: 'lola-health-scraper' },
   ];
