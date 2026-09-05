@@ -101,15 +101,35 @@ function AdminTestDashboardContent() {
 
     return masterTests.map((mt) => {
       const nameLower = mt.test_name.toLowerCase();
-      // Match provider tests by name similarity
-      const matched = providerTests.filter((pt) => {
+      // Candidate matches by name similarity (first pass)
+      const candidates = providerTests.filter((pt) => {
         const ptName = pt.test_name.toLowerCase();
         return ptName.includes(nameLower) || nameLower.includes(ptName) ||
           (nameLower.length > 8 && ptName.includes(nameLower.substring(0, Math.min(nameLower.length, 20))));
       });
+      // Keep at most one row per provider: the best match.
+      // Prefer an exact case-insensitive name match; otherwise the candidate
+      // whose name length is closest to the master test's name length.
+      const bestByProvider = new Map<string, (typeof candidates)[number]>();
+      for (const pt of candidates) {
+        const existing = bestByProvider.get(pt.provider_id);
+        if (!existing) {
+          bestByProvider.set(pt.provider_id, pt);
+          continue;
+        }
+        const ptExact = pt.test_name.toLowerCase() === nameLower;
+        const exExact = existing.test_name.toLowerCase() === nameLower;
+        if (ptExact !== exExact) {
+          if (ptExact) bestByProvider.set(pt.provider_id, pt);
+          continue;
+        }
+        const ptDiff = Math.abs(pt.test_name.length - mt.test_name.length);
+        const exDiff = Math.abs(existing.test_name.length - mt.test_name.length);
+        if (ptDiff < exDiff) bestByProvider.set(pt.provider_id, pt);
+      }
       return {
         ...mt,
-        providers: matched.map((pt) => ({
+        providers: Array.from(bestByProvider.values()).map((pt) => ({
           provider_id: pt.provider_id,
           test_name: pt.test_name,
           price: pt.price,
