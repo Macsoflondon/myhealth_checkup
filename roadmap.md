@@ -12,4 +12,4 @@
 - [x] Make page edging strips white
 - [x] Condense spacing in AccreditedProvidersBar standards grid
 - [x] Add turquoise top border to toolbar and smooth sticky transition on scroll
-- [ ] Correct Lola Health Peak Insights 70 turnaround and full 70-biomarker panel
+- [x] Correct Lola Health Peak Insights 70 turnaround and full 70-biomarker panel
