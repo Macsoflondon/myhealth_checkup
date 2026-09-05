@@ -26,17 +26,10 @@ const isMFAVerificationResult = (value: unknown): value is MFAVerificationResult
     'isAdmin' in value && 'hasMFA' in value && 'mfaVerified' in value;
 };
 
-const readFunctionErrorBody = async (error: unknown): Promise<unknown | null> => {
-  const response = (error as { context?: unknown })?.context;
+const SUPABASE_FUNCTIONS_URL = 'https://clvuioagsgfadynuvodj.supabase.co/functions/v1';
+const SUPABASE_ANON_KEY =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdnVpb2Fnc2dmYWR5bnV2b2RqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1MDQ1MDcsImV4cCI6MjA2ODA4MDUwN30.N_ddGrc6YhEYnINwofAI-SNOtsxZr5D-dLVuA5TZEBM';
 
-  if (!(response instanceof Response)) return null;
-
-  try {
-    return await response.clone().json();
-  } catch {
-    return null;
-  }
-};
 
 /**
  * Cached MFA verification result, keyed by user id.
@@ -95,21 +88,23 @@ export const useAdminMFA = (): UseAdminMFAResult => {
         return;
       }
 
-      const { data, error: fnError } = await withTimeout(
-        supabase.functions.invoke('verify-admin-mfa', {
+      // Use fetch rather than supabase.functions.invoke: a 403 here is an
+      // expected "step-up required" response, not a failure. invoke() throws on
+      // non-2xx, which surfaced as a captured RUNTIME_ERROR and a blank screen.
+      const response = await withTimeout(
+        fetch(`${SUPABASE_FUNCTIONS_URL}/verify-admin-mfa`, {
+          method: 'POST',
           headers: {
             Authorization: `Bearer ${accessToken}`,
+            apikey: SUPABASE_ANON_KEY,
+            'Content-Type': 'application/json',
           },
         }),
         CHECK_TIMEOUT_MS,
       );
 
-      // The edge function returns 403 with a valid MFAVerificationResult body
-      // when an admin needs to set up or step-up MFA. Supabase surfaces non-2xx
-      // as fnError and may leave `data` empty, so parse the FunctionHttpError
-      // response body before treating it as a hard failure.
-      const errorBody = fnError ? await readFunctionErrorBody(fnError) : null;
-      const status = isMFAVerificationResult(data) ? data : errorBody;
+      const status: unknown = await response.json().catch(() => null);
+
 
       if (isMFAVerificationResult(status)) {
         let reconciledStatus = status;
@@ -136,7 +131,7 @@ export const useAdminMFA = (): UseAdminMFAResult => {
         // Fall back to a client-side check so the admin app never dead-ends on
         // a blank screen: role comes from `user_roles`, MFA state from the
         // Supabase auth client itself.
-        if (fnError) console.warn('MFA verification fell back to client check:', fnError.message);
+        console.warn('MFA verification fell back to client check; status', response.status);
 
         const [{ data: roleRow }, { data: factorsData }, { data: aalData }] = await Promise.all([
           supabase.from('user_roles').select('role').eq('user_id', user.id).eq('role', 'admin').maybeSingle(),
