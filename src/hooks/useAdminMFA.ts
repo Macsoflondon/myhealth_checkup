@@ -79,8 +79,9 @@ export const useAdminMFA = (): UseAdminMFAResult => {
       setIsLoading(true);
       setError(null);
 
+      let accessToken: string | undefined;
       const { data: sessionData } = await supabase.auth.getSession();
-      const accessToken = sessionData.session?.access_token;
+      accessToken = sessionData.session?.access_token;
 
       if (!accessToken) {
         setError('No active session');
@@ -88,22 +89,45 @@ export const useAdminMFA = (): UseAdminMFAResult => {
         return;
       }
 
+      const callVerify = (token: string) =>
+        withTimeout(
+          fetch(`${SUPABASE_FUNCTIONS_URL}/verify-admin-mfa`, {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              apikey: SUPABASE_ANON_KEY,
+              'Content-Type': 'application/json',
+            },
+          }),
+          CHECK_TIMEOUT_MS,
+        );
+
       // Use fetch rather than supabase.functions.invoke: a 403 here is an
       // expected "step-up required" response, not a failure. invoke() throws on
       // non-2xx, which surfaced as a captured RUNTIME_ERROR and a blank screen.
-      const response = await withTimeout(
-        fetch(`${SUPABASE_FUNCTIONS_URL}/verify-admin-mfa`, {
-          method: 'POST',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            apikey: SUPABASE_ANON_KEY,
-            'Content-Type': 'application/json',
-          },
-        }),
-        CHECK_TIMEOUT_MS,
-      );
+      let response = await callVerify(accessToken);
+
+      // 401 means the JWT is stale (typically an expired session whose refresh
+      // token was already rotated/revoked). Try one refresh, then treat it as a
+      // signed-out state instead of an error/blank screen.
+      if (response.status === 401) {
+        const { data: refreshed } = await supabase.auth.refreshSession();
+        const newToken = refreshed.session?.access_token;
+        if (newToken) {
+          response = await callVerify(newToken);
+        }
+        if (response.status === 401) {
+          mfaCache.delete(user.id);
+          setMfaStatus(null);
+          setError('Your session has expired. Please sign in again.');
+          setIsLoading(false);
+          await supabase.auth.signOut();
+          return;
+        }
+      }
 
       const status: unknown = await response.json().catch(() => null);
+
 
 
       if (isMFAVerificationResult(status)) {
