@@ -260,6 +260,18 @@ Deno.serve(async (req) => {
       const category = determineCategory(title, description);
       const turnaroundRaw = extractTurnaround(markdown);
       const parsedTurn = parseTurnaround(turnaroundRaw);
+      const routePrices = extractCollectionRoutePrices(html);
+      const basePrice = routePrices.kitPrice ?? price;
+      const clinicFee =
+        routePrices.clinicPrice != null && basePrice != null
+          ? Math.max(0, +(routePrices.clinicPrice - basePrice).toFixed(2))
+          : CLINIC_VISIT_FEE;
+      const homeVisitFee =
+        routePrices.homeVisitPrice != null && basePrice != null
+          ? Math.max(0, +(routePrices.homeVisitPrice - basePrice).toFixed(2))
+          : HOME_NURSE_FEE;
+      const hasKit = routePrices.kitPrice != null;
+      const markers = biomarkerFeed.get(title.trim().toLowerCase());
       const imageUrl = extractImageFromHtml(html, markdown)
         || (metadata.ogImage ? stripShopifySizeSuffix(metadata.ogImage) : null);
 
@@ -268,20 +280,22 @@ Deno.serve(async (req) => {
         provider_test_id: slug,
         test_name: title,
         url,
-        price,
-        collection_fee: CLINIC_VISIT_FEE,
-        home_visit_fee: HOME_NURSE_FEE,
+        price: basePrice ?? price,
+        collection_fee: clinicFee,
+        home_visit_fee: homeVisitFee,
         gp_review_fee: 0,
-        total_expected_cost: price,
-        // biomarkers curated manually — do NOT overwrite
-        biomarker_count: undefined,
-        biomarkers_list: undefined,
+        total_expected_cost: basePrice ?? price,
+        // Only overwrite when Goodbody's own feed publishes markers for this test.
+        biomarker_count: markers && markers.length > 0 ? markers.length : undefined,
+        biomarkers_list: markers && markers.length > 0 ? markers : undefined,
         turnaround_raw: turnaroundRaw,
         turnaround_hours: parsedTurn.hours,
         turnaround_days: parsedTurn.days,
         turnaround_unit: parsedTurn.unit,
-        sample_type: 'Venous blood',
-        collection_method: 'Clinic phlebotomy; home visit on request',
+        sample_type: hasKit ? 'Finger-prick or venous blood' : 'Venous blood',
+        collection_method: hasKit
+          ? 'Home finger-prick kit; clinic phlebotomy; nurse home visit'
+          : 'Clinic phlebotomy; home visit on request',
         in_stock: inStock,
         scrape_source_url: url,
       }, { scrapeRunId: runId, outOfStock: !inStock });
@@ -295,12 +309,18 @@ Deno.serve(async (req) => {
           description: metadata.description || description || `${title} from Goodbody Clinic.`,
           category,
           clinic_visit_available: true,
-          home_kit_available: true,
+          home_kit_available: hasKit,
+          clinic_phlebotomy_cost: clinicFee,
+          home_phlebotomy_cost: homeVisitFee,
           phlebotomy_included: true,
           url_verified: true,
           url_verified_at: new Date().toISOString(),
           scraped_at: new Date().toISOString(),
         };
+        if (markers) {
+          extras.biomarkers_not_stated = markers.length === 0;
+          if (markers.length > 0) extras.last_validated_at = new Date().toISOString();
+        }
         if (imageUrl) extras.image_url = imageUrl;
         await supabase.from('provider_tests').update(extras).eq('id', upsertResult.providerTestId);
       }
