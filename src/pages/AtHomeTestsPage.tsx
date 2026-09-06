@@ -84,8 +84,8 @@ const StatusShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
       <Header />
       <main className="flex-1">
         <CategoryStandardHero pillLabel="At Home Test Kits" />
-        <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-[#08122b] min-h-[60vh]">
-          <div className="max-w-6xl mx-auto">{children}</div>
+        <section className="pt-8 pb-[72px] px-4 sm:px-6 lg:px-10 bg-white min-h-[60vh]">
+          <div className="max-w-[1280px] mx-auto">{children}</div>
         </section>
         <CategoryPageBottom
           benefitsTitle="Why Choose At Home Testing?"
@@ -100,7 +100,7 @@ const StatusShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 const LoadingSkeleton: React.FC = () => (
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
     {Array.from({ length: 9 }).map((_, i) => (
-      <Skeleton key={i} className="w-full h-[240px] rounded-2xl bg-white/10" />
+      <Skeleton key={i} className="w-full h-[240px] rounded-2xl bg-black/[0.06]" />
     ))}
   </div>
 );
@@ -110,8 +110,8 @@ const ErrorState: React.FC<{ onRetry: () => void }> = ({ onRetry }) => (
     <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-destructive/15 mb-5">
       <AlertCircle className="h-7 w-7 text-destructive" />
     </div>
-    <h2 className="text-2xl font-bold text-white mb-2">Couldn't load at-home test kits</h2>
-    <p className="text-white/90 mb-6">
+    <h2 className="text-2xl font-bold text-[#060b18] mb-2">Couldn't load at-home test kits</h2>
+    <p className="text-[#060b18]/75 mb-6">
       Something went wrong while fetching the latest kits. Please check your connection and try again.
     </p>
     <Button onClick={onRetry} variant="secondary" className="gap-2">
@@ -122,11 +122,11 @@ const ErrorState: React.FC<{ onRetry: () => void }> = ({ onRetry }) => (
 
 const EmptyState: React.FC = () => (
   <div className="text-center py-20 max-w-md mx-auto">
-    <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-white/10 mb-5">
-      <Inbox className="h-7 w-7 text-white/90" />
+    <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-black/[0.06] mb-5">
+      <Inbox className="h-7 w-7 text-[#060b18]/70" />
     </div>
-    <h2 className="text-2xl font-bold text-white mb-2">No at home test kits available yet</h2>
-    <p className="text-white/90 mb-6">
+    <h2 className="text-2xl font-bold text-[#060b18] mb-2">No at home test kits available yet</h2>
+    <p className="text-[#060b18]/75 mb-6">
       We're updating our catalogue. Browse the full comparison hub to find the right test for you.
     </p>
     <Button asChild variant="secondary">
