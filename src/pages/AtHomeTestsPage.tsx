@@ -199,8 +199,7 @@ const AtHomeTestsPage: React.FC = () => {
           </h2>
           <p className="text-[#060b18]/75 max-w-2xl mx-auto">
             {totalKits} finger-prick kits from UKAS-accredited UK providers, grouped so you can go
-            straight to the area you care about. Prices, biomarkers and typical turnaround times are
-            shown on every listing.
+            straight to the area you care about.
           </p>
         </div>
         <AtHomeSectionGrid counts={counts} />
