@@ -160,7 +160,8 @@ Deno.serve(async (req) => {
     }, { onConflict: 'provider_id' });
 
     const all: WooProduct[] = [];
-    for (let page = 1; page <= 6; page++) {
+    // Provider's feed runs well past 600 products (Bone Profile sits ~page 12).
+    for (let page = 1; page <= 25; page++) {
       const batch = await fetchWooPage(page, 100);
       if (batch.length === 0) break;
       all.push(...batch);
