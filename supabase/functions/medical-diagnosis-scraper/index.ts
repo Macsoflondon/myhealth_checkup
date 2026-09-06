@@ -224,7 +224,7 @@ Deno.serve(async (req) => {
         turnaround_days: parsedTurn.days,
         turnaround_unit: parsedTurn.unit,
         sample_type: 'Venous blood',
-        collection_method: 'Clinic phlebotomy',
+        collection_method: `In-clinic appointment — venous blood draw (phlebotomy fee £${clinicFee})`,
         in_stock: inStock,
         scrape_source_url: p.permalink,
       }, { scrapeRunId: runId, outOfStock: !inStock });
