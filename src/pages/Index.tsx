@@ -329,6 +329,12 @@ const Index = () => {
             </SectionReveal>
           </Suspense>
 
+          <Suspense fallback={<SectionFallback />}>
+            <SectionReveal delay={0.1}>
+              <FeaturedPublications />
+            </SectionReveal>
+          </Suspense>
+
           <LazyMount
             minHeight={800}
             className="bg-brand-navy"
