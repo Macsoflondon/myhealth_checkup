@@ -5,9 +5,6 @@ import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import FeaturedPartnerWheel from "@/components/sections/FeaturedPartnerWheel";
 import faceGridAsset from "@/assets/goodbody-face-grid.jpg.asset.json";
 
-const FeaturedPublications = lazy(() =>
-  import("@/components/sections/FeaturedPublications").then((m) => ({ default: m.FeaturedPublications }))
-);
 const DreamHealthShowcase = lazy(() => import("@/components/sections/DreamHealthShowcase"));
 const TestCategoriesSection = lazy(() => import("@/components/sections/TestCategoriesSection"));
 const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
@@ -86,11 +83,6 @@ const PartnerShowcaseGrid = () => {
 
       <SafeBlock name="Most Popular Tests" fallback={<BlockSkeleton />}>
         <DreamHealthShowcase />
-      </SafeBlock>
-
-
-      <SafeBlock name="Featured Publications" fallback={<BlockSkeleton height="min-h-[280px]" />}>
-        <FeaturedPublications />
       </SafeBlock>
 
 

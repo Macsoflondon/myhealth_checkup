@@ -24,6 +24,11 @@ const JourneySimplified = lazy(
 const PartnerShowcaseGrid = lazy(
   () => import("@/components/sections/PartnerShowcaseGrid"),
 );
+const FeaturedPublications = lazy(() =>
+  import("@/components/sections/FeaturedPublications").then((m) => ({
+    default: m.FeaturedPublications,
+  })),
+);
 
 const AccreditedProvidersBar = lazy(
   () => import("@/components/sections/AccreditedProvidersBar"),
@@ -321,6 +326,12 @@ const Index = () => {
           <Suspense fallback={<SectionFallback />}>
             <SectionReveal delay={0.15}>
               <StartJourneySection />
+            </SectionReveal>
+          </Suspense>
+
+          <Suspense fallback={<SectionFallback />}>
+            <SectionReveal delay={0.1}>
+              <FeaturedPublications />
             </SectionReveal>
           </Suspense>
 
