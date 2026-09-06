@@ -77,8 +77,15 @@ export type HeroSlide = {
   posDesktop: string;
 };
 
-/** URL of the first hero slide — preloaded from the home route head(). */
+/** URL of the first hero slide — the original, used as the <img> fallback. */
 export const FIRST_SLIDE_SRC: string = joggingWoman;
+
+/**
+ * Preload target for the AVIF candidate set. The route head() declares
+ * type="image/avif", so the href must be an AVIF too — pointing it at the
+ * original PNG made the hint inconsistent and risked a second download.
+ */
+export const FIRST_SLIDE_PRELOAD_HREF: string = joggingWoman1200Avif;
 
 /** Responsive candidate sets for the first slide, widest-format first. */
 export const FIRST_SLIDE_AVIF_SRCSET: string = joggingWomanAvifSrcSet;
