@@ -235,14 +235,17 @@ Deno.serve(async (req) => {
 
       if (result.providerTestId) {
         await supabase.from('provider_tests').update({
-          description: desc || `${niceName} from Medical Diagnosis.`,
+          description: desc,
+          description_scraped: desc,
+          description_source: desc ? 'scraped_verbatim' : null,
           category,
           image_url: p.images?.[0]?.src ?? null,
           original_price: wasPrice,
           home_kit_available: false,
           clinic_visit_available: true,
-          phlebotomy_included: true,
-          clinic_phlebotomy_cost: CLINIC_VISIT_FEE,
+          phlebotomy_included: false,
+          clinic_phlebotomy_cost: clinicFee,
+          total_expected_cost: price === null ? null : price + clinicFee,
           lab_ukas_accredited: true,
           url_verified: true,
           url_verified_at: new Date().toISOString(),
