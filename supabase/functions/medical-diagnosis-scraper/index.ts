@@ -20,7 +20,22 @@ const corsHeaders = {
 
 const PROVIDER_ID = 'medical-diagnosis';
 const WOO_BASE = 'https://www.medical-diagnosis.co.uk';
-const CLINIC_VISIT_FEE = 0; // phlebotomy typically included in Medical Diagnosis clinic price
+const DEFAULT_CLINIC_FEE = 21; // fallback only; per-test fee is parsed from the provider's own copy
+
+/** Provider's site-wide page furniture (address, nav, "Recent Posts") — never a test description. */
+const BOILERPLATE_PREFIX = 'Medical Diagnosis is a private clinical pathology laboratory';
+
+function isBoilerplate(text: string): boolean {
+  return text.startsWith(BOILERPLATE_PREFIX) || /Recent Posts|No products in the cart/i.test(text);
+}
+
+/** "Phlebotomy service fee: £21." → 21 */
+export function extractPhlebotomyFee(text: string): number | null {
+  const m = text.match(/phlebotomy[^.£]{0,40}£\s*(\d+(?:\.\d{1,2})?)/i);
+  if (!m) return null;
+  const value = Number(m[1]);
+  return Number.isFinite(value) ? value : null;
+}
 
 interface WooPrices { price: string; regular_price: string; sale_price: string; currency_minor_unit: number }
 interface WooCategory { name: string; slug: string }
