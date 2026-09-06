@@ -1234,6 +1234,24 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               {test.test_name}
             </div>
 
+            {/* Add-on purchase requirement (provider wording, verbatim) */}
+            {test.is_addon && test.purchase_notes && (
+              <p
+                className="line-clamp-2 mb-1"
+                style={{
+                  fontFamily: "'DM Sans',sans-serif",
+                  fontSize: 11,
+                  fontWeight: 600,
+                  color: "#b45309",
+                  lineHeight: 1.4,
+                }}
+              >
+                {test.purchase_notes}
+              </p>
+            )}
+
+
+
             {/* Category */}
             <div
               className="truncate mb-2"
