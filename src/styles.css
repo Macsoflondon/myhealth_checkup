@@ -1212,12 +1212,10 @@ html, body {
 }
 @media (min-width: 640px) { :root { --gutter: 1.5rem; } }   /* 24px */
 @media (min-width: 768px) {
-  /* tablet: 24px inset with the same hard navy frame as desktop */
-  :root { --page-inset: 1.5rem; --edge-fade: 0px; }
+  :root { --page-inset: 0; --edge-fade: 0px; }
 }
 @media (min-width: 1024px) {
-  /* desktop: 2.5cm of breathing room per side, framed by a hard navy line */
-  :root { --gutter: 2rem; --page-inset: 2.5cm; --edge-fade: 0px; }
+  :root { --gutter: 2rem; --page-inset: 0; --edge-fade: 0px; }
 }
 
 /* Prevents any bleed band from creating horizontal scroll */
