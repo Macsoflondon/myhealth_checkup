@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { CategoryTestItem } from "@/components/category/CategoryPageLayout";
 import {
   CATEGORY_TEST_COLUMNS,
-  mapProviderTestRow,
+  mapProviderTestRowVariants,
   type ProviderTestRow,
 } from "@/lib/categoryTestMapper";
 
@@ -86,8 +86,8 @@ export function useMappedCategoryTests(slug: string | null, badgeColor: string) 
         .order("price", { ascending: true });
       if (error) throw error;
 
-      return ((data ?? []) as unknown as ProviderTestRow[]).map((row) =>
-        mapProviderTestRow(row, badgeColor)
+      return ((data ?? []) as unknown as ProviderTestRow[]).flatMap((row) =>
+        mapProviderTestRowVariants(row, badgeColor)
       );
     },
     staleTime: 5 * 60 * 1000,

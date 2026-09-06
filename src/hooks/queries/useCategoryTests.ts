@@ -5,7 +5,7 @@ import { findSubcategory, testMatchesSubcategory } from "@/config/subcategoryMap
 import {
   BADGE_COLOR_BY_CATEGORY,
   CATEGORY_TEST_COLUMNS,
-  mapProviderTestRow,
+  mapProviderTestRowVariants,
   type ProviderTestRow,
 } from "@/lib/categoryTestMapper";
 
@@ -47,8 +47,8 @@ export function useCategoryTests(canonicalCategory: string, subcategory?: string
       if (!data) return [];
 
       const badgeColor = BADGE_COLOR_BY_CATEGORY[canonicalCategory] || "#3B82F6";
-      const mapped = (data as unknown as ProviderTestRow[]).map((row) =>
-        mapProviderTestRow(row, badgeColor)
+      const mapped = (data as unknown as ProviderTestRow[]).flatMap((row) =>
+        mapProviderTestRowVariants(row, badgeColor)
       );
 
       if (!sub) return mapped;
