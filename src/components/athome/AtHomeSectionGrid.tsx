@@ -16,7 +16,7 @@ export const AtHomeSectionGrid: React.FC<AtHomeSectionGridProps> = ({ counts }) 
   const [hovered, setHovered] = useState<string | null>(null);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {AT_HOME_SECTIONS.filter((section) => (counts[section.slug] ?? 0) > 0).map((section) => {
         const count = counts[section.slug] ?? 0;
         const isHov = hovered === section.slug;
@@ -26,7 +26,7 @@ export const AtHomeSectionGrid: React.FC<AtHomeSectionGridProps> = ({ counts }) 
             to={`/at-home-tests?subcategory=${section.slug}`}
             onMouseEnter={() => setHovered(section.slug)}
             onMouseLeave={() => setHovered(null)}
-            className="group relative block overflow-hidden rounded-[20px] bg-white px-7 pt-7 pb-6 shadow-[0_4px_18px_rgba(0,0,0,0.12)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(0,0,0,0.18)]"
+            className="group relative block overflow-hidden rounded-[18px] bg-white px-5 pt-5 pb-4 shadow-[0_3px_14px_rgba(0,0,0,0.10)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_14px_32px_rgba(0,0,0,0.16)]"
             style={{
               borderWidth: 1,
               borderStyle: "solid",
@@ -43,9 +43,9 @@ export const AtHomeSectionGrid: React.FC<AtHomeSectionGridProps> = ({ counts }) 
               />
             )}
 
-            <div className="flex items-start justify-between mb-5">
+            <div className="flex items-start justify-between mb-3">
               <span
-                className="flex h-12 w-12 items-center justify-center rounded-[14px] text-[22px] transition-transform duration-300 group-hover:scale-105"
+                className="flex h-10 w-10 items-center justify-center rounded-[12px] text-lg transition-transform duration-300 group-hover:scale-105"
                 style={{
                   color: section.accent,
                   backgroundColor: `${section.accent}10`,
@@ -62,13 +62,13 @@ export const AtHomeSectionGrid: React.FC<AtHomeSectionGridProps> = ({ counts }) 
               </span>
             </div>
 
-            <h3 className="mb-2.5 font-heading text-xl font-bold tracking-tight text-[#060b18]">
+            <h3 className="mb-1.5 font-heading text-lg font-bold tracking-tight text-[#060b18]">
               {section.label}
             </h3>
-            <p className="mb-6 text-sm leading-relaxed text-[#060b18]/75">{section.desc}</p>
+            <p className="mb-4 text-[13px] leading-snug text-[#060b18]/75">{section.desc}</p>
 
             <span
-              className="flex w-full items-center justify-center gap-2 rounded-xl py-3 text-[13px] font-bold tracking-[0.06em] transition-all duration-300"
+              className="flex w-full items-center justify-center gap-2 rounded-lg py-2.5 text-xs font-bold tracking-[0.06em] transition-all duration-300"
               style={{
                 color: section.accent,
                 background: `linear-gradient(135deg, ${section.accent}20, ${section.accent}10)`,
