@@ -291,7 +291,7 @@ const WellnessPage = () => {
           style={{
             background: "#ffffff",
 
-            padding: "32px 40px 72px",
+            padding: "64px 40px 72px",
             position: "relative",
             overflow: "hidden",
           }}
