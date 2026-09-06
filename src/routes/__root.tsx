@@ -9,6 +9,16 @@ import "@fontsource/montserrat/latin-800.css";
 import "@fontsource/dm-sans/latin-400.css";
 import "@fontsource/dm-sans/latin-500.css";
 import "@fontsource/dm-sans/latin-700.css";
+// Editorial + secondary faces, self-hosted so no render-blocking Google Fonts
+// stylesheet sits in front of first paint.
+import "@fontsource/eb-garamond/latin-400.css";
+import "@fontsource/eb-garamond/latin-500.css";
+import "@fontsource/eb-garamond/latin-600.css";
+import "@fontsource/eb-garamond/latin-400-italic.css";
+import "@fontsource/eb-garamond/latin-500-italic.css";
+import "@fontsource/lora/latin-400.css";
+import "@fontsource/lato/latin-400.css";
+import "@fontsource/lato/latin-700.css";
 
 // ported from main.tsx — i18next initialisation (module-scope, side-effect import)
 import i18nInstance from "../i18n/config";
