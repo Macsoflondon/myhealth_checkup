@@ -105,6 +105,8 @@ export function fromCategoryTestItem(t: CategoryTestItem): UniversalTestData {
     is_popular: !!t.popular,
     home_kit_available: /home|finger|kit/i.test(t.collection || ""),
     clinic_visit_available: /clinic|venous|in-person/i.test(t.collection || ""),
+    is_addon: !!t.isAddon,
+    purchase_notes: t.purchaseNotes ?? null,
     route_variant: t.routeVariant ?? null,
   };
 }

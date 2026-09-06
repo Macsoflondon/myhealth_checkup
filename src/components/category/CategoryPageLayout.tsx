@@ -40,6 +40,10 @@ export interface CategoryTestItem {
   /** Provider product-packaging image */
   imageUrl?: string;
   collectionOptions?: unknown;
+  /** True when the entry is a provider add-on rather than a standalone test. */
+  isAddon?: boolean;
+  /** Provider's verbatim purchase requirement for an add-on. */
+  purchaseNotes?: string | null;
   /** Collection-route listing this card represents. */
   routeVariant?: CollectionVariant | null;
 }
