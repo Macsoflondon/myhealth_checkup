@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useSearchParams } from "@/lib/router-compat";
 import { Activity, HeartPulse, ShieldCheck } from "lucide-react";
