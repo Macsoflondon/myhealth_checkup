@@ -1,6 +1,10 @@
 import { CategoryTestItem } from "@/components/category/CategoryPageLayout";
 import { getProviderRating } from "@/constants/providerRatings";
 import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
+import {
+  deriveCollectionVariants,
+  type CollectionVariant,
+} from "@/lib/collectionVariants";
 
 export const PROVIDER_NAMES: Record<string, string> = {
   "medichecks": "Medichecks",
@@ -31,7 +35,7 @@ export const BADGE_COLOR_BY_CATEGORY: Record<string, string> = {
 
 /** Columns required to build a CategoryTestItem from provider_tests. */
 export const CATEGORY_TEST_COLUMNS =
-  "id,provider_id,test_name,description,price,base_price,url,image_url,biomarker_count,biomarkers_list,turnaround_days_text,is_popular,popularity_rank,sample_type,home_kit_available,clinic_visit_available,category,source_section_label,canonical_category";
+  "id,provider_id,test_name,description,price,base_price,url,image_url,biomarker_count,biomarkers_list,turnaround_days_text,is_popular,popularity_rank,sample_type,home_kit_available,clinic_visit_available,clinic_phlebotomy_cost,home_phlebotomy_cost,category,source_section_label,canonical_category";
 
 export interface ProviderTestRow {
   id: string;
@@ -50,6 +54,8 @@ export interface ProviderTestRow {
   sample_type: string | null;
   home_kit_available: boolean | null;
   clinic_visit_available: boolean | null;
+  clinic_phlebotomy_cost: number | null;
+  home_phlebotomy_cost: number | null;
   category: string | null;
   source_section_label: string | null;
   canonical_category: string | null;
@@ -92,4 +98,28 @@ export function mapProviderTestRow(row: ProviderTestRow, badgeColor: string): Ca
     url: row.url || undefined,
     imageUrl: row.image_url || undefined,
   };
+}
+
+/**
+ * Expands a row into one card per collection route, so an at-home finger-prick
+ * kit and a clinic/nurse draw of the same test are listed (and priced) apart.
+ */
+export function mapProviderTestRowVariants(
+  row: ProviderTestRow,
+  badgeColor: string,
+): CategoryTestItem[] {
+  const base = mapProviderTestRow(row, badgeColor);
+  const variants = deriveCollectionVariants(row);
+  if (variants.length === 1 && variants[0].fee <= 0) return [base];
+
+  return variants.map((variant: CollectionVariant) => ({
+    ...base,
+    id: variant.variantId,
+    priceNum: variant.total,
+    price: `£${variant.total.toFixed(variant.total % 1 === 0 ? 0 : 2)}`,
+    collection:
+      variant.fee > 0
+        ? `${variant.label} (+£${variant.fee.toFixed(variant.fee % 1 === 0 ? 0 : 2)})`
+        : variant.label,
+  }));
 }

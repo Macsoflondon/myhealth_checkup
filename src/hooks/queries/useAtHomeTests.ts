@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { isJunkTestName } from "@/utils/is-junk-test-name";
+import { hasHomeKitRoute } from "@/lib/collectionVariants";
 
 export interface AtHomeTest {
   id: string;
@@ -44,7 +45,6 @@ export const useAtHomeTests = (category?: string, search?: string) => {
         .eq("is_active", true)
         .eq("home_kit_available", true)
         .eq("is_addon", false)
-        .ilike("sample_type", "%finger%")
         .not("price", "is", null)
         .gt("price", 0)
         .order("is_popular", { ascending: false })
@@ -63,7 +63,11 @@ export const useAtHomeTests = (category?: string, search?: string) => {
       const { data, error } = await query;
       if (error) throw error;
       const rows = (data || []) as unknown as AtHomeTest[];
-      return rows.filter((row) => !isJunkTestName(row.test_name));
+      // Only self-collected home kits belong on this page; a row whose only
+      // home option is a nurse/clinic venous draw is listed elsewhere.
+      return rows.filter(
+        (row) => !isJunkTestName(row.test_name) && hasHomeKitRoute(row),
+      );
     },
     staleTime: 5 * 60 * 1000,
   });
@@ -75,16 +79,20 @@ export const useAtHomeCategories = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("provider_tests")
-        .select("category")
+        .select("category, sample_type, home_kit_available")
         .eq("is_active", true)
         .eq("home_kit_available", true)
         .eq("is_addon", false)
-        .ilike("sample_type", "%finger%")
         .not("price", "is", null)
         .gt("price", 0);
       if (error) throw error;
       const cats = Array.from(
-        new Set((data || []).map((r) => r.category).filter(Boolean)),
+        new Set(
+          (data || [])
+            .filter((r) => hasHomeKitRoute(r as never))
+            .map((r) => r.category)
+            .filter(Boolean),
+        ),
       ).sort();
       return ["All", ...cats];
     },
