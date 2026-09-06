@@ -25,6 +25,7 @@ import { getProviderRating } from "@/constants/providerRatings";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import RelatedLinks from "@/components/seo/RelatedLinks";
 import { resolveCategorySlug } from "@/lib/internal-links";
+import { deriveCollectionVariants, CollectionVariant } from "@/lib/collectionVariants";
 
 export interface ProviderTestData {
   id: string;
@@ -43,6 +44,21 @@ export interface ProviderTestData {
   symptoms?: string[] | null;
   conditions?: string[] | null;
   who_should_test?: string | null;
+  sample_type?: string | null;
+  collection_method?: string | null;
+  collection_fee_type?: string | null;
+  collection_fee_amount?: number | null;
+  clinic_phlebotomy_cost?: number | null;
+  home_phlebotomy_cost?: number | null;
+  home_kit_available?: boolean | null;
+  clinic_visit_available?: boolean | null;
+  home_phlebotomy_option?: boolean | null;
+  turnaround_days_text?: string | null;
+  turnaround_raw?: string | null;
+  clinical_review_type?: string | null;
+  clinical_review_fee?: number | null;
+  gp_review_included?: boolean | null;
+  total_expected_cost?: number | null;
 }
 
 interface BiomarkerInfo {
@@ -359,6 +375,111 @@ const AddonWarning = ({ providerName }: { providerName: string }) => (
   </div>
 );
 
+function getTestTurnaround(test: ProviderTestData): string {
+  return test.turnaround_days_text || test.turnaround_raw || '';
+}
+
+function getTestSampleType(test: ProviderTestData): string {
+  return test.sample_type || test.collection_method || '';
+}
+
+function formatCurrency(value: number | null | undefined): string {
+  if (value == null || Number.isNaN(value)) return '—';
+  return `£${value.toFixed(2)}`;
+}
+
+function CollectionOptionsSection({ test }: { test: ProviderTestData }) {
+  const variants = deriveCollectionVariants({
+    id: test.id,
+    price: test.price,
+    base_price: test.price,
+    sample_type: test.sample_type,
+    collection_method: test.collection_method,
+    home_kit_available: test.home_kit_available,
+    clinic_visit_available: test.clinic_visit_available,
+    clinic_phlebotomy_cost: test.clinic_phlebotomy_cost,
+    home_phlebotomy_cost: test.home_phlebotomy_cost,
+  });
+
+  if (variants.length === 0) return null;
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Sample Collection Options</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {variants.map((variant, index) => (
+          <div key={variant.variantId}>
+            {index > 0 && <Separator className="my-4" />}
+            <div className="flex items-start space-x-4">
+              {variant.route === 'home_kit' ? (
+                <Home className="h-6 w-6 text-primary mt-1 shrink-0" />
+              ) : (
+                <Building2 className="h-6 w-6 text-primary mt-1 shrink-0" />
+              )}
+              <div className="flex-1">
+                <div className="flex items-center justify-between gap-4">
+                  <h3 className="font-semibold">{variant.label}</h3>
+                  <span className="font-bold text-primary">
+                    {formatCurrency(variant.total)}
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground mt-1">{variant.detail}</p>
+                {variant.fee > 0 && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    £{variant.basePrice.toFixed(2)} test + £{variant.fee.toFixed(2)} collection fee
+                  </p>
+                )}
+                {variant.secondary && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Or {variant.secondary.label.toLowerCase()} for {formatCurrency(variant.secondary.total)}
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </CardContent>
+    </Card>
+  );
+}
+
+function ClinicalReviewSection({ test }: { test: ProviderTestData }) {
+  const reviewType = test.clinical_review_type;
+  const fee = test.clinical_review_fee;
+  const included = reviewType === 'included' || test.gp_review_included;
+
+  if (!reviewType && !included && (fee == null || fee <= 0)) return null;
+
+  const label = included ? 'Clinical review included' : 'Clinical review available';
+  const description = included
+    ? 'A clinician reviews your results and provides commentary at no extra cost.'
+    : fee && fee > 0
+      ? `Clinical review is available for an additional ${formatCurrency(fee)}.`
+      : 'Check with the provider for clinical review options.';
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Stethoscope className="h-5 w-5 text-primary" />
+          Clinical Review
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex items-start gap-3">
+          <CheckCircle2 className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+          <div>
+            <p className="font-semibold">{label}</p>
+            <p className="text-sm text-muted-foreground">{description}</p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
 export default function ProviderTestDetailTemplate({
   test,
   providerConfig,
@@ -555,6 +676,9 @@ export default function ProviderTestDetailTemplate({
               {/* Conditions Section */}
               <ConditionsSection conditions={test.conditions} />
 
+              {/* Clinical Review */}
+              <ClinicalReviewSection test={test} />
+
               {/* Compare Across Providers */}
               {otherProviders.length > 0 && (
                 <TestProviderPriceTable
@@ -578,29 +702,7 @@ export default function ProviderTestDetailTemplate({
               )}
 
               {/* Sample Collection Options */}
-              <Card>
-                <CardHeader>
-                  <CardTitle>Sample Collection Options</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  {providerConfig.sampleOptions.map((option, index) => (
-                    <div key={index}>
-                      {index > 0 && <Separator className="my-4" />}
-                      <div className="flex items-start space-x-4">
-                        {option.icon === 'home' ? (
-                          <Home className="h-6 w-6 text-primary mt-1" />
-                        ) : (
-                          <Building2 className="h-6 w-6 text-primary mt-1" />
-                        )}
-                        <div>
-                          <h3 className="font-semibold mb-2">{option.title}</h3>
-                          <p className="text-sm text-muted-foreground">{option.description}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
+              <CollectionOptionsSection test={test} />
 
               {/* Why Choose Provider */}
               <Card>
@@ -656,7 +758,9 @@ export default function ProviderTestDetailTemplate({
                     <span className="text-sm text-muted-foreground">Turnaround Time</span>
                     <div className="flex items-center">
                       <Clock className="h-4 w-4 mr-2 text-primary" />
-                      <span className="font-semibold">{providerConfig.turnaround}</span>
+                      <span className="font-semibold">
+                        {getTestTurnaround(test) || providerConfig.turnaround}
+                      </span>
                     </div>
                   </div>
                   
@@ -677,7 +781,9 @@ export default function ProviderTestDetailTemplate({
                 <CardContent className="space-y-3 text-sm">
                   <div>
                     <p className="font-semibold mb-1">Sample Type</p>
-                    <p className="text-muted-foreground">{providerConfig.quickInfo.sampleType}</p>
+                    <p className="text-muted-foreground">
+                      {getTestSampleType(test) || providerConfig.quickInfo.sampleType}
+                    </p>
                   </div>
                   <Separator />
                   <div>
