@@ -297,47 +297,6 @@ const WellnessPage = () => {
           }}
         >
           <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
-            {/* Filter pills */}
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap" as const,
-                gap: 8,
-                justifyContent: "center",
-                marginBottom: 56,
-              }}
-            >
-              {tags.map((tag) => {
-                const active = filter === tag;
-                const isHoveredTag = hoveredTag === tag;
-                const color = tag === "ALL" ? "#00d4c8" : tagColors[tag];
-                return (
-                  <button
-                    key={tag}
-                    onClick={() => setFilter(tag)}
-                    onMouseEnter={() => setHoveredTag(tag)}
-                    onMouseLeave={() => setHoveredTag(null)}
-                    style={{
-                      padding: "7px 20px",
-                      borderRadius: 100,
-                      border: active || isHoveredTag ? `1.5px solid ${color}` : "1.5px solid rgba(8,17,41,0.2)",
-                      background: active || isHoveredTag ? `${color}18` : "transparent",
-                      color: active || isHoveredTag ? color : "#081129",
-
-                      fontSize: 12,
-                      fontWeight: 700,
-                      letterSpacing: "0.1em",
-                      cursor: "pointer",
-                      transition: "all 0.2s ease",
-                      outline: "none",
-                    }}
-                  >
-                    {tag}
-                  </button>
-                );
-              })}
-            </div>
-
             {/* Cards grid */}
             <div
               style={{
