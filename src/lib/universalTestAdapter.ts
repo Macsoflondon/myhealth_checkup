@@ -2,6 +2,7 @@ import type { UniversalTestData } from "@/components/cards/UniversalTestCard";
 import type { AtHomeTest } from "@/hooks/queries/useAtHomeTests";
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 import type { CategoryTestItem } from "@/components/category/CategoryPageLayout";
+import type { CollectionVariant } from "@/lib/collectionVariants";
 
 /** Adapter: AtHomeTest (provider_tests row) → UniversalTestData */
 export function fromAtHomeTest(t: AtHomeTest): UniversalTestData {
@@ -101,6 +102,7 @@ export function fromCategoryTestItem(t: CategoryTestItem): UniversalTestData {
     is_popular: !!t.popular,
     home_kit_available: /home|finger|kit/i.test(t.collection || ""),
     clinic_visit_available: /clinic|venous|in-person/i.test(t.collection || ""),
+    route_variant: t.routeVariant ?? null,
   };
 }
 
@@ -118,6 +120,7 @@ export interface LegacyUnifiedProps {
   url?: string;
   testDetails?: ProviderTestCardData;
   badge?: string;
+  routeVariant?: CollectionVariant | null;
 }
 
 export function fromLegacyUnified(p: LegacyUnifiedProps): UniversalTestData {
@@ -145,5 +148,6 @@ export function fromLegacyUnified(p: LegacyUnifiedProps): UniversalTestData {
     home_kit_available: /home|finger|kit/i.test(p.collection || ""),
     clinic_visit_available: /clinic|venous|in-person/i.test(p.collection || ""),
     collection_options: fromDetails?.collection_options,
+    route_variant: p.routeVariant ?? null,
   };
 }

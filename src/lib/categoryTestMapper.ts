@@ -115,6 +115,7 @@ export function mapProviderTestRowVariants(
   return variants.map((variant: CollectionVariant) => ({
     ...base,
     id: variant.variantId,
+    routeVariant: variant,
     priceNum: variant.total,
     price: `£${variant.total.toFixed(variant.total % 1 === 0 ? 0 : 2)}`,
     collection:

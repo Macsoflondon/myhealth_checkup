@@ -21,6 +21,8 @@ import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
 import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
 import { excerptTestDescription } from "@/lib/test-summary";
 import { displayTurnaround } from "@/lib/resolve-test-fields";
+import type { CollectionVariant } from "@/lib/collectionVariants";
+
 
 // ─── Design tokens (kept inline to mirror AtHomeTestsPage exactly) ───────────
 export const UTC_NAVY = "#081129";
@@ -62,7 +64,10 @@ export interface UniversalTestData {
   collection_options?: unknown;
   is_addon?: boolean;
   purchase_notes?: string | null;
+  /** Collection-route listing this card represents (kit vs professional draw). */
+  route_variant?: CollectionVariant | null;
 }
+
 
 /** Short verbatim excerpt of the provider description (or factual generated summary) for the card. */
 const summaryFor = (test: UniversalTestData, providerName?: string): string =>
@@ -124,8 +129,9 @@ const ROUTE_VARIANT_LABEL =
 
 /** Short, honest sample/collection descriptor for the compact card. */
 function collectionLabel(t: UniversalTestData): string {
+  // A route-split listing speaks only for its own route.
+  if (t.route_variant) return t.route_variant.label;
   const raw = (t.sample_type || "").trim();
-  // A route-split listing already carries its own honest label and fee.
   if (ROUTE_VARIANT_LABEL.test(raw)) return raw;
   const s = raw.toLowerCase();
   if (s.includes("finger")) return "Finger-prick";
@@ -141,8 +147,10 @@ function collectionLabel(t: UniversalTestData): string {
 
 /** Full collection detail for the detail modal — never guesses. */
 function collectionDetail(t: UniversalTestData): string {
+  if (t.route_variant) return t.route_variant.detail;
   if (t.collection_method && t.collection_method.trim())
     return t.collection_method.trim();
+
   const s = (t.sample_type || "").toLowerCase();
   const sample = s.includes("finger")
     ? "Finger-prick blood sample"
@@ -212,11 +220,17 @@ export const UniversalTestDetailModal: React.FC<{
   const inCompare = compareItems.some((c) => c.id === test.id);
   const handleCompareToggle = () => compareStore.toggle(toCompareData(test));
   const isAllergy = (test.category || "").toLowerCase().includes("allerg");
-  const displayPrice = test.total_expected_cost ?? test.price;
-  const collectionFee =
-    test.collection_fee_amount != null && test.collection_fee_amount > 0
+  const variant = test.route_variant ?? null;
+  const displayPrice = variant?.total ?? test.total_expected_cost ?? test.price;
+  const secondaryRoute = variant?.secondary ?? null;
+  const collectionFee = variant
+    ? variant.fee > 0
+      ? variant.fee
+      : null
+    : test.collection_fee_amount != null && test.collection_fee_amount > 0
       ? test.collection_fee_amount
       : null;
+
 
   // Close on Escape and lock background scroll while the modal is open.
   React.useEffect(() => {
@@ -332,7 +346,9 @@ export const UniversalTestDetailModal: React.FC<{
                   fontFamily: "'DM Sans',sans-serif",
                 }}
               >
-                Total expected cost
+                {variant?.route === "venous"
+                  ? "Total expected cost (in-clinic draw)"
+                  : "Total expected cost"}
               </div>
               {collectionFee != null && (
                 <div
@@ -346,7 +362,31 @@ export const UniversalTestDetailModal: React.FC<{
                   incl. Collection Fee: +£{collectionFee.toFixed(2)}
                 </div>
               )}
+              {secondaryRoute && (
+                <div style={{ marginTop: 8 }}>
+                  <div
+                    style={{
+                      color: UTC_PINK,
+                      fontFamily: "'Montserrat',sans-serif",
+                      fontWeight: 700,
+                      fontSize: 18,
+                    }}
+                  >
+                    £{secondaryRoute.total.toFixed(2)}
+                  </div>
+                  <div
+                    style={{
+                      color: "rgba(255,255,255,0.6)",
+                      fontSize: 11,
+                      fontFamily: "'DM Sans',sans-serif",
+                    }}
+                  >
+                    Total expected cost (nurse home visit)
+                  </div>
+                </div>
+              )}
             </div>
+
             {displayTurnaround(test.turnaround_days_text) && (
               <div className="flex items-center gap-1.5">
                 <Clock size={14} color={UTC_TURQUOISE} />
@@ -786,11 +826,17 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
   const compareItems = useCompareItems();
   const inCompare = compareItems.some((c) => c.id === test.id);
   const isAllergy = (test.category || "").toLowerCase().includes("allerg");
-  const displayPrice = test.total_expected_cost ?? test.price;
-  const collectionFee =
-    test.collection_fee_amount != null && test.collection_fee_amount > 0
+  const variant = test.route_variant ?? null;
+  const displayPrice = variant?.total ?? test.total_expected_cost ?? test.price;
+  const secondaryRoute = variant?.secondary ?? null;
+  const collectionFee = variant
+    ? variant.fee > 0
+      ? variant.fee
+      : null
+    : test.collection_fee_amount != null && test.collection_fee_amount > 0
       ? test.collection_fee_amount
       : null;
+
 
   useEffect(
     () => () => {
@@ -1308,9 +1354,28 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                   color: UTC_NAVY,
                 }}
               >
-                Total cost
+                {variant?.route === "venous" ? "In-clinic draw" : "Total cost"}
               </span>
             </div>
+
+            {secondaryRoute && (
+              <div
+                className="flex items-center justify-between"
+                style={{
+                  fontFamily: "'DM Sans',sans-serif",
+                  fontSize: 11,
+                  color: UTC_NAVY,
+                  opacity: 0.85,
+                  marginTop: 2,
+                }}
+              >
+                <span style={{ fontWeight: 700 }}>
+                  £{secondaryRoute.total.toFixed(2)}
+                </span>
+                <span className="truncate ml-2">Nurse home visit</span>
+              </div>
+            )}
+
 
             {/* Collection fee callout */}
             {collectionFee != null && (

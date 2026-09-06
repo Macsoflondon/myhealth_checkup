@@ -8,7 +8,12 @@
  * variants so each listing can show the honest total for its own route.
  */
 
-export type CollectionRoute = "home_kit" | "clinic" | "home_visit" | "standard";
+export type CollectionRoute =
+  | "home_kit"
+  | "clinic"
+  | "home_visit"
+  | "venous"
+  | "standard";
 
 export interface CollectionVariantSource {
   id: string;
@@ -20,6 +25,14 @@ export interface CollectionVariantSource {
   clinic_visit_available?: boolean | null;
   clinic_phlebotomy_cost?: number | null;
   home_phlebotomy_cost?: number | null;
+}
+
+/** A second priced route shown beneath the headline total on the same listing. */
+export interface CollectionVariantSecondary {
+  route: CollectionRoute;
+  label: string;
+  fee: number;
+  total: number;
 }
 
 export interface CollectionVariant {
@@ -36,12 +49,15 @@ export interface CollectionVariant {
   fee: number;
   /** basePrice + fee. */
   total: number;
+  /** Second route priced on the same card (nurse home visit alongside clinic). */
+  secondary?: CollectionVariantSecondary;
 }
 
 const ROUTE_LABELS: Record<CollectionRoute, string> = {
   home_kit: "At-home finger-prick kit",
   clinic: "Clinic blood draw",
   home_visit: "Nurse home visit",
+  venous: "Clinic blood draw or nurse home visit",
   standard: "Standard collection",
 };
 
@@ -49,8 +65,11 @@ const ROUTE_DETAILS: Record<CollectionRoute, string> = {
   home_kit: "Finger-prick sample you collect yourself at home",
   clinic: "Venous blood draw taken at a partner clinic",
   home_visit: "Venous blood draw taken by a nurse at your home",
+  venous:
+    "Venous blood draw taken at a partner clinic, or by a nurse at your home",
   standard: "Collection method as published by the provider",
 };
+
 
 const num = (v: number | null | undefined): number | null =>
   typeof v === "number" && Number.isFinite(v) ? v : null;
@@ -101,16 +120,28 @@ export function deriveCollectionVariants(
   }
 
   const clinicFee = num(source.clinic_phlebotomy_cost);
-  if (source.clinic_visit_available || (clinicFee != null && clinicFee > 0)) {
-    variants.push(makeVariant(source, "clinic", basePrice, clinicFee ?? 0));
-  }
+  const hasClinic =
+    !!source.clinic_visit_available || (clinicFee != null && clinicFee > 0);
 
   const homeVisitFee = num(source.home_phlebotomy_cost);
-  if (
+  const hasHomeVisit =
     homeVisitFee != null &&
     homeVisitFee > 0 &&
-    (source.clinic_visit_available || mentionsVenous(source.sample_type))
-  ) {
+    (!!source.clinic_visit_available || mentionsVenous(source.sample_type));
+
+  if (hasClinic && hasHomeVisit) {
+    // Both professional-draw routes live on one listing, clinic priced first.
+    const venous = makeVariant(source, "venous", basePrice, clinicFee ?? 0);
+    venous.secondary = {
+      route: "home_visit",
+      label: ROUTE_LABELS.home_visit,
+      fee: homeVisitFee,
+      total: Math.round((basePrice + homeVisitFee) * 100) / 100,
+    };
+    variants.push(venous);
+  } else if (hasClinic) {
+    variants.push(makeVariant(source, "clinic", basePrice, clinicFee ?? 0));
+  } else if (hasHomeVisit) {
     variants.push(makeVariant(source, "home_visit", basePrice, homeVisitFee));
   }
 
@@ -120,6 +151,7 @@ export function deriveCollectionVariants(
 
   return variants;
 }
+
 
 /** Pick a single route from a row, when a surface only shows one card per test. */
 export function pickVariant(
@@ -133,10 +165,11 @@ export function pickVariant(
 export function variantFeeNote(variant: CollectionVariant): string | null {
   if (variant.fee <= 0) return null;
   const label =
-    variant.route === "clinic"
+    variant.route === "clinic" || variant.route === "venous"
       ? "clinic blood draw"
       : variant.route === "home_visit"
         ? "nurse home visit"
         : "collection";
+
   return `£${variant.basePrice.toFixed(2)} test + £${variant.fee.toFixed(2)} ${label}`;
 }
