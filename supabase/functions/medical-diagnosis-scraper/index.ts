@@ -191,7 +191,10 @@ Deno.serve(async (req) => {
       matchedKeys.add(niceName.toLowerCase());
       const cleanShort = stripHtml(p.short_description || '');
       const cleanLong = stripHtml(p.description || '');
-      const desc = (cleanShort || cleanLong).slice(0, 1000);
+      const candidateDesc = (cleanShort || cleanLong).slice(0, 1000);
+      // Verbatim provider copy only — never the site-wide page furniture, never a synthesised sentence.
+      const desc = candidateDesc && !isBoilerplate(candidateDesc) ? candidateDesc : null;
+      const clinicFee = extractPhlebotomyFee(cleanShort + ' ' + cleanLong) ?? DEFAULT_CLINIC_FEE;
       const price = priceFromWoo(p.prices, 'price');
       const regular = priceFromWoo(p.prices, 'regular_price');
       const wasPrice = regular && regular !== price ? regular : null;
