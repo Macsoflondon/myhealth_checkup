@@ -305,7 +305,7 @@ const WellnessPage = () => {
                 gap: 20,
               }}
             >
-              {filtered.map((cat) => {
+              {wellnessCategoryCards.map((cat) => {
                 const isHov = hovered === cat.id;
                 const cardSubSlug = SUB_SLUG_BY_CARD[cat.id];
                 const cardHref = cardSubSlug
