@@ -325,9 +325,12 @@ export default function ProviderTestDetailModal({
           {test.is_addon && (
             <div className="rounded-lg border border-amber-400 bg-amber-50 p-3 text-sm text-amber-900">
               <strong className="block mb-0.5">Add-on only</strong>
-              This test can only be purchased when bundled with one of {providerName}'s full test panels.
+              {test.purchase_notes
+                ? test.purchase_notes
+                : `This test can only be purchased when bundled with one of ${providerName}'s full test panels.`}
             </div>
           )}
+
 
           {/* About */}
           <section>
