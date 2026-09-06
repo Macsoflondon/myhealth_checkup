@@ -20,7 +20,22 @@ const corsHeaders = {
 
 const PROVIDER_ID = 'medical-diagnosis';
 const WOO_BASE = 'https://www.medical-diagnosis.co.uk';
-const CLINIC_VISIT_FEE = 0; // phlebotomy typically included in Medical Diagnosis clinic price
+const DEFAULT_CLINIC_FEE = 21; // fallback only; per-test fee is parsed from the provider's own copy
+
+/** Provider's site-wide page furniture (address, nav, "Recent Posts") — never a test description. */
+const BOILERPLATE_PREFIX = 'Medical Diagnosis is a private clinical pathology laboratory';
+
+function isBoilerplate(text: string): boolean {
+  return text.startsWith(BOILERPLATE_PREFIX) || /Recent Posts|No products in the cart/i.test(text);
+}
+
+/** "Phlebotomy service fee: £21." → 21 */
+export function extractPhlebotomyFee(text: string): number | null {
+  const m = text.match(/phlebotomy[^.£]{0,40}£\s*(\d+(?:\.\d{1,2})?)/i);
+  if (!m) return null;
+  const value = Number(m[1]);
+  return Number.isFinite(value) ? value : null;
+}
 
 interface WooPrices { price: string; regular_price: string; sale_price: string; currency_minor_unit: number }
 interface WooCategory { name: string; slug: string }
@@ -176,7 +191,10 @@ Deno.serve(async (req) => {
       matchedKeys.add(niceName.toLowerCase());
       const cleanShort = stripHtml(p.short_description || '');
       const cleanLong = stripHtml(p.description || '');
-      const desc = (cleanShort || cleanLong).slice(0, 1000);
+      const candidateDesc = (cleanShort || cleanLong).slice(0, 1000);
+      // Verbatim provider copy only — never the site-wide page furniture, never a synthesised sentence.
+      const desc = candidateDesc && !isBoilerplate(candidateDesc) ? candidateDesc : null;
+      const clinicFee = extractPhlebotomyFee(cleanShort + ' ' + cleanLong) ?? DEFAULT_CLINIC_FEE;
       const price = priceFromWoo(p.prices, 'price');
       const regular = priceFromWoo(p.prices, 'regular_price');
       const wasPrice = regular && regular !== price ? regular : null;
@@ -195,10 +213,10 @@ Deno.serve(async (req) => {
         url: p.permalink,
         price,
         was_price: wasPrice,
-        collection_fee: CLINIC_VISIT_FEE,
+        collection_fee: clinicFee,
         home_visit_fee: null,
         gp_review_fee: 0,
-        total_expected_cost: price,
+        total_expected_cost: price === null ? null : price + clinicFee,
         biomarker_count: biomarkerCount,
         biomarkers_list: biomarkersList,
         turnaround_raw: turnaroundRaw,
@@ -206,7 +224,7 @@ Deno.serve(async (req) => {
         turnaround_days: parsedTurn.days,
         turnaround_unit: parsedTurn.unit,
         sample_type: 'Venous blood',
-        collection_method: 'Clinic phlebotomy',
+        collection_method: `In-clinic appointment — venous blood draw (phlebotomy fee £${clinicFee})`,
         in_stock: inStock,
         scrape_source_url: p.permalink,
       }, { scrapeRunId: runId, outOfStock: !inStock });
@@ -217,14 +235,17 @@ Deno.serve(async (req) => {
 
       if (result.providerTestId) {
         await supabase.from('provider_tests').update({
-          description: desc || `${niceName} from Medical Diagnosis.`,
+          description: desc,
+          description_scraped: desc,
+          description_source: desc ? 'scraped_verbatim' : null,
           category,
           image_url: p.images?.[0]?.src ?? null,
           original_price: wasPrice,
           home_kit_available: false,
           clinic_visit_available: true,
-          phlebotomy_included: true,
-          clinic_phlebotomy_cost: CLINIC_VISIT_FEE,
+          phlebotomy_included: false,
+          clinic_phlebotomy_cost: clinicFee,
+          total_expected_cost: price === null ? null : price + clinicFee,
           lab_ukas_accredited: true,
           url_verified: true,
           url_verified_at: new Date().toISOString(),
