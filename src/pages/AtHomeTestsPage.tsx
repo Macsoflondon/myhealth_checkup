@@ -88,6 +88,8 @@ const StatusShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
           <div className="max-w-[1280px] mx-auto">{children}</div>
         </section>
         <CategoryPageBottom
+          topic="At Home Test Kits"
+          guidesTitle="At Home Test Kit Guides"
           benefitsTitle="Why Choose At Home Testing?"
           benefits={[HERO_BENEFITS[0], HERO_BENEFITS[1], HERO_BENEFITS[2]]}
         />

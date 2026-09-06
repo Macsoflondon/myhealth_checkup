@@ -1,5 +1,7 @@
 import { LucideIcon } from "lucide-react";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
+import CategoryGuides from "@/components/sections/CategoryGuides";
+import { guidesHeadingFor } from "@/lib/blog/topic-relevance";
 
 interface BenefitItem {
   icon: LucideIcon;
@@ -13,12 +15,18 @@ interface CategoryPageBottomProps {
   benefits: [BenefitItem, BenefitItem, BenefitItem];
   /** Link for the quiz CTA, defaults to /find-test */
   quizLink?: string;
+  /** Topic used to match provider guide articles; defaults to benefitsTitle. */
+  topic?: string;
+  /** Heading for the guides block; defaults to a heading derived from topic. */
+  guidesTitle?: string;
 }
 
 const CategoryPageBottom = ({
   benefitsTitle,
   benefits,
   quizLink = "/find-test",
+  topic,
+  guidesTitle,
 }: CategoryPageBottomProps) => {
   return (
     <section className="bg-white px-4 sm:px-8 lg:px-10 py-10 sm:py-12">
@@ -61,6 +69,11 @@ const CategoryPageBottom = ({
             );
           })}
         </div>
+
+        <CategoryGuides
+          heading={guidesTitle ?? guidesHeadingFor(topic ?? benefitsTitle)}
+          topic={topic ?? benefitsTitle}
+        />
 
         <QuizCTABanner quizLink={quizLink} />
       </div>
