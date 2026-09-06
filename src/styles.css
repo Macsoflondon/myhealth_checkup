@@ -1227,37 +1227,14 @@ html { overflow-x: clip; }
    ambient background. No border, no radius, no shadow — the boundary is
    perceived purely through the fade. */
 @utility page-surface {
-  padding-inline: var(--page-inset);
+  padding-inline: 0;
 }
 
 @utility page-surface-inner {
   width: 100%;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    #000 var(--edge-fade),
-    #000 calc(100% - var(--edge-fade)),
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0,
-    #000 var(--edge-fade),
-    #000 calc(100% - var(--edge-fade)),
-    transparent 100%
-  );
-}
-/* No fade below the tablet breakpoint — mobile stays edge to edge. */
-@media (max-width: 767.98px) {
-  .page-surface-inner { -webkit-mask-image: none; mask-image: none; }
-}
-/* Tablet and desktop: crisp 1px navy frame line instead of a feathered fade. */
-@media (min-width: 768px) {
-  .page-surface-inner {
-    -webkit-mask-image: none;
-    mask-image: none;
-    border-inline: 1px solid var(--color-brand-navy);
-  }
+  border-inline: none;
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
 /* Align a viewport-fixed element (pinned toolbar, sticky bars) with the
