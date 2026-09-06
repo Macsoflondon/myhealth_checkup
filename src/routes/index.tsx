@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 // Index stays eager — it's the LCP route. Everything else is code-split.
 import Index from "@/pages/Index";
 import {
-  FIRST_SLIDE_SRC,
+  FIRST_SLIDE_PRELOAD_HREF,
   FIRST_SLIDE_AVIF_SRCSET,
 } from "@/components/sections/hero-slides";
 import { buildRouteHead } from "@/lib/seo/route-head";
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/")({
           rel: "preload",
           as: "image",
           type: "image/avif",
-          href: FIRST_SLIDE_SRC,
+          href: FIRST_SLIDE_PRELOAD_HREF,
           imageSrcSet: FIRST_SLIDE_AVIF_SRCSET,
           imageSizes: "100vw",
           fetchPriority: "high",

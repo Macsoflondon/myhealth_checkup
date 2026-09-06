@@ -9,6 +9,16 @@ import "@fontsource/montserrat/latin-800.css";
 import "@fontsource/dm-sans/latin-400.css";
 import "@fontsource/dm-sans/latin-500.css";
 import "@fontsource/dm-sans/latin-700.css";
+// Editorial + secondary faces, self-hosted so no render-blocking Google Fonts
+// stylesheet sits in front of first paint.
+import "@fontsource/eb-garamond/latin-400.css";
+import "@fontsource/eb-garamond/latin-500.css";
+import "@fontsource/eb-garamond/latin-600.css";
+import "@fontsource/eb-garamond/latin-400-italic.css";
+import "@fontsource/eb-garamond/latin-500-italic.css";
+import "@fontsource/lora/latin-400.css";
+import "@fontsource/lato/latin-400.css";
+import "@fontsource/lato/latin-700.css";
 
 // ported from main.tsx — i18next initialisation (module-scope, side-effect import)
 import i18nInstance from "../i18n/config";
@@ -117,17 +127,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "manifest", href: "/manifest.json" },
       { rel: "alternate", hrefLang: "en-gb", href: "https://myhealthcheckup.co.uk/" },
       { rel: "alternate", hrefLang: "x-default", href: "https://myhealthcheckup.co.uk/" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "dns-prefetch", href: "https://storage.googleapis.com" },
-      {
-        // One combined request instead of three separate stylesheet round-trips.
-        // JetBrains Mono was dropped — it only appeared as a --font-mono token
-        // fallback, so the system monospace stack now covers it.
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora&display=swap",
-      },
-
     ],
     scripts: [{ type: "application/ld+json", children: ORG_JSONLD }],
   }),

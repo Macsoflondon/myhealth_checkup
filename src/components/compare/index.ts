@@ -9,7 +9,9 @@ export { CancerBiomarkerGroup } from "./CancerBiomarkerGroup";
 export { CategoryLiveBadge } from "./CategoryLiveBadge";
 export { CompareFilters } from "./CompareFilters";
 export { ComparisonBar } from "./ComparisonBar";
-export { ComparisonChart } from "./ComparisonChart";
+// ComparisonChart is intentionally NOT re-exported here: it pulls in recharts,
+// and a barrel export drags that ~100 KB into anything importing this file.
+// Import it directly (and lazily) from "./ComparisonChart" where it is used.
 export { ComparisonPanel } from "./ComparisonPanel";
 export { DataSourceIndicator } from "./DataSourceIndicator";
 export { EnhancedComparisonTable } from "./EnhancedComparisonTable";

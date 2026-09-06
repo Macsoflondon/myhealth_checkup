@@ -159,7 +159,7 @@ export default function BiomarkerLibraryUI() {
   }, [filtered]);
   return (
     <div style={{ fontFamily: "'Lato','Helvetica Neue',sans-serif", background: COLORS.lightBg, minHeight: "100vh" }}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;600;700&display=swap');`}</style>
+      {/* Lato is self-hosted in the root route — a runtime @import here blocked rendering. */}
       <StandardPageHero
         title="Complete Biomarker Reference Library"
         strapline="What every blood test marker means, in plain English and grounded in clinical evidence."
