@@ -24,6 +24,58 @@ const PROVIDER_ID = 'goodbody-clinic';
 const CLINIC_VISIT_FEE = 0; // included in listed price
 const HOME_NURSE_FEE = null; // not offered as standard
 
+/** Goodbody publishes each product's biomarker list in a public Shopify JSON feed. */
+const BIOMARKER_FEED_URL =
+  'https://goodbodyclinic.com/cdn/shop/files/shopify-get-product-biomarkers2.json';
+
+interface BiomarkerFeedEntry {
+  id: number;
+  name: string;
+  biomarker_categories?: Array<{ category?: string; biomarkers?: string[] }>;
+}
+
+async function loadBiomarkerFeed(): Promise<Map<string, string[]>> {
+  const map = new Map<string, string[]>();
+  try {
+    const res = await fetch(BIOMARKER_FEED_URL);
+    if (!res.ok) return map;
+    const feed = (await res.json()) as BiomarkerFeedEntry[];
+    for (const entry of feed) {
+      const markers: string[] = [];
+      for (const cat of entry.biomarker_categories ?? []) {
+        for (const marker of cat.biomarkers ?? []) {
+          if (marker && !markers.includes(marker)) markers.push(marker);
+        }
+      }
+      map.set((entry.name ?? '').trim().toLowerCase(), markers);
+    }
+  } catch {
+    // Feed unavailable — leave existing biomarker data untouched.
+  }
+  return map;
+}
+
+interface CollectionRoutePrices {
+  kitPrice: number | null;
+  clinicPrice: number | null;
+  homeVisitPrice: number | null;
+}
+
+/** Reads Shopify variant titles/prices so each collection route is priced separately. */
+function extractCollectionRoutePrices(html: string): CollectionRoutePrices {
+  const out: CollectionRoutePrices = { kitPrice: null, clinicPrice: null, homeVisitPrice: null };
+  if (!html) return out;
+  for (const m of html.matchAll(/"title":"([^"]{3,120})"[^{}]{0,400}?"price":(\d+)/g)) {
+    const title = m[1].toLowerCase();
+    const value = parseInt(m[2], 10) / 100;
+    if (!Number.isFinite(value) || value <= 0) continue;
+    if (/finger[- ]?prick/.test(title)) out.kitPrice ??= value;
+    else if (/in[- ]?clinic|clinic appointment/.test(title)) out.clinicPrice ??= value;
+    else if (/home nurse|nurse visit/.test(title)) out.homeVisitPrice ??= value;
+  }
+  return out;
+}
+
 function determineCategory(title: string, description: string): string {
   const text = (title + ' ' + description).toLowerCase();
   if (/cancer|tumour|tumor|psa|ca125|cea|afp|bowel screen/.test(text)) return 'Cancer Screening';
