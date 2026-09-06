@@ -61,30 +61,10 @@ export default defineConfig({
         "shallowequal",
       ],
     },
-    build: {
-      // Split rarely-changing vendor code into stable, long-cacheable chunks so a
-      // product deploy doesn't invalidate the whole JS payload.
-      rollupOptions: {
-        output: {
-          manualChunks(id: string) {
-            if (!id.includes("node_modules")) return undefined;
-            if (id.includes("recharts") || id.includes("d3-"))
-              return "vendor-charts";
-            if (id.includes("leaflet")) return "vendor-maps";
-            if (id.includes("framer-motion")) return "vendor-motion";
-            if (id.includes("@supabase")) return "vendor-supabase";
-            if (id.includes("@radix-ui")) return "vendor-radix";
-            if (
-              id.includes("react-dom") ||
-              id.includes("/react/") ||
-              id.includes("@tanstack")
-            ) {
-              return "vendor-react";
-            }
-            return undefined;
-          },
-        },
-      },
-    },
+    // NOTE: no manual vendor chunking. The previous hand-rolled manualChunks
+    // grouping mis-assigned React itself into the "vendor-charts" chunk under
+    // Rolldown, so every route — including "/" — modulepreloaded a 106 KB
+    // chart bundle it never rendered. Rolldown's automatic splitting keeps
+    // shared code in the entry graph and route-only code in route chunks.
   },
 });
