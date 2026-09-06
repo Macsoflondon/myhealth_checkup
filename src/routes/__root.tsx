@@ -127,17 +127,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "manifest", href: "/manifest.json" },
       { rel: "alternate", hrefLang: "en-gb", href: "https://myhealthcheckup.co.uk/" },
       { rel: "alternate", hrefLang: "x-default", href: "https://myhealthcheckup.co.uk/" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "dns-prefetch", href: "https://storage.googleapis.com" },
-      {
-        // One combined request instead of three separate stylesheet round-trips.
-        // JetBrains Mono was dropped — it only appeared as a --font-mono token
-        // fallback, so the system monospace stack now covers it.
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Lora&display=swap",
-      },
-
     ],
     scripts: [{ type: "application/ld+json", children: ORG_JSONLD }],
   }),
