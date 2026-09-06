@@ -194,16 +194,36 @@ const AtHomeTestsPage: React.FC = () => {
     return (
       <StatusShell>
         <div className="mb-10 text-center">
-          <h2 className="font-heading text-2xl sm:text-3xl font-bold text-white mb-3">
+          <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#060b18] mb-3">
             Browse at home test kits by category
           </h2>
-          <p className="text-white/85 max-w-2xl mx-auto">
+          <p className="text-[#060b18]/75 max-w-2xl mx-auto">
             {totalKits} finger-prick kits from UKAS-accredited UK providers, grouped so you can go
             straight to the area you care about. Prices, biomarkers and typical turnaround times are
             shown on every listing.
           </p>
         </div>
         <AtHomeSectionGrid counts={counts} />
+        <section className="mt-16">
+          <div className="rounded-2xl bg-gradient-to-br from-[#e70d69] via-[#22c0d4] to-[#e70d69] p-[3px]">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-6 sm:gap-8 rounded-[13px] bg-[#0a1120] px-6 py-8 sm:px-9">
+              <div className="text-center sm:text-left">
+                <p className="mb-2 text-[13px] font-bold uppercase tracking-[0.12em] text-[#22c0d4]">
+                  Not Sure Where to Start?
+                </p>
+                <h2 className="m-0 text-[clamp(22px,3vw,28px)] font-bold text-white">
+                  Find the Right Health Test for You
+                </h2>
+              </div>
+              <Link
+                to="/find-test"
+                className="inline-block whitespace-nowrap rounded-[10px] bg-gradient-to-br from-[#e70d69] to-[#ff4d6d] px-9 py-4 text-base font-semibold text-white"
+              >
+                Start Your Quiz →
+              </Link>
+            </div>
+          </div>
+        </section>
       </StatusShell>
     );
   }
