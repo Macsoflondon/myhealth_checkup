@@ -24,6 +24,11 @@ const JourneySimplified = lazy(
 const PartnerShowcaseGrid = lazy(
   () => import("@/components/sections/PartnerShowcaseGrid"),
 );
+const FeaturedPublications = lazy(() =>
+  import("@/components/sections/FeaturedPublications").then((m) => ({
+    default: m.FeaturedPublications,
+  })),
+);
 
 const AccreditedProvidersBar = lazy(
   () => import("@/components/sections/AccreditedProvidersBar"),
