@@ -35,7 +35,7 @@ export const BADGE_COLOR_BY_CATEGORY: Record<string, string> = {
 
 /** Columns required to build a CategoryTestItem from provider_tests. */
 export const CATEGORY_TEST_COLUMNS =
-  "id,provider_id,test_name,description,price,base_price,url,image_url,biomarker_count,biomarkers_list,turnaround_days_text,is_popular,popularity_rank,sample_type,home_kit_available,clinic_visit_available,clinic_phlebotomy_cost,home_phlebotomy_cost,category,source_section_label,canonical_category";
+  "id,provider_id,test_name,description,price,base_price,url,image_url,biomarker_count,biomarkers_list,turnaround_days_text,is_popular,popularity_rank,sample_type,home_kit_available,clinic_visit_available,clinic_phlebotomy_cost,home_phlebotomy_cost,category,source_section_label,canonical_category,is_addon,purchase_notes";
 
 export interface ProviderTestRow {
   id: string;
@@ -59,6 +59,8 @@ export interface ProviderTestRow {
   category: string | null;
   source_section_label: string | null;
   canonical_category: string | null;
+  is_addon?: boolean | null;
+  purchase_notes?: string | null;
 }
 
 /** Maps a raw provider_tests row into the shared category card shape. */
@@ -97,6 +99,8 @@ export function mapProviderTestRow(row: ProviderTestRow, badgeColor: string): Ca
     collection,
     url: row.url || undefined,
     imageUrl: row.image_url || undefined,
+    isAddon: !!row.is_addon,
+    purchaseNotes: row.purchase_notes ?? null,
   };
 }
 

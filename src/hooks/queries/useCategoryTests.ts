@@ -39,6 +39,7 @@ export function useCategoryTests(canonicalCategory: string, subcategory?: string
       }
 
       const { data, error } = await query
+        .order("is_addon", { ascending: true, nullsFirst: true })
         .order("is_popular", { ascending: false })
         .order("popularity_rank", { ascending: true, nullsFirst: false })
         .order("price", { ascending: true });

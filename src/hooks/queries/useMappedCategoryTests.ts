@@ -81,6 +81,7 @@ export function useMappedCategoryTests(slug: string | null, badgeColor: string) 
         .eq("is_active", true)
         .not("image_url", "is", null)
         .not("url", "is", null)
+        .order("is_addon", { ascending: true, nullsFirst: true })
         .order("is_popular", { ascending: false })
         .order("popularity_rank", { ascending: true, nullsFirst: false })
         .order("price", { ascending: true });

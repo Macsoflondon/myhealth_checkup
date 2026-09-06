@@ -25,6 +25,7 @@ export function fromAtHomeTest(t: AtHomeTest): UniversalTestData {
     home_kit_available: t.home_kit_available,
     clinic_visit_available: t.clinic_visit_available,
     collection_options: t.collection_options,
+    is_addon: t.is_addon ?? false,
   };
 }
 
@@ -50,6 +51,8 @@ export function fromProviderTest(t: ProviderTestCardData): UniversalTestData {
     home_kit_available: t.home_kit_available ?? undefined,
     clinic_visit_available: t.clinic_visit_available ?? undefined,
     collection_options: t.collection_options,
+    is_addon: !!t.is_addon,
+    purchase_notes: t.purchase_notes ?? null,
   };
 }
 
@@ -102,6 +105,8 @@ export function fromCategoryTestItem(t: CategoryTestItem): UniversalTestData {
     is_popular: !!t.popular,
     home_kit_available: /home|finger|kit/i.test(t.collection || ""),
     clinic_visit_available: /clinic|venous|in-person/i.test(t.collection || ""),
+    is_addon: !!t.isAddon,
+    purchase_notes: t.purchaseNotes ?? null,
     route_variant: t.routeVariant ?? null,
   };
 }
@@ -148,6 +153,8 @@ export function fromLegacyUnified(p: LegacyUnifiedProps): UniversalTestData {
     home_kit_available: /home|finger|kit/i.test(p.collection || ""),
     clinic_visit_available: /clinic|venous|in-person/i.test(p.collection || ""),
     collection_options: fromDetails?.collection_options,
+    is_addon: fromDetails?.is_addon ?? false,
+    purchase_notes: fromDetails?.purchase_notes ?? null,
     route_variant: p.routeVariant ?? null,
   };
 }
