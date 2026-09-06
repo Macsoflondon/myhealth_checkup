@@ -194,12 +194,8 @@ const AtHomeTestsPage: React.FC = () => {
     return (
       <StatusShell>
         <div className="mb-10 text-center">
-          <h2 className="font-heading text-2xl sm:text-3xl font-bold text-[#060b18] mb-3">
-            Browse at home test kits by category
-          </h2>
           <p className="text-[#060b18]/75 max-w-2xl mx-auto">
-            {totalKits} finger-prick kits from UKAS-accredited UK providers, grouped so you can go
-            straight to the area you care about.
+            Finger-prick kits grouped so you can go straight to the area you care about.
           </p>
         </div>
         <AtHomeSectionGrid counts={counts} />
