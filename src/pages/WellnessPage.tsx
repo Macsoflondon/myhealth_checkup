@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useSearchParams } from "@/lib/router-compat";
 import { Activity, HeartPulse, ShieldCheck } from "lucide-react";
@@ -197,20 +197,6 @@ const WellnessPage = () => {
   const sub = findSubcategory("wellness", subSlug);
 
   const [hovered, setHovered] = useState<string | null>(null);
-  const [filter, setFilter] = useState("ALL");
-  const [hoveredTag, setHoveredTag] = useState<string | null>(null);
-
-  const tags = useMemo(
-    () => ["ALL", ...Array.from(new Set(wellnessCategoryCards.map((c) => c.tag)))],
-    []
-  );
-  const filtered = useMemo(
-    () =>
-      filter === "ALL"
-        ? wellnessCategoryCards
-        : wellnessCategoryCards.filter((c) => c.tag === filter),
-    [filter]
-  );
 
   const { data: liveCounts } = useWellnessCategoryCounts(COUNT_SPECS);
 
@@ -311,47 +297,6 @@ const WellnessPage = () => {
           }}
         >
           <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
-            {/* Filter pills */}
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap" as const,
-                gap: 8,
-                justifyContent: "center",
-                marginBottom: 56,
-              }}
-            >
-              {tags.map((tag) => {
-                const active = filter === tag;
-                const isHoveredTag = hoveredTag === tag;
-                const color = tag === "ALL" ? "#00d4c8" : tagColors[tag];
-                return (
-                  <button
-                    key={tag}
-                    onClick={() => setFilter(tag)}
-                    onMouseEnter={() => setHoveredTag(tag)}
-                    onMouseLeave={() => setHoveredTag(null)}
-                    style={{
-                      padding: "7px 20px",
-                      borderRadius: 100,
-                      border: active || isHoveredTag ? `1.5px solid ${color}` : "1.5px solid rgba(8,17,41,0.2)",
-                      background: active || isHoveredTag ? `${color}18` : "transparent",
-                      color: active || isHoveredTag ? color : "#081129",
-
-                      fontSize: 12,
-                      fontWeight: 700,
-                      letterSpacing: "0.1em",
-                      cursor: "pointer",
-                      transition: "all 0.2s ease",
-                      outline: "none",
-                    }}
-                  >
-                    {tag}
-                  </button>
-                );
-              })}
-            </div>
-
             {/* Cards grid */}
             <div
               style={{
@@ -360,7 +305,7 @@ const WellnessPage = () => {
                 gap: 20,
               }}
             >
-              {filtered.map((cat) => {
+              {wellnessCategoryCards.map((cat) => {
                 const isHov = hovered === cat.id;
                 const cardSubSlug = SUB_SLUG_BY_CARD[cat.id];
                 const cardHref = cardSubSlug
