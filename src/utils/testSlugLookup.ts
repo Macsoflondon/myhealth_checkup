@@ -18,6 +18,21 @@ export interface TestData {
   symptoms?: string[] | null;
   conditions?: string[] | null;
   who_should_test?: string | null;
+  sample_type?: string | null;
+  collection_method?: string | null;
+  collection_fee_type?: string | null;
+  collection_fee_amount?: number | null;
+  clinic_phlebotomy_cost?: number | null;
+  home_phlebotomy_cost?: number | null;
+  home_kit_available?: boolean | null;
+  clinic_visit_available?: boolean | null;
+  home_phlebotomy_option?: boolean | null;
+  turnaround_days_text?: string | null;
+  turnaround_raw?: string | null;
+  clinical_review_type?: string | null;
+  clinical_review_fee?: number | null;
+  gp_review_included?: boolean | null;
+  total_expected_cost?: number | null;
 }
 
 /**
@@ -44,7 +59,12 @@ function generateSlugVariations(slug: string): string[] {
 const SELECT_FIELDS = `
   id, test_name, category, description, url, price, provider_test_id, 
   biomarkers_list, biomarker_count, image_url, is_addon, 
-  original_price, discount_percentage, symptoms, conditions, who_should_test
+  original_price, discount_percentage, symptoms, conditions, who_should_test,
+  sample_type, collection_method, collection_fee_type, collection_fee_amount,
+  clinic_phlebotomy_cost, home_phlebotomy_cost, home_kit_available,
+  clinic_visit_available, home_phlebotomy_option, turnaround_days_text,
+  turnaround_raw, clinical_review_type, clinical_review_fee, gp_review_included,
+  total_expected_cost
 `;
 
 /**
