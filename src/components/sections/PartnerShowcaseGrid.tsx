@@ -86,11 +86,6 @@ const PartnerShowcaseGrid = () => {
       </SafeBlock>
 
 
-      <SafeBlock name="Featured Publications" fallback={<BlockSkeleton height="min-h-[280px]" />}>
-        <FeaturedPublications />
-      </SafeBlock>
-
-
       <SafeBlock name="Call To Action" fallback={<CtaSkeleton />}>
         <CallToAction />
       </SafeBlock>
