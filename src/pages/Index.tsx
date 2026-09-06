@@ -128,48 +128,8 @@ const Index = () => {
     },
   };
 
-  const organisationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "@id": "https://myhealthcheckup.co.uk/#organisation",
-    name: "myhealth checkup",
-    legalName: "MYHEALTHCHECKUP LTD",
-    url: "https://myhealthcheckup.co.uk",
-    logo: "https://myhealthcheckup.co.uk/og-image.png",
-    sameAs: [
-      "https://www.facebook.com/myhealthcheckupuk",
-      "https://www.twitter.com/myhealthcheckup",
-      "https://www.instagram.com/myhealthcheckup_uk",
-      "https://www.linkedin.com/company/myhealthcheckup",
-    ],
-    contactPoint: {
-      "@type": "ContactPoint",
-      contactType: "customer support",
-      email: "support@myhealthcheckup.co.uk",
-      areaServed: "GB",
-      availableLanguage: ["en-GB"],
-    },
-  };
-
-  const websiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "@id": "https://myhealthcheckup.co.uk/#website",
-    url: "https://myhealthcheckup.co.uk",
-    name: "myhealth checkup",
-    description: "Compare private health tests across accredited UK providers.",
-    publisher: { "@id": "https://myhealthcheckup.co.uk/#organisation" },
-    inLanguage: "en-GB",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate:
-          "https://myhealthcheckup.co.uk/compare?search={search_term_string}",
-      },
-      "query-input": "required name=search_term_string",
-    },
-  };
+  // Organization + WebSite JSON-LD live once, site-wide, in src/routes/__root.tsx.
+  // Repeating them here duplicated ~2 KB of markup in every homepage response.
 
   return (
     <ErrorBoundary>
@@ -213,12 +173,6 @@ const Index = () => {
 
           <script type="application/ld+json">
             {JSON.stringify(structuredData)}
-          </script>
-          <script type="application/ld+json">
-            {JSON.stringify(organisationSchema)}
-          </script>
-          <script type="application/ld+json">
-            {JSON.stringify(websiteSchema)}
           </script>
         </Helmet>
 
