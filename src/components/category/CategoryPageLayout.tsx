@@ -310,6 +310,7 @@ export function CategoryPageLayout({
 
           <CategoryPageBottom
             benefitsTitle={benefitsTitle}
+            topic={headline}
             benefits={benefits}
           />
         </main>
