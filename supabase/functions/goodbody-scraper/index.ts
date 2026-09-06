@@ -230,6 +230,8 @@ Deno.serve(async (req) => {
     counters.tests_seen = productUrls.length;
     console.log(`[goodbody] ${productUrls.length} URLs to scrape`);
 
+    const biomarkerFeed = await loadBiomarkerFeed();
+
     await runInChunks(productUrls, 6, async (url) => {
       const slug = url.split('/products/').pop() || '';
       const result = await firecrawlScrape(url, firecrawlApiKey, {
