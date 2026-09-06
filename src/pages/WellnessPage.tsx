@@ -197,20 +197,6 @@ const WellnessPage = () => {
   const sub = findSubcategory("wellness", subSlug);
 
   const [hovered, setHovered] = useState<string | null>(null);
-  const [filter, setFilter] = useState("ALL");
-  const [hoveredTag, setHoveredTag] = useState<string | null>(null);
-
-  const tags = useMemo(
-    () => ["ALL", ...Array.from(new Set(wellnessCategoryCards.map((c) => c.tag)))],
-    []
-  );
-  const filtered = useMemo(
-    () =>
-      filter === "ALL"
-        ? wellnessCategoryCards
-        : wellnessCategoryCards.filter((c) => c.tag === filter),
-    [filter]
-  );
 
   const { data: liveCounts } = useWellnessCategoryCounts(COUNT_SPECS);
 
