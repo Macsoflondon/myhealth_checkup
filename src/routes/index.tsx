@@ -27,7 +27,7 @@ export const Route = createFileRoute("/")({
           rel: "preload",
           as: "image",
           type: "image/avif",
-          href: FIRST_SLIDE_SRC,
+          href: FIRST_SLIDE_PRELOAD_HREF,
           imageSrcSet: FIRST_SLIDE_AVIF_SRCSET,
           imageSizes: "100vw",
           fetchPriority: "high",
