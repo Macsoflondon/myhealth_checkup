@@ -13,6 +13,8 @@ import { Search } from "lucide-react";
 
 const isFromPriceLabel = (value: string) => /^from\s+/i.test(value.trim());
 
+import type { CollectionVariant } from "@/lib/collectionVariants";
+
 /* ───────── Types ───────── */
 export interface CategoryTestItem {
   id: string | number;
@@ -38,6 +40,8 @@ export interface CategoryTestItem {
   /** Provider product-packaging image */
   imageUrl?: string;
   collectionOptions?: unknown;
+  /** Collection-route listing this card represents. */
+  routeVariant?: CollectionVariant | null;
 }
 
 interface BenefitItem {
@@ -257,6 +261,7 @@ export function CategoryPageLayout({
                     biomarkers={test.biomarkerCount}
                     results={test.turnaround}
                     collection={test.collection || "Home Kit"}
+                    routeVariant={test.routeVariant}
                     rating={test.rating}
                     reviews={test.reviews}
                     price={test.priceNum}

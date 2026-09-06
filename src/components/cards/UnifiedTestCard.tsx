@@ -1,6 +1,7 @@
 import { UniversalTestCard } from "@/components/cards/UniversalTestCard";
 import { fromLegacyUnified, type LegacyUnifiedProps } from "@/lib/universalTestAdapter";
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
+import type { CollectionVariant } from "@/lib/collectionVariants";
 
 /* ───────── Backwards-compatible props ───────── */
 export interface UnifiedTestCardProps {
@@ -27,6 +28,8 @@ export interface UnifiedTestCardProps {
   testDetails?: ProviderTestCardData;
   /** At-rest face: kit photo (default) or branded provider-logo tile. */
   defaultFace?: "image" | "brand";
+  /** Collection-route listing this card represents. */
+  routeVariant?: CollectionVariant | null;
 }
 
 /**

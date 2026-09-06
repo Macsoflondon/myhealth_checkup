@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { deriveCollectionVariants, variantFeeNote } from "./collectionVariants";
 
 describe("deriveCollectionVariants", () => {
-  it("splits a finger-prick kit from clinic and nurse routes", () => {
+  it("splits a finger-prick kit from a combined professional-draw listing", () => {
     const variants = deriveCollectionVariants({
       id: "psa",
       price: 69,
@@ -15,11 +15,17 @@ describe("deriveCollectionVariants", () => {
 
     expect(variants.map((v) => [v.route, v.total])).toEqual([
       ["home_kit", 69],
-      ["clinic", 109],
-      ["home_visit", 129],
+      ["venous", 109],
     ]);
     expect(variants[0].variantId).toBe("psa::home_kit");
+    expect(variants[1].secondary).toEqual({
+      route: "home_visit",
+      label: "Nurse home visit",
+      fee: 60,
+      total: 129,
+    });
   });
+
 
   it("keeps venous-only tests as a single clinic listing", () => {
     const variants = deriveCollectionVariants({

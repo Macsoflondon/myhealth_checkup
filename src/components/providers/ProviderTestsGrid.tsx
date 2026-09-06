@@ -9,6 +9,7 @@ import { hasStartingPrice } from "@/hooks/usePopularTestsFromDatabase";
 import { toUnifiedCardProps } from "@/lib/unifiedCardAdapter";
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 import { isJunkTestName } from "@/utils/is-junk-test-name";
+import { deriveCollectionVariants } from "@/lib/collectionVariants";
 
 const PROVIDER_ID_DB_MAP: Record<string, string> = {
   "randox-health": "randox",
@@ -42,7 +43,7 @@ export const ProviderTestsGrid = ({
       const { data, error } = await supabase
         .from("provider_tests")
         .select(
-          "id, test_name, image_url, price, base_price, category, sample_type, collection_method, measurement_type, who_should_test, home_kit_available, clinic_visit_available, url, biomarker_count, biomarkers_list, description, turnaround_days_text, collection_options, popularity_rank, is_popular, is_addon, purchase_notes, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189",
+          "id, test_name, image_url, price, base_price, clinic_phlebotomy_cost, home_phlebotomy_cost, category, sample_type, collection_method, measurement_type, who_should_test, home_kit_available, clinic_visit_available, url, biomarker_count, biomarkers_list, description, turnaround_days_text, collection_options, popularity_rank, is_popular, is_addon, purchase_notes, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189",
         )
         .eq("provider_id", dbId)
         .eq("is_active", true)
@@ -81,7 +82,7 @@ export const ProviderTestsGrid = ({
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
-        {data.map((t: any) => {
+        {data.flatMap((t: any) => {
           const card: ProviderTestCardData = {
             id: t.id,
             provider_id: dbId,
@@ -110,10 +111,25 @@ export const ProviderTestsGrid = ({
             lab_iso15189: t.lab_iso15189 ?? null,
             purchase_notes: t.purchase_notes ?? null,
           };
-          return (
+          // One listing per collection route, so kit and professional-draw
+          // prices are never mixed on the same card.
+          const variants = deriveCollectionVariants({
+            id: String(t.id),
+            price: t.price ?? null,
+            base_price: t.base_price ?? null,
+            sample_type: t.sample_type ?? null,
+            collection_method: t.collection_method ?? null,
+            home_kit_available: t.home_kit_available ?? null,
+            clinic_visit_available: t.clinic_visit_available ?? null,
+            clinic_phlebotomy_cost: t.clinic_phlebotomy_cost ?? null,
+            home_phlebotomy_cost: t.home_phlebotomy_cost ?? null,
+          });
+          const single = variants.length === 1 && variants[0].fee <= 0;
+          return variants.map((variant) => (
             <UnifiedTestCard
-              key={t.id}
+              key={variant.variantId}
               defaultFace="brand"
+              routeVariant={single ? null : variant}
               {...toUnifiedCardProps(card, {
                 provider: providerDisplayName,
                 rating: rating?.rating,
@@ -121,7 +137,7 @@ export const ProviderTestsGrid = ({
                 ctaLabel: t.url ? "View test" : "Compare",
               })}
             />
-          );
+          ));
         })}
       </div>
     </section>
