@@ -24,6 +24,58 @@ const PROVIDER_ID = 'goodbody-clinic';
 const CLINIC_VISIT_FEE = 0; // included in listed price
 const HOME_NURSE_FEE = null; // not offered as standard
 
+/** Goodbody publishes each product's biomarker list in a public Shopify JSON feed. */
+const BIOMARKER_FEED_URL =
+  'https://goodbodyclinic.com/cdn/shop/files/shopify-get-product-biomarkers2.json';
+
+interface BiomarkerFeedEntry {
+  id: number;
+  name: string;
+  biomarker_categories?: Array<{ category?: string; biomarkers?: string[] }>;
+}
+
+async function loadBiomarkerFeed(): Promise<Map<string, string[]>> {
+  const map = new Map<string, string[]>();
+  try {
+    const res = await fetch(BIOMARKER_FEED_URL);
+    if (!res.ok) return map;
+    const feed = (await res.json()) as BiomarkerFeedEntry[];
+    for (const entry of feed) {
+      const markers: string[] = [];
+      for (const cat of entry.biomarker_categories ?? []) {
+        for (const marker of cat.biomarkers ?? []) {
+          if (marker && !markers.includes(marker)) markers.push(marker);
+        }
+      }
+      map.set((entry.name ?? '').trim().toLowerCase(), markers);
+    }
+  } catch {
+    // Feed unavailable — leave existing biomarker data untouched.
+  }
+  return map;
+}
+
+interface CollectionRoutePrices {
+  kitPrice: number | null;
+  clinicPrice: number | null;
+  homeVisitPrice: number | null;
+}
+
+/** Reads Shopify variant titles/prices so each collection route is priced separately. */
+function extractCollectionRoutePrices(html: string): CollectionRoutePrices {
+  const out: CollectionRoutePrices = { kitPrice: null, clinicPrice: null, homeVisitPrice: null };
+  if (!html) return out;
+  for (const m of html.matchAll(/"title":"([^"]{3,120})"[^{}]{0,400}?"price":(\d+)/g)) {
+    const title = m[1].toLowerCase();
+    const value = parseInt(m[2], 10) / 100;
+    if (!Number.isFinite(value) || value <= 0) continue;
+    if (/finger[- ]?prick/.test(title)) out.kitPrice ??= value;
+    else if (/in[- ]?clinic|clinic appointment/.test(title)) out.clinicPrice ??= value;
+    else if (/home nurse|nurse visit/.test(title)) out.homeVisitPrice ??= value;
+  }
+  return out;
+}
+
 function determineCategory(title: string, description: string): string {
   const text = (title + ' ' + description).toLowerCase();
   if (/cancer|tumour|tumor|psa|ca125|cea|afp|bowel screen/.test(text)) return 'Cancer Screening';
@@ -178,6 +230,8 @@ Deno.serve(async (req) => {
     counters.tests_seen = productUrls.length;
     console.log(`[goodbody] ${productUrls.length} URLs to scrape`);
 
+    const biomarkerFeed = await loadBiomarkerFeed();
+
     await runInChunks(productUrls, 6, async (url) => {
       const slug = url.split('/products/').pop() || '';
       const result = await firecrawlScrape(url, firecrawlApiKey, {
@@ -206,6 +260,18 @@ Deno.serve(async (req) => {
       const category = determineCategory(title, description);
       const turnaroundRaw = extractTurnaround(markdown);
       const parsedTurn = parseTurnaround(turnaroundRaw);
+      const routePrices = extractCollectionRoutePrices(html);
+      const basePrice = routePrices.kitPrice ?? price;
+      const clinicFee =
+        routePrices.clinicPrice != null && basePrice != null
+          ? Math.max(0, +(routePrices.clinicPrice - basePrice).toFixed(2))
+          : CLINIC_VISIT_FEE;
+      const homeVisitFee =
+        routePrices.homeVisitPrice != null && basePrice != null
+          ? Math.max(0, +(routePrices.homeVisitPrice - basePrice).toFixed(2))
+          : HOME_NURSE_FEE;
+      const hasKit = routePrices.kitPrice != null;
+      const markers = biomarkerFeed.get(title.trim().toLowerCase());
       const imageUrl = extractImageFromHtml(html, markdown)
         || (metadata.ogImage ? stripShopifySizeSuffix(metadata.ogImage) : null);
 
@@ -214,20 +280,22 @@ Deno.serve(async (req) => {
         provider_test_id: slug,
         test_name: title,
         url,
-        price,
-        collection_fee: CLINIC_VISIT_FEE,
-        home_visit_fee: HOME_NURSE_FEE,
+        price: basePrice ?? price,
+        collection_fee: clinicFee,
+        home_visit_fee: homeVisitFee,
         gp_review_fee: 0,
-        total_expected_cost: price,
-        // biomarkers curated manually — do NOT overwrite
-        biomarker_count: undefined,
-        biomarkers_list: undefined,
+        total_expected_cost: basePrice ?? price,
+        // Only overwrite when Goodbody's own feed publishes markers for this test.
+        biomarker_count: markers && markers.length > 0 ? markers.length : undefined,
+        biomarkers_list: markers && markers.length > 0 ? markers : undefined,
         turnaround_raw: turnaroundRaw,
         turnaround_hours: parsedTurn.hours,
         turnaround_days: parsedTurn.days,
         turnaround_unit: parsedTurn.unit,
-        sample_type: 'Venous blood',
-        collection_method: 'Clinic phlebotomy; home visit on request',
+        sample_type: hasKit ? 'Finger-prick or venous blood' : 'Venous blood',
+        collection_method: hasKit
+          ? 'Home finger-prick kit; clinic phlebotomy; nurse home visit'
+          : 'Clinic phlebotomy; home visit on request',
         in_stock: inStock,
         scrape_source_url: url,
       }, { scrapeRunId: runId, outOfStock: !inStock });
@@ -241,12 +309,18 @@ Deno.serve(async (req) => {
           description: metadata.description || description || `${title} from Goodbody Clinic.`,
           category,
           clinic_visit_available: true,
-          home_kit_available: true,
+          home_kit_available: hasKit,
+          clinic_phlebotomy_cost: clinicFee,
+          home_phlebotomy_cost: homeVisitFee,
           phlebotomy_included: true,
           url_verified: true,
           url_verified_at: new Date().toISOString(),
           scraped_at: new Date().toISOString(),
         };
+        if (markers) {
+          extras.biomarkers_not_stated = markers.length === 0;
+          if (markers.length > 0) extras.last_validated_at = new Date().toISOString();
+        }
         if (imageUrl) extras.image_url = imageUrl;
         await supabase.from('provider_tests').update(extras).eq('id', upsertResult.providerTestId);
       }

@@ -118,9 +118,16 @@ function isFingerPrickOnly(sampleType?: string | null): boolean {
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 // normalizeBiomarkers now lives in @/utils/normalize-biomarkers (shared).
 
+/** Route labels produced by deriveCollectionVariants, e.g. "Clinic blood draw (+£40)". */
+const ROUTE_VARIANT_LABEL =
+  /^(At-home finger-prick kit|Clinic blood draw|Nurse home visit|Standard collection)/i;
+
 /** Short, honest sample/collection descriptor for the compact card. */
 function collectionLabel(t: UniversalTestData): string {
-  const s = (t.sample_type || "").toLowerCase();
+  const raw = (t.sample_type || "").trim();
+  // A route-split listing already carries its own honest label and fee.
+  if (ROUTE_VARIANT_LABEL.test(raw)) return raw;
+  const s = raw.toLowerCase();
   if (s.includes("finger")) return "Finger-prick";
   if (s.includes("venous") || s.includes("blood draw")) return "Venous draw";
   if (s.includes("saliva")) return "Saliva";
