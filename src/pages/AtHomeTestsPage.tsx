@@ -193,9 +193,9 @@ const AtHomeTestsPage: React.FC = () => {
   if (!section) {
     return (
       <StatusShell>
-        <div className="mt-8 mb-10 text-center">
-          <p className="text-[#060b18]/75 max-w-2xl mx-auto">
-            Finger-prick kits grouped so you can go straight to the area you care about.
+        <div className="mt-10 mb-10 text-center">
+          <p className="text-[#060b18] font-medium max-w-2xl mx-auto">
+            At Home Test Kits are grouped for easy convenience.
           </p>
         </div>
         <AtHomeSectionGrid counts={counts} />
