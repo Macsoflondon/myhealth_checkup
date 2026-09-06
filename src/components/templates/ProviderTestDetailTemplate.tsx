@@ -25,7 +25,7 @@ import { getProviderRating } from "@/constants/providerRatings";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import RelatedLinks from "@/components/seo/RelatedLinks";
 import { resolveCategorySlug } from "@/lib/internal-links";
-import { deriveCollectionVariants, CollectionVariant } from "@/lib/collectionVariants";
+import { deriveCollectionVariants } from "@/lib/collectionVariants";
 
 export interface ProviderTestData {
   id: string;
