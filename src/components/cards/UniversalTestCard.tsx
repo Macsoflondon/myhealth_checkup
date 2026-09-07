@@ -21,7 +21,7 @@ import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
 import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
 import { excerptTestDescription } from "@/lib/test-summary";
 import { displayTurnaround } from "@/lib/resolve-test-fields";
-import type { CollectionVariant } from "@/lib/collectionVariants";
+import { baseTestId, type CollectionVariant } from "@/lib/collectionVariants";
 
 
 // ─── Design tokens (kept inline to mirror AtHomeTestsPage exactly) ───────────
@@ -190,7 +190,9 @@ function toCompareData(t: UniversalTestData): CompareTestData {
   const meta = getProviderMeta(t.provider_id);
   const logo = getProviderLogo(t.provider_id) || meta.logo || "";
   return {
-    id: t.id,
+    // Never persist a synthetic `id::route` variant id: compare links are shared
+    // and re-resolved against the catalogue by real row id.
+    id: baseTestId(t.id),
     name: t.test_name,
     provider: meta.displayName,
     price: t.total_expected_cost ?? t.price ?? 0,
@@ -217,7 +219,7 @@ export const UniversalTestDetailModal: React.FC<{
   const logo = getProviderLogo(test.provider_id) || meta.logo;
   const biomarkers = normalizeBiomarkers(test.biomarkers_list);
   const compareItems = useCompareItems();
-  const inCompare = compareItems.some((c) => c.id === test.id);
+  const inCompare = compareItems.some((c) => c.id === baseTestId(test.id));
   const handleCompareToggle = () => compareStore.toggle(toCompareData(test));
   const isAllergy = (test.category || "").toLowerCase().includes("allerg");
   const variant = test.route_variant ?? null;
@@ -824,7 +826,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
   const logo = getProviderLogo(test.provider_id) || meta.logo;
   const biomarkers = normalizeBiomarkers(test.biomarkers_list);
   const compareItems = useCompareItems();
-  const inCompare = compareItems.some((c) => c.id === test.id);
+  const inCompare = compareItems.some((c) => c.id === baseTestId(test.id));
   const isAllergy = (test.category || "").toLowerCase().includes("allerg");
   const variant = test.route_variant ?? null;
   const displayPrice = variant?.total ?? test.total_expected_cost ?? test.price;

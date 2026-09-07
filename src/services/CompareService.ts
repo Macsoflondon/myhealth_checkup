@@ -1,6 +1,7 @@
 import { logger } from "@/lib/logger";
 import { supabase } from "@/integrations/supabase/client";
 import type { CompareTestData } from "@/types";
+import { baseTestId } from '@/lib/collectionVariants';
 import { cacheService } from "./CacheService";
 import { TestDataTransformer, type LiveTestRow } from "./transformers/testDataTransformer";
 
@@ -98,7 +99,7 @@ export class CompareService {
    * Results are returned in the order the ids were requested; unknown ids are dropped.
    */
   static async getTestsByIds(ids: string[]): Promise<CompareTestData[]> {
-    const unique = Array.from(new Set(ids.filter(Boolean)));
+    const unique = Array.from(new Set(ids.filter(Boolean).map(baseTestId)));
     if (unique.length === 0) return [];
 
     const cacheKey = cacheService.generateKey('getTestsByIds', { ids: [...unique].sort() });
