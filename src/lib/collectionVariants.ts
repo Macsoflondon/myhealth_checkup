@@ -173,3 +173,13 @@ export function variantFeeNote(variant: CollectionVariant): string | null {
 
   return `£${variant.basePrice.toFixed(2)} test + £${variant.fee.toFixed(2)} ${label}`;
 }
+
+/**
+ * Strip the `::route` suffix a collection variant adds, returning the real
+ * catalogue row id. Shareable surfaces (compare URLs, database lookups) must
+ * only ever carry this id — synthetic variant ids resolve to nothing on reload.
+ */
+export function baseTestId(id: string): string {
+  const separator = id.indexOf("::");
+  return separator === -1 ? id : id.slice(0, separator);
+}

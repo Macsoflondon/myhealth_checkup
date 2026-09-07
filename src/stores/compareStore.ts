@@ -4,6 +4,7 @@
  */
 import { useSyncExternalStore } from "react";
 import type { CompareTestData } from "@/types";
+import { baseTestId } from "@/lib/collectionVariants";
 
 // Version suffix: bumping it discards older cached snapshots whose shape
 // predates the clinical review / collection fee fields.
@@ -18,7 +19,17 @@ function load(): CompareTestData[] {
   try {
     window.localStorage.removeItem("mhc:compare");
     const raw = window.localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as CompareTestData[]) : [];
+    if (!raw) return [];
+    // Older snapshots may hold synthetic `id::route` variant ids, which never
+    // resolve against the catalogue — normalise them back to real row ids.
+    const parsed = JSON.parse(raw) as CompareTestData[];
+    const seen = new Set<string>();
+    return parsed.filter((t) => {
+      t.id = baseTestId(t.id);
+      if (seen.has(t.id)) return false;
+      seen.add(t.id);
+      return true;
+    });
   } catch {
     return [];
   }
