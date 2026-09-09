@@ -112,6 +112,11 @@ async function checkUrl(url: string): Promise<CheckResult> {
         signal: AbortSignal.timeout(TIMEOUT_MS),
       });
     }
+    if (res.status === 429) {
+      // Still rate limited after the retry: the URL state is unknown, not
+      // broken. Flag it so callers skip alerts and leave url_verified as-is.
+      return { ok: false, httpStatus: 429, issue: "HTTP 429", hit429, rateLimited: true };
+    }
     if (!res.ok) return { ok: false, httpStatus: res.status, issue: `HTTP ${res.status}`, hit429 };
     return { ok: true, httpStatus: res.status, hit429 };
   } catch (e) {
@@ -178,10 +183,17 @@ Deno.serve(async (req) => {
   async function processRow(row: TestRow): Promise<{ ok: boolean; hit429: boolean }> {
     const result = await checkUrl(row.url as string);
 
-    summary[row.provider_id] ??= { total: 0, ok: 0, broken: 0 };
+    summary[row.provider_id] ??= { total: 0, ok: 0, broken: 0, rateLimited: 0 };
     summary[row.provider_id].total++;
 
     let ok: boolean;
+    if (result.rateLimited) {
+      // 429 after retry = inconclusive, not broken. No alert, and do not
+      // flip url_verified — the last known verification state stands.
+      ok = true;
+      summary[row.provider_id].rateLimited++;
+      return { ok, hit429: result.hit429 ?? false };
+    }
     if (result.ok) {
       ok = true;
       summary[row.provider_id].ok++;
