@@ -177,7 +177,7 @@ Deno.serve(async (req) => {
     if (!data || data.length < pageSize) break;
   }
 
-  const summary: Record<string, { total: number; ok: number; broken: number }> = {};
+  const summary: Record<string, { total: number; ok: number; broken: number; rateLimited: number }> = {};
   const verifiedAt = new Date().toISOString();
 
   async function processRow(row: TestRow): Promise<{ ok: boolean; hit429: boolean }> {
