@@ -200,9 +200,15 @@ export async function upsertWithProvenance(
       providerTestId = (data?.id as string) ?? (existing.id as string);
       action = "updated";
     } else {
+      // £0–£1 placeholder prices are scrape junk, not real products: keep the
+      // row for audit but never let it go live or pollute aggregates.
+      const suspiciousPrice = typeof safePrice === "number" && safePrice <= 1;
+      if (suspiciousPrice) {
+        warnings.push("suspicious_price: price <= £1, inserted as inactive");
+      }
       const { data, error } = await supabase
         .from("provider_tests")
-        .insert({ ...row, is_active: true })
+        .insert({ ...row, is_active: !suspiciousPrice })
         .select("id")
         .maybeSingle();
       if (error) throw error;

@@ -59,6 +59,9 @@ interface CheckResult {
   issue?: string;
   /** True if this request saw a 429 (even if the single retry recovered). */
   hit429?: boolean;
+  /** True if the provider was still rate limiting after the 429 retry —
+   *  the URL state is unknown, NOT broken. */
+  rateLimited?: boolean;
 }
 
 // Providers (medichecks, clinilabs) reject bare/Deno requests as bot traffic.
@@ -108,6 +111,11 @@ async function checkUrl(url: string): Promise<CheckResult> {
         redirect: "follow",
         signal: AbortSignal.timeout(TIMEOUT_MS),
       });
+    }
+    if (res.status === 429) {
+      // Still rate limited after the retry: the URL state is unknown, not
+      // broken. Flag it so callers skip alerts and leave url_verified as-is.
+      return { ok: false, httpStatus: 429, issue: "HTTP 429", hit429, rateLimited: true };
     }
     if (!res.ok) return { ok: false, httpStatus: res.status, issue: `HTTP ${res.status}`, hit429 };
     return { ok: true, httpStatus: res.status, hit429 };
@@ -169,16 +177,23 @@ Deno.serve(async (req) => {
     if (!data || data.length < pageSize) break;
   }
 
-  const summary: Record<string, { total: number; ok: number; broken: number }> = {};
+  const summary: Record<string, { total: number; ok: number; broken: number; rateLimited: number }> = {};
   const verifiedAt = new Date().toISOString();
 
   async function processRow(row: TestRow): Promise<{ ok: boolean; hit429: boolean }> {
     const result = await checkUrl(row.url as string);
 
-    summary[row.provider_id] ??= { total: 0, ok: 0, broken: 0 };
+    summary[row.provider_id] ??= { total: 0, ok: 0, broken: 0, rateLimited: 0 };
     summary[row.provider_id].total++;
 
     let ok: boolean;
+    if (result.rateLimited) {
+      // 429 after retry = inconclusive, not broken. No alert, and do not
+      // flip url_verified — the last known verification state stands.
+      ok = true;
+      summary[row.provider_id].rateLimited++;
+      return { ok, hit429: result.hit429 ?? false };
+    }
     if (result.ok) {
       ok = true;
       summary[row.provider_id].ok++;
