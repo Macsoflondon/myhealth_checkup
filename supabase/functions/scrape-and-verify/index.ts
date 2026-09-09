@@ -59,6 +59,9 @@ interface CheckResult {
   issue?: string;
   /** True if this request saw a 429 (even if the single retry recovered). */
   hit429?: boolean;
+  /** True if the provider was still rate limiting after the 429 retry —
+   *  the URL state is unknown, NOT broken. */
+  rateLimited?: boolean;
 }
 
 // Providers (medichecks, clinilabs) reject bare/Deno requests as bot traffic.
