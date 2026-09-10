@@ -189,7 +189,30 @@ export async function upsertWithProvenance(
     let providerTestId: string | null = null;
     let action: UpsertResult["action"];
 
+    // £0–£1 placeholder prices are scrape junk, not real products: keep the
+    // row for audit but never let it go live or pollute aggregates.
+    const suspiciousPrice = typeof safePrice === "number" && safePrice <= 1;
+
     if (existing) {
+      const wasActive = existing.is_active !== false;
+      if (suspiciousPrice) {
+        // Quarantine: a live row that now scrapes at <= £1 is pulled out of
+        // the catalogue and aggregates until a real price comes back.
+        row.is_active = false;
+        if (wasActive) {
+          warnings.push("suspicious_price: price <= £1, row deactivated");
+        }
+      } else if (
+        !wasActive &&
+        typeof existing.price === "number" &&
+        (existing.price as number) <= 1
+      ) {
+        // Self-healing: only rows quarantined for a suspicious price come
+        // back. Rows deactivated for editorial/other reasons stay hidden.
+        row.is_active = true;
+        warnings.push("reactivated: valid price replaced previous suspicious price");
+      }
+
       const { data, error } = await supabase
         .from("provider_tests")
         .update(row)
@@ -200,9 +223,6 @@ export async function upsertWithProvenance(
       providerTestId = (data?.id as string) ?? (existing.id as string);
       action = "updated";
     } else {
-      // £0–£1 placeholder prices are scrape junk, not real products: keep the
-      // row for audit but never let it go live or pollute aggregates.
-      const suspiciousPrice = typeof safePrice === "number" && safePrice <= 1;
       if (suspiciousPrice) {
         warnings.push("suspicious_price: price <= £1, inserted as inactive");
       }
