@@ -202,9 +202,13 @@ export async function upsertWithProvenance(
         if (wasActive) {
           warnings.push("suspicious_price: price <= £1, row deactivated");
         }
-      } else if (!wasActive) {
-        // Self-healing: a previously quarantined row with a valid price
-        // returns to the catalogue automatically.
+      } else if (
+        !wasActive &&
+        typeof existing.price === "number" &&
+        (existing.price as number) <= 1
+      ) {
+        // Self-healing: only rows quarantined for a suspicious price come
+        // back. Rows deactivated for editorial/other reasons stay hidden.
         row.is_active = true;
         warnings.push("reactivated: valid price replaced previous suspicious price");
       }
