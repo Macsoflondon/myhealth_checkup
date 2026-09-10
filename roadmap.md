@@ -6,5 +6,5 @@
 - [x] Diagnose critical SOC incidents: broken_url storms were HTTP 429 rate-limit false positives from scrape-and-verify (medichecks 108, clinilabs 112 alerts/3d).
 - [x] Fix scrape-and-verify: 429-after-retry now treated as inconclusive — no alert, url_verified untouched (deployed).
 - [ ] Verify next daily url-verification run (05:15 UTC cron) produces zero 429 broken_url alerts.
-- [ ] Resolve open false-positive broken_url SOC incidents in soc_incidents.
+- [x] Resolved all 85 open broken_url SOC incidents as false positives; zero critical/high incidents remain open.
 - [ ] London Health Company partial runs: mhc-shopify-rich-sync fuzzy-matcher leaves 7/16 tests in needs_review (name drift vs Shopify feed). Name renames rejected by user; alternative = set provider_test_id from feed handles (all LHC rows currently NULL) pending confirmation the sync matches on it.
