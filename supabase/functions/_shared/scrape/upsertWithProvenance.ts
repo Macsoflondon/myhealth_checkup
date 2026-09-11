@@ -191,7 +191,10 @@ export async function upsertWithProvenance(
 
     // £0–£1 placeholder prices are scrape junk, not real products: keep the
     // row for audit but never let it go live or pollute aggregates.
-    const suspiciousPrice = typeof safePrice === "number" && safePrice <= 1;
+    // Exception: an explicit out-of-stock signal is legitimate evidence, not
+    // junk — a temporarily unavailable product stays listed as out of stock.
+    const suspiciousPrice =
+      !outOfStock && typeof safePrice === "number" && safePrice <= 1;
 
     if (existing) {
       const wasActive = existing.is_active !== false;
