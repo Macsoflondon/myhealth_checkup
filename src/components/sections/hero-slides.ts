@@ -30,6 +30,13 @@ import bloodTestKit480Webp from "@/assets/hero/generated/blood-test-kit-480.webp
 import bloodTestKit768Webp from "@/assets/hero/generated/blood-test-kit-768.webp";
 import bloodTestKit1200Webp from "@/assets/hero/generated/blood-test-kit-1200.webp";
 import bloodTestKit1590Webp from "@/assets/hero/generated/blood-test-kit-1590.webp";
+import gymSelfie from "@/assets/hero/hero-gym-selfie.png";
+import gymSelfie480Avif from "@/assets/hero/generated/gym-selfie-480.avif";
+import gymSelfie768Avif from "@/assets/hero/generated/gym-selfie-768.avif";
+import gymSelfie1200Avif from "@/assets/hero/generated/gym-selfie-1200.avif";
+import gymSelfie480Webp from "@/assets/hero/generated/gym-selfie-480.webp";
+import gymSelfie768Webp from "@/assets/hero/generated/gym-selfie-768.webp";
+import gymSelfie1200Webp from "@/assets/hero/generated/gym-selfie-1200.webp";
 
 const srcSet = (...candidates: ReadonlyArray<readonly [string, number]>): string =>
   candidates.map(([url, width]) => `${url} ${width}w`).join(", ");
@@ -61,6 +68,12 @@ const bloodTestKitAvif = srcSet(
 const bloodTestKitWebp = srcSet(
   [bloodTestKit480Webp, 480], [bloodTestKit768Webp, 768],
   [bloodTestKit1200Webp, 1200], [bloodTestKit1590Webp, 1590],
+);
+const gymSelfieAvif = srcSet(
+  [gymSelfie480Avif, 480], [gymSelfie768Avif, 768], [gymSelfie1200Avif, 1200],
+);
+const gymSelfieWebp = srcSet(
+  [gymSelfie480Webp, 480], [gymSelfie768Webp, 768], [gymSelfie1200Webp, 1200],
 );
 
 export type HeroSlide = {
@@ -144,6 +157,16 @@ export const SLIDES: HeroSlide[] = [
     posMobile: "40% 15%",
     posTablet: "40% 32%",
     posDesktop: "50% 45%",
+  },
+  {
+    src: gymSelfie,
+    avifSrcSet: gymSelfieAvif,
+    webpSrcSet: gymSelfieWebp,
+    label: "Train Hard. Test Smarter.",
+    alt: "Man in gym wear taking a progress photo after a workout",
+    posMobile: "50% 20%",
+    posTablet: "50% 25%",
+    posDesktop: "50% 30%",
   },
 ];
 
