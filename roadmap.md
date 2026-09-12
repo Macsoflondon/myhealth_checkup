@@ -8,3 +8,7 @@
 - [ ] Verify next daily url-verification run (05:15 UTC cron) produces zero 429 broken_url alerts.
 - [x] Resolved all 85 open broken_url SOC incidents as false positives; zero critical/high incidents remain open.
 - [ ] London Health Company partial runs: mhc-shopify-rich-sync fuzzy-matcher leaves 7/16 tests in needs_review (name drift vs Shopify feed). Name renames rejected by user; alternative = set provider_test_id from feed handles (all LHC rows currently NULL) pending confirmation the sync matches on it.
+- [x] Medichecks: capture biomarker lists + provider-verbatim sections from product pages (195/200 biomarkers & prep/limitations, 41 "what can I learn"); parser `_shared/scrape/medichecksProductPage.ts`, enrichment in `medichecks-firecrawl` (runs each sync).
+- [x] Surface provider-verbatim sections on test detail page + modal; biomarker empty state distinguishes capture gap from unpublished data.
+- [ ] Extend page-level enrichment to remaining providers (randox, goodbody, clinilabs, lola-health, LML, LHC, medical-diagnosis) — each needs its own page parser.
+- [ ] Route-split listings (home kit vs clinic vs nurse visit) across category/provider listings.
