@@ -193,6 +193,104 @@ async function fetchCatalogue(): Promise<CatalogueRow[]> {
   return rows;
 }
 
+const PAGE_UA =
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36';
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+/**
+ * Fetch one product page, backing off on the 429s Medichecks returns to any
+ * caller moving faster than roughly one page a second.
+ */
+async function fetchProductPage(url: string): Promise<string | null> {
+  let delay = 2000;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    try {
+      const res = await fetch(url, { headers: { 'User-Agent': PAGE_UA } });
+      if (res.ok) return await res.text();
+      if (res.status !== 429 && res.status < 500) return null;
+    } catch {
+      /* retry below */
+    }
+    await sleep(delay);
+    delay = Math.min(delay * 2, 20_000);
+  }
+  return null;
+}
+
+/**
+ * Second pass: read each product page for the biomarker list, the provider's
+ * fuller verbatim sections and the collection surcharges. The feed carries
+ * none of these, so without this pass every row shows "not published by this
+ * provider" for biomarkers and collapses both collection routes into one
+ * price. Runs after the catalogue upsert, throttled, in the background.
+ */
+async function enrichFromProductPages(supabase: Supa, runId: string): Promise<number> {
+  const { data, error } = await supabase
+    .from('provider_tests')
+    .select('id, url')
+    .eq('provider_id', 'medichecks')
+    .eq('is_active', true)
+    .not('url', 'is', null);
+
+  if (error || !data) {
+    console.error('[medichecks] enrichment query failed:', getErrorMessage(error));
+    return 0;
+  }
+
+  let enriched = 0;
+  for (const row of data as Array<{ id: string; url: string }>) {
+    const doc = await fetchProductPage(row.url);
+    await sleep(700);
+    if (!doc) continue;
+
+    const detail = parseMedichecksProductPage(doc);
+    const update: Record<string, unknown> = {
+      what_is_tested: detail.whatIsTested,
+      preparation_notes: detail.preparationNotes,
+      test_limitations: detail.testLimitations,
+      description_source: 'scraped_verbatim',
+      updated_at: new Date().toISOString(),
+    };
+
+    if (detail.biomarkers.length > 0) {
+      update.biomarkers_list = detail.biomarkers;
+      update.biomarker_count = detail.biomarkers.length;
+      update.biomarkers_not_stated = false;
+    } else {
+      // The page genuinely lists no markers — say so rather than leaving a
+      // null that looks like a capture failure.
+      update.biomarkers_not_stated = true;
+    }
+
+    if (detail.clinicDrawFee !== null) update.clinic_phlebotomy_cost = detail.clinicDrawFee;
+    if (detail.nurseVisitFee !== null) {
+      update.home_phlebotomy_cost = detail.nurseVisitFee;
+      update.home_phlebotomy_option = true;
+    }
+
+    const { error: updateError } = await supabase
+      .from('provider_tests')
+      .update(update)
+      .eq('id', row.id);
+
+    if (updateError) {
+      console.error(`[medichecks] enrichment update failed for ${row.id}:`, getErrorMessage(updateError));
+      continue;
+    }
+    enriched++;
+
+    if (enriched % 25 === 0) {
+      await supabase.from('scrape_runs')
+        .update({ metadata: { source: 'shopify-products-feed', enriched } })
+        .eq('id', runId);
+    }
+  }
+
+  console.log(`[medichecks] enriched ${enriched}/${data.length} product pages`);
+  return enriched;
+}
+
 async function setJob(supabase: Supa, status: string, errorMessage: string | null): Promise<void> {
   const row = {
     status,
