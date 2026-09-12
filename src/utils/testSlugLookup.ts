@@ -64,7 +64,7 @@ const SELECT_FIELDS = `
   clinic_phlebotomy_cost, home_phlebotomy_cost, home_kit_available,
   clinic_visit_available, home_phlebotomy_option, turnaround_days_text,
   turnaround_raw, clinical_review_type, clinical_review_fee, gp_review_included,
-  total_expected_cost
+  total_expected_cost, what_is_tested, preparation_notes, test_limitations
 `;
 
 /**

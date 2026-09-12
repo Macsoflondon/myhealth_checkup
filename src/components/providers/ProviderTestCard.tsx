@@ -37,6 +37,10 @@ export interface ProviderTestCardData {
   lab_ukas_accredited?: boolean | null;
   lab_cqc_regulated?: boolean | null;
   lab_iso15189?: boolean | null;
+  /** Provider-verbatim sections captured from the provider's own test page. */
+  what_is_tested?: string | null;
+  preparation_notes?: string | null;
+  test_limitations?: string | null;
 }
 
 interface ProviderTestCardProps {

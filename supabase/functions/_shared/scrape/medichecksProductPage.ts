@@ -106,7 +106,7 @@ export function parseMedichecksProductPage(doc: string): MedichecksPageDetail {
 
   return {
     biomarkers: normaliseBiomarkers(rawMarkers),
-    whatIsTested: readSection(doc, "What can I learn from this test\\?"),
+    whatIsTested: readSection(doc, "What can I learn from this test?"),
     preparationNotes: readSection(doc, "How to prepare for your test"),
     testLimitations: readSection(doc, "Test limitations"),
     clinicDrawFee,
