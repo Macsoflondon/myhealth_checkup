@@ -122,6 +122,7 @@ const MostPopularTestsPage = () => {
       const tag = t.category || 'General Health';
       return {
         id: t.id,
+        providerId: t.provider_id,
         popular: idx < 3,
         badge: tag,
         badgeColor: branding?.primary || '#e70d69',
@@ -141,7 +142,9 @@ const MostPopularTestsPage = () => {
         tag,
         collection: t.sample_type || 'Blood sample',
         url: t.url || undefined,
+        imageUrl: t.image_url,
         collectionOptions: t.collection_options,
+        isAddon: t.is_addon,
       } satisfies CategoryTestItem;
     });
   }, [popularTests]);

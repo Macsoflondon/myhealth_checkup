@@ -165,6 +165,7 @@ export interface PopularTest {
   clinic_phlebotomy_cost?: number | null;
   home_phlebotomy_cost?: number | null;
   is_popular?: boolean;
+  is_addon?: boolean;
   collection_method?: string;
   measurement_type?: string;
 }
@@ -213,7 +214,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
       // Prioritise is_popular + popularity_rank, then backfill with everything else.
       const { data: popularData, error: popularError } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, biomarkers_list, description, image_url, turnaround_days_text, base_price, collection_options, clinic_phlebotomy_cost, home_phlebotomy_cost, is_popular')
+        .select('id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, biomarkers_list, description, image_url, turnaround_days_text, base_price, collection_options, clinic_phlebotomy_cost, home_phlebotomy_cost, is_popular, is_addon')
         .eq('is_active', true)
         .not('price', 'is', null)
         .not('url', 'is', null)
@@ -245,6 +246,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10) => {
           clinic_phlebotomy_cost: test.clinic_phlebotomy_cost,
           home_phlebotomy_cost: test.home_phlebotomy_cost,
           is_popular: (test as any).is_popular ?? undefined,
+          is_addon: test.is_addon ?? undefined,
         }));
 
         return enrichTestsFromWebsite(mappedTests);

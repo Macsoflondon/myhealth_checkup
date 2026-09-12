@@ -10,6 +10,7 @@ import { formatTestPrice } from "@/lib/utils";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 import { isGenericDescription, resolveTestSummary } from "@/lib/test-summary";
+import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
 
 const withFrom = (s: string) => (s && !/^from\b/i.test(s) ? `from ${s}` : s);
 
@@ -29,6 +30,12 @@ const toCardData = (t: PopularTest): ProviderTestCardData => ({
   collection_options: (t.collection_options as any) ?? null,
   clinic_phlebotomy_cost: t.clinic_phlebotomy_cost ?? null,
   home_phlebotomy_cost: t.home_phlebotomy_cost ?? null,
+  image_url: resolveTestCardImage({
+    providerId: t.provider_id,
+    isAddon: t.is_addon,
+    imageUrl: t.image_url,
+  }),
+  is_addon: t.is_addon ?? false,
 });
 
 const cleanName = (name: string) =>
@@ -146,10 +153,19 @@ const isRealProviderImage = (url?: string | null): url is string =>
   !/\/image\/gb\.png(?:\?|$)/i.test(url) &&
   !/randox-health-white-red-dot/i.test(url);
 
-const resolveImage = (t: PopularTest): string | null =>
-  isRealProviderImage(normalizeImageUrl(t.image_url, t.provider_id, t.url))
-    ? normalizeImageUrl(t.image_url, t.provider_id, t.url)!
+const resolveImage = (t: PopularTest): string | null => {
+  const preferredImage = resolveTestCardImage({
+    providerId: t.provider_id,
+    isAddon: t.is_addon,
+    imageUrl: t.image_url,
+  });
+
+  return preferredImage?.startsWith("/__l5e/assets-v1/")
+    ? preferredImage
+    : isRealProviderImage(normalizeImageUrl(preferredImage, t.provider_id, t.url))
+    ? normalizeImageUrl(preferredImage, t.provider_id, t.url)!
     : (PROVIDER_FALLBACK_IMAGES[t.provider_id] ?? null);
+};
 
 const ALLOWED_PROVIDERS = [
   "lola-health",
