@@ -59,6 +59,37 @@ export interface ProviderTestData {
   clinical_review_fee?: number | null;
   gp_review_included?: boolean | null;
   total_expected_cost?: number | null;
+  /** Provider-verbatim sections captured from the provider's own test page. */
+  what_is_tested?: string | null;
+  preparation_notes?: string | null;
+  test_limitations?: string | null;
+}
+
+/**
+ * Renders a section exactly as the provider published it. Nothing here is
+ * summarised or rewritten — the wording is the provider's own.
+ */
+function ProviderVerbatimSection({
+  title,
+  body,
+}: {
+  title: string;
+  body?: string | null;
+}) {
+  if (!body || body.trim().length === 0) return null;
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-muted-foreground leading-relaxed whitespace-pre-line">{body}</p>
+        <p className="mt-4 text-xs text-muted-foreground/70">
+          Published by the provider. Shown in their own words.
+        </p>
+      </CardContent>
+    </Card>
+  );
 }
 
 interface BiomarkerInfo {
@@ -668,6 +699,20 @@ export default function ProviderTestDetailTemplate({
               <BiomarkersSection 
                 biomarkers={biomarkers} 
                 biomarkerCount={test.biomarker_count} 
+              />
+
+              {/* Provider's own detail, verbatim */}
+              <ProviderVerbatimSection
+                title="What you can learn from this test"
+                body={test.what_is_tested}
+              />
+              <ProviderVerbatimSection
+                title="How to prepare"
+                body={test.preparation_notes}
+              />
+              <ProviderVerbatimSection
+                title="Test limitations"
+                body={test.test_limitations}
               />
 
               {/* Symptoms Section */}

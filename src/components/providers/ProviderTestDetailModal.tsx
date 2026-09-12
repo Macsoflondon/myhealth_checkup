@@ -357,6 +357,23 @@ export default function ProviderTestDetailModal({
                 </p>
               </>
             )}
+            {/* Provider's own wording, captured verbatim from their test page. */}
+            {([
+              ["What you can learn from this test", test.what_is_tested],
+              ["How to prepare", test.preparation_notes],
+              ["Test limitations", test.test_limitations],
+            ] as const).map(([heading, body]) =>
+              body ? (
+                <div key={heading}>
+                  <h4 className="mt-5 text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-2">
+                    {heading}
+                  </h4>
+                  <p className="text-[15px] text-[#081129]/80 leading-relaxed whitespace-pre-line break-words">
+                    {body}
+                  </p>
+                </div>
+              ) : null,
+            )}
           </section>
 
           {/* Standards & accreditation */}
