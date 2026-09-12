@@ -359,6 +359,8 @@ async function syncCatalogue(supabase: Supa, runId: string): Promise<void> {
       }).eq('id', runId);
     }
 
+    const enriched = await enrichFromProductPages(supabase, runId);
+
     const status = errors.length > 0 ? 'partial' : 'success';
     await supabase.from('scrape_runs').update({
       status,
