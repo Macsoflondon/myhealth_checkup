@@ -368,7 +368,7 @@ async function syncCatalogue(supabase: Supa, runId: string): Promise<void> {
       tests_seen: rows.length,
       tests_updated: upserted,
       errors: errors.slice(0, 20).map((message) => ({ message })),
-      metadata: { source: 'shopify-products-feed', total: rows.length, upserted, withPrices },
+      metadata: { source: 'shopify-products-feed', total: rows.length, upserted, withPrices, enriched },
     }).eq('id', runId);
 
     await setJob(supabase, 'completed', errors.length > 0 ? `Completed with ${errors.length} error(s)` : null);
