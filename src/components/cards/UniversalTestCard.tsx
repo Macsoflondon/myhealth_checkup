@@ -800,6 +800,8 @@ export const UniversalTestDetailModal: React.FC<{
 // ─── Card ────────────────────────────────────────────────────────────────────
 export interface UniversalTestCardProps {
   test: UniversalTestData;
+  /** Display-only title override. The underlying catalogue name remains unchanged. */
+  headline?: string;
   /** Optional override for the click handler. If omitted, opens the detail modal. */
   onOpenDetail?: () => void;
   className?: string;
@@ -813,10 +815,12 @@ export interface UniversalTestCardProps {
 
 export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
   test,
+  headline,
   onOpenDetail,
   className,
   defaultFace = "image",
 }) => {
+  const cardHeadline = headline ?? test.test_name;
   const [internalOpen, setInternalOpen] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const hoverIntentTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -1001,7 +1005,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                       color: "#ffffff",
                     }}
                   >
-                    {test.test_name}
+                    {cardHeadline}
                   </span>
                 </div>
               )}
@@ -1020,7 +1024,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                     color: UTC_NAVY,
                   }}
                 >
-                  {test.test_name}
+                  {cardHeadline}
                 </div>
                 <div
                   className="truncate"
@@ -1233,7 +1237,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                 minHeight: "calc(15px * 1.3 * 2)",
               }}
             >
-              {test.test_name}
+              {cardHeadline}
             </div>
 
             {/* Add-on purchase requirement (provider wording, verbatim) */}
