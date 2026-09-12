@@ -232,7 +232,9 @@ export async function upsertWithProvenance(
       } else if (
         !wasActive &&
         typeof existing.price === "number" &&
-        (existing.price as number) <= 1
+        (existing.price as number) <= 1 &&
+        typeof safePrice === "number" &&
+        safePrice > 1
       ) {
         // Self-healing: only rows quarantined for a suspicious price come
         // back. Rows deactivated for editorial/other reasons stay hidden.
