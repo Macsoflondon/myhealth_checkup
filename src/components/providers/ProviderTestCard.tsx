@@ -28,7 +28,7 @@ export interface ProviderTestCardData {
   clinic_visit_available?: boolean | null;
   turnaround_days_text?: string | null;
   base_price?: number | null;
-  collection_options?: ProviderCollectionOption[] | null;
+  collection_options?: unknown;
   clinic_phlebotomy_cost?: number | null;
   home_phlebotomy_cost?: number | null;
   reviews?: number | null;

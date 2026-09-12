@@ -28,12 +28,7 @@ export interface ProviderTestData {
   collection_method?: string | null;
   measurement_type?: string | null;
   base_price?: number | null;
-  collection_options?: Array<{
-    method: string;
-    price_modifier?: number;
-    price?: number;
-    note?: string;
-  }> | null;
+  collection_options?: unknown;
   clinic_phlebotomy_cost?: number | null;
   home_phlebotomy_cost?: number | null;
   lab_ukas_accredited?: boolean | null;

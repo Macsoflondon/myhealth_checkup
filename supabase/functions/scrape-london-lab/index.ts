@@ -43,7 +43,6 @@ const categoryPages = [
 // Known test URLs - verified 32 products from LML website
 const knownProductUrls = [
   'https://www.londonmedicallaboratory.com/product/allergy-complete',
-  'https://www.londonmedicallaboratory.com/product/allergy-complete-295-allergens-tested',
   'https://www.londonmedicallaboratory.com/product/cholesterol-profile',
   'https://www.londonmedicallaboratory.com/product/diabetes-check',
   'https://www.londonmedicallaboratory.com/product/erectile-dysfunction-profile',

@@ -169,7 +169,11 @@ export interface PopularTest {
   measurement_type?: string;
 }
 
-export const hasStartingPrice = (test: Pick<PopularTest, 'price' | 'base_price' | 'collection_options'>) =>
+export const hasStartingPrice = (test: {
+  price?: number | null;
+  base_price?: number | null;
+  collection_options?: unknown;
+}) =>
   Boolean(
     (typeof test.base_price === 'number' && test.base_price > 0 && test.base_price !== test.price) ||
     (Array.isArray(test.collection_options) && test.collection_options.length > 0)

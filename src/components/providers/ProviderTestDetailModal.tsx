@@ -172,8 +172,19 @@ const getCollectionDetail = (
 const getStoredCollectionOptions = (
   test: ProviderTestCardData,
 ): ProviderCollectionOption[] | null => {
-  if (Array.isArray(test.collection_options) && test.collection_options.length > 0) {
-    return test.collection_options;
+  if (Array.isArray(test.collection_options)) {
+    const stored = test.collection_options.flatMap((option: unknown) => {
+      if (!option || typeof option !== "object") return [];
+      const record = option as Record<string, unknown>;
+      if (typeof record.method !== "string") return [];
+      return [{
+        method: record.method,
+        price_modifier: typeof record.price_modifier === "number" ? record.price_modifier : undefined,
+        price: typeof record.price === "number" ? record.price : undefined,
+        note: typeof record.note === "string" ? record.note : undefined,
+      } satisfies ProviderCollectionOption];
+    });
+    if (stored.length > 0) return stored;
   }
 
   const options: ProviderCollectionOption[] = [];
