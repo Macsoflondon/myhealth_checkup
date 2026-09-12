@@ -35,11 +35,16 @@ export function BiomarkerChipList({
   const title = `${noun.charAt(0).toUpperCase()}${noun.slice(1)} tested`;
 
   if (biomarkers.length === 0) {
+    // A published count with no stored names is our capture gap, not a gap in
+    // the provider's own information — never claim the provider withheld it.
+    const countOnly = typeof publishedCount === "number" && publishedCount > 0;
     return (
       <div className={className}>
-        <Heading>{title}</Heading>
+        <Heading>{countOnly ? `${title} (${publishedCount})` : title}</Heading>
         <p className="text-sm italic text-[#081129]/50 leading-relaxed">
-          {title} not published by this provider.
+          {countOnly
+            ? `The provider lists ${publishedCount} ${noun} for this test. We are still collecting the individual names.`
+            : `${title} not published by this provider.`}
         </p>
       </div>
     );
