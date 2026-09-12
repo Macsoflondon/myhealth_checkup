@@ -1,6 +1,4 @@
 import joggingWoman from "@/assets/hero/hero-jogging-woman.png";
-import seniorCouple from "@/assets/hero/hero-senior-couple.jpg";
-import benchPhone from "@/assets/hero/hero-bench-phone.jpg";
 import bloodTestKit from "@/assets/hero/hero-blood-test-kit.jpg";
 import joggingWoman480Avif from "@/assets/hero/generated/jogging-woman-480.avif";
 import joggingWoman768Avif from "@/assets/hero/generated/jogging-woman-768.avif";
@@ -10,18 +8,6 @@ import joggingWoman480Webp from "@/assets/hero/generated/jogging-woman-480.webp"
 import joggingWoman768Webp from "@/assets/hero/generated/jogging-woman-768.webp";
 import joggingWoman1200Webp from "@/assets/hero/generated/jogging-woman-1200.webp";
 import joggingWoman1920Webp from "@/assets/hero/generated/jogging-woman-1920.webp";
-import seniorCouple480Avif from "@/assets/hero/generated/senior-couple-480.avif";
-import seniorCouple768Avif from "@/assets/hero/generated/senior-couple-768.avif";
-import seniorCouple1200Avif from "@/assets/hero/generated/senior-couple-1200.avif";
-import seniorCouple480Webp from "@/assets/hero/generated/senior-couple-480.webp";
-import seniorCouple768Webp from "@/assets/hero/generated/senior-couple-768.webp";
-import seniorCouple1200Webp from "@/assets/hero/generated/senior-couple-1200.webp";
-import benchPhone480Avif from "@/assets/hero/generated/bench-phone-480.avif";
-import benchPhone768Avif from "@/assets/hero/generated/bench-phone-768.avif";
-import benchPhone1200Avif from "@/assets/hero/generated/bench-phone-1200.avif";
-import benchPhone480Webp from "@/assets/hero/generated/bench-phone-480.webp";
-import benchPhone768Webp from "@/assets/hero/generated/bench-phone-768.webp";
-import benchPhone1200Webp from "@/assets/hero/generated/bench-phone-1200.webp";
 import bloodTestKit480Avif from "@/assets/hero/generated/blood-test-kit-480.avif";
 import bloodTestKit768Avif from "@/assets/hero/generated/blood-test-kit-768.avif";
 import bloodTestKit1200Avif from "@/assets/hero/generated/blood-test-kit-1200.avif";
@@ -37,6 +23,27 @@ import gymSelfie1200Avif from "@/assets/hero/generated/gym-selfie-1200.avif";
 import gymSelfie480Webp from "@/assets/hero/generated/gym-selfie-480.webp";
 import gymSelfie768Webp from "@/assets/hero/generated/gym-selfie-768.webp";
 import gymSelfie1200Webp from "@/assets/hero/generated/gym-selfie-1200.webp";
+import wellnessChoiceAsset from "@/assets/hero/stock/wellness-choice.jpg.asset.json";
+import wellnessChoice480AvifAsset from "@/assets/hero/stock/wellness-choice-480.avif.asset.json";
+import wellnessChoice768AvifAsset from "@/assets/hero/stock/wellness-choice-768.avif.asset.json";
+import wellnessChoice1200AvifAsset from "@/assets/hero/stock/wellness-choice-1200.avif.asset.json";
+import wellnessChoice480WebpAsset from "@/assets/hero/stock/wellness-choice-480.webp.asset.json";
+import wellnessChoice768WebpAsset from "@/assets/hero/stock/wellness-choice-768.webp.asset.json";
+import wellnessChoice1200WebpAsset from "@/assets/hero/stock/wellness-choice-1200.webp.asset.json";
+import healthyAgeingAsset from "@/assets/hero/stock/healthy-ageing.jpg.asset.json";
+import healthyAgeing480AvifAsset from "@/assets/hero/stock/healthy-ageing-480.avif.asset.json";
+import healthyAgeing768AvifAsset from "@/assets/hero/stock/healthy-ageing-768.avif.asset.json";
+import healthyAgeing1200AvifAsset from "@/assets/hero/stock/healthy-ageing-1200.avif.asset.json";
+import healthyAgeing480WebpAsset from "@/assets/hero/stock/healthy-ageing-480.webp.asset.json";
+import healthyAgeing768WebpAsset from "@/assets/hero/stock/healthy-ageing-768.webp.asset.json";
+import healthyAgeing1200WebpAsset from "@/assets/hero/stock/healthy-ageing-1200.webp.asset.json";
+import screeningClarityAsset from "@/assets/hero/stock/screening-clarity.jpg.asset.json";
+import screeningClarity480AvifAsset from "@/assets/hero/stock/screening-clarity-480.avif.asset.json";
+import screeningClarity768AvifAsset from "@/assets/hero/stock/screening-clarity-768.avif.asset.json";
+import screeningClarity1200AvifAsset from "@/assets/hero/stock/screening-clarity-1200.avif.asset.json";
+import screeningClarity480WebpAsset from "@/assets/hero/stock/screening-clarity-480.webp.asset.json";
+import screeningClarity768WebpAsset from "@/assets/hero/stock/screening-clarity-768.webp.asset.json";
+import screeningClarity1200WebpAsset from "@/assets/hero/stock/screening-clarity-1200.webp.asset.json";
 
 const srcSet = (...candidates: ReadonlyArray<readonly [string, number]>): string =>
   candidates.map(([url, width]) => `${url} ${width}w`).join(", ");
@@ -49,17 +56,23 @@ const joggingWomanWebpSrcSet = srcSet(
   [joggingWoman480Webp, 480], [joggingWoman768Webp, 768],
   [joggingWoman1200Webp, 1200], [joggingWoman1920Webp, 1920],
 );
-const seniorCoupleAvif = srcSet(
-  [seniorCouple480Avif, 480], [seniorCouple768Avif, 768], [seniorCouple1200Avif, 1200],
+const wellnessChoiceAvif = srcSet(
+  [wellnessChoice480AvifAsset.url, 480], [wellnessChoice768AvifAsset.url, 768], [wellnessChoice1200AvifAsset.url, 1200],
 );
-const seniorCoupleWebp = srcSet(
-  [seniorCouple480Webp, 480], [seniorCouple768Webp, 768], [seniorCouple1200Webp, 1200],
+const wellnessChoiceWebp = srcSet(
+  [wellnessChoice480WebpAsset.url, 480], [wellnessChoice768WebpAsset.url, 768], [wellnessChoice1200WebpAsset.url, 1200],
 );
-const benchPhoneAvif = srcSet(
-  [benchPhone480Avif, 480], [benchPhone768Avif, 768], [benchPhone1200Avif, 1200],
+const healthyAgeingAvif = srcSet(
+  [healthyAgeing480AvifAsset.url, 480], [healthyAgeing768AvifAsset.url, 768], [healthyAgeing1200AvifAsset.url, 1200],
 );
-const benchPhoneWebp = srcSet(
-  [benchPhone480Webp, 480], [benchPhone768Webp, 768], [benchPhone1200Webp, 1200],
+const healthyAgeingWebp = srcSet(
+  [healthyAgeing480WebpAsset.url, 480], [healthyAgeing768WebpAsset.url, 768], [healthyAgeing1200WebpAsset.url, 1200],
+);
+const screeningClarityAvif = srcSet(
+  [screeningClarity480AvifAsset.url, 480], [screeningClarity768AvifAsset.url, 768], [screeningClarity1200AvifAsset.url, 1200],
+);
+const screeningClarityWebp = srcSet(
+  [screeningClarity480WebpAsset.url, 480], [screeningClarity768WebpAsset.url, 768], [screeningClarity1200WebpAsset.url, 1200],
 );
 const bloodTestKitAvif = srcSet(
   [bloodTestKit480Avif, 480], [bloodTestKit768Avif, 768],
@@ -131,24 +144,14 @@ export const SLIDES: HeroSlide[] = [
     posDesktop: "center 35%",
   },
   {
-    src: seniorCouple,
-    avifSrcSet: seniorCoupleAvif,
-    webpSrcSet: seniorCoupleWebp,
-    label: "Proactive Health for Every Stage of Life",
-    alt: "Older couple walking together outdoors in the sunshine",
-    posMobile: "50% 40%",
-    posTablet: "center 28%",
-    posDesktop: "center 30%",
-  },
-  {
-    src: benchPhone,
-    avifSrcSet: benchPhoneAvif,
-    webpSrcSet: benchPhoneWebp,
-    label: "Find the Right Test for You, Compare. Choose. Book.",
-    alt: "Man sitting on a park bench comparing health tests on his phone",
-    posMobile: "55% 50%",
-    posTablet: "center 40%",
-    posDesktop: "center 40%",
+    src: wellnessChoiceAsset.url,
+    avifSrcSet: wellnessChoiceAvif,
+    webpSrcSet: wellnessChoiceWebp,
+    label: "Your health. Your choice. Compare with confidence.",
+    alt: "Woman stretching before a run on a sunny country road",
+    posMobile: "42% center",
+    posTablet: "center center",
+    posDesktop: "center center",
   },
   {
     src: bloodTestKit,
@@ -161,6 +164,16 @@ export const SLIDES: HeroSlide[] = [
     posDesktop: "50% 45%",
   },
   {
+    src: healthyAgeingAsset.url,
+    avifSrcSet: healthyAgeingAvif,
+    webpSrcSet: healthyAgeingWebp,
+    label: "Plan well for the years ahead.",
+    alt: "Older couple carrying exercise mats while walking in a park",
+    posMobile: "38% center",
+    posTablet: "center center",
+    posDesktop: "center center",
+  },
+  {
     src: gymSelfie,
     avifSrcSet: gymSelfieAvif,
     webpSrcSet: gymSelfieWebp,
@@ -170,6 +183,16 @@ export const SLIDES: HeroSlide[] = [
     posTablet: "50% 25%",
     posDesktop: "50% 30%",
     fit: "contain",
+  },
+  {
+    src: screeningClarityAsset.url,
+    avifSrcSet: screeningClarityAvif,
+    webpSrcSet: screeningClarityWebp,
+    label: "Private screening, made clearer.",
+    alt: "Patient discussing private screening options with a clinician",
+    posMobile: "45% center",
+    posTablet: "center center",
+    posDesktop: "center center",
   },
 ];
 
