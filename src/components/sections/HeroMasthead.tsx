@@ -107,17 +107,53 @@ export default function HeroMasthead({
               fetchPriority={n === 0 ? "high" : "low"}
               decoding="async"
               onLoad={n === 0 ? () => setFirstLoaded(true) : undefined}
-              className={`hero-slide absolute inset-0 h-full w-full transition-opacity duration-500 ${s.fit === "contain" ? "object-contain" : "object-cover"}`}
-              style={commonStyle}
+              className={`hero-slide absolute inset-0 h-full w-full ${s.fit === "contain" ? "object-contain" : "object-cover"}`}
             />
           );
 
           return (
-            <picture key={`p-${n}`}>
-              <source type="image/avif" srcSet={s.avifSrcSet} sizes="100vw" />
-              <source type="image/webp" srcSet={s.webpSrcSet} sizes="100vw" />
-              {img}
-            </picture>
+            <div
+              key={`slide-${n}`}
+              aria-hidden={active ? undefined : true}
+              className="absolute inset-0 transition-opacity duration-500"
+              style={commonStyle}
+            >
+              <picture>
+                {s.mobileAvifSrcSet ? (
+                  <source media="(max-width: 639px)" type="image/avif" srcSet={s.mobileAvifSrcSet} sizes="100vw" />
+                ) : null}
+                {s.mobileWebpSrcSet ? (
+                  <source media="(max-width: 639px)" type="image/webp" srcSet={s.mobileWebpSrcSet} sizes="100vw" />
+                ) : null}
+                <source type="image/avif" srcSet={s.avifSrcSet} sizes="100vw" />
+                <source type="image/webp" srcSet={s.webpSrcSet} sizes="100vw" />
+                {img}
+              </picture>
+
+              {s.headline ? (
+                <div className="absolute inset-0 z-10 flex items-start bg-gradient-to-r from-brand-navy/90 via-brand-navy/55 to-transparent px-5 pt-8 sm:items-center sm:px-10 sm:pt-0 md:px-16 lg:px-20">
+                  <div className="w-[74%] max-w-xl text-primary-foreground sm:w-[58%] lg:w-[52%]">
+                    {s.eyebrow ? (
+                      <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-brand-turquoise sm:text-sm">
+                        {s.eyebrow}
+                      </p>
+                    ) : null}
+                    <p className="font-display text-3xl font-extrabold leading-tight sm:text-4xl md:text-5xl lg:text-6xl">
+                      {s.headline}
+                    </p>
+                    {s.supportingCopy ? (
+                      <p className="mt-4 max-w-md text-sm font-medium leading-relaxed text-primary-foreground/90 sm:text-lg md:text-xl">
+                        {s.supportingCopy}
+                      </p>
+                    ) : null}
+                    <div aria-hidden className="mt-5 flex h-1 w-28 overflow-hidden rounded-full sm:w-36">
+                      <span className="w-2/3 bg-brand-turquoise" />
+                      <span className="w-1/3 bg-brand-pink" />
+                    </div>
+                  </div>
+                </div>
+              ) : null}
+            </div>
           );
         })}
 
