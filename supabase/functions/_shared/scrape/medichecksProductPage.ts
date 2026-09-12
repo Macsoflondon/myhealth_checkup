@@ -54,16 +54,35 @@ export function toPlainText(fragment: string): string {
     .trim();
 }
 
+/** Headings that mark the end of whichever section we are reading. */
+const SECTION_BOUNDARIES = [
+  "Test limitations",
+  "How to prepare for your test",
+  "What can I learn from this test",
+  "What's in the test",
+  "Reviews",
+  "Frequently asked",
+  "Related tests",
+  "How it works",
+];
+
 function readSection(doc: string, heading: string): string | null {
   const marker = new RegExp(
     `<h3[^>]*>\\s*${heading.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*</h3>`,
   );
   const found = marker.exec(doc);
   if (!found) return null;
-  const body = toPlainText(
-    doc.slice(found.index + found[0].length, found.index + found[0].length + SECTION_LIMIT),
-  );
-  return body.length > 20 ? body : null;
+  const start = found.index + found[0].length;
+  let body = toPlainText(doc.slice(start, start + SECTION_LIMIT));
+
+  for (const boundary of SECTION_BOUNDARIES) {
+    const at = body.indexOf(boundary, 30);
+    if (at > 0) body = body.slice(0, at);
+  }
+  body = body.trim().replace(/[.,;:\s]+$/, "");
+
+  if (body.length <= 20) return null;
+  return /[.!?]$/.test(body) ? body : `${body}.`;
 }
 
 export function parseMedichecksProductPage(doc: string): MedichecksPageDetail {
