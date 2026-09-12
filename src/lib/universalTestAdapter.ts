@@ -53,6 +53,8 @@ export function fromProviderTest(t: ProviderTestCardData): UniversalTestData {
     home_kit_available: t.home_kit_available ?? undefined,
     clinic_visit_available: t.clinic_visit_available ?? undefined,
     collection_options: t.collection_options,
+    clinic_phlebotomy_cost: t.clinic_phlebotomy_cost,
+    home_phlebotomy_cost: t.home_phlebotomy_cost,
     is_addon: !!t.is_addon,
     purchase_notes: t.purchase_notes ?? null,
   };

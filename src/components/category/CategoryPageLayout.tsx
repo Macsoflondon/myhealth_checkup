@@ -288,6 +288,8 @@ export function CategoryPageLayout({
                       biomarker_count: test.biomarkerCount ?? null,
                       url: test.url ?? null,
                       image_url: test.imageUrl ?? null,
+                      is_addon: test.isAddon ?? false,
+                      purchase_notes: test.purchaseNotes ?? null,
 
                       biomarkers_list: (test.biomarkers as any) ?? null,
                       turnaround_days_text: test.turnaround ?? null,
