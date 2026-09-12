@@ -14,4 +14,4 @@
 - [ ] Route-split listings (home kit vs clinic vs nurse visit) across category/provider listings.
 - [x] Correct London Medical Laboratory Allergy Complete allergen count, collection wording and £3.99/£35/£80 charges; preserve them in future scrapes.
 - [x] Use the supplied Lola Health add-on kit image on all Lola add-on test cards without changing stored provider images.
-- [ ] Present three licensed real-stock hero image and slogan previews for approval; do not change the homepage until approved.
+- [x] Present and install three approved licensed real-stock hero images with branded slogans in a six-slide homepage sequence.
