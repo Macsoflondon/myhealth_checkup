@@ -191,10 +191,34 @@ export async function upsertWithProvenance(
 
     // £0–£1 placeholder prices are scrape junk, not real products: keep the
     // row for audit but never let it go live or pollute aggregates.
-    // Exception: an explicit out-of-stock signal is legitimate evidence, not
-    // junk — a temporarily unavailable product stays listed as out of stock.
-    const suspiciousPrice =
-      !outOfStock && typeof safePrice === "number" && safePrice <= 1;
+    //
+    // An explicit out-of-stock signal is legitimate evidence that the product
+    // is temporarily unavailable, so the row stays listed (in_stock = false) —
+    // but the junk price is never published with it. We fall back to the last
+    // known good price, or to "price not stated" when there isn't one.
+    const junkPrice = typeof safePrice === "number" && safePrice <= 1;
+
+    if (junkPrice && outOfStock) {
+      const lastKnown =
+        existing && typeof existing.price === "number" && (existing.price as number) > 1
+          ? (existing.price as number)
+          : null;
+      row.price = lastKnown;
+      row.price_not_stated = lastKnown === null;
+      safePrice = lastKnown;
+      warnings.push(
+        lastKnown === null
+          ? "out_of_stock: placeholder price <= £1 discarded, price not stated"
+          : "out_of_stock: placeholder price <= £1 discarded, last known price retained",
+      );
+      const restated = computeStatus(row);
+      row.data_status = restated.status;
+      row.field_completeness_score = restated.score;
+    }
+
+    // Only a genuinely in-stock junk price quarantines the row; an
+    // out-of-stock row has already had its price neutralised above.
+    const suspiciousPrice = !outOfStock && junkPrice;
 
     if (existing) {
       const wasActive = existing.is_active !== false;
@@ -208,7 +232,9 @@ export async function upsertWithProvenance(
       } else if (
         !wasActive &&
         typeof existing.price === "number" &&
-        (existing.price as number) <= 1
+        (existing.price as number) <= 1 &&
+        typeof safePrice === "number" &&
+        safePrice > 1
       ) {
         // Self-healing: only rows quarantined for a suspicious price come
         // back. Rows deactivated for editorial/other reasons stay hidden.
