@@ -88,6 +88,8 @@ export type HeroSlide = {
   posMobile: string;
   posTablet: string;
   posDesktop: string;
+  /** Preserve the complete frame where a portrait image should not be cropped. */
+  fit?: "cover" | "contain";
 };
 
 /** URL of the first hero slide — the original, used as the <img> fallback. */
@@ -167,6 +169,7 @@ export const SLIDES: HeroSlide[] = [
     posMobile: "50% 20%",
     posTablet: "50% 25%",
     posDesktop: "50% 30%",
+    fit: "contain",
   },
 ];
 
