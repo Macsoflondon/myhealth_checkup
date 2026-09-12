@@ -107,7 +107,7 @@ export default function HeroMasthead({
               fetchPriority={n === 0 ? "high" : "low"}
               decoding="async"
               onLoad={n === 0 ? () => setFirstLoaded(true) : undefined}
-              className="hero-slide absolute inset-0 w-full h-full object-cover transition-opacity duration-500"
+              className={`hero-slide absolute inset-0 h-full w-full transition-opacity duration-500 ${s.fit === "contain" ? "object-contain" : "object-cover"}`}
               style={commonStyle}
             />
           );
