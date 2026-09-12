@@ -15,6 +15,16 @@ interface LondonLabProduct {
   biomarker_count: number | null;
   biomarkers_list: string[] | null;
   image_url: string | null;
+  measurement_type: string;
+  collection_method: string | null;
+  collection_options: CollectionOption[] | null;
+  clinic_phlebotomy_cost: number | null;
+  home_phlebotomy_cost: number | null;
+}
+
+interface CollectionOption {
+  method: string;
+  price_modifier: number;
 }
 
 // London Medical Laboratory category pages
@@ -32,6 +42,7 @@ const categoryPages = [
 
 // Known test URLs - verified 32 products from LML website
 const knownProductUrls = [
+  'https://www.londonmedicallaboratory.com/product/allergy-complete',
   'https://www.londonmedicallaboratory.com/product/allergy-complete-295-allergens-tested',
   'https://www.londonmedicallaboratory.com/product/cholesterol-profile',
   'https://www.londonmedicallaboratory.com/product/diabetes-check',
@@ -244,9 +255,8 @@ function extractBiomarkersList(html: string): string[] | null {
 }
 
 function extractBiomarkerCount(html: string, biomarkersList: string[] | null): number | null {
-  if (biomarkersList && biomarkersList.length > 0) return biomarkersList.length;
-  
   const patterns = [
+    /(\d+)\s*allergens?\s+tested/i,
     /(\d+)\s*biomarkers?/i,
     /(\d+)\s*tests?\s+included/i,
     /(\d+)\s*markers?/i,
@@ -257,8 +267,34 @@ function extractBiomarkerCount(html: string, biomarkersList: string[] | null): n
     const match = html.match(pattern);
     if (match) return parseInt(match[1], 10);
   }
-  
-  return null;
+
+  return biomarkersList && biomarkersList.length > 0 ? biomarkersList.length : null;
+}
+
+function extractCollectionOptions(html: string): CollectionOption[] | null {
+  const definitions = [
+    { heading: /Royal Mail/i, method: 'Finger-prick home kit' },
+    { heading: /Onsite Test/i, method: 'Venous clinic draw' },
+    { heading: /At Home Phlebotomy/i, method: 'Home phlebotomy visit' },
+  ] as const;
+  const options: CollectionOption[] = [];
+
+  for (const definition of definitions) {
+    const blocks = html.match(/<div class="product-shipping-options[\s\S]*?<div class="shipping-price[^>]*>[\s\S]*?<\/div>\s*<\/div>/gi) ?? [];
+    const block = blocks.find((candidate) => definition.heading.test(candidate));
+    const priceMatch = block?.match(/shipping-price[^>]*>\s*\+?£([\d,.]+)/i);
+    if (!priceMatch) continue;
+    options.push({
+      method: definition.method,
+      price_modifier: Number.parseFloat(priceMatch[1].replace(',', '')),
+    });
+  }
+
+  return options.length > 0 ? options : null;
+}
+
+function collectionFee(options: CollectionOption[] | null, method: string): number | null {
+  return options?.find((option) => option.method === method)?.price_modifier ?? null;
 }
 
 function determineCategory(title: string, description: string, url: string): string {
@@ -366,6 +402,7 @@ Deno.serve(async (req) => {
         const imageUrl = extractImageUrl(html);
         const biomarkersList = extractBiomarkersList(html);
         const biomarkerCount = extractBiomarkerCount(html, biomarkersList);
+        const collectionOptions = extractCollectionOptions(html);
         const category = determineCategory(title, description || '', url);
         
         scrapedProducts.push({
@@ -378,6 +415,13 @@ Deno.serve(async (req) => {
           biomarker_count: biomarkerCount,
           biomarkers_list: biomarkersList,
           image_url: imageUrl,
+          measurement_type: /allerg/i.test(`${title} ${category}`) ? 'allergens' : 'biomarkers',
+          collection_method: collectionOptions && collectionOptions.length > 0
+            ? collectionOptions.map((option) => option.method).join(' or ')
+            : null,
+          collection_options: collectionOptions,
+          clinic_phlebotomy_cost: collectionFee(collectionOptions, 'Venous clinic draw'),
+          home_phlebotomy_cost: collectionFee(collectionOptions, 'Home phlebotomy visit'),
         });
         
         console.log(`Scraped: ${title} - £${price} - ${biomarkerCount || 0} biomarkers`);
@@ -404,6 +448,11 @@ Deno.serve(async (req) => {
         biomarker_count: product.biomarker_count,
         biomarkers_list: product.biomarkers_list,
         image_url: product.image_url,
+        measurement_type: product.measurement_type,
+        collection_method: product.collection_method,
+        collection_options: product.collection_options,
+        clinic_phlebotomy_cost: product.clinic_phlebotomy_cost,
+        home_phlebotomy_cost: product.home_phlebotomy_cost,
         is_active: true,
         home_kit_available: true,
         clinic_visit_available: true,

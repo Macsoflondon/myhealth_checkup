@@ -25,6 +25,8 @@ export function fromAtHomeTest(t: AtHomeTest): UniversalTestData {
     home_kit_available: t.home_kit_available,
     clinic_visit_available: t.clinic_visit_available,
     collection_options: t.collection_options,
+    clinic_phlebotomy_cost: t.clinic_phlebotomy_cost,
+    home_phlebotomy_cost: t.home_phlebotomy_cost,
     is_addon: t.is_addon ?? false,
   };
 }

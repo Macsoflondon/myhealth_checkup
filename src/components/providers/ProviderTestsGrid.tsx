@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
@@ -82,7 +81,7 @@ export const ProviderTestsGrid = ({
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-items-center">
-        {data.flatMap((t: any) => {
+        {data.flatMap((t) => {
           const card: ProviderTestCardData = {
             id: t.id,
             provider_id: dbId,
@@ -99,10 +98,12 @@ export const ProviderTestsGrid = ({
             biomarker_count: t.biomarker_count ?? null,
             url: t.url ?? null,
             image_url: t.image_url ?? null,
-            biomarkers_list: (t.biomarkers_list as any) ?? null,
+            biomarkers_list: t.biomarkers_list ?? null,
             turnaround_days_text: t.turnaround_days_text ?? null,
             base_price: t.base_price ?? null,
             collection_options: t.collection_options ?? null,
+            clinic_phlebotomy_cost: t.clinic_phlebotomy_cost ?? null,
+            home_phlebotomy_cost: t.home_phlebotomy_cost ?? null,
             price_from: hasStartingPrice(t),
             categoryColor: branding?.primary || "#e70d69",
             is_addon: t.is_addon ?? false,
@@ -110,6 +111,9 @@ export const ProviderTestsGrid = ({
             lab_cqc_regulated: t.lab_cqc_regulated ?? null,
             lab_iso15189: t.lab_iso15189 ?? null,
             purchase_notes: t.purchase_notes ?? null,
+            what_is_tested: t.what_is_tested ?? null,
+            preparation_notes: t.preparation_notes ?? null,
+            test_limitations: t.test_limitations ?? null,
           };
           // One listing per collection route, so kit and professional-draw
           // prices are never mixed on the same card.
