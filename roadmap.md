@@ -13,3 +13,4 @@
 - [ ] Extend page-level enrichment to remaining providers (randox, goodbody, clinilabs, lola-health, LML, LHC, medical-diagnosis) — each needs its own page parser.
 - [ ] Route-split listings (home kit vs clinic vs nurse visit) across category/provider listings.
 - [ ] Correct London Medical Laboratory Allergy Complete allergen count, collection wording and £3.99/£35/£80 charges; preserve them in future scrapes.
+- [ ] Use the supplied Lola Health add-on kit image on all Lola add-on test cards without changing stored provider images.

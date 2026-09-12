@@ -23,6 +23,7 @@ import { excerptTestDescription } from "@/lib/test-summary";
 import { displayTurnaround } from "@/lib/resolve-test-fields";
 import { baseTestId, type CollectionVariant } from "@/lib/collectionVariants";
 import { formatTestCardHeadline } from "@/utils/format-test-card-headline";
+import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
 
 
 // ─── Design tokens (kept inline to mirror AtHomeTestsPage exactly) ───────────
@@ -824,6 +825,11 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
   defaultFace = "image",
 }) => {
   const cardHeadline = formatTestCardHeadline(headline ?? test.test_name);
+  const cardImageUrl = resolveTestCardImage({
+    providerId: test.provider_id,
+    isAddon: test.is_addon,
+    imageUrl: test.image_url,
+  });
   const [internalOpen, setInternalOpen] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const hoverIntentTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -969,16 +975,16 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
             )}
             <div className="flex flex-1 items-center justify-center overflow-hidden p-4">
               {defaultFace === "image" &&
-              test.image_url &&
-              brokenImageSrc !== test.image_url ? (
+              cardImageUrl &&
+              brokenImageSrc !== cardImageUrl ? (
                 <img
-                  src={test.image_url}
+                  src={cardImageUrl}
                   alt={`${test.test_name} test kit from ${meta.displayName}`}
                   loading="lazy"
                   decoding="async"
                   className="h-full w-full object-contain"
                   onError={() => {
-                    setBrokenImageSrc(test.image_url ?? null);
+                    setBrokenImageSrc(cardImageUrl);
                   }}
                 />
               ) : (
