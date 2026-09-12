@@ -55,10 +55,6 @@ export default function ProviderTestCard({ test, onClick, turnaroundTime }: Prov
     ...test,
     turnaround_days_text: test.turnaround_days_text || turnaroundTime || null,
   });
-  const headline = test.test_name
-    .replace(/\bblood\s+tests?\b/gi, "")
-    .replace(/\s{2,}/g, " ")
-    .trim();
 
-  return <UniversalTestCard test={data} headline={headline} onOpenDetail={onClick} />;
+  return <UniversalTestCard test={data} onOpenDetail={onClick} />;
 }

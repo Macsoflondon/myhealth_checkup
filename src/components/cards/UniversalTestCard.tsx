@@ -22,6 +22,7 @@ import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
 import { excerptTestDescription } from "@/lib/test-summary";
 import { displayTurnaround } from "@/lib/resolve-test-fields";
 import { baseTestId, type CollectionVariant } from "@/lib/collectionVariants";
+import { formatTestCardHeadline } from "@/utils/format-test-card-headline";
 
 
 // ─── Design tokens (kept inline to mirror AtHomeTestsPage exactly) ───────────
@@ -820,7 +821,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
   className,
   defaultFace = "image",
 }) => {
-  const cardHeadline = headline ?? test.test_name;
+  const cardHeadline = formatTestCardHeadline(headline ?? test.test_name);
   const [internalOpen, setInternalOpen] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const hoverIntentTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
