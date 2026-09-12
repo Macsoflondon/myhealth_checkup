@@ -27,6 +27,8 @@ const toCardData = (t: PopularTest): ProviderTestCardData => ({
   turnaround_days_text: t.turnaround_days_text ?? null,
   base_price: t.base_price ?? null,
   collection_options: (t.collection_options as any) ?? null,
+  clinic_phlebotomy_cost: t.clinic_phlebotomy_cost ?? null,
+  home_phlebotomy_cost: t.home_phlebotomy_cost ?? null,
 });
 
 const cleanName = (name: string) =>

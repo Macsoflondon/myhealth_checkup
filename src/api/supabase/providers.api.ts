@@ -26,6 +26,11 @@ export interface ProviderTestData {
   purchase_notes?: string | null;
   turnaround_days_text?: string | null;
   collection_method?: string | null;
+  measurement_type?: string | null;
+  base_price?: number | null;
+  collection_options?: unknown;
+  clinic_phlebotomy_cost?: number | null;
+  home_phlebotomy_cost?: number | null;
   lab_ukas_accredited?: boolean | null;
   lab_cqc_regulated?: boolean | null;
   lab_iso15189?: boolean | null;

@@ -63,6 +63,8 @@ export interface UniversalTestData {
   clinic_visit_available?: boolean;
   /** Raw collection_options from provider_tests — parsed per provider */
   collection_options?: unknown;
+  clinic_phlebotomy_cost?: number | null;
+  home_phlebotomy_cost?: number | null;
   is_addon?: boolean;
   purchase_notes?: string | null;
   /** Collection-route listing this card represents (kit vs professional draw). */

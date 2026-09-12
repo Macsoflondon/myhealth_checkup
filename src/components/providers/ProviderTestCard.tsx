@@ -1,6 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { UniversalTestCard } from "@/components/cards/UniversalTestCard";
 import { fromProviderTest } from "@/lib/universalTestAdapter";
+
+export interface ProviderCollectionOption {
+  method: string;
+  price_modifier?: number;
+  price?: number;
+  note?: string;
+}
 
 export interface ProviderTestCardData {
   id: string;
@@ -22,7 +28,9 @@ export interface ProviderTestCardData {
   clinic_visit_available?: boolean | null;
   turnaround_days_text?: string | null;
   base_price?: number | null;
-  collection_options?: any;
+  collection_options?: unknown;
+  clinic_phlebotomy_cost?: number | null;
+  home_phlebotomy_cost?: number | null;
   reviews?: number | null;
   categoryColor?: string | null;
   badge?: string;

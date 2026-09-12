@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useNavigate } from "@/lib/router-compat";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -6,7 +5,7 @@ import { TestTube2, Home, Check, ExternalLink, ShieldCheck } from "lucide-react"
 import { getBranding } from "@/data/providerBranding";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { getGoodbodyTestByName } from "@/data/goodbodyTestDetails";
-import type { ProviderTestCardData } from "./ProviderTestCard";
+import type { ProviderCollectionOption, ProviderTestCardData } from "./ProviderTestCard";
 import { formatTestPrice } from "@/lib/utils";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import { compareResultsPath } from "@/lib/compareUrl";
@@ -78,14 +77,7 @@ const formatTurnaround = (providerId: string): string => {
   return defaults[providerId.toLowerCase()] || "2–5 working days";
 };
 
-type CollectionOption = {
-  method: string;
-  price_modifier?: number;
-  price?: number;
-  note?: string;
-};
-
-const PROVIDER_DEFAULT_COLLECTION_OPTIONS: Record<string, CollectionOption[]> = {
+const PROVIDER_DEFAULT_COLLECTION_OPTIONS: Record<string, ProviderCollectionOption[]> = {
   "lola-health": [
     { method: "In-clinic phlebotomy", price_modifier: 35 },
     { method: "At-home phlebotomy", price_modifier: 35 },
@@ -97,9 +89,9 @@ const PROVIDER_DEFAULT_COLLECTION_OPTIONS: Record<string, CollectionOption[]> = 
     { method: "Clinic phlebotomy", price_modifier: 25 },
   ],
   "london-medical-laboratory": [
-    { method: "Finger-prick home kit", price_modifier: 0, note: "Included" },
+    { method: "Finger-prick home kit", price_modifier: 3.99 },
     { method: "Venous clinic draw", price_modifier: 35 },
-    { method: "Home phlebotomist visit", price_modifier: 45 },
+    { method: "Home phlebotomy visit", price_modifier: 80 },
   ],
   "goodbody-clinic": [
     { method: "In-clinic venous draw", price_modifier: 0, note: "Included" },
@@ -123,10 +115,16 @@ const PROVIDER_DEFAULT_COLLECTION_OPTIONS: Record<string, CollectionOption[]> = 
   ],
 };
 
-const parseBiomarkersList = (biomarkersList: any): string[] => {
+const parseBiomarkersList = (biomarkersList: unknown): string[] => {
   if (!biomarkersList) return [];
   if (Array.isArray(biomarkersList)) {
-    return biomarkersList.map((b: any) => (typeof b === "string" ? b : b.name || b.biomarker_name || String(b)));
+    return biomarkersList.map((biomarker: unknown) => {
+      if (typeof biomarker === "string") return biomarker;
+      if (!biomarker || typeof biomarker !== "object") return String(biomarker);
+      const record = biomarker as Record<string, unknown>;
+      const name = record.name ?? record.biomarker_name ?? record.value;
+      return typeof name === "string" ? name : String(biomarker);
+    });
   }
   if (typeof biomarkersList === "object") {
     return Object.values(biomarkersList).map(String);
@@ -134,7 +132,7 @@ const parseBiomarkersList = (biomarkersList: any): string[] => {
   return [];
 };
 
-const getCollectionLabel = (sampleType?: string | null, collectionOptions?: CollectionOption[] | null): string => {
+const getCollectionLabel = (sampleType?: string | null, collectionOptions?: ProviderCollectionOption[] | null): string => {
   const st = (sampleType || "").toLowerCase();
   if (collectionOptions && collectionOptions.length > 0) {
     const m = collectionOptions[0].method.toLowerCase();
@@ -153,7 +151,7 @@ const getCollectionLabel = (sampleType?: string | null, collectionOptions?: Coll
 const getCollectionDetail = (
   collectionMethod?: string | null,
   sampleType?: string | null,
-  collectionOptions?: CollectionOption[] | null,
+  collectionOptions?: ProviderCollectionOption[] | null,
 ): string => {
   if (collectionMethod && collectionMethod.trim()) return collectionMethod.trim();
   const st = (sampleType || "").toLowerCase();
@@ -169,6 +167,41 @@ const getCollectionDetail = (
   if (sample) return sample;
   if (setting) return setting;
   return "Collection method not stated by this provider";
+};
+
+const getStoredCollectionOptions = (
+  test: ProviderTestCardData,
+): ProviderCollectionOption[] | null => {
+  if (Array.isArray(test.collection_options)) {
+    const stored = test.collection_options.flatMap((option: unknown) => {
+      if (!option || typeof option !== "object") return [];
+      const record = option as Record<string, unknown>;
+      if (typeof record.method !== "string") return [];
+      return [{
+        method: record.method,
+        price_modifier: typeof record.price_modifier === "number" ? record.price_modifier : undefined,
+        price: typeof record.price === "number" ? record.price : undefined,
+        note: typeof record.note === "string" ? record.note : undefined,
+      } satisfies ProviderCollectionOption];
+    });
+    if (stored.length > 0) return stored;
+  }
+
+  const options: ProviderCollectionOption[] = [];
+  if (test.clinic_visit_available && typeof test.clinic_phlebotomy_cost === "number") {
+    options.push({ method: "Venous clinic draw", price_modifier: test.clinic_phlebotomy_cost });
+  }
+  if (typeof test.home_phlebotomy_cost === "number" && test.home_phlebotomy_cost > 0) {
+    options.push({ method: "Home phlebotomy visit", price_modifier: test.home_phlebotomy_cost });
+  }
+  return options.length > 0 ? options : null;
+};
+
+const formatCollectionCharge = (option: ProviderCollectionOption): string => {
+  if (option.note) return option.note;
+  if (typeof option.price === "number") return `£${option.price.toFixed(option.price % 1 === 0 ? 0 : 2)}`;
+  const modifier = option.price_modifier ?? 0;
+  return modifier > 0 ? `+£${modifier.toFixed(modifier % 1 === 0 ? 0 : 2)}` : "Free";
 };
 
 /** What the headline count actually measures, per provider data. */
@@ -203,16 +236,17 @@ export default function ProviderTestDetailModal({
 
   const biomarkers = goodbodyStatic?.biomarkers || parseBiomarkersList(test.biomarkers_list);
   const turnaround = test.turnaround_days_text || goodbodyStatic?.turnaround || formatTurnaround(test.provider_id);
-  const collectionOptions: CollectionOption[] | null =
+  const storedCollectionOptions = getStoredCollectionOptions(test);
+  const collectionOptions: ProviderCollectionOption[] | null =
     goodbodyStatic?.collectionOptions && goodbodyStatic.collectionOptions.length > 0
       ? goodbodyStatic.collectionOptions
-      : Array.isArray(test.collection_options) && test.collection_options.length > 0
-        ? (test.collection_options as CollectionOption[])
+      : storedCollectionOptions
+        ? storedCollectionOptions
         : PROVIDER_DEFAULT_COLLECTION_OPTIONS[test.provider_id.toLowerCase()] ?? null;
 
-  const displayedBiomarkerCount = biomarkers.length > 0
-    ? biomarkers.length
-    : (test.biomarker_count ?? 0);
+  const displayedBiomarkerCount = test.biomarker_count && test.biomarker_count > 0
+    ? test.biomarker_count
+    : biomarkers.length;
 
   const headerPrice = test.base_price ?? goodbodyStatic?.price ?? test.price;
   const priceIsFrom = test.base_price != null && test.base_price > 0;
@@ -407,12 +441,7 @@ export default function ProviderTestDetailModal({
                   >
                     <span className="min-w-0 break-words">{opt.method}</span>
                     <span className="font-semibold whitespace-nowrap text-[#22c0d4]">
-                      {opt.note
-                        ?? (typeof opt.price === "number"
-                          ? `£${opt.price}`
-                          : (opt.price_modifier ?? 0) > 0
-                            ? `+£${opt.price_modifier}`
-                            : "Free")}
+                      {formatCollectionCharge(opt)}
                     </span>
                   </li>
                 ))}
