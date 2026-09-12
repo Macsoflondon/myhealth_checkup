@@ -4196,6 +4196,7 @@ export type Database = {
           phlebotomy_included: boolean | null
           policy_source_url: string | null
           popularity_rank: number | null
+          preparation_notes: string | null
           price: number | null
           price_not_stated: boolean | null
           provider_id: string
@@ -4209,6 +4210,7 @@ export type Database = {
           source_section_label: string | null
           sub_goals: string[] | null
           symptoms: Json | null
+          test_limitations: string | null
           test_name: string
           test_type: string | null
           total_expected_cost: number | null
@@ -4226,6 +4228,7 @@ export type Database = {
           url_verified: boolean | null
           url_verified_at: string | null
           was_price: number | null
+          what_is_tested: string | null
           who_should_test: string | null
         }
         Insert: {
@@ -4286,6 +4289,7 @@ export type Database = {
           phlebotomy_included?: boolean | null
           policy_source_url?: string | null
           popularity_rank?: number | null
+          preparation_notes?: string | null
           price?: number | null
           price_not_stated?: boolean | null
           provider_id: string
@@ -4299,6 +4303,7 @@ export type Database = {
           source_section_label?: string | null
           sub_goals?: string[] | null
           symptoms?: Json | null
+          test_limitations?: string | null
           test_name: string
           test_type?: string | null
           total_expected_cost?: number | null
@@ -4316,6 +4321,7 @@ export type Database = {
           url_verified?: boolean | null
           url_verified_at?: string | null
           was_price?: number | null
+          what_is_tested?: string | null
           who_should_test?: string | null
         }
         Update: {
@@ -4376,6 +4382,7 @@ export type Database = {
           phlebotomy_included?: boolean | null
           policy_source_url?: string | null
           popularity_rank?: number | null
+          preparation_notes?: string | null
           price?: number | null
           price_not_stated?: boolean | null
           provider_id?: string
@@ -4389,6 +4396,7 @@ export type Database = {
           source_section_label?: string | null
           sub_goals?: string[] | null
           symptoms?: Json | null
+          test_limitations?: string | null
           test_name?: string
           test_type?: string | null
           total_expected_cost?: number | null
@@ -4406,6 +4414,7 @@ export type Database = {
           url_verified?: boolean | null
           url_verified_at?: string | null
           was_price?: number | null
+          what_is_tested?: string | null
           who_should_test?: string | null
         }
         Relationships: []
