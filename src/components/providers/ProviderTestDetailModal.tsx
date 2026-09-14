@@ -14,6 +14,7 @@ import { getProviderLogo } from "@/constants/providers";
 import { resolveAccreditationsFromRow } from "@/lib/resolve-test-fields";
 import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
 import { resolveTestSummary } from "@/lib/test-summary";
+import { hasHomeKitRoute } from "@/lib/collectionVariants";
 
 
 interface ProviderTestDetailModalProps {
