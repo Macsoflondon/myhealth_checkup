@@ -17,4 +17,7 @@ jobs:
       # Covers, among others:
       #   src/lib/storage/__tests__/testResultsPath.test.ts  (W5 storage prefix regression)
       #   src/lib/ci/__tests__/migration-parity.test.ts      (W2 parity fixture self-test)
-      - run: npx vitest run
+      # categoryMapping.test.ts queries live catalogue data and has its own
+      # workflow (category-mapping-regression.yml); excluded here so this job
+      # stays a deterministic, offline unit-test gate.
+      - run: npx vitest run --exclude "src/components/admin/__tests__/categoryMapping.test.ts"
