@@ -90,7 +90,11 @@ export type HeroSlide = {
   fit?: "cover" | "contain";
   eyebrow?: string;
   headline?: string;
+  /** Explicit line breaks for the headline, so wording never wraps awkwardly. */
+  headlineLines?: readonly string[];
   supportingCopy?: string;
+  /** Which side of the photograph the copy sits on. Defaults to left. */
+  align?: "left" | "right";
 };
 
 const joggingWomanAvifSrcSet = srcSet([joggingWoman480Avif, 480], [joggingWoman768Avif, 768], [joggingWoman1200Avif, 1200], [joggingWoman1920Avif, 1920]);
