@@ -1,6 +1,4 @@
 import { describe, expect, it } from "vitest";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error - plain ESM script module shared with CI, no type declarations
 import {
   compareMigrationSets,
   formatParityReport,
