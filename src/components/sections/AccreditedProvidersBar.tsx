@@ -52,7 +52,7 @@ const AccreditedProvidersBar = () => {
                 className="w-6 h-1.5 mb-0.5 rounded-full"
                 style={{ backgroundColor: underlineColors[idx % underlineColors.length] }}
               />
-              <h3 className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.14em] text-[#081129] leading-tight">
+              <h3 className="whitespace-nowrap text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.04em] sm:tracking-[0.14em] text-[#081129] leading-tight">
                 {item.label}
               </h3>
             </div>

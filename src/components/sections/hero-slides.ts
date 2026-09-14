@@ -90,7 +90,11 @@ export type HeroSlide = {
   fit?: "cover" | "contain";
   eyebrow?: string;
   headline?: string;
+  /** Explicit line breaks for the headline, so wording never wraps awkwardly. */
+  headlineLines?: readonly string[];
   supportingCopy?: string;
+  /** Which side of the photograph the copy sits on. Defaults to left. */
+  align?: "left" | "right";
 };
 
 const joggingWomanAvifSrcSet = srcSet([joggingWoman480Avif, 480], [joggingWoman768Avif, 768], [joggingWoman1200Avif, 1200], [joggingWoman1920Avif, 1920]);
@@ -146,6 +150,11 @@ export const SLIDES: HeroSlide[] = [
     posMobile: "40% 15%",
     posTablet: "40% 32%",
     posDesktop: "50% 45%",
+    eyebrow: "At-home testing",
+    headline: "Test at home, made simple.",
+    headlineLines: ["Test at home,", "made simple."],
+    supportingCopy: "Finger-prick kits from accredited UK laboratories.",
+    align: "right",
   },
   {
     src: ageingDesktop1200Webp.url,
@@ -184,8 +193,9 @@ export const SLIDES: HeroSlide[] = [
     posMobile: "center center",
     posTablet: "center center",
     posDesktop: "center center",
-    eyebrow: "Private screening",
+    eyebrow: "Compare",
     headline: "Private screening, made clearer.",
+    headlineLines: ["Private screening,", "made clearer."],
     supportingCopy: "Compare options, prices and providers in one place.",
   },
 ];

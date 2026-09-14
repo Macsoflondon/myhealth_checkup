@@ -131,22 +131,43 @@ export default function HeroMasthead({
               </picture>
 
               {s.headline ? (
-                <div className="absolute inset-0 z-10 flex items-start bg-gradient-to-r from-brand-navy/90 via-brand-navy/55 to-transparent px-5 pt-8 sm:items-center sm:px-10 sm:pt-0 md:px-16 lg:px-20">
-                  <div className="w-[74%] max-w-xl text-primary-foreground sm:w-[58%] lg:w-[52%]">
+                <div
+                  className={`absolute inset-0 z-10 flex items-start px-5 pt-8 sm:items-center sm:px-10 sm:pt-0 md:px-16 lg:px-20 ${
+                    s.align === "right"
+                      ? "justify-end bg-gradient-to-l from-brand-navy/90 via-brand-navy/55 to-transparent text-right"
+                      : "bg-gradient-to-r from-brand-navy/90 via-brand-navy/55 to-transparent"
+                  }`}
+                >
+                  <div className="w-[82%] max-w-xl text-primary-foreground sm:w-[58%] lg:w-[52%]">
                     {s.eyebrow ? (
                       <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-brand-turquoise sm:text-sm">
                         {s.eyebrow}
                       </p>
                     ) : null}
-                    <p className="font-display text-3xl font-extrabold leading-tight sm:text-4xl md:text-5xl lg:text-6xl">
-                      {s.headline}
+                    <p className="font-display text-[1.65rem] font-extrabold leading-[1.12] sm:text-4xl md:text-5xl lg:text-6xl">
+                      {s.headlineLines
+                        ? s.headlineLines.map((line) => (
+                            <span key={line} className="block">
+                              {line}
+                            </span>
+                          ))
+                        : s.headline}
                     </p>
                     {s.supportingCopy ? (
-                      <p className="mt-4 max-w-md text-sm font-medium leading-relaxed text-primary-foreground/90 sm:text-lg md:text-xl">
+                      <p
+                        className={`mt-4 max-w-md text-sm font-medium leading-relaxed text-primary-foreground/90 sm:text-lg md:text-xl ${
+                          s.align === "right" ? "ml-auto" : ""
+                        }`}
+                      >
                         {s.supportingCopy}
                       </p>
                     ) : null}
-                    <div aria-hidden className="mt-5 flex h-1 w-28 overflow-hidden rounded-full sm:w-36">
+                    <div
+                      aria-hidden
+                      className={`mt-5 flex h-1 w-28 overflow-hidden rounded-full sm:w-36 ${
+                        s.align === "right" ? "ml-auto" : ""
+                      }`}
+                    >
                       <span className="w-2/3 bg-brand-turquoise" />
                       <span className="w-1/3 bg-brand-pink" />
                     </div>
