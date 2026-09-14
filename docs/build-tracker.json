@@ -1,0 +1,33 @@
+{
+  "project": "MyHealthCheckup Health Intelligence Platform",
+  "updated": "2026-09-14",
+  "status_values": ["NOT STARTED", "IN PROGRESS", "BLOCKED", "COMPLETE", "DEFERRED", "FAILED / REWORK REQUIRED"],
+  "overall": {
+    "architecture_specified": true,
+    "production_health_intelligence_build_started": false,
+    "current_blocker": "Lovable connector projects:write permission"
+  },
+  "phases": [
+    {"id":"P0","name":"Existing platform and database audit","status":"IN PROGRESS","completion":0},
+    {"id":"P1","name":"Health Record Foundation","status":"NOT STARTED","completion":0},
+    {"id":"P2","name":"AI Results and Document Intelligence","status":"NOT STARTED","completion":0},
+    {"id":"P3","name":"Biomarker Ontology and Longitudinal Engine","status":"NOT STARTED","completion":0},
+    {"id":"P4","name":"Retest Intelligence Engine","status":"NOT STARTED","completion":0},
+    {"id":"P5","name":"Personal Health Record and User Experience","status":"NOT STARTED","completion":0},
+    {"id":"P6","name":"Clinician Reports and Secure Sharing","status":"NOT STARTED","completion":0},
+    {"id":"P7","name":"Provider and Laboratory Integrations","status":"NOT STARTED","completion":0},
+    {"id":"P8","name":"FHIR / LOINC Interoperability","status":"NOT STARTED","completion":0},
+    {"id":"P9","name":"Health Intelligence AI","status":"NOT STARTED","completion":0}
+  ],
+  "gates": [
+    {"id":"A","name":"Architecture approved","status":"COMPLETE"},
+    {"id":"B","name":"Database foundation safe","status":"NOT STARTED"},
+    {"id":"C","name":"Verified results foundation","status":"NOT STARTED"},
+    {"id":"D","name":"Automated ingestion safe","status":"NOT STARTED"},
+    {"id":"E","name":"Longitudinal intelligence reliable","status":"NOT STARTED"},
+    {"id":"F","name":"Retesting governed","status":"NOT STARTED"},
+    {"id":"G","name":"Patient record production-ready","status":"NOT STARTED"},
+    {"id":"H","name":"Connected ecosystem","status":"NOT STARTED"},
+    {"id":"I","name":"Health Intelligence AI","status":"NOT STARTED"}
+  ]
+}
