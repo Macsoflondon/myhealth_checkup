@@ -79,24 +79,27 @@ A task is `COMPLETE` **only** when all five are evidenced, and the evidence is r
 
 ## Phase 1 — Health record foundation
 
-**Status: NOT STARTED.** Gated behind a genuinely closed Phase 0. No production Health Intelligence tables are to be created.
+**Status: IN PROGRESS** — groundwork schema shipped 14 September 2026 in one additive, reversible migration: **18 tables, 14 enums, explicit grants, RLS on every table, least-privilege policies, Supabase linter clean.** Every table is empty by design. Schema is not a feature: no item below is COMPLETE, because completion requires an ingestion path, patient verification and a user-facing surface, none of which exist yet.
 
-| ID | Task | Status |
-| --- | --- | --- |
-| P1.01 | `health_profiles` | NOT STARTED |
-| P1.02 | Profile relationships and memberships | NOT STARTED |
-| P1.03 | `source_documents` | NOT STARTED |
-| P1.04 | `diagnostic_reports` | NOT STARTED |
-| P1.05 | `specimens` | NOT STARTED |
-| P1.06 | `observations` (full observation contract) | NOT STARTED |
-| P1.07 | `reference_ranges` (historical ranges retained per observation) | NOT STARTED |
-| P1.08 | `observation_provenance` | NOT STARTED |
-| P1.09 | `verification_records` | NOT STARTED |
-| P1.10 | Audit logging for health-record access | NOT STARTED |
-| P1.11 | RLS across all Phase 1 tables | NOT STARTED |
-| P1.12 | Manual result entry | NOT STARTED |
-| P1.13 | Basic health record UI | NOT STARTED |
-| P1.14 | Regression and security gate | NOT STARTED |
+Contracts and pure logic accompanying the schema: `src/types/health-intelligence.ts`, `src/lib/health/release-state-machine.ts`, `src/lib/health/biomarker-series.ts`, `src/services/HealthRecordService.ts`, with 19 unit tests. Typecheck clean; full suite green.
+
+| ID | Task | Status | Evidence |
+| --- | --- | --- | --- |
+| P1.01 | `health_profiles` | IN PROGRESS | Table created, owner-scoped RLS, separate from `auth.users` so dependant profiles are possible later. No UI |
+| P1.02 | Profile relationships and memberships | NOT STARTED | Deferred deliberately; `organisation_members` covers the practitioner side only and grants no health-data access |
+| P1.03 | `source_documents` | IN PROGRESS | Table created; `storage_path` is a private object path, never a public URL. No upload path yet |
+| P1.04 | `diagnostic_reports` | IN PROGRESS | Table created with the release status machine; owner can read only once released. No ingestion |
+| P1.05 | `specimens` | IN PROGRESS | Table created and linked to reports |
+| P1.06 | `observations` (full observation contract) | IN PROGRESS | **Authoritative result table.** Carries no interpretation or AI-derived field. Source value, unit and range immutable after insert, enforced by a trigger. Trust requires `verification_status = 'confirmed'`. Cycle day, phase, menstrual status and hormone medication context included |
+| P1.07 | `reference_ranges` (historical ranges retained per observation) | IN PROGRESS | `observation_reference_ranges` retains the range that applied at the time; `reference_range_contexts` holds versioned contextual definitions, inactive until clinically signed off |
+| P1.08 | `observation_provenance` | IN PROGRESS | Provenance carried on `observations` itself (source document, page, text anchor, extraction method and confidence) rather than a separate table — ratified P0.09 decision |
+| P1.09 | `verification_records` | NOT STARTED | Verification state exists on the observation; the confirm/edit/reject audit trail is outstanding |
+| P1.10 | Audit logging for health-record access | NOT STARTED | Canonical `audit_logs` to be wired when read paths go live |
+| P1.11 | RLS across all Phase 1 tables | IN PROGRESS | Enabled with policies on all 18 tables and linter-clean; the acceptance test suite proving each policy is outstanding |
+| P1.12 | Manual result entry | NOT STARTED | First adapter to build against `InboundReport` |
+| P1.13 | Basic health record UI | NOT STARTED | |
+| P1.14 | Regression and security gate | NOT STARTED | |
+
 
 ---
 
