@@ -116,6 +116,11 @@ export const SLIDES: HeroSlide[] = [
     posMobile: "35% 55%",
     posTablet: "center 32%",
     posDesktop: "center 35%",
+    eyebrow: "Preventative health",
+    headline: "Stay ahead of your health.",
+    headlineLines: ["Stay ahead of", "your health."],
+    supportingCopy: "Compare private screening from accredited UK laboratories.",
+    align: "right",
   },
   {
     src: wellnessDesktop1200Webp.url,
