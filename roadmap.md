@@ -16,3 +16,12 @@
 - [x] Use the supplied Lola Health add-on kit image on all Lola add-on test cards without changing stored provider images.
 - [x] Present and install three approved licensed real-stock hero images with branded slogans in a six-slide homepage sequence.
 - [x] Correct the three slogan slides with art-directed mobile/desktop photos and responsive live text so no wording is cropped.
+- [x] Phase 0 audit closed to the limit of agent access: migration reconciliation executed (93 marker files, 33 policy exclusions), `public.profiles` retired reversibly, storage prefix and bucket controls regression-tested.
+- [ ] Phase 0 exit gate — blocked on the site owner: Supabase dashboard verification (auth policy, backups/PITR, cron inventory, live grants, bucket `allowed_mime_types`) and the `SUPABASE_DB_URL` repository secret for the live migration parity check.
+- [x] Health Intelligence groundwork schema: 18 additive tables, RLS and grants throughout, `SECURITY DEFINER` helpers moved to a non-exposed schema, Supabase linter clean.
+- [x] Canonical health contracts, release state machine, longitudinal series maths and health-record read layer, with 19 tests.
+- [x] Forth Connect competitive architecture review; capabilities cherry-picked into backlog F.A-F.I, proprietary scores explicitly refused.
+- [ ] F.A release transitions as server functions writing an audit event in the same transaction.
+- [ ] F.I manual-entry adapter, then document upload, as the reference ingestion implementations.
+- [ ] F.B longitudinal charts on the health dashboard once observations can exist.
+- [ ] F.G notification dispatch abstraction and preference screen.

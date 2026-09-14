@@ -162,3 +162,18 @@ If the original blueprint becomes retrievable, reconcile this mapping against it
 ## Exit condition
 
 Phase 0 closes (P0.11) when W1, W2, W4, W5 and W6 are done and W3 is either done or explicitly deferred with the residual risk accepted in writing. Only then does Phase 1 begin.
+
+---
+
+## Worklist outcome — 14 September 2026 (fifth pass)
+
+| Item | Outcome |
+| --- | --- |
+| W1 — profile model | **DONE.** `user_profiles` confirmed canonical; `public.profiles` retired in an isolated reversible migration after a clean live preflight (0 rows, 0 grants, 0 triggers, 0 inbound FKs, 0 dependent views, 0 referencing functions). `handle_new_user_profile()` deliberately not renamed — bound to the reserved `auth.users` trigger; a `COMMENT` records the true target. Signup regression green. |
+| W2 — migration drift | **DONE in the repository.** 93 non-executing marker files committed, 33 catalogue-DML versions excluded by written policy, parity tooling enforces both, 12 tests green. No historical DDL or DML replayed. Live remote diff still blocked by B5. |
+| W3 — dashboard-only controls | **OPEN, external.** Auth password/MFA policy, backups/PITR, cron inventory, live grants and storage `allowed_mime_types` all require Supabase dashboard access. Application-level enforcement stays in `src/lib/storage/testResultsPath.ts`. Not claimed as verified. |
+| W4 — bucket hardening | **DONE as far as the supported interface allows.** `test-results` private, 20 MB limit verified. MIME allow-list enforced in application code; the bucket-level setting is a dashboard residual. |
+| W5 — storage prefix | **DONE.** `<uid>/` invariant centralised, 10 positive and negative tests (traversal, prefix spoofing, cross-user) running in CI. |
+| W6 — architecture decisions | **DONE.** All ten ratified as direction and now implemented in the groundwork migration: `biomarker_hub`, `audit_logs`, `ai_prompt_versions` and `clinical_consent_records` kept canonical; `observations` created fresh with no interpretation field; per-observation historical ranges; `diagnostic_reports` and `specimens` new; contextual ranges added for cycle-aware modelling. |
+
+**Exit condition restated:** W1, W2, W4, W5 and W6 are done. W3 is not done and cannot be done from this session. Phase 0 therefore stays IN PROGRESS with P0.10 and P0.11 BLOCKED on B4 and B5 — it is not being marked complete on the strength of everything else passing.
