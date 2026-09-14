@@ -5,14 +5,14 @@
 
 These six items are everything still standing between the current state and a genuinely closed Phase 0. Phase 1 does not begin until all six are resolved or explicitly deferred with a recorded decision. **No production Health Intelligence tables are to be created while this list is open.** The existing marketplace, provider, catalogue, SEO and referral functionality is preserved throughout — none of these actions touches it.
 
-| Item | State after the third pass |
+| Item | State after the fourth pass (14 Sep 2026) |
 | --- | --- |
-| W1 profiles vs user_profiles | **Investigation complete.** Retirement migration outstanding |
-| W2 migration drift | **Enumerated and classified.** Parity enforcement fix outstanding |
-| W3 dashboard-only settings | Blocked — needs Supabase dashboard access |
-| W4 bucket hardening | Not started |
-| W5 storage prefix test | Not started |
-| W6 architecture gap mapping | **Mapping complete.** Five collision decisions await ratification |
+| W1 profiles vs user_profiles | **Investigation complete; retirement plan and rollback written.** Migration deliberately not executed |
+| W2 migration drift | **Parity enforcement fixed and self-tested; inventory and exclusion policy published** (`docs/MIGRATION_RECONCILIATION.md`). Marker backfill and near-miss correction outstanding; live remote diff unproven until `SUPABASE_DB_URL` exists |
+| W3 dashboard-only settings | Blocked — needs Supabase dashboard access. Now also carries the `allowed_mime_types` setting from W4 |
+| W4 bucket hardening | **Partial.** 20 MB limit set and verified; MIME allow-list not settable through the supported operation, enforced in application code only |
+| W5 storage prefix test | **Done.** Shared helper, 10 positive and negative tests, running in CI |
+| W6 architecture gap mapping | **Mapping complete; ten decisions ratified as direction.** No retirement executed, no Phase 1 table created |
 
 ---
 

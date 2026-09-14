@@ -403,3 +403,157 @@ Planned canonical entities from project knowledge, mapped against the live schem
 ### Tracker effect
 
 `P0.05` moves to COMPLETE — the model is determined and evidenced; execution of the retirement is worklist W1 and remains open. `P0.02` and `P0.08` stay IN PROGRESS. `P0.09` moves from BLOCKED to IN PROGRESS: the mapping is complete against project knowledge, and only ratification of the five collision decisions is outstanding. Blocker B3 is downgraded — project knowledge supplied the entity list the missing blueprint would have.
+
+---
+
+## FOURTH PASS — 14 September 2026: safe remediation executed
+
+This pass changed code, CI and one bucket setting. It changed **no** production table, no
+production data, no schema, and nothing in the marketplace, provider, catalogue, SEO or
+referral surfaces.
+
+### W2 — Migration parity enforcement: FIXED
+
+Full inventory and the exclusion policy now live in `docs/MIGRATION_RECONCILIATION.md`.
+
+Two independent holes meant drift could never be detected, which explains its accumulation:
+
+1. `.github/workflows/migration-parity.yml` gated the remote diff on
+   `if: ${{ secrets.SUPABASE_DB_URL != '' }}`. GitHub does not expose the `secrets` context
+   to step-level `if`, so the condition never evaluated truthy, the remote half never ran,
+   and the job still reported green.
+2. The `pull_request` trigger was path-filtered to `supabase/migrations/**`, so a migration
+   applied through the tool without a file touches no path and opens no PR.
+
+Remediation:
+
+| Change | Artefact |
+| --- | --- |
+| Secret moved to job-level `env`; steps test `env.SUPABASE_DB_URL != ''` | `.github/workflows/migration-parity.yml` |
+| Visible warning annotation when the secret is absent, so a skipped remote check is never silent | same |
+| Daily schedule (`17 6 * * *`) plus `workflow_dispatch` | same |
+| Remote comparison extracted from inline bash to a reviewable script that exits non-zero when the URL is missing | `scripts/check-remote-migration-parity.mjs` |
+| Comparison logic isolated and pure; the `+1s` skew tolerance is now explicit and narrow (trailing version only, exactly one second, nothing else differing) and is reported in the log when applied rather than silently swallowed | `scripts/lib/migration-parity-core.mjs` |
+| Fixture self-test proving the checker fails on deliberate drift — no production access | `src/lib/ci/__tests__/migration-parity.test.ts` |
+
+**Verified:** 8 of 8 fixture tests pass. **Not yet verified:** the live remote diff, because
+`SUPABASE_DB_URL` is not present in repository secrets. Until it is, CI warns and the remote
+half is genuinely unproven. No historical SQL was invented, replayed or backfilled.
+
+### W4 — `test-results` bucket hardening: PARTIAL
+
+Before: private, `file_size_limit` null, `allowed_mime_types` null — any authenticated user
+could place a file of any type and any size under their own prefix.
+
+After (set through `supabase--storage_update_bucket`, not raw SQL; re-read from
+`storage.buckets` to confirm): `file_size_limit = 20971520` (20 MB), `public = false`.
+
+Rationale for 20 MB: UK laboratory PDF reports are typically well under 2 MB; a
+multi-page scanned report or a modern phone photograph of a result sheet can reach 8–12 MB.
+20 MB accommodates both with headroom while making bulk-storage abuse plainly abnormal. The
+previous client-side 10 MB toast was a soft check only and is now replaced by a shared
+helper that mirrors the bucket limit.
+
+`provider-test-images` and `videos` were not altered.
+
+**Residual gap — recorded honestly:** the supported bucket operation exposes only
+`public` and `file_size_limit`. It has no parameter for `allowed_mime_types`, and raw
+`UPDATE storage.buckets` is rejected. The MIME allow-list is therefore enforced in
+application code (`assertUploadableFile`) but **not** at the storage layer. Setting
+`allowed_mime_types` to PDF, JPEG, PNG, WebP, HEIC and HEIF requires Supabase dashboard
+access and is added to W3's dashboard checklist. Until then a determined authenticated
+client could still place a disallowed type under its own prefix, bounded by 20 MB.
+
+### W5 — Storage prefix regression: DONE
+
+The four `test-results` policies are all gated on
+`auth.uid()::text = (storage.foldername(name))[1]`, so per-user isolation depends entirely on
+every upload path writing a `<uid>/` prefix. That invariant was previously held only by an
+inline template literal in one component.
+
+- `src/lib/storage/testResultsPath.ts` is now the single place the invariant is expressed:
+  `buildTestResultObjectKey(userId, fileName)`, `isOwnedByUser`, `assertUploadableFile`,
+  `TEST_RESULTS_MAX_BYTES`, `TEST_RESULTS_ALLOWED_MIME_TYPES`.
+- `src/components/dashboard/TestResultUploader.tsx` — the only upload path to the bucket,
+  confirmed by search — now uses the helper instead of `${user.id}/${Date.now()}.${ext}`,
+  and validates size and type before upload.
+- `src/lib/storage/__tests__/testResultsPath.test.ts` asserts the positive invariant and the
+  negative security cases: an empty or anonymous id is refused; path traversal in the
+  filename is neutralised; another user's id embedded in the filename cannot coerce the
+  prefix; ownership checks reject cross-user keys; oversized and disallowed types are
+  rejected.
+- `.github/workflows/unit-tests.yml` added, running the full vitest suite on push, pull
+  request and manual dispatch, so neither this suite nor the parity self-test is stranded.
+
+**Verified:** 10 of 10 tests pass (18 of 18 with the parity suite). The tests are
+deterministic and create no persistent health data. A live policy-level cross-user probe
+against production storage was deliberately not run — it would require a second real session
+and would write objects into the bucket holding real user data.
+
+### W1 — Profile model: retirement plan, not executed
+
+`user_profiles` remains canonical on the third-pass evidence. `public.profiles` was **not**
+dropped and `handle_new_user_profile()` was **not** renamed in this pass, per instruction.
+
+Retirement plan, to run as one reviewed migration containing nothing else:
+
+1. Pre-flight, re-asserted at execution time, not assumed from this document:
+   `select count(*) from public.profiles` is 0; no rows in `pg_depend` / `information_schema`
+   referencing it; no grants; no policies; no triggers; no inbound foreign keys.
+2. Snapshot: `create table private.profiles_retired_20260914 as select * from public.profiles;`
+   retained for one release cycle, so the rollback is a rename rather than a recreation.
+3. `drop table public.profiles;`
+4. `alter function public.handle_new_user_profile() rename to handle_new_user_signup;` and
+   update the `auth.users` trigger to match, in the same transaction.
+5. Regenerate `src/integrations/supabase/types.ts` so the dead row type disappears.
+6. Regression: a real signup must still produce one `user_profiles`, one `user_preferences`
+   and one `user_roles` row; the admin console and dashboard must load unchanged.
+
+Rollback requirements, stated explicitly in the migration comment:
+`drop trigger` → rename the function back → `create table public.profiles as select * from
+private.profiles_retired_20260914` → restore the original (empty) grant set, which is none.
+Because the table is empty and ungranted, rollback restores structure only, and nothing
+depends on that structure.
+
+**Tracker consequence:** P0.05 stays COMPLETE — the model is determined and evidenced, which
+is what that task asks. P0.08 stays IN PROGRESS and cannot be COMPLETE: the acceptance rule
+requires implementation and regression, and the retirement has deliberately not been
+implemented. A documentation-only status is not sufficient for P0.08.
+
+### W6 — Architecture direction: RATIFIED AS DIRECTION, NOT EXECUTED
+
+The following are recorded as the ratified architecture direction, on the site owner's
+instruction of 14 September 2026. Each is consistent with project knowledge and with the
+third-pass evidence. **No destructive retirement has been executed, and no Phase 1 table has
+been created.**
+
+| Decision | Direction |
+| --- | --- |
+| `biomarker_hub` | Keep and extend as the canonical biomarker entity. Do not create `biomarkers`. |
+| `audit_logs` | Keep and extend. Do not create a second audit table. |
+| `ai_prompt_versions` | Keep. Populate rather than replace. |
+| `consent_records` | Extend `clinical_consent_records`; retire `user_consents` later. Both empty today. |
+| `observations` | Create new. Do not promote `biomarker_readings` or `clinical_biomarker_history` to the authoritative observation table. |
+| `reference_ranges` | Keep `clinical_reference_ranges` as the definitions table; attach a separate historical range to each observation. |
+| Source documents | `clinical_patient_uploads` is the source-document base. The 2 `uploaded_test_results` rows migrate later through a controlled migration before that table is retired. |
+| `diagnostic_reports`, `specimens` | Create new, later. |
+| Sharing | Keep `data_sharing_grants` as the foundation; extend with scoped permissions. |
+| Audit and AI infrastructure | Extend what exists rather than duplicate it. |
+
+Rationale for the `observations` decision, restated because it is the one that looks like
+duplication and is not: `clinical_biomarker_history` stores `ai_interpretation` and
+`trend_direction` on the observation row itself. That violates rule 5 — AI must never create
+a trusted clinical observation — and the rule that trend mathematics is derived, never
+recorded as fact. All three candidate tables are empty, so the correction is free now and
+expensive later.
+
+### Part B — Forth Connect
+
+Recorded in `docs/RESEARCH_FORTH_CONNECT.md`. Summary of the architectural implication for
+this audit: Forth is a candidate **fulfilment and ingestion adapter upstream of the canonical
+model**, never a replacement for it. The canonical inbound contract in section 4.1 of that
+document is now the required shape for every ingestion route — Forth, provider API, FHIR,
+PDF upload and manual entry alike — and Phase 2 should be designed against it. Two hard
+requirements would gate any integration: we receive and may retain the original laboratory
+document for every result, and we hold a contractual right to bulk export on demand and on
+exit. Discovery only; no contact, no contract, no code.
