@@ -2,7 +2,7 @@
  * Smoke test — AccreditedProvidersBar must render all required trust-signal labels
  * (UKAS, CQC, ISO 15189) and must not produce horizontal scroll on mobile viewports.
  *
- * The component renders a static grid of badge pills (data-testid="accreditors-static-row").
+ * The component renders a static grid of badge pills (data-testid="accreditors-mobile-grid").
  *
  * Run with:  bunx playwright test tests/e2e/accredited-providers-bar.spec.ts
  */
@@ -17,7 +17,7 @@ const VIEWPORTS = [
   { name: "iPhone Plus/Max (414)", width: 414, height: 896 },
 ] as const;
 
-const ROW = '[data-testid="accreditors-static-row"]';
+const ROW = '[data-testid="accreditors-mobile-grid"]';
 
 // Labels that must appear at least once somewhere in the component.
 const REQUIRED_LABELS = ["UKAS", "CQC", "ISO 15189"];
