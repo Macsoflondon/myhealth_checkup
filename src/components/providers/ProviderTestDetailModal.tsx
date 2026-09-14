@@ -14,6 +14,7 @@ import { getProviderLogo } from "@/constants/providers";
 import { resolveAccreditationsFromRow } from "@/lib/resolve-test-fields";
 import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
 import { resolveTestSummary } from "@/lib/test-summary";
+import { hasHomeKitRoute } from "@/lib/collectionVariants";
 
 
 interface ProviderTestDetailModalProps {
@@ -188,6 +189,27 @@ const getStoredCollectionOptions = (
   }
 
   const options: ProviderCollectionOption[] = [];
+
+  // The self-collected kit is usually the cheapest route — never let the
+  // phlebotomy costs synthesise a list that hides it.
+  if (hasHomeKitRoute({
+    id: test.id,
+    price: test.price,
+    base_price: test.base_price,
+    sample_type: test.sample_type,
+    collection_method: test.collection_method,
+    home_kit_available: test.home_kit_available,
+    clinic_visit_available: test.clinic_visit_available,
+    clinic_phlebotomy_cost: test.clinic_phlebotomy_cost,
+    home_phlebotomy_cost: test.home_phlebotomy_cost,
+  })) {
+    const providerDefaults = PROVIDER_DEFAULT_COLLECTION_OPTIONS[test.provider_id.toLowerCase()] ?? [];
+    const defaultKit = providerDefaults.find((option) =>
+      /finger|home kit/i.test(option.method),
+    );
+    options.push(defaultKit ?? { method: "Finger-prick home kit", price_modifier: 0, note: "Included" });
+  }
+
   if (test.clinic_visit_available && typeof test.clinic_phlebotomy_cost === "number") {
     options.push({ method: "Venous clinic draw", price_modifier: test.clinic_phlebotomy_cost });
   }
