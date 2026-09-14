@@ -146,7 +146,7 @@ export default function HeroMasthead({
                     ) : null}
                     <p className="font-display text-[1.65rem] font-extrabold leading-[1.12] sm:text-4xl md:text-5xl lg:text-6xl">
                       {s.headlineLines
-                        ? s.headlineLines.map((line, li) => (
+                        ? s.headlineLines.map((line) => (
                             <span key={line} className="block">
                               {line}
                             </span>
