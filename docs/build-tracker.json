@@ -1006,6 +1006,285 @@
     "note": "No partner adapter before documentation and a sandbox exist. Hard requirements: original document retained per result, bulk export on demand and on exit.",
     "phase": "7"
    }
+  ],
+  "analysisDocument": "docs/FORTH_CONNECT_COMPETITIVE_ARCHITECTURE.md",
+  "sourcesReviewed": [
+   "products/results-app",
+   "products/connectpro",
+   "products/myform",
+   "products/healthcoach",
+   "solutions",
+   "terms-of-service"
+  ],
+  "governingConclusion": "Forth's advantages are operational and single-vendor (CE-marked kits, ISO 13485, MHRA registration, lab network, employed GP rota). We will not buy that chain. Our capabilities must survive heterogeneous multi-provider input, which is the harder problem and the defensible one.",
+  "priorities": {
+   "P0": [
+    {
+     "id": "P0-a",
+     "item": "Release transition server functions",
+     "dependsOn": [
+      "F.A"
+     ],
+     "acceptance": "Transitions go through the state machine and write result_release_events in the same transaction; invalid transitions rejected in the database; owner cannot read a report before release, proved by RLS tests."
+    },
+    {
+     "id": "P0-b",
+     "item": "Manual-entry ingestion adapter",
+     "dependsOn": [
+      "F.I",
+      "P0-a"
+     ],
+     "acceptance": "Produces a valid InboundReport; source value and unit preserved verbatim; provenance written with extraction_method manual_entry; round-trip test proves source fields unchanged after canonicalisation."
+    },
+    {
+     "id": "P0-c",
+     "item": "Patient verification flow",
+     "dependsOn": [
+      "P0-b"
+     ],
+     "acceptance": "Draft shows value, unit, range, date, laboratory and source document; confirm/edit/reject recorded with actor and timestamp; edits supersede rather than overwrite; only confirmed rows enter any series."
+    },
+    {
+     "id": "P0-d",
+     "item": "Deterministic validation pass",
+     "dependsOn": [
+      "P0-b"
+     ],
+     "acceptance": "Unit, value type, range sanity and date plausibility checked; failures block trust with a reason; no LLM in the path, enforced by a module-boundary test."
+    },
+    {
+     "id": "P0-e",
+     "item": "Abnormal-result escalation policy",
+     "dependsOn": [
+      "P0-d",
+      "X.11"
+     ],
+     "acceptance": "Written policy naming clinical standard, lawful basis and human in the loop; deterministic trigger on validated observations only; not consent-toggleable; never AI-triggered; recorded in audit_logs.",
+     "note": "Modelled on Forth ToS clause 11.5, which overrides the customer opt-out for abnormal results."
+    },
+    {
+     "id": "P0-f",
+     "item": "Health-record access audit",
+     "dependsOn": [
+      "audit_logs"
+     ],
+     "acceptance": "Every non-owner read of an observation or source document writes an audit row with actor, purpose and data classification."
+    },
+    {
+     "id": "P0-g",
+     "item": "Source-neutrality contract test",
+     "dependsOn": [],
+     "status": "COMPLETE",
+     "acceptance": "Automated test asserts no canonical health module references a partner brand and the observation contract exposes no interpretation, score or AI field.",
+     "evidence": "src/lib/health/__tests__/canonical-neutrality.test.ts, shipped 14 Sep 2026. It immediately caught a partner name in a doc comment in src/types/health-intelligence.ts, which was removed."
+    },
+    {
+     "id": "P0-h",
+     "item": "Non-diagnostic and emergency notice in the record",
+     "dependsOn": [],
+     "acceptance": "Shown at the point of viewing a result, names emergency symptoms, states the platform reports and compares rather than diagnoses."
+    }
+   ],
+   "P1": [
+    {
+     "id": "P1-a",
+     "item": "Longitudinal charts",
+     "dependsOn": [
+      "P0-c"
+     ],
+     "acceptance": "Multi-provider series on one axis; overlay uses the range stored per observation; laboratory, method and provider labelled per point; captioned as measurement change, not interpretation."
+    },
+    {
+     "id": "P1-b",
+     "item": "Document upload and extraction",
+     "dependsOn": [
+      "P0-c",
+      "Phase 2"
+     ],
+     "acceptance": "Original retained privately under the <uid>/ prefix; extraction produces drafts only; confidence recorded; each draft reviewable against its source page."
+    },
+    {
+     "id": "P1-c",
+     "item": "Order and referral tracking (Layer 5)",
+     "dependsOn": [],
+     "acceptance": "Our order reference is primary; fulfiller is a nullable adapter reference; results from any adapter match to an order; removing an adapter loses no history."
+    },
+    {
+     "id": "P1-d",
+     "item": "Notification dispatch",
+     "dependsOn": [
+      "F.G"
+     ],
+     "acceptance": "Consent checked per channel per event type; payload carries no biomarker name or value; delivery status recorded; nothing forwarded to analytics or advertising, asserted by test."
+    },
+    {
+     "id": "P1-e",
+     "item": "Clinician review queue",
+     "dependsOn": [
+      "P0-a",
+      "P0-e"
+     ],
+     "acceptance": "Reviewer sees previous results for context; commentary attributed with professional registration and released separately; org-scoped policy only with recorded governance sign-off."
+    },
+    {
+     "id": "P1-f",
+     "item": "Contextual reference ranges",
+     "dependsOn": [
+      "F.H"
+     ],
+     "acceptance": "Ranges resolve by biomarker, sex, age band, cycle phase and cycle day; each carries evidence source and version; is_active requires clinical sign-off; a range change never mutates a historical observation."
+    },
+    {
+     "id": "P1-g",
+     "item": "Curated profile admin",
+     "dependsOn": [
+      "F.F"
+     ],
+     "acceptance": "Editable under /control; maps to biomarker_hub only; no price, provider or commission field, asserted by a schema test."
+    },
+    {
+     "id": "P1-h",
+     "item": "Export and deletion",
+     "dependsOn": [
+      "P0-c"
+     ],
+     "acceptance": "Machine-readable export of all observations plus original documents on demand; deletion removes both and leaves an audit record."
+    }
+   ],
+   "P2": [
+    {
+     "id": "P2-a",
+     "item": "Retest intelligence",
+     "dependsOn": [
+      "P1-a",
+      "P1-f",
+      "X.11"
+     ],
+     "acceptance": "Output limited to no action, routine review, monitoring opportunity or clinician pathway; every recommendation cites rule version and evidence source; a test proves identical output regardless of source_system and commission."
+    },
+    {
+     "id": "P2-b",
+     "item": "Category scores and focus areas",
+     "dependsOn": [
+      "P2-a"
+     ],
+     "acceptance": "Deterministic and versioned; each score decomposes into named components with visible weights; no AI-assigned weighting; withheld where inputs are insufficient."
+    },
+    {
+     "id": "P2-c",
+     "item": "Personalised targets",
+     "dependsOn": [
+      "P2-b"
+     ],
+     "acceptance": "Traceable to a versioned rule with recorded evidence source; framed as measurement targets, never clinical goals or outcomes."
+    },
+    {
+     "id": "P2-d",
+     "item": "Hormone curve modelling",
+     "dependsOn": [
+      "P1-f"
+     ],
+     "acceptance": "Our own published, versioned method stating its own limits; not a reimplementation of FORM."
+    },
+    {
+     "id": "P2-e",
+     "item": "Health timeline",
+     "dependsOn": [
+      "P1-a"
+     ],
+     "acceptance": "Results, releases, verifications and retests on one chronological surface."
+    },
+    {
+     "id": "P2-f",
+     "item": "FHIR export",
+     "dependsOn": [
+      "P1-a"
+     ],
+     "acceptance": "Validates against the profiles before release; DiagnosticReport carries report context and Observation the atomic measurement; not a claim of NHS connectivity."
+    },
+    {
+     "id": "P2-g",
+     "item": "Clinician sharing",
+     "dependsOn": [
+      "P1-e",
+      "P1-h"
+     ],
+     "acceptance": "Short-lived signed links, explicit scope, expiry, revocation, access logging; no public document URL."
+    }
+   ]
+  },
+  "doNotBuildYet": [
+   {
+    "item": "Peer benchmarking",
+    "why": "Re-identification risk and no statistical governance. The database constraint already refuses to enable it.",
+    "unblocksWhen": "Statistical governance, clinical sign-off, de-identification method and cohort definitions exist in writing."
+   },
+   {
+    "item": "Production clinician portal",
+    "why": "Broad access to special-category data before permissions and consent are designed.",
+    "unblocksWhen": "P1-e complete, DPIA covering practitioner access, role model tested."
+   },
+   {
+    "item": "Any Forth adapter",
+    "why": "No documentation, no sandbox, no agreed terms.",
+    "unblocksWhen": "Forth supplies technical documentation and a sandbox under NDA AND contractually commits to per-result source documents and bulk export on demand and on exit. Without both the integration breaches our provenance and portability rules and does not proceed at any price."
+   },
+   {
+    "item": "AI interpretation on the record surface",
+    "why": "Cannot be allowed to read as clinical truth.",
+    "unblocksWhen": "P2-b exists with explainability and governance sign-off."
+   },
+   {
+    "item": "Kit logistics, phlebotomy, laboratory operations",
+    "why": "Makes us a provider and destroys editorial independence.",
+    "unblocksWhen": "Never. Partner instead."
+   },
+   {
+    "item": "White-label storefront",
+    "why": "Nothing left of the proposition.",
+    "unblocksWhen": "Never."
+   },
+   {
+    "item": "Promoting clinical_biomarker_history or biomarker_readings to authoritative",
+    "why": "They store ai_interpretation and trend_direction on the row, violating two standing rules.",
+    "unblocksWhen": "Never. observations is authoritative."
+   }
+  ],
+  "refusals": [
+   {
+    "item": "FORM score",
+    "why": "Proprietary, unpublished composite. Copying breaches explainability and is an IP problem."
+   },
+   {
+    "item": "HealthCoach AI-assigned category weights",
+    "why": "An AI-assigned score that cannot be decomposed and versioned must not be shown as though it were a measurement."
+   },
+   {
+    "item": "Any AI output reaching a trusted observation field",
+    "why": "observations has no interpretation, score, trend or AI column, enforced by the table definition and an immutability trigger."
+   },
+   {
+    "item": "Benchmarking on by default",
+    "why": "A cohort claim is marketing until inclusion criteria, minimum cell size and de-identification method are stated."
+   },
+   {
+    "item": "Vertical integration into kits, logistics and labs",
+    "why": "Would make us a provider and destroy editorial independence."
+   },
+   {
+    "item": "Single-vendor result gravity",
+    "why": "Anything that only works for results we fulfilled ourselves is fatal to the marketplace."
+   }
+  ],
+  "strongerThanForth": [
+   "Cross-provider longitudinal continuity on one axis, units reconciled, historical ranges retained per point.",
+   "Patient verification as the explicit trust boundary, which works for any source.",
+   "Provenance to a source document page and text anchor, with extraction method and confidence.",
+   "Explainable, versioned intelligence citing rule version, components and evidence source.",
+   "Recommendation independent of who profits, enforced by a contract test.",
+   "The loop closes back into multi-provider marketplace comparison of exactly the biomarkers needing a retest.",
+   "The person owns the record including a machine-readable exit.",
+   "Contextual ranges that apply to results from any provider, not only our own assay."
   ]
  }
 }

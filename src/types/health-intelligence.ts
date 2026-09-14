@@ -2,9 +2,10 @@
  * Canonical Health Intelligence contracts.
  *
  * These types are the single shape every ingestion route must produce and
- * every longitudinal surface must consume. No partner-specific field appears
- * here: Forth, a direct laboratory API, FHIR, PDF/OCR and manual entry all
- * converge on `InboundReport`.
+ * every longitudinal surface must consume. No partner is named here and no
+ * partner-specific field exists: a fulfilment platform, a direct laboratory
+ * API, FHIR, PDF/OCR and manual entry all converge on `InboundReport`, and a
+ * partner is identified only by an `ingestion_adapters` row.
  */
 
 export type ReportStatus =
