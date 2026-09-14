@@ -51,7 +51,7 @@ A task is `COMPLETE` **only** when all five are evidenced, and the evidence is r
 
 ## Phase 0 — Architecture, database and RLS audit
 
-**Status: IN PROGRESS** — six of eleven tasks evidenced. Cannot close: the architecture gap report is unreconciled against the full original blueprint, and two structural defects (duplicate profile models, migration drift) are open.
+**Status: IN PROGRESS** — seven of eleven tasks evidenced. Cannot close: five entity name collisions await a ratified keep/extend decision, the dead `public.profiles` table is still in place, the schema-bearing migration orphans are not backfilled, migration parity is not actually enforced in CI, and the dashboard-only settings (auth policy, backups/PITR, cron, grants) remain unverified.
 
 | ID | Task | Status | Evidence / blocker |
 | --- | --- | --- | --- |
