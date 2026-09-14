@@ -238,3 +238,168 @@ Auth provider configuration (password policy, leaked-password protection, MFA en
 ### Phase 0 tracker status (P0.01–P0.11)
 
 **Not assessable.** `docs/BUILD_TRACKER.md` and `docs/build-tracker.json` are absent, so the text of P0.01–P0.11 and their acceptance criteria are unknown. No tracker item has been marked complete, and no tracker file was created or edited. Once the tracker is supplied, the evidence above should map onto it directly — in particular the RLS, storage-policy, parity and auth-model items, which are now evidenced rather than assumed.
+
+---
+
+## THIRD PASS — 14 September 2026: W1, W2 and W6
+
+Read-only. No schema, data, route or function was modified. Nothing was deleted or migrated.
+
+### W1 — `profiles` vs `user_profiles`: RESOLVED
+
+**`user_profiles` is the active demographic model. `public.profiles` is dead.** This is now settled by evidence, not inference.
+
+**1. The trigger writes to `user_profiles`.** The body of `handle_new_user_profile()` (SECURITY DEFINER, `search_path = ''`) parses `first_name`/`last_name` from `raw_user_meta_data`, falling back to splitting `full_name` for OAuth signups, then performs three inserts:
+
+```
+INSERT INTO public.user_profiles (user_id, first_name, last_name) ...
+INSERT INTO public.user_preferences (user_id) ...
+INSERT INTO public.user_roles (user_id, role) VALUES (NEW.id, 'user');
+```
+
+It never touches `public.profiles`. The earlier concern that the trigger was named for `profiles` and failing silently is wrong — the name is simply misleading. Row counts corroborate: `user_profiles` 2, `user_preferences` 2, `user_roles` 5, `profiles` 0.
+
+**2. No code reads or writes `public.profiles`.** A repository-wide search for `.from("profiles")` returns nothing in `src/`, `supabase/functions/` or `scripts/`. The one apparent hit — `supabase/functions/encryption-status/index.ts` — uses `profiles` as a local JavaScript variable name while selecting `.from("user_profiles")`. Every real consumer targets `user_profiles`: `src/api/supabase/users.api.ts` (whose `UserProfile` interface mirrors the 18-column shape exactly), `src/services/EncryptionService.ts`, `src/pages/AdminEncryptionStatusPage.tsx`, `supabase/functions/encrypt-sensitive-data`, `encryption-status`, `send-test-notification`, `security-alert-notify`, and `scripts/backup-restore-test.sh`. The only remaining reference to `profiles` anywhere is its generated row type in `src/integrations/supabase/types.ts`, which is produced from the live schema and is not a usage.
+
+**3. `profiles` has no dependents and is unreachable through the Data API.**
+
+| Dependent kind | Result |
+| --- | --- |
+| Inbound foreign keys | none |
+| Triggers | none |
+| Dependent views | none |
+| Outbound constraints | `profiles_pkey`; `profiles_id_fkey → auth.users(id) ON DELETE CASCADE` |
+| RLS policies | 3 — `profiles self insert`, `profiles self read`, `profiles self update`, all `auth.uid() = id` |
+| **Table grants** | **none — no row in `role_table_grants` for `anon`, `authenticated` or `service_role`** |
+
+The absence of grants is decisive. PostgREST cannot reach the table at all, whatever its policies say. `profiles` could never have accumulated rows through the app.
+
+**4. Field coverage.** `profiles` carries `id`, `email`, `display_name`, `created_at`. `user_profiles` carries `user_id`, `first_name`, `last_name`, `date_of_birth`, `gender`, `phone_number`, four address fields, two emergency-contact fields, `last_login`, `account_status` and timestamps. **Only `user_profiles` holds `date_of_birth` and `gender`**, which Phase 3 requires for reference-range selection.
+
+**Recommendation (not executed):** adopt `user_profiles` as the canonical demographic record. Retire `public.profiles` in its own reviewed, reversible migration, separate from any feature work, and rename `handle_new_user_profile()` to match the table it actually writes to. Dropping it is zero-risk on current evidence: no data, no grants, no dependents, no code path. Note the differing key convention — `profiles.id` **is** the auth user id, while `user_profiles` uses a surrogate `id` plus a `user_id` column. Health Intelligence `health_profiles` should follow the `user_profiles` convention, since profiles must eventually be separable from accounts to support family profiles.
+
+### W2 — Migration drift: ENUMERATED AND CLASSIFIED
+
+Exact set difference between `supabase_migrations.schema_migrations` (393 rows) and the 14-digit prefixes of the 279 committed files:
+
+| Set | Count |
+| --- | --- |
+| Applied and committed | 267 |
+| Applied with **no** committed file | **126** |
+| of which: timestamp near-miss (within 10s of a committed file) | 12 |
+| of which: **true orphans** | **114** |
+| Committed but never applied remotely | 0 |
+
+The 114 figure in the second pass was correct; the extra 12 are the previously documented `+1s` CLI skew recurring (`20260705225139 → …135`, `20260719143122 → …121`, `20260721105637 → …633`, and nine more). `docs/MIGRATION_HISTORY.md` records the same class of drift being reconciled on 2026-07-05; every one of these 12 postdates that reconciliation, so the skew was not eliminated, only cleared once.
+
+**The history is not lost.** `schema_migrations` stores `name`, `created_by` and the full `statements` array, so each orphan is fully attributable and recoverable. Classification of all 114 by statement content:
+
+| Class | Count | Reading |
+| --- | --- | --- |
+| Data-only DML (INSERT/UPDATE/DELETE) | 62 | Catalogue maintenance — junk-row cleanup, category normalisation, deduplication, price and stock corrections per provider. No schema effect. |
+| Security: policies, RLS, GRANT/REVOKE | 17 | e.g. `revoke_truncate_on_mfa_backup_codes`, `restrict_comparison_test_groups_to_read_only` |
+| Views | 7 | Mostly repeated `ALTER VIEW unified_provider_tests SET (security_invoker = true)` |
+| `ALTER TABLE … ADD COLUMN` | 8 | e.g. `add_image_is_stock_flag`, `biomarker_canonical_phase1_add_columns` |
+| `CREATE TABLE` | 4 | `image_audit_results`, `provider_test_biomarkers_link_table`, biomarker taxonomy, junk guard |
+| Functions and triggers | 3 | |
+| Cron | 3 | |
+| Indexes | 1 | `drop_unused_indexes` is classified separately under Other |
+| Destructive | 1 | `biomarker_drop_archives` — explicitly authorised, preceded by `biomarker_preserve_archive_variants` |
+| Other | 8 | FK additions, whitelist fixes, privilege-escalation trigger removal |
+
+**Assessment:** this is not mysterious out-of-band SQL. It is the site owner's own work applied through the Lovable migration tool and never written back as files — 62 of 114 are pure catalogue data maintenance that arguably never belonged in version control anyway. The genuinely schema-bearing subset is **13 migrations** (4 CREATE TABLE, 8 ADD COLUMN, 1 destructive) plus 17 security changes, and every one is named, dated, attributed and recoverable verbatim from `statements`.
+
+Materially, the `biomarker_canonical_phase1…phase4` sequence of 29 August is the most significant: it establishes `biomarker_hub` as the canonical biomarker entity, resolves 18 case-duplicate pairs, links LOINC and SNOMED to it by id, adds a taxonomy mapping table, and creates `provider_test_biomarkers`. **That work is a direct partial implementation of the Phase 3 biomarker ontology, done ahead of the programme and uncommitted.** It changes the Phase 3 starting position — see W6.
+
+**Is remote drift actually enforced? Almost certainly not.** `.github/workflows/migration-parity.yml` does contain a genuine remote diff (`psql` against `SUPABASE_DB_URL`, `comm` on both directions, tolerating one trailing `+1s` pair). But the step is guarded by:
+
+```yaml
+if: ${{ secrets.SUPABASE_DB_URL != '' }}
+```
+
+GitHub does not expose the `secrets` context to step-level `if` expressions — the documented contexts there are `github`, `needs`, `strategy`, `matrix`, `job`, `runner`, `env`, `vars`, `steps` and `inputs`. The condition therefore cannot evaluate truthy, and the remote half of the check is skipped on every run while the job still reports green. That is consistent with 114 orphans accumulating unnoticed. Additionally, the `pull_request` trigger is path-filtered to `supabase/migrations/**`, so a migration applied through the tool without a file touches no path and opens no PR — nothing triggers the check at all. **This must be confirmed against actual Actions run logs before it is treated as established**; the reasoning is from GitHub's documented context availability, and the run logs were not readable from this session.
+
+### W6 — Architecture gap mapping
+
+Planned canonical entities from project knowledge, mapped against the live schema. Decisions are **proposed, not executed.**
+
+#### Identity and profile
+
+| Planned | Existing | Class | Proposed decision |
+| --- | --- | --- | --- |
+| `auth.users` | `auth.users`, 3 rows | EXISTS AND USABLE | Keep |
+| `health_profiles` | `user_profiles` (2 rows) is an *account* profile, not a health profile; no subject-separable record exists | MISSING | **New.** A health profile is the subject of measurement and must support family members, so it cannot be 1:1 with an account. `user_profiles` stays as the account record |
+| `profile_memberships` | none | MISSING | New |
+| `profile_relationships` | none | MISSING | New |
+| `consent_records` | `user_consents` (10 cols, 0 rows) and `clinical_consent_records` (12 cols, 0 rows) — two empty competing models | COLLISION | **Extend one, retire the other.** `clinical_consent_records` is the better shape (`expires_at`, `ip_hash`, `metadata`, `version`) and is already referenced by `clinical_patient_uploads.consent_record_id`. Both are empty, so this is cost-free now and expensive later |
+
+#### Biomarker
+
+| Planned | Existing | Class | Proposed decision |
+| --- | --- | --- | --- |
+| `biomarkers` | `biomarker_hub` — 1,552 rows, 45 columns, already declared canonical by the uncommitted 29 Aug phase-1 work, HNSW pgvector `embedding`, public read policy | COLLISION (name only) | **Keep and extend `biomarker_hub`.** Do not create a `biomarkers` table. Renaming would break the public catalogue, `match_biomarkers()`, the Human Context Engine and 4,434 mapping rows for no gain |
+| `biomarker_aliases` | none as a table; case-duplicate resolution and `variant_content` provenance exist on the hub | MISSING | New, keyed to `biomarker_hub.id` |
+| `biomarker_loinc_mappings` | `clinical_loinc_mappings` (47 rows, 23 cols) and `clinical_snomed_mappings` (47 rows), both already linked to the canonical biomarker by id with provenance columns | EXISTS AND USABLE | Keep. Rename is unnecessary |
+| `biomarker_units` / `biomarker_unit_conversions` | none | MISSING | New. Versioned conversions are a hard requirement for cross-provider comparability |
+| `biomarker_categories` | `biomarker_category_map` (46 rows) plus the 29 Aug taxonomy table | EXISTS AND USABLE | Keep, verify coverage |
+| `biomarker_reference_definitions` | `clinical_reference_ranges` (13 cols, **0 rows**) — has `sex`, `age_min_years`, `age_max_years`, `population`, `source` | EXISTS BUT EMPTY | Keep the shape, populate it. Note it keys on `biomarker_code`/`loinc_code`, not the canonical biomarker id — add the id link |
+
+#### Results
+
+| Planned | Existing | Class | Proposed decision |
+| --- | --- | --- | --- |
+| `source_documents` | `clinical_patient_uploads` (13 cols, 0 rows) — `file_ref`, `mime_type`, `file_size_bytes`, `status`, `consent_record_id`; and `uploaded_test_results` (11 cols, **2 rows**) which conflates document, report and parsed payload in one row | EXISTS BUT UNSUITABLE | **Extend `clinical_patient_uploads`** as the document record. Migrate the 2 `uploaded_test_results` rows and retire that table — its `parsed_data` jsonb blob is exactly the undifferentiated shape the observation contract exists to replace |
+| `diagnostic_reports` | `test_results` (14 cols, 0 rows) is report-shaped (`result_date`, `pdf_url`, `provider_id`, `reviewed_by_professional`) but stores results as a `biomarker_results` jsonb blob | EXISTS BUT UNSUITABLE | **New `diagnostic_reports`.** `test_results` is empty and predates the contract; retire it rather than bend it |
+| `specimens` | none | MISSING | New |
+| `observations` | `biomarker_readings` (12 cols, 0 rows) and `clinical_biomarker_history` (18 cols, 0 rows) — two empty competing models | COLLISION | **New `observations`.** Neither is adequate: `biomarker_readings` has no provenance, no canonical/source value split, no validation or verification state; `clinical_biomarker_history` is closer (`source_upload_id`, `source_type`, `lab_name`, `loinc_code`) but carries `ai_interpretation` and `trend_direction` *on the observation row*, which violates the rule that AI never creates a trusted clinical observation and that trend mathematics is derived, not stored as fact. Both are empty — retire both |
+| `observation_components` | none | MISSING | New |
+| `reference_ranges` | `clinical_reference_ranges` is a *definitions* table, not the historical range attached to an observation | EXISTS BUT UNSUITABLE for this role | Keep it as `biomarker_reference_definitions`; create a separate per-observation historical range record, as the rule that historical ranges remain attached to each observation requires |
+| `observation_provenance` | none. The catalogue side has strong provenance (`upsertWithProvenance.ts`, `scrape_runs`, `product_change_log`); the health side has none | MISSING | New. Model it on the catalogue pattern |
+| `extraction_jobs` / `extraction_items` | none. `scraping_jobs` and `scrape_operations` are catalogue-side and must not be reused | MISSING | New |
+| `validation_events` | none | MISSING | New |
+| `verification_records` | none. No table anywhere carries a patient-verification state | MISSING | New. This is the gate between draft and trusted — nothing currently implements it |
+
+#### Longitudinal
+
+| Planned | Existing | Class | Proposed decision |
+| --- | --- | --- | --- |
+| `health_events` | none | MISSING | New |
+| `biomarker_series` | `clinical_biomarker_history` (0 rows) is the nearest, but is per-reading not per-series | EXISTS BUT UNSUITABLE | New, derived from `observations` |
+| `trend_snapshots` | none | MISSING | New |
+| `retest_rules` / `retest_events` | none at all | MISSING | New. The whole Phase 4 differentiator is greenfield |
+| `reminders` | `price_alert_preferences` (0 rows) and `notification_history` (0 rows) are commercial-alert plumbing | EXISTS BUT UNSUITABLE | New. Keep the commercial tables separate — mixing them would entangle clinical prompts with affiliate messaging and breach commission independence |
+| `recommendation_events` | `recommendation_history` (13 cols, 0 rows) | EXISTS BUT EMPTY | Inspect and likely extend |
+
+#### Sharing and audit
+
+| Planned | Existing | Class | Proposed decision |
+| --- | --- | --- | --- |
+| `share_links` / `share_permissions` | `data_sharing_grants` (16 cols, 0 rows) — `access_token_hash`, `scope`, `expires_at`, `revoked_at`, `revoked_reason`, `last_accessed_at`, `access_count` | EXISTS AND USABLE | **Keep and extend.** This already covers expiry, revocation and access counting; it needs a per-scope permission child table |
+| `access_events` | `data_access_requests` (0 rows); `log_data_access()`, `log_data_access_with_reason()` and `log_sensitive_data_access()` triggers exist | PARTIAL | Extend the existing audit path rather than build a parallel one |
+| `audit_logs` | `audit_logs` — **6 rows, live, 14 columns** including `reason_code`, `purpose`, `data_classification`, `siem_exported_at` | COLLISION (name) — EXISTS AND USABLE | **Keep and extend.** The planned entity and the live table are the same thing. Do not create a second one |
+
+#### AI and platform
+
+| Planned | Existing | Class | Proposed decision |
+| --- | --- | --- | --- |
+| `ai_requests` / `ai_outputs` | `ai_operation_logs` (partitioned 2025–2028), live and written by `ai-human-context` | PARTIAL | Extend; splitting request from output is worthwhile for source-grounded Q&A |
+| `ai_prompt_versions` | `ai_prompt_versions` — **exists, 9 cols, 0 rows**: `prompt_key`, `version`, `content`, `job_type`, `is_active`, `created_by` | COLLISION (name) — EXISTS AND EMPTY | **Keep.** The shape is right and matches the planned entity. Populate rather than replace |
+| `model_versions` | none | MISSING | New |
+| `system_events` / `error_events` | `operational_alerts`, `soc_incidents`, `edge_function_logs`, `cron_run_log` | EXISTS AND USABLE | Keep |
+
+#### Summary
+
+| Class | Count |
+| --- | --- |
+| EXISTS AND USABLE | 9 |
+| EXISTS BUT UNSUITABLE / EMPTY | 7 |
+| COLLISION (name clash needing a decision) | 5 |
+| MISSING | 19 |
+
+**Five name collisions require a ratified decision before any Phase 1 migration**, or a migration will clash with a live table: `biomarkers`/`biomarker_hub`, `audit_logs`, `ai_prompt_versions`, `consent_records`, and `observations`/`reference_ranges` against the existing clinical tables. The proposed resolution in every case is to extend what exists rather than introduce a parallel structure.
+
+**Observation contract readiness:** no existing table supplies more than roughly half the required fields. `clinical_biomarker_history` is closest and still lacks the source/canonical value split, specimen, method, source page and text, extraction method and confidence, validation status, verification status and verifier. Phase 1 designs `observations` fresh.
+
+### Tracker effect
+
+`P0.05` moves to COMPLETE — the model is determined and evidenced; execution of the retirement is worklist W1 and remains open. `P0.02` and `P0.08` stay IN PROGRESS. `P0.09` moves from BLOCKED to IN PROGRESS: the mapping is complete against project knowledge, and only ratification of the five collision decisions is outstanding. Blocker B3 is downgraded — project knowledge supplied the entity list the missing blueprint would have.

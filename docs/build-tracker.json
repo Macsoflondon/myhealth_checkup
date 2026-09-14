@@ -25,27 +25,45 @@
   "blockers": [
     {
       "id": "B1",
-      "title": "Two competing profile models",
-      "detail": "public.profiles (0 rows, 4 columns) and public.user_profiles (2 rows, 18 columns) both exist; the auth.users trigger handle_new_user_profile is named for the empty one. Phase 1 requires one unambiguous demographic record because date of birth and sex drive reference-range selection.",
-      "blocks": ["P0.05", "P0.08", "P0.11", "phase-1"]
+      "title": "Dead public.profiles table awaiting retirement",
+      "detail": "Resolved 14 Sep 2026: user_profiles is canonical on trigger, code, dependency and grant evidence. public.profiles is empty, ungranted, unreferenced and still needs retiring in its own reversible migration (W1).",
+      "blocks": [
+        "P0.08",
+        "P0.11",
+        "phase-1"
+      ],
+      "status": "NARROWED"
     },
     {
       "id": "B2",
       "title": "Historical migration drift",
-      "detail": "393 rows in supabase_migrations.schema_migrations versus 279 committed files: 114 production migrations have no committed file. Head versions match, so the gap is historical out-of-band change. No new schema until reconciled.",
-      "blocks": ["P0.02", "P0.11", "phase-1"]
+      "detail": "Narrowed 14 Sep 2026: 114 true orphans (plus 12 timestamp near-misses), all enumerated, classified and attributable from schema_migrations.statements; only 13 are schema-bearing. Now a backfill-and-enforcement task. Remote parity check in migration-parity.yml is believed never to run.",
+      "blocks": [
+        "P0.02",
+        "P0.11",
+        "phase-1"
+      ],
+      "status": "NARROWED"
     },
     {
       "id": "B3",
       "title": "Original master blueprint unretrievable",
-      "detail": "docs/HEALTH_INTELLIGENCE_MASTER_PLAN.md exists only on GitHub branch docs/health-intelligence-master-plan, which is unreachable from this project (origin is the Lovable internal mirror; no GitHub connector). Project knowledge carries the entity list but not the full specification, so the architecture gap report cannot be completed against it.",
-      "blocks": ["P0.09", "P0.11"]
+      "detail": "Downgraded 14 Sep 2026: project knowledge supplied the canonical entity list and the architecture gap mapping is complete against it. Reconcile against the original blueprint only if that branch becomes reachable.",
+      "blocks": [
+        "P0.11"
+      ],
+      "status": "DOWNGRADED"
     },
     {
       "id": "B4",
       "title": "Dashboard-only settings unverified",
       "detail": "Auth password policy, leaked-password protection, MFA enforcement, JWT expiry, redirect allow-list, backups/PITR, cron.job inventory and live role_table_grants cannot be read from this session.",
-      "blocks": ["P0.10", "P0.11", "X.03", "X.10"]
+      "blocks": [
+        "P0.10",
+        "P0.11",
+        "X.03",
+        "X.10"
+      ]
     }
   ],
   "gates": [
@@ -54,13 +72,48 @@
       "name": "Governance",
       "status": "COMPLETE",
       "tasks": [
-        { "id": "G0.1", "title": "Architecture fixed: Supabase/PostgreSQL system of record, no Firebase", "status": "COMPLETE", "evidence": "project knowledge, non-negotiable architecture 1" },
-        { "id": "G0.2", "title": "Preservation rule: additive reversible migrations, marketplace preserved", "status": "COMPLETE", "evidence": "project knowledge, items 2-3" },
-        { "id": "G0.3", "title": "Source-of-truth hierarchy: original document is source evidence, AI drafts only", "status": "COMPLETE", "evidence": "project knowledge, items 4-5, 8-10" },
-        { "id": "G0.4", "title": "Clinical safety: no autonomous diagnosis; validation and verification precede trust", "status": "COMPLETE", "evidence": "project knowledge, items 6-7, 13" },
-        { "id": "G0.5", "title": "Marketplace independence: commission never determines clinical recommendation", "status": "COMPLETE", "evidence": "project knowledge, item 12" },
-        { "id": "G0.6", "title": "Security baseline for special-category health data", "status": "COMPLETE", "evidence": "project knowledge, UK health-data governance" },
-        { "id": "G0.7", "title": "FHIR/LOINC as interoperability target, not NHS connectivity claim", "status": "COMPLETE", "evidence": "project knowledge, item 14 and FHIR model" }
+        {
+          "id": "G0.1",
+          "title": "Architecture fixed: Supabase/PostgreSQL system of record, no Firebase",
+          "status": "COMPLETE",
+          "evidence": "project knowledge, non-negotiable architecture 1"
+        },
+        {
+          "id": "G0.2",
+          "title": "Preservation rule: additive reversible migrations, marketplace preserved",
+          "status": "COMPLETE",
+          "evidence": "project knowledge, items 2-3"
+        },
+        {
+          "id": "G0.3",
+          "title": "Source-of-truth hierarchy: original document is source evidence, AI drafts only",
+          "status": "COMPLETE",
+          "evidence": "project knowledge, items 4-5, 8-10"
+        },
+        {
+          "id": "G0.4",
+          "title": "Clinical safety: no autonomous diagnosis; validation and verification precede trust",
+          "status": "COMPLETE",
+          "evidence": "project knowledge, items 6-7, 13"
+        },
+        {
+          "id": "G0.5",
+          "title": "Marketplace independence: commission never determines clinical recommendation",
+          "status": "COMPLETE",
+          "evidence": "project knowledge, item 12"
+        },
+        {
+          "id": "G0.6",
+          "title": "Security baseline for special-category health data",
+          "status": "COMPLETE",
+          "evidence": "project knowledge, UK health-data governance"
+        },
+        {
+          "id": "G0.7",
+          "title": "FHIR/LOINC as interoperability target, not NHS connectivity claim",
+          "status": "COMPLETE",
+          "evidence": "project knowledge, item 14 and FHIR model"
+        }
       ]
     }
   ],
@@ -69,19 +122,100 @@
       "id": "phase-0",
       "name": "Architecture, database and RLS audit",
       "status": "IN PROGRESS",
-      "blockers": ["B1", "B2", "B3", "B4"],
+      "blockers": [
+        "B1",
+        "B2",
+        "B3",
+        "B4"
+      ],
       "tasks": [
-        { "id": "P0.01", "title": "Repository architecture audit", "status": "COMPLETE", "evidence": "docs/PHASE_0_ARCHITECTURE_AUDIT.md" },
-        { "id": "P0.02", "title": "All migrations reviewed", "status": "IN PROGRESS", "evidence": "279 committed files enumerated; 114 applied without a file", "blockers": ["B2"] },
-        { "id": "P0.03", "title": "Live table inventory", "status": "COMPLETE", "evidence": "121 public base tables including 16 partitions; row counts captured" },
-        { "id": "P0.04", "title": "RLS policy inventory", "status": "COMPLETE", "evidence": "policy bodies read for clinical_*, health-record and storage.objects; user-scoped confirmed" },
-        { "id": "P0.05", "title": "Auth and profile model", "status": "IN PROGRESS", "evidence": "3 auth users, 5 user_roles, 1 trigger", "blockers": ["B1"] },
-        { "id": "P0.06", "title": "Provider and test catalogue audit", "status": "COMPLETE", "evidence": "904 provider_tests; provenance and junk-price controls verified" },
-        { "id": "P0.07", "title": "Biomarker and test mapping audit", "status": "COMPLETE", "evidence": "1552 biomarker_hub, 4434 provider_test_biomarkers, 47 clinical_loinc_mappings" },
-        { "id": "P0.08", "title": "Legacy and duplicate table review", "status": "IN PROGRESS", "evidence": "duplicates identified; no keep/retire decision taken", "blockers": ["B1"] },
-        { "id": "P0.09", "title": "Architecture gap report", "status": "BLOCKED", "evidence": "canonical entity mapping not performed", "blockers": ["B3"] },
-        { "id": "P0.10", "title": "Security review", "status": "IN PROGRESS", "evidence": "RLS and storage policies evidenced; bucket limits, prefix test and dashboard settings outstanding", "blockers": ["B4"] },
-        { "id": "P0.11", "title": "Phase 0 exit gate", "status": "BLOCKED", "evidence": "gated on P0.02, P0.05, P0.08, P0.09, P0.10", "blockers": ["B1", "B2", "B3", "B4"] }
+        {
+          "id": "P0.01",
+          "title": "Repository architecture audit",
+          "status": "COMPLETE",
+          "evidence": "docs/PHASE_0_ARCHITECTURE_AUDIT.md"
+        },
+        {
+          "id": "P0.02",
+          "title": "All migrations reviewed",
+          "status": "IN PROGRESS",
+          "evidence": "126 applied-without-file versions: 12 are +1s timestamp near-misses, 114 are true orphans. All 114 classified from schema_migrations.statements (62 catalogue DML, 17 security, 13 schema-bearing, 7 views, 3 cron, 3 functions, 1 index, 8 other) and fully attributable via name/created_by/statements. Outstanding: backfill the 13 schema-bearing plus 17 security orphans, reconcile the 12 near-misses, and fix migration-parity.yml whose remote step is guarded by a secrets expression that step-level if cannot evaluate.",
+          "blockers": [
+            "B2"
+          ]
+        },
+        {
+          "id": "P0.03",
+          "title": "Live table inventory",
+          "status": "COMPLETE",
+          "evidence": "121 public base tables including 16 partitions; row counts captured"
+        },
+        {
+          "id": "P0.04",
+          "title": "RLS policy inventory",
+          "status": "COMPLETE",
+          "evidence": "policy bodies read for clinical_*, health-record and storage.objects; user-scoped confirmed"
+        },
+        {
+          "id": "P0.05",
+          "title": "Auth and profile model",
+          "status": "COMPLETE",
+          "evidence": "user_profiles is canonical. handle_new_user_profile() inserts into user_profiles, user_preferences and user_roles, never public.profiles. Zero code references to public.profiles; no inbound FKs, triggers or dependent views; no table grants at all, so PostgREST cannot reach it. Only user_profiles carries date_of_birth and gender. Retirement of the dead table is worklist W1 execution.",
+          "blockers": [
+            "B1"
+          ]
+        },
+        {
+          "id": "P0.06",
+          "title": "Provider and test catalogue audit",
+          "status": "COMPLETE",
+          "evidence": "904 provider_tests; provenance and junk-price controls verified"
+        },
+        {
+          "id": "P0.07",
+          "title": "Biomarker and test mapping audit",
+          "status": "COMPLETE",
+          "evidence": "1552 biomarker_hub, 4434 provider_test_biomarkers, 47 clinical_loinc_mappings"
+        },
+        {
+          "id": "P0.08",
+          "title": "Legacy and duplicate table review",
+          "status": "IN PROGRESS",
+          "evidence": "All duplicates enumerated with row counts and column lists and a keep/retire recommendation recorded for each. No owner ratification yet.",
+          "blockers": [
+            "B1"
+          ]
+        },
+        {
+          "id": "P0.09",
+          "title": "Architecture gap report",
+          "status": "IN PROGRESS",
+          "evidence": "Full mapping of 40 canonical entities against the live schema complete: 9 exists-and-usable, 7 exists-but-unsuitable/empty, 5 collisions, 19 missing. Observation contract checked field by field. Outstanding: ratification of the 5 collision decisions.",
+          "blockers": [
+            "B3"
+          ]
+        },
+        {
+          "id": "P0.10",
+          "title": "Security review",
+          "status": "IN PROGRESS",
+          "evidence": "New finding: public.profiles has RLS policies but zero table grants, confirming the grant layer diverges from the policy layer and must be audited live. Bucket limits, prefix regression test and dashboard-only settings still outstanding.",
+          "blockers": [
+            "B4"
+          ]
+        },
+        {
+          "id": "P0.11",
+          "title": "Phase 0 exit gate",
+          "status": "BLOCKED",
+          "evidence": "gated on P0.02, P0.05, P0.08, P0.09, P0.10",
+          "blockers": [
+            "B1",
+            "B2",
+            "B3",
+            "B4"
+          ]
+        }
       ]
     },
     {
@@ -90,20 +224,76 @@
       "status": "NOT STARTED",
       "note": "Gated behind a genuinely closed Phase 0. No production Health Intelligence tables to be created.",
       "tasks": [
-        { "id": "P1.01", "title": "health_profiles", "status": "NOT STARTED" },
-        { "id": "P1.02", "title": "Profile relationships and memberships", "status": "NOT STARTED" },
-        { "id": "P1.03", "title": "source_documents", "status": "NOT STARTED" },
-        { "id": "P1.04", "title": "diagnostic_reports", "status": "NOT STARTED" },
-        { "id": "P1.05", "title": "specimens", "status": "NOT STARTED" },
-        { "id": "P1.06", "title": "observations with full observation contract", "status": "NOT STARTED" },
-        { "id": "P1.07", "title": "reference_ranges", "status": "NOT STARTED" },
-        { "id": "P1.08", "title": "observation_provenance", "status": "NOT STARTED" },
-        { "id": "P1.09", "title": "verification_records", "status": "NOT STARTED" },
-        { "id": "P1.10", "title": "Audit logging for health-record access", "status": "NOT STARTED" },
-        { "id": "P1.11", "title": "RLS across all Phase 1 tables", "status": "NOT STARTED" },
-        { "id": "P1.12", "title": "Manual result entry", "status": "NOT STARTED" },
-        { "id": "P1.13", "title": "Basic health record UI", "status": "NOT STARTED" },
-        { "id": "P1.14", "title": "Regression and security gate", "status": "NOT STARTED" }
+        {
+          "id": "P1.01",
+          "title": "health_profiles",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P1.02",
+          "title": "Profile relationships and memberships",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P1.03",
+          "title": "source_documents",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P1.04",
+          "title": "diagnostic_reports",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P1.05",
+          "title": "specimens",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P1.06",
+          "title": "observations with full observation contract",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P1.07",
+          "title": "reference_ranges",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P1.08",
+          "title": "observation_provenance",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P1.09",
+          "title": "verification_records",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P1.10",
+          "title": "Audit logging for health-record access",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P1.11",
+          "title": "RLS across all Phase 1 tables",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P1.12",
+          "title": "Manual result entry",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P1.13",
+          "title": "Basic health record UI",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P1.14",
+          "title": "Regression and security gate",
+          "status": "NOT STARTED"
+        }
       ]
     },
     {
@@ -111,21 +301,81 @@
       "name": "Document intelligence",
       "status": "NOT STARTED",
       "tasks": [
-        { "id": "P2.01", "title": "Secure upload", "status": "NOT STARTED" },
-        { "id": "P2.02", "title": "extraction_jobs", "status": "NOT STARTED" },
-        { "id": "P2.03", "title": "PDF parsing", "status": "NOT STARTED" },
-        { "id": "P2.04", "title": "OCR and image reading", "status": "NOT STARTED" },
-        { "id": "P2.05", "title": "Structured AI extraction", "status": "NOT STARTED" },
-        { "id": "P2.06", "title": "Biomarker matching", "status": "NOT STARTED" },
-        { "id": "P2.07", "title": "Unit recognition", "status": "NOT STARTED" },
-        { "id": "P2.08", "title": "Reference-range extraction", "status": "NOT STARTED" },
-        { "id": "P2.09", "title": "Date and laboratory identification", "status": "NOT STARTED" },
-        { "id": "P2.10", "title": "Confidence scoring", "status": "NOT STARTED" },
-        { "id": "P2.11", "title": "Deterministic validation", "status": "NOT STARTED" },
-        { "id": "P2.12", "title": "Human review interface", "status": "NOT STARTED" },
-        { "id": "P2.13", "title": "Corrections with audit history", "status": "NOT STARTED" },
-        { "id": "P2.14", "title": "Synthetic test fixtures", "status": "NOT STARTED" },
-        { "id": "P2.15", "title": "Safety gate", "status": "NOT STARTED" }
+        {
+          "id": "P2.01",
+          "title": "Secure upload",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P2.02",
+          "title": "extraction_jobs",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P2.03",
+          "title": "PDF parsing",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P2.04",
+          "title": "OCR and image reading",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P2.05",
+          "title": "Structured AI extraction",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P2.06",
+          "title": "Biomarker matching",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P2.07",
+          "title": "Unit recognition",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P2.08",
+          "title": "Reference-range extraction",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P2.09",
+          "title": "Date and laboratory identification",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P2.10",
+          "title": "Confidence scoring",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P2.11",
+          "title": "Deterministic validation",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P2.12",
+          "title": "Human review interface",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P2.13",
+          "title": "Corrections with audit history",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P2.14",
+          "title": "Synthetic test fixtures",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P2.15",
+          "title": "Safety gate",
+          "status": "NOT STARTED"
+        }
       ]
     },
     {
@@ -133,20 +383,76 @@
       "name": "Biomarker ontology and longitudinal engine",
       "status": "NOT STARTED",
       "tasks": [
-        { "id": "P3.01", "title": "Canonical biomarkers", "status": "NOT STARTED" },
-        { "id": "P3.02", "title": "biomarker_aliases", "status": "NOT STARTED" },
-        { "id": "P3.03", "title": "biomarker_units", "status": "NOT STARTED" },
-        { "id": "P3.04", "title": "Versioned unit conversions", "status": "NOT STARTED" },
-        { "id": "P3.05", "title": "LOINC mappings", "status": "NOT STARTED" },
-        { "id": "P3.06", "title": "Test-to-biomarker mapping, many-to-many", "status": "NOT STARTED" },
-        { "id": "P3.07", "title": "Value normalisation", "status": "NOT STARTED" },
-        { "id": "P3.08", "title": "Historical reference ranges", "status": "NOT STARTED" },
-        { "id": "P3.09", "title": "Biomarker history", "status": "NOT STARTED" },
-        { "id": "P3.10", "title": "Trend calculation", "status": "NOT STARTED" },
-        { "id": "P3.11", "title": "Charts", "status": "NOT STARTED" },
-        { "id": "P3.12", "title": "Health timeline", "status": "NOT STARTED" },
-        { "id": "P3.13", "title": "Source drill-down", "status": "NOT STARTED" },
-        { "id": "P3.14", "title": "Data-quality gate", "status": "NOT STARTED" }
+        {
+          "id": "P3.01",
+          "title": "Canonical biomarkers",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P3.02",
+          "title": "biomarker_aliases",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P3.03",
+          "title": "biomarker_units",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P3.04",
+          "title": "Versioned unit conversions",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P3.05",
+          "title": "LOINC mappings",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P3.06",
+          "title": "Test-to-biomarker mapping, many-to-many",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P3.07",
+          "title": "Value normalisation",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P3.08",
+          "title": "Historical reference ranges",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P3.09",
+          "title": "Biomarker history",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P3.10",
+          "title": "Trend calculation",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P3.11",
+          "title": "Charts",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P3.12",
+          "title": "Health timeline",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P3.13",
+          "title": "Source drill-down",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P3.14",
+          "title": "Data-quality gate",
+          "status": "NOT STARTED"
+        }
       ]
     },
     {
@@ -155,19 +461,71 @@
       "status": "NOT STARTED",
       "note": "Primary product differentiator. Clinical intervals must never be hard-coded into UI components.",
       "tasks": [
-        { "id": "P4.01", "title": "Retest rule schema", "status": "NOT STARTED" },
-        { "id": "P4.02", "title": "Evidence fields: source, jurisdiction, governance status, effective and review dates, version", "status": "NOT STARTED" },
-        { "id": "P4.03", "title": "Time-based rules", "status": "NOT STARTED" },
-        { "id": "P4.04", "title": "Result and trend rules", "status": "NOT STARTED" },
-        { "id": "P4.05", "title": "Coverage engine", "status": "NOT STARTED" },
-        { "id": "P4.06", "title": "Goal-aware rules", "status": "NOT STARTED" },
-        { "id": "P4.07", "title": "Monitoring states", "status": "NOT STARTED" },
-        { "id": "P4.08", "title": "retest_events", "status": "NOT STARTED" },
-        { "id": "P4.09", "title": "Reminders", "status": "NOT STARTED" },
-        { "id": "P4.10", "title": "Provider comparison handoff", "status": "NOT STARTED" },
-        { "id": "P4.11", "title": "Commission-independence test", "status": "NOT STARTED" },
-        { "id": "P4.12", "title": "Audit trail", "status": "NOT STARTED" },
-        { "id": "P4.13", "title": "Clinical governance gate", "status": "NOT STARTED" }
+        {
+          "id": "P4.01",
+          "title": "Retest rule schema",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P4.02",
+          "title": "Evidence fields: source, jurisdiction, governance status, effective and review dates, version",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P4.03",
+          "title": "Time-based rules",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P4.04",
+          "title": "Result and trend rules",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P4.05",
+          "title": "Coverage engine",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P4.06",
+          "title": "Goal-aware rules",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P4.07",
+          "title": "Monitoring states",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P4.08",
+          "title": "retest_events",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P4.09",
+          "title": "Reminders",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P4.10",
+          "title": "Provider comparison handoff",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P4.11",
+          "title": "Commission-independence test",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P4.12",
+          "title": "Audit trail",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P4.13",
+          "title": "Clinical governance gate",
+          "status": "NOT STARTED"
+        }
       ]
     },
     {
@@ -175,15 +533,51 @@
       "name": "Personal health record UX",
       "status": "NOT STARTED",
       "tasks": [
-        { "id": "P5.01", "title": "Overview", "status": "NOT STARTED" },
-        { "id": "P5.02", "title": "Results", "status": "NOT STARTED" },
-        { "id": "P5.03", "title": "Biomarkers", "status": "NOT STARTED" },
-        { "id": "P5.04", "title": "Documents", "status": "NOT STARTED" },
-        { "id": "P5.05", "title": "Retests", "status": "NOT STARTED" },
-        { "id": "P5.06", "title": "Timeline", "status": "NOT STARTED" },
-        { "id": "P5.07", "title": "Family profiles", "status": "NOT STARTED" },
-        { "id": "P5.08", "title": "WCAG 2.2 AA", "status": "NOT STARTED" },
-        { "id": "P5.09", "title": "Empty, loading and error states", "status": "NOT STARTED" }
+        {
+          "id": "P5.01",
+          "title": "Overview",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P5.02",
+          "title": "Results",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P5.03",
+          "title": "Biomarkers",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P5.04",
+          "title": "Documents",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P5.05",
+          "title": "Retests",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P5.06",
+          "title": "Timeline",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P5.07",
+          "title": "Family profiles",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P5.08",
+          "title": "WCAG 2.2 AA",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P5.09",
+          "title": "Empty, loading and error states",
+          "status": "NOT STARTED"
+        }
       ]
     },
     {
@@ -192,14 +586,46 @@
       "status": "NOT STARTED",
       "note": "No public document URLs.",
       "tasks": [
-        { "id": "P6.01", "title": "Report builder", "status": "NOT STARTED" },
-        { "id": "P6.02", "title": "Factual longitudinal report", "status": "NOT STARTED" },
-        { "id": "P6.03", "title": "PDF export", "status": "NOT STARTED" },
-        { "id": "P6.04", "title": "Secure short-lived links", "status": "NOT STARTED" },
-        { "id": "P6.05", "title": "Expiry", "status": "NOT STARTED" },
-        { "id": "P6.06", "title": "Revocation", "status": "NOT STARTED" },
-        { "id": "P6.07", "title": "Access logging", "status": "NOT STARTED" },
-        { "id": "P6.08", "title": "Permission scopes", "status": "NOT STARTED" }
+        {
+          "id": "P6.01",
+          "title": "Report builder",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P6.02",
+          "title": "Factual longitudinal report",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P6.03",
+          "title": "PDF export",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P6.04",
+          "title": "Secure short-lived links",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P6.05",
+          "title": "Expiry",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P6.06",
+          "title": "Revocation",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P6.07",
+          "title": "Access logging",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P6.08",
+          "title": "Permission scopes",
+          "status": "NOT STARTED"
+        }
       ]
     },
     {
@@ -208,13 +634,41 @@
       "status": "NOT STARTED",
       "note": "All inbound routes converge on the single validation and provenance pipeline.",
       "tasks": [
-        { "id": "P7.01", "title": "Common inbound contract", "status": "NOT STARTED" },
-        { "id": "P7.02", "title": "API ingestion", "status": "NOT STARTED" },
-        { "id": "P7.03", "title": "Laboratory matching", "status": "NOT STARTED" },
-        { "id": "P7.04", "title": "Profile matching", "status": "NOT STARTED" },
-        { "id": "P7.05", "title": "Email ingestion where approved", "status": "NOT STARTED" },
-        { "id": "P7.06", "title": "Reconciliation", "status": "NOT STARTED" },
-        { "id": "P7.07", "title": "Monitoring", "status": "NOT STARTED" }
+        {
+          "id": "P7.01",
+          "title": "Common inbound contract",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P7.02",
+          "title": "API ingestion",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P7.03",
+          "title": "Laboratory matching",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P7.04",
+          "title": "Profile matching",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P7.05",
+          "title": "Email ingestion where approved",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P7.06",
+          "title": "Reconciliation",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P7.07",
+          "title": "Monitoring",
+          "status": "NOT STARTED"
+        }
       ]
     },
     {
@@ -222,15 +676,51 @@
       "name": "FHIR and LOINC interoperability",
       "status": "NOT STARTED",
       "tasks": [
-        { "id": "P8.01", "title": "Internal mapping", "status": "NOT STARTED" },
-        { "id": "P8.02", "title": "Patient", "status": "NOT STARTED" },
-        { "id": "P8.03", "title": "DiagnosticReport", "status": "NOT STARTED" },
-        { "id": "P8.04", "title": "Observation", "status": "NOT STARTED" },
-        { "id": "P8.05", "title": "DocumentReference", "status": "NOT STARTED" },
-        { "id": "P8.06", "title": "Specimen", "status": "NOT STARTED" },
-        { "id": "P8.07", "title": "Terminology service", "status": "NOT STARTED" },
-        { "id": "P8.08", "title": "Export validation", "status": "NOT STARTED" },
-        { "id": "P8.09", "title": "Security review", "status": "NOT STARTED" }
+        {
+          "id": "P8.01",
+          "title": "Internal mapping",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P8.02",
+          "title": "Patient",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P8.03",
+          "title": "DiagnosticReport",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P8.04",
+          "title": "Observation",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P8.05",
+          "title": "DocumentReference",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P8.06",
+          "title": "Specimen",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P8.07",
+          "title": "Terminology service",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P8.08",
+          "title": "Export validation",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P8.09",
+          "title": "Security review",
+          "status": "NOT STARTED"
+        }
       ]
     },
     {
@@ -239,29 +729,124 @@
       "status": "NOT STARTED",
       "note": "AI never creates a trusted clinical observation.",
       "tasks": [
-        { "id": "P9.01", "title": "Authorised verified-data retrieval", "status": "NOT STARTED" },
-        { "id": "P9.02", "title": "Source-grounded question answering", "status": "NOT STARTED" },
-        { "id": "P9.03", "title": "Trend explanation", "status": "NOT STARTED" },
-        { "id": "P9.04", "title": "Clinician preparation", "status": "NOT STARTED" },
-        { "id": "P9.05", "title": "Document search", "status": "NOT STARTED" },
-        { "id": "P9.06", "title": "Cross-biomarker analysis", "status": "NOT STARTED" },
-        { "id": "P9.07", "title": "AI audit trail", "status": "NOT STARTED" },
-        { "id": "P9.08", "title": "Safety regression", "status": "NOT STARTED" }
+        {
+          "id": "P9.01",
+          "title": "Authorised verified-data retrieval",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P9.02",
+          "title": "Source-grounded question answering",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P9.03",
+          "title": "Trend explanation",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P9.04",
+          "title": "Clinician preparation",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P9.05",
+          "title": "Document search",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P9.06",
+          "title": "Cross-biomarker analysis",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P9.07",
+          "title": "AI audit trail",
+          "status": "NOT STARTED"
+        },
+        {
+          "id": "P9.08",
+          "title": "Safety regression",
+          "status": "NOT STARTED"
+        }
       ]
     }
   ],
   "crossCutting": [
-    { "id": "X.01", "title": "UK GDPR, DPIA, Article 6 lawful basis, Article 9 condition", "status": "NOT STARTED", "note": "Required before production health-data use" },
-    { "id": "X.02", "title": "Retention and deletion", "status": "NOT STARTED", "note": "audit_retention_policy and apply_audit_retention() cover audit data only" },
-    { "id": "X.03", "title": "Backup and recovery", "status": "BLOCKED", "blockers": ["B4"] },
-    { "id": "X.04", "title": "Security monitoring", "status": "IN PROGRESS", "note": "soc_incidents, operational_alerts, csp_reports, siem_export_cursor are wired" },
-    { "id": "X.05", "title": "Dependency scanning", "status": "NOT STARTED", "note": "No dependency scan in the prebuild chain" },
-    { "id": "X.06", "title": "Admin MFA", "status": "IN PROGRESS", "note": "verify-admin-mfa, mfa_backup_codes, AAL2 on recovery-token issuance; enforcement breadth unverified" },
-    { "id": "X.07", "title": "Accessibility WCAG 2.2 AA", "status": "NOT STARTED" },
-    { "id": "X.08", "title": "SEO preservation", "status": "IN PROGRESS", "note": "seo-regression.mjs, validate-structured-data.mjs and sitemap generation run in prebuild" },
-    { "id": "X.09", "title": "Analytics privacy", "status": "NOT STARTED", "note": "Never send identifiable health data to advertising or analytics services" },
-    { "id": "X.10", "title": "Disaster recovery", "status": "NOT STARTED", "blockers": ["B4"] },
-    { "id": "X.11", "title": "Clinical governance", "status": "NOT STARTED", "note": "Required before any retest rule ships" },
-    { "id": "X.12", "title": "Data quality operations", "status": "IN PROGRESS", "note": "Catalogue-side controls live; no equivalent for health-record data" }
+    {
+      "id": "X.01",
+      "title": "UK GDPR, DPIA, Article 6 lawful basis, Article 9 condition",
+      "status": "NOT STARTED",
+      "note": "Required before production health-data use"
+    },
+    {
+      "id": "X.02",
+      "title": "Retention and deletion",
+      "status": "NOT STARTED",
+      "note": "audit_retention_policy and apply_audit_retention() cover audit data only"
+    },
+    {
+      "id": "X.03",
+      "title": "Backup and recovery",
+      "status": "BLOCKED",
+      "blockers": [
+        "B4"
+      ]
+    },
+    {
+      "id": "X.04",
+      "title": "Security monitoring",
+      "status": "IN PROGRESS",
+      "note": "soc_incidents, operational_alerts, csp_reports, siem_export_cursor are wired"
+    },
+    {
+      "id": "X.05",
+      "title": "Dependency scanning",
+      "status": "NOT STARTED",
+      "note": "No dependency scan in the prebuild chain"
+    },
+    {
+      "id": "X.06",
+      "title": "Admin MFA",
+      "status": "IN PROGRESS",
+      "note": "verify-admin-mfa, mfa_backup_codes, AAL2 on recovery-token issuance; enforcement breadth unverified"
+    },
+    {
+      "id": "X.07",
+      "title": "Accessibility WCAG 2.2 AA",
+      "status": "NOT STARTED"
+    },
+    {
+      "id": "X.08",
+      "title": "SEO preservation",
+      "status": "IN PROGRESS",
+      "note": "seo-regression.mjs, validate-structured-data.mjs and sitemap generation run in prebuild"
+    },
+    {
+      "id": "X.09",
+      "title": "Analytics privacy",
+      "status": "NOT STARTED",
+      "note": "Never send identifiable health data to advertising or analytics services"
+    },
+    {
+      "id": "X.10",
+      "title": "Disaster recovery",
+      "status": "NOT STARTED",
+      "blockers": [
+        "B4"
+      ]
+    },
+    {
+      "id": "X.11",
+      "title": "Clinical governance",
+      "status": "NOT STARTED",
+      "note": "Required before any retest rule ships"
+    },
+    {
+      "id": "X.12",
+      "title": "Data quality operations",
+      "status": "IN PROGRESS",
+      "note": "Catalogue-side controls live; no equivalent for health-record data"
+    }
   ]
 }
