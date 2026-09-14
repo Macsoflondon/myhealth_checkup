@@ -183,7 +183,27 @@ P9.01 authorised verified-data retrieval · P9.02 source-grounded Q&A · P9.03 t
 | X.10 | Disaster recovery | NOT STARTED | Depends on X.03 |
 | X.11 | Clinical governance | NOT STARTED | Needed before any retest rule ships |
 | X.12 | Data quality operations | IN PROGRESS | Junk-price quarantine, biomarker audit runs, scrape provenance and out-of-stock handling live for the catalogue; nothing equivalent for health-record data |
-| X.13 | Partner lab/results integration discovery (Forth Connect) | IN PROGRESS | `docs/RESEARCH_FORTH_CONNECT.md`, 14 Sep 2026: vendor claims recorded as claims, API surface marked UNKNOWN, A/B/C/D comparison, risk register and the canonical inbound contract every ingestion route must satisfy. Discovery only — no contact, no contract, no integration. No production integration may be marked complete from this item |
+| X.13 | Partner lab/results integration discovery (Forth Connect) | IN PROGRESS | `docs/RESEARCH_FORTH_CONNECT.md` and `docs/FORTH_CONNECT_COMPETITIVE_ARCHITECTURE.md`, 14 Sep 2026: vendor claims recorded as claims, API surface marked UNKNOWN, A/B/C/D comparison, risk register, canonical inbound contract, and an explicit list of capabilities we refuse to copy. Discovery only — no contact, no contract, no integration. No production integration may be marked complete from this item |
+
+---
+
+## Competitive design backlog (Forth-inspired)
+
+Added 14 September 2026. Reasoning in `docs/FORTH_CONNECT_COMPETITIVE_ARCHITECTURE.md`; narrative in `docs/HEALTH_INTELLIGENCE_MASTER_PLAN.md` §5. Every item below is **groundwork only** — schema, contracts and tests exist; no behaviour, no UI, no data.
+
+| ID | Capability | Status | Groundwork shipped | Remaining before COMPLETE |
+| --- | --- | --- | --- | --- |
+| F.A | Results delivery and release control | GROUNDWORK | `diagnostic_reports.status`, append-only `result_release_events` (no update/delete grant), per-source release policy, `release-state-machine.ts` + 9 tests | Transition server functions writing the event in the same transaction; reviewer UI; notification on release |
+| F.B | Longitudinal results experience | GROUNDWORK | `biomarker-series.ts` (trusted-only, latest/previous, absolute and percentage change, direction, interval) + 10 tests; `HealthRecordService` read layer | Charts, date-range and reference-range overlays, provider/lab context, educational copy join |
+| F.C | Peer benchmarking | GROUNDWORK, DISABLED | `benchmark_cohort_policies` with a CHECK constraint refusing `is_enabled` without both governance sign-offs, minimum cohort 100 and small-cell threshold 10 | Statistical governance, clinical sign-off, de-identification method, cohort definitions. Not to be enabled before all four exist |
+| F.D | Clinician commentary | GROUNDWORK | `clinical_review_comments` — attributed, timestamped, separately released, no UPDATE grant, corrections by supersede, never merged into an observation | Review queue, org-scoped policy (governance-gated), release wiring |
+| F.E | Practitioner and clinic console | GROUNDWORK | `organisations`, `organisation_members`, `private.is_org_member()` — **no health-data access granted** | Role model tests, consent flow, permissions design. No portal before governance is complete |
+| F.F | Curated test profiles | GROUNDWORK | `curated_test_profiles` + `_biomarkers` mapped to `biomarker_hub`; deliberately no price, provider or commission column; public read only when published | Admin editor under `/control`; read-only mapping to the provider catalogue |
+| F.G | Notifications | GROUNDWORK | `notification_channel_preferences` (off by default, per channel per event type), `notification_events` carrying no clinical content | Dispatch abstraction, preference screen, delivery-status audit, suppression rules |
+| F.H | Cycle-aware female health modelling | GROUNDWORK | `observations.cycle_day`/`cycle_phase`/`menstrual_status`/`hormone_medication_context`; `reference_range_contexts`, inactive until clinically signed off; `CycleContext` contract | Capture UI, evidence-sourced range definitions, our own explainable curve model. **Forth's FORM score is explicitly not to be implemented** |
+| F.I | Connectivity and adapters | GROUNDWORK | `InboundReport`/`InboundObservation` canonical contract; `ingestion_adapters` (status, hard-requirement flags); `ingestion_events` (signature verification required, no payload body stored) | Manual-entry adapter, then document upload as the reference implementation. No partner adapter before documentation and a sandbox exist |
+
+**Standing constraints on this backlog:** no partner-specific column in any canonical table; adapter identity is never an input to recommendation, ranking or retesting; no proprietary third-party score is reproduced; no clinical content leaves the record in a notification; nothing here justifies a claim of NHS connectivity.
 
 ---
 
@@ -193,3 +213,5 @@ P9.01 authorised verified-data retrieval · P9.02 source-grounded Q&A · P9.03 t
 | --- | --- |
 | 14 Sep 2026 | Tracker created locally from project knowledge. Gate 0 marked COMPLETE. Phase 0 IN PROGRESS with four blockers. Phase 1 onward NOT STARTED. No schema created. |
 | 14 Sep 2026 (fourth pass) | Migration parity CI rebuilt and self-tested; `docs/MIGRATION_RECONCILIATION.md` published; `test-results` bucket limited to 20 MB; `<uid>/` storage prefix invariant centralised and regression-tested in CI; `public.profiles` retirement plan and rollback recorded but not executed; ten W6 architecture decisions ratified as direction; Forth Connect discovery recorded as X.13. P0.09 COMPLETE. No production table created, altered, dropped or renamed. |
+| 14 Sep 2026 (fifth pass) | Migration reconciliation executed (93 marker files, 33 policy exclusions) — P0.02 COMPLETE. `public.profiles` retired in an isolated reversible migration after a clean live preflight — P0.08 COMPLETE. Health Intelligence groundwork shipped: 18 additive tables, 14 enums, RLS and grants throughout, `SECURITY DEFINER` helpers relocated to a non-exposed `private` schema, Supabase linter clean. Canonical contracts, release state machine, longitudinal series maths and the health-record read layer added with 19 tests. Phase 1 moved to IN PROGRESS (schema only). `docs/FORTH_CONNECT_COMPETITIVE_ARCHITECTURE.md` and `docs/HEALTH_INTELLIGENCE_MASTER_PLAN.md` written; competitive backlog F.A–F.I added. Phase 0 **not** marked COMPLETE: B4 (dashboard-only) and B5 (`SUPABASE_DB_URL`) remain open and are not claimed as verified. Marketplace, catalogue, SEO and referral functionality untouched (904 provider tests, 1,552 biomarkers, 4,434 links). |
+
