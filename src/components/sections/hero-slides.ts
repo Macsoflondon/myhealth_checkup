@@ -193,8 +193,9 @@ export const SLIDES: HeroSlide[] = [
     posMobile: "center center",
     posTablet: "center center",
     posDesktop: "center center",
-    eyebrow: "Private screening",
+    eyebrow: "Compare",
     headline: "Private screening, made clearer.",
+    headlineLines: ["Private screening,", "made clearer."],
     supportingCopy: "Compare options, prices and providers in one place.",
   },
 ];
