@@ -644,6 +644,51 @@ export type Database = {
         }
         Relationships: []
       }
+      benchmark_cohort_policies: {
+        Row: {
+          clinical_governance_signed_off: boolean
+          cohort_key: string
+          created_at: string
+          description: string | null
+          dimensions: string[]
+          id: string
+          is_enabled: boolean
+          minimum_cohort_size: number
+          requires_explicit_consent: boolean
+          small_cell_suppression_threshold: number
+          statistical_governance_signed_off: boolean
+          updated_at: string
+        }
+        Insert: {
+          clinical_governance_signed_off?: boolean
+          cohort_key: string
+          created_at?: string
+          description?: string | null
+          dimensions?: string[]
+          id?: string
+          is_enabled?: boolean
+          minimum_cohort_size?: number
+          requires_explicit_consent?: boolean
+          small_cell_suppression_threshold?: number
+          statistical_governance_signed_off?: boolean
+          updated_at?: string
+        }
+        Update: {
+          clinical_governance_signed_off?: boolean
+          cohort_key?: string
+          created_at?: string
+          description?: string | null
+          dimensions?: string[]
+          id?: string
+          is_enabled?: boolean
+          minimum_cohort_size?: number
+          requires_explicit_consent?: boolean
+          small_cell_suppression_threshold?: number
+          statistical_governance_signed_off?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
       biomarker_audit_runs: {
         Row: {
           approved: boolean
@@ -1649,6 +1694,80 @@ export type Database = {
         }
         Relationships: []
       }
+      clinical_review_comments: {
+        Row: {
+          author_display_name: string | null
+          author_registration: string | null
+          author_user_id: string
+          body: string
+          created_at: string
+          diagnostic_report_id: string | null
+          id: string
+          is_released: boolean
+          observation_id: string | null
+          organisation_id: string | null
+          released_at: string | null
+          superseded_by: string | null
+        }
+        Insert: {
+          author_display_name?: string | null
+          author_registration?: string | null
+          author_user_id: string
+          body: string
+          created_at?: string
+          diagnostic_report_id?: string | null
+          id?: string
+          is_released?: boolean
+          observation_id?: string | null
+          organisation_id?: string | null
+          released_at?: string | null
+          superseded_by?: string | null
+        }
+        Update: {
+          author_display_name?: string | null
+          author_registration?: string | null
+          author_user_id?: string
+          body?: string
+          created_at?: string
+          diagnostic_report_id?: string | null
+          id?: string
+          is_released?: boolean
+          observation_id?: string | null
+          organisation_id?: string | null
+          released_at?: string | null
+          superseded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "clinical_review_comments_diagnostic_report_id_fkey"
+            columns: ["diagnostic_report_id"]
+            isOneToOne: false
+            referencedRelation: "diagnostic_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_review_comments_observation_id_fkey"
+            columns: ["observation_id"]
+            isOneToOne: false
+            referencedRelation: "observations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_review_comments_organisation_id_fkey"
+            columns: ["organisation_id"]
+            isOneToOne: false
+            referencedRelation: "organisations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_review_comments_superseded_by_fkey"
+            columns: ["superseded_by"]
+            isOneToOne: false
+            referencedRelation: "clinical_review_comments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       clinical_snomed_mappings: {
         Row: {
           biomarker_code: string | null
@@ -1821,6 +1940,122 @@ export type Database = {
         }
         Relationships: []
       }
+      curated_test_profile_biomarkers: {
+        Row: {
+          biomarker_id: string
+          created_at: string
+          curated_test_profile_id: string
+          display_order: number
+          id: string
+          is_core: boolean
+        }
+        Insert: {
+          biomarker_id: string
+          created_at?: string
+          curated_test_profile_id: string
+          display_order?: number
+          id?: string
+          is_core?: boolean
+        }
+        Update: {
+          biomarker_id?: string
+          created_at?: string
+          curated_test_profile_id?: string
+          display_order?: number
+          id?: string
+          is_core?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "curated_test_profile_biomarkers_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarker_hub"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "curated_test_profile_biomarkers_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarker_knowledge_hub"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "curated_test_profile_biomarkers_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarker_provider_comparison"
+            referencedColumns: ["biomarker_id"]
+          },
+          {
+            foreignKeyName: "curated_test_profile_biomarkers_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarker_terminology_coverage"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "curated_test_profile_biomarkers_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarkers_canonical"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "curated_test_profile_biomarkers_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarkers_library"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "curated_test_profile_biomarkers_curated_test_profile_id_fkey"
+            columns: ["curated_test_profile_id"]
+            isOneToOne: false
+            referencedRelation: "curated_test_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      curated_test_profiles: {
+        Row: {
+          clinical_rationale: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          is_published: boolean
+          name: string
+          slug: string
+          summary: string | null
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          clinical_rationale?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_published?: boolean
+          name: string
+          slug: string
+          summary?: string | null
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          clinical_rationale?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          is_published?: boolean
+          name?: string
+          slug?: string
+          summary?: string | null
+          updated_at?: string
+          version?: number
+        }
+        Relationships: []
+      }
       data_access_requests: {
         Row: {
           completed_at: string | null
@@ -1910,6 +2145,102 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      diagnostic_reports: {
+        Row: {
+          adapter_id: string | null
+          collected_at: string | null
+          created_at: string
+          external_id: string | null
+          health_profile_id: string
+          id: string
+          laboratory_name: string | null
+          ordering_organisation_id: string | null
+          panel_name: string | null
+          release_policy: Database["public"]["Enums"]["hi_release_policy"]
+          released_at: string | null
+          report_date: string | null
+          resulted_at: string | null
+          source_document_id: string | null
+          status: Database["public"]["Enums"]["hi_report_status"]
+          superseded_by: string | null
+          updated_at: string
+        }
+        Insert: {
+          adapter_id?: string | null
+          collected_at?: string | null
+          created_at?: string
+          external_id?: string | null
+          health_profile_id: string
+          id?: string
+          laboratory_name?: string | null
+          ordering_organisation_id?: string | null
+          panel_name?: string | null
+          release_policy?: Database["public"]["Enums"]["hi_release_policy"]
+          released_at?: string | null
+          report_date?: string | null
+          resulted_at?: string | null
+          source_document_id?: string | null
+          status?: Database["public"]["Enums"]["hi_report_status"]
+          superseded_by?: string | null
+          updated_at?: string
+        }
+        Update: {
+          adapter_id?: string | null
+          collected_at?: string | null
+          created_at?: string
+          external_id?: string | null
+          health_profile_id?: string
+          id?: string
+          laboratory_name?: string | null
+          ordering_organisation_id?: string | null
+          panel_name?: string | null
+          release_policy?: Database["public"]["Enums"]["hi_release_policy"]
+          released_at?: string | null
+          report_date?: string | null
+          resulted_at?: string | null
+          source_document_id?: string | null
+          status?: Database["public"]["Enums"]["hi_report_status"]
+          superseded_by?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "diagnostic_reports_adapter_id_fkey"
+            columns: ["adapter_id"]
+            isOneToOne: false
+            referencedRelation: "ingestion_adapters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "diagnostic_reports_health_profile_id_fkey"
+            columns: ["health_profile_id"]
+            isOneToOne: false
+            referencedRelation: "health_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "diagnostic_reports_ordering_organisation_id_fkey"
+            columns: ["ordering_organisation_id"]
+            isOneToOne: false
+            referencedRelation: "organisations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "diagnostic_reports_source_document_id_fkey"
+            columns: ["source_document_id"]
+            isOneToOne: false
+            referencedRelation: "source_documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "diagnostic_reports_superseded_by_fkey"
+            columns: ["superseded_by"]
+            isOneToOne: false
+            referencedRelation: "diagnostic_reports"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       edge_function_logs: {
         Row: {
@@ -2509,6 +2840,45 @@ export type Database = {
         }
         Relationships: []
       }
+      health_profiles: {
+        Row: {
+          created_at: string
+          date_of_birth: string | null
+          display_name: string | null
+          gender_identity: string | null
+          id: string
+          is_primary: boolean
+          relationship: string
+          sex_at_birth: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date_of_birth?: string | null
+          display_name?: string | null
+          gender_identity?: string | null
+          id?: string
+          is_primary?: boolean
+          relationship?: string
+          sex_at_birth?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date_of_birth?: string | null
+          display_name?: string | null
+          gender_identity?: string | null
+          id?: string
+          is_primary?: boolean
+          relationship?: string
+          sex_at_birth?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       health_queries: {
         Row: {
           age: number | null
@@ -2619,6 +2989,102 @@ export type Database = {
             columns: ["provider_test_id"]
             isOneToOne: true
             referencedRelation: "unified_provider_tests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ingestion_adapters: {
+        Row: {
+          adapter_key: string
+          created_at: string
+          default_release_policy: Database["public"]["Enums"]["hi_release_policy"]
+          display_name: string
+          id: string
+          kind: Database["public"]["Enums"]["hi_adapter_kind"]
+          notes: string | null
+          status: Database["public"]["Enums"]["hi_adapter_status"]
+          supports_bulk_export: boolean
+          supports_source_document: boolean
+          updated_at: string
+        }
+        Insert: {
+          adapter_key: string
+          created_at?: string
+          default_release_policy?: Database["public"]["Enums"]["hi_release_policy"]
+          display_name: string
+          id?: string
+          kind: Database["public"]["Enums"]["hi_adapter_kind"]
+          notes?: string | null
+          status?: Database["public"]["Enums"]["hi_adapter_status"]
+          supports_bulk_export?: boolean
+          supports_source_document?: boolean
+          updated_at?: string
+        }
+        Update: {
+          adapter_key?: string
+          created_at?: string
+          default_release_policy?: Database["public"]["Enums"]["hi_release_policy"]
+          display_name?: string
+          id?: string
+          kind?: Database["public"]["Enums"]["hi_adapter_kind"]
+          notes?: string | null
+          status?: Database["public"]["Enums"]["hi_adapter_status"]
+          supports_bulk_export?: boolean
+          supports_source_document?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      ingestion_events: {
+        Row: {
+          adapter_id: string
+          diagnostic_report_id: string | null
+          error_message: string | null
+          event_type: string
+          external_event_id: string | null
+          id: string
+          processed_at: string | null
+          processing_status: string
+          received_at: string
+          signature_verified: boolean
+        }
+        Insert: {
+          adapter_id: string
+          diagnostic_report_id?: string | null
+          error_message?: string | null
+          event_type: string
+          external_event_id?: string | null
+          id?: string
+          processed_at?: string | null
+          processing_status?: string
+          received_at?: string
+          signature_verified?: boolean
+        }
+        Update: {
+          adapter_id?: string
+          diagnostic_report_id?: string | null
+          error_message?: string | null
+          event_type?: string
+          external_event_id?: string | null
+          id?: string
+          processed_at?: string | null
+          processing_status?: string
+          received_at?: string
+          signature_verified?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ingestion_events_adapter_id_fkey"
+            columns: ["adapter_id"]
+            isOneToOne: false
+            referencedRelation: "ingestion_adapters"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "ingestion_events_diagnostic_report_id_fkey"
+            columns: ["diagnostic_report_id"]
+            isOneToOne: false
+            referencedRelation: "diagnostic_reports"
             referencedColumns: ["id"]
           },
         ]
@@ -2767,6 +3233,109 @@ export type Database = {
         }
         Relationships: []
       }
+      notification_channel_preferences: {
+        Row: {
+          channel: Database["public"]["Enums"]["hi_notification_channel"]
+          consent_record_id: string | null
+          created_at: string
+          destination_hint: string | null
+          event_type: string
+          id: string
+          is_enabled: boolean
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          channel: Database["public"]["Enums"]["hi_notification_channel"]
+          consent_record_id?: string | null
+          created_at?: string
+          destination_hint?: string | null
+          event_type: string
+          id?: string
+          is_enabled?: boolean
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          channel?: Database["public"]["Enums"]["hi_notification_channel"]
+          consent_record_id?: string | null
+          created_at?: string
+          destination_hint?: string | null
+          event_type?: string
+          id?: string
+          is_enabled?: boolean
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_channel_preferences_consent_record_id_fkey"
+            columns: ["consent_record_id"]
+            isOneToOne: false
+            referencedRelation: "clinical_consent_records"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notification_events: {
+        Row: {
+          channel: Database["public"]["Enums"]["hi_notification_channel"]
+          created_at: string
+          delivered_at: string | null
+          dispatched_at: string | null
+          error_message: string | null
+          event_type: string
+          failed_at: string | null
+          health_profile_id: string | null
+          id: string
+          provider_message_id: string | null
+          status: Database["public"]["Enums"]["hi_notification_status"]
+          subject: string | null
+          suppression_reason: string | null
+          user_id: string
+        }
+        Insert: {
+          channel: Database["public"]["Enums"]["hi_notification_channel"]
+          created_at?: string
+          delivered_at?: string | null
+          dispatched_at?: string | null
+          error_message?: string | null
+          event_type: string
+          failed_at?: string | null
+          health_profile_id?: string | null
+          id?: string
+          provider_message_id?: string | null
+          status?: Database["public"]["Enums"]["hi_notification_status"]
+          subject?: string | null
+          suppression_reason?: string | null
+          user_id: string
+        }
+        Update: {
+          channel?: Database["public"]["Enums"]["hi_notification_channel"]
+          created_at?: string
+          delivered_at?: string | null
+          dispatched_at?: string | null
+          error_message?: string | null
+          event_type?: string
+          failed_at?: string | null
+          health_profile_id?: string | null
+          id?: string
+          provider_message_id?: string | null
+          status?: Database["public"]["Enums"]["hi_notification_status"]
+          subject?: string | null
+          suppression_reason?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_events_health_profile_id_fkey"
+            columns: ["health_profile_id"]
+            isOneToOne: false
+            referencedRelation: "health_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notification_history: {
         Row: {
           created_at: string
@@ -2808,6 +3377,251 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      observation_reference_ranges: {
+        Row: {
+          applies_to: string | null
+          captured_at: string
+          cycle_phase: Database["public"]["Enums"]["hi_cycle_phase"] | null
+          id: string
+          observation_id: string
+          range_high: number | null
+          range_low: number | null
+          range_text: string | null
+          source: string
+          unit: string | null
+        }
+        Insert: {
+          applies_to?: string | null
+          captured_at?: string
+          cycle_phase?: Database["public"]["Enums"]["hi_cycle_phase"] | null
+          id?: string
+          observation_id: string
+          range_high?: number | null
+          range_low?: number | null
+          range_text?: string | null
+          source?: string
+          unit?: string | null
+        }
+        Update: {
+          applies_to?: string | null
+          captured_at?: string
+          cycle_phase?: Database["public"]["Enums"]["hi_cycle_phase"] | null
+          id?: string
+          observation_id?: string
+          range_high?: number | null
+          range_low?: number | null
+          range_text?: string | null
+          source?: string
+          unit?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "observation_reference_ranges_observation_id_fkey"
+            columns: ["observation_id"]
+            isOneToOne: false
+            referencedRelation: "observations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      observations: {
+        Row: {
+          biomarker_id: string | null
+          canonical_unit: string | null
+          canonical_value: number | null
+          collected_at: string | null
+          created_at: string
+          created_by: string | null
+          cycle_day: number | null
+          cycle_phase: Database["public"]["Enums"]["hi_cycle_phase"]
+          diagnostic_report_id: string
+          extraction_confidence: number | null
+          extraction_method: Database["public"]["Enums"]["hi_extraction_method"]
+          health_profile_id: string
+          hormone_medication_context: string | null
+          id: string
+          laboratory_name: string | null
+          menstrual_status: Database["public"]["Enums"]["hi_menstrual_status"]
+          method: string | null
+          resulted_at: string | null
+          source_biomarker_label: string | null
+          source_document_id: string | null
+          source_flag: string | null
+          source_page: number | null
+          source_reference_high: number | null
+          source_reference_low: number | null
+          source_reference_text: string | null
+          source_text: string | null
+          source_unit: string | null
+          source_value: string
+          source_value_numeric: number | null
+          specimen_id: string | null
+          supersedes_observation_id: string | null
+          updated_at: string
+          validation_status: Database["public"]["Enums"]["hi_validation_status"]
+          value_type: Database["public"]["Enums"]["hi_value_type"]
+          verification_status: Database["public"]["Enums"]["hi_verification_status"]
+          verified_at: string | null
+          verified_by: string | null
+        }
+        Insert: {
+          biomarker_id?: string | null
+          canonical_unit?: string | null
+          canonical_value?: number | null
+          collected_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          cycle_day?: number | null
+          cycle_phase?: Database["public"]["Enums"]["hi_cycle_phase"]
+          diagnostic_report_id: string
+          extraction_confidence?: number | null
+          extraction_method?: Database["public"]["Enums"]["hi_extraction_method"]
+          health_profile_id: string
+          hormone_medication_context?: string | null
+          id?: string
+          laboratory_name?: string | null
+          menstrual_status?: Database["public"]["Enums"]["hi_menstrual_status"]
+          method?: string | null
+          resulted_at?: string | null
+          source_biomarker_label?: string | null
+          source_document_id?: string | null
+          source_flag?: string | null
+          source_page?: number | null
+          source_reference_high?: number | null
+          source_reference_low?: number | null
+          source_reference_text?: string | null
+          source_text?: string | null
+          source_unit?: string | null
+          source_value: string
+          source_value_numeric?: number | null
+          specimen_id?: string | null
+          supersedes_observation_id?: string | null
+          updated_at?: string
+          validation_status?: Database["public"]["Enums"]["hi_validation_status"]
+          value_type?: Database["public"]["Enums"]["hi_value_type"]
+          verification_status?: Database["public"]["Enums"]["hi_verification_status"]
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Update: {
+          biomarker_id?: string | null
+          canonical_unit?: string | null
+          canonical_value?: number | null
+          collected_at?: string | null
+          created_at?: string
+          created_by?: string | null
+          cycle_day?: number | null
+          cycle_phase?: Database["public"]["Enums"]["hi_cycle_phase"]
+          diagnostic_report_id?: string
+          extraction_confidence?: number | null
+          extraction_method?: Database["public"]["Enums"]["hi_extraction_method"]
+          health_profile_id?: string
+          hormone_medication_context?: string | null
+          id?: string
+          laboratory_name?: string | null
+          menstrual_status?: Database["public"]["Enums"]["hi_menstrual_status"]
+          method?: string | null
+          resulted_at?: string | null
+          source_biomarker_label?: string | null
+          source_document_id?: string | null
+          source_flag?: string | null
+          source_page?: number | null
+          source_reference_high?: number | null
+          source_reference_low?: number | null
+          source_reference_text?: string | null
+          source_text?: string | null
+          source_unit?: string | null
+          source_value?: string
+          source_value_numeric?: number | null
+          specimen_id?: string | null
+          supersedes_observation_id?: string | null
+          updated_at?: string
+          validation_status?: Database["public"]["Enums"]["hi_validation_status"]
+          value_type?: Database["public"]["Enums"]["hi_value_type"]
+          verification_status?: Database["public"]["Enums"]["hi_verification_status"]
+          verified_at?: string | null
+          verified_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "observations_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarker_hub"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "observations_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarker_knowledge_hub"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "observations_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarker_provider_comparison"
+            referencedColumns: ["biomarker_id"]
+          },
+          {
+            foreignKeyName: "observations_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarker_terminology_coverage"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "observations_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarkers_canonical"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "observations_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarkers_library"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "observations_diagnostic_report_id_fkey"
+            columns: ["diagnostic_report_id"]
+            isOneToOne: false
+            referencedRelation: "diagnostic_reports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "observations_health_profile_id_fkey"
+            columns: ["health_profile_id"]
+            isOneToOne: false
+            referencedRelation: "health_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "observations_source_document_id_fkey"
+            columns: ["source_document_id"]
+            isOneToOne: false
+            referencedRelation: "source_documents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "observations_specimen_id_fkey"
+            columns: ["specimen_id"]
+            isOneToOne: false
+            referencedRelation: "specimens"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "observations_supersedes_observation_id_fkey"
+            columns: ["supersedes_observation_id"]
+            isOneToOne: false
+            referencedRelation: "observations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       operational_alerts: {
         Row: {
@@ -2908,6 +3722,80 @@ export type Database = {
           status?: string
           test_id?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      organisation_members: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          organisation_id: string
+          professional_registration: string | null
+          role: Database["public"]["Enums"]["hi_org_role"]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          organisation_id: string
+          professional_registration?: string | null
+          role?: Database["public"]["Enums"]["hi_org_role"]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          organisation_id?: string
+          professional_registration?: string | null
+          role?: Database["public"]["Enums"]["hi_org_role"]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "organisation_members_organisation_id_fkey"
+            columns: ["organisation_id"]
+            isOneToOne: false
+            referencedRelation: "organisations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organisations: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          registration_body: string | null
+          registration_number: string | null
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          registration_body?: string | null
+          registration_number?: string | null
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          registration_body?: string | null
+          registration_number?: string | null
+          slug?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -3361,27 +4249,6 @@ export type Database = {
           provider_test_id?: string
           quality_score?: number | null
           seo_score?: number | null
-        }
-        Relationships: []
-      }
-      profiles: {
-        Row: {
-          created_at: string
-          display_name: string | null
-          email: string | null
-          id: string
-        }
-        Insert: {
-          created_at?: string
-          display_name?: string | null
-          email?: string | null
-          id: string
-        }
-        Update: {
-          created_at?: string
-          display_name?: string | null
-          email?: string | null
-          id?: string
         }
         Relationships: []
       }
@@ -4467,6 +5334,181 @@ export type Database = {
         }
         Relationships: []
       }
+      reference_range_contexts: {
+        Row: {
+          biomarker_id: string | null
+          clinical_reference_range_id: string | null
+          created_at: string
+          cycle_day_max: number | null
+          cycle_day_min: number | null
+          cycle_phase: Database["public"]["Enums"]["hi_cycle_phase"] | null
+          effective_from: string | null
+          evidence_source: string | null
+          governance_status: string
+          hormone_medication_context: string | null
+          id: string
+          is_active: boolean
+          jurisdiction: string
+          max_value: number | null
+          menstrual_status:
+            | Database["public"]["Enums"]["hi_menstrual_status"]
+            | null
+          min_value: number | null
+          review_due: string | null
+          unit: string | null
+          updated_at: string
+          version: number
+        }
+        Insert: {
+          biomarker_id?: string | null
+          clinical_reference_range_id?: string | null
+          created_at?: string
+          cycle_day_max?: number | null
+          cycle_day_min?: number | null
+          cycle_phase?: Database["public"]["Enums"]["hi_cycle_phase"] | null
+          effective_from?: string | null
+          evidence_source?: string | null
+          governance_status?: string
+          hormone_medication_context?: string | null
+          id?: string
+          is_active?: boolean
+          jurisdiction?: string
+          max_value?: number | null
+          menstrual_status?:
+            | Database["public"]["Enums"]["hi_menstrual_status"]
+            | null
+          min_value?: number | null
+          review_due?: string | null
+          unit?: string | null
+          updated_at?: string
+          version?: number
+        }
+        Update: {
+          biomarker_id?: string | null
+          clinical_reference_range_id?: string | null
+          created_at?: string
+          cycle_day_max?: number | null
+          cycle_day_min?: number | null
+          cycle_phase?: Database["public"]["Enums"]["hi_cycle_phase"] | null
+          effective_from?: string | null
+          evidence_source?: string | null
+          governance_status?: string
+          hormone_medication_context?: string | null
+          id?: string
+          is_active?: boolean
+          jurisdiction?: string
+          max_value?: number | null
+          menstrual_status?:
+            | Database["public"]["Enums"]["hi_menstrual_status"]
+            | null
+          min_value?: number | null
+          review_due?: string | null
+          unit?: string | null
+          updated_at?: string
+          version?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reference_range_contexts_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarker_hub"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reference_range_contexts_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarker_knowledge_hub"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reference_range_contexts_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarker_provider_comparison"
+            referencedColumns: ["biomarker_id"]
+          },
+          {
+            foreignKeyName: "reference_range_contexts_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarker_terminology_coverage"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reference_range_contexts_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarkers_canonical"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reference_range_contexts_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "biomarkers_library"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reference_range_contexts_clinical_reference_range_id_fkey"
+            columns: ["clinical_reference_range_id"]
+            isOneToOne: false
+            referencedRelation: "clinical_reference_ranges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      result_release_events: {
+        Row: {
+          actor_kind: string
+          actor_user_id: string | null
+          diagnostic_report_id: string
+          from_status: Database["public"]["Enums"]["hi_report_status"] | null
+          id: string
+          occurred_at: string
+          policy_applied:
+            | Database["public"]["Enums"]["hi_release_policy"]
+            | null
+          reason: string | null
+          to_status: Database["public"]["Enums"]["hi_report_status"]
+        }
+        Insert: {
+          actor_kind?: string
+          actor_user_id?: string | null
+          diagnostic_report_id: string
+          from_status?: Database["public"]["Enums"]["hi_report_status"] | null
+          id?: string
+          occurred_at?: string
+          policy_applied?:
+            | Database["public"]["Enums"]["hi_release_policy"]
+            | null
+          reason?: string | null
+          to_status: Database["public"]["Enums"]["hi_report_status"]
+        }
+        Update: {
+          actor_kind?: string
+          actor_user_id?: string | null
+          diagnostic_report_id?: string
+          from_status?: Database["public"]["Enums"]["hi_report_status"] | null
+          id?: string
+          occurred_at?: string
+          policy_applied?:
+            | Database["public"]["Enums"]["hi_release_policy"]
+            | null
+          reason?: string | null
+          to_status?: Database["public"]["Enums"]["hi_report_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "result_release_events_diagnostic_report_id_fkey"
+            columns: ["diagnostic_report_id"]
+            isOneToOne: false
+            referencedRelation: "diagnostic_reports"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       revenue_events: {
         Row: {
           affiliate_network: string | null
@@ -5347,6 +6389,110 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      source_documents: {
+        Row: {
+          byte_size: number | null
+          checksum_sha256: string | null
+          clinical_patient_upload_id: string | null
+          created_at: string
+          health_profile_id: string
+          id: string
+          mime_type: string | null
+          original_filename: string | null
+          page_count: number | null
+          retained_until: string | null
+          storage_bucket: string
+          storage_path: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          byte_size?: number | null
+          checksum_sha256?: string | null
+          clinical_patient_upload_id?: string | null
+          created_at?: string
+          health_profile_id: string
+          id?: string
+          mime_type?: string | null
+          original_filename?: string | null
+          page_count?: number | null
+          retained_until?: string | null
+          storage_bucket?: string
+          storage_path: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          byte_size?: number | null
+          checksum_sha256?: string | null
+          clinical_patient_upload_id?: string | null
+          created_at?: string
+          health_profile_id?: string
+          id?: string
+          mime_type?: string | null
+          original_filename?: string | null
+          page_count?: number | null
+          retained_until?: string | null
+          storage_bucket?: string
+          storage_path?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "source_documents_clinical_patient_upload_id_fkey"
+            columns: ["clinical_patient_upload_id"]
+            isOneToOne: false
+            referencedRelation: "clinical_patient_uploads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "source_documents_health_profile_id_fkey"
+            columns: ["health_profile_id"]
+            isOneToOne: false
+            referencedRelation: "health_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      specimens: {
+        Row: {
+          collected_at: string | null
+          collection_method: string | null
+          created_at: string
+          diagnostic_report_id: string
+          fasting: boolean | null
+          id: string
+          received_at: string | null
+          specimen_type: string | null
+        }
+        Insert: {
+          collected_at?: string | null
+          collection_method?: string | null
+          created_at?: string
+          diagnostic_report_id: string
+          fasting?: boolean | null
+          id?: string
+          received_at?: string | null
+          specimen_type?: string | null
+        }
+        Update: {
+          collected_at?: string | null
+          collection_method?: string | null
+          created_at?: string
+          diagnostic_report_id?: string
+          fasting?: boolean | null
+          id?: string
+          received_at?: string | null
+          specimen_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "specimens_diagnostic_report_id_fkey"
+            columns: ["diagnostic_report_id"]
+            isOneToOne: false
+            referencedRelation: "diagnostic_reports"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       sync_heartbeat: {
         Row: {
@@ -6987,6 +8133,62 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
+      hi_adapter_kind:
+        | "laboratory_api"
+        | "partner_platform"
+        | "fhir"
+        | "document_upload"
+        | "manual_entry"
+      hi_adapter_status: "planned" | "sandbox" | "disabled" | "live"
+      hi_cycle_phase:
+        | "unknown"
+        | "menstrual"
+        | "follicular"
+        | "ovulatory"
+        | "luteal"
+        | "not_applicable"
+      hi_extraction_method:
+        | "manual_entry"
+        | "api"
+        | "fhir"
+        | "pdf_extraction"
+        | "ocr"
+        | "adapter"
+      hi_menstrual_status:
+        | "unknown"
+        | "regular_cycling"
+        | "irregular_cycling"
+        | "pregnant"
+        | "postpartum"
+        | "perimenopausal"
+        | "postmenopausal"
+        | "hormonal_contraception"
+        | "hrt"
+        | "not_applicable"
+      hi_notification_channel: "email" | "sms" | "push" | "in_app"
+      hi_notification_status:
+        | "pending"
+        | "queued"
+        | "sent"
+        | "delivered"
+        | "failed"
+        | "suppressed"
+      hi_org_role: "owner" | "admin" | "practitioner" | "support"
+      hi_release_policy: "immediate" | "clinician_review" | "manual"
+      hi_report_status:
+        | "draft"
+        | "awaiting_review"
+        | "reviewed"
+        | "released"
+        | "superseded"
+        | "cancelled"
+      hi_validation_status: "pending" | "passed" | "failed" | "overridden"
+      hi_value_type: "quantitative" | "qualitative" | "ratio" | "titre" | "text"
+      hi_verification_status:
+        | "unverified"
+        | "confirmed"
+        | "corrected"
+        | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -7115,6 +8317,69 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "moderator", "user"],
+      hi_adapter_kind: [
+        "laboratory_api",
+        "partner_platform",
+        "fhir",
+        "document_upload",
+        "manual_entry",
+      ],
+      hi_adapter_status: ["planned", "sandbox", "disabled", "live"],
+      hi_cycle_phase: [
+        "unknown",
+        "menstrual",
+        "follicular",
+        "ovulatory",
+        "luteal",
+        "not_applicable",
+      ],
+      hi_extraction_method: [
+        "manual_entry",
+        "api",
+        "fhir",
+        "pdf_extraction",
+        "ocr",
+        "adapter",
+      ],
+      hi_menstrual_status: [
+        "unknown",
+        "regular_cycling",
+        "irregular_cycling",
+        "pregnant",
+        "postpartum",
+        "perimenopausal",
+        "postmenopausal",
+        "hormonal_contraception",
+        "hrt",
+        "not_applicable",
+      ],
+      hi_notification_channel: ["email", "sms", "push", "in_app"],
+      hi_notification_status: [
+        "pending",
+        "queued",
+        "sent",
+        "delivered",
+        "failed",
+        "suppressed",
+      ],
+      hi_org_role: ["owner", "admin", "practitioner", "support"],
+      hi_release_policy: ["immediate", "clinician_review", "manual"],
+      hi_report_status: [
+        "draft",
+        "awaiting_review",
+        "reviewed",
+        "released",
+        "superseded",
+        "cancelled",
+      ],
+      hi_validation_status: ["pending", "passed", "failed", "overridden"],
+      hi_value_type: ["quantitative", "qualitative", "ratio", "titre", "text"],
+      hi_verification_status: [
+        "unverified",
+        "confirmed",
+        "corrected",
+        "rejected",
+      ],
     },
   },
 } as const

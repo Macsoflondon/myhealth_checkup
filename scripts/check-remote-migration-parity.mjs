@@ -9,9 +9,13 @@
  * variable is absent, so a missing secret can never be mistaken for a pass.
  * Read-only: it issues a single SELECT and writes nothing.
  */
-import { readdirSync } from "node:fs";
+import { readdirSync, readFileSync, existsSync } from "node:fs";
 import { execFileSync } from "node:child_process";
-import { compareMigrationSets, formatParityReport } from "./lib/migration-parity-core.mjs";
+import {
+  compareMigrationSets,
+  formatParityReport,
+  parseExclusionRegistry,
+} from "./lib/migration-parity-core.mjs";
 
 const dbUrl = process.env["SUPABASE_DB_URL"];
 if (!dbUrl) {
@@ -22,6 +26,11 @@ if (!dbUrl) {
   );
   process.exit(1);
 }
+
+const EXCLUSIONS = "supabase/migrations/.excluded-versions";
+const excludedVersions = existsSync(EXCLUSIONS)
+  ? parseExclusionRegistry(readFileSync(EXCLUSIONS, "utf8"))
+  : [];
 
 const repoVersions = readdirSync("supabase/migrations")
   .filter((f) => f.endsWith(".sql"))
@@ -40,10 +49,13 @@ const raw = execFileSync(
 
 const remoteVersions = raw.split("\n");
 
-const result = compareMigrationSets(remoteVersions, repoVersions);
+const result = compareMigrationSets(remoteVersions, repoVersions, {
+  excludedVersions,
+});
 console.log(
   `Remote versions: ${new Set(remoteVersions.filter(Boolean)).size} · ` +
-    `Repo files: ${repoVersions.length}`,
+    `Repo files: ${repoVersions.length} · ` +
+    `Excluded by policy: ${excludedVersions.length}`,
 );
 console.log(formatParityReport(result));
 

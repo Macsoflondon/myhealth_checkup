@@ -1,0 +1,20 @@
+-- RECONCILIATION MARKER — NON-EXECUTING
+-- Version:        20260829234959
+-- Class:          A — schema — CREATE TABLE
+-- Statements md5: d3e99e03d6ca938d16c22d4a30d67335
+--   (md5 of array_to_string(statements, E';\n') as recorded in
+--    supabase_migrations.schema_migrations for this version)
+--
+-- This migration was applied to production through the Lovable migration tool
+-- and was never written back as a file. That is the historical drift recorded in
+-- docs/MIGRATION_RECONCILIATION.md.
+--
+-- This file exists so the repository's migration set matches the applied set and
+-- CI parity can detect NEW drift. It deliberately contains no executable SQL:
+-- the change is already applied, and replaying historical DDL/DML against a
+-- moved-on production database would be harmful.
+--
+-- The authoritative verbatim body is retained in
+--   supabase_migrations.schema_migrations.statements WHERE version = '20260829234959'
+-- and can be verified against the md5 above. No SQL has been invented,
+-- reconstructed or paraphrased here.

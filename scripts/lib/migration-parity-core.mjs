@@ -41,16 +41,31 @@ export const normaliseVersions = (versions) =>
  *   malformed: string[],
  * }}
  */
-export const compareMigrationSets = (remoteVersions, repoVersions) => {
+export const compareMigrationSets = (
+  remoteVersions,
+  repoVersions,
+  options = {},
+) => {
   const remote = normaliseVersions(remoteVersions);
   const repo = normaliseVersions(repoVersions);
+  const excluded = new Set(normaliseVersions(options.excludedVersions ?? []));
 
   const malformed = [...remote, ...repo].filter((v) => !isWellFormedVersion(v));
 
   const repoSet = new Set(repo);
   const remoteSet = new Set(remote);
 
-  const missingLocal = remote.filter((v) => !repoSet.has(v));
+  // An excluded version is applied-but-deliberately-uncommitted routine
+  // catalogue DML (see docs/MIGRATION_RECONCILIATION.md). It is reported, never
+  // silently dropped, and it must never masquerade as a committed file.
+  const excludedApplied = remote.filter(
+    (v) => excluded.has(v) && !repoSet.has(v),
+  );
+  const excludedButCommitted = repo.filter((v) => excluded.has(v));
+
+  const missingLocal = remote.filter(
+    (v) => !repoSet.has(v) && !excluded.has(v),
+  );
   const missingRemote = repo.filter((v) => !remoteSet.has(v));
 
   let skewTolerated = null;
@@ -71,11 +86,33 @@ export const compareMigrationSets = (remoteVersions, repoVersions) => {
 
   const ok =
     malformed.length === 0 &&
+    excludedButCommitted.length === 0 &&
     (skewTolerated !== null ||
       (missingLocal.length === 0 && missingRemote.length === 0));
 
-  return { ok, missingLocal, missingRemote, skewTolerated, malformed };
+  return {
+    ok,
+    missingLocal,
+    missingRemote,
+    skewTolerated,
+    malformed,
+    excludedApplied,
+    excludedButCommitted,
+  };
 };
+
+/**
+ * Parse the exclusion registry (supabase/migrations/.excluded-versions).
+ * Lines are "<version> <md5>"; blank lines and # comments are ignored.
+ * @param {string} contents
+ * @returns {string[]}
+ */
+export const parseExclusionRegistry = (contents) =>
+  contents
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith("#"))
+    .map((line) => line.split(/\s+/)[0]);
 
 /**
  * Human-readable report for CI logs.
@@ -86,6 +123,18 @@ export const formatParityReport = (result) => {
   const lines = [];
   if (result.malformed.length) {
     lines.push(`✗ Malformed migration versions: ${result.malformed.join(", ")}`);
+  }
+  if (result.excludedApplied?.length) {
+    lines.push(
+      `· ${result.excludedApplied.length} applied version(s) excluded by policy ` +
+        "(routine catalogue DML — docs/MIGRATION_RECONCILIATION.md).",
+    );
+  }
+  if (result.excludedButCommitted?.length) {
+    lines.push(
+      "✗ Versions are both excluded by policy AND committed as files — resolve one or the other:",
+    );
+    lines.push(...result.excludedButCommitted.map((v) => `    ${v}`));
   }
   if (result.skewTolerated) {
     lines.push(
@@ -102,7 +151,7 @@ export const formatParityReport = (result) => {
     lines.push(...result.missingRemote.map((v) => `    ${v}`));
   }
   if (result.ok && !result.skewTolerated) {
-    lines.push("✓ Repo and remote migration sets are identical.");
+    lines.push("✓ Repo and remote migration sets are reconciled.");
   }
   return lines.join("\n");
 };
