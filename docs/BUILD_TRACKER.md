@@ -51,51 +51,55 @@ A task is `COMPLETE` **only** when all five are evidenced, and the evidence is r
 
 ## Phase 0 — Architecture, database and RLS audit
 
-**Status: IN PROGRESS** — eight of eleven tasks evidenced (fourth pass, 14 September 2026). Cannot close: the dead `public.profiles` table is still in place and its retirement is unexecuted, the schema-bearing migration orphans are not backfilled, the live remote parity diff is unproven until `SUPABASE_DB_URL` exists in repository secrets, and the dashboard-only settings (auth policy, backups/PITR, cron, grants, and the bucket MIME allow-list) remain unverified.
+**Status: IN PROGRESS** — **ten of eleven tasks evidenced** (fifth pass, 14 September 2026). Everything executable from the agent is now done: the migration reconciliation is committed, and `public.profiles` has been retired in an isolated reversible migration after a clean live preflight. The gate stays open for one reason only — the residual P0.10 items all require Supabase dashboard access (auth policy, backups/PITR, cron inventory, live grants, `allowed_mime_types`), and the live remote parity diff needs the `SUPABASE_DB_URL` repository secret. Neither is claimed as verified.
 
 | ID | Task | Status | Evidence / blocker |
 | --- | --- | --- | --- |
 | P0.01 | Repository architecture audit | COMPLETE | `docs/PHASE_0_ARCHITECTURE_AUDIT.md` — routes, services, data layer, auth, scripts and CI inspected |
-| P0.02 | All migrations reviewed | IN PROGRESS | Inventory, classification and exclusion policy published in `docs/MIGRATION_RECONCILIATION.md` (126 applied-without-file: 12 `+1s` near-misses, 114 true orphans — 62 catalogue DML excluded by policy, 17 security, 13 schema-bearing, 8 unclassified, rest views/cron/functions/index). **Parity enforcement fixed 14 Sep 2026:** job-level `env` replaces the step-level `secrets` expression that could never evaluate, daily schedule added, remote diff extracted to `scripts/check-remote-migration-parity.mjs`, pure logic in `scripts/lib/migration-parity-core.mjs` with the `+1s` tolerance made explicit and logged, fixture self-test 8/8 passing in CI. Outstanding: marker-file backfill, near-miss correction, live remote run once `SUPABASE_DB_URL` exists — worklist W2 |
+| P0.02 | All migrations reviewed | COMPLETE | **Reconciliation executed 14 Sep 2026.** All 126 applied-without-file versions accounted for: **93 non-executing marker files** committed as `supabase/migrations/<version>_reconciliation_marker.sql` (comment-only headers carrying version, class and md5 — the parity checker rejects any marker containing executable SQL), and **33 catalogue-DML versions formally excluded** via `supabase/migrations/.excluded-versions` under the written policy in `docs/MIGRATION_RECONCILIATION.md`. No historical DDL or DML was replayed; no SQL was invented. Parity tooling honours the exclusion registry and rejects malformed entries and excluded-but-committed versions. Local parity passes: 375 files, 93 comment-only markers, 33 excluded. 12 unit tests green. **External verification blocker (B5):** the live remote diff cannot run until `SUPABASE_DB_URL` exists in repository secrets — the script fails loudly rather than reporting a false pass |
 | P0.03 | Live table inventory | COMPLETE | 121 public base tables (16 partitions); row counts captured for catalogue and health-record tables |
 | P0.04 | RLS policy inventory | COMPLETE | Policy bodies read for all `clinical_*`, health-record and storage objects. User-scoped (`auth.uid() = user_id OR has_role(...,'admin')`); `biomarker_hub` public read by design; `test-results` objects scoped to `<uid>/` prefix |
 | P0.05 | Auth and profile model | COMPLETE | **`user_profiles` is canonical.** `handle_new_user_profile()` body read from `pg_proc`: it inserts into `user_profiles`, `user_preferences` and `user_roles`, never `profiles` — the trigger name is misleading, not broken. Zero code references to `public.profiles` anywhere; it has no inbound FKs, triggers or dependent views, and **no table grants at all**, so PostgREST cannot reach it. Only `user_profiles` carries `date_of_birth` and `gender`. Retirement migration is worklist W1 (execution, not investigation) |
 | P0.06 | Provider and test catalogue audit | COMPLETE | 904 `provider_tests`; scrape provenance, junk-price quarantine and out-of-stock handling verified in `upsertWithProvenance.ts` |
 | P0.07 | Biomarker and test mapping audit | COMPLETE | 1,552 `biomarker_hub` rows; 4,434 `provider_test_biomarkers` links; many-to-many confirmed; 47 `clinical_loinc_mappings` |
-| P0.08 | Legacy and duplicate table review | IN PROGRESS | Duplicates enumerated with row counts and column lists; ten architecture decisions ratified as direction on 14 Sep 2026 (fourth-pass audit section). Six-step `public.profiles` retirement plan with an explicit rollback now recorded. **Not COMPLETE:** the acceptance rule requires implementation and regression of the retirement, which is deliberately unexecuted this pass — worklist W1 |
+| P0.08 | Legacy and duplicate table review | COMPLETE | Duplicates enumerated; ten architecture decisions ratified as direction. **`public.profiles` retired 14 Sep 2026** in an isolated, reversible migration whose comment carries the complete rollback DDL (table, FK, primary key, RLS and all three policies). Live preflight first proved 0 rows, 0 grants, 0 triggers, 0 inbound FKs, 0 dependent views, 0 referencing functions, 0 realtime publications and 0 code references. `handle_new_user_profile()` deliberately **not** renamed — it is bound to the reserved `auth.users` trigger `on_auth_user_created_profile`; a `COMMENT` records the true target instead. Post-migration: `to_regclass('public.profiles')` null, signup trigger intact, `user_profiles` 2 rows, catalogue unchanged (904 / 1,552). Types regenerated; the dead row type is gone. No other legacy table touched |
 | P0.09 | Architecture gap report | COMPLETE | All 40 canonical entities mapped against the live schema (9 usable, 7 unsuitable/empty, 5 collisions, 19 missing); observation contract checked field by field. All five collision decisions plus the `uploaded_test_results` decision ratified as architecture direction on 14 Sep 2026 and recorded in `docs/PHASE_0_ARCHITECTURE_AUDIT.md` |
-| P0.10 | Security review | IN PROGRESS | `test-results` hardened 14 Sep 2026: private, 20 MB `file_size_limit`, verified by re-reading `storage.buckets`. `<uid>/` prefix invariant and MIME allow-list centralised in `src/lib/storage/testResultsPath.ts`; 10 positive and negative regression tests run in CI via `.github/workflows/unit-tests.yml`. **Residual:** `allowed_mime_types` is not settable through the supported bucket operation and needs dashboard access; auth password/MFA policy, backups/PITR, cron inventory and live grants remain dashboard-only and unverified — worklist W3 |
-| P0.11 | Phase 0 exit gate | BLOCKED | Gated on P0.02, P0.05, P0.08, P0.09, P0.10 |
+| P0.10 | Security review | BLOCKED | `test-results` unchanged and hardened: private, 20 MB `file_size_limit`, `<uid>/` prefix invariant and MIME allow-list centralised in `src/lib/storage/testResultsPath.ts` with 10 CI regression tests. The new Health Intelligence tables shipped with explicit grants, RLS and least-privilege policies, and the **Supabase linter reports zero issues** after remediation — three `SECURITY DEFINER` helpers were moved into a non-exposed `private` schema so they cannot be called over the API. **Residual, dashboard-only (B4):** `allowed_mime_types` is not settable through the supported bucket operation; auth password/MFA policy, backups/PITR, cron inventory and live `role_table_grants` remain unverifiable from this session and are **not** claimed as verified |
+| P0.11 | Phase 0 exit gate | BLOCKED | Ten of eleven tasks COMPLETE with evidence. Held open solely by the P0.10 dashboard residuals (B4) and the absent `SUPABASE_DB_URL` secret (B5). No further Phase 0 item is executable from the agent |
 
 **Phase 0 blockers**
 
-- **B1** — ~~Two competing profile models.~~ **Resolved 14 Sep 2026:** `user_profiles` is canonical on trigger, code, dependency and grant evidence. Narrowed to execution — `public.profiles` still needs retiring in its own reversible migration (W1).
-- **B2** — 114 orphan migrations. **Narrowed 14 Sep 2026:** all enumerated, classified and attributable from `schema_migrations.statements`; only 13 are schema-bearing. Now a backfill-and-enforcement task, not an unknown. No new schema until the schema-bearing set is backfilled and the parity check actually runs (W2).
-- **B3** — Original master blueprint unretrievable. **Downgraded 14 Sep 2026:** project knowledge supplied the canonical entity list, and the gap mapping is complete against it. Reconcile if the branch ever becomes reachable.
-- **B4** — Dashboard-only settings (auth policy, backups/PITR, cron, grants) unverifiable from this session.
+- **B1** — ~~Two competing profile models.~~ **RESOLVED 14 Sep 2026.** `public.profiles` retired; `user_profiles` is canonical and untouched.
+- **B2** — ~~114 orphan migrations.~~ **RESOLVED in the repository, 14 Sep 2026.** 93 marker files committed, 33 catalogue-DML versions excluded by written policy, parity tooling enforces both. Live remote verification is tracked separately as B5.
+- **B3** — Original master blueprint unretrievable. **Downgraded 14 Sep 2026:** project knowledge supplied the canonical entity list and the gap mapping is complete against it. The narrative plan has been reconstructed locally as `docs/HEALTH_INTELLIGENCE_MASTER_PLAN.md`. Reconcile if the branch ever becomes reachable.
+- **B4** — Dashboard-only settings (auth password/MFA policy, backups/PITR, cron inventory, live grants, storage `allowed_mime_types`) unverifiable from this session. **OPEN — needs the site owner.**
+- **B5** — `SUPABASE_DB_URL` missing from repository secrets, so the remote migration parity diff in `.github/workflows/migration-parity.yml` cannot run. It fails loudly rather than reporting a false pass. **OPEN — needs the site owner.**
 
 ---
 
 ## Phase 1 — Health record foundation
 
-**Status: NOT STARTED.** Gated behind a genuinely closed Phase 0. No production Health Intelligence tables are to be created.
+**Status: IN PROGRESS** — groundwork schema shipped 14 September 2026 in one additive, reversible migration: **18 tables, 14 enums, explicit grants, RLS on every table, least-privilege policies, Supabase linter clean.** Every table is empty by design. Schema is not a feature: no item below is COMPLETE, because completion requires an ingestion path, patient verification and a user-facing surface, none of which exist yet.
 
-| ID | Task | Status |
-| --- | --- | --- |
-| P1.01 | `health_profiles` | NOT STARTED |
-| P1.02 | Profile relationships and memberships | NOT STARTED |
-| P1.03 | `source_documents` | NOT STARTED |
-| P1.04 | `diagnostic_reports` | NOT STARTED |
-| P1.05 | `specimens` | NOT STARTED |
-| P1.06 | `observations` (full observation contract) | NOT STARTED |
-| P1.07 | `reference_ranges` (historical ranges retained per observation) | NOT STARTED |
-| P1.08 | `observation_provenance` | NOT STARTED |
-| P1.09 | `verification_records` | NOT STARTED |
-| P1.10 | Audit logging for health-record access | NOT STARTED |
-| P1.11 | RLS across all Phase 1 tables | NOT STARTED |
-| P1.12 | Manual result entry | NOT STARTED |
-| P1.13 | Basic health record UI | NOT STARTED |
-| P1.14 | Regression and security gate | NOT STARTED |
+Contracts and pure logic accompanying the schema: `src/types/health-intelligence.ts`, `src/lib/health/release-state-machine.ts`, `src/lib/health/biomarker-series.ts`, `src/services/HealthRecordService.ts`, with 19 unit tests. Typecheck clean; full suite green.
+
+| ID | Task | Status | Evidence |
+| --- | --- | --- | --- |
+| P1.01 | `health_profiles` | IN PROGRESS | Table created, owner-scoped RLS, separate from `auth.users` so dependant profiles are possible later. No UI |
+| P1.02 | Profile relationships and memberships | NOT STARTED | Deferred deliberately; `organisation_members` covers the practitioner side only and grants no health-data access |
+| P1.03 | `source_documents` | IN PROGRESS | Table created; `storage_path` is a private object path, never a public URL. No upload path yet |
+| P1.04 | `diagnostic_reports` | IN PROGRESS | Table created with the release status machine; owner can read only once released. No ingestion |
+| P1.05 | `specimens` | IN PROGRESS | Table created and linked to reports |
+| P1.06 | `observations` (full observation contract) | IN PROGRESS | **Authoritative result table.** Carries no interpretation or AI-derived field. Source value, unit and range immutable after insert, enforced by a trigger. Trust requires `verification_status = 'confirmed'`. Cycle day, phase, menstrual status and hormone medication context included |
+| P1.07 | `reference_ranges` (historical ranges retained per observation) | IN PROGRESS | `observation_reference_ranges` retains the range that applied at the time; `reference_range_contexts` holds versioned contextual definitions, inactive until clinically signed off |
+| P1.08 | `observation_provenance` | IN PROGRESS | Provenance carried on `observations` itself (source document, page, text anchor, extraction method and confidence) rather than a separate table — ratified P0.09 decision |
+| P1.09 | `verification_records` | NOT STARTED | Verification state exists on the observation; the confirm/edit/reject audit trail is outstanding |
+| P1.10 | Audit logging for health-record access | NOT STARTED | Canonical `audit_logs` to be wired when read paths go live |
+| P1.11 | RLS across all Phase 1 tables | IN PROGRESS | Enabled with policies on all 18 tables and linter-clean; the acceptance test suite proving each policy is outstanding |
+| P1.12 | Manual result entry | NOT STARTED | First adapter to build against `InboundReport` |
+| P1.13 | Basic health record UI | NOT STARTED | |
+| P1.14 | Regression and security gate | NOT STARTED | |
+
 
 ---
 
@@ -179,7 +183,27 @@ P9.01 authorised verified-data retrieval · P9.02 source-grounded Q&A · P9.03 t
 | X.10 | Disaster recovery | NOT STARTED | Depends on X.03 |
 | X.11 | Clinical governance | NOT STARTED | Needed before any retest rule ships |
 | X.12 | Data quality operations | IN PROGRESS | Junk-price quarantine, biomarker audit runs, scrape provenance and out-of-stock handling live for the catalogue; nothing equivalent for health-record data |
-| X.13 | Partner lab/results integration discovery (Forth Connect) | IN PROGRESS | `docs/RESEARCH_FORTH_CONNECT.md`, 14 Sep 2026: vendor claims recorded as claims, API surface marked UNKNOWN, A/B/C/D comparison, risk register and the canonical inbound contract every ingestion route must satisfy. Discovery only — no contact, no contract, no integration. No production integration may be marked complete from this item |
+| X.13 | Partner lab/results integration discovery (Forth Connect) | IN PROGRESS | `docs/RESEARCH_FORTH_CONNECT.md` and `docs/FORTH_CONNECT_COMPETITIVE_ARCHITECTURE.md`, 14 Sep 2026: vendor claims recorded as claims, API surface marked UNKNOWN, A/B/C/D comparison, risk register, canonical inbound contract, and an explicit list of capabilities we refuse to copy. Discovery only — no contact, no contract, no integration. No production integration may be marked complete from this item |
+
+---
+
+## Competitive design backlog (Forth-inspired)
+
+Added 14 September 2026. Reasoning in `docs/FORTH_CONNECT_COMPETITIVE_ARCHITECTURE.md`; narrative in `docs/HEALTH_INTELLIGENCE_MASTER_PLAN.md` §5. Every item below is **groundwork only** — schema, contracts and tests exist; no behaviour, no UI, no data.
+
+| ID | Capability | Status | Groundwork shipped | Remaining before COMPLETE |
+| --- | --- | --- | --- | --- |
+| F.A | Results delivery and release control | GROUNDWORK | `diagnostic_reports.status`, append-only `result_release_events` (no update/delete grant), per-source release policy, `release-state-machine.ts` + 9 tests | Transition server functions writing the event in the same transaction; reviewer UI; notification on release |
+| F.B | Longitudinal results experience | GROUNDWORK | `biomarker-series.ts` (trusted-only, latest/previous, absolute and percentage change, direction, interval) + 10 tests; `HealthRecordService` read layer | Charts, date-range and reference-range overlays, provider/lab context, educational copy join |
+| F.C | Peer benchmarking | GROUNDWORK, DISABLED | `benchmark_cohort_policies` with a CHECK constraint refusing `is_enabled` without both governance sign-offs, minimum cohort 100 and small-cell threshold 10 | Statistical governance, clinical sign-off, de-identification method, cohort definitions. Not to be enabled before all four exist |
+| F.D | Clinician commentary | GROUNDWORK | `clinical_review_comments` — attributed, timestamped, separately released, no UPDATE grant, corrections by supersede, never merged into an observation | Review queue, org-scoped policy (governance-gated), release wiring |
+| F.E | Practitioner and clinic console | GROUNDWORK | `organisations`, `organisation_members`, `private.is_org_member()` — **no health-data access granted** | Role model tests, consent flow, permissions design. No portal before governance is complete |
+| F.F | Curated test profiles | GROUNDWORK | `curated_test_profiles` + `_biomarkers` mapped to `biomarker_hub`; deliberately no price, provider or commission column; public read only when published | Admin editor under `/control`; read-only mapping to the provider catalogue |
+| F.G | Notifications | GROUNDWORK | `notification_channel_preferences` (off by default, per channel per event type), `notification_events` carrying no clinical content | Dispatch abstraction, preference screen, delivery-status audit, suppression rules |
+| F.H | Cycle-aware female health modelling | GROUNDWORK | `observations.cycle_day`/`cycle_phase`/`menstrual_status`/`hormone_medication_context`; `reference_range_contexts`, inactive until clinically signed off; `CycleContext` contract | Capture UI, evidence-sourced range definitions, our own explainable curve model. **Forth's FORM score is explicitly not to be implemented** |
+| F.I | Connectivity and adapters | GROUNDWORK | `InboundReport`/`InboundObservation` canonical contract; `ingestion_adapters` (status, hard-requirement flags); `ingestion_events` (signature verification required, no payload body stored) | Manual-entry adapter, then document upload as the reference implementation. No partner adapter before documentation and a sandbox exist |
+
+**Standing constraints on this backlog:** no partner-specific column in any canonical table; adapter identity is never an input to recommendation, ranking or retesting; no proprietary third-party score is reproduced; no clinical content leaves the record in a notification; nothing here justifies a claim of NHS connectivity.
 
 ---
 
@@ -189,3 +213,5 @@ P9.01 authorised verified-data retrieval · P9.02 source-grounded Q&A · P9.03 t
 | --- | --- |
 | 14 Sep 2026 | Tracker created locally from project knowledge. Gate 0 marked COMPLETE. Phase 0 IN PROGRESS with four blockers. Phase 1 onward NOT STARTED. No schema created. |
 | 14 Sep 2026 (fourth pass) | Migration parity CI rebuilt and self-tested; `docs/MIGRATION_RECONCILIATION.md` published; `test-results` bucket limited to 20 MB; `<uid>/` storage prefix invariant centralised and regression-tested in CI; `public.profiles` retirement plan and rollback recorded but not executed; ten W6 architecture decisions ratified as direction; Forth Connect discovery recorded as X.13. P0.09 COMPLETE. No production table created, altered, dropped or renamed. |
+| 14 Sep 2026 (fifth pass) | Migration reconciliation executed (93 marker files, 33 policy exclusions) — P0.02 COMPLETE. `public.profiles` retired in an isolated reversible migration after a clean live preflight — P0.08 COMPLETE. Health Intelligence groundwork shipped: 18 additive tables, 14 enums, RLS and grants throughout, `SECURITY DEFINER` helpers relocated to a non-exposed `private` schema, Supabase linter clean. Canonical contracts, release state machine, longitudinal series maths and the health-record read layer added with 19 tests. Phase 1 moved to IN PROGRESS (schema only). `docs/FORTH_CONNECT_COMPETITIVE_ARCHITECTURE.md` and `docs/HEALTH_INTELLIGENCE_MASTER_PLAN.md` written; competitive backlog F.A–F.I added. Phase 0 **not** marked COMPLETE: B4 (dashboard-only) and B5 (`SUPABASE_DB_URL`) remain open and are not claimed as verified. Marketplace, catalogue, SEO and referral functionality untouched (904 provider tests, 1,552 biomarkers, 4,434 links). |
+
