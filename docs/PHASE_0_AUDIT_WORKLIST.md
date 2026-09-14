@@ -31,12 +31,12 @@ Confirmed to exist today (live schema, `clvuioagsgfadynuvodj`):
 | `clinical_loinc_mappings` | 47 | §25 LOINC architecture — has `verification_status`, `is_primary`, `code_source`, `release_version`, `verified_at`/`verified_by` — i.e. the exact governance model §25 asks for | Only `fhir-export` function |
 | `clinical_snomed_mappings` | 47 | Not in master plan at all — SNOMED CT, one step further than LOINC | Only `fhir-export` function |
 | `clinical_reference_ranges` | 0 | §16 Reference ranges — but modeled as canonical/population ranges (sex, age band, `source: 'nhs'`), not per-observation source ranges like §16 specifies | None found |
-| `clinical_biomarker_history` | 0 | §4 `observations` + §14 longitudinal engine, flattened into one table incl. `trend_direction`, `ai_interpretation` | Only `fhir-export` function |
-| `clinical_patient_uploads` | 0 | §4 `source_documents` + `extraction_jobs` | Only `fhir-export` function |
-| `clinical_consent_records` | 0 | §4 `consent_records`, has `ip_hash`, `version`, `expires_at` | Only `fhir-export` function |
-| `clinical_fhir_bundles` | 0 | §24/§7 Phase 7 FHIR export — stores generated R4 bundles with `validated`/`validation_errors` | Only `fhir-export` function |
-| `clinical_gp_notifications` | 0 | Not in master plan at all — GP practice (ODS code) notification workflow | Only `fhir-export` function |
-| `fhir_export_jobs` | 0 | Job-tracking wrapper around the above | `fhir-export` function |
+| `clinical_biomarker_history` | 0 | §4 `observations` + §14 longitudinal engine, flattened into one table incl. `trend_direction`, `ai_interpretation` | **Corrected (Section 8/9 full read): none.** Confirmed dark — no code anywhere reads or writes it |
+| `clinical_patient_uploads` | 0 | §4 `source_documents` + `extraction_jobs` | **Corrected: none.** Confirmed dark |
+| `clinical_consent_records` | 0 | §4 `consent_records`, has `ip_hash`, `version`, `expires_at` | **Corrected: none.** Confirmed dark — `fhir-export` uses the legacy `user_consents` table instead |
+| `clinical_fhir_bundles` | 0 | §24/§7 Phase 7 FHIR export — stores generated R4 bundles with `validated`/`validation_errors` | **Corrected: none.** Confirmed dark — `fhir-export` builds bundles in-memory and never persists to this table |
+| `clinical_gp_notifications` | 0 | Not in master plan at all — GP practice (ODS code) notification workflow | **Corrected: none.** Confirmed dark |
+| `fhir_export_jobs` | 0 | Job-tracking wrapper around the above | `fhir-export` function — confirmed, this one genuinely is wired up |
 | `data_sharing_grants` | 0 | §23 Secure sharing — `scope` JSONB *defaults to* `{"resources": ["Patient","DiagnosticReport","Observation"]}`, has `access_token_hash`, `expires_at` (30d default), `revoked_at`/`reason`, `access_count` | `AdminDataSharingPage` (admin-only route `/admin/data-sharing`) |
 | `profiles` | 0 | **Resolved (2026-09-14):** not boilerplate. Migration `20260705205407` created it deliberately (`id references auth.users(id)`, self-service RLS: `profiles self read/insert/update`), paired with an `engine_*` table set (`engine_runs`, `engine_freezes`, `engine_checkpoints`, `engine_audit_log` — an agent/skill-run tracker: columns `command`, `skill`, `stage`, `status`) and a first-user-auto-admin trigger. The auto-admin trigger was deliberately dropped again in `20260730102214` once real admin was established (privilege-escalation cleanup), but `profiles` itself, its RLS, and the `engine_*` tables remain live. | RLS policies exist; no confirmed frontend reader found yet — re-check `src/` now that this is understood to be real, not dead |
 
@@ -82,7 +82,8 @@ read directly from applied migration content.
 | `profiles` + `engine_*` tables | **Leave alone — unrelated to the health-record build.** Confirmed real (0.1 above) but serves a different purpose (looks like agent/skill-run tracking: `engine_runs.skill`, `.stage`, `.status`). Not a health-profile candidate despite the name. The actual multi-profile-per-account gap (master plan §4) is still open and unaddressed by any existing table — `user_profiles` remains hard 1:1 with `auth.users`. | Migration content, this session |
 | `test_results` (`biomarker_results` JSONB) | **Deprecate.** Zero rows, the exact blob anti-pattern the master plan rejects (§5). Mark deprecated via table comment now; drop only after confirming no code path still references it. | Row count + schema, earlier this session |
 | `uploaded_test_results` | **Adopt with rework, has live data (2 rows) — do not silently drop.** Reconcile into `clinical_patient_uploads` rather than deprecating outright, since real rows exist. | Row count, earlier this session |
-| `user_health_data`, `user_health_scores`, `biomarker_readings` | **Deprecate.** All 0 rows, all conceptually absorbed by `biomarker_hub` + `clinical_biomarker_history`. Cheapest possible point to consolidate, before any real data lands in any of them. | Row counts, earlier this session |
+| `user_health_data`, `user_health_scores` | **Deprecate.** 0 rows, no reader or writer found anywhere in the codebase (Section 8/9 full reads). Conceptually absorbed by `biomarker_hub` + `clinical_biomarker_history`. | Row counts + code reads, this session |
+| `biomarker_readings` | **Correction — do not deprecate.** 0 rows, but actively *read* by both `blood-test-analysis` (historical readings for AI context) and `fhir-export` (`fetchUserData`, feeds the FHIR bundle). Empty because nothing has been found that *writes* to it yet, not because it's dead. Reconcile into `clinical_biomarker_history` rather than dropping — repoint both readers as part of that reconciliation, don't leave two live tables serving the same role. | Section 8/9 full code reads, this session |
 | `biomarker_audit_runs` | **Out of scope, no action.** Confirmed as the `audit-biomarkers` scraper data-quality job log — unrelated to the clinical/health-record domain. Don't fold into `audit_logs`. | Function-name match, this session |
 | `user_profiles` (NHS number, PII, 2 live rows) | **Leave alone in Phase 0/1.** Actively used by the marketplace/quiz features with real user data. Out of scope for the Health Intelligence buildout — a dedicated migration plan is required before this table is touched, per principle #15. Do not let Phase 1's `health_profiles` design assume it can extend or replace this table without that separate plan. | Column audit, earlier this session |
 
@@ -160,19 +161,68 @@ Confirmed duplicates/overlaps to resolve explicitly (not just "note and move on"
 - **Health metrics:** `user_health_data`, `user_health_scores`, `biomarker_readings` — all 0 rows, all overlapping conceptually with `clinical_biomarker_history` and the master plan's `health_events`/`biomarker_series`. Since all are empty, this is the cheapest possible place to consolidate before any real data lands in any of them.
 - **Audit runs:** `biomarker_audit_runs` (75 rows) vs `audit-biomarkers` edge function vs the master plan's general `audit_logs` — confirm this is a data-quality job log (matches `audit-biomarkers` function name) and not something that should be folded into `audit_logs`.
 
-## 8. Existing AI/document pipeline (not in original tracker — add explicitly)
+## 8. Existing AI/document pipeline — DONE (full read, 2026-09-14)
 
-- `blood-test-analysis` function (336 lines) and `ai-test-mapper` function (536 lines) already perform work that overlaps with master plan Phase 2 (§9 document intelligence pipeline, §10 AI extraction contract). Read both in full. For each, determine:
-  - What input it accepts (PDF? image? structured text?).
-  - What it writes, and to which table(s) — does it write directly to a "trusted" table, which would violate principle #3/#4?
-  - Whether it has any confidence scoring or validation step, or goes straight from AI output to storage.
-- Record findings against `P2.05` (AI extraction schema) and `P2.11` (deterministic validation) — these two tracker items may already be 30-70% answered by existing code, or may reveal the existing code violates the very principles the master plan sets out (in which case that's a rework item, not a "delete and start over" item — principle #15).
+**`blood-test-analysis`** (336 lines): **not** a document-intelligence pipeline —
+takes structured JSON input (`{biomarkerName, value, unit}[]`, manually typed
+by the user, not a PDF/image). Reads reference data from `biomarkers_library`
+(now a compat view onto `biomarker_hub`, so it already inherits the 29 Aug
+consolidation with zero code change) and history from `biomarker_readings`.
+Calls a third-party AI gateway (Lovable AI Gateway, `google/gemini-3-flash-preview`)
+with age/gender/biomarker values, gets back a structured per-biomarker
+`status`/`explanation`/`trend`, and stores the raw AI response in
+`health_queries.ai_response` — an advisory/insight log, **not** a trusted
+observation table. So it does not literally violate principle #3 (it never
+writes AI output onto a trusted clinical row). But it skips essentially all
+the governance the master plan wants around AI calls: no entry in
+`ai_operation_logs`/`ai_prompt_versions` despite that infrastructure already
+existing in the schema (confirmed present, unused, in the table inventory),
+no confidence score on its own output, no visible data-processing-agreement
+check before sending age/gender/biomarker values to an external third-party
+model. **Decision: refactor-in-place, not replace.** Wire it into the
+existing `ai_operation_logs` table before Phase 2 work builds anything new on
+top of the AI-governance gap this leaves.
 
-## 9. Existing interoperability / sharing pipeline (not in original tracker — add explicitly)
+**`ai-test-mapper`** (536 lines): **unrelated to the clinical/health-record
+domain** — despite the name, this maps *marketplace catalogue* entries
+(`provider_tests` → `tests_master`) using OpenAI, admin-gated, with zod
+validation and safe dry-run defaults. Well-built, but has nothing to do with
+patient results. **Decision: out of scope, no action** — same bucket as
+`biomarker_audit_runs`/`audit-biomarkers`.
 
-- Read `fhir-export/index.ts` (373 lines) in full against master plan §24 (FHIR architecture) and Phase 7/8 acceptance criteria. Determine actual resource coverage (Patient/DiagnosticReport/Observation/DocumentReference/Specimen — which are implemented vs. stubbed).
-- `data_sharing_grants.scope` defaulting to FHIR resource names is a strong signal this was built with the same FHIR-shaped model the master plan independently arrived at. Confirm whether `AdminDataSharingPage` is feature-complete enough to become the Phase 6 secure-sharing UI (extended to non-admin users) rather than building a new one.
-- `clinical_gp_notifications` implies NHS GP-practice integration was already scoped (ODS code field). This is beyond anything in the master plan's current phases — decide whether to fold it into Phase 7 explicitly or flag as deliberately out of scope for now.
+## 9. Existing interoperability / sharing pipeline — DONE (full read, 2026-09-14)
+
+**`fhir-export`** (373 lines) is a real, fairly complete implementation of the
+FHIR Bulk Data Export pattern: `/metadata` CapabilityStatement, consent-gated
+`/$export` async kickoff (202 + Content-Location, matches spec), `/status`
+polling, `/output` download, plus a fully working secure-sharing feature
+(`/grants`, `/grants/:id/revoke`, `/shared/:token` anonymous recipient
+access) — SHA-256-hashed tokens, 1-90 day expiry, revocation with reason,
+access counting. This **is** master plan §23's secure sharing, already built.
+Audit logging via `log_data_access_with_reason` RPC is real.
+
+**Important correction to Section 0's table above:** the "wired to:
+`fhir-export`" note for several `clinical_*` rows was wrong — it came from an
+overly broad grep pattern. Reading the file in full: `fhir-export` reads/writes
+`uploaded_test_results`, `biomarker_readings`, `user_consents`,
+`data_sharing_grants`, and `fhir_export_jobs` — **not** `clinical_biomarker_history`,
+`clinical_patient_uploads`, `clinical_consent_records`, `clinical_fhir_bundles`,
+`clinical_gp_notifications`, `clinical_loinc_mappings`, or `clinical_snomed_mappings`.
+Those seven tables are confirmed **100% dark** — no code anywhere in the repo
+reads or writes them. The FHIR export/sharing pipeline and the governed
+`clinical_*` domain are two disconnected systems today, each unaware of the
+other.
+
+**Decision: refactor-in-place, not replace.** The `/grants` routes become the
+Phase 6 secure-sharing backend directly — do not rebuild. But `fetchUserData()`
+needs repointing at whichever table becomes the real Phase 1 observations
+model, since it currently builds bundles from the legacy `uploaded_test_results`/
+`biomarker_readings` pair, not from `biomarker_hub`/the `clinical_*` domain.
+
+`clinical_gp_notifications` remains a real, deliberately-scoped-but-unbuilt
+NHS GP-notification workflow (ODS code field) — genuinely beyond the master
+plan's current phases. Flag as a named Phase 7+ candidate, don't build
+against it yet.
 
 ## 10. Security / governance baseline (`P0.10`)
 
@@ -185,7 +235,7 @@ Confirmed duplicates/overlaps to resolve explicitly (not just "note and move on"
 Single document, produced from sections 0-10 above, containing:
 1. A disposition decision (adopt / adopt-with-rework / deprecate) for every table listed in Section 0 and Section 7, with the reasoning.
 2. A revised Phase 1 schema plan that names, for each proposed master-plan table (`health_profiles`, `observations`, `diagnostic_reports`, `biomarkers`, `consent_records`, `share_links`, etc.), whether it is: new, or an extension of a named existing table, or a rename/rework of one.
-3. An explicit call on `blood-test-analysis`, `ai-test-mapper`, `fhir-export`: keep, refactor-in-place, or replace — each with a reason tied to master plan principles #3/#4/#11.
+3. An explicit call on `blood-test-analysis`, `ai-test-mapper`, `fhir-export` — **done, see Sections 8-9:** `blood-test-analysis` refactor-in-place (wire into existing unused `ai_operation_logs`/`ai_prompt_versions`, add confidence scoring, check the third-party AI gateway's data handling before Phase 2 builds on it); `ai-test-mapper` out of scope, no action (marketplace catalogue tooling, not clinical); `fhir-export` refactor-in-place (keep its `/grants` sharing implementation as Phase 6's backend, repoint `fetchUserData()` at the real Phase 1 observations model instead of the legacy `uploaded_test_results`/`biomarker_readings` pair it reads today).
 4. Updated `docs/BUILD_TRACKER.md` — several `P0.06`/`P0.07`/`P2.05` items are likely NOT "NOT STARTED" once this report exists; they're "existing implementation found, disposition pending" or "existing implementation found, adopted." Don't mark them COMPLETE (nothing has been verified yet), but stop tracking them as if no work exists.
 
 ## 12. Phase 0 exit gate (`P0.11`)
