@@ -178,14 +178,17 @@ export const TestListCard: React.FC<TestListCardProps> = ({
                 )}
                 {...externalLinkProps}
               >
-                View details
+                Book with {test.provider}
               </a>
             </Button>
           ) : (
+            // No provider URL to book against — let the click fall through
+            // to the card's own `Link` (internal detail page) instead of
+            // swallowing it. Previously this stopped propagation with no
+            // navigation of its own, so the button did nothing at all.
             <Button
               size="sm"
               className="bg-primary hover:bg-primary/90 text-primary-foreground"
-              onClick={(e) => e.stopPropagation()}
             >
               View details
             </Button>
