@@ -150,6 +150,11 @@ export const SLIDES: HeroSlide[] = [
     posMobile: "40% 15%",
     posTablet: "40% 32%",
     posDesktop: "50% 45%",
+    eyebrow: "At-home testing",
+    headline: "Test at home, made simple.",
+    headlineLines: ["Test at home,", "made simple."],
+    supportingCopy: "Finger-prick kits from accredited UK laboratories.",
+    align: "right",
   },
   {
     src: ageingDesktop1200Webp.url,
