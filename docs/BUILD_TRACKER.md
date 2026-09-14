@@ -183,13 +183,19 @@ P9.01 authorised verified-data retrieval · P9.02 source-grounded Q&A · P9.03 t
 | X.10 | Disaster recovery | NOT STARTED | Depends on X.03 |
 | X.11 | Clinical governance | NOT STARTED | Needed before any retest rule ships |
 | X.12 | Data quality operations | IN PROGRESS | Junk-price quarantine, biomarker audit runs, scrape provenance and out-of-stock handling live for the catalogue; nothing equivalent for health-record data |
-| X.13 | Partner lab/results integration discovery (Forth Connect) | IN PROGRESS | `docs/RESEARCH_FORTH_CONNECT.md` and `docs/FORTH_CONNECT_COMPETITIVE_ARCHITECTURE.md`, 14 Sep 2026: vendor claims recorded as claims, API surface marked UNKNOWN, A/B/C/D comparison, risk register, canonical inbound contract, and an explicit list of capabilities we refuse to copy. Discovery only — no contact, no contract, no integration. No production integration may be marked complete from this item |
+| X.13 | Partner lab/results integration discovery (Forth Connect) | IN PROGRESS | `docs/RESEARCH_FORTH_CONNECT.md` (partnership risk register) and `docs/FORTH_CONNECT_COMPETITIVE_ARCHITECTURE.md` (full-lifecycle competitive analysis, 14 Sep 2026 — all six published surfaces including Solutions and the Terms of Service). Vendor claims recorded as claims; API surface UNKNOWN; six-way separation of features, architecture, clinical governance, commercial workflow, deliberate refusals and where we must be stronger; eighteen-layer mapping; P0/P1/P2 backlog with dependencies, acceptance criteria and do-not-build-yet items. Discovery only — no contact, no contract, no integration, no code against a Forth API. No production integration may be marked complete from this item |
 
 ---
 
 ## Competitive design backlog (Forth-inspired)
 
-Added 14 September 2026. Reasoning in `docs/FORTH_CONNECT_COMPETITIVE_ARCHITECTURE.md`; narrative in `docs/HEALTH_INTELLIGENCE_MASTER_PLAN.md` §5. Every item below is **groundwork only** — schema, contracts and tests exist; no behaviour, no UI, no data.
+Added 14 September 2026. Reasoning in `docs/FORTH_CONNECT_COMPETITIVE_ARCHITECTURE.md`; narrative in `docs/HEALTH_INTELLIGENCE_MASTER_PLAN.md` §5–§8. Every item below is **groundwork only** — schema, contracts and tests exist; no behaviour, no UI, no data.
+
+**The delivery backlog lives in `docs/FORTH_CONNECT_COMPETITIVE_ARCHITECTURE.md` §9** (P0-a…h, P1-a…h, P2-a…g, each with dependencies and acceptance criteria) and is mirrored in `docs/build-tracker.json` under `competitiveBacklog.priorities`, with `doNotBuildYet`, `refusals` and `strongerThanForth`. The F.x rows below are the *schema and contract* groundwork those items build on; they are not the delivery plan.
+
+**P0-g is COMPLETE:** `src/lib/health/__tests__/canonical-neutrality.test.ts` asserts that no canonical health module names a partner brand and that the observation contract exposes no interpretation, score or AI field. It caught a real violation on first run — a partner name in a doc comment in `src/types/health-intelligence.ts` — which was removed.
+
+**Governing conclusion from the analysis:** Forth's advantages are operational and single-vendor — CE-marked kits, ISO 13485, MHRA registration, a laboratory network and an employed GP rota — and every capability downstream is coherent because they control the whole chain. We will not buy that chain. Our equivalents must survive heterogeneous multi-provider input, which is the harder problem and the defensible one.
 
 | ID | Capability | Status | Groundwork shipped | Remaining before COMPLETE |
 | --- | --- | --- | --- | --- |
