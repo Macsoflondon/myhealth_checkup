@@ -179,6 +179,7 @@ P9.01 authorised verified-data retrieval · P9.02 source-grounded Q&A · P9.03 t
 | X.10 | Disaster recovery | NOT STARTED | Depends on X.03 |
 | X.11 | Clinical governance | NOT STARTED | Needed before any retest rule ships |
 | X.12 | Data quality operations | IN PROGRESS | Junk-price quarantine, biomarker audit runs, scrape provenance and out-of-stock handling live for the catalogue; nothing equivalent for health-record data |
+| X.13 | Partner lab/results integration discovery (Forth Connect) | IN PROGRESS | `docs/RESEARCH_FORTH_CONNECT.md`, 14 Sep 2026: vendor claims recorded as claims, API surface marked UNKNOWN, A/B/C/D comparison, risk register and the canonical inbound contract every ingestion route must satisfy. Discovery only — no contact, no contract, no integration. No production integration may be marked complete from this item |
 
 ---
 
