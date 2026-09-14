@@ -1,6 +1,6 @@
 # Phase 0 — Architecture Audit (Health Intelligence Master Blueprint)
 
-**Date:** 14 September 2026
+**Date:** 14 September 2026 (first pass), amended 14 September 2026 (second pass)
 **Scope:** Read-only audit of repository and read-only inspection of the connected Supabase project (`clvuioagsgfadynuvodj`).
 **Status:** **Phase 0 NOT COMPLETE — blocked.** See "Blockers".
 
@@ -10,10 +10,19 @@ No schema, data, route, component or edge function was modified during this audi
 
 ## Blockers
 
-1. **`docs/HEALTH_INTELLIGENCE_MASTER_PLAN.md` does not exist in this repository.** A full-repository search for the filename and for the phrase "Health Intelligence" returned zero matches outside of this audit file. The comparison of the existing implementation against the planned Health Intelligence schema therefore could not be performed. Every "conflict" and "missing prerequisite" statement below is inferred from conventional health-record architecture, **not** from the plan.
-2. **`docs/BUILD_TRACKER.md` does not exist in this repository.** The Phase 0 acceptance criteria are unavailable, so Phase 0 cannot be genuinely assessed as met and has not been marked complete.
+1. **`docs/HEALTH_INTELLIGENCE_MASTER_PLAN.md` does not exist in this repository or anywhere in its git history.** The comparison of the existing implementation against the planned Health Intelligence schema therefore could not be performed. Every "conflict" and "missing prerequisite" statement below is inferred from conventional health-record architecture, **not** from the plan.
+2. **`docs/BUILD_TRACKER.md` does not exist in this repository or anywhere in its git history.** The Phase 0 acceptance criteria (P0.01–P0.11) are unavailable, so no tracker item can be evidenced and Phase 0 has not been marked complete.
+3. **`docs/PHASE_0_AUDIT_WORKLIST.md` and `docs/build-tracker.json` are likewise absent.**
+4. **The branch `docs/health-intelligence-master-plan` is not reachable from this project.** Second-pass retrieval attempt, 14 September 2026:
+   - `git remote -v` resolves `origin` to the Lovable-internal mirror (`git.private.lovable-gcp.code.storage/37e227e1-…`), **not** to GitHub.
+   - `git ls-remote --heads origin` returned 151 refs; **none** matches `docs/health-intelligence-master-plan` or contains "health".
+   - `git log --all` and a scan of reachable trees found no blob under any of the four filenames at any commit.
+   - No GitHub connector connection is available to this workspace (`list_connections` for `github` returned none), so the GitHub API route is also unavailable.
 
-Both documents must be committed to `docs/` before Phase 0 can be closed.
+   Per instruction, the documents were **not** reconstructed from memory. They must be supplied by one of: pushing the branch to the Lovable-connected remote, cherry-picking the four files onto `main`, creating a GitHub connector connection in workspace settings, or pasting the file contents directly into chat.
+
+Phase 0 cannot be closed until the four documents are present and the audit is re-run against them.
+
 
 ---
 
