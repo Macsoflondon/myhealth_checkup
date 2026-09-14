@@ -2,9 +2,11 @@ import { describe, expect, it } from "vitest";
 import {
   compareMigrationSets,
   formatParityReport,
+  parseExclusionRegistry,
 } from "../../../../scripts/lib/migration-parity-core.mjs";
 
 const base = ["20250714231842", "20260705225135", "20260912113814"];
+
 
 describe("compareMigrationSets", () => {
   it("passes when the sets are identical", () => {
@@ -60,5 +62,53 @@ describe("compareMigrationSets", () => {
 
   it("de-duplicates repeated versions before comparing", () => {
     expect(compareMigrationSets([...base, ...base], base).ok).toBe(true);
+  });
+});
+
+describe("policy exclusions", () => {
+  const excludedVersions = ["20260806004010"];
+
+  it("tolerates an excluded applied version with no committed file, and reports it", () => {
+    const result = compareMigrationSets([...base, "20260806004010"], base, {
+      excludedVersions,
+    });
+    expect(result.ok).toBe(true);
+    expect(result.missingLocal).toEqual([]);
+    expect(result.excludedApplied).toEqual(["20260806004010"]);
+    expect(formatParityReport(result)).toContain("excluded by policy");
+  });
+
+  it("still fails on a NON-excluded orphan alongside an excluded one", () => {
+    const result = compareMigrationSets(
+      [...base, "20260806004010", "20260913090000"],
+      base,
+      { excludedVersions },
+    );
+    expect(result.ok).toBe(false);
+    expect(result.missingLocal).toEqual(["20260913090000"]);
+  });
+
+  it("fails when an excluded version also has a committed file", () => {
+    const repo = [...base, "20260806004010"];
+    const result = compareMigrationSets([...base, "20260806004010"], repo, {
+      excludedVersions,
+    });
+    expect(result.ok).toBe(false);
+    expect(result.excludedButCommitted).toEqual(["20260806004010"]);
+  });
+});
+
+describe("parseExclusionRegistry", () => {
+  it("ignores comments and blank lines, and keeps only the version column", () => {
+    const contents = [
+      "# a comment",
+      "",
+      "20260806004010 c302f0d8b3280b06bfd7215a8b74a2ac",
+      "  20260806004150   f26f8a822c5cffaf2a2cbfc905401dea  ",
+    ].join("\n");
+    expect(parseExclusionRegistry(contents)).toEqual([
+      "20260806004010",
+      "20260806004150",
+    ]);
   });
 });
