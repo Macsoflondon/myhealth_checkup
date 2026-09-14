@@ -137,7 +137,7 @@ export const SLIDES: HeroSlide[] = [
     posMobile: "center center",
     posTablet: "center center",
     posDesktop: "center center",
-    eyebrow: "Your health. Your choice.",
+    eyebrow: "Trusted comparison",
     headline: "Compare with confidence.",
     supportingCopy: "Private health tests, clearly compared.",
   },
