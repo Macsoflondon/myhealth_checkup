@@ -1,0 +1,1 @@
+ALTER VIEW public.unified_provider_tests SET (security_invoker = true);

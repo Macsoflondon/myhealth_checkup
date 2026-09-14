@@ -1,0 +1,1 @@
+revoke insert, update, delete, truncate on comparison_test_groups from anon, authenticated;
