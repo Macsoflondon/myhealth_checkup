@@ -16,13 +16,6 @@ import bloodTestKit480Webp from "@/assets/hero/generated/blood-test-kit-480.webp
 import bloodTestKit768Webp from "@/assets/hero/generated/blood-test-kit-768.webp";
 import bloodTestKit1200Webp from "@/assets/hero/generated/blood-test-kit-1200.webp";
 import bloodTestKit1590Webp from "@/assets/hero/generated/blood-test-kit-1590.webp";
-import gymSelfie from "@/assets/hero/hero-gym-selfie.png";
-import gymSelfie480Avif from "@/assets/hero/generated/gym-selfie-480.avif";
-import gymSelfie768Avif from "@/assets/hero/generated/gym-selfie-768.avif";
-import gymSelfie1200Avif from "@/assets/hero/generated/gym-selfie-1200.avif";
-import gymSelfie480Webp from "@/assets/hero/generated/gym-selfie-480.webp";
-import gymSelfie768Webp from "@/assets/hero/generated/gym-selfie-768.webp";
-import gymSelfie1200Webp from "@/assets/hero/generated/gym-selfie-1200.webp";
 
 import wellnessDesktop480Avif from "@/assets/hero/stock/wellness-desktop-480.avif.asset.json";
 import wellnessDesktop768Avif from "@/assets/hero/stock/wellness-desktop-768.avif.asset.json";
