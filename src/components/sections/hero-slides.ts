@@ -94,8 +94,6 @@ const joggingWomanAvifSrcSet = srcSet([joggingWoman480Avif, 480], [joggingWoman7
 const joggingWomanWebpSrcSet = srcSet([joggingWoman480Webp, 480], [joggingWoman768Webp, 768], [joggingWoman1200Webp, 1200], [joggingWoman1920Webp, 1920]);
 const bloodTestKitAvif = srcSet([bloodTestKit480Avif, 480], [bloodTestKit768Avif, 768], [bloodTestKit1200Avif, 1200], [bloodTestKit1590Avif, 1590]);
 const bloodTestKitWebp = srcSet([bloodTestKit480Webp, 480], [bloodTestKit768Webp, 768], [bloodTestKit1200Webp, 1200], [bloodTestKit1590Webp, 1590]);
-const gymSelfieAvif = srcSet([gymSelfie480Avif, 480], [gymSelfie768Avif, 768], [gymSelfie1200Avif, 1200]);
-const gymSelfieWebp = srcSet([gymSelfie480Webp, 480], [gymSelfie768Webp, 768], [gymSelfie1200Webp, 1200]);
 
 export const FIRST_SLIDE_SRC: string = joggingWoman;
 export const FIRST_SLIDE_PRELOAD_HREF: string = joggingWoman1200Avif;
@@ -163,17 +161,6 @@ export const SLIDES: HeroSlide[] = [
     eyebrow: "Healthy ageing",
     headline: "Plan well for the years ahead.",
     supportingCopy: "Compare tests for health, wellbeing and longevity.",
-  },
-  {
-    src: gymSelfie,
-    avifSrcSet: gymSelfieAvif,
-    webpSrcSet: gymSelfieWebp,
-    label: "Train Hard. Test Smarter.",
-    alt: "Man in gym wear taking a progress photo after a workout",
-    posMobile: "50% 20%",
-    posTablet: "50% 25%",
-    posDesktop: "50% 30%",
-    fit: "contain",
   },
   {
     src: screeningDesktop1200Webp.url,
