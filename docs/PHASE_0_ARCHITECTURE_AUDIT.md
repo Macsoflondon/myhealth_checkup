@@ -166,3 +166,75 @@ The Supabase project is external/unmanaged by Lovable. Read-only SQL **was** ava
 ## Files and objects inspected
 
 `docs/` (listing), `supabase/migrations/` (279 files, aggregate grep), `supabase/functions/` (listing, 66), `src/routes/` (listing, 145), `src/api/supabase/healthData.api.ts`, `src/lib/audit/logAccess.ts`, `src/hooks/use-auth.ts`, `src/lib/testFinder/supabaseAdapter.ts`, `src/types/entities.ts`, `src/lib/mcp/index.ts`, `package.json`, `playwright.config.ts`, `CLAUDE.md`, `roadmap.md`, `.github/workflows/`, and read-only queries against `information_schema`, `pg_class`, `pg_policy` and `storage.buckets`.
+
+---
+
+## SECOND PASS — 14 September 2026: live read-only verification
+
+This pass resolved several items previously listed as "not verified". All queries were read-only (`pg_policy`, `pg_class`, `pg_trigger`, `information_schema`, `storage.buckets`, `supabase_migrations.schema_migrations`). Nothing was written to the database.
+
+### Correction to the first pass
+
+The first pass flagged the eight `clinical_*` tables and `encryption_keys` as "one policy each — likely admin-only blanket policies with no user-scoped read path" and called it the highest-risk unknown. **Reading the policy bodies shows this concern was wrong.** The single policies are `FOR ALL` and are correctly user-scoped.
+
+### Verified policy bodies — `clinical_*`
+
+| Table | Policy | Cmd | Expression |
+| --- | --- | --- | --- |
+| `clinical_biomarker_history` | `user_biomarker_history` | ALL | `auth.uid() = user_id OR has_role(auth.uid(),'admin')` |
+| `clinical_consent_records` | `user_consent_records` | ALL | same |
+| `clinical_fhir_bundles` | `user_fhir_bundles` | ALL | same |
+| `clinical_gp_notifications` | `user_gp_notifications` | ALL | same |
+| `clinical_patient_uploads` | `user_clinical_uploads` | ALL | same |
+| `clinical_loinc_mappings` | `admin_loinc` | ALL | `has_role(auth.uid(),'admin')` |
+| `clinical_reference_ranges` | `admin_ref_ranges` | ALL | `has_role(auth.uid(),'admin')` |
+| `clinical_snomed_mappings` | `admin_snomed` | ALL | `has_role(auth.uid(),'admin')` |
+
+Related: `encryption_keys` is admin-read-only to `authenticated`; `biomarker_readings`, `uploaded_test_results`, `health_insights`, `fhir_export_jobs` and `data_sharing_grants` all carry per-command `auth.uid() = user_id` policies. `health_insights` additionally blocks user deletes (`USING false`) and restricts inserts to admin/moderator. `biomarker_hub` has one permissive `SELECT … USING (true)` policy — acceptable for a public biomarker catalogue.
+
+Residual observations (not defects, worth deciding on):
+- The `clinical_*` `ALL` policies have no separate `WITH CHECK`, so Postgres reuses `USING`. Functionally correct; an explicit `WITH CHECK` would be clearer.
+- Those policies are granted to `PUBLIC` rather than `TO authenticated`. `auth.uid()` is null for `anon`, so no rows leak, but scoping them to `authenticated` is tidier and matches the newer policies on `fhir_export_jobs` / `data_sharing_grants`.
+
+### Verified `storage.objects` policies for `test-results`
+
+Four policies (SELECT, INSERT, UPDATE, DELETE), each gated on `bucket_id = 'test-results' AND auth.uid()::text = (storage.foldername(name))[1]`. **Per-user object isolation is enforced, provided uploads are always written under a `<uid>/` prefix** — that prefix convention is a code-side invariant with no database constraint behind it and no test asserting it.
+
+Bucket flags unchanged: `test-results` private, `videos` private, `provider-test-images` public. **`test-results` still has no `file_size_limit` and no `allowed_mime_types`** — the first-pass recommendation stands.
+
+### Migration / live-schema parity
+
+| Metric | Value |
+| --- | --- |
+| Migration files committed in `supabase/migrations/` | 279 |
+| Rows in `supabase_migrations.schema_migrations` | 393 |
+| Earliest / latest applied version | `20250714231842` / `20260912113814` |
+| Public base tables live | 121 (16 of them `*_2025…2028` partitions) |
+
+**~114 migrations have been applied to production with no corresponding committed file.** The latest applied version equals the latest committed version, so the repository is not behind at the head — the gap is historical, out-of-band changes made through the dashboard or ad-hoc SQL.
+
+`scripts/check-migration-parity.mjs` only validates local filename shape and duplicate versions; by its own comment it defers the remote comparison to `.github/workflows/migration-parity.yml`. The remote half of that check is therefore the only thing that would have caught this, and the 114-file gap indicates it is either not running, not failing, or not enforced.
+
+### Auth / profile model
+
+- 3 rows in `auth.users`; 5 rows in `user_roles`; one non-internal trigger on `auth.users` (`handle_new_user_profile`).
+- **Two competing profile tables.** `public.profiles` (4 columns: `id`, `email`, `display_name`, `created_at`) holds **0 rows**. `public.user_profiles` (18 columns, including `date_of_birth`, `gender`, `phone_number`, address and emergency-contact fields) holds **2 rows**. The `auth.users` trigger is named for `profiles`, yet `profiles` is empty while `user_profiles` is populated — so either the trigger targets `user_profiles`, or it is failing silently, or `profiles` is dead.
+- This must be resolved before Phase 1: a health-intelligence layer needs one unambiguous demographic record (date of birth and sex drive reference-range selection).
+
+### Items still not verified
+
+Auth provider configuration (password policy, leaked-password protection, MFA enforcement, JWT expiry, redirect allow-list), backup/PITR settings, live `role_table_grants`, and `cron.job` contents remain unreadable without Supabase dashboard access. Production deployment status of `myhealthcheckup.co.uk` is unchanged and unverified.
+
+### Second-pass additions to recommended actions
+
+| # | Action |
+| --- | --- |
+| P0-6 | Decide `profiles` vs `user_profiles` as the single demographic record; migrate or drop the loser (as its own reviewed migration, not in Phase 1) |
+| P0-7 | Investigate the 114 uncommitted production migrations; backfill marker files per `docs/MIGRATION_HISTORY.md` and confirm the remote parity workflow actually fails on drift |
+| P0-8 | Add `file_size_limit` and `allowed_mime_types` to the `test-results` bucket |
+| P0-9 | Add a regression test asserting uploads are written under `<uid>/`, since the storage policy depends entirely on that prefix |
+| P0-10 | Optional hardening: add explicit `WITH CHECK` and `TO authenticated` to the eight `clinical_*` policies |
+
+### Phase 0 tracker status (P0.01–P0.11)
+
+**Not assessable.** `docs/BUILD_TRACKER.md` and `docs/build-tracker.json` are absent, so the text of P0.01–P0.11 and their acceptance criteria are unknown. No tracker item has been marked complete, and no tracker file was created or edited. Once the tracker is supplied, the evidence above should map onto it directly — in particular the RLS, storage-policy, parity and auth-model items, which are now evidenced rather than assumed.
