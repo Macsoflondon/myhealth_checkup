@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "programme": "Health Intelligence Platform",
+  "updated": "2026-09-15",
+  "blueprint": "docs/HEALTH_INTELLIGENCE_UNIFIED_BLUEPRINT.md",
+  "statusValues": ["NOT STARTED", "IN PROGRESS", "BLOCKED", "COMPLETE", "DEFERRED", "FAILED / REWORK REQUIRED"],
+  "completionRule": ["implementation", "verification", "security review", "regression testing", "acceptance criteria"],
+  "blockers": [
+    {"id":"B4","title":"Supabase dashboard-only security settings unverified","status":"OPEN","blocks":["P0.10","P0.11","X.03","X.10"]},
+    {"id":"B5","title":"SUPABASE_DB_URL missing from repository secrets","status":"OPEN","blocks":["P0.02","P0.11"]}
+  ],
+  "phases": [
+    {"id":"phase-0","name":"Architecture and safety gate","status":"BLOCKED","tasks":["P0.01","P0.02","P0.03","P0.04","P0.05","P0.06","P0.07","P0.08","P0.09","P0.10","P0.11","P0.12","P0.13","P0.14","P0.15","P0.16","P0.17"]},
+    {"id":"phase-1","name":"Health Record + Health Memory Foundation","status":"IN PROGRESS","tasks":["P1.01","P1.02","P1.03","P1.04","P1.05","P1.06","P1.07","P1.08","P1.09","P1.10","P1.11","P1.12","P1.13","P1.14","P1.15","P1.16","P1.17","P1.18","P1.19","P1.20","P1.21","P1.22"]},
+    {"id":"phase-2","name":"Document Intelligence","status":"NOT STARTED","tasks":["P2.01","P2.02","P2.03","P2.04","P2.05","P2.06","P2.07","P2.08","P2.09","P2.10","P2.11","P2.12","P2.13","P2.14","P2.15","P2.16","P2.17"]},
+    {"id":"phase-3","name":"Biomarker Ontology + Longitudinal Engine","status":"NOT STARTED","tasks":["P3.01","P3.02","P3.03","P3.04","P3.05","P3.06","P3.07","P3.08","P3.09","P3.10","P3.11","P3.12","P3.13","P3.14","P3.15","P3.16","P3.17","P3.18"]},
+    {"id":"phase-4","name":"Retest Intelligence","status":"NOT STARTED","tasks":["P4.01","P4.02","P4.03","P4.04","P4.05","P4.06","P4.07","P4.08","P4.09","P4.10","P4.11","P4.12","P4.13","P4.14","P4.15","P4.16"]},
+    {"id":"phase-5","name":"Personal Health Record UX","status":"NOT STARTED","tasks":["P5.01","P5.02","P5.03","P5.04","P5.05","P5.06","P5.07","P5.08","P5.09","P5.10","P5.11","P5.12","P5.13","P5.14","P5.15","P5.16"]},
+    {"id":"phase-6","name":"Clinician Reports + Secure Sharing","status":"NOT STARTED","tasks":["P6.01","P6.02","P6.03","P6.04","P6.05","P6.06","P6.07","P6.08","P6.09","P6.10","P6.11","P6.12","P6.13","P6.14","P6.15","P6.16"]},
+    {"id":"phase-7","name":"Provider, Laboratory and External Data Integrations","status":"NOT STARTED","tasks":["P7.01","P7.02","P7.03","P7.04","P7.05","P7.06","P7.07","P7.08","P7.09","P7.10","P7.11","P7.12"]},
+    {"id":"phase-8","name":"FHIR + LOINC Interoperability","status":"NOT STARTED","tasks":["P8.01","P8.02","P8.03","P8.04","P8.05","P8.06","P8.07","P8.08","P8.09","P8.10","P8.11"]},
+    {"id":"phase-9","name":"Health Intelligence AI","status":"NOT STARTED","tasks":["P9.01","P9.02","P9.03","P9.04","P9.05","P9.06","P9.07","P9.08","P9.09","P9.10","P9.11","P9.12","P9.13","P9.14","P9.15","P9.16"]},
+    {"id":"phase-10","name":"Advanced Health Intelligence","status":"NOT STARTED","tasks":["P10.01","P10.02","P10.03","P10.04","P10.05","P10.06","P10.07","P10.08","P10.09","P10.10","P10.11","P10.12","P10.13"]}
+  ],
+  "crossCutting": ["X.01","X.02","X.03","X.04","X.05","X.06","X.07","X.08","X.09","X.10","X.11","X.12","X.13","X.14","X.15","X.16","X.17","X.18"],
+  "competitiveBacklog": {
+    "hda": ["C-HDA-01","C-HDA-02","C-HDA-03","C-HDA-04","C-HDA-05","C-HDA-06","C-HDA-07","C-HDA-08","C-HDA-09","C-HDA-10","C-HDA-11","C-HDA-12","C-HDA-13","C-HDA-14","C-HDA-15","C-HDA-16","C-HDA-17"],
+    "forth": ["C-FORTH-01","C-FORTH-02","C-FORTH-03","C-FORTH-04","C-FORTH-05","C-FORTH-06","C-FORTH-07","C-FORTH-08","C-FORTH-09"]
+  },
+  "nextExecutionOrder": ["P0.12","P0.13","P0.14","P0.15","P0.16","P0.17","P0.11","P1.09","P1.10","P1.12","P1.13","P1.14","P1.15","P1.16","P1.17","P1.18","P1.19","P1.20","P1.21","P1.22"]
+}
