@@ -149,7 +149,7 @@ export const SLIDES: HeroSlide[] = [
     eyebrow: "At-home testing",
     headline: "Test at home, made simple.",
     headlineLines: ["Test at home,", "made simple."],
-    supportingCopy: "Finger-prick kits from accredited UK laboratories.",
+    supportingCopy: "Finger prick & Autodraw options available.",
     align: "right",
   },
   {
