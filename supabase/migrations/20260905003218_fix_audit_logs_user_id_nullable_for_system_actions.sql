@@ -1,0 +1,20 @@
+-- Bug: new user signup (and any service-role user creation) has been failing
+-- with a 500 error since the audit_user_profiles_changes / log_data_access /
+-- set_audit_log_user_id trigger chain was introduced. Root cause: those
+-- triggers derive audit_logs.user_id strictly from auth.uid(), which is null
+-- for any INSERT performed outside an authenticated PostgREST session --
+-- including GoTrue's own write when a brand new account is created, and any
+-- service-role (admin API) user creation. audit_logs.user_id was NOT NULL,
+-- so that legitimate null value crashed the whole insert, and because the
+-- trigger chain (auth.users -> user_profiles -> audit_logs) runs inside one
+-- transaction, the entire signup rolled back with a generic 500.
+--
+-- Fix: allow audit_logs.user_id to be null, representing "no interactive
+-- actor" (a system/service-initiated event such as account creation). This
+-- does not weaken the audit trail's integrity: set_audit_log_user_id() still
+-- forcibly overwrites user_id from auth.uid() on every insert (application
+-- code can never spoof it), the foreign key to auth.users is untouched, and
+-- the event itself (table, action, record_id, new_data, timestamp) is still
+-- fully captured either way. It only stops a legitimate, actor-less system
+-- event from crashing the operation that caused it.
+alter table public.audit_logs alter column user_id drop not null;
