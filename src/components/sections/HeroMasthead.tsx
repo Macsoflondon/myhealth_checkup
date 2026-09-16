@@ -63,7 +63,7 @@ export default function HeroMasthead({
 
       {/* Brand bar + category toolbar. The brand bar renders at every width;
           the pill toolbar is desktop/tablet only (mobile uses the drawer). */}
-      <div className="relative -mx-3 sm:-mx-6 md:-mx-9 mt-0 order-1 flex flex-wrap items-center bg-white pb-0 md:pb-1 border-b-2 border-[#22c0d4]">
+      <div className="relative -mx-3 sm:-mx-6 md:-mx-9 mt-0 order-1 flex flex-wrap items-center bg-white pb-0 md:pb-1 border-b-2 border-[#22c0d4] lg:bg-transparent lg:border-b-0 lg:pb-0">
         <BrowseByCategoryBar compact placement="hero" />
       </div>
 
