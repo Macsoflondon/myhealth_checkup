@@ -1,8 +1,6 @@
 name: Apply Quiz Fix
 on:
-  push:
-    paths:
-      - '.github/workflows/apply-quiz-fix.yml'
+  workflow_dispatch:
 permissions:
   contents: write
 jobs:
@@ -79,8 +77,6 @@ jobs:
           }
         }}>'''
 
-          # Find the specific div in the aiResult block
-          # The pattern is: if (aiResult) {\n    return (\n      <div className="space-y-6">
           old_div = '''  if (aiResult) {
     return (
       <div className="space-y-6">'''
@@ -94,7 +90,6 @@ jobs:
               f.write(content)
 
           # Verify
-          import subprocess
           lines = len(content.splitlines())
           wellness = content.lower().count("wellness panel")
           best_matched = content.lower().count("best-matched")
