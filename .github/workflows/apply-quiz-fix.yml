@@ -1,0 +1,119 @@
+name: Apply Quiz Fix
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-quiz-fix.yml'
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Restore original file
+        run: git checkout 7f703cb0ad48 -- src/components/testFinder/TestFinderQuiz.tsx
+      - name: Apply all changes
+        run: |
+          python3 << 'PYEOF'
+          import re
+
+          with open("src/components/testFinder/TestFinderQuiz.tsx", "r") as f:
+              content = f.read()
+
+          # 1. Add useRef to import
+          content = content.replace(
+              'import { useState, useEffect } from "react";',
+              'import { useState, useEffect, useRef } from "react";'
+          )
+
+          # 2. Add trackFunnelEvent import after RecommendationEngine import
+          content = content.replace(
+              'import { RecommendationResults, type AIAnalysisResult } from "@/components/ai/RecommendationEngine";',
+              'import { RecommendationResults, type AIAnalysisResult } from "@/components/ai/RecommendationEngine";\n\nimport { trackFunnelEvent } from "@/lib/funnelTracking";'
+          )
+
+          # 3. Replace "wellness panel" with "best-matched options" (case insensitive)
+          content = re.sub(r'wellness panel', 'best-matched options', content, flags=re.IGNORECASE)
+
+          # 4. Insert quiz_start and quiz_complete tracking after "const progress" line
+          tracking_code = '''
+    // ── Funnel tracking: quiz_start ──
+  const quizStartTracked = useRef(false);
+  useEffect(() => {
+    if (!quizStartTracked.current) {
+      quizStartTracked.current = true;
+      trackFunnelEvent("quiz_start", { entity_type: "quiz", entity_name: "health_quiz" });
+    }
+  }, []);
+
+  // ── Funnel tracking: quiz_complete ──
+  useEffect(() => {
+    if (aiResult) {
+      trackFunnelEvent("quiz_complete", { entity_type: "quiz", entity_name: "health_quiz" });
+    }
+  }, [aiResult]);
+'''
+          content = content.replace(
+              '  const progress = Math.min(19 + history.length * 10, 100);\n\n  const genderFromHistory',
+              '  const progress = Math.min(19 + history.length * 10, 100);\n' + tracking_code + '\n  const genderFromHistory'
+          )
+
+          # 5. Add provider_click tracking via onClickCapture on the results div
+          on_click_capture = '''<div className="space-y-6" onClickCapture={(e) => {
+          const anchor = (e.target as HTMLElement).closest("a[href]");
+          if (!anchor || !aiResult) return;
+          const gridItem = anchor.closest(".grid > div");
+          if (!gridItem?.parentElement?.classList.contains("grid")) return;
+          const idx = Array.from(gridItem.parentElement.children).indexOf(gridItem);
+          if (idx >= 0 && idx < aiResult.recommendedTests.length) {
+            const rec = aiResult.recommendedTests[idx];
+            trackFunnelEvent("provider_click", {
+              entity_type: "test",
+              entity_id: rec.actualTestId ?? "",
+              entity_name: rec.testName,
+              provider_id: rec.providerId,
+            });
+          }
+        }}>'''
+
+          # Find the specific div in the aiResult block
+          # The pattern is: if (aiResult) {\n    return (\n      <div className="space-y-6">
+          old_div = '''  if (aiResult) {
+    return (
+      <div className="space-y-6">'''
+          new_div = '''  if (aiResult) {
+    return (
+      ''' + on_click_capture
+
+          content = content.replace(old_div, new_div)
+
+          with open("src/components/testFinder/TestFinderQuiz.tsx", "w") as f:
+              f.write(content)
+
+          # Verify
+          import subprocess
+          lines = len(content.splitlines())
+          wellness = content.lower().count("wellness panel")
+          best_matched = content.lower().count("best-matched")
+          track_count = content.count("trackFunnelEvent")
+          print(f"Lines: {lines}")
+          print(f"wellness panel: {wellness}")
+          print(f"best-matched: {best_matched}")
+          print(f"trackFunnelEvent: {track_count}")
+          assert lines > 700, f"Too few lines: {lines}"
+          assert wellness == 0, f"Still has wellness panel: {wellness}"
+          assert best_matched >= 1, f"Missing best-matched: {best_matched}"
+          assert track_count >= 4, f"Missing trackFunnelEvent: {track_count}"
+          print("ALL CHECKS PASSED")
+          PYEOF
+      - name: Remove workflow and commit
+        run: |
+          git config user.name "myhealth checkup"
+          git config user.email "support@myhealthcheckup.co.uk"
+          rm -f .github/workflows/apply-quiz-fix.yml
+          git add src/components/testFinder/TestFinderQuiz.tsx .github/workflows/apply-quiz-fix.yml
+          git commit -m "fix: replace wellness panel with best-matched options + add funnel tracking [skip ci]"
+          git push origin main
