@@ -1,6 +1,8 @@
 name: Apply Quiz Fix
 on:
   workflow_dispatch:
+  repository_dispatch:
+    types: [apply-quiz-fix]
 permissions:
   contents: write
 jobs:
