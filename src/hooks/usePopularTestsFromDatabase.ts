@@ -213,6 +213,30 @@ const LEAN_POOL_COLUMNS =
 const FULL_POOL_COLUMNS =
   'id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, biomarkers_list, description, image_url, turnaround_days_text, base_price, collection_options, clinic_phlebotomy_cost, home_phlebotomy_cost, is_popular, is_addon';
 
+interface PoolRow {
+  id: string;
+  test_name: string;
+  provider_id: string;
+  price: number | null;
+  category: string | null;
+  sample_type: string | null;
+  collection_method: string | null;
+  measurement_type: string | null;
+  url: string | null;
+  biomarker_count: number | null;
+  popularity_rank: number | null;
+  biomarkers_list?: unknown;
+  description?: string | null;
+  image_url: string | null;
+  turnaround_days_text: string | null;
+  base_price: number | null;
+  collection_options?: unknown;
+  clinic_phlebotomy_cost: number | null;
+  home_phlebotomy_cost: number | null;
+  is_popular: boolean | null;
+  is_addon: boolean | null;
+}
+
 interface PopularTestsOptions {
   /**
    * Omit description, biomarker list and collection options from the pool
