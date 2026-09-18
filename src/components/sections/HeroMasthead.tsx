@@ -55,20 +55,20 @@ export default function HeroMasthead({
   }, [activeIndex, advance, reducedMotion, rotateMs]);
 
   return (
-    <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border-0 sm:border sm:border-b-0 sm:border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-9 pt-0 pb-0 min-h-[68svh] sm:min-h-[100svh] flex flex-col">
+    <section className="rounded-t-none rounded-b-none overflow-hidden bg-[#081129] border-0 sm:border sm:border-b-0 sm:border-white/10 shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-3 sm:px-6 md:px-[57px] pt-0 pb-0 min-h-[68svh] sm:min-h-[100svh] flex flex-col">
       <TestCategoryTicker
         variant="inline"
-        className="bg-white border-b-2 border-[#22c0d4] -mx-3 sm:-mx-6 md:-mx-9"
+        className="bg-white border-b-2 border-[#22c0d4] -mx-3 sm:-mx-6 md:mx-0"
       />
 
       {/* Brand bar + category toolbar. The brand bar renders at every width;
           the pill toolbar is desktop/tablet only (mobile uses the drawer). */}
-      <div className="relative -mx-3 sm:-mx-6 md:-mx-9 mt-0 order-1 flex flex-wrap items-center bg-white pb-0 md:pb-1 border-b-2 border-[#22c0d4] lg:bg-transparent lg:border-b-0 lg:pb-0">
+      <div className="relative -mx-3 sm:-mx-6 md:mx-0 mt-0 order-1 flex flex-wrap items-center bg-white pb-0 md:pb-1 border-b-2 border-[#22c0d4] lg:bg-transparent lg:border-b-0 lg:pb-0">
         <BrowseByCategoryBar compact placement="hero" />
       </div>
 
 
-      <div className="relative overflow-hidden mt-0 -mx-3 sm:-mx-6 md:-mx-9 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-20">
+      <div className="relative overflow-hidden mt-0 -mx-3 sm:-mx-6 md:mx-0 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-20">
         {/* Blurred LQIP + gradient placeholder — fades out once slide 1 paints */}
         <div
           aria-hidden
@@ -138,7 +138,7 @@ export default function HeroMasthead({
                       : "bg-gradient-to-r from-brand-navy/90 via-brand-navy/55 to-transparent"
                   }`}
                 >
-                  <div className="w-[82%] max-w-xl text-primary-foreground sm:w-[58%] lg:w-[52%]">
+                  <div className="w-[82%] max-w-2xl text-primary-foreground sm:w-[58%] md:w-[88%] lg:w-[62%]">
                     {s.eyebrow ? (
                       <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-brand-turquoise sm:text-sm">
                         {s.eyebrow}
