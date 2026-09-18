@@ -41,7 +41,18 @@ Deno.serve(async (req) => {
 
   let body: unknown;
   try { body = await req.json(); } catch { body = null; }
-  const parsed = BodySchema.safeParse(body);
+  // Drop individual out-of-range samples rather than rejecting the whole beacon.
+  const rawSamples = Array.isArray((body as { samples?: unknown })?.samples)
+    ? (body as { samples: unknown[] }).samples
+    : [];
+  const clamped = rawSamples.map((s) => {
+    if (typeof s !== "object" || s === null) return s;
+    const v = (s as { value?: unknown }).value;
+    return typeof v === "number" && Number.isFinite(v)
+      ? { ...s, value: Math.min(Math.max(v, 0), 60_000) }
+      : s;
+  });
+  const parsed = BodySchema.safeParse({ samples: clamped });
   if (!parsed.success) {
     return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), {
       status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
