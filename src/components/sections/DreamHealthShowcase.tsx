@@ -163,9 +163,11 @@ const resolveImage = (t: PopularTest): string | null => {
 
   return preferredImage?.startsWith("/__l5e/assets-v1/")
     ? preferredImage
-    : isRealProviderImage(normalizeImageUrl(preferredImage, t.provider_id, t.url))
-    ? normalizeImageUrl(preferredImage, t.provider_id, t.url)!
-    : (PROVIDER_FALLBACK_IMAGES[t.provider_id] ?? null);
+    : isRealProviderImage(
+          normalizeImageUrl(preferredImage, t.provider_id, t.url),
+        )
+      ? normalizeImageUrl(preferredImage, t.provider_id, t.url)!
+      : (PROVIDER_FALLBACK_IMAGES[t.provider_id] ?? null);
 };
 
 const ALLOWED_PROVIDERS = [
@@ -247,7 +249,9 @@ const DreamHealthShowcase = () => {
   const navigate = useNavigate();
   // Lean pool: descriptions and biomarker lists are fetched only for the
   // handful of tests that end up on screen (see enrichedTests below).
-  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(500, { lean: true });
+  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(500, {
+    lean: true,
+  });
   const trackRef = useRef<HTMLDivElement>(null);
   const [selectedTest, setSelectedTest] = useState<PopularTest | null>(null);
 
@@ -304,7 +308,10 @@ const DreamHealthShowcase = () => {
     return [...guaranteedCoverage, ...remainder].slice(0, 9);
   }, [popularTests]);
 
-  const visibleIds = useMemo(() => orderedTests.map((t) => t.id), [orderedTests]);
+  const visibleIds = useMemo(
+    () => orderedTests.map((t) => t.id),
+    [orderedTests],
+  );
   const details = useTestDetailsByIds(visibleIds);
 
   const enrichedTests = useMemo(
@@ -314,14 +321,17 @@ const DreamHealthShowcase = () => {
         if (!detail) return t;
         const markers = Array.isArray(detail.biomarkersList)
           ? (detail.biomarkersList as unknown[]).filter(
-              (m): m is string => typeof m === "string" && m.length > 1 && m.length < 50,
+              (m): m is string =>
+                typeof m === "string" && m.length > 1 && m.length < 50,
             )
           : t.markers;
         return {
           ...t,
           description: detail.description ?? t.description,
           markers,
-          collection_options: (detail.collectionOptions as PopularTest["collection_options"]) ?? t.collection_options,
+          collection_options:
+            (detail.collectionOptions as PopularTest["collection_options"]) ??
+            t.collection_options,
         };
       }),
     [orderedTests, details],

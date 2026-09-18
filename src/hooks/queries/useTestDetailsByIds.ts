@@ -41,7 +41,8 @@ export function useTestDetailsByIds(ids: readonly string[]): TestDetailsMap {
       const map: TestDetailsMap = {};
       for (const row of rows ?? []) {
         map[row.id] = {
-          description: typeof row.description === "string" ? row.description : null,
+          description:
+            typeof row.description === "string" ? row.description : null,
           biomarkersList: row.biomarkers_list ?? null,
           collectionOptions: row.collection_options ?? null,
         };
