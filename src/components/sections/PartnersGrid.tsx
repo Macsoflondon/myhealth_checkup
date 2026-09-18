@@ -81,7 +81,7 @@ const PartnersGrid = () => {
         <EyebrowBadge size="md" tone="onDark" className="mb-2" />
 
         <SectionHeading
-          title=" "
+          title="Our trusted providers"
           gradientText=""
           className="mb-4 sm:mb-5"
           titleClassName="text-white"

@@ -144,15 +144,27 @@ export default function HeroMasthead({
                         {s.eyebrow}
                       </p>
                     ) : null}
-                    <p className="font-display text-[1.65rem] font-extrabold leading-[1.12] sm:text-4xl md:text-5xl lg:text-6xl">
-                      {s.headlineLines
-                        ? s.headlineLines.map((line) => (
-                            <span key={line} className="block">
-                              {line}
-                            </span>
-                          ))
-                        : s.headline}
-                    </p>
+                    {n === 0 ? (
+                      <h1 className="font-display text-[1.65rem] font-extrabold leading-[1.12] sm:text-4xl md:text-5xl lg:text-6xl">
+                        {s.headlineLines
+                          ? s.headlineLines.map((line) => (
+                              <span key={line} className="block">
+                                {line}
+                              </span>
+                            ))
+                          : s.headline}
+                      </h1>
+                    ) : (
+                      <h2 className="font-display text-[1.65rem] font-extrabold leading-[1.12] sm:text-4xl md:text-5xl lg:text-6xl">
+                        {s.headlineLines
+                          ? s.headlineLines.map((line) => (
+                              <span key={line} className="block">
+                                {line}
+                              </span>
+                            ))
+                          : s.headline}
+                      </h2>
+                    )}
                     {s.supportingCopy ? (
                       <p
                         className={`mt-4 max-w-md text-sm font-medium leading-relaxed text-primary-foreground/90 sm:text-lg md:text-xl ${
