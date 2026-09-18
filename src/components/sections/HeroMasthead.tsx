@@ -138,7 +138,7 @@ export default function HeroMasthead({
                       : "bg-gradient-to-r from-brand-navy/90 via-brand-navy/55 to-transparent"
                   }`}
                 >
-                  <div className="w-[82%] max-w-xl text-primary-foreground sm:w-[58%] lg:w-[52%]">
+                  <div className="w-[82%] max-w-2xl text-primary-foreground sm:w-[58%] md:w-[88%] lg:w-[62%]">
                     {s.eyebrow ? (
                       <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-brand-turquoise sm:text-sm">
                         {s.eyebrow}
