@@ -206,15 +206,32 @@ function parseMarkers(raw: unknown): string[] {
  * Prioritizes tests marked as is_popular=true, ordered by popularity_rank
  * Falls back to price-based ordering if no popular tests are marked yet
  */
-export const usePopularTestsFromDatabase = (limit: number = 10) => {
+/** Columns needed to rank and render a card, minus the heavy prose fields. */
+const LEAN_POOL_COLUMNS =
+  'id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, image_url, turnaround_days_text, base_price, clinic_phlebotomy_cost, home_phlebotomy_cost, is_popular, is_addon';
+
+const FULL_POOL_COLUMNS =
+  'id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, biomarkers_list, description, image_url, turnaround_days_text, base_price, collection_options, clinic_phlebotomy_cost, home_phlebotomy_cost, is_popular, is_addon';
+
+interface PopularTestsOptions {
+  /**
+   * Omit description, biomarker list and collection options from the pool
+   * query. Large pools (hundreds of rows) only need these for the handful of
+   * rows actually rendered, and the prose fields dominate the payload.
+   */
+  lean?: boolean;
+}
+
+export const usePopularTestsFromDatabase = (limit: number = 10, options: PopularTestsOptions = {}) => {
+  const lean = options.lean === true;
   return useQuery({
-    queryKey: ['popular-tests-database', limit],
+    queryKey: ['popular-tests-database', limit, lean],
     queryFn: async (): Promise<PopularTest[]> => {
       // Pull a wide pool of valid provider rows: must have a URL.
       // Prioritise is_popular + popularity_rank, then backfill with everything else.
       const { data: popularData, error: popularError } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, biomarkers_list, description, image_url, turnaround_days_text, base_price, collection_options, clinic_phlebotomy_cost, home_phlebotomy_cost, is_popular, is_addon')
+        .select(lean ? LEAN_POOL_COLUMNS : FULL_POOL_COLUMNS)
         .eq('is_active', true)
         .not('price', 'is', null)
         .not('url', 'is', null)
