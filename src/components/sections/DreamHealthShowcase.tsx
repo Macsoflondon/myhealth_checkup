@@ -321,7 +321,7 @@ const DreamHealthShowcase = () => {
           ...t,
           description: detail.description ?? t.description,
           markers,
-          collection_options: detail.collectionOptions ?? t.collection_options,
+          collection_options: (detail.collectionOptions as PopularTest["collection_options"]) ?? t.collection_options,
         };
       }),
     [orderedTests, details],
