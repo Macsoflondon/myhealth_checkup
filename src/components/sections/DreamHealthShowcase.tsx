@@ -11,6 +11,7 @@ import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailMo
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 import { isGenericDescription, resolveTestSummary } from "@/lib/test-summary";
 import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
+import { useTestDetailsByIds } from "@/hooks/queries/useTestDetailsByIds";
 
 const withFrom = (s: string) => (s && !/^from\b/i.test(s) ? `from ${s}` : s);
 
@@ -303,7 +304,30 @@ const DreamHealthShowcase = () => {
     return [...guaranteedCoverage, ...remainder].slice(0, 9);
   }, [popularTests]);
 
-  const filmstripTests = orderedTests;
+  const visibleIds = useMemo(() => orderedTests.map((t) => t.id), [orderedTests]);
+  const details = useTestDetailsByIds(visibleIds);
+
+  const enrichedTests = useMemo(
+    () =>
+      orderedTests.map((t) => {
+        const detail = details[t.id];
+        if (!detail) return t;
+        const markers = Array.isArray(detail.biomarkersList)
+          ? (detail.biomarkersList as unknown[]).filter(
+              (m): m is string => typeof m === "string" && m.length > 1 && m.length < 50,
+            )
+          : t.markers;
+        return {
+          ...t,
+          description: detail.description ?? t.description,
+          markers,
+          collection_options: detail.collectionOptions ?? t.collection_options,
+        };
+      }),
+    [orderedTests, details],
+  );
+
+  const filmstripTests = enrichedTests;
   const filmstripLoop = useMemo(
     () => [
       ...filmstripTests,
