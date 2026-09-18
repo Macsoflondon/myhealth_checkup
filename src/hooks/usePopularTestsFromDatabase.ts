@@ -206,21 +206,66 @@ function parseMarkers(raw: unknown): string[] {
  * Prioritizes tests marked as is_popular=true, ordered by popularity_rank
  * Falls back to price-based ordering if no popular tests are marked yet
  */
-export const usePopularTestsFromDatabase = (limit: number = 10) => {
+/** Columns needed to rank and render a card, minus the heavy prose fields. */
+const LEAN_POOL_COLUMNS =
+  'id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, image_url, turnaround_days_text, base_price, clinic_phlebotomy_cost, home_phlebotomy_cost, is_popular, is_addon';
+
+const FULL_POOL_COLUMNS =
+  'id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, biomarkers_list, description, image_url, turnaround_days_text, base_price, collection_options, clinic_phlebotomy_cost, home_phlebotomy_cost, is_popular, is_addon';
+
+interface PoolRow {
+  id: string;
+  test_name: string;
+  provider_id: string;
+  price: number | null;
+  category: string | null;
+  sample_type: string | null;
+  collection_method: string | null;
+  measurement_type: string | null;
+  url: string | null;
+  biomarker_count: number | null;
+  popularity_rank: number | null;
+  biomarkers_list?: unknown;
+  description?: string | null;
+  image_url: string | null;
+  turnaround_days_text: string | null;
+  base_price: number | null;
+  collection_options?: unknown;
+  clinic_phlebotomy_cost: number | null;
+  home_phlebotomy_cost: number | null;
+  is_popular: boolean | null;
+  is_addon: boolean | null;
+}
+
+interface PopularTestsOptions {
+  /**
+   * Omit description, biomarker list and collection options from the pool
+   * query. Large pools (hundreds of rows) only need these for the handful of
+   * rows actually rendered, and the prose fields dominate the payload.
+   */
+  lean?: boolean;
+}
+
+export const usePopularTestsFromDatabase = (limit: number = 10, options: PopularTestsOptions = {}) => {
+  const lean = options.lean === true;
   return useQuery({
-    queryKey: ['popular-tests-database', limit],
+    queryKey: ['popular-tests-database', limit, lean],
     queryFn: async (): Promise<PopularTest[]> => {
       // Pull a wide pool of valid provider rows: must have a URL.
       // Prioritise is_popular + popularity_rank, then backfill with everything else.
-      const { data: popularData, error: popularError } = await supabase
+      const { data: rawPopularData, error: popularError } = await supabase
         .from('provider_tests')
-        .select('id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, biomarkers_list, description, image_url, turnaround_days_text, base_price, collection_options, clinic_phlebotomy_cost, home_phlebotomy_cost, is_popular, is_addon')
+        .select(lean ? LEAN_POOL_COLUMNS : FULL_POOL_COLUMNS)
         .eq('is_active', true)
         .not('price', 'is', null)
         .not('url', 'is', null)
         .order('is_popular', { ascending: false, nullsFirst: false })
         .order('popularity_rank', { ascending: true, nullsFirst: false })
         .limit(limit);
+
+      // The column list is chosen at runtime, so PostgREST's literal-select
+      // inference can't type the rows; narrow to the known pool row shape.
+      const popularData = rawPopularData as unknown as PoolRow[] | null;
 
       if (!popularError && popularData && popularData.length > 0) {
         const mappedTests = popularData.map(test => ({

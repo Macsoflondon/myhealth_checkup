@@ -1,5 +1,6 @@
 import { Link } from "@/lib/router-compat";
 import { useEffect, useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import LiveComparisonCard, {
   DEFAULT_LIVE_COMPARISON_PANELS,
   type LiveComparisonPanelData,
@@ -43,6 +44,14 @@ function rowHasForbiddenWording(row: DbRow): boolean {
 
 function providerKey(row: DbRow): string { return (row.providerId || row.name || "").trim().toLowerCase(); }
 
+/** Providers that must never be shown in comparison output. */
+const EXCLUDED_PROVIDER_KEYS = new Set<string>(["thriva"]);
+
+function isExcludedProvider(row: DbRow): boolean {
+  const key = providerKey(row);
+  return EXCLUDED_PROVIDER_KEYS.has(key) || key.includes("thriva");
+}
+
 function dbPanelToPanelData(p: DbPanel): LiveComparisonPanelData {
   const rows = p.rows ?? [];
   const firstMethod = rows.map(normaliseCollectionMethod).find((m): m is CollectionMethod => m !== null);
@@ -51,7 +60,7 @@ function dbPanelToPanelData(p: DbPanel): LiveComparisonPanelData {
   const safeRows = firstMethod ? rows.filter((row) => {
     const method = normaliseCollectionMethod(row);
     const key = providerKey(row);
-    if (method !== firstMethod || !key || !row.name || !row.price || rowHasForbiddenWording(row) || seenProviders.has(key)) return false;
+    if (method !== firstMethod || !key || !row.name || !row.price || rowHasForbiddenWording(row) || isExcludedProvider(row) || seenProviders.has(key)) return false;
     seenProviders.add(key);
     return true;
   }) : [];
@@ -64,19 +73,26 @@ function dbPanelToPanelData(p: DbPanel): LiveComparisonPanelData {
 function hasComparableProviders(panel: LiveComparisonPanelData): boolean { return panel.providers.length >= 2; }
 
 const StartJourneySection = () => {
-  const [dbPanels, setDbPanels] = useState<LiveComparisonPanelData[] | null>(null);
-  const { panels: dynamicPanels } = useDynamicComparisonPanels();
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      const { data, error } = await supabase.from("live_comparison_panels").select("slug, panel_name, display_order, rows, last_scraped_at").order("display_order", { ascending: true });
-      if (cancelled || error || !data?.length) return;
+  // Curated panels are the primary source; the catalogue-derived panels are the
+  // fallback, so they are only fetched when the curated set is unusable.
+  const { data: dbPanels = null, isLoading: dbPanelsLoading } = useQuery({
+    queryKey: ["homepage", "live-comparison-panels"],
+    staleTime: 30 * 60 * 1000,
+    gcTime: 60 * 60 * 1000,
+    refetchOnMount: false,
+    queryFn: async (): Promise<LiveComparisonPanelData[] | null> => {
+      const { data, error } = await supabase
+        .from("live_comparison_panels")
+        .select("slug, panel_name, display_order, rows, last_scraped_at")
+        .order("display_order", { ascending: true });
+      if (error || !data?.length) return null;
       const panels = (data as unknown as DbPanel[]).map(dbPanelToPanelData).filter(hasComparableProviders);
-      if (panels.length >= 2) setDbPanels(panels);
-    })();
-    return () => { cancelled = true; };
-  }, []);
+      return panels.length >= 2 ? panels : null;
+    },
+  });
+
+  const needsDynamicFallback = !dbPanelsLoading && (!dbPanels || dbPanels.length < 2);
+  const { panels: dynamicPanels } = useDynamicComparisonPanels(needsDynamicFallback);
 
   const { leftPanels, rightPanels } = useMemo(() => {
     if (dbPanels && dbPanels.length >= 2) { const mid = Math.ceil(dbPanels.length / 2); return { leftPanels: dbPanels.slice(0, mid), rightPanels: dbPanels.slice(mid) }; }
