@@ -558,6 +558,8 @@ export const TestFinderQuiz = () => {
     } catch {
       toast.error("Unable to generate recommendations. Please try again.");
       setIsAnalysing(false);
+      // Return to the context step so the user can retry without redoing the quiz.
+      setShowContextStep(true);
     }
   };
 
