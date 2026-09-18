@@ -1,5 +1,6 @@
 import { Link } from "@/lib/router-compat";
 import { useEffect, useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import LiveComparisonCard, {
   DEFAULT_LIVE_COMPARISON_PANELS,
   type LiveComparisonPanelData,
@@ -42,6 +43,14 @@ function rowHasForbiddenWording(row: DbRow): boolean {
 }
 
 function providerKey(row: DbRow): string { return (row.providerId || row.name || "").trim().toLowerCase(); }
+
+/** Providers that must never be shown in comparison output. */
+const EXCLUDED_PROVIDER_KEYS = new Set<string>(["thriva"]);
+
+function isExcludedProvider(row: DbRow): boolean {
+  const key = providerKey(row);
+  return EXCLUDED_PROVIDER_KEYS.has(key) || key.includes("thriva");
+}
 
 function dbPanelToPanelData(p: DbPanel): LiveComparisonPanelData {
   const rows = p.rows ?? [];
