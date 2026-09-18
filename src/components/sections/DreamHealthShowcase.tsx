@@ -244,7 +244,9 @@ const interleaveByProvider = (tests: PopularTest[]): PopularTest[] => {
 
 const DreamHealthShowcase = () => {
   const navigate = useNavigate();
-  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(500);
+  // Lean pool: descriptions and biomarker lists are fetched only for the
+  // handful of tests that end up on screen (see enrichedTests below).
+  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(500, { lean: true });
   const trackRef = useRef<HTMLDivElement>(null);
   const [selectedTest, setSelectedTest] = useState<PopularTest | null>(null);
 
