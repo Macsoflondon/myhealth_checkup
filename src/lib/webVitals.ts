@@ -65,8 +65,12 @@ function scheduleFlush(): void {
   }, 3_000);
 }
 
+const MAX_METRIC_VALUE = 60_000;
+
 function push(sample: Sample): void {
-  BATCH.push(sample);
+  if (!Number.isFinite(sample.value) || sample.value < 0) return;
+  // Clamp pathological cold-load timings so the whole batch isn't rejected server-side.
+  BATCH.push({ ...sample, value: Math.min(sample.value, MAX_METRIC_VALUE) });
   if (BATCH.length >= 10) {
     if (flushTimer !== null) { clearTimeout(flushTimer); flushTimer = null; }
     void flush();
