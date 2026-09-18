@@ -229,7 +229,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10, options: Popular
     queryFn: async (): Promise<PopularTest[]> => {
       // Pull a wide pool of valid provider rows: must have a URL.
       // Prioritise is_popular + popularity_rank, then backfill with everything else.
-      const { data: popularData, error: popularError } = await supabase
+      const { data: rawPopularData, error: popularError } = await supabase
         .from('provider_tests')
         .select(lean ? LEAN_POOL_COLUMNS : FULL_POOL_COLUMNS)
         .eq('is_active', true)
@@ -238,6 +238,10 @@ export const usePopularTestsFromDatabase = (limit: number = 10, options: Popular
         .order('is_popular', { ascending: false, nullsFirst: false })
         .order('popularity_rank', { ascending: true, nullsFirst: false })
         .limit(limit);
+
+      // The column list is chosen at runtime, so PostgREST's literal-select
+      // inference can't type the rows; narrow to the known pool row shape.
+      const popularData = rawPopularData as unknown as PoolRow[] | null;
 
       if (!popularError && popularData && popularData.length > 0) {
         const mappedTests = popularData.map(test => ({
