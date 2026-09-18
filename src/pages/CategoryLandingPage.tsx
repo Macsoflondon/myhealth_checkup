@@ -177,7 +177,7 @@ const CategoryLandingPage: React.FC = () => {
         </Helmet>
 
         <MainLayout>
-          <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="max-w-7xl mx-auto px-6 md:px-[81px] py-8">
             <h1 className="text-2xl sm:text-3xl font-bold text-foreground font-montserrat mb-2">
               {content.heroTitle}
             </h1>

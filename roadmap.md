@@ -25,3 +25,4 @@
 - [ ] F.I manual-entry adapter, then document upload, as the reference ingestion implementations.
 - [ ] F.B longitudinal charts on the health dashboard once observations can exist.
 - [ ] F.G notification dispatch abstraction and preference screen.
+- [ ] Inset all live hero content by 57px at tablet/desktop widths, preserving mobile, and verify wrapping at 390px, 768px and 1280px.

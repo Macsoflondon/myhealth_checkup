@@ -225,7 +225,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
       ? `${
           heroPinned
             ? "fixed inset-x-0 top-0 mx-[57px] transition-[box-shadow] duration-300 ease-out motion-reduce:transition-none shadow-[0_6px_20px_-8px_rgba(8,17,41,0.28)]"
-            : "relative mx-[57px] transition-[box-shadow] duration-300 ease-out motion-reduce:transition-none"
+            : "relative mx-0 transition-[box-shadow] duration-300 ease-out motion-reduce:transition-none"
         } mt-0 flex-1 min-w-0`
       : compact ? "mt-0 mx-3 lg:mx-6" : isFlush ? "mt-4 mx-4 sm:mx-8 md:mx-14 lg:mx-16" : "mt-6 mx-4 sm:mx-8 md:mx-14 lg:mx-16";
 
