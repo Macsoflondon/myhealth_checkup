@@ -234,7 +234,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   // Hero placement: a flush, full-width strip with a turquoise top border.
   // Everywhere else the dock stays a floating frosted pill.
   let innerClass = placement === "hero"
-    ? "w-full max-w-full overflow-hidden bg-white border-2 border-t-[#22c0d4] border-b-[#22c0d4] border-x-[#081129]"
+    ? "w-full max-w-full overflow-hidden bg-white border-y-2 border-x-0 border-[#22c0d4]"
     : `mx-auto w-fit max-w-full rounded-full bg-white/85 backdrop-blur-xl border-2 border-[#22c0d4] ring-1 ring-[#081129]/[0.06] ${
     stuck
       ? "shadow-[0_2px_8px_rgba(8,17,41,0.08),0_20px_48px_-12px_rgba(8,17,41,0.34)]"
