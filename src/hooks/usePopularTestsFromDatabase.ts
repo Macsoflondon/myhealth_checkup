@@ -64,13 +64,21 @@ function normalizeTestRecord(test: PopularTest): PopularTest {
   };
 }
 
-async function enrichTestsFromWebsite(tests: PopularTest[]): Promise<PopularTest[]> {
+async function enrichTestsFromWebsite(
+  tests: PopularTest[],
+  /**
+   * False when the pool query omitted `description`; a missing description is
+   * then an artefact of the lean column list, not missing provider data, so it
+   * must not trigger enrichment.
+   */
+  descriptionsLoaded: boolean = true
+): Promise<PopularTest[]> {
   const items = tests
     .filter(
       (test) =>
         WEBSITE_ENRICHMENT_PROVIDERS.has(test.provider_id) &&
         !!test.url &&
-        (!hasAbsoluteImageUrl(test.image_url) || !test.description?.trim())
+        (!hasAbsoluteImageUrl(test.image_url) || (descriptionsLoaded && !test.description?.trim()))
     )
     .map((test) => ({
       id: test.id,
@@ -294,7 +302,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10, options: Popular
           is_addon: test.is_addon ?? undefined,
         }));
 
-        return enrichTestsFromWebsite(mappedTests);
+        return enrichTestsFromWebsite(mappedTests, !lean);
       }
 
       // Fallback: Get diverse tests from all providers based on price
