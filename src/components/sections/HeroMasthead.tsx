@@ -192,7 +192,8 @@ export default function HeroMasthead({
 
         <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
-        {/* Turquoise section divider */}
+        {/* Turquoise section dividers — inside the rounded stage so they stop at the curve */}
+        <div className="absolute top-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#22c0d4]" />
         <div className="absolute bottom-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#22c0d4]" />
 
       </div>
