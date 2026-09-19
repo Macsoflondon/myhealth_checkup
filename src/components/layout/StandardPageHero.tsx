@@ -34,7 +34,7 @@ export function StandardPageHero({
   return (
     <section
       aria-labelledby={headingId}
-      className="px-4 sm:px-8 md:px-[97px] pt-10 sm:pt-12 md:pt-14 pb-11 sm:pb-14"
+      className="px-4 sm:px-8 md:px-10 pt-10 sm:pt-12 md:pt-14 pb-11 sm:pb-14"
       style={{ background: "#081129", position: "relative", overflow: "hidden" }}
     >
       <div

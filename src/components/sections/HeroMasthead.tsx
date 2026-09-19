@@ -68,7 +68,7 @@ export default function HeroMasthead({
       </div>
 
 
-      <div className="relative overflow-hidden mt-0 -mx-3 sm:-mx-6 md:mx-0 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-20">
+      <div className="relative overflow-hidden mt-0 -mx-3 sm:-mx-6 md:mx-0 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-20 md:rounded-2xl md:border md:border-[rgba(34,192,212,0.35)] md:shadow-[0_0_0_1px_rgba(34,192,212,0.20),0_8px_28px_rgba(34,192,212,0.18)]">
         {/* Blurred LQIP + gradient placeholder — fades out once slide 1 paints */}
         <div
           aria-hidden
