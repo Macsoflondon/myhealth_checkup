@@ -302,7 +302,7 @@ export const usePopularTestsFromDatabase = (limit: number = 10, options: Popular
           is_addon: test.is_addon ?? undefined,
         }));
 
-        return enrichTestsFromWebsite(mappedTests);
+        return enrichTestsFromWebsite(mappedTests, !lean);
       }
 
       // Fallback: Get diverse tests from all providers based on price
