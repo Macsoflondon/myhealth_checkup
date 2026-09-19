@@ -24,9 +24,9 @@ const AccreditedProvidersBar = () => {
   return (
     <section
       aria-label="Accredited provider standards"
-      className="bg-white border-b-2 border-[#22c0d4] -mt-6 md:mt-0 pt-6 md:pt-0"
+      className="bg-white border-y-2 border-[#22c0d4]"
     >
-      <div className="container mx-auto px-5 sm:px-4 pt-8 pb-6 sm:pt-10 sm:pb-8">
+      <div className="container mx-auto px-5 sm:px-4 py-4 sm:py-5">
         <Reveal variant="fade">
           <p className="hidden md:block text-center font-[Montserrat] font-semibold text-[#081129] text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)] xl:text-[clamp(1.3rem,2.05vw,2rem)] xl:whitespace-nowrap leading-tight mb-0.5 px-4">
             {HERO_CAPTION}
@@ -34,7 +34,7 @@ const AccreditedProvidersBar = () => {
         </Reveal>
 
         {/* Editorial standards header */}
-        <div className="flex flex-col items-center mt-6 mb-5 sm:mt-8 sm:mb-6">
+        <div className="flex flex-col items-center mt-0 mb-4 sm:mb-5">
           <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-[#081129]/40 mb-2">
             Our clinical standards
           </div>
