@@ -234,7 +234,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
   // Hero placement: a flush, full-width strip with a turquoise top border.
   // Everywhere else the dock stays a floating frosted pill.
   let innerClass = placement === "hero"
-    ? "w-full max-w-full overflow-hidden bg-white border-2 border-t-[#22c0d4] border-b-[#22c0d4] border-x-[#081129]"
+    ? "w-full max-w-full overflow-hidden bg-white border-y-2 border-x-0 border-[#22c0d4]"
     : `mx-auto w-fit max-w-full rounded-full bg-white/85 backdrop-blur-xl border-2 border-[#22c0d4] ring-1 ring-[#081129]/[0.06] ${
     stuck
       ? "shadow-[0_2px_8px_rgba(8,17,41,0.08),0_20px_48px_-12px_rgba(8,17,41,0.34)]"
@@ -251,7 +251,7 @@ export default function BrowseByCategoryBar({ variant = "card", compact = false,
 
       <div ref={sentinelRef} aria-hidden="true" className={placement === "hero" ? "absolute inset-x-0 top-0 h-px" : "h-px w-full"} />
       <div ref={mobileBarRef} className="w-full shrink-0 basis-full relative" data-testid="browse-by-category-bar-mobile">
-        <div data-scrolled={scrolled} className={`${placement === "hero" ? "flex flex-col px-4 sm:px-6 md:px-9 min-h-[96px] md:min-h-[120px] py-3 md:py-4" : "flex items-center px-4 sm:px-6 md:px-9 h-24 md:h-[120px]"} transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b bg-white ${placement === "hero" ? "border-[#e70d69]" : "border-[#22c0d4]"}`}>
+        <div data-scrolled={scrolled} className={`${placement === "hero" ? "flex flex-col px-4 sm:px-6 md:px-9 min-h-[96px] md:min-h-[120px] py-3 md:py-4" : "flex items-center px-4 sm:px-6 md:px-9 h-24 md:h-[120px]"} transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b bg-white ${placement === "hero" ? "border-[#e70d69] lg:border-b-0" : "border-[#22c0d4]"}`}>
             <div className="flex items-start w-full shrink-0">
               <div className="flex flex-col min-w-0 pr-14">
                 <Link to="/" className="flex items-center no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] leading-none whitespace-nowrap text-[clamp(30px,8.2vw,88px)] py-1 md:py-2">
