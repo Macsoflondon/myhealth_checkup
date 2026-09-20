@@ -41,9 +41,7 @@
    "id": "B3",
    "title": "Original master blueprint unretrievable",
    "detail": "Downgraded 14 Sep 2026: project knowledge supplied the canonical entity list and the architecture gap mapping is complete against it. Reconcile against the original blueprint only if that branch becomes reachable.",
-   "blocks": [
-    "P0.11"
-   ],
+   "blocks": [],
    "status": "NARROWED"
   },
   {
@@ -55,7 +53,8 @@
     "P0.11",
     "X.03",
     "X.10"
-   ]
+   ],
+   "status": "OPEN"
   },
   {
    "id": "B5",
@@ -125,9 +124,8 @@
    "name": "Architecture, database and RLS audit",
    "status": "IN PROGRESS",
    "blockers": [
-    "B1",
-    "B2",
-    "B4"
+    "B4",
+    "B5"
    ],
    "tasks": [
     {
@@ -252,12 +250,14 @@
     {
      "id": "P1.07",
      "title": "reference_ranges",
-     "status": "NOT STARTED"
+     "status": "IN PROGRESS",
+     "evidence": "observation_reference_ranges retains the range that applied at the time; reference_range_contexts holds versioned contextual definitions, inactive until clinically signed off."
     },
     {
      "id": "P1.08",
      "title": "observation_provenance",
-     "status": "NOT STARTED"
+     "status": "IN PROGRESS",
+     "evidence": "Provenance carried on observations itself (source document, page, text anchor, extraction method and confidence) rather than a separate table, per the ratified P0.09 decision."
     },
     {
      "id": "P1.09",
@@ -272,7 +272,8 @@
     {
      "id": "P1.11",
      "title": "RLS across all Phase 1 tables",
-     "status": "NOT STARTED"
+     "status": "IN PROGRESS",
+     "evidence": "Enabled with policies on all 18 tables and linter-clean; the acceptance test suite proving each policy is outstanding."
     },
     {
      "id": "P1.12",
