@@ -165,7 +165,7 @@ export const SLIDES: HeroSlide[] = [
     posDesktop: "center center",
     eyebrow: "Healthy ageing",
     headline: "Make the years ahead your healthiest yet.",
-    headlineLines: ["Make the years ahead", "your healthiest yet."],
+    headlineLines: ["Make the years ahead,", "your healthiest yet."],
     supportingCopy: "Compare tests for health, wellbeing and longevity.",
   },
   {
