@@ -21,10 +21,16 @@ export default function ProvidersSection() {
     let cancelled = false;
     (async () => {
       // provider_tests keys on provider_id (there is no provider_name column);
-      // scrape outcomes live in scraping_jobs.
-      const [{ data: tests }, { data: jobs }] = await Promise.all([
+      // scrape outcomes live in scrape_runs (confirmed the live mhc-* pipeline's real
+      // write target by a 2026-09-21 audit — the previous source, scraping_jobs, had
+      // gone 9+ days stale and is no longer written to by anything).
+      const [{ data: tests }, { data: runs }] = await Promise.all([
         supabase.from("provider_tests").select("provider_id").eq("is_active", true).limit(10000),
-        supabase.from("scraping_jobs").select("provider_id, status, last_scraped"),
+        supabase
+          .from("scrape_runs")
+          .select("provider_id, status, started_at")
+          .order("started_at", { ascending: false })
+          .limit(2000),
       ]);
 
       const counts = new Map<string, number>();
@@ -34,11 +40,11 @@ export default function ProvidersSection() {
       }
 
       const jobByProvider = new Map<string, { status: string | null; last_scraped: string | null }>();
-      for (const j of (jobs ?? []) as { provider_id: string; status: string | null; last_scraped: string | null }[]) {
-        const canonicalId = normalizeProviderId(j.provider_id);
-        const existing = jobByProvider.get(canonicalId);
-        if (!existing || (j.last_scraped ?? "") > (existing.last_scraped ?? "")) {
-          jobByProvider.set(canonicalId, { status: j.status, last_scraped: j.last_scraped });
+      for (const r of (runs ?? []) as { provider_id: string; status: string | null; started_at: string | null }[]) {
+        const canonicalId = normalizeProviderId(r.provider_id);
+        // runs are ordered newest-first, so the first one seen per provider is the latest.
+        if (!jobByProvider.has(canonicalId)) {
+          jobByProvider.set(canonicalId, { status: r.status, last_scraped: r.started_at });
         }
       }
 
@@ -68,7 +74,7 @@ export default function ProvidersSection() {
       <div className="grid grid-cols-3 gap-3 mb-6">
         <StatCard label="Providers tracked" value={rows.length} />
         <StatCard label="Total tests indexed" value={rows.reduce((s, r) => s + r.tests, 0)} />
-        <StatCard label="Failing scrapers" value={rows.filter((r) => r.lastScrapeStatus === "failed").length} tone="warn" />
+        <StatCard label="Failing scrapers" value={rows.filter((r) => r.lastScrapeStatus === "error").length} tone="warn" />
       </div>
 
       {loading ? (
@@ -93,7 +99,7 @@ export default function ProvidersSection() {
                   <td className="px-3 py-2 text-right tabular-nums">{r.tests}</td>
                   <td className="px-3 py-2">
                     <span className="inline-flex items-center gap-2">
-                      <HealthDot state={r.lastScrapeStatus === "failed" ? "bad" : r.lastScrapeStatus ? "good" : "idle"} />
+                      <HealthDot state={r.lastScrapeStatus === "error" ? "bad" : r.lastScrapeStatus === "partial" ? "warn" : r.lastScrapeStatus ? "good" : "idle"} />
                       {r.lastScrapeStatus ?? "—"}
                     </span>
                   </td>

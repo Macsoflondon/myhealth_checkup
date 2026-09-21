@@ -97,6 +97,7 @@ export const ProviderTestsGrid = ({
             clinic_visit_available: t.clinic_visit_available ?? null,
             biomarker_count: t.biomarker_count ?? null,
             url: t.url ?? null,
+            url_verified: t.url_verified ?? null,
             image_url: t.image_url ?? null,
             biomarkers_list: t.biomarkers_list ?? null,
             turnaround_days_text: t.turnaround_days_text ?? null,

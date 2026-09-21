@@ -55,6 +55,8 @@ export interface UniversalTestData {
   symptoms?: string[] | null;
   who_should_test?: string | null;
   url?: string | null;
+  /** From provider_tests.url_verified — false means the last URL health check failed (see scraper_alerts). */
+  url_verified?: boolean | null;
   /** Provider product-packaging image shown as the card's resting state */
   image_url?: string | null;
   /** True when image_url is an on-brand generic stock photo, not a provider product photo */
@@ -751,7 +753,7 @@ export const UniversalTestDetailModal: React.FC<{
             >
               {inCompare ? "\u2713 In Compare" : "+ Compare"}
             </button>
-            {test.url && test.url !== "#" ? (
+            {test.url && test.url !== "#" && test.url_verified !== false ? (
               <a
                 href={test.url}
                 target="_blank"
@@ -885,7 +887,10 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
   const handleBook = (e: React.MouseEvent) => {
     e.stopPropagation();
     void trackFunnelEvent("provider_click", { provider_id: test.provider_id, entity_type: "test", entity_id: test.id, entity_name: test.test_name });
-    if (test.url && test.url !== "#") {
+    // url_verified is explicitly false only after a failed scraper_alerts URL health check —
+    // undefined/null (not selected by this caller's query, or never checked) still opens the URL
+    // as before, so this only ever tightens behaviour where the data is actually known-bad.
+    if (test.url && test.url !== "#" && test.url_verified !== false) {
       window.open(test.url, "_blank", "noopener,noreferrer");
     } else {
       window.location.href = `/contact?test=${encodeURIComponent(test.id)}`;
@@ -1526,7 +1531,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                   (e.currentTarget.style.background = UTC_PINK)
                 }
               >
-                {test.url && test.url !== "#" ? "Book" : "Enquire"}
+                {test.url && test.url !== "#" && test.url_verified !== false ? "Book" : "Enquire"}
               </button>
             </div>
           </div>

@@ -19,6 +19,17 @@ interface ScrapeRow {
   trigger_source: string | null;
 }
 
+interface LiveRunRow {
+  id: string;
+  provider_id: string;
+  scraper_function: string;
+  status: string;
+  started_at: string;
+  finished_at: string | null;
+  tests_seen: number | null;
+  tests_updated: number | null;
+}
+
 const PROVIDERS: { id: string; label: string }[] = [
   { id: "lola-health", label: "Lola Health" },
   { id: "medichecks", label: "Medichecks" },
@@ -38,6 +49,7 @@ interface ProviderTestStat {
 
 export default function CrawlsSection() {
   const [rows, setRows] = useState<ScrapeRow[]>([]);
+  const [liveRuns, setLiveRuns] = useState<LiveRunRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [runningAll, setRunningAll] = useState(false);
@@ -46,7 +58,7 @@ export default function CrawlsSection() {
   const [stats, setStats] = useState<Record<string, ProviderTestStat>>({});
 
   const load = useCallback(async () => {
-    const [{ data: runs, error: runsError }, { data: tests, error: testsError }] = await Promise.all([
+    const [{ data: runs, error: runsError }, { data: tests, error: testsError }, { data: live, error: liveError }] = await Promise.all([
       supabase
         .from("scrape_run_log")
         .select("*")
@@ -57,10 +69,19 @@ export default function CrawlsSection() {
         .select("provider_id, updated_at")
         .eq("is_active", true)
         .limit(5000),
+      // scrape_runs is what the live mhc-* scraper pipeline actually writes to (confirmed by
+      // a 2026-09-21 audit) — distinct from scrape_run_log above, which only tracks the
+      // separate promote-provider-tests orchestrator.
+      supabase
+        .from("scrape_runs")
+        .select("id, provider_id, scraper_function, status, started_at, finished_at, tests_seen, tests_updated")
+        .order("started_at", { ascending: false })
+        .limit(20),
     ]);
-    const failure = runsError ?? testsError;
+    const failure = runsError ?? testsError ?? liveError;
     setLoadError(failure ? failure.message : null);
     setRows((runs ?? []) as never);
+    setLiveRuns((live ?? []) as LiveRunRow[]);
     const grouped: Record<string, ProviderTestStat> = {};
     for (const t of (tests ?? []) as { provider_id: string; updated_at: string }[]) {
       const s = grouped[t.provider_id] ?? { provider_id: t.provider_id, count: 0, lastUpdated: null };
@@ -219,6 +240,56 @@ export default function CrawlsSection() {
         </table>
       </div>
 
+      {/* Live scraper pipeline (mhc-*) — the runs that actually keep provider_tests fresh */}
+      {!loading && (
+        <div className="rounded-xl border bg-card overflow-hidden mb-6">
+          <div className="px-4 py-3 border-b">
+            <h3 className="text-sm font-semibold">Live scraper pipeline (last 20 runs)</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              What actually keeps `provider_tests` fresh, on its own 6-hourly cron schedule — separate from the manual "Run" controls above and the promotion runs below.
+            </p>
+          </div>
+          <table className="w-full text-sm">
+            <thead className="bg-muted/40 text-xs uppercase tracking-wider text-muted-foreground">
+              <tr>
+                <th className="text-left px-3 py-2">Started</th>
+                <th className="text-left px-3 py-2">Provider</th>
+                <th className="text-left px-3 py-2">Function</th>
+                <th className="text-left px-3 py-2">Status</th>
+                <th className="text-right px-3 py-2">Seen</th>
+                <th className="text-right px-3 py-2">Updated</th>
+              </tr>
+            </thead>
+            <tbody>
+              {liveRuns.map((r) => (
+                <tr key={r.id} className="border-t">
+                  <td className="px-3 py-2 text-xs text-muted-foreground tabular-nums">
+                    {new Date(r.started_at).toLocaleString()}
+                  </td>
+                  <td className="px-3 py-2 font-medium">{r.provider_id}</td>
+                  <td className="px-3 py-2 text-xs font-mono text-muted-foreground">{r.scraper_function}</td>
+                  <td className="px-3 py-2">
+                    <span className="inline-flex items-center gap-2">
+                      <HealthDot state={r.status === "error" ? "bad" : r.status === "partial" ? "warn" : "good"} />
+                      {r.status}
+                    </span>
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums">{r.tests_seen ?? 0}</td>
+                  <td className="px-3 py-2 text-right tabular-nums">{r.tests_updated ?? 0}</td>
+                </tr>
+              ))}
+              {liveRuns.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="px-3 py-8 text-center text-muted-foreground text-sm">
+                    No live pipeline runs recorded yet.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      )}
+
       {/* Run history */}
       {loading ? (
         <div className="flex items-center gap-2 text-muted-foreground text-sm py-12">
@@ -227,7 +298,10 @@ export default function CrawlsSection() {
       ) : (
         <div className="rounded-xl border bg-card overflow-hidden">
           <div className="px-4 py-3 border-b">
-            <h3 className="text-sm font-semibold">Recent runs</h3>
+            <h3 className="text-sm font-semibold">Promotion runs (promote-provider-tests)</h3>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Normalises whatever the live pipeline above wrote into `tests_master`/`provider_test_mapping` — not the scrape itself.
+            </p>
           </div>
           <table className="w-full text-sm">
             <thead className="bg-muted/40 text-xs uppercase tracking-wider text-muted-foreground">

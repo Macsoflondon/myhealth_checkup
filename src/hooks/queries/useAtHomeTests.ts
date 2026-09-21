@@ -27,6 +27,7 @@ export interface AtHomeTest {
   collection_options: Record<string, unknown> | null;
   clinic_phlebotomy_cost: number | null;
   home_phlebotomy_cost: number | null;
+  url_verified: boolean | null;
 }
 
 export const useAtHomeTests = (category?: string, search?: string) => {
@@ -41,7 +42,7 @@ export const useAtHomeTests = (category?: string, search?: string) => {
           turnaround_days_text, biomarker_count, biomarkers_list,
           description, who_should_test, symptoms, conditions, url, image_url,
           home_kit_available, clinic_visit_available, is_popular, is_addon,
-           collection_options, clinic_phlebotomy_cost, home_phlebotomy_cost
+           collection_options, clinic_phlebotomy_cost, home_phlebotomy_cost, url_verified
         `,
         )
         .eq("is_active", true)
