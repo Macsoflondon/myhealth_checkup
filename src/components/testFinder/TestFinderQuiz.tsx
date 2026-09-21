@@ -4,6 +4,7 @@ import { Brain, Sparkles, ChevronLeft, RotateCcw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { RecommendationResults, type AIAnalysisResult } from "@/components/ai/RecommendationEngine";
+import { trackFunnelEvent } from "@/lib/funnelTracking";
 
 // ─── Decision Tree (Medichecks V13 Logic Map) ───────────────────────────────────────
 
@@ -522,6 +523,14 @@ export const TestFinderQuiz = () => {
   const stepCount = history.length + 1;
   const progress = Math.min(19 + history.length * 10, 100);
 
+  // Fires once per mount — funnel_events had no writer for this quiz at all (confirmed
+  // by audit: zero rows since 2026-07-31), so Historical Analytics' conversion chart was
+  // reading a table nothing ever wrote to for this surface.
+  useEffect(() => {
+    void trackFunnelEvent("quiz_start");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const genderFromHistory = (): string | null => {
     const genderEntry = history.find((h) => h.nodeId === "gender");
     if (!genderEntry) return null;
@@ -555,6 +564,7 @@ export const TestFinderQuiz = () => {
 
       if (error) throw error;
       setAiResult(data as AIAnalysisResult);
+      void trackFunnelEvent("quiz_complete");
     } catch {
       toast.error("Unable to generate recommendations. Please try again.");
       setIsAnalysing(false);
