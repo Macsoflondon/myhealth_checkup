@@ -142,14 +142,14 @@ export default function HeroMasthead({
                       : "bg-gradient-to-r from-brand-navy/90 via-brand-navy/55 to-transparent"
                   }`}
                 >
-                  <div className="w-[82%] max-w-2xl text-primary-foreground sm:w-[58%] md:w-[88%] lg:w-[62%]">
+                  <div className="@container w-[82%] max-w-4xl text-primary-foreground sm:w-[58%] md:w-[88%] lg:w-[62%]">
                     {s.eyebrow ? (
                       <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-brand-turquoise sm:text-sm">
                         {s.eyebrow}
                       </p>
                     ) : null}
                     {n === 0 ? (
-                      <h1 className="font-display text-[1.65rem] font-extrabold leading-[1.12] sm:text-4xl md:text-5xl lg:text-6xl">
+                      <h1 className="font-display text-[clamp(1.5rem,8cqw,3.75rem)] font-extrabold leading-[1.12]">
                         {s.headlineLines
                           ? s.headlineLines.map((line) => (
                               <span key={line} className="block">
@@ -159,7 +159,7 @@ export default function HeroMasthead({
                           : s.headline}
                       </h1>
                     ) : (
-                      <h2 className="font-display text-[1.65rem] font-extrabold leading-[1.12] sm:text-4xl md:text-5xl lg:text-6xl">
+                      <h2 className="font-display text-[clamp(1.5rem,8cqw,3.75rem)] font-extrabold leading-[1.12]">
                         {s.headlineLines
                           ? s.headlineLines.map((line) => (
                               <span key={line} className="block">
@@ -171,7 +171,7 @@ export default function HeroMasthead({
                     )}
                     {s.supportingCopy ? (
                       <p
-                        className={`mt-4 max-w-md text-sm font-medium leading-relaxed text-primary-foreground/90 sm:text-lg md:text-xl ${
+                        className={`mt-4 max-w-2xl text-[clamp(0.875rem,3.4cqw,1.25rem)] font-medium leading-relaxed text-primary-foreground/90 ${
                           s.align === "right" ? "ml-auto" : ""
                         }`}
                       >
