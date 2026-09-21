@@ -43,6 +43,10 @@ Pass 1 — in progress. Evidence-per-finding below; ledger will keep appending a
 
 **Net for "is Crux Control receiving accurate and live data platform-wide": no.** Of the 12 sections, at least 4 (`CrawlsSection`, `ProvidersSection`, `AuditsSection`, `AnalyticsSection`) are confirmed showing stale, wrong-pipeline, or frozen data as of this audit (2026-09-21), ranging from 9 to 52 days out of date — not cosmetic, since these are exactly the panels an operator would check to confirm scraping and conversion tracking are healthy.
 
+## DB↔frontend type-safety sweep (repo-wide, beyond Crux Control)
+
+`grep -rln "as any\|as never" src/services src/api src/hooks/queries` → 3 hits outside Crux Control: `alertRecipients.api.ts:97`, `users.api.ts:81`, `useAtHomeTests.ts:94`. Checked each — all three are legitimate casts for real typing reasons (a `Record<string, unknown>` payload going into a `Json`-typed column, an encrypted-update payload, a type-guard narrowing), not instances of the stale "not in generated types" claim fixed elsewhere in this pass. No further fix needed; the false-claim pattern this pass targeted appears to have been fully contained to the four Crux Control sections already fixed.
+
 ## Not yet covered in this pass (deferred, not silently dropped)
 ## LOW — DB↔frontend type-safety drift (fixed this pass)
 
