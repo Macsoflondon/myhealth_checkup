@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { SectionShell, StatCard, HealthDot } from "../SectionShell";
@@ -23,24 +22,23 @@ export default function OverviewSection() {
     (async () => {
       try {
         const since = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-        const db = supabase as any;
         // provider_tests has no provider_name column — count distinct provider_id instead.
-        const providerRowsRes = await db
+        const providerRowsRes = await supabase
           .from("provider_tests")
           .select("provider_id")
           .eq("is_active", true)
           .limit(10000);
         const providerCount = new Set(
-          ((providerRowsRes.data ?? []) as { provider_id: string | null }[])
+          (providerRowsRes.data ?? [])
             .map((r) => r.provider_id)
             .filter(Boolean),
         ).size;
-        const testsRes = await db.from("tests_master").select("id", { count: "exact", head: true });
-        const mapRes = await db.from("provider_test_mapping").select("id", { count: "exact", head: true });
-        const scrapesRes = await db.from("scrape_run_log").select("id", { count: "exact", head: true }).gte("started_at", since);
-        const failedRes = await db.from("scrape_run_log").select("id", { count: "exact", head: true }).gte("started_at", since).eq("status", "failed");
-        const alertsRes = await db.from("scraper_alerts").select("id", { count: "exact", head: true }).eq("acknowledged", false);
-        const lastScrapeRes = await db.from("scrape_run_log").select("started_at").order("started_at", { ascending: false }).limit(1).maybeSingle();
+        const testsRes = await supabase.from("tests_master").select("id", { count: "exact", head: true });
+        const mapRes = await supabase.from("provider_test_mapping").select("id", { count: "exact", head: true });
+        const scrapesRes = await supabase.from("scrape_run_log").select("id", { count: "exact", head: true }).gte("started_at", since);
+        const failedRes = await supabase.from("scrape_run_log").select("id", { count: "exact", head: true }).gte("started_at", since).eq("status", "failed");
+        const alertsRes = await supabase.from("scraper_alerts").select("id", { count: "exact", head: true }).eq("acknowledged", false);
+        const lastScrapeRes = await supabase.from("scrape_run_log").select("started_at").order("started_at", { ascending: false }).limit(1).maybeSingle();
         if (cancelled) return;
         setData({
           providers: providerCount,
