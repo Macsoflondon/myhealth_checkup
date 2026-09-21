@@ -183,7 +183,7 @@ const Index = () => {
 
           {/* Accredited standards bar — sits directly under the slogan */}
           <Suspense fallback={<SectionFallback />}>
-            <div>
+            <div className="bg-white pt-4 sm:pt-5 pb-6 sm:pb-8">
               <AccreditedProvidersBar />
             </div>
           </Suspense>

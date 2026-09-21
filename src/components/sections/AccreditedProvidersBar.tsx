@@ -24,7 +24,7 @@ const AccreditedProvidersBar = () => {
   return (
     <section
       aria-label="Accredited provider standards"
-      className="bg-white border-y-2 border-[#22c0d4]"
+      className="bg-white border-t-2 border-t-[#e70d69] border-b-2 border-b-[#22c0d4]"
     >
       <div className="container mx-auto px-5 sm:px-4 py-4 sm:py-5">
         <Reveal variant="fade">
