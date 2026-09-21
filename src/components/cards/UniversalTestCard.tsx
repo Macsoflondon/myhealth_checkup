@@ -24,6 +24,7 @@ import { displayTurnaround } from "@/lib/resolve-test-fields";
 import { baseTestId, type CollectionVariant } from "@/lib/collectionVariants";
 import { formatTestCardHeadline } from "@/utils/format-test-card-headline";
 import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
+import { trackFunnelEvent } from "@/lib/funnelTracking";
 
 
 // ─── Design tokens (kept inline to mirror AtHomeTestsPage exactly) ───────────
@@ -883,6 +884,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
 
   const handleBook = (e: React.MouseEvent) => {
     e.stopPropagation();
+    void trackFunnelEvent("provider_click", { provider_id: test.provider_id, entity_type: "test", entity_id: test.id, entity_name: test.test_name });
     if (test.url && test.url !== "#") {
       window.open(test.url, "_blank", "noopener,noreferrer");
     } else {

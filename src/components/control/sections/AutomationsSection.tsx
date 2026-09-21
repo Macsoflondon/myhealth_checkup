@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { SectionShell, StatCard, HealthDot } from "../SectionShell";
@@ -25,7 +24,7 @@ export default function AutomationsSection() {
       .order("started_at", { ascending: false })
       .limit(40)
       .then(({ data }) => {
-        setRows((data ?? []) as any);
+        setRows(data ?? []);
         setLoading(false);
       });
   }, []);
