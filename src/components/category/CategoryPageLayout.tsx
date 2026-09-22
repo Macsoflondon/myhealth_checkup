@@ -291,10 +291,10 @@ export function CategoryPageLayout({
                       is_addon: test.isAddon ?? false,
                       purchase_notes: test.purchaseNotes ?? null,
 
-                      biomarkers_list: (test.biomarkers as any) ?? null,
+                      biomarkers_list: test.biomarkers ?? null,
                       turnaround_days_text: test.turnaround ?? null,
                       base_price: null,
-                      collection_options: (test.collectionOptions as any) ?? null,
+                      collection_options: test.collectionOptions ?? null,
                     }}
                   />
                 ))}

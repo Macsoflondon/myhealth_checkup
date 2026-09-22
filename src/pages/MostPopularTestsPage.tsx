@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { hasStartingPrice, usePopularTestsFromDatabase } from '@/hooks/usePopularTestsFromDatabase';
 import { getBranding } from '@/data/providerBranding';
 import { getProviderRating } from '@/constants/providerRatings';
+import { categoryMenuIconFor } from '@/components/header/menuIcons';
 
 const SEO = {
   title: 'Most Popular Tests | myhealth checkup',
@@ -125,7 +126,7 @@ const MostPopularTestsPage = () => {
         providerId: t.provider_id,
         popular: idx < 3,
         badge: tag,
-        badgeColor: branding?.primary || '#e70d69',
+        badgeColor: categoryMenuIconFor('Most Popular Tests').color,
         provider: t.provider_name,
         priceNum: t.price,
         price: hasStartingPrice(t) ? `from £${t.price}` : `£${t.price}`,

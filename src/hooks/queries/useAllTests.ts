@@ -2,6 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { CategoryTestItem } from "@/components/category/CategoryPageLayout";
 import { getProviderRating } from "@/constants/providerRatings";
+import {
+  categoryMenuIconFor,
+  resolveCategoryMenuName,
+} from "@/components/header/menuIcons";
 
 const PROVIDER_NAMES: Record<string, string> = {
   "medichecks": "Medichecks",
@@ -28,22 +32,6 @@ const CATEGORY_DISPLAY: Record<string, string> = {
   "sports-performance": "Sports & Fitness",
   "general-health": "General Health",
   "at-home": "At Home Test Kits",
-};
-
-const BADGE_COLOR_BY_CATEGORY: Record<string, string> = {
-  "womens-health": "#E91E7A",
-  "mens-health": "#3B82F6",
-  "fertility": "#10B981",
-  "sexual-health": "#8B5CF6",
-  "hormones": "#E91E7A",
-  "thyroid": "#22c0d4",
-  "heart": "#EF4444",
-  "gut": "#F59E0B",
-  "vitamins": "#F97316",
-  "cancer-screening": "#9333EA",
-  "sports-performance": "#22c55e",
-  "general-health": "#3B82F6",
-  "at-home": "#22c0d4",
 };
 
 const displayFor = (slug: string | null | undefined): string => {
@@ -95,8 +83,9 @@ export function useAllTests() {
           : "Home Kit";
 
         const tag = displayFor(row.canonical_category);
-        const badgeColor =
-          BADGE_COLOR_BY_CATEGORY[row.canonical_category ?? ""] || "#3B82F6";
+        const badgeColor = categoryMenuIconFor(
+          resolveCategoryMenuName(row.canonical_category),
+        ).color;
 
         return {
           id: row.id,

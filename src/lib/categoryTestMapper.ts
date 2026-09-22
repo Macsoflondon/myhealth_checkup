@@ -5,6 +5,7 @@ import {
   deriveCollectionVariants,
   type CollectionVariant,
 } from "@/lib/collectionVariants";
+import { categoryMenuIconFor } from "@/components/header/menuIcons";
 
 export const PROVIDER_NAMES: Record<string, string> = {
   "medichecks": "Medichecks",
@@ -18,19 +19,19 @@ export const PROVIDER_NAMES: Record<string, string> = {
 };
 
 export const BADGE_COLOR_BY_CATEGORY: Record<string, string> = {
-  "womens-health": "#E91E7A",
-  "mens-health": "#3B82F6",
-  "fertility": "#10B981",
-  "sexual-health": "#8B5CF6",
-  "hormones": "#E91E7A",
-  "thyroid": "#22c0d4",
-  "heart": "#EF4444",
-  "gut": "#F59E0B",
-  "vitamins": "#F97316",
-  "cancer-screening": "#9333EA",
-  "sports-performance": "#22c55e",
-  "general-health": "#3B82F6",
-  "at-home": "#22c0d4",
+  "womens-health": categoryMenuIconFor("Women's Health").color,
+  "mens-health": categoryMenuIconFor("Men's Health").color,
+  "fertility": categoryMenuIconFor("Fertility - Prenatal").color,
+  "sexual-health": categoryMenuIconFor("General Wellness").color,
+  "hormones": categoryMenuIconFor("General Wellness").color,
+  "thyroid": categoryMenuIconFor("General Wellness").color,
+  "heart": categoryMenuIconFor("General Wellness").color,
+  "gut": categoryMenuIconFor("General Wellness").color,
+  "vitamins": categoryMenuIconFor("General Wellness").color,
+  "cancer-screening": categoryMenuIconFor("Cancer Screening").color,
+  "sports-performance": categoryMenuIconFor("Sports & Fitness").color,
+  "general-health": categoryMenuIconFor("General Wellness").color,
+  "at-home": categoryMenuIconFor("At Home Test Kits").color,
 };
 
 /** Columns required to build a CategoryTestItem from provider_tests. */

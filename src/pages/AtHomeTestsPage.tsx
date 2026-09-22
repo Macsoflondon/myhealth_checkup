@@ -15,6 +15,7 @@ import { getBranding } from "@/data/providerBranding";
 import { getProviderRating } from "@/constants/providerRatings";
 import { AT_HOME_SECTIONS, findAtHomeSection } from "@/config/atHomeSections";
 import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
+import { categoryMenuIconFor } from "@/components/header/menuIcons";
 
 const SEO = {
   title: "At Home Test Kits | Compare UK Finger-Prick Tests | myhealth checkup",
@@ -54,7 +55,7 @@ const toCategoryTestItem = (test: AtHomeTest): CategoryTestItem => {
     providerId: test.provider_id,
     popular: test.is_popular,
     badge: tag,
-    badgeColor: branding?.primary || "#e70d69",
+    badgeColor: categoryMenuIconFor("At Home Test Kits").color,
     provider: test.provider_id,
     priceNum,
     price: `£${priceNum}`,

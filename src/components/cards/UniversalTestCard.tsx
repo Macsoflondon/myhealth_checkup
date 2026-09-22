@@ -25,6 +25,10 @@ import { baseTestId, type CollectionVariant } from "@/lib/collectionVariants";
 import { formatTestCardHeadline } from "@/utils/format-test-card-headline";
 import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
 import { trackFunnelEvent } from "@/lib/funnelTracking";
+import {
+  categoryMenuIconFor,
+  resolveCategoryMenuName,
+} from "@/components/header/menuIcons";
 
 
 // ─── Design tokens (kept inline to mirror AtHomeTestsPage exactly) ───────────
@@ -39,6 +43,7 @@ export interface UniversalTestData {
   provider_id: string;
   test_name: string;
   category?: string | null;
+  category_color?: string | null;
   description?: string | null;
   price?: number | null;
   total_expected_cost?: number | null;
@@ -227,6 +232,10 @@ export const UniversalTestDetailModal: React.FC<{
   const inCompare = compareItems.some((c) => c.id === baseTestId(test.id));
   const handleCompareToggle = () => compareStore.toggle(toCompareData(test));
   const isAllergy = (test.category || "").toLowerCase().includes("allerg");
+  const categoryName = resolveCategoryMenuName(test.category);
+  const categoryMeta = categoryMenuIconFor(categoryName);
+  const categoryColor = test.category_color || categoryMeta.color;
+  const CategoryIcon = categoryMeta.Icon;
   const variant = test.route_variant ?? null;
   const displayPrice = variant?.total ?? test.total_expected_cost ?? test.price;
   const secondaryRoute = variant?.secondary ?? null;
@@ -1270,16 +1279,24 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
 
 
             {/* Category */}
-            <div
-              className="truncate mb-2"
+            <div className="mb-2 min-h-[18px] overflow-hidden">
+              <span
+              data-testid="category-accent-pill"
+              data-category={categoryName}
+              className="inline-flex max-w-full items-center gap-1 truncate"
               style={{
-                fontFamily: "'DM Sans',sans-serif",
-                fontSize: 12,
-                color: UTC_NAVY,
-                minHeight: 18,
+                background: `${categoryColor}1a`,
+                color: categoryColor,
+                fontFamily: "'Montserrat',sans-serif",
+                fontSize: 10,
+                fontWeight: 700,
+                padding: "2px 10px",
+                borderRadius: 20,
               }}
             >
-              {test.category || "\u00A0"}
+                <CategoryIcon aria-hidden="true" size={12} strokeWidth={2.25} />
+                <span className="truncate">{categoryName}</span>
+              </span>
             </div>
 
             {/* Description */}
