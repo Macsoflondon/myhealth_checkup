@@ -13,5 +13,11 @@ interface Props extends Omit<CategoryPageLayoutProps, "tests"> {
  */
 export function MappedCategoryPage({ category, ...rest }: Props) {
   const { data } = useMappedCategoryTests(category.slug, category.badgeColor);
-  return <CategoryPageLayout {...rest} tests={data ?? []} />;
+  return (
+    <CategoryPageLayout
+      {...rest}
+      categoryAccent="General Wellness"
+      tests={data ?? []}
+    />
+  );
 }

@@ -2,6 +2,7 @@ import { useSearchParams } from "@/lib/router-compat";
 import { CategoryPageLayout, CategoryPageLayoutProps, CategoryTestItem } from "./CategoryPageLayout";
 import { useCategoryTests } from "@/hooks/queries/useCategoryTests";
 import { findSubcategory } from "@/config/subcategoryMap";
+import { resolveCategoryMenuName } from "@/components/header/menuIcons";
 
 interface Props extends Omit<CategoryPageLayoutProps, "tests"> {
   canonicalCategory: string;
@@ -56,5 +57,10 @@ export function DbCategoryPage({ canonicalCategory, fallbackTests = [], ...rest 
       })()
     : { ...rest, tests };
 
-  return <CategoryPageLayout {...layoutProps} />;
+  return (
+    <CategoryPageLayout
+      {...layoutProps}
+      categoryAccent={resolveCategoryMenuName(canonicalCategory)}
+    />
+  );
 }

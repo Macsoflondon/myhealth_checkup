@@ -75,6 +75,8 @@ export interface CategoryPageLayoutProps {
   filters: string[];
   /* Test data */
   tests: CategoryTestItem[];
+  /** Parent navigation category used by card accent pills on category-specific routes. */
+  categoryAccent?: string;
   /* Bottom section */
   benefitsTitle: string;
   benefits: [BenefitItem, BenefitItem, BenefitItem];
@@ -97,6 +99,7 @@ export function CategoryPageLayout({
   trustStats,
   filters,
   tests,
+  categoryAccent,
   benefitsTitle,
   benefits,
   breadcrumbs,
@@ -257,7 +260,7 @@ export function CategoryPageLayout({
                   <UnifiedTestCard
                     key={test.id}
                     defaultFace="brand"
-                    category={test.tag}
+                    category={categoryAccent ?? test.tag}
                     categoryColor={test.badgeColor}
                     badge={test.popular ? "Most Popular" : test.badge}
                     name={test.title}

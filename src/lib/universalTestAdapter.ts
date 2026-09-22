@@ -14,7 +14,7 @@ export function fromAtHomeTest(t: AtHomeTest): UniversalTestData {
     id: t.id,
     provider_id: t.provider_id,
     test_name: t.test_name,
-    category: t.category,
+    category: "At Home Test Kits",
     category_color: resolvedCategoryColor("At Home Test Kits"),
     description: t.description,
     price: t.price,

@@ -221,6 +221,7 @@ const AtHomeTestsPage: React.FC = () => {
       ]}
       filters={filters}
       tests={tests}
+      categoryAccent="At Home Test Kits"
       benefitsTitle="Why Choose At Home Testing?"
       benefits={[HERO_BENEFITS[0], HERO_BENEFITS[1], HERO_BENEFITS[2]]}
       breadcrumbs={[

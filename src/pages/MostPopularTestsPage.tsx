@@ -194,6 +194,7 @@ const MostPopularTestsPage = () => {
       ]}
       filters={filters}
       tests={tests}
+      categoryAccent="Most Popular Tests"
       benefitsTitle="Why Choose Our Most Popular Tests?"
       benefits={[
         { icon: Star, title: 'Trusted by Thousands', description: 'Our highest-rated tests chosen by customers across the UK' },
