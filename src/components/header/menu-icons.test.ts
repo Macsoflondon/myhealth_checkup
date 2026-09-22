@@ -7,7 +7,9 @@ import {
 
 describe("category menu accents", () => {
   it("keeps all eight canonical categories visually distinct", () => {
-    const colours = Object.values(CATEGORY_MENU_ICONS).map(({ color }) => color);
+    const colours = Object.values(CATEGORY_MENU_ICONS).map(
+      ({ color }) => color,
+    );
     expect(colours).toHaveLength(8);
     expect(new Set(colours).size).toBe(8);
   });

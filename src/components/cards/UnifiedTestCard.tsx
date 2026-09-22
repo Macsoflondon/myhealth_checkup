@@ -1,5 +1,8 @@
 import { UniversalTestCard } from "@/components/cards/UniversalTestCard";
-import { fromLegacyUnified, type LegacyUnifiedProps } from "@/lib/universalTestAdapter";
+import {
+  fromLegacyUnified,
+  type LegacyUnifiedProps,
+} from "@/lib/universalTestAdapter";
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 import type { CollectionVariant } from "@/lib/collectionVariants";
 
@@ -39,7 +42,13 @@ export interface UnifiedTestCardProps {
  */
 export function UnifiedTestCard(props: UnifiedTestCardProps) {
   const data = fromLegacyUnified(props);
-  return <UniversalTestCard test={data} className={props.className} defaultFace={props.defaultFace} />;
+  return (
+    <UniversalTestCard
+      test={data}
+      className={props.className}
+      defaultFace={props.defaultFace}
+    />
+  );
 }
 
 export default UnifiedTestCard;
