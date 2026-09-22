@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
@@ -10,6 +9,7 @@ import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { LucideIcon } from "lucide-react";
 import { Search } from "lucide-react";
+import { categoryMenuIconFor } from "@/components/header/menuIcons";
 
 const isFromPriceLabel = (value: string) => /^from\s+/i.test(value.trim());
 
@@ -261,7 +261,11 @@ export function CategoryPageLayout({
                     key={test.id}
                     defaultFace="brand"
                     category={categoryAccent ?? test.tag}
-                    categoryColor={test.badgeColor}
+                    categoryColor={
+                      categoryAccent
+                        ? categoryMenuIconFor(categoryAccent).color
+                        : test.badgeColor
+                    }
                     badge={test.popular ? "Most Popular" : test.badge}
                     name={test.title}
                     description={test.desc}

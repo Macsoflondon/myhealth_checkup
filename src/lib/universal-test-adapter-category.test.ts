@@ -37,7 +37,9 @@ describe("universal card category accents", () => {
       home_phlebotomy_cost: null,
     } satisfies AtHomeTest;
 
-    expect(fromAtHomeTest(row).category_color).toBe("#C2410C");
+    const adapted = fromAtHomeTest(row);
+    expect(adapted.category).toBe("At Home Test Kits");
+    expect(adapted.category_color).toBe("#C2410C");
   });
 
   it("resolves provider and Medichecks cards through the shared map", () => {
