@@ -26,3 +26,4 @@
 - [ ] F.B longitudinal charts on the health dashboard once observations can exist.
 - [ ] F.G notification dispatch abstraction and preference screen.
 - [x] Inset all live hero content by 57px at tablet/desktop widths, preserving mobile, and verify wrapping at 390px, 768px and 1280px.
+- [x] Apply the canonical eight-colour category palette to navigation pills and universal test-card category tags; verify populated women’s and cancer routes plus the at-home adapter path.

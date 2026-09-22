@@ -38,7 +38,7 @@ export interface UnifiedTestCardProps {
  * callers don't need to change. Visual style now always matches AtHomeTestCard.
  */
 export function UnifiedTestCard(props: UnifiedTestCardProps) {
-  const data = fromLegacyUnified(props as LegacyUnifiedProps);
+  const data = fromLegacyUnified(props);
   return <UniversalTestCard test={data} className={props.className} defaultFace={props.defaultFace} />;
 }
 

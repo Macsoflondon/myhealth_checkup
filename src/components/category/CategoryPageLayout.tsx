@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
@@ -10,6 +9,7 @@ import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { LucideIcon } from "lucide-react";
 import { Search } from "lucide-react";
+import { categoryMenuIconFor } from "@/components/header/menuIcons";
 
 const isFromPriceLabel = (value: string) => /^from\s+/i.test(value.trim());
 
@@ -75,6 +75,8 @@ export interface CategoryPageLayoutProps {
   filters: string[];
   /* Test data */
   tests: CategoryTestItem[];
+  /** Parent navigation category used by card accent pills on category-specific routes. */
+  categoryAccent?: string;
   /* Bottom section */
   benefitsTitle: string;
   benefits: [BenefitItem, BenefitItem, BenefitItem];
@@ -97,6 +99,7 @@ export function CategoryPageLayout({
   trustStats,
   filters,
   tests,
+  categoryAccent,
   benefitsTitle,
   benefits,
   breadcrumbs,
@@ -257,8 +260,12 @@ export function CategoryPageLayout({
                   <UnifiedTestCard
                     key={test.id}
                     defaultFace="brand"
-                    category={test.tag}
-                    categoryColor={test.badgeColor}
+                    category={categoryAccent ?? test.tag}
+                    categoryColor={
+                      categoryAccent
+                        ? categoryMenuIconFor(categoryAccent).color
+                        : test.badgeColor
+                    }
                     badge={test.popular ? "Most Popular" : test.badge}
                     name={test.title}
                     description={test.desc}
@@ -291,10 +298,10 @@ export function CategoryPageLayout({
                       is_addon: test.isAddon ?? false,
                       purchase_notes: test.purchaseNotes ?? null,
 
-                      biomarkers_list: (test.biomarkers as any) ?? null,
+                      biomarkers_list: test.biomarkers ?? null,
                       turnaround_days_text: test.turnaround ?? null,
                       base_price: null,
-                      collection_options: (test.collectionOptions as any) ?? null,
+                      collection_options: test.collectionOptions ?? null,
                     }}
                   />
                 ))}

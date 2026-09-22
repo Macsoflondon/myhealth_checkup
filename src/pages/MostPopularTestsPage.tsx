@@ -10,8 +10,8 @@ import { CategoryPageLayout, CategoryTestItem } from '@/components/category/Cate
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { hasStartingPrice, usePopularTestsFromDatabase } from '@/hooks/usePopularTestsFromDatabase';
-import { getBranding } from '@/data/providerBranding';
 import { getProviderRating } from '@/constants/providerRatings';
+import { categoryMenuIconFor } from '@/components/header/menuIcons';
 
 const SEO = {
   title: 'Most Popular Tests | myhealth checkup',
@@ -117,7 +117,6 @@ const MostPopularTestsPage = () => {
   const tests: CategoryTestItem[] = useMemo(() => {
     if (!popularTests) return [];
     return popularTests.map((t, idx) => {
-      const branding = getBranding(t.provider_id);
       const providerRating = getProviderRating(t.provider_id);
       const tag = t.category || 'General Health';
       return {
@@ -125,7 +124,7 @@ const MostPopularTestsPage = () => {
         providerId: t.provider_id,
         popular: idx < 3,
         badge: tag,
-        badgeColor: branding?.primary || '#e70d69',
+        badgeColor: categoryMenuIconFor('Most Popular Tests').color,
         provider: t.provider_name,
         priceNum: t.price,
         price: hasStartingPrice(t) ? `from £${t.price}` : `£${t.price}`,
@@ -195,6 +194,7 @@ const MostPopularTestsPage = () => {
       ]}
       filters={filters}
       tests={tests}
+      categoryAccent="Most Popular Tests"
       benefitsTitle="Why Choose Our Most Popular Tests?"
       benefits={[
         { icon: Star, title: 'Trusted by Thousands', description: 'Our highest-rated tests chosen by customers across the UK' },
