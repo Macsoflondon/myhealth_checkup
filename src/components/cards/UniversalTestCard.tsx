@@ -30,7 +30,6 @@ import {
   resolveCategoryMenuName,
 } from "@/components/header/menuIcons";
 
-
 // ─── Design tokens (kept inline to mirror AtHomeTestsPage exactly) ───────────
 export const UTC_NAVY = "#081129";
 export const UTC_TURQUOISE = "#22c0d4";
@@ -77,7 +76,6 @@ export interface UniversalTestData {
   /** Collection-route listing this card represents (kit vs professional draw). */
   route_variant?: CollectionVariant | null;
 }
-
 
 /** Short verbatim excerpt of the provider description (or factual generated summary) for the card. */
 const summaryFor = (test: UniversalTestData, providerName?: string): string =>
@@ -242,7 +240,6 @@ export const UniversalTestDetailModal: React.FC<{
     : test.collection_fee_amount != null && test.collection_fee_amount > 0
       ? test.collection_fee_amount
       : null;
-
 
   // Close on Escape and lock background scroll while the modal is open.
   React.useEffect(() => {
@@ -862,7 +859,6 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
       ? test.collection_fee_amount
       : null;
 
-
   useEffect(
     () => () => {
       if (hoverIntentTimer.current) clearTimeout(hoverIntentTimer.current);
@@ -893,7 +889,12 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
 
   const handleBook = (e: React.MouseEvent) => {
     e.stopPropagation();
-    void trackFunnelEvent("provider_click", { provider_id: test.provider_id, entity_type: "test", entity_id: test.id, entity_name: test.test_name });
+    void trackFunnelEvent("provider_click", {
+      provider_id: test.provider_id,
+      entity_type: "test",
+      entity_id: test.id,
+      entity_name: test.test_name,
+    });
     if (test.url && test.url !== "#") {
       window.open(test.url, "_blank", "noopener,noreferrer");
     } else {
@@ -1276,8 +1277,6 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               </p>
             )}
 
-
-
             {/* Category */}
             <div className="mb-2 min-h-[18px] overflow-hidden">
               <span
@@ -1427,7 +1426,6 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                 <span className="truncate ml-2">Nurse home visit</span>
               </div>
             )}
-
 
             {/* Collection fee callout */}
             {collectionFee != null && (

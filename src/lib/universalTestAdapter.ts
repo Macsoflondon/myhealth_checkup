@@ -52,7 +52,8 @@ export function fromProviderTest(t: ProviderTestCardData): UniversalTestData {
     measurement_type: t.measurement_type,
     who_should_test: t.who_should_test,
     biomarker_count: t.biomarker_count,
-    biomarkers_list: t.biomarkers_list as string[] | { value: string }[] | undefined,
+    biomarkers_list: t.biomarkers_list as
+      string[] | { value: string }[] | undefined,
     url: t.url,
     image_url: t.image_url ?? null,
     is_popular: !!t.is_popular,
@@ -65,7 +66,6 @@ export function fromProviderTest(t: ProviderTestCardData): UniversalTestData {
     purchase_notes: t.purchase_notes ?? null,
   };
 }
-
 
 /** Adapter: Medichecks card props → UniversalTestData */
 export function fromMedichecksTest(t: {
@@ -89,7 +89,9 @@ export function fromMedichecksTest(t: {
     category_color: resolvedCategoryColor("General Wellness"),
     description: t.description,
     price: t.price,
-    turnaround_days_text: t.turnaroundDays ? `${t.turnaroundDays} working days` : null,
+    turnaround_days_text: t.turnaroundDays
+      ? `${t.turnaroundDays} working days`
+      : null,
     sample_type: t.sampleType,
     biomarker_count: t.biomarkerCount,
     url: `/medichecks/${t.slug}`,
@@ -103,7 +105,8 @@ export function fromMedichecksTest(t: {
 export function fromCategoryTestItem(t: CategoryTestItem): UniversalTestData {
   return {
     id: String(t.id),
-    provider_id: t.providerId || (t.provider || "").toLowerCase().replace(/\s+/g, "-"),
+    provider_id:
+      t.providerId || (t.provider || "").toLowerCase().replace(/\s+/g, "-"),
     test_name: t.title,
     category: t.tag,
     category_color: t.badgeColor || resolvedCategoryColor(t.tag),
@@ -146,7 +149,9 @@ export function fromLegacyUnified(p: LegacyUnifiedProps): UniversalTestData {
   const fromDetails = p.testDetails ? fromProviderTest(p.testDetails) : null;
   return {
     id: fromDetails?.id ?? `${p.provider}-${p.name}`,
-    provider_id: fromDetails?.provider_id ?? (p.provider || "").toLowerCase().replace(/\s+/g, "-"),
+    provider_id:
+      fromDetails?.provider_id ??
+      (p.provider || "").toLowerCase().replace(/\s+/g, "-"),
     test_name: p.name,
     category: p.category,
     category_color:

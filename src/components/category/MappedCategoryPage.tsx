@@ -1,4 +1,7 @@
-import { CategoryPageLayout, CategoryPageLayoutProps } from "./CategoryPageLayout";
+import {
+  CategoryPageLayout,
+  CategoryPageLayoutProps,
+} from "./CategoryPageLayout";
 import { useMappedCategoryTests } from "@/hooks/queries/useMappedCategoryTests";
 import type { MappedCategoryDef } from "@/config/mappedCategories";
 

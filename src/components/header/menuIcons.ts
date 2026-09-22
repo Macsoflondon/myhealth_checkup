@@ -1,4 +1,20 @@
-import { Star, Heart, UserCheck, User, Dumbbell, Baby, ShieldCheck, Home, Info, Phone, Users, Search, BarChart2, BookOpen, Library } from "lucide-react";
+import {
+  Star,
+  Heart,
+  UserCheck,
+  User,
+  Dumbbell,
+  Baby,
+  ShieldCheck,
+  Home,
+  Info,
+  Phone,
+  Users,
+  Search,
+  BarChart2,
+  BookOpen,
+  Library,
+} from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 export const MENU_PINK = "#e70d69";
@@ -23,7 +39,7 @@ export type CanonicalCategoryName = keyof typeof CATEGORY_MENU_ICONS;
 const CATEGORY_PARENT_ALIASES: Record<string, CanonicalCategoryName> = {
   "most-popular": "Most Popular Tests",
   "most-popular-tests": "Most Popular Tests",
-  "popular": "Most Popular Tests",
+  popular: "Most Popular Tests",
   "popular-tests": "Most Popular Tests",
   wellness: "General Wellness",
   "general-health": "General Wellness",
@@ -134,4 +150,5 @@ export const MORE_SECTION_ICONS: Record<string, MenuIconEntry> = {
 
 /** Resolve an icon for any menu item name — categories first, then sections. */
 export const menuIconFor = (name: string): MenuIconEntry =>
-  CATEGORY_MENU_ICONS[name] ?? MORE_SECTION_ICONS[name] ?? { Icon: Info, color: MENU_TURQUOISE };
+  CATEGORY_MENU_ICONS[name] ??
+  MORE_SECTION_ICONS[name] ?? { Icon: Info, color: MENU_TURQUOISE };

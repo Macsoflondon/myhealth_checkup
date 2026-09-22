@@ -8,26 +8,26 @@ import {
 import { categoryMenuIconFor } from "@/components/header/menuIcons";
 
 export const PROVIDER_NAMES: Record<string, string> = {
-  "medichecks": "Medichecks",
+  medichecks: "Medichecks",
   "goodbody-clinic": "GoodBody Clinic",
   "lola-health": "Lola Health",
-  "randox": "Randox Health",
+  randox: "Randox Health",
   "london-medical-laboratory": "London Medical Laboratory",
   "london-health-company": "London Health Company",
-  "clinilabs": "Clinilabs",
+  clinilabs: "Clinilabs",
   "medical-diagnosis": "Medical Diagnosis",
 };
 
 export const BADGE_COLOR_BY_CATEGORY: Record<string, string> = {
   "womens-health": categoryMenuIconFor("Women's Health").color,
   "mens-health": categoryMenuIconFor("Men's Health").color,
-  "fertility": categoryMenuIconFor("Fertility - Prenatal").color,
+  fertility: categoryMenuIconFor("Fertility - Prenatal").color,
   "sexual-health": categoryMenuIconFor("General Wellness").color,
-  "hormones": categoryMenuIconFor("General Wellness").color,
-  "thyroid": categoryMenuIconFor("General Wellness").color,
-  "heart": categoryMenuIconFor("General Wellness").color,
-  "gut": categoryMenuIconFor("General Wellness").color,
-  "vitamins": categoryMenuIconFor("General Wellness").color,
+  hormones: categoryMenuIconFor("General Wellness").color,
+  thyroid: categoryMenuIconFor("General Wellness").color,
+  heart: categoryMenuIconFor("General Wellness").color,
+  gut: categoryMenuIconFor("General Wellness").color,
+  vitamins: categoryMenuIconFor("General Wellness").color,
   "cancer-screening": categoryMenuIconFor("Cancer Screening").color,
   "sports-performance": categoryMenuIconFor("Sports & Fitness").color,
   "general-health": categoryMenuIconFor("General Wellness").color,
@@ -65,7 +65,10 @@ export interface ProviderTestRow {
 }
 
 /** Maps a raw provider_tests row into the shared category card shape. */
-export function mapProviderTestRow(row: ProviderTestRow, badgeColor: string): CategoryTestItem {
+export function mapProviderTestRow(
+  row: ProviderTestRow,
+  badgeColor: string,
+): CategoryTestItem {
   const providerName = PROVIDER_NAMES[row.provider_id] || row.provider_id;
   const rating = getProviderRating(row.provider_id);
   const priceNum = Number(row.price ?? row.base_price ?? 0);
@@ -73,11 +76,12 @@ export function mapProviderTestRow(row: ProviderTestRow, badgeColor: string): Ca
   const turnaround = row.turnaround_days_text || "Typical 3–5 days";
   const match = turnaround.match(/(\d+)/);
   const turnaroundDays = match ? parseInt(match[1], 10) : 5;
-  const collection = row.home_kit_available && row.clinic_visit_available
-    ? "Home Kit / Clinic"
-    : row.clinic_visit_available
-    ? "Clinic"
-    : "Home Kit";
+  const collection =
+    row.home_kit_available && row.clinic_visit_available
+      ? "Home Kit / Clinic"
+      : row.clinic_visit_available
+        ? "Clinic"
+        : "Home Kit";
 
   return {
     id: row.id,
