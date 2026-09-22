@@ -11,7 +11,6 @@ import { AtHomeSectionGrid } from "@/components/athome/AtHomeSectionGrid";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { useAtHomeTests, type AtHomeTest } from "@/hooks/queries/useAtHomeTests";
-import { getBranding } from "@/data/providerBranding";
 import { getProviderRating } from "@/constants/providerRatings";
 import { AT_HOME_SECTIONS, findAtHomeSection } from "@/config/atHomeSections";
 import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
@@ -45,7 +44,6 @@ const parseTurnaroundDays = (turnaround: string): number => {
 };
 
 const toCategoryTestItem = (test: AtHomeTest): CategoryTestItem => {
-  const branding = getBranding(test.provider_id);
   const providerRating = getProviderRating(test.provider_id);
   const tag = test.category || "General Health";
   const priceNum = test.price ?? 0;

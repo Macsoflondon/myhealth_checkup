@@ -232,10 +232,6 @@ export const UniversalTestDetailModal: React.FC<{
   const inCompare = compareItems.some((c) => c.id === baseTestId(test.id));
   const handleCompareToggle = () => compareStore.toggle(toCompareData(test));
   const isAllergy = (test.category || "").toLowerCase().includes("allerg");
-  const categoryName = resolveCategoryMenuName(test.category);
-  const categoryMeta = categoryMenuIconFor(categoryName);
-  const categoryColor = test.category_color || categoryMeta.color;
-  const CategoryIcon = categoryMeta.Icon;
   const variant = test.route_variant ?? null;
   const displayPrice = variant?.total ?? test.total_expected_cost ?? test.price;
   const secondaryRoute = variant?.secondary ?? null;
@@ -851,6 +847,10 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
   const compareItems = useCompareItems();
   const inCompare = compareItems.some((c) => c.id === baseTestId(test.id));
   const isAllergy = (test.category || "").toLowerCase().includes("allerg");
+  const categoryName = resolveCategoryMenuName(test.category);
+  const categoryMeta = categoryMenuIconFor(categoryName);
+  const categoryColor = test.category_color || categoryMeta.color;
+  const CategoryIcon = categoryMeta.Icon;
   const variant = test.route_variant ?? null;
   const displayPrice = variant?.total ?? test.total_expected_cost ?? test.price;
   const secondaryRoute = variant?.secondary ?? null;
@@ -1281,19 +1281,19 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
             {/* Category */}
             <div className="mb-2 min-h-[18px] overflow-hidden">
               <span
-              data-testid="category-accent-pill"
-              data-category={categoryName}
-              className="inline-flex max-w-full items-center gap-1 truncate"
-              style={{
-                background: `${categoryColor}1a`,
-                color: categoryColor,
-                fontFamily: "'Montserrat',sans-serif",
-                fontSize: 10,
-                fontWeight: 700,
-                padding: "2px 10px",
-                borderRadius: 20,
-              }}
-            >
+                data-testid="category-accent-pill"
+                data-category={categoryName}
+                className="inline-flex max-w-full items-center gap-1 truncate"
+                style={{
+                  background: `${categoryColor}1a`,
+                  color: categoryColor,
+                  fontFamily: "'Montserrat',sans-serif",
+                  fontSize: 10,
+                  fontWeight: 700,
+                  padding: "2px 10px",
+                  borderRadius: 20,
+                }}
+              >
                 <CategoryIcon aria-hidden="true" size={12} strokeWidth={2.25} />
                 <span className="truncate">{categoryName}</span>
               </span>

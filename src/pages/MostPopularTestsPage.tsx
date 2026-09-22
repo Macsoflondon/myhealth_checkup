@@ -10,7 +10,6 @@ import { CategoryPageLayout, CategoryTestItem } from '@/components/category/Cate
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import { hasStartingPrice, usePopularTestsFromDatabase } from '@/hooks/usePopularTestsFromDatabase';
-import { getBranding } from '@/data/providerBranding';
 import { getProviderRating } from '@/constants/providerRatings';
 import { categoryMenuIconFor } from '@/components/header/menuIcons';
 
@@ -118,7 +117,6 @@ const MostPopularTestsPage = () => {
   const tests: CategoryTestItem[] = useMemo(() => {
     if (!popularTests) return [];
     return popularTests.map((t, idx) => {
-      const branding = getBranding(t.provider_id);
       const providerRating = getProviderRating(t.provider_id);
       const tag = t.category || 'General Health';
       return {
