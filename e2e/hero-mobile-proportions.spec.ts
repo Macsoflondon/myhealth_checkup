@@ -15,7 +15,7 @@ import { test, expect } from "@playwright/test";
 const BREAKPOINTS = [
   { name: "iPhone SE", width: 375, height: 667 },
   { name: "iPhone 12", width: 390, height: 844 },
-  { name: "Pixel 5",   width: 393, height: 851 },
+  { name: "Pixel 5", width: 393, height: 851 },
   { name: "iPhone 14 Pro Max", width: 430, height: 932 },
   { name: "Small Android", width: 360, height: 740 },
 ];
@@ -31,7 +31,9 @@ for (const bp of BREAKPOINTS) {
       await page.waitForLoadState("networkidle").catch(() => {});
     });
 
-    test("slide 1 H1 scales within its mobile clamp and fits viewport", async ({ page }) => {
+    test("slide 1 H1 scales within its mobile clamp and fits viewport", async ({
+      page,
+    }) => {
       const h1 = page.getByRole("heading", {
         level: 1,
         name: "Compare private blood tests and cancer screening.",
@@ -53,21 +55,29 @@ for (const bp of BREAKPOINTS) {
       expect(box).not.toBeNull();
       if (!box) return;
       expect(box.x + box.width).toBeLessThanOrEqual(bp.width);
-      const fs = px(await wordmark.evaluate((el) => getComputedStyle(el).fontSize));
+      const fs = px(
+        await wordmark.evaluate((el) => getComputedStyle(el).fontSize),
+      );
       expect(fs).toBeGreaterThanOrEqual(20);
       expect(fs).toBeLessThanOrEqual(36);
     });
 
-    test("supporting copy renders at mobile size and wraps cleanly", async ({ page }) => {
+    test("supporting copy renders at mobile size and wraps cleanly", async ({
+      page,
+    }) => {
       const supportingCopy = page.getByText(
         "Prices, biomarkers and turnaround times from UKAS-accredited laboratories, side by side.",
       );
       await expect(supportingCopy).toBeVisible();
-      const fs = px(await supportingCopy.evaluate((el) => getComputedStyle(el).fontSize));
+      const fs = px(
+        await supportingCopy.evaluate((el) => getComputedStyle(el).fontSize),
+      );
       expect(fs).toBeLessThanOrEqual(16);
     });
 
-    test("slide headline remains inside the mobile copy area", async ({ page }) => {
+    test("slide headline remains inside the mobile copy area", async ({
+      page,
+    }) => {
       const headline = page.getByRole("heading", {
         level: 1,
         name: "Compare private blood tests and cancer screening.",
@@ -79,7 +89,9 @@ for (const bp of BREAKPOINTS) {
       expect(box!.width).toBeLessThanOrEqual(bp.width * 0.9);
     });
 
-    test("Hero image wrapper occupies a healthy share of viewport", async ({ page }) => {
+    test("Hero image wrapper occupies a healthy share of viewport", async ({
+      page,
+    }) => {
       const slide = page.locator("img.hero-slide").first();
       await expect(slide).toBeVisible();
       const box = await slide.boundingBox();
@@ -95,7 +107,9 @@ for (const bp of BREAKPOINTS) {
 
     test("Hero has no horizontal overflow", async ({ page }) => {
       const overflow = await page.evaluate(
-        () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        () =>
+          document.documentElement.scrollWidth -
+          document.documentElement.clientWidth,
       );
       expect(overflow).toBeLessThanOrEqual(1);
     });
