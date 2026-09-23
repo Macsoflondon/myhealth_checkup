@@ -5,11 +5,7 @@ import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 
 import { SLIDES, FIRST_SLIDE_LQIP } from "@/components/sections/hero-slides";
 
-export default function HeroMasthead({
-  rotateMs = 15000,
-}: {
-  rotateMs?: number;
-}) {
+export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }) {
   const [i, setI] = useState(0);
   const activeIndex = i % SLIDES.length;
   const firstSlideRef = useRef<HTMLImageElement>(null);
@@ -24,8 +20,7 @@ export default function HeroMasthead({
   useEffect(() => {
     const schedule =
       window.requestIdleCallback ??
-      ((cb: IdleRequestCallback) =>
-        window.setTimeout(cb as unknown as TimerHandler, 1200));
+      ((cb: IdleRequestCallback) => window.setTimeout(cb as unknown as TimerHandler, 1200));
     const id = schedule(() => setDeferredMounted(true), { timeout: 3000 });
     return () => {
       if (window.cancelIdleCallback && typeof id === "number") {
@@ -52,10 +47,7 @@ export default function HeroMasthead({
 
   return (
     <section className="rounded-t-none rounded-b-none overflow-visible bg-[#081129] md:bg-white border-0 sm:border sm:border-b-0 sm:border-white/10 md:border-0 shadow-[0_30px_80px_rgba(8,17,41,0.10)] md:shadow-none px-3 sm:px-6 md:px-0 pt-0 pb-0 min-h-[68svh] sm:min-h-[100svh] flex flex-col">
-      <TestCategoryTicker
-        variant="inline"
-        className="bg-white border-b-2 border-[#22c0d4] -mx-3 sm:-mx-6 md:mx-0"
-      />
+      <TestCategoryTicker variant="inline" className="bg-white border-b-2 border-[#22c0d4] -mx-3 sm:-mx-6 md:mx-0" />
 
       {/* Brand bar + category toolbar. The brand bar renders at every width;
           the pill toolbar is desktop/tablet only (mobile uses the drawer).
@@ -66,10 +58,7 @@ export default function HeroMasthead({
       </div>
 
       {/* White breathing space between the pink brand-bar line and the photo */}
-      <div
-        aria-hidden
-        className="order-2 -mx-3 sm:-mx-6 md:mx-0 h-4 sm:h-5 bg-white"
-      />
+      <div aria-hidden className="order-2 -mx-3 sm:-mx-6 md:mx-0 h-4 sm:h-5 bg-white" />
 
       <div className="relative overflow-hidden mt-0 -mx-3 sm:-mx-6 md:mx-0 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-20 md:rounded-2xl md:border md:border-[rgba(34,192,212,0.35)] md:shadow-[0_0_0_1px_rgba(34,192,212,0.20),0_8px_28px_rgba(34,192,212,0.18)]">
         {/* Blurred LQIP + gradient placeholder — fades out once slide 1 paints */}
@@ -135,20 +124,10 @@ export default function HeroMasthead({
             >
               <picture>
                 {s.mobileAvifSrcSet ? (
-                  <source
-                    media="(max-width: 639px)"
-                    type="image/avif"
-                    srcSet={s.mobileAvifSrcSet}
-                    sizes="100vw"
-                  />
+                  <source media="(max-width: 639px)" type="image/avif" srcSet={s.mobileAvifSrcSet} sizes="100vw" />
                 ) : null}
                 {s.mobileWebpSrcSet ? (
-                  <source
-                    media="(max-width: 639px)"
-                    type="image/webp"
-                    srcSet={s.mobileWebpSrcSet}
-                    sizes="100vw"
-                  />
+                  <source media="(max-width: 639px)" type="image/webp" srcSet={s.mobileWebpSrcSet} sizes="100vw" />
                 ) : null}
                 <source type="image/avif" srcSet={s.avifSrcSet} sizes="100vw" />
                 <source type="image/webp" srcSet={s.webpSrcSet} sizes="100vw" />
@@ -159,27 +138,27 @@ export default function HeroMasthead({
                 <div
                   className={`absolute inset-0 z-10 flex px-5 sm:items-center sm:px-10 sm:pb-0 sm:pt-0 md:px-12 lg:px-16 xl:px-20 ${mobilePlacement} ${desktopGradient} ${s.align === "right" ? "justify-end text-right" : "justify-start text-left"}`}
                 >
-                  <div className="@container w-[88%] max-w-4xl text-primary-foreground sm:w-[var(--copy-width-t)] lg:w-[var(--copy-width-d)]">
+                  <div className="@container w-full max-w-4xl text-primary-foreground sm:w-[var(--copy-width-t)] sm:min-w-[19rem] lg:w-[var(--copy-width-d)]">
                     {s.eyebrow ? (
-                      <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-brand-turquoise sm:text-sm">
+                      <p className="mb-3 whitespace-nowrap text-xs font-bold uppercase tracking-[0.18em] text-brand-turquoise sm:text-sm">
                         {s.eyebrow}
                       </p>
                     ) : null}
                     {n === 0 ? (
-                      <h1 className="font-display text-[clamp(1.4rem,7.1cqw,3.25rem)] font-extrabold leading-[1.12]">
+                      <h1 className="font-display text-[clamp(1.5rem,10cqw,3.5rem)] font-extrabold leading-[1.12]">
                         {s.headlineLines
                           ? s.headlineLines.map((line) => (
-                              <span key={line} className="block">
+                              <span key={line} className="block whitespace-nowrap">
                                 {line}
                               </span>
                             ))
                           : s.headline}
                       </h1>
                     ) : (
-                      <h2 className="font-display text-[clamp(1.4rem,7.1cqw,3.25rem)] font-extrabold leading-[1.12]">
+                      <h2 className="font-display text-[clamp(1.5rem,10cqw,3.5rem)] font-extrabold leading-[1.12]">
                         {s.headlineLines
                           ? s.headlineLines.map((line) => (
-                              <span key={line} className="block">
+                              <span key={line} className="block whitespace-nowrap">
                                 {line}
                               </span>
                             ))
@@ -188,7 +167,7 @@ export default function HeroMasthead({
                     )}
                     {s.supportingCopy ? (
                       <p
-                        className={`mt-3 max-w-2xl text-[clamp(0.78rem,3.1cqw,1.125rem)] font-medium leading-relaxed text-primary-foreground/90 sm:mt-4 ${
+                        className={`mt-3 max-w-[40ch] text-[clamp(0.875rem,3.4cqw,1.125rem)] [text-wrap:pretty] font-medium leading-relaxed text-primary-foreground/90 sm:mt-4 ${
                           s.align === "right" ? "ml-auto" : ""
                         }`}
                       >
