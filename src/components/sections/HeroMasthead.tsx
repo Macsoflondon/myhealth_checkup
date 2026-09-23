@@ -149,7 +149,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
                         {s.headlineLines
                           ? s.headlineLines.map((line) => (
                               <span key={line} className="block whitespace-nowrap">
-                                {line}
+                                {line}{" "}
                               </span>
                             ))
                           : s.headline}
@@ -159,7 +159,7 @@ export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }
                         {s.headlineLines
                           ? s.headlineLines.map((line) => (
                               <span key={line} className="block whitespace-nowrap">
-                                {line}
+                                {line}{" "}
                               </span>
                             ))
                           : s.headline}
