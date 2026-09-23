@@ -3,11 +3,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 
-
-import {
-  SLIDES,
-  FIRST_SLIDE_LQIP,
-} from "@/components/sections/hero-slides";
+import { SLIDES, FIRST_SLIDE_LQIP } from "@/components/sections/hero-slides";
 
 export default function HeroMasthead({
   rotateMs = 15000,
@@ -70,7 +66,10 @@ export default function HeroMasthead({
       </div>
 
       {/* White breathing space between the pink brand-bar line and the photo */}
-      <div aria-hidden className="order-2 -mx-3 sm:-mx-6 md:mx-0 h-4 sm:h-5 bg-white" />
+      <div
+        aria-hidden
+        className="order-2 -mx-3 sm:-mx-6 md:mx-0 h-4 sm:h-5 bg-white"
+      />
 
       <div className="relative overflow-hidden mt-0 -mx-3 sm:-mx-6 md:mx-0 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-20 md:rounded-2xl md:border md:border-[rgba(34,192,212,0.35)] md:shadow-[0_0_0_1px_rgba(34,192,212,0.20),0_8px_28px_rgba(34,192,212,0.18)]">
         {/* Blurred LQIP + gradient placeholder — fades out once slide 1 paints */}
@@ -95,7 +94,17 @@ export default function HeroMasthead({
             ["--pos-m" as string]: s.posMobile,
             ["--pos-t" as string]: s.posTablet,
             ["--pos-d" as string]: s.posDesktop,
+            ["--copy-width-t" as string]: s.copyWidthTablet,
+            ["--copy-width-d" as string]: s.copyWidthDesktop,
           };
+          const mobilePlacement =
+            s.copyPlacementMobile === "bottom"
+              ? "items-end pb-20 bg-gradient-to-t from-brand-navy/95 via-brand-navy/55 to-transparent"
+              : "items-start pt-16 bg-gradient-to-b from-brand-navy/90 via-brand-navy/45 to-transparent";
+          const desktopGradient =
+            s.align === "right"
+              ? "sm:bg-gradient-to-l sm:from-brand-navy/90 sm:via-brand-navy/50 sm:to-transparent"
+              : "sm:bg-gradient-to-r sm:from-brand-navy/90 sm:via-brand-navy/50 sm:to-transparent";
           const img = (
             <img
               key={`i-${n}`}
@@ -121,13 +130,25 @@ export default function HeroMasthead({
               aria-hidden={active ? undefined : true}
               className="absolute inset-0 transition-opacity duration-500"
               style={commonStyle}
+              data-testid={`hero-slide-${n + 1}`}
+              data-active={active}
             >
               <picture>
                 {s.mobileAvifSrcSet ? (
-                  <source media="(max-width: 639px)" type="image/avif" srcSet={s.mobileAvifSrcSet} sizes="100vw" />
+                  <source
+                    media="(max-width: 639px)"
+                    type="image/avif"
+                    srcSet={s.mobileAvifSrcSet}
+                    sizes="100vw"
+                  />
                 ) : null}
                 {s.mobileWebpSrcSet ? (
-                  <source media="(max-width: 639px)" type="image/webp" srcSet={s.mobileWebpSrcSet} sizes="100vw" />
+                  <source
+                    media="(max-width: 639px)"
+                    type="image/webp"
+                    srcSet={s.mobileWebpSrcSet}
+                    sizes="100vw"
+                  />
                 ) : null}
                 <source type="image/avif" srcSet={s.avifSrcSet} sizes="100vw" />
                 <source type="image/webp" srcSet={s.webpSrcSet} sizes="100vw" />
@@ -136,20 +157,16 @@ export default function HeroMasthead({
 
               {s.headline ? (
                 <div
-                  className={`absolute inset-0 z-10 flex items-start px-5 pt-8 sm:items-center sm:px-10 sm:pt-0 md:px-16 lg:px-20 ${
-                    s.align === "right"
-                      ? "justify-end bg-gradient-to-l from-brand-navy/90 via-brand-navy/55 to-transparent text-right"
-                      : "bg-gradient-to-r from-brand-navy/90 via-brand-navy/55 to-transparent"
-                  }`}
+                  className={`absolute inset-0 z-10 flex px-5 sm:items-center sm:px-10 sm:pb-0 sm:pt-0 md:px-12 lg:px-16 xl:px-20 ${mobilePlacement} ${desktopGradient} ${s.align === "right" ? "justify-end text-right" : "justify-start text-left"}`}
                 >
-                  <div className="@container w-[82%] max-w-4xl text-primary-foreground sm:w-[58%] md:w-[88%] lg:w-[62%]">
+                  <div className="@container w-[88%] max-w-4xl text-primary-foreground sm:w-[var(--copy-width-t)] lg:w-[var(--copy-width-d)]">
                     {s.eyebrow ? (
                       <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-brand-turquoise sm:text-sm">
                         {s.eyebrow}
                       </p>
                     ) : null}
                     {n === 0 ? (
-                      <h1 className="font-display text-[clamp(1.5rem,8cqw,3.75rem)] font-extrabold leading-[1.12]">
+                      <h1 className="font-display text-[clamp(1.4rem,7.1cqw,3.25rem)] font-extrabold leading-[1.12]">
                         {s.headlineLines
                           ? s.headlineLines.map((line) => (
                               <span key={line} className="block">
@@ -159,7 +176,7 @@ export default function HeroMasthead({
                           : s.headline}
                       </h1>
                     ) : (
-                      <h2 className="font-display text-[clamp(1.5rem,8cqw,3.75rem)] font-extrabold leading-[1.12]">
+                      <h2 className="font-display text-[clamp(1.4rem,7.1cqw,3.25rem)] font-extrabold leading-[1.12]">
                         {s.headlineLines
                           ? s.headlineLines.map((line) => (
                               <span key={line} className="block">
@@ -171,7 +188,7 @@ export default function HeroMasthead({
                     )}
                     {s.supportingCopy ? (
                       <p
-                        className={`mt-4 max-w-2xl text-[clamp(0.875rem,3.4cqw,1.25rem)] font-medium leading-relaxed text-primary-foreground/90 ${
+                        className={`mt-3 max-w-2xl text-[clamp(0.78rem,3.1cqw,1.125rem)] font-medium leading-relaxed text-primary-foreground/90 sm:mt-4 ${
                           s.align === "right" ? "ml-auto" : ""
                         }`}
                       >
@@ -180,7 +197,7 @@ export default function HeroMasthead({
                     ) : null}
                     <div
                       aria-hidden
-                      className={`mt-5 flex h-1 w-28 overflow-hidden rounded-full sm:w-36 ${
+                      className={`mt-4 flex h-1 w-28 overflow-hidden rounded-full sm:mt-5 sm:w-36 ${
                         s.align === "right" ? "ml-auto" : ""
                       }`}
                     >
@@ -199,7 +216,6 @@ export default function HeroMasthead({
         {/* Turquoise section dividers — inside the rounded stage so they stop at the curve */}
         <div className="absolute top-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#22c0d4]" />
         <div className="absolute bottom-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#22c0d4]" />
-
       </div>
     </section>
   );

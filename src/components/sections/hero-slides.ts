@@ -48,8 +48,9 @@ import screeningMobile768Avif from "@/assets/hero/stock/screening-mobile-768.avi
 import screeningMobile480Webp from "@/assets/hero/stock/screening-mobile-480.webp.asset.json";
 import screeningMobile768Webp from "@/assets/hero/stock/screening-mobile-768.webp.asset.json";
 
-const srcSet = (...candidates: ReadonlyArray<readonly [string, number]>): string =>
-  candidates.map(([url, width]) => `${url} ${width}w`).join(", ");
+const srcSet = (
+  ...candidates: ReadonlyArray<readonly [string, number]>
+): string => candidates.map(([url, width]) => `${url} ${width}w`).join(", ");
 
 const localSrcSet = (
   mobile480: string,
@@ -62,12 +63,48 @@ const localSrcSet = (
   desktop: srcSet([desktop480, 480], [desktop768, 768], [desktop1200, 1200]),
 });
 
-const wellnessAvif = localSrcSet(wellnessMobile480Avif.url, wellnessMobile768Avif.url, wellnessDesktop480Avif.url, wellnessDesktop768Avif.url, wellnessDesktop1200Avif.url);
-const wellnessWebp = localSrcSet(wellnessMobile480Webp.url, wellnessMobile768Webp.url, wellnessDesktop480Webp.url, wellnessDesktop768Webp.url, wellnessDesktop1200Webp.url);
-const ageingAvif = localSrcSet(ageingMobile480Avif.url, ageingMobile768Avif.url, ageingDesktop480Avif.url, ageingDesktop768Avif.url, ageingDesktop1200Avif.url);
-const ageingWebp = localSrcSet(ageingMobile480Webp.url, ageingMobile768Webp.url, ageingDesktop480Webp.url, ageingDesktop768Webp.url, ageingDesktop1200Webp.url);
-const screeningAvif = localSrcSet(screeningMobile480Avif.url, screeningMobile768Avif.url, screeningDesktop480Avif.url, screeningDesktop768Avif.url, screeningDesktop1200Avif.url);
-const screeningWebp = localSrcSet(screeningMobile480Webp.url, screeningMobile768Webp.url, screeningDesktop480Webp.url, screeningDesktop768Webp.url, screeningDesktop1200Webp.url);
+const wellnessAvif = localSrcSet(
+  wellnessMobile480Avif.url,
+  wellnessMobile768Avif.url,
+  wellnessDesktop480Avif.url,
+  wellnessDesktop768Avif.url,
+  wellnessDesktop1200Avif.url,
+);
+const wellnessWebp = localSrcSet(
+  wellnessMobile480Webp.url,
+  wellnessMobile768Webp.url,
+  wellnessDesktop480Webp.url,
+  wellnessDesktop768Webp.url,
+  wellnessDesktop1200Webp.url,
+);
+const ageingAvif = localSrcSet(
+  ageingMobile480Avif.url,
+  ageingMobile768Avif.url,
+  ageingDesktop480Avif.url,
+  ageingDesktop768Avif.url,
+  ageingDesktop1200Avif.url,
+);
+const ageingWebp = localSrcSet(
+  ageingMobile480Webp.url,
+  ageingMobile768Webp.url,
+  ageingDesktop480Webp.url,
+  ageingDesktop768Webp.url,
+  ageingDesktop1200Webp.url,
+);
+const screeningAvif = localSrcSet(
+  screeningMobile480Avif.url,
+  screeningMobile768Avif.url,
+  screeningDesktop480Avif.url,
+  screeningDesktop768Avif.url,
+  screeningDesktop1200Avif.url,
+);
+const screeningWebp = localSrcSet(
+  screeningMobile480Webp.url,
+  screeningMobile768Webp.url,
+  screeningDesktop480Webp.url,
+  screeningDesktop768Webp.url,
+  screeningDesktop1200Webp.url,
+);
 
 export type HeroSlide = {
   src: string;
@@ -88,12 +125,35 @@ export type HeroSlide = {
   supportingCopy?: string;
   /** Which side of the photograph the copy sits on. Defaults to left. */
   align?: "left" | "right";
+  copyWidthTablet: string;
+  copyWidthDesktop: string;
+  copyPlacementMobile: "top" | "bottom";
 };
 
-const joggingWomanAvifSrcSet = srcSet([joggingWoman480Avif, 480], [joggingWoman768Avif, 768], [joggingWoman1200Avif, 1200], [joggingWoman1920Avif, 1920]);
-const joggingWomanWebpSrcSet = srcSet([joggingWoman480Webp, 480], [joggingWoman768Webp, 768], [joggingWoman1200Webp, 1200], [joggingWoman1920Webp, 1920]);
-const bloodTestKitAvif = srcSet([bloodTestKit480Avif, 480], [bloodTestKit768Avif, 768], [bloodTestKit1200Avif, 1200], [bloodTestKit1590Avif, 1590]);
-const bloodTestKitWebp = srcSet([bloodTestKit480Webp, 480], [bloodTestKit768Webp, 768], [bloodTestKit1200Webp, 1200], [bloodTestKit1590Webp, 1590]);
+const joggingWomanAvifSrcSet = srcSet(
+  [joggingWoman480Avif, 480],
+  [joggingWoman768Avif, 768],
+  [joggingWoman1200Avif, 1200],
+  [joggingWoman1920Avif, 1920],
+);
+const joggingWomanWebpSrcSet = srcSet(
+  [joggingWoman480Webp, 480],
+  [joggingWoman768Webp, 768],
+  [joggingWoman1200Webp, 1200],
+  [joggingWoman1920Webp, 1920],
+);
+const bloodTestKitAvif = srcSet(
+  [bloodTestKit480Avif, 480],
+  [bloodTestKit768Avif, 768],
+  [bloodTestKit1200Avif, 1200],
+  [bloodTestKit1590Avif, 1590],
+);
+const bloodTestKitWebp = srcSet(
+  [bloodTestKit480Webp, 480],
+  [bloodTestKit768Webp, 768],
+  [bloodTestKit1200Webp, 1200],
+  [bloodTestKit1590Webp, 1590],
+);
 
 export const FIRST_SLIDE_SRC: string = joggingWoman;
 export const FIRST_SLIDE_PRELOAD_HREF: string = joggingWoman1200Avif;
@@ -111,16 +171,20 @@ export const SLIDES: HeroSlide[] = [
     src: joggingWoman,
     avifSrcSet: joggingWomanAvifSrcSet,
     webpSrcSet: joggingWomanWebpSrcSet,
-    label: "Know Your Health. Own Your Future.",
-    alt: "Woman jogging along a coastal path on a bright morning",
-    posMobile: "35% 55%",
+    label: "Compare private blood tests and cancer screening.",
+    alt: "Woman running on a riverside path at sunrise with a city skyline behind her",
+    posMobile: "38% 50%",
     posTablet: "center 32%",
     posDesktop: "center 35%",
-    eyebrow: "Preventative health",
-    headline: "Stay ahead of your health.",
-    headlineLines: ["Stay ahead of", "your health."],
-    supportingCopy: "Compare private screening from accredited UK laboratories.",
+    eyebrow: "UK private health test comparison",
+    headline: "Compare private blood tests and cancer screening.",
+    headlineLines: ["Compare private blood tests", "and cancer screening."],
+    supportingCopy:
+      "Prices, biomarkers and turnaround times from UKAS-accredited laboratories, side by side.",
     align: "right",
+    copyWidthTablet: "48%",
+    copyWidthDesktop: "40%",
+    copyPlacementMobile: "top",
   },
   {
     src: wellnessDesktop1200Webp.url,
@@ -128,29 +192,38 @@ export const SLIDES: HeroSlide[] = [
     webpSrcSet: wellnessWebp.desktop,
     mobileAvifSrcSet: wellnessAvif.mobile,
     mobileWebpSrcSet: wellnessWebp.mobile,
-    label: "Your health. Your choice. Compare with confidence.",
-    alt: "Woman stretching before a run on a sunny country road",
-    posMobile: "center center",
-    posTablet: "center center",
+    label: "Test early. Decide with evidence.",
+    alt: "Woman stretching her arms overhead before a run on a sunny country road",
+    posMobile: "58% 28%",
+    posTablet: "64% center",
     posDesktop: "center center",
-    eyebrow: "Trusted comparison",
-    headline: "Compare with confidence.",
-    supportingCopy: "Private health tests, clearly compared.",
+    eyebrow: "Preventative health screening",
+    headline: "Test early. Decide with evidence.",
+    headlineLines: ["Test early.", "Decide with evidence."],
+    supportingCopy:
+      "Compare wellness, hormone and vitamin blood tests by price and biomarker coverage.",
+    copyWidthTablet: "48%",
+    copyWidthDesktop: "40%",
+    copyPlacementMobile: "bottom",
   },
   {
     src: bloodTestKit,
     avifSrcSet: bloodTestKitAvif,
     webpSrcSet: bloodTestKitWebp,
-    label: "Testing at home has never been easier.",
-    alt: "At-home finger-prick blood test kit laid out on a kitchen worktop",
-    posMobile: "40% 15%",
+    label: "Home blood test kits, compared side by side.",
+    alt: "Person opening an at-home finger-prick blood test kit on a kitchen worktop",
+    posMobile: "38% 18%",
     posTablet: "40% 32%",
-    posDesktop: "50% 45%",
-    eyebrow: "At-home testing",
-    headline: "Testing at home has never been easier.",
-    headlineLines: ["Testing at home has", "never been easier."],
-    supportingCopy: "Professional at home finger-prick blood test kits delivered to your door.",
+    posDesktop: "42% 45%",
+    eyebrow: "At-home blood test kits",
+    headline: "Home blood test kits, compared side by side.",
+    headlineLines: ["Home blood test kits,", "compared side by side."],
+    supportingCopy:
+      "Check the sample method, laboratory accreditation and results turnaround before you order.",
     align: "right",
+    copyWidthTablet: "48%",
+    copyWidthDesktop: "40%",
+    copyPlacementMobile: "top",
   },
   {
     src: ageingDesktop1200Webp.url,
@@ -158,15 +231,19 @@ export const SLIDES: HeroSlide[] = [
     webpSrcSet: ageingWebp.desktop,
     mobileAvifSrcSet: ageingAvif.mobile,
     mobileWebpSrcSet: ageingWebp.mobile,
-    label: "Make the years ahead your healthiest yet.",
-    alt: "Older couple carrying exercise mats while walking in a park",
-    posMobile: "center center",
-    posTablet: "center center",
+    label: "Health checks for the decades ahead.",
+    alt: "Older couple carrying exercise mats while walking together in a park",
+    posMobile: "58% 24%",
+    posTablet: "64% center",
     posDesktop: "center center",
-    eyebrow: "Healthy ageing",
-    headline: "Make the years ahead your healthiest yet.",
-    headlineLines: ["Make the years ahead,", "your healthiest yet."],
-    supportingCopy: "Compare tests for health, wellbeing and longevity.",
+    eyebrow: "Healthy ageing and longevity",
+    headline: "Health checks for the decades ahead.",
+    headlineLines: ["Health checks for", "the decades ahead."],
+    supportingCopy:
+      "Compare heart health, hormone and longevity blood tests from CQC-regulated providers.",
+    copyWidthTablet: "48%",
+    copyWidthDesktop: "40%",
+    copyPlacementMobile: "bottom",
   },
   {
     src: screeningDesktop1200Webp.url,
@@ -174,14 +251,18 @@ export const SLIDES: HeroSlide[] = [
     webpSrcSet: screeningWebp.desktop,
     mobileAvifSrcSet: screeningAvif.mobile,
     mobileWebpSrcSet: screeningWebp.mobile,
-    label: "Private screening, made clearer.",
-    alt: "Patient discussing private screening options with a clinician",
-    posMobile: "center center",
+    label: "Private cancer screening, clearly explained.",
+    alt: "Woman discussing private cancer screening options with a clinician holding a tablet",
+    posMobile: "58% 24%",
     posTablet: "center center",
-    posDesktop: "center center",
-    eyebrow: "Compare",
-    headline: "Private screening, made clearer.",
-    headlineLines: ["Private screening,", "made clearer."],
-    supportingCopy: "Compare options, prices and providers in one place.",
+    posDesktop: "58% center",
+    eyebrow: "Private cancer screening",
+    headline: "Private cancer screening, clearly explained.",
+    headlineLines: ["Private cancer screening,", "clearly explained."],
+    supportingCopy:
+      "Compare what each test detects, its limitations and its price in one place.",
+    copyWidthTablet: "48%",
+    copyWidthDesktop: "40%",
+    copyPlacementMobile: "bottom",
   },
 ];
