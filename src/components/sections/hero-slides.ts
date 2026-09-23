@@ -48,9 +48,8 @@ import screeningMobile768Avif from "@/assets/hero/stock/screening-mobile-768.avi
 import screeningMobile480Webp from "@/assets/hero/stock/screening-mobile-480.webp.asset.json";
 import screeningMobile768Webp from "@/assets/hero/stock/screening-mobile-768.webp.asset.json";
 
-const srcSet = (
-  ...candidates: ReadonlyArray<readonly [string, number]>
-): string => candidates.map(([url, width]) => `${url} ${width}w`).join(", ");
+const srcSet = (...candidates: ReadonlyArray<readonly [string, number]>): string =>
+  candidates.map(([url, width]) => `${url} ${width}w`).join(", ");
 
 const localSrcSet = (
   mobile480: string,
@@ -163,26 +162,24 @@ export const FIRST_SLIDE_WEBP_SRCSET: string = joggingWomanWebpSrcSet;
 export const FIRST_SLIDE_LQIP =
   "data:image/webp;base64,UklGRrIAAABXRUJQVlA4IKYAAADwBACdASogABUAPu1cq04ppKQiMBgMATAdiWYAsOwQ8K9HyiX4F5aT3lgrt7OcrHAA/uqDRKnL5YU7cmWJ8ia6JPvg2tpXgVF0QsnGzmDF8hRV8CcPjGNzBIn08ReUQBwSA1Ey1HIn4cyRS5s6pKpTzoDBRAS/DpxFyby/9d26U7c0n6lUmar9erfa0gkbaOCI+mur9hZDz4naSj6Fx8WJHBxkoAAA";
 
-export const HERO_CAPTION =
-  "Your trusted platform for comparing private health and cancer screening tests.";
+export const HERO_CAPTION = "Your trusted platform for comparing private health and cancer screening tests.";
 
 export const SLIDES: HeroSlide[] = [
   {
     src: joggingWoman,
     avifSrcSet: joggingWomanAvifSrcSet,
     webpSrcSet: joggingWomanWebpSrcSet,
-    label: "Compare private blood tests and cancer screening.",
+    label: "Compare private blood tests.",
     alt: "Woman running on a riverside path at sunrise with a city skyline behind her",
     posMobile: "38% 50%",
     posTablet: "center 32%",
     posDesktop: "center 35%",
-    eyebrow: "UK private health test comparison",
-    headline: "Compare private blood tests and cancer screening.",
-    headlineLines: ["Compare private blood tests", "and cancer screening."],
-    supportingCopy:
-      "Prices, biomarkers and turnaround times from UKAS-accredited laboratories, side by side.",
+    eyebrow: "UK private blood tests",
+    headline: "Compare private blood tests.",
+    headlineLines: ["Compare private", "blood tests."],
+    supportingCopy: "Prices, biomarkers and turnaround for UK blood tests and cancer screening.",
     align: "right",
-    copyWidthTablet: "48%",
+    copyWidthTablet: "56%",
     copyWidthDesktop: "40%",
     copyPlacementMobile: "top",
   },
@@ -192,17 +189,16 @@ export const SLIDES: HeroSlide[] = [
     webpSrcSet: wellnessWebp.desktop,
     mobileAvifSrcSet: wellnessAvif.mobile,
     mobileWebpSrcSet: wellnessWebp.mobile,
-    label: "Test early. Decide with evidence.",
+    label: "Test early. Act on evidence.",
     alt: "Woman stretching her arms overhead before a run on a sunny country road",
     posMobile: "58% 28%",
     posTablet: "64% center",
     posDesktop: "center center",
-    eyebrow: "Preventative health screening",
-    headline: "Test early. Decide with evidence.",
-    headlineLines: ["Test early.", "Decide with evidence."],
-    supportingCopy:
-      "Compare wellness, hormone and vitamin blood tests by price and biomarker coverage.",
-    copyWidthTablet: "48%",
+    eyebrow: "Preventative screening",
+    headline: "Test early. Act on evidence.",
+    headlineLines: ["Test early.", "Act on evidence."],
+    supportingCopy: "Compare wellness, hormone and vitamin blood tests by price and biomarkers.",
+    copyWidthTablet: "56%",
     copyWidthDesktop: "40%",
     copyPlacementMobile: "bottom",
   },
@@ -210,18 +206,17 @@ export const SLIDES: HeroSlide[] = [
     src: bloodTestKit,
     avifSrcSet: bloodTestKitAvif,
     webpSrcSet: bloodTestKitWebp,
-    label: "Home blood test kits, compared side by side.",
+    label: "Home test kits, side by side.",
     alt: "Person opening an at-home finger-prick blood test kit on a kitchen worktop",
     posMobile: "38% 18%",
     posTablet: "40% 32%",
     posDesktop: "42% 45%",
     eyebrow: "At-home blood test kits",
-    headline: "Home blood test kits, compared side by side.",
-    headlineLines: ["Home blood test kits,", "compared side by side."],
-    supportingCopy:
-      "Check the sample method, laboratory accreditation and results turnaround before you order.",
+    headline: "Home test kits, side by side.",
+    headlineLines: ["Home test kits,", "side by side."],
+    supportingCopy: "Check the sample method, lab accreditation and turnaround before you order.",
     align: "right",
-    copyWidthTablet: "48%",
+    copyWidthTablet: "56%",
     copyWidthDesktop: "40%",
     copyPlacementMobile: "top",
   },
@@ -231,17 +226,16 @@ export const SLIDES: HeroSlide[] = [
     webpSrcSet: ageingWebp.desktop,
     mobileAvifSrcSet: ageingAvif.mobile,
     mobileWebpSrcSet: ageingWebp.mobile,
-    label: "Health checks for the decades ahead.",
+    label: "Health checks for the years ahead.",
     alt: "Older couple carrying exercise mats while walking together in a park",
     posMobile: "58% 24%",
     posTablet: "64% center",
     posDesktop: "center center",
-    eyebrow: "Healthy ageing and longevity",
-    headline: "Health checks for the decades ahead.",
-    headlineLines: ["Health checks for", "the decades ahead."],
-    supportingCopy:
-      "Compare heart health, hormone and longevity blood tests from CQC-regulated providers.",
-    copyWidthTablet: "48%",
+    eyebrow: "Healthy ageing",
+    headline: "Health checks for the years ahead.",
+    headlineLines: ["Health checks for", "the years ahead."],
+    supportingCopy: "Compare heart, hormone and longevity blood tests from CQC-regulated providers.",
+    copyWidthTablet: "56%",
     copyWidthDesktop: "40%",
     copyPlacementMobile: "bottom",
   },
@@ -251,17 +245,16 @@ export const SLIDES: HeroSlide[] = [
     webpSrcSet: screeningWebp.desktop,
     mobileAvifSrcSet: screeningAvif.mobile,
     mobileWebpSrcSet: screeningWebp.mobile,
-    label: "Private cancer screening, clearly explained.",
+    label: "Cancer screening, clearly explained.",
     alt: "Woman discussing private cancer screening options with a clinician holding a tablet",
     posMobile: "58% 24%",
     posTablet: "center center",
     posDesktop: "58% center",
     eyebrow: "Private cancer screening",
-    headline: "Private cancer screening, clearly explained.",
-    headlineLines: ["Private cancer screening,", "clearly explained."],
-    supportingCopy:
-      "Compare what each test detects, its limitations and its price in one place.",
-    copyWidthTablet: "48%",
+    headline: "Cancer screening, clearly explained.",
+    headlineLines: ["Cancer screening,", "clearly explained."],
+    supportingCopy: "See what each screening test detects, its limits and its price in one place.",
+    copyWidthTablet: "56%",
     copyWidthDesktop: "40%",
     copyPlacementMobile: "bottom",
   },
