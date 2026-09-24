@@ -22,6 +22,8 @@ export interface ProviderTestCardData {
   biomarker_count?: number | null;
   is_popular?: boolean | null;
   url?: string | null;
+  /** From provider_tests.url_verified — false means the last URL health check failed. */
+  url_verified?: boolean | null;
   image_url?: string | null;
   biomarkers_list?: unknown;
   home_kit_available?: boolean | null;
