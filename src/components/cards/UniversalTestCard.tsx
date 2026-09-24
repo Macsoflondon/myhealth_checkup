@@ -758,6 +758,14 @@ export const UniversalTestDetailModal: React.FC<{
                 href={test.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  void trackFunnelEvent("provider_click", {
+                    provider_id: test.provider_id,
+                    entity_type: "test",
+                    entity_id: test.id,
+                    entity_name: test.test_name,
+                  });
+                }}
                 className="flex items-center justify-center gap-2 rounded-full"
                 style={{
                   background: UTC_PINK,
