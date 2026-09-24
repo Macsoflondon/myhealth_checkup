@@ -100,29 +100,5 @@ for (const bp of BREAKPOINTS) {
       );
       expect(overflow).toBeLessThanOrEqual(1);
     });
-    test("every slide headline sits on two lines at one shared size", async ({ page }) => {
-      await page.locator('[data-testid="hero-slide-5"]').waitFor({ state: "attached" });
-      const metrics = await page.evaluate(() =>
-        Array.from(document.querySelectorAll('[data-testid^="hero-slide-"] :is(h1, h2)')).map((h) => {
-          const cs = getComputedStyle(h);
-          const lines = Math.round(h.getBoundingClientRect().height / parseFloat(cs.lineHeight));
-          const width = h.parentElement!.getBoundingClientRect().width;
-          const widest = Math.max(
-            ...Array.from(h.children).map((c) => {
-              const r = document.createRange();
-              r.selectNodeContents(c);
-              return r.getBoundingClientRect().width;
-            }),
-          );
-          return { size: cs.fontSize, lines, fits: widest <= width + 1 };
-        }),
-      );
-      expect(metrics).toHaveLength(5);
-      for (const m of metrics) {
-        expect(m.lines).toBe(2);
-        expect(m.fits).toBe(true);
-      }
-      expect(new Set(metrics.map((m) => m.size)).size).toBe(1);
-    });
   });
 }

@@ -1,20 +1,33 @@
 import React, { useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { Link, useSearchParams } from "@/lib/router-compat";
-import { Home, Shield, Clock, AlertCircle, Inbox, RotateCw } from "lucide-react";
+import {
+  Home,
+  Shield,
+  Clock,
+  AlertCircle,
+  Inbox,
+  RotateCw,
+} from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { CategoryStandardHero } from "@/components/category/CategoryStandardHero";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
-import { CategoryPageLayout, CategoryTestItem } from "@/components/category/CategoryPageLayout";
+import {
+  CategoryPageLayout,
+  CategoryTestItem,
+} from "@/components/category/CategoryPageLayout";
 import { AtHomeSectionGrid } from "@/components/athome/AtHomeSectionGrid";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { useAtHomeTests, type AtHomeTest } from "@/hooks/queries/useAtHomeTests";
-import { getBranding } from "@/data/providerBranding";
+import {
+  useAtHomeTests,
+  type AtHomeTest,
+} from "@/hooks/queries/useAtHomeTests";
 import { getProviderRating } from "@/constants/providerRatings";
 import { AT_HOME_SECTIONS, findAtHomeSection } from "@/config/atHomeSections";
 import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
+import { categoryMenuIconFor } from "@/components/header/menuIcons";
 
 const SEO = {
   title: "At Home Test Kits | Compare UK Finger-Prick Tests | myhealth checkup",
@@ -26,9 +39,22 @@ const SEO = {
 };
 
 const HERO_BENEFITS = [
-  { icon: Home, title: "Delivered to Your Door", description: "Finger-prick kits shipped directly to your home across the UK" },
-  { icon: Shield, title: "UKAS Accredited Labs", description: "Every sample analysed by UKAS-accredited UK laboratories" },
-  { icon: Clock, title: "Fast Online Results", description: "Typical turnaround in a few days, delivered securely online" },
+  {
+    icon: Home,
+    title: "Delivered to Your Door",
+    description:
+      "Finger-prick kits shipped directly to your home across the UK",
+  },
+  {
+    icon: Shield,
+    title: "UKAS Accredited Labs",
+    description: "Every sample analysed by UKAS-accredited UK laboratories",
+  },
+  {
+    icon: Clock,
+    title: "Fast Online Results",
+    description: "Typical turnaround in a few days, delivered securely online",
+  },
 ] as const;
 
 const cleanName = (name: string) =>
@@ -44,7 +70,6 @@ const parseTurnaroundDays = (turnaround: string): number => {
 };
 
 const toCategoryTestItem = (test: AtHomeTest): CategoryTestItem => {
-  const branding = getBranding(test.provider_id);
   const providerRating = getProviderRating(test.provider_id);
   const tag = test.category || "General Health";
   const priceNum = test.price ?? 0;
@@ -54,7 +79,7 @@ const toCategoryTestItem = (test: AtHomeTest): CategoryTestItem => {
     providerId: test.provider_id,
     popular: test.is_popular,
     badge: tag,
-    badgeColor: branding?.primary || "#e70d69",
+    badgeColor: categoryMenuIconFor("At Home Test Kits").color,
     provider: test.provider_id,
     priceNum,
     price: `£${priceNum}`,
@@ -78,8 +103,7 @@ const toCategoryTestItem = (test: AtHomeTest): CategoryTestItem => {
 
 const StatusShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <>
-    <Helmet>
-    </Helmet>
+    <Helmet></Helmet>
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
@@ -102,7 +126,10 @@ const StatusShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 const LoadingSkeleton: React.FC = () => (
   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
     {Array.from({ length: 9 }).map((_, i) => (
-      <Skeleton key={i} className="w-full h-[240px] rounded-2xl bg-black/[0.06]" />
+      <Skeleton
+        key={i}
+        className="w-full h-[240px] rounded-2xl bg-black/[0.06]"
+      />
     ))}
   </div>
 );
@@ -112,9 +139,12 @@ const ErrorState: React.FC<{ onRetry: () => void }> = ({ onRetry }) => (
     <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-destructive/15 mb-5">
       <AlertCircle className="h-7 w-7 text-destructive" />
     </div>
-    <h2 className="text-2xl font-bold text-[#060b18] mb-2">Couldn't load at-home test kits</h2>
+    <h2 className="text-2xl font-bold text-[#060b18] mb-2">
+      Couldn't load at-home test kits
+    </h2>
     <p className="text-[#060b18]/75 mb-6">
-      Something went wrong while fetching the latest kits. Please check your connection and try again.
+      Something went wrong while fetching the latest kits. Please check your
+      connection and try again.
     </p>
     <Button onClick={onRetry} variant="secondary" className="gap-2">
       <RotateCw className="h-4 w-4" /> Retry
@@ -127,9 +157,12 @@ const EmptyState: React.FC = () => (
     <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-black/[0.06] mb-5">
       <Inbox className="h-7 w-7 text-[#060b18]/70" />
     </div>
-    <h2 className="text-2xl font-bold text-[#060b18] mb-2">No at home test kits available yet</h2>
+    <h2 className="text-2xl font-bold text-[#060b18] mb-2">
+      No at home test kits available yet
+    </h2>
     <p className="text-[#060b18]/75 mb-6">
-      We're updating our catalogue. Browse the full comparison hub to find the right test for you.
+      We're updating our catalogue. Browse the full comparison hub to find the
+      right test for you.
     </p>
     <Button asChild variant="secondary">
       <Link to="/compare">Browse all tests</Link>
@@ -138,7 +171,13 @@ const EmptyState: React.FC = () => (
 );
 
 const AtHomeTestsPage: React.FC = () => {
-  const { data: atHomeTests, isLoading, error, refetch, isFetching } = useAtHomeTests();
+  const {
+    data: atHomeTests,
+    isLoading,
+    error,
+    refetch,
+    isFetching,
+  } = useAtHomeTests();
   const [params] = useSearchParams();
   const section = findAtHomeSection(params.get("subcategory"));
 
@@ -147,7 +186,7 @@ const AtHomeTestsPage: React.FC = () => {
     const result: Record<string, number> = {};
     for (const def of AT_HOME_SECTIONS) {
       result[def.slug] = (atHomeTests ?? []).filter((t) =>
-        def.categories.includes(t.canonical_category ?? "")
+        def.categories.includes(t.canonical_category ?? ""),
       ).length;
     }
     return result;
@@ -222,6 +261,7 @@ const AtHomeTestsPage: React.FC = () => {
       ]}
       filters={filters}
       tests={tests}
+      categoryAccent="At Home Test Kits"
       benefitsTitle="Why Choose At Home Testing?"
       benefits={[HERO_BENEFITS[0], HERO_BENEFITS[1], HERO_BENEFITS[2]]}
       breadcrumbs={[

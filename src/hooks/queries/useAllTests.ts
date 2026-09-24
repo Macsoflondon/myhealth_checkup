@@ -2,48 +2,36 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { CategoryTestItem } from "@/components/category/CategoryPageLayout";
 import { getProviderRating } from "@/constants/providerRatings";
+import {
+  categoryMenuIconFor,
+  resolveCategoryMenuName,
+} from "@/components/header/menuIcons";
 
 const PROVIDER_NAMES: Record<string, string> = {
-  "medichecks": "Medichecks",
+  medichecks: "Medichecks",
   "goodbody-clinic": "GoodBody Clinic",
   "lola-health": "Lola Health",
-  "randox": "Randox Health",
+  randox: "Randox Health",
   "london-medical-laboratory": "London Medical Laboratory",
   "london-health-company": "London Health Company",
-  "clinilabs": "Clinilabs",
+  clinilabs: "Clinilabs",
   "medical-diagnosis": "Medical Diagnosis",
 };
 
 const CATEGORY_DISPLAY: Record<string, string> = {
   "womens-health": "Women's Health",
   "mens-health": "Men's Health",
-  "fertility": "Fertility",
+  fertility: "Fertility",
   "sexual-health": "Sexual Health",
-  "hormones": "Hormones",
-  "thyroid": "Thyroid",
-  "heart": "Heart Health",
-  "gut": "Gut Health",
-  "vitamins": "Vitamins",
+  hormones: "Hormones",
+  thyroid: "Thyroid",
+  heart: "Heart Health",
+  gut: "Gut Health",
+  vitamins: "Vitamins",
   "cancer-screening": "Cancer Screening",
   "sports-performance": "Sports & Fitness",
   "general-health": "General Health",
   "at-home": "At Home Test Kits",
-};
-
-const BADGE_COLOR_BY_CATEGORY: Record<string, string> = {
-  "womens-health": "#E91E7A",
-  "mens-health": "#3B82F6",
-  "fertility": "#10B981",
-  "sexual-health": "#8B5CF6",
-  "hormones": "#E91E7A",
-  "thyroid": "#22c0d4",
-  "heart": "#EF4444",
-  "gut": "#F59E0B",
-  "vitamins": "#F97316",
-  "cancer-screening": "#9333EA",
-  "sports-performance": "#22c55e",
-  "general-health": "#3B82F6",
-  "at-home": "#22c0d4",
 };
 
 const displayFor = (slug: string | null | undefined): string => {
@@ -62,7 +50,7 @@ export function useAllTests() {
       const { data, error } = await supabase
         .from("provider_tests")
         .select(
-          "id,provider_id,test_name,description,price,base_price,url,image_url,biomarker_count,biomarkers_list,turnaround_days_text,is_popular,popularity_rank,sample_type,home_kit_available,clinic_visit_available,category,source_section_label,canonical_category"
+          "id,provider_id,test_name,description,price,base_price,url,image_url,biomarker_count,biomarkers_list,turnaround_days_text,is_popular,popularity_rank,sample_type,home_kit_available,clinic_visit_available,category,source_section_label,canonical_category",
         )
         .eq("is_active", true)
         .not("image_url", "is", null)
@@ -88,15 +76,17 @@ export function useAllTests() {
           const m = turnaround.match(/(\d+)/);
           return m ? parseInt(m[1], 10) : 5;
         })();
-        const collection = row.home_kit_available && row.clinic_visit_available
-          ? "Home Kit / Clinic"
-          : row.clinic_visit_available
-          ? "Clinic"
-          : "Home Kit";
+        const collection =
+          row.home_kit_available && row.clinic_visit_available
+            ? "Home Kit / Clinic"
+            : row.clinic_visit_available
+              ? "Clinic"
+              : "Home Kit";
 
         const tag = displayFor(row.canonical_category);
-        const badgeColor =
-          BADGE_COLOR_BY_CATEGORY[row.canonical_category ?? ""] || "#3B82F6";
+        const badgeColor = categoryMenuIconFor(
+          resolveCategoryMenuName(row.canonical_category),
+        ).color;
 
         return {
           id: row.id,

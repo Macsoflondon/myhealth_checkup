@@ -3,17 +3,9 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 
+import { SLIDES, FIRST_SLIDE_LQIP } from "@/components/sections/hero-slides";
 
-import {
-  SLIDES,
-  FIRST_SLIDE_LQIP,
-} from "@/components/sections/hero-slides";
-
-export default function HeroMasthead({
-  rotateMs = 15000,
-}: {
-  rotateMs?: number;
-}) {
+export default function HeroMasthead({ rotateMs = 15000 }: { rotateMs?: number }) {
   const [i, setI] = useState(0);
   const activeIndex = i % SLIDES.length;
   const firstSlideRef = useRef<HTMLImageElement>(null);
@@ -28,8 +20,7 @@ export default function HeroMasthead({
   useEffect(() => {
     const schedule =
       window.requestIdleCallback ??
-      ((cb: IdleRequestCallback) =>
-        window.setTimeout(cb as unknown as TimerHandler, 1200));
+      ((cb: IdleRequestCallback) => window.setTimeout(cb as unknown as TimerHandler, 1200));
     const id = schedule(() => setDeferredMounted(true), { timeout: 3000 });
     return () => {
       if (window.cancelIdleCallback && typeof id === "number") {
@@ -56,10 +47,7 @@ export default function HeroMasthead({
 
   return (
     <section className="rounded-t-none rounded-b-none overflow-visible bg-[#081129] md:bg-white border-0 sm:border sm:border-b-0 sm:border-white/10 md:border-0 shadow-[0_30px_80px_rgba(8,17,41,0.10)] md:shadow-none px-3 sm:px-6 md:px-0 pt-0 pb-0 min-h-[68svh] sm:min-h-[100svh] flex flex-col">
-      <TestCategoryTicker
-        variant="inline"
-        className="bg-white border-b-2 border-[#22c0d4] -mx-3 sm:-mx-6 md:mx-0"
-      />
+      <TestCategoryTicker variant="inline" className="bg-white border-b-2 border-[#22c0d4] -mx-3 sm:-mx-6 md:mx-0" />
 
       {/* Brand bar + category toolbar. The brand bar renders at every width;
           the pill toolbar is desktop/tablet only (mobile uses the drawer).
@@ -95,7 +83,17 @@ export default function HeroMasthead({
             ["--pos-m" as string]: s.posMobile,
             ["--pos-t" as string]: s.posTablet,
             ["--pos-d" as string]: s.posDesktop,
+            ["--copy-width-t" as string]: s.copyWidthTablet,
+            ["--copy-width-d" as string]: s.copyWidthDesktop,
           };
+          const mobilePlacement =
+            s.copyPlacementMobile === "bottom"
+              ? "items-end pb-20 bg-gradient-to-t from-brand-navy/95 via-brand-navy/55 to-transparent"
+              : "items-start pt-16 bg-gradient-to-b from-brand-navy/90 via-brand-navy/45 to-transparent";
+          const desktopGradient =
+            s.align === "right"
+              ? "sm:bg-gradient-to-l sm:from-brand-navy/90 sm:via-brand-navy/50 sm:to-transparent"
+              : "sm:bg-gradient-to-r sm:from-brand-navy/90 sm:via-brand-navy/50 sm:to-transparent";
           const img = (
             <img
               key={`i-${n}`}
@@ -121,6 +119,8 @@ export default function HeroMasthead({
               aria-hidden={active ? undefined : true}
               className="absolute inset-0 transition-opacity duration-500"
               style={commonStyle}
+              data-testid={`hero-slide-${n + 1}`}
+              data-active={active}
             >
               <picture>
                 {s.mobileAvifSrcSet ? (
@@ -136,34 +136,30 @@ export default function HeroMasthead({
 
               {s.headline ? (
                 <div
-                  className={`absolute inset-0 z-10 flex items-start px-5 pt-8 sm:items-center sm:px-10 sm:pt-0 md:px-16 lg:px-20 ${
-                    s.align === "right"
-                      ? "justify-end bg-gradient-to-l from-brand-navy/90 via-brand-navy/55 to-transparent text-right"
-                      : "bg-gradient-to-r from-brand-navy/90 via-brand-navy/55 to-transparent"
-                  }`}
+                  className={`absolute inset-0 z-10 flex px-5 sm:items-center sm:px-10 sm:pb-0 sm:pt-0 md:px-12 lg:px-16 xl:px-20 ${mobilePlacement} ${desktopGradient} ${s.align === "right" ? "justify-end text-right" : "justify-start text-left"}`}
                 >
-                  <div className="@container w-[82%] max-w-4xl text-primary-foreground sm:w-[58%] md:w-[88%] lg:w-[62%]">
+                  <div className="@container w-full max-w-4xl text-primary-foreground sm:w-[var(--copy-width-t)] sm:min-w-[19rem] lg:w-[var(--copy-width-d)]">
                     {s.eyebrow ? (
-                      <p className="mb-3 text-xs font-bold uppercase tracking-[0.18em] text-brand-turquoise sm:text-sm">
+                      <p className="mb-3 whitespace-nowrap text-xs font-bold uppercase tracking-[0.18em] text-brand-turquoise sm:text-sm">
                         {s.eyebrow}
                       </p>
                     ) : null}
                     {n === 0 ? (
-                      <h1 className="font-display text-[clamp(1.5rem,8cqw,3.75rem)] font-extrabold leading-[1.12]">
+                      <h1 className="font-display text-[clamp(1.5rem,10cqw,3.5rem)] font-extrabold leading-[1.12]">
                         {s.headlineLines
                           ? s.headlineLines.map((line) => (
-                              <span key={line} className="block">
-                                {line}
+                              <span key={line} className="block whitespace-nowrap">
+                                {line}{" "}
                               </span>
                             ))
                           : s.headline}
                       </h1>
                     ) : (
-                      <h2 className="font-display text-[clamp(1.5rem,8cqw,3.75rem)] font-extrabold leading-[1.12]">
+                      <h2 className="font-display text-[clamp(1.5rem,10cqw,3.5rem)] font-extrabold leading-[1.12]">
                         {s.headlineLines
                           ? s.headlineLines.map((line) => (
-                              <span key={line} className="block">
-                                {line}
+                              <span key={line} className="block whitespace-nowrap">
+                                {line}{" "}
                               </span>
                             ))
                           : s.headline}
@@ -171,7 +167,7 @@ export default function HeroMasthead({
                     )}
                     {s.supportingCopy ? (
                       <p
-                        className={`mt-4 max-w-2xl text-[clamp(0.875rem,3.4cqw,1.25rem)] font-medium leading-relaxed text-primary-foreground/90 ${
+                        className={`mt-3 max-w-[40ch] text-[clamp(0.875rem,3.4cqw,1.125rem)] [text-wrap:pretty] font-medium leading-relaxed text-primary-foreground/90 sm:mt-4 ${
                           s.align === "right" ? "ml-auto" : ""
                         }`}
                       >
@@ -180,7 +176,7 @@ export default function HeroMasthead({
                     ) : null}
                     <div
                       aria-hidden
-                      className={`mt-5 flex h-1 w-28 overflow-hidden rounded-full sm:w-36 ${
+                      className={`mt-4 flex h-1 w-28 overflow-hidden rounded-full sm:mt-5 sm:w-36 ${
                         s.align === "right" ? "ml-auto" : ""
                       }`}
                     >
@@ -199,7 +195,6 @@ export default function HeroMasthead({
         {/* Turquoise section dividers — inside the rounded stage so they stop at the curve */}
         <div className="absolute top-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#22c0d4]" />
         <div className="absolute bottom-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#22c0d4]" />
-
       </div>
     </section>
   );
