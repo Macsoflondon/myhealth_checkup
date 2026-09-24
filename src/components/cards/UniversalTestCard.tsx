@@ -1295,7 +1295,12 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                   borderRadius: 20,
                 }}
               >
-                <CategoryIcon aria-hidden="true" size={12} strokeWidth={2.25} color={categoryColor} />
+                <CategoryIcon
+                  aria-hidden="true"
+                  size={12}
+                  strokeWidth={2.25}
+                  color={categoryColor}
+                />
                 <span className="truncate">{categoryName}</span>
               </span>
             </div>
