@@ -136,6 +136,23 @@ export const resolveCategoryMenuName = (
 export const categoryMenuIconFor = (category?: string | null): MenuIconEntry =>
   CATEGORY_MENU_ICONS[resolveCategoryMenuName(category)];
 
+/**
+ * Text-safe (≥4.5:1 on white) variants for accents too light to use as text.
+ * Icons, tints and borders keep the original CATEGORY_MENU_ICONS hex.
+ */
+const TEXT_SAFE_BY_HEX: Record<string, string> = {
+  "#22c0d4": "#0e7490",
+  "#0ea5e9": "#0369a1",
+};
+
+/** Map any accent hex to its text-safe variant (pass-through when already safe). */
+export const textSafeAccent = (hex: string): string =>
+  TEXT_SAFE_BY_HEX[hex.toLowerCase()] ?? hex;
+
+/** Colour to use when rendering a category label as text in its accent. */
+export const categoryTextColor = (category?: string | null): string =>
+  textSafeAccent(categoryMenuIconFor(category).color);
+
 /** Sections inside the More menu / mobile drawer (About, Services, …). */
 export const MORE_SECTION_ICONS: Record<string, MenuIconEntry> = {
   "About Us": { Icon: Info, color: MENU_TURQUOISE },

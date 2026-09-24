@@ -28,6 +28,7 @@ import { trackFunnelEvent } from "@/lib/funnelTracking";
 import {
   categoryMenuIconFor,
   resolveCategoryMenuName,
+  textSafeAccent,
 } from "@/components/header/menuIcons";
 
 // ─── Design tokens (kept inline to mirror AtHomeTestsPage exactly) ───────────
@@ -849,6 +850,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
   const categoryName = resolveCategoryMenuName(test.category);
   const categoryMeta = categoryMenuIconFor(categoryName);
   const categoryColor = test.category_color || categoryMeta.color;
+  const categoryLabelColor = textSafeAccent(categoryColor);
   const CategoryIcon = categoryMeta.Icon;
   const variant = test.route_variant ?? null;
   const displayPrice = variant?.total ?? test.total_expected_cost ?? test.price;
@@ -1290,7 +1292,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                 className="inline-flex max-w-full items-center gap-1 truncate"
                 style={{
                   background: `${categoryColor}1a`,
-                  color: categoryColor,
+                  color: categoryLabelColor,
                   fontFamily: "'Montserrat',sans-serif",
                   fontSize: 10,
                   fontWeight: 700,
@@ -1298,7 +1300,12 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                   borderRadius: 20,
                 }}
               >
-                <CategoryIcon aria-hidden="true" size={12} strokeWidth={2.25} />
+                <CategoryIcon
+                  aria-hidden="true"
+                  size={12}
+                  strokeWidth={2.25}
+                  color={categoryColor}
+                />
                 <span className="truncate">{categoryName}</span>
               </span>
             </div>
