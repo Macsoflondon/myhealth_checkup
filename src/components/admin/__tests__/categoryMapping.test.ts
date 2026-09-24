@@ -38,6 +38,11 @@ const KNOWN_CATEGORIES = new Set([
   "general-health",
   "at-home",
   "allergy",
+  // Page categories the frontend routes on (src/constants/categories.ts,
+  // src/config/mappedCategories.ts, src/config/subcategoryMap.ts).
+  "allergy-testing",
+  "antibody",
+  "liver",
   "blood-health",
   "diabetes",
   "genetic-testing",
