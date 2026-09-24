@@ -5,8 +5,20 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# A newer push to main supersedes an in-flight deploy, so never cancel one
+# mid-publish but always finish on the latest commit.
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
 jobs:
+  # Same deterministic gate as unit-tests.yml (npm ci + vitest). If the
+  # lockfile drifts from package.json or a test fails, nothing is deployed.
+  test:
+    uses: ./.github/workflows/unit-tests.yml
+
   deploy:
+    needs: test
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -20,8 +32,11 @@ jobs:
         with:
           node-version: 20
 
+      # npm ci (not npm install): installs exactly what the lockfile pins and
+      # fails if it is out of sync with package.json, instead of silently
+      # re-resolving and shipping versions CI never tested.
       - name: Install Dependencies
-        run: npm install
+        run: npm ci --no-audit --fund=false
 
       - name: Build
         run: npm run build
