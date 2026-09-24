@@ -27,3 +27,13 @@ describe("category menu accents", () => {
     expect(categoryMenuIconFor(input).color).toBe(expectedColour);
   });
 });
+
+describe("categoryTextColor", () => {
+  it("darkens the two low-contrast accents and passes others through", async () => {
+    const m = await import("./menuIcons");
+    expect(m.categoryTextColor("General Wellness")).toBe("#0e7490");
+    expect(m.categoryTextColor("Cancer Screening")).toBe("#0369a1");
+    expect(m.categoryTextColor("Fertility - Prenatal")).toBe("#C026D3");
+    expect(m.CATEGORY_MENU_ICONS["General Wellness"].color).toBe("#22c0d4");
+  });
+});
