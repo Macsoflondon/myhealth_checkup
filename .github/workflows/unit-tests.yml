@@ -5,6 +5,8 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  # Called by deploy.yml so production only ships a commit that passes this gate.
+  workflow_call:
 
 jobs:
   vitest:
