@@ -13,8 +13,8 @@ jobs:
     name: Static checks (secrets + RLS grants)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: "20"
       - name: Install ripgrep
@@ -28,7 +28,7 @@ jobs:
     name: Supabase advisor snapshot (regression gate)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Invoke security-scan-snapshot
         id: scan
         env:
@@ -57,7 +57,7 @@ jobs:
             if (errs > 0) { console.error("FAIL: error-level findings present"); process.exit(1); }
             if (added > 0) { console.error("FAIL: new findings vs previous snapshot"); process.exit(1); }
           '
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: supabase-advisor-snapshot
