@@ -135,7 +135,8 @@ export interface LegacyUnifiedProps {
   biomarkers: number;
   results: string;
   collection: string;
-  price: number;
+  /** null/undefined means genuinely unpriced — never defaulted to 0 here. */
+  price: number | null;
   markers?: string[];
   provider: string;
   url?: string;
