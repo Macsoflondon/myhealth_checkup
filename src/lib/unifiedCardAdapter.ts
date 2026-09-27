@@ -54,7 +54,10 @@ export function toUnifiedCardProps(
     results: test.turnaround_days_text ?? "Not stated",
     collection: test.sample_type ?? "Not stated",
 
-    price: test.price ?? 0,
+    // A genuinely unpriced test must reach UniversalTestCard as null so it
+    // renders "POA" — defaulting to 0 here previously made it display the
+    // false claim "£0.00".
+    price: test.price ?? null,
     priceFrom: !!test.price_from,
     markers: test.markers ?? [],
     url: test.url ?? undefined,

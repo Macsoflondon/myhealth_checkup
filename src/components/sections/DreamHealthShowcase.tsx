@@ -436,11 +436,11 @@ const DreamHealthShowcase = () => {
                   </div>
                 ))
               : filmstripLoop.map((t, i) => (
-                  <a
+                  <button
                     key={`${t.id}-${i}`}
-                    href={t.url!}
-                    target="_blank"
-                    rel="noopener noreferrer sponsored"
+                    type="button"
+                    onClick={() => setSelectedTest(t)}
+                    aria-label={`View details for ${cleanName(t.test_name)}`}
                     className="relative flex-shrink-0 w-[42vw] sm:w-[26vw] md:w-[19vw] lg:w-[17vw] aspect-square rounded-2xl overflow-hidden shadow-lg bg-[#f6f7f9]"
                   >
                     <img
@@ -453,7 +453,7 @@ const DreamHealthShowcase = () => {
                       }}
                       className="w-full h-full object-contain p-4"
                     />
-                  </a>
+                  </button>
                 ))}
           </div>
         </div>

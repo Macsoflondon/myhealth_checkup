@@ -761,6 +761,7 @@ export const UniversalTestDetailModal: React.FC<{
                 href={test.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`Book ${test.test_name} on the provider's website (opens in a new tab)`}
                 onClick={() => {
                   void trackFunnelEvent("provider_click", {
                     provider_id: test.provider_id,

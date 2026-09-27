@@ -18,7 +18,8 @@ export interface UnifiedTestCardProps {
   collection: string;
   rating?: number;
   reviews?: number;
-  price: number;
+  /** null/undefined means genuinely unpriced — UniversalTestCard renders "POA", never £0.00. */
+  price: number | null;
   priceFrom?: boolean;
   markers?: string[];
   provider: string;
