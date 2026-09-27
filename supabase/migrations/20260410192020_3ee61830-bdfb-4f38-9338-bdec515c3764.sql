@@ -1,3 +1,11 @@
+-- Wrapped 2026-09-27: realtime.messages is owned by supabase_realtime_admin.
+-- Production (already applied) is unaffected. A fresh database built from these
+-- migrations (Supabase Preview branches, local `supabase db reset`) cannot alter
+-- it and previously aborted the whole replay; there these statements are skipped
+-- with a NOTICE instead.
+DO $rt$
+BEGIN
+  EXECUTE $sql$
 -- Drop the overly broad authenticated SELECT policy on realtime.messages
 DROP POLICY IF EXISTS "Authenticated users can receive realtime messages" ON realtime.messages;
 
@@ -26,3 +34,8 @@ USING (
     )
   )
 );
+  $sql$;
+EXCEPTION WHEN insufficient_privilege THEN
+  RAISE NOTICE 'Skipping realtime.messages RLS setup: insufficient privilege (expected outside production)';
+END
+$rt$;
