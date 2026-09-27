@@ -106,16 +106,16 @@ export function CategoryPillDropdown({ item, color, Icon, compact, displayName, 
         }
       >
         <Icon
-          className={`${dense ? "hidden xl:block w-[13px] h-[13px] shrink-0" : "w-[14px] h-[14px] shrink-0 2xl:w-[17px] 2xl:h-[17px]"} group-hover:!text-brand-pink`}
+          className={`${dense ? "hidden xl:block w-[15px] h-[15px] shrink-0" : "w-[14px] h-[14px] shrink-0 2xl:w-[17px] 2xl:h-[17px]"} group-hover:!text-brand-pink`}
           style={{ color: isActiveParent ? PINK : color }}
           strokeWidth={2}
         />
         <span
           className={`font-[Montserrat] whitespace-nowrap group-hover:!text-brand-pink ${
-            highlighted ? "font-bold" : "font-semibold"
+            highlighted ? "font-bold" : "font-bold"
           } ${
             dense
-              ? "text-[11px] xl:text-[11.5px] tracking-[-0.02em]"
+              ? "text-[13px] xl:text-[14px] tracking-[-0.01em]"
               : "text-xs sm:text-[12px] tracking-[-0.02em] 2xl:text-sm 2xl:tracking-normal"
           }`}
 
@@ -126,7 +126,7 @@ export function CategoryPillDropdown({ item, color, Icon, compact, displayName, 
 
         {hasDropdown && (
           <ChevronDown
-            className={`text-[#081129]/45 transition-transform duration-300 shrink-0 ${dense ? "hidden xl:block w-[10px] h-[10px]" : "w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px]"} group-hover:text-brand-pink ${open ? "rotate-180" : ""}`}
+            className={`text-[#081129]/45 transition-transform duration-300 shrink-0 ${dense ? "hidden xl:block w-[12px] h-[12px]" : "w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px]"} group-hover:text-brand-pink ${open ? "rotate-180" : ""}`}
           />
         )}
       </Link>

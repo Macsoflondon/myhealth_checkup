@@ -11,6 +11,7 @@ import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailMo
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 import { isGenericDescription, resolveTestSummary } from "@/lib/test-summary";
 import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
+import { useTestDetailsByIds } from "@/hooks/queries/useTestDetailsByIds";
 
 const withFrom = (s: string) => (s && !/^from\b/i.test(s) ? `from ${s}` : s);
 
@@ -162,9 +163,11 @@ const resolveImage = (t: PopularTest): string | null => {
 
   return preferredImage?.startsWith("/__l5e/assets-v1/")
     ? preferredImage
-    : isRealProviderImage(normalizeImageUrl(preferredImage, t.provider_id, t.url))
-    ? normalizeImageUrl(preferredImage, t.provider_id, t.url)!
-    : (PROVIDER_FALLBACK_IMAGES[t.provider_id] ?? null);
+    : isRealProviderImage(
+          normalizeImageUrl(preferredImage, t.provider_id, t.url),
+        )
+      ? normalizeImageUrl(preferredImage, t.provider_id, t.url)!
+      : (PROVIDER_FALLBACK_IMAGES[t.provider_id] ?? null);
 };
 
 const ALLOWED_PROVIDERS = [
@@ -244,7 +247,11 @@ const interleaveByProvider = (tests: PopularTest[]): PopularTest[] => {
 
 const DreamHealthShowcase = () => {
   const navigate = useNavigate();
-  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(500);
+  // Lean pool: descriptions and biomarker lists are fetched only for the
+  // handful of tests that end up on screen (see enrichedTests below).
+  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(500, {
+    lean: true,
+  });
   const trackRef = useRef<HTMLDivElement>(null);
   const [selectedTest, setSelectedTest] = useState<PopularTest | null>(null);
 
@@ -301,7 +308,36 @@ const DreamHealthShowcase = () => {
     return [...guaranteedCoverage, ...remainder].slice(0, 9);
   }, [popularTests]);
 
-  const filmstripTests = orderedTests;
+  const visibleIds = useMemo(
+    () => orderedTests.map((t) => t.id),
+    [orderedTests],
+  );
+  const details = useTestDetailsByIds(visibleIds);
+
+  const enrichedTests = useMemo(
+    () =>
+      orderedTests.map((t) => {
+        const detail = details[t.id];
+        if (!detail) return t;
+        const markers = Array.isArray(detail.biomarkersList)
+          ? (detail.biomarkersList as unknown[]).filter(
+              (m): m is string =>
+                typeof m === "string" && m.length > 1 && m.length < 50,
+            )
+          : t.markers;
+        return {
+          ...t,
+          description: detail.description ?? t.description,
+          markers,
+          collection_options:
+            (detail.collectionOptions as PopularTest["collection_options"]) ??
+            t.collection_options,
+        };
+      }),
+    [orderedTests, details],
+  );
+
+  const filmstripTests = enrichedTests;
   const filmstripLoop = useMemo(
     () => [
       ...filmstripTests,

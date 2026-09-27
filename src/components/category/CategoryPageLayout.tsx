@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
@@ -10,6 +9,7 @@ import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { LucideIcon } from "lucide-react";
 import { Search } from "lucide-react";
+import { categoryMenuIconFor } from "@/components/header/menuIcons";
 
 const isFromPriceLabel = (value: string) => /^from\s+/i.test(value.trim());
 
@@ -75,6 +75,8 @@ export interface CategoryPageLayoutProps {
   filters: string[];
   /* Test data */
   tests: CategoryTestItem[];
+  /** Parent navigation category used by card accent pills on category-specific routes. */
+  categoryAccent?: string;
   /* Bottom section */
   benefitsTitle: string;
   benefits: [BenefitItem, BenefitItem, BenefitItem];
@@ -97,6 +99,7 @@ export function CategoryPageLayout({
   trustStats,
   filters,
   tests,
+  categoryAccent,
   benefitsTitle,
   benefits,
   breadcrumbs,
@@ -127,7 +130,7 @@ export function CategoryPageLayout({
         (t) =>
           t.title.toLowerCase().includes(q) ||
           t.desc.toLowerCase().includes(q) ||
-          t.biomarkers.some((b) => b.toLowerCase().includes(q))
+          t.biomarkers.some((b) => b.toLowerCase().includes(q)),
       );
     }
     const sorted = [...list];
@@ -149,9 +152,7 @@ export function CategoryPageLayout({
         break;
       case "popular":
       default:
-        sorted.sort(
-          (a, b) => (b.popular ? 1 : 0) - (a.popular ? 1 : 0)
-        );
+        sorted.sort((a, b) => (b.popular ? 1 : 0) - (a.popular ? 1 : 0));
         break;
     }
     return sorted;
@@ -180,50 +181,57 @@ export function CategoryPageLayout({
             in src/routes so crawlers see them in the server-rendered HTML. */}
         {seoKeywords && <meta name="keywords" content={seoKeywords} />}
 
-        <script type="application/ld+json">{JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          name: seoTitle,
-          description: seoDescription,
-          url: canonicalUrl,
-          breadcrumb: {
-            "@type": "BreadcrumbList",
-            itemListElement: breadcrumbs.map((b, i) => ({
-              "@type": "ListItem",
-              position: i + 1,
-              name: b.label,
-              ...(b.href ? { item: `https://myhealthcheckup.co.uk${b.href}` } : {}),
-            })),
-          },
-          mainEntity: {
-            "@type": "ItemList",
-            numberOfItems: filtered.length,
-            itemListElement: filtered.slice(0, 50).map((t, i) => ({
-              "@type": "ListItem",
-              position: i + 1,
-              item: {
-                "@type": "Product",
-                name: t.title,
-                description: t.desc,
-                category: t.tag,
-                brand: { "@type": "Brand", name: t.provider },
-                aggregateRating: t.rating && t.reviews && t.reviews > 0 ? {
-                  "@type": "AggregateRating",
-                  ratingValue: t.rating,
-                  reviewCount: t.reviews,
-                } : undefined,
-                offers: {
-                  "@type": "Offer",
-                  price: t.priceNum,
-                  priceCurrency: "GBP",
-                  availability: "https://schema.org/InStock",
-                  seller: { "@type": "Organization", name: t.provider },
-                  ...(t.url ? { url: t.url } : {}),
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            name: seoTitle,
+            description: seoDescription,
+            url: canonicalUrl,
+            breadcrumb: {
+              "@type": "BreadcrumbList",
+              itemListElement: breadcrumbs.map((b, i) => ({
+                "@type": "ListItem",
+                position: i + 1,
+                name: b.label,
+                ...(b.href
+                  ? { item: `https://myhealthcheckup.co.uk${b.href}` }
+                  : {}),
+              })),
+            },
+            mainEntity: {
+              "@type": "ItemList",
+              numberOfItems: filtered.length,
+              itemListElement: filtered.slice(0, 50).map((t, i) => ({
+                "@type": "ListItem",
+                position: i + 1,
+                item: {
+                  "@type": "Product",
+                  name: t.title,
+                  description: t.desc,
+                  category: t.tag,
+                  brand: { "@type": "Brand", name: t.provider },
+                  aggregateRating:
+                    t.rating && t.reviews && t.reviews > 0
+                      ? {
+                          "@type": "AggregateRating",
+                          ratingValue: t.rating,
+                          reviewCount: t.reviews,
+                        }
+                      : undefined,
+                  offers: {
+                    "@type": "Offer",
+                    price: t.priceNum,
+                    priceCurrency: "GBP",
+                    availability: "https://schema.org/InStock",
+                    seller: { "@type": "Organization", name: t.provider },
+                    ...(t.url ? { url: t.url } : {}),
+                  },
                 },
-              },
-            })),
-          },
-        })}</script>
+              })),
+            },
+          })}
+        </script>
       </Helmet>
 
       <div className="min-h-screen flex flex-col">
@@ -233,7 +241,6 @@ export function CategoryPageLayout({
           className="flex-1"
           style={{ paddingBottom: compared.length > 0 ? 80 : 0 }}
         >
-
           <CategoryStandardHero pillLabel={pillLabel} />
 
           {/* Filter + Sort + Cards */}
@@ -257,8 +264,12 @@ export function CategoryPageLayout({
                   <UnifiedTestCard
                     key={test.id}
                     defaultFace="brand"
-                    category={test.tag}
-                    categoryColor={test.badgeColor}
+                    category={categoryAccent ?? test.tag}
+                    categoryColor={
+                      categoryAccent
+                        ? categoryMenuIconFor(categoryAccent).color
+                        : test.badgeColor
+                    }
                     badge={test.popular ? "Most Popular" : test.badge}
                     name={test.title}
                     description={test.desc}
@@ -279,7 +290,11 @@ export function CategoryPageLayout({
                     className="w-full h-full"
                     testDetails={{
                       id: String(test.id),
-                      provider_id: test.providerId || (test.provider || "").toLowerCase().replace(/\s+/g, "-"),
+                      provider_id:
+                        test.providerId ||
+                        (test.provider || "")
+                          .toLowerCase()
+                          .replace(/\s+/g, "-"),
                       test_name: test.title,
                       description: test.desc ?? null,
                       price: test.priceNum ?? null,
@@ -291,10 +306,10 @@ export function CategoryPageLayout({
                       is_addon: test.isAddon ?? false,
                       purchase_notes: test.purchaseNotes ?? null,
 
-                      biomarkers_list: (test.biomarkers as any) ?? null,
+                      biomarkers_list: test.biomarkers ?? null,
                       turnaround_days_text: test.turnaround ?? null,
                       base_price: null,
-                      collection_options: (test.collectionOptions as any) ?? null,
+                      collection_options: test.collectionOptions ?? null,
                     }}
                   />
                 ))}

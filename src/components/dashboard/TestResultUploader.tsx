@@ -8,6 +8,10 @@ import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { healthDataApi } from "@/api/supabase/healthData.api";
 import { supabase } from "@/integrations/supabase/client";
+import {
+  assertUploadableFile,
+  buildTestResultObjectKey,
+} from "@/lib/storage/testResultsPath";
 
 interface TestResultUploaderProps {
   onUploadComplete?: () => void;
@@ -23,13 +27,14 @@ export const TestResultUploader = ({ onUploadComplete }: TestResultUploaderProps
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 10 * 1024 * 1024) {
-        toast.error("File size must be less than 10MB");
-        return;
-      }
-      setSelectedFile(file);
+    if (!file) return;
+    try {
+      assertUploadableFile(file);
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : "That file cannot be uploaded");
+      return;
     }
+    setSelectedFile(file);
   };
 
   const handleUpload = async () => {
@@ -48,8 +53,9 @@ export const TestResultUploader = ({ onUploadComplete }: TestResultUploaderProps
         const { data: { user } } = await supabase.auth.getUser();
         if (!user) throw new Error("Not authenticated");
 
-        const fileExt = selectedFile.name.split('.').pop();
-        const fileName = `${user.id}/${Date.now()}.${fileExt}`;
+        // Canonical key: always beneath the authenticated user's own prefix,
+        // which is the invariant every test-results RLS policy depends on.
+        const fileName = buildTestResultObjectKey(user.id, selectedFile.name);
 
         const { error: uploadError } = await supabase.storage
           .from('test-results')

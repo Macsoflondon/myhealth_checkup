@@ -24,7 +24,12 @@ import { displayTurnaround } from "@/lib/resolve-test-fields";
 import { baseTestId, type CollectionVariant } from "@/lib/collectionVariants";
 import { formatTestCardHeadline } from "@/utils/format-test-card-headline";
 import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
-
+import { trackFunnelEvent } from "@/lib/funnelTracking";
+import {
+  categoryMenuIconFor,
+  resolveCategoryMenuName,
+  textSafeAccent,
+} from "@/components/header/menuIcons";
 
 // ─── Design tokens (kept inline to mirror AtHomeTestsPage exactly) ───────────
 export const UTC_NAVY = "#081129";
@@ -38,6 +43,7 @@ export interface UniversalTestData {
   provider_id: string;
   test_name: string;
   category?: string | null;
+  category_color?: string | null;
   description?: string | null;
   price?: number | null;
   total_expected_cost?: number | null;
@@ -71,7 +77,6 @@ export interface UniversalTestData {
   /** Collection-route listing this card represents (kit vs professional draw). */
   route_variant?: CollectionVariant | null;
 }
-
 
 /** Short verbatim excerpt of the provider description (or factual generated summary) for the card. */
 const summaryFor = (test: UniversalTestData, providerName?: string): string =>
@@ -236,7 +241,6 @@ export const UniversalTestDetailModal: React.FC<{
     : test.collection_fee_amount != null && test.collection_fee_amount > 0
       ? test.collection_fee_amount
       : null;
-
 
   // Close on Escape and lock background scroll while the modal is open.
   React.useEffect(() => {
@@ -755,6 +759,14 @@ export const UniversalTestDetailModal: React.FC<{
                 href={test.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => {
+                  void trackFunnelEvent("provider_click", {
+                    provider_id: test.provider_id,
+                    entity_type: "test",
+                    entity_id: test.id,
+                    entity_name: test.test_name,
+                  });
+                }}
                 className="flex items-center justify-center gap-2 rounded-full"
                 style={{
                   background: UTC_PINK,
@@ -841,6 +853,11 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
   const compareItems = useCompareItems();
   const inCompare = compareItems.some((c) => c.id === baseTestId(test.id));
   const isAllergy = (test.category || "").toLowerCase().includes("allerg");
+  const categoryName = resolveCategoryMenuName(test.category);
+  const categoryMeta = categoryMenuIconFor(categoryName);
+  const categoryColor = test.category_color || categoryMeta.color;
+  const categoryLabelColor = textSafeAccent(categoryColor);
+  const CategoryIcon = categoryMeta.Icon;
   const variant = test.route_variant ?? null;
   const displayPrice = variant?.total ?? test.total_expected_cost ?? test.price;
   const secondaryRoute = variant?.secondary ?? null;
@@ -851,7 +868,6 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
     : test.collection_fee_amount != null && test.collection_fee_amount > 0
       ? test.collection_fee_amount
       : null;
-
 
   useEffect(
     () => () => {
@@ -883,6 +899,12 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
 
   const handleBook = (e: React.MouseEvent) => {
     e.stopPropagation();
+    void trackFunnelEvent("provider_click", {
+      provider_id: test.provider_id,
+      entity_type: "test",
+      entity_id: test.id,
+      entity_name: test.test_name,
+    });
     if (test.url && test.url !== "#") {
       window.open(test.url, "_blank", "noopener,noreferrer");
     } else {
@@ -1265,19 +1287,30 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               </p>
             )}
 
-
-
             {/* Category */}
-            <div
-              className="truncate mb-2"
-              style={{
-                fontFamily: "'DM Sans',sans-serif",
-                fontSize: 12,
-                color: UTC_NAVY,
-                minHeight: 18,
-              }}
-            >
-              {test.category || "\u00A0"}
+            <div className="mb-2 min-h-[18px] overflow-hidden">
+              <span
+                data-testid="category-accent-pill"
+                data-category={categoryName}
+                className="inline-flex max-w-full items-center gap-1 truncate"
+                style={{
+                  background: `${categoryColor}1a`,
+                  color: categoryLabelColor,
+                  fontFamily: "'Montserrat',sans-serif",
+                  fontSize: 10,
+                  fontWeight: 700,
+                  padding: "2px 10px",
+                  borderRadius: 20,
+                }}
+              >
+                <CategoryIcon
+                  aria-hidden="true"
+                  size={12}
+                  strokeWidth={2.25}
+                  color={categoryColor}
+                />
+                <span className="truncate">{categoryName}</span>
+              </span>
             </div>
 
             {/* Description */}
@@ -1408,7 +1441,6 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                 <span className="truncate ml-2">Nurse home visit</span>
               </div>
             )}
-
 
             {/* Collection fee callout */}
             {collectionFee != null && (

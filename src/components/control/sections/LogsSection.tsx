@@ -55,8 +55,7 @@ export default function LogsSection() {
   useEffect(() => {
     setLoading(true);
     let q = supabase
-      // unified_audit_log is a view; not in generated types
-      .from("unified_audit_log" as never)
+      .from("unified_audit_log")
       .select("*")
       .order("event_time", { ascending: false })
       .limit(300);

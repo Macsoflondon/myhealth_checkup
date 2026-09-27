@@ -1235,6 +1235,14 @@ html { overflow-x: clip; }
   mask-image: none;
 }
 
+/* Desktop/tablet page buffer: ~1.5cm of breathing space either side of the
+   whole page, matching the hero inset. Mobile stays edge to edge. */
+@media (min-width: 768px) {
+  .page-surface-inner {
+    padding-inline: 57px;
+  }
+}
+
 /* Align a viewport-fixed element (pinned toolbar, sticky bars) with the
    inset page surface instead of the raw browser edge. */
 @utility page-inset-x {

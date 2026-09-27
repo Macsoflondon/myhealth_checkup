@@ -155,9 +155,11 @@ const LiveComparisonCard = ({
   className = "",
   panelIndex,
 }: LiveComparisonCardProps) => {
-  const { panels: dynamicPanels } = useDynamicComparisonPanels();
+  const hasExternalPanels = Boolean(externalPanels && externalPanels.length > 0);
+  // Skip the catalogue fetch entirely when the parent already supplied panels.
+  const { panels: dynamicPanels } = useDynamicComparisonPanels(!hasExternalPanels);
   const panels =
-    externalPanels && externalPanels.length > 0
+    hasExternalPanels && externalPanels
       ? externalPanels
       : dynamicPanels.length > 0
         ? dynamicPanels

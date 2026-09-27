@@ -1,7 +1,12 @@
 import { useSearchParams } from "@/lib/router-compat";
-import { CategoryPageLayout, CategoryPageLayoutProps, CategoryTestItem } from "./CategoryPageLayout";
+import {
+  CategoryPageLayout,
+  CategoryPageLayoutProps,
+  CategoryTestItem,
+} from "./CategoryPageLayout";
 import { useCategoryTests } from "@/hooks/queries/useCategoryTests";
 import { findSubcategory } from "@/config/subcategoryMap";
+import { resolveCategoryMenuName } from "@/components/header/menuIcons";
 
 interface Props extends Omit<CategoryPageLayoutProps, "tests"> {
   canonicalCategory: string;
@@ -16,20 +21,29 @@ interface Props extends Omit<CategoryPageLayoutProps, "tests"> {
  * (e.g. category not yet scraped). Reads ?subcategory= from the URL and
  * narrows both the DB query and the client-side result set.
  */
-export function DbCategoryPage({ canonicalCategory, fallbackTests = [], ...rest }: Props) {
+export function DbCategoryPage({
+  canonicalCategory,
+  fallbackTests = [],
+  ...rest
+}: Props) {
   const [params] = useSearchParams();
   const subSlug = params.get("subcategory");
   const sub = findSubcategory(canonicalCategory, subSlug);
 
-  const { data, isLoading } = useCategoryTests(canonicalCategory, sub?.slug ?? null);
-  const tests = (data && data.length > 0) ? data : (isLoading ? [] : fallbackTests);
+  const { data, isLoading } = useCategoryTests(
+    canonicalCategory,
+    sub?.slug ?? null,
+  );
+  const tests = data && data.length > 0 ? data : isLoading ? [] : fallbackTests;
 
   const layoutProps: CategoryPageLayoutProps = sub
     ? (() => {
         // Derive parent path from the provided canonicalUrl (strip host + query).
         const parentPath = (() => {
           try {
-            return new URL(rest.canonicalUrl).pathname.replace(/\/$/, "") || "/";
+            return (
+              new URL(rest.canonicalUrl).pathname.replace(/\/$/, "") || "/"
+            );
           } catch {
             return rest.canonicalUrl;
           }
@@ -44,11 +58,13 @@ export function DbCategoryPage({ canonicalCategory, fallbackTests = [], ...rest 
           pillLabel: sub.label,
           headline: sub.label,
           breadcrumbs: [
-            ...rest.breadcrumbs.filter((b) => b.label !== sub.label).map((b) =>
-              b.href === undefined && b.label !== "Home"
-                ? { ...b, href: parentPath }
-                : b
-            ),
+            ...rest.breadcrumbs
+              .filter((b) => b.label !== sub.label)
+              .map((b) =>
+                b.href === undefined && b.label !== "Home"
+                  ? { ...b, href: parentPath }
+                  : b,
+              ),
             { label: sub.label },
           ],
           tests,
@@ -56,5 +72,10 @@ export function DbCategoryPage({ canonicalCategory, fallbackTests = [], ...rest 
       })()
     : { ...rest, tests };
 
-  return <CategoryPageLayout {...layoutProps} />;
+  return (
+    <CategoryPageLayout
+      {...layoutProps}
+      categoryAccent={resolveCategoryMenuName(canonicalCategory)}
+    />
+  );
 }

@@ -1,4 +1,7 @@
-import { CategoryPageLayout, CategoryPageLayoutProps } from "./CategoryPageLayout";
+import {
+  CategoryPageLayout,
+  CategoryPageLayoutProps,
+} from "./CategoryPageLayout";
 import { useMappedCategoryTests } from "@/hooks/queries/useMappedCategoryTests";
 import type { MappedCategoryDef } from "@/config/mappedCategories";
 
@@ -13,5 +16,11 @@ interface Props extends Omit<CategoryPageLayoutProps, "tests"> {
  */
 export function MappedCategoryPage({ category, ...rest }: Props) {
   const { data } = useMappedCategoryTests(category.slug, category.badgeColor);
-  return <CategoryPageLayout {...rest} tests={data ?? []} />;
+  return (
+    <CategoryPageLayout
+      {...rest}
+      categoryAccent="General Wellness"
+      tests={data ?? []}
+    />
+  );
 }
