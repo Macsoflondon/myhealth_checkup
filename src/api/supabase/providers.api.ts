@@ -34,6 +34,7 @@ export interface ProviderTestData {
   lab_ukas_accredited?: boolean | null;
   lab_cqc_regulated?: boolean | null;
   lab_iso15189?: boolean | null;
+  url_verified?: boolean | null;
 }
 
 export interface PriceUpdate {

@@ -27,6 +27,7 @@ describe("universal card category accents", () => {
       symptoms: null,
       conditions: null,
       url: null,
+      url_verified: null,
       image_url: null,
       home_kit_available: true,
       clinic_visit_available: false,

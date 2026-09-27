@@ -35,10 +35,13 @@ export default function OverviewSection() {
         ).size;
         const testsRes = await supabase.from("tests_master").select("id", { count: "exact", head: true });
         const mapRes = await supabase.from("provider_test_mapping").select("id", { count: "exact", head: true });
-        const scrapesRes = await supabase.from("scrape_run_log").select("id", { count: "exact", head: true }).gte("started_at", since);
-        const failedRes = await supabase.from("scrape_run_log").select("id", { count: "exact", head: true }).gte("started_at", since).eq("status", "failed");
+        // scrape_runs is what the live mhc-* scraper pipeline actually writes to (confirmed
+        // by a 2026-09-21 audit); scrape_run_log only tracks the separate promote-provider-tests
+        // orchestrator and was sitting near-idle, making this card understate real activity.
+        const scrapesRes = await supabase.from("scrape_runs").select("id", { count: "exact", head: true }).gte("started_at", since);
+        const failedRes = await supabase.from("scrape_runs").select("id", { count: "exact", head: true }).gte("started_at", since).eq("status", "error");
         const alertsRes = await supabase.from("scraper_alerts").select("id", { count: "exact", head: true }).eq("acknowledged", false);
-        const lastScrapeRes = await supabase.from("scrape_run_log").select("started_at").order("started_at", { ascending: false }).limit(1).maybeSingle();
+        const lastScrapeRes = await supabase.from("scrape_runs").select("started_at").order("started_at", { ascending: false }).limit(1).maybeSingle();
         if (cancelled) return;
         setData({
           providers: providerCount,

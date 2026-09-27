@@ -33,6 +33,7 @@ export function fromAtHomeTest(t: AtHomeTest): UniversalTestData {
     clinic_phlebotomy_cost: t.clinic_phlebotomy_cost,
     home_phlebotomy_cost: t.home_phlebotomy_cost,
     is_addon: t.is_addon ?? false,
+    url_verified: t.url_verified,
   };
 }
 
@@ -64,6 +65,7 @@ export function fromProviderTest(t: ProviderTestCardData): UniversalTestData {
     home_phlebotomy_cost: t.home_phlebotomy_cost,
     is_addon: !!t.is_addon,
     purchase_notes: t.purchase_notes ?? null,
+    url_verified: t.url_verified,
   };
 }
 
