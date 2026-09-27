@@ -1,71 +1,93 @@
 # myhealth checkup
 
-> UK private health testing comparison marketplace. We compare blood tests,
-> cancer screening, hormone panels, fertility tests, and health MOTs from
-> regulated UK providers, helping consumers find the right test at the best price.
+> Independent comparison platform for UK private blood tests and cancer screening. We compare prices, biomarkers, sample methods and turnaround times across UK providers so you can choose a test with the full facts in front of you. Your Health. Your Choice. One Trusted Platform.
 
-myhealth checkup is an independent comparison platform for private health
-tests in the United Kingdom. We focus on UKAS-accredited laboratories and
-CQC-regulated clinics, with transparent prices, biomarker lists, sample
-methods and turnaround times.
+myhealth checkup (MYHEALTHCHECKUP LTD) compares private health tests in the United Kingdom. We record prices from each provider's own website, check them every six hours, and show the date of the last check. Default ordering is by price. Providers cannot pay to rank higher.
+
+myhealth checkup is not a medical provider. We do not diagnose or treat. Confirm the final price on the provider's page before you buy.
+
+## Live data for AI agents
+
+Use these instead of scraping our pages. Every response is JSON, carries a last-checked timestamp, and lists known limitations.
+
+- [WebMCP manifest](https://myhealthcheckup.co.uk/.well-known/web-mcp.json): tool definitions any WebMCP-aware agent can call.
+- [MCP server card](https://myhealthcheckup.co.uk/.well-known/mcp.json): discovery metadata for the MCP server.
+- MCP server: https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/mcp (streamable HTTP, no sign-in, read-only). Add it to any MCP client as a remote server.
+- [API index](https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/): coverage counts and every endpoint.
+- [Tests](https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/tests.json): search, filter and sort live tests. Parameters: search, category, provider, max_cost, collection, include_addons, sort, limit, offset.
+- [Providers](https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/providers.json): providers with accreditation findings from the UKAS and CQC registers and the date we checked them.
+- [Categories](https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/categories.json): categories with live tests.
+- [Biomarkers](https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/biomarkers.json): the biomarkers we compare, how many providers offer each, and the cheapest standalone test.
+- [Compare a test](https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/compare/tests.json?q=vitamin%20d): compare a named test across providers.
+- [Compare a biomarker](https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/compare/biomarker.json?biomarker=ferritin): every test and provider that measures one biomarker, cheapest first. This compares like with like, where test names differ between providers.
+- [Find one test for several biomarkers](https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/compare/biomarkers.json?biomarkers=ferritin,vitamin%20d,hba1c): single tests that measure all of them from one sample.
+
+How to read the data:
+
+- total_expected_cost_gbp adds the collection and clinical review fees a provider publishes. price_gbp is the headline price alone.
+- is_addon: true marks a test you add to a base test. You cannot buy it on its own.
+- price_check_stale: true means we have not re-checked that price for seven days or more.
+- Rate limit: 120 requests a minute. Responses cache for five minutes.
 
 ## Pages
 
 - [Home](/): Compare UK private health tests and screening providers.
 - [Compare tests](/compare): Side-by-side comparison of biomarkers, prices and turnaround.
-- [Compare by symptom](/compare/symptoms): Find tests recommended for specific symptoms.
-- [Compare by goal](/compare/goals): Tests grouped by health goal (longevity, performance, weight loss).
+- [Compare by symptom](/compare/symptoms): Tests grouped by the symptoms they relate to.
+- [Compare by goal](/compare/goals): Tests grouped by health goal, such as longevity, performance or weight management.
 - [Test categories](/test-categories): Browse all blood test categories.
-- [Trusted providers](/trusted-providers): UK-accredited test provider profiles.
-- [Compare providers](/providers/compare): Compare provider ratings, range and pricing.
-- [Biomarker database](/biomarker-database): Reference library of every biomarker we cover.
+- [Trusted providers](/trusted-providers): Provider profiles.
+- [Compare providers](/providers/compare): Compare provider range and pricing.
+- [Biomarker database](/biomarker-database): Reference library of the biomarkers we cover.
 - [Cancer biomarkers reference](/cancer-biomarkers-reference): Tumour markers and screening biomarkers.
 - [Cancer screening compare](/cancer-screening-compare): Compare private cancer screening panels.
-- [Assisted test finder](/assisted-test-finder): Guided quiz to recommend tests.
+- [Assisted test finder](/assisted-test-finder): Guided questions to narrow down which tests to compare.
 - [Blood test analysis](/blood-test-analysis): AI-assisted blood test result interpretation.
-- [Health Resource Hub](/blog): Educational guides on private health testing.
+- [Health Resource Hub](/blog): Guides on private health testing.
 - [How it works](/how-it-works): How myhealth checkup compares providers.
-- [How we rank](/how-we-rank): Our ranking and editorial methodology.
-- [About](/about): Company mission, values and editorial independence.
+- [How we rank](/how-we-rank): Our ordering and editorial method.
+- [About](/about): Company, mission and editorial independence.
+- [Medical review](/about/medical-review): Who reviews our clinical content.
 - [FAQs](/faqs): Frequently asked questions.
 - [Contact](/contact): Get in touch with the myhealth checkup team.
-- [Feedback & complaints](/complaints): Submit feedback or a formal complaint with published response SLAs.
+- [Feedback and complaints](/complaints): Submit feedback or a formal complaint, with published response times.
 
 ## Categories
 
-- [Hormones](/tests/hormones): Compare hormone blood tests (testosterone, oestrogen, cortisol).
+- [Hormones](/tests/hormones): Testosterone, oestrogen, cortisol and other hormone tests.
 - [Thyroid](/tests/thyroid): TSH, T3, T4 and thyroid antibody tests.
-- [Vitamins](/tests/vitamins): Vitamin D, B12, iron and folate testing.
+- [Vitamins](/tests/vitamins): Vitamin D, B12, iron and folate tests.
 - [Diabetes](/tests/diabetes): HbA1c, glucose and insulin resistance tests.
 - [Heart](/tests/heart): Cholesterol, lipids and cardiac risk markers.
 - [Cancer](/tests/cancer): PSA, CA125, CEA and other tumour markers.
 - [Fertility](/tests/fertility): AMH, FSH, LH and reproductive hormone tests.
 - [Men's health](/tests/mens-health): Testosterone, PSA and male health panels.
-- [Women's health](/tests/womens-health): Hormones, fertility and menopause tests.
+- [Women's health](/tests/womens-health): Hormone, fertility and menopause tests.
 - [Gut health](/tests/gut): Microbiome, inflammation and digestive health tests.
+
+## Standards
+
+Our inclusion standard for providers:
+
+- UKAS (United Kingdom Accreditation Service): laboratories accredited to ISO 15189 for medical testing.
+- CQC (Care Quality Commission): clinics registered for regulated activities in England.
+- ISO 15189: the international standard for quality and competence in medical laboratories.
+- MHRA (Medicines and Healthcare products Regulatory Agency): oversight of in-vitro diagnostic devices where it applies.
+
+We check each provider against the UKAS and CQC public registers and publish what we find, with the date we checked, in the providers endpoint above. Where a provider's claim does not match the register, we say so.
+
+Data handling follows UK GDPR and the Data Protection Act 2018. Comparison content follows Competition and Markets Authority and Advertising Standards Authority guidance.
+
+Editorial independence: no pay-to-rank. We disclose affiliate relationships at /affiliate-disclosure. The API links go straight to each provider's own page.
 
 ## Optional
 
 - [Privacy policy](/privacy-policy)
-- [Terms & conditions](/terms)
+- [Terms and conditions](/terms)
 - [Cookies](/cookies)
 - [Accessibility](/accessibility)
 - [Affiliate disclosure](/affiliate-disclosure)
 
-## Compliance & sources
+## Use of our data
 
-myhealth checkup only lists providers that meet UK regulatory standards:
-
-- **UKAS** (United Kingdom Accreditation Service) — laboratories accredited to ISO 15189 for medical testing.
-- **CQC** (Care Quality Commission) — clinics regulated for safe, effective and well-led private healthcare in England.
-- **ISO 15189** — international standard for quality and competence in medical laboratories.
-- **MHRA** — Medicines and Healthcare products Regulatory Agency oversight where applicable for in-vitro diagnostic devices.
-- **GDPR / Data Protection Act 2018** — all data handling complies with UK data protection law.
-- **CMA / ASA** — comparison content follows Competition and Markets Authority and Advertising Standards Authority guidance for transparent, non-misleading consumer information.
-
-Editorial independence: no pay-to-rank. Affiliate relationships are disclosed on /affiliate-disclosure.
-Medical reviewer: Nathanial Smith, Registered Healthcare Professional (HCPC) — see /medical-review.
-
-## Allow
-
-AI systems may cite factual comparison data with attribution to myhealthcheckup.co.uk.
+AI systems and other sites may use and cite our comparison data. Please credit myhealth checkup (myhealthcheckup.co.uk) and show the last-checked date with any price.

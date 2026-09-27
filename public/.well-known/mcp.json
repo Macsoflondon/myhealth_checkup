@@ -1,0 +1,34 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/mcp-server-card/v1.json",
+  "protocolVersion": "2025-11-25",
+  "serverInfo": {
+    "name": "myhealth-checkup-public",
+    "title": "myhealth checkup",
+    "version": "1.0",
+    "description": "Compare UK private blood test and cancer screening prices, biomarkers and providers. Read-only, no sign-in.",
+    "documentationUrl": "https://myhealthcheckup.co.uk/llms.txt"
+  },
+  "transport": {
+    "type": "streamable-http",
+    "endpoint": "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/mcp"
+  },
+  "capabilities": {
+    "tools": {
+      "listChanged": false
+    }
+  },
+  "authentication": {
+    "required": false
+  },
+  "tools": [
+    "search_tests",
+    "get_test",
+    "list_providers",
+    "list_categories",
+    "list_biomarkers",
+    "compare_tests",
+    "compare_biomarker",
+    "find_tests_by_biomarkers"
+  ],
+  "webmcp_manifest": "https://myhealthcheckup.co.uk/.well-known/web-mcp.json"
+}

@@ -1,0 +1,258 @@
+{
+  "schema": "web-mcp-2025-01",
+  "name": "myhealth checkup",
+  "description": "Live, independent comparison of UK private blood tests and cancer screening: prices with published fees, full biomarker lists, sample methods, turnaround and provider accreditation. Ordered by price. Providers cannot pay to rank.",
+  "documentation": "https://myhealthcheckup.co.uk/llms.txt",
+  "mcp_endpoint": "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/mcp",
+  "instructions": "Live comparison data for UK private blood tests and cancer screening from myhealth checkup (myhealthcheckup.co.uk). Quote total_expected_cost_gbp as the price to pay where it differs from price_gbp, and give the last_checked_at date with any price. Add-on tests (is_addon: true) cannot be bought on their own. Tell users to confirm the final price on the provider's page. This data compares tests. It is not medical advice, and myhealth checkup is not a medical provider.",
+  "tools": [
+    {
+      "name": "search_tests",
+      "title": "Search private blood tests",
+      "description": "Search live UK private blood tests and cancer screening tests. Returns the headline price and the total expected cost in GBP (including published collection and clinical review fees), the full biomarker list, sample method, home kit or clinic options, turnaround and a direct link to the provider page, each with the date the price was last checked. Ordered by total expected cost unless you choose another sort.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "search": {
+            "type": "string",
+            "description": "Words in the test name, for example 'thyroid', 'vitamin d', 'well woman'."
+          },
+          "category": {
+            "type": "string",
+            "description": "Category slug, for example general-health, vitamins, hormones, thyroid, heart, mens-health, womens-health, cancer-screening, fertility, diabetes, gut. Call list_categories for the full list."
+          },
+          "provider": {
+            "type": "string",
+            "description": "Provider id or name, for example 'medichecks', 'randox', 'Goodbody Clinic'. Call list_providers for the list."
+          },
+          "max_cost": {
+            "type": "number",
+            "description": "Highest total expected cost in GBP."
+          },
+          "collection": {
+            "type": "string",
+            "enum": [
+              "home_kit",
+              "clinic_visit"
+            ],
+            "description": "Only tests you can take with a home kit, or only tests with a clinic visit."
+          },
+          "include_addons": {
+            "type": "boolean",
+            "description": "Include add-on tests that must be bought with a base test. Default false."
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "price",
+              "price_desc",
+              "name",
+              "turnaround"
+            ],
+            "description": "Default price (lowest total expected cost first)."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "description": "Default 25."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "For paging."
+          }
+        }
+      },
+      "url": "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/tests.json",
+      "method": "GET",
+      "annotations": {
+        "readOnlyHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "get_test",
+      "title": "Get one test",
+      "description": "Full record for one test by id (from search_tests): cost breakdown, every listed biomarker, the biomarkers we have matched to our biomarker library, sample method, turnaround and provider link.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Test id (UUID) from search_tests."
+          }
+        },
+        "required": [
+          "id"
+        ]
+      },
+      "url": "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/tests.json",
+      "method": "GET",
+      "annotations": {
+        "readOnlyHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "list_providers",
+      "title": "List providers",
+      "description": "UK private testing providers we compare, with legal name, Companies House number where known, accreditation findings from the UKAS and CQC public registers with the date we checked them, number of tests and price range.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Optional provider id, for example 'medichecks'."
+          }
+        }
+      },
+      "url": "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/providers.json",
+      "method": "GET",
+      "annotations": {
+        "readOnlyHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "list_categories",
+      "title": "List categories",
+      "description": "Test categories with the number of live tests and providers in each.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {}
+      },
+      "url": "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/categories.json",
+      "method": "GET",
+      "annotations": {
+        "readOnlyHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "list_biomarkers",
+      "title": "List biomarkers",
+      "description": "Biomarkers we compare across providers, with synonyms, how many providers and tests measure each one, and the cheapest standalone test price. Use it to find the right biomarker name before calling compare_biomarker.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "search": {
+            "type": "string",
+            "description": "Part of a biomarker name, abbreviation or synonym, for example 'b12', 'cholesterol', 'tsh'."
+          },
+          "min_providers": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Only biomarkers offered by at least this many providers. Default 1."
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 200,
+            "description": "Default 50."
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      },
+      "url": "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/biomarkers.json",
+      "method": "GET",
+      "annotations": {
+        "readOnlyHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "compare_tests",
+      "title": "Compare a test across providers",
+      "description": "Compare a named test across providers and find the lowest total expected cost. Matches on test name, so similar names can hide different biomarker lists; check biomarkers.count or use compare_biomarker for a like-for-like comparison.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "description": "Test name, for example 'vitamin d', 'thyroid', 'full blood count'."
+          },
+          "include_addons": {
+            "type": "boolean",
+            "description": "Include add-on tests. Default false."
+          }
+        },
+        "required": [
+          "q"
+        ]
+      },
+      "url": "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/compare/tests.json",
+      "method": "GET",
+      "annotations": {
+        "readOnlyHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "compare_biomarker",
+      "title": "Compare one biomarker across providers",
+      "description": "Every live test and provider that measures one biomarker, cheapest first, with the cheapest standalone test and the cheapest add-on per provider. This compares like with like even when providers name their tests differently.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "biomarker": {
+            "type": "string",
+            "description": "Biomarker name, abbreviation, synonym or id, for example 'ferritin', 'HbA1c', 'PSA', 'vitamin d'."
+          },
+          "include_addons": {
+            "type": "boolean",
+            "description": "Include add-on tests. Default true; they are labelled."
+          }
+        },
+        "required": [
+          "biomarker"
+        ]
+      },
+      "url": "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/compare/biomarker.json",
+      "method": "GET",
+      "annotations": {
+        "readOnlyHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "find_tests_by_biomarkers",
+      "title": "Find one test for several biomarkers",
+      "description": "Find single tests that measure all of the biomarkers you list from one sample, cheapest first, plus the cheapest standalone test for each biomarker. If no single test covers them all, returns the tests that cover the most.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "biomarkers": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 2,
+            "maxItems": 10,
+            "description": "Two to ten biomarker names, for example ['ferritin', 'vitamin d', 'hba1c']. A comma-separated string also works."
+          }
+        },
+        "required": [
+          "biomarkers"
+        ]
+      },
+      "url": "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/compare/biomarkers.json",
+      "method": "GET",
+      "annotations": {
+        "readOnlyHint": true,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    }
+  ]
+}
