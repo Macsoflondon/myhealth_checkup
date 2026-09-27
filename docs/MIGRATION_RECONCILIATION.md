@@ -98,7 +98,12 @@ Fixture self-test result, 14 September 2026: 8 tests passed.
 
 - Backfill the 13 schema-bearing and 17 security marker files (plus the 8 class-Z
   after individual classification).
-- Correct the 12 near-miss versions, backup first.
+- ~~Correct the 12 near-miss versions, backup first.~~ Done 24 September 2026, repository-side
+  only (no production write): each real migration file was renamed to the version
+  `schema_migrations` recorded for it (its `name` column already pointed at that file), and
+  the placeholder reconciliation marker at that version was removed. Checked against the
+  live version list with `compareMigrationSets`: `ok: true`, 0 missing either side, 33
+  excluded-by-policy versions correctly uncommitted.
 - Confirm the remote check goes red against a real injected orphan once
   `SUPABASE_DB_URL` is configured in repository secrets. Until that secret exists, CI
   emits a warning and the remote half is genuinely not verified.
