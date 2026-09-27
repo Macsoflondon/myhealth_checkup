@@ -386,7 +386,7 @@ const AnalysingState = () => {
           Clinically analysing your results{".".repeat(dots)}
         </h3>
         <p className="text-[#081129]/60 text-sm max-w-sm mx-auto">
-          Cross-referencing your profile with our accredited provider database to find your optimal wellness panel.
+          Cross-referencing your profile with our accredited provider database to find your best-matched options.
         </p>
       </div>
       <div className="w-64 h-1.5 bg-[#081129]/10 rounded-full overflow-hidden">
