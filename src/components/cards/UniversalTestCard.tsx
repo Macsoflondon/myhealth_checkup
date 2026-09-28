@@ -1563,7 +1563,9 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                   (e.currentTarget.style.background = UTC_PINK)
                 }
               >
-                {canBookDirect(test.url, test.url_verified) ? "Book" : "Enquire"}
+                {canBookDirect(test.url, test.url_verified)
+                  ? "Book"
+                  : "Enquire"}
               </button>
             </div>
           </div>
