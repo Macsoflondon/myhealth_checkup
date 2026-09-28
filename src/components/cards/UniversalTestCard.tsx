@@ -1,3 +1,4 @@
+import { canBookDirect } from "@/lib/booking-link-state";
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import {
@@ -60,7 +61,7 @@ export interface UniversalTestData {
   symptoms?: string[] | null;
   who_should_test?: string | null;
   url?: string | null;
-  /** From provider_tests.url_verified — false means the last URL health check failed (see scraper_alerts). */
+  /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
   url_verified?: boolean | null;
   /** Provider product-packaging image shown as the card's resting state */
   image_url?: string | null;
@@ -756,7 +757,7 @@ export const UniversalTestDetailModal: React.FC<{
             >
               {inCompare ? "\u2713 In Compare" : "+ Compare"}
             </button>
-            {test.url && test.url !== "#" && test.url_verified !== false ? (
+            {canBookDirect(test.url, test.url_verified) ? (
               <a
                 href={test.url}
                 target="_blank"
@@ -911,7 +912,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
     // url_verified is explicitly false only after a failed scraper_alerts URL health check —
     // undefined/null (not selected by this caller's query, or never checked) still opens the URL
     // as before, so this only ever tightens behaviour where the data is actually known-bad.
-    if (test.url && test.url !== "#" && test.url_verified !== false) {
+    if (canBookDirect(test.url, test.url_verified)) {
       window.open(test.url, "_blank", "noopener,noreferrer");
     } else {
       window.location.href = `/contact?test=${encodeURIComponent(test.id)}`;
@@ -1562,7 +1563,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                   (e.currentTarget.style.background = UTC_PINK)
                 }
               >
-                {test.url && test.url !== "#" && test.url_verified !== false ? "Book" : "Enquire"}
+                {canBookDirect(test.url, test.url_verified) ? "Book" : "Enquire"}
               </button>
             </div>
           </div>
