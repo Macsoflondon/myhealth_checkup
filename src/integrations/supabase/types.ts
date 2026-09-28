@@ -914,6 +914,20 @@ export type Database = {
             foreignKeyName: "biomarker_hub_canonical_id_fkey"
             columns: ["canonical_id"]
             isOneToOne: false
+            referencedRelation: "api_v1_biomarker_offers"
+            referencedColumns: ["biomarker_id"]
+          },
+          {
+            foreignKeyName: "biomarker_hub_canonical_id_fkey"
+            columns: ["canonical_id"]
+            isOneToOne: false
+            referencedRelation: "api_v1_biomarkers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "biomarker_hub_canonical_id_fkey"
+            columns: ["canonical_id"]
+            isOneToOne: false
             referencedRelation: "biomarker_hub"
             referencedColumns: ["id"]
           },
@@ -1225,6 +1239,20 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "category_test_mapping_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: false
+            referencedRelation: "api_v1_biomarker_offers"
+            referencedColumns: ["test_id"]
+          },
+          {
+            foreignKeyName: "category_test_mapping_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: false
+            referencedRelation: "api_v1_tests"
             referencedColumns: ["id"]
           },
           {
@@ -1558,6 +1586,20 @@ export type Database = {
             foreignKeyName: "clinical_loinc_mappings_biomarker_id_fkey"
             columns: ["biomarker_id"]
             isOneToOne: false
+            referencedRelation: "api_v1_biomarker_offers"
+            referencedColumns: ["biomarker_id"]
+          },
+          {
+            foreignKeyName: "clinical_loinc_mappings_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "api_v1_biomarkers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_loinc_mappings_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
             referencedRelation: "biomarker_hub"
             referencedColumns: ["id"]
           },
@@ -1831,6 +1873,20 @@ export type Database = {
             foreignKeyName: "clinical_snomed_mappings_biomarker_id_fkey"
             columns: ["biomarker_id"]
             isOneToOne: false
+            referencedRelation: "api_v1_biomarker_offers"
+            referencedColumns: ["biomarker_id"]
+          },
+          {
+            foreignKeyName: "clinical_snomed_mappings_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "api_v1_biomarkers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "clinical_snomed_mappings_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
             referencedRelation: "biomarker_hub"
             referencedColumns: ["id"]
           },
@@ -1966,6 +2022,20 @@ export type Database = {
           is_core?: boolean
         }
         Relationships: [
+          {
+            foreignKeyName: "curated_test_profile_biomarkers_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "api_v1_biomarker_offers"
+            referencedColumns: ["biomarker_id"]
+          },
+          {
+            foreignKeyName: "curated_test_profile_biomarkers_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "api_v1_biomarkers"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "curated_test_profile_biomarkers_biomarker_id_fkey"
             columns: ["biomarker_id"]
@@ -2960,6 +3030,20 @@ export type Database = {
             foreignKeyName: "image_audit_results_provider_test_id_fkey"
             columns: ["provider_test_id"]
             isOneToOne: true
+            referencedRelation: "api_v1_biomarker_offers"
+            referencedColumns: ["test_id"]
+          },
+          {
+            foreignKeyName: "image_audit_results_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: true
+            referencedRelation: "api_v1_tests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "image_audit_results_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: true
             referencedRelation: "biomarker_provider_comparison"
             referencedColumns: ["provider_test_id"]
           },
@@ -3544,6 +3628,20 @@ export type Database = {
           verified_by?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "observations_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "api_v1_biomarker_offers"
+            referencedColumns: ["biomarker_id"]
+          },
+          {
+            foreignKeyName: "observations_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "api_v1_biomarkers"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "observations_biomarker_id_fkey"
             columns: ["biomarker_id"]
@@ -4494,6 +4592,7 @@ export type Database = {
           last_scraped_at: string | null
           metadata: Json | null
           provider_name: string
+          slug: string | null
           supported_methods: string[] | null
           updated_at: string | null
           website_url: string | null
@@ -4508,6 +4607,7 @@ export type Database = {
           last_scraped_at?: string | null
           metadata?: Json | null
           provider_name: string
+          slug?: string | null
           supported_methods?: string[] | null
           updated_at?: string | null
           website_url?: string | null
@@ -4522,6 +4622,7 @@ export type Database = {
           last_scraped_at?: string | null
           metadata?: Json | null
           provider_name?: string
+          slug?: string | null
           supported_methods?: string[] | null
           updated_at?: string | null
           website_url?: string | null
@@ -4666,6 +4767,20 @@ export type Database = {
             foreignKeyName: "provider_test_biomarkers_biomarker_id_fkey"
             columns: ["biomarker_id"]
             isOneToOne: false
+            referencedRelation: "api_v1_biomarker_offers"
+            referencedColumns: ["biomarker_id"]
+          },
+          {
+            foreignKeyName: "provider_test_biomarkers_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "api_v1_biomarkers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "provider_test_biomarkers_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
             referencedRelation: "biomarker_hub"
             referencedColumns: ["id"]
           },
@@ -4702,6 +4817,20 @@ export type Database = {
             columns: ["biomarker_id"]
             isOneToOne: false
             referencedRelation: "biomarkers_library"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "provider_test_biomarkers_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: false
+            referencedRelation: "api_v1_biomarker_offers"
+            referencedColumns: ["test_id"]
+          },
+          {
+            foreignKeyName: "provider_test_biomarkers_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: false
+            referencedRelation: "api_v1_tests"
             referencedColumns: ["id"]
           },
           {
@@ -4827,6 +4956,20 @@ export type Database = {
           was_price?: number | null
         }
         Relationships: [
+          {
+            foreignKeyName: "provider_test_history_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: false
+            referencedRelation: "api_v1_biomarker_offers"
+            referencedColumns: ["test_id"]
+          },
+          {
+            foreignKeyName: "provider_test_history_provider_test_id_fkey"
+            columns: ["provider_test_id"]
+            isOneToOne: false
+            referencedRelation: "api_v1_tests"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "provider_test_history_provider_test_id_fkey"
             columns: ["provider_test_id"]
@@ -4960,6 +5103,20 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "provider_test_mapping_provider_test_uuid_fkey"
+            columns: ["provider_test_uuid"]
+            isOneToOne: false
+            referencedRelation: "api_v1_biomarker_offers"
+            referencedColumns: ["test_id"]
+          },
+          {
+            foreignKeyName: "provider_test_mapping_provider_test_uuid_fkey"
+            columns: ["provider_test_uuid"]
+            isOneToOne: false
+            referencedRelation: "api_v1_tests"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "provider_test_mapping_provider_test_uuid_fkey"
             columns: ["provider_test_uuid"]
@@ -5408,6 +5565,20 @@ export type Database = {
           version?: number
         }
         Relationships: [
+          {
+            foreignKeyName: "reference_range_contexts_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "api_v1_biomarker_offers"
+            referencedColumns: ["biomarker_id"]
+          },
+          {
+            foreignKeyName: "reference_range_contexts_biomarker_id_fkey"
+            columns: ["biomarker_id"]
+            isOneToOne: false
+            referencedRelation: "api_v1_biomarkers"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "reference_range_contexts_biomarker_id_fkey"
             columns: ["biomarker_id"]
@@ -7430,6 +7601,116 @@ export type Database = {
       }
     }
     Views: {
+      api_v1_biomarker_offers: {
+        Row: {
+          biomarker_abbreviation: string | null
+          biomarker_category: string | null
+          biomarker_count: number | null
+          biomarker_id: string | null
+          biomarker_name: string | null
+          clinic_visit_available: boolean | null
+          home_kit_available: boolean | null
+          is_addon: boolean | null
+          last_checked_at: string | null
+          price_check_stale: boolean | null
+          price_gbp: number | null
+          provider_id: string | null
+          provider_name: string | null
+          provider_url: string | null
+          sample_type: string | null
+          test_id: string | null
+          test_name: string | null
+          total_expected_cost_gbp: number | null
+          turnaround_days: number | null
+          turnaround_text: string | null
+        }
+        Relationships: []
+      }
+      api_v1_biomarkers: {
+        Row: {
+          abbreviation: string | null
+          category: string | null
+          cheapest_standalone_test_gbp: number | null
+          id: string | null
+          name: string | null
+          provider_count: number | null
+          synonyms: string[] | null
+          test_count: number | null
+        }
+        Relationships: []
+      }
+      api_v1_categories: {
+        Row: {
+          category: string | null
+          provider_count: number | null
+          test_count: number | null
+        }
+        Relationships: []
+      }
+      api_v1_coverage: {
+        Row: {
+          addon_tests: number | null
+          data_last_checked_at: string | null
+          standalone_tests: number | null
+          standalone_tests_without_biomarker_list: number | null
+          standalone_tests_without_matched_biomarkers: number | null
+          tests_with_stale_price_check: number | null
+        }
+        Relationships: []
+      }
+      api_v1_providers: {
+        Row: {
+          accreditation_checked_on: string | null
+          accreditation_notes: string[] | null
+          addon_count: number | null
+          companies_house_number: string | null
+          id: string | null
+          legal_name: string | null
+          max_total_expected_cost_gbp: number | null
+          min_total_expected_cost_gbp: number | null
+          name: string | null
+          offers_clinic_visits: boolean | null
+          offers_home_kits: boolean | null
+          prices_last_checked_at: string | null
+          test_count: number | null
+          website_url: string | null
+        }
+        Relationships: []
+      }
+      api_v1_tests: {
+        Row: {
+          biomarker_count: number | null
+          biomarkers: Json | null
+          category: string | null
+          clinic_phlebotomy_cost_gbp: number | null
+          clinic_visit_available: boolean | null
+          clinical_review_fee_gbp: number | null
+          clinical_review_type: string | null
+          collection_fee_gbp: number | null
+          collection_fee_type: string | null
+          collection_method: string | null
+          gender_specific: string | null
+          home_kit_available: boolean | null
+          home_phlebotomy_cost_gbp: number | null
+          id: string | null
+          is_addon: boolean | null
+          last_checked_at: string | null
+          location_options: Json | null
+          price_check_stale: boolean | null
+          price_gbp: number | null
+          provider_id: string | null
+          provider_name: string | null
+          provider_url: string | null
+          provider_url_verified: boolean | null
+          sample_type: string | null
+          test_name: string | null
+          total_expected_cost_gbp: number | null
+          total_includes_collection_fee: boolean | null
+          turnaround_days: number | null
+          turnaround_text: string | null
+        }
+        Relationships: []
+      }
       biomarker_knowledge_hub: {
         Row: {
           category: string | null
@@ -8116,6 +8397,7 @@ export type Database = {
           snomed_code: string
         }[]
       }
+      refresh_provider_test_biomarkers: { Args: never; Returns: Json }
       regenerate_mfa_backup_codes: { Args: never; Returns: string[] }
       resolve_canonical_category: {
         Args: { _provider_id: string; _source_section: string }
