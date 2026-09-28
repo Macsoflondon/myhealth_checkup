@@ -17,6 +17,19 @@
 
   Reporting-Endpoints: csp-endpoint="https://clvuioagsgfadynuvodj.supabase.co/functions/v1/csp-report"
 
+# Machine-readable discovery files for AI agents: readable cross-origin.
+/.well-known/web-mcp.json
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600
+
+/.well-known/mcp.json
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600
+
+/llms.txt
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600
+
 # Long-cache hashed build assets
 /assets/*
   Cache-Control: public, max-age=31536000, immutable

@@ -181,3 +181,11 @@ verify_jwt = false
 # Apify webhook receiver — called by Apify, authorised by shared secret in-code.
 [functions.apify-ingest]
 verify_jwt = false
+
+# Public comparison API + MCP server (read-only, no user data)
+# Public access by design: serves the api_v1_* views to AI agents and third-party
+# sites. Security: GET-only REST, stateless MCP over POST, service-role reads
+# limited to the api_v1_* views, input sanitisation, per-IP rate limit (hashed,
+# in memory, never stored).
+[functions.public-api]
+verify_jwt = false
