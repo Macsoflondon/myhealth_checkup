@@ -24,7 +24,8 @@ async function rpc(body: unknown) {
 Deno.test("index reports coverage and every response carries meta", async () => {
   const { status, body, headers } = await get("/");
   assertEquals(status, 200);
-  assert(body.coverage.tests > 0);
+  assert(body.coverage.standalone_tests > 0);
+  assert(typeof body.known_gaps.tests_with_stale_price_check === "number");
   assert(body.coverage.providers > 0);
   assert(typeof body.meta.data_last_checked_at === "string");
   assert(body.meta.disclaimer.includes("not a medical provider"));
@@ -79,6 +80,63 @@ Deno.test("MCP handshake, tool list and a tool call", async () => {
   const call = await rpc({ jsonrpc: "2.0", id: 3, method: "tools/call", params: { name: "compare_tests", arguments: { q: "vitamin d" } } });
   assertEquals(call.body.result.isError, false);
   assert(call.body.result.structuredContent.provider_count >= 1);
+});
+
+Deno.test("shared abbreviations resolve to the most widely offered biomarker", async () => {
+  const { body } = await get("/compare/biomarker.json?biomarker=hdl");
+  assertEquals(body.biomarker.name, "HDL Cholesterol");
+  assert(body.summary.provider_count >= 5);
+});
+
+Deno.test("equivalent biomarker rows are folded together (HbA1c includes Clinilabs)", async () => {
+  const { body } = await get("/compare/biomarker.json?biomarker=hba1c&include_addons=false");
+  const ids = body.by_provider.map((p: { provider: { id: string } }) => p.provider.id);
+  assert(ids.includes("clinilabs"), `providers: ${ids.join(", ")}`);
+});
+
+Deno.test("cheapest picks never use a stale price when a fresh one exists", async () => {
+  for (const b of ["psa", "b12", "ferritin", "tsh"]) {
+    const { body } = await get(`/compare/biomarker.json?biomarker=${b}&include_addons=false`);
+    const offers = body.offers as { price_check_stale: boolean }[];
+    if (offers.some((o) => !o.price_check_stale)) {
+      assertEquals(body.summary.cheapest_standalone.price_check_stale, false, b);
+    }
+  }
+});
+
+Deno.test("clinic-only tests with a published collection fee include it in the total", async () => {
+  const { body } = await get("/tests.json?provider=london-medical-laboratory&collection=clinic_visit&limit=100");
+  const withFee = body.results.filter((r: { price: { total_includes_collection_fee: boolean } }) => r.price.total_includes_collection_fee);
+  for (const r of withFee) assert(r.price.total_expected_cost_gbp >= r.price.price_gbp + r.price.collection_fee_gbp);
+});
+
+Deno.test("non-test rows are excluded", async () => {
+  const { body } = await get("/tests.json?search=collection%20method");
+  assertEquals(body.total, 0);
+});
+
+Deno.test("paging past the end returns an empty page, not an error", async () => {
+  const { status, body } = await get("/tests.json?offset=5000&limit=5");
+  assertEquals(status, 200);
+  assertEquals(body.results.length, 0);
+});
+
+Deno.test("unusable filters are rejected with 400 and carry meta", async () => {
+  for (const q of ["provider=*", "collection=nurse", "sort=cheapest", "search=%25"]) {
+    const { status, body } = await get(`/tests.json?${q}`);
+    assertEquals(status, 400, q);
+    assert(body.meta?.disclaimer, q);
+  }
+});
+
+Deno.test("malformed MCP messages get JSON-RPC errors", async () => {
+  for (const bad of [null, [null], 5]) {
+    const res = await rpc(bad);
+    const reply = Array.isArray(res.body) ? res.body[0] : res.body;
+    assertEquals(reply.error.code, -32600);
+  }
+  const missing = await rpc({ jsonrpc: "2.0", id: 9, method: "tools/call", params: { name: "get_test", arguments: {} } });
+  assertEquals(missing.body.result.isError, true);
 });
 
 Deno.test("write methods are refused", async () => {

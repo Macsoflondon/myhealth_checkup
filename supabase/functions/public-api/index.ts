@@ -54,11 +54,11 @@ const DISCLAIMER =
   "myhealth checkup compares tests. It is not a medical provider and does not give medical advice, diagnosis or treatment.";
 
 const KNOWN_LIMITATIONS = [
-  "total_expected_cost_gbp adds the collection and clinical review fees a provider publishes. Optional extras are not included.",
+  "total_expected_cost_gbp is our all-in figure. For clinic-only tests it adds the collection fee the provider publishes (see total_includes_collection_fee). Where a provider offers a choice of collection routes, each route's fee is listed separately and not added. Optional extras are not included.",
   "Add-on tests (is_addon: true) are bought with a base test, not on their own.",
-  "Biomarkers are matched by exact name, synonym or abbreviation. A test may measure a biomarker under a name not yet matched.",
-  "price_check_stale: true means the price has not been re-checked against the provider's page for 7 days or more.",
-  "Accreditation notes are recorded from the UKAS and CQC public registers on the date shown for each provider.",
+  "Biomarkers are matched to our library by exact name, synonym, abbreviation or the text in and before brackets. No fuzzy matching. Some tests have no biomarker list, or none we could match yet, so the biomarker tools do not see them. The index reports how many.",
+  "price_check_stale: true means the price has not been re-checked against the provider's page for 7 days or more. Stale prices are listed but never picked as the cheapest option.",
+  "Accreditation notes record what we found on public registers (UKAS, CQC, MHRA) on the date shown for each provider. A null date means we have not checked that provider yet.",
 ];
 
 // ---------------------------------------------------------------------------
@@ -83,7 +83,7 @@ class ApiError extends Error {
 // ---------------------------------------------------------------------------
 
 const TEST_COLUMNS =
-  "id, provider_id, provider_name, test_name, category, is_addon, price_gbp, total_expected_cost_gbp, " +
+  "id, provider_id, provider_name, test_name, category, is_addon, price_gbp, total_expected_cost_gbp, total_includes_collection_fee, " +
   "collection_method, collection_fee_type, collection_fee_gbp, home_phlebotomy_cost_gbp, clinic_phlebotomy_cost_gbp, " +
   "clinical_review_type, clinical_review_fee_gbp, sample_type, home_kit_available, clinic_visit_available, " +
   "location_options, turnaround_days, turnaround_text, biomarker_count, biomarkers, gender_specific, " +
@@ -128,7 +128,13 @@ function boolParam(v: string | null, def: boolean): boolean {
 }
 
 function normalise(s: string): string {
-  return s.toLowerCase().normalize("NFKD").replace(/[^a-z0-9]+/g, " ").trim();
+  return s.toLowerCase().normalize("NFKD").replace(/%/g, " percent ").replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+/** Prefer prices checked in the last 7 days; fall back to stale ones only if nothing else exists. */
+function pickCheapest<T extends Row>(rows: T[]): T | null {
+  const sorted = [...rows].sort(byCost);
+  return sorted.find((r) => r.price_check_stale !== true) ?? sorted[0] ?? null;
 }
 
 /** Rows from untyped view queries. */
@@ -155,6 +161,7 @@ function shapeTest(r: Row) {
     price: {
       price_gbp: num(r.price_gbp),
       total_expected_cost_gbp: num(r.total_expected_cost_gbp),
+      total_includes_collection_fee: r.total_includes_collection_fee === true,
       collection_method: r.collection_method ?? null,
       collection_fee_type: r.collection_fee_type ?? null,
       collection_fee_gbp: num(r.collection_fee_gbp),
@@ -214,7 +221,7 @@ function shapeProvider(r: Row) {
     accreditation: {
       notes: Array.isArray(r.accreditation_notes) ? r.accreditation_notes : [],
       checked_on: r.accreditation_checked_on ?? null,
-      source: "UKAS and CQC public registers",
+      source: "Public registers (UKAS, CQC, MHRA) as named in each note. A null checked_on means not yet checked.",
     },
     tests: {
       standalone_count: r.test_count ?? 0,
@@ -313,10 +320,13 @@ type Resolution =
   | { kind: "none"; suggestions: BiomarkerEntry[] };
 
 /**
- * Exact match on name, abbreviation or synonym first; then a single partial match.
- * When an exact key is shared (e.g. "B12" is the abbreviation for both total
- * and active B12), the biomarker offered by the most providers wins and the
- * others are returned as alternatives. A true tie is reported as ambiguous.
+ * Exact match on name, abbreviation or synonym first (also ignoring spaces, so
+ * "ca125" finds "CA-125"); then a single partial match. When several
+ * biomarkers share an exact key, the one offered by the most providers wins,
+ * the rest come back as alternatives, and a true tie is reported as ambiguous.
+ * Biomarkers whose names contain the query as a whole word (for example
+ * "HDL %" or "Non-HDL Cholesterol" for "hdl") are also returned as
+ * alternatives, so a caller can see what it did not get.
  */
 async function resolveBiomarker(input: string): Promise<Resolution> {
   const all = await biomarkers();
@@ -326,30 +336,35 @@ async function resolveBiomarker(input: string): Promise<Resolution> {
   }
   const q = normalise(input);
   if (!q) return { kind: "none", suggestions: [] };
+  const qc = q.replace(/ /g, "");
+  const rank = (a: BiomarkerEntry, b: BiomarkerEntry) => b.provider_count - a.provider_count || b.test_count - a.test_count;
 
-  const exact = all.filter((b) => b.keys.includes(q));
-  if (exact.length === 1) return { kind: "match", biomarker: exact[0] };
-  if (exact.length > 1) {
-    // Prefer an exact name match, then the most widely offered.
-    const byName = exact.filter((b) => normalise(b.name) === q);
-    if (byName.length === 1) return { kind: "match", biomarker: byName[0], alternatives: exact.filter((b) => b !== byName[0]) };
-    const ranked = [...exact].sort((a, b) => b.provider_count - a.provider_count || b.test_count - a.test_count);
-    if (ranked[0].provider_count > ranked[1].provider_count) {
-      return { kind: "match", biomarker: ranked[0], alternatives: ranked.slice(1, 6) };
+  let exact = all.filter((b) => b.keys.includes(q));
+  if (!exact.length && qc.length >= 3) exact = all.filter((b) => b.keys.some((k) => k.replace(/ /g, "") === qc));
+
+  if (exact.length) {
+    const ranked = [...exact].sort(rank);
+    if (ranked.length > 1 && ranked[0].provider_count === ranked[1].provider_count && ranked[0].test_count === ranked[1].test_count) {
+      return { kind: "ambiguous", candidates: ranked.slice(0, 10) };
     }
-    return { kind: "ambiguous", candidates: ranked.slice(0, 10) };
+    const chosen = ranked[0];
+    const wordRe = new RegExp(`(^| )${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}( |$)`);
+    const related = all
+      .filter((b) => b !== chosen && !ranked.includes(b) && b.keys.some((k) => wordRe.test(k)))
+      .sort(rank);
+    return { kind: "match", biomarker: chosen, alternatives: [...ranked.slice(1), ...related].slice(0, 8) };
   }
 
   const words = q.split(" ");
   const partial = all
     .filter((b) => b.keys.some((k) => words.every((w) => k.includes(w))))
-    .sort((a, b) => b.test_count - a.test_count);
+    .sort(rank);
   if (partial.length === 1) return { kind: "match", biomarker: partial[0] };
   if (partial.length > 1) return { kind: "ambiguous", candidates: partial.slice(0, 10) };
 
   const loose = all
-    .filter((b) => b.keys.some((k) => words.some((w) => w.length >= 3 && k.includes(w))))
-    .sort((a, b) => b.test_count - a.test_count)
+    .filter((b) => b.keys.some((k) => words.some((w) => w.length >= 3 && k.includes(w)) || (qc.length >= 3 && k.replace(/ /g, "").includes(qc))))
+    .sort(rank)
     .slice(0, 10);
   return { kind: "none", suggestions: loose };
 }
@@ -359,11 +374,13 @@ async function resolveBiomarker(input: string): Promise<Resolution> {
 // ---------------------------------------------------------------------------
 
 async function handleIndex(): Promise<ApiResult> {
-  const [tests, providers, bms] = await Promise.all([
-    supabase.from("api_v1_tests").select("id", { count: "exact", head: true }),
+  const [cov, providers, bms] = await Promise.all([
+    supabase.from("api_v1_coverage").select("*").maybeSingle(),
     supabase.from("api_v1_providers").select("id", { count: "exact", head: true }),
     biomarkers(),
   ]);
+  if (cov.error) throw cov.error;
+  const c = (cov.data ?? {}) as Row;
   return {
     status: 200,
     body: {
@@ -374,10 +391,16 @@ async function handleIndex(): Promise<ApiResult> {
       webmcp_manifest: `${FN_BASE}/.well-known/web-mcp.json`,
       mcp_endpoint: `${FN_BASE}/mcp`,
       coverage: {
-        tests: tests.count ?? null,
+        standalone_tests: c.standalone_tests ?? null,
+        addon_tests: c.addon_tests ?? null,
         providers: providers.count ?? null,
         biomarkers_compared: bms.length,
         biomarkers_offered_by_two_or_more_providers: bms.filter((b) => b.provider_count >= 2).length,
+      },
+      known_gaps: {
+        standalone_tests_without_biomarker_list: c.standalone_tests_without_biomarker_list ?? null,
+        standalone_tests_without_matched_biomarkers: c.standalone_tests_without_matched_biomarkers ?? null,
+        tests_with_stale_price_check: c.tests_with_stale_price_check ?? null,
       },
       endpoints: [
         { path: "/tests", description: "Search, filter and sort tests.", params: ["search", "category", "provider", "max_cost", "collection (home_kit | clinic_visit)", "include_addons", "sort (price | price_desc | name | turnaround)", "limit", "offset"] },
@@ -395,14 +418,36 @@ async function handleIndex(): Promise<ApiResult> {
 }
 
 async function handleTests(p: URLSearchParams): Promise<ApiResult> {
-  const search = cleanText(p.get("search") ?? p.get("q"));
-  const category = cleanSlug(p.get("category"));
+  const rawSearch = p.get("search") ?? p.get("q");
+  const search = cleanText(rawSearch);
+  if (rawSearch && rawSearch.trim() && !search) {
+    throw new ApiError(400, "invalid_search", "search needs at least two letters or digits.");
+  }
+  const rawCategory = p.get("category");
+  const category = cleanSlug(rawCategory ? rawCategory.trim().replace(/[\s_]+/g, "-").replace(/'/g, "") : null);
+  if (rawCategory && rawCategory.trim() && !category) {
+    throw new ApiError(400, "invalid_category", "Unknown category. Call /categories for the list.");
+  }
+  const rawProvider = p.get("provider");
   const providerText = (p.get("provider") ?? "").replace(/[^A-Za-z0-9 -]/g, "").replace(/\s+/g, " ").trim().slice(0, 60) || null;
   const provider = cleanSlug(providerText?.replace(/\s+/g, "-") ?? null);
+  if (rawProvider && rawProvider.trim() && !provider) {
+    throw new ApiError(400, "invalid_provider", "Unknown provider. Call /providers for the list.");
+  }
   const maxCost = p.get("max_cost") ?? p.get("max_price");
+  if (maxCost && !Number.isFinite(Number(maxCost))) {
+    throw new ApiError(400, "invalid_max_cost", "max_cost must be a number in GBP.");
+  }
   const collection = cleanSlug(p.get("collection"));
+  const COLLECTIONS = ["home-kit", "homekit", "home", "clinic-visit", "clinicvisit", "clinic"];
+  if (collection && !COLLECTIONS.includes(collection)) {
+    throw new ApiError(400, "invalid_collection", "collection must be home_kit or clinic_visit.");
+  }
   const includeAddons = boolParam(p.get("include_addons"), false);
   const sort = cleanSlug(p.get("sort")) ?? "price";
+  if (!["price", "price-desc", "pricedesc", "name", "turnaround"].includes(sort)) {
+    throw new ApiError(400, "invalid_sort", "sort must be price, price_desc, name or turnaround.");
+  }
   const limit = intParam(p.get("limit"), DEFAULT_LIMIT, 1, MAX_LIMIT);
   const offset = intParam(p.get("offset"), 0, 0, 5000);
 
@@ -426,13 +471,27 @@ async function handleTests(p: URLSearchParams): Promise<ApiResult> {
   q = q.order("id", { ascending: true }).range(offset, offset + limit - 1);
 
   const { data, error, count } = await q;
-  if (error) throw error;
+  // PostgREST rejects a range that starts past the last row. Treat it as an empty page.
+  const pastEnd = !!error && (error as { code?: string }).code === "PGRST103";
+  if (error && !pastEnd) throw error;
+  let total = count ?? null;
+  if (pastEnd) {
+    let cq = supabase.from("api_v1_tests").select("id", { count: "exact", head: true });
+    if (search) cq = cq.ilike("test_name", `%${escapeLike(search)}%`);
+    if (category) cq = cq.eq("category", category);
+    if (provider && providerText) {
+      cq = cq.or(`provider_id.eq.${provider},provider_id.ilike.*${provider}*,provider_name.ilike."*${providerText}*"`);
+    }
+    if (maxCost) cq = cq.lte("total_expected_cost_gbp", Number(maxCost));
+    if (!includeAddons) cq = cq.eq("is_addon", false);
+    total = (await cq).count ?? null;
+  }
   return {
     status: 200,
     body: {
       query: { search, category, provider: providerText, max_cost: maxCost ? Number(maxCost) : null, collection, include_addons: includeAddons, sort, limit, offset },
-      total: count ?? null,
-      results: asRows(data).map(shapeTest),
+      total,
+      results: pastEnd ? [] : asRows(data).map(shapeTest),
     },
   };
 }
@@ -459,7 +518,9 @@ async function handleTest(id: string): Promise<ApiResult> {
 }
 
 async function handleProviders(p: URLSearchParams, pathId?: string): Promise<ApiResult> {
-  const id = cleanSlug(pathId ?? p.get("id"));
+  const rawId = pathId ?? p.get("id");
+  const id = cleanSlug(rawId);
+  if (rawId && rawId.trim() && !id) throw new ApiError(404, "not_found", "No provider with that id. Call /providers for the list.");
   let q = supabase
     .from("api_v1_providers")
     .select("*")
@@ -526,11 +587,11 @@ async function handleCompareTests(p: URLSearchParams): Promise<ApiResult> {
   }
   const providers = [...perProvider.values()]
     .map((list) => {
-      const sorted = [...list].sort(byCost);
+      const best = pickCheapest(list)!;
       return {
-        provider: { id: sorted[0].provider_id, name: sorted[0].provider_name },
-        cheapest: shapeTest(sorted[0]),
-        matching_tests: sorted.length,
+        provider: { id: best.provider_id, name: best.provider_name },
+        cheapest: shapeTest(best),
+        matching_tests: list.length,
       };
     })
     .sort((a, b) => (a.cheapest.price.total_expected_cost_gbp ?? 1e9) - (b.cheapest.price.total_expected_cost_gbp ?? 1e9));
@@ -588,8 +649,8 @@ async function handleCompareBiomarker(p: URLSearchParams): Promise<ApiResult> {
 
   const b = res.biomarker;
   const offers = (await offersFor([b.id], includeAddons)).sort(byCost);
-  const standalone = offers.filter((o) => o.is_addon !== true);
-  const addons = offers.filter((o) => o.is_addon === true);
+  const standalone = pickCheapest(offers.filter((o) => o.is_addon !== true));
+  const addon = pickCheapest(offers.filter((o) => o.is_addon === true));
 
   const perProvider = new Map<string, Row[]>();
   for (const o of offers) {
@@ -599,13 +660,13 @@ async function handleCompareBiomarker(p: URLSearchParams): Promise<ApiResult> {
   }
   const byProvider = [...perProvider.values()]
     .map((list) => {
-      const s = list.filter((o) => o.is_addon !== true);
-      const a = list.filter((o) => o.is_addon === true);
+      const s = pickCheapest(list.filter((o) => o.is_addon !== true));
+      const a = pickCheapest(list.filter((o) => o.is_addon === true));
       return {
         provider: { id: list[0].provider_id, name: list[0].provider_name },
         tests_measuring_it: list.length,
-        cheapest_standalone: s[0] ? shapeOffer(s[0]) : null,
-        cheapest_addon: a[0] ? shapeOffer(a[0]) : null,
+        cheapest_standalone: s ? shapeOffer(s) : null,
+        cheapest_addon: a ? shapeOffer(a) : null,
       };
     })
     .sort(
@@ -624,13 +685,14 @@ async function handleCompareBiomarker(p: URLSearchParams): Promise<ApiResult> {
       summary: {
         provider_count: byProvider.length,
         test_count: offers.length,
-        cheapest_standalone: standalone[0] ? shapeOffer(standalone[0]) : null,
-        cheapest_addon: addons[0] ? shapeOffer(addons[0]) : null,
+        cheapest_standalone: standalone ? shapeOffer(standalone) : null,
+        cheapest_addon: addon ? shapeOffer(addon) : null,
         total_expected_cost_range_gbp: costs.length ? [Math.min(...costs), Math.max(...costs)] : null,
       },
       notes: [
         "Panel tests measure other biomarkers as well. biomarkers_in_test shows how many.",
         "Add-on tests are bought with a base test, not on their own.",
+        "Cheapest picks skip prices not re-checked for 7 days (price_check_stale) unless nothing else exists.",
       ],
       by_provider: byProvider,
       offers: offers.slice(0, 100).map(shapeOffer),
@@ -673,9 +735,9 @@ async function handleCompareBiomarkers(p: URLSearchParams): Promise<ApiResult> {
     covers_count: covered.size,
   }));
 
-  const full = shaped
-    .filter((t) => t.covers_count === ids.length)
-    .sort((a, b) => (a.total_expected_cost_gbp ?? 1e9) - (b.total_expected_cost_gbp ?? 1e9));
+  const freshFirst = (a: { price_check_stale: boolean; total_expected_cost_gbp: number | null }, b: { price_check_stale: boolean; total_expected_cost_gbp: number | null }) =>
+    Number(a.price_check_stale) - Number(b.price_check_stale) || (a.total_expected_cost_gbp ?? 1e9) - (b.total_expected_cost_gbp ?? 1e9);
+  const full = shaped.filter((t) => t.covers_count === ids.length).sort(freshFirst);
   const partial = full.length
     ? []
     : shaped
@@ -683,7 +745,7 @@ async function handleCompareBiomarkers(p: URLSearchParams): Promise<ApiResult> {
         .slice(0, 20);
 
   const cheapestEach = resolved.map(({ input, biomarker }) => {
-    const best = offers.filter((o) => String(o.biomarker_id) === biomarker.id).sort(byCost)[0];
+    const best = pickCheapest(offers.filter((o) => String(o.biomarker_id) === biomarker.id));
     return { input, biomarker: { id: biomarker.id, name: biomarker.name }, cheapest_standalone: best ? shapeOffer(best) : null };
   });
 
@@ -697,12 +759,14 @@ async function handleCompareBiomarkers(p: URLSearchParams): Promise<ApiResult> {
         other_possible_matches: alternatives.map((a) => ({ id: a.id, name: a.name })),
       })),
       unresolved,
+      complete: unresolved.length === 0,
       full_coverage_count: full.length,
       full_coverage: full.slice(0, 50),
       best_partial_coverage: partial,
       cheapest_per_biomarker: cheapestEach,
       notes: [
-        "full_coverage lists single tests that measure every resolved biomarker from one sample, cheapest first.",
+        "full_coverage lists single tests that measure every resolved biomarker from one sample, cheapest first, with prices checked in the last 7 days ahead of stale ones.",
+        "If complete is false, some requested biomarkers could not be matched, so full_coverage covers only the resolved ones.",
         "Add-on tests are left out here because they cannot be bought on their own.",
       ],
     },
@@ -791,36 +855,46 @@ const BASE_HEADERS: Record<string, string> = {
 function respond(req: Request, status: number, text: string, extra: Record<string, string> = {}): Response {
   const headers = new Headers({ ...BASE_HEADERS, ...extra });
   if (status === 200) {
-    headers.set("Cache-Control", "public, max-age=300, s-maxage=900, stale-while-revalidate=3600");
+    headers.set("Cache-Control", "public, max-age=300, s-maxage=300");
   } else {
     headers.set("Cache-Control", "no-store");
   }
   return new Response(req.method === "HEAD" ? null : text, { status, headers });
 }
 
-async function envelope(result: ApiResult): Promise<string> {
+async function meta(): Promise<Row> {
   let lastChecked: string | null = null;
   try {
     lastChecked = await dataLastCheckedAt();
   } catch {
     lastChecked = null;
   }
-  return JSON.stringify({
-    meta: {
-      api: "myhealth checkup public comparison API",
-      version: API_VERSION,
-      generated_at: new Date().toISOString(),
-      data_last_checked_at: lastChecked,
-      currency: "GBP",
-      source: SITE,
-      attribution: "Free to use. Please credit myhealth checkup (myhealthcheckup.co.uk) when you use this data.",
-      ordering: "Results are ordered by price or by the sort you choose. Providers cannot pay to change the order.",
-      links: "Provider links go straight to the provider's own page.",
-      disclaimer: DISCLAIMER,
-      known_limitations: KNOWN_LIMITATIONS,
-    },
-    ...result.body,
-  });
+  return {
+    api: "myhealth checkup public comparison API",
+    version: API_VERSION,
+    generated_at: new Date().toISOString(),
+    data_last_checked_at: lastChecked,
+    currency: "GBP",
+    source: SITE,
+    attribution: "Free to use. Please credit myhealth checkup (myhealthcheckup.co.uk) when you use this data.",
+    ordering: "Results are ordered by price or by the sort you choose. Providers cannot pay to change the order.",
+    links: "Provider links go straight to the provider's own page.",
+    disclaimer: DISCLAIMER,
+    known_limitations: KNOWN_LIMITATIONS,
+  };
+}
+
+async function envelope(result: ApiResult): Promise<string> {
+  return JSON.stringify({ meta: await meta(), ...result.body });
+}
+
+function describeError(err: unknown): string {
+  if (err instanceof Error) return err.message;
+  if (err && typeof err === "object") {
+    const e = err as { code?: string; message?: string; details?: string };
+    return [e.code, e.message, e.details].filter(Boolean).join(" | ") || JSON.stringify(err);
+  }
+  return String(err);
 }
 
 /** Runs a GET route through the response cache. Shared by the REST routes and MCP tools/call. */
@@ -840,14 +914,14 @@ async function runRoute(path: string, rawParams: URLSearchParams): Promise<{ sta
     if (err instanceof ApiError) {
       return {
         status: err.status,
-        text: JSON.stringify({ error: { code: err.code, message: err.message, ...err.extra }, documentation: `${SITE}/llms.txt` }),
+        text: JSON.stringify({ meta: await meta(), error: { code: err.code, message: err.message, ...err.extra }, documentation: `${SITE}/llms.txt` }),
         cache: "MISS",
       };
     }
-    console.error("public-api error", path, err instanceof Error ? err.message : String(err));
+    console.error("public-api error", path, describeError(err));
     return {
       status: 500,
-      text: JSON.stringify({ error: { code: "internal_error", message: "Something went wrong. Try again shortly." } }),
+      text: JSON.stringify({ meta: await meta(), error: { code: "internal_error", message: "Something went wrong. Try again shortly." } }),
       cache: "MISS",
     };
   }
@@ -876,7 +950,7 @@ const TOOLS: ToolDef[] = [
     name: "search_tests",
     title: "Search private blood tests",
     description:
-      "Search live UK private blood tests and cancer screening tests. Returns the headline price and the total expected cost in GBP (including published collection and clinical review fees), the full biomarker list, sample method, home kit or clinic options, turnaround and a direct link to the provider page, each with the date the price was last checked. Ordered by total expected cost unless you choose another sort.",
+      "Search live UK private blood tests and cancer screening tests. Returns the headline price and the total expected cost in GBP (adding the published collection fee for clinic-only tests), the full biomarker list, sample method, home kit or clinic options, turnaround and a direct link to the provider page, each with the date the price was last checked. Ordered by total expected cost unless you choose another sort.",
     path: "/tests",
     inputSchema: {
       type: "object",
@@ -908,7 +982,7 @@ const TOOLS: ToolDef[] = [
     name: "list_providers",
     title: "List providers",
     description:
-      "UK private testing providers we compare, with legal name, Companies House number where known, accreditation findings from the UKAS and CQC public registers with the date we checked them, number of tests and price range.",
+      "UK private testing providers we compare, with legal name, Companies House number where known, accreditation findings from public registers (UKAS, CQC, MHRA) with the date we checked them, number of tests and price range.",
     path: "/providers",
     inputSchema: {
       type: "object",
@@ -994,6 +1068,8 @@ const SERVER_INSTRUCTIONS =
   "Live comparison data for UK private blood tests and cancer screening from myhealth checkup (myhealthcheckup.co.uk). " +
   "Quote total_expected_cost_gbp as the price to pay where it differs from price_gbp, and give the last_checked_at date with any price. " +
   "Add-on tests (is_addon: true) cannot be bought on their own. " +
+  "Treat prices with price_check_stale: true as out of date. " +
+  "compare_biomarker returns other_possible_matches; mention them when the user's term could mean more than one biomarker. " +
   "Tell users to confirm the final price on the provider's page. " +
   "This data compares tests. It is not medical advice, and myhealth checkup is not a medical provider.";
 
@@ -1068,10 +1144,12 @@ function rpcError(id: JsonRpcRequest["id"], code: number, message: string) {
   return { jsonrpc: "2.0", id: id ?? null, error: { code, message } };
 }
 
-async function handleRpc(msg: JsonRpcRequest): Promise<unknown | null> {
+async function handleRpc(raw: unknown): Promise<unknown | null> {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return rpcError(null, -32600, "Invalid request");
+  const msg = raw as JsonRpcRequest;
   const isNotification = msg.id === undefined || msg.id === null;
-  if (!msg || msg.jsonrpc !== "2.0" || typeof msg.method !== "string") {
-    return isNotification ? null : rpcError(msg?.id, -32600, "Invalid request");
+  if (msg.jsonrpc !== "2.0" || typeof msg.method !== "string") {
+    return isNotification ? null : rpcError(msg.id, -32600, "Invalid request");
   }
   if (isNotification) return null;
 
@@ -1103,6 +1181,17 @@ async function handleRpc(msg: JsonRpcRequest): Promise<unknown | null> {
       const args = ((msg.params as Row | undefined)?.arguments ?? {}) as Row;
       const tool = TOOLS.find((t) => t.name === name);
       if (!tool) return rpcError(msg.id, -32602, `Unknown tool: ${name}`);
+      const required = ((tool.inputSchema.required as string[] | undefined) ?? []);
+      const missing = required.filter((k) => {
+        const v = (args ?? {})[k];
+        return v === undefined || v === null || (typeof v === "string" && !v.trim()) || (Array.isArray(v) && !v.length);
+      });
+      if (missing.length) {
+        return rpcResult(msg.id, {
+          content: [{ type: "text", text: `Missing required argument: ${missing.join(", ")}` }],
+          isError: true,
+        });
+      }
       const out = await runRoute(tool.path, toolParams(tool, args));
       let structured: unknown = null;
       try {
@@ -1151,7 +1240,10 @@ async function handleMcp(req: Request): Promise<Response> {
     return new Response(JSON.stringify(rpcError(null, -32700, "Parse error")), { status: 400, headers: MCP_HEADERS });
   }
 
-  const messages = (Array.isArray(body) ? body : [body]).slice(0, 20) as JsonRpcRequest[];
+  if (Array.isArray(body) && !body.length) {
+    return new Response(JSON.stringify(rpcError(null, -32600, "Invalid request")), { status: 400, headers: MCP_HEADERS });
+  }
+  const messages = (Array.isArray(body) ? body : [body]).slice(0, 20) as unknown[];
   const replies = (await Promise.all(messages.map(handleRpc))).filter((r) => r !== null);
   if (!replies.length) return new Response(null, { status: 202, headers: MCP_HEADERS });
   const payload = Array.isArray(body) ? replies : replies[0];

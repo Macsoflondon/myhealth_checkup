@@ -2,13 +2,13 @@
 
 > Independent comparison platform for UK private blood tests and cancer screening. We compare prices, biomarkers, sample methods and turnaround times across UK providers so you can choose a test with the full facts in front of you. Your Health. Your Choice. One Trusted Platform.
 
-myhealth checkup (MYHEALTHCHECKUP LTD) compares private health tests in the United Kingdom. We record prices from each provider's own website, check them every six hours, and show the date of the last check. Default ordering is by price. Providers cannot pay to rank higher.
+myhealth checkup (MYHEALTHCHECKUP LTD) compares private health tests in the United Kingdom. We record prices from each provider's own website, re-check them on a six-hour cycle, and show the date of the last check on every price. Default ordering is by price. Providers cannot pay to rank higher.
 
 myhealth checkup is not a medical provider. We do not diagnose or treat. Confirm the final price on the provider's page before you buy.
 
 ## Live data for AI agents
 
-Use these instead of scraping our pages. Every response is JSON, carries a last-checked timestamp, and lists known limitations.
+Use these instead of scraping our pages. Every data response is JSON, carries a last-checked timestamp, and lists known limitations.
 
 - [WebMCP manifest](https://myhealthcheckup.co.uk/.well-known/web-mcp.json): tool definitions any WebMCP-aware agent can call.
 - [MCP server card](https://myhealthcheckup.co.uk/.well-known/mcp.json): discovery metadata for the MCP server.
@@ -24,9 +24,11 @@ Use these instead of scraping our pages. Every response is JSON, carries a last-
 
 How to read the data:
 
-- total_expected_cost_gbp adds the collection and clinical review fees a provider publishes. price_gbp is the headline price alone.
+- total_expected_cost_gbp is the all-in figure. For clinic-only tests it adds the collection fee the provider publishes, and total_includes_collection_fee says when it has. price_gbp is the headline price alone.
 - is_addon: true marks a test you add to a base test. You cannot buy it on its own.
-- price_check_stale: true means we have not re-checked that price for seven days or more.
+- price_check_stale: true means we have not re-checked that price for seven days or more. The API lists these prices but never picks them as the cheapest option.
+- compare_biomarker returns other_possible_matches when a name could mean more than one measurement, for example HDL cholesterol and HDL as a percentage.
+- Some tests have no biomarker list, or none we have matched yet. The API index reports how many under known_gaps.
 - Rate limit: 120 requests a minute. Responses cache for five minutes.
 
 ## Pages
