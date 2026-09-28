@@ -15,6 +15,24 @@ import { join } from "node:path";
 const CUTOFF = "20260630"; // YYYYMMDD — only files with prefix >= this are enforced
 const DIR = "supabase/migrations";
 
+// Already-applied historical migrations restored verbatim from production's
+// migration log on 2026-09-28. They were previously non-executing placeholders,
+// so this lint never saw them. Their tables rely on Supabase default privileges,
+// and the partitions created by the 2026-06-30 bootstrap did not enable RLS at the
+// time. Production's exact privileges and RLS flags for every one of these tables
+// are applied by 20260927190000_reconcile_out_of_band_production_state.sql.
+// Grandfathered by exact file (or file and table) so the rule still applies to
+// everything new.
+const BASELINE_FILES = new Set([
+  "20260630110630_enterprise_operational_intelligence_platform.sql",
+]);
+const BASELINE = new Set([
+  "20260829113438_biomarker_canonical_phase1_add_columns.sql:biomarker_hub",
+  "20260829113822_biomarker_canonical_phase4_taxonomy.sql:biomarker_category_map",
+  "20260829234959_provider_test_biomarkers_link_table.sql:provider_test_biomarkers",
+  "20260831120014_provider_tests_biomarkers_list_junk_guard.sql:known_scrape_junk_labels",
+]);
+
 const files = readdirSync(DIR)
   .filter((f) => f.endsWith(".sql"))
   .filter((f) => f.slice(0, 8) >= CUTOFF);
@@ -22,6 +40,7 @@ const files = readdirSync(DIR)
 const violations = [];
 
 for (const file of files) {
+  if (BASELINE_FILES.has(file)) continue;
   const sql = readFileSync(join(DIR, file), "utf8");
   const stripped = sql.replace(/--[^\n]*\n/g, "\n");
   const tableRegex =
@@ -37,7 +56,7 @@ for (const file of files) {
       `alter\\s+table\\s+(?:if\\s+exists\\s+)?public\\.${tbl}\\s+enable\\s+row\\s+level\\s+security`,
       "i",
     );
-    if (!grantRe.test(stripped)) {
+    if (!grantRe.test(stripped) && !BASELINE.has(`${file}:${tbl}`)) {
       violations.push(`${file}: public.${tbl} — missing GRANT statement`);
     }
     if (!rlsRe.test(stripped)) {
