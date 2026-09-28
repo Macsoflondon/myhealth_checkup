@@ -18,7 +18,7 @@ export function getBookingLinkState(
 export function canBookDirect(
   url: string | null | undefined,
   urlVerified: boolean | null | undefined,
-): boolean {
+): url is string {
   const state = getBookingLinkState(url, urlVerified);
   return state === "verified" || state === "unchecked";
 }
