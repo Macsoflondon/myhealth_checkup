@@ -51,7 +51,17 @@ What changed:
    `20260927190000_reconcile_out_of_band_production_state.sql` brings a rebuilt
    database to production's state as of 28 September. It was generated from a
    structured comparison of production's catalogue against a fresh replay, and every
-   statement is idempotent. Its version is recorded in production as applied.
+   statement is idempotent. On 28 September its version was recorded in production as
+   applied without being run (the equivalent of `supabase migration repair --status
+   applied`), because production already has that state. Repository and production now
+   hold the same 402 versions.
+5. **Privileges no longer depend on the platform's defaults.** Production is an older
+   Supabase project whose default privileges grant anon, authenticated and service_role
+   full table access. Newer projects, including preview branches, grant almost nothing
+   by default, so migrations that relied on defaults produced different privileges on a
+   preview even though they all succeeded. The reconciliation sets production's default
+   privileges explicitly and applies production's exact privileges to every table, view,
+   sequence and function.
 
 Verification (28 September 2026): all 402 migrations replayed on a fresh Supabase stack
 (Postgres 17.6, CLI 2.118.0) with no errors. The result was then compared with
@@ -59,7 +69,9 @@ production on tables, column order, types and defaults, constraints, indexes, fu
 function bodies, views, triggers, event triggers, RLS flags and policies, table,
 column and function privileges, owners, comments, extensions and their schemas,
 publications, storage bucket settings, and every cron job's schedule and command. The
-only differences remaining are:
+same comparison was run against a hosted Supabase Preview branch built from this
+repository: every section was byte-identical to production. The only differences
+remaining are:
 
 - grants to `db_admin_role`, a login role with `BYPASSRLS` that exists only in
   production. It is not recreated in other environments; grants to it apply only where
