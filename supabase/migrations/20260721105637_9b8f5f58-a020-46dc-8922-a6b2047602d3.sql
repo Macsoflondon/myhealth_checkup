@@ -4,6 +4,17 @@
 -- Additive / non-destructive only. Safe to re-run (IF NOT EXISTS).
 -- =====================================================================
 
+-- Replay adaptation (2026-09-28): production had already gained these three columns
+-- outside any migration when this ran, which is why its column order puts them right
+-- after category_ids and why the generated total_expected_cost below was skipped there
+-- (production's is a plain numeric(10,2)). Adding them here reproduces production
+-- exactly on a fresh database. No-op wherever they exist. See
+-- docs/MIGRATION_RECONCILIATION.md.
+ALTER TABLE public.provider_tests
+  ADD COLUMN IF NOT EXISTS total_expected_cost numeric(10,2),
+  ADD COLUMN IF NOT EXISTS goals text[],
+  ADD COLUMN IF NOT EXISTS sub_goals text[];
+
 -- ---------- A1. Extend provider_tests -------------------------------
 ALTER TABLE public.provider_tests
   ADD COLUMN IF NOT EXISTS sku text,

@@ -4,9 +4,88 @@
 **Companions:** `docs/MIGRATION_HISTORY.md`, `docs/PHASE_0_ARCHITECTURE_AUDIT.md`
 
 This document records what the historical migration drift actually consists of, and the
-policy that governs which of it is brought back under schema version control. No
-historical SQL has been invented, replayed or re-applied, and no executable duplicate
-migration file has been created for an already-applied version.
+policy that governs which of it is brought back under schema version control.
+
+## Update, 28 September 2026: the repository now rebuilds production exactly
+
+**This supersedes the marker-file policy below.** The 14 September policy kept
+schema-bearing history as non-executing marker files and excluded catalogue DML. That
+left the repository unable to build a working database. Every Supabase Preview branch
+failed with `relation "public.scrape_change_events" does not exist`, because the
+table's only `CREATE TABLE` sat inside a marker file.
+
+What was found:
+
+| Finding | Count |
+| --- | --- |
+| Migration files that were non-executing placeholders (`SELECT 1 WHERE FALSE` or comment-only) | 99 |
+| Applied versions excluded from the repository by policy (all pure catalogue DML) | 33 |
+| Differences between production and a database rebuilt from the repository | 512 |
+| Remote parity check able to detect any of this | No: `SUPABASE_DB_URL` has never been set, so the remote half never runs |
+
+The out-of-band production changes included two `private` tables used by
+`admin-recovery`, 9 columns on existing tables (including `provider_tests.goals` and
+the phlebotomy cost columns), 34 indexes added and 144 dropped, 182 RLS policy
+differences, anon `SELECT` revoked on 40 tables and views (user data, audit logs and
+the executive views among them), RLS enabled on 20 tables, the
+`ensure_rls` event trigger, 22 cron jobs (every live `mhc-*` scraper) created and 4
+legacy ones removed, and 20 tables added to the Realtime publication.
+
+What changed:
+
+1. **Every applied version is committed, verbatim.** The 99 placeholders now hold
+   the exact SQL production recorded in `supabase_migrations.schema_migrations`, and
+   the 33 excluded versions are committed the same way. Each file's header gives the
+   md5 of the recorded statements. `.excluded-versions` is now empty.
+2. **This is safe for production.** The migration runner never re-runs a version
+   production has already recorded. These files run only when a database is built
+   from scratch (preview branches, local development).
+3. **Replay adaptations are minimal and documented in place.** Where the recorded SQL
+   could not run on a fresh database, the file carries a `Replay adaptation` note.
+   There are eight: a foreign-key guard on a production-only user id, an unrecorded
+   `DROP VIEW`, the `biomarker_hub` base table (created in production outside any
+   migration), extension schemas for `vector` and `pg_net`, cron jobs addressed by
+   name instead of production job id, and two sets of columns placed where production
+   actually had them. Production's result is identical in every case.
+4. **One reconciliation migration covers the rest.**
+   `20260927190000_reconcile_out_of_band_production_state.sql` brings a rebuilt
+   database to production's state as of 28 September. It was generated from a
+   structured comparison of production's catalogue against a fresh replay, and every
+   statement is idempotent. On 28 September its version was recorded in production as
+   applied without being run (the equivalent of `supabase migration repair --status
+   applied`), because production already has that state. Repository and production now
+   hold the same 402 versions.
+5. **Privileges no longer depend on the platform's defaults.** Production is an older
+   Supabase project whose default privileges grant anon, authenticated and service_role
+   full table access. Newer projects, including preview branches, grant almost nothing
+   by default, so migrations that relied on defaults produced different privileges on a
+   preview even though they all succeeded. The reconciliation sets production's default
+   privileges explicitly and applies production's exact privileges to every table, view,
+   sequence and function.
+
+Verification (28 September 2026): all 402 migrations replayed on a fresh Supabase stack
+(Postgres 17.6, CLI 2.118.0) with no errors. The result was then compared with
+production on tables, column order, types and defaults, constraints, indexes, full
+function bodies, views, triggers, event triggers, RLS flags and policies, table,
+column and function privileges, owners, comments, extensions and their schemas,
+publications, storage bucket settings, and every cron job's schedule and command. The
+same comparison was run against a hosted Supabase Preview branch built from this
+repository: every section was byte-identical to production. The only differences
+remaining are:
+
+- grants to `db_admin_role`, a login role with `BYPASSRLS` that exists only in
+  production. It is not recreated in other environments; grants to it apply only where
+  it exists. **Confirm who created this role and whether it still needs to exist.**
+- items owned by the Supabase platform: extension versions, `pg_graphql` event trigger
+  tags, Realtime's default privileges and its daily message partitions, and storage
+  service indexes.
+
+**Rule from now on: every schema, privilege, policy or cron change goes through a
+migration file committed to this repository.** Changes made in the dashboard or SQL
+editor are what caused this drift. To catch any recurrence, set the `SUPABASE_DB_URL`
+repository secret so the remote half of `migration-parity.yml` actually runs.
+
+The sections below are the original 14 September inventory, kept for the record.
 
 ## The numbers
 

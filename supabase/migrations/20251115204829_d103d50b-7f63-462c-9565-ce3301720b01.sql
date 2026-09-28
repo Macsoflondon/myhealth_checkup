@@ -2,7 +2,10 @@
 CREATE EXTENSION IF NOT EXISTS pg_cron;
 
 -- Enable pg_net extension for HTTP requests
-CREATE EXTENSION IF NOT EXISTS pg_net;
+-- Replay adaptation (2026-09-28): production keeps pg_net in the extensions schema, where it
+-- already existed when this ran. Without the schema clause a fresh database installed
+-- it into public instead. See docs/MIGRATION_RECONCILIATION.md.
+CREATE EXTENSION IF NOT EXISTS pg_net WITH SCHEMA extensions;
 
 -- Schedule Medichecks scraper to run every 6 hours
 SELECT cron.schedule(
