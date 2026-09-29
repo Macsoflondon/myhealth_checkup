@@ -7,7 +7,6 @@ import {
 } from "@/config/mappedCategories";
 import { useMappedCategoryCounts } from "@/hooks/queries/useMappedCategoryTests";
 
-
 /** One card's live-count definition. */
 export interface WellnessCountSpec {
   /** Card id (also the key in the returned record). */
@@ -44,7 +43,6 @@ export function useWellnessCategoryCounts(specs: WellnessCountSpec[]) {
         .from("provider_tests")
         .select("test_name,description,biomarkers_list,canonical_category")
         .eq("is_active", true)
-        .not("image_url", "is", null)
         .not("url", "is", null);
 
       if (error) throw error;
@@ -52,19 +50,29 @@ export function useWellnessCategoryCounts(specs: WellnessCountSpec[]) {
 
       const counts: Record<string, number> = {};
       for (const spec of specs) {
-        const sub = spec.subSlug ? findSubcategory("wellness", spec.subSlug) : null;
+        const sub = spec.subSlug
+          ? findSubcategory("wellness", spec.subSlug)
+          : null;
         const patterns = sub?.matchAny ?? spec.matchAny ?? null;
         const categories = new Set(sub?.siblingCategories ?? spec.categories);
         for (const c of spec.categories) categories.add(c);
 
         counts[spec.id] = rows.filter((row) => {
-          if (!row.canonical_category || !categories.has(row.canonical_category)) return false;
+          if (
+            !row.canonical_category ||
+            !categories.has(row.canonical_category)
+          )
+            return false;
           if (!patterns) return true;
           const biomarkers = Array.isArray(row.biomarkers_list)
             ? (row.biomarkers_list as unknown[]).map(String)
             : [];
           return patterns.some((rx) =>
-            rx.test([row.test_name ?? "", row.description ?? "", ...biomarkers].join(" \u0001 "))
+            rx.test(
+              [row.test_name ?? "", row.description ?? "", ...biomarkers].join(
+                " \u0001 ",
+              ),
+            ),
           );
         }).length;
       }
@@ -74,17 +82,22 @@ export function useWellnessCategoryCounts(specs: WellnessCountSpec[]) {
   });
 
   // Overlay taxonomy-backed counts on top of the pattern-derived ones.
-  const merged: Record<string, number> | undefined = legacy.data || mappedCounts
-    ? {
-        ...(legacy.data ?? {}),
-        ...Object.fromEntries(
-          Object.entries(MAPPED_WELLNESS_CATEGORIES)
-            .map(([cardId, def]) => [cardId, mappedCounts?.[def.slug]] as const)
-            .filter((entry): entry is readonly [string, number] => entry[1] !== undefined)
-        ),
-      }
-    : undefined;
+  const merged: Record<string, number> | undefined =
+    legacy.data || mappedCounts
+      ? {
+          ...(legacy.data ?? {}),
+          ...Object.fromEntries(
+            Object.entries(MAPPED_WELLNESS_CATEGORIES)
+              .map(
+                ([cardId, def]) => [cardId, mappedCounts?.[def.slug]] as const,
+              )
+              .filter(
+                (entry): entry is readonly [string, number] =>
+                  entry[1] !== undefined,
+              ),
+          ),
+        }
+      : undefined;
 
   return { ...legacy, data: merged };
 }
-
