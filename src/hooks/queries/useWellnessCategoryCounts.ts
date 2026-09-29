@@ -44,7 +44,6 @@ export function useWellnessCategoryCounts(specs: WellnessCountSpec[]) {
         .from("provider_tests")
         .select("test_name,description,biomarkers_list,canonical_category")
         .eq("is_active", true)
-        .not("image_url", "is", null)
         .not("url", "is", null);
 
       if (error) throw error;

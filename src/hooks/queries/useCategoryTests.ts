@@ -23,7 +23,6 @@ export function useCategoryTests(canonicalCategory: string, subcategory?: string
         .from("provider_tests")
         .select(CATEGORY_TEST_COLUMNS)
         .eq("is_active", true)
-        .not("image_url", "is", null)
         .not("url", "is", null);
 
       const siblings = sub?.siblingCategories ?? [];

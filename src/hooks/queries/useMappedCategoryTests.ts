@@ -48,7 +48,6 @@ export function useMappedCategoryCounts(slugs: string[]) {
         .select("id")
         .in("id", allIds)
         .eq("is_active", true)
-        .not("image_url", "is", null)
         .not("url", "is", null);
       if (error) throw error;
 
@@ -79,7 +78,6 @@ export function useMappedCategoryTests(slug: string | null, badgeColor: string) 
         .select(CATEGORY_TEST_COLUMNS)
         .in("id", ids)
         .eq("is_active", true)
-        .not("image_url", "is", null)
         .not("url", "is", null)
         .order("is_addon", { ascending: true, nullsFirst: true })
         .order("is_popular", { ascending: false })
