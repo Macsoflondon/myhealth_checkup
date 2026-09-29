@@ -99,6 +99,7 @@ Deno.serve(async (req)=>{
     let html="";let finalUrl=url;try{const r=await fetch(url,{headers:{"User-Agent":"myhealthcheckup-sync/1.0"}});if(!r.ok)continue;finalUrl=r.url||url;html=await r.text();}catch(_e){continue;}
     if(slugRaw(finalUrl)!==slugRaw(url)){redir++;continue;}
     const p=parsePage(html);
+    if(p.name&&/\bvaccin/i.test(p.name)){skippedNoNameOrPrice.push({url,name:p.name,price:p.price,reason:"non_test_vaccine"});continue;}
     if(!p.name||!p.price||p.price<=0){skippedNoNameOrPrice.push({url,name:p.name,price:p.price});continue;}
     const row=bySlug.get(slugRaw(url))||byNorm.get(norm(p.name));
     if(row){

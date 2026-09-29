@@ -102,7 +102,7 @@ Deno.serve(async (req: Request) => {
       const handle: string = p.handle ?? "";
       const productUrl = `${BASE}/products/${handle}`;
 
-      if (/^clinic-visit/i.test(handle)) {
+      if (/^clinic-visit/i.test(handle) || /gift ?card/i.test(p.title ?? "")) {
         skippedJunk++;
         if (!dryRun) {
           await supabase.from("provider_tests").update({ is_active: false })

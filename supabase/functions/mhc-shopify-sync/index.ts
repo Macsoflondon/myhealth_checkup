@@ -39,13 +39,13 @@ const PROVIDERS: Record<string, { domain: string; junk: (title: string, ptype: s
   clinilabs: {
     domain: "https://www.clinilabs.co.uk",
     junk: (title, ptype, tags) =>
-      ptype.toLowerCase() === "giftcard" || tags.includes("giftcard") || /gift ?card/i.test(title),
+      ptype.toLowerCase() === "giftcard" || tags.includes("giftcard") || /gift ?card|phlebotomy|venous draw/i.test(title),
   },
   "lola-health": {
     domain: "https://lolahealth.com",
     junk: (title, ptype, tags) =>
       ptype.toLowerCase() === "giftcard" || tags.includes("giftcard") || tags.includes("category:gift-card") ||
-      /gift ?card|membership|deposit|e-?voucher|nmn|supplement|consultation|top ?up/i.test(title),
+      /gift ?card|membership|deposit|e-?voucher|nmn|supplement|consultation|top ?up|biological kit/i.test(title),
   },
 };
 
