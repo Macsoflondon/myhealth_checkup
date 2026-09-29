@@ -38,7 +38,11 @@ describe("resolveTestCardImage", () => {
 
   it("returns null for a test with no image so the card shows the brand tile", () => {
     expect(
-      resolveTestCardImage({ providerId: "clinilabs", isAddon: false, imageUrl: null }),
+      resolveTestCardImage({
+        providerId: "clinilabs",
+        isAddon: false,
+        imageUrl: null,
+      }),
     ).toBeNull();
     expect(resolveTestCardImage({ providerId: "clinilabs" })).toBeNull();
   });
@@ -57,6 +61,7 @@ describe("resolveTestCardImage", () => {
       desc: "Provider description",
       biomarkers: [],
       tag: "Women's Health",
+      badgeColor: "#7C3AED",
     });
     expect(adapted.image_url).toBeNull();
   });

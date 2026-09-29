@@ -8,7 +8,9 @@ import {
 } from "@/lib/categoryTestMapper";
 
 /** Resolves provider_test_ids for one or more category slugs. */
-async function fetchMappedTestIds(slugs: string[]): Promise<Record<string, string[]>> {
+async function fetchMappedTestIds(
+  slugs: string[],
+): Promise<Record<string, string[]>> {
   const { data: cats, error: catErr } = await supabase
     .from("categories")
     .select("id,slug")
@@ -63,7 +65,10 @@ export function useMappedCategoryCounts(slugs: string[]) {
 }
 
 /** Full test list for one mapped category slug, as category card items. */
-export function useMappedCategoryTests(slug: string | null, badgeColor: string) {
+export function useMappedCategoryTests(
+  slug: string | null,
+  badgeColor: string,
+) {
   return useQuery({
     queryKey: ["mapped-category-tests", slug],
     enabled: !!slug,
@@ -86,7 +91,7 @@ export function useMappedCategoryTests(slug: string | null, badgeColor: string) 
       if (error) throw error;
 
       return ((data ?? []) as unknown as ProviderTestRow[]).flatMap((row) =>
-        mapProviderTestRowVariants(row, badgeColor)
+        mapProviderTestRowVariants(row, badgeColor),
       );
     },
     staleTime: 5 * 60 * 1000,
