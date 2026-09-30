@@ -1,6 +1,7 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { anonClient, fail, ok, PRICE_NOTE, toNumber } from "../shared";
+import { anonClient, fail, ok, PRICE_NOTE, toNumber   withAccreditation,
+} from "../shared";
 
 export const TEST_DETAIL_COLUMNS =
   "id, provider_id, provider_name, test_name, description, is_addon, category_primary, price, original_price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, biomarker_count, biomarkers_list, biomarkers_listed, turnaround_days_text, sample_type, collection_method, location_options, home_kit_available, clinic_visit_available, url, url_verified, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, scraped_at, updated_at";
@@ -43,7 +44,7 @@ export default defineTool({
   name: "get_test",
   title: "Get test details",
   description:
-    "Fetch the full record for one test by id: provider description (verbatim), full biomarker list, price, collection and clinical review fees, total expected cost, turnaround, sample and collection method, location options, accreditation flags, provider URL, scraped_at and updated_at, plus a limitations list stating any missing or unverified data.",
+    "Fetch the full record for one test by id: provider description (verbatim), full biomarker list, price, collection and clinical review fees, total expected cost, turnaround, sample and collection method, location options, accreditation flags with accreditation_status (confirmed, not_confirmed or failed), provider URL, scraped_at and updated_at, plus a limitations list stating any missing or unverified data.",
   inputSchema: {
     id: z.string().uuid().describe("Test UUID returned by search_tests."),
   },
@@ -61,6 +62,6 @@ export default defineTool({
     if (error) return fail(error.message);
     if (!data) return fail("Not found");
     const test = data as unknown as TestDetail & Record<string, unknown>;
-    return ok({ test, limitations: testLimitations(test), note: PRICE_NOTE });
+    return ok({ test: withAccreditation(test), limitations: testLimitations(test), note: PRICE_NOTE });
   },
 });

@@ -1,9 +1,10 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { anonClient, fail, ilikeContains, ok, PRICE_NOTE } from "../shared";
+import { anonClient, fail, ilikeContains, ok, PRICE_NOTE   withAccreditation,
+} from "../shared";
 
 export const LISTING_COLUMNS =
-  "id, test_name, provider_id, provider_name, biomarker_count, price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, turnaround_days_text, sample_type, collection_method, location_options, home_kit_available, clinic_visit_available, url, updated_at";
+  "id, test_name, provider_id, provider_name, biomarker_count, price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, turnaround_days_text, sample_type, collection_method, location_options, home_kit_available, clinic_visit_available, url, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, updated_at";
 
 export const SORTS = {
   price_asc: { column: "total_expected_cost", ascending: true },
@@ -16,7 +17,7 @@ export default defineTool({
   name: "search_tests",
   title: "Search diagnostic tests",
   description:
-    "Search the myhealth checkup catalogue of UK private diagnostic tests. The keyword matches the test name or the provider's description. Filter by category slug (see list_categories), provider, maximum total expected cost, minimum biomarker count and collection method. Sorted only by the sort you choose (default price_asc, by total expected cost). Returns every listing field: name, biomarker count, price, collection and clinical review fees, total expected cost, turnaround, sample type, collection method, location options, home kit and clinic availability, provider URL and updated_at, plus total_matches.",
+    "Search the myhealth checkup catalogue of UK private diagnostic tests. The keyword matches the test name or the provider's description. Filter by category slug (see list_categories), provider, maximum total expected cost, minimum biomarker count and collection method. Sorted only by the sort you choose (default price_asc, by total expected cost). Returns every listing field: name, biomarker count, price, collection and clinical review fees, total expected cost, turnaround, sample type, collection method, location options, home kit and clinic availability, provider URL, accreditation flags with accreditation_status and updated_at, plus total_matches.",
   inputSchema: {
     query: z
       .string()
@@ -87,7 +88,7 @@ export default defineTool({
       total_matches: count ?? 0,
       offset: args.offset,
       sort: args.sort,
-      results: data ?? [],
+      results: ((data ?? []) as unknown as Array<Record<string, unknown>>).map((r) => withAccreditation(r)),
       note: PRICE_NOTE,
     });
   },
