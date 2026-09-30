@@ -19,7 +19,7 @@
       {
         "name": "search_tests",
         "title": "Search diagnostic tests",
-        "description": "Search the myhealth checkup catalogue of UK private diagnostic tests. The keyword matches the test name or the provider's description. Filter by category slug (see list_categories), provider, maximum total expected cost, minimum biomarker count and collection method. Sorted only by the sort you choose (default price_asc, by total expected cost). Returns every listing field: name, biomarker count, price, collection and clinical review fees, total expected cost, turnaround, sample type, collection method, location options, home kit and clinic availability, provider URL and updated_at, plus total_matches.",
+        "description": "Search the myhealth checkup catalogue of UK private diagnostic tests. The keyword matches the test name or the provider's description. Filter by category slug (see list_categories), provider, maximum total expected cost, minimum biomarker count and collection method. Sorted only by the sort you choose (default price_asc, by total expected cost). Returns every listing field: name, biomarker count, price, collection and clinical review fees, total expected cost, turnaround, sample type, collection method, location options, home kit and clinic availability, provider URL, accreditation flags with accreditation_status and updated_at, plus total_matches.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -92,7 +92,7 @@
       {
         "name": "get_test",
         "title": "Get test details",
-        "description": "Fetch the full record for one test by id: provider description (verbatim), full biomarker list, price, collection and clinical review fees, total expected cost, turnaround, sample and collection method, location options, accreditation flags, provider URL, scraped_at and updated_at, plus a limitations list stating any missing or unverified data.",
+        "description": "Fetch the full record for one test by id: provider description (verbatim), full biomarker list, price, collection and clinical review fees, total expected cost, turnaround, sample and collection method, location options, accreditation flags with accreditation_status (confirmed, not_confirmed or failed), provider URL, scraped_at and updated_at, plus a limitations list stating any missing or unverified data.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -118,7 +118,7 @@
       {
         "name": "list_providers",
         "title": "List providers",
-        "description": "List the private diagnostic test providers compared on myhealth checkup that meet our inclusion rules (UKAS accreditation and CQC registration confirmed; ISO 15189 where applicable). Returns each provider's accreditation flags, number of active tests (add-ons excluded, counted exactly) and the latest updated_at date. Providers whose accreditation is not yet confirmed in our data are listed separately under excluded_providers with the reason.",
+        "description": "List every private diagnostic test provider compared on myhealth checkup. Each provider carries its accreditation flags (lab_ukas_accredited, lab_cqc_regulated, lab_iso15189; null means not yet recorded) and an accreditation_status: confirmed (UKAS and CQC both true), not_confirmed (a flag is not recorded) or failed (a flag is recorded as false). Only treat a provider as accredited when the status is confirmed. Also returns the number of active tests (add-ons excluded, counted exactly) and the latest updated_at date.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -150,7 +150,7 @@
       {
         "name": "get_provider",
         "title": "Get provider",
-        "description": "Profile for one provider that meets our inclusion rules: name, accreditation flags, number of active tests, home kit and clinic collection options, location options, typical (median) phlebotomy and GP review fees, and the latest updated_at date.",
+        "description": "Profile for one provider: name, accreditation flags with accreditation_status (confirmed, not_confirmed or failed; only confirmed means UKAS and CQC are both recorded as true), number of active tests, home kit and clinic collection options, location options, typical (median) phlebotomy and GP review fees, and the latest updated_at date.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
