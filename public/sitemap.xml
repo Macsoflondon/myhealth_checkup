@@ -127,12 +127,6 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://myhealthcheckup.co.uk/tests/fertility</loc>
-    <lastmod>2026-04-09</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://myhealthcheckup.co.uk/tests/general-health</loc>
     <lastmod>2026-04-09</lastmod>
     <changefreq>weekly</changefreq>
@@ -481,18 +475,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://myhealthcheckup.co.uk/mens-health</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/womens-health</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://myhealthcheckup.co.uk/conditions</loc>
     <lastmod>2026-04-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -509,30 +491,6 @@
     <lastmod>2026-04-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/providers/randox</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/providers/lola-health</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/providers/london-medical-laboratory</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/providers/goodbody-clinic</loc>
-    <lastmod>2026-04-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://myhealthcheckup.co.uk/guides</loc>
@@ -613,27 +571,12 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://myhealthcheckup.co.uk/providers</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://myhealthcheckup.co.uk/clinilabs</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://myhealthcheckup.co.uk/providers/clinilabs</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://myhealthcheckup.co.uk/london-health-company</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/providers/london-health-company</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -648,37 +591,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://myhealthcheckup.co.uk/providers/medical-diagnosis</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/health-blog</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/most-popular-tests</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/find-test/compare</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/find-test/recommendations</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://myhealthcheckup.co.uk/trust</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/security</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
