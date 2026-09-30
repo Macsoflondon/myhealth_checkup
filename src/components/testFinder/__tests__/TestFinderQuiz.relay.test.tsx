@@ -22,6 +22,9 @@ const mockInvoke = vi.fn();
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
     functions: { invoke: (...args: unknown[]) => mockInvoke(...args) },
+    auth: {
+      getSession: () => Promise.resolve({ data: { session: { user: { id: "test-user" } } } }),
+    },
   },
 }));
 
