@@ -43,7 +43,9 @@ export default defineTool({
     if (error) return fail(error.message);
     const favourites = (data ?? []) as FavouriteRow[];
 
-    const ids = favourites.map((f) => f.test_id).filter((id) => UUID_RE.test(id));
+    const ids = favourites
+      .map((f) => f.test_id)
+      .filter((id) => UUID_RE.test(id));
     const current = new Map<string, CatalogueRow>();
     if (ids.length > 0) {
       const { data: rows, error: catError } = await client
@@ -62,7 +64,9 @@ export default defineTool({
         ...f,
         saved_price: saved,
         current_price: now,
-        current_total_expected_cost: live ? toNumber(live.total_expected_cost) : null,
+        current_total_expected_cost: live
+          ? toNumber(live.total_expected_cost)
+          : null,
         updated_at: live?.updated_at ?? null,
         in_catalogue: Boolean(live),
         price_changed: saved != null && now != null && saved !== now,

@@ -72,10 +72,12 @@ export default defineTool({
           window_hours: args.hours,
           ...((counts.data ?? {}) as Record<string, unknown>),
           overdue_jobs: jobRows.filter(
-            (j) => j.next_scrape != null && new Date(j.next_scrape).getTime() < now,
+            (j) =>
+              j.next_scrape != null && new Date(j.next_scrape).getTime() < now,
           ),
           failing_jobs: jobRows.filter(
-            (j) => FAILURE.has((j.status ?? "").toLowerCase()) || !!j.error_message,
+            (j) =>
+              FAILURE.has((j.status ?? "").toLowerCase()) || !!j.error_message,
           ),
           recent_orchestrator_runs: runLog.data ?? [],
           recent_failing_cron_runs: (

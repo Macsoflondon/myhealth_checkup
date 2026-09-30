@@ -74,8 +74,7 @@ export async function logAdminToolCall(
 }
 
 export type AdminRunResult =
-  | { payload: Record<string, unknown> }
-  | { error: string };
+  { payload: Record<string, unknown> } | { error: string };
 
 /**
  * Standard wrapper for every admin tool: guard, run, audit, then return.
@@ -96,6 +95,8 @@ export async function runAdminTool(
   if ("error" in result) return fail(result.error);
   const logError = await logAdminToolCall(session, toolName, args);
   if (logError)
-    return fail(`Audit log write failed, so no data was returned (${logError}).`);
+    return fail(
+      `Audit log write failed, so no data was returned (${logError}).`,
+    );
   return ok(result.payload);
 }

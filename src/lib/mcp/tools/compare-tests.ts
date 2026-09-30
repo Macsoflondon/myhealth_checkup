@@ -1,6 +1,13 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { anonClient, biomarkerNames, fail, ok, PRICE_NOTE } from "../shared";
+import {
+  anonClient,
+  biomarkerNames,
+  fail,
+  ok,
+  PRICE_NOTE,
+  withAccreditation,
+} from "../shared";
 
 type CompareRow = {
   id: string;
@@ -62,22 +69,28 @@ export default defineTool({
     const { data, error } = await anonClient()
       .from("unified_provider_tests")
       .select(
-        "id, test_name, provider_name, price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, turnaround_days_text, sample_type, collection_method, location_options, biomarker_count, biomarkers_list, updated_at",
+        "id, test_name, provider_name, price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, turnaround_days_text, sample_type, collection_method, location_options, biomarker_count, biomarkers_list, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, updated_at",
       )
       .in("id", ids);
     if (error) return fail(error.message);
     const byId = new Map(((data ?? []) as CompareRow[]).map((r) => [r.id, r]));
     const missing = ids.filter((id) => !byId.has(id));
-    if (missing.length > 0) return fail(`Tests not found: ${missing.join(", ")}`);
+    if (missing.length > 0)
+      return fail(`Tests not found: ${missing.join(", ")}`);
 
     const ordered = ids.map((id) => byId.get(id)!);
     const overlap = biomarkerOverlap(
-      ordered.map((r) => ({ id: r.id, biomarkers: biomarkerNames(r.biomarkers_list) })),
+      ordered.map((r) => ({
+        id: r.id,
+        biomarkers: biomarkerNames(r.biomarkers_list),
+      })),
     );
-    const table = ordered.map(({ biomarkers_list, ...rest }) => ({
-      ...rest,
-      biomarkers_listed: biomarkerNames(biomarkers_list).length,
-    }));
+    const table = ordered.map(({ biomarkers_list, ...rest }) =>
+      withAccreditation({
+        ...rest,
+        biomarkers_listed: biomarkerNames(biomarkers_list).length,
+      }),
+    );
     return ok({
       tests: table,
       shared_biomarkers: overlap.shared,

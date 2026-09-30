@@ -4,7 +4,8 @@ import { runAdminTool } from "../admin-guard";
 
 /** Each check is a PostgREST `or`/filter expression on unified_provider_tests. */
 export const DATA_QUALITY_CHECKS: Record<string, string> = {
-  missing_biomarkers: "biomarker_count.is.null,biomarker_count.eq.0,biomarkers_listed.is.null,biomarkers_listed.eq.0",
+  missing_biomarkers:
+    "biomarker_count.is.null,biomarker_count.eq.0,biomarkers_listed.is.null,biomarkers_listed.eq.0",
   missing_or_placeholder_price: "price.is.null,price.lte.1",
   missing_turnaround: "turnaround_days_text.is.null,turnaround_days_text.eq.",
   url_never_checked: "url_verified.is.null",
@@ -38,13 +39,16 @@ export default defineTool({
             .limit(args.sample_size),
         ),
       );
-      const checks: Record<string, { count: number; sample_ids: string[] }> = {};
+      const checks: Record<string, { count: number; sample_ids: string[] }> =
+        {};
       for (let i = 0; i < entries.length; i++) {
         const r = results[i];
         if (r.error) return { error: r.error.message };
         checks[entries[i][0]] = {
           count: r.count ?? 0,
-          sample_ids: ((r.data ?? []) as Array<{ id: string }>).map((d) => d.id),
+          sample_ids: ((r.data ?? []) as Array<{ id: string }>).map(
+            (d) => d.id,
+          ),
         };
       }
       return { payload: { checks } };

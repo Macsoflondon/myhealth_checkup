@@ -87,18 +87,37 @@ export type AccreditationFlags = {
   lab_iso15189: boolean | null;
 };
 
+export type AccreditationStatus = "confirmed" | "not_confirmed" | "failed";
+
 /**
- * Inclusion rules: UKAS-accredited and CQC-regulated must be confirmed true.
- * ISO 15189 applies where relevant, so unknown is allowed but an explicit false excludes.
+ * Accreditation status from the raw flags. Never used to hide providers.
+ * failed: any flag explicitly false. confirmed: UKAS and CQC both true.
+ * not_confirmed: anything else (a flag is null or unknown).
  */
-export function inclusionFailures(flags: AccreditationFlags): string[] {
-  const reasons: string[] = [];
-  if (flags.lab_ukas_accredited !== true)
-    reasons.push("UKAS accreditation not confirmed");
-  if (flags.lab_cqc_regulated !== true)
-    reasons.push("CQC registration not confirmed");
-  if (flags.lab_iso15189 === false) reasons.push("ISO 15189 recorded as absent");
-  return reasons;
+export function accreditationStatus(
+  flags: Partial<AccreditationFlags>,
+): AccreditationStatus {
+  const values = [
+    flags.lab_ukas_accredited,
+    flags.lab_cqc_regulated,
+    flags.lab_iso15189,
+  ];
+  if (values.some((v) => v === false)) return "failed";
+  if (flags.lab_ukas_accredited === true && flags.lab_cqc_regulated === true)
+    return "confirmed";
+  return "not_confirmed";
+}
+
+/** Returns the row with the three flags (null when absent) and accreditation_status. */
+export function withAccreditation<T extends object>(
+  row: T & Partial<AccreditationFlags>,
+): T & AccreditationFlags & { accreditation_status: AccreditationStatus } {
+  const flags: AccreditationFlags = {
+    lab_ukas_accredited: row.lab_ukas_accredited ?? null,
+    lab_cqc_regulated: row.lab_cqc_regulated ?? null,
+    lab_iso15189: row.lab_iso15189 ?? null,
+  };
+  return { ...row, ...flags, accreditation_status: accreditationStatus(flags) };
 }
 
 export function toNumber(value: unknown): number | null {
