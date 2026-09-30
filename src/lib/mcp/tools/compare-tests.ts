@@ -1,6 +1,6 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { anonClient, biomarkerNames, fail, ok, PRICE_NOTE   withAccreditation,
+import { anonClient, biomarkerNames, fail, ok, PRICE_NOTE, withAccreditation,
 } from "../shared";
 
 type CompareRow = {

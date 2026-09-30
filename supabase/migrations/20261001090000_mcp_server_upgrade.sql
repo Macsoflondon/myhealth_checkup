@@ -1,30 +1,10 @@
 -- MCP server upgrade (src/lib/mcp). Additive and reversible.
--- Run manually against the external Supabase project, then move this file
--- into supabase/migrations/ so the parity check stays green.
--- 1. favorites: remove duplicates (keep oldest) and enforce one row per user/test.
+-- Applied manually to production on 2026-09-30. The favorites uniqueness step
+-- was removed: favorites_user_test_unique (user_id, test_id) already exists.
 -- 2. Denied-call audit logging helper.
 -- 3. Aggregation functions so MCP tools never depend on the PostgREST row cap.
 -- Catalogue functions are SECURITY INVOKER so existing RLS still applies.
 -- Admin functions additionally check has_role(auth.uid(), 'admin').
-
--- 1. favorites uniqueness ----------------------------------------------------
-DELETE FROM public.favorites f
-USING public.favorites g
-WHERE f.user_id = g.user_id
-  AND f.test_id = g.test_id
-  AND (f.created_at, f.id) > (g.created_at, g.id);
-
-DO $$
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1 FROM pg_constraint
-    WHERE conname = 'favorites_user_id_test_id_key'
-      AND conrelid = 'public.favorites'::regclass
-  ) THEN
-    ALTER TABLE public.favorites
-      ADD CONSTRAINT favorites_user_id_test_id_key UNIQUE (user_id, test_id);
-  END IF;
-END $$;
 
 -- 2. Denied MCP call logging (callers are not admins, so RLS would block them)
 CREATE OR REPLACE FUNCTION public.mcp_log_denied_tool_call(p_tool text)
@@ -376,4 +356,3 @@ GRANT EXECUTE ON FUNCTION public.mcp_platform_health_counts(int) TO authenticate
 --     public.mcp_price_movements(int, text, text, numeric, int),
 --     public.mcp_find_tests_by_biomarker(text, numeric, int), public.mcp_list_categories(),
 --     public.mcp_get_provider(text), public.mcp_list_providers(), public.mcp_log_denied_tool_call(text);
---   ALTER TABLE public.favorites DROP CONSTRAINT favorites_user_id_test_id_key;

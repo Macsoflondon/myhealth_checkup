@@ -1,6 +1,6 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { anonClient, fail, ok, PRICE_NOTE   withAccreditation,
+import { anonClient, fail, ok, PRICE_NOTE, withAccreditation,
   type AccreditationFlags,
 } from "../shared";
 

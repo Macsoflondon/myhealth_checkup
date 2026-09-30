@@ -1,6 +1,6 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { anonClient, fail, ok, PRICE_NOTE, toNumber   withAccreditation,
+import { anonClient, fail, ok, PRICE_NOTE, toNumber, withAccreditation,
 } from "../shared";
 
 export const TEST_DETAIL_COLUMNS =
