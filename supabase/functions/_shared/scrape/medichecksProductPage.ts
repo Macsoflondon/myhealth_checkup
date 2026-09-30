@@ -12,6 +12,7 @@
  */
 
 import { normaliseBiomarkers } from "./normaliseBiomarkers.ts";
+import { htmlToText } from "./html.ts";
 
 export interface MedichecksPageDetail {
   biomarkers: string[];
@@ -36,22 +37,8 @@ const FEE =
 
 const SECTION_LIMIT = 2600;
 
-function decodeEntities(input: string): string {
-  return input
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;|&apos;/g, "'")
-    .replace(/&rsquo;|&#8217;/g, "\u2019")
-    .replace(/&pound;/g, "£");
-}
-
 export function toPlainText(fragment: string): string {
-  return decodeEntities(fragment.replace(/<[^>]+>/g, " "))
-    .replace(/\s+/g, " ")
-    .trim();
+  return htmlToText(fragment);
 }
 
 /** Headings that mark the end of whichever section we are reading. */

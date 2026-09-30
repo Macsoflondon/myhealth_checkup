@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
+import { internalErrorResponse } from "../_shared/errors.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -371,15 +372,8 @@ Deno.serve(async (req) => {
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (e) {
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: e instanceof Error ? e.message : String(e),
-      }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      },
-    );
+    return internalErrorResponse("audit-biomarkers", e, corsHeaders, {
+      body: { success: false },
+    });
   }
 });

@@ -16,7 +16,7 @@
  */
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
-import { getErrorMessage } from "../_shared/errors.ts";
+import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
 import { parseTurnaround } from "../_shared/scrape/index.ts";
 
 const corsHeaders = {
@@ -121,12 +121,8 @@ Deno.serve(async (req) => {
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (err) {
-    return new Response(
-      JSON.stringify({ success: false, error: getErrorMessage(err), stats }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      },
-    );
+    return internalErrorResponse("backfill-turnaround", err, corsHeaders, {
+      body: { success: false, stats },
+    });
   }
 });

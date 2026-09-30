@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { internalErrorResponse } from "../_shared/errors.ts";
+import { decodeEntities, htmlToText } from "../_shared/scrape/html.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -56,21 +58,12 @@ interface ScrapedTest {
 }
 
 function decodeHtml(value: string) {
-  return value
-    .replace(/&amp;/g, "&")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&nbsp;/g, " ")
-    .trim();
+  return decodeEntities(value).trim();
 }
 
 function stripHtml(value?: string | null) {
   if (!value) return null;
-  const cleaned = decodeHtml(
-    value.replace(/<[^>]+>/g, " ").replace(/\s+/g, " "),
-  );
+  const cleaned = htmlToText(value);
   return cleaned || null;
 }
 
@@ -429,16 +422,7 @@ async function scrapeLmlDescription(url: string): Promise<string | null> {
       /<h2[^>]*>\s*What can I expect[^<]*<\/h2>([\s\S]*?)<h2/i,
     );
     if (!m) return null;
-    let txt = m[1].replace(/<[^>]+>/g, " ");
-    txt = txt
-      .replace(/&nbsp;/g, " ")
-      .replace(/&amp;/g, "&")
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'")
-      .replace(/&ldquo;|&rdquo;/g, '"')
-      .replace(/&lsquo;|&rsquo;/g, "'")
-      .replace(/\s+/g, " ")
-      .trim();
+    let txt = htmlToText(m[1]);
     if (!txt) return null;
     if (txt.length > 380) {
       const cut = txt.slice(0, 380);
@@ -640,16 +624,8 @@ Deno.serve(async (req) => {
       },
     );
   } catch (err) {
-    console.error("scrape-popular-tests fatal:", err);
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: err instanceof Error ? err.message : String(err),
-      }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      },
-    );
+    return internalErrorResponse("scrape-popular-tests", err, corsHeaders, {
+      body: { success: false },
+    });
   }
 });

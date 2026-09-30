@@ -10,6 +10,9 @@ on:
     - cron: "30 6 * * *"
     - cron: "30 18 * * *"
 
+permissions:
+  contents: read
+
 jobs:
   category-mapping:
     name: provider_tests canonical_category invariants

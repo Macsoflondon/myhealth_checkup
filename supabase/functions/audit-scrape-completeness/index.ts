@@ -15,7 +15,7 @@
  */
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
-import { getErrorMessage } from "../_shared/errors.ts";
+import { internalErrorResponse } from "../_shared/errors.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -144,11 +144,11 @@ Deno.serve(async (req) => {
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (err) {
-    const msg = getErrorMessage(err);
-    console.error("audit-scrape-completeness error:", msg);
-    return new Response(JSON.stringify({ success: false, error: msg }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return internalErrorResponse(
+      "audit-scrape-completeness",
+      err,
+      corsHeaders,
+      { body: { success: false } },
+    );
   }
 });

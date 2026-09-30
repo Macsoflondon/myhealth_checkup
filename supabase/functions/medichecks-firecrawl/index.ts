@@ -18,8 +18,9 @@
  * No LLM is involved at any point.
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
-import { getErrorMessage } from "../_shared/errors.ts";
+import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
 import { parseMedichecksProductPage } from "../_shared/scrape/medichecksProductPage.ts";
+import { htmlToText } from "../_shared/scrape/html.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -150,20 +151,7 @@ function determineCategory(
 }
 
 function stripHtml(html: string): string {
-  return html
-    .replace(/<(script|style)[\s\S]*?<\/\1>/gi, " ")
-    .replace(/<br\s*\/?>/gi, "\n")
-    .replace(/<\/(p|li|h[1-6]|div)>/gi, "\n")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&#39;|&rsquo;/g, "'")
-    .replace(/&quot;/g, '"')
-    .replace(/[ \t]+/g, " ")
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
+  return htmlToText(html, { preserveNewlines: true });
 }
 
 function extractBiomarkerCount(text: string): number | null {
@@ -567,6 +555,8 @@ Deno.serve(async (req) => {
     const message = getErrorMessage(error);
     console.error("[medichecks] fatal:", message);
     await setJob(supabase, "failed", message);
-    return json({ success: false, error: message }, 500);
+    return internalErrorResponse("medichecks-firecrawl", error, corsHeaders, {
+      body: { success: false },
+    });
   }
 });

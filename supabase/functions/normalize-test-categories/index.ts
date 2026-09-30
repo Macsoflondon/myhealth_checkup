@@ -6,7 +6,8 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { getErrorMessage } from "../_shared/errors.ts";
+import { internalErrorResponse } from "../_shared/errors.ts";
+import { decodeEntities } from "../_shared/scrape/html.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -27,17 +28,7 @@ interface ProviderTestRow {
   category: string | null;
 }
 
-function decodeHtmlEntities(s: string): string {
-  return s
-    .replace(/&#8211;/g, "–")
-    .replace(/&#8217;/g, "\u2019")
-    .replace(/&#038;/g, "&")
-    .replace(/&amp;/g, "&")
-    .replace(/&pound;/g, "£")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&quot;/g, '"')
-    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(parseInt(n, 10)));
-}
+const decodeHtmlEntities = decodeEntities;
 
 /**
  * Canonical categoriser. Order matters: more specific buckets first so a
@@ -253,10 +244,6 @@ serve(async (req) => {
       },
     );
   } catch (err) {
-    console.error("[normalize-test-categories] error:", getErrorMessage(err));
-    return new Response(JSON.stringify({ error: getErrorMessage(err) }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 500,
-    });
+    return internalErrorResponse("normalize-test-categories", err, corsHeaders);
   }
 });

@@ -15,6 +15,8 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { resolve, join } from "node:path";
 
+// Plain-text search for the old www host anywhere in a file (not URL validation).
+const WWW_HOST_RE = /\bwww\.myhealthcheckup\.co\.uk\b/;
 const ROOT = process.cwd();
 const APEX = "https://myhealthcheckup.co.uk";
 
@@ -27,7 +29,7 @@ const sitemapPaths = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) =>
   m[1].replace(APEX, ""),
 );
 
-if (sitemap.includes("www.myhealthcheckup.co.uk")) {
+if (WWW_HOST_RE.test(sitemap)) {
   fail.push("sitemap.xml still contains www. URLs");
 }
 
@@ -63,7 +65,7 @@ for (const f of allSrc) {
   const rel = f.replace(ROOT + "/", "");
   if (WWW_GUARD_FILES.includes(rel)) continue;
   const txt = readFileSync(f, "utf8");
-  if (txt.includes("www.myhealthcheckup.co.uk")) {
+  if (WWW_HOST_RE.test(txt)) {
     warn.push(
       `${f.replace(ROOT + "/", "")} still references www.myhealthcheckup.co.uk`,
     );
@@ -95,8 +97,7 @@ for (const tag of ["og:type", "og:site_name", "og:image"]) {
 }
 if (!rootRoute.includes("application/ld+json"))
   fail.push("__root.tsx missing Organization JSON-LD");
-if (rootRoute.includes("www.myhealthcheckup.co.uk"))
-  fail.push("__root.tsx still references www.");
+if (WWW_HOST_RE.test(rootRoute)) fail.push("__root.tsx still references www.");
 
 // ---- 5b. Dynamic detail routes must build metadata from the shared helpers --
 const HELPER_ROUTES = [

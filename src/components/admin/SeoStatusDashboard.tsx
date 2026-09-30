@@ -104,9 +104,16 @@ export function SeoStatusDashboard() {
 
   const sitemapPaths = useMemo(() => {
     if (!sitemapUrls) return null;
-    return sitemapUrls.map((u) =>
-      u.startsWith(BASE_URL) ? u.slice(BASE_URL.length) || "/" : u,
-    );
+    return sitemapUrls.map((u) => {
+      try {
+        const parsed = new URL(u);
+        if (parsed.origin === BASE_URL)
+          return `${parsed.pathname}${parsed.search}${parsed.hash}` || "/";
+      } catch {
+        // not an absolute URL, keep as-is
+      }
+      return u;
+    });
   }, [sitemapUrls]);
 
   const robots = useMemo(

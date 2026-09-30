@@ -4,7 +4,7 @@
  * provenance pipeline (history + change events + safety rails).
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
-import { getErrorMessage } from "../_shared/errors.ts";
+import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
 import {
   upsertWithProvenance,
   parseTurnaround,
@@ -286,9 +286,8 @@ Deno.serve(async (req) => {
       .update({ status: "failed", error_message: msg })
       .eq("provider_id", PROVIDER_ID);
     await finishScrapeRun(supabase, runId, counters, "error");
-    return new Response(JSON.stringify({ success: false, error: msg }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    return internalErrorResponse("clinilabs-scraper", err, corsHeaders, {
+      body: { success: false },
     });
   }
 });

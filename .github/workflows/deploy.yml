@@ -11,6 +11,9 @@ concurrency:
   group: deploy-production
   cancel-in-progress: false
 
+permissions:
+  contents: read
+
 jobs:
   # Same deterministic gate as unit-tests.yml (npm ci + vitest). If the
   # lockfile drifts from package.json or a test fails, nothing is deployed.

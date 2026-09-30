@@ -63,9 +63,14 @@ function collectSitemapPaths() {
   let m;
   while ((m = re.exec(xml)) !== null) {
     const url = m[1].trim();
-    const path = url.startsWith(BASE_URL)
-      ? url.slice(BASE_URL.length) || "/"
-      : url;
+    let path = url;
+    try {
+      const parsed = new URL(url);
+      if (parsed.origin === BASE_URL)
+        path = `${parsed.pathname}${parsed.search}${parsed.hash}` || "/";
+    } catch {
+      // not an absolute URL, keep as-is
+    }
     paths.add(path);
   }
   return paths;

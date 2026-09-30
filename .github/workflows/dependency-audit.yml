@@ -9,6 +9,9 @@ on:
     # Weekly scan every Monday at 06:00 UTC to catch newly disclosed CVEs
     - cron: "0 6 * * 1"
 
+permissions:
+  contents: read
+
 jobs:
   audit:
     name: npm audit (fail on high/critical)

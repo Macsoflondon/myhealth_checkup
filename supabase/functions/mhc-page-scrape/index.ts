@@ -8,6 +8,7 @@
 // Set the MHC_SYNC_SECRET edge function secret in the Supabase dashboard; this file will not
 // authenticate correctly until you do, by design.
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { htmlToText } from "../_shared/scrape/html.ts";
 
 const SECRET = Deno.env.get("MHC_SYNC_SECRET") ?? "";
 
@@ -26,13 +27,7 @@ const PROVIDERS: Record<
 };
 
 function stripTags(s: string): string {
-  return (s || "")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&#8211;/g, "-")
-    .replace(/\s+/g, " ")
-    .trim();
+  return htmlToText(s || "");
 }
 function norm(s: string): string {
   return (s || "")
@@ -79,10 +74,7 @@ function extractDescriptionScraped(
 ): string | null {
   const jsonLd = extractJsonLdDescription(html);
   if (jsonLd) return stripTags(jsonLd).slice(0, 4000);
-  const cleanedHtml = html
-    .replace(/<script[\s\S]*?<\/script>/gi, " ")
-    .replace(/<style[\s\S]*?<\/style>/gi, " ");
-  const text = stripTags(cleanedHtml);
+  const text = stripTags(html);
   let startIdx = 0;
   if (name) {
     const idx = text.indexOf(name);

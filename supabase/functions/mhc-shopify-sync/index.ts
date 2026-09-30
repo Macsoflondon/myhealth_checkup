@@ -18,22 +18,14 @@
 // Set the MHC_SYNC_SECRET edge function secret in the Supabase dashboard; this file will not
 // authenticate correctly until you do, by design.
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { internalErrorResponse } from "../_shared/errors.ts";
+import { htmlToText } from "../_shared/scrape/html.ts";
 
 const SECRET = Deno.env.get("MHC_SYNC_SECRET") ?? "";
 
 function stripHtml(html: string | null | undefined): string | null {
   if (!html) return null;
-  const text = html
-    .replace(/<style[\s\S]*?<\/style>/gi, " ")
-    .replace(/<script[\s\S]*?<\/script>/gi, " ")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&#39;/g, "'")
-    .replace(/&quot;/g, '"')
-    .replace(/&#8211;|&ndash;/g, "-")
-    .replace(/\s+/g, " ")
-    .trim();
+  const text = htmlToText(html);
   return text ? text.slice(0, 4000) : null;
 }
 
@@ -317,9 +309,11 @@ Deno.serve(async (req: Request) => {
           .eq("id", runId);
       } catch (_e) {}
     }
-    return new Response(
-      JSON.stringify({ ok: false, provider, error: msg, page, seen }),
-      { status: 500, headers: { "Content-Type": "application/json" } },
+    return internalErrorResponse(
+      "mhc-shopify-sync",
+      e,
+      {},
+      { body: { ok: false, provider, page, seen } },
     );
   }
 });
