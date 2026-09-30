@@ -31,4 +31,4 @@
 - [x] Show active tests without images (All Tests/catalogue), brand-tile fallback; report 5 uncategorised tests
 - [ ] Security: Assisted Test Finder and Hidden Gap Detector AI calls restricted to signed-in users
 - [ ] Security: Assisted Test Finder and Hidden Gap Detector AI calls restricted to signed-in users
-- [ ] Reformat the whole site and verify types, unit tests and production build.
+- [x] Reformat the whole site and verify types, unit tests and production build.
