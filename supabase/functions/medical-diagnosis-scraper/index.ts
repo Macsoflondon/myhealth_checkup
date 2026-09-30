@@ -4,7 +4,8 @@
  * under their parent test. Writes via shared provenance pipeline.
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
-import { getErrorMessage } from "../_shared/errors.ts";
+import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
+import { decodeEntities, htmlToText } from "../_shared/scrape/html.ts";
 import {
   upsertWithProvenance,
   parseTurnaround,
@@ -65,27 +66,8 @@ interface WooProduct {
   images: { src: string }[];
 }
 
-function decodeHtmlEntities(s: string): string {
-  return s
-    .replace(/&#8211;/g, "–")
-    .replace(/&#8217;/g, "\u2019")
-    .replace(/&#038;/g, "&")
-    .replace(/&#0?38;/g, "&")
-    .replace(/&amp;/g, "&")
-    .replace(/&pound;/g, "£")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&quot;/g, '"')
-    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(parseInt(n, 10)));
-}
-
-function stripHtml(html: string): string {
-  return decodeHtmlEntities(
-    html
-      .replace(/<[^>]+>/g, " ")
-      .replace(/\s+/g, " ")
-      .trim(),
-  );
-}
+const decodeHtmlEntities = decodeEntities;
+const stripHtml = (html: string): string => htmlToText(html);
 
 export function parseRawTestName(
   raw: string,
@@ -417,9 +399,11 @@ Deno.serve(async (req) => {
       .update({ status: "failed", error_message: msg })
       .eq("provider_id", PROVIDER_ID);
     await finishScrapeRun(supabase, runId, counters, "error");
-    return new Response(JSON.stringify({ success: false, error: msg }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return internalErrorResponse(
+      "medical-diagnosis-scraper",
+      err,
+      corsHeaders,
+      { body: { success: false } },
+    );
   }
 });

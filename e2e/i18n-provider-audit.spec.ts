@@ -110,7 +110,7 @@ for (const lang of NON_ENGLISH_LANGUAGES) {
         await page.waitForTimeout(500);
 
         const testLinkPattern = new RegExp(
-          `^/${slug.replace(/-/g, "\\-")}/[a-z0-9-]+$`,
+          `^/${slug.replace(/[.*+?^${}()|[\]\\-]/g, "\\$&")}/[a-z0-9-]+$`,
           "i",
         );
         const testLink = page

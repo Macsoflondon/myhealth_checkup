@@ -11,7 +11,7 @@
  */
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
-import { getErrorMessage } from "../_shared/errors.ts";
+import { internalErrorResponse } from "../_shared/errors.ts";
 import {
   applyProviderRows,
   type ProviderDatasetRow,
@@ -178,8 +178,8 @@ serve(async (req) => {
       unmatched: result.unmatched.slice(0, 50),
     });
   } catch (err) {
-    const message = getErrorMessage(err);
-    console.error("[apify-ingest] fatal:", message);
-    return json({ success: false, error: message }, 500);
+    return internalErrorResponse("apify-ingest", err, corsHeaders, {
+      body: { success: false },
+    });
   }
 });

@@ -4,7 +4,8 @@
  * Firecrawl URL discovery. Writes via shared provenance pipeline.
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
-import { getErrorMessage } from "../_shared/errors.ts";
+import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
+import { decodeEntities } from "../_shared/scrape/html.ts";
 import {
   upsertWithProvenance,
   parseTurnaround,
@@ -185,10 +186,7 @@ function extractTitle(html: string): string {
     const m = html.match(pattern);
     if (m && m[1]) {
       const t = cleanTitle(
-        m[1]
-          .replace(/\s*[|-]\s*Randox.*$/i, "")
-          .replace(/&amp;/g, "&")
-          .replace(/&#39;/g, "'"),
+        decodeEntities(m[1].replace(/\s*[|-]\s*Randox.*$/i, "")),
       );
       if (t && !isGarbageName(t)) return t;
     }
@@ -215,13 +213,14 @@ function extractPrice(html: string): {
   let current: number | null = null;
   let original: number | null = null;
 
-  const jsonLdBlocks = html.match(
-    /<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi,
-  );
-  if (jsonLdBlocks) {
-    for (const block of jsonLdBlocks) {
+  const jsonLdBlocks = [
+    ...html.matchAll(
+      /<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script\s*>/gi,
+    ),
+  ];
+  if (jsonLdBlocks.length) {
+    for (const [, json] of jsonLdBlocks) {
       try {
-        const json = block.replace(/<script[^>]*>|<\/script>/gi, "");
         const data = JSON.parse(json);
         if (data.offers?.price) current = parseFloat(data.offers.price);
         if (data["@graph"]) {
@@ -665,9 +664,8 @@ Deno.serve(async (req) => {
       .update({ status: "failed", error_message: msg })
       .eq("provider_id", PROVIDER_ID);
     await finishScrapeRun(supabase, runId, counters, "error");
-    return new Response(JSON.stringify({ success: false, error: msg }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    return internalErrorResponse("randox-scraper", err, corsHeaders, {
+      body: { success: false },
     });
   }
 });

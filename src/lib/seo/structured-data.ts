@@ -91,7 +91,7 @@ export const validateJsonLd = (
           message: `url must be absolute, got "${url}"`,
         });
       }
-      if (url.includes("www.myhealthcheckup.co.uk")) {
+      if (hostnameOf(url) === "www.myhealthcheckup.co.uk") {
         issues.push({
           node: label,
           message: "url uses the www host instead of the apex domain",
@@ -255,3 +255,11 @@ export const buildBreadcrumbSchema = (
     item: crumb.url,
   })),
 });
+
+function hostnameOf(url: string): string | null {
+  try {
+    return new URL(url).hostname;
+  } catch {
+    return null;
+  }
+}

@@ -6,6 +6,7 @@
 // victims out by guessing the email alone (we still throttle that bucket,
 // but never lock anyone out of their own account from a different IP).
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { internalErrorResponse } from "../_shared/errors.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -78,9 +79,6 @@ Deno.serve(async (req) => {
       },
     );
   } catch (e) {
-    return new Response(JSON.stringify({ error: String(e) }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return internalErrorResponse("auth-throttle", e, corsHeaders);
   }
 });

@@ -1,6 +1,7 @@
 // Edge function: AI-powered batch translation with Supabase caching.
 // Uses Lovable AI Gateway (Gemini) — no user-supplied keys.
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { internalErrorResponse } from "../_shared/errors.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -236,9 +237,6 @@ Deno.serve(async (req) => {
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (e) {
-    return new Response(JSON.stringify({ error: String(e) }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return internalErrorResponse("translate", e, corsHeaders);
   }
 });

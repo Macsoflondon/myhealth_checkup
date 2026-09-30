@@ -9,7 +9,7 @@
  */
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
-import { getErrorMessage } from "../_shared/errors.ts";
+import { internalErrorResponse } from "../_shared/errors.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -223,8 +223,8 @@ serve(async (req) => {
       scrape_run_id: scrapeRunId,
     });
   } catch (err) {
-    const message = getErrorMessage(err);
-    console.error("[apify-scrape-provider] fatal:", message);
-    return json({ success: false, error: message }, 500);
+    return internalErrorResponse("apify-scrape-provider", err, corsHeaders, {
+      body: { success: false },
+    });
   }
 });

@@ -27,7 +27,9 @@ async function resolveOne(rec: RecInput): Promise<UniversalTestData | null> {
   }
 
   // Fallback: fuzzy match by provider + test_name (LIKE for curly apostrophes)
-  const pattern = `%${rec.testName.replace(/[\u2018\u2019]/g, "_").replace(/[%_]/g, "\\$&")}%`;
+  // Escape LIKE metacharacters (including the escape char itself) first, then
+  // turn curly apostrophes into the single-char wildcard so it stays unescaped.
+  const pattern = `%${rec.testName.replace(/[\\%_]/g, "\\$&").replace(/[\u2018\u2019]/g, "_")}%`;
   const { data } = await supabase
     .from("provider_tests")
     .select(SELECT)

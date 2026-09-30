@@ -6,6 +6,7 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type",
 };
 import { z } from "https://esm.sh/zod@3.23.8";
+import { decodeEntities, htmlToText } from "../_shared/scrape/html.ts";
 
 const RATE_LIMIT_MAX = 20; // max calls per IP per window
 const RATE_LIMIT_WINDOW_MIN = 5;
@@ -47,25 +48,12 @@ function assertAllowedUrl(item: z.infer<typeof ItemSchema>) {
 const ABSOLUTE_URL = /^https?:\/\//i;
 
 function decodeHtml(value: string) {
-  return value
-    .replace(/&amp;/g, "&")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&nbsp;/g, " ")
-    .trim();
+  return decodeEntities(value).trim();
 }
 
 function stripHtml(value?: string | null) {
   if (!value) return null;
-  const cleaned = decodeHtml(
-    value
-      .replace(/<script[\s\S]*?<\/script>/gi, " ")
-      .replace(/<style[\s\S]*?<\/style>/gi, " ")
-      .replace(/<[^>]+>/g, " ")
-      .replace(/\s+/g, " "),
-  );
+  const cleaned = htmlToText(value);
   return cleaned || null;
 }
 

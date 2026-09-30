@@ -1,4 +1,6 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
+import { internalErrorResponse } from "../_shared/errors.ts";
+import { htmlToText } from "../_shared/scrape/html.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -226,10 +228,7 @@ function extractDescription(html: string): string | null {
   for (const pattern of patterns) {
     const match = html.match(pattern);
     if (match && match[1]) {
-      return match[1]
-        .replace(/<[^>]+>/g, "")
-        .trim()
-        .substring(0, 500);
+      return htmlToText(match[1]).substring(0, 500);
     }
   }
 
@@ -252,13 +251,14 @@ function extractPrice(html: string): {
   }
 
   // JSON-LD
-  const jsonLdMatch = html.match(
-    /<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi,
-  );
-  if (jsonLdMatch && current === null) {
-    for (const script of jsonLdMatch) {
+  const jsonLdMatch = [
+    ...html.matchAll(
+      /<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script\s*>/gi,
+    ),
+  ];
+  if (jsonLdMatch.length && current === null) {
+    for (const [, jsonContent] of jsonLdMatch) {
       try {
-        const jsonContent = script.replace(/<script[^>]*>|<\/script>/gi, "");
         const data = JSON.parse(jsonContent);
         if (data.offers?.price) {
           current = parseFloat(data.offers.price);
@@ -705,15 +705,8 @@ Deno.serve(async (req) => {
       })
       .eq("provider_id", "london-medical-laboratory");
 
-    return new Response(
-      JSON.stringify({
-        success: false,
-        error: error instanceof Error ? error.message : String(error),
-      }),
-      {
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-        status: 500,
-      },
-    );
+    return internalErrorResponse("scrape-london-lab", error, corsHeaders, {
+      body: { success: false },
+    });
   }
 });

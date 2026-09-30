@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
-import { getErrorMessage } from "../_shared/errors.ts";
+import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
 import {
   firecrawlScrape,
   firecrawlMap,
@@ -404,9 +404,8 @@ Deno.serve(async (req) => {
       { onConflict: "provider_id" },
     );
     await finishScrapeRun(supabase, runId, counters, "error");
-    return new Response(JSON.stringify({ success: false, error: msg }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 500,
+    return internalErrorResponse("london-health-scraper", error, corsHeaders, {
+      body: { success: false },
     });
   }
 });

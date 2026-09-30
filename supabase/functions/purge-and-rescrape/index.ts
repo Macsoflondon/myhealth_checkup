@@ -5,7 +5,7 @@
 
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { getErrorMessage } from "../_shared/errors.ts";
+import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -204,10 +204,6 @@ serve(async (req) => {
       },
     );
   } catch (err) {
-    console.error("[purge-and-rescrape] error:", getErrorMessage(err));
-    return new Response(JSON.stringify({ error: getErrorMessage(err) }), {
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
-      status: 500,
-    });
+    return internalErrorResponse("purge-and-rescrape", err, corsHeaders);
   }
 });

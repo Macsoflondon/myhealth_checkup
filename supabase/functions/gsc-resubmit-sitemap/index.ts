@@ -1,6 +1,7 @@
 // Resubmits the sitemap to Google Search Console via the Lovable connector gateway.
 // Trigger: HTTP (manual / webhook / GitHub Action) or pg_cron schedule.
 import { logProtectedCall } from "../_shared/audit.ts";
+import { internalErrorResponse } from "../_shared/errors.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -66,9 +67,9 @@ Deno.serve(async (req) => {
       gsc: data,
     });
   } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    console.error("GSC submit error", msg);
-    return json({ ok: false, error: msg }, 500);
+    return internalErrorResponse("gsc-resubmit-sitemap", e, corsHeaders, {
+      body: { ok: false },
+    });
   }
 });
 

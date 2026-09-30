@@ -22,6 +22,7 @@
 // This file is a stub: no partner is live yet. It exists so the pattern is
 // codified and the P0 architecture item is met.
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
+import { internalErrorResponse } from "../_shared/errors.ts";
 
 interface PartnerConfig {
   tokenUrl: string;
@@ -181,15 +182,9 @@ Deno.serve(async (req) => {
       { headers: { ...corsHeaders, "Content-Type": "application/json" } },
     );
   } catch (e) {
-    return new Response(
-      JSON.stringify({
-        error: "token_acquisition_failed",
-        detail: e instanceof Error ? e.message : String(e),
-      }),
-      {
-        status: 502,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      },
-    );
+    return internalErrorResponse("partner-api-proxy", e, corsHeaders, {
+      status: 502,
+      body: { code: "token_acquisition_failed" },
+    });
   }
 });

@@ -23,7 +23,8 @@
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 import { logProtectedCall } from "../_shared/audit.ts";
-import { getErrorMessage } from "../_shared/errors.ts";
+import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
+import { htmlToText } from "../_shared/scrape/html.ts";
 import {
   upsertWithProvenance,
   startScrapeRun,
@@ -115,16 +116,7 @@ async function fetchShopifyProducts(): Promise<ShopifyProduct[]> {
 }
 
 function stripHtml(s: string): string {
-  return s
-    .replace(/<script[\s\S]*?<\/script>/gi, " ")
-    .replace(/<style[\s\S]*?<\/style>/gi, " ")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&#39;|&rsquo;|&lsquo;/g, "'")
-    .replace(/&mdash;|&ndash;/g, "—")
-    .replace(/\s+/g, " ")
-    .trim();
+  return htmlToText(s);
 }
 
 function isJunkHandle(handle: string): boolean {
@@ -447,9 +439,8 @@ Deno.serve(async (req) => {
       .update({ status: "failed", error_message: message })
       .eq("provider_id", PROVIDER_ID);
     await finishScrapeRun(supabase, runId, counters, "error");
-    return new Response(JSON.stringify({ success: false, error: message }), {
-      status: 500,
-      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    return internalErrorResponse("medichecks-scraper", err, corsHeaders, {
+      body: { success: false },
     });
   }
 });

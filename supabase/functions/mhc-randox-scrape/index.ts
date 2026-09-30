@@ -8,6 +8,7 @@
 // Set the MHC_SYNC_SECRET edge function secret in the Supabase dashboard; this file will not
 // authenticate correctly until you do, by design.
 import { createClient } from "npm:@supabase/supabase-js@2";
+import { htmlToText } from "../_shared/scrape/html.ts";
 const SECRET = Deno.env.get("MHC_SYNC_SECRET") ?? "";
 const PROVIDER = "randox";
 const SITEMAPS = ["https://randoxhealth.com/sitemap.xml"];
@@ -37,13 +38,7 @@ function slugNorm(u) {
   return norm(slugRaw(u).replace(/-/g, " "));
 }
 function stripTags(s) {
-  return (s || "")
-    .replace(/<[^>]+>/g, " ")
-    .replace(/&amp;/g, "&")
-    .replace(/&nbsp;/g, " ")
-    .replace(/&#8211;|&ndash;/g, "-")
-    .replace(/\s+/g, " ")
-    .trim();
+  return htmlToText(s || "");
 }
 function deriveCategory(n) {
   n = n.toLowerCase();
