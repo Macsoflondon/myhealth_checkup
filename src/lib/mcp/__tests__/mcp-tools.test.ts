@@ -42,7 +42,7 @@ vi.mock("@supabase/supabase-js", () => ({
   }),
 }));
 
-import { escapeLike, ilikeContains, inclusionFailures, maskPii, truncate } from "../shared";
+import { accreditationStatus, escapeLike, ilikeContains, maskPii, truncate, withAccreditation } from "../shared";
 import listProviders from "../tools/list-providers";
 import searchTests from "../tools/search-tests";
 import getTest, { testLimitations } from "../tools/get-test";
@@ -102,14 +102,19 @@ describe("shared helpers", () => {
       "hit from [ip masked] by [email masked]",
     );
   });
-  it("applies inclusion rules", () => {
-    expect(inclusionFailures({ lab_ukas_accredited: true, lab_cqc_regulated: true, lab_iso15189: null })).toEqual([]);
-    expect(inclusionFailures({ lab_ukas_accredited: null, lab_cqc_regulated: true, lab_iso15189: false })).toHaveLength(2);
+  it("derives accreditation_status from the flags", () => {
+    expect(accreditationStatus({ lab_ukas_accredited: true, lab_cqc_regulated: true, lab_iso15189: null })).toBe("confirmed");
+    expect(accreditationStatus({ lab_ukas_accredited: true, lab_cqc_regulated: true, lab_iso15189: true })).toBe("confirmed");
+    expect(accreditationStatus({ lab_ukas_accredited: null, lab_cqc_regulated: true, lab_iso15189: null })).toBe("not_confirmed");
+    expect(accreditationStatus({})).toBe("not_confirmed");
+    expect(accreditationStatus({ lab_ukas_accredited: true, lab_cqc_regulated: true, lab_iso15189: false })).toBe("failed");
+    expect(accreditationStatus({ lab_ukas_accredited: null, lab_cqc_regulated: false, lab_iso15189: null })).toBe("failed");
+    expect(withAccreditation({ id: "a" })).toEqual({ id: "a", lab_ukas_accredited: null, lab_cqc_regulated: null, lab_iso15189: null, accreditation_status: "not_confirmed" });
   });
 });
 
 describe("public tools", () => {
-  it("list_providers only lists providers meeting inclusion rules", async () => {
+  it("list_providers lists every provider with flags and status", async () => {
     state.rpc.mcp_list_providers = {
       data: [
         { provider_id: "randox", provider_name: "Randox", test_count: "60", lab_ukas_accredited: true, lab_cqc_regulated: true, lab_iso15189: true, latest_updated_at: "2026-09-30" },
@@ -118,9 +123,11 @@ describe("public tools", () => {
     };
     const r = await run(listProviders, {});
     const s = r.structuredContent!;
-    expect((s.providers as unknown[]).length).toBe(1);
-    expect((s.providers as Array<{ test_count: number }>)[0].test_count).toBe(60);
-    expect((s.excluded_providers as Array<{ provider_id: string }>)[0].provider_id).toBe("x");
+    const providers = s.providers as Array<{ provider_id: string; test_count: number; accreditation_status: string; lab_ukas_accredited: boolean | null }>;
+    expect(providers.length).toBe(2);
+    expect(providers[0]).toMatchObject({ provider_id: "randox", test_count: 60, accreditation_status: "confirmed" });
+    expect(providers[1]).toMatchObject({ provider_id: "x", accreditation_status: "not_confirmed", lab_ukas_accredited: null });
+    expect(s.excluded_providers).toBeUndefined();
   });
 
   it("search_tests escapes the keyword, filters, sorts and counts", async () => {
@@ -154,9 +161,13 @@ describe("public tools", () => {
     expect(r.structuredContent!.categories).toEqual([{ slug: "thyroid", name: "Thyroid", active_tests: 12, providers: 4 }]);
   });
 
-  it("get_provider refuses providers that fail inclusion rules", async () => {
+  it("get_provider returns unconfirmed and failed providers with their status", async () => {
     state.rpc.mcp_get_provider = { data: { provider_id: "x", lab_ukas_accredited: null, lab_cqc_regulated: true, lab_iso15189: null } };
-    expect((await run(getProvider, { provider_id: "x" })).isError).toBe(true);
+    const unconfirmed = await run(getProvider, { provider_id: "x" });
+    expect(unconfirmed.isError).toBeUndefined();
+    expect((unconfirmed.structuredContent!.provider as { accreditation_status: string }).accreditation_status).toBe("not_confirmed");
+    state.rpc.mcp_get_provider = { data: { provider_id: "y", lab_ukas_accredited: false, lab_cqc_regulated: true, lab_iso15189: null } };
+    expect(((await run(getProvider, { provider_id: "y" })).structuredContent!.provider as { accreditation_status: string }).accreditation_status).toBe("failed");
     state.rpc.mcp_get_provider = { data: { provider_id: "randox", lab_ukas_accredited: true, lab_cqc_regulated: true, lab_iso15189: true } };
     expect((await run(getProvider, { provider_id: "randox" })).isError).toBeUndefined();
   });
