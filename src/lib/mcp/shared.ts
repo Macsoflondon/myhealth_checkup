@@ -94,10 +94,17 @@ export type AccreditationStatus = "confirmed" | "not_confirmed" | "failed";
  * failed: any flag explicitly false. confirmed: UKAS and CQC both true.
  * not_confirmed: anything else (a flag is null or unknown).
  */
-export function accreditationStatus(flags: Partial<AccreditationFlags>): AccreditationStatus {
-  const values = [flags.lab_ukas_accredited, flags.lab_cqc_regulated, flags.lab_iso15189];
+export function accreditationStatus(
+  flags: Partial<AccreditationFlags>,
+): AccreditationStatus {
+  const values = [
+    flags.lab_ukas_accredited,
+    flags.lab_cqc_regulated,
+    flags.lab_iso15189,
+  ];
   if (values.some((v) => v === false)) return "failed";
-  if (flags.lab_ukas_accredited === true && flags.lab_cqc_regulated === true) return "confirmed";
+  if (flags.lab_ukas_accredited === true && flags.lab_cqc_regulated === true)
+    return "confirmed";
   return "not_confirmed";
 }
 

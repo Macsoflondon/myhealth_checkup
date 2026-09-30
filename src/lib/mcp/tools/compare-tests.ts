@@ -1,6 +1,12 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { anonClient, biomarkerNames, fail, ok, PRICE_NOTE, withAccreditation,
+import {
+  anonClient,
+  biomarkerNames,
+  fail,
+  ok,
+  PRICE_NOTE,
+  withAccreditation,
 } from "../shared";
 
 type CompareRow = {
@@ -69,11 +75,15 @@ export default defineTool({
     if (error) return fail(error.message);
     const byId = new Map(((data ?? []) as CompareRow[]).map((r) => [r.id, r]));
     const missing = ids.filter((id) => !byId.has(id));
-    if (missing.length > 0) return fail(`Tests not found: ${missing.join(", ")}`);
+    if (missing.length > 0)
+      return fail(`Tests not found: ${missing.join(", ")}`);
 
     const ordered = ids.map((id) => byId.get(id)!);
     const overlap = biomarkerOverlap(
-      ordered.map((r) => ({ id: r.id, biomarkers: biomarkerNames(r.biomarkers_list) })),
+      ordered.map((r) => ({
+        id: r.id,
+        biomarkers: biomarkerNames(r.biomarkers_list),
+      })),
     );
     const table = ordered.map(({ biomarkers_list, ...rest }) =>
       withAccreditation({

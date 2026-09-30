@@ -17,19 +17,24 @@ export default defineTool({
   },
   handler: async (args, ctx) =>
     runAdminTool(ctx, "get_business_summary", args, async ({ client }) => {
-      const [orders, subscribers, activeSubscribers, users] = await Promise.all([
-        client.rpc("mcp_business_summary", { p_days: args.days }),
-        client
-          .from("newsletter_subscribers")
-          .select("id", { count: "exact", head: true }),
-        client
-          .from("newsletter_subscribers")
-          .select("id", { count: "exact", head: true })
-          .eq("status", "active"),
-        client.rpc("get_registered_user_count"),
-      ]);
+      const [orders, subscribers, activeSubscribers, users] = await Promise.all(
+        [
+          client.rpc("mcp_business_summary", { p_days: args.days }),
+          client
+            .from("newsletter_subscribers")
+            .select("id", { count: "exact", head: true }),
+          client
+            .from("newsletter_subscribers")
+            .select("id", { count: "exact", head: true })
+            .eq("status", "active"),
+          client.rpc("get_registered_user_count"),
+        ],
+      );
       const firstError =
-        orders.error ?? subscribers.error ?? activeSubscribers.error ?? users.error;
+        orders.error ??
+        subscribers.error ??
+        activeSubscribers.error ??
+        users.error;
       if (firstError) return { error: firstError.message };
       return {
         payload: {

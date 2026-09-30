@@ -59,9 +59,9 @@ export default defineTool({
             (adminLog.data ?? []) as Array<{ error_message: string | null }>
           ).map((r) => ({ ...r, error_message: truncate(r.error_message) })),
           role_audit_log: roleLog.data ?? [],
-          audit_logs: ((auditLog.data ?? []) as Array<{ purpose: string | null }>).map(
-            (r) => ({ ...r, purpose: truncate(r.purpose) }),
-          ),
+          audit_logs: (
+            (auditLog.data ?? []) as Array<{ purpose: string | null }>
+          ).map((r) => ({ ...r, purpose: truncate(r.purpose) })),
         },
       };
     }),

@@ -1,6 +1,12 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { anonClient, fail, ok, PRICE_NOTE, toNumber, withAccreditation,
+import {
+  anonClient,
+  fail,
+  ok,
+  PRICE_NOTE,
+  toNumber,
+  withAccreditation,
 } from "../shared";
 
 export const TEST_DETAIL_COLUMNS =
@@ -20,7 +26,8 @@ export function testLimitations(t: TestDetail): string[] {
   const out: string[] = [];
   const price = toNumber(t.price);
   if (price == null) out.push("Price is missing.");
-  else if (price <= 1) out.push("Price looks like a placeholder and is unverified.");
+  else if (price <= 1)
+    out.push("Price looks like a placeholder and is unverified.");
   if (toNumber(t.total_expected_cost) == null)
     out.push("Total expected cost has not been calculated.");
   const count = toNumber(t.biomarker_count);
@@ -62,6 +69,10 @@ export default defineTool({
     if (error) return fail(error.message);
     if (!data) return fail("Not found");
     const test = data as unknown as TestDetail & Record<string, unknown>;
-    return ok({ test: withAccreditation(test), limitations: testLimitations(test), note: PRICE_NOTE });
+    return ok({
+      test: withAccreditation(test),
+      limitations: testLimitations(test),
+      note: PRICE_NOTE,
+    });
   },
 });

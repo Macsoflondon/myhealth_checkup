@@ -1,6 +1,12 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { anonClient, fail, ilikeContains, ok, PRICE_NOTE, withAccreditation,
+import {
+  anonClient,
+  fail,
+  ilikeContains,
+  ok,
+  PRICE_NOTE,
+  withAccreditation,
 } from "../shared";
 
 export const LISTING_COLUMNS =
@@ -71,7 +77,8 @@ export default defineTool({
       const operand = ilikeContains(args.provider);
       q = q.or(`provider_id.ilike.${operand},provider_name.ilike.${operand}`);
     }
-    if (args.max_price != null) q = q.lte("total_expected_cost", args.max_price);
+    if (args.max_price != null)
+      q = q.lte("total_expected_cost", args.max_price);
     if (args.min_biomarkers != null)
       q = q.gte("biomarker_count", args.min_biomarkers);
     if (args.collection === "home_kit") q = q.eq("home_kit_available", true);
@@ -88,7 +95,9 @@ export default defineTool({
       total_matches: count ?? 0,
       offset: args.offset,
       sort: args.sort,
-      results: ((data ?? []) as unknown as Array<Record<string, unknown>>).map((r) => withAccreditation(r)),
+      results: ((data ?? []) as unknown as Array<Record<string, unknown>>).map(
+        (r) => withAccreditation(r),
+      ),
       note: PRICE_NOTE,
     });
   },

@@ -39,6 +39,12 @@ export default defineTool({
       const alerts = ((data ?? []) as Array<{ message: string | null }>).map(
         (a) => ({ ...a, message: truncate(a.message) }),
       );
-      return { payload: { total: count ?? alerts.length, count: alerts.length, alerts } };
+      return {
+        payload: {
+          total: count ?? alerts.length,
+          count: alerts.length,
+          alerts,
+        },
+      };
     }),
 });

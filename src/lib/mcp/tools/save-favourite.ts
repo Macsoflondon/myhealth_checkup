@@ -56,7 +56,9 @@ export default defineTool({
     if (readError) return fail(readError.message);
     return {
       ...ok({ favourite: saved }),
-      content: [{ type: "text", text: `Saved "${row.test_name}" to favourites.` }],
+      content: [
+        { type: "text", text: `Saved "${row.test_name}" to favourites.` },
+      ],
     };
   },
 });
