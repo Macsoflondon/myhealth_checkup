@@ -1252,7 +1252,6 @@ export const TestFinderQuiz = () => {
   // reading a table nothing ever wrote to for this surface.
   useEffect(() => {
     void trackFunnelEvent("quiz_start");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const genderFromHistory = (): string | null => {

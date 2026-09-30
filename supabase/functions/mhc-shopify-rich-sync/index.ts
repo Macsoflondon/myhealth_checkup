@@ -312,29 +312,27 @@ Deno.serve(async (req) => {
   const needsReview = totalRows - confidentCount;
   const reviewRatio = totalRows ? needsReview / totalRows : 0;
   try {
-    await supabase
-      .from("scrape_runs")
-      .insert({
-        provider_id: providerId,
-        scraper_function: "mhc-shopify-rich-sync",
-        started_at: startedAt,
-        finished_at: new Date().toISOString(),
-        status: reviewRatio > 0.25 ? "partial" : "success",
-        tests_seen: totalRows,
-        tests_new: 0,
-        tests_updated: written,
-        tests_deactivated: 0,
-        tests_unchanged: Math.max(0, totalRows - written),
-        errors: [],
-        metadata: {
-          feed_products: feed.length,
-          confident: confidentCount,
-          needs_review: needsReview,
-          needs_review_ratio: +reviewRatio.toFixed(2),
-          fuzzy,
-          dry,
-        },
-      });
+    await supabase.from("scrape_runs").insert({
+      provider_id: providerId,
+      scraper_function: "mhc-shopify-rich-sync",
+      started_at: startedAt,
+      finished_at: new Date().toISOString(),
+      status: reviewRatio > 0.25 ? "partial" : "success",
+      tests_seen: totalRows,
+      tests_new: 0,
+      tests_updated: written,
+      tests_deactivated: 0,
+      tests_unchanged: Math.max(0, totalRows - written),
+      errors: [],
+      metadata: {
+        feed_products: feed.length,
+        confident: confidentCount,
+        needs_review: needsReview,
+        needs_review_ratio: +reviewRatio.toFixed(2),
+        fuzzy,
+        dry,
+      },
+    });
   } catch (_e) {
     /* logging must never block the scrape response */
   }

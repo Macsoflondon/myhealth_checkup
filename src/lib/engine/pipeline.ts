@@ -47,7 +47,6 @@ type RunPatch = Partial<{
   result: unknown;
 }>;
 async function updateRun(runId: string, patch: RunPatch) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   await supabase
     .from("engine_runs")
     .update(patch as any)

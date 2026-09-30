@@ -257,16 +257,14 @@ Deno.serve(async (req: Request) => {
         }
       }
       try {
-        await supabase
-          .from("provider_test_history")
-          .insert({
-            provider_test_id: rowId,
-            provider_id: provider,
-            test_name: title,
-            price: basePrice,
-            total_expected_cost: basePrice,
-            scrape_source_url: productUrl,
-          });
+        await supabase.from("provider_test_history").insert({
+          provider_test_id: rowId,
+          provider_id: provider,
+          test_name: title,
+          price: basePrice,
+          total_expected_cost: basePrice,
+          scrape_source_url: productUrl,
+        });
       } catch (_e) {}
     }
 

@@ -92,7 +92,7 @@ serve(async (req) => {
 
     function sanitize(val: unknown, maxLen = MAX_STR): string {
       if (typeof val !== "string") return "";
-      // eslint-disable-next-line no-control-regex -- intentionally strips control characters from user input
+
       return val
         .slice(0, maxLen)
         .replace(/[\x00-\x1F\x7F]/g, "")

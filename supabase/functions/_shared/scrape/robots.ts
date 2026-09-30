@@ -116,7 +116,7 @@ export async function acquireRateToken(
   }
 
   // Loop until we can consume a token.
-  // eslint-disable-next-line no-constant-condition
+
   while (true) {
     const now = Date.now();
     const elapsed = now - b.updatedAt;

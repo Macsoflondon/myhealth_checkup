@@ -79,7 +79,7 @@ async function fetchText(url) {
   return new TextDecoder().decode(buf);
 }
 async function getUrls() {
-  let urls = [];
+  const urls = [];
   for (const sm of SITEMAPS) {
     const xml = await fetchText(sm);
     if (!xml) continue;
@@ -169,7 +169,7 @@ function extractDescriptionScraped(html, name) {
   return slice && slice.length > 20 ? slice.slice(0, 4000) : null;
 }
 function parsePage(html) {
-  let name = extractName(html);
+  const name = extractName(html);
   let price = null;
   const pm = stripTags(html).match(/£\s*([\d,]+(?:\.\d{2})?)/);
   if (pm) price = parseFloat(pm[1].replace(/,/g, ""));
@@ -347,30 +347,28 @@ Deno.serve(async (req) => {
     }
   }
   try {
-    await supabase
-      .from("scrape_runs")
-      .insert({
-        provider_id: PROVIDER,
-        scraper_function: "mhc-randox-scrape",
-        started_at: startedAt,
-        finished_at: new Date().toISOString(),
-        status: "success",
-        tests_seen: slice.length,
-        tests_new: inserted,
-        tests_updated: updated,
-        tests_deactivated: 0,
-        tests_unchanged: Math.max(0, slice.length - inserted - updated - redir),
-        errors: [],
-        metadata: {
-          total_product_urls: urls.length,
-          existing_active: rows?.length || 0,
-          redirected_skipped: redir,
-          skipped_no_name_or_price: skippedNoNameOrPrice.length,
-          offset,
-          limit,
-          dry,
-        },
-      });
+    await supabase.from("scrape_runs").insert({
+      provider_id: PROVIDER,
+      scraper_function: "mhc-randox-scrape",
+      started_at: startedAt,
+      finished_at: new Date().toISOString(),
+      status: "success",
+      tests_seen: slice.length,
+      tests_new: inserted,
+      tests_updated: updated,
+      tests_deactivated: 0,
+      tests_unchanged: Math.max(0, slice.length - inserted - updated - redir),
+      errors: [],
+      metadata: {
+        total_product_urls: urls.length,
+        existing_active: rows?.length || 0,
+        redirected_skipped: redir,
+        skipped_no_name_or_price: skippedNoNameOrPrice.length,
+        offset,
+        limit,
+        dry,
+      },
+    });
   } catch (_e) {
     /* logging must never block the scrape response */
   }

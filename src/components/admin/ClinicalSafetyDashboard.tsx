@@ -199,20 +199,18 @@ export function ClinicalSafetyDashboard() {
     }
     setLoading(true);
     const reason = `[EMERGENCY ${new Date().toISOString()}] ${emergencyReason.trim()}`;
-    const { error } = await supabase
-      .from("engine_freezes")
-      .upsert(
-        {
-          path: "*",
-          reason,
-          active: true,
-          created_by: user?.id ?? null,
-          unfrozen_at: null,
-          unfrozen_by: null,
-          unfreeze_reason: null,
-        },
-        { onConflict: "path" },
-      );
+    const { error } = await supabase.from("engine_freezes").upsert(
+      {
+        path: "*",
+        reason,
+        active: true,
+        created_by: user?.id ?? null,
+        unfrozen_at: null,
+        unfrozen_by: null,
+        unfreeze_reason: null,
+      },
+      { onConflict: "path" },
+    );
     await logAdmin("emergency_freeze", { reason }, !error, error?.message);
     setLoading(false);
     if (error) {

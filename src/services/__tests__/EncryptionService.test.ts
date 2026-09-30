@@ -17,63 +17,61 @@ const { mockFunctionsInvoke } = vi.hoisted(() => {
     return Buffer.from(value.slice(4), "base64").toString("utf-8");
   }
 
-  const mockFunctionsInvoke = vi
-    .fn()
-    .mockImplementation(
-      async (
-        _name: string,
-        options: {
-          body: { action: string; data: unknown; fields?: readonly string[] };
-        },
-      ) => {
-        const { action, data, fields } = options.body;
-        if (action === "encrypt") {
-          return {
-            data: { success: true, data: mockEncrypt(data as string) },
-            error: null,
-          };
-        }
-        if (action === "decrypt") {
-          return {
-            data: { success: true, data: mockDecrypt(data as string) },
-            error: null,
-          };
-        }
-        if (action === "encryptFields") {
-          const result = { ...(data as Record<string, unknown>) };
-          for (const field of fields || []) {
-            if (result[field] && typeof result[field] === "string") {
-              result[field] = mockEncrypt(result[field] as string);
-            } else if (result[field] && Array.isArray(result[field])) {
-              result[field] = mockEncrypt(JSON.stringify(result[field]));
-            }
-          }
-          return { data: { success: true, data: result }, error: null };
-        }
-        if (action === "decryptFields") {
-          const result = { ...(data as Record<string, unknown>) };
-          for (const field of fields || []) {
-            if (
-              result[field] &&
-              typeof result[field] === "string" &&
-              (result[field] as string).startsWith("enc:")
-            ) {
-              const decrypted = mockDecrypt(result[field] as string);
-              try {
-                result[field] = JSON.parse(decrypted);
-              } catch {
-                result[field] = decrypted;
-              }
-            }
-          }
-          return { data: { success: true, data: result }, error: null };
-        }
+  const mockFunctionsInvoke = vi.fn().mockImplementation(
+    async (
+      _name: string,
+      options: {
+        body: { action: string; data: unknown; fields?: readonly string[] };
+      },
+    ) => {
+      const { action, data, fields } = options.body;
+      if (action === "encrypt") {
         return {
-          data: { success: false, error: "Unknown action" },
+          data: { success: true, data: mockEncrypt(data as string) },
           error: null,
         };
-      },
-    );
+      }
+      if (action === "decrypt") {
+        return {
+          data: { success: true, data: mockDecrypt(data as string) },
+          error: null,
+        };
+      }
+      if (action === "encryptFields") {
+        const result = { ...(data as Record<string, unknown>) };
+        for (const field of fields || []) {
+          if (result[field] && typeof result[field] === "string") {
+            result[field] = mockEncrypt(result[field] as string);
+          } else if (result[field] && Array.isArray(result[field])) {
+            result[field] = mockEncrypt(JSON.stringify(result[field]));
+          }
+        }
+        return { data: { success: true, data: result }, error: null };
+      }
+      if (action === "decryptFields") {
+        const result = { ...(data as Record<string, unknown>) };
+        for (const field of fields || []) {
+          if (
+            result[field] &&
+            typeof result[field] === "string" &&
+            (result[field] as string).startsWith("enc:")
+          ) {
+            const decrypted = mockDecrypt(result[field] as string);
+            try {
+              result[field] = JSON.parse(decrypted);
+            } catch {
+              result[field] = decrypted;
+            }
+          }
+        }
+        return { data: { success: true, data: result }, error: null };
+      }
+      return {
+        data: { success: false, error: "Unknown action" },
+        error: null,
+      };
+    },
+  );
 
   return { mockFunctionsInvoke };
 });

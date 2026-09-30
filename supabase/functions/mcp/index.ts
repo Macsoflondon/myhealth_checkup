@@ -16,7 +16,7 @@ function anonClient() {
     { auth: { persistSession: false, autoRefreshToken: false } },
   );
 }
-var search_tests_default = defineTool({
+const search_tests_default = defineTool({
   name: "search_tests",
   title: "Search diagnostic tests",
   description:
@@ -87,7 +87,7 @@ function anonClient2() {
     { auth: { persistSession: false, autoRefreshToken: false } },
   );
 }
-var get_test_default = defineTool2({
+const get_test_default = defineTool2({
   name: "get_test",
   title: "Get test details",
   description:
@@ -130,7 +130,7 @@ function anonClient3() {
     { auth: { persistSession: false, autoRefreshToken: false } },
   );
 }
-var list_providers_default = defineTool3({
+const list_providers_default = defineTool3({
   name: "list_providers",
   title: "List providers",
   description:
@@ -185,7 +185,7 @@ function userClient(ctx) {
     },
   );
 }
-var list_my_favourites_default = defineTool4({
+const list_my_favourites_default = defineTool4({
   name: "list_my_favourites",
   title: "List my saved tests",
   description:
@@ -233,7 +233,7 @@ function userClient2(ctx) {
     },
   );
 }
-var save_favourite_default = defineTool5({
+const save_favourite_default = defineTool5({
   name: "save_favourite",
   title: "Save a test to my favourites",
   description:
@@ -291,7 +291,7 @@ import { z as z4 } from "npm:zod@^3.24.2";
 
 // src/lib/mcp/admin-guard.ts
 import { createClient as createClient6 } from "npm:@supabase/supabase-js@2.111.0";
-var DENIED = {
+const DENIED = {
   content: [
     { type: "text", text: "You do not have permission to use this tool." },
   ],
@@ -345,7 +345,7 @@ function fail(message) {
 }
 
 // src/lib/mcp/tools/get-platform-health.ts
-var get_platform_health_default = defineTool6({
+const get_platform_health_default = defineTool6({
   name: "get_platform_health",
   title: "Get platform health",
   description:
@@ -450,7 +450,7 @@ var get_platform_health_default = defineTool6({
 // src/lib/mcp/tools/list-scraper-alerts.ts
 import { defineTool as defineTool7 } from "npm:@lovable.dev/mcp-js@0.26.3";
 import { z as z5 } from "npm:zod@^3.24.2";
-var list_scraper_alerts_default = defineTool7({
+const list_scraper_alerts_default = defineTool7({
   name: "list_scraper_alerts",
   title: "List scraper alerts",
   description:
@@ -494,7 +494,7 @@ var list_scraper_alerts_default = defineTool7({
 // src/lib/mcp/tools/get-catalogue-coverage.ts
 import { defineTool as defineTool8 } from "npm:@lovable.dev/mcp-js@0.26.3";
 import { z as z6 } from "npm:zod@^3.24.2";
-var get_catalogue_coverage_default = defineTool8({
+const get_catalogue_coverage_default = defineTool8({
   name: "get_catalogue_coverage",
   title: "Get catalogue coverage",
   description:
@@ -594,7 +594,7 @@ var get_catalogue_coverage_default = defineTool8({
 // src/lib/mcp/tools/get-price-movements.ts
 import { defineTool as defineTool9 } from "npm:@lovable.dev/mcp-js@0.26.3";
 import { z as z7 } from "npm:zod@^3.24.2";
-var get_price_movements_default = defineTool9({
+const get_price_movements_default = defineTool9({
   name: "get_price_movements",
   title: "Get price movements",
   description:
@@ -688,7 +688,7 @@ var get_price_movements_default = defineTool9({
 // src/lib/mcp/tools/get-security-posture.ts
 import { defineTool as defineTool10 } from "npm:@lovable.dev/mcp-js@0.26.3";
 import { z as z8 } from "npm:zod@^3.24.2";
-var get_security_posture_default = defineTool10({
+const get_security_posture_default = defineTool10({
   name: "get_security_posture",
   title: "Get security posture",
   description:
@@ -792,7 +792,7 @@ function percentile(sorted, p) {
   );
   return Number(sorted[index].toFixed(3));
 }
-var get_performance_summary_default = defineTool11({
+const get_performance_summary_default = defineTool11({
   name: "get_performance_summary",
   title: "Get performance summary",
   description:
@@ -885,7 +885,7 @@ var get_performance_summary_default = defineTool11({
 
 // src/lib/mcp/tools/get-business-summary.ts
 import { defineTool as defineTool12 } from "npm:@lovable.dev/mcp-js@0.26.3";
-var get_business_summary_default = defineTool12({
+const get_business_summary_default = defineTool12({
   name: "get_business_summary",
   title: "Get business summary",
   description:
@@ -950,7 +950,7 @@ var get_business_summary_default = defineTool12({
 // src/lib/mcp/tools/get-admin-audit-trail.ts
 import { defineTool as defineTool13 } from "npm:@lovable.dev/mcp-js@0.26.3";
 import { z as z10 } from "npm:zod@^3.24.2";
-var get_admin_audit_trail_default = defineTool13({
+const get_admin_audit_trail_default = defineTool13({
   name: "get_admin_audit_trail",
   title: "Get admin audit trail",
   description:
@@ -1018,8 +1018,8 @@ var get_admin_audit_trail_default = defineTool13({
 });
 
 // src/lib/mcp/index.ts
-var projectRef = "clvuioagsgfadynuvodj";
-var mcp_default = defineMcp({
+const projectRef = "clvuioagsgfadynuvodj";
+const mcp_default = defineMcp({
   name: "myhealth-checkup-mcp",
   title: "myhealth checkup",
   version: "0.2.0",

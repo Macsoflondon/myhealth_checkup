@@ -15,9 +15,7 @@ type AuthorizationDetails = {
 type OAuthRedirect = { redirect_url: string };
 
 type OAuthNs = {
-  getAuthorizationDetails: (
-    id: string,
-  ) => Promise<{
+  getAuthorizationDetails: (id: string) => Promise<{
     data: AuthorizationDetails | OAuthRedirect | null;
     error: { message: string } | null;
   }>;

@@ -111,9 +111,9 @@ function parsePage(html) {
   else if (/venous/i.test(txt)) sample = "Venous";
   let clinicFee = null,
     homeFee = null;
-  let cf = txt.match(/Onsite Test[^£]*£\s*([\d.]+)/i);
+  const cf = txt.match(/Onsite Test[^£]*£\s*([\d.]+)/i);
   if (cf) clinicFee = parseFloat(cf[1]);
-  let hf = txt.match(/At Home Phlebotomy[^£]*£\s*([\d.]+)/i);
+  const hf = txt.match(/At Home Phlebotomy[^£]*£\s*([\d.]+)/i);
   if (hf) homeFee = parseFloat(hf[1]);
   const descriptionScraped = extractDescriptionScraped(html, txt, title);
   return {
@@ -223,32 +223,30 @@ Deno.serve(async (req) => {
   const runStatus =
     noCrawlableUrl.length > 0 || redirectRatio > 0.5 ? "partial" : "success";
   try {
-    await supabase
-      .from("scrape_runs")
-      .insert({
-        provider_id: PROVIDER,
-        scraper_function: "mhc-lml-scrape",
-        started_at: startedAt,
-        finished_at: new Date().toISOString(),
-        status: runStatus,
-        tests_seen: slice.length,
-        tests_new: 0,
-        tests_updated: written,
-        tests_deactivated: 0,
-        tests_unchanged: Math.max(0, slice.length - written - skipped),
-        errors: [],
-        metadata: {
-          candidates: rows.length,
-          skipped,
-          offset,
-          limit,
-          dry,
-          no_crawlable_url_count: noCrawlableUrl.length,
-          no_crawlable_url_sample: noCrawlableUrl
-            .slice(0, 10)
-            .map((r) => ({ id: r.id, test_name: r.test_name, url: r.url })),
-        },
-      });
+    await supabase.from("scrape_runs").insert({
+      provider_id: PROVIDER,
+      scraper_function: "mhc-lml-scrape",
+      started_at: startedAt,
+      finished_at: new Date().toISOString(),
+      status: runStatus,
+      tests_seen: slice.length,
+      tests_new: 0,
+      tests_updated: written,
+      tests_deactivated: 0,
+      tests_unchanged: Math.max(0, slice.length - written - skipped),
+      errors: [],
+      metadata: {
+        candidates: rows.length,
+        skipped,
+        offset,
+        limit,
+        dry,
+        no_crawlable_url_count: noCrawlableUrl.length,
+        no_crawlable_url_sample: noCrawlableUrl
+          .slice(0, 10)
+          .map((r) => ({ id: r.id, test_name: r.test_name, url: r.url })),
+      },
+    });
   } catch (_e) {
     /* logging must never block the scrape response */
   }

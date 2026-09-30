@@ -350,33 +350,31 @@ Deno.serve(async (req) => {
       ? "partial"
       : "success";
   try {
-    await supabase
-      .from("scrape_runs")
-      .insert({
-        provider_id: providerId,
-        scraper_function: "mhc-page-scrape",
-        started_at: startedAt,
-        finished_at: new Date().toISOString(),
-        status: runStatus,
-        tests_seen: slice.length,
-        tests_new: 0,
-        tests_updated: written,
-        tests_deactivated: 0,
-        tests_unchanged: Math.max(0, matched - written),
-        errors: sitemapFullyFailed
-          ? [{ message: "sitemap fetch failed for all configured sitemaps" }]
-          : [],
-        metadata: {
-          matched_urls: allUrls.length,
-          offset,
-          limit,
-          matched,
-          dry,
-          name_extraction_failures: nameSkips,
-          sitemap_fetch_failures: fetchFailures,
-          sitemaps_tried: sitemapsTried,
-        },
-      });
+    await supabase.from("scrape_runs").insert({
+      provider_id: providerId,
+      scraper_function: "mhc-page-scrape",
+      started_at: startedAt,
+      finished_at: new Date().toISOString(),
+      status: runStatus,
+      tests_seen: slice.length,
+      tests_new: 0,
+      tests_updated: written,
+      tests_deactivated: 0,
+      tests_unchanged: Math.max(0, matched - written),
+      errors: sitemapFullyFailed
+        ? [{ message: "sitemap fetch failed for all configured sitemaps" }]
+        : [],
+      metadata: {
+        matched_urls: allUrls.length,
+        offset,
+        limit,
+        matched,
+        dry,
+        name_extraction_failures: nameSkips,
+        sitemap_fetch_failures: fetchFailures,
+        sitemaps_tried: sitemapsTried,
+      },
+    });
   } catch (_e) {
     /* logging must never block the scrape response */
   }
