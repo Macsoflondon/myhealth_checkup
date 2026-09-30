@@ -89,11 +89,17 @@ serve(async (req) => {
     }));
 
     // Fetch biomarker definitions from library
-    const biomarkerNames = sanitizedReadings.map(r => r.biomarkerName.toLowerCase());
-    const { data: biomarkerLibrary } = await supabase
-      .from("biomarkers_library")
-      .select("*")
-      .or(biomarkerNames.map(n => `biomarker_name.ilike.%${n}%`).join(","));
+    // Strip PostgREST filter-grammar characters (commas, dots, parentheses, quotes,
+    // wildcards, backslashes) so user input can only ever be a literal search term.
+    const biomarkerNames = sanitizedReadings
+      .map(r => r.biomarkerName.toLowerCase().replace(/[^\p{L}\p{N} \-]/gu, " ").replace(/\s+/g, " ").trim())
+      .filter(n => n.length > 0);
+    const { data: biomarkerLibrary } = biomarkerNames.length
+      ? await supabase
+          .from("biomarkers_library")
+          .select("*")
+          .or(biomarkerNames.map(n => `biomarker_name.ilike.%${n}%`).join(","))
+      : { data: null };
 
     // Create lookup map
     const biomarkerInfoMap: Record<string, BiomarkerInfo> = {};
