@@ -1,18 +1,13 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import {
-  DENIED,
-  fail,
-  logAdminToolCall,
-  ok,
-  requireAdmin,
-} from "../admin-guard";
+import { maskPii } from "../shared";
+import { runAdminTool } from "../admin-guard";
 
 export default defineTool({
   name: "get_security_posture",
   title: "Get security posture",
   description:
-    "Latest security scan snapshot metadata, open SOC incidents by severity, and recent CSP violation counts. Counts and metadata only — no patient data, no secrets.",
+    "Latest security scan snapshot metadata, open SOC incidents by severity, and recent CSP violation counts. No patient data; pseudonymous user IDs included; no secrets. Incident titles and entities are truncated to 200 characters with IP and email addresses masked.",
   inputSchema: {
     days: z
       .number()
@@ -28,9 +23,7 @@ export default defineTool({
     openWorldHint: false,
   },
   handler: async (args, ctx) => {
-    const session = await requireAdmin(ctx);
-    if (!session) return DENIED;
-    const { client } = session;
+    return runAdminTool(ctx, "get_security_posture", args, async ({ client }) => {
     const since = new Date(Date.now() - args.days * 86_400_000).toISOString();
 
     const [snapshot, incidents, csp] = await Promise.all([
@@ -58,7 +51,7 @@ export default defineTool({
     ]);
 
     const firstError = snapshot.error ?? incidents.error ?? csp.error;
-    if (firstError) return fail(firstError.message);
+    if (firstError) return { error: firstError.message };
 
     const bySeverity = new Map<string, number>();
     for (const i of incidents.data ?? []) {
@@ -80,8 +73,7 @@ export default defineTool({
       [key: string]: unknown;
     } | null;
 
-    await logAdminToolCall(session, "get_security_posture", args);
-    return ok({
+    return { payload: {
       window_days: args.days,
       latest_scan: snap
         ? {
@@ -104,11 +96,14 @@ export default defineTool({
         : null,
       open_incidents_total: incidents.data?.length ?? 0,
       open_incidents_by_severity: Object.fromEntries(bySeverity),
-      open_incidents: incidents.data ?? [],
+      open_incidents: (
+        (incidents.data ?? []) as Array<{ entity: string | null; title: string | null }>
+      ).map((i) => ({ ...i, entity: maskPii(i.entity), title: maskPii(i.title) })),
       csp_reports_total: csp.data?.length ?? 0,
       csp_reports_by_directive: Object.fromEntries(
         [...cspByDirective.entries()].sort((a, b) => b[1] - a[1]),
       ),
+    } };
     });
   },
 });

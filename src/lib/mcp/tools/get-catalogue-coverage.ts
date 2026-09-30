@@ -1,12 +1,6 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import {
-  DENIED,
-  fail,
-  logAdminToolCall,
-  ok,
-  requireAdmin,
-} from "../admin-guard";
+import { runAdminTool } from "../admin-guard";
 
 type TestRow = {
   id: string;
@@ -20,7 +14,7 @@ export default defineTool({
   name: "get_catalogue_coverage",
   title: "Get catalogue coverage",
   description:
-    "Active test counts by provider and by category, plus records whose validation is stale or missing — the freshness signal for the comparison catalogue. No patient or personal data.",
+    "Active test counts by provider and by category, plus records whose validation is stale or missing — the freshness signal for the comparison catalogue. No patient data. For the underlying records use list_stale_tests.",
   inputSchema: {
     stale_after_days: z
       .number()
@@ -38,9 +32,7 @@ export default defineTool({
     openWorldHint: false,
   },
   handler: async (args, ctx) => {
-    const session = await requireAdmin(ctx);
-    if (!session) return DENIED;
-    const { client } = session;
+    return runAdminTool(ctx, "get_catalogue_coverage", args, async ({ client }) => {
 
     const [tests, categories, mappings] = await Promise.all([
       client
@@ -61,7 +53,7 @@ export default defineTool({
     ]);
 
     const firstError = tests.error ?? categories.error ?? mappings.error;
-    if (firstError) return fail(firstError.message);
+    if (firstError) return { error: firstError.message };
 
     const rows = (tests.data ?? []) as TestRow[];
     const activeIds = new Set(rows.map((r) => r.id));
@@ -115,8 +107,7 @@ export default defineTool({
       byCategory.set(c, cat);
     }
 
-    await logAdminToolCall(session, "get_catalogue_coverage", args);
-    return ok({
+    return { payload: {
       stale_after_days: args.stale_after_days,
       total_active_tests: rows.length,
       stale_tests: stale,
@@ -129,6 +120,7 @@ export default defineTool({
       by_category: [...byCategory.values()].sort(
         (a, b) => b.active_tests - a.active_tests,
       ),
+    } };
     });
   },
 });

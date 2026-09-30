@@ -6,9 +6,12 @@
 import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.26.3";
 
 // src/lib/mcp/tools/search-tests.ts
-import { createClient } from "npm:@supabase/supabase-js@2.111.0";
 import { defineTool } from "npm:@lovable.dev/mcp-js@0.26.3";
 import { z } from "npm:zod@^3.24.2";
+
+// src/lib/mcp/shared.ts
+import { createClient } from "npm:@supabase/supabase-js@2.111.0";
+var PRICE_NOTE = "Prices are the provider's own published prices on the date shown in updated_at and can change. Confirm the final price on the provider's page. For comparison only; not medical advice.";
 function anonClient() {
   return createClient(
     process.env.SUPABASE_URL,
@@ -16,139 +19,8 @@ function anonClient() {
     { auth: { persistSession: false, autoRefreshToken: false } }
   );
 }
-var search_tests_default = defineTool({
-  name: "search_tests",
-  title: "Search diagnostic tests",
-  description: "Search the myhealth checkup catalogue of private UK diagnostic tests. Filter by keyword, category, provider, and price. Returns test name, provider, price (GBP), turnaround, biomarker count, and URL.",
-  inputSchema: {
-    query: z.string().trim().optional().describe("Keyword to match against test name or description."),
-    category: z.string().trim().optional().describe(
-      "Category slug (e.g. 'womens-health', 'cancer-screening', 'hormones')."
-    ),
-    provider: z.string().trim().optional().describe("Provider name (e.g. 'Medichecks', 'Randox', 'Goodbody')."),
-    max_price: z.number().positive().optional().describe("Maximum total expected cost in GBP."),
-    limit: z.number().int().min(1).max(50).default(20)
-  },
-  annotations: {
-    readOnlyHint: true,
-    idempotentHint: true,
-    openWorldHint: false
-  },
-  handler: async ({ query, category, provider, max_price, limit }) => {
-    let q = anonClient().from("unified_provider_tests").select(
-      "id, test_name, provider_name, price, total_expected_cost, category_primary, biomarker_count, turnaround_days_text, sample_type, url"
-    ).limit(limit);
-    if (query) q = q.ilike("test_name", `%${query}%`);
-    if (category) q = q.eq("category_primary", category);
-    if (provider) q = q.ilike("provider_name", `%${provider}%`);
-    if (max_price != null) q = q.lte("total_expected_cost", max_price);
-    const { data, error } = await q;
-    if (error) {
-      return {
-        content: [{ type: "text", text: `Error: ${error.message}` }],
-        isError: true
-      };
-    }
-    return {
-      content: [{ type: "text", text: JSON.stringify(data ?? [], null, 2) }],
-      structuredContent: { results: data ?? [], count: data?.length ?? 0 }
-    };
-  }
-});
-
-// src/lib/mcp/tools/get-test.ts
-import { createClient as createClient2 } from "npm:@supabase/supabase-js@2.111.0";
-import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z2 } from "npm:zod@^3.24.2";
-function anonClient2() {
-  return createClient2(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_PUBLISHABLE_KEY,
-    { auth: { persistSession: false, autoRefreshToken: false } }
-  );
-}
-var get_test_default = defineTool2({
-  name: "get_test",
-  title: "Get test details",
-  description: "Fetch the full record for a single diagnostic test by id, including biomarker list, fees, sample method and booking URL.",
-  inputSchema: {
-    id: z2.string().uuid().describe("Test UUID returned by search_tests.")
-  },
-  annotations: {
-    readOnlyHint: true,
-    idempotentHint: true,
-    openWorldHint: false
-  },
-  handler: async ({ id }) => {
-    const { data, error } = await anonClient2().from("unified_provider_tests").select("*").eq("id", id).maybeSingle();
-    if (error)
-      return {
-        content: [{ type: "text", text: `Error: ${error.message}` }],
-        isError: true
-      };
-    if (!data)
-      return { content: [{ type: "text", text: "Not found" }], isError: true };
-    return {
-      content: [{ type: "text", text: JSON.stringify(data, null, 2) }],
-      structuredContent: { test: data }
-    };
-  }
-});
-
-// src/lib/mcp/tools/list-providers.ts
-import { createClient as createClient3 } from "npm:@supabase/supabase-js@2.111.0";
-import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.26.3";
-function anonClient3() {
-  return createClient3(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_PUBLISHABLE_KEY,
-    { auth: { persistSession: false, autoRefreshToken: false } }
-  );
-}
-var list_providers_default = defineTool3({
-  name: "list_providers",
-  title: "List providers",
-  description: "List all UKAS-accredited, CQC-regulated private diagnostic test providers compared on myhealth checkup, with the number of active tests each has.",
-  inputSchema: {},
-  annotations: {
-    readOnlyHint: true,
-    idempotentHint: true,
-    openWorldHint: false
-  },
-  handler: async () => {
-    const { data, error } = await anonClient3().from("unified_provider_tests").select("provider_id, provider_name");
-    if (error)
-      return {
-        content: [{ type: "text", text: `Error: ${error.message}` }],
-        isError: true
-      };
-    const counts = /* @__PURE__ */ new Map();
-    for (const row of data ?? []) {
-      const key = row.provider_id ?? row.provider_name ?? "unknown";
-      const existing = counts.get(key);
-      if (existing) existing.test_count += 1;
-      else
-        counts.set(key, {
-          provider_id: row.provider_id,
-          provider_name: row.provider_name,
-          test_count: 1
-        });
-    }
-    const providers = [...counts.values()].sort(
-      (a, b) => b.test_count - a.test_count
-    );
-    return {
-      content: [{ type: "text", text: JSON.stringify(providers, null, 2) }],
-      structuredContent: { providers }
-    };
-  }
-});
-
-// src/lib/mcp/tools/list-my-favourites.ts
-import { createClient as createClient4 } from "npm:@supabase/supabase-js@2.111.0";
-import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.26.3";
 function userClient(ctx) {
-  return createClient4(
+  return createClient(
     process.env.SUPABASE_URL,
     process.env.SUPABASE_PUBLISHABLE_KEY,
     {
@@ -156,141 +28,6 @@ function userClient(ctx) {
       auth: { persistSession: false, autoRefreshToken: false }
     }
   );
-}
-var list_my_favourites_default = defineTool4({
-  name: "list_my_favourites",
-  title: "List my saved tests",
-  description: "Return the diagnostic tests the signed-in user has saved to their favourites on myhealth checkup.",
-  inputSchema: {},
-  annotations: {
-    readOnlyHint: true,
-    idempotentHint: true,
-    openWorldHint: false
-  },
-  handler: async (_input, ctx) => {
-    if (!ctx.isAuthenticated()) {
-      return {
-        content: [{ type: "text", text: "Not authenticated" }],
-        isError: true
-      };
-    }
-    const { data, error } = await userClient(ctx).from("favorites").select("id, test_id, name, provider, category, price, created_at").order("created_at", { ascending: false });
-    if (error)
-      return {
-        content: [{ type: "text", text: `Error: ${error.message}` }],
-        isError: true
-      };
-    return {
-      content: [{ type: "text", text: JSON.stringify(data ?? [], null, 2) }],
-      structuredContent: { favourites: data ?? [] }
-    };
-  }
-});
-
-// src/lib/mcp/tools/save-favourite.ts
-import { createClient as createClient5 } from "npm:@supabase/supabase-js@2.111.0";
-import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z3 } from "npm:zod@^3.24.2";
-function userClient2(ctx) {
-  return createClient5(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_PUBLISHABLE_KEY,
-    {
-      global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
-      auth: { persistSession: false, autoRefreshToken: false }
-    }
-  );
-}
-var save_favourite_default = defineTool5({
-  name: "save_favourite",
-  title: "Save a test to my favourites",
-  description: "Save a diagnostic test to the signed-in user's favourites on myhealth checkup.",
-  inputSchema: {
-    test_id: z3.string().min(1).describe("Test id (uuid from search_tests, or provider slug)."),
-    name: z3.string().min(1).describe("Test name."),
-    provider: z3.string().min(1).describe("Provider name."),
-    category: z3.string().optional(),
-    price: z3.number().nonnegative().optional()
-  },
-  annotations: {
-    readOnlyHint: false,
-    destructiveHint: false,
-    idempotentHint: true,
-    openWorldHint: false
-  },
-  handler: async ({ test_id, name, provider, category, price }, ctx) => {
-    if (!ctx.isAuthenticated()) {
-      return {
-        content: [{ type: "text", text: "Not authenticated" }],
-        isError: true
-      };
-    }
-    const { data, error } = await userClient2(ctx).from("favorites").insert({
-      user_id: ctx.getUserId(),
-      test_id,
-      name,
-      provider,
-      category,
-      price
-    }).select().maybeSingle();
-    if (error)
-      return {
-        content: [{ type: "text", text: `Error: ${error.message}` }],
-        isError: true
-      };
-    return {
-      content: [{ type: "text", text: `Saved "${name}" to favourites.` }],
-      structuredContent: { favourite: data }
-    };
-  }
-});
-
-// src/lib/mcp/tools/get-platform-health.ts
-import { defineTool as defineTool6 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z4 } from "npm:zod@^3.24.2";
-
-// src/lib/mcp/admin-guard.ts
-import { createClient as createClient6 } from "npm:@supabase/supabase-js@2.111.0";
-var DENIED = {
-  content: [
-    { type: "text", text: "You do not have permission to use this tool." }
-  ],
-  isError: true
-};
-function callerClient(ctx) {
-  return createClient6(
-    process.env.SUPABASE_URL,
-    process.env.SUPABASE_PUBLISHABLE_KEY,
-    {
-      global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
-      auth: { persistSession: false, autoRefreshToken: false }
-    }
-  );
-}
-async function requireAdmin(ctx) {
-  if (!ctx.isAuthenticated()) return null;
-  const client = callerClient(ctx);
-  const userId = ctx.getUserId();
-  if (!userId) return null;
-  const { data, error } = await client.rpc("has_role", {
-    _user_id: userId,
-    _role: "admin"
-  });
-  if (error || data !== true) return null;
-  return { client, userId };
-}
-async function logAdminToolCall(session, toolName, args) {
-  try {
-    await session.client.from("admin_activity_log").insert({
-      admin_user_id: session.userId,
-      action: `mcp.${toolName}`,
-      resource_type: "mcp_tool",
-      resource_name: toolName,
-      new_value: { arguments: args ?? {}, via: "mcp" },
-      success: true
-    });
-  } catch {
-  }
 }
 function ok(payload) {
   return {
@@ -304,127 +41,616 @@ function fail(message) {
     isError: true
   };
 }
+function escapeLike(value) {
+  return value.replace(/\\/g, "\\\\").replace(/%/g, "\\%").replace(/_/g, "\\_");
+}
+function ilikeContains(keyword) {
+  const escaped = escapeLike(keyword).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+  return `"%${escaped}%"`;
+}
+var FREE_TEXT_MAX = 200;
+function truncate(value, max = FREE_TEXT_MAX) {
+  if (value == null) return null;
+  const text = typeof value === "string" ? value : JSON.stringify(value);
+  return text.length > max ? `${text.slice(0, max - 1)}\u2026` : text;
+}
+var EMAIL_RE = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi;
+var IPV4_RE = /\b(?:\d{1,3}\.){3}\d{1,3}\b/g;
+var IPV6_RE = /\b(?:[0-9a-f]{1,4}:){2,7}[0-9a-f]{0,4}\b/gi;
+function maskPii(value, max = FREE_TEXT_MAX) {
+  const text = truncate(value, 1e4);
+  if (text == null) return null;
+  const masked = text.replace(EMAIL_RE, "[email masked]").replace(IPV4_RE, "[ip masked]").replace(IPV6_RE, "[ip masked]");
+  return truncate(masked, max);
+}
+function inclusionFailures(flags) {
+  const reasons = [];
+  if (flags.lab_ukas_accredited !== true)
+    reasons.push("UKAS accreditation not confirmed");
+  if (flags.lab_cqc_regulated !== true)
+    reasons.push("CQC registration not confirmed");
+  if (flags.lab_iso15189 === false) reasons.push("ISO 15189 recorded as absent");
+  return reasons;
+}
+function toNumber(value) {
+  if (value == null || value === "") return null;
+  const n = typeof value === "number" ? value : Number(value);
+  return Number.isFinite(n) ? n : null;
+}
+function biomarkerNames(list) {
+  if (!Array.isArray(list)) return [];
+  return list.map((item) => {
+    if (typeof item === "string") return item.trim();
+    if (item && typeof item === "object" && "name" in item) {
+      const name = item.name;
+      return typeof name === "string" ? name.trim() : "";
+    }
+    return "";
+  }).filter((s) => s.length > 0);
+}
+var UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-// src/lib/mcp/tools/get-platform-health.ts
-var get_platform_health_default = defineTool6({
-  name: "get_platform_health",
-  title: "Get platform health",
-  description: "Operational scraper and scheduled-job health: last run per provider, success and failure counts, and anything overdue or failing. Contains no patient or personal data.",
+// src/lib/mcp/tools/search-tests.ts
+var LISTING_COLUMNS = "id, test_name, provider_id, provider_name, biomarker_count, price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, turnaround_days_text, sample_type, collection_method, location_options, home_kit_available, clinic_visit_available, url, updated_at";
+var SORTS = {
+  price_asc: { column: "total_expected_cost", ascending: true },
+  price_desc: { column: "total_expected_cost", ascending: false },
+  biomarkers_desc: { column: "biomarker_count", ascending: false },
+  name: { column: "test_name", ascending: true }
+};
+var search_tests_default = defineTool({
+  name: "search_tests",
+  title: "Search diagnostic tests",
+  description: "Search the myhealth checkup catalogue of UK private diagnostic tests. The keyword matches the test name or the provider's description. Filter by category slug (see list_categories), provider, maximum total expected cost, minimum biomarker count and collection method. Sorted only by the sort you choose (default price_asc, by total expected cost). Returns every listing field: name, biomarker count, price, collection and clinical review fees, total expected cost, turnaround, sample type, collection method, location options, home kit and clinic availability, provider URL and updated_at, plus total_matches.",
   inputSchema: {
-    hours: z4.number().int().min(1).max(720).default(72).describe("Lookback window in hours.")
+    query: z.string().trim().max(100).optional().describe("Keyword matched against test name or description."),
+    category: z.string().trim().optional().describe("Category slug, for example 'womens-health'."),
+    provider: z.string().trim().optional().describe("Provider id or name, for example 'medichecks'."),
+    max_price: z.number().positive().optional().describe("Maximum total expected cost in GBP."),
+    min_biomarkers: z.number().int().min(1).optional(),
+    collection: z.enum(["home_kit", "clinic_visit"]).optional(),
+    include_addons: z.boolean().default(false).describe("Include add-on tests that cannot be bought alone."),
+    sort: z.enum(["price_asc", "price_desc", "biomarkers_desc", "name"]).default("price_asc"),
+    limit: z.number().int().min(1).max(50).default(20),
+    offset: z.number().int().min(0).default(0)
   },
   annotations: {
     readOnlyHint: true,
     idempotentHint: true,
     openWorldHint: false
   },
-  handler: async (args, ctx) => {
-    const session = await requireAdmin(ctx);
-    if (!session) return DENIED;
-    const { client } = session;
+  handler: async (args) => {
+    const sort = SORTS[args.sort];
+    let q = anonClient().from("unified_provider_tests").select(LISTING_COLUMNS, { count: "exact" });
+    if (args.query) {
+      const operand = ilikeContains(args.query);
+      q = q.or(`test_name.ilike.${operand},description.ilike.${operand}`);
+    }
+    if (args.category) q = q.eq("category_primary", args.category);
+    if (args.provider) {
+      const operand = ilikeContains(args.provider);
+      q = q.or(`provider_id.ilike.${operand},provider_name.ilike.${operand}`);
+    }
+    if (args.max_price != null) q = q.lte("total_expected_cost", args.max_price);
+    if (args.min_biomarkers != null)
+      q = q.gte("biomarker_count", args.min_biomarkers);
+    if (args.collection === "home_kit") q = q.eq("home_kit_available", true);
+    if (args.collection === "clinic_visit")
+      q = q.eq("clinic_visit_available", true);
+    if (!args.include_addons) q = q.eq("is_addon", false);
+    const { data, error, count } = await q.order(sort.column, { ascending: sort.ascending, nullsFirst: false }).order("id", { ascending: true }).range(args.offset, args.offset + args.limit - 1);
+    if (error) return fail(error.message);
+    return ok({
+      total_matches: count ?? 0,
+      offset: args.offset,
+      sort: args.sort,
+      results: data ?? [],
+      note: PRICE_NOTE
+    });
+  }
+});
+
+// src/lib/mcp/tools/get-test.ts
+import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z2 } from "npm:zod@^3.24.2";
+var TEST_DETAIL_COLUMNS = "id, provider_id, provider_name, test_name, description, is_addon, category_primary, price, original_price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, biomarker_count, biomarkers_list, biomarkers_listed, turnaround_days_text, sample_type, collection_method, location_options, home_kit_available, clinic_visit_available, url, url_verified, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, scraped_at, updated_at";
+function testLimitations(t) {
+  const out = [];
+  const price = toNumber(t.price);
+  if (price == null) out.push("Price is missing.");
+  else if (price <= 1) out.push("Price looks like a placeholder and is unverified.");
+  if (toNumber(t.total_expected_cost) == null)
+    out.push("Total expected cost has not been calculated.");
+  const count = toNumber(t.biomarker_count);
+  const listed = toNumber(t.biomarkers_listed);
+  if (!listed) out.push("The provider's biomarker list has not been captured.");
+  else if (count != null && listed < count)
+    out.push(
+      `Only ${listed} of ${count} biomarkers are listed by name; the list is incomplete.`
+    );
+  if (t.url_verified === null)
+    out.push("The booking link has not been checked yet.");
+  else if (t.url_verified === false)
+    out.push("The booking link failed its last check.");
+  if (!t.collection_fee_type)
+    out.push("Collection fee information has not been captured.");
+  if (!t.turnaround_days_text) out.push("Turnaround time is not stated.");
+  return out;
+}
+var get_test_default = defineTool2({
+  name: "get_test",
+  title: "Get test details",
+  description: "Fetch the full record for one test by id: provider description (verbatim), full biomarker list, price, collection and clinical review fees, total expected cost, turnaround, sample and collection method, location options, accreditation flags, provider URL, scraped_at and updated_at, plus a limitations list stating any missing or unverified data.",
+  inputSchema: {
+    id: z2.string().uuid().describe("Test UUID returned by search_tests.")
+  },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
+  handler: async ({ id }) => {
+    const { data, error } = await anonClient().from("unified_provider_tests").select(TEST_DETAIL_COLUMNS).eq("id", id).maybeSingle();
+    if (error) return fail(error.message);
+    if (!data) return fail("Not found");
+    const test = data;
+    return ok({ test, limitations: testLimitations(test), note: PRICE_NOTE });
+  }
+});
+
+// src/lib/mcp/tools/list-providers.ts
+import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.26.3";
+var list_providers_default = defineTool3({
+  name: "list_providers",
+  title: "List providers",
+  description: "List the private diagnostic test providers compared on myhealth checkup that meet our inclusion rules (UKAS accreditation and CQC registration confirmed; ISO 15189 where applicable). Returns each provider's accreditation flags, number of active tests (add-ons excluded, counted exactly) and the latest updated_at date. Providers whose accreditation is not yet confirmed in our data are listed separately under excluded_providers with the reason.",
+  inputSchema: {},
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
+  handler: async () => {
+    const { data, error } = await anonClient().rpc("mcp_list_providers");
+    if (error) return fail(error.message);
+    const rows = data ?? [];
+    const providers = [];
+    const excluded = [];
+    for (const row of rows) {
+      const entry = {
+        provider_id: row.provider_id,
+        provider_name: row.provider_name,
+        test_count: toNumber(row.test_count) ?? 0,
+        lab_ukas_accredited: row.lab_ukas_accredited,
+        lab_cqc_regulated: row.lab_cqc_regulated,
+        lab_iso15189: row.lab_iso15189,
+        updated_at: row.latest_updated_at
+      };
+      const reasons = inclusionFailures(row);
+      if (reasons.length === 0) providers.push(entry);
+      else excluded.push({ provider_id: row.provider_id, reasons });
+    }
+    providers.sort((a, b) => Number(b.test_count) - Number(a.test_count));
+    return ok({ providers, excluded_providers: excluded });
+  }
+});
+
+// src/lib/mcp/tools/list-categories.ts
+import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.26.3";
+var list_categories_default = defineTool4({
+  name: "list_categories",
+  title: "List categories",
+  description: "List test category slugs and names with the number of active tests and providers in each. Use these slugs for the category filter in search_tests.",
+  inputSchema: {},
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
+  handler: async () => {
+    const { data, error } = await anonClient().rpc("mcp_list_categories");
+    if (error) return fail(error.message);
+    const categories = (data ?? []).map((c) => ({
+      slug: c.slug,
+      name: c.name,
+      active_tests: toNumber(c.active_tests) ?? 0,
+      providers: toNumber(c.providers) ?? 0
+    }));
+    return ok({ categories });
+  }
+});
+
+// src/lib/mcp/tools/get-provider.ts
+import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z3 } from "npm:zod@^3.24.2";
+var get_provider_default = defineTool5({
+  name: "get_provider",
+  title: "Get provider",
+  description: "Profile for one provider that meets our inclusion rules: name, accreditation flags, number of active tests, home kit and clinic collection options, location options, typical (median) phlebotomy and GP review fees, and the latest updated_at date.",
+  inputSchema: {
+    provider_id: z3.string().trim().min(1).max(100).describe("Provider id from list_providers, for example 'randox'.")
+  },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
+  handler: async ({ provider_id }) => {
+    const { data, error } = await anonClient().rpc("mcp_get_provider", {
+      p_provider_id: provider_id
+    });
+    if (error) return fail(error.message);
+    if (!data) return fail("Provider not found.");
+    const provider = data;
+    const reasons = inclusionFailures(provider);
+    if (reasons.length > 0)
+      return fail(
+        `This provider is not listed because it does not yet meet our inclusion rules: ${reasons.join("; ")}.`
+      );
+    return ok({ provider, note: PRICE_NOTE });
+  }
+});
+
+// src/lib/mcp/tools/compare-tests.ts
+import { defineTool as defineTool6 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z4 } from "npm:zod@^3.24.2";
+function biomarkerOverlap(tests) {
+  const sets = tests.map((t) => ({
+    id: t.id,
+    map: new Map(t.biomarkers.map((b) => [b.toLowerCase(), b]))
+  }));
+  const shared = sets.length === 0 ? [] : [...sets[0].map.entries()].filter(([key]) => sets.every((s) => s.map.has(key))).map(([, label]) => label);
+  const unique = {};
+  for (const s of sets) {
+    unique[s.id] = [...s.map.entries()].filter(([key]) => sets.every((o) => o.id === s.id || !o.map.has(key))).map(([, label]) => label);
+  }
+  return { shared, unique };
+}
+var compare_tests_default = defineTool6({
+  name: "compare_tests",
+  title: "Compare tests side by side",
+  description: "Compare two to five tests by id side by side: price, collection fee, clinical review fee, total expected cost, turnaround, sample method, location options and biomarker counts, plus biomarkers shared by all tests and biomarkers unique to each. Tests are returned in the order given; nothing is ranked.",
+  inputSchema: {
+    test_ids: z4.array(z4.string().uuid()).min(2).max(5)
+  },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
+  handler: async ({ test_ids }) => {
+    const ids = [...new Set(test_ids)];
+    if (ids.length < 2) return fail("Provide at least two different test ids.");
+    const { data, error } = await anonClient().from("unified_provider_tests").select(
+      "id, test_name, provider_name, price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, turnaround_days_text, sample_type, collection_method, location_options, biomarker_count, biomarkers_list, updated_at"
+    ).in("id", ids);
+    if (error) return fail(error.message);
+    const byId = new Map((data ?? []).map((r) => [r.id, r]));
+    const missing = ids.filter((id) => !byId.has(id));
+    if (missing.length > 0) return fail(`Tests not found: ${missing.join(", ")}`);
+    const ordered = ids.map((id) => byId.get(id));
+    const overlap = biomarkerOverlap(
+      ordered.map((r) => ({ id: r.id, biomarkers: biomarkerNames(r.biomarkers_list) }))
+    );
+    const table = ordered.map(({ biomarkers_list, ...rest }) => ({
+      ...rest,
+      biomarkers_listed: biomarkerNames(biomarkers_list).length
+    }));
+    return ok({
+      tests: table,
+      shared_biomarkers: overlap.shared,
+      unique_biomarkers: overlap.unique,
+      note: PRICE_NOTE
+    });
+  }
+});
+
+// src/lib/mcp/tools/find-tests-by-biomarker.ts
+import { defineTool as defineTool7 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z5 } from "npm:zod@^3.24.2";
+var find_tests_by_biomarker_default = defineTool7({
+  name: "find_tests_by_biomarker",
+  title: "Find tests by biomarker",
+  description: "Find tests whose biomarker list includes a biomarker name (case-insensitive, partial matches included and shown in matched_biomarkers), sorted by total expected cost from lowest. Add-on tests are excluded.",
+  inputSchema: {
+    biomarker: z5.string().trim().min(2).max(100).describe("Biomarker name, for example 'ferritin' or 'HbA1c'."),
+    max_price: z5.number().positive().optional().describe("Maximum total expected cost in GBP."),
+    limit: z5.number().int().min(1).max(100).default(25)
+  },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
+  handler: async ({ biomarker, max_price, limit }) => {
+    const { data, error } = await anonClient().rpc("mcp_find_tests_by_biomarker", {
+      p_name: biomarker,
+      p_max_price: max_price ?? null,
+      p_limit: limit
+    });
+    if (error) return fail(error.message);
+    const result = data ?? { total_matches: 0, tests: [] };
+    return ok({ biomarker, ...result, note: PRICE_NOTE });
+  }
+});
+
+// src/lib/mcp/tools/list-my-favourites.ts
+import { defineTool as defineTool8 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z6 } from "npm:zod@^3.24.2";
+var list_my_favourites_default = defineTool8({
+  name: "list_my_favourites",
+  title: "List my saved tests",
+  description: "Return the signed-in user's saved tests with the current catalogue price, total expected cost and updated_at. price_changed is true when the current price differs from the price saved.",
+  inputSchema: {
+    limit: z6.number().int().min(1).max(200).default(50)
+  },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
+  handler: async ({ limit }, ctx) => {
+    if (!ctx.isAuthenticated()) return fail("Not authenticated");
+    const client = userClient(ctx);
+    const { data, error } = await client.from("favorites").select("id, test_id, name, provider, category, price, created_at").order("created_at", { ascending: false }).limit(limit);
+    if (error) return fail(error.message);
+    const favourites = data ?? [];
+    const ids = favourites.map((f) => f.test_id).filter((id) => UUID_RE.test(id));
+    const current = /* @__PURE__ */ new Map();
+    if (ids.length > 0) {
+      const { data: rows, error: catError } = await client.from("unified_provider_tests").select("id, price, total_expected_cost, updated_at").in("id", ids);
+      if (catError) return fail(catError.message);
+      for (const r of rows ?? []) current.set(r.id, r);
+    }
+    const result = favourites.map((f) => {
+      const live = current.get(f.test_id);
+      const saved = toNumber(f.price);
+      const now = live ? toNumber(live.price) : null;
+      return {
+        ...f,
+        saved_price: saved,
+        current_price: now,
+        current_total_expected_cost: live ? toNumber(live.total_expected_cost) : null,
+        updated_at: live?.updated_at ?? null,
+        in_catalogue: Boolean(live),
+        price_changed: saved != null && now != null && saved !== now
+      };
+    });
+    return ok({ count: result.length, favourites: result, note: PRICE_NOTE });
+  }
+});
+
+// src/lib/mcp/tools/save-favourite.ts
+import { defineTool as defineTool9 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z7 } from "npm:zod@^3.24.2";
+var save_favourite_default = defineTool9({
+  name: "save_favourite",
+  title: "Save a test to my favourites",
+  description: "Save a diagnostic test to the signed-in user's favourites by test id. The test name, provider, category and price are looked up from the catalogue. Saving the same test twice has no further effect.",
+  inputSchema: {
+    test_id: z7.string().uuid().describe("Test UUID from search_tests.")
+  },
+  annotations: {
+    readOnlyHint: false,
+    destructiveHint: false,
+    idempotentHint: true,
+    openWorldHint: false
+  },
+  handler: async ({ test_id }, ctx) => {
+    const userId = ctx.getUserId();
+    if (!ctx.isAuthenticated() || !userId) return fail("Not authenticated");
+    const client = userClient(ctx);
+    const { data: test, error: lookupError } = await client.from("unified_provider_tests").select("id, test_name, provider_name, category_primary, price").eq("id", test_id).maybeSingle();
+    if (lookupError) return fail(lookupError.message);
+    if (!test) return fail("Test not found in the catalogue.");
+    const row = test;
+    const { error } = await client.from("favorites").upsert(
+      {
+        user_id: userId,
+        test_id,
+        name: row.test_name,
+        provider: row.provider_name,
+        category: row.category_primary,
+        price: row.price
+      },
+      { onConflict: "user_id,test_id", ignoreDuplicates: true }
+    );
+    if (error) return fail(error.message);
+    const { data: saved, error: readError } = await client.from("favorites").select("id, test_id, name, provider, category, price, created_at").eq("user_id", userId).eq("test_id", test_id).maybeSingle();
+    if (readError) return fail(readError.message);
+    return {
+      ...ok({ favourite: saved }),
+      content: [{ type: "text", text: `Saved "${row.test_name}" to favourites.` }]
+    };
+  }
+});
+
+// src/lib/mcp/tools/remove-favourite.ts
+import { defineTool as defineTool10 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z8 } from "npm:zod@^3.24.2";
+var remove_favourite_default = defineTool10({
+  name: "remove_favourite",
+  title: "Remove a test from my favourites",
+  description: "Remove a test from the signed-in user's own favourites by test id. Only the caller's own saved row is affected.",
+  inputSchema: {
+    test_id: z8.string().uuid().describe("Test UUID to remove.")
+  },
+  annotations: {
+    readOnlyHint: false,
+    destructiveHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
+  handler: async ({ test_id }, ctx) => {
+    const userId = ctx.getUserId();
+    if (!ctx.isAuthenticated() || !userId) return fail("Not authenticated");
+    const { data, error } = await userClient(ctx).from("favorites").delete().eq("user_id", userId).eq("test_id", test_id).select("id");
+    if (error) return fail(error.message);
+    const removed = (data ?? []).length;
+    return ok({ removed, test_id });
+  }
+});
+
+// src/lib/mcp/tools/get-platform-health.ts
+import { defineTool as defineTool11 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z9 } from "npm:zod@^3.24.2";
+
+// src/lib/mcp/admin-guard.ts
+var DENIED = {
+  content: [
+    { type: "text", text: "You do not have permission to use this tool." }
+  ],
+  isError: true
+};
+async function requireAdmin(ctx) {
+  if (!ctx.isAuthenticated()) return null;
+  const userId = ctx.getUserId();
+  if (!userId) return null;
+  const client = userClient(ctx);
+  const { data, error } = await client.rpc("has_role", {
+    _user_id: userId,
+    _role: "admin"
+  });
+  if (error || data !== true) return null;
+  return { client, userId };
+}
+async function logDeniedToolCall(ctx, toolName) {
+  if (!ctx.isAuthenticated() || !ctx.getUserId()) return;
+  try {
+    await userClient(ctx).rpc("mcp_log_denied_tool_call", { p_tool: toolName });
+  } catch {
+  }
+}
+async function logAdminToolCall(session, toolName, args) {
+  try {
+    const { error } = await session.client.from("admin_activity_log").insert({
+      admin_user_id: session.userId,
+      action: `mcp.${toolName}`,
+      resource_type: "mcp_tool",
+      resource_name: toolName,
+      new_value: { arguments: args ?? {}, via: "mcp" },
+      success: true
+    });
+    return error ? error.message : null;
+  } catch (e) {
+    return e instanceof Error ? e.message : "unknown error";
+  }
+}
+async function runAdminTool(ctx, toolName, args, run) {
+  const session = await requireAdmin(ctx);
+  if (!session) {
+    await logDeniedToolCall(ctx, toolName);
+    return DENIED;
+  }
+  const result = await run(session);
+  if ("error" in result) return fail(result.error);
+  const logError = await logAdminToolCall(session, toolName, args);
+  if (logError)
+    return fail(`Audit log write failed, so no data was returned (${logError}).`);
+  return ok(result.payload);
+}
+
+// src/lib/mcp/tools/get-platform-health.ts
+var FAILURE = /* @__PURE__ */ new Set([
+  "failed",
+  "failure",
+  "error",
+  "errored",
+  "timeout",
+  "timed_out",
+  "cancelled",
+  "aborted"
+]);
+var get_platform_health_default = defineTool11({
+  name: "get_platform_health",
+  title: "Get platform health",
+  description: "Operational scraper and scheduled-job health. Success, failure and in-progress counts are computed in the database; runs still in progress are reported separately and never counted as failures. Also lists overdue and failing jobs. No patient data; pseudonymous user IDs may be included. Free-text error fields are truncated to 200 characters.",
+  inputSchema: {
+    hours: z9.number().int().min(1).max(720).default(72)
+  },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
+  handler: async (args, ctx) => runAdminTool(ctx, "get_platform_health", args, async ({ client }) => {
     const since = new Date(Date.now() - args.hours * 36e5).toISOString();
-    const [runs, jobs, runLog, cron] = await Promise.all([
-      client.from("scrape_runs").select(
-        "provider_id, scraper_function, started_at, finished_at, status, tests_seen, tests_new, tests_updated, tests_deactivated, errors"
-      ).gte("started_at", since).order("started_at", { ascending: false }).limit(500),
+    const [counts, jobs, runLog, failingCron] = await Promise.all([
+      client.rpc("mcp_platform_health_counts", { p_hours: args.hours }),
       client.from("scraping_jobs").select(
         "provider_id, status, last_scraped, next_scrape, error_message, expected_min_tests, last_test_count"
       ),
       client.from("scrape_run_log").select(
         "started_at, completed_at, status, providers_run, tests_scraped, tests_promoted, verification_failures, trigger_source"
       ).gte("started_at", since).order("started_at", { ascending: false }).limit(50),
-      client.from("cron_run_log").select(
-        "job_name, started_at, finished_at, status, duration_ms, rows_affected, error_message"
-      ).gte("started_at", since).order("started_at", { ascending: false }).limit(200)
+      client.from("cron_run_log").select("job_name, started_at, finished_at, status, error_message").gte("started_at", since).in("status", [...FAILURE]).order("started_at", { ascending: false }).limit(50)
     ]);
-    const firstError = runs.error ?? jobs.error ?? runLog.error ?? cron.error;
-    if (firstError) return fail(firstError.message);
-    const perProvider = /* @__PURE__ */ new Map();
-    for (const row of runs.data ?? []) {
-      const key = row.provider_id ?? "unknown";
-      const entry = perProvider.get(key) ?? {
-        provider_id: key,
-        last_run_at: null,
-        last_status: null,
-        success: 0,
-        failure: 0
-      };
-      const status = (row.status ?? "").toLowerCase();
-      if (status === "success" || status === "completed" || status === "ok")
-        entry.success += 1;
-      else if (status) entry.failure += 1;
-      if (!entry.last_run_at || (row.started_at ?? "") > entry.last_run_at) {
-        entry.last_run_at = row.started_at;
-        entry.last_status = row.status;
-      }
-      perProvider.set(key, entry);
-    }
+    const firstError = counts.error ?? jobs.error ?? runLog.error ?? failingCron.error;
+    if (firstError) return { error: firstError.message };
+    const jobRows = (jobs.data ?? []).map((j) => ({
+      ...j,
+      error_message: truncate(j.error_message)
+    }));
     const now = Date.now();
-    const overdue = (jobs.data ?? []).filter(
-      (j) => j.next_scrape != null && new Date(j.next_scrape).getTime() < now
-    );
-    const failingJobs = (jobs.data ?? []).filter(
-      (j) => (j.status ?? "").toLowerCase() === "failed" || !!j.error_message
-    );
-    const failingCron = (cron.data ?? []).filter(
-      (c) => (c.status ?? "").toLowerCase() !== "success"
-    );
-    await logAdminToolCall(session, "get_platform_health", args);
-    return ok({
-      window_hours: args.hours,
-      providers: [...perProvider.values()].sort(
-        (a, b) => (b.last_run_at ?? "").localeCompare(a.last_run_at ?? "")
-      ),
-      overdue_jobs: overdue,
-      failing_jobs: failingJobs,
-      recent_orchestrator_runs: runLog.data ?? [],
-      failing_cron_runs: failingCron,
-      cron_runs_total: cron.data?.length ?? 0
-    });
-  }
+    return {
+      payload: {
+        window_hours: args.hours,
+        ...counts.data ?? {},
+        overdue_jobs: jobRows.filter(
+          (j) => j.next_scrape != null && new Date(j.next_scrape).getTime() < now
+        ),
+        failing_jobs: jobRows.filter(
+          (j) => FAILURE.has((j.status ?? "").toLowerCase()) || !!j.error_message
+        ),
+        recent_orchestrator_runs: runLog.data ?? [],
+        recent_failing_cron_runs: (failingCron.data ?? []).map((c) => ({ ...c, error_message: truncate(c.error_message) }))
+      }
+    };
+  })
 });
 
 // src/lib/mcp/tools/list-scraper-alerts.ts
-import { defineTool as defineTool7 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z5 } from "npm:zod@^3.24.2";
-var list_scraper_alerts_default = defineTool7({
+import { defineTool as defineTool12 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z10 } from "npm:zod@^3.24.2";
+var list_scraper_alerts_default = defineTool12({
   name: "list_scraper_alerts",
   title: "List scraper alerts",
-  description: "List open scraper alerts (newest first) with severity, provider and counts. Operational data only \u2014 no patient or personal data.",
+  description: "List open scraper alerts (newest first) with severity, provider and counts. No patient data; pseudonymous user IDs may be included. Free-text messages are truncated to 200 characters.",
   inputSchema: {
-    include_acknowledged: z5.boolean().default(false).describe("Include alerts already acknowledged."),
-    severity: z5.string().trim().optional().describe("Filter to a single severity, e.g. 'critical'."),
-    limit: z5.number().int().min(1).max(200).default(50)
+    include_acknowledged: z10.boolean().default(false),
+    severity: z10.string().trim().optional().describe("Filter to a single severity, for example 'critical'."),
+    limit: z10.number().int().min(1).max(200).default(50)
   },
   annotations: {
     readOnlyHint: true,
     idempotentHint: true,
     openWorldHint: false
   },
-  handler: async (args, ctx) => {
-    const session = await requireAdmin(ctx);
-    if (!session) return DENIED;
-    let q = session.client.from("scraper_alerts").select(
-      "id, provider_id, alert_type, severity, message, current_count, previous_count, expected_min, acknowledged, acknowledged_at, created_at"
+  handler: async (args, ctx) => runAdminTool(ctx, "list_scraper_alerts", args, async ({ client }) => {
+    let q = client.from("scraper_alerts").select(
+      "id, provider_id, alert_type, severity, message, current_count, previous_count, expected_min, acknowledged, acknowledged_at, created_at",
+      { count: "exact" }
     ).order("created_at", { ascending: false }).limit(args.limit);
     if (!args.include_acknowledged) q = q.eq("acknowledged", false);
     if (args.severity) q = q.eq("severity", args.severity);
-    const { data, error } = await q;
-    if (error) return fail(error.message);
-    await logAdminToolCall(session, "list_scraper_alerts", args);
-    return ok({ count: data?.length ?? 0, alerts: data ?? [] });
-  }
+    const { data, error, count } = await q;
+    if (error) return { error: error.message };
+    const alerts = (data ?? []).map(
+      (a) => ({ ...a, message: truncate(a.message) })
+    );
+    return { payload: { total: count ?? alerts.length, count: alerts.length, alerts } };
+  })
 });
 
 // src/lib/mcp/tools/get-catalogue-coverage.ts
-import { defineTool as defineTool8 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z6 } from "npm:zod@^3.24.2";
-var get_catalogue_coverage_default = defineTool8({
+import { defineTool as defineTool13 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z11 } from "npm:zod@^3.24.2";
+var get_catalogue_coverage_default = defineTool13({
   name: "get_catalogue_coverage",
   title: "Get catalogue coverage",
-  description: "Active test counts by provider and by category, plus records whose validation is stale or missing \u2014 the freshness signal for the comparison catalogue. No patient or personal data.",
+  description: "Active test counts by provider and by category, plus records whose validation is stale or missing \u2014 the freshness signal for the comparison catalogue. No patient data. For the underlying records use list_stale_tests.",
   inputSchema: {
-    stale_after_days: z6.number().int().min(1).max(365).default(30).describe(
+    stale_after_days: z11.number().int().min(1).max(365).default(30).describe(
       "Treat a test as stale when it has not been validated within this many days."
     )
   },
@@ -434,148 +660,197 @@ var get_catalogue_coverage_default = defineTool8({
     openWorldHint: false
   },
   handler: async (args, ctx) => {
-    const session = await requireAdmin(ctx);
-    if (!session) return DENIED;
-    const { client } = session;
-    const [tests, categories, mappings] = await Promise.all([
-      client.from("provider_tests").select(
-        "id, provider_id, canonical_category, is_active, last_validated_at"
-      ).eq("is_active", true).limit(2e4),
-      client.from("categories").select("id, slug, name, is_active").eq("is_active", true),
-      client.from("category_test_mapping").select("provider_test_id, category_id").limit(1e4)
-    ]);
-    const firstError = tests.error ?? categories.error ?? mappings.error;
-    if (firstError) return fail(firstError.message);
-    const rows = tests.data ?? [];
-    const activeIds = new Set(rows.map((r) => r.id));
-    const activeMappings = (mappings.data ?? []).filter(
-      (m) => m.provider_test_id ? activeIds.has(m.provider_test_id) : false
-    );
-    const cutoff = Date.now() - args.stale_after_days * 864e5;
-    const byProvider = /* @__PURE__ */ new Map();
-    const byCategory = /* @__PURE__ */ new Map();
-    let stale = 0;
-    let neverValidated = 0;
-    for (const row of rows) {
-      const p = row.provider_id ?? "unknown";
-      const entry = byProvider.get(p) ?? {
-        provider_id: p,
-        active_tests: 0,
-        stale: 0,
-        never_validated: 0
-      };
-      entry.active_tests += 1;
-      if (!row.last_validated_at) {
-        entry.never_validated += 1;
-        neverValidated += 1;
-      } else if (new Date(row.last_validated_at).getTime() < cutoff) {
-        entry.stale += 1;
-        stale += 1;
+    return runAdminTool(ctx, "get_catalogue_coverage", args, async ({ client }) => {
+      const [tests, categories, mappings] = await Promise.all([
+        client.from("provider_tests").select(
+          "id, provider_id, canonical_category, is_active, last_validated_at"
+        ).eq("is_active", true).limit(2e4),
+        client.from("categories").select("id, slug, name, is_active").eq("is_active", true),
+        client.from("category_test_mapping").select("provider_test_id, category_id").limit(1e4)
+      ]);
+      const firstError = tests.error ?? categories.error ?? mappings.error;
+      if (firstError) return { error: firstError.message };
+      const rows = tests.data ?? [];
+      const activeIds = new Set(rows.map((r) => r.id));
+      const activeMappings = (mappings.data ?? []).filter(
+        (m) => m.provider_test_id ? activeIds.has(m.provider_test_id) : false
+      );
+      const cutoff = Date.now() - args.stale_after_days * 864e5;
+      const byProvider = /* @__PURE__ */ new Map();
+      const byCategory = /* @__PURE__ */ new Map();
+      let stale = 0;
+      let neverValidated = 0;
+      for (const row of rows) {
+        const p = row.provider_id ?? "unknown";
+        const entry = byProvider.get(p) ?? {
+          provider_id: p,
+          active_tests: 0,
+          stale: 0,
+          never_validated: 0
+        };
+        entry.active_tests += 1;
+        if (!row.last_validated_at) {
+          entry.never_validated += 1;
+          neverValidated += 1;
+        } else if (new Date(row.last_validated_at).getTime() < cutoff) {
+          entry.stale += 1;
+          stale += 1;
+        }
+        byProvider.set(p, entry);
+        const c = row.canonical_category ?? "uncategorised";
+        const cat = byCategory.get(c) ?? {
+          canonical_category: c,
+          active_tests: 0
+        };
+        cat.active_tests += 1;
+        byCategory.set(c, cat);
       }
-      byProvider.set(p, entry);
-      const c = row.canonical_category ?? "uncategorised";
-      const cat = byCategory.get(c) ?? {
-        canonical_category: c,
-        active_tests: 0
-      };
-      cat.active_tests += 1;
-      byCategory.set(c, cat);
-    }
-    await logAdminToolCall(session, "get_catalogue_coverage", args);
-    return ok({
-      stale_after_days: args.stale_after_days,
-      total_active_tests: rows.length,
-      stale_tests: stale,
-      never_validated_tests: neverValidated,
-      active_categories: categories.data?.length ?? 0,
-      category_test_mappings: activeMappings.length,
-      by_provider: [...byProvider.values()].sort(
-        (a, b) => b.active_tests - a.active_tests
-      ),
-      by_category: [...byCategory.values()].sort(
-        (a, b) => b.active_tests - a.active_tests
-      )
+      return { payload: {
+        stale_after_days: args.stale_after_days,
+        total_active_tests: rows.length,
+        stale_tests: stale,
+        never_validated_tests: neverValidated,
+        active_categories: categories.data?.length ?? 0,
+        category_test_mappings: activeMappings.length,
+        by_provider: [...byProvider.values()].sort(
+          (a, b) => b.active_tests - a.active_tests
+        ),
+        by_category: [...byCategory.values()].sort(
+          (a, b) => b.active_tests - a.active_tests
+        )
+      } };
     });
   }
+});
+
+// src/lib/mcp/tools/list-stale-tests.ts
+import { defineTool as defineTool14 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z12 } from "npm:zod@^3.24.2";
+var list_stale_tests_default = defineTool14({
+  name: "list_stale_tests",
+  title: "List stale tests",
+  description: "List the active catalogue records that have never been validated or were last validated more than stale_after_days ago, oldest first, so they can be fixed. Returns total_matches as an exact count. Catalogue data only; no patient data.",
+  inputSchema: {
+    stale_after_days: z12.number().int().min(1).max(365).default(30),
+    provider_id: z12.string().trim().max(100).optional(),
+    limit: z12.number().int().min(1).max(200).default(50)
+  },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
+  handler: async (args, ctx) => runAdminTool(ctx, "list_stale_tests", args, async ({ client }) => {
+    const cutoff = new Date(
+      Date.now() - args.stale_after_days * 864e5
+    ).toISOString();
+    let q = client.from("provider_tests").select(
+      "id, provider_id, test_name, price, url, url_verified, last_validated_at, updated_at",
+      { count: "exact" }
+    ).eq("is_active", true).or(`last_validated_at.is.null,last_validated_at.lt.${cutoff}`).order("last_validated_at", { ascending: true, nullsFirst: true }).order("id", { ascending: true }).limit(args.limit);
+    if (args.provider_id) q = q.eq("provider_id", args.provider_id);
+    const { data, error, count } = await q;
+    if (error) return { error: error.message };
+    return {
+      payload: {
+        stale_after_days: args.stale_after_days,
+        total_matches: count ?? 0,
+        tests: data ?? []
+      }
+    };
+  })
+});
+
+// src/lib/mcp/tools/get-data-quality.ts
+import { defineTool as defineTool15 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z13 } from "npm:zod@^3.24.2";
+var DATA_QUALITY_CHECKS = {
+  missing_biomarkers: "biomarker_count.is.null,biomarker_count.eq.0,biomarkers_listed.is.null,biomarkers_listed.eq.0",
+  missing_or_placeholder_price: "price.is.null,price.lte.1",
+  missing_turnaround: "turnaround_days_text.is.null,turnaround_days_text.eq.",
+  url_never_checked: "url_verified.is.null",
+  url_failed_check: "url_verified.eq.false",
+  missing_collection_fee: "collection_fee_type.is.null"
+};
+var get_data_quality_default = defineTool15({
+  name: "get_data_quality",
+  title: "Get data quality",
+  description: "Exact counts and sample test ids for catalogue data problems: missing biomarkers, missing or placeholder prices (\xA31 or less), missing turnaround, booking links never checked or failing, and missing collection fee data. Catalogue data only; no patient data.",
+  inputSchema: {
+    sample_size: z13.number().int().min(1).max(50).default(10)
+  },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
+  handler: async (args, ctx) => runAdminTool(ctx, "get_data_quality", args, async ({ client }) => {
+    const entries = Object.entries(DATA_QUALITY_CHECKS);
+    const results = await Promise.all(
+      entries.map(
+        ([, filter]) => client.from("unified_provider_tests").select("id", { count: "exact" }).or(filter).order("id", { ascending: true }).limit(args.sample_size)
+      )
+    );
+    const checks = {};
+    for (let i = 0; i < entries.length; i++) {
+      const r = results[i];
+      if (r.error) return { error: r.error.message };
+      checks[entries[i][0]] = {
+        count: r.count ?? 0,
+        sample_ids: (r.data ?? []).map((d) => d.id)
+      };
+    }
+    return { payload: { checks } };
+  })
 });
 
 // src/lib/mcp/tools/get-price-movements.ts
-import { defineTool as defineTool9 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z7 } from "npm:zod@^3.24.2";
-var get_price_movements_default = defineTool9({
+import { defineTool as defineTool16 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z14 } from "npm:zod@^3.24.2";
+var get_price_movements_default = defineTool16({
   name: "get_price_movements",
   title: "Get price movements",
-  description: "Recent catalogue price changes from provider test history and the price history log: what moved, by how much, and when. Commercial data only \u2014 no patient or personal data.",
+  description: "Catalogue price changes in a window, aggregated in the database so nothing is truncated. Compares the published price at the first and last snapshot in the window (never mixed with total expected cost), and lists price log entries with test names. Filter by provider (applied to both sources), direction and minimum percentage change. Commercial data only; no patient data.",
   inputSchema: {
-    days: z7.number().int().min(1).max(365).default(30).describe("Lookback window in days."),
-    provider: z7.string().trim().optional().describe("Restrict to one provider id."),
-    limit: z7.number().int().min(1).max(200).default(50)
+    days: z14.number().int().min(1).max(365).default(30),
+    provider: z14.string().trim().max(100).optional().describe("Provider id."),
+    direction: z14.enum(["up", "down", "any"]).default("any"),
+    min_change_percentage: z14.number().min(0).max(1e3).default(0),
+    limit: z14.number().int().min(1).max(200).default(50)
   },
   annotations: {
     readOnlyHint: true,
     idempotentHint: true,
     openWorldHint: false
   },
-  handler: async (args, ctx) => {
-    const session = await requireAdmin(ctx);
-    if (!session) return DENIED;
-    const { client } = session;
-    const since = new Date(Date.now() - args.days * 864e5).toISOString();
-    let historyQuery = client.from("provider_test_history").select(
-      "provider_test_id, provider_id, test_name, price, was_price, total_expected_cost, snapshot_at"
-    ).gte("snapshot_at", since).order("snapshot_at", { ascending: false }).limit(5e3);
-    if (args.provider)
-      historyQuery = historyQuery.eq("provider_id", args.provider);
-    const [history, priceLog] = await Promise.all([
-      historyQuery,
-      client.from("price_history").select(
-        "test_id, provider, old_price, new_price, change_percentage, availability_changed, changed_at"
-      ).gte("changed_at", since).order("changed_at", { ascending: false }).limit(args.limit)
-    ]);
-    const firstError = history.error ?? priceLog.error;
-    if (firstError) return fail(firstError.message);
-    const byTest = /* @__PURE__ */ new Map();
-    for (const row of history.data ?? []) {
-      const key = row.provider_test_id ?? `${row.provider_id}:${row.test_name}`;
-      const existing = byTest.get(key);
-      if (!existing) byTest.set(key, { newest: row, oldest: row });
-      else if ((row.snapshot_at ?? "") < (existing.oldest.snapshot_at ?? ""))
-        existing.oldest = row;
-    }
-    const movements = [...byTest.values()].map(({ newest, oldest }) => {
-      const from = oldest.price ?? oldest.total_expected_cost;
-      const to = newest.price ?? newest.total_expected_cost;
-      if (from == null || to == null || from === to) return null;
-      return {
-        provider_id: newest.provider_id,
-        test_name: newest.test_name,
-        from_price: from,
-        to_price: to,
-        delta: Number((to - from).toFixed(2)),
-        change_percentage: from === 0 ? null : Number(((to - from) / from * 100).toFixed(2)),
-        first_seen_at: oldest.snapshot_at,
-        last_seen_at: newest.snapshot_at
-      };
-    }).filter((m) => m !== null).sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta)).slice(0, args.limit);
-    await logAdminToolCall(session, "get_price_movements", args);
-    return ok({
-      window_days: args.days,
-      movements_found: movements.length,
-      movements,
-      price_history_log: priceLog.data ?? []
+  handler: async (args, ctx) => runAdminTool(ctx, "get_price_movements", args, async ({ client }) => {
+    const { data, error } = await client.rpc("mcp_price_movements", {
+      p_days: args.days,
+      p_provider: args.provider ?? null,
+      p_direction: args.direction,
+      p_min_change_percentage: args.min_change_percentage,
+      p_limit: args.limit
     });
-  }
+    if (error) return { error: error.message };
+    return {
+      payload: {
+        window_days: args.days,
+        compared_field: "price",
+        ...data ?? {}
+      }
+    };
+  })
 });
 
 // src/lib/mcp/tools/get-security-posture.ts
-import { defineTool as defineTool10 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z8 } from "npm:zod@^3.24.2";
-var get_security_posture_default = defineTool10({
+import { defineTool as defineTool17 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z15 } from "npm:zod@^3.24.2";
+var get_security_posture_default = defineTool17({
   name: "get_security_posture",
   title: "Get security posture",
-  description: "Latest security scan snapshot metadata, open SOC incidents by severity, and recent CSP violation counts. Counts and metadata only \u2014 no patient data, no secrets.",
+  description: "Latest security scan snapshot metadata, open SOC incidents by severity, and recent CSP violation counts. No patient data; pseudonymous user IDs included; no secrets. Incident titles and entities are truncated to 200 characters with IP and email addresses masked.",
   inputSchema: {
-    days: z8.number().int().min(1).max(90).default(7).describe("Lookback window in days for CSP reports.")
+    days: z15.number().int().min(1).max(90).default(7).describe("Lookback window in days for CSP reports.")
   },
   annotations: {
     readOnlyHint: true,
@@ -583,206 +858,139 @@ var get_security_posture_default = defineTool10({
     openWorldHint: false
   },
   handler: async (args, ctx) => {
-    const session = await requireAdmin(ctx);
-    if (!session) return DENIED;
-    const { client } = session;
-    const since = new Date(Date.now() - args.days * 864e5).toISOString();
-    const [snapshot, incidents, csp] = await Promise.all([
-      client.from("security_scan_snapshots").select(
-        "id, scanned_at, total_findings, error_count, warn_count, has_diff, added_findings, removed_findings, modified_findings, acknowledged_at"
-      ).order("scanned_at", { ascending: false }).limit(1).maybeSingle(),
-      client.from("soc_incidents").select(
-        "id, cluster_key, source, entity, severity, status, title, signal_count, first_seen_at, last_seen_at"
-      ).neq("status", "resolved").order("last_seen_at", { ascending: false }).limit(100),
-      client.from("csp_reports").select("violated_directive, blocked_uri, received_at").gte("received_at", since).limit(2e3)
-    ]);
-    const firstError = snapshot.error ?? incidents.error ?? csp.error;
-    if (firstError) return fail(firstError.message);
-    const bySeverity = /* @__PURE__ */ new Map();
-    for (const i of incidents.data ?? []) {
-      const key = i.severity ?? "unknown";
-      bySeverity.set(key, (bySeverity.get(key) ?? 0) + 1);
-    }
-    const cspByDirective = /* @__PURE__ */ new Map();
-    for (const r of csp.data ?? []) {
-      const key = r.violated_directive ?? "unknown";
-      cspByDirective.set(key, (cspByDirective.get(key) ?? 0) + 1);
-    }
-    const snap = snapshot.data;
-    await logAdminToolCall(session, "get_security_posture", args);
-    return ok({
-      window_days: args.days,
-      latest_scan: snap ? {
-        scanned_at: snap.scanned_at,
-        total_findings: snap.total_findings,
-        error_count: snap.error_count,
-        warn_count: snap.warn_count,
-        has_diff: snap.has_diff,
-        acknowledged_at: snap.acknowledged_at,
-        added_findings: Array.isArray(snap.added_findings) ? snap.added_findings.length : 0,
-        removed_findings: Array.isArray(snap.removed_findings) ? snap.removed_findings.length : 0,
-        modified_findings: Array.isArray(snap.modified_findings) ? snap.modified_findings.length : 0
-      } : null,
-      open_incidents_total: incidents.data?.length ?? 0,
-      open_incidents_by_severity: Object.fromEntries(bySeverity),
-      open_incidents: incidents.data ?? [],
-      csp_reports_total: csp.data?.length ?? 0,
-      csp_reports_by_directive: Object.fromEntries(
-        [...cspByDirective.entries()].sort((a, b) => b[1] - a[1])
-      )
+    return runAdminTool(ctx, "get_security_posture", args, async ({ client }) => {
+      const since = new Date(Date.now() - args.days * 864e5).toISOString();
+      const [snapshot, incidents, csp] = await Promise.all([
+        client.from("security_scan_snapshots").select(
+          "id, scanned_at, total_findings, error_count, warn_count, has_diff, added_findings, removed_findings, modified_findings, acknowledged_at"
+        ).order("scanned_at", { ascending: false }).limit(1).maybeSingle(),
+        client.from("soc_incidents").select(
+          "id, cluster_key, source, entity, severity, status, title, signal_count, first_seen_at, last_seen_at"
+        ).neq("status", "resolved").order("last_seen_at", { ascending: false }).limit(100),
+        client.from("csp_reports").select("violated_directive, blocked_uri, received_at").gte("received_at", since).limit(2e3)
+      ]);
+      const firstError = snapshot.error ?? incidents.error ?? csp.error;
+      if (firstError) return { error: firstError.message };
+      const bySeverity = /* @__PURE__ */ new Map();
+      for (const i of incidents.data ?? []) {
+        const key = i.severity ?? "unknown";
+        bySeverity.set(key, (bySeverity.get(key) ?? 0) + 1);
+      }
+      const cspByDirective = /* @__PURE__ */ new Map();
+      for (const r of csp.data ?? []) {
+        const key = r.violated_directive ?? "unknown";
+        cspByDirective.set(key, (cspByDirective.get(key) ?? 0) + 1);
+      }
+      const snap = snapshot.data;
+      return { payload: {
+        window_days: args.days,
+        latest_scan: snap ? {
+          scanned_at: snap.scanned_at,
+          total_findings: snap.total_findings,
+          error_count: snap.error_count,
+          warn_count: snap.warn_count,
+          has_diff: snap.has_diff,
+          acknowledged_at: snap.acknowledged_at,
+          added_findings: Array.isArray(snap.added_findings) ? snap.added_findings.length : 0,
+          removed_findings: Array.isArray(snap.removed_findings) ? snap.removed_findings.length : 0,
+          modified_findings: Array.isArray(snap.modified_findings) ? snap.modified_findings.length : 0
+        } : null,
+        open_incidents_total: incidents.data?.length ?? 0,
+        open_incidents_by_severity: Object.fromEntries(bySeverity),
+        open_incidents: (incidents.data ?? []).map((i) => ({ ...i, entity: maskPii(i.entity), title: maskPii(i.title) })),
+        csp_reports_total: csp.data?.length ?? 0,
+        csp_reports_by_directive: Object.fromEntries(
+          [...cspByDirective.entries()].sort((a, b) => b[1] - a[1])
+        )
+      } };
     });
   }
 });
 
 // src/lib/mcp/tools/get-performance-summary.ts
-import { defineTool as defineTool11 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z9 } from "npm:zod@^3.24.2";
-function percentile(sorted, p) {
-  if (sorted.length === 0) return null;
-  const index = Math.min(
-    sorted.length - 1,
-    Math.floor(p / 100 * sorted.length)
-  );
-  return Number(sorted[index].toFixed(3));
-}
-var get_performance_summary_default = defineTool11({
+import { defineTool as defineTool18 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z16 } from "npm:zod@^3.24.2";
+var get_performance_summary_default = defineTool18({
   name: "get_performance_summary",
   title: "Get performance summary",
-  description: "Aggregate Core Web Vitals (LCP, CLS, INP) percentiles by page route, plus the worst performing routes. Anonymous aggregates only \u2014 no patient or personal data.",
+  description: "Core Web Vitals (LCP, CLS, INP and others) computed in the database over every sample in the window: p50, p75 and p95 per route and metric, the good, needs-improvement and poor share from the stored rating, and the worst routes. Anonymous aggregates; no patient data.",
   inputSchema: {
-    days: z9.number().int().min(1).max(90).default(7).describe("Lookback window in days."),
-    limit: z9.number().int().min(1).max(100).default(20).describe("Number of routes to return.")
+    days: z16.number().int().min(1).max(90).default(7),
+    limit: z16.number().int().min(1).max(100).default(20).describe("Number of routes to return.")
   },
   annotations: {
     readOnlyHint: true,
     idempotentHint: true,
     openWorldHint: false
   },
-  handler: async (args, ctx) => {
-    const session = await requireAdmin(ctx);
-    if (!session) return DENIED;
-    const since = new Date(Date.now() - args.days * 864e5).toISOString();
-    const { data, error } = await session.client.from("web_vitals").select("metric, value, route, rating").gte("created_at", since).limit(5e4);
-    if (error) return fail(error.message);
-    const rows = data ?? [];
-    const buckets = /* @__PURE__ */ new Map();
-    const overall = /* @__PURE__ */ new Map();
-    for (const row of rows) {
-      if (row.metric == null || row.value == null) continue;
-      const metric = row.metric.toUpperCase();
-      const route = row.route ?? "unknown";
-      if (!buckets.has(route)) buckets.set(route, /* @__PURE__ */ new Map());
-      const routeBucket = buckets.get(route);
-      routeBucket.set(metric, [...routeBucket.get(metric) ?? [], row.value]);
-      overall.set(metric, [...overall.get(metric) ?? [], row.value]);
-    }
-    const summarise = (values) => {
-      const sorted = [...values].sort((a, b) => a - b);
-      return {
-        samples: sorted.length,
-        p50: percentile(sorted, 50),
-        p75: percentile(sorted, 75),
-        p95: percentile(sorted, 95)
-      };
-    };
-    const byRoute = [...buckets.entries()].map(([route, metrics]) => ({
-      route,
-      samples: [...metrics.values()].reduce((n, v) => n + v.length, 0),
-      metrics: Object.fromEntries(
-        [...metrics.entries()].map(([m, v]) => [m, summarise(v)])
-      )
-    })).sort((a, b) => b.samples - a.samples).slice(0, args.limit);
-    const worstBy = (metric) => [...buckets.entries()].map(([route, metrics]) => ({
-      route,
-      ...summarise(metrics.get(metric) ?? [])
-    })).filter((r) => r.samples >= 5 && r.p75 != null).sort((a, b) => (b.p75 ?? 0) - (a.p75 ?? 0)).slice(0, 5);
-    await logAdminToolCall(session, "get_performance_summary", args);
-    return ok({
-      window_days: args.days,
-      total_samples: rows.length,
-      overall: Object.fromEntries(
-        [...overall.entries()].map(([m, v]) => [m, summarise(v)])
-      ),
-      by_route: byRoute,
-      worst_lcp: worstBy("LCP"),
-      worst_cls: worstBy("CLS"),
-      worst_inp: worstBy("INP")
+  handler: async (args, ctx) => runAdminTool(ctx, "get_performance_summary", args, async ({ client }) => {
+    const { data, error } = await client.rpc("mcp_web_vitals_summary", {
+      p_days: args.days,
+      p_limit: args.limit
     });
-  }
+    if (error) return { error: error.message };
+    return {
+      payload: {
+        window_days: args.days,
+        ...data ?? {}
+      }
+    };
+  })
 });
 
 // src/lib/mcp/tools/get-business-summary.ts
-import { defineTool as defineTool12 } from "npm:@lovable.dev/mcp-js@0.26.3";
-var get_business_summary_default = defineTool12({
+import { defineTool as defineTool19 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z17 } from "npm:zod@^3.24.2";
+var get_business_summary_default = defineTool19({
   name: "get_business_summary",
   title: "Get business summary",
-  description: "Aggregate commercial totals: order count and value, newsletter subscriber count, and total registered users as a bare number. Aggregates only \u2014 never individual records, names or email addresses.",
-  inputSchema: {},
+  description: "Aggregate commercial totals computed in the database: order count and value for the window, by status and by month, exact newsletter subscriber counts and total registered users as a bare number. Aggregates only; never individual records, names or email addresses.",
+  inputSchema: {
+    days: z17.number().int().min(1).max(3650).default(365)
+  },
   annotations: {
     readOnlyHint: true,
     idempotentHint: true,
     openWorldHint: false
   },
-  handler: async (_input, ctx) => {
-    const session = await requireAdmin(ctx);
-    if (!session) return DENIED;
-    const { client } = session;
+  handler: async (args, ctx) => runAdminTool(ctx, "get_business_summary", args, async ({ client }) => {
     const [orders, subscribers, activeSubscribers, users] = await Promise.all([
-      client.from("orders").select("price, status, order_date").limit(5e4),
+      client.rpc("mcp_business_summary", { p_days: args.days }),
       client.from("newsletter_subscribers").select("id", { count: "exact", head: true }),
       client.from("newsletter_subscribers").select("id", { count: "exact", head: true }).eq("status", "active"),
       client.rpc("get_registered_user_count")
     ]);
     const firstError = orders.error ?? subscribers.error ?? activeSubscribers.error ?? users.error;
-    if (firstError) return fail(firstError.message);
-    const rows = orders.data ?? [];
-    const totalValue = rows.reduce((sum, r) => sum + (r.price ?? 0), 0);
-    const byStatus = /* @__PURE__ */ new Map();
-    for (const r of rows) {
-      const key = r.status ?? "unknown";
-      const entry = byStatus.get(key) ?? { orders: 0, value: 0 };
-      entry.orders += 1;
-      entry.value += r.price ?? 0;
-      byStatus.set(key, entry);
-    }
-    await logAdminToolCall(session, "get_business_summary", {});
-    return ok({
-      orders_total: rows.length,
-      orders_total_value_gbp: Number(totalValue.toFixed(2)),
-      average_order_value_gbp: rows.length ? Number((totalValue / rows.length).toFixed(2)) : 0,
-      orders_by_status: Object.fromEntries(
-        [...byStatus.entries()].map(([k, v]) => [
-          k,
-          { orders: v.orders, value_gbp: Number(v.value.toFixed(2)) }
-        ])
-      ),
-      newsletter_subscribers_total: subscribers.count ?? 0,
-      newsletter_subscribers_active: activeSubscribers.count ?? 0,
-      registered_users_total: typeof users.data === "number" ? users.data : 0
-    });
-  }
+    if (firstError) return { error: firstError.message };
+    return {
+      payload: {
+        window_days: args.days,
+        ...orders.data ?? {},
+        newsletter_subscribers_total: subscribers.count ?? 0,
+        newsletter_subscribers_active: activeSubscribers.count ?? 0,
+        registered_users_total: Number(users.data ?? 0)
+      }
+    };
+  })
 });
 
 // src/lib/mcp/tools/get-admin-audit-trail.ts
-import { defineTool as defineTool13 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z10 } from "npm:zod@^3.24.2";
-var get_admin_audit_trail_default = defineTool13({
+import { defineTool as defineTool20 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z18 } from "npm:zod@^3.24.2";
+var get_admin_audit_trail_default = defineTool20({
   name: "get_admin_audit_trail",
   title: "Get admin audit trail",
-  description: "Recent administrative activity, role changes and audit log entries: action names, actor user IDs and timestamps only. Record payloads are deliberately omitted so no personal data is returned.",
+  description: "Recent administrative activity, role changes and audit log entries: action names, actor and target user IDs, and timestamps. Record payloads are omitted. No patient data; pseudonymous user IDs included. Free-text fields are truncated to 200 characters.",
   inputSchema: {
-    days: z10.number().int().min(1).max(180).default(14).describe("Lookback window in days."),
-    limit: z10.number().int().min(1).max(200).default(50).describe("Maximum entries per log.")
+    days: z18.number().int().min(1).max(180).default(14),
+    limit: z18.number().int().min(1).max(200).default(50).describe("Maximum entries per log.")
   },
   annotations: {
     readOnlyHint: true,
     idempotentHint: true,
     openWorldHint: false
   },
-  handler: async (args, ctx) => {
-    const session = await requireAdmin(ctx);
-    if (!session) return DENIED;
-    const { client } = session;
+  handler: async (args, ctx) => runAdminTool(ctx, "get_admin_audit_trail", args, async ({ client }) => {
     const since = new Date(Date.now() - args.days * 864e5).toISOString();
     const [adminLog, roleLog, auditLog] = await Promise.all([
       client.from("admin_activity_log").select(
@@ -794,15 +1002,18 @@ var get_admin_audit_trail_default = defineTool13({
       ).gte("created_at", since).order("created_at", { ascending: false }).limit(args.limit)
     ]);
     const firstError = adminLog.error ?? roleLog.error ?? auditLog.error;
-    if (firstError) return fail(firstError.message);
-    await logAdminToolCall(session, "get_admin_audit_trail", args);
-    return ok({
-      window_days: args.days,
-      admin_activity_log: adminLog.data ?? [],
-      role_audit_log: roleLog.data ?? [],
-      audit_logs: auditLog.data ?? []
-    });
-  }
+    if (firstError) return { error: firstError.message };
+    return {
+      payload: {
+        window_days: args.days,
+        admin_activity_log: (adminLog.data ?? []).map((r) => ({ ...r, error_message: truncate(r.error_message) })),
+        role_audit_log: roleLog.data ?? [],
+        audit_logs: (auditLog.data ?? []).map(
+          (r) => ({ ...r, purpose: truncate(r.purpose) })
+        )
+      }
+    };
+  })
 });
 
 // src/lib/mcp/index.ts
@@ -810,8 +1021,8 @@ var projectRef = "clvuioagsgfadynuvodj";
 var mcp_default = defineMcp({
   name: "myhealth-checkup-mcp",
   title: "myhealth checkup",
-  version: "0.2.0",
-  instructions: "Tools for myhealth checkup \u2014 the UK private diagnostics comparison platform. Use search_tests and get_test to compare private blood tests and cancer screening across UKAS-accredited, CQC-regulated providers (prices in GBP, turnaround in days). list_providers enumerates partner labs. list_my_favourites and save_favourite act on the signed-in user's saved tests. The admin tools (get_platform_health, list_scraper_alerts, get_catalogue_coverage, get_price_movements, get_security_posture, get_performance_summary, get_business_summary, get_admin_audit_trail) are strictly read-only and operational or commercial in nature: scraper and job health, catalogue freshness, pricing movements, security posture metadata, anonymous performance aggregates, and aggregate business totals. They require the signed-in user to hold the admin role, every call is audit-logged, and they contain no patient data \u2014 no test results, biomarker readings, health records or personal identifiers are exposed through this server by design. This platform is decision infrastructure only \u2014 never present results as medical advice or diagnosis.",
+  version: "0.3.0",
+  instructions: "Tools for myhealth checkup, the UK private diagnostics comparison platform. Use search_tests, get_test, compare_tests, find_tests_by_biomarker, list_categories, list_providers and get_provider to compare private blood tests and cancer screening across providers that meet our inclusion rules (prices in GBP, turnaround in days). list_my_favourites, save_favourite and remove_favourite act on the signed-in user's saved tests. The admin tools (get_platform_health, list_scraper_alerts, get_catalogue_coverage, list_stale_tests, get_data_quality, get_price_movements, get_security_posture, get_performance_summary, get_business_summary, get_admin_audit_trail) are strictly read-only: scraper and job health, catalogue freshness and quality, pricing movements, security posture metadata, anonymous performance aggregates and aggregate business totals. They require the admin role and every call, including denied attempts, is audit-logged. They return no patient data; some include pseudonymous user IDs, and free-text fields are truncated. Rules: prices are provider-published and can change, so always show the updated_at date alongside any price. Never rank or recommend a provider on commercial grounds; order only by the criteria the user asks for. Disclose affiliate relationships where present. Do not imply any NHS integration. State that results are for comparison only and are not medical advice. This platform is decision infrastructure only; never present results as medical advice or diagnosis.",
   auth: auth.oauth.issuer({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated"
@@ -820,11 +1031,18 @@ var mcp_default = defineMcp({
     search_tests_default,
     get_test_default,
     list_providers_default,
+    list_categories_default,
+    get_provider_default,
+    compare_tests_default,
+    find_tests_by_biomarker_default,
     list_my_favourites_default,
     save_favourite_default,
+    remove_favourite_default,
     get_platform_health_default,
     list_scraper_alerts_default,
     get_catalogue_coverage_default,
+    list_stale_tests_default,
+    get_data_quality_default,
     get_price_movements_default,
     get_security_posture_default,
     get_performance_summary_default,

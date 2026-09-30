@@ -12,14 +12,14 @@
   "mcp": {
     "server": {
       "name": "myhealth-checkup-mcp",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "title": "myhealth checkup"
     },
     "tools": [
       {
         "name": "search_tests",
         "title": "Search diagnostic tests",
-        "description": "Search the myhealth checkup catalogue of private UK diagnostic tests. Filter by keyword, category, provider, and price. Returns test name, provider, price (GBP), turnaround, biomarker count, and URL.",
+        "description": "Search the myhealth checkup catalogue of UK private diagnostic tests. The keyword matches the test name or the provider's description. Filter by category slug (see list_categories), provider, maximum total expected cost, minimum biomarker count and collection method. Sorted only by the sort you choose (default price_asc, by total expected cost). Returns every listing field: name, biomarker count, price, collection and clinical review fees, total expected cost, turnaround, sample type, collection method, location options, home kit and clinic availability, provider URL and updated_at, plus total_matches.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -30,26 +30,58 @@
           "properties": {
             "query": {
               "type": "string",
-              "description": "Keyword to match against test name or description."
+              "maxLength": 100,
+              "description": "Keyword matched against test name or description."
             },
             "category": {
               "type": "string",
-              "description": "Category slug (e.g. 'womens-health', 'cancer-screening', 'hormones')."
+              "description": "Category slug, for example 'womens-health'."
             },
             "provider": {
               "type": "string",
-              "description": "Provider name (e.g. 'Medichecks', 'Randox', 'Goodbody')."
+              "description": "Provider id or name, for example 'medichecks'."
             },
             "max_price": {
               "type": "number",
               "exclusiveMinimum": 0,
               "description": "Maximum total expected cost in GBP."
             },
+            "min_biomarkers": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "collection": {
+              "type": "string",
+              "enum": [
+                "home_kit",
+                "clinic_visit"
+              ]
+            },
+            "include_addons": {
+              "type": "boolean",
+              "default": false,
+              "description": "Include add-on tests that cannot be bought alone."
+            },
+            "sort": {
+              "type": "string",
+              "enum": [
+                "price_asc",
+                "price_desc",
+                "biomarkers_desc",
+                "name"
+              ],
+              "default": "price_asc"
+            },
             "limit": {
               "type": "integer",
               "minimum": 1,
               "maximum": 50,
               "default": 20
+            },
+            "offset": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
             }
           },
           "additionalProperties": false,
@@ -60,7 +92,7 @@
       {
         "name": "get_test",
         "title": "Get test details",
-        "description": "Fetch the full record for a single diagnostic test by id, including biomarker list, fees, sample method and booking URL.",
+        "description": "Fetch the full record for one test by id: provider description (verbatim), full biomarker list, price, collection and clinical review fees, total expected cost, turnaround, sample and collection method, location options, accreditation flags, provider URL, scraped_at and updated_at, plus a limitations list stating any missing or unverified data.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -86,7 +118,7 @@
       {
         "name": "list_providers",
         "title": "List providers",
-        "description": "List all UKAS-accredited, CQC-regulated private diagnostic test providers compared on myhealth checkup, with the number of active tests each has.",
+        "description": "List the private diagnostic test providers compared on myhealth checkup that meet our inclusion rules (UKAS accreditation and CQC registration confirmed; ISO 15189 where applicable). Returns each provider's accreditation flags, number of active tests (add-ons excluded, counted exactly) and the latest updated_at date. Providers whose accreditation is not yet confirmed in our data are listed separately under excluded_providers with the reason.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -96,29 +128,148 @@
           "$schema": "http://json-schema.org/draft-07/schema#",
           "type": "object",
           "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "list_categories",
+        "title": "List categories",
+        "description": "List test category slugs and names with the number of active tests and providers in each. Use these slugs for the category filter in search_tests.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "http://json-schema.org/draft-07/schema#",
+          "type": "object",
+          "properties": {}
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_provider",
+        "title": "Get provider",
+        "description": "Profile for one provider that meets our inclusion rules: name, accreditation flags, number of active tests, home kit and clinic collection options, location options, typical (median) phlebotomy and GP review fees, and the latest updated_at date.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "provider_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100,
+              "description": "Provider id from list_providers, for example 'randox'."
+            }
+          },
+          "required": [
+            "provider_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "compare_tests",
+        "title": "Compare tests side by side",
+        "description": "Compare two to five tests by id side by side: price, collection fee, clinical review fee, total expected cost, turnaround, sample method, location options and biomarker counts, plus biomarkers shared by all tests and biomarkers unique to each. Tests are returned in the order given; nothing is ranked.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "test_ids": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "minItems": 2,
+              "maxItems": 5
+            }
+          },
+          "required": [
+            "test_ids"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "find_tests_by_biomarker",
+        "title": "Find tests by biomarker",
+        "description": "Find tests whose biomarker list includes a biomarker name (case-insensitive, partial matches included and shown in matched_biomarkers), sorted by total expected cost from lowest. Add-on tests are excluded.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "biomarker": {
+              "type": "string",
+              "minLength": 2,
+              "maxLength": 100,
+              "description": "Biomarker name, for example 'ferritin' or 'HbA1c'."
+            },
+            "max_price": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "Maximum total expected cost in GBP."
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          },
+          "required": [
+            "biomarker"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
         },
         "outputSchema": null
       },
       {
         "name": "list_my_favourites",
         "title": "List my saved tests",
-        "description": "Return the diagnostic tests the signed-in user has saved to their favourites on myhealth checkup.",
+        "description": "Return the signed-in user's saved tests with the current catalogue price, total expected cost and updated_at. price_changed is true when the current price differs from the price saved.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
           "openWorldHint": false
         },
         "inputSchema": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
           "type": "object",
-          "properties": {}
+          "properties": {
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
         },
         "outputSchema": null
       },
       {
         "name": "save_favourite",
         "title": "Save a test to my favourites",
-        "description": "Save a diagnostic test to the signed-in user's favourites on myhealth checkup.",
+        "description": "Save a diagnostic test to the signed-in user's favourites by test id. The test name, provider, category and price are looked up from the catalogue. Saving the same test twice has no further effect.",
         "annotations": {
           "readOnlyHint": false,
           "destructiveHint": false,
@@ -130,31 +281,39 @@
           "properties": {
             "test_id": {
               "type": "string",
-              "minLength": 1,
-              "description": "Test id (uuid from search_tests, or provider slug)."
-            },
-            "name": {
-              "type": "string",
-              "minLength": 1,
-              "description": "Test name."
-            },
-            "provider": {
-              "type": "string",
-              "minLength": 1,
-              "description": "Provider name."
-            },
-            "category": {
-              "type": "string"
-            },
-            "price": {
-              "type": "number",
-              "minimum": 0
+              "format": "uuid",
+              "description": "Test UUID from search_tests."
             }
           },
           "required": [
-            "test_id",
-            "name",
-            "provider"
+            "test_id"
+          ],
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "remove_favourite",
+        "title": "Remove a test from my favourites",
+        "description": "Remove a test from the signed-in user's own favourites by test id. Only the caller's own saved row is affected.",
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "test_id": {
+              "type": "string",
+              "format": "uuid",
+              "description": "Test UUID to remove."
+            }
+          },
+          "required": [
+            "test_id"
           ],
           "additionalProperties": false,
           "$schema": "http://json-schema.org/draft-07/schema#"
@@ -164,7 +323,7 @@
       {
         "name": "get_platform_health",
         "title": "Get platform health",
-        "description": "Operational scraper and scheduled-job health: last run per provider, success and failure counts, and anything overdue or failing. Contains no patient or personal data.",
+        "description": "Operational scraper and scheduled-job health. Success, failure and in-progress counts are computed in the database; runs still in progress are reported separately and never counted as failures. Also lists overdue and failing jobs. No patient data; pseudonymous user IDs may be included. Free-text error fields are truncated to 200 characters.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -177,8 +336,7 @@
               "type": "integer",
               "minimum": 1,
               "maximum": 720,
-              "default": 72,
-              "description": "Lookback window in hours."
+              "default": 72
             }
           },
           "additionalProperties": false,
@@ -189,7 +347,7 @@
       {
         "name": "list_scraper_alerts",
         "title": "List scraper alerts",
-        "description": "List open scraper alerts (newest first) with severity, provider and counts. Operational data only — no patient or personal data.",
+        "description": "List open scraper alerts (newest first) with severity, provider and counts. No patient data; pseudonymous user IDs may be included. Free-text messages are truncated to 200 characters.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -200,12 +358,11 @@
           "properties": {
             "include_acknowledged": {
               "type": "boolean",
-              "default": false,
-              "description": "Include alerts already acknowledged."
+              "default": false
             },
             "severity": {
               "type": "string",
-              "description": "Filter to a single severity, e.g. 'critical'."
+              "description": "Filter to a single severity, for example 'critical'."
             },
             "limit": {
               "type": "integer",
@@ -222,7 +379,7 @@
       {
         "name": "get_catalogue_coverage",
         "title": "Get catalogue coverage",
-        "description": "Active test counts by provider and by category, plus records whose validation is stale or missing — the freshness signal for the comparison catalogue. No patient or personal data.",
+        "description": "Active test counts by provider and by category, plus records whose validation is stale or missing — the freshness signal for the comparison catalogue. No patient data. For the underlying records use list_stale_tests.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -245,9 +402,67 @@
         "outputSchema": null
       },
       {
+        "name": "list_stale_tests",
+        "title": "List stale tests",
+        "description": "List the active catalogue records that have never been validated or were last validated more than stale_after_days ago, oldest first, so they can be fixed. Returns total_matches as an exact count. Catalogue data only; no patient data.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "stale_after_days": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 365,
+              "default": 30
+            },
+            "provider_id": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "limit": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 200,
+              "default": 50
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
+        "name": "get_data_quality",
+        "title": "Get data quality",
+        "description": "Exact counts and sample test ids for catalogue data problems: missing biomarkers, missing or placeholder prices (£1 or less), missing turnaround, booking links never checked or failing, and missing collection fee data. Catalogue data only; no patient data.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "sample_size": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 10
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
+      },
+      {
         "name": "get_price_movements",
         "title": "Get price movements",
-        "description": "Recent catalogue price changes from provider test history and the price history log: what moved, by how much, and when. Commercial data only — no patient or personal data.",
+        "description": "Catalogue price changes in a window, aggregated in the database so nothing is truncated. Compares the published price at the first and last snapshot in the window (never mixed with total expected cost), and lists price log entries with test names. Filter by provider (applied to both sources), direction and minimum percentage change. Commercial data only; no patient data.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -260,12 +475,27 @@
               "type": "integer",
               "minimum": 1,
               "maximum": 365,
-              "default": 30,
-              "description": "Lookback window in days."
+              "default": 30
             },
             "provider": {
               "type": "string",
-              "description": "Restrict to one provider id."
+              "maxLength": 100,
+              "description": "Provider id."
+            },
+            "direction": {
+              "type": "string",
+              "enum": [
+                "up",
+                "down",
+                "any"
+              ],
+              "default": "any"
+            },
+            "min_change_percentage": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1000,
+              "default": 0
             },
             "limit": {
               "type": "integer",
@@ -282,7 +512,7 @@
       {
         "name": "get_security_posture",
         "title": "Get security posture",
-        "description": "Latest security scan snapshot metadata, open SOC incidents by severity, and recent CSP violation counts. Counts and metadata only — no patient data, no secrets.",
+        "description": "Latest security scan snapshot metadata, open SOC incidents by severity, and recent CSP violation counts. No patient data; pseudonymous user IDs included; no secrets. Incident titles and entities are truncated to 200 characters with IP and email addresses masked.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -307,7 +537,7 @@
       {
         "name": "get_performance_summary",
         "title": "Get performance summary",
-        "description": "Aggregate Core Web Vitals (LCP, CLS, INP) percentiles by page route, plus the worst performing routes. Anonymous aggregates only — no patient or personal data.",
+        "description": "Core Web Vitals (LCP, CLS, INP and others) computed in the database over every sample in the window: p50, p75 and p95 per route and metric, the good, needs-improvement and poor share from the stored rating, and the worst routes. Anonymous aggregates; no patient data.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -320,8 +550,7 @@
               "type": "integer",
               "minimum": 1,
               "maximum": 90,
-              "default": 7,
-              "description": "Lookback window in days."
+              "default": 7
             },
             "limit": {
               "type": "integer",
@@ -339,23 +568,31 @@
       {
         "name": "get_business_summary",
         "title": "Get business summary",
-        "description": "Aggregate commercial totals: order count and value, newsletter subscriber count, and total registered users as a bare number. Aggregates only — never individual records, names or email addresses.",
+        "description": "Aggregate commercial totals computed in the database: order count and value for the window, by status and by month, exact newsletter subscriber counts and total registered users as a bare number. Aggregates only; never individual records, names or email addresses.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
           "openWorldHint": false
         },
         "inputSchema": {
-          "$schema": "http://json-schema.org/draft-07/schema#",
           "type": "object",
-          "properties": {}
+          "properties": {
+            "days": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3650,
+              "default": 365
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
         },
         "outputSchema": null
       },
       {
         "name": "get_admin_audit_trail",
         "title": "Get admin audit trail",
-        "description": "Recent administrative activity, role changes and audit log entries: action names, actor user IDs and timestamps only. Record payloads are deliberately omitted so no personal data is returned.",
+        "description": "Recent administrative activity, role changes and audit log entries: action names, actor and target user IDs, and timestamps. Record payloads are omitted. No patient data; pseudonymous user IDs included. Free-text fields are truncated to 200 characters.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
@@ -368,8 +605,7 @@
               "type": "integer",
               "minimum": 1,
               "maximum": 180,
-              "default": 14,
-              "description": "Lookback window in days."
+              "default": 14
             },
             "limit": {
               "type": "integer",

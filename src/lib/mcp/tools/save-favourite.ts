@@ -1,32 +1,14 @@
-import { createClient } from "@supabase/supabase-js";
-import { defineTool, type ToolContext } from "@lovable.dev/mcp-js";
+import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-
-function userClient(ctx: ToolContext) {
-  return createClient(
-    process.env.SUPABASE_URL!,
-    process.env.SUPABASE_PUBLISHABLE_KEY!,
-    {
-      global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
-      auth: { persistSession: false, autoRefreshToken: false },
-    },
-  );
-}
+import { fail, ok, userClient } from "../shared";
 
 export default defineTool({
   name: "save_favourite",
   title: "Save a test to my favourites",
   description:
-    "Save a diagnostic test to the signed-in user's favourites on myhealth checkup.",
+    "Save a diagnostic test to the signed-in user's favourites by test id. The test name, provider, category and price are looked up from the catalogue. Saving the same test twice has no further effect.",
   inputSchema: {
-    test_id: z
-      .string()
-      .min(1)
-      .describe("Test id (uuid from search_tests, or provider slug)."),
-    name: z.string().min(1).describe("Test name."),
-    provider: z.string().min(1).describe("Provider name."),
-    category: z.string().optional(),
-    price: z.number().nonnegative().optional(),
+    test_id: z.string().uuid().describe("Test UUID from search_tests."),
   },
   annotations: {
     readOnlyHint: false,
@@ -34,33 +16,47 @@ export default defineTool({
     idempotentHint: true,
     openWorldHint: false,
   },
-  handler: async ({ test_id, name, provider, category, price }, ctx) => {
-    if (!ctx.isAuthenticated()) {
-      return {
-        content: [{ type: "text", text: "Not authenticated" }],
-        isError: true,
-      };
-    }
-    const { data, error } = await userClient(ctx)
-      .from("favorites")
-      .insert({
-        user_id: ctx.getUserId(),
-        test_id,
-        name,
-        provider,
-        category,
-        price,
-      })
-      .select()
+  handler: async ({ test_id }, ctx) => {
+    const userId = ctx.getUserId();
+    if (!ctx.isAuthenticated() || !userId) return fail("Not authenticated");
+    const client = userClient(ctx);
+    const { data: test, error: lookupError } = await client
+      .from("unified_provider_tests")
+      .select("id, test_name, provider_name, category_primary, price")
+      .eq("id", test_id)
       .maybeSingle();
-    if (error)
-      return {
-        content: [{ type: "text", text: `Error: ${error.message}` }],
-        isError: true,
-      };
+    if (lookupError) return fail(lookupError.message);
+    if (!test) return fail("Test not found in the catalogue.");
+    const row = test as {
+      test_name: string;
+      provider_name: string;
+      category_primary: string | null;
+      price: number | null;
+    };
+
+    const { error } = await client.from("favorites").upsert(
+      {
+        user_id: userId,
+        test_id,
+        name: row.test_name,
+        provider: row.provider_name,
+        category: row.category_primary,
+        price: row.price,
+      },
+      { onConflict: "user_id,test_id", ignoreDuplicates: true },
+    );
+    if (error) return fail(error.message);
+
+    const { data: saved, error: readError } = await client
+      .from("favorites")
+      .select("id, test_id, name, provider, category, price, created_at")
+      .eq("user_id", userId)
+      .eq("test_id", test_id)
+      .maybeSingle();
+    if (readError) return fail(readError.message);
     return {
-      content: [{ type: "text", text: `Saved "${name}" to favourites.` }],
-      structuredContent: { favourite: data },
+      ...ok({ favourite: saved }),
+      content: [{ type: "text", text: `Saved "${row.test_name}" to favourites.` }],
     };
   },
 });
