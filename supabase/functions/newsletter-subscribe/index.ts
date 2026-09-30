@@ -78,29 +78,17 @@ serve(async (req: Request): Promise<Response> => {
       request_count: 1,
     });
 
-    // Upsert: re-activate if previously unsubscribed
+    // Never change an existing subscriber's status from an unauthenticated request:
+    // anyone could otherwise re-subscribe someone who opted out. Respond identically
+    // either way so the endpoint doesn't reveal whether an address is on the list.
     const { data: existing } = await supabase
       .from("newsletter_subscribers")
-      .select("id, status")
+      .select("id")
       .eq("email", email)
       .maybeSingle();
 
     if (existing) {
-      if (existing.status === "active") {
-        return json({ ok: true, message: "You're already subscribed." });
-      }
-      const { error: updErr } = await supabase
-        .from("newsletter_subscribers")
-        .update({
-          status: "active",
-          subscribed_at: new Date().toISOString(),
-          unsubscribed_at: null,
-          source,
-          consent_ip: ip,
-          consent_user_agent: ua,
-        })
-        .eq("id", existing.id);
-      if (updErr) throw updErr;
+      return json({ ok: true, message: "Thanks — you're subscribed." });
     } else {
       const { error: insErr } = await supabase
         .from("newsletter_subscribers")

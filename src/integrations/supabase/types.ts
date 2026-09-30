@@ -8397,6 +8397,7 @@ export type Database = {
           snomed_code: string
         }[]
       }
+      mhc_sync_secret: { Args: never; Returns: string }
       refresh_provider_test_biomarkers: { Args: never; Returns: Json }
       regenerate_mfa_backup_codes: { Args: never; Returns: string[] }
       resolve_canonical_category: {

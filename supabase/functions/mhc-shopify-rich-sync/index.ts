@@ -72,6 +72,8 @@ function stripHtml(html: string | null | undefined): string | null {
 
 Deno.serve(async (req) => {
   const url = new URL(req.url);
+  // Fail closed: an unset secret must never match an empty/missing query parameter.
+  if (!SECRET) return new Response("sync secret not configured", { status: 503 });
   if (url.searchParams.get("secret") !== SECRET) return new Response("unauthorized", { status: 401 });
   const startedAt = new Date().toISOString();
   const providerId = url.searchParams.get("provider") || "";
