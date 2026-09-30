@@ -63,14 +63,24 @@ function maskPii(value, max = FREE_TEXT_MAX) {
   const masked = text.replace(EMAIL_RE, "[email masked]").replace(IPV4_RE, "[ip masked]").replace(IPV6_RE, "[ip masked]");
   return truncate(masked, max);
 }
-function inclusionFailures(flags) {
-  const reasons = [];
-  if (flags.lab_ukas_accredited !== true)
-    reasons.push("UKAS accreditation not confirmed");
-  if (flags.lab_cqc_regulated !== true)
-    reasons.push("CQC registration not confirmed");
-  if (flags.lab_iso15189 === false) reasons.push("ISO 15189 recorded as absent");
-  return reasons;
+function accreditationStatus(flags) {
+  const values = [
+    flags.lab_ukas_accredited,
+    flags.lab_cqc_regulated,
+    flags.lab_iso15189
+  ];
+  if (values.some((v) => v === false)) return "failed";
+  if (flags.lab_ukas_accredited === true && flags.lab_cqc_regulated === true)
+    return "confirmed";
+  return "not_confirmed";
+}
+function withAccreditation(row) {
+  const flags = {
+    lab_ukas_accredited: row.lab_ukas_accredited ?? null,
+    lab_cqc_regulated: row.lab_cqc_regulated ?? null,
+    lab_iso15189: row.lab_iso15189 ?? null
+  };
+  return { ...row, ...flags, accreditation_status: accreditationStatus(flags) };
 }
 function toNumber(value) {
   if (value == null || value === "") return null;
@@ -91,7 +101,7 @@ function biomarkerNames(list) {
 var UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 // src/lib/mcp/tools/search-tests.ts
-var LISTING_COLUMNS = "id, test_name, provider_id, provider_name, biomarker_count, price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, turnaround_days_text, sample_type, collection_method, location_options, home_kit_available, clinic_visit_available, url, updated_at";
+var LISTING_COLUMNS = "id, test_name, provider_id, provider_name, biomarker_count, price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, turnaround_days_text, sample_type, collection_method, location_options, home_kit_available, clinic_visit_available, url, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, updated_at";
 var SORTS = {
   price_asc: { column: "total_expected_cost", ascending: true },
   price_desc: { column: "total_expected_cost", ascending: false },
@@ -101,7 +111,7 @@ var SORTS = {
 var search_tests_default = defineTool({
   name: "search_tests",
   title: "Search diagnostic tests",
-  description: "Search the myhealth checkup catalogue of UK private diagnostic tests. The keyword matches the test name or the provider's description. Filter by category slug (see list_categories), provider, maximum total expected cost, minimum biomarker count and collection method. Sorted only by the sort you choose (default price_asc, by total expected cost). Returns every listing field: name, biomarker count, price, collection and clinical review fees, total expected cost, turnaround, sample type, collection method, location options, home kit and clinic availability, provider URL and updated_at, plus total_matches.",
+  description: "Search the myhealth checkup catalogue of UK private diagnostic tests. The keyword matches the test name or the provider's description. Filter by category slug (see list_categories), provider, maximum total expected cost, minimum biomarker count and collection method. Sorted only by the sort you choose (default price_asc, by total expected cost). Returns every listing field: name, biomarker count, price, collection and clinical review fees, total expected cost, turnaround, sample type, collection method, location options, home kit and clinic availability, provider URL, accreditation flags with accreditation_status and updated_at, plus total_matches.",
   inputSchema: {
     query: z.string().trim().max(100).optional().describe("Keyword matched against test name or description."),
     category: z.string().trim().optional().describe("Category slug, for example 'womens-health'."),
@@ -131,7 +141,8 @@ var search_tests_default = defineTool({
       const operand = ilikeContains(args.provider);
       q = q.or(`provider_id.ilike.${operand},provider_name.ilike.${operand}`);
     }
-    if (args.max_price != null) q = q.lte("total_expected_cost", args.max_price);
+    if (args.max_price != null)
+      q = q.lte("total_expected_cost", args.max_price);
     if (args.min_biomarkers != null)
       q = q.gte("biomarker_count", args.min_biomarkers);
     if (args.collection === "home_kit") q = q.eq("home_kit_available", true);
@@ -144,7 +155,9 @@ var search_tests_default = defineTool({
       total_matches: count ?? 0,
       offset: args.offset,
       sort: args.sort,
-      results: data ?? [],
+      results: (data ?? []).map(
+        (r) => withAccreditation(r)
+      ),
       note: PRICE_NOTE
     });
   }
@@ -158,7 +171,8 @@ function testLimitations(t) {
   const out = [];
   const price = toNumber(t.price);
   if (price == null) out.push("Price is missing.");
-  else if (price <= 1) out.push("Price looks like a placeholder and is unverified.");
+  else if (price <= 1)
+    out.push("Price looks like a placeholder and is unverified.");
   if (toNumber(t.total_expected_cost) == null)
     out.push("Total expected cost has not been calculated.");
   const count = toNumber(t.biomarker_count);
@@ -180,7 +194,7 @@ function testLimitations(t) {
 var get_test_default = defineTool2({
   name: "get_test",
   title: "Get test details",
-  description: "Fetch the full record for one test by id: provider description (verbatim), full biomarker list, price, collection and clinical review fees, total expected cost, turnaround, sample and collection method, location options, accreditation flags, provider URL, scraped_at and updated_at, plus a limitations list stating any missing or unverified data.",
+  description: "Fetch the full record for one test by id: provider description (verbatim), full biomarker list, price, collection and clinical review fees, total expected cost, turnaround, sample and collection method, location options, accreditation flags with accreditation_status (confirmed, not_confirmed or failed), provider URL, scraped_at and updated_at, plus a limitations list stating any missing or unverified data.",
   inputSchema: {
     id: z2.string().uuid().describe("Test UUID returned by search_tests.")
   },
@@ -194,7 +208,11 @@ var get_test_default = defineTool2({
     if (error) return fail(error.message);
     if (!data) return fail("Not found");
     const test = data;
-    return ok({ test, limitations: testLimitations(test), note: PRICE_NOTE });
+    return ok({
+      test: withAccreditation(test),
+      limitations: testLimitations(test),
+      note: PRICE_NOTE
+    });
   }
 });
 
@@ -203,7 +221,7 @@ import { defineTool as defineTool3 } from "npm:@lovable.dev/mcp-js@0.26.3";
 var list_providers_default = defineTool3({
   name: "list_providers",
   title: "List providers",
-  description: "List the private diagnostic test providers compared on myhealth checkup that meet our inclusion rules (UKAS accreditation and CQC registration confirmed; ISO 15189 where applicable). Returns each provider's accreditation flags, number of active tests (add-ons excluded, counted exactly) and the latest updated_at date. Providers whose accreditation is not yet confirmed in our data are listed separately under excluded_providers with the reason.",
+  description: "List every private diagnostic test provider compared on myhealth checkup. Each provider carries its accreditation flags (lab_ukas_accredited, lab_cqc_regulated, lab_iso15189; null means not yet recorded) and an accreditation_status: confirmed (UKAS and CQC both true), not_confirmed (a flag is not recorded) or failed (a flag is recorded as false). Only treat a provider as accredited when the status is confirmed. Also returns the number of active tests (add-ons excluded, counted exactly) and the latest updated_at date.",
   inputSchema: {},
   annotations: {
     readOnlyHint: true,
@@ -214,10 +232,8 @@ var list_providers_default = defineTool3({
     const { data, error } = await anonClient().rpc("mcp_list_providers");
     if (error) return fail(error.message);
     const rows = data ?? [];
-    const providers = [];
-    const excluded = [];
-    for (const row of rows) {
-      const entry = {
+    const providers = rows.map(
+      (row) => withAccreditation({
         provider_id: row.provider_id,
         provider_name: row.provider_name,
         test_count: toNumber(row.test_count) ?? 0,
@@ -225,13 +241,10 @@ var list_providers_default = defineTool3({
         lab_cqc_regulated: row.lab_cqc_regulated,
         lab_iso15189: row.lab_iso15189,
         updated_at: row.latest_updated_at
-      };
-      const reasons = inclusionFailures(row);
-      if (reasons.length === 0) providers.push(entry);
-      else excluded.push({ provider_id: row.provider_id, reasons });
-    }
-    providers.sort((a, b) => Number(b.test_count) - Number(a.test_count));
-    return ok({ providers, excluded_providers: excluded });
+      })
+    );
+    providers.sort((a, b) => b.test_count - a.test_count);
+    return ok({ providers });
   }
 });
 
@@ -266,7 +279,7 @@ import { z as z3 } from "npm:zod@^3.24.2";
 var get_provider_default = defineTool5({
   name: "get_provider",
   title: "Get provider",
-  description: "Profile for one provider that meets our inclusion rules: name, accreditation flags, number of active tests, home kit and clinic collection options, location options, typical (median) phlebotomy and GP review fees, and the latest updated_at date.",
+  description: "Profile for one provider: name, accreditation flags with accreditation_status (confirmed, not_confirmed or failed; only confirmed means UKAS and CQC are both recorded as true), number of active tests, home kit and clinic collection options, location options, typical (median) phlebotomy and GP review fees, and the latest updated_at date.",
   inputSchema: {
     provider_id: z3.string().trim().min(1).max(100).describe("Provider id from list_providers, for example 'randox'.")
   },
@@ -282,12 +295,7 @@ var get_provider_default = defineTool5({
     if (error) return fail(error.message);
     if (!data) return fail("Provider not found.");
     const provider = data;
-    const reasons = inclusionFailures(provider);
-    if (reasons.length > 0)
-      return fail(
-        `This provider is not listed because it does not yet meet our inclusion rules: ${reasons.join("; ")}.`
-      );
-    return ok({ provider, note: PRICE_NOTE });
+    return ok({ provider: withAccreditation(provider), note: PRICE_NOTE });
   }
 });
 
@@ -322,20 +330,26 @@ var compare_tests_default = defineTool6({
     const ids = [...new Set(test_ids)];
     if (ids.length < 2) return fail("Provide at least two different test ids.");
     const { data, error } = await anonClient().from("unified_provider_tests").select(
-      "id, test_name, provider_name, price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, turnaround_days_text, sample_type, collection_method, location_options, biomarker_count, biomarkers_list, updated_at"
+      "id, test_name, provider_name, price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, turnaround_days_text, sample_type, collection_method, location_options, biomarker_count, biomarkers_list, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, updated_at"
     ).in("id", ids);
     if (error) return fail(error.message);
     const byId = new Map((data ?? []).map((r) => [r.id, r]));
     const missing = ids.filter((id) => !byId.has(id));
-    if (missing.length > 0) return fail(`Tests not found: ${missing.join(", ")}`);
+    if (missing.length > 0)
+      return fail(`Tests not found: ${missing.join(", ")}`);
     const ordered = ids.map((id) => byId.get(id));
     const overlap = biomarkerOverlap(
-      ordered.map((r) => ({ id: r.id, biomarkers: biomarkerNames(r.biomarkers_list) }))
+      ordered.map((r) => ({
+        id: r.id,
+        biomarkers: biomarkerNames(r.biomarkers_list)
+      }))
     );
-    const table = ordered.map(({ biomarkers_list, ...rest }) => ({
-      ...rest,
-      biomarkers_listed: biomarkerNames(biomarkers_list).length
-    }));
+    const table = ordered.map(
+      ({ biomarkers_list, ...rest }) => withAccreditation({
+        ...rest,
+        biomarkers_listed: biomarkerNames(biomarkers_list).length
+      })
+    );
     return ok({
       tests: table,
       shared_biomarkers: overlap.shared,
@@ -363,14 +377,43 @@ var find_tests_by_biomarker_default = defineTool7({
     openWorldHint: false
   },
   handler: async ({ biomarker, max_price, limit }) => {
-    const { data, error } = await anonClient().rpc("mcp_find_tests_by_biomarker", {
-      p_name: biomarker,
-      p_max_price: max_price ?? null,
-      p_limit: limit
-    });
+    const { data, error } = await anonClient().rpc(
+      "mcp_find_tests_by_biomarker",
+      {
+        p_name: biomarker,
+        p_max_price: max_price ?? null,
+        p_limit: limit
+      }
+    );
     if (error) return fail(error.message);
     const result = data ?? { total_matches: 0, tests: [] };
-    return ok({ biomarker, ...result, note: PRICE_NOTE });
+    const tests = result.tests ?? [];
+    const providerIds = [
+      ...new Set(
+        tests.map((t) => t.provider_id).filter((p) => !!p)
+      )
+    ];
+    const flagsByProvider = /* @__PURE__ */ new Map();
+    if (providerIds.length > 0) {
+      const { data: provs, error: pErr } = await anonClient().rpc("mcp_list_providers");
+      if (pErr) return fail(pErr.message);
+      for (const p of provs ?? [])
+        flagsByProvider.set(p.provider_id, p);
+    }
+    return ok({
+      biomarker,
+      total_matches: result.total_matches ?? 0,
+      tests: tests.map((t) => {
+        const f = t.provider_id ? flagsByProvider.get(t.provider_id) : void 0;
+        return withAccreditation({
+          ...t,
+          lab_ukas_accredited: f?.lab_ukas_accredited ?? null,
+          lab_cqc_regulated: f?.lab_cqc_regulated ?? null,
+          lab_iso15189: f?.lab_iso15189 ?? null
+        });
+      }),
+      note: PRICE_NOTE
+    });
   }
 });
 
@@ -460,7 +503,9 @@ var save_favourite_default = defineTool9({
     if (readError) return fail(readError.message);
     return {
       ...ok({ favourite: saved }),
-      content: [{ type: "text", text: `Saved "${row.test_name}" to favourites.` }]
+      content: [
+        { type: "text", text: `Saved "${row.test_name}" to favourites.` }
+      ]
     };
   }
 });
@@ -546,7 +591,9 @@ async function runAdminTool(ctx, toolName, args, run) {
   if ("error" in result) return fail(result.error);
   const logError = await logAdminToolCall(session, toolName, args);
   if (logError)
-    return fail(`Audit log write failed, so no data was returned (${logError}).`);
+    return fail(
+      `Audit log write failed, so no data was returned (${logError}).`
+    );
   return ok(result.payload);
 }
 
@@ -638,7 +685,13 @@ var list_scraper_alerts_default = defineTool12({
     const alerts = (data ?? []).map(
       (a) => ({ ...a, message: truncate(a.message) })
     );
-    return { payload: { total: count ?? alerts.length, count: alerts.length, alerts } };
+    return {
+      payload: {
+        total: count ?? alerts.length,
+        count: alerts.length,
+        alerts
+      }
+    };
   })
 });
 
@@ -660,66 +713,73 @@ var get_catalogue_coverage_default = defineTool13({
     openWorldHint: false
   },
   handler: async (args, ctx) => {
-    return runAdminTool(ctx, "get_catalogue_coverage", args, async ({ client }) => {
-      const [tests, categories, mappings] = await Promise.all([
-        client.from("provider_tests").select(
-          "id, provider_id, canonical_category, is_active, last_validated_at"
-        ).eq("is_active", true).limit(2e4),
-        client.from("categories").select("id, slug, name, is_active").eq("is_active", true),
-        client.from("category_test_mapping").select("provider_test_id, category_id").limit(1e4)
-      ]);
-      const firstError = tests.error ?? categories.error ?? mappings.error;
-      if (firstError) return { error: firstError.message };
-      const rows = tests.data ?? [];
-      const activeIds = new Set(rows.map((r) => r.id));
-      const activeMappings = (mappings.data ?? []).filter(
-        (m) => m.provider_test_id ? activeIds.has(m.provider_test_id) : false
-      );
-      const cutoff = Date.now() - args.stale_after_days * 864e5;
-      const byProvider = /* @__PURE__ */ new Map();
-      const byCategory = /* @__PURE__ */ new Map();
-      let stale = 0;
-      let neverValidated = 0;
-      for (const row of rows) {
-        const p = row.provider_id ?? "unknown";
-        const entry = byProvider.get(p) ?? {
-          provider_id: p,
-          active_tests: 0,
-          stale: 0,
-          never_validated: 0
-        };
-        entry.active_tests += 1;
-        if (!row.last_validated_at) {
-          entry.never_validated += 1;
-          neverValidated += 1;
-        } else if (new Date(row.last_validated_at).getTime() < cutoff) {
-          entry.stale += 1;
-          stale += 1;
+    return runAdminTool(
+      ctx,
+      "get_catalogue_coverage",
+      args,
+      async ({ client }) => {
+        const [tests, categories, mappings] = await Promise.all([
+          client.from("provider_tests").select(
+            "id, provider_id, canonical_category, is_active, last_validated_at"
+          ).eq("is_active", true).limit(2e4),
+          client.from("categories").select("id, slug, name, is_active").eq("is_active", true),
+          client.from("category_test_mapping").select("provider_test_id, category_id").limit(1e4)
+        ]);
+        const firstError = tests.error ?? categories.error ?? mappings.error;
+        if (firstError) return { error: firstError.message };
+        const rows = tests.data ?? [];
+        const activeIds = new Set(rows.map((r) => r.id));
+        const activeMappings = (mappings.data ?? []).filter(
+          (m) => m.provider_test_id ? activeIds.has(m.provider_test_id) : false
+        );
+        const cutoff = Date.now() - args.stale_after_days * 864e5;
+        const byProvider = /* @__PURE__ */ new Map();
+        const byCategory = /* @__PURE__ */ new Map();
+        let stale = 0;
+        let neverValidated = 0;
+        for (const row of rows) {
+          const p = row.provider_id ?? "unknown";
+          const entry = byProvider.get(p) ?? {
+            provider_id: p,
+            active_tests: 0,
+            stale: 0,
+            never_validated: 0
+          };
+          entry.active_tests += 1;
+          if (!row.last_validated_at) {
+            entry.never_validated += 1;
+            neverValidated += 1;
+          } else if (new Date(row.last_validated_at).getTime() < cutoff) {
+            entry.stale += 1;
+            stale += 1;
+          }
+          byProvider.set(p, entry);
+          const c = row.canonical_category ?? "uncategorised";
+          const cat = byCategory.get(c) ?? {
+            canonical_category: c,
+            active_tests: 0
+          };
+          cat.active_tests += 1;
+          byCategory.set(c, cat);
         }
-        byProvider.set(p, entry);
-        const c = row.canonical_category ?? "uncategorised";
-        const cat = byCategory.get(c) ?? {
-          canonical_category: c,
-          active_tests: 0
+        return {
+          payload: {
+            stale_after_days: args.stale_after_days,
+            total_active_tests: rows.length,
+            stale_tests: stale,
+            never_validated_tests: neverValidated,
+            active_categories: categories.data?.length ?? 0,
+            category_test_mappings: activeMappings.length,
+            by_provider: [...byProvider.values()].sort(
+              (a, b) => b.active_tests - a.active_tests
+            ),
+            by_category: [...byCategory.values()].sort(
+              (a, b) => b.active_tests - a.active_tests
+            )
+          }
         };
-        cat.active_tests += 1;
-        byCategory.set(c, cat);
       }
-      return { payload: {
-        stale_after_days: args.stale_after_days,
-        total_active_tests: rows.length,
-        stale_tests: stale,
-        never_validated_tests: neverValidated,
-        active_categories: categories.data?.length ?? 0,
-        category_test_mappings: activeMappings.length,
-        by_provider: [...byProvider.values()].sort(
-          (a, b) => b.active_tests - a.active_tests
-        ),
-        by_category: [...byCategory.values()].sort(
-          (a, b) => b.active_tests - a.active_tests
-        )
-      } };
-    });
+    );
   }
 });
 
@@ -797,7 +857,9 @@ var get_data_quality_default = defineTool15({
       if (r.error) return { error: r.error.message };
       checks[entries[i][0]] = {
         count: r.count ?? 0,
-        sample_ids: (r.data ?? []).map((d) => d.id)
+        sample_ids: (r.data ?? []).map(
+          (d) => d.id
+        )
       };
     }
     return { payload: { checks } };
@@ -858,52 +920,65 @@ var get_security_posture_default = defineTool17({
     openWorldHint: false
   },
   handler: async (args, ctx) => {
-    return runAdminTool(ctx, "get_security_posture", args, async ({ client }) => {
-      const since = new Date(Date.now() - args.days * 864e5).toISOString();
-      const [snapshot, incidents, csp] = await Promise.all([
-        client.from("security_scan_snapshots").select(
-          "id, scanned_at, total_findings, error_count, warn_count, has_diff, added_findings, removed_findings, modified_findings, acknowledged_at"
-        ).order("scanned_at", { ascending: false }).limit(1).maybeSingle(),
-        client.from("soc_incidents").select(
-          "id, cluster_key, source, entity, severity, status, title, signal_count, first_seen_at, last_seen_at"
-        ).neq("status", "resolved").order("last_seen_at", { ascending: false }).limit(100),
-        client.from("csp_reports").select("violated_directive, blocked_uri, received_at").gte("received_at", since).limit(2e3)
-      ]);
-      const firstError = snapshot.error ?? incidents.error ?? csp.error;
-      if (firstError) return { error: firstError.message };
-      const bySeverity = /* @__PURE__ */ new Map();
-      for (const i of incidents.data ?? []) {
-        const key = i.severity ?? "unknown";
-        bySeverity.set(key, (bySeverity.get(key) ?? 0) + 1);
+    return runAdminTool(
+      ctx,
+      "get_security_posture",
+      args,
+      async ({ client }) => {
+        const since = new Date(
+          Date.now() - args.days * 864e5
+        ).toISOString();
+        const [snapshot, incidents, csp] = await Promise.all([
+          client.from("security_scan_snapshots").select(
+            "id, scanned_at, total_findings, error_count, warn_count, has_diff, added_findings, removed_findings, modified_findings, acknowledged_at"
+          ).order("scanned_at", { ascending: false }).limit(1).maybeSingle(),
+          client.from("soc_incidents").select(
+            "id, cluster_key, source, entity, severity, status, title, signal_count, first_seen_at, last_seen_at"
+          ).neq("status", "resolved").order("last_seen_at", { ascending: false }).limit(100),
+          client.from("csp_reports").select("violated_directive, blocked_uri, received_at").gte("received_at", since).limit(2e3)
+        ]);
+        const firstError = snapshot.error ?? incidents.error ?? csp.error;
+        if (firstError) return { error: firstError.message };
+        const bySeverity = /* @__PURE__ */ new Map();
+        for (const i of incidents.data ?? []) {
+          const key = i.severity ?? "unknown";
+          bySeverity.set(key, (bySeverity.get(key) ?? 0) + 1);
+        }
+        const cspByDirective = /* @__PURE__ */ new Map();
+        for (const r of csp.data ?? []) {
+          const key = r.violated_directive ?? "unknown";
+          cspByDirective.set(key, (cspByDirective.get(key) ?? 0) + 1);
+        }
+        const snap = snapshot.data;
+        return {
+          payload: {
+            window_days: args.days,
+            latest_scan: snap ? {
+              scanned_at: snap.scanned_at,
+              total_findings: snap.total_findings,
+              error_count: snap.error_count,
+              warn_count: snap.warn_count,
+              has_diff: snap.has_diff,
+              acknowledged_at: snap.acknowledged_at,
+              added_findings: Array.isArray(snap.added_findings) ? snap.added_findings.length : 0,
+              removed_findings: Array.isArray(snap.removed_findings) ? snap.removed_findings.length : 0,
+              modified_findings: Array.isArray(snap.modified_findings) ? snap.modified_findings.length : 0
+            } : null,
+            open_incidents_total: incidents.data?.length ?? 0,
+            open_incidents_by_severity: Object.fromEntries(bySeverity),
+            open_incidents: (incidents.data ?? []).map((i) => ({
+              ...i,
+              entity: maskPii(i.entity),
+              title: maskPii(i.title)
+            })),
+            csp_reports_total: csp.data?.length ?? 0,
+            csp_reports_by_directive: Object.fromEntries(
+              [...cspByDirective.entries()].sort((a, b) => b[1] - a[1])
+            )
+          }
+        };
       }
-      const cspByDirective = /* @__PURE__ */ new Map();
-      for (const r of csp.data ?? []) {
-        const key = r.violated_directive ?? "unknown";
-        cspByDirective.set(key, (cspByDirective.get(key) ?? 0) + 1);
-      }
-      const snap = snapshot.data;
-      return { payload: {
-        window_days: args.days,
-        latest_scan: snap ? {
-          scanned_at: snap.scanned_at,
-          total_findings: snap.total_findings,
-          error_count: snap.error_count,
-          warn_count: snap.warn_count,
-          has_diff: snap.has_diff,
-          acknowledged_at: snap.acknowledged_at,
-          added_findings: Array.isArray(snap.added_findings) ? snap.added_findings.length : 0,
-          removed_findings: Array.isArray(snap.removed_findings) ? snap.removed_findings.length : 0,
-          modified_findings: Array.isArray(snap.modified_findings) ? snap.modified_findings.length : 0
-        } : null,
-        open_incidents_total: incidents.data?.length ?? 0,
-        open_incidents_by_severity: Object.fromEntries(bySeverity),
-        open_incidents: (incidents.data ?? []).map((i) => ({ ...i, entity: maskPii(i.entity), title: maskPii(i.title) })),
-        csp_reports_total: csp.data?.length ?? 0,
-        csp_reports_by_directive: Object.fromEntries(
-          [...cspByDirective.entries()].sort((a, b) => b[1] - a[1])
-        )
-      } };
-    });
+    );
   }
 });
 
@@ -954,12 +1029,14 @@ var get_business_summary_default = defineTool19({
     openWorldHint: false
   },
   handler: async (args, ctx) => runAdminTool(ctx, "get_business_summary", args, async ({ client }) => {
-    const [orders, subscribers, activeSubscribers, users] = await Promise.all([
-      client.rpc("mcp_business_summary", { p_days: args.days }),
-      client.from("newsletter_subscribers").select("id", { count: "exact", head: true }),
-      client.from("newsletter_subscribers").select("id", { count: "exact", head: true }).eq("status", "active"),
-      client.rpc("get_registered_user_count")
-    ]);
+    const [orders, subscribers, activeSubscribers, users] = await Promise.all(
+      [
+        client.rpc("mcp_business_summary", { p_days: args.days }),
+        client.from("newsletter_subscribers").select("id", { count: "exact", head: true }),
+        client.from("newsletter_subscribers").select("id", { count: "exact", head: true }).eq("status", "active"),
+        client.rpc("get_registered_user_count")
+      ]
+    );
     const firstError = orders.error ?? subscribers.error ?? activeSubscribers.error ?? users.error;
     if (firstError) return { error: firstError.message };
     return {
@@ -1008,9 +1085,7 @@ var get_admin_audit_trail_default = defineTool20({
         window_days: args.days,
         admin_activity_log: (adminLog.data ?? []).map((r) => ({ ...r, error_message: truncate(r.error_message) })),
         role_audit_log: roleLog.data ?? [],
-        audit_logs: (auditLog.data ?? []).map(
-          (r) => ({ ...r, purpose: truncate(r.purpose) })
-        )
+        audit_logs: (auditLog.data ?? []).map((r) => ({ ...r, purpose: truncate(r.purpose) }))
       }
     };
   })
@@ -1022,7 +1097,7 @@ var mcp_default = defineMcp({
   name: "myhealth-checkup-mcp",
   title: "myhealth checkup",
   version: "0.3.0",
-  instructions: "Tools for myhealth checkup, the UK private diagnostics comparison platform. Use search_tests, get_test, compare_tests, find_tests_by_biomarker, list_categories, list_providers and get_provider to compare private blood tests and cancer screening across providers that meet our inclusion rules (prices in GBP, turnaround in days). list_my_favourites, save_favourite and remove_favourite act on the signed-in user's saved tests. The admin tools (get_platform_health, list_scraper_alerts, get_catalogue_coverage, list_stale_tests, get_data_quality, get_price_movements, get_security_posture, get_performance_summary, get_business_summary, get_admin_audit_trail) are strictly read-only: scraper and job health, catalogue freshness and quality, pricing movements, security posture metadata, anonymous performance aggregates and aggregate business totals. They require the admin role and every call, including denied attempts, is audit-logged. They return no patient data; some include pseudonymous user IDs, and free-text fields are truncated. Rules: prices are provider-published and can change, so always show the updated_at date alongside any price. Never rank or recommend a provider on commercial grounds; order only by the criteria the user asks for. Disclose affiliate relationships where present. Do not imply any NHS integration. State that results are for comparison only and are not medical advice. This platform is decision infrastructure only; never present results as medical advice or diagnosis.",
+  instructions: "Tools for myhealth checkup, the UK private diagnostics comparison platform. Use search_tests, get_test, compare_tests, find_tests_by_biomarker, list_categories, list_providers and get_provider to compare private blood tests and cancer screening across every listed provider. Each provider and test carries its accreditation flags and an accreditation_status (confirmed, not_confirmed or failed); only describe a provider as accredited when the status is confirmed (prices in GBP, turnaround in days). list_my_favourites, save_favourite and remove_favourite act on the signed-in user's saved tests. The admin tools (get_platform_health, list_scraper_alerts, get_catalogue_coverage, list_stale_tests, get_data_quality, get_price_movements, get_security_posture, get_performance_summary, get_business_summary, get_admin_audit_trail) are strictly read-only: scraper and job health, catalogue freshness and quality, pricing movements, security posture metadata, anonymous performance aggregates and aggregate business totals. They require the admin role and every call, including denied attempts, is audit-logged. They return no patient data; some include pseudonymous user IDs, and free-text fields are truncated. Rules: prices are provider-published and can change, so always show the updated_at date alongside any price. Never rank or recommend a provider on commercial grounds; order only by the criteria the user asks for. Disclose affiliate relationships where present. Do not imply any NHS integration. State that results are for comparison only and are not medical advice. This platform is decision infrastructure only; never present results as medical advice or diagnosis.",
   auth: auth.oauth.issuer({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated"
