@@ -30,3 +30,4 @@
 - [x] Update all five homepage hero slides and verify responsive copy avoids people at six widths.
 - [x] Show active tests without images (All Tests/catalogue), brand-tile fallback; report 5 uncategorised tests
 - [ ] Security: Assisted Test Finder and Hidden Gap Detector AI calls restricted to signed-in users
+- [ ] Security: Assisted Test Finder and Hidden Gap Detector AI calls restricted to signed-in users
