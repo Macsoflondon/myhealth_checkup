@@ -8397,6 +8397,50 @@ export type Database = {
           snomed_code: string
         }[]
       }
+      mcp_business_summary: { Args: { p_days?: number }; Returns: Json }
+      mcp_find_tests_by_biomarker: {
+        Args: { p_limit?: number; p_max_price?: number; p_name: string }
+        Returns: Json
+      }
+      mcp_get_provider: { Args: { p_provider_id: string }; Returns: Json }
+      mcp_list_categories: {
+        Args: never
+        Returns: {
+          active_tests: number
+          name: string
+          providers: number
+          slug: string
+        }[]
+      }
+      mcp_list_providers: {
+        Args: never
+        Returns: {
+          lab_cqc_regulated: boolean
+          lab_iso15189: boolean
+          lab_ukas_accredited: boolean
+          latest_updated_at: string
+          provider_id: string
+          provider_name: string
+          test_count: number
+        }[]
+      }
+      mcp_log_denied_tool_call: { Args: { p_tool: string }; Returns: undefined }
+      mcp_platform_health_counts: { Args: { p_hours?: number }; Returns: Json }
+      mcp_price_movements: {
+        Args: {
+          p_days?: number
+          p_direction?: string
+          p_limit?: number
+          p_min_change_percentage?: number
+          p_provider?: string
+        }
+        Returns: Json
+      }
+      mcp_run_status_class: { Args: { p_status: string }; Returns: string }
+      mcp_web_vitals_summary: {
+        Args: { p_days?: number; p_limit?: number }
+        Returns: Json
+      }
       mhc_sync_secret: { Args: never; Returns: string }
       refresh_provider_test_biomarkers: { Args: never; Returns: Json }
       regenerate_mfa_backup_codes: { Args: never; Returns: string[] }
