@@ -10,7 +10,13 @@ import {
 describe("release state machine", () => {
   it("only makes a released report visible to its owner", () => {
     expect(isVisibleToOwner("released")).toBe(true);
-    for (const status of ["draft", "awaiting_review", "reviewed", "superseded", "cancelled"] as const) {
+    for (const status of [
+      "draft",
+      "awaiting_review",
+      "reviewed",
+      "superseded",
+      "cancelled",
+    ] as const) {
       expect(isVisibleToOwner(status)).toBe(false);
     }
   });

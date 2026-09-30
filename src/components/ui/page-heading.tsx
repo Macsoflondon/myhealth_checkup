@@ -18,25 +18,25 @@ interface PageHeadingProps {
  * Features navy title with turquoise-to-pink gradient accent text
  * Includes entrance animation for visual polish
  */
-const PageHeading = ({ 
-  title, 
-  accent, 
+const PageHeading = ({
+  title,
+  accent,
   className,
   centered = true,
   animate = true,
 }: PageHeadingProps) => {
   return (
-    <div className={cn(
-      centered && "text-center",
-      animate && "animate-fade-in",
-      className
-    )}>
+    <div
+      className={cn(
+        centered && "text-center",
+        animate && "animate-fade-in",
+        className,
+      )}
+    >
       <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold leading-[1.05] tracking-tight">
         <span className="text-[#081129] block mb-2">{title}</span>
         {accent && (
-          <span className="text-[#081129] inline-block">
-            {accent}
-          </span>
+          <span className="text-[#081129] inline-block">{accent}</span>
         )}
       </h1>
     </div>

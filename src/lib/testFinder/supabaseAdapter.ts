@@ -19,10 +19,14 @@ import type {
   TestRecord,
 } from "@/types/testFinder";
 
-export type ProviderTestRow = Database["public"]["Tables"]["provider_tests"]["Row"];
+export type ProviderTestRow =
+  Database["public"]["Tables"]["provider_tests"]["Row"];
 
 const PROVIDER_DISPLAY: Record<string, { name: string; logo?: string }> = {
-  medichecks: { name: "Medichecks", logo: "/lovable-uploads/provider-medichecks-new-v3.png" },
+  medichecks: {
+    name: "Medichecks",
+    logo: "/lovable-uploads/provider-medichecks-new-v3.png",
+  },
   randox: { name: "Randox Health" },
   "lola-health": { name: "Lola Health" },
   "goodbody-clinic": { name: "GOODBODY Clinic" },
@@ -105,7 +109,9 @@ function normReviewType(raw: string | null): ClinicalReviewType {
   }
 }
 
-function normReviewProfessional(raw: string | null): ClinicalReviewProfessional {
+function normReviewProfessional(
+  raw: string | null,
+): ClinicalReviewProfessional {
   switch (raw) {
     case "gp":
     case "consultant":
@@ -118,7 +124,10 @@ function normReviewProfessional(raw: string | null): ClinicalReviewProfessional 
   }
 }
 
-function normStatus(raw: string | null, fallback: FieldStatus = "needs_verification"): FieldStatus {
+function normStatus(
+  raw: string | null,
+  fallback: FieldStatus = "needs_verification",
+): FieldStatus {
   return raw === "verified" ? "verified" : fallback;
 }
 
@@ -127,33 +136,56 @@ function normStatus(raw: string | null, fallback: FieldStatus = "needs_verificat
 function inferGoals(name: string, category: string | null): GoalTag[] {
   const n = `${name} ${category ?? ""}`.toLowerCase();
   const g = new Set<GoalTag>();
-  if (/(performance|sports|athlete|optimal|ultimate)/.test(n)) g.add("performance");
-  if (/(general|wellness|well[- ]?(man|woman)|mot|screening|lifestyle|nutrition|preventative)/.test(n))
+  if (/(performance|sports|athlete|optimal|ultimate)/.test(n))
+    g.add("performance");
+  if (
+    /(general|wellness|well[- ]?(man|woman)|mot|screening|lifestyle|nutrition|preventative)/.test(
+      n,
+    )
+  )
     g.add("preventative");
   if (/(advanced|longevity|biological age)/.test(n)) g.add("longevity");
-  if (/(weight|metabolic|diabetes|hba1c|cholesterol)/.test(n)) g.add("weight_management");
-  if (/(thyroid|cortisol|fatigue|hormone|testosterone|oestradiol|amh|psa|liver|kidney|iron|vitamin|allergy|fertility|pregnancy)/.test(n))
+  if (/(weight|metabolic|diabetes|hba1c|cholesterol)/.test(n))
+    g.add("weight_management");
+  if (
+    /(thyroid|cortisol|fatigue|hormone|testosterone|oestradiol|amh|psa|liver|kidney|iron|vitamin|allergy|fertility|pregnancy)/.test(
+      n,
+    )
+  )
     g.add("symptom_investigation");
   if (/(trt|monitoring|hba1c)/.test(n)) g.add("condition_monitoring");
   if (g.size === 0) g.add("preventative");
   return [...g];
 }
 
-function inferConditions(name: string, category: string | null): ConditionTag[] {
+function inferConditions(
+  name: string,
+  category: string | null,
+): ConditionTag[] {
   const n = `${name} ${category ?? ""}`.toLowerCase();
   const c = new Set<ConditionTag>();
   if (/(psa|prostate)/.test(n)) c.add("prostate_health");
-  if (/(testosterone|trt|male hormone|sports hormone|dhea)/.test(n)) c.add("male_hormones");
-  if (/(female hormone|oestradiol|progesterone|amh|ovulation)/.test(n)) c.add("female_hormones");
+  if (/(testosterone|trt|male hormone|sports hormone|dhea)/.test(n))
+    c.add("male_hormones");
+  if (/(female hormone|oestradiol|progesterone|amh|ovulation)/.test(n))
+    c.add("female_hormones");
   if (/menopause/.test(n)) c.add("menopause_hrt");
-  if (/(pregnancy|nipt|fertility)/.test(n) && /female|women|amh|ovulation|pregnancy|nipt/.test(n))
+  if (
+    /(pregnancy|nipt|fertility)/.test(n) &&
+    /female|women|amh|ovulation|pregnancy|nipt/.test(n)
+  )
     c.add("fertility_female");
   if (/(sperm|male fertility)/.test(n)) c.add("fertility_male");
   if (/(cholesterol|heart|lipid|cardio)/.test(n)) c.add("cardiovascular_risk");
   if (/(diabetes|hba1c|glucose|insulin)/.test(n)) c.add("diabetes");
-  if (/(metabolic|weight|nutrition|vitamin|iron)/.test(n)) c.add("metabolic_health");
+  if (/(metabolic|weight|nutrition|vitamin|iron)/.test(n))
+    c.add("metabolic_health");
   if (/thyroid/.test(n)) c.add("thyroid");
-  if (/(general|well[- ]?(man|woman)|mot|screening|lifestyle|optimal|ultimate)/.test(n))
+  if (
+    /(general|well[- ]?(man|woman)|mot|screening|lifestyle|optimal|ultimate)/.test(
+      n,
+    )
+  )
     c.add("general_health");
   if (/(sports|performance|athlete)/.test(n)) c.add("sports_performance");
   if (/(fatigue|cortisol|stress|energy)/.test(n)) c.add("fatigue_low_energy");
@@ -162,10 +194,15 @@ function inferConditions(name: string, category: string | null): ConditionTag[] 
   return [...c];
 }
 
-function inferSexRestriction(name: string, category: string | null): SexRestriction {
+function inferSexRestriction(
+  name: string,
+  category: string | null,
+): SexRestriction {
   const n = `${name} ${category ?? ""}`.toLowerCase();
   if (/\b(male|men's|prostate|psa|trt|sperm)\b/.test(n)) return "male_only";
-  if (/\b(female|women's|woman|ovulation|amh|pregnancy|menopause|nipt)\b/.test(n))
+  if (
+    /\b(female|women's|woman|ovulation|amh|pregnancy|menopause|nipt)\b/.test(n)
+  )
     return "female_only";
   return "none";
 }
@@ -175,16 +212,23 @@ function inferSexRestriction(name: string, category: string | null): SexRestrict
 export function adaptProviderTestRow(row: ProviderTestRow): TestRecord | null {
   if (!row.test_name || row.price == null) return null;
 
-  const display = PROVIDER_DISPLAY[row.provider_id] ?? { name: row.provider_id };
+  const display = PROVIDER_DISPLAY[row.provider_id] ?? {
+    name: row.provider_id,
+  };
   const feeType = normFeeType(row.collection_fee_type);
   const feeAmount =
-    feeType === "none" ? null : feeType === "range" || feeType === "varies_by_location"
-      ? row.collection_fee_amount != null
-        ? { min: Number(row.collection_fee_amount), max: Number(row.collection_fee_amount) }
-        : null
-      : row.collection_fee_amount != null
-        ? Number(row.collection_fee_amount)
-        : null;
+    feeType === "none"
+      ? null
+      : feeType === "range" || feeType === "varies_by_location"
+        ? row.collection_fee_amount != null
+          ? {
+              min: Number(row.collection_fee_amount),
+              max: Number(row.collection_fee_amount),
+            }
+          : null
+        : row.collection_fee_amount != null
+          ? Number(row.collection_fee_amount)
+          : null;
 
   return {
     id: row.id,
@@ -203,11 +247,22 @@ export function adaptProviderTestRow(row: ProviderTestRow): TestRecord | null {
     collection_fee_type: feeType,
     collection_fee_amount: feeAmount,
     clinical_review_type: normReviewType(row.clinical_review_type),
-    clinical_review_professional: normReviewProfessional(row.clinical_review_professional),
+    clinical_review_professional: normReviewProfessional(
+      row.clinical_review_professional,
+    ),
     clinical_review_fee: Number(row.clinical_review_fee ?? 0),
-    goal_tags: inferGoals(row.test_name, row.canonical_category ?? row.category),
-    condition_tags: inferConditions(row.test_name, row.canonical_category ?? row.category),
-    sex_restriction: inferSexRestriction(row.test_name, row.canonical_category ?? row.category),
+    goal_tags: inferGoals(
+      row.test_name,
+      row.canonical_category ?? row.category,
+    ),
+    condition_tags: inferConditions(
+      row.test_name,
+      row.canonical_category ?? row.category,
+    ),
+    sex_restriction: inferSexRestriction(
+      row.test_name,
+      row.canonical_category ?? row.category,
+    ),
     book_url: row.url ?? undefined,
     source_url: row.url ?? undefined,
     verification: {

@@ -8,7 +8,8 @@ export const Route = createFileRoute("/test-categories")({
   head: () =>
     buildRouteHead({
       title: "Blood Test Categories | myhealth checkup",
-      description: "Browse every private blood test category we compare, from general health and hormones to cancer screening and vitamins.",
+      description:
+        "Browse every private blood test category we compare, from general health and hormones to cancer screening and vitamins.",
       path: "/test-categories",
     }),
   component: TestCategoriesPage,

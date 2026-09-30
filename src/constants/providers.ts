@@ -13,140 +13,141 @@ export interface Provider {
 }
 
 export const PROVIDER_LOGOS: Record<string, string> = {
-  'medichecks': '/lovable-uploads/provider-medichecks-light.png',
-  'randox': '/lovable-uploads/provider-randox.png',
-  'randox-health': '/lovable-uploads/provider-randox.png',
-  'london-medical-laboratory': '/lovable-uploads/provider-london-medical.png',
-  'lola-health': '/lovable-uploads/provider-lola-health.png',
-  'goodbody-clinic': '/lovable-uploads/provider-goodbody-slate-2026.png',
-  'goodbody': '/lovable-uploads/provider-goodbody-slate-2026.png',
-  'london-health-company': '/lovable-uploads/provider-london-health-company.png',
-  'medical-diagnosis': '/lovable-uploads/provider-medical-diagnosis.png',
-  'clinilabs': '/lovable-uploads/provider-clinilabs.png',
+  medichecks: "/lovable-uploads/provider-medichecks-light.png",
+  randox: "/lovable-uploads/provider-randox.png",
+  "randox-health": "/lovable-uploads/provider-randox.png",
+  "london-medical-laboratory": "/lovable-uploads/provider-london-medical.png",
+  "lola-health": "/lovable-uploads/provider-lola-health.png",
+  "goodbody-clinic": "/lovable-uploads/provider-goodbody-slate-2026.png",
+  goodbody: "/lovable-uploads/provider-goodbody-slate-2026.png",
+  "london-health-company":
+    "/lovable-uploads/provider-london-health-company.png",
+  "medical-diagnosis": "/lovable-uploads/provider-medical-diagnosis.png",
+  clinilabs: "/lovable-uploads/provider-clinilabs.png",
 };
 
 export const PROVIDER_NAMES: Record<string, string> = {
-  'medichecks': 'Medichecks',
-  'randox': 'Randox Health',
-  'randox-health': 'Randox Health',
-  'london-medical-laboratory': 'London Medical Laboratory',
-  'lola-health': 'Lola Health',
-  'goodbody-clinic': 'GoodBody Clinic',
-  'goodbody': 'GoodBody Clinic',
-  'london-health-company': 'London Health Company',
-  'medical-diagnosis': 'Medical Diagnosis',
-  'clinilabs': 'Clinilabs',
+  medichecks: "Medichecks",
+  randox: "Randox Health",
+  "randox-health": "Randox Health",
+  "london-medical-laboratory": "London Medical Laboratory",
+  "lola-health": "Lola Health",
+  "goodbody-clinic": "GoodBody Clinic",
+  goodbody: "GoodBody Clinic",
+  "london-health-company": "London Health Company",
+  "medical-diagnosis": "Medical Diagnosis",
+  clinilabs: "Clinilabs",
 };
 
 export const PROVIDER_WEBSITES: Record<string, string> = {
-  'medichecks': 'https://medichecks.com',
-  'randox': 'https://randoxhealth.com/en-GB',
-  'london-medical-laboratory': 'https://londonmedicallaboratory.com',
-  'lola-health': 'https://referrals.lolahealth.com/myhealthcheckup',
-  'goodbody-clinic': 'https://goodbodyclinic.com',
-  'london-health-company': 'https://londonhealthcompany.co.uk',
-  'medical-diagnosis': 'https://www.medical-diagnosis.co.uk',
-  'clinilabs': 'https://www.clinilabs.co.uk',
+  medichecks: "https://medichecks.com",
+  randox: "https://randoxhealth.com/en-GB",
+  "london-medical-laboratory": "https://londonmedicallaboratory.com",
+  "lola-health": "https://referrals.lolahealth.com/myhealthcheckup",
+  "goodbody-clinic": "https://goodbodyclinic.com",
+  "london-health-company": "https://londonhealthcompany.co.uk",
+  "medical-diagnosis": "https://www.medical-diagnosis.co.uk",
+  clinilabs: "https://www.clinilabs.co.uk",
 };
 
 const PROVIDER_ALIASES: Record<string, string> = {
-  'randox-health': 'randox',
-  'goodbody': 'goodbody-clinic',
-  'medichecks-firecrawl': 'medichecks',
+  "randox-health": "randox",
+  goodbody: "goodbody-clinic",
+  "medichecks-firecrawl": "medichecks",
 };
 
 export function normalizeProviderId(providerId: string): string {
-  const key = (providerId || '').toLowerCase().trim().replace(/\s+/g, '-');
+  const key = (providerId || "").toLowerCase().trim().replace(/\s+/g, "-");
   return PROVIDER_ALIASES[key] || key;
 }
 
 export const PROVIDER_DETAILS: Record<string, Provider> = {
-  'goodbody-clinic': {
-    id: 'goodbody-clinic',
-    name: 'GoodBody Clinic',
-    logo: PROVIDER_LOGOS['goodbody-clinic'],
-    website: PROVIDER_WEBSITES['goodbody-clinic'],
-    description: 'Premium health screening services',
-    accreditations: ['CQC', 'UKAS'],
+  "goodbody-clinic": {
+    id: "goodbody-clinic",
+    name: "GoodBody Clinic",
+    logo: PROVIDER_LOGOS["goodbody-clinic"],
+    website: PROVIDER_WEBSITES["goodbody-clinic"],
+    description: "Premium health screening services",
+    accreditations: ["CQC", "UKAS"],
   },
-  'medichecks': {
-    id: 'medichecks',
-    name: 'Medichecks',
-    logo: PROVIDER_LOGOS['medichecks'],
-    website: PROVIDER_WEBSITES['medichecks'],
-    description: 'UK\'s leading blood testing service',
-    accreditations: ['UKAS', 'ISO 15189'],
+  medichecks: {
+    id: "medichecks",
+    name: "Medichecks",
+    logo: PROVIDER_LOGOS["medichecks"],
+    website: PROVIDER_WEBSITES["medichecks"],
+    description: "UK's leading blood testing service",
+    accreditations: ["UKAS", "ISO 15189"],
   },
-  'lola-health': {
-    id: 'lola-health',
-    name: 'Lola Health',
-    logo: PROVIDER_LOGOS['lola-health'],
-    website: PROVIDER_WEBSITES['lola-health'],
-    description: 'Digital health testing platform',
-    accreditations: ['UKAS'],
+  "lola-health": {
+    id: "lola-health",
+    name: "Lola Health",
+    logo: PROVIDER_LOGOS["lola-health"],
+    website: PROVIDER_WEBSITES["lola-health"],
+    description: "Digital health testing platform",
+    accreditations: ["UKAS"],
   },
-  'london-medical-laboratory': {
-    id: 'london-medical-laboratory',
-    name: 'London Medical Laboratory',
-    logo: PROVIDER_LOGOS['london-medical-laboratory'],
-    website: PROVIDER_WEBSITES['london-medical-laboratory'],
-    description: 'CQC-regulated laboratory services',
-    accreditations: ['CQC', 'UKAS', 'ISO 15189'],
+  "london-medical-laboratory": {
+    id: "london-medical-laboratory",
+    name: "London Medical Laboratory",
+    logo: PROVIDER_LOGOS["london-medical-laboratory"],
+    website: PROVIDER_WEBSITES["london-medical-laboratory"],
+    description: "CQC-regulated laboratory services",
+    accreditations: ["CQC", "UKAS", "ISO 15189"],
   },
-  'randox': {
-    id: 'randox',
-    name: 'Randox Health',
-    logo: PROVIDER_LOGOS['randox'],
-    website: PROVIDER_WEBSITES['randox'],
-    description: 'Advanced health screening',
-    accreditations: ['UKAS', 'ISO 15189'],
+  randox: {
+    id: "randox",
+    name: "Randox Health",
+    logo: PROVIDER_LOGOS["randox"],
+    website: PROVIDER_WEBSITES["randox"],
+    description: "Advanced health screening",
+    accreditations: ["UKAS", "ISO 15189"],
   },
-  'london-health-company': {
-    id: 'london-health-company',
-    name: 'London Health Company',
-    logo: PROVIDER_LOGOS['london-health-company'],
-    website: PROVIDER_WEBSITES['london-health-company'],
-    description: 'At-home blood test kits with lab analysis',
-    accreditations: ['UKAS'],
+  "london-health-company": {
+    id: "london-health-company",
+    name: "London Health Company",
+    logo: PROVIDER_LOGOS["london-health-company"],
+    website: PROVIDER_WEBSITES["london-health-company"],
+    description: "At-home blood test kits with lab analysis",
+    accreditations: ["UKAS"],
   },
-  'medical-diagnosis': {
-    id: 'medical-diagnosis',
-    name: 'Medical Diagnosis',
-    logo: PROVIDER_LOGOS['medical-diagnosis'],
-    website: PROVIDER_WEBSITES['medical-diagnosis'],
-    description: 'Comprehensive diagnostic testing services',
-    accreditations: ['UKAS'],
+  "medical-diagnosis": {
+    id: "medical-diagnosis",
+    name: "Medical Diagnosis",
+    logo: PROVIDER_LOGOS["medical-diagnosis"],
+    website: PROVIDER_WEBSITES["medical-diagnosis"],
+    description: "Comprehensive diagnostic testing services",
+    accreditations: ["UKAS"],
   },
-  'clinilabs': {
-    id: 'clinilabs',
-    name: 'Clinilabs',
-    logo: PROVIDER_LOGOS['clinilabs'],
-    website: PROVIDER_WEBSITES['clinilabs'],
-    description: 'In-clinic blood testing and diagnostics',
-    accreditations: ['UKAS'],
+  clinilabs: {
+    id: "clinilabs",
+    name: "Clinilabs",
+    logo: PROVIDER_LOGOS["clinilabs"],
+    website: PROVIDER_WEBSITES["clinilabs"],
+    description: "In-clinic blood testing and diagnostics",
+    accreditations: ["UKAS"],
   },
 };
 
 export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
-  'goodbody-clinic': '3-5 days',
-  'medichecks': '3-6 days',
-  'lola-health': '4 days',
-  'london-medical-laboratory': 'Next day (in-store) / 3-4 days (home kit)',
-  'randox': '2-3 days',
-  'london-health-company': '4-8 days',
-  'medical-diagnosis': '3-6 days',
-  'clinilabs': '3-6 days',
+  "goodbody-clinic": "3-5 days",
+  medichecks: "3-6 days",
+  "lola-health": "4 days",
+  "london-medical-laboratory": "Next day (in-store) / 3-4 days (home kit)",
+  randox: "2-3 days",
+  "london-health-company": "4-8 days",
+  "medical-diagnosis": "3-6 days",
+  clinilabs: "3-6 days",
 };
 
 export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
-  'goodbody-clinic': 'Venous (clinic)',
-  'medichecks': 'Finger-prick or Venous',
-  'lola-health': 'Venous (home nurse or clinic)',
-  'london-medical-laboratory': 'Venous (clinic)',
-  'randox': 'Venous (clinic)',
-  'london-health-company': 'Finger-prick (home)',
-  'medical-diagnosis': 'Venous (clinic)',
-  'clinilabs': 'Venous (clinic)',
+  "goodbody-clinic": "Venous (clinic)",
+  medichecks: "Finger-prick or Venous",
+  "lola-health": "Venous (home nurse or clinic)",
+  "london-medical-laboratory": "Venous (clinic)",
+  randox: "Venous (clinic)",
+  "london-health-company": "Finger-prick (home)",
+  "medical-diagnosis": "Venous (clinic)",
+  clinilabs: "Venous (clinic)",
 };
 
 /**
@@ -154,19 +155,23 @@ export const PROVIDER_COLLECTION_METHODS: Record<string, string> = {
  * These are the primary partners displayed prominently on the site
  */
 export const providers: Provider[] = [
-  PROVIDER_DETAILS['goodbody-clinic'],
-  PROVIDER_DETAILS['medichecks'],
-  PROVIDER_DETAILS['randox'],
-  PROVIDER_DETAILS['london-medical-laboratory'],
-  PROVIDER_DETAILS['lola-health'],
-  PROVIDER_DETAILS['london-health-company'],
-  PROVIDER_DETAILS['medical-diagnosis'],
-  PROVIDER_DETAILS['clinilabs'],
+  PROVIDER_DETAILS["goodbody-clinic"],
+  PROVIDER_DETAILS["medichecks"],
+  PROVIDER_DETAILS["randox"],
+  PROVIDER_DETAILS["london-medical-laboratory"],
+  PROVIDER_DETAILS["lola-health"],
+  PROVIDER_DETAILS["london-health-company"],
+  PROVIDER_DETAILS["medical-diagnosis"],
+  PROVIDER_DETAILS["clinilabs"],
 ];
 
 export function getProviderLogo(providerId: string): string {
   const normalizedId = normalizeProviderId(providerId);
-  return PROVIDER_LOGOS[normalizedId] || PROVIDER_LOGOS[providerId] || '/placeholder.svg';
+  return (
+    PROVIDER_LOGOS[normalizedId] ||
+    PROVIDER_LOGOS[providerId] ||
+    "/placeholder.svg"
+  );
 }
 
 /**
@@ -175,14 +180,21 @@ export function getProviderLogo(providerId: string): string {
  * Falls back to the original logo when no responsive set exists.
  */
 const PROVIDERS_WITH_RESPONSIVE_LOGOS = new Set<string>([
-  'lola-health', 'goodbody-clinic', 'london-health-company',
-  'medical-diagnosis', 'clinilabs',
+  "lola-health",
+  "goodbody-clinic",
+  "london-health-company",
+  "medical-diagnosis",
+  "clinilabs",
 ]);
 
-export function getProviderLogoSrcSet(providerId: string): { src: string; srcSet?: string } {
+export function getProviderLogoSrcSet(providerId: string): {
+  src: string;
+  srcSet?: string;
+} {
   const normalizedId = normalizeProviderId(providerId);
   const fallback = getProviderLogo(normalizedId);
-  if (!PROVIDERS_WITH_RESPONSIVE_LOGOS.has(normalizedId)) return { src: fallback };
+  if (!PROVIDERS_WITH_RESPONSIVE_LOGOS.has(normalizedId))
+    return { src: fallback };
   const base = `/lovable-uploads/providers/${normalizedId}`;
   return {
     src: `${base}@160.png`,
@@ -192,12 +204,14 @@ export function getProviderLogoSrcSet(providerId: string): { src: string; srcSet
 
 export function getProviderName(providerId: string): string {
   const normalizedId = normalizeProviderId(providerId);
-  return PROVIDER_NAMES[normalizedId] || PROVIDER_NAMES[providerId] || providerId;
+  return (
+    PROVIDER_NAMES[normalizedId] || PROVIDER_NAMES[providerId] || providerId
+  );
 }
 
 export function getProviderWebsite(providerId: string): string {
   const normalizedId = normalizeProviderId(providerId);
-  return PROVIDER_WEBSITES[normalizedId] || PROVIDER_WEBSITES[providerId] || '';
+  return PROVIDER_WEBSITES[normalizedId] || PROVIDER_WEBSITES[providerId] || "";
 }
 
 export function getProviderDetails(providerId: string): Provider | null {

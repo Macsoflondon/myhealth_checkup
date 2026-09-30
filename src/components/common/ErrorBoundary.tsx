@@ -26,14 +26,19 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     // Preserve raw Error (stack) in devtools / Server Logs
-     
+
     console.error("[ErrorBoundary]", error, errorInfo);
     logger.error("ErrorBoundary caught an error:", { error, errorInfo });
     this.setState({ errorInfo });
   }
 
   private handleRetry = () => {
-    this.setState({ hasError: false, error: undefined, errorInfo: undefined, copied: false });
+    this.setState({
+      hasError: false,
+      error: undefined,
+      errorInfo: undefined,
+      copied: false,
+    });
   };
 
   private handleReload = () => {
@@ -84,7 +89,8 @@ export class ErrorBoundary extends Component<Props, State> {
             </CardHeader>
             <CardContent className="text-center space-y-4">
               <p className="text-muted-foreground text-sm">
-                We encountered an unexpected error. Please try refreshing the page.
+                We encountered an unexpected error. Please try refreshing the
+                page.
               </p>
 
               <div className="grid grid-cols-2 gap-2">
@@ -108,11 +114,11 @@ export class ErrorBoundary extends Component<Props, State> {
                       {error.name}: {error.message}
                     </div>
                     <pre className="text-[11px] font-mono whitespace-pre-wrap break-words max-h-60 overflow-auto rounded bg-background p-2 border border-border">
-{error.stack ?? "(no stack)"}
+                      {error.stack ?? "(no stack)"}
                     </pre>
                     {errorInfo?.componentStack && (
                       <pre className="text-[11px] font-mono whitespace-pre-wrap break-words max-h-40 overflow-auto rounded bg-background p-2 border border-border">
-{errorInfo.componentStack}
+                        {errorInfo.componentStack}
                       </pre>
                     )}
                     <Button
@@ -122,9 +128,15 @@ export class ErrorBoundary extends Component<Props, State> {
                       className="w-full"
                     >
                       {copied ? (
-                        <><Check className="w-4 h-4 mr-2" />Copied</>
+                        <>
+                          <Check className="w-4 h-4 mr-2" />
+                          Copied
+                        </>
                       ) : (
-                        <><Copy className="w-4 h-4 mr-2" />Copy details</>
+                        <>
+                          <Copy className="w-4 h-4 mr-2" />
+                          Copy details
+                        </>
                       )}
                     </Button>
                   </div>
@@ -132,7 +144,11 @@ export class ErrorBoundary extends Component<Props, State> {
               )}
 
               <div className="flex items-center justify-center pt-2 border-t border-border">
-                <img src={cqcLogo} alt="CQC Regulated" className="h-6 w-auto opacity-70" />
+                <img
+                  src={cqcLogo}
+                  alt="CQC Regulated"
+                  className="h-6 w-auto opacity-70"
+                />
               </div>
             </CardContent>
           </Card>

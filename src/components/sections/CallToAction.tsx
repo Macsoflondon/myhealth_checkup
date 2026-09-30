@@ -11,25 +11,29 @@ interface CallToActionProps {
 
 const CallToAction = ({ className }: CallToActionProps) => {
   const navigate = useNavigate();
-  
-  return <section className={cn("py-10 bg-[#081129] relative overflow-hidden", className)}>
+
+  return (
+    <section
+      className={cn("py-10 bg-[#081129] relative overflow-hidden", className)}
+    >
       <NavyDecorativeCircles />
 
       <div className="container mx-auto px-4 relative">
         <div className="max-w-5xl mx-auto text-center">
-          <SectionHeading 
-            title="Take Control of" 
-            gradientText="Your Health Today" 
+          <SectionHeading
+            title="Take Control of"
+            gradientText="Your Health Today"
             className="mb-6"
             titleClassName="text-white"
           />
           <p className="text-xl mb-5 text-white/90 my-0 py-0">
-            Join thousands of customers who've discovered health insights that made a difference.
+            Join thousands of customers who've discovered health insights that
+            made a difference.
           </p>
           <div className="flex flex-row gap-2 sm:gap-3 justify-center items-center flex-wrap">
             <Button
               size="lg"
-              onClick={() => navigate('/assisted-test-finder')}
+              onClick={() => navigate("/assisted-test-finder")}
               className="inline-flex items-center justify-center gap-1.5 flex-1 sm:flex-none sm:w-64 min-w-0 px-4 bg-[#22c0d4] hover:bg-[#e70d69] text-white text-sm sm:text-base font-semibold rounded-xl shadow-lg transition-colors duration-300 whitespace-nowrap"
             >
               <span className="truncate">Find Your Perfect Test</span>
@@ -37,7 +41,7 @@ const CallToAction = ({ className }: CallToActionProps) => {
             </Button>
             <Button
               size="lg"
-              onClick={() => navigate('/compare')}
+              onClick={() => navigate("/compare")}
               className="inline-flex items-center justify-center gap-1.5 flex-1 sm:flex-none sm:w-64 min-w-0 px-4 bg-[#e70d69] hover:bg-[#22c0d4] text-white text-sm sm:text-base font-semibold rounded-xl shadow-lg transition-colors duration-300 whitespace-nowrap"
             >
               <span className="truncate">Browse All 200+ Tests</span>
@@ -46,6 +50,7 @@ const CallToAction = ({ className }: CallToActionProps) => {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
 export default CallToAction;

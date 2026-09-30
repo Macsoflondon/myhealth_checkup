@@ -27,18 +27,20 @@ Two additional +1s-drifted pairs added during that day's security-fix and reconc
 
 ### Known residual: trailing +1s drift on the newest migration
 
-Every `supabase--migration` call recorded via the Lovable/Supabase CLI stamps the remote `version` roughly 1 second *before* the repo filename is saved. Fixing this with another metadata update immediately reintroduces the same 1s gap on the fix migration itself — the pattern is asymptotic. We therefore accept a **single trailing pair** where the newest remote `version` is exactly `filename_prefix + 1s`. The CI parity check in `.github/workflows/migration-parity.yml` explicitly tolerates this single-row case and fails on any other drift. As soon as another migration is pushed, the previous trailing drift is fixed by the next reconciliation.
-
+Every `supabase--migration` call recorded via the Lovable/Supabase CLI stamps the remote `version` roughly 1 second _before_ the repo filename is saved. Fixing this with another metadata update immediately reintroduces the same 1s gap on the fix migration itself — the pattern is asymptotic. We therefore accept a **single trailing pair** where the newest remote `version` is exactly `filename_prefix + 1s`. The CI parity check in `.github/workflows/migration-parity.yml` explicitly tolerates this single-row case and fails on any other drift. As soon as another migration is pushed, the previous trailing drift is fixed by the next reconciliation.
 
 ## Rules going forward
 
 ### 1. Never edit a migration file after it has been pushed
+
 Migration files are append-only. If you need to change something, write a new migration.
 
 ### 2. Only apply migrations via the migration tool
+
 Do not run ad-hoc SQL against production. Anything applied outside the migration flow becomes an orphan and re-introduces drift. If you must (recovery / hotfix), immediately create a marker file — see below.
 
 ### 3. Backfilling an out-of-band migration
+
 When a migration exists in `schema_migrations` but not in the repo, create a marker file:
 
 ```sql
@@ -53,6 +55,7 @@ SELECT 1 WHERE FALSE;
 The filename's 14-digit prefix must exactly equal the remote `version`. This keeps `db push` idempotent without any risk of re-running the DDL.
 
 ### 4. Rollback of the 2026-07-05 reconciliation
+
 Metadata-only, reversible from the snapshot:
 
 ```sql

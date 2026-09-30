@@ -12,9 +12,9 @@ interface UTMParams {
 }
 
 const DEFAULT_UTM: UTMParams = {
-  source: 'myhealthcheckup',
-  medium: 'comparison',
-  campaign: 'test-comparison',
+  source: "myhealthcheckup",
+  medium: "comparison",
+  campaign: "test-comparison",
 };
 
 /**
@@ -22,39 +22,50 @@ const DEFAULT_UTM: UTMParams = {
  */
 export function buildTrackedUrl(baseUrl: string, params?: UTMParams): string {
   const mergedParams = { ...DEFAULT_UTM, ...params };
-  
+
   try {
     const url = new URL(baseUrl);
-    
+
     if (mergedParams.source) {
-      url.searchParams.set('utm_source', mergedParams.source);
+      url.searchParams.set("utm_source", mergedParams.source);
     }
     if (mergedParams.medium) {
-      url.searchParams.set('utm_medium', mergedParams.medium);
+      url.searchParams.set("utm_medium", mergedParams.medium);
     }
     if (mergedParams.campaign) {
-      url.searchParams.set('utm_campaign', mergedParams.campaign);
+      url.searchParams.set("utm_campaign", mergedParams.campaign);
     }
     if (mergedParams.content) {
-      url.searchParams.set('utm_content', mergedParams.content);
+      url.searchParams.set("utm_content", mergedParams.content);
     }
     if (mergedParams.providerId) {
-      url.searchParams.set('provider_id', mergedParams.providerId);
+      url.searchParams.set("provider_id", mergedParams.providerId);
     }
-    
+
     return url.toString();
   } catch {
     // If URL is invalid, return original with query string appended
-    const separator = baseUrl.includes('?') ? '&' : '?';
+    const separator = baseUrl.includes("?") ? "&" : "?";
     const queryParts: string[] = [];
-    
-    if (mergedParams.source) queryParts.push(`utm_source=${encodeURIComponent(mergedParams.source)}`);
-    if (mergedParams.medium) queryParts.push(`utm_medium=${encodeURIComponent(mergedParams.medium)}`);
-    if (mergedParams.campaign) queryParts.push(`utm_campaign=${encodeURIComponent(mergedParams.campaign)}`);
-    if (mergedParams.content) queryParts.push(`utm_content=${encodeURIComponent(mergedParams.content)}`);
-    if (mergedParams.providerId) queryParts.push(`provider_id=${encodeURIComponent(mergedParams.providerId)}`);
-    
-    return `${baseUrl}${separator}${queryParts.join('&')}`;
+
+    if (mergedParams.source)
+      queryParts.push(`utm_source=${encodeURIComponent(mergedParams.source)}`);
+    if (mergedParams.medium)
+      queryParts.push(`utm_medium=${encodeURIComponent(mergedParams.medium)}`);
+    if (mergedParams.campaign)
+      queryParts.push(
+        `utm_campaign=${encodeURIComponent(mergedParams.campaign)}`,
+      );
+    if (mergedParams.content)
+      queryParts.push(
+        `utm_content=${encodeURIComponent(mergedParams.content)}`,
+      );
+    if (mergedParams.providerId)
+      queryParts.push(
+        `provider_id=${encodeURIComponent(mergedParams.providerId)}`,
+      );
+
+    return `${baseUrl}${separator}${queryParts.join("&")}`;
   }
 }
 
@@ -64,13 +75,15 @@ export function buildTrackedUrl(baseUrl: string, params?: UTMParams): string {
 export function buildProviderBookingUrl(
   providerUrl: string,
   providerId: string,
-  testName?: string
+  testName?: string,
 ): string {
   return buildTrackedUrl(providerUrl, {
-    source: 'myhealthcheckup',
-    medium: 'booking',
-    campaign: 'test-booking',
-    content: testName ? encodeURIComponent(testName.substring(0, 50)) : undefined,
+    source: "myhealthcheckup",
+    medium: "booking",
+    campaign: "test-booking",
+    content: testName
+      ? encodeURIComponent(testName.substring(0, 50))
+      : undefined,
     providerId,
   });
 }
@@ -80,12 +93,12 @@ export function buildProviderBookingUrl(
  */
 export function buildProviderWebsiteUrl(
   providerUrl: string,
-  providerId: string
+  providerId: string,
 ): string {
   return buildTrackedUrl(providerUrl, {
-    source: 'myhealthcheckup',
-    medium: 'referral',
-    campaign: 'provider-profile',
+    source: "myhealthcheckup",
+    medium: "referral",
+    campaign: "provider-profile",
     providerId,
   });
 }
@@ -94,6 +107,6 @@ export function buildProviderWebsiteUrl(
  * External link attributes for security and SEO
  */
 export const externalLinkProps = {
-  target: '_blank' as const,
-  rel: 'noopener noreferrer' as const,
+  target: "_blank" as const,
+  rel: "noopener noreferrer" as const,
 };

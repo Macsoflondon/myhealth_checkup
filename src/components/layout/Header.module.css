@@ -15,8 +15,9 @@
 
 /* Header States */
 .header {
-  transition: transform var(--transition-duration) cubic-bezier(0.4, 0, 0.2, 1),
-              opacity var(--transition-duration) cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    transform var(--transition-duration) cubic-bezier(0.4, 0, 0.2, 1),
+    opacity var(--transition-duration) cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
 
@@ -86,7 +87,7 @@
   :root {
     --header-height: 56px;
   }
-  
+
   .header {
     padding: 0.5rem;
   }
@@ -96,9 +97,10 @@
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
   }
-  
+
   /* Touch optimization */
-  button, a {
+  button,
+  a {
     -webkit-tap-highlight-color: transparent;
   }
 }
@@ -116,7 +118,7 @@
   .toolbar {
     transition: none;
   }
-  
+
   .header {
     will-change: auto;
   }

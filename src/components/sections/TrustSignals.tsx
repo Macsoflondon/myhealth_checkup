@@ -1,5 +1,5 @@
-import React from 'react';
-import { Star, Clock } from 'lucide-react';
+import React from "react";
+import { Star, Clock } from "lucide-react";
 
 const TrustSignals: React.FC = () => {
   return (

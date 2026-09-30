@@ -1,5 +1,19 @@
-import { useEffect, useRef, useState, useCallback, type PointerEvent as ReactPointerEvent } from "react";
-import { ChevronLeft, ChevronRight, X, Beaker, Clock, MapPin, ExternalLink } from "lucide-react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  type PointerEvent as ReactPointerEvent,
+} from "react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  X,
+  Beaker,
+  Clock,
+  MapPin,
+  ExternalLink,
+} from "lucide-react";
 import { Link } from "@/lib/router-compat";
 import { Button } from "@/components/ui/button";
 
@@ -15,16 +29,116 @@ type Kit = {
 };
 
 const KITS: Kit[] = [
-  { name: "Bowel Cancer Screening", accent: "#1f55c4", sample: "Stool Test", price: "£69.00", turnaround: "5–7 working days", biomarkers: "qFIT — faecal blood", collection: "At-home stool kit", about: "A simple FIT home test that detects hidden (occult) blood in your stool — an early sign of bowel cancer, polyps and other bowel conditions. Analysed in a UKAS-accredited lab." },
-  { name: "HPV Cervical Cancer Screening", accent: "#1f9bd6", sample: "Swab Test", price: "£165.00", turnaround: "3 working days", biomarkers: "24 high-risk HPV types", collection: "At-home swab kit", about: "A simple home swab that screens for 24 high-risk HPV types (including 16 and 18). Around 95% of cervical cancers are caused by HPV, so detection supports earlier follow-up. UKAS-accredited, GP report included." },
-  { name: "Advanced Well Woman", accent: "#1e9e5a", sample: "Blood Test", price: "£175.00", turnaround: "3–5 working days", biomarkers: "52 biomarkers", collection: "In-clinic / home nurse", about: "A comprehensive health check for women covering hormones, thyroid, iron, vitamins, cholesterol, liver and kidney function in a single test. GP report included." },
-  { name: "Female Hormone & Fertility", accent: "#e0156b", sample: "Blood Test", price: "£79.00", turnaround: "3–5 working days", biomarkers: "7 biomarkers", collection: "At-home / in-clinic", about: "Checks 7 key female hormones that regulate fertility, mood, energy and thyroid function — giving insight into cycle health and hormonal balance. GP report included." },
-  { name: "Advanced Well Man", accent: "#2f74d0", sample: "Blood Test", price: "£175.00", turnaround: "3–5 working days", biomarkers: "49 biomarkers", collection: "In-clinic / home nurse", about: "An essential all-round health check for men — organ function, cholesterol, diabetes, hormones, iron and vitamins in one comprehensive test. GP report included." },
-  { name: "Prostate PSA", accent: "#1e9e5a", sample: "Blood Test", price: "£69.00", turnaround: "3–5 working days", biomarkers: "PSA", collection: "At-home / in-clinic", about: "Measures prostate-specific antigen (PSA) to support prostate health monitoring and the early detection of potential concerns. GP report included." },
-  { name: "Premium Complete", accent: "#e0202a", sample: "Blood Test", price: "£249.00", turnaround: "3–5 working days", biomarkers: "61 biomarkers", collection: "In-clinic / home nurse", about: "Our most comprehensive health check — 61 biomarkers spanning thyroid, kidney, liver, cholesterol, iron, hormones, vitamins, diabetes, muscle and bone health. GP report included." },
-  { name: "Early Cancer Screening", accent: "#1e9e5a", sample: "Blood Test", price: "£1,199.00", turnaround: "2–3 weeks", biomarkers: "Up to 70 cancer types", collection: "In-clinic blood draw", about: "TruCheck™ detects circulating tumour cells (CTCs) in the blood to screen for up to 70 solid-organ cancer types and indicate their likely origin. Includes a UK doctor pre-consultation." },
-  { name: "Lung Cancer Screening", accent: "#e0202a", sample: "Blood Test", price: "£340.00", turnaround: "14 working days", biomarkers: "EarlyCDT® autoantibodies", collection: "At-home finger-prick", about: "The EarlyCDT® blood test detects autoantibodies linked to lung cancer that can appear before symptoms. 99.3% negative predictive value; no GP referral required." },
-  { name: "Sports & Fitness", accent: "#1e9e5a", sample: "Blood Test", price: "£89.00", turnaround: "3–5 working days", biomarkers: "32 biomarkers", collection: "At-home kit", about: "Tracks 32 biomarkers including organ and muscle health, vitamin levels, iron status and full blood count to optimise training, recovery and performance." },
+  {
+    name: "Bowel Cancer Screening",
+    accent: "#1f55c4",
+    sample: "Stool Test",
+    price: "£69.00",
+    turnaround: "5–7 working days",
+    biomarkers: "qFIT — faecal blood",
+    collection: "At-home stool kit",
+    about:
+      "A simple FIT home test that detects hidden (occult) blood in your stool — an early sign of bowel cancer, polyps and other bowel conditions. Analysed in a UKAS-accredited lab.",
+  },
+  {
+    name: "HPV Cervical Cancer Screening",
+    accent: "#1f9bd6",
+    sample: "Swab Test",
+    price: "£165.00",
+    turnaround: "3 working days",
+    biomarkers: "24 high-risk HPV types",
+    collection: "At-home swab kit",
+    about:
+      "A simple home swab that screens for 24 high-risk HPV types (including 16 and 18). Around 95% of cervical cancers are caused by HPV, so detection supports earlier follow-up. UKAS-accredited, GP report included.",
+  },
+  {
+    name: "Advanced Well Woman",
+    accent: "#1e9e5a",
+    sample: "Blood Test",
+    price: "£175.00",
+    turnaround: "3–5 working days",
+    biomarkers: "52 biomarkers",
+    collection: "In-clinic / home nurse",
+    about:
+      "A comprehensive health check for women covering hormones, thyroid, iron, vitamins, cholesterol, liver and kidney function in a single test. GP report included.",
+  },
+  {
+    name: "Female Hormone & Fertility",
+    accent: "#e0156b",
+    sample: "Blood Test",
+    price: "£79.00",
+    turnaround: "3–5 working days",
+    biomarkers: "7 biomarkers",
+    collection: "At-home / in-clinic",
+    about:
+      "Checks 7 key female hormones that regulate fertility, mood, energy and thyroid function — giving insight into cycle health and hormonal balance. GP report included.",
+  },
+  {
+    name: "Advanced Well Man",
+    accent: "#2f74d0",
+    sample: "Blood Test",
+    price: "£175.00",
+    turnaround: "3–5 working days",
+    biomarkers: "49 biomarkers",
+    collection: "In-clinic / home nurse",
+    about:
+      "An essential all-round health check for men — organ function, cholesterol, diabetes, hormones, iron and vitamins in one comprehensive test. GP report included.",
+  },
+  {
+    name: "Prostate PSA",
+    accent: "#1e9e5a",
+    sample: "Blood Test",
+    price: "£69.00",
+    turnaround: "3–5 working days",
+    biomarkers: "PSA",
+    collection: "At-home / in-clinic",
+    about:
+      "Measures prostate-specific antigen (PSA) to support prostate health monitoring and the early detection of potential concerns. GP report included.",
+  },
+  {
+    name: "Premium Complete",
+    accent: "#e0202a",
+    sample: "Blood Test",
+    price: "£249.00",
+    turnaround: "3–5 working days",
+    biomarkers: "61 biomarkers",
+    collection: "In-clinic / home nurse",
+    about:
+      "Our most comprehensive health check — 61 biomarkers spanning thyroid, kidney, liver, cholesterol, iron, hormones, vitamins, diabetes, muscle and bone health. GP report included.",
+  },
+  {
+    name: "Early Cancer Screening",
+    accent: "#1e9e5a",
+    sample: "Blood Test",
+    price: "£1,199.00",
+    turnaround: "2–3 weeks",
+    biomarkers: "Up to 70 cancer types",
+    collection: "In-clinic blood draw",
+    about:
+      "TruCheck™ detects circulating tumour cells (CTCs) in the blood to screen for up to 70 solid-organ cancer types and indicate their likely origin. Includes a UK doctor pre-consultation.",
+  },
+  {
+    name: "Lung Cancer Screening",
+    accent: "#e0202a",
+    sample: "Blood Test",
+    price: "£340.00",
+    turnaround: "14 working days",
+    biomarkers: "EarlyCDT® autoantibodies",
+    collection: "At-home finger-prick",
+    about:
+      "The EarlyCDT® blood test detects autoantibodies linked to lung cancer that can appear before symptoms. 99.3% negative predictive value; no GP referral required.",
+  },
+  {
+    name: "Sports & Fitness",
+    accent: "#1e9e5a",
+    sample: "Blood Test",
+    price: "£89.00",
+    turnaround: "3–5 working days",
+    biomarkers: "32 biomarkers",
+    collection: "At-home kit",
+    about:
+      "Tracks 32 biomarkers including organ and muscle health, vitamin levels, iron status and full blood count to optimise training, recovery and performance.",
+  },
 ];
 
 const CARD_W = 196;
@@ -35,9 +149,27 @@ const AUTO_SPEED = 0.0015; // index per ms
 const FRICTION = 0.94;
 
 const CompassRose = ({ size = 56 }: { size?: number }) => (
-  <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true">
-    <circle cx="32" cy="32" r="22" stroke="rgba(255,255,255,0.55)" strokeWidth="1.2" />
-    <circle cx="32" cy="32" r="14" stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
+  <svg
+    width={size}
+    height={size}
+    viewBox="0 0 64 64"
+    fill="none"
+    aria-hidden="true"
+  >
+    <circle
+      cx="32"
+      cy="32"
+      r="22"
+      stroke="rgba(255,255,255,0.55)"
+      strokeWidth="1.2"
+    />
+    <circle
+      cx="32"
+      cy="32"
+      r="14"
+      stroke="rgba(255,255,255,0.4)"
+      strokeWidth="1"
+    />
     <path d="M32 6 L34 32 L32 58 L30 32 Z" fill="rgba(255,255,255,0.9)" />
     <path d="M6 32 L32 30 L58 32 L32 34 Z" fill="rgba(255,255,255,0.75)" />
     <circle cx="32" cy="32" r="2.5" fill="white" />
@@ -48,14 +180,26 @@ const KitCard = ({ kit, onClick }: { kit: Kit; onClick: () => void }) => (
   <div
     onClick={onClick}
     className="relative bg-white rounded-3xl overflow-hidden cursor-pointer flex flex-col"
-    style={{ width: CARD_W, height: CARD_H, boxShadow: "0 28px 54px -22px rgba(0,0,0,0.5)" }}
+    style={{
+      width: CARD_W,
+      height: CARD_H,
+      boxShadow: "0 28px 54px -22px rgba(0,0,0,0.5)",
+    }}
   >
-    <div className="flex items-center justify-center" style={{ background: kit.accent, height: "40%" }}>
+    <div
+      className="flex items-center justify-center"
+      style={{ background: kit.accent, height: "40%" }}
+    >
       <CompassRose />
     </div>
     <div className="flex-1 px-4 pt-3 pb-3 flex flex-col">
-      <div className="text-[10px] font-extrabold tracking-[0.15em] text-[#081129]">GOODBODY</div>
-      <div className="mt-1 font-bold leading-tight text-[14px] line-clamp-2" style={{ color: kit.accent }}>
+      <div className="text-[10px] font-extrabold tracking-[0.15em] text-[#081129]">
+        GOODBODY
+      </div>
+      <div
+        className="mt-1 font-bold leading-tight text-[14px] line-clamp-2"
+        style={{ color: kit.accent }}
+      >
         {kit.name}
       </div>
       <div className="mt-2">
@@ -63,7 +207,10 @@ const KitCard = ({ kit, onClick }: { kit: Kit; onClick: () => void }) => (
           {kit.sample}
         </span>
       </div>
-      <div className="mt-auto pl-2 italic text-[10px] text-[#6b7280]" style={{ borderLeft: `2px solid ${kit.accent}` }}>
+      <div
+        className="mt-auto pl-2 italic text-[10px] text-[#6b7280]"
+        style={{ borderLeft: `2px solid ${kit.accent}` }}
+      >
         Know more. Live better.
       </div>
     </div>
@@ -157,7 +304,11 @@ const GoodbodyCarousel = () => {
   const onPointerUp = (e: ReactPointerEvent) => {
     if (!draggingRef.current) return;
     draggingRef.current = false;
-    try { (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId); } catch { /* capture already released */ }
+    try {
+      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+    } catch {
+      /* capture already released */
+    }
     // amplify a little
     velocityRef.current *= 16;
   };
@@ -172,35 +323,58 @@ const GoodbodyCarousel = () => {
               <div onClick={() => setSelectedIdx(i)} className="cursor-pointer">
                 <div
                   className="relative bg-white rounded-2xl overflow-hidden flex flex-col"
-                  style={{ width: 140, height: 190, boxShadow: "0 18px 30px -16px rgba(0,0,0,0.5)" }}
+                  style={{
+                    width: 140,
+                    height: 190,
+                    boxShadow: "0 18px 30px -16px rgba(0,0,0,0.5)",
+                  }}
                 >
-                  <div className="flex items-center justify-center" style={{ background: kit.accent, height: "40%" }}>
+                  <div
+                    className="flex items-center justify-center"
+                    style={{ background: kit.accent, height: "40%" }}
+                  >
                     <CompassRose size={36} />
                   </div>
                   <div className="flex-1 px-3 pt-2 pb-2 flex flex-col">
-                    <div className="text-[8px] font-extrabold tracking-[0.15em] text-[#081129]">GOODBODY</div>
-                    <div className="mt-0.5 font-bold leading-tight text-[11px] line-clamp-2" style={{ color: kit.accent }}>
+                    <div className="text-[8px] font-extrabold tracking-[0.15em] text-[#081129]">
+                      GOODBODY
+                    </div>
+                    <div
+                      className="mt-0.5 font-bold leading-tight text-[11px] line-clamp-2"
+                      style={{ color: kit.accent }}
+                    >
                       {kit.name}
                     </div>
-                    <div className="mt-auto pl-1.5 italic text-[8px] text-[#6b7280]" style={{ borderLeft: `2px solid ${kit.accent}` }}>
+                    <div
+                      className="mt-auto pl-1.5 italic text-[8px] text-[#6b7280]"
+                      style={{ borderLeft: `2px solid ${kit.accent}` }}
+                    >
                       Know more. Live better.
                     </div>
                   </div>
                 </div>
-                <div className="mt-2 text-center text-[12px] text-[#cfe9ee]">{kit.name}</div>
+                <div className="mt-2 text-center text-[12px] text-[#cfe9ee]">
+                  {kit.name}
+                </div>
               </div>
             </div>
           ))}
         </div>
         <MobileBlurb />
-        {selectedIdx !== null && <KitModal kit={KITS[selectedIdx]} onClose={() => setSelectedIdx(null)} />}
+        {selectedIdx !== null && (
+          <KitModal
+            kit={KITS[selectedIdx]}
+            onClose={() => setSelectedIdx(null)}
+          />
+        )}
       </div>
     );
   }
 
   // ---------- DESKTOP ----------
   const pos = positionRef.current;
-  const centerIdx = ((Math.round(pos) % KITS.length) + KITS.length) % KITS.length;
+  const centerIdx =
+    ((Math.round(pos) % KITS.length) + KITS.length) % KITS.length;
 
   return (
     <div className="relative w-full">
@@ -244,7 +418,8 @@ const GoodbodyCarousel = () => {
 
               const x = d * SPACING;
               // arc: y dips down as |d| grows: y = R - sqrt(R^2 - x^2)
-              const y = RADIUS - Math.sqrt(Math.max(0, RADIUS * RADIUS - x * x));
+              const y =
+                RADIUS - Math.sqrt(Math.max(0, RADIUS * RADIUS - x * x));
               const scale = Math.max(0.55, 1 - absD * 0.13);
               const opacity = Math.max(0, 1 - absD * 0.22);
               const isHover = hoverIdx === i;
@@ -267,7 +442,11 @@ const GoodbodyCarousel = () => {
                 >
                   <div
                     className="rounded-3xl"
-                    style={{ outline: isHover ? "2px solid #22C0D4" : "none", outlineOffset: 4, borderRadius: 24 }}
+                    style={{
+                      outline: isHover ? "2px solid #22C0D4" : "none",
+                      outlineOffset: 4,
+                      borderRadius: 24,
+                    }}
                   >
                     <KitCard kit={kit} onClick={() => setSelectedIdx(i)} />
                   </div>
@@ -297,7 +476,12 @@ const GoodbodyCarousel = () => {
         {hoverIdx === null && selectedIdx === null && <IdleBlurb />}
       </div>
 
-      {selectedIdx !== null && <KitModal kit={KITS[selectedIdx]} onClose={() => setSelectedIdx(null)} />}
+      {selectedIdx !== null && (
+        <KitModal
+          kit={KITS[selectedIdx]}
+          onClose={() => setSelectedIdx(null)}
+        />
+      )}
     </div>
   );
 };
@@ -307,24 +491,47 @@ const HoverTooltip = ({ kit }: { kit: Kit }) => (
     <div className="bg-white rounded-2xl shadow-2xl p-4 flex gap-4 max-w-[560px]">
       <div
         className="shrink-0 rounded-lg overflow-hidden flex flex-col"
-        style={{ width: 60, height: 80, boxShadow: "0 8px 16px -8px rgba(0,0,0,0.3)" }}
+        style={{
+          width: 60,
+          height: 80,
+          boxShadow: "0 8px 16px -8px rgba(0,0,0,0.3)",
+        }}
       >
-        <div style={{ background: kit.accent, height: "40%" }} className="flex items-center justify-center">
+        <div
+          style={{ background: kit.accent, height: "40%" }}
+          className="flex items-center justify-center"
+        >
           <CompassRose size={20} />
         </div>
         <div className="flex-1 bg-white" />
       </div>
       <div className="flex-1 min-w-0">
         <div className="flex items-baseline justify-between gap-3">
-          <div className="font-bold text-sm truncate" style={{ color: kit.accent }}>{kit.name}</div>
+          <div
+            className="font-bold text-sm truncate"
+            style={{ color: kit.accent }}
+          >
+            {kit.name}
+          </div>
           <div className="font-bold text-lg text-[#081129]">{kit.price}</div>
         </div>
         <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-brand-navy">
-          <span className="inline-flex items-center gap-1"><Clock size={11} />{kit.turnaround}</span>
-          <span className="inline-flex items-center gap-1"><Beaker size={11} />{kit.biomarkers}</span>
-          <span className="inline-flex items-center gap-1"><MapPin size={11} />{kit.collection}</span>
+          <span className="inline-flex items-center gap-1">
+            <Clock size={11} />
+            {kit.turnaround}
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <Beaker size={11} />
+            {kit.biomarkers}
+          </span>
+          <span className="inline-flex items-center gap-1">
+            <MapPin size={11} />
+            {kit.collection}
+          </span>
         </div>
-        <div className="mt-1 text-[11px] text-brand-navy line-clamp-1">{kit.about}</div>
+        <div className="mt-1 text-[11px] text-brand-navy line-clamp-1">
+          {kit.about}
+        </div>
       </div>
     </div>
   </div>
@@ -333,17 +540,33 @@ const HoverTooltip = ({ kit }: { kit: Kit }) => (
 const IdleBlurb = () => (
   <div className="absolute left-1/2 -translate-x-1/2 bottom-2 z-10 w-full max-w-2xl px-4 text-center animate-fade-in">
     <p className="italic text-white/85 text-sm sm:text-base">
-      High-quality private blood tests & cancer screening — accessible, affordable, convenient.
+      High-quality private blood tests & cancer screening — accessible,
+      affordable, convenient.
     </p>
     <p className="mt-1 text-white/65 text-xs sm:text-sm">
-      Clinical-grade accuracy with high-street accessibility. Over 60 blood & wellness tests, processed in UKAS-accredited laboratories and reviewed by a GP.
+      Clinical-grade accuracy with high-street accessibility. Over 60 blood &
+      wellness tests, processed in UKAS-accredited laboratories and reviewed by
+      a GP.
     </p>
     <div className="mt-3 flex items-center justify-center gap-3">
-      <Button asChild size="sm" className="bg-gradient-to-r from-brand-turquoise to-brand-pink text-white">
+      <Button
+        asChild
+        size="sm"
+        className="bg-gradient-to-r from-brand-turquoise to-brand-pink text-white"
+      >
         <Link to="/provider/goodbody-clinic">Explore the range</Link>
       </Button>
-      <Button asChild size="sm" variant="outline" className="border-white/30 text-white hover:bg-white/10">
-        <a href="https://goodbodyclinic.com" target="_blank" rel="noopener noreferrer">
+      <Button
+        asChild
+        size="sm"
+        variant="outline"
+        className="border-white/30 text-white hover:bg-white/10"
+      >
+        <a
+          href="https://goodbodyclinic.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Visit Goodbody <ExternalLink size={12} className="ml-1" />
         </a>
       </Button>
@@ -354,17 +577,33 @@ const IdleBlurb = () => (
 const MobileBlurb = () => (
   <div className="px-4 text-center">
     <p className="italic text-white/85 text-sm">
-      High-quality private blood tests & cancer screening — accessible, affordable, convenient.
+      High-quality private blood tests & cancer screening — accessible,
+      affordable, convenient.
     </p>
     <p className="mt-1 text-white/65 text-xs">
-      Clinical-grade accuracy with high-street accessibility. Over 60 blood & wellness tests, processed in UKAS-accredited laboratories and reviewed by a GP.
+      Clinical-grade accuracy with high-street accessibility. Over 60 blood &
+      wellness tests, processed in UKAS-accredited laboratories and reviewed by
+      a GP.
     </p>
     <div className="mt-3 flex items-center justify-center gap-2 flex-wrap">
-      <Button asChild size="sm" className="bg-gradient-to-r from-brand-turquoise to-brand-pink text-white">
+      <Button
+        asChild
+        size="sm"
+        className="bg-gradient-to-r from-brand-turquoise to-brand-pink text-white"
+      >
         <Link to="/provider/goodbody-clinic">Explore the range</Link>
       </Button>
-      <Button asChild size="sm" variant="outline" className="border-white/30 text-white hover:bg-white/10">
-        <a href="https://goodbodyclinic.com" target="_blank" rel="noopener noreferrer">
+      <Button
+        asChild
+        size="sm"
+        variant="outline"
+        className="border-white/30 text-white hover:bg-white/10"
+      >
+        <a
+          href="https://goodbodyclinic.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Visit Goodbody <ExternalLink size={12} className="ml-1" />
         </a>
       </Button>
@@ -374,7 +613,9 @@ const MobileBlurb = () => (
 
 const KitModal = ({ kit, onClose }: { kit: Kit; onClose: () => void }) => {
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
@@ -398,8 +639,13 @@ const KitModal = ({ kit, onClose }: { kit: Kit; onClose: () => void }) => {
           <X size={20} />
         </button>
 
-        <div className="text-[11px] font-extrabold tracking-[0.2em] text-[#081129]">GOODBODY</div>
-        <h3 className="mt-1 text-2xl sm:text-3xl font-bold leading-tight" style={{ color: kit.accent }}>
+        <div className="text-[11px] font-extrabold tracking-[0.2em] text-[#081129]">
+          GOODBODY
+        </div>
+        <h3
+          className="mt-1 text-2xl sm:text-3xl font-bold leading-tight"
+          style={{ color: kit.accent }}
+        >
           {kit.name}
         </h3>
         <div
@@ -409,17 +655,38 @@ const KitModal = ({ kit, onClose }: { kit: Kit; onClose: () => void }) => {
           {kit.price}
         </div>
 
-        <p className="mt-4 text-sm text-brand-navy leading-relaxed">{kit.about}</p>
+        <p className="mt-4 text-sm text-brand-navy leading-relaxed">
+          {kit.about}
+        </p>
 
         <div className="mt-5 space-y-2.5 border-t border-gray-100 pt-4">
-          <Row icon={<Beaker size={16} />} label="Biomarkers" value={kit.biomarkers} />
-          <Row icon={<MapPin size={16} />} label="Collection" value={kit.collection} />
-          <Row icon={<Clock size={16} />} label="Turnaround" value={kit.turnaround} />
+          <Row
+            icon={<Beaker size={16} />}
+            label="Biomarkers"
+            value={kit.biomarkers}
+          />
+          <Row
+            icon={<MapPin size={16} />}
+            label="Collection"
+            value={kit.collection}
+          />
+          <Row
+            icon={<Clock size={16} />}
+            label="Turnaround"
+            value={kit.turnaround}
+          />
         </div>
 
         <div className="mt-6 flex flex-col sm:flex-row gap-2">
-          <Button asChild className="flex-1 bg-gradient-to-r from-brand-turquoise to-brand-pink text-white">
-            <a href="https://goodbodyclinic.com" target="_blank" rel="noopener noreferrer">
+          <Button
+            asChild
+            className="flex-1 bg-gradient-to-r from-brand-turquoise to-brand-pink text-white"
+          >
+            <a
+              href="https://goodbodyclinic.com"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               View on Goodbody <ExternalLink size={14} className="ml-1" />
             </a>
           </Button>
@@ -432,11 +699,21 @@ const KitModal = ({ kit, onClose }: { kit: Kit; onClose: () => void }) => {
   );
 };
 
-const Row = ({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) => (
+const Row = ({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) => (
   <div className="flex items-start gap-3 text-sm">
     <div className="mt-0.5 text-brand-navy">{icon}</div>
     <div className="flex-1">
-      <div className="text-[11px] uppercase tracking-wider text-brand-navy font-semibold">{label}</div>
+      <div className="text-[11px] uppercase tracking-wider text-brand-navy font-semibold">
+        {label}
+      </div>
       <div className="text-[#081129]">{value}</div>
     </div>
   </div>

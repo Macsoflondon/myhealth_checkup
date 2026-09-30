@@ -2,7 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, XCircle, AlertTriangle, Loader2, RefreshCw } from "lucide-react";
+import {
+  CheckCircle2,
+  XCircle,
+  AlertTriangle,
+  Loader2,
+  RefreshCw,
+} from "lucide-react";
 
 type CheckState = "pending" | "ok" | "fail" | "warn";
 
@@ -15,13 +21,19 @@ interface RouteCheck {
 
 const BASE_URL = "https://myhealthcheckup.co.uk";
 
-async function fetchText(url: string): Promise<{ ok: boolean; status: number; text: string }> {
+async function fetchText(
+  url: string,
+): Promise<{ ok: boolean; status: number; text: string }> {
   try {
     const res = await fetch(url, { cache: "no-store" });
     const text = await res.text();
     return { ok: res.ok, status: res.status, text };
   } catch (err) {
-    return { ok: false, status: 0, text: err instanceof Error ? err.message : String(err) };
+    return {
+      ok: false,
+      status: 0,
+      text: err instanceof Error ? err.message : String(err),
+    };
   }
 }
 
@@ -35,7 +47,8 @@ function parseSitemap(xml: string): string[] {
 
 function parseRobots(text: string) {
   const groups: { agent: string; disallow: string[]; allow: string[] }[] = [];
-  let current: { agent: string; disallow: string[]; allow: string[] } | null = null;
+  let current: { agent: string; disallow: string[]; allow: string[] } | null =
+    null;
   let sitemap: string | undefined;
   for (const raw of text.split(/\r?\n/)) {
     const line = raw.trim();
@@ -54,9 +67,11 @@ function parseRobots(text: string) {
 }
 
 const StatusIcon = ({ state }: { state: CheckState }) => {
-  if (state === "ok") return <CheckCircle2 className="h-4 w-4 text-emerald-600" />;
+  if (state === "ok")
+    return <CheckCircle2 className="h-4 w-4 text-emerald-600" />;
   if (state === "fail") return <XCircle className="h-4 w-4 text-red-600" />;
-  if (state === "warn") return <AlertTriangle className="h-4 w-4 text-amber-600" />;
+  if (state === "warn")
+    return <AlertTriangle className="h-4 w-4 text-amber-600" />;
   return <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />;
 };
 
@@ -89,15 +104,23 @@ export function SeoStatusDashboard() {
 
   const sitemapPaths = useMemo(() => {
     if (!sitemapUrls) return null;
-    return sitemapUrls.map((u) => (u.startsWith(BASE_URL) ? u.slice(BASE_URL.length) || "/" : u));
+    return sitemapUrls.map((u) =>
+      u.startsWith(BASE_URL) ? u.slice(BASE_URL.length) || "/" : u,
+    );
   }, [sitemapUrls]);
 
-  const robots = useMemo(() => (robotsText ? parseRobots(robotsText) : null), [robotsText]);
+  const robots = useMemo(
+    () => (robotsText ? parseRobots(robotsText) : null),
+    [robotsText],
+  );
 
   const runCrawlChecks = async () => {
     if (!sitemapPaths || sitemapPaths.length === 0) return;
     setRunning(true);
-    const initial: RouteCheck[] = sitemapPaths.map((p) => ({ path: p, status: "pending" }));
+    const initial: RouteCheck[] = sitemapPaths.map((p) => ({
+      path: p,
+      status: "pending",
+    }));
     setChecks(initial);
     const results: RouteCheck[] = [];
     const concurrency = 6;
@@ -107,7 +130,11 @@ export function SeoStatusDashboard() {
         const my = idx++;
         const path = sitemapPaths[my];
         const r = await fetchText(path);
-        const status: CheckState = r.ok ? "ok" : r.status === 0 ? "warn" : "fail";
+        const status: CheckState = r.ok
+          ? "ok"
+          : r.status === 0
+            ? "warn"
+            : "fail";
         results[my] = {
           path,
           status,
@@ -131,10 +158,15 @@ export function SeoStatusDashboard() {
         <div>
           <h1 className="text-2xl font-bold">SEO Status</h1>
           <p className="text-sm text-muted-foreground">
-            Crawlability signals — sitemap, robots.txt, and live 404 checks for public routes.
+            Crawlability signals — sitemap, robots.txt, and live 404 checks for
+            public routes.
           </p>
         </div>
-        <Button variant="outline" size="sm" onClick={() => setNonce((n) => n + 1)}>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setNonce((n) => n + 1)}
+        >
           <RefreshCw className="h-4 w-4 mr-2" /> Reload
         </Button>
       </div>
@@ -143,7 +175,9 @@ export function SeoStatusDashboard() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <StatusIcon state={sitemapErr ? "fail" : sitemapPaths ? "ok" : "pending"} />
+              <StatusIcon
+                state={sitemapErr ? "fail" : sitemapPaths ? "ok" : "pending"}
+              />
               sitemap.xml
             </CardTitle>
           </CardHeader>
@@ -152,10 +186,13 @@ export function SeoStatusDashboard() {
             {sitemapPaths && (
               <>
                 <p>
-                  <strong>{sitemapPaths.length}</strong> URLs published to <code>/sitemap.xml</code>.
+                  <strong>{sitemapPaths.length}</strong> URLs published to{" "}
+                  <code>/sitemap.xml</code>.
                 </p>
                 <details className="text-xs">
-                  <summary className="cursor-pointer text-muted-foreground">Show all entries</summary>
+                  <summary className="cursor-pointer text-muted-foreground">
+                    Show all entries
+                  </summary>
                   <ul className="mt-2 max-h-64 overflow-auto font-mono space-y-0.5">
                     {sitemapPaths.map((p) => (
                       <li key={p}>{p}</li>
@@ -170,7 +207,9 @@ export function SeoStatusDashboard() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <StatusIcon state={robotsErr ? "fail" : robots ? "ok" : "pending"} />
+              <StatusIcon
+                state={robotsErr ? "fail" : robots ? "ok" : "pending"}
+              />
               robots.txt
             </CardTitle>
           </CardHeader>
@@ -185,12 +224,17 @@ export function SeoStatusDashboard() {
                       sitemap: <code>{robots.sitemap}</code>
                     </>
                   ) : (
-                    <span className="text-amber-600">no Sitemap: directive</span>
+                    <span className="text-amber-600">
+                      no Sitemap: directive
+                    </span>
                   )}
                 </p>
                 <div className="space-y-2 max-h-64 overflow-auto">
                   {robots.groups.map((g, i) => (
-                    <div key={i} className="border rounded p-2 text-xs font-mono">
+                    <div
+                      key={i}
+                      className="border rounded p-2 text-xs font-mono"
+                    >
                       <div className="font-semibold">User-agent: {g.agent}</div>
                       {g.disallow.map((d, k) => (
                         <div key={`d${k}`}>Disallow: {d || "(empty)"}</div>
@@ -215,7 +259,9 @@ export function SeoStatusDashboard() {
               {checks.length > 0 && (
                 <>
                   <Badge variant="secondary">{okCount} OK</Badge>
-                  <Badge variant={failedCount ? "destructive" : "secondary"}>{failedCount} failed</Badge>
+                  <Badge variant={failedCount ? "destructive" : "secondary"}>
+                    {failedCount} failed
+                  </Badge>
                 </>
               )}
               <Button
@@ -236,11 +282,14 @@ export function SeoStatusDashboard() {
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground mb-3">
-            Fetches every sitemap URL against the current origin and reports HTTP status. Runs
-            client-side; results reflect what a browser (not a bot) would see.
+            Fetches every sitemap URL against the current origin and reports
+            HTTP status. Runs client-side; results reflect what a browser (not a
+            bot) would see.
           </p>
           {checks.length === 0 ? (
-            <p className="text-sm text-muted-foreground italic">No results yet — click "Run checks".</p>
+            <p className="text-sm text-muted-foreground italic">
+              No results yet — click "Run checks".
+            </p>
           ) : (
             <div className="max-h-[480px] overflow-auto border rounded">
               <table className="w-full text-xs">
@@ -260,7 +309,9 @@ export function SeoStatusDashboard() {
                       </td>
                       <td className="p-2 font-mono">{c.path}</td>
                       <td className="p-2 font-mono">{c.httpStatus ?? "—"}</td>
-                      <td className="p-2 text-muted-foreground truncate max-w-[280px]">{c.note ?? ""}</td>
+                      <td className="p-2 text-muted-foreground truncate max-w-[280px]">
+                        {c.note ?? ""}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

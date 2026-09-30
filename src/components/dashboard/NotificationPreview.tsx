@@ -9,14 +9,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 const NotificationPreview = () => {
   const emailExamples = {
     orderUpdates: {
       subject: "Your Test Order is Confirmed - #MH12345",
-      preview: "Your blood test order has been confirmed and is being processed.",
+      preview:
+        "Your blood test order has been confirmed and is being processed.",
       body: `Dear John,
 
 Thank you for your order. Your blood test kit will be dispatched within 24 hours.
@@ -29,7 +36,7 @@ Order Details:
 Track your order: https://myhealthcheckup.co.uk/orders/MH12345
 
 Best regards,
-myhealth checkup Team`
+myhealth checkup Team`,
     },
     healthInsights: {
       subject: "Your Weekly Health Insights",
@@ -50,7 +57,7 @@ Recommended Tests:
 View full insights: https://myhealthcheckup.co.uk/dashboard
 
 Stay healthy,
-myhealth checkup Team`
+myhealth checkup Team`,
     },
     testReminders: {
       subject: "Reminder: Annual Health Check Due",
@@ -68,7 +75,7 @@ We recommend:
 Book now: https://myhealthcheckup.co.uk/compare
 
 Your health is your greatest asset,
-myhealth checkup Team`
+myhealth checkup Team`,
     },
     promotions: {
       subject: "20% Off All Vitamin Tests This Week",
@@ -88,20 +95,23 @@ Valid until: Sunday 11:59 PM
 Shop now: https://myhealthcheckup.co.uk/vitamins
 
 Best regards,
-myhealth checkup Team`
-    }
+myhealth checkup Team`,
+    },
   };
 
   const smsExamples = {
     results: {
-      message: "myhealth checkup: Your test results are ready to view. Log in to see your Full Blood Count results and personalised insights. https://myhealthcheckup.co.uk/results"
+      message:
+        "myhealth checkup: Your test results are ready to view. Log in to see your Full Blood Count results and personalised insights. https://myhealthcheckup.co.uk/results",
     },
     appointments: {
-      message: "myhealth checkup: Reminder - Your blood test appointment is tomorrow at 10:30 AM at Goodbody Clinic, London. Bring photo ID. Reply CANCEL to reschedule."
+      message:
+        "myhealth checkup: Reminder - Your blood test appointment is tomorrow at 10:30 AM at Goodbody Clinic, London. Bring photo ID. Reply CANCEL to reschedule.",
     },
     urgent: {
-      message: "myhealth checkup: URGENT - Please contact your GP regarding your recent test results. Our team will call you within 2 hours. Call us: 020 1234 5678"
-    }
+      message:
+        "myhealth checkup: URGENT - Please contact your GP regarding your recent test results. Our team will call you within 2 hours. Call us: 020 1234 5678",
+    },
   };
 
   return (
@@ -116,7 +126,8 @@ myhealth checkup Team`
         <DialogHeader>
           <DialogTitle>Notification Preview</DialogTitle>
           <DialogDescription>
-            See examples of the notifications you'll receive when you enable each type
+            See examples of the notifications you'll receive when you enable
+            each type
           </DialogDescription>
         </DialogHeader>
 
@@ -187,7 +198,9 @@ myhealth checkup Team`
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-base">Promotions &amp; Offers</CardTitle>
+                  <CardTitle className="text-base">
+                    Promotions &amp; Offers
+                  </CardTitle>
                   <Badge variant="secondary">Email</Badge>
                 </div>
                 <CardDescription className="text-sm">
@@ -206,7 +219,9 @@ myhealth checkup Team`
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-base">Test Results Available</CardTitle>
+                  <CardTitle className="text-base">
+                    Test Results Available
+                  </CardTitle>
                   <Badge variant="secondary">SMS</Badge>
                 </div>
                 <CardDescription className="text-sm">
@@ -226,7 +241,9 @@ myhealth checkup Team`
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-base">Appointment Reminders</CardTitle>
+                  <CardTitle className="text-base">
+                    Appointment Reminders
+                  </CardTitle>
                   <Badge variant="secondary">SMS</Badge>
                 </div>
                 <CardDescription className="text-sm">
@@ -237,7 +254,9 @@ myhealth checkup Team`
                 <div className="bg-muted p-4 rounded-lg">
                   <div className="flex gap-3">
                     <MessageSquare className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
-                    <p className="text-sm">{smsExamples.appointments.message}</p>
+                    <p className="text-sm">
+                      {smsExamples.appointments.message}
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -257,7 +276,9 @@ myhealth checkup Team`
                 <div className="bg-destructive/10 border border-destructive/20 p-4 rounded-lg">
                   <div className="flex gap-3">
                     <MessageSquare className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
-                    <p className="text-sm text-destructive">{smsExamples.urgent.message}</p>
+                    <p className="text-sm text-destructive">
+                      {smsExamples.urgent.message}
+                    </p>
                   </div>
                 </div>
               </CardContent>

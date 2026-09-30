@@ -43,40 +43,60 @@ export interface LiveTestRow {
   image_is_stock?: boolean | null;
 }
 
-const COLLECTION_FEE_TYPES = ['none', 'fixed', 'from', 'varies', 'self_arranged'] as const;
+const COLLECTION_FEE_TYPES = [
+  "none",
+  "fixed",
+  "from",
+  "varies",
+  "self_arranged",
+] as const;
 const CLINICAL_REVIEW_TYPES = [
-  'included', 'optional', 'gp_included', 'consultant_included',
-  'clinician_included', 'not_included', 'not_available',
+  "included",
+  "optional",
+  "gp_included",
+  "consultant_included",
+  "clinician_included",
+  "not_included",
+  "not_available",
 ] as const;
 
 type CollectionFeeType = (typeof COLLECTION_FEE_TYPES)[number];
 type ClinicalReviewType = (typeof CLINICAL_REVIEW_TYPES)[number];
 
 /** Only accept values the comparison label maps understand; never guess. */
-const toCollectionFeeType = (v: string | null | undefined): CollectionFeeType | null =>
-  v && (COLLECTION_FEE_TYPES as readonly string[]).includes(v) ? (v as CollectionFeeType) : null;
+const toCollectionFeeType = (
+  v: string | null | undefined,
+): CollectionFeeType | null =>
+  v && (COLLECTION_FEE_TYPES as readonly string[]).includes(v)
+    ? (v as CollectionFeeType)
+    : null;
 
 /**
  * Providers that publish a home phlebotomy visit as a paid alternative to the
  * in-clinic appointment already covered by the collection fee (GBP).
  */
 const HOME_VISIT_FEES: Record<string, number | undefined> = {
-  'goodbody-clinic': 20,
-  'london-medical-laboratory': 80,
+  "goodbody-clinic": 20,
+  "london-medical-laboratory": 80,
 };
 
-const toClinicalReviewType = (v: string | null | undefined): ClinicalReviewType | null =>
-  v && (CLINICAL_REVIEW_TYPES as readonly string[]).includes(v) ? (v as ClinicalReviewType) : null;
+const toClinicalReviewType = (
+  v: string | null | undefined,
+): ClinicalReviewType | null =>
+  v && (CLINICAL_REVIEW_TYPES as readonly string[]).includes(v)
+    ? (v as ClinicalReviewType)
+    : null;
 
 /** Pull a day count out of a real turnaround string, e.g. "2-3 days" -> 3. */
-const parseTurnaroundDays = (text: string | null | undefined): number | null => {
+const parseTurnaroundDays = (
+  text: string | null | undefined,
+): number | null => {
   if (!text) return null;
   const numbers = text.match(/\d+/g);
   if (!numbers || numbers.length === 0) return null;
   const days = Number(numbers[numbers.length - 1]);
   return Number.isFinite(days) && days > 0 ? days : null;
 };
-
 
 /**
  * Normalise the stored biomarkers_list JSON into plain strings.
@@ -85,12 +105,12 @@ const toBiomarkerNames = (raw: unknown): string[] => {
   if (!Array.isArray(raw)) return [];
   return raw
     .map((entry) => {
-      if (typeof entry === 'string') return entry;
-      if (entry && typeof entry === 'object' && 'value' in entry) {
+      if (typeof entry === "string") return entry;
+      if (entry && typeof entry === "object" && "value" in entry) {
         const value = (entry as { value?: unknown }).value;
-        return typeof value === 'string' ? value : '';
+        return typeof value === "string" ? value : "";
       }
-      return '';
+      return "";
     })
     .filter((name) => name.trim().length > 0);
 };
@@ -106,10 +126,10 @@ export class TestDataTransformer {
     const biomarkersList = toBiomarkerNames(test.biomarkers_list);
     // The stored count is the source of truth; never estimate it from copy.
     const biomarkerCount =
-      typeof test.biomarker_count === 'number' && test.biomarker_count > 0
+      typeof test.biomarker_count === "number" && test.biomarker_count > 0
         ? test.biomarker_count
         : biomarkersList.length;
-    const category = test.category ?? 'General';
+    const category = test.category ?? "General";
 
     return {
       id: test.id,
@@ -117,13 +137,15 @@ export class TestDataTransformer {
       provider: PROVIDER_NAMES[test.provider_id] || test.provider_id,
       price: test.price || 0,
       category,
-      description: test.description || '',
+      description: test.description || "",
       features: {
         turnaround: resolveTurnaround(test, test.provider_id),
         collection: resolveCollection(test, test.provider_id),
-        bioMarkers: biomarkersList.slice(0, 3).join(', ') || this.extractBioMarkers(test.description || '')
+        bioMarkers:
+          biomarkersList.slice(0, 3).join(", ") ||
+          this.extractBioMarkers(test.description || ""),
       },
-      providerLogo: PROVIDER_LOGOS[test.provider_id] || '/placeholder.svg',
+      providerLogo: PROVIDER_LOGOS[test.provider_id] || "/placeholder.svg",
       available: test.is_active ?? true,
       accreditations: this.getAccreditations(test),
       popularityScore: this.estimatePopularity(test.test_name, category),
@@ -134,14 +156,19 @@ export class TestDataTransformer {
       url: test.url || undefined,
       collectionFeeType: toCollectionFeeType(test.collection_fee_type),
       collectionFeeAmount:
-        typeof test.collection_fee_amount === 'number' ? test.collection_fee_amount : null,
+        typeof test.collection_fee_amount === "number"
+          ? test.collection_fee_amount
+          : null,
       collectionFeeNote: TestDataTransformer.resolveCollectionFeeNote(test),
       clinicalReviewType: toClinicalReviewType(test.clinical_review_type),
       clinicalReviewFee:
-        typeof test.clinical_review_fee === 'number' ? test.clinical_review_fee : null,
+        typeof test.clinical_review_fee === "number"
+          ? test.clinical_review_fee
+          : null,
       clinicalReviewNote: TestDataTransformer.resolveClinicalReviewNote(test),
-      image_url: typeof test.image_url === 'string' ? test.image_url : null,
-      image_is_stock: typeof test.image_is_stock === 'boolean' ? test.image_is_stock : null,
+      image_url: typeof test.image_url === "string" ? test.image_url : null,
+      image_is_stock:
+        typeof test.image_is_stock === "boolean" ? test.image_is_stock : null,
     };
   }
 
@@ -149,29 +176,42 @@ export class TestDataTransformer {
    * Transform multiple test records
    */
   static transformMultiple(tests: LiveTestRow[]): CompareTestData[] {
-    return tests.map(test => this.transformSingle(test));
+    return tests.map((test) => this.transformSingle(test));
   }
 
   /**
    * Extract biomarker information from description
    */
   private static extractBioMarkers(description: string): string {
-    if (!description) return '';
-    
+    if (!description) return "";
+
     const commonMarkers = [
-      'cholesterol', 'hdl', 'ldl', 'triglycerides',
-      'glucose', 'hba1c', 'insulin',
-      'tsh', 't3', 't4',
-      'vitamin d', 'b12', 'folate', 'iron',
-      'testosterone', 'estrogen', 'progesterone',
-      'cortisol', 'dhea'
+      "cholesterol",
+      "hdl",
+      "ldl",
+      "triglycerides",
+      "glucose",
+      "hba1c",
+      "insulin",
+      "tsh",
+      "t3",
+      "t4",
+      "vitamin d",
+      "b12",
+      "folate",
+      "iron",
+      "testosterone",
+      "estrogen",
+      "progesterone",
+      "cortisol",
+      "dhea",
     ];
-    
-    const found = commonMarkers.filter(marker => 
-      description.toLowerCase().includes(marker)
+
+    const found = commonMarkers.filter((marker) =>
+      description.toLowerCase().includes(marker),
     );
-    
-    return found.length > 0 ? found.slice(0, 3).join(', ') : '';
+
+    return found.length > 0 ? found.slice(0, 3).join(", ") : "";
   }
 
   /**
@@ -183,46 +223,55 @@ export class TestDataTransformer {
     if (fromRow) return fromRow;
 
     const accreditationMap: Record<string, string[]> = {
-      'medichecks': ['UKAS', 'CQC'],
-      'goodbody-clinic': ['UKAS', 'ISO 15189'],
-      'randox': ['UKAS', 'ISO 15189'],
-      'london-medical-laboratory': ['CQC', 'ISO 15189'],
-      'lola-health': ['CQC']
+      medichecks: ["UKAS", "CQC"],
+      "goodbody-clinic": ["UKAS", "ISO 15189"],
+      randox: ["UKAS", "ISO 15189"],
+      "london-medical-laboratory": ["CQC", "ISO 15189"],
+      "lola-health": ["CQC"],
     };
-    
+
     return accreditationMap[test.provider_id] || [];
   }
 
   /**
    * Estimate test popularity based on name and category
    */
-  private static estimatePopularity(testName: string, category: string): number {
+  private static estimatePopularity(
+    testName: string,
+    category: string,
+  ): number {
     const nameLower = testName.toLowerCase();
-    
+
     // High popularity tests
-    if (nameLower.includes('vitamin d') || 
-        nameLower.includes('thyroid') ||
-        nameLower.includes('testosterone') ||
-        nameLower.includes('full blood count') ||
-        nameLower.includes('hba1c')) {
+    if (
+      nameLower.includes("vitamin d") ||
+      nameLower.includes("thyroid") ||
+      nameLower.includes("testosterone") ||
+      nameLower.includes("full blood count") ||
+      nameLower.includes("hba1c")
+    ) {
       return 85;
     }
-    
+
     // Medium-high popularity
-    if (nameLower.includes('cholesterol') ||
-        nameLower.includes('liver') ||
-        nameLower.includes('kidney') ||
-        nameLower.includes('hormone')) {
+    if (
+      nameLower.includes("cholesterol") ||
+      nameLower.includes("liver") ||
+      nameLower.includes("kidney") ||
+      nameLower.includes("hormone")
+    ) {
       return 75;
     }
-    
+
     // Standard popularity for common categories
-    if (category.toLowerCase().includes('general') ||
-        category.toLowerCase().includes('wellness') ||
-        category.toLowerCase().includes('heart')) {
+    if (
+      category.toLowerCase().includes("general") ||
+      category.toLowerCase().includes("wellness") ||
+      category.toLowerCase().includes("heart")
+    ) {
       return 65;
     }
-    
+
     return 50; // Default popularity
   }
 
@@ -237,13 +286,13 @@ export class TestDataTransformer {
     if (fromRow !== null) return fromRow;
 
     const turnaroundMap: Record<string, number> = {
-      'medichecks': 2,
-      'goodbody-clinic': 1,
-      'randox': 2,
-      'london-medical-laboratory': 1,
-      'lola-health': 2
+      medichecks: 2,
+      "goodbody-clinic": 1,
+      randox: 2,
+      "london-medical-laboratory": 1,
+      "lola-health": 2,
     };
-    
+
     return turnaroundMap[test.provider_id] || 3;
   }
 
@@ -253,9 +302,11 @@ export class TestDataTransformer {
    */
   private static resolveCollectionFeeNote(test: LiveTestRow): string | null {
     const feeType = toCollectionFeeType(test.collection_fee_type);
-    if (feeType !== 'fixed' && feeType !== 'from') return null;
+    if (feeType !== "fixed" && feeType !== "from") return null;
     const amount =
-      typeof test.collection_fee_amount === 'number' ? test.collection_fee_amount : null;
+      typeof test.collection_fee_amount === "number"
+        ? test.collection_fee_amount
+        : null;
     if (amount == null) return null;
 
     const homeVisitFee = HOME_VISIT_FEES[test.provider_id];
@@ -271,9 +322,13 @@ export class TestDataTransformer {
    * Currently used for Medical Diagnosis's Premium Report add-on.
    */
   private static resolveClinicalReviewNote(test: LiveTestRow): string | null {
-    if (test.provider_id !== 'medical-diagnosis') return null;
-    if (toClinicalReviewType(test.clinical_review_type) !== 'optional') return null;
-    const fee = typeof test.clinical_review_fee === 'number' ? test.clinical_review_fee : null;
+    if (test.provider_id !== "medical-diagnosis") return null;
+    if (toClinicalReviewType(test.clinical_review_type) !== "optional")
+      return null;
+    const fee =
+      typeof test.clinical_review_fee === "number"
+        ? test.clinical_review_fee
+        : null;
     if (fee == null) return null;
     return `Medical Diagnosis offer a Premium Report service for an extra £${fee.toFixed(0)}.`;
   }

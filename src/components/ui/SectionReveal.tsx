@@ -15,7 +15,11 @@ interface SectionRevealProps {
  * Implemented with IntersectionObserver + a CSS transition rather than
  * framer-motion so the homepage never pays for an animation library.
  */
-const SectionReveal = ({ children, delay = 0, className }: SectionRevealProps) => {
+const SectionReveal = ({
+  children,
+  delay = 0,
+  className,
+}: SectionRevealProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [revealed, setRevealed] = useState(false);
 

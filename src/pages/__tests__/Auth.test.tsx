@@ -9,24 +9,42 @@ import Auth from "@/pages/Auth";
 const navigateMock = vi.fn();
 const setSearchParamsMock = vi.fn();
 vi.mock("@/lib/router-compat", async () => {
-  const actual = await vi.importActual<typeof import("@/lib/router-compat")>("@/lib/router-compat");
+  const actual = await vi.importActual<typeof import("@/lib/router-compat")>(
+    "@/lib/router-compat",
+  );
   return {
     ...actual,
     useNavigate: () => navigateMock,
     // No router is mounted in unit tests; stub location-derived hooks.
-    useSearchParams: () => [new URLSearchParams(), setSearchParamsMock] as const,
-    useLocation: () => ({ pathname: "/auth", search: "", hash: "", state: null, key: "/auth" }),
+    useSearchParams: () =>
+      [new URLSearchParams(), setSearchParamsMock] as const,
+    useLocation: () => ({
+      pathname: "/auth",
+      search: "",
+      hash: "",
+      state: null,
+      key: "/auth",
+    }),
     useParams: () => ({}),
   };
 });
 
-
 vi.mock("@/lib/mfa", () => ({
-  getAalStatus: () => Promise.resolve({ stepUpRequired: false, currentLevel: "aal1", nextLevel: "aal1" }),
+  getAalStatus: () =>
+    Promise.resolve({
+      stepUpRequired: false,
+      currentLevel: "aal1",
+      nextLevel: "aal1",
+    }),
 }));
 
 vi.mock("@/context/AuthContext", () => ({
-  useAuth: () => ({ user: null, isLoading: false, session: null, signOut: vi.fn() }),
+  useAuth: () => ({
+    user: null,
+    isLoading: false,
+    session: null,
+    signOut: vi.fn(),
+  }),
 }));
 
 vi.mock("@/components/layout/Header", () => ({ default: () => <header /> }));
@@ -36,7 +54,9 @@ const signInWithPassword = vi.fn();
 const signUp = vi.fn();
 const resetPasswordForEmail = vi.fn();
 const signInWithOAuth = vi.fn();
-const invoke = vi.fn().mockResolvedValue({ data: { allowed: true }, error: null });
+const invoke = vi
+  .fn()
+  .mockResolvedValue({ data: { allowed: true }, error: null });
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
@@ -53,10 +73,16 @@ vi.mock("@/integrations/supabase/client", () => ({
 const toastError = vi.fn();
 const toastSuccess = vi.fn();
 vi.mock("@/components/ui/sonner", () => ({
-  toast: { error: (m: string) => toastError(m), success: (m: string) => toastSuccess(m) },
+  toast: {
+    error: (m: string) => toastError(m),
+    success: (m: string) => toastSuccess(m),
+  },
 }));
 vi.mock("sonner", () => ({
-  toast: { error: (m: string) => toastError(m), success: (m: string) => toastSuccess(m) },
+  toast: {
+    error: (m: string) => toastError(m),
+    success: (m: string) => toastSuccess(m),
+  },
 }));
 
 const renderAuth = () =>
@@ -80,10 +106,14 @@ beforeEach(() => {
 describe("Auth page", () => {
   it("renders sign-in UI with remember-me and Google button", () => {
     renderAuth();
-    expect(screen.getByRole("heading", { name: /sign in/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: /sign in/i }),
+    ).toBeInTheDocument();
     expect(screen.getByLabelText(/remember me/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /google/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /forgot password/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /forgot password/i }),
+    ).toBeInTheDocument();
   });
 
   it("signs in with valid credentials and navigates to dashboard", async () => {
@@ -92,11 +122,15 @@ describe("Auth page", () => {
     await user.type(screen.getByLabelText(/email/i), "test@example.com");
     await user.type(screen.getByLabelText(/^password/i), "password123");
     await user.click(screen.getByRole("button", { name: /^sign in$/i }));
-    await waitFor(() => expect(signInWithPassword).toHaveBeenCalledWith({
-      email: "test@example.com",
-      password: "password123",
-    }));
-    await waitFor(() => expect(navigateMock).toHaveBeenCalledWith("/health-dashboard"));
+    await waitFor(() =>
+      expect(signInWithPassword).toHaveBeenCalledWith({
+        email: "test@example.com",
+        password: "password123",
+      }),
+    );
+    await waitFor(() =>
+      expect(navigateMock).toHaveBeenCalledWith("/health-dashboard"),
+    );
   });
 
   it("submits form when pressing Enter in the password field", async () => {
@@ -109,21 +143,27 @@ describe("Auth page", () => {
   });
 
   it("shows invalid-credentials error toast", async () => {
-    signInWithPassword.mockResolvedValue({ error: { message: "Invalid login credentials" } });
+    signInWithPassword.mockResolvedValue({
+      error: { message: "Invalid login credentials" },
+    });
     const user = userEvent.setup();
     renderAuth();
     await user.type(screen.getByLabelText(/email/i), "test@example.com");
     await user.type(screen.getByLabelText(/^password/i), "password123");
     await user.click(screen.getByRole("button", { name: /^sign in$/i }));
     await waitFor(() =>
-      expect(toastError).toHaveBeenCalledWith(expect.stringMatching(/invalid email or password/i)),
+      expect(toastError).toHaveBeenCalledWith(
+        expect.stringMatching(/invalid email or password/i),
+      ),
     );
   });
 
   it("switches to sign-up mode and shows password strength indicator", async () => {
     const user = userEvent.setup();
     renderAuth();
-    await user.click(screen.getByRole("button", { name: /don't have an account/i }));
+    await user.click(
+      screen.getByRole("button", { name: /don't have an account/i }),
+    );
     expect(screen.getByLabelText(/first name/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/last name/i)).toBeInTheDocument();
     await user.type(screen.getByLabelText(/^password/i), "Abcdef1!");
@@ -135,7 +175,9 @@ describe("Auth page", () => {
   it("signs up with valid data", async () => {
     const user = userEvent.setup();
     renderAuth();
-    await user.click(screen.getByRole("button", { name: /don't have an account/i }));
+    await user.click(
+      screen.getByRole("button", { name: /don't have an account/i }),
+    );
     await user.type(screen.getByLabelText(/first name/i), "Jane");
     await user.type(screen.getByLabelText(/last name/i), "Doe");
     await user.type(screen.getByLabelText(/email/i), "jane@example.com");
@@ -163,7 +205,9 @@ describe("Auth page", () => {
     renderAuth();
     await user.click(screen.getByRole("button", { name: /google/i }));
     await waitFor(() =>
-      expect(signInWithOAuth).toHaveBeenCalledWith(expect.objectContaining({ provider: "google" })),
+      expect(signInWithOAuth).toHaveBeenCalledWith(
+        expect.objectContaining({ provider: "google" }),
+      ),
     );
   });
 });

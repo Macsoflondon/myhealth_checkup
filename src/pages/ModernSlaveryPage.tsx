@@ -1,15 +1,14 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
-import ModernSlaveryStatement from '@/components/compliance/ModernSlaveryStatement';
-import PageBanner from '@/components/sections/PageBanner';
+import React from "react";
+import { Helmet } from "react-helmet-async";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import ModernSlaveryStatement from "@/components/compliance/ModernSlaveryStatement";
+import PageBanner from "@/components/sections/PageBanner";
 
 const ModernSlaveryPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Helmet>
-      </Helmet>
+      <Helmet></Helmet>
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner

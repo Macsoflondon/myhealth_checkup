@@ -1,7 +1,13 @@
 import { useLocation, Link, useNavigate } from "@/lib/router-compat";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Search, Home, Compass, MessageCircle, FlaskConical } from "lucide-react";
+import {
+  Search,
+  Home,
+  Compass,
+  MessageCircle,
+  FlaskConical,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Header from "@/components/layout/Header";
@@ -11,7 +17,7 @@ import PageHeading from "@/components/ui/page-heading";
 
 const POPULAR_DESTINATIONS = [
   { label: "Compare blood tests", href: "/compare", icon: FlaskConical },
-  
+
   { label: "Compare by symptom", href: "/compare/symptoms", icon: Search },
   { label: "Compare by goal", href: "/compare/goals", icon: Search },
   { label: "How it works", href: "/how-it-works", icon: Home },
@@ -33,7 +39,10 @@ const NotFound = () => {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    logger.error("404 Error: User attempted to access non-existent route:", location.pathname);
+    logger.error(
+      "404 Error: User attempted to access non-existent route:",
+      location.pathname,
+    );
   }, [location.pathname]);
 
   const handleSearch = (e: React.FormEvent) => {
@@ -65,8 +74,9 @@ const NotFound = () => {
             </p>
             <PageHeading title="We can't find" accent="that page" />
             <p className="text-base sm:text-lg text-muted-foreground mt-6 max-w-xl mx-auto">
-              The link may be broken, the page may have moved, or the URL might be mistyped.
-              Use the search below or pick a popular destination to keep exploring.
+              The link may be broken, the page may have moved, or the URL might
+              be mistyped. Use the search below or pick a popular destination to
+              keep exploring.
             </p>
 
             <form

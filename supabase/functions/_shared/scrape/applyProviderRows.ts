@@ -50,7 +50,10 @@ export interface ApplyResult {
 
 function toNumber(value: unknown): number | null {
   if (value === null || value === undefined || value === "") return null;
-  const n = typeof value === "number" ? value : Number(String(value).replace(/[^0-9.]/g, ""));
+  const n =
+    typeof value === "number"
+      ? value
+      : Number(String(value).replace(/[^0-9.]/g, ""));
   return Number.isFinite(n) ? n : null;
 }
 
@@ -85,14 +88,20 @@ export async function applyProviderRows(
   const nowIso = new Date().toISOString();
 
   for (const item of items) {
-    const name = typeof item.test_name === "string" ? item.test_name.trim() : "";
-    const rawUrl = typeof (item.url ?? item.product_url) === "string"
-      ? String(item.url ?? item.product_url).trim()
-      : "";
+    const name =
+      typeof item.test_name === "string" ? item.test_name.trim() : "";
+    const rawUrl =
+      typeof (item.url ?? item.product_url) === "string"
+        ? String(item.url ?? item.product_url).trim()
+        : "";
 
     if (!name && !rawUrl) {
       result.skipped_unmatched++;
-      result.unmatched.push({ test_name: name || null, url: rawUrl || null, reason: "no_identifier" });
+      result.unmatched.push({
+        test_name: name || null,
+        url: rawUrl || null,
+        reason: "no_identifier",
+      });
       continue;
     }
 
@@ -131,7 +140,11 @@ export async function applyProviderRows(
 
     if (candidates.length === 0) {
       result.skipped_unmatched++;
-      result.unmatched.push({ test_name: name || null, url: rawUrl || null, reason: "unmatched" });
+      result.unmatched.push({
+        test_name: name || null,
+        url: rawUrl || null,
+        reason: "unmatched",
+      });
       continue;
     }
     if (candidates.length > 1) {
@@ -159,8 +172,12 @@ export async function applyProviderRows(
     if (basePrice !== null) patch.base_price = basePrice;
     if (clinicFee !== null) patch.clinic_phlebotomy_cost = clinicFee;
     if (homeFee !== null) patch.home_phlebotomy_cost = homeFee;
-    if (typeof item.gp_review_included === "boolean") patch.gp_review_included = item.gp_review_included;
-    if (Array.isArray(item.biomarkers_list) && item.biomarkers_list.length > 0) {
+    if (typeof item.gp_review_included === "boolean")
+      patch.gp_review_included = item.gp_review_included;
+    if (
+      Array.isArray(item.biomarkers_list) &&
+      item.biomarkers_list.length > 0
+    ) {
       patch.biomarkers_list = item.biomarkers_list;
       patch.biomarker_count = item.biomarkers_list.length;
     }
@@ -176,7 +193,10 @@ export async function applyProviderRows(
       .eq("provider_id", providerId);
 
     if (updateError) {
-      result.errors.push({ test_name: name || null, message: updateError.message });
+      result.errors.push({
+        test_name: name || null,
+        message: updateError.message,
+      });
       continue;
     }
     result.updated++;

@@ -6,18 +6,39 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Helmet } from "react-helmet-async";
-import { 
-  CheckCircle2, Clock, Home, Building2, ExternalLink, ArrowLeft, 
-  FlaskConical, Info, AlertTriangle, Stethoscope, HeartPulse, Shield 
+import {
+  CheckCircle2,
+  Clock,
+  Home,
+  Building2,
+  ExternalLink,
+  ArrowLeft,
+  FlaskConical,
+  Info,
+  AlertTriangle,
+  Stethoscope,
+  HeartPulse,
+  Shield,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import SimilarTestsSection from "@/components/tests/SimilarTestsSection";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ProviderConfig } from "@/constants/providerTestPageConfig";
 import { supabase } from "@/integrations/supabase/client";
-import { useUrlValidation, getProviderFallbackUrl } from "@/hooks/useUrlValidation";
-import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
+import {
+  useUrlValidation,
+  getProviderFallbackUrl,
+} from "@/hooks/useUrlValidation";
+import {
+  buildProviderBookingUrl,
+  externalLinkProps,
+} from "@/utils/urlTracking";
 import { seo } from "@/lib/seo";
 import { getProviderLogo } from "@/constants/providers";
 import { TestProviderPriceTable } from "@/components/compare/TestProviderPriceTable";
@@ -83,7 +104,9 @@ function ProviderVerbatimSection({
         <CardTitle>{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-muted-foreground leading-relaxed whitespace-pre-line">{body}</p>
+        <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
+          {body}
+        </p>
         <p className="mt-4 text-xs text-muted-foreground/70">
           Published by the provider. Shown in their own words.
         </p>
@@ -132,7 +155,7 @@ const LoadingSkeleton = () => (
 // Not found component
 const NotFoundState = ({ providerName }: { providerName: string }) => {
   const navigate = useNavigate();
-  
+
   return (
     <div className="min-h-screen bg-white py-12">
       <div className="container mx-auto px-4 max-w-5xl">
@@ -144,7 +167,8 @@ const NotFoundState = ({ providerName }: { providerName: string }) => {
           <CardContent className="py-12 text-center">
             <h2 className="text-2xl font-bold mb-4">Test Not Found</h2>
             <p className="text-muted-foreground mb-6">
-              The {providerName} test you're looking for doesn't exist or has been removed.
+              The {providerName} test you're looking for doesn't exist or has
+              been removed.
             </p>
             <Button asChild>
               <Link to="/compare">Browse All Tests</Link>
@@ -157,11 +181,11 @@ const NotFoundState = ({ providerName }: { providerName: string }) => {
 };
 
 // Booking Button Component with URL validation and fallback
-const BookingButton = ({ 
-  testUrl, 
-  providerConfig 
-}: { 
-  testUrl: string; 
+const BookingButton = ({
+  testUrl,
+  providerConfig,
+}: {
+  testUrl: string;
   providerConfig: ProviderConfig;
 }) => {
   const { isValid, isLoading } = useUrlValidation(testUrl);
@@ -178,11 +202,7 @@ const BookingButton = ({
 
   return (
     <div className="space-y-3">
-      <Button
-        size="lg"
-        className="w-full"
-        asChild
-      >
+      <Button size="lg" className="w-full" asChild>
         <a
           href={buildProviderBookingUrl(testUrl, providerConfig.id)}
           {...externalLinkProps}
@@ -202,15 +222,10 @@ const BookingButton = ({
         <p className="text-xs text-center text-muted-foreground mb-2">
           Link not working?
         </p>
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="w-full" 
-          asChild
-        >
-          <a 
-            href={fallbackUrl} 
-            target="_blank" 
+        <Button variant="outline" size="sm" className="w-full" asChild>
+          <a
+            href={fallbackUrl}
+            target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center text-xs"
           >
@@ -223,36 +238,44 @@ const BookingButton = ({
 };
 
 // Biomarkers Section Component
-const BiomarkersSection = ({ biomarkers, biomarkerCount }: { biomarkers: string[] | null | undefined; biomarkerCount: number | null | undefined }) => {
-  const [biomarkerDetails, setBiomarkerDetails] = useState<Record<string, BiomarkerInfo>>({});
+const BiomarkersSection = ({
+  biomarkers,
+  biomarkerCount,
+}: {
+  biomarkers: string[] | null | undefined;
+  biomarkerCount: number | null | undefined;
+}) => {
+  const [biomarkerDetails, setBiomarkerDetails] = useState<
+    Record<string, BiomarkerInfo>
+  >({});
   const [loading, setLoading] = useState(false);
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     const fetchBiomarkerDetails = async () => {
       if (!biomarkers || biomarkers.length === 0) return;
-      
+
       setLoading(true);
       try {
         const { data, error } = await supabase
-          .from('biomarkers_library')
-          .select('biomarker_name, description, category')
-          .in('biomarker_name', biomarkers);
-        
+          .from("biomarkers_library")
+          .select("biomarker_name, description, category")
+          .in("biomarker_name", biomarkers);
+
         if (!error && data) {
           const details: Record<string, BiomarkerInfo> = {};
           data.forEach((item) => {
-             if (!item.biomarker_name) return;
-             details[item.biomarker_name.toLowerCase()] = {
-               biomarker_name: item.biomarker_name,
-               description: item.description ?? "",
-               category: item.category ?? "Uncategorised",
-             };
+            if (!item.biomarker_name) return;
+            details[item.biomarker_name.toLowerCase()] = {
+              biomarker_name: item.biomarker_name,
+              description: item.description ?? "",
+              category: item.category ?? "Uncategorised",
+            };
           });
           setBiomarkerDetails(details);
         }
       } catch (err) {
-        console.error('Error fetching biomarker details:', err);
+        console.error("Error fetching biomarker details:", err);
       } finally {
         setLoading(false);
       }
@@ -265,7 +288,8 @@ const BiomarkersSection = ({ biomarkers, biomarkerCount }: { biomarkers: string[
     return null;
   }
 
-  const incomplete = typeof biomarkerCount === 'number' && biomarkerCount > biomarkers.length;
+  const incomplete =
+    typeof biomarkerCount === "number" && biomarkerCount > biomarkers.length;
   const heading = incomplete
     ? `Biomarkers tested — showing ${biomarkers.length} of ${biomarkerCount} published by the provider`
     : `Biomarkers tested (${biomarkers.length})`;
@@ -282,7 +306,8 @@ const BiomarkersSection = ({ biomarkers, biomarkerCount }: { biomarkers: string[
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground mb-4">
-          This test analyses the following biomarkers. Hover over each for more information.
+          This test analyses the following biomarkers. Hover over each for more
+          information.
         </p>
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -295,7 +320,7 @@ const BiomarkersSection = ({ biomarkers, biomarkerCount }: { biomarkers: string[
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
               {visibleBiomarkers.map((biomarker, index) => {
                 const details = biomarkerDetails[biomarker.toLowerCase()];
-                
+
                 return (
                   <Tooltip key={index}>
                     <TooltipTrigger asChild>
@@ -310,8 +335,12 @@ const BiomarkersSection = ({ biomarkers, biomarkerCount }: { biomarkers: string[
                     <TooltipContent side="top" className="max-w-xs">
                       {details ? (
                         <div>
-                          <p className="font-semibold">{details.biomarker_name}</p>
-                          <p className="text-xs text-muted-foreground">{details.category}</p>
+                          <p className="font-semibold">
+                            {details.biomarker_name}
+                          </p>
+                          <p className="text-xs text-muted-foreground">
+                            {details.category}
+                          </p>
                           <p className="text-sm mt-1">{details.description}</p>
                         </div>
                       ) : (
@@ -331,7 +360,7 @@ const BiomarkersSection = ({ biomarkers, biomarkerCount }: { biomarkers: string[
             aria-expanded={showAll}
             className="mt-3 text-xs font-semibold text-[#22c0d4] underline underline-offset-2 hover:text-[#e70d69] transition-colors"
           >
-            {showAll ? 'Show less' : `Show ${hiddenCount} more`}
+            {showAll ? "Show less" : `Show ${hiddenCount} more`}
           </button>
         )}
       </CardContent>
@@ -340,7 +369,11 @@ const BiomarkersSection = ({ biomarkers, biomarkerCount }: { biomarkers: string[
 };
 
 // Symptoms Section Component
-const SymptomsSection = ({ symptoms }: { symptoms: string[] | null | undefined }) => {
+const SymptomsSection = ({
+  symptoms,
+}: {
+  symptoms: string[] | null | undefined;
+}) => {
   if (!symptoms || symptoms.length === 0) return null;
 
   return (
@@ -366,7 +399,11 @@ const SymptomsSection = ({ symptoms }: { symptoms: string[] | null | undefined }
 };
 
 // Conditions Section Component
-const ConditionsSection = ({ conditions }: { conditions: string[] | null | undefined }) => {
+const ConditionsSection = ({
+  conditions,
+}: {
+  conditions: string[] | null | undefined;
+}) => {
   if (!conditions || conditions.length === 0) return null;
 
   return (
@@ -399,7 +436,8 @@ const AddonWarning = ({ providerName }: { providerName: string }) => (
       <div>
         <p className="font-semibold text-amber-800">Add-on Only</p>
         <p className="text-sm text-amber-700">
-          This test can only be purchased when bundled with one of {providerName}'s full test panels. It cannot be ordered on its own.
+          This test can only be purchased when bundled with one of{" "}
+          {providerName}'s full test panels. It cannot be ordered on its own.
         </p>
       </div>
     </div>
@@ -407,15 +445,15 @@ const AddonWarning = ({ providerName }: { providerName: string }) => (
 );
 
 function getTestTurnaround(test: ProviderTestData): string {
-  return test.turnaround_days_text || test.turnaround_raw || '';
+  return test.turnaround_days_text || test.turnaround_raw || "";
 }
 
 function getTestSampleType(test: ProviderTestData): string {
-  return test.sample_type || test.collection_method || '';
+  return test.sample_type || test.collection_method || "";
 }
 
 function formatCurrency(value: number | null | undefined): string {
-  if (value == null || Number.isNaN(value)) return '—';
+  if (value == null || Number.isNaN(value)) return "—";
   return `£${value.toFixed(2)}`;
 }
 
@@ -444,7 +482,7 @@ function CollectionOptionsSection({ test }: { test: ProviderTestData }) {
           <div key={variant.variantId}>
             {index > 0 && <Separator className="my-4" />}
             <div className="flex items-start space-x-4">
-              {variant.route === 'home_kit' ? (
+              {variant.route === "home_kit" ? (
                 <Home className="h-6 w-6 text-primary mt-1 shrink-0" />
               ) : (
                 <Building2 className="h-6 w-6 text-primary mt-1 shrink-0" />
@@ -456,15 +494,19 @@ function CollectionOptionsSection({ test }: { test: ProviderTestData }) {
                     {formatCurrency(variant.total)}
                   </span>
                 </div>
-                <p className="text-sm text-muted-foreground mt-1">{variant.detail}</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  {variant.detail}
+                </p>
                 {variant.fee > 0 && (
                   <p className="text-xs text-muted-foreground mt-1">
-                    £{variant.basePrice.toFixed(2)} test + £{variant.fee.toFixed(2)} collection fee
+                    £{variant.basePrice.toFixed(2)} test + £
+                    {variant.fee.toFixed(2)} collection fee
                   </p>
                 )}
                 {variant.secondary && (
                   <p className="text-xs text-muted-foreground mt-1">
-                    Or {variant.secondary.label.toLowerCase()} for {formatCurrency(variant.secondary.total)}
+                    Or {variant.secondary.label.toLowerCase()} for{" "}
+                    {formatCurrency(variant.secondary.total)}
                   </p>
                 )}
               </div>
@@ -479,16 +521,18 @@ function CollectionOptionsSection({ test }: { test: ProviderTestData }) {
 function ClinicalReviewSection({ test }: { test: ProviderTestData }) {
   const reviewType = test.clinical_review_type;
   const fee = test.clinical_review_fee;
-  const included = reviewType === 'included' || test.gp_review_included;
+  const included = reviewType === "included" || test.gp_review_included;
 
   if (!reviewType && !included && (fee == null || fee <= 0)) return null;
 
-  const label = included ? 'Clinical review included' : 'Clinical review available';
+  const label = included
+    ? "Clinical review included"
+    : "Clinical review available";
   const description = included
-    ? 'A clinician reviews your results and provides commentary at no extra cost.'
+    ? "A clinician reviews your results and provides commentary at no extra cost."
     : fee && fee > 0
       ? `Clinical review is available for an additional ${formatCurrency(fee)}.`
-      : 'Check with the provider for clinical review options.';
+      : "Check with the provider for clinical review options.";
 
   return (
     <Card>
@@ -519,7 +563,9 @@ export default function ProviderTestDetailTemplate({
 }: ProviderTestDetailTemplateProps) {
   const navigate = useNavigate();
 
-  const [otherProviders, setOtherProviders] = useState<ComparisonProviderOption[]>([]);
+  const [otherProviders, setOtherProviders] = useState<
+    ComparisonProviderOption[]
+  >([]);
 
   useEffect(() => {
     if (!test?.id) return;
@@ -527,19 +573,19 @@ export default function ProviderTestDetailTemplate({
 
     const fetchComparisons = async () => {
       const { data: ownGroup } = await supabase
-        .from('comparison_test_groups')
-        .select('group_key')
-        .eq('provider_test_id', test.id)
+        .from("comparison_test_groups")
+        .select("group_key")
+        .eq("provider_test_id", test.id)
         .maybeSingle();
 
       const groupKey = ownGroup?.group_key;
       if (!groupKey) return;
 
       const { data: siblings } = await supabase
-        .from('comparison_test_groups')
-        .select('provider_test_id, provider_id')
-        .eq('group_key', groupKey)
-        .neq('provider_test_id', test.id);
+        .from("comparison_test_groups")
+        .select("provider_test_id, provider_id")
+        .eq("group_key", groupKey)
+        .neq("provider_test_id", test.id);
 
       const siblingIds = (siblings ?? [])
         .map((row) => row.provider_test_id)
@@ -548,34 +594,41 @@ export default function ProviderTestDetailTemplate({
       if (siblingIds.length === 0) return;
 
       const { data: siblingTests } = await supabase
-        .from('provider_tests')
-        .select('*')
-        .in('id', siblingIds)
-        .eq('is_active', true);
+        .from("provider_tests")
+        .select("*")
+        .in("id", siblingIds)
+        .eq("is_active", true);
 
       if (cancelled) return;
 
-      const options: ComparisonProviderOption[] = (siblingTests ?? []).map((t: any) => {
-        const provRating = getProviderRating(t.provider_id);
-        return {
-          id: t.id,
-          providerId: t.provider_id,
-          providerName: detailedProviders.find(p => p.id === t.provider_id)?.name || t.provider_id,
-          price: t.price || 0,
-          turnaroundTime: t.turnaround_days_text || t.turnaround_raw || 'Contact provider',
-          collectionMethod: t.collection_method || 'Contact provider',
-          biomarkerCount: t.biomarker_count || undefined,
-          url: t.url || undefined,
-          rating: provRating?.rating,
-          reviews: provRating?.reviewsFormatted,
-        };
-      });
+      const options: ComparisonProviderOption[] = (siblingTests ?? []).map(
+        (t: any) => {
+          const provRating = getProviderRating(t.provider_id);
+          return {
+            id: t.id,
+            providerId: t.provider_id,
+            providerName:
+              detailedProviders.find((p) => p.id === t.provider_id)?.name ||
+              t.provider_id,
+            price: t.price || 0,
+            turnaroundTime:
+              t.turnaround_days_text || t.turnaround_raw || "Contact provider",
+            collectionMethod: t.collection_method || "Contact provider",
+            biomarkerCount: t.biomarker_count || undefined,
+            url: t.url || undefined,
+            rating: provRating?.rating,
+            reviews: provRating?.reviewsFormatted,
+          };
+        },
+      );
 
       setOtherProviders(options);
     };
 
     fetchComparisons();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [test?.id]);
 
   if (isLoading) {
@@ -587,14 +640,17 @@ export default function ProviderTestDetailTemplate({
   }
 
   // Parse biomarkers from JSON if needed
-  const biomarkers = Array.isArray(test.biomarkers_list) 
-    ? test.biomarkers_list 
+  const biomarkers = Array.isArray(test.biomarkers_list)
+    ? test.biomarkers_list
     : null;
 
-  const { title: pageTitle, description: pageDescription } = seo.test(test.test_name, {
-    providerName: providerConfig.name,
-    priceGbp: test.price ?? null,
-  });
+  const { title: pageTitle, description: pageDescription } = seo.test(
+    test.test_name,
+    {
+      providerName: providerConfig.name,
+      priceGbp: test.price ?? null,
+    },
+  );
   const canonicalUrl = `${providerConfig.canonicalBase}/${testId}`;
 
   const productSchema = {
@@ -616,8 +672,10 @@ export default function ProviderTestDetailTemplate({
     }),
   };
 
-  const hasDiscount = test.original_price && test.original_price > (test.price || 0);
-  const providerLogo = providerConfig.logo || getProviderLogo(providerConfig.id);
+  const hasDiscount =
+    test.original_price && test.original_price > (test.price || 0);
+  const providerLogo =
+    providerConfig.logo || getProviderLogo(providerConfig.id);
 
   return (
     <>
@@ -631,7 +689,9 @@ export default function ProviderTestDetailTemplate({
         <meta property="og:type" content="product" />
         <link rel="canonical" href={canonicalUrl} />
         {!test.is_addon && (
-          <script type="application/ld+json">{JSON.stringify(productSchema)}</script>
+          <script type="application/ld+json">
+            {JSON.stringify(productSchema)}
+          </script>
         )}
       </Helmet>
 
@@ -641,21 +701,25 @@ export default function ProviderTestDetailTemplate({
         <div className="container mx-auto px-4 max-w-5xl">
           {/* Provider Badge */}
           <div className="mb-6">
-            <img 
-              src={providerLogo} 
-              alt={providerConfig.name} 
+            <img
+              src={providerLogo}
+              alt={providerConfig.name}
               loading="lazy"
               decoding="async"
               className="h-12 mb-4"
               onError={(event) => {
                 const fallback = getProviderLogo(providerConfig.id);
-                if (event.currentTarget.src !== fallback) event.currentTarget.src = fallback;
+                if (event.currentTarget.src !== fallback)
+                  event.currentTarget.src = fallback;
               }}
             />
             <div className="flex flex-wrap gap-2 mb-2">
               <Badge variant="secondary">{providerConfig.badgeText}</Badge>
               {test.is_addon && (
-                <Badge variant="outline" className="border-amber-500 text-amber-700">
+                <Badge
+                  variant="outline"
+                  className="border-amber-500 text-amber-700"
+                >
                   Add-on
                 </Badge>
               )}
@@ -664,7 +728,9 @@ export default function ProviderTestDetailTemplate({
 
           {/* Test Header */}
           <h1 className="text-4xl font-bold mb-4">{test.test_name}</h1>
-          <p className="text-xl text-muted-foreground mb-8">{test.description}</p>
+          <p className="text-xl text-muted-foreground mb-8">
+            {test.description}
+          </p>
 
           {/* Add-on Warning */}
           {test.is_addon && <AddonWarning providerName={providerConfig.name} />}
@@ -679,7 +745,8 @@ export default function ProviderTestDetailTemplate({
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-muted-foreground">
-                    The {test.test_name} from {providerConfig.name} is a {providerConfig.aboutText}
+                    The {test.test_name} from {providerConfig.name} is a{" "}
+                    {providerConfig.aboutText}
                   </p>
                   <div className="grid sm:grid-cols-2 gap-4 pt-4">
                     {providerConfig.features.map((feature, index) => (
@@ -687,7 +754,9 @@ export default function ProviderTestDetailTemplate({
                         <CheckCircle2 className="h-5 w-5 text-primary mt-0.5" />
                         <div>
                           <p className="font-semibold">{feature.title}</p>
-                          <p className="text-sm text-muted-foreground">{feature.description}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {feature.description}
+                          </p>
                         </div>
                       </div>
                     ))}
@@ -696,9 +765,9 @@ export default function ProviderTestDetailTemplate({
               </Card>
 
               {/* Biomarkers Section */}
-              <BiomarkersSection 
-                biomarkers={biomarkers} 
-                biomarkerCount={test.biomarker_count} 
+              <BiomarkersSection
+                biomarkers={biomarkers}
+                biomarkerCount={test.biomarker_count}
               />
 
               {/* Provider's own detail, verbatim */}
@@ -734,12 +803,16 @@ export default function ProviderTestDetailTemplate({
                       providerId: providerConfig.id,
                       providerName: providerConfig.name,
                       price: test.total_expected_cost ?? test.price ?? 0,
-                      turnaroundTime: getTestTurnaround(test) || providerConfig.turnaround,
-                      collectionMethod: getTestSampleType(test) || providerConfig.quickInfo.sampleType,
+                      turnaroundTime:
+                        getTestTurnaround(test) || providerConfig.turnaround,
+                      collectionMethod:
+                        getTestSampleType(test) ||
+                        providerConfig.quickInfo.sampleType,
                       biomarkerCount: test.biomarker_count || undefined,
                       url: test.url || undefined,
                       rating: getProviderRating(providerConfig.id)?.rating,
-                      reviews: getProviderRating(providerConfig.id)?.reviewsFormatted,
+                      reviews: getProviderRating(providerConfig.id)
+                        ?.reviewsFormatted,
                     },
                     ...otherProviders,
                   ]}
@@ -759,7 +832,9 @@ export default function ProviderTestDetailTemplate({
                     {providerConfig.whyChoose.items.map((item, index) => (
                       <li key={index} className="flex items-start">
                         <CheckCircle2 className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
-                        <span><strong>{item.bold}</strong> {item.text}</span>
+                        <span>
+                          <strong>{item.bold}</strong> {item.text}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -773,7 +848,9 @@ export default function ProviderTestDetailTemplate({
               <Card className="sticky top-6">
                 <CardHeader>
                   <CardTitle>Book This Test</CardTitle>
-                  <p className="text-sm text-muted-foreground">{test.category}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {test.category}
+                  </p>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {test.price && (
@@ -798,9 +875,11 @@ export default function ProviderTestDetailTemplate({
                       <Separator />
                     </>
                   )}
-                  
+
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Turnaround Time</span>
+                    <span className="text-sm text-muted-foreground">
+                      Turnaround Time
+                    </span>
                     <div className="flex items-center">
                       <Clock className="h-4 w-4 mr-2 text-primary" />
                       <span className="font-semibold">
@@ -808,10 +887,10 @@ export default function ProviderTestDetailTemplate({
                       </span>
                     </div>
                   </div>
-                  
+
                   <Separator />
-                  
-                  <BookingButton 
+
+                  <BookingButton
                     testUrl={test.url}
                     providerConfig={providerConfig}
                   />
@@ -827,27 +906,36 @@ export default function ProviderTestDetailTemplate({
                   <div>
                     <p className="font-semibold mb-1">Sample Type</p>
                     <p className="text-muted-foreground">
-                      {getTestSampleType(test) || providerConfig.quickInfo.sampleType}
+                      {getTestSampleType(test) ||
+                        providerConfig.quickInfo.sampleType}
                     </p>
                   </div>
                   <Separator />
                   <div>
                     <p className="font-semibold mb-1">Lab Processing</p>
-                    <p className="text-muted-foreground">{providerConfig.quickInfo.labProcessing}</p>
+                    <p className="text-muted-foreground">
+                      {providerConfig.quickInfo.labProcessing}
+                    </p>
                   </div>
                   <Separator />
                   <div>
                     <p className="font-semibold mb-1">Results Delivery</p>
-                    <p className="text-muted-foreground">{providerConfig.quickInfo.resultsDelivery}</p>
+                    <p className="text-muted-foreground">
+                      {providerConfig.quickInfo.resultsDelivery}
+                    </p>
                   </div>
                   <Separator />
                   <div>
                     <p className="font-semibold mb-1">Support</p>
                     {providerConfig.quickInfo.supportPhone && (
-                      <p className="text-muted-foreground">Phone: {providerConfig.quickInfo.supportPhone}</p>
+                      <p className="text-muted-foreground">
+                        Phone: {providerConfig.quickInfo.supportPhone}
+                      </p>
                     )}
                     {providerConfig.quickInfo.supportEmail && (
-                      <p className="text-muted-foreground">Email: {providerConfig.quickInfo.supportEmail}</p>
+                      <p className="text-muted-foreground">
+                        Email: {providerConfig.quickInfo.supportEmail}
+                      </p>
                     )}
                   </div>
                 </CardContent>
@@ -857,7 +945,7 @@ export default function ProviderTestDetailTemplate({
 
           {/* Similar Tests Section */}
           <div className="mb-12">
-            <SimilarTestsSection 
+            <SimilarTestsSection
               category={test.category}
               currentTestName={test.test_name}
               currentProvider={providerConfig.id}
@@ -867,13 +955,16 @@ export default function ProviderTestDetailTemplate({
           {/* CTA Card */}
           <Card className="bg-primary/5 border-primary/20">
             <CardContent className="py-8 text-center">
-              <SectionHeading 
-                title="Ready to Take Control" 
-                gradientText="of Your Health?" 
+              <SectionHeading
+                title="Ready to Take Control"
+                gradientText="of Your Health?"
                 className="mb-4"
               />
               <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                {providerConfig.ctaText.replace('your test', `your ${test.test_name}`)}
+                {providerConfig.ctaText.replace(
+                  "your test",
+                  `your ${test.test_name}`,
+                )}
               </p>
               <Button size="lg" asChild>
                 <a href={test.url} target="_blank" rel="noopener noreferrer">

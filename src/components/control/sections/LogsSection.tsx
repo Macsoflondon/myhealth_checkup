@@ -67,7 +67,9 @@ export default function LogsSection() {
   }, [source]);
 
   const filtered = query
-    ? rows.filter((r) => JSON.stringify(r).toLowerCase().includes(query.toLowerCase()))
+    ? rows.filter((r) =>
+        JSON.stringify(r).toLowerCase().includes(query.toLowerCase()),
+      )
     : rows;
 
   return (
@@ -77,7 +79,10 @@ export default function LogsSection() {
       status="live"
       actions={
         <div className="flex items-center gap-2">
-          <Select value={source} onValueChange={(v) => setSource(v as typeof source)}>
+          <Select
+            value={source}
+            onValueChange={(v) => setSource(v as typeof source)}
+          >
             <SelectTrigger className="h-8 w-44">
               <SelectValue />
             </SelectTrigger>
@@ -120,12 +125,19 @@ export default function LogsSection() {
               {filtered.map((r) => (
                 <tr key={`${r.source}:${r.id}`} className="border-t align-top">
                   <td className="px-3 py-1.5 tabular-nums text-muted-foreground whitespace-nowrap">
-                    {r.event_time ? new Date(r.event_time).toLocaleString() : "—"}
+                    {r.event_time
+                      ? new Date(r.event_time).toLocaleString()
+                      : "—"}
                   </td>
-                  <td className="px-3 py-1.5 font-mono text-[10px] text-muted-foreground">{r.source}</td>
+                  <td className="px-3 py-1.5 font-mono text-[10px] text-muted-foreground">
+                    {r.source}
+                  </td>
                   <td className="px-3 py-1.5">
                     {r.severity ? (
-                      <Badge variant="secondary" className={SEVERITY_TONE[r.severity] ?? ""}>
+                      <Badge
+                        variant="secondary"
+                        className={SEVERITY_TONE[r.severity] ?? ""}
+                      >
                         {r.severity}
                       </Badge>
                     ) : (
@@ -137,13 +149,20 @@ export default function LogsSection() {
                     {r.target_table}
                     {r.target_id ? ` · ${r.target_id.slice(0, 8)}` : ""}
                   </td>
-                  <td className="px-3 py-1.5 font-mono text-[10px]">{r.actor_id?.slice(0, 8) ?? "—"}</td>
-                  <td className="px-3 py-1.5 font-mono text-[10px]">{r.ip_address ?? "—"}</td>
+                  <td className="px-3 py-1.5 font-mono text-[10px]">
+                    {r.actor_id?.slice(0, 8) ?? "—"}
+                  </td>
+                  <td className="px-3 py-1.5 font-mono text-[10px]">
+                    {r.ip_address ?? "—"}
+                  </td>
                 </tr>
               ))}
               {filtered.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-3 py-8 text-center text-muted-foreground">
+                  <td
+                    colSpan={7}
+                    className="px-3 py-8 text-center text-muted-foreground"
+                  >
                     No matching log events.
                   </td>
                 </tr>

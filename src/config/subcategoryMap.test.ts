@@ -34,7 +34,9 @@ describe("fertility sub-category matching", () => {
 
   it("does not leak female panels into the Men's Health fertility tab", () => {
     for (const title of femaleTests) {
-      expect(testMatchesSubcategory(mensHealthFertility, { title })).toBe(false);
+      expect(testMatchesSubcategory(mensHealthFertility, { title })).toBe(
+        false,
+      );
     }
     for (const title of maleTests) {
       expect(testMatchesSubcategory(mensHealthFertility, { title })).toBe(true);
@@ -43,10 +45,14 @@ describe("fertility sub-category matching", () => {
 
   it("does not leak male panels into the Women's Health fertility tab", () => {
     for (const title of maleTests) {
-      expect(testMatchesSubcategory(womensHealthFertility, { title })).toBe(false);
+      expect(testMatchesSubcategory(womensHealthFertility, { title })).toBe(
+        false,
+      );
     }
     for (const title of femaleTests) {
-      expect(testMatchesSubcategory(womensHealthFertility, { title })).toBe(true);
+      expect(testMatchesSubcategory(womensHealthFertility, { title })).toBe(
+        true,
+      );
     }
   });
 });

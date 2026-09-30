@@ -7,7 +7,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export type CatalogSortOption = "name-asc" | "name-desc" | "price-asc" | "price-desc" | "biomarkers-desc" | "popularity";
+export type CatalogSortOption =
+  | "name-asc"
+  | "name-desc"
+  | "price-asc"
+  | "price-desc"
+  | "biomarkers-desc"
+  | "popularity";
 
 interface CatalogSortBarProps {
   sortBy: CatalogSortOption;
@@ -16,10 +22,15 @@ interface CatalogSortBarProps {
   categoryLabel?: string;
 }
 
-export function sortTests<T extends { test_name: string; price?: number | null; biomarker_count?: number | null; is_popular?: boolean | null; popularity_rank?: number | null }>(
-  tests: T[],
-  sortBy: CatalogSortOption
-): T[] {
+export function sortTests<
+  T extends {
+    test_name: string;
+    price?: number | null;
+    biomarker_count?: number | null;
+    is_popular?: boolean | null;
+    popularity_rank?: number | null;
+  },
+>(tests: T[], sortBy: CatalogSortOption): T[] {
   return [...tests].sort((a, b) => {
     switch (sortBy) {
       case "name-asc":
@@ -45,7 +56,12 @@ export function sortTests<T extends { test_name: string; price?: number | null; 
   });
 }
 
-export default function CatalogSortBar({ sortBy, onSortChange, resultCount, categoryLabel }: CatalogSortBarProps) {
+export default function CatalogSortBar({
+  sortBy,
+  onSortChange,
+  resultCount,
+  categoryLabel,
+}: CatalogSortBarProps) {
   return (
     <div className="flex items-center justify-between mb-6">
       <p className="text-white/90 text-sm">
@@ -53,7 +69,10 @@ export default function CatalogSortBar({ sortBy, onSortChange, resultCount, cate
         {categoryLabel && categoryLabel !== "all" ? ` in ${categoryLabel}` : ""}
       </p>
       <div className="flex items-center gap-2">
-        <Select value={sortBy} onValueChange={(v) => onSortChange(v as CatalogSortOption)}>
+        <Select
+          value={sortBy}
+          onValueChange={(v) => onSortChange(v as CatalogSortOption)}
+        >
           <SelectTrigger className="w-[200px] bg-white">
             <ArrowUpDown className="h-4 w-4 mr-2 text-white/78" />
             <SelectValue placeholder="Sort by" />

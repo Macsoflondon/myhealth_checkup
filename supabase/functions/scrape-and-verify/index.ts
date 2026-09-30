@@ -23,7 +23,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
 const TIMEOUT_MS = 8000;
@@ -67,7 +68,8 @@ interface CheckResult {
 // Providers (medichecks, clinilabs) reject bare/Deno requests as bot traffic.
 // Reuse the same UA the provider scrapers already send.
 const REQUEST_HEADERS: Record<string, string> = {
-  "User-Agent": "myhealthcheckup-comparison-bot/1.0 (+https://myhealthcheckup.co.uk)",
+  "User-Agent":
+    "myhealthcheckup-comparison-bot/1.0 (+https://myhealthcheckup.co.uk)",
   Accept: "text/html,*/*",
 };
 
@@ -77,7 +79,8 @@ function retryAfterMs(headers: Headers): number {
   const raw = headers.get("Retry-After");
   if (!raw) return RATE_LIMIT_FALLBACK_WAIT_MS;
   const seconds = Number(raw);
-  if (!Number.isFinite(seconds) || seconds < 0) return RATE_LIMIT_FALLBACK_WAIT_MS;
+  if (!Number.isFinite(seconds) || seconds < 0)
+    return RATE_LIMIT_FALLBACK_WAIT_MS;
   return Math.min(seconds * 1000, RETRY_AFTER_CAP_MS);
 }
 
@@ -115,18 +118,30 @@ async function checkUrl(url: string): Promise<CheckResult> {
     if (res.status === 429) {
       // Still rate limited after the retry: the URL state is unknown, not
       // broken. Flag it so callers skip alerts and leave url_verified as-is.
-      return { ok: false, httpStatus: 429, issue: "HTTP 429", hit429, rateLimited: true };
+      return {
+        ok: false,
+        httpStatus: 429,
+        issue: "HTTP 429",
+        hit429,
+        rateLimited: true,
+      };
     }
-    if (!res.ok) return { ok: false, httpStatus: res.status, issue: `HTTP ${res.status}`, hit429 };
+    if (!res.ok)
+      return {
+        ok: false,
+        httpStatus: res.status,
+        issue: `HTTP ${res.status}`,
+        hit429,
+      };
     return { ok: true, httpStatus: res.status, hit429 };
   } catch (e) {
     return { ok: false, issue: (e as Error).message };
   }
 }
 
-
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  if (req.method === "OPTIONS")
+    return new Response("ok", { headers: corsHeaders });
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -140,7 +155,9 @@ Deno.serve(async (req) => {
     });
   }
 
-  const supabase = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
+  const supabase = createClient(supabaseUrl, serviceKey, {
+    auth: { persistSession: false },
+  });
 
   const reqUrl = new URL(req.url);
   const providerFilter = reqUrl.searchParams.get("provider");
@@ -148,7 +165,11 @@ Deno.serve(async (req) => {
   const started = new Date().toISOString();
   const { data: runRow } = await supabase
     .from("scrape_run_log")
-    .insert({ status: "running", trigger_source: "url-verification", started_at: started })
+    .insert({
+      status: "running",
+      trigger_source: "url-verification",
+      started_at: started,
+    })
     .select("id")
     .single();
   const runId = runRow?.id as string | undefined;
@@ -177,10 +198,15 @@ Deno.serve(async (req) => {
     if (!data || data.length < pageSize) break;
   }
 
-  const summary: Record<string, { total: number; ok: number; broken: number; rateLimited: number }> = {};
+  const summary: Record<
+    string,
+    { total: number; ok: number; broken: number; rateLimited: number }
+  > = {};
   const verifiedAt = new Date().toISOString();
 
-  async function processRow(row: TestRow): Promise<{ ok: boolean; hit429: boolean }> {
+  async function processRow(
+    row: TestRow,
+  ): Promise<{ ok: boolean; hit429: boolean }> {
     const result = await checkUrl(row.url as string);
 
     summary[row.provider_id] ??= { total: 0, ok: 0, broken: 0, rateLimited: 0 };
@@ -269,13 +295,28 @@ Deno.serve(async (req) => {
         status: "completed",
         providers_run: Object.keys(summary).length,
         verification_failures: brokenCount,
-        details: { checked: rows.length, ok: okCount, broken: brokenCount, summary },
+        details: {
+          checked: rows.length,
+          ok: okCount,
+          broken: brokenCount,
+          summary,
+        },
       })
       .eq("id", runId);
   }
 
   return new Response(
-    JSON.stringify({ run_id: runId, checked: rows.length, ok: okCount, broken: brokenCount, summary }, null, 2),
+    JSON.stringify(
+      {
+        run_id: runId,
+        checked: rows.length,
+        ok: okCount,
+        broken: brokenCount,
+        summary,
+      },
+      null,
+      2,
+    ),
     { headers: { ...corsHeaders, "Content-Type": "application/json" } },
   );
 });

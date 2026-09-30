@@ -17,15 +17,24 @@ type OAuthRedirect = { redirect_url: string };
 type OAuthNs = {
   getAuthorizationDetails: (
     id: string,
-  ) => Promise<{ data: AuthorizationDetails | OAuthRedirect | null; error: { message: string } | null }>;
+  ) => Promise<{
+    data: AuthorizationDetails | OAuthRedirect | null;
+    error: { message: string } | null;
+  }>;
   approveAuthorization: (
     id: string,
     options?: { skipBrowserRedirect?: boolean },
-  ) => Promise<{ data: OAuthRedirect | null; error: { message: string } | null }>;
+  ) => Promise<{
+    data: OAuthRedirect | null;
+    error: { message: string } | null;
+  }>;
   denyAuthorization: (
     id: string,
     options?: { skipBrowserRedirect?: boolean },
-  ) => Promise<{ data: OAuthRedirect | null; error: { message: string } | null }>;
+  ) => Promise<{
+    data: OAuthRedirect | null;
+    error: { message: string } | null;
+  }>;
 };
 
 type FailureKind = "missing_id" | "unsupported_sdk" | "expired" | "unexpected";
@@ -73,7 +82,10 @@ export default function OAuthConsent() {
       setDetails(null);
 
       if (!authorizationId) {
-        setFailure({ kind: "missing_id", message: "This link is missing an authorization_id." });
+        setFailure({
+          kind: "missing_id",
+          message: "This link is missing an authorization_id.",
+        });
         return;
       }
 
@@ -102,7 +114,8 @@ export default function OAuthConsent() {
           return;
         }
 
-        const { data, error } = await oauth.getAuthorizationDetails(authorizationId);
+        const { data, error } =
+          await oauth.getAuthorizationDetails(authorizationId);
         if (!active) return;
 
         if (error) {
@@ -114,7 +127,10 @@ export default function OAuthConsent() {
         }
 
         if (!data) {
-          setFailure({ kind: "expired", message: "This authorization request no longer exists." });
+          setFailure({
+            kind: "expired",
+            message: "This authorization request no longer exists.",
+          });
           return;
         }
 
@@ -127,7 +143,10 @@ export default function OAuthConsent() {
         setDetails(data);
       } catch (err) {
         if (!active) return;
-        const message = err instanceof Error ? err.message : "Unexpected error loading this request.";
+        const message =
+          err instanceof Error
+            ? err.message
+            : "Unexpected error loading this request.";
         setFailure({
           kind: isExpiredLike(message) ? "expired" : "unexpected",
           message,
@@ -149,14 +168,19 @@ export default function OAuthConsent() {
         setBusy(false);
         setFailure({
           kind: "unsupported_sdk",
-          message: "The OAuth client library is unavailable. Please hard-refresh the page.",
+          message:
+            "The OAuth client library is unavailable. Please hard-refresh the page.",
         });
         return;
       }
       try {
         const { data, error } = approve
-          ? await oauth.approveAuthorization(authorizationId, { skipBrowserRedirect: true })
-          : await oauth.denyAuthorization(authorizationId, { skipBrowserRedirect: true });
+          ? await oauth.approveAuthorization(authorizationId, {
+              skipBrowserRedirect: true,
+            })
+          : await oauth.denyAuthorization(authorizationId, {
+              skipBrowserRedirect: true,
+            });
 
         if (error) {
           setBusy(false);
@@ -179,7 +203,10 @@ export default function OAuthConsent() {
         setBusy(false);
         setFailure({
           kind: "unexpected",
-          message: err instanceof Error ? err.message : "Unexpected error completing this request.",
+          message:
+            err instanceof Error
+              ? err.message
+              : "Unexpected error completing this request.",
         });
       }
     },
@@ -209,7 +236,9 @@ export default function OAuthConsent() {
           <h1 className="text-xl font-semibold">{heading}</h1>
           <p className="text-white/90 text-sm">{body}</p>
           {failure.kind !== "missing_id" && failure.kind !== "expired" && (
-            <p className="text-white/78 text-xs break-words">Details: {failure.message}</p>
+            <p className="text-white/78 text-xs break-words">
+              Details: {failure.message}
+            </p>
           )}
           <div className="flex gap-3 pt-2">
             {authorizationId && failure.kind !== "expired" && (
@@ -251,8 +280,9 @@ export default function OAuthConsent() {
           Connect {clientName} to your myhealth checkup account
         </h1>
         <p className="text-white/90 text-sm">
-          {clientName} is requesting access to act on your behalf. It will be able to search the
-          test catalogue and read or update your saved tests as you.
+          {clientName} is requesting access to act on your behalf. It will be
+          able to search the test catalogue and read or update your saved tests
+          as you.
         </p>
         {scopes.length > 0 && (
           <ul className="text-white/90 text-xs list-disc pl-5 space-y-1">

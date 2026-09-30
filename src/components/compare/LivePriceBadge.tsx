@@ -6,7 +6,10 @@ interface LivePriceBadgeProps {
   showIcon?: boolean;
 }
 
-export const LivePriceBadge = ({ priceChange, showIcon = true }: LivePriceBadgeProps) => {
+export const LivePriceBadge = ({
+  priceChange,
+  showIcon = true,
+}: LivePriceBadgeProps) => {
   if (!priceChange || priceChange === 0) return null;
 
   const isIncrease = priceChange > 0;
@@ -16,10 +19,16 @@ export const LivePriceBadge = ({ priceChange, showIcon = true }: LivePriceBadgeP
       variant={isIncrease ? "destructive" : "secondary"}
       className="gap-1 text-xs"
     >
-      {showIcon && (
-        isIncrease ? <TrendingUp className="h-3 w-3" /> : <TrendingDown className="h-3 w-3" />
-      )}
-      <span>{isIncrease ? "+" : ""}{priceChange.toFixed(2)}%</span>
+      {showIcon &&
+        (isIncrease ? (
+          <TrendingUp className="h-3 w-3" />
+        ) : (
+          <TrendingDown className="h-3 w-3" />
+        ))}
+      <span>
+        {isIncrease ? "+" : ""}
+        {priceChange.toFixed(2)}%
+      </span>
     </Badge>
   );
 };

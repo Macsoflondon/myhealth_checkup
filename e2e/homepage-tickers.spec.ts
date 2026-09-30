@@ -12,7 +12,10 @@ import { test, expect, devices } from "@playwright/test";
 
 const BASE_URL = process.env.E2E_BASE_URL ?? "http://localhost:8080";
 
-async function firstChildX(page: import("@playwright/test").Page, selector: string) {
+async function firstChildX(
+  page: import("@playwright/test").Page,
+  selector: string,
+) {
   return page.evaluate((sel) => {
     const track = document.querySelector(sel) as HTMLElement | null;
     const first = track?.firstElementChild as HTMLElement | null;
@@ -21,7 +24,11 @@ async function firstChildX(page: import("@playwright/test").Page, selector: stri
   }, selector);
 }
 
-async function assertMoves(page: import("@playwright/test").Page, selector: string, label: string) {
+async function assertMoves(
+  page: import("@playwright/test").Page,
+  selector: string,
+  label: string,
+) {
   // Wait for the track to exist
   await page.waitForSelector(selector, { timeout: 10_000 });
   const x1 = await firstChildX(page, selector);
@@ -30,16 +37,22 @@ async function assertMoves(page: import("@playwright/test").Page, selector: stri
   const x2 = await firstChildX(page, selector);
   expect(x2, `${label}: first child should still be measurable`).not.toBeNull();
   const delta = Math.abs((x2 as number) - (x1 as number));
-  expect(delta, `${label}: expected position to change after 1.5s, got delta ${delta}px`).toBeGreaterThan(5);
+  expect(
+    delta,
+    `${label}: expected position to change after 1.5s, got delta ${delta}px`,
+  ).toBeGreaterThan(5);
 }
 
 const promoSelector = '[data-testid="promo-ticker-track"]';
 // The category ticker has no testid, so target by structure.
-const categorySelector = 'section.bg-brand-navy .overflow-hidden > .flex.whitespace-nowrap';
+const categorySelector =
+  "section.bg-brand-navy .overflow-hidden > .flex.whitespace-nowrap";
 
 test.describe("Homepage tickers move", () => {
   test("desktop: promo + category tickers animate", async ({ browser }) => {
-    const ctx = await browser.newContext({ viewport: { width: 1280, height: 720 } });
+    const ctx = await browser.newContext({
+      viewport: { width: 1280, height: 720 },
+    });
     const page = await ctx.newPage();
     await page.goto(BASE_URL + "/");
     await assertMoves(page, promoSelector, "desktop promo ticker");

@@ -10,12 +10,13 @@ export const COMPARE_IDS_PARAM = "ids";
 export const COMPARE_PANEL_PARAM = "panel";
 
 /** Validate a panel slug from the URL (canonical category slugs only). */
-export function parseComparePanel(raw: string | null | undefined): string | null {
+export function parseComparePanel(
+  raw: string | null | undefined,
+): string | null {
   if (!raw) return null;
   const slug = raw.trim();
   return /^[a-z0-9_-]{1,48}$/i.test(slug) ? slug : null;
 }
-
 
 /** Maximum tests a comparison view supports. */
 export const MAX_COMPARE_IDS = 5;
@@ -43,12 +44,17 @@ export function serialiseCompareIds(ids: readonly string[]): string {
 }
 
 /** Order-sensitive equality so we only rewrite the URL when the selection really changed. */
-export function sameCompareIds(a: readonly string[], b: readonly string[]): boolean {
+export function sameCompareIds(
+  a: readonly string[],
+  b: readonly string[],
+): boolean {
   return a.length === b.length && a.every((id, i) => id === b[i]);
 }
 
 /** Build a shareable path for a given selection. */
 export function compareResultsPath(ids: readonly string[]): string {
   const query = serialiseCompareIds(ids);
-  return query ? `/compare/results?${COMPARE_IDS_PARAM}=${encodeURIComponent(query)}` : "/compare/results";
+  return query
+    ? `/compare/results?${COMPARE_IDS_PARAM}=${encodeURIComponent(query)}`
+    : "/compare/results";
 }

@@ -39,7 +39,7 @@ export const sanitiseTurnaroundText = (
   if (!value) return null;
   const cleaned = value
     .split(/\]\(|https?:\/\//)[0]
-    .replace(/[\s\]\[(),;|-]+$/, '')
+    .replace(/[\s\]\[(),;|-]+$/, "")
     .trim();
   return cleaned.length > 0 ? cleaned : null;
 };
@@ -51,7 +51,7 @@ export const resolveTurnaround = (
   sanitiseTurnaroundText(row.turnaround_days_text) ||
   sanitiseTurnaroundText(row.turnaround_raw) ||
   PROVIDER_TURNAROUND_TIMES[providerId] ||
-  '2-5 days';
+  "2-5 days";
 
 export const resolveCollection = (
   row: CollectionRowFields,
@@ -60,7 +60,7 @@ export const resolveCollection = (
   row.collection_method?.trim() ||
   row.sample_type?.trim() ||
   PROVIDER_COLLECTION_METHODS[providerId] ||
-  'Varies';
+  "Varies";
 
 /**
  * Accreditation badges built from the row's real boolean flags. Returns null
@@ -70,9 +70,9 @@ export const resolveAccreditationsFromRow = (
   row: AccreditationRowFields,
 ): string[] | null => {
   const flags: string[] = [];
-  if (row.lab_ukas_accredited) flags.push('UKAS');
-  if (row.lab_cqc_regulated) flags.push('CQC');
-  if (row.lab_iso15189) flags.push('ISO 15189');
+  if (row.lab_ukas_accredited) flags.push("UKAS");
+  if (row.lab_cqc_regulated) flags.push("CQC");
+  if (row.lab_iso15189) flags.push("ISO 15189");
   return flags.length > 0 ? flags : null;
 };
 

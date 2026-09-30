@@ -38,7 +38,7 @@ export const categoryTaglines: Record<string, string> = {
   "kidney-health": "Keep your kidneys healthy",
   "weight-loss-tests": "Support your weight management goals",
   "popular-tests": "Our most requested health tests",
-  "vitamins": "Optimise your vitamin and mineral levels",
+  vitamins: "Optimise your vitamin and mineral levels",
   "vitamin-mineral": "Optimise your vitamin and mineral levels",
   default: "Take control of your health",
 };
@@ -87,7 +87,7 @@ export const categoryDisplayNames: Record<string, string> = {
   "kidney-health": "Kidney Health",
   "weight-loss-tests": "Weight Loss Tests",
   "popular-tests": "Popular Tests",
-  "vitamins": "Vitamin and Mineral Tests",
+  vitamins: "Vitamin and Mineral Tests",
   "vitamin-mineral": "Vitamin and Mineral Tests",
 };
 
@@ -96,8 +96,8 @@ export function getCategoryDisplayName(category: string): string {
   return (
     categoryDisplayNames[normalised] ||
     category
-      .split('-')
+      .split("-")
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(' ')
+      .join(" ")
   );
 }

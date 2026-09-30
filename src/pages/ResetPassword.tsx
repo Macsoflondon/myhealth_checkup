@@ -30,13 +30,15 @@ const ResetPassword = () => {
   // Check if user arrived via password reset link
   useEffect(() => {
     const checkRecoveryMode = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+
       // Check URL hash for recovery token (Supabase uses hash-based routing for auth)
       const hashParams = new URLSearchParams(window.location.hash.substring(1));
-      const type = hashParams.get('type');
-      
-      if (type === 'recovery' || session?.user) {
+      const type = hashParams.get("type");
+
+      if (type === "recovery" || session?.user) {
         setIsRecoveryMode(true);
       } else {
         // No valid recovery session, redirect to auth
@@ -71,25 +73,33 @@ const ResetPassword = () => {
     setLoading(true);
     try {
       const { error } = await supabase.auth.updateUser({
-        password: password
+        password: password,
       });
 
       if (error) {
         const msg = error.message?.toLowerCase() ?? "";
-        if (msg.includes("aal2") || msg.includes("insufficient_aal") || msg.includes("assurance")) {
+        if (
+          msg.includes("aal2") ||
+          msg.includes("insufficient_aal") ||
+          msg.includes("assurance")
+        ) {
           // User has MFA on — prompt for the 6-digit code, then retry.
           setStepUpOpen(true);
           return;
         }
-        if (error.message.includes('same as the old password')) {
-          toast.error("New password must be different from your current password");
+        if (error.message.includes("same as the old password")) {
+          toast.error(
+            "New password must be different from your current password",
+          );
         } else {
           toast.error(error.message || "Failed to reset password");
         }
         return;
       }
 
-      toast.success("Password reset successfully! You can now sign in with your new password.");
+      toast.success(
+        "Password reset successfully! You can now sign in with your new password.",
+      );
 
       // Sign out and redirect to auth page
       await supabase.auth.signOut();
@@ -110,7 +120,9 @@ const ResetPassword = () => {
         toast.error(error.message || "Failed to reset password");
         return;
       }
-      toast.success("Password reset successfully! You can now sign in with your new password.");
+      toast.success(
+        "Password reset successfully! You can now sign in with your new password.",
+      );
       await supabase.auth.signOut();
       navigate("/auth");
     } finally {
@@ -167,16 +179,18 @@ const ResetPassword = () => {
           <h2 className="text-2xl text-center mb-6 text-[#22c0d4] font-medium">
             Set New Password
           </h2>
-          
+
           <p className="text-sm text-[#22c0d4] text-center mb-6">
             Please enter your new password below.
           </p>
 
-
           <form onSubmit={handleResetPassword} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="password">
-                New Password <span className="text-xs text-muted-foreground">(minimum 8 characters)</span>
+                New Password{" "}
+                <span className="text-xs text-muted-foreground">
+                  (minimum 8 characters)
+                </span>
               </Label>
               <Input
                 id="password"
@@ -192,7 +206,12 @@ const ResetPassword = () => {
                 className={passwordError ? "border-destructive" : ""}
                 minLength={8}
               />
-              {password && <PasswordStrengthIndicator strength={passwordStrength} password={password} />}
+              {password && (
+                <PasswordStrengthIndicator
+                  strength={passwordStrength}
+                  password={password}
+                />
+              )}
             </div>
 
             <div className="space-y-2">
@@ -208,7 +227,11 @@ const ResetPassword = () => {
                 placeholder="Confirm your new password"
                 required
                 disabled={loading}
-                className={passwordError && password !== confirmPassword ? "border-destructive" : ""}
+                className={
+                  passwordError && password !== confirmPassword
+                    ? "border-destructive"
+                    : ""
+                }
                 minLength={8}
               />
               {confirmPassword && password === confirmPassword && (
@@ -222,7 +245,9 @@ const ResetPassword = () => {
             {passwordError && (
               <Alert variant="destructive" className="py-2">
                 <AlertCircle className="h-4 w-4" />
-                <AlertDescription className="text-sm">{passwordError}</AlertDescription>
+                <AlertDescription className="text-sm">
+                  {passwordError}
+                </AlertDescription>
               </Alert>
             )}
 

@@ -15,26 +15,29 @@
  * Never fabricates numeric values.
  */
 
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
-import { getErrorMessage } from '../_shared/errors.ts';
-import { parseTurnaround } from '../_shared/scrape/index.ts';
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
+import { getErrorMessage } from "../_shared/errors.ts";
+import { parseTurnaround } from "../_shared/scrape/index.ts";
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
+  if (req.method === "OPTIONS")
+    return new Response(null, { headers: corsHeaders });
 
-  const svc = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
-  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${svc}`) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  const svc = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+  if ((req.headers.get("Authorization") ?? "") !== `Bearer ${svc}`) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 
-  const supabase = createClient(Deno.env.get('SUPABASE_URL')!, svc);
+  const supabase = createClient(Deno.env.get("SUPABASE_URL")!, svc);
   const stats = { scanned: 0, updated: 0, not_stated: 0, errors: 0 };
   const errors: string[] = [];
 
@@ -45,9 +48,11 @@ Deno.serve(async (req) => {
 
     while (true) {
       const { data: rows, error } = await supabase
-        .from('provider_tests')
-        .select('id, provider_id, test_name, description, turnaround_raw, turnaround_unit')
-        .eq('is_active', true)
+        .from("provider_tests")
+        .select(
+          "id, provider_id, test_name, description, turnaround_raw, turnaround_unit",
+        )
+        .eq("is_active", true)
         .range(from, from + pageSize - 1);
       if (error) throw error;
       if (!rows || rows.length === 0) break;
@@ -56,13 +61,18 @@ Deno.serve(async (req) => {
         stats.scanned++;
 
         // Skip rows that already have a parsed unit — don't overwrite scraper truth.
-        if (row.turnaround_unit && row.turnaround_unit !== 'not_stated') continue;
+        if (row.turnaround_unit && row.turnaround_unit !== "not_stated")
+          continue;
 
-        const sources = [row.turnaround_raw, row.description, row.test_name].filter(Boolean) as string[];
+        const sources = [
+          row.turnaround_raw,
+          row.description,
+          row.test_name,
+        ].filter(Boolean) as string[];
         let matched = null;
         for (const src of sources) {
           const parsed = parseTurnaround(src);
-          if (parsed.unit && parsed.unit !== 'not_stated') {
+          if (parsed.unit && parsed.unit !== "not_stated") {
             matched = { ...parsed, source: src };
             break;
           }
@@ -80,14 +90,14 @@ Deno.serve(async (req) => {
               turnaround_raw: row.turnaround_raw ?? null,
               turnaround_hours: null,
               turnaround_days: null,
-              turnaround_unit: 'not_stated',
+              turnaround_unit: "not_stated",
               turnaround_not_stated: true,
             };
 
         const { error: uErr } = await supabase
-          .from('provider_tests')
+          .from("provider_tests")
           .update(update)
-          .eq('id', row.id);
+          .eq("id", row.id);
         if (uErr) {
           stats.errors++;
           errors.push(`${row.id}: ${getErrorMessage(uErr)}`);
@@ -102,14 +112,21 @@ Deno.serve(async (req) => {
       from += pageSize;
     }
 
-    return new Response(JSON.stringify({
-      success: true,
-      stats,
-      firstErrors: errors.slice(0, 10),
-    }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
-
+    return new Response(
+      JSON.stringify({
+        success: true,
+        stats,
+        firstErrors: errors.slice(0, 10),
+      }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    );
   } catch (err) {
-    return new Response(JSON.stringify({ success: false, error: getErrorMessage(err), stats }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    return new Response(
+      JSON.stringify({ success: false, error: getErrorMessage(err), stats }),
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
   }
 });

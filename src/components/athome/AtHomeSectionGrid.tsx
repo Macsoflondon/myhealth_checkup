@@ -12,12 +12,16 @@ interface AtHomeSectionGridProps {
  * linking into the filtered listing via `?subcategory=`. Card styling mirrors
  * the General Wellness (/wellness) landing grid for a uniform look.
  */
-export const AtHomeSectionGrid: React.FC<AtHomeSectionGridProps> = ({ counts }) => {
+export const AtHomeSectionGrid: React.FC<AtHomeSectionGridProps> = ({
+  counts,
+}) => {
   const [hovered, setHovered] = useState<string | null>(null);
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-      {AT_HOME_SECTIONS.filter((section) => (counts[section.slug] ?? 0) > 0).map((section) => {
+      {AT_HOME_SECTIONS.filter(
+        (section) => (counts[section.slug] ?? 0) > 0,
+      ).map((section) => {
         const count = counts[section.slug] ?? 0;
         const isHov = hovered === section.slug;
         return (
@@ -65,7 +69,9 @@ export const AtHomeSectionGrid: React.FC<AtHomeSectionGridProps> = ({ counts }) 
             <h3 className="mb-1.5 font-heading text-lg font-bold tracking-tight text-[#060b18]">
               {section.label}
             </h3>
-            <p className="mb-4 text-[13px] leading-snug text-[#060b18]/75">{section.desc}</p>
+            <p className="mb-4 text-[13px] leading-snug text-[#060b18]/75">
+              {section.desc}
+            </p>
 
             <span
               className="flex w-full items-center justify-center gap-2 rounded-lg py-2.5 text-xs font-bold tracking-[0.06em] transition-all duration-300"

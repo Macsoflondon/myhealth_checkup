@@ -38,7 +38,9 @@ if (!url || !key) {
 
 function collectNavSlugs() {
   const slugs = new Set();
-  const files = readdirSync(NAV_DIR).filter((f) => f.startsWith(NAV_FILE_PREFIX));
+  const files = readdirSync(NAV_DIR).filter((f) =>
+    f.startsWith(NAV_FILE_PREFIX),
+  );
   for (const f of files) {
     const src = readFileSync(join(NAV_DIR, f), "utf8");
     for (const m of src.matchAll(COMPARE_SLUG_RE)) slugs.add(m[1]);
@@ -71,7 +73,9 @@ async function rest(path) {
     headers: { apikey: key, Authorization: `Bearer ${key}` },
   });
   if (!res.ok) {
-    console.error(`✖ Supabase REST ${path} → ${res.status} ${await res.text()}`);
+    console.error(
+      `✖ Supabase REST ${path} → ${res.status} ${await res.text()}`,
+    );
     process.exit(2);
   }
   return res.json();
@@ -106,7 +110,9 @@ function resolveSlug(slug, policy) {
   if (inCat && inRed) {
     // The same slug resolves two ways. Surface aliases + both destinations.
     const directAliases = aliasByCat.get(slug) ?? [];
-    const targetAliases = redTargetExists ? aliasByCat.get(redTarget) ?? [] : [];
+    const targetAliases = redTargetExists
+      ? (aliasByCat.get(redTarget) ?? [])
+      : [];
     return {
       status: "AMBIGUOUS",
       detail: `category "${slug}" AND redirect→${redTarget}${redTargetExists ? "" : " (target missing)"}`,
@@ -130,7 +136,10 @@ function resolveSlug(slug, policy) {
       };
     }
     if (!redTargetExists) {
-      return { status: "BROKEN", detail: `redirect→${redTarget} but target category missing` };
+      return {
+        status: "BROKEN",
+        detail: `redirect→${redTarget} but target category missing`,
+      };
     }
     return { status: "OK", detail: `redirect→${redTarget}` };
   }
@@ -153,14 +162,22 @@ const results = [
 const w = Math.max(...results.map((r) => r.slug.length), 4);
 const pad = (s, n) => s + " ".repeat(Math.max(0, n - s.length));
 
-console.log(`Audited ${results.length} URLs (nav: ${navSlugs.length} · sitemap /tests/: ${testsSlugs.length} · sitemap ?category=: ${querySlugs.length})\n`);
+console.log(
+  `Audited ${results.length} URLs (nav: ${navSlugs.length} · sitemap /tests/: ${testsSlugs.length} · sitemap ?category=: ${querySlugs.length})\n`,
+);
 for (const r of results) {
   const tag = r.status === "OK" ? "✓" : r.status === "AMBIGUOUS" ? "≈" : "✖";
-  console.log(`  ${tag} [${r.source}] ${pad(r.slug, w)}  ${r.status.padEnd(9)} ${r.detail}`);
+  console.log(
+    `  ${tag} [${r.source}] ${pad(r.slug, w)}  ${r.status.padEnd(9)} ${r.detail}`,
+  );
   if (r.conflicts) {
     for (const c of r.conflicts) {
-      const aliasLine = c.aliases.length ? c.aliases.join(", ") : "(no aliases)";
-      console.log(`        └─ ${c.source} → "${c.destination}"${c.targetMissing ? " [MISSING]" : ""}  aliases: ${aliasLine}`);
+      const aliasLine = c.aliases.length
+        ? c.aliases.join(", ")
+        : "(no aliases)";
+      console.log(
+        `        └─ ${c.source} → "${c.destination}"${c.targetMissing ? " [MISSING]" : ""}  aliases: ${aliasLine}`,
+      );
     }
   }
 }
@@ -169,10 +186,14 @@ const broken = results.filter((r) => r.status === "BROKEN");
 const ambiguous = results.filter((r) => r.status === "AMBIGUOUS");
 const ok = results.length - broken.length - ambiguous.length;
 
-console.log(`\nSummary: ${ok} ok · ${ambiguous.length} ambiguous · ${broken.length} broken`);
+console.log(
+  `\nSummary: ${ok} ok · ${ambiguous.length} ambiguous · ${broken.length} broken`,
+);
 
 if (broken.length || ambiguous.length) {
-  console.error("\n✖ Audit failed. Fix the taxonomy, the sitemap entries, or the nav links before deploying.");
+  console.error(
+    "\n✖ Audit failed. Fix the taxonomy, the sitemap entries, or the nav links before deploying.",
+  );
   process.exit(1);
 }
 

@@ -28,7 +28,10 @@ interface TestCategoryTickerProps {
   className?: string;
 }
 
-const TestCategoryTicker = ({ variant = "section", className = "" }: TestCategoryTickerProps) => {
+const TestCategoryTicker = ({
+  variant = "section",
+  className = "",
+}: TestCategoryTickerProps) => {
   const trackRef = useMarqueeTicker(categories.length, 0.03);
   const items = Array.from({ length: SETS }, () => categories).flat();
 
@@ -40,7 +43,6 @@ const TestCategoryTicker = ({ variant = "section", className = "" }: TestCategor
 
   const innerPad = isInline ? "py-1.5 sm:py-2" : "py-2.5 sm:py-3";
 
-
   const textClass = isInline
     ? "font-heading font-semibold text-xs sm:text-sm md:text-base tracking-wider uppercase px-3 sm:px-5 text-[#081129]"
     : "font-heading font-semibold text-xs sm:text-sm md:text-base tracking-wider uppercase px-3 sm:px-5 text-white";
@@ -51,8 +53,10 @@ const TestCategoryTicker = ({ variant = "section", className = "" }: TestCategor
         <div
           className="relative overflow-hidden"
           style={{
-            maskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
-            WebkitMaskImage: "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+            maskImage:
+              "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
           }}
         >
           <div

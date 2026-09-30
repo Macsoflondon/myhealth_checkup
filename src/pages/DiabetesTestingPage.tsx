@@ -20,9 +20,21 @@ const DiabetesTestingPage = () => (
     filters={["All"]}
     benefitsTitle="Why Test for Diabetes?"
     benefits={[
-      { icon: Activity, title: "Early Detection", description: "Catch pre-diabetes before it progresses" },
-      { icon: Clock, title: "Track Progress", description: "Monitor HbA1c over time" },
-      { icon: TrendingUp, title: "Optimise Health", description: "Guide lifestyle and treatment decisions" },
+      {
+        icon: Activity,
+        title: "Early Detection",
+        description: "Catch pre-diabetes before it progresses",
+      },
+      {
+        icon: Clock,
+        title: "Track Progress",
+        description: "Monitor HbA1c over time",
+      },
+      {
+        icon: TrendingUp,
+        title: "Optimise Health",
+        description: "Guide lifestyle and treatment decisions",
+      },
     ]}
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Diabetes" }]}
     compareUrl="/compare?category=diabetes"

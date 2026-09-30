@@ -1,12 +1,26 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { DENIED, fail, logAdminToolCall, ok, requireAdmin } from "../admin-guard";
+import {
+  DENIED,
+  fail,
+  logAdminToolCall,
+  ok,
+  requireAdmin,
+} from "../admin-guard";
 
-type VitalRow = { metric: string | null; value: number | null; route: string | null; rating: string | null };
+type VitalRow = {
+  metric: string | null;
+  value: number | null;
+  route: string | null;
+  rating: string | null;
+};
 
 function percentile(sorted: number[], p: number): number | null {
   if (sorted.length === 0) return null;
-  const index = Math.min(sorted.length - 1, Math.floor((p / 100) * sorted.length));
+  const index = Math.min(
+    sorted.length - 1,
+    Math.floor((p / 100) * sorted.length),
+  );
   return Number(sorted[index].toFixed(3));
 }
 
@@ -16,10 +30,26 @@ export default defineTool({
   description:
     "Aggregate Core Web Vitals (LCP, CLS, INP) percentiles by page route, plus the worst performing routes. Anonymous aggregates only — no patient or personal data.",
   inputSchema: {
-    days: z.number().int().min(1).max(90).default(7).describe("Lookback window in days."),
-    limit: z.number().int().min(1).max(100).default(20).describe("Number of routes to return."),
+    days: z
+      .number()
+      .int()
+      .min(1)
+      .max(90)
+      .default(7)
+      .describe("Lookback window in days."),
+    limit: z
+      .number()
+      .int()
+      .min(1)
+      .max(100)
+      .default(20)
+      .describe("Number of routes to return."),
   },
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false,
+  },
   handler: async (args, ctx) => {
     const session = await requireAdmin(ctx);
     if (!session) return DENIED;
@@ -48,21 +78,31 @@ export default defineTool({
 
     const summarise = (values: number[]) => {
       const sorted = [...values].sort((a, b) => a - b);
-      return { samples: sorted.length, p50: percentile(sorted, 50), p75: percentile(sorted, 75), p95: percentile(sorted, 95) };
+      return {
+        samples: sorted.length,
+        p50: percentile(sorted, 50),
+        p75: percentile(sorted, 75),
+        p95: percentile(sorted, 95),
+      };
     };
 
     const byRoute = [...buckets.entries()]
       .map(([route, metrics]) => ({
         route,
         samples: [...metrics.values()].reduce((n, v) => n + v.length, 0),
-        metrics: Object.fromEntries([...metrics.entries()].map(([m, v]) => [m, summarise(v)])),
+        metrics: Object.fromEntries(
+          [...metrics.entries()].map(([m, v]) => [m, summarise(v)]),
+        ),
       }))
       .sort((a, b) => b.samples - a.samples)
       .slice(0, args.limit);
 
     const worstBy = (metric: string) =>
       [...buckets.entries()]
-        .map(([route, metrics]) => ({ route, ...summarise(metrics.get(metric) ?? []) }))
+        .map(([route, metrics]) => ({
+          route,
+          ...summarise(metrics.get(metric) ?? []),
+        }))
         .filter((r) => r.samples >= 5 && r.p75 != null)
         .sort((a, b) => (b.p75 ?? 0) - (a.p75 ?? 0))
         .slice(0, 5);
@@ -71,7 +111,9 @@ export default defineTool({
     return ok({
       window_days: args.days,
       total_samples: rows.length,
-      overall: Object.fromEntries([...overall.entries()].map(([m, v]) => [m, summarise(v)])),
+      overall: Object.fromEntries(
+        [...overall.entries()].map(([m, v]) => [m, summarise(v)]),
+      ),
       by_route: byRoute,
       worst_lcp: worstBy("LCP"),
       worst_cls: worstBy("CLS"),

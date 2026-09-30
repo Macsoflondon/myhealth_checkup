@@ -9,11 +9,7 @@
  */
 
 export type CollectionRoute =
-  | "home_kit"
-  | "clinic"
-  | "home_visit"
-  | "venous"
-  | "standard";
+  "home_kit" | "clinic" | "home_visit" | "venous" | "standard";
 
 export interface CollectionVariantSource {
   id: string;
@@ -69,7 +65,6 @@ const ROUTE_DETAILS: Record<CollectionRoute, string> = {
     "Venous blood draw taken at a partner clinic, or by a nurse at your home",
   standard: "Collection method as published by the provider",
 };
-
 
 const num = (v: number | null | undefined): number | null =>
   typeof v === "number" && Number.isFinite(v) ? v : null;
@@ -152,13 +147,14 @@ export function deriveCollectionVariants(
   return variants;
 }
 
-
 /** Pick a single route from a row, when a surface only shows one card per test. */
 export function pickVariant(
   source: CollectionVariantSource,
   route: CollectionRoute,
 ): CollectionVariant | null {
-  return deriveCollectionVariants(source).find((v) => v.route === route) ?? null;
+  return (
+    deriveCollectionVariants(source).find((v) => v.route === route) ?? null
+  );
 }
 
 /** "£69.00 kit + £40.00 clinic draw" style breakdown, or null when there is no fee. */

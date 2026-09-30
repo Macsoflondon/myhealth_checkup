@@ -22,7 +22,9 @@ test("outbound provider links use safe target/rel", async ({ page }) => {
   }
 });
 
-test("dataLayer receives affiliate_click only after consent", async ({ page }) => {
+test("dataLayer receives affiliate_click only after consent", async ({
+  page,
+}) => {
   await page.addInitScript(() => {
     (window as unknown as { dataLayer: unknown[] }).dataLayer = [];
   });
@@ -30,15 +32,17 @@ test("dataLayer receives affiliate_click only after consent", async ({ page }) =
   await page.goto("/", { waitUntil: "domcontentloaded" });
 
   // Before consent: simulating a click should NOT push to dataLayer.
-  const beforeConsent = await page.evaluate(async () => {
-    const mod = await import("/src/lib/affiliateTracking.ts");
-    mod.trackAffiliateClick({
-      providerId: "test-provider",
-      destinationUrl: "https://example.com/test",
-      surface: "e2e",
-    });
-    return (window as unknown as { dataLayer: unknown[] }).dataLayer.length;
-  }).catch(() => null);
+  const beforeConsent = await page
+    .evaluate(async () => {
+      const mod = await import("/src/lib/affiliateTracking.ts");
+      mod.trackAffiliateClick({
+        providerId: "test-provider",
+        destinationUrl: "https://example.com/test",
+        surface: "e2e",
+      });
+      return (window as unknown as { dataLayer: unknown[] }).dataLayer.length;
+    })
+    .catch(() => null);
 
   // Skip silently if dynamic import isn't supported in the test runtime.
   test.skip(beforeConsent === null, "dynamic import unavailable in this build");

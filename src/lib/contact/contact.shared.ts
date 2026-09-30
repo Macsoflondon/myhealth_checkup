@@ -17,8 +17,12 @@ export const contactInputSchema = z.object({
 export type ContactInput = z.infer<typeof contactInputSchema>;
 
 export const escapeHtml = (value: string): string =>
-  value.replace(/[&<>"']/g, (c) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] ?? c,
+  value.replace(
+    /[&<>"']/g,
+    (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        c
+      ] ?? c,
   );
 
 export const buildContactReference = (): string =>

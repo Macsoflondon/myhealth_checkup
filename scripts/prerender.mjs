@@ -37,7 +37,8 @@ const browser = await chromium.launch();
 const context = await browser.newContext({
   // Mark these requests so the app can opt out of analytics / heavy effects
   // if it wants to (we don't currently — keep this for future use).
-  userAgent: "Mozilla/5.0 (compatible; MHC-Prerenderer/1.0; +https://myhealthcheckup.co.uk)",
+  userAgent:
+    "Mozilla/5.0 (compatible; MHC-Prerenderer/1.0; +https://myhealthcheckup.co.uk)",
 });
 
 let succeeded = 0;
@@ -60,7 +61,7 @@ async function snapshot(route) {
     // Wait briefly for Helmet to flush and for the React tree to settle.
     await page.waitForFunction(
       () => document.querySelector("#root")?.children.length > 0,
-      { timeout: 10_000 }
+      { timeout: 10_000 },
     );
 
     // Pull the rendered HTML *after* React + Helmet have run.

@@ -1,6 +1,24 @@
-import { Check, Home, Building2, Truck, Droplet, FlaskConical, TestTube, Stethoscope } from "lucide-react";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import type { CollectionMethod, SampleType, TestRecord } from "@/types/testFinder";
+import {
+  Check,
+  Home,
+  Building2,
+  Truck,
+  Droplet,
+  FlaskConical,
+  TestTube,
+  Stethoscope,
+} from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import type {
+  CollectionMethod,
+  SampleType,
+  TestRecord,
+} from "@/types/testFinder";
 import {
   COLLECTION_METHOD_LABEL,
   SAMPLE_TYPE_LABEL,
@@ -83,8 +101,14 @@ export const AdditionalFeesCell = ({ test }: { test: TestRecord }) => {
   }
   let label = "";
   if (t === "fixed") {
-    const amt = typeof test.collection_fee_amount === "number" ? test.collection_fee_amount : 0;
-    label = amt > 0 ? `Clinic blood draw +${formatGBP(amt)}` : "Clinic blood draw included";
+    const amt =
+      typeof test.collection_fee_amount === "number"
+        ? test.collection_fee_amount
+        : 0;
+    label =
+      amt > 0
+        ? `Clinic blood draw +${formatGBP(amt)}`
+        : "Clinic blood draw included";
   } else if (t === "range") {
     const r = test.collection_fee_amount as { min: number; max: number } | null;
     label = r ? `From ${formatGBP(r.min)}` : "Variable";
@@ -98,7 +122,11 @@ export const AdditionalFeesCell = ({ test }: { test: TestRecord }) => {
       {label}
     </span>
   );
-  return <VerificationMark status={test.verification.collection_fee}>{inner}</VerificationMark>;
+  return (
+    <VerificationMark status={test.verification.collection_fee}>
+      {inner}
+    </VerificationMark>
+  );
 };
 
 export const ClinicalReviewCell = ({ test }: { test: TestRecord }) => {
@@ -109,19 +137,32 @@ export const ClinicalReviewCell = ({ test }: { test: TestRecord }) => {
   );
   const positive = test.clinical_review_type === "included";
   const muted =
-    test.clinical_review_type === "not_included" || test.clinical_review_type === "not_available";
+    test.clinical_review_type === "not_included" ||
+    test.clinical_review_type === "not_available";
 
   const inner = (
     <span
       className={`inline-flex items-center gap-1.5 text-sm ${
-        positive ? "text-[#1F9D63] font-medium" : muted ? "text-[#8A97A6]" : "text-ink"
+        positive
+          ? "text-[#1F9D63] font-medium"
+          : muted
+            ? "text-[#8A97A6]"
+            : "text-ink"
       }`}
     >
-      {positive ? <Check className="w-4 h-4" /> : <Stethoscope className="w-4 h-4 opacity-70" />}
+      {positive ? (
+        <Check className="w-4 h-4" />
+      ) : (
+        <Stethoscope className="w-4 h-4 opacity-70" />
+      )}
       {label}
     </span>
   );
-  return <VerificationMark status={test.verification.clinical_review}>{inner}</VerificationMark>;
+  return (
+    <VerificationMark status={test.verification.clinical_review}>
+      {inner}
+    </VerificationMark>
+  );
 };
 
 export const TotalCostCell = ({ test }: { test: TestRecord }) => {
@@ -152,11 +193,15 @@ export const TotalCostCell = ({ test }: { test: TestRecord }) => {
                   {formatGBP(c.total)}
                 </span>
               </TooltipTrigger>
-              <TooltipContent className="max-w-[260px] text-xs">{c.tooltip}</TooltipContent>
+              <TooltipContent className="max-w-[260px] text-xs">
+                {c.tooltip}
+              </TooltipContent>
             </Tooltip>
           </TooltipProvider>
         ) : (
-          <span className="text-lg font-bold text-brand-pink">{formatGBP(c.total)}</span>
+          <span className="text-lg font-bold text-brand-pink">
+            {formatGBP(c.total)}
+          </span>
         )}
       </div>
     </div>

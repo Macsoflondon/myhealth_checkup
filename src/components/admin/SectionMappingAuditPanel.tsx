@@ -1,10 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Loader2, RefreshCw, AlertTriangle, CheckCircle2, Check, X } from "lucide-react";
+import {
+  Loader2,
+  RefreshCw,
+  AlertTriangle,
+  CheckCircle2,
+  Check,
+  X,
+} from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -56,7 +69,7 @@ interface Conflict {
   provider_id: string;
   source_section: string;
   expected: string; // map rule
-  actual: string;   // stored canonical on row
+  actual: string; // stored canonical on row
   rows: TestRow[];
 }
 interface Unmapped {
@@ -79,17 +92,25 @@ export const SectionMappingAuditPanel = () => {
   const run = async () => {
     setLoading(true);
     const [{ data: rules }, { data: tests }] = await Promise.all([
-      supabase.from("provider_section_category_map").select("*").order("provider_id"),
+      supabase
+        .from("provider_section_category_map")
+        .select("*")
+        .order("provider_id"),
       supabase
         .from("provider_tests")
-        .select("id,provider_id,test_name,category,source_section,canonical_category")
+        .select(
+          "id,provider_id,test_name,category,source_section,canonical_category",
+        )
         .eq("is_active", true)
         .limit(5000),
     ]);
 
     const ruleMap = new Map<string, string>();
     (rules ?? []).forEach((r: any) =>
-      ruleMap.set(`${r.provider_id}::${r.source_section}`, r.canonical_category)
+      ruleMap.set(
+        `${r.provider_id}::${r.source_section}`,
+        r.canonical_category,
+      ),
     );
 
     const conflictMap = new Map<string, Conflict>();
@@ -130,8 +151,12 @@ export const SectionMappingAuditPanel = () => {
     });
 
     setMapRules((rules ?? []) as MapRow[]);
-    setConflicts([...conflictMap.values()].sort((a, b) => b.rows.length - a.rows.length));
-    setUnmapped([...unmappedMap.values()].sort((a, b) => b.row_count - a.row_count));
+    setConflicts(
+      [...conflictMap.values()].sort((a, b) => b.rows.length - a.rows.length),
+    );
+    setUnmapped(
+      [...unmappedMap.values()].sort((a, b) => b.row_count - a.row_count),
+    );
     setMissingCanonical(missing);
     setActiveCount((tests ?? []).length);
     setLoading(false);
@@ -153,9 +178,18 @@ export const SectionMappingAuditPanel = () => {
       return;
     }
     setBusyKey(key);
-    const { data, error } = await supabase.functions.invoke("resolve-section-mapping", {
-      body: { provider_id, source_section, canonical_category, backfill: true, mark_reviewed: true },
-    });
+    const { data, error } = await supabase.functions.invoke(
+      "resolve-section-mapping",
+      {
+        body: {
+          provider_id,
+          source_section,
+          canonical_category,
+          backfill: true,
+          mark_reviewed: true,
+        },
+      },
+    );
     setBusyKey(null);
 
     if (error || (data as any)?.error) {
@@ -189,7 +223,7 @@ export const SectionMappingAuditPanel = () => {
     mapRules.reduce<Record<string, number>>((acc, r) => {
       acc[r.provider_id] = (acc[r.provider_id] ?? 0) + 1;
       return acc;
-    }, {})
+    }, {}),
   ).sort((a, b) => a[0].localeCompare(b[0]));
 
   const CategorySelect = ({
@@ -223,12 +257,17 @@ export const SectionMappingAuditPanel = () => {
               Section → Canonical Audit (per provider)
             </CardTitle>
             <CardDescription>
-              {mapRules.length} per-provider rules across {perProviderCounts.length} providers •{" "}
-              {activeCount} active tests audited
+              {mapRules.length} per-provider rules across{" "}
+              {perProviderCounts.length} providers • {activeCount} active tests
+              audited
             </CardDescription>
           </div>
           <Button size="sm" variant="outline" onClick={run} disabled={loading}>
-            {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <RefreshCw className="h-4 w-4 mr-2" />}
+            {loading ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <RefreshCw className="h-4 w-4 mr-2" />
+            )}
             Re-run audit
           </Button>
         </div>
@@ -238,21 +277,36 @@ export const SectionMappingAuditPanel = () => {
           <Alert>
             <CheckCircle2 className="h-4 w-4" />
             <AlertDescription>
-              No conflicts, no unmapped sections, no missing canonical categories. All providers route via explicit per-provider rules.
+              No conflicts, no unmapped sections, no missing canonical
+              categories. All providers route via explicit per-provider rules.
             </AlertDescription>
           </Alert>
         )}
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
           <Stat label="Rules" value={mapRules.length} />
-          <Stat label="Needs review" value={needsReview.length} tone={needsReview.length ? "warn" : "ok"} />
-          <Stat label="Conflicts" value={conflicts.length} tone={conflicts.length ? "err" : "ok"} />
-          <Stat label="Unmapped sections" value={unmapped.length} tone={unmapped.length ? "warn" : "ok"} />
+          <Stat
+            label="Needs review"
+            value={needsReview.length}
+            tone={needsReview.length ? "warn" : "ok"}
+          />
+          <Stat
+            label="Conflicts"
+            value={conflicts.length}
+            tone={conflicts.length ? "err" : "ok"}
+          />
+          <Stat
+            label="Unmapped sections"
+            value={unmapped.length}
+            tone={unmapped.length ? "warn" : "ok"}
+          />
         </div>
 
         <Section title={`Conflicting rules (${conflicts.length})`}>
           {conflicts.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No rows disagree with their provider's mapping rule.</p>
+            <p className="text-sm text-muted-foreground">
+              No rows disagree with their provider's mapping rule.
+            </p>
           ) : (
             <div className="space-y-3">
               {conflicts.map((c) => {
@@ -267,11 +321,18 @@ export const SectionMappingAuditPanel = () => {
                       <Badge>{c.expected}</Badge>
                       <span className="text-muted-foreground">vs rows</span>
                       <Badge variant="destructive">{c.actual}</Badge>
-                      <span className="text-muted-foreground">({c.rows.length} rows)</span>
+                      <span className="text-muted-foreground">
+                        ({c.rows.length} rows)
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-xs text-muted-foreground">Approve canonical:</span>
-                      <CategorySelect value={choice} onChange={(v) => setDraft((d) => ({ ...d, [key]: v }))} />
+                      <span className="text-xs text-muted-foreground">
+                        Approve canonical:
+                      </span>
+                      <CategorySelect
+                        value={choice}
+                        onChange={(v) => setDraft((d) => ({ ...d, [key]: v }))}
+                      />
                       <Button
                         size="sm"
                         onClick={() =>
@@ -294,7 +355,9 @@ export const SectionMappingAuditPanel = () => {
                       <Button
                         size="sm"
                         variant="outline"
-                        onClick={() => setDraft((d) => ({ ...d, [key]: c.actual }))}
+                        onClick={() =>
+                          setDraft((d) => ({ ...d, [key]: c.actual }))
+                        }
                       >
                         Use rows' value ({c.actual})
                       </Button>
@@ -305,7 +368,9 @@ export const SectionMappingAuditPanel = () => {
                           <code>{r.id.slice(0, 8)}</code> — {r.test_name}
                         </li>
                       ))}
-                      {c.rows.length > 10 && <li>… +{c.rows.length - 10} more</li>}
+                      {c.rows.length > 10 && (
+                        <li>… +{c.rows.length - 10} more</li>
+                      )}
                     </ul>
                   </div>
                 );
@@ -316,7 +381,9 @@ export const SectionMappingAuditPanel = () => {
 
         <Section title={`Unmapped sections (${unmapped.length})`}>
           {unmapped.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Every active row's section has an explicit per-provider rule.</p>
+            <p className="text-sm text-muted-foreground">
+              Every active row's section has an explicit per-provider rule.
+            </p>
           ) : (
             <div className="space-y-2 max-h-[480px] overflow-auto">
               {unmapped.map((u) => {
@@ -332,9 +399,14 @@ export const SectionMappingAuditPanel = () => {
                     <span className="text-muted-foreground truncate max-w-[260px]">
                       — e.g. {u.example_test}
                     </span>
-                    <span className="text-muted-foreground">{u.row_count} rows</span>
+                    <span className="text-muted-foreground">
+                      {u.row_count} rows
+                    </span>
                     <div className="ml-auto flex items-center gap-2">
-                      <CategorySelect value={choice} onChange={(v) => setDraft((d) => ({ ...d, [key]: v }))} />
+                      <CategorySelect
+                        value={choice}
+                        onChange={(v) => setDraft((d) => ({ ...d, [key]: v }))}
+                      />
                       <Button
                         size="sm"
                         onClick={() =>
@@ -364,20 +436,28 @@ export const SectionMappingAuditPanel = () => {
 
         <Section title={`Rules pending review (${needsReview.length})`}>
           {needsReview.length === 0 ? (
-            <p className="text-sm text-muted-foreground">All rules are confirmed.</p>
+            <p className="text-sm text-muted-foreground">
+              All rules are confirmed.
+            </p>
           ) : (
             <div className="space-y-1 max-h-72 overflow-auto text-sm">
               {needsReview.map((r) => {
                 const key = `r::${r.provider_id}::${r.source_section}`;
                 const choice = draft[key] ?? r.canonical_category;
                 return (
-                  <div key={key} className="flex items-center gap-2 border rounded p-2 flex-wrap">
+                  <div
+                    key={key}
+                    className="flex items-center gap-2 border rounded p-2 flex-wrap"
+                  >
                     <Badge variant="outline">{r.provider_id}</Badge>
                     <code className="text-xs">{r.source_section}</code>
                     <span>→</span>
                     <Badge variant="secondary">{r.canonical_category}</Badge>
                     <div className="ml-auto flex items-center gap-2">
-                      <CategorySelect value={choice} onChange={(v) => setDraft((d) => ({ ...d, [key]: v }))} />
+                      <CategorySelect
+                        value={choice}
+                        onChange={(v) => setDraft((d) => ({ ...d, [key]: v }))}
+                      />
                       <Button
                         size="sm"
                         onClick={() =>
@@ -408,7 +488,10 @@ export const SectionMappingAuditPanel = () => {
         <Section title={`Rules per provider`}>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
             {perProviderCounts.map(([p, n]) => (
-              <div key={p} className="flex justify-between border rounded px-2 py-1">
+              <div
+                key={p}
+                className="flex justify-between border rounded px-2 py-1"
+              >
                 <code className="text-xs">{p}</code>
                 <span className="text-muted-foreground">{n}</span>
               </div>
@@ -420,10 +503,22 @@ export const SectionMappingAuditPanel = () => {
   );
 };
 
-const Stat = ({ label, value, tone = "ok" }: { label: string; value: number; tone?: "ok" | "warn" | "err" }) => (
+const Stat = ({
+  label,
+  value,
+  tone = "ok",
+}: {
+  label: string;
+  value: number;
+  tone?: "ok" | "warn" | "err";
+}) => (
   <div
     className={`rounded-md border p-3 ${
-      tone === "err" ? "border-destructive/50" : tone === "warn" ? "border-yellow-500/50" : ""
+      tone === "err"
+        ? "border-destructive/50"
+        : tone === "warn"
+          ? "border-yellow-500/50"
+          : ""
     }`}
   >
     <div className="text-xs text-muted-foreground">{label}</div>
@@ -431,7 +526,13 @@ const Stat = ({ label, value, tone = "ok" }: { label: string; value: number; ton
   </div>
 );
 
-const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+const Section = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => (
   <div>
     <h4 className="text-sm font-semibold mb-2">{title}</h4>
     {children}

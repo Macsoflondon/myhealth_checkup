@@ -8,9 +8,9 @@ import { MegaMenuDropdown } from "./MegaMenuDropdown";
 import { MoreDropdownMenu } from "./MoreDropdownMenu";
 import { NavItemDropdown } from "./NavItemDropdown";
 import type { PrimaryNavItem } from "./NavigationItems";
-import { 
-  primaryNavigationItems, 
-  moreNavigationSections 
+import {
+  primaryNavigationItems,
+  moreNavigationSections,
 } from "./NavigationItems";
 
 interface NavigationMenuProps {
@@ -18,12 +18,16 @@ interface NavigationMenuProps {
   className?: string;
 }
 
-export const NavigationMenu: React.FC<NavigationMenuProps> = ({ 
-  onItemClick, 
-  className = "" 
+export const NavigationMenu: React.FC<NavigationMenuProps> = ({
+  onItemClick,
+  className = "",
 }) => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const { getTestsForNavigation, getFilteredCategories, shouldShowGoodbodyTests } = useNavigationData();
+  const {
+    getTestsForNavigation,
+    getFilteredCategories,
+    shouldShowGoodbodyTests,
+  } = useNavigationData();
   const { data: popularTestsFromDb } = usePopularTestsForNavigation();
   const isMobile = useIsMobile();
   const location = useLocation();
@@ -39,28 +43,31 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
 
     const handleClickOutside = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
-      
+
       // Don't close if clicking on a link inside the dropdown - let navigation happen first
-      if (target.closest('a[href]')) {
+      if (target.closest("a[href]")) {
         return;
       }
-      
-      if (!target.closest('.nav-item-wrapper') && !target.closest('.dropdown-content')) {
+
+      if (
+        !target.closest(".nav-item-wrapper") &&
+        !target.closest(".dropdown-content")
+      ) {
         setActiveDropdown(null);
       }
     };
 
     const handleEscKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         setActiveDropdown(null);
       }
     };
 
-    document.addEventListener('click', handleClickOutside);
-    document.addEventListener('keydown', handleEscKey);
+    document.addEventListener("click", handleClickOutside);
+    document.addEventListener("keydown", handleEscKey);
     return () => {
-      document.removeEventListener('click', handleClickOutside);
-      document.removeEventListener('keydown', handleEscKey);
+      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("keydown", handleEscKey);
     };
   }, [activeDropdown]);
 
@@ -106,7 +113,9 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
   };
 
   // All navigation items for single row layout
-  const allNavItems = primaryNavigationItems.filter(item => item.name !== "How It Works");
+  const allNavItems = primaryNavigationItems.filter(
+    (item) => item.name !== "How It Works",
+  );
 
   const highlightedItems: string[] = ["Most Popular Tests"];
 
@@ -114,14 +123,17 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
     const isPopularTests = item.name === "Most Popular Tests";
     const hasAccent = highlightedItems.includes(item.name);
     const isDropdownOpen = activeDropdown === item.name;
-    const hasDropdown = item.hasDropdown && item.dropdownItems && item.dropdownItems.length > 0;
+    const hasDropdown =
+      item.hasDropdown && item.dropdownItems && item.dropdownItems.length > 0;
 
     return (
       <div
         key={item.path}
         className="relative nav-item-wrapper"
-        style={{ overflow: 'visible' }}
-        onMouseEnter={hasDropdown ? () => handleWrapperMouseEnter(item.name) : undefined}
+        style={{ overflow: "visible" }}
+        onMouseEnter={
+          hasDropdown ? () => handleWrapperMouseEnter(item.name) : undefined
+        }
         onMouseLeave={hasDropdown ? handleWrapperMouseLeave : undefined}
       >
         {hasDropdown ? (
@@ -136,9 +148,11 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
               onClick={(e) => handleDropdownToggle(e, item.name)}
             >
               {item.name}
-              <ChevronDown className={`w-4 h-4 lg:w-5 lg:h-5 transition-transform ${
-                isDropdownOpen ? 'rotate-180' : ''
-              }`} />
+              <ChevronDown
+                className={`w-4 h-4 lg:w-5 lg:h-5 transition-transform ${
+                  isDropdownOpen ? "rotate-180" : ""
+                }`}
+              />
             </button>
             {isDropdownOpen && item.dropdownItems && (
               <NavItemDropdown
@@ -180,11 +194,13 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
         onClick={(e) => handleDropdownToggle(e, "MORE")}
       >
         More
-        <ChevronDown className={`w-4 h-4 lg:w-5 lg:h-5 transition-transform ${
-          activeDropdown === "MORE" ? 'rotate-180' : ''
-        }`} />
+        <ChevronDown
+          className={`w-4 h-4 lg:w-5 lg:h-5 transition-transform ${
+            activeDropdown === "MORE" ? "rotate-180" : ""
+          }`}
+        />
       </button>
-      
+
       {activeDropdown === "MORE" && (
         <MoreDropdownMenu
           sections={moreNavigationSections}
@@ -200,22 +216,32 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
     <>
       {/* Backdrop for mobile */}
       {isMobile && activeDropdown && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/30 backdrop-blur-xs z-[98]"
           onClick={() => setActiveDropdown(null)}
         />
       )}
 
-      <nav className={`relative ${className}`} aria-label="Main Navigation" style={{ position: 'relative', zIndex: 100, overflow: 'visible' }}>
+      <nav
+        className={`relative ${className}`}
+        aria-label="Main Navigation"
+        style={{ position: "relative", zIndex: 100, overflow: "visible" }}
+      >
         {/* Mobile: Single wrapped row */}
         {isMobile ? (
-          <div className="flex items-center justify-center gap-1 flex-wrap" style={{ position: 'relative', overflow: 'visible' }}>
+          <div
+            className="flex items-center justify-center gap-1 flex-wrap"
+            style={{ position: "relative", overflow: "visible" }}
+          >
             {allNavItems.map(renderNavItem)}
             {renderMoreButton()}
           </div>
         ) : (
           /* Tablet wraps to two rows; desktop stays single row */
-          <div className="flex items-center justify-center gap-x-2 gap-y-1.5 lg:gap-x-2 lg:gap-y-0 flex-wrap lg:flex-nowrap" style={{ position: 'relative', overflow: 'visible' }}>
+          <div
+            className="flex items-center justify-center gap-x-2 gap-y-1.5 lg:gap-x-2 lg:gap-y-0 flex-wrap lg:flex-nowrap"
+            style={{ position: "relative", overflow: "visible" }}
+          >
             {allNavItems.map(renderNavItem)}
             {renderMoreButton()}
           </div>

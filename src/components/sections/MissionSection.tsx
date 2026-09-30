@@ -13,7 +13,7 @@ const MissionSection = () => {
     {
       icon: Award,
       title: "ISO 15189 Certified",
-    }
+    },
   ];
 
   return (
@@ -22,7 +22,7 @@ const MissionSection = () => {
       <div>
         {/* Top gradient divider */}
         <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
-        
+
         <div className="bg-brand-navy py-3 sm:py-4 md:py-5 lg:py-6">
           <div className="container mx-auto px-3 sm:px-4">
             <h2 className="text-center text-3xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl lg:whitespace-nowrap font-heading font-bold">
@@ -34,11 +34,10 @@ const MissionSection = () => {
             </h2>
           </div>
         </div>
-        
+
         {/* Bottom gradient divider */}
         <div className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       </div>
-
     </section>
   );
 };

@@ -72,7 +72,9 @@ for (const relPath of CARD_SURFACES) {
   } catch {
     // A surface that's been renamed/removed is a card-contract inventory
     // problem, not this script's — but don't silently skip it either.
-    console.error(`SKIP (not found): ${relPath} — update CARD_SURFACES in this script`);
+    console.error(
+      `SKIP (not found): ${relPath} — update CARD_SURFACES in this script`,
+    );
     continue;
   }
 
@@ -97,11 +99,13 @@ for (const relPath of CARD_SURFACES) {
   });
 }
 
-console.log(`\nCard external-link audit: ${checked} external navigation(s) checked, ${failures} unlabelled.`);
+console.log(
+  `\nCard external-link audit: ${checked} external navigation(s) checked, ${failures} unlabelled.`,
+);
 
 if (failures > 0) {
   console.error(
-    "\nAn external navigation on a test-card surface has no nearby \"book\" label. " +
+    '\nAn external navigation on a test-card surface has no nearby "book" label. ' +
       "Per the card contract, the provider's URL may only appear on an explicit, " +
       "separately labelled booking action — never as an unlabelled or mislabelled " +
       "primary link. See .claude/skills/mhc-audit-loop/references/card-contract.md.",

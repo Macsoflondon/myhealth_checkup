@@ -17,7 +17,6 @@ export const cleanTestName = (raw: string): string =>
     .replace(/\s+Blood Test$/i, "")
     .trim();
 
-
 /** Caller-supplied fields that aren't derivable from `ProviderTestCardData`. */
 export interface UnifiedCardOverrides {
   provider: string;
@@ -43,7 +42,7 @@ export interface UnifiedCardOverrides {
  */
 export function toUnifiedCardProps(
   test: ProviderTestCardData,
-  overrides: UnifiedCardOverrides
+  overrides: UnifiedCardOverrides,
 ): UnifiedTestCardProps {
   return {
     category: test.category ?? "Health",

@@ -1,5 +1,8 @@
-import { test, expect, Page } from '@playwright/test';
-import { FALLBACK_LABELS, NON_ENGLISH_LANGUAGES } from '../src/i18n/fallbackLabels';
+import { test, expect, Page } from "@playwright/test";
+import {
+  FALLBACK_LABELS,
+  NON_ENGLISH_LANGUAGES,
+} from "../src/i18n/fallbackLabels";
 
 /**
  * i18n audit — verifies that every provider page and every test-kit page
@@ -19,25 +22,25 @@ import { FALLBACK_LABELS, NON_ENGLISH_LANGUAGES } from '../src/i18n/fallbackLabe
  */
 
 const PROVIDER_SLUGS = [
-  'medichecks',
-  'randox',
-  'london-medical-laboratory',
-  'lola-health',
-  'goodbody-clinic',
-  'london-health-company',
-  'medical-diagnosis',
-  'clinilabs',
+  "medichecks",
+  "randox",
+  "london-medical-laboratory",
+  "lola-health",
+  "goodbody-clinic",
+  "london-health-company",
+  "medical-diagnosis",
+  "clinilabs",
 ];
 
 async function setLanguage(page: Page, lang: string) {
   await page.addInitScript((l) => {
-    localStorage.setItem('i18nextLng', l);
+    localStorage.setItem("i18nextLng", l);
   }, lang);
 }
 
 async function waitForAutoTranslate(page: Page) {
   // AutoTranslatePage runs on mount + follow-up sweeps at 250/900/1800ms.
-  await page.waitForLoadState('networkidle').catch(() => {});
+  await page.waitForLoadState("networkidle").catch(() => {});
   await page.waitForTimeout(2100);
 }
 
@@ -49,26 +52,27 @@ async function assertLocalisedCtas(page: Page, lang: string, context: string) {
   const dict = FALLBACK_LABELS[lang as keyof typeof FALLBACK_LABELS];
   expect(dict, `missing fallback dict for ${lang}`).toBeDefined();
 
-  const rawEnglishCtas = ['Compare', 'Book', 'Enquire', 'Book now', 'Added'];
+  const rawEnglishCtas = ["Compare", "Book", "Enquire", "Book now", "Added"];
   for (const english of rawEnglishCtas) {
     // Exact-text match on buttons or links only. We tolerate the word
     // appearing inside longer sentences (e.g. legal copy); the goal is
     // to catch un-translated CTAs specifically.
-    const stillEnglish = page.locator(
-      `button, a, [role="button"]`,
-      { hasText: new RegExp(`^\\s*${english}\\s*$`) },
-    );
+    const stillEnglish = page.locator(`button, a, [role="button"]`, {
+      hasText: new RegExp(`^\\s*${english}\\s*$`),
+    });
     const count = await stillEnglish.count();
     expect(
       count,
-      `[${context}][${lang}] found ${count} untranslated "${english}" CTA — expected "${dict[english] ?? '???'}"`,
+      `[${context}][${lang}] found ${count} untranslated "${english}" CTA — expected "${dict[english] ?? "???"}"`,
     ).toBe(0);
   }
 
   // Positive assertion: at least one localised CTA is visible.
-  const localisedCompare = dict['Compare'];
+  const localisedCompare = dict["Compare"];
   const anyLocalised = page.locator(`button, a, [role="button"]`, {
-    hasText: new RegExp(`(${dict['Compare']}|${dict['Book']}|${dict['Book now']}|${dict['View details']})`),
+    hasText: new RegExp(
+      `(${dict["Compare"]}|${dict["Book"]}|${dict["Book now"]}|${dict["View details"]})`,
+    ),
   });
   const localisedCount = await anyLocalised.count();
   expect(
@@ -80,41 +84,56 @@ async function assertLocalisedCtas(page: Page, lang: string, context: string) {
 for (const lang of NON_ENGLISH_LANGUAGES) {
   test.describe(`i18n audit — ${lang}`, () => {
     for (const slug of PROVIDER_SLUGS) {
-      test(`provider page /${slug} renders localised CTAs`, async ({ page }) => {
+      test(`provider page /${slug} renders localised CTAs`, async ({
+        page,
+      }) => {
         await setLanguage(page, lang);
-        const res = await page.goto(`/provider/${slug}`, { waitUntil: 'domcontentloaded' });
+        const res = await page.goto(`/provider/${slug}`, {
+          waitUntil: "domcontentloaded",
+        });
         // Skip providers that don't have a public profile route yet — the
         // audit should not fail if the route 404s in this environment.
-        if (!res || res.status() >= 400) test.skip(true, `no route for /provider/${slug}`);
+        if (!res || res.status() >= 400)
+          test.skip(true, `no route for /provider/${slug}`);
         await waitForAutoTranslate(page);
         await assertLocalisedCtas(page, lang, `provider:${slug}`);
       });
 
-      test(`first test-kit page under ${slug} renders localised CTAs`, async ({ page }) => {
+      test(`first test-kit page under ${slug} renders localised CTAs`, async ({
+        page,
+      }) => {
         await setLanguage(page, lang);
         // The catalog for each provider lives on the provider profile. We
         // pick the first test link that matches the /<provider>/<testId>
         // route pattern the app uses for provider-scoped detail pages.
-        await page.goto(`/provider/${slug}`, { waitUntil: 'domcontentloaded' });
+        await page.goto(`/provider/${slug}`, { waitUntil: "domcontentloaded" });
         await page.waitForTimeout(500);
 
-        const testLinkPattern = new RegExp(`^/${slug.replace(/-/g, '\\-')}/[a-z0-9-]+$`, 'i');
+        const testLinkPattern = new RegExp(
+          `^/${slug.replace(/-/g, "\\-")}/[a-z0-9-]+$`,
+          "i",
+        );
         const testLink = page
-          .locator('a')
-          .filter({ hasNot: page.locator('nav a') })
+          .locator("a")
+          .filter({ hasNot: page.locator("nav a") })
           .filter({
-            has: page.locator('*'),
+            has: page.locator("*"),
           })
           .first();
 
         // Fall back to any anchor whose href matches the provider/testId pattern
-        const hrefs = await page.locator('a').evaluateAll((els) =>
-          (els as HTMLAnchorElement[]).map((a) => a.getAttribute('href') ?? ''),
-        );
+        const hrefs = await page
+          .locator("a")
+          .evaluateAll((els) =>
+            (els as HTMLAnchorElement[]).map(
+              (a) => a.getAttribute("href") ?? "",
+            ),
+          );
         const match = hrefs.find((h) => testLinkPattern.test(h));
-        if (!match) test.skip(true, `no test-kit link found on /provider/${slug}`);
+        if (!match)
+          test.skip(true, `no test-kit link found on /provider/${slug}`);
 
-        await page.goto(match!, { waitUntil: 'domcontentloaded' });
+        await page.goto(match!, { waitUntil: "domcontentloaded" });
         await waitForAutoTranslate(page);
         await assertLocalisedCtas(page, lang, `test:${match}`);
       });

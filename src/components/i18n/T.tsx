@@ -1,5 +1,5 @@
-import { ReactNode, ElementType } from 'react';
-import { useAiTranslate } from '@/hooks/useAiTranslate';
+import { ReactNode, ElementType } from "react";
+import { useAiTranslate } from "@/hooks/useAiTranslate";
 
 interface TProps {
   children: string;
@@ -12,7 +12,11 @@ interface TProps {
  * currently selected language via Lovable AI Gateway, cached in Supabase.
  * Falls back to the source string while loading / on error.
  */
-export function T({ children, as: Tag = 'span', className }: TProps): ReactNode {
+export function T({
+  children,
+  as: Tag = "span",
+  className,
+}: TProps): ReactNode {
   const translated = useAiTranslate(children);
   return <Tag className={className}>{translated}</Tag>;
 }

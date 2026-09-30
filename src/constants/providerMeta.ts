@@ -1,13 +1,16 @@
 import { getProviderLogo, normalizeProviderId } from "@/constants/providers";
 
-export const PROVIDER_META: Record<string, {
-  displayName: string;
-  logo: string;
-  color: string;
-  ukas: boolean;
-  cqc: boolean;
-}> = {
-  "medichecks": {
+export const PROVIDER_META: Record<
+  string,
+  {
+    displayName: string;
+    logo: string;
+    color: string;
+    ukas: boolean;
+    cqc: boolean;
+  }
+> = {
+  medichecks: {
     displayName: "Medichecks",
     logo: "/lovable-uploads/medichecks-logo.png",
     color: "#003087",
@@ -21,7 +24,7 @@ export const PROVIDER_META: Record<string, {
     ukas: true,
     cqc: false,
   },
-  "randox": {
+  randox: {
     displayName: "Randox Health",
     logo: "/lovable-uploads/randox-logo.png",
     color: "#E30613",
@@ -42,7 +45,7 @@ export const PROVIDER_META: Record<string, {
     ukas: true,
     cqc: false,
   },
-  "clinilabs": {
+  clinilabs: {
     displayName: "Clinilabs",
     logo: "/lovable-uploads/clinilabs-logo.png",
     color: "#00838F",

@@ -3,7 +3,7 @@ export interface ProviderBrand {
   accent: string;
   tagline: string;
   primaryLight: string; // light tint for backgrounds
-  accentLight: string;  // light tint for feature cards
+  accentLight: string; // light tint for feature cards
 }
 
 export const providerBranding: Record<string, ProviderBrand> = {
@@ -138,17 +138,22 @@ export function getBranding(nameOrId: string): ProviderBrand | null {
   if (key.includes("randox")) return providerBranding.randox;
   if (key.includes("lola")) return providerBranding.lola;
   if (key.includes("clinilabs")) return providerBranding.clinilabs;
-  if (key.includes("london health")) return providerBranding.londonhealthcompany;
-  if (key.includes("medical diagnosis")) return providerBranding.medicaldiagnosis;
+  if (key.includes("london health"))
+    return providerBranding.londonhealthcompany;
+  if (key.includes("medical diagnosis"))
+    return providerBranding.medicaldiagnosis;
   if (key.includes("blue horizon")) return providerBranding.bluehorizon;
   if (key.includes("spire")) return providerBranding.spire;
   if (key.includes("london blood")) return providerBranding.londonbloodtests;
   if (key.includes("youth revisited")) return providerBranding.youthrevisited;
   if (key.includes("manual")) return providerBranding.manual;
   if (key.includes("functional dx")) return providerBranding.functionaldx;
-  if (key.includes("onedaytests") || key.includes("one day")) return providerBranding.onedaytests;
-  if (key.includes("doctors laboratory") || key.includes("tdl")) return providerBranding.thedoctorslaboratory;
-  if (key.includes("london laboratory")) return providerBranding.londonlaboratory;
+  if (key.includes("onedaytests") || key.includes("one day"))
+    return providerBranding.onedaytests;
+  if (key.includes("doctors laboratory") || key.includes("tdl"))
+    return providerBranding.thedoctorslaboratory;
+  if (key.includes("london laboratory"))
+    return providerBranding.londonlaboratory;
   if (key.includes("london medical")) return providerBranding.londonmedicallab;
   return null;
 }

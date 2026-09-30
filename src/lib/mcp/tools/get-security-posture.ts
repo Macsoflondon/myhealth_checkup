@@ -1,6 +1,12 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { DENIED, fail, logAdminToolCall, ok, requireAdmin } from "../admin-guard";
+import {
+  DENIED,
+  fail,
+  logAdminToolCall,
+  ok,
+  requireAdmin,
+} from "../admin-guard";
 
 export default defineTool({
   name: "get_security_posture",
@@ -8,9 +14,19 @@ export default defineTool({
   description:
     "Latest security scan snapshot metadata, open SOC incidents by severity, and recent CSP violation counts. Counts and metadata only — no patient data, no secrets.",
   inputSchema: {
-    days: z.number().int().min(1).max(90).default(7).describe("Lookback window in days for CSP reports."),
+    days: z
+      .number()
+      .int()
+      .min(1)
+      .max(90)
+      .default(7)
+      .describe("Lookback window in days for CSP reports."),
   },
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false,
+  },
   handler: async (args, ctx) => {
     const session = await requireAdmin(ctx);
     if (!session) return DENIED;
@@ -20,17 +36,25 @@ export default defineTool({
     const [snapshot, incidents, csp] = await Promise.all([
       client
         .from("security_scan_snapshots")
-        .select("id, scanned_at, total_findings, error_count, warn_count, has_diff, added_findings, removed_findings, modified_findings, acknowledged_at")
+        .select(
+          "id, scanned_at, total_findings, error_count, warn_count, has_diff, added_findings, removed_findings, modified_findings, acknowledged_at",
+        )
         .order("scanned_at", { ascending: false })
         .limit(1)
         .maybeSingle(),
       client
         .from("soc_incidents")
-        .select("id, cluster_key, source, entity, severity, status, title, signal_count, first_seen_at, last_seen_at")
+        .select(
+          "id, cluster_key, source, entity, severity, status, title, signal_count, first_seen_at, last_seen_at",
+        )
         .neq("status", "resolved")
         .order("last_seen_at", { ascending: false })
         .limit(100),
-      client.from("csp_reports").select("violated_directive, blocked_uri, received_at").gte("received_at", since).limit(2000),
+      client
+        .from("csp_reports")
+        .select("violated_directive, blocked_uri, received_at")
+        .gte("received_at", since)
+        .limit(2000),
     ]);
 
     const firstError = snapshot.error ?? incidents.error ?? csp.error;
@@ -43,18 +67,18 @@ export default defineTool({
     }
     const cspByDirective = new Map<string, number>();
     for (const r of csp.data ?? []) {
-      const key = (r as { violated_directive: string | null }).violated_directive ?? "unknown";
+      const key =
+        (r as { violated_directive: string | null }).violated_directive ??
+        "unknown";
       cspByDirective.set(key, (cspByDirective.get(key) ?? 0) + 1);
     }
 
-    const snap = snapshot.data as
-      | {
-          added_findings: unknown;
-          removed_findings: unknown;
-          modified_findings: unknown;
-          [key: string]: unknown;
-        }
-      | null;
+    const snap = snapshot.data as {
+      added_findings: unknown;
+      removed_findings: unknown;
+      modified_findings: unknown;
+      [key: string]: unknown;
+    } | null;
 
     await logAdminToolCall(session, "get_security_posture", args);
     return ok({
@@ -67,9 +91,15 @@ export default defineTool({
             warn_count: snap.warn_count,
             has_diff: snap.has_diff,
             acknowledged_at: snap.acknowledged_at,
-            added_findings: Array.isArray(snap.added_findings) ? snap.added_findings.length : 0,
-            removed_findings: Array.isArray(snap.removed_findings) ? snap.removed_findings.length : 0,
-            modified_findings: Array.isArray(snap.modified_findings) ? snap.modified_findings.length : 0,
+            added_findings: Array.isArray(snap.added_findings)
+              ? snap.added_findings.length
+              : 0,
+            removed_findings: Array.isArray(snap.removed_findings)
+              ? snap.removed_findings.length
+              : 0,
+            modified_findings: Array.isArray(snap.modified_findings)
+              ? snap.modified_findings.length
+              : 0,
           }
         : null,
       open_incidents_total: incidents.data?.length ?? 0,

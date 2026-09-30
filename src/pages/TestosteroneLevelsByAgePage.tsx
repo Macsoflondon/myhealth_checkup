@@ -80,8 +80,18 @@ const breadcrumbJsonLd = {
   "@type": "BreadcrumbList",
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
-    { "@type": "ListItem", position: 2, name: "Health Resource Hub", item: `${BASE_URL}/blog` },
-    { "@type": "ListItem", position: 3, name: "Testosterone Levels by Age", item: CANONICAL },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Health Resource Hub",
+      item: `${BASE_URL}/blog`,
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "Testosterone Levels by Age",
+      item: CANONICAL,
+    },
   ],
 };
 
@@ -97,67 +107,90 @@ const TestosteroneLevelsByAgePage = () => {
         <meta property="og:description" content={DESCRIPTION} />
         <meta property="og:url" content={CANONICAL} />
         <meta property="og:locale" content="en_GB" />
-        <script type="application/ld+json">{JSON.stringify(articleJsonLd)}</script>
+        <script type="application/ld+json">
+          {JSON.stringify(articleJsonLd)}
+        </script>
         <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
-        <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbJsonLd)}
+        </script>
       </Helmet>
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 text-white">
         <nav className="text-sm text-white/78 mb-6" aria-label="Breadcrumb">
-          <Link to="/" className="hover:text-white">Home</Link>
+          <Link to="/" className="hover:text-white">
+            Home
+          </Link>
           <span className="mx-2">/</span>
-          <Link to="/blog" className="hover:text-white">Health Resource Hub</Link>
+          <Link to="/blog" className="hover:text-white">
+            Health Resource Hub
+          </Link>
           <span className="mx-2">/</span>
           <span className="text-white/90">Testosterone Levels by Age</span>
         </nav>
 
         <header className="mb-10">
-          <Badge variant="secondary" className="mb-4">Hormone health · UK guide</Badge>
+          <Badge variant="secondary" className="mb-4">
+            Hormone health · UK guide
+          </Badge>
           <h1 className="text-4xl lg:text-5xl font-semibold tracking-tight mb-4">
             Normal testosterone levels by age: a UK guide
           </h1>
           <p className="text-lg text-white/90 leading-relaxed">
-            Testosterone shapes energy, mood, libido, body composition and long-term cardiometabolic
-            health in men. Levels naturally decline with age, but reference ranges and clinical
-            thresholds vary between laboratories. This independent guide explains what UK labs
-            consider typical at each life stage and how to choose a private test if you want to
-            check your own numbers.
+            Testosterone shapes energy, mood, libido, body composition and
+            long-term cardiometabolic health in men. Levels naturally decline
+            with age, but reference ranges and clinical thresholds vary between
+            laboratories. This independent guide explains what UK labs consider
+            typical at each life stage and how to choose a private test if you
+            want to check your own numbers.
           </p>
-          <p className="text-sm text-white/78 mt-4">Last reviewed: 19 June 2026 · Editorially independent · Not medical advice</p>
+          <p className="text-sm text-white/78 mt-4">
+            Last reviewed: 19 June 2026 · Editorially independent · Not medical
+            advice
+          </p>
         </header>
 
         <section className="mb-10 space-y-4">
           <h2 className="text-2xl font-semibold">Why testosterone matters</h2>
           <p>
-            Testosterone is the primary male sex hormone, produced mainly in the testes and, in
-            smaller amounts, by the adrenal glands. It supports muscle mass, bone density,
-            red-blood-cell production, sexual function, mood and cognition. Women produce
-            testosterone too, at roughly one-tenth the male concentration, where it contributes to
+            Testosterone is the primary male sex hormone, produced mainly in the
+            testes and, in smaller amounts, by the adrenal glands. It supports
+            muscle mass, bone density, red-blood-cell production, sexual
+            function, mood and cognition. Women produce testosterone too, at
+            roughly one-tenth the male concentration, where it contributes to
             libido and overall wellbeing.
           </p>
           <p>
-            From around age 30, total testosterone in men typically falls by about 1% per year. In
-            most men this gentle decline is asymptomatic. In a minority — the British Society for
-            Sexual Medicine estimates around 2% of men aged 40–79 — symptoms combine with
-            consistently low blood levels to meet the criteria for testosterone deficiency
+            From around age 30, total testosterone in men typically falls by
+            about 1% per year. In most men this gentle decline is asymptomatic.
+            In a minority — the British Society for Sexual Medicine estimates
+            around 2% of men aged 40–79 — symptoms combine with consistently low
+            blood levels to meet the criteria for testosterone deficiency
             syndrome (sometimes called late-onset hypogonadism).
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="text-2xl font-semibold mb-4">Typical testosterone ranges by age (UK labs)</h2>
+          <h2 className="text-2xl font-semibold mb-4">
+            Typical testosterone ranges by age (UK labs)
+          </h2>
           <p className="mb-4">
-            The table below summarises the ranges most commonly reported by UK private laboratories
-            using LC-MS/MS or immunoassay methods. Treat these as orientation only — your own lab
-            report's reference range is the one that matters clinically.
+            The table below summarises the ranges most commonly reported by UK
+            private laboratories using LC-MS/MS or immunoassay methods. Treat
+            these as orientation only — your own lab report's reference range is
+            the one that matters clinically.
           </p>
           <div className="overflow-x-auto rounded-xl border border-white/10">
             <table className="w-full text-sm">
               <thead className="bg-white/5 text-white/90">
                 <tr>
                   <th className="text-left px-4 py-3 font-medium">Age band</th>
-                  <th className="text-left px-4 py-3 font-medium">Total testosterone</th>
-                  <th className="text-left px-4 py-3 font-medium">Free testosterone (calculated)</th>
+                  <th className="text-left px-4 py-3 font-medium">
+                    Total testosterone
+                  </th>
+                  <th className="text-left px-4 py-3 font-medium">
+                    Free testosterone (calculated)
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/10">
@@ -172,47 +205,58 @@ const TestosteroneLevelsByAgePage = () => {
             </table>
           </div>
           <p className="text-xs text-white/78 mt-3">
-            Ranges synthesised from UK laboratory reference intervals (The Doctors Laboratory,
-            Synnovis, Randox Health). nmol/L is the standard UK reporting unit; multiply by 28.84 to
-            convert to ng/dL.
+            Ranges synthesised from UK laboratory reference intervals (The
+            Doctors Laboratory, Synnovis, Randox Health). nmol/L is the standard
+            UK reporting unit; multiply by 28.84 to convert to ng/dL.
           </p>
         </section>
 
         <section className="mb-10 space-y-4">
-          <h2 className="text-2xl font-semibold">What counts as "low" in the UK?</h2>
+          <h2 className="text-2xl font-semibold">
+            What counts as "low" in the UK?
+          </h2>
           <p>
-            UK guidance (BSSM, 2022) treats a total testosterone consistently below 12 nmol/L,
-            taken on two separate morning samples, as a trigger for further evaluation when
-            symptoms are present. Levels below 8 nmol/L generally warrant referral. Between 8 and
-            12 nmol/L, clinicians usually calculate free testosterone using SHBG to decide whether
-            the result is clinically low.
+            UK guidance (BSSM, 2022) treats a total testosterone consistently
+            below 12 nmol/L, taken on two separate morning samples, as a trigger
+            for further evaluation when symptoms are present. Levels below 8
+            nmol/L generally warrant referral. Between 8 and 12 nmol/L,
+            clinicians usually calculate free testosterone using SHBG to decide
+            whether the result is clinically low.
           </p>
           <p>
-            A single result outside the reference range is not a diagnosis. Acute illness, recent
-            exercise, poor sleep, certain medications, obesity and alcohol can all transiently
-            suppress testosterone. That is why repeat morning testing — and a wider hormone panel
-            including SHBG, LH, FSH and prolactin — sits at the heart of UK clinical pathways.
+            A single result outside the reference range is not a diagnosis.
+            Acute illness, recent exercise, poor sleep, certain medications,
+            obesity and alcohol can all transiently suppress testosterone. That
+            is why repeat morning testing — and a wider hormone panel including
+            SHBG, LH, FSH and prolactin — sits at the heart of UK clinical
+            pathways.
           </p>
         </section>
 
         <section className="mb-10 space-y-4">
-          <h2 className="text-2xl font-semibold">When private testing is worth considering</h2>
+          <h2 className="text-2xl font-semibold">
+            When private testing is worth considering
+          </h2>
           <p>
-            NHS testosterone testing is available where clinically indicated, but waits can be
-            long and some integrated assessments (calculated free testosterone, SHBG, oestradiol,
-            DHEA-S) are not routinely offered in primary care. A private test can be useful when
-            you want a baseline, are tracking symptoms such as fatigue or low libido, or want to
-            monitor response to lifestyle changes.
+            NHS testosterone testing is available where clinically indicated,
+            but waits can be long and some integrated assessments (calculated
+            free testosterone, SHBG, oestradiol, DHEA-S) are not routinely
+            offered in primary care. A private test can be useful when you want
+            a baseline, are tracking symptoms such as fatigue or low libido, or
+            want to monitor response to lifestyle changes.
           </p>
           <p>
-            Insist on laboratories accredited by UKAS to ISO 15189, and clinics regulated by the
-            Care Quality Commission. Both standards exist in the UK to safeguard accuracy and
-            patient safety. Every provider listed on myhealth checkup meets these criteria.
+            Insist on laboratories accredited by UKAS to ISO 15189, and clinics
+            regulated by the Care Quality Commission. Both standards exist in
+            the UK to safeguard accuracy and patient safety. Every provider
+            listed on myhealth checkup meets these criteria.
           </p>
         </section>
 
         <section className="mb-10">
-          <h2 className="text-2xl font-semibold mb-4">How to choose the right testosterone test</h2>
+          <h2 className="text-2xl font-semibold mb-4">
+            How to choose the right testosterone test
+          </h2>
           <div className="grid sm:grid-cols-3 gap-4">
             <Card>
               <CardHeader>
@@ -220,8 +264,9 @@ const TestosteroneLevelsByAgePage = () => {
                 <CardTitle className="text-base">Biomarkers covered</CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-white/90">
-                Look for total testosterone, SHBG and calculated free testosterone as a minimum.
-                Comprehensive panels add LH, FSH, oestradiol and prolactin.
+                Look for total testosterone, SHBG and calculated free
+                testosterone as a minimum. Comprehensive panels add LH, FSH,
+                oestradiol and prolactin.
               </CardContent>
             </Card>
             <Card>
@@ -230,8 +275,9 @@ const TestosteroneLevelsByAgePage = () => {
                 <CardTitle className="text-base">Sample method</CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-white/90">
-                Venous draws at a clinic are the reference standard. At-home finger-prick kits are
-                convenient, though best confirmed venously if a low result is found.
+                Venous draws at a clinic are the reference standard. At-home
+                finger-prick kits are convenient, though best confirmed venously
+                if a low result is found.
               </CardContent>
             </Card>
             <Card>
@@ -240,8 +286,9 @@ const TestosteroneLevelsByAgePage = () => {
                 <CardTitle className="text-base">Accreditation</CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-white/90">
-                Confirm the analysing laboratory is UKAS-accredited (ISO 15189) and the clinic is
-                CQC-regulated. Both are standard across the providers we list.
+                Confirm the analysing laboratory is UKAS-accredited (ISO 15189)
+                and the clinic is CQC-regulated. Both are standard across the
+                providers we list.
               </CardContent>
             </Card>
           </div>
@@ -255,22 +302,28 @@ const TestosteroneLevelsByAgePage = () => {
                 <CardHeader>
                   <CardTitle className="text-base">{f.q}</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/90">{f.a}</CardContent>
+                <CardContent className="text-sm text-white/90">
+                  {f.a}
+                </CardContent>
               </Card>
             ))}
           </div>
         </section>
 
         <section className="rounded-2xl border border-white/10 bg-gradient-to-r from-[#22c0d4]/15 to-[#e70d69]/15 p-6 lg:p-8 mb-10">
-          <h2 className="text-2xl font-semibold mb-2">Compare testosterone tests on myhealth checkup</h2>
+          <h2 className="text-2xl font-semibold mb-2">
+            Compare testosterone tests on myhealth checkup
+          </h2>
           <p className="text-white/90 mb-6">
-            Independent, side-by-side comparison of biomarkers, sample method, typical turnaround
-            and price across CQC-regulated UK providers. No upselling, no pay-to-rank.
+            Independent, side-by-side comparison of biomarkers, sample method,
+            typical turnaround and price across CQC-regulated UK providers. No
+            upselling, no pay-to-rank.
           </p>
           <div className="flex flex-wrap gap-3">
             <Button asChild size="lg">
               <Link to="/hormones">
-                Compare testosterone tests <ArrowRight className="ml-2 w-4 h-4" />
+                Compare testosterone tests{" "}
+                <ArrowRight className="ml-2 w-4 h-4" />
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline">
@@ -280,10 +333,11 @@ const TestosteroneLevelsByAgePage = () => {
         </section>
 
         <p className="text-xs text-white/78">
-          Editorial note: this article is for information only and does not constitute medical
-          advice, diagnosis or treatment. Always discuss test results with a qualified clinician.
-          myhealth checkup is an independent comparison platform and does not provide clinical
-          care. Turnaround times are typical, not guaranteed.
+          Editorial note: this article is for information only and does not
+          constitute medical advice, diagnosis or treatment. Always discuss test
+          results with a qualified clinician. myhealth checkup is an independent
+          comparison platform and does not provide clinical care. Turnaround
+          times are typical, not guaranteed.
         </p>
       </article>
       <section className="bg-white py-12 px-4 sm:px-6">

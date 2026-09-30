@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { cn } from '@/lib/utils';
+import React, { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
-type Variant = 'rise' | 'scale' | 'fade' | 'slide-left' | 'slide-right';
+type Variant = "rise" | "scale" | "fade" | "slide-left" | "slide-right";
 
 interface ScrollFadeInProps {
   children: React.ReactNode;
@@ -20,19 +20,19 @@ interface ScrollFadeInProps {
 }
 
 const HIDDEN_BY_VARIANT: Record<Variant, string> = {
-  rise: 'opacity-0 translate-y-8',
-  scale: 'opacity-0 scale-[0.96]',
-  fade: 'opacity-0',
-  'slide-left': 'opacity-0 -translate-x-6',
-  'slide-right': 'opacity-0 translate-x-6',
+  rise: "opacity-0 translate-y-8",
+  scale: "opacity-0 scale-[0.96]",
+  fade: "opacity-0",
+  "slide-left": "opacity-0 -translate-x-6",
+  "slide-right": "opacity-0 translate-x-6",
 };
 
 const VISIBLE_BY_VARIANT: Record<Variant, string> = {
-  rise: 'opacity-100 translate-y-0',
-  scale: 'opacity-100 scale-100',
-  fade: 'opacity-100',
-  'slide-left': 'opacity-100 translate-x-0',
-  'slide-right': 'opacity-100 translate-x-0',
+  rise: "opacity-100 translate-y-0",
+  scale: "opacity-100 scale-100",
+  fade: "opacity-100",
+  "slide-left": "opacity-100 translate-x-0",
+  "slide-right": "opacity-100 translate-x-0",
 };
 
 const ScrollFadeIn: React.FC<ScrollFadeInProps> = ({
@@ -40,7 +40,7 @@ const ScrollFadeIn: React.FC<ScrollFadeInProps> = ({
   className,
   delay = 0,
   threshold = 0.1,
-  variant = 'rise',
+  variant = "rise",
 }) => {
   const [isVisible, setIsVisible] = useState(false);
   const elementRef = useRef<HTMLDivElement>(null);
@@ -56,7 +56,7 @@ const ScrollFadeIn: React.FC<ScrollFadeInProps> = ({
           observer.unobserve(node);
         }
       },
-      { threshold, rootMargin: '0px' }
+      { threshold, rootMargin: "0px" },
     );
 
     observer.observe(node);
@@ -67,9 +67,9 @@ const ScrollFadeIn: React.FC<ScrollFadeInProps> = ({
     <div
       ref={elementRef}
       className={cn(
-        'transition-all duration-700 ease-out will-change-transform',
+        "transition-all duration-700 ease-out will-change-transform",
         isVisible ? VISIBLE_BY_VARIANT[variant] : HIDDEN_BY_VARIANT[variant],
-        className
+        className,
       )}
       style={{ transitionDelay: `${delay}ms` }}
     >

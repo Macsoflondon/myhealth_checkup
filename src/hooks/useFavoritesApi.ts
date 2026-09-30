@@ -11,7 +11,7 @@ import { logger } from "@/lib/logger";
  */
 export function useFavoritesApi(user: User | null, category: string) {
   const [favorites, setFavorites] = useState<string[]>([]);
-  
+
   useEffect(() => {
     if (user && category) {
       fetchFavorites();
@@ -19,73 +19,83 @@ export function useFavoritesApi(user: User | null, category: string) {
       setFavorites([]);
     }
   }, [user, category]);
-  
+
   const fetchFavorites = async () => {
     if (!user) return;
-    
+
     try {
-      const { data, error } = await favoritesApi.getFavoriteTestIds(user.id, category);
-      
+      const { data, error } = await favoritesApi.getFavoriteTestIds(
+        user.id,
+        category,
+      );
+
       if (error) throw error;
       setFavorites(data || []);
     } catch (error) {
-      logger.error('Error fetching favorites:', error);
+      logger.error("Error fetching favorites:", error);
     }
   };
-  
-  const toggleFavorite = async (testId: string, item: { name?: string; price?: number | null; provider?: string }) => {
+
+  const toggleFavorite = async (
+    testId: string,
+    item: { name?: string; price?: number | null; provider?: string },
+  ) => {
     if (!user) {
       toast.error("Please sign in to save favorites");
       return false;
     }
-    
+
     const isFavorite = favorites.includes(testId);
-    
+
     try {
       if (isFavorite) {
-        const { error } = await favoritesApi.removeFavorite(user.id, testId, category);
-        
+        const { error } = await favoritesApi.removeFavorite(
+          user.id,
+          testId,
+          category,
+        );
+
         if (error) throw error;
-        setFavorites(prev => prev.filter(id => id !== testId));
+        setFavorites((prev) => prev.filter((id) => id !== testId));
         toast.success("Removed from favorites");
       } else {
         const { error } = await favoritesApi.addFavorite({
           user_id: user.id,
           test_id: testId,
           category: category,
-          provider: item.provider ?? '',
+          provider: item.provider ?? "",
           name: item.name,
           price: item.price ?? undefined,
         });
-        
+
         if (error) throw error;
-        setFavorites(prev => [...prev, testId]);
-        
+        setFavorites((prev) => [...prev, testId]);
+
         // Automatically create a price alert with 10% threshold
         try {
-          await supabase
-            .from('price_alert_preferences')
-            .insert({
-              user_id: user.id,
-              test_id: testId,
-              provider: item.provider ?? '',
-              threshold_percentage: 10,
-              enabled: true,
-            });
+          await supabase.from("price_alert_preferences").insert({
+            user_id: user.id,
+            test_id: testId,
+            provider: item.provider ?? "",
+            threshold_percentage: 10,
+            enabled: true,
+          });
         } catch (alertError) {
           // Ignore if alert already exists (unique constraint)
-          logger.debug('Price alert creation skipped:', alertError);
+          logger.debug("Price alert creation skipped:", alertError);
         }
-        
+
         toast.success("Added to favorites with price alert enabled");
       }
       return true;
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Something went wrong');
+      toast.error(
+        error instanceof Error ? error.message : "Something went wrong",
+      );
       return false;
     }
   };
-  
+
   return { favorites, toggleFavorite };
 }
 

@@ -9,7 +9,14 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { FileText, Heart, Settings, TrendingUp, User, Bell } from "lucide-react";
+import {
+  FileText,
+  Heart,
+  Settings,
+  TrendingUp,
+  User,
+  Bell,
+} from "lucide-react";
 import { toast } from "sonner";
 import { Helmet } from "react-helmet-async";
 import { logger } from "@/lib/logger";
@@ -21,7 +28,6 @@ interface UserProfile {
   gender: string | null;
   phone_number: string | null;
 }
-
 
 interface TestResult {
   id: string;
@@ -43,7 +49,7 @@ export default function ClientPortal() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  
+
   const [testResults, setTestResults] = useState<TestResult[]>([]);
   const [insights, setInsights] = useState<HealthInsight[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,7 +59,7 @@ export default function ClientPortal() {
       navigate("/auth");
       return;
     }
-    
+
     fetchPortalData();
   }, [user, navigate]);
 
@@ -74,16 +80,14 @@ export default function ClientPortal() {
           .select("*")
           .eq("user_id", user?.id ?? "")
           .order("created_at", { ascending: false })
-          .limit(5)
+          .limit(5),
       ]);
 
       if (profileData.error) throw profileData.error;
       setProfile(profileData.data as unknown as UserProfile);
 
-      
       if (!resultsData.error) setTestResults(resultsData.data || []);
       if (!insightsData.error) setInsights(insightsData.data || []);
-
     } catch (error) {
       logger.error("Error fetching portal data:", error);
       toast.error("Failed to load your health dashboard");
@@ -94,21 +98,31 @@ export default function ClientPortal() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "completed": return "bg-green-500";
-      case "confirmed": return "bg-blue-500";
-      case "pending": return "bg-yellow-500";
-      case "cancelled": return "bg-red-500";
-      default: return "bg-muted";
+      case "completed":
+        return "bg-green-500";
+      case "confirmed":
+        return "bg-blue-500";
+      case "pending":
+        return "bg-yellow-500";
+      case "cancelled":
+        return "bg-red-500";
+      default:
+        return "bg-muted";
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case "urgent": return "bg-destructive";
-      case "high": return "bg-orange-500";
-      case "medium": return "bg-yellow-500";
-      case "low": return "bg-green-500";
-      default: return "bg-muted";
+      case "urgent":
+        return "bg-destructive";
+      case "high":
+        return "bg-orange-500";
+      case "medium":
+        return "bg-yellow-500";
+      case "low":
+        return "bg-green-500";
+      default:
+        return "bg-muted";
     }
   };
 
@@ -131,13 +145,16 @@ export default function ClientPortal() {
     <>
       <Helmet>
         <title>Health Portal | myhealth checkup</title>
-        <meta name="description" content="Access your test results, appointments, and health insights" />
+        <meta
+          name="description"
+          content="Access your test results, appointments, and health insights"
+        />
         <meta name="robots" content="noindex, follow" />
       </Helmet>
 
       <div className="min-h-screen bg-background">
         <Header />
-        
+
         <main className="container mx-auto px-4 py-12">
           {/* Welcome Section */}
           <div className="mb-8">
@@ -192,7 +209,7 @@ export default function ClientPortal() {
           <Tabs defaultValue="overview" className="space-y-6">
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="overview">Overview</TabsTrigger>
-              
+
               <TabsTrigger value="results">Test Results</TabsTrigger>
               <TabsTrigger value="insights">Health Insights</TabsTrigger>
               <TabsTrigger value="profile">Profile</TabsTrigger>
@@ -211,20 +228,25 @@ export default function ClientPortal() {
                       <div key={insight.id} className="p-4 border rounded-lg">
                         <div className="flex items-start justify-between mb-2">
                           <h3 className="font-semibold">{insight.title}</h3>
-                          <span className={`px-2 py-1 rounded text-white text-xs ${getPriorityColor(insight.priority ?? '')}`}>
+                          <span
+                            className={`px-2 py-1 rounded text-white text-xs ${getPriorityColor(insight.priority ?? "")}`}
+                          >
                             {insight.priority}
                           </span>
                         </div>
-                        <p className="text-sm text-muted-foreground">{insight.description}</p>
+                        <p className="text-sm text-muted-foreground">
+                          {insight.description}
+                        </p>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-muted-foreground">No health insights available yet</p>
+                  <p className="text-muted-foreground">
+                    No health insights available yet
+                  </p>
                 )}
               </Card>
             </TabsContent>
-
 
             <TabsContent value="results">
               <Card className="p-6">
@@ -237,14 +259,18 @@ export default function ClientPortal() {
                           <div>
                             <p className="font-semibold text-lg">Test Result</p>
                             <p className="text-sm text-muted-foreground">
-                              {new Date(result.result_date).toLocaleDateString()}
+                              {new Date(
+                                result.result_date,
+                              ).toLocaleDateString()}
                             </p>
-                            <p className="text-sm">Provider: {result.provider_id}</p>
+                            <p className="text-sm">
+                              Provider: {result.provider_id}
+                            </p>
                           </div>
                           {result.pdf_url && (
-                            <a 
-                              href={result.pdf_url} 
-                              target="_blank" 
+                            <a
+                              href={result.pdf_url}
+                              target="_blank"
                               rel="noopener noreferrer"
                               className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
                             >
@@ -256,7 +282,9 @@ export default function ClientPortal() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-muted-foreground">No test results available yet</p>
+                  <p className="text-muted-foreground">
+                    No test results available yet
+                  </p>
                 )}
               </Card>
             </TabsContent>
@@ -269,12 +297,18 @@ export default function ClientPortal() {
                     {insights.map((insight) => (
                       <div key={insight.id} className="p-6 border rounded-lg">
                         <div className="flex items-start justify-between mb-3">
-                          <h3 className="font-semibold text-lg">{insight.title}</h3>
-                          <span className={`px-3 py-1 rounded text-white ${getPriorityColor(insight.priority ?? '')}`}>
+                          <h3 className="font-semibold text-lg">
+                            {insight.title}
+                          </h3>
+                          <span
+                            className={`px-3 py-1 rounded text-white ${getPriorityColor(insight.priority ?? "")}`}
+                          >
                             {insight.priority}
                           </span>
                         </div>
-                        <p className="text-muted-foreground mb-2">{insight.description}</p>
+                        <p className="text-muted-foreground mb-2">
+                          {insight.description}
+                        </p>
                         <p className="text-xs text-muted-foreground">
                           {new Date(insight.created_at).toLocaleDateString()}
                         </p>
@@ -282,7 +316,9 @@ export default function ClientPortal() {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-muted-foreground">No health insights available</p>
+                  <p className="text-muted-foreground">
+                    No health insights available
+                  </p>
                 )}
               </Card>
             </TabsContent>
@@ -295,20 +331,34 @@ export default function ClientPortal() {
                 </h2>
                 <div className="space-y-4">
                   <div>
-                    <label className="text-sm font-medium text-muted-foreground">Name</label>
-                    <p className="text-lg">{profile?.first_name} {profile?.last_name}</p>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      Name
+                    </label>
+                    <p className="text-lg">
+                      {profile?.first_name} {profile?.last_name}
+                    </p>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-muted-foreground">Date of Birth</label>
-                    <p className="text-lg">{profile?.date_of_birth || "Not set"}</p>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      Date of Birth
+                    </label>
+                    <p className="text-lg">
+                      {profile?.date_of_birth || "Not set"}
+                    </p>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-muted-foreground">Gender</label>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      Gender
+                    </label>
                     <p className="text-lg">{profile?.gender || "Not set"}</p>
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-muted-foreground">Phone</label>
-                    <p className="text-lg">{profile?.phone_number || "Not set"}</p>
+                    <label className="text-sm font-medium text-muted-foreground">
+                      Phone
+                    </label>
+                    <p className="text-lg">
+                      {profile?.phone_number || "Not set"}
+                    </p>
                   </div>
                 </div>
               </Card>

@@ -1,5 +1,9 @@
 import { describe, it, expect } from "vitest";
-import { buildRecommendations, computeMatchScore, isSexCompatible } from "../scoring";
+import {
+  buildRecommendations,
+  computeMatchScore,
+  isSexCompatible,
+} from "../scoring";
 import { computeTotalCost } from "../cost";
 import { applyFilters, deriveFilterState } from "../filters";
 import { SEED_TESTS } from "@/data/testFinderSeed";
@@ -29,7 +33,9 @@ describe("testFinder scoring", () => {
   it("ranks London Health Company essential MOT above Blood Tests London for male/preventative/finger-prick profile", () => {
     const recs = buildRecommendations(SEED_TESTS, baseProfile);
     const ids = recs.map((r) => r.id);
-    expect(ids.indexOf("lhc-essential-mot")).toBeLessThan(ids.indexOf("btl-full-vip"));
+    expect(ids.indexOf("lhc-essential-mot")).toBeLessThan(
+      ids.indexOf("btl-full-vip"),
+    );
   });
 
   it("excludes zero-scoring tests", () => {

@@ -2,7 +2,7 @@
 
 **Owner:** Platform / Security Lead
 **Cadence:** Quarterly (Q1 Jan, Q2 Apr, Q3 Jul, Q4 Oct — first week)
-**Purpose:** Evidence for Cyber Essentials Plus control A.7 (backups) — proves backups are not only taken but are *restorable*.
+**Purpose:** Evidence for Cyber Essentials Plus control A.7 (backups) — proves backups are not only taken but are _restorable_.
 
 ---
 
@@ -41,19 +41,20 @@
 
 ## 4. Acceptance criteria
 
-| Check | Pass condition |
-|---|---|
-| Restore completes | `pg_restore` exit code 0, no FATAL in log |
-| Schema parity | All canary tables present |
-| Row-count drift | ≤ 0.5% vs source (accounts for live writes during backup window) |
-| RLS posture | 100% of `public.*` tables have `rowsecurity = true` |
-| Functions | All listed security-definer functions present and `SECURITY DEFINER` |
-| RTO | Full restore + verification < 60 min |
-| RPO | Backup age ≤ 24 h |
+| Check             | Pass condition                                                       |
+| ----------------- | -------------------------------------------------------------------- |
+| Restore completes | `pg_restore` exit code 0, no FATAL in log                            |
+| Schema parity     | All canary tables present                                            |
+| Row-count drift   | ≤ 0.5% vs source (accounts for live writes during backup window)     |
+| RLS posture       | 100% of `public.*` tables have `rowsecurity = true`                  |
+| Functions         | All listed security-definer functions present and `SECURITY DEFINER` |
+| RTO               | Full restore + verification < 60 min                                 |
+| RPO               | Backup age ≤ 24 h                                                    |
 
 ## 5. Evidence to retain (7 years)
 
 Store under `evidence/backups/YYYY-QX/`:
+
 - `restore-test-YYYY-QX.json` (script output)
 - `restore.log` (full pg_restore log)
 - Screenshot of Supabase Backups page showing date downloaded
@@ -69,6 +70,7 @@ Store under `evidence/backups/YYYY-QX/`:
 ## 7. Failure escalation
 
 If acceptance criteria fail:
+
 1. File P1 incident in incident tracker within 1 h.
 2. Re-test against the previous day's backup.
 3. If two consecutive backups fail restore → engage Supabase support, switch to manual `pg_dump` nightly until resolved.
@@ -77,6 +79,7 @@ If acceptance criteria fail:
 ## 8. Annual review
 
 Every January, review this runbook against:
+
 - Schema changes (new tables → add to canary list in script)
 - Cyber Essentials scheme update
 - Supabase backup product changes
@@ -87,14 +90,14 @@ Every January, review this runbook against:
 
 Every `run` produces `rls-per-table.csv` in the evidence directory with one row per `public.*` table:
 
-| Column | Meaning |
-|---|---|
-| `schemaname`, `tablename` | Identifier |
-| `rls_enabled` | `t` = `ALTER TABLE … ENABLE ROW LEVEL SECURITY` is set |
-| `policy_count`, `policy_names` | Number of policies + their names |
-| `anon_select / anon_insert` | Whether the anonymous role has the grant (separate from RLS) |
-| `auth_select / insert / update / delete` | Same for the `authenticated` role |
-| `verdict` | `PASS`, `FAIL: RLS disabled`, or `FAIL: RLS on but no policies (deny-all)` |
+| Column                                   | Meaning                                                                    |
+| ---------------------------------------- | -------------------------------------------------------------------------- |
+| `schemaname`, `tablename`                | Identifier                                                                 |
+| `rls_enabled`                            | `t` = `ALTER TABLE … ENABLE ROW LEVEL SECURITY` is set                     |
+| `policy_count`, `policy_names`           | Number of policies + their names                                           |
+| `anon_select / anon_insert`              | Whether the anonymous role has the grant (separate from RLS)               |
+| `auth_select / insert / update / delete` | Same for the `authenticated` role                                          |
+| `verdict`                                | `PASS`, `FAIL: RLS disabled`, or `FAIL: RLS on but no policies (deny-all)` |
 
 Acceptance: zero `FAIL` rows. The summary counts and failing-table list are mirrored into `restore-test-YYYY-QX.json` under `"rls"`. Attach both files to the quarterly evidence pack.
 
@@ -103,11 +106,14 @@ Acceptance: zero `FAIL` rows. The summary counts and failing-table list are mirr
 Every cron run is logged to `public.cron_run_log` via `run_logged_cleanup()`. Failures auto-raise a `cron_job_failure` row in `scraper_alerts` (already surfaced on the admin dashboard).
 
 Export to evidence pack:
+
 ```bash
 export SOURCE_DB_URL='<prod connection>'
 bash scripts/export-cron-evidence.sh 90
 ```
+
 Outputs to `evidence/cron/YYYY-QX/`:
+
 - `cron-runs-90d-<ts>.csv` — every run with start/end/duration/status/rows/error
 - `cron-summary-90d-<ts>.json` — per-job success/failure counts + last 20 failures
 
@@ -120,6 +126,7 @@ Run this once per quarter alongside the restore test.
 Failures auto-email every enabled recipient in `public.security_alert_recipients`.
 
 **Configure recipients** (admin SQL editor):
+
 ```sql
 INSERT INTO public.security_alert_recipients (email, label, alert_types) VALUES
   ('security@myhealthcheckup.co.uk', 'SecOps inbox',
@@ -134,10 +141,11 @@ UPDATE public.security_alert_recipients SET enabled = false WHERE email = '...';
 `alert_types` accepts any combination of `cron_failure`, `rls_failure`, `backup_restore_failure`.
 
 **Trigger surface:**
-| Source | When it fires | Alert type |
-|---|---|---|
-| Postgres trigger on `cron_run_log` | row inserted/updated with `status='error'` | `cron_failure` |
-| `scripts/backup-restore-test.sh run` | any RLS table fails (`rls_enabled=false` or no policies) | `rls_failure` |
+
+| Source                               | When it fires                                                         | Alert type               |
+| ------------------------------------ | --------------------------------------------------------------------- | ------------------------ |
+| Postgres trigger on `cron_run_log`   | row inserted/updated with `status='error'`                            | `cron_failure`           |
+| `scripts/backup-restore-test.sh run` | any RLS table fails (`rls_enabled=false` or no policies)              | `rls_failure`            |
 | `scripts/backup-restore-test.sh run` | restore fails for any other reason (drift, missing fns, FATAL in log) | `backup_restore_failure` |
 
 Email body includes the job/context, duration, error message, evidence-pack path, and the full restore report JSON. Save the inbound email alongside the evidence pack for CE+ assessor review.

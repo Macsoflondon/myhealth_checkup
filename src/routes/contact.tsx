@@ -8,7 +8,8 @@ export const Route = createFileRoute("/contact")({
   head: () =>
     buildRouteHead({
       title: "Contact myhealth checkup",
-      description: "Get in touch with the myhealth checkup team about listings, data corrections, partnerships or general enquiries.",
+      description:
+        "Get in touch with the myhealth checkup team about listings, data corrections, partnerships or general enquiries.",
       path: "/contact",
     }),
   component: ContactPage,

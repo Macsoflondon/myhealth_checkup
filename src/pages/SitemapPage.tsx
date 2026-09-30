@@ -1,9 +1,9 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
-import { Link } from '@/lib/router-compat';
-import PageBanner from '@/components/sections/PageBanner';
+import React from "react";
+import { Helmet } from "react-helmet-async";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import { Link } from "@/lib/router-compat";
+import PageBanner from "@/components/sections/PageBanner";
 import {
   Home,
   FlaskConical,
@@ -12,7 +12,7 @@ import {
   UserRound,
   LifeBuoy,
   type LucideIcon,
-} from 'lucide-react';
+} from "lucide-react";
 
 interface SitemapSection {
   title: string;
@@ -20,30 +20,65 @@ interface SitemapSection {
   links: { name: string; path: string }[];
 }
 
-const siteStructure: SitemapSection[] = [{
-  title: "Main Pages",
-  icon: Home,
-  links: [{ name: "Home", path: "/" }, { name: "Compare Tests", path: "/compare" }, { name: "Test Categories", path: "/test-categories" }, { name: "Intelligent Search", path: "/search" }, { name: "How It Works", path: "/how-it-works" }, { name: "About Us", path: "/about" }]
-}, {
-  title: "Health Testing Services",
-  icon: FlaskConical,
-  links: [{ name: "Cancer Screening", path: "/tests/cancer" }, { name: "Diabetes Testing", path: "/tests/diabetes" }, { name: "Heart Health", path: "/tests/heart" }, { name: "Vitamin Deficiency", path: "/tests/vitamins" }, { name: "Gut Health", path: "/tests/gut" }, { name: "Men's Health", path: "/tests/mens-health" }, { name: "Women's Health", path: "/tests/womens-health" }]
-}, {
-  title: "Information & Support",
-  icon: Info,
-  links: [{ name: "FAQs", path: "/faqs" }, { name: "Health Resources", path: "/blog" }, { name: "Contact Us", path: "/contact" }, { name: "Partners", path: "/partners" }]
-}, {
-  title: "Legal & Compliance",
-  icon: ShieldCheck,
-  links: [{ name: "Privacy Policy", path: "/privacy-policy" }, { name: "Terms & Conditions", path: "/terms" }, { name: "Cookie Policy", path: "/cookies" }, { name: "Accessibility", path: "/accessibility" }]
-}, {
-  title: "User Account",
-  icon: UserRound,
-  links: [{ name: "Sign In / Register", path: "/auth" }, { name: "Dashboard", path: "/health-dashboard" }]
-}];
+const siteStructure: SitemapSection[] = [
+  {
+    title: "Main Pages",
+    icon: Home,
+    links: [
+      { name: "Home", path: "/" },
+      { name: "Compare Tests", path: "/compare" },
+      { name: "Test Categories", path: "/test-categories" },
+      { name: "Intelligent Search", path: "/search" },
+      { name: "How It Works", path: "/how-it-works" },
+      { name: "About Us", path: "/about" },
+    ],
+  },
+  {
+    title: "Health Testing Services",
+    icon: FlaskConical,
+    links: [
+      { name: "Cancer Screening", path: "/tests/cancer" },
+      { name: "Diabetes Testing", path: "/tests/diabetes" },
+      { name: "Heart Health", path: "/tests/heart" },
+      { name: "Vitamin Deficiency", path: "/tests/vitamins" },
+      { name: "Gut Health", path: "/tests/gut" },
+      { name: "Men's Health", path: "/tests/mens-health" },
+      { name: "Women's Health", path: "/tests/womens-health" },
+    ],
+  },
+  {
+    title: "Information & Support",
+    icon: Info,
+    links: [
+      { name: "FAQs", path: "/faqs" },
+      { name: "Health Resources", path: "/blog" },
+      { name: "Contact Us", path: "/contact" },
+      { name: "Partners", path: "/partners" },
+    ],
+  },
+  {
+    title: "Legal & Compliance",
+    icon: ShieldCheck,
+    links: [
+      { name: "Privacy Policy", path: "/privacy-policy" },
+      { name: "Terms & Conditions", path: "/terms" },
+      { name: "Cookie Policy", path: "/cookies" },
+      { name: "Accessibility", path: "/accessibility" },
+    ],
+  },
+  {
+    title: "User Account",
+    icon: UserRound,
+    links: [
+      { name: "Sign In / Register", path: "/auth" },
+      { name: "Dashboard", path: "/health-dashboard" },
+    ],
+  },
+];
 
 const SitemapPage = () => {
-  return <div className="min-h-screen flex flex-col">
+  return (
+    <div className="min-h-screen flex flex-col">
       <Helmet>
         <meta property="og:type" content="website" />
       </Helmet>
@@ -69,12 +104,21 @@ const SitemapPage = () => {
                       <div className="w-10 h-10 rounded-lg bg-[#22c0d4]/10 flex items-center justify-center text-[#081129]">
                         <Icon className="w-5 h-5" aria-hidden="true" />
                       </div>
-                      <h2 className="text-lg font-bold text-[#081129] font-montserrat">{section.title}</h2>
+                      <h2 className="text-lg font-bold text-[#081129] font-montserrat">
+                        {section.title}
+                      </h2>
                     </div>
                     <ul className="space-y-3">
-                      {section.links.map((link) => <li key={link.path}>
-                          <Link to={link.path} className="text-[#0e9aac] font-medium hover:text-[#081129] hover:underline underline-offset-4 transition-colors text-sm">{link.name}</Link>
-                        </li>)}
+                      {section.links.map((link) => (
+                        <li key={link.path}>
+                          <Link
+                            to={link.path}
+                            className="text-[#0e9aac] font-medium hover:text-[#081129] hover:underline underline-offset-4 transition-colors text-sm"
+                          >
+                            {link.name}
+                          </Link>
+                        </li>
+                      ))}
                     </ul>
                   </section>
                 );
@@ -86,13 +130,26 @@ const SitemapPage = () => {
                     <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-[#081129]">
                       <LifeBuoy className="w-5 h-5" aria-hidden="true" />
                     </div>
-                    <h2 className="text-lg font-bold text-[#081129] font-montserrat">Need help finding something?</h2>
+                    <h2 className="text-lg font-bold text-[#081129] font-montserrat">
+                      Need help finding something?
+                    </h2>
                   </div>
-                  <p className="text-sm text-[#081129]/70 mb-6">Try our intelligent search, or contact our team and we will point you in the right direction.</p>
+                  <p className="text-sm text-[#081129]/70 mb-6">
+                    Try our intelligent search, or contact our team and we will
+                    point you in the right direction.
+                  </p>
                 </div>
                 <div className="flex flex-col gap-3">
-                  <Link to="/search" className="text-sm font-medium text-[#0e9aac] hover:text-[#081129] hover:underline underline-offset-4 transition-colors">Try intelligent search →</Link>
-                  <Link to="/contact" className="inline-flex items-center justify-center w-full bg-gradient-to-r from-[#22c0d4] to-[#e70d69] text-white font-semibold text-sm py-2.5 px-4 rounded-lg hover:opacity-90 transition-opacity">
+                  <Link
+                    to="/search"
+                    className="text-sm font-medium text-[#0e9aac] hover:text-[#081129] hover:underline underline-offset-4 transition-colors"
+                  >
+                    Try intelligent search →
+                  </Link>
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center justify-center w-full bg-gradient-to-r from-[#22c0d4] to-[#e70d69] text-white font-semibold text-sm py-2.5 px-4 rounded-lg hover:opacity-90 transition-opacity"
+                  >
                     Contact us
                   </Link>
                 </div>
@@ -102,6 +159,7 @@ const SitemapPage = () => {
         </div>
       </main>
       <Footer />
-    </div>;
+    </div>
+  );
 };
 export default SitemapPage;

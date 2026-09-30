@@ -17,7 +17,9 @@ export interface CompareOptions {
 }
 
 export declare const isWellFormedVersion: (version: string) => boolean;
-export declare const normaliseVersions: (versions: readonly string[]) => string[];
+export declare const normaliseVersions: (
+  versions: readonly string[],
+) => string[];
 export declare const compareMigrationSets: (
   remoteVersions: readonly string[],
   repoVersions: readonly string[],

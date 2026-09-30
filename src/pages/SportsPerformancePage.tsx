@@ -20,11 +20,26 @@ const SportsPerformancePage = () => (
     filters={["All"]}
     benefitsTitle="Why Choose Sports-Fitness Health Testing?"
     benefits={[
-      { icon: Zap, title: "Peak Performance", description: "Monitor biomarkers crucial for competitive advantage" },
-      { icon: Activity, title: "Recovery Optimisation", description: "Track markers that impact recovery and adaptation" },
-      { icon: TrendingUp, title: "Competitive Edge", description: "Data-driven insights to optimise training" },
+      {
+        icon: Zap,
+        title: "Peak Performance",
+        description: "Monitor biomarkers crucial for competitive advantage",
+      },
+      {
+        icon: Activity,
+        title: "Recovery Optimisation",
+        description: "Track markers that impact recovery and adaptation",
+      },
+      {
+        icon: TrendingUp,
+        title: "Competitive Edge",
+        description: "Data-driven insights to optimise training",
+      },
     ]}
-    breadcrumbs={[{ label: "Home", href: "/" }, { label: "Sports-Fitness Health" }]}
+    breadcrumbs={[
+      { label: "Home", href: "/" },
+      { label: "Sports-Fitness Health" },
+    ]}
     compareUrl="/compare?category=sports-performance"
   />
 );

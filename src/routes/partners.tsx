@@ -8,7 +8,8 @@ export const Route = createFileRoute("/partners")({
   head: () =>
     buildRouteHead({
       title: "Partner With myhealth checkup",
-      description: "Information for UK diagnostics providers who want their accredited tests listed on our comparison platform.",
+      description:
+        "Information for UK diagnostics providers who want their accredited tests listed on our comparison platform.",
       path: "/partners",
     }),
   component: PartnersPage,

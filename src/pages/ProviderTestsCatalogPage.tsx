@@ -6,10 +6,17 @@ import MainLayout from "@/layouts/MainLayout";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TestTube2 } from "lucide-react";
-import ProviderCatalogHeader, { PROVIDER_FEATURES } from "@/components/providers/ProviderCatalogHeader";
-import ProviderTestCard, { type ProviderTestCardData } from "@/components/providers/ProviderTestCard";
+import ProviderCatalogHeader, {
+  PROVIDER_FEATURES,
+} from "@/components/providers/ProviderCatalogHeader";
+import ProviderTestCard, {
+  type ProviderTestCardData,
+} from "@/components/providers/ProviderTestCard";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
-import CatalogSortBar, { sortTests, type CatalogSortOption } from "@/components/providers/CatalogSortBar";
+import CatalogSortBar, {
+  sortTests,
+  type CatalogSortOption,
+} from "@/components/providers/CatalogSortBar";
 
 interface ProviderCatalogConfig {
   providerId: string;
@@ -25,56 +32,64 @@ const PROVIDER_CONFIGS: Record<string, ProviderCatalogConfig> = {
     providerName: "GOODBODY",
     tagline: "Premium private blood testing with in-clinic phlebotomy",
     metaTitle: "Goodbody Clinic Blood Tests | Compare Health Tests UK",
-    metaDescription: "Browse all Goodbody Clinic blood tests. Compare prices, biomarkers, and book your private health screening at clinic locations across the UK.",
+    metaDescription:
+      "Browse all Goodbody Clinic blood tests. Compare prices, biomarkers, and book your private health screening at clinic locations across the UK.",
   },
-  "medichecks": {
+  medichecks: {
     providerId: "medichecks",
     providerName: "Medichecks",
     tagline: "UK's leading home blood testing service",
     metaTitle: "Medichecks Blood Tests | Compare Health Tests UK",
-    metaDescription: "Browse all Medichecks blood tests. Home test kits and clinic appointments available. Compare prices and book your private health screening.",
+    metaDescription:
+      "Browse all Medichecks blood tests. Home test kits and clinic appointments available. Compare prices and book your private health screening.",
   },
-  "randox": {
+  randox: {
     providerId: "randox",
     providerName: "Randox Health",
     tagline: "Comprehensive health packages with advanced diagnostics",
     metaTitle: "Randox Health Tests | Compare Health Tests UK",
-    metaDescription: "Browse all Randox Health blood tests. Premium clinic-based testing with comprehensive health packages. Compare prices and book your appointment.",
+    metaDescription:
+      "Browse all Randox Health blood tests. Premium clinic-based testing with comprehensive health packages. Compare prices and book your appointment.",
   },
   "lola-health": {
     providerId: "lola-health",
     providerName: "Lola Health",
     tagline: "Professional at-home phlebotomy with doctor-reviewed results",
     metaTitle: "Lola Health Blood Tests | Compare Health Tests UK",
-    metaDescription: "Browse all Lola Health blood tests. At-home nurse visits and clinic appointments with doctor-reviewed results. Compare prices and book your test.",
+    metaDescription:
+      "Browse all Lola Health blood tests. At-home nurse visits and clinic appointments with doctor-reviewed results. Compare prices and book your test.",
   },
   "london-medical-laboratory": {
     providerId: "london-medical-laboratory",
     providerName: "London Medical Laboratory",
     tagline: "UKAS-accredited laboratory services",
     metaTitle: "London Medical Laboratory Tests | Compare Health Tests UK",
-    metaDescription: "Browse London Medical Laboratory's full range of blood tests and health screenings. Compare prices, biomarkers, and turnaround times.",
+    metaDescription:
+      "Browse London Medical Laboratory's full range of blood tests and health screenings. Compare prices, biomarkers, and turnaround times.",
   },
   "london-health-company": {
     providerId: "london-health-company",
     providerName: "London Health Company",
     tagline: "Accessible London clinic network with hospital-grade diagnostics",
     metaTitle: "London Health Company Blood Tests | Compare Health Tests UK",
-    metaDescription: "Browse all London Health Company blood tests. Private health testing across London clinics with UKAS-accredited laboratory analysis.",
+    metaDescription:
+      "Browse all London Health Company blood tests. Private health testing across London clinics with UKAS-accredited laboratory analysis.",
   },
   "medical-diagnosis": {
     providerId: "medical-diagnosis",
     providerName: "Medical Diagnosis",
     tagline: "Specialist diagnostic blood testing with fast turnaround",
     metaTitle: "Medical Diagnosis Blood Tests | Compare Health Tests UK",
-    metaDescription: "Browse all Medical Diagnosis blood tests. Specialist diagnostic testing with UKAS-accredited partner laboratories across the UK.",
+    metaDescription:
+      "Browse all Medical Diagnosis blood tests. Specialist diagnostic testing with UKAS-accredited partner laboratories across the UK.",
   },
-  "clinilabs": {
+  clinilabs: {
     providerId: "clinilabs",
     providerName: "Clinilabs",
     tagline: "UKAS-accredited clinical laboratory testing",
     metaTitle: "Clinilabs Blood Tests | Compare Health Tests UK",
-    metaDescription: "Browse all Clinilabs blood tests. In-clinic phlebotomy and postal kits with clinician-reviewed results from a UKAS-accredited laboratory.",
+    metaDescription:
+      "Browse all Clinilabs blood tests. In-clinic phlebotomy and postal kits with clinician-reviewed results from a UKAS-accredited laboratory.",
   },
 };
 
@@ -90,10 +105,15 @@ const normalizeCategory = (cat: string | null | undefined): string | null => {
   return cat;
 };
 
-const ProviderTestsCatalogPage = ({ providerId }: ProviderTestsCatalogPageProps) => {
-  const config = PROVIDER_CONFIGS[providerId] ?? PROVIDER_CONFIGS["medichecks"]!;
+const ProviderTestsCatalogPage = ({
+  providerId,
+}: ProviderTestsCatalogPageProps) => {
+  const config =
+    PROVIDER_CONFIGS[providerId] ?? PROVIDER_CONFIGS["medichecks"]!;
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
-  const [selectedTest, setSelectedTest] = useState<ProviderTestCardData | null>(null);
+  const [selectedTest, setSelectedTest] = useState<ProviderTestCardData | null>(
+    null,
+  );
   const [sortBy, setSortBy] = useState<CatalogSortOption>("name-asc");
 
   const { data: tests, isLoading } = useQuery({
@@ -112,28 +132,41 @@ const ProviderTestsCatalogPage = ({ providerId }: ProviderTestsCatalogPageProps)
 
   const categories = useMemo(() => {
     if (!tests) return [];
-    return [...new Set(tests.map((t) => normalizeCategory(t.category)).filter(Boolean))].sort() as string[];
+    return [
+      ...new Set(
+        tests.map((t) => normalizeCategory(t.category)).filter(Boolean),
+      ),
+    ].sort() as string[];
   }, [tests]);
 
   const filteredTests = useMemo(() => {
     if (!tests) return [];
-    const filtered = selectedCategory === "all" ? tests : tests.filter((t) => normalizeCategory(t.category) === selectedCategory);
+    const filtered =
+      selectedCategory === "all"
+        ? tests
+        : tests.filter(
+            (t) => normalizeCategory(t.category) === selectedCategory,
+          );
     return sortTests(filtered, sortBy);
   }, [tests, selectedCategory, sortBy]);
-
-  
 
   return (
     <MainLayout>
       <Helmet>
         <title>{config.metaTitle}</title>
         <meta name="description" content={config.metaDescription} />
-        <link rel="canonical" href={`https://myhealthcheckup.co.uk/providers/${config.providerId}`} />
+        <link
+          rel="canonical"
+          href={`https://myhealthcheckup.co.uk/providers/${config.providerId}`}
+        />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="myhealth checkup" />
         <meta property="og:title" content={config.metaTitle} />
         <meta property="og:description" content={config.metaDescription} />
-        <meta property="og:url" content={`https://myhealthcheckup.co.uk/providers/${config.providerId}`} />
+        <meta
+          property="og:url"
+          content={`https://myhealthcheckup.co.uk/providers/${config.providerId}`}
+        />
         <meta property="og:locale" content="en_GB" />
       </Helmet>
       <div className="min-h-screen bg-[primary-on-container] bg-tertiary">
@@ -153,26 +186,44 @@ const ProviderTestsCatalogPage = ({ providerId }: ProviderTestsCatalogPageProps)
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {[...Array(6)].map((_, i) => (
                 <Card key={i}>
-                  <CardHeader><Skeleton className="h-6 w-3/4" /></CardHeader>
-                  <CardContent><Skeleton className="h-20 w-full" /></CardContent>
+                  <CardHeader>
+                    <Skeleton className="h-6 w-3/4" />
+                  </CardHeader>
+                  <CardContent>
+                    <Skeleton className="h-20 w-full" />
+                  </CardContent>
                 </Card>
               ))}
             </div>
           ) : filteredTests.length > 0 ? (
             <>
-              <CatalogSortBar sortBy={sortBy} onSortChange={setSortBy} resultCount={filteredTests.length} categoryLabel={selectedCategory} />
+              <CatalogSortBar
+                sortBy={sortBy}
+                onSortChange={setSortBy}
+                resultCount={filteredTests.length}
+                categoryLabel={selectedCategory}
+              />
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {filteredTests.map((test) => (
-                  <ProviderTestCard key={test.id} test={test} providerName={config.providerName} onClick={() => setSelectedTest(test)} />
+                  <ProviderTestCard
+                    key={test.id}
+                    test={test}
+                    providerName={config.providerName}
+                    onClick={() => setSelectedTest(test)}
+                  />
                 ))}
               </div>
             </>
           ) : (
             <div className="text-center py-12">
               <TestTube2 className="h-12 w-12 mx-auto text-white/78 mb-4" />
-              <h3 className="text-lg font-semibold mb-2 text-white">No tests found</h3>
+              <h3 className="text-lg font-semibold mb-2 text-white">
+                No tests found
+              </h3>
               <p className="text-white/90">
-                {selectedCategory !== 'all' ? 'Try selecting a different category' : 'Tests from this provider will appear here soon'}
+                {selectedCategory !== "all"
+                  ? "Try selecting a different category"
+                  : "Tests from this provider will appear here soon"}
               </p>
             </div>
           )}
@@ -182,7 +233,9 @@ const ProviderTestsCatalogPage = ({ providerId }: ProviderTestsCatalogPageProps)
         test={selectedTest}
         providerName={config.providerName}
         open={!!selectedTest}
-        onOpenChange={(open) => { if (!open) setSelectedTest(null); }}
+        onOpenChange={(open) => {
+          if (!open) setSelectedTest(null);
+        }}
       />
     </MainLayout>
   );

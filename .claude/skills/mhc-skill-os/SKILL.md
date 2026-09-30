@@ -21,22 +21,22 @@ Conflict priority: **Security → Compliance → Stability → Product intent.**
 
 ## Skill registry (hard limit — 14, no additions)
 
-| Skill | Purpose | Hard rules |
-|---|---|---|
-| **PATCH** | Modify existing code | Touch only affected files. Preserve unrelated logic. No refactors outside scope. Must run VERIFY after. |
-| **AUDIT** | Full system inspection | Read-only. Identify bugs, risks, regressions, perf, a11y. No writes. |
-| **VERIFY** | Validate implementation | Test functionality, security, UI, API. No code changes. |
-| **REGRESSION** | Confirm prior functionality intact | Re-test all confirmed features. Block COMPLETE if any regression. |
-| **SECURE** | Security hardening | OWASP ASVS, NCSC, Cyber Essentials Plus. No functional change unless security-critical. |
-| **OPTIMISE** | Performance | Behaviour must not change. Perf only. |
-| **POLISH** | UI/UX refinement | Visual, spacing, animation, UX consistency only. No logic. |
-| **DEBUG** | Diagnose | Identify + root-cause only. No fixes. |
-| **FREEZE** | Lock stable component | Immutable until UNFREEZE. Record in `.mhc-freeze.json`. |
-| **UNFREEZE** | Unlock frozen component | Must state reason. |
-| **REVERT** | Roll back to last CHECKPOINT | Restore exact prior state. |
-| **CHECKPOINT** | Save state | Immutable reference for recovery. Record in `.mhc-checkpoints.json`. |
-| **RESUME** | Continue from CHECKPOINT | Restore full context before continuing. |
-| **COMPLETE** | Close task | Only after all pipeline stages + all verifications pass. |
+| Skill          | Purpose                            | Hard rules                                                                                              |
+| -------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **PATCH**      | Modify existing code               | Touch only affected files. Preserve unrelated logic. No refactors outside scope. Must run VERIFY after. |
+| **AUDIT**      | Full system inspection             | Read-only. Identify bugs, risks, regressions, perf, a11y. No writes.                                    |
+| **VERIFY**     | Validate implementation            | Test functionality, security, UI, API. No code changes.                                                 |
+| **REGRESSION** | Confirm prior functionality intact | Re-test all confirmed features. Block COMPLETE if any regression.                                       |
+| **SECURE**     | Security hardening                 | OWASP ASVS, NCSC, Cyber Essentials Plus. No functional change unless security-critical.                 |
+| **OPTIMISE**   | Performance                        | Behaviour must not change. Perf only.                                                                   |
+| **POLISH**     | UI/UX refinement                   | Visual, spacing, animation, UX consistency only. No logic.                                              |
+| **DEBUG**      | Diagnose                           | Identify + root-cause only. No fixes.                                                                   |
+| **FREEZE**     | Lock stable component              | Immutable until UNFREEZE. Record in `.mhc-freeze.json`.                                                 |
+| **UNFREEZE**   | Unlock frozen component            | Must state reason.                                                                                      |
+| **REVERT**     | Roll back to last CHECKPOINT       | Restore exact prior state.                                                                              |
+| **CHECKPOINT** | Save state                         | Immutable reference for recovery. Record in `.mhc-checkpoints.json`.                                    |
+| **RESUME**     | Continue from CHECKPOINT           | Restore full context before continuing.                                                                 |
+| **COMPLETE**   | Close task                         | Only after all pipeline stages + all verifications pass.                                                |
 
 ## Change isolation
 
@@ -63,26 +63,36 @@ Touching these requires an explicit `[PATCH]` or `[SECURE]` command naming the s
 ## Freeze bookkeeping
 
 Track frozen paths in `.mhc-freeze.json` at repo root:
+
 ```json
 { "frozen": [{ "path": "src/…", "at": "ISO-8601", "reason": "…" }] }
 ```
+
 Before any PATCH, check this file. If target is frozen → refuse and require UNFREEZE.
 
 ## Checkpoint bookkeeping
 
 Track in `.mhc-checkpoints.json`:
+
 ```json
-{ "checkpoints": [{ "id": "cp-YYYYMMDD-HHMM", "at": "ISO-8601", "note": "…", "files": ["…"] }] }
+{
+  "checkpoints": [
+    { "id": "cp-YYYYMMDD-HHMM", "at": "ISO-8601", "note": "…", "files": ["…"] }
+  ]
+}
 ```
+
 RESUME must reload the checkpoint entry and restate the context before acting.
 
 ## Response shape
 
 Every skill invocation reply must open with:
+
 ```
 [SKILL] · stage: <PIPELINE_STAGE>
 scope: <files/paths>
 ```
+
 Then the work. Close with the next required stage or COMPLETE.
 
 ## Refusal rules

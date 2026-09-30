@@ -1,11 +1,10 @@
-
-import React, { useState, useEffect } from 'react';
-import { X, Shield, Eye, BarChart3, Cog } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
-import { Separator } from '@/components/ui/separator';
-import { broadcastConsent, type CookiePreferences } from '@/lib/consent';
+import React, { useState, useEffect } from "react";
+import { X, Shield, Eye, BarChart3, Cog } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
+import { broadcastConsent, type CookiePreferences } from "@/lib/consent";
 
 const CookieConsent = () => {
   const [showBanner, setShowBanner] = useState(false);
@@ -14,11 +13,11 @@ const CookieConsent = () => {
     necessary: true,
     analytics: false,
     marketing: false,
-    functional: false
+    functional: false,
   });
 
   useEffect(() => {
-    const consent = localStorage.getItem('cookieConsent');
+    const consent = localStorage.getItem("cookieConsent");
     if (!consent) {
       setShowBanner(true);
     } else {
@@ -33,26 +32,43 @@ const CookieConsent = () => {
     }
     // Allow other parts of the app (e.g. /cookies "Manage Preferences" button)
     // to re-open the settings panel without reloading.
-    const open = () => { setShowBanner(true); setShowSettings(true); };
-    window.addEventListener('cookie-preferences:open', open as EventListener);
-    return () => window.removeEventListener('cookie-preferences:open', open as EventListener);
+    const open = () => {
+      setShowBanner(true);
+      setShowSettings(true);
+    };
+    window.addEventListener("cookie-preferences:open", open as EventListener);
+    return () =>
+      window.removeEventListener(
+        "cookie-preferences:open",
+        open as EventListener,
+      );
   }, []);
 
   const persistAndBroadcast = (prefs: CookiePreferences) => {
     setPreferences(prefs);
-    localStorage.setItem('cookieConsent', JSON.stringify(prefs));
-    localStorage.setItem('cookieConsentDate', new Date().toISOString());
+    localStorage.setItem("cookieConsent", JSON.stringify(prefs));
+    localStorage.setItem("cookieConsentDate", new Date().toISOString());
     broadcastConsent(prefs);
     setShowBanner(false);
     setShowSettings(false);
   };
 
   const handleAcceptAll = () => {
-    persistAndBroadcast({ necessary: true, analytics: true, marketing: true, functional: true });
+    persistAndBroadcast({
+      necessary: true,
+      analytics: true,
+      marketing: true,
+      functional: true,
+    });
   };
 
   const handleRejectAll = () => {
-    persistAndBroadcast({ necessary: true, analytics: false, marketing: false, functional: false });
+    persistAndBroadcast({
+      necessary: true,
+      analytics: false,
+      marketing: false,
+      functional: false,
+    });
   };
 
   const handleSavePreferences = () => {
@@ -60,9 +76,9 @@ const CookieConsent = () => {
   };
 
   const updatePreference = (key: keyof CookiePreferences, value: boolean) => {
-    setPreferences(prev => ({
+    setPreferences((prev) => ({
       ...prev,
-      [key]: value
+      [key]: value,
     }));
   };
 
@@ -78,14 +94,18 @@ const CookieConsent = () => {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-0.5 sm:mb-2">
                   <Shield className="h-4 w-4 sm:h-5 sm:w-5 text-brand-turquoise flex-shrink-0" />
-                  <h3 className="font-semibold text-brand-navy text-sm sm:text-base">Your Privacy Matters</h3>
+                  <h3 className="font-semibold text-brand-navy text-sm sm:text-base">
+                    Your Privacy Matters
+                  </h3>
                 </div>
                 <p className="text-xs sm:text-sm text-brand-navy line-clamp-2 sm:line-clamp-none">
                   We use cookies to enhance your experience and analyse traffic.
-                  <a href="/privacy-policy" className="inline-block py-1.5 text-health-600 underline ml-1">
+                  <a
+                    href="/privacy-policy"
+                    className="inline-block py-1.5 text-health-600 underline ml-1"
+                  >
                     Privacy Policy
                   </a>
-
                 </p>
               </div>
               <div className="flex gap-1.5 sm:gap-2 flex-wrap w-full lg:w-auto">
@@ -122,7 +142,9 @@ const CookieConsent = () => {
           <Card className="w-full max-w-2xl max-h-[90vh] overflow-y-auto animate-scale-in">
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-semibold text-brand-navy">Cookie Preferences</h2>
+                <h2 className="text-xl font-semibold text-brand-navy">
+                  Cookie Preferences
+                </h2>
                 <Button
                   variant="ghost"
                   size="sm"
@@ -138,15 +160,15 @@ const CookieConsent = () => {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <Shield className="h-5 w-5 text-green-600" />
-                      <h3 className="font-medium text-brand-navy">Necessary Cookies</h3>
+                      <h3 className="font-medium text-brand-navy">
+                        Necessary Cookies
+                      </h3>
                     </div>
-                    <Switch
-                      checked={preferences.necessary}
-                      disabled={true}
-                    />
+                    <Switch checked={preferences.necessary} disabled={true} />
                   </div>
                   <p className="text-sm text-brand-navy">
-                    Essential for the website to function properly. These cannot be disabled.
+                    Essential for the website to function properly. These cannot
+                    be disabled.
                   </p>
                 </div>
 
@@ -157,15 +179,20 @@ const CookieConsent = () => {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <BarChart3 className="h-5 w-5 text-blue-600" />
-                      <h3 className="font-medium text-brand-navy">Analytics Cookies</h3>
+                      <h3 className="font-medium text-brand-navy">
+                        Analytics Cookies
+                      </h3>
                     </div>
                     <Switch
                       checked={preferences.analytics}
-                      onCheckedChange={(checked) => updatePreference('analytics', checked)}
+                      onCheckedChange={(checked) =>
+                        updatePreference("analytics", checked)
+                      }
                     />
                   </div>
                   <p className="text-sm text-brand-navy">
-                    Help us understand how visitors interact with our website by collecting and reporting information anonymously.
+                    Help us understand how visitors interact with our website by
+                    collecting and reporting information anonymously.
                   </p>
                 </div>
 
@@ -176,15 +203,20 @@ const CookieConsent = () => {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <Eye className="h-5 w-5 text-purple-600" />
-                      <h3 className="font-medium text-brand-navy">Marketing Cookies</h3>
+                      <h3 className="font-medium text-brand-navy">
+                        Marketing Cookies
+                      </h3>
                     </div>
                     <Switch
                       checked={preferences.marketing}
-                      onCheckedChange={(checked) => updatePreference('marketing', checked)}
+                      onCheckedChange={(checked) =>
+                        updatePreference("marketing", checked)
+                      }
                     />
                   </div>
                   <p className="text-sm text-brand-navy">
-                    Used to track visitors across websites to display relevant advertisements.
+                    Used to track visitors across websites to display relevant
+                    advertisements.
                   </p>
                 </div>
 
@@ -195,15 +227,20 @@ const CookieConsent = () => {
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <Cog className="h-5 w-5 text-orange-600" />
-                      <h3 className="font-medium text-brand-navy">Functional Cookies</h3>
+                      <h3 className="font-medium text-brand-navy">
+                        Functional Cookies
+                      </h3>
                     </div>
                     <Switch
                       checked={preferences.functional}
-                      onCheckedChange={(checked) => updatePreference('functional', checked)}
+                      onCheckedChange={(checked) =>
+                        updatePreference("functional", checked)
+                      }
                     />
                   </div>
                   <p className="text-sm text-brand-navy">
-                    Enable enhanced functionality and personalisation, such as remembering your preferences.
+                    Enable enhanced functionality and personalisation, such as
+                    remembering your preferences.
                   </p>
                 </div>
               </div>

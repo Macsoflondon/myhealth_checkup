@@ -18,7 +18,13 @@ interface UserMenuProps {
   /** Render a labelled "Sign in" button instead of an icon-only control. */
   labelled?: boolean;
 }
-export const UserMenu = ({ isMobile = false, onItemClick, variant = "chip", onDark = false, labelled = false }: UserMenuProps) => {
+export const UserMenu = ({
+  isMobile = false,
+  onItemClick,
+  variant = "chip",
+  onDark = false,
+  labelled = false,
+}: UserMenuProps) => {
   const glassBtn = `!h-9 !w-9 !min-h-0 !p-0 ${onDark ? "!text-white hover:!bg-white/15" : "!text-[#081129] hover:!bg-[#081129]/10"} !bg-transparent !border-0 rounded-full transition-colors flex-shrink-0`;
   const { user, signOut } = useAuth();
   const { t } = useTranslation();
@@ -35,7 +41,11 @@ export const UserMenu = ({ isMobile = false, onItemClick, variant = "chip", onDa
         className="!h-9 !min-h-0 !px-3 gap-1.5 !text-[#081129] hover:!text-white hover:bg-[#e70d69] border-[1.5px] border-[#e70d69] rounded-full transition-colors shrink-0 font-[Montserrat] font-semibold text-[12.5px]"
         asChild
       >
-        <Link to="/auth" className="flex items-center justify-center no-underline" onClick={onItemClick}>
+        <Link
+          to="/auth"
+          className="flex items-center justify-center no-underline"
+          onClick={onItemClick}
+        >
           <User className="h-4 w-4" />
           Sign in
         </Link>
@@ -51,7 +61,11 @@ export const UserMenu = ({ isMobile = false, onItemClick, variant = "chip", onDa
             <Button
               variant="ghost"
               size="sm"
-              className={variant === "glass" ? glassBtn : "!h-9 !w-9 !min-h-0 !p-0 !text-[#e70d69] hover:!text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors flex-shrink-0"}
+              className={
+                variant === "glass"
+                  ? glassBtn
+                  : "!h-9 !w-9 !min-h-0 !p-0 !text-[#e70d69] hover:!text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors flex-shrink-0"
+              }
               aria-label="User menu"
             >
               <User className="h-4 w-4" />
@@ -59,7 +73,11 @@ export const UserMenu = ({ isMobile = false, onItemClick, variant = "chip", onDa
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuItem asChild>
-              <Link to="/health-dashboard" className="flex items-center gap-2" onClick={onItemClick}>
+              <Link
+                to="/health-dashboard"
+                className="flex items-center gap-2"
+                onClick={onItemClick}
+              >
                 <LayoutDashboard className="h-4 w-4" />
                 Dashboard
               </Link>
@@ -79,11 +97,19 @@ export const UserMenu = ({ isMobile = false, onItemClick, variant = "chip", onDa
       <Button
         variant="ghost"
         size="sm"
-        className={variant === "glass" ? glassBtn : "!h-9 !w-9 !min-h-0 !p-0 !text-[#e70d69] hover:!text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors flex-shrink-0"}
+        className={
+          variant === "glass"
+            ? glassBtn
+            : "!h-9 !w-9 !min-h-0 !p-0 !text-[#e70d69] hover:!text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors flex-shrink-0"
+        }
         aria-label="Sign in"
         asChild
       >
-        <Link to="/auth" className="flex items-center justify-center" onClick={onItemClick}>
+        <Link
+          to="/auth"
+          className="flex items-center justify-center"
+          onClick={onItemClick}
+        >
           <User className="h-4 w-4" />
         </Link>
       </Button>
@@ -96,7 +122,11 @@ export const UserMenu = ({ isMobile = false, onItemClick, variant = "chip", onDa
           <Button
             variant="ghost"
             size="sm"
-            className={variant === "glass" ? glassBtn : "!h-9 !w-9 !min-h-0 !p-0 !text-[#e70d69] hover:!text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors"}
+            className={
+              variant === "glass"
+                ? glassBtn
+                : "!h-9 !w-9 !min-h-0 !p-0 !text-[#e70d69] hover:!text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors"
+            }
             aria-label="User menu"
           >
             <User className="h-4 w-4" />
@@ -124,7 +154,11 @@ export const UserMenu = ({ isMobile = false, onItemClick, variant = "chip", onDa
       <Button
         variant="ghost"
         size="sm"
-        className={variant === "glass" ? glassBtn : "!h-9 !w-9 !min-h-0 !p-0 !text-[#e70d69] hover:!text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors"}
+        className={
+          variant === "glass"
+            ? glassBtn
+            : "!h-9 !w-9 !min-h-0 !p-0 !text-[#e70d69] hover:!text-white hover:bg-[#e70d69] border-2 border-[#e70d69] rounded-lg transition-colors"
+        }
         aria-label="Sign in"
         asChild
       >

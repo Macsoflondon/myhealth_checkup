@@ -3,7 +3,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
 // Mirror of SENSITIVE_USER_PROFILE_FIELDS in encrypt-sensitive-data, scoped to
@@ -24,7 +25,10 @@ const IV_LENGTH = 12;
 const SALT_LENGTH = 16;
 const ITERATIONS = 100000;
 
-async function deriveKey(password: string, salt: Uint8Array): Promise<CryptoKey> {
+async function deriveKey(
+  password: string,
+  salt: Uint8Array,
+): Promise<CryptoKey> {
   const encoder = new TextEncoder();
   const keyMaterial = await crypto.subtle.importKey(
     "raw",
@@ -47,12 +51,16 @@ async function deriveKey(password: string, salt: Uint8Array): Promise<CryptoKey>
   );
 }
 
-async function decryptField(encryptedText: string, secret: string): Promise<string> {
+async function decryptField(
+  encryptedText: string,
+  secret: string,
+): Promise<string> {
   if (!encryptedText.startsWith("enc:")) return encryptedText;
   const decoder = new TextDecoder();
   const binaryStr = atob(encryptedText.slice(4));
   const combined = new Uint8Array(binaryStr.length);
-  for (let i = 0; i < binaryStr.length; i++) combined[i] = binaryStr.charCodeAt(i);
+  for (let i = 0; i < binaryStr.length; i++)
+    combined[i] = binaryStr.charCodeAt(i);
   const salt = combined.slice(0, SALT_LENGTH);
   const iv = combined.slice(SALT_LENGTH, SALT_LENGTH + IV_LENGTH);
   const ciphertext = combined.slice(SALT_LENGTH + IV_LENGTH);
@@ -86,7 +94,10 @@ serve(async (req) => {
     if (!authHeader) {
       return new Response(
         JSON.stringify({ error: "Authorization header required" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+        {
+          status: 401,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
@@ -100,10 +111,10 @@ serve(async (req) => {
 
     const { data: userData, error: userErr } = await userClient.auth.getUser();
     if (userErr || !userData?.user) {
-      return new Response(
-        JSON.stringify({ error: "Unauthorized" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
+      return new Response(JSON.stringify({ error: "Unauthorized" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     const { data: isAdmin, error: roleErr } = await userClient.rpc("has_role", {
@@ -111,10 +122,10 @@ serve(async (req) => {
       _role: "admin",
     });
     if (roleErr || !isAdmin) {
-      return new Response(
-        JSON.stringify({ error: "Admin role required" }),
-        { status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" } },
-      );
+      return new Response(JSON.stringify({ error: "Admin role required" }), {
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     // Service-role client for the audit (bypasses RLS — needed to count across users).
@@ -129,16 +140,16 @@ serve(async (req) => {
       legacy_vite_key_present: !!legacyKey,
       keys_match:
         encryptionKey && legacyKey ? encryptionKey === legacyKey : null,
-      active_key_fingerprint: encryptionKey ? await fingerprint(encryptionKey) : null,
+      active_key_fingerprint: encryptionKey
+        ? await fingerprint(encryptionKey)
+        : null,
       legacy_key_fingerprint: legacyKey ? await fingerprint(legacyKey) : null,
     };
 
     // ---- PII audit on user_profiles ----
     const { data: profiles, error: profilesErr } = await admin
       .from("user_profiles")
-      .select(
-        `id, ${USER_PROFILE_TEXT_FIELDS.join(", ")}, date_of_birth`,
-      );
+      .select(`id, ${USER_PROFILE_TEXT_FIELDS.join(", ")}, date_of_birth`);
     if (profilesErr) throw profilesErr;
 
     const totalRows = profiles?.length ?? 0;
@@ -228,14 +239,21 @@ serve(async (req) => {
           decryption_probe.success = true;
         } catch (e) {
           decryption_probe.success = false;
-          decryption_probe.error = e instanceof Error ? e.message : "Decryption failed";
+          decryption_probe.error =
+            e instanceof Error ? e.message : "Decryption failed";
         }
       }
     }
 
     // ---- Rotation safety verdict ----
-    const totalEncrypted = piiAudit.reduce((sum, c) => sum + c.encrypted_rows, 0);
-    const totalPlaintext = piiAudit.reduce((sum, c) => sum + c.plaintext_rows, 0);
+    const totalEncrypted = piiAudit.reduce(
+      (sum, c) => sum + c.encrypted_rows,
+      0,
+    );
+    const totalPlaintext = piiAudit.reduce(
+      (sum, c) => sum + c.plaintext_rows,
+      0,
+    );
 
     let rotation_safety: "safe" | "data_at_risk" | "edge_function_broken";
     let verdict_reason: string;
@@ -257,9 +275,10 @@ serve(async (req) => {
     }
 
     // Plaintext leakage warning (sensitive fields stored unencrypted)
-    const plaintext_warning = totalPlaintext > 0
-      ? `${totalPlaintext} sensitive value(s) are stored as plaintext, violating the validate_encrypted_fields trigger expectation.`
-      : null;
+    const plaintext_warning =
+      totalPlaintext > 0
+        ? `${totalPlaintext} sensitive value(s) are stored as plaintext, violating the validate_encrypted_fields trigger expectation.`
+        : null;
 
     return new Response(
       JSON.stringify({
@@ -283,7 +302,10 @@ serve(async (req) => {
     console.error("encryption-status error:", error);
     return new Response(
       JSON.stringify({ error: "Encryption status check failed" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
     );
   }
 });

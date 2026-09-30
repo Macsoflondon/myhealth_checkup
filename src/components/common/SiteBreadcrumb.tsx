@@ -7,7 +7,15 @@ import { findSubcategoryBySlug } from "@/config/subcategoryMap";
  * routes. Emits BreadcrumbList JSON-LD for SEO (audit item 2.7 / 3.3).
  */
 
-const HIDDEN_PREFIXES = ["/admin", "/auth", "/reset-password", "/dashboard", "/client-portal", "/provider", "/providers"];
+const HIDDEN_PREFIXES = [
+  "/admin",
+  "/auth",
+  "/reset-password",
+  "/dashboard",
+  "/client-portal",
+  "/provider",
+  "/providers",
+];
 
 const SLUG_LABELS: Record<string, string> = {
   compare: "Compare Tests",
@@ -88,7 +96,10 @@ const SiteBreadcrumb = () => {
       ]
     : baseCrumbs;
 
-  const origin = typeof window !== "undefined" ? window.location.origin : "https://myhealthcheckup.co.uk";
+  const origin =
+    typeof window !== "undefined"
+      ? window.location.origin
+      : "https://myhealthcheckup.co.uk";
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",

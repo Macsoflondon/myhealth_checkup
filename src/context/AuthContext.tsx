@@ -1,4 +1,11 @@
-import { createContext, useCallback, useContext, useEffect, useState, ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  ReactNode,
+} from "react";
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -27,9 +34,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     try {
-      const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
-      const stepUp =
-        aal?.currentLevel === "aal1" && aal?.nextLevel === "aal2";
+      const { data: aal } =
+        await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+      const stepUp = aal?.currentLevel === "aal1" && aal?.nextLevel === "aal2";
       setMfaStepUpRequired(!!stepUp);
     } catch {
       setMfaStepUpRequired(false);
@@ -38,15 +45,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     // Set up auth state listener FIRST
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, s) => {
-        setSession(s);
-        setUser(s?.user ?? null);
-        setIsLoading(false);
-        // Defer to avoid recursive calls inside the listener.
-        setTimeout(() => { evaluateMfa(s); }, 0);
-      }
-    );
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, s) => {
+      setSession(s);
+      setUser(s?.user ?? null);
+      setIsLoading(false);
+      // Defer to avoid recursive calls inside the listener.
+      setTimeout(() => {
+        evaluateMfa(s);
+      }, 0);
+    });
 
     // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -68,7 +77,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ session, user, isLoading, mfaStepUpRequired, refreshMfaState, signOut }}>
+    <AuthContext.Provider
+      value={{
+        session,
+        user,
+        isLoading,
+        mfaStepUpRequired,
+        refreshMfaState,
+        signOut,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

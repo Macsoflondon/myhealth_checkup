@@ -17,24 +17,31 @@
  * Shopify `body_html`, `description` holds the same text with tags stripped.
  * No LLM is involved at any point.
  */
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
-import { getErrorMessage } from '../_shared/errors.ts';
-import { parseMedichecksProductPage } from '../_shared/scrape/medichecksProductPage.ts';
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
+import { getErrorMessage } from "../_shared/errors.ts";
+import { parseMedichecksProductPage } from "../_shared/scrape/medichecksProductPage.ts";
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
-const FEED_BASE = 'https://www.medichecks.com/products.json';
+const FEED_BASE = "https://www.medichecks.com/products.json";
 const MAX_FEED_PAGES = 8;
 const PAGE_SIZE = 250;
 const UPSERT_CHUNK = 25;
 
 type Supa = ReturnType<typeof createClient>;
 
-interface ShopifyImage { src?: string }
-interface ShopifyVariant { price?: string; compare_at_price?: string | null; available?: boolean }
+interface ShopifyImage {
+  src?: string;
+}
+interface ShopifyVariant {
+  price?: string;
+  compare_at_price?: string | null;
+  available?: boolean;
+}
 interface ShopifyProduct {
   title?: string;
   handle?: string;
@@ -58,57 +65,104 @@ interface CatalogueRow {
   category: string;
 }
 
-declare const EdgeRuntime: { waitUntil: (p: Promise<unknown>) => void } | undefined;
+declare const EdgeRuntime:
+  { waitUntil: (p: Promise<unknown>) => void } | undefined;
 const waitUntil = (p: Promise<unknown>): void => {
   try {
-    if (typeof EdgeRuntime !== 'undefined' && EdgeRuntime?.waitUntil) {
+    if (typeof EdgeRuntime !== "undefined" && EdgeRuntime?.waitUntil) {
       EdgeRuntime.waitUntil(p);
       return;
     }
-  } catch { /* noop */ }
-  p.catch((err) => console.error('[medichecks] bg error:', getErrorMessage(err)));
+  } catch {
+    /* noop */
+  }
+  p.catch((err) =>
+    console.error("[medichecks] bg error:", getErrorMessage(err)),
+  );
 };
 
-function determineCategory(title: string, description: string, url: string): string {
+function determineCategory(
+  title: string,
+  description: string,
+  url: string,
+): string {
   const text = `${title} ${description} ${url}`.toLowerCase();
 
   const categoryMap: Record<string, string[]> = {
-    'Thyroid': ['thyroid', 'tsh', 't3', 't4'],
-    'Hormones': ['hormone', 'testosterone', 'oestrogen', 'estrogen', 'progesterone', 'dhea', 'cortisol'],
-    'Vitamins & Minerals': ['vitamin', 'mineral', 'iron', 'ferritin', 'b12', 'folate', 'magnesium', 'zinc'],
-    'Heart Health': ['heart', 'cholesterol', 'cardiovascular', 'cardiac', 'lipid'],
-    'Diabetes': ['diabetes', 'hba1c', 'glucose', 'insulin', 'blood sugar'],
-    'Liver Health': ['liver', 'hepatic', 'alt', 'ast', 'bilirubin'],
-    'Kidney Health': ['kidney', 'renal', 'creatinine', 'egfr', 'urea'],
-    'Mens Health': ['men', 'male', 'prostate', 'psa', 'well man'],
-    'Womens Health': ['women', 'female', 'menopause', 'well woman', 'pcos'],
-    'Fertility': ['fertility', 'ovarian', 'amh', 'sperm', 'conception'],
-    'Sports & Fitness': ['sport', 'fitness', 'athlete', 'performance', 'muscle'],
-    'General Health': ['general', 'comprehensive', 'full body', 'health check', 'mot', 'baseline', 'essential', 'optimal'],
-    'Fatigue': ['fatigue', 'tiredness', 'energy', 'exhaustion'],
-    'Inflammation': ['inflammation', 'crp', 'esr', 'autoimmune'],
+    Thyroid: ["thyroid", "tsh", "t3", "t4"],
+    Hormones: [
+      "hormone",
+      "testosterone",
+      "oestrogen",
+      "estrogen",
+      "progesterone",
+      "dhea",
+      "cortisol",
+    ],
+    "Vitamins & Minerals": [
+      "vitamin",
+      "mineral",
+      "iron",
+      "ferritin",
+      "b12",
+      "folate",
+      "magnesium",
+      "zinc",
+    ],
+    "Heart Health": [
+      "heart",
+      "cholesterol",
+      "cardiovascular",
+      "cardiac",
+      "lipid",
+    ],
+    Diabetes: ["diabetes", "hba1c", "glucose", "insulin", "blood sugar"],
+    "Liver Health": ["liver", "hepatic", "alt", "ast", "bilirubin"],
+    "Kidney Health": ["kidney", "renal", "creatinine", "egfr", "urea"],
+    "Mens Health": ["men", "male", "prostate", "psa", "well man"],
+    "Womens Health": ["women", "female", "menopause", "well woman", "pcos"],
+    Fertility: ["fertility", "ovarian", "amh", "sperm", "conception"],
+    "Sports & Fitness": [
+      "sport",
+      "fitness",
+      "athlete",
+      "performance",
+      "muscle",
+    ],
+    "General Health": [
+      "general",
+      "comprehensive",
+      "full body",
+      "health check",
+      "mot",
+      "baseline",
+      "essential",
+      "optimal",
+    ],
+    Fatigue: ["fatigue", "tiredness", "energy", "exhaustion"],
+    Inflammation: ["inflammation", "crp", "esr", "autoimmune"],
   };
 
   for (const [category, keywords] of Object.entries(categoryMap)) {
     if (keywords.some((keyword) => text.includes(keyword))) return category;
   }
-  return 'General Health';
+  return "General Health";
 }
 
 function stripHtml(html: string): string {
   return html
-    .replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ')
-    .replace(/<br\s*\/?>/gi, '\n')
-    .replace(/<\/(p|li|h[1-6]|div)>/gi, '\n')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
+    .replace(/<(script|style)[\s\S]*?<\/\1>/gi, " ")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/(p|li|h[1-6]|div)>/gi, "\n")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
     .replace(/&#39;|&rsquo;/g, "'")
     .replace(/&quot;/g, '"')
-    .replace(/[ \t]+/g, ' ')
-    .replace(/\n{3,}/g, '\n\n')
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
     .trim();
 }
 
@@ -130,13 +184,24 @@ function isNotATest(title: string, handle: string): boolean {
   const t = title.toLowerCase().trim();
   if (t.length < 3) return true;
   const banned = [
-    'clinic visit', 'gift card', 'nurse visit', 'phlebotomy', 'blood draw',
-    'consultation', 'shipping', 'sample kit', 'donation', '404',
-    'collection method', 'collection kit',
+    "clinic visit",
+    "gift card",
+    "nurse visit",
+    "phlebotomy",
+    "blood draw",
+    "consultation",
+    "shipping",
+    "sample kit",
+    "donation",
+    "404",
+    "collection method",
+    "collection kit",
   ];
-  return banned.some((b) => t.startsWith(b) || t.includes(b))
-    || handle.startsWith('clinic-visit')
-    || handle.startsWith('collection-method');
+  return (
+    banned.some((b) => t.startsWith(b) || t.includes(b)) ||
+    handle.startsWith("clinic-visit") ||
+    handle.startsWith("collection-method")
+  );
 }
 
 async function fetchCatalogue(): Promise<CatalogueRow[]> {
@@ -146,18 +211,22 @@ async function fetchCatalogue(): Promise<CatalogueRow[]> {
 
   for (let page = 1; page <= MAX_FEED_PAGES; page++) {
     const res = await fetch(`${FEED_BASE}?limit=${PAGE_SIZE}&page=${page}`, {
-      headers: { 'User-Agent': 'MyHealthCheckupBot/1.0 (+https://myhealthcheckup.co.uk)' },
+      headers: {
+        "User-Agent": "MyHealthCheckupBot/1.0 (+https://myhealthcheckup.co.uk)",
+      },
     });
     if (!res.ok) {
-      throw new Error(`Medichecks products feed failed [${res.status}]: ${(await res.text()).slice(0, 300)}`);
+      throw new Error(
+        `Medichecks products feed failed [${res.status}]: ${(await res.text()).slice(0, 300)}`,
+      );
     }
-    const payload = await res.json() as { products?: ShopifyProduct[] };
+    const payload = (await res.json()) as { products?: ShopifyProduct[] };
     const products = Array.isArray(payload.products) ? payload.products : [];
     if (products.length === 0) break;
 
     for (const product of products) {
-      const title = (product.title ?? '').trim();
-      const handle = (product.handle ?? '').trim();
+      const title = (product.title ?? "").trim();
+      const handle = (product.handle ?? "").trim();
       if (!title || !handle) continue;
       if (isNotATest(title, handle)) continue;
       if (seenHandles.has(handle)) continue;
@@ -166,11 +235,13 @@ async function fetchCatalogue(): Promise<CatalogueRow[]> {
       seenHandles.add(handle);
       seenNames.add(nameKey);
 
-      const bodyHtml = product.body_html ?? '';
-      const plain = bodyHtml ? stripHtml(bodyHtml) : '';
+      const bodyHtml = product.body_html ?? "";
+      const plain = bodyHtml ? stripHtml(bodyHtml) : "";
       const variant = product.variants?.[0];
       const price = variant?.price ? Number.parseFloat(variant.price) : NaN;
-      const compareAt = variant?.compare_at_price ? Number.parseFloat(variant.compare_at_price) : NaN;
+      const compareAt = variant?.compare_at_price
+        ? Number.parseFloat(variant.compare_at_price)
+        : NaN;
       const url = `https://www.medichecks.com/products/${handle}`;
 
       rows.push({
@@ -178,7 +249,8 @@ async function fetchCatalogue(): Promise<CatalogueRow[]> {
         test_name: title,
         url,
         price: Number.isFinite(price) && price > 0 ? price : null,
-        original_price: Number.isFinite(compareAt) && compareAt > 0 ? compareAt : null,
+        original_price:
+          Number.isFinite(compareAt) && compareAt > 0 ? compareAt : null,
         description: plain ? plain.slice(0, 4000) : null,
         description_scraped: bodyHtml || null,
         biomarker_count: extractBiomarkerCount(plain),
@@ -194,7 +266,7 @@ async function fetchCatalogue(): Promise<CatalogueRow[]> {
 }
 
 const PAGE_UA =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36';
+  "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -206,7 +278,7 @@ async function fetchProductPage(url: string): Promise<string | null> {
   let delay = 2000;
   for (let attempt = 0; attempt < 4; attempt++) {
     try {
-      const res = await fetch(url, { headers: { 'User-Agent': PAGE_UA } });
+      const res = await fetch(url, { headers: { "User-Agent": PAGE_UA } });
       if (res.ok) return await res.text();
       if (res.status !== 429 && res.status < 500) return null;
     } catch {
@@ -225,16 +297,22 @@ async function fetchProductPage(url: string): Promise<string | null> {
  * provider" for biomarkers and collapses both collection routes into one
  * price. Runs after the catalogue upsert, throttled, in the background.
  */
-async function enrichFromProductPages(supabase: Supa, runId: string): Promise<number> {
+async function enrichFromProductPages(
+  supabase: Supa,
+  runId: string,
+): Promise<number> {
   const { data, error } = await supabase
-    .from('provider_tests')
-    .select('id, url')
-    .eq('provider_id', 'medichecks')
-    .eq('is_active', true)
-    .not('url', 'is', null);
+    .from("provider_tests")
+    .select("id, url")
+    .eq("provider_id", "medichecks")
+    .eq("is_active", true)
+    .not("url", "is", null);
 
   if (error || !data) {
-    console.error('[medichecks] enrichment query failed:', getErrorMessage(error));
+    console.error(
+      "[medichecks] enrichment query failed:",
+      getErrorMessage(error),
+    );
     return 0;
   }
 
@@ -249,7 +327,7 @@ async function enrichFromProductPages(supabase: Supa, runId: string): Promise<nu
       what_is_tested: detail.whatIsTested,
       preparation_notes: detail.preparationNotes,
       test_limitations: detail.testLimitations,
-      description_source: 'scraped_verbatim',
+      description_source: "scraped_verbatim",
       updated_at: new Date().toISOString(),
     };
 
@@ -263,27 +341,32 @@ async function enrichFromProductPages(supabase: Supa, runId: string): Promise<nu
       update.biomarkers_not_stated = true;
     }
 
-    if (detail.clinicDrawFee !== null) update.clinic_phlebotomy_cost = detail.clinicDrawFee;
+    if (detail.clinicDrawFee !== null)
+      update.clinic_phlebotomy_cost = detail.clinicDrawFee;
     if (detail.nurseVisitFee !== null) {
       update.home_phlebotomy_cost = detail.nurseVisitFee;
       update.home_phlebotomy_option = true;
     }
 
     const { error: updateError } = await supabase
-      .from('provider_tests')
+      .from("provider_tests")
       .update(update)
-      .eq('id', row.id);
+      .eq("id", row.id);
 
     if (updateError) {
-      console.error(`[medichecks] enrichment update failed for ${row.id}:`, getErrorMessage(updateError));
+      console.error(
+        `[medichecks] enrichment update failed for ${row.id}:`,
+        getErrorMessage(updateError),
+      );
       continue;
     }
     enriched++;
 
     if (enriched % 25 === 0) {
-      await supabase.from('scrape_runs')
-        .update({ metadata: { source: 'shopify-products-feed', enriched } })
-        .eq('id', runId);
+      await supabase
+        .from("scrape_runs")
+        .update({ metadata: { source: "shopify-products-feed", enriched } })
+        .eq("id", runId);
     }
   }
 
@@ -291,7 +374,11 @@ async function enrichFromProductPages(supabase: Supa, runId: string): Promise<nu
   return enriched;
 }
 
-async function setJob(supabase: Supa, status: string, errorMessage: string | null): Promise<void> {
+async function setJob(
+  supabase: Supa,
+  status: string,
+  errorMessage: string | null,
+): Promise<void> {
   const row = {
     status,
     error_message: errorMessage,
@@ -300,8 +387,18 @@ async function setJob(supabase: Supa, status: string, errorMessage: string | nul
   };
   // Canonical id first — dashboards key off `medichecks`; the legacy alias is
   // kept in step so the two rows never disagree again.
-  await supabase.from('scraping_jobs').upsert({ provider_id: 'medichecks', ...row }, { onConflict: 'provider_id' });
-  await supabase.from('scraping_jobs').upsert({ provider_id: 'medichecks-firecrawl', ...row }, { onConflict: 'provider_id' });
+  await supabase
+    .from("scraping_jobs")
+    .upsert(
+      { provider_id: "medichecks", ...row },
+      { onConflict: "provider_id" },
+    );
+  await supabase
+    .from("scraping_jobs")
+    .upsert(
+      { provider_id: "medichecks-firecrawl", ...row },
+      { onConflict: "provider_id" },
+    );
 }
 
 async function syncCatalogue(supabase: Supa, runId: string): Promise<void> {
@@ -320,19 +417,19 @@ async function syncCatalogue(supabase: Supa, runId: string): Promise<void> {
       const payload = chunk.map((row) => {
         if (row.price !== null) withPrices++;
         return {
-          provider_id: 'medichecks',
+          provider_id: "medichecks",
           provider_test_id: row.provider_test_id,
           test_name: row.test_name,
           url: row.url,
           category: row.category,
           description: row.description,
           description_scraped: row.description_scraped,
-          description_source: 'scraped_verbatim',
+          description_source: "scraped_verbatim",
           price: row.price,
           original_price: row.original_price,
           biomarker_count: row.biomarker_count,
           image_url: row.image_url,
-          sample_type: 'Finger-prick or Venous',
+          sample_type: "Finger-prick or Venous",
           is_active: true,
           scraped_at: now,
           updated_at: now,
@@ -342,83 +439,112 @@ async function syncCatalogue(supabase: Supa, runId: string): Promise<void> {
       });
 
       const { error } = await supabase
-        .from('provider_tests')
-        .upsert(payload, { onConflict: 'provider_id,provider_test_id' });
+        .from("provider_tests")
+        .upsert(payload, { onConflict: "provider_id,provider_test_id" });
 
       if (error) {
         errors.push(`chunk ${i}: ${getErrorMessage(error)}`);
-        console.error(`[medichecks] chunk ${i} failed:`, getErrorMessage(error));
+        console.error(
+          `[medichecks] chunk ${i} failed:`,
+          getErrorMessage(error),
+        );
       } else {
         upserted += payload.length;
       }
 
-      await supabase.from('scrape_runs').update({
-        tests_seen: rows.length,
-        tests_updated: upserted,
-        metadata: { source: 'shopify-products-feed', total: rows.length, upserted },
-      }).eq('id', runId);
+      await supabase
+        .from("scrape_runs")
+        .update({
+          tests_seen: rows.length,
+          tests_updated: upserted,
+          metadata: {
+            source: "shopify-products-feed",
+            total: rows.length,
+            upserted,
+          },
+        })
+        .eq("id", runId);
     }
 
     const enriched = await enrichFromProductPages(supabase, runId);
 
-    const status = errors.length > 0 ? 'partial' : 'success';
-    await supabase.from('scrape_runs').update({
-      status,
-      finished_at: new Date().toISOString(),
-      tests_seen: rows.length,
-      tests_updated: upserted,
-      errors: errors.slice(0, 20).map((message) => ({ message })),
-      metadata: { source: 'shopify-products-feed', total: rows.length, upserted, withPrices, enriched },
-    }).eq('id', runId);
+    const status = errors.length > 0 ? "partial" : "success";
+    await supabase
+      .from("scrape_runs")
+      .update({
+        status,
+        finished_at: new Date().toISOString(),
+        tests_seen: rows.length,
+        tests_updated: upserted,
+        errors: errors.slice(0, 20).map((message) => ({ message })),
+        metadata: {
+          source: "shopify-products-feed",
+          total: rows.length,
+          upserted,
+          withPrices,
+          enriched,
+        },
+      })
+      .eq("id", runId);
 
-    await setJob(supabase, 'completed', errors.length > 0 ? `Completed with ${errors.length} error(s)` : null);
-    console.log(`[medichecks] run ${runId} ${status}: ${upserted}/${rows.length} upserted, ${withPrices} with prices`);
+    await setJob(
+      supabase,
+      "completed",
+      errors.length > 0 ? `Completed with ${errors.length} error(s)` : null,
+    );
+    console.log(
+      `[medichecks] run ${runId} ${status}: ${upserted}/${rows.length} upserted, ${withPrices} with prices`,
+    );
   } catch (err) {
     const message = getErrorMessage(err);
-    console.error('[medichecks] run failed:', message);
-    await supabase.from('scrape_runs').update({
-      status: 'error',
-      finished_at: new Date().toISOString(),
-      tests_updated: upserted,
-      errors: [{ message }],
-    }).eq('id', runId);
-    await setJob(supabase, 'failed', message.slice(0, 1000));
+    console.error("[medichecks] run failed:", message);
+    await supabase
+      .from("scrape_runs")
+      .update({
+        status: "error",
+        finished_at: new Date().toISOString(),
+        tests_updated: upserted,
+        errors: [{ message }],
+      })
+      .eq("id", runId);
+    await setJob(supabase, "failed", message.slice(0, 1000));
   }
 }
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
+  if (req.method === "OPTIONS")
+    return new Response(null, { headers: corsHeaders });
 
   const json = (body: unknown, status = 200) =>
     new Response(JSON.stringify(body), {
       status,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
 
-  const serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
-  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${serviceKey}`) {
-    return json({ error: 'Unauthorized' }, 401);
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+  if ((req.headers.get("Authorization") ?? "") !== `Bearer ${serviceKey}`) {
+    return json({ error: "Unauthorized" }, 401);
   }
 
-  const supabase = createClient(Deno.env.get('SUPABASE_URL')!, serviceKey);
+  const supabase = createClient(Deno.env.get("SUPABASE_URL")!, serviceKey);
 
   try {
-    await setJob(supabase, 'running', null);
+    await setJob(supabase, "running", null);
 
     const { data: runRow, error: runError } = await supabase
-      .from('scrape_runs')
+      .from("scrape_runs")
       .insert({
-        provider_id: 'medichecks',
-        scraper_function: 'medichecks-firecrawl',
-        status: 'running',
-        metadata: { source: 'shopify-products-feed' },
+        provider_id: "medichecks",
+        scraper_function: "medichecks-firecrawl",
+        status: "running",
+        metadata: { source: "shopify-products-feed" },
       })
-      .select('id')
+      .select("id")
       .single();
 
     if (runError || !runRow) {
-      const message = `Could not open scrape run: ${runError?.message ?? 'unknown'}`;
-      await setJob(supabase, 'failed', message);
+      const message = `Could not open scrape run: ${runError?.message ?? "unknown"}`;
+      await setJob(supabase, "failed", message);
       return json({ error: message }, 500);
     }
 
@@ -427,17 +553,20 @@ Deno.serve(async (req) => {
     // can ever time out mid-write.
     waitUntil(syncCatalogue(supabase, runId));
 
-    return json({
-      success: true,
-      provider: 'medichecks',
-      method: 'shopify-products-feed',
-      runId,
-      message: 'Medichecks catalogue sync running in the background.',
-    }, 202);
+    return json(
+      {
+        success: true,
+        provider: "medichecks",
+        method: "shopify-products-feed",
+        runId,
+        message: "Medichecks catalogue sync running in the background.",
+      },
+      202,
+    );
   } catch (error) {
     const message = getErrorMessage(error);
-    console.error('[medichecks] fatal:', message);
-    await setJob(supabase, 'failed', message);
+    console.error("[medichecks] fatal:", message);
+    await setJob(supabase, "failed", message);
     return json({ success: false, error: message }, 500);
   }
 });

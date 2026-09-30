@@ -7,12 +7,16 @@ import { providersApi, type ProviderTestData } from "@/api";
 import { logger } from "@/lib/logger";
 
 export const providersQueryKeys = {
-  all: ['providers'] as const,
-  tests: (providerId: string) => ['providers', providerId, 'tests'] as const,
-  catalog: (providerId: string) => ['providers', providerId, 'catalog'] as const,
+  all: ["providers"] as const,
+  tests: (providerId: string) => ["providers", providerId, "tests"] as const,
+  catalog: (providerId: string) =>
+    ["providers", providerId, "catalog"] as const,
 };
 
-export function useProviderTestsQuery(providerId: string, options?: { enabled?: boolean }) {
+export function useProviderTestsQuery(
+  providerId: string,
+  options?: { enabled?: boolean },
+) {
   return useQuery({
     queryKey: providersQueryKeys.tests(providerId),
     queryFn: async () => {
@@ -29,15 +33,18 @@ export function useProviderTestsQuery(providerId: string, options?: { enabled?: 
 }
 
 export function useProviderCatalogQuery(
-  providerId: string, 
-  options?: { enabled?: boolean }
+  providerId: string,
+  options?: { enabled?: boolean },
 ) {
   return useQuery({
     queryKey: providersQueryKeys.catalog(providerId),
     queryFn: async () => {
       const { data, error } = await providersApi.getProviderCatalog(providerId);
       if (error) {
-        logger.error(`Error fetching catalog for provider ${providerId}:`, error);
+        logger.error(
+          `Error fetching catalog for provider ${providerId}:`,
+          error,
+        );
         throw error;
       }
       return data || [];

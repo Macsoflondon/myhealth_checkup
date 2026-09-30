@@ -2,7 +2,10 @@ import "@testing-library/jest-dom/vitest";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { TestProviders } from "@/test/test-providers";
-import { UniversalTestDetailModal, type UniversalTestData } from "../UniversalTestCard";
+import {
+  UniversalTestDetailModal,
+  type UniversalTestData,
+} from "../UniversalTestCard";
 import { trackFunnelEvent } from "@/lib/funnelTracking";
 
 vi.mock("@/lib/funnelTracking", () => ({ trackFunnelEvent: vi.fn() }));
@@ -19,7 +22,9 @@ describe("UniversalTestDetailModal provider link", () => {
   beforeEach(() => vi.mocked(trackFunnelEvent).mockClear());
 
   it("records a provider_click funnel event when the provider link is opened", () => {
-    render(<UniversalTestDetailModal test={test} onClose={() => {}} />, { wrapper: TestProviders });
+    render(<UniversalTestDetailModal test={test} onClose={() => {}} />, {
+      wrapper: TestProviders,
+    });
 
     const link = screen
       .getAllByRole("link")

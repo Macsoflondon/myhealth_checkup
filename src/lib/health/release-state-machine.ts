@@ -9,7 +9,9 @@ import type { ReleasePolicy, ReportStatus } from "@/types/health-intelligence";
  * without a database.
  */
 
-const ALLOWED_TRANSITIONS: Readonly<Record<ReportStatus, readonly ReportStatus[]>> = {
+const ALLOWED_TRANSITIONS: Readonly<
+  Record<ReportStatus, readonly ReportStatus[]>
+> = {
   draft: ["awaiting_review", "released", "cancelled"],
   awaiting_review: ["reviewed", "draft", "cancelled"],
   reviewed: ["released", "awaiting_review", "cancelled"],

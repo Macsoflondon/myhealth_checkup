@@ -16,7 +16,10 @@
  * for providers not yet present in the real-data file (Lola Health, London
  * Health Company, Blood Tests London, Medical Diagnosis, Goodbody).
  */
-import { realTestData, type RealTestData } from "@/data/compare/realProviderData";
+import {
+  realTestData,
+  type RealTestData,
+} from "@/data/compare/realProviderData";
 import { SEED_TESTS } from "@/data/testFinderSeed";
 import type {
   ClinicalReviewProfessional,
@@ -115,7 +118,10 @@ function inferCollection(
   return fallback;
 }
 
-function inferSexRestriction(name: string, tags: string | null): SexRestriction {
+function inferSexRestriction(
+  name: string,
+  tags: string | null,
+): SexRestriction {
   const n = name.toLowerCase();
   if (/\b(male|men's|man|prostate|psa|trt|testosterone|sperm)\b/.test(n)) {
     // "Testosterone" can be ordered by anyone clinically, but in this
@@ -123,8 +129,13 @@ function inferSexRestriction(name: string, tags: string | null): SexRestriction 
     // explicit "Male"/"Men's"/PSA/TRT cases only.
     if (/\b(male|men's|prostate|psa|trt|sperm)\b/.test(n)) return "male_only";
   }
-  if (/\b(female|women's|woman|ovulation|amh|pregnancy|menopause|oestradiol|progesterone)\b/.test(n)) {
-    if (/\b(female|women's|ovulation|amh|pregnancy|menopause)\b/.test(n)) return "female_only";
+  if (
+    /\b(female|women's|woman|ovulation|amh|pregnancy|menopause|oestradiol|progesterone)\b/.test(
+      n,
+    )
+  ) {
+    if (/\b(female|women's|ovulation|amh|pregnancy|menopause)\b/.test(n))
+      return "female_only";
   }
   return "none";
 }
@@ -132,12 +143,18 @@ function inferSexRestriction(name: string, tags: string | null): SexRestriction 
 function inferGoals(name: string, tags: string | null): GoalTag[] {
   const n = name.toLowerCase();
   const goals = new Set<GoalTag>();
-  if (/(performance|sports|ultimate|optimal|athlete)/.test(n)) goals.add("performance");
-  if (/(general|wellness|well[- ]?(man|woman)|mot|screening|lifestyle|nutrition)/.test(n)) {
+  if (/(performance|sports|ultimate|optimal|athlete)/.test(n))
+    goals.add("performance");
+  if (
+    /(general|wellness|well[- ]?(man|woman)|mot|screening|lifestyle|nutrition)/.test(
+      n,
+    )
+  ) {
     goals.add("preventative");
   }
   if (/(advanced|optimal|ultimate|longevity)/.test(n)) goals.add("longevity");
-  if (/(weight|metabolic|diabetes|hba1c|cholesterol)/.test(n)) goals.add("weight_management");
+  if (/(weight|metabolic|diabetes|hba1c|cholesterol)/.test(n))
+    goals.add("weight_management");
   if (
     /(thyroid|cortisol|fatigue|hormone|testosterone|oestradiol|amh|psa|liver|kidney|iron|vitamin|deficiency|allergy|fertility|pregnancy)/.test(
       n,
@@ -156,18 +173,30 @@ function inferConditions(name: string, tags: string | null): ConditionTag[] {
   const c = new Set<ConditionTag>();
 
   if (/(psa|prostate)/.test(n)) c.add("prostate_health");
-  if (/(testosterone|trt|male hormone|sports hormone|dhea)/.test(n)) c.add("male_hormones");
-  if (/(female hormone|oestradiol|progesterone|amh|ovulation)/.test(n)) c.add("female_hormones");
+  if (/(testosterone|trt|male hormone|sports hormone|dhea)/.test(n))
+    c.add("male_hormones");
+  if (/(female hormone|oestradiol|progesterone|amh|ovulation)/.test(n))
+    c.add("female_hormones");
   if (/menopause/.test(n)) c.add("menopause_hrt");
-  if (/(pregnancy|fertility)/.test(n) && /female|women|amh|ovulation|pregnancy/.test(n)) {
+  if (
+    /(pregnancy|fertility)/.test(n) &&
+    /female|women|amh|ovulation|pregnancy/.test(n)
+  ) {
     c.add("fertility_female");
   }
   if (/(sperm|male fertility)/.test(n)) c.add("fertility_male");
-  if (/(cholesterol|heart|lipid|cardio)/.test(n) || t.includes("heart")) c.add("cardiovascular_risk");
-  if (/(diabetes|hba1c|glucose|insulin)/.test(n) || t.includes("diabetes")) c.add("diabetes");
-  if (/(metabolic|weight|nutrition|vitamin|iron)/.test(n)) c.add("metabolic_health");
+  if (/(cholesterol|heart|lipid|cardio)/.test(n) || t.includes("heart"))
+    c.add("cardiovascular_risk");
+  if (/(diabetes|hba1c|glucose|insulin)/.test(n) || t.includes("diabetes"))
+    c.add("diabetes");
+  if (/(metabolic|weight|nutrition|vitamin|iron)/.test(n))
+    c.add("metabolic_health");
   if (/thyroid/.test(n) || t.includes("thyroid")) c.add("thyroid");
-  if (/(general|well[- ]?(man|woman)|mot|screening|lifestyle|optimal|ultimate)/.test(n))
+  if (
+    /(general|well[- ]?(man|woman)|mot|screening|lifestyle|optimal|ultimate)/.test(
+      n,
+    )
+  )
     c.add("general_health");
   if (/(sports|performance|athlete)/.test(n)) c.add("sports_performance");
   if (/(fatigue|cortisol|stress|energy)/.test(n)) c.add("fatigue_low_energy");
@@ -197,7 +226,9 @@ function adaptRow(row: RealTestData, idx: number): TestRecord {
   const collection = inferCollection(name, defaults.collection_method);
   // Home-kit only flows generally drop the phlebotomy fee.
   const isHomeOnly = collection.length === 1 && collection[0] === "home_kit";
-  const feeType: CollectionFeeType = isHomeOnly ? "none" : defaults.collection_fee_type;
+  const feeType: CollectionFeeType = isHomeOnly
+    ? "none"
+    : defaults.collection_fee_type;
   const feeAmount = isHomeOnly ? null : defaults.collection_fee_amount;
 
   // Biomarker counts of 4 in this dataset are placeholders; flag for review.

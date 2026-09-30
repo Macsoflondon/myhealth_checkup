@@ -16,7 +16,8 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/testosterone-blood-test",
     category: "Hormone",
     biomarkerCount: 4,
-    description: "Comprehensive testosterone level assessment for hormonal health monitoring."
+    description:
+      "Comprehensive testosterone level assessment for hormonal health monitoring.",
   },
   {
     id: "medichecks-male-hormone",
@@ -25,7 +26,8 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/male-hormone-check-blood-test",
     category: "Hormone",
     biomarkerCount: 4,
-    description: "Complete male hormone panel for comprehensive hormonal health assessment."
+    description:
+      "Complete male hormone panel for comprehensive hormonal health assessment.",
   },
   {
     id: "medichecks-ultimate-performance",
@@ -34,7 +36,8 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/ultimate-performance-blood-test",
     category: "Sports Performance",
     biomarkerCount: 4,
-    description: "Advanced testing for athletes and active individuals seeking optimal performance."
+    description:
+      "Advanced testing for athletes and active individuals seeking optimal performance.",
   },
   {
     id: "medichecks-advanced-thyroid",
@@ -43,7 +46,8 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/advanced-thyroid-function-blood-test",
     category: "Thyroid",
     biomarkerCount: 4,
-    description: "Comprehensive thyroid function assessment including key thyroid hormones."
+    description:
+      "Comprehensive thyroid function assessment including key thyroid hormones.",
   },
   {
     id: "medichecks-well-woman-advanced",
@@ -52,7 +56,8 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/well-woman-advanced-blood-test",
     category: "Women's Health",
     biomarkerCount: 4,
-    description: "Comprehensive health check tailored specifically for women's health needs."
+    description:
+      "Comprehensive health check tailored specifically for women's health needs.",
   },
   {
     id: "medichecks-well-man-advanced",
@@ -61,7 +66,8 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/well-man-advanced-blood-test",
     category: "Men's Health",
     biomarkerCount: 4,
-    description: "Complete health assessment designed specifically for men's health monitoring."
+    description:
+      "Complete health assessment designed specifically for men's health monitoring.",
   },
   {
     id: "medichecks-trt-advanced",
@@ -70,7 +76,8 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/trt-check-plus-testosterone-replacement-therapy-blood-test",
     category: "Hormone",
     biomarkerCount: 4,
-    description: "Specialised testing for individuals on testosterone replacement therapy."
+    description:
+      "Specialised testing for individuals on testosterone replacement therapy.",
   },
   {
     id: "medichecks-thyroid-function",
@@ -79,7 +86,8 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/thyroid-function-blood-test",
     category: "Thyroid",
     biomarkerCount: 4,
-    description: "Essential thyroid function screening to monitor thyroid health."
+    description:
+      "Essential thyroid function screening to monitor thyroid health.",
   },
   {
     id: "medichecks-female-hormone",
@@ -88,7 +96,8 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/female-hormone-check-blood-test",
     category: "Hormone",
     biomarkerCount: 4,
-    description: "Comprehensive female hormone panel for hormonal health assessment."
+    description:
+      "Comprehensive female hormone panel for hormonal health assessment.",
   },
   {
     id: "medichecks-health-lifestyle",
@@ -97,7 +106,8 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/health-and-lifestyle-check-blood-test",
     category: "General Health",
     biomarkerCount: 4,
-    description: "Comprehensive health check covering key lifestyle and wellness markers."
+    description:
+      "Comprehensive health check covering key lifestyle and wellness markers.",
   },
   {
     id: "medichecks-thyroid-antibodies",
@@ -106,7 +116,8 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/thyroid-function-antibodies-blood-test",
     category: "Thyroid",
     biomarkerCount: 4,
-    description: "Thyroid assessment including antibody testing for autoimmune conditions."
+    description:
+      "Thyroid assessment including antibody testing for autoimmune conditions.",
   },
   {
     id: "medichecks-sports-hormone",
@@ -115,7 +126,7 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/sports-hormone-check-blood-test",
     category: "Sports Performance",
     biomarkerCount: 4,
-    description: "Hormone panel designed for athletes and active individuals."
+    description: "Hormone panel designed for athletes and active individuals.",
   },
   {
     id: "medichecks-liver-function",
@@ -124,7 +135,7 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/liver-check-blood-test",
     category: "Liver",
     biomarkerCount: 4,
-    description: "Essential liver function screening to monitor liver health."
+    description: "Essential liver function screening to monitor liver health.",
   },
   {
     id: "medichecks-optimal-health",
@@ -133,7 +144,8 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/optimal-health-blood-test",
     category: "General Health",
     biomarkerCount: 4,
-    description: "Most comprehensive health assessment covering all major health markers."
+    description:
+      "Most comprehensive health assessment covering all major health markers.",
   },
   {
     id: "medichecks-vitamin-d",
@@ -142,7 +154,8 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/vitamin-d-25-oh-blood-test",
     category: "Vitamins",
     biomarkerCount: 4,
-    description: "Essential vitamin D level testing for bone and immune health."
+    description:
+      "Essential vitamin D level testing for bone and immune health.",
   },
   {
     id: "medichecks-female-hormone-advanced",
@@ -151,7 +164,8 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/female-hormone-check-advanced-blood-test",
     category: "Hormone",
     biomarkerCount: 4,
-    description: "Comprehensive female hormone assessment for detailed hormonal analysis."
+    description:
+      "Comprehensive female hormone assessment for detailed hormonal analysis.",
   },
   {
     id: "medichecks-psa",
@@ -160,7 +174,7 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/psa-prostate-specific-antigen-blood-test",
     category: "Men's Health",
     biomarkerCount: 4,
-    description: "Prostate health screening for men to monitor PSA levels."
+    description: "Prostate health screening for men to monitor PSA levels.",
   },
   {
     id: "medichecks-iron",
@@ -169,6 +183,7 @@ export const medichecksTests: MedichecksTest[] = [
     url: "https://www.medichecks.com/products/iron-deficiency-check-blood-test",
     category: "General Health",
     biomarkerCount: 4,
-    description: "Iron status assessment to detect iron deficiency or overload."
-  }
+    description:
+      "Iron status assessment to detect iron deficiency or overload.",
+  },
 ];

@@ -16,15 +16,15 @@ import {
 } from "@/components/ui/tooltip";
 
 const PROVIDER_NAME_TO_ID: Record<string, string> = {
-  "medichecks": "medichecks",
-  "randox": "randox",
+  medichecks: "medichecks",
+  randox: "randox",
   "randox health": "randox",
   "london medical laboratory": "london-medical-laboratory",
   "london health company": "london-health-company",
   "lola health": "lola-health",
-  "goodbody": "goodbody-clinic",
+  goodbody: "goodbody-clinic",
   "goodbody clinic": "goodbody-clinic",
-  "clinilabs": "clinilabs",
+  clinilabs: "clinilabs",
   "medical diagnosis": "medical-diagnosis",
 };
 
@@ -68,12 +68,10 @@ const parseCollection = (collection: string): ParsedCollection => {
   return { homeKit, clinic, label };
 };
 
-
 const formatPrice = (price: number): string =>
   price == null || Number.isNaN(price) ? "—" : `£${price.toFixed(2)}`;
 
 const Dash: React.FC = () => <span style={{ color: MUTED }}>—</span>;
-
 
 const cellBase = (bg: string): React.CSSProperties => ({
   background: bg,
@@ -94,7 +92,13 @@ interface RowProps {
   placeholder?: React.ReactNode;
 }
 
-const Row: React.FC<RowProps> = ({ label, index, slots, render, placeholder }) => {
+const Row: React.FC<RowProps> = ({
+  label,
+  index,
+  slots,
+  render,
+  placeholder,
+}) => {
   const bg = index % 2 === 0 ? "#ffffff" : TINT;
   return (
     <tr style={{ borderBottom: `1px solid ${DIVIDER}` }}>
@@ -148,7 +152,9 @@ const PlaceholderHeader: React.FC = () => (
   </div>
 );
 
-export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = ({ tests }) => {
+export const ProviderComparisonTable: React.FC<
+  ProviderComparisonTableProps
+> = ({ tests }) => {
   const columns = useMemo(() => {
     const seen = new Set<string>();
     const picked: CompareTestData[] = [];
@@ -164,7 +170,10 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
   // columns so users can see the structure they're filling in.
 
   const colCount = Math.min(MAX_COLS, Math.max(MIN_COLS, columns.length));
-  const slots: Slot[] = Array.from({ length: colCount }, (_, i) => columns[i] ?? null);
+  const slots: Slot[] = Array.from(
+    { length: colCount },
+    (_, i) => columns[i] ?? null,
+  );
 
   return (
     <div className="w-full">
@@ -208,7 +217,14 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
           border: `1px solid ${DIVIDER}`,
         }}
       >
-        <table className="comparison-table" style={{ borderCollapse: "collapse", width: "100%", background: "#ffffff" }}>
+        <table
+          className="comparison-table"
+          style={{
+            borderCollapse: "collapse",
+            width: "100%",
+            background: "#ffffff",
+          }}
+        >
           <thead>
             <tr>
               <th
@@ -262,7 +278,12 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                     <div className="flex items-start gap-3">
                       <div
                         className="rounded-lg flex-shrink-0 flex items-center justify-center"
-                        style={{ background: "#ffffff", width: 48, height: 48, padding: 5 }}
+                        style={{
+                          background: "#ffffff",
+                          width: 48,
+                          height: 48,
+                          padding: 5,
+                        }}
                       >
                         {(() => {
                           const logo = resolveLogo(test);
@@ -303,7 +324,10 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                             opacity: 0.85,
                           }}
                         >
-                          {test.name.replace(/\s*\(\d+\s+Biomarkers?\)\s*$/i, "")}
+                          {test.name.replace(
+                            /\s*\(\d+\s+Biomarkers?\)\s*$/i,
+                            "",
+                          )}
                         </div>
                         <div
                           className="mt-2"
@@ -329,7 +353,9 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
               label="Biomarkers"
               index={0}
               slots={slots}
-              render={(t) => <span className="font-semibold">{t.biomarkerCount ?? '—'}</span>}
+              render={(t) => (
+                <span className="font-semibold">{t.biomarkerCount ?? "—"}</span>
+              )}
             />
             <Row
               label="Turnaround Time"
@@ -346,7 +372,9 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                   return (
                     <span className="inline-flex items-center gap-1.5">
                       <Check size={14} color={TURQUOISE} />
-                      <span>{COLLECTION_METHOD_LABELS[t.collectionMethod]}</span>
+                      <span>
+                        {COLLECTION_METHOD_LABELS[t.collectionMethod]}
+                      </span>
                     </span>
                   );
                 }
@@ -367,20 +395,23 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
               index={3}
               slots={slots}
               render={(t) => {
-                const fee = formatCollectionFee(t.collectionFeeType, t.collectionFeeAmount);
+                const fee = formatCollectionFee(
+                  t.collectionFeeType,
+                  t.collectionFeeAmount,
+                );
                 const label = t.collectionFeeNote ? `${fee.label}*` : fee.label;
                 const pill = (
                   <span
                     style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      padding: '4px 10px',
+                      display: "inline-flex",
+                      alignItems: "center",
+                      padding: "4px 10px",
                       borderRadius: 999,
-                      background: fee.isFree ? '#dcfce7' : '#fef3c7',
-                      color: fee.isFree ? '#15803d' : '#92400e',
+                      background: fee.isFree ? "#dcfce7" : "#fef3c7",
+                      color: fee.isFree ? "#15803d" : "#92400e",
                       fontWeight: 600,
                       fontSize: 12,
-                      cursor: t.collectionFeeNote ? 'help' : 'default',
+                      cursor: t.collectionFeeNote ? "help" : "default",
                     }}
                   >
                     {label}
@@ -389,7 +420,9 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
 
                 if (!t.collectionFeeNote) {
                   return fee.isFree ? (
-                    <span style={{ color: '#15803d', fontWeight: 600 }}>{fee.label}</span>
+                    <span style={{ color: "#15803d", fontWeight: 600 }}>
+                      {fee.label}
+                    </span>
                   ) : (
                     pill
                   );
@@ -431,11 +464,17 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
               index={5}
               slots={slots}
               render={(t) => {
-                const r = formatClinicalReview(t.clinicalReviewType, t.clinicalReviewFee);
+                const r = formatClinicalReview(
+                  t.clinicalReviewType,
+                  t.clinicalReviewFee,
+                );
                 if (!r.isAvailable) return <Dash />;
                 if (r.isIncluded) {
                   return (
-                    <span className="inline-flex items-center gap-1.5" style={{ color: '#15803d', fontWeight: 600 }}>
+                    <span
+                      className="inline-flex items-center gap-1.5"
+                      style={{ color: "#15803d", fontWeight: 600 }}
+                    >
                       <Check size={14} /> {r.label}
                     </span>
                   );
@@ -445,14 +484,14 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                 const pill = (
                   <span
                     style={{
-                      display: 'inline-flex',
-                      padding: '4px 10px',
+                      display: "inline-flex",
+                      padding: "4px 10px",
                       borderRadius: 999,
-                      background: '#fef3c7',
-                      color: '#92400e',
+                      background: "#fef3c7",
+                      color: "#92400e",
                       fontWeight: 600,
                       fontSize: 12,
-                      cursor: note ? 'help' : 'default',
+                      cursor: note ? "help" : "default",
                     }}
                   >
                     {label}
@@ -512,8 +551,12 @@ export const ProviderComparisonTable: React.FC<ProviderComparisonTableProps> = (
                       fontFamily: "'Montserrat', sans-serif",
                       fontWeight: 600,
                     }}
-                    onMouseEnter={(e) => (e.currentTarget.style.background = TURQUOISE)}
-                    onMouseLeave={(e) => (e.currentTarget.style.background = PINK)}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background = TURQUOISE)
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = PINK)
+                    }
                   >
                     Book Now
                   </a>

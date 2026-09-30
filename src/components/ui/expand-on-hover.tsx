@@ -19,7 +19,9 @@ export interface OverlayData {
 }
 
 const useBreakpoint = () => {
-  const [breakpoint, setBreakpoint] = useState<"mobile" | "smallTablet" | "largeTablet" | "desktop">(() => {
+  const [breakpoint, setBreakpoint] = useState<
+    "mobile" | "smallTablet" | "largeTablet" | "desktop"
+  >(() => {
     if (typeof window === "undefined") return "desktop";
     const width = window.innerWidth;
     if (width < 768) return "mobile";
@@ -66,7 +68,7 @@ const MobileCarousel = ({
       const target = idx * (cardWidth + gap);
       scrollRef.current.scrollTo({ left: target, behavior: "smooth" });
     },
-    [cardWidth, gap]
+    [cardWidth, gap],
   );
 
   const handleScroll = useCallback(() => {
@@ -101,7 +103,8 @@ const MobileCarousel = ({
         <div
           className="absolute left-0 top-0 bottom-2 w-10 z-10 pointer-events-none transition-opacity duration-300"
           style={{
-            background: "linear-gradient(to right, hsl(var(--background)), transparent)",
+            background:
+              "linear-gradient(to right, hsl(var(--background)), transparent)",
             opacity: activeIndex > 0 ? 1 : 0,
           }}
         />
@@ -109,7 +112,8 @@ const MobileCarousel = ({
         <div
           className="absolute right-0 top-0 bottom-2 w-10 z-10 pointer-events-none transition-opacity duration-300"
           style={{
-            background: "linear-gradient(to left, hsl(var(--background)), transparent)",
+            background:
+              "linear-gradient(to left, hsl(var(--background)), transparent)",
             opacity: activeIndex < images.length - 1 ? 1 : 0,
           }}
         />
@@ -151,7 +155,10 @@ const MobileCarousel = ({
               key={index}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.25, delay: Math.min(index * 0.03, 0.3) }}
+              transition={{
+                duration: 0.25,
+                delay: Math.min(index * 0.03, 0.3),
+              }}
               className="relative shrink-0 snap-start overflow-hidden rounded-xl bg-white cursor-pointer shadow-xs border border-border/30 active:scale-[0.97] transition-all"
               style={{ width: `min(${cardWidth}px, 48vw)`, height: 200 }}
               onClick={() => onTestClick?.(image)}
@@ -162,7 +169,11 @@ const MobileCarousel = ({
                 alt={image.alt}
                 loading="lazy"
                 onError={(event) => {
-                  if (image.fallbackSrc && event.currentTarget.getAttribute("src") !== image.fallbackSrc) {
+                  if (
+                    image.fallbackSrc &&
+                    event.currentTarget.getAttribute("src") !==
+                      image.fallbackSrc
+                  ) {
                     event.currentTarget.src = image.fallbackSrc;
                   }
                 }}
@@ -198,7 +209,7 @@ const MobileCarousel = ({
                   ? "w-5 h-2 bg-brand-turquoise"
                   : distance <= 2
                     ? "w-2 h-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
-                    : "w-1.5 h-1.5 bg-muted-foreground/20"
+                    : "w-1.5 h-1.5 bg-muted-foreground/20",
               )}
               aria-label={`Go to test ${i + 1}`}
             />
@@ -287,7 +298,10 @@ const HoverExpand_001 = ({
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.3 }}
-        className={cn("w-full mx-auto", "maxWidth" in config ? config.maxWidth : "")}
+        className={cn(
+          "w-full mx-auto",
+          "maxWidth" in config ? config.maxWidth : "",
+        )}
       >
         <div
           className={cn("flex w-full items-center justify-center", config.gap)}
@@ -295,7 +309,9 @@ const HoverExpand_001 = ({
         >
           {images.slice(0, config.numVisible).map((image, index) => {
             const isActive = activeImage === index;
-            const width = isActive ? `${expandedPercent}%` : `${collapsedPercent}%`;
+            const width = isActive
+              ? `${expandedPercent}%`
+              : `${collapsedPercent}%`;
             const initialWidth = `${collapsedPercent}%`;
 
             return (
@@ -316,10 +332,14 @@ const HoverExpand_001 = ({
               >
                 <img
                   src={image.src}
-                  className={`w-full h-full ${image.objectFit === 'contain' ? 'object-contain' : 'object-cover'}`}
+                  className={`w-full h-full ${image.objectFit === "contain" ? "object-contain" : "object-cover"}`}
                   alt={image.alt}
                   onError={(event) => {
-                    if (image.fallbackSrc && event.currentTarget.getAttribute("src") !== image.fallbackSrc) {
+                    if (
+                      image.fallbackSrc &&
+                      event.currentTarget.getAttribute("src") !==
+                        image.fallbackSrc
+                    ) {
                       event.currentTarget.src = image.fallbackSrc;
                     }
                   }}

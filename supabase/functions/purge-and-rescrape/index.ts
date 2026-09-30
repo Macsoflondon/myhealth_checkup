@@ -9,17 +9,18 @@ import { getErrorMessage } from "../_shared/errors.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
 const SCRAPER_MAP: Record<string, string> = {
-  "medichecks": "medichecks-firecrawl",
+  medichecks: "medichecks-firecrawl",
   "goodbody-clinic": "goodbody-scraper",
-  "randox": "randox-scraper",
+  randox: "randox-scraper",
   "lola-health": "lola-health-scraper",
   "london-medical-laboratory": "scrape-london-lab",
   "medical-diagnosis": "medical-diagnosis-scraper",
-  "clinilabs": "clinilabs-scraper",
+  clinilabs: "clinilabs-scraper",
   "london-health-company": "london-health-scraper",
 };
 
@@ -28,19 +29,25 @@ interface Body {
   confirm?: boolean;
 }
 
-declare const EdgeRuntime: { waitUntil: (p: Promise<unknown>) => void } | undefined;
+declare const EdgeRuntime:
+  { waitUntil: (p: Promise<unknown>) => void } | undefined;
 const waitUntil = (p: Promise<unknown>): void => {
   try {
     if (typeof EdgeRuntime !== "undefined" && EdgeRuntime?.waitUntil) {
       EdgeRuntime.waitUntil(p);
       return;
     }
-  } catch { /* noop */ }
-  p.catch((err) => console.error("[purge-and-rescrape] bg error:", getErrorMessage(err)));
+  } catch {
+    /* noop */
+  }
+  p.catch((err) =>
+    console.error("[purge-and-rescrape] bg error:", getErrorMessage(err)),
+  );
 };
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  if (req.method === "OPTIONS")
+    return new Response(null, { headers: corsHeaders });
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
@@ -52,35 +59,49 @@ serve(async (req) => {
   if (!isServiceRole) {
     if (!authHeader || !supabaseUrl || !anonKey) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
     const userClient = createClient(supabaseUrl, anonKey, {
       global: { headers: { Authorization: authHeader } },
     });
-    const { data: { user } } = await userClient.auth.getUser();
+    const {
+      data: { user },
+    } = await userClient.auth.getUser();
     if (!user) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
-    const { data: isAdmin } = await userClient.rpc("has_role", { _user_id: user.id, _role: "admin" });
+    const { data: isAdmin } = await userClient.rpc("has_role", {
+      _user_id: user.id,
+      _role: "admin",
+    });
     if (!isAdmin) {
       return new Response(JSON.stringify({ error: "Admin only" }), {
-        status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
   }
 
-  const body: Body = req.method === "POST" ? await req.json().catch(() => ({})) : {};
+  const body: Body =
+    req.method === "POST" ? await req.json().catch(() => ({})) : {};
   if (!body.providerId || !SCRAPER_MAP[body.providerId]) {
-    return new Response(JSON.stringify({ error: "Invalid or missing providerId" }), {
-      status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ error: "Invalid or missing providerId" }),
+      {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
   }
   if (!body.confirm) {
     return new Response(JSON.stringify({ error: "Missing confirm=true" }), {
-      status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 400,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 
@@ -107,45 +128,67 @@ serve(async (req) => {
       .eq("is_active", true);
     if (deactivateErr) throw deactivateErr;
 
-    console.log(`[purge-and-rescrape] deactivated ${before ?? 0} rows for ${providerId}`);
+    console.log(
+      `[purge-and-rescrape] deactivated ${before ?? 0} rows for ${providerId}`,
+    );
 
     // 3. Reset scraping_jobs row so dashboard reflects fresh state
-    await supabase.from("scraping_jobs").upsert({
-      provider_id: providerId,
-      status: "running",
-      last_scraped: new Date().toISOString(),
-      error_message: null,
-    }, { onConflict: "provider_id" });
+    await supabase.from("scraping_jobs").upsert(
+      {
+        provider_id: providerId,
+        status: "running",
+        last_scraped: new Date().toISOString(),
+        error_message: null,
+      },
+      { onConflict: "provider_id" },
+    );
 
     // 4. Fire-and-forget the scraper with service-role auth
-    waitUntil((async () => {
-      try {
-        const res = await fetch(`${supabaseUrl}/functions/v1/${scraperFn}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${serviceKey}`,
-          },
-          body: JSON.stringify({ replace: true }),
-        });
-        const text = await res.text();
-        console.log(`[purge-and-rescrape] ${providerId} scraper -> ${res.status}: ${text.slice(0, 500)}`);
-        if (!res.ok) {
-          await supabase.from("scraping_jobs").upsert({
-            provider_id: providerId,
-            status: "failed",
-            error_message: `Re-scrape after purge failed: HTTP ${res.status}`,
-          }, { onConflict: "provider_id" });
+    waitUntil(
+      (async () => {
+        try {
+          const res = await fetch(`${supabaseUrl}/functions/v1/${scraperFn}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${serviceKey}`,
+            },
+            body: JSON.stringify({ replace: true }),
+          });
+          const text = await res.text();
+          console.log(
+            `[purge-and-rescrape] ${providerId} scraper -> ${res.status}: ${text.slice(0, 500)}`,
+          );
+          if (!res.ok) {
+            await supabase.from("scraping_jobs").upsert(
+              {
+                provider_id: providerId,
+                status: "failed",
+                error_message: `Re-scrape after purge failed: HTTP ${res.status}`,
+              },
+              { onConflict: "provider_id" },
+            );
+          }
+        } catch (err) {
+          console.error(
+            `[purge-and-rescrape] ${providerId} scraper crashed:`,
+            getErrorMessage(err),
+          );
+          await supabase.from("scraping_jobs").upsert(
+            {
+              provider_id: providerId,
+              status: "failed",
+              error_message:
+                `Re-scrape after purge crashed: ${getErrorMessage(err)}`.slice(
+                  0,
+                  1000,
+                ),
+            },
+            { onConflict: "provider_id" },
+          );
         }
-      } catch (err) {
-        console.error(`[purge-and-rescrape] ${providerId} scraper crashed:`, getErrorMessage(err));
-        await supabase.from("scraping_jobs").upsert({
-          provider_id: providerId,
-          status: "failed",
-          error_message: `Re-scrape after purge crashed: ${getErrorMessage(err)}`.slice(0, 1000),
-        }, { onConflict: "provider_id" });
-      }
-    })());
+      })(),
+    );
 
     return new Response(
       JSON.stringify({
@@ -155,13 +198,16 @@ serve(async (req) => {
         scraperDispatched: scraperFn,
         message: `Deactivated ${before ?? 0} rows for ${providerId}. Re-scrape running in background; surviving products will be reactivated.`,
       }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 202 },
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 202,
+      },
     );
   } catch (err) {
     console.error("[purge-and-rescrape] error:", getErrorMessage(err));
-    return new Response(
-      JSON.stringify({ error: getErrorMessage(err) }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 },
-    );
+    return new Response(JSON.stringify({ error: getErrorMessage(err) }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 500,
+    });
   }
 });

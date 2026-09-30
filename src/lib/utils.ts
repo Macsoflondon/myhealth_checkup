@@ -1,8 +1,8 @@
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 /**
@@ -29,20 +29,24 @@ export function formatTestPrice(
   opts: { showFrom?: boolean } = {},
 ): string {
   if (!test) return "";
-  const headline = test.base_price && test.base_price > 0 ? test.base_price : test.price;
+  const headline =
+    test.base_price && test.base_price > 0 ? test.base_price : test.price;
   if (headline == null) return "";
 
-  const numeric = typeof headline === "string" ? parseFloat(headline) : headline;
+  const numeric =
+    typeof headline === "string" ? parseFloat(headline) : headline;
   if (!Number.isFinite(numeric as number)) return "";
 
   const isStarting =
     opts.showFrom !== false &&
-    (
-      (test.base_price != null && test.price != null && Number(test.base_price) !== Number(test.price)) ||
-      (Array.isArray(test.collection_options) && (test.collection_options as unknown[]).length > 0) ||
+    ((test.base_price != null &&
+      test.price != null &&
+      Number(test.base_price) !== Number(test.price)) ||
+      (Array.isArray(test.collection_options) &&
+        (test.collection_options as unknown[]).length > 0) ||
       (test.phlebotomy_included === false && (test.phlebotomy_cost ?? 0) > 0) ||
-      (test.gp_consultation_included === false && (test.gp_consultation_cost ?? 0) > 0)
-    );
+      (test.gp_consultation_included === false &&
+        (test.gp_consultation_cost ?? 0) > 0));
 
   const formatted = Number.isInteger(numeric as number)
     ? `£${numeric}`

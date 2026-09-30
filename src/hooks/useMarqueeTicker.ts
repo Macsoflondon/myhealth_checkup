@@ -61,7 +61,7 @@ export function useMarqueeTicker(itemCount: number, speedPxPerMs = 0.04) {
         ([entry]) => {
           isVisibleRef.current = entry.isIntersecting;
         },
-        { threshold: 0 }
+        { threshold: 0 },
       );
       io.observe(observedEl);
     }

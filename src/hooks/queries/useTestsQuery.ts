@@ -7,11 +7,11 @@ import { testsApi, type Test } from "@/api";
 import { logger } from "@/lib/logger";
 
 export const testsQueryKeys = {
-  all: ['tests'] as const,
-  active: () => ['tests', 'active'] as const,
-  byCategory: (category: string) => ['tests', 'category', category] as const,
-  search: (query: string) => ['tests', 'search', query] as const,
-  popular: (limit: number) => ['tests', 'popular', limit] as const,
+  all: ["tests"] as const,
+  active: () => ["tests", "active"] as const,
+  byCategory: (category: string) => ["tests", "category", category] as const,
+  search: (query: string) => ["tests", "search", query] as const,
+  popular: (limit: number) => ["tests", "popular", limit] as const,
 };
 
 export function useActiveTestsQuery(options?: { enabled?: boolean }) {
@@ -20,7 +20,7 @@ export function useActiveTestsQuery(options?: { enabled?: boolean }) {
     queryFn: async () => {
       const { data, error } = await testsApi.getActiveTests();
       if (error) {
-        logger.error('Error fetching active tests:', error);
+        logger.error("Error fetching active tests:", error);
         throw error;
       }
       return data || [];
@@ -30,7 +30,10 @@ export function useActiveTestsQuery(options?: { enabled?: boolean }) {
   });
 }
 
-export function useTestsByCategoryQuery(category: string, options?: { enabled?: boolean }) {
+export function useTestsByCategoryQuery(
+  category: string,
+  options?: { enabled?: boolean },
+) {
   return useQuery({
     queryKey: testsQueryKeys.byCategory(category),
     queryFn: async () => {
@@ -46,7 +49,10 @@ export function useTestsByCategoryQuery(category: string, options?: { enabled?: 
   });
 }
 
-export function useSearchTestsQuery(query: string, options?: { enabled?: boolean }) {
+export function useSearchTestsQuery(
+  query: string,
+  options?: { enabled?: boolean },
+) {
   return useQuery({
     queryKey: testsQueryKeys.search(query),
     queryFn: async () => {
@@ -62,13 +68,16 @@ export function useSearchTestsQuery(query: string, options?: { enabled?: boolean
   });
 }
 
-export function usePopularTestsQuery(limit: number = 10, options?: { enabled?: boolean }) {
+export function usePopularTestsQuery(
+  limit: number = 10,
+  options?: { enabled?: boolean },
+) {
   return useQuery({
     queryKey: testsQueryKeys.popular(limit),
     queryFn: async () => {
       const { data, error } = await testsApi.getPopularTests(limit);
       if (error) {
-        logger.error('Error fetching popular tests:', error);
+        logger.error("Error fetching popular tests:", error);
         throw error;
       }
       return data || [];

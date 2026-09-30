@@ -13,7 +13,8 @@ import { createClient } from "@supabase/supabase-js";
  * rather than failed so CI on forks doesn't break.
  */
 
-const url = (import.meta as any).env?.VITE_SUPABASE_URL ?? process.env.VITE_SUPABASE_URL;
+const url =
+  (import.meta as any).env?.VITE_SUPABASE_URL ?? process.env.VITE_SUPABASE_URL;
 const key =
   (import.meta as any).env?.VITE_SUPABASE_PUBLISHABLE_KEY ??
   process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
@@ -78,7 +79,7 @@ d("provider_tests canonical_category integrity", () => {
     const unknown = new Set(
       (data ?? [])
         .map((r) => r.canonical_category as string)
-        .filter((c) => !KNOWN_CATEGORIES.has(c))
+        .filter((c) => !KNOWN_CATEGORIES.has(c)),
     );
     expect([...unknown]).toEqual([]);
   });

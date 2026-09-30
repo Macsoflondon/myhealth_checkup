@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
-import { useEffect, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useLocation } from '@/lib/router-compat';
-import { supabase } from '@/integrations/supabase/client';
-import { FALLBACK_LABELS, getFallbackLabel } from '@/i18n/fallbackLabels';
-
+import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
+import { useLocation } from "@/lib/router-compat";
+import { supabase } from "@/integrations/supabase/client";
+import { FALLBACK_LABELS, getFallbackLabel } from "@/i18n/fallbackLabels";
 
 /**
  * Global DOM auto-translator — tuned for zero-perceived-latency.
@@ -27,25 +26,33 @@ import { FALLBACK_LABELS, getFallbackLabel } from '@/i18n/fallbackLabels';
  *      no network call.
  */
 
-const BATCH_SIZE = 48;           // edge function caps at 50
+const BATCH_SIZE = 48; // edge function caps at 50
 const MAX_LEN = 2000;
 const MUTATION_DEBOUNCE_MS = 120; // was 350
 const MAX_PARALLEL = 6;
-const STORAGE_KEY = 'mhc:i18n:cache:v1';
+const STORAGE_KEY = "mhc:i18n:cache:v1";
 
 const SKIP_TAGS = new Set([
-  'SCRIPT', 'STYLE', 'NOSCRIPT', 'CODE', 'PRE', 'KBD', 'SAMP',
-  'SVG', 'PATH', 'CANVAS', 'IFRAME',
+  "SCRIPT",
+  "STYLE",
+  "NOSCRIPT",
+  "CODE",
+  "PRE",
+  "KBD",
+  "SAMP",
+  "SVG",
+  "PATH",
+  "CANVAS",
+  "IFRAME",
 ]);
 
-const ATTR_KEYS = ['alt', 'aria-label', 'title', 'placeholder'] as const;
+const ATTR_KEYS = ["alt", "aria-label", "title", "placeholder"] as const;
 const FOLLOW_UP_SWEEPS_MS = [250, 900, 1800];
 
 // Sourced from a shared module (see `src/i18n/fallbackLabels.ts`) so
 // tests/audits and i18next's `parseMissingKeyHandler` share the same
 // dictionary. Do not inline additions here — add them in that module.
 const LOCAL_TRANSLATIONS = FALLBACK_LABELS;
-
 
 // ── Persistent cache ────────────────────────────────────────────────────────
 const cache = new Map<string, string>();
@@ -59,7 +66,9 @@ function loadCache() {
     if (!raw) return;
     const parsed = JSON.parse(raw) as [string, string][];
     parsed.forEach(([k, v]) => cache.set(k, v));
-  } catch { /* ignore */ }
+  } catch {
+    /* ignore */
+  }
 }
 
 function schedulePersist() {
@@ -70,7 +79,9 @@ function schedulePersist() {
       // Cap to last ~5000 entries to avoid runaway growth
       const entries = Array.from(cache.entries()).slice(-5000);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-    } catch { /* quota exceeded — ignore */ }
+    } catch {
+      /* quota exceeded — ignore */
+    }
   }, 1000);
 }
 
@@ -79,8 +90,8 @@ function shouldSkipNode(el: Element | null): boolean {
   let cur: Element | null = el;
   while (cur) {
     if (SKIP_TAGS.has(cur.tagName)) return true;
-    if (cur.getAttribute?.('data-no-translate') === 'true') return true;
-    if (cur.getAttribute?.('translate') === 'no') return true;
+    if (cur.getAttribute?.("data-no-translate") === "true") return true;
+    if (cur.getAttribute?.("translate") === "no") return true;
     cur = cur.parentElement;
   }
   return false;
@@ -112,7 +123,6 @@ function localTranslation(lang: string, text: string): string | undefined {
   return getFallbackLabel(text, lang) ?? undefined;
 }
 
-
 function collectPending(root: Node, lang: string): Pending[] {
   const pending: Pending[] = [];
 
@@ -121,7 +131,7 @@ function collectPending(root: Node, lang: string): Pending[] {
     acceptNode: (n) => {
       const parent = n.parentElement;
       if (!parent || shouldSkipNode(parent)) return NodeFilter.FILTER_REJECT;
-      const text = n.nodeValue ?? '';
+      const text = n.nodeValue ?? "";
       if (!isTranslatable(text)) return NodeFilter.FILTER_REJECT;
       return NodeFilter.FILTER_ACCEPT;
     },
@@ -132,11 +142,11 @@ function collectPending(root: Node, lang: string): Pending[] {
     const textNode = node as Text;
     if (textNode.parentElement?.closest('[data-translating="true"]')) continue;
     const original =
-      (textNode as any).__i18nOriginal ?? (textNode.nodeValue ?? '');
+      (textNode as any).__i18nOriginal ?? textNode.nodeValue ?? "";
     (textNode as any).__i18nOriginal = original;
 
-    const leading = textNode.nodeValue?.match(/^\s*/)?.[0] ?? '';
-    const trailing = textNode.nodeValue?.match(/\s*$/)?.[0] ?? '';
+    const leading = textNode.nodeValue?.match(/^\s*/)?.[0] ?? "";
+    const trailing = textNode.nodeValue?.match(/\s*$/)?.[0] ?? "";
     const core = original.trim();
     if (!core) continue;
 
@@ -165,8 +175,8 @@ function collectPending(root: Node, lang: string): Pending[] {
   // 2. Attributes on every element
   const elements =
     root instanceof Element
-      ? [root, ...Array.from(root.querySelectorAll('*'))]
-      : Array.from((root as Document | DocumentFragment).querySelectorAll('*'));
+      ? [root, ...Array.from(root.querySelectorAll("*"))]
+      : Array.from((root as Document | DocumentFragment).querySelectorAll("*"));
 
   for (const el of elements) {
     if (shouldSkipNode(el)) continue;
@@ -208,24 +218,27 @@ function restoreEnglish(root: Node) {
   while ((node = walker.nextNode())) {
     const t = node as Text;
     const original = (t as any).__i18nOriginal;
-    if (typeof original === 'string') t.nodeValue = original;
+    if (typeof original === "string") t.nodeValue = original;
   }
   const elements =
     root instanceof Element
-      ? [root, ...Array.from(root.querySelectorAll('*'))]
-      : Array.from((root as Document | DocumentFragment).querySelectorAll('*'));
+      ? [root, ...Array.from(root.querySelectorAll("*"))]
+      : Array.from((root as Document | DocumentFragment).querySelectorAll("*"));
   for (const el of elements) {
     for (const attr of ATTR_KEYS) {
       const original = (el as any)[`__i18n_${attr}`];
-      if (typeof original === 'string') el.setAttribute(attr, original);
+      if (typeof original === "string") el.setAttribute(attr, original);
     }
   }
 }
 
-async function translateBatch(texts: string[], lang: string): Promise<Record<string, string>> {
+async function translateBatch(
+  texts: string[],
+  lang: string,
+): Promise<Record<string, string>> {
   if (texts.length === 0) return {};
   try {
-    const { data, error } = await supabase.functions.invoke('translate', {
+    const { data, error } = await supabase.functions.invoke("translate", {
       body: { texts, language: lang },
     });
     if (error || !data?.translations) return {};
@@ -242,26 +255,29 @@ async function runChunks<T>(
   concurrency: number,
 ) {
   let idx = 0;
-  const runners = Array.from({ length: Math.min(concurrency, items.length) }, async () => {
-    while (idx < items.length) {
-      const my = idx++;
-      await worker(items[my]);
-    }
-  });
+  const runners = Array.from(
+    { length: Math.min(concurrency, items.length) },
+    async () => {
+      while (idx < items.length) {
+        const my = idx++;
+        await worker(items[my]);
+      }
+    },
+  );
   await Promise.all(runners);
 }
 
 export function AutoTranslatePage() {
   const { i18n } = useTranslation();
   const location = useLocation();
-  const lang = (i18n.language || 'en').split('-')[0];
+  const lang = (i18n.language || "en").split("-")[0];
   const timerRef = useRef<number | null>(null);
   const observerRef = useRef<MutationObserver | null>(null);
 
   useEffect(() => {
     loadCache();
 
-    if (lang === 'en') {
+    if (lang === "en") {
       observerRef.current?.disconnect();
       observerRef.current = null;
       restoreEnglish(document.body);
@@ -280,7 +296,10 @@ export function AutoTranslatePage() {
     };
 
     const run = async () => {
-      if (running) { rerun = true; return; }
+      if (running) {
+        rerun = true;
+        return;
+      }
       running = true;
       try {
         observerRef.current?.disconnect();
@@ -296,7 +315,11 @@ export function AutoTranslatePage() {
 
         const uniqueOf = (arr: Pending[]) =>
           Array.from(
-            new Set(arr.map((p) => p.text).filter((t) => !inflight.has(`${lang}::${t}`))),
+            new Set(
+              arr
+                .map((p) => p.text)
+                .filter((t) => !inflight.has(`${lang}::${t}`)),
+            ),
           );
 
         const dispatch = async (bucket: Pending[]) => {
@@ -312,14 +335,18 @@ export function AutoTranslatePage() {
             chunks.push(unique.slice(i, i + BATCH_SIZE));
           }
 
-          await runChunks(chunks, async (chunk) => {
-            const result = await translateBatch(chunk, lang);
-            Object.entries(result).forEach(([src, tr]) => {
-              cache.set(`${lang}::${src}`, tr);
-            });
-            // Apply as each chunk arrives — progressive rendering
-            if (!disposed) applyChunkResults(bucket);
-          }, MAX_PARALLEL);
+          await runChunks(
+            chunks,
+            async (chunk) => {
+              const result = await translateBatch(chunk, lang);
+              Object.entries(result).forEach(([src, tr]) => {
+                cache.set(`${lang}::${src}`, tr);
+              });
+              // Apply as each chunk arrives — progressive rendering
+              if (!disposed) applyChunkResults(bucket);
+            },
+            MAX_PARALLEL,
+          );
 
           unique.forEach((t) => inflight.delete(`${lang}::${t}`));
           schedulePersist();
@@ -331,7 +358,10 @@ export function AutoTranslatePage() {
       } finally {
         reattach();
         running = false;
-        if (rerun && !disposed) { rerun = false; debouncedRun(); }
+        if (rerun && !disposed) {
+          rerun = false;
+          debouncedRun();
+        }
       }
     };
 
@@ -360,7 +390,9 @@ export function AutoTranslatePage() {
     // Initial pass — NO debounce. Synchronously applies cached translations,
     // then network-fetches the rest with viewport priority.
     run();
-    const followUpTimers = FOLLOW_UP_SWEEPS_MS.map((ms) => window.setTimeout(run, ms));
+    const followUpTimers = FOLLOW_UP_SWEEPS_MS.map((ms) =>
+      window.setTimeout(run, ms),
+    );
 
     return () => {
       disposed = true;

@@ -1,14 +1,28 @@
 import { useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
-import { Activity, AlertTriangle, CheckCircle2, Clock, RefreshCw, Zap } from "lucide-react";
+import {
+  Activity,
+  AlertTriangle,
+  CheckCircle2,
+  Clock,
+  RefreshCw,
+  Zap,
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { formatSocDateTime } from "@/lib/socWatchUtils";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const HOURS = 24;
@@ -56,13 +70,22 @@ export default function AdminOpsPage() {
       if (error) throw error;
       const map = new Map<string, CronSummary>();
       for (const r of data ?? []) {
-        const s = map.get(r.job_name) ?? { job_name: r.job_name, runs: 0, errors: 0, last_status: r.status, last_started: r.started_at, avg_ms: 0 };
+        const s = map.get(r.job_name) ?? {
+          job_name: r.job_name,
+          runs: 0,
+          errors: 0,
+          last_status: r.status,
+          last_started: r.started_at,
+          avg_ms: 0,
+        };
         s.runs++;
         if (r.status === "error") s.errors++;
         s.avg_ms = s.avg_ms + ((r.duration_ms ?? 0) - s.avg_ms) / s.runs;
         map.set(r.job_name, s);
       }
-      return Array.from(map.values()).sort((a, b) => b.errors - a.errors || b.runs - a.runs);
+      return Array.from(map.values()).sort(
+        (a, b) => b.errors - a.errors || b.runs - a.runs,
+      );
     },
     refetchInterval: 60_000,
   });
@@ -72,30 +95,61 @@ export default function AdminOpsPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("edge_function_logs")
-        .select("function_name, status, duration_ms, error_message, created_at, http_status")
+        .select(
+          "function_name, status, duration_ms, error_message, created_at, http_status",
+        )
         .gte("created_at", since)
         .order("created_at", { ascending: false })
         .limit(5000);
       if (error) throw error;
-      const map = new Map<string, { calls: number; errors: number; durations: number[]; last_error: string | null; last_called: string }>();
+      const map = new Map<
+        string,
+        {
+          calls: number;
+          errors: number;
+          durations: number[];
+          last_error: string | null;
+          last_called: string;
+        }
+      >();
       for (const r of data ?? []) {
-        const s = map.get(r.function_name) ?? { calls: 0, errors: 0, durations: [], last_error: null, last_called: r.created_at };
+        const s = map.get(r.function_name) ?? {
+          calls: 0,
+          errors: 0,
+          durations: [],
+          last_error: null,
+          last_called: r.created_at,
+        };
         s.calls++;
         if (r.status === "error" || (r.http_status ?? 0) >= 500) {
           s.errors++;
-          if (!s.last_error) s.last_error = r.error_message ?? `HTTP ${r.http_status}`;
+          if (!s.last_error)
+            s.last_error = r.error_message ?? `HTTP ${r.http_status}`;
         }
         if (r.duration_ms != null) s.durations.push(r.duration_ms);
         map.set(r.function_name, s);
       }
-      const summaries: EdgeSummary[] = Array.from(map.entries()).map(([fn, s]) => {
-        s.durations.sort((a, b) => a - b);
-        const p95 = s.durations.length ? s.durations[Math.min(s.durations.length - 1, Math.floor(s.durations.length * 0.95))] : null;
-        return {
-          function_name: fn, calls: s.calls, errors: s.errors, p95_ms: p95,
-          last_error: s.last_error, last_called: s.last_called,
-        };
-      });
+      const summaries: EdgeSummary[] = Array.from(map.entries()).map(
+        ([fn, s]) => {
+          s.durations.sort((a, b) => a - b);
+          const p95 = s.durations.length
+            ? s.durations[
+                Math.min(
+                  s.durations.length - 1,
+                  Math.floor(s.durations.length * 0.95),
+                )
+              ]
+            : null;
+          return {
+            function_name: fn,
+            calls: s.calls,
+            errors: s.errors,
+            p95_ms: p95,
+            last_error: s.last_error,
+            last_called: s.last_called,
+          };
+        },
+      );
       return summaries.sort((a, b) => b.errors - a.errors || b.calls - a.calls);
     },
     refetchInterval: 60_000,
@@ -111,31 +165,61 @@ export default function AdminOpsPage() {
         <header className="flex items-center justify-between">
           <div>
             <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-              <Activity className="h-6 w-6 text-primary" />Operations dashboard
+              <Activity className="h-6 w-6 text-primary" />
+              Operations dashboard
             </h1>
-            <p className="text-sm text-muted-foreground">Cron jobs and edge functions over the last {HOURS} hours.</p>
+            <p className="text-sm text-muted-foreground">
+              Cron jobs and edge functions over the last {HOURS} hours.
+            </p>
           </div>
-          <Button variant="outline" onClick={() => { void cronQuery.refetch(); void edgeQuery.refetch(); }}>
-            <RefreshCw className="mr-2 h-4 w-4" />Refresh
+          <Button
+            variant="outline"
+            onClick={() => {
+              void cronQuery.refetch();
+              void edgeQuery.refetch();
+            }}
+          >
+            <RefreshCw className="mr-2 h-4 w-4" />
+            Refresh
           </Button>
         </header>
 
         <Tabs defaultValue="cron">
           <TabsList>
-            <TabsTrigger value="cron"><Clock className="mr-1 h-3 w-3" />Cron jobs</TabsTrigger>
-            <TabsTrigger value="edge"><Zap className="mr-1 h-3 w-3" />Edge functions</TabsTrigger>
+            <TabsTrigger value="cron">
+              <Clock className="mr-1 h-3 w-3" />
+              Cron jobs
+            </TabsTrigger>
+            <TabsTrigger value="edge">
+              <Zap className="mr-1 h-3 w-3" />
+              Edge functions
+            </TabsTrigger>
           </TabsList>
 
           <TabsContent value="cron" className="mt-4">
             <Card variant="outlined" className="p-4">
               {cronQuery.isPending ? (
-                <div className="space-y-2">{Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-10" />)}</div>
+                <div className="space-y-2">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Skeleton key={i} className="h-10" />
+                  ))}
+                </div>
               ) : cronQuery.isError ? (
                 <div className="space-y-3 py-6 text-center">
                   <AlertTriangle className="mx-auto h-6 w-6 text-error" />
-                  <p className="text-sm text-foreground">Couldn't load cron run history.</p>
-                  <p className="text-xs text-muted-foreground">{(cronQuery.error as Error).message}</p>
-                  <Button variant="outline" size="sm" onClick={() => void cronQuery.refetch()}>Try again</Button>
+                  <p className="text-sm text-foreground">
+                    Couldn't load cron run history.
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {(cronQuery.error as Error).message}
+                  </p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => void cronQuery.refetch()}
+                  >
+                    Try again
+                  </Button>
                 </div>
               ) : (
                 <Table>
@@ -153,22 +237,51 @@ export default function AdminOpsPage() {
                   <TableBody>
                     {(cronQuery.data ?? []).map((r) => (
                       <TableRow key={r.job_name}>
-                        <TableCell className="font-mono text-xs">{r.job_name}</TableCell>
-                        <TableCell className="text-right font-mono">{r.runs}</TableCell>
+                        <TableCell className="font-mono text-xs">
+                          {r.job_name}
+                        </TableCell>
                         <TableCell className="text-right font-mono">
-                          {r.errors > 0 ? <Badge className="bg-error text-error-foreground">{r.errors}</Badge> : <span className="text-muted-foreground">0</span>}
+                          {r.runs}
                         </TableCell>
-                        <TableCell className="text-right font-mono">{successRate(r.runs, r.errors)}</TableCell>
-                        <TableCell className="text-right font-mono">{Math.round(r.avg_ms)}</TableCell>
+                        <TableCell className="text-right font-mono">
+                          {r.errors > 0 ? (
+                            <Badge className="bg-error text-error-foreground">
+                              {r.errors}
+                            </Badge>
+                          ) : (
+                            <span className="text-muted-foreground">0</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right font-mono">
+                          {successRate(r.runs, r.errors)}
+                        </TableCell>
+                        <TableCell className="text-right font-mono">
+                          {Math.round(r.avg_ms)}
+                        </TableCell>
                         <TableCell>
-                          {r.last_status === "error" ? <AlertTriangle className="inline h-4 w-4 text-error" /> : <CheckCircle2 className="inline h-4 w-4 text-primary" />}
-                          <span className="ml-1 capitalize">{r.last_status}</span>
+                          {r.last_status === "error" ? (
+                            <AlertTriangle className="inline h-4 w-4 text-error" />
+                          ) : (
+                            <CheckCircle2 className="inline h-4 w-4 text-primary" />
+                          )}
+                          <span className="ml-1 capitalize">
+                            {r.last_status}
+                          </span>
                         </TableCell>
-                        <TableCell className="text-muted-foreground">{formatSocDateTime(r.last_started)}</TableCell>
+                        <TableCell className="text-muted-foreground">
+                          {formatSocDateTime(r.last_started)}
+                        </TableCell>
                       </TableRow>
                     ))}
                     {(cronQuery.data ?? []).length === 0 && (
-                      <TableRow><TableCell colSpan={7} className="py-8 text-center text-muted-foreground">No cron runs in this window.</TableCell></TableRow>
+                      <TableRow>
+                        <TableCell
+                          colSpan={7}
+                          className="py-8 text-center text-muted-foreground"
+                        >
+                          No cron runs in this window.
+                        </TableCell>
+                      </TableRow>
                     )}
                   </TableBody>
                 </Table>
@@ -179,13 +292,27 @@ export default function AdminOpsPage() {
           <TabsContent value="edge" className="mt-4">
             <Card variant="outlined" className="p-4">
               {edgeQuery.isPending ? (
-                <div className="space-y-2">{Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-10" />)}</div>
+                <div className="space-y-2">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Skeleton key={i} className="h-10" />
+                  ))}
+                </div>
               ) : edgeQuery.isError ? (
                 <div className="space-y-3 py-6 text-center">
                   <AlertTriangle className="mx-auto h-6 w-6 text-error" />
-                  <p className="text-sm text-foreground">Couldn't load edge function activity.</p>
-                  <p className="text-xs text-muted-foreground">{(edgeQuery.error as Error).message}</p>
-                  <Button variant="outline" size="sm" onClick={() => void edgeQuery.refetch()}>Try again</Button>
+                  <p className="text-sm text-foreground">
+                    Couldn't load edge function activity.
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    {(edgeQuery.error as Error).message}
+                  </p>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => void edgeQuery.refetch()}
+                  >
+                    Try again
+                  </Button>
                 </div>
               ) : (
                 <Table>
@@ -203,19 +330,47 @@ export default function AdminOpsPage() {
                   <TableBody>
                     {(edgeQuery.data ?? []).map((r) => (
                       <TableRow key={r.function_name}>
-                        <TableCell className="font-mono text-xs">{r.function_name}</TableCell>
-                        <TableCell className="text-right font-mono">{r.calls}</TableCell>
-                        <TableCell className="text-right font-mono">
-                          {r.errors > 0 ? <Badge className="bg-error text-error-foreground">{r.errors}</Badge> : <span className="text-muted-foreground">0</span>}
+                        <TableCell className="font-mono text-xs">
+                          {r.function_name}
                         </TableCell>
-                        <TableCell className="text-right font-mono">{successRate(r.calls, r.errors)}</TableCell>
-                        <TableCell className="text-right font-mono">{r.p95_ms ?? "—"}</TableCell>
-                        <TableCell className="max-w-xs truncate text-xs text-muted-foreground" title={r.last_error ?? ""}>{r.last_error ?? "—"}</TableCell>
-                        <TableCell className="text-muted-foreground">{formatSocDateTime(r.last_called)}</TableCell>
+                        <TableCell className="text-right font-mono">
+                          {r.calls}
+                        </TableCell>
+                        <TableCell className="text-right font-mono">
+                          {r.errors > 0 ? (
+                            <Badge className="bg-error text-error-foreground">
+                              {r.errors}
+                            </Badge>
+                          ) : (
+                            <span className="text-muted-foreground">0</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-right font-mono">
+                          {successRate(r.calls, r.errors)}
+                        </TableCell>
+                        <TableCell className="text-right font-mono">
+                          {r.p95_ms ?? "—"}
+                        </TableCell>
+                        <TableCell
+                          className="max-w-xs truncate text-xs text-muted-foreground"
+                          title={r.last_error ?? ""}
+                        >
+                          {r.last_error ?? "—"}
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">
+                          {formatSocDateTime(r.last_called)}
+                        </TableCell>
                       </TableRow>
                     ))}
                     {(edgeQuery.data ?? []).length === 0 && (
-                      <TableRow><TableCell colSpan={7} className="py-8 text-center text-muted-foreground">No edge function calls in this window.</TableCell></TableRow>
+                      <TableRow>
+                        <TableCell
+                          colSpan={7}
+                          className="py-8 text-center text-muted-foreground"
+                        >
+                          No edge function calls in this window.
+                        </TableCell>
+                      </TableRow>
                     )}
                   </TableBody>
                 </Table>

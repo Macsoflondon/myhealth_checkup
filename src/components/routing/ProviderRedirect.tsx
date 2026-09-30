@@ -12,8 +12,8 @@ interface ProviderRedirectProps {
 export default function ProviderRedirect({ from, to }: ProviderRedirectProps) {
   const { testId } = useParams<{ testId: string }>();
   const location = useLocation();
-  
-  const newPath = `/${to}/${testId || ''}${location.search}`;
-  
+
+  const newPath = `/${to}/${testId || ""}${location.search}`;
+
   return <Navigate to={newPath} replace />;
 }

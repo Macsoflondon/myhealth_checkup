@@ -52,8 +52,18 @@ const BiomarkerGuidePage = () => {
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
-      { "@type": "ListItem", position: 2, name: "Guides", item: `${BASE_URL}/guides` },
-      { "@type": "ListItem", position: 3, name: guide.keyword, item: canonicalUrl },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Guides",
+        item: `${BASE_URL}/guides`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: guide.keyword,
+        item: canonicalUrl,
+      },
     ],
   };
 
@@ -62,7 +72,10 @@ const BiomarkerGuidePage = () => {
       <Helmet>
         <title>{`${guide.title} | myhealth checkup`}</title>
         <meta name="description" content={guide.description} />
-        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <meta
+          name="robots"
+          content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+        />
         <link rel="canonical" href={canonicalUrl} />
         <link rel="alternate" hrefLang="en-gb" href={canonicalUrl} />
         <link rel="alternate" hrefLang="x-default" href={canonicalUrl} />
@@ -77,22 +90,32 @@ const BiomarkerGuidePage = () => {
         <meta name="twitter:title" content={guide.title} />
         <meta name="twitter:description" content={guide.description} />
         <meta name="article:section" content={guide.category} />
-        <script type="application/ld+json">{serializeJsonLd(articleJsonLd)}</script>
+        <script type="application/ld+json">
+          {serializeJsonLd(articleJsonLd)}
+        </script>
         <script type="application/ld+json">{serializeJsonLd(faqJsonLd)}</script>
-        <script type="application/ld+json">{serializeJsonLd(breadcrumbJsonLd)}</script>
+        <script type="application/ld+json">
+          {serializeJsonLd(breadcrumbJsonLd)}
+        </script>
       </Helmet>
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 text-white">
         <nav className="text-sm text-white/78 mb-6" aria-label="Breadcrumb">
-          <Link to="/" className="hover:text-white">Home</Link>
+          <Link to="/" className="hover:text-white">
+            Home
+          </Link>
           <span className="mx-2">/</span>
-          <Link to="/guides" className="hover:text-white">Guides</Link>
+          <Link to="/guides" className="hover:text-white">
+            Guides
+          </Link>
           <span className="mx-2">/</span>
           <span className="text-white/90">{guide.keyword}</span>
         </nav>
 
         <header className="mb-10">
-          <Badge variant="secondary" className="mb-4">{guide.category}</Badge>
+          <Badge variant="secondary" className="mb-4">
+            {guide.category}
+          </Badge>
           <h1 className="font-display text-4xl lg:text-5xl font-semibold tracking-tight mb-4">
             {guide.keyword}
           </h1>
@@ -100,7 +123,9 @@ const BiomarkerGuidePage = () => {
         </header>
 
         <section className="mb-10">
-          <p className="text-base lg:text-lg leading-relaxed text-white/85">{guide.intro}</p>
+          <p className="text-base lg:text-lg leading-relaxed text-white/85">
+            {guide.intro}
+          </p>
         </section>
 
         <section className="mb-12">
@@ -111,9 +136,13 @@ const BiomarkerGuidePage = () => {
             {guide.biomarkers.map((b) => (
               <Card key={b.name} className="bg-white/5 border-white/10">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-base text-white">{b.name}</CardTitle>
+                  <CardTitle className="text-base text-white">
+                    {b.name}
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/90">{b.what}</CardContent>
+                <CardContent className="text-sm text-white/90">
+                  {b.what}
+                </CardContent>
               </Card>
             ))}
           </div>
@@ -135,7 +164,9 @@ const BiomarkerGuidePage = () => {
           <h2 className="text-2xl font-semibold mb-4">How testing works</h2>
           <ol className="space-y-3 list-decimal list-inside text-white/85">
             {guide.howItWorks.map((s) => (
-              <li key={s} className="pl-2">{s}</li>
+              <li key={s} className="pl-2">
+                {s}
+              </li>
             ))}
           </ol>
         </section>
@@ -144,14 +175,21 @@ const BiomarkerGuidePage = () => {
           <div className="flex items-start gap-4 mb-4">
             <ShieldCheck className="h-6 w-6 text-[#22c0d4] flex-shrink-0 mt-1" />
             <div>
-              <h2 className="text-xl font-semibold mb-2">Compare {guide.keyword} prices in the UK</h2>
+              <h2 className="text-xl font-semibold mb-2">
+                Compare {guide.keyword} prices in the UK
+              </h2>
               <p className="text-white/75">
-                Side-by-side comparison of CQC-regulated providers and UKAS-accredited laboratories.
-                Transparent pricing, typical turnaround times and sample methods.
+                Side-by-side comparison of CQC-regulated providers and
+                UKAS-accredited laboratories. Transparent pricing, typical
+                turnaround times and sample methods.
               </p>
             </div>
           </div>
-          <Button asChild size="lg" className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] text-white hover:opacity-90">
+          <Button
+            asChild
+            size="lg"
+            className="bg-gradient-to-r from-[#22c0d4] to-[#e70d69] text-white hover:opacity-90"
+          >
             <Link to={guide.compareHref}>
               Compare providers <ArrowRight className="h-4 w-4 ml-2" />
             </Link>
@@ -159,10 +197,15 @@ const BiomarkerGuidePage = () => {
         </section>
 
         <section className="mb-12">
-          <h2 className="text-2xl font-semibold mb-6">Frequently asked questions</h2>
+          <h2 className="text-2xl font-semibold mb-6">
+            Frequently asked questions
+          </h2>
           <div className="space-y-5">
             {guide.faqs.map((f) => (
-              <div key={f.q} className="border-b border-white/10 pb-5 last:border-0">
+              <div
+                key={f.q}
+                className="border-b border-white/10 pb-5 last:border-0"
+              >
                 <h3 className="text-lg font-semibold mb-2">{f.q}</h3>
                 <p className="text-white/75 leading-relaxed">{f.a}</p>
               </div>
@@ -189,8 +232,9 @@ const BiomarkerGuidePage = () => {
         )}
 
         <p className="text-xs text-white/78 mt-12">
-          This guide is for general information only and does not constitute medical advice.
-          Always discuss test results with a qualified clinician.
+          This guide is for general information only and does not constitute
+          medical advice. Always discuss test results with a qualified
+          clinician.
         </p>
       </article>
       <section className="bg-white py-12 px-4 sm:px-6">

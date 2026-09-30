@@ -1,7 +1,10 @@
 import { Suspense, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { NavLink, useParams, Navigate } from "@/lib/router-compat";
-import { CONTROL_SECTIONS, getSection } from "@/components/control/sectionRegistry";
+import {
+  CONTROL_SECTIONS,
+  getSection,
+} from "@/components/control/sectionRegistry";
 import { StatusBadge } from "@/components/control/SectionShell";
 import { Loader2, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -51,9 +54,9 @@ export default function ControlPage() {
                       className={({ isActive }) =>
                         cn(
                           "group flex items-center justify-between gap-2 px-2.5 py-2 rounded-md text-sm transition",
-                          (isActive || (active === s.slug))
+                          isActive || active === s.slug
                             ? "bg-primary/10 text-primary font-medium"
-                            : "text-foreground/80 hover:bg-muted hover:text-foreground"
+                            : "text-foreground/80 hover:bg-muted hover:text-foreground",
                         )
                       }
                     >
@@ -69,7 +72,8 @@ export default function ControlPage() {
             </ul>
           </nav>
           <div className="px-4 py-3 border-t text-[10px] text-muted-foreground">
-            Build {import.meta.env.MODE} · {new Date().toISOString().slice(0, 10)}
+            Build {import.meta.env.MODE} ·{" "}
+            {new Date().toISOString().slice(0, 10)}
           </div>
         </aside>
 

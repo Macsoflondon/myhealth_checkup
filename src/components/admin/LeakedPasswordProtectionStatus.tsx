@@ -1,9 +1,22 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { ShieldCheck, ShieldAlert, ShieldQuestion, RefreshCw, ExternalLink, Loader2 } from "lucide-react";
+import {
+  ShieldCheck,
+  ShieldAlert,
+  ShieldQuestion,
+  RefreshCw,
+  ExternalLink,
+  Loader2,
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 
@@ -100,11 +113,14 @@ export const LeakedPasswordProtectionStatus = () => {
       </CardHeader>
       <CardContent className="space-y-3">
         {result && (
-          <Alert variant={result.status === "disabled" ? "destructive" : "default"}>
+          <Alert
+            variant={result.status === "disabled" ? "destructive" : "default"}
+          >
             <AlertDescription className="text-sm">
               {result.detail}
               <div className="text-xs text-muted-foreground mt-1">
-                Last checked: {new Date(result.checked_at).toLocaleString("en-GB")}
+                Last checked:{" "}
+                {new Date(result.checked_at).toLocaleString("en-GB")}
               </div>
             </AlertDescription>
           </Alert>

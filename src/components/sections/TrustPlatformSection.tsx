@@ -7,32 +7,44 @@ interface TrustPlatformSectionProps {
   embedded?: boolean;
 }
 
-const TrustPlatformSection = ({ className, embedded = false }: TrustPlatformSectionProps) => {
+const TrustPlatformSection = ({
+  className,
+  embedded = false,
+}: TrustPlatformSectionProps) => {
   const Wrapper = embedded ? "div" : "section";
 
   const features = [
     {
       icon: Eye,
       title: "Independent & Transparent",
-      description: "We're not owned by any provider. Our comparisons are unbiased, and we're upfront about how we make money.",
-      accent: "brand-turquoise"
+      description:
+        "We're not owned by any provider. Our comparisons are unbiased, and we're upfront about how we make money.",
+      accent: "brand-turquoise",
     },
     {
       icon: Stethoscope,
       title: "Clinically Led",
-      description: "Our content is evidence-based and reviewed by registered healthcare professionals to ensure accuracy.",
-      accent: "brand-pink"
+      description:
+        "Our content is evidence-based and reviewed by registered healthcare professionals to ensure accuracy.",
+      accent: "brand-pink",
     },
     {
       icon: BadgeCheck,
       title: "Quality Focused",
-      description: "We only feature UKAS accredited laboratories, CQC regulated providers, and ISO 15189 certified facilities.",
-      accent: "brand-turquoise"
-    }
+      description:
+        "We only feature UKAS accredited laboratories, CQC regulated providers, and ISO 15189 certified facilities.",
+      accent: "brand-turquoise",
+    },
   ];
 
   return (
-    <Wrapper className={cn("py-8 sm:py-10 md:py-12 relative overflow-hidden", !embedded && "bg-brand-navy", className)}>
+    <Wrapper
+      className={cn(
+        "py-8 sm:py-10 md:py-12 relative overflow-hidden",
+        !embedded && "bg-brand-navy",
+        className,
+      )}
+    >
       {!embedded && <NavyDecorativeCircles />}
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 xl:px-16 relative">
@@ -50,7 +62,8 @@ const TrustPlatformSection = ({ className, embedded = false }: TrustPlatformSect
             <span className="text-white">Comparison Platform</span>
           </h2>
           <p className="text-white font-sans font-medium text-xs sm:text-sm md:text-base max-w-lg mx-auto leading-relaxed">
-            Built on principles of transparency, clinical accuracy, and unwavering quality standards.
+            Built on principles of transparency, clinical accuracy, and
+            unwavering quality standards.
           </p>
         </div>
 
@@ -61,13 +74,21 @@ const TrustPlatformSection = ({ className, embedded = false }: TrustPlatformSect
               style={{ animationDelay: `${index * 100}ms` }}
               className="relative p-5 sm:p-7 bg-white/5 backdrop-blur-xs rounded-2xl border border-white/10 hover:border-brand-turquoise/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-brand-turquoise/5 group animate-fade-in"
             >
-              <div className={`absolute top-0 left-6 right-6 h-[2px] rounded-b-full ${
-                feature.accent === "brand-turquoise" ? "bg-brand-turquoise" : "bg-brand-pink"
-              }`} />
+              <div
+                className={`absolute top-0 left-6 right-6 h-[2px] rounded-b-full ${
+                  feature.accent === "brand-turquoise"
+                    ? "bg-brand-turquoise"
+                    : "bg-brand-pink"
+                }`}
+              />
 
-              <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110 ${
-                feature.accent === "brand-turquoise" ? "bg-brand-turquoise" : "bg-brand-pink"
-              }`}>
+              <div
+                className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110 ${
+                  feature.accent === "brand-turquoise"
+                    ? "bg-brand-turquoise"
+                    : "bg-brand-pink"
+                }`}
+              >
                 <feature.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
               </div>
               <h3 className="text-sm sm:text-base font-heading font-semibold mb-2 text-white">

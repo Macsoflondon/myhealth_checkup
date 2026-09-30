@@ -8,7 +8,8 @@ export const Route = createFileRoute("/cancer-screening-compare")({
   head: () =>
     buildRouteHead({
       title: "Compare Private Cancer Screening UK",
-      description: "Compare private cancer screening panels from accredited UK providers by biomarkers covered, price and turnaround time.",
+      description:
+        "Compare private cancer screening panels from accredited UK providers by biomarkers covered, price and turnaround time.",
       path: "/cancer-screening-compare",
     }),
   component: CancerComparisonPage,

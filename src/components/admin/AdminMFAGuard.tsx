@@ -1,14 +1,27 @@
-import { useState } from 'react';
-import { useNavigate } from '@/lib/router-compat';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/context/AuthContext';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Shield, ShieldCheck, Loader2, Smartphone, Key, AlertTriangle } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState } from "react";
+import { useNavigate } from "@/lib/router-compat";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthContext";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Shield,
+  ShieldCheck,
+  Loader2,
+  Smartphone,
+  Key,
+  AlertTriangle,
+} from "lucide-react";
+import { toast } from "sonner";
 
 interface AdminMFAGuardProps {
   children: React.ReactNode;
@@ -25,29 +38,31 @@ export const AdminMFAGuard = ({
   needsMFASetup,
   needsMFAVerification,
   isLoading,
-  onMFAComplete
+  onMFAComplete,
 }: AdminMFAGuardProps) => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [setupStep, setSetupStep] = useState<'initial' | 'qr' | 'verify'>('initial');
+  const [setupStep, setSetupStep] = useState<"initial" | "qr" | "verify">(
+    "initial",
+  );
   const [qrCode, setQrCode] = useState<string | null>(null);
   const [secret, setSecret] = useState<string | null>(null);
   const [factorId, setFactorId] = useState<string | null>(null);
-  const [verifyCode, setVerifyCode] = useState('');
+  const [verifyCode, setVerifyCode] = useState("");
   const [isEnrolling, setIsEnrolling] = useState(false);
   const [isVerifying, setIsVerifying] = useState(false);
 
   const handleStartEnrollment = async () => {
     try {
       setIsEnrolling(true);
-      
+
       const { data, error } = await supabase.auth.mfa.enroll({
-        factorType: 'totp',
-        friendlyName: 'Authenticator App'
+        factorType: "totp",
+        friendlyName: "Authenticator App",
       });
 
       if (error) {
-        toast.error('Failed to start MFA enrollment: ' + error.message);
+        toast.error("Failed to start MFA enrollment: " + error.message);
         return;
       }
 
@@ -55,11 +70,11 @@ export const AdminMFAGuard = ({
         setQrCode(data.totp.qr_code);
         setSecret(data.totp.secret);
         setFactorId(data.id);
-        setSetupStep('qr');
+        setSetupStep("qr");
       }
     } catch (err) {
-      console.error('Enrollment error:', err);
-      toast.error('Failed to start MFA enrollment');
+      console.error("Enrollment error:", err);
+      toast.error("Failed to start MFA enrollment");
     } finally {
       setIsEnrolling(false);
     }
@@ -67,7 +82,7 @@ export const AdminMFAGuard = ({
 
   const handleVerifyAndEnroll = async () => {
     if (!factorId || verifyCode.length !== 6) {
-      toast.error('Please enter a valid 6-digit code');
+      toast.error("Please enter a valid 6-digit code");
       return;
     }
 
@@ -75,23 +90,25 @@ export const AdminMFAGuard = ({
       setIsVerifying(true);
 
       // First, verify the enrollment
-      const { data: challengeData, error: challengeError } = await supabase.auth.mfa.challenge({
-        factorId
-      });
+      const { data: challengeData, error: challengeError } =
+        await supabase.auth.mfa.challenge({
+          factorId,
+        });
 
       if (challengeError) {
-        toast.error('Challenge failed: ' + challengeError.message);
+        toast.error("Challenge failed: " + challengeError.message);
         return;
       }
 
-      const { data: verifyData, error: verifyError } = await supabase.auth.mfa.verify({
-        factorId,
-        challengeId: challengeData.id,
-        code: verifyCode
-      });
+      const { data: verifyData, error: verifyError } =
+        await supabase.auth.mfa.verify({
+          factorId,
+          challengeId: challengeData.id,
+          code: verifyCode,
+        });
 
       if (verifyError) {
-        toast.error('Verification failed: ' + verifyError.message);
+        toast.error("Verification failed: " + verifyError.message);
         return;
       }
 
@@ -102,12 +119,12 @@ export const AdminMFAGuard = ({
         });
       }
 
-      toast.success('MFA enabled successfully!');
-      setVerifyCode('');
+      toast.success("MFA enabled successfully!");
+      setVerifyCode("");
       await onMFAComplete();
     } catch (err) {
-      console.error('Verification error:', err);
-      toast.error('Failed to verify MFA code');
+      console.error("Verification error:", err);
+      toast.error("Failed to verify MFA code");
     } finally {
       setIsVerifying(false);
     }
@@ -115,7 +132,7 @@ export const AdminMFAGuard = ({
 
   const handleVerifyExisting = async () => {
     if (verifyCode.length !== 6) {
-      toast.error('Please enter a valid 6-digit code');
+      toast.error("Please enter a valid 6-digit code");
       return;
     }
 
@@ -123,38 +140,43 @@ export const AdminMFAGuard = ({
       setIsVerifying(true);
 
       // Get the factors list
-      const { data: factorsData, error: factorsError } = await supabase.auth.mfa.listFactors();
-      
+      const { data: factorsData, error: factorsError } =
+        await supabase.auth.mfa.listFactors();
+
       if (factorsError || !factorsData?.totp?.length) {
-        toast.error('No MFA factors found');
+        toast.error("No MFA factors found");
         return;
       }
 
-      const verifiedFactor = factorsData.totp.find(f => f.status === 'verified');
+      const verifiedFactor = factorsData.totp.find(
+        (f) => f.status === "verified",
+      );
       if (!verifiedFactor) {
-        toast.error('No verified MFA factor found');
+        toast.error("No verified MFA factor found");
         return;
       }
 
       // Create a challenge
-      const { data: challengeData, error: challengeError } = await supabase.auth.mfa.challenge({
-        factorId: verifiedFactor.id
-      });
+      const { data: challengeData, error: challengeError } =
+        await supabase.auth.mfa.challenge({
+          factorId: verifiedFactor.id,
+        });
 
       if (challengeError) {
-        toast.error('Challenge failed: ' + challengeError.message);
+        toast.error("Challenge failed: " + challengeError.message);
         return;
       }
 
       // Verify the challenge
-      const { data: verifyData, error: verifyError } = await supabase.auth.mfa.verify({
-        factorId: verifiedFactor.id,
-        challengeId: challengeData.id,
-        code: verifyCode
-      });
+      const { data: verifyData, error: verifyError } =
+        await supabase.auth.mfa.verify({
+          factorId: verifiedFactor.id,
+          challengeId: challengeData.id,
+          code: verifyCode,
+        });
 
       if (verifyError) {
-        toast.error('Invalid code: ' + verifyError.message);
+        toast.error("Invalid code: " + verifyError.message);
         return;
       }
 
@@ -165,12 +187,12 @@ export const AdminMFAGuard = ({
         });
       }
 
-      toast.success('MFA verified successfully!');
-      setVerifyCode('');
+      toast.success("MFA verified successfully!");
+      setVerifyCode("");
       await onMFAComplete();
     } catch (err) {
-      console.error('Verification error:', err);
-      toast.error('Failed to verify MFA code');
+      console.error("Verification error:", err);
+      toast.error("Failed to verify MFA code");
     } finally {
       setIsVerifying(false);
     }
@@ -198,21 +220,24 @@ export const AdminMFAGuard = ({
             </div>
             <CardTitle>MFA Required for Admin Access</CardTitle>
             <CardDescription>
-              Multi-factor authentication is required for all admin operations to protect sensitive data.
+              Multi-factor authentication is required for all admin operations
+              to protect sensitive data.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {setupStep === 'initial' && (
+            {setupStep === "initial" && (
               <>
                 <Alert>
                   <AlertTriangle className="h-4 w-4" />
                   <AlertTitle>Security Requirement</AlertTitle>
                   <AlertDescription>
-                    As an admin, you must set up two-factor authentication using an authenticator app like Google Authenticator, Authy, or 1Password.
+                    As an admin, you must set up two-factor authentication using
+                    an authenticator app like Google Authenticator, Authy, or
+                    1Password.
                   </AlertDescription>
                 </Alert>
-                <Button 
-                  onClick={handleStartEnrollment} 
+                <Button
+                  onClick={handleStartEnrollment}
                   className="w-full"
                   disabled={isEnrolling}
                 >
@@ -231,16 +256,16 @@ export const AdminMFAGuard = ({
               </>
             )}
 
-            {setupStep === 'qr' && qrCode && (
+            {setupStep === "qr" && qrCode && (
               <>
                 <div className="text-center space-y-4">
                   <p className="text-sm text-muted-foreground">
                     Scan this QR code with your authenticator app:
                   </p>
                   <div className="flex justify-center">
-                    <img 
-                      src={qrCode} 
-                      alt="MFA QR Code" 
+                    <img
+                      src={qrCode}
+                      alt="MFA QR Code"
                       className="w-48 h-48 border rounded-lg"
                     />
                   </div>
@@ -254,7 +279,9 @@ export const AdminMFAGuard = ({
                   )}
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="verifyCode">Enter the 6-digit code from your app:</Label>
+                  <Label htmlFor="verifyCode">
+                    Enter the 6-digit code from your app:
+                  </Label>
                   <Input
                     id="verifyCode"
                     type="text"
@@ -263,11 +290,13 @@ export const AdminMFAGuard = ({
                     maxLength={6}
                     placeholder="000000"
                     value={verifyCode}
-                    onChange={(e) => setVerifyCode(e.target.value.replace(/\D/g, ''))}
+                    onChange={(e) =>
+                      setVerifyCode(e.target.value.replace(/\D/g, ""))
+                    }
                     className="text-center text-2xl tracking-widest"
                   />
                 </div>
-                <Button 
+                <Button
                   onClick={handleVerifyAndEnroll}
                   className="w-full"
                   disabled={isVerifying || verifyCode.length !== 6}
@@ -316,12 +345,14 @@ export const AdminMFAGuard = ({
                 maxLength={6}
                 placeholder="000000"
                 value={verifyCode}
-                onChange={(e) => setVerifyCode(e.target.value.replace(/\D/g, ''))}
+                onChange={(e) =>
+                  setVerifyCode(e.target.value.replace(/\D/g, ""))
+                }
                 className="text-center text-2xl tracking-widest"
                 autoFocus
               />
             </div>
-            <Button 
+            <Button
               onClick={handleVerifyExisting}
               className="w-full"
               disabled={isVerifying || verifyCode.length !== 6}
@@ -354,7 +385,7 @@ export const AdminMFAGuard = ({
           You don't have permission to access this page.
         </AlertDescription>
       </Alert>
-      <Button onClick={() => navigate('/')} className="mt-4">
+      <Button onClick={() => navigate("/")} className="mt-4">
         Return Home
       </Button>
     </div>

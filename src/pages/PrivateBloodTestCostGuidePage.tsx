@@ -24,31 +24,60 @@ const priceBands = [
   {
     tier: "Focused panels",
     range: "£45 – £99",
-    examples: "Thyroid, iron status, cholesterol, female or male hormone screens",
+    examples:
+      "Thyroid, iron status, cholesterol, female or male hormone screens",
   },
   {
     tier: "General wellness panels",
     range: "£99 – £199",
-    examples: "20–40 markers covering thyroid, liver, kidney, cholesterol, vitamins",
+    examples:
+      "20–40 markers covering thyroid, liver, kidney, cholesterol, vitamins",
   },
   {
     tier: "Advanced / premium panels",
     range: "£199 – £399",
-    examples: "60+ markers, advanced lipids, hormones, inflammation, tumour markers",
+    examples:
+      "60+ markers, advanced lipids, hormones, inflammation, tumour markers",
   },
   {
     tier: "Executive / longevity panels",
     range: "£399 – £900+",
-    examples: "80–100+ markers, clinician review, sometimes imaging or genetics",
+    examples:
+      "80–100+ markers, clinician review, sometimes imaging or genetics",
   },
 ];
 
 const providerSnapshot = [
-  { provider: "Medichecks", entry: "£29", panel: "£99 (Ultimate Performance)", venous: "+£35" },
-  { provider: "Randox Health", entry: "£45", panel: "£295 (Everyman/Everywoman)", venous: "Included in-clinic" },
-  { provider: "Goodbody Clinic", entry: "£45", panel: "£179 (Advanced Wellness)", venous: "Included" },
-  { provider: "London Medical Lab", entry: "£39", panel: "£189 (General Health)", venous: "+£30" },
-  { provider: "Bluecrest Wellness", entry: "£129", panel: "£249 (Ultimate)", venous: "Included" },
+  {
+    provider: "Medichecks",
+    entry: "£29",
+    panel: "£99 (Ultimate Performance)",
+    venous: "+£35",
+  },
+  {
+    provider: "Randox Health",
+    entry: "£45",
+    panel: "£295 (Everyman/Everywoman)",
+    venous: "Included in-clinic",
+  },
+  {
+    provider: "Goodbody Clinic",
+    entry: "£45",
+    panel: "£179 (Advanced Wellness)",
+    venous: "Included",
+  },
+  {
+    provider: "London Medical Lab",
+    entry: "£39",
+    panel: "£189 (General Health)",
+    venous: "+£30",
+  },
+  {
+    provider: "Bluecrest Wellness",
+    entry: "£129",
+    panel: "£249 (Ultimate)",
+    venous: "Included",
+  },
 ];
 
 const hiddenCosts = [
@@ -64,7 +93,8 @@ const hiddenCosts = [
   },
   {
     label: "Postage and return shipping",
-    detail: "Typically £0 – £6.99. Tracked return postage is worth paying for on hormone-sensitive samples.",
+    detail:
+      "Typically £0 – £6.99. Tracked return postage is worth paying for on hormone-sensitive samples.",
   },
   {
     label: "Repeat or confirmatory testing",
@@ -133,8 +163,18 @@ const breadcrumbJsonLd = {
   "@type": "BreadcrumbList",
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Home", item: BASE_URL },
-    { "@type": "ListItem", position: 2, name: "Health Resource Hub", item: `${BASE_URL}/blog` },
-    { "@type": "ListItem", position: 3, name: "Private Blood Test Cost Guide", item: CANONICAL },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Health Resource Hub",
+      item: `${BASE_URL}/blog`,
+    },
+    {
+      "@type": "ListItem",
+      position: 3,
+      name: "Private Blood Test Cost Guide",
+      item: CANONICAL,
+    },
   ],
 };
 
@@ -150,50 +190,67 @@ export const PrivateBloodTestCostGuidePage = () => {
         <meta property="og:description" content={DESCRIPTION} />
         <meta property="og:url" content={CANONICAL} />
         <meta property="og:locale" content="en_GB" />
-        <script type="application/ld+json">{JSON.stringify(articleJsonLd)}</script>
+        <script type="application/ld+json">
+          {JSON.stringify(articleJsonLd)}
+        </script>
         <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
-        <script type="application/ld+json">{JSON.stringify(breadcrumbJsonLd)}</script>
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbJsonLd)}
+        </script>
       </Helmet>
 
       <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 text-white">
         <nav className="text-sm text-white/78 mb-6" aria-label="Breadcrumb">
-          <Link to="/" className="hover:text-white">Home</Link>
+          <Link to="/" className="hover:text-white">
+            Home
+          </Link>
           <span className="mx-2">/</span>
-          <Link to="/blog" className="hover:text-white">Health Resource Hub</Link>
+          <Link to="/blog" className="hover:text-white">
+            Health Resource Hub
+          </Link>
           <span className="mx-2">/</span>
           <span className="text-white/90">Private blood test cost guide</span>
         </nav>
 
         <header className="mb-10">
-          <Badge variant="secondary" className="mb-4">Pricing · UK guide</Badge>
+          <Badge variant="secondary" className="mb-4">
+            Pricing · UK guide
+          </Badge>
           <h1 className="text-4xl lg:text-5xl font-semibold tracking-tight mb-4">
             How much does a private blood test cost in the UK?
           </h1>
           <p className="text-lg text-white/90 leading-relaxed">
-            Private blood tests in the UK range from £19 for a single marker to over £900 for
-            premium executive panels. This independent 2026 guide breaks down what you actually
-            pay across the major CQC-regulated providers, where hidden fees appear, and how to
-            match panel depth to what you want to learn.
+            Private blood tests in the UK range from £19 for a single marker to
+            over £900 for premium executive panels. This independent 2026 guide
+            breaks down what you actually pay across the major CQC-regulated
+            providers, where hidden fees appear, and how to match panel depth to
+            what you want to learn.
           </p>
           <p className="text-sm text-white/78 mt-4">
-            Last reviewed: 19 July 2026 · Editorially independent · Prices are typical retail rates and change frequently
+            Last reviewed: 19 July 2026 · Editorially independent · Prices are
+            typical retail rates and change frequently
           </p>
         </header>
 
         <section className="mb-10 space-y-4">
           <h2 className="text-2xl font-semibold">Typical UK price bands</h2>
           <p>
-            Private testing in the UK is competitive, so pricing clusters into predictable tiers.
-            Most consumers pay between £99 and £199 for a general wellness panel, with entry-level
-            single markers available from £19 for basic finger-prick tests.
+            Private testing in the UK is competitive, so pricing clusters into
+            predictable tiers. Most consumers pay between £99 and £199 for a
+            general wellness panel, with entry-level single markers available
+            from £19 for basic finger-prick tests.
           </p>
           <div className="overflow-x-auto rounded-xl border border-white/10">
             <table className="w-full text-sm">
               <thead className="bg-white/5 text-white/90">
                 <tr>
                   <th className="text-left px-4 py-3 font-medium">Tier</th>
-                  <th className="text-left px-4 py-3 font-medium">Typical price</th>
-                  <th className="text-left px-4 py-3 font-medium">What you get</th>
+                  <th className="text-left px-4 py-3 font-medium">
+                    Typical price
+                  </th>
+                  <th className="text-left px-4 py-3 font-medium">
+                    What you get
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/10">
@@ -210,20 +267,29 @@ export const PrivateBloodTestCostGuidePage = () => {
         </section>
 
         <section className="mb-10">
-          <h2 className="text-2xl font-semibold mb-4">Provider price snapshot (2026)</h2>
+          <h2 className="text-2xl font-semibold mb-4">
+            Provider price snapshot (2026)
+          </h2>
           <p className="mb-4">
-            Indicative pricing for a comparable entry-level test and a comprehensive wellness
-            panel across the largest UK direct-to-consumer providers. Actual prices update
-            frequently — always check the live comparison on the panel page.
+            Indicative pricing for a comparable entry-level test and a
+            comprehensive wellness panel across the largest UK
+            direct-to-consumer providers. Actual prices update frequently —
+            always check the live comparison on the panel page.
           </p>
           <div className="overflow-x-auto rounded-xl border border-white/10">
             <table className="w-full text-sm">
               <thead className="bg-white/5 text-white/90">
                 <tr>
                   <th className="text-left px-4 py-3 font-medium">Provider</th>
-                  <th className="text-left px-4 py-3 font-medium">Entry-level</th>
-                  <th className="text-left px-4 py-3 font-medium">General wellness panel</th>
-                  <th className="text-left px-4 py-3 font-medium">Clinic draw</th>
+                  <th className="text-left px-4 py-3 font-medium">
+                    Entry-level
+                  </th>
+                  <th className="text-left px-4 py-3 font-medium">
+                    General wellness panel
+                  </th>
+                  <th className="text-left px-4 py-3 font-medium">
+                    Clinic draw
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/10">
@@ -239,16 +305,20 @@ export const PrivateBloodTestCostGuidePage = () => {
             </table>
           </div>
           <p className="text-xs text-white/78 mt-3">
-            Prices sourced from each provider's public UK website, July 2026. Includes VAT where
-            applicable. Excludes optional add-ons such as consultant review or expedited turnaround.
+            Prices sourced from each provider's public UK website, July 2026.
+            Includes VAT where applicable. Excludes optional add-ons such as
+            consultant review or expedited turnaround.
           </p>
         </section>
 
         <section className="mb-10 space-y-4">
-          <h2 className="text-2xl font-semibold">Hidden costs to check before you buy</h2>
+          <h2 className="text-2xl font-semibold">
+            Hidden costs to check before you buy
+          </h2>
           <p>
-            The headline price on a private blood test rarely tells the full story. These
-            extras are the most common source of surprise on invoices.
+            The headline price on a private blood test rarely tells the full
+            story. These extras are the most common source of surprise on
+            invoices.
           </p>
           <div className="grid sm:grid-cols-2 gap-4">
             {hiddenCosts.map((h) => (
@@ -256,73 +326,94 @@ export const PrivateBloodTestCostGuidePage = () => {
                 <CardHeader>
                   <CardTitle className="text-base">{h.label}</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/90">{h.detail}</CardContent>
+                <CardContent className="text-sm text-white/90">
+                  {h.detail}
+                </CardContent>
               </Card>
             ))}
           </div>
         </section>
 
         <section className="mb-10 space-y-4">
-          <h2 className="text-2xl font-semibold">How to match panel depth to your goal</h2>
+          <h2 className="text-2xl font-semibold">
+            How to match panel depth to your goal
+          </h2>
           <div className="grid sm:grid-cols-3 gap-4">
             <Card>
               <CardHeader>
                 <PoundSterling className="w-6 h-6 mb-2 text-[#22c0d4]" />
-                <CardTitle className="text-base">Checking a single concern</CardTitle>
+                <CardTitle className="text-base">
+                  Checking a single concern
+                </CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-white/90">
-                A single-marker test (vitamin D, TSH, ferritin, PSA) at £19–£45 is usually
-                enough when you already know what you want to measure.
+                A single-marker test (vitamin D, TSH, ferritin, PSA) at £19–£45
+                is usually enough when you already know what you want to
+                measure.
               </CardContent>
             </Card>
             <Card>
               <CardHeader>
                 <Beaker className="w-6 h-6 mb-2 text-[#e70d69]" />
-                <CardTitle className="text-base">Baseline or annual review</CardTitle>
+                <CardTitle className="text-base">
+                  Baseline or annual review
+                </CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-white/90">
-                A general wellness panel at £99–£199 covers thyroid, liver, kidney,
-                cholesterol, iron and key vitamins — the standard MOT for most adults.
+                A general wellness panel at £99–£199 covers thyroid, liver,
+                kidney, cholesterol, iron and key vitamins — the standard MOT
+                for most adults.
               </CardContent>
             </Card>
             <Card>
               <CardHeader>
                 <ShieldCheck className="w-6 h-6 mb-2 text-[#22c0d4]" />
-                <CardTitle className="text-base">Symptom investigation</CardTitle>
+                <CardTitle className="text-base">
+                  Symptom investigation
+                </CardTitle>
               </CardHeader>
               <CardContent className="text-sm text-white/90">
-                An advanced panel at £199–£399 adds hormones, inflammation and advanced
-                lipids — worth it when symptoms don't fit a single system.
+                An advanced panel at £199–£399 adds hormones, inflammation and
+                advanced lipids — worth it when symptoms don't fit a single
+                system.
               </CardContent>
             </Card>
           </div>
         </section>
 
         <section className="mb-10 space-y-4">
-          <h2 className="text-2xl font-semibold">Are private blood tests worth the cost?</h2>
+          <h2 className="text-2xl font-semibold">
+            Are private blood tests worth the cost?
+          </h2>
           <p>
-            Value depends on what a result changes. A £39 vitamin D or ferritin test that
-            prompts a course of supplementation and resolves fatigue represents strong value.
-            A £399 premium panel that duplicates markers your GP would run for free on the NHS
-            is harder to justify unless you specifically want the speed or the extras.
+            Value depends on what a result changes. A £39 vitamin D or ferritin
+            test that prompts a course of supplementation and resolves fatigue
+            represents strong value. A £399 premium panel that duplicates
+            markers your GP would run for free on the NHS is harder to justify
+            unless you specifically want the speed or the extras.
           </p>
           <p>
-            Before you buy, ask two questions. First, what decision will the result change?
-            Second, is the same marker available on the NHS without a wait that materially
-            affects you? Where the answer is "nothing" or "yes", spend less. Where a fast,
-            broader result would genuinely inform a lifestyle or medical decision, the
-            premium is usually money well spent.
+            Before you buy, ask two questions. First, what decision will the
+            result change? Second, is the same marker available on the NHS
+            without a wait that materially affects you? Where the answer is
+            "nothing" or "yes", spend less. Where a fast, broader result would
+            genuinely inform a lifestyle or medical decision, the premium is
+            usually money well spent.
           </p>
         </section>
 
         <section className="mb-10 space-y-4">
-          <h2 className="text-2xl font-semibold">What to look for beyond price</h2>
+          <h2 className="text-2xl font-semibold">
+            What to look for beyond price
+          </h2>
           <p>
-            The three non-negotiables when comparing providers on price alone: UKAS accreditation
-            (ISO 15189) on the analysing laboratory, CQC regulation on the clinic, and a
-            clearly stated turnaround time. All providers listed on myhealth checkup meet these
-            standards; the comparison table shows the differences that actually matter — number
-            of biomarkers, sample method, typical turnaround, and total delivered price.
+            The three non-negotiables when comparing providers on price alone:
+            UKAS accreditation (ISO 15189) on the analysing laboratory, CQC
+            regulation on the clinic, and a clearly stated turnaround time. All
+            providers listed on myhealth checkup meet these standards; the
+            comparison table shows the differences that actually matter — number
+            of biomarkers, sample method, typical turnaround, and total
+            delivered price.
           </p>
         </section>
 
@@ -334,22 +425,28 @@ export const PrivateBloodTestCostGuidePage = () => {
                 <CardHeader>
                   <CardTitle className="text-base">{f.q}</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/90">{f.a}</CardContent>
+                <CardContent className="text-sm text-white/90">
+                  {f.a}
+                </CardContent>
               </Card>
             ))}
           </div>
         </section>
 
         <section className="rounded-2xl border border-white/10 bg-gradient-to-r from-[#22c0d4]/15 to-[#e70d69]/15 p-6 lg:p-8 mb-10">
-          <h2 className="text-2xl font-semibold mb-2">Compare live prices across UK providers</h2>
+          <h2 className="text-2xl font-semibold mb-2">
+            Compare live prices across UK providers
+          </h2>
           <p className="text-white/90 mb-6">
-            Independent, side-by-side price comparison across CQC-regulated UK laboratories.
-            No pay-to-rank, no upselling — just what each test actually costs delivered.
+            Independent, side-by-side price comparison across CQC-regulated UK
+            laboratories. No pay-to-rank, no upselling — just what each test
+            actually costs delivered.
           </p>
           <div className="flex flex-wrap gap-3">
             <Button asChild size="lg">
               <Link to="/compare">
-                Compare blood test prices <ArrowRight className="ml-2 w-4 h-4" />
+                Compare blood test prices{" "}
+                <ArrowRight className="ml-2 w-4 h-4" />
               </Link>
             </Button>
             <Button asChild size="lg" variant="outline">
@@ -359,10 +456,11 @@ export const PrivateBloodTestCostGuidePage = () => {
         </section>
 
         <p className="text-xs text-white/78">
-          Editorial note: prices in this guide are typical retail rates from public provider
-          websites in July 2026 and change frequently. This article is for information only and
-          does not constitute medical advice. myhealth checkup is an independent comparison
-          platform and does not provide clinical care.
+          Editorial note: prices in this guide are typical retail rates from
+          public provider websites in July 2026 and change frequently. This
+          article is for information only and does not constitute medical
+          advice. myhealth checkup is an independent comparison platform and
+          does not provide clinical care.
         </p>
       </article>
       <section className="bg-white py-12 px-4 sm:px-6">

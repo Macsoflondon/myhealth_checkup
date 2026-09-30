@@ -21,25 +21,13 @@ export type ReleasePolicy = "immediate" | "clinician_review" | "manual";
 export type ValidationStatus = "pending" | "passed" | "failed" | "overridden";
 
 export type VerificationStatus =
-  | "unverified"
-  | "confirmed"
-  | "corrected"
-  | "rejected";
+  "unverified" | "confirmed" | "corrected" | "rejected";
 
 export type ObservationValueType =
-  | "quantitative"
-  | "qualitative"
-  | "ratio"
-  | "titre"
-  | "text";
+  "quantitative" | "qualitative" | "ratio" | "titre" | "text";
 
 export type ExtractionMethod =
-  | "manual_entry"
-  | "api"
-  | "fhir"
-  | "pdf_extraction"
-  | "ocr"
-  | "adapter";
+  "manual_entry" | "api" | "fhir" | "pdf_extraction" | "ocr" | "adapter";
 
 export type CyclePhase =
   | "unknown"

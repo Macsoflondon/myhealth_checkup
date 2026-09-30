@@ -3,7 +3,7 @@ import type { Json } from "@/integrations/supabase/types";
 import { ApiResponse } from "./base";
 
 // Storage bucket for test result files
-const TEST_RESULTS_BUCKET = 'test-results';
+const TEST_RESULTS_BUCKET = "test-results";
 
 // Signed URL expiry time (1 hour in seconds)
 const SIGNED_URL_EXPIRY = 3600;
@@ -32,7 +32,7 @@ export interface BiomarkerReading {
   unit?: string;
   reference_range_min?: number;
   reference_range_max?: number;
-  status?: 'low' | 'normal' | 'high' | 'critical';
+  status?: "low" | "normal" | "high" | "critical";
   recorded_at: string;
   created_at: string;
 }
@@ -68,27 +68,27 @@ class HealthDataApi {
    */
   async getSecureFileUrl(filePath: string): Promise<string | null> {
     if (!filePath) return null;
-    
+
     // If it's already a full URL (external), return as-is
-    if (filePath.startsWith('http://') || filePath.startsWith('https://')) {
+    if (filePath.startsWith("http://") || filePath.startsWith("https://")) {
       // For external URLs, we can't generate signed URLs
       // Consider migrating to Supabase storage for security
       return filePath;
     }
-    
+
     try {
       const { data, error } = await supabase.storage
         .from(TEST_RESULTS_BUCKET)
         .createSignedUrl(filePath, SIGNED_URL_EXPIRY);
-      
+
       if (error) {
-        console.error('Failed to generate signed URL:', error);
+        console.error("Failed to generate signed URL:", error);
         return null;
       }
-      
+
       return data.signedUrl;
     } catch (error) {
-      console.error('Error generating signed URL:', error);
+      console.error("Error generating signed URL:", error);
       return null;
     }
   }
@@ -96,12 +96,14 @@ class HealthDataApi {
   /**
    * Get uploaded test results with secure file URLs
    */
-  async getUploadedTestResults(userId: string): Promise<ApiResponse<UploadedTestResult[]>> {
+  async getUploadedTestResults(
+    userId: string,
+  ): Promise<ApiResponse<UploadedTestResult[]>> {
     const { data, error, count } = await supabase
-      .from('uploaded_test_results')
-      .select('*', { count: 'exact' })
-      .eq('user_id', userId)
-      .order('test_date', { ascending: false });
+      .from("uploaded_test_results")
+      .select("*", { count: "exact" })
+      .eq("user_id", userId)
+      .order("test_date", { ascending: false });
 
     if (error || !data) {
       return { data, error, count };
@@ -111,19 +113,28 @@ class HealthDataApi {
     const resultsWithSignedUrls = await Promise.all(
       data.map(async (result) => ({
         ...result,
-        file_url: result.file_url ? await this.getSecureFileUrl(result.file_url) : null,
-      }))
+        file_url: result.file_url
+          ? await this.getSecureFileUrl(result.file_url)
+          : null,
+      })),
     );
 
     return { data: resultsWithSignedUrls, error, count };
   }
 
-  async uploadTestResult(result: Omit<UploadedTestResult, 'id' | 'user_id' | 'uploaded_at' | 'created_at' | 'updated_at'>): Promise<ApiResponse<UploadedTestResult>> {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return { data: null, error: new Error('Not authenticated') };
+  async uploadTestResult(
+    result: Omit<
+      UploadedTestResult,
+      "id" | "user_id" | "uploaded_at" | "created_at" | "updated_at"
+    >,
+  ): Promise<ApiResponse<UploadedTestResult>> {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return { data: null, error: new Error("Not authenticated") };
 
     const { data, error } = await supabase
-      .from('uploaded_test_results')
+      .from("uploaded_test_results")
       .insert({ ...result, user_id: user.id })
       .select()
       .single();
@@ -133,35 +144,42 @@ class HealthDataApi {
 
   async deleteTestResult(id: string): Promise<ApiResponse<null>> {
     const { error } = await supabase
-      .from('uploaded_test_results')
+      .from("uploaded_test_results")
       .delete()
-      .eq('id', id);
+      .eq("id", id);
 
     return { data: null, error };
   }
 
   // Biomarker Readings
-  async getBiomarkerReadings(userId: string, biomarkerName?: string): Promise<ApiResponse<BiomarkerReading[]>> {
+  async getBiomarkerReadings(
+    userId: string,
+    biomarkerName?: string,
+  ): Promise<ApiResponse<BiomarkerReading[]>> {
     let query = supabase
-      .from('biomarker_readings')
-      .select('*')
-      .eq('user_id', userId)
-      .order('recorded_at', { ascending: false });
+      .from("biomarker_readings")
+      .select("*")
+      .eq("user_id", userId)
+      .order("recorded_at", { ascending: false });
 
     if (biomarkerName) {
-      query = query.eq('biomarker_name', biomarkerName);
+      query = query.eq("biomarker_name", biomarkerName);
     }
 
     const { data, error, count } = await query;
     return { data: data as BiomarkerReading[] | null, error, count };
   }
 
-  async addBiomarkerReading(reading: Omit<BiomarkerReading, 'id' | 'user_id' | 'created_at'>): Promise<ApiResponse<BiomarkerReading>> {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return { data: null, error: new Error('Not authenticated') };
+  async addBiomarkerReading(
+    reading: Omit<BiomarkerReading, "id" | "user_id" | "created_at">,
+  ): Promise<ApiResponse<BiomarkerReading>> {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return { data: null, error: new Error("Not authenticated") };
 
     const { data, error } = await supabase
-      .from('biomarker_readings')
+      .from("biomarker_readings")
       .insert({ ...reading, user_id: user.id })
       .select()
       .single();
@@ -169,65 +187,82 @@ class HealthDataApi {
     return { data: data as BiomarkerReading | null, error };
   }
 
-  async getBiomarkerTrend(userId: string, biomarkerName: string, limit: number = 10): Promise<ApiResponse<BiomarkerReading[]>> {
+  async getBiomarkerTrend(
+    userId: string,
+    biomarkerName: string,
+    limit: number = 10,
+  ): Promise<ApiResponse<BiomarkerReading[]>> {
     const { data, error } = await supabase
-      .from('biomarker_readings')
-      .select('*')
-      .eq('user_id', userId)
-      .eq('biomarker_name', biomarkerName)
-      .order('recorded_at', { ascending: true })
+      .from("biomarker_readings")
+      .select("*")
+      .eq("user_id", userId)
+      .eq("biomarker_name", biomarkerName)
+      .order("recorded_at", { ascending: true })
       .limit(limit);
 
     return { data: data as BiomarkerReading[] | null, error };
   }
 
   // Health Scores
-  async getLatestHealthScore(userId: string): Promise<ApiResponse<HealthScore>> {
+  async getLatestHealthScore(
+    userId: string,
+  ): Promise<ApiResponse<HealthScore>> {
     const { data, error } = await supabase
-      .from('user_health_scores')
-      .select('*')
-      .eq('user_id', userId)
-      .order('calculated_at', { ascending: false })
+      .from("user_health_scores")
+      .select("*")
+      .eq("user_id", userId)
+      .order("calculated_at", { ascending: false })
       .limit(1)
       .single();
 
     return { data, error };
   }
 
-  async getHealthScoreHistory(userId: string, limit: number = 30): Promise<ApiResponse<HealthScore[]>> {
+  async getHealthScoreHistory(
+    userId: string,
+    limit: number = 30,
+  ): Promise<ApiResponse<HealthScore[]>> {
     const { data, error } = await supabase
-      .from('user_health_scores')
-      .select('*')
-      .eq('user_id', userId)
-      .order('calculated_at', { ascending: false })
+      .from("user_health_scores")
+      .select("*")
+      .eq("user_id", userId)
+      .order("calculated_at", { ascending: false })
       .limit(limit);
 
     return { data, error };
   }
 
   // User Health Data (wearables, manual entries)
-  async getUserHealthData(userId: string, metricType?: string, limit: number = 100): Promise<ApiResponse<UserHealthData[]>> {
+  async getUserHealthData(
+    userId: string,
+    metricType?: string,
+    limit: number = 100,
+  ): Promise<ApiResponse<UserHealthData[]>> {
     let query = supabase
-      .from('user_health_data')
-      .select('*')
-      .eq('user_id', userId)
-      .order('recorded_at', { ascending: false })
+      .from("user_health_data")
+      .select("*")
+      .eq("user_id", userId)
+      .order("recorded_at", { ascending: false })
       .limit(limit);
 
     if (metricType) {
-      query = query.eq('metric_type', metricType);
+      query = query.eq("metric_type", metricType);
     }
 
     const { data, error, count } = await query;
     return { data, error, count };
   }
 
-  async addHealthData(data: Omit<UserHealthData, 'id' | 'user_id' | 'synced_at' | 'created_at'>): Promise<ApiResponse<UserHealthData>> {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return { data: null, error: new Error('Not authenticated') };
+  async addHealthData(
+    data: Omit<UserHealthData, "id" | "user_id" | "synced_at" | "created_at">,
+  ): Promise<ApiResponse<UserHealthData>> {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return { data: null, error: new Error("Not authenticated") };
 
     const { data: result, error } = await supabase
-      .from('user_health_data')
+      .from("user_health_data")
       .insert({ ...data, user_id: user.id })
       .select()
       .single();

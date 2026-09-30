@@ -34,7 +34,13 @@ import {
 } from "lucide-react";
 import { logger } from "@/lib/logger";
 
-type SortField = "test_name" | "category" | "provider_count" | "min_price" | "max_price" | "sample_type";
+type SortField =
+  | "test_name"
+  | "category"
+  | "provider_count"
+  | "min_price"
+  | "max_price"
+  | "sample_type";
 type SortDir = "asc" | "desc";
 
 interface MasterTestRow {
@@ -104,8 +110,14 @@ function AdminTestDashboardContent() {
       // Candidate matches by name similarity (first pass)
       const candidates = providerTests.filter((pt) => {
         const ptName = pt.test_name.toLowerCase();
-        return ptName.includes(nameLower) || nameLower.includes(ptName) ||
-          (nameLower.length > 8 && ptName.includes(nameLower.substring(0, Math.min(nameLower.length, 20))));
+        return (
+          ptName.includes(nameLower) ||
+          nameLower.includes(ptName) ||
+          (nameLower.length > 8 &&
+            ptName.includes(
+              nameLower.substring(0, Math.min(nameLower.length, 20)),
+            ))
+        );
       });
       // Keep at most one row per provider: the best match.
       // Prefer an exact case-insensitive name match; otherwise the candidate
@@ -124,7 +136,9 @@ function AdminTestDashboardContent() {
           continue;
         }
         const ptDiff = Math.abs(pt.test_name.length - mt.test_name.length);
-        const exDiff = Math.abs(existing.test_name.length - mt.test_name.length);
+        const exDiff = Math.abs(
+          existing.test_name.length - mt.test_name.length,
+        );
         if (ptDiff < exDiff) bestByProvider.set(pt.provider_id, pt);
       }
       return {
@@ -161,7 +175,7 @@ function AdminTestDashboardContent() {
         (r) =>
           r.test_name.toLowerCase().includes(q) ||
           r.category.toLowerCase().includes(q) ||
-          r.providers.some((p) => p.provider_id.toLowerCase().includes(q))
+          r.providers.some((p) => p.provider_id.toLowerCase().includes(q)),
       );
     }
     if (categoryFilter !== "all") {
@@ -169,7 +183,7 @@ function AdminTestDashboardContent() {
     }
     if (providerFilter !== "all") {
       rows = rows.filter((r) =>
-        r.providers.some((p) => p.provider_id === providerFilter)
+        r.providers.some((p) => p.provider_id === providerFilter),
       );
     }
     return rows;
@@ -226,7 +240,8 @@ function AdminTestDashboardContent() {
   };
 
   const SortIcon = ({ field }: { field: SortField }) => {
-    if (sortField !== field) return <ArrowUpDown className="w-3.5 h-3.5 ml-1 opacity-40" />;
+    if (sortField !== field)
+      return <ArrowUpDown className="w-3.5 h-3.5 ml-1 opacity-40" />;
     return sortDir === "asc" ? (
       <ArrowUp className="w-3.5 h-3.5 ml-1 text-brand-pink" />
     ) : (
@@ -236,7 +251,8 @@ function AdminTestDashboardContent() {
 
   const getBiomarkerCount = (biomarkers: unknown): number => {
     if (Array.isArray(biomarkers)) return biomarkers.length;
-    if (typeof biomarkers === "object" && biomarkers !== null) return Object.keys(biomarkers).length;
+    if (typeof biomarkers === "object" && biomarkers !== null)
+      return Object.keys(biomarkers).length;
     return 0;
   };
 
@@ -246,9 +262,19 @@ function AdminTestDashboardContent() {
   };
 
   const exportCSV = () => {
-    const headers = ["Test Name", "Category", "Sample Type", "Biomarkers", "Providers", "Min Price", "Max Price"];
+    const headers = [
+      "Test Name",
+      "Category",
+      "Sample Type",
+      "Biomarkers",
+      "Providers",
+      "Min Price",
+      "Max Price",
+    ];
     const rows = sorted.map((r) => {
-      const prices = r.providers.map((p) => p.price).filter((p): p is number => p !== null);
+      const prices = r.providers
+        .map((p) => p.price)
+        .filter((p): p is number => p !== null);
       return [
         r.test_name,
         r.category,
@@ -270,7 +296,10 @@ function AdminTestDashboardContent() {
   };
 
   const providerLabel = (id: string) =>
-    id.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+    id
+      .split("-")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -294,7 +323,8 @@ function AdminTestDashboardContent() {
             </Link>
           </div>
           <p className="text-muted-foreground text-sm">
-            Master catalogue with provider pricing — {combinedRows.length} master tests, {providerTests?.length ?? 0} provider listings
+            Master catalogue with provider pricing — {combinedRows.length}{" "}
+            master tests, {providerTests?.length ?? 0} provider listings
           </p>
         </div>
       </div>
@@ -303,10 +333,22 @@ function AdminTestDashboardContent() {
       <div className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {[
-            { label: "Master tests", value: masterTests?.length ?? 0, icon: Database },
+            {
+              label: "Master tests",
+              value: masterTests?.length ?? 0,
+              icon: Database,
+            },
             { label: "Categories", value: categories.length, icon: Filter },
-            { label: "Providers", value: providers.length, icon: LayoutDashboard },
-            { label: "Provider listings", value: providerTests?.length ?? 0, icon: Database },
+            {
+              label: "Providers",
+              value: providers.length,
+              icon: LayoutDashboard,
+            },
+            {
+              label: "Provider listings",
+              value: providerTests?.length ?? 0,
+              icon: Database,
+            },
           ].map((stat) => (
             <div
               key={stat.label}
@@ -319,7 +361,9 @@ function AdminTestDashboardContent() {
                 <div className="text-2xl font-bold leading-tight text-foreground tabular-nums">
                   {stat.value.toLocaleString("en-GB")}
                 </div>
-                <div className="text-xs text-muted-foreground truncate">{stat.label}</div>
+                <div className="text-xs text-muted-foreground truncate">
+                  {stat.label}
+                </div>
               </div>
             </div>
           ))}
@@ -332,29 +376,48 @@ function AdminTestDashboardContent() {
             <Input
               placeholder="Search tests, categories, providers..."
               value={search}
-              onChange={(e) => { setSearch(e.target.value); setPage(0); }}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(0);
+              }}
               className="pl-10 bg-background border-border text-foreground placeholder:text-muted-foreground"
             />
           </div>
-          <Select value={categoryFilter} onValueChange={(v) => { setCategoryFilter(v); setPage(0); }}>
+          <Select
+            value={categoryFilter}
+            onValueChange={(v) => {
+              setCategoryFilter(v);
+              setPage(0);
+            }}
+          >
             <SelectTrigger className="w-full sm:w-48 bg-background border-border text-foreground">
               <SelectValue placeholder="Category" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All categories</SelectItem>
               {categories.map((c) => (
-                <SelectItem key={c} value={c}>{c}</SelectItem>
+                <SelectItem key={c} value={c}>
+                  {c}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
-          <Select value={providerFilter} onValueChange={(v) => { setProviderFilter(v); setPage(0); }}>
+          <Select
+            value={providerFilter}
+            onValueChange={(v) => {
+              setProviderFilter(v);
+              setPage(0);
+            }}
+          >
             <SelectTrigger className="w-full sm:w-48 bg-background border-border text-foreground">
               <SelectValue placeholder="Provider" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All providers</SelectItem>
               {providers.map((p) => (
-                <SelectItem key={p} value={p}>{providerLabel(p)}</SelectItem>
+                <SelectItem key={p} value={p}>
+                  {providerLabel(p)}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -372,8 +435,11 @@ function AdminTestDashboardContent() {
         {/* Results count */}
         <div className="flex items-center justify-between mb-2">
           <span className="text-muted-foreground text-sm">
-            {filtered.length.toLocaleString("en-GB")} result{filtered.length !== 1 ? "s" : ""}
-            {search || categoryFilter !== "all" || providerFilter !== "all" ? " (filtered)" : ""}
+            {filtered.length.toLocaleString("en-GB")} result
+            {filtered.length !== 1 ? "s" : ""}
+            {search || categoryFilter !== "all" || providerFilter !== "all"
+              ? " (filtered)"
+              : ""}
           </span>
           <span className="text-muted-foreground text-sm">
             Page {page + 1} of {totalPages || 1}
@@ -386,11 +452,13 @@ function AdminTestDashboardContent() {
             <Table>
               <TableHeader>
                 <TableRow className="border-border hover:bg-transparent bg-muted/50">
-                  {([
-                    ["test_name", "Test name"],
-                    ["category", "Category"],
-                    ["sample_type", "Sample"],
-                  ] as [SortField, string][]).map(([field, label]) => (
+                  {(
+                    [
+                      ["test_name", "Test name"],
+                      ["category", "Category"],
+                      ["sample_type", "Sample"],
+                    ] as [SortField, string][]
+                  ).map(([field, label]) => (
                     <TableHead
                       key={field}
                       className="h-11 text-xs font-semibold uppercase tracking-wide text-muted-foreground cursor-pointer select-none whitespace-nowrap"
@@ -440,32 +508,47 @@ function AdminTestDashboardContent() {
               <TableBody>
                 {isLoading ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-16 text-muted-foreground">
+                    <TableCell
+                      colSpan={8}
+                      className="text-center py-16 text-muted-foreground"
+                    >
                       <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-pink mx-auto mb-3" />
                       Loading test data...
                     </TableCell>
                   </TableRow>
                 ) : paginated.length === 0 ? (
                   <TableRow>
-                    <TableCell colSpan={8} className="text-center py-16 text-muted-foreground">
+                    <TableCell
+                      colSpan={8}
+                      className="text-center py-16 text-muted-foreground"
+                    >
                       No tests found matching your filters.
                     </TableCell>
                   </TableRow>
                 ) : (
                   paginated.map((row) => {
-                    const prices = row.providers.map((p) => p.price).filter((p): p is number => p !== null);
+                    const prices = row.providers
+                      .map((p) => p.price)
+                      .filter((p): p is number => p !== null);
                     const minPrice = prices.length ? Math.min(...prices) : null;
                     const maxPrice = prices.length ? Math.max(...prices) : null;
                     const visibleProviders = row.providers.slice(0, 3);
-                    const hiddenCount = row.providers.length - visibleProviders.length;
+                    const hiddenCount =
+                      row.providers.length - visibleProviders.length;
 
                     return (
-                      <TableRow key={row.id} className="border-border/60 hover:bg-muted/40">
+                      <TableRow
+                        key={row.id}
+                        className="border-border/60 hover:bg-muted/40"
+                      >
                         <TableCell className="py-2.5 text-foreground font-medium max-w-[220px] truncate">
                           {row.test_name}
                         </TableCell>
                         <TableCell className="py-2.5">
-                          <Badge variant="secondary" className="bg-brand-turquoise/10 text-brand-turquoise border-0 text-xs font-medium">
+                          <Badge
+                            variant="secondary"
+                            className="bg-brand-turquoise/10 text-brand-turquoise border-0 text-xs font-medium"
+                          >
                             {row.category}
                           </Badge>
                         </TableCell>
@@ -495,7 +578,9 @@ function AdminTestDashboardContent() {
                         <TableCell className="py-2.5 max-w-[280px]">
                           <div className="flex flex-wrap items-center gap-1">
                             {row.providers.length === 0 ? (
-                              <span className="text-muted-foreground text-xs">No providers</span>
+                              <span className="text-muted-foreground text-xs">
+                                No providers
+                              </span>
                             ) : (
                               <>
                                 {visibleProviders.map((p, i) => (
@@ -538,14 +623,21 @@ function AdminTestDashboardContent() {
               <ChevronLeft className="w-4 h-4" />
             </Button>
             {Array.from({ length: Math.min(totalPages, 7) }, (_, i) => {
-              const pageNum = totalPages <= 7 ? i : Math.max(0, Math.min(page - 3, totalPages - 7)) + i;
+              const pageNum =
+                totalPages <= 7
+                  ? i
+                  : Math.max(0, Math.min(page - 3, totalPages - 7)) + i;
               return (
                 <Button
                   key={pageNum}
                   variant={page === pageNum ? "default" : "outline"}
                   size="sm"
                   onClick={() => setPage(pageNum)}
-                  className={page === pageNum ? "bg-brand-pink text-primary-foreground hover:bg-brand-pink/90" : ""}
+                  className={
+                    page === pageNum
+                      ? "bg-brand-pink text-primary-foreground hover:bg-brand-pink/90"
+                      : ""
+                  }
                 >
                   {pageNum + 1}
                 </Button>

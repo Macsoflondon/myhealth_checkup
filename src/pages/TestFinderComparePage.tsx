@@ -34,7 +34,10 @@ const TestFinderComparePage = () => {
           name="description"
           content="Compare private health tests side by side on price, biomarkers, sample type, collection and clinical review."
         />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/find-test/compare" />
+        <link
+          rel="canonical"
+          href="https://myhealthcheckup.co.uk/find-test/compare"
+        />
       </Helmet>
       <div className="min-h-screen bg-[#081129] text-white">
         <Header />
@@ -70,12 +73,17 @@ const TestFinderComparePage = () => {
             <div className="space-y-4">
               {selectedTests.length === 0 && (
                 <div className="bg-[#0F2238] border border-white/10 rounded-xl p-4 text-sm text-white/90">
-                  Showing all {filtered.length} matching tests. Tick tests on the recommendations
-                  page to narrow this to a side-by-side comparison.
+                  Showing all {filtered.length} matching tests. Tick tests on
+                  the recommendations page to narrow this to a side-by-side
+                  comparison.
                 </div>
               )}
               <ComparisonTable
-                tests={selectedTests.length > 0 ? selectedTests : filtered.slice(0, 4)}
+                tests={
+                  selectedTests.length > 0
+                    ? selectedTests
+                    : filtered.slice(0, 4)
+                }
               />
             </div>
           </div>

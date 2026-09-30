@@ -45,7 +45,9 @@ export function clinicalReviewLabel(
   fee?: number,
 ): string {
   if (type === "included") {
-    const role = professional ? CLINICAL_REVIEW_PROFESSIONAL_LABEL[professional] : "Clinical";
+    const role = professional
+      ? CLINICAL_REVIEW_PROFESSIONAL_LABEL[professional]
+      : "Clinical";
     return `${role} review included`;
   }
   if (type === "optional") {

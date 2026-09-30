@@ -41,7 +41,10 @@ serve(async (req) => {
     const userClient = createClient(supabaseUrl, anonKey, {
       global: { headers: { Authorization: authHeader } },
     });
-    const { data: { user }, error: userErr } = await userClient.auth.getUser();
+    const {
+      data: { user },
+      error: userErr,
+    } = await userClient.auth.getUser();
     if (userErr || !user) return json({ error: "Unauthorized" }, 401);
     const { data: isAdmin } = await userClient.rpc("has_role", {
       _user_id: user.id,
@@ -94,7 +97,7 @@ serve(async (req) => {
   }
 
   const providers = [...byProvider.values()].sort((a, b) =>
-    a.provider.localeCompare(b.provider)
+    a.provider.localeCompare(b.provider),
   );
 
   // Persist alerts for providers that need attention.
@@ -106,8 +109,7 @@ serve(async (req) => {
         provider_id: p.provider,
         alert_type: "taxonomy_orphans",
         severity: "warning",
-        message:
-          `${p.orphan} of ${p.active} active tests have no category mapping after re-crawl.`,
+        message: `${p.orphan} of ${p.active} active tests have no category mapping after re-crawl.`,
         current_count: p.orphan,
         expected_min: 0,
       });
@@ -117,8 +119,7 @@ serve(async (req) => {
         provider_id: p.provider,
         alert_type: "taxonomy_general_only",
         severity: "warning",
-        message:
-          `${p.onlyGeneral}/${p.active} (${Math.round(generalRatio * 100)}%) of catalogue collapsed to general-health only — tighten aliases.`,
+        message: `${p.onlyGeneral}/${p.active} (${Math.round(generalRatio * 100)}%) of catalogue collapsed to general-health only — tighten aliases.`,
         current_count: p.onlyGeneral,
         expected_min: Math.floor(p.active * (1 - GENERAL_THRESHOLD)),
       });

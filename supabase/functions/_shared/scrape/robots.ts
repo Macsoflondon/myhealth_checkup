@@ -58,7 +58,10 @@ export async function isAllowedByRobots(url: string): Promise<boolean> {
         }
         robotsCache.set(origin, entry);
       } catch (err) {
-        console.warn(`[robots] fetch failed for ${origin}:`, getErrorMessage(err));
+        console.warn(
+          `[robots] fetch failed for ${origin}:`,
+          getErrorMessage(err),
+        );
         entry = { fetchedAt: Date.now(), disallow: [], allow: [] };
         robotsCache.set(origin, entry);
       }
@@ -67,7 +70,8 @@ export async function isAllowedByRobots(url: string): Promise<boolean> {
     const path = u.pathname + (u.search || "");
     // Allow rules take precedence over Disallow (per Google/robots conventions).
     if (entry.allow.some((p) => path.startsWith(p))) return true;
-    if (entry.disallow.some((p) => p === "/" || path.startsWith(p))) return false;
+    if (entry.disallow.some((p) => p === "/" || path.startsWith(p)))
+      return false;
     return true;
   } catch {
     return true;
@@ -94,7 +98,10 @@ export interface RateLimitConfig {
  * Wait until a token is available for `key` (typically a provider id or host).
  * Guarantees at most `requestsPerSecond` sustained, `burst` peak.
  */
-export async function acquireRateToken(key: string, cfg: RateLimitConfig): Promise<void> {
+export async function acquireRateToken(
+  key: string,
+  cfg: RateLimitConfig,
+): Promise<void> {
   const capacity = Math.max(1, cfg.burst ?? Math.ceil(cfg.requestsPerSecond));
   const refillPerMs = cfg.requestsPerSecond / 1000;
 
@@ -126,14 +133,14 @@ export async function acquireRateToken(key: string, cfg: RateLimitConfig): Promi
 
 // Sensible per-provider defaults. Providers not listed fall back to 1 req/s.
 export const PROVIDER_RATE_LIMITS: Record<string, RateLimitConfig> = {
-  "medichecks": { requestsPerSecond: 1, burst: 2 },
+  medichecks: { requestsPerSecond: 1, burst: 2 },
   "medical-diagnosis": { requestsPerSecond: 1, burst: 2 },
   "lola-health": { requestsPerSecond: 1.5, burst: 3 }, // Shopify tolerates a bit more
   "london-medical-laboratory": { requestsPerSecond: 1, burst: 2 },
   "london-health-company": { requestsPerSecond: 1, burst: 2 },
   "goodbody-clinic": { requestsPerSecond: 1, burst: 2 },
-  "clinilabs": { requestsPerSecond: 1, burst: 2 },
-  "randox": { requestsPerSecond: 1, burst: 2 },
+  clinilabs: { requestsPerSecond: 1, burst: 2 },
+  randox: { requestsPerSecond: 1, burst: 2 },
 };
 
 export function getProviderRateLimit(providerId: string): RateLimitConfig {

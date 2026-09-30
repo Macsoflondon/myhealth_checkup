@@ -16,7 +16,9 @@ export async function submitToIndexNow(paths: string[]): Promise<{
   indexNowResponse: string | null;
 }> {
   const urls = paths.map((p) =>
-    p.startsWith("http") ? p : `${SITE_ORIGIN}${p.startsWith("/") ? p : `/${p}`}`
+    p.startsWith("http")
+      ? p
+      : `${SITE_ORIGIN}${p.startsWith("/") ? p : `/${p}`}`,
   );
 
   const { data, error } = await supabase.functions.invoke("indexnow-submit", {

@@ -19,12 +19,8 @@ import { MfaStepUp } from "@/components/auth/MfaStepUp";
 import { getAalStatus } from "@/lib/mfa";
 import { Helmet } from "react-helmet-async";
 
-
 const Auth = () => {
-  const {
-    user,
-    isLoading
-  } = useAuth();
+  const { user, isLoading } = useAuth();
   const {
     isLocked,
     remainingTimeFormatted,
@@ -48,14 +44,19 @@ const Auth = () => {
   const [searchParams] = useSearchParams();
   // Validate ?next= is a same-origin relative path before honouring it.
   const rawNext = searchParams.get("next") ?? "";
-  const nextPath = rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : "";
+  const nextPath =
+    rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : "";
   const afterAuthTarget = nextPath || "/health-dashboard";
   const passwordStrength = validatePassword(password);
 
   // Clear any stale lockout data and load saved email on mount
   useEffect(() => {
     // Clear lockout counter so previous failed attempts don't block login
-    try { localStorage.removeItem('login_attempts'); } catch { /* storage unavailable */ }
+    try {
+      localStorage.removeItem("login_attempts");
+    } catch {
+      /* storage unavailable */
+    }
     recordSuccessfulLogin(); // resets lockout state in the hook
 
     const savedEmail = localStorage.getItem("rememberedEmail");
@@ -63,7 +64,7 @@ const Auth = () => {
       setEmail(savedEmail);
       setRememberMe(true);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleForgotPassword = async (e: React.FormEvent) => {
@@ -148,88 +149,100 @@ const Auth = () => {
   };
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Check if account is locked (brute-force protection)
     if (!isSignUp && !canAttemptLogin()) {
-      toast.error(`Account temporarily locked. Try again in ${remainingTimeFormatted}.`);
+      toast.error(
+        `Account temporarily locked. Try again in ${remainingTimeFormatted}.`,
+      );
       return;
     }
-    
+
     if (!validateForm()) {
       return;
     }
     setLoading(true);
     try {
       if (isSignUp) {
-        const {
-          error
-        } = await supabase.auth.signUp({
+        const { error } = await supabase.auth.signUp({
           email,
           password,
           options: {
             data: {
               first_name: firstName.trim(),
-              last_name: lastName.trim()
+              last_name: lastName.trim(),
             },
-            emailRedirectTo: `${window.location.origin}${afterAuthTarget}`
-          }
+            emailRedirectTo: `${window.location.origin}${afterAuthTarget}`,
+          },
         });
         if (error) {
           // Handle specific auth errors
-          if (error.message.includes('User already registered')) {
-            toast.error("An account with this email already exists. Try signing in instead.");
-          } else if (error.message.includes('Password should be at least')) {
+          if (error.message.includes("User already registered")) {
+            toast.error(
+              "An account with this email already exists. Try signing in instead.",
+            );
+          } else if (error.message.includes("Password should be at least")) {
             toast.error("Password must be at least 6 characters long");
-          } else if (error.message.includes('Invalid email')) {
+          } else if (error.message.includes("Invalid email")) {
             toast.error("Please enter a valid email address");
           } else {
             toast.error(error.message || "Sign up failed");
           }
           return;
         }
-        toast.success("Sign up successful! Please check your email for verification.");
+        toast.success(
+          "Sign up successful! Please check your email for verification.",
+        );
       } else {
         // CE+ server-side brute-force gate (defence in depth on top of client-side lockout)
         try {
-          const { data: throttle, error: throttleErr } = await supabase.functions.invoke('auth-throttle', {
-            body: { email, outcome: 'check' },
-          });
+          const { data: throttle, error: throttleErr } =
+            await supabase.functions.invoke("auth-throttle", {
+              body: { email, outcome: "check" },
+            });
           if (!throttleErr && throttle && throttle.allowed === false) {
-            toast.error('Too many sign-in attempts. Try again in 15 minutes.');
+            toast.error("Too many sign-in attempts. Try again in 15 minutes.");
             return;
           }
-        } catch { /* network error — fall back to client-side lockout only */ }
+        } catch {
+          /* network error — fall back to client-side lockout only */
+        }
 
-        const {
-          error
-        } = await supabase.auth.signInWithPassword({
+        const { error } = await supabase.auth.signInWithPassword({
           email,
-          password
+          password,
         });
         if (error) {
           // Record failed attempt for brute-force protection (client + server)
-          const { isNowLocked, attemptsRemaining: remaining } = recordFailedAttempt();
+          const { isNowLocked, attemptsRemaining: remaining } =
+            recordFailedAttempt();
           try {
-            await supabase.functions.invoke('auth-throttle', {
-              body: { email, outcome: 'failure' },
+            await supabase.functions.invoke("auth-throttle", {
+              body: { email, outcome: "failure" },
             });
-          } catch { /* ignore */ }
+          } catch {
+            /* ignore */
+          }
 
           // Handle specific auth errors
-          if (error.message.includes('Invalid login credentials')) {
+          if (error.message.includes("Invalid login credentials")) {
             if (isNowLocked) {
-              toast.error("Too many failed attempts. Account locked for 15 minutes.");
+              toast.error(
+                "Too many failed attempts. Account locked for 15 minutes.",
+              );
             } else {
-              toast.error(`Invalid email or password. ${remaining} attempt${remaining !== 1 ? 's' : ''} remaining.`);
+              toast.error(
+                `Invalid email or password. ${remaining} attempt${remaining !== 1 ? "s" : ""} remaining.`,
+              );
             }
-          } else if (error.message.includes('Email not confirmed')) {
+          } else if (error.message.includes("Email not confirmed")) {
             toast.error("Please confirm your email address before signing in.");
           } else {
             toast.error(error.message || "Sign in failed");
           }
           return;
         }
-        
+
         // Record successful login (resets lockout counter)
         recordSuccessfulLogin();
 
@@ -294,9 +307,10 @@ const Auth = () => {
             <h2 className="text-2xl text-center mb-6 text-[#22c0d4] font-medium">
               Reset Password
             </h2>
-            
+
             <p className="text-sm text-[#081129] text-center mb-6">
-              Enter your email address and we'll send you a link to reset your password.
+              Enter your email address and we'll send you a link to reset your
+              password.
             </p>
 
             <form onSubmit={handleForgotPassword} className="space-y-4">
@@ -318,7 +332,9 @@ const Auth = () => {
                 {emailError && (
                   <Alert variant="destructive" className="py-2">
                     <AlertCircle className="h-4 w-4" />
-                    <AlertDescription className="text-sm">{emailError}</AlertDescription>
+                    <AlertDescription className="text-sm">
+                      {emailError}
+                    </AlertDescription>
                   </Alert>
                 )}
               </div>
@@ -348,14 +364,24 @@ const Auth = () => {
     );
   }
 
-  return <div className="min-h-screen flex flex-col">
+  return (
+    <div className="min-h-screen flex flex-col">
       <Helmet>
         <title>Sign In or Create Account | myhealth checkup</title>
-        <meta name="description" content="Sign in or create your myhealth checkup account to compare private UK health tests, save favourites and track orders across accredited providers." />
+        <meta
+          name="description"
+          content="Sign in or create your myhealth checkup account to compare private UK health tests, save favourites and track orders across accredited providers."
+        />
         <link rel="canonical" href="https://myhealthcheckup.co.uk/auth" />
         <meta name="robots" content="noindex, follow" />
-        <meta property="og:title" content="Sign In or Create Account | myhealth checkup" />
-        <meta property="og:description" content="Access your myhealth checkup account to compare and manage private UK health tests." />
+        <meta
+          property="og:title"
+          content="Sign In or Create Account | myhealth checkup"
+        />
+        <meta
+          property="og:description"
+          content="Access your myhealth checkup account to compare and manage private UK health tests."
+        />
         <meta property="og:url" content="https://myhealthcheckup.co.uk/auth" />
         <meta property="og:type" content="website" />
       </Helmet>
@@ -371,49 +397,92 @@ const Auth = () => {
             <Alert variant="destructive" className="mb-4">
               <Lock className="h-4 w-4" />
               <AlertDescription>
-                Account temporarily locked due to too many failed attempts. 
+                Account temporarily locked due to too many failed attempts.
                 Please try again in {remainingTimeFormatted}.
               </AlertDescription>
             </Alert>
           )}
 
           {/* Low attempts warning */}
-          {!isSignUp && !isLocked && attemptsRemaining <= 2 && attemptsRemaining > 0 && (
-            <Alert className="mb-4 border-amber-500 bg-amber-50">
-              <AlertCircle className="h-4 w-4 text-amber-600" />
-              <AlertDescription className="text-amber-800">
-                Warning: {attemptsRemaining} login attempt{attemptsRemaining !== 1 ? 's' : ''} remaining before temporary lockout.
-              </AlertDescription>
-            </Alert>
-          )}
+          {!isSignUp &&
+            !isLocked &&
+            attemptsRemaining <= 2 &&
+            attemptsRemaining > 0 && (
+              <Alert className="mb-4 border-amber-500 bg-amber-50">
+                <AlertCircle className="h-4 w-4 text-amber-600" />
+                <AlertDescription className="text-amber-800">
+                  Warning: {attemptsRemaining} login attempt
+                  {attemptsRemaining !== 1 ? "s" : ""} remaining before
+                  temporary lockout.
+                </AlertDescription>
+              </Alert>
+            )}
 
           <form onSubmit={handleAuth} className="space-y-4">
-            {isSignUp && <>
+            {isSignUp && (
+              <>
                 <div className="space-y-2">
                   <Label htmlFor="firstName">First Name</Label>
-                  <Input id="firstName" type="text" value={firstName} onChange={e => setFirstName(e.target.value)} placeholder="Enter your first name" required={isSignUp} disabled={loading} />
+                  <Input
+                    id="firstName"
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    placeholder="Enter your first name"
+                    required={isSignUp}
+                    disabled={loading}
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" type="text" value={lastName} onChange={e => setLastName(e.target.value)} placeholder="Enter your last name" required={isSignUp} disabled={loading} />
+                  <Input
+                    id="lastName"
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    placeholder="Enter your last name"
+                    required={isSignUp}
+                    disabled={loading}
+                  />
                 </div>
-              </>}
-            
+              </>
+            )}
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" value={email} onChange={e => {
-              setEmail(e.target.value);
-              setEmailError("");
-            }} placeholder="Enter your email" required disabled={loading} className={emailError ? "border-destructive" : ""} />
-              {emailError && <Alert variant="destructive" className="py-2">
+              <Input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setEmailError("");
+                }}
+                placeholder="Enter your email"
+                required
+                disabled={loading}
+                className={emailError ? "border-destructive" : ""}
+              />
+              {emailError && (
+                <Alert variant="destructive" className="py-2">
                   <AlertCircle className="h-4 w-4" />
-                  <AlertDescription className="text-sm">{emailError}</AlertDescription>
-                </Alert>}
+                  <AlertDescription className="text-sm">
+                    {emailError}
+                  </AlertDescription>
+                </Alert>
+              )}
             </div>
-            
+
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <Label htmlFor="password">Password {isSignUp && <span className="text-xs text-muted-foreground">(minimum 8 characters)</span>}</Label>
+                <Label htmlFor="password">
+                  Password{" "}
+                  {isSignUp && (
+                    <span className="text-xs text-muted-foreground">
+                      (minimum 8 characters)
+                    </span>
+                  )}
+                </Label>
                 {!isSignUp && (
                   <button
                     type="button"
@@ -424,15 +493,36 @@ const Auth = () => {
                   </button>
                 )}
               </div>
-              <Input id="password" type="password" value={password} onChange={e => {
-              setPassword(e.target.value);
-              setPasswordError("");
-            }} placeholder={isSignUp ? "Create a strong password" : "Enter your password"} required disabled={loading} className={passwordError ? "border-destructive" : ""} minLength={isSignUp ? 8 : 6} />
-              {isSignUp && password && <PasswordStrengthIndicator strength={passwordStrength} password={password} />}
-              {passwordError && <Alert variant="destructive" className="py-2">
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setPasswordError("");
+                }}
+                placeholder={
+                  isSignUp ? "Create a strong password" : "Enter your password"
+                }
+                required
+                disabled={loading}
+                className={passwordError ? "border-destructive" : ""}
+                minLength={isSignUp ? 8 : 6}
+              />
+              {isSignUp && password && (
+                <PasswordStrengthIndicator
+                  strength={passwordStrength}
+                  password={password}
+                />
+              )}
+              {passwordError && (
+                <Alert variant="destructive" className="py-2">
                   <AlertCircle className="h-4 w-4" />
-                  <AlertDescription className="text-sm">{passwordError}</AlertDescription>
-                </Alert>}
+                  <AlertDescription className="text-sm">
+                    {passwordError}
+                  </AlertDescription>
+                </Alert>
+              )}
             </div>
 
             {!isSignUp && (
@@ -452,7 +542,11 @@ const Auth = () => {
               </div>
             )}
 
-            <Button type="submit" disabled={loading || (!isSignUp && isLocked)} className="w-full flex items-center justify-center gap-2 bg-[#22c0d4] text-[#e70d69] text-base rounded drop-shadow-md font-medium">
+            <Button
+              type="submit"
+              disabled={loading || (!isSignUp && isLocked)}
+              className="w-full flex items-center justify-center gap-2 bg-[#22c0d4] text-[#e70d69] text-base rounded drop-shadow-md font-medium"
+            >
               {loading ? "Processing..." : isSignUp ? "Sign Up" : "Sign In"}
             </Button>
 
@@ -461,17 +555,30 @@ const Auth = () => {
                 <span className="w-full border-t border-muted" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-tertiary px-2 text-white">Or continue with</span>
+                <span className="bg-tertiary px-2 text-white">
+                  Or continue with
+                </span>
               </div>
             </div>
 
             <div className="flex flex-col gap-3">
-              <GoogleSignInButton mode={isSignUp ? "signup" : "signin"} disabled={loading || (!isSignUp && isLocked)} onLoading={setLoading} nextPath={nextPath} />
+              <GoogleSignInButton
+                mode={isSignUp ? "signup" : "signin"}
+                disabled={loading || (!isSignUp && isLocked)}
+                onLoading={setLoading}
+                nextPath={nextPath}
+              />
             </div>
 
             <div className="text-center mt-2">
-              <button type="button" onClick={() => setIsSignUp(!isSignUp)} className="hover:underline text-center text-base font-medium !text-white">
-                {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
+              <button
+                type="button"
+                onClick={() => setIsSignUp(!isSignUp)}
+                className="hover:underline text-center text-base font-medium !text-white"
+              >
+                {isSignUp
+                  ? "Already have an account? Sign In"
+                  : "Don't have an account? Sign Up"}
               </button>
             </div>
 
@@ -501,6 +608,7 @@ const Auth = () => {
         </div>
       </main>
       <Footer />
-    </div>;
+    </div>
+  );
 };
 export default Auth;

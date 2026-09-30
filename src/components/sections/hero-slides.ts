@@ -48,8 +48,9 @@ import screeningMobile768Avif from "@/assets/hero/stock/screening-mobile-768.avi
 import screeningMobile480Webp from "@/assets/hero/stock/screening-mobile-480.webp.asset.json";
 import screeningMobile768Webp from "@/assets/hero/stock/screening-mobile-768.webp.asset.json";
 
-const srcSet = (...candidates: ReadonlyArray<readonly [string, number]>): string =>
-  candidates.map(([url, width]) => `${url} ${width}w`).join(", ");
+const srcSet = (
+  ...candidates: ReadonlyArray<readonly [string, number]>
+): string => candidates.map(([url, width]) => `${url} ${width}w`).join(", ");
 
 const localSrcSet = (
   mobile480: string,
@@ -162,7 +163,8 @@ export const FIRST_SLIDE_WEBP_SRCSET: string = joggingWomanWebpSrcSet;
 export const FIRST_SLIDE_LQIP =
   "data:image/webp;base64,UklGRrIAAABXRUJQVlA4IKYAAADwBACdASogABUAPu1cq04ppKQiMBgMATAdiWYAsOwQ8K9HyiX4F5aT3lgrt7OcrHAA/uqDRKnL5YU7cmWJ8ia6JPvg2tpXgVF0QsnGzmDF8hRV8CcPjGNzBIn08ReUQBwSA1Ey1HIn4cyRS5s6pKpTzoDBRAS/DpxFyby/9d26U7c0n6lUmar9erfa0gkbaOCI+mur9hZDz4naSj6Fx8WJHBxkoAAA";
 
-export const HERO_CAPTION = "Your trusted platform for comparing private health and cancer screening tests.";
+export const HERO_CAPTION =
+  "Your trusted platform for comparing private health and cancer screening tests.";
 
 export const SLIDES: HeroSlide[] = [
   {
@@ -177,7 +179,8 @@ export const SLIDES: HeroSlide[] = [
     eyebrow: "UK private blood tests",
     headline: "Compare private blood tests.",
     headlineLines: ["Compare private", "blood tests."],
-    supportingCopy: "Prices, biomarkers and turnaround for UK blood tests and cancer screening.",
+    supportingCopy:
+      "Prices, biomarkers and turnaround for UK blood tests and cancer screening.",
     align: "right",
     copyWidthTablet: "56%",
     copyWidthDesktop: "40%",
@@ -197,7 +200,8 @@ export const SLIDES: HeroSlide[] = [
     eyebrow: "Preventative screening",
     headline: "Test early. Act on evidence.",
     headlineLines: ["Test early.", "Act on evidence."],
-    supportingCopy: "Compare wellness, hormone and vitamin blood tests by price and biomarkers.",
+    supportingCopy:
+      "Compare wellness, hormone and vitamin blood tests by price and biomarkers.",
     copyWidthTablet: "56%",
     copyWidthDesktop: "40%",
     copyPlacementMobile: "bottom",
@@ -214,7 +218,8 @@ export const SLIDES: HeroSlide[] = [
     eyebrow: "At-home blood test kits",
     headline: "Home test kits, side by side.",
     headlineLines: ["Home test kits,", "side by side."],
-    supportingCopy: "Check the sample method, lab accreditation and turnaround before you order.",
+    supportingCopy:
+      "Check the sample method, lab accreditation and turnaround before you order.",
     align: "right",
     copyWidthTablet: "56%",
     copyWidthDesktop: "40%",
@@ -234,7 +239,8 @@ export const SLIDES: HeroSlide[] = [
     eyebrow: "Healthy ageing",
     headline: "Health checks for the years ahead.",
     headlineLines: ["Health checks for", "the years ahead."],
-    supportingCopy: "Compare heart, hormone and longevity blood tests from CQC-regulated providers.",
+    supportingCopy:
+      "Compare heart, hormone and longevity blood tests from CQC-regulated providers.",
     copyWidthTablet: "56%",
     copyWidthDesktop: "40%",
     copyPlacementMobile: "bottom",
@@ -253,7 +259,8 @@ export const SLIDES: HeroSlide[] = [
     eyebrow: "Private cancer screening",
     headline: "Cancer screening, clearly explained.",
     headlineLines: ["Cancer screening,", "clearly explained."],
-    supportingCopy: "See what each screening test detects, its limits and its price in one place.",
+    supportingCopy:
+      "See what each screening test detects, its limits and its price in one place.",
     copyWidthTablet: "56%",
     copyWidthDesktop: "40%",
     copyPlacementMobile: "bottom",

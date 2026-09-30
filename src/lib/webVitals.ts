@@ -30,7 +30,9 @@ function deviceType(): Sample["device_type"] {
 }
 
 function connectionType(): string | undefined {
-  const nav = navigator as unknown as { connection?: { effectiveType?: string } };
+  const nav = navigator as unknown as {
+    connection?: { effectiveType?: string };
+  };
   return nav.connection?.effectiveType;
 }
 
@@ -72,7 +74,10 @@ function push(sample: Sample): void {
   // Clamp pathological cold-load timings so the whole batch isn't rejected server-side.
   BATCH.push({ ...sample, value: Math.min(sample.value, MAX_METRIC_VALUE) });
   if (BATCH.length >= 10) {
-    if (flushTimer !== null) { clearTimeout(flushTimer); flushTimer = null; }
+    if (flushTimer !== null) {
+      clearTimeout(flushTimer);
+      flushTimer = null;
+    }
     void flush();
   } else {
     scheduleFlush();
@@ -97,13 +102,25 @@ export async function installWebVitals(): Promise<void> {
   const hash = sessionHash();
   const route = window.location.pathname;
 
-  const report = (metric: MetricName) => (m: { name: string; value: number; rating?: Rating; navigationType?: string }) => {
-    push({
-      metric, value: m.value, rating: m.rating, route,
-      device_type: device, connection_type: connection,
-      session_hash: hash, navigation_type: m.navigationType,
-    });
-  };
+  const report =
+    (metric: MetricName) =>
+    (m: {
+      name: string;
+      value: number;
+      rating?: Rating;
+      navigationType?: string;
+    }) => {
+      push({
+        metric,
+        value: m.value,
+        rating: m.rating,
+        route,
+        device_type: device,
+        connection_type: connection,
+        session_hash: hash,
+        navigation_type: m.navigationType,
+      });
+    };
 
   webVitals.onLCP(report("LCP"));
   webVitals.onCLS(report("CLS"));
@@ -111,7 +128,9 @@ export async function installWebVitals(): Promise<void> {
   webVitals.onFCP(report("FCP"));
   webVitals.onTTFB(report("TTFB"));
 
-  window.addEventListener("pagehide", () => { void flush(); });
+  window.addEventListener("pagehide", () => {
+    void flush();
+  });
   window.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "hidden") void flush();
   });

@@ -63,7 +63,9 @@ function collectSitemapPaths() {
   let m;
   while ((m = re.exec(xml)) !== null) {
     const url = m[1].trim();
-    const path = url.startsWith(BASE_URL) ? url.slice(BASE_URL.length) || "/" : url;
+    const path = url.startsWith(BASE_URL)
+      ? url.slice(BASE_URL.length) || "/"
+      : url;
     paths.add(path);
   }
   return paths;
@@ -90,7 +92,12 @@ const stale = [...sitemapPaths]
     for (const r of routePaths) {
       if (r.startsWith(parent + "/") && r.includes(":")) return false;
       // /provider/:providerId, /medichecks/:testId etc.
-      if (r === parent + "/:providerId" || r === parent + "/:testId" || r === parent + "/:slug") return false;
+      if (
+        r === parent + "/:providerId" ||
+        r === parent + "/:testId" ||
+        r === parent + "/:slug"
+      )
+        return false;
     }
     return true;
   })
@@ -114,7 +121,9 @@ if (failed) {
   console.error(
     `\nRoutes checked: ${publicStaticRoutes.length} · sitemap <loc>s: ${sitemapPaths.size} · missing: ${missing.length}`,
   );
-  console.error("Add the missing paths to scripts/generate-sitemap.ts (rawEntries) and rerun `npm run prebuild`.\n");
+  console.error(
+    "Add the missing paths to scripts/generate-sitemap.ts (rawEntries) and rerun `npm run prebuild`.\n",
+  );
   process.exit(1);
 }
 

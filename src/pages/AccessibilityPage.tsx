@@ -1,17 +1,16 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Eye, Ear, MousePointer, Keyboard } from 'lucide-react';
-import PageBanner from '@/components/sections/PageBanner';
-import SupportSLA from '@/components/compliance/SupportSLA';
+import React from "react";
+import { Helmet } from "react-helmet-async";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Eye, Ear, MousePointer, Keyboard } from "lucide-react";
+import PageBanner from "@/components/sections/PageBanner";
+import SupportSLA from "@/components/compliance/SupportSLA";
 
 const AccessibilityPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Helmet>
-      </Helmet>
+      <Helmet></Helmet>
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner
@@ -96,7 +95,10 @@ const AccessibilityPage = () => {
                 <CardTitle>Standards Compliance</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p>This website aims to conform to the Web Content Accessibility Guidelines (WCAG) 2.1 Level AA standards.</p>
+                <p>
+                  This website aims to conform to the Web Content Accessibility
+                  Guidelines (WCAG) 2.1 Level AA standards.
+                </p>
                 <p>We regularly test our site with:</p>
                 <ul className="list-disc pl-6 space-y-1">
                   <li>Automated accessibility testing tools</li>
@@ -113,13 +115,18 @@ const AccessibilityPage = () => {
               </CardHeader>
               <CardContent>
                 <p className="mb-4">
-                  If you encounter any accessibility barriers or have suggestions for improvement, 
-                  please contact us:
+                  If you encounter any accessibility barriers or have
+                  suggestions for improvement, please contact us:
                 </p>
                 <div className="bg-muted p-4 rounded-lg">
-                   <p><strong>Email:</strong> support@myhealthcheckup.co.uk</p>
-                   <p><strong>Response time:</strong> We aim to respond within 2 business days</p>
-                 </div>
+                  <p>
+                    <strong>Email:</strong> support@myhealthcheckup.co.uk
+                  </p>
+                  <p>
+                    <strong>Response time:</strong> We aim to respond within 2
+                    business days
+                  </p>
+                </div>
               </CardContent>
             </Card>
 

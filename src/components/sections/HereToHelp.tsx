@@ -7,31 +7,34 @@ const HereToHelp = () => {
     {
       icon: Search,
       title: "Find the Right Test for You",
-      description: "Browse our full range of test categories to discover what's best for your health needs.",
+      description:
+        "Browse our full range of test categories to discover what's best for your health needs.",
       link: "/test-categories",
-      accent: "brand-pink"
+      accent: "brand-pink",
     },
     {
       icon: BookOpen,
       title: "Health Hub",
-      description: "In-depth articles on tests, conditions and what your results mean.",
+      description:
+        "In-depth articles on tests, conditions and what your results mean.",
       link: "/blog",
-      accent: "brand-turquoise"
+      accent: "brand-turquoise",
     },
     {
       icon: HelpCircle,
       title: "FAQs",
-      description: "Answers to common questions about testing and our platform.",
+      description:
+        "Answers to common questions about testing and our platform.",
       link: "/faqs",
-      accent: "brand-pink"
+      accent: "brand-pink",
     },
     {
       icon: MessageCircle,
       title: "Contact Us",
       description: "Get in touch with our team for personalised support.",
       link: "/contact",
-      accent: "brand-turquoise"
-    }
+      accent: "brand-turquoise",
+    },
   ];
 
   return (
@@ -39,12 +42,13 @@ const HereToHelp = () => {
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
-            
             {/* Left Column */}
             <div>
               <div className="flex items-center gap-3 mb-4 justify-center lg:justify-start">
                 <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-                <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">Here to Help</span>
+                <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
+                  Here to Help
+                </span>
                 <div className="h-px w-8 sm:w-12 bg-brand-pink" />
               </div>
 
@@ -55,7 +59,9 @@ const HereToHelp = () => {
               />
 
               <p className="text-brand-navy font-sans text-sm sm:text-base md:text-lg max-w-lg mt-4 text-center lg:text-left mx-auto lg:mx-0">
-                Whether you're testing for the first time or proactively monitoring your health, we're here to support you every step of the way.
+                Whether you're testing for the first time or proactively
+                monitoring your health, we're here to support you every step of
+                the way.
               </p>
             </div>
 
@@ -68,19 +74,27 @@ const HereToHelp = () => {
                   className="relative flex items-start gap-4 sm:gap-5 bg-[#F7F7F8] rounded-xl sm:rounded-2xl p-5 sm:p-6 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group border border-gray-100 hover:border-brand-turquoise/30 overflow-hidden"
                 >
                   {/* Top accent line */}
-                  <div className={`absolute top-0 left-6 right-6 h-[2px] rounded-b-full ${
-                    resource.accent === 'brand-turquoise' ? 'bg-brand-turquoise' : 'bg-brand-pink'
-                  }`} />
-                  <div className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors duration-300 ${
-                    resource.accent === 'brand-turquoise' 
-                      ? 'bg-brand-turquoise/10 group-hover:bg-brand-turquoise' 
-                      : 'bg-brand-pink/10 group-hover:bg-brand-pink'
-                  }`}>
-                    <resource.icon className={`w-5 h-5 sm:w-6 sm:h-6 transition-colors duration-300 ${
-                      resource.accent === 'brand-turquoise'
-                        ? 'text-brand-turquoise group-hover:text-white'
-                        : 'text-brand-pink group-hover:text-white'
-                    }`} />
+                  <div
+                    className={`absolute top-0 left-6 right-6 h-[2px] rounded-b-full ${
+                      resource.accent === "brand-turquoise"
+                        ? "bg-brand-turquoise"
+                        : "bg-brand-pink"
+                    }`}
+                  />
+                  <div
+                    className={`w-11 h-11 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center flex-shrink-0 transition-colors duration-300 ${
+                      resource.accent === "brand-turquoise"
+                        ? "bg-brand-turquoise/10 group-hover:bg-brand-turquoise"
+                        : "bg-brand-pink/10 group-hover:bg-brand-pink"
+                    }`}
+                  >
+                    <resource.icon
+                      className={`w-5 h-5 sm:w-6 sm:h-6 transition-colors duration-300 ${
+                        resource.accent === "brand-turquoise"
+                          ? "text-brand-turquoise group-hover:text-white"
+                          : "text-brand-pink group-hover:text-white"
+                      }`}
+                    />
                   </div>
                   <div>
                     <h3 className="text-base sm:text-lg font-heading font-semibold text-brand-navy mb-1">

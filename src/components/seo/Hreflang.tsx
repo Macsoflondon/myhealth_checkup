@@ -25,8 +25,7 @@ interface HreflangProps {
 
 export const Hreflang = ({ path }: HreflangProps) => {
   const resolved =
-    path ??
-    (typeof window !== "undefined" ? window.location.pathname : "/");
+    path ?? (typeof window !== "undefined" ? window.location.pathname : "/");
   const url = `${BASE}${resolved.startsWith("/") ? resolved : `/${resolved}`}`;
 
   return (

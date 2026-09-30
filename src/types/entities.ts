@@ -3,7 +3,6 @@
  * Single source of truth for all entity interfaces
  */
 
-
 export interface Provider {
   id: string;
   name: string;
@@ -32,7 +31,7 @@ export interface TestFeatures {
 export interface CompareTestData extends Test {
   features: TestFeatures;
   providerLogo: string;
-  dataSource?: 'live' | 'cache' | 'database';
+  dataSource?: "live" | "cache" | "database";
   lastUpdated?: string;
   accreditations?: string[];
   popularityScore?: number;
@@ -43,12 +42,37 @@ export interface CompareTestData extends Test {
   url?: string; // Provider booking URL
 
   // Standardised comparison fields (optional — populated from DB when available)
-  sampleTypeCode?: 'finger_prick' | 'venous' | 'saliva' | 'urine' | 'stool' | 'buccal_swab' | 'multiple' | null;
-  collectionMethod?: 'home_kit' | 'clinic' | 'home_visit' | 'mobile_phleb' | 'third_party_phleb' | 'self_arranged' | 'multiple' | null;
-  collectionFeeType?: 'none' | 'fixed' | 'from' | 'varies' | 'self_arranged' | null;
+  sampleTypeCode?:
+    | "finger_prick"
+    | "venous"
+    | "saliva"
+    | "urine"
+    | "stool"
+    | "buccal_swab"
+    | "multiple"
+    | null;
+  collectionMethod?:
+    | "home_kit"
+    | "clinic"
+    | "home_visit"
+    | "mobile_phleb"
+    | "third_party_phleb"
+    | "self_arranged"
+    | "multiple"
+    | null;
+  collectionFeeType?:
+    "none" | "fixed" | "from" | "varies" | "self_arranged" | null;
   collectionFeeAmount?: number | null;
   collectionFeeNote?: string | null;
-  clinicalReviewType?: 'included' | 'optional' | 'gp_included' | 'consultant_included' | 'clinician_included' | 'not_included' | 'not_available' | null;
+  clinicalReviewType?:
+    | "included"
+    | "optional"
+    | "gp_included"
+    | "consultant_included"
+    | "clinician_included"
+    | "not_included"
+    | "not_available"
+    | null;
   clinicalReviewFee?: number | null;
   clinicalReviewNote?: string | null;
 

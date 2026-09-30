@@ -23,7 +23,9 @@ interface RouteHeadInput {
  */
 export const canonicalUrl = (path: string): string => {
   const withoutQuery = path.split(/[?#]/)[0] ?? "";
-  const withSlash = withoutQuery.startsWith("/") ? withoutQuery : `/${withoutQuery}`;
+  const withSlash = withoutQuery.startsWith("/")
+    ? withoutQuery
+    : `/${withoutQuery}`;
   const trimmed = withSlash.length > 1 ? withSlash.replace(/\/+$/, "") : "/";
   return `${SITE_URL}${trimmed === "/" ? "" : trimmed}` || SITE_URL;
 };
@@ -33,9 +35,13 @@ export const canonicalUrl = (path: string): string => {
  * and canonical) so every public page ships unique, crawlable metadata during
  * server rendering rather than relying on the site-wide defaults.
  */
-export const buildRouteHead = ({ title, description, path, type = "website" }: RouteHeadInput) => {
+export const buildRouteHead = ({
+  title,
+  description,
+  path,
+  type = "website",
+}: RouteHeadInput) => {
   const url = canonicalUrl(path);
-
 
   return {
     meta: [
@@ -103,7 +109,11 @@ export const buildArticleHead = ({
           dateModified: dateModified ?? datePublished,
           isAccessibleForFree: true,
           author: { "@type": "Organization", name: "myhealth checkup" },
-          publisher: { "@type": "Organization", name: "MYHEALTHCHECKUP LTD", url: SITE_URL },
+          publisher: {
+            "@type": "Organization",
+            name: "MYHEALTHCHECKUP LTD",
+            url: SITE_URL,
+          },
         }),
       },
     ],
@@ -114,7 +124,11 @@ export const buildArticleHead = ({
  * Head metadata for test category pages: adds CollectionPage JSON-LD so search
  * engines understand the page lists comparable diagnostic products.
  */
-export const buildCollectionHead = ({ title, description, path }: RouteHeadInput) => {
+export const buildCollectionHead = ({
+  title,
+  description,
+  path,
+}: RouteHeadInput) => {
   const base = buildRouteHead({ title, description, path });
   const url = canonicalUrl(path);
 
@@ -130,9 +144,17 @@ export const buildCollectionHead = ({ title, description, path }: RouteHeadInput
           description,
           url,
           inLanguage: "en-GB",
-          isPartOf: { "@type": "WebSite", name: "myhealth checkup", url: SITE_URL },
+          isPartOf: {
+            "@type": "WebSite",
+            name: "myhealth checkup",
+            url: SITE_URL,
+          },
           about: { "@type": "MedicalTest", name: title },
-          provider: { "@type": "Organization", name: "MYHEALTHCHECKUP LTD", url: SITE_URL },
+          provider: {
+            "@type": "Organization",
+            name: "MYHEALTHCHECKUP LTD",
+            url: SITE_URL,
+          },
         }),
       },
     ],
@@ -166,7 +188,13 @@ export const buildProviderHead = ({
   return {
     ...base,
     scripts: toJsonLdScripts(
-      buildProviderSchema({ providerName, url, description, rating, reviewCount }),
+      buildProviderSchema({
+        providerName,
+        url,
+        description,
+        rating,
+        reviewCount,
+      }),
     ),
   };
 };

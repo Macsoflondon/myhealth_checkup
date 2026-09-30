@@ -1,12 +1,12 @@
 import { useState, useMemo, useCallback, useRef } from "react";
 import { Link } from "@/lib/router-compat";
-import { 
-  ChevronDown, 
-  ChevronRight, 
-  Search, 
-  X, 
-  MapPin, 
-  Phone, 
+import {
+  ChevronDown,
+  ChevronRight,
+  Search,
+  X,
+  MapPin,
+  Phone,
   ArrowRight,
   Heart,
   Droplets,
@@ -20,14 +20,22 @@ import {
   Clock,
   TestTube,
   Stethoscope,
-  Users
+  Users,
 } from "lucide-react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { primaryNavigationItems, moreNavigationSections } from "@/components/header/NavigationItems";
+import {
+  primaryNavigationItems,
+  moreNavigationSections,
+} from "@/components/header/NavigationItems";
 import { useNavigationData } from "@/hooks/useNavigationData";
 import { compareCategories } from "@/constants/categories";
 import { cn } from "@/lib/utils";
@@ -40,22 +48,22 @@ interface MobileNavigationDrawerProps {
 // Category icon mapping for visual hierarchy
 const getCategoryIcon = (categoryId: string) => {
   const iconMap: Record<string, React.ElementType> = {
-    'blood-tests': Droplets,
-    'hormones': Activity,
-    'thyroid': Activity,
-    'vitamins': Sparkles,
-    'liver': Shield,
-    'diabetes': TestTube,
-    'cancer-screening': Shield,
-    'heart-health': Heart,
-    'mens-health': Users,
-    'womens-health': Users,
-    'fertility': Baby,
-    'general-health': Stethoscope,
-    'allergy-testing': Apple,
-    'sports-performance-tests': Dumbbell,
-    'weight-loss-tests': Scale,
-    'longevity-tests': Clock,
+    "blood-tests": Droplets,
+    hormones: Activity,
+    thyroid: Activity,
+    vitamins: Sparkles,
+    liver: Shield,
+    diabetes: TestTube,
+    "cancer-screening": Shield,
+    "heart-health": Heart,
+    "mens-health": Users,
+    "womens-health": Users,
+    fertility: Baby,
+    "general-health": Stethoscope,
+    "allergy-testing": Apple,
+    "sports-performance-tests": Dumbbell,
+    "weight-loss-tests": Scale,
+    "longevity-tests": Clock,
   };
   return iconMap[categoryId] || TestTube;
 };
@@ -63,24 +71,24 @@ const getCategoryIcon = (categoryId: string) => {
 // Category colour mapping for visual distinction
 const getCategoryColour = (categoryId: string) => {
   const colourMap: Record<string, string> = {
-    'blood-tests': 'bg-red-500',
-    'hormones': 'bg-purple-500',
-    'thyroid': 'bg-emerald-500',
-    'vitamins': 'bg-amber-500',
-    'liver': 'bg-yellow-600',
-    'diabetes': 'bg-orange-500',
-    'cancer-screening': 'bg-slate-700',
-    'heart-health': 'bg-rose-500',
-    'mens-health': 'bg-blue-500',
-    'womens-health': 'bg-brand-pink',
-    'fertility': 'bg-violet-500',
-    'general-health': 'bg-teal-500',
-    'allergy-testing': 'bg-indigo-500',
-    'sports-performance-tests': 'bg-sky-500',
-    'weight-loss-tests': 'bg-lime-500',
-    'longevity-tests': 'bg-cyan-500',
+    "blood-tests": "bg-red-500",
+    hormones: "bg-purple-500",
+    thyroid: "bg-emerald-500",
+    vitamins: "bg-amber-500",
+    liver: "bg-yellow-600",
+    diabetes: "bg-orange-500",
+    "cancer-screening": "bg-slate-700",
+    "heart-health": "bg-rose-500",
+    "mens-health": "bg-blue-500",
+    "womens-health": "bg-brand-pink",
+    fertility: "bg-violet-500",
+    "general-health": "bg-teal-500",
+    "allergy-testing": "bg-indigo-500",
+    "sports-performance-tests": "bg-sky-500",
+    "weight-loss-tests": "bg-lime-500",
+    "longevity-tests": "bg-cyan-500",
   };
-  return colourMap[categoryId] || 'bg-gray-500';
+  return colourMap[categoryId] || "bg-gray-500";
 };
 
 // Canonical test-category entries shown in the Categories tab.
@@ -91,23 +99,67 @@ const testCategoryCards: Array<{
   icon: React.ElementType;
   bg: string;
 }> = [
-  { name: "Most Popular Tests", path: "/popular-tests", icon: Sparkles, bg: "bg-amber-500" },
-  { name: "General Wellness", path: "/wellness", icon: Stethoscope, bg: "bg-teal-500" },
-  { name: "Women's Health", path: "/womens-health", icon: Users, bg: "bg-brand-pink" },
-  { name: "Men's Health", path: "/mens-health", icon: Users, bg: "bg-blue-500" },
-  { name: "Sports-Fitness Health", path: "/sports-performance", icon: Dumbbell, bg: "bg-sky-500" },
-  { name: "Fertility - Prenatal", path: "/fertility-tests", icon: Baby, bg: "bg-violet-500" },
-  { name: "Cancer Screening", path: "/tests/cancer", icon: Shield, bg: "bg-slate-700" },
-  { name: "At Home Test Kits", path: "/at-home-tests", icon: TestTube, bg: "bg-emerald-500" },
+  {
+    name: "Most Popular Tests",
+    path: "/popular-tests",
+    icon: Sparkles,
+    bg: "bg-amber-500",
+  },
+  {
+    name: "General Wellness",
+    path: "/wellness",
+    icon: Stethoscope,
+    bg: "bg-teal-500",
+  },
+  {
+    name: "Women's Health",
+    path: "/womens-health",
+    icon: Users,
+    bg: "bg-brand-pink",
+  },
+  {
+    name: "Men's Health",
+    path: "/mens-health",
+    icon: Users,
+    bg: "bg-blue-500",
+  },
+  {
+    name: "Sports-Fitness Health",
+    path: "/sports-performance",
+    icon: Dumbbell,
+    bg: "bg-sky-500",
+  },
+  {
+    name: "Fertility - Prenatal",
+    path: "/fertility-tests",
+    icon: Baby,
+    bg: "bg-violet-500",
+  },
+  {
+    name: "Cancer Screening",
+    path: "/tests/cancer",
+    icon: Shield,
+    bg: "bg-slate-700",
+  },
+  {
+    name: "At Home Test Kits",
+    path: "/at-home-tests",
+    icon: TestTube,
+    bg: "bg-emerald-500",
+  },
 ];
 
-
-export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDrawerProps) => {
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set());
+export const MobileNavigationDrawer = ({
+  isOpen,
+  onClose,
+}: MobileNavigationDrawerProps) => {
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(
+    new Set(),
+  );
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<'menu' | 'categories'>('menu');
+  const [activeTab, setActiveTab] = useState<"menu" | "categories">("menu");
   const { getFilteredCategories } = useNavigationData();
-  
+
   // Swipe gesture state
   const touchStartX = useRef<number>(0);
   const touchStartY = useRef<number>(0);
@@ -155,7 +207,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
   }, [onClose]);
 
   const toggleSection = useCallback((sectionName: string) => {
-    setExpandedSections(prev => {
+    setExpandedSections((prev) => {
       const newExpanded = new Set(prev);
       if (newExpanded.has(sectionName)) {
         newExpanded.delete(sectionName);
@@ -179,7 +231,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
 
     const query = searchQuery.toLowerCase();
     const results: Array<{
-      type: 'category' | 'section';
+      type: "category" | "section";
       name: string;
       path: string;
       description?: string;
@@ -190,18 +242,20 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
     // Search through all categories
     compareCategories.forEach((category) => {
       const matchesName = category.name.toLowerCase().includes(query);
-      const matchesDescription = category.description?.toLowerCase().includes(query);
-      const matchesSearchTerms = category.searchTerms.some(term => 
-        term.toLowerCase().includes(query)
+      const matchesDescription = category.description
+        ?.toLowerCase()
+        .includes(query);
+      const matchesSearchTerms = category.searchTerms.some((term) =>
+        term.toLowerCase().includes(query),
       );
 
       if (matchesName || matchesDescription || matchesSearchTerms) {
         results.push({
-          type: 'category',
+          type: "category",
           name: category.name,
           path: `/compare?category=${category.id}`,
           description: category.description,
-          categoryId: category.id
+          categoryId: category.id,
         });
       }
     });
@@ -210,9 +264,9 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
     primaryNavigationItems.forEach((item) => {
       if (item.name.toLowerCase().includes(query)) {
         results.push({
-          type: 'section',
+          type: "section",
           name: item.name,
-          path: item.path
+          path: item.path,
         });
       }
     });
@@ -220,12 +274,15 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
     // Search through more navigation sections
     moreNavigationSections.forEach((section) => {
       section.items.forEach((item) => {
-        if (item.name.toLowerCase().includes(query) || section.title.toLowerCase().includes(query)) {
+        if (
+          item.name.toLowerCase().includes(query) ||
+          section.title.toLowerCase().includes(query)
+        ) {
           results.push({
-            type: 'section',
+            type: "section",
             name: item.name,
             path: item.path,
-            parentSection: section.title
+            parentSection: section.title,
           });
         }
       });
@@ -236,8 +293,8 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <SheetContent 
-        side="left" 
+      <SheetContent
+        side="left"
         className="w-[88vw] max-w-[420px] p-0 bg-white border-r border-brand-navy"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
@@ -251,33 +308,33 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
               myhealth checkup
             </SheetTitle>
           </div>
-          
+
           {/* Tab Switcher */}
           <div className="flex gap-1 mt-3 p-1 bg-gray-100 rounded-xl">
             <button
-              onClick={() => setActiveTab('menu')}
+              onClick={() => setActiveTab("menu")}
               className={cn(
                 "flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200",
-                activeTab === 'menu' 
-                  ? "bg-white text-[hsl(var(--navy))] shadow-xs" 
-                  : "text-brand-navy hover:text-brand-navy"
+                activeTab === "menu"
+                  ? "bg-white text-[hsl(var(--navy))] shadow-xs"
+                  : "text-brand-navy hover:text-brand-navy",
               )}
             >
               Menu
             </button>
             <button
-              onClick={() => setActiveTab('categories')}
+              onClick={() => setActiveTab("categories")}
               className={cn(
                 "flex-1 py-2.5 px-4 rounded-lg text-sm font-semibold transition-all duration-200",
-                activeTab === 'categories' 
-                  ? "bg-white text-[hsl(var(--navy))] shadow-xs" 
-                  : "text-brand-navy hover:text-brand-navy"
+                activeTab === "categories"
+                  ? "bg-white text-[hsl(var(--navy))] shadow-xs"
+                  : "text-brand-navy hover:text-brand-navy",
               )}
             >
               Test Categories
             </button>
           </div>
-          
+
           {/* Search Input */}
           <div className="relative mt-3">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-brand-navy" />
@@ -305,12 +362,17 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
             {filteredContent && filteredContent.length > 0 && (
               <div className="space-y-1">
                 <p className="px-3 py-2 text-xs font-semibold text-brand-navy uppercase tracking-wider">
-                  {filteredContent.length} {filteredContent.length === 1 ? 'Result' : 'Results'}
+                  {filteredContent.length}{" "}
+                  {filteredContent.length === 1 ? "Result" : "Results"}
                 </p>
                 {filteredContent.map((result, index) => {
-                  const IconComponent = result.categoryId ? getCategoryIcon(result.categoryId) : ChevronRight;
-                  const bgColour = result.categoryId ? getCategoryColour(result.categoryId) : 'bg-gray-400';
-                  
+                  const IconComponent = result.categoryId
+                    ? getCategoryIcon(result.categoryId)
+                    : ChevronRight;
+                  const bgColour = result.categoryId
+                    ? getCategoryColour(result.categoryId)
+                    : "bg-gray-400";
+
                   return (
                     <Link
                       key={`${result.path}-${index}`}
@@ -318,7 +380,12 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                       onClick={handleLinkClick}
                       className="flex items-start gap-3 px-4 py-3.5 rounded-xl hover:bg-gray-50 active:bg-gray-100 transition-colors touch-manipulation group"
                     >
-                      <div className={cn("w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0", bgColour)}>
+                      <div
+                        className={cn(
+                          "w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0",
+                          bgColour,
+                        )}
+                      >
                         <IconComponent className="w-4 h-4 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
@@ -349,7 +416,9 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                 <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
                   <Search className="h-7 w-7 text-brand-navy" />
                 </div>
-                <p className="text-base font-medium text-brand-navy mb-1">No results found</p>
+                <p className="text-base font-medium text-brand-navy mb-1">
+                  No results found
+                </p>
                 <p className="text-sm text-brand-navy">
                   Try searching for different tests or categories
                 </p>
@@ -357,7 +426,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
             )}
 
             {/* Tab Content — Menu = site sections only (no test categories) */}
-            {!filteredContent && activeTab === 'menu' && (
+            {!filteredContent && activeTab === "menu" && (
               <>
                 {moreNavigationSections.map((section, sectionIndex) => (
                   <div
@@ -371,14 +440,16 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                         "w-full flex items-center justify-between px-4 py-3.5 rounded-xl transition-all duration-200 touch-manipulation active:scale-[0.98] min-h-[52px]",
                         expandedSections.has(section.title)
                           ? "bg-[hsl(var(--secondary))]/10 text-[hsl(var(--secondary))]"
-                          : "hover:bg-gray-50 active:bg-gray-100 text-brand-navy"
+                          : "hover:bg-gray-50 active:bg-gray-100 text-brand-navy",
                       )}
                     >
-                      <span className="font-semibold text-base">{section.title}</span>
+                      <span className="font-semibold text-base">
+                        {section.title}
+                      </span>
                       <ChevronDown
                         className={cn(
                           "h-5 w-5 transition-transform duration-300 ease-out",
-                          expandedSections.has(section.title) && "rotate-180"
+                          expandedSections.has(section.title) && "rotate-180",
                         )}
                       />
                     </button>
@@ -388,7 +459,7 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                         "overflow-hidden transition-all duration-300 ease-out",
                         expandedSections.has(section.title)
                           ? "max-h-[800px] opacity-100"
-                          : "max-h-0 opacity-0"
+                          : "max-h-0 opacity-0",
                       )}
                     >
                       <div className="ml-2 mt-1 space-y-0.5 border-l-2 border-[hsl(var(--secondary))]/20 pl-3">
@@ -412,16 +483,17 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                   to="/how-it-works"
                   onClick={handleLinkClick}
                   className="flex items-center px-4 py-3.5 rounded-xl font-semibold text-base text-brand-navy hover:bg-gray-50 active:bg-gray-100 transition-all duration-150 touch-manipulation active:scale-[0.98] min-h-[52px] animate-fade-in"
-                  style={{ animationDelay: `${moreNavigationSections.length * 30}ms` }}
+                  style={{
+                    animationDelay: `${moreNavigationSections.length * 30}ms`,
+                  }}
                 >
                   How It Works
                 </Link>
               </>
             )}
 
-
             {/* Categories Tab — flat grid of canonical category pages */}
-            {!filteredContent && activeTab === 'categories' && (
+            {!filteredContent && activeTab === "categories" && (
               <div className="space-y-3">
                 <div className="grid grid-cols-2 gap-2 px-1">
                   {testCategoryCards.map((card, i) => {
@@ -434,7 +506,12 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                         className="flex flex-col items-center gap-2 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 active:bg-gray-200 transition-all duration-150 touch-manipulation active:scale-[0.97] group animate-fade-in"
                         style={{ animationDelay: `${i * 30}ms` }}
                       >
-                        <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center shadow-xs", card.bg)}>
+                        <div
+                          className={cn(
+                            "w-10 h-10 rounded-xl flex items-center justify-center shadow-xs",
+                            card.bg,
+                          )}
+                        >
                           <Icon className="w-5 h-5 text-white" />
                         </div>
                         <span className="text-xs font-medium text-brand-navy text-center leading-tight group-hover:text-[hsl(var(--primary))]">
@@ -457,7 +534,6 @@ export const MobileNavigationDrawer = ({ isOpen, onClose }: MobileNavigationDraw
                 </div>
               </div>
             )}
-
 
             {/* Quick Actions & CTA - Show for both tabs */}
             {!filteredContent && (

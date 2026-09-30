@@ -21,23 +21,24 @@
  * Handles starting `clinic-visit` / `clinic-visits` are partner-clinic LOCATION
  * pages, not tests — we mark those inactive and skip them.
  */
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
-import { logProtectedCall } from '../_shared/audit.ts';
-import { getErrorMessage } from '../_shared/errors.ts';
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
+import { logProtectedCall } from "../_shared/audit.ts";
+import { getErrorMessage } from "../_shared/errors.ts";
 import {
   upsertWithProvenance,
   startScrapeRun,
   finishScrapeRun,
   newCounters,
-} from '../_shared/scrape/index.ts';
+} from "../_shared/scrape/index.ts";
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
-const PROVIDER_ID = 'medichecks';
-const BASE = 'https://www.medichecks.com';
+const PROVIDER_ID = "medichecks";
+const BASE = "https://www.medichecks.com";
 
 const CLINIC_PHLEBOTOMY_FEE = 35;
 const HOME_NURSE_FEE = 59;
@@ -59,8 +60,9 @@ async function fetchShopifyProducts(): Promise<ShopifyProduct[]> {
     const url = `${BASE}/products.json?limit=250&page=${page}`;
     const res = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36',
-        'Accept': 'application/json',
+        "User-Agent":
+          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36",
+        Accept: "application/json",
       },
     });
     if (!res.ok) {
@@ -71,23 +73,32 @@ async function fetchShopifyProducts(): Promise<ShopifyProduct[]> {
     const products = Array.isArray(json?.products) ? json.products : [];
     if (products.length === 0) break;
     for (const p of products) {
-      const variant = Array.isArray(p.variants) && p.variants.length > 0 ? p.variants[0] : null;
+      const variant =
+        Array.isArray(p.variants) && p.variants.length > 0
+          ? p.variants[0]
+          : null;
       const price = variant?.price ? parseFloat(variant.price) : null;
-      const compareAt = variant?.compare_at_price ? parseFloat(variant.compare_at_price) : null;
-      const firstImage = Array.isArray(p.images) && p.images.length > 0 ? p.images[0]?.src : null;
+      const compareAt = variant?.compare_at_price
+        ? parseFloat(variant.compare_at_price)
+        : null;
+      const firstImage =
+        Array.isArray(p.images) && p.images.length > 0
+          ? p.images[0]?.src
+          : null;
       const tags: string[] = Array.isArray(p.tags)
         ? p.tags
-        : typeof p.tags === 'string'
-        ? p.tags.split(',').map((t: string) => t.trim())
-        : [];
+        : typeof p.tags === "string"
+          ? p.tags.split(",").map((t: string) => t.trim())
+          : [];
       out.push({
         handle: p.handle,
-        title: (p.title ?? '').trim(),
+        title: (p.title ?? "").trim(),
         tags,
         price: Number.isFinite(price) && price! > 0 ? price! : null,
-        compareAtPrice: Number.isFinite(compareAt) && compareAt! > 0 ? compareAt! : null,
+        compareAtPrice:
+          Number.isFinite(compareAt) && compareAt! > 0 ? compareAt! : null,
         productType: p.product_type ?? null,
-        bodyHtml: p.body_html ?? '',
+        bodyHtml: p.body_html ?? "",
         imageUrl: firstImage ?? null,
       });
     }
@@ -105,20 +116,20 @@ async function fetchShopifyProducts(): Promise<ShopifyProduct[]> {
 
 function stripHtml(s: string): string {
   return s
-    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-    .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
     .replace(/&#39;|&rsquo;|&lsquo;/g, "'")
-    .replace(/&mdash;|&ndash;/g, '—')
-    .replace(/\s+/g, ' ')
+    .replace(/&mdash;|&ndash;/g, "—")
+    .replace(/\s+/g, " ")
     .trim();
 }
 
 function isJunkHandle(handle: string): boolean {
   const h = handle.toLowerCase();
-  return h.startsWith('clinic-visit') || h.startsWith('clinic-visits');
+  return h.startsWith("clinic-visit") || h.startsWith("clinic-visits");
 }
 
 interface ParsedTags {
@@ -150,15 +161,24 @@ function parseTags(tags: string[]): ParsedTags {
     } else if ((m = t.match(/^info_results_(\d+)$/))) {
       const n = parseInt(m[1], 10);
       if (n > 0 && n <= 60) out.turnaroundDays = n;
-    } else if (t === 'info_sample_blood_sample' || t.startsWith('info_sample_blood')) {
-      out.sampleType = 'Blood';
-    } else if (t === 'collection_method_blood_delivery') {
+    } else if (
+      t === "info_sample_blood_sample" ||
+      t.startsWith("info_sample_blood")
+    ) {
+      out.sampleType = "Blood";
+    } else if (t === "collection_method_blood_delivery") {
       out.homeKitAvailable = true;
-    } else if (t === 'collection_method_blood_in-store' || t === 'collection_method_blood_in_store') {
+    } else if (
+      t === "collection_method_blood_in-store" ||
+      t === "collection_method_blood_in_store"
+    ) {
       out.clinicVisitAvailable = true;
-    } else if (t === 'collection_method_blood_nurse-visit' || t === 'collection_method_blood_nurse_visit') {
+    } else if (
+      t === "collection_method_blood_nurse-visit" ||
+      t === "collection_method_blood_nurse_visit"
+    ) {
       out.homeNurseAvailable = true;
-    } else if (t === 'collection_method_blood_pro') {
+    } else if (t === "collection_method_blood_pro") {
       out.selfArrangeAvailable = true;
     }
   }
@@ -178,67 +198,85 @@ function computeTEC(basePrice: number | null, p: ParsedTags): number | null {
 
 function categoryFor(text: string): string {
   const t = text.toLowerCase();
-  if (/thyroid|tsh|\bt3\b|\bt4\b/.test(t)) return 'Thyroid';
-  if (/testosterone|oestrogen|estrogen|progesterone|dhea|cortisol|hormone/.test(t)) return 'Hormones';
-  if (/vitamin|mineral|iron|ferritin|b12|folate|magnesium|zinc/.test(t)) return 'Vitamins & Minerals';
-  if (/heart|cholesterol|cardio|lipid/.test(t)) return 'Heart Health';
-  if (/diabet|hba1c|glucose|insulin/.test(t)) return 'Diabetes';
-  if (/liver|hepatic|\balt\b|\bast\b|bilirubin/.test(t)) return 'Liver Health';
-  if (/kidney|renal|creatinine|egfr/.test(t)) return 'Kidney Health';
+  if (/thyroid|tsh|\bt3\b|\bt4\b/.test(t)) return "Thyroid";
+  if (
+    /testosterone|oestrogen|estrogen|progesterone|dhea|cortisol|hormone/.test(t)
+  )
+    return "Hormones";
+  if (/vitamin|mineral|iron|ferritin|b12|folate|magnesium|zinc/.test(t))
+    return "Vitamins & Minerals";
+  if (/heart|cholesterol|cardio|lipid/.test(t)) return "Heart Health";
+  if (/diabet|hba1c|glucose|insulin/.test(t)) return "Diabetes";
+  if (/liver|hepatic|\balt\b|\bast\b|bilirubin/.test(t)) return "Liver Health";
+  if (/kidney|renal|creatinine|egfr/.test(t)) return "Kidney Health";
   if (/prostate|\bpsa\b|well\s*man/.test(t)) return "Men's Health";
   if (/menopause|well\s*woman|pcos|female/.test(t)) return "Women's Health";
-  if (/fertility|\bamh\b|sperm/.test(t)) return 'Fertility';
-  if (/sport|fitness|athlete|performance/.test(t)) return 'Sports & Fitness';
-  if (/fatigue|tiredness|energy/.test(t)) return 'Fatigue';
-  if (/inflammation|\bcrp\b|\besr\b/.test(t)) return 'Inflammation';
-  return 'General Health';
+  if (/fertility|\bamh\b|sperm/.test(t)) return "Fertility";
+  if (/sport|fitness|athlete|performance/.test(t)) return "Sports & Fitness";
+  if (/fatigue|tiredness|energy/.test(t)) return "Fatigue";
+  if (/inflammation|\bcrp\b|\besr\b/.test(t)) return "Inflammation";
+  return "General Health";
 }
 
 function genderFor(text: string): string | null {
   const t = text.toLowerCase();
-  if (/well\s*woman|women|female|menopause|pcos/.test(t)) return 'female';
-  if (/well\s*man|\bmen\b|male|prostate/.test(t)) return 'male';
+  if (/well\s*woman|women|female|menopause|pcos/.test(t)) return "female";
+  if (/well\s*man|\bmen\b|male|prostate/.test(t)) return "male";
   return null;
 }
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
+  if (req.method === "OPTIONS")
+    return new Response(null, { headers: corsHeaders });
 
-  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+  const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
-  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${supabaseKey}`) {
-    await logProtectedCall({ functionName: 'medichecks-scraper', status: 'denied', req });
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+  if ((req.headers.get("Authorization") ?? "") !== `Bearer ${supabaseKey}`) {
+    await logProtectedCall({
+      functionName: "medichecks-scraper",
+      status: "denied",
+      req,
+    });
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
-  await logProtectedCall({ functionName: 'medichecks-scraper', status: 'allowed', req });
+  await logProtectedCall({
+    functionName: "medichecks-scraper",
+    status: "allowed",
+    req,
+  });
 
   const supabase = createClient(supabaseUrl, supabaseKey);
   const counters = newCounters();
-  const runId = await startScrapeRun(supabase, PROVIDER_ID, 'medichecks-scraper', {
-    started_at: new Date().toISOString(),
-    method: 'shopify-tags',
-  });
+  const runId = await startScrapeRun(
+    supabase,
+    PROVIDER_ID,
+    "medichecks-scraper",
+    {
+      started_at: new Date().toISOString(),
+      method: "shopify-tags",
+    },
+  );
 
   try {
-    await supabase
-      .from('scraping_jobs')
-      .upsert(
-        {
-          provider_id: PROVIDER_ID,
-          status: 'running',
-          last_scraped: new Date().toISOString(),
-          next_scrape: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString(),
-        },
-        { onConflict: 'provider_id' },
-      );
+    await supabase.from("scraping_jobs").upsert(
+      {
+        provider_id: PROVIDER_ID,
+        status: "running",
+        last_scraped: new Date().toISOString(),
+        next_scrape: new Date(Date.now() + 12 * 60 * 60 * 1000).toISOString(),
+      },
+      { onConflict: "provider_id" },
+    );
 
     const products = await fetchShopifyProducts();
     counters.tests_seen = products.length;
-    console.log(`[medichecks] fetched ${products.length} products from Shopify`);
+    console.log(
+      `[medichecks] fetched ${products.length} products from Shopify`,
+    );
 
     let junkSkipped = 0;
 
@@ -247,36 +285,38 @@ Deno.serve(async (req) => {
         junkSkipped++;
         // Ensure any stray active row for a junk handle is marked inactive.
         await supabase
-          .from('provider_tests')
+          .from("provider_tests")
           .update({ is_active: false })
-          .eq('provider_id', PROVIDER_ID)
-          .eq('provider_test_id', product.handle);
+          .eq("provider_id", PROVIDER_ID)
+          .eq("provider_test_id", product.handle);
         continue;
       }
 
       const title = product.title;
       if (!title || title.length < 3) {
-        counters.errors.push({ test: product.handle, message: 'no title' });
+        counters.errors.push({ test: product.handle, message: "no title" });
         continue;
       }
 
       const tagInfo = parseTags(product.tags);
       const basePrice = product.price;
-      const wasPrice = product.compareAtPrice && product.compareAtPrice > (basePrice ?? 0)
-        ? product.compareAtPrice
-        : null;
+      const wasPrice =
+        product.compareAtPrice && product.compareAtPrice > (basePrice ?? 0)
+          ? product.compareAtPrice
+          : null;
       const inStock = basePrice !== null && basePrice > 0;
       const tec = computeTEC(basePrice, tagInfo);
 
       const turnDays = tagInfo.turnaroundDays;
-      const turnRaw = turnDays !== null
-        ? `Results in ${turnDays} working days (estimated)`
-        : null;
+      const turnRaw =
+        turnDays !== null
+          ? `Results in ${turnDays} working days (estimated)`
+          : null;
 
-      const bodyText = stripHtml(product.bodyHtml || '');
+      const bodyText = stripHtml(product.bodyHtml || "");
       const description = bodyText ? bodyText.substring(0, 500) : null;
       const productUrl = `${BASE}/products/${product.handle}`;
-      const categoryText = `${title} ${bodyText} ${product.productType ?? ''} ${product.tags.join(' ')}`;
+      const categoryText = `${title} ${bodyText} ${product.productType ?? ""} ${product.tags.join(" ")}`;
       const category = categoryFor(categoryText);
       const gender = genderFor(`${title} ${bodyText}`);
 
@@ -292,8 +332,8 @@ Deno.serve(async (req) => {
           collection_fee: tagInfo.homeKitAvailable
             ? 0
             : tagInfo.selfArrangeAvailable
-            ? 0
-            : null,
+              ? 0
+              : null,
           home_visit_fee: tagInfo.homeNurseAvailable ? HOME_NURSE_FEE : null,
           gp_review_fee: 0,
           biomarker_count: tagInfo.biomarkerCount,
@@ -301,9 +341,10 @@ Deno.serve(async (req) => {
           turnaround_raw: turnRaw,
           turnaround_hours: turnDays !== null ? turnDays * 24 : null,
           turnaround_days: turnDays,
-          turnaround_unit: turnDays !== null ? 'days' : 'not_stated',
-          sample_type: tagInfo.sampleType ?? 'Blood',
-          collection_method: 'Home finger-prick kit; optional home nurse or clinic phlebotomy',
+          turnaround_unit: turnDays !== null ? "days" : "not_stated",
+          sample_type: tagInfo.sampleType ?? "Blood",
+          collection_method:
+            "Home finger-prick kit; optional home nurse or clinic phlebotomy",
           in_stock: inStock,
           scrape_source_url: productUrl,
         },
@@ -311,12 +352,15 @@ Deno.serve(async (req) => {
       );
 
       if (!result.ok) {
-        counters.errors.push({ test: title, message: result.error ?? 'upsert failed' });
+        counters.errors.push({
+          test: title,
+          message: result.error ?? "upsert failed",
+        });
         continue;
       }
 
-      if (result.action === 'inserted') counters.tests_new++;
-      else if (result.action === 'updated') counters.tests_updated++;
+      if (result.action === "inserted") counters.tests_new++;
+      else if (result.action === "updated") counters.tests_updated++;
 
       const extras: Record<string, unknown> = {
         url: productUrl,
@@ -331,10 +375,17 @@ Deno.serve(async (req) => {
         home_kit_available: tagInfo.homeKitAvailable,
         clinic_visit_available: tagInfo.clinicVisitAvailable,
         home_phlebotomy_option: tagInfo.homeNurseAvailable,
-        home_phlebotomy_cost: tagInfo.homeNurseAvailable ? HOME_NURSE_FEE : null,
-        clinic_phlebotomy_cost: tagInfo.clinicVisitAvailable ? CLINIC_PHLEBOTOMY_FEE : null,
-        phlebotomy_cost: tagInfo.clinicVisitAvailable ? CLINIC_PHLEBOTOMY_FEE : null,
-        phlebotomy_included: tagInfo.homeKitAvailable || tagInfo.selfArrangeAvailable,
+        home_phlebotomy_cost: tagInfo.homeNurseAvailable
+          ? HOME_NURSE_FEE
+          : null,
+        clinic_phlebotomy_cost: tagInfo.clinicVisitAvailable
+          ? CLINIC_PHLEBOTOMY_FEE
+          : null,
+        phlebotomy_cost: tagInfo.clinicVisitAvailable
+          ? CLINIC_PHLEBOTOMY_FEE
+          : null,
+        phlebotomy_included:
+          tagInfo.homeKitAvailable || tagInfo.selfArrangeAvailable,
         gp_review_included: true,
         gp_consultation_included: true,
         gender_specific: gender,
@@ -348,46 +399,57 @@ Deno.serve(async (req) => {
       };
       if (result.providerTestId) {
         const { error: extraErr } = await supabase
-          .from('provider_tests')
+          .from("provider_tests")
           .update(extras)
-          .eq('id', result.providerTestId);
-        if (extraErr) console.warn(`[medichecks] extras update failed for ${title}:`, extraErr.message);
+          .eq("id", result.providerTestId);
+        if (extraErr)
+          console.warn(
+            `[medichecks] extras update failed for ${title}:`,
+            extraErr.message,
+          );
       }
     }
 
     await supabase
-      .from('scraping_jobs')
-      .update({ status: 'completed', error_message: null })
-      .eq('provider_id', PROVIDER_ID);
+      .from("scraping_jobs")
+      .update({ status: "completed", error_message: null })
+      .eq("provider_id", PROVIDER_ID);
 
-    await finishScrapeRun(supabase, runId, counters, counters.errors.length > 0 ? 'partial' : 'success');
+    await finishScrapeRun(
+      supabase,
+      runId,
+      counters,
+      counters.errors.length > 0 ? "partial" : "success",
+    );
 
     return new Response(
       JSON.stringify({
         success: true,
         provider: PROVIDER_ID,
         run_id: runId,
-        method: 'shopify-tags',
+        method: "shopify-tags",
         catalogue_total: products.length,
         junk_skipped: junkSkipped,
         tests_new: counters.tests_new,
         tests_updated: counters.tests_updated,
         errors: counters.errors.slice(0, 10),
       }),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
+      {
+        status: 200,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
     );
-
   } catch (err) {
     const message = getErrorMessage(err);
-    console.error('[medichecks] fatal:', message);
+    console.error("[medichecks] fatal:", message);
     await supabase
-      .from('scraping_jobs')
-      .update({ status: 'failed', error_message: message })
-      .eq('provider_id', PROVIDER_ID);
-    await finishScrapeRun(supabase, runId, counters, 'error');
+      .from("scraping_jobs")
+      .update({ status: "failed", error_message: message })
+      .eq("provider_id", PROVIDER_ID);
+    await finishScrapeRun(supabase, runId, counters, "error");
     return new Response(JSON.stringify({ success: false, error: message }), {
       status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 });

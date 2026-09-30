@@ -6,7 +6,10 @@ interface PasswordStrengthIndicatorProps {
   password: string;
 }
 
-export const PasswordStrengthIndicator = ({ strength, password }: PasswordStrengthIndicatorProps) => {
+export const PasswordStrengthIndicator = ({
+  strength,
+  password,
+}: PasswordStrengthIndicatorProps) => {
   if (!password) return null;
 
   const getStrengthColor = (score: number) => {
@@ -49,20 +52,27 @@ export const PasswordStrengthIndicator = ({ strength, password }: PasswordStreng
             key={level}
             className={cn(
               "h-2 flex-1 rounded-sm transition-colors",
-              strength.score >= level ? getStrengthColor(strength.score) : "bg-muted"
+              strength.score >= level
+                ? getStrengthColor(strength.score)
+                : "bg-muted",
             )}
           />
         ))}
       </div>
-      
+
       <div className="flex justify-between items-center text-sm">
-        <span className={cn(
-          "font-medium",
-          strength.score <= 1 ? "text-destructive" :
-          strength.score === 2 ? "text-yellow-600" :
-          strength.score === 3 ? "text-orange-600" :
-          "text-green-600"
-        )}>
+        <span
+          className={cn(
+            "font-medium",
+            strength.score <= 1
+              ? "text-destructive"
+              : strength.score === 2
+                ? "text-yellow-600"
+                : strength.score === 3
+                  ? "text-orange-600"
+                  : "text-green-600",
+          )}
+        >
           {getStrengthText(strength.score)}
         </span>
         {!strength.isValid && strength.feedback.length > 0 && (

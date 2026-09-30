@@ -19,7 +19,6 @@ const Footer = () => {
           <StayInformedSection />
         </div>
       </div>
-
     </footer>
   );
 };
@@ -53,7 +52,7 @@ const StayInformedSection = () => {
     try {
       const { data, error: fnErr } = await supabase.functions.invoke(
         "newsletter-subscribe",
-        { body: { email: email.trim(), source: "footer", consent: true } }
+        { body: { email: email.trim(), source: "footer", consent: true } },
       );
       if (fnErr || (data as any)?.error) {
         setError((data as any)?.error || "Subscription failed. Try again.");
@@ -82,11 +81,30 @@ const StayInformedSection = () => {
             <SocialIcon
               href="https://www.instagram.com/myhealthcheckup_uk"
               label="Instagram"
-              style={{ background: "linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)" }}
+              style={{
+                background:
+                  "linear-gradient(45deg,#f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%)",
+              }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <rect x="2" y="2" width="20" height="20" rx="5" stroke="#fff" strokeWidth="1.8" fill="none" />
-                <circle cx="12" cy="12" r="5" stroke="#fff" strokeWidth="1.8" fill="none" />
+                <rect
+                  x="2"
+                  y="2"
+                  width="20"
+                  height="20"
+                  rx="5"
+                  stroke="#fff"
+                  strokeWidth="1.8"
+                  fill="none"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="5"
+                  stroke="#fff"
+                  strokeWidth="1.8"
+                  fill="none"
+                />
                 <circle cx="17.5" cy="6.5" r="1.25" fill="#fff" />
               </svg>
             </SocialIcon>
@@ -105,9 +123,20 @@ const StayInformedSection = () => {
               style={{ background: "#000" }}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                <path d="M16.5 3h-2.6v12.2a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V9.9a5.7 5.7 0 00-.8-.1 5.6 5.6 0 105.6 5.6V8.7a7.1 7.1 0 004.2 1.4V7.5a4.3 4.3 0 01-4.5-4.5z" fill="#25F4EE" />
-                <path d="M17 3.5h-2.6v12.2a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V10.4a5.7 5.7 0 00-.8-.1 5.6 5.6 0 105.6 5.6V9.2a7.1 7.1 0 004.2 1.4V8a4.3 4.3 0 01-4.5-4.5z" fill="#FE2C55" fillOpacity="0.85" />
-                <path d="M16.7 3.2h-2.6v12.2a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V10.1a5.7 5.7 0 00-.8-.1 5.6 5.6 0 105.6 5.6V8.9a7.1 7.1 0 004.2 1.4V7.7a4.3 4.3 0 01-4.5-4.5z" fill="#fff" fillOpacity="0.9" />
+                <path
+                  d="M16.5 3h-2.6v12.2a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V9.9a5.7 5.7 0 00-.8-.1 5.6 5.6 0 105.6 5.6V8.7a7.1 7.1 0 004.2 1.4V7.5a4.3 4.3 0 01-4.5-4.5z"
+                  fill="#25F4EE"
+                />
+                <path
+                  d="M17 3.5h-2.6v12.2a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V10.4a5.7 5.7 0 00-.8-.1 5.6 5.6 0 105.6 5.6V9.2a7.1 7.1 0 004.2 1.4V8a4.3 4.3 0 01-4.5-4.5z"
+                  fill="#FE2C55"
+                  fillOpacity="0.85"
+                />
+                <path
+                  d="M16.7 3.2h-2.6v12.2a2.7 2.7 0 11-2.7-2.7c.3 0 .5 0 .8.1V10.1a5.7 5.7 0 00-.8-.1 5.6 5.6 0 105.6 5.6V8.9a7.1 7.1 0 004.2 1.4V7.7a4.3 4.3 0 01-4.5-4.5z"
+                  fill="#fff"
+                  fillOpacity="0.9"
+                />
               </svg>
             </SocialIcon>
           </div>
@@ -115,34 +144,51 @@ const StayInformedSection = () => {
           {/* Copyright + Medical Disclaimer — pushed to bottom of column */}
           <div className="mt-6 sm:mt-auto w-full space-y-2 px-1">
             <p className="text-[10px] sm:text-[11px] text-white/78 leading-snug text-center break-words">
-              © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales, Company No. 16589056. All rights reserved.
+              © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales,
+              Company No. 16589056. All rights reserved.
             </p>
             <p className="text-[10px] sm:text-[11px] text-white/78 leading-snug text-center break-words">
-              <span className="text-brand-pink font-semibold">Medical disclaimer:</span>{" "}
-              This site provides comparison information only and does not constitute medical advice.{" "}
-              <Link to="/legal" className="inline-block py-1.5 underline hover:text-brand-pink transition-colors">
+              <span className="text-brand-pink font-semibold">
+                Medical disclaimer:
+              </span>{" "}
+              This site provides comparison information only and does not
+              constitute medical advice.{" "}
+              <Link
+                to="/legal"
+                className="inline-block py-1.5 underline hover:text-brand-pink transition-colors"
+              >
                 Legal Hub
               </Link>
               {" · "}
-              <Link to="/trust" className="inline-block py-1.5 underline hover:text-brand-pink transition-colors">
+              <Link
+                to="/trust"
+                className="inline-block py-1.5 underline hover:text-brand-pink transition-colors"
+              >
                 Trust &amp; Security
               </Link>
-
             </p>
             <p className="text-[10px] sm:text-[11px] text-white/78 leading-snug text-center break-words">
-              <Link to="/auth" className="inline-block py-1.5 underline hover:text-brand-pink transition-colors">
+              <Link
+                to="/auth"
+                className="inline-block py-1.5 underline hover:text-brand-pink transition-colors"
+              >
                 Sign in
               </Link>
               {" · "}
-              <Link to="/admin/login" className="inline-block py-1.5 underline hover:text-brand-pink transition-colors">
+              <Link
+                to="/admin/login"
+                className="inline-block py-1.5 underline hover:text-brand-pink transition-colors"
+              >
                 Admin login
               </Link>
               {" · "}
-              <Link to="/control" className="inline-block py-1.5 underline hover:text-brand-pink transition-colors">
+              <Link
+                to="/control"
+                className="inline-block py-1.5 underline hover:text-brand-pink transition-colors"
+              >
                 Crux Control
               </Link>
             </p>
-
           </div>
         </div>
 
@@ -150,7 +196,8 @@ const StayInformedSection = () => {
         <div>
           <SectionHeading title="Stay Informed" />
           <p className="text-white/90 text-xs sm:text-sm leading-relaxed mb-4">
-            New tests, new providers, straight to your inbox. Provider updates and platform improvements — when they matter.
+            New tests, new providers, straight to your inbox. Provider updates
+            and platform improvements — when they matter.
           </p>
           {submitted ? (
             <p className="text-brand-turquoise font-heading font-bold text-sm tracking-wide">
@@ -178,9 +225,7 @@ const StayInformedSection = () => {
               >
                 {loading ? "Subscribing…" : "Subscribe"}
               </button>
-              {error && (
-                <p className="text-xs text-brand-pink mt-1">{error}</p>
-              )}
+              {error && <p className="text-xs text-brand-pink mt-1">{error}</p>}
             </div>
           )}
           <p className="mt-3 text-[10px] text-white/78 leading-relaxed">

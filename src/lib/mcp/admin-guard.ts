@@ -19,26 +19,37 @@ export type ToolTextResult = {
 };
 
 export const DENIED: ToolTextResult = {
-  content: [{ type: "text", text: "You do not have permission to use this tool." }],
+  content: [
+    { type: "text", text: "You do not have permission to use this tool." },
+  ],
   isError: true,
 };
 
 export type AdminSession = { client: SupabaseClient; userId: string };
 
 function callerClient(ctx: ToolContext): SupabaseClient {
-  return createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_PUBLISHABLE_KEY!, {
-    global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
-    auth: { persistSession: false, autoRefreshToken: false },
-  });
+  return createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_PUBLISHABLE_KEY!,
+    {
+      global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
+      auth: { persistSession: false, autoRefreshToken: false },
+    },
+  );
 }
 
 /** Returns an admin session, or null when the caller is not a verified admin. */
-export async function requireAdmin(ctx: ToolContext): Promise<AdminSession | null> {
+export async function requireAdmin(
+  ctx: ToolContext,
+): Promise<AdminSession | null> {
   if (!ctx.isAuthenticated()) return null;
   const client = callerClient(ctx);
   const userId = ctx.getUserId();
   if (!userId) return null;
-  const { data, error } = await client.rpc("has_role", { _user_id: userId, _role: "admin" });
+  const { data, error } = await client.rpc("has_role", {
+    _user_id: userId,
+    _role: "admin",
+  });
   if (error || data !== true) return null;
   return { client, userId };
 }
@@ -71,5 +82,8 @@ export function ok(payload: Record<string, unknown>): ToolTextResult {
 }
 
 export function fail(message: string): ToolTextResult {
-  return { content: [{ type: "text", text: `Error: ${message}` }], isError: true };
+  return {
+    content: [{ type: "text", text: `Error: ${message}` }],
+    isError: true,
+  };
 }

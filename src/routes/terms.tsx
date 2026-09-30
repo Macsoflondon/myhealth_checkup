@@ -8,7 +8,8 @@ export const Route = createFileRoute("/terms")({
   head: () =>
     buildRouteHead({
       title: "Terms of Use | myhealth checkup",
-      description: "The terms governing use of the myhealth checkup comparison platform.",
+      description:
+        "The terms governing use of the myhealth checkup comparison platform.",
       path: "/terms",
     }),
   component: TermsConditionsPage,

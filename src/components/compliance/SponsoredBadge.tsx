@@ -21,26 +21,24 @@ interface SponsoredBadgeProps {
   compact?: boolean;
 }
 
-const COPY: Record<
-  SponsoredBadgeVariant,
-  { label: string; tooltip: string }
-> = {
-  sponsored: {
-    label: "Sponsored",
-    tooltip:
-      "This placement is paid for by the provider. Its position has been influenced by a commercial arrangement. We disclose this in line with CMA and DMCC 2024 transparency rules.",
-  },
-  promoted: {
-    label: "Promoted",
-    tooltip:
-      "This provider has a commercial relationship with myhealth checkup, but ranking and ordering are not influenced. Shown for transparency under CMA / DMCC 2024 guidance.",
-  },
-  affiliate: {
-    label: "Affiliate link",
-    tooltip:
-      "We may earn a small commission if you book through this link, at no extra cost to you. Affiliate relationships do not influence ranking or editorial content.",
-  },
-};
+const COPY: Record<SponsoredBadgeVariant, { label: string; tooltip: string }> =
+  {
+    sponsored: {
+      label: "Sponsored",
+      tooltip:
+        "This placement is paid for by the provider. Its position has been influenced by a commercial arrangement. We disclose this in line with CMA and DMCC 2024 transparency rules.",
+    },
+    promoted: {
+      label: "Promoted",
+      tooltip:
+        "This provider has a commercial relationship with myhealth checkup, but ranking and ordering are not influenced. Shown for transparency under CMA / DMCC 2024 guidance.",
+    },
+    affiliate: {
+      label: "Affiliate link",
+      tooltip:
+        "We may earn a small commission if you book through this link, at no extra cost to you. Affiliate relationships do not influence ranking or editorial content.",
+    },
+  };
 
 /**
  * Visible commercial-disclosure badge for any sponsored, promoted, or
@@ -75,7 +73,9 @@ const SponsoredBadge: React.FC<SponsoredBadgeProps> = ({
         >
           <BadgeDollarSign className="w-3 h-3" aria-hidden="true" />
           {label}
-          {!compact && <Info className="w-3 h-3 opacity-70" aria-hidden="true" />}
+          {!compact && (
+            <Info className="w-3 h-3 opacity-70" aria-hidden="true" />
+          )}
         </span>
       </TooltipTrigger>
       <TooltipContent side="top" className="max-w-xs text-xs leading-relaxed">

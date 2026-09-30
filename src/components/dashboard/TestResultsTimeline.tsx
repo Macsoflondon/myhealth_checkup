@@ -1,10 +1,19 @@
 import { useEffect, useState } from "react";
-import { FileText, Calendar, Building2, Trash2, ExternalLink } from "lucide-react";
+import {
+  FileText,
+  Calendar,
+  Building2,
+  Trash2,
+  ExternalLink,
+} from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { healthDataApi, UploadedTestResult } from "@/api/supabase/healthData.api";
+import {
+  healthDataApi,
+  UploadedTestResult,
+} from "@/api/supabase/healthData.api";
 import { useAuth } from "@/context/AuthContext";
 import { format } from "date-fns";
 
@@ -15,10 +24,10 @@ export const TestResultsTimeline = () => {
 
   const loadResults = async () => {
     if (!user) return;
-    
+
     setLoading(true);
     const { data, error } = await healthDataApi.getUploadedTestResults(user.id);
-    
+
     if (error) {
       toast.error("Failed to load test results");
     } else {
@@ -35,7 +44,7 @@ export const TestResultsTimeline = () => {
     if (!confirm("Are you sure you want to delete this test result?")) return;
 
     const { error } = await healthDataApi.deleteTestResult(id);
-    
+
     if (error) {
       toast.error("Failed to delete test result");
     } else {
@@ -72,7 +81,10 @@ export const TestResultsTimeline = () => {
   return (
     <div className="space-y-4">
       {results.map((result, index) => (
-        <Card key={result.id} className="p-6 border-2 hover:shadow-lg transition-shadow">
+        <Card
+          key={result.id}
+          className="p-6 border-2 hover:shadow-lg transition-shadow"
+        >
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
@@ -89,7 +101,7 @@ export const TestResultsTimeline = () => {
                   <Calendar className="w-4 h-4" />
                   {format(new Date(result.test_date), "dd MMM yyyy")}
                 </div>
-                
+
                 {result.provider_id && (
                   <div className="flex items-center gap-1">
                     <Building2 className="w-4 h-4" />
@@ -106,17 +118,17 @@ export const TestResultsTimeline = () => {
 
               <div className="flex items-center gap-2">
                 {result.file_url && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    asChild
-                  >
-                    <a href={result.file_url} target="_blank" rel="noopener noreferrer">
+                  <Button variant="outline" size="sm" asChild>
+                    <a
+                      href={result.file_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       View File
                     </a>
                   </Button>
                 )}
-                
+
                 <Button
                   variant="ghost"
                   size="sm"

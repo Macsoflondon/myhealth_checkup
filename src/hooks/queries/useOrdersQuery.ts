@@ -9,9 +9,9 @@ import { toast } from "@/components/ui/sonner";
 import { logger } from "@/lib/logger";
 
 export const ordersQueryKeys = {
-  all: ['orders'] as const,
-  user: (userId: string) => ['orders', userId] as const,
-  byId: (orderId: string) => ['orders', 'detail', orderId] as const,
+  all: ["orders"] as const,
+  user: (userId: string) => ["orders", userId] as const,
+  byId: (orderId: string) => ["orders", "detail", orderId] as const,
 };
 
 export function useOrdersQuery() {
@@ -19,7 +19,7 @@ export function useOrdersQuery() {
   const userId = user?.id;
 
   return useQuery({
-    queryKey: ordersQueryKeys.user(userId || ''),
+    queryKey: ordersQueryKeys.user(userId || ""),
     queryFn: async () => {
       if (!userId) return [];
       const { data, error } = await ordersApi.getUserOrders(userId);
@@ -41,25 +41,27 @@ export function useCreateOrder() {
       name?: string;
       price?: number;
     }) => {
-      if (!user?.id) throw new Error('User not authenticated');
+      if (!user?.id) throw new Error("User not authenticated");
       const { data, error } = await ordersApi.createOrder({
         user_id: user.id,
         test_id: params.testId,
         provider: params.provider,
         name: params.name,
         price: params.price,
-        status: 'pending',
+        status: "pending",
       });
       if (error) throw error;
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ordersQueryKeys.user(user?.id || '') });
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.user(user?.id || ""),
+      });
       toast.success("Order created successfully");
     },
     onError: (error) => {
-      logger.error('Error creating order:', error);
-      toast.error('Failed to create order');
+      logger.error("Error creating order:", error);
+      toast.error("Failed to create order");
     },
   });
 }
@@ -70,16 +72,21 @@ export function useUpdateOrderStatus() {
 
   return useMutation({
     mutationFn: async (params: { orderId: string; status: string }) => {
-      const { error } = await ordersApi.updateOrderStatus(params.orderId, params.status);
+      const { error } = await ordersApi.updateOrderStatus(
+        params.orderId,
+        params.status,
+      );
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ordersQueryKeys.user(user?.id || '') });
+      queryClient.invalidateQueries({
+        queryKey: ordersQueryKeys.user(user?.id || ""),
+      });
       toast.success("Order status updated");
     },
     onError: (error) => {
-      logger.error('Error updating order status:', error);
-      toast.error('Failed to update order status');
+      logger.error("Error updating order status:", error);
+      toast.error("Failed to update order status");
     },
   });
 }

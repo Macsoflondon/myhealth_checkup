@@ -1,16 +1,15 @@
-import React from 'react';
+import React from "react";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
-import { Helmet } from 'react-helmet-async';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
-import HowWeRank from '@/components/compliance/HowWeRank';
-import PageBanner from '@/components/sections/PageBanner';
+import { Helmet } from "react-helmet-async";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import HowWeRank from "@/components/compliance/HowWeRank";
+import PageBanner from "@/components/sections/PageBanner";
 
 const HowWeRankPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Helmet>
-      </Helmet>
+      <Helmet></Helmet>
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner

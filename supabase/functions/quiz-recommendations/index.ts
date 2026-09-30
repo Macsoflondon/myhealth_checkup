@@ -52,7 +52,8 @@ serve(async (req) => {
   }
 
   // Rate limit deferred until after supabase client is created (persistent store)
-  const clientIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const clientIp =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
 
   try {
     const body = await req.json();
@@ -62,19 +63,40 @@ serve(async (req) => {
     const MAX_ARRAY = 10;
     const VALID_WHO = ["myself", "partner", "family-member", "other"];
     const VALID_GENDER = ["male", "female", "other", "prefer-not-to-say"];
-    const VALID_AGE_RANGES = ["18-24", "25-34", "35-44", "45-54", "55-64", "65+"];
+    const VALID_AGE_RANGES = [
+      "18-24",
+      "25-34",
+      "35-44",
+      "45-54",
+      "55-64",
+      "65+",
+    ];
     const VALID_GOALS = [
-      "general-health", "preventive-screening", "specific-concern",
-      "fitness-performance", "hormonal-balance", "weight-management", "other"
+      "general-health",
+      "preventive-screening",
+      "specific-concern",
+      "fitness-performance",
+      "hormonal-balance",
+      "weight-management",
+      "other",
     ];
     const VALID_SAMPLE = ["no-preference", "home-kit", "clinic-visit"];
-    const VALID_BUDGET = ["no-preference", "under-50", "50-100", "100-200", "200-500"];
+    const VALID_BUDGET = [
+      "no-preference",
+      "under-50",
+      "50-100",
+      "100-200",
+      "200-500",
+    ];
     const VALID_SPEED = ["no-preference", "fastest", "standard"];
 
     function sanitize(val: unknown, maxLen = MAX_STR): string {
       if (typeof val !== "string") return "";
       // eslint-disable-next-line no-control-regex -- intentionally strips control characters from user input
-  return val.slice(0, maxLen).replace(/[\x00-\x1F\x7F]/g, "").trim();
+      return val
+        .slice(0, maxLen)
+        .replace(/[\x00-\x1F\x7F]/g, "")
+        .trim();
     }
     function validateEnum(val: unknown, allowed: string[]): string {
       const s = sanitize(val);
@@ -82,7 +104,10 @@ serve(async (req) => {
     }
     function sanitizeArray(val: unknown, maxItems = MAX_ARRAY): string[] {
       if (!Array.isArray(val)) return [];
-      return val.slice(0, maxItems).map(v => sanitize(v)).filter(Boolean);
+      return val
+        .slice(0, maxItems)
+        .map((v) => sanitize(v))
+        .filter(Boolean);
     }
 
     const who = validateEnum(body.who, VALID_WHO);
@@ -100,10 +125,13 @@ serve(async (req) => {
     const lovableKey = Deno.env.get("LOVABLE_API_KEY");
 
     if (!lovableKey) {
-      return new Response(JSON.stringify({ error: "AI service not configured" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ error: "AI service not configured" }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
@@ -113,24 +141,36 @@ serve(async (req) => {
     const authHeader = req.headers.get("Authorization");
     if (authHeader?.startsWith("Bearer ")) {
       try {
-        const { data: userData } = await supabase.auth.getUser(authHeader.replace("Bearer ", ""));
+        const { data: userData } = await supabase.auth.getUser(
+          authHeader.replace("Bearer ", ""),
+        );
         if (userData?.user?.id) clientKey = `user:${userData.user.id}`;
-      } catch (_) { /* fall back to IP */ }
+      } catch (_) {
+        /* fall back to IP */
+      }
     }
-    const allowed = await checkPersistentRateLimit(supabase, "quiz-recommendations", clientKey);
+    const allowed = await checkPersistentRateLimit(
+      supabase,
+      "quiz-recommendations",
+      clientKey,
+    );
     if (!allowed) {
       return new Response(
-        JSON.stringify({ error: "Too many requests. Please wait a minute before trying again." }),
-        { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({
+          error: "Too many requests. Please wait a minute before trying again.",
+        }),
+        {
+          status: 429,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
-
 
     // Fetch active provider tests with relevant fields
     const { data: tests, error: dbError } = await supabase
       .from("provider_tests")
       .select(
-        "id, test_name, provider_id, price, category, description, biomarker_count, sample_type, home_kit_available, clinic_visit_available, biomarkers_list, who_should_test, url"
+        "id, test_name, provider_id, price, category, description, biomarker_count, sample_type, home_kit_available, clinic_visit_available, biomarkers_list, who_should_test, url",
       )
       .eq("is_active", true)
       .not("price", "is", null)
@@ -156,7 +196,9 @@ serve(async (req) => {
       };
       const max = budgetMap[budget];
       if (max) {
-        const budgetFiltered = filtered.filter((t: { price?: number | null }) => t.price && t.price <= max);
+        const budgetFiltered = filtered.filter(
+          (t: { price?: number | null }) => t.price && t.price <= max,
+        );
         // Only apply if there are enough results
         if (budgetFiltered.length >= 5) {
           filtered = budgetFiltered;
@@ -166,10 +208,15 @@ serve(async (req) => {
 
     // Pre-filter by sample method
     if (sampleMethod === "home-kit") {
-      const homeFiltered = filtered.filter((t: { home_kit_available?: boolean | null }) => t.home_kit_available);
+      const homeFiltered = filtered.filter(
+        (t: { home_kit_available?: boolean | null }) => t.home_kit_available,
+      );
       if (homeFiltered.length >= 5) filtered = homeFiltered;
     } else if (sampleMethod === "clinic-visit") {
-      const clinicFiltered = filtered.filter((t: { clinic_visit_available?: boolean | null }) => t.clinic_visit_available);
+      const clinicFiltered = filtered.filter(
+        (t: { clinic_visit_available?: boolean | null }) =>
+          t.clinic_visit_available,
+      );
       if (clinicFiltered.length >= 5) filtered = clinicFiltered;
     }
 
@@ -178,26 +225,55 @@ serve(async (req) => {
     // CA 19-9, CA 15-3, LDH, beta-hCG) ahead of hormone/general panels so
     // the AI sees them first and PSA wins for males.
     const CANCER_MARKERS = [
-      "psa", "prostate specific antigen", "afp", "alpha-fetoprotein",
-      "cea", "carcinoembryonic", "ca-125", "ca125", "ca 125",
-      "ca-19", "ca19", "ca 19", "ca-15", "ca15", "ca 15",
-      "ldh", "lactate dehydrogenase", "beta-hcg", "beta hcg",
-      "tumour marker", "tumor marker", "cancer",
+      "psa",
+      "prostate specific antigen",
+      "afp",
+      "alpha-fetoprotein",
+      "cea",
+      "carcinoembryonic",
+      "ca-125",
+      "ca125",
+      "ca 125",
+      "ca-19",
+      "ca19",
+      "ca 19",
+      "ca-15",
+      "ca15",
+      "ca 15",
+      "ldh",
+      "lactate dehydrogenase",
+      "beta-hcg",
+      "beta hcg",
+      "tumour marker",
+      "tumor marker",
+      "cancer",
     ];
     const wantsCancerScreening = concerns.some(
-      (c) => c === "cancer-screening" || c === "cancer" || c.toLowerCase().includes("cancer")
+      (c) =>
+        c === "cancer-screening" ||
+        c === "cancer" ||
+        c.toLowerCase().includes("cancer"),
     );
 
     const isCancerTest = (t: any): boolean => {
       const haystack = [
-        t.test_name, t.category, t.description,
+        t.test_name,
+        t.category,
+        t.description,
         Array.isArray(t.biomarkers_list) ? t.biomarkers_list.join(" ") : "",
         t.who_should_test,
-      ].filter(Boolean).join(" ").toLowerCase();
+      ]
+        .filter(Boolean)
+        .join(" ")
+        .toLowerCase();
       return CANCER_MARKERS.some((m) => haystack.includes(m));
     };
     const hasPsa = (t: any): boolean => {
-      const hay = (t.test_name + " " + (Array.isArray(t.biomarkers_list) ? t.biomarkers_list.join(" ") : "")).toLowerCase();
+      const hay = (
+        t.test_name +
+        " " +
+        (Array.isArray(t.biomarkers_list) ? t.biomarkers_list.join(" ") : "")
+      ).toLowerCase();
       return hay.includes("psa") || hay.includes("prostate specific antigen");
     };
 
@@ -206,26 +282,30 @@ serve(async (req) => {
       const otherTests = filtered.filter((t: any) => !isCancerTest(t));
       if (gender === "male") {
         // Surface PSA tests first for males
-        cancerTests.sort((a: any, b: any) => Number(hasPsa(b)) - Number(hasPsa(a)));
+        cancerTests.sort(
+          (a: any, b: any) => Number(hasPsa(b)) - Number(hasPsa(a)),
+        );
       }
       filtered = [...cancerTests, ...otherTests];
     }
 
     // Limit to top 80 tests for AI context (sorted by relevance signals)
-    const testsForAI = filtered.slice(0, 80).map((t: Record<string, unknown>) => ({
-      id: t.id,
-      name: t.test_name,
-      provider: t.provider_id,
-      price: t.price,
-      category: t.category,
-      biomarkers: t.biomarker_count || 0,
-      sampleType: t.sample_type,
-      homeKit: t.home_kit_available,
-      clinicVisit: t.clinic_visit_available,
-      description: t.description?.slice(0, 200),
-      url: t.url,
-      isCancerMarkerTest: wantsCancerScreening ? isCancerTest(t) : undefined,
-    }));
+    const testsForAI = filtered
+      .slice(0, 80)
+      .map((t: Record<string, unknown>) => ({
+        id: t.id,
+        name: t.test_name,
+        provider: t.provider_id,
+        price: t.price,
+        category: t.category,
+        biomarkers: t.biomarker_count || 0,
+        sampleType: t.sample_type,
+        homeKit: t.home_kit_available,
+        clinicVisit: t.clinic_visit_available,
+        description: t.description?.slice(0, 200),
+        url: t.url,
+        isCancerMarkerTest: wantsCancerScreening ? isCancerTest(t) : undefined,
+      }));
 
     const userProfile = {
       who,
@@ -282,63 +362,89 @@ ${JSON.stringify(testsForAI, null, 2)}
 
 Based on this profile, recommend the 3 best tests. Return ONLY the JSON object.`;
 
-    const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${lovableKey}`,
-        "Content-Type": "application/json",
+    const aiResponse = await fetch(
+      "https://ai.gateway.lovable.dev/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${lovableKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-3-flash-preview",
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userMessage },
+          ],
+        }),
       },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userMessage },
-        ],
-      }),
-    });
+    );
 
     if (!aiResponse.ok) {
       if (aiResponse.status === 429) {
         return new Response(
-          JSON.stringify({ error: "Our recommendation service is busy. Please try again in a moment." }),
-          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          JSON.stringify({
+            error:
+              "Our recommendation service is busy. Please try again in a moment.",
+          }),
+          {
+            status: 429,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
         );
       }
       if (aiResponse.status === 402) {
         return new Response(
-          JSON.stringify({ error: "Recommendation service temporarily unavailable." }),
-          { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          JSON.stringify({
+            error: "Recommendation service temporarily unavailable.",
+          }),
+          {
+            status: 402,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
         );
       }
       const errText = await aiResponse.text();
       console.error("AI error:", aiResponse.status, errText);
-      return new Response(JSON.stringify({ error: "Failed to generate recommendations" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ error: "Failed to generate recommendations" }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
     }
 
     const aiData = await aiResponse.json();
     const content = aiData.choices?.[0]?.message?.content;
 
     if (!content) {
-      return new Response(JSON.stringify({ error: "No recommendations generated" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ error: "No recommendations generated" }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
     }
 
     // Parse JSON from AI response (handle markdown code blocks)
     let parsed;
     try {
-      const jsonStr = content.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+      const jsonStr = content
+        .replace(/```json\n?/g, "")
+        .replace(/```\n?/g, "")
+        .trim();
       parsed = JSON.parse(jsonStr);
     } catch (e) {
       console.error("Failed to parse AI response:", content);
-      return new Response(JSON.stringify({ error: "Failed to parse recommendations" }), {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ error: "Failed to parse recommendations" }),
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
     }
 
     return new Response(JSON.stringify(parsed), {
@@ -346,9 +452,9 @@ Based on this profile, recommend the 3 best tests. Return ONLY the JSON object.`
     });
   } catch (e) {
     console.error("quiz-recommendations error:", e);
-    return new Response(
-      JSON.stringify({ error: "Internal server error" }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: "Internal server error" }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });

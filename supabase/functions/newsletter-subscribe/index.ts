@@ -51,7 +51,7 @@ serve(async (req: Request): Promise<Response> => {
 
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
-      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "",
     );
 
     const ip =
@@ -59,7 +59,9 @@ serve(async (req: Request): Promise<Response> => {
     const ua = req.headers.get("user-agent") ?? null;
 
     // Per-IP rate limit (sliding window via api_rate_limits)
-    const windowStart = new Date(Date.now() - RATE_LIMIT_WINDOW_MIN * 60_000).toISOString();
+    const windowStart = new Date(
+      Date.now() - RATE_LIMIT_WINDOW_MIN * 60_000,
+    ).toISOString();
     const { count: recentCount } = await supabase
       .from("api_rate_limits")
       .select("*", { count: "exact", head: true })

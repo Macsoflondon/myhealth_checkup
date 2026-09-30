@@ -14,8 +14,14 @@ const trustItems: TrustItem[] = [
   { label: "No GP Referral Needed" },
 ];
 
-const underlineColors = ["#22c0d4", "#e70d69", "#081129", "#22c0d4", "#e70d69", "#081129"];
-
+const underlineColors = [
+  "#22c0d4",
+  "#e70d69",
+  "#081129",
+  "#22c0d4",
+  "#e70d69",
+  "#081129",
+];
 
 /**
  * Trust signals bar — static standards row.
@@ -50,7 +56,10 @@ const AccreditedProvidersBar = () => {
             <div key={item.label} className="group">
               <div
                 className="w-6 h-1.5 mb-0.5 rounded-full"
-                style={{ backgroundColor: underlineColors[idx % underlineColors.length] }}
+                style={{
+                  backgroundColor:
+                    underlineColors[idx % underlineColors.length],
+                }}
               />
               <h3 className="whitespace-nowrap text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.04em] sm:tracking-[0.14em] text-[#081129] leading-tight">
                 {item.label}
@@ -58,7 +67,6 @@ const AccreditedProvidersBar = () => {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

@@ -21,25 +21,13 @@ export type CollectionMethod =
   | "multiple";
 
 export type CollectionFeeType =
-  | "none"
-  | "fixed"
-  | "range"
-  | "patient_arranged"
-  | "varies_by_location";
+  "none" | "fixed" | "range" | "patient_arranged" | "varies_by_location";
 
 export type ClinicalReviewType =
-  | "included"
-  | "optional"
-  | "not_included"
-  | "not_available";
+  "included" | "optional" | "not_included" | "not_available";
 
 export type ClinicalReviewProfessional =
-  | "gp"
-  | "consultant"
-  | "clinician"
-  | "nurse"
-  | "clinical_scientist"
-  | null;
+  "gp" | "consultant" | "clinician" | "nurse" | "clinical_scientist" | null;
 
 export type GoalTag =
   | "preventative"

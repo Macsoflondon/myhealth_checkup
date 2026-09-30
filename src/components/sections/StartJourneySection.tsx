@@ -14,35 +14,78 @@ const FALLBACK_RIGHT: LiveComparisonPanelData[] = [
     collectionMethod: "clinic",
     methodLabel: "In-clinic test",
     providers: [
-      { name: "Randox Health", options: [{ label: "In-clinic test", price: "£99" }] },
-      { name: "Goodbody Health", options: [{ label: "In-clinic test", price: "£65" }] },
-      { name: "London Medical Laboratory", options: [{ label: "In-clinic test", price: "£75" }] },
-      { name: "Lola Health", options: [{ label: "In-clinic test", price: "£129" }] },
+      {
+        name: "Randox Health",
+        options: [{ label: "In-clinic test", price: "£99" }],
+      },
+      {
+        name: "Goodbody Health",
+        options: [{ label: "In-clinic test", price: "£65" }],
+      },
+      {
+        name: "London Medical Laboratory",
+        options: [{ label: "In-clinic test", price: "£75" }],
+      },
+      {
+        name: "Lola Health",
+        options: [{ label: "In-clinic test", price: "£129" }],
+      },
     ],
   },
 ];
 
 const SYNC_ROTATE_MS = 30000;
 type CollectionMethod = "at_home" | "clinic";
-type DbRow = { name?: string; bio?: string; badge?: string; price?: string; url?: string; providerId?: string; method?: CollectionMethod | string; methodLabel?: string; };
-type DbPanel = { slug: string; panel_name: string; display_order: number; rows: DbRow[] | null; last_scraped_at: string | null; };
+type DbRow = {
+  name?: string;
+  bio?: string;
+  badge?: string;
+  price?: string;
+  url?: string;
+  providerId?: string;
+  method?: CollectionMethod | string;
+  methodLabel?: string;
+};
+type DbPanel = {
+  slug: string;
+  panel_name: string;
+  display_order: number;
+  rows: DbRow[] | null;
+  last_scraped_at: string | null;
+};
 
-const approvedMethodLabel: Record<CollectionMethod, string> = { at_home: "At-home test kit", clinic: "In-clinic test" };
+const approvedMethodLabel: Record<CollectionMethod, string> = {
+  at_home: "At-home test kit",
+  clinic: "In-clinic test",
+};
 
 function normaliseCollectionMethod(row: DbRow): CollectionMethod | null {
   if (row.method === "at_home" || row.method === "clinic") return row.method;
-  const text = `${row.method ?? ""} ${row.methodLabel ?? ""} ${row.bio ?? ""} ${row.badge ?? ""}`.toLowerCase();
-  if (text.includes("at-home") || text.includes("home kit") || text.includes("home test")) return "at_home";
+  const text =
+    `${row.method ?? ""} ${row.methodLabel ?? ""} ${row.bio ?? ""} ${row.badge ?? ""}`.toLowerCase();
+  if (
+    text.includes("at-home") ||
+    text.includes("home kit") ||
+    text.includes("home test")
+  )
+    return "at_home";
   if (text.includes("in-clinic") || text.includes("clinic")) return "clinic";
   return null;
 }
 
 function rowHasForbiddenWording(row: DbRow): boolean {
-  const text = `${row.methodLabel ?? ""} ${row.bio ?? ""} ${row.badge ?? ""}`.toLowerCase();
-  return text.includes("walk-in") || text.includes("walk in") || text.includes("clinic-based");
+  const text =
+    `${row.methodLabel ?? ""} ${row.bio ?? ""} ${row.badge ?? ""}`.toLowerCase();
+  return (
+    text.includes("walk-in") ||
+    text.includes("walk in") ||
+    text.includes("clinic-based")
+  );
 }
 
-function providerKey(row: DbRow): string { return (row.providerId || row.name || "").trim().toLowerCase(); }
+function providerKey(row: DbRow): string {
+  return (row.providerId || row.name || "").trim().toLowerCase();
+}
 
 /** Providers that must never be shown in comparison output. */
 const EXCLUDED_PROVIDER_KEYS = new Set<string>(["thriva"]);
@@ -54,23 +97,51 @@ function isExcludedProvider(row: DbRow): boolean {
 
 function dbPanelToPanelData(p: DbPanel): LiveComparisonPanelData {
   const rows = p.rows ?? [];
-  const firstMethod = rows.map(normaliseCollectionMethod).find((m): m is CollectionMethod => m !== null);
-  const methodLabel = firstMethod ? approvedMethodLabel[firstMethod] : undefined;
+  const firstMethod = rows
+    .map(normaliseCollectionMethod)
+    .find((m): m is CollectionMethod => m !== null);
+  const methodLabel = firstMethod
+    ? approvedMethodLabel[firstMethod]
+    : undefined;
   const seenProviders = new Set<string>();
-  const safeRows = firstMethod ? rows.filter((row) => {
-    const method = normaliseCollectionMethod(row);
-    const key = providerKey(row);
-    if (method !== firstMethod || !key || !row.name || !row.price || rowHasForbiddenWording(row) || isExcludedProvider(row) || seenProviders.has(key)) return false;
-    seenProviders.add(key);
-    return true;
-  }) : [];
+  const safeRows = firstMethod
+    ? rows.filter((row) => {
+        const method = normaliseCollectionMethod(row);
+        const key = providerKey(row);
+        if (
+          method !== firstMethod ||
+          !key ||
+          !row.name ||
+          !row.price ||
+          rowHasForbiddenWording(row) ||
+          isExcludedProvider(row) ||
+          seenProviders.has(key)
+        )
+          return false;
+        seenProviders.add(key);
+        return true;
+      })
+    : [];
   return {
-    name: p.panel_name, lastScrapedAt: p.last_scraped_at, collectionMethod: firstMethod, methodLabel,
-    providers: safeRows.map((r) => ({ name: r.name ?? "Provider", options: [{ label: methodLabel ?? "Test", price: r.price ?? "Price on provider site" }] })),
+    name: p.panel_name,
+    lastScrapedAt: p.last_scraped_at,
+    collectionMethod: firstMethod,
+    methodLabel,
+    providers: safeRows.map((r) => ({
+      name: r.name ?? "Provider",
+      options: [
+        {
+          label: methodLabel ?? "Test",
+          price: r.price ?? "Price on provider site",
+        },
+      ],
+    })),
   };
 }
 
-function hasComparableProviders(panel: LiveComparisonPanelData): boolean { return panel.providers.length >= 2; }
+function hasComparableProviders(panel: LiveComparisonPanelData): boolean {
+  return panel.providers.length >= 2;
+}
 
 const StartJourneySection = () => {
   // Curated panels are the primary source; the catalogue-derived panels are the
@@ -86,25 +157,47 @@ const StartJourneySection = () => {
         .select("slug, panel_name, display_order, rows, last_scraped_at")
         .order("display_order", { ascending: true });
       if (error || !data?.length) return null;
-      const panels = (data as unknown as DbPanel[]).map(dbPanelToPanelData).filter(hasComparableProviders);
+      const panels = (data as unknown as DbPanel[])
+        .map(dbPanelToPanelData)
+        .filter(hasComparableProviders);
       return panels.length >= 2 ? panels : null;
     },
   });
 
-  const needsDynamicFallback = !dbPanelsLoading && (!dbPanels || dbPanels.length < 2);
-  const { panels: dynamicPanels } = useDynamicComparisonPanels(needsDynamicFallback);
+  const needsDynamicFallback =
+    !dbPanelsLoading && (!dbPanels || dbPanels.length < 2);
+  const { panels: dynamicPanels } =
+    useDynamicComparisonPanels(needsDynamicFallback);
 
   const { leftPanels, rightPanels } = useMemo(() => {
-    if (dbPanels && dbPanels.length >= 2) { const mid = Math.ceil(dbPanels.length / 2); return { leftPanels: dbPanels.slice(0, mid), rightPanels: dbPanels.slice(mid) }; }
-    if (dynamicPanels.length >= 2) { const mid = Math.ceil(dynamicPanels.length / 2); return { leftPanels: dynamicPanels.slice(0, mid), rightPanels: dynamicPanels.slice(mid) }; }
-    return { leftPanels: DEFAULT_LIVE_COMPARISON_PANELS, rightPanels: FALLBACK_RIGHT };
+    if (dbPanels && dbPanels.length >= 2) {
+      const mid = Math.ceil(dbPanels.length / 2);
+      return {
+        leftPanels: dbPanels.slice(0, mid),
+        rightPanels: dbPanels.slice(mid),
+      };
+    }
+    if (dynamicPanels.length >= 2) {
+      const mid = Math.ceil(dynamicPanels.length / 2);
+      return {
+        leftPanels: dynamicPanels.slice(0, mid),
+        rightPanels: dynamicPanels.slice(mid),
+      };
+    }
+    return {
+      leftPanels: DEFAULT_LIVE_COMPARISON_PANELS,
+      rightPanels: FALLBACK_RIGHT,
+    };
   }, [dbPanels, dynamicPanels]);
 
   const maxLen = Math.max(leftPanels.length, rightPanels.length);
   const [syncIdx, setSyncIdx] = useState(0);
   useEffect(() => {
     if (maxLen <= 1) return;
-    const interval = setInterval(() => setSyncIdx((i) => (i + 1) % maxLen), SYNC_ROTATE_MS);
+    const interval = setInterval(
+      () => setSyncIdx((i) => (i + 1) % maxLen),
+      SYNC_ROTATE_MS,
+    );
     return () => clearInterval(interval);
   }, [maxLen]);
 
@@ -116,16 +209,38 @@ const StartJourneySection = () => {
             <div className="flex-1 text-center lg:text-left">
               <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
                 <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-                <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise">Start Your Journey</span>
+                <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
+                  Start Your Journey
+                </span>
                 <div className="h-px w-8 sm:w-12 bg-brand-pink" />
               </div>
-              <h2 className="font-heading font-bold text-[#081129] leading-[1.15] tracking-tight text-3xl sm:text-[2.25rem] lg:text-[2.5rem] mb-3">Take Control of Your Health Today</h2>
-              <p className="text-base sm:text-lg text-brand-navy leading-relaxed max-w-2xl mx-auto lg:mx-0">Compare trusted, accredited tests from leading UK providers in minutes.</p>
+              <h2 className="font-heading font-bold text-[#081129] leading-[1.15] tracking-tight text-3xl sm:text-[2.25rem] lg:text-[2.5rem] mb-3">
+                Take Control of Your Health Today
+              </h2>
+              <p className="text-base sm:text-lg text-brand-navy leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                Compare trusted, accredited tests from leading UK providers in
+                minutes.
+              </p>
             </div>
             <div className="flex flex-col sm:flex-row lg:flex-row gap-3 lg:flex-shrink-0 lg:max-w-[640px] w-full lg:w-auto">
-              <Link to="/assisted-test-finder" className="flex-1 h-[60px] inline-flex items-center justify-center px-6 bg-[#22c0d4] hover:bg-[#1da9bc] text-white font-semibold text-base rounded-full shadow-[0_8px_28px_-8px_rgba(34,192,212,0.5)] hover:shadow-[0_10px_32px_-8px_rgba(34,192,212,0.6)] transition-all active:scale-[0.98] whitespace-nowrap">Find your test</Link>
-              <Link to="/compare/goals" className="flex-1 h-[60px] inline-flex items-center justify-center px-6 bg-[#e70d69] hover:bg-[#c50a5a] text-white font-semibold text-base rounded-full shadow-[0_8px_28px_-8px_rgba(231,13,105,0.45)] hover:shadow-[0_10px_32px_-8px_rgba(231,13,105,0.55)] transition-all active:scale-[0.98] whitespace-nowrap">Compare by goal</Link>
-              <Link to="/compare" className="flex-1 h-[60px] inline-flex items-center justify-center px-6 bg-white border-2 border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold text-base rounded-full transition-colors active:scale-[0.98] whitespace-nowrap">Browse all tests</Link>
+              <Link
+                to="/assisted-test-finder"
+                className="flex-1 h-[60px] inline-flex items-center justify-center px-6 bg-[#22c0d4] hover:bg-[#1da9bc] text-white font-semibold text-base rounded-full shadow-[0_8px_28px_-8px_rgba(34,192,212,0.5)] hover:shadow-[0_10px_32px_-8px_rgba(34,192,212,0.6)] transition-all active:scale-[0.98] whitespace-nowrap"
+              >
+                Find your test
+              </Link>
+              <Link
+                to="/compare/goals"
+                className="flex-1 h-[60px] inline-flex items-center justify-center px-6 bg-[#e70d69] hover:bg-[#c50a5a] text-white font-semibold text-base rounded-full shadow-[0_8px_28px_-8px_rgba(231,13,105,0.45)] hover:shadow-[0_10px_32px_-8px_rgba(231,13,105,0.55)] transition-all active:scale-[0.98] whitespace-nowrap"
+              >
+                Compare by goal
+              </Link>
+              <Link
+                to="/compare"
+                className="flex-1 h-[60px] inline-flex items-center justify-center px-6 bg-white border-2 border-[#081129] text-[#081129] hover:bg-[#081129] hover:text-white font-semibold text-base rounded-full transition-colors active:scale-[0.98] whitespace-nowrap"
+              >
+                Browse all tests
+              </Link>
             </div>
           </div>
         </div>

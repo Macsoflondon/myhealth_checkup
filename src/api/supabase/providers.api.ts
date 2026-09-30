@@ -50,7 +50,9 @@ class ProvidersApi {
   /**
    * Get all provider tests
    */
-  async getProviderTests(providerId?: string): Promise<ApiResponse<ProviderTestData[]>> {
+  async getProviderTests(
+    providerId?: string,
+  ): Promise<ApiResponse<ProviderTestData[]>> {
     try {
       let query = supabase
         .from("provider_tests")
@@ -74,7 +76,7 @@ class ProvidersApi {
    */
   async getPriceUpdates(
     testIds?: string[],
-    provider?: string
+    provider?: string,
   ): Promise<ApiResponse<PriceUpdate[]>> {
     try {
       let query = supabase.from("price_updates").select("*");
@@ -100,7 +102,7 @@ class ProvidersApi {
    */
   async getLatestPrice(
     testId: string,
-    provider: string
+    provider: string,
   ): Promise<ApiResponse<PriceUpdate>> {
     try {
       const { data, error } = await supabase
@@ -121,7 +123,9 @@ class ProvidersApi {
   /**
    * Get all active categories
    */
-  async getCategories(): Promise<ApiResponse<Array<{ id: string; name: string; count: number }>>> {
+  async getCategories(): Promise<
+    ApiResponse<Array<{ id: string; name: string; count: number }>>
+  > {
     try {
       const { data, error } = await supabase
         .from("test_categories")
@@ -137,11 +141,13 @@ class ProvidersApi {
         categoryMap.set(cat.name, count + 1);
       });
 
-      const categories = Array.from(categoryMap.entries()).map(([name, count], index) => ({
-        id: name.toLowerCase().replace(/\s+/g, "-"),
-        name,
-        count,
-      }));
+      const categories = Array.from(categoryMap.entries()).map(
+        ([name, count], index) => ({
+          id: name.toLowerCase().replace(/\s+/g, "-"),
+          name,
+          count,
+        }),
+      );
 
       return { data: categories, error: null };
     } catch (error) {
@@ -170,7 +176,9 @@ class ProvidersApi {
    * Fetch provider test catalog. Scraping is admin/cron-only and is no longer
    * triggered automatically from the client.
    */
-  async getProviderCatalog(providerId: string): Promise<ApiResponse<ProviderTestData[]>> {
+  async getProviderCatalog(
+    providerId: string,
+  ): Promise<ApiResponse<ProviderTestData[]>> {
     return await this.getProviderTests(providerId);
   }
 
@@ -178,11 +186,16 @@ class ProvidersApi {
    * Trigger provider scraper edge function. Requires service-role bearer
    * (cron / admin invocation) — will return 401 from the browser.
    */
-  async triggerProviderScrape(providerId: string): Promise<ApiResponse<unknown>> {
+  async triggerProviderScrape(
+    providerId: string,
+  ): Promise<ApiResponse<unknown>> {
     try {
-      const { data, error } = await supabase.functions.invoke('provider-scraper', {
-        body: { providerId, action: 'scrape' }
-      });
+      const { data, error } = await supabase.functions.invoke(
+        "provider-scraper",
+        {
+          body: { providerId, action: "scrape" },
+        },
+      );
 
       return { data, error };
     } catch (error) {

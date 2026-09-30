@@ -32,8 +32,13 @@ if (sitemap.includes("www.myhealthcheckup.co.uk")) {
 }
 
 // ---- 2. Read prerender route list -----------------------------------------
-const prerenderSrc = readFileSync(resolve(ROOT, "scripts/prerender-routes.mjs"), "utf8");
-const prerenderPaths = [...prerenderSrc.matchAll(/"(\/[^"]*)"/g)].map((m) => m[1]);
+const prerenderSrc = readFileSync(
+  resolve(ROOT, "scripts/prerender-routes.mjs"),
+  "utf8",
+);
+const prerenderPaths = [...prerenderSrc.matchAll(/"(\/[^"]*)"/g)].map(
+  (m) => m[1],
+);
 
 // ---- 3. Walk src/ for Helmet usage ---------------------------------------
 function walk(dir) {
@@ -50,13 +55,18 @@ const allSrc = walk(resolve(ROOT, "src"));
 
 // Grep every file once for www. leaks
 // These files reference the www host only to assert it never ships.
-const WWW_GUARD_FILES = ["src/lib/seo/structured-data.ts", "src/lib/seo/route-metadata.test.ts"];
+const WWW_GUARD_FILES = [
+  "src/lib/seo/structured-data.ts",
+  "src/lib/seo/route-metadata.test.ts",
+];
 for (const f of allSrc) {
   const rel = f.replace(ROOT + "/", "");
   if (WWW_GUARD_FILES.includes(rel)) continue;
   const txt = readFileSync(f, "utf8");
   if (txt.includes("www.myhealthcheckup.co.uk")) {
-    warn.push(`${f.replace(ROOT + "/", "")} still references www.myhealthcheckup.co.uk`);
+    warn.push(
+      `${f.replace(ROOT + "/", "")} still references www.myhealthcheckup.co.uk`,
+    );
   }
 }
 
@@ -64,7 +74,8 @@ for (const f of allSrc) {
 // Dynamic detail routes are server-rendered on demand, not prerendered.
 const DYNAMIC_PREFIXES = ["/provider/"];
 const dynamicSegment = (p) =>
-  /:[A-Za-z]/.test(p) || DYNAMIC_PREFIXES.some((prefix) => p.startsWith(prefix));
+  /:[A-Za-z]/.test(p) ||
+  DYNAMIC_PREFIXES.some((prefix) => p.startsWith(prefix));
 const missingPrerender = sitemapPaths
   .filter((p) => !dynamicSegment(p))
   .filter((p) => !prerenderPaths.includes(p));
@@ -72,7 +83,9 @@ const missingPrerender = sitemapPaths
 // SSR renders every route on demand, so a missing prerender entry is only a
 // warm-cache gap, not a crawlability failure.
 for (const p of missingPrerender) {
-  warn.push(`sitemap has ${p} but it's not in scripts/prerender-routes.mjs (SSR still serves it)`);
+  warn.push(
+    `sitemap has ${p} but it's not in scripts/prerender-routes.mjs (SSR still serves it)`,
+  );
 }
 
 // ---- 5. Root route sanity -------------------------------------------------
@@ -80,8 +93,10 @@ const rootRoute = readFileSync(resolve(ROOT, "src/routes/__root.tsx"), "utf8");
 for (const tag of ["og:type", "og:site_name", "og:image"]) {
   if (!rootRoute.includes(`"${tag}"`)) fail.push(`__root.tsx missing ${tag}`);
 }
-if (!rootRoute.includes("application/ld+json")) fail.push("__root.tsx missing Organization JSON-LD");
-if (rootRoute.includes("www.myhealthcheckup.co.uk")) fail.push("__root.tsx still references www.");
+if (!rootRoute.includes("application/ld+json"))
+  fail.push("__root.tsx missing Organization JSON-LD");
+if (rootRoute.includes("www.myhealthcheckup.co.uk"))
+  fail.push("__root.tsx still references www.");
 
 // ---- 5b. Dynamic detail routes must build metadata from the shared helpers --
 const HELPER_ROUTES = [
@@ -91,7 +106,9 @@ const HELPER_ROUTES = [
 for (const [file, helper] of HELPER_ROUTES) {
   const src = readFileSync(resolve(ROOT, file), "utf8");
   if (!src.includes(helper)) {
-    fail.push(`${file} must build its head via ${helper} so canonical/og:url/JSON-LD stay in sync`);
+    fail.push(
+      `${file} must build its head via ${helper} so canonical/og:url/JSON-LD stay in sync`,
+    );
   }
 }
 
@@ -102,13 +119,19 @@ for (const [file, helper] of HELPER_ROUTES) {
 const dynamicUnavailable = sitemap.includes("dynamic-routes: unavailable");
 const missing = dynamicUnavailable ? warn : fail;
 const providerPaths = sitemapPaths.filter((p) => /^\/provider\/[^/]+$/.test(p));
-const testPaths = sitemapPaths.filter((p) => /^\/provider\/[^/]+\/tests\/[^/]+$/.test(p));
-if (providerPaths.length === 0) missing.push("sitemap.xml contains no /provider/:id routes");
-if (testPaths.length === 0) missing.push("sitemap.xml contains no /provider/:id/tests/:testId routes");
+const testPaths = sitemapPaths.filter((p) =>
+  /^\/provider\/[^/]+\/tests\/[^/]+$/.test(p),
+);
+if (providerPaths.length === 0)
+  missing.push("sitemap.xml contains no /provider/:id routes");
+if (testPaths.length === 0)
+  missing.push("sitemap.xml contains no /provider/:id/tests/:testId routes");
 if (new Set(sitemapPaths).size !== sitemapPaths.length) {
   fail.push("sitemap.xml contains duplicate <loc> entries");
 }
-console.log(`Provider pages: ${providerPaths.length}, test detail pages: ${testPaths.length}`);
+console.log(
+  `Provider pages: ${providerPaths.length}, test detail pages: ${testPaths.length}`,
+);
 
 // ---- 6. Report -------------------------------------------------------------
 console.log(`Sitemap routes: ${sitemapPaths.length}`);

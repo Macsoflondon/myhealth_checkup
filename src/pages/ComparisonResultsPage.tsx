@@ -13,7 +13,6 @@ const ComparisonResultsPage = () => {
   const { selected, isHydrating, missingIds } = useCompareUrlSync();
   const navigate = useNavigate();
 
-
   return (
     <ErrorBoundary>
       <Helmet>
@@ -36,8 +35,8 @@ const ComparisonResultsPage = () => {
                   No tests selected yet
                 </h2>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Add up to five tests from any category or comparison page, then return here to
-                  see the full side-by-side breakdown.
+                  Add up to five tests from any category or comparison page,
+                  then return here to see the full side-by-side breakdown.
                 </p>
                 <Button
                   className="mt-6 bg-brand-navy text-white hover:bg-brand-navy/90"
@@ -60,7 +59,6 @@ const ComparisonResultsPage = () => {
                   <ProviderComparisonTable tests={selected} />
                 </div>
 
-
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
                   <Button
                     variant="outline"
@@ -78,9 +76,10 @@ const ComparisonResultsPage = () => {
                 </div>
 
                 <p className="mt-8 text-center text-xs text-muted-foreground">
-                  Prices, turnaround times and inclusions are taken from provider listings and can
-                  change. Turnaround times are typical, not guaranteed. myhealth checkup does not
-                  provide medical care or diagnoses.
+                  Prices, turnaround times and inclusions are taken from
+                  provider listings and can change. Turnaround times are
+                  typical, not guaranteed. myhealth checkup does not provide
+                  medical care or diagnoses.
                 </p>
               </>
             )}

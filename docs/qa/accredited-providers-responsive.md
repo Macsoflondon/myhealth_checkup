@@ -8,11 +8,11 @@ always fits on a single line at mobile widths. Run after any change to
 
 The row uses `flex flex-wrap` with a graduated gap ladder:
 
-| Class                | Breakpoint | Gap-x |
-| -------------------- | ---------- | ----- |
-| `gap-x-3` (base)     | < 640 px   | 12 px |
-| `sm:gap-x-8`         | ≥ 640 px   | 32 px |
-| `md:gap-x-10`        | ≥ 768 px   | 40 px |
+| Class            | Breakpoint | Gap-x |
+| ---------------- | ---------- | ----- |
+| `gap-x-3` (base) | < 640 px   | 12 px |
+| `sm:gap-x-8`     | ≥ 640 px   | 32 px |
+| `md:gap-x-10`    | ≥ 768 px   | 40 px |
 
 If the base gap creeps back up (e.g. someone re-adds `gap-x-8`), ISO 15189
 will wrap onto a second row at 375 px and the bar's vertical rhythm
@@ -23,15 +23,15 @@ breaks.
 Open `/` in the preview. Resize the device frame using the toolbar above
 the preview, or use DevTools responsive mode.
 
-| Width | Device           | UKAS · CQC · ISO 15189 on one row? | Notes                                  |
-| ----- | ---------------- | ---------------------------------- | -------------------------------------- |
-| 320   | iPhone SE (1st)  | ☐                                  | Tightest realistic width. Must pass.   |
-| 360   | Android baseline | ☐                                  |                                        |
-| 375   | iPhone X / 12/13 | ☐                                  | Most common iPhone width.              |
-| 390   | iPhone 14/15     | ☐                                  |                                        |
-| 414   | iPhone Plus/Max  | ☐                                  |                                        |
-| 640   | `sm:` breakpoint | ☐                                  | Gap should expand to 32 px here.       |
-| 768   | iPad portrait    | ☐                                  | Gap should expand to 40 px here.       |
+| Width | Device           | UKAS · CQC · ISO 15189 on one row? | Notes                                |
+| ----- | ---------------- | ---------------------------------- | ------------------------------------ |
+| 320   | iPhone SE (1st)  | ☐                                  | Tightest realistic width. Must pass. |
+| 360   | Android baseline | ☐                                  |                                      |
+| 375   | iPhone X / 12/13 | ☐                                  | Most common iPhone width.            |
+| 390   | iPhone 14/15     | ☐                                  |                                      |
+| 414   | iPhone Plus/Max  | ☐                                  |                                      |
+| 640   | `sm:` breakpoint | ☐                                  | Gap should expand to 32 px here.     |
+| 768   | iPad portrait    | ☐                                  | Gap should expand to 40 px here.     |
 
 ## Pass criteria
 
@@ -49,11 +49,18 @@ For every row above:
 From the browser DevTools console on `/`:
 
 ```js
-const labels = [...document.querySelectorAll('section[aria-label="Accreditation and partners"] .font-bold')]
-  .filter(el => /UKAS|CQC|ISO 15189/.test(el.textContent || ''));
-const ys = labels.map(el => el.getBoundingClientRect().top);
-console.assert(new Set(ys).size === 1, 'Accreditor labels are NOT on one row', ys);
-console.log('y-coords:', ys);
+const labels = [
+  ...document.querySelectorAll(
+    'section[aria-label="Accreditation and partners"] .font-bold',
+  ),
+].filter((el) => /UKAS|CQC|ISO 15189/.test(el.textContent || ""));
+const ys = labels.map((el) => el.getBoundingClientRect().top);
+console.assert(
+  new Set(ys).size === 1,
+  "Accreditor labels are NOT on one row",
+  ys,
+);
+console.log("y-coords:", ys);
 ```
 
 Run it after each viewport change. `Set(ys).size === 1` ⇒ pass.

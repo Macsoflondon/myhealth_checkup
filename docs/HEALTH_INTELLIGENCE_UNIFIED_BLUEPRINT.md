@@ -530,26 +530,26 @@ The assistant answers from authorised sources and states when the record is inco
 
 These are now first-class parts of the design, not optional extras.
 
-| Capability | Decision | Build stage |
-| --- | --- | --- |
-| Health Memory | ADOPT | Phase 1 foundation |
-| Unified Health Timeline | ADOPT | Phase 1/3 |
-| Patient context and journal | ADOPT | Phase 1/5 |
-| Editable health tree | ADOPT | Phase 5 |
-| Data-gap engine | ADOPT | Phase 3/4 |
-| Conflict detection | ADOPT | Phase 3/4 |
-| Medication timeline | ADOPT | Phase 1/3 |
-| Source-grounded smart search | ADOPT | Phase 9 |
-| Appointment preparation | ADOPT | Phase 9 |
-| Multilingual derivative model | ARCHITECT NOW | Phase 2/9 |
-| PII detection and redaction | ARCHITECT NOW | Phase 6 |
-| FHIR export | ADOPT | Phase 8 |
-| LLM-friendly export | ADOPT | Phase 8/9 |
-| Wearable adapters | ARCHITECT NOW | Phase 7/9 |
-| Questionnaire adapters | ARCHITECT NOW | Phase 7/9 |
-| External AI agent/MCP boundary | ARCHITECT NOW | Phase 9/10 |
-| WhatsApp/Telegram journal ingestion | DEFER | Post-launch |
-| Disease prediction | DO NOT BUILD NOW | Governance-dependent future research |
+| Capability                          | Decision         | Build stage                          |
+| ----------------------------------- | ---------------- | ------------------------------------ |
+| Health Memory                       | ADOPT            | Phase 1 foundation                   |
+| Unified Health Timeline             | ADOPT            | Phase 1/3                            |
+| Patient context and journal         | ADOPT            | Phase 1/5                            |
+| Editable health tree                | ADOPT            | Phase 5                              |
+| Data-gap engine                     | ADOPT            | Phase 3/4                            |
+| Conflict detection                  | ADOPT            | Phase 3/4                            |
+| Medication timeline                 | ADOPT            | Phase 1/3                            |
+| Source-grounded smart search        | ADOPT            | Phase 9                              |
+| Appointment preparation             | ADOPT            | Phase 9                              |
+| Multilingual derivative model       | ARCHITECT NOW    | Phase 2/9                            |
+| PII detection and redaction         | ARCHITECT NOW    | Phase 6                              |
+| FHIR export                         | ADOPT            | Phase 8                              |
+| LLM-friendly export                 | ADOPT            | Phase 8/9                            |
+| Wearable adapters                   | ARCHITECT NOW    | Phase 7/9                            |
+| Questionnaire adapters              | ARCHITECT NOW    | Phase 7/9                            |
+| External AI agent/MCP boundary      | ARCHITECT NOW    | Phase 9/10                           |
+| WhatsApp/Telegram journal ingestion | DEFER            | Post-launch                          |
+| Disease prediction                  | DO NOT BUILD NOW | Governance-dependent future research |
 
 HDA's own release history shows why these features should be designed as separate processing jobs, with retry and recovery rather than one opaque upload workflow. citeturn0search2
 
@@ -1359,15 +1359,15 @@ FHIR, laboratory APIs, wearables, questionnaires and external AI agents plug int
 
 # 18. Competitive position
 
-| Platform | Strongest capability | Our response |
-| --- | --- | --- |
-| Anamoris | Document ingestion, verification, longitudinal archive | Adopt provenance, review and family/profile concepts |
-| LabTracker | Local-first privacy and structured lab tracking | Adopt privacy-by-architecture principles and transparent data controls |
-| Ornament | Scale, biomarker breadth, longitudinal health experience | Match breadth over time, but retain stronger provenance and provider neutrality |
-| Tohar | Lab analysis connected to test ordering | Build the full retest-to-marketplace loop |
-| Forth Connect | Integrated testing, controlled release, practitioner workflow, health plans | Match workflow patterns while remaining provider-neutral |
+| Platform           | Strongest capability                                                           | Our response                                                                            |
+| ------------------ | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------- |
+| Anamoris           | Document ingestion, verification, longitudinal archive                         | Adopt provenance, review and family/profile concepts                                    |
+| LabTracker         | Local-first privacy and structured lab tracking                                | Adopt privacy-by-architecture principles and transparent data controls                  |
+| Ornament           | Scale, biomarker breadth, longitudinal health experience                       | Match breadth over time, but retain stronger provenance and provider neutrality         |
+| Tohar              | Lab analysis connected to test ordering                                        | Build the full retest-to-marketplace loop                                               |
+| Forth Connect      | Integrated testing, controlled release, practitioner workflow, health plans    | Match workflow patterns while remaining provider-neutral                                |
 | Health Data Avatar | Patient-owned health memory, multimodal context, sharing, search, agent access | Build a stronger diagnostics-native memory layer tied directly to testing and retesting |
-| myhealth checkup | UK provider comparison and referral marketplace | Connect the marketplace to the longitudinal patient record and make the loop continuous |
+| myhealth checkup   | UK provider comparison and referral marketplace                                | Connect the marketplace to the longitudinal patient record and make the loop continuous |
 
 The strategic moat is not one AI model. It is the combination of:
 

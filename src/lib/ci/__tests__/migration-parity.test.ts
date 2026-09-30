@@ -7,7 +7,6 @@ import {
 
 const base = ["20250714231842", "20260705225135", "20260912113814"];
 
-
 describe("compareMigrationSets", () => {
   it("passes when the sets are identical", () => {
     const result = compareMigrationSets(base, base);

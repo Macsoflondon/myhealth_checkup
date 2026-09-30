@@ -1,16 +1,16 @@
-import React from 'react';
-import { Link } from '@/lib/router-compat';
-import { blogArticles } from '@/data/blogArticles';
-import type { BlogArticle } from '@/types/blog.types';
+import React from "react";
+import { Link } from "@/lib/router-compat";
+import { blogArticles } from "@/data/blogArticles";
+import type { BlogArticle } from "@/types/blog.types";
 
 const FALLBACK_IMAGE =
-  'https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80';
+  "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=1200&q=80";
 
 const formatDate = (dateStr: string) =>
-  new Date(dateStr).toLocaleDateString('en-GB', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
+  new Date(dateStr).toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
   });
 
 const FeaturedCard: React.FC<{ article: BlogArticle }> = ({ article }) => (
@@ -28,7 +28,12 @@ const FeaturedCard: React.FC<{ article: BlogArticle }> = ({ article }) => (
       <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,17,41,0.5)] via-transparent to-transparent" />
       <span
         className="absolute left-3 bottom-3 inline-block rounded-full bg-[#22c0d4] text-white px-2.5 py-1 uppercase"
-        style={{ fontFamily: 'Montserrat, sans-serif', fontSize: 10, letterSpacing: '0.08em', fontWeight: 600 }}
+        style={{
+          fontFamily: "Montserrat, sans-serif",
+          fontSize: 10,
+          letterSpacing: "0.08em",
+          fontWeight: 600,
+        }}
       >
         {article.category}
       </span>
@@ -36,24 +41,46 @@ const FeaturedCard: React.FC<{ article: BlogArticle }> = ({ article }) => (
     <div className="p-5 flex flex-col flex-1">
       <div
         className="uppercase"
-        style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 11, color: '#94a3b8', letterSpacing: '0.08em' }}
+        style={{
+          fontFamily: "DM Sans, sans-serif",
+          fontSize: 11,
+          color: "#94a3b8",
+          letterSpacing: "0.08em",
+        }}
       >
         {article.provider}
       </div>
       <h3
         className="mt-1 mb-2 line-clamp-2"
-        style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 600, fontSize: 16, color: '#081129', lineHeight: 1.35 }}
+        style={{
+          fontFamily: "Montserrat, sans-serif",
+          fontWeight: 600,
+          fontSize: 16,
+          color: "#081129",
+          lineHeight: 1.35,
+        }}
       >
         {article.title}
       </h3>
       <p
         className="line-clamp-3 mb-4 flex-1"
-        style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 13, color: '#64748b', lineHeight: 1.55 }}
+        style={{
+          fontFamily: "DM Sans, sans-serif",
+          fontSize: 13,
+          color: "#64748b",
+          lineHeight: 1.55,
+        }}
       >
         {article.excerpt}
       </p>
       <div className="flex items-center justify-between mt-auto pt-2 border-t border-[#f0f4fa]">
-        <span style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 12, color: '#94a3b8' }}>
+        <span
+          style={{
+            fontFamily: "DM Sans, sans-serif",
+            fontSize: 12,
+            color: "#94a3b8",
+          }}
+        >
           {formatDate(article.date)}
         </span>
         <a
@@ -61,7 +88,12 @@ const FeaturedCard: React.FC<{ article: BlogArticle }> = ({ article }) => (
           target="_blank"
           rel="noopener noreferrer"
           className="hover:underline"
-          style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 13, color: '#22c0d4', fontWeight: 500 }}
+          style={{
+            fontFamily: "DM Sans, sans-serif",
+            fontSize: 13,
+            color: "#22c0d4",
+            fontWeight: 500,
+          }}
         >
           Read article →
         </a>
@@ -94,7 +126,12 @@ const HealthResources: React.FC = () => {
             <Link
               to="/blog"
               className="inline-block rounded-full bg-white text-[#081129] hover:bg-[#f0f4fa] transition-colors"
-              style={{ fontFamily: 'DM Sans, sans-serif', fontSize: 14, fontWeight: 600, padding: '12px 32px' }}
+              style={{
+                fontFamily: "DM Sans, sans-serif",
+                fontSize: 14,
+                fontWeight: 600,
+                padding: "12px 32px",
+              }}
             >
               View all articles
             </Link>

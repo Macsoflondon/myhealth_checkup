@@ -3,15 +3,15 @@ import logo from "/myhealth-logo-v3.png";
 export const Logo = () => {
   const location = useLocation();
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    if (location.pathname === '/') {
+    if (location.pathname === "/") {
       e.preventDefault();
       window.scrollTo({
         top: 0,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
     }
   };
-  return <Link to="/" onClick={handleClick} className="flex items-center">
-      
-    </Link>;
+  return (
+    <Link to="/" onClick={handleClick} className="flex items-center"></Link>
+  );
 };

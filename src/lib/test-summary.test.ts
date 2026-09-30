@@ -19,7 +19,11 @@ describe("buildTestSummary", () => {
 
   it("uses singular labels and non-biomarker measurement types", () => {
     expect(
-      buildTestSummary({ testName: "Galleri", measurementCount: 1, measurementType: "cancers" }),
+      buildTestSummary({
+        testName: "Galleri",
+        measurementCount: 1,
+        measurementType: "cancers",
+      }),
     ).toContain("1 cancer signal");
   });
 
@@ -29,13 +33,16 @@ describe("buildTestSummary", () => {
 
   it("prefers the provider's own description", () => {
     expect(
-      resolveTestSummary("Provider copy.", { testName: "X", measurementCount: 10 }),
+      resolveTestSummary("Provider copy.", {
+        testName: "X",
+        measurementCount: 10,
+      }),
     ).toBe("Provider copy.");
   });
 
   it("falls back to a generated summary when the description is blank", () => {
-    expect(resolveTestSummary("   ", { testName: "X", measurementCount: 10 })).toContain(
-      "10 biomarkers",
-    );
+    expect(
+      resolveTestSummary("   ", { testName: "X", measurementCount: 10 }),
+    ).toContain("10 biomarkers");
   });
 });

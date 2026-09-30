@@ -15,11 +15,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { 
-  CheckCircle, 
-  ArrowRight, 
-  Shield, 
-  Clock, 
+import {
+  CheckCircle,
+  ArrowRight,
+  Shield,
+  Clock,
   Sparkles,
   TrendingUp,
   Users,
@@ -33,11 +33,17 @@ import {
   Baby,
   Calendar,
   Zap,
-  Pill
+  Pill,
 } from "lucide-react";
-import { getCategoryContent, type CategoryContent } from "@/data/categoryContent";
+import {
+  getCategoryContent,
+  type CategoryContent,
+} from "@/data/categoryContent";
 import RelatedLinks from "@/components/seo/RelatedLinks";
-import { useProvidersByCategory, type ProviderTestRow } from "@/hooks/queries/useProvidersByTestType";
+import {
+  useProvidersByCategory,
+  type ProviderTestRow,
+} from "@/hooks/queries/useProvidersByTestType";
 import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
 import { Loader2 } from "lucide-react";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
@@ -64,7 +70,7 @@ const iconMap: Record<string, React.ElementType> = {
 const CategoryLandingPage: React.FC = () => {
   const { category } = useParams<{ category: string }>();
   const navigate = useNavigate();
-  
+
   // Get category content
   const content = useMemo(() => {
     if (!category) return null;
@@ -72,16 +78,12 @@ const CategoryLandingPage: React.FC = () => {
   }, [category]);
 
   // Fetch tests for this category
-  const { data: providerTests = [], isLoading: isLoadingTests } = useProvidersByCategory(
-    category || "",
-    !!category
-  );
+  const { data: providerTests = [], isLoading: isLoadingTests } =
+    useProvidersByCategory(category || "", !!category);
 
   // Fetch recommended tests
-  const { data: recommendedTests = [], isLoading: isLoadingRecommended } = useRecommendedTests(
-    category || "",
-    8
-  );
+  const { data: recommendedTests = [], isLoading: isLoadingRecommended } =
+    useRecommendedTests(category || "", 8);
 
   // Handle test selection for carousel
   const handleSelectTest = (test: unknown) => {
@@ -96,7 +98,8 @@ const CategoryLandingPage: React.FC = () => {
           <div className="text-center max-w-md">
             <h1 className="text-2xl font-bold mb-4">Category Not Found</h1>
             <p className="text-muted-foreground mb-6">
-              We couldn't find tests for this category. Browse our available categories below.
+              We couldn't find tests for this category. Browse our available
+              categories below.
             </p>
             <Button asChild>
               <Link to="/compare">Browse All Tests</Link>
@@ -114,51 +117,78 @@ const CategoryLandingPage: React.FC = () => {
           <title>{content.title}</title>
           <meta name="description" content={content.metaDescription} />
           <meta name="keywords" content={content.keywords.join(", ")} />
-          <link rel="canonical" href={`https://myhealthcheckup.co.uk/tests/${content.slug}`} />
+          <link
+            rel="canonical"
+            href={`https://myhealthcheckup.co.uk/tests/${content.slug}`}
+          />
           <meta name="robots" content="index, follow" />
-          
+
           {/* Open Graph */}
           <meta property="og:type" content="website" />
           <meta property="og:site_name" content="myhealth checkup" />
           <meta property="og:title" content={content.title} />
           <meta property="og:description" content={content.metaDescription} />
-          <meta property="og:url" content={`https://myhealthcheckup.co.uk/tests/${content.slug}`} />
-          <meta property="og:image" content="https://myhealthcheckup.co.uk/og-image.png" />
+          <meta
+            property="og:url"
+            content={`https://myhealthcheckup.co.uk/tests/${content.slug}`}
+          />
+          <meta
+            property="og:image"
+            content="https://myhealthcheckup.co.uk/og-image.png"
+          />
           <meta property="og:locale" content="en_GB" />
-          
+
           {/* Twitter Card */}
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:site" content="@myhealthcheckup" />
           <meta name="twitter:title" content={content.title} />
           <meta name="twitter:description" content={content.metaDescription} />
-          <meta name="twitter:image" content="https://myhealthcheckup.co.uk/og-image.png" />
-          
+          <meta
+            name="twitter:image"
+            content="https://myhealthcheckup.co.uk/og-image.png"
+          />
+
           {/* JSON-LD Structured Data */}
           <script type="application/ld+json">
             {JSON.stringify({
               "@context": "https://schema.org",
               "@type": "MedicalWebPage",
-              "name": content.heroTitle,
-              "description": content.metaDescription,
-              "url": `https://myhealthcheckup.co.uk/tests/${content.slug}`,
-              "isPartOf": {
+              name: content.heroTitle,
+              description: content.metaDescription,
+              url: `https://myhealthcheckup.co.uk/tests/${content.slug}`,
+              isPartOf: {
                 "@type": "WebSite",
-                "name": "myhealth checkup",
-                "url": "https://myhealthcheckup.co.uk"
+                name: "myhealth checkup",
+                url: "https://myhealthcheckup.co.uk",
               },
-              "mainEntity": {
+              mainEntity: {
                 "@type": "MedicalTest",
-                "name": content.name,
-                "description": content.introduction
+                name: content.name,
+                description: content.introduction,
               },
-              "breadcrumb": {
+              breadcrumb: {
                 "@type": "BreadcrumbList",
-                "itemListElement": [
-                  { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://myhealthcheckup.co.uk" },
-                  { "@type": "ListItem", "position": 2, "name": "Tests", "item": "https://myhealthcheckup.co.uk/test-categories" },
-                  { "@type": "ListItem", "position": 3, "name": content.name, "item": `https://myhealthcheckup.co.uk/tests/${content.slug}` }
-                ]
-              }
+                itemListElement: [
+                  {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Home",
+                    item: "https://myhealthcheckup.co.uk",
+                  },
+                  {
+                    "@type": "ListItem",
+                    position: 2,
+                    name: "Tests",
+                    item: "https://myhealthcheckup.co.uk/test-categories",
+                  },
+                  {
+                    "@type": "ListItem",
+                    position: 3,
+                    name: content.name,
+                    item: `https://myhealthcheckup.co.uk/tests/${content.slug}`,
+                  },
+                ],
+              },
             })}
           </script>
           {content.faqs && content.faqs.length > 0 && (
@@ -166,11 +196,11 @@ const CategoryLandingPage: React.FC = () => {
               {JSON.stringify({
                 "@context": "https://schema.org",
                 "@type": "FAQPage",
-                "mainEntity": content.faqs.map((faq) => ({
+                mainEntity: content.faqs.map((faq) => ({
                   "@type": "Question",
-                  "name": faq.question,
-                  "acceptedAnswer": { "@type": "Answer", "text": faq.answer }
-                }))
+                  name: faq.question,
+                  acceptedAnswer: { "@type": "Answer", text: faq.answer },
+                })),
               })}
             </script>
           )}
@@ -181,7 +211,9 @@ const CategoryLandingPage: React.FC = () => {
             <h1 className="text-2xl sm:text-3xl font-bold text-foreground font-montserrat mb-2">
               {content.heroTitle}
             </h1>
-            <p className="text-muted-foreground text-lg mb-6">{content.heroSubtitle}</p>
+            <p className="text-muted-foreground text-lg mb-6">
+              {content.heroSubtitle}
+            </p>
             {/* Breadcrumb */}
 
             {/* Introduction */}
@@ -220,7 +252,9 @@ const CategoryLandingPage: React.FC = () => {
                         <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                           <IconComponent className="h-6 w-6 text-primary" />
                         </div>
-                        <h3 className="font-semibold text-lg mb-2">{benefit.title}</h3>
+                        <h3 className="font-semibold text-lg mb-2">
+                          {benefit.title}
+                        </h3>
                         <p className="text-muted-foreground text-sm">
                           {benefit.description}
                         </p>
@@ -237,11 +271,12 @@ const CategoryLandingPage: React.FC = () => {
                 Common Health Concerns
               </h2>
               <p className="text-muted-foreground mb-6">
-                Consider testing if you're experiencing any of these symptoms or concerns:
+                Consider testing if you're experiencing any of these symptoms or
+                concerns:
               </p>
               <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {content.healthConcerns.map((concern, idx) => (
-                  <div 
+                  <div
                     key={idx}
                     className="flex items-start gap-3 bg-background rounded-lg p-4 border border-border"
                   >
@@ -273,7 +308,7 @@ const CategoryLandingPage: React.FC = () => {
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 {content.whoShouldTest.map((who, idx) => (
-                  <div 
+                  <div
                     key={idx}
                     className="flex items-center gap-3 p-4 rounded-lg border border-border bg-card"
                   >
@@ -317,8 +352,13 @@ const CategoryLandingPage: React.FC = () => {
                     to={`/tests/${relatedSlug}`}
                     className="inline-flex"
                   >
-                    <Badge variant="secondary" className="cursor-pointer hover:bg-secondary/80 transition-colors">
-                      {relatedSlug.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase())}
+                    <Badge
+                      variant="secondary"
+                      className="cursor-pointer hover:bg-secondary/80 transition-colors"
+                    >
+                      {relatedSlug
+                        .replace(/-/g, " ")
+                        .replace(/\b\w/g, (c) => c.toUpperCase())}
                     </Badge>
                   </Link>
                 ))}
@@ -331,11 +371,12 @@ const CategoryLandingPage: React.FC = () => {
                 Ready to Take Control of Your Health?
               </h2>
               <p className="text-white/90 mb-6 max-w-2xl mx-auto">
-                Compare {content.name.toLowerCase()} from trusted UK providers. 
-                All laboratories are UKAS accredited with results reviewed by qualified professionals.
+                Compare {content.name.toLowerCase()} from trusted UK providers.
+                All laboratories are UKAS accredited with results reviewed by
+                qualified professionals.
               </p>
               <div className="flex flex-col sm:flex-row flex-wrap gap-4 justify-center">
-                <Button 
+                <Button
                   size="lg"
                   variant="secondary"
                   className="w-full sm:w-auto gap-2 whitespace-nowrap"
@@ -346,26 +387,24 @@ const CategoryLandingPage: React.FC = () => {
                     <ArrowRight className="h-4 w-4 shrink-0" />
                   </Link>
                 </Button>
-                <Button 
+                <Button
                   size="lg"
                   variant="outline"
                   className="w-full sm:w-auto bg-white/10 border-white/30 text-white hover:bg-white/20 whitespace-nowrap"
                   asChild
                 >
-                  <Link to="/how-it-works">
-                    How It Works
-                  </Link>
+                  <Link to="/how-it-works">How It Works</Link>
                 </Button>
               </div>
             </section>
           </div>
-      <RelatedLinks categorySlug={content.slug} />
+          <RelatedLinks categorySlug={content.slug} />
 
-      <section className="bg-white py-12 px-4 sm:px-6">
-        <div className="max-w-[1280px] mx-auto">
-          <QuizCTABanner />
-        </div>
-      </section>
+          <section className="bg-white py-12 px-4 sm:px-6">
+            <div className="max-w-[1280px] mx-auto">
+              <QuizCTABanner />
+            </div>
+          </section>
         </MainLayout>
       </div>
     </ErrorBoundary>

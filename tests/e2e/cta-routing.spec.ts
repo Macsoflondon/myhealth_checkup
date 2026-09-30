@@ -39,7 +39,9 @@ const collectCtaLinks = async (page: Page): Promise<readonly CtaLink[]> => {
   const links = await page.$$eval("a[href]", (els) =>
     els.map((el) => ({
       href: el.getAttribute("href") ?? "",
-      text: (el.textContent ?? el.getAttribute("aria-label") ?? "").trim().slice(0, 80),
+      text: (el.textContent ?? el.getAttribute("aria-label") ?? "")
+        .trim()
+        .slice(0, 80),
     })),
   );
 
@@ -58,7 +60,9 @@ const collectCtaLinks = async (page: Page): Promise<readonly CtaLink[]> => {
 
 const assertPageLoads = async (page: Page, href: string): Promise<void> => {
   const response = await page.goto(href, { waitUntil: "domcontentloaded" });
-  expect(response?.status(), `${href} returned an error status`).toBeLessThan(400);
+  expect(response?.status(), `${href} returned an error status`).toBeLessThan(
+    400,
+  );
 
   // The app is client-rendered behind lazy routes — wait for the real heading
   // to exist in the DOM (some heroes render it visually hidden).
@@ -70,8 +74,12 @@ const assertPageLoads = async (page: Page, href: string): Promise<void> => {
     .toBeGreaterThan(0);
 
   const body = (await page.locator("body").innerText()).trim();
-  expect(body.length, `${href} rendered almost no content`).toBeGreaterThan(400);
-  expect(body, `${href} rendered the not-found page`).not.toMatch(/page not found/i);
+  expect(body.length, `${href} rendered almost no content`).toBeGreaterThan(
+    400,
+  );
+  expect(body, `${href} rendered the not-found page`).not.toMatch(
+    /page not found/i,
+  );
 };
 
 test.describe("CTA routing", () => {
@@ -80,7 +88,9 @@ test.describe("CTA routing", () => {
       test.slow();
 
       await page.goto(screen, { waitUntil: "domcontentloaded" });
-      await expect.poll(async () => page.locator("h1").count(), { timeout: 20_000 }).toBeGreaterThan(0);
+      await expect
+        .poll(async () => page.locator("h1").count(), { timeout: 20_000 })
+        .toBeGreaterThan(0);
 
       const ctas = await collectCtaLinks(page);
       expect(ctas.length, `no CTAs found on ${screen}`).toBeGreaterThan(0);
@@ -104,11 +114,16 @@ test.describe("Key CTA destinations", () => {
   for (const [from, label, expected] of CANONICAL) {
     test(`"${label}" on ${from} navigates to ${expected}`, async ({ page }) => {
       await page.goto(from, { waitUntil: "domcontentloaded" });
-      const link = page.getByRole("link", { name: new RegExp(label, "i") }).first();
-      if ((await link.count()) === 0) test.skip(true, `"${label}" not present on ${from}`);
+      const link = page
+        .getByRole("link", { name: new RegExp(label, "i") })
+        .first();
+      if ((await link.count()) === 0)
+        test.skip(true, `"${label}" not present on ${from}`);
       await link.click();
       await expect(page).toHaveURL(expected);
-      await expect.poll(async () => page.locator("h1").count(), { timeout: 20_000 }).toBeGreaterThan(0);
+      await expect
+        .poll(async () => page.locator("h1").count(), { timeout: 20_000 })
+        .toBeGreaterThan(0);
     });
   }
 });
@@ -124,7 +139,9 @@ test.describe("Provider shortcut redirects", () => {
     test(`${from} redirects to ${to} and loads`, async ({ page }) => {
       await page.goto(from, { waitUntil: "domcontentloaded" });
       await expect(page).toHaveURL(new RegExp(`${to}/?$`));
-      await expect.poll(async () => page.locator("h1").count(), { timeout: 20_000 }).toBeGreaterThan(0);
+      await expect
+        .poll(async () => page.locator("h1").count(), { timeout: 20_000 })
+        .toBeGreaterThan(0);
     });
   }
 });

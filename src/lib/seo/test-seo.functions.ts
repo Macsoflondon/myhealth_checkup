@@ -15,7 +15,9 @@ export interface TestSeoSummary {
  * test cannot be resolved so the route falls back to slug-derived metadata.
  */
 export const fetchTestSeoSummary = createServerFn({ method: "GET" })
-  .inputValidator((data: unknown) => z.object({ testId: z.string().min(1) }).parse(data))
+  .inputValidator((data: unknown) =>
+    z.object({ testId: z.string().min(1) }).parse(data),
+  )
   .handler(async ({ data }): Promise<TestSeoSummary | null> => {
     const { data: row, error } = await supabase
       .from("unified_provider_tests")
@@ -29,6 +31,7 @@ export const fetchTestSeoSummary = createServerFn({ method: "GET" })
       testName: row.test_name ?? "Test details",
       providerName: row.provider_name ?? "",
       price: typeof row.price === "number" ? row.price : null,
-      biomarkerCount: typeof row.biomarker_count === "number" ? row.biomarker_count : null,
+      biomarkerCount:
+        typeof row.biomarker_count === "number" ? row.biomarker_count : null,
     };
   });

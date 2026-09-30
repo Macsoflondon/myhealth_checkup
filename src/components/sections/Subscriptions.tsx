@@ -1,11 +1,37 @@
 import { Link } from "@/lib/router-compat";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Check } from "lucide-react";
 const planFeatures = {
-  essentials: ["Quarterly finger-prick test kit", "Diabetes (HbA1c) monitoring", "Full lipid profile", "Liver & kidney function", "Iron/ferritin levels", "Vitamin D testing", "Vitamin B12 testing", "Online results dashboard", "Email results notifications"],
-  advanced: ["Biannual comprehensive screening", "Everything in Essentials", "PSA (men) or Female hormones", "High-sensitivity CRP", "Thyroid panel (TSH, T4)", "One genetic test annually", "15-min healthcare professional consultation", "Personalised health action plan", "Priority processing"]
+  essentials: [
+    "Quarterly finger-prick test kit",
+    "Diabetes (HbA1c) monitoring",
+    "Full lipid profile",
+    "Liver & kidney function",
+    "Iron/ferritin levels",
+    "Vitamin D testing",
+    "Vitamin B12 testing",
+    "Online results dashboard",
+    "Email results notifications",
+  ],
+  advanced: [
+    "Biannual comprehensive screening",
+    "Everything in Essentials",
+    "PSA (men) or Female hormones",
+    "High-sensitivity CRP",
+    "Thyroid panel (TSH, T4)",
+    "One genetic test annually",
+    "15-min healthcare professional consultation",
+    "Personalised health action plan",
+    "Priority processing",
+  ],
 };
 const SubscriptionPlan = ({
   title,
@@ -13,7 +39,7 @@ const SubscriptionPlan = ({
   period,
   description,
   features,
-  popular
+  popular,
 }: {
   title: string;
   price: string;
@@ -22,9 +48,14 @@ const SubscriptionPlan = ({
   features: string[];
   popular?: boolean;
 }) => {
-  return <Card className={`h-full flex flex-col ${popular ? 'border-health-500 shadow-xl' : 'border-brand-navy'}`}>
+  return (
+    <Card
+      className={`h-full flex flex-col ${popular ? "border-health-500 shadow-xl" : "border-brand-navy"}`}
+    >
       <CardHeader>
-        {popular && <Badge className="w-fit mb-2 bg-health-600">Most Popular</Badge>}
+        {popular && (
+          <Badge className="w-fit mb-2 bg-health-600">Most Popular</Badge>
+        )}
         <CardTitle className="text-xl font-bold">{title}</CardTitle>
         <div className="flex items-baseline gap-1">
           <span className="text-3xl font-bold">£{price}</span>
@@ -34,30 +65,39 @@ const SubscriptionPlan = ({
       </CardHeader>
       <CardContent className="flex-grow">
         <ul className="space-y-2">
-          {features.map((feature, index) => <li key={index} className="flex">
+          {features.map((feature, index) => (
+            <li key={index} className="flex">
               <Check className="h-5 w-5 text-health-600 mr-2 flex-shrink-0" />
               <span className="text-sm">{feature}</span>
-            </li>)}
+            </li>
+          ))}
         </ul>
       </CardContent>
       <CardFooter>
-        <Button asChild className={`w-full ${popular ? 'bg-health-600 hover:bg-health-700' : ''}`}>
+        <Button
+          asChild
+          className={`w-full ${popular ? "bg-health-600 hover:bg-health-700" : ""}`}
+        >
           <Link to="/contact">Subscribe Now</Link>
         </Button>
       </CardFooter>
-    </Card>;
+    </Card>
+  );
 };
 const Subscriptions = () => {
   return (
     <section className="py-16 bg-gradient-to-br from-health-50 to-health-100">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-semibold mb-4">Health Monitoring Subscriptions</h2>
+          <h2 className="text-3xl font-semibold mb-4">
+            Health Monitoring Subscriptions
+          </h2>
           <p className="text-brand-navy max-w-2xl mx-auto">
-            Stay on top of your health with our convenient subscription plans. Regular monitoring helps catch potential issues early.
+            Stay on top of your health with our convenient subscription plans.
+            Regular monitoring helps catch potential issues early.
           </p>
         </div>
-        
+
         <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
           <SubscriptionPlan
             title="myhealth checkup Essentials"
@@ -66,7 +106,7 @@ const Subscriptions = () => {
             description="Perfect for maintaining basic health awareness"
             features={planFeatures.essentials}
           />
-          
+
           <SubscriptionPlan
             title="myhealth checkup Advanced"
             price="79"

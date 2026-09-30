@@ -47,24 +47,27 @@ export function useProviderTestCounts() {
  */
 export function getTestCountForProvider(
   counts: Record<string, number>,
-  providerId: string | null
+  providerId: string | null,
 ): number {
   if (!providerId || !counts) return 0;
-  
-  const normalizedId = providerId.toLowerCase().replace(/[-_\s]/g, '');
-  
+
+  const normalizedId = providerId.toLowerCase().replace(/[-_\s]/g, "");
+
   // Try exact match first
   if (counts[providerId.toLowerCase()]) {
     return counts[providerId.toLowerCase()];
   }
-  
+
   // Try normalized match
   for (const [key, count] of Object.entries(counts)) {
-    const normalizedKey = key.replace(/[-_\s]/g, '');
-    if (normalizedKey.includes(normalizedId) || normalizedId.includes(normalizedKey)) {
+    const normalizedKey = key.replace(/[-_\s]/g, "");
+    if (
+      normalizedKey.includes(normalizedId) ||
+      normalizedId.includes(normalizedKey)
+    ) {
       return count;
     }
   }
-  
+
   return 0;
 }

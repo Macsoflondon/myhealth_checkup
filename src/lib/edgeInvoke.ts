@@ -1,5 +1,9 @@
 import { supabase } from "@/integrations/supabase/client";
-import { FunctionsHttpError, FunctionsRelayError, FunctionsFetchError } from "@supabase/supabase-js";
+import {
+  FunctionsHttpError,
+  FunctionsRelayError,
+  FunctionsFetchError,
+} from "@supabase/supabase-js";
 
 /**
  * Wrapper around supabase.functions.invoke that surfaces real error messages
@@ -41,7 +45,7 @@ export async function edgeInvoke<T = unknown>(
   }
 
   const err = new Error(`${name}${status ? ` [${status}]` : ""}: ${message}`);
-   
+
   console.error("[edgeInvoke]", name, status, message);
   throw err;
 }

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,19 +12,26 @@ interface FavoriteActionProps {
   onToggleFavorite: (id: string) => void;
 }
 
-const FavoriteAction = ({ item, isFavorite, onToggleFavorite }: FavoriteActionProps) => {
+const FavoriteAction = ({
+  item,
+  isFavorite,
+  onToggleFavorite,
+}: FavoriteActionProps) => {
   return (
     <TableCell key={`${item.id}-favorite`} className="text-center">
-      <Button 
-        variant="ghost" 
-        size="sm" 
+      <Button
+        variant="ghost"
+        size="sm"
         onClick={() => onToggleFavorite(item.id)}
         className={cn(
           "hover:bg-brand-pink",
-          isFavorite ? "text-brand-pink" : "text-brand-navy"
+          isFavorite ? "text-brand-pink" : "text-brand-navy",
         )}
       >
-        <Heart className="h-5 w-5 text-health-success" fill={isFavorite ? "currentColor" : "none"} />
+        <Heart
+          className="h-5 w-5 text-health-success"
+          fill={isFavorite ? "currentColor" : "none"}
+        />
       </Button>
     </TableCell>
   );

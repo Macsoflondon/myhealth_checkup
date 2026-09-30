@@ -1,20 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import type { User } from "@supabase/supabase-js";
-import { Brain, Sparkles, Target, Clock, TrendingUp, AlertTriangle, Stethoscope, History, Shield } from 'lucide-react';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
-import { logger } from '@/lib/logger';
-import { analytics } from '@/lib/analytics';
-import { UniversalTestCard } from '@/components/cards/UniversalTestCard';
-import { useResolvedRecommendations } from '@/hooks/queries/useResolvedRecommendations';
-
-
+import {
+  Brain,
+  Sparkles,
+  Target,
+  Clock,
+  TrendingUp,
+  AlertTriangle,
+  Stethoscope,
+  History,
+  Shield,
+} from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { logger } from "@/lib/logger";
+import { analytics } from "@/lib/analytics";
+import { UniversalTestCard } from "@/components/cards/UniversalTestCard";
+import { useResolvedRecommendations } from "@/hooks/queries/useResolvedRecommendations";
 
 interface QueryHistoryItem {
   id?: string;
@@ -32,7 +40,7 @@ interface RecommendationProps {
   price: number | null;
   reason: string;
   category: string;
-  urgency: 'low' | 'medium' | 'high';
+  urgency: "low" | "medium" | "high";
   confidence: number;
   actualTestId?: string;
 }
@@ -47,33 +55,40 @@ export interface AIAnalysisResult {
 }
 
 interface RecommendationEngineProps {
-  surface?: 'homepage' | 'recommendations_page' | string;
+  surface?: "homepage" | "recommendations_page" | string;
   resultsOnly?: boolean;
   initialResult?: AIAnalysisResult | null;
 }
 
 const getUrgencyColor = (urgency: string) => {
   switch (urgency) {
-    case 'high':
-      return 'bg-red-100 text-red-800';
-    case 'medium':
-      return 'bg-yellow-100 text-yellow-800';
-    case 'low':
-      return 'bg-green-100 text-green-800';
+    case "high":
+      return "bg-red-100 text-red-800";
+    case "medium":
+      return "bg-yellow-100 text-yellow-800";
+    case "low":
+      return "bg-green-100 text-green-800";
     default:
-      return 'bg-gray-100 text-brand-navy';
+      return "bg-gray-100 text-brand-navy";
   }
 };
 
 /** Renders AI recommendations as standard platform test cards backed by real provider_tests data. */
-const ResolvedRecommendationList = ({ recs }: { recs: RecommendationProps[] }) => {
+const ResolvedRecommendationList = ({
+  recs,
+}: {
+  recs: RecommendationProps[];
+}) => {
   const { data: resolved, isLoading } = useResolvedRecommendations(recs);
 
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {recs.map((_, i) => (
-          <div key={i} className="h-64 rounded-2xl bg-[#081129]/5 animate-pulse" />
+          <div
+            key={i}
+            className="h-64 rounded-2xl bg-[#081129]/5 animate-pulse"
+          />
         ))}
       </div>
     );
@@ -87,29 +102,45 @@ const ResolvedRecommendationList = ({ recs }: { recs: RecommendationProps[] }) =
           return (
             <Card key={i} className="p-4 border-[#081129]/10">
               <div className="flex items-center gap-2 mb-2">
-                <h3 className="text-sm font-semibold text-[#081129]" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                <h3
+                  className="text-sm font-semibold text-[#081129]"
+                  style={{ fontFamily: "'Montserrat', sans-serif" }}
+                >
                   {rec.testName}
                 </h3>
-                <Badge className={getUrgencyColor(rec.urgency)}>{rec.urgency}</Badge>
+                <Badge className={getUrgencyColor(rec.urgency)}>
+                  {rec.urgency}
+                </Badge>
               </div>
-              <p className="text-xs text-[#081129]/70 mb-2">{rec.provider} · {rec.confidence}% match</p>
+              <p className="text-xs text-[#081129]/70 mb-2">
+                {rec.provider} · {rec.confidence}% match
+              </p>
               <p className="text-xs text-[#081129]/80">{rec.reason}</p>
-              <p className="text-[11px] text-[#081129]/50 mt-2 italic">Live details unavailable — this test may have been updated. Please browse the catalogue for the latest information.</p>
+              <p className="text-[11px] text-[#081129]/50 mt-2 italic">
+                Live details unavailable — this test may have been updated.
+                Please browse the catalogue for the latest information.
+              </p>
             </Card>
           );
         }
         return (
           <div key={test.id} className="flex flex-col gap-2">
             <div className="flex items-center gap-2 flex-wrap px-1">
-              <Badge className={getUrgencyColor(rec.urgency)}>{rec.urgency} priority</Badge>
-              <span className="text-xs font-semibold text-[#22c0d4]" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+              <Badge className={getUrgencyColor(rec.urgency)}>
+                {rec.urgency} priority
+              </Badge>
+              <span
+                className="text-xs font-semibold text-[#22c0d4]"
+                style={{ fontFamily: "'Montserrat', sans-serif" }}
+              >
                 {rec.confidence}% match
               </span>
             </div>
             <UniversalTestCard test={test as any} />
             {rec.reason && (
               <p className="text-xs text-[#081129]/70 px-1 leading-relaxed border-l-2 border-[#22c0d4]/50 pl-2">
-                <span className="font-semibold text-[#081129]">Why:</span> {rec.reason}
+                <span className="font-semibold text-[#081129]">Why:</span>{" "}
+                {rec.reason}
               </p>
             )}
           </div>
@@ -120,7 +151,11 @@ const ResolvedRecommendationList = ({ recs }: { recs: RecommendationProps[] }) =
 };
 
 /** Results-only view — renders Wellness Analysis + Recommended Tests. */
-export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) => {
+export const RecommendationResults = ({
+  result,
+}: {
+  result: AIAnalysisResult;
+}) => {
   const prices = result.recommendedTests
     .map((rec) => rec.price)
     .filter((p): p is number => typeof p === "number" && p > 0);
@@ -144,15 +179,17 @@ export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) 
             {result.recommendedTests.length}
           </p>
           <p className="text-white/78 text-sm mt-1">
-            {lowest !== null ? `Individual prices from £${lowest.toFixed(0)}` : "Individual prices shown per test"}
+            {lowest !== null
+              ? `Individual prices from £${lowest.toFixed(0)}`
+              : "Individual prices shown per test"}
           </p>
           <p className="text-white/60 text-xs mt-2 max-w-md mx-auto">
-            These are suggestions, not a basket. Your expected cost is confirmed once you choose a test and any
-            options such as a GP report or home phlebotomy.
+            These are suggestions, not a basket. Your expected cost is confirmed
+            once you choose a test and any options such as a GP report or home
+            phlebotomy.
           </p>
         </div>
       )}
-
 
       <Card className="p-6 border-[#22c0d4]/20 bg-[#081129]/[0.03]">
         <h2
@@ -166,10 +203,15 @@ export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) 
 
         {result.generalGuidance && (
           <div className="mt-4 p-4 bg-[#22c0d4]/10 border border-[#22c0d4]/20 rounded-lg">
-            <h4 className="font-medium text-[#081129] mb-2" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+            <h4
+              className="font-medium text-[#081129] mb-2"
+              style={{ fontFamily: "'Montserrat', sans-serif" }}
+            >
               General Wellness Guidance:
             </h4>
-            <p className="text-[#081129]/70 text-sm">{result.generalGuidance}</p>
+            <p className="text-[#081129]/70 text-sm">
+              {result.generalGuidance}
+            </p>
           </div>
         )}
       </Card>
@@ -193,7 +235,9 @@ export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) 
 
           <ResolvedRecommendationList recs={result.recommendedTests} />
           <p className="text-xs text-[#081129]/60 italic">
-            Tap any test card to view the full standardised details — biomarkers, collection method, turnaround and pricing — pulled directly from the provider.
+            Tap any test card to view the full standardised details —
+            biomarkers, collection method, turnaround and pricing — pulled
+            directly from the provider.
           </p>
         </div>
       )}
@@ -208,12 +252,18 @@ export const RecommendationResults = ({ result }: { result: AIAnalysisResult }) 
   );
 };
 
-const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = false, initialResult = null }: RecommendationEngineProps) => {
-  const [symptoms, setSymptoms] = useState('');
-  const [age, setAge] = useState('');
-  const [gender, setGender] = useState('');
-  const [methodPreference, setMethodPreference] = useState('');
-  const [analysisResult, setAnalysisResult] = useState<AIAnalysisResult | null>(initialResult);
+const RecommendationEngine = ({
+  surface = "recommendations_page",
+  resultsOnly = false,
+  initialResult = null,
+}: RecommendationEngineProps) => {
+  const [symptoms, setSymptoms] = useState("");
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+  const [methodPreference, setMethodPreference] = useState("");
+  const [analysisResult, setAnalysisResult] = useState<AIAnalysisResult | null>(
+    initialResult,
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const [showHistory, setShowHistory] = useState(false);
@@ -230,7 +280,9 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
       }
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
       setUser(session?.user ?? null);
       if (session?.user) {
         loadQueryHistory(session.user.id);
@@ -250,10 +302,10 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
   const loadQueryHistory = async (userId: string) => {
     try {
       const { data, error } = await supabase
-        .from('health_queries')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false })
+        .from("health_queries")
+        .select("*")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
         .limit(10);
 
       if (error) throw error;
@@ -261,16 +313,16 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
         (data || []).map((row) => ({
           ...row,
           ai_response: row.ai_response as unknown as AIAnalysisResult | null,
-        }))
+        })),
       );
     } catch (error) {
-      logger.error('Error loading query history:', error);
+      logger.error("Error loading query history:", error);
     }
   };
 
   const generateRecommendations = async () => {
     if (!symptoms.trim()) {
-      toast.error('Please enter your symptoms or health goals');
+      toast.error("Please enter your symptoms or health goals");
       return;
     }
 
@@ -291,19 +343,27 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
 
     try {
       if (!user) {
-        toast.error('Please sign in to get personalised recommendations.', {
-          action: { label: 'Sign in', onClick: () => { window.location.href = '/auth'; } },
+        toast.error("Please sign in to get personalised recommendations.", {
+          action: {
+            label: "Sign in",
+            onClick: () => {
+              window.location.href = "/auth";
+            },
+          },
         });
         return;
       }
-      const { data, error } = await supabase.functions.invoke('ai-human-context', {
-        body: {
-          query_text: symptoms,
-          gender: gender || null,
-          age: age ? parseInt(age) : null,
-          method_preference: methodPreference || null,
-        }
-      });
+      const { data, error } = await supabase.functions.invoke(
+        "ai-human-context",
+        {
+          body: {
+            query_text: symptoms,
+            gender: gender || null,
+            age: age ? parseInt(age) : null,
+            method_preference: methodPreference || null,
+          },
+        },
+      );
 
       if (error) {
         throw error;
@@ -313,19 +373,25 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
       analytics.recommendationSuccess({
         surface,
         latency_ms: Math.round(performance.now() - startedAt),
-        recommendations_count: Array.isArray(data?.recommendedTests) ? data.recommendedTests.length : 0,
+        recommendations_count: Array.isArray(data?.recommendedTests)
+          ? data.recommendedTests.length
+          : 0,
         authenticated,
       });
       if (user) {
-        toast.success('Recommendation saved to your account');
+        toast.success("Recommendation saved to your account");
         loadQueryHistory(user.id);
       }
     } catch (error) {
-      const err = error as { message?: string; status?: number; context?: { status?: number } };
-      const failureReason = err?.message || 'unknown_error';
+      const err = error as {
+        message?: string;
+        status?: number;
+        context?: { status?: number };
+      };
+      const failureReason = err?.message || "unknown_error";
       const statusCode = err?.status ?? err?.context?.status ?? null;
 
-      logger.error('Error getting AI recommendations:', error);
+      logger.error("Error getting AI recommendations:", error);
       analytics.recommendationFailure({
         surface,
         latency_ms: Math.round(performance.now() - startedAt),
@@ -333,28 +399,31 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
         status_code: statusCode,
         authenticated,
       });
-      toast.error('Unable to generate recommendations. Please try again.');
+      toast.error("Unable to generate recommendations. Please try again.");
       setAnalysisResult({
-        medicalDisclaimer: "This information is for educational purposes only and is not medical advice. Please consult your GP or healthcare professional regarding any health concerns or symptoms.",
-        analysis: "Sorry, we couldn't analyse your request at the moment. Please try again or consult your healthcare professional.",
+        medicalDisclaimer:
+          "This information is for educational purposes only and is not medical advice. Please consult your GP or healthcare professional regarding any health concerns or symptoms.",
+        analysis:
+          "Sorry, we couldn't analyse your request at the moment. Please try again or consult your healthcare professional.",
         recommendedTests: [],
-        generalGuidance: "Please consult your healthcare professional for personalised health advice.",
-        whenToSeeDoctor: "Seek immediate medical attention for urgent symptoms or persistent health concerns.",
-        hasRecommendations: false
+        generalGuidance:
+          "Please consult your healthcare professional for personalised health advice.",
+        whenToSeeDoctor:
+          "Seek immediate medical attention for urgent symptoms or persistent health concerns.",
+        hasRecommendations: false,
       });
     } finally {
       setIsLoading(false);
     }
   };
 
-
   const loadPreviousQuery = (query: QueryHistoryItem) => {
     setSymptoms(query.query_text);
-    setAge(query.age?.toString() || '');
-    setGender(query.gender || '');
+    setAge(query.age?.toString() || "");
+    setGender(query.gender || "");
     setAnalysisResult(query.ai_response);
     setShowHistory(false);
-    toast.success('Previous query loaded');
+    toast.success("Previous query loaded");
   };
 
   // Results-only mode: skip the entire input form
@@ -381,10 +450,13 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
       <div className="text-center mb-8">
         <div className="flex items-center justify-center gap-2 mb-4">
           <Brain className="h-8 w-8 text-primary" />
-          <h2 className="text-3xl font-bold text-foreground">AI Wellness Recommendations</h2>
+          <h2 className="text-3xl font-bold text-foreground">
+            AI Wellness Recommendations
+          </h2>
         </div>
         <p className="text-muted-foreground">
-          Get personalised wellness test recommendations from our trusted providers
+          Get personalised wellness test recommendations from our trusted
+          providers
         </p>
       </div>
 
@@ -392,8 +464,9 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
         <Alert className="mb-6 border-primary/20 bg-primary/5">
           <Shield className="h-4 w-4 text-primary" />
           <AlertDescription>
-            <strong>Your data is protected:</strong> All health queries are securely stored and encrypted. 
-            Only you can access your data. You can delete your queries anytime.
+            <strong>Your data is protected:</strong> All health queries are
+            securely stored and encrypted. Only you can access your data. You
+            can delete your queries anytime.
           </AlertDescription>
         </Alert>
       )}
@@ -401,8 +474,9 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
       <Alert className="mb-6 border-amber-200 bg-amber-50">
         <AlertTriangle className="h-4 w-4 text-amber-600" />
         <AlertDescription className="text-amber-800">
-          <strong>Important:</strong> This tool provides general wellness information only and is not medical advice. 
-          Always consult your GP or healthcare professional regarding any health concerns or symptoms.
+          <strong>Important:</strong> This tool provides general wellness
+          information only and is not medical advice. Always consult your GP or
+          healthcare professional regarding any health concerns or symptoms.
         </AlertDescription>
       </Alert>
 
@@ -410,8 +484,15 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
         <Alert className="mb-6 border-primary/20 bg-primary/5">
           <Shield className="h-4 w-4 text-primary" />
           <AlertDescription className="text-foreground">
-            <strong>Sign in to save your recommendations:</strong> Create an account to securely store 
-            your health queries and access them anytime. <a href="/auth" className="underline font-medium text-primary hover:text-primary/80">Sign in now</a>
+            <strong>Sign in to save your recommendations:</strong> Create an
+            account to securely store your health queries and access them
+            anytime.{" "}
+            <a
+              href="/auth"
+              className="underline font-medium text-primary hover:text-primary/80"
+            >
+              Sign in now
+            </a>
           </AlertDescription>
         </Alert>
       )}
@@ -428,7 +509,7 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
               size="sm"
               onClick={() => setShowHistory(!showHistory)}
             >
-              {showHistory ? 'Hide' : 'Show'}
+              {showHistory ? "Hide" : "Show"}
             </Button>
           </div>
           {showHistory && (
@@ -441,10 +522,13 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
                   onClick={() => loadPreviousQuery(query)}
                 >
                   <div className="space-y-1 w-full">
-                    <p className="text-sm font-medium line-clamp-1">{query.query_text}</p>
+                    <p className="text-sm font-medium line-clamp-1">
+                      {query.query_text}
+                    </p>
                     <p className="text-xs text-muted-foreground">
-                      {query.created_at && new Date(query.created_at).toLocaleDateString()} • 
-                      {query.age && ` Age: ${query.age}`}
+                      {query.created_at &&
+                        new Date(query.created_at).toLocaleDateString()}{" "}
+                      •{query.age && ` Age: ${query.age}`}
                       {query.gender && ` • ${query.gender}`}
                     </p>
                   </div>
@@ -465,14 +549,15 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
           <label className="block text-sm font-medium mb-2">
             Wellness Goals or General Health Interests
           </label>
-          <textarea 
-            className="w-full p-3 border rounded-md h-24 resize-none" 
-            placeholder="Describe your wellness goals or general health interests (e.g., energy levels, preventive screening, fitness optimization, general wellness check)..." 
-            value={symptoms} 
-            onChange={e => setSymptoms(e.target.value)} 
+          <textarea
+            className="w-full p-3 border rounded-md h-24 resize-none"
+            placeholder="Describe your wellness goals or general health interests (e.g., energy levels, preventive screening, fitness optimization, general wellness check)..."
+            value={symptoms}
+            onChange={(e) => setSymptoms(e.target.value)}
           />
           <p className="text-xs text-muted-foreground mt-1">
-            Note: For specific symptoms or medical concerns, please consult your healthcare professional directly.
+            Note: For specific symptoms or medical concerns, please consult your
+            healthcare professional directly.
           </p>
         </div>
 
@@ -480,11 +565,20 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 animate-in fade-in slide-in-from-top-2 duration-300">
             <div>
               <label className="block text-sm font-medium mb-2">Age</label>
-              <Input type="number" placeholder="Enter your age" value={age} onChange={e => setAge(e.target.value)} />
+              <Input
+                type="number"
+                placeholder="Enter your age"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+              />
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">Gender</label>
-              <select className="w-full p-2 border rounded-md" value={gender} onChange={e => setGender(e.target.value)}>
+              <select
+                className="w-full p-2 border rounded-md"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+              >
                 <option value="">Select gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
@@ -492,8 +586,14 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Collection Preference</label>
-              <select className="w-full p-2 border rounded-md" value={methodPreference} onChange={e => setMethodPreference(e.target.value)}>
+              <label className="block text-sm font-medium mb-2">
+                Collection Preference
+              </label>
+              <select
+                className="w-full p-2 border rounded-md"
+                value={methodPreference}
+                onChange={(e) => setMethodPreference(e.target.value)}
+              >
                 <option value="">No preference</option>
                 <option value="home">At-home kit</option>
                 <option value="clinic">Clinic visit</option>
@@ -503,7 +603,11 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
           </div>
         )}
 
-        <Button onClick={generateRecommendations} disabled={isLoading || !symptoms.trim()} className="w-full">
+        <Button
+          onClick={generateRecommendations}
+          disabled={isLoading || !symptoms.trim()}
+          className="w-full"
+        >
           {isLoading ? (
             <>
               <Sparkles className="h-4 w-4 mr-2 animate-spin" />

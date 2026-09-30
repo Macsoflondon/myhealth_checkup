@@ -8,7 +8,8 @@ export const Route = createFileRoute("/wellness")({
   head: () =>
     buildRouteHead({
       title: "Wellness Blood Tests UK | Compare",
-      description: "Compare general wellness and preventative health panels from UK providers, with full biomarker lists and transparent pricing.",
+      description:
+        "Compare general wellness and preventative health panels from UK providers, with full biomarker lists and transparent pricing.",
       path: "/wellness",
     }),
   component: WellnessPage,

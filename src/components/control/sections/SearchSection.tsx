@@ -21,9 +21,21 @@ export default function SearchSection() {
     setLoading(true);
     try {
       const [tests, providers, logs] = await Promise.all([
-        supabase.from("tests_master").select("id,test_name,category").ilike("test_name", `%${q}%`).limit(10),
-        supabase.from("provider_tests").select("id,provider_id,test_name").ilike("test_name", `%${q}%`).limit(10),
-        supabase.from("audit_logs").select("id,action,table_name,created_at").ilike("action", `%${q}%`).limit(10),
+        supabase
+          .from("tests_master")
+          .select("id,test_name,category")
+          .ilike("test_name", `%${q}%`)
+          .limit(10),
+        supabase
+          .from("provider_tests")
+          .select("id,provider_id,test_name")
+          .ilike("test_name", `%${q}%`)
+          .limit(10),
+        supabase
+          .from("audit_logs")
+          .select("id,action,table_name,created_at")
+          .ilike("action", `%${q}%`)
+          .limit(10),
       ]);
       setResults([
         { table: "tests_master", rows: tests.data ?? [] },
@@ -36,7 +48,11 @@ export default function SearchSection() {
   };
 
   return (
-    <SectionShell title="Global Search" description="Search across tests, providers and logs." status="stub">
+    <SectionShell
+      title="Global Search"
+      description="Search across tests, providers and logs."
+      status="stub"
+    >
       <div className="flex gap-2 mb-6">
         <Input
           placeholder="Search…"
@@ -54,7 +70,9 @@ export default function SearchSection() {
             <div className="text-xs uppercase tracking-wider text-muted-foreground font-medium mb-2">
               {r.table} · {r.rows.length} result{r.rows.length === 1 ? "" : "s"}
             </div>
-            <pre className="text-[11px] overflow-x-auto">{JSON.stringify(r.rows, null, 2)}</pre>
+            <pre className="text-[11px] overflow-x-auto">
+              {JSON.stringify(r.rows, null, 2)}
+            </pre>
           </div>
         ))}
       </div>

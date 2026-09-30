@@ -17,8 +17,8 @@ const CollectionPagination = ({
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 
   return (
-    <nav 
-      aria-label="Pagination" 
+    <nav
+      aria-label="Pagination"
       className="flex items-center justify-center gap-2 mt-10"
     >
       {/* Previous Button */}

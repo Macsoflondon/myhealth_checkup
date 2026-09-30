@@ -3,7 +3,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 // Persistent shared rate limiter: 5 requests per client_key per 60 seconds
@@ -71,35 +72,49 @@ const MAX_STRING_LENGTH = 500;
 const MAX_DESCRIPTION_LENGTH = 2000;
 
 function sanitizeString(str: string, maxLength: number): string {
-  if (typeof str !== 'string') return '';
+  if (typeof str !== "string") return "";
   // Remove potential prompt injection patterns and limit length
   // eslint-disable-next-line no-control-regex -- intentionally strips control characters from user input
-  return str.slice(0, maxLength).replace(/[\x00-\x1F\x7F]/g, '');
+  return str.slice(0, maxLength).replace(/[\x00-\x1F\x7F]/g, "");
 }
 
 function validateTest(test: unknown): test is Test {
-  if (!test || typeof test !== 'object') return false;
+  if (!test || typeof test !== "object") return false;
   const t = test as Record<string, unknown>;
-  
+
   return (
-    typeof t.id === 'string' && t.id.length <= 100 &&
-    typeof t.name === 'string' && t.name.length <= MAX_STRING_LENGTH &&
-    typeof t.provider === 'string' && t.provider.length <= 100 &&
-    typeof t.price === 'number' && t.price >= 0 && t.price <= 10000 &&
-    typeof t.category === 'string' && t.category.length <= 100 &&
-    (t.description === undefined || (typeof t.description === 'string' && t.description.length <= MAX_DESCRIPTION_LENGTH)) &&
-    (t.features === undefined || typeof t.features === 'object')
+    typeof t.id === "string" &&
+    t.id.length <= 100 &&
+    typeof t.name === "string" &&
+    t.name.length <= MAX_STRING_LENGTH &&
+    typeof t.provider === "string" &&
+    t.provider.length <= 100 &&
+    typeof t.price === "number" &&
+    t.price >= 0 &&
+    t.price <= 10000 &&
+    typeof t.category === "string" &&
+    t.category.length <= 100 &&
+    (t.description === undefined ||
+      (typeof t.description === "string" &&
+        t.description.length <= MAX_DESCRIPTION_LENGTH)) &&
+    (t.features === undefined || typeof t.features === "object")
   );
 }
 
 function validatePreferences(prefs: unknown): prefs is Preferences {
-  if (!prefs || typeof prefs !== 'object') return false;
+  if (!prefs || typeof prefs !== "object") return false;
   const p = prefs as Record<string, unknown>;
-  
+
   return (
-    typeof p.price === 'number' && p.price >= 1 && p.price <= 5 &&
-    typeof p.speed === 'number' && p.speed >= 1 && p.speed <= 5 &&
-    typeof p.comprehensiveness === 'number' && p.comprehensiveness >= 1 && p.comprehensiveness <= 5
+    typeof p.price === "number" &&
+    p.price >= 1 &&
+    p.price <= 5 &&
+    typeof p.speed === "number" &&
+    p.speed >= 1 &&
+    p.speed <= 5 &&
+    typeof p.comprehensiveness === "number" &&
+    p.comprehensiveness >= 1 &&
+    p.comprehensiveness <= 5
   );
 }
 
@@ -109,7 +124,8 @@ serve(async (req) => {
   }
 
   // Persistent shared rate limit, keyed by authenticated user when present, otherwise client IP
-  const clientIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const clientIp =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
   const rateClient = createClient(supabaseUrl, supabaseServiceKey);
@@ -117,41 +133,60 @@ serve(async (req) => {
   const authHeader = req.headers.get("Authorization");
   if (authHeader?.startsWith("Bearer ")) {
     try {
-      const { data: userData } = await rateClient.auth.getUser(authHeader.replace("Bearer ", ""));
+      const { data: userData } = await rateClient.auth.getUser(
+        authHeader.replace("Bearer ", ""),
+      );
       if (userData?.user?.id) clientKey = `user:${userData.user.id}`;
-    } catch (_) { /* fall back to IP */ }
+    } catch (_) {
+      /* fall back to IP */
+    }
   }
-  const allowed = await checkPersistentRateLimit(rateClient, "test-recommendations", clientKey);
+  const allowed = await checkPersistentRateLimit(
+    rateClient,
+    "test-recommendations",
+    clientKey,
+  );
   if (!allowed) {
     return new Response(
-      JSON.stringify({ error: "Too many requests. Please wait a minute before trying again." }),
-      { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      JSON.stringify({
+        error: "Too many requests. Please wait a minute before trying again.",
+      }),
+      {
+        status: 429,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
     );
   }
 
   try {
     const body = await req.json();
-    const { tests, preferences } = body as { tests: unknown[], preferences: unknown };
+    const { tests, preferences } = body as {
+      tests: unknown[];
+      preferences: unknown;
+    };
 
     // Validate input structure
     if (!Array.isArray(tests)) {
-      return new Response(
-        JSON.stringify({ error: "Tests must be an array" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "Tests must be an array" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     if (tests.length === 0) {
-      return new Response(
-        JSON.stringify({ error: "No tests provided" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "No tests provided" }), {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     if (tests.length > MAX_TESTS) {
       return new Response(
         JSON.stringify({ error: `Maximum ${MAX_TESTS} tests allowed` }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
@@ -159,10 +194,16 @@ serve(async (req) => {
     const validatedTests: Test[] = [];
     for (const test of tests) {
       if (!validateTest(test)) {
-        console.error('Invalid test format:', JSON.stringify(test).slice(0, 200));
+        console.error(
+          "Invalid test format:",
+          JSON.stringify(test).slice(0, 200),
+        );
         return new Response(
           JSON.stringify({ error: "Invalid test format in request" }),
-          { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          {
+            status: 400,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
         );
       }
       validatedTests.push(test);
@@ -171,8 +212,14 @@ serve(async (req) => {
     // Validate preferences
     if (!validatePreferences(preferences)) {
       return new Response(
-        JSON.stringify({ error: "Invalid preferences format. Price, speed, and comprehensiveness must be numbers between 1-5" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        JSON.stringify({
+          error:
+            "Invalid preferences format. Price, speed, and comprehensiveness must be numbers between 1-5",
+        }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
@@ -182,15 +229,19 @@ serve(async (req) => {
     }
 
     // Build a detailed prompt for the AI with sanitized inputs
-    const testsDescription = validatedTests.map((test, idx) => `
+    const testsDescription = validatedTests
+      .map(
+        (test, idx) => `
 Test ${idx + 1}: ${sanitizeString(test.name, 200)}
 - Provider: ${sanitizeString(test.provider, 100)}
 - Price: £${test.price}
-- Turnaround Time: ${sanitizeString(test.features?.turnaround || 'Unknown', 50)}
-- Sample Collection: ${sanitizeString(test.features?.collection || 'Unknown', 50)}
-- Key Biomarkers: ${sanitizeString(test.features?.bioMarkers || 'Multiple biomarkers', 200)}
-- Description: ${sanitizeString(test.description || 'Comprehensive health screening', 300)}
-`).join('\n');
+- Turnaround Time: ${sanitizeString(test.features?.turnaround || "Unknown", 50)}
+- Sample Collection: ${sanitizeString(test.features?.collection || "Unknown", 50)}
+- Key Biomarkers: ${sanitizeString(test.features?.bioMarkers || "Multiple biomarkers", 200)}
+- Description: ${sanitizeString(test.description || "Comprehensive health screening", 300)}
+`,
+      )
+      .join("\n");
 
     const preferencesDescription = `
 User Preferences (1-5 scale, 5 = highest priority):
@@ -219,36 +270,51 @@ ${preferencesDescription}
 
 Provide a clear recommendation with reasoning.`;
 
-    console.log(`Processing recommendation request with ${validatedTests.length} tests`);
+    console.log(
+      `Processing recommendation request with ${validatedTests.length} tests`,
+    );
 
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
+    const response = await fetch(
+      "https://ai.gateway.lovable.dev/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash",
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userPrompt },
+          ],
+          temperature: 0.7,
+          max_tokens: 500,
+        }),
       },
-      body: JSON.stringify({
-        model: "google/gemini-2.5-flash",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt }
-        ],
-        temperature: 0.7,
-        max_tokens: 500,
-      }),
-    });
+    );
 
     if (!response.ok) {
       if (response.status === 429) {
         return new Response(
-          JSON.stringify({ error: "Rate limit exceeded. Please try again in a moment." }),
-          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          JSON.stringify({
+            error: "Rate limit exceeded. Please try again in a moment.",
+          }),
+          {
+            status: 429,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
         );
       }
       if (response.status === 402) {
         return new Response(
-          JSON.stringify({ error: "AI credits exhausted. Please add credits to continue." }),
-          { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          JSON.stringify({
+            error: "AI credits exhausted. Please add credits to continue.",
+          }),
+          {
+            status: 402,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
         );
       }
       const errorText = await response.text();
@@ -257,24 +323,45 @@ Provide a clear recommendation with reasoning.`;
     }
 
     const data = await response.json();
-    const recommendation = data.choices?.[0]?.message?.content || "Unable to generate recommendation";
+    const recommendation =
+      data.choices?.[0]?.message?.content ||
+      "Unable to generate recommendation";
 
     // Calculate simple scores for each test based on preferences
-    const scoredTests = validatedTests.map(test => {
-      const priceScore = preferences.price * (1 - (test.price / Math.max(...validatedTests.map(t => t.price))));
-      
-      const turnaroundDays = parseTurnaroundDays(test.features?.turnaround || '');
-      const speedScore = preferences.speed * (1 - (turnaroundDays / Math.max(...validatedTests.map(t => parseTurnaroundDays(t.features?.turnaround || '')))));
-      
-      const biomarkerCount = test.features?.bioMarkers?.split(',').length || 5;
-      const comprehensivenessScore = preferences.comprehensiveness * (biomarkerCount / Math.max(...validatedTests.map(t => (t.features?.bioMarkers?.split(',').length || 5))));
-      
+    const scoredTests = validatedTests.map((test) => {
+      const priceScore =
+        preferences.price *
+        (1 - test.price / Math.max(...validatedTests.map((t) => t.price)));
+
+      const turnaroundDays = parseTurnaroundDays(
+        test.features?.turnaround || "",
+      );
+      const speedScore =
+        preferences.speed *
+        (1 -
+          turnaroundDays /
+            Math.max(
+              ...validatedTests.map((t) =>
+                parseTurnaroundDays(t.features?.turnaround || ""),
+              ),
+            ));
+
+      const biomarkerCount = test.features?.bioMarkers?.split(",").length || 5;
+      const comprehensivenessScore =
+        preferences.comprehensiveness *
+        (biomarkerCount /
+          Math.max(
+            ...validatedTests.map(
+              (t) => t.features?.bioMarkers?.split(",").length || 5,
+            ),
+          ));
+
       const totalScore = priceScore + speedScore + comprehensivenessScore;
-      
+
       return {
         testId: test.id,
         testName: test.name,
-        score: totalScore
+        score: totalScore,
       };
     });
 
@@ -286,29 +373,26 @@ Provide a clear recommendation with reasoning.`;
       JSON.stringify({
         recommendation,
         topChoice: topRecommendation,
-        allScores: scoredTests
+        allScores: scoredTests,
       }),
       {
         headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      },
     );
   } catch (error) {
     console.error("test-recommendations error:", error);
-    return new Response(
-      JSON.stringify({ error: "Internal server error" }),
-      {
-        status: 500,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
-    );
+    return new Response(JSON.stringify({ error: "Internal server error" }), {
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   }
 });
 
 function parseTurnaroundDays(turnaround: string): number {
   const lower = turnaround.toLowerCase();
-  if (lower.includes('same day') || lower.includes('24h')) return 1;
-  if (lower.includes('48') || lower.includes('2 day')) return 2;
-  if (lower.includes('3') || lower.includes('5 day')) return 5;
-  if (lower.includes('week') || lower.includes('7 day')) return 7;
+  if (lower.includes("same day") || lower.includes("24h")) return 1;
+  if (lower.includes("48") || lower.includes("2 day")) return 2;
+  if (lower.includes("3") || lower.includes("5 day")) return 5;
+  if (lower.includes("week") || lower.includes("7 day")) return 7;
   return 14;
 }

@@ -4,10 +4,13 @@ import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 import { AdminRoute } from "@/components/auth/AdminRoute";
 import { AdminShell } from "@/components/admin/AdminShell";
 
-const AdminTestDashboardPage = lazy(() => import("@/pages/AdminTestDashboardPage"));
+const AdminTestDashboardPage = lazy(
+  () => import("@/pages/AdminTestDashboardPage"),
+);
 
 export const Route = createFileRoute("/admin/test-dashboard")({
-  head: () => buildPrivateRouteHead("Test Dashboard | Admin | myhealth checkup"),
+  head: () =>
+    buildPrivateRouteHead("Test Dashboard | Admin | myhealth checkup"),
   component: () => (
     <AdminRoute>
       <AdminShell>

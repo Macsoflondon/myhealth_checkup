@@ -1,8 +1,8 @@
 // Shared FHIR R4 builders + Zod contracts for interoperability validation.
 // Used by the fhir-export edge function and by unit tests (Deno + Vitest via npm:zod).
-import { z } from 'npm:zod@3.23.8';
+import { z } from "npm:zod@3.23.8";
 
-export const FHIR_BASE_URL = 'https://myhealthcheckup.co.uk/fhir';
+export const FHIR_BASE_URL = "https://myhealthcheckup.co.uk/fhir";
 
 // -- Zod contracts (subset of FHIR R4 relevant to blood-test exports) --
 const coding = z.object({
@@ -26,16 +26,29 @@ const quantity = z.object({
 });
 
 export const PatientResource = z.object({
-  resourceType: z.literal('Patient'),
+  resourceType: z.literal("Patient"),
   id: z.string().uuid(),
-  identifier: z.array(z.object({ system: z.string(), value: z.string() })).min(1),
+  identifier: z
+    .array(z.object({ system: z.string(), value: z.string() }))
+    .min(1),
   active: z.boolean(),
 });
 
 export const DiagnosticReportResource = z.object({
-  resourceType: z.literal('DiagnosticReport'),
+  resourceType: z.literal("DiagnosticReport"),
   id: z.string(),
-  status: z.enum(['registered', 'partial', 'preliminary', 'final', 'amended', 'corrected', 'appended', 'cancelled', 'entered-in-error', 'unknown']),
+  status: z.enum([
+    "registered",
+    "partial",
+    "preliminary",
+    "final",
+    "amended",
+    "corrected",
+    "appended",
+    "cancelled",
+    "entered-in-error",
+    "unknown",
+  ]),
   category: z.array(codeableConcept).optional(),
   code: codeableConcept,
   subject: reference,
@@ -47,39 +60,56 @@ export const DiagnosticReportResource = z.object({
 });
 
 export const ObservationResource = z.object({
-  resourceType: z.literal('Observation'),
+  resourceType: z.literal("Observation"),
   id: z.string(),
-  status: z.enum(['registered', 'preliminary', 'final', 'amended', 'corrected', 'cancelled', 'entered-in-error', 'unknown']),
+  status: z.enum([
+    "registered",
+    "preliminary",
+    "final",
+    "amended",
+    "corrected",
+    "cancelled",
+    "entered-in-error",
+    "unknown",
+  ]),
   category: z.array(codeableConcept).optional(),
   code: codeableConcept,
   subject: reference,
   effectiveDateTime: z.string(),
   valueQuantity: quantity.optional(),
-  referenceRange: z.array(z.object({
-    low: quantity.optional(),
-    high: quantity.optional(),
-  })).optional(),
+  referenceRange: z
+    .array(
+      z.object({
+        low: quantity.optional(),
+        high: quantity.optional(),
+      }),
+    )
+    .optional(),
   interpretation: z.array(codeableConcept).optional(),
 });
 
-const anyResource = z.discriminatedUnion('resourceType', [
+const anyResource = z.discriminatedUnion("resourceType", [
   PatientResource,
   DiagnosticReportResource,
   ObservationResource,
 ]);
 
 export const BundleSchema = z.object({
-  resourceType: z.literal('Bundle'),
-  type: z.enum(['collection', 'batch', 'transaction', 'searchset', 'document']),
+  resourceType: z.literal("Bundle"),
+  type: z.enum(["collection", "batch", "transaction", "searchset", "document"]),
   timestamp: z.string(),
-  meta: z.object({
-    profile: z.array(z.string()).optional(),
-    tag: z.array(coding).optional(),
-  }).optional(),
-  entry: z.array(z.object({
-    fullUrl: z.string(),
-    resource: anyResource,
-  })),
+  meta: z
+    .object({
+      profile: z.array(z.string()).optional(),
+      tag: z.array(coding).optional(),
+    })
+    .optional(),
+  entry: z.array(
+    z.object({
+      fullUrl: z.string(),
+      resource: anyResource,
+    }),
+  ),
 });
 
 export type Bundle = z.infer<typeof BundleSchema>;
@@ -108,24 +138,30 @@ export interface UploadRow {
 
 function statusInterpretation(status: string | null) {
   const map: Record<string, { code: string; display: string }> = {
-    normal: { code: 'N', display: 'Normal' },
-    low: { code: 'L', display: 'Low' },
-    high: { code: 'H', display: 'High' },
-    critical: { code: 'AA', display: 'Critical abnormal' },
+    normal: { code: "N", display: "Normal" },
+    low: { code: "L", display: "Low" },
+    high: { code: "H", display: "High" },
+    critical: { code: "AA", display: "Critical abnormal" },
   };
-  return map[(status ?? '').toLowerCase()] ?? null;
+  return map[(status ?? "").toLowerCase()] ?? null;
 }
 
-export function buildBundle(userId: string, uploads: UploadRow[], readings: BiomarkerRow[]): Bundle {
+export function buildBundle(
+  userId: string,
+  uploads: UploadRow[],
+  readings: BiomarkerRow[],
+): Bundle {
   const now = new Date().toISOString();
   const patientRef = `Patient/${userId}`;
 
   const patientEntry = {
     fullUrl: `urn:uuid:${userId}`,
     resource: {
-      resourceType: 'Patient' as const,
+      resourceType: "Patient" as const,
       id: userId,
-      identifier: [{ system: 'https://myhealthcheckup.co.uk/patient-id', value: userId }],
+      identifier: [
+        { system: "https://myhealthcheckup.co.uk/patient-id", value: userId },
+      ],
       active: true,
     },
   };
@@ -135,17 +171,21 @@ export function buildBundle(userId: string, uploads: UploadRow[], readings: Biom
     return {
       fullUrl: `urn:uuid:${u.id}`,
       resource: {
-        resourceType: 'DiagnosticReport' as const,
+        resourceType: "DiagnosticReport" as const,
         id: u.id,
-        status: 'final' as const,
-        category: [{
-          coding: [{
-            system: 'http://terminology.hl7.org/CodeSystem/v2-0074',
-            code: 'LAB',
-            display: 'Laboratory',
-          }],
-        }],
-        code: { text: u.test_name ?? 'Uploaded blood test' },
+        status: "final" as const,
+        category: [
+          {
+            coding: [
+              {
+                system: "http://terminology.hl7.org/CodeSystem/v2-0074",
+                code: "LAB",
+                display: "Laboratory",
+              },
+            ],
+          },
+        ],
+        code: { text: u.test_name ?? "Uploaded blood test" },
         subject: { reference: patientRef },
         effectiveDateTime: u.test_date ?? u.uploaded_at ?? now,
         issued: u.uploaded_at ?? now,
@@ -161,45 +201,82 @@ export function buildBundle(userId: string, uploads: UploadRow[], readings: Biom
     return {
       fullUrl: `urn:uuid:${r.id}`,
       resource: {
-        resourceType: 'Observation' as const,
+        resourceType: "Observation" as const,
         id: r.id,
-        status: 'final' as const,
-        category: [{
-          coding: [{
-            system: 'http://terminology.hl7.org/CodeSystem/observation-category',
-            code: 'laboratory',
-            display: 'Laboratory',
-          }],
-        }],
+        status: "final" as const,
+        category: [
+          {
+            coding: [
+              {
+                system:
+                  "http://terminology.hl7.org/CodeSystem/observation-category",
+                code: "laboratory",
+                display: "Laboratory",
+              },
+            ],
+          },
+        ],
         code: { text: r.biomarker_name },
         subject: { reference: patientRef },
         effectiveDateTime: r.recorded_at ?? now,
-        valueQuantity: r.value !== null ? {
-          value: Number(r.value),
-          unit: r.unit ?? undefined,
-        } : undefined,
-        referenceRange: (r.reference_range_min !== null || r.reference_range_max !== null) ? [{
-          low: r.reference_range_min !== null ? { value: Number(r.reference_range_min), unit: r.unit ?? undefined } : undefined,
-          high: r.reference_range_max !== null ? { value: Number(r.reference_range_max), unit: r.unit ?? undefined } : undefined,
-        }] : undefined,
-        interpretation: interp ? [{
-          coding: [{
-            system: 'http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation',
-            code: interp.code,
-            display: interp.display,
-          }],
-        }] : undefined,
+        valueQuantity:
+          r.value !== null
+            ? {
+                value: Number(r.value),
+                unit: r.unit ?? undefined,
+              }
+            : undefined,
+        referenceRange:
+          r.reference_range_min !== null || r.reference_range_max !== null
+            ? [
+                {
+                  low:
+                    r.reference_range_min !== null
+                      ? {
+                          value: Number(r.reference_range_min),
+                          unit: r.unit ?? undefined,
+                        }
+                      : undefined,
+                  high:
+                    r.reference_range_max !== null
+                      ? {
+                          value: Number(r.reference_range_max),
+                          unit: r.unit ?? undefined,
+                        }
+                      : undefined,
+                },
+              ]
+            : undefined,
+        interpretation: interp
+          ? [
+              {
+                coding: [
+                  {
+                    system:
+                      "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    code: interp.code,
+                    display: interp.display,
+                  },
+                ],
+              },
+            ]
+          : undefined,
       },
     };
   });
 
   return {
-    resourceType: 'Bundle',
-    type: 'collection',
+    resourceType: "Bundle",
+    type: "collection",
     timestamp: now,
     meta: {
-      profile: ['http://hl7.org/fhir/StructureDefinition/Bundle'],
-      tag: [{ system: 'https://myhealthcheckup.co.uk/tags', code: 'patient-self-export' }],
+      profile: ["http://hl7.org/fhir/StructureDefinition/Bundle"],
+      tag: [
+        {
+          system: "https://myhealthcheckup.co.uk/tags",
+          code: "patient-self-export",
+        },
+      ],
     },
     entry: [patientEntry, ...reportEntries, ...observationEntries],
   };
@@ -209,7 +286,10 @@ export function buildBundle(userId: string, uploads: UploadRow[], readings: Biom
 export function validateBundle(bundle: unknown): Bundle {
   const parsed = BundleSchema.safeParse(bundle);
   if (!parsed.success) {
-    const issues = parsed.error.issues.slice(0, 10).map((i) => `${i.path.join('.') || '(root)'}: ${i.message}`).join('; ');
+    const issues = parsed.error.issues
+      .slice(0, 10)
+      .map((i) => `${i.path.join(".") || "(root)"}: ${i.message}`)
+      .join("; ");
     throw new Error(`FHIR Bundle validation failed: ${issues}`);
   }
   return parsed.data;
@@ -219,45 +299,61 @@ export function validateBundle(bundle: unknown): Bundle {
 export function buildCapabilityStatement(baseUrl: string = FHIR_BASE_URL) {
   const now = new Date().toISOString();
   return {
-    resourceType: 'CapabilityStatement',
-    status: 'active',
+    resourceType: "CapabilityStatement",
+    status: "active",
     date: now,
-    publisher: 'MYHEALTHCHECKUP LTD',
-    kind: 'instance',
+    publisher: "MYHEALTHCHECKUP LTD",
+    kind: "instance",
     software: {
-      name: 'myhealth checkup FHIR Export',
-      version: '1.1.0',
+      name: "myhealth checkup FHIR Export",
+      version: "1.1.0",
     },
     implementation: {
-      description: 'Patient-initiated FHIR R4 export of self-uploaded blood-test results (GDPR Art. 20 portability).',
+      description:
+        "Patient-initiated FHIR R4 export of self-uploaded blood-test results (GDPR Art. 20 portability).",
       url: baseUrl,
     },
-    fhirVersion: '4.0.1',
-    format: ['application/fhir+json'],
-    rest: [{
-      mode: 'server',
-      security: {
-        cors: true,
-        service: [{
-          coding: [{
-            system: 'http://terminology.hl7.org/CodeSystem/restful-security-service',
-            code: 'OAuth',
-            display: 'OAuth (Supabase JWT)',
-          }],
-        }],
-      },
-      resource: [
-        { type: 'Patient', interaction: [{ code: 'read' }] },
-        { type: 'DiagnosticReport', interaction: [{ code: 'read' }, { code: 'search-type' }] },
-        { type: 'Observation', interaction: [{ code: 'read' }, { code: 'search-type' }] },
-      ],
-      operation: [
-        {
-          name: 'export',
-          definition: 'http://hl7.org/fhir/uv/bulkdata/OperationDefinition/patient-export',
-          documentation: 'Async patient-scoped bulk export. Returns 202 + Content-Location header pointing to a polling URL.',
+    fhirVersion: "4.0.1",
+    format: ["application/fhir+json"],
+    rest: [
+      {
+        mode: "server",
+        security: {
+          cors: true,
+          service: [
+            {
+              coding: [
+                {
+                  system:
+                    "http://terminology.hl7.org/CodeSystem/restful-security-service",
+                  code: "OAuth",
+                  display: "OAuth (Supabase JWT)",
+                },
+              ],
+            },
+          ],
         },
-      ],
-    }],
+        resource: [
+          { type: "Patient", interaction: [{ code: "read" }] },
+          {
+            type: "DiagnosticReport",
+            interaction: [{ code: "read" }, { code: "search-type" }],
+          },
+          {
+            type: "Observation",
+            interaction: [{ code: "read" }, { code: "search-type" }],
+          },
+        ],
+        operation: [
+          {
+            name: "export",
+            definition:
+              "http://hl7.org/fhir/uv/bulkdata/OperationDefinition/patient-export",
+            documentation:
+              "Async patient-scoped bulk export. Returns 202 + Content-Location header pointing to a polling URL.",
+          },
+        ],
+      },
+    ],
   };
 }

@@ -1,25 +1,49 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from "react";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
-import { useSearchParams, Link } from '@/lib/router-compat';
-import { Helmet } from 'react-helmet-async';
-import { Shield, Activity, Heart, Target, Microscope, AlertCircle, Plus, Minus, ExternalLink, BookOpen } from 'lucide-react';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import { useSearchParams, Link } from "@/lib/router-compat";
+import { Helmet } from "react-helmet-async";
+import {
+  Shield,
+  Activity,
+  Heart,
+  Target,
+  Microscope,
+  AlertCircle,
+  Plus,
+  Minus,
+  ExternalLink,
+  BookOpen,
+} from "lucide-react";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Skeleton } from '@/components/ui/skeleton';
-import { CancerScreeningDisclaimer } from '@/components/compliance/CancerScreeningDisclaimer';
-import { CancerBiomarkerGroup } from '@/components/compare/CancerBiomarkerGroup';
-import { EnhancedComparisonTable } from '@/components/compare/EnhancedComparisonTable';
-import { SaveComparisonDialog } from '@/components/compare/SaveComparisonDialog';
-import { useEnhancedComparison } from '@/hooks/useEnhancedComparison';
-import { CANCER_TYPES, CANCER_SEARCH_TERMS, getCancerTypeById } from '@/data/compare/cancerBiomarkers';
-import { supabase } from '@/integrations/supabase/client';
-import { getProviderLogo as getProviderLogoFn, PROVIDER_DETAILS } from '@/constants/providers';
-import { EnhancedTestData } from '@/types/comparison';
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
+import { CancerScreeningDisclaimer } from "@/components/compliance/CancerScreeningDisclaimer";
+import { CancerBiomarkerGroup } from "@/components/compare/CancerBiomarkerGroup";
+import { EnhancedComparisonTable } from "@/components/compare/EnhancedComparisonTable";
+import { SaveComparisonDialog } from "@/components/compare/SaveComparisonDialog";
+import { useEnhancedComparison } from "@/hooks/useEnhancedComparison";
+import {
+  CANCER_TYPES,
+  CANCER_SEARCH_TERMS,
+  getCancerTypeById,
+} from "@/data/compare/cancerBiomarkers";
+import { supabase } from "@/integrations/supabase/client";
+import {
+  getProviderLogo as getProviderLogoFn,
+  PROVIDER_DETAILS,
+} from "@/constants/providers";
+import { EnhancedTestData } from "@/types/comparison";
 import PageBanner from "@/components/sections/PageBanner";
 
 const CANCER_TYPE_ICONS: Record<string, React.ElementType> = {
@@ -36,9 +60,11 @@ export default function CancerComparisonPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [cancerTests, setCancerTests] = useState<EnhancedTestData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [activeCancerType, setActiveCancerType] = useState(searchParams.get('type') || 'all');
-  const [activeTab, setActiveTab] = useState<string>('browse');
-  
+  const [activeCancerType, setActiveCancerType] = useState(
+    searchParams.get("type") || "all",
+  );
+  const [activeTab, setActiveTab] = useState<string>("browse");
+
   const {
     selectedTests,
     addToComparison,
@@ -55,23 +81,28 @@ export default function CancerComparisonPage() {
       setIsLoading(true);
       try {
         const { data, error } = await supabase
-          .from('provider_tests')
-          .select('*')
-          .eq('is_active', true);
+          .from("provider_tests")
+          .select("*")
+          .eq("is_active", true);
 
         if (error) throw error;
 
         // Filter for cancer-related tests
-        const cancerRelatedTests = (data || []).filter(test => {
-          const searchText = `${test.test_name} ${test.description || ''} ${test.category || ''}`.toLowerCase();
-          return CANCER_SEARCH_TERMS.some(term => searchText.includes(term.toLowerCase()));
+        const cancerRelatedTests = (data || []).filter((test) => {
+          const searchText =
+            `${test.test_name} ${test.description || ""} ${test.category || ""}`.toLowerCase();
+          return CANCER_SEARCH_TERMS.some((term) =>
+            searchText.includes(term.toLowerCase()),
+          );
         });
 
         // Transform to enhanced format
-        const enhanced = cancerRelatedTests.map(test => transformToEnhanced(test));
+        const enhanced = cancerRelatedTests.map((test) =>
+          transformToEnhanced(test),
+        );
         setCancerTests(enhanced);
       } catch (err) {
-        console.error('Error fetching cancer tests:', err);
+        console.error("Error fetching cancer tests:", err);
       } finally {
         setIsLoading(false);
       }
@@ -82,14 +113,16 @@ export default function CancerComparisonPage() {
 
   // Filter tests by cancer type
   const filteredTests = useMemo(() => {
-    if (activeCancerType === 'all') return cancerTests;
-    
+    if (activeCancerType === "all") return cancerTests;
+
     const cancerType = getCancerTypeById(activeCancerType);
     if (!cancerType) return cancerTests;
 
-    return cancerTests.filter(test => {
+    return cancerTests.filter((test) => {
       const searchText = `${test.testName} ${test.description}`.toLowerCase();
-      return cancerType.searchTerms.some(term => searchText.includes(term.toLowerCase()));
+      return cancerType.searchTerms.some((term) =>
+        searchText.includes(term.toLowerCase()),
+      );
     });
   }, [cancerTests, activeCancerType]);
 
@@ -98,11 +131,12 @@ export default function CancerComparisonPage() {
     setSearchParams({ type });
   };
 
-  const isTestSelected = (testId: string) => selectedTests.some(t => t.id === testId);
+  const isTestSelected = (testId: string) =>
+    selectedTests.some((t) => t.id === testId);
 
   const handleBookTest = (test: EnhancedTestData) => {
     if (test.url) {
-      window.open(test.url, '_blank', 'noopener,noreferrer');
+      window.open(test.url, "_blank", "noopener,noreferrer");
     }
   };
 
@@ -112,10 +146,8 @@ export default function CancerComparisonPage() {
 
   return (
     <>
-      <Helmet>
-      </Helmet>
+      <Helmet></Helmet>
 
-      
       <Header />
 
       {/* Disclaimer Banner */}
@@ -133,10 +165,14 @@ export default function CancerComparisonPage() {
             </Badge>
             {filteredTests.length > 0 && (
               <Badge variant="outline" className="text-white border-white/30">
-                {[...new Set(filteredTests.map((t) => t.providerId))].length} Trusted Providers
+                {[...new Set(filteredTests.map((t) => t.providerId))].length}{" "}
+                Trusted Providers
               </Badge>
             )}
-            <Link to="/cancer-biomarkers-reference" className="inline-flex items-center text-sm text-primary hover:underline">
+            <Link
+              to="/cancer-biomarkers-reference"
+              className="inline-flex items-center text-sm text-primary hover:underline"
+            >
               <BookOpen className="h-4 w-4 mr-1" />
               Biomarkers Reference Guide
             </Link>
@@ -148,13 +184,13 @@ export default function CancerComparisonPage() {
           <div className="container mx-auto px-4">
             <div className="overflow-x-auto">
               <div className="flex gap-2 py-4 min-w-max">
-                {CANCER_TYPES.map(type => {
+                {CANCER_TYPES.map((type) => {
                   const Icon = CANCER_TYPE_ICONS[type.id] || Shield;
                   const isActive = activeCancerType === type.id;
                   return (
                     <Button
                       key={type.id}
-                      variant={isActive ? 'default' : 'outline'}
+                      variant={isActive ? "default" : "outline"}
                       size="sm"
                       onClick={() => handleCancerTypeChange(type.id)}
                       className="flex items-center gap-2 whitespace-nowrap shrink-0"
@@ -175,7 +211,11 @@ export default function CancerComparisonPage() {
             <CancerScreeningDisclaimer variant="full" />
           </div>
 
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+          <Tabs
+            value={activeTab}
+            onValueChange={setActiveTab}
+            className="space-y-6"
+          >
             <TabsList className="grid w-full max-w-md grid-cols-3">
               <TabsTrigger value="browse">Browse Tests</TabsTrigger>
               <TabsTrigger value="compare" disabled={selectedTests.length < 2}>
@@ -192,9 +232,15 @@ export default function CancerComparisonPage() {
                   <CardContent className="py-4">
                     <div className="flex items-center justify-between flex-wrap gap-4">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-sm font-medium">Selected for comparison:</span>
-                        {selectedTests.map(test => (
-                          <Badge key={test.id} variant="secondary" className="flex items-center gap-1">
+                        <span className="text-sm font-medium">
+                          Selected for comparison:
+                        </span>
+                        {selectedTests.map((test) => (
+                          <Badge
+                            key={test.id}
+                            variant="secondary"
+                            className="flex items-center gap-1"
+                          >
                             {test.provider}
                             <button
                               onClick={() => removeFromComparison(test.id)}
@@ -206,11 +252,19 @@ export default function CancerComparisonPage() {
                         ))}
                       </div>
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm" onClick={clearComparison}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={clearComparison}
+                        >
                           Clear
                         </Button>
                         {selectedTests.length >= 2 && (
-                          <Button size="sm" className="whitespace-nowrap" onClick={() => setActiveTab('compare')}>
+                          <Button
+                            size="sm"
+                            className="whitespace-nowrap"
+                            onClick={() => setActiveTab("compare")}
+                          >
                             Compare {selectedTests.length} Tests
                           </Button>
                         )}
@@ -240,23 +294,24 @@ export default function CancerComparisonPage() {
                     <Microscope className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                     <h3 className="text-lg font-medium mb-2">No tests found</h3>
                     <p className="text-muted-foreground">
-                      No cancer screening tests match the current filter. Try selecting a different category.
+                      No cancer screening tests match the current filter. Try
+                      selecting a different category.
                     </p>
                   </CardContent>
                 </Card>
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {filteredTests.map(test => {
+                  {filteredTests.map((test) => {
                     const selected = isTestSelected(test.id);
                     return (
-                      <Card 
-                        key={test.id} 
-                        className={`transition-all ${selected ? 'ring-2 ring-primary' : ''}`}
+                      <Card
+                        key={test.id}
+                        className={`transition-all ${selected ? "ring-2 ring-primary" : ""}`}
                       >
                         <CardHeader className="pb-3">
                           <div className="flex items-center justify-between mb-2">
-                            <img 
-                              src={getProviderLogo(test.providerId)} 
+                            <img
+                              src={getProviderLogo(test.providerId)}
                               alt={test.provider}
                               loading="lazy"
                               decoding="async"
@@ -279,7 +334,8 @@ export default function CancerComparisonPage() {
                               {test.biomarkerCount} biomarkers
                             </Badge>
                             <Badge variant="outline">
-                              {test.turnaroundDays} day{test.turnaroundDays !== 1 ? 's' : ''}
+                              {test.turnaroundDays} day
+                              {test.turnaroundDays !== 1 ? "s" : ""}
                             </Badge>
                             {test.gpConsultationIncluded && (
                               <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
@@ -289,10 +345,14 @@ export default function CancerComparisonPage() {
                           </div>
                           <div className="flex gap-2">
                             <Button
-                              variant={selected ? 'destructive' : 'outline'}
+                              variant={selected ? "destructive" : "outline"}
                               size="sm"
                               className="flex-1"
-                              onClick={() => selected ? removeFromComparison(test.id) : addToComparison(test)}
+                              onClick={() =>
+                                selected
+                                  ? removeFromComparison(test.id)
+                                  : addToComparison(test)
+                              }
                               disabled={!selected && selectedTests.length >= 4}
                             >
                               {selected ? (
@@ -330,20 +390,22 @@ export default function CancerComparisonPage() {
               {comparisonResult && (
                 <>
                   <div className="flex justify-between items-center">
-                    <h2 className="text-xl font-semibold">Side-by-Side Comparison</h2>
-                    <SaveComparisonDialog 
+                    <h2 className="text-xl font-semibold">
+                      Side-by-Side Comparison
+                    </h2>
+                    <SaveComparisonDialog
                       onSave={saveComparison}
                       testCount={selectedTests.length}
                     />
                   </div>
-                  
+
                   <EnhancedComparisonTable
                     result={comparisonResult}
                     onRemoveTest={removeFromComparison}
                     onBookTest={handleBookTest}
                   />
 
-                  <CancerBiomarkerGroup 
+                  <CancerBiomarkerGroup
                     selectedTests={selectedTests}
                     cancerTypeFilter={activeCancerType}
                   />
@@ -353,16 +415,17 @@ export default function CancerComparisonPage() {
 
             {/* Biomarkers Tab */}
             <TabsContent value="biomarkers" className="space-y-6">
-              <CancerBiomarkerGroup 
+              <CancerBiomarkerGroup
                 selectedTests={selectedTests}
                 cancerTypeFilter={activeCancerType}
               />
-              
+
               {selectedTests.length === 0 && (
                 <Card className="border-dashed">
                   <CardContent className="py-8 text-center">
                     <p className="text-muted-foreground">
-                      Select tests from the "Browse Tests" tab to see detailed biomarker coverage comparison.
+                      Select tests from the "Browse Tests" tab to see detailed
+                      biomarker coverage comparison.
                     </p>
                   </CardContent>
                 </Card>

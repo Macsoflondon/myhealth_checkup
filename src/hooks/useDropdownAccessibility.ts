@@ -16,19 +16,19 @@ export const useDropdownAccessibility = ({
   // Get all focusable elements within the dropdown
   const getFocusableElements = useCallback(() => {
     if (!containerRef.current) return [];
-    
+
     const focusableSelectors = [
-      'a[href]',
-      'button:not([disabled])',
-      'input:not([disabled])',
-      'select:not([disabled])',
-      'textarea:not([disabled])',
+      "a[href]",
+      "button:not([disabled])",
+      "input:not([disabled])",
+      "select:not([disabled])",
+      "textarea:not([disabled])",
       '[tabindex]:not([tabindex="-1"])',
-    ].join(', ');
+    ].join(", ");
 
     return Array.from(
-      containerRef.current.querySelectorAll<HTMLElement>(focusableSelectors)
-    ).filter(el => el.offsetParent !== null); // Filter out hidden elements
+      containerRef.current.querySelectorAll<HTMLElement>(focusableSelectors),
+    ).filter((el) => el.offsetParent !== null); // Filter out hidden elements
   }, []);
 
   // Update focusable elements list
@@ -62,27 +62,27 @@ export const useDropdownAccessibility = ({
       const elements = focusableElementsRef.current;
 
       switch (e.key) {
-        case 'ArrowDown':
+        case "ArrowDown":
           e.preventDefault();
           focusElement(currentFocusIndexRef.current + 1);
           break;
 
-        case 'ArrowUp':
+        case "ArrowUp":
           e.preventDefault();
           focusElement(currentFocusIndexRef.current - 1);
           break;
 
-        case 'Home':
+        case "Home":
           e.preventDefault();
           focusElement(0);
           break;
 
-        case 'End':
+        case "End":
           e.preventDefault();
           focusElement(elements.length - 1);
           break;
 
-        case 'Tab': {
+        case "Tab": {
           // Trap focus within dropdown
           if (elements.length === 0) return;
 
@@ -109,7 +109,7 @@ export const useDropdownAccessibility = ({
           break;
       }
     },
-    [isOpen, focusElement, updateFocusableElements]
+    [isOpen, focusElement, updateFocusableElements],
   );
 
   // Track current focus index when focus changes
@@ -118,9 +118,9 @@ export const useDropdownAccessibility = ({
 
     const activeElement = document.activeElement;
     const index = focusableElementsRef.current.findIndex(
-      (el) => el === activeElement
+      (el) => el === activeElement,
     );
-    
+
     if (index !== -1) {
       currentFocusIndexRef.current = index;
     }
@@ -140,16 +140,20 @@ export const useDropdownAccessibility = ({
     const timer = setTimeout(() => {
       updateFocusableElements();
       const elements = focusableElementsRef.current;
-      
+
       // Try to find and focus the search input first
-      const searchInput = containerRef.current?.querySelector('input[type="text"]') as HTMLElement;
+      const searchInput = containerRef.current?.querySelector(
+        'input[type="text"]',
+      ) as HTMLElement;
       if (searchInput) {
         searchInput.focus();
-        const index = elements.findIndex(el => el === searchInput);
+        const index = elements.findIndex((el) => el === searchInput);
         currentFocusIndexRef.current = index !== -1 ? index : 0;
       } else if (elements.length > 0) {
         // Focus close button or first element
-        const closeButton = elements.find(el => el.getAttribute('aria-label') === 'Close dropdown');
+        const closeButton = elements.find(
+          (el) => el.getAttribute("aria-label") === "Close dropdown",
+        );
         if (closeButton) {
           closeButton.focus();
           currentFocusIndexRef.current = elements.indexOf(closeButton);
@@ -161,13 +165,13 @@ export const useDropdownAccessibility = ({
     }, 50);
 
     // Add event listeners
-    document.addEventListener('keydown', handleKeyDown);
-    containerRef.current?.addEventListener('focusin', handleFocusIn);
+    document.addEventListener("keydown", handleKeyDown);
+    containerRef.current?.addEventListener("focusin", handleFocusIn);
 
     return () => {
       clearTimeout(timer);
-      document.removeEventListener('keydown', handleKeyDown);
-      containerRef.current?.removeEventListener('focusin', handleFocusIn);
+      document.removeEventListener("keydown", handleKeyDown);
+      containerRef.current?.removeEventListener("focusin", handleFocusIn);
     };
   }, [isOpen, handleKeyDown, handleFocusIn, updateFocusableElements]);
 

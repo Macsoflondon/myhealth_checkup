@@ -24,8 +24,12 @@ describe("socWatchUtils", () => {
 
   it("masks user, email and IP identifiers for GDPR-safe displays", () => {
     expect(maskSensitiveIdentifier("192.168.10.22")).toBe("192.168.10.•••");
-    expect(maskSensitiveIdentifier("person@example.co.uk")).toBe("p•••@example.co.uk");
-    expect(maskSensitiveIdentifier("7f0d79ec-0db6-4a31-b2fd-bbb9dbd902da")).toBe("7f0d79…02da");
+    expect(maskSensitiveIdentifier("person@example.co.uk")).toBe(
+      "p•••@example.co.uk",
+    );
+    expect(
+      maskSensitiveIdentifier("7f0d79ec-0db6-4a31-b2fd-bbb9dbd902da"),
+    ).toBe("7f0d79…02da");
   });
 
   it("formats timestamps using UK date ordering", () => {

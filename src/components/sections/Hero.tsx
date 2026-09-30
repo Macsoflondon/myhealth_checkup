@@ -3,7 +3,6 @@ import { useNavigate } from "@/lib/router-compat";
 import { Search, Loader2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-
 import heroActiveAsset from "@/assets/hero/hero-active-lifestyle.jpg.asset.json";
 import heroCoupleAsset from "@/assets/hero/hero-elderly-couple-park.jpg.asset.json";
 
@@ -52,7 +51,8 @@ const heroSlides: Array<{
     mobileObjectPosition: "55% 30%",
     mobileScale: "scale(1.05)",
     theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/25 via-[#081129]/10 to-[#081129]/35",
+      overlay:
+        "bg-gradient-to-b from-[#081129]/25 via-[#081129]/10 to-[#081129]/35",
       surface: 70,
       accent: "turquoise",
     },
@@ -67,7 +67,8 @@ const heroSlides: Array<{
     mobileObjectPosition: "center 30%",
     mobileScale: "scale(1.1)",
     theme: {
-      overlay: "bg-gradient-to-b from-[#081129]/25 via-[#081129]/10 to-[#081129]/35",
+      overlay:
+        "bg-gradient-to-b from-[#081129]/25 via-[#081129]/10 to-[#081129]/35",
       surface: 65,
       accent: "turquoise",
     },
@@ -76,8 +77,10 @@ const heroSlides: Array<{
 
 // Tiny blurred LQIPs (32px WebP, ~150B) for the first slide — render instantly so users
 // never see a navy "black screen" while the full hero image streams in.
-const LQIP_DESKTOP = "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAADwBACdASogABIAPt1WpE2opKOiN/qoARAbiWUAs4AYv7MlNIQ/1eawUMfG66JUE+gA/oVLXJz6RR5bj3eso6dG03s3A+CfuMICh9a1oxoeVCOYa2rytgDftKG2CZ8TBmOxz+CZNRP6R7BUNygAAA==";
-const LQIP_MOBILE = "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAACwBQCdASogACAAPu1srlCppiQiqAqpMB2JYwC/WW2rQUZttiClW/8mD0nZ1fH5MRIxjzu7gAAA/vFUJTqM0A/JVYXFVGBF1UD2Ntya24HXaVS/iGfmszfkjsS9WyXn5PjeZ710jyoZRIZnAlaV+AygYPWpbO9xKKgdNBt1J53KpKoHvo8mBExdfPtH5ETUAAA=";
+const LQIP_DESKTOP =
+  "data:image/webp;base64,UklGRnoAAABXRUJQVlA4IG4AAADwBACdASogABIAPt1WpE2opKOiN/qoARAbiWUAs4AYv7MlNIQ/1eawUMfG66JUE+gA/oVLXJz6RR5bj3eso6dG03s3A+CfuMICh9a1oxoeVCOYa2rytgDftKG2CZ8TBmOxz+CZNRP6R7BUNygAAA==";
+const LQIP_MOBILE =
+  "data:image/webp;base64,UklGRpwAAABXRUJQVlA4IJAAAACwBQCdASogACAAPu1srlCppiQiqAqpMB2JYwC/WW2rQUZttiClW/8mD0nZ1fH5MRIxjzu7gAAA/vFUJTqM0A/JVYXFVGBF1UD2Ntya24HXaVS/iGfmszfkjsS9WyXn5PjeZ710jyoZRIZnAlaV+AygYPWpbO9xKKgdNBt1J53KpKoHvo8mBExdfPtH5ETUAAA=";
 
 const Hero = () => {
   const navigate = useNavigate();
@@ -108,7 +111,8 @@ const Hero = () => {
 
   const slide = heroSlides[currentSlide];
   const accentColor = ACCENT_HEX[slide.theme.accent];
-  const surfaceTransition = "background-color 1200ms cubic-bezier(0.4, 0, 0.2, 1), border-color 1200ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 1200ms ease";
+  const surfaceTransition =
+    "background-color 1200ms cubic-bezier(0.4, 0, 0.2, 1), border-color 1200ms cubic-bezier(0.4, 0, 0.2, 1), box-shadow 1200ms ease";
   const surfaceStyle: React.CSSProperties = {
     backgroundColor: `rgba(255, 255, 255, 0.08)`,
     borderColor: `${accentColor}99`,
@@ -143,25 +147,29 @@ const Hero = () => {
               height={isMobile ? 1600 : 1088}
               fetchPriority={i === 0 ? "high" : "low"}
               style={{
-                objectPosition: isMobile && s.mobileObjectPosition ? s.mobileObjectPosition : s.objectPosition,
-                transform: isMobile && s.mobileScale ? s.mobileScale : undefined,
+                objectPosition:
+                  isMobile && s.mobileObjectPosition
+                    ? s.mobileObjectPosition
+                    : s.objectPosition,
+                transform:
+                  isMobile && s.mobileScale ? s.mobileScale : undefined,
                 transformOrigin: "center center",
               }}
               className={`absolute inset-0 w-full h-full object-cover z-0 transition-opacity duration-[1600ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${
                 i === currentSlide ? "opacity-100" : "opacity-0"
               }`}
             />
-          ) : null
+          ) : null,
         )}
 
-        <div className={`absolute inset-0 z-[1] transition-[background] duration-[1600ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${slide.theme.overlay}`} />
+        <div
+          className={`absolute inset-0 z-[1] transition-[background] duration-[1600ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${slide.theme.overlay}`}
+        />
 
         <div className="relative z-10 flex flex-col flex-1 pt-8 sm:pt-12 md:pt-16 lg:pt-20 pb-6 sm:pb-8">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex flex-col flex-1">
             <div className="max-w-[1240px] mx-auto flex flex-col flex-1 w-full">
-
               <div className="mt-auto mb-32 sm:mb-36 w-full">
-
                 <div className="text-center mb-1 sm:mb-2 flex-col flex items-center justify-center">
                   <h1
                     key={currentSlide}
@@ -181,9 +189,14 @@ const Hero = () => {
                   <span className="block w-12 sm:w-20 h-[2px] sm:h-[3px] rounded-full bg-gradient-to-r from-[hsl(var(--primary))] to-[hsl(var(--secondary))]" />
                 </div>
 
-                
-                <div id="hero-search-sentinel" className="max-w-[855px] mx-auto w-full">
-                  <div style={surfaceStyle} className="backdrop-blur-md sm:rounded-2xl p-2.5 sm:p-4 border-2 border-solid rounded-sm shadow-md">
+                <div
+                  id="hero-search-sentinel"
+                  className="max-w-[855px] mx-auto w-full"
+                >
+                  <div
+                    style={surfaceStyle}
+                    className="backdrop-blur-md sm:rounded-2xl p-2.5 sm:p-4 border-2 border-solid rounded-sm shadow-md"
+                  >
                     <div className="relative">
                       <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white w-4 h-4 sm:w-5 sm:h-5" />
                       <input
@@ -220,13 +233,11 @@ const Hero = () => {
                   </button>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
       </section>
     </>
-
   );
 };
 

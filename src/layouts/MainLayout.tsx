@@ -12,18 +12,23 @@ interface MainLayoutProps {
   mainClassName?: string;
 }
 
-export const MainLayout = ({ 
-  children, 
+export const MainLayout = ({
+  children,
   hideHeader = false,
   hideFooter = false,
-  mainClassName = "flex-1"
+  mainClassName = "flex-1",
 }: MainLayoutProps) => {
   const { pathname } = useLocation();
   const isHome = pathname === "/";
   const isCompare = pathname === "/compare";
   return (
     <div className="min-h-dvh flex flex-col bg-brand-navy md:bg-white page-surface">
-      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg">Skip to main content</a>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-lg"
+      >
+        Skip to main content
+      </a>
       {/* Page surface: inset from the viewport, with the outer margins painted
           in the brand navy. Overlays (cookie banner, comparison bar) stay
           outside so the mask never clips them. */}

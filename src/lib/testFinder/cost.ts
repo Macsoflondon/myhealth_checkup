@@ -27,17 +27,26 @@ export function computeTotalCost(test: TestRecord): TotalCost {
         isEstimate: false,
       };
     case "fixed": {
-      const amt = typeof test.collection_fee_amount === "number" ? test.collection_fee_amount : 0;
+      const amt =
+        typeof test.collection_fee_amount === "number"
+          ? test.collection_fee_amount
+          : 0;
       return {
         testPrice: price,
         addOn: amt,
         total: price + amt,
-        addOnLabel: amt > 0 ? `Clinic blood draw +${formatGBP(amt)}` : "No additional fees",
+        addOnLabel:
+          amt > 0
+            ? `Clinic blood draw +${formatGBP(amt)}`
+            : "No additional fees",
         isEstimate: false,
       };
     }
     case "range": {
-      const range = test.collection_fee_amount as { min: number; max: number } | null;
+      const range = test.collection_fee_amount as {
+        min: number;
+        max: number;
+      } | null;
       const min = range?.min ?? 0;
       return {
         testPrice: price,
@@ -50,7 +59,10 @@ export function computeTotalCost(test: TestRecord): TotalCost {
       };
     }
     case "varies_by_location": {
-      const range = test.collection_fee_amount as { min: number; max: number } | null;
+      const range = test.collection_fee_amount as {
+        min: number;
+        max: number;
+      } | null;
       const min = range?.min ?? 0;
       return {
         testPrice: price,

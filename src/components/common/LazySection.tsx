@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, ReactNode } from 'react';
+import { useEffect, useRef, useState, ReactNode } from "react";
 
 interface LazySectionProps {
   children: ReactNode;
@@ -6,10 +6,10 @@ interface LazySectionProps {
   rootMargin?: string;
 }
 
-export function LazySection({ 
-  children, 
+export function LazySection({
+  children,
   fallback = <div className="h-64 bg-gray-50 animate-pulse rounded-lg" />,
-  rootMargin = '200px' 
+  rootMargin = "200px",
 }: LazySectionProps) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -22,7 +22,7 @@ export function LazySection({
           observer.disconnect();
         }
       },
-      { rootMargin }
+      { rootMargin },
     );
 
     if (ref.current) {
@@ -32,9 +32,5 @@ export function LazySection({
     return () => observer.disconnect();
   }, [rootMargin]);
 
-  return (
-    <div ref={ref}>
-      {isVisible ? children : fallback}
-    </div>
-  );
+  return <div ref={ref}>{isVisible ? children : fallback}</div>;
 }

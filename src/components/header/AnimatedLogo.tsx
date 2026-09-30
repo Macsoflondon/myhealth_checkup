@@ -9,14 +9,17 @@ interface AnimatedLogoProps {
 
 const logos = [logo3];
 
-export const AnimatedLogo = ({ className, mobileClassName }: AnimatedLogoProps) => {
+export const AnimatedLogo = ({
+  className,
+  mobileClassName,
+}: AnimatedLogoProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setIsTransitioning(true);
-      
+
       setTimeout(() => {
         setCurrentIndex((prev) => (prev + 1) % logos.length);
         setIsTransitioning(false);
@@ -33,7 +36,7 @@ export const AnimatedLogo = ({ className, mobileClassName }: AnimatedLogoProps) 
         alt="myhealth checkup"
         className={cn(
           "relative z-10 h-full w-auto object-contain transition-opacity duration-1000",
-          isTransitioning ? "opacity-0" : "opacity-100"
+          isTransitioning ? "opacity-0" : "opacity-100",
         )}
       />
     </div>

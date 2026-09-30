@@ -1,6 +1,9 @@
 // web-vitals-ingest schema tests. Contract-level only.
 
-import { assertEquals, assert } from "https://deno.land/std@0.224.0/assert/mod.ts";
+import {
+  assertEquals,
+  assert,
+} from "https://deno.land/std@0.224.0/assert/mod.ts";
 import { z } from "npm:zod";
 
 const SampleSchema = z.object({
@@ -16,7 +19,9 @@ const SampleSchema = z.object({
 const BodySchema = z.object({ samples: z.array(SampleSchema).min(1).max(20) });
 
 Deno.test("accepts a valid LCP sample", () => {
-  const r = BodySchema.safeParse({ samples: [{ metric: "LCP", value: 2300, rating: "good", route: "/" }] });
+  const r = BodySchema.safeParse({
+    samples: [{ metric: "LCP", value: 2300, rating: "good", route: "/" }],
+  });
   assert(r.success);
 });
 
@@ -26,12 +31,24 @@ Deno.test("rejects unknown metric", () => {
 });
 
 Deno.test("rejects negative or infinite values", () => {
-  assertEquals(BodySchema.safeParse({ samples: [{ metric: "CLS", value: -1 }] }).success, false);
-  assertEquals(BodySchema.safeParse({ samples: [{ metric: "CLS", value: Number.POSITIVE_INFINITY }] }).success, false);
+  assertEquals(
+    BodySchema.safeParse({ samples: [{ metric: "CLS", value: -1 }] }).success,
+    false,
+  );
+  assertEquals(
+    BodySchema.safeParse({
+      samples: [{ metric: "CLS", value: Number.POSITIVE_INFINITY }],
+    }).success,
+    false,
+  );
 });
 
 Deno.test("rejects value beyond upper bound", () => {
-  assertEquals(BodySchema.safeParse({ samples: [{ metric: "LCP", value: 60_001 }] }).success, false);
+  assertEquals(
+    BodySchema.safeParse({ samples: [{ metric: "LCP", value: 60_001 }] })
+      .success,
+    false,
+  );
 });
 
 Deno.test("rejects empty samples array", () => {
@@ -39,11 +56,19 @@ Deno.test("rejects empty samples array", () => {
 });
 
 Deno.test("rejects overly large batch (>20 samples)", () => {
-  const samples = Array.from({ length: 21 }, () => ({ metric: "LCP", value: 1000 }));
+  const samples = Array.from({ length: 21 }, () => ({
+    metric: "LCP",
+    value: 1000,
+  }));
   assertEquals(BodySchema.safeParse({ samples }).success, false);
 });
 
 Deno.test("caps route length", () => {
   const long = "a".repeat(301);
-  assertEquals(BodySchema.safeParse({ samples: [{ metric: "LCP", value: 100, route: long }] }).success, false);
+  assertEquals(
+    BodySchema.safeParse({
+      samples: [{ metric: "LCP", value: 100, route: long }],
+    }).success,
+    false,
+  );
 });

@@ -86,7 +86,7 @@ class TestsApi {
       const { data, error } = await supabase
         .from("provider_tests")
         .select(
-          "id, test_name, provider_id, category, canonical_category, description, biomarkers_list, biomarker_count, price, url, image_url, is_active, created_at, updated_at"
+          "id, test_name, provider_id, category, canonical_category, description, biomarkers_list, biomarker_count, price, url, image_url, is_active, created_at, updated_at",
         )
         .eq("is_active", true)
         .or(
@@ -95,12 +95,12 @@ class TestsApi {
             `description.ilike.%${safe}%`,
             `category.ilike.%${safe}%`,
             `canonical_category.ilike.%${safe}%`,
-          ].join(",")
+          ].join(","),
         )
         .order("price", { ascending: true })
         .limit(600);
 
-      return { data: (data as unknown) as Test[], error };
+      return { data: data as unknown as Test[], error };
     } catch (error) {
       return { data: null, error: error as Error };
     }
@@ -109,7 +109,9 @@ class TestsApi {
   /**
    * Get provider tests for a specific test
    */
-  async getProviderTests(testMasterId: string): Promise<ApiResponse<ProviderTest[]>> {
+  async getProviderTests(
+    testMasterId: string,
+  ): Promise<ApiResponse<ProviderTest[]>> {
     try {
       const { data, error } = await supabase
         .from("provider_test_mapping")
@@ -128,7 +130,7 @@ class TestsApi {
    */
   async getAllProviderTests(
     category?: string,
-    providers?: string[]
+    providers?: string[],
   ): Promise<ApiResponse<ProviderTest[]>> {
     try {
       let query = supabase

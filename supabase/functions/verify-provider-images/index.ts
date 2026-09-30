@@ -7,14 +7,26 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
-const PLACEHOLDER_PATTERNS = [/gb\.png/i, /flag/i, /placeholder/i, /no[-_ ]image/i, /default/i];
+const PLACEHOLDER_PATTERNS = [
+  /gb\.png/i,
+  /flag/i,
+  /placeholder/i,
+  /no[-_ ]image/i,
+  /default/i,
+];
 
 // Expected hostnames per provider (anything outside flags as wrong_host).
 const PROVIDER_HOST_ALLOWLIST: Record<string, RegExp[]> = {
-  randox: [/randoxhealth\.com/i, /randox\.com/i, /blob\.core\.windows\.net/i, /azurefd\.net/i],
+  randox: [
+    /randoxhealth\.com/i,
+    /randox\.com/i,
+    /blob\.core\.windows\.net/i,
+    /azurefd\.net/i,
+  ],
   medichecks: [/medichecks\.com/i, /cloudinary\.com/i],
   "goodbody-clinic": [/goodbodyclinic\.com/i],
   clinilabs: [/clinilabs\./i, /cdn\.shopify\.com/i],
@@ -38,7 +50,13 @@ interface Row {
 }
 
 interface Result {
-  status: "ok" | "missing" | "placeholder" | "unreachable" | "wrong_type" | "wrong_host";
+  status:
+    | "ok"
+    | "missing"
+    | "placeholder"
+    | "unreachable"
+    | "wrong_type"
+    | "wrong_host";
   http_status?: number;
   content_type?: string;
   issue?: string;
@@ -49,7 +67,10 @@ async function checkOne(row: Row): Promise<Result> {
   if (!url) return { status: "missing", issue: "image_url is null/empty" };
 
   if (PLACEHOLDER_PATTERNS.some((re) => re.test(url))) {
-    return { status: "placeholder", issue: `matches placeholder pattern (${url})` };
+    return {
+      status: "placeholder",
+      issue: `matches placeholder pattern (${url})`,
+    };
   }
 
   if (UNIVERSAL_STORAGE_HOST.test(url)) {
@@ -57,13 +78,20 @@ async function checkOne(row: Row): Promise<Result> {
   } else {
     const allow = PROVIDER_HOST_ALLOWLIST[row.provider_id];
     if (allow && !allow.some((re) => re.test(url))) {
-      return { status: "wrong_host", issue: `host not in allowlist for ${row.provider_id}` };
+      return {
+        status: "wrong_host",
+        issue: `host not in allowlist for ${row.provider_id}`,
+      };
     }
   }
 
   try {
     const ctrl = AbortSignal.timeout(8000);
-    let res = await fetch(url, { method: "HEAD", redirect: "follow", signal: ctrl });
+    let res = await fetch(url, {
+      method: "HEAD",
+      redirect: "follow",
+      signal: ctrl,
+    });
     // Some CDNs don't allow HEAD — fall back to ranged GET.
     if (res.status === 405 || res.status === 403) {
       res = await fetch(url, {
@@ -75,10 +103,20 @@ async function checkOne(row: Row): Promise<Result> {
     }
     const ct = res.headers.get("content-type") ?? "";
     if (!res.ok) {
-      return { status: "unreachable", http_status: res.status, content_type: ct, issue: `HTTP ${res.status}` };
+      return {
+        status: "unreachable",
+        http_status: res.status,
+        content_type: ct,
+        issue: `HTTP ${res.status}`,
+      };
     }
     if (!/^image\//i.test(ct) && !/octet-stream/i.test(ct)) {
-      return { status: "wrong_type", http_status: res.status, content_type: ct, issue: `content-type ${ct}` };
+      return {
+        status: "wrong_type",
+        http_status: res.status,
+        content_type: ct,
+        issue: `content-type ${ct}`,
+      };
     }
     return { status: "ok", http_status: res.status, content_type: ct };
   } catch (e) {
@@ -87,7 +125,8 @@ async function checkOne(row: Row): Promise<Result> {
 }
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  if (req.method === "OPTIONS")
+    return new Response("ok", { headers: corsHeaders });
 
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
   const authHeader = req.headers.get("Authorization") ?? "";
@@ -98,15 +137,15 @@ Deno.serve(async (req) => {
     });
   }
 
-  const admin = createClient(
-    Deno.env.get("SUPABASE_URL")!,
-    serviceKey,
-  );
+  const admin = createClient(Deno.env.get("SUPABASE_URL")!, serviceKey);
 
   const url = new URL(req.url);
   const providerFilter = url.searchParams.get("provider"); // optional
   const limit = Math.min(Number(url.searchParams.get("limit") ?? 2000), 5000);
-  const concurrency = Math.min(Number(url.searchParams.get("concurrency") ?? 12), 24);
+  const concurrency = Math.min(
+    Number(url.searchParams.get("concurrency") ?? 12),
+    24,
+  );
 
   let q = admin
     .from("provider_tests")
@@ -151,14 +190,24 @@ Deno.serve(async (req) => {
   // Bulk insert in chunks of 500
   for (let c = 0; c < records.length; c += 500) {
     const chunk = records.slice(c, c + 500);
-    const { error: insErr } = await admin.from("provider_image_audit").insert(chunk);
+    const { error: insErr } = await admin
+      .from("provider_image_audit")
+      .insert(chunk);
     if (insErr) console.error("insert err", insErr.message);
   }
 
   const summary: Record<string, Record<string, number>> = {};
   for (const r of records) {
     const key = `${r.provider_id}::${r.category ?? "Uncategorised"}`;
-    summary[key] ??= { total: 0, ok: 0, missing: 0, placeholder: 0, unreachable: 0, wrong_type: 0, wrong_host: 0 };
+    summary[key] ??= {
+      total: 0,
+      ok: 0,
+      missing: 0,
+      placeholder: 0,
+      unreachable: 0,
+      wrong_type: 0,
+      wrong_host: 0,
+    };
     summary[key].total++;
     summary[key][r.status]++;
   }

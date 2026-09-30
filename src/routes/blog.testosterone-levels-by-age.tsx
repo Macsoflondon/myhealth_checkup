@@ -2,7 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { buildArticleHead } from "@/lib/seo/route-head";
 import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 
-const TestosteroneLevelsByAgePage = lazy(() => import("@/pages/TestosteroneLevelsByAgePage"));
+const TestosteroneLevelsByAgePage = lazy(
+  () => import("@/pages/TestosteroneLevelsByAgePage"),
+);
 
 export const Route = createFileRoute("/blog/testosterone-levels-by-age")({
   head: () =>

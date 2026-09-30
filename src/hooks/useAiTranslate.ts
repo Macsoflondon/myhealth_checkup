@@ -1,11 +1,11 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { supabase } from '@/integrations/supabase/client';
+import { useEffect, useState, useCallback, useRef } from "react";
+import { useTranslation } from "react-i18next";
+import { supabase } from "@/integrations/supabase/client";
 
 /** Brazilian Portuguese targets its own translation; other tags use the base code. */
 const normaliseLang = (tag: string | undefined): string => {
-  const value = tag || 'en';
-  return value.toLowerCase() === 'pt-br' ? 'pt-BR' : value.split('-')[0];
+  const value = tag || "en";
+  return value.toLowerCase() === "pt-br" ? "pt-BR" : value.split("-")[0];
 };
 
 const memCache = new Map<string, string>(); // `${lang}::${text}` -> translated
@@ -17,20 +17,29 @@ const memCache = new Map<string, string>(); // `${lang}::${text}` -> translated
 export function useAiTranslate(text: string | undefined): string {
   const { i18n } = useTranslation();
   const lang = normaliseLang(i18n.language);
-  const [value, setValue] = useState<string>(text ?? '');
+  const [value, setValue] = useState<string>(text ?? "");
   const reqId = useRef(0);
 
   useEffect(() => {
-    if (!text) { setValue(''); return; }
-    if (lang === 'en') { setValue(text); return; }
+    if (!text) {
+      setValue("");
+      return;
+    }
+    if (lang === "en") {
+      setValue(text);
+      return;
+    }
     const key = `${lang}::${text}`;
     const cached = memCache.get(key);
-    if (cached) { setValue(cached); return; }
+    if (cached) {
+      setValue(cached);
+      return;
+    }
 
     const myId = ++reqId.current;
     setValue(text); // optimistic: render English while loading
     supabase.functions
-      .invoke('translate', { body: { texts: [text], language: lang } })
+      .invoke("translate", { body: { texts: [text], language: lang } })
       .then(({ data, error }) => {
         if (error || !data?.translations) return;
         const t = data.translations[text];
@@ -39,7 +48,9 @@ export function useAiTranslate(text: string | undefined): string {
           if (reqId.current === myId) setValue(t);
         }
       })
-      .catch(() => {/* keep fallback */});
+      .catch(() => {
+        /* keep fallback */
+      });
   }, [text, lang]);
 
   return value;
@@ -51,33 +62,43 @@ export function useAiTranslateBatch(texts: string[]): Record<string, string> {
   const lang = normaliseLang(i18n.language);
   const [map, setMap] = useState<Record<string, string>>({});
 
-  const stableKey = texts.join('|');
+  const stableKey = texts.join("|");
   const run = useCallback(async () => {
-    if (lang === 'en' || texts.length === 0) {
-      setMap(Object.fromEntries(texts.map(t => [t, t])));
+    if (lang === "en" || texts.length === 0) {
+      setMap(Object.fromEntries(texts.map((t) => [t, t])));
       return;
     }
     const result: Record<string, string> = {};
     const need: string[] = [];
-    texts.forEach(t => {
+    texts.forEach((t) => {
       const hit = memCache.get(`${lang}::${t}`);
-      if (hit) result[t] = hit; else need.push(t);
+      if (hit) result[t] = hit;
+      else need.push(t);
     });
-    if (need.length === 0) { setMap(result); return; }
-    const { data, error } = await supabase.functions.invoke('translate', {
+    if (need.length === 0) {
+      setMap(result);
+      return;
+    }
+    const { data, error } = await supabase.functions.invoke("translate", {
       body: { texts: need, language: lang },
     });
     if (!error && data?.translations) {
-      Object.entries(data.translations as Record<string, string>).forEach(([src, tr]) => {
-        memCache.set(`${lang}::${src}`, tr);
-        result[src] = tr;
-      });
+      Object.entries(data.translations as Record<string, string>).forEach(
+        ([src, tr]) => {
+          memCache.set(`${lang}::${src}`, tr);
+          result[src] = tr;
+        },
+      );
     }
     // Fill any gaps with source
-    texts.forEach(t => { if (!result[t]) result[t] = t; });
+    texts.forEach((t) => {
+      if (!result[t]) result[t] = t;
+    });
     setMap(result);
   }, [stableKey, lang]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => { run(); }, [run]);
+  useEffect(() => {
+    run();
+  }, [run]);
   return map;
 }

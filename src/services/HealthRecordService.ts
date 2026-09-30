@@ -6,7 +6,10 @@ import type {
   ValidationStatus,
   VerificationStatus,
 } from "@/types/health-intelligence";
-import { buildBiomarkerSeries, type SeriesOptions } from "@/lib/health/biomarker-series";
+import {
+  buildBiomarkerSeries,
+  type SeriesOptions,
+} from "@/lib/health/biomarker-series";
 
 /**
  * Read layer for the personal health record.
@@ -42,7 +45,9 @@ const biomarkerNameOf = (row: ObservationRow): string | null => {
   return Array.isArray(joined) ? (joined[0]?.name ?? null) : joined.name;
 };
 
-export const toObservationRecord = (row: ObservationRow): ObservationRecord => ({
+export const toObservationRecord = (
+  row: ObservationRow,
+): ObservationRecord => ({
   id: row.id,
   biomarkerId: row.biomarker_id,
   biomarkerName: biomarkerNameOf(row),

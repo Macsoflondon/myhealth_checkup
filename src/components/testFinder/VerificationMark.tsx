@@ -1,4 +1,9 @@
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import type { FieldStatus } from "@/types/testFinder";
 
 interface Props {
@@ -30,7 +35,9 @@ export const VerificationMark = ({ status, children }: Props) => {
 
 export const VerificationLegend = () => (
   <div className="flex items-center gap-2 text-[11px] text-white/55">
-    <span className="border-b border-dotted border-amber-400/70 px-1">value</span>
+    <span className="border-b border-dotted border-amber-400/70 px-1">
+      value
+    </span>
     <span>= pending verification against the provider's live site</span>
   </div>
 );

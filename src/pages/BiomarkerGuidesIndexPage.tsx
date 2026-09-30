@@ -28,7 +28,9 @@ const BiomarkerGuidesIndexPage = () => {
     <MainLayout>
       <Helmet>
         <meta property="og:type" content="website" />
-        <script type="application/ld+json">{JSON.stringify(itemListJsonLd)}</script>
+        <script type="application/ld+json">
+          {JSON.stringify(itemListJsonLd)}
+        </script>
       </Helmet>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 text-white">
@@ -37,8 +39,9 @@ const BiomarkerGuidesIndexPage = () => {
             Health Test Guides
           </h1>
           <p className="text-lg text-white/75">
-            Plain-English explainers of the biomarkers behind UK private blood tests —
-            what each one measures, why it matters, and how to compare providers with confidence.
+            Plain-English explainers of the biomarkers behind UK private blood
+            tests — what each one measures, why it matters, and how to compare
+            providers with confidence.
           </p>
         </header>
 
@@ -57,7 +60,9 @@ const BiomarkerGuidesIndexPage = () => {
                     <h3 className="font-semibold text-lg text-white mb-2 group-hover:text-[#22c0d4] transition">
                       {g.keyword}
                     </h3>
-                    <p className="text-sm text-white/90 mb-4 line-clamp-2">{g.strapline}</p>
+                    <p className="text-sm text-white/90 mb-4 line-clamp-2">
+                      {g.strapline}
+                    </p>
                     <span className="inline-flex items-center text-sm text-[#22c0d4]">
                       Read guide <ArrowRight className="h-4 w-4 ml-1" />
                     </span>

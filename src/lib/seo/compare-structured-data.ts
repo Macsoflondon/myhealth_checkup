@@ -54,7 +54,9 @@ export const buildCompareDetailStructuredData = ({
       description: test.why,
       url: `${SITE_URL}/compare?search=${test.searchQuery}`,
       usedToDiagnose:
-        kind === "symptom" ? { "@type": "MedicalSignOrSymptom", name } : undefined,
+        kind === "symptom"
+          ? { "@type": "MedicalSignOrSymptom", name }
+          : undefined,
       additionalProperty: test.keyBiomarkers.map((biomarker) => ({
         "@type": "PropertyValue",
         name: "Biomarker",
@@ -73,7 +75,11 @@ export const buildCompareDetailStructuredData = ({
         description: explanation,
         url: pageUrl,
         inLanguage: "en-GB",
-        isPartOf: { "@type": "WebSite", name: "myhealth checkup", url: SITE_URL },
+        isPartOf: {
+          "@type": "WebSite",
+          name: "myhealth checkup",
+          url: SITE_URL,
+        },
         about:
           kind === "symptom"
             ? { "@type": "MedicalSignOrSymptom", name }
@@ -84,8 +90,18 @@ export const buildCompareDetailStructuredData = ({
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
-          { "@type": "ListItem", position: 2, name: "Compare", item: `${SITE_URL}/compare` },
-          { "@type": "ListItem", position: 3, name: hub.label, item: `${SITE_URL}${hub.path}` },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Compare",
+            item: `${SITE_URL}/compare`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: hub.label,
+            item: `${SITE_URL}${hub.path}`,
+          },
           { "@type": "ListItem", position: 4, name, item: pageUrl },
         ],
       },

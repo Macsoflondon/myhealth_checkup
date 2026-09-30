@@ -1,11 +1,20 @@
 import { useNavigate } from "@/lib/router-compat";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { TestTube2, Home, Check, ExternalLink, ShieldCheck } from "lucide-react";
+import {
+  TestTube2,
+  Home,
+  Check,
+  ExternalLink,
+  ShieldCheck,
+} from "lucide-react";
 import { getBranding } from "@/data/providerBranding";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import { getGoodbodyTestByName } from "@/data/goodbodyTestDetails";
-import type { ProviderCollectionOption, ProviderTestCardData } from "./ProviderTestCard";
+import type {
+  ProviderCollectionOption,
+  ProviderTestCardData,
+} from "./ProviderTestCard";
 import { formatTestPrice } from "@/lib/utils";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import { compareResultsPath } from "@/lib/compareUrl";
@@ -15,7 +24,6 @@ import { resolveAccreditationsFromRow } from "@/lib/resolve-test-fields";
 import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
 import { resolveTestSummary } from "@/lib/test-summary";
 import { hasHomeKitRoute } from "@/lib/collectionVariants";
-
 
 interface ProviderTestDetailModalProps {
   test: ProviderTestCardData | null;
@@ -29,11 +37,20 @@ interface ProviderTestDetailModalProps {
  * only used when the row states none of them.
  */
 const getAccreditations = (
-  test: Pick<ProviderTestCardData, "provider_id" | "lab_ukas_accredited" | "lab_cqc_regulated" | "lab_iso15189">,
+  test: Pick<
+    ProviderTestCardData,
+    "provider_id" | "lab_ukas_accredited" | "lab_cqc_regulated" | "lab_iso15189"
+  >,
 ): string[] => {
   const fromRow = resolveAccreditationsFromRow(test);
   if (fromRow) {
-    return fromRow.map((flag) => (flag === 'UKAS' ? 'UKAS accredited lab' : flag === 'CQC' ? 'CQC regulated' : flag));
+    return fromRow.map((flag) =>
+      flag === "UKAS"
+        ? "UKAS accredited lab"
+        : flag === "CQC"
+          ? "CQC regulated"
+          : flag,
+    );
   }
 
   const providerId = test.provider_id;
@@ -45,7 +62,11 @@ const getAccreditations = (
     randox: ["UKAS accredited lab", "ISO 15189", "50+ UK clinics"],
     "lola-health": ["UKAS accredited lab", "ISO 15189", "GMC-reviewed"],
     lola: ["CQC regulated", "UKAS accredited lab"],
-    "london-medical-laboratory": ["UKAS accredited lab", "ISO 15189", "GDPR compliant"],
+    "london-medical-laboratory": [
+      "UKAS accredited lab",
+      "ISO 15189",
+      "GDPR compliant",
+    ],
     "tuli-health": ["CQC regulated", "UKAS accredited lab"],
     tuli: ["CQC regulated", "UKAS accredited lab"],
   };
@@ -54,8 +75,9 @@ const getAccreditations = (
 
 const getProviderTagline = (providerId: string): string => {
   const provider = detailedProviders.find(
-    (p) => p.id.toLowerCase() === providerId.toLowerCase() ||
-      providerId.toLowerCase().startsWith(p.id.toLowerCase())
+    (p) =>
+      p.id.toLowerCase() === providerId.toLowerCase() ||
+      providerId.toLowerCase().startsWith(p.id.toLowerCase()),
   );
   if (provider?.keyDifferentiators) {
     return provider.keyDifferentiators.split(",")[0].trim();
@@ -78,7 +100,10 @@ const formatTurnaround = (providerId: string): string => {
   return defaults[providerId.toLowerCase()] || "2–5 working days";
 };
 
-const PROVIDER_DEFAULT_COLLECTION_OPTIONS: Record<string, ProviderCollectionOption[]> = {
+const PROVIDER_DEFAULT_COLLECTION_OPTIONS: Record<
+  string,
+  ProviderCollectionOption[]
+> = {
   "lola-health": [
     { method: "In-clinic phlebotomy", price_modifier: 35 },
     { method: "At-home phlebotomy", price_modifier: 35 },
@@ -133,7 +158,10 @@ const parseBiomarkersList = (biomarkersList: unknown): string[] => {
   return [];
 };
 
-const getCollectionLabel = (sampleType?: string | null, collectionOptions?: ProviderCollectionOption[] | null): string => {
+const getCollectionLabel = (
+  sampleType?: string | null,
+  collectionOptions?: ProviderCollectionOption[] | null,
+): string => {
   const st = (sampleType || "").toLowerCase();
   if (collectionOptions && collectionOptions.length > 0) {
     const m = collectionOptions[0].method.toLowerCase();
@@ -154,16 +182,18 @@ const getCollectionDetail = (
   sampleType?: string | null,
   collectionOptions?: ProviderCollectionOption[] | null,
 ): string => {
-  if (collectionMethod && collectionMethod.trim()) return collectionMethod.trim();
+  if (collectionMethod && collectionMethod.trim())
+    return collectionMethod.trim();
   const st = (sampleType || "").toLowerCase();
   const sample = st.includes("finger")
     ? "Finger-prick blood sample"
     : st.includes("venous") || st.includes("blood draw")
       ? "Venous blood draw"
       : sampleType?.trim() || null;
-  const setting = collectionOptions && collectionOptions.length > 0
-    ? collectionOptions.map((o) => o.method).join(" or ")
-    : null;
+  const setting =
+    collectionOptions && collectionOptions.length > 0
+      ? collectionOptions.map((o) => o.method).join(" or ")
+      : null;
   if (sample && setting) return `${sample} — ${setting}`;
   if (sample) return sample;
   if (setting) return setting;
@@ -178,12 +208,17 @@ const getStoredCollectionOptions = (
       if (!option || typeof option !== "object") return [];
       const record = option as Record<string, unknown>;
       if (typeof record.method !== "string") return [];
-      return [{
-        method: record.method,
-        price_modifier: typeof record.price_modifier === "number" ? record.price_modifier : undefined,
-        price: typeof record.price === "number" ? record.price : undefined,
-        note: typeof record.note === "string" ? record.note : undefined,
-      } satisfies ProviderCollectionOption];
+      return [
+        {
+          method: record.method,
+          price_modifier:
+            typeof record.price_modifier === "number"
+              ? record.price_modifier
+              : undefined,
+          price: typeof record.price === "number" ? record.price : undefined,
+          note: typeof record.note === "string" ? record.note : undefined,
+        } satisfies ProviderCollectionOption,
+      ];
     });
     if (stored.length > 0) return stored;
   }
@@ -192,46 +227,74 @@ const getStoredCollectionOptions = (
 
   // The self-collected kit is usually the cheapest route — never let the
   // phlebotomy costs synthesise a list that hides it.
-  if (hasHomeKitRoute({
-    id: test.id,
-    price: test.price,
-    base_price: test.base_price,
-    sample_type: test.sample_type,
-    collection_method: test.collection_method,
-    home_kit_available: test.home_kit_available,
-    clinic_visit_available: test.clinic_visit_available,
-    clinic_phlebotomy_cost: test.clinic_phlebotomy_cost,
-    home_phlebotomy_cost: test.home_phlebotomy_cost,
-  })) {
-    const providerDefaults = PROVIDER_DEFAULT_COLLECTION_OPTIONS[test.provider_id.toLowerCase()] ?? [];
+  if (
+    hasHomeKitRoute({
+      id: test.id,
+      price: test.price,
+      base_price: test.base_price,
+      sample_type: test.sample_type,
+      collection_method: test.collection_method,
+      home_kit_available: test.home_kit_available,
+      clinic_visit_available: test.clinic_visit_available,
+      clinic_phlebotomy_cost: test.clinic_phlebotomy_cost,
+      home_phlebotomy_cost: test.home_phlebotomy_cost,
+    })
+  ) {
+    const providerDefaults =
+      PROVIDER_DEFAULT_COLLECTION_OPTIONS[test.provider_id.toLowerCase()] ?? [];
     const defaultKit = providerDefaults.find((option) =>
       /finger|home kit/i.test(option.method),
     );
-    options.push(defaultKit ?? { method: "Finger-prick home kit", price_modifier: 0, note: "Included" });
+    options.push(
+      defaultKit ?? {
+        method: "Finger-prick home kit",
+        price_modifier: 0,
+        note: "Included",
+      },
+    );
   }
 
-  if (test.clinic_visit_available && typeof test.clinic_phlebotomy_cost === "number") {
-    options.push({ method: "Venous clinic draw", price_modifier: test.clinic_phlebotomy_cost });
+  if (
+    test.clinic_visit_available &&
+    typeof test.clinic_phlebotomy_cost === "number"
+  ) {
+    options.push({
+      method: "Venous clinic draw",
+      price_modifier: test.clinic_phlebotomy_cost,
+    });
   }
-  if (typeof test.home_phlebotomy_cost === "number" && test.home_phlebotomy_cost > 0) {
-    options.push({ method: "Home phlebotomy visit", price_modifier: test.home_phlebotomy_cost });
+  if (
+    typeof test.home_phlebotomy_cost === "number" &&
+    test.home_phlebotomy_cost > 0
+  ) {
+    options.push({
+      method: "Home phlebotomy visit",
+      price_modifier: test.home_phlebotomy_cost,
+    });
   }
   return options.length > 0 ? options : null;
 };
 
 const formatCollectionCharge = (option: ProviderCollectionOption): string => {
   if (option.note) return option.note;
-  if (typeof option.price === "number") return `£${option.price.toFixed(option.price % 1 === 0 ? 0 : 2)}`;
+  if (typeof option.price === "number")
+    return `£${option.price.toFixed(option.price % 1 === 0 ? 0 : 2)}`;
   const modifier = option.price_modifier ?? 0;
-  return modifier > 0 ? `+£${modifier.toFixed(modifier % 1 === 0 ? 0 : 2)}` : "Free";
+  return modifier > 0
+    ? `+£${modifier.toFixed(modifier % 1 === 0 ? 0 : 2)}`
+    : "Free";
 };
 
 /** What the headline count actually measures, per provider data. */
-const measurementNoun = (measurementType?: string | null, category?: string | null): string => {
+const measurementNoun = (
+  measurementType?: string | null,
+  category?: string | null,
+): string => {
   const type = (measurementType || "").toLowerCase();
   if (type === "cancers") return "cancer types";
   if (type === "conditions") return "conditions";
-  if (type === "allergens" || /allerg/i.test(category || "")) return "allergens";
+  if (type === "allergens" || /allerg/i.test(category || ""))
+    return "allergens";
   return "biomarkers";
 };
 
@@ -254,30 +317,49 @@ export default function ProviderTestDetailModal({
   const tagline = getProviderTagline(test.provider_id);
 
   const isGoodbody = test.provider_id.toLowerCase().includes("goodbody");
-  const goodbodyStatic = isGoodbody ? getGoodbodyTestByName(test.test_name) : undefined;
+  const goodbodyStatic = isGoodbody
+    ? getGoodbodyTestByName(test.test_name)
+    : undefined;
 
-  const biomarkers = goodbodyStatic?.biomarkers || parseBiomarkersList(test.biomarkers_list);
-  const turnaround = test.turnaround_days_text || goodbodyStatic?.turnaround || formatTurnaround(test.provider_id);
+  const biomarkers =
+    goodbodyStatic?.biomarkers || parseBiomarkersList(test.biomarkers_list);
+  const turnaround =
+    test.turnaround_days_text ||
+    goodbodyStatic?.turnaround ||
+    formatTurnaround(test.provider_id);
   const storedCollectionOptions = getStoredCollectionOptions(test);
   const collectionOptions: ProviderCollectionOption[] | null =
-    goodbodyStatic?.collectionOptions && goodbodyStatic.collectionOptions.length > 0
+    goodbodyStatic?.collectionOptions &&
+    goodbodyStatic.collectionOptions.length > 0
       ? goodbodyStatic.collectionOptions
       : storedCollectionOptions
         ? storedCollectionOptions
-        : PROVIDER_DEFAULT_COLLECTION_OPTIONS[test.provider_id.toLowerCase()] ?? null;
+        : (PROVIDER_DEFAULT_COLLECTION_OPTIONS[
+            test.provider_id.toLowerCase()
+          ] ?? null);
 
-  const displayedBiomarkerCount = test.biomarker_count && test.biomarker_count > 0
-    ? test.biomarker_count
-    : biomarkers.length;
+  const displayedBiomarkerCount =
+    test.biomarker_count && test.biomarker_count > 0
+      ? test.biomarker_count
+      : biomarkers.length;
 
   const headerPrice = test.base_price ?? goodbodyStatic?.price ?? test.price;
   const priceIsFrom = test.base_price != null && test.base_price > 0;
-  const priceFormatted = headerPrice != null && (headerPrice as number) > 0
-    ? (formatTestPrice({ ...test, price: headerPrice as number }) || `£${(headerPrice as number).toFixed(2)}`)
-    : null;
+  const priceFormatted =
+    headerPrice != null && (headerPrice as number) > 0
+      ? formatTestPrice({ ...test, price: headerPrice as number }) ||
+        `£${(headerPrice as number).toFixed(2)}`
+      : null;
 
-  const collectionLabel = getCollectionLabel(goodbodyStatic?.sampleType || test.sample_type, collectionOptions);
-  const collectionDetail = getCollectionDetail(test.collection_method, goodbodyStatic?.sampleType || test.sample_type, collectionOptions);
+  const collectionLabel = getCollectionLabel(
+    goodbodyStatic?.sampleType || test.sample_type,
+    collectionOptions,
+  );
+  const collectionDetail = getCollectionDetail(
+    test.collection_method,
+    goodbodyStatic?.sampleType || test.sample_type,
+    collectionOptions,
+  );
   const countNoun = measurementNoun(test.measurement_type, test.category);
   const providerLogo = getProviderLogo(test.provider_id);
 
@@ -307,7 +389,6 @@ export default function ProviderTestDetailModal({
     navigate(compareResultsPath(compareStore.getAll().map((t) => t.id)));
   };
 
-
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="w-[calc(100vw-2rem)] sm:w-full max-w-2xl p-0 rounded-2xl gap-0 max-h-[90vh] overflow-y-auto overflow-x-hidden bg-[#f6f7fb] [&>button.absolute]:text-white [&>button.absolute]:opacity-90 [&>button.absolute]:hover:opacity-100 [&>button.absolute]:focus:ring-white/60">
@@ -323,10 +404,16 @@ export default function ProviderTestDetailModal({
                 className="max-h-10 max-w-12 object-contain"
                 onError={(event) => {
                   event.currentTarget.style.display = "none";
-                  event.currentTarget.nextElementSibling?.removeAttribute("hidden");
+                  event.currentTarget.nextElementSibling?.removeAttribute(
+                    "hidden",
+                  );
                 }}
               />
-              <span hidden className="text-xl font-bold" style={{ color: brandColor }}>
+              <span
+                hidden
+                className="text-xl font-bold"
+                style={{ color: brandColor }}
+              >
                 {getProviderInitial(providerName)}
               </span>
             </div>
@@ -345,10 +432,14 @@ export default function ProviderTestDetailModal({
             {priceFormatted && (
               <div>
                 <p className="text-3xl sm:text-4xl font-extrabold text-[#e70d69] leading-none">
-                  {priceIsFrom ? <span className="text-2xl font-bold">from </span> : null}
+                  {priceIsFrom ? (
+                    <span className="text-2xl font-bold">from </span>
+                  ) : null}
                   {priceFormatted}
                 </p>
-                <p className="text-xs text-white/90 mt-1.5">{collectionLabel}</p>
+                <p className="text-xs text-white/90 mt-1.5">
+                  {collectionLabel}
+                </p>
               </div>
             )}
 
@@ -358,8 +449,12 @@ export default function ProviderTestDetailModal({
                   <TestTube2 className="w-4 h-4" />
                 </span>
                 <div className="leading-tight">
-                  <p className="text-sm font-semibold text-white">{displayedBiomarkerCount} {countNoun}</p>
-                  <p className="text-xs text-white/78">{countNoun === "biomarkers" ? "Measured" : "Screened for"}</p>
+                  <p className="text-sm font-semibold text-white">
+                    {displayedBiomarkerCount} {countNoun}
+                  </p>
+                  <p className="text-xs text-white/78">
+                    {countNoun === "biomarkers" ? "Measured" : "Screened for"}
+                  </p>
                 </div>
               </div>
             )}
@@ -369,7 +464,9 @@ export default function ProviderTestDetailModal({
                 <Home className="w-4 h-4" />
               </span>
               <div className="leading-tight">
-                <p className="text-sm font-semibold text-white">{collectionDetail}</p>
+                <p className="text-sm font-semibold text-white">
+                  {collectionDetail}
+                </p>
                 <p className="text-xs text-white/78">Collection</p>
               </div>
             </div>
@@ -387,21 +484,23 @@ export default function ProviderTestDetailModal({
             </div>
           )}
 
-
           {/* About */}
           <section>
             <h4 className="text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-2">
               About this test
             </h4>
             <p className="text-[15px] text-[#081129]/80 leading-relaxed whitespace-pre-line break-words">
-              {resolveTestSummary(goodbodyStatic?.description || test.description, {
-                testName: test.test_name,
-                providerName,
-                measurementCount: test.biomarker_count ?? null,
-                sampleType: test.sample_type ?? null,
-                turnaroundText: test.turnaround_days_text ?? null,
-                category: test.category ?? null,
-              })}
+              {resolveTestSummary(
+                goodbodyStatic?.description || test.description,
+                {
+                  testName: test.test_name,
+                  providerName,
+                  measurementCount: test.biomarker_count ?? null,
+                  sampleType: test.sample_type ?? null,
+                  turnaroundText: test.turnaround_days_text ?? null,
+                  category: test.category ?? null,
+                },
+              )}
             </p>
             {test.who_should_test && (
               <>
@@ -414,11 +513,13 @@ export default function ProviderTestDetailModal({
               </>
             )}
             {/* Provider's own wording, captured verbatim from their test page. */}
-            {([
-              ["What you can learn from this test", test.what_is_tested],
-              ["How to prepare", test.preparation_notes],
-              ["Test limitations", test.test_limitations],
-            ] as const).map(([heading, body]) =>
+            {(
+              [
+                ["What you can learn from this test", test.what_is_tested],
+                ["How to prepare", test.preparation_notes],
+                ["Test limitations", test.test_limitations],
+              ] as const
+            ).map(([heading, body]) =>
               body ? (
                 <div key={heading}>
                   <h4 className="mt-5 text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-2">
@@ -439,7 +540,10 @@ export default function ProviderTestDetailModal({
             </h4>
             <div className="flex flex-wrap gap-x-6 gap-y-2">
               {accreditations.map((acc) => (
-                <span key={acc} className="inline-flex items-center gap-2 text-sm text-[#081129]/85">
+                <span
+                  key={acc}
+                  className="inline-flex items-center gap-2 text-sm text-[#081129]/85"
+                >
                   <span className="w-5 h-5 rounded-full border border-[#22c0d4] flex items-center justify-center text-[#22c0d4]">
                     <Check className="w-3 h-3" strokeWidth={3} />
                   </span>
@@ -480,13 +584,15 @@ export default function ProviderTestDetailModal({
             />
           </section>
 
-
           {/* Disclaimer */}
           <div className="border-l-4 border-[#22c0d4] bg-[#22c0d4]/10 rounded-r-lg px-4 py-3">
             <p className="text-sm text-[#081129]/80 leading-relaxed flex gap-2">
               <ShieldCheck className="w-4 h-4 text-[#22c0d4] shrink-0 mt-0.5" />
               <span>
-                myhealth checkup is an independent comparison platform. We do not provide medical advice. Always confirm test details, pricing, and availability directly with the provider before booking.
+                myhealth checkup is an independent comparison platform. We do
+                not provide medical advice. Always confirm test details,
+                pricing, and availability directly with the provider before
+                booking.
               </span>
             </p>
           </div>
@@ -499,7 +605,9 @@ export default function ProviderTestDetailModal({
               className="flex-1 h-14 text-sm font-semibold rounded-full bg-white border-2 border-[#22c0d4] text-[#22c0d4] hover:bg-[#22c0d4] hover:text-white transition-colors"
             >
               {inCompare ? (
-                <><Check className="w-4 h-4 mr-1.5" /> In compare — view list</>
+                <>
+                  <Check className="w-4 h-4 mr-1.5" /> In compare — view list
+                </>
               ) : (
                 <>+ Compare this test</>
               )}
@@ -527,7 +635,8 @@ export default function ProviderTestDetailModal({
 
           {test.url && (
             <p className="text-center text-xs text-[#081129]/50">
-              You'll be taken to {providerName}'s website to complete your booking.
+              You'll be taken to {providerName}'s website to complete your
+              booking.
             </p>
           )}
         </div>

@@ -26,7 +26,6 @@ describe("deriveCollectionVariants", () => {
     });
   });
 
-
   it("keeps venous-only tests as a single clinic listing", () => {
     const variants = deriveCollectionVariants({
       id: "fbc",
@@ -58,6 +57,8 @@ describe("deriveCollectionVariants", () => {
       clinic_phlebotomy_cost: 40,
     });
     expect(variantFeeNote(kit)).toBeNull();
-    expect(variantFeeNote(clinic)).toBe("£69.00 test + £40.00 clinic blood draw");
+    expect(variantFeeNote(clinic)).toBe(
+      "£69.00 test + £40.00 clinic blood draw",
+    );
   });
 });

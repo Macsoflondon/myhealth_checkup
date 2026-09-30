@@ -30,7 +30,8 @@ function extractGbpNumbers(text: string): number[] {
     if (Number.isFinite(n) && n > 0) results.push(n);
   }
   // number followed by GBP
-  const gbpRe = /(\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?|\d+(?:\.\d{1,2})?)\s*gbp\b/gi;
+  const gbpRe =
+    /(\d{1,3}(?:,\d{3})*(?:\.\d{1,2})?|\d+(?:\.\d{1,2})?)\s*gbp\b/gi;
   while ((m = gbpRe.exec(cleaned)) !== null) {
     const n = parseFloat(m[1].replace(/,/g, ""));
     if (Number.isFinite(n) && n > 0) results.push(n);
@@ -38,7 +39,9 @@ function extractGbpNumbers(text: string): number[] {
   return results;
 }
 
-export function parsePrice(input: string | number | null | undefined): PriceParseResult {
+export function parsePrice(
+  input: string | number | null | undefined,
+): PriceParseResult {
   if (input === null || input === undefined) {
     return { price: null, wasPrice: null, currency: null, from: false };
   }
@@ -49,7 +52,8 @@ export function parsePrice(input: string | number | null | undefined): PricePars
   }
 
   const text = input.toString().trim();
-  if (!text) return { price: null, wasPrice: null, currency: null, from: false };
+  if (!text)
+    return { price: null, wasPrice: null, currency: null, from: false };
 
   const from = /\bfrom\b/i.test(text);
   const hasWas = /\bwas\b|\bwere\b|\brrp\b/i.test(text);
@@ -69,7 +73,12 @@ export function parsePrice(input: string | number | null | undefined): PricePars
   // first £-anchored occurrence (which on product pages is the primary price).
   if (hasWas) {
     const sorted = [...nums].sort((a, b) => a - b);
-    return { price: sorted[0], wasPrice: sorted[sorted.length - 1], currency: "GBP", from };
+    return {
+      price: sorted[0],
+      wasPrice: sorted[sorted.length - 1],
+      currency: "GBP",
+      from,
+    };
   }
 
   return { price: nums[0], wasPrice: null, currency: "GBP", from };

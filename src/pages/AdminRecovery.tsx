@@ -24,8 +24,10 @@ const readRecoveryError = async (error: unknown): Promise<string> => {
       const body = (await response.clone().json()) as { error?: string };
       if (typeof body?.error === "string") return body.error;
     } catch {
-      if (response.status === 401) return "Recovery token is invalid, expired or already used.";
-      if (response.status === 403) return "You are not authorised to perform this action.";
+      if (response.status === 401)
+        return "Recovery token is invalid, expired or already used.";
+      if (response.status === 403)
+        return "You are not authorised to perform this action.";
     }
   }
 
@@ -53,9 +55,12 @@ const AdminRecovery = () => {
     }
     setLoading(true);
     try {
-      const { data, error } = await supabase.functions.invoke<RecoveryResponse>("admin-recovery", {
-        body: { action: "redeem", token, email, newPassword },
-      });
+      const { data, error } = await supabase.functions.invoke<RecoveryResponse>(
+        "admin-recovery",
+        {
+          body: { action: "redeem", token, email, newPassword },
+        },
+      );
       if (error) {
         toast.error(await readRecoveryError(error));
         return;
@@ -67,7 +72,9 @@ const AdminRecovery = () => {
         toast.error(data?.error || "Recovery failed.");
       }
     } catch (err) {
-      toast.error((err as { message?: string })?.message || "Unexpected error.");
+      toast.error(
+        (err as { message?: string })?.message || "Unexpected error.",
+      );
     } finally {
       setLoading(false);
     }
@@ -82,25 +89,27 @@ const AdminRecovery = () => {
           </div>
         </div>
 
-        <h1 className="text-xl font-semibold text-white text-center mb-1">Admin recovery</h1>
+        <h1 className="text-xl font-semibold text-white text-center mb-1">
+          Admin recovery
+        </h1>
         <p className="text-white/78 text-sm text-center mb-6">
           Requires a single-use recovery token issued by another administrator.
         </p>
 
         <Alert className="mb-4 border-amber-500/40 bg-amber-950/40">
           <AlertDescription className="text-amber-200 text-xs">
-            Recovery tokens expire after 15 minutes and can only be used once, for the
-            administrator account they were issued to. This resets that account's password and
-            clears its multi-factor devices. No account privileges are granted here, and every
-            attempt is logged.
+            Recovery tokens expire after 15 minutes and can only be used once,
+            for the administrator account they were issued to. This resets that
+            account's password and clears its multi-factor devices. No account
+            privileges are granted here, and every attempt is logged.
           </AlertDescription>
         </Alert>
 
         {done ? (
           <div className="space-y-4 text-center">
             <p className="text-white/90 text-sm">
-              Account recovered. Sign in with your new password, then re-enrol multi-factor
-              authentication straight away.
+              Account recovered. Sign in with your new password, then re-enrol
+              multi-factor authentication straight away.
             </p>
             <Button onClick={() => navigate("/admin/login")} className="w-full">
               Go to admin login
@@ -139,7 +148,10 @@ const AdminRecovery = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="recovery-new-password" className="text-white/90 text-sm">
+              <Label
+                htmlFor="recovery-new-password"
+                className="text-white/90 text-sm"
+              >
                 New password (min 12 characters)
               </Label>
               <Input
@@ -153,7 +165,10 @@ const AdminRecovery = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="recovery-confirm" className="text-white/90 text-sm">
+              <Label
+                htmlFor="recovery-confirm"
+                className="text-white/90 text-sm"
+              >
                 Confirm new password
               </Label>
               <Input

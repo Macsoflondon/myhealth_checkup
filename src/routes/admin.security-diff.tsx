@@ -4,7 +4,9 @@ import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 import { AdminRoute } from "@/components/auth/AdminRoute";
 import { AdminShell } from "@/components/admin/AdminShell";
 
-const AdminSecurityDiffPage = lazy(() => import("@/pages/AdminSecurityDiffPage"));
+const AdminSecurityDiffPage = lazy(
+  () => import("@/pages/AdminSecurityDiffPage"),
+);
 
 export const Route = createFileRoute("/admin/security-diff")({
   head: () => buildPrivateRouteHead("Security Diff | Admin | myhealth checkup"),

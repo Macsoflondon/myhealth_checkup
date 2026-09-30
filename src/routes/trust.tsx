@@ -8,7 +8,8 @@ export const Route = createFileRoute("/trust")({
   head: () =>
     buildRouteHead({
       title: "Trust Centre | myhealth checkup",
-      description: "How we vet providers, protect your data and keep our comparisons independent, with our security and compliance standards.",
+      description:
+        "How we vet providers, protect your data and keep our comparisons independent, with our security and compliance standards.",
       path: "/trust",
     }),
   component: TrustCentrePage,

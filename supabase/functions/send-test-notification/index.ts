@@ -11,7 +11,7 @@ const corsHeaders = {
 };
 
 interface TestNotificationRequest {
-  type: 'email' | 'sms';
+  type: "email" | "sms";
   notificationType: string;
 }
 
@@ -35,7 +35,7 @@ serve(async (req: Request): Promise<Response> => {
         global: {
           headers: { Authorization: authHeader },
         },
-      }
+      },
     );
 
     const {
@@ -58,9 +58,10 @@ serve(async (req: Request): Promise<Response> => {
       throw new Error("Could not fetch user profile");
     }
 
-    const { type, notificationType }: TestNotificationRequest = await req.json();
+    const { type, notificationType }: TestNotificationRequest =
+      await req.json();
 
-    if (type === 'email') {
+    if (type === "email") {
       const resendApiKey = Deno.env.get("RESEND_API_KEY");
       if (!resendApiKey) {
         throw new Error("RESEND_API_KEY not configured");
@@ -73,16 +74,19 @@ serve(async (req: Request): Promise<Response> => {
         throw new Error("No email address found");
       }
 
-      const emailContent = getEmailContent(notificationType, profile.first_name || 'there');
+      const emailContent = getEmailContent(
+        notificationType,
+        profile.first_name || "there",
+      );
 
       // Create notification history entry
       const { error: logError } = await supabase
-        .from('notification_history')
+        .from("notification_history")
         .insert({
           user_id: user.id,
-          notification_type: 'email',
+          notification_type: "email",
           notification_category: notificationType,
-          status: 'pending',
+          status: "pending",
           recipient: email,
           subject: emailContent.subject,
         });
@@ -104,23 +108,23 @@ serve(async (req: Request): Promise<Response> => {
 
         // Update notification status to sent
         await supabase
-          .from('notification_history')
+          .from("notification_history")
           .update({
-            status: 'sent',
+            status: "sent",
             sent_at: new Date().toISOString(),
           })
-          .eq('user_id', user.id)
-          .eq('recipient', email)
-          .eq('status', 'pending')
-          .eq('notification_category', notificationType)
-          .order('created_at', { ascending: false })
+          .eq("user_id", user.id)
+          .eq("recipient", email)
+          .eq("status", "pending")
+          .eq("notification_category", notificationType)
+          .order("created_at", { ascending: false })
           .limit(1);
 
         return new Response(
-          JSON.stringify({ 
-            success: true, 
+          JSON.stringify({
+            success: true,
             message: `Test ${notificationType} email sent to ${email}`,
-            emailId: emailResponse.data?.id ?? null
+            emailId: emailResponse.data?.id ?? null,
           }),
           {
             status: 200,
@@ -128,28 +132,28 @@ serve(async (req: Request): Promise<Response> => {
               "Content-Type": "application/json",
               ...corsHeaders,
             },
-          }
+          },
         );
       } catch (emailError) {
         console.error("Email send error:", emailError);
-        
+
         // Update notification status to failed
         await supabase
-          .from('notification_history')
+          .from("notification_history")
           .update({
-            status: 'failed',
-            error_message: emailError.message || 'Email send failed',
+            status: "failed",
+            error_message: emailError.message || "Email send failed",
           })
-          .eq('user_id', user.id)
-          .eq('recipient', email)
-          .eq('status', 'pending')
-          .eq('notification_category', notificationType)
-          .order('created_at', { ascending: false })
+          .eq("user_id", user.id)
+          .eq("recipient", email)
+          .eq("status", "pending")
+          .eq("notification_category", notificationType)
+          .order("created_at", { ascending: false })
           .limit(1);
-        
+
         throw emailError;
       }
-    } else if (type === 'sms') {
+    } else if (type === "sms") {
       // SMS functionality would require a service like Twilio
       // For now, log the attempt and return a placeholder response
       if (!profile.phone) {
@@ -157,21 +161,19 @@ serve(async (req: Request): Promise<Response> => {
       }
 
       // Log SMS attempt
-      await supabase
-        .from('notification_history')
-        .insert({
-          user_id: user.id,
-          notification_type: 'sms',
-          notification_category: notificationType,
-          status: 'pending',
-          recipient: profile.phone,
-        });
+      await supabase.from("notification_history").insert({
+        user_id: user.id,
+        notification_type: "sms",
+        notification_category: notificationType,
+        status: "pending",
+        recipient: profile.phone,
+      });
 
       return new Response(
-        JSON.stringify({ 
-          success: true, 
+        JSON.stringify({
+          success: true,
           message: `SMS functionality requires Twilio integration. Phone: ${profile.phone}`,
-          note: "SMS sending not yet configured"
+          note: "SMS sending not yet configured",
         }),
         {
           status: 200,
@@ -179,7 +181,7 @@ serve(async (req: Request): Promise<Response> => {
             "Content-Type": "application/json",
             ...corsHeaders,
           },
-        }
+        },
       );
     } else {
       throw new Error("Invalid notification type");
@@ -191,7 +193,9 @@ serve(async (req: Request): Promise<Response> => {
     return new Response(
       JSON.stringify({
         success: false,
-        error: isConfigError ? "Email service unavailable" : "Internal server error",
+        error: isConfigError
+          ? "Email service unavailable"
+          : "Internal server error",
       }),
       {
         status: isConfigError ? 503 : 500,
@@ -199,14 +203,17 @@ serve(async (req: Request): Promise<Response> => {
           "Content-Type": "application/json",
           ...corsHeaders,
         },
-      }
+      },
     );
   }
 });
 
-function getEmailContent(notificationType: string, firstName: string): { subject: string; html: string } {
+function getEmailContent(
+  notificationType: string,
+  firstName: string,
+): { subject: string; html: string } {
   switch (notificationType) {
-    case 'results':
+    case "results":
       return {
         subject: "🧪 Test Notification: Your Results Are Ready",
         html: `
@@ -227,9 +234,9 @@ function getEmailContent(notificationType: string, firstName: string): { subject
               </p>
             </div>
           </div>
-        `
+        `,
       };
-    case 'appointments':
+    case "appointments":
       return {
         subject: "📅 Test Notification: Appointment Reminder",
         html: `
@@ -252,9 +259,9 @@ function getEmailContent(notificationType: string, firstName: string): { subject
               </p>
             </div>
           </div>
-        `
+        `,
       };
-    case 'promotions':
+    case "promotions":
       return {
         subject: "🎉 Test Notification: Special Offer",
         html: `
@@ -276,7 +283,7 @@ function getEmailContent(notificationType: string, firstName: string): { subject
               </p>
             </div>
           </div>
-        `
+        `,
       };
     default:
       return {
@@ -296,7 +303,7 @@ function getEmailContent(notificationType: string, firstName: string): { subject
               </p>
             </div>
           </div>
-        `
+        `,
       };
   }
 }

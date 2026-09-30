@@ -24,7 +24,11 @@ interface UseProvidersByTestTypeOptions {
   enabled?: boolean;
 }
 
-export const useProvidersByTestType = ({ testType, category, enabled = true }: UseProvidersByTestTypeOptions) => {
+export const useProvidersByTestType = ({
+  testType,
+  category,
+  enabled = true,
+}: UseProvidersByTestTypeOptions) => {
   return useQuery({
     queryKey: ["providers-by-test-type", testType, category],
     queryFn: async (): Promise<ProviderTestRow[]> => {
@@ -45,7 +49,7 @@ export const useProvidersByTestType = ({ testType, category, enabled = true }: U
       if (category) {
         const categorySpaced = category.replace(/-/g, " ");
         query = query.or(
-          `canonical_category.ilike.%${category}%,category.ilike.%${categorySpaced}%`
+          `canonical_category.ilike.%${category}%,category.ilike.%${categorySpaced}%`,
         );
       }
 
@@ -93,7 +97,7 @@ export const useProvidersByCategory = (category: string, enabled = true) => {
         .select("*")
         .eq("is_active", true)
         .or(
-          `canonical_category.ilike.%${category}%,category.ilike.%${category.replace(/-/g, " ")}%`
+          `canonical_category.ilike.%${category}%,category.ilike.%${category.replace(/-/g, " ")}%`,
         )
         .order("price", { ascending: true });
 
@@ -129,18 +133,20 @@ export const useProvidersByCategory = (category: string, enabled = true) => {
 };
 
 // Group tests by name to show all providers offering similar tests
-export const groupTestsByName = (tests: ProviderTestRow[]): Map<string, ProviderTestRow[]> => {
+export const groupTestsByName = (
+  tests: ProviderTestRow[],
+): Map<string, ProviderTestRow[]> => {
   const groups = new Map<string, ProviderTestRow[]>();
-  
+
   tests.forEach((test) => {
     // Normalise test name for grouping
     const normalisedName = test.testName.toLowerCase().trim();
-    
+
     if (!groups.has(normalisedName)) {
       groups.set(normalisedName, []);
     }
     groups.get(normalisedName)!.push(test);
   });
-  
+
   return groups;
 };

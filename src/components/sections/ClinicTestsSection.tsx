@@ -1,5 +1,8 @@
 import { useClinicTests, type ClinicTest } from "@/hooks/useClinicTests";
-import { UniversalTestCard, type UniversalTestData } from "@/components/cards/UniversalTestCard";
+import {
+  UniversalTestCard,
+  type UniversalTestData,
+} from "@/components/cards/UniversalTestCard";
 import { SectionSkeleton } from "@/components/common/SectionSkeleton";
 import { getProviderMeta } from "@/constants/providerMeta";
 
@@ -22,7 +25,10 @@ export interface ClinicTestsSectionProps {
   limit?: number;
 }
 
-export function ClinicTestsSection({ providerId, limit = 8 }: ClinicTestsSectionProps) {
+export function ClinicTestsSection({
+  providerId,
+  limit = 8,
+}: ClinicTestsSectionProps) {
   const { data: tests, isLoading, error } = useClinicTests(providerId);
   const meta = getProviderMeta(providerId);
 
@@ -50,16 +56,14 @@ export function ClinicTestsSection({ providerId, limit = 8 }: ClinicTestsSection
             Tests available from {meta.displayName}
           </h2>
           <p className="mt-2 text-sm sm:text-base text-brand-navy max-w-2xl">
-            Browse and compare {meta.displayName} tests with transparent pricing and accreditation details.
+            Browse and compare {meta.displayName} tests with transparent pricing
+            and accreditation details.
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {visibleTests.map((test) => (
-            <UniversalTestCard
-              key={test.id}
-              test={toUniversalTest(test)}
-            />
+            <UniversalTestCard key={test.id} test={toUniversalTest(test)} />
           ))}
         </div>
       </div>

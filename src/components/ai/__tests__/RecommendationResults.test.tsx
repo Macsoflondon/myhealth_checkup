@@ -2,14 +2,19 @@ import "@testing-library/jest-dom/vitest";
 import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { TestProviders } from "@/test/test-providers";
-import { RecommendationResults, type AIAnalysisResult } from "../RecommendationEngine";
+import {
+  RecommendationResults,
+  type AIAnalysisResult,
+} from "../RecommendationEngine";
 
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
     functions: { invoke: vi.fn() },
     auth: {
       getUser: () => Promise.resolve({ data: { user: null } }),
-      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
+      onAuthStateChange: () => ({
+        data: { subscription: { unsubscribe: () => {} } },
+      }),
     },
   },
 }));
@@ -65,7 +70,6 @@ describe("RecommendationResults", () => {
     expect(screen.queryByText("£68")).not.toBeInTheDocument();
   });
 
-
   it("renders wellness analysis section", () => {
     render(<RecommendationResults result={mockResult} />, { wrapper });
     expect(screen.getByText("Wellness Analysis")).toBeInTheDocument();
@@ -96,15 +100,14 @@ describe("RecommendationResults", () => {
   it("handles null price gracefully", () => {
     const withNullPrice: AIAnalysisResult = {
       ...mockResult,
-      recommendedTests: [
-        { ...mockResult.recommendedTests[0], price: null },
-      ],
+      recommendedTests: [{ ...mockResult.recommendedTests[0], price: null }],
     };
     render(<RecommendationResults result={withNullPrice} />, { wrapper });
     expect(screen.getByText("Thyroid Function Test")).toBeInTheDocument();
     // Missing prices fall back to a neutral message, never NaN.
     expect(screen.getByText("Suggested tests")).toBeInTheDocument();
-    expect(screen.getByText("Individual prices shown per test")).toBeInTheDocument();
-
+    expect(
+      screen.getByText("Individual prices shown per test"),
+    ).toBeInTheDocument();
   });
 });

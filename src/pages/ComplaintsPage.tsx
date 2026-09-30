@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { z } from "zod";
-import { Loader2, CheckCircle2, AlertCircle, Clock, Shield, Scale } from "lucide-react";
+import {
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+  Clock,
+  Shield,
+  Scale,
+} from "lucide-react";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import PageBanner from "@/components/sections/PageBanner";
@@ -79,7 +86,9 @@ const initialState: FormState = {
 const ComplaintsPage: React.FC = () => {
   const [form, setForm] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "ok" | "error">(
+    "idle",
+  );
   const [reference, setReference] = useState<string | null>(null);
   const [serverError, setServerError] = useState<string | null>(null);
 
@@ -104,9 +113,12 @@ const ComplaintsPage: React.FC = () => {
 
     setStatus("sending");
     try {
-      const { data, error } = await supabase.functions.invoke("submit-complaint", {
-        body: { ...parsed.data, hp: form.hp },
-      });
+      const { data, error } = await supabase.functions.invoke(
+        "submit-complaint",
+        {
+          body: { ...parsed.data, hp: form.hp },
+        },
+      );
       if (error) throw error;
       if (data?.error) throw new Error(data.error);
       setReference(data?.reference ?? null);
@@ -115,7 +127,9 @@ const ComplaintsPage: React.FC = () => {
     } catch (err) {
       logger.error("[complaints] submit failed", err);
       setServerError(
-        err instanceof Error ? err.message : "Something went wrong. Please try again.",
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again.",
       );
       setStatus("error");
     }
@@ -123,8 +137,7 @@ const ComplaintsPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Helmet>
-      </Helmet>
+      <Helmet></Helmet>
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner
@@ -148,16 +161,22 @@ const ComplaintsPage: React.FC = () => {
                     </h3>
                     <p className="text-sm text-green-900/80">
                       Your reference is{" "}
-                      <span className="font-mono font-semibold">{reference}</span>.
-                      We've sent an acknowledgement to your email and will respond
-                      within our published SLA.
+                      <span className="font-mono font-semibold">
+                        {reference}
+                      </span>
+                      . We've sent an acknowledgement to your email and will
+                      respond within our published SLA.
                     </p>
                     <Button variant="outline" onClick={() => setStatus("idle")}>
                       Submit another
                     </Button>
                   </div>
                 ) : (
-                  <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                  <form
+                    onSubmit={handleSubmit}
+                    className="space-y-4"
+                    noValidate
+                  >
                     {/* Honeypot */}
                     <input
                       type="text"
@@ -182,7 +201,9 @@ const ComplaintsPage: React.FC = () => {
                           required
                         />
                         {errors.name && (
-                          <p className="text-xs text-destructive mt-1">{errors.name}</p>
+                          <p className="text-xs text-destructive mt-1">
+                            {errors.name}
+                          </p>
                         )}
                       </div>
                       <div>
@@ -197,7 +218,9 @@ const ComplaintsPage: React.FC = () => {
                           required
                         />
                         {errors.email && (
-                          <p className="text-xs text-destructive mt-1">{errors.email}</p>
+                          <p className="text-xs text-destructive mt-1">
+                            {errors.email}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -220,23 +243,31 @@ const ComplaintsPage: React.FC = () => {
                         </SelectContent>
                       </Select>
                       {errors.category && (
-                        <p className="text-xs text-destructive mt-1">{errors.category}</p>
+                        <p className="text-xs text-destructive mt-1">
+                          {errors.category}
+                        </p>
                       )}
                     </div>
 
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="providerName">Provider (optional)</Label>
+                        <Label htmlFor="providerName">
+                          Provider (optional)
+                        </Label>
                         <Input
                           id="providerName"
                           value={form.providerName}
-                          onChange={(e) => update("providerName", e.target.value)}
+                          onChange={(e) =>
+                            update("providerName", e.target.value)
+                          }
                           maxLength={160}
                           placeholder="e.g. Medichecks"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="orderRef">Order reference (optional)</Label>
+                        <Label htmlFor="orderRef">
+                          Order reference (optional)
+                        </Label>
                         <Input
                           id="orderRef"
                           value={form.orderRef}
@@ -259,7 +290,9 @@ const ComplaintsPage: React.FC = () => {
                       <div className="flex justify-between text-xs text-muted-foreground mt-1">
                         <span>
                           {errors.message ? (
-                            <span className="text-destructive">{errors.message}</span>
+                            <span className="text-destructive">
+                              {errors.message}
+                            </span>
                           ) : (
                             "Please include any relevant dates, links, or order details."
                           )}
@@ -274,14 +307,20 @@ const ComplaintsPage: React.FC = () => {
                         checked={form.consent}
                         onCheckedChange={(v) => update("consent", v === true)}
                       />
-                      <Label htmlFor="consent" className="text-sm leading-snug font-normal">
-                        I consent to MYHEALTHCHECKUP LTD processing the information
-                        above for the sole purpose of responding to my submission, in
-                        line with the UK GDPR and the Data Protection Act 2018.
+                      <Label
+                        htmlFor="consent"
+                        className="text-sm leading-snug font-normal"
+                      >
+                        I consent to MYHEALTHCHECKUP LTD processing the
+                        information above for the sole purpose of responding to
+                        my submission, in line with the UK GDPR and the Data
+                        Protection Act 2018.
                       </Label>
                     </div>
                     {errors.consent && (
-                      <p className="text-xs text-destructive">{errors.consent}</p>
+                      <p className="text-xs text-destructive">
+                        {errors.consent}
+                      </p>
                     )}
 
                     {serverError && (
@@ -329,7 +368,8 @@ const ComplaintsPage: React.FC = () => {
                   <div>
                     <p className="font-semibold">Full response</p>
                     <p className="text-muted-foreground">
-                      Within <strong>10 business days</strong> for standard matters.
+                      Within <strong>10 business days</strong> for standard
+                      matters.
                     </p>
                   </div>
                   <div>
@@ -395,18 +435,25 @@ const ComplaintsPage: React.FC = () => {
                 <CardContent className="text-sm text-muted-foreground space-y-1">
                   <p>
                     <strong>Compliance:</strong>{" "}
-                    <a className="underline" href="mailto:support@myhealthcheckup.co.uk">
+                    <a
+                      className="underline"
+                      href="mailto:support@myhealthcheckup.co.uk"
+                    >
                       support@myhealthcheckup.co.uk
                     </a>
                   </p>
                   <p>
                     <strong>Legal:</strong>{" "}
-                    <a className="underline" href="mailto:support@myhealthcheckup.co.uk">
+                    <a
+                      className="underline"
+                      href="mailto:support@myhealthcheckup.co.uk"
+                    >
                       support@myhealthcheckup.co.uk
                     </a>
                   </p>
                   <p>
-                    MYHEALTHCHECKUP LTD · Company No. 16589056 · Clapham, SW London, UK
+                    MYHEALTHCHECKUP LTD · Company No. 16589056 · Clapham, SW
+                    London, UK
                   </p>
                 </CardContent>
               </Card>

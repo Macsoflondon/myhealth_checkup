@@ -31,7 +31,6 @@ test("adding a test from the detail modal lands on /compare/results with the ite
   await detailsTrigger.scrollIntoViewIfNeeded();
   await expect(detailsTrigger).toBeVisible({ timeout: 30_000 });
 
-
   const label = (await detailsTrigger.getAttribute("aria-label")) ?? "";
   const testName = label.replace(/^View details for /i, "").trim();
   expect(testName.length).toBeGreaterThan(0);

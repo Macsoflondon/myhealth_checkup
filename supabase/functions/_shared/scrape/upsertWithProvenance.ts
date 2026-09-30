@@ -15,10 +15,7 @@ type SupabaseClient = any;
 
 import { getErrorMessage } from "../errors.ts";
 import { isJunkTestName } from "./isJunkTestName.ts";
-import {
-  writeHistorySnapshot,
-  type ProviderTestSnapshot,
-} from "./history.ts";
+import { writeHistorySnapshot, type ProviderTestSnapshot } from "./history.ts";
 
 export interface UpsertResult {
   ok: boolean;
@@ -50,7 +47,8 @@ function computeStatus(row: Record<string, unknown>): {
   let filled = 0;
   for (const f of REQUIRED_FIELDS) {
     const v = row[f];
-    if (v !== null && v !== undefined && !(Array.isArray(v) && v.length === 0)) filled++;
+    if (v !== null && v !== undefined && !(Array.isArray(v) && v.length === 0))
+      filled++;
   }
   const score = filled / REQUIRED_FIELDS.length;
   if (score === 1) return { status: "complete", score };
@@ -111,7 +109,11 @@ export async function upsertWithProvenance(
   opts: UpsertOptions = {},
 ): Promise<UpsertResult> {
   const warnings: string[] = [];
-  const { scrapeRunId = null, outOfStock = false, allowPriceClear = false } = opts;
+  const {
+    scrapeRunId = null,
+    outOfStock = false,
+    allowPriceClear = false,
+  } = opts;
 
   try {
     if (!input.provider_id || !input.test_name) {
@@ -147,10 +149,14 @@ export async function upsertWithProvenance(
     let safePrice = input.price ?? null;
     if (existing && typeof existing.price === "number" && existing.price > 0) {
       if (safePrice === 0 && !outOfStock) {
-        warnings.push("refused to overwrite positive price with 0 (no out-of-stock evidence)");
+        warnings.push(
+          "refused to overwrite positive price with 0 (no out-of-stock evidence)",
+        );
         safePrice = existing.price as number;
       } else if (safePrice === null && !allowPriceClear) {
-        warnings.push("refused to null out positive price without allowPriceClear");
+        warnings.push(
+          "refused to null out positive price without allowPriceClear",
+        );
         safePrice = existing.price as number;
       }
     }
@@ -176,8 +182,11 @@ export async function upsertWithProvenance(
       url: input.url ?? input.scrape_source_url ?? null,
       last_validated_at: new Date().toISOString(),
       price_not_stated: safePrice === null,
-      biomarkers_not_stated: !Array.isArray(input.biomarkers_list) || (input.biomarkers_list as unknown[]).length === 0,
-      turnaround_not_stated: !input.turnaround_unit || input.turnaround_unit === "not_stated",
+      biomarkers_not_stated:
+        !Array.isArray(input.biomarkers_list) ||
+        (input.biomarkers_list as unknown[]).length === 0,
+      turnaround_not_stated:
+        !input.turnaround_unit || input.turnaround_unit === "not_stated",
     };
 
     if (input.provider_test_id) row.provider_test_id = input.provider_test_id;
@@ -200,7 +209,9 @@ export async function upsertWithProvenance(
 
     if (junkPrice && outOfStock) {
       const lastKnown =
-        existing && typeof existing.price === "number" && (existing.price as number) > 1
+        existing &&
+        typeof existing.price === "number" &&
+        (existing.price as number) > 1
           ? (existing.price as number)
           : null;
       row.price = lastKnown;
@@ -239,7 +250,9 @@ export async function upsertWithProvenance(
         // Self-healing: only rows quarantined for a suspicious price come
         // back. Rows deactivated for editorial/other reasons stay hidden.
         row.is_active = true;
-        warnings.push("reactivated: valid price replaced previous suspicious price");
+        warnings.push(
+          "reactivated: valid price replaced previous suspicious price",
+        );
       }
 
       const { data, error } = await supabase
@@ -272,7 +285,11 @@ export async function upsertWithProvenance(
     // the uuid override wins.
     await writeHistorySnapshot(
       supabase,
-      { ...input, ...row, provider_test_id: providerTestId } as ProviderTestSnapshot,
+      {
+        ...input,
+        ...row,
+        provider_test_id: providerTestId,
+      } as ProviderTestSnapshot,
       { scrapeRunId, previous: existing },
     );
 

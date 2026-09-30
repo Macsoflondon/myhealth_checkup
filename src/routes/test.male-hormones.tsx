@@ -8,7 +8,8 @@ export const Route = createFileRoute("/test/male-hormones")({
   head: () =>
     buildRouteHead({
       title: "Male Hormone Blood Tests Compared | myhealth checkup",
-      description: "Compare male hormone blood tests across UK providers: biomarkers, sample methods, turnaround times and prices in GBP.",
+      description:
+        "Compare male hormone blood tests across UK providers: biomarkers, sample methods, turnaround times and prices in GBP.",
       path: "/test/male-hormones",
     }),
   component: MaleHormoneTestPage,

@@ -5,7 +5,10 @@ import {
   type ContactInput,
 } from "./contact.shared";
 
-async function sendEmail(apiKey: string, payload: Record<string, unknown>): Promise<void> {
+async function sendEmail(
+  apiKey: string,
+  payload: Record<string, unknown>,
+): Promise<void> {
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -16,7 +19,9 @@ async function sendEmail(apiKey: string, payload: Record<string, unknown>): Prom
   });
   if (!response.ok) {
     const detail = await response.text().catch(() => "");
-    throw new Error(`Email delivery failed (${response.status}): ${detail.slice(0, 200)}`);
+    throw new Error(
+      `Email delivery failed (${response.status}): ${detail.slice(0, 200)}`,
+    );
   }
 }
 

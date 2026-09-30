@@ -31,11 +31,19 @@ const buildRows = (): Row[] => [
   },
   {
     label: "Turnaround time",
-    render: (t) => <span className="text-ink text-sm">{t.turnaround_label}</span>,
+    render: (t) => (
+      <span className="text-ink text-sm">{t.turnaround_label}</span>
+    ),
   },
   { label: "Sample type", render: (t) => <SampleTypeCell test={t} /> },
-  { label: "Collection method", render: (t) => <CollectionMethodCell test={t} /> },
-  { label: "Additional collection fees", render: (t) => <AdditionalFeesCell test={t} /> },
+  {
+    label: "Collection method",
+    render: (t) => <CollectionMethodCell test={t} />,
+  },
+  {
+    label: "Additional collection fees",
+    render: (t) => <AdditionalFeesCell test={t} />,
+  },
   { label: "Clinical review", render: (t) => <ClinicalReviewCell test={t} /> },
   { label: "Total expected cost", render: (t) => <TotalCostCell test={t} /> },
 ];
@@ -45,10 +53,14 @@ const ProviderHeaderCell = ({ test }: { test: TestRecord }) => (
     <div className="text-brand-turquoise font-semibold text-base leading-tight">
       {test.provider}
     </div>
-    <div className="text-white font-semibold text-sm mt-1 leading-snug">{test.name}</div>
+    <div className="text-white font-semibold text-sm mt-1 leading-snug">
+      {test.name}
+    </div>
     <div className="mt-2">
       <VerificationMark status={test.verification.price}>
-        <span className="text-brand-pink font-bold text-2xl">{formatGBP(test.price)}</span>
+        <span className="text-brand-pink font-bold text-2xl">
+          {formatGBP(test.price)}
+        </span>
       </VerificationMark>
     </div>
   </div>

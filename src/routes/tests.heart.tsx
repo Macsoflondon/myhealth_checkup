@@ -8,7 +8,8 @@ export const Route = createFileRoute("/tests/heart")({
   head: () =>
     buildCollectionHead({
       title: "Heart Health Blood Tests UK | Compare",
-      description: "Compare cardiovascular blood tests covering cholesterol, lipoprotein(a), ApoB and inflammation markers from UK providers.",
+      description:
+        "Compare cardiovascular blood tests covering cholesterol, lipoprotein(a), ApoB and inflammation markers from UK providers.",
       path: "/tests/heart",
     }),
   component: HeartHealthPage,

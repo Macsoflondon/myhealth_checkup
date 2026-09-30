@@ -20,9 +20,21 @@ const HeartHealthPage = () => (
     filters={["All"]}
     benefitsTitle="Why Test Your Heart Health?"
     benefits={[
-      { icon: Heart, title: "Early Detection", description: "Identify risk factors before symptoms appear" },
-      { icon: Shield, title: "Prevention", description: "Take action to prevent heart disease" },
-      { icon: TrendingUp, title: "Monitor Progress", description: "Track improvements over time" },
+      {
+        icon: Heart,
+        title: "Early Detection",
+        description: "Identify risk factors before symptoms appear",
+      },
+      {
+        icon: Shield,
+        title: "Prevention",
+        description: "Take action to prevent heart disease",
+      },
+      {
+        icon: TrendingUp,
+        title: "Monitor Progress",
+        description: "Track improvements over time",
+      },
     ]}
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Heart Health" }]}
     compareUrl="/compare?category=heart-health"

@@ -20,9 +20,21 @@ const GutHealthPage = () => (
     filters={["All"]}
     benefitsTitle="Why Test Your Gut?"
     benefits={[
-      { icon: Shield, title: "Immunity", description: "70% of immune system is in your gut" },
-      { icon: Activity, title: "Mental Health", description: "Gut produces 90% of serotonin" },
-      { icon: Heart, title: "Whole-Body Health", description: "Gut bacteria affect cholesterol and energy" },
+      {
+        icon: Shield,
+        title: "Immunity",
+        description: "70% of immune system is in your gut",
+      },
+      {
+        icon: Activity,
+        title: "Mental Health",
+        description: "Gut produces 90% of serotonin",
+      },
+      {
+        icon: Heart,
+        title: "Whole-Body Health",
+        description: "Gut bacteria affect cholesterol and energy",
+      },
     ]}
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Gut Health" }]}
     compareUrl="/compare?category=gut-health"

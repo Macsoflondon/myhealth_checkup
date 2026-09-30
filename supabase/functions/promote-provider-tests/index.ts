@@ -7,7 +7,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
 interface ProviderTestRow {
@@ -34,7 +35,10 @@ interface ProviderTestRow {
 function normaliseName(name: string): string {
   return name
     .toLowerCase()
-    .replace(/\b(blood\s*test|home\s*test\s*kit|home\s*kit|test\s*kit|panel|profile|screen|screening)\b/gi, "")
+    .replace(
+      /\b(blood\s*test|home\s*test\s*kit|home\s*kit|test\s*kit|panel|profile|screen|screening)\b/gi,
+      "",
+    )
     .replace(/\s*\|.*$/g, "")
     .replace(/[^a-z0-9\s]+/g, " ")
     .replace(/\s+/g, " ")
@@ -48,7 +52,8 @@ function parseTurnaroundDays(text: string | null): number | null {
 }
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  if (req.method === "OPTIONS")
+    return new Response("ok", { headers: corsHeaders });
 
   const url = Deno.env.get("SUPABASE_URL")!;
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -63,19 +68,20 @@ Deno.serve(async (req) => {
     });
   }
 
-  const supabase = createClient(url, serviceKey, { auth: { persistSession: false } });
+  const supabase = createClient(url, serviceKey, {
+    auth: { persistSession: false },
+  });
 
   const body = await req.json().catch(() => ({}));
   const sinceIso: string =
-    body.since ||
-    new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    body.since || new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
   const providerFilter: string | undefined = body.provider_id;
 
   // Fetch candidate rows
   let q = supabase
     .from("provider_tests")
     .select(
-      "id,provider_id,provider_test_id,test_name,description,price,base_price,url,image_url,canonical_category,category,source_section,biomarker_count,biomarkers_list,sample_type,turnaround_days_text,home_kit_available,clinic_visit_available"
+      "id,provider_id,provider_test_id,test_name,description,price,base_price,url,image_url,canonical_category,category,source_section,biomarker_count,biomarkers_list,sample_type,turnaround_days_text,home_kit_available,clinic_visit_available",
     )
     .eq("is_active", true)
     .gte("updated_at", sinceIso);
@@ -107,10 +113,13 @@ Deno.serve(async (req) => {
       }
 
       // Fuzzy-match within same category (trigram similarity)
-      const { data: match } = await supabase.rpc("pg_trgm_test_match" as never, {} as never).maybeSingle().then(
-        () => ({ data: null }),
-        () => ({ data: null })
-      );
+      const { data: match } = await supabase
+        .rpc("pg_trgm_test_match" as never, {} as never)
+        .maybeSingle()
+        .then(
+          () => ({ data: null }),
+          () => ({ data: null }),
+        );
 
       // Use a direct query for similarity — no RPC needed
       const { data: candidates } = await supabase
@@ -146,13 +155,18 @@ Deno.serve(async (req) => {
             description: row.description || `${row.test_name} from provider.`,
             biomarkers,
             sample_type: row.sample_type,
-            typical_turnaround_days: parseTurnaroundDays(row.turnaround_days_text),
+            typical_turnaround_days: parseTurnaroundDays(
+              row.turnaround_days_text,
+            ),
             is_active: true,
           })
           .select("id")
           .single();
         if (insertErr) {
-          errors.push({ id: row.id, msg: `master insert: ${insertErr.message}` });
+          errors.push({
+            id: row.id,
+            msg: `master insert: ${insertErr.message}`,
+          });
           continue;
         }
         masterId = newMaster.id as string;
@@ -179,7 +193,7 @@ Deno.serve(async (req) => {
             availability_status: "available",
             last_scraped_at: new Date().toISOString(),
           },
-          { onConflict: "provider_id,test_master_id" }
+          { onConflict: "provider_id,test_master_id" },
         );
       if (mapErr) {
         errors.push({ id: row.id, msg: `mapping upsert: ${mapErr.message}` });
@@ -200,7 +214,7 @@ Deno.serve(async (req) => {
       skipped,
       errors: errors.slice(0, 20),
     }),
-    { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    { headers: { ...corsHeaders, "Content-Type": "application/json" } },
   );
 });
 
@@ -216,8 +230,10 @@ function similarity(a: string, b: string): number {
     }
     return out;
   };
-  const A = bigrams(a), B = bigrams(b);
-  let inter = 0, total = 0;
+  const A = bigrams(a),
+    B = bigrams(b);
+  let inter = 0,
+    total = 0;
   for (const [k, v] of A) {
     total += v;
     if (B.has(k)) inter += Math.min(v, B.get(k)!);

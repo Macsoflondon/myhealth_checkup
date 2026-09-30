@@ -16,7 +16,6 @@ export interface Order {
 }
 
 class OrdersApi {
-
   /**
    * Get all orders for a user
    */
@@ -38,7 +37,7 @@ class OrdersApi {
    * Create a new order
    */
   async createOrder(
-    order: Omit<Order, "id" | "order_date">
+    order: Omit<Order, "id" | "order_date">,
   ): Promise<ApiResponse<Order>> {
     try {
       const { data, error } = await supabase
@@ -59,13 +58,16 @@ class OrdersApi {
    */
   async updateOrderStatus(
     orderId: string,
-    status: string
+    status: string,
   ): Promise<ApiResponse<Order>> {
     try {
-      const { data: isAdmin } = await supabase.rpc('is_current_user_admin');
+      const { data: isAdmin } = await supabase.rpc("is_current_user_admin");
       if (!isAdmin) {
-        logger.warn('Non-admin user attempted to update order status');
-        return { data: null, error: new Error('Only administrators can update order status') };
+        logger.warn("Non-admin user attempted to update order status");
+        return {
+          data: null,
+          error: new Error("Only administrators can update order status"),
+        };
       }
 
       const { data, error } = await supabase
@@ -88,13 +90,16 @@ class OrdersApi {
   async addOrderResult(
     orderId: string,
     resultUrl: string,
-    resultDate: string
+    resultDate: string,
   ): Promise<ApiResponse<Order>> {
     try {
-      const { data: isAdmin } = await supabase.rpc('is_current_user_admin');
+      const { data: isAdmin } = await supabase.rpc("is_current_user_admin");
       if (!isAdmin) {
-        logger.warn('Non-admin user attempted to add order result');
-        return { data: null, error: new Error('Only administrators can update order results') };
+        logger.warn("Non-admin user attempted to add order result");
+        return {
+          data: null,
+          error: new Error("Only administrators can update order results"),
+        };
       }
 
       const { data, error } = await supabase

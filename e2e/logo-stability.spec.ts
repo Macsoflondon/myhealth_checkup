@@ -28,7 +28,8 @@ const VIEWPORTS = [
 
 const MAX_CLS = 0.1;
 const MAX_LOGO_LOAD_MS = 1500;
-const LOGO_URL_PATTERN = /myhealth-logo|header-tagline|compliance-badges|cyber-essentials/i;
+const LOGO_URL_PATTERN =
+  /myhealth-logo|header-tagline|compliance-badges|cyber-essentials/i;
 
 async function collectCLS(page: Page): Promise<number> {
   return page.evaluate(
@@ -75,13 +76,19 @@ async function collectLogoTimings(page: Page) {
 
 for (const vp of VIEWPORTS) {
   for (const route of ROUTES) {
-    test(`logo stability @ ${vp.name} ${route}`, async ({ browser }, testInfo) => {
-      const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
+    test(`logo stability @ ${vp.name} ${route}`, async ({
+      browser,
+    }, testInfo) => {
+      const ctx = await browser.newContext({
+        viewport: { width: vp.width, height: vp.height },
+      });
       const page = await ctx.newPage();
 
       const consoleMessages: string[] = [];
       const failedRequests: string[] = [];
-      page.on("console", (m) => consoleMessages.push(`[${m.type()}] ${m.text()}`));
+      page.on("console", (m) =>
+        consoleMessages.push(`[${m.type()}] ${m.text()}`),
+      );
       page.on("requestfailed", (r) =>
         failedRequests.push(`${r.url()} :: ${r.failure()?.errorText}`),
       );
@@ -98,21 +105,45 @@ for (const vp of VIEWPORTS) {
       await page.waitForTimeout(500);
       await page.evaluate(() => window.scrollTo(0, 0));
 
-      const [cls, timings] = await Promise.all([collectCLS(page), collectLogoTimings(page)]);
+      const [cls, timings] = await Promise.all([
+        collectCLS(page),
+        collectLogoTimings(page),
+      ]);
 
       // Attach diagnostics to the test report regardless of pass/fail — cheap and
       // makes triage instant when something does regress.
       await testInfo.attach("logo-resource-timings.json", {
-        body: JSON.stringify({ route, viewport: vp, cls, timings, failedRequests, consoleMessages }, null, 2),
+        body: JSON.stringify(
+          {
+            route,
+            viewport: vp,
+            cls,
+            timings,
+            failedRequests,
+            consoleMessages,
+          },
+          null,
+          2,
+        ),
         contentType: "application/json",
       });
 
       // 1. Logo assets actually loaded.
-      expect(failedRequests, `failed logo requests: ${failedRequests.join("\n")}`).toEqual([]);
-      expect(timings.length, "expected at least one logo resource").toBeGreaterThan(0);
+      expect(
+        failedRequests,
+        `failed logo requests: ${failedRequests.join("\n")}`,
+      ).toEqual([]);
+      expect(
+        timings.length,
+        "expected at least one logo resource",
+      ).toBeGreaterThan(0);
       for (const t of timings) {
-        expect(t.decodedBodySize, `empty body for ${t.name}`).toBeGreaterThan(0);
-        expect(t.duration, `${t.name} took ${t.duration}ms`).toBeLessThan(MAX_LOGO_LOAD_MS);
+        expect(t.decodedBodySize, `empty body for ${t.name}`).toBeGreaterThan(
+          0,
+        );
+        expect(t.duration, `${t.name} took ${t.duration}ms`).toBeLessThan(
+          MAX_LOGO_LOAD_MS,
+        );
       }
 
       // 2. Rendered <img> tags for logos have real dimensions.
@@ -130,13 +161,21 @@ for (const vp of VIEWPORTS) {
         }),
       );
       for (const img of imgs) {
-        expect(img.naturalWidth, `naturalWidth=0 for ${img.src}`).toBeGreaterThan(0);
+        expect(
+          img.naturalWidth,
+          `naturalWidth=0 for ${img.src}`,
+        ).toBeGreaterThan(0);
         expect(img.width, `rendered width=0 for ${img.src}`).toBeGreaterThan(0);
-        expect(img.height, `rendered height=0 for ${img.src}`).toBeGreaterThan(0);
+        expect(img.height, `rendered height=0 for ${img.src}`).toBeGreaterThan(
+          0,
+        );
       }
 
       // 3. Cumulative layout shift below Core Web Vitals "good" threshold.
-      expect(cls, `CLS ${cls} exceeded ${MAX_CLS} on ${route} @ ${vp.name}`).toBeLessThanOrEqual(MAX_CLS);
+      expect(
+        cls,
+        `CLS ${cls} exceeded ${MAX_CLS} on ${route} @ ${vp.name}`,
+      ).toBeLessThanOrEqual(MAX_CLS);
 
       await ctx.close();
     });

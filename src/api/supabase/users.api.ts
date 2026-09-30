@@ -1,6 +1,10 @@
 import { ApiResponse } from "./base";
 import { supabase } from "@/integrations/supabase/client";
-import { encryptSensitiveFields, decryptSensitiveFields, SENSITIVE_FIELDS } from "@/services/EncryptionService";
+import {
+  encryptSensitiveFields,
+  decryptSensitiveFields,
+  SENSITIVE_FIELDS,
+} from "@/services/EncryptionService";
 import type { Json, TablesInsert } from "@/integrations/supabase/types";
 
 export interface UserProfile {
@@ -45,7 +49,9 @@ class UsersApi {
     try {
       const { data, error } = await supabase
         .from("user_profiles")
-        .select("id, user_id, first_name, last_name, date_of_birth, gender, phone_number, address_line1, address_line2, city, postal_code, country, emergency_contact_name, emergency_contact_phone, account_status, last_login, created_at, updated_at")
+        .select(
+          "id, user_id, first_name, last_name, date_of_birth, gender, phone_number, address_line1, address_line2, city, postal_code, country, emergency_contact_name, emergency_contact_phone, account_status, last_login, created_at, updated_at",
+        )
         .eq("user_id", userId)
         .single();
 
@@ -54,7 +60,9 @@ class UsersApi {
       }
 
       // Decrypt sensitive fields before returning
-      const decryptedData = await decryptSensitiveFields(data as Record<string, unknown>);
+      const decryptedData = await decryptSensitiveFields(
+        data as Record<string, unknown>,
+      );
       return { data: decryptedData as unknown as UserProfile, error: null };
     } catch (error) {
       return { data: null, error: error as Error };
@@ -66,16 +74,15 @@ class UsersApi {
    */
   async updateUserProfile(
     userId: string,
-    updates: Partial<UserProfile>
+    updates: Partial<UserProfile>,
   ): Promise<ApiResponse<UserProfile>> {
     try {
       // Encrypt sensitive fields before storing
       const encryptedUpdates = await encryptSensitiveFields(
         updates as Record<string, unknown>,
-        SENSITIVE_FIELDS
+        SENSITIVE_FIELDS,
       );
 
-       
       const { data, error } = await supabase
         .from("user_profiles")
         .update(encryptedUpdates as never)
@@ -88,7 +95,9 @@ class UsersApi {
       }
 
       // Decrypt sensitive fields before returning
-      const decryptedData = await decryptSensitiveFields(data as Record<string, unknown>);
+      const decryptedData = await decryptSensitiveFields(
+        data as Record<string, unknown>,
+      );
       return { data: decryptedData as unknown as UserProfile, error: null };
     } catch (error) {
       return { data: null, error: error as Error };
@@ -98,7 +107,9 @@ class UsersApi {
   /**
    * Get user preferences
    */
-  async getUserPreferences(userId: string): Promise<ApiResponse<UserPreferences>> {
+  async getUserPreferences(
+    userId: string,
+  ): Promise<ApiResponse<UserPreferences>> {
     try {
       const { data, error } = await supabase
         .from("user_preferences")
@@ -117,10 +128,9 @@ class UsersApi {
    */
   async updateUserPreferences(
     userId: string,
-    updates: Partial<UserPreferences>
+    updates: Partial<UserPreferences>,
   ): Promise<ApiResponse<UserPreferences>> {
     try {
-       
       const { data, error } = await supabase
         .from("user_preferences")
         .update(updates)
@@ -138,16 +148,15 @@ class UsersApi {
    * Create user profile with automatic encryption of sensitive fields
    */
   async createUserProfile(
-    profile: Omit<UserProfile, "id" | "created_at" | "updated_at">
+    profile: Omit<UserProfile, "id" | "created_at" | "updated_at">,
   ): Promise<ApiResponse<UserProfile>> {
     try {
       // Encrypt sensitive fields before storing
       const encryptedProfile = await encryptSensitiveFields(
         profile as Record<string, unknown>,
-        SENSITIVE_FIELDS
+        SENSITIVE_FIELDS,
       );
 
-       
       const { data, error } = await supabase
         .from("user_profiles")
         .insert(encryptedProfile as TablesInsert<"user_profiles">)
@@ -159,7 +168,9 @@ class UsersApi {
       }
 
       // Decrypt sensitive fields before returning
-      const decryptedData = await decryptSensitiveFields(data as Record<string, unknown>);
+      const decryptedData = await decryptSensitiveFields(
+        data as Record<string, unknown>,
+      );
       return { data: decryptedData as unknown as UserProfile, error: null };
     } catch (error) {
       return { data: null, error: error as Error };
@@ -170,10 +181,9 @@ class UsersApi {
    * Create user preferences
    */
   async createUserPreferences(
-    preferences: Omit<UserPreferences, "id" | "created_at" | "updated_at">
+    preferences: Omit<UserPreferences, "id" | "created_at" | "updated_at">,
   ): Promise<ApiResponse<UserPreferences>> {
     try {
-       
       const { data, error } = await supabase
         .from("user_preferences")
         .insert(preferences)

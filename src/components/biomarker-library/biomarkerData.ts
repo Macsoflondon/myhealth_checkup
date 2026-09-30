@@ -7,7 +7,6 @@ import { biomarkersChunk3 } from "./biomarkersChunk3";
 import { biomarkersChunk4 } from "./biomarkersChunk4";
 import { biomarkersChunk5 } from "./biomarkersChunk5";
 
-
 export const COLORS = {
   navy: "#081129",
   accent: "#22c0d4",
@@ -35,22 +34,23 @@ export const biomarkers: any[] = [
   ...biomarkersChunk5,
 ];
 
-
 export const categoryIcons: Record<string, string> = {
   All: "🧬",
   "Full Blood Count": "🩸",
   "Liver Function": "🫁",
   "Kidney Function": "🩺",
-  "Thyroid": "🦋",
-  "Hormones": "⚡",
+  Thyroid: "🦋",
+  Hormones: "⚡",
   "Vitamins & Minerals": "💊",
-  "Cardiovascular": "❤️",
+  Cardiovascular: "❤️",
   "Diabetes & Metabolic": "🍬",
-  "Inflammation": "🔥",
+  Inflammation: "🔥",
   "Cancer Markers": "🎗️",
-  "Nutrition": "🥗",
-  "Immunity": "🛡️",
+  Nutrition: "🥗",
+  Immunity: "🛡️",
 };
 
-const derivedCategories = Array.from(new Set(biomarkers.map((b: any) => b.category))).sort();
+const derivedCategories = Array.from(
+  new Set(biomarkers.map((b: any) => b.category)),
+).sort();
 export const categories: string[] = ["All", ...derivedCategories];

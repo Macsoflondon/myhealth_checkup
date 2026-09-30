@@ -17,7 +17,9 @@ interface TestResultUploaderProps {
   onUploadComplete?: () => void;
 }
 
-export const TestResultUploader = ({ onUploadComplete }: TestResultUploaderProps) => {
+export const TestResultUploader = ({
+  onUploadComplete,
+}: TestResultUploaderProps) => {
   const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [testName, setTestName] = useState("");
@@ -31,7 +33,9 @@ export const TestResultUploader = ({ onUploadComplete }: TestResultUploaderProps
     try {
       assertUploadableFile(file);
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : "That file cannot be uploaded");
+      toast.error(
+        error instanceof Error ? error.message : "That file cannot be uploaded",
+      );
       return;
     }
     setSelectedFile(file);
@@ -50,7 +54,9 @@ export const TestResultUploader = ({ onUploadComplete }: TestResultUploaderProps
 
       // Upload file to Supabase Storage if selected
       if (selectedFile) {
-        const { data: { user } } = await supabase.auth.getUser();
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
         if (!user) throw new Error("Not authenticated");
 
         // Canonical key: always beneath the authenticated user's own prefix,
@@ -58,7 +64,7 @@ export const TestResultUploader = ({ onUploadComplete }: TestResultUploaderProps
         const fileName = buildTestResultObjectKey(user.id, selectedFile.name);
 
         const { error: uploadError } = await supabase.storage
-          .from('test-results')
+          .from("test-results")
           .upload(fileName, selectedFile);
 
         if (uploadError) throw uploadError;
@@ -79,17 +85,18 @@ export const TestResultUploader = ({ onUploadComplete }: TestResultUploaderProps
       if (error) throw error;
 
       toast.success("Test result uploaded successfully");
-      
+
       // Reset form
       setTestName("");
       setTestDate("");
       setProvider("");
       setNotes("");
       setSelectedFile(null);
-      
+
       if (onUploadComplete) onUploadComplete();
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Failed to upload test result";
+      const message =
+        error instanceof Error ? error.message : "Failed to upload test result";
       toast.error(message);
     } finally {
       setUploading(false);
@@ -98,8 +105,10 @@ export const TestResultUploader = ({ onUploadComplete }: TestResultUploaderProps
 
   return (
     <Card className="p-6 border-2">
-      <h3 className="text-xl font-semibold mb-4 text-[#081129]">Upload Test Result</h3>
-      
+      <h3 className="text-xl font-semibold mb-4 text-[#081129]">
+        Upload Test Result
+      </h3>
+
       <div className="space-y-4">
         <div>
           <Label htmlFor="testName">Test Name *</Label>

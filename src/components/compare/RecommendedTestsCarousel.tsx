@@ -25,7 +25,10 @@ interface RecommendedTestsCarouselProps {
 /** Map a DB category string to the categoryColors ID format */
 function resolveCategoryColor(category: string): string {
   const pinColor = getCategoryPinColor(
-    category.toLowerCase().replace(/['\s]+/g, "-").replace(/&/g, "")
+    category
+      .toLowerCase()
+      .replace(/['\s]+/g, "-")
+      .replace(/&/g, ""),
   );
   if (pinColor !== "#6b7280") return pinColor;
 
@@ -34,7 +37,9 @@ function resolveCategoryColor(category: string): string {
   return brand?.primary || "#e70d69";
 }
 
-export const RecommendedTestsCarousel: React.FC<RecommendedTestsCarouselProps> = ({
+export const RecommendedTestsCarousel: React.FC<
+  RecommendedTestsCarouselProps
+> = ({
   tests,
   category,
   onSelectTest,
@@ -77,7 +82,8 @@ export const RecommendedTestsCarousel: React.FC<RecommendedTestsCarouselProps> =
         <div className="flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-primary" />
           <h2 className="text-xl font-bold text-foreground">
-            Recommended {displayName}{displayName.toLowerCase().endsWith('tests') ? '' : ' Tests'}
+            Recommended {displayName}
+            {displayName.toLowerCase().endsWith("tests") ? "" : " Tests"}
           </h2>
         </div>
         <p className="text-sm text-muted-foreground hidden sm:block">
@@ -96,7 +102,9 @@ export const RecommendedTestsCarousel: React.FC<RecommendedTestsCarouselProps> =
         <CarouselContent className="-ml-4">
           {tests.map((test) => {
             const providerRating = getProviderRating(test.provider);
-            const catColor = resolveCategoryColor(test.category || category || "general-health");
+            const catColor = resolveCategoryColor(
+              test.category || category || "general-health",
+            );
             const brandColor = getBranding(test.provider)?.primary;
             const accentColor = brandColor || catColor;
 
@@ -134,13 +142,14 @@ export const RecommendedTestsCarousel: React.FC<RecommendedTestsCarouselProps> =
                     sample_type: test.features?.collection ?? null,
                     biomarker_count: test.biomarkerCount ?? null,
                     url: test.url ?? null,
-                    biomarkers_list: (test.biomarkersList ?? []).map((value) => ({ value })),
+                    biomarkers_list: (test.biomarkersList ?? []).map(
+                      (value) => ({ value }),
+                    ),
                     turnaround_days_text: test.features?.turnaround ?? null,
                     base_price: null,
                     collection_options: null,
                   }}
                 />
-
               </CarouselItem>
             );
           })}

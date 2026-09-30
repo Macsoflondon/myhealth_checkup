@@ -38,10 +38,15 @@ const decodeEntities = (input: string): string =>
     .replace(/&amp;/g, "&");
 
 const stripHtml = (input: string): string =>
-  decodeEntities(input.replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
+  decodeEntities(input.replace(/<[^>]+>/g, " "))
+    .replace(/\s+/g, " ")
+    .trim();
 
 const stripCdata = (input: string): string =>
-  input.replace(/^\s*<!\[CDATA\[/, "").replace(/\]\]>\s*$/, "").trim();
+  input
+    .replace(/^\s*<!\[CDATA\[/, "")
+    .replace(/\]\]>\s*$/, "")
+    .trim();
 
 const truncate = (input: string, max = 220): string =>
   input.length <= max ? input : `${input.slice(0, max - 1).trimEnd()}…`;
@@ -50,7 +55,10 @@ const truncate = (input: string, max = 220): string =>
 const cleanSummary = (input: string): string =>
   input
     .replace(/\]\]>/g, " ")
-    .replace(/\b(?:read|continue reading|learn|find out)\s+more\s*[.…>»]*\s*$/i, "")
+    .replace(
+      /\b(?:read|continue reading|learn|find out)\s+more\s*[.…>»]*\s*$/i,
+      "",
+    )
     .replace(/^\s*(?:read|continue reading)\s+more\s*$/i, "")
     .replace(/The post .+ appeared first on .+$/i, "")
     .replace(/\s+/g, " ")
@@ -61,7 +69,6 @@ const firstMatch = (xml: string, pattern: RegExp): string | null => {
   return match?.[1] ? decodeEntities(stripCdata(match[1]).trim()) : null;
 };
 
-
 const toIsoDate = (value: string | null): string | null => {
   if (!value) return null;
   const parsed = new Date(value);
@@ -69,9 +76,13 @@ const toIsoDate = (value: string | null): string | null => {
   return parsed.toISOString().slice(0, 10);
 };
 
-const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
+const sleep = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
-async function fetchOnce(url: string, timeoutMs: number): Promise<string | null> {
+async function fetchOnce(
+  url: string,
+  timeoutMs: number,
+): Promise<string | null> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
@@ -89,7 +100,11 @@ async function fetchOnce(url: string, timeoutMs: number): Promise<string | null>
 }
 
 /** Providers throttle bursts, so retry once with a short backoff. */
-async function fetchText(url: string, timeoutMs = 20000, attempts = 2): Promise<string | null> {
+async function fetchText(
+  url: string,
+  timeoutMs = 20000,
+  attempts = 2,
+): Promise<string | null> {
   for (let attempt = 0; attempt < attempts; attempt += 1) {
     const text = await fetchOnce(url, timeoutMs);
     if (text) return text;
@@ -98,8 +113,11 @@ async function fetchText(url: string, timeoutMs = 20000, attempts = 2): Promise<
   return null;
 }
 
-
-function parseAtom(xml: string, source: BlogSource, feedUrl: string): AggregatedPost[] {
+function parseAtom(
+  xml: string,
+  source: BlogSource,
+  feedUrl: string,
+): AggregatedPost[] {
   const entries = xml.split(/<entry[\s>]/).slice(1);
   const posts: AggregatedPost[] = [];
 
@@ -115,13 +133,17 @@ function parseAtom(xml: string, source: BlogSource, feedUrl: string): Aggregated
     );
     if (!title || !link || !published) continue;
 
-    const summaryHtml = firstMatch(entry, /<summary[^>]*>([\s\S]*?)<\/summary>/) ?? "";
-    const contentHtml = firstMatch(entry, /<content[^>]*>([\s\S]*?)<\/content>/) ?? "";
-    const image = /<img[^>]+src="([^"]+)"/.exec(contentHtml || summaryHtml)?.[1] ?? null;
+    const summaryHtml =
+      firstMatch(entry, /<summary[^>]*>([\s\S]*?)<\/summary>/) ?? "";
+    const contentHtml =
+      firstMatch(entry, /<content[^>]*>([\s\S]*?)<\/content>/) ?? "";
+    const image =
+      /<img[^>]+src="([^"]+)"/.exec(contentHtml || summaryHtml)?.[1] ?? null;
     const summaryText = cleanSummary(stripHtml(summaryHtml));
     const contentText = cleanSummary(stripHtml(contentHtml));
-    const excerpt = truncate(summaryText.length >= 60 ? summaryText : contentText || summaryText);
-
+    const excerpt = truncate(
+      summaryText.length >= 60 ? summaryText : contentText || summaryText,
+    );
 
     posts.push({
       provider_id: source.providerId,
@@ -140,26 +162,43 @@ function parseAtom(xml: string, source: BlogSource, feedUrl: string): Aggregated
   return posts;
 }
 
-function parseRss(xml: string, source: BlogSource, feedUrl: string): AggregatedPost[] {
+function parseRss(
+  xml: string,
+  source: BlogSource,
+  feedUrl: string,
+): AggregatedPost[] {
   const items = xml.split(/<item[\s>]/).slice(1);
   const posts: AggregatedPost[] = [];
 
   for (const rawItem of items) {
     const item = rawItem.slice(0, rawItem.indexOf("</item>") + 1);
-    const title = firstMatch(item, /<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/);
+    const title = firstMatch(
+      item,
+      /<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/,
+    );
     const link = firstMatch(item, /<link>([\s\S]*?)<\/link>/);
-    const published = toIsoDate(firstMatch(item, /<pubDate>([\s\S]*?)<\/pubDate>/));
+    const published = toIsoDate(
+      firstMatch(item, /<pubDate>([\s\S]*?)<\/pubDate>/),
+    );
     if (!title || !link || !published) continue;
 
     const descriptionHtml =
-      firstMatch(item, /<description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/) ?? "";
+      firstMatch(
+        item,
+        /<description>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/,
+      ) ?? "";
     const contentHtml =
-      firstMatch(item, /<content:encoded>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/content:encoded>/) ?? "";
-    const image = /<img[^>]+src="([^"]+)"/.exec(contentHtml || descriptionHtml)?.[1] ?? null;
+      firstMatch(
+        item,
+        /<content:encoded>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/content:encoded>/,
+      ) ?? "";
+    const image =
+      /<img[^>]+src="([^"]+)"/.exec(contentHtml || descriptionHtml)?.[1] ??
+      null;
     const excerpt = truncate(
-      cleanSummary(stripHtml(descriptionHtml)) || cleanSummary(stripHtml(contentHtml)),
+      cleanSummary(stripHtml(descriptionHtml)) ||
+        cleanSummary(stripHtml(contentHtml)),
     );
-
 
     posts.push({
       provider_id: source.providerId,
@@ -190,13 +229,19 @@ function parseSitemapEntries(xml: string, pathFilter: string): SitemapEntry[] {
   for (const block of blocks) {
     const loc = firstMatch(block, /<loc>([\s\S]*?)<\/loc>/);
     if (!loc || !loc.includes(pathFilter)) continue;
-    entries.push({ loc: loc.trim(), lastmod: toIsoDate(firstMatch(block, /<lastmod>([\s\S]*?)<\/lastmod>/)) });
+    entries.push({
+      loc: loc.trim(),
+      lastmod: toIsoDate(firstMatch(block, /<lastmod>([\s\S]*?)<\/lastmod>/)),
+    });
   }
 
   return entries;
 }
 
-async function parseSitemapOg(source: BlogSource, sitemapUrl: string): Promise<AggregatedPost[]> {
+async function parseSitemapOg(
+  source: BlogSource,
+  sitemapUrl: string,
+): Promise<AggregatedPost[]> {
   const xml = await fetchText(sitemapUrl, 30000);
   if (!xml) return [];
 
@@ -209,22 +254,41 @@ async function parseSitemapOg(source: BlogSource, sitemapUrl: string): Promise<A
 
   for (let i = 0; i < entries.length; i += batchSize) {
     const batch = entries.slice(i, i + batchSize);
-    const pages = await Promise.all(batch.map((entry) => fetchText(entry.loc, 15000)));
+    const pages = await Promise.all(
+      batch.map((entry) => fetchText(entry.loc, 15000)),
+    );
 
     pages.forEach((html, index) => {
       const entry = batch[index];
       if (!html || !entry) return;
 
       const meta = (property: string): string | null =>
-        firstMatch(html, new RegExp(`<meta[^>]+(?:property|name)="${property}"[^>]+content="([^"]*)"`, "i")) ??
-        firstMatch(html, new RegExp(`<meta[^>]+content="([^"]*)"[^>]+(?:property|name)="${property}"`, "i"));
+        firstMatch(
+          html,
+          new RegExp(
+            `<meta[^>]+(?:property|name)="${property}"[^>]+content="([^"]*)"`,
+            "i",
+          ),
+        ) ??
+        firstMatch(
+          html,
+          new RegExp(
+            `<meta[^>]+content="([^"]*)"[^>]+(?:property|name)="${property}"`,
+            "i",
+          ),
+        );
 
-      const title = meta("og:title") ?? firstMatch(html, /<title[^>]*>([\s\S]*?)<\/title>/);
+      const title =
+        meta("og:title") ?? firstMatch(html, /<title[^>]*>([\s\S]*?)<\/title>/);
       if (!title) return;
 
-      const excerpt = truncate(stripHtml(meta("og:description") ?? meta("description") ?? ""));
+      const excerpt = truncate(
+        stripHtml(meta("og:description") ?? meta("description") ?? ""),
+      );
       const published =
-        toIsoDate(meta("article:published_time")) ?? entry.lastmod ?? new Date().toISOString().slice(0, 10);
+        toIsoDate(meta("article:published_time")) ??
+        entry.lastmod ??
+        new Date().toISOString().slice(0, 10);
 
       posts.push({
         provider_id: source.providerId,
@@ -246,7 +310,9 @@ async function parseSitemapOg(source: BlogSource, sitemapUrl: string): Promise<A
 
 async function collectForSource(source: BlogSource): Promise<AggregatedPost[]> {
   if (source.type === "sitemap-og") {
-    const results = await Promise.all(source.urls.map((url) => parseSitemapOg(source, url)));
+    const results = await Promise.all(
+      source.urls.map((url) => parseSitemapOg(source, url)),
+    );
     return results.flat();
   }
 
@@ -260,7 +326,9 @@ async function collectForSource(source: BlogSource): Promise<AggregatedPost[]> {
       batch.map(async (url) => {
         const xml = await fetchText(url);
         if (!xml) return [] as AggregatedPost[];
-        return source.type === "atom" ? parseAtom(xml, source, url) : parseRss(xml, source, url);
+        return source.type === "atom"
+          ? parseAtom(xml, source, url)
+          : parseRss(xml, source, url);
       }),
     );
     posts.push(...results.flat());
@@ -268,12 +336,23 @@ async function collectForSource(source: BlogSource): Promise<AggregatedPost[]> {
   }
 
   return posts;
-
 }
 
 const metaFrom = (html: string, property: string): string | null =>
-  firstMatch(html, new RegExp(`<meta[^>]+(?:property|name)="${property}"[^>]+content="([^"]*)"`, "i")) ??
-  firstMatch(html, new RegExp(`<meta[^>]+content="([^"]*)"[^>]+(?:property|name)="${property}"`, "i"));
+  firstMatch(
+    html,
+    new RegExp(
+      `<meta[^>]+(?:property|name)="${property}"[^>]+content="([^"]*)"`,
+      "i",
+    ),
+  ) ??
+  firstMatch(
+    html,
+    new RegExp(
+      `<meta[^>]+content="([^"]*)"[^>]+(?:property|name)="${property}"`,
+      "i",
+    ),
+  );
 
 const absoluteUrl = (value: string, base: string): string | null => {
   try {
@@ -287,7 +366,9 @@ const absoluteUrl = (value: string, base: string): string | null => {
 
 /** Provider logos and placeholder banners are not article imagery. */
 const isGenericImage = (url: string): boolean =>
-  /logo|placeholder|default[-_]?(?:image|banner)|favicon|og[-_]?default/i.test(url);
+  /logo|placeholder|default[-_]?(?:image|banner)|favicon|og[-_]?default/i.test(
+    url,
+  );
 
 const applyMeta = (post: AggregatedPost, html: string): void => {
   if (!post.image_url) {
@@ -299,12 +380,14 @@ const applyMeta = (post: AggregatedPost, html: string): void => {
     if (resolved && !isGenericImage(resolved)) post.image_url = resolved;
   }
 
-
   if (post.excerpt.length < 60) {
     const description = cleanSummary(
-      stripHtml(metaFrom(html, "og:description") ?? metaFrom(html, "description") ?? ""),
+      stripHtml(
+        metaFrom(html, "og:description") ?? metaFrom(html, "description") ?? "",
+      ),
     );
-    if (description.length > post.excerpt.length) post.excerpt = truncate(description);
+    if (description.length > post.excerpt.length)
+      post.excerpt = truncate(description);
   }
 };
 
@@ -325,7 +408,9 @@ async function enrichFromArticlePages(posts: AggregatedPost[]): Promise<void> {
 
     for (let i = 0; i < needy.length; i += batchSize) {
       const batch = needy.slice(i, i + batchSize);
-      const pages = await Promise.all(batch.map((post) => fetchText(post.url, 20000)));
+      const pages = await Promise.all(
+        batch.map((post) => fetchText(post.url, 20000)),
+      );
 
       pages.forEach((html, index) => {
         const post = batch[index];
@@ -343,26 +428,37 @@ async function enrichFromArticlePages(posts: AggregatedPost[]): Promise<void> {
  * sometimes throttle a run, so this catches up on the next one.
  */
 async function backfillStoredPosts(limit = 200): Promise<number> {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { supabaseAdmin } =
+    await import("@/integrations/supabase/client.server");
 
   const { data, error } = await supabaseAdmin
     .from("provider_blog_posts")
-    .select("url, provider_id, provider_name, title, excerpt, image_url, category, published_at, source_type, source_url")
+    .select(
+      "url, provider_id, provider_name, title, excerpt, image_url, category, published_at, source_type, source_url",
+    )
     .or("image_url.is.null,excerpt.is.null")
     .limit(limit);
 
   if (error || !data || data.length === 0) return 0;
 
-  const posts = data.map((row) => ({ ...row, excerpt: row.excerpt ?? "" })) as AggregatedPost[];
+  const posts = data.map((row) => ({
+    ...row,
+    excerpt: row.excerpt ?? "",
+  })) as AggregatedPost[];
   await enrichFromArticlePages(posts);
 
-  const improved = posts.filter((post) => post.image_url || post.excerpt.length >= 60);
+  const improved = posts.filter(
+    (post) => post.image_url || post.excerpt.length >= 60,
+  );
   if (improved.length === 0) return 0;
 
   const { error: upsertError } = await supabaseAdmin
     .from("provider_blog_posts")
     .upsert(
-      improved.map((post) => ({ ...post, last_seen_at: new Date().toISOString() })),
+      improved.map((post) => ({
+        ...post,
+        last_seen_at: new Date().toISOString(),
+      })),
       { onConflict: "url" },
     );
 
@@ -375,7 +471,8 @@ export async function runBlogAggregation(): Promise<{
   backfilled: number;
   providers: ProviderRunResult[];
 }> {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  const { supabaseAdmin } =
+    await import("@/integrations/supabase/client.server");
 
   const providers: ProviderRunResult[] = [];
   let totalUpserted = 0;
@@ -383,14 +480,17 @@ export async function runBlogAggregation(): Promise<{
   for (const source of BLOG_SOURCES) {
     try {
       const posts = await collectForSource(source);
-      const deduped = Array.from(new Map(posts.map((post) => [post.url, post])).values()).filter(
-        (post) => post.title.length > 3,
-      );
+      const deduped = Array.from(
+        new Map(posts.map((post) => [post.url, post])).values(),
+      ).filter((post) => post.title.length > 3);
 
       await enrichFromArticlePages(deduped);
 
       if (deduped.length > 0) {
-        const rows = deduped.map((post) => ({ ...post, last_seen_at: new Date().toISOString() }));
+        const rows = deduped.map((post) => ({
+          ...post,
+          last_seen_at: new Date().toISOString(),
+        }));
         const { error } = await supabaseAdmin
           .from("provider_blog_posts")
           .upsert(rows, { onConflict: "url" });
@@ -412,4 +512,3 @@ export async function runBlogAggregation(): Promise<{
 
   return { totalUpserted, backfilled, providers };
 }
-

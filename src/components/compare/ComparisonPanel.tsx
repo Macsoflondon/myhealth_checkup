@@ -11,13 +11,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { 
-  X, 
-  Check,
-  Heart,
-  ExternalLink,
-  RefreshCw
-} from "lucide-react";
+import { X, Check, Heart, ExternalLink, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ComparisonPanelProps {
@@ -31,13 +25,13 @@ export const ComparisonPanel = ({
   tests,
   isOpen,
   onClose,
-  onRemoveTest
+  onRemoveTest,
 }: ComparisonPanelProps) => {
   const [liveUpdates, setLiveUpdates] = useState(false);
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
 
   const toggleFavorite = (testId: string) => {
-    setFavorites(prev => {
+    setFavorites((prev) => {
       const newSet = new Set(prev);
       if (newSet.has(testId)) {
         newSet.delete(testId);
@@ -47,7 +41,7 @@ export const ComparisonPanel = ({
       return newSet;
     });
   };
-  
+
   if (tests.length === 0) return null;
 
   // Helper to get service location text
@@ -77,7 +71,8 @@ export const ComparisonPanel = ({
   const getTurnaroundText = (test: CompareTestData) => {
     if (test.turnaroundDays) {
       if (test.turnaroundDays === 1) return "1-2 days";
-      if (test.turnaroundDays <= 3) return `${test.turnaroundDays}-${test.turnaroundDays + 1} days`;
+      if (test.turnaroundDays <= 3)
+        return `${test.turnaroundDays}-${test.turnaroundDays + 1} days`;
       return `${test.turnaroundDays}-${test.turnaroundDays + 2} days`;
     }
     return test.features?.turnaround || "2-5 days";
@@ -85,34 +80,34 @@ export const ComparisonPanel = ({
 
   // Row labels matching reference image
   const rows = [
-    { 
-      key: "biomarkers", 
+    {
+      key: "biomarkers",
       label: "Bio Markers",
-      render: (test: CompareTestData) => getBiomarkerText(test)
+      render: (test: CompareTestData) => getBiomarkerText(test),
     },
-    { 
-      key: "turnaround", 
+    {
+      key: "turnaround",
       label: "Turnaround Time",
-      render: (test: CompareTestData) => getTurnaroundText(test)
+      render: (test: CompareTestData) => getTurnaroundText(test),
     },
-    { 
-      key: "location", 
+    {
+      key: "location",
       label: "Service Location",
-      render: (test: CompareTestData) => getServiceLocation(test)
+      render: (test: CompareTestData) => getServiceLocation(test),
     },
-    { 
-      key: "doctorReview", 
+    {
+      key: "doctorReview",
       label: "Doctor Review",
       render: (test: CompareTestData) => (
         <Check className="h-5 w-5 text-green-500 mx-auto" />
-      )
+      ),
     },
-    { 
-      key: "detailedReport", 
+    {
+      key: "detailedReport",
       label: "Detailed report",
       render: (test: CompareTestData) => (
         <Check className="h-5 w-5 text-green-500 mx-auto" />
-      )
+      ),
     },
   ];
 
@@ -131,19 +126,23 @@ export const ComparisonPanel = ({
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
-                <RefreshCw className={cn(
-                  "h-4 w-4 text-muted-foreground",
-                  liveUpdates && "animate-spin"
-                )} />
-                <span className="text-sm text-muted-foreground">Live Updates {liveUpdates ? "On" : "Off"}</span>
+                <RefreshCw
+                  className={cn(
+                    "h-4 w-4 text-muted-foreground",
+                    liveUpdates && "animate-spin",
+                  )}
+                />
+                <span className="text-sm text-muted-foreground">
+                  Live Updates {liveUpdates ? "On" : "Off"}
+                </span>
                 <Switch
                   id="live-updates"
                   checked={liveUpdates}
                   onCheckedChange={setLiveUpdates}
                 />
               </div>
-              <Button 
-                variant="ghost" 
+              <Button
+                variant="ghost"
                 size="icon"
                 onClick={onClose}
                 className="h-8 w-8 rounded-full"
@@ -165,13 +164,16 @@ export const ComparisonPanel = ({
                     Test / Service
                   </th>
                   {tests.map((test) => (
-                    <th key={test.id} className="py-4 px-4 text-center min-w-[180px]">
+                    <th
+                      key={test.id}
+                      className="py-4 px-4 text-center min-w-[180px]"
+                    >
                       <div className="flex flex-col items-center gap-2">
                         {/* Provider Logo / Test Image */}
                         <div className="w-16 h-16 rounded-lg bg-muted flex items-center justify-center overflow-hidden">
                           {test.providerLogo ? (
-                            <img 
-                              src={test.providerLogo} 
+                            <img
+                              src={test.providerLogo}
                               alt={test.provider}
                               loading="lazy"
                               decoding="async"
@@ -196,21 +198,26 @@ export const ComparisonPanel = ({
               </thead>
               <tbody>
                 {rows.map((row, idx) => (
-                  <tr 
+                  <tr
                     key={row.key}
                     className={cn(
                       "border-b border-border",
-                      idx % 2 === 0 ? "bg-muted/20" : "bg-background"
+                      idx % 2 === 0 ? "bg-muted/20" : "bg-background",
                     )}
                   >
-                    <td className={cn(
-                      "py-4 px-4 text-sm font-medium text-foreground sticky left-0 z-10",
-                      idx % 2 === 0 ? "bg-muted/20" : "bg-background"
-                    )}>
+                    <td
+                      className={cn(
+                        "py-4 px-4 text-sm font-medium text-foreground sticky left-0 z-10",
+                        idx % 2 === 0 ? "bg-muted/20" : "bg-background",
+                      )}
+                    >
                       {row.label}
                     </td>
                     {tests.map((test) => (
-                      <td key={test.id} className="py-4 px-4 text-center text-sm text-foreground">
+                      <td
+                        key={test.id}
+                        className="py-4 px-4 text-center text-sm text-foreground"
+                      >
                         {row.render(test)}
                       </td>
                     ))}
@@ -224,17 +231,17 @@ export const ComparisonPanel = ({
                   </td>
                   {tests.map((test) => (
                     <td key={test.id} className="py-4 px-4 text-center">
-                      <button 
+                      <button
                         onClick={() => toggleFavorite(test.id)}
                         className="mx-auto block"
                       >
-                        <Heart 
+                        <Heart
                           className={cn(
                             "h-5 w-5 transition-colors",
-                            favorites.has(test.id) 
-                              ? "text-red-500 fill-red-500" 
-                              : "text-muted-foreground hover:text-red-500"
-                          )} 
+                            favorites.has(test.id)
+                              ? "text-red-500 fill-red-500"
+                              : "text-muted-foreground hover:text-red-500",
+                          )}
                         />
                       </button>
                     </td>
@@ -253,9 +260,9 @@ export const ComparisonPanel = ({
                           className="bg-primary hover:bg-primary/90 text-primary-foreground font-medium px-6"
                           asChild
                         >
-                          <a 
-                            href={test.url} 
-                            target="_blank" 
+                          <a
+                            href={test.url}
+                            target="_blank"
                             rel="noopener noreferrer"
                           >
                             Order Now

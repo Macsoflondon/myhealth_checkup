@@ -32,7 +32,10 @@ export const NavItemDropdown: React.FC<NavItemDropdownProps> = ({
     onClose: onClose || (() => {}),
   });
 
-  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+  const handleLinkClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    path: string,
+  ) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -96,9 +99,13 @@ export const NavItemDropdown: React.FC<NavItemDropdownProps> = ({
                   }`}
                   onClick={(e) => handleLinkClick(e, item.path)}
                 >
-                  <span className={`text-sm font-medium transition-colors ${
-                    isActive ? "text-brand-pink" : "text-brand-navy hover:text-brand-pink"
-                  }`}>
+                  <span
+                    className={`text-sm font-medium transition-colors ${
+                      isActive
+                        ? "text-brand-pink"
+                        : "text-brand-navy hover:text-brand-pink"
+                    }`}
+                  >
                     {item.name}
                   </span>
                 </a>

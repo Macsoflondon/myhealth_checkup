@@ -1,6 +1,12 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -65,12 +71,14 @@ const verdictMeta = {
   safe: {
     icon: ShieldCheck,
     title: "Safe to rotate",
-    className: "border-green-600/40 bg-green-50 text-green-900 dark:bg-green-950/40 dark:text-green-200",
+    className:
+      "border-green-600/40 bg-green-50 text-green-900 dark:bg-green-950/40 dark:text-green-200",
   },
   data_at_risk: {
     icon: ShieldAlert,
     title: "Data at risk",
-    className: "border-amber-600/40 bg-amber-50 text-amber-900 dark:bg-amber-950/40 dark:text-amber-200",
+    className:
+      "border-amber-600/40 bg-amber-50 text-amber-900 dark:bg-amber-950/40 dark:text-amber-200",
   },
   edge_function_broken: {
     icon: ShieldX,
@@ -108,7 +116,10 @@ const AdminEncryptionStatusPage: React.FC = () => {
     });
     try {
       const { data: result, error: fnError } = await Promise.race([
-        supabase.functions.invoke<EncryptionStatusResponse>("encryption-status", { body: {} }),
+        supabase.functions.invoke<EncryptionStatusResponse>(
+          "encryption-status",
+          { body: {} },
+        ),
         timeout,
       ]);
       if (fnError) throw fnError;
@@ -129,7 +140,6 @@ const AdminEncryptionStatusPage: React.FC = () => {
       if (timer) clearTimeout(timer);
       if (mountedRef.current) setLoading(false);
     }
-
   }, []);
 
   useEffect(() => {
@@ -144,9 +154,12 @@ const AdminEncryptionStatusPage: React.FC = () => {
       <main className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="flex items-start justify-between mb-6 gap-4 flex-wrap">
           <div>
-            <h1 className="text-3xl font-bold text-foreground">Encryption Status</h1>
+            <h1 className="text-3xl font-bold text-foreground">
+              Encryption Status
+            </h1>
             <p className="text-muted-foreground mt-1">
-              Verify encrypted PII coverage and active encryption secrets before rotating keys.
+              Verify encrypted PII coverage and active encryption secrets before
+              rotating keys.
             </p>
           </div>
           <Button onClick={fetchStatus} disabled={loading} variant="outline">
@@ -199,20 +212,26 @@ const AdminEncryptionStatusPage: React.FC = () => {
                   <CardTitle>Encryption secrets</CardTitle>
                 </div>
                 <CardDescription>
-                  Which secret the <code className="text-xs">encrypt-sensitive-data</code> edge function is reading.
-                  Fingerprints are the first 8 hex chars of SHA-256 — safe to display.
+                  Which secret the{" "}
+                  <code className="text-xs">encrypt-sensitive-data</code> edge
+                  function is reading. Fingerprints are the first 8 hex chars of
+                  SHA-256 — safe to display.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
                 <div className="flex items-center justify-between gap-4 flex-wrap">
                   <div>
                     <div className="font-medium">ENCRYPTION_KEY</div>
-                    <div className="text-xs text-muted-foreground">Active secret used by the edge function.</div>
+                    <div className="text-xs text-muted-foreground">
+                      Active secret used by the edge function.
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     {data.secrets.encryption_key_present ? (
                       <>
-                        <Badge className="bg-green-600 hover:bg-green-600">Set</Badge>
+                        <Badge className="bg-green-600 hover:bg-green-600">
+                          Set
+                        </Badge>
                         <code className="text-xs bg-muted px-2 py-1 rounded">
                           {data.secrets.active_key_fingerprint}
                         </code>
@@ -225,9 +244,12 @@ const AdminEncryptionStatusPage: React.FC = () => {
 
                 <div className="flex items-center justify-between gap-4 flex-wrap">
                   <div>
-                    <div className="font-medium">VITE_ENCRYPTION_KEY (legacy)</div>
+                    <div className="font-medium">
+                      VITE_ENCRYPTION_KEY (legacy)
+                    </div>
                     <div className="text-xs text-muted-foreground">
-                      Should be removed — the <code>VITE_</code> prefix risks bundling into client JS.
+                      Should be removed — the <code>VITE_</code> prefix risks
+                      bundling into client JS.
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
@@ -239,7 +261,9 @@ const AdminEncryptionStatusPage: React.FC = () => {
                         </code>
                       </>
                     ) : (
-                      <Badge className="bg-green-600 hover:bg-green-600">Removed</Badge>
+                      <Badge className="bg-green-600 hover:bg-green-600">
+                        Removed
+                      </Badge>
                     )}
                   </div>
                 </div>
@@ -248,9 +272,13 @@ const AdminEncryptionStatusPage: React.FC = () => {
                   <div className="flex items-center justify-between gap-4 flex-wrap pt-2 border-t">
                     <div className="font-medium">Both keys identical?</div>
                     {data.secrets.keys_match ? (
-                      <Badge variant="secondary">Yes — safe to delete the legacy one</Badge>
+                      <Badge variant="secondary">
+                        Yes — safe to delete the legacy one
+                      </Badge>
                     ) : (
-                      <Badge variant="destructive">No — fingerprints differ</Badge>
+                      <Badge variant="destructive">
+                        No — fingerprints differ
+                      </Badge>
                     )}
                   </div>
                 )}
@@ -264,15 +292,22 @@ const AdminEncryptionStatusPage: React.FC = () => {
                   <CardTitle>PII audit</CardTitle>
                 </div>
                 <CardDescription>
-                  Per-column scan of <code>user_profiles</code>. Encrypted values start with{" "}
-                  <code>enc:</code>. Plaintext in a sensitive column means the encrypt step was skipped.
+                  Per-column scan of <code>user_profiles</code>. Encrypted
+                  values start with <code>enc:</code>. Plaintext in a sensitive
+                  column means the encrypt step was skipped.
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="text-sm text-muted-foreground mb-3">
-                  Total user profiles: <strong>{data.totals.profiles_total}</strong> · Encrypted values:{" "}
-                  <strong>{data.totals.encrypted_rows}</strong> · Plaintext values:{" "}
-                  <strong className={data.totals.plaintext_rows > 0 ? "text-destructive" : ""}>
+                  Total user profiles:{" "}
+                  <strong>{data.totals.profiles_total}</strong> · Encrypted
+                  values: <strong>{data.totals.encrypted_rows}</strong> ·
+                  Plaintext values:{" "}
+                  <strong
+                    className={
+                      data.totals.plaintext_rows > 0 ? "text-destructive" : ""
+                    }
+                  >
                     {data.totals.plaintext_rows}
                   </strong>
                 </div>
@@ -303,7 +338,9 @@ const AdminEncryptionStatusPage: React.FC = () => {
                         </TableCell>
                         <TableCell className="text-right">
                           {row.plaintext_rows > 0 ? (
-                            <Badge variant="destructive">{row.plaintext_rows}</Badge>
+                            <Badge variant="destructive">
+                              {row.plaintext_rows}
+                            </Badge>
                           ) : (
                             <span className="text-muted-foreground">0</span>
                           )}
@@ -321,12 +358,16 @@ const AdminEncryptionStatusPage: React.FC = () => {
 
                 {data.declared_but_missing_in_schema.length > 0 && (
                   <Alert className="mt-4">
-                    <AlertTitle className="text-sm">Declared but not in schema</AlertTitle>
+                    <AlertTitle className="text-sm">
+                      Declared but not in schema
+                    </AlertTitle>
                     <AlertDescription className="text-xs">
-                      These fields are listed as sensitive in the encryption function but no
-                      matching column exists. Informational only — no action needed unless you
-                      add them later:{" "}
-                      <code>{data.declared_but_missing_in_schema.join(", ")}</code>
+                      These fields are listed as sensitive in the encryption
+                      function but no matching column exists. Informational only
+                      — no action needed unless you add them later:{" "}
+                      <code>
+                        {data.declared_but_missing_in_schema.join(", ")}
+                      </code>
                     </AlertDescription>
                   </Alert>
                 )}
@@ -337,8 +378,8 @@ const AdminEncryptionStatusPage: React.FC = () => {
               <CardHeader>
                 <CardTitle>Live decryption probe</CardTitle>
                 <CardDescription>
-                  Picks the first encrypted value in the database and tries to decrypt it with the
-                  active <code>ENCRYPTION_KEY</code>.
+                  Picks the first encrypted value in the database and tries to
+                  decrypt it with the active <code>ENCRYPTION_KEY</code>.
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -351,8 +392,13 @@ const AdminEncryptionStatusPage: React.FC = () => {
                     <ShieldCheck className="h-4 w-4 text-green-700 dark:text-green-300" />
                     <AlertTitle>Decryption succeeded</AlertTitle>
                     <AlertDescription>
-                      Sample from <code>{data.decryption_probe.sample_table}.{data.decryption_probe.sample_column}</code>{" "}
-                      decrypted cleanly. The active key matches the data on disk.
+                      Sample from{" "}
+                      <code>
+                        {data.decryption_probe.sample_table}.
+                        {data.decryption_probe.sample_column}
+                      </code>{" "}
+                      decrypted cleanly. The active key matches the data on
+                      disk.
                     </AlertDescription>
                   </Alert>
                 ) : (
@@ -360,9 +406,14 @@ const AdminEncryptionStatusPage: React.FC = () => {
                     <ShieldX className="h-4 w-4" />
                     <AlertTitle>Decryption failed</AlertTitle>
                     <AlertDescription>
-                      Sample from <code>{data.decryption_probe.sample_table}.{data.decryption_probe.sample_column}</code>{" "}
-                      could not be decrypted. The active key does not match the data on disk —
-                      <strong> do not rotate</strong> until the original key is restored.
+                      Sample from{" "}
+                      <code>
+                        {data.decryption_probe.sample_table}.
+                        {data.decryption_probe.sample_column}
+                      </code>{" "}
+                      could not be decrypted. The active key does not match the
+                      data on disk —<strong> do not rotate</strong> until the
+                      original key is restored.
                     </AlertDescription>
                   </Alert>
                 )}

@@ -28,12 +28,16 @@ const ProviderTestCatalogPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedTest, setSelectedTest] = useState<ProviderTestData | null>(null);
+  const [selectedTest, setSelectedTest] = useState<ProviderTestData | null>(
+    null,
+  );
 
   const provider = detailedProviders.find((p) => {
     const lowerId = p.id.toLowerCase();
     const lowerProviderId = providerId?.toLowerCase() || "";
-    return lowerId === lowerProviderId || lowerId.startsWith(lowerProviderId + "-");
+    return (
+      lowerId === lowerProviderId || lowerId.startsWith(lowerProviderId + "-")
+    );
   });
 
   const resolvedProviderId = provider?.id || providerId;
@@ -51,7 +55,7 @@ const ProviderTestCatalogPage = () => {
   // Map from URL/detailed-provider IDs to actual DB provider_ids
   const DB_PROVIDER_MAP: Record<string, string> = {
     "randox-health": "randox",
-    "goodbody": "goodbody-clinic",
+    goodbody: "goodbody-clinic",
     "tuli-health": "tuli-health",
   };
 
@@ -65,7 +69,10 @@ const ProviderTestCatalogPage = () => {
         DB_PROVIDER_MAP[resolvedProviderId],
         providerId,
         providerId ? DB_PROVIDER_MAP[providerId] : undefined,
-      ].filter((id): id is string => !!id && id !== resolvedProviderId || id === resolvedProviderId);
+      ].filter(
+        (id): id is string =>
+          (!!id && id !== resolvedProviderId) || id === resolvedProviderId,
+      );
 
       let finalData: ProviderTestData[] = [];
       for (const id of [...new Set(idsToTry)]) {
@@ -90,16 +97,25 @@ const ProviderTestCatalogPage = () => {
       filtered = filtered.filter(
         (test) =>
           test.test_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          test.description?.toLowerCase().includes(searchTerm.toLowerCase())
+          test.description?.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
     if (selectedCategory !== "all") {
-      filtered = filtered.filter((test) => normalizeCategory(test.category) === selectedCategory);
+      filtered = filtered.filter(
+        (test) => normalizeCategory(test.category) === selectedCategory,
+      );
     }
     setFilteredTests(filtered);
   };
 
-  const categories = ["all", ...Array.from(new Set(tests.map((test) => normalizeCategory(test.category)).filter(Boolean)))];
+  const categories = [
+    "all",
+    ...Array.from(
+      new Set(
+        tests.map((test) => normalizeCategory(test.category)).filter(Boolean),
+      ),
+    ),
+  ];
 
   if (!provider) {
     return (
@@ -107,8 +123,12 @@ const ProviderTestCatalogPage = () => {
         <Header />
         <main className="container mx-auto px-4 py-16">
           <div className="text-center">
-            <h1 className="text-3xl font-bold mb-4 text-white">Provider Not Found</h1>
-            <p className="text-gray-300">The provider you're looking for doesn't exist.</p>
+            <h1 className="text-3xl font-bold mb-4 text-white">
+              Provider Not Found
+            </h1>
+            <p className="text-gray-300">
+              The provider you're looking for doesn't exist.
+            </p>
           </div>
         </main>
         <Footer />
@@ -129,7 +149,8 @@ const ProviderTestCatalogPage = () => {
             Available Tests – {provider.name}
           </h1>
           <p className="text-brand-navy">
-            Browse all available tests and health checks offered by {provider.name}
+            Browse all available tests and health checks offered by{" "}
+            {provider.name}
           </p>
         </div>
 
@@ -152,7 +173,10 @@ const ProviderTestCatalogPage = () => {
               className="px-3 py-2 border border-brand-navy rounded-md bg-white text-brand-navy"
             >
               {categories.map((category) => (
-                <option key={category ?? "uncategorized"} value={category ?? ""}>
+                <option
+                  key={category ?? "uncategorized"}
+                  value={category ?? ""}
+                >
                   {category === "all" ? "All Categories" : category}
                 </option>
               ))}
@@ -180,7 +204,8 @@ const ProviderTestCatalogPage = () => {
         {!loading && !error && (
           <>
             <div className="mb-4 text-sm text-brand-navy">
-              {filteredTests.length} test{filteredTests.length !== 1 ? "s" : ""} found
+              {filteredTests.length} test{filteredTests.length !== 1 ? "s" : ""}{" "}
+              found
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -196,7 +221,9 @@ const ProviderTestCatalogPage = () => {
 
             {filteredTests.length === 0 && (
               <div className="text-center py-16">
-                <p className="text-brand-navy">No tests found matching your criteria.</p>
+                <p className="text-brand-navy">
+                  No tests found matching your criteria.
+                </p>
               </div>
             )}
           </>

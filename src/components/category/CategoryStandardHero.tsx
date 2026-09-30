@@ -21,98 +21,94 @@ export function CategoryStandardHero({
 
   return (
     <>
-    <section
-      aria-labelledby={headingId}
-      className="px-4 sm:px-8 md:px-10 pt-10 sm:pt-12 md:pt-14 pb-11 sm:pb-14"
-      style={{
-        background: "#081129",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-
-      {/* Background grid */}
-      <div
+      <section
+        aria-labelledby={headingId}
+        className="px-4 sm:px-8 md:px-10 pt-10 sm:pt-12 md:pt-14 pb-11 sm:pb-14"
         style={{
-          position: "absolute",
-          inset: 0,
-          backgroundImage:
-            "radial-gradient(circle at 1px 1px, rgba(6,11,24,0.08) 1px, transparent 0)",
-          backgroundSize: "40px 40px",
-          pointerEvents: "none",
+          background: "#081129",
+          position: "relative",
+          overflow: "hidden",
         }}
-      />
-      {/* Ambient glow orbs */}
-      <div
-        style={{
-          position: "absolute",
-          top: "-10%",
-          left: "-5%",
-          width: 500,
-          height: 500,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(233,30,140,0.05) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          bottom: "10%",
-          right: "-5%",
-          width: 400,
-          height: 400,
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, rgba(0,212,200,0.06) 0%, transparent 70%)",
-          pointerEvents: "none",
-        }}
-      />
-
-      <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
-        {/* Category name */}
-        <div className="flex items-center justify-center gap-3 sm:gap-4 relative">
-          <span
-            aria-hidden="true"
-            className="flex-shrink-0 h-px w-8 sm:w-12 bg-[#e70d69]"
-          />
-          <Heading
-            id={headingId}
-            className="font-bold text-center m-0 text-white text-xl sm:text-2xl md:text-[33px]"
-            style={{
-              letterSpacing: "0.04em",
-              lineHeight: 1.15,
-              // Ensures capital-letter optical baseline sits centred against the accent lines
-              paddingBlock: "0.05em",
-            }}
-          >
-            {pillLabel}
-          </Heading>
-          <span
-            aria-hidden="true"
-            className="flex-shrink-0 h-px w-8 sm:w-12 bg-[#e70d69]"
-          />
-        </div>
-
-        {/* Tricolour divider */}
+      >
+        {/* Background grid */}
         <div
-          role="presentation"
-          aria-hidden="true"
-          className="mt-5 sm:mt-6"
           style={{
-            height: 3,
-            background: "linear-gradient(90deg, #22c0d4, #e70d69, #22c0d4)",
-            borderRadius: 2,
+            position: "absolute",
+            inset: 0,
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, rgba(6,11,24,0.08) 1px, transparent 0)",
+            backgroundSize: "40px 40px",
+            pointerEvents: "none",
           }}
         />
-      </div>
+        {/* Ambient glow orbs */}
+        <div
+          style={{
+            position: "absolute",
+            top: "-10%",
+            left: "-5%",
+            width: 500,
+            height: 500,
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(233,30,140,0.05) 0%, transparent 70%)",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: "10%",
+            right: "-5%",
+            width: 400,
+            height: 400,
+            borderRadius: "50%",
+            background:
+              "radial-gradient(circle, rgba(0,212,200,0.06) 0%, transparent 70%)",
+            pointerEvents: "none",
+          }}
+        />
 
-    </section>
-    {/* Boundary marker: the category toolbar is portalled here so it straddles the navy/white edge */}
-    <div id="page-toolbar-anchor" className="relative h-0 z-[1000]" />
+        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
+          {/* Category name */}
+          <div className="flex items-center justify-center gap-3 sm:gap-4 relative">
+            <span
+              aria-hidden="true"
+              className="flex-shrink-0 h-px w-8 sm:w-12 bg-[#e70d69]"
+            />
+            <Heading
+              id={headingId}
+              className="font-bold text-center m-0 text-white text-xl sm:text-2xl md:text-[33px]"
+              style={{
+                letterSpacing: "0.04em",
+                lineHeight: 1.15,
+                // Ensures capital-letter optical baseline sits centred against the accent lines
+                paddingBlock: "0.05em",
+              }}
+            >
+              {pillLabel}
+            </Heading>
+            <span
+              aria-hidden="true"
+              className="flex-shrink-0 h-px w-8 sm:w-12 bg-[#e70d69]"
+            />
+          </div>
 
+          {/* Tricolour divider */}
+          <div
+            role="presentation"
+            aria-hidden="true"
+            className="mt-5 sm:mt-6"
+            style={{
+              height: 3,
+              background: "linear-gradient(90deg, #22c0d4, #e70d69, #22c0d4)",
+              borderRadius: 2,
+            }}
+          />
+        </div>
+      </section>
+      {/* Boundary marker: the category toolbar is portalled here so it straddles the navy/white edge */}
+      <div id="page-toolbar-anchor" className="relative h-0 z-[1000]" />
     </>
   );
 }
-

@@ -181,7 +181,11 @@ const DYNAMIC_ROUTE_REGEXES: readonly RegExp[] = DYNAMIC_ROUTE_PATTERNS.map(
   (pattern) => {
     const source = pattern
       .split("/")
-      .map((seg) => (seg.startsWith(":") ? "[^/]+" : seg.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")))
+      .map((seg) =>
+        seg.startsWith(":")
+          ? "[^/]+"
+          : seg.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
+      )
       .join("/");
     return new RegExp(`^${source}/?$`);
   },

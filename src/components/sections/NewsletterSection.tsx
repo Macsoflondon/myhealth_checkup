@@ -49,7 +49,9 @@ const NewsletterSection = () => {
       <NavyDecorativeCircles />
       <div
         className="pointer-events-none absolute -top-24 -right-24 w-80 h-80 rounded-full opacity-10"
-        style={{ background: "radial-gradient(circle, #22c0d4 0%, transparent 70%)" }}
+        style={{
+          background: "radial-gradient(circle, #22c0d4 0%, transparent 70%)",
+        }}
         aria-hidden="true"
       />
       <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
@@ -68,7 +70,9 @@ const NewsletterSection = () => {
             gradientClassName="text-brand-turquoise"
           />
           <p className="mt-3 mb-8 text-base sm:text-lg text-white/78 leading-relaxed">
-            Health information worth reading. No marketing. No filler. Provider updates, new biomarker guides, and platform improvements — when they matter.
+            Health information worth reading. No marketing. No filler. Provider
+            updates, new biomarker guides, and platform improvements — when they
+            matter.
           </p>
           {submitted ? (
             <p className="text-brand-turquoise font-heading font-bold text-base tracking-wide">

@@ -31,7 +31,9 @@ const TestBreadcrumb = ({ providerName, testName }: TestBreadcrumbProps) => {
         <BreadcrumbSeparator />
         <BreadcrumbItem>
           {testName ? (
-            <BreadcrumbLink className="text-foreground">{providerName}</BreadcrumbLink>
+            <BreadcrumbLink className="text-foreground">
+              {providerName}
+            </BreadcrumbLink>
           ) : (
             <BreadcrumbPage>{providerName}</BreadcrumbPage>
           )}

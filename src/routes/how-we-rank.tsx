@@ -8,7 +8,8 @@ export const Route = createFileRoute("/how-we-rank")({
   head: () =>
     buildRouteHead({
       title: "How We Rank Tests | myhealth checkup",
-      description: "Our ranking method explained: no pay-to-rank, no provider marketing copy. See the factors behind every comparison we publish.",
+      description:
+        "Our ranking method explained: no pay-to-rank, no provider marketing copy. See the factors behind every comparison we publish.",
       path: "/how-we-rank",
     }),
   component: HowWeRankPage,

@@ -27,7 +27,9 @@ const MedichecksMensHealthPage = () => {
         .select("*")
         .eq("provider_id", "medichecks")
         .eq("is_active", true)
-        .or("category.ilike.%men%,category.ilike.%male%,category.ilike.%testosterone%,category.ilike.%prostate%,category.ilike.%fertility%");
+        .or(
+          "category.ilike.%men%,category.ilike.%male%,category.ilike.%testosterone%,category.ilike.%prostate%,category.ilike.%fertility%",
+        );
 
       if (error) throw error;
       return data;
@@ -56,7 +58,7 @@ const MedichecksMensHealthPage = () => {
   }, [tests, sortBy]);
 
   const totalPages = Math.ceil(sortedTests.length / ITEMS_PER_PAGE);
-  
+
   const paginatedTests = useMemo(() => {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     return sortedTests.slice(start, start + ITEMS_PER_PAGE);
@@ -102,7 +104,10 @@ const MedichecksMensHealthPage = () => {
             {isLoading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {[...Array(8)].map((_, i) => (
-                  <div key={i} className="bg-surface rounded-xl border border-border overflow-hidden">
+                  <div
+                    key={i}
+                    className="bg-surface rounded-xl border border-border overflow-hidden"
+                  >
                     <Skeleton className="h-10 w-full" />
                     <div className="p-5 space-y-3">
                       <Skeleton className="h-6 w-3/4" />
@@ -133,8 +138,8 @@ const MedichecksMensHealthPage = () => {
                         test.home_kit_available && test.clinic_visit_available
                           ? "Finger-prick or Venous collection"
                           : test.clinic_visit_available
-                          ? "Venous collection"
-                          : "Finger-prick collection"
+                            ? "Venous collection"
+                            : "Finger-prick collection"
                       }
                       imageUrl={test.image_url}
                       slug={generateTestSlug(test.test_name)}

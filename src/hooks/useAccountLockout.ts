@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from "react";
 
 /**
  * UX-only Account Lockout Hint
@@ -16,7 +16,7 @@ import { useState, useCallback, useEffect } from 'react';
 
 const MAX_ATTEMPTS = 5;
 const LOCKOUT_DURATION_MS = 15 * 60 * 1000; // 15 minutes
-const STORAGE_KEY = 'login_attempts';
+const STORAGE_KEY = "login_attempts";
 
 interface LoginAttemptData {
   attempts: number;
@@ -94,7 +94,7 @@ export function useAccountLockout() {
   const recordFailedAttempt = useCallback(() => {
     const data = getStoredData();
     const now = Date.now();
-    
+
     const newAttempts = data.attempts + 1;
     const newData: LoginAttemptData = {
       attempts: newAttempts,
@@ -149,15 +149,15 @@ export function useAccountLockout() {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     if (mins > 0) {
-      return `${mins} minute${mins !== 1 ? 's' : ''} ${secs} second${secs !== 1 ? 's' : ''}`;
+      return `${mins} minute${mins !== 1 ? "s" : ""} ${secs} second${secs !== 1 ? "s" : ""}`;
     }
-    return `${secs} second${secs !== 1 ? 's' : ''}`;
+    return `${secs} second${secs !== 1 ? "s" : ""}`;
   }, []);
 
   // Initial check and interval for countdown
   useEffect(() => {
     checkLockStatus();
-    
+
     const interval = setInterval(() => {
       checkLockStatus();
     }, 1000);

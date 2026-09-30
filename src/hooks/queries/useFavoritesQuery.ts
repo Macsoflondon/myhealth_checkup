@@ -9,9 +9,10 @@ import { toast } from "@/components/ui/sonner";
 import { logger } from "@/lib/logger";
 
 export const favoritesQueryKeys = {
-  all: ['favorites'] as const,
-  user: (userId: string) => ['favorites', userId] as const,
-  byTest: (userId: string, testId: string) => ['favorites', userId, testId] as const,
+  all: ["favorites"] as const,
+  user: (userId: string) => ["favorites", userId] as const,
+  byTest: (userId: string, testId: string) =>
+    ["favorites", userId, testId] as const,
 };
 
 export function useFavoritesQuery() {
@@ -19,7 +20,7 @@ export function useFavoritesQuery() {
   const userId = user?.id;
 
   return useQuery({
-    queryKey: favoritesQueryKeys.user(userId || ''),
+    queryKey: favoritesQueryKeys.user(userId || ""),
     queryFn: async () => {
       if (!userId) return [];
       const { data, error } = await favoritesApi.getUserFavorites(userId);
@@ -42,7 +43,7 @@ export function useAddFavorite() {
       name?: string;
       price?: number;
     }) => {
-      if (!user?.id) throw new Error('User not authenticated');
+      if (!user?.id) throw new Error("User not authenticated");
       const { error } = await favoritesApi.addFavorite({
         user_id: user.id,
         test_id: params.testId,
@@ -54,12 +55,14 @@ export function useAddFavorite() {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: favoritesQueryKeys.user(user?.id || '') });
+      queryClient.invalidateQueries({
+        queryKey: favoritesQueryKeys.user(user?.id || ""),
+      });
       toast.success("Added to favorites");
     },
     onError: (error) => {
-      logger.error('Error adding favorite:', error);
-      toast.error('Failed to add favorite');
+      logger.error("Error adding favorite:", error);
+      toast.error("Failed to add favorite");
     },
   });
 }
@@ -70,26 +73,28 @@ export function useRemoveFavorite() {
 
   return useMutation({
     mutationFn: async (params: { testId: string; category: string }) => {
-      if (!user?.id) throw new Error('User not authenticated');
+      if (!user?.id) throw new Error("User not authenticated");
       const { error } = await favoritesApi.removeFavorite(
         user.id,
         params.testId,
-        params.category
+        params.category,
       );
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: favoritesQueryKeys.user(user?.id || '') });
+      queryClient.invalidateQueries({
+        queryKey: favoritesQueryKeys.user(user?.id || ""),
+      });
       toast.success("Removed from favorites");
     },
     onError: (error) => {
-      logger.error('Error removing favorite:', error);
-      toast.error('Failed to remove favorite');
+      logger.error("Error removing favorite:", error);
+      toast.error("Failed to remove favorite");
     },
   });
 }
 
 export function useIsFavorite(testId: string, category: string) {
   const { data: favorites = [] } = useFavoritesQuery();
-  return favorites.some(f => f.test_id === testId && f.category === category);
+  return favorites.some((f) => f.test_id === testId && f.category === category);
 }

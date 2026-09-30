@@ -75,7 +75,8 @@ export function usePerformanceOptimization() {
           if (!key?.startsWith("cache_")) continue;
           try {
             const item = JSON.parse(localStorage.getItem(key) || "{}");
-            if (item.timestamp && now - item.timestamp > TTL) keysToRemove.push(key);
+            if (item.timestamp && now - item.timestamp > TTL)
+              keysToRemove.push(key);
           } catch {
             keysToRemove.push(key);
           }

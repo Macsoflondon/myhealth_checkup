@@ -7,9 +7,21 @@ import { useMarqueeTicker } from "@/hooks/useMarqueeTicker";
  */
 
 const promos = [
-  { provider: "GoodBody", text: "5% off all popular blood tests", color: "#0bb77e" },
-  { provider: "Medichecks", text: "UK's leading home blood testing service", color: "#e70d68" },
-  { provider: "Lola Health", text: "Private health testing made simple", color: "#fa757e" },
+  {
+    provider: "GoodBody",
+    text: "5% off all popular blood tests",
+    color: "#0bb77e",
+  },
+  {
+    provider: "Medichecks",
+    text: "UK's leading home blood testing service",
+    color: "#e70d68",
+  },
+  {
+    provider: "Lola Health",
+    text: "Private health testing made simple",
+    color: "#fa757e",
+  },
 ];
 
 const SETS = 8;
@@ -20,13 +32,14 @@ const PromoTicker = () => {
 
   return (
     <section className="bg-brand-navy overflow-hidden select-none relative">
-
       <div className="pt-3 pb-1.5 sm:pt-5 sm:pb-2.5">
         <div
           className="relative overflow-hidden"
           style={{
-            maskImage: "linear-gradient(to right, transparent, black 4%, black 96%, transparent)",
-            WebkitMaskImage: "linear-gradient(to right, transparent, black 4%, black 96%, transparent)",
+            maskImage:
+              "linear-gradient(to right, transparent, black 4%, black 96%, transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent, black 4%, black 96%, transparent)",
           }}
           aria-label="Promotional offers from health test providers"
         >
@@ -37,7 +50,10 @@ const PromoTicker = () => {
             style={{ willChange: "transform", backfaceVisibility: "hidden" }}
           >
             {items.map((p, i) => (
-              <span key={i} className="flex items-center shrink-0 gap-1.5 sm:gap-2.5 px-2 sm:px-5">
+              <span
+                key={i}
+                className="flex items-center shrink-0 gap-1.5 sm:gap-2.5 px-2 sm:px-5"
+              >
                 <span
                   className="font-heading font-bold text-[11px] xs:text-xs sm:text-lg md:text-xl tracking-wide uppercase leading-none"
                   style={{ color: p.color }}

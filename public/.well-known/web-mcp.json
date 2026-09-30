@@ -31,10 +31,7 @@
           },
           "collection": {
             "type": "string",
-            "enum": [
-              "home_kit",
-              "clinic_visit"
-            ],
+            "enum": ["home_kit", "clinic_visit"],
             "description": "Only tests you can take with a home kit, or only tests with a clinic visit."
           },
           "include_addons": {
@@ -43,12 +40,7 @@
           },
           "sort": {
             "type": "string",
-            "enum": [
-              "price",
-              "price_desc",
-              "name",
-              "turnaround"
-            ],
+            "enum": ["price", "price_desc", "name", "turnaround"],
             "description": "Default price (lowest total expected cost first)."
           },
           "limit": {
@@ -84,9 +76,7 @@
             "description": "Test id (UUID) from search_tests."
           }
         },
-        "required": [
-          "id"
-        ]
+        "required": ["id"]
       },
       "url": "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/tests.json",
       "method": "GET",
@@ -185,9 +175,7 @@
             "description": "Include add-on tests. Default false."
           }
         },
-        "required": [
-          "q"
-        ]
+        "required": ["q"]
       },
       "url": "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/compare/tests.json",
       "method": "GET",
@@ -213,9 +201,7 @@
             "description": "Include add-on tests. Default true; they are labelled."
           }
         },
-        "required": [
-          "biomarker"
-        ]
+        "required": ["biomarker"]
       },
       "url": "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/compare/biomarker.json",
       "method": "GET",
@@ -242,9 +228,7 @@
             "description": "Two to ten biomarker names, for example ['ferritin', 'vitamin d', 'hba1c']. A comma-separated string also works."
           }
         },
-        "required": [
-          "biomarkers"
-        ]
+        "required": ["biomarkers"]
       },
       "url": "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api/compare/biomarkers.json",
       "method": "GET",

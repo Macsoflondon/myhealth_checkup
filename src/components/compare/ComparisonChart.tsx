@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  RadarChart, 
-  PolarGrid, 
-  PolarAngleAxis, 
-  PolarRadiusAxis, 
-  Radar, 
+import {
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
   ResponsiveContainer,
   Legend,
-  Tooltip
+  Tooltip,
 } from "recharts";
 import { EnhancedTestData } from "@/types/comparison";
 import { BarChart3 } from "lucide-react";
@@ -18,24 +18,23 @@ interface ComparisonChartProps {
   tests: EnhancedTestData[];
 }
 
-const COLORS = [
-  "hsl(var(--primary))",
-  "#22c0d4",
-  "#e70d69",
-  "#fbbf24"
-];
+const COLORS = ["hsl(var(--primary))", "#22c0d4", "#e70d69", "#fbbf24"];
 
 export function ComparisonChart({ tests }: ComparisonChartProps) {
   const chartData = useMemo(() => {
     if (tests.length === 0) return [];
 
     // Find max values for normalization
-    const maxPrice = Math.max(...tests.map(t => t.totalEstimatedCost || t.basePrice));
-    const maxTurnaround = Math.max(...tests.map(t => t.turnaroundDays));
-    const maxBiomarkers = Math.max(...tests.map(t => t.biomarkerCount));
-    const maxValueRatio = Math.max(...tests.map(t => 
-      t.biomarkerCount / (t.totalEstimatedCost || t.basePrice)
-    ));
+    const maxPrice = Math.max(
+      ...tests.map((t) => t.totalEstimatedCost || t.basePrice),
+    );
+    const maxTurnaround = Math.max(...tests.map((t) => t.turnaroundDays));
+    const maxBiomarkers = Math.max(...tests.map((t) => t.biomarkerCount));
+    const maxValueRatio = Math.max(
+      ...tests.map(
+        (t) => t.biomarkerCount / (t.totalEstimatedCost || t.basePrice),
+      ),
+    );
 
     // Create normalized data for radar chart
     // For price and turnaround, we invert (100 - value) so lower is better
@@ -44,25 +43,27 @@ export function ComparisonChart({ tests }: ComparisonChartProps) {
       { metric: "Speed", key: "speed" },
       { metric: "Comprehensiveness", key: "biomarkers" },
       { metric: "Affordability", key: "affordability" },
-      { metric: "Home Collection", key: "homeKit" }
+      { metric: "Home Collection", key: "homeKit" },
     ];
 
     return metrics.map(({ metric, key }) => {
       const dataPoint: Record<string, any> = { metric };
-      
+
       tests.forEach((test, index) => {
         let score = 0;
-        
+
         switch (key) {
           case "value": {
             // Value = biomarkers per pound (normalized 0-100)
-            const valueRatio = test.biomarkerCount / (test.totalEstimatedCost || test.basePrice);
+            const valueRatio =
+              test.biomarkerCount / (test.totalEstimatedCost || test.basePrice);
             score = (valueRatio / maxValueRatio) * 100;
             break;
           }
           case "speed":
             // Speed = inverse of turnaround (lower is better)
-            score = ((maxTurnaround - test.turnaroundDays + 1) / maxTurnaround) * 100;
+            score =
+              ((maxTurnaround - test.turnaroundDays + 1) / maxTurnaround) * 100;
             break;
           case "biomarkers":
             // Biomarkers normalized
@@ -70,17 +71,20 @@ export function ComparisonChart({ tests }: ComparisonChartProps) {
             break;
           case "affordability":
             // Affordability = inverse of price
-            score = ((maxPrice - (test.totalEstimatedCost || test.basePrice) + 1) / maxPrice) * 100;
+            score =
+              ((maxPrice - (test.totalEstimatedCost || test.basePrice) + 1) /
+                maxPrice) *
+              100;
             break;
           case "homeKit":
             // Home kit availability
             score = test.homeKitAvailable ? 100 : 0;
             break;
         }
-        
+
         dataPoint[test.testName] = Math.round(score);
       });
-      
+
       return dataPoint;
     });
   }, [tests]);
@@ -116,21 +120,25 @@ export function ComparisonChart({ tests }: ComparisonChartProps) {
           <ResponsiveContainer width="100%" height="100%">
             <RadarChart cx="50%" cy="50%" outerRadius="70%" data={chartData}>
               <PolarGrid className="stroke-muted" />
-              <PolarAngleAxis 
-                dataKey="metric" 
+              <PolarAngleAxis
+                dataKey="metric"
                 tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }}
               />
-              <PolarRadiusAxis 
-                angle={90} 
-                domain={[0, 100]} 
+              <PolarRadiusAxis
+                angle={90}
+                domain={[0, 100]}
                 tick={{ fontSize: 10 }}
                 tickCount={5}
               />
-              
+
               {tests.map((test, index) => (
                 <Radar
                   key={test.id}
-                  name={test.testName.length > 25 ? test.testName.substring(0, 25) + "..." : test.testName}
+                  name={
+                    test.testName.length > 25
+                      ? test.testName.substring(0, 25) + "..."
+                      : test.testName
+                  }
                   dataKey={test.testName}
                   stroke={COLORS[index % COLORS.length]}
                   fill={COLORS[index % COLORS.length]}
@@ -138,16 +146,16 @@ export function ComparisonChart({ tests }: ComparisonChartProps) {
                   strokeWidth={2}
                 />
               ))}
-              
-              <Tooltip 
-                contentStyle={{ 
+
+              <Tooltip
+                contentStyle={{
                   backgroundColor: "hsl(var(--card))",
                   border: "1px solid hsl(var(--border))",
-                  borderRadius: "var(--radius)"
+                  borderRadius: "var(--radius)",
                 }}
                 formatter={(value: number) => [`${value}%`, ""]}
               />
-              <Legend 
+              <Legend
                 wrapperStyle={{ fontSize: "12px" }}
                 formatter={(value: string) => (
                   <span className="text-xs">{value}</span>
@@ -156,14 +164,24 @@ export function ComparisonChart({ tests }: ComparisonChartProps) {
             </RadarChart>
           </ResponsiveContainer>
         </div>
-        
+
         {/* Legend explanation */}
         <div className="mt-4 text-xs text-muted-foreground space-y-1">
-          <p><strong>Value for Money:</strong> Biomarkers per pound spent</p>
-          <p><strong>Speed:</strong> Results turnaround time (faster is better)</p>
-          <p><strong>Comprehensiveness:</strong> Number of biomarkers included</p>
-          <p><strong>Affordability:</strong> Price comparison (lower is better)</p>
-          <p><strong>Home Collection:</strong> Whether home kit is available</p>
+          <p>
+            <strong>Value for Money:</strong> Biomarkers per pound spent
+          </p>
+          <p>
+            <strong>Speed:</strong> Results turnaround time (faster is better)
+          </p>
+          <p>
+            <strong>Comprehensiveness:</strong> Number of biomarkers included
+          </p>
+          <p>
+            <strong>Affordability:</strong> Price comparison (lower is better)
+          </p>
+          <p>
+            <strong>Home Collection:</strong> Whether home kit is available
+          </p>
         </div>
       </CardContent>
     </Card>

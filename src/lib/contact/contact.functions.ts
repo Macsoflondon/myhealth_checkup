@@ -1,5 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
-import { contactInputSchema, buildContactReference, SUPPORT_INBOX } from "./contact.shared";
+import {
+  contactInputSchema,
+  buildContactReference,
+  SUPPORT_INBOX,
+} from "./contact.shared";
 
 /**
  * Delivers a contact-form message to the support inbox and acknowledges the

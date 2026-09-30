@@ -28,7 +28,11 @@ export const MobileAccountLinks = ({ onNavigate }: MobileAccountLinksProps) => {
           className="w-8 h-8 rounded-full inline-flex items-center justify-center shrink-0"
           style={{ background: "#e70d691a" }}
         >
-          <LogIn className="w-4 h-4" style={{ color: "#e70d69" }} strokeWidth={2} />
+          <LogIn
+            className="w-4 h-4"
+            style={{ color: "#e70d69" }}
+            strokeWidth={2}
+          />
         </span>
         <span className="text-sm font-semibold text-[#081129] font-[Montserrat] truncate">
           Sign in to your account
@@ -44,7 +48,11 @@ export const MobileAccountLinks = ({ onNavigate }: MobileAccountLinksProps) => {
           className="w-8 h-8 rounded-full inline-flex items-center justify-center shrink-0"
           style={{ background: "#22c0d41a" }}
         >
-          <LayoutDashboard className="w-4 h-4" style={{ color: "#22c0d4" }} strokeWidth={2} />
+          <LayoutDashboard
+            className="w-4 h-4"
+            style={{ color: "#22c0d4" }}
+            strokeWidth={2}
+          />
         </span>
         <span className="text-sm font-semibold text-[#081129] font-[Montserrat] truncate">
           My dashboard
@@ -55,7 +63,11 @@ export const MobileAccountLinks = ({ onNavigate }: MobileAccountLinksProps) => {
           className="w-8 h-8 rounded-full inline-flex items-center justify-center shrink-0"
           style={{ background: "#0811291a" }}
         >
-          <LogOut className="w-4 h-4" style={{ color: "#081129" }} strokeWidth={2} />
+          <LogOut
+            className="w-4 h-4"
+            style={{ color: "#081129" }}
+            strokeWidth={2}
+          />
         </span>
         <span className="text-sm font-semibold text-[#081129] font-[Montserrat] truncate">
           Sign out

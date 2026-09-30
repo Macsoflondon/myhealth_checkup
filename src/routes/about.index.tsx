@@ -8,7 +8,8 @@ export const Route = createFileRoute("/about/")({
   head: () =>
     buildRouteHead({
       title: "About myhealth checkup | Our Mission",
-      description: "How myhealth checkup compares UK private diagnostics independently, with transparent pricing, full biomarker lists and accredited providers only.",
+      description:
+        "How myhealth checkup compares UK private diagnostics independently, with transparent pricing, full biomarker lists and accredited providers only.",
       path: "/about",
     }),
   component: AboutUsPage,

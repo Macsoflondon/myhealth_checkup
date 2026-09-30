@@ -34,7 +34,7 @@ export const TRACKED_FIELDS = [
   "scrape_source_url",
 ] as const;
 
-export type TrackedField = typeof TRACKED_FIELDS[number];
+export type TrackedField = (typeof TRACKED_FIELDS)[number];
 
 export interface ProviderTestSnapshot {
   provider_test_id?: string | null;
@@ -83,7 +83,10 @@ function eq(a: unknown, b: unknown): boolean {
 export async function writeHistorySnapshot(
   supabase: SupabaseClient,
   snapshot: ProviderTestSnapshot,
-  opts: { scrapeRunId?: string | null; previous?: Record<string, unknown> | null } = {},
+  opts: {
+    scrapeRunId?: string | null;
+    previous?: Record<string, unknown> | null;
+  } = {},
 ): Promise<{ ok: true } | { ok: false; error: string }> {
   const { scrapeRunId = null, previous = null } = opts;
 

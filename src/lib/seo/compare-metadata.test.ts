@@ -24,13 +24,20 @@ interface HeadResult {
 
 type HeadFn = (ctx: { params: Record<string, string> }) => HeadResult;
 
-const readHead = (route: unknown, params: Record<string, string> = {}): HeadResult => {
+const readHead = (
+  route: unknown,
+  params: Record<string, string> = {},
+): HeadResult => {
   const head = (route as { options: { head?: HeadFn } }).options.head;
   expect(head, "route is missing a head() definition").toBeTypeOf("function");
   return (head as HeadFn)({ params });
 };
 
-const metaValue = (head: HeadResult, key: "name" | "property", value: string): string | undefined =>
+const metaValue = (
+  head: HeadResult,
+  key: "name" | "property",
+  value: string,
+): string | undefined =>
   head.meta?.find((entry) => entry[key] === value)?.content;
 
 /** Every compare route, resolved to a concrete path for canonical assertions. */
@@ -55,7 +62,9 @@ describe("compare page metadata", () => {
       const { head } = page;
       const url = `${SITE_URL}${path}`;
 
-      const title = head.meta?.find((entry) => typeof entry.title === "string")?.title;
+      const title = head.meta?.find(
+        (entry) => typeof entry.title === "string",
+      )?.title;
       expect(title, "missing <title>").toBeTruthy();
       expect(title!.length).toBeLessThan(70);
       expect(title).toContain("myhealth checkup");
@@ -73,7 +82,8 @@ describe("compare page metadata", () => {
       expect(metaValue(head, "name", "twitter:title")).toBe(title);
       expect(metaValue(head, "name", "twitter:description")).toBe(description);
 
-      const canonicals = head.links?.filter((link) => link.rel === "canonical") ?? [];
+      const canonicals =
+        head.links?.filter((link) => link.rel === "canonical") ?? [];
       expect(canonicals).toHaveLength(1);
       expect(canonicals[0]?.href).toBe(url);
     },
@@ -81,9 +91,12 @@ describe("compare page metadata", () => {
 
   it("gives every compare page a unique title and description", () => {
     const titles = comparePages.map(
-      (page) => page.head.meta?.find((entry) => typeof entry.title === "string")?.title,
+      (page) =>
+        page.head.meta?.find((entry) => typeof entry.title === "string")?.title,
     );
-    const descriptions = comparePages.map((page) => metaValue(page.head, "name", "description"));
+    const descriptions = comparePages.map((page) =>
+      metaValue(page.head, "name", "description"),
+    );
 
     expect(new Set(titles).size).toBe(titles.length);
     expect(new Set(descriptions).size).toBe(descriptions.length);
@@ -120,19 +133,31 @@ describe("compare detail structured data", () => {
       expect(types).toEqual(["MedicalWebPage", "BreadcrumbList", "ItemList"]);
 
       const page = nodes[0]!;
-      const list = nodes[2] as { numberOfItems: number; itemListElement: unknown[] };
-      expect(page["url"]).toMatch(/^https:\/\/myhealthcheckup\.co\.uk\/compare\//);
-      expect(page["mainEntity"]).toEqual({ "@id": list["@id" as keyof typeof list] });
+      const list = nodes[2] as {
+        numberOfItems: number;
+        itemListElement: unknown[];
+      };
+      expect(page["url"]).toMatch(
+        /^https:\/\/myhealthcheckup\.co\.uk\/compare\//,
+      );
+      expect(page["mainEntity"]).toEqual({
+        "@id": list["@id" as keyof typeof list],
+      });
       expect(list.numberOfItems).toBeGreaterThan(0);
       expect(list.itemListElement).toHaveLength(list.numberOfItems);
 
       list.itemListElement.forEach((entry, i) => {
-        const item = (entry as { position: number; item: Record<string, unknown> });
+        const item = entry as {
+          position: number;
+          item: Record<string, unknown>;
+        };
         expect(item.position).toBe(i + 1);
         expect(item.item["@type"]).toBe("MedicalTest");
         expect(item.item["name"]).toBeTruthy();
         expect(item.item["description"]).toBeTruthy();
-        expect((item.item["additionalProperty"] as unknown[]).length).toBeGreaterThan(0);
+        expect(
+          (item.item["additionalProperty"] as unknown[]).length,
+        ).toBeGreaterThan(0);
       });
 
       // Structured data must survive serialisation into the <script> tag.

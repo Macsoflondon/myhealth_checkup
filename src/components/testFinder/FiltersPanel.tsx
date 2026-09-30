@@ -11,7 +11,10 @@ import {
   GOAL_LABEL,
   SAMPLE_TYPE_LABEL,
 } from "@/lib/testFinder/labels";
-import { countActiveFilters, filtersDifferFrom } from "@/lib/testFinder/filters";
+import {
+  countActiveFilters,
+  filtersDifferFrom,
+} from "@/lib/testFinder/filters";
 
 interface Props {
   filters: FilterState;
@@ -46,7 +49,11 @@ const COLLECTION_METHODS: CollectionMethod[] = [
   "third_party_phlebotomy",
 ];
 
-const CLINICAL_REVIEW: ClinicalReviewType[] = ["included", "optional", "not_included"];
+const CLINICAL_REVIEW: ClinicalReviewType[] = [
+  "included",
+  "optional",
+  "not_included",
+];
 const CLINICAL_REVIEW_LABEL: Record<ClinicalReviewType, string> = {
   included: "Included",
   optional: "Optional",
@@ -58,7 +65,13 @@ function toggle<T>(arr: T[], v: T): T[] {
   return arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v];
 }
 
-const Group = ({ title, children }: { title: string; children: React.ReactNode }) => (
+const Group = ({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) => (
   <div className="space-y-2">
     <div className="text-[11px] font-semibold uppercase tracking-wide text-brand-turquoise">
       {title}
@@ -135,7 +148,9 @@ export const FiltersPanel = ({
           <Chip
             key={g}
             active={filters.goals.includes(g)}
-            onClick={() => onChange({ ...filters, goals: toggle(filters.goals, g) })}
+            onClick={() =>
+              onChange({ ...filters, goals: toggle(filters.goals, g) })
+            }
           >
             {GOAL_LABEL[g]}
           </Chip>
@@ -148,7 +163,10 @@ export const FiltersPanel = ({
             key={s}
             active={filters.sample_types.includes(s)}
             onClick={() =>
-              onChange({ ...filters, sample_types: toggle(filters.sample_types, s) })
+              onChange({
+                ...filters,
+                sample_types: toggle(filters.sample_types, s),
+              })
             }
           >
             {SAMPLE_TYPE_LABEL[s]}
@@ -177,7 +195,10 @@ export const FiltersPanel = ({
         <Chip
           active={filters.no_additional_fees}
           onClick={() =>
-            onChange({ ...filters, no_additional_fees: !filters.no_additional_fees })
+            onChange({
+              ...filters,
+              no_additional_fees: !filters.no_additional_fees,
+            })
           }
         >
           No additional fees

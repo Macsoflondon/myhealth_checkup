@@ -36,7 +36,9 @@ export function useLiveComparisonPanel() {
       const idx = new Date().getUTCHours() % data.length;
       setPanel(data[idx] as LiveComparisonPanel);
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return panel;

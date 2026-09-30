@@ -17,7 +17,7 @@ export function SaveProviderButton({
   size = "sm",
   variant = "ghost",
   className,
-  showLabel = false
+  showLabel = false,
 }: SaveProviderButtonProps) {
   return (
     <Button
@@ -31,20 +31,13 @@ export function SaveProviderButton({
       className={cn(
         "transition-colors",
         isSaved && "text-[#e70d69]",
-        className
+        className,
       )}
       title={isSaved ? "Remove from saved providers" : "Save provider"}
     >
-      <Heart
-        className={cn(
-          "h-4 w-4",
-          isSaved && "fill-current"
-        )}
-      />
+      <Heart className={cn("h-4 w-4", isSaved && "fill-current")} />
       {showLabel && (
-        <span className="ml-1.5">
-          {isSaved ? "Saved" : "Save"}
-        </span>
+        <span className="ml-1.5">{isSaved ? "Saved" : "Save"}</span>
       )}
     </Button>
   );

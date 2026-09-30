@@ -38,5 +38,6 @@ export const COMPARE_PANELS: Record<string, ComparePanelConfig> = {
   },
 };
 
-export const getComparePanel = (slug: string | null | undefined): ComparePanelConfig | null =>
-  slug ? COMPARE_PANELS[slug] ?? null : null;
+export const getComparePanel = (
+  slug: string | null | undefined,
+): ComparePanelConfig | null => (slug ? (COMPARE_PANELS[slug] ?? null) : null);

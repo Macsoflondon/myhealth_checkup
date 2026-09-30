@@ -4,7 +4,8 @@
  * on the user's explicit GDPR consent (UK GDPR / DPA 2018).
  */
 
-export type ConsentCategory = "necessary" | "analytics" | "marketing" | "functional";
+export type ConsentCategory =
+  "necessary" | "analytics" | "marketing" | "functional";
 
 export interface CookiePreferences {
   necessary: boolean;
@@ -40,5 +41,7 @@ export function hasConsent(category: ConsentCategory): boolean {
 
 export function broadcastConsent(prefs: CookiePreferences): void {
   if (typeof window === "undefined") return;
-  window.dispatchEvent(new CustomEvent<CookiePreferences>(CONSENT_EVENT, { detail: prefs }));
+  window.dispatchEvent(
+    new CustomEvent<CookiePreferences>(CONSENT_EVENT, { detail: prefs }),
+  );
 }

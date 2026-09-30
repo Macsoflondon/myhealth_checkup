@@ -11,7 +11,9 @@ export const validatePassword = (password: string): PasswordStrength => {
   if (password.length >= 12) {
     score += 1;
   } else {
-    feedback.push("Use at least 12 characters (NCSC / Cyber Essentials guidance)");
+    feedback.push(
+      "Use at least 12 characters (NCSC / Cyber Essentials guidance)",
+    );
   }
 
   if (/[a-z]/.test(password)) {

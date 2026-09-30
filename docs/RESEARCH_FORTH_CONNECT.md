@@ -65,19 +65,19 @@ agreement.
 
 ### A. What Forth appears to have solved better than our current design
 
-| Area | Why |
-| --- | --- |
-| Multi-laboratory order and result plumbing | We have none. Our catalogue ends at an affiliate hand-off; we never see a structured result. Forth claims live integrations with several laboratories. |
-| Structured biomarker result delivery | Our only ingestion route today is a user-uploaded PDF, which requires the whole document-intelligence pipeline (Phase 2) before it yields anything trustworthy. A structured feed bypasses OCR, table detection and extraction confidence entirely. |
-| Controlled result release | The clinical-governance workflow of holding a result until a clinician releases it is genuinely non-trivial and they have it in production. |
-| Cycle-aware female hormone modelling | Cycle-day-specific reference ranges are a real clinical modelling problem. MyFORM is ahead of anything we have specified. |
-| Practitioner-facing tooling | ConnectPro is a working practitioner console. Our Phase 6 clinician reports are unbuilt. |
-| Operating clinical supervision | GMC-registered GP oversight already in place; for us that is a hiring and governance exercise, not a code one. |
+| Area                                       | Why                                                                                                                                                                                                                                                 |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Multi-laboratory order and result plumbing | We have none. Our catalogue ends at an affiliate hand-off; we never see a structured result. Forth claims live integrations with several laboratories.                                                                                              |
+| Structured biomarker result delivery       | Our only ingestion route today is a user-uploaded PDF, which requires the whole document-intelligence pipeline (Phase 2) before it yields anything trustworthy. A structured feed bypasses OCR, table detection and extraction confidence entirely. |
+| Controlled result release                  | The clinical-governance workflow of holding a result until a clinician releases it is genuinely non-trivial and they have it in production.                                                                                                         |
+| Cycle-aware female hormone modelling       | Cycle-day-specific reference ranges are a real clinical modelling problem. MyFORM is ahead of anything we have specified.                                                                                                                           |
+| Practitioner-facing tooling                | ConnectPro is a working practitioner console. Our Phase 6 clinician reports are unbuilt.                                                                                                                                                            |
+| Operating clinical supervision             | GMC-registered GP oversight already in place; for us that is a hiring and governance exercise, not a code one.                                                                                                                                      |
 
 ### B. Integrate rather than rebuild
 
 1. **Laboratory order fulfilment and result ingestion** — the single largest accelerator, and
-   the one that costs us least in strategic terms because it sits *upstream* of our canonical
+   the one that costs us least in strategic terms because it sits _upstream_ of our canonical
    model.
 2. **Structured result delivery** as a normalised inbound feed, if and only if it maps to our
    own inbound contract (section 4).
@@ -99,32 +99,32 @@ agreement.
 
 ### D. Must NOT outsource
 
-| Must stay ours | Why |
-| --- | --- |
-| The canonical biomarker ontology (`biomarker_hub`) | It is the interoperability layer that lets a Medichecks result and a Randox result sit on one chart. Delegating it re-couples us to one vendor's naming. |
-| The observation store and its provenance chain | Project knowledge requires source value/unit and canonical value/unit stored separately, historical ranges attached per observation, and provenance to the source document. A vendor's normalised output is an *input* to that, never the record itself. |
-| Patient verification | Rule 7: a result becomes trusted only after the patient confirms it. That gate cannot live in a third party. |
-| Source documents | Rule 4: the original laboratory document is source evidence. We must hold our own copy. |
-| Provider comparison, ranking and clinical relevance | Rule 12: commercial ranking stays independent of clinical relevance. A partner who also fulfils orders has an obvious incentive to be recommended. Scoring and recommendation logic must never sit with a party that benefits from the outcome. |
-| Multi-provider neutrality | The marketplace is the business. A results layer that can only ingest one vendor's output destroys it. |
-| The user relationship and the data controller role | We are the controller for the PHR. Any integrator is a processor. |
+| Must stay ours                                      | Why                                                                                                                                                                                                                                                      |
+| --------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The canonical biomarker ontology (`biomarker_hub`)  | It is the interoperability layer that lets a Medichecks result and a Randox result sit on one chart. Delegating it re-couples us to one vendor's naming.                                                                                                 |
+| The observation store and its provenance chain      | Project knowledge requires source value/unit and canonical value/unit stored separately, historical ranges attached per observation, and provenance to the source document. A vendor's normalised output is an _input_ to that, never the record itself. |
+| Patient verification                                | Rule 7: a result becomes trusted only after the patient confirms it. That gate cannot live in a third party.                                                                                                                                             |
+| Source documents                                    | Rule 4: the original laboratory document is source evidence. We must hold our own copy.                                                                                                                                                                  |
+| Provider comparison, ranking and clinical relevance | Rule 12: commercial ranking stays independent of clinical relevance. A partner who also fulfils orders has an obvious incentive to be recommended. Scoring and recommendation logic must never sit with a party that benefits from the outcome.          |
+| Multi-provider neutrality                           | The marketplace is the business. A results layer that can only ingest one vendor's output destroys it.                                                                                                                                                   |
+| The user relationship and the data controller role  | We are the controller for the PHR. Any integrator is a processor.                                                                                                                                                                                        |
 
 ---
 
 ## 3. Risks
 
-| Risk | Assessment | Mitigation |
-| --- | --- | --- |
-| Vendor lock-in | High if Forth's model becomes our model. Low if Forth is one adapter behind a canonical contract. | Adapter pattern, section 4. No Forth identifier in any core table except a nullable provenance field. |
-| Proprietary scoring opacity | HealthCoach weights are unlikely to be disclosed. An unexplainable score cannot satisfy our explainability rule. | Do not surface Forth scores as ours. If displayed at all, attribute them and store them as a third-party opinion, not as a derived platform value. |
-| Cannot import non-Forth results | Fatal to the marketplace if it happens. | Our upload/extraction pipeline (Phase 2) must be built regardless, and must be the default path. Forth is an optimisation for Forth-fulfilled orders only. |
-| Commercial incentive distorting clinical relevance | Direct conflict with rule 12. | Recommendation and retest engines never read fulfilment-partner identity as an input. Assert this in code and in a test. |
-| Controller/processor roles | Unclear from marketing material. | Settle in the data-processing agreement before any personal data flows. Our position: we are controller, Forth is processor for fulfilment and results transmission. |
-| UK GDPR Article 9 | Special category data throughout. | DPIA covering the integration specifically, lawful basis recorded, explicit consent for the Forth route captured in `clinical_consent_records`. |
-| Portability and exit | Unknown. | Contractual right to bulk export of all results and source documents, in a machine-readable form, at any time and on termination, at no cost. Non-negotiable. |
-| API availability, rate limits, SLA | UNKNOWN. | Establish before design. Assume nothing. |
-| Do we keep source documents and history? | UNKNOWN. | Contractual requirement that we receive and may retain the original laboratory document for every result. If we cannot, the integration fails rule 4 and does not proceed. |
-| Are HealthCoach outputs exportable and auditable? | UNKNOWN. | Require export with the component breakdown and algorithm version. Without that, treat scores as unusable for our purposes. |
+| Risk                                               | Assessment                                                                                                       | Mitigation                                                                                                                                                                 |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Vendor lock-in                                     | High if Forth's model becomes our model. Low if Forth is one adapter behind a canonical contract.                | Adapter pattern, section 4. No Forth identifier in any core table except a nullable provenance field.                                                                      |
+| Proprietary scoring opacity                        | HealthCoach weights are unlikely to be disclosed. An unexplainable score cannot satisfy our explainability rule. | Do not surface Forth scores as ours. If displayed at all, attribute them and store them as a third-party opinion, not as a derived platform value.                         |
+| Cannot import non-Forth results                    | Fatal to the marketplace if it happens.                                                                          | Our upload/extraction pipeline (Phase 2) must be built regardless, and must be the default path. Forth is an optimisation for Forth-fulfilled orders only.                 |
+| Commercial incentive distorting clinical relevance | Direct conflict with rule 12.                                                                                    | Recommendation and retest engines never read fulfilment-partner identity as an input. Assert this in code and in a test.                                                   |
+| Controller/processor roles                         | Unclear from marketing material.                                                                                 | Settle in the data-processing agreement before any personal data flows. Our position: we are controller, Forth is processor for fulfilment and results transmission.       |
+| UK GDPR Article 9                                  | Special category data throughout.                                                                                | DPIA covering the integration specifically, lawful basis recorded, explicit consent for the Forth route captured in `clinical_consent_records`.                            |
+| Portability and exit                               | Unknown.                                                                                                         | Contractual right to bulk export of all results and source documents, in a machine-readable form, at any time and on termination, at no cost. Non-negotiable.              |
+| API availability, rate limits, SLA                 | UNKNOWN.                                                                                                         | Establish before design. Assume nothing.                                                                                                                                   |
+| Do we keep source documents and history?           | UNKNOWN.                                                                                                         | Contractual requirement that we receive and may retain the original laboratory document for every result. If we cannot, the integration fails rule 4 and does not proceed. |
+| Are HealthCoach outputs exportable and auditable?  | UNKNOWN.                                                                                                         | Require export with the component breakdown and algorithm version. Without that, treat scores as unusable for our purposes.                                                |
 
 ---
 

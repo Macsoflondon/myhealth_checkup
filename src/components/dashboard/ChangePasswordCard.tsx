@@ -6,9 +6,21 @@ import { toast } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { KeyRound, Loader2, AlertCircle, CheckCircle, Mail } from "lucide-react";
+import {
+  KeyRound,
+  Loader2,
+  AlertCircle,
+  CheckCircle,
+  Mail,
+} from "lucide-react";
 import { PasswordStrengthIndicator } from "@/components/auth/PasswordStrengthIndicator";
 import { validatePassword } from "@/lib/passwordValidation";
 import { MfaStepUp } from "@/components/auth/MfaStepUp";
@@ -16,7 +28,11 @@ import { MfaStepUp } from "@/components/auth/MfaStepUp";
 const isAalError = (message: string | undefined) => {
   if (!message) return false;
   const m = message.toLowerCase();
-  return m.includes("aal2") || m.includes("insufficient_aal") || m.includes("assurance");
+  return (
+    m.includes("aal2") ||
+    m.includes("insufficient_aal") ||
+    m.includes("assurance")
+  );
 };
 
 const ChangePasswordCard = () => {
@@ -32,7 +48,9 @@ const ChangePasswordCard = () => {
   const strength = validatePassword(newPassword);
 
   const attemptUpdate = async () => {
-    const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
+    const { error: updateError } = await supabase.auth.updateUser({
+      password: newPassword,
+    });
     if (updateError) {
       if (isAalError(updateError.message)) {
         setStepUpOpen(true);
@@ -69,7 +87,9 @@ const ChangePasswordCard = () => {
       return;
     }
     if (newPassword === currentPassword) {
-      setError("Your new password must be different from your current password.");
+      setError(
+        "Your new password must be different from your current password.",
+      );
       return;
     }
 
@@ -109,9 +129,12 @@ const ChangePasswordCard = () => {
     if (!user?.email) return;
     setIsSendingReset(true);
     try {
-      const { error: resetError } = await supabase.auth.resetPasswordForEmail(user.email, {
-        redirectTo: `${window.location.origin}/reset-password`,
-      });
+      const { error: resetError } = await supabase.auth.resetPasswordForEmail(
+        user.email,
+        {
+          redirectTo: `${window.location.origin}/reset-password`,
+        },
+      );
       if (resetError) {
         toast.error(resetError.message || "Failed to send reset email.");
         return;
@@ -130,7 +153,8 @@ const ChangePasswordCard = () => {
           Change Password
         </CardTitle>
         <CardDescription>
-          Update your account password. You will remain signed in on this device.
+          Update your account password. You will remain signed in on this
+          device.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -150,7 +174,10 @@ const ChangePasswordCard = () => {
                   id="currentPassword"
                   type="password"
                   value={currentPassword}
-                  onChange={(e) => { setCurrentPassword(e.target.value); setError(""); }}
+                  onChange={(e) => {
+                    setCurrentPassword(e.target.value);
+                    setError("");
+                  }}
                   autoComplete="current-password"
                   disabled={isSaving}
                   required
@@ -159,19 +186,30 @@ const ChangePasswordCard = () => {
 
               <div className="space-y-2">
                 <Label htmlFor="newPassword">
-                  New password <span className="text-xs text-muted-foreground">(minimum 8 characters)</span>
+                  New password{" "}
+                  <span className="text-xs text-muted-foreground">
+                    (minimum 8 characters)
+                  </span>
                 </Label>
                 <Input
                   id="newPassword"
                   type="password"
                   value={newPassword}
-                  onChange={(e) => { setNewPassword(e.target.value); setError(""); }}
+                  onChange={(e) => {
+                    setNewPassword(e.target.value);
+                    setError("");
+                  }}
                   autoComplete="new-password"
                   disabled={isSaving}
                   minLength={8}
                   required
                 />
-                {newPassword && <PasswordStrengthIndicator strength={strength} password={newPassword} />}
+                {newPassword && (
+                  <PasswordStrengthIndicator
+                    strength={strength}
+                    password={newPassword}
+                  />
+                )}
               </div>
 
               <div className="space-y-2">
@@ -180,7 +218,10 @@ const ChangePasswordCard = () => {
                   id="confirmNewPassword"
                   type="password"
                   value={confirmPassword}
-                  onChange={(e) => { setConfirmPassword(e.target.value); setError(""); }}
+                  onChange={(e) => {
+                    setConfirmPassword(e.target.value);
+                    setError("");
+                  }}
                   autoComplete="new-password"
                   disabled={isSaving}
                   minLength={8}
@@ -197,12 +238,18 @@ const ChangePasswordCard = () => {
               {error && (
                 <Alert variant="destructive" className="py-2">
                   <AlertCircle className="h-4 w-4" />
-                  <AlertDescription className="text-sm">{error}</AlertDescription>
+                  <AlertDescription className="text-sm">
+                    {error}
+                  </AlertDescription>
                 </Alert>
               )}
 
               <div className="pt-2">
-                <Button type="submit" disabled={isSaving} data-testid="update-password-btn">
+                <Button
+                  type="submit"
+                  disabled={isSaving}
+                  data-testid="update-password-btn"
+                >
                   {isSaving ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -219,9 +266,13 @@ const ChangePasswordCard = () => {
             </form>
 
             <div className="mt-6 pt-6 border-t">
-              <h4 className="text-sm font-semibold mb-1">Forgotten your current password?</h4>
+              <h4 className="text-sm font-semibold mb-1">
+                Forgotten your current password?
+              </h4>
               <p className="text-sm text-muted-foreground mb-3">
-                We can email a secure link to {user?.email ?? "your account email"} so you can set a new password without entering your current one.
+                We can email a secure link to{" "}
+                {user?.email ?? "your account email"} so you can set a new
+                password without entering your current one.
               </p>
               <Button
                 type="button"

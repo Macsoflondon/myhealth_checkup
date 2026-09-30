@@ -10,13 +10,13 @@ export type {
   UserProfile,
   Order,
   Favorite,
-} from './entities';
+} from "./entities";
 
 export type {
   ApiResponse,
   PaginationParams,
   FilterParams,
-} from '../api/supabase/base';
+} from "../api/supabase/base";
 
 /**
  * Live test data from provider_tests table
