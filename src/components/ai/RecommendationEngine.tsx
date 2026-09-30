@@ -290,6 +290,12 @@ const RecommendationEngine = ({ surface = 'recommendations_page', resultsOnly = 
     });
 
     try {
+      if (!user) {
+        toast.error('Please sign in to get personalised recommendations.', {
+          action: { label: 'Sign in', onClick: () => { window.location.href = '/auth'; } },
+        });
+        return;
+      }
       const { data, error } = await supabase.functions.invoke('ai-human-context', {
         body: {
           query_text: symptoms,

@@ -199,6 +199,12 @@ const HiddenGapDetector = () => {
 
     try {
       const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        toast.error('Please sign in to run the gap analysis.', {
+          action: { label: 'Sign in', onClick: () => { window.location.href = '/auth'; } },
+        });
+        return;
+      }
 
       const { data, error } = await supabase.functions.invoke('hidden-gap-detector', {
         body: {

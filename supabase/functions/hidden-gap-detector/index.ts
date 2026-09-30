@@ -88,6 +88,14 @@ serve(async (req) => {
       }
     }
 
+    // Paid AI calls are restricted to signed-in users so anonymous callers cannot spend credits.
+    if (!verifiedUserId) {
+      return new Response(
+        JSON.stringify({ error: 'Please sign in to run the gap analysis.' }),
+        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     if (!age || typeof age !== 'number' || age < 18 || age > 120) {
       return new Response(
         JSON.stringify({ error: 'A valid age (18–120) is required' }),

@@ -553,6 +553,17 @@ export const TestFinderQuiz = () => {
       : `Path: ${pathString}`;
 
     try {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (!session) {
+        toast.error("Please sign in to see your personalised recommendations.", {
+          action: { label: "Sign in", onClick: () => { window.location.href = "/auth"; } },
+        });
+        setIsAnalysing(false);
+        setShowContextStep(true);
+        return;
+      }
       const { data, error } = await supabase.functions.invoke("ai-human-context", {
         body: {
           query_text: queryText,

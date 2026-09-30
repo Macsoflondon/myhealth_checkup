@@ -326,6 +326,10 @@ Deno.serve(async (req) => {
 
   const serviceClient = createClient<Database>(supabaseUrl, supabaseServiceKey);
   const userId = await getOptionalUserId(supabaseUrl, supabaseAnonKey, req);
+  // Paid AI calls are restricted to signed-in users so anonymous callers cannot spend credits.
+  if (!userId) {
+    return jsonResponse({ error: "Please sign in to get personalised recommendations." }, 401);
+  }
   const clientIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   const clientKey = userId ? `user:${userId}` : `ip:${clientIp}`;
 
