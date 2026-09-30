@@ -13,14 +13,30 @@ LANGUAGE plpgsql
 SECURITY DEFINER
 SET search_path = public
 AS $$
+DECLARE
+  v_tool text := left(coalesce(p_tool, 'unknown'), 100);
 BEGIN
   IF auth.uid() IS NULL THEN
+    RETURN;
+  END IF;
+  -- Only plain tool names are recorded; anything else is logged as 'unknown'.
+  IF p_tool IS NULL OR p_tool !~ '^[a-z_]{1,60}$' THEN
+    v_tool := 'unknown';
+  END IF;
+  -- One denied row per user and tool every 10 minutes, so callers cannot flood the log.
+  IF EXISTS (
+    SELECT 1 FROM public.admin_activity_log
+    WHERE admin_user_id = auth.uid()
+      AND action = 'mcp.denied'
+      AND resource_name = v_tool
+      AND created_at > now() - interval '10 minutes'
+  ) THEN
     RETURN;
   END IF;
   INSERT INTO public.admin_activity_log
     (admin_user_id, action, resource_type, resource_name, new_value, success, error_message)
   VALUES
-    (auth.uid(), 'mcp.denied', 'mcp_tool', left(coalesce(p_tool, 'unknown'), 100),
+    (auth.uid(), 'mcp.denied', 'mcp_tool', v_tool,
      jsonb_build_object('via', 'mcp'), false, 'Caller lacks admin role');
 END;
 $$;

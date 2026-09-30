@@ -711,3 +711,21 @@ describe("admin tools", () => {
     ).toBe(1);
   });
 });
+
+describe("migration: mcp_log_denied_tool_call", () => {
+  it("matches the hardened production version", async () => {
+    const { readFileSync } = await import("node:fs");
+    const sql = readFileSync(
+      "supabase/migrations/20261001090000_mcp_server_upgrade.sql",
+      "utf8",
+    );
+    const start = sql.indexOf("FUNCTION public.mcp_log_denied_tool_call");
+    const body = sql.slice(start, sql.indexOf("$$;", start));
+    expect(body).toContain("SECURITY DEFINER");
+    expect(body).toContain("'^[a-z_]{1,60}$'");
+    expect(body).toContain("v_tool := 'unknown'");
+    expect(body).toContain("interval '10 minutes'");
+    expect(body).toContain("IF auth.uid() IS NULL");
+    expect(sql).not.toContain("favorites_user_id_test_id_key");
+  });
+});
