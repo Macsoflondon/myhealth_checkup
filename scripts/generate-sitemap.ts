@@ -6,6 +6,15 @@
 import { writeFileSync } from "fs";
 import { resolve } from "path";
 
+// Hosted builds (e.g. Lovable publish) run this via `npx tsx`, which does not
+// read .env, so the publishable key was missing and every provider/test page
+// was dropped from the sitemap. Load .env here; real env vars still win.
+try {
+  process.loadEnvFile(resolve(process.cwd(), ".env"));
+} catch {
+  // no .env file (CI sets the variables directly)
+}
+
 const BASE_URL = "https://myhealthcheckup.co.uk";
 
 // Any path starting with one of these is excluded from the sitemap.
@@ -163,12 +172,6 @@ const rawEntries: SitemapEntry[] = [
     priority: "0.8",
   },
 
-  {
-    path: "/tests/fertility",
-    lastmod: "2026-04-09",
-    changefreq: "weekly",
-    priority: "0.8",
-  },
   {
     path: "/tests/general-health",
     lastmod: "2026-04-09",
@@ -519,18 +522,6 @@ const rawEntries: SitemapEntry[] = [
     priority: "0.6",
   },
   {
-    path: "/mens-health",
-    lastmod: "2026-04-20",
-    changefreq: "monthly",
-    priority: "0.7",
-  },
-  {
-    path: "/womens-health",
-    lastmod: "2026-04-20",
-    changefreq: "monthly",
-    priority: "0.7",
-  },
-  {
     path: "/conditions",
     lastmod: "2026-04-20",
     changefreq: "monthly",
@@ -547,30 +538,6 @@ const rawEntries: SitemapEntry[] = [
     lastmod: "2026-04-20",
     changefreq: "monthly",
     priority: "0.6",
-  },
-  {
-    path: "/providers/randox",
-    lastmod: "2026-04-20",
-    changefreq: "weekly",
-    priority: "0.7",
-  },
-  {
-    path: "/providers/lola-health",
-    lastmod: "2026-04-20",
-    changefreq: "weekly",
-    priority: "0.7",
-  },
-  {
-    path: "/providers/london-medical-laboratory",
-    lastmod: "2026-04-20",
-    changefreq: "weekly",
-    priority: "0.7",
-  },
-  {
-    path: "/providers/goodbody-clinic",
-    lastmod: "2026-04-20",
-    changefreq: "weekly",
-    priority: "0.7",
   },
   {
     path: "/guides",
@@ -651,29 +618,12 @@ const rawEntries: SitemapEntry[] = [
     priority: "0.8",
   },
   // Provider landing pages
-  { path: "/providers", changefreq: "weekly", priority: "0.8" },
   { path: "/clinilabs", changefreq: "weekly", priority: "0.7" },
-  { path: "/providers/clinilabs", changefreq: "weekly", priority: "0.7" },
   { path: "/london-health-company", changefreq: "weekly", priority: "0.7" },
-  {
-    path: "/providers/london-health-company",
-    changefreq: "weekly",
-    priority: "0.7",
-  },
   { path: "/london-medical-laboratory", changefreq: "weekly", priority: "0.7" },
   { path: "/medical-diagnosis", changefreq: "weekly", priority: "0.7" },
-  {
-    path: "/providers/medical-diagnosis",
-    changefreq: "weekly",
-    priority: "0.7",
-  },
   // Public content / tools
-  { path: "/health-blog", changefreq: "weekly", priority: "0.7" },
-  { path: "/most-popular-tests", changefreq: "weekly", priority: "0.7" },
-  { path: "/find-test/compare", changefreq: "weekly", priority: "0.6" },
-  { path: "/find-test/recommendations", changefreq: "weekly", priority: "0.6" },
   { path: "/trust", changefreq: "monthly", priority: "0.6" },
-  { path: "/security", changefreq: "monthly", priority: "0.6" },
 ];
 
 // ---- Dynamic routes (providers + test detail pages) -----------------------
