@@ -22,12 +22,18 @@ var search_tests_default = defineTool({
   description: "Search the myhealth checkup catalogue of private UK diagnostic tests. Filter by keyword, category, provider, and price. Returns test name, provider, price (GBP), turnaround, biomarker count, and URL.",
   inputSchema: {
     query: z.string().trim().optional().describe("Keyword to match against test name or description."),
-    category: z.string().trim().optional().describe("Category slug (e.g. 'womens-health', 'cancer-screening', 'hormones')."),
+    category: z.string().trim().optional().describe(
+      "Category slug (e.g. 'womens-health', 'cancer-screening', 'hormones')."
+    ),
     provider: z.string().trim().optional().describe("Provider name (e.g. 'Medichecks', 'Randox', 'Goodbody')."),
     max_price: z.number().positive().optional().describe("Maximum total expected cost in GBP."),
     limit: z.number().int().min(1).max(50).default(20)
   },
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
   handler: async ({ query, category, provider, max_price, limit }) => {
     let q = anonClient().from("unified_provider_tests").select(
       "id, test_name, provider_name, price, total_expected_cost, category_primary, biomarker_count, turnaround_days_text, sample_type, url"
@@ -38,7 +44,10 @@ var search_tests_default = defineTool({
     if (max_price != null) q = q.lte("total_expected_cost", max_price);
     const { data, error } = await q;
     if (error) {
-      return { content: [{ type: "text", text: `Error: ${error.message}` }], isError: true };
+      return {
+        content: [{ type: "text", text: `Error: ${error.message}` }],
+        isError: true
+      };
     }
     return {
       content: [{ type: "text", text: JSON.stringify(data ?? [], null, 2) }],
@@ -65,11 +74,20 @@ var get_test_default = defineTool2({
   inputSchema: {
     id: z2.string().uuid().describe("Test UUID returned by search_tests.")
   },
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
   handler: async ({ id }) => {
     const { data, error } = await anonClient2().from("unified_provider_tests").select("*").eq("id", id).maybeSingle();
-    if (error) return { content: [{ type: "text", text: `Error: ${error.message}` }], isError: true };
-    if (!data) return { content: [{ type: "text", text: "Not found" }], isError: true };
+    if (error)
+      return {
+        content: [{ type: "text", text: `Error: ${error.message}` }],
+        isError: true
+      };
+    if (!data)
+      return { content: [{ type: "text", text: "Not found" }], isError: true };
     return {
       content: [{ type: "text", text: JSON.stringify(data, null, 2) }],
       structuredContent: { test: data }
@@ -92,18 +110,33 @@ var list_providers_default = defineTool3({
   title: "List providers",
   description: "List all UKAS-accredited, CQC-regulated private diagnostic test providers compared on myhealth checkup, with the number of active tests each has.",
   inputSchema: {},
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
   handler: async () => {
     const { data, error } = await anonClient3().from("unified_provider_tests").select("provider_id, provider_name");
-    if (error) return { content: [{ type: "text", text: `Error: ${error.message}` }], isError: true };
+    if (error)
+      return {
+        content: [{ type: "text", text: `Error: ${error.message}` }],
+        isError: true
+      };
     const counts = /* @__PURE__ */ new Map();
     for (const row of data ?? []) {
       const key = row.provider_id ?? row.provider_name ?? "unknown";
       const existing = counts.get(key);
       if (existing) existing.test_count += 1;
-      else counts.set(key, { provider_id: row.provider_id, provider_name: row.provider_name, test_count: 1 });
+      else
+        counts.set(key, {
+          provider_id: row.provider_id,
+          provider_name: row.provider_name,
+          test_count: 1
+        });
     }
-    const providers = [...counts.values()].sort((a, b) => b.test_count - a.test_count);
+    const providers = [...counts.values()].sort(
+      (a, b) => b.test_count - a.test_count
+    );
     return {
       content: [{ type: "text", text: JSON.stringify(providers, null, 2) }],
       structuredContent: { providers }
@@ -115,23 +148,38 @@ var list_providers_default = defineTool3({
 import { createClient as createClient4 } from "npm:@supabase/supabase-js@2.111.0";
 import { defineTool as defineTool4 } from "npm:@lovable.dev/mcp-js@0.26.3";
 function userClient(ctx) {
-  return createClient4(process.env.SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY, {
-    global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
-    auth: { persistSession: false, autoRefreshToken: false }
-  });
+  return createClient4(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_PUBLISHABLE_KEY,
+    {
+      global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
+      auth: { persistSession: false, autoRefreshToken: false }
+    }
+  );
 }
 var list_my_favourites_default = defineTool4({
   name: "list_my_favourites",
   title: "List my saved tests",
   description: "Return the diagnostic tests the signed-in user has saved to their favourites on myhealth checkup.",
   inputSchema: {},
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
   handler: async (_input, ctx) => {
     if (!ctx.isAuthenticated()) {
-      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+      return {
+        content: [{ type: "text", text: "Not authenticated" }],
+        isError: true
+      };
     }
     const { data, error } = await userClient(ctx).from("favorites").select("id, test_id, name, provider, category, price, created_at").order("created_at", { ascending: false });
-    if (error) return { content: [{ type: "text", text: `Error: ${error.message}` }], isError: true };
+    if (error)
+      return {
+        content: [{ type: "text", text: `Error: ${error.message}` }],
+        isError: true
+      };
     return {
       content: [{ type: "text", text: JSON.stringify(data ?? [], null, 2) }],
       structuredContent: { favourites: data ?? [] }
@@ -144,10 +192,14 @@ import { createClient as createClient5 } from "npm:@supabase/supabase-js@2.111.0
 import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.26.3";
 import { z as z3 } from "npm:zod@^3.24.2";
 function userClient2(ctx) {
-  return createClient5(process.env.SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY, {
-    global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
-    auth: { persistSession: false, autoRefreshToken: false }
-  });
+  return createClient5(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_PUBLISHABLE_KEY,
+    {
+      global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
+      auth: { persistSession: false, autoRefreshToken: false }
+    }
+  );
 }
 var save_favourite_default = defineTool5({
   name: "save_favourite",
@@ -160,13 +212,32 @@ var save_favourite_default = defineTool5({
     category: z3.string().optional(),
     price: z3.number().nonnegative().optional()
   },
-  annotations: { readOnlyHint: false, destructiveHint: false, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: false,
+    destructiveHint: false,
+    idempotentHint: true,
+    openWorldHint: false
+  },
   handler: async ({ test_id, name, provider, category, price }, ctx) => {
     if (!ctx.isAuthenticated()) {
-      return { content: [{ type: "text", text: "Not authenticated" }], isError: true };
+      return {
+        content: [{ type: "text", text: "Not authenticated" }],
+        isError: true
+      };
     }
-    const { data, error } = await userClient2(ctx).from("favorites").insert({ user_id: ctx.getUserId(), test_id, name, provider, category, price }).select().maybeSingle();
-    if (error) return { content: [{ type: "text", text: `Error: ${error.message}` }], isError: true };
+    const { data, error } = await userClient2(ctx).from("favorites").insert({
+      user_id: ctx.getUserId(),
+      test_id,
+      name,
+      provider,
+      category,
+      price
+    }).select().maybeSingle();
+    if (error)
+      return {
+        content: [{ type: "text", text: `Error: ${error.message}` }],
+        isError: true
+      };
     return {
       content: [{ type: "text", text: `Saved "${name}" to favourites.` }],
       structuredContent: { favourite: data }
@@ -181,21 +252,30 @@ import { z as z4 } from "npm:zod@^3.24.2";
 // src/lib/mcp/admin-guard.ts
 import { createClient as createClient6 } from "npm:@supabase/supabase-js@2.111.0";
 var DENIED = {
-  content: [{ type: "text", text: "You do not have permission to use this tool." }],
+  content: [
+    { type: "text", text: "You do not have permission to use this tool." }
+  ],
   isError: true
 };
 function callerClient(ctx) {
-  return createClient6(process.env.SUPABASE_URL, process.env.SUPABASE_PUBLISHABLE_KEY, {
-    global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
-    auth: { persistSession: false, autoRefreshToken: false }
-  });
+  return createClient6(
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_PUBLISHABLE_KEY,
+    {
+      global: { headers: { Authorization: `Bearer ${ctx.getToken()}` } },
+      auth: { persistSession: false, autoRefreshToken: false }
+    }
+  );
 }
 async function requireAdmin(ctx) {
   if (!ctx.isAuthenticated()) return null;
   const client = callerClient(ctx);
   const userId = ctx.getUserId();
   if (!userId) return null;
-  const { data, error } = await client.rpc("has_role", { _user_id: userId, _role: "admin" });
+  const { data, error } = await client.rpc("has_role", {
+    _user_id: userId,
+    _role: "admin"
+  });
   if (error || data !== true) return null;
   return { client, userId };
 }
@@ -219,7 +299,10 @@ function ok(payload) {
   };
 }
 function fail(message) {
-  return { content: [{ type: "text", text: `Error: ${message}` }], isError: true };
+  return {
+    content: [{ type: "text", text: `Error: ${message}` }],
+    isError: true
+  };
 }
 
 // src/lib/mcp/tools/get-platform-health.ts
@@ -230,7 +313,11 @@ var get_platform_health_default = defineTool6({
   inputSchema: {
     hours: z4.number().int().min(1).max(720).default(72).describe("Lookback window in hours.")
   },
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
   handler: async (args, ctx) => {
     const session = await requireAdmin(ctx);
     if (!session) return DENIED;
@@ -240,18 +327,31 @@ var get_platform_health_default = defineTool6({
       client.from("scrape_runs").select(
         "provider_id, scraper_function, started_at, finished_at, status, tests_seen, tests_new, tests_updated, tests_deactivated, errors"
       ).gte("started_at", since).order("started_at", { ascending: false }).limit(500),
-      client.from("scraping_jobs").select("provider_id, status, last_scraped, next_scrape, error_message, expected_min_tests, last_test_count"),
-      client.from("scrape_run_log").select("started_at, completed_at, status, providers_run, tests_scraped, tests_promoted, verification_failures, trigger_source").gte("started_at", since).order("started_at", { ascending: false }).limit(50),
-      client.from("cron_run_log").select("job_name, started_at, finished_at, status, duration_ms, rows_affected, error_message").gte("started_at", since).order("started_at", { ascending: false }).limit(200)
+      client.from("scraping_jobs").select(
+        "provider_id, status, last_scraped, next_scrape, error_message, expected_min_tests, last_test_count"
+      ),
+      client.from("scrape_run_log").select(
+        "started_at, completed_at, status, providers_run, tests_scraped, tests_promoted, verification_failures, trigger_source"
+      ).gte("started_at", since).order("started_at", { ascending: false }).limit(50),
+      client.from("cron_run_log").select(
+        "job_name, started_at, finished_at, status, duration_ms, rows_affected, error_message"
+      ).gte("started_at", since).order("started_at", { ascending: false }).limit(200)
     ]);
     const firstError = runs.error ?? jobs.error ?? runLog.error ?? cron.error;
     if (firstError) return fail(firstError.message);
     const perProvider = /* @__PURE__ */ new Map();
     for (const row of runs.data ?? []) {
       const key = row.provider_id ?? "unknown";
-      const entry = perProvider.get(key) ?? { provider_id: key, last_run_at: null, last_status: null, success: 0, failure: 0 };
+      const entry = perProvider.get(key) ?? {
+        provider_id: key,
+        last_run_at: null,
+        last_status: null,
+        success: 0,
+        failure: 0
+      };
       const status = (row.status ?? "").toLowerCase();
-      if (status === "success" || status === "completed" || status === "ok") entry.success += 1;
+      if (status === "success" || status === "completed" || status === "ok")
+        entry.success += 1;
       else if (status) entry.failure += 1;
       if (!entry.last_run_at || (row.started_at ?? "") > entry.last_run_at) {
         entry.last_run_at = row.started_at;
@@ -272,7 +372,9 @@ var get_platform_health_default = defineTool6({
     await logAdminToolCall(session, "get_platform_health", args);
     return ok({
       window_hours: args.hours,
-      providers: [...perProvider.values()].sort((a, b) => (b.last_run_at ?? "").localeCompare(a.last_run_at ?? "")),
+      providers: [...perProvider.values()].sort(
+        (a, b) => (b.last_run_at ?? "").localeCompare(a.last_run_at ?? "")
+      ),
       overdue_jobs: overdue,
       failing_jobs: failingJobs,
       recent_orchestrator_runs: runLog.data ?? [],
@@ -294,7 +396,11 @@ var list_scraper_alerts_default = defineTool7({
     severity: z5.string().trim().optional().describe("Filter to a single severity, e.g. 'critical'."),
     limit: z5.number().int().min(1).max(200).default(50)
   },
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
   handler: async (args, ctx) => {
     const session = await requireAdmin(ctx);
     if (!session) return DENIED;
@@ -405,17 +511,26 @@ var get_price_movements_default = defineTool9({
     provider: z7.string().trim().optional().describe("Restrict to one provider id."),
     limit: z7.number().int().min(1).max(200).default(50)
   },
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
   handler: async (args, ctx) => {
     const session = await requireAdmin(ctx);
     if (!session) return DENIED;
     const { client } = session;
     const since = new Date(Date.now() - args.days * 864e5).toISOString();
-    let historyQuery = client.from("provider_test_history").select("provider_test_id, provider_id, test_name, price, was_price, total_expected_cost, snapshot_at").gte("snapshot_at", since).order("snapshot_at", { ascending: false }).limit(5e3);
-    if (args.provider) historyQuery = historyQuery.eq("provider_id", args.provider);
+    let historyQuery = client.from("provider_test_history").select(
+      "provider_test_id, provider_id, test_name, price, was_price, total_expected_cost, snapshot_at"
+    ).gte("snapshot_at", since).order("snapshot_at", { ascending: false }).limit(5e3);
+    if (args.provider)
+      historyQuery = historyQuery.eq("provider_id", args.provider);
     const [history, priceLog] = await Promise.all([
       historyQuery,
-      client.from("price_history").select("test_id, provider, old_price, new_price, change_percentage, availability_changed, changed_at").gte("changed_at", since).order("changed_at", { ascending: false }).limit(args.limit)
+      client.from("price_history").select(
+        "test_id, provider, old_price, new_price, change_percentage, availability_changed, changed_at"
+      ).gte("changed_at", since).order("changed_at", { ascending: false }).limit(args.limit)
     ]);
     const firstError = history.error ?? priceLog.error;
     if (firstError) return fail(firstError.message);
@@ -424,7 +539,8 @@ var get_price_movements_default = defineTool9({
       const key = row.provider_test_id ?? `${row.provider_id}:${row.test_name}`;
       const existing = byTest.get(key);
       if (!existing) byTest.set(key, { newest: row, oldest: row });
-      else if ((row.snapshot_at ?? "") < (existing.oldest.snapshot_at ?? "")) existing.oldest = row;
+      else if ((row.snapshot_at ?? "") < (existing.oldest.snapshot_at ?? ""))
+        existing.oldest = row;
     }
     const movements = [...byTest.values()].map(({ newest, oldest }) => {
       const from = oldest.price ?? oldest.total_expected_cost;
@@ -461,15 +577,23 @@ var get_security_posture_default = defineTool10({
   inputSchema: {
     days: z8.number().int().min(1).max(90).default(7).describe("Lookback window in days for CSP reports.")
   },
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
   handler: async (args, ctx) => {
     const session = await requireAdmin(ctx);
     if (!session) return DENIED;
     const { client } = session;
     const since = new Date(Date.now() - args.days * 864e5).toISOString();
     const [snapshot, incidents, csp] = await Promise.all([
-      client.from("security_scan_snapshots").select("id, scanned_at, total_findings, error_count, warn_count, has_diff, added_findings, removed_findings, modified_findings, acknowledged_at").order("scanned_at", { ascending: false }).limit(1).maybeSingle(),
-      client.from("soc_incidents").select("id, cluster_key, source, entity, severity, status, title, signal_count, first_seen_at, last_seen_at").neq("status", "resolved").order("last_seen_at", { ascending: false }).limit(100),
+      client.from("security_scan_snapshots").select(
+        "id, scanned_at, total_findings, error_count, warn_count, has_diff, added_findings, removed_findings, modified_findings, acknowledged_at"
+      ).order("scanned_at", { ascending: false }).limit(1).maybeSingle(),
+      client.from("soc_incidents").select(
+        "id, cluster_key, source, entity, severity, status, title, signal_count, first_seen_at, last_seen_at"
+      ).neq("status", "resolved").order("last_seen_at", { ascending: false }).limit(100),
       client.from("csp_reports").select("violated_directive, blocked_uri, received_at").gte("received_at", since).limit(2e3)
     ]);
     const firstError = snapshot.error ?? incidents.error ?? csp.error;
@@ -515,7 +639,10 @@ import { defineTool as defineTool11 } from "npm:@lovable.dev/mcp-js@0.26.3";
 import { z as z9 } from "npm:zod@^3.24.2";
 function percentile(sorted, p) {
   if (sorted.length === 0) return null;
-  const index = Math.min(sorted.length - 1, Math.floor(p / 100 * sorted.length));
+  const index = Math.min(
+    sorted.length - 1,
+    Math.floor(p / 100 * sorted.length)
+  );
   return Number(sorted[index].toFixed(3));
 }
 var get_performance_summary_default = defineTool11({
@@ -526,7 +653,11 @@ var get_performance_summary_default = defineTool11({
     days: z9.number().int().min(1).max(90).default(7).describe("Lookback window in days."),
     limit: z9.number().int().min(1).max(100).default(20).describe("Number of routes to return.")
   },
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
   handler: async (args, ctx) => {
     const session = await requireAdmin(ctx);
     if (!session) return DENIED;
@@ -547,19 +678,31 @@ var get_performance_summary_default = defineTool11({
     }
     const summarise = (values) => {
       const sorted = [...values].sort((a, b) => a - b);
-      return { samples: sorted.length, p50: percentile(sorted, 50), p75: percentile(sorted, 75), p95: percentile(sorted, 95) };
+      return {
+        samples: sorted.length,
+        p50: percentile(sorted, 50),
+        p75: percentile(sorted, 75),
+        p95: percentile(sorted, 95)
+      };
     };
     const byRoute = [...buckets.entries()].map(([route, metrics]) => ({
       route,
       samples: [...metrics.values()].reduce((n, v) => n + v.length, 0),
-      metrics: Object.fromEntries([...metrics.entries()].map(([m, v]) => [m, summarise(v)]))
+      metrics: Object.fromEntries(
+        [...metrics.entries()].map(([m, v]) => [m, summarise(v)])
+      )
     })).sort((a, b) => b.samples - a.samples).slice(0, args.limit);
-    const worstBy = (metric) => [...buckets.entries()].map(([route, metrics]) => ({ route, ...summarise(metrics.get(metric) ?? []) })).filter((r) => r.samples >= 5 && r.p75 != null).sort((a, b) => (b.p75 ?? 0) - (a.p75 ?? 0)).slice(0, 5);
+    const worstBy = (metric) => [...buckets.entries()].map(([route, metrics]) => ({
+      route,
+      ...summarise(metrics.get(metric) ?? [])
+    })).filter((r) => r.samples >= 5 && r.p75 != null).sort((a, b) => (b.p75 ?? 0) - (a.p75 ?? 0)).slice(0, 5);
     await logAdminToolCall(session, "get_performance_summary", args);
     return ok({
       window_days: args.days,
       total_samples: rows.length,
-      overall: Object.fromEntries([...overall.entries()].map(([m, v]) => [m, summarise(v)])),
+      overall: Object.fromEntries(
+        [...overall.entries()].map(([m, v]) => [m, summarise(v)])
+      ),
       by_route: byRoute,
       worst_lcp: worstBy("LCP"),
       worst_cls: worstBy("CLS"),
@@ -575,7 +718,11 @@ var get_business_summary_default = defineTool12({
   title: "Get business summary",
   description: "Aggregate commercial totals: order count and value, newsletter subscriber count, and total registered users as a bare number. Aggregates only \u2014 never individual records, names or email addresses.",
   inputSchema: {},
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
   handler: async (_input, ctx) => {
     const session = await requireAdmin(ctx);
     if (!session) return DENIED;
@@ -604,7 +751,10 @@ var get_business_summary_default = defineTool12({
       orders_total_value_gbp: Number(totalValue.toFixed(2)),
       average_order_value_gbp: rows.length ? Number((totalValue / rows.length).toFixed(2)) : 0,
       orders_by_status: Object.fromEntries(
-        [...byStatus.entries()].map(([k, v]) => [k, { orders: v.orders, value_gbp: Number(v.value.toFixed(2)) }])
+        [...byStatus.entries()].map(([k, v]) => [
+          k,
+          { orders: v.orders, value_gbp: Number(v.value.toFixed(2)) }
+        ])
       ),
       newsletter_subscribers_total: subscribers.count ?? 0,
       newsletter_subscribers_active: activeSubscribers.count ?? 0,
@@ -624,16 +774,24 @@ var get_admin_audit_trail_default = defineTool13({
     days: z10.number().int().min(1).max(180).default(14).describe("Lookback window in days."),
     limit: z10.number().int().min(1).max(200).default(50).describe("Maximum entries per log.")
   },
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
   handler: async (args, ctx) => {
     const session = await requireAdmin(ctx);
     if (!session) return DENIED;
     const { client } = session;
     const since = new Date(Date.now() - args.days * 864e5).toISOString();
     const [adminLog, roleLog, auditLog] = await Promise.all([
-      client.from("admin_activity_log").select("id, admin_user_id, action, resource_type, resource_id, success, error_message, created_at").gte("created_at", since).order("created_at", { ascending: false }).limit(args.limit),
+      client.from("admin_activity_log").select(
+        "id, admin_user_id, action, resource_type, resource_id, success, error_message, created_at"
+      ).gte("created_at", since).order("created_at", { ascending: false }).limit(args.limit),
       client.from("role_audit_log").select("id, actor_id, target_user_id, role, action, created_at").gte("created_at", since).order("created_at", { ascending: false }).limit(args.limit),
-      client.from("audit_logs").select("id, user_id, action, table_name, record_id, reason_code, purpose, data_classification, created_at").gte("created_at", since).order("created_at", { ascending: false }).limit(args.limit)
+      client.from("audit_logs").select(
+        "id, user_id, action, table_name, record_id, reason_code, purpose, data_classification, created_at"
+      ).gte("created_at", since).order("created_at", { ascending: false }).limit(args.limit)
     ]);
     const firstError = adminLog.error ?? roleLog.error ?? auditLog.error;
     if (firstError) return fail(firstError.message);

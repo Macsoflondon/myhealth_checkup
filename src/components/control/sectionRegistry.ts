@@ -56,7 +56,8 @@ export const CONTROL_SECTIONS: ControlSection[] = [
     slug: "crawls",
     title: "Crawl & Scrape Centre",
     short: "Crawls",
-    description: "All provider crawlers \u2014 status, history & manual controls.",
+    description:
+      "All provider crawlers \u2014 status, history & manual controls.",
     icon: Radar,
     status: "live",
     component: lazy(() => import("./sections/CrawlsSection")),
@@ -110,7 +111,8 @@ export const CONTROL_SECTIONS: ControlSection[] = [
     slug: "soc-watch",
     title: "SOC Watch",
     short: "SOC Watch",
-    description: "Read-only security operations monitoring and signal correlation.",
+    description:
+      "Read-only security operations monitoring and signal correlation.",
     icon: Siren,
     status: "live",
     component: lazy(() => import("./sections/SocWatchSection")),

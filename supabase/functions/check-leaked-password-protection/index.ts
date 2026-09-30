@@ -71,8 +71,11 @@ Deno.serve(async (req) => {
     const probePassword = "Password123!"; // appears in HIBP breach lists
 
     const probeClient = createClient(SUPABASE_URL, ANON_KEY);
-    const { data: signUpData, error: signUpErr } = await probeClient.auth
-      .signUp({ email: probeEmail, password: probePassword });
+    const { data: signUpData, error: signUpErr } =
+      await probeClient.auth.signUp({
+        email: probeEmail,
+        password: probePassword,
+      });
 
     let result: ProbeResult;
 

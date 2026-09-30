@@ -10,7 +10,8 @@ import { getErrorMessage } from "../_shared/errors.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
 interface NormalizeBody {
@@ -47,25 +48,41 @@ function decodeHtmlEntities(s: string): string {
  * a tiebreaker. This avoids broad panels being dragged into a narrow category
  * just because the description lists liver/kidney markers alongside others.
  */
-function determineCategory(testName: string, description: string | null): string {
+function determineCategory(
+  testName: string,
+  description: string | null,
+): string {
   const name = (testName ?? "").toLowerCase();
   const desc = (description ?? "").toLowerCase();
 
   // Name-driven matches (high confidence)
-  if (/cancer|tumour|psa|ca[\s-]?125|cea|colorectal|fit\s*test/.test(name)) return "Cancer Screening";
-  if (/heart|cardio|cholesterol|lipid|cardiac|hdl|ldl|triglyceride|apo[ab]/.test(name)) return "Heart Health";
+  if (/cancer|tumour|psa|ca[\s-]?125|cea|colorectal|fit\s*test/.test(name))
+    return "Cancer Screening";
+  if (
+    /heart|cardio|cholesterol|lipid|cardiac|hdl|ldl|triglyceride|apo[ab]/.test(
+      name,
+    )
+  )
+    return "Heart Health";
   if (/diabetes|glucose|hba1c|insulin\b/.test(name)) return "Diabetes";
   if (/thyroid|tsh|\bt3\b|\bt4\b/.test(name)) return "Thyroid";
   if (/fertility|amh|ovarian/.test(name)) return "Fertility";
-  if (/menopause|female|women|pcos|prolactin|oestrogen|estradiol/.test(name)) return "Women's Health";
-  if (/testosterone|prostate|men'?s|male hormone/.test(name)) return "Men's Health";
-  if (/\bsti\b|\bstd\b|sexual|hepatitis|\bhiv\b|chlamydia|gonorrh/.test(name)) return "Sexual Health";
+  if (/menopause|female|women|pcos|prolactin|oestrogen|estradiol/.test(name))
+    return "Women's Health";
+  if (/testosterone|prostate|men'?s|male hormone/.test(name))
+    return "Men's Health";
+  if (/\bsti\b|\bstd\b|sexual|hepatitis|\bhiv\b|chlamydia|gonorrh/.test(name))
+    return "Sexual Health";
   if (/allergy|intolerance|igg|ige/.test(name)) return "Allergy";
-  if (/sport|fitness|performance|active\b/.test(name)) return "Sports & Fitness";
-  if (/vitamin|mineral|\bb12\b|folate|\bd3\b/.test(name)) return "Vitamins & Minerals";
+  if (/sport|fitness|performance|active\b/.test(name))
+    return "Sports & Fitness";
+  if (/vitamin|mineral|\bb12\b|folate|\bd3\b/.test(name))
+    return "Vitamins & Minerals";
   if (/iron|ferritin|anaemia|anemia/.test(name)) return "Iron & Anaemia";
-  if (/liver|hepatic|alt\b|ast\b|ggt\b|bilirubin|albumin|globulin/.test(name)) return "Liver Function";
-  if (/kidney|renal|urea|creatinine|egfr|uric acid|gout/.test(name)) return "Kidney Function";
+  if (/liver|hepatic|alt\b|ast\b|ggt\b|bilirubin|albumin|globulin/.test(name))
+    return "Liver Function";
+  if (/kidney|renal|urea|creatinine|egfr|uric acid|gout/.test(name))
+    return "Kidney Function";
   if (/hormone|cortisol|dhea/.test(name)) return "Hormones";
 
   // Fallback: description hints (lower confidence)
@@ -78,7 +95,8 @@ function determineCategory(testName: string, description: string | null): string
 }
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  if (req.method === "OPTIONS")
+    return new Response(null, { headers: corsHeaders });
 
   const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
@@ -90,31 +108,36 @@ serve(async (req) => {
   if (!isServiceRole) {
     if (!authHeader || !supabaseUrl || !anonKey) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
     const userClient = createClient(supabaseUrl, anonKey, {
       global: { headers: { Authorization: authHeader } },
     });
-    const { data: { user } } = await userClient.auth.getUser();
+    const {
+      data: { user },
+    } = await userClient.auth.getUser();
     if (!user) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
     const { data: isAdmin } = await userClient.rpc("has_role", {
-      _user_id: user.id, _role: "admin",
+      _user_id: user.id,
+      _role: "admin",
     });
     if (!isAdmin) {
       return new Response(JSON.stringify({ error: "Admin only" }), {
-        status: 403, headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 403,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
   }
 
-  const body: NormalizeBody = req.method === "POST"
-    ? await req.json().catch(() => ({}))
-    : {};
+  const body: NormalizeBody =
+    req.method === "POST" ? await req.json().catch(() => ({})) : {};
   const dryRun = Boolean(body.dryRun);
 
   const supabase = createClient(supabaseUrl, serviceKey);
@@ -139,8 +162,15 @@ serve(async (req) => {
       from += PAGE;
     }
 
-    const changes: Array<{ id: string; provider_id: string; from: string; to: string; test_name: string }> = [];
-    const updates: Array<{ id: string; category: string; test_name: string }> = [];
+    const changes: Array<{
+      id: string;
+      provider_id: string;
+      from: string;
+      to: string;
+      test_name: string;
+    }> = [];
+    const updates: Array<{ id: string; category: string; test_name: string }> =
+      [];
 
     for (const row of allRows) {
       const cleanName = decodeHtmlEntities(row.test_name ?? "").trim();
@@ -154,7 +184,11 @@ serve(async (req) => {
           to: newCategory,
           test_name: cleanName,
         });
-        updates.push({ id: row.id, category: newCategory, test_name: cleanName });
+        updates.push({
+          id: row.id,
+          category: newCategory,
+          test_name: cleanName,
+        });
       }
     }
 
@@ -164,7 +198,9 @@ serve(async (req) => {
       const key = `${c.from || "∅"} → ${c.to}`;
       shiftCounts.set(key, (shiftCounts.get(key) ?? 0) + 1);
     }
-    const shifts = Object.fromEntries([...shiftCounts.entries()].sort((a, b) => b[1] - a[1]));
+    const shifts = Object.fromEntries(
+      [...shiftCounts.entries()].sort((a, b) => b[1] - a[1]),
+    );
 
     if (dryRun) {
       return new Response(
@@ -175,7 +211,10 @@ serve(async (req) => {
           shifts,
           sample: changes.slice(0, 20),
         }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 },
+        {
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+          status: 200,
+        },
       );
     }
 
@@ -185,12 +224,18 @@ serve(async (req) => {
     for (let i = 0; i < updates.length; i += CHUNK) {
       const slice = updates.slice(i, i + CHUNK);
       // Per-row update so we only touch changed columns
-      await Promise.all(slice.map((u) =>
-        supabase
-          .from("provider_tests")
-          .update({ category: u.category, test_name: u.test_name, updated_at: new Date().toISOString() })
-          .eq("id", u.id)
-      ));
+      await Promise.all(
+        slice.map((u) =>
+          supabase
+            .from("provider_tests")
+            .update({
+              category: u.category,
+              test_name: u.test_name,
+              updated_at: new Date().toISOString(),
+            })
+            .eq("id", u.id),
+        ),
+      );
       applied += slice.length;
     }
 
@@ -202,13 +247,16 @@ serve(async (req) => {
         shifts,
         sample: changes.slice(0, 20),
       }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 200 },
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 200,
+      },
     );
   } catch (err) {
     console.error("[normalize-test-categories] error:", getErrorMessage(err));
-    return new Response(
-      JSON.stringify({ error: getErrorMessage(err) }),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" }, status: 500 },
-    );
+    return new Response(JSON.stringify({ error: getErrorMessage(err) }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 500,
+    });
   }
 });

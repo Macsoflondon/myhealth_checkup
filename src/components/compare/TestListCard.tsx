@@ -7,7 +7,10 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import type { CompareTestData } from "@/services/CompareService";
-import { buildProviderBookingUrl, externalLinkProps } from "@/utils/urlTracking";
+import {
+  buildProviderBookingUrl,
+  externalLinkProps,
+} from "@/utils/urlTracking";
 
 interface TestListCardProps {
   test: CompareTestData;
@@ -18,24 +21,24 @@ interface TestListCardProps {
 
 // Helper to generate test detail URL
 const getTestDetailUrl = (provider: string, testId: string): string => {
-  const providerSlug = provider.toLowerCase().replace(/\s+/g, '-');
+  const providerSlug = provider.toLowerCase().replace(/\s+/g, "-");
   return `/${providerSlug}/${testId}`;
 };
 
-export const TestListCard: React.FC<TestListCardProps> = ({ 
-  test, 
+export const TestListCard: React.FC<TestListCardProps> = ({
+  test,
   isSelected = false,
   onToggleSelect,
   showCompareCheckbox = true,
 }) => {
   const isOutOfStock = test.available === false;
-  
+
   const handleCompareClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     onToggleSelect?.(test);
   };
-  
+
   return (
     <Link
       to={getTestDetailUrl(test.provider, test.id)}
@@ -43,7 +46,7 @@ export const TestListCard: React.FC<TestListCardProps> = ({
         "block bg-card rounded-2xl p-6 border border-border relative",
         "hover:border-primary hover:shadow-lg transition-all duration-200",
         isOutOfStock && "opacity-60",
-        isSelected && "ring-2 ring-primary border-primary"
+        isSelected && "ring-2 ring-primary border-primary",
       )}
     >
       {/* Compare Checkbox */}
@@ -55,9 +58,9 @@ export const TestListCard: React.FC<TestListCardProps> = ({
             onClick={handleCompareClick}
             className={cn(
               "h-8 gap-1.5 text-xs font-medium transition-all",
-              isSelected 
-                ? "bg-primary text-primary-foreground hover:bg-primary/90" 
-                : "hover:border-primary hover:text-primary"
+              isSelected
+                ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                : "hover:border-primary hover:text-primary",
             )}
           >
             {isSelected ? (
@@ -74,7 +77,7 @@ export const TestListCard: React.FC<TestListCardProps> = ({
           </Button>
         </div>
       )}
-      
+
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 pr-24 md:pr-28">
         {/* Test Info */}
         <div className="flex-1">
@@ -174,7 +177,7 @@ export const TestListCard: React.FC<TestListCardProps> = ({
                 href={buildProviderBookingUrl(
                   test.url,
                   test.provider.toLowerCase().replace(/\s+/g, "-"),
-                  test.name
+                  test.name,
                 )}
                 {...externalLinkProps}
               >

@@ -29,9 +29,18 @@ export interface ProviderTestRow {
 export interface SupabaseLike {
   from: (table: string) => {
     select: (cols: string) => {
-      eq: (col: string, val: string) => {
-        eq: (col: string, val: boolean) => Promise<{
-          data: Array<{ provider_test_id: string | null; test_name: string }> | null;
+      eq: (
+        col: string,
+        val: string,
+      ) => {
+        eq: (
+          col: string,
+          val: boolean,
+        ) => Promise<{
+          data: Array<{
+            provider_test_id: string | null;
+            test_name: string;
+          }> | null;
           error: { message: string } | null;
         }>;
       };
@@ -102,14 +111,17 @@ export async function upsertProviderTests(
       const suffix = (r.provider_test_id || "")
         .replace(new RegExp(`^${slugPrefix}`), "")
         .slice(0, 24);
-      name = suffix ? `${r.test_name} (${suffix})` : `${r.test_name} (${r.provider_test_id})`;
+      name = suffix
+        ? `${r.test_name} (${suffix})`
+        : `${r.test_name} (${r.provider_test_id})`;
       key = name.toLowerCase().trim();
 
       // Extremely rare: even the suffixed name collides. Append numeric salt.
       let salt = 2;
       while (
         seenNames.has(key) ||
-        (reservedNames.has(key) && reservedNames.get(key) !== r.provider_test_id)
+        (reservedNames.has(key) &&
+          reservedNames.get(key) !== r.provider_test_id)
       ) {
         name = `${r.test_name} (${suffix}-${salt})`;
         key = name.toLowerCase().trim();
@@ -149,7 +161,9 @@ export async function upsertProviderTests(
         .from("provider_tests")
         .upsert([renamed], { onConflict: "provider_id,provider_test_id" });
       if (!retry.error) return true;
-      errors.push(`row ${row.provider_test_id}: ${getErrorMessage(retry.error)}`);
+      errors.push(
+        `row ${row.provider_test_id}: ${getErrorMessage(retry.error)}`,
+      );
       return false;
     }
     errors.push(`row ${row.provider_test_id}: ${msg}`);

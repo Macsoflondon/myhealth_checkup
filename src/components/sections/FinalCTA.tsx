@@ -9,38 +9,39 @@ const FinalCTA = () => {
     <section className="pt-10 pb-8 sm:pt-12 sm:pb-10 md:pt-14 md:pb-12 lg:pt-16 lg:pb-14 bg-white border-t border-brand-navy">
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12">
         <div className="max-w-3xl mx-auto text-center">
-          <EyebrowBadge label="Start Your Journey" size="sm" tone="onLight" className="mb-4 sm:mb-6" />
+          <EyebrowBadge
+            label="Start Your Journey"
+            size="sm"
+            tone="onLight"
+            className="mb-4 sm:mb-6"
+          />
 
-
-          <SectionHeading 
-            title="Take Control of Your" 
+          <SectionHeading
+            title="Take Control of Your"
             gradientText="Health Today"
             className="mb-4 sm:mb-6"
           />
 
           <p className="text-brand-navy font-sans text-sm sm:text-base md:text-lg mb-8 sm:mb-10 max-w-2xl mx-auto px-2">
-            Your health is your greatest asset. Compare trusted tests, find the right provider, and book with confidence.
+            Your health is your greatest asset. Compare trusted tests, find the
+            right provider, and book with confidence.
           </p>
 
           {/* CTAs */}
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-6 sm:mb-8 px-4">
-            <Button 
-              asChild 
-              size="lg" 
+            <Button
+              asChild
+              size="lg"
               className="bg-[#22c0d4] hover:bg-[#e70d69] text-white px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg rounded-xl w-full sm:w-auto min-h-[52px] transition-colors duration-300 shadow-lg"
             >
-              <Link to="/compare">
-                Compare tests
-              </Link>
+              <Link to="/compare">Compare tests</Link>
             </Button>
-            <Button 
-              asChild 
-              size="lg" 
+            <Button
+              asChild
+              size="lg"
               className="bg-[#e70d69] hover:bg-[#22c0d4] text-white px-6 sm:px-8 py-5 sm:py-6 text-base sm:text-lg rounded-xl w-full sm:w-auto min-h-[52px] transition-colors duration-300 shadow-lg"
             >
-              <Link to="/assisted-test-finder">
-                Take the health quiz
-              </Link>
+              <Link to="/assisted-test-finder">Take the health quiz</Link>
             </Button>
           </div>
 

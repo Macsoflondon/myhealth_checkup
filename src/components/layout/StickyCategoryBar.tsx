@@ -18,7 +18,9 @@ interface StickyCategoryBarProps {
   hideUntilTriggerId?: string;
 }
 
-export const StickyCategoryBar = ({ hideUntilTriggerId }: StickyCategoryBarProps) => {
+export const StickyCategoryBar = ({
+  hideUntilTriggerId,
+}: StickyCategoryBarProps) => {
   const [visible, setVisible] = useState(hideUntilTriggerId === undefined);
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();
@@ -46,7 +48,7 @@ export const StickyCategoryBar = ({ hideUntilTriggerId }: StickyCategoryBarProps
           const rect = entry.boundingClientRect;
           setVisible(!entry.isIntersecting && rect.top <= 0);
         },
-        { threshold: 0, rootMargin: "0px" }
+        { threshold: 0, rootMargin: "0px" },
       );
       observer.observe(el);
     };
@@ -62,7 +64,9 @@ export const StickyCategoryBar = ({ hideUntilTriggerId }: StickyCategoryBarProps
   return (
     <div
       className={`sticky top-0 z-50 bg-[#081129]/95 backdrop-blur-md border-b border-white/10 transition-all duration-300 ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"
+        visible
+          ? "opacity-100 translate-y-0"
+          : "opacity-0 -translate-y-full pointer-events-none"
       }`}
       aria-hidden={!visible}
     >
@@ -76,12 +80,18 @@ export const StickyCategoryBar = ({ hideUntilTriggerId }: StickyCategoryBarProps
               <SheetTrigger asChild>
                 <button
                   type="button"
-                  aria-label={open ? "Close category menu" : "Open category menu"}
+                  aria-label={
+                    open ? "Close category menu" : "Open category menu"
+                  }
                   aria-expanded={open}
                   aria-controls="sticky-category-sheet"
                   className="inline-flex items-center gap-2 min-h-11 min-w-11 px-3 rounded-lg text-white bg-white/10 hover:bg-white/15 active:bg-white/20 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2 focus-visible:ring-offset-[#081129] transition"
                 >
-                  {open ? <X className="w-5 h-5" aria-hidden="true" /> : <Menu className="w-5 h-5" aria-hidden="true" />}
+                  {open ? (
+                    <X className="w-5 h-5" aria-hidden="true" />
+                  ) : (
+                    <Menu className="w-5 h-5" aria-hidden="true" />
+                  )}
                   <span className="text-sm font-semibold">Menu</span>
                 </button>
               </SheetTrigger>
@@ -93,7 +103,9 @@ export const StickyCategoryBar = ({ hideUntilTriggerId }: StickyCategoryBarProps
               className="w-[88vw] max-w-sm bg-[#081129] border-l border-white/10 p-0 text-white"
             >
               <SheetHeader className="px-4 py-4 border-b border-white/10 text-left">
-                <SheetTitle className="text-white text-base font-heading">Categories</SheetTitle>
+                <SheetTitle className="text-white text-base font-heading">
+                  Categories
+                </SheetTitle>
               </SheetHeader>
               <nav
                 aria-label="Sticky category navigation"

@@ -33,7 +33,9 @@ export function normaliseSocSeverity(value: unknown): SocSeverity {
   return KNOWN_SEVERITIES[key] ?? "info";
 }
 
-export function severityFromHttpStatus(status: number | null | undefined): SocSeverity {
+export function severityFromHttpStatus(
+  status: number | null | undefined,
+): SocSeverity {
   if (typeof status !== "number") return "info";
   if (status >= 500) return "high";
   if (status >= 400) return "medium";
@@ -41,7 +43,9 @@ export function severityFromHttpStatus(status: number | null | undefined): SocSe
   return "info";
 }
 
-export function maskSensitiveIdentifier(value: string | null | undefined): string {
+export function maskSensitiveIdentifier(
+  value: string | null | undefined,
+): string {
   if (!value) return "—";
   const trimmed = value.trim();
   if (!trimmed) return "—";
@@ -82,11 +86,13 @@ export function formatSocDateTime(value: string | null | undefined): string {
   }).format(date);
 }
 
-export function compareSeverityThenTime<T extends { severity: SocSeverity; occurredAt: string }>(
-  left: T,
-  right: T,
-): number {
-  const severityDelta = SOC_SEVERITY_ORDER[right.severity] - SOC_SEVERITY_ORDER[left.severity];
+export function compareSeverityThenTime<
+  T extends { severity: SocSeverity; occurredAt: string },
+>(left: T, right: T): number {
+  const severityDelta =
+    SOC_SEVERITY_ORDER[right.severity] - SOC_SEVERITY_ORDER[left.severity];
   if (severityDelta !== 0) return severityDelta;
-  return new Date(right.occurredAt).getTime() - new Date(left.occurredAt).getTime();
+  return (
+    new Date(right.occurredAt).getTime() - new Date(left.occurredAt).getTime()
+  );
 }

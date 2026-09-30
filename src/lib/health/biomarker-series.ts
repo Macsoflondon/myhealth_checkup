@@ -37,7 +37,9 @@ export const filterByDateRange = (
   observations: readonly ObservationRecord[],
   range: DateRangeFilter,
 ): ObservationRecord[] => {
-  const from = range.from ? new Date(range.from).getTime() : Number.NEGATIVE_INFINITY;
+  const from = range.from
+    ? new Date(range.from).getTime()
+    : Number.NEGATIVE_INFINITY;
   const to = range.to ? new Date(range.to).getTime() : Number.POSITIVE_INFINITY;
   return observations.filter((o) => {
     const at = timestampOf(o);
@@ -101,7 +103,9 @@ export const buildBiomarkerSeries = (
 
   const absoluteChange = comparable ? latestValue - previousValue : null;
   const intervalMs =
-    latest && previous ? timestampOf(latest) - timestampOf(previous) : Number.NaN;
+    latest && previous
+      ? timestampOf(latest) - timestampOf(previous)
+      : Number.NaN;
 
   return {
     biomarkerId: latest?.biomarkerId ?? points[0]?.biomarkerId ?? null,
@@ -110,7 +114,9 @@ export const buildBiomarkerSeries = (
     latest,
     previous,
     absoluteChange,
-    percentageChange: comparable ? percentageChange(previousValue, latestValue) : null,
+    percentageChange: comparable
+      ? percentageChange(previousValue, latestValue)
+      : null,
     direction: comparable
       ? directionOf(previousValue, latestValue, tolerance)
       : "indeterminate",

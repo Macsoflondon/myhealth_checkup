@@ -1,22 +1,21 @@
-import i18n from 'i18next';
-import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
-import { getFallbackLabel } from './fallbackLabels';
-
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+import { getFallbackLabel } from "./fallbackLabels";
 
 // Import translation files
-import enTranslations from '../locales/en.json';
-import frTranslations from '../locales/fr.json';
-import esTranslations from '../locales/es.json';
-import deTranslations from '../locales/de.json';
-import itTranslations from '../locales/it.json';
-import ptTranslations from '../locales/pt.json';
-import ptBrTranslations from '../locales/pt-BR.json';
-import nlTranslations from '../locales/nl.json';
-import plTranslations from '../locales/pl.json';
-import arTranslations from '../locales/ar.json';
-import zhTranslations from '../locales/zh.json';
-import jaTranslations from '../locales/ja.json';
+import enTranslations from "../locales/en.json";
+import frTranslations from "../locales/fr.json";
+import esTranslations from "../locales/es.json";
+import deTranslations from "../locales/de.json";
+import itTranslations from "../locales/it.json";
+import ptTranslations from "../locales/pt.json";
+import ptBrTranslations from "../locales/pt-BR.json";
+import nlTranslations from "../locales/nl.json";
+import plTranslations from "../locales/pl.json";
+import arTranslations from "../locales/ar.json";
+import zhTranslations from "../locales/zh.json";
+import jaTranslations from "../locales/ja.json";
 
 const resources = {
   en: {
@@ -37,7 +36,7 @@ const resources = {
   pt: {
     translation: ptTranslations,
   },
-  'pt-BR': {
+  "pt-BR": {
     translation: ptBrTranslations,
   },
   nl: {
@@ -57,7 +56,20 @@ const resources = {
   },
 };
 
-export const SUPPORTED_LANGUAGES = ['en', 'fr', 'es', 'de', 'it', 'pt', 'pt-BR', 'nl', 'pl', 'ar', 'zh', 'ja'] as const;
+export const SUPPORTED_LANGUAGES = [
+  "en",
+  "fr",
+  "es",
+  "de",
+  "it",
+  "pt",
+  "pt-BR",
+  "nl",
+  "pl",
+  "ar",
+  "zh",
+  "ja",
+] as const;
 export type SupportedLanguage = (typeof SUPPORTED_LANGUAGES)[number];
 
 const isSupported = (code: string): code is SupportedLanguage =>
@@ -70,12 +82,12 @@ const isSupported = (code: string): code is SupportedLanguage =>
 export const resolveLanguageTag = (tag: string): SupportedLanguage | null => {
   const normalised = tag.toLowerCase().trim();
   if (!normalised) return null;
-  if (normalised.startsWith('en')) return 'en';
+  if (normalised.startsWith("en")) return "en";
   // Brazilian Portuguese keeps its own bundle; other pt variants fall back to pt.
-  if (normalised === 'pt-br') return 'pt-BR';
-  const base = normalised.split('-')[0];
+  if (normalised === "pt-br") return "pt-BR";
+  const base = normalised.split("-")[0];
   // Chinese script/region variants (zh-Hans, zh-Hant, zh-TW, zh-HK) all map to zh
-  if (base === 'zh') return 'zh';
+  if (base === "zh") return "zh";
   return isSupported(base) ? base : null;
 };
 
@@ -84,7 +96,7 @@ export const resolveLanguageTag = (tag: string): SupportedLanguage | null => {
  * first entry — a user with ["nb-NO", "de-DE", "en-GB"] gets German, not English.
  */
 export const detectPreferredLanguage = (
-  tags: readonly string[] = typeof navigator === 'undefined'
+  tags: readonly string[] = typeof navigator === "undefined"
     ? []
     : navigator.languages?.length
       ? navigator.languages
@@ -94,13 +106,14 @@ export const detectPreferredLanguage = (
     const match = resolveLanguageTag(tag);
     if (match) return match;
   }
-  return 'en';
+  return "en";
 };
 
 /** Custom detector: runs only when no stored choice exists (localStorage wins). */
 const navigatorBestMatch = {
-  name: 'navigatorBestMatch',
-  lookup: () => (typeof navigator === 'undefined' ? undefined : detectPreferredLanguage()),
+  name: "navigatorBestMatch",
+  lookup: () =>
+    typeof navigator === "undefined" ? undefined : detectPreferredLanguage(),
   cacheUserLanguage: () => {
     /* caching is handled by the localStorage detector */
   },
@@ -111,9 +124,9 @@ detector.addDetector(navigatorBestMatch);
 
 /** Keep <html lang>/<html dir> in sync with the active language. */
 export const syncDocumentLanguage = (code: string) => {
-  if (typeof document === 'undefined') return;
-  document.documentElement.lang = code === 'en' ? 'en-GB' : code;
-  document.documentElement.dir = code === 'ar' ? 'rtl' : 'ltr';
+  if (typeof document === "undefined") return;
+  document.documentElement.lang = code === "en" ? "en-GB" : code;
+  document.documentElement.dir = code === "ar" ? "rtl" : "ltr";
 };
 
 i18n
@@ -121,7 +134,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'en',
+    fallbackLng: "en",
     // No hard-coded `lng` — the detector reads localStorage first so an explicit
     // user choice always beats auto-detection, then falls back to browser/OS.
     supportedLngs: SUPPORTED_LANGUAGES as unknown as string[],
@@ -132,11 +145,10 @@ i18n
     // stops English field labels from leaking through when a translation
     // file is out of date.
     parseMissingKeyHandler: (key: string) => {
-      const lang = i18n.language || 'en';
+      const lang = i18n.language || "en";
       const fallback = getFallbackLabel(key, lang);
       return fallback ?? key;
     },
-
 
     interpolation: {
       escapeValue: false, // React already does escaping
@@ -145,14 +157,15 @@ i18n
     detection: {
       // localStorage first (explicit choice), then best match across the whole
       // navigator preference list, then the server-rendered <html lang>.
-      order: ['localStorage', 'navigatorBestMatch', 'navigator', 'htmlTag'],
-      caches: ['localStorage'],
-      lookupLocalStorage: 'i18nextLng',
-      convertDetectedLanguage: (lng: string) => resolveLanguageTag(lng) ?? 'en',
+      order: ["localStorage", "navigatorBestMatch", "navigator", "htmlTag"],
+      caches: ["localStorage"],
+      lookupLocalStorage: "i18nextLng",
+      convertDetectedLanguage: (lng: string) => resolveLanguageTag(lng) ?? "en",
     },
   });
 
-i18n.on('languageChanged', syncDocumentLanguage);
-if (typeof document !== 'undefined') syncDocumentLanguage(i18n.language || 'en');
+i18n.on("languageChanged", syncDocumentLanguage);
+if (typeof document !== "undefined")
+  syncDocumentLanguage(i18n.language || "en");
 
 export default i18n;

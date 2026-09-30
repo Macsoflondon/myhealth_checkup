@@ -28,10 +28,38 @@ export { useUserRole } from "./useUserRole";
 export { useEnhancedComparison } from "./useEnhancedComparison";
 
 // React Query hooks (from queries folder)
-export { useDashboardData, dashboardQueryKeys } from "./queries/useDashboardData";
-export { useCompareTestsData, compareQueryKeys, defaultFilters, type CompareFilters } from "./queries/useCompareTestsData";
-export { useFavoritesQuery, useAddFavorite, useRemoveFavorite, useIsFavorite, favoritesQueryKeys } from "./queries/useFavoritesQuery";
-export { useOrdersQuery, useCreateOrder, useUpdateOrderStatus, ordersQueryKeys } from "./queries/useOrdersQuery";
-export { useProviderTestsQuery, useProviderCatalogQuery, providersQueryKeys } from "./queries/useProvidersQuery";
-export { useActiveTestsQuery, useTestsByCategoryQuery, useSearchTestsQuery, usePopularTestsQuery, testsQueryKeys } from "./queries/useTestsQuery";
-
+export {
+  useDashboardData,
+  dashboardQueryKeys,
+} from "./queries/useDashboardData";
+export {
+  useCompareTestsData,
+  compareQueryKeys,
+  defaultFilters,
+  type CompareFilters,
+} from "./queries/useCompareTestsData";
+export {
+  useFavoritesQuery,
+  useAddFavorite,
+  useRemoveFavorite,
+  useIsFavorite,
+  favoritesQueryKeys,
+} from "./queries/useFavoritesQuery";
+export {
+  useOrdersQuery,
+  useCreateOrder,
+  useUpdateOrderStatus,
+  ordersQueryKeys,
+} from "./queries/useOrdersQuery";
+export {
+  useProviderTestsQuery,
+  useProviderCatalogQuery,
+  providersQueryKeys,
+} from "./queries/useProvidersQuery";
+export {
+  useActiveTestsQuery,
+  useTestsByCategoryQuery,
+  useSearchTestsQuery,
+  usePopularTestsQuery,
+  testsQueryKeys,
+} from "./queries/useTestsQuery";

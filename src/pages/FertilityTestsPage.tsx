@@ -20,9 +20,21 @@ const FertilityTestsPage = () => (
     filters={["All"]}
     benefitsTitle="Why Choose Prenatal Testing?"
     benefits={[
-      { icon: Shield, title: "Safe & Non-Invasive", description: "Simple blood tests with no risk to mother or baby" },
-      { icon: Activity, title: "Accurate Results", description: "Advanced DNA technology for highly accurate screening" },
-      { icon: Heart, title: "Peace of Mind", description: "Early insights to help you prepare with confidence" },
+      {
+        icon: Shield,
+        title: "Safe & Non-Invasive",
+        description: "Simple blood tests with no risk to mother or baby",
+      },
+      {
+        icon: Activity,
+        title: "Accurate Results",
+        description: "Advanced DNA technology for highly accurate screening",
+      },
+      {
+        icon: Heart,
+        title: "Peace of Mind",
+        description: "Early insights to help you prepare with confidence",
+      },
     ]}
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Fertility Tests" }]}
   />

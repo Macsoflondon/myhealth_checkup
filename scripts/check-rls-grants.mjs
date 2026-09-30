@@ -60,7 +60,9 @@ for (const file of files) {
       violations.push(`${file}: public.${tbl} — missing GRANT statement`);
     }
     if (!rlsRe.test(stripped)) {
-      violations.push(`${file}: public.${tbl} — missing ENABLE ROW LEVEL SECURITY`);
+      violations.push(
+        `${file}: public.${tbl} — missing ENABLE ROW LEVEL SECURITY`,
+      );
     }
   }
 }
@@ -73,4 +75,6 @@ if (violations.length) {
   );
   process.exit(1);
 }
-console.log(`✓ RLS/GRANTS lint: ${files.length} migration(s) checked, no violations.`);
+console.log(
+  `✓ RLS/GRANTS lint: ${files.length} migration(s) checked, no violations.`,
+);

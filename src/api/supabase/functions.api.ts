@@ -21,21 +21,32 @@ export interface FunctionResponse<T> {
  */
 async function invokeFunction<TResponse, TBody = unknown>(
   functionName: string,
-  options?: FunctionInvokeOptions<TBody>
+  options?: FunctionInvokeOptions<TBody>,
 ): Promise<FunctionResponse<TResponse>> {
   try {
     logger.debug(`Invoking edge function: ${functionName}`, options?.body);
-    
+
     const { data, error } = await supabase.functions.invoke<TResponse>(
       functionName,
-      options as { body?: string | FormData | Record<string, unknown> | ArrayBuffer | Blob | File; headers?: Record<string, string> } | undefined
+      options as
+        | {
+            body?:
+              | string
+              | FormData
+              | Record<string, unknown>
+              | ArrayBuffer
+              | Blob
+              | File;
+            headers?: Record<string, string>;
+          }
+        | undefined,
     );
-    
+
     if (error) {
       logger.error(`Edge function ${functionName} error:`, error);
       return { data: null, error };
     }
-    
+
     logger.debug(`Edge function ${functionName} success`);
     return { data, error: null };
   } catch (error) {
@@ -69,7 +80,7 @@ export interface RecommendedTest {
   price: number | null;
   category: string;
   reason: string;
-  urgency: 'low' | 'medium' | 'high';
+  urgency: "low" | "medium" | "high";
   confidence: number;
   actualTestId?: string;
 }
@@ -91,10 +102,10 @@ export interface HealthAIAnalysisResponse {
 }
 
 export const healthAIAnalysis = (
-  request: HealthAIAnalysisRequest
+  request: HealthAIAnalysisRequest,
 ): Promise<FunctionResponse<HealthAIAnalysisResponse>> => {
   return invokeFunction<HealthAIAnalysisResponse, AiHumanContextRequest>(
-    'ai-human-context',
+    "ai-human-context",
     {
       body: {
         query_text: request.query,
@@ -102,7 +113,7 @@ export const healthAIAnalysis = (
         gender: request.gender ?? null,
         method_preference: request.methodPreference ?? null,
       },
-    }
+    },
   );
 };
 
@@ -122,10 +133,10 @@ export interface TestRecommendationsRequest {
 export interface TestRecommendationsResponse extends HealthAIAnalysisResponse {}
 
 export const getTestRecommendations = (
-  request: TestRecommendationsRequest
+  request: TestRecommendationsRequest,
 ): Promise<FunctionResponse<TestRecommendationsResponse>> => {
   return invokeFunction<TestRecommendationsResponse, AiHumanContextRequest>(
-    'ai-human-context',
+    "ai-human-context",
     {
       body: {
         query_text: request.query,
@@ -133,6 +144,6 @@ export const getTestRecommendations = (
         gender: null,
         method_preference: null,
       },
-    }
+    },
   );
 };

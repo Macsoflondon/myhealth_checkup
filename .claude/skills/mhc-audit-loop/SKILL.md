@@ -58,7 +58,7 @@ Data claims about tests, prices, biomarkers or providers get checked against Sup
 Write to `docs/qa/audit-<scope>-<YYYY-MM-DD>.md`, commit it, and keep appending across the loop's passes. One row per check:
 
 | surface | contract rule | verdict | evidence | fix |
-|---|---|---|---|---|
+| ------- | ------------- | ------- | -------- | --- |
 
 The ledger is the report. The chat summary points at it and names the counts — it never replaces it.
 

@@ -4,7 +4,10 @@ import PromoTicker from "../PromoTicker";
 
 // jsdom doesn't ship ResizeObserver
 beforeAll(() => {
-  if (typeof (globalThis as { ResizeObserver?: unknown }).ResizeObserver === "undefined") {
+  if (
+    typeof (globalThis as { ResizeObserver?: unknown }).ResizeObserver ===
+    "undefined"
+  ) {
     (globalThis as { ResizeObserver?: unknown }).ResizeObserver = class {
       observe() {}
       unobserve() {}
@@ -27,7 +30,7 @@ describe("PromoTicker", () => {
   it("renders the promo strip", () => {
     const { getByLabelText } = render(<PromoTicker />);
     expect(
-      getByLabelText("Promotional offers from health test providers")
+      getByLabelText("Promotional offers from health test providers"),
     ).toBeTruthy();
   });
 
@@ -41,7 +44,7 @@ describe("PromoTicker", () => {
   it("duplicates every promo across multiple sets so the marquee wraps", () => {
     const { getByLabelText } = render(<PromoTicker />);
     const strip = getByLabelText(
-      "Promotional offers from health test providers"
+      "Promotional offers from health test providers",
     ) as HTMLElement;
     const utils = within(strip);
 
@@ -49,14 +52,10 @@ describe("PromoTicker", () => {
     // provider names case-insensitively — the uppercasing is CSS-only
     // (text-transform), which Testing Library does not apply. Don't assert
     // on promo copy: it changes with marketing campaigns.
-    expect(
-      utils.getAllByText(/goodbody:/i).length
-    ).toBeGreaterThanOrEqual(2);
-    expect(
-      utils.getAllByText(/medichecks:/i).length
-    ).toBeGreaterThanOrEqual(2);
-    expect(
-      utils.getAllByText(/lola health:/i).length
-    ).toBeGreaterThanOrEqual(2);
+    expect(utils.getAllByText(/goodbody:/i).length).toBeGreaterThanOrEqual(2);
+    expect(utils.getAllByText(/medichecks:/i).length).toBeGreaterThanOrEqual(2);
+    expect(utils.getAllByText(/lola health:/i).length).toBeGreaterThanOrEqual(
+      2,
+    );
   });
 });

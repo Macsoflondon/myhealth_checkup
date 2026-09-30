@@ -58,7 +58,11 @@ export default function CrawlsSection() {
   const [stats, setStats] = useState<Record<string, ProviderTestStat>>({});
 
   const load = useCallback(async () => {
-    const [{ data: runs, error: runsError }, { data: tests, error: testsError }, { data: live, error: liveError }] = await Promise.all([
+    const [
+      { data: runs, error: runsError },
+      { data: tests, error: testsError },
+      { data: live, error: liveError },
+    ] = await Promise.all([
       supabase
         .from("scrape_run_log")
         .select("*")
@@ -74,7 +78,9 @@ export default function CrawlsSection() {
       // separate promote-provider-tests orchestrator.
       supabase
         .from("scrape_runs")
-        .select("id, provider_id, scraper_function, status, started_at, finished_at, tests_seen, tests_updated")
+        .select(
+          "id, provider_id, scraper_function, status, started_at, finished_at, tests_seen, tests_updated",
+        )
         .order("started_at", { ascending: false })
         .limit(20),
     ]);
@@ -83,10 +89,18 @@ export default function CrawlsSection() {
     setRows((runs ?? []) as never);
     setLiveRuns((live ?? []) as LiveRunRow[]);
     const grouped: Record<string, ProviderTestStat> = {};
-    for (const t of (tests ?? []) as { provider_id: string; updated_at: string }[]) {
-      const s = grouped[t.provider_id] ?? { provider_id: t.provider_id, count: 0, lastUpdated: null };
+    for (const t of (tests ?? []) as {
+      provider_id: string;
+      updated_at: string;
+    }[]) {
+      const s = grouped[t.provider_id] ?? {
+        provider_id: t.provider_id,
+        count: 0,
+        lastUpdated: null,
+      };
       s.count += 1;
-      if (!s.lastUpdated || t.updated_at > s.lastUpdated) s.lastUpdated = t.updated_at;
+      if (!s.lastUpdated || t.updated_at > s.lastUpdated)
+        s.lastUpdated = t.updated_at;
       grouped[t.provider_id] = s;
     }
     setStats(grouped);
@@ -97,7 +111,11 @@ export default function CrawlsSection() {
     void load();
     const channel = supabase
       .channel("control-crawls")
-      .on("postgres_changes", { event: "*", schema: "public", table: "scrape_run_log" }, () => void load())
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "scrape_run_log" },
+        () => void load(),
+      )
       .subscribe();
     return () => {
       supabase.removeChannel(channel);
@@ -123,7 +141,9 @@ export default function CrawlsSection() {
       toast.success(`${label} dispatched`, { description: result?.message });
       await load();
     } catch (err) {
-      toast.error(`${label} failed`, { description: err instanceof Error ? err.message : String(err) });
+      toast.error(`${label} failed`, {
+        description: err instanceof Error ? err.message : String(err),
+      });
     }
   };
 
@@ -137,40 +157,54 @@ export default function CrawlsSection() {
           <Button
             onClick={() => {
               setRunningJob("verify");
-              void trigger("URL verification", () => edgeInvoke("scrape-and-verify")).finally(() =>
-                setRunningJob(null),
-              );
+              void trigger("URL verification", () =>
+                edgeInvoke("scrape-and-verify"),
+              ).finally(() => setRunningJob(null));
             }}
             disabled={runningJob === "verify"}
             variant="outline"
             size="sm"
           >
-            {runningJob === "verify" ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <ShieldCheck className="w-4 h-4 mr-2" />}
+            {runningJob === "verify" ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <ShieldCheck className="w-4 h-4 mr-2" />
+            )}
             Verify URLs
           </Button>
           <Button
             onClick={() => {
               setRunningJob("promote");
-              void trigger("Promotion", () => edgeInvoke("promote-provider-tests")).finally(() =>
-                setRunningJob(null),
-              );
+              void trigger("Promotion", () =>
+                edgeInvoke("promote-provider-tests"),
+              ).finally(() => setRunningJob(null));
             }}
             disabled={runningJob === "promote"}
             variant="outline"
             size="sm"
           >
-            {runningJob === "promote" ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <RefreshCw className="w-4 h-4 mr-2" />}
+            {runningJob === "promote" ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <RefreshCw className="w-4 h-4 mr-2" />
+            )}
             Re-promote
           </Button>
           <Button
             onClick={() => {
               setRunningAll(true);
-              void trigger("All scrapers", () => edgeInvoke("run-all-scrapers")).finally(() => setRunningAll(false));
+              void trigger("All scrapers", () =>
+                edgeInvoke("run-all-scrapers"),
+              ).finally(() => setRunningAll(false));
             }}
             disabled={runningAll}
             size="sm"
           >
-            {runningAll ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <Play className="w-4 h-4 mr-2" />}
+            {runningAll ? (
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+            ) : (
+              <Play className="w-4 h-4 mr-2" />
+            )}
             Run all scrapers
           </Button>
         </div>
@@ -187,15 +221,25 @@ export default function CrawlsSection() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         <StatCard label="Runs (last 50)" value={summary.total} />
         <StatCard label="Successful" value={summary.ok} tone="good" />
-        <StatCard label="Failed" value={summary.failed} tone={summary.failed > 0 ? "bad" : "good"} />
-        <StatCard label="URL verify fails" value={summary.verificationFailures} tone={summary.verificationFailures > 0 ? "warn" : "good"} />
+        <StatCard
+          label="Failed"
+          value={summary.failed}
+          tone={summary.failed > 0 ? "bad" : "good"}
+        />
+        <StatCard
+          label="URL verify fails"
+          value={summary.verificationFailures}
+          tone={summary.verificationFailures > 0 ? "warn" : "good"}
+        />
       </div>
 
       {/* Per-provider grid */}
       <div className="rounded-xl border bg-card overflow-hidden mb-6">
         <div className="px-4 py-3 border-b flex items-center justify-between">
           <h3 className="text-sm font-semibold">Per-provider scrapers</h3>
-          <span className="text-xs text-muted-foreground">{PROVIDERS.length} sources</span>
+          <span className="text-xs text-muted-foreground">
+            {PROVIDERS.length} sources
+          </span>
         </div>
         <table className="w-full text-sm">
           <thead className="bg-muted/40 text-xs uppercase tracking-wider text-muted-foreground">
@@ -213,9 +257,13 @@ export default function CrawlsSection() {
               return (
                 <tr key={p.id} className="border-t">
                   <td className="px-3 py-2 font-medium">{p.label}</td>
-                  <td className="px-3 py-2 text-right tabular-nums">{s?.count ?? 0}</td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    {s?.count ?? 0}
+                  </td>
                   <td className="px-3 py-2 text-xs text-muted-foreground tabular-nums">
-                    {s?.lastUpdated ? new Date(s.lastUpdated).toLocaleString() : "—"}
+                    {s?.lastUpdated
+                      ? new Date(s.lastUpdated).toLocaleString()
+                      : "—"}
                   </td>
                   <td className="px-3 py-2 text-right">
                     <Button
@@ -224,12 +272,16 @@ export default function CrawlsSection() {
                       disabled={isRunning || runningAll}
                       onClick={() => {
                         setRunningProvider(p.id);
-                        void trigger(p.label, () => edgeInvoke("run-all-scrapers", { providerId: p.id })).finally(() =>
-                          setRunningProvider(null),
-                        );
+                        void trigger(p.label, () =>
+                          edgeInvoke("run-all-scrapers", { providerId: p.id }),
+                        ).finally(() => setRunningProvider(null));
                       }}
                     >
-                      {isRunning ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <Play className="w-3 h-3 mr-1" />}
+                      {isRunning ? (
+                        <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                      ) : (
+                        <Play className="w-3 h-3 mr-1" />
+                      )}
                       Run
                     </Button>
                   </td>
@@ -244,9 +296,13 @@ export default function CrawlsSection() {
       {!loading && (
         <div className="rounded-xl border bg-card overflow-hidden mb-6">
           <div className="px-4 py-3 border-b">
-            <h3 className="text-sm font-semibold">Live scraper pipeline (last 20 runs)</h3>
+            <h3 className="text-sm font-semibold">
+              Live scraper pipeline (last 20 runs)
+            </h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              What actually keeps `provider_tests` fresh, on its own 6-hourly cron schedule — separate from the manual "Run" controls above and the promotion runs below.
+              What actually keeps `provider_tests` fresh, on its own 6-hourly
+              cron schedule — separate from the manual "Run" controls above and
+              the promotion runs below.
             </p>
           </div>
           <table className="w-full text-sm">
@@ -267,20 +323,37 @@ export default function CrawlsSection() {
                     {new Date(r.started_at).toLocaleString()}
                   </td>
                   <td className="px-3 py-2 font-medium">{r.provider_id}</td>
-                  <td className="px-3 py-2 text-xs font-mono text-muted-foreground">{r.scraper_function}</td>
+                  <td className="px-3 py-2 text-xs font-mono text-muted-foreground">
+                    {r.scraper_function}
+                  </td>
                   <td className="px-3 py-2">
                     <span className="inline-flex items-center gap-2">
-                      <HealthDot state={r.status === "error" ? "bad" : r.status === "partial" ? "warn" : "good"} />
+                      <HealthDot
+                        state={
+                          r.status === "error"
+                            ? "bad"
+                            : r.status === "partial"
+                              ? "warn"
+                              : "good"
+                        }
+                      />
                       {r.status}
                     </span>
                   </td>
-                  <td className="px-3 py-2 text-right tabular-nums">{r.tests_seen ?? 0}</td>
-                  <td className="px-3 py-2 text-right tabular-nums">{r.tests_updated ?? 0}</td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    {r.tests_seen ?? 0}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    {r.tests_updated ?? 0}
+                  </td>
                 </tr>
               ))}
               {liveRuns.length === 0 && (
                 <tr>
-                  <td colSpan={6} className="px-3 py-8 text-center text-muted-foreground text-sm">
+                  <td
+                    colSpan={6}
+                    className="px-3 py-8 text-center text-muted-foreground text-sm"
+                  >
                     No live pipeline runs recorded yet.
                   </td>
                 </tr>
@@ -298,9 +371,12 @@ export default function CrawlsSection() {
       ) : (
         <div className="rounded-xl border bg-card overflow-hidden">
           <div className="px-4 py-3 border-b">
-            <h3 className="text-sm font-semibold">Promotion runs (promote-provider-tests)</h3>
+            <h3 className="text-sm font-semibold">
+              Promotion runs (promote-provider-tests)
+            </h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              Normalises whatever the live pipeline above wrote into `tests_master`/`provider_test_mapping` — not the scrape itself.
+              Normalises whatever the live pipeline above wrote into
+              `tests_master`/`provider_test_mapping` — not the scrape itself.
             </p>
           </div>
           <table className="w-full text-sm">
@@ -324,24 +400,46 @@ export default function CrawlsSection() {
                   </td>
                   <td className="px-3 py-2">
                     <span className="inline-flex items-center gap-2">
-                      <HealthDot state={r.status === "failed" || r.status === "error" ? "bad" : "good"} />
+                      <HealthDot
+                        state={
+                          r.status === "failed" || r.status === "error"
+                            ? "bad"
+                            : "good"
+                        }
+                      />
                       {r.status}
                     </span>
                   </td>
-                  <td className="px-3 py-2 text-xs">{r.trigger_source ?? "—"}</td>
-                  <td className="px-3 py-2 text-right tabular-nums">{r.providers_run ?? 0}</td>
-                  <td className="px-3 py-2 text-right tabular-nums">{r.tests_scraped ?? 0}</td>
-                  <td className="px-3 py-2 text-right tabular-nums">{r.tests_promoted ?? 0}</td>
-                  <td className="px-3 py-2 text-right tabular-nums">{r.mappings_upserted ?? 0}</td>
-                  <td className={`px-3 py-2 text-right tabular-nums ${(r.verification_failures ?? 0) > 0 ? "text-rose-600" : ""}`}>
+                  <td className="px-3 py-2 text-xs">
+                    {r.trigger_source ?? "—"}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    {r.providers_run ?? 0}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    {r.tests_scraped ?? 0}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    {r.tests_promoted ?? 0}
+                  </td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    {r.mappings_upserted ?? 0}
+                  </td>
+                  <td
+                    className={`px-3 py-2 text-right tabular-nums ${(r.verification_failures ?? 0) > 0 ? "text-rose-600" : ""}`}
+                  >
                     {r.verification_failures ?? 0}
                   </td>
                 </tr>
               ))}
               {rows.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="px-3 py-8 text-center text-muted-foreground text-sm">
-                    No scrape runs recorded yet — hit "Run all scrapers" to kick one off.
+                  <td
+                    colSpan={8}
+                    className="px-3 py-8 text-center text-muted-foreground text-sm"
+                  >
+                    No scrape runs recorded yet — hit "Run all scrapers" to kick
+                    one off.
                   </td>
                 </tr>
               )}

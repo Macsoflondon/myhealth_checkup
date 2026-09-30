@@ -15,10 +15,30 @@ import { ShieldCheck, FlaskConical, Stethoscope, Clock } from "lucide-react";
  */
 const PersuasionTrustStrip = () => {
   const stats = [
-    { icon: ShieldCheck, value: "100%", label: "UKAS-accredited labs", tone: "turquoise" as const },
-    { icon: FlaskConical, value: "200+", label: "tests compared", tone: "pink" as const },
-    { icon: Stethoscope, value: "No GP", label: "referral needed", tone: "turquoise" as const },
-    { icon: Clock, value: "60 sec", label: "to your match", tone: "pink" as const },
+    {
+      icon: ShieldCheck,
+      value: "100%",
+      label: "UKAS-accredited labs",
+      tone: "turquoise" as const,
+    },
+    {
+      icon: FlaskConical,
+      value: "200+",
+      label: "tests compared",
+      tone: "pink" as const,
+    },
+    {
+      icon: Stethoscope,
+      value: "No GP",
+      label: "referral needed",
+      tone: "turquoise" as const,
+    },
+    {
+      icon: Clock,
+      value: "60 sec",
+      label: "to your match",
+      tone: "pink" as const,
+    },
   ];
 
   return (

@@ -6,16 +6,18 @@
 import { useCallback, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "@/lib/router-compat";
-import { CompareService, type CompareTestData } from "@/services/CompareService";
+import {
+  CompareService,
+  type CompareTestData,
+} from "@/services/CompareService";
 import { logger } from "@/lib/logger";
 import { isJunkTestName } from "@/utils/is-junk-test-name";
 
-
 // Query keys
 export const compareQueryKeys = {
-  tests: (category: string, provider: string, search: string) => 
-    ['compare', 'tests', category, provider, search] as const,
-  categories: () => ['compare', 'categories'] as const,
+  tests: (category: string, provider: string, search: string) =>
+    ["compare", "tests", category, provider, search] as const,
+  categories: () => ["compare", "categories"] as const,
 };
 
 export interface CompareFilters {
@@ -43,25 +45,25 @@ export const defaultFilters: CompareFilters = {
 // Filter application logic
 function applyLocalFilters(
   tests: CompareTestData[],
-  filters: CompareFilters
+  filters: CompareFilters,
 ): CompareTestData[] {
   let filtered = [...tests];
 
   // Price range filter
   if (filters.priceRange.min) {
     filtered = filtered.filter(
-      test => test.price >= parseFloat(filters.priceRange.min)
+      (test) => test.price >= parseFloat(filters.priceRange.min),
     );
   }
   if (filters.priceRange.max) {
     filtered = filtered.filter(
-      test => test.price <= parseFloat(filters.priceRange.max)
+      (test) => test.price <= parseFloat(filters.priceRange.max),
     );
   }
 
   // Sample method filter
   if (filters.sampleMethod && filters.sampleMethod !== "all") {
-    filtered = filtered.filter(test => {
+    filtered = filtered.filter((test) => {
       const collection = (test.features?.collection || "").toLowerCase();
       switch (filters.sampleMethod) {
         case "finger-prick":
@@ -78,8 +80,8 @@ function applyLocalFilters(
 
   // GP Review filter
   if (filters.gpReview) {
-    filtered = filtered.filter(test =>
-      ["Medichecks", "Randox"].includes(test.provider)
+    filtered = filtered.filter((test) =>
+      ["Medichecks", "Randox"].includes(test.provider),
     );
   }
 
@@ -87,7 +89,10 @@ function applyLocalFilters(
 }
 
 // Sort logic
-function sortTests(tests: CompareTestData[], sortBy: string): CompareTestData[] {
+function sortTests(
+  tests: CompareTestData[],
+  sortBy: string,
+): CompareTestData[] {
   const sorted = [...tests];
 
   switch (sortBy) {
@@ -97,11 +102,11 @@ function sortTests(tests: CompareTestData[], sortBy: string): CompareTestData[] 
       return sorted.sort((a, b) => b.price - a.price);
     case "turnaround":
       return sorted.sort(
-        (a, b) => (a.turnaroundDays ?? 999) - (b.turnaroundDays ?? 999)
+        (a, b) => (a.turnaroundDays ?? 999) - (b.turnaroundDays ?? 999),
       );
     case "popular":
       return sorted.sort(
-        (a, b) => (b.popularityScore || 0) - (a.popularityScore || 0)
+        (a, b) => (b.popularityScore || 0) - (a.popularityScore || 0),
       );
     default:
       return sorted.sort((a, b) => a.price - b.price);
@@ -139,7 +144,7 @@ export function useCompareTestsData(filters: CompareFilters) {
     queryKey: compareQueryKeys.tests(
       effectiveCategory,
       filters.selectedProvider,
-      filters.searchQuery
+      filters.searchQuery,
     ),
     queryFn: async () => {
       try {
@@ -160,7 +165,7 @@ export function useCompareTestsData(filters: CompareFilters) {
           const categoryName = effectiveCategory || "all";
           results = await CompareService.getTestsByCategory(
             categoryName,
-            providerFilter
+            providerFilter,
           );
         }
 
@@ -180,7 +185,6 @@ export function useCompareTestsData(filters: CompareFilters) {
     const filtered = applyLocalFilters(clean, filters);
     return sortTests(filtered, filters.sortBy);
   }, [testsQuery.data, filters]);
-
 
   // Clear cache
   const clearCache = useCallback(() => {

@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Check, X } from "lucide-react";
 import { TableCell, TableRow } from "@/components/ui/table";
@@ -18,18 +17,30 @@ const TestFeatureRow = ({ feature, items }: TestFeatureRowProps) => {
   // Format feature name for display
   const getFeatureDisplayName = (feature: string) => {
     switch (feature) {
-      case "bioMarkers": return "Biomarkers";
-      case "turnaround": return "Turnaround time";
-      case "doctorReview": return "Clinical review";
-      case "collection": return "Collection method";
-      case "sampleType": return "Sample type";
-      case "additionalFees": return "Additional collection fees";
-      case "totalCost": return "Total expected cost";
-      case "Video otoscopy": return "Video otoscopy";
-      case "Both ears": return "Both ears included";
-      case "Audiologist performed": return "Audiologist performed";
-      case "Free follow-up": return "Free follow-up";
-      default: return feature;
+      case "bioMarkers":
+        return "Biomarkers";
+      case "turnaround":
+        return "Turnaround time";
+      case "doctorReview":
+        return "Clinical review";
+      case "collection":
+        return "Collection method";
+      case "sampleType":
+        return "Sample type";
+      case "additionalFees":
+        return "Additional collection fees";
+      case "totalCost":
+        return "Total expected cost";
+      case "Video otoscopy":
+        return "Video otoscopy";
+      case "Both ears":
+        return "Both ears included";
+      case "Audiologist performed":
+        return "Audiologist performed";
+      case "Free follow-up":
+        return "Free follow-up";
+      default:
+        return feature;
     }
   };
 

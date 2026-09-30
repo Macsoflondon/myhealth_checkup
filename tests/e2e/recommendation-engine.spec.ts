@@ -9,7 +9,8 @@ import { test, expect, type Page } from "@playwright/test";
 const MOCK_RESPONSE = {
   medicalDisclaimer:
     "This information is for educational purposes only and is not medical advice.",
-  analysis: "Your symptoms suggest reviewing thyroid and general wellness markers.",
+  analysis:
+    "Your symptoms suggest reviewing thyroid and general wellness markers.",
   generalGuidance: "Consider a comprehensive wellness screen.",
   whenToSeeDoctor: "Seek medical advice for persistent symptoms.",
   hasRecommendations: true,
@@ -19,7 +20,8 @@ const MOCK_RESPONSE = {
       provider: "Medichecks",
       providerId: "medichecks",
       price: 79,
-      reason: "Covers TSH, FT3, FT4 and thyroid antibodies to investigate fatigue.",
+      reason:
+        "Covers TSH, FT3, FT4 and thyroid antibodies to investigate fatigue.",
       category: "Thyroid",
       urgency: "medium",
       confidence: 92,
@@ -35,9 +37,12 @@ async function stubEdgeFunction(page: Page) {
       // Guard against regressions to the old key names.
       if (payload) {
         const keys = Object.keys(payload);
-        if (!keys.includes("query_text") || !keys.includes("method_preference")) {
+        if (
+          !keys.includes("query_text") ||
+          !keys.includes("method_preference")
+        ) {
           throw new Error(
-            `ai-human-context invoked with unexpected payload keys: ${keys.join(", ")}`
+            `ai-human-context invoked with unexpected payload keys: ${keys.join(", ")}`,
           );
         }
       }
@@ -56,13 +61,16 @@ async function submitAndAssert(page: Page) {
   await expect(engine).toBeVisible();
 
   // Heading must be visible (regression guard for invisible white-on-white text).
-  await expect(engine.getByRole("heading", { name: /AI Wellness Recommendations/i }))
-    .toBeVisible();
+  await expect(
+    engine.getByRole("heading", { name: /AI Wellness Recommendations/i }),
+  ).toBeVisible();
 
   const textarea = engine.locator("textarea");
   await textarea.fill("Persistent fatigue and low energy for six weeks");
 
-  await engine.getByRole("button", { name: /Get Wellness Recommendations/i }).click();
+  await engine
+    .getByRole("button", { name: /Get Wellness Recommendations/i })
+    .click();
 
   const results = engine.getByTestId("ai-recommendation-results");
   await expect(results).toBeVisible({ timeout: 10_000 });

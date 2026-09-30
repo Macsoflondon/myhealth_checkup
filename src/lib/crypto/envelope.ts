@@ -22,7 +22,7 @@
  *   2. `reencryptEnvelope()` reads with the old kid and writes with the new.
  */
 
-const ALG = 'AES-256-GCM' as const;
+const ALG = "AES-256-GCM" as const;
 
 export interface Envelope {
   alg: typeof ALG;
@@ -34,7 +34,7 @@ export interface Envelope {
 }
 
 function b64(bytes: Uint8Array): string {
-  let bin = '';
+  let bin = "";
   for (const b of bytes) bin += String.fromCharCode(b);
   return btoa(bin);
 }
@@ -51,8 +51,14 @@ function bs(u: Uint8Array): BufferSource {
 }
 
 async function importKey(rawKey: Uint8Array): Promise<CryptoKey> {
-  if (rawKey.byteLength !== 32) throw new Error('DEK must be 32 bytes');
-  return crypto.subtle.importKey('raw', bs(rawKey), { name: 'AES-GCM' }, false, ['encrypt', 'decrypt']);
+  if (rawKey.byteLength !== 32) throw new Error("DEK must be 32 bytes");
+  return crypto.subtle.importKey(
+    "raw",
+    bs(rawKey),
+    { name: "AES-GCM" },
+    false,
+    ["encrypt", "decrypt"],
+  );
 }
 
 export interface SealOpts {
@@ -61,13 +67,21 @@ export interface SealOpts {
   aad?: Uint8Array;
 }
 
-export async function seal(plaintext: string, opts: SealOpts): Promise<Envelope> {
+export async function seal(
+  plaintext: string,
+  opts: SealOpts,
+): Promise<Envelope> {
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const key = await importKey(opts.key);
   const buf = new TextEncoder().encode(plaintext);
   const cipherWithTag = new Uint8Array(
     await crypto.subtle.encrypt(
-      { name: 'AES-GCM', iv: bs(iv), additionalData: opts.aad ? bs(opts.aad) : undefined, tagLength: 128 },
+      {
+        name: "AES-GCM",
+        iv: bs(iv),
+        additionalData: opts.aad ? bs(opts.aad) : undefined,
+        tagLength: 128,
+      },
       key,
       bs(buf),
     ),
@@ -98,7 +112,12 @@ export async function open(env: Envelope, opts: OpenOpts): Promise<string> {
   combined.set(ct, 0);
   combined.set(tag, ct.byteLength);
   const plain = await crypto.subtle.decrypt(
-    { name: 'AES-GCM', iv: bs(unb64(env.iv)), additionalData: opts.aad ? bs(opts.aad) : undefined, tagLength: 128 },
+    {
+      name: "AES-GCM",
+      iv: bs(unb64(env.iv)),
+      additionalData: opts.aad ? bs(opts.aad) : undefined,
+      tagLength: 128,
+    },
     key,
     bs(combined),
   );
@@ -106,10 +125,15 @@ export async function open(env: Envelope, opts: OpenOpts): Promise<string> {
 }
 
 export function isEnvelope(value: unknown): value is Envelope {
-  if (!value || typeof value !== 'object') return false;
+  if (!value || typeof value !== "object") return false;
   const v = value as Record<string, unknown>;
-  return v.alg === ALG && typeof v.kid === 'string' && typeof v.iv === 'string'
-    && typeof v.ct === 'string' && typeof v.tag === 'string';
+  return (
+    v.alg === ALG &&
+    typeof v.kid === "string" &&
+    typeof v.iv === "string" &&
+    typeof v.ct === "string" &&
+    typeof v.tag === "string"
+  );
 }
 
 /**

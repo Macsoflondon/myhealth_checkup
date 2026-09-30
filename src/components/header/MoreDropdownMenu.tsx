@@ -175,7 +175,9 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
               <div className="grid grid-cols-1 gap-2">
                 {section.items.map((item) => {
                   const { Icon, color } = menuIconFor(item.name);
-                  const hasSubs = Boolean(item.hasDropdown && item.dropdownItems?.length);
+                  const hasSubs = Boolean(
+                    item.hasDropdown && item.dropdownItems?.length,
+                  );
                   const isExpanded = expandedItem === item.name;
                   return (
                     <div
@@ -192,7 +194,11 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
                             className="w-8 h-8 rounded-full inline-flex items-center justify-center shrink-0"
                             style={{ background: `${color}1a` }}
                           >
-                            <Icon className="w-4 h-4" style={{ color }} strokeWidth={2} />
+                            <Icon
+                              className="w-4 h-4"
+                              style={{ color }}
+                              strokeWidth={2}
+                            />
                           </span>
                           <span className="text-sm font-semibold text-[#081129] font-[Montserrat] truncate">
                             {item.name}
@@ -204,7 +210,9 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
                             aria-expanded={isExpanded}
                             aria-label={`Expand ${item.name}`}
                             onClick={() =>
-                              setExpandedItem((cur) => (cur === item.name ? null : item.name))
+                              setExpandedItem((cur) =>
+                                cur === item.name ? null : item.name,
+                              )
                             }
                             className="shrink-0 px-3 flex items-center justify-center border-l border-[#081129]/10 text-[#081129]/60"
                           >

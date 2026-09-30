@@ -73,14 +73,18 @@ for (const path of ROUTES) {
 
     // A crashed tree leaves an empty root, so assert real content mounted.
     const bodyText = (await page.locator("body").innerText()).trim();
-    expect(bodyText.length, `rendered text length for ${path}`).toBeGreaterThan(50);
+    expect(bodyText.length, `rendered text length for ${path}`).toBeGreaterThan(
+      50,
+    );
     await expect(page.locator("header, main, h1").first()).toBeVisible();
 
     expect(fatal, `fatal render errors on ${path}`).toEqual([]);
   });
 }
 
-test("client-side navigation between comparison routes stays stable", async ({ page }) => {
+test("client-side navigation between comparison routes stays stable", async ({
+  page,
+}) => {
   const fatal = collectErrors(page);
 
   await page.goto("/", { waitUntil: "domcontentloaded" });
@@ -93,8 +97,13 @@ test("client-side navigation between comparison routes stays stable", async ({ p
     }, path);
     await page.waitForTimeout(600);
     const bodyText = (await page.locator("body").innerText()).trim();
-    expect(bodyText.length, `rendered text length after navigating to ${path}`).toBeGreaterThan(50);
+    expect(
+      bodyText.length,
+      `rendered text length after navigating to ${path}`,
+    ).toBeGreaterThan(50);
   }
 
-  expect(fatal, "fatal render errors during client-side navigation").toEqual([]);
+  expect(fatal, "fatal render errors during client-side navigation").toEqual(
+    [],
+  );
 });

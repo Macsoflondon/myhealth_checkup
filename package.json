@@ -147,7 +147,7 @@
     "fast-uri": "^3.1.6",
     "qs": "^6.16.0",
     "js-yaml": "^5.2.3",
-    "@tanstack/router-core": "^1.171.19"
+    "@tanstack/router-core": "^1.171.34"
   },
   "resolutions": {
     "@hono/node-server": "^2.0.12",
@@ -156,6 +156,6 @@
     "qs": "^6.16.0",
     "js-yaml": "^5.2.3",
     "nanoid": "^3.3.18",
-    "@tanstack/router-core": "^1.171.19"
+    "@tanstack/router-core": "^1.171.34"
   }
 }

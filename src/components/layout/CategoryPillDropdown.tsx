@@ -10,7 +10,11 @@ const NAVY = "#081129";
 interface Props {
   item: PrimaryNavItem;
   color: string;
-  Icon: React.ComponentType<{ className?: string; style?: React.CSSProperties; strokeWidth?: number }>;
+  Icon: React.ComponentType<{
+    className?: string;
+    style?: React.CSSProperties;
+    strokeWidth?: number;
+  }>;
   compact: boolean;
   displayName?: string;
   /** Tighter padding/gaps used by the straddling toolbar so the full row fits one line. */
@@ -24,7 +28,14 @@ interface Props {
  * The panel is `position: fixed` and portalled to the body so the dock's
  * horizontal scroll can never clip it.
  */
-export function CategoryPillDropdown({ item, color, Icon, compact, displayName, dense = false }: Props) {
+export function CategoryPillDropdown({
+  item,
+  color,
+  Icon,
+  compact,
+  displayName,
+  dense = false,
+}: Props) {
   const location = useLocation();
   const currentUrl = location.pathname + location.search;
   const hasDropdown = Boolean(item.hasDropdown && item.dropdownItems?.length);
@@ -32,12 +43,18 @@ export function CategoryPillDropdown({ item, color, Icon, compact, displayName, 
   const wrapRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<number | null>(null);
   const [open, setOpen] = useState(false);
-  const [anchor, setAnchor] = useState<{ left: number; top: number } | null>(null);
+  const [anchor, setAnchor] = useState<{ left: number; top: number } | null>(
+    null,
+  );
 
   const isActiveParent = currentUrl === item.path;
 
-  const subItems = (item.dropdownItems ?? []).filter((s) => !/^view all/i.test(s.name));
-  const viewAll = (item.dropdownItems ?? []).find((s) => /^view all/i.test(s.name));
+  const subItems = (item.dropdownItems ?? []).filter(
+    (s) => !/^view all/i.test(s.name),
+  );
+  const viewAll = (item.dropdownItems ?? []).find((s) =>
+    /^view all/i.test(s.name),
+  );
   const twoColumn = subItems.length > 5;
   const panelWidth = twoColumn ? 460 : 280;
 
@@ -95,13 +112,19 @@ export function CategoryPillDropdown({ item, color, Icon, compact, displayName, 
         aria-haspopup={hasDropdown ? "menu" : undefined}
         aria-expanded={hasDropdown ? open : undefined}
         className={`group inline-flex items-center rounded-full no-underline transition-colors duration-200 shrink-0 ${
-          dense ? "gap-1 px-1 py-2" : "gap-0.5 px-1 py-2 2xl:gap-1 2xl:px-2 2xl:py-2.5"
+          dense
+            ? "gap-1 px-1 py-2"
+            : "gap-0.5 px-1 py-2 2xl:gap-1 2xl:px-2 2xl:py-2.5"
         } ${compact ? "sm:py-2.5" : "sm:py-2.5"} ${
           highlighted ? "" : "hover:bg-brand-pink/10"
         }`}
         style={
           highlighted
-            ? { backgroundColor: isActiveParent ? `${PINK}14` : "rgba(34,192,212,0.12)" }
+            ? {
+                backgroundColor: isActiveParent
+                  ? `${PINK}14`
+                  : "rgba(34,192,212,0.12)",
+              }
             : undefined
         }
       >
@@ -119,7 +142,9 @@ export function CategoryPillDropdown({ item, color, Icon, compact, displayName, 
               : "text-xs sm:text-[12px] tracking-[-0.02em] 2xl:text-sm 2xl:tracking-normal"
           }`}
 
-          style={{ color: isActiveParent ? PINK : open ? "#127f8e" : "#081129" }}
+          style={{
+            color: isActiveParent ? PINK : open ? "#127f8e" : "#081129",
+          }}
         >
           {displayName ?? item.name}
         </span>
@@ -131,68 +156,89 @@ export function CategoryPillDropdown({ item, color, Icon, compact, displayName, 
         )}
       </Link>
 
-      {open && anchor && hasDropdown && createPortal(
-        <div
-          role="menu"
-          aria-label={`${item.name} subcategories`}
-          onMouseEnter={openNow}
-          onMouseLeave={scheduleClose}
-          style={{
-            position: "fixed",
-            left: Math.max(12, Math.min(anchor.left, window.innerWidth - panelWidth - 12)),
-            top: anchor.top,
-            zIndex: 9999,
-            width: panelWidth,
-          }}
-          className="overflow-hidden rounded-2xl border border-white/50 bg-white/85 backdrop-blur-xl shadow-[0_24px_60px_rgba(8,17,41,0.22)] animate-in fade-in-0 slide-in-from-top-1 duration-150"
-        >
-          <ul className={`p-2.5 gap-0.5 ${twoColumn ? "grid grid-cols-2" : "flex flex-col"}`}>
-            {subItems.map((sub) => {
-              const active = currentUrl === sub.path;
-              return (
-                <li key={sub.path + sub.name}>
-                  <Link
-                    to={sub.path}
-                    role="menuitem"
-                    aria-current={active ? "page" : undefined}
-                    onClick={() => setOpen(false)}
-                    className={`flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-[13px] font-medium font-[Montserrat] no-underline transition-colors ${
-                      active ? "text-[#e70d69]" : "text-[#081129] hover:bg-white"
-                    }`}
-                    style={active ? { backgroundColor: `${PINK}14` } : undefined}
-                  >
-                    <span
-                      className="w-7 h-7 rounded-lg inline-flex items-center justify-center shrink-0"
-                      style={{ background: active ? `${PINK}1f` : `${color}1f` }}
+      {open &&
+        anchor &&
+        hasDropdown &&
+        createPortal(
+          <div
+            role="menu"
+            aria-label={`${item.name} subcategories`}
+            onMouseEnter={openNow}
+            onMouseLeave={scheduleClose}
+            style={{
+              position: "fixed",
+              left: Math.max(
+                12,
+                Math.min(anchor.left, window.innerWidth - panelWidth - 12),
+              ),
+              top: anchor.top,
+              zIndex: 9999,
+              width: panelWidth,
+            }}
+            className="overflow-hidden rounded-2xl border border-white/50 bg-white/85 backdrop-blur-xl shadow-[0_24px_60px_rgba(8,17,41,0.22)] animate-in fade-in-0 slide-in-from-top-1 duration-150"
+          >
+            <ul
+              className={`p-2.5 gap-0.5 ${twoColumn ? "grid grid-cols-2" : "flex flex-col"}`}
+            >
+              {subItems.map((sub) => {
+                const active = currentUrl === sub.path;
+                return (
+                  <li key={sub.path + sub.name}>
+                    <Link
+                      to={sub.path}
+                      role="menuitem"
+                      aria-current={active ? "page" : undefined}
+                      onClick={() => setOpen(false)}
+                      className={`flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-[13px] font-medium font-[Montserrat] no-underline transition-colors ${
+                        active
+                          ? "text-[#e70d69]"
+                          : "text-[#081129] hover:bg-white"
+                      }`}
+                      style={
+                        active ? { backgroundColor: `${PINK}14` } : undefined
+                      }
                     >
-                      <Icon className="w-3.5 h-3.5" style={{ color: active ? PINK : color }} strokeWidth={2} />
-                    </span>
-                    <span className="truncate">{sub.name}</span>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
+                      <span
+                        className="w-7 h-7 rounded-lg inline-flex items-center justify-center shrink-0"
+                        style={{
+                          background: active ? `${PINK}1f` : `${color}1f`,
+                        }}
+                      >
+                        <Icon
+                          className="w-3.5 h-3.5"
+                          style={{ color: active ? PINK : color }}
+                          strokeWidth={2}
+                        />
+                      </span>
+                      <span className="truncate">{sub.name}</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ul>
 
-          <div className="flex items-center justify-between gap-3 border-t border-[#081129]/[0.07] bg-[#081129]/[0.035] px-4 py-3">
-            <span className="text-[10px] font-bold uppercase tracking-[0.18em]" style={{ color: `${NAVY}66` }}>
-              {item.name}
-            </span>
-            {viewAll && (
-              <Link
-                to={viewAll.path}
-                role="menuitem"
-                onClick={() => setOpen(false)}
-                className="text-[11px] font-bold font-[Montserrat] no-underline hover:underline whitespace-nowrap"
-                style={{ color: PINK }}
+            <div className="flex items-center justify-between gap-3 border-t border-[#081129]/[0.07] bg-[#081129]/[0.035] px-4 py-3">
+              <span
+                className="text-[10px] font-bold uppercase tracking-[0.18em]"
+                style={{ color: `${NAVY}66` }}
               >
-                {viewAll.name}
-              </Link>
-            )}
-          </div>
-        </div>,
-        document.body,
-      )}
+                {item.name}
+              </span>
+              {viewAll && (
+                <Link
+                  to={viewAll.path}
+                  role="menuitem"
+                  onClick={() => setOpen(false)}
+                  className="text-[11px] font-bold font-[Montserrat] no-underline hover:underline whitespace-nowrap"
+                  style={{ color: PINK }}
+                >
+                  {viewAll.name}
+                </Link>
+              )}
+            </div>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }

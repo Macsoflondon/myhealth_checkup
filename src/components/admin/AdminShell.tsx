@@ -54,11 +54,23 @@ const groups: Array<{ label: string; items: NavItem[] }> = [
   {
     label: "Data",
     items: [
-      { title: "Test dashboard", url: "/admin/test-dashboard", icon: LayoutDashboard },
+      {
+        title: "Test dashboard",
+        url: "/admin/test-dashboard",
+        icon: LayoutDashboard,
+      },
       { title: "Scrapers", url: "/admin/scrapers", icon: RefreshCw },
       { title: "Test mapper", url: "/admin/test-mapper", icon: MapIcon },
-      { title: "Biomarker audit", url: "/admin/biomarker-audit", icon: FlaskConical },
-      { title: "Biomarker validation", url: "/admin/biomarker-validation", icon: ListChecks },
+      {
+        title: "Biomarker audit",
+        url: "/admin/biomarker-audit",
+        icon: FlaskConical,
+      },
+      {
+        title: "Biomarker validation",
+        url: "/admin/biomarker-validation",
+        icon: ListChecks,
+      },
       { title: "Data refresh", url: "/admin/data-refresh", icon: Database },
       { title: "Test upload", url: "/admin/test-upload", icon: Upload },
     ],
@@ -66,8 +78,16 @@ const groups: Array<{ label: string; items: NavItem[] }> = [
   {
     label: "System",
     items: [
-      { title: "Encryption status", url: "/admin/encryption-status", icon: KeyRound },
-      { title: "Security diff", url: "/admin/security-diff", icon: ShieldCheck },
+      {
+        title: "Encryption status",
+        url: "/admin/encryption-status",
+        icon: KeyRound,
+      },
+      {
+        title: "Security diff",
+        url: "/admin/security-diff",
+        icon: ShieldCheck,
+      },
       { title: "Control centre", url: "/control", icon: Layers },
     ],
   },
@@ -77,12 +97,16 @@ function AdminSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const { pathname } = useLocation();
-  const isActive = (url: string) => pathname === url || pathname.startsWith(url + "/");
+  const isActive = (url: string) =>
+    pathname === url || pathname.startsWith(url + "/");
 
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader className="px-3 py-2">
-        <NavLink to="/admin/soc-watch" className="flex items-center gap-2 text-sm font-semibold">
+        <NavLink
+          to="/admin/soc-watch"
+          className="flex items-center gap-2 text-sm font-semibold"
+        >
           <AlertTriangle className="h-4 w-4 text-primary" />
           {!collapsed && <span>Admin</span>}
         </NavLink>
@@ -95,10 +119,19 @@ function AdminSidebar() {
               <SidebarMenu>
                 {g.items.map((item) => (
                   <SidebarMenuItem key={item.url}>
-                    <SidebarMenuButton asChild isActive={isActive(item.url)} tooltip={item.title}>
-                      <NavLink to={item.url} className="flex items-center gap-2">
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive(item.url)}
+                      tooltip={item.title}
+                    >
+                      <NavLink
+                        to={item.url}
+                        className="flex items-center gap-2"
+                      >
                         <item.icon className="h-4 w-4 shrink-0" />
-                        {!collapsed && <span className="truncate">{item.title}</span>}
+                        {!collapsed && (
+                          <span className="truncate">{item.title}</span>
+                        )}
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -120,7 +153,9 @@ export function AdminShell({ children }: PropsWithChildren) {
         <div className="flex-1 flex flex-col min-w-0">
           <header className="h-12 flex items-center gap-2 border-b px-2 sticky top-0 bg-background z-10">
             <SidebarTrigger />
-            <span className="text-xs text-muted-foreground">myhealth checkup · admin</span>
+            <span className="text-xs text-muted-foreground">
+              myhealth checkup · admin
+            </span>
           </header>
           <main className="flex-1 min-w-0">{children}</main>
         </div>

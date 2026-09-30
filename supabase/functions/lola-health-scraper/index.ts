@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
-import { getErrorMessage } from '../_shared/errors.ts';
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
+import { getErrorMessage } from "../_shared/errors.ts";
 import {
   parseTurnaround,
   upsertWithProvenance,
   startScrapeRun,
   finishScrapeRun,
   newCounters,
-} from '../_shared/scrape/index.ts';
+} from "../_shared/scrape/index.ts";
 
 function extractTurnaroundText(md: string): string | null {
   const patterns = [
@@ -21,95 +21,96 @@ function extractTurnaroundText(md: string): string | null {
   return null;
 }
 
-
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
-const LOLA_COLLECTION_PRODUCTS_URL = 'https://lolahealth.com/collections/blood-tests/products.json?limit=250';
+const LOLA_COLLECTION_PRODUCTS_URL =
+  "https://lolahealth.com/collections/blood-tests/products.json?limit=250";
 
 // Lola's product page publishes this as a 70-biomarker panel. Keep this
 // authoritative list explicit because loose markdown keyword matching drops
 // lipid ratios and can also duplicate ApoB labels.
 const PEAK_INSIGHTS_70_BIOMARKERS = [
-  'Albumin',
-  'Ferritin',
-  'Iron',
-  'Globulin',
-  'TIBC (Total Iron Binding Capacity)',
-  'Transferrin',
-  'Transferrin Saturation',
-  'Calcium',
-  'Corrected Calcium',
-  'Apolipoprotein B (ApoB)',
-  'Apolipoprotein A1 (ApoA1)',
-  'VLDL (Very Low-Density Lipoprotein)',
-  'ApoB : ApoA1 Ratio',
-  'Cholesterol',
-  'Chol:HDL Ratio',
-  'HDL (High-Density Lipoprotein) Cholesterol',
-  'HDL Cholesterol %',
-  'LDL (Low-Density Lipoprotein) Cholesterol',
-  'Non-HDL Cholesterol',
-  'Triglycerides',
-  'HbA1c (Glycated Haemoglobin)',
-  'Sodium',
-  'Creatinine',
-  'eGFR',
-  'Urea',
-  'Alanine Aminotransferase (ALT)',
-  'Alkaline Phosphatase (ALP)',
-  'Gamma GT (Gamma-glutamyltransferase)',
-  'Total Bilirubin',
-  'Total Protein',
-  'CK (Creatine Kinase)',
-  'Basophils',
-  'Eosinophils',
-  'Haematocrit',
-  'Haemoglobin',
-  'Lymphocytes',
-  'MCHC (Mean Corpuscular Hemoglobin Concentration)',
-  'Mean Cell Hb (Mean Corpuscular Hemoglobin)',
-  'Mean Cell Volume (MCV)',
-  'Monocytes',
-  'MPV (Mean Platelet Volume)',
-  'Neutrophils',
-  'Platelets',
-  'Red Blood Cells',
-  'Red Cell Distribution Width (RDW)',
-  'White Blood Cells',
-  'HsCRP (High-sensitivity C-reactive Protein)',
-  'Uric Acid',
-  'IgE (Total)',
-  'Follicle Stimulating Hormone (FSH)',
-  'Luteinising Hormone (LH)',
-  'Progesterone',
-  'Prolactin',
-  'Total PSA (Prostate-Specific Antigen)',
-  'DHEA-S (Dehydroepiandrosterone-Sulphate)',
-  'Oestradiol (Estradiol)',
-  'Testosterone',
-  'Free Testosterone (Calculated)',
-  'Free Androgen Index (FAI)',
-  'SHBG (Sex Hormone-Binding Globulin)',
-  'Cortisol',
-  'Anti-TPO (Anti-Thyroidperoxidase Antibodies)',
-  'Anti-TG (Anti-Thyroglobulin Antibodies)',
-  'FT3 (Free Triiodothyronine)',
-  'FT4 (Free Thyroxine)',
-  'TSH (Thyroid-Stimulating Hormone)',
-  'Active B12',
-  'Magnesium',
-  'Serum Folate (Vitamin B9)',
-  'Vitamin D',
+  "Albumin",
+  "Ferritin",
+  "Iron",
+  "Globulin",
+  "TIBC (Total Iron Binding Capacity)",
+  "Transferrin",
+  "Transferrin Saturation",
+  "Calcium",
+  "Corrected Calcium",
+  "Apolipoprotein B (ApoB)",
+  "Apolipoprotein A1 (ApoA1)",
+  "VLDL (Very Low-Density Lipoprotein)",
+  "ApoB : ApoA1 Ratio",
+  "Cholesterol",
+  "Chol:HDL Ratio",
+  "HDL (High-Density Lipoprotein) Cholesterol",
+  "HDL Cholesterol %",
+  "LDL (Low-Density Lipoprotein) Cholesterol",
+  "Non-HDL Cholesterol",
+  "Triglycerides",
+  "HbA1c (Glycated Haemoglobin)",
+  "Sodium",
+  "Creatinine",
+  "eGFR",
+  "Urea",
+  "Alanine Aminotransferase (ALT)",
+  "Alkaline Phosphatase (ALP)",
+  "Gamma GT (Gamma-glutamyltransferase)",
+  "Total Bilirubin",
+  "Total Protein",
+  "CK (Creatine Kinase)",
+  "Basophils",
+  "Eosinophils",
+  "Haematocrit",
+  "Haemoglobin",
+  "Lymphocytes",
+  "MCHC (Mean Corpuscular Hemoglobin Concentration)",
+  "Mean Cell Hb (Mean Corpuscular Hemoglobin)",
+  "Mean Cell Volume (MCV)",
+  "Monocytes",
+  "MPV (Mean Platelet Volume)",
+  "Neutrophils",
+  "Platelets",
+  "Red Blood Cells",
+  "Red Cell Distribution Width (RDW)",
+  "White Blood Cells",
+  "HsCRP (High-sensitivity C-reactive Protein)",
+  "Uric Acid",
+  "IgE (Total)",
+  "Follicle Stimulating Hormone (FSH)",
+  "Luteinising Hormone (LH)",
+  "Progesterone",
+  "Prolactin",
+  "Total PSA (Prostate-Specific Antigen)",
+  "DHEA-S (Dehydroepiandrosterone-Sulphate)",
+  "Oestradiol (Estradiol)",
+  "Testosterone",
+  "Free Testosterone (Calculated)",
+  "Free Androgen Index (FAI)",
+  "SHBG (Sex Hormone-Binding Globulin)",
+  "Cortisol",
+  "Anti-TPO (Anti-Thyroidperoxidase Antibodies)",
+  "Anti-TG (Anti-Thyroglobulin Antibodies)",
+  "FT3 (Free Triiodothyronine)",
+  "FT4 (Free Thyroxine)",
+  "TSH (Thyroid-Stimulating Hormone)",
+  "Active B12",
+  "Magnesium",
+  "Serum Folate (Vitamin B9)",
+  "Vitamin D",
 ] as const;
 
 function normalizeUrl(url: string | null | undefined, baseUrl: string) {
   if (!url) return null;
   if (/^https?:\/\//i.test(url)) return url;
-  if (url.startsWith('//')) return `https:${url}`;
-  if (url.startsWith('/')) return new URL(url, baseUrl).toString();
+  if (url.startsWith("//")) return `https:${url}`;
+  if (url.startsWith("/")) return new URL(url, baseUrl).toString();
   return null;
 }
 
@@ -126,12 +127,14 @@ function extractCollectionBasePrice(product: any): number | null {
 async function fetchLolaCollectionProducts(): Promise<any[]> {
   const response = await fetch(LOLA_COLLECTION_PRODUCTS_URL, {
     headers: {
-      'User-Agent': 'Mozilla/5.0 (compatible; LovableBot/1.0; +https://lovable.dev)',
-      Accept: 'application/json,text/plain,*/*',
+      "User-Agent":
+        "Mozilla/5.0 (compatible; LovableBot/1.0; +https://lovable.dev)",
+      Accept: "application/json,text/plain,*/*",
     },
   });
 
-  if (!response.ok) throw new Error(`Lola collection fetch failed: ${response.status}`);
+  if (!response.ok)
+    throw new Error(`Lola collection fetch failed: ${response.status}`);
   const data = await response.json();
   return Array.isArray(data?.products) ? data.products : [];
 }
@@ -144,24 +147,35 @@ async function fetchLolaCollectionProducts(): Promise<any[]> {
  */
 async function fetchLolaCollectionViaFirecrawl(apiKey: string): Promise<any[]> {
   const result = await firecrawlScrape(
-    'https://lolahealth.com/collections/blood-tests',
+    "https://lolahealth.com/collections/blood-tests",
     apiKey,
-    { formats: ['html', 'markdown'], onlyMainContent: false, waitFor: 2000, timeout: 60000, proxy: 'stealth' },
+    {
+      formats: ["html", "markdown"],
+      onlyMainContent: false,
+      waitFor: 2000,
+      timeout: 60000,
+      proxy: "stealth",
+    },
   );
   if (!result.success || !result.data) return [];
 
-  const html: string = result.data.html || '';
-  const markdown: string = result.data.markdown || '';
+  const html: string = result.data.html || "";
+  const markdown: string = result.data.markdown || "";
   const handles = new Set<string>();
 
-  for (const m of html.matchAll(/\/products\/([a-z0-9-]+)(?:["'?#/]|$)/gi)) handles.add(m[1]);
-  for (const m of markdown.matchAll(/\/products\/([a-z0-9-]+)/gi)) handles.add(m[1]);
+  for (const m of html.matchAll(/\/products\/([a-z0-9-]+)(?:["'?#/]|$)/gi))
+    handles.add(m[1]);
+  for (const m of markdown.matchAll(/\/products\/([a-z0-9-]+)/gi))
+    handles.add(m[1]);
 
   const stubs: any[] = [];
   for (const handle of handles) {
-    if (handle.includes('subscription')) continue;
+    if (handle.includes("subscription")) continue;
     // Best-effort image extraction: nearest <img src=""> after the handle in HTML
-    const imgRe = new RegExp(`/products/${handle}[^"']*["'][^>]*>[\\s\\S]{0,400}?<img[^>]+src=["']([^"']+)`, 'i');
+    const imgRe = new RegExp(
+      `/products/${handle}[^"']*["'][^>]*>[\\s\\S]{0,400}?<img[^>]+src=["']([^"']+)`,
+      "i",
+    );
     const imgMatch = html.match(imgRe);
     stubs.push({
       handle,
@@ -170,84 +184,113 @@ async function fetchLolaCollectionViaFirecrawl(apiKey: string): Promise<any[]> {
       images: imgMatch ? [{ src: imgMatch[1] }] : [],
     });
   }
-  console.log(`[fallback] Firecrawl collection scrape recovered ${stubs.length} product handles`);
+  console.log(
+    `[fallback] Firecrawl collection scrape recovered ${stubs.length} product handles`,
+  );
   return stubs;
 }
 
 function determineCategory(title: string, description: string): string {
-  const text = (title + ' ' + description).toLowerCase();
-  if (text.match(/liver|albumin|alt|ast|alp|bilirubin|ggt/)) return 'Liver Function';
-  if (text.match(/heart|cardiovascular|cholesterol|apolipoprotein|lipid/)) return 'Heart Health';
-  if (text.match(/fertility|amh|antimullerian|ovarian/)) return 'Fertility';
-  if (text.match(/thyroid|tsh|t3|t4|thyroxine/)) return 'Thyroid';
-  if (text.match(/vitamin|mineral|b12|d3|folate|iron|ferritin/)) return 'Vitamins & Minerals';
-  if (text.match(/diabetes|glucose|hba1c|insulin/)) return 'Diabetes';
-  if (text.match(/women|female|menopause|oestrogen|progesterone/)) return "Women's Health";
+  const text = (title + " " + description).toLowerCase();
+  if (text.match(/liver|albumin|alt|ast|alp|bilirubin|ggt/))
+    return "Liver Function";
+  if (text.match(/heart|cardiovascular|cholesterol|apolipoprotein|lipid/))
+    return "Heart Health";
+  if (text.match(/fertility|amh|antimullerian|ovarian/)) return "Fertility";
+  if (text.match(/thyroid|tsh|t3|t4|thyroxine/)) return "Thyroid";
+  if (text.match(/vitamin|mineral|b12|d3|folate|iron|ferritin/))
+    return "Vitamins & Minerals";
+  if (text.match(/diabetes|glucose|hba1c|insulin/)) return "Diabetes";
+  if (text.match(/women|female|menopause|oestrogen|progesterone/))
+    return "Women's Health";
   if (text.match(/men|male|testosterone|prostate|psa/)) return "Men's Health";
-  if (text.match(/kidney|renal|creatinine|egfr|urea/)) return 'Kidney Function';
-  if (text.match(/inflammation|crp|esr/)) return 'Inflammation';
-  if (text.match(/hormone/)) return 'Hormones';
-  if (text.match(/blood count|cbc|fbc|haemoglobin|wbc|rbc/)) return 'Blood Count';
-  if (text.match(/sports|fitness|performance|athlete/)) return 'Sports & Fitness';
-  return 'General Health';
+  if (text.match(/kidney|renal|creatinine|egfr|urea/)) return "Kidney Function";
+  if (text.match(/inflammation|crp|esr/)) return "Inflammation";
+  if (text.match(/hormone/)) return "Hormones";
+  if (text.match(/blood count|cbc|fbc|haemoglobin|wbc|rbc/))
+    return "Blood Count";
+  if (text.match(/sports|fitness|performance|athlete/))
+    return "Sports & Fitness";
+  return "General Health";
 }
 
-import { firecrawlScrape, firecrawlMap, runInChunks } from '../_shared/firecrawl-helpers.ts';
+import {
+  firecrawlScrape,
+  firecrawlMap,
+  runInChunks,
+} from "../_shared/firecrawl-helpers.ts";
 
 /**
  * Lola Health is a phlebotomy service: blood panels are collected by a nurse
  * (home visit) or in clinic — they are NOT self-collected finger-prick kits.
  * Only the posted DNA kits (TruAge / TruHealth / Biological Kit) are home kits.
  */
-const POSTED_KIT_PATTERN = /truage|truhealth|tru\s*diagnostic|biological\s*kit|dna/i;
+const POSTED_KIT_PATTERN =
+  /truage|truhealth|tru\s*diagnostic|biological\s*kit|dna/i;
 
 const collectionFor = (title: string, slug: string) => {
   const isPostedKit = POSTED_KIT_PATTERN.test(`${title} ${slug}`);
   return isPostedKit
     ? {
-        sample_type: 'Finger-prick',
-        collection_method: 'Home kit',
+        sample_type: "Finger-prick",
+        collection_method: "Home kit",
         home_kit_available: true,
         clinic_visit_available: false,
       }
     : {
-        sample_type: 'Venous',
-        collection_method: 'Phlebotomy (nurse visit or clinic)',
+        sample_type: "Venous",
+        collection_method: "Phlebotomy (nurse visit or clinic)",
         home_kit_available: false,
         clinic_visit_available: true,
       };
 };
 
-
 async function mapLola(apiKey: string): Promise<string[]> {
-  const links = await firecrawlMap('https://lolahealth.com/collections/blood-tests', apiKey, {
-    search: 'blood test', limit: 200,
-  });
-  return links.filter((l) => l.includes('/products/') && !l.includes('?') && !l.includes('subscription'));
+  const links = await firecrawlMap(
+    "https://lolahealth.com/collections/blood-tests",
+    apiKey,
+    {
+      search: "blood test",
+      limit: 200,
+    },
+  );
+  return links.filter(
+    (l) =>
+      l.includes("/products/") &&
+      !l.includes("?") &&
+      !l.includes("subscription"),
+  );
 }
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') return new Response(null, { headers: corsHeaders });
+  if (req.method === "OPTIONS")
+    return new Response(null, { headers: corsHeaders });
 
-  const _serviceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '';
-  if ((req.headers.get('Authorization') ?? '') !== `Bearer ${_serviceKey}`) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
-      status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  const _serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+  if ((req.headers.get("Authorization") ?? "") !== `Bearer ${_serviceKey}`) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 
   try {
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    const firecrawlApiKey = Deno.env.get('FIRECRAWL_API_KEY');
-    if (!firecrawlApiKey) throw new Error('FIRECRAWL_API_KEY not configured');
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const firecrawlApiKey = Deno.env.get("FIRECRAWL_API_KEY");
+    if (!firecrawlApiKey) throw new Error("FIRECRAWL_API_KEY not configured");
 
     const supabase = createClient(supabaseUrl, supabaseKey);
-    console.log('Starting Lola Health Firecrawl scraper...');
+    console.log("Starting Lola Health Firecrawl scraper...");
 
-    await supabase.from('scraping_jobs').upsert({
-      provider_id: 'lola-health', status: 'running', last_scraped: new Date().toISOString(),
-    }, { onConflict: 'provider_id' });
+    await supabase.from("scraping_jobs").upsert(
+      {
+        provider_id: "lola-health",
+        status: "running",
+        last_scraped: new Date().toISOString(),
+      },
+      { onConflict: "provider_id" },
+    );
 
     // Discover product URLs
     let productUrls: string[] = [];
@@ -255,23 +298,33 @@ Deno.serve(async (req) => {
       productUrls = await mapLola(firecrawlApiKey);
       console.log(`Map discovered ${productUrls.length} URLs`);
     } catch (e) {
-      console.error('Map failed:', getErrorMessage(e));
+      console.error("Map failed:", getErrorMessage(e));
     }
 
     // Fallback: scrape collection page for links
     if (productUrls.length === 0) {
       try {
-        const collResult = await firecrawlScrape('https://lolahealth.com/collections/blood-tests', firecrawlApiKey, {
-          formats: ['markdown'], onlyMainContent: true, waitFor: 1500, timeout: 60000, proxy: 'stealth',
-        });
+        const collResult = await firecrawlScrape(
+          "https://lolahealth.com/collections/blood-tests",
+          firecrawlApiKey,
+          {
+            formats: ["markdown"],
+            onlyMainContent: true,
+            waitFor: 1500,
+            timeout: 60000,
+            proxy: "stealth",
+          },
+        );
         if (collResult.success && collResult.data?.markdown) {
-          const urlMatches = collResult.data.markdown.matchAll(/\(https:\/\/lolahealth\.com\/products\/([^)]+)\)/g);
+          const urlMatches = collResult.data.markdown.matchAll(
+            /\(https:\/\/lolahealth\.com\/products\/([^)]+)\)/g,
+          );
           for (const m of urlMatches) {
             productUrls.push(`https://lolahealth.com/products/${m[1]}`);
           }
         }
       } catch (e) {
-        console.error('Collection scrape failed:', getErrorMessage(e));
+        console.error("Collection scrape failed:", getErrorMessage(e));
       }
     }
 
@@ -279,40 +332,88 @@ Deno.serve(async (req) => {
     try {
       collectionProducts = await fetchLolaCollectionProducts();
     } catch (e) {
-      console.warn(`Shopify products.json failed (${getErrorMessage(e)}) — falling back to Firecrawl HTML scrape`);
+      console.warn(
+        `Shopify products.json failed (${getErrorMessage(e)}) — falling back to Firecrawl HTML scrape`,
+      );
       try {
-        collectionProducts = await fetchLolaCollectionViaFirecrawl(firecrawlApiKey);
+        collectionProducts =
+          await fetchLolaCollectionViaFirecrawl(firecrawlApiKey);
       } catch (fbErr) {
-        console.error('Firecrawl collection fallback also failed:', getErrorMessage(fbErr));
+        console.error(
+          "Firecrawl collection fallback also failed:",
+          getErrorMessage(fbErr),
+        );
       }
     }
-    const collectionByHandle = new Map(collectionProducts.map((product: any) => [product.handle, product]));
+    const collectionByHandle = new Map(
+      collectionProducts.map((product: any) => [product.handle, product]),
+    );
 
     const collectionUrls = collectionProducts
-      .map((product: any) => `https://lolahealth.com/products/${product.handle}`)
-      .filter((url: string) => url.includes('/products/'));
+      .map(
+        (product: any) => `https://lolahealth.com/products/${product.handle}`,
+      )
+      .filter((url: string) => url.includes("/products/"));
 
     productUrls = [...new Set([...collectionUrls, ...productUrls])];
     console.log(`Total URLs: ${productUrls.length}`);
 
     const products: any[] = [];
-    const biomarkerTerms = ['vitamin', 'b12', 'folate', 'iron', 'ferritin', 'calcium', 'magnesium',
-      'testosterone', 'oestradiol', 'progesterone', 'fsh', 'lh', 'cortisol', 'dhea',
-      'tsh', 't3', 't4', 'cholesterol', 'hdl', 'ldl', 'triglyceride', 'alt', 'ast',
-      'bilirubin', 'albumin', 'creatinine', 'urea', 'egfr', 'glucose', 'hba1c', 'crp',
-      'haemoglobin', 'platelet', 'psa', 'thyroid', 'shbg', 'prolactin'];
+    const biomarkerTerms = [
+      "vitamin",
+      "b12",
+      "folate",
+      "iron",
+      "ferritin",
+      "calcium",
+      "magnesium",
+      "testosterone",
+      "oestradiol",
+      "progesterone",
+      "fsh",
+      "lh",
+      "cortisol",
+      "dhea",
+      "tsh",
+      "t3",
+      "t4",
+      "cholesterol",
+      "hdl",
+      "ldl",
+      "triglyceride",
+      "alt",
+      "ast",
+      "bilirubin",
+      "albumin",
+      "creatinine",
+      "urea",
+      "egfr",
+      "glucose",
+      "hba1c",
+      "crp",
+      "haemoglobin",
+      "platelet",
+      "psa",
+      "thyroid",
+      "shbg",
+      "prolactin",
+    ];
 
     // Batch mode, concurrency 4
     await runInChunks(productUrls, 8, async (url) => {
-      const slug = url.split('/products/').pop() || '';
+      const slug = url.split("/products/").pop() || "";
       console.log(`Scraping: ${slug}`);
       const result = await firecrawlScrape(url, firecrawlApiKey, {
-        formats: ['markdown', 'html'], onlyMainContent: true, waitFor: 1500, timeout: 60000, proxy: 'stealth',
+        formats: ["markdown", "html"],
+        onlyMainContent: true,
+        waitFor: 1500,
+        timeout: 60000,
+        proxy: "stealth",
       });
       if (!result.success || !result.data) return;
 
-      const markdown = result.data.markdown || '';
-      const html = result.data.html || '';
+      const markdown = result.data.markdown || "";
+      const html = result.data.html || "";
       const metadata = result.data.metadata || {};
 
       const collectionProduct = collectionByHandle.get(slug);
@@ -320,82 +421,106 @@ Deno.serve(async (req) => {
       // Authoritative title comes from the Shopify collection product when we
       // have it (unique per handle). Fall back to the scraped page metadata
       // only when the handle isn't in the collection feed.
-      let title = '';
-      if (collectionProduct && typeof collectionProduct.title === 'string') {
+      let title = "";
+      if (collectionProduct && typeof collectionProduct.title === "string") {
         title = collectionProduct.title.trim();
       }
       if (!title) {
-        title = metadata.title?.replace(/\s*[–|]\s*Lola\s*Health.*$/i, '').trim() || '';
+        title =
+          metadata.title?.replace(/\s*[–|]\s*Lola\s*Health.*$/i, "").trim() ||
+          "";
       }
       if (!title) {
         const h1 = markdown.match(/^#\s+(.+)$/m);
-        title = h1 ? h1[1].trim() : '';
+        title = h1 ? h1[1].trim() : "";
       }
       if (!title) return;
 
       const collectionBasePrice = extractCollectionBasePrice(collectionProduct);
-      const collectionHeadlinePrice = Number.isFinite(Number(collectionProduct?.variants?.[0]?.price))
+      const collectionHeadlinePrice = Number.isFinite(
+        Number(collectionProduct?.variants?.[0]?.price),
+      )
         ? Number(collectionProduct.variants[0].price)
         : null;
 
       const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
-      const markdownPrice = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : null;
-      const price = collectionHeadlinePrice ?? collectionBasePrice ?? markdownPrice;
+      const markdownPrice = priceMatch
+        ? parseFloat(priceMatch[1].replace(",", ""))
+        : null;
+      const price =
+        collectionHeadlinePrice ?? collectionBasePrice ?? markdownPrice;
 
       const origMatch = markdown.match(/~~£([\d,]+\.\d{2})~~/);
-      const originalPrice = origMatch ? parseFloat(origMatch[1].replace(',', '')) : null;
+      const originalPrice = origMatch
+        ? parseFloat(origMatch[1].replace(",", ""))
+        : null;
 
       const discountMatch = markdown.match(/(\d+)%\s*(?:OFF|off|discount)/i);
       const discount = discountMatch ? parseInt(discountMatch[1]) : null;
 
-      const bioCountMatch = markdown.match(/(\d+)\s*(?:Biomarkers?\s*Tested|biomarkers?)/i);
+      const bioCountMatch = markdown.match(
+        /(\d+)\s*(?:Biomarkers?\s*Tested|biomarkers?)/i,
+      );
       const biomarkerCount = bioCountMatch ? parseInt(bioCountMatch[1]) : null;
 
       const biomarkers: string[] = [];
-      const lines = markdown.split('\n');
+      const lines = markdown.split("\n");
       for (const line of lines) {
-        const clean = line.replace(/^[\s*•-]+/, '').trim();
-        if (clean.length > 2 && clean.length < 80 && biomarkerTerms.some(t => clean.toLowerCase().includes(t))) {
+        const clean = line.replace(/^[\s*•-]+/, "").trim();
+        if (
+          clean.length > 2 &&
+          clean.length < 80 &&
+          biomarkerTerms.some((t) => clean.toLowerCase().includes(t))
+        ) {
           biomarkers.push(clean);
         }
       }
 
-      const isPeakInsights70 = slug === 'peak-insights';
+      const isPeakInsights70 = slug === "peak-insights";
       const verifiedBiomarkers = isPeakInsights70
         ? [...PEAK_INSIGHTS_70_BIOMARKERS]
         : biomarkers;
       const verifiedBiomarkerCount = isPeakInsights70
         ? PEAK_INSIGHTS_70_BIOMARKERS.length
         : biomarkerCount || verifiedBiomarkers.length || null;
-      const isAddon = markdown.toLowerCase().includes('add-on') || markdown.toLowerCase().includes('can only be added');
+      const isAddon =
+        markdown.toLowerCase().includes("add-on") ||
+        markdown.toLowerCase().includes("can only be added");
       const turnaroundRaw = isPeakInsights70
-        ? 'Results in 2 Working Days'
+        ? "Results in 2 Working Days"
         : extractTurnaroundText(markdown);
 
       products.push({
         test_name: title,
-        provider_id: 'lola-health',
+        provider_id: "lola-health",
         provider_test_id: slug,
-        category: determineCategory(title, metadata.description || ''),
+        category: determineCategory(title, metadata.description || ""),
         price,
         base_price: collectionBasePrice,
         original_price: originalPrice,
         discount_percentage: discount,
-        description: metadata.description || `${title} blood test from Lola Health.`,
+        description:
+          metadata.description || `${title} blood test from Lola Health.`,
         url,
         image_url:
           normalizeUrl(collectionProduct?.image?.src, url) ||
           normalizeUrl(collectionProduct?.featured_image, url) ||
-          normalizeUrl(collectionProduct?.images?.[0]?.src ?? collectionProduct?.images?.[0], url) ||
+          normalizeUrl(
+            collectionProduct?.images?.[0]?.src ??
+              collectionProduct?.images?.[0],
+            url,
+          ) ||
           normalizeUrl(metadata.ogImage, url) ||
           (() => {
-            const m = html.match(/property="og:image"\s+content="([^"]+)"/i)
-              || html.match(/content="([^"]+)"\s+property="og:image"/i);
+            const m =
+              html.match(/property="og:image"\s+content="([^"]+)"/i) ||
+              html.match(/content="([^"]+)"\s+property="og:image"/i);
             return m ? normalizeUrl(m[1], url) : null;
           })(),
         is_active: true,
         is_addon: isAddon,
-        biomarkers_list: verifiedBiomarkers.length > 0 ? verifiedBiomarkers : null,
+        biomarkers_list:
+          verifiedBiomarkers.length > 0 ? verifiedBiomarkers : null,
         biomarker_count: verifiedBiomarkerCount,
         ...collectionFor(title, slug),
         turnaround_raw: turnaroundRaw,
@@ -403,7 +528,9 @@ Deno.serve(async (req) => {
         url_verified: true,
         url_verified_at: new Date().toISOString(),
       });
-      console.log(`✓ ${title} - £${price ?? 'N/A'}${isAddon ? ' (Add-on)' : ''}`);
+      console.log(
+        `✓ ${title} - £${price ?? "N/A"}${isAddon ? " (Add-on)" : ""}`,
+      );
     });
 
     // De-duplicate by test_name (case-insensitive, trimmed), keep first occurrence.
@@ -411,95 +538,133 @@ Deno.serve(async (req) => {
     // provider_tests_unique_active on (provider_id, test_name) WHERE is_active.
     const seenNames = new Set<string>();
     const dedupedProducts = products.filter((p) => {
-      const key = String(p.test_name ?? '').trim().toLowerCase();
+      const key = String(p.test_name ?? "")
+        .trim()
+        .toLowerCase();
       if (!key || seenNames.has(key)) return false;
       seenNames.add(key);
       return true;
     });
     if (dedupedProducts.length !== products.length) {
-      console.log(`Deduped ${products.length - dedupedProducts.length} duplicate test_name rows`);
+      console.log(
+        `Deduped ${products.length - dedupedProducts.length} duplicate test_name rows`,
+      );
     }
 
     // Per-row upsert loop: collect errors instead of throwing on first collision.
     // Per-row upsert via provenance helper: writes history + change events + safety rails.
-    const runId = await startScrapeRun(supabase, 'lola-health', 'lola-health-scraper');
+    const runId = await startScrapeRun(
+      supabase,
+      "lola-health",
+      "lola-health-scraper",
+    );
     const counters = newCounters();
     counters.tests_seen = dedupedProducts.length;
     let upsertedCount = 0;
     const rowErrors: string[] = [];
 
     for (const row of dedupedProducts) {
-      const turnaround = parseTurnaround(row.turnaround_raw ?? '');
-      const res = await upsertWithProvenance(supabase, {
-        provider_id: 'lola-health',
-        provider_test_id: row.provider_test_id,
-        test_name: row.test_name,
-        price: row.price,
-        biomarker_count: row.biomarker_count,
-        biomarkers_list: row.biomarkers_list,
-        turnaround_raw: row.turnaround_raw,
-        turnaround_hours: turnaround.hours,
-        turnaround_days: turnaround.days,
-        turnaround_unit: turnaround.unit,
-        sample_type: row.sample_type,
-        collection_method: row.collection_method,
-        in_stock: true,
-        scrape_source_url: row.url,
-      }, { scrapeRunId: runId });
+      const turnaround = parseTurnaround(row.turnaround_raw ?? "");
+      const res = await upsertWithProvenance(
+        supabase,
+        {
+          provider_id: "lola-health",
+          provider_test_id: row.provider_test_id,
+          test_name: row.test_name,
+          price: row.price,
+          biomarker_count: row.biomarker_count,
+          biomarkers_list: row.biomarkers_list,
+          turnaround_raw: row.turnaround_raw,
+          turnaround_hours: turnaround.hours,
+          turnaround_days: turnaround.days,
+          turnaround_unit: turnaround.unit,
+          sample_type: row.sample_type,
+          collection_method: row.collection_method,
+          in_stock: true,
+          scrape_source_url: row.url,
+        },
+        { scrapeRunId: runId },
+      );
 
       if (!res.ok) {
         rowErrors.push(`${row.provider_test_id}: ${res.error}`);
       } else {
         upsertedCount++;
-        if (res.action === 'inserted') counters.tests_new++;
-        else if (res.action === 'updated') counters.tests_updated++;
+        if (res.action === "inserted") counters.tests_new++;
+        else if (res.action === "updated") counters.tests_updated++;
 
         // Preserve Lola-specific side fields that upsertWithProvenance doesn't own.
         if (res.providerTestId) {
-          await supabase.from('provider_tests').update({
-            category: row.category,
-            description: row.description,
-            image_url: row.image_url,
-            home_kit_available: row.home_kit_available,
-            clinic_visit_available: row.clinic_visit_available,
-            was_price: row.original_price ?? null,
-          }).eq('id', res.providerTestId);
+          await supabase
+            .from("provider_tests")
+            .update({
+              category: row.category,
+              description: row.description,
+              image_url: row.image_url,
+              home_kit_available: row.home_kit_available,
+              clinic_visit_available: row.clinic_visit_available,
+              was_price: row.original_price ?? null,
+            })
+            .eq("id", res.providerTestId);
         }
       }
     }
 
-    await finishScrapeRun(supabase, runId, counters, upsertedCount > 0 ? 'success' : 'error') /*
-      */;
+    await finishScrapeRun(
+      supabase,
+      runId,
+      counters,
+      upsertedCount > 0 ? "success" : "error",
+    ); /*
+     */
 
     const succeeded = upsertedCount > 0;
     const errorSummary = rowErrors.length
-      ? `${rowErrors.length} row error(s): ${rowErrors.slice(0, 5).join('; ')}${rowErrors.length > 5 ? '…' : ''}`
+      ? `${rowErrors.length} row error(s): ${rowErrors.slice(0, 5).join("; ")}${rowErrors.length > 5 ? "…" : ""}`
       : null;
 
-    await supabase.from('scraping_jobs').upsert({
-      provider_id: 'lola-health',
-      status: succeeded ? 'completed' : 'failed',
-      last_scraped: new Date().toISOString(),
-      next_scrape: new Date(Date.now() + 12 * 3600000).toISOString(),
-      error_message: succeeded ? null : (errorSummary ?? 'No rows upserted'),
-    }, { onConflict: 'provider_id' });
+    await supabase.from("scraping_jobs").upsert(
+      {
+        provider_id: "lola-health",
+        status: succeeded ? "completed" : "failed",
+        last_scraped: new Date().toISOString(),
+        next_scrape: new Date(Date.now() + 12 * 3600000).toISOString(),
+        error_message: succeeded ? null : (errorSummary ?? "No rows upserted"),
+      },
+      { onConflict: "provider_id" },
+    );
 
-    return new Response(JSON.stringify({
-      success: succeeded,
-      message: `Scraped ${dedupedProducts.length} Lola Health tests via Firecrawl (upserted ${upsertedCount})`,
-      testsUpdated: upsertedCount,
-      rowErrors: rowErrors.length ? rowErrors : undefined,
-    }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: succeeded ? 200 : 500 });
-
+    return new Response(
+      JSON.stringify({
+        success: succeeded,
+        message: `Scraped ${dedupedProducts.length} Lola Health tests via Firecrawl (upserted ${upsertedCount})`,
+        testsUpdated: upsertedCount,
+        rowErrors: rowErrors.length ? rowErrors : undefined,
+      }),
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: succeeded ? 200 : 500,
+      },
+    );
   } catch (error) {
     const errMsg = getErrorMessage(error);
-    console.error('Lola Health scraper error:', errMsg);
-    const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
-    await supabase.from('scraping_jobs').upsert({
-      provider_id: 'lola-health', status: 'failed',
-      error_message: errMsg, last_scraped: new Date().toISOString(),
-    }, { onConflict: 'provider_id' });
-    return new Response(JSON.stringify({ success: false, error: errMsg }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 });
+    console.error("Lola Health scraper error:", errMsg);
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+    );
+    await supabase.from("scraping_jobs").upsert(
+      {
+        provider_id: "lola-health",
+        status: "failed",
+        error_message: errMsg,
+        last_scraped: new Date().toISOString(),
+      },
+      { onConflict: "provider_id" },
+    );
+    return new Response(JSON.stringify({ success: false, error: errMsg }), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 500,
+    });
   }
 });

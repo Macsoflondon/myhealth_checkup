@@ -8,7 +8,8 @@ export const Route = createFileRoute("/sitemap")({
   head: () =>
     buildRouteHead({
       title: "Site Map | myhealth checkup",
-      description: "Every page on myhealth checkup in one place: comparisons, categories, provider profiles, guides and legal information.",
+      description:
+        "Every page on myhealth checkup in one place: comparisons, categories, provider profiles, guides and legal information.",
       path: "/sitemap",
     }),
   component: SitemapPage,

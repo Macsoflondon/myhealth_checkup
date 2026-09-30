@@ -33,17 +33,27 @@ interface JsonLdRating {
   };
 }
 
-function extractRating(html: string): { rating: number | null; count: number | null } {
-  const scripts = html.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi);
+function extractRating(html: string): {
+  rating: number | null;
+  count: number | null;
+} {
+  const scripts = html.matchAll(
+    /<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi,
+  );
   for (const m of scripts) {
     try {
       const parsed = JSON.parse(m[1].trim()) as JsonLdRating | JsonLdRating[];
       const nodes = Array.isArray(parsed) ? parsed : [parsed];
       for (const node of nodes) {
         const ar = node?.aggregateRating;
-        if (ar && (ar.ratingValue !== undefined || ar.reviewCount !== undefined)) {
-          const rating = ar.ratingValue !== undefined ? Number(ar.ratingValue) : null;
-          const count = ar.reviewCount !== undefined ? Number(ar.reviewCount) : null;
+        if (
+          ar &&
+          (ar.ratingValue !== undefined || ar.reviewCount !== undefined)
+        ) {
+          const rating =
+            ar.ratingValue !== undefined ? Number(ar.ratingValue) : null;
+          const count =
+            ar.reviewCount !== undefined ? Number(ar.reviewCount) : null;
           return {
             rating: Number.isFinite(rating) ? rating : null,
             count: Number.isFinite(count) ? count : null,
@@ -62,7 +72,9 @@ function extractRating(html: string): { rating: number | null; count: number | n
  * matches a Trustpilot review URL) or a full "https://www.trustpilot.com/..."
  * URL if the caller already knows the exact page.
  */
-export async function fetchTrustpilot(domainOrSlug: string): Promise<TrustpilotResult> {
+export async function fetchTrustpilot(
+  domainOrSlug: string,
+): Promise<TrustpilotResult> {
   const key = domainOrSlug.toLowerCase().trim();
   const now = Date.now();
   const cached = cache.get(key);
@@ -84,7 +96,7 @@ export async function fetchTrustpilot(domainOrSlug: string): Promise<TrustpilotR
       headers: {
         "User-Agent":
           "Mozilla/5.0 (compatible; myhealthcheckup-scraper/1.0; +https://myhealthcheckup.co.uk)",
-        "Accept": "text/html,application/xhtml+xml",
+        Accept: "text/html,application/xhtml+xml",
       },
       redirect: "follow",
     });

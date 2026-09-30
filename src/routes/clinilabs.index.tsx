@@ -8,7 +8,8 @@ export const Route = createFileRoute("/clinilabs/")({
   head: () =>
     buildRouteHead({
       title: "Clinilabs Blood Tests & Prices | myhealth checkup",
-      description: "Compare Clinilabs blood tests, biomarkers, turnaround times and prices in GBP from UKAS-accredited laboratories.",
+      description:
+        "Compare Clinilabs blood tests, biomarkers, turnaround times and prices in GBP from UKAS-accredited laboratories.",
       path: "/clinilabs",
     }),
   component: ClinilabsPage,

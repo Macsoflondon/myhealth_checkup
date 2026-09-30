@@ -32,14 +32,14 @@ export function CategoryFilters({
 
   return (
     <div className="mb-5">
-
       {/* Sort + result count row */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="text-xs font-semibold" style={{ color: TURQUOISE }}>
           {resultCount} test{resultCount !== 1 ? "s" : ""} found
           {searchTerm && (
             <span>
-              {" "}for "<strong>{searchTerm}</strong>"
+              {" "}
+              for "<strong>{searchTerm}</strong>"
             </span>
           )}
           {compareCount > 0 && (

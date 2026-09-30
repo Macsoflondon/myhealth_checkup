@@ -45,14 +45,19 @@ const TestFinderRecommendationsPage = () => {
           name="description"
           content="Personalised health test recommendations based on your goals, concerns, and preferences."
         />
-        <link rel="canonical" href="https://myhealthcheckup.co.uk/find-test/recommendations" />
+        <link
+          rel="canonical"
+          href="https://myhealthcheckup.co.uk/find-test/recommendations"
+        />
       </Helmet>
       <div className="min-h-screen bg-white text-[#081129]">
         <Header />
         <main className="container mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-[#081129]">Your recommended tests</h1>
+              <h1 className="text-3xl sm:text-4xl font-bold text-[#081129]">
+                Your recommended tests
+              </h1>
               <p className="text-[#081129]/70 mt-2 text-sm sm:text-base">
                 {recs.length > 0
                   ? `Top ${recs.length} matches ranked by relevance to your profile. Add the ones you'd like to compare.`
@@ -104,7 +109,8 @@ const TestFinderRecommendationsPage = () => {
                         </span>
                       </VerificationMark>
                       <span className="text-xs text-white/78">
-                        {cost.isEstimate ? "from" : "all-in"} {formatGBP(cost.total)}
+                        {cost.isEstimate ? "from" : "all-in"}{" "}
+                        {formatGBP(cost.total)}
                       </span>
                     </div>
                     <div className="text-xs text-white/55 mt-1">

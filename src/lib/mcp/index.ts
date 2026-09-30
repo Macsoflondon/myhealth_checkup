@@ -13,7 +13,8 @@ import getPerformanceSummary from "./tools/get-performance-summary";
 import getBusinessSummary from "./tools/get-business-summary";
 import getAdminAuditTrail from "./tools/get-admin-audit-trail";
 
-const projectRef = import.meta.env.VITE_SUPABASE_PROJECT_ID ?? "project-ref-unset";
+const projectRef =
+  import.meta.env.VITE_SUPABASE_PROJECT_ID ?? "project-ref-unset";
 
 export default defineMcp({
   name: "myhealth-checkup-mcp",

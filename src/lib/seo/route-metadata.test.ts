@@ -18,9 +18,11 @@ interface HeadLike {
 const metaByName = (head: HeadLike, key: "name" | "property", value: string) =>
   head.meta.find((m) => m[key] === value)?.["content"] as string | undefined;
 
-const titleOf = (head: HeadLike) => head.meta.find((m) => "title" in m)?.["title"] as string;
+const titleOf = (head: HeadLike) =>
+  head.meta.find((m) => "title" in m)?.["title"] as string;
 const canonicalOf = (head: HeadLike) =>
-  head.links?.find((l) => l["rel"] === "canonical")?.["href"] as string | undefined;
+  head.links?.find((l) => l["rel"] === "canonical")?.["href"] as
+    string | undefined;
 
 const assertCoreTags = (head: HeadLike, expectedUrl: string) => {
   expect(titleOf(head)).toBeTruthy();
@@ -74,16 +76,24 @@ describe("provider page metadata", () => {
 
   it("emits valid, non-duplicated JSON-LD pinned to the provider path", () => {
     const graph = (head.scripts ?? []).map((s) => JSON.parse(s.children));
-    expect(graph.map((n) => n["@type"])).toEqual(["MedicalBusiness", "BreadcrumbList"]);
+    expect(graph.map((n) => n["@type"])).toEqual([
+      "MedicalBusiness",
+      "BreadcrumbList",
+    ]);
     expect(validateJsonLd(graph[0], { expectedUrl: url })).toEqual([]);
     expect(validateJsonLd(graph[1])).toEqual([]);
   });
 
   it("omits aggregateRating when no ratings exist", () => {
-    const bare = buildProviderHead({ providerId: "medichecks", providerName: "Medichecks" });
+    const bare = buildProviderHead({
+      providerId: "medichecks",
+      providerName: "Medichecks",
+    });
     const node = JSON.parse((bare.scripts ?? [])[0].children);
     expect(node.aggregateRating).toBeUndefined();
-    expect(validateJsonLd(node, { expectedUrl: `${SITE}/provider/medichecks` })).toEqual([]);
+    expect(
+      validateJsonLd(node, { expectedUrl: `${SITE}/provider/medichecks` }),
+    ).toEqual([]);
   });
 });
 
@@ -105,7 +115,10 @@ describe("test detail metadata", () => {
 
   it("emits a valid MedicalTest graph with a GBP offer", () => {
     const graph = (head.scripts ?? []).map((s) => JSON.parse(s.children));
-    expect(graph.map((n) => n["@type"])).toEqual(["MedicalTest", "BreadcrumbList"]);
+    expect(graph.map((n) => n["@type"])).toEqual([
+      "MedicalTest",
+      "BreadcrumbList",
+    ]);
     expect(validateJsonLd(graph[0], { expectedUrl: url })).toEqual([]);
     expect(graph[0].offers.priceCurrency).toBe("GBP");
     expect(graph[0].offers.price).toBe("69.00");
@@ -121,13 +134,21 @@ describe("test detail metadata", () => {
     });
     const node = JSON.parse((noPrice.scripts ?? [])[0].children);
     expect(node.offers).toBeUndefined();
-    expect(validateJsonLd(node, { expectedUrl: `${SITE}/provider/medichecks/tests/abc` })).toEqual([]);
+    expect(
+      validateJsonLd(node, {
+        expectedUrl: `${SITE}/provider/medichecks/tests/abc`,
+      }),
+    ).toEqual([]);
   });
 });
 
 describe("metadata uniqueness across routes", () => {
   const heads = [
-    buildRouteHead({ title: "Home | myhealth checkup", description: "Home page.", path: "/" }),
+    buildRouteHead({
+      title: "Home | myhealth checkup",
+      description: "Home page.",
+      path: "/",
+    }),
     buildProviderHead({ providerId: "medichecks", providerName: "Medichecks" }),
     buildProviderHead({ providerId: "randox", providerName: "Randox Health" }),
     buildTestHead({
@@ -151,8 +172,12 @@ describe("metadata uniqueness across routes", () => {
 
   it("never emits duplicate canonical links or og:url tags", () => {
     for (const head of heads) {
-      expect((head.links ?? []).filter((l) => l["rel"] === "canonical")).toHaveLength(1);
-      expect(head.meta.filter((m) => m["property"] === "og:url")).toHaveLength(1);
+      expect(
+        (head.links ?? []).filter((l) => l["rel"] === "canonical"),
+      ).toHaveLength(1);
+      expect(head.meta.filter((m) => m["property"] === "og:url")).toHaveLength(
+        1,
+      );
     }
   });
 });
@@ -170,8 +195,14 @@ describe("validateJsonLd", () => {
   });
 
   it("flags duplicate root types", () => {
-    const node = { "@context": "https://schema.org", "@type": "MedicalTest", name: "A" };
+    const node = {
+      "@context": "https://schema.org",
+      "@type": "MedicalTest",
+      name: "A",
+    };
     const issues = validateJsonLd([node, { ...node, name: "B" }]);
-    expect(issues.some((i) => i.message.includes("duplicate root @type"))).toBe(true);
+    expect(issues.some((i) => i.message.includes("duplicate root @type"))).toBe(
+      true,
+    );
   });
 });

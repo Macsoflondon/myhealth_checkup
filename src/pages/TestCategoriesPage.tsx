@@ -22,25 +22,28 @@ const BENEFITS = [
   {
     icon: Shield,
     title: "UKAS-Accredited Labs",
-    description: "Every listed test is processed by an accredited UK laboratory",
+    description:
+      "Every listed test is processed by an accredited UK laboratory",
   },
   {
     icon: FlaskConical,
     title: "Transparent Pricing",
-    description: "Full biomarker lists and total costs shown up front — no hidden fees",
+    description:
+      "Full biomarker lists and total costs shown up front — no hidden fees",
   },
   {
     icon: Scale,
     title: "Editorially Independent",
-    description: "Comparison ranking is never influenced by provider commercials",
+    description:
+      "Comparison ranking is never influenced by provider commercials",
   },
 ] as const;
 
-const BENEFITS_TUPLE: [typeof BENEFITS[0], typeof BENEFITS[1], typeof BENEFITS[2]] = [
-  BENEFITS[0],
-  BENEFITS[1],
-  BENEFITS[2],
-];
+const BENEFITS_TUPLE: [
+  (typeof BENEFITS)[0],
+  (typeof BENEFITS)[1],
+  (typeof BENEFITS)[2],
+] = [BENEFITS[0], BENEFITS[1], BENEFITS[2]];
 
 const PILL_LABEL = "All Test Categories";
 const BENEFITS_TITLE = "Why Compare Through myhealth checkup?";
@@ -50,7 +53,9 @@ const TestCategoriesPage = () => {
 
   const filters = useMemo(() => {
     if (!tests) return ["All"];
-    const unique = Array.from(new Set(tests.map((t) => t.tag))).filter(Boolean).sort();
+    const unique = Array.from(new Set(tests.map((t) => t.tag)))
+      .filter(Boolean)
+      .sort();
     return ["All", ...unique];
   }, [tests]);
 
@@ -79,7 +84,10 @@ const TestCategoriesPage = () => {
         benefits={BENEFITS_TUPLE}
         benefitsTitle={BENEFITS_TITLE}
       >
-        <CategoryErrorState onRetry={() => refetch()} title="Couldn't load test categories" />
+        <CategoryErrorState
+          onRetry={() => refetch()}
+          title="Couldn't load test categories"
+        />
       </CategoryStatusShell>
     );
   }

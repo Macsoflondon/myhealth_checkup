@@ -11,5 +11,7 @@ export function TestProviders({ children }: { children?: ReactNode }) {
     defaultOptions: { queries: { retry: false, gcTime: 0 } },
   });
 
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
 }

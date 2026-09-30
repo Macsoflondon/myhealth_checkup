@@ -41,14 +41,14 @@ const AdminAuth = () => {
       setVerifyingRole(true);
       try {
         const { data: roleRow, error } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id)
-          .eq('role', 'admin')
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", user.id)
+          .eq("role", "admin")
           .maybeSingle();
         if (cancelled) return;
         if (error) {
-          logger.error('Admin role check failed:', error);
+          logger.error("Admin role check failed:", error);
           setVerifyingRole(false);
           return;
         }
@@ -60,12 +60,14 @@ const AdminAuth = () => {
         }
       } catch (err) {
         if (cancelled) return;
-        logger.error('Admin verification error:', err);
+        logger.error("Admin verification error:", err);
         setVerifyingRole(false);
       }
     })();
-    return () => { cancelled = true; };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, authLoading]);
 
   // Used only after a fresh credential submission in handleAdminLogin.
@@ -73,14 +75,14 @@ const AdminAuth = () => {
     setVerifyingRole(true);
     try {
       const { data: roleRow, error } = await supabase
-        .from('user_roles')
-        .select('role')
-        .eq('user_id', userId)
-        .eq('role', 'admin')
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", userId)
+        .eq("role", "admin")
         .maybeSingle();
 
       if (error) {
-        logger.error('Admin role check failed:', error);
+        logger.error("Admin role check failed:", error);
         toast.error("Failed to verify admin access.");
         await supabase.auth.signOut();
         setVerifyingRole(false);
@@ -88,7 +90,7 @@ const AdminAuth = () => {
       }
 
       if (!roleRow) {
-        logger.warn('Non-admin attempted admin login:', { userId });
+        logger.warn("Non-admin attempted admin login:", { userId });
         toast.error("Access denied. This portal is for administrators only.");
         await supabase.auth.signOut();
         setVerifyingRole(false);
@@ -98,7 +100,7 @@ const AdminAuth = () => {
       toast.success("Admin access verified!");
       navigate("/admin/test-dashboard");
     } catch (err) {
-      logger.error('Admin verification error:', err);
+      logger.error("Admin verification error:", err);
       toast.error("Verification failed.");
       await supabase.auth.signOut();
       setVerifyingRole(false);
@@ -109,7 +111,9 @@ const AdminAuth = () => {
     e.preventDefault();
 
     if (!canAttemptLogin()) {
-      toast.error(`Account temporarily locked. Try again in ${remainingTimeFormatted}.`);
+      toast.error(
+        `Account temporarily locked. Try again in ${remainingTimeFormatted}.`,
+      );
       return;
     }
 
@@ -118,23 +122,41 @@ const AdminAuth = () => {
     setEmailError("");
     setPasswordError("");
 
-    if (!email) { setEmailError("Email is required"); valid = false; }
-    else if (!validateEmail(email)) { setEmailError("Please enter a valid email address"); valid = false; }
-    if (!password) { setPasswordError("Password is required"); valid = false; }
-    else if (password.length < 6) { setPasswordError("Password must be at least 6 characters"); valid = false; }
+    if (!email) {
+      setEmailError("Email is required");
+      valid = false;
+    } else if (!validateEmail(email)) {
+      setEmailError("Please enter a valid email address");
+      valid = false;
+    }
+    if (!password) {
+      setPasswordError("Password is required");
+      valid = false;
+    } else if (password.length < 6) {
+      setPasswordError("Password must be at least 6 characters");
+      valid = false;
+    }
 
     if (!valid) return;
 
     setLoading(true);
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
       if (error) {
-        const { isNowLocked, attemptsRemaining: remaining } = recordFailedAttempt();
+        const { isNowLocked, attemptsRemaining: remaining } =
+          recordFailedAttempt();
         if (isNowLocked) {
-          toast.error("Too many failed attempts. Account locked for 15 minutes.");
+          toast.error(
+            "Too many failed attempts. Account locked for 15 minutes.",
+          );
         } else {
-          toast.error(`Invalid credentials. ${remaining} attempt${remaining !== 1 ? 's' : ''} remaining.`);
+          toast.error(
+            `Invalid credentials. ${remaining} attempt${remaining !== 1 ? "s" : ""} remaining.`,
+          );
         }
         setLoading(false);
         return;
@@ -186,7 +208,9 @@ const AdminAuth = () => {
         <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))]">
           <div className="text-center">
             <Loader2 className="h-8 w-8 animate-spin text-[hsl(var(--primary))] mx-auto" />
-            <p className="mt-4 text-white/90 text-sm">Verifying admin access...</p>
+            <p className="mt-4 text-white/90 text-sm">
+              Verifying admin access...
+            </p>
           </div>
         </div>
       </>
@@ -196,118 +220,135 @@ const AdminAuth = () => {
   return (
     <>
       <div className="min-h-screen flex items-center justify-center bg-[hsl(var(--navy))] px-4">
-      <div className="max-w-sm w-full">
-        {/* Shield icon */}
-        <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 rounded-full bg-[hsl(var(--primary))]/15 flex items-center justify-center">
-            <Shield className="h-8 w-8 text-[hsl(var(--primary))]" />
+        <div className="max-w-sm w-full">
+          {/* Shield icon */}
+          <div className="flex justify-center mb-6">
+            <div className="w-16 h-16 rounded-full bg-[hsl(var(--primary))]/15 flex items-center justify-center">
+              <Shield className="h-8 w-8 text-[hsl(var(--primary))]" />
+            </div>
           </div>
-        </div>
 
-        <h1 className="text-xl font-semibold text-white text-center mb-1">
-          Admin Portal
-        </h1>
-        <p className="text-white/78 text-sm text-center mb-8">
-          Restricted access. Authorised personnel only.
-        </p>
+          <h1 className="text-xl font-semibold text-white text-center mb-1">
+            Admin Portal
+          </h1>
+          <p className="text-white/78 text-sm text-center mb-8">
+            Restricted access. Authorised personnel only.
+          </p>
 
-        {/* Lockout warning */}
-        {isLocked && (
-          <Alert variant="destructive" className="mb-4">
-            <Lock className="h-4 w-4" />
-            <AlertDescription>
-              Account locked. Try again in {remainingTimeFormatted}.
-            </AlertDescription>
-          </Alert>
-        )}
+          {/* Lockout warning */}
+          {isLocked && (
+            <Alert variant="destructive" className="mb-4">
+              <Lock className="h-4 w-4" />
+              <AlertDescription>
+                Account locked. Try again in {remainingTimeFormatted}.
+              </AlertDescription>
+            </Alert>
+          )}
 
-        {!isLocked && attemptsRemaining <= 2 && attemptsRemaining > 0 && (
-          <Alert className="mb-4 border-amber-500 bg-amber-950/50">
-            <AlertCircle className="h-4 w-4 text-amber-400" />
-            <AlertDescription className="text-amber-300 text-sm">
-              {attemptsRemaining} attempt{attemptsRemaining !== 1 ? 's' : ''} remaining.
-            </AlertDescription>
-          </Alert>
-        )}
+          {!isLocked && attemptsRemaining <= 2 && attemptsRemaining > 0 && (
+            <Alert className="mb-4 border-amber-500 bg-amber-950/50">
+              <AlertCircle className="h-4 w-4 text-amber-400" />
+              <AlertDescription className="text-amber-300 text-sm">
+                {attemptsRemaining} attempt{attemptsRemaining !== 1 ? "s" : ""}{" "}
+                remaining.
+              </AlertDescription>
+            </Alert>
+          )}
 
-        <form onSubmit={handleAdminLogin} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="admin-email" className="text-white/90 text-sm">Email</Label>
-            <Input
-              id="admin-email"
-              type="email"
-              value={email}
-              onChange={(e) => { setEmail(e.target.value); setEmailError(""); }}
-              placeholder="admin@example.com"
+          <form onSubmit={handleAdminLogin} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="admin-email" className="text-white/90 text-sm">
+                Email
+              </Label>
+              <Input
+                id="admin-email"
+                type="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setEmailError("");
+                }}
+                placeholder="admin@example.com"
+                disabled={loading || isLocked}
+                className={`bg-white/10 border-white/20 text-white placeholder:text-white/65 ${emailError ? "border-destructive" : ""}`}
+              />
+              {emailError && (
+                <p className="text-destructive text-xs">{emailError}</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="admin-password" className="text-white/90 text-sm">
+                Password
+              </Label>
+              <Input
+                id="admin-password"
+                type="password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setPasswordError("");
+                }}
+                placeholder="••••••••"
+                disabled={loading || isLocked}
+                className={`bg-white/10 border-white/20 text-white placeholder:text-white/65 ${passwordError ? "border-destructive" : ""}`}
+              />
+              {passwordError && (
+                <p className="text-destructive text-xs">{passwordError}</p>
+              )}
+            </div>
+
+            <Button
+              type="submit"
               disabled={loading || isLocked}
-              className={`bg-white/10 border-white/20 text-white placeholder:text-white/65 ${emailError ? 'border-destructive' : ''}`}
-            />
-            {emailError && (
-              <p className="text-destructive text-xs">{emailError}</p>
-            )}
-          </div>
+              className="w-full bg-[hsl(var(--secondary))] hover:bg-[hsl(var(--secondary))]/90 text-white font-medium"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Authenticating...
+                </>
+              ) : (
+                <>
+                  <Shield className="mr-2 h-4 w-4" />
+                  Sign In
+                </>
+              )}
+            </Button>
+          </form>
 
-          <div className="space-y-2">
-            <Label htmlFor="admin-password" className="text-white/90 text-sm">Password</Label>
-            <Input
-              id="admin-password"
-              type="password"
-              value={password}
-              onChange={(e) => { setPassword(e.target.value); setPasswordError(""); }}
-              placeholder="••••••••"
+          <div className="mt-4 flex items-center justify-between text-xs">
+            <button
+              type="button"
+              onClick={handleForgotPassword}
               disabled={loading || isLocked}
-              className={`bg-white/10 border-white/20 text-white placeholder:text-white/65 ${passwordError ? 'border-destructive' : ''}`}
-            />
-            {passwordError && (
-              <p className="text-destructive text-xs">{passwordError}</p>
-            )}
+              className="text-white/78 hover:text-white transition-colors disabled:opacity-50"
+            >
+              Forgot password?
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                clearLockout();
+                toast.success("Lockout cleared. You can try signing in again.");
+              }}
+              className="text-white/78 hover:text-white transition-colors"
+            >
+              Clear lockout
+            </button>
           </div>
 
-          <Button
-            type="submit"
-            disabled={loading || isLocked}
-            className="w-full bg-[hsl(var(--secondary))] hover:bg-[hsl(var(--secondary))]/90 text-white font-medium"
-          >
-            {loading ? (
-              <><Loader2 className="mr-2 h-4 w-4 animate-spin" />Authenticating...</>
-            ) : (
-              <><Shield className="mr-2 h-4 w-4" />Sign In</>
-            )}
-          </Button>
-        </form>
-
-        <div className="mt-4 flex items-center justify-between text-xs">
-          <button
-            type="button"
-            onClick={handleForgotPassword}
-            disabled={loading || isLocked}
-            className="text-white/78 hover:text-white transition-colors disabled:opacity-50"
-          >
-            Forgot password?
-          </button>
-          <button
-            type="button"
-            onClick={() => {
-              clearLockout();
-              toast.success("Lockout cleared. You can try signing in again.");
-            }}
-            className="text-white/78 hover:text-white transition-colors"
-          >
-            Clear lockout
-          </button>
-        </div>
-
-        <div className="mt-8 text-center">
-          <button
-            type="button"
-            onClick={() => navigate("/auth")}
-            className="text-white/78 hover:text-white/78 text-xs transition-colors"
-          >
-            ← Back to user sign in
-          </button>
+          <div className="mt-8 text-center">
+            <button
+              type="button"
+              onClick={() => navigate("/auth")}
+              className="text-white/78 hover:text-white/78 text-xs transition-colors"
+            >
+              ← Back to user sign in
+            </button>
+          </div>
         </div>
       </div>
-    </div>
     </>
   );
 };

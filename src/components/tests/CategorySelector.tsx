@@ -1,11 +1,11 @@
-import React from 'react';
-import { Link } from '@/lib/router-compat';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Search } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { compareCategories } from '@/constants/categories';
+import React from "react";
+import { Link } from "@/lib/router-compat";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Search } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { compareCategories } from "@/constants/categories";
 
 interface CategorySelectorProps {
   onCategorySelect?: (categoryId: string) => void;
@@ -16,7 +16,7 @@ interface CategorySelectorProps {
 export const CategorySelector: React.FC<CategorySelectorProps> = ({
   onCategorySelect,
   selectedCategory,
-  showSearch = true
+  showSearch = true,
 }) => {
   return (
     <Card className="w-full max-w-4xl mx-auto bg-white shadow-lg">
@@ -38,8 +38,8 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
               placeholder="Find your perfect health test..."
               className="w-full pl-12 pr-4 py-4 text-lg border border-brand-navy rounded-xl focus:outline-hidden focus:ring-2 focus:ring-primary focus:border-transparent"
             />
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-primary hover:bg-primary/90"
             >
               <Search className="h-5 w-5" />
@@ -55,17 +55,19 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
                 "group p-6 rounded-xl border-2 transition-all duration-200 cursor-pointer hover:shadow-lg",
                 selectedCategory === category.id
                   ? "border-primary bg-primary/5"
-                  : "border-brand-navy hover:border-brand-navy"
+                  : "border-brand-navy hover:border-brand-navy",
               )}
               onClick={() => onCategorySelect?.(category.id)}
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-3">
-                    <div className={cn(
-                      "w-3 h-3 rounded-full",
-                      getCategoryColor(category.id)
-                    )} />
+                    <div
+                      className={cn(
+                        "w-3 h-3 rounded-full",
+                        getCategoryColor(category.id),
+                      )}
+                    />
                     <h3 className="text-lg font-semibold text-brand-navy">
                       {category.name}
                     </h3>
@@ -75,9 +77,9 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
                   </p>
                 </div>
               </div>
-              
+
               <div className="mt-4">
-                <Link 
+                <Link
                   to={`/compare?category=${category.id}`}
                   className="inline-flex items-center text-primary font-medium text-sm hover:text-primary/80 transition-colors"
                 >
@@ -103,21 +105,21 @@ export const CategorySelector: React.FC<CategorySelectorProps> = ({
 
 const getCategoryColor = (categoryId: string): string => {
   const colorMap: Record<string, string> = {
-    'blood-tests': 'bg-red-500',
-    'hormones': 'bg-purple-500', 
-    'thyroid': 'bg-green-500',
-    'vitamins': 'bg-yellow-500',
-    'diabetes': 'bg-orange-500',
-    'heart-health': 'bg-red-600',
-    'liver-health': 'bg-yellow-600',
-    'kidney-health': 'bg-[#081129]',
-    'fertility': 'bg-brand-pink',
-    'general-health': 'bg-gray-500',
-    'allergy-testing': 'bg-cyan-500',
-    'cancer-screening': 'bg-indigo-500'
+    "blood-tests": "bg-red-500",
+    hormones: "bg-purple-500",
+    thyroid: "bg-green-500",
+    vitamins: "bg-yellow-500",
+    diabetes: "bg-orange-500",
+    "heart-health": "bg-red-600",
+    "liver-health": "bg-yellow-600",
+    "kidney-health": "bg-[#081129]",
+    fertility: "bg-brand-pink",
+    "general-health": "bg-gray-500",
+    "allergy-testing": "bg-cyan-500",
+    "cancer-screening": "bg-indigo-500",
   };
-  
-  return colorMap[categoryId] || 'bg-gray-400';
+
+  return colorMap[categoryId] || "bg-gray-400";
 };
 
 export default CategorySelector;

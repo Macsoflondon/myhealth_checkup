@@ -74,7 +74,7 @@ Deno.serve(async (req) => {
 
   const cleanUrls = Array.from(new Set(urls.filter(isValidUrl))).slice(
     0,
-    MAX_URLS_PER_REQUEST
+    MAX_URLS_PER_REQUEST,
   );
   if (cleanUrls.length === 0) {
     return new Response(
@@ -84,7 +84,7 @@ Deno.serve(async (req) => {
       {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
-      }
+      },
     );
   }
 
@@ -108,7 +108,7 @@ Deno.serve(async (req) => {
     const supabase = createClient(
       Deno.env.get("SUPABASE_URL")!,
       Deno.env.get("SUPABASE_ANON_KEY")!,
-      { global: { headers: { Authorization: authHeader } } }
+      { global: { headers: { Authorization: authHeader } } },
     );
 
     const {
@@ -159,6 +159,6 @@ Deno.serve(async (req) => {
     {
       status: indexNowRes.ok ? 200 : indexNowRes.status,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
-    }
+    },
   );
 });

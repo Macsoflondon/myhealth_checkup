@@ -41,7 +41,10 @@ const excluded = existsSync(EXCLUSIONS)
 
 const malformedExclusions = excluded.filter((v) => !/^\d{14}$/.test(v));
 if (malformedExclusions.length) {
-  console.error("✗ Malformed entries in .excluded-versions:", malformedExclusions);
+  console.error(
+    "✗ Malformed entries in .excluded-versions:",
+    malformedExclusions,
+  );
   process.exit(1);
 }
 
@@ -65,11 +68,22 @@ const executable = markers.filter((f) =>
     .some((line) => line.trim() && !line.trim().startsWith("--")),
 );
 if (executable.length) {
-  console.error("✗ Reconciliation markers must contain comments only:", executable);
+  console.error(
+    "✗ Reconciliation markers must contain comments only:",
+    executable,
+  );
   process.exit(1);
 }
 
-console.log(`✓ Migration parity (local): ${files.length} files, all well-formed, no duplicates.`);
-console.log(`  ${markers.length} non-executing reconciliation markers, all comment-only.`);
-console.log(`  ${excluded.length} applied versions excluded by policy, none committed as files.`);
-console.log(`  Remote parity is enforced by the CI workflow migration-parity.yml.`);
+console.log(
+  `✓ Migration parity (local): ${files.length} files, all well-formed, no duplicates.`,
+);
+console.log(
+  `  ${markers.length} non-executing reconciliation markers, all comment-only.`,
+);
+console.log(
+  `  ${excluded.length} applied versions excluded by policy, none committed as files.`,
+);
+console.log(
+  `  Remote parity is enforced by the CI workflow migration-parity.yml.`,
+);

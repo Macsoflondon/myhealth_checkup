@@ -12,18 +12,43 @@ interface CategoryConfig {
 }
 
 const COMPARISON_CATEGORIES: CategoryConfig[] = [
-  { canonical: "fbc", panelSlug: "full-blood-count", displayName: "Full Blood Count", methodLabel: "At-home test kit" },
-  { canonical: "thyroid", panelSlug: "thyroid", displayName: "Thyroid Function", methodLabel: "At-home test kit" },
-  { canonical: "male_hormones", panelSlug: "male-hormones", displayName: "Male Hormone Panel", methodLabel: "At-home test kit" },
-  { canonical: "female_hormones", panelSlug: "female-hormones", displayName: "Female Hormone Panel", methodLabel: "At-home test kit" },
+  {
+    canonical: "fbc",
+    panelSlug: "full-blood-count",
+    displayName: "Full Blood Count",
+    methodLabel: "At-home test kit",
+  },
+  {
+    canonical: "thyroid",
+    panelSlug: "thyroid",
+    displayName: "Thyroid Function",
+    methodLabel: "At-home test kit",
+  },
+  {
+    canonical: "male_hormones",
+    panelSlug: "male-hormones",
+    displayName: "Male Hormone Panel",
+    methodLabel: "At-home test kit",
+  },
+  {
+    canonical: "female_hormones",
+    panelSlug: "female-hormones",
+    displayName: "Female Hormone Panel",
+    methodLabel: "At-home test kit",
+  },
 ];
 
 /** Providers that must never appear in comparison output. */
 const EXCLUDED_PROVIDER_IDS = new Set<string>(["thriva"]);
 
-export const dynamicComparisonPanelsQueryKey = ["homepage", "dynamic-comparison-panels"] as const;
+export const dynamicComparisonPanelsQueryKey = [
+  "homepage",
+  "dynamic-comparison-panels",
+] as const;
 
-async function fetchCategoryPanel(cat: CategoryConfig): Promise<LiveComparisonPanelData | null> {
+async function fetchCategoryPanel(
+  cat: CategoryConfig,
+): Promise<LiveComparisonPanelData | null> {
   const { data } = await supabase
     .from("provider_tests")
     .select("provider_id, price, scraped_at")
@@ -65,7 +90,9 @@ async function fetchCategoryPanel(cat: CategoryConfig): Promise<LiveComparisonPa
     lastScrapedAt: latestScrape,
     providers: sorted.map(([pid, { price }]) => ({
       name: PROVIDER_NAMES[pid] || pid,
-      options: [{ label: cat.methodLabel, price: `\u00a3${Math.round(price)}` }],
+      options: [
+        { label: cat.methodLabel, price: `\u00a3${Math.round(price)}` },
+      ],
     })),
   };
 }
@@ -88,8 +115,12 @@ export function useDynamicComparisonPanels(enabled = true): {
     gcTime: 60 * 60 * 1000,
     refetchOnMount: false,
     queryFn: async (): Promise<LiveComparisonPanelData[]> => {
-      const settled = await Promise.all(COMPARISON_CATEGORIES.map(fetchCategoryPanel));
-      return settled.filter((panel): panel is LiveComparisonPanelData => panel !== null);
+      const settled = await Promise.all(
+        COMPARISON_CATEGORIES.map(fetchCategoryPanel),
+      );
+      return settled.filter(
+        (panel): panel is LiveComparisonPanelData => panel !== null,
+      );
     },
   });
 

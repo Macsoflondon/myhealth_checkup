@@ -7,7 +7,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
 const SCRAPERS: Array<{ id: string; fn: string }> = [
@@ -21,20 +22,28 @@ const SCRAPERS: Array<{ id: string; fn: string }> = [
   { id: "london-health-company", fn: "london-health-scraper" },
 ];
 
-declare const EdgeRuntime: { waitUntil: (p: Promise<unknown>) => void } | undefined;
+declare const EdgeRuntime:
+  { waitUntil: (p: Promise<unknown>) => void } | undefined;
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  if (req.method === "OPTIONS")
+    return new Response("ok", { headers: corsHeaders });
 
   const url = Deno.env.get("SUPABASE_URL") ?? "";
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
   const triggerSecret = Deno.env.get("SCRAPE_TRIGGER_SECRET") ?? "";
 
   let body: { secret?: string; providerIds?: string[] } = {};
-  try { body = await req.json(); } catch { /* noop */ }
+  try {
+    body = await req.json();
+  } catch {
+    /* noop */
+  }
 
   const authHeader = req.headers.get("authorization") ?? "";
-  const bearer = authHeader.toLowerCase().startsWith("bearer ") ? authHeader.slice(7) : "";
+  const bearer = authHeader.toLowerCase().startsWith("bearer ")
+    ? authHeader.slice(7)
+    : "";
   const serviceAuthed = !!serviceKey && bearer === serviceKey;
   const secretAuthed = !!triggerSecret && body.secret === triggerSecret;
 
@@ -56,13 +65,15 @@ serve(async (req) => {
           const res = await fetch(`${url}/functions/v1/${s.fn}`, {
             method: "POST",
             headers: {
-              "Authorization": `Bearer ${serviceKey}`,
+              Authorization: `Bearer ${serviceKey}`,
               "Content-Type": "application/json",
             },
             body: JSON.stringify({}),
           });
           const text = await res.text().catch(() => "");
-          console.log(`[trigger-all-scrapers] ${s.id} → ${res.status} ${text.slice(0, 200)}`);
+          console.log(
+            `[trigger-all-scrapers] ${s.id} → ${res.status} ${text.slice(0, 200)}`,
+          );
           return { id: s.id, status: res.status, ok: res.ok };
         } catch (e) {
           console.error(`[trigger-all-scrapers] ${s.id} failed:`, e);
@@ -88,7 +99,12 @@ serve(async (req) => {
           finished_at: finishedAt,
           errors: ok
             ? []
-            : [{ message: `dispatch to ${target.fn} failed`, http_status: value?.status ?? 0 }],
+            : [
+                {
+                  message: `dispatch to ${target.fn} failed`,
+                  http_status: value?.status ?? 0,
+                },
+              ],
           metadata: { break_glass: true, dispatched_function: target.fn },
         };
       });
@@ -111,6 +127,9 @@ serve(async (req) => {
 
   return new Response(
     JSON.stringify({ started: true, providers: targets.map((t) => t.id) }),
-    { status: 202, headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    {
+      status: 202,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    },
   );
 });

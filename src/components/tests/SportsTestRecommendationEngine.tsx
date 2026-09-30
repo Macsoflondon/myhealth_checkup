@@ -1,8 +1,20 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Loader2, Sparkles, TrendingUp, AlertCircle } from "lucide-react";
@@ -22,7 +34,8 @@ export default function SportsTestRecommendationEngine() {
     if (!athleteType || !trainingGoals) {
       toast({
         title: "Missing Information",
-        description: "Please select athlete type and describe your training goals.",
+        description:
+          "Please select athlete type and describe your training goals.",
         variant: "destructive",
       });
       return;
@@ -33,29 +46,35 @@ export default function SportsTestRecommendationEngine() {
 
     try {
       const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
-      const SUPABASE_PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
-      
-      const response = await fetch(`${SUPABASE_URL}/functions/v1/sports-test-recommendations`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+      const SUPABASE_PUBLISHABLE_KEY = import.meta.env
+        .VITE_SUPABASE_PUBLISHABLE_KEY;
+
+      const response = await fetch(
+        `${SUPABASE_URL}/functions/v1/sports-test-recommendations`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+          },
+          body: JSON.stringify({
+            athleteType,
+            trainingGoals,
+            experience,
+            age: age ? parseInt(age) : null,
+            gender,
+          }),
         },
-        body: JSON.stringify({
-          athleteType,
-          trainingGoals,
-          experience,
-          age: age ? parseInt(age) : null,
-          gender,
-        }),
-      });
+      );
 
       if (!response.ok) {
         if (response.status === 429) {
           throw new Error("Too many requests. Please try again in a moment.");
         }
         if (response.status === 402) {
-          throw new Error("Service temporarily unavailable. Please try again later.");
+          throw new Error(
+            "Service temporarily unavailable. Please try again later.",
+          );
         }
         throw new Error("Failed to get recommendations");
       }
@@ -126,7 +145,10 @@ export default function SportsTestRecommendationEngine() {
       console.error("Error getting recommendations:", error);
       toast({
         title: "Error",
-        description: error instanceof Error ? error.message : "Failed to generate recommendations",
+        description:
+          error instanceof Error
+            ? error.message
+            : "Failed to generate recommendations",
         variant: "destructive",
       });
     } finally {
@@ -143,9 +165,12 @@ export default function SportsTestRecommendationEngine() {
               <Sparkles className="w-6 h-6 text-[#e70d69]" />
             </div>
             <div>
-              <CardTitle className="text-2xl">AI-Powered Test Recommendations</CardTitle>
+              <CardTitle className="text-2xl">
+                AI-Powered Test Recommendations
+              </CardTitle>
               <CardDescription>
-                Get personalised blood test suggestions based on your sport and goals
+                Get personalised blood test suggestions based on your sport and
+                goals
               </CardDescription>
             </div>
           </div>
@@ -159,9 +184,15 @@ export default function SportsTestRecommendationEngine() {
                   <SelectValue placeholder="Select your sport category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="endurance">Endurance (Running, Cycling, Triathlon)</SelectItem>
-                  <SelectItem value="strength">Strength (Powerlifting, Bodybuilding, CrossFit)</SelectItem>
-                  <SelectItem value="team-sports">Team Sports (Football, Rugby, Basketball)</SelectItem>
+                  <SelectItem value="endurance">
+                    Endurance (Running, Cycling, Triathlon)
+                  </SelectItem>
+                  <SelectItem value="strength">
+                    Strength (Powerlifting, Bodybuilding, CrossFit)
+                  </SelectItem>
+                  <SelectItem value="team-sports">
+                    Team Sports (Football, Rugby, Basketball)
+                  </SelectItem>
                   <SelectItem value="mixed">Mixed / Multiple Sports</SelectItem>
                 </SelectContent>
               </Select>
@@ -175,9 +206,13 @@ export default function SportsTestRecommendationEngine() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="beginner">Beginner (0-1 years)</SelectItem>
-                  <SelectItem value="intermediate">Intermediate (1-3 years)</SelectItem>
+                  <SelectItem value="intermediate">
+                    Intermediate (1-3 years)
+                  </SelectItem>
                   <SelectItem value="advanced">Advanced (3-5 years)</SelectItem>
-                  <SelectItem value="elite">Elite / Professional (5+ years)</SelectItem>
+                  <SelectItem value="elite">
+                    Elite / Professional (5+ years)
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -204,7 +239,9 @@ export default function SportsTestRecommendationEngine() {
                 <SelectContent>
                   <SelectItem value="male">Male</SelectItem>
                   <SelectItem value="female">Female</SelectItem>
-                  <SelectItem value="prefer-not-to-say">Prefer not to say</SelectItem>
+                  <SelectItem value="prefer-not-to-say">
+                    Prefer not to say
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -266,7 +303,8 @@ export default function SportsTestRecommendationEngine() {
           <CardContent className="py-12 text-center">
             <AlertCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
             <p className="text-muted-foreground">
-              Fill in your athlete profile above to receive personalised test recommendations
+              Fill in your athlete profile above to receive personalised test
+              recommendations
             </p>
           </CardContent>
         </Card>

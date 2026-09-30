@@ -1,9 +1,12 @@
 import { logger } from "@/lib/logger";
 import { supabase } from "@/integrations/supabase/client";
 import type { CompareTestData } from "@/types";
-import { baseTestId } from '@/lib/collectionVariants';
+import { baseTestId } from "@/lib/collectionVariants";
 import { cacheService } from "./CacheService";
-import { TestDataTransformer, type LiveTestRow } from "./transformers/testDataTransformer";
+import {
+  TestDataTransformer,
+  type LiveTestRow,
+} from "./transformers/testDataTransformer";
 
 import { TestQueryBuilder } from "./queryBuilders/testQueryBuilder";
 import { getComparePanel } from "@/lib/comparePanels";
@@ -29,43 +32,51 @@ export interface LiveTestData {
   url: string | null;
   created_at: string;
   updated_at: string;
-  dataSource?: 'live' | 'cache' | 'database';
+  dataSource?: "live" | "cache" | "database";
   lastUpdated?: string;
 }
 
 export class CompareService {
-
   // ============================================================================
   // Core Query Methods
   // ============================================================================
 
-  static async getTestsByCategory(category: string, providers: string[] = ['all']): Promise<CompareTestData[]> {
-    const cacheKey = cacheService.generateKey('getTestsByCategory', { category, providers });
+  static async getTestsByCategory(
+    category: string,
+    providers: string[] = ["all"],
+  ): Promise<CompareTestData[]> {
+    const cacheKey = cacheService.generateKey("getTestsByCategory", {
+      category,
+      providers,
+    });
     const cached = cacheService.get<CompareTestData[]>(cacheKey);
     if (cached) return cached;
 
     try {
       // If specific providers requested, try live data first
-      if (providers.length > 0 && providers[0] !== 'all') {
+      if (providers.length > 0 && providers[0] !== "all") {
         const liveResults: CompareTestData[] = [];
-        
+
         for (const providerId of providers) {
-          const { data, source } = await LiveDataService.getLiveTestData(providerId, category);
+          const { data, source } = await LiveDataService.getLiveTestData(
+            providerId,
+            category,
+          );
           // Attach data source metadata to each test
-          const enrichedData = data.map(test => ({
+          const enrichedData = data.map((test) => ({
             ...test,
             dataSource: source,
-            lastUpdated: new Date().toISOString()
+            lastUpdated: new Date().toISOString(),
           }));
           liveResults.push(...enrichedData);
-          
-          if (source === 'live') {
+
+          if (source === "live") {
             logger.info(`Using live data for ${providerId}`);
           } else {
             logger.info(`Using ${source} data for ${providerId}`);
           }
         }
-        
+
         if (liveResults.length > 0) {
           cacheService.set(cacheKey, liveResults);
           return liveResults;
@@ -77,19 +88,21 @@ export class CompareService {
       const { data, error } = await query;
 
       if (error) {
-        logger.error('Error fetching tests:', error);
+        logger.error("Error fetching tests:", error);
         return [];
       }
 
-      const result = TestDataTransformer.transformMultiple(data || []).map(test => ({
-        ...test,
-        dataSource: 'database' as const,
-        lastUpdated: new Date().toISOString()
-      }));
+      const result = TestDataTransformer.transformMultiple(data || []).map(
+        (test) => ({
+          ...test,
+          dataSource: "database" as const,
+          lastUpdated: new Date().toISOString(),
+        }),
+      );
       cacheService.set(cacheKey, result);
       return result;
     } catch (error) {
-      logger.error('Error in getTestsByCategory:', error);
+      logger.error("Error in getTestsByCategory:", error);
       return [];
     }
   }
@@ -102,18 +115,22 @@ export class CompareService {
     const unique = Array.from(new Set(ids.filter(Boolean).map(baseTestId)));
     if (unique.length === 0) return [];
 
-    const cacheKey = cacheService.generateKey('getTestsByIds', { ids: [...unique].sort() });
+    const cacheKey = cacheService.generateKey("getTestsByIds", {
+      ids: [...unique].sort(),
+    });
     const cached = cacheService.get<CompareTestData[]>(cacheKey);
     if (cached) return this.orderByIds(cached, unique);
 
     try {
       const { data, error } = await supabase
-        .from('unified_provider_tests')
-        .select('id, test_name, provider_id, category_primary, price, description, url, biomarker_count, biomarkers_list, turnaround_days_text, sample_type, collection_method, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189')
-        .in('id', unique);
+        .from("unified_provider_tests")
+        .select(
+          "id, test_name, provider_id, category_primary, price, description, url, biomarker_count, biomarkers_list, turnaround_days_text, sample_type, collection_method, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189",
+        )
+        .in("id", unique);
 
       if (error) {
-        logger.error('Error fetching tests by id:', error);
+        logger.error("Error fetching tests by id:", error);
         return [];
       }
 
@@ -122,7 +139,7 @@ export class CompareService {
         .map((row) => ({
           id: row.id as string,
           test_name: row.test_name as string,
-          provider_id: row.provider_id ?? '',
+          provider_id: row.provider_id ?? "",
           category: row.category_primary ?? null,
           price: row.price ?? null,
           description: row.description ?? null,
@@ -142,20 +159,24 @@ export class CompareService {
           lab_iso15189: row.lab_iso15189 ?? null,
         }));
 
-
       const result = TestDataTransformer.transformMultiple(rows);
       cacheService.set(cacheKey, result);
 
       return this.orderByIds(result, unique);
     } catch (error) {
-      logger.error('Error in getTestsByIds:', error);
+      logger.error("Error in getTestsByIds:", error);
       return [];
     }
   }
 
-  private static orderByIds(tests: CompareTestData[], ids: string[]): CompareTestData[] {
+  private static orderByIds(
+    tests: CompareTestData[],
+    ids: string[],
+  ): CompareTestData[] {
     const byId = new Map(tests.map((t) => [t.id, t]));
-    return ids.map((id) => byId.get(id)).filter((t): t is CompareTestData => Boolean(t));
+    return ids
+      .map((id) => byId.get(id))
+      .filter((t): t is CompareTestData => Boolean(t));
   }
 
   /**
@@ -164,13 +185,16 @@ export class CompareService {
    * "Compare all providers" CTA — no new data, just a narrowed view of the
    * existing catalogue.
    */
-  static async getPanelTests(panelSlug: string, limit = 8): Promise<CompareTestData[]> {
+  static async getPanelTests(
+    panelSlug: string,
+    limit = 8,
+  ): Promise<CompareTestData[]> {
     const panel = getComparePanel(panelSlug.trim());
     if (!panel) return [];
 
     const { data, error } = await TestQueryBuilder.buildPanelQuery(panel);
     if (error) {
-      logger.error('Error fetching panel tests:', error);
+      logger.error("Error fetching panel tests:", error);
       return [];
     }
     const tests = TestDataTransformer.transformMultiple(data ?? []);
@@ -180,7 +204,8 @@ export class CompareService {
       if (!test.price || test.price <= 0) continue;
       const key = test.provider || test.id;
       const current = cheapestByProvider.get(key);
-      if (!current || test.price < current.price) cheapestByProvider.set(key, test);
+      if (!current || test.price < current.price)
+        cheapestByProvider.set(key, test);
     }
 
     return Array.from(cheapestByProvider.values())
@@ -188,27 +213,31 @@ export class CompareService {
       .slice(0, limit);
   }
 
-
-
-
-
   static async searchTests(
     searchTerm: string,
-    providers: string[] = ['all'],
+    providers: string[] = ["all"],
     category?: string,
   ): Promise<CompareTestData[]> {
     if (!searchTerm.trim()) return [];
 
-    const cacheKey = cacheService.generateKey('searchTests', { searchTerm, providers, category });
+    const cacheKey = cacheService.generateKey("searchTests", {
+      searchTerm,
+      providers,
+      category,
+    });
     const cached = cacheService.get<CompareTestData[]>(cacheKey);
     if (cached) return cached;
 
     try {
-      const query = TestQueryBuilder.buildSearchQuery(searchTerm, providers, category);
+      const query = TestQueryBuilder.buildSearchQuery(
+        searchTerm,
+        providers,
+        category,
+      );
       const { data, error } = await query;
 
       if (error) {
-        logger.error('Error searching tests:', error);
+        logger.error("Error searching tests:", error);
         return [];
       }
 
@@ -216,14 +245,19 @@ export class CompareService {
       cacheService.set(cacheKey, result);
       return result;
     } catch (error) {
-      logger.error('Error in searchTests:', error);
+      logger.error("Error in searchTests:", error);
       return [];
     }
   }
 
-  static async getCategories(): Promise<Array<{ id: string; name: string; count: number }>> {
-    const cacheKey = cacheService.generateKey('getCategories', {});
-    const cached = cacheService.get<Array<{ id: string; name: string; count: number }>>(cacheKey);
+  static async getCategories(): Promise<
+    Array<{ id: string; name: string; count: number }>
+  > {
+    const cacheKey = cacheService.generateKey("getCategories", {});
+    const cached =
+      cacheService.get<Array<{ id: string; name: string; count: number }>>(
+        cacheKey,
+      );
     if (cached) return cached;
 
     try {
@@ -231,13 +265,13 @@ export class CompareService {
       const { data, error } = await query;
 
       if (error) {
-        logger.error('Error fetching categories:', error);
+        logger.error("Error fetching categories:", error);
         return [];
       }
 
       // Count tests per category
       const categoryMap = new Map<string, number>();
-      data?.forEach(item => {
+      data?.forEach((item) => {
         if (item.category) {
           const count = categoryMap.get(item.category) || 0;
           categoryMap.set(item.category, count + 1);
@@ -247,16 +281,16 @@ export class CompareService {
       // Convert to array and sort by count
       const result = Array.from(categoryMap.entries())
         .map(([category, count]) => ({
-          id: category.toLowerCase().replace(/[^a-z0-9]/g, '-'),
+          id: category.toLowerCase().replace(/[^a-z0-9]/g, "-"),
           name: category,
-          count
+          count,
         }))
         .sort((a, b) => b.count - a.count);
 
       cacheService.set(cacheKey, result);
       return result;
     } catch (error) {
-      logger.error('Error in getCategories:', error);
+      logger.error("Error in getCategories:", error);
       return [];
     }
   }

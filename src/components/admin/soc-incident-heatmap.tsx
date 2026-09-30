@@ -1,8 +1,17 @@
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
-import type { SocIncident, SocIncidentSeverity } from "@/api/supabase/socIncidents.api";
+import type {
+  SocIncident,
+  SocIncidentSeverity,
+} from "@/api/supabase/socIncidents.api";
 
-const SEVERITY_ORDER: SocIncidentSeverity[] = ["critical", "high", "medium", "low", "info"];
+const SEVERITY_ORDER: SocIncidentSeverity[] = [
+  "critical",
+  "high",
+  "medium",
+  "low",
+  "info",
+];
 const SEVERITY_TONE: Record<SocIncidentSeverity, string> = {
   critical: "bg-clinical-alert/80",
   high: "bg-error/70",
@@ -45,20 +54,34 @@ export function SocIncidentHeatmap({ incidents }: Props) {
       <table className="min-w-full text-xs">
         <thead>
           <tr>
-            <th className="px-2 py-2 text-left font-medium text-muted-foreground">Source ↓ / Severity →</th>
+            <th className="px-2 py-2 text-left font-medium text-muted-foreground">
+              Source ↓ / Severity →
+            </th>
             {SEVERITY_ORDER.map((s) => (
-              <th key={s} className="px-2 py-2 text-center font-medium capitalize text-muted-foreground">{s}</th>
+              <th
+                key={s}
+                className="px-2 py-2 text-center font-medium capitalize text-muted-foreground"
+              >
+                {s}
+              </th>
             ))}
-            <th className="px-2 py-2 text-right font-medium text-muted-foreground">Total</th>
+            <th className="px-2 py-2 text-right font-medium text-muted-foreground">
+              Total
+            </th>
           </tr>
         </thead>
         <tbody>
           {sources.map((source) => {
             const row = grid.get(source)!;
-            const rowTotal = Array.from(row.values()).reduce((a, b) => a + b, 0);
+            const rowTotal = Array.from(row.values()).reduce(
+              (a, b) => a + b,
+              0,
+            );
             return (
               <tr key={source}>
-                <td className="px-2 py-1 font-medium capitalize text-foreground">{source.replace(/-/g, " ")}</td>
+                <td className="px-2 py-1 font-medium capitalize text-foreground">
+                  {source.replace(/-/g, " ")}
+                </td>
                 {SEVERITY_ORDER.map((s) => {
                   const count = row.get(s) ?? 0;
                   const intensity = maxCount > 0 ? count / maxCount : 0;
@@ -67,9 +90,15 @@ export function SocIncidentHeatmap({ incidents }: Props) {
                       <div
                         className={cn(
                           "flex h-9 items-center justify-center rounded text-xs font-mono text-foreground",
-                          count === 0 ? "bg-muted/30 text-muted-foreground" : SEVERITY_TONE[s],
+                          count === 0
+                            ? "bg-muted/30 text-muted-foreground"
+                            : SEVERITY_TONE[s],
                         )}
-                        style={count > 0 ? { opacity: 0.4 + intensity * 0.6 } : undefined}
+                        style={
+                          count > 0
+                            ? { opacity: 0.4 + intensity * 0.6 }
+                            : undefined
+                        }
                         title={`${count} ${s} ${source} incident${count === 1 ? "" : "s"}`}
                       >
                         {count || "·"}
@@ -77,7 +106,9 @@ export function SocIncidentHeatmap({ incidents }: Props) {
                     </td>
                   );
                 })}
-                <td className="px-2 py-1 text-right font-mono text-foreground">{rowTotal}</td>
+                <td className="px-2 py-1 text-right font-mono text-foreground">
+                  {rowTotal}
+                </td>
               </tr>
             );
           })}

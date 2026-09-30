@@ -29,10 +29,13 @@ export class SectionErrorBoundary extends React.Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: React.ErrorInfo) {
-    logger.error(`SectionErrorBoundary [${this.props.name ?? "unnamed"}] caught:`, {
-      error: error?.message,
-      stack: info?.componentStack,
-    });
+    logger.error(
+      `SectionErrorBoundary [${this.props.name ?? "unnamed"}] caught:`,
+      {
+        error: error?.message,
+        stack: info?.componentStack,
+      },
+    );
   }
 
   render() {

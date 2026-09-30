@@ -22,7 +22,6 @@ import {
   type WellnessCountSpec,
 } from "@/hooks/queries/useWellnessCategoryCounts";
 
-
 const wellnessCategoryCards = [
   {
     id: "longevity-tests",
@@ -146,7 +145,6 @@ const wellnessCategoryCards = [
   },
 ];
 
-
 /**
  * Per-card live-count + routing spec. Cards mapped to a wellness subcategory
  * deep-link into the filtered subcategory view on this page.
@@ -159,26 +157,35 @@ const COUNT_SPECS: WellnessCountSpec[] = [
   { id: "nutrition-tests", categories: ["vitamins"], subSlug: "vitamins" },
   { id: "allergy-testing", categories: ["general-health"], subSlug: "allergy" },
   { id: "sexual-health", categories: ["sexual-health"] },
-  
+
   { id: "antibody-tests", categories: ["general-health"] },
   { id: "infection-tests", categories: ["general-health"] },
   { id: "immunity-tests", categories: ["general-health"] },
   { id: "autoimmunity-tests", categories: ["general-health"] },
   { id: "liver-health", categories: ["general-health"], subSlug: "liver" },
   { id: "kidney-health", categories: ["general-health"], subSlug: "kidney" },
-  { id: "gut-health", categories: ["gut"], matchAny: [/gut|digest|microbiome|intoleran|stool/i] },
+  {
+    id: "gut-health",
+    categories: ["gut"],
+    matchAny: [/gut|digest|microbiome|intoleran|stool/i],
+  },
   { id: "diabetes", categories: ["general-health"], subSlug: "diabetes" },
 ];
 
 const SUB_SLUG_BY_CARD: Record<string, string> = {
   ...Object.fromEntries(
-    COUNT_SPECS.filter((s) => s.subSlug).map((s) => [s.id, s.subSlug as string])
+    COUNT_SPECS.filter((s) => s.subSlug).map((s) => [
+      s.id,
+      s.subSlug as string,
+    ]),
   ),
   ...Object.fromEntries(
-    Object.entries(MAPPED_WELLNESS_CATEGORIES).map(([id, def]) => [id, def.slug])
+    Object.entries(MAPPED_WELLNESS_CATEGORIES).map(([id, def]) => [
+      id,
+      def.slug,
+    ]),
   ),
 };
-
 
 const tagColors: Record<string, string> = {
   PREVENTIVE: "#00d4c8",
@@ -221,9 +228,22 @@ const WellnessPage = () => {
         filters={["All"]}
         benefitsTitle="Why Choose Wellness Testing?"
         benefits={[
-          { icon: ShieldCheck, title: "Early Insight", description: "Spot changes in key markers before symptoms appear" },
-          { icon: Activity, title: "Track Progress", description: "Monitor how lifestyle changes affect your results over time" },
-          { icon: HeartPulse, title: "Preventative Care", description: "Build a clearer picture of your long-term health" },
+          {
+            icon: ShieldCheck,
+            title: "Early Insight",
+            description: "Spot changes in key markers before symptoms appear",
+          },
+          {
+            icon: Activity,
+            title: "Track Progress",
+            description:
+              "Monitor how lifestyle changes affect your results over time",
+          },
+          {
+            icon: HeartPulse,
+            title: "Preventative Care",
+            description: "Build a clearer picture of your long-term health",
+          },
         ]}
         breadcrumbs={[
           { label: "Home", href: "/" },
@@ -236,7 +256,6 @@ const WellnessPage = () => {
   }
 
   if (sub) {
-
     return (
       <DbCategoryPage
         canonicalCategory="wellness"
@@ -256,11 +275,27 @@ const WellnessPage = () => {
         filters={["All"]}
         benefitsTitle="Why Choose Wellness Testing?"
         benefits={[
-          { icon: ShieldCheck, title: "Early Insight", description: "Spot changes in key markers before symptoms appear" },
-          { icon: Activity, title: "Track Progress", description: "Monitor how lifestyle changes affect your results over time" },
-          { icon: HeartPulse, title: "Preventative Care", description: "Build a clearer picture of your long-term health" },
+          {
+            icon: ShieldCheck,
+            title: "Early Insight",
+            description: "Spot changes in key markers before symptoms appear",
+          },
+          {
+            icon: Activity,
+            title: "Track Progress",
+            description:
+              "Monitor how lifestyle changes affect your results over time",
+          },
+          {
+            icon: HeartPulse,
+            title: "Preventative Care",
+            description: "Build a clearer picture of your long-term health",
+          },
         ]}
-        breadcrumbs={[{ label: "Home", href: "/" }, { label: "General Wellness" }]}
+        breadcrumbs={[
+          { label: "Home", href: "/" },
+          { label: "General Wellness" },
+        ]}
         compareUrl="/compare?category=wellness"
       />
     );
@@ -296,7 +331,9 @@ const WellnessPage = () => {
             overflow: "hidden",
           }}
         >
-          <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
+          <div
+            style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}
+          >
             {/* Cards grid */}
             <div
               style={{
@@ -321,13 +358,17 @@ const WellnessPage = () => {
                     style={{
                       position: "relative",
                       background: "#ffffff", // white cards
-                      border: isHov ? `1px solid ${cat.accent}50` : "1px solid rgba(0,0,0,0.06)",
+                      border: isHov
+                        ? `1px solid ${cat.accent}50`
+                        : "1px solid rgba(0,0,0,0.06)",
                       borderRadius: 20,
                       padding: "28px 28px 24px",
                       cursor: "pointer",
                       transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                       transform: isHov ? "translateY(-4px)" : "translateY(0)",
-                      boxShadow: isHov ? "0 18px 40px rgba(0,0,0,0.18)" : "0 4px 18px rgba(0,0,0,0.12)",
+                      boxShadow: isHov
+                        ? "0 18px 40px rgba(0,0,0,0.18)"
+                        : "0 4px 18px rgba(0,0,0,0.12)",
                       backdropFilter: "none",
                       overflow: "hidden",
                       textDecoration: "none",
@@ -404,7 +445,9 @@ const WellnessPage = () => {
                             fontWeight: 500,
                           }}
                         >
-                          {count === undefined ? "\u2014" : `${count} ${count === 1 ? "test" : "tests"}`}
+                          {count === undefined
+                            ? "\u2014"
+                            : `${count} ${count === 1 ? "test" : "tests"}`}
                         </span>
                       </div>
                     </div>
@@ -459,7 +502,9 @@ const WellnessPage = () => {
                         style={{
                           display: "inline-block",
                           transition: "transform 0.3s ease",
-                          transform: isHov ? "translateX(4px)" : "translateX(0)",
+                          transform: isHov
+                            ? "translateX(4px)"
+                            : "translateX(0)",
                         }}
                       >
                         →
@@ -519,7 +564,8 @@ const WellnessPage = () => {
                 to="/find-test"
                 className="inline-block whitespace-nowrap text-center"
                 style={{
-                  background: "linear-gradient(135deg, #e70d69 0%, #ff4d6d 100%)",
+                  background:
+                    "linear-gradient(135deg, #e70d69 0%, #ff4d6d 100%)",
                   color: "#ffffff",
                   padding: "16px 36px",
                   fontSize: "16px",
@@ -533,7 +579,6 @@ const WellnessPage = () => {
             </div>
           </div>
         </section>
-
       </main>
 
       <Footer />

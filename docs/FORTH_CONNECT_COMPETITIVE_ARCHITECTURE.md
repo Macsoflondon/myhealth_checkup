@@ -71,8 +71,8 @@ machinery:
   Terms confirm it is the correct shape.
 - **Abnormal-result escalation that overrides the customer's own opt-out.** Where a result is
   abnormal "by reference to generally accepted UK medical standards", Forth may share the
-  customer's name and contact details with GPs or other qualified healthcare services *even if
-  the customer opted out of detailed comments*, and a practitioner may contact them directly to
+  customer's name and contact details with GPs or other qualified healthcare services _even if
+  the customer opted out of detailed comments_, and a practitioner may contact them directly to
   recommend immediate medical attention. This is the single most important clinical-safety
   pattern on the whole site, and it has a hard consequence for us: **a safety escalation route
   cannot be a consent-toggleable feature.** It is a standing duty with its own lawful basis.
@@ -90,19 +90,19 @@ machinery:
 
 ## 2. Product features worth adopting
 
-| Forth feature | What is actually good about it | Our version |
-| --- | --- | --- |
-| Controlled release of results | Decouples "result exists" from "person can see it", which is what makes clinician review possible at all | `diagnostic_reports.status` + `release_policy`; owner sees nothing until `released` |
-| Comparison to the person's previous result, shown inline | The single most useful number on a results screen is the last one | `BiomarkerSeriesSummary.previous`, `absoluteChange`, `percentageChange`, `intervalDays` |
-| Interactive graphs with an explanation beside each marker | Turns a number into a decision | Charts over `observations`, joined to `biomarker_hub` editorial we already own |
-| Category grouping of biomarkers (Lipids, Inflammatory Markers, Glucose Control, Sex Steroid Hormones) | A good information architecture; roughly ten categories, each with a stated biomarker count | `curated_test_profiles` for clinical groupings — deliberately not the commercial catalogue's categories |
-| Focus areas — which single component most moves a category | Genuinely useful prioritisation, and explainable if the weights are yours | Deferred to Phase 9 as an explainable, versioned rule. Not scored, ranked |
-| Personalised incremental targets over three to six months | Makes retesting meaningful instead of arbitrary | Feeds Phase 4 retest intelligence via `retest_rules`, with a recorded evidence source |
-| Guidance conditioned on age, sex, menstrual cycle and hormone medication | The conditioning set is right, and we had not specified hormone medication before reading this | Already added to `observations`: `cycle_day`, `cycle_phase`, `menstrual_status`, `hormone_medication_context` |
-| Doctor commentary attached to results | A trust multiplier that costs a rota, not an algorithm | `clinical_review_comments` — attributed, released separately |
-| SMS and push notification of release | Results are time-sensitive; email alone is not enough | `notification_channel_preferences` + `notification_events`, consent-first |
-| Peer benchmarking by age and sex | Context people ask for constantly | `benchmark_cohort_policies` — designed, and disabled until governance exists |
-| Cycle-day-specific personalised ranges | A real clinical modelling advance over static ranges | `reference_range_contexts` + per-observation historical ranges |
+| Forth feature                                                                                         | What is actually good about it                                                                           | Our version                                                                                                   |
+| ----------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Controlled release of results                                                                         | Decouples "result exists" from "person can see it", which is what makes clinician review possible at all | `diagnostic_reports.status` + `release_policy`; owner sees nothing until `released`                           |
+| Comparison to the person's previous result, shown inline                                              | The single most useful number on a results screen is the last one                                        | `BiomarkerSeriesSummary.previous`, `absoluteChange`, `percentageChange`, `intervalDays`                       |
+| Interactive graphs with an explanation beside each marker                                             | Turns a number into a decision                                                                           | Charts over `observations`, joined to `biomarker_hub` editorial we already own                                |
+| Category grouping of biomarkers (Lipids, Inflammatory Markers, Glucose Control, Sex Steroid Hormones) | A good information architecture; roughly ten categories, each with a stated biomarker count              | `curated_test_profiles` for clinical groupings — deliberately not the commercial catalogue's categories       |
+| Focus areas — which single component most moves a category                                            | Genuinely useful prioritisation, and explainable if the weights are yours                                | Deferred to Phase 9 as an explainable, versioned rule. Not scored, ranked                                     |
+| Personalised incremental targets over three to six months                                             | Makes retesting meaningful instead of arbitrary                                                          | Feeds Phase 4 retest intelligence via `retest_rules`, with a recorded evidence source                         |
+| Guidance conditioned on age, sex, menstrual cycle and hormone medication                              | The conditioning set is right, and we had not specified hormone medication before reading this           | Already added to `observations`: `cycle_day`, `cycle_phase`, `menstrual_status`, `hormone_medication_context` |
+| Doctor commentary attached to results                                                                 | A trust multiplier that costs a rota, not an algorithm                                                   | `clinical_review_comments` — attributed, released separately                                                  |
+| SMS and push notification of release                                                                  | Results are time-sensitive; email alone is not enough                                                    | `notification_channel_preferences` + `notification_events`, consent-first                                     |
+| Peer benchmarking by age and sex                                                                      | Context people ask for constantly                                                                        | `benchmark_cohort_policies` — designed, and disabled until governance exists                                  |
+| Cycle-day-specific personalised ranges                                                                | A real clinical modelling advance over static ranges                                                     | `reference_range_contexts` + per-observation historical ranges                                                |
 
 ## 3. Architectural patterns worth adopting
 
@@ -155,14 +155,14 @@ machinery:
 
 ## 5. Commercial and workflow patterns worth adopting
 
-| Pattern | Adopt? | Note |
-| --- | --- | --- |
-| Practitioner console with a client list and a review queue | Domain model now, portal much later | `organisations`, `organisation_members` exist and grant **no** health-data access |
-| Ordering and order-status tracking keyed to a partner reference | Yes — this is Layer 5 and it is currently missing | Must key on *our* order reference so any fulfiller is interchangeable |
-| Just-in-time fulfilment and kit logistics | No. Buy, never build | It is a warehouse business |
-| Branded white-label storefront | No | We are the brand; a comparison platform that white-labels itself has nothing left |
-| Modular commercial packaging | Yes, as an internal boundary discipline | Not as a pricing model |
-| Bespoke profile building as a *sales* tool | No — as a *clinical* tool, yes | `curated_test_profiles` deliberately has no price, provider or commission column |
+| Pattern                                                         | Adopt?                                            | Note                                                                              |
+| --------------------------------------------------------------- | ------------------------------------------------- | --------------------------------------------------------------------------------- |
+| Practitioner console with a client list and a review queue      | Domain model now, portal much later               | `organisations`, `organisation_members` exist and grant **no** health-data access |
+| Ordering and order-status tracking keyed to a partner reference | Yes — this is Layer 5 and it is currently missing | Must key on _our_ order reference so any fulfiller is interchangeable             |
+| Just-in-time fulfilment and kit logistics                       | No. Buy, never build                              | It is a warehouse business                                                        |
+| Branded white-label storefront                                  | No                                                | We are the brand; a comparison platform that white-labels itself has nothing left |
+| Modular commercial packaging                                    | Yes, as an internal boundary discipline           | Not as a pricing model                                                            |
+| Bespoke profile building as a _sales_ tool                      | No — as a _clinical_ tool, yes                    | `curated_test_profiles` deliberately has no price, provider or commission column  |
 
 ## 6. Things we should deliberately NOT copy
 
@@ -192,7 +192,7 @@ handled, produces something Forth structurally cannot match.
 1. **Cross-provider longitudinal continuity.** Forth can chart results Forth produced. We chart a
    Medichecks ferritin from March against a Randox ferritin from September and a photographed GP
    printout from last year, on one axis, with units reconciled and each point retaining the
-   laboratory, method and the reference range that applied *at the time*. That requires a
+   laboratory, method and the reference range that applied _at the time_. That requires a
    canonical ontology (`biomarker_hub`), a source/canonical value split, and per-observation
    historical ranges — all of which we have and a single-vendor app has no reason to build.
 2. **Patient verification as the trust boundary.** Forth's result is trusted because Forth's lab
@@ -212,7 +212,7 @@ handled, produces something Forth structurally cannot match.
    clinical relevance, retest timing or ranking. This needs to be provable, not asserted — hence
    the source-neutrality contract test.
 6. **The loop closes back into the marketplace.** Discovery → comparison → test → result →
-   verification → record → retest intelligence → *back into comparison*, with the retest
+   verification → record → retest intelligence → _back into comparison_, with the retest
    recommendation landing on a fresh, price-aware, multi-provider comparison of the specific
    biomarkers that need repeating. Forth's loop returns to Forth's catalogue. This is the whole
    thesis of the platform, and it is the one capability neither Forth nor any single provider can
@@ -221,7 +221,7 @@ handled, produces something Forth structurally cannot match.
    documents, on demand, in a machine-readable form. Our own portability requirement, applied to
    ourselves and not only to partners.
 8. **Contextual ranges that apply across sources.** Cycle-aware ranges implemented in
-   `reference_range_contexts` apply to a hormone result from *any* provider, not only to results
+   `reference_range_contexts` apply to a hormone result from _any_ provider, not only to results
    from our own assay. MyFORM's modelling only works on MyFORM samples.
 
 ---
@@ -232,83 +232,83 @@ Canonical entities are fixed: `biomarker_hub` (biomarkers), `audit_logs` (audit)
 `clinical_consent_records` (consent), `observations` (results). Nothing below creates a
 duplicate of any of them.
 
-| # | Layer | State | Canonical entities | Forth-derived addition |
-| --- | --- | --- | --- | --- |
-| 1 | Health discovery | Live | marketplace, `biomarker_hub` | Category-based biomarker grouping via `curated_test_profiles` |
-| 2 | Test recommendation | Live (scoring + AI fallback) | `ai_prompt_versions` | Retest targets feed it later; adapter identity never an input |
-| 3 | Provider comparison | Live | `unified_provider_tests` | Unchanged. Deliberately untouched by health-record work |
-| 4 | Test and provider catalogue | Live | `provider_tests`, `biomarker_hub` | `curated_test_profiles` sits beside it, clinical not commercial |
-| 5 | Order and referral tracking | **Missing** | — | Order reference keyed to us, fulfiller interchangeable. P1 |
-| 6 | Results ingestion | Schema only | `ingestion_adapters`, `ingestion_events`, `diagnostic_reports` | Adapter architecture; per-adapter hard-requirement flags |
-| 7 | Document intelligence | Not started | `source_documents` | Source document REQUIRED per report, never a public URL |
-| 8 | Results validation | Schema only | `observations.validation_status` | Deterministic validation before trust; AI produces drafts only |
-| 9 | Patient verification | Schema only | `observations.verification_status` | The trust boundary Forth does not need and we do |
-| 10 | Health data provenance | Schema only | `observations` (document, page, text anchor, method, confidence), `audit_logs` | Immutability trigger on source fields |
-| 11 | Biomarker ontology | Partially built | `biomarker_hub` (1,552 rows, 4,434 links) | Category taxonomy; contextual ranges |
-| 12 | Longitudinal results engine | Contract + maths done | `observations`, `observation_reference_ranges` | Latest/previous, change, direction, interval — measurement only |
-| 13 | Health timeline | Not started | `observations`, `diagnostic_reports` | Release events appear on the timeline as events |
-| 14 | Retest intelligence | Not started | `retest_rules` (planned) | Personalised targets as versioned, evidence-sourced rules |
-| 15 | Personal health record | Not started | all of the above | Export and deletion as first-class, not a support ticket |
-| 16 | Clinician reports and sharing | Domain model only | `organisations`, `organisation_members`, `clinical_review_comments`, `data_sharing_grants` | Healthcare-comment model; escalation route; previous-result context for reviewers |
-| 17 | FHIR and LOINC | Not started | — | `InboundReport` maps to DiagnosticReport/Observation/DocumentReference/Specimen |
-| 18 | Health intelligence AI | Not started | `ai_prompt_versions`, `ai_operation_logs` | Category scores and focus areas — deterministic and versioned, or not at all |
+| #   | Layer                         | State                        | Canonical entities                                                                         | Forth-derived addition                                                            |
+| --- | ----------------------------- | ---------------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| 1   | Health discovery              | Live                         | marketplace, `biomarker_hub`                                                               | Category-based biomarker grouping via `curated_test_profiles`                     |
+| 2   | Test recommendation           | Live (scoring + AI fallback) | `ai_prompt_versions`                                                                       | Retest targets feed it later; adapter identity never an input                     |
+| 3   | Provider comparison           | Live                         | `unified_provider_tests`                                                                   | Unchanged. Deliberately untouched by health-record work                           |
+| 4   | Test and provider catalogue   | Live                         | `provider_tests`, `biomarker_hub`                                                          | `curated_test_profiles` sits beside it, clinical not commercial                   |
+| 5   | Order and referral tracking   | **Missing**                  | —                                                                                          | Order reference keyed to us, fulfiller interchangeable. P1                        |
+| 6   | Results ingestion             | Schema only                  | `ingestion_adapters`, `ingestion_events`, `diagnostic_reports`                             | Adapter architecture; per-adapter hard-requirement flags                          |
+| 7   | Document intelligence         | Not started                  | `source_documents`                                                                         | Source document REQUIRED per report, never a public URL                           |
+| 8   | Results validation            | Schema only                  | `observations.validation_status`                                                           | Deterministic validation before trust; AI produces drafts only                    |
+| 9   | Patient verification          | Schema only                  | `observations.verification_status`                                                         | The trust boundary Forth does not need and we do                                  |
+| 10  | Health data provenance        | Schema only                  | `observations` (document, page, text anchor, method, confidence), `audit_logs`             | Immutability trigger on source fields                                             |
+| 11  | Biomarker ontology            | Partially built              | `biomarker_hub` (1,552 rows, 4,434 links)                                                  | Category taxonomy; contextual ranges                                              |
+| 12  | Longitudinal results engine   | Contract + maths done        | `observations`, `observation_reference_ranges`                                             | Latest/previous, change, direction, interval — measurement only                   |
+| 13  | Health timeline               | Not started                  | `observations`, `diagnostic_reports`                                                       | Release events appear on the timeline as events                                   |
+| 14  | Retest intelligence           | Not started                  | `retest_rules` (planned)                                                                   | Personalised targets as versioned, evidence-sourced rules                         |
+| 15  | Personal health record        | Not started                  | all of the above                                                                           | Export and deletion as first-class, not a support ticket                          |
+| 16  | Clinician reports and sharing | Domain model only            | `organisations`, `organisation_members`, `clinical_review_comments`, `data_sharing_grants` | Healthcare-comment model; escalation route; previous-result context for reviewers |
+| 17  | FHIR and LOINC                | Not started                  | —                                                                                          | `InboundReport` maps to DiagnosticReport/Observation/DocumentReference/Specimen   |
+| 18  | Health intelligence AI        | Not started                  | `ai_prompt_versions`, `ai_operation_logs`                                                  | Category scores and focus areas — deterministic and versioned, or not at all      |
 
 ---
 
 ## 9. Prioritised implementation backlog
 
-Priorities are ordered by whether the platform is *safe and honest* without them, not by appeal.
+Priorities are ordered by whether the platform is _safe and honest_ without them, not by appeal.
 Nothing below is started; the F.x groundwork referenced is schema, contracts and tests only.
 
 ### P0 — required before a single real result is stored
 
-| ID | Item | Depends on | Acceptance criteria |
-| --- | --- | --- | --- |
-| P0-a | Release transition server functions | F.A groundwork | Every status change goes through the state machine and writes a `result_release_events` row **in the same transaction**; an invalid transition is rejected by the database, not only by the UI; a report is unreadable by its owner until `released`, proved by an RLS test executing as a non-owner and as a pre-release owner |
-| P0-b | Manual-entry ingestion adapter | F.I contract, P0-a | Produces a valid `InboundReport`; `sourceValue` and `sourceUnit` preserved verbatim; writes provenance with `extraction_method = 'manual_entry'`; round-trip test proves source fields are unchanged after canonicalisation |
-| P0-c | Patient verification flow | P0-b | Draft observations display value, unit, range, date, laboratory and source document; confirm / edit / reject recorded with actor and timestamp; an edit supersedes rather than overwrites; only `confirmed` rows appear in any series — asserted in `biomarker-series` tests |
-| P0-d | Deterministic validation pass | P0-b | Unit recognised, value parses to the declared `value_type`, range sanity-checked, date plausible; failures surface a reason and block trust; no LLM anywhere in the path — enforced by a module-boundary test |
-| P0-e | Abnormal-result escalation policy | P0-d, X.11 clinical governance | Written policy naming the clinical standard, the lawful basis and the human in the loop; deterministic trigger against validated observations only; escalation is **not** consent-toggleable and is recorded in `audit_logs`; never triggered by an AI output |
-| P0-f | Health-record access audit | canonical `audit_logs` | Every read of an observation or source document by anyone other than the owner writes an audit row with actor, purpose and data classification |
-| P0-g | Source-neutrality contract test | — | An automated test asserts that no canonical health module references any partner brand and that the observation contract exposes no interpretation, score or AI field. **Shipped 14 Sep 2026** |
-| P0-h | Non-diagnostic and emergency notice in the record | — | Visible at the point of viewing a result, not only in the footer; names emergency symptoms; states that the platform reports and compares and does not diagnose |
+| ID   | Item                                              | Depends on                     | Acceptance criteria                                                                                                                                                                                                                                                                                                             |
+| ---- | ------------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P0-a | Release transition server functions               | F.A groundwork                 | Every status change goes through the state machine and writes a `result_release_events` row **in the same transaction**; an invalid transition is rejected by the database, not only by the UI; a report is unreadable by its owner until `released`, proved by an RLS test executing as a non-owner and as a pre-release owner |
+| P0-b | Manual-entry ingestion adapter                    | F.I contract, P0-a             | Produces a valid `InboundReport`; `sourceValue` and `sourceUnit` preserved verbatim; writes provenance with `extraction_method = 'manual_entry'`; round-trip test proves source fields are unchanged after canonicalisation                                                                                                     |
+| P0-c | Patient verification flow                         | P0-b                           | Draft observations display value, unit, range, date, laboratory and source document; confirm / edit / reject recorded with actor and timestamp; an edit supersedes rather than overwrites; only `confirmed` rows appear in any series — asserted in `biomarker-series` tests                                                    |
+| P0-d | Deterministic validation pass                     | P0-b                           | Unit recognised, value parses to the declared `value_type`, range sanity-checked, date plausible; failures surface a reason and block trust; no LLM anywhere in the path — enforced by a module-boundary test                                                                                                                   |
+| P0-e | Abnormal-result escalation policy                 | P0-d, X.11 clinical governance | Written policy naming the clinical standard, the lawful basis and the human in the loop; deterministic trigger against validated observations only; escalation is **not** consent-toggleable and is recorded in `audit_logs`; never triggered by an AI output                                                                   |
+| P0-f | Health-record access audit                        | canonical `audit_logs`         | Every read of an observation or source document by anyone other than the owner writes an audit row with actor, purpose and data classification                                                                                                                                                                                  |
+| P0-g | Source-neutrality contract test                   | —                              | An automated test asserts that no canonical health module references any partner brand and that the observation contract exposes no interpretation, score or AI field. **Shipped 14 Sep 2026**                                                                                                                                  |
+| P0-h | Non-diagnostic and emergency notice in the record | —                              | Visible at the point of viewing a result, not only in the footer; names emergency symptoms; states that the platform reports and compares and does not diagnose                                                                                                                                                                 |
 
 ### P1 — the product
 
-| ID | Item | Depends on | Acceptance criteria |
-| --- | --- | --- | --- |
-| P1-a | Longitudinal charts | P0-c | Multi-provider series on one axis; reference-range overlay uses the range stored per observation, not today's; laboratory, method and provider labelled per point; explicitly captioned as measurement change, not interpretation |
-| P1-b | Document upload and extraction | P0-c, Phase 2 | Original retained in the private bucket under the `<uid>/` prefix; extraction produces drafts only; confidence recorded; every draft reviewable against the page it came from |
-| P1-c | Order and referral tracking (Layer 5) | — | Our order reference is primary; fulfiller is a nullable adapter reference; a result arriving from any adapter can be matched to an order; removing an adapter loses no order history |
-| P1-d | Notification dispatch | F.G groundwork | Consent checked per channel per event type before send; payload carries no biomarker name or value; delivery status recorded; nothing forwarded to analytics or advertising — asserted by test |
-| P1-e | Clinician review queue | P0-a, P0-e | Reviewer sees previous results for context; commentary is attributed with professional registration and released separately from the result; org-scoped policy added only with governance sign-off recorded |
-| P1-f | Contextual reference ranges | F.H groundwork | Ranges resolve by biomarker, sex, age band, cycle phase and cycle day; each carries an evidence source and a version; `is_active` requires clinical sign-off; a range change never mutates a historical observation |
-| P1-g | Curated profile admin | F.F groundwork | Editable under `/control`; maps to `biomarker_hub` only; no price, provider or commission field can be added — asserted by a schema test |
-| P1-h | Export and deletion | P0-c | Machine-readable export of all observations plus original documents, on demand; deletion removes documents and observations and leaves an audit record |
+| ID   | Item                                  | Depends on     | Acceptance criteria                                                                                                                                                                                                               |
+| ---- | ------------------------------------- | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P1-a | Longitudinal charts                   | P0-c           | Multi-provider series on one axis; reference-range overlay uses the range stored per observation, not today's; laboratory, method and provider labelled per point; explicitly captioned as measurement change, not interpretation |
+| P1-b | Document upload and extraction        | P0-c, Phase 2  | Original retained in the private bucket under the `<uid>/` prefix; extraction produces drafts only; confidence recorded; every draft reviewable against the page it came from                                                     |
+| P1-c | Order and referral tracking (Layer 5) | —              | Our order reference is primary; fulfiller is a nullable adapter reference; a result arriving from any adapter can be matched to an order; removing an adapter loses no order history                                              |
+| P1-d | Notification dispatch                 | F.G groundwork | Consent checked per channel per event type before send; payload carries no biomarker name or value; delivery status recorded; nothing forwarded to analytics or advertising — asserted by test                                    |
+| P1-e | Clinician review queue                | P0-a, P0-e     | Reviewer sees previous results for context; commentary is attributed with professional registration and released separately from the result; org-scoped policy added only with governance sign-off recorded                       |
+| P1-f | Contextual reference ranges           | F.H groundwork | Ranges resolve by biomarker, sex, age band, cycle phase and cycle day; each carries an evidence source and a version; `is_active` requires clinical sign-off; a range change never mutates a historical observation               |
+| P1-g | Curated profile admin                 | F.F groundwork | Editable under `/control`; maps to `biomarker_hub` only; no price, provider or commission field can be added — asserted by a schema test                                                                                          |
+| P1-h | Export and deletion                   | P0-c           | Machine-readable export of all observations plus original documents, on demand; deletion removes documents and observations and leaves an audit record                                                                            |
 
 ### P2 — intelligence, once the record exists and is trusted
 
-| ID | Item | Depends on | Acceptance criteria |
-| --- | --- | --- | --- |
-| P2-a | Retest intelligence | P1-a, P1-f, X.11 | Output limited to no action, routine review, monitoring opportunity or clinician pathway; every recommendation cites its rule version and evidence source; a test proves identical output regardless of `source_system` and of commission |
-| P2-b | Category scores and focus areas | P2-a | Deterministic and versioned; every score decomposes into named components with weights the person can see; no AI-assigned weighting; withheld where inputs are insufficient |
-| P2-c | Personalised targets | P2-b | Traceable to a versioned rule with a recorded evidence source; framed as measurement targets, never as clinical goals or outcomes |
-| P2-d | Hormone curve modelling | P1-f | Our own model, published method, versioned; states its own limits (cycle length bounds, hormone medication) as Forth's does; **not** a reimplementation of FORM |
-| P2-e | Health timeline | P1-a | Results, releases, verifications and retests on one chronological surface |
-| P2-f | FHIR export | P1-a | Validates against the profiles before release; DiagnosticReport carries report context, Observation the atomic measurement; export is not a claim of NHS connectivity |
-| P2-g | Clinician sharing | P1-e, P1-h | Short-lived signed links, explicit scope, expiry, revocation, access logging; no public document URL ever issued |
+| ID   | Item                            | Depends on       | Acceptance criteria                                                                                                                                                                                                                       |
+| ---- | ------------------------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P2-a | Retest intelligence             | P1-a, P1-f, X.11 | Output limited to no action, routine review, monitoring opportunity or clinician pathway; every recommendation cites its rule version and evidence source; a test proves identical output regardless of `source_system` and of commission |
+| P2-b | Category scores and focus areas | P2-a             | Deterministic and versioned; every score decomposes into named components with weights the person can see; no AI-assigned weighting; withheld where inputs are insufficient                                                               |
+| P2-c | Personalised targets            | P2-b             | Traceable to a versioned rule with a recorded evidence source; framed as measurement targets, never as clinical goals or outcomes                                                                                                         |
+| P2-d | Hormone curve modelling         | P1-f             | Our own model, published method, versioned; states its own limits (cycle length bounds, hormone medication) as Forth's does; **not** a reimplementation of FORM                                                                           |
+| P2-e | Health timeline                 | P1-a             | Results, releases, verifications and retests on one chronological surface                                                                                                                                                                 |
+| P2-f | FHIR export                     | P1-a             | Validates against the profiles before release; DiagnosticReport carries report context, Observation the atomic measurement; export is not a claim of NHS connectivity                                                                     |
+| P2-g | Clinician sharing               | P1-e, P1-h       | Short-lived signed links, explicit scope, expiry, revocation, access logging; no public document URL ever issued                                                                                                                          |
 
 ### Do not build yet — explicit
 
-| Item | Why not | Unblocks when |
-| --- | --- | --- |
-| Peer benchmarking | Re-identification risk and no statistical governance. The database constraint already refuses to enable it | Statistical governance, clinical sign-off, de-identification method and cohort definitions all exist in writing |
-| Production clinician portal | Broad access to special-category data before permissions and consent are designed | P1-e complete, DPIA covering practitioner access, role model tested |
-| Any Forth adapter | No documentation, no sandbox, no agreed terms; building against a guessed API is wasted work | Forth supplies technical documentation and a sandbox under NDA, **and** contractually commits to per-result source documents and bulk export on demand and on exit. Without both, the integration breaches our own provenance and portability rules and does not proceed at any price |
-| AI interpretation on the record surface | Cannot be allowed to read as clinical truth | P2-b exists, with explainability and a governance sign-off |
-| Kit logistics, phlebotomy, laboratory operations | Makes us a provider and destroys editorial independence | Never. Partner instead |
-| White-label storefront | Nothing left of the proposition | Never |
-| Promoting `clinical_biomarker_history` or `biomarker_readings` to authoritative | They store `ai_interpretation` and `trend_direction` on the row, which violates two standing rules | Never. `observations` is authoritative |
+| Item                                                                            | Why not                                                                                                    | Unblocks when                                                                                                                                                                                                                                                                         |
+| ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Peer benchmarking                                                               | Re-identification risk and no statistical governance. The database constraint already refuses to enable it | Statistical governance, clinical sign-off, de-identification method and cohort definitions all exist in writing                                                                                                                                                                       |
+| Production clinician portal                                                     | Broad access to special-category data before permissions and consent are designed                          | P1-e complete, DPIA covering practitioner access, role model tested                                                                                                                                                                                                                   |
+| Any Forth adapter                                                               | No documentation, no sandbox, no agreed terms; building against a guessed API is wasted work               | Forth supplies technical documentation and a sandbox under NDA, **and** contractually commits to per-result source documents and bulk export on demand and on exit. Without both, the integration breaches our own provenance and portability rules and does not proceed at any price |
+| AI interpretation on the record surface                                         | Cannot be allowed to read as clinical truth                                                                | P2-b exists, with explainability and a governance sign-off                                                                                                                                                                                                                            |
+| Kit logistics, phlebotomy, laboratory operations                                | Makes us a provider and destroys editorial independence                                                    | Never. Partner instead                                                                                                                                                                                                                                                                |
+| White-label storefront                                                          | Nothing left of the proposition                                                                            | Never                                                                                                                                                                                                                                                                                 |
+| Promoting `clinical_biomarker_history` or `biomarker_readings` to authoritative | They store `ai_interpretation` and `trend_direction` on the row, which violates two standing rules         | Never. `observations` is authoritative                                                                                                                                                                                                                                                |
 
 ---
 

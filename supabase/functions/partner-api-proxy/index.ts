@@ -21,7 +21,7 @@
 //
 // This file is a stub: no partner is live yet. It exists so the pattern is
 // codified and the P0 architecture item is met.
-import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
+import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 
 interface PartnerConfig {
   tokenUrl: string;
@@ -36,31 +36,34 @@ interface PartnerConfig {
 
 function loadConfig(prefix: string): PartnerConfig | null {
   const env = (k: string) => Deno.env.get(`${prefix}_${k}`);
-  const tokenUrl = env('TOKEN_URL');
-  const clientId = env('CLIENT_ID');
-  const privateKeyPem = env('JWT_PRIVATE_KEY');
-  const kid = env('JWT_KID');
+  const tokenUrl = env("TOKEN_URL");
+  const clientId = env("CLIENT_ID");
+  const privateKeyPem = env("JWT_PRIVATE_KEY");
+  const kid = env("JWT_KID");
   if (!tokenUrl || !clientId || !privateKeyPem || !kid) return null;
   return {
     tokenUrl,
     clientId,
     privateKeyPem,
     kid,
-    audience: env('AUDIENCE') ?? tokenUrl,
-    scope: env('SCOPE') ?? '',
-    mtlsCertPem: env('MTLS_CERT') ?? undefined,
-    mtlsKeyPem: env('MTLS_KEY') ?? undefined,
+    audience: env("AUDIENCE") ?? tokenUrl,
+    scope: env("SCOPE") ?? "",
+    mtlsCertPem: env("MTLS_CERT") ?? undefined,
+    mtlsKeyPem: env("MTLS_KEY") ?? undefined,
   };
 }
 
 function b64url(bytes: Uint8Array): string {
-  let bin = '';
+  let bin = "";
   for (const b of bytes) bin += String.fromCharCode(b);
-  return btoa(bin).replace(/=+$/, '').replace(/\+/g, '-').replace(/\//g, '_');
+  return btoa(bin).replace(/=+$/, "").replace(/\+/g, "-").replace(/\//g, "_");
 }
 
 function pemToDer(pem: string): Uint8Array {
-  const body = pem.replace(/-----BEGIN [^-]+-----|-----END [^-]+-----|\s+/g, '');
+  const body = pem.replace(
+    /-----BEGIN [^-]+-----|-----END [^-]+-----|\s+/g,
+    "",
+  );
   const bin = atob(body);
   const out = new Uint8Array(bin.length);
   for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
@@ -69,7 +72,7 @@ function pemToDer(pem: string): Uint8Array {
 
 async function signClientAssertion(cfg: PartnerConfig): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
-  const header = { alg: 'RS256', typ: 'JWT', kid: cfg.kid };
+  const header = { alg: "RS256", typ: "JWT", kid: cfg.kid };
   const payload = {
     iss: cfg.clientId,
     sub: cfg.clientId,
@@ -83,76 +86,110 @@ async function signClientAssertion(cfg: PartnerConfig): Promise<string> {
   const signingInput = `${encHeader}.${encPayload}`;
 
   const key = await crypto.subtle.importKey(
-    'pkcs8',
+    "pkcs8",
     pemToDer(cfg.privateKeyPem),
-    { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
     false,
-    ['sign'],
+    ["sign"],
   );
-  const sig = new Uint8Array(await crypto.subtle.sign('RSASSA-PKCS1-v1_5', key, new TextEncoder().encode(signingInput)));
+  const sig = new Uint8Array(
+    await crypto.subtle.sign(
+      "RSASSA-PKCS1-v1_5",
+      key,
+      new TextEncoder().encode(signingInput),
+    ),
+  );
   return `${signingInput}.${b64url(sig)}`;
 }
 
 async function fetchToken(cfg: PartnerConfig): Promise<string> {
   const assertion = await signClientAssertion(cfg);
   const body = new URLSearchParams({
-    grant_type: 'client_credentials',
-    client_assertion_type: 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer',
+    grant_type: "client_credentials",
+    client_assertion_type:
+      "urn:ietf:params:oauth:client-assertion-type:jwt-bearer",
     client_assertion: assertion,
     ...(cfg.scope ? { scope: cfg.scope } : {}),
   });
   const res = await fetch(cfg.tokenUrl, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body,
   });
   if (!res.ok) throw new Error(`token endpoint ${res.status}`);
-  const json = await res.json() as { access_token?: string };
-  if (!json.access_token) throw new Error('no access_token in response');
+  const json = (await res.json()) as { access_token?: string };
+  if (!json.access_token) throw new Error("no access_token in response");
   return json.access_token;
 }
 
 Deno.serve(async (req) => {
-  if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
+  if (req.method === "OPTIONS")
+    return new Response("ok", { headers: corsHeaders });
 
   // Stub: partner configuration is opt-in. Until a partner is onboarded this
   // endpoint returns a discovery payload describing what secrets are needed.
   const url = new URL(req.url);
-  const partner = url.searchParams.get('partner')?.toUpperCase() ?? '';
+  const partner = url.searchParams.get("partner")?.toUpperCase() ?? "";
   if (!/^[A-Z0-9_]{2,32}$/.test(partner)) {
-    return new Response(JSON.stringify({
-      error: 'missing_or_invalid_partner_query_param',
-      required_secrets: [
-        '<PARTNER>_TOKEN_URL', '<PARTNER>_CLIENT_ID', '<PARTNER>_JWT_PRIVATE_KEY',
-        '<PARTNER>_JWT_KID', '<PARTNER>_AUDIENCE', '<PARTNER>_SCOPE',
-        '<PARTNER>_MTLS_CERT (optional)', '<PARTNER>_MTLS_KEY (optional)',
-      ],
-    }), { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    return new Response(
+      JSON.stringify({
+        error: "missing_or_invalid_partner_query_param",
+        required_secrets: [
+          "<PARTNER>_TOKEN_URL",
+          "<PARTNER>_CLIENT_ID",
+          "<PARTNER>_JWT_PRIVATE_KEY",
+          "<PARTNER>_JWT_KID",
+          "<PARTNER>_AUDIENCE",
+          "<PARTNER>_SCOPE",
+          "<PARTNER>_MTLS_CERT (optional)",
+          "<PARTNER>_MTLS_KEY (optional)",
+        ],
+      }),
+      {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
   }
 
   const cfg = loadConfig(partner);
   if (!cfg) {
-    return new Response(JSON.stringify({
-      error: 'partner_not_configured',
-      partner,
-    }), { status: 501, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    return new Response(
+      JSON.stringify({
+        error: "partner_not_configured",
+        partner,
+      }),
+      {
+        status: 501,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
   }
 
   try {
     const token = await fetchToken(cfg);
     // Downstream call would go here with Authorization: Bearer <token>
     // and (when supported) a Deno.createHttpClient({ cert, key }) client for mTLS.
-    return new Response(JSON.stringify({
-      ok: true,
-      partner,
-      token_acquired: true,
-      token_preview: `${token.slice(0, 8)}…`,
-      mtls_configured: Boolean(cfg.mtlsCertPem && cfg.mtlsKeyPem),
-    }), { headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    return new Response(
+      JSON.stringify({
+        ok: true,
+        partner,
+        token_acquired: true,
+        token_preview: `${token.slice(0, 8)}…`,
+        mtls_configured: Boolean(cfg.mtlsCertPem && cfg.mtlsKeyPem),
+      }),
+      { headers: { ...corsHeaders, "Content-Type": "application/json" } },
+    );
   } catch (e) {
-    return new Response(JSON.stringify({
-      error: 'token_acquisition_failed',
-      detail: e instanceof Error ? e.message : String(e),
-    }), { status: 502, headers: { ...corsHeaders, 'Content-Type': 'application/json' } });
+    return new Response(
+      JSON.stringify({
+        error: "token_acquisition_failed",
+        detail: e instanceof Error ? e.message : String(e),
+      }),
+      {
+        status: 502,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
   }
 });

@@ -29,7 +29,9 @@ async function dumpAccreditorsDebug(page: any, vpName: string, label: string) {
     const allRowTexts = await page.locator(ROW).allInnerTexts();
 
     // Console output is captured in Playwright traces / job logs.
-    console.error(`${vpName}: Debug — missing label: "${label}"\nfirstRowHTML:\n${firstRowHtml}\nallRowTexts:\n${JSON.stringify(allRowTexts, null, 2)}`);
+    console.error(
+      `${vpName}: Debug — missing label: "${label}"\nfirstRowHTML:\n${firstRowHtml}\nallRowTexts:\n${JSON.stringify(allRowTexts, null, 2)}`,
+    );
 
     // Save a screenshot into the test-results directory so it's uploaded as an artifact.
     const safeVp = vpName.replace(/[^a-z0-9]/gi, "_").toLowerCase();
@@ -38,13 +40,20 @@ async function dumpAccreditorsDebug(page: any, vpName: string, label: string) {
     await page.screenshot({ path: screenshotPath, fullPage: false });
     console.error(`${vpName}: Saved screenshot to ${screenshotPath}`);
   } catch (err) {
-    console.error(`Failed to capture debug info for ${vpName} / ${label}:`, err);
+    console.error(
+      `Failed to capture debug info for ${vpName} / ${label}:`,
+      err,
+    );
   }
 }
 
 for (const vp of VIEWPORTS) {
-  test(`AccreditedProvidersBar @ ${vp.name}: labels present, no overflow`, async ({ browser }) => {
-    const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
+  test(`AccreditedProvidersBar @ ${vp.name}: labels present, no overflow`, async ({
+    browser,
+  }) => {
+    const ctx = await browser.newContext({
+      viewport: { width: vp.width, height: vp.height },
+    });
     const page = await ctx.newPage();
     await page.goto(BASE_URL + "/");
     await page.waitForSelector(ROW, { timeout: 10_000 });
@@ -58,7 +67,10 @@ for (const vp of VIEWPORTS) {
         await dumpAccreditorsDebug(page, vp.name, label);
       }
 
-      expect(count, `${vp.name}: "${label}" not found in accreditors bar`).toBeGreaterThan(0);
+      expect(
+        count,
+        `${vp.name}: "${label}" not found in accreditors bar`,
+      ).toBeGreaterThan(0);
     }
 
     // 2. Page-level horizontal scroll guard.

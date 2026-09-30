@@ -50,7 +50,9 @@ export function MfaStepUp({
       setLoadingFactor(false);
       setTimeout(() => inputRef.current?.focus(), 60);
     })();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const handleTotpSubmit = async (e: React.FormEvent) => {
@@ -85,7 +87,9 @@ export function MfaStepUp({
   const body = (
     <div className="space-y-5">
       <div className="space-y-1">
-        <h2 className="font-[Montserrat] text-xl font-semibold text-white">{title}</h2>
+        <h2 className="font-[Montserrat] text-xl font-semibold text-white">
+          {title}
+        </h2>
         <p className="text-sm text-white/90">{description}</p>
       </div>
 
@@ -96,7 +100,8 @@ export function MfaStepUp({
       ) : !factorId && mode === "totp" ? (
         <Alert className="border-[#22c0d4]/40 bg-[#22c0d4]/10 text-white">
           <AlertDescription>
-            No authenticator app is currently linked to this account. If you set one up recently and can't sign in, use a backup code instead.
+            No authenticator app is currently linked to this account. If you set
+            one up recently and can't sign in, use a backup code instead.
           </AlertDescription>
         </Alert>
       ) : mode === "totp" ? (
@@ -113,16 +118,24 @@ export function MfaStepUp({
               maxLength={6}
               placeholder="123456"
               value={code}
-              onChange={(e) => { setCode(e.target.value.replace(/\D/g, "")); setError(null); }}
+              onChange={(e) => {
+                setCode(e.target.value.replace(/\D/g, ""));
+                setError(null);
+              }}
               className="h-14 text-center text-2xl tracking-[0.6em] bg-white text-[#081129] font-semibold"
             />
             <p className="text-xs text-white/78">
-              Open your authenticator app (Google Authenticator, Authy, 1Password…) and enter the newest 6-digit code shown for myhealth checkup.
+              Open your authenticator app (Google Authenticator, Authy,
+              1Password…) and enter the newest 6-digit code shown for myhealth
+              checkup.
             </p>
           </div>
 
           {error && (
-            <Alert variant="destructive" className="border-[#e70d69]/60 bg-[#e70d69]/10 text-white">
+            <Alert
+              variant="destructive"
+              className="border-[#e70d69]/60 bg-[#e70d69]/10 text-white"
+            >
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
@@ -144,40 +157,58 @@ export function MfaStepUp({
               className="flex-1 h-12 bg-[#e70d69] hover:bg-[#c60a5b] text-white font-semibold text-base"
             >
               {submitting ? (
-                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Verifying…</>
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Verifying…
+                </>
               ) : (
-                <><ShieldCheck className="mr-2 h-4 w-4" /> Verify and continue</>
+                <>
+                  <ShieldCheck className="mr-2 h-4 w-4" /> Verify and continue
+                </>
               )}
             </Button>
           </div>
 
           <button
             type="button"
-            onClick={() => { setMode("backup"); setError(null); }}
+            onClick={() => {
+              setMode("backup");
+              setError(null);
+            }}
             className="flex items-center gap-2 text-sm text-[#22c0d4] hover:underline"
           >
-            <LifeBuoy className="h-4 w-4" /> Lost access to your authenticator? Use a backup code
+            <LifeBuoy className="h-4 w-4" /> Lost access to your authenticator?
+            Use a backup code
           </button>
         </form>
       ) : (
         <form onSubmit={handleBackupSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="mfa-backup" className="text-white/85">Backup code</Label>
+            <Label htmlFor="mfa-backup" className="text-white/85">
+              Backup code
+            </Label>
             <Input
               id="mfa-backup"
               placeholder="e.g. ABCDE-FGHJK"
               value={backupCode}
-              onChange={(e) => { setBackupCode(e.target.value.toUpperCase()); setError(null); }}
+              onChange={(e) => {
+                setBackupCode(e.target.value.toUpperCase());
+                setError(null);
+              }}
               className="h-12 text-center tracking-widest bg-white text-[#081129] font-mono font-semibold"
               autoComplete="one-time-code"
             />
             <p className="text-xs text-white/78">
-              Enter one of the single-use backup codes you saved when you set up two-step verification. Each code works only once — you'll be asked to re-enrol your authenticator afterwards.
+              Enter one of the single-use backup codes you saved when you set up
+              two-step verification. Each code works only once — you'll be asked
+              to re-enrol your authenticator afterwards.
             </p>
           </div>
 
           {error && (
-            <Alert variant="destructive" className="border-[#e70d69]/60 bg-[#e70d69]/10 text-white">
+            <Alert
+              variant="destructive"
+              className="border-[#e70d69]/60 bg-[#e70d69]/10 text-white"
+            >
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}
@@ -186,7 +217,10 @@ export function MfaStepUp({
             <Button
               type="button"
               variant="ghost"
-              onClick={() => { setMode("totp"); setError(null); }}
+              onClick={() => {
+                setMode("totp");
+                setError(null);
+              }}
               className="text-white/90 hover:text-white"
             >
               Back
@@ -197,9 +231,13 @@ export function MfaStepUp({
               className="flex-1 h-12 bg-[#22c0d4] hover:bg-[#1ca8ba] text-[#081129] font-semibold text-base"
             >
               {submitting ? (
-                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Checking…</>
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Checking…
+                </>
               ) : (
-                <><KeyRound className="mr-2 h-4 w-4" /> Use backup code</>
+                <>
+                  <KeyRound className="mr-2 h-4 w-4" /> Use backup code
+                </>
               )}
             </Button>
           </div>

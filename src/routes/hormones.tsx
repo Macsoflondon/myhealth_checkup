@@ -8,7 +8,8 @@ export const Route = createFileRoute("/hormones")({
   head: () =>
     buildRouteHead({
       title: "Hormone Blood Tests UK | Compare Prices",
-      description: "Compare private hormone panels covering testosterone, oestradiol, cortisol and more, with full biomarker detail and UK pricing.",
+      description:
+        "Compare private hormone panels covering testosterone, oestradiol, cortisol and more, with full biomarker detail and UK pricing.",
       path: "/hormones",
     }),
   component: HormonesPage,

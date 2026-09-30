@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { Link } from "@/lib/router-compat";
 import { Button } from "@/components/ui/button";
-import { hasStartingPrice, usePopularTestsFromDatabase } from "@/hooks/usePopularTestsFromDatabase";
+import {
+  hasStartingPrice,
+  usePopularTestsFromDatabase,
+} from "@/hooks/usePopularTestsFromDatabase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { getProviderRating } from "@/constants/providerRatings";
@@ -10,10 +13,14 @@ import { toUnifiedCardProps } from "@/lib/unifiedCardAdapter";
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 
 const MostPopularTestsSection = () => {
-  const { data: popularTests, isLoading, error } = usePopularTestsFromDatabase(12);
+  const {
+    data: popularTests,
+    isLoading,
+    error,
+  } = usePopularTestsFromDatabase(12);
 
   if (error) {
-    console.error('Error loading popular tests:', error);
+    console.error("Error loading popular tests:", error);
     return null;
   }
 
@@ -27,9 +34,7 @@ const MostPopularTestsSection = () => {
           </span>
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight mb-4">
             <span className="text-[#081129]">Most Popular Tests from Our </span>
-            <span className="text-[#081129]">
-              Providers
-            </span>
+            <span className="text-[#081129]">Providers</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Compare the best-selling health tests from trusted UK providers
@@ -40,7 +45,10 @@ const MostPopularTestsSection = () => {
         {isLoading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
             {Array.from({ length: 8 }).map((_, i) => (
-              <div key={i} className="bg-card rounded-xl border border-border p-5">
+              <div
+                key={i}
+                className="bg-card rounded-xl border border-border p-5"
+              >
                 <Skeleton className="h-8 w-24 mb-4" />
                 <Skeleton className="h-6 w-full mb-2" />
                 <Skeleton className="h-4 w-3/4 mb-4" />
@@ -97,9 +105,7 @@ const MostPopularTestsSection = () => {
             size="lg"
             className="bg-[#22c0d4] hover:bg-[#e70d69] text-white transition-colors duration-300"
           >
-            <Link to="/popular-tests">
-              View all popular tests
-            </Link>
+            <Link to="/popular-tests">View all popular tests</Link>
           </Button>
         </div>
       </div>

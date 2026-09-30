@@ -12,7 +12,8 @@ export const detailedProviders = [
     coreServices:
       "300+ blood tests: general health, hormones, vitamins, thyroid, longevity, sports performance, fertility, allergy testing",
     tests: "300+ comprehensive blood tests available",
-    sampleCollection: "Home finger-prick kits, clinic venous blood draw, home nurse visits (premium service)",
+    sampleCollection:
+      "Home finger-prick kits, clinic venous blood draw, home nurse visits (premium service)",
     turnaroundTime: "4-6 working days",
     customerReviews: "4.7/5 (Feefo, 14,000+ reviews)",
     keyDifferentiators:
@@ -28,13 +29,16 @@ export const detailedProviders = [
     locations: "50+ clinics across the UK & Ireland",
     accreditation: "UKAS accredited and FDA approved",
     clinics: "50+ CQC-registered clinics nationwide",
-    coreServices: "Full-body health checks, cancer risk, genetic testing, cardiovascular assessment",
+    coreServices:
+      "Full-body health checks, cancer risk, genetic testing, cardiovascular assessment",
     tests: "Full-body health checks and genetic testing",
     sampleCollection: "Home finger-prick kits, clinic venous blood draw",
     turnaroundTime: "Results in as little as 2-3 days from sample",
     customerReviews: "4.7/5 (Trustpilot, 28,400+ reviews)",
-    keyDifferentiators: "Comprehensive health packages, 50+ clinic locations, global laboratory network, results in as little as 2 hours",
-    description: "Global diagnostics company with 40+ years of innovation, offering comprehensive health checks at 50+ clinics across the UK & Ireland. Over 22 million tests processed to date.",
+    keyDifferentiators:
+      "Comprehensive health packages, 50+ clinic locations, global laboratory network, results in as little as 2 hours",
+    description:
+      "Global diagnostics company with 40+ years of innovation, offering comprehensive health checks at 50+ clinics across the UK & Ireland. Over 22 million tests processed to date.",
   },
   {
     id: "blue-horizon",
@@ -45,7 +49,8 @@ export const detailedProviders = [
     sampleCollection: "Home kits, clinic visits, home nurse",
     turnaroundTime: "4-8 days",
     customerReviews: "4.2/5 (Trustpilot, 320+ reviews)",
-    keyDifferentiators: "Multiple sample collection options, doctor-reviewed results",
+    keyDifferentiators:
+      "Multiple sample collection options, doctor-reviewed results",
     description: "Comprehensive blood testing with flexible collection options",
   },
   {
@@ -57,7 +62,8 @@ export const detailedProviders = [
     sampleCollection: "Spire hospitals, clinics",
     turnaroundTime: "3-6 days",
     customerReviews: "4.6/5 (Trustpilot, 200+ reviews)",
-    keyDifferentiators: "Access to Spire hospitals, free GP referrals, VIP service",
+    keyDifferentiators:
+      "Access to Spire hospitals, free GP referrals, VIP service",
     description: "Premium testing through Spire hospital network",
   },
   {
@@ -72,7 +78,8 @@ export const detailedProviders = [
     sampleCollection: "Clinics, home visits",
     turnaroundTime: "3-5 days",
     customerReviews: "4.5/5 (Trustpilot, 14 reviews)",
-    keyDifferentiators: "Same-day appointments, home visit options, competitive pricing",
+    keyDifferentiators:
+      "Same-day appointments, home visit options, competitive pricing",
     description: "Fast turnaround London-based testing service",
   },
   {
@@ -82,12 +89,14 @@ export const detailedProviders = [
     phone: "03301 242 970",
     email: "support@youth-revisited.co.uk",
     supportHours: "Mon-Fri 9am-5pm",
-    coreServices: "Wellness, nutrition, men's and women's health, mental health",
+    coreServices:
+      "Wellness, nutrition, men's and women's health, mental health",
     tests: "Wellness and nutrition tests",
     sampleCollection: "Clinics, home visits",
     turnaroundTime: "4-7 days",
     customerReviews: "Not yet rated on Trustpilot",
-    keyDifferentiators: "Specialised in wellness and longevity, personalised health packages",
+    keyDifferentiators:
+      "Specialised in wellness and longevity, personalised health packages",
     description: "Wellness-focused health testing and optimisation",
   },
   {
@@ -97,12 +106,14 @@ export const detailedProviders = [
     phone: "0203 808 0064",
     email: "support@manual.co",
     supportHours: "Mon-Fri 9am-6pm",
-    coreServices: "Testosterone Replacement Therapy (TRT), hormone testing, men's health panels",
+    coreServices:
+      "Testosterone Replacement Therapy (TRT), hormone testing, men's health panels",
     tests: "TRT and men's health testing",
     sampleCollection: "Home kits and partner clinics",
     turnaroundTime: "4-7 days",
     customerReviews: "4.3/5 (Trustpilot, 11,200+ reviews)",
-    keyDifferentiators: "Subscription-based TRT, physician-led support, repeat blood testing for optimisation",
+    keyDifferentiators:
+      "Subscription-based TRT, physician-led support, repeat blood testing for optimisation",
     description: "Specialised men's health and TRT monitoring",
   },
   {
@@ -112,12 +123,14 @@ export const detailedProviders = [
     phone: "0203 808 0064",
     email: "support@manual.co",
     supportHours: "Mon-Fri 9am-6pm",
-    coreServices: "HRT support (through partner brands), hormone testing, menopause symptom tracking",
+    coreServices:
+      "HRT support (through partner brands), hormone testing, menopause symptom tracking",
     tests: "HRT and menopause testing",
     sampleCollection: "Home kits",
     turnaroundTime: "4-6 days",
     customerReviews: "4.3/5 (Trustpilot, 11,200+ reviews)",
-    keyDifferentiators: "Menopause support tools, app tracking, ongoing HRT monitoring, future integration",
+    keyDifferentiators:
+      "Menopause support tools, app tracking, ongoing HRT monitoring, future integration",
     description: "Women's hormone health and menopause support",
   },
   {
@@ -127,7 +140,8 @@ export const detailedProviders = [
     phone: "0330 043 2501",
     email: "hello@functionaldx.com",
     supportHours: "Mon-Fri 9am-5pm (Practitioner access only)",
-    coreServices: "Advanced functional blood testing, metabolic health, hormonal balance",
+    coreServices:
+      "Advanced functional blood testing, metabolic health, hormonal balance",
     tests: "100+ comprehensive biomarker panels",
     sampleCollection: "Clinic-based via practitioner referral",
     turnaroundTime: "7-10 days",
@@ -145,8 +159,10 @@ export const detailedProviders = [
     accreditation: "NHS-accredited laboratories (ISO 15189)",
     coreServices:
       "70+ biomarkers across comprehensive health panels, at-home phlebotomy service, clinic appointments, individual biomarker testing",
-    tests: "40+ blood tests including comprehensive panels and individual biomarkers",
-    sampleCollection: "At-home nurse visit (venous blood draw) or clinic appointment",
+    tests:
+      "40+ blood tests including comprehensive panels and individual biomarkers",
+    sampleCollection:
+      "At-home nurse visit (venous blood draw) or clinic appointment",
     turnaroundTime: "Results in 6-7 working days",
     customerReviews: "4.6/5 (Trustpilot, 160+ reviews)",
     keyDifferentiators:
@@ -164,8 +180,10 @@ export const detailedProviders = [
     clinics: "More than 200+ Clinic's nationwide",
     coreServices:
       "Comprehensive venous blood testing: general health, hormones, fertility, vitamins, thyroid, sexual health, autoimmune, diabetes screening",
-    tests: "35+ venous blood tests including wellness panels, hormone profiles, fertility testing, vitamin analysis",
-    sampleCollection: "Home finger-prick kits, clinic venous blood draw, home nurse visits (premium service)",
+    tests:
+      "35+ venous blood tests including wellness panels, hormone profiles, fertility testing, vitamin analysis",
+    sampleCollection:
+      "Home finger-prick kits, clinic venous blood draw, home nurse visits (premium service)",
     turnaroundTime: "4-6 working days",
     customerReviews: "4.8/5 (Trustpilot, 3,600+ reviews)",
     keyDifferentiators:
@@ -184,13 +202,17 @@ export const detailedProviders = [
     locations: "36 locations UK-wide",
     parentCompany: "Sussex Pathology Ltd (CQC Reg. 1-14470761199)",
     accreditation: "UKAS Medical 15189:2022 accredited (No. 29041)",
-    coreServices: "Health check panels, cholesterol, liver, kidney, hormone, and rapid testing with own state-of-the-art laboratory",
+    coreServices:
+      "Health check panels, cholesterol, liver, kidney, hormone, and rapid testing with own state-of-the-art laboratory",
     tests: "Health check panels and rapid testing with own laboratory",
-    sampleCollection: "Own nationwide clinics with full-time phlebotomy staff, home finger-prick kits",
+    sampleCollection:
+      "Own nationwide clinics with full-time phlebotomy staff, home finger-prick kits",
     turnaroundTime: "2-3 days on most markers",
     customerReviews: "4.8/5 (Trustpilot, 4,000+ reviews)",
-    keyDifferentiators: "Ultra-fast turnaround (99.2% of markers start testing within 4 hours), own laboratory, 36 clinic locations, same-day appointments, NHS GPs, 100,000+ tests per month",
-    description: "State-of-the-art own laboratory with nationwide clinics offering same-day appointments and same or next day results. Trusted for 100,000+ tests and consultations per month.",
+    keyDifferentiators:
+      "Ultra-fast turnaround (99.2% of markers start testing within 4 hours), own laboratory, 36 clinic locations, same-day appointments, NHS GPs, 100,000+ tests per month",
+    description:
+      "State-of-the-art own laboratory with nationwide clinics offering same-day appointments and same or next day results. Trusted for 100,000+ tests and consultations per month.",
   },
   {
     id: "london-medical-laboratory",
@@ -199,8 +221,10 @@ export const detailedProviders = [
     phone: "020 7183 6122",
     email: "info@londonmedicallaboratory.co.uk",
     accreditation: "UKAS accredited laboratory (ISO 15189)",
-    coreServices: "Comprehensive blood testing, health screening, hormones, vitamins, allergy testing, fertility, longevity analysis",
-    tests: "100+ blood tests including health MOTs, hormone profiles, vitamin panels, longevity analysis",
+    coreServices:
+      "Comprehensive blood testing, health screening, hormones, vitamins, allergy testing, fertility, longevity analysis",
+    tests:
+      "100+ blood tests including health MOTs, hormone profiles, vitamin panels, longevity analysis",
     sampleCollection: "At-home test kits and in-store tests at partner clinics",
     turnaroundTime: "3-4 days on most tests",
     customerReviews: "4.1/5 (Trustpilot, 3,266 reviews)",
@@ -213,14 +237,17 @@ export const detailedProviders = [
     id: "london-laboratory",
     name: "London Laboratory",
     website: "https://www.londonlaboratory.co.uk",
-    coreServices: "General health checks, vitamins, hormones, allergy testing, fertility",
+    coreServices:
+      "General health checks, vitamins, hormones, allergy testing, fertility",
     tests: "Comprehensive health, hormone and allergy testing",
     sampleCollection: "In-clinic (Harley Street) and home kits",
     turnaroundTime: "3-6 days",
     customerReviews: "Not yet independently rated on Trustpilot",
-    keyDifferentiators: "Central London clinic, fast turnaround, wide test menu, premium location",
+    keyDifferentiators:
+      "Central London clinic, fast turnaround, wide test menu, premium location",
     accreditation: "UKAS accredited laboratory (ISO 15189)",
-    description: "Professional medical laboratory services with comprehensive testing capabilities",
+    description:
+      "Professional medical laboratory services with comprehensive testing capabilities",
   },
   {
     id: "the-doctors-laboratory",
@@ -230,12 +257,16 @@ export const detailedProviders = [
     email: "pathology@tdlpathology.com",
     accreditation: "UKAS accredited (ISO 15189), CQC-registered",
     labAccreditation: "UKAS ISO 15189:2012",
-    clinics: "Wimpole Street Clinic (London W1) and nationwide collection network",
+    clinics:
+      "Wimpole Street Clinic (London W1) and nationwide collection network",
     coreServices:
       "3,000+ pathology tests: clinical biochemistry, haematology, immunology, microbiology, genetics, toxicology, specialist endocrinology",
-    tests: "3,000+ diagnostic tests available - one of the UK's most comprehensive test menus",
-    sampleCollection: "Venous blood draw at TDL clinics, GP surgeries, hospitals, home visits available",
-    turnaroundTime: "2-4 working days (routine), specialist tests may take longer",
+    tests:
+      "3,000+ diagnostic tests available - one of the UK's most comprehensive test menus",
+    sampleCollection:
+      "Venous blood draw at TDL clinics, GP surgeries, hospitals, home visits available",
+    turnaroundTime:
+      "2-4 working days (routine), specialist tests may take longer",
     customerReviews: "1.9/5 (Trustpilot, 22 reviews)",
     keyDifferentiators:
       "UK's largest independent pathology provider, 40+ years experience, same-day results for many tests, used by NHS and private hospitals, comprehensive test menu including rare and specialist tests",
@@ -251,8 +282,10 @@ export const detailedProviders = [
     accreditation: "UKAS accredited laboratory (ISO 15189)",
     coreServices:
       "General health screens, hormone profiles, thyroid panels, vitamin and mineral analysis, sexual health diagnostics, cardiovascular and specialist pathology",
-    tests: "Wide range of clinical pathology tests across wellness, hormones and specialist diagnostics",
-    sampleCollection: "In-clinic phlebotomy at partner sites and postal sample kits where appropriate",
+    tests:
+      "Wide range of clinical pathology tests across wellness, hormones and specialist diagnostics",
+    sampleCollection:
+      "In-clinic phlebotomy at partner sites and postal sample kits where appropriate",
     turnaroundTime: "3-6 working days (typical)",
     customerReviews: "No verified independent rating available",
     keyDifferentiators:
@@ -267,8 +300,10 @@ export const detailedProviders = [
     accreditation: "UKAS-accredited partner laboratories (ISO 15189)",
     coreServices:
       "Private blood tests, hormone profiles, comprehensive wellness screens, sexual health diagnostics, corporate wellness packages",
-    tests: "Broad menu of wellness, hormone, sexual health and travel medical tests",
-    sampleCollection: "Clinics across London with at-home phlebotomy options for selected tests",
+    tests:
+      "Broad menu of wellness, hormone, sexual health and travel medical tests",
+    sampleCollection:
+      "Clinics across London with at-home phlebotomy options for selected tests",
     turnaroundTime: "4-8 working days (typical)",
     customerReviews: "No verified independent rating available",
     keyDifferentiators:
@@ -283,7 +318,8 @@ export const detailedProviders = [
     accreditation: "UKAS-accredited partner laboratories",
     coreServices:
       "Specialist diagnostic blood testing, advanced health screening and rapid turnaround pathology",
-    tests: "Specialist diagnostic and health screening blood tests across the UK",
+    tests:
+      "Specialist diagnostic and health screening blood tests across the UK",
     sampleCollection: "Clinic-based venous draw across UK partner sites",
     turnaroundTime: "3-6 working days (typical)",
     customerReviews: "No verified independent rating available",

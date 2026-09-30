@@ -9,127 +9,192 @@ import { useSavedProviders } from "@/hooks/useSavedProviders";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getBranding } from "@/data/providerBranding";
 import { getProviderProfileRoute } from "@/utils/providerRoutes";
-import { buildProviderWebsiteUrl, externalLinkProps } from "@/utils/urlTracking";
+import {
+  buildProviderWebsiteUrl,
+  externalLinkProps,
+} from "@/utils/urlTracking";
 import { getProviderRating } from "@/constants/providerRatings";
 
 const FeaturedProviders = () => {
   const { isProviderSaved, toggleSaveProvider } = useSavedProviders();
 
-  const featuredProviderData = [{
-    id: "medichecks",
-    name: "Medichecks",
-    rating: 4.7,
-    reviews: "16,600+",
-    description: "Award-winning health screening service offering comprehensive health MOTs and specialised testing with doctor reviews",
-    location: "UK Wide",
-    tags: ["Health MOTs", "Specialist Testing", "Doctor Reviews", "UKAS Accredited"],
-    website: "medichecks.com"
-  }, {
-    id: "goodbody",
-    name: "GOODBODY",
-    rating: 4.7,
-    reviews: "3,150+",
-    description: "Provides comprehensive wellness profiles with GP follow-ups across 140+ clinics nationwide",
-    location: "UK Wide",
-    tags: ["GP Follow-ups", "Wellness Profiles", "CQC Regulated Providers", "Nationwide"],
-    website: "health.goodbodyclinic.com"
-  }, {
-    id: "randox",
-    name: "Randox Health",
-    rating: 4.6,
-    reviews: "26,100+",
-    description: "Global diagnostics company offering comprehensive health checks with UKAS accredited and FDA approved testing",
-    location: "UK Wide",
-    tags: ["FDA Approved", "UKAS Accredited", "Health Checks", "Global Company"],
-    website: "randoxhealth.com/en-GB"
-  }, {
-    id: "london-medical-laboratory",
-    name: "London Medical Laboratory",
-    rating: 4.5,
-    reviews: "3,250+",
-    description: "Professional medical laboratory services with comprehensive testing capabilities and UKAS accreditation",
-    location: "UK Wide",
-    tags: ["UKAS Accredited", "Professional Lab", "Comprehensive Testing", "ISO 15189"],
-    website: "londonmedicallaboratory.com"
-  }, {
-    id: "lola-health",
-    name: "Lola Health",
-    rating: 4.5,
-    reviews: "143",
-    description: "Modern health testing platform focused on women's health and wellness with innovative approaches",
-    location: "UK Wide",
-    tags: ["Women's Health", "Modern Platform", "Wellness Focus", "Innovative"],
-    website: "referrals.lolahealth.com/myhealthcheckup"
-  }, {
-    id: "clinilabs",
-    name: "Clinilabs",
-    rating: 4.3,
-    reviews: "120+",
-    description: "Professional clinical laboratory services offering a wide range of diagnostic and health screening tests with accredited facilities",
-    location: "UK Wide",
-    tags: ["Clinical Lab", "Diagnostic Testing", "Accredited", "Health Screening"],
-    website: "clinilabs.com"
-  }, {
-    id: "london-health-company",
-    name: "London Health Company",
-    rating: 4.4,
-    reviews: "250+",
-    description: "Comprehensive health testing services based in London, providing accessible and affordable private blood tests and health checks",
-    location: "UK Wide",
-    tags: ["Health Checks", "Blood Tests", "Affordable", "Accessible"],
-    website: "londonhealthcompany.co.uk"
-  }, {
-    id: "medical-diagnosis",
-    name: "Medical Diagnosis",
-    rating: 4.3,
-    reviews: "180+",
-    description: "Specialist diagnostic services offering advanced blood testing and health screening with fast turnaround times",
-    location: "UK Wide",
-    tags: ["Specialist Testing", "Fast Results", "Advanced Diagnostics", "Screening"],
-    website: "medicaldiagnosis.co.uk"
-  }];
+  const featuredProviderData = [
+    {
+      id: "medichecks",
+      name: "Medichecks",
+      rating: 4.7,
+      reviews: "16,600+",
+      description:
+        "Award-winning health screening service offering comprehensive health MOTs and specialised testing with doctor reviews",
+      location: "UK Wide",
+      tags: [
+        "Health MOTs",
+        "Specialist Testing",
+        "Doctor Reviews",
+        "UKAS Accredited",
+      ],
+      website: "medichecks.com",
+    },
+    {
+      id: "goodbody",
+      name: "GOODBODY",
+      rating: 4.7,
+      reviews: "3,150+",
+      description:
+        "Provides comprehensive wellness profiles with GP follow-ups across 140+ clinics nationwide",
+      location: "UK Wide",
+      tags: [
+        "GP Follow-ups",
+        "Wellness Profiles",
+        "CQC Regulated Providers",
+        "Nationwide",
+      ],
+      website: "health.goodbodyclinic.com",
+    },
+    {
+      id: "randox",
+      name: "Randox Health",
+      rating: 4.6,
+      reviews: "26,100+",
+      description:
+        "Global diagnostics company offering comprehensive health checks with UKAS accredited and FDA approved testing",
+      location: "UK Wide",
+      tags: [
+        "FDA Approved",
+        "UKAS Accredited",
+        "Health Checks",
+        "Global Company",
+      ],
+      website: "randoxhealth.com/en-GB",
+    },
+    {
+      id: "london-medical-laboratory",
+      name: "London Medical Laboratory",
+      rating: 4.5,
+      reviews: "3,250+",
+      description:
+        "Professional medical laboratory services with comprehensive testing capabilities and UKAS accreditation",
+      location: "UK Wide",
+      tags: [
+        "UKAS Accredited",
+        "Professional Lab",
+        "Comprehensive Testing",
+        "ISO 15189",
+      ],
+      website: "londonmedicallaboratory.com",
+    },
+    {
+      id: "lola-health",
+      name: "Lola Health",
+      rating: 4.5,
+      reviews: "143",
+      description:
+        "Modern health testing platform focused on women's health and wellness with innovative approaches",
+      location: "UK Wide",
+      tags: [
+        "Women's Health",
+        "Modern Platform",
+        "Wellness Focus",
+        "Innovative",
+      ],
+      website: "referrals.lolahealth.com/myhealthcheckup",
+    },
+    {
+      id: "clinilabs",
+      name: "Clinilabs",
+      rating: 4.3,
+      reviews: "120+",
+      description:
+        "Professional clinical laboratory services offering a wide range of diagnostic and health screening tests with accredited facilities",
+      location: "UK Wide",
+      tags: [
+        "Clinical Lab",
+        "Diagnostic Testing",
+        "Accredited",
+        "Health Screening",
+      ],
+      website: "clinilabs.com",
+    },
+    {
+      id: "london-health-company",
+      name: "London Health Company",
+      rating: 4.4,
+      reviews: "250+",
+      description:
+        "Comprehensive health testing services based in London, providing accessible and affordable private blood tests and health checks",
+      location: "UK Wide",
+      tags: ["Health Checks", "Blood Tests", "Affordable", "Accessible"],
+      website: "londonhealthcompany.co.uk",
+    },
+    {
+      id: "medical-diagnosis",
+      name: "Medical Diagnosis",
+      rating: 4.3,
+      reviews: "180+",
+      description:
+        "Specialist diagnostic services offering advanced blood testing and health screening with fast turnaround times",
+      location: "UK Wide",
+      tags: [
+        "Specialist Testing",
+        "Fast Results",
+        "Advanced Diagnostics",
+        "Screening",
+      ],
+      website: "medicaldiagnosis.co.uk",
+    },
+  ];
 
   return (
     <section id="providers" className="bg-white py-16 md:py-20">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <SectionHeading 
-            title="Featured" 
-            gradientText="Partners" 
-          />
+          <SectionHeading title="Featured" gradientText="Partners" />
           <p className="text-lg text-brand-navy max-w-2xl mx-auto mt-4">
             Accredited health testing providers with proven track records
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {featuredProviderData.map(provider => {
+          {featuredProviderData.map((provider) => {
             const brand = getBranding(provider.name);
             const canonical = getProviderRating(provider.id);
             return (
               <Card
                 key={provider.id}
                 className="transition-all duration-300 hover:shadow-lg hover:-translate-y-1 border-brand-navy overflow-hidden"
-                style={{ borderTop: brand ? `4px solid ${brand.primary}` : undefined }}
+                style={{
+                  borderTop: brand ? `4px solid ${brand.primary}` : undefined,
+                }}
               >
                 <CardContent className="p-8">
                   <div className="flex items-start gap-5 mb-5">
                     <div className="w-24 h-24 bg-gray-50 rounded-lg flex items-center justify-center flex-shrink-0 overflow-hidden p-3">
-                      <ProviderLogo provider={provider.name} className="w-full h-full object-contain" />
+                      <ProviderLogo
+                        provider={provider.name}
+                        className="w-full h-full object-contain"
+                      />
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
-                        <h3 className="text-xl font-semibold text-[hsl(var(--navy))] mb-2">{provider.name}</h3>
+                        <h3 className="text-xl font-semibold text-[hsl(var(--navy))] mb-2">
+                          {provider.name}
+                        </h3>
                         <SaveProviderButton
                           isSaved={isProviderSaved(provider.id)}
-                          onToggle={() => toggleSaveProvider(provider.id, provider.name)}
+                          onToggle={() =>
+                            toggleSaveProvider(provider.id, provider.name)
+                          }
                         />
                       </div>
                       {canonical && (
                         <div className="flex items-center space-x-1.5">
                           <Star className="w-4 h-4 text-yellow-400 fill-current flex-shrink-0" />
-                          <span className="font-semibold text-brand-navy">{canonical.rating}</span>
-                          <span className="text-sm text-brand-navy">({canonical.reviewsFormatted} reviews)</span>
+                          <span className="font-semibold text-brand-navy">
+                            {canonical.rating}
+                          </span>
+                          <span className="text-sm text-brand-navy">
+                            ({canonical.reviewsFormatted} reviews)
+                          </span>
                         </div>
                       )}
                     </div>
@@ -150,10 +215,14 @@ const FeaturedProviders = () => {
                         key={tagIndex}
                         variant="secondary"
                         className="text-xs hover:opacity-80"
-                        style={brand ? {
-                          backgroundColor: brand.primaryLight,
-                          color: brand.primary,
-                        } : undefined}
+                        style={
+                          brand
+                            ? {
+                                backgroundColor: brand.primaryLight,
+                                color: brand.primary,
+                              }
+                            : undefined
+                        }
                       >
                         {tag}
                       </Badge>
@@ -165,16 +234,26 @@ const FeaturedProviders = () => {
                       variant="default"
                       size="sm"
                       className="flex-1 min-w-0 text-white whitespace-nowrap"
-                      style={brand ? { backgroundColor: brand.primary } : undefined}
+                      style={
+                        brand ? { backgroundColor: brand.primary } : undefined
+                      }
                       asChild
                     >
                       <Link to={getProviderProfileRoute(provider.id)}>
                         <span className="truncate">View Profile</span>
                       </Link>
                     </Button>
-                    <Button variant="outline" size="sm" className="flex-1 min-w-0 whitespace-nowrap" asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="flex-1 min-w-0 whitespace-nowrap"
+                      asChild
+                    >
                       <a
-                        href={buildProviderWebsiteUrl(`https://${provider.website}`, provider.id)}
+                        href={buildProviderWebsiteUrl(
+                          `https://${provider.website}`,
+                          provider.id,
+                        )}
                         {...externalLinkProps}
                       >
                         <span className="truncate">Visit Site</span>

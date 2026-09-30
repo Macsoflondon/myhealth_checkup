@@ -1,6 +1,8 @@
 import { useParams } from "@/lib/router-compat";
 import { useState, useEffect } from "react";
-import ProviderTestDetailTemplate, { ProviderTestData } from "@/components/templates/ProviderTestDetailTemplate";
+import ProviderTestDetailTemplate, {
+  ProviderTestData,
+} from "@/components/templates/ProviderTestDetailTemplate";
 import { getProviderConfig } from "@/constants/providerTestPageConfig";
 import { findTestByIdOrSlug } from "@/utils/testSlugLookup";
 
@@ -8,7 +10,9 @@ interface ProviderTestDetailPageProps {
   providerId: string;
 }
 
-export default function ProviderTestDetailPage({ providerId }: ProviderTestDetailPageProps) {
+export default function ProviderTestDetailPage({
+  providerId,
+}: ProviderTestDetailPageProps) {
   const { testId } = useParams<{ testId: string }>();
   const [test, setTest] = useState<ProviderTestData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -32,7 +36,7 @@ export default function ProviderTestDetailPage({ providerId }: ProviderTestDetai
       test={test}
       providerConfig={providerConfig}
       isLoading={loading}
-      testId={testId || ''}
+      testId={testId || ""}
     />
   );
 }

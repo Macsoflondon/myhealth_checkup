@@ -33,6 +33,7 @@ import {
   Outlet,
   Scripts,
   useRouter,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { HelmetProvider } from "react-helmet-async";
 
@@ -80,7 +81,8 @@ const ORG_JSONLD = JSON.stringify({
         "@type": "SearchAction",
         target: {
           "@type": "EntryPoint",
-          urlTemplate: "https://myhealthcheckup.co.uk/search?q={search_term_string}",
+          urlTemplate:
+            "https://myhealthcheckup.co.uk/search?q={search_term_string}",
         },
         "query-input": "required name=search_term_string",
       },
@@ -88,54 +90,76 @@ const ORG_JSONLD = JSON.stringify({
   ],
 });
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1.0" },
-      // title / description are intentionally NOT set here. TanStack Router
-      // concatenates root meta with route meta rather than merging by key, so
-      // a sitewide default would emit a second title and description on every
-      // page. Each route supplies its own via buildRouteHead().
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
+  {
+    head: () => ({
+      meta: [
+        { charSet: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1.0" },
+        // title / description are intentionally NOT set here. TanStack Router
+        // concatenates root meta with route meta rather than merging by key, so
+        // a sitewide default would emit a second title and description on every
+        // page. Each route supplies its own via buildRouteHead().
 
-      { name: "author", content: "MYHEALTHCHECKUP LTD" },
-      { name: "robots", content: "index, follow" },
-      { name: "google-site-verification", content: "d-S0SbPF-GVT1OxyYdzTj45dGI9dV0W5jRY76zau1GY" },
-      { name: "geo.region", content: "GB" },
-      { name: "geo.placename", content: "United Kingdom" },
-      { property: "og:type", content: "website" },
-      { property: "og:image", content: "https://myhealthcheckup.co.uk/og-image.png" },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
-      // og:title / og:description / og:url are intentionally NOT set here.
-      // Each route supplies its own self-referencing social metadata via
-      // buildRouteHead(), so a hardcoded homepage default would leak onto
-      // sub-pages for crawlers that read the server-rendered shell.
-      { property: "og:site_name", content: "myhealth checkup" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@myhealthcheckup" },
-      { name: "twitter:image", content: "https://myhealthcheckup.co.uk/og-image.png" },
-      { name: "theme-color", content: "#081129" },
-      { name: "mobile-web-app-capable", content: "yes" },
-      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
-    ],
-    links: [
-      { rel: "stylesheet", href: appCss },
-      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
-      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
-      { rel: "apple-touch-icon", href: "/favicon.svg" },
-      { rel: "manifest", href: "/manifest.json" },
-      { rel: "alternate", hrefLang: "en-gb", href: "https://myhealthcheckup.co.uk/" },
-      { rel: "alternate", hrefLang: "x-default", href: "https://myhealthcheckup.co.uk/" },
-      { rel: "dns-prefetch", href: "https://storage.googleapis.com" },
-    ],
-    scripts: [{ type: "application/ld+json", children: ORG_JSONLD }],
-  }),
-  shellComponent: RootShell,
-  component: RootComponent,
-  notFoundComponent: NotFoundComponent,
-  errorComponent: RootErrorComponent,
-});
+        { name: "author", content: "MYHEALTHCHECKUP LTD" },
+        { name: "robots", content: "index, follow" },
+        {
+          name: "google-site-verification",
+          content: "d-S0SbPF-GVT1OxyYdzTj45dGI9dV0W5jRY76zau1GY",
+        },
+        { name: "geo.region", content: "GB" },
+        { name: "geo.placename", content: "United Kingdom" },
+        { property: "og:type", content: "website" },
+        {
+          property: "og:image",
+          content: "https://myhealthcheckup.co.uk/og-image.png",
+        },
+        { property: "og:image:width", content: "1200" },
+        { property: "og:image:height", content: "630" },
+        // og:title / og:description / og:url are intentionally NOT set here.
+        // Each route supplies its own self-referencing social metadata via
+        // buildRouteHead(), so a hardcoded homepage default would leak onto
+        // sub-pages for crawlers that read the server-rendered shell.
+        { property: "og:site_name", content: "myhealth checkup" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:site", content: "@myhealthcheckup" },
+        {
+          name: "twitter:image",
+          content: "https://myhealthcheckup.co.uk/og-image.png",
+        },
+        { name: "theme-color", content: "#081129" },
+        { name: "mobile-web-app-capable", content: "yes" },
+        {
+          name: "apple-mobile-web-app-status-bar-style",
+          content: "black-translucent",
+        },
+      ],
+      links: [
+        { rel: "stylesheet", href: appCss },
+        { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+        { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+        { rel: "apple-touch-icon", href: "/favicon.svg" },
+        { rel: "manifest", href: "/manifest.json" },
+        {
+          rel: "alternate",
+          hrefLang: "en-gb",
+          href: "https://myhealthcheckup.co.uk/",
+        },
+        {
+          rel: "alternate",
+          hrefLang: "x-default",
+          href: "https://myhealthcheckup.co.uk/",
+        },
+        { rel: "dns-prefetch", href: "https://storage.googleapis.com" },
+      ],
+      scripts: [{ type: "application/ld+json", children: ORG_JSONLD }],
+    }),
+    shellComponent: RootShell,
+    component: RootComponent,
+    notFoundComponent: NotFoundComponent,
+    errorComponent: RootErrorComponent,
+  },
+);
 
 function RootShell({ children }: { children: React.ReactNode }) {
   return (
@@ -147,9 +171,10 @@ function RootShell({ children }: { children: React.ReactNode }) {
         {children}
         {/* Static, crawlable medical disclaimer + reviewer attribution (E-E-A-T). */}
         <p hidden id="static-medical-disclaimer" data-purpose="seo-eeat">
-          <strong>Medical disclaimer:</strong> This site provides comparison information only and
-          does not constitute medical advice. Consult your GP for medical guidance. Clinical
-          content reviewed by Nathanial Smith, Registered Healthcare Professional (HCPC reg. PA43353).
+          <strong>Medical disclaimer:</strong> This site provides comparison
+          information only and does not constitute medical advice. Consult your
+          GP for medical guidance. Clinical content reviewed by Nathanial Smith,
+          Registered Healthcare Professional (HCPC reg. PA43353).
         </p>
         <Scripts />
       </body>
@@ -158,7 +183,9 @@ function RootShell({ children }: { children: React.ReactNode }) {
 }
 
 const PageFallback = () => (
-  <div className="flex items-center justify-center min-h-screen text-muted-foreground">Loading…</div>
+  <div className="flex items-center justify-center min-h-screen text-muted-foreground">
+    Loading…
+  </div>
 );
 
 function RootComponent() {
@@ -172,30 +199,30 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <I18nextProvider i18n={i18nInstance}>
-      <AuthProvider>
-        <SessionSecurityProvider>
-          <HelmetProvider>
-            {/* Toasters intentionally kept outside TooltipProvider so toast
+        <AuthProvider>
+          <SessionSecurityProvider>
+            <HelmetProvider>
+              {/* Toasters intentionally kept outside TooltipProvider so toast
                 state changes don't trigger tooltip context re-renders. */}
-            <Toaster />
-            <Sonner />
-            <TooltipProvider>
-              <ScrollToTop />
-              <GlobalPageBackground />
-              <GlobalHreflang />
-              <TestPageViewTracker />
-              <FloatingNavDock />
-              <AutoTranslatePage />
-              <GlobalComparisonBar />
-              <ErrorBoundary>
-                <Suspense fallback={<PageFallback />}>
-                  <Outlet />
-                </Suspense>
-              </ErrorBoundary>
-            </TooltipProvider>
-          </HelmetProvider>
-        </SessionSecurityProvider>
-      </AuthProvider>
+              <Toaster />
+              <Sonner />
+              <TooltipProvider>
+                <ScrollToTop />
+                <GlobalPageBackground />
+                <GlobalHreflang />
+                <TestPageViewTracker />
+                <FloatingNavDock />
+                <AutoTranslatePage />
+                <GlobalComparisonBar />
+                <ErrorBoundary>
+                  <Suspense fallback={<PageFallback />}>
+                    <Outlet />
+                  </Suspense>
+                </ErrorBoundary>
+              </TooltipProvider>
+            </HelmetProvider>
+          </SessionSecurityProvider>
+        </AuthProvider>
       </I18nextProvider>
     </QueryClientProvider>
   );
@@ -211,7 +238,7 @@ function NotFoundComponent() {
   );
 }
 
-function RootErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function RootErrorComponent({ error, reset }: ErrorComponentProps) {
   const router = useRouter();
 
   useEffect(() => {
@@ -221,9 +248,12 @@ function RootErrorComponent({ error, reset }: { error: Error; reset: () => void 
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-background px-6 text-center">
-      <h1 className="text-2xl font-bold text-foreground mb-3">This page didn't load</h1>
+      <h1 className="text-2xl font-bold text-foreground mb-3">
+        This page didn't load
+      </h1>
       <p className="text-muted-foreground mb-8 max-w-md">
-        Something went wrong on our end. You can try again or head back to the home page.
+        Something went wrong on our end. You can try again or head back to the
+        home page.
       </p>
       <div className="flex gap-3">
         <button

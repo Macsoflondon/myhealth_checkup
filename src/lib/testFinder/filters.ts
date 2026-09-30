@@ -8,23 +8,33 @@ export function deriveFilterState(profile: UserProfile): FilterState {
     sample_types: [...profile.preferences.preferred_sample_types],
     collection_methods: [...profile.preferences.preferred_collection_methods],
     no_additional_fees: profile.preferences.prefer_no_additional_fees,
-    clinical_review_included: profile.preferences.require_clinical_review_included,
+    clinical_review_included:
+      profile.preferences.require_clinical_review_included,
   };
 }
 
-export function applyFilters(tests: TestRecord[], f: FilterState): TestRecord[] {
+export function applyFilters(
+  tests: TestRecord[],
+  f: FilterState,
+): TestRecord[] {
   return tests.filter((t) => {
-    if (f.goals.length && !f.goals.some((g) => t.goal_tags.includes(g))) return false;
-    if (f.sample_types.length && !f.sample_types.includes(t.sample_type)) return false;
+    if (f.goals.length && !f.goals.some((g) => t.goal_tags.includes(g)))
+      return false;
+    if (f.sample_types.length && !f.sample_types.includes(t.sample_type))
+      return false;
     if (
       f.collection_methods.length &&
       !f.collection_methods.some((m) => t.collection_method.includes(m))
     )
       return false;
     if (f.no_additional_fees && t.collection_fee_type !== "none") return false;
-    if (f.clinical_review.length && !f.clinical_review.includes(t.clinical_review_type))
+    if (
+      f.clinical_review.length &&
+      !f.clinical_review.includes(t.clinical_review_type)
+    )
       return false;
-    if (f.clinical_review_included && t.clinical_review_type !== "included") return false;
+    if (f.clinical_review_included && t.clinical_review_type !== "included")
+      return false;
     return true;
   });
 }

@@ -30,7 +30,8 @@ import { createClient } from "npm:@supabase/supabase-js@2.111.0";
 
 const API_VERSION = "1.0";
 const SITE = "https://myhealthcheckup.co.uk";
-const FN_BASE = "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api";
+const FN_BASE =
+  "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/public-api";
 
 const CACHE_TTL_MS = 5 * 60 * 1000;
 const CACHE_MAX_ENTRIES = 300;
@@ -73,7 +74,12 @@ interface ApiResult {
 }
 
 class ApiError extends Error {
-  constructor(public status: number, public code: string, message: string, public extra: Row = {}) {
+  constructor(
+    public status: number,
+    public code: string,
+    message: string,
+    public extra: Row = {},
+  ) {
     super(message);
   }
 }
@@ -94,7 +100,8 @@ const OFFER_COLUMNS =
   "biomarker_count, sample_type, home_kit_available, clinic_visit_available, turnaround_days, turnaround_text, " +
   "provider_url, last_checked_at, price_check_stale";
 
-const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function num(v: unknown): number | null {
   if (v === null || v === undefined || v === "") return null;
@@ -105,18 +112,32 @@ function num(v: unknown): number | null {
 /** Free-text search input: letters, digits, spaces and a few safe symbols only. */
 function cleanText(v: string | null, max = 80): string | null {
   if (!v) return null;
-  const s = v.normalize("NFKC").replace(/[^\p{L}\p{N} \-'.:/+]/gu, " ").replace(/\s+/g, " ").trim().slice(0, max);
+  const s = v
+    .normalize("NFKC")
+    .replace(/[^\p{L}\p{N} \-'.:/+]/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, max);
   return s.length >= 2 ? s : null;
 }
 
 /** Slug input for ids and categories. */
 function cleanSlug(v: string | null): string | null {
   if (!v) return null;
-  const s = v.toLowerCase().trim().replace(/[^a-z0-9-]/g, "").slice(0, 60);
+  const s = v
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9-]/g, "")
+    .slice(0, 60);
   return s || null;
 }
 
-function intParam(v: string | null, def: number, min: number, max: number): number {
+function intParam(
+  v: string | null,
+  def: number,
+  min: number,
+  max: number,
+): number {
   const n = v === null ? NaN : parseInt(v, 10);
   if (!Number.isFinite(n)) return def;
   return Math.min(max, Math.max(min, n));
@@ -128,7 +149,12 @@ function boolParam(v: string | null, def: boolean): boolean {
 }
 
 function normalise(s: string): string {
-  return s.toLowerCase().normalize("NFKD").replace(/%/g, " percent ").replace(/[^a-z0-9]+/g, " ").trim();
+  return s
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/%/g, " percent ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
 }
 
 /** Prefer prices checked in the last 7 days; fall back to stale ones only if nothing else exists. */
@@ -151,7 +177,9 @@ function escapeLike(s: string): string {
 // ---------------------------------------------------------------------------
 
 function shapeTest(r: Row) {
-  const listed = Array.isArray(r.biomarkers) ? (r.biomarkers as unknown[]).map(String) : [];
+  const listed = Array.isArray(r.biomarkers)
+    ? (r.biomarkers as unknown[]).map(String)
+    : [];
   return {
     id: r.id,
     name: r.test_name,
@@ -174,7 +202,9 @@ function shapeTest(r: Row) {
       type: r.sample_type ?? null,
       home_kit_available: r.home_kit_available === true,
       clinic_visit_available: r.clinic_visit_available === true,
-      location_options: Array.isArray(r.location_options) ? r.location_options : [],
+      location_options: Array.isArray(r.location_options)
+        ? r.location_options
+        : [],
     },
     turnaround: {
       days: r.turnaround_days ?? null,
@@ -204,7 +234,10 @@ function shapeOffer(r: Row) {
     sample_type: r.sample_type ?? null,
     home_kit_available: r.home_kit_available === true,
     clinic_visit_available: r.clinic_visit_available === true,
-    turnaround: { days: r.turnaround_days ?? null, text: r.turnaround_text ?? null },
+    turnaround: {
+      days: r.turnaround_days ?? null,
+      text: r.turnaround_text ?? null,
+    },
     provider_url: r.provider_url ?? null,
     last_checked_at: r.last_checked_at ?? null,
     price_check_stale: r.price_check_stale === true,
@@ -221,12 +254,16 @@ function shapeProvider(r: Row) {
     accreditation: {
       notes: Array.isArray(r.accreditation_notes) ? r.accreditation_notes : [],
       checked_on: r.accreditation_checked_on ?? null,
-      source: "Public registers (UKAS, CQC, MHRA) as named in each note. A null checked_on means not yet checked.",
+      source:
+        "Public registers (UKAS, CQC, MHRA) as named in each note. A null checked_on means not yet checked.",
     },
     tests: {
       standalone_count: r.test_count ?? 0,
       addon_count: r.addon_count ?? 0,
-      total_expected_cost_range_gbp: [num(r.min_total_expected_cost_gbp), num(r.max_total_expected_cost_gbp)],
+      total_expected_cost_range_gbp: [
+        num(r.min_total_expected_cost_gbp),
+        num(r.max_total_expected_cost_gbp),
+      ],
     },
     offers_home_kits: r.offers_home_kits === true,
     offers_clinic_visits: r.offers_clinic_visits === true,
@@ -237,14 +274,19 @@ function shapeProvider(r: Row) {
 function byCost(a: Row, b: Row): number {
   const x = num(a.total_expected_cost_gbp) ?? Number.MAX_VALUE;
   const y = num(b.total_expected_cost_gbp) ?? Number.MAX_VALUE;
-  return x - y || String(a.test_name ?? "").localeCompare(String(b.test_name ?? ""));
+  return (
+    x - y || String(a.test_name ?? "").localeCompare(String(b.test_name ?? ""))
+  );
 }
 
 // ---------------------------------------------------------------------------
 // Shared lookups (cached in memory)
 // ---------------------------------------------------------------------------
 
-let freshness: { value: string | null; expires: number } = { value: null, expires: 0 };
+let freshness: { value: string | null; expires: number } = {
+  value: null,
+  expires: 0,
+};
 
 async function dataLastCheckedAt(): Promise<string | null> {
   if (Date.now() < freshness.expires) return freshness.value;
@@ -255,7 +297,10 @@ async function dataLastCheckedAt(): Promise<string | null> {
     .order("last_checked_at", { ascending: false })
     .limit(1);
   if (error) throw error;
-  freshness = { value: (data?.[0]?.last_checked_at as string) ?? null, expires: Date.now() + CACHE_TTL_MS };
+  freshness = {
+    value: (data?.[0]?.last_checked_at as string) ?? null,
+    expires: Date.now() + CACHE_TTL_MS,
+  };
   return freshness.value;
 }
 
@@ -271,18 +316,30 @@ interface BiomarkerEntry {
   keys: string[];
 }
 
-let biomarkerIndex: { value: BiomarkerEntry[]; expires: number } = { value: [], expires: 0 };
+let biomarkerIndex: { value: BiomarkerEntry[]; expires: number } = {
+  value: [],
+  expires: 0,
+};
 
 async function biomarkers(): Promise<BiomarkerEntry[]> {
-  if (Date.now() < biomarkerIndex.expires && biomarkerIndex.value.length) return biomarkerIndex.value;
+  if (Date.now() < biomarkerIndex.expires && biomarkerIndex.value.length)
+    return biomarkerIndex.value;
   const { data, error } = await supabase
     .from("api_v1_biomarkers")
-    .select("id, name, abbreviation, synonyms, category, provider_count, test_count, cheapest_standalone_test_gbp")
+    .select(
+      "id, name, abbreviation, synonyms, category, provider_count, test_count, cheapest_standalone_test_gbp",
+    )
     .limit(5000);
   if (error) throw error;
   const value = (data ?? []).map((r: Row) => {
-    const synonyms = Array.isArray(r.synonyms) ? (r.synonyms as unknown[]).map(String) : [];
-    const keys = [String(r.name), ...(r.abbreviation ? [String(r.abbreviation)] : []), ...synonyms]
+    const synonyms = Array.isArray(r.synonyms)
+      ? (r.synonyms as unknown[]).map(String)
+      : [];
+    const keys = [
+      String(r.name),
+      ...(r.abbreviation ? [String(r.abbreviation)] : []),
+      ...synonyms,
+    ]
       .map(normalise)
       .filter(Boolean);
     return {
@@ -315,7 +372,11 @@ function publicBiomarker(b: BiomarkerEntry) {
 }
 
 type Resolution =
-  | { kind: "match"; biomarker: BiomarkerEntry; alternatives?: BiomarkerEntry[] }
+  | {
+      kind: "match";
+      biomarker: BiomarkerEntry;
+      alternatives?: BiomarkerEntry[];
+    }
   | { kind: "ambiguous"; candidates: BiomarkerEntry[] }
   | { kind: "none"; suggestions: BiomarkerEntry[] };
 
@@ -332,27 +393,46 @@ async function resolveBiomarker(input: string): Promise<Resolution> {
   const all = await biomarkers();
   if (UUID_RE.test(input)) {
     const hit = all.find((b) => b.id === input.toLowerCase());
-    return hit ? { kind: "match", biomarker: hit } : { kind: "none", suggestions: [] };
+    return hit
+      ? { kind: "match", biomarker: hit }
+      : { kind: "none", suggestions: [] };
   }
   const q = normalise(input);
   if (!q) return { kind: "none", suggestions: [] };
   const qc = q.replace(/ /g, "");
-  const rank = (a: BiomarkerEntry, b: BiomarkerEntry) => b.provider_count - a.provider_count || b.test_count - a.test_count;
+  const rank = (a: BiomarkerEntry, b: BiomarkerEntry) =>
+    b.provider_count - a.provider_count || b.test_count - a.test_count;
 
   let exact = all.filter((b) => b.keys.includes(q));
-  if (!exact.length && qc.length >= 3) exact = all.filter((b) => b.keys.some((k) => k.replace(/ /g, "") === qc));
+  if (!exact.length && qc.length >= 3)
+    exact = all.filter((b) => b.keys.some((k) => k.replace(/ /g, "") === qc));
 
   if (exact.length) {
     const ranked = [...exact].sort(rank);
-    if (ranked.length > 1 && ranked[0].provider_count === ranked[1].provider_count && ranked[0].test_count === ranked[1].test_count) {
+    if (
+      ranked.length > 1 &&
+      ranked[0].provider_count === ranked[1].provider_count &&
+      ranked[0].test_count === ranked[1].test_count
+    ) {
       return { kind: "ambiguous", candidates: ranked.slice(0, 10) };
     }
     const chosen = ranked[0];
-    const wordRe = new RegExp(`(^| )${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}( |$)`);
+    const wordRe = new RegExp(
+      `(^| )${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}( |$)`,
+    );
     const related = all
-      .filter((b) => b !== chosen && !ranked.includes(b) && b.keys.some((k) => wordRe.test(k)))
+      .filter(
+        (b) =>
+          b !== chosen &&
+          !ranked.includes(b) &&
+          b.keys.some((k) => wordRe.test(k)),
+      )
       .sort(rank);
-    return { kind: "match", biomarker: chosen, alternatives: [...ranked.slice(1), ...related].slice(0, 8) };
+    return {
+      kind: "match",
+      biomarker: chosen,
+      alternatives: [...ranked.slice(1), ...related].slice(0, 8),
+    };
   }
 
   const words = q.split(" ");
@@ -360,10 +440,17 @@ async function resolveBiomarker(input: string): Promise<Resolution> {
     .filter((b) => b.keys.some((k) => words.every((w) => k.includes(w))))
     .sort(rank);
   if (partial.length === 1) return { kind: "match", biomarker: partial[0] };
-  if (partial.length > 1) return { kind: "ambiguous", candidates: partial.slice(0, 10) };
+  if (partial.length > 1)
+    return { kind: "ambiguous", candidates: partial.slice(0, 10) };
 
   const loose = all
-    .filter((b) => b.keys.some((k) => words.some((w) => w.length >= 3 && k.includes(w)) || (qc.length >= 3 && k.replace(/ /g, "").includes(qc))))
+    .filter((b) =>
+      b.keys.some(
+        (k) =>
+          words.some((w) => w.length >= 3 && k.includes(w)) ||
+          (qc.length >= 3 && k.replace(/ /g, "").includes(qc)),
+      ),
+    )
     .sort(rank)
     .slice(0, 10);
   return { kind: "none", suggestions: loose };
@@ -376,7 +463,9 @@ async function resolveBiomarker(input: string): Promise<Resolution> {
 async function handleIndex(): Promise<ApiResult> {
   const [cov, providers, bms] = await Promise.all([
     supabase.from("api_v1_coverage").select("*").maybeSingle(),
-    supabase.from("api_v1_providers").select("id", { count: "exact", head: true }),
+    supabase
+      .from("api_v1_providers")
+      .select("id", { count: "exact", head: true }),
     biomarkers(),
   ]);
   if (cov.error) throw cov.error;
@@ -395,22 +484,68 @@ async function handleIndex(): Promise<ApiResult> {
         addon_tests: c.addon_tests ?? null,
         providers: providers.count ?? null,
         biomarkers_compared: bms.length,
-        biomarkers_offered_by_two_or_more_providers: bms.filter((b) => b.provider_count >= 2).length,
+        biomarkers_offered_by_two_or_more_providers: bms.filter(
+          (b) => b.provider_count >= 2,
+        ).length,
       },
       known_gaps: {
-        standalone_tests_without_biomarker_list: c.standalone_tests_without_biomarker_list ?? null,
-        standalone_tests_without_matched_biomarkers: c.standalone_tests_without_matched_biomarkers ?? null,
+        standalone_tests_without_biomarker_list:
+          c.standalone_tests_without_biomarker_list ?? null,
+        standalone_tests_without_matched_biomarkers:
+          c.standalone_tests_without_matched_biomarkers ?? null,
         tests_with_stale_price_check: c.tests_with_stale_price_check ?? null,
       },
       endpoints: [
-        { path: "/tests", description: "Search, filter and sort tests.", params: ["search", "category", "provider", "max_cost", "collection (home_kit | clinic_visit)", "include_addons", "sort (price | price_desc | name | turnaround)", "limit", "offset"] },
-        { path: "/tests/{id}", description: "One test with its full cost breakdown and biomarker list." },
-        { path: "/providers", description: "Providers with accreditation notes and price ranges.", params: ["id"] },
+        {
+          path: "/tests",
+          description: "Search, filter and sort tests.",
+          params: [
+            "search",
+            "category",
+            "provider",
+            "max_cost",
+            "collection (home_kit | clinic_visit)",
+            "include_addons",
+            "sort (price | price_desc | name | turnaround)",
+            "limit",
+            "offset",
+          ],
+        },
+        {
+          path: "/tests/{id}",
+          description:
+            "One test with its full cost breakdown and biomarker list.",
+        },
+        {
+          path: "/providers",
+          description: "Providers with accreditation notes and price ranges.",
+          params: ["id"],
+        },
         { path: "/categories", description: "Categories with live tests." },
-        { path: "/biomarkers", description: "Biomarkers we compare, with coverage and cheapest standalone test.", params: ["search", "min_providers", "limit", "offset"] },
-        { path: "/compare/tests", description: "Compare a named test across providers and find the lowest total expected cost.", params: ["q", "include_addons"] },
-        { path: "/compare/biomarker", description: "Every test and provider that measures one biomarker, cheapest first.", params: ["biomarker", "include_addons"] },
-        { path: "/compare/biomarkers", description: "Tests that measure all of several biomarkers in one sample, cheapest first.", params: ["biomarkers (comma-separated, up to 10)"] },
+        {
+          path: "/biomarkers",
+          description:
+            "Biomarkers we compare, with coverage and cheapest standalone test.",
+          params: ["search", "min_providers", "limit", "offset"],
+        },
+        {
+          path: "/compare/tests",
+          description:
+            "Compare a named test across providers and find the lowest total expected cost.",
+          params: ["q", "include_addons"],
+        },
+        {
+          path: "/compare/biomarker",
+          description:
+            "Every test and provider that measures one biomarker, cheapest first.",
+          params: ["biomarker", "include_addons"],
+        },
+        {
+          path: "/compare/biomarkers",
+          description:
+            "Tests that measure all of several biomarkers in one sample, cheapest first.",
+          params: ["biomarkers (comma-separated, up to 10)"],
+        },
       ],
       base_url: FN_BASE,
     },
@@ -421,53 +556,117 @@ async function handleTests(p: URLSearchParams): Promise<ApiResult> {
   const rawSearch = p.get("search") ?? p.get("q");
   const search = cleanText(rawSearch);
   if (rawSearch && rawSearch.trim() && !search) {
-    throw new ApiError(400, "invalid_search", "search needs at least two letters or digits.");
+    throw new ApiError(
+      400,
+      "invalid_search",
+      "search needs at least two letters or digits.",
+    );
   }
   const rawCategory = p.get("category");
-  const category = cleanSlug(rawCategory ? rawCategory.trim().replace(/[\s_]+/g, "-").replace(/'/g, "") : null);
+  const category = cleanSlug(
+    rawCategory
+      ? rawCategory
+          .trim()
+          .replace(/[\s_]+/g, "-")
+          .replace(/'/g, "")
+      : null,
+  );
   if (rawCategory && rawCategory.trim() && !category) {
-    throw new ApiError(400, "invalid_category", "Unknown category. Call /categories for the list.");
+    throw new ApiError(
+      400,
+      "invalid_category",
+      "Unknown category. Call /categories for the list.",
+    );
   }
   const rawProvider = p.get("provider");
-  const providerText = (p.get("provider") ?? "").replace(/[^A-Za-z0-9 -]/g, "").replace(/\s+/g, " ").trim().slice(0, 60) || null;
+  const providerText =
+    (p.get("provider") ?? "")
+      .replace(/[^A-Za-z0-9 -]/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 60) || null;
   const provider = cleanSlug(providerText?.replace(/\s+/g, "-") ?? null);
   if (rawProvider && rawProvider.trim() && !provider) {
-    throw new ApiError(400, "invalid_provider", "Unknown provider. Call /providers for the list.");
+    throw new ApiError(
+      400,
+      "invalid_provider",
+      "Unknown provider. Call /providers for the list.",
+    );
   }
   const maxCost = p.get("max_cost") ?? p.get("max_price");
   if (maxCost && !Number.isFinite(Number(maxCost))) {
-    throw new ApiError(400, "invalid_max_cost", "max_cost must be a number in GBP.");
+    throw new ApiError(
+      400,
+      "invalid_max_cost",
+      "max_cost must be a number in GBP.",
+    );
   }
   const collection = cleanSlug(p.get("collection"));
-  const COLLECTIONS = ["home-kit", "homekit", "home", "clinic-visit", "clinicvisit", "clinic"];
+  const COLLECTIONS = [
+    "home-kit",
+    "homekit",
+    "home",
+    "clinic-visit",
+    "clinicvisit",
+    "clinic",
+  ];
   if (collection && !COLLECTIONS.includes(collection)) {
-    throw new ApiError(400, "invalid_collection", "collection must be home_kit or clinic_visit.");
+    throw new ApiError(
+      400,
+      "invalid_collection",
+      "collection must be home_kit or clinic_visit.",
+    );
   }
   const includeAddons = boolParam(p.get("include_addons"), false);
   const sort = cleanSlug(p.get("sort")) ?? "price";
-  if (!["price", "price-desc", "pricedesc", "name", "turnaround"].includes(sort)) {
-    throw new ApiError(400, "invalid_sort", "sort must be price, price_desc, name or turnaround.");
+  if (
+    !["price", "price-desc", "pricedesc", "name", "turnaround"].includes(sort)
+  ) {
+    throw new ApiError(
+      400,
+      "invalid_sort",
+      "sort must be price, price_desc, name or turnaround.",
+    );
   }
   const limit = intParam(p.get("limit"), DEFAULT_LIMIT, 1, MAX_LIMIT);
   const offset = intParam(p.get("offset"), 0, 0, 5000);
 
-  let q = supabase.from("api_v1_tests").select(TEST_COLUMNS, { count: "exact" });
+  let q = supabase
+    .from("api_v1_tests")
+    .select(TEST_COLUMNS, { count: "exact" });
   if (search) q = q.ilike("test_name", `%${escapeLike(search)}%`);
   if (category) q = q.eq("category", category);
   // Accept a provider id ("randox") or a name ("Randox Health"). Inputs are
   // reduced to letters, digits, spaces and hyphens above, so the filter
   // string cannot break out of its quotes.
   if (provider && providerText) {
-    q = q.or(`provider_id.eq.${provider},provider_id.ilike.*${provider}*,provider_name.ilike."*${providerText}*"`);
+    q = q.or(
+      `provider_id.eq.${provider},provider_id.ilike.*${provider}*,provider_name.ilike."*${providerText}*"`,
+    );
   }
-  if (maxCost && Number.isFinite(Number(maxCost))) q = q.lte("total_expected_cost_gbp", Number(maxCost));
-  if (collection === "home-kit" || collection === "homekit" || collection === "home") q = q.eq("home_kit_available", true);
-  if (collection === "clinic-visit" || collection === "clinicvisit" || collection === "clinic") q = q.eq("clinic_visit_available", true);
+  if (maxCost && Number.isFinite(Number(maxCost)))
+    q = q.lte("total_expected_cost_gbp", Number(maxCost));
+  if (
+    collection === "home-kit" ||
+    collection === "homekit" ||
+    collection === "home"
+  )
+    q = q.eq("home_kit_available", true);
+  if (
+    collection === "clinic-visit" ||
+    collection === "clinicvisit" ||
+    collection === "clinic"
+  )
+    q = q.eq("clinic_visit_available", true);
   if (!includeAddons) q = q.eq("is_addon", false);
 
   if (sort === "name") q = q.order("test_name", { ascending: true });
-  else if (sort === "turnaround") q = q.order("turnaround_days", { ascending: true, nullsFirst: false });
-  else q = q.order("total_expected_cost_gbp", { ascending: sort !== "price-desc" && sort !== "pricedesc" });
+  else if (sort === "turnaround")
+    q = q.order("turnaround_days", { ascending: true, nullsFirst: false });
+  else
+    q = q.order("total_expected_cost_gbp", {
+      ascending: sort !== "price-desc" && sort !== "pricedesc",
+    });
   q = q.order("id", { ascending: true }).range(offset, offset + limit - 1);
 
   const { data, error, count } = await q;
@@ -476,11 +675,15 @@ async function handleTests(p: URLSearchParams): Promise<ApiResult> {
   if (error && !pastEnd) throw error;
   let total = count ?? null;
   if (pastEnd) {
-    let cq = supabase.from("api_v1_tests").select("id", { count: "exact", head: true });
+    let cq = supabase
+      .from("api_v1_tests")
+      .select("id", { count: "exact", head: true });
     if (search) cq = cq.ilike("test_name", `%${escapeLike(search)}%`);
     if (category) cq = cq.eq("category", category);
     if (provider && providerText) {
-      cq = cq.or(`provider_id.eq.${provider},provider_id.ilike.*${provider}*,provider_name.ilike."*${providerText}*"`);
+      cq = cq.or(
+        `provider_id.eq.${provider},provider_id.ilike.*${provider}*,provider_name.ilike."*${providerText}*"`,
+      );
     }
     if (maxCost) cq = cq.lte("total_expected_cost_gbp", Number(maxCost));
     if (!includeAddons) cq = cq.eq("is_addon", false);
@@ -489,7 +692,17 @@ async function handleTests(p: URLSearchParams): Promise<ApiResult> {
   return {
     status: 200,
     body: {
-      query: { search, category, provider: providerText, max_cost: maxCost ? Number(maxCost) : null, collection, include_addons: includeAddons, sort, limit, offset },
+      query: {
+        search,
+        category,
+        provider: providerText,
+        max_cost: maxCost ? Number(maxCost) : null,
+        collection,
+        include_addons: includeAddons,
+        sort,
+        limit,
+        offset,
+      },
       total,
       results: pastEnd ? [] : asRows(data).map(shapeTest),
     },
@@ -497,8 +710,17 @@ async function handleTests(p: URLSearchParams): Promise<ApiResult> {
 }
 
 async function handleTest(id: string): Promise<ApiResult> {
-  if (!UUID_RE.test(id)) throw new ApiError(400, "invalid_id", "Test id must be a UUID from /tests.");
-  const { data, error } = await supabase.from("api_v1_tests").select(TEST_COLUMNS).eq("id", id).maybeSingle();
+  if (!UUID_RE.test(id))
+    throw new ApiError(
+      400,
+      "invalid_id",
+      "Test id must be a UUID from /tests.",
+    );
+  const { data, error } = await supabase
+    .from("api_v1_tests")
+    .select(TEST_COLUMNS)
+    .eq("id", id)
+    .maybeSingle();
   if (error) throw error;
   if (!data) throw new ApiError(404, "not_found", "No live test with that id.");
 
@@ -514,13 +736,29 @@ async function handleTest(id: string): Promise<ApiResult> {
     .filter((b): b is BiomarkerEntry => !!b)
     .map((b) => ({ id: b.id, name: b.name, abbreviation: b.abbreviation }));
 
-  return { status: 200, body: { result: { ...shapeTest(data as unknown as Row), biomarkers_matched: matched } } };
+  return {
+    status: 200,
+    body: {
+      result: {
+        ...shapeTest(data as unknown as Row),
+        biomarkers_matched: matched,
+      },
+    },
+  };
 }
 
-async function handleProviders(p: URLSearchParams, pathId?: string): Promise<ApiResult> {
+async function handleProviders(
+  p: URLSearchParams,
+  pathId?: string,
+): Promise<ApiResult> {
   const rawId = pathId ?? p.get("id");
   const id = cleanSlug(rawId);
-  if (rawId && rawId.trim() && !id) throw new ApiError(404, "not_found", "No provider with that id. Call /providers for the list.");
+  if (rawId && rawId.trim() && !id)
+    throw new ApiError(
+      404,
+      "not_found",
+      "No provider with that id. Call /providers for the list.",
+    );
   let q = supabase
     .from("api_v1_providers")
     .select("*")
@@ -528,9 +766,17 @@ async function handleProviders(p: URLSearchParams, pathId?: string): Promise<Api
   if (id) q = q.eq("id", id);
   const { data, error } = await q;
   if (error) throw error;
-  if (id && !(data ?? []).length) throw new ApiError(404, "not_found", "No provider with that id. Call /providers for the list.");
+  if (id && !(data ?? []).length)
+    throw new ApiError(
+      404,
+      "not_found",
+      "No provider with that id. Call /providers for the list.",
+    );
   const results = (data ?? []).map(shapeProvider);
-  return { status: 200, body: pathId ? { result: results[0] } : { total: results.length, results } };
+  return {
+    status: 200,
+    body: pathId ? { result: results[0] } : { total: results.length, results },
+  };
 }
 
 async function handleCategories(): Promise<ApiResult> {
@@ -539,7 +785,10 @@ async function handleCategories(): Promise<ApiResult> {
     .select("category, test_count, provider_count")
     .order("test_count", { ascending: false });
   if (error) throw error;
-  return { status: 200, body: { total: (data ?? []).length, results: data ?? [] } };
+  return {
+    status: 200,
+    body: { total: (data ?? []).length, results: data ?? [] },
+  };
 }
 
 async function handleBiomarkers(p: URLSearchParams): Promise<ApiResult> {
@@ -547,12 +796,21 @@ async function handleBiomarkers(p: URLSearchParams): Promise<ApiResult> {
   const minProviders = intParam(p.get("min_providers"), 1, 1, 20);
   const limit = intParam(p.get("limit"), 50, 1, 200);
   const offset = intParam(p.get("offset"), 0, 0, 5000);
-  let all = (await biomarkers()).filter((b) => b.provider_count >= minProviders);
+  let all = (await biomarkers()).filter(
+    (b) => b.provider_count >= minProviders,
+  );
   if (search) {
     const words = normalise(search).split(" ");
-    all = all.filter((b) => b.keys.some((k) => words.every((w) => k.includes(w))));
+    all = all.filter((b) =>
+      b.keys.some((k) => words.every((w) => k.includes(w))),
+    );
   }
-  all = [...all].sort((a, b) => b.provider_count - a.provider_count || b.test_count - a.test_count || a.name.localeCompare(b.name));
+  all = [...all].sort(
+    (a, b) =>
+      b.provider_count - a.provider_count ||
+      b.test_count - a.test_count ||
+      a.name.localeCompare(b.name),
+  );
   return {
     status: 200,
     body: {
@@ -565,7 +823,12 @@ async function handleBiomarkers(p: URLSearchParams): Promise<ApiResult> {
 
 async function handleCompareTests(p: URLSearchParams): Promise<ApiResult> {
   const term = cleanText(p.get("q") ?? p.get("test") ?? p.get("search"));
-  if (!term) throw new ApiError(400, "missing_q", "Pass the test name in q, for example ?q=vitamin d.");
+  if (!term)
+    throw new ApiError(
+      400,
+      "missing_q",
+      "Pass the test name in q, for example ?q=vitamin d.",
+    );
   const includeAddons = boolParam(p.get("include_addons"), false);
 
   let q = supabase
@@ -594,7 +857,11 @@ async function handleCompareTests(p: URLSearchParams): Promise<ApiResult> {
         matching_tests: list.length,
       };
     })
-    .sort((a, b) => (a.cheapest.price.total_expected_cost_gbp ?? 1e9) - (b.cheapest.price.total_expected_cost_gbp ?? 1e9));
+    .sort(
+      (a, b) =>
+        (a.cheapest.price.total_expected_cost_gbp ?? 1e9) -
+        (b.cheapest.price.total_expected_cost_gbp ?? 1e9),
+    );
 
   return {
     status: 200,
@@ -611,7 +878,10 @@ async function handleCompareTests(p: URLSearchParams): Promise<ApiResult> {
   };
 }
 
-async function offersFor(biomarkerIds: string[], includeAddons: boolean): Promise<Row[]> {
+async function offersFor(
+  biomarkerIds: string[],
+  includeAddons: boolean,
+): Promise<Row[]> {
   let q = supabase
     .from("api_v1_biomarker_offers")
     .select(OFFER_COLUMNS)
@@ -626,7 +896,12 @@ async function offersFor(biomarkerIds: string[], includeAddons: boolean): Promis
 
 async function handleCompareBiomarker(p: URLSearchParams): Promise<ApiResult> {
   const input = cleanText(p.get("biomarker") ?? p.get("q") ?? p.get("id"), 80);
-  if (!input) throw new ApiError(400, "missing_biomarker", "Pass a biomarker name, abbreviation or id, for example ?biomarker=ferritin.");
+  if (!input)
+    throw new ApiError(
+      400,
+      "missing_biomarker",
+      "Pass a biomarker name, abbreviation or id, for example ?biomarker=ferritin.",
+    );
   const includeAddons = boolParam(p.get("include_addons"), true);
 
   const res = await resolveBiomarker(input);
@@ -636,15 +911,21 @@ async function handleCompareBiomarker(p: URLSearchParams): Promise<ApiResult> {
       body: {
         status: "ambiguous",
         query: { biomarker: input },
-        message: "More than one biomarker matches. Call again with one of these ids or names.",
+        message:
+          "More than one biomarker matches. Call again with one of these ids or names.",
         candidates: res.candidates.map(publicBiomarker),
       },
     };
   }
   if (res.kind === "none") {
-    throw new ApiError(404, "biomarker_not_found", "No live test measures a biomarker by that name.", {
-      suggestions: res.suggestions.map(publicBiomarker),
-    });
+    throw new ApiError(
+      404,
+      "biomarker_not_found",
+      "No live test measures a biomarker by that name.",
+      {
+        suggestions: res.suggestions.map(publicBiomarker),
+      },
+    );
   }
 
   const b = res.biomarker;
@@ -671,10 +952,13 @@ async function handleCompareBiomarker(p: URLSearchParams): Promise<ApiResult> {
     })
     .sort(
       (x, y) =>
-        (x.cheapest_standalone?.total_expected_cost_gbp ?? 1e9) - (y.cheapest_standalone?.total_expected_cost_gbp ?? 1e9),
+        (x.cheapest_standalone?.total_expected_cost_gbp ?? 1e9) -
+        (y.cheapest_standalone?.total_expected_cost_gbp ?? 1e9),
     );
 
-  const costs = offers.map((o) => num(o.total_expected_cost_gbp)).filter((n): n is number => n !== null);
+  const costs = offers
+    .map((o) => num(o.total_expected_cost_gbp))
+    .filter((n): n is number => n !== null);
   return {
     status: 200,
     body: {
@@ -687,7 +971,9 @@ async function handleCompareBiomarker(p: URLSearchParams): Promise<ApiResult> {
         test_count: offers.length,
         cheapest_standalone: standalone ? shapeOffer(standalone) : null,
         cheapest_addon: addon ? shapeOffer(addon) : null,
-        total_expected_cost_range_gbp: costs.length ? [Math.min(...costs), Math.max(...costs)] : null,
+        total_expected_cost_range_gbp: costs.length
+          ? [Math.min(...costs), Math.max(...costs)]
+          : null,
       },
       notes: [
         "Panel tests measure other biomarkers as well. biomarkers_in_test shows how many.",
@@ -702,23 +988,54 @@ async function handleCompareBiomarker(p: URLSearchParams): Promise<ApiResult> {
 
 async function handleCompareBiomarkers(p: URLSearchParams): Promise<ApiResult> {
   const joined = p.getAll("biomarkers").join(",") || p.get("q") || "";
-  const raw = joined.split(",").map((s) => cleanText(s, 60)).filter((s): s is string => !!s);
+  const raw = joined
+    .split(",")
+    .map((s) => cleanText(s, 60))
+    .filter((s): s is string => !!s);
   const inputs = [...new Set(raw)].slice(0, 10);
   if (inputs.length < 2) {
-    throw new ApiError(400, "need_two_biomarkers", "Pass two to ten biomarkers, comma-separated, for example ?biomarkers=ferritin,vitamin d,b12.");
+    throw new ApiError(
+      400,
+      "need_two_biomarkers",
+      "Pass two to ten biomarkers, comma-separated, for example ?biomarkers=ferritin,vitamin d,b12.",
+    );
   }
 
-  const resolved: { input: string; biomarker: BiomarkerEntry; alternatives: BiomarkerEntry[] }[] = [];
+  const resolved: {
+    input: string;
+    biomarker: BiomarkerEntry;
+    alternatives: BiomarkerEntry[];
+  }[] = [];
   const unresolved: Row[] = [];
   for (const input of inputs) {
     const r = await resolveBiomarker(input);
-    if (r.kind === "match") resolved.push({ input, biomarker: r.biomarker, alternatives: r.alternatives ?? [] });
-    else if (r.kind === "ambiguous") unresolved.push({ input, reason: "ambiguous", candidates: r.candidates.slice(0, 5).map(publicBiomarker) });
-    else unresolved.push({ input, reason: "not_found", suggestions: r.suggestions.slice(0, 5).map(publicBiomarker) });
+    if (r.kind === "match")
+      resolved.push({
+        input,
+        biomarker: r.biomarker,
+        alternatives: r.alternatives ?? [],
+      });
+    else if (r.kind === "ambiguous")
+      unresolved.push({
+        input,
+        reason: "ambiguous",
+        candidates: r.candidates.slice(0, 5).map(publicBiomarker),
+      });
+    else
+      unresolved.push({
+        input,
+        reason: "not_found",
+        suggestions: r.suggestions.slice(0, 5).map(publicBiomarker),
+      });
   }
   const ids = [...new Set(resolved.map((r) => r.biomarker.id))];
   if (!ids.length) {
-    throw new ApiError(404, "biomarkers_not_found", "None of those biomarkers could be matched.", { unresolved });
+    throw new ApiError(
+      404,
+      "biomarkers_not_found",
+      "None of those biomarkers could be matched.",
+      { unresolved },
+    );
   }
 
   const offers = await offersFor(ids, false);
@@ -728,25 +1045,44 @@ async function handleCompareBiomarkers(p: URLSearchParams): Promise<ApiResult> {
     if (!byTest.has(k)) byTest.set(k, { row: o, covered: new Set() });
     byTest.get(k)!.covered.add(String(o.biomarker_id));
   }
-  const nameOf = new Map(resolved.map((r) => [r.biomarker.id, r.biomarker.name]));
+  const nameOf = new Map(
+    resolved.map((r) => [r.biomarker.id, r.biomarker.name]),
+  );
   const shaped = [...byTest.values()].map(({ row, covered }) => ({
     ...shapeOffer(row),
     covers: [...covered].map((id) => nameOf.get(id)).filter(Boolean),
     covers_count: covered.size,
   }));
 
-  const freshFirst = (a: { price_check_stale: boolean; total_expected_cost_gbp: number | null }, b: { price_check_stale: boolean; total_expected_cost_gbp: number | null }) =>
-    Number(a.price_check_stale) - Number(b.price_check_stale) || (a.total_expected_cost_gbp ?? 1e9) - (b.total_expected_cost_gbp ?? 1e9);
-  const full = shaped.filter((t) => t.covers_count === ids.length).sort(freshFirst);
+  const freshFirst = (
+    a: { price_check_stale: boolean; total_expected_cost_gbp: number | null },
+    b: { price_check_stale: boolean; total_expected_cost_gbp: number | null },
+  ) =>
+    Number(a.price_check_stale) - Number(b.price_check_stale) ||
+    (a.total_expected_cost_gbp ?? 1e9) - (b.total_expected_cost_gbp ?? 1e9);
+  const full = shaped
+    .filter((t) => t.covers_count === ids.length)
+    .sort(freshFirst);
   const partial = full.length
     ? []
     : shaped
-        .sort((a, b) => b.covers_count - a.covers_count || (a.total_expected_cost_gbp ?? 1e9) - (b.total_expected_cost_gbp ?? 1e9))
+        .sort(
+          (a, b) =>
+            b.covers_count - a.covers_count ||
+            (a.total_expected_cost_gbp ?? 1e9) -
+              (b.total_expected_cost_gbp ?? 1e9),
+        )
         .slice(0, 20);
 
   const cheapestEach = resolved.map(({ input, biomarker }) => {
-    const best = pickCheapest(offers.filter((o) => String(o.biomarker_id) === biomarker.id));
-    return { input, biomarker: { id: biomarker.id, name: biomarker.name }, cheapest_standalone: best ? shapeOffer(best) : null };
+    const best = pickCheapest(
+      offers.filter((o) => String(o.biomarker_id) === biomarker.id),
+    );
+    return {
+      input,
+      biomarker: { id: biomarker.id, name: biomarker.name },
+      cheapest_standalone: best ? shapeOffer(best) : null,
+    };
   });
 
   return {
@@ -755,8 +1091,15 @@ async function handleCompareBiomarkers(p: URLSearchParams): Promise<ApiResult> {
       query: { biomarkers: inputs },
       resolved: resolved.map(({ input, biomarker, alternatives }) => ({
         input,
-        biomarker: { id: biomarker.id, name: biomarker.name, abbreviation: biomarker.abbreviation },
-        other_possible_matches: alternatives.map((a) => ({ id: a.id, name: a.name })),
+        biomarker: {
+          id: biomarker.id,
+          name: biomarker.name,
+          abbreviation: biomarker.abbreviation,
+        },
+        other_possible_matches: alternatives.map((a) => ({
+          id: a.id,
+          name: a.name,
+        })),
       })),
       unresolved,
       complete: unresolved.length === 0,
@@ -777,20 +1120,31 @@ async function handleCompareBiomarkers(p: URLSearchParams): Promise<ApiResult> {
 // Routing, caching, rate limiting
 // ---------------------------------------------------------------------------
 
-async function route(path: string, params: URLSearchParams): Promise<ApiResult> {
+async function route(
+  path: string,
+  params: URLSearchParams,
+): Promise<ApiResult> {
   const parts = path.split("/").filter(Boolean);
   const [a, b] = parts;
   if (!a) return handleIndex();
-  if (a === "tests" && !b && params.get("id")) return handleTest(String(params.get("id")));
+  if (a === "tests" && !b && params.get("id"))
+    return handleTest(String(params.get("id")));
   if (a === "tests" && !b) return handleTests(params);
   if (a === "tests" && b && parts.length === 2) return handleTest(b);
   if (a === "providers" && parts.length <= 2) return handleProviders(params, b);
   if (a === "categories" && !b) return handleCategories();
   if (a === "biomarkers" && !b) return handleBiomarkers(params);
-  if (a === "compare" && b === "tests" && parts.length === 2) return handleCompareTests(params);
-  if (a === "compare" && b === "biomarker" && parts.length === 2) return handleCompareBiomarker(params);
-  if (a === "compare" && b === "biomarkers" && parts.length === 2) return handleCompareBiomarkers(params);
-  throw new ApiError(404, "unknown_endpoint", "Unknown endpoint. See the index at / for the list.");
+  if (a === "compare" && b === "tests" && parts.length === 2)
+    return handleCompareTests(params);
+  if (a === "compare" && b === "biomarker" && parts.length === 2)
+    return handleCompareBiomarker(params);
+  if (a === "compare" && b === "biomarkers" && parts.length === 2)
+    return handleCompareBiomarkers(params);
+  throw new ApiError(
+    404,
+    "unknown_endpoint",
+    "Unknown endpoint. See the index at / for the list.",
+  );
 }
 
 /** Strip the function prefix, an optional /v1 and any .json suffix. */
@@ -803,7 +1157,10 @@ function normalisePath(pathname: string): string {
   return p || "/";
 }
 
-const responseCache = new Map<string, { status: number; text: string; expires: number }>();
+const responseCache = new Map<
+  string,
+  { status: number; text: string; expires: number }
+>();
 
 function cacheGet(key: string) {
   const hit = responseCache.get(key);
@@ -826,9 +1183,16 @@ function cacheSet(key: string, status: number, text: string) {
 const buckets = new Map<string, { count: number; windowStart: number }>();
 
 async function clientKey(req: Request): Promise<string> {
-  const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || "unknown";
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(`mhc-public-api:${ip}`));
-  return Array.from(new Uint8Array(digest).slice(0, 12), (x) => x.toString(16).padStart(2, "0")).join("");
+  const ip =
+    (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() ||
+    "unknown";
+  const digest = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(`mhc-public-api:${ip}`),
+  );
+  return Array.from(new Uint8Array(digest).slice(0, 12), (x) =>
+    x.toString(16).padStart(2, "0"),
+  ).join("");
 }
 
 function rateLimited(key: string): boolean {
@@ -846,13 +1210,19 @@ function rateLimited(key: string): boolean {
 const BASE_HEADERS: Record<string, string> = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
-  "Access-Control-Allow-Headers": "content-type, accept, authorization, apikey, x-client-info",
+  "Access-Control-Allow-Headers":
+    "content-type, accept, authorization, apikey, x-client-info",
   "Access-Control-Max-Age": "86400",
   "X-Content-Type-Options": "nosniff",
   "Content-Type": "application/json; charset=utf-8",
 };
 
-function respond(req: Request, status: number, text: string, extra: Record<string, string> = {}): Response {
+function respond(
+  req: Request,
+  status: number,
+  text: string,
+  extra: Record<string, string> = {},
+): Response {
   const headers = new Headers({ ...BASE_HEADERS, ...extra });
   if (status === 200) {
     headers.set("Cache-Control", "public, max-age=300, s-maxage=300");
@@ -876,8 +1246,10 @@ async function meta(): Promise<Row> {
     data_last_checked_at: lastChecked,
     currency: "GBP",
     source: SITE,
-    attribution: "Free to use. Please credit myhealth checkup (myhealthcheckup.co.uk) when you use this data.",
-    ordering: "Results are ordered by price or by the sort you choose. Providers cannot pay to change the order.",
+    attribution:
+      "Free to use. Please credit myhealth checkup (myhealthcheckup.co.uk) when you use this data.",
+    ordering:
+      "Results are ordered by price or by the sort you choose. Providers cannot pay to change the order.",
     links: "Provider links go straight to the provider's own page.",
     disclaimer: DISCLAIMER,
     known_limitations: KNOWN_LIMITATIONS,
@@ -892,15 +1264,23 @@ function describeError(err: unknown): string {
   if (err instanceof Error) return err.message;
   if (err && typeof err === "object") {
     const e = err as { code?: string; message?: string; details?: string };
-    return [e.code, e.message, e.details].filter(Boolean).join(" | ") || JSON.stringify(err);
+    return (
+      [e.code, e.message, e.details].filter(Boolean).join(" | ") ||
+      JSON.stringify(err)
+    );
   }
   return String(err);
 }
 
 /** Runs a GET route through the response cache. Shared by the REST routes and MCP tools/call. */
-async function runRoute(path: string, rawParams: URLSearchParams): Promise<{ status: number; text: string; cache: "HIT" | "MISS" }> {
+async function runRoute(
+  path: string,
+  rawParams: URLSearchParams,
+): Promise<{ status: number; text: string; cache: "HIT" | "MISS" }> {
   // Sorted query string so equivalent requests share a cache entry.
-  const params = new URLSearchParams([...rawParams.entries()].sort(([a], [b]) => a.localeCompare(b)));
+  const params = new URLSearchParams(
+    [...rawParams.entries()].sort(([a], [b]) => a.localeCompare(b)),
+  );
   const cacheKey = `${path}?${params.toString()}`;
   const cached = cacheGet(cacheKey);
   if (cached) return { status: cached.status, text: cached.text, cache: "HIT" };
@@ -914,14 +1294,24 @@ async function runRoute(path: string, rawParams: URLSearchParams): Promise<{ sta
     if (err instanceof ApiError) {
       return {
         status: err.status,
-        text: JSON.stringify({ meta: await meta(), error: { code: err.code, message: err.message, ...err.extra }, documentation: `${SITE}/llms.txt` }),
+        text: JSON.stringify({
+          meta: await meta(),
+          error: { code: err.code, message: err.message, ...err.extra },
+          documentation: `${SITE}/llms.txt`,
+        }),
         cache: "MISS",
       };
     }
     console.error("public-api error", path, describeError(err));
     return {
       status: 500,
-      text: JSON.stringify({ meta: await meta(), error: { code: "internal_error", message: "Something went wrong. Try again shortly." } }),
+      text: JSON.stringify({
+        meta: await meta(),
+        error: {
+          code: "internal_error",
+          message: "Something went wrong. Try again shortly.",
+        },
+      }),
       cache: "MISS",
     };
   }
@@ -955,14 +1345,43 @@ const TOOLS: ToolDef[] = [
     inputSchema: {
       type: "object",
       properties: {
-        search: { type: "string", description: "Words in the test name, for example 'thyroid', 'vitamin d', 'well woman'." },
+        search: {
+          type: "string",
+          description:
+            "Words in the test name, for example 'thyroid', 'vitamin d', 'well woman'.",
+        },
         category: { type: "string", description: CATEGORY_HINT },
-        provider: { type: "string", description: "Provider id or name, for example 'medichecks', 'randox', 'Goodbody Clinic'. Call list_providers for the list." },
-        max_cost: { type: "number", description: "Highest total expected cost in GBP." },
-        collection: { type: "string", enum: ["home_kit", "clinic_visit"], description: "Only tests you can take with a home kit, or only tests with a clinic visit." },
-        include_addons: { type: "boolean", description: "Include add-on tests that must be bought with a base test. Default false." },
-        sort: { type: "string", enum: ["price", "price_desc", "name", "turnaround"], description: "Default price (lowest total expected cost first)." },
-        limit: { type: "integer", minimum: 1, maximum: 100, description: "Default 25." },
+        provider: {
+          type: "string",
+          description:
+            "Provider id or name, for example 'medichecks', 'randox', 'Goodbody Clinic'. Call list_providers for the list.",
+        },
+        max_cost: {
+          type: "number",
+          description: "Highest total expected cost in GBP.",
+        },
+        collection: {
+          type: "string",
+          enum: ["home_kit", "clinic_visit"],
+          description:
+            "Only tests you can take with a home kit, or only tests with a clinic visit.",
+        },
+        include_addons: {
+          type: "boolean",
+          description:
+            "Include add-on tests that must be bought with a base test. Default false.",
+        },
+        sort: {
+          type: "string",
+          enum: ["price", "price_desc", "name", "turnaround"],
+          description: "Default price (lowest total expected cost first).",
+        },
+        limit: {
+          type: "integer",
+          minimum: 1,
+          maximum: 100,
+          description: "Default 25.",
+        },
         offset: { type: "integer", minimum: 0, description: "For paging." },
       },
     },
@@ -970,11 +1389,17 @@ const TOOLS: ToolDef[] = [
   {
     name: "get_test",
     title: "Get one test",
-    description: "Full record for one test by id (from search_tests): cost breakdown, every listed biomarker, the biomarkers we have matched to our biomarker library, sample method, turnaround and provider link.",
+    description:
+      "Full record for one test by id (from search_tests): cost breakdown, every listed biomarker, the biomarkers we have matched to our biomarker library, sample method, turnaround and provider link.",
     path: "/tests",
     inputSchema: {
       type: "object",
-      properties: { id: { type: "string", description: "Test id (UUID) from search_tests." } },
+      properties: {
+        id: {
+          type: "string",
+          description: "Test id (UUID) from search_tests.",
+        },
+      },
       required: ["id"],
     },
   },
@@ -986,13 +1411,19 @@ const TOOLS: ToolDef[] = [
     path: "/providers",
     inputSchema: {
       type: "object",
-      properties: { id: { type: "string", description: "Optional provider id, for example 'medichecks'." } },
+      properties: {
+        id: {
+          type: "string",
+          description: "Optional provider id, for example 'medichecks'.",
+        },
+      },
     },
   },
   {
     name: "list_categories",
     title: "List categories",
-    description: "Test categories with the number of live tests and providers in each.",
+    description:
+      "Test categories with the number of live tests and providers in each.",
     path: "/categories",
     inputSchema: { type: "object", properties: {} },
   },
@@ -1005,9 +1436,23 @@ const TOOLS: ToolDef[] = [
     inputSchema: {
       type: "object",
       properties: {
-        search: { type: "string", description: "Part of a biomarker name, abbreviation or synonym, for example 'b12', 'cholesterol', 'tsh'." },
-        min_providers: { type: "integer", minimum: 1, description: "Only biomarkers offered by at least this many providers. Default 1." },
-        limit: { type: "integer", minimum: 1, maximum: 200, description: "Default 50." },
+        search: {
+          type: "string",
+          description:
+            "Part of a biomarker name, abbreviation or synonym, for example 'b12', 'cholesterol', 'tsh'.",
+        },
+        min_providers: {
+          type: "integer",
+          minimum: 1,
+          description:
+            "Only biomarkers offered by at least this many providers. Default 1.",
+        },
+        limit: {
+          type: "integer",
+          minimum: 1,
+          maximum: 200,
+          description: "Default 50.",
+        },
         offset: { type: "integer", minimum: 0 },
       },
     },
@@ -1021,8 +1466,15 @@ const TOOLS: ToolDef[] = [
     inputSchema: {
       type: "object",
       properties: {
-        q: { type: "string", description: "Test name, for example 'vitamin d', 'thyroid', 'full blood count'." },
-        include_addons: { type: "boolean", description: "Include add-on tests. Default false." },
+        q: {
+          type: "string",
+          description:
+            "Test name, for example 'vitamin d', 'thyroid', 'full blood count'.",
+        },
+        include_addons: {
+          type: "boolean",
+          description: "Include add-on tests. Default false.",
+        },
       },
       required: ["q"],
     },
@@ -1036,8 +1488,15 @@ const TOOLS: ToolDef[] = [
     inputSchema: {
       type: "object",
       properties: {
-        biomarker: { type: "string", description: "Biomarker name, abbreviation, synonym or id, for example 'ferritin', 'HbA1c', 'PSA', 'vitamin d'." },
-        include_addons: { type: "boolean", description: "Include add-on tests. Default true; they are labelled." },
+        biomarker: {
+          type: "string",
+          description:
+            "Biomarker name, abbreviation, synonym or id, for example 'ferritin', 'HbA1c', 'PSA', 'vitamin d'.",
+        },
+        include_addons: {
+          type: "boolean",
+          description: "Include add-on tests. Default true; they are labelled.",
+        },
       },
       required: ["biomarker"],
     },
@@ -1056,7 +1515,8 @@ const TOOLS: ToolDef[] = [
           items: { type: "string" },
           minItems: 2,
           maxItems: 10,
-          description: "Two to ten biomarker names, for example ['ferritin', 'vitamin d', 'hba1c']. A comma-separated string also works.",
+          description:
+            "Two to ten biomarker names, for example ['ferritin', 'vitamin d', 'hba1c']. A comma-separated string also works.",
         },
       },
       required: ["biomarkers"],
@@ -1098,14 +1558,19 @@ function webMcpManifest() {
       inputSchema: t.inputSchema,
       url: `${FN_BASE}${t.path}.json`,
       method: "GET",
-      annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+      annotations: {
+        readOnlyHint: true,
+        idempotentHint: true,
+        openWorldHint: false,
+      },
     })),
   };
 }
 
 function mcpServerCard() {
   return {
-    $schema: "https://static.modelcontextprotocol.io/schemas/mcp-server-card/v1.json",
+    $schema:
+      "https://static.modelcontextprotocol.io/schemas/mcp-server-card/v1.json",
     protocolVersion: MCP_PROTOCOL_VERSIONS[0],
     serverInfo: {
       name: "myhealth-checkup-public",
@@ -1127,7 +1592,12 @@ function mcpServerCard() {
 // MCP over streamable HTTP (stateless, JSON responses, tools only)
 // ---------------------------------------------------------------------------
 
-const MCP_PROTOCOL_VERSIONS = ["2025-11-25", "2025-06-18", "2025-03-26", "2024-11-05"];
+const MCP_PROTOCOL_VERSIONS = [
+  "2025-11-25",
+  "2025-06-18",
+  "2025-03-26",
+  "2024-11-05",
+];
 
 interface JsonRpcRequest {
   jsonrpc?: string;
@@ -1145,7 +1615,8 @@ function rpcError(id: JsonRpcRequest["id"], code: number, message: string) {
 }
 
 async function handleRpc(raw: unknown): Promise<unknown | null> {
-  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return rpcError(null, -32600, "Invalid request");
+  if (!raw || typeof raw !== "object" || Array.isArray(raw))
+    return rpcError(null, -32600, "Invalid request");
   const msg = raw as JsonRpcRequest;
   const isNotification = msg.id === undefined || msg.id === null;
   if (msg.jsonrpc !== "2.0" || typeof msg.method !== "string") {
@@ -1155,12 +1626,20 @@ async function handleRpc(raw: unknown): Promise<unknown | null> {
 
   switch (msg.method) {
     case "initialize": {
-      const requested = String((msg.params as Row | undefined)?.protocolVersion ?? "");
-      const version = MCP_PROTOCOL_VERSIONS.includes(requested) ? requested : MCP_PROTOCOL_VERSIONS[0];
+      const requested = String(
+        (msg.params as Row | undefined)?.protocolVersion ?? "",
+      );
+      const version = MCP_PROTOCOL_VERSIONS.includes(requested)
+        ? requested
+        : MCP_PROTOCOL_VERSIONS[0];
       return rpcResult(msg.id, {
         protocolVersion: version,
         capabilities: { tools: { listChanged: false } },
-        serverInfo: { name: "myhealth-checkup-public", title: "myhealth checkup", version: API_VERSION },
+        serverInfo: {
+          name: "myhealth-checkup-public",
+          title: "myhealth checkup",
+          version: API_VERSION,
+        },
         instructions: SERVER_INSTRUCTIONS,
       });
     }
@@ -1173,7 +1652,11 @@ async function handleRpc(raw: unknown): Promise<unknown | null> {
           title: t.title,
           description: t.description,
           inputSchema: t.inputSchema,
-          annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+          annotations: {
+            readOnlyHint: true,
+            idempotentHint: true,
+            openWorldHint: false,
+          },
         })),
       });
     case "tools/call": {
@@ -1181,14 +1664,25 @@ async function handleRpc(raw: unknown): Promise<unknown | null> {
       const args = ((msg.params as Row | undefined)?.arguments ?? {}) as Row;
       const tool = TOOLS.find((t) => t.name === name);
       if (!tool) return rpcError(msg.id, -32602, `Unknown tool: ${name}`);
-      const required = ((tool.inputSchema.required as string[] | undefined) ?? []);
+      const required =
+        (tool.inputSchema.required as string[] | undefined) ?? [];
       const missing = required.filter((k) => {
         const v = (args ?? {})[k];
-        return v === undefined || v === null || (typeof v === "string" && !v.trim()) || (Array.isArray(v) && !v.length);
+        return (
+          v === undefined ||
+          v === null ||
+          (typeof v === "string" && !v.trim()) ||
+          (Array.isArray(v) && !v.length)
+        );
       });
       if (missing.length) {
         return rpcResult(msg.id, {
-          content: [{ type: "text", text: `Missing required argument: ${missing.join(", ")}` }],
+          content: [
+            {
+              type: "text",
+              text: `Missing required argument: ${missing.join(", ")}`,
+            },
+          ],
           isError: true,
         });
       }
@@ -1201,7 +1695,11 @@ async function handleRpc(raw: unknown): Promise<unknown | null> {
       }
       return rpcResult(msg.id, {
         content: [{ type: "text", text: out.text }],
-        ...(structured && typeof structured === "object" && !Array.isArray(structured) ? { structuredContent: structured } : {}),
+        ...(structured &&
+        typeof structured === "object" &&
+        !Array.isArray(structured)
+          ? { structuredContent: structured }
+          : {}),
         isError: out.status !== 200,
       });
     }
@@ -1213,49 +1711,91 @@ async function handleRpc(raw: unknown): Promise<unknown | null> {
 const MCP_HEADERS: Record<string, string> = {
   ...BASE_HEADERS,
   "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-  "Access-Control-Allow-Headers": "content-type, accept, authorization, apikey, x-client-info, mcp-session-id, mcp-protocol-version, last-event-id",
+  "Access-Control-Allow-Headers":
+    "content-type, accept, authorization, apikey, x-client-info, mcp-session-id, mcp-protocol-version, last-event-id",
   "Access-Control-Expose-Headers": "mcp-session-id",
   "Cache-Control": "no-store",
 };
 
 async function handleMcp(req: Request): Promise<Response> {
-  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: MCP_HEADERS });
-  if (req.method === "DELETE") return new Response(null, { status: 405, headers: { ...MCP_HEADERS, Allow: "POST" } });
+  if (req.method === "OPTIONS")
+    return new Response(null, { status: 204, headers: MCP_HEADERS });
+  if (req.method === "DELETE")
+    return new Response(null, {
+      status: 405,
+      headers: { ...MCP_HEADERS, Allow: "POST" },
+    });
   if (req.method !== "POST") {
     // Stateless server: no server-initiated stream to offer on GET.
-    return new Response(JSON.stringify(rpcError(null, -32000, "Use POST for MCP requests.")), {
-      status: 405,
-      headers: { ...MCP_HEADERS, Allow: "POST, OPTIONS" },
-    });
+    return new Response(
+      JSON.stringify(rpcError(null, -32000, "Use POST for MCP requests.")),
+      {
+        status: 405,
+        headers: { ...MCP_HEADERS, Allow: "POST, OPTIONS" },
+      },
+    );
   }
 
   const raw = await req.text();
   if (raw.length > 64_000) {
-    return new Response(JSON.stringify(rpcError(null, -32600, "Request too large")), { status: 413, headers: MCP_HEADERS });
+    return new Response(
+      JSON.stringify(rpcError(null, -32600, "Request too large")),
+      { status: 413, headers: MCP_HEADERS },
+    );
   }
   let body: unknown;
   try {
     body = JSON.parse(raw);
   } catch {
-    return new Response(JSON.stringify(rpcError(null, -32700, "Parse error")), { status: 400, headers: MCP_HEADERS });
+    return new Response(JSON.stringify(rpcError(null, -32700, "Parse error")), {
+      status: 400,
+      headers: MCP_HEADERS,
+    });
   }
 
   if (Array.isArray(body) && !body.length) {
-    return new Response(JSON.stringify(rpcError(null, -32600, "Invalid request")), { status: 400, headers: MCP_HEADERS });
+    return new Response(
+      JSON.stringify(rpcError(null, -32600, "Invalid request")),
+      { status: 400, headers: MCP_HEADERS },
+    );
   }
-  const messages = (Array.isArray(body) ? body : [body]).slice(0, 20) as unknown[];
-  const replies = (await Promise.all(messages.map(handleRpc))).filter((r) => r !== null);
-  if (!replies.length) return new Response(null, { status: 202, headers: MCP_HEADERS });
+  const messages = (Array.isArray(body) ? body : [body]).slice(
+    0,
+    20,
+  ) as unknown[];
+  const replies = (await Promise.all(messages.map(handleRpc))).filter(
+    (r) => r !== null,
+  );
+  if (!replies.length)
+    return new Response(null, { status: 202, headers: MCP_HEADERS });
   const payload = Array.isArray(body) ? replies : replies[0];
-  return new Response(JSON.stringify(payload), { status: 200, headers: MCP_HEADERS });
+  return new Response(JSON.stringify(payload), {
+    status: 200,
+    headers: MCP_HEADERS,
+  });
 }
 
 // ---------------------------------------------------------------------------
 // Entry point
 // ---------------------------------------------------------------------------
 
-function logLine(req: Request, path: string, status: number, cache: string, started: number) {
-  console.log(JSON.stringify({ path, method: req.method, status, cache, ms: Date.now() - started, ua: (req.headers.get("user-agent") ?? "").slice(0, 120) }));
+function logLine(
+  req: Request,
+  path: string,
+  status: number,
+  cache: string,
+  started: number,
+) {
+  console.log(
+    JSON.stringify({
+      path,
+      method: req.method,
+      status,
+      cache,
+      ms: Date.now() - started,
+      ua: (req.headers.get("user-agent") ?? "").slice(0, 120),
+    }),
+  );
 }
 
 Deno.serve(async (req) => {
@@ -1268,7 +1808,12 @@ Deno.serve(async (req) => {
     return respond(
       req,
       429,
-      JSON.stringify({ error: { code: "rate_limited", message: `Limit is ${RATE_LIMIT_PER_MINUTE} requests a minute. Try again shortly.` } }),
+      JSON.stringify({
+        error: {
+          code: "rate_limited",
+          message: `Limit is ${RATE_LIMIT_PER_MINUTE} requests a minute. Try again shortly.`,
+        },
+      }),
       { "Retry-After": "60" },
     );
   }
@@ -1279,15 +1824,28 @@ Deno.serve(async (req) => {
     return res;
   }
 
-  if (req.method === "OPTIONS") return new Response(null, { status: 204, headers: BASE_HEADERS });
+  if (req.method === "OPTIONS")
+    return new Response(null, { status: 204, headers: BASE_HEADERS });
   if (req.method !== "GET" && req.method !== "HEAD") {
-    return respond(req, 405, JSON.stringify({ error: { code: "method_not_allowed", message: "Read-only API. Use GET." } }), {
-      Allow: "GET, HEAD, OPTIONS",
-    });
+    return respond(
+      req,
+      405,
+      JSON.stringify({
+        error: {
+          code: "method_not_allowed",
+          message: "Read-only API. Use GET.",
+        },
+      }),
+      {
+        Allow: "GET, HEAD, OPTIONS",
+      },
+    );
   }
 
-  if (path === "/.well-known/web-mcp") return respond(req, 200, JSON.stringify(webMcpManifest(), null, 2));
-  if (path === "/.well-known/mcp") return respond(req, 200, JSON.stringify(mcpServerCard(), null, 2));
+  if (path === "/.well-known/web-mcp")
+    return respond(req, 200, JSON.stringify(webMcpManifest(), null, 2));
+  if (path === "/.well-known/mcp")
+    return respond(req, 200, JSON.stringify(mcpServerCard(), null, 2));
 
   const out = await runRoute(path, url.searchParams);
   logLine(req, path, out.status, out.cache, started);

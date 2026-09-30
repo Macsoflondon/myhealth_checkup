@@ -19,15 +19,19 @@ export interface ClinicTest {
   image_is_stock: boolean | null;
 }
 
-async function fetchClinicTests(providerId: string | null): Promise<ClinicTest[]> {
+async function fetchClinicTests(
+  providerId: string | null,
+): Promise<ClinicTest[]> {
   if (!providerId) return [];
 
   // Normalize provider ID for matching
-  const normalizedId = providerId.toLowerCase().replace(/[-_\s]/g, '');
-  
+  const normalizedId = providerId.toLowerCase().replace(/[-_\s]/g, "");
+
   const { data, error } = await supabase
     .from("provider_tests")
-    .select("id, provider_id, test_name, description, price, category, url, image_url, image_is_stock")
+    .select(
+      "id, provider_id, test_name, description, price, category, url, image_url, image_is_stock",
+    )
     .eq("is_active", true)
     .or(`provider_id.ilike.%${normalizedId}%,provider_id.ilike.%${providerId}%`)
     .order("category", { ascending: true })

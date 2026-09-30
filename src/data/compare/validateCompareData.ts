@@ -8,15 +8,15 @@
  *   bunx tsx src/data/compare/validateCompareData.ts
  */
 
-import { compareData } from './index';
-import { realTestData } from './realProviderData';
-import { medichecksCompareData } from './medichecksData';
-import { londonLabCompareData } from './londonLabData';
-import { PROVIDER_NAMES } from '@/constants/providers';
-import type { CompareTestData } from '@/types';
+import { compareData } from "./index";
+import { realTestData } from "./realProviderData";
+import { medichecksCompareData } from "./medichecksData";
+import { londonLabCompareData } from "./londonLabData";
+import { PROVIDER_NAMES } from "@/constants/providers";
+import type { CompareTestData } from "@/types";
 
 export interface ValidationIssue {
-  severity: 'error' | 'warning';
+  severity: "error" | "warning";
   source: string;
   id?: string;
   provider?: string;
@@ -37,22 +37,22 @@ export interface ValidationReport {
 const KNOWN_PROVIDER_NAMES = new Set<string>([
   ...Object.values(PROVIDER_NAMES),
   // Legacy/display aliases that historically appear in static datasets.
-  'Randox',
-  'GoodBody Clinic',
-  'Goodbody Clinic',
+  "Randox",
+  "GoodBody Clinic",
+  "Goodbody Clinic",
 ]);
 
 const ID_PATTERN = /^[a-z0-9][a-z0-9-]*$/;
 
 function isNonEmptyString(v: unknown): v is string {
-  return typeof v === 'string' && v.trim().length > 0;
+  return typeof v === "string" && v.trim().length > 0;
 }
 
 function isHttpUrl(v: unknown): boolean {
-  if (typeof v !== 'string') return false;
+  if (typeof v !== "string") return false;
   try {
     const u = new URL(v);
-    return u.protocol === 'http:' || u.protocol === 'https:';
+    return u.protocol === "http:" || u.protocol === "https:";
   } catch {
     return false;
   }
@@ -65,7 +65,7 @@ function pushMissing(
   field: string,
 ) {
   issues.push({
-    severity: 'error',
+    severity: "error",
     source,
     id: record.id,
     provider: record.provider,
@@ -81,26 +81,26 @@ function validateMappedTest(
   issues: ValidationIssue[],
 ) {
   if (!isNonEmptyString(test.id)) {
-    pushMissing(issues, source, test, 'id');
+    pushMissing(issues, source, test, "id");
   } else {
     if (!ID_PATTERN.test(test.id)) {
       issues.push({
-        severity: 'warning',
+        severity: "warning",
         source,
         id: test.id,
         provider: test.provider,
-        field: 'id',
+        field: "id",
         message: `ID "${test.id}" is not kebab-case lowercase`,
       });
     }
     const prev = seenIds.get(test.id);
     if (prev) {
       issues.push({
-        severity: 'error',
+        severity: "error",
         source,
         id: test.id,
         provider: test.provider,
-        field: 'id',
+        field: "id",
         message: `Duplicate id (also in ${prev})`,
       });
     } else {
@@ -108,30 +108,36 @@ function validateMappedTest(
     }
   }
 
-  if (!isNonEmptyString(test.name)) pushMissing(issues, source, test, 'name');
-  if (!isNonEmptyString(test.category)) pushMissing(issues, source, test, 'category');
+  if (!isNonEmptyString(test.name)) pushMissing(issues, source, test, "name");
+  if (!isNonEmptyString(test.category))
+    pushMissing(issues, source, test, "category");
   if (!isNonEmptyString(test.provider)) {
-    pushMissing(issues, source, test, 'provider');
+    pushMissing(issues, source, test, "provider");
   } else if (!KNOWN_PROVIDER_NAMES.has(test.provider)) {
     issues.push({
-      severity: 'error',
+      severity: "error",
       source,
       id: test.id,
       provider: test.provider,
-      field: 'provider',
+      field: "provider",
       message: `Unknown provider "${test.provider}" — not in PROVIDER_NAMES`,
     });
   }
 
-  if (typeof test.price !== 'number' || !Number.isFinite(test.price) || test.price <= 0) {
-    pushMissing(issues, source, test, 'price');
+  if (
+    typeof test.price !== "number" ||
+    !Number.isFinite(test.price) ||
+    test.price <= 0
+  ) {
+    pushMissing(issues, source, test, "price");
   }
 
-  const features = test.features as unknown as Record<string, unknown> | undefined;
-  if (!features || typeof features !== 'object') {
-    pushMissing(issues, source, test, 'features');
+  const features = test.features as unknown as
+    Record<string, unknown> | undefined;
+  if (!features || typeof features !== "object") {
+    pushMissing(issues, source, test, "features");
   } else {
-    for (const f of ['bioMarkers', 'turnaround', 'collection'] as const) {
+    for (const f of ["bioMarkers", "turnaround", "collection"] as const) {
       if (!isNonEmptyString(features[f])) {
         pushMissing(issues, source, test, `features.${f}`);
       }
@@ -139,14 +145,14 @@ function validateMappedTest(
   }
 
   const extra = test as unknown as { testUrl?: unknown };
-  const url = extra.testUrl ?? features?.['Real provider URL'];
+  const url = extra.testUrl ?? features?.["Real provider URL"];
   if (url !== undefined && !isHttpUrl(url)) {
     issues.push({
-      severity: 'warning',
+      severity: "warning",
       source,
       id: test.id,
       provider: test.provider,
-      field: 'testUrl',
+      field: "testUrl",
       message: `Malformed URL: ${String(url)}`,
     });
   }
@@ -161,35 +167,68 @@ export function validateCompareData(): ValidationReport {
   realTestData.forEach((row, i) => {
     const src = `realProviderData[${i}]`;
     if (!isNonEmptyString(row.Provider)) {
-      issues.push({ severity: 'error', source: src, field: 'Provider', message: 'Missing Provider' });
+      issues.push({
+        severity: "error",
+        source: src,
+        field: "Provider",
+        message: "Missing Provider",
+      });
     } else if (!KNOWN_PROVIDER_NAMES.has(row.Provider)) {
       issues.push({
-        severity: 'error',
+        severity: "error",
         source: src,
         provider: row.Provider,
-        field: 'Provider',
+        field: "Provider",
         message: `Unknown provider "${row.Provider}"`,
       });
     }
-    if (!isNonEmptyString(row['Test Name'])) {
-      issues.push({ severity: 'error', source: src, field: 'Test Name', message: 'Missing Test Name' });
+    if (!isNonEmptyString(row["Test Name"])) {
+      issues.push({
+        severity: "error",
+        source: src,
+        field: "Test Name",
+        message: "Missing Test Name",
+      });
     }
-    if (typeof row['Price (£)'] !== 'number' || row['Price (£)'] <= 0) {
-      issues.push({ severity: 'error', source: src, field: 'Price (£)', message: 'Invalid price' });
+    if (typeof row["Price (£)"] !== "number" || row["Price (£)"] <= 0) {
+      issues.push({
+        severity: "error",
+        source: src,
+        field: "Price (£)",
+        message: "Invalid price",
+      });
     }
-    if (!isHttpUrl(row['Test URL'])) {
-      issues.push({ severity: 'error', source: src, field: 'Test URL', message: `Malformed URL: ${row['Test URL']}` });
+    if (!isHttpUrl(row["Test URL"])) {
+      issues.push({
+        severity: "error",
+        source: src,
+        field: "Test URL",
+        message: `Malformed URL: ${row["Test URL"]}`,
+      });
     }
-    if (typeof row['Biomarker Count'] !== 'number' || row['Biomarker Count'] < 0) {
-      issues.push({ severity: 'warning', source: src, field: 'Biomarker Count', message: 'Invalid biomarker count' });
+    if (
+      typeof row["Biomarker Count"] !== "number" ||
+      row["Biomarker Count"] < 0
+    ) {
+      issues.push({
+        severity: "warning",
+        source: src,
+        field: "Biomarker Count",
+        message: "Invalid biomarker count",
+      });
     }
   });
 
   // 2) Validate each compare-ready dataset
   const datasets: Array<[string, CompareTestData[]]> = [
-    ['mappedTestData', (compareData as CompareTestData[]).filter(t => t.id?.startsWith('real-test-'))],
-    ['medichecksCompareData', medichecksCompareData],
-    ['londonLabCompareData', londonLabCompareData],
+    [
+      "mappedTestData",
+      (compareData as CompareTestData[]).filter((t) =>
+        t.id?.startsWith("real-test-"),
+      ),
+    ],
+    ["medichecksCompareData", medichecksCompareData],
+    ["londonLabCompareData", londonLabCompareData],
   ];
 
   for (const [name, ds] of datasets) {
@@ -204,12 +243,17 @@ export function validateCompareData(): ValidationReport {
   // 3) Cross-check the combined compareData export
   compareData.forEach((t, i) => {
     if (!isNonEmptyString(t.id)) {
-      issues.push({ severity: 'error', source: `compareData[${i}]`, field: 'id', message: 'Missing id in combined export' });
+      issues.push({
+        severity: "error",
+        source: `compareData[${i}]`,
+        field: "id",
+        message: "Missing id in combined export",
+      });
     }
   });
 
-  const errorCount = issues.filter(i => i.severity === 'error').length;
-  const warningCount = issues.filter(i => i.severity === 'warning').length;
+  const errorCount = issues.filter((i) => i.severity === "error").length;
+  const warningCount = issues.filter((i) => i.severity === "warning").length;
 
   return {
     ok: errorCount === 0,
@@ -232,25 +276,28 @@ export function formatReport(report: ValidationReport): string {
     lines.push(`    - ${p}: ${n}`);
   }
   if (report.issues.length) {
-    lines.push('');
-    lines.push('Issues:');
+    lines.push("");
+    lines.push("Issues:");
     for (const i of report.issues) {
-      const idPart = i.id ? ` [${i.id}]` : '';
-      const fieldPart = i.field ? ` {${i.field}}` : '';
-      lines.push(`  ${i.severity.toUpperCase()} ${i.source}${idPart}${fieldPart}: ${i.message}`);
+      const idPart = i.id ? ` [${i.id}]` : "";
+      const fieldPart = i.field ? ` {${i.field}}` : "";
+      lines.push(
+        `  ${i.severity.toUpperCase()} ${i.source}${idPart}${fieldPart}: ${i.message}`,
+      );
     }
   }
-  return lines.join('\n');
+  return lines.join("\n");
 }
 
 // CLI entry — works under `bunx tsx` or `node --import tsx`.
-const isCli = typeof process !== 'undefined'
-  && Array.isArray(process.argv)
-  && process.argv[1]?.includes('validateCompareData');
+const isCli =
+  typeof process !== "undefined" &&
+  Array.isArray(process.argv) &&
+  process.argv[1]?.includes("validateCompareData");
 
 if (isCli) {
   const report = validateCompareData();
-   
+
   console.log(formatReport(report));
   if (!report.ok) process.exit(1);
 }

@@ -59,7 +59,10 @@ Deno.serve(async (req) => {
         Deno.env.get("SUPABASE_ANON_KEY")!,
         { global: { headers: { Authorization: authHeader } } },
       );
-      const { data: { user }, error: userErr } = await userClient.auth.getUser();
+      const {
+        data: { user },
+        error: userErr,
+      } = await userClient.auth.getUser();
       if (userErr || !user) return json({ error: "Unauthorized" }, 401);
       const { data: isAdmin } = await userClient.rpc("has_role", {
         _user_id: user.id,
@@ -127,8 +130,7 @@ Deno.serve(async (req) => {
             key: `rls_no_policy:${row.schemaname}.${row.tablename}`,
             level: "warn",
             category: "RLS",
-            title:
-              `Table ${row.schemaname}.${row.tablename} has RLS enabled but no policies`,
+            title: `Table ${row.schemaname}.${row.tablename} has RLS enabled but no policies`,
             detail:
               "RLS denies all access by default — confirm this is intentional or add policies.",
           });
@@ -157,8 +159,11 @@ Deno.serve(async (req) => {
     const currByKey = new Map(findings.map((f) => [f.key, f]));
 
     const added: Finding[] = findings.filter((f) => !prevByKey.has(f.key));
-    const removed: Finding[] = prevFindings.filter((f) => !currByKey.has(f.key));
-    const modified: Array<{ key: string; before: Finding; after: Finding }> = [];
+    const removed: Finding[] = prevFindings.filter(
+      (f) => !currByKey.has(f.key),
+    );
+    const modified: Array<{ key: string; before: Finding; after: Finding }> =
+      [];
 
     for (const [key, curr] of currByKey) {
       const prev = prevByKey.get(key);
@@ -172,8 +177,8 @@ Deno.serve(async (req) => {
       }
     }
 
-    const hasDiff = added.length > 0 || removed.length > 0 ||
-      modified.length > 0;
+    const hasDiff =
+      added.length > 0 || removed.length > 0 || modified.length > 0;
 
     // ---- 6. Persist snapshot --------------------------------------------
     const { data: inserted, error: insertErr } = await admin

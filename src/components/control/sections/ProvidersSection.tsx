@@ -25,7 +25,11 @@ export default function ProvidersSection() {
       // write target by a 2026-09-21 audit — the previous source, scraping_jobs, had
       // gone 9+ days stale and is no longer written to by anything).
       const [{ data: tests }, { data: runs }] = await Promise.all([
-        supabase.from("provider_tests").select("provider_id").eq("is_active", true).limit(10000),
+        supabase
+          .from("provider_tests")
+          .select("provider_id")
+          .eq("is_active", true)
+          .limit(10000),
         supabase
           .from("scrape_runs")
           .select("provider_id, status, started_at")
@@ -39,25 +43,37 @@ export default function ProvidersSection() {
         counts.set(k, (counts.get(k) ?? 0) + 1);
       }
 
-      const jobByProvider = new Map<string, { status: string | null; last_scraped: string | null }>();
-      for (const r of (runs ?? []) as { provider_id: string; status: string | null; started_at: string | null }[]) {
+      const jobByProvider = new Map<
+        string,
+        { status: string | null; last_scraped: string | null }
+      >();
+      for (const r of (runs ?? []) as {
+        provider_id: string;
+        status: string | null;
+        started_at: string | null;
+      }[]) {
         const canonicalId = normalizeProviderId(r.provider_id);
         // runs are ordered newest-first, so the first one seen per provider is the latest.
         if (!jobByProvider.has(canonicalId)) {
-          jobByProvider.set(canonicalId, { status: r.status, last_scraped: r.started_at });
+          jobByProvider.set(canonicalId, {
+            status: r.status,
+            last_scraped: r.started_at,
+          });
         }
       }
 
-      const merged: ProviderRow[] = Array.from(counts.entries()).map(([providerId, tests]) => {
-        const job = jobByProvider.get(providerId);
-        return {
-          providerId,
-          provider_name: getProviderMeta(providerId).displayName,
-          tests,
-          lastScrapeStatus: job?.status ?? null,
-          lastScrapeAt: job?.last_scraped ?? null,
-        };
-      });
+      const merged: ProviderRow[] = Array.from(counts.entries()).map(
+        ([providerId, tests]) => {
+          const job = jobByProvider.get(providerId);
+          return {
+            providerId,
+            provider_name: getProviderMeta(providerId).displayName,
+            tests,
+            lastScrapeStatus: job?.status ?? null,
+            lastScrapeAt: job?.last_scraped ?? null,
+          };
+        },
+      );
       merged.sort((a, b) => b.tests - a.tests);
       if (cancelled) return;
       setRows(merged);
@@ -68,13 +84,23 @@ export default function ProvidersSection() {
     };
   }, []);
 
-
   return (
-    <SectionShell title="Provider Monitoring" description="Per-provider catalog size and most recent scrape outcome." status="live">
+    <SectionShell
+      title="Provider Monitoring"
+      description="Per-provider catalog size and most recent scrape outcome."
+      status="live"
+    >
       <div className="grid grid-cols-3 gap-3 mb-6">
         <StatCard label="Providers tracked" value={rows.length} />
-        <StatCard label="Total tests indexed" value={rows.reduce((s, r) => s + r.tests, 0)} />
-        <StatCard label="Failing scrapers" value={rows.filter((r) => r.lastScrapeStatus === "error").length} tone="warn" />
+        <StatCard
+          label="Total tests indexed"
+          value={rows.reduce((s, r) => s + r.tests, 0)}
+        />
+        <StatCard
+          label="Failing scrapers"
+          value={rows.filter((r) => r.lastScrapeStatus === "error").length}
+          tone="warn"
+        />
       </div>
 
       {loading ? (
@@ -96,15 +122,29 @@ export default function ProvidersSection() {
               {rows.map((r) => (
                 <tr key={r.providerId} className="border-t">
                   <td className="px-3 py-2 font-medium">{r.provider_name}</td>
-                  <td className="px-3 py-2 text-right tabular-nums">{r.tests}</td>
+                  <td className="px-3 py-2 text-right tabular-nums">
+                    {r.tests}
+                  </td>
                   <td className="px-3 py-2">
                     <span className="inline-flex items-center gap-2">
-                      <HealthDot state={r.lastScrapeStatus === "error" ? "bad" : r.lastScrapeStatus === "partial" ? "warn" : r.lastScrapeStatus ? "good" : "idle"} />
+                      <HealthDot
+                        state={
+                          r.lastScrapeStatus === "error"
+                            ? "bad"
+                            : r.lastScrapeStatus === "partial"
+                              ? "warn"
+                              : r.lastScrapeStatus
+                                ? "good"
+                                : "idle"
+                        }
+                      />
                       {r.lastScrapeStatus ?? "—"}
                     </span>
                   </td>
                   <td className="px-3 py-2 text-xs text-muted-foreground tabular-nums">
-                    {r.lastScrapeAt ? new Date(r.lastScrapeAt).toLocaleString() : "—"}
+                    {r.lastScrapeAt
+                      ? new Date(r.lastScrapeAt).toLocaleString()
+                      : "—"}
                   </td>
                 </tr>
               ))}

@@ -30,641 +30,650 @@ const PRIVATE_PREFIXES = [
 interface SitemapEntry {
   path: string;
   lastmod?: string;
-  changefreq?: "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
+  changefreq?:
+    "always" | "hourly" | "daily" | "weekly" | "monthly" | "yearly" | "never";
   priority?: string;
 }
 
 const rawEntries: SitemapEntry[] = [
   {
-    "path": "/blog/testosterone-levels-by-age",
-    "lastmod": "2026-06-19",
-    "changefreq": "monthly",
-    "priority": "0.8"
+    path: "/blog/testosterone-levels-by-age",
+    lastmod: "2026-06-19",
+    changefreq: "monthly",
+    priority: "0.8",
   },
   {
-    "path": "/blog/private-blood-test-cost-guide",
-    "lastmod": "2026-07-19",
-    "changefreq": "monthly",
-    "priority": "0.8"
+    path: "/blog/private-blood-test-cost-guide",
+    lastmod: "2026-07-19",
+    changefreq: "monthly",
+    priority: "0.8",
   },
   {
-    "path": "/blog/ferritin-vs-iron-comparison-guide",
-    "lastmod": "2026-07-19",
-    "changefreq": "monthly",
-    "priority": "0.8"
+    path: "/blog/ferritin-vs-iron-comparison-guide",
+    lastmod: "2026-07-19",
+    changefreq: "monthly",
+    priority: "0.8",
   },
   {
-    "path": "/blog/total-vs-free-testosterone",
-    "lastmod": "2026-07-25",
-    "changefreq": "monthly",
-    "priority": "0.8"
+    path: "/blog/total-vs-free-testosterone",
+    lastmod: "2026-07-25",
+    changefreq: "monthly",
+    priority: "0.8",
   },
   {
-    "path": "/",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "1.0"
+    path: "/",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "1.0",
   },
   {
-    "path": "/compare",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.9"
+    path: "/compare",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.9",
   },
   {
-    "path": "/test-categories",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.9"
+    path: "/test-categories",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.9",
   },
   {
-    "path": "/search",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
+    path: "/search",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/how-it-works",
-    "lastmod": "2026-03-15",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/how-it-works",
+    lastmod: "2026-03-15",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/about",
-    "lastmod": "2026-03-15",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/about",
+    lastmod: "2026-03-15",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/compare/symptoms",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
+    path: "/compare/symptoms",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/compare/goals",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
+    path: "/compare/goals",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/tests/blood-tests",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
+    path: "/tests/blood-tests",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/tests/hormones",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
+    path: "/tests/hormones",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/tests/thyroid",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
+    path: "/tests/thyroid",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/tests/vitamins",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
+    path: "/tests/vitamins",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/tests/diabetes",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
+    path: "/tests/diabetes",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/tests/heart",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
+    path: "/tests/heart",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/tests/liver",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
+    path: "/tests/liver",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/tests/kidney-health",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
+    path: "/tests/kidney-health",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/tests/cancer",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
-  },
-
-  {
-    "path": "/tests/fertility",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
-  },
-  {
-    "path": "/tests/general-health",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
-  },
-  {
-    "path": "/tests/allergy-testing",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
-  },
-  {
-    "path": "/tests/mens-health",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
-  },
-  {
-    "path": "/tests/womens-health",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
-  },
-  {
-    "path": "/tests/sports-fitness",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
-  },
-  {
-    "path": "/tests/weight-loss-tests",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
-  },
-  {
-    "path": "/tests/longevity-tests",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
-  },
-  {
-    "path": "/tests/gut",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.8"
+    path: "/tests/cancer",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
 
   {
-    "path": "/compare/goals/longevity",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/tests/fertility",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/compare/goals/performance",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/tests/general-health",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/compare/goals/weight-loss",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/tests/allergy-testing",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/compare/goals/preventative-health",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/tests/mens-health",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/compare/symptoms/fatigue",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/tests/womens-health",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/compare/symptoms/low-mood",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/tests/sports-fitness",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/compare/symptoms/hair-loss",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/tests/weight-loss-tests",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/compare/symptoms/weight-gain",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/tests/longevity-tests",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/compare/symptoms/low-libido",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/tests/gut",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.8",
   },
+
   {
-    "path": "/thyroid",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/compare/goals/longevity",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/hormones",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/compare/goals/performance",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/fertility-tests",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/compare/goals/weight-loss",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/sports-performance",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/compare/goals/preventative-health",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/wellness",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/compare/symptoms/fatigue",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/popular-tests",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/compare/symptoms/low-mood",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/at-home-tests",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/compare/symptoms/hair-loss",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/test/general-health",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/compare/symptoms/weight-gain",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/test/male-hormones",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/compare/symptoms/low-libido",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/test/vitamin-d",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/thyroid",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/test/iron-profile",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/hormones",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/test/lipid-profile",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/fertility-tests",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/test/well-woman",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/sports-performance",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/test/female-hormones",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/wellness",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/trusted-providers",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/popular-tests",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/providers/compare",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/at-home-tests",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/goodbody-clinic",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/test/general-health",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/faqs",
-    "lastmod": "2026-03-15",
-    "changefreq": "monthly",
-    "priority": "0.5"
+    path: "/test/male-hormones",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/blog",
-    "lastmod": "2026-04-09",
-    "changefreq": "weekly",
-    "priority": "0.6"
+    path: "/test/vitamin-d",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/contact",
-    "lastmod": "2026-03-15",
-    "changefreq": "monthly",
-    "priority": "0.5"
+    path: "/test/iron-profile",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/partners",
-    "lastmod": "2026-03-15",
-    "changefreq": "monthly",
-    "priority": "0.5"
+    path: "/test/lipid-profile",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/blood-test-analysis",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.6"
+    path: "/test/well-woman",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/privacy-policy",
-    "lastmod": "2026-02-01",
-    "changefreq": "yearly",
-    "priority": "0.3"
+    path: "/test/female-hormones",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/terms",
-    "lastmod": "2026-02-01",
-    "changefreq": "yearly",
-    "priority": "0.3"
+    path: "/trusted-providers",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/cookies",
-    "lastmod": "2026-02-01",
-    "changefreq": "yearly",
-    "priority": "0.3"
+    path: "/providers/compare",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/accessibility",
-    "lastmod": "2026-02-01",
-    "changefreq": "yearly",
-    "priority": "0.3"
+    path: "/goodbody-clinic",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/how-we-rank",
-    "lastmod": "2026-03-15",
-    "changefreq": "monthly",
-    "priority": "0.5"
+    path: "/faqs",
+    lastmod: "2026-03-15",
+    changefreq: "monthly",
+    priority: "0.5",
   },
   {
-    "path": "/sitemap",
-    "lastmod": "2026-04-09",
-    "changefreq": "monthly",
-    "priority": "0.3"
+    path: "/blog",
+    lastmod: "2026-04-09",
+    changefreq: "weekly",
+    priority: "0.6",
   },
   {
-    "path": "/legal",
-    "lastmod": "2026-05-28",
-    "changefreq": "yearly",
-    "priority": "0.3"
+    path: "/contact",
+    lastmod: "2026-03-15",
+    changefreq: "monthly",
+    priority: "0.5",
   },
   {
-    "path": "/modern-slavery",
-    "lastmod": "2026-05-28",
-    "changefreq": "yearly",
-    "priority": "0.3"
+    path: "/partners",
+    lastmod: "2026-03-15",
+    changefreq: "monthly",
+    priority: "0.5",
   },
   {
-    "path": "/affiliate-disclosure",
-    "lastmod": "2026-05-28",
-    "changefreq": "yearly",
-    "priority": "0.3"
+    path: "/blood-test-analysis",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.6",
   },
   {
-    "path": "/fair-trading",
-    "lastmod": "2026-05-28",
-    "changefreq": "yearly",
-    "priority": "0.3"
+    path: "/privacy-policy",
+    lastmod: "2026-02-01",
+    changefreq: "yearly",
+    priority: "0.3",
   },
   {
-    "path": "/complaints",
-    "lastmod": "2026-05-28",
-    "changefreq": "yearly",
-    "priority": "0.3"
+    path: "/terms",
+    lastmod: "2026-02-01",
+    changefreq: "yearly",
+    priority: "0.3",
   },
   {
-    "path": "/about/medical-review",
-    "lastmod": "2026-05-28",
-    "changefreq": "monthly",
-    "priority": "0.5"
+    path: "/cookies",
+    lastmod: "2026-02-01",
+    changefreq: "yearly",
+    priority: "0.3",
   },
   {
-    "path": "/reviews",
-    "lastmod": "2026-05-28",
-    "changefreq": "weekly",
-    "priority": "0.6"
+    path: "/accessibility",
+    lastmod: "2026-02-01",
+    changefreq: "yearly",
+    priority: "0.3",
   },
   {
-    "path": "/find-test",
-    "lastmod": "2026-05-28",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/how-we-rank",
+    lastmod: "2026-03-15",
+    changefreq: "monthly",
+    priority: "0.5",
   },
   {
-    "path": "/biomarker-database",
-    "lastmod": "2026-04-20",
-    "changefreq": "weekly",
-    "priority": "0.8"
+    path: "/sitemap",
+    lastmod: "2026-04-09",
+    changefreq: "monthly",
+    priority: "0.3",
   },
   {
-    "path": "/cancer-screening-compare",
-    "lastmod": "2026-04-20",
-    "changefreq": "weekly",
-    "priority": "0.8"
+    path: "/legal",
+    lastmod: "2026-05-28",
+    changefreq: "yearly",
+    priority: "0.3",
   },
   {
-    "path": "/cancer-biomarkers-reference",
-    "lastmod": "2026-04-20",
-    "changefreq": "weekly",
-    "priority": "0.7"
+    path: "/modern-slavery",
+    lastmod: "2026-05-28",
+    changefreq: "yearly",
+    priority: "0.3",
   },
   {
-    "path": "/assisted-test-finder",
-    "lastmod": "2026-04-20",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/affiliate-disclosure",
+    lastmod: "2026-05-28",
+    changefreq: "yearly",
+    priority: "0.3",
   },
   {
-    "path": "/recommendations",
-    "lastmod": "2026-04-20",
-    "changefreq": "monthly",
-    "priority": "0.6"
+    path: "/fair-trading",
+    lastmod: "2026-05-28",
+    changefreq: "yearly",
+    priority: "0.3",
   },
   {
-    "path": "/mens-health",
-    "lastmod": "2026-04-20",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/complaints",
+    lastmod: "2026-05-28",
+    changefreq: "yearly",
+    priority: "0.3",
   },
   {
-    "path": "/womens-health",
-    "lastmod": "2026-04-20",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/about/medical-review",
+    lastmod: "2026-05-28",
+    changefreq: "monthly",
+    priority: "0.5",
   },
   {
-    "path": "/conditions",
-    "lastmod": "2026-04-20",
-    "changefreq": "monthly",
-    "priority": "0.6"
+    path: "/reviews",
+    lastmod: "2026-05-28",
+    changefreq: "weekly",
+    priority: "0.6",
   },
   {
-    "path": "/providers/medichecks",
-    "lastmod": "2026-04-20",
-    "changefreq": "weekly",
-    "priority": "0.7"
+    path: "/find-test",
+    lastmod: "2026-05-28",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/medichecks/mens-health",
-    "lastmod": "2026-04-20",
-    "changefreq": "monthly",
-    "priority": "0.6"
+    path: "/biomarker-database",
+    lastmod: "2026-04-20",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/providers/randox",
-    "lastmod": "2026-04-20",
-    "changefreq": "weekly",
-    "priority": "0.7"
+    path: "/cancer-screening-compare",
+    lastmod: "2026-04-20",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/providers/lola-health",
-    "lastmod": "2026-04-20",
-    "changefreq": "weekly",
-    "priority": "0.7"
+    path: "/cancer-biomarkers-reference",
+    lastmod: "2026-04-20",
+    changefreq: "weekly",
+    priority: "0.7",
   },
   {
-    "path": "/providers/london-medical-laboratory",
-    "lastmod": "2026-04-20",
-    "changefreq": "weekly",
-    "priority": "0.7"
+    path: "/assisted-test-finder",
+    lastmod: "2026-04-20",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/providers/goodbody-clinic",
-    "lastmod": "2026-04-20",
-    "changefreq": "weekly",
-    "priority": "0.7"
+    path: "/recommendations",
+    lastmod: "2026-04-20",
+    changefreq: "monthly",
+    priority: "0.6",
   },
   {
-    "path": "/guides",
-    "lastmod": "2026-05-31",
-    "changefreq": "weekly",
-    "priority": "0.8"
+    path: "/mens-health",
+    lastmod: "2026-04-20",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/guides/testosterone-test",
-    "lastmod": "2026-05-31",
-    "changefreq": "monthly",
-    "priority": "0.8"
+    path: "/womens-health",
+    lastmod: "2026-04-20",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/guides/low-testosterone-symptoms",
-    "lastmod": "2026-05-31",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/conditions",
+    lastmod: "2026-04-20",
+    changefreq: "monthly",
+    priority: "0.6",
   },
   {
-    "path": "/guides/cortisol-test",
-    "lastmod": "2026-05-31",
-    "changefreq": "monthly",
-    "priority": "0.8"
+    path: "/providers/medichecks",
+    lastmod: "2026-04-20",
+    changefreq: "weekly",
+    priority: "0.7",
   },
   {
-    "path": "/guides/ferritin-test",
-    "lastmod": "2026-05-31",
-    "changefreq": "monthly",
-    "priority": "0.8"
+    path: "/medichecks/mens-health",
+    lastmod: "2026-04-20",
+    changefreq: "monthly",
+    priority: "0.6",
   },
   {
-    "path": "/guides/vitamin-d-test",
-    "lastmod": "2026-05-31",
-    "changefreq": "monthly",
-    "priority": "0.8"
+    path: "/providers/randox",
+    lastmod: "2026-04-20",
+    changefreq: "weekly",
+    priority: "0.7",
   },
   {
-    "path": "/guides/thyroid-test",
-    "lastmod": "2026-05-31",
-    "changefreq": "monthly",
-    "priority": "0.8"
+    path: "/providers/lola-health",
+    lastmod: "2026-04-20",
+    changefreq: "weekly",
+    priority: "0.7",
   },
   {
-    "path": "/guides/liver-function-test",
-    "lastmod": "2026-05-31",
-    "changefreq": "monthly",
-    "priority": "0.8"
+    path: "/providers/london-medical-laboratory",
+    lastmod: "2026-04-20",
+    changefreq: "weekly",
+    priority: "0.7",
   },
   {
-    "path": "/guides/kidney-function-test",
-    "lastmod": "2026-05-31",
-    "changefreq": "monthly",
-    "priority": "0.8"
+    path: "/providers/goodbody-clinic",
+    lastmod: "2026-04-20",
+    changefreq: "weekly",
+    priority: "0.7",
   },
   {
-    "path": "/guides/crp-test",
-    "lastmod": "2026-05-31",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/guides",
+    lastmod: "2026-05-31",
+    changefreq: "weekly",
+    priority: "0.8",
   },
   {
-    "path": "/guides/autoimmune-blood-test",
-    "lastmod": "2026-05-31",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/guides/testosterone-test",
+    lastmod: "2026-05-31",
+    changefreq: "monthly",
+    priority: "0.8",
   },
   {
-    "path": "/guides/finger-prick-blood-test",
-    "lastmod": "2026-05-31",
-    "changefreq": "monthly",
-    "priority": "0.7"
+    path: "/guides/low-testosterone-symptoms",
+    lastmod: "2026-05-31",
+    changefreq: "monthly",
+    priority: "0.7",
   },
   {
-    "path": "/guides/female-hormone-test",
-    "lastmod": "2026-05-31",
-    "changefreq": "monthly",
-    "priority": "0.8"
+    path: "/guides/cortisol-test",
+    lastmod: "2026-05-31",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    path: "/guides/ferritin-test",
+    lastmod: "2026-05-31",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    path: "/guides/vitamin-d-test",
+    lastmod: "2026-05-31",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    path: "/guides/thyroid-test",
+    lastmod: "2026-05-31",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    path: "/guides/liver-function-test",
+    lastmod: "2026-05-31",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    path: "/guides/kidney-function-test",
+    lastmod: "2026-05-31",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    path: "/guides/crp-test",
+    lastmod: "2026-05-31",
+    changefreq: "monthly",
+    priority: "0.7",
+  },
+  {
+    path: "/guides/autoimmune-blood-test",
+    lastmod: "2026-05-31",
+    changefreq: "monthly",
+    priority: "0.7",
+  },
+  {
+    path: "/guides/finger-prick-blood-test",
+    lastmod: "2026-05-31",
+    changefreq: "monthly",
+    priority: "0.7",
+  },
+  {
+    path: "/guides/female-hormone-test",
+    lastmod: "2026-05-31",
+    changefreq: "monthly",
+    priority: "0.8",
   },
   // Provider landing pages
   { path: "/providers", changefreq: "weekly", priority: "0.8" },
   { path: "/clinilabs", changefreq: "weekly", priority: "0.7" },
   { path: "/providers/clinilabs", changefreq: "weekly", priority: "0.7" },
   { path: "/london-health-company", changefreq: "weekly", priority: "0.7" },
-  { path: "/providers/london-health-company", changefreq: "weekly", priority: "0.7" },
+  {
+    path: "/providers/london-health-company",
+    changefreq: "weekly",
+    priority: "0.7",
+  },
   { path: "/london-medical-laboratory", changefreq: "weekly", priority: "0.7" },
   { path: "/medical-diagnosis", changefreq: "weekly", priority: "0.7" },
-  { path: "/providers/medical-diagnosis", changefreq: "weekly", priority: "0.7" },
+  {
+    path: "/providers/medical-diagnosis",
+    changefreq: "weekly",
+    priority: "0.7",
+  },
   // Public content / tools
   { path: "/health-blog", changefreq: "weekly", priority: "0.7" },
   { path: "/most-popular-tests", changefreq: "weekly", priority: "0.7" },
   { path: "/find-test/compare", changefreq: "weekly", priority: "0.6" },
   { path: "/find-test/recommendations", changefreq: "weekly", priority: "0.6" },
   { path: "/trust", changefreq: "monthly", priority: "0.6" },
-  { path: "/security", changefreq: "monthly", priority: "0.6" }
+  { path: "/security", changefreq: "monthly", priority: "0.6" },
 ];
 
 // ---- Dynamic routes (providers + test detail pages) -----------------------
@@ -672,9 +681,12 @@ const rawEntries: SitemapEntry[] = [
 // detail page is discoverable. Capped well below publish limits.
 const MAX_DYNAMIC_ENTRIES = Number(process.env["SITEMAP_MAX_DYNAMIC"] ?? 5000);
 const SUPABASE_URL =
-  process.env["VITE_SUPABASE_URL"] ?? "https://clvuioagsgfadynuvodj.supabase.co";
+  process.env["VITE_SUPABASE_URL"] ??
+  "https://clvuioagsgfadynuvodj.supabase.co";
 const SUPABASE_KEY =
-  process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] ?? process.env["VITE_SUPABASE_KEY"] ?? "";
+  process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] ??
+  process.env["VITE_SUPABASE_KEY"] ??
+  "";
 
 interface TestRow {
   id: string;
@@ -699,11 +711,16 @@ async function fetchDynamicEntries(): Promise<SitemapEntry[]> {
 
   try {
     const res = await fetch(url, {
-      headers: { apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` },
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: `Bearer ${SUPABASE_KEY}`,
+      },
     });
     if (!res.ok) {
       dynamicUnavailable = true;
-      console.warn(`sitemap: dynamic fetch failed (${res.status}) — static entries only`);
+      console.warn(
+        `sitemap: dynamic fetch failed (${res.status}) — static entries only`,
+      );
       return [];
     }
 
@@ -724,14 +741,24 @@ async function fetchDynamicEntries(): Promise<SitemapEntry[]> {
     }
 
     for (const providerId of providers) {
-      out.push({ path: `/provider/${providerId}`, changefreq: "weekly", priority: "0.8" });
-      out.push({ path: `/provider/${providerId}/tests`, changefreq: "weekly", priority: "0.7" });
+      out.push({
+        path: `/provider/${providerId}`,
+        changefreq: "weekly",
+        priority: "0.8",
+      });
+      out.push({
+        path: `/provider/${providerId}/tests`,
+        changefreq: "weekly",
+        priority: "0.7",
+      });
     }
 
     return out;
   } catch (err) {
     dynamicUnavailable = true;
-    console.warn(`sitemap: dynamic fetch errored — static entries only (${String(err)})`);
+    console.warn(
+      `sitemap: dynamic fetch errored — static entries only (${String(err)})`,
+    );
     return [];
   }
 }
@@ -768,7 +795,9 @@ function generateSitemap(entries: SitemapEntry[]) {
   return [
     `<?xml version="1.0" encoding="UTF-8"?>`,
     `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,
-    ...(dynamicUnavailable ? [`  <!-- dynamic-routes: unavailable at build time -->`] : []),
+    ...(dynamicUnavailable
+      ? [`  <!-- dynamic-routes: unavailable at build time -->`]
+      : []),
     ...urls,
     `</urlset>`,
   ].join("\n");

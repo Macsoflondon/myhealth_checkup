@@ -36,7 +36,7 @@ export class CacheService {
    */
   public get<T>(key: string): T | null {
     const cached = this.cache.get(key);
-    
+
     if (!cached) {
       return null;
     }
@@ -58,7 +58,7 @@ export class CacheService {
   public set<T>(key: string, data: T): void {
     this.cache.set(key, {
       data,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
     logger.debug(`Cache set for key: ${key}`);
   }
@@ -69,11 +69,11 @@ export class CacheService {
   public has(key: string): boolean {
     const cached = this.cache.get(key);
     if (!cached) return false;
-    
+
     if (Date.now() - cached.timestamp < CACHE_CONFIG.DURATION) {
       return true;
     }
-    
+
     this.cache.delete(key);
     return false;
   }
@@ -91,7 +91,7 @@ export class CacheService {
    */
   public clear(): void {
     this.cache.clear();
-    logger.info('All cache cleared');
+    logger.info("All cache cleared");
   }
 
   /**
@@ -100,7 +100,7 @@ export class CacheService {
   public getStats() {
     return {
       size: this.cache.size,
-      keys: Array.from(this.cache.keys())
+      keys: Array.from(this.cache.keys()),
     };
   }
 
@@ -110,14 +110,14 @@ export class CacheService {
   public clearExpired(): void {
     const now = Date.now();
     let cleared = 0;
-    
+
     for (const [key, entry] of this.cache.entries()) {
       if (now - entry.timestamp >= CACHE_CONFIG.DURATION) {
         this.cache.delete(key);
         cleared++;
       }
     }
-    
+
     if (cleared > 0) {
       logger.info(`Cleared ${cleared} expired cache entries`);
     }

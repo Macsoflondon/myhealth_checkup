@@ -23,27 +23,32 @@ const TOPIC_RULES: TopicRule[] = [
   },
   {
     match: /cancer|screening/i,
-    keywords: /cancer|tumour|tumor|\bpsa\b|prostate|bowel|melanoma|early detection|\bca[\s-]?125\b/i,
+    keywords:
+      /cancer|tumour|tumor|\bpsa\b|prostate|bowel|melanoma|early detection|\bca[\s-]?125\b/i,
     categories: ["Cancer Screening"],
   },
   {
     match: /women|female|menopause/i,
-    keywords: /women|female|oestrogen|estrogen|menopause|perimenopause|pcos|period|\bhrt\b|cervical|breast/i,
+    keywords:
+      /women|female|oestrogen|estrogen|menopause|perimenopause|pcos|period|\bhrt\b|cervical|breast/i,
     categories: ["Women's Health", "Hormones"],
   },
   {
     match: /\bmen\b|men's|male|testosterone/i,
-    keywords: /\bmen\b|men's|male|testosterone|prostate|libido|erectile|muscle/i,
+    keywords:
+      /\bmen\b|men's|male|testosterone|prostate|libido|erectile|muscle/i,
     categories: ["Men's Health", "Hormones"],
   },
   {
     match: /fertility|paternity|conception/i,
-    keywords: /fertility|conceiv|sperm|ovulation|\bamh\b|pregnan|paternity|\bdna\b|ivf/i,
+    keywords:
+      /fertility|conceiv|sperm|ovulation|\bamh\b|pregnan|paternity|\bdna\b|ivf/i,
     categories: ["Hormones", "Women's Health"],
   },
   {
     match: /sport|fitness|performance|active/i,
-    keywords: /sport|fitness|training|performance|muscle|exercise|recovery|endurance|protein|energy/i,
+    keywords:
+      /sport|fitness|training|performance|muscle|exercise|recovery|endurance|protein|energy/i,
     categories: ["Wellness"],
   },
   {
@@ -53,7 +58,8 @@ const TOPIC_RULES: TopicRule[] = [
   },
   {
     match: /heart|cardio|cholesterol/i,
-    keywords: /heart|cardiac|cardiovascular|cholesterol|blood pressure|lipid|triglyceride/i,
+    keywords:
+      /heart|cardiac|cardiovascular|cholesterol|blood pressure|lipid|triglyceride/i,
     categories: ["Heart Health"],
   },
   {
@@ -68,17 +74,20 @@ const TOPIC_RULES: TopicRule[] = [
   },
   {
     match: /vitamin|nutrition|deficien/i,
-    keywords: /vitamin|iron|ferritin|folate|b12|magnesium|zinc|deficien|nutrition/i,
+    keywords:
+      /vitamin|iron|ferritin|folate|b12|magnesium|zinc|deficien|nutrition/i,
     categories: ["Vitamins"],
   },
   {
     match: /hormone/i,
-    keywords: /hormone|testosterone|oestrogen|estrogen|cortisol|menopause|pcos/i,
+    keywords:
+      /hormone|testosterone|oestrogen|estrogen|cortisol|menopause|pcos/i,
     categories: ["Hormones"],
   },
   {
     match: /wellness|general health|popular/i,
-    keywords: /wellness|general health|health check|blood test|biomarker|longevity|prevent/i,
+    keywords:
+      /wellness|general health|health check|blood test|biomarker|longevity|prevent/i,
     categories: ["Wellness"],
   },
 ];

@@ -31,7 +31,10 @@ const readError = async (error: unknown): Promise<string> => {
       /* fall through to generic message */
     }
   }
-  return (error as { message?: string })?.message || "Could not issue a recovery token.";
+  return (
+    (error as { message?: string })?.message ||
+    "Could not issue a recovery token."
+  );
 };
 
 /**
@@ -50,9 +53,12 @@ export const AdminRecoveryTokenPanel = () => {
     setLoading(true);
     setIssuedToken(null);
     try {
-      const { data, error } = await supabase.functions.invoke<IssueResponse>("admin-recovery", {
-        body: { action: "issue", email },
-      });
+      const { data, error } = await supabase.functions.invoke<IssueResponse>(
+        "admin-recovery",
+        {
+          body: { action: "issue", email },
+        },
+      );
       if (error) {
         toast.error(await readError(error));
         return;
@@ -83,9 +89,9 @@ export const AdminRecoveryTokenPanel = () => {
           Issue admin recovery token
         </CardTitle>
         <CardDescription>
-          Generates a single-use token so an existing administrator who has lost their password or
-          multi-factor device can regain access. Tokens expire quickly and never grant new
-          privileges.
+          Generates a single-use token so an existing administrator who has lost
+          their password or multi-factor device can regain access. Tokens expire
+          quickly and never grant new privileges.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -118,14 +124,20 @@ export const AdminRecoveryTokenPanel = () => {
           <Alert>
             <AlertDescription className="space-y-2">
               <p className="text-sm">
-                Shown once only. Send it to the administrator through a trusted channel — it
-                expires in {expiresInMinutes} minutes and works a single time.
+                Shown once only. Send it to the administrator through a trusted
+                channel — it expires in {expiresInMinutes} minutes and works a
+                single time.
               </p>
               <div className="flex items-center gap-2">
                 <code className="flex-1 break-all rounded bg-muted px-2 py-1 text-xs">
                   {issuedToken}
                 </code>
-                <Button type="button" variant="outline" size="sm" onClick={copyToken}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={copyToken}
+                >
                   <Copy className="h-3.5 w-3.5" />
                 </Button>
               </div>

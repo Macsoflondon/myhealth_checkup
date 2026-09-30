@@ -9,7 +9,13 @@ interface SectionShellProps {
   children: ReactNode;
 }
 
-export function SectionShell({ title, description, status, actions, children }: SectionShellProps) {
+export function SectionShell({
+  title,
+  description,
+  status,
+  actions,
+  children,
+}: SectionShellProps) {
   return (
     <div className="space-y-6">
       <header className="flex items-start justify-between gap-4 flex-wrap">
@@ -36,7 +42,12 @@ export function StatusBadge({ status }: { status: "live" | "beta" | "stub" }) {
     stub: "bg-muted text-muted-foreground border-border",
   };
   return (
-    <span className={cn("text-[10px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded border", styles[status])}>
+    <span
+      className={cn(
+        "text-[10px] uppercase tracking-wider font-semibold px-1.5 py-0.5 rounded border",
+        styles[status],
+      )}
+    >
       {status === "stub" ? "scaffold" : status}
     </span>
   );
@@ -46,7 +57,8 @@ export function ScaffoldNotice({ children }: { children?: ReactNode }) {
   return (
     <div className="rounded-lg border border-dashed border-border bg-muted/30 p-8 text-center">
       <p className="text-sm text-muted-foreground">
-        {children ?? "This section is scaffolded. Live data wiring will be added in a follow-up turn."}
+        {children ??
+          "This section is scaffolded. Live data wiring will be added in a follow-up turn."}
       </p>
     </div>
   );
@@ -71,14 +83,24 @@ export function StatCard({
   }[tone];
   return (
     <div className="rounded-xl border bg-card p-4">
-      <div className="text-[11px] uppercase tracking-wider text-muted-foreground font-medium">{label}</div>
-      <div className={cn("mt-1 text-2xl font-semibold tabular-nums", toneClass)}>{value}</div>
+      <div className="text-[11px] uppercase tracking-wider text-muted-foreground font-medium">
+        {label}
+      </div>
+      <div
+        className={cn("mt-1 text-2xl font-semibold tabular-nums", toneClass)}
+      >
+        {value}
+      </div>
       {hint && <div className="mt-1 text-xs text-muted-foreground">{hint}</div>}
     </div>
   );
 }
 
-export function HealthDot({ state }: { state: "good" | "warn" | "bad" | "idle" }) {
+export function HealthDot({
+  state,
+}: {
+  state: "good" | "warn" | "bad" | "idle";
+}) {
   const cls = {
     good: "bg-emerald-500 shadow-[0_0_0_3px_rgba(16,185,129,0.18)]",
     warn: "bg-amber-500 shadow-[0_0_0_3px_rgba(245,158,11,0.18)]",

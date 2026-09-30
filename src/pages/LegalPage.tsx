@@ -1,32 +1,97 @@
-import { Helmet } from 'react-helmet-async';
-import { Link } from '@/lib/router-compat';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
-import PageBanner from '@/components/sections/PageBanner';
-import { Card, CardContent } from '@/components/ui/card';
-import { FileText, Shield, Cookie, Users, Handshake, Scale, Award, Accessibility, Stethoscope, MessageSquareWarning } from 'lucide-react';
+import { Helmet } from "react-helmet-async";
+import { Link } from "@/lib/router-compat";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import PageBanner from "@/components/sections/PageBanner";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  FileText,
+  Shield,
+  Cookie,
+  Users,
+  Handshake,
+  Scale,
+  Award,
+  Accessibility,
+  Stethoscope,
+  MessageSquareWarning,
+} from "lucide-react";
 
 const legalPages = [
-  { title: 'Privacy Policy', path: '/privacy-policy', icon: Shield, description: 'How we collect, use, and protect your personal data.' },
-  { title: 'Terms & Conditions', path: '/terms', icon: FileText, description: 'The terms governing your use of our platform.' },
-  { title: 'Cookie Policy', path: '/cookies', icon: Cookie, description: 'How we use cookies and similar technologies.' },
-  { title: 'Modern Slavery Statement', path: '/modern-slavery', icon: Users, description: 'Our commitment to preventing modern slavery.' },
-  { title: 'Affiliate Disclosure', path: '/affiliate-disclosure', icon: Handshake, description: 'How we earn revenue and maintain editorial independence.' },
-  { title: 'Fair Trading Policy', path: '/fair-trading', icon: Scale, description: 'Our commitment to fair and transparent trading practices.' },
-  { title: 'How We Rank', path: '/how-we-rank', icon: Award, description: 'Our methodology for ranking and comparing providers.' },
-  { title: 'Accessibility Statement', path: '/accessibility', icon: Accessibility, description: 'Our commitment to accessible, inclusive digital experiences.' },
-  { title: 'Medical Review & Editorial Standards', path: '/about/medical-review', icon: Stethoscope, description: 'Clinical content reviewed by Nathanial Smith, Registered Healthcare Professional (HCPC reg. PA43353).' },
-  { title: 'Feedback & Complaints', path: '/complaints', icon: MessageSquareWarning, description: 'How to raise a concern, give feedback, or make a complaint about our platform.' },
+  {
+    title: "Privacy Policy",
+    path: "/privacy-policy",
+    icon: Shield,
+    description: "How we collect, use, and protect your personal data.",
+  },
+  {
+    title: "Terms & Conditions",
+    path: "/terms",
+    icon: FileText,
+    description: "The terms governing your use of our platform.",
+  },
+  {
+    title: "Cookie Policy",
+    path: "/cookies",
+    icon: Cookie,
+    description: "How we use cookies and similar technologies.",
+  },
+  {
+    title: "Modern Slavery Statement",
+    path: "/modern-slavery",
+    icon: Users,
+    description: "Our commitment to preventing modern slavery.",
+  },
+  {
+    title: "Affiliate Disclosure",
+    path: "/affiliate-disclosure",
+    icon: Handshake,
+    description: "How we earn revenue and maintain editorial independence.",
+  },
+  {
+    title: "Fair Trading Policy",
+    path: "/fair-trading",
+    icon: Scale,
+    description: "Our commitment to fair and transparent trading practices.",
+  },
+  {
+    title: "How We Rank",
+    path: "/how-we-rank",
+    icon: Award,
+    description: "Our methodology for ranking and comparing providers.",
+  },
+  {
+    title: "Accessibility Statement",
+    path: "/accessibility",
+    icon: Accessibility,
+    description: "Our commitment to accessible, inclusive digital experiences.",
+  },
+  {
+    title: "Medical Review & Editorial Standards",
+    path: "/about/medical-review",
+    icon: Stethoscope,
+    description:
+      "Clinical content reviewed by Nathanial Smith, Registered Healthcare Professional (HCPC reg. PA43353).",
+  },
+  {
+    title: "Feedback & Complaints",
+    path: "/complaints",
+    icon: MessageSquareWarning,
+    description:
+      "How to raise a concern, give feedback, or make a complaint about our platform.",
+  },
 ];
 
 const LegalPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
-      <Helmet>
-      </Helmet>
+      <Helmet></Helmet>
       <Header />
       <main className="flex-grow bg-white">
-        <PageBanner title="Legal" subtitle="Our policies, terms, and compliance documents." />
+        <PageBanner
+          title="Legal"
+          subtitle="Our policies, terms, and compliance documents."
+        />
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl mx-auto grid sm:grid-cols-2 gap-6">
             {legalPages.map(({ title, path, icon: Icon, description }) => (
@@ -37,8 +102,12 @@ const LegalPage = () => {
                       <Icon className="w-5 h-5 text-primary" />
                     </div>
                     <div>
-                      <h2 className="font-semibold text-foreground mb-1">{title}</h2>
-                      <p className="text-sm text-muted-foreground">{description}</p>
+                      <h2 className="font-semibold text-foreground mb-1">
+                        {title}
+                      </h2>
+                      <p className="text-sm text-muted-foreground">
+                        {description}
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
@@ -56,19 +125,30 @@ const LegalPage = () => {
               CMA &amp; DMCC compliance
             </h2>
             <p className="text-sm sm:text-base leading-relaxed text-white/85">
-              myhealth checkup operates in full compliance with the UK Competition and Markets Authority (CMA)
-              and the Digital Markets, Competition and Consumers Act 2024. Prices include mandatory fees where
-              known, sponsored placements are clearly labelled, ranking criteria are disclosed, and listings are
-              refreshed regularly for accuracy. Read our{" "}
-              <Link to="/how-we-rank" className="underline hover:text-brand-turquoise transition-colors">
+              myhealth checkup operates in full compliance with the UK
+              Competition and Markets Authority (CMA) and the Digital Markets,
+              Competition and Consumers Act 2024. Prices include mandatory fees
+              where known, sponsored placements are clearly labelled, ranking
+              criteria are disclosed, and listings are refreshed regularly for
+              accuracy. Read our{" "}
+              <Link
+                to="/how-we-rank"
+                className="underline hover:text-brand-turquoise transition-colors"
+              >
                 ranking methodology
               </Link>{" "}
               and{" "}
-              <Link to="/fair-trading" className="underline hover:text-brand-turquoise transition-colors">
+              <Link
+                to="/fair-trading"
+                className="underline hover:text-brand-turquoise transition-colors"
+              >
                 fair trading policy
               </Link>
               . To raise a concern, see our{" "}
-              <Link to="/complaints" className="underline hover:text-brand-turquoise transition-colors">
+              <Link
+                to="/complaints"
+                className="underline hover:text-brand-turquoise transition-colors"
+              >
                 feedback &amp; complaints process
               </Link>
               .

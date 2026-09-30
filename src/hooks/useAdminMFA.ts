@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from '@/context/AuthContext';
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/context/AuthContext";
 
 export interface MFAVerificationResult {
   isAdmin: boolean;
@@ -21,15 +21,22 @@ export interface UseAdminMFAResult {
   checkMFAStatus: () => Promise<void>;
 }
 
-const isMFAVerificationResult = (value: unknown): value is MFAVerificationResult => {
-  return !!value && typeof value === 'object' &&
-    'isAdmin' in value && 'hasMFA' in value && 'mfaVerified' in value;
+const isMFAVerificationResult = (
+  value: unknown,
+): value is MFAVerificationResult => {
+  return (
+    !!value &&
+    typeof value === "object" &&
+    "isAdmin" in value &&
+    "hasMFA" in value &&
+    "mfaVerified" in value
+  );
 };
 
-const SUPABASE_FUNCTIONS_URL = 'https://clvuioagsgfadynuvodj.supabase.co/functions/v1';
+const SUPABASE_FUNCTIONS_URL =
+  "https://clvuioagsgfadynuvodj.supabase.co/functions/v1";
 const SUPABASE_ANON_KEY =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdnVpb2Fnc2dmYWR5bnV2b2RqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1MDQ1MDcsImV4cCI6MjA2ODA4MDUwN30.N_ddGrc6YhEYnINwofAI-SNOtsxZr5D-dLVuA5TZEBM';
-
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNsdnVpb2Fnc2dmYWR5bnV2b2RqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI1MDQ1MDcsImV4cCI6MjA2ODA4MDUwN30.N_ddGrc6YhEYnINwofAI-SNOtsxZr5D-dLVuA5TZEBM";
 
 /**
  * Cached MFA verification result, keyed by user id.
@@ -42,15 +49,21 @@ const SUPABASE_ANON_KEY =
  */
 const MFA_CACHE_TTL_MS = 5 * 60 * 1000;
 const CHECK_TIMEOUT_MS = 15_000;
-const mfaCache = new Map<string, { status: MFAVerificationResult; at: number }>();
+const mfaCache = new Map<
+  string,
+  { status: MFAVerificationResult; at: number }
+>();
 
-const withTimeout = async <T,>(promise: Promise<T>, ms: number): Promise<T> => {
+const withTimeout = async <T>(promise: Promise<T>, ms: number): Promise<T> => {
   let timer: ReturnType<typeof setTimeout> | undefined;
   try {
     return await Promise.race([
       promise,
       new Promise<never>((_, reject) => {
-        timer = setTimeout(() => reject(new Error('MFA verification timed out')), ms);
+        timer = setTimeout(
+          () => reject(new Error("MFA verification timed out")),
+          ms,
+        );
       }),
     ]);
   } finally {
@@ -71,7 +84,7 @@ export const useAdminMFA = (): UseAdminMFAResult => {
   const checkMFAStatus = async () => {
     if (!user) {
       setIsLoading(false);
-      setError('Not authenticated');
+      setError("Not authenticated");
       return;
     }
 
@@ -82,9 +95,8 @@ export const useAdminMFA = (): UseAdminMFAResult => {
       const { data: sessionData } = await supabase.auth.getSession();
       const accessToken = sessionData.session?.access_token;
 
-
       if (!accessToken) {
-        setError('No active session');
+        setError("No active session");
         setIsLoading(false);
         return;
       }
@@ -92,11 +104,11 @@ export const useAdminMFA = (): UseAdminMFAResult => {
       const callVerify = (token: string) =>
         withTimeout(
           fetch(`${SUPABASE_FUNCTIONS_URL}/verify-admin-mfa`, {
-            method: 'POST',
+            method: "POST",
             headers: {
               Authorization: `Bearer ${token}`,
               apikey: SUPABASE_ANON_KEY,
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
           }),
           CHECK_TIMEOUT_MS,
@@ -119,7 +131,7 @@ export const useAdminMFA = (): UseAdminMFAResult => {
         if (response.status === 401) {
           mfaCache.delete(user.id);
           setMfaStatus(null);
-          setError('Your session has expired. Please sign in again.');
+          setError("Your session has expired. Please sign in again.");
           setIsLoading(false);
           await supabase.auth.signOut();
           return;
@@ -127,8 +139,6 @@ export const useAdminMFA = (): UseAdminMFAResult => {
       }
 
       const status: unknown = await response.json().catch(() => null);
-
-
 
       if (isMFAVerificationResult(status)) {
         let reconciledStatus = status;
@@ -138,12 +148,13 @@ export const useAdminMFA = (): UseAdminMFAResult => {
         // pre-step-up state. Only reconcile after the server has confirmed the
         // user is an admin with an enrolled MFA factor.
         if (status.isAdmin && status.hasMFA && !status.mfaVerified) {
-          const { data: aalData } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
-          if (aalData?.currentLevel === 'aal2') {
+          const { data: aalData } =
+            await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+          if (aalData?.currentLevel === "aal2") {
             reconciledStatus = {
               ...status,
               mfaVerified: true,
-              message: 'Admin verified with MFA',
+              message: "Admin verified with MFA",
             };
           }
         }
@@ -155,31 +166,43 @@ export const useAdminMFA = (): UseAdminMFAResult => {
         // Fall back to a client-side check so the admin app never dead-ends on
         // a blank screen: role comes from `user_roles`, MFA state from the
         // Supabase auth client itself.
-        console.warn('MFA verification fell back to client check; status', response.status);
+        console.warn(
+          "MFA verification fell back to client check; status",
+          response.status,
+        );
 
-        const [{ data: roleRow }, { data: factorsData }, { data: aalData }] = await Promise.all([
-          supabase.from('user_roles').select('role').eq('user_id', user.id).eq('role', 'admin').maybeSingle(),
-          supabase.auth.mfa.listFactors(),
-          supabase.auth.mfa.getAuthenticatorAssuranceLevel(),
-        ]);
+        const [{ data: roleRow }, { data: factorsData }, { data: aalData }] =
+          await Promise.all([
+            supabase
+              .from("user_roles")
+              .select("role")
+              .eq("user_id", user.id)
+              .eq("role", "admin")
+              .maybeSingle(),
+            supabase.auth.mfa.listFactors(),
+            supabase.auth.mfa.getAuthenticatorAssuranceLevel(),
+          ]);
 
-        const hasMFA = (factorsData?.totp ?? []).some((f) => f.status === 'verified');
+        const hasMFA = (factorsData?.totp ?? []).some(
+          (f) => f.status === "verified",
+        );
         const fallback: MFAVerificationResult = {
           isAdmin: !!roleRow,
           hasMFA,
-          mfaVerified: hasMFA && aalData?.currentLevel === 'aal2',
+          mfaVerified: hasMFA && aalData?.currentLevel === "aal2",
           requiresMFA: !!roleRow,
           userId: user.id,
-          message: 'Resolved from client session',
+          message: "Resolved from client session",
         };
 
         mfaCache.set(user.id, { status: fallback, at: Date.now() });
         setMfaStatus(fallback);
       }
-
     } catch (err) {
-      console.error('MFA check failed:', err);
-      setError(err instanceof Error ? err.message : 'Failed to verify MFA status');
+      console.error("MFA check failed:", err);
+      setError(
+        err instanceof Error ? err.message : "Failed to verify MFA status",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -200,9 +223,11 @@ export const useAdminMFA = (): UseAdminMFAResult => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
 
-  const isVerified = mfaStatus?.isAdmin && mfaStatus?.hasMFA && mfaStatus?.mfaVerified;
+  const isVerified =
+    mfaStatus?.isAdmin && mfaStatus?.hasMFA && mfaStatus?.mfaVerified;
   const needsMFASetup = mfaStatus?.isAdmin && !mfaStatus?.hasMFA;
-  const needsMFAVerification = mfaStatus?.isAdmin && mfaStatus?.hasMFA && !mfaStatus?.mfaVerified;
+  const needsMFAVerification =
+    mfaStatus?.isAdmin && mfaStatus?.hasMFA && !mfaStatus?.mfaVerified;
 
   return {
     isLoading,
@@ -211,6 +236,6 @@ export const useAdminMFA = (): UseAdminMFAResult => {
     needsMFAVerification: !!needsMFAVerification,
     error,
     mfaStatus,
-    checkMFAStatus
+    checkMFAStatus,
   };
 };

@@ -93,10 +93,14 @@ export const BLOG_SOURCES: BlogSource[] = [
  * feed nor article URLs in their sitemaps, so they are excluded rather than
  * surfaced as an empty filter.
  */
-export const BLOG_SOURCES_UNAVAILABLE: { providerId: string; reason: string }[] = [
+export const BLOG_SOURCES_UNAVAILABLE: {
+  providerId: string;
+  reason: string;
+}[] = [
   {
     providerId: "randox",
-    reason: "Blog index is client-rendered; no feed and no article URLs in sitemap",
+    reason:
+      "Blog index is client-rendered; no feed and no article URLs in sitemap",
   },
   {
     providerId: "london-medical-laboratory",
@@ -106,14 +110,37 @@ export const BLOG_SOURCES_UNAVAILABLE: { providerId: string; reason: string }[] 
 
 /** Keyword mapping onto the hub's existing category list. */
 const CATEGORY_RULES: { category: string; pattern: RegExp }[] = [
-  { category: "Cancer Screening", pattern: /cancer|tumour|tumor|\bpsa\b|prostate|bowel cancer|melanoma/i },
+  {
+    category: "Cancer Screening",
+    pattern: /cancer|tumour|tumor|\bpsa\b|prostate|bowel cancer|melanoma/i,
+  },
   { category: "Thyroid", pattern: /thyroid|\btsh\b|hypothyroid|hyperthyroid/i },
-  { category: "Hormones", pattern: /hormone|testosterone|oestrogen|estrogen|menopause|pcos|fertility|cortisol|libido/i },
-  { category: "Heart Health", pattern: /heart|cardiac|cardiovascular|cholesterol|blood pressure|lipid|triglyceride/i },
-  { category: "Diabetes", pattern: /diabet|hba1c|insulin|blood sugar|glucose/i },
-  { category: "Gut Health", pattern: /\bgut\b|liver|digest|microbiome|coeliac|\bibs\b|stomach/i },
-  { category: "Vitamins", pattern: /vitamin|iron|ferritin|folate|b12|magnesium|zinc|deficien/i },
-  { category: "Mental Health", pattern: /mental health|stress|anxiety|depress|sleep|burnout|mood/i },
+  {
+    category: "Hormones",
+    pattern:
+      /hormone|testosterone|oestrogen|estrogen|menopause|pcos|fertility|cortisol|libido/i,
+  },
+  {
+    category: "Heart Health",
+    pattern:
+      /heart|cardiac|cardiovascular|cholesterol|blood pressure|lipid|triglyceride/i,
+  },
+  {
+    category: "Diabetes",
+    pattern: /diabet|hba1c|insulin|blood sugar|glucose/i,
+  },
+  {
+    category: "Gut Health",
+    pattern: /\bgut\b|liver|digest|microbiome|coeliac|\bibs\b|stomach/i,
+  },
+  {
+    category: "Vitamins",
+    pattern: /vitamin|iron|ferritin|folate|b12|magnesium|zinc|deficien/i,
+  },
+  {
+    category: "Mental Health",
+    pattern: /mental health|stress|anxiety|depress|sleep|burnout|mood/i,
+  },
 ];
 
 export function categoriseArticle(text: string): string {

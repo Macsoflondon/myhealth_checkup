@@ -7,8 +7,7 @@ import BiomarkerLibraryUI from "@/components/biomarker-library/BiomarkerLibraryU
 export default function BiomarkerDatabasePage() {
   return (
     <>
-      <Helmet>
-      </Helmet>
+      <Helmet></Helmet>
       <Header />
       <BiomarkerLibraryUI />
       <section className="bg-white py-12 px-4 sm:px-6">

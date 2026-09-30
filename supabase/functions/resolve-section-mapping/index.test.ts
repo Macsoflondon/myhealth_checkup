@@ -74,9 +74,10 @@ function makeFake(opts: {
         limit(_n: number) {
           // executes select
           if (table === "user_roles") {
-            const rows = opts.isAdmin && ctx.filters.user_id === opts.userId
-              ? [{ role: "admin" }]
-              : [];
+            const rows =
+              opts.isAdmin && ctx.filters.user_id === opts.userId
+                ? [{ role: "admin" }]
+                : [];
             return Promise.resolve({ data: rows, error: null });
           }
           if (table === "provider_tests") {
@@ -155,7 +156,11 @@ Deno.test("non-admin caller → 403", async () => {
   const fake = makeFake({ userId: "u1", isAdmin: false });
   const res = await buildHandler(fake)(
     post(
-      { provider_id: "p", source_section: "women", canonical_category: "womens-health" },
+      {
+        provider_id: "p",
+        source_section: "women",
+        canonical_category: "womens-health",
+      },
       { Authorization: "Bearer x" },
     ),
   );
@@ -177,7 +182,11 @@ Deno.test("unknown canonical_category → 400", async () => {
   const fake = makeFake({ userId: "u1", isAdmin: true });
   const res = await buildHandler(fake)(
     post(
-      { provider_id: "p", source_section: "women", canonical_category: "made-up" },
+      {
+        provider_id: "p",
+        source_section: "women",
+        canonical_category: "made-up",
+      },
       { Authorization: "Bearer x" },
     ),
   );
@@ -190,7 +199,11 @@ Deno.test("blank source_section after normalisation → 400", async () => {
   const fake = makeFake({ userId: "u1", isAdmin: true });
   const res = await buildHandler(fake)(
     post(
-      { provider_id: "p", source_section: "---", canonical_category: "thyroid" },
+      {
+        provider_id: "p",
+        source_section: "---",
+        canonical_category: "thyroid",
+      },
       { Authorization: "Bearer x" },
     ),
   );
@@ -201,117 +214,205 @@ Deno.test("blank source_section after normalisation → 400", async () => {
 
 // ─── Happy paths ────────────────────────────────────────────────────
 
-Deno.test("conflict resolution: upserts rule and backfills disagreeing rows", async () => {
-  const tests: Row[] = [
-    { id: "t1", provider_id: "medichecks", source_section: "Women's Health",
-      category: null, is_active: true, canonical_category: "general-health" },
-    { id: "t2", provider_id: "medichecks", source_section: "women's health",
-      category: null, is_active: true, canonical_category: "general-health" },
-    { id: "t3", provider_id: "medichecks", source_section: "thyroid",
-      category: null, is_active: true, canonical_category: "thyroid" },
-    // inactive row must be ignored
-    { id: "t4", provider_id: "medichecks", source_section: "Women's Health",
-      category: null, is_active: false, canonical_category: "general-health" },
-    // other provider must be ignored
-    { id: "t5", provider_id: "randox", source_section: "Women's Health",
-      category: null, is_active: true, canonical_category: "general-health" },
-  ];
-  const recorded: Recorded = { upserts: [], updates: [] };
-  const fake = makeFake({ userId: "u1", isAdmin: true, providerTests: tests, recorded });
-
-  const res = await buildHandler(fake)(
-    post(
+Deno.test(
+  "conflict resolution: upserts rule and backfills disagreeing rows",
+  async () => {
+    const tests: Row[] = [
       {
+        id: "t1",
         provider_id: "medichecks",
         source_section: "Women's Health",
-        canonical_category: "womens-health",
+        category: null,
+        is_active: true,
+        canonical_category: "general-health",
       },
-      { Authorization: "Bearer x" },
-    ),
-  );
-  assertEquals(res.status, 200);
-  const body = await res.json();
-  assertEquals(body.ok, true);
-  assertEquals(body.source_section, "women-s-health"); // normalised
-  assertEquals(body.updated_rows, 2); // t1 + t2
-
-  // Rule upserted with normalised section + mark_reviewed=true → needs_review=false
-  assertEquals(recorded.upserts.length, 1);
-  assertEquals(recorded.upserts[0].table, "provider_section_category_map");
-  assertEquals(recorded.upserts[0].row.provider_id, "medichecks");
-  assertEquals(recorded.upserts[0].row.source_section, "women-s-health");
-  assertEquals(recorded.upserts[0].row.canonical_category, "womens-health");
-  assertEquals(recorded.upserts[0].row.needs_review, false);
-  assertEquals(recorded.upserts[0].opts.onConflict, "provider_id,source_section");
-
-  // Backfill targeted only t1 + t2
-  assertEquals(recorded.updates.length, 1);
-  assertEquals(recorded.updates[0].ids.sort(), ["t1", "t2"]);
-  assertEquals(tests.find((t) => t.id === "t1")!.canonical_category, "womens-health");
-  assertEquals(tests.find((t) => t.id === "t3")!.canonical_category, "thyroid"); // untouched
-  assertEquals(tests.find((t) => t.id === "t4")!.canonical_category, "general-health"); // inactive untouched
-  assertEquals(tests.find((t) => t.id === "t5")!.canonical_category, "general-health"); // other provider untouched
-});
-
-Deno.test("unmapped section: creates new rule, backfills via category fallback", async () => {
-  // rows have no source_section, only category — backfill must still match via fallback
-  const tests: Row[] = [
-    { id: "a", provider_id: "medichecks", source_section: null,
-      category: "Sports Performance", is_active: true, canonical_category: null },
-    { id: "b", provider_id: "medichecks", source_section: null,
-      category: "sports-performance", is_active: true, canonical_category: null },
-    { id: "c", provider_id: "medichecks", source_section: null,
-      category: "Gut Health", is_active: true, canonical_category: null },
-  ];
-  const recorded: Recorded = { upserts: [], updates: [] };
-  const fake = makeFake({ userId: "u1", isAdmin: true, providerTests: tests, recorded });
-
-  const res = await buildHandler(fake)(
-    post(
       {
+        id: "t2",
         provider_id: "medichecks",
-        source_section: "Sports Performance",
-        canonical_category: "sports-performance",
+        source_section: "women's health",
+        category: null,
+        is_active: true,
+        canonical_category: "general-health",
       },
-      { Authorization: "Bearer x" },
-    ),
-  );
-  assertEquals(res.status, 200);
-  const body = await res.json();
-  assertEquals(body.updated_rows, 2);
-  assertEquals(recorded.updates[0].ids.sort(), ["a", "b"]);
-});
-
-Deno.test("pending-review confirmation: mark_reviewed=true clears needs_review without backfill when backfill=false", async () => {
-  const recorded: Recorded = { upserts: [], updates: [] };
-  const fake = makeFake({
-    userId: "u1",
-    isAdmin: true,
-    providerTests: [
-      { id: "x", provider_id: "randox", source_section: "hormones",
-        category: null, is_active: true, canonical_category: "hormones" },
-    ],
-    recorded,
-  });
-
-  const res = await buildHandler(fake)(
-    post(
       {
-        provider_id: "randox",
-        source_section: "hormones",
-        canonical_category: "hormones",
-        backfill: false,
-        mark_reviewed: true,
+        id: "t3",
+        provider_id: "medichecks",
+        source_section: "thyroid",
+        category: null,
+        is_active: true,
+        canonical_category: "thyroid",
       },
-      { Authorization: "Bearer x" },
-    ),
-  );
-  assertEquals(res.status, 200);
-  const body = await res.json();
-  assertEquals(body.updated_rows, 0);
-  assertEquals(recorded.upserts[0].row.needs_review, false);
-  assertEquals(recorded.updates.length, 0);
-});
+      // inactive row must be ignored
+      {
+        id: "t4",
+        provider_id: "medichecks",
+        source_section: "Women's Health",
+        category: null,
+        is_active: false,
+        canonical_category: "general-health",
+      },
+      // other provider must be ignored
+      {
+        id: "t5",
+        provider_id: "randox",
+        source_section: "Women's Health",
+        category: null,
+        is_active: true,
+        canonical_category: "general-health",
+      },
+    ];
+    const recorded: Recorded = { upserts: [], updates: [] };
+    const fake = makeFake({
+      userId: "u1",
+      isAdmin: true,
+      providerTests: tests,
+      recorded,
+    });
+
+    const res = await buildHandler(fake)(
+      post(
+        {
+          provider_id: "medichecks",
+          source_section: "Women's Health",
+          canonical_category: "womens-health",
+        },
+        { Authorization: "Bearer x" },
+      ),
+    );
+    assertEquals(res.status, 200);
+    const body = await res.json();
+    assertEquals(body.ok, true);
+    assertEquals(body.source_section, "women-s-health"); // normalised
+    assertEquals(body.updated_rows, 2); // t1 + t2
+
+    // Rule upserted with normalised section + mark_reviewed=true → needs_review=false
+    assertEquals(recorded.upserts.length, 1);
+    assertEquals(recorded.upserts[0].table, "provider_section_category_map");
+    assertEquals(recorded.upserts[0].row.provider_id, "medichecks");
+    assertEquals(recorded.upserts[0].row.source_section, "women-s-health");
+    assertEquals(recorded.upserts[0].row.canonical_category, "womens-health");
+    assertEquals(recorded.upserts[0].row.needs_review, false);
+    assertEquals(
+      recorded.upserts[0].opts.onConflict,
+      "provider_id,source_section",
+    );
+
+    // Backfill targeted only t1 + t2
+    assertEquals(recorded.updates.length, 1);
+    assertEquals(recorded.updates[0].ids.sort(), ["t1", "t2"]);
+    assertEquals(
+      tests.find((t) => t.id === "t1")!.canonical_category,
+      "womens-health",
+    );
+    assertEquals(
+      tests.find((t) => t.id === "t3")!.canonical_category,
+      "thyroid",
+    ); // untouched
+    assertEquals(
+      tests.find((t) => t.id === "t4")!.canonical_category,
+      "general-health",
+    ); // inactive untouched
+    assertEquals(
+      tests.find((t) => t.id === "t5")!.canonical_category,
+      "general-health",
+    ); // other provider untouched
+  },
+);
+
+Deno.test(
+  "unmapped section: creates new rule, backfills via category fallback",
+  async () => {
+    // rows have no source_section, only category — backfill must still match via fallback
+    const tests: Row[] = [
+      {
+        id: "a",
+        provider_id: "medichecks",
+        source_section: null,
+        category: "Sports Performance",
+        is_active: true,
+        canonical_category: null,
+      },
+      {
+        id: "b",
+        provider_id: "medichecks",
+        source_section: null,
+        category: "sports-performance",
+        is_active: true,
+        canonical_category: null,
+      },
+      {
+        id: "c",
+        provider_id: "medichecks",
+        source_section: null,
+        category: "Gut Health",
+        is_active: true,
+        canonical_category: null,
+      },
+    ];
+    const recorded: Recorded = { upserts: [], updates: [] };
+    const fake = makeFake({
+      userId: "u1",
+      isAdmin: true,
+      providerTests: tests,
+      recorded,
+    });
+
+    const res = await buildHandler(fake)(
+      post(
+        {
+          provider_id: "medichecks",
+          source_section: "Sports Performance",
+          canonical_category: "sports-performance",
+        },
+        { Authorization: "Bearer x" },
+      ),
+    );
+    assertEquals(res.status, 200);
+    const body = await res.json();
+    assertEquals(body.updated_rows, 2);
+    assertEquals(recorded.updates[0].ids.sort(), ["a", "b"]);
+  },
+);
+
+Deno.test(
+  "pending-review confirmation: mark_reviewed=true clears needs_review without backfill when backfill=false",
+  async () => {
+    const recorded: Recorded = { upserts: [], updates: [] };
+    const fake = makeFake({
+      userId: "u1",
+      isAdmin: true,
+      providerTests: [
+        {
+          id: "x",
+          provider_id: "randox",
+          source_section: "hormones",
+          category: null,
+          is_active: true,
+          canonical_category: "hormones",
+        },
+      ],
+      recorded,
+    });
+
+    const res = await buildHandler(fake)(
+      post(
+        {
+          provider_id: "randox",
+          source_section: "hormones",
+          canonical_category: "hormones",
+          backfill: false,
+          mark_reviewed: true,
+        },
+        { Authorization: "Bearer x" },
+      ),
+    );
+    assertEquals(res.status, 200);
+    const body = await res.json();
+    assertEquals(body.updated_rows, 0);
+    assertEquals(recorded.upserts[0].row.needs_review, false);
+    assertEquals(recorded.updates.length, 0);
+  },
+);
 
 Deno.test("mark_reviewed=false flags rule as needs_review=true", async () => {
   const recorded: Recorded = { upserts: [], updates: [] };
@@ -339,8 +440,14 @@ Deno.test("backfill no-op when no rows match section", async () => {
     userId: "u1",
     isAdmin: true,
     providerTests: [
-      { id: "z", provider_id: "p", source_section: "thyroid",
-        category: null, is_active: true, canonical_category: "thyroid" },
+      {
+        id: "z",
+        provider_id: "p",
+        source_section: "thyroid",
+        category: null,
+        is_active: true,
+        canonical_category: "thyroid",
+      },
     ],
     recorded,
   });

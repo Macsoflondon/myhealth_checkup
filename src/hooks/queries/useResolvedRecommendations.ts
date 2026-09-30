@@ -40,7 +40,9 @@ async function resolveOne(rec: RecInput): Promise<UniversalTestData | null> {
 }
 
 export function useResolvedRecommendations(recs: RecInput[]) {
-  const key = recs.map((r) => r.actualTestId || `${r.providerId}:${r.testName}`).join("|");
+  const key = recs
+    .map((r) => r.actualTestId || `${r.providerId}:${r.testName}`)
+    .join("|");
   return useQuery({
     queryKey: ["resolved-recommendations", key],
     queryFn: async () => {

@@ -25,7 +25,10 @@ Deno.test("BodySchema rejects unknown actions", () => {
 });
 
 Deno.test("BodySchema rejects non-UUID incident_id", () => {
-  const r = BodySchema.safeParse({ incident_id: "not-a-uuid", action: "acknowledge_scraper_alerts_for_entity" });
+  const r = BodySchema.safeParse({
+    incident_id: "not-a-uuid",
+    action: "acknowledge_scraper_alerts_for_entity",
+  });
   assertEquals(r.success, false);
 });
 
@@ -36,7 +39,10 @@ Deno.test("BodySchema accepts each supported action", () => {
     "reverse_acknowledge_scraper_alerts_for_entity",
     "reverse_resolve_operational_alerts_for_entity",
   ] as const) {
-    const r = BodySchema.safeParse({ incident_id: crypto.randomUUID(), action });
+    const r = BodySchema.safeParse({
+      incident_id: crypto.randomUUID(),
+      action,
+    });
     assertEquals(r.success, true, `should accept ${action}`);
   }
 });

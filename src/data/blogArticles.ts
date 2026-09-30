@@ -1,4 +1,4 @@
-import type { BlogArticle } from '@/types/blog.types';
+import type { BlogArticle } from "@/types/blog.types";
 
 /**
  * Blog Articles - auto-aggregated from provider blogs.
@@ -7,48 +7,313 @@ import type { BlogArticle } from '@/types/blog.types';
  * own public Open Graph tags (aggregator pattern - no full-text copy).
  */
 export const blogArticles: BlogArticle[] = [
-  {"title":"What Are Weight Loss Injections, and Are They Safe?","excerpt":"Whether you’re taking weight loss injections, considering them as a treatment, or just curious, here are some things you should know.","url":"https://www.medichecks.com/blogs/weight-loss/what-are-weight-loss-injections-and-are-they-safe","image":"https://www.medichecks.com/cdn/shop/articles/what-are-weight-loss-injections-and-are-they-safe-270224.png?v=1758189631","provider":"Medichecks","category":"Wellness","date":"2026-05-19"},
-  {"title":"Retatrutide Dose Escalation | 1mg to 12mg Chart","excerpt":"Retatrutide dose escalation from 1mg to 12mg over 20 weeks. Visual chart, side effects at each dose, weight loss by dose, and blood test schedule.","url":"https://lolahealth.com/blogs/longevity/retatrutide-dose-escalation-chart","image":"https://lolahealth.com/cdn/shop/files/lola-health-logo.png","provider":"Lola Health","category":"Wellness","date":"2026-05-17"},
-  {"title":"The Best Exercise to Balance Men’s Hormones","excerpt":"30% of men in the UK don’t exercise. It’s a terrifying truth skyrocketing obesity, disease, and infertility rates. Unfortunately, people tend to focus on looking good and fitting into the right jean…","url":"https://goodbodyclinic.com/blogs/goodbody-health-hub/the-best-exercise-to-balance-men-s-hormones","image":"https://goodbodyclinic.com/cdn/shop/articles/fortune-vieyra-eCKIeu1Lkok-unsplash-scaled_927eb594-b85b-4f5c-bbd5-dd064379e814.jpg?v=1767692259","provider":"Goodbody Clinic","category":"Hormones","date":"2026-05-16"},
-  {"title":"How Does Stress Affect Testosterone Levels?","excerpt":"From stomach ache to acne, stress can affect your body in different ways. But how does it affect your testosterone levels? Read on to find out how your lifestyle could be affecting you.","url":"https://www.medichecks.com/blogs/mental-health/how-can-stress-affect-testosterone-levels","image":"https://www.medichecks.com/cdn/shop/articles/how-can-stress-affect-testosterone-levels-114764.jpg?v=1679657822","provider":"Medichecks","category":"Hormones","date":"2026-05-15"},
-  {"title":"Vitamin D Blood Test","excerpt":"Learn what Vitamin D is, normal ranges, causes of deficiency, and how to optimise your levels for bone health, immunity, and overall wellbeing.","url":"https://lolahealth.com/blogs/longevity/vitamin-d-blood-test-normal-ranges-causes-what-your-results-mean","image":"https://lolahealth.com/cdn/shop/files/lola-health-logo.png","provider":"Lola Health","category":"Vitamins","date":"2026-05-13"},
-  {"title":"Top 10 Foods for a Healthy Liver","excerpt":"There has been a 400% rise in deaths due to liver disease in the UK since the 1970s. An increase in alcohol consumption, processed foods, refined sugars, and lack of exercise means liver…","url":"https://goodbodyclinic.com/blogs/goodbody-health-hub/top-10-foods-for-a-healthy-liver","image":"https://goodbodyclinic.com/cdn/shop/articles/Liver-health-blood-test_c45baba8-824f-4272-92c0-288d413989e7.jpg?v=1767692270","provider":"Goodbody Clinic","category":"Gut Health","date":"2026-05-12"},
-  {"title":"What Has Caused My Blood Sample Error?","excerpt":"A clotted blood sample can’t be tested, but it can be avoided. Here’s what causes it, how to prevent it, and what happens if your blood test fails.","url":"https://www.medichecks.com/blogs/blood-testing/what-causes-blood-sample-errors","image":"https://www.medichecks.com/cdn/shop/articles/why-do-blood-samples-clot-what-it-means-and-how-to-avoid-it-622688.jpg?v=1778531647","provider":"Medichecks","category":"Wellness","date":"2026-05-11"},
-  {"title":"Corporate Health Screening | Employee Blood Testing","excerpt":"Corporate blood testing for employees: reduce absenteeism, improve productivity. At-home and on-site options for UK businesses.","url":"https://lolahealth.com/blogs/longevity/corporate-wellness-blood-testing","image":"https://lolahealth.com/cdn/shop/files/lola-health-logo.png","provider":"Lola Health","category":"Wellness","date":"2026-05-09"},
-  {"title":"Prostate Cancer: Prostate","excerpt":"‘In the UK 1 in 8 men will be diagnosed with prostate cancer.’ Prostate cancer is the most common cancer throughout Britain, with 143 men per day receiving a diagnosis and 11,500 dying yearly.…","url":"https://goodbodyclinic.com/blogs/goodbody-health-hub/prostate-cancer-prostate-specific-antigen-psa-test","image":"https://goodbodyclinic.com/cdn/shop/articles/prostate_ce8911bf-16fb-4261-b6ff-aa6769701220.png?v=1767692259","provider":"Goodbody Clinic","category":"Cancer Screening","date":"2026-05-08"},
-  {"title":"Are You Iron Deficient?","excerpt":"One in five women under 50 are iron deficient. But what is a low iron level for a woman and do your recommended iron levels change throughout your life?","url":"https://www.medichecks.com/blogs/womens-health/are-you-iron-deficient","image":"https://www.medichecks.com/cdn/shop/articles/iron-levels-for-women-are-you-iron-deficient-478729.jpg?v=1753450647","provider":"Medichecks","category":"Vitamins","date":"2026-05-07"},
-  {"title":"Mercury Blood Test","excerpt":"What does your mercury blood test result mean? UK normal ranges, high and low causes, and what to do next. Expert guide from Lola Health.","url":"https://lolahealth.com/blogs/longevity/mercury-blood-test-normal-ranges-causes-what-your-results-mean","image":"https://lolahealth.com/cdn/shop/files/lola-health-logo.png","provider":"Lola Health","category":"Wellness","date":"2026-05-05"},
-  {"title":"The 5 Most Important Blood Tests for Women","excerpt":"Gain insight and take control of your health with at-home and in-clinic women’s blood tests. Order yours or find your nearest Goodbody Clinic today.","url":"https://goodbodyclinic.com/blogs/goodbody-health-hub/the-5-most-important-blood-tests-for-women","image":"https://goodbodyclinic.com/cdn/shop/articles/julian-bock-r_K7rCRTeUI-unsplash_5a63307c-0d6c-4d82-89f1-3f969ea18d8c.jpg?v=1772648709","provider":"Goodbody Clinic","category":"Wellness","date":"2026-05-04"},
-  {"title":"Serum vs. RBC Magnesium","excerpt":"What causes low magnesium levels? And are magnesium blood tests accurate? This article contains everything you need to know about magnesium testing.","url":"https://www.medichecks.com/blogs/news/do-you-need-more-magnesium","image":"https://www.medichecks.com/cdn/shop/articles/serum-vs-rbc-magnesium-how-should-i-check-for-magnesium-deficiency-246610.jpg?v=1742590791","provider":"Medichecks","category":"Wellness","date":"2026-05-03"},
-  {"title":"How to Increase Thyroid Function for Long","excerpt":"Learn how to increase thyroid function with practical tests, diet, and lifestyle tips to boost energy and well-being.","url":"https://lolahealth.com/blogs/longevity/how-to-increase-thyroid-function","image":"//lolahealth.com/cdn/shop/articles/how-to-increase-thyroid-function-thyroid-function.jpg?v=1772530466","provider":"Lola Health","category":"Thyroid","date":"2026-05-01"},
-  {"title":"Early Cancer Detection: Why Testing Early Saves Lives","excerpt":"Private cancer testing is the first step in early cancer detection, with the best blood tests identifying up to 70 solid organ cancers and 18 biomarkers.","url":"https://goodbodyclinic.com/blogs/goodbody-health-hub/early-cancer-detection-why-testing-early-saves-lives","image":"https://goodbodyclinic.com/cdn/shop/articles/blood_test_for_all_page_photo_0ef3e078-b57d-4cbc-8141-fc0379837b12.png?v=1771427294","provider":"Goodbody Clinic","category":"Cancer Screening","date":"2026-04-30"},
-  {"title":"Why Are Men's Testosterone Levels Decreasing?","excerpt":"Odds are your grandad had higher testosterone levels than you — but why?","url":"https://www.medichecks.com/blogs/testosterone/why-do-gen-z-and-millennial-men-have-lower-testosterone","image":"https://www.medichecks.com/cdn/shop/articles/why-do-gen-z-and-millennial-men-have-lower-testosterone-levels-741771.jpg?v=1677179135","provider":"Medichecks","category":"Hormones","date":"2026-04-29"},
-  {"title":"Blood Test for Joint Pain: Inflammatory Markers and What They Mean","excerpt":"Joint pain is remarkably common in the UK, with approximately 17.8 million people living with a musculoskeletal condition. For most, the critical diagnostic question is whether their joint pain is…","url":"https://lolahealth.com/blogs/longevity/blood-test-for-joint-pain","image":"https://lolahealth.com/cdn/shop/files/lola-health-logo.png","provider":"Lola Health","category":"Wellness","date":"2026-04-27"},
-  {"title":"Bowel cancer early detection: How the FIT test finds cancer signs","excerpt":"Discover how bowel cancer early detection is enhanced by the FIT test, a simple blood test that identifies early signs of cancer for timely treatment.","url":"https://goodbodyclinic.com/blogs/goodbody-health-hub/bowel-cancer-early-detection-how-the-fit-test-finds-cancer-signs-18-80","image":"https://goodbodyclinic.com/cdn/shop/articles/9667220_50576cea-56fd-4cfe-852d-78770f346fb1.jpg?v=1767692200","provider":"Goodbody Clinic","category":"Cancer Screening","date":"2026-04-26"},
-  {"title":"4 Reasons You’re Not Building Muscle","excerpt":"Discover four of the most common reasons you’re not building muscle, plus how optimise your performance and build muscle safely.","url":"https://www.medichecks.com/blogs/sports-performance/four-reasons-you-re-not-building-muscle","image":"https://www.medichecks.com/cdn/shop/articles/4-reasons-youre-not-gaining-muscle-185992.png?v=1775737710","provider":"Medichecks","category":"Wellness","date":"2026-04-25"},
-  {"title":"Albumin Normal Range: What Your Levels Mean","excerpt":"Albumin normal range explained simply. See levels by age, what high or low albumin means, and how to read your blood test results.","url":"https://lolahealth.com/blogs/longevity/albumin-normal-range","image":"//lolahealth.com/cdn/shop/articles/featured-image-9ff5b5fc-54fa-442d-8d63-91c850b1f575.jpg?v=1763543017","provider":"Lola Health","category":"Wellness","date":"2026-04-23"},
-  {"title":"Full Body MRI Explained: What It Is and How It Works in Detail","excerpt":"Full body MRI explained: Discover how this comprehensive, non-invasive scan works to detect health issues early, including its role in cancer screening and health checks.","url":"https://goodbodyclinic.com/blogs/goodbody-health-hub/full-body-mri-explained-what-it-is-and-how-it-works-in-detail-35-75","image":"https://goodbodyclinic.com/cdn/shop/articles/Full-body-MRI-scan_a4cbee41-1680-45eb-bec1-9f8011f5c8f7.jpg?v=1767712790","provider":"Goodbody Clinic","category":"Cancer Screening","date":"2026-04-22"},
-  {"title":"5 Reasons You Could Be Tired All the Time","excerpt":"Do you find yourself feeling exhausted even when you have had a good night sleep? It can be difficult to know whether you are simply doing too much or an underlying reason is making you feel…","url":"https://www.medichecks.com/blogs/general-health/5-reasons-you-could-be-tired-all-the-time","image":"https://www.medichecks.com/cdn/shop/articles/5-reasons-you-could-be-tired-all-the-time-323537.jpg?v=1671726809","provider":"Medichecks","category":"Mental Health","date":"2026-04-21"},
-  {"title":"Hormone Profile Blood Test","excerpt":"What does your hormone profile blood test result mean? UK normal ranges for testosterone, oestrogen, thyroid and more. Expert guide from Lola Health.","url":"https://lolahealth.com/blogs/longevity/hormone-profile-blood-test-normal-ranges-causes-what-your-results-mean","image":"https://lolahealth.com/cdn/shop/files/lola-health-logo.png","provider":"Lola Health","category":"Thyroid","date":"2026-04-19"},
-  {"title":"How to Avoid Overdoing Supplements","excerpt":"71% of the UK population take supplements, and since Covid-19 hit, their use has increased by 3.5 million. Although supplements can be highly beneficial, misusing them can lead to severe health…","url":"https://goodbodyclinic.com/blogs/goodbody-health-hub/how-to-avoid-overdoing-supplements","image":"https://goodbodyclinic.com/cdn/shop/articles/leohoho-DRchVK5apjw-unsplash-scaled_e1e04db6-bf10-4285-8440-cad487787aa2.jpg?v=1767692250","provider":"Goodbody Clinic","category":"Heart Health","date":"2026-04-18"},
-  {"title":"What is infertility?","excerpt":"Infertility affects nearly one in seven couples. We look at what infertility is, how it is investigated and where to get support.","url":"https://www.medichecks.com/blogs/fertility/what-is-infertility","image":"https://www.medichecks.com/cdn/shop/articles/what-is-infertility-232936.jpg?v=1671726223","provider":"Medichecks","category":"Hormones","date":"2026-04-17"},
-  {"title":"Best Supplements for Endurance and Longevity","excerpt":"Unlock peak performance with the best supplements for endurance. Our guide explores science-backed nutrients that boost stamina and support long-term health.","url":"https://lolahealth.com/blogs/longevity/best-supplements-for-endurance","image":"//lolahealth.com/cdn/shop/articles/featured-image-e98e40f3-d550-4cff-8cc0-d03960711c29.jpg?v=1759131892","provider":"Lola Health","category":"Wellness","date":"2026-04-15"},
-  {"title":"Pregnancy Blood Tests: What is Beta HCG and why take a blood test?","excerpt":"If you think you may be pregnant, the most common way to tell is with a urine test kit completed at home. But did you know that you can also check your blood to see if you are pregnant, and that a…","url":"https://goodbodyclinic.com/blogs/goodbody-health-hub/pregnancy-blood-tests-what-is-beta-hcg-and-why-take-a-blood-test","image":"https://goodbodyclinic.com/cdn/shop/articles/Untitled-design-2_b6c3e5fb-af8f-407e-852b-7b559a1db8aa.jpg?v=1767692252","provider":"Goodbody Clinic","category":"Hormones","date":"2026-04-14"}
+  {
+    title: "What Are Weight Loss Injections, and Are They Safe?",
+    excerpt:
+      "Whether you’re taking weight loss injections, considering them as a treatment, or just curious, here are some things you should know.",
+    url: "https://www.medichecks.com/blogs/weight-loss/what-are-weight-loss-injections-and-are-they-safe",
+    image:
+      "https://www.medichecks.com/cdn/shop/articles/what-are-weight-loss-injections-and-are-they-safe-270224.png?v=1758189631",
+    provider: "Medichecks",
+    category: "Wellness",
+    date: "2026-05-19",
+  },
+  {
+    title: "Retatrutide Dose Escalation | 1mg to 12mg Chart",
+    excerpt:
+      "Retatrutide dose escalation from 1mg to 12mg over 20 weeks. Visual chart, side effects at each dose, weight loss by dose, and blood test schedule.",
+    url: "https://lolahealth.com/blogs/longevity/retatrutide-dose-escalation-chart",
+    image: "https://lolahealth.com/cdn/shop/files/lola-health-logo.png",
+    provider: "Lola Health",
+    category: "Wellness",
+    date: "2026-05-17",
+  },
+  {
+    title: "The Best Exercise to Balance Men’s Hormones",
+    excerpt:
+      "30% of men in the UK don’t exercise. It’s a terrifying truth skyrocketing obesity, disease, and infertility rates. Unfortunately, people tend to focus on looking good and fitting into the right jean…",
+    url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/the-best-exercise-to-balance-men-s-hormones",
+    image:
+      "https://goodbodyclinic.com/cdn/shop/articles/fortune-vieyra-eCKIeu1Lkok-unsplash-scaled_927eb594-b85b-4f5c-bbd5-dd064379e814.jpg?v=1767692259",
+    provider: "Goodbody Clinic",
+    category: "Hormones",
+    date: "2026-05-16",
+  },
+  {
+    title: "How Does Stress Affect Testosterone Levels?",
+    excerpt:
+      "From stomach ache to acne, stress can affect your body in different ways. But how does it affect your testosterone levels? Read on to find out how your lifestyle could be affecting you.",
+    url: "https://www.medichecks.com/blogs/mental-health/how-can-stress-affect-testosterone-levels",
+    image:
+      "https://www.medichecks.com/cdn/shop/articles/how-can-stress-affect-testosterone-levels-114764.jpg?v=1679657822",
+    provider: "Medichecks",
+    category: "Hormones",
+    date: "2026-05-15",
+  },
+  {
+    title: "Vitamin D Blood Test",
+    excerpt:
+      "Learn what Vitamin D is, normal ranges, causes of deficiency, and how to optimise your levels for bone health, immunity, and overall wellbeing.",
+    url: "https://lolahealth.com/blogs/longevity/vitamin-d-blood-test-normal-ranges-causes-what-your-results-mean",
+    image: "https://lolahealth.com/cdn/shop/files/lola-health-logo.png",
+    provider: "Lola Health",
+    category: "Vitamins",
+    date: "2026-05-13",
+  },
+  {
+    title: "Top 10 Foods for a Healthy Liver",
+    excerpt:
+      "There has been a 400% rise in deaths due to liver disease in the UK since the 1970s. An increase in alcohol consumption, processed foods, refined sugars, and lack of exercise means liver…",
+    url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/top-10-foods-for-a-healthy-liver",
+    image:
+      "https://goodbodyclinic.com/cdn/shop/articles/Liver-health-blood-test_c45baba8-824f-4272-92c0-288d413989e7.jpg?v=1767692270",
+    provider: "Goodbody Clinic",
+    category: "Gut Health",
+    date: "2026-05-12",
+  },
+  {
+    title: "What Has Caused My Blood Sample Error?",
+    excerpt:
+      "A clotted blood sample can’t be tested, but it can be avoided. Here’s what causes it, how to prevent it, and what happens if your blood test fails.",
+    url: "https://www.medichecks.com/blogs/blood-testing/what-causes-blood-sample-errors",
+    image:
+      "https://www.medichecks.com/cdn/shop/articles/why-do-blood-samples-clot-what-it-means-and-how-to-avoid-it-622688.jpg?v=1778531647",
+    provider: "Medichecks",
+    category: "Wellness",
+    date: "2026-05-11",
+  },
+  {
+    title: "Corporate Health Screening | Employee Blood Testing",
+    excerpt:
+      "Corporate blood testing for employees: reduce absenteeism, improve productivity. At-home and on-site options for UK businesses.",
+    url: "https://lolahealth.com/blogs/longevity/corporate-wellness-blood-testing",
+    image: "https://lolahealth.com/cdn/shop/files/lola-health-logo.png",
+    provider: "Lola Health",
+    category: "Wellness",
+    date: "2026-05-09",
+  },
+  {
+    title: "Prostate Cancer: Prostate",
+    excerpt:
+      "‘In the UK 1 in 8 men will be diagnosed with prostate cancer.’ Prostate cancer is the most common cancer throughout Britain, with 143 men per day receiving a diagnosis and 11,500 dying yearly.…",
+    url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/prostate-cancer-prostate-specific-antigen-psa-test",
+    image:
+      "https://goodbodyclinic.com/cdn/shop/articles/prostate_ce8911bf-16fb-4261-b6ff-aa6769701220.png?v=1767692259",
+    provider: "Goodbody Clinic",
+    category: "Cancer Screening",
+    date: "2026-05-08",
+  },
+  {
+    title: "Are You Iron Deficient?",
+    excerpt:
+      "One in five women under 50 are iron deficient. But what is a low iron level for a woman and do your recommended iron levels change throughout your life?",
+    url: "https://www.medichecks.com/blogs/womens-health/are-you-iron-deficient",
+    image:
+      "https://www.medichecks.com/cdn/shop/articles/iron-levels-for-women-are-you-iron-deficient-478729.jpg?v=1753450647",
+    provider: "Medichecks",
+    category: "Vitamins",
+    date: "2026-05-07",
+  },
+  {
+    title: "Mercury Blood Test",
+    excerpt:
+      "What does your mercury blood test result mean? UK normal ranges, high and low causes, and what to do next. Expert guide from Lola Health.",
+    url: "https://lolahealth.com/blogs/longevity/mercury-blood-test-normal-ranges-causes-what-your-results-mean",
+    image: "https://lolahealth.com/cdn/shop/files/lola-health-logo.png",
+    provider: "Lola Health",
+    category: "Wellness",
+    date: "2026-05-05",
+  },
+  {
+    title: "The 5 Most Important Blood Tests for Women",
+    excerpt:
+      "Gain insight and take control of your health with at-home and in-clinic women’s blood tests. Order yours or find your nearest Goodbody Clinic today.",
+    url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/the-5-most-important-blood-tests-for-women",
+    image:
+      "https://goodbodyclinic.com/cdn/shop/articles/julian-bock-r_K7rCRTeUI-unsplash_5a63307c-0d6c-4d82-89f1-3f969ea18d8c.jpg?v=1772648709",
+    provider: "Goodbody Clinic",
+    category: "Wellness",
+    date: "2026-05-04",
+  },
+  {
+    title: "Serum vs. RBC Magnesium",
+    excerpt:
+      "What causes low magnesium levels? And are magnesium blood tests accurate? This article contains everything you need to know about magnesium testing.",
+    url: "https://www.medichecks.com/blogs/news/do-you-need-more-magnesium",
+    image:
+      "https://www.medichecks.com/cdn/shop/articles/serum-vs-rbc-magnesium-how-should-i-check-for-magnesium-deficiency-246610.jpg?v=1742590791",
+    provider: "Medichecks",
+    category: "Wellness",
+    date: "2026-05-03",
+  },
+  {
+    title: "How to Increase Thyroid Function for Long",
+    excerpt:
+      "Learn how to increase thyroid function with practical tests, diet, and lifestyle tips to boost energy and well-being.",
+    url: "https://lolahealth.com/blogs/longevity/how-to-increase-thyroid-function",
+    image:
+      "//lolahealth.com/cdn/shop/articles/how-to-increase-thyroid-function-thyroid-function.jpg?v=1772530466",
+    provider: "Lola Health",
+    category: "Thyroid",
+    date: "2026-05-01",
+  },
+  {
+    title: "Early Cancer Detection: Why Testing Early Saves Lives",
+    excerpt:
+      "Private cancer testing is the first step in early cancer detection, with the best blood tests identifying up to 70 solid organ cancers and 18 biomarkers.",
+    url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/early-cancer-detection-why-testing-early-saves-lives",
+    image:
+      "https://goodbodyclinic.com/cdn/shop/articles/blood_test_for_all_page_photo_0ef3e078-b57d-4cbc-8141-fc0379837b12.png?v=1771427294",
+    provider: "Goodbody Clinic",
+    category: "Cancer Screening",
+    date: "2026-04-30",
+  },
+  {
+    title: "Why Are Men's Testosterone Levels Decreasing?",
+    excerpt:
+      "Odds are your grandad had higher testosterone levels than you — but why?",
+    url: "https://www.medichecks.com/blogs/testosterone/why-do-gen-z-and-millennial-men-have-lower-testosterone",
+    image:
+      "https://www.medichecks.com/cdn/shop/articles/why-do-gen-z-and-millennial-men-have-lower-testosterone-levels-741771.jpg?v=1677179135",
+    provider: "Medichecks",
+    category: "Hormones",
+    date: "2026-04-29",
+  },
+  {
+    title: "Blood Test for Joint Pain: Inflammatory Markers and What They Mean",
+    excerpt:
+      "Joint pain is remarkably common in the UK, with approximately 17.8 million people living with a musculoskeletal condition. For most, the critical diagnostic question is whether their joint pain is…",
+    url: "https://lolahealth.com/blogs/longevity/blood-test-for-joint-pain",
+    image: "https://lolahealth.com/cdn/shop/files/lola-health-logo.png",
+    provider: "Lola Health",
+    category: "Wellness",
+    date: "2026-04-27",
+  },
+  {
+    title: "Bowel cancer early detection: How the FIT test finds cancer signs",
+    excerpt:
+      "Discover how bowel cancer early detection is enhanced by the FIT test, a simple blood test that identifies early signs of cancer for timely treatment.",
+    url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/bowel-cancer-early-detection-how-the-fit-test-finds-cancer-signs-18-80",
+    image:
+      "https://goodbodyclinic.com/cdn/shop/articles/9667220_50576cea-56fd-4cfe-852d-78770f346fb1.jpg?v=1767692200",
+    provider: "Goodbody Clinic",
+    category: "Cancer Screening",
+    date: "2026-04-26",
+  },
+  {
+    title: "4 Reasons You’re Not Building Muscle",
+    excerpt:
+      "Discover four of the most common reasons you’re not building muscle, plus how optimise your performance and build muscle safely.",
+    url: "https://www.medichecks.com/blogs/sports-performance/four-reasons-you-re-not-building-muscle",
+    image:
+      "https://www.medichecks.com/cdn/shop/articles/4-reasons-youre-not-gaining-muscle-185992.png?v=1775737710",
+    provider: "Medichecks",
+    category: "Wellness",
+    date: "2026-04-25",
+  },
+  {
+    title: "Albumin Normal Range: What Your Levels Mean",
+    excerpt:
+      "Albumin normal range explained simply. See levels by age, what high or low albumin means, and how to read your blood test results.",
+    url: "https://lolahealth.com/blogs/longevity/albumin-normal-range",
+    image:
+      "//lolahealth.com/cdn/shop/articles/featured-image-9ff5b5fc-54fa-442d-8d63-91c850b1f575.jpg?v=1763543017",
+    provider: "Lola Health",
+    category: "Wellness",
+    date: "2026-04-23",
+  },
+  {
+    title: "Full Body MRI Explained: What It Is and How It Works in Detail",
+    excerpt:
+      "Full body MRI explained: Discover how this comprehensive, non-invasive scan works to detect health issues early, including its role in cancer screening and health checks.",
+    url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/full-body-mri-explained-what-it-is-and-how-it-works-in-detail-35-75",
+    image:
+      "https://goodbodyclinic.com/cdn/shop/articles/Full-body-MRI-scan_a4cbee41-1680-45eb-bec1-9f8011f5c8f7.jpg?v=1767712790",
+    provider: "Goodbody Clinic",
+    category: "Cancer Screening",
+    date: "2026-04-22",
+  },
+  {
+    title: "5 Reasons You Could Be Tired All the Time",
+    excerpt:
+      "Do you find yourself feeling exhausted even when you have had a good night sleep? It can be difficult to know whether you are simply doing too much or an underlying reason is making you feel…",
+    url: "https://www.medichecks.com/blogs/general-health/5-reasons-you-could-be-tired-all-the-time",
+    image:
+      "https://www.medichecks.com/cdn/shop/articles/5-reasons-you-could-be-tired-all-the-time-323537.jpg?v=1671726809",
+    provider: "Medichecks",
+    category: "Mental Health",
+    date: "2026-04-21",
+  },
+  {
+    title: "Hormone Profile Blood Test",
+    excerpt:
+      "What does your hormone profile blood test result mean? UK normal ranges for testosterone, oestrogen, thyroid and more. Expert guide from Lola Health.",
+    url: "https://lolahealth.com/blogs/longevity/hormone-profile-blood-test-normal-ranges-causes-what-your-results-mean",
+    image: "https://lolahealth.com/cdn/shop/files/lola-health-logo.png",
+    provider: "Lola Health",
+    category: "Thyroid",
+    date: "2026-04-19",
+  },
+  {
+    title: "How to Avoid Overdoing Supplements",
+    excerpt:
+      "71% of the UK population take supplements, and since Covid-19 hit, their use has increased by 3.5 million. Although supplements can be highly beneficial, misusing them can lead to severe health…",
+    url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/how-to-avoid-overdoing-supplements",
+    image:
+      "https://goodbodyclinic.com/cdn/shop/articles/leohoho-DRchVK5apjw-unsplash-scaled_e1e04db6-bf10-4285-8440-cad487787aa2.jpg?v=1767692250",
+    provider: "Goodbody Clinic",
+    category: "Heart Health",
+    date: "2026-04-18",
+  },
+  {
+    title: "What is infertility?",
+    excerpt:
+      "Infertility affects nearly one in seven couples. We look at what infertility is, how it is investigated and where to get support.",
+    url: "https://www.medichecks.com/blogs/fertility/what-is-infertility",
+    image:
+      "https://www.medichecks.com/cdn/shop/articles/what-is-infertility-232936.jpg?v=1671726223",
+    provider: "Medichecks",
+    category: "Hormones",
+    date: "2026-04-17",
+  },
+  {
+    title: "Best Supplements for Endurance and Longevity",
+    excerpt:
+      "Unlock peak performance with the best supplements for endurance. Our guide explores science-backed nutrients that boost stamina and support long-term health.",
+    url: "https://lolahealth.com/blogs/longevity/best-supplements-for-endurance",
+    image:
+      "//lolahealth.com/cdn/shop/articles/featured-image-e98e40f3-d550-4cff-8cc0-d03960711c29.jpg?v=1759131892",
+    provider: "Lola Health",
+    category: "Wellness",
+    date: "2026-04-15",
+  },
+  {
+    title: "Pregnancy Blood Tests: What is Beta HCG and why take a blood test?",
+    excerpt:
+      "If you think you may be pregnant, the most common way to tell is with a urine test kit completed at home. But did you know that you can also check your blood to see if you are pregnant, and that a…",
+    url: "https://goodbodyclinic.com/blogs/goodbody-health-hub/pregnancy-blood-tests-what-is-beta-hcg-and-why-take-a-blood-test",
+    image:
+      "https://goodbodyclinic.com/cdn/shop/articles/Untitled-design-2_b6c3e5fb-af8f-407e-852b-7b559a1db8aa.jpg?v=1767692252",
+    provider: "Goodbody Clinic",
+    category: "Hormones",
+    date: "2026-04-14",
+  },
 ];
 
 export const getCategories = (): string[] => {
-  const set = new Set<string>(['All Articles']);
-  blogArticles.forEach(a => set.add(a.category));
+  const set = new Set<string>(["All Articles"]);
+  blogArticles.forEach((a) => set.add(a.category));
   return Array.from(set);
 };
 
 export const filterByCategory = (category: string): BlogArticle[] => {
-  if (category === 'All Articles') return blogArticles;
-  return blogArticles.filter(a => a.category === category);
+  if (category === "All Articles") return blogArticles;
+  return blogArticles.filter((a) => a.category === category);
 };
 
 export const getProviders = (): string[] =>
-  Array.from(new Set(blogArticles.map(a => a.provider))).sort();
+  Array.from(new Set(blogArticles.map((a) => a.provider))).sort();
 
-export const getFeaturedArticles = (): BlogArticle[] => blogArticles.slice(0, 3);
+export const getFeaturedArticles = (): BlogArticle[] =>
+  blogArticles.slice(0, 3);
 export const getRecentArticles = (): BlogArticle[] => blogArticles.slice(3);

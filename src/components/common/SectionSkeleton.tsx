@@ -29,7 +29,9 @@ export const SectionSkeleton = ({
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-8 xl:px-16">
         <div className="max-w-7xl mx-auto animate-pulse">
           <div className={`h-3 w-40 rounded-full ${block}`} />
-          <div className={`h-8 sm:h-10 w-2/3 max-w-xl rounded-lg mt-4 ${block}`} />
+          <div
+            className={`h-8 sm:h-10 w-2/3 max-w-xl rounded-lg mt-4 ${block}`}
+          />
           <div className={`h-4 w-1/2 max-w-md rounded-md mt-3 ${block}`} />
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-8">

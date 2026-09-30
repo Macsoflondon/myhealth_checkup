@@ -8,7 +8,8 @@ export const Route = createFileRoute("/cookies")({
   head: () =>
     buildRouteHead({
       title: "Cookie Policy | myhealth checkup",
-      description: "The cookies myhealth checkup uses, what each one does and how to manage your preferences.",
+      description:
+        "The cookies myhealth checkup uses, what each one does and how to manage your preferences.",
       path: "/cookies",
     }),
   component: CookiePolicyPage,

@@ -4,9 +4,9 @@ import { ApiResponse } from "./base";
 export interface NotificationHistory {
   id: string;
   user_id: string;
-  notification_type: 'email' | 'sms';
+  notification_type: "email" | "sms";
   notification_category: string;
-  status: 'sent' | 'failed' | 'pending';
+  status: "sent" | "failed" | "pending";
   recipient: string;
   subject?: string;
   error_message?: string;
@@ -19,12 +19,14 @@ export const notificationHistoryApi = {
   /**
    * Get all notification history for the current user
    */
-  async getHistory(userId: string): Promise<ApiResponse<NotificationHistory[]>> {
+  async getHistory(
+    userId: string,
+  ): Promise<ApiResponse<NotificationHistory[]>> {
     const { data, error, count } = await supabase
-      .from('notification_history')
-      .select('*', { count: 'exact' })
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false });
+      .from("notification_history")
+      .select("*", { count: "exact" })
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
 
     return { data: data as NotificationHistory[] | null, error, count };
   },
@@ -35,16 +37,16 @@ export const notificationHistoryApi = {
   async getHistoryPaginated(
     userId: string,
     page: number = 1,
-    pageSize: number = 20
+    pageSize: number = 20,
   ): Promise<ApiResponse<NotificationHistory[]>> {
     const from = (page - 1) * pageSize;
     const to = from + pageSize - 1;
 
     const { data, error, count } = await supabase
-      .from('notification_history')
-      .select('*', { count: 'exact' })
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false })
+      .from("notification_history")
+      .select("*", { count: "exact" })
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false })
       .range(from, to);
 
     return { data: data as NotificationHistory[] | null, error, count };
@@ -55,14 +57,14 @@ export const notificationHistoryApi = {
    */
   async getHistoryByType(
     userId: string,
-    type: 'email' | 'sms'
+    type: "email" | "sms",
   ): Promise<ApiResponse<NotificationHistory[]>> {
     const { data, error, count } = await supabase
-      .from('notification_history')
-      .select('*', { count: 'exact' })
-      .eq('user_id', userId)
-      .eq('notification_type', type)
-      .order('created_at', { ascending: false });
+      .from("notification_history")
+      .select("*", { count: "exact" })
+      .eq("user_id", userId)
+      .eq("notification_type", type)
+      .order("created_at", { ascending: false });
 
     return { data: data as NotificationHistory[] | null, error, count };
   },
@@ -72,14 +74,14 @@ export const notificationHistoryApi = {
    */
   async getHistoryByStatus(
     userId: string,
-    status: 'sent' | 'failed' | 'pending'
+    status: "sent" | "failed" | "pending",
   ): Promise<ApiResponse<NotificationHistory[]>> {
     const { data, error, count } = await supabase
-      .from('notification_history')
-      .select('*', { count: 'exact' })
-      .eq('user_id', userId)
-      .eq('status', status)
-      .order('created_at', { ascending: false });
+      .from("notification_history")
+      .select("*", { count: "exact" })
+      .eq("user_id", userId)
+      .eq("status", status)
+      .order("created_at", { ascending: false });
 
     return { data: data as NotificationHistory[] | null, error, count };
   },
@@ -88,10 +90,10 @@ export const notificationHistoryApi = {
    * Create a notification history entry
    */
   async createEntry(
-    entry: Omit<NotificationHistory, 'id' | 'created_at' | 'updated_at'>
+    entry: Omit<NotificationHistory, "id" | "created_at" | "updated_at">,
   ): Promise<ApiResponse<NotificationHistory>> {
     const { data, error } = await supabase
-      .from('notification_history')
+      .from("notification_history")
       .insert(entry)
       .select()
       .single();

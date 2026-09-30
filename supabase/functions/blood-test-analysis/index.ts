@@ -3,7 +3,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
 interface BiomarkerReading {
@@ -51,7 +52,10 @@ serve(async (req) => {
     if (!authHeader) {
       return new Response(
         JSON.stringify({ error: "Authorization header required" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        {
+          status: 401,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
@@ -59,16 +63,19 @@ serve(async (req) => {
     const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
     const supabaseKey = Deno.env.get("SUPABASE_ANON_KEY")!;
     const supabase = createClient(supabaseUrl, supabaseKey, {
-      global: { headers: { Authorization: authHeader } }
+      global: { headers: { Authorization: authHeader } },
     });
 
     // Verify user
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
     if (authError || !user) {
-      return new Response(
-        JSON.stringify({ error: "Authentication failed" }),
-        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "Authentication failed" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
 
     // Parse request
@@ -77,28 +84,41 @@ serve(async (req) => {
     if (!readings || !Array.isArray(readings) || readings.length === 0) {
       return new Response(
         JSON.stringify({ error: "At least one biomarker reading is required" }),
-        { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
     // Sanitize inputs
-    const sanitizedReadings = readings.slice(0, 50).map(r => ({
+    const sanitizedReadings = readings.slice(0, 50).map((r) => ({
       biomarkerName: String(r.biomarkerName).substring(0, 100).trim(),
       value: Number(r.value),
-      unit: String(r.unit || "").substring(0, 20).trim()
+      unit: String(r.unit || "")
+        .substring(0, 20)
+        .trim(),
     }));
 
     // Fetch biomarker definitions from library
     // Strip PostgREST filter-grammar characters (commas, dots, parentheses, quotes,
     // wildcards, backslashes) so user input can only ever be a literal search term.
     const biomarkerNames = sanitizedReadings
-      .map(r => r.biomarkerName.toLowerCase().replace(/[^\p{L}\p{N} \-]/gu, " ").replace(/\s+/g, " ").trim())
-      .filter(n => n.length > 0);
+      .map((r) =>
+        r.biomarkerName
+          .toLowerCase()
+          .replace(/[^\p{L}\p{N} \-]/gu, " ")
+          .replace(/\s+/g, " ")
+          .trim(),
+      )
+      .filter((n) => n.length > 0);
     const { data: biomarkerLibrary } = biomarkerNames.length
       ? await supabase
           .from("biomarkers_library")
           .select("*")
-          .or(biomarkerNames.map(n => `biomarker_name.ilike.%${n}%`).join(","))
+          .or(
+            biomarkerNames.map((n) => `biomarker_name.ilike.%${n}%`).join(","),
+          )
       : { data: null };
 
     // Create lookup map
@@ -114,7 +134,10 @@ serve(async (req) => {
       .from("biomarker_readings")
       .select("biomarker_name, value, recorded_at, unit, status")
       .eq("user_id", user.id)
-      .in("biomarker_name", sanitizedReadings.map(r => r.biomarkerName))
+      .in(
+        "biomarker_name",
+        sanitizedReadings.map((r) => r.biomarkerName),
+      )
       .order("recorded_at", { ascending: false })
       .limit(100);
 
@@ -128,32 +151,35 @@ serve(async (req) => {
           value: reading.value,
           recorded_at: reading.recorded_at,
           unit: reading.unit,
-          status: reading.status
+          status: reading.status,
         });
       }
     }
 
     // Build context for AI
-    const readingsContext = sanitizedReadings.map(reading => {
+    const readingsContext = sanitizedReadings.map((reading) => {
       const info = biomarkerInfoMap[reading.biomarkerName.toLowerCase()];
       const history = historyMap[reading.biomarkerName.toLowerCase()] || [];
-      
+
       return {
         name: reading.biomarkerName,
         currentValue: reading.value,
         unit: reading.unit || info?.unit_of_measurement || "",
-        referenceRange: gender === "female" 
-          ? info?.normal_range_female || info?.normal_range_male || "Not available"
-          : info?.normal_range_male || "Not available",
+        referenceRange:
+          gender === "female"
+            ? info?.normal_range_female ||
+              info?.normal_range_male ||
+              "Not available"
+            : info?.normal_range_male || "Not available",
         description: info?.description || "No description available",
         clinicalSignificance: info?.clinical_significance || "",
         category: info?.category || "General",
         lifestyleFactors: info?.lifestyle_factors || [],
         relatedConditions: info?.related_conditions || [],
-        previousReadings: history.slice(0, 5).map(h => ({
+        previousReadings: history.slice(0, 5).map((h) => ({
           value: h.value,
-          date: h.recorded_at
-        }))
+          date: h.recorded_at,
+        })),
       };
     });
 
@@ -195,91 +221,127 @@ Please provide your analysis using the suggest_analysis function with structured
       throw new Error("LOVABLE_API_KEY is not configured");
     }
 
-    const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "google/gemini-3-flash-preview",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt }
-        ],
-        tools: [
-          {
-            type: "function",
-            function: {
-              name: "suggest_analysis",
-              description: "Return structured blood test analysis",
-              parameters: {
-                type: "object",
-                properties: {
-                  medicalDisclaimer: {
-                    type: "string",
-                    description: "Clear medical disclaimer about the limitations of this analysis"
-                  },
-                  overallSummary: {
-                    type: "string",
-                    description: "2-3 sentence summary of the results"
-                  },
-                  biomarkerAnalysis: {
-                    type: "array",
-                    items: {
-                      type: "object",
-                      properties: {
-                        name: { type: "string" },
-                        value: { type: "number" },
-                        unit: { type: "string" },
-                        status: { 
-                          type: "string", 
-                          enum: ["normal", "low", "high", "borderline-low", "borderline-high", "unknown"]
+    const aiResponse = await fetch(
+      "https://ai.gateway.lovable.dev/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-3-flash-preview",
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userPrompt },
+          ],
+          tools: [
+            {
+              type: "function",
+              function: {
+                name: "suggest_analysis",
+                description: "Return structured blood test analysis",
+                parameters: {
+                  type: "object",
+                  properties: {
+                    medicalDisclaimer: {
+                      type: "string",
+                      description:
+                        "Clear medical disclaimer about the limitations of this analysis",
+                    },
+                    overallSummary: {
+                      type: "string",
+                      description: "2-3 sentence summary of the results",
+                    },
+                    biomarkerAnalysis: {
+                      type: "array",
+                      items: {
+                        type: "object",
+                        properties: {
+                          name: { type: "string" },
+                          value: { type: "number" },
+                          unit: { type: "string" },
+                          status: {
+                            type: "string",
+                            enum: [
+                              "normal",
+                              "low",
+                              "high",
+                              "borderline-low",
+                              "borderline-high",
+                              "unknown",
+                            ],
+                          },
+                          normalRange: { type: "string" },
+                          explanation: { type: "string" },
+                          implications: { type: "string" },
+                          trend: {
+                            type: "string",
+                            enum: [
+                              "improving",
+                              "stable",
+                              "declining",
+                              "no-history",
+                              "insufficient-data",
+                            ],
+                          },
+                          recommendations: {
+                            type: "array",
+                            items: { type: "string" },
+                          },
                         },
-                        normalRange: { type: "string" },
-                        explanation: { type: "string" },
-                        implications: { type: "string" },
-                        trend: { 
-                          type: "string", 
-                          enum: ["improving", "stable", "declining", "no-history", "insufficient-data"]
-                        },
-                        recommendations: {
-                          type: "array",
-                          items: { type: "string" }
-                        }
+                        required: ["name", "value", "status", "explanation"],
                       },
-                      required: ["name", "value", "status", "explanation"]
-                    }
+                    },
+                    lifestyleRecommendations: {
+                      type: "array",
+                      items: { type: "string" },
+                    },
+                    whenToSeeDoctor: {
+                      type: "string",
+                      description:
+                        "Guidance on when professional medical advice is recommended",
+                    },
                   },
-                  lifestyleRecommendations: {
-                    type: "array",
-                    items: { type: "string" }
-                  },
-                  whenToSeeDoctor: {
-                    type: "string",
-                    description: "Guidance on when professional medical advice is recommended"
-                  }
+                  required: [
+                    "medicalDisclaimer",
+                    "overallSummary",
+                    "biomarkerAnalysis",
+                    "whenToSeeDoctor",
+                  ],
                 },
-                required: ["medicalDisclaimer", "overallSummary", "biomarkerAnalysis", "whenToSeeDoctor"]
-              }
-            }
-          }
-        ],
-        tool_choice: { type: "function", function: { name: "suggest_analysis" } }
-      }),
-    });
+              },
+            },
+          ],
+          tool_choice: {
+            type: "function",
+            function: { name: "suggest_analysis" },
+          },
+        }),
+      },
+    );
 
     if (!aiResponse.ok) {
       if (aiResponse.status === 429) {
         return new Response(
-          JSON.stringify({ error: "Rate limit exceeded. Please try again in a few moments." }),
-          { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          JSON.stringify({
+            error: "Rate limit exceeded. Please try again in a few moments.",
+          }),
+          {
+            status: 429,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
         );
       }
       if (aiResponse.status === 402) {
         return new Response(
-          JSON.stringify({ error: "Service temporarily unavailable. Please try again later." }),
-          { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+          JSON.stringify({
+            error: "Service temporarily unavailable. Please try again later.",
+          }),
+          {
+            status: 402,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
         );
       }
       const errorText = await aiResponse.text();
@@ -288,7 +350,7 @@ Please provide your analysis using the suggest_analysis function with structured
     }
 
     const aiData = await aiResponse.json();
-    
+
     // Extract structured response from tool call
     let analysisResult;
     const toolCall = aiData.choices?.[0]?.message?.tool_calls?.[0];
@@ -306,9 +368,9 @@ Please provide your analysis using the suggest_analysis function with structured
     if (analysisResult.biomarkerAnalysis) {
       for (const analysis of analysisResult.biomarkerAnalysis) {
         const history = historyMap[analysis.name.toLowerCase()] || [];
-        analysis.previousValues = history.slice(0, 5).map(h => ({
+        analysis.previousValues = history.slice(0, 5).map((h) => ({
           value: h.value,
-          date: h.recorded_at
+          date: h.recorded_at,
         }));
       }
     }
@@ -316,27 +378,31 @@ Please provide your analysis using the suggest_analysis function with structured
     // Store the analysis in health_queries for history
     await supabase.from("health_queries").insert({
       user_id: user.id,
-      query_text: `Blood test analysis: ${sanitizedReadings.map(r => r.biomarkerName).join(", ")}`,
+      query_text: `Blood test analysis: ${sanitizedReadings.map((r) => r.biomarkerName).join(", ")}`,
       ai_response: analysisResult,
       age: age || null,
-      gender: gender || null
+      gender: gender || null,
     });
 
-    console.log(`Blood test analysis completed for user ${user.id} with ${sanitizedReadings.length} biomarkers`);
-
-    return new Response(
-      JSON.stringify(analysisResult),
-      { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    console.log(
+      `Blood test analysis completed for user ${user.id} with ${sanitizedReadings.length} biomarkers`,
     );
 
+    return new Response(JSON.stringify(analysisResult), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   } catch (error) {
     console.error("Blood test analysis error:", error);
     return new Response(
-      JSON.stringify({ 
+      JSON.stringify({
         error: "Analysis failed",
-        medicalDisclaimer: "This service is temporarily unavailable. Please consult a healthcare professional for interpretation of your test results."
+        medicalDisclaimer:
+          "This service is temporarily unavailable. Please consult a healthcare professional for interpretation of your test results.",
       }),
-      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
     );
   }
 });

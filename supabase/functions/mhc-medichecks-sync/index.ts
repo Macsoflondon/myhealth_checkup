@@ -25,8 +25,15 @@ const CLINIC_FEE = 35;
 const NURSE_FEE = 59;
 
 function parseTags(tags: unknown) {
-  const raw = Array.isArray(tags) ? tags.join(",") : (typeof tags === "string" ? tags : "");
-  const t = raw.split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
+  const raw = Array.isArray(tags)
+    ? tags.join(",")
+    : typeof tags === "string"
+      ? tags
+      : "";
+  const t = raw
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
   const num = (prefix: string) => {
     const hit = t.find((x) => x.startsWith(prefix));
     if (!hit) return null;
@@ -36,9 +43,9 @@ function parseTags(tags: unknown) {
   const biomarkers = num("info_biomarkers_");
   const results = num("info_results_");
   const homeKit = t.includes("collection_method_blood_delivery");
-  const clinic  = t.includes("collection_method_blood_in-store");
-  const nurse   = t.includes("collection_method_blood_nurse-visit");
-  const pro     = t.includes("collection_method_blood_pro");
+  const clinic = t.includes("collection_method_blood_in-store");
+  const nurse = t.includes("collection_method_blood_nurse-visit");
+  const pro = t.includes("collection_method_blood_pro");
   let sample: string | null = null;
   if (t.some((x) => x.includes("info_sample_blood"))) sample = "Blood";
   else if (t.some((x) => x.includes("info_sample_urine"))) sample = "Urine";
@@ -53,7 +60,10 @@ function stripHtml(html: string | null | undefined): string | null {
     .replace(/<style[\s\S]*?<\/style>/gi, " ")
     .replace(/<script[\s\S]*?<\/script>/gi, " ")
     .replace(/<[^>]+>/g, " ")
-    .replace(/&amp;/g, "&").replace(/&nbsp;/g, " ").replace(/&#39;/g, "'").replace(/&quot;/g, '"')
+    .replace(/&amp;/g, "&")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"')
     .replace(/&#8211;|&ndash;/g, "-")
     .replace(/\s+/g, " ")
     .trim();
@@ -63,11 +73,17 @@ function stripHtml(html: string | null | undefined): string | null {
 Deno.serve(async (req: Request) => {
   const url = new URL(req.url);
   if (url.searchParams.get("secret") !== SECRET) {
-    return new Response(JSON.stringify({ error: "unauthorised" }), { status: 401, headers: { "Content-Type": "application/json" } });
+    return new Response(JSON.stringify({ error: "unauthorised" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   const page = parseInt(url.searchParams.get("page") ?? "1", 10);
-  const limit = Math.min(parseInt(url.searchParams.get("limit") ?? "250", 10), 250);
+  const limit = Math.min(
+    parseInt(url.searchParams.get("limit") ?? "250", 10),
+    250,
+  );
   const dryRun = url.searchParams.get("dry") === "1";
 
   const supabase = createClient(
@@ -79,20 +95,41 @@ Deno.serve(async (req: Request) => {
   let runId: string | null = null;
   if (!dryRun) {
     try {
-      const { data } = await supabase.from("scrape_runs")
-        .insert({ provider_id: PROVIDER, scraper_function: "mhc-medichecks-sync", status: "running", started_at: started }).select("id").single();
+      const { data } = await supabase
+        .from("scrape_runs")
+        .insert({
+          provider_id: PROVIDER,
+          scraper_function: "mhc-medichecks-sync",
+          status: "running",
+          started_at: started,
+        })
+        .select("id")
+        .single();
       runId = data?.id ?? null;
-    } catch (_e) { /* non-fatal */ }
+    } catch (_e) {
+      /* non-fatal */
+    }
   }
 
-  let seen = 0, updated = 0, inserted = 0, skippedJunk = 0, noPrice = 0, tagMissTotal = 0;
+  let seen = 0,
+    updated = 0,
+    inserted = 0,
+    skippedJunk = 0,
+    noPrice = 0,
+    tagMissTotal = 0;
   const errors: string[] = [];
   const sample: unknown[] = [];
 
   try {
-    const res = await fetch(`${BASE}/products.json?limit=${limit}&page=${page}`, {
-      headers: { "User-Agent": "myhealthcheckup-comparison-bot/1.0 (+https://myhealthcheckup.co.uk)" },
-    });
+    const res = await fetch(
+      `${BASE}/products.json?limit=${limit}&page=${page}`,
+      {
+        headers: {
+          "User-Agent":
+            "myhealthcheckup-comparison-bot/1.0 (+https://myhealthcheckup.co.uk)",
+        },
+      },
+    );
     if (!res.ok) throw new Error(`products.json HTTP ${res.status}`);
     const body = await res.json();
     const products: any[] = body?.products ?? [];
@@ -105,22 +142,30 @@ Deno.serve(async (req: Request) => {
       if (/^clinic-visit/i.test(handle) || /gift ?card/i.test(p.title ?? "")) {
         skippedJunk++;
         if (!dryRun) {
-          await supabase.from("provider_tests").update({ is_active: false })
-            .eq("provider_id", PROVIDER).eq("url", productUrl);
+          await supabase
+            .from("provider_tests")
+            .update({ is_active: false })
+            .eq("provider_id", PROVIDER)
+            .eq("url", productUrl);
         }
         continue;
       }
 
       const tg = parseTags(p.tags);
       const basePrice = parseFloat(p?.variants?.[0]?.price ?? "");
-      if (!Number.isFinite(basePrice) || basePrice <= 0) { noPrice++; continue; }
+      if (!Number.isFinite(basePrice) || basePrice <= 0) {
+        noPrice++;
+        continue;
+      }
 
       const freeOption = tg.homeKit || tg.pro;
       const feeCandidates: number[] = [];
       if (freeOption) feeCandidates.push(0);
       if (tg.clinic) feeCandidates.push(CLINIC_FEE);
       if (tg.nurse) feeCandidates.push(NURSE_FEE);
-      const collectionFee = feeCandidates.length ? Math.min(...feeCandidates) : 0;
+      const collectionFee = feeCandidates.length
+        ? Math.min(...feeCandidates)
+        : 0;
 
       const descriptionScraped = stripHtml(p.body_html);
       const row: Record<string, unknown> = {
@@ -149,8 +194,10 @@ Deno.serve(async (req: Request) => {
         row.description_generated_at = new Date().toISOString();
       }
 
-      if (tg.biomarkers != null) row.biomarker_count = tg.biomarkers; else tagMissTotal++;
-      if (tg.sample != null) row.sample_type = tg.sample; else tagMissTotal++;
+      if (tg.biomarkers != null) row.biomarker_count = tg.biomarkers;
+      else tagMissTotal++;
+      if (tg.sample != null) row.sample_type = tg.sample;
+      else tagMissTotal++;
       if (tg.results != null) {
         row.turnaround_days = tg.results;
         row.turnaround_days_text = `Results in ${tg.results} working days (estimated)`;
@@ -159,32 +206,69 @@ Deno.serve(async (req: Request) => {
         tagMissTotal++;
       }
 
-      if (dryRun) { if (sample.length < 5) sample.push({ handle, title: p.title, basePrice, ...tg }); continue; }
+      if (dryRun) {
+        if (sample.length < 5)
+          sample.push({ handle, title: p.title, basePrice, ...tg });
+        continue;
+      }
 
-      const { data: existing } = await supabase.from("provider_tests")
-        .select("id").eq("provider_id", PROVIDER).eq("url", productUrl).maybeSingle();
+      const { data: existing } = await supabase
+        .from("provider_tests")
+        .select("id")
+        .eq("provider_id", PROVIDER)
+        .eq("url", productUrl)
+        .maybeSingle();
 
       let rowId: string | null = null;
       if (existing?.id) {
-        const { error } = await supabase.from("provider_tests").update(row).eq("id", existing.id);
-        if (error) { errors.push(`${handle}: ${error.message}`); continue; }
-        rowId = existing.id; updated++;
+        const { error } = await supabase
+          .from("provider_tests")
+          .update(row)
+          .eq("id", existing.id);
+        if (error) {
+          errors.push(`${handle}: ${error.message}`);
+          continue;
+        }
+        rowId = existing.id;
+        updated++;
       } else {
-        const { data: ins, error } = await supabase.from("provider_tests").insert(row).select("id").single();
+        const { data: ins, error } = await supabase
+          .from("provider_tests")
+          .insert(row)
+          .select("id")
+          .single();
         if (!error) {
-          rowId = ins?.id ?? null; inserted++;
-        } else if (error.code === "23505" || /duplicate key/i.test(error.message)) {
-          const { data: conflict } = await supabase.from("provider_tests").select("id")
-            .eq("provider_id", PROVIDER).eq("test_name", p.title).eq("is_active", true).maybeSingle();
+          rowId = ins?.id ?? null;
+          inserted++;
+        } else if (
+          error.code === "23505" ||
+          /duplicate key/i.test(error.message)
+        ) {
+          const { data: conflict } = await supabase
+            .from("provider_tests")
+            .select("id")
+            .eq("provider_id", PROVIDER)
+            .eq("test_name", p.title)
+            .eq("is_active", true)
+            .maybeSingle();
           if (conflict?.id) {
-            const { error: updErr } = await supabase.from("provider_tests").update(row).eq("id", conflict.id);
-            if (updErr) { errors.push(`${handle}: ${updErr.message}`); continue; }
-            rowId = conflict.id; updated++;
+            const { error: updErr } = await supabase
+              .from("provider_tests")
+              .update(row)
+              .eq("id", conflict.id);
+            if (updErr) {
+              errors.push(`${handle}: ${updErr.message}`);
+              continue;
+            }
+            rowId = conflict.id;
+            updated++;
           } else {
-            errors.push(`${handle}: ${error.message}`); continue;
+            errors.push(`${handle}: ${error.message}`);
+            continue;
           }
         } else {
-          errors.push(`${handle}: ${error.message}`); continue;
+          errors.push(`${handle}: ${error.message}`);
+          continue;
         }
       }
 
@@ -199,41 +283,75 @@ Deno.serve(async (req: Request) => {
           turnaround_days: tg.results,
           scrape_source_url: productUrl,
         });
-      } catch (_e) { /* non-fatal */ }
+      } catch (_e) {
+        /* non-fatal */
+      }
     }
 
     const hasMore = products.length === limit;
     if (runId) {
       try {
-        await supabase.from("scrape_runs").update({
-          status: errors.length ? "partial" : "success",
-          finished_at: new Date().toISOString(),
-          tests_seen: seen, tests_updated: updated + inserted,
-          errors: errors.slice(0, 20),
-          metadata: { skipped_junk: skippedJunk, skipped_no_price: noPrice, tag_miss_total: tagMissTotal, page, dry: dryRun },
-        }).eq("id", runId);
-      } catch (_e) { /* non-fatal */ }
+        await supabase
+          .from("scrape_runs")
+          .update({
+            status: errors.length ? "partial" : "success",
+            finished_at: new Date().toISOString(),
+            tests_seen: seen,
+            tests_updated: updated + inserted,
+            errors: errors.slice(0, 20),
+            metadata: {
+              skipped_junk: skippedJunk,
+              skipped_no_price: noPrice,
+              tag_miss_total: tagMissTotal,
+              page,
+              dry: dryRun,
+            },
+          })
+          .eq("id", runId);
+      } catch (_e) {
+        /* non-fatal */
+      }
     }
 
-    return new Response(JSON.stringify({
-      ok: true, dry: dryRun, page, seen, updated, inserted,
-      skipped_clinic_junk: skippedJunk, skipped_no_price: noPrice, tag_miss_total: tagMissTotal,
-      errors: errors.slice(0, 10), has_more: hasMore, next_page: hasMore ? page + 1 : null,
-      sample,
-    }), { headers: { "Content-Type": "application/json" } });
-
+    return new Response(
+      JSON.stringify({
+        ok: true,
+        dry: dryRun,
+        page,
+        seen,
+        updated,
+        inserted,
+        skipped_clinic_junk: skippedJunk,
+        skipped_no_price: noPrice,
+        tag_miss_total: tagMissTotal,
+        errors: errors.slice(0, 10),
+        has_more: hasMore,
+        next_page: hasMore ? page + 1 : null,
+        sample,
+      }),
+      { headers: { "Content-Type": "application/json" } },
+    );
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
     if (runId) {
       try {
-        await supabase.from("scrape_runs").update({
-          status: "error", finished_at: new Date().toISOString(),
-          tests_seen: seen, tests_updated: updated + inserted, errors: [{ message: msg }],
-        }).eq("id", runId);
-      } catch (_e) { /* non-fatal */ }
+        await supabase
+          .from("scrape_runs")
+          .update({
+            status: "error",
+            finished_at: new Date().toISOString(),
+            tests_seen: seen,
+            tests_updated: updated + inserted,
+            errors: [{ message: msg }],
+          })
+          .eq("id", runId);
+      } catch (_e) {
+        /* non-fatal */
+      }
     }
     return new Response(JSON.stringify({ ok: false, error: msg, page, seen }), {
-      status: 500, headers: { "Content-Type": "application/json" },
+      status: 500,
+      headers: { "Content-Type": "application/json" },
     });
   }
 });

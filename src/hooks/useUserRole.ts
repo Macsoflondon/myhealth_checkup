@@ -3,19 +3,19 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/context/AuthContext";
 import { logger } from "@/lib/logger";
 
-export type UserRole = 'admin' | 'moderator' | 'user';
+export type UserRole = "admin" | "moderator" | "user";
 
 /**
  * SECURITY WARNING: Client-side role checking for UI display only
- * 
+ *
  * This hook fetches user roles from the database for UI rendering purposes.
  * NEVER use this hook alone for authorization of sensitive operations.
- * 
+ *
  * For server-side operations (edge functions, RLS policies):
  * - Always validate roles using the has_role() database function
  * - Never trust client-side role checks for authorization
  * - Implement proper server-side validation in edge functions
- * 
+ *
  * Example: In an edge function for admin operations:
  * ```
  * const { data: isAdmin } = await supabase.rpc('has_role', {
@@ -41,16 +41,16 @@ export function useUserRole() {
     const fetchRoles = async () => {
       try {
         const { data, error } = await supabase
-          .from('user_roles')
-          .select('role')
-          .eq('user_id', user.id);
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", user.id);
 
         if (error) throw error;
-        
-        setRoles(data?.map(r => r.role as UserRole) || ['user']);
+
+        setRoles(data?.map((r) => r.role as UserRole) || ["user"]);
       } catch (error) {
-        logger.error('Error fetching user roles:', error);
-        setRoles(['user']); // Default to user role
+        logger.error("Error fetching user roles:", error);
+        setRoles(["user"]); // Default to user role
       } finally {
         setIsLoading(false);
       }
@@ -63,14 +63,14 @@ export function useUserRole() {
     return roles.includes(role);
   };
 
-  const isAdmin = hasRole('admin');
-  const isModerator = hasRole('moderator');
+  const isAdmin = hasRole("admin");
+  const isModerator = hasRole("moderator");
 
   return {
     roles,
     hasRole,
     isAdmin,
     isModerator,
-    isLoading
+    isLoading,
   };
 }

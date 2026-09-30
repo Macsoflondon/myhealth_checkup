@@ -8,7 +8,8 @@ export const Route = createFileRoute("/test/well-woman")({
   head: () =>
     buildRouteHead({
       title: "Well Woman Blood Tests Compared | myhealth checkup",
-      description: "Compare well woman health panels from UK providers: biomarkers covered, sample methods, turnaround and prices in GBP.",
+      description:
+        "Compare well woman health panels from UK providers: biomarkers covered, sample methods, turnaround and prices in GBP.",
       path: "/test/well-woman",
     }),
   component: WellWomanTestPage,

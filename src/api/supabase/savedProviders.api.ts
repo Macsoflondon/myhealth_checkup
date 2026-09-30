@@ -14,7 +14,9 @@ class SavedProvidersApi {
   /**
    * Get all saved providers for a user
    */
-  async getUserSavedProviders(userId: string): Promise<ApiResponse<SavedProvider[]>> {
+  async getUserSavedProviders(
+    userId: string,
+  ): Promise<ApiResponse<SavedProvider[]>> {
     try {
       const { data, error } = await supabase
         .from("saved_providers")
@@ -35,7 +37,7 @@ class SavedProvidersApi {
     userId: string,
     providerId: string,
     providerName: string,
-    notes?: string
+    notes?: string,
   ): Promise<ApiResponse<SavedProvider>> {
     try {
       const { data, error } = await supabase
@@ -44,7 +46,7 @@ class SavedProvidersApi {
           user_id: userId,
           provider_id: providerId,
           provider_name: providerName,
-          notes
+          notes,
         })
         .select()
         .single();
@@ -60,7 +62,7 @@ class SavedProvidersApi {
    */
   async removeSavedProvider(
     userId: string,
-    providerId: string
+    providerId: string,
   ): Promise<ApiResponse<boolean>> {
     try {
       const { error } = await supabase

@@ -21,7 +21,10 @@ export const InteractiveProductCard: React.FC<InteractiveProductCardProps> = ({
   className,
 }) => {
   const ref = React.useRef<HTMLDivElement>(null);
-  const [tilt, setTilt] = React.useState<{ rx: number; ry: number }>({ rx: 0, ry: 0 });
+  const [tilt, setTilt] = React.useState<{ rx: number; ry: number }>({
+    rx: 0,
+    ry: 0,
+  });
   const [hovering, setHovering] = React.useState(false);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -50,7 +53,7 @@ export const InteractiveProductCard: React.FC<InteractiveProductCardProps> = ({
       onMouseLeave={handleLeave}
       className={cn(
         "group relative w-full max-w-[340px] aspect-[9/12] rounded-3xl bg-card shadow-lg overflow-hidden transition-transform duration-200 ease-out will-change-transform",
-        className
+        className,
       )}
       style={{
         transform: `perspective(1000px) rotateX(${tilt.rx}deg) rotateY(${tilt.ry}deg)`,
@@ -64,7 +67,9 @@ export const InteractiveProductCard: React.FC<InteractiveProductCardProps> = ({
           backgroundImage: `url(${imageUrl})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          transform: hovering ? "scale(1.06) translateZ(-20px)" : "scale(1.02) translateZ(-20px)",
+          transform: hovering
+            ? "scale(1.06) translateZ(-20px)"
+            : "scale(1.02) translateZ(-20px)",
         }}
       />
 
@@ -77,8 +82,12 @@ export const InteractiveProductCard: React.FC<InteractiveProductCardProps> = ({
         style={{ transform: "translateZ(30px)" }}
       >
         <div className="flex-1 min-w-0">
-          <h3 className="text-white font-semibold text-sm leading-tight truncate">{title}</h3>
-          <p className="text-white/90 text-xs leading-tight truncate">{description}</p>
+          <h3 className="text-white font-semibold text-sm leading-tight truncate">
+            {title}
+          </h3>
+          <p className="text-white/90 text-xs leading-tight truncate">
+            {description}
+          </p>
         </div>
         <img
           src={logoUrl}
@@ -105,7 +114,7 @@ export const InteractiveProductCard: React.FC<InteractiveProductCardProps> = ({
             key={i}
             className={cn(
               "h-1.5 rounded-full transition-all",
-              i === 0 ? "w-5 bg-white" : "w-1.5 bg-white/50"
+              i === 0 ? "w-5 bg-white" : "w-1.5 bg-white/50",
             )}
           />
         ))}

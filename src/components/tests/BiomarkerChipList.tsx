@@ -86,7 +86,11 @@ export function BiomarkerChipList({
             }
             style={
               variant === "chips"
-                ? { background: UTC_TINT, color: UTC_NAVY, fontFamily: "'DM Sans',sans-serif" }
+                ? {
+                    background: UTC_TINT,
+                    color: UTC_NAVY,
+                    fontFamily: "'DM Sans',sans-serif",
+                  }
                 : undefined
             }
           >

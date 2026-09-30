@@ -20,9 +20,11 @@ export type AalStatus = {
 };
 
 export async function getAalStatus(): Promise<AalStatus> {
-  const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+  const { data: aal } =
+    await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
   const { data: factorsData } = await supabase.auth.mfa.listFactors();
-  const verified = factorsData?.totp?.find((f) => f.status === "verified") ?? null;
+  const verified =
+    factorsData?.totp?.find((f) => f.status === "verified") ?? null;
   return {
     currentLevel: (aal?.currentLevel as AalStatus["currentLevel"]) ?? null,
     nextLevel: (aal?.nextLevel as AalStatus["nextLevel"]) ?? null,
@@ -36,9 +38,13 @@ export async function getAalStatus(): Promise<AalStatus> {
  * Verify a 6-digit TOTP code against the user's verified factor.
  * Returns null on success, a user-friendly error message on failure.
  */
-export async function verifyTotp(factorId: string, code: string): Promise<string | null> {
+export async function verifyTotp(
+  factorId: string,
+  code: string,
+): Promise<string | null> {
   const trimmed = code.replace(/\D/g, "").slice(0, 6);
-  if (trimmed.length !== 6) return "Enter the 6-digit code from your authenticator app.";
+  if (trimmed.length !== 6)
+    return "Enter the 6-digit code from your authenticator app.";
 
   const challenge = await supabase.auth.mfa.challenge({ factorId });
   if (challenge.error || !challenge.data) {
@@ -83,16 +89,19 @@ export async function replaceBackupCodes(): Promise<string[]> {
     if (pgError.code === "28000") {
       throw new Error("Please sign in again to create backup codes.");
     }
-    throw new Error("We couldn't create your backup codes. Please try again in a moment.");
+    throw new Error(
+      "We couldn't create your backup codes. Please try again in a moment.",
+    );
   }
 
   if (!Array.isArray(data) || data.length === 0) {
-    throw new Error("We couldn't create your backup codes. Please try again in a moment.");
+    throw new Error(
+      "We couldn't create your backup codes. Please try again in a moment.",
+    );
   }
 
   return data as string[];
 }
-
 
 /**
  * Attempt to redeem a backup code. Calls the `mfa-recovery` edge function,
@@ -103,7 +112,8 @@ export async function redeemBackupCode(
   code: string,
 ): Promise<{ ok: true } | { ok: false; message: string }> {
   const trimmed = code.trim();
-  if (!trimmed) return { ok: false, message: "Enter one of your backup codes." };
+  if (!trimmed)
+    return { ok: false, message: "Enter one of your backup codes." };
 
   const { data, error } = await supabase.functions.invoke("mfa-recovery", {
     body: { code: trimmed },
@@ -116,7 +126,10 @@ export async function redeemBackupCode(
     };
   }
   if (!data?.ok) {
-    return { ok: false, message: data?.message ?? "That backup code could not be used." };
+    return {
+      ok: false,
+      message: data?.message ?? "That backup code could not be used.",
+    };
   }
   // Force a fresh session so the client picks up the lowered AAL requirement.
   await supabase.auth.refreshSession();

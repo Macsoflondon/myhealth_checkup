@@ -11,7 +11,10 @@ interface QuizCTABannerProps {
  * The standard site-wide quiz call to action.
  * Must look identical on every page — do not fork the styling locally.
  */
-export const QuizCTABanner = ({ quizLink = "/find-test", className }: QuizCTABannerProps) => {
+export const QuizCTABanner = ({
+  quizLink = "/find-test",
+  className,
+}: QuizCTABannerProps) => {
   return (
     <div
       className={className}

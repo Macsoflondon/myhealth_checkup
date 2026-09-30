@@ -2,14 +2,30 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "@/lib/router-compat";
-import { notificationHistoryApi, NotificationHistory } from "@/api/supabase/notificationHistory.api";
+import {
+  notificationHistoryApi,
+  NotificationHistory,
+} from "@/api/supabase/notificationHistory.api";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Mail, MessageSquare, Clock, CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import {
+  Mail,
+  MessageSquare,
+  Clock,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+} from "lucide-react";
 import { format } from "date-fns";
 import {
   Table,
@@ -43,10 +59,11 @@ const NotificationHistoryPage = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const { data, error: fetchError } = await notificationHistoryApi.getHistory(user!.id);
-      
+      const { data, error: fetchError } =
+        await notificationHistoryApi.getHistory(user!.id);
+
       if (fetchError) throw fetchError;
-      
+
       setNotifications(data || []);
     } catch (err) {
       console.error("Error loading notification history:", err);
@@ -58,11 +75,11 @@ const NotificationHistoryPage = () => {
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'sent':
+      case "sent":
         return <CheckCircle className="h-4 w-4 text-green-500" />;
-      case 'failed':
+      case "failed":
         return <XCircle className="h-4 w-4 text-red-500" />;
-      case 'pending':
+      case "pending":
         return <AlertCircle className="h-4 w-4 text-yellow-500" />;
       default:
         return <Clock className="h-4 w-4 text-muted-foreground" />;
@@ -75,16 +92,12 @@ const NotificationHistoryPage = () => {
       failed: "destructive",
       pending: "secondary",
     };
-    
-    return (
-      <Badge variant={variants[status] || "secondary"}>
-        {status}
-      </Badge>
-    );
+
+    return <Badge variant={variants[status] || "secondary"}>{status}</Badge>;
   };
 
   const getTypeIcon = (type: string) => {
-    return type === 'email' ? (
+    return type === "email" ? (
       <Mail className="h-4 w-4" />
     ) : (
       <MessageSquare className="h-4 w-4" />
@@ -102,10 +115,12 @@ const NotificationHistoryPage = () => {
         <meta name="robots" content="noindex, follow" />
       </Helmet>
       <Header />
-      
+
       <main className="flex-1 container mx-auto px-4 py-8 max-w-7xl">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-foreground mb-2">Notification History</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Notification History
+          </h1>
           <p className="text-muted-foreground">
             View all notifications sent to your account
           </p>
@@ -134,7 +149,9 @@ const NotificationHistoryPage = () => {
             ) : notifications.length === 0 ? (
               <div className="text-center py-12">
                 <Mail className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                <h3 className="text-lg font-medium mb-2">No notifications yet</h3>
+                <h3 className="text-lg font-medium mb-2">
+                  No notifications yet
+                </h3>
                 <p className="text-muted-foreground">
                   When you send test notifications, they'll appear here
                 </p>
@@ -149,7 +166,9 @@ const NotificationHistoryPage = () => {
                       <TableHead>Recipient</TableHead>
                       <TableHead>Status</TableHead>
                       <TableHead>Sent</TableHead>
-                      <TableHead className="hidden md:table-cell">Subject/Details</TableHead>
+                      <TableHead className="hidden md:table-cell">
+                        Subject/Details
+                      </TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -158,7 +177,9 @@ const NotificationHistoryPage = () => {
                         <TableCell>
                           <div className="flex items-center gap-2">
                             {getTypeIcon(notification.notification_type)}
-                            <span className="capitalize">{notification.notification_type}</span>
+                            <span className="capitalize">
+                              {notification.notification_type}
+                            </span>
                           </div>
                         </TableCell>
                         <TableCell className="capitalize">
@@ -176,24 +197,36 @@ const NotificationHistoryPage = () => {
                         <TableCell>
                           {notification.sent_at ? (
                             <div className="text-sm">
-                              {format(new Date(notification.sent_at), 'MMM dd, yyyy')}
+                              {format(
+                                new Date(notification.sent_at),
+                                "MMM dd, yyyy",
+                              )}
                               <div className="text-muted-foreground text-xs">
-                                {format(new Date(notification.sent_at), 'HH:mm:ss')}
+                                {format(
+                                  new Date(notification.sent_at),
+                                  "HH:mm:ss",
+                                )}
                               </div>
                             </div>
                           ) : (
-                            <span className="text-muted-foreground text-sm">Not sent</span>
+                            <span className="text-muted-foreground text-sm">
+                              Not sent
+                            </span>
                           )}
                         </TableCell>
                         <TableCell className="hidden md:table-cell max-w-[300px]">
                           {notification.subject ? (
-                            <span className="text-sm truncate block">{notification.subject}</span>
+                            <span className="text-sm truncate block">
+                              {notification.subject}
+                            </span>
                           ) : notification.error_message ? (
                             <span className="text-sm text-destructive truncate block">
                               {notification.error_message}
                             </span>
                           ) : (
-                            <span className="text-muted-foreground text-sm">-</span>
+                            <span className="text-muted-foreground text-sm">
+                              -
+                            </span>
                           )}
                         </TableCell>
                       </TableRow>

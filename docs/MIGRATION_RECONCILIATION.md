@@ -16,12 +16,12 @@ table's only `CREATE TABLE` sat inside a marker file.
 
 What was found:
 
-| Finding | Count |
-| --- | --- |
-| Migration files that were non-executing placeholders (`SELECT 1 WHERE FALSE` or comment-only) | 99 |
-| Applied versions excluded from the repository by policy (all pure catalogue DML) | 33 |
-| Differences between production and a database rebuilt from the repository | 512 |
-| Remote parity check able to detect any of this | No: `SUPABASE_DB_URL` has never been set, so the remote half never runs |
+| Finding                                                                                       | Count                                                                   |
+| --------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| Migration files that were non-executing placeholders (`SELECT 1 WHERE FALSE` or comment-only) | 99                                                                      |
+| Applied versions excluded from the repository by policy (all pure catalogue DML)              | 33                                                                      |
+| Differences between production and a database rebuilt from the repository                     | 512                                                                     |
+| Remote parity check able to detect any of this                                                | No: `SUPABASE_DB_URL` has never been set, so the remote half never runs |
 
 The out-of-band production changes included two `private` tables used by
 `admin-recovery`, 9 columns on existing tables (including `provider_tests.goals` and
@@ -53,7 +53,7 @@ What changed:
    structured comparison of production's catalogue against a fresh replay, and every
    statement is idempotent. On 28 September its version was recorded in production as
    applied without being run (the equivalent of `supabase migration repair --status
-   applied`), because production already has that state. Repository and production now
+applied`), because production already has that state. Repository and production now
    hold the same 402 versions.
 5. **Privileges no longer depend on the platform's defaults.** Production is an older
    Supabase project whose default privileges grant anon, authenticated and service_role
@@ -92,29 +92,29 @@ The sections below are the original 14 September inventory, kept for the record.
 Measured 14 September 2026 against `supabase_migrations.schema_migrations`
 (393 applied versions) and `supabase/migrations/*.sql` (279 committed files).
 
-| Set | Count |
-| --- | --- |
-| Applied and committed | 267 |
-| Applied with no committed file | 126 |
-| — of which timestamp near-misses (`+1s` CLI skew) | 12 |
-| — of which true orphans | 114 |
-| Committed but never applied | 0 |
+| Set                                               | Count |
+| ------------------------------------------------- | ----- |
+| Applied and committed                             | 267   |
+| Applied with no committed file                    | 126   |
+| — of which timestamp near-misses (`+1s` CLI skew) | 12    |
+| — of which true orphans                           | 114   |
+| Committed but never applied                       | 0     |
 
 Classification of the 114 true orphans, taken from the `statements` array that
 `schema_migrations` stores alongside each version:
 
-| Class | Count | Disposition |
-| --- | --- | --- |
-| A — `CREATE TABLE` | 4 | Backfill a marker file |
-| B — `ADD COLUMN` | 8 | Backfill a marker file |
-| C — destructive (authorised at the time) | 1 | Backfill a marker file |
-| D — RLS / grant / security | 17 | Backfill a marker file |
-| E — function / trigger | 3 | Backfill a marker file |
-| F — index | 1 | Backfill a marker file |
-| G — view | 7 | Backfill a marker file |
-| H — cron | 3 | Backfill a marker file |
-| I — catalogue DML only | 62 | **Excluded by policy — see below** |
-| Z — other / mixed | 8 | Classify individually during backfill |
+| Class                                    | Count | Disposition                           |
+| ---------------------------------------- | ----- | ------------------------------------- |
+| A — `CREATE TABLE`                       | 4     | Backfill a marker file                |
+| B — `ADD COLUMN`                         | 8     | Backfill a marker file                |
+| C — destructive (authorised at the time) | 1     | Backfill a marker file                |
+| D — RLS / grant / security               | 17    | Backfill a marker file                |
+| E — function / trigger                   | 3     | Backfill a marker file                |
+| F — index                                | 1     | Backfill a marker file                |
+| G — view                                 | 7     | Backfill a marker file                |
+| H — cron                                 | 3     | Backfill a marker file                |
+| I — catalogue DML only                   | 62    | **Excluded by policy — see below**    |
+| Z — other / mixed                        | 8     | Classify individually during backfill |
 
 "Schema-bearing" in the worklist means classes A + B + C (13). "Security orphans"
 means class D (17).
@@ -139,7 +139,7 @@ Phase 3 starts further along than the plan assumes.
    deliberate: pretending data maintenance belongs in schema history guarantees the
    drift recurs.
 2. **Schema-bearing and security changes are reproducible from the repository alone.**
-   Classes A–H are backfilled as *marker* files containing the verbatim recorded
+   Classes A–H are backfilled as _marker_ files containing the verbatim recorded
    statements wrapped so they are no-ops against the live database, never as
    re-executable DDL.
 3. **Backfill is a separate, reviewed change.** It is not bundled with feature work, and
@@ -162,14 +162,14 @@ The previous CI could not detect drift at all. Two independent holes:
 
 Both are now fixed:
 
-| Change | File |
-| --- | --- |
-| Secret moved to job-level `env`; steps test `env.SUPABASE_DB_URL != ''` | `.github/workflows/migration-parity.yml` |
-| Explicit warning annotation when the secret is absent, so a skipped remote check is visible rather than silent | same |
-| Daily `schedule` trigger plus `workflow_dispatch`, so drift cannot hide behind path filters | same |
-| Remote comparison extracted from inline bash into a reviewable script that exits non-zero when `SUPABASE_DB_URL` is missing | `scripts/check-remote-migration-parity.mjs` |
-| Comparison logic isolated, pure and auditable, with the `+1s` skew tolerance stated as an explicit, narrow rule (trailing version only, exactly one second, no other difference — and reported in the log when applied rather than silently swallowed) | `scripts/lib/migration-parity-core.mjs` |
-| Fixture self-test proving the checker fails on deliberate drift, passes on identical sets, tolerates only the documented skew, and rejects malformed versions — run in CI, no production access | `src/lib/ci/__tests__/migration-parity.test.ts` |
+| Change                                                                                                                                                                                                                                                 | File                                            |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------- |
+| Secret moved to job-level `env`; steps test `env.SUPABASE_DB_URL != ''`                                                                                                                                                                                | `.github/workflows/migration-parity.yml`        |
+| Explicit warning annotation when the secret is absent, so a skipped remote check is visible rather than silent                                                                                                                                         | same                                            |
+| Daily `schedule` trigger plus `workflow_dispatch`, so drift cannot hide behind path filters                                                                                                                                                            | same                                            |
+| Remote comparison extracted from inline bash into a reviewable script that exits non-zero when `SUPABASE_DB_URL` is missing                                                                                                                            | `scripts/check-remote-migration-parity.mjs`     |
+| Comparison logic isolated, pure and auditable, with the `+1s` skew tolerance stated as an explicit, narrow rule (trailing version only, exactly one second, no other difference — and reported in the log when applied rather than silently swallowed) | `scripts/lib/migration-parity-core.mjs`         |
+| Fixture self-test proving the checker fails on deliberate drift, passes on identical sets, tolerates only the documented skew, and rejects malformed versions — run in CI, no production access                                                        | `src/lib/ci/__tests__/migration-parity.test.ts` |
 
 Fixture self-test result, 14 September 2026: 8 tests passed.
 

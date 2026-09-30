@@ -7,7 +7,8 @@ import { z } from "npm:zod";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
 };
 
@@ -24,10 +25,12 @@ const SampleSchema = z.object({
 const BodySchema = z.object({ samples: z.array(SampleSchema).min(1).max(20) });
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  if (req.method === "OPTIONS")
+    return new Response(null, { headers: corsHeaders });
   if (req.method !== "POST") {
     return new Response(JSON.stringify({ error: "method not allowed" }), {
-      status: 405, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 405,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 
@@ -35,12 +38,17 @@ Deno.serve(async (req) => {
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   if (!url || !serviceKey) {
     return new Response(JSON.stringify({ error: "server not configured" }), {
-      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 
   let body: unknown;
-  try { body = await req.json(); } catch { body = null; }
+  try {
+    body = await req.json();
+  } catch {
+    body = null;
+  }
   // Drop individual out-of-range samples rather than rejecting the whole beacon.
   const rawSamples = Array.isArray((body as { samples?: unknown })?.samples)
     ? (body as { samples: unknown[] }).samples
@@ -54,19 +62,31 @@ Deno.serve(async (req) => {
   });
   const parsed = BodySchema.safeParse({ samples: clamped });
   if (!parsed.success) {
-    return new Response(JSON.stringify({ error: parsed.error.flatten().fieldErrors }), {
-      status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ error: parsed.error.flatten().fieldErrors }),
+      {
+        status: 400,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
   }
 
-  const supabase = createClient(url, serviceKey, { auth: { persistSession: false } });
-  const { error } = await supabase.from("web_vitals").insert(parsed.data.samples);
+  const supabase = createClient(url, serviceKey, {
+    auth: { persistSession: false },
+  });
+  const { error } = await supabase
+    .from("web_vitals")
+    .insert(parsed.data.samples);
   if (error) {
     return new Response(JSON.stringify({ error: error.message }), {
-      status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
-  return new Response(JSON.stringify({ ok: true, count: parsed.data.samples.length }), {
-    headers: { ...corsHeaders, "Content-Type": "application/json" },
-  });
+  return new Response(
+    JSON.stringify({ ok: true, count: parsed.data.samples.length }),
+    {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    },
+  );
 });

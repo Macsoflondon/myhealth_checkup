@@ -28,8 +28,12 @@ const ROW = '[data-testid="accreditors-row"]';
 const REQUIRED_LABELS = ["UKAS", "CQC", "ISO 15189"];
 
 for (const vp of VIEWPORTS) {
-  test(`AccreditedProvidersBar @ ${vp.name}: labels present, no overflow`, async ({ browser }) => {
-    const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height } });
+  test(`AccreditedProvidersBar @ ${vp.name}: labels present, no overflow`, async ({
+    browser,
+  }) => {
+    const ctx = await browser.newContext({
+      viewport: { width: vp.width, height: vp.height },
+    });
     const page = await ctx.newPage();
     await page.goto(BASE_URL + "/");
     await page.waitForSelector(ROW, { timeout: 10_000 });
@@ -38,10 +42,14 @@ for (const vp of VIEWPORTS) {
     for (const label of REQUIRED_LABELS) {
       const count = await page.$$eval(
         `${ROW} .font-bold`,
-        (els, lbl) => els.filter((el) => (el.textContent ?? "").includes(lbl)).length,
+        (els, lbl) =>
+          els.filter((el) => (el.textContent ?? "").includes(lbl)).length,
         label,
       );
-      expect(count, `${vp.name}: "${label}" not found in accreditors bar`).toBeGreaterThan(0);
+      expect(
+        count,
+        `${vp.name}: "${label}" not found in accreditors bar`,
+      ).toBeGreaterThan(0);
     }
 
     // 2. Page-level horizontal scroll guard.

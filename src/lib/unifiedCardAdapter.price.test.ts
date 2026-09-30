@@ -32,18 +32,24 @@ const rowWithZeroPrice: ProviderTestCardData = {
 
 describe("toUnifiedCardProps price honesty", () => {
   it("keeps a null price null, never defaulting to 0", () => {
-    const props = toUnifiedCardProps(rowWithNoPrice, { provider: "Medichecks" });
+    const props = toUnifiedCardProps(rowWithNoPrice, {
+      provider: "Medichecks",
+    });
     expect(props.price).toBeNull();
   });
 
   it("a null price stays null through fromLegacyUnified too", () => {
-    const props = toUnifiedCardProps(rowWithNoPrice, { provider: "Medichecks" });
+    const props = toUnifiedCardProps(rowWithNoPrice, {
+      provider: "Medichecks",
+    });
     const universal = fromLegacyUnified(props);
     expect(universal.price).toBeNull();
   });
 
   it("a genuine price of 0 is preserved as 0, not confused with missing", () => {
-    const props = toUnifiedCardProps(rowWithZeroPrice, { provider: "Medichecks" });
+    const props = toUnifiedCardProps(rowWithZeroPrice, {
+      provider: "Medichecks",
+    });
     expect(props.price).toBe(0);
     const universal = fromLegacyUnified(props);
     expect(universal.price).toBe(0);

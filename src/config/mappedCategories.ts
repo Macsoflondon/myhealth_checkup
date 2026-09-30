@@ -50,8 +50,7 @@ export const MAPPED_WELLNESS_CATEGORIES: Record<string, MappedCategoryDef> = {
     slug: "immunity",
     label: "Immunity Tests",
     badgeColor: "#f0b429",
-    subtitle:
-      "Compare tests assessing immune function and immunity status.",
+    subtitle: "Compare tests assessing immune function and immunity status.",
   },
   "autoimmunity-tests": {
     slug: "autoimmunity",
@@ -62,13 +61,14 @@ export const MAPPED_WELLNESS_CATEGORIES: Record<string, MappedCategoryDef> = {
   },
 };
 
-export const MAPPED_WELLNESS_SLUGS = Object.values(MAPPED_WELLNESS_CATEGORIES).map(
-  (c) => c.slug
-);
+export const MAPPED_WELLNESS_SLUGS = Object.values(
+  MAPPED_WELLNESS_CATEGORIES,
+).map((c) => c.slug);
 
 export function findMappedWellnessCategory(slug: string | null | undefined) {
   if (!slug) return null;
   return (
-    Object.values(MAPPED_WELLNESS_CATEGORIES).find((c) => c.slug === slug) ?? null
+    Object.values(MAPPED_WELLNESS_CATEGORIES).find((c) => c.slug === slug) ??
+    null
   );
 }

@@ -6,8 +6,11 @@
  * by the time the user clicks.
  */
 
-import { Link } from '@/lib/router-compat';
-import { buildRelatedLinks, type RelatedLinksInput } from '@/lib/internal-links';
+import { Link } from "@/lib/router-compat";
+import {
+  buildRelatedLinks,
+  type RelatedLinksInput,
+} from "@/lib/internal-links";
 
 interface RelatedLinksProps extends RelatedLinksInput {
   heading?: string;
@@ -18,8 +21,8 @@ export const RelatedLinks = ({
   categorySlug,
   providerId,
   limit,
-  heading = 'Continue your comparison',
-  className = '',
+  heading = "Continue your comparison",
+  className = "",
 }: RelatedLinksProps) => {
   const groups = buildRelatedLinks({ categorySlug, providerId, limit });
   if (groups.length === 0) return null;

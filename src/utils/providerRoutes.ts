@@ -1,7 +1,7 @@
 /**
  * Centralized provider route configuration
  * Maps database provider_id values to their URL route paths
- * 
+ *
  * Database provider_id values:
  * - goodbody-clinic
  * - lola-health
@@ -12,30 +12,30 @@
 
 // Map database provider_id to URL route path (canonical routes)
 export const PROVIDER_ROUTE_MAP: Record<string, string> = {
-  'goodbody-clinic': '/goodbody-clinic',
-  'goodbody': '/goodbody-clinic', // Alias
-  'lola-health': '/lola-health',
-  'london-medical-laboratory': '/london-medical-laboratory',
-  'london-health-company': '/london-health-company',
-  'medichecks': '/medichecks',
-  'randox': '/randox',
-  'randox-health': '/randox', // Alias
-  'clinilabs': '/clinilabs',
-  'medical-diagnosis': '/medical-diagnosis',
+  "goodbody-clinic": "/goodbody-clinic",
+  goodbody: "/goodbody-clinic", // Alias
+  "lola-health": "/lola-health",
+  "london-medical-laboratory": "/london-medical-laboratory",
+  "london-health-company": "/london-health-company",
+  medichecks: "/medichecks",
+  randox: "/randox",
+  "randox-health": "/randox", // Alias
+  clinilabs: "/clinilabs",
+  "medical-diagnosis": "/medical-diagnosis",
 };
 
 // Provider display names
 export const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
-  'goodbody-clinic': 'GOODBODY',
-  'goodbody': 'GOODBODY',
-  'lola-health': 'Lola Health',
-  'london-medical-laboratory': 'London Medical Laboratory',
-  'london-health-company': 'London Health Company',
-  'medichecks': 'Medichecks',
-  'randox': 'Randox Health',
-  'randox-health': 'Randox Health',
-  'clinilabs': 'Clinilabs',
-  'medical-diagnosis': 'Medical Diagnosis',
+  "goodbody-clinic": "GOODBODY",
+  goodbody: "GOODBODY",
+  "lola-health": "Lola Health",
+  "london-medical-laboratory": "London Medical Laboratory",
+  "london-health-company": "London Health Company",
+  medichecks: "Medichecks",
+  randox: "Randox Health",
+  "randox-health": "Randox Health",
+  clinilabs: "Clinilabs",
+  "medical-diagnosis": "Medical Diagnosis",
 };
 
 /**
@@ -44,21 +44,23 @@ export const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
  * to keep the experience identical across the catalogue.
  */
 export const PROVIDER_PROFILE_ROUTE_MAP: Record<string, string> = {
-  'medichecks': '/provider/medichecks',
-  'goodbody': '/provider/goodbody-clinic',
-  'goodbody-clinic': '/provider/goodbody-clinic',
-  'randox': '/provider/randox-health',
-  'randox-health': '/provider/randox-health',
-  'lola-health': '/provider/lola-health',
-  'london-medical-laboratory': '/provider/london-medical-laboratory',
-  'london-health-company': '/provider/london-health-company',
-  'clinilabs': '/provider/clinilabs',
-  'medical-diagnosis': '/provider/medical-diagnosis',
+  medichecks: "/provider/medichecks",
+  goodbody: "/provider/goodbody-clinic",
+  "goodbody-clinic": "/provider/goodbody-clinic",
+  randox: "/provider/randox-health",
+  "randox-health": "/provider/randox-health",
+  "lola-health": "/provider/lola-health",
+  "london-medical-laboratory": "/provider/london-medical-laboratory",
+  "london-health-company": "/provider/london-health-company",
+  clinilabs: "/provider/clinilabs",
+  "medical-diagnosis": "/provider/medical-diagnosis",
 };
 
 export function getProviderProfileRoute(providerId: string): string {
   const normalizedId = providerId.toLowerCase();
-  return PROVIDER_PROFILE_ROUTE_MAP[normalizedId] || `/provider/${normalizedId}`;
+  return (
+    PROVIDER_PROFILE_ROUTE_MAP[normalizedId] || `/provider/${normalizedId}`
+  );
 }
 
 /**
@@ -68,7 +70,7 @@ export function getProviderProfileRoute(providerId: string): string {
  */
 export function getProviderRoute(providerId: string): string {
   const normalizedId = providerId.toLowerCase();
-  return PROVIDER_ROUTE_MAP[normalizedId] || '/compare';
+  return PROVIDER_ROUTE_MAP[normalizedId] || "/compare";
 }
 
 /**
@@ -98,14 +100,17 @@ export function getTestDetailUrl(providerId: string, testSlug: string): string {
  * @returns The canonical provider_id
  */
 export function normalizeProviderFromName(providerName: string): string {
-  const name = providerName.toLowerCase().replace(/\s+/g, '-').replace('clinic', '');
-  
-  if (name.includes('medichecks')) return 'medichecks';
-  if (name.includes('goodbody')) return 'goodbody-clinic';
-  if (name.includes('lola')) return 'lola-health';
-  if (name.includes('randox')) return 'randox';
-  if (name.includes('london')) return 'london-medical-laboratory';
-  
+  const name = providerName
+    .toLowerCase()
+    .replace(/\s+/g, "-")
+    .replace("clinic", "");
+
+  if (name.includes("medichecks")) return "medichecks";
+  if (name.includes("goodbody")) return "goodbody-clinic";
+  if (name.includes("lola")) return "lola-health";
+  if (name.includes("randox")) return "randox";
+  if (name.includes("london")) return "london-medical-laboratory";
+
   return providerName;
 }
 
@@ -119,12 +124,14 @@ export function normalizeProviderFromName(providerName: string): string {
 export function getTestUrlFromProviderName(
   providerName: string | undefined,
   testId: string,
-  fallbackCategory?: string
+  fallbackCategory?: string,
 ): string {
   if (!providerName) {
-    return fallbackCategory ? `/compare?category=${fallbackCategory}` : '/compare';
+    return fallbackCategory
+      ? `/compare?category=${fallbackCategory}`
+      : "/compare";
   }
-  
+
   const providerId = normalizeProviderFromName(providerName);
   return getTestDetailUrl(providerId, testId);
 }

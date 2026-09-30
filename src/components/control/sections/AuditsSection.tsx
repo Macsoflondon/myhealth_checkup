@@ -28,7 +28,8 @@ const TASKS: AuditTask[] = [
   {
     id: "normalize-categories",
     label: "Category normaliser",
-    description: "Re-classify provider tests into the canonical category taxonomy.",
+    description:
+      "Re-classify provider tests into the canonical category taxonomy.",
     fn: "normalize-test-categories",
   },
   {
@@ -40,14 +41,16 @@ const TASKS: AuditTask[] = [
   {
     id: "security-snapshot",
     label: "Security scan snapshot",
-    description: "Capture current Supabase advisor findings and diff against baseline.",
+    description:
+      "Capture current Supabase advisor findings and diff against baseline.",
     fn: "security-scan-snapshot",
     detailsTo: "/admin/security-diff",
   },
   {
     id: "leaked-passwords",
     label: "Leaked password protection",
-    description: "Confirm HIBP-backed protection is enabled on the auth provider.",
+    description:
+      "Confirm HIBP-backed protection is enabled on the auth provider.",
     fn: "check-leaked-password-protection",
   },
   {
@@ -65,8 +68,17 @@ const TASKS: AuditTask[] = [
 ];
 
 export default function AuditsSection() {
-  const [biomarkerRuns, setBiomarkerRuns] = useState<{ created_at: string; stored_count: number | null; scraped_count: number | null }[]>([]);
-  const [security, setSecurity] = useState<{ total_findings: number | null; scanned_at: string | null } | null>(null);
+  const [biomarkerRuns, setBiomarkerRuns] = useState<
+    {
+      created_at: string;
+      stored_count: number | null;
+      scraped_count: number | null;
+    }[]
+  >([]);
+  const [security, setSecurity] = useState<{
+    total_findings: number | null;
+    scanned_at: string | null;
+  } | null>(null);
   const [running, setRunning] = useState<string | null>(null);
 
   const load = useCallback(async () => {
@@ -92,14 +104,26 @@ export default function AuditsSection() {
   }, [load]);
 
   const latest = biomarkerRuns[0];
-  const totalStored = biomarkerRuns.reduce((s, r) => s + (r.stored_count ?? 0), 0);
-  const totalScraped = biomarkerRuns.reduce((s, r) => s + (r.scraped_count ?? 0), 0);
-  const matchRate = totalStored > 0 ? Math.round((Math.min(totalStored, totalScraped) / totalStored) * 100) : null;
+  const totalStored = biomarkerRuns.reduce(
+    (s, r) => s + (r.stored_count ?? 0),
+    0,
+  );
+  const totalScraped = biomarkerRuns.reduce(
+    (s, r) => s + (r.scraped_count ?? 0),
+    0,
+  );
+  const matchRate =
+    totalStored > 0
+      ? Math.round((Math.min(totalStored, totalScraped) / totalStored) * 100)
+      : null;
 
   const runTask = async (task: AuditTask) => {
     setRunning(task.id);
     try {
-      const result = (await edgeInvoke(task.fn, task.body)) as Record<string, unknown>;
+      const result = (await edgeInvoke(task.fn, task.body)) as Record<
+        string,
+        unknown
+      >;
       toast.success(`${task.label} complete`, {
         description: JSON.stringify(result).slice(0, 220),
       });
@@ -123,12 +147,24 @@ export default function AuditsSection() {
         <StatCard
           label="Biomarker audits (recent)"
           value={biomarkerRuns.length}
-          hint={latest ? `Last: ${new Date(latest.created_at).toLocaleDateString()}` : undefined}
+          hint={
+            latest
+              ? `Last: ${new Date(latest.created_at).toLocaleDateString()}`
+              : undefined
+          }
         />
         <StatCard
           label="Biomarker match rate"
           value={matchRate != null ? `${matchRate}%` : "—"}
-          tone={matchRate == null ? "default" : matchRate >= 90 ? "good" : matchRate >= 70 ? "warn" : "bad"}
+          tone={
+            matchRate == null
+              ? "default"
+              : matchRate >= 90
+                ? "good"
+                : matchRate >= 70
+                  ? "warn"
+                  : "bad"
+          }
         />
         <StatCard
           label="Security findings"
@@ -137,7 +173,11 @@ export default function AuditsSection() {
         />
         <StatCard
           label="Last security scan"
-          value={security?.scanned_at ? new Date(security.scanned_at).toLocaleDateString() : "—"}
+          value={
+            security?.scanned_at
+              ? new Date(security.scanned_at).toLocaleDateString()
+              : "—"
+          }
         />
       </div>
 
@@ -145,10 +185,15 @@ export default function AuditsSection() {
         {TASKS.map((task) => {
           const isRunning = running === task.id;
           return (
-            <div key={task.id} className="flex items-center justify-between px-4 py-3 gap-3">
+            <div
+              key={task.id}
+              className="flex items-center justify-between px-4 py-3 gap-3"
+            >
               <div className="min-w-0">
                 <div className="text-sm font-medium">{task.label}</div>
-                <div className="text-xs text-muted-foreground truncate">{task.description}</div>
+                <div className="text-xs text-muted-foreground truncate">
+                  {task.description}
+                </div>
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 {task.detailsTo && (
@@ -158,8 +203,16 @@ export default function AuditsSection() {
                     </Link>
                   </Button>
                 )}
-                <Button size="sm" disabled={isRunning} onClick={() => void runTask(task)}>
-                  {isRunning ? <Loader2 className="w-3 h-3 mr-1 animate-spin" /> : <Play className="w-3 h-3 mr-1" />}
+                <Button
+                  size="sm"
+                  disabled={isRunning}
+                  onClick={() => void runTask(task)}
+                >
+                  {isRunning ? (
+                    <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                  ) : (
+                    <Play className="w-3 h-3 mr-1" />
+                  )}
                   Run
                 </Button>
               </div>

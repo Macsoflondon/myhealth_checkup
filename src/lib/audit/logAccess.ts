@@ -1,4 +1,4 @@
-import { supabase } from '@/integrations/supabase/client';
+import { supabase } from "@/integrations/supabase/client";
 
 /**
  * Standard reason codes for sensitive data access. Extend as needed but keep
@@ -6,14 +6,14 @@ import { supabase } from '@/integrations/supabase/client';
  * dashboard and understand *why* each C3/C4 read happened.
  */
 export type AccessReason =
-  | 'user:self-view'
-  | 'user:profile-edit'
-  | 'admin:support-ticket'
-  | 'admin:security-investigation'
-  | 'clinician:review'
-  | 'system:automated-processing';
+  | "user:self-view"
+  | "user:profile-edit"
+  | "admin:support-ticket"
+  | "admin:security-investigation"
+  | "clinician:review"
+  | "system:automated-processing";
 
-export type DataClassification = 'C0' | 'C1' | 'C2' | 'C3' | 'C4';
+export type DataClassification = "C0" | "C1" | "C2" | "C3" | "C4";
 
 export interface LogAccessArgs {
   tableName: string;
@@ -29,8 +29,8 @@ export interface LogAccessArgs {
  * logging outage double as a denial of service on legitimate access).
  */
 export async function logSensitiveAccess(args: LogAccessArgs): Promise<void> {
-  const { tableName, recordId, reason, purpose, classification = 'C2' } = args;
-  const { error } = await supabase.rpc('log_data_access_with_reason', {
+  const { tableName, recordId, reason, purpose, classification = "C2" } = args;
+  const { error } = await supabase.rpc("log_data_access_with_reason", {
     _table_name: tableName,
     _record_id: recordId,
     _reason_code: reason,
@@ -38,7 +38,6 @@ export async function logSensitiveAccess(args: LogAccessArgs): Promise<void> {
     _classification: classification,
   });
   if (error) {
-     
-    console.warn('[audit] log_data_access_with_reason failed', error.message);
+    console.warn("[audit] log_data_access_with_reason failed", error.message);
   }
 }

@@ -2,11 +2,18 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { CompareTestData } from "@/services/CompareService";
-import { X, ArrowRight, GitCompare, GripVertical, ChevronDown, ChevronUp, Scale } from "lucide-react";
+import {
+  X,
+  ArrowRight,
+  GitCompare,
+  GripVertical,
+  ChevronDown,
+  ChevronUp,
+  Scale,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useDraggable } from "@/hooks";
 import { useLocation } from "@/lib/router-compat";
-
 
 interface ComparisonBarProps {
   selectedTests: CompareTestData[];
@@ -46,7 +53,6 @@ export const ComparisonBar = ({
     }
     setHasReached(false);
 
-
     let anchorReached = false;
     let endPassed = false;
     const update = () => setHasReached(anchorReached && !endPassed);
@@ -63,7 +69,7 @@ export const ComparisonBar = ({
         }
         update();
       },
-      { rootMargin: "0px 0px -20% 0px" }
+      { rootMargin: "0px 0px -20% 0px" },
     );
     anchorObs.observe(anchor);
 
@@ -72,11 +78,12 @@ export const ComparisonBar = ({
       endObs = new IntersectionObserver(
         (entries) => {
           for (const entry of entries) {
-            endPassed = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+            endPassed =
+              !entry.isIntersecting && entry.boundingClientRect.top < 0;
           }
           update();
         },
-        { rootMargin: "0px 0px 0px 0px" }
+        { rootMargin: "0px 0px 0px 0px" },
       );
       endObs.observe(end);
     }
@@ -91,13 +98,12 @@ export const ComparisonBar = ({
     ? "opacity-100 translate-y-0"
     : "opacity-0 translate-y-full pointer-events-none";
 
-
-
-  const { onDragStart, onDragEnd, onDragOver, onDrop, draggedOverIndex } = useDraggable({
-    items: orderedTests,
-    onReorder: setOrderedTests,
-    getId: (test) => test.id,
-  });
+  const { onDragStart, onDragEnd, onDragOver, onDrop, draggedOverIndex } =
+    useDraggable({
+      items: orderedTests,
+      onReorder: setOrderedTests,
+      getId: (test) => test.id,
+    });
 
   const isEmpty = selectedTests.length === 0;
 
@@ -107,7 +113,7 @@ export const ComparisonBar = ({
       <div
         className={cn(
           "fixed bottom-0 left-0 right-0 z-40 pointer-events-none transition-all duration-500 ease-out",
-          revealClass
+          revealClass,
         )}
 
         role="region"
@@ -126,9 +132,13 @@ export const ComparisonBar = ({
         <div className="hidden sm:block">
           <div className="page-inset-x pb-3">
             <div className="pointer-events-auto compare-tray-surface rounded-t-2xl border-b-0 px-5 py-3 flex items-center justify-center gap-2 text-sm text-brand-navy/70">
-              <Scale className="h-4 w-4 text-brand-navy/50" aria-hidden="true" />
+              <Scale
+                className="h-4 w-4 text-brand-navy/50"
+                aria-hidden="true"
+              />
               <span>
-                Select up to 5 tests to compare prices, biomarkers &amp; collection methods.
+                Select up to 5 tests to compare prices, biomarkers &amp;
+                collection methods.
               </span>
               <span className="ml-2 rounded-full border border-brand-navy/15 bg-white/60 px-2 py-0.5 text-xs font-semibold text-brand-navy/60">
                 0/5
@@ -145,7 +155,7 @@ export const ComparisonBar = ({
     <div
       className={cn(
         "fixed bottom-0 left-0 right-0 z-40 compare-tray-active animate-slideUp transition-all duration-500 ease-out",
-        revealClass
+        revealClass,
       )}
 
       role="region"
@@ -163,13 +173,20 @@ export const ComparisonBar = ({
           <span className="flex items-center gap-2 font-bold text-sm">
             <Scale className="h-4 w-4" />
             Comparing
-            <Badge className="bg-brand-navy text-white">{selectedTests.length}/5</Badge>
+            <Badge className="bg-brand-navy text-white">
+              {selectedTests.length}/5
+            </Badge>
           </span>
           <ChevronUp className="h-5 w-5" />
         </button>
       </div>
 
-      <div className={cn("page-inset-x py-3 sm:py-4", mobileCollapsed && "hidden sm:block")}>
+      <div
+        className={cn(
+          "page-inset-x py-3 sm:py-4",
+          mobileCollapsed && "hidden sm:block",
+        )}
+      >
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           {/* Left: Selected Tests */}
           <div className="flex items-center gap-3 flex-1 overflow-hidden min-w-0">
@@ -178,7 +195,9 @@ export const ComparisonBar = ({
               <span className="font-heading font-bold text-sm whitespace-nowrap text-brand-navy hidden sm:inline">
                 Comparing
               </span>
-              <Badge className="bg-brand-navy text-white">{selectedTests.length}/5</Badge>
+              <Badge className="bg-brand-navy text-white">
+                {selectedTests.length}/5
+              </Badge>
               <button
                 onClick={() => setMobileCollapsed(true)}
                 className="sm:hidden ml-1 p-1 rounded hover:bg-muted"
@@ -200,14 +219,16 @@ export const ComparisonBar = ({
                   onDrop={(e) => onDrop(e, index)}
                   className={cn(
                     "draggable-element flex items-center gap-1.5 bg-muted rounded-full pl-2 pr-1 py-1 whitespace-nowrap text-xs shrink-0",
-                    draggedOverIndex === index && "drag-over"
+                    draggedOverIndex === index && "drag-over",
                   )}
                 >
                   <GripVertical className="drag-handle h-3 w-3 shrink-0 text-muted-foreground" />
                   <span className="font-medium truncate max-w-[110px] sm:max-w-[150px]">
                     {test.name}
                   </span>
-                  <span className="text-muted-foreground hidden sm:inline">•</span>
+                  <span className="text-muted-foreground hidden sm:inline">
+                    •
+                  </span>
                   <span className="text-brand-pink font-semibold hidden sm:inline">
                     £{test.price.toFixed(0)}
                   </span>
@@ -240,7 +261,7 @@ export const ComparisonBar = ({
               disabled={orderedTests.length < 2}
               className={cn(
                 "gap-2 bg-brand-navy hover:bg-brand-navy/90 text-white font-heading font-bold whitespace-nowrap",
-                orderedTests.length < 2 && "opacity-50 cursor-not-allowed"
+                orderedTests.length < 2 && "opacity-50 cursor-not-allowed",
               )}
             >
               Compare Now

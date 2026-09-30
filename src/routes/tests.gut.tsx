@@ -8,7 +8,8 @@ export const Route = createFileRoute("/tests/gut")({
   head: () =>
     buildCollectionHead({
       title: "Gut Health Tests UK | Compare Prices",
-      description: "Compare private gut health tests including coeliac, microbiome and digestive panels from UK providers.",
+      description:
+        "Compare private gut health tests including coeliac, microbiome and digestive panels from UK providers.",
       path: "/tests/gut",
     }),
   component: GutHealthPage,

@@ -44,7 +44,12 @@ export const SEED_TESTS: TestRecord[] = [
     clinical_review_professional: "clinician",
     clinical_review_fee: 0,
     goal_tags: ["preventative", "longevity", "weight_management"],
-    condition_tags: ["general_health", "metabolic_health", "thyroid", "cardiovascular_risk"],
+    condition_tags: [
+      "general_health",
+      "metabolic_health",
+      "thyroid",
+      "cardiovascular_risk",
+    ],
     sex_restriction: "none",
     source_url: "https://lolahealth.com",
     verification: {
@@ -68,7 +73,11 @@ export const SEED_TESTS: TestRecord[] = [
     clinical_review_type: "not_included",
     clinical_review_fee: 0,
     goal_tags: ["preventative", "weight_management"],
-    condition_tags: ["general_health", "cardiovascular_risk", "metabolic_health"],
+    condition_tags: [
+      "general_health",
+      "cardiovascular_risk",
+      "metabolic_health",
+    ],
     sex_restriction: "none",
     source_url:
       "https://londonhealthcompany.co.uk/products/general-health-blood-test-15",
@@ -93,7 +102,12 @@ export const SEED_TESTS: TestRecord[] = [
     clinical_review_type: "not_included",
     clinical_review_fee: 0,
     goal_tags: ["preventative", "longevity"],
-    condition_tags: ["general_health", "cardiovascular_risk", "metabolic_health", "thyroid"],
+    condition_tags: [
+      "general_health",
+      "cardiovascular_risk",
+      "metabolic_health",
+      "thyroid",
+    ],
     sex_restriction: "none",
     source_url:
       "https://bloodtestslondon.com/products/full-london-health-screen-plus-v",
@@ -118,7 +132,12 @@ export const SEED_TESTS: TestRecord[] = [
     clinical_review_type: "not_included",
     clinical_review_fee: 0,
     goal_tags: ["preventative", "condition_monitoring"],
-    condition_tags: ["general_health", "cardiovascular_risk", "thyroid", "metabolic_health"],
+    condition_tags: [
+      "general_health",
+      "cardiovascular_risk",
+      "thyroid",
+      "metabolic_health",
+    ],
     sex_restriction: "none",
     source_url:
       "https://www.medical-diagnosis.co.uk/exam/profiles/health-screening-profile/",

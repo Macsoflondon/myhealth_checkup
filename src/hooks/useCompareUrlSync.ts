@@ -63,7 +63,9 @@ export function useCompareUrlSync(): CompareUrlSync {
   );
   const panelApplied = useRef<string>("");
   const shouldLoadPanel =
-    Boolean(panelSlug) && urlIds.length === 0 && panelApplied.current !== panelSlug;
+    Boolean(panelSlug) &&
+    urlIds.length === 0 &&
+    panelApplied.current !== panelSlug;
 
   const { data: panelTests, isFetching: isPanelFetching } = useQuery({
     queryKey: ["compare", "panel", panelSlug],
@@ -79,8 +81,6 @@ export function useCompareUrlSync(): CompareUrlSync {
     if (panelTests.length > 0) compareStore.set(panelTests);
   }, [panelSlug, panelTests]);
 
-
-
   // URL -> store (once, on arrival with ids).
   useEffect(() => {
     if (hydratedFromUrl.current || urlIds.length === 0) return;
@@ -92,7 +92,13 @@ export function useCompareUrlSync(): CompareUrlSync {
       .filter((t): t is CompareTestData => Boolean(t));
 
     hydratedFromUrl.current = true;
-    if (ordered.length > 0 && !sameCompareIds(ordered.map((t) => t.id), storeIds)) {
+    if (
+      ordered.length > 0 &&
+      !sameCompareIds(
+        ordered.map((t) => t.id),
+        storeIds,
+      )
+    ) {
       compareStore.set(ordered);
     }
   }, [urlIds, unresolvedIds, fetched, selected, storeIds]);
@@ -126,7 +132,6 @@ export function useCompareUrlSync(): CompareUrlSync {
     if (changed) compareStore.set(merged);
   }, [refreshed, refreshKey, selected]);
 
-
   // Store -> URL (after hydration, or immediately when the URL carries no ids).
   // While a panel drives the view the slug alone stays the shareable source of
   // truth — the id list is capped at five and would truncate the panel.
@@ -134,7 +139,6 @@ export function useCompareUrlSync(): CompareUrlSync {
     if (panelSlug) return;
     if (urlIds.length > 0 && !hydratedFromUrl.current) return;
     if (sameCompareIds(storeIds, urlIds)) return;
-
 
     setSearchParams(
       (prev) => {
@@ -158,8 +162,8 @@ export function useCompareUrlSync(): CompareUrlSync {
 
   return {
     selected,
-    isHydrating: (shouldHydrate && isFetching) || (shouldLoadPanel && isPanelFetching),
+    isHydrating:
+      (shouldHydrate && isFetching) || (shouldLoadPanel && isPanelFetching),
     missingIds,
   };
 }
-

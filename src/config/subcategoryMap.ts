@@ -46,7 +46,14 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
     {
       slug: "hormones",
       label: "Female Hormone Tests",
-      matchAny: [/hormone/i, /oestrogen|estrogen/i, /progesterone/i, /\bfsh\b/i, /\blh\b/i, /prolactin/i],
+      matchAny: [
+        /hormone/i,
+        /oestrogen|estrogen/i,
+        /progesterone/i,
+        /\bfsh\b/i,
+        /\blh\b/i,
+        /prolactin/i,
+      ],
       siblingCategories: ["hormones"],
     },
     {
@@ -120,7 +127,12 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
     {
       slug: "iron-anaemia",
       label: "Iron & Anaemia Tests",
-      matchAny: [/iron/i, /ferritin/i, /anaem|anemia/i, /haemoglobin|hemoglobin/i],
+      matchAny: [
+        /iron/i,
+        /ferritin/i,
+        /anaem|anemia/i,
+        /haemoglobin|hemoglobin/i,
+      ],
       siblingCategories: ["general-health"],
     },
     {
@@ -169,7 +181,14 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
     {
       slug: "energy",
       label: "Energy & Fatigue Tests",
-      matchAny: [/energy/i, /fatigue/i, /\bb12\b/i, /iron/i, /ferritin/i, /vitamin d/i],
+      matchAny: [
+        /energy/i,
+        /fatigue/i,
+        /\bb12\b/i,
+        /iron/i,
+        /ferritin/i,
+        /vitamin d/i,
+      ],
       siblingCategories: ["general-health"],
     },
   ],
@@ -206,28 +225,107 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
   // /at-home-tests listing filters on canonical_category, these entries only
   // provide labels for navigation and breadcrumbs.
   "at-home": [
-    { slug: "womens", label: "Women's Health Home Kits", matchAny: [/\bwomen\b|\bwomen's\b|\bfemale\b|menopaus|pcos|ovarian|\bamh\b/i], excludeAny: MALE_TERMS, siblingCategories: ["womens-health"] },
-    { slug: "mens", label: "Men's Health Home Kits", matchAny: [/\bmen\b|\bmen's\b|\bmale\b|prostate|\bpsa\b|testosterone/i], excludeAny: FEMALE_TERMS, siblingCategories: ["mens-health"] },
-    { slug: "general", label: "General Health Home Kits", matchAny: [/general|wellness|essential|full body|complete/i], siblingCategories: ["general-health"] },
-    { slug: "vitamins", label: "Vitamins & Nutrition Home Kits", matchAny: [/vitamin|ferritin|iron|folate|b12/i], siblingCategories: ["vitamins"] },
-    { slug: "thyroid", label: "Thyroid Home Kits", matchAny: [/thyroid|\btsh\b|\bt3\b|\bt4\b/i], siblingCategories: ["thyroid"] },
-    { slug: "heart", label: "Heart Health Home Kits", matchAny: [/heart|cholesterol|lipid|cardio/i], siblingCategories: ["heart"] },
-    { slug: "hormones", label: "Hormone Home Kits", matchAny: [/hormone|cortisol/i], siblingCategories: ["hormones"] },
-    { slug: "fertility", label: "Fertility Home Kits", matchAny: [/fertility|\bamh\b|ovarian reserve/i], siblingCategories: ["fertility"] },
-    { slug: "cancer-screening", label: "Cancer Screening Home Kits", matchAny: [/cancer|\bpsa\b|prostate/i], siblingCategories: ["cancer-screening"] },
-    { slug: "sexual-health", label: "Sexual Health Home Kits", matchAny: [/sexual|\bsti\b|\bstd\b/i], siblingCategories: ["sexual-health"] },
-    { slug: "gut", label: "Gut Health Home Kits", matchAny: [/gut|microbiome|coeliac|celiac/i], siblingCategories: ["gut"] },
-    { slug: "sports", label: "Sports & Fitness Home Kits", matchAny: [/sport|fitness|performance/i], siblingCategories: ["sports-performance"] },
+    {
+      slug: "womens",
+      label: "Women's Health Home Kits",
+      matchAny: [
+        /\bwomen\b|\bwomen's\b|\bfemale\b|menopaus|pcos|ovarian|\bamh\b/i,
+      ],
+      excludeAny: MALE_TERMS,
+      siblingCategories: ["womens-health"],
+    },
+    {
+      slug: "mens",
+      label: "Men's Health Home Kits",
+      matchAny: [/\bmen\b|\bmen's\b|\bmale\b|prostate|\bpsa\b|testosterone/i],
+      excludeAny: FEMALE_TERMS,
+      siblingCategories: ["mens-health"],
+    },
+    {
+      slug: "general",
+      label: "General Health Home Kits",
+      matchAny: [/general|wellness|essential|full body|complete/i],
+      siblingCategories: ["general-health"],
+    },
+    {
+      slug: "vitamins",
+      label: "Vitamins & Nutrition Home Kits",
+      matchAny: [/vitamin|ferritin|iron|folate|b12/i],
+      siblingCategories: ["vitamins"],
+    },
+    {
+      slug: "thyroid",
+      label: "Thyroid Home Kits",
+      matchAny: [/thyroid|\btsh\b|\bt3\b|\bt4\b/i],
+      siblingCategories: ["thyroid"],
+    },
+    {
+      slug: "heart",
+      label: "Heart Health Home Kits",
+      matchAny: [/heart|cholesterol|lipid|cardio/i],
+      siblingCategories: ["heart"],
+    },
+    {
+      slug: "hormones",
+      label: "Hormone Home Kits",
+      matchAny: [/hormone|cortisol/i],
+      siblingCategories: ["hormones"],
+    },
+    {
+      slug: "fertility",
+      label: "Fertility Home Kits",
+      matchAny: [/fertility|\bamh\b|ovarian reserve/i],
+      siblingCategories: ["fertility"],
+    },
+    {
+      slug: "cancer-screening",
+      label: "Cancer Screening Home Kits",
+      matchAny: [/cancer|\bpsa\b|prostate/i],
+      siblingCategories: ["cancer-screening"],
+    },
+    {
+      slug: "sexual-health",
+      label: "Sexual Health Home Kits",
+      matchAny: [/sexual|\bsti\b|\bstd\b/i],
+      siblingCategories: ["sexual-health"],
+    },
+    {
+      slug: "gut",
+      label: "Gut Health Home Kits",
+      matchAny: [/gut|microbiome|coeliac|celiac/i],
+      siblingCategories: ["gut"],
+    },
+    {
+      slug: "sports",
+      label: "Sports & Fitness Home Kits",
+      matchAny: [/sport|fitness|performance/i],
+      siblingCategories: ["sports-performance"],
+    },
   ],
   "cancer-screening": [
-    { slug: "bowel", label: "Bowel Cancer Screening", matchAny: [/bowel|colorectal|\bfit\b|colon/i] },
-    { slug: "prostate", label: "Prostate Cancer PSA", matchAny: [/prostate|\bpsa\b/i] },
-    { slug: "cervical", label: "Cervical Cancer HPV", matchAny: [/cervical|\bhpv\b/i] },
+    {
+      slug: "bowel",
+      label: "Bowel Cancer Screening",
+      matchAny: [/bowel|colorectal|\bfit\b|colon/i],
+    },
+    {
+      slug: "prostate",
+      label: "Prostate Cancer PSA",
+      matchAny: [/prostate|\bpsa\b/i],
+    },
+    {
+      slug: "cervical",
+      label: "Cervical Cancer HPV",
+      matchAny: [/cervical|\bhpv\b/i],
+    },
     { slug: "lung", label: "Lung Cancer Screening", matchAny: [/lung/i] },
   ],
 };
 
-export function findSubcategory(canonicalCategory: string, slug: string | null | undefined): SubcategoryDef | null {
+export function findSubcategory(
+  canonicalCategory: string,
+  slug: string | null | undefined,
+): SubcategoryDef | null {
   if (!slug) return null;
   const list = SUBCATEGORY_MAP[canonicalCategory];
   if (!list) return null;
@@ -239,7 +337,9 @@ export function findSubcategory(canonicalCategory: string, slug: string | null |
  * consumers (e.g. the global breadcrumb) that only know the URL, not the
  * canonical_category the page maps to.
  */
-export function findSubcategoryBySlug(slug: string | null | undefined): SubcategoryDef | null {
+export function findSubcategoryBySlug(
+  slug: string | null | undefined,
+): SubcategoryDef | null {
   if (!slug) return null;
   for (const list of Object.values(SUBCATEGORY_MAP)) {
     const hit = list.find((s) => s.slug === slug);
@@ -251,7 +351,12 @@ export function findSubcategoryBySlug(slug: string | null | undefined): Subcateg
 /** Test a CategoryTestItem-shaped object against a subcategory. */
 export function testMatchesSubcategory(
   sub: SubcategoryDef,
-  fields: { title?: string | null; biomarkers?: string[] | null; tag?: string | null; desc?: string | null }
+  fields: {
+    title?: string | null;
+    biomarkers?: string[] | null;
+    tag?: string | null;
+    desc?: string | null;
+  },
 ): boolean {
   const title = fields.title ?? "";
   // Exclusions are name-only: a description mentioning the other sex must not

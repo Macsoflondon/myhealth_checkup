@@ -4,11 +4,23 @@ import { toast } from "@/components/ui/sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Save, Loader2, User, MapPin, Phone, AlertCircle } from "lucide-react";
 import { usersApi, type UserProfile } from "@/api";
 import { logger } from "@/lib/logger";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import ChangePasswordCard from "./ChangePasswordCard";
 
 const ProfileSettings = () => {
@@ -16,7 +28,7 @@ const ProfileSettings = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  
+
   // Form fields
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -38,12 +50,12 @@ const ProfileSettings = () => {
 
   const fetchProfile = async () => {
     if (!user) return;
-    
+
     try {
       const { data, error } = await usersApi.getUserProfile(user.id);
-      
+
       if (error) throw error;
-      
+
       if (data) {
         setProfile(data);
         setFirstName(data.first_name || "");
@@ -59,8 +71,8 @@ const ProfileSettings = () => {
         setEmergencyContactPhone(data.emergency_contact_phone || "");
       }
     } catch (error) {
-      logger.error('Error fetching profile:', error);
-      toast.error('Failed to load profile');
+      logger.error("Error fetching profile:", error);
+      toast.error("Failed to load profile");
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +80,7 @@ const ProfileSettings = () => {
 
   const handleSave = async () => {
     if (!user) return;
-    
+
     setIsSaving(true);
     try {
       const updates: Partial<UserProfile> = {
@@ -86,14 +98,14 @@ const ProfileSettings = () => {
       };
 
       const { error } = await usersApi.updateUserProfile(user.id, updates);
-      
+
       if (error) throw error;
-      
-      toast.success('Profile updated successfully');
+
+      toast.success("Profile updated successfully");
       fetchProfile();
     } catch (error) {
-      logger.error('Error updating profile:', error);
-      toast.error('Failed to update profile');
+      logger.error("Error updating profile:", error);
+      toast.error("Failed to update profile");
     } finally {
       setIsSaving(false);
     }
@@ -111,7 +123,9 @@ const ProfileSettings = () => {
     <div className="space-y-6">
       <div>
         <h2 className="text-2xl font-semibold mb-2">Profile Settings</h2>
-        <p className="text-muted-foreground">Manage your personal information</p>
+        <p className="text-muted-foreground">
+          Manage your personal information
+        </p>
       </div>
 
       {/* Personal Information */}
@@ -165,7 +179,9 @@ const ProfileSettings = () => {
                   <SelectItem value="male">Male</SelectItem>
                   <SelectItem value="female">Female</SelectItem>
                   <SelectItem value="other">Other</SelectItem>
-                  <SelectItem value="prefer_not_to_say">Prefer not to say</SelectItem>
+                  <SelectItem value="prefer_not_to_say">
+                    Prefer not to say
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -245,7 +261,9 @@ const ProfileSettings = () => {
             <AlertCircle className="h-5 w-5" />
             Emergency Contact
           </CardTitle>
-          <CardDescription>Person to contact in case of emergency</CardDescription>
+          <CardDescription>
+            Person to contact in case of emergency
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
@@ -271,8 +289,8 @@ const ProfileSettings = () => {
       </Card>
 
       <div className="flex justify-end">
-        <Button 
-          onClick={handleSave} 
+        <Button
+          onClick={handleSave}
           disabled={isSaving}
           className="w-full md:w-auto"
           size="lg"

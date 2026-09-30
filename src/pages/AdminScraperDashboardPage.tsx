@@ -2,13 +2,37 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Play, RefreshCw, CheckCircle2, XCircle, Clock, AlertTriangle, Wand2, Trash2, Sparkles } from "lucide-react";
 import {
-  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+  Loader2,
+  Play,
+  RefreshCw,
+  CheckCircle2,
+  XCircle,
+  Clock,
+  AlertTriangle,
+  Wand2,
+  Trash2,
+  Sparkles,
+} from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
@@ -35,7 +59,8 @@ const formatErrorMessage = (raw: unknown): string => {
   if (raw === null || raw === undefined) return "";
   if (typeof raw === "string") {
     const trimmed = raw.trim();
-    if (!trimmed || trimmed === "[object Object]") return "Scrape failed (no error detail recorded).";
+    if (!trimmed || trimmed === "[object Object]")
+      return "Scrape failed (no error detail recorded).";
     if (trimmed.startsWith("{") || trimmed.startsWith("[")) {
       try {
         return formatErrorMessage(JSON.parse(trimmed));
@@ -46,11 +71,21 @@ const formatErrorMessage = (raw: unknown): string => {
     return trimmed;
   }
   if (raw instanceof Error) return raw.message;
-  if (Array.isArray(raw)) return raw.map(formatErrorMessage).filter(Boolean).join(" · ");
+  if (Array.isArray(raw))
+    return raw.map(formatErrorMessage).filter(Boolean).join(" · ");
   if (typeof raw === "object") {
     const e = raw as Record<string, unknown>;
-    const parts = [e.message, e.error, e.details, e.hint, e.code ? `(code ${String(e.code)})` : null]
-      .filter((p): p is string | number => typeof p === "string" || typeof p === "number")
+    const parts = [
+      e.message,
+      e.error,
+      e.details,
+      e.hint,
+      e.code ? `(code ${String(e.code)})` : null,
+    ]
+      .filter(
+        (p): p is string | number =>
+          typeof p === "string" || typeof p === "number",
+      )
       .map(String)
       .filter((p) => p.trim().length > 0);
     if (parts.length) return parts.join(" — ");
@@ -63,7 +98,6 @@ const formatErrorMessage = (raw: unknown): string => {
   return String(raw);
 };
 
-
 interface Provider {
   id: string;
   name: string;
@@ -71,14 +105,38 @@ interface Provider {
 }
 
 const PROVIDERS: Provider[] = [
-  { id: 'medichecks', name: 'Medichecks', functionName: 'medichecks-firecrawl' },
-  { id: 'goodbody-clinic', name: 'GoodBody Clinic', functionName: 'goodbody-scraper' },
-  { id: 'randox', name: 'Randox Health', functionName: 'randox-scraper' },
-  { id: 'lola-health', name: 'Lola Health', functionName: 'lola-health-scraper' },
-  { id: 'london-medical-laboratory', name: 'London Medical Lab', functionName: 'scrape-london-lab' },
-  { id: 'medical-diagnosis', name: 'Medical Diagnosis', functionName: 'medical-diagnosis-scraper' },
-  { id: 'clinilabs', name: 'Clinilabs', functionName: 'clinilabs-scraper' },
-  { id: 'london-health-company', name: 'London Health Company', functionName: 'london-health-scraper' },
+  {
+    id: "medichecks",
+    name: "Medichecks",
+    functionName: "medichecks-firecrawl",
+  },
+  {
+    id: "goodbody-clinic",
+    name: "GoodBody Clinic",
+    functionName: "goodbody-scraper",
+  },
+  { id: "randox", name: "Randox Health", functionName: "randox-scraper" },
+  {
+    id: "lola-health",
+    name: "Lola Health",
+    functionName: "lola-health-scraper",
+  },
+  {
+    id: "london-medical-laboratory",
+    name: "London Medical Lab",
+    functionName: "scrape-london-lab",
+  },
+  {
+    id: "medical-diagnosis",
+    name: "Medical Diagnosis",
+    functionName: "medical-diagnosis-scraper",
+  },
+  { id: "clinilabs", name: "Clinilabs", functionName: "clinilabs-scraper" },
+  {
+    id: "london-health-company",
+    name: "London Health Company",
+    functionName: "london-health-scraper",
+  },
 ];
 
 const AdminScraperDashboardPage: React.FC = () => {
@@ -87,7 +145,9 @@ const AdminScraperDashboardPage: React.FC = () => {
   const [isLoadingJobs, setIsLoadingJobs] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [countsError, setCountsError] = useState<string | null>(null);
-  const [runningScrapers, setRunningScrapers] = useState<Set<string>>(new Set());
+  const [runningScrapers, setRunningScrapers] = useState<Set<string>>(
+    new Set(),
+  );
   const [testCounts, setTestCounts] = useState<Record<string, number>>({});
   const [isRefreshingPopular, setIsRefreshingPopular] = useState(false);
   const [popularResult, setPopularResult] = useState<string | null>(null);
@@ -99,7 +159,8 @@ const AdminScraperDashboardPage: React.FC = () => {
       const existing = map.get(key);
       if (
         !existing ||
-        new Date(j.last_scraped || 0).getTime() > new Date(existing.last_scraped || 0).getTime()
+        new Date(j.last_scraped || 0).getTime() >
+          new Date(existing.last_scraped || 0).getTime()
       ) {
         map.set(key, j);
       }
@@ -109,12 +170,12 @@ const AdminScraperDashboardPage: React.FC = () => {
 
   const fetchJobs = async () => {
     const { data, error } = await supabase
-      .from('scraping_jobs')
-      .select('*')
-      .order('updated_at', { ascending: false });
+      .from("scraping_jobs")
+      .select("*")
+      .order("updated_at", { ascending: false });
 
     if (error) {
-      console.error('Failed to load scraping jobs:', error);
+      console.error("Failed to load scraping jobs:", error);
       setLoadError(formatErrorMessage(error));
     } else {
       setLoadError(null);
@@ -128,10 +189,10 @@ const AdminScraperDashboardPage: React.FC = () => {
     const failures: string[] = [];
     for (const provider of PROVIDERS) {
       const { count, error } = await supabase
-        .from('provider_tests')
-        .select('*', { count: 'exact', head: true })
-        .eq('provider_id', provider.id)
-        .eq('is_active', true);
+        .from("provider_tests")
+        .select("*", { count: "exact", head: true })
+        .eq("provider_id", provider.id)
+        .eq("is_active", true);
       if (error) {
         console.error(`Failed to count tests for ${provider.name}:`, error);
         failures.push(provider.name);
@@ -140,7 +201,9 @@ const AdminScraperDashboardPage: React.FC = () => {
     }
     setTestCounts(counts);
     setCountsError(
-      failures.length > 0 ? `Test counts unavailable for: ${failures.join(', ')}.` : null,
+      failures.length > 0
+        ? `Test counts unavailable for: ${failures.join(", ")}.`
+        : null,
     );
   };
 
@@ -150,18 +213,21 @@ const AdminScraperDashboardPage: React.FC = () => {
   }, []);
 
   const runScraper = async (provider: Provider) => {
-    setRunningScrapers(prev => new Set(prev).add(provider.id));
-    
+    setRunningScrapers((prev) => new Set(prev).add(provider.id));
+
     try {
-      const { data, error } = await supabase.functions.invoke('run-all-scrapers', {
-        body: { providerId: provider.id }
-      });
+      const { data, error } = await supabase.functions.invoke(
+        "run-all-scrapers",
+        {
+          body: { providerId: provider.id },
+        },
+      );
 
       if (error) throw error;
 
       toast({
         title: "Scraper started",
-        description: `${provider.name}: ${data?.message || 'Scraping is running in the background.'}`,
+        description: `${provider.name}: ${data?.message || "Scraping is running in the background."}`,
       });
 
       // Refresh data now, then again once background batches have landed so a
@@ -176,11 +242,11 @@ const AdminScraperDashboardPage: React.FC = () => {
       console.error(`Error running ${provider.name} scraper:`, error);
       toast({
         title: "Scraper failed",
-        description: `${provider.name}: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        description: `${provider.name}: ${error instanceof Error ? error.message : "Unknown error"}`,
         variant: "destructive",
       });
     } finally {
-      setRunningScrapers(prev => {
+      setRunningScrapers((prev) => {
         const next = new Set(prev);
         next.delete(provider.id);
         return next;
@@ -189,11 +255,14 @@ const AdminScraperDashboardPage: React.FC = () => {
   };
 
   const purgeAndRescrape = async (provider: Provider) => {
-    setRunningScrapers(prev => new Set(prev).add(provider.id));
+    setRunningScrapers((prev) => new Set(prev).add(provider.id));
     try {
-      const { data, error } = await supabase.functions.invoke('purge-and-rescrape', {
-        body: { providerId: provider.id, confirm: true }
-      });
+      const { data, error } = await supabase.functions.invoke(
+        "purge-and-rescrape",
+        {
+          body: { providerId: provider.id, confirm: true },
+        },
+      );
       if (error) throw error;
       toast({
         title: "Purge + re-scrape dispatched",
@@ -204,11 +273,11 @@ const AdminScraperDashboardPage: React.FC = () => {
     } catch (error) {
       toast({
         title: "Purge failed",
-        description: `${provider.name}: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        description: `${provider.name}: ${error instanceof Error ? error.message : "Unknown error"}`,
         variant: "destructive",
       });
     } finally {
-      setRunningScrapers(prev => {
+      setRunningScrapers((prev) => {
         const next = new Set(prev);
         next.delete(provider.id);
         return next;
@@ -220,24 +289,29 @@ const AdminScraperDashboardPage: React.FC = () => {
     setRunningScrapers(new Set(PROVIDERS.map((provider) => provider.id)));
 
     try {
-      const { data, error } = await supabase.functions.invoke('run-all-scrapers', {
-        body: { providerIds: PROVIDERS.map((provider) => provider.id) }
-      });
+      const { data, error } = await supabase.functions.invoke(
+        "run-all-scrapers",
+        {
+          body: { providerIds: PROVIDERS.map((provider) => provider.id) },
+        },
+      );
 
       if (error) throw error;
 
       toast({
         title: "Scraper batch started",
-        description: data?.message || 'All provider scrapers are running in the background.',
+        description:
+          data?.message ||
+          "All provider scrapers are running in the background.",
       });
 
       await fetchJobs();
       await fetchTestCounts();
     } catch (error) {
-      console.error('Error running all scrapers:', error);
+      console.error("Error running all scrapers:", error);
       toast({
         title: "Scraper batch failed",
-        description: error instanceof Error ? error.message : 'Unknown error',
+        description: error instanceof Error ? error.message : "Unknown error",
         variant: "destructive",
       });
     } finally {
@@ -251,7 +325,7 @@ const AdminScraperDashboardPage: React.FC = () => {
       const count = testCounts[provider.id] ?? 0;
       // Retry when: never run, failed, still running (likely stuck), or completed but empty/partial
       if (!job) return true;
-      if (job.status !== 'completed') return true;
+      if (job.status !== "completed") return true;
       if (count === 0) return true;
       return false;
     });
@@ -270,26 +344,28 @@ const AdminScraperDashboardPage: React.FC = () => {
     setRunningScrapers(new Set(targets.map((p) => p.id)));
 
     try {
-      const { data, error } = await supabase.functions.invoke('run-all-scrapers', {
-        body: { providerIds: targets.map((p) => p.id) },
-      });
+      const { data, error } = await supabase.functions.invoke(
+        "run-all-scrapers",
+        {
+          body: { providerIds: targets.map((p) => p.id) },
+        },
+      );
 
       if (error) throw error;
 
       toast({
         title: `Smart re-scrape: ${targets.length} provider(s)`,
         description:
-          data?.message ||
-          `Retrying: ${targets.map((p) => p.name).join(', ')}`,
+          data?.message || `Retrying: ${targets.map((p) => p.name).join(", ")}`,
       });
 
       await fetchJobs();
       await fetchTestCounts();
     } catch (error) {
-      console.error('Smart re-scrape failed:', error);
+      console.error("Smart re-scrape failed:", error);
       toast({
         title: "Smart re-scrape failed",
-        description: error instanceof Error ? error.message : 'Unknown error',
+        description: error instanceof Error ? error.message : "Unknown error",
         variant: "destructive",
       });
     } finally {
@@ -301,20 +377,29 @@ const AdminScraperDashboardPage: React.FC = () => {
     setIsRefreshingPopular(true);
     setPopularResult(null);
     try {
-      const { data, error } = await supabase.functions.invoke('scrape-popular-tests', {
-        body: {},
-      });
+      const { data, error } = await supabase.functions.invoke(
+        "scrape-popular-tests",
+        {
+          body: {},
+        },
+      );
       if (error) throw error;
       const summary = Array.isArray(data?.providers)
-        ? data.providers.map((p: any) => `${p.provider}: ${p.matched ?? 0} matched`).join(' • ')
-        : data?.message || 'Done.';
+        ? data.providers
+            .map((p: any) => `${p.provider}: ${p.matched ?? 0} matched`)
+            .join(" • ")
+        : data?.message || "Done.";
       setPopularResult(summary);
-      toast({ title: 'Popular tests refreshed', description: summary });
+      toast({ title: "Popular tests refreshed", description: summary });
       await fetchTestCounts();
     } catch (error) {
-      const msg = error instanceof Error ? error.message : 'Unknown error';
+      const msg = error instanceof Error ? error.message : "Unknown error";
       setPopularResult(`Failed: ${msg}`);
-      toast({ title: 'Refresh failed', description: msg, variant: 'destructive' });
+      toast({
+        title: "Refresh failed",
+        description: msg,
+        variant: "destructive",
+      });
     } finally {
       setIsRefreshingPopular(false);
     }
@@ -326,25 +411,45 @@ const AdminScraperDashboardPage: React.FC = () => {
 
   const getStatusBadge = (status: string | undefined) => {
     switch (status) {
-      case 'completed':
-        return <Badge variant="default" className="bg-green-500"><CheckCircle2 className="w-3 h-3 mr-1" />Completed</Badge>;
-      case 'running':
-        return <Badge variant="secondary"><Loader2 className="w-3 h-3 mr-1 animate-spin" />Running</Badge>;
-      case 'failed':
-        return <Badge variant="destructive"><XCircle className="w-3 h-3 mr-1" />Failed</Badge>;
+      case "completed":
+        return (
+          <Badge variant="default" className="bg-green-500">
+            <CheckCircle2 className="w-3 h-3 mr-1" />
+            Completed
+          </Badge>
+        );
+      case "running":
+        return (
+          <Badge variant="secondary">
+            <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+            Running
+          </Badge>
+        );
+      case "failed":
+        return (
+          <Badge variant="destructive">
+            <XCircle className="w-3 h-3 mr-1" />
+            Failed
+          </Badge>
+        );
       default:
-        return <Badge variant="outline"><Clock className="w-3 h-3 mr-1" />Never Run</Badge>;
+        return (
+          <Badge variant="outline">
+            <Clock className="w-3 h-3 mr-1" />
+            Never Run
+          </Badge>
+        );
     }
   };
 
   const formatDate = (dateStr: string | null) => {
-    if (!dateStr) return 'Never';
-    return new Date(dateStr).toLocaleString('en-GB', {
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+    if (!dateStr) return "Never";
+    return new Date(dateStr).toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -354,15 +459,28 @@ const AdminScraperDashboardPage: React.FC = () => {
         <div className="max-w-4xl mx-auto space-y-6">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-white">Scraper Dashboard</h1>
-              <p className="text-white/90">Manage and monitor provider data scrapers</p>
+              <h1 className="text-2xl font-bold text-white">
+                Scraper Dashboard
+              </h1>
+              <p className="text-white/90">
+                Manage and monitor provider data scrapers
+              </p>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" onClick={fetchJobs} disabled={isLoadingJobs}>
-                <RefreshCw className={`h-4 w-4 mr-2 ${isLoadingJobs ? 'animate-spin' : ''}`} />
+              <Button
+                variant="outline"
+                onClick={fetchJobs}
+                disabled={isLoadingJobs}
+              >
+                <RefreshCw
+                  className={`h-4 w-4 mr-2 ${isLoadingJobs ? "animate-spin" : ""}`}
+                />
                 Refresh
               </Button>
-              <Button onClick={runAllScrapers} disabled={runningScrapers.size > 0}>
+              <Button
+                onClick={runAllScrapers}
+                disabled={runningScrapers.size > 0}
+              >
                 <Play className="h-4 w-4 mr-2" />
                 Run All Scrapers
               </Button>
@@ -382,7 +500,7 @@ const AdminScraperDashboardPage: React.FC = () => {
             <Alert variant="destructive">
               <AlertTriangle className="h-4 w-4" />
               <AlertDescription className="text-sm">
-                {[loadError, countsError].filter(Boolean).join(' ')}
+                {[loadError, countsError].filter(Boolean).join(" ")}
               </AlertDescription>
             </Alert>
           )}
@@ -402,14 +520,25 @@ const AdminScraperDashboardPage: React.FC = () => {
                     Refresh Popular Tests
                   </CardTitle>
                   <CardDescription>
-                    Scrape each provider's curated best-sellers page and update <code>is_popular</code>, <code>popularity_rank</code> and <code>image_url</code>. Runs as your admin user.
+                    Scrape each provider's curated best-sellers page and update{" "}
+                    <code>is_popular</code>, <code>popularity_rank</code> and{" "}
+                    <code>image_url</code>. Runs as your admin user.
                   </CardDescription>
                 </div>
-                <Button onClick={refreshPopularTests} disabled={isRefreshingPopular}>
+                <Button
+                  onClick={refreshPopularTests}
+                  disabled={isRefreshingPopular}
+                >
                   {isRefreshingPopular ? (
-                    <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Refreshing...</>
+                    <>
+                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                      Refreshing...
+                    </>
                   ) : (
-                    <><Sparkles className="h-4 w-4 mr-2" />Refresh Popular Tests</>
+                    <>
+                      <Sparkles className="h-4 w-4 mr-2" />
+                      Refresh Popular Tests
+                    </>
                   )}
                 </Button>
               </div>
@@ -417,7 +546,9 @@ const AdminScraperDashboardPage: React.FC = () => {
             {popularResult && (
               <CardContent className="pt-0">
                 <Alert>
-                  <AlertDescription className="text-sm">{popularResult}</AlertDescription>
+                  <AlertDescription className="text-sm">
+                    {popularResult}
+                  </AlertDescription>
                 </Alert>
               </CardContent>
             )}
@@ -426,12 +557,15 @@ const AdminScraperDashboardPage: React.FC = () => {
           <Alert>
             <Clock className="h-4 w-4" />
             <AlertDescription>
-              <strong>Scheduled scraping:</strong> All provider scrapers run automatically every 6 hours, with a daily health check that creates alerts when any provider drops below its expected test count.
+              <strong>Scheduled scraping:</strong> All provider scrapers run
+              automatically every 6 hours, with a daily health check that
+              creates alerts when any provider drops below its expected test
+              count.
             </AlertDescription>
           </Alert>
 
           <div className="grid gap-4">
-            {PROVIDERS.map(provider => {
+            {PROVIDERS.map((provider) => {
               const job = getJobForProvider(provider.id);
               const isRunning = runningScrapers.has(provider.id);
               const testCount = testCounts[provider.id] || 0;
@@ -441,9 +575,12 @@ const AdminScraperDashboardPage: React.FC = () => {
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                       <div>
-                        <CardTitle className="text-lg">{provider.name}</CardTitle>
+                        <CardTitle className="text-lg">
+                          {provider.name}
+                        </CardTitle>
                         <CardDescription>
-                          {testCount} active tests • Last scraped: {formatDate(job?.last_scraped || null)}
+                          {testCount} active tests • Last scraped:{" "}
+                          {formatDate(job?.last_scraped || null)}
                         </CardDescription>
                       </div>
                       <div className="flex items-center gap-2 flex-wrap justify-end">
@@ -478,12 +615,21 @@ const AdminScraperDashboardPage: React.FC = () => {
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle>Purge all {provider.name} tests?</AlertDialogTitle>
+                              <AlertDialogTitle>
+                                Purge all {provider.name} tests?
+                              </AlertDialogTitle>
                               <AlertDialogDescription>
-                                This will <strong>permanently delete all {testCount} active rows</strong> in
-                                <code className="mx-1">provider_tests</code> for <strong>{provider.name}</strong>,
-                                then immediately re-trigger the scraper so the improved parser repopulates everything
-                                from scratch. Cannot be undone.
+                                This will{" "}
+                                <strong>
+                                  permanently delete all {testCount} active rows
+                                </strong>{" "}
+                                in
+                                <code className="mx-1">
+                                  provider_tests
+                                </code> for <strong>{provider.name}</strong>,
+                                then immediately re-trigger the scraper so the
+                                improved parser repopulates everything from
+                                scratch. Cannot be undone.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
@@ -500,16 +646,18 @@ const AdminScraperDashboardPage: React.FC = () => {
                       </div>
                     </div>
                   </CardHeader>
-                  {job && Boolean(job.error_message) && job.status === 'failed' && (
-                    <CardContent className="pt-0">
-                      <Alert variant="destructive">
-                        <AlertTriangle className="h-4 w-4" />
-                        <AlertDescription className="text-sm">
-                          {formatErrorMessage(job.error_message)}
-                        </AlertDescription>
-                      </Alert>
-                    </CardContent>
-                  )}
+                  {job &&
+                    Boolean(job.error_message) &&
+                    job.status === "failed" && (
+                      <CardContent className="pt-0">
+                        <Alert variant="destructive">
+                          <AlertTriangle className="h-4 w-4" />
+                          <AlertDescription className="text-sm">
+                            {formatErrorMessage(job.error_message)}
+                          </AlertDescription>
+                        </Alert>
+                      </CardContent>
+                    )}
                 </Card>
               );
             })}
@@ -521,25 +669,34 @@ const AdminScraperDashboardPage: React.FC = () => {
 
           <CategoryVerificationPanel />
 
-
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Recent Scraping Activity</CardTitle>
+              <CardTitle className="text-lg">
+                Recent Scraping Activity
+              </CardTitle>
             </CardHeader>
             <CardContent>
               {jobs.length === 0 ? (
-                <p className="text-muted-foreground text-sm">No scraping activity recorded yet.</p>
+                <p className="text-muted-foreground text-sm">
+                  No scraping activity recorded yet.
+                </p>
               ) : (
                 <div className="space-y-2">
-                  {jobs.slice(0, 10).map(job => (
-                    <div key={job.id} className="flex items-center justify-between text-sm py-2 border-b last:border-0">
+                  {jobs.slice(0, 10).map((job) => (
+                    <div
+                      key={job.id}
+                      className="flex items-center justify-between text-sm py-2 border-b last:border-0"
+                    >
                       <div className="flex items-center gap-2">
                         {getStatusBadge(job.status)}
                         <span className="font-medium">
-                          {PROVIDERS.find(p => p.id === job.provider_id)?.name || job.provider_id}
+                          {PROVIDERS.find((p) => p.id === job.provider_id)
+                            ?.name || job.provider_id}
                         </span>
                       </div>
-                      <span className="text-muted-foreground">{formatDate(job.updated_at)}</span>
+                      <span className="text-muted-foreground">
+                        {formatDate(job.updated_at)}
+                      </span>
                     </div>
                   ))}
                 </div>

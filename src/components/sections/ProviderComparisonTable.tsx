@@ -25,10 +25,12 @@ const ProviderComparisonTable = () => {
               background: selected.length === 0 ? "#cbd5e1" : "#22c0d4",
             }}
             onMouseEnter={(e) => {
-              if (selected.length > 0) e.currentTarget.style.background = "#e70d69";
+              if (selected.length > 0)
+                e.currentTarget.style.background = "#e70d69";
             }}
             onMouseLeave={(e) => {
-              if (selected.length > 0) e.currentTarget.style.background = "#22c0d4";
+              if (selected.length > 0)
+                e.currentTarget.style.background = "#22c0d4";
             }}
           >
             Clear

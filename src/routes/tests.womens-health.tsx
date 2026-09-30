@@ -8,7 +8,8 @@ export const Route = createFileRoute("/tests/womens-health")({
   head: () =>
     buildCollectionHead({
       title: "Women's Health Blood Tests UK | Compare",
-      description: "Compare private women's health panels covering hormones, thyroid, iron and fertility markers from UK providers.",
+      description:
+        "Compare private women's health panels covering hormones, thyroid, iron and fertility markers from UK providers.",
       path: "/tests/womens-health",
     }),
   component: WomensHealthPage,

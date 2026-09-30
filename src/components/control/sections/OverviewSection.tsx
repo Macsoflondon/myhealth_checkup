@@ -33,15 +33,34 @@ export default function OverviewSection() {
             .map((r) => r.provider_id)
             .filter(Boolean),
         ).size;
-        const testsRes = await supabase.from("tests_master").select("id", { count: "exact", head: true });
-        const mapRes = await supabase.from("provider_test_mapping").select("id", { count: "exact", head: true });
+        const testsRes = await supabase
+          .from("tests_master")
+          .select("id", { count: "exact", head: true });
+        const mapRes = await supabase
+          .from("provider_test_mapping")
+          .select("id", { count: "exact", head: true });
         // scrape_runs is what the live mhc-* scraper pipeline actually writes to (confirmed
         // by a 2026-09-21 audit); scrape_run_log only tracks the separate promote-provider-tests
         // orchestrator and was sitting near-idle, making this card understate real activity.
-        const scrapesRes = await supabase.from("scrape_runs").select("id", { count: "exact", head: true }).gte("started_at", since);
-        const failedRes = await supabase.from("scrape_runs").select("id", { count: "exact", head: true }).gte("started_at", since).eq("status", "error");
-        const alertsRes = await supabase.from("scraper_alerts").select("id", { count: "exact", head: true }).eq("acknowledged", false);
-        const lastScrapeRes = await supabase.from("scrape_runs").select("started_at").order("started_at", { ascending: false }).limit(1).maybeSingle();
+        const scrapesRes = await supabase
+          .from("scrape_runs")
+          .select("id", { count: "exact", head: true })
+          .gte("started_at", since);
+        const failedRes = await supabase
+          .from("scrape_runs")
+          .select("id", { count: "exact", head: true })
+          .gte("started_at", since)
+          .eq("status", "error");
+        const alertsRes = await supabase
+          .from("scraper_alerts")
+          .select("id", { count: "exact", head: true })
+          .eq("acknowledged", false);
+        const lastScrapeRes = await supabase
+          .from("scrape_runs")
+          .select("started_at")
+          .order("started_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
         if (cancelled) return;
         setData({
           providers: providerCount,
@@ -70,7 +89,14 @@ export default function OverviewSection() {
     return Math.max(0, score);
   })();
 
-  const healthState = healthScore == null ? "idle" : healthScore >= 85 ? "good" : healthScore >= 60 ? "warn" : "bad";
+  const healthState =
+    healthScore == null
+      ? "idle"
+      : healthScore >= 85
+        ? "good"
+        : healthScore >= 60
+          ? "warn"
+          : "bad";
 
   return (
     <SectionShell
@@ -86,16 +112,23 @@ export default function OverviewSection() {
         <>
           <div className="rounded-2xl border bg-card p-6 flex items-center justify-between mb-6">
             <div>
-              <div className="text-xs uppercase tracking-wider text-muted-foreground font-medium">Platform Health Score</div>
+              <div className="text-xs uppercase tracking-wider text-muted-foreground font-medium">
+                Platform Health Score
+              </div>
               <div className="mt-1 flex items-center gap-3">
                 <HealthDot state={healthState as any} />
-                <span className="text-4xl font-semibold tabular-nums">{healthScore}<span className="text-xl text-muted-foreground">/100</span></span>
+                <span className="text-4xl font-semibold tabular-nums">
+                  {healthScore}
+                  <span className="text-xl text-muted-foreground">/100</span>
+                </span>
               </div>
             </div>
             <div className="text-right text-xs text-muted-foreground">
               <div>Last scrape</div>
               <div className="mt-1 text-foreground tabular-nums">
-                {data?.lastScrapeAt ? new Date(data.lastScrapeAt).toLocaleString() : "—"}
+                {data?.lastScrapeAt
+                  ? new Date(data.lastScrapeAt).toLocaleString()
+                  : "—"}
               </div>
             </div>
           </div>
@@ -104,8 +137,16 @@ export default function OverviewSection() {
             <StatCard label="Tests (master)" value={data?.tests ?? 0} />
             <StatCard label="Provider mappings" value={data?.mappings ?? 0} />
             <StatCard label="Scrapes (24h)" value={data?.recentScrapes ?? 0} />
-            <StatCard label="Failed scrapes (24h)" value={data?.failedScrapes ?? 0} tone={data && data.failedScrapes > 0 ? "bad" : "good"} />
-            <StatCard label="Open alerts" value={data?.openAlerts ?? 0} tone={data && data.openAlerts > 0 ? "warn" : "good"} />
+            <StatCard
+              label="Failed scrapes (24h)"
+              value={data?.failedScrapes ?? 0}
+              tone={data && data.failedScrapes > 0 ? "bad" : "good"}
+            />
+            <StatCard
+              label="Open alerts"
+              value={data?.openAlerts ?? 0}
+              tone={data && data.openAlerts > 0 ? "warn" : "good"}
+            />
           </div>
         </>
       )}

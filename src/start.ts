@@ -1,4 +1,8 @@
-import { createStart, createCsrfMiddleware, createMiddleware } from "@tanstack/react-start";
+import {
+  createStart,
+  createCsrfMiddleware,
+  createMiddleware,
+} from "@tanstack/react-start";
 
 // Arms the process-level client-abort guard in the dev/SSR process too — in dev
 // the Vite Node server, not src/server.ts, owns the HTTP socket that emits
@@ -7,7 +11,6 @@ import "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { isClientAbort } from "./lib/is-client-abort";
 import { attachSupabaseAuth } from "@/integrations/supabase/auth-attacher";
-
 
 const errorMiddleware = createMiddleware().server(async ({ next }) => {
   try {

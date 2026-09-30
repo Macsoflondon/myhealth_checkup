@@ -20,7 +20,7 @@ export interface BlogArticle {
   date: string;
 }
 
-export type BlogCategory = 
+export type BlogCategory =
   | "All Articles"
   | "Heart Health"
   | "Nutrition"

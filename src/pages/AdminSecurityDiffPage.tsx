@@ -98,7 +98,9 @@ export default function AdminSecurityDiffPage() {
       .limit(25);
 
     if (dbErr) {
-      logger.error("Failed to load security snapshots", { message: dbErr.message });
+      logger.error("Failed to load security snapshots", {
+        message: dbErr.message,
+      });
       setError(dbErr.message);
     } else {
       setSnapshots((data ?? []) as unknown as Snapshot[]);
@@ -162,9 +164,11 @@ export default function AdminSecurityDiffPage() {
             </p>
           </div>
           <Button onClick={runScan} disabled={scanning}>
-            {scanning
-              ? <Loader2 className="h-4 w-4 animate-spin mr-2" />
-              : <RefreshCw className="h-4 w-4 mr-2" />}
+            {scanning ? (
+              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+            ) : (
+              <RefreshCw className="h-4 w-4 mr-2" />
+            )}
             Run scan now
           </Button>
         </div>
@@ -180,185 +184,179 @@ export default function AdminSecurityDiffPage() {
           </Alert>
         )}
 
-
-        {loading
-          ? (
-            <div className="flex items-center justify-center py-16 text-muted-foreground">
-              <Loader2 className="h-5 w-5 animate-spin mr-2" /> Loading…
-            </div>
-          )
-          : (
-            <>
-              {/* Summary banner */}
-              {latest && (
-                <Alert
-                  className={`mb-6 ${
-                    unackDiffs.length > 0
-                      ? "border-amber-600/40 bg-amber-50 dark:bg-amber-950/30"
-                      : "border-green-600/40 bg-green-50 dark:bg-green-950/30"
-                  }`}
-                >
+        {loading ? (
+          <div className="flex items-center justify-center py-16 text-muted-foreground">
+            <Loader2 className="h-5 w-5 animate-spin mr-2" /> Loading…
+          </div>
+        ) : (
+          <>
+            {/* Summary banner */}
+            {latest && (
+              <Alert
+                className={`mb-6 ${
+                  unackDiffs.length > 0
+                    ? "border-amber-600/40 bg-amber-50 dark:bg-amber-950/30"
+                    : "border-green-600/40 bg-green-50 dark:bg-green-950/30"
+                }`}
+              >
+                {unackDiffs.length > 0 ? (
+                  <ShieldAlert className="h-5 w-5" />
+                ) : (
+                  <ShieldCheck className="h-5 w-5" />
+                )}
+                <AlertTitle>
                   {unackDiffs.length > 0
-                    ? <ShieldAlert className="h-5 w-5" />
-                    : <ShieldCheck className="h-5 w-5" />}
-                  <AlertTitle>
-                    {unackDiffs.length > 0
-                      ? `${unackDiffs.length} unacknowledged diff${
+                    ? `${unackDiffs.length} unacknowledged diff${
                         unackDiffs.length === 1 ? "" : "s"
                       }`
-                      : "No new changes since last acknowledgement"}
-                  </AlertTitle>
-                  <AlertDescription>
-                    Last scan {fmtTime(latest.scanned_at)} —{" "}
-                    {latest.error_count} error
-                    {latest.error_count === 1 ? "" : "s"}, {latest.warn_count}
-                    {" "}
-                    warning{latest.warn_count === 1 ? "" : "s"}.
-                  </AlertDescription>
-                </Alert>
-              )}
+                    : "No new changes since last acknowledgement"}
+                </AlertTitle>
+                <AlertDescription>
+                  Last scan {fmtTime(latest.scanned_at)} — {latest.error_count}{" "}
+                  error
+                  {latest.error_count === 1 ? "" : "s"}, {latest.warn_count}{" "}
+                  warning{latest.warn_count === 1 ? "" : "s"}.
+                </AlertDescription>
+              </Alert>
+            )}
 
-              {/* Snapshot list */}
-              <div className="space-y-4">
-                {snapshots.map((snap, idx) => (
-                  <Card
-                    key={snap.id}
-                    className={snap.has_diff && !snap.acknowledged_at
+            {/* Snapshot list */}
+            <div className="space-y-4">
+              {snapshots.map((snap, idx) => (
+                <Card
+                  key={snap.id}
+                  className={
+                    snap.has_diff && !snap.acknowledged_at
                       ? "border-amber-600/40"
-                      : ""}
-                  >
-                    <CardHeader>
-                      <div className="flex items-center justify-between gap-4 flex-wrap">
-                        <div>
-                          <CardTitle className="flex items-center gap-2 text-base">
-                            <Clock className="h-4 w-4 text-muted-foreground" />
-                            {fmtTime(snap.scanned_at)}
-                            {idx === 0 && (
-                              <Badge variant="outline" className="ml-2">
-                                Latest
-                              </Badge>
-                            )}
-                          </CardTitle>
-                          <CardDescription className="mt-1">
-                            {snap.total_findings} finding
-                            {snap.total_findings === 1 ? "" : "s"} —{" "}
-                            {snap.error_count} error · {snap.warn_count} warn
-                          </CardDescription>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          {snap.has_diff
-                            ? (
-                              <Badge variant="destructive">
-                                Diff vs previous
-                              </Badge>
-                            )
-                            : (
-                              <Badge variant="secondary">
-                                No change
-                              </Badge>
-                            )}
-                          {snap.has_diff && !snap.acknowledged_at && (
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => acknowledge(snap.id)}
-                            >
-                              Acknowledge
-                            </Button>
-                          )}
-                          {snap.acknowledged_at && (
-                            <Badge variant="outline">
-                              Acked {fmtTime(snap.acknowledged_at)}
+                      : ""
+                  }
+                >
+                  <CardHeader>
+                    <div className="flex items-center justify-between gap-4 flex-wrap">
+                      <div>
+                        <CardTitle className="flex items-center gap-2 text-base">
+                          <Clock className="h-4 w-4 text-muted-foreground" />
+                          {fmtTime(snap.scanned_at)}
+                          {idx === 0 && (
+                            <Badge variant="outline" className="ml-2">
+                              Latest
                             </Badge>
                           )}
-                        </div>
+                        </CardTitle>
+                        <CardDescription className="mt-1">
+                          {snap.total_findings} finding
+                          {snap.total_findings === 1 ? "" : "s"} —{" "}
+                          {snap.error_count} error · {snap.warn_count} warn
+                        </CardDescription>
                       </div>
-                    </CardHeader>
+                      <div className="flex items-center gap-2">
+                        {snap.has_diff ? (
+                          <Badge variant="destructive">Diff vs previous</Badge>
+                        ) : (
+                          <Badge variant="secondary">No change</Badge>
+                        )}
+                        {snap.has_diff && !snap.acknowledged_at && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => acknowledge(snap.id)}
+                          >
+                            Acknowledge
+                          </Button>
+                        )}
+                        {snap.acknowledged_at && (
+                          <Badge variant="outline">
+                            Acked {fmtTime(snap.acknowledged_at)}
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  </CardHeader>
 
-                    {snap.has_diff && (
-                      <CardContent className="space-y-4">
-                        {snap.added_findings.length > 0 && (
-                          <DiffSection
-                            icon={<Plus className="h-4 w-4 text-destructive" />}
-                            label={`Added (${snap.added_findings.length})`}
-                            rows={snap.added_findings}
-                          />
-                        )}
-                        {snap.removed_findings.length > 0 && (
-                          <DiffSection
-                            icon={<Minus className="h-4 w-4 text-primary" />}
-                            label={`Resolved (${snap.removed_findings.length})`}
-                            rows={snap.removed_findings}
-                          />
-                        )}
-                        {snap.modified_findings.length > 0 && (
-                          <div>
-                            <div className="flex items-center gap-2 text-sm font-semibold mb-2">
-                              <Pencil className="h-4 w-4 text-muted-foreground" />
-                              Modified ({snap.modified_findings.length})
-                            </div>
-                            <Table>
-                              <TableHeader>
-                                <TableRow>
-                                  <TableHead>Finding</TableHead>
-                                  <TableHead>Before</TableHead>
-                                  <TableHead>After</TableHead>
+                  {snap.has_diff && (
+                    <CardContent className="space-y-4">
+                      {snap.added_findings.length > 0 && (
+                        <DiffSection
+                          icon={<Plus className="h-4 w-4 text-destructive" />}
+                          label={`Added (${snap.added_findings.length})`}
+                          rows={snap.added_findings}
+                        />
+                      )}
+                      {snap.removed_findings.length > 0 && (
+                        <DiffSection
+                          icon={<Minus className="h-4 w-4 text-primary" />}
+                          label={`Resolved (${snap.removed_findings.length})`}
+                          rows={snap.removed_findings}
+                        />
+                      )}
+                      {snap.modified_findings.length > 0 && (
+                        <div>
+                          <div className="flex items-center gap-2 text-sm font-semibold mb-2">
+                            <Pencil className="h-4 w-4 text-muted-foreground" />
+                            Modified ({snap.modified_findings.length})
+                          </div>
+                          <Table>
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead>Finding</TableHead>
+                                <TableHead>Before</TableHead>
+                                <TableHead>After</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {snap.modified_findings.map((m) => (
+                                <TableRow key={m.key}>
+                                  <TableCell className="font-mono text-xs">
+                                    {m.key}
+                                  </TableCell>
+                                  <TableCell>
+                                    <LevelBadge level={m.before.level} />{" "}
+                                    <span className="text-xs text-muted-foreground">
+                                      {m.before.title}
+                                    </span>
+                                  </TableCell>
+                                  <TableCell>
+                                    <LevelBadge level={m.after.level} />{" "}
+                                    <span className="text-xs">
+                                      {m.after.title}
+                                    </span>
+                                  </TableCell>
                                 </TableRow>
-                              </TableHeader>
-                              <TableBody>
-                                {snap.modified_findings.map((m) => (
-                                  <TableRow key={m.key}>
-                                    <TableCell className="font-mono text-xs">
-                                      {m.key}
-                                    </TableCell>
-                                    <TableCell>
-                                      <LevelBadge level={m.before.level} />{" "}
-                                      <span className="text-xs text-muted-foreground">
-                                        {m.before.title}
-                                      </span>
-                                    </TableCell>
-                                    <TableCell>
-                                      <LevelBadge level={m.after.level} />{" "}
-                                      <span className="text-xs">
-                                        {m.after.title}
-                                      </span>
-                                    </TableCell>
-                                  </TableRow>
-                                ))}
-                              </TableBody>
-                            </Table>
-                          </div>
-                        )}
-                      </CardContent>
-                    )}
-
-                    {!snap.has_diff && snap.findings.length > 0 && idx === 0 && (
-                      <CardContent>
-                        <details>
-                          <summary className="cursor-pointer text-sm text-muted-foreground hover:text-foreground">
-                            Show current findings ({snap.findings.length})
-                          </summary>
-                          <div className="mt-3">
-                            <DiffSection rows={snap.findings} />
-                          </div>
-                        </details>
-                      </CardContent>
-                    )}
-                  </Card>
-                ))}
-
-                {snapshots.length === 0 && (
-                  <Card>
-                    <CardContent className="py-12 text-center text-muted-foreground">
-                      No scans yet. Click <strong>Run scan now</strong>{" "}
-                      to take the first snapshot. The hourly cron will then
-                      maintain history automatically.
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </div>
+                      )}
                     </CardContent>
-                  </Card>
-                )}
-              </div>
-            </>
-          )}
+                  )}
+
+                  {!snap.has_diff && snap.findings.length > 0 && idx === 0 && (
+                    <CardContent>
+                      <details>
+                        <summary className="cursor-pointer text-sm text-muted-foreground hover:text-foreground">
+                          Show current findings ({snap.findings.length})
+                        </summary>
+                        <div className="mt-3">
+                          <DiffSection rows={snap.findings} />
+                        </div>
+                      </details>
+                    </CardContent>
+                  )}
+                </Card>
+              ))}
+
+              {snapshots.length === 0 && (
+                <Card>
+                  <CardContent className="py-12 text-center text-muted-foreground">
+                    No scans yet. Click <strong>Run scan now</strong> to take
+                    the first snapshot. The hourly cron will then maintain
+                    history automatically.
+                  </CardContent>
+                </Card>
+              )}
+            </div>
+          </>
+        )}
       </main>
       <Footer />
     </div>
@@ -393,7 +391,9 @@ function DiffSection({
         <TableBody>
           {rows.map((f) => (
             <TableRow key={f.key}>
-              <TableCell><LevelBadge level={f.level} /></TableCell>
+              <TableCell>
+                <LevelBadge level={f.level} />
+              </TableCell>
               <TableCell className="text-xs">{f.category}</TableCell>
               <TableCell>
                 <div className="font-medium">{f.title}</div>

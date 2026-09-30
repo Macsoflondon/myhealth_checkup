@@ -27,13 +27,26 @@ export const goalPages: GoalPageData[] = [
       {
         name: "Advanced Health Check",
         why: "Comprehensive baseline covering heart, liver, kidney, thyroid, and metabolic markers",
-        keyBiomarkers: ["HbA1c", "Cholesterol", "Liver Function", "Kidney Function", "CRP"],
+        keyBiomarkers: [
+          "HbA1c",
+          "Cholesterol",
+          "Liver Function",
+          "Kidney Function",
+          "CRP",
+        ],
         searchQuery: "advanced+health",
       },
       {
         name: "Heart Health",
         why: "Cardiovascular disease remains the UK's leading cause of death — early detection saves lives",
-        keyBiomarkers: ["Total Cholesterol", "LDL", "HDL", "Triglycerides", "ApoB", "Lp(a)"],
+        keyBiomarkers: [
+          "Total Cholesterol",
+          "LDL",
+          "HDL",
+          "Triglycerides",
+          "ApoB",
+          "Lp(a)",
+        ],
         searchQuery: "heart+health",
       },
       {
@@ -45,7 +58,13 @@ export const goalPages: GoalPageData[] = [
       {
         name: "Vitamin & Mineral Panel",
         why: "Micronutrient status impacts immune function, energy, and cellular repair",
-        keyBiomarkers: ["Vitamin D", "Vitamin B12", "Folate", "Ferritin", "Magnesium"],
+        keyBiomarkers: [
+          "Vitamin D",
+          "Vitamin B12",
+          "Folate",
+          "Ferritin",
+          "Magnesium",
+        ],
         searchQuery: "vitamin",
       },
     ],
@@ -64,7 +83,14 @@ export const goalPages: GoalPageData[] = [
       {
         name: "Sports Performance Panel",
         why: "Tailored for athletes — covers hormones, iron, inflammation, and metabolic markers",
-        keyBiomarkers: ["Testosterone", "Cortisol", "Ferritin", "CRP", "CK", "Vitamin D"],
+        keyBiomarkers: [
+          "Testosterone",
+          "Cortisol",
+          "Ferritin",
+          "CRP",
+          "CK",
+          "Vitamin D",
+        ],
         searchQuery: "sports+performance",
       },
       {
@@ -76,7 +102,13 @@ export const goalPages: GoalPageData[] = [
       {
         name: "Male / Female Hormone Profile",
         why: "Hormonal balance directly affects muscle synthesis, recovery, and energy",
-        keyBiomarkers: ["Testosterone", "Cortisol", "SHBG", "Oestradiol", "DHEA-S"],
+        keyBiomarkers: [
+          "Testosterone",
+          "Cortisol",
+          "SHBG",
+          "Oestradiol",
+          "DHEA-S",
+        ],
         searchQuery: "hormone",
       },
       {
@@ -94,7 +126,8 @@ export const goalPages: GoalPageData[] = [
     name: "Weight Loss",
     icon: "🎯",
     colorHex: "#059669",
-    shortDescription: "Understand what's working against your weight loss goals",
+    shortDescription:
+      "Understand what's working against your weight loss goals",
     explanation:
       "If you're eating well and exercising but not losing weight, there may be a medical reason. Thyroid disorders, insulin resistance, hormonal imbalances, and chronic inflammation can all make weight loss significantly harder. Testing identifies these barriers so you can work with your body — not against it.",
     recommendedTests: [
@@ -138,7 +171,13 @@ export const goalPages: GoalPageData[] = [
       {
         name: "Well Man / Well Woman Check",
         why: "Age- and gender-appropriate screening covering the most important health markers",
-        keyBiomarkers: ["Full Blood Count", "Liver Function", "Kidney Function", "Thyroid", "Cholesterol"],
+        keyBiomarkers: [
+          "Full Blood Count",
+          "Liver Function",
+          "Kidney Function",
+          "Thyroid",
+          "Cholesterol",
+        ],
         searchQuery: "well+man",
       },
       {
@@ -156,7 +195,13 @@ export const goalPages: GoalPageData[] = [
       {
         name: "Heart Health Check",
         why: "Cardiovascular disease is the UK's biggest killer — a simple blood test assesses your risk",
-        keyBiomarkers: ["Total Cholesterol", "LDL", "HDL", "Triglycerides", "CRP"],
+        keyBiomarkers: [
+          "Total Cholesterol",
+          "LDL",
+          "HDL",
+          "Triglycerides",
+          "CRP",
+        ],
         searchQuery: "heart+health",
       },
     ],

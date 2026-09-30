@@ -1,130 +1,190 @@
 import React, { useState } from "react";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, RefreshCw, Database, Globe, CheckCircle2, XCircle, Clock, Zap } from "lucide-react";
+import {
+  Loader2,
+  RefreshCw,
+  Database,
+  Globe,
+  CheckCircle2,
+  XCircle,
+  Clock,
+  Zap,
+} from "lucide-react";
 import { LiveDataService } from "@/services/LiveDataService";
 import { supabase } from "@/integrations/supabase/client";
 
 const AdminDataRefreshPage: React.FC = () => {
   const [isRefreshing, setIsRefreshing] = useState<Record<string, boolean>>({});
-  const [refreshResults, setRefreshResults] = useState<Record<string, {
-    success: boolean;
-    message: string;
-    timestamp: string;
-    details?: string;
-  }>>({});
+  const [refreshResults, setRefreshResults] = useState<
+    Record<
+      string,
+      {
+        success: boolean;
+        message: string;
+        timestamp: string;
+        details?: string;
+      }
+    >
+  >({});
 
   const providers = [
-    { id: 'medichecks', name: 'Medichecks', hasLiveScraper: true, scraperFunction: 'medichecks-scraper' },
-    { id: 'medichecks-firecrawl', name: 'Medichecks (Firecrawl)', hasLiveScraper: true, scraperFunction: 'medichecks-firecrawl' },
-    { id: 'london-medical-laboratory', name: 'London Medical Laboratory', hasLiveScraper: true, scraperFunction: 'scrape-london-lab' },
-    { id: 'goodbody-clinic', name: 'Goodbody Clinic', hasLiveScraper: true, scraperFunction: 'goodbody-scraper' },
-    { id: 'randox', name: 'Randox Health', hasLiveScraper: true, scraperFunction: 'randox-scraper' },
-    { id: 'lola-health', name: 'Lola Health', hasLiveScraper: true, scraperFunction: 'lola-health-scraper' },
+    {
+      id: "medichecks",
+      name: "Medichecks",
+      hasLiveScraper: true,
+      scraperFunction: "medichecks-scraper",
+    },
+    {
+      id: "medichecks-firecrawl",
+      name: "Medichecks (Firecrawl)",
+      hasLiveScraper: true,
+      scraperFunction: "medichecks-firecrawl",
+    },
+    {
+      id: "london-medical-laboratory",
+      name: "London Medical Laboratory",
+      hasLiveScraper: true,
+      scraperFunction: "scrape-london-lab",
+    },
+    {
+      id: "goodbody-clinic",
+      name: "Goodbody Clinic",
+      hasLiveScraper: true,
+      scraperFunction: "goodbody-scraper",
+    },
+    {
+      id: "randox",
+      name: "Randox Health",
+      hasLiveScraper: true,
+      scraperFunction: "randox-scraper",
+    },
+    {
+      id: "lola-health",
+      name: "Lola Health",
+      hasLiveScraper: true,
+      scraperFunction: "lola-health-scraper",
+    },
   ];
 
-  const handleRunScraper = async (providerId: string, scraperFunction: string) => {
-    setIsRefreshing(prev => ({ ...prev, [providerId]: true }));
-    
+  const handleRunScraper = async (
+    providerId: string,
+    scraperFunction: string,
+  ) => {
+    setIsRefreshing((prev) => ({ ...prev, [providerId]: true }));
+
     try {
       const { data, error } = await supabase.functions.invoke(scraperFunction, {
-        body: {}
+        body: {},
       });
-      
+
       if (error) {
         throw error;
       }
-      
-      setRefreshResults(prev => ({
+
+      setRefreshResults((prev) => ({
         ...prev,
         [providerId]: {
           success: data?.success ?? true,
-          message: data?.success 
-            ? `Successfully scraped ${data.testsScraped || 0} tests, ${data.testsWithPrices || data.testsUpserted || 0} with prices` 
-            : data?.error || 'Scraper completed with errors',
+          message: data?.success
+            ? `Successfully scraped ${data.testsScraped || 0} tests, ${data.testsWithPrices || data.testsUpserted || 0} with prices`
+            : data?.error || "Scraper completed with errors",
           timestamp: new Date().toISOString(),
           details: JSON.stringify(data, null, 2),
-        }
+        },
       }));
     } catch (error) {
-      setRefreshResults(prev => ({
+      setRefreshResults((prev) => ({
         ...prev,
         [providerId]: {
           success: false,
-          message: error instanceof Error ? error.message : 'Error running scraper',
+          message:
+            error instanceof Error ? error.message : "Error running scraper",
           timestamp: new Date().toISOString(),
-        }
+        },
       }));
     } finally {
-      setIsRefreshing(prev => ({ ...prev, [providerId]: false }));
+      setIsRefreshing((prev) => ({ ...prev, [providerId]: false }));
     }
   };
 
   const handleRefreshProvider = async (providerId: string) => {
-    setIsRefreshing(prev => ({ ...prev, [providerId]: true }));
-    
+    setIsRefreshing((prev) => ({ ...prev, [providerId]: true }));
+
     try {
       const success = await LiveDataService.refreshProviderData(providerId);
-      
-      setRefreshResults(prev => ({
+
+      setRefreshResults((prev) => ({
         ...prev,
         [providerId]: {
           success,
-          message: success 
-            ? 'Successfully refreshed live data' 
-            : 'Failed to refresh - using database backup',
+          message: success
+            ? "Successfully refreshed live data"
+            : "Failed to refresh - using database backup",
           timestamp: new Date().toISOString(),
-        }
+        },
       }));
     } catch (error) {
-      setRefreshResults(prev => ({
+      setRefreshResults((prev) => ({
         ...prev,
         [providerId]: {
           success: false,
-          message: 'Error refreshing data',
+          message: "Error refreshing data",
           timestamp: new Date().toISOString(),
-        }
+        },
       }));
     } finally {
-      setIsRefreshing(prev => ({ ...prev, [providerId]: false }));
+      setIsRefreshing((prev) => ({ ...prev, [providerId]: false }));
     }
   };
 
   const handleRunAllScrapers = async () => {
-    setIsRefreshing(prev => ({ ...prev, 'all-scrapers': true }));
-    
+    setIsRefreshing((prev) => ({ ...prev, "all-scrapers": true }));
+
     try {
-      const { data, error } = await supabase.functions.invoke('run-all-scrapers', {
-        body: {}
-      });
-      
+      const { data, error } = await supabase.functions.invoke(
+        "run-all-scrapers",
+        {
+          body: {},
+        },
+      );
+
       if (error) throw error;
-      
-      setRefreshResults(prev => ({
+
+      setRefreshResults((prev) => ({
         ...prev,
-        'all-scrapers': {
+        "all-scrapers": {
           success: data?.success ?? true,
-          message: data?.success 
-            ? 'All scrapers completed successfully' 
-            : 'Some scrapers failed',
+          message: data?.success
+            ? "All scrapers completed successfully"
+            : "Some scrapers failed",
           timestamp: new Date().toISOString(),
           details: JSON.stringify(data, null, 2),
-        }
+        },
       }));
     } catch (error) {
-      setRefreshResults(prev => ({
+      setRefreshResults((prev) => ({
         ...prev,
-        'all-scrapers': {
+        "all-scrapers": {
           success: false,
-          message: error instanceof Error ? error.message : 'Error running all scrapers',
+          message:
+            error instanceof Error
+              ? error.message
+              : "Error running all scrapers",
           timestamp: new Date().toISOString(),
-        }
+        },
       }));
     } finally {
-      setIsRefreshing(prev => ({ ...prev, 'all-scrapers': false }));
+      setIsRefreshing((prev) => ({ ...prev, "all-scrapers": false }));
     }
   };
 
@@ -145,7 +205,8 @@ const AdminDataRefreshPage: React.FC = () => {
                   Live Data Management
                 </CardTitle>
                 <CardDescription>
-                  Run scrapers to update provider test data with current prices. Database backup is used when live scraping fails.
+                  Run scrapers to update provider test data with current prices.
+                  Database backup is used when live scraping fails.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -154,20 +215,29 @@ const AdminDataRefreshPage: React.FC = () => {
                   <AlertDescription>
                     <p className="font-medium mb-2">Data Source Priority:</p>
                     <ol className="text-sm space-y-1 ml-4 list-decimal">
-                      <li><strong>Live Scraping</strong> - Fetch current prices and availability from provider websites</li>
-                      <li><strong>Cache</strong> - Use cached data (1 hour validity)</li>
-                      <li><strong>Database Backup</strong> - Fallback to stored data when live scraping fails</li>
+                      <li>
+                        <strong>Live Scraping</strong> - Fetch current prices
+                        and availability from provider websites
+                      </li>
+                      <li>
+                        <strong>Cache</strong> - Use cached data (1 hour
+                        validity)
+                      </li>
+                      <li>
+                        <strong>Database Backup</strong> - Fallback to stored
+                        data when live scraping fails
+                      </li>
                     </ol>
                   </AlertDescription>
                 </Alert>
 
                 <div className="flex flex-wrap gap-2">
-                  <Button 
-                    onClick={handleRunAllScrapers} 
-                    disabled={Object.values(isRefreshing).some(v => v)}
+                  <Button
+                    onClick={handleRunAllScrapers}
+                    disabled={Object.values(isRefreshing).some((v) => v)}
                     size="lg"
                   >
-                    {isRefreshing['all-scrapers'] ? (
+                    {isRefreshing["all-scrapers"] ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                         Running All Scrapers...
@@ -179,26 +249,33 @@ const AdminDataRefreshPage: React.FC = () => {
                       </>
                     )}
                   </Button>
-                  <Button 
-                    onClick={handleClearCache} 
-                    variant="outline"
-                  >
+                  <Button onClick={handleClearCache} variant="outline">
                     Clear Cache
                   </Button>
                 </div>
 
-                {refreshResults['all-scrapers'] && (
-                  <Alert variant={refreshResults['all-scrapers'].success ? "default" : "destructive"}>
-                    {refreshResults['all-scrapers'].success ? (
+                {refreshResults["all-scrapers"] && (
+                  <Alert
+                    variant={
+                      refreshResults["all-scrapers"].success
+                        ? "default"
+                        : "destructive"
+                    }
+                  >
+                    {refreshResults["all-scrapers"].success ? (
                       <CheckCircle2 className="h-4 w-4" />
                     ) : (
                       <XCircle className="h-4 w-4" />
                     )}
                     <AlertDescription>
-                      <p className="font-medium">{refreshResults['all-scrapers'].message}</p>
+                      <p className="font-medium">
+                        {refreshResults["all-scrapers"].message}
+                      </p>
                       <p className="text-xs mt-1 flex items-center gap-1">
                         <Clock className="h-3 w-3" />
-                        {new Date(refreshResults['all-scrapers'].timestamp).toLocaleString()}
+                        {new Date(
+                          refreshResults["all-scrapers"].timestamp,
+                        ).toLocaleString()}
                       </p>
                     </AlertDescription>
                   </Alert>
@@ -207,14 +284,16 @@ const AdminDataRefreshPage: React.FC = () => {
             </Card>
 
             <div className="grid gap-4">
-              {providers.map(provider => (
+              {providers.map((provider) => (
                 <Card key={provider.id}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-lg">{provider.name}</CardTitle>
                       <div className="flex gap-2">
                         {provider.hasLiveScraper ? (
-                          <Badge variant="default" className="bg-primary">Live Scraper</Badge>
+                          <Badge variant="default" className="bg-primary">
+                            Live Scraper
+                          </Badge>
                         ) : (
                           <Badge variant="secondary">Database Only</Badge>
                         )}
@@ -223,17 +302,27 @@ const AdminDataRefreshPage: React.FC = () => {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     {refreshResults[provider.id] && (
-                      <Alert variant={refreshResults[provider.id].success ? "default" : "destructive"}>
+                      <Alert
+                        variant={
+                          refreshResults[provider.id].success
+                            ? "default"
+                            : "destructive"
+                        }
+                      >
                         {refreshResults[provider.id].success ? (
                           <CheckCircle2 className="h-4 w-4" />
                         ) : (
                           <XCircle className="h-4 w-4" />
                         )}
                         <AlertDescription>
-                          <p className="font-medium">{refreshResults[provider.id].message}</p>
+                          <p className="font-medium">
+                            {refreshResults[provider.id].message}
+                          </p>
                           <p className="text-xs mt-1 flex items-center gap-1">
                             <Clock className="h-3 w-3" />
-                            {new Date(refreshResults[provider.id].timestamp).toLocaleString()}
+                            {new Date(
+                              refreshResults[provider.id].timestamp,
+                            ).toLocaleString()}
                           </p>
                         </AlertDescription>
                       </Alert>
@@ -241,8 +330,15 @@ const AdminDataRefreshPage: React.FC = () => {
 
                     <div className="flex gap-2">
                       <Button
-                        onClick={() => handleRunScraper(provider.id, provider.scraperFunction)}
-                        disabled={isRefreshing[provider.id] || !provider.hasLiveScraper}
+                        onClick={() =>
+                          handleRunScraper(
+                            provider.id,
+                            provider.scraperFunction,
+                          )
+                        }
+                        disabled={
+                          isRefreshing[provider.id] || !provider.hasLiveScraper
+                        }
                         className="flex-1"
                       >
                         {isRefreshing[provider.id] ? (

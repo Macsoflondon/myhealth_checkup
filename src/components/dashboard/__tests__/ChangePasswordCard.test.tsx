@@ -1,7 +1,13 @@
 // @vitest-environment jsdom
 import "@testing-library/jest-dom/vitest";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  cleanup,
+} from "@testing-library/react";
 import ChangePasswordCard from "../ChangePasswordCard";
 
 // --- Mocks ---
@@ -38,9 +44,15 @@ vi.mock("@/components/ui/sonner", () => ({
 const STRONG = "NewStrongP@ss1";
 
 const fillForm = (current: string, next: string, confirm: string) => {
-  fireEvent.change(screen.getByLabelText(/current password/i), { target: { value: current } });
-  fireEvent.change(screen.getByLabelText(/^new password/i), { target: { value: next } });
-  fireEvent.change(screen.getByLabelText(/confirm new password/i), { target: { value: confirm } });
+  fireEvent.change(screen.getByLabelText(/current password/i), {
+    target: { value: current },
+  });
+  fireEvent.change(screen.getByLabelText(/^new password/i), {
+    target: { value: next },
+  });
+  fireEvent.change(screen.getByLabelText(/confirm new password/i), {
+    target: { value: confirm },
+  });
 };
 
 const submit = () => fireEvent.click(screen.getByTestId("update-password-btn"));
@@ -62,9 +74,18 @@ describe("ChangePasswordCard", () => {
     fillForm("OldPass123!", STRONG, STRONG);
     submit();
 
-    await waitFor(() => expect(updateUser).toHaveBeenCalledWith({ password: STRONG }));
-    expect(verifyCurrentPassword).toHaveBeenCalledWith("user@example.com", "OldPass123!");
-    await waitFor(() => expect(toastSuccess).toHaveBeenCalledWith("Password updated successfully."));
+    await waitFor(() =>
+      expect(updateUser).toHaveBeenCalledWith({ password: STRONG }),
+    );
+    expect(verifyCurrentPassword).toHaveBeenCalledWith(
+      "user@example.com",
+      "OldPass123!",
+    );
+    await waitFor(() =>
+      expect(toastSuccess).toHaveBeenCalledWith(
+        "Password updated successfully.",
+      ),
+    );
   });
 
   it("shows error when current password is incorrect", async () => {
@@ -74,7 +95,9 @@ describe("ChangePasswordCard", () => {
     fillForm("WrongOld!", STRONG, STRONG);
     submit();
 
-    expect(await screen.findByText(/current password is incorrect/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/current password is incorrect/i),
+    ).toBeInTheDocument();
     expect(updateUser).not.toHaveBeenCalled();
   });
 
@@ -83,7 +106,9 @@ describe("ChangePasswordCard", () => {
     fillForm("OldPass123!", STRONG, STRONG + "x");
     submit();
 
-    expect(await screen.findByText(/new passwords do not match/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/new passwords do not match/i),
+    ).toBeInTheDocument();
     expect(verifyCurrentPassword).not.toHaveBeenCalled();
   });
 
@@ -92,7 +117,9 @@ describe("ChangePasswordCard", () => {
     fillForm(STRONG, STRONG, STRONG);
     submit();
 
-    expect(await screen.findByText(/different from your current password/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/different from your current password/i),
+    ).toBeInTheDocument();
     expect(verifyCurrentPassword).not.toHaveBeenCalled();
   });
 
@@ -101,19 +128,25 @@ describe("ChangePasswordCard", () => {
     fillForm("OldPass123!", "weakpass", "weakpass");
     submit();
 
-    expect(await screen.findByText(/does not meet security requirements/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/does not meet security requirements/i),
+    ).toBeInTheDocument();
     expect(verifyCurrentPassword).not.toHaveBeenCalled();
   });
 
   it("surfaces updateUser errors", async () => {
     verifyCurrentPassword.mockResolvedValue(true);
-    updateUser.mockResolvedValue({ error: { message: "Password too weak server-side" } });
+    updateUser.mockResolvedValue({
+      error: { message: "Password too weak server-side" },
+    });
 
     render(<ChangePasswordCard />);
     fillForm("OldPass123!", STRONG, STRONG);
     submit();
 
-    expect(await screen.findByText(/password too weak server-side/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/password too weak server-side/i),
+    ).toBeInTheDocument();
   });
 
   it("sends a password reset email when the reset button is clicked", async () => {
@@ -125,20 +158,28 @@ describe("ChangePasswordCard", () => {
     await waitFor(() =>
       expect(resetPasswordForEmail).toHaveBeenCalledWith(
         "user@example.com",
-        expect.objectContaining({ redirectTo: expect.stringContaining("/reset-password") })
-      )
+        expect.objectContaining({
+          redirectTo: expect.stringContaining("/reset-password"),
+        }),
+      ),
     );
     await waitFor(() =>
-      expect(toastSuccess).toHaveBeenCalledWith("Password reset email sent. Please check your inbox.")
+      expect(toastSuccess).toHaveBeenCalledWith(
+        "Password reset email sent. Please check your inbox.",
+      ),
     );
   });
 
   it("shows a toast error if reset email fails", async () => {
-    resetPasswordForEmail.mockResolvedValue({ error: { message: "Rate limited" } });
+    resetPasswordForEmail.mockResolvedValue({
+      error: { message: "Rate limited" },
+    });
 
     render(<ChangePasswordCard />);
     fireEvent.click(screen.getByTestId("send-reset-email-btn"));
 
-    await waitFor(() => expect(toastError).toHaveBeenCalledWith("Rate limited"));
+    await waitFor(() =>
+      expect(toastError).toHaveBeenCalledWith("Rate limited"),
+    );
   });
 });

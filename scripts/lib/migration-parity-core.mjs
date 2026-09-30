@@ -122,7 +122,9 @@ export const parseExclusionRegistry = (contents) =>
 export const formatParityReport = (result) => {
   const lines = [];
   if (result.malformed.length) {
-    lines.push(`✗ Malformed migration versions: ${result.malformed.join(", ")}`);
+    lines.push(
+      `✗ Malformed migration versions: ${result.malformed.join(", ")}`,
+    );
   }
   if (result.excludedApplied?.length) {
     lines.push(

@@ -31,8 +31,10 @@ import { cn } from "@/lib/utils";
 export type EyebrowBadgeSize = "sm" | "md";
 export type EyebrowBadgeTone = "onLight" | "onDark";
 
-export interface EyebrowBadgeProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
+export interface EyebrowBadgeProps extends Omit<
+  React.HTMLAttributes<HTMLElement>,
+  "children"
+> {
   /** Label text. Defaults to the canonical "Accredited & Verified". */
   label?: React.ReactNode;
   /** Size preset — controls text size, tracking, gap and rule length. */

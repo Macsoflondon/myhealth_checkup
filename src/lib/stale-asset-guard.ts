@@ -42,7 +42,9 @@ const hasDirtyFormInput = (): boolean => {
     if (active.value.trim() !== "") return true;
   }
   // Also protect any field with user-entered content anywhere on the page.
-  const fields = document.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>(
+  const fields = document.querySelectorAll<
+    HTMLInputElement | HTMLTextAreaElement
+  >(
     "input:not([type=checkbox]):not([type=radio]):not([type=hidden]), textarea",
   );
   for (const field of fields) {
@@ -105,8 +107,15 @@ export const isAssetUrl = (rawUrl: string): boolean => {
 /** True when the asset really is gone rather than momentarily unreachable. */
 const isAssetStale = async (url: string): Promise<boolean> => {
   try {
-    const response = await fetch(url, { cache: "reload", credentials: "same-origin" });
-    return response.status === 404 || response.status === 410 || response.status >= 500;
+    const response = await fetch(url, {
+      cache: "reload",
+      credentials: "same-origin",
+    });
+    return (
+      response.status === 404 ||
+      response.status === 410 ||
+      response.status >= 500
+    );
   } catch {
     // Network-level failure (offline, aborted): not provably stale.
     return false;
@@ -140,7 +149,8 @@ const handleStaleCandidate = async (url: string): Promise<void> => {
 
 const resourceUrl = (target: EventTarget | null): string | null => {
   if (!(target instanceof HTMLElement)) return null;
-  if (target instanceof HTMLImageElement) return target.currentSrc || target.src;
+  if (target instanceof HTMLImageElement)
+    return target.currentSrc || target.src;
   if (target instanceof HTMLScriptElement) return target.src;
   if (target instanceof HTMLLinkElement) return target.href;
   if (target instanceof HTMLSourceElement) return target.src || target.srcset;
@@ -170,7 +180,11 @@ export const installStaleAssetGuard = (): (() => void) => {
     const message = String(
       (event.reason as Error | undefined)?.message ?? event.reason ?? "",
     );
-    if (!/dynamically imported module|module script failed|ChunkLoadError/i.test(message)) {
+    if (
+      !/dynamically imported module|module script failed|ChunkLoadError/i.test(
+        message,
+      )
+    ) {
       return;
     }
     const match = message.match(/https?:\/\/\S+?(?=\s|$|\))/);

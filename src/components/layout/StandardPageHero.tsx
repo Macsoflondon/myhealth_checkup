@@ -35,7 +35,11 @@ export function StandardPageHero({
     <section
       aria-labelledby={headingId}
       className="px-4 sm:px-8 md:px-10 pt-10 sm:pt-12 md:pt-14 pb-11 sm:pb-14"
-      style={{ background: "#081129", position: "relative", overflow: "hidden" }}
+      style={{
+        background: "#081129",
+        position: "relative",
+        overflow: "hidden",
+      }}
     >
       <div
         aria-hidden="true"
@@ -106,7 +110,11 @@ export function StandardPageHero({
         {strapline ? (
           <p
             className="text-center mx-auto mt-4 text-sm sm:text-base"
-            style={{ color: "rgba(255,255,255,0.78)", maxWidth: 680, lineHeight: 1.6 }}
+            style={{
+              color: "rgba(255,255,255,0.78)",
+              maxWidth: 680,
+              lineHeight: 1.6,
+            }}
           >
             {strapline}
           </p>

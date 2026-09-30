@@ -1,5 +1,9 @@
 import "https://deno.land/std@0.224.0/dotenv/load.ts";
-import { assertEquals, assertExists, assertMatch } from "https://deno.land/std@0.224.0/assert/mod.ts";
+import {
+  assertEquals,
+  assertExists,
+  assertMatch,
+} from "https://deno.land/std@0.224.0/assert/mod.ts";
 
 const SUPABASE_URL = Deno.env.get("VITE_SUPABASE_URL")!;
 const SUPABASE_ANON_KEY = Deno.env.get("VITE_SUPABASE_PUBLISHABLE_KEY")!;
@@ -52,68 +56,80 @@ Deno.test("blood-test-analysis: rejects invalid bearer token", async () => {
 
 // ─── Input validation: missing readings ─────────────────────────────
 
-Deno.test("blood-test-analysis: rejects missing readings (unauthed → 401)", async () => {
-  const res = await fetch(FUNCTION_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: SUPABASE_ANON_KEY,
-    },
-    body: JSON.stringify({}),
-  });
-  // Auth check comes first
-  assertEquals(res.status, 401);
-  await res.text();
-});
+Deno.test(
+  "blood-test-analysis: rejects missing readings (unauthed → 401)",
+  async () => {
+    const res = await fetch(FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify({}),
+    });
+    // Auth check comes first
+    assertEquals(res.status, 401);
+    await res.text();
+  },
+);
 
 // ─── Input validation: empty readings array ─────────────────────────
 
-Deno.test("blood-test-analysis: rejects empty readings array (unauthed → 401)", async () => {
-  const res = await fetch(FUNCTION_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: SUPABASE_ANON_KEY,
-    },
-    body: JSON.stringify({ readings: [] }),
-  });
-  assertEquals(res.status, 401);
-  await res.text();
-});
+Deno.test(
+  "blood-test-analysis: rejects empty readings array (unauthed → 401)",
+  async () => {
+    const res = await fetch(FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify({ readings: [] }),
+    });
+    assertEquals(res.status, 401);
+    await res.text();
+  },
+);
 
 // ─── Content-Type on errors ─────────────────────────────────────────
 
-Deno.test("blood-test-analysis: returns JSON content type on auth error", async () => {
-  const res = await fetch(FUNCTION_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: SUPABASE_ANON_KEY,
-    },
-    body: JSON.stringify({
-      readings: [{ biomarkerName: "HbA1c", value: 42, unit: "mmol/mol" }],
-    }),
-  });
-  assertMatch(res.headers.get("content-type") || "", /application\/json/);
-  await res.text();
-});
+Deno.test(
+  "blood-test-analysis: returns JSON content type on auth error",
+  async () => {
+    const res = await fetch(FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify({
+        readings: [{ biomarkerName: "HbA1c", value: 42, unit: "mmol/mol" }],
+      }),
+    });
+    assertMatch(res.headers.get("content-type") || "", /application\/json/);
+    await res.text();
+  },
+);
 
 // ─── CORS on error responses ────────────────────────────────────────
 
-Deno.test("blood-test-analysis: includes CORS headers on error responses", async () => {
-  const res = await fetch(FUNCTION_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: SUPABASE_ANON_KEY,
-    },
-    body: JSON.stringify({
-      readings: [{ biomarkerName: "TSH", value: 2.5, unit: "mIU/L" }],
-    }),
-  });
-  assertEquals(res.headers.get("access-control-allow-origin"), "*");
-  await res.text();
-});
+Deno.test(
+  "blood-test-analysis: includes CORS headers on error responses",
+  async () => {
+    const res = await fetch(FUNCTION_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        apikey: SUPABASE_ANON_KEY,
+      },
+      body: JSON.stringify({
+        readings: [{ biomarkerName: "TSH", value: 2.5, unit: "mIU/L" }],
+      }),
+    });
+    assertEquals(res.headers.get("access-control-allow-origin"), "*");
+    await res.text();
+  },
+);
 
 // ─── Error response structure ───────────────────────────────────────
 

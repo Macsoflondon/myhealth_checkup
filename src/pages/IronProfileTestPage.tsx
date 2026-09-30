@@ -5,12 +5,14 @@ import { Heart, Clock, Shield } from "lucide-react";
 const IronProfileTestPage = () => {
   const testData: TestPageData = {
     title: "Iron Profile Test",
-    description: "Comprehensive iron status testing to check for iron deficiency, anaemia, or iron overload. Essential for energy levels and overall health assessment.",
+    description:
+      "Comprehensive iron status testing to check for iron deficiency, anaemia, or iron overload. Essential for energy levels and overall health assessment.",
     category: "Blood Tests",
     breadcrumbTitle: "Iron Profile Test",
     metaTitle: "Iron Profile Test - Compare UK Providers | MyHealth Checkup",
-    metaDescription: "Compare Iron Profile Tests from top UK providers. Check for iron deficiency, anaemia and iron overload with comprehensive iron status testing.",
-    
+    metaDescription:
+      "Compare Iron Profile Tests from top UK providers. Check for iron deficiency, anaemia and iron overload with comprehensive iron status testing.",
+
     biomarkerSections: [
       {
         title: "Iron Markers",
@@ -18,8 +20,8 @@ const IronProfileTestPage = () => {
           "Serum Iron",
           "Ferritin (iron stores)",
           "Total Iron Binding Capacity (TIBC)",
-          "Transferrin Saturation"
-        ]
+          "Transferrin Saturation",
+        ],
       },
       {
         title: "Related Tests",
@@ -27,11 +29,11 @@ const IronProfileTestPage = () => {
           "Haemoglobin levels",
           "Red blood cell count",
           "Mean cell volume (MCV)",
-          "Vitamin B12 & Folate"
-        ]
-      }
+          "Vitamin B12 & Folate",
+        ],
+      },
     ],
-    
+
     highlights: [
       {
         title: "Signs of Iron Deficiency",
@@ -40,42 +42,42 @@ const IronProfileTestPage = () => {
           "Pale skin, nails or inner eyelids",
           "Shortness of breath",
           "Cold hands and feet",
-          "Restless leg syndrome"
+          "Restless leg syndrome",
         ],
         bgColor: "bg-red-50 dark:bg-red-900/20",
-        textColor: "text-red-800 dark:text-red-200"
-      }
+        textColor: "text-red-800 dark:text-red-200",
+      },
     ],
-    
+
     featureBadges: [
       { icon: Shield, label: "UKAS Accredited" },
       { icon: Clock, label: "Fast Results" },
-      { icon: Heart, label: "Energy Insights" }
+      { icon: Heart, label: "Energy Insights" },
     ],
-    
+
     whyChooseTitle: "Why Test Iron Levels?",
     whyChooseItems: [
       "Iron deficiency is one of the most common nutritional deficiencies",
       "Essential for oxygen transport and energy production",
       "Women are at higher risk due to menstruation",
       "Vegetarians and vegans may have lower iron levels",
-      "Can identify both deficiency and excess iron"
+      "Can identify both deficiency and excess iron",
     ],
-    
+
     providers: [
       {
         name: "Medichecks",
         price: 39,
         url: "https://medichecks.com/products/iron-status-blood-test",
-        features: ["Full iron panel", "3-4 day results", "Finger-prick option"]
+        features: ["Full iron panel", "3-4 day results", "Finger-prick option"],
       },
       {
         name: "London Medical Laboratory",
         price: 45,
         url: "https://londonmedicallaboratory.com/product/iron-profile-test",
-        features: ["Comprehensive iron", "Same day results", "Home or clinic"]
-      }
-    ]
+        features: ["Comprehensive iron", "Same day results", "Home or clinic"],
+      },
+    ],
   };
 
   return <TestPageTemplate data={testData} />;

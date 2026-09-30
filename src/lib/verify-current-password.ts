@@ -12,7 +12,10 @@ import { supabase } from "@/integrations/supabase/client";
  * the resulting session is discarded and the user's real session (and its
  * assurance level) is left intact.
  */
-export async function verifyCurrentPassword(email: string, password: string): Promise<boolean> {
+export async function verifyCurrentPassword(
+  email: string,
+  password: string,
+): Promise<boolean> {
   const { supabaseUrl, supabaseKey } = supabase as unknown as {
     supabaseUrl: string;
     supabaseKey: string;
@@ -26,7 +29,10 @@ export async function verifyCurrentPassword(email: string, password: string): Pr
     },
   });
 
-  const { data, error } = await verifier.auth.signInWithPassword({ email, password });
+  const { data, error } = await verifier.auth.signInWithPassword({
+    email,
+    password,
+  });
   if (error || !data.session) return false;
 
   // Best-effort clean-up of the throwaway session only ("local" scope never

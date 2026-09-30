@@ -39,15 +39,26 @@ const approvedMethodLabel: Record<"at_home" | "clinic", string> = {
 
 function normaliseMethod(row: Row): "at_home" | "clinic" | null {
   if (row.method === "at_home" || row.method === "clinic") return row.method;
-  const text = `${row.methodLabel ?? ""} ${row.bio ?? ""} ${row.badge ?? ""}`.toLowerCase();
-  if (text.includes("at-home") || text.includes("home kit") || text.includes("home test")) return "at_home";
+  const text =
+    `${row.methodLabel ?? ""} ${row.bio ?? ""} ${row.badge ?? ""}`.toLowerCase();
+  if (
+    text.includes("at-home") ||
+    text.includes("home kit") ||
+    text.includes("home test")
+  )
+    return "at_home";
   if (text.includes("in-clinic") || text.includes("clinic")) return "clinic";
   return null;
 }
 
 function hasForbiddenWording(row: Row): boolean {
-  const text = `${row.methodLabel ?? ""} ${row.bio ?? ""} ${row.badge ?? ""}`.toLowerCase();
-  return text.includes("walk-in") || text.includes("walk in") || text.includes("clinic-based");
+  const text =
+    `${row.methodLabel ?? ""} ${row.bio ?? ""} ${row.badge ?? ""}`.toLowerCase();
+  return (
+    text.includes("walk-in") ||
+    text.includes("walk in") ||
+    text.includes("clinic-based")
+  );
 }
 
 function providerKey(row: Row): string {
@@ -55,17 +66,31 @@ function providerKey(row: Row): string {
 }
 
 function sanitiseRows(rows: Row[]): Row[] {
-  const firstMethod = rows.map(normaliseMethod).find((method): method is "at_home" | "clinic" => method !== null);
+  const firstMethod = rows
+    .map(normaliseMethod)
+    .find((method): method is "at_home" | "clinic" => method !== null);
   if (!firstMethod) return [];
 
   const seenProviders = new Set<string>();
   const methodLabel = approvedMethodLabel[firstMethod];
-  return rows.filter((row) => {
-    const key = providerKey(row);
-    const keep = normaliseMethod(row) === firstMethod && key !== "" && !seenProviders.has(key) && !hasForbiddenWording(row);
-    if (keep) seenProviders.add(key);
-    return keep;
-  }).map((row) => ({ ...row, method: firstMethod, methodLabel, bio: methodLabel, badge: methodLabel }));
+  return rows
+    .filter((row) => {
+      const key = providerKey(row);
+      const keep =
+        normaliseMethod(row) === firstMethod &&
+        key !== "" &&
+        !seenProviders.has(key) &&
+        !hasForbiddenWording(row);
+      if (keep) seenProviders.add(key);
+      return keep;
+    })
+    .map((row) => ({
+      ...row,
+      method: firstMethod,
+      methodLabel,
+      bio: methodLabel,
+      badge: methodLabel,
+    }));
 }
 
 function normaliseText(value: string | null | undefined): string {
@@ -81,50 +106,92 @@ function formatPrice(value: number): string {
   return Number.isInteger(rounded) ? `£${rounded}` : `£${rounded.toFixed(2)}`;
 }
 
-function supportsMethod(test: ProviderTest, method: "at_home" | "clinic"): boolean {
+function supportsMethod(
+  test: ProviderTest,
+  method: "at_home" | "clinic",
+): boolean {
   const collectionMethod = normaliseText(test.collection_method);
   if (method === "at_home") {
-    return test.home_kit_available === true || collectionMethod === "home_kit" || collectionMethod === "self_arranged";
+    return (
+      test.home_kit_available === true ||
+      collectionMethod === "home_kit" ||
+      collectionMethod === "self_arranged"
+    );
   }
-  return test.clinic_visit_available === true || collectionMethod === "clinic_appointment" || collectionMethod === "home_visit";
+  return (
+    test.clinic_visit_available === true ||
+    collectionMethod === "clinic_appointment" ||
+    collectionMethod === "home_visit"
+  );
 }
 
 function isMandatoryFee(type: string | null, amount: number | null): boolean {
-  return amount !== null && amount > 0 && type !== null && type !== "none" && type !== "optional";
+  return (
+    amount !== null &&
+    amount > 0 &&
+    type !== null &&
+    type !== "none" &&
+    type !== "optional"
+  );
 }
 
-function expectedTotal(test: ProviderTest, method: "at_home" | "clinic"): number | null {
-  if (test.price === null || test.price <= 0 || !supportsMethod(test, method)) return null;
+function expectedTotal(
+  test: ProviderTest,
+  method: "at_home" | "clinic",
+): number | null {
+  if (test.price === null || test.price <= 0 || !supportsMethod(test, method))
+    return null;
 
   let total = test.price;
   const collectionMethod = normaliseText(test.collection_method);
-  const feeAppliesToMethod = method === "clinic"
-    ? collectionMethod === "clinic_appointment" || test.home_kit_available !== true
-    : collectionMethod === "home_kit";
+  const feeAppliesToMethod =
+    method === "clinic"
+      ? collectionMethod === "clinic_appointment" ||
+        test.home_kit_available !== true
+      : collectionMethod === "home_kit";
 
-  if (feeAppliesToMethod && isMandatoryFee(test.collection_fee_type, test.collection_fee_amount)) {
+  if (
+    feeAppliesToMethod &&
+    isMandatoryFee(test.collection_fee_type, test.collection_fee_amount)
+  ) {
     total += test.collection_fee_amount ?? 0;
   }
-  if (test.clinical_review_type === "required" && test.clinical_review_fee !== null && test.clinical_review_fee > 0) {
+  if (
+    test.clinical_review_type === "required" &&
+    test.clinical_review_fee !== null &&
+    test.clinical_review_fee > 0
+  ) {
     total += test.clinical_review_fee;
   }
   return total;
 }
 
-function findProviderTest(row: Row, tests: ProviderTest[]): ProviderTest | null {
+function findProviderTest(
+  row: Row,
+  tests: ProviderTest[],
+): ProviderTest | null {
   const providerId = normaliseText(row.providerId);
   if (!providerId) return null;
-  const providerTests = tests.filter((test) => normaliseText(test.provider_id) === providerId);
+  const providerTests = tests.filter(
+    (test) => normaliseText(test.provider_id) === providerId,
+  );
   const rowUrl = normaliseUrl(row.url);
   const rowName = normaliseText(row.sourceTestName);
 
-  return providerTests.find((test) => rowUrl !== "" && normaliseUrl(test.url) === rowUrl)
-    ?? providerTests.find((test) => rowName !== "" && normaliseText(test.test_name) === rowName)
-    ?? null;
+  return (
+    providerTests.find(
+      (test) => rowUrl !== "" && normaliseUrl(test.url) === rowUrl,
+    ) ??
+    providerTests.find(
+      (test) => rowName !== "" && normaliseText(test.test_name) === rowName,
+    ) ??
+    null
+  );
 }
 
 Deno.serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  if (req.method === "OPTIONS")
+    return new Response("ok", { headers: corsHeaders });
 
   const url = Deno.env.get("SUPABASE_URL")!;
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -138,7 +205,9 @@ Deno.serve(async (req) => {
     });
   }
 
-  const supabase = createClient(url, serviceKey, { auth: { persistSession: false } });
+  const supabase = createClient(url, serviceKey, {
+    auth: { persistSession: false },
+  });
 
   const { data: panels, error } = await supabase
     .from("live_comparison_panels")
@@ -153,7 +222,9 @@ Deno.serve(async (req) => {
 
   const { data: tests, error: testsError } = await supabase
     .from("provider_tests")
-    .select("provider_id, test_name, price, url, collection_method, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, home_kit_available, clinic_visit_available")
+    .select(
+      "provider_id, test_name, price, url, collection_method, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, home_kit_available, clinic_visit_available",
+    )
     .eq("is_active", true)
     .not("price", "is", null)
     .limit(5000);
@@ -166,11 +237,18 @@ Deno.serve(async (req) => {
   }
 
   const providerTests = (tests ?? []) as ProviderTest[];
-  const summary: Array<{ slug: string; updated: number; total: number; removed: number }> = [];
+  const summary: Array<{
+    slug: string;
+    updated: number;
+    total: number;
+    removed: number;
+  }> = [];
 
   for (const panel of panels ?? []) {
     const rows = sanitiseRows((panel.rows as Row[]) ?? []);
-    const panelMethod = rows.map(normaliseMethod).find((method): method is "at_home" | "clinic" => method !== null);
+    const panelMethod = rows
+      .map(normaliseMethod)
+      .find((method): method is "at_home" | "clinic" => method !== null);
     let updated = 0;
     const newRows: Row[] = [];
     for (const row of rows) {
@@ -189,7 +267,12 @@ Deno.serve(async (req) => {
       .from("live_comparison_panels")
       .update({ rows: newRows, last_scraped_at: new Date().toISOString() })
       .eq("id", panel.id);
-    summary.push({ slug: panel.slug, updated, total: newRows.length, removed: rows.length - newRows.length });
+    summary.push({
+      slug: panel.slug,
+      updated,
+      total: newRows.length,
+      removed: rows.length - newRows.length,
+    });
   }
 
   return new Response(JSON.stringify({ success: true, summary }), {

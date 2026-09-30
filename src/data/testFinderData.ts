@@ -15,33 +15,59 @@
 
 // ---------- enums / unions ----------
 export type SampleType =
-  | "finger_prick" | "venous" | "saliva" | "urine" | "stool" | "buccal_swab" | "multiple";
+  | "finger_prick"
+  | "venous"
+  | "saliva"
+  | "urine"
+  | "stool"
+  | "buccal_swab"
+  | "multiple";
 
 export type CollectionMethod =
-  | "home_kit" | "clinic_appointment" | "home_visit" | "mobile_phlebotomy"
-  | "third_party_phlebotomy" | "self_arranged" | "multiple";
+  | "home_kit"
+  | "clinic_appointment"
+  | "home_visit"
+  | "mobile_phlebotomy"
+  | "third_party_phlebotomy"
+  | "self_arranged"
+  | "multiple";
 
 export type CollectionFeeType =
-  | "none" | "fixed" | "range" | "varies_by_location" | "patient_arranged";
+  "none" | "fixed" | "range" | "varies_by_location" | "patient_arranged";
 
-export type ClinicalReviewType = "included" | "optional" | "not_included" | "not_available";
+export type ClinicalReviewType =
+  "included" | "optional" | "not_included" | "not_available";
 
 export type ClinicalProfessional =
-  | "gp" | "consultant" | "clinician" | "nurse" | "clinical_scientist";
+  "gp" | "consultant" | "clinician" | "nurse" | "clinical_scientist";
 
 export type SexRestriction = "none" | "male_only" | "female_only";
 
 export type VerificationState = "verified" | "needs_verification";
 
 export type GoalTag =
-  | "preventative" | "longevity" | "performance" | "weight_management"
-  | "symptom_investigation" | "condition_monitoring";
+  | "preventative"
+  | "longevity"
+  | "performance"
+  | "weight_management"
+  | "symptom_investigation"
+  | "condition_monitoring";
 
 export type ConditionTag =
-  | "cardiovascular_risk" | "metabolic_health" | "thyroid" | "diabetes"
-  | "fatigue_low_energy" | "general_health" | "prostate_health" | "male_hormones"
-  | "fertility_male" | "female_hormones" | "menopause_hrt" | "gynaecology"
-  | "fertility_female" | "sports_performance";
+  | "cardiovascular_risk"
+  | "metabolic_health"
+  | "thyroid"
+  | "diabetes"
+  | "fatigue_low_energy"
+  | "general_health"
+  | "prostate_health"
+  | "male_hormones"
+  | "fertility_male"
+  | "female_hormones"
+  | "menopause_hrt"
+  | "gynaecology"
+  | "fertility_female"
+  | "sports_performance";
 
 export interface VerificationFlags {
   price: VerificationState;
@@ -50,7 +76,10 @@ export interface VerificationFlags {
   clinical_review: VerificationState;
 }
 
-export interface FeeRange { min: number; max: number; }
+export interface FeeRange {
+  min: number;
+  max: number;
+}
 
 export interface TestRecord {
   id: string;
@@ -75,9 +104,16 @@ export interface TestRecord {
 }
 
 const v = (
-  price: VerificationState, biomarkers: VerificationState,
-  collection_fee: VerificationState, clinical_review: VerificationState,
-): VerificationFlags => ({ price, biomarkers, collection_fee, clinical_review });
+  price: VerificationState,
+  biomarkers: VerificationState,
+  collection_fee: VerificationState,
+  clinical_review: VerificationState,
+): VerificationFlags => ({
+  price,
+  biomarkers,
+  collection_fee,
+  clinical_review,
+});
 const V: VerificationState = "verified";
 const N: VerificationState = "needs_verification";
 
@@ -85,20 +121,343 @@ const N: VerificationState = "needs_verification";
 // TEST RECORDS — verified seed (17 hero tests across all 8 providers)
 // ─────────────────────────────────────────────────────────────────────────────
 export const TEST_RECORDS: TestRecord[] = [
-  { id: "medichecks-male-hormone", name: "Male Hormone Check", provider: "Medichecks", price: 99, biomarkers: 11, turnaround_label: "2–5 days", sample_type: "venous", collection_method: ["self_arranged", "clinic_appointment", "home_visit"], collection_fee_type: "range", collection_fee_amount: { min: 0, max: 59 }, clinical_review_type: "included", clinical_review_professional: "gp", clinical_review_fee: 0, goal_tags: ["symptom_investigation", "performance"], condition_tags: ["male_hormones", "fatigue_low_energy"], sex_restriction: "male_only", book_url: "https://www.medichecks.com/products/male-hormone-check-blood-test", source_url: "https://support.medichecks.com/hc/en-gb/articles/30837564263581-How-to-place-an-order-on-the-website", verification: v(N, N, V, V) },
-  { id: "medichecks-cholesterol", name: "Cholesterol & Lipids", provider: "Medichecks", price: 39, biomarkers: 7, turnaround_label: "2–4 days", sample_type: "finger_prick", collection_method: ["home_kit"], collection_fee_type: "none", collection_fee_amount: null, clinical_review_type: "included", clinical_review_professional: "gp", clinical_review_fee: 0, goal_tags: ["preventative", "condition_monitoring"], condition_tags: ["cardiovascular_risk", "metabolic_health"], sex_restriction: "none", book_url: "https://www.medichecks.com/products/cholesterol-blood-test", source_url: "https://support.medichecks.com/hc/en-gb/articles/30837564263581-How-to-place-an-order-on-the-website", verification: v(N, V, V, V) },
-  { id: "lola-vital-56", name: "Vital Check 56", provider: "Lola Health", price: 155, biomarkers: 56, turnaround_label: "~4 days", sample_type: "venous", collection_method: ["home_visit", "clinic_appointment"], collection_fee_type: "none", collection_fee_amount: null, clinical_review_type: "included", clinical_review_professional: "clinician", clinical_review_fee: 0, goal_tags: ["preventative", "longevity", "weight_management"], condition_tags: ["general_health", "metabolic_health", "thyroid", "cardiovascular_risk"], sex_restriction: "none", book_url: "https://lolahealth.com", source_url: "https://lolahealth.com", verification: v(V, V, V, V) },
-  { id: "lola-core-45", name: "Core Health 45", provider: "Lola Health", price: 119, biomarkers: 45, turnaround_label: "~4 days", sample_type: "venous", collection_method: ["home_visit", "clinic_appointment"], collection_fee_type: "none", collection_fee_amount: null, clinical_review_type: "included", clinical_review_professional: "clinician", clinical_review_fee: 0, goal_tags: ["preventative", "longevity"], condition_tags: ["general_health", "metabolic_health", "thyroid"], sex_restriction: "none", book_url: "https://lolahealth.com", source_url: "https://lolahealth.com", verification: v(N, V, V, V) },
-  { id: "lhc-essential-mot", name: "Essential Health MOT", provider: "London Health Company", price: 34, biomarkers: 16, turnaround_label: "24–48 hrs", sample_type: "finger_prick", collection_method: ["home_kit"], collection_fee_type: "none", collection_fee_amount: null, clinical_review_type: "not_included", clinical_review_fee: 0, goal_tags: ["preventative", "weight_management"], condition_tags: ["general_health", "cardiovascular_risk", "metabolic_health"], sex_restriction: "none", book_url: "https://londonhealthcompany.co.uk/products/general-health-blood-test-15", source_url: "https://www.londonhealthcompany.co.uk", verification: v(V, V, V, V) },
-  { id: "lhc-male-hormone", name: "Male Hormone Blood Test", provider: "London Health Company", price: 49, biomarkers: 4, turnaround_label: "24–48 hrs", sample_type: "finger_prick", collection_method: ["home_kit"], collection_fee_type: "none", collection_fee_amount: null, clinical_review_type: "not_included", clinical_review_fee: 0, goal_tags: ["symptom_investigation", "performance"], condition_tags: ["male_hormones"], sex_restriction: "male_only", book_url: "https://londonhealthcompany.co.uk", source_url: "https://www.londonhealthcompany.co.uk", verification: v(N, V, V, V) },
-  { id: "btl-full-vip", name: "FULL LONDON VIP Blood Test", provider: "Blood Tests London", price: 159, biomarkers: 55, turnaround_label: "~3 days", sample_type: "venous", collection_method: ["clinic_appointment"], collection_fee_type: "none", collection_fee_amount: null, clinical_review_type: "optional", clinical_review_professional: "gp", clinical_review_fee: 0, goal_tags: ["preventative", "longevity"], condition_tags: ["general_health", "cardiovascular_risk", "metabolic_health", "thyroid"], sex_restriction: "none", book_url: "https://bloodtestslondon.com/products/full-london-health-screen-plus-v", source_url: "https://bloodtestslondon.com", verification: v(V, V, V, V) },
-  { id: "btl-fbc", name: "Full Blood Count Profile", provider: "Blood Tests London", price: 90.37, biomarkers: 17, turnaround_label: "~1 day", sample_type: "venous", collection_method: ["clinic_appointment"], collection_fee_type: "none", collection_fee_amount: null, clinical_review_type: "optional", clinical_review_professional: "gp", clinical_review_fee: 0, goal_tags: ["condition_monitoring"], condition_tags: ["general_health"], sex_restriction: "none", book_url: "https://bloodtestslondon.com", source_url: "https://bloodtestslondon.com", verification: v(V, V, V, V) },
-  { id: "md-health-screen", name: "Health Screening Profile", provider: "Medical Diagnosis", price: 79, biomarkers: 27, turnaround_label: "Next day", sample_type: "venous", collection_method: ["clinic_appointment"], collection_fee_type: "fixed", collection_fee_amount: 20, clinical_review_type: "not_included", clinical_review_fee: 0, goal_tags: ["preventative", "condition_monitoring"], condition_tags: ["general_health", "cardiovascular_risk", "thyroid", "metabolic_health"], sex_restriction: "none", book_url: "https://www.medical-diagnosis.co.uk/exam/profiles/health-screening-profile/", source_url: "https://www.medical-diagnosis.co.uk/exam/profiles/health-screening-profile/", verification: v(N, V, V, V) },
-  { id: "randox-female-hormone", name: "Female Hormonal Health", provider: "Randox Health", price: 145, biomarkers: 9, turnaround_label: "Next day", sample_type: "venous", collection_method: ["clinic_appointment"], collection_fee_type: "none", collection_fee_amount: null, clinical_review_type: "included", clinical_review_professional: "clinician", clinical_review_fee: 0, goal_tags: ["symptom_investigation", "condition_monitoring"], condition_tags: ["female_hormones", "gynaecology", "menopause_hrt"], sex_restriction: "female_only", book_url: "https://randoxhealth.com/en-GB/", source_url: "https://randoxhealth.com/en-GB/", verification: v(N, N, V, V) },
-  { id: "randox-everyman", name: "Everyman Health Check", provider: "Randox Health", price: 295, biomarkers: 120, turnaround_label: "Next day", sample_type: "venous", collection_method: ["clinic_appointment"], collection_fee_type: "none", collection_fee_amount: null, clinical_review_type: "included", clinical_review_professional: "clinician", clinical_review_fee: 0, goal_tags: ["preventative", "longevity", "performance"], condition_tags: ["general_health", "cardiovascular_risk", "metabolic_health", "prostate_health", "male_hormones"], sex_restriction: "male_only", book_url: "https://randoxhealth.com/en-GB/", source_url: "https://randoxhealth.com/en-GB/", verification: v(N, N, V, V) },
-  { id: "goodbody-full-mot", name: "Advanced Well Person", provider: "Goodbody Clinic", price: 139, biomarkers: 50, turnaround_label: "2–3 days", sample_type: "venous", collection_method: ["clinic_appointment", "home_visit", "home_kit"], collection_fee_type: "range", collection_fee_amount: { min: 0, max: 20 }, clinical_review_type: "optional", clinical_review_professional: "gp", clinical_review_fee: 59.99, goal_tags: ["preventative", "longevity"], condition_tags: ["general_health", "cardiovascular_risk", "metabolic_health", "thyroid"], sex_restriction: "none", book_url: "https://goodbodyclinic.com", source_url: "https://goodbodyclinic.com/products/gp-consultation", verification: v(V, V, V, V) },
-  { id: "lml-general", name: "General Health Profile", provider: "London Medical Laboratory", price: 89, biomarkers: 35, turnaround_label: "Next day", sample_type: "finger_prick", collection_method: ["home_kit", "clinic_appointment"], collection_fee_type: "none", collection_fee_amount: null, clinical_review_type: "included", clinical_review_professional: "gp", clinical_review_fee: 0, goal_tags: ["preventative", "condition_monitoring"], condition_tags: ["general_health", "cardiovascular_risk", "metabolic_health"], sex_restriction: "none", book_url: "https://www.londonmedicallaboratory.com", source_url: "https://www.londonmedicallaboratory.com", verification: v(V, N, V, V) },
-  { id: "clinilabs-performance", name: "Ultimate Performance Panel", provider: "Clinilabs", price: 189, biomarkers: 48, turnaround_label: "2–4 days", sample_type: "venous", collection_method: ["clinic_appointment"], collection_fee_type: "fixed", collection_fee_amount: 30, clinical_review_type: "optional", clinical_review_professional: "clinician", clinical_review_fee: 0, goal_tags: ["performance", "longevity"], condition_tags: ["sports_performance", "male_hormones", "metabolic_health", "cardiovascular_risk"], sex_restriction: "none", book_url: "https://www.clinilabs.co.uk", source_url: "https://www.clinilabs.co.uk", verification: v(N, V, V, V) },
+  {
+    id: "medichecks-male-hormone",
+    name: "Male Hormone Check",
+    provider: "Medichecks",
+    price: 99,
+    biomarkers: 11,
+    turnaround_label: "2–5 days",
+    sample_type: "venous",
+    collection_method: ["self_arranged", "clinic_appointment", "home_visit"],
+    collection_fee_type: "range",
+    collection_fee_amount: { min: 0, max: 59 },
+    clinical_review_type: "included",
+    clinical_review_professional: "gp",
+    clinical_review_fee: 0,
+    goal_tags: ["symptom_investigation", "performance"],
+    condition_tags: ["male_hormones", "fatigue_low_energy"],
+    sex_restriction: "male_only",
+    book_url:
+      "https://www.medichecks.com/products/male-hormone-check-blood-test",
+    source_url:
+      "https://support.medichecks.com/hc/en-gb/articles/30837564263581-How-to-place-an-order-on-the-website",
+    verification: v(N, N, V, V),
+  },
+  {
+    id: "medichecks-cholesterol",
+    name: "Cholesterol & Lipids",
+    provider: "Medichecks",
+    price: 39,
+    biomarkers: 7,
+    turnaround_label: "2–4 days",
+    sample_type: "finger_prick",
+    collection_method: ["home_kit"],
+    collection_fee_type: "none",
+    collection_fee_amount: null,
+    clinical_review_type: "included",
+    clinical_review_professional: "gp",
+    clinical_review_fee: 0,
+    goal_tags: ["preventative", "condition_monitoring"],
+    condition_tags: ["cardiovascular_risk", "metabolic_health"],
+    sex_restriction: "none",
+    book_url: "https://www.medichecks.com/products/cholesterol-blood-test",
+    source_url:
+      "https://support.medichecks.com/hc/en-gb/articles/30837564263581-How-to-place-an-order-on-the-website",
+    verification: v(N, V, V, V),
+  },
+  {
+    id: "lola-vital-56",
+    name: "Vital Check 56",
+    provider: "Lola Health",
+    price: 155,
+    biomarkers: 56,
+    turnaround_label: "~4 days",
+    sample_type: "venous",
+    collection_method: ["home_visit", "clinic_appointment"],
+    collection_fee_type: "none",
+    collection_fee_amount: null,
+    clinical_review_type: "included",
+    clinical_review_professional: "clinician",
+    clinical_review_fee: 0,
+    goal_tags: ["preventative", "longevity", "weight_management"],
+    condition_tags: [
+      "general_health",
+      "metabolic_health",
+      "thyroid",
+      "cardiovascular_risk",
+    ],
+    sex_restriction: "none",
+    book_url: "https://lolahealth.com",
+    source_url: "https://lolahealth.com",
+    verification: v(V, V, V, V),
+  },
+  {
+    id: "lola-core-45",
+    name: "Core Health 45",
+    provider: "Lola Health",
+    price: 119,
+    biomarkers: 45,
+    turnaround_label: "~4 days",
+    sample_type: "venous",
+    collection_method: ["home_visit", "clinic_appointment"],
+    collection_fee_type: "none",
+    collection_fee_amount: null,
+    clinical_review_type: "included",
+    clinical_review_professional: "clinician",
+    clinical_review_fee: 0,
+    goal_tags: ["preventative", "longevity"],
+    condition_tags: ["general_health", "metabolic_health", "thyroid"],
+    sex_restriction: "none",
+    book_url: "https://lolahealth.com",
+    source_url: "https://lolahealth.com",
+    verification: v(N, V, V, V),
+  },
+  {
+    id: "lhc-essential-mot",
+    name: "Essential Health MOT",
+    provider: "London Health Company",
+    price: 34,
+    biomarkers: 16,
+    turnaround_label: "24–48 hrs",
+    sample_type: "finger_prick",
+    collection_method: ["home_kit"],
+    collection_fee_type: "none",
+    collection_fee_amount: null,
+    clinical_review_type: "not_included",
+    clinical_review_fee: 0,
+    goal_tags: ["preventative", "weight_management"],
+    condition_tags: [
+      "general_health",
+      "cardiovascular_risk",
+      "metabolic_health",
+    ],
+    sex_restriction: "none",
+    book_url:
+      "https://londonhealthcompany.co.uk/products/general-health-blood-test-15",
+    source_url: "https://www.londonhealthcompany.co.uk",
+    verification: v(V, V, V, V),
+  },
+  {
+    id: "lhc-male-hormone",
+    name: "Male Hormone Blood Test",
+    provider: "London Health Company",
+    price: 49,
+    biomarkers: 4,
+    turnaround_label: "24–48 hrs",
+    sample_type: "finger_prick",
+    collection_method: ["home_kit"],
+    collection_fee_type: "none",
+    collection_fee_amount: null,
+    clinical_review_type: "not_included",
+    clinical_review_fee: 0,
+    goal_tags: ["symptom_investigation", "performance"],
+    condition_tags: ["male_hormones"],
+    sex_restriction: "male_only",
+    book_url: "https://londonhealthcompany.co.uk",
+    source_url: "https://www.londonhealthcompany.co.uk",
+    verification: v(N, V, V, V),
+  },
+  {
+    id: "btl-full-vip",
+    name: "FULL LONDON VIP Blood Test",
+    provider: "Blood Tests London",
+    price: 159,
+    biomarkers: 55,
+    turnaround_label: "~3 days",
+    sample_type: "venous",
+    collection_method: ["clinic_appointment"],
+    collection_fee_type: "none",
+    collection_fee_amount: null,
+    clinical_review_type: "optional",
+    clinical_review_professional: "gp",
+    clinical_review_fee: 0,
+    goal_tags: ["preventative", "longevity"],
+    condition_tags: [
+      "general_health",
+      "cardiovascular_risk",
+      "metabolic_health",
+      "thyroid",
+    ],
+    sex_restriction: "none",
+    book_url:
+      "https://bloodtestslondon.com/products/full-london-health-screen-plus-v",
+    source_url: "https://bloodtestslondon.com",
+    verification: v(V, V, V, V),
+  },
+  {
+    id: "btl-fbc",
+    name: "Full Blood Count Profile",
+    provider: "Blood Tests London",
+    price: 90.37,
+    biomarkers: 17,
+    turnaround_label: "~1 day",
+    sample_type: "venous",
+    collection_method: ["clinic_appointment"],
+    collection_fee_type: "none",
+    collection_fee_amount: null,
+    clinical_review_type: "optional",
+    clinical_review_professional: "gp",
+    clinical_review_fee: 0,
+    goal_tags: ["condition_monitoring"],
+    condition_tags: ["general_health"],
+    sex_restriction: "none",
+    book_url: "https://bloodtestslondon.com",
+    source_url: "https://bloodtestslondon.com",
+    verification: v(V, V, V, V),
+  },
+  {
+    id: "md-health-screen",
+    name: "Health Screening Profile",
+    provider: "Medical Diagnosis",
+    price: 79,
+    biomarkers: 27,
+    turnaround_label: "Next day",
+    sample_type: "venous",
+    collection_method: ["clinic_appointment"],
+    collection_fee_type: "fixed",
+    collection_fee_amount: 20,
+    clinical_review_type: "not_included",
+    clinical_review_fee: 0,
+    goal_tags: ["preventative", "condition_monitoring"],
+    condition_tags: [
+      "general_health",
+      "cardiovascular_risk",
+      "thyroid",
+      "metabolic_health",
+    ],
+    sex_restriction: "none",
+    book_url:
+      "https://www.medical-diagnosis.co.uk/exam/profiles/health-screening-profile/",
+    source_url:
+      "https://www.medical-diagnosis.co.uk/exam/profiles/health-screening-profile/",
+    verification: v(N, V, V, V),
+  },
+  {
+    id: "randox-female-hormone",
+    name: "Female Hormonal Health",
+    provider: "Randox Health",
+    price: 145,
+    biomarkers: 9,
+    turnaround_label: "Next day",
+    sample_type: "venous",
+    collection_method: ["clinic_appointment"],
+    collection_fee_type: "none",
+    collection_fee_amount: null,
+    clinical_review_type: "included",
+    clinical_review_professional: "clinician",
+    clinical_review_fee: 0,
+    goal_tags: ["symptom_investigation", "condition_monitoring"],
+    condition_tags: ["female_hormones", "gynaecology", "menopause_hrt"],
+    sex_restriction: "female_only",
+    book_url: "https://randoxhealth.com/en-GB/",
+    source_url: "https://randoxhealth.com/en-GB/",
+    verification: v(N, N, V, V),
+  },
+  {
+    id: "randox-everyman",
+    name: "Everyman Health Check",
+    provider: "Randox Health",
+    price: 295,
+    biomarkers: 120,
+    turnaround_label: "Next day",
+    sample_type: "venous",
+    collection_method: ["clinic_appointment"],
+    collection_fee_type: "none",
+    collection_fee_amount: null,
+    clinical_review_type: "included",
+    clinical_review_professional: "clinician",
+    clinical_review_fee: 0,
+    goal_tags: ["preventative", "longevity", "performance"],
+    condition_tags: [
+      "general_health",
+      "cardiovascular_risk",
+      "metabolic_health",
+      "prostate_health",
+      "male_hormones",
+    ],
+    sex_restriction: "male_only",
+    book_url: "https://randoxhealth.com/en-GB/",
+    source_url: "https://randoxhealth.com/en-GB/",
+    verification: v(N, N, V, V),
+  },
+  {
+    id: "goodbody-full-mot",
+    name: "Advanced Well Person",
+    provider: "Goodbody Clinic",
+    price: 139,
+    biomarkers: 50,
+    turnaround_label: "2–3 days",
+    sample_type: "venous",
+    collection_method: ["clinic_appointment", "home_visit", "home_kit"],
+    collection_fee_type: "range",
+    collection_fee_amount: { min: 0, max: 20 },
+    clinical_review_type: "optional",
+    clinical_review_professional: "gp",
+    clinical_review_fee: 59.99,
+    goal_tags: ["preventative", "longevity"],
+    condition_tags: [
+      "general_health",
+      "cardiovascular_risk",
+      "metabolic_health",
+      "thyroid",
+    ],
+    sex_restriction: "none",
+    book_url: "https://goodbodyclinic.com",
+    source_url: "https://goodbodyclinic.com/products/gp-consultation",
+    verification: v(V, V, V, V),
+  },
+  {
+    id: "lml-general",
+    name: "General Health Profile",
+    provider: "London Medical Laboratory",
+    price: 89,
+    biomarkers: 35,
+    turnaround_label: "Next day",
+    sample_type: "finger_prick",
+    collection_method: ["home_kit", "clinic_appointment"],
+    collection_fee_type: "none",
+    collection_fee_amount: null,
+    clinical_review_type: "included",
+    clinical_review_professional: "gp",
+    clinical_review_fee: 0,
+    goal_tags: ["preventative", "condition_monitoring"],
+    condition_tags: [
+      "general_health",
+      "cardiovascular_risk",
+      "metabolic_health",
+    ],
+    sex_restriction: "none",
+    book_url: "https://www.londonmedicallaboratory.com",
+    source_url: "https://www.londonmedicallaboratory.com",
+    verification: v(V, N, V, V),
+  },
+  {
+    id: "clinilabs-performance",
+    name: "Ultimate Performance Panel",
+    provider: "Clinilabs",
+    price: 189,
+    biomarkers: 48,
+    turnaround_label: "2–4 days",
+    sample_type: "venous",
+    collection_method: ["clinic_appointment"],
+    collection_fee_type: "fixed",
+    collection_fee_amount: 30,
+    clinical_review_type: "optional",
+    clinical_review_professional: "clinician",
+    clinical_review_fee: 0,
+    goal_tags: ["performance", "longevity"],
+    condition_tags: [
+      "sports_performance",
+      "male_hormones",
+      "metabolic_health",
+      "cardiovascular_risk",
+    ],
+    sex_restriction: "none",
+    book_url: "https://www.clinilabs.co.uk",
+    source_url: "https://www.clinilabs.co.uk",
+    verification: v(N, V, V, V),
+  },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -132,11 +491,31 @@ export const TAG_TAXONOMY = {
   } as Record<ConditionTag, string>,
 
   bodySystems: {
-    cardiovascular: { label: "Cardiovascular", conditions: ["cardiovascular_risk"] },
-    metabolic_endocrine: { label: "Metabolic & endocrine", conditions: ["metabolic_health", "diabetes", "thyroid"] },
-    hormonal_male: { label: "Hormonal (male)", conditions: ["male_hormones", "prostate_health", "fertility_male"] },
-    hormonal_female: { label: "Hormonal (female)", conditions: ["female_hormones", "menopause_hrt", "gynaecology", "fertility_female"] },
-    general_wellbeing: { label: "General wellbeing", conditions: ["general_health", "fatigue_low_energy"] },
+    cardiovascular: {
+      label: "Cardiovascular",
+      conditions: ["cardiovascular_risk"],
+    },
+    metabolic_endocrine: {
+      label: "Metabolic & endocrine",
+      conditions: ["metabolic_health", "diabetes", "thyroid"],
+    },
+    hormonal_male: {
+      label: "Hormonal (male)",
+      conditions: ["male_hormones", "prostate_health", "fertility_male"],
+    },
+    hormonal_female: {
+      label: "Hormonal (female)",
+      conditions: [
+        "female_hormones",
+        "menopause_hrt",
+        "gynaecology",
+        "fertility_female",
+      ],
+    },
+    general_wellbeing: {
+      label: "General wellbeing",
+      conditions: ["general_health", "fatigue_low_energy"],
+    },
     performance: { label: "Performance", conditions: ["sports_performance"] },
   } as Record<string, { label: string; conditions: ConditionTag[] }>,
 
@@ -151,8 +530,13 @@ export const TAG_TAXONOMY = {
   } as Record<SampleType, string>,
 
   sampleTypeShort: {
-    finger_prick: "Finger-prick", venous: "Venous", saliva: "Saliva",
-    urine: "Urine", stool: "Stool", buccal_swab: "Swab", multiple: "Multiple",
+    finger_prick: "Finger-prick",
+    venous: "Venous",
+    saliva: "Saliva",
+    urine: "Urine",
+    stool: "Stool",
+    buccal_swab: "Swab",
+    multiple: "Multiple",
   } as Record<SampleType, string>,
 
   collectionMethodLabels: {
@@ -240,22 +624,173 @@ export interface ProviderPolicy {
 }
 
 export const PROVIDER_COLORS: Record<string, string> = {
-  "Medichecks": "#15A0A0", "Lola Health": "#1F8A5B",
-  "Clinilabs": "#2D9CDB", "Goodbody Clinic": "#5AAA46",
-  "London Medical Laboratory": "#46566B", "London Health Company": "#2E76C9",
-  "Blood Tests London": "#C0392B", "Medical Diagnosis": "#2C7BE5", "Randox Health": "#0F8A80",
+  Medichecks: "#15A0A0",
+  "Lola Health": "#1F8A5B",
+  Clinilabs: "#2D9CDB",
+  "Goodbody Clinic": "#5AAA46",
+  "London Medical Laboratory": "#46566B",
+  "London Health Company": "#2E76C9",
+  "Blood Tests London": "#C0392B",
+  "Medical Diagnosis": "#2C7BE5",
+  "Randox Health": "#0F8A80",
 };
 
 export const PROVIDER_POLICIES: ProviderPolicy[] = [
-  { provider: "Medichecks", color: PROVIDER_COLORS["Medichecks"], verified: true, sample: "Finger-prick, saliva, stool, or venous depending on the test.", collection: "At-home kit; partner-clinic draw; nurse home visit; or arrange your own phlebotomist.", fees: "Nurse home visit £59; arranging your own collection is free (you pay your phlebotomist); clinic charge shown at checkout.", clinical_review: "Written doctor's comments included as standard on all tests (opt out for results-only).", source_url: "https://support.medichecks.com/hc/en-gb/articles/30837564263581-How-to-place-an-order-on-the-website", collection_methods: ["self_arranged", "clinic_appointment", "home_visit", "home_kit"], collection_fee_type: "range", collection_fee_amount: { min: 0, max: 59 }, clinical_review_type: "included", clinical_review_fee: 0 },
-  { provider: "Lola Health", color: PROVIDER_COLORS["Lola Health"], verified: true, sample: "Venous blood draw (standard arm draw).", collection: "Professional phlebotomist home visit, included with every panel.", fees: "Home-visit phlebotomy included in the panel price — no extra collection fee.", clinical_review: "Clinician review of results included.", source_url: "https://lolahealth.com", collection_methods: ["home_visit", "clinic_appointment"], collection_fee_type: "none", collection_fee_amount: null, clinical_review_type: "included", clinical_review_fee: 0 },
-  { provider: "Clinilabs", color: PROVIDER_COLORS["Clinilabs"], verified: true, sample: "Venous draw at the Fitzrovia (London W1) clinic.", collection: "In-clinic phlebotomy appointment.", fees: "Phlebotomy is a separate fee — £30 prepaid online or £50 walk-in. Test price is not included in the draw fee.", clinical_review: "Not included as standard — clinical interpretation is an optional add-on service.", source_url: "https://www.clinilabs.co.uk", collection_methods: ["clinic_appointment"], collection_fee_type: "fixed", collection_fee_amount: 30, clinical_review_type: "optional", clinical_review_fee: 0 },
-  { provider: "Goodbody Clinic", color: PROVIDER_COLORS["Goodbody Clinic"], verified: true, sample: "Venous draw, or finger-prick home kit for selected panels.", collection: "Clinic appointment or home nurse visit; home kits posted for finger-prick.", fees: "In-clinic blood draw is included at the advertised test price; a home nurse visit costs £20 more.", clinical_review: "Not included by default — a virtual GP Consultation is an optional add-on at £59.99.", source_url: "https://goodbodyclinic.com/products/gp-consultation", collection_methods: ["clinic_appointment", "home_visit", "home_kit"], collection_fee_type: "range", collection_fee_amount: { min: 0, max: 20 }, clinical_review_type: "optional", clinical_review_fee: 59.99 },
-  { provider: "London Medical Laboratory", color: PROVIDER_COLORS["London Medical Laboratory"], verified: true, sample: "Finger-prick home kit, or venous draw at a partner clinic.", collection: "At-home kit with pre-paid postage, or partner clinic with overnight courier for phlebotomy samples.", fees: "No fee on the postal kit (postage included); partner-clinic phlebotomy charge varies by site.", clinical_review: "GP-reviewed report included on all results.", source_url: "https://www.londonmedicallaboratory.com", collection_methods: ["home_kit", "clinic_appointment"], collection_fee_type: "none", collection_fee_amount: null, clinical_review_type: "included", clinical_review_fee: 0 },
-  { provider: "London Health Company", color: PROVIDER_COLORS["London Health Company"], verified: true, sample: "Finger-prick capillary sample via posted home kit.", collection: "Self-collected home kit; pre-paid return postage to a CQC-regulated lab.", fees: "No collection fee — kit and return postage included in the price.", clinical_review: "Not included — results come as a report you can show your own GP.", source_url: "https://www.londonhealthcompany.co.uk", collection_methods: ["home_kit"], collection_fee_type: "none", collection_fee_amount: null, clinical_review_type: "not_included", clinical_review_fee: 0 },
-  { provider: "Blood Tests London", color: PROVIDER_COLORS["Blood Tests London"], verified: true, sample: "Venous draw at the Oxford Street (central London) clinic.", collection: "In-clinic phlebotomy appointment.", fees: "No extra phlebotomy or medical charge on arrival — the draw is included in the test price.", clinical_review: "Optional GP comment on results (adds ~2 days); not required by default.", source_url: "https://bloodtestslondon.com", collection_methods: ["clinic_appointment"], collection_fee_type: "none", collection_fee_amount: null, clinical_review_type: "optional", clinical_review_fee: 0 },
-  { provider: "Randox Health", color: PROVIDER_COLORS["Randox Health"], verified: true, sample: "Venous draw at Randox-owned clinics (~30 across UK & Ireland).", collection: "In-clinic appointment with a Randox phlebotomist into Randox's own lab pipeline.", fees: "Phlebotomy carried out at Randox's own clinic — included in the panel price, no separate add-on.", clinical_review: "In-person results consultation included with most clinic panels.", source_url: "https://randoxhealth.com/en-GB/", collection_methods: ["clinic_appointment"], collection_fee_type: "none", collection_fee_amount: null, clinical_review_type: "included", clinical_review_fee: 0 },
-  { provider: "Medical Diagnosis", color: PROVIDER_COLORS["Medical Diagnosis"], verified: true, sample: "Venous draw at the Neasden (London NW10) clinic.", collection: "In-clinic phlebotomy appointment.", fees: "Phlebotomy fee per visit, stated per profile on their own site: £15 (screening list), £20 (Health Screening Profile), £21 (health checks).", clinical_review: "Not included — sample-collection / lab service, results delivered via portal.", source_url: "https://www.medical-diagnosis.co.uk/exam/profiles/health-screening-profile/", collection_methods: ["clinic_appointment"], collection_fee_type: "fixed", collection_fee_amount: 20, clinical_review_type: "not_included", clinical_review_fee: 0 },
+  {
+    provider: "Medichecks",
+    color: PROVIDER_COLORS["Medichecks"],
+    verified: true,
+    sample: "Finger-prick, saliva, stool, or venous depending on the test.",
+    collection:
+      "At-home kit; partner-clinic draw; nurse home visit; or arrange your own phlebotomist.",
+    fees: "Nurse home visit £59; arranging your own collection is free (you pay your phlebotomist); clinic charge shown at checkout.",
+    clinical_review:
+      "Written doctor's comments included as standard on all tests (opt out for results-only).",
+    source_url:
+      "https://support.medichecks.com/hc/en-gb/articles/30837564263581-How-to-place-an-order-on-the-website",
+    collection_methods: [
+      "self_arranged",
+      "clinic_appointment",
+      "home_visit",
+      "home_kit",
+    ],
+    collection_fee_type: "range",
+    collection_fee_amount: { min: 0, max: 59 },
+    clinical_review_type: "included",
+    clinical_review_fee: 0,
+  },
+  {
+    provider: "Lola Health",
+    color: PROVIDER_COLORS["Lola Health"],
+    verified: true,
+    sample: "Venous blood draw (standard arm draw).",
+    collection:
+      "Professional phlebotomist home visit, included with every panel.",
+    fees: "Home-visit phlebotomy included in the panel price — no extra collection fee.",
+    clinical_review: "Clinician review of results included.",
+    source_url: "https://lolahealth.com",
+    collection_methods: ["home_visit", "clinic_appointment"],
+    collection_fee_type: "none",
+    collection_fee_amount: null,
+    clinical_review_type: "included",
+    clinical_review_fee: 0,
+  },
+  {
+    provider: "Clinilabs",
+    color: PROVIDER_COLORS["Clinilabs"],
+    verified: true,
+    sample: "Venous draw at the Fitzrovia (London W1) clinic.",
+    collection: "In-clinic phlebotomy appointment.",
+    fees: "Phlebotomy is a separate fee — £30 prepaid online or £50 walk-in. Test price is not included in the draw fee.",
+    clinical_review:
+      "Not included as standard — clinical interpretation is an optional add-on service.",
+    source_url: "https://www.clinilabs.co.uk",
+    collection_methods: ["clinic_appointment"],
+    collection_fee_type: "fixed",
+    collection_fee_amount: 30,
+    clinical_review_type: "optional",
+    clinical_review_fee: 0,
+  },
+  {
+    provider: "Goodbody Clinic",
+    color: PROVIDER_COLORS["Goodbody Clinic"],
+    verified: true,
+    sample: "Venous draw, or finger-prick home kit for selected panels.",
+    collection:
+      "Clinic appointment or home nurse visit; home kits posted for finger-prick.",
+    fees: "In-clinic blood draw is included at the advertised test price; a home nurse visit costs £20 more.",
+    clinical_review:
+      "Not included by default — a virtual GP Consultation is an optional add-on at £59.99.",
+    source_url: "https://goodbodyclinic.com/products/gp-consultation",
+    collection_methods: ["clinic_appointment", "home_visit", "home_kit"],
+    collection_fee_type: "range",
+    collection_fee_amount: { min: 0, max: 20 },
+    clinical_review_type: "optional",
+    clinical_review_fee: 59.99,
+  },
+  {
+    provider: "London Medical Laboratory",
+    color: PROVIDER_COLORS["London Medical Laboratory"],
+    verified: true,
+    sample: "Finger-prick home kit, or venous draw at a partner clinic.",
+    collection:
+      "At-home kit with pre-paid postage, or partner clinic with overnight courier for phlebotomy samples.",
+    fees: "No fee on the postal kit (postage included); partner-clinic phlebotomy charge varies by site.",
+    clinical_review: "GP-reviewed report included on all results.",
+    source_url: "https://www.londonmedicallaboratory.com",
+    collection_methods: ["home_kit", "clinic_appointment"],
+    collection_fee_type: "none",
+    collection_fee_amount: null,
+    clinical_review_type: "included",
+    clinical_review_fee: 0,
+  },
+  {
+    provider: "London Health Company",
+    color: PROVIDER_COLORS["London Health Company"],
+    verified: true,
+    sample: "Finger-prick capillary sample via posted home kit.",
+    collection:
+      "Self-collected home kit; pre-paid return postage to a CQC-regulated lab.",
+    fees: "No collection fee — kit and return postage included in the price.",
+    clinical_review:
+      "Not included — results come as a report you can show your own GP.",
+    source_url: "https://www.londonhealthcompany.co.uk",
+    collection_methods: ["home_kit"],
+    collection_fee_type: "none",
+    collection_fee_amount: null,
+    clinical_review_type: "not_included",
+    clinical_review_fee: 0,
+  },
+  {
+    provider: "Blood Tests London",
+    color: PROVIDER_COLORS["Blood Tests London"],
+    verified: true,
+    sample: "Venous draw at the Oxford Street (central London) clinic.",
+    collection: "In-clinic phlebotomy appointment.",
+    fees: "No extra phlebotomy or medical charge on arrival — the draw is included in the test price.",
+    clinical_review:
+      "Optional GP comment on results (adds ~2 days); not required by default.",
+    source_url: "https://bloodtestslondon.com",
+    collection_methods: ["clinic_appointment"],
+    collection_fee_type: "none",
+    collection_fee_amount: null,
+    clinical_review_type: "optional",
+    clinical_review_fee: 0,
+  },
+  {
+    provider: "Randox Health",
+    color: PROVIDER_COLORS["Randox Health"],
+    verified: true,
+    sample: "Venous draw at Randox-owned clinics (~30 across UK & Ireland).",
+    collection:
+      "In-clinic appointment with a Randox phlebotomist into Randox's own lab pipeline.",
+    fees: "Phlebotomy carried out at Randox's own clinic — included in the panel price, no separate add-on.",
+    clinical_review:
+      "In-person results consultation included with most clinic panels.",
+    source_url: "https://randoxhealth.com/en-GB/",
+    collection_methods: ["clinic_appointment"],
+    collection_fee_type: "none",
+    collection_fee_amount: null,
+    clinical_review_type: "included",
+    clinical_review_fee: 0,
+  },
+  {
+    provider: "Medical Diagnosis",
+    color: PROVIDER_COLORS["Medical Diagnosis"],
+    verified: true,
+    sample: "Venous draw at the Neasden (London NW10) clinic.",
+    collection: "In-clinic phlebotomy appointment.",
+    fees: "Phlebotomy fee per visit, stated per profile on their own site: £15 (screening list), £20 (Health Screening Profile), £21 (health checks).",
+    clinical_review:
+      "Not included — sample-collection / lab service, results delivered via portal.",
+    source_url:
+      "https://www.medical-diagnosis.co.uk/exam/profiles/health-screening-profile/",
+    collection_methods: ["clinic_appointment"],
+    collection_fee_type: "fixed",
+    collection_fee_amount: 20,
+    clinical_review_type: "not_included",
+    clinical_review_fee: 0,
+  },
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -273,9 +808,16 @@ export const SCORING = {
   REVIEW_INC_PENALTY: -20,
   BIOMARKER_CAP: 10,
   age: {
-    PROSTATE_50: 20, MALE_HORMONES_30: 12, MALE_CARDIO_40: 12, MALE_METABOLIC_40: 10,
-    FEMALE_HORMONES_35_50: 12, FEMALE_MENO_GYN_40: 20, FEMALE_CARDIO_40: 12, FEMALE_METABOLIC_40: 10,
-    DIABETES_40: 10, THYROID_40: 8,
+    PROSTATE_50: 20,
+    MALE_HORMONES_30: 12,
+    MALE_CARDIO_40: 12,
+    MALE_METABOLIC_40: 10,
+    FEMALE_HORMONES_35_50: 12,
+    FEMALE_MENO_GYN_40: 20,
+    FEMALE_CARDIO_40: 12,
+    FEMALE_METABOLIC_40: 10,
+    DIABETES_40: 10,
+    THYROID_40: 8,
   },
 };
 
@@ -295,7 +837,10 @@ export interface QuizProfile {
 
 const ageNum = (band: string) =>
   QUIZ_CONFIG.ageBands.find((b) => b.key === band)?.midpoint ?? 35;
-const inter = <T,>(a: T[], b: T[]) => { const s = new Set(b); return a.filter((x) => s.has(x)); };
+const inter = <T>(a: T[], b: T[]) => {
+  const s = new Set(b);
+  return a.filter((x) => s.has(x));
+};
 
 function isSexCompatible(t: TestRecord, p: QuizProfile): boolean {
   if (t.sex_restriction === "none") return true;
@@ -305,18 +850,48 @@ function isSexCompatible(t: TestRecord, p: QuizProfile): boolean {
 }
 
 function ageBoost(t: TestRecord, p: QuizProfile): number {
-  const age = ageNum(p.age_band); const A = SCORING.age; let b = 0;
+  const age = ageNum(p.age_band);
+  const A = SCORING.age;
+  let b = 0;
   if (p.sex === "male") {
-    if (age >= 30 && t.condition_tags.includes("prostate_health")) b += A.PROSTATE_50;
-    if (age >= 30 && t.condition_tags.includes("male_hormones")) b += A.MALE_HORMONES_30;
-    if (age >= 40 && p.goals.includes("preventative") && t.condition_tags.includes("cardiovascular_risk")) b += A.MALE_CARDIO_40;
-    if (age >= 40 && p.goals.includes("longevity") && t.condition_tags.includes("metabolic_health")) b += A.MALE_METABOLIC_40;
+    if (age >= 30 && t.condition_tags.includes("prostate_health"))
+      b += A.PROSTATE_50;
+    if (age >= 30 && t.condition_tags.includes("male_hormones"))
+      b += A.MALE_HORMONES_30;
+    if (
+      age >= 40 &&
+      p.goals.includes("preventative") &&
+      t.condition_tags.includes("cardiovascular_risk")
+    )
+      b += A.MALE_CARDIO_40;
+    if (
+      age >= 40 &&
+      p.goals.includes("longevity") &&
+      t.condition_tags.includes("metabolic_health")
+    )
+      b += A.MALE_METABOLIC_40;
   }
   if (p.sex === "female") {
-    if (age >= 35 && age <= 50 && t.condition_tags.includes("female_hormones")) b += A.FEMALE_HORMONES_35_50;
-    if (age >= 40 && (t.condition_tags.includes("menopause_hrt") || t.condition_tags.includes("gynaecology"))) b += A.FEMALE_MENO_GYN_40;
-    if (age >= 40 && p.goals.includes("preventative") && t.condition_tags.includes("cardiovascular_risk")) b += A.FEMALE_CARDIO_40;
-    if (age >= 40 && p.goals.includes("longevity") && t.condition_tags.includes("metabolic_health")) b += A.FEMALE_METABOLIC_40;
+    if (age >= 35 && age <= 50 && t.condition_tags.includes("female_hormones"))
+      b += A.FEMALE_HORMONES_35_50;
+    if (
+      age >= 40 &&
+      (t.condition_tags.includes("menopause_hrt") ||
+        t.condition_tags.includes("gynaecology"))
+    )
+      b += A.FEMALE_MENO_GYN_40;
+    if (
+      age >= 40 &&
+      p.goals.includes("preventative") &&
+      t.condition_tags.includes("cardiovascular_risk")
+    )
+      b += A.FEMALE_CARDIO_40;
+    if (
+      age >= 40 &&
+      p.goals.includes("longevity") &&
+      t.condition_tags.includes("metabolic_health")
+    )
+      b += A.FEMALE_METABOLIC_40;
   }
   if (age >= 40 && p.goals.includes("preventative")) {
     if (t.condition_tags.includes("diabetes")) b += A.DIABETES_40;
@@ -331,11 +906,23 @@ export function scoreTest(t: TestRecord, p: QuizProfile): number {
   s += inter(t.goal_tags, p.goals).length * SCORING.GOAL_MATCH;
   s += inter(t.condition_tags, p.concerns).length * SCORING.CONDITION_MATCH;
   s += ageBoost(t, p);
-  if (p.preferences.preferred_sample_types.includes(t.sample_type)) s += SCORING.SAMPLE_PREF_MATCH;
-  if (p.preferences.avoid_venous && t.sample_type === "venous") s += SCORING.AVOID_VENOUS_PENALTY;
-  s += inter(t.collection_method, p.preferences.preferred_collection_methods).length * SCORING.COLLECTION_METHOD_MATCH;
-  if (p.preferences.prefer_no_additional_fees) s += t.collection_fee_type === "none" ? SCORING.NO_FEES_BONUS : SCORING.NO_FEES_PENALTY;
-  if (p.preferences.require_clinical_review_included) s += t.clinical_review_type === "included" ? SCORING.REVIEW_INC_BONUS : SCORING.REVIEW_INC_PENALTY;
+  if (p.preferences.preferred_sample_types.includes(t.sample_type))
+    s += SCORING.SAMPLE_PREF_MATCH;
+  if (p.preferences.avoid_venous && t.sample_type === "venous")
+    s += SCORING.AVOID_VENOUS_PENALTY;
+  s +=
+    inter(t.collection_method, p.preferences.preferred_collection_methods)
+      .length * SCORING.COLLECTION_METHOD_MATCH;
+  if (p.preferences.prefer_no_additional_fees)
+    s +=
+      t.collection_fee_type === "none"
+        ? SCORING.NO_FEES_BONUS
+        : SCORING.NO_FEES_PENALTY;
+  if (p.preferences.require_clinical_review_included)
+    s +=
+      t.clinical_review_type === "included"
+        ? SCORING.REVIEW_INC_BONUS
+        : SCORING.REVIEW_INC_PENALTY;
   s += Math.min(t.biomarkers / 10, SCORING.BIOMARKER_CAP);
   return s;
 }
@@ -347,20 +934,33 @@ export async function recommend(
   return tests
     .map((t) => ({ test: t, score: scoreTest(t, p) }))
     .filter((x) => x.score > 0)
-    .sort((a, b) => (b.score !== a.score ? b.score - a.score : a.test.price - b.test.price));
+    .sort((a, b) =>
+      b.score !== a.score ? b.score - a.score : a.test.price - b.test.price,
+    );
 }
 
 export function lowestFee(t: TestRecord): number {
   const a = t.collection_fee_amount;
-  if (t.collection_fee_type === "none" || t.collection_fee_type === "patient_arranged") return 0;
+  if (
+    t.collection_fee_type === "none" ||
+    t.collection_fee_type === "patient_arranged"
+  )
+    return 0;
   if (t.collection_fee_type === "fixed") return typeof a === "number" ? a : 0;
   if (a && typeof a === "object") return (a as FeeRange).min ?? 0;
   return 0;
 }
 export function isFeeEstimate(t: TestRecord): boolean {
-  return t.collection_fee_type === "range" || t.collection_fee_type === "varies_by_location" || t.collection_fee_type === "patient_arranged";
+  return (
+    t.collection_fee_type === "range" ||
+    t.collection_fee_type === "varies_by_location" ||
+    t.collection_fee_type === "patient_arranged"
+  );
 }
-export function computeTotalExpectedCost(t: TestRecord): { total: number; isEstimate: boolean } {
+export function computeTotalExpectedCost(t: TestRecord): {
+  total: number;
+  isEstimate: boolean;
+} {
   return { total: t.price + lowestFee(t), isEstimate: isFeeEstimate(t) };
 }
 
@@ -369,20 +969,30 @@ const money = (n: number) => "£" + (Number.isInteger(n) ? n : n.toFixed(2));
 export function feeCellLabel(t: TestRecord): string {
   const a = t.collection_fee_amount;
   if (t.collection_fee_type === "none") return "None";
-  if (t.collection_fee_type === "fixed") return typeof a === "number" && a > 0 ? "Clinic draw +" + money(a) : "None";
-  if (t.collection_fee_type === "range" || t.collection_fee_type === "varies_by_location")
-    return a && typeof a === "object" && (a as FeeRange).min > 0 ? "From " + money((a as FeeRange).min) : "Varies by location";
+  if (t.collection_fee_type === "fixed")
+    return typeof a === "number" && a > 0 ? "Clinic draw +" + money(a) : "None";
+  if (
+    t.collection_fee_type === "range" ||
+    t.collection_fee_type === "varies_by_location"
+  )
+    return a && typeof a === "object" && (a as FeeRange).min > 0
+      ? "From " + money((a as FeeRange).min)
+      : "Varies by location";
   if (t.collection_fee_type === "patient_arranged") return "Self-arranged";
   return "Not specified";
 }
 export function reviewCellLabel(t: TestRecord): string {
   const role: Record<string, string> = {
-    gp: "GP review included", consultant: "Consultant review included",
-    clinician: "Clinician review included", nurse: "Nurse review included",
+    gp: "GP review included",
+    consultant: "Consultant review included",
+    clinician: "Clinician review included",
+    nurse: "Nurse review included",
     clinical_scientist: "Clinical scientist review",
   };
-  if (t.clinical_review_type === "included") return role[t.clinical_review_professional ?? ""] || "Included";
-  if (t.clinical_review_type === "optional") return "Optional (+" + money(t.clinical_review_fee) + ")";
+  if (t.clinical_review_type === "included")
+    return role[t.clinical_review_professional ?? ""] || "Included";
+  if (t.clinical_review_type === "optional")
+    return "Optional (+" + money(t.clinical_review_fee) + ")";
   if (t.clinical_review_type === "not_included") return "Not included";
   return "Not specified";
 }

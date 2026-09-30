@@ -13,7 +13,8 @@ import { getErrorMessage } from "../_shared/errors.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
 const ACTOR_ID = "apify~cheerio-scraper";
@@ -36,14 +37,17 @@ function isAuthorised(req: Request): boolean {
   const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
   const cronSecret = Deno.env.get("SCRAPER_CRON_SECRET") ?? "";
   const auth = req.headers.get("authorization") ?? "";
-  const bearer = auth.toLowerCase().startsWith("bearer ") ? auth.slice(7).trim() : "";
+  const bearer = auth.toLowerCase().startsWith("bearer ")
+    ? auth.slice(7).trim()
+    : "";
   if (serviceKey && bearer === serviceKey) return true;
   const cronHeader = req.headers.get("x-cron-secret") ?? "";
   return Boolean(cronSecret) && cronHeader === cronSecret;
 }
 
 serve(async (req) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  if (req.method === "OPTIONS")
+    return new Response(null, { headers: corsHeaders });
 
   const json = (body: unknown, status = 200) =>
     new Response(JSON.stringify(body), {
@@ -65,8 +69,11 @@ serve(async (req) => {
 
   try {
     const body = await req.json().catch(() => ({}));
-    const providerId: string = String(body.provider_id ?? body.providerId ?? "");
-    if (!PROVIDER_ID_RE.test(providerId)) return json({ error: "Invalid or missing provider_id" }, 400);
+    const providerId: string = String(
+      body.provider_id ?? body.providerId ?? "",
+    );
+    if (!PROVIDER_ID_RE.test(providerId))
+      return json({ error: "Invalid or missing provider_id" }, 400);
 
     const { data: config, error: configError } = await supabase
       .from("apify_provider_configs")
@@ -74,12 +81,19 @@ serve(async (req) => {
       .eq("provider_id", providerId)
       .maybeSingle<ApifyProviderConfig>();
 
-    if (configError) return json({ error: `Config lookup failed: ${configError.message}` }, 500);
-    if (!config) return json({ error: `No Apify config for provider ${providerId}` }, 404);
-    if (!config.enabled) return json({ error: `Apify config for ${providerId} is disabled` }, 409);
+    if (configError)
+      return json(
+        { error: `Config lookup failed: ${configError.message}` },
+        500,
+      );
+    if (!config)
+      return json({ error: `No Apify config for provider ${providerId}` }, 404);
+    if (!config.enabled)
+      return json({ error: `Apify config for ${providerId} is disabled` }, 409);
 
     const startUrls = Array.isArray(config.start_urls) ? config.start_urls : [];
-    if (startUrls.length === 0) return json({ error: `No start_urls configured for ${providerId}` }, 400);
+    if (startUrls.length === 0)
+      return json({ error: `No start_urls configured for ${providerId}` }, 400);
 
     // Record the run up-front so an abandoned crawl is visible, not invisible.
     const { data: runRow, error: runError } = await supabase
@@ -92,12 +106,15 @@ serve(async (req) => {
       })
       .select("id")
       .single();
-    if (runError) return json({ error: `Could not open scrape run: ${runError.message}` }, 500);
+    if (runError)
+      return json(
+        { error: `Could not open scrape run: ${runError.message}` },
+        500,
+      );
     const scrapeRunId: string = runRow.id;
 
     const ingestSecret = Deno.env.get("SCRAPER_CRON_SECRET") ?? serviceKey;
-    const webhookUrl =
-      `${supabaseUrl}/functions/v1/apify-ingest?secret=${encodeURIComponent(ingestSecret)}`;
+    const webhookUrl = `${supabaseUrl}/functions/v1/apify-ingest?secret=${encodeURIComponent(ingestSecret)}`;
 
     const payloadTemplate = JSON.stringify({
       eventType: "{{eventType}}",
@@ -110,16 +127,20 @@ serve(async (req) => {
 
     const input = {
       startUrls,
-      globs: (Array.isArray(config.globs) ? config.globs : []).map((glob: string) => ({ glob })),
+      globs: (Array.isArray(config.globs) ? config.globs : []).map(
+        (glob: string) => ({ glob }),
+      ),
       linkSelector: config.link_selector ?? "a[href]",
       pageFunction: config.page_function,
       // Cost control: never unlimited, modest concurrency, Apify proxy, robots respected.
-      maxPagesPerCrawl: config.max_pages_per_crawl && config.max_pages_per_crawl > 0
-        ? config.max_pages_per_crawl
-        : DEFAULT_MAX_PAGES,
-      maxConcurrency: config.max_concurrency && config.max_concurrency > 0
-        ? config.max_concurrency
-        : DEFAULT_MAX_CONCURRENCY,
+      maxPagesPerCrawl:
+        config.max_pages_per_crawl && config.max_pages_per_crawl > 0
+          ? config.max_pages_per_crawl
+          : DEFAULT_MAX_PAGES,
+      maxConcurrency:
+        config.max_concurrency && config.max_concurrency > 0
+          ? config.max_concurrency
+          : DEFAULT_MAX_CONCURRENCY,
       respectRobotsTxtFile: true,
       proxyConfiguration: { useApifyProxy: true },
       maxRequestRetries: 2,
@@ -128,7 +149,12 @@ serve(async (req) => {
 
     const webhooks = [
       {
-        eventTypes: ["ACTOR.RUN.SUCCEEDED", "ACTOR.RUN.FAILED", "ACTOR.RUN.TIMED_OUT", "ACTOR.RUN.ABORTED"],
+        eventTypes: [
+          "ACTOR.RUN.SUCCEEDED",
+          "ACTOR.RUN.FAILED",
+          "ACTOR.RUN.TIMED_OUT",
+          "ACTOR.RUN.ABORTED",
+        ],
         requestUrl: webhookUrl,
         payloadTemplate,
       },
@@ -151,11 +177,14 @@ serve(async (req) => {
       const errorBody = await startRes.text();
       const message = `Apify run start failed [${startRes.status}]: ${errorBody.slice(0, 500)}`;
       console.error(`[apify-scrape-provider] ${message}`);
-      await supabase.from("scrape_runs").update({
-        status: "error",
-        finished_at: new Date().toISOString(),
-        errors: [{ message }],
-      }).eq("id", scrapeRunId);
+      await supabase
+        .from("scrape_runs")
+        .update({
+          status: "error",
+          finished_at: new Date().toISOString(),
+          errors: [{ message }],
+        })
+        .eq("id", scrapeRunId);
       await supabase.from("scraper_alerts").insert({
         provider_id: providerId,
         alert_type: "scrape_failed",
@@ -169,16 +198,21 @@ serve(async (req) => {
     const apifyRunId: string = started?.data?.id ?? "";
     const datasetId: string = started?.data?.defaultDatasetId ?? "";
 
-    await supabase.from("scrape_runs").update({
-      metadata: {
-        actor: ACTOR_ID,
-        apify_run_id: apifyRunId,
-        apify_dataset_id: datasetId,
-        dispatched_at: new Date().toISOString(),
-      },
-    }).eq("id", scrapeRunId);
+    await supabase
+      .from("scrape_runs")
+      .update({
+        metadata: {
+          actor: ACTOR_ID,
+          apify_run_id: apifyRunId,
+          apify_dataset_id: datasetId,
+          dispatched_at: new Date().toISOString(),
+        },
+      })
+      .eq("id", scrapeRunId);
 
-    console.log(`[apify-scrape-provider] ${providerId} dispatched run ${apifyRunId}`);
+    console.log(
+      `[apify-scrape-provider] ${providerId} dispatched run ${apifyRunId}`,
+    );
 
     return json({
       success: true,

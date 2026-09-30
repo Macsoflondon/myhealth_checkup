@@ -1,17 +1,18 @@
 import { useEffect } from "react";
 const MediaSpotlight = () => {
   useEffect(() => {
-    const track = document.querySelector('.marquee__track');
+    const track = document.querySelector(".marquee__track");
     if (track) {
       // Safely duplicate slides using cloneNode instead of innerHTML
       const slides = Array.from(track.children);
-      slides.forEach(slide => {
+      slides.forEach((slide) => {
         const clone = slide.cloneNode(true);
         track.appendChild(clone);
       });
     }
   }, []);
-  return <>
+  return (
+    <>
       <style>{`
         :root {
           --accent-color: #22c0d4;
@@ -74,8 +75,7 @@ const MediaSpotlight = () => {
           100% { transform: translateX(calc(-50% - var(--slide-gap))); }
         }
       `}</style>
-      
-      
-    </>;
+    </>
+  );
 };
 export default MediaSpotlight;

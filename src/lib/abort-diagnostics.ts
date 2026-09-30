@@ -52,8 +52,9 @@ const inFlight = new Map<string, InFlight>();
 let counter = 0;
 
 const isEnabled = (): boolean => {
-  const env = (globalThis as { process?: { env?: Record<string, string | undefined> } }).process
-    ?.env;
+  const env = (
+    globalThis as { process?: { env?: Record<string, string | undefined> } }
+  ).process?.env;
   if (env?.["MHC_ABORT_LOG"] === "0") return false;
   return true;
 };
@@ -132,7 +133,9 @@ export function getRecentAborts(): AbortRecord[] {
   return [...ring].reverse();
 }
 
-export function getInFlightSnapshot(): Array<Omit<InFlight, "startedAt"> & { ageMs: number }> {
+export function getInFlightSnapshot(): Array<
+  Omit<InFlight, "startedAt"> & { ageMs: number }
+> {
   const now = Date.now();
   return [...inFlight.values()].map(({ startedAt, ...rest }) => ({
     ...rest,

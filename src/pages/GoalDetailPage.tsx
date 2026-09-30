@@ -5,15 +5,35 @@ import { StandardPageHero } from "@/components/layout/StandardPageHero";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Lightbulb, Search, Target, Shield, Clock } from "lucide-react";
+import {
+  ArrowRight,
+  Lightbulb,
+  Search,
+  Target,
+  Shield,
+  Clock,
+} from "lucide-react";
 import { goalPages } from "@/data/goalPages";
 import NotFound from "@/pages/NotFound";
 import { buildCompareDetailStructuredData } from "@/lib/seo/compare-structured-data";
 
 const BENEFITS = [
-  { icon: Target, title: "Outcome-led matching", description: "See the panels that support this goal" },
-  { icon: Shield, title: "UKAS accredited labs", description: "Every listed provider uses UKAS-accredited UK laboratories" },
-  { icon: Clock, title: "Clear turnaround", description: "Typical result times shown alongside price and biomarker coverage" },
+  {
+    icon: Target,
+    title: "Outcome-led matching",
+    description: "See the panels that support this goal",
+  },
+  {
+    icon: Shield,
+    title: "UKAS accredited labs",
+    description: "Every listed provider uses UKAS-accredited UK laboratories",
+  },
+  {
+    icon: Clock,
+    title: "Clear turnaround",
+    description:
+      "Typical result times shown alongside price and biomarker coverage",
+  },
 ] as const;
 
 const GoalDetailPage = () => {
@@ -24,7 +44,6 @@ const GoalDetailPage = () => {
   // silent 200 redirect to /compare/goals — that pattern is a classic
   // soft-404 and dilutes crawl budget.
   if (!goal) return <NotFound />;
-
 
   return (
     <MainLayout mainClassName="flex-1 bg-white">
@@ -63,7 +82,9 @@ const GoalDetailPage = () => {
               <h2 className="text-xl sm:text-2xl font-heading font-bold text-[#081129] mb-3">
                 Why test for {goal.name.toLowerCase()}?
               </h2>
-              <p className="text-[#081129]/80 leading-relaxed">{goal.explanation}</p>
+              <p className="text-[#081129]/80 leading-relaxed">
+                {goal.explanation}
+              </p>
             </div>
           </div>
 
@@ -78,7 +99,9 @@ const GoalDetailPage = () => {
                 className="rounded-2xl border border-[#081129]/10 bg-white shadow-[0_2px_12px_rgba(8,17,41,0.06)] p-5"
               >
                 <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
-                  <h3 className="text-lg font-heading font-bold text-[#081129]">{test.name}</h3>
+                  <h3 className="text-lg font-heading font-bold text-[#081129]">
+                    {test.name}
+                  </h3>
                   <Button
                     asChild
                     size="sm"
@@ -111,7 +134,9 @@ const GoalDetailPage = () => {
             <div className="flex items-start gap-3">
               <Lightbulb className="w-5 h-5 text-[#22c0d4] flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-heading font-semibold text-[#081129] mb-1">Top tip</h3>
+                <h3 className="font-heading font-semibold text-[#081129] mb-1">
+                  Top tip
+                </h3>
                 <p className="text-sm text-[#081129]/75">{goal.topTip}</p>
               </div>
             </div>
@@ -124,7 +149,9 @@ const GoalDetailPage = () => {
               size="lg"
               className="bg-[#22c0d4] hover:bg-[#e70d69] text-white rounded-xl"
             >
-              <Link to={`/compare?search=${goal.recommendedTests[0]?.searchQuery || ""}`}>
+              <Link
+                to={`/compare?search=${goal.recommendedTests[0]?.searchQuery || ""}`}
+              >
                 Compare {goal.name.toLowerCase()} tests
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>

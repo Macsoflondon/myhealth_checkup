@@ -7,15 +7,18 @@ export interface FirecrawlScrapeOpts {
   onlyMainContent?: boolean;
   waitFor?: number;
   timeout?: number;
-  proxy?: 'basic' | 'stealth' | 'auto';
+  proxy?: "basic" | "stealth" | "auto";
 }
 
-const V2 = 'https://api.firecrawl.dev/v2';
+const V2 = "https://api.firecrawl.dev/v2";
 
 const RETRY_STATUS = new Set([408, 425, 429, 500, 502, 503, 504, 522, 524]);
 const MAX_ATTEMPTS = 5;
 
-function backoffDelay(attempt: number, retryAfterHeader?: string | null): number {
+function backoffDelay(
+  attempt: number,
+  retryAfterHeader?: string | null,
+): number {
   if (retryAfterHeader) {
     const secs = Number(retryAfterHeader);
     if (!Number.isNaN(secs) && secs > 0) return Math.min(secs * 1000, 30_000);
@@ -36,14 +39,18 @@ async function fetchWithRetry(
       const res = await fetch(url, init);
       if (res.ok) return res;
       if (!RETRY_STATUS.has(res.status) || attempt === MAX_ATTEMPTS) return res;
-      const delay = backoffDelay(attempt, res.headers.get('retry-after'));
-      console.warn(`[firecrawl:${label}] ${res.status} — retry ${attempt}/${MAX_ATTEMPTS - 1} in ${delay}ms`);
+      const delay = backoffDelay(attempt, res.headers.get("retry-after"));
+      console.warn(
+        `[firecrawl:${label}] ${res.status} — retry ${attempt}/${MAX_ATTEMPTS - 1} in ${delay}ms`,
+      );
       await new Promise((r) => setTimeout(r, delay));
     } catch (e) {
       lastErr = e;
       if (attempt === MAX_ATTEMPTS) throw e;
       const delay = backoffDelay(attempt);
-      console.warn(`[firecrawl:${label}] network err — retry ${attempt}/${MAX_ATTEMPTS - 1} in ${delay}ms: ${e instanceof Error ? e.message : String(e)}`);
+      console.warn(
+        `[firecrawl:${label}] network err — retry ${attempt}/${MAX_ATTEMPTS - 1} in ${delay}ms: ${e instanceof Error ? e.message : String(e)}`,
+      );
       await new Promise((r) => setTimeout(r, delay));
     }
   }
@@ -58,28 +65,38 @@ export async function firecrawlScrape(
   url: string,
   apiKey: string,
   opts: FirecrawlScrapeOpts = {},
-): Promise<{ success: boolean; data?: any; markdown?: string; html?: string; metadata?: any; error?: string }> {
+): Promise<{
+  success: boolean;
+  data?: any;
+  markdown?: string;
+  html?: string;
+  metadata?: any;
+  error?: string;
+}> {
   const body = {
     url,
-    formats: opts.formats ?? ['markdown'],
+    formats: opts.formats ?? ["markdown"],
     onlyMainContent: opts.onlyMainContent ?? true,
     waitFor: opts.waitFor ?? 5000,
     timeout: opts.timeout ?? 90000,
-    proxy: opts.proxy ?? 'stealth',
+    proxy: opts.proxy ?? "stealth",
   };
 
   const res = await fetchWithRetry(
     `${V2}/scrape`,
     {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify(body),
     },
     `scrape ${new URL(url).hostname}`,
   );
 
   if (!res.ok) {
-    const text = await res.text().catch(() => '');
+    const text = await res.text().catch(() => "");
     throw new Error(`Firecrawl scrape ${res.status}: ${text.slice(0, 200)}`);
   }
   const json = await res.json();
@@ -97,8 +114,11 @@ export async function firecrawlMap(
   const res = await fetchWithRetry(
     `${V2}/map`,
     {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         url,
         search: opts.search,
@@ -112,8 +132,10 @@ export async function firecrawlMap(
   const data = await res.json();
   const rawLinks = data.links ?? data.data?.links ?? [];
   return rawLinks
-    .map((l: unknown) => (typeof l === 'string' ? l : (l as { url?: string })?.url))
-    .filter((l: unknown): l is string => typeof l === 'string' && l.length > 0);
+    .map((l: unknown) =>
+      typeof l === "string" ? l : (l as { url?: string })?.url,
+    )
+    .filter((l: unknown): l is string => typeof l === "string" && l.length > 0);
 }
 
 /** Worker-pool concurrency (batch mode) — N workers pull from a shared queue.
@@ -132,11 +154,16 @@ export async function runInChunks<T, R>(
       try {
         results[idx] = await fn(items[idx], idx);
       } catch (e) {
-        console.error(`[runInChunks] item ${idx} failed:`, e instanceof Error ? e.message : String(e));
+        console.error(
+          `[runInChunks] item ${idx} failed:`,
+          e instanceof Error ? e.message : String(e),
+        );
         results[idx] = undefined as unknown as R;
       }
     }
   };
-  await Promise.all(Array.from({ length: Math.min(concurrency, items.length) }, () => worker()));
+  await Promise.all(
+    Array.from({ length: Math.min(concurrency, items.length) }, () => worker()),
+  );
   return results;
 }

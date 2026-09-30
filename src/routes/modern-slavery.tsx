@@ -8,7 +8,8 @@ export const Route = createFileRoute("/modern-slavery")({
   head: () =>
     buildRouteHead({
       title: "Modern Slavery Statement | myhealth checkup",
-      description: "MYHEALTHCHECKUP LTD's statement on modern slavery and ethical supply chain practices.",
+      description:
+        "MYHEALTHCHECKUP LTD's statement on modern slavery and ethical supply chain practices.",
       path: "/modern-slavery",
     }),
   component: ModernSlaveryPage,

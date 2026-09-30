@@ -8,7 +8,7 @@ export interface CompareItem {
   features: Record<string, string | boolean>;
 }
 
-export type SortOrder = 'asc' | 'desc';
+export type SortOrder = "asc" | "desc";
 
 export interface FilterOptions {
   category: string;
@@ -17,20 +17,24 @@ export interface FilterOptions {
   sortOrder?: SortOrder;
 }
 
-export function filterAndSortCompareData<T extends CompareItem>(data: T[], options: FilterOptions): T[] {
-  const { category, providers, searchTerm = '', sortOrder = 'asc' } = options;
-  const isAll = providers.includes('all');
+export function filterAndSortCompareData<T extends CompareItem>(
+  data: T[],
+  options: FilterOptions,
+): T[] {
+  const { category, providers, searchTerm = "", sortOrder = "asc" } = options;
+  const isAll = providers.includes("all");
   const search = searchTerm.toLowerCase();
 
-  const filtered = data.filter(item => {
+  const filtered = data.filter((item) => {
     if (item.category !== category) return false;
-    if (!isAll && !providers.includes(item.provider.toLowerCase())) return false;
+    if (!isAll && !providers.includes(item.provider.toLowerCase()))
+      return false;
     if (search && !item.name.toLowerCase().includes(search)) return false;
     return true;
   });
 
   const sorted = [...filtered].sort((a, b) => {
-    return sortOrder === 'asc' ? a.price - b.price : b.price - a.price;
+    return sortOrder === "asc" ? a.price - b.price : b.price - a.price;
   });
 
   return sorted;

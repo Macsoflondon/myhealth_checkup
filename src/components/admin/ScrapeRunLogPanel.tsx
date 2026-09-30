@@ -4,10 +4,23 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
-import { Clock, CheckCircle2, XCircle, AlertTriangle, ArrowDown, ArrowUp, Minus, ExternalLink } from "lucide-react";
+import {
+  Clock,
+  CheckCircle2,
+  XCircle,
+  AlertTriangle,
+  ArrowDown,
+  ArrowUp,
+  Minus,
+  ExternalLink,
+} from "lucide-react";
 
 interface ScrapeRun {
   id: string;
@@ -42,9 +55,12 @@ export const ScrapeRunLogPanel = () => {
   }, []);
 
   const statusIcon = (status: string) => {
-    if (status === "completed") return <CheckCircle2 className="h-4 w-4 text-green-600" />;
-    if (status === "failed") return <XCircle className="h-4 w-4 text-red-600" />;
-    if (status === "running") return <Clock className="h-4 w-4 text-amber-600 animate-pulse" />;
+    if (status === "completed")
+      return <CheckCircle2 className="h-4 w-4 text-green-600" />;
+    if (status === "failed")
+      return <XCircle className="h-4 w-4 text-red-600" />;
+    if (status === "running")
+      return <Clock className="h-4 w-4 text-amber-600 animate-pulse" />;
     return <AlertTriangle className="h-4 w-4 text-muted-foreground" />;
   };
 
@@ -52,22 +68,41 @@ export const ScrapeRunLogPanel = () => {
     const c = cur ?? 0;
     const p = prev ?? 0;
     const d = c - p;
-    if (d === 0) return <span className="inline-flex items-center text-muted-foreground"><Minus className="h-3 w-3" /></span>;
-    if (d > 0) return <span className="inline-flex items-center text-green-600"><ArrowUp className="h-3 w-3" />{d}</span>;
-    return <span className="inline-flex items-center text-red-600"><ArrowDown className="h-3 w-3" />{Math.abs(d)}</span>;
+    if (d === 0)
+      return (
+        <span className="inline-flex items-center text-muted-foreground">
+          <Minus className="h-3 w-3" />
+        </span>
+      );
+    if (d > 0)
+      return (
+        <span className="inline-flex items-center text-green-600">
+          <ArrowUp className="h-3 w-3" />
+          {d}
+        </span>
+      );
+    return (
+      <span className="inline-flex items-center text-red-600">
+        <ArrowDown className="h-3 w-3" />
+        {Math.abs(d)}
+      </span>
+    );
   };
 
   const extractFailureReasons = (r: ScrapeRun): string[] => {
     const reasons: string[] = [];
     const d = r.details;
     if (!d) return reasons;
-    if (d.scrapers?.status && d.scrapers.status >= 300) reasons.push(`scrapers HTTP ${d.scrapers.status}`);
+    if (d.scrapers?.status && d.scrapers.status >= 300)
+      reasons.push(`scrapers HTTP ${d.scrapers.status}`);
     if (d.promote?.error) reasons.push(`promote: ${d.promote.error}`);
     if (Array.isArray(d.promote?.failures)) {
-      for (const f of d.promote.failures.slice(0, 3)) reasons.push(`promote: ${f.reason ?? JSON.stringify(f)}`);
+      for (const f of d.promote.failures.slice(0, 3))
+        reasons.push(`promote: ${f.reason ?? JSON.stringify(f)}`);
     }
     if (Array.isArray(d.verification?.failures)) {
-      for (const f of d.verification.failures.slice(0, 3)) reasons.push(`verify: ${f.url ?? f.reason ?? "fail"}`);
+      for (const f of d.verification.failures.slice(0, 3))
+        reasons.push(`verify: ${f.url ?? f.reason ?? "fail"}`);
     }
     return reasons;
   };
@@ -80,8 +115,8 @@ export const ScrapeRunLogPanel = () => {
           Automated Scrape Runs
         </CardTitle>
         <p className="text-sm text-muted-foreground">
-          Twice-daily scrape, promote and verify pipeline. Cron: 06:00 &amp; 18:00 UTC. Diff arrows compare each run to the
-          previous one.
+          Twice-daily scrape, promote and verify pipeline. Cron: 06:00 &amp;
+          18:00 UTC. Diff arrows compare each run to the previous one.
         </p>
       </CardHeader>
       <CardContent>
@@ -110,47 +145,75 @@ export const ScrapeRunLogPanel = () => {
                           <span>{r.trigger_source ?? "manual"}</span>
                           <span>{r.providers_run ?? 0} providers</span>
                           <span className="inline-flex items-center gap-1">
-                            scraped {r.tests_scraped ?? 0} {prev && diff(r.tests_scraped, prev.tests_scraped)}
+                            scraped {r.tests_scraped ?? 0}{" "}
+                            {prev && diff(r.tests_scraped, prev.tests_scraped)}
                           </span>
                           <span className="inline-flex items-center gap-1">
-                            promoted {r.tests_promoted ?? 0} {prev && diff(r.tests_promoted, prev.tests_promoted)}
+                            promoted {r.tests_promoted ?? 0}{" "}
+                            {prev &&
+                              diff(r.tests_promoted, prev.tests_promoted)}
                           </span>
                           <span className="inline-flex items-center gap-1">
-                            mapped {r.mappings_upserted ?? 0} {prev && diff(r.mappings_upserted, prev.mappings_upserted)}
+                            mapped {r.mappings_upserted ?? 0}{" "}
+                            {prev &&
+                              diff(r.mappings_upserted, prev.mappings_upserted)}
                           </span>
                         </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       {(r.verification_failures ?? 0) > 0 && (
-                        <Badge variant="destructive">{r.verification_failures} fail</Badge>
+                        <Badge variant="destructive">
+                          {r.verification_failures} fail
+                        </Badge>
                       )}
-                      <Badge variant={r.status === "completed" ? "default" : "secondary"}>
+                      <Badge
+                        variant={
+                          r.status === "completed" ? "default" : "secondary"
+                        }
+                      >
                         {r.status}
                       </Badge>
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button size="sm" variant="ghost">Details</Button>
+                          <Button size="sm" variant="ghost">
+                            Details
+                          </Button>
                         </DialogTrigger>
                         <DialogContent className="max-w-2xl">
                           <DialogHeader>
-                            <DialogTitle>Run {r.id.slice(0, 8)} · {r.status}</DialogTitle>
+                            <DialogTitle>
+                              Run {r.id.slice(0, 8)} · {r.status}
+                            </DialogTitle>
                           </DialogHeader>
                           <div className="space-y-3 text-sm">
                             <div>
-                              <strong>Started:</strong> {new Date(r.started_at).toLocaleString("en-GB")}
-                              {r.completed_at && <> · <strong>Completed:</strong> {new Date(r.completed_at).toLocaleString("en-GB")}</>}
+                              <strong>Started:</strong>{" "}
+                              {new Date(r.started_at).toLocaleString("en-GB")}
+                              {r.completed_at && (
+                                <>
+                                  {" "}
+                                  · <strong>Completed:</strong>{" "}
+                                  {new Date(r.completed_at).toLocaleString(
+                                    "en-GB",
+                                  )}
+                                </>
+                              )}
                             </div>
                             {reasons.length > 0 && (
                               <div>
                                 <strong>Failure reasons:</strong>
                                 <ul className="ml-4 list-disc">
-                                  {reasons.map((x, i) => <li key={i}>{x}</li>)}
+                                  {reasons.map((x, i) => (
+                                    <li key={i}>{x}</li>
+                                  ))}
                                 </ul>
                               </div>
                             )}
                             <details>
-                              <summary className="cursor-pointer text-muted-foreground">Raw details JSON</summary>
+                              <summary className="cursor-pointer text-muted-foreground">
+                                Raw details JSON
+                              </summary>
                               <pre className="mt-2 max-h-96 overflow-auto rounded bg-muted p-2 text-xs">
                                 {JSON.stringify(r.details, null, 2)}
                               </pre>
@@ -158,13 +221,14 @@ export const ScrapeRunLogPanel = () => {
                             <div className="flex gap-2 pt-2">
                               <a
                                 href={`https://supabase.com/dashboard/project/${PROJECT_REF}/sql/new?content=${encodeURIComponent(
-                                  `select * from scrape_run_log where id = '${r.id}';`
+                                  `select * from scrape_run_log where id = '${r.id}';`,
                                 )}`}
                                 target="_blank"
                                 rel="noreferrer"
                                 className="text-xs text-primary inline-flex items-center gap-1 hover:underline"
                               >
-                                Open run in SQL editor <ExternalLink className="h-3 w-3" />
+                                Open run in SQL editor{" "}
+                                <ExternalLink className="h-3 w-3" />
                               </a>
                               <a
                                 href={`https://supabase.com/dashboard/project/${PROJECT_REF}/functions/scrape-and-verify/logs`}
@@ -172,7 +236,8 @@ export const ScrapeRunLogPanel = () => {
                                 rel="noreferrer"
                                 className="text-xs text-primary inline-flex items-center gap-1 hover:underline"
                               >
-                                Edge function logs <ExternalLink className="h-3 w-3" />
+                                Edge function logs{" "}
+                                <ExternalLink className="h-3 w-3" />
                               </a>
                             </div>
                           </div>

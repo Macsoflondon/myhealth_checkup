@@ -16,7 +16,8 @@ export const londonLaboratoryTests: LondonLaboratoryTest[] = [
     url: "https://www.londonmedicallaboratory.com/",
     category: "General Health",
     biomarkerCount: 12,
-    description: "Comprehensive health screening covering essential health markers."
+    description:
+      "Comprehensive health screening covering essential health markers.",
   },
   {
     id: "lml-vitamin-profile",
@@ -25,7 +26,7 @@ export const londonLaboratoryTests: LondonLaboratoryTest[] = [
     url: "https://www.londonmedicallaboratory.com/",
     category: "Vitamins",
     biomarkerCount: 8,
-    description: "Complete vitamin status assessment including key vitamins."
+    description: "Complete vitamin status assessment including key vitamins.",
   },
   {
     id: "lml-hormone-check",
@@ -34,7 +35,7 @@ export const londonLaboratoryTests: LondonLaboratoryTest[] = [
     url: "https://www.londonmedicallaboratory.com/",
     category: "Hormone",
     biomarkerCount: 10,
-    description: "Comprehensive hormone panel for hormonal health assessment."
+    description: "Comprehensive hormone panel for hormonal health assessment.",
   },
   {
     id: "lml-thyroid-advanced",
@@ -43,7 +44,8 @@ export const londonLaboratoryTests: LondonLaboratoryTest[] = [
     url: "https://www.londonmedicallaboratory.com/",
     category: "Thyroid",
     biomarkerCount: 6,
-    description: "Detailed thyroid function assessment with comprehensive markers."
+    description:
+      "Detailed thyroid function assessment with comprehensive markers.",
   },
   {
     id: "lml-fertility-female",
@@ -52,7 +54,8 @@ export const londonLaboratoryTests: LondonLaboratoryTest[] = [
     url: "https://www.londonmedicallaboratory.com/",
     category: "Fertility",
     biomarkerCount: 8,
-    description: "Comprehensive fertility assessment for women planning pregnancy."
+    description:
+      "Comprehensive fertility assessment for women planning pregnancy.",
   },
   {
     id: "lml-fertility-male",
@@ -61,7 +64,8 @@ export const londonLaboratoryTests: LondonLaboratoryTest[] = [
     url: "https://www.londonmedicallaboratory.com/",
     category: "Fertility",
     biomarkerCount: 7,
-    description: "Complete fertility screening for men assessing reproductive health."
+    description:
+      "Complete fertility screening for men assessing reproductive health.",
   },
   {
     id: "lml-heart-health",
@@ -70,7 +74,8 @@ export const londonLaboratoryTests: LondonLaboratoryTest[] = [
     url: "https://www.londonmedicallaboratory.com/",
     category: "Heart Health",
     biomarkerCount: 9,
-    description: "Cardiovascular health assessment including key cardiac markers."
+    description:
+      "Cardiovascular health assessment including key cardiac markers.",
   },
   {
     id: "lml-diabetes-screen",
@@ -79,6 +84,6 @@ export const londonLaboratoryTests: LondonLaboratoryTest[] = [
     url: "https://www.londonmedicallaboratory.com/",
     category: "Diabetes",
     biomarkerCount: 5,
-    description: "Essential diabetes screening to monitor blood sugar levels."
-  }
+    description: "Essential diabetes screening to monitor blood sugar levels.",
+  },
 ];

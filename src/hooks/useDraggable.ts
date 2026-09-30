@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback } from "react";
 
 export interface DraggableItem {
   id: string;
@@ -30,53 +30,59 @@ export function useDraggable<T>({
 
   const onDragStart = useCallback((e: React.DragEvent, item: DraggableItem) => {
     setDraggedItem(item);
-    e.dataTransfer.effectAllowed = 'move';
-    e.dataTransfer.setData('text/html', e.currentTarget.innerHTML);
-    
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/html", e.currentTarget.innerHTML);
+
     // Add dragging class to the element
     const target = e.currentTarget as HTMLElement;
     requestAnimationFrame(() => {
-      target.classList.add('is-dragging');
+      target.classList.add("is-dragging");
     });
   }, []);
 
   const onDragEnd = useCallback((e: React.DragEvent) => {
     // Remove dragging class
     const target = e.currentTarget as HTMLElement;
-    target.classList.remove('is-dragging');
-    
+    target.classList.remove("is-dragging");
+
     setDraggedItem(null);
     setDraggedOverIndex(null);
   }, []);
 
-  const onDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-    
-    const target = e.currentTarget as HTMLElement;
-    const targetIndex = parseInt(target.dataset.index || '0', 10);
-    
-    if (draggedItem && targetIndex !== draggedItem.index) {
-      setDraggedOverIndex(targetIndex);
-    }
-  }, [draggedItem]);
+  const onDragOver = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
 
-  const onDrop = useCallback((e: React.DragEvent, targetIndex: number) => {
-    e.preventDefault();
-    
-    if (!draggedItem || draggedItem.index === targetIndex) {
+      const target = e.currentTarget as HTMLElement;
+      const targetIndex = parseInt(target.dataset.index || "0", 10);
+
+      if (draggedItem && targetIndex !== draggedItem.index) {
+        setDraggedOverIndex(targetIndex);
+      }
+    },
+    [draggedItem],
+  );
+
+  const onDrop = useCallback(
+    (e: React.DragEvent, targetIndex: number) => {
+      e.preventDefault();
+
+      if (!draggedItem || draggedItem.index === targetIndex) {
+        setDraggedOverIndex(null);
+        return;
+      }
+
+      // Reorder items
+      const reorderedItems = [...items];
+      const [movedItem] = reorderedItems.splice(draggedItem.index, 1);
+      reorderedItems.splice(targetIndex, 0, movedItem);
+
+      onReorder(reorderedItems);
       setDraggedOverIndex(null);
-      return;
-    }
-
-    // Reorder items
-    const reorderedItems = [...items];
-    const [movedItem] = reorderedItems.splice(draggedItem.index, 1);
-    reorderedItems.splice(targetIndex, 0, movedItem);
-
-    onReorder(reorderedItems);
-    setDraggedOverIndex(null);
-  }, [draggedItem, items, onReorder]);
+    },
+    [draggedItem, items, onReorder],
+  );
 
   return {
     onDragStart,

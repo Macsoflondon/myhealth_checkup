@@ -21,7 +21,9 @@ const toPath = (file: string): string => {
 describe("known-routes allow-list", () => {
   const files = readdirSync(resolve(process.cwd(), "src/routes"))
     .filter((file) => /\.tsx?$/.test(file))
-    .filter((file) => !IGNORED_PREFIXES.some((prefix) => file.startsWith(prefix)));
+    .filter(
+      (file) => !IGNORED_PREFIXES.some((prefix) => file.startsWith(prefix)),
+    );
 
   it.each(files)("recognises %s", (file) => {
     expect(isKnownRoute(toPath(file))).toBe(true);

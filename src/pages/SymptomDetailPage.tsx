@@ -5,15 +5,35 @@ import { StandardPageHero } from "@/components/layout/StandardPageHero";
 import CategoryPageBottom from "@/components/sections/CategoryPageBottom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { AlertTriangle, ArrowRight, Search, Activity, Shield, Clock } from "lucide-react";
+import {
+  AlertTriangle,
+  ArrowRight,
+  Search,
+  Activity,
+  Shield,
+  Clock,
+} from "lucide-react";
 import { symptomPages } from "@/data/symptomPages";
 import NotFound from "@/pages/NotFound";
 import { buildCompareDetailStructuredData } from "@/lib/seo/compare-structured-data";
 
 const BENEFITS = [
-  { icon: Activity, title: "Symptom-led matching", description: "See the tests commonly used to investigate this symptom" },
-  { icon: Shield, title: "UKAS accredited labs", description: "Every listed provider uses UKAS-accredited UK laboratories" },
-  { icon: Clock, title: "Clear turnaround", description: "Typical result times shown alongside price and biomarker coverage" },
+  {
+    icon: Activity,
+    title: "Symptom-led matching",
+    description: "See the tests commonly used to investigate this symptom",
+  },
+  {
+    icon: Shield,
+    title: "UKAS accredited labs",
+    description: "Every listed provider uses UKAS-accredited UK laboratories",
+  },
+  {
+    icon: Clock,
+    title: "Clear turnaround",
+    description:
+      "Typical result times shown alongside price and biomarker coverage",
+  },
 ] as const;
 
 const SymptomDetailPage = () => {
@@ -24,7 +44,6 @@ const SymptomDetailPage = () => {
   // silent 200 redirect to /compare/symptoms — that pattern is a classic
   // soft-404 and dilutes crawl budget.
   if (!symptom) return <NotFound />;
-
 
   return (
     <MainLayout mainClassName="flex-1 bg-white">
@@ -63,7 +82,9 @@ const SymptomDetailPage = () => {
               <h2 className="text-xl sm:text-2xl font-heading font-bold text-[#081129] mb-3">
                 Why test for {symptom.name.toLowerCase()}?
               </h2>
-              <p className="text-[#081129]/80 leading-relaxed">{symptom.clinicalExplanation}</p>
+              <p className="text-[#081129]/80 leading-relaxed">
+                {symptom.clinicalExplanation}
+              </p>
             </div>
           </div>
 
@@ -78,7 +99,9 @@ const SymptomDetailPage = () => {
                 className="rounded-2xl border border-[#081129]/10 bg-white shadow-[0_2px_12px_rgba(8,17,41,0.06)] p-5"
               >
                 <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
-                  <h3 className="text-lg font-heading font-bold text-[#081129]">{test.name}</h3>
+                  <h3 className="text-lg font-heading font-bold text-[#081129]">
+                    {test.name}
+                  </h3>
                   <Button
                     asChild
                     size="sm"
@@ -111,8 +134,12 @@ const SymptomDetailPage = () => {
             <div className="flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-[#e70d69] flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-heading font-semibold text-[#081129] mb-1">When to see your GP</h3>
-                <p className="text-sm text-[#081129]/75">{symptom.whenToSeeGP}</p>
+                <h3 className="font-heading font-semibold text-[#081129] mb-1">
+                  When to see your GP
+                </h3>
+                <p className="text-sm text-[#081129]/75">
+                  {symptom.whenToSeeGP}
+                </p>
               </div>
             </div>
           </div>
@@ -124,7 +151,9 @@ const SymptomDetailPage = () => {
               size="lg"
               className="bg-[#22c0d4] hover:bg-[#e70d69] text-white rounded-xl"
             >
-              <Link to={`/compare?search=${symptom.recommendedTests[0]?.searchQuery || ""}`}>
+              <Link
+                to={`/compare?search=${symptom.recommendedTests[0]?.searchQuery || ""}`}
+              >
                 Compare all {symptom.name.toLowerCase()} tests
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>

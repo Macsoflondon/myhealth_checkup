@@ -5,14 +5,19 @@ import { ordersApi } from "@/api";
 
 export function useOrders(user: User | null) {
   const navigate = useNavigate();
-  
-  const placeOrder = async (testId: string, provider: string, testName?: string, price?: number) => {
+
+  const placeOrder = async (
+    testId: string,
+    provider: string,
+    testName?: string,
+    price?: number,
+  ) => {
     if (!user) {
       toast.error("Please sign in to place an order");
       navigate("/auth");
       return false;
     }
-    
+
     try {
       const { error } = await ordersApi.createOrder({
         user_id: user.id,
@@ -20,19 +25,21 @@ export function useOrders(user: User | null) {
         provider: provider,
         name: testName,
         price: price,
-        status: 'pending',
+        status: "pending",
       });
-      
+
       if (error) throw error;
-      
+
       toast.success("Order placed successfully!");
       navigate("/dashboard?tab=orders");
       return true;
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to place order');
+      toast.error(
+        error instanceof Error ? error.message : "Failed to place order",
+      );
       return false;
     }
   };
-  
+
   return { placeOrder };
 }

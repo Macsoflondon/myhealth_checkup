@@ -3,11 +3,12 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { Resend } from "https://esm.sh/resend@2.0.0";
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
-const resend = new Resend(Deno.env.get('RESEND_API_KEY'));
+const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 interface PriceAlert {
   id: string;
@@ -28,31 +29,31 @@ interface PriceChange {
 }
 
 serve(async (req) => {
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
-  const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+  const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+  const supabaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
   // Cron/service-role guard: only callers presenting the service-role key may run this.
-  const authHeader = req.headers.get('Authorization') ?? '';
+  const authHeader = req.headers.get("Authorization") ?? "";
   if (authHeader !== `Bearer ${supabaseKey}`) {
-    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 
   try {
-    console.log('Starting price alert checker');
+    console.log("Starting price alert checker");
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     // Fetch all enabled price alerts
     const { data: alerts, error: alertsError } = await supabase
-      .from('price_alert_preferences')
-      .select('*')
-      .eq('enabled', true);
+      .from("price_alert_preferences")
+      .select("*")
+      .eq("enabled", true);
 
     if (alertsError) {
       throw new Error(`Failed to fetch alerts: ${alertsError.message}`);
@@ -63,11 +64,11 @@ serve(async (req) => {
     // Get recent price changes (last 6 hours)
     const sixHoursAgo = new Date(Date.now() - 6 * 60 * 60 * 1000).toISOString();
     const { data: priceChanges, error: changesError } = await supabase
-      .from('price_history')
-      .select('*')
-      .gte('changed_at', sixHoursAgo)
-      .lt('change_percentage', 0) // Only price drops
-      .order('changed_at', { ascending: false });
+      .from("price_history")
+      .select("*")
+      .gte("changed_at", sixHoursAgo)
+      .lt("change_percentage", 0) // Only price drops
+      .order("changed_at", { ascending: false });
 
     if (changesError) {
       throw new Error(`Failed to fetch price changes: ${changesError.message}`);
@@ -82,48 +83,53 @@ serve(async (req) => {
       // Skip if alerted in the last 24 hours
       if (alert.last_alerted_at) {
         const lastAlerted = new Date(alert.last_alerted_at);
-        const hoursSinceLastAlert = (Date.now() - lastAlerted.getTime()) / (1000 * 60 * 60);
+        const hoursSinceLastAlert =
+          (Date.now() - lastAlerted.getTime()) / (1000 * 60 * 60);
         if (hoursSinceLastAlert < 24) {
-          console.log(`Skipping alert ${alert.id} - alerted ${hoursSinceLastAlert.toFixed(1)} hours ago`);
+          console.log(
+            `Skipping alert ${alert.id} - alerted ${hoursSinceLastAlert.toFixed(1)} hours ago`,
+          );
           continue;
         }
       }
 
       // Find matching price drop
       const matchingDrop = priceChanges?.find(
-        change => 
-          change.test_id === alert.test_id && 
+        (change) =>
+          change.test_id === alert.test_id &&
           change.provider === alert.provider &&
-          Math.abs(change.change_percentage) >= alert.threshold_percentage
+          Math.abs(change.change_percentage) >= alert.threshold_percentage,
       );
 
       if (matchingDrop) {
         console.log(`Found matching price drop for alert ${alert.id}`);
 
         // Get user email
-        const { data: userData, error: userError } = await supabase.auth.admin.getUserById(
-          alert.user_id
-        );
+        const { data: userData, error: userError } =
+          await supabase.auth.admin.getUserById(alert.user_id);
 
         if (userError || !userData.user?.email) {
-          console.error(`Failed to get user email for ${alert.user_id}:`, userError);
+          console.error(
+            `Failed to get user email for ${alert.user_id}:`,
+            userError,
+          );
           continue;
         }
 
         // Get test details
         const { data: testData } = await supabase
-          .from('provider_tests')
-          .select('test_name')
-          .eq('id', alert.test_id)
+          .from("provider_tests")
+          .select("test_name")
+          .eq("id", alert.test_id)
           .single();
 
-        const testName = testData?.test_name || 'Health Test';
+        const testName = testData?.test_name || "Health Test";
 
         // Send email notification
         try {
           await resend.emails.send({
-            from: 'myhealth checkup <support@myhealthcheckup.co.uk>',
-            reply_to: 'support@myhealthcheckup.co.uk',
+            from: "myhealth checkup <support@myhealthcheckup.co.uk>",
+            reply_to: "support@myhealthcheckup.co.uk",
             to: [userData.user.email],
             subject: `🎉 Price Drop Alert: ${testName}`,
             html: `
@@ -162,9 +168,9 @@ serve(async (req) => {
 
           // Update last_alerted_at
           await supabase
-            .from('price_alert_preferences')
+            .from("price_alert_preferences")
             .update({ last_alerted_at: new Date().toISOString() })
-            .eq('id', alert.id);
+            .eq("id", alert.id);
 
           alertsSent.push({
             alert_id: alert.id,
@@ -173,9 +179,14 @@ serve(async (req) => {
             price_drop: matchingDrop.change_percentage,
           });
 
-          console.log(`Alert sent successfully for ${testName} to ${userData.user.email}`);
+          console.log(
+            `Alert sent successfully for ${testName} to ${userData.user.email}`,
+          );
         } catch (emailError) {
-          console.error(`Failed to send email for alert ${alert.id}:`, emailError);
+          console.error(
+            `Failed to send email for alert ${alert.id}:`,
+            emailError,
+          );
         }
       }
     }
@@ -187,20 +198,19 @@ serve(async (req) => {
         alerts_sent: alertsSent,
         total_price_drops: priceChanges?.length || 0,
       }),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200 
-      }
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 200,
+      },
     );
-
   } catch (error) {
-    console.error('Error in price alert checker:', error);
+    console.error("Error in price alert checker:", error);
     return new Response(
-      JSON.stringify({ success: false, error: 'Internal server error' }),
-      { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 500 
-      }
+      JSON.stringify({ success: false, error: "Internal server error" }),
+      {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+        status: 500,
+      },
     );
   }
 });

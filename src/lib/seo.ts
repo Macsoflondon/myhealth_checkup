@@ -29,7 +29,7 @@ export const seo = {
     return {
       title: withSuffix(`${name} Tests in the UK — Compare Prices${price}`),
       description: trimDesc(
-        `Compare ${name.toLowerCase()} tests from accredited UK providers${price}. Side-by-side prices, biomarkers and turnaround times to help you choose with confidence.`
+        `Compare ${name.toLowerCase()} tests from accredited UK providers${price}. Side-by-side prices, biomarkers and turnaround times to help you choose with confidence.`,
       ),
     };
   },
@@ -39,7 +39,7 @@ export const seo = {
     description: trimDesc(
       `Compare private blood tests for ${name.toLowerCase()}.${
         shortDescription ? ` ${shortDescription}.` : ""
-      } See recommended panels, key biomarkers and prices from accredited UK providers.`
+      } See recommended panels, key biomarkers and prices from accredited UK providers.`,
     ),
   }),
 
@@ -48,27 +48,30 @@ export const seo = {
     description: trimDesc(
       `Compare private blood tests for ${name.toLowerCase()}.${
         shortDescription ? ` ${shortDescription}.` : ""
-      } See recommended panels, key biomarkers and prices from accredited UK providers.`
+      } See recommended panels, key biomarkers and prices from accredited UK providers.`,
     ),
   }),
 
-  test: (testName: string, opts?: { providerName?: string; priceGbp?: number | null }) => {
+  test: (
+    testName: string,
+    opts?: { providerName?: string; priceGbp?: number | null },
+  ) => {
     const priceBit =
-      opts?.priceGbp != null
-        ? ` from £${opts.priceGbp.toFixed(2)}`
-        : "";
-    const providerBit = opts?.providerName ? ` Available from ${opts.providerName}.` : "";
+      opts?.priceGbp != null ? ` from £${opts.priceGbp.toFixed(2)}` : "";
+    const providerBit = opts?.providerName
+      ? ` Available from ${opts.providerName}.`
+      : "";
     return {
       title: withSuffix(`${testName}${priceBit} — UK Prices`),
       description: trimDesc(
-        `Compare the ${testName} across accredited UK providers${priceBit}. View biomarkers, sample method, turnaround and pricing side-by-side.${providerBit}`
+        `Compare the ${testName} across accredited UK providers${priceBit}. View biomarkers, sample method, turnaround and pricing side-by-side.${providerBit}`,
       ),
     };
   },
 
   provider: (
     providerName: string,
-    opts?: { rating?: number | null; reviewCount?: number | null }
+    opts?: { rating?: number | null; reviewCount?: number | null },
   ) => {
     const ratingBit =
       opts?.rating && opts?.reviewCount
@@ -77,7 +80,7 @@ export const seo = {
     return {
       title: withSuffix(`${providerName} Reviews & Tests`),
       description: trimDesc(
-        `${providerName} private health tests reviewed and compared.${ratingBit} Browse the full test range, prices, accreditations and turnaround times.`
+        `${providerName} private health tests reviewed and compared.${ratingBit} Browse the full test range, prices, accreditations and turnaround times.`,
       ),
     };
   },
@@ -87,7 +90,7 @@ export const seo = {
     description: trimDesc(
       `Browse ${
         testCount ? `${testCount}+ ` : ""
-      }${providerName} blood tests and health screenings. Compare prices, biomarkers and turnaround times across accredited UK providers.`
+      }${providerName} blood tests and health screenings. Compare prices, biomarkers and turnaround times across accredited UK providers.`,
     ),
   }),
 

@@ -37,4 +37,3 @@ export const Route = createFileRoute("/")({
   },
   component: Index,
 });
-

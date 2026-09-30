@@ -14,12 +14,19 @@ import { resolve } from "node:path";
 const SITE = "https://myhealthcheckup.co.uk";
 const SAMPLE_SIZE = Number(process.env["SEO_VALIDATION_SAMPLE"] ?? 40);
 const SUPABASE_URL =
-  process.env["VITE_SUPABASE_URL"] ?? "https://clvuioagsgfadynuvodj.supabase.co";
+  process.env["VITE_SUPABASE_URL"] ??
+  "https://clvuioagsgfadynuvodj.supabase.co";
 const SUPABASE_KEY =
-  process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] ?? process.env["VITE_SUPABASE_KEY"] ?? "";
+  process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] ??
+  process.env["VITE_SUPABASE_KEY"] ??
+  "";
 
-const headMod = await import(pathToFileURL(resolve("src/lib/seo/route-head.ts")).href);
-const sdMod = await import(pathToFileURL(resolve("src/lib/seo/structured-data.ts")).href);
+const headMod = await import(
+  pathToFileURL(resolve("src/lib/seo/route-head.ts")).href
+);
+const sdMod = await import(
+  pathToFileURL(resolve("src/lib/seo/structured-data.ts")).href
+);
 const { buildProviderHead, buildTestHead } = headMod;
 const { validateJsonLd } = sdMod;
 
@@ -28,14 +35,20 @@ const failures = [];
 const checkHead = (label, head, expectedUrl) => {
   const canonical = (head.links ?? []).filter((l) => l.rel === "canonical");
   if (canonical.length !== 1) {
-    failures.push(`${label}: expected exactly one canonical, found ${canonical.length}`);
+    failures.push(
+      `${label}: expected exactly one canonical, found ${canonical.length}`,
+    );
   } else if (canonical[0].href !== expectedUrl) {
-    failures.push(`${label}: canonical ${canonical[0].href} !== ${expectedUrl}`);
+    failures.push(
+      `${label}: canonical ${canonical[0].href} !== ${expectedUrl}`,
+    );
   }
 
   const ogUrl = head.meta.filter((m) => m.property === "og:url");
   if (ogUrl.length !== 1 || ogUrl[0].content !== expectedUrl) {
-    failures.push(`${label}: og:url must be exactly one tag pointing at ${expectedUrl}`);
+    failures.push(
+      `${label}: og:url must be exactly one tag pointing at ${expectedUrl}`,
+    );
   }
 
   const scripts = head.scripts ?? [];
@@ -52,15 +65,21 @@ const checkHead = (label, head, expectedUrl) => {
     }
     types.push(node["@type"]);
     const issues = validateJsonLd(node, node.url ? { expectedUrl } : {});
-    for (const issue of issues) failures.push(`${label}: ${issue.node} ${issue.message}`);
+    for (const issue of issues)
+      failures.push(`${label}: ${issue.node} ${issue.message}`);
   }
   const dupes = types.filter((t, i) => types.indexOf(t) !== i);
-  if (dupes.length) failures.push(`${label}: duplicate JSON-LD @type ${[...new Set(dupes)].join(", ")}`);
+  if (dupes.length)
+    failures.push(
+      `${label}: duplicate JSON-LD @type ${[...new Set(dupes)].join(", ")}`,
+    );
 };
 
 async function loadSample() {
   if (!SUPABASE_KEY) {
-    console.warn("structured data: no Supabase key — validating synthetic fixtures only");
+    console.warn(
+      "structured data: no Supabase key — validating synthetic fixtures only",
+    );
     return [];
   }
   const url =
@@ -80,7 +99,14 @@ async function loadSample() {
 const rows = await loadSample();
 
 const fixtures = [
-  { id: "fixture-test", provider_id: "medichecks", provider_name: "Medichecks", test_name: "Vitamin D Test", price: 39, biomarker_count: 1 },
+  {
+    id: "fixture-test",
+    provider_id: "medichecks",
+    provider_name: "Medichecks",
+    test_name: "Vitamin D Test",
+    price: 39,
+    biomarker_count: 1,
+  },
 ];
 
 const providers = new Map();
@@ -97,7 +123,8 @@ for (const row of [...rows, ...fixtures]) {
       testId: row.id,
       testName: row.test_name ?? "Test details",
       priceGbp: typeof row.price === "number" ? row.price : null,
-      biomarkerCount: typeof row.biomarker_count === "number" ? row.biomarker_count : null,
+      biomarkerCount:
+        typeof row.biomarker_count === "number" ? row.biomarker_count : null,
     }),
     url,
   );
@@ -111,7 +138,9 @@ for (const [providerId, providerName] of providers.entries()) {
   );
 }
 
-console.log(`Validated ${rows.length + fixtures.length} test pages and ${providers.size} provider pages`);
+console.log(
+  `Validated ${rows.length + fixtures.length} test pages and ${providers.size} provider pages`,
+);
 
 if (failures.length) {
   console.log(`\n✘ ${failures.length} structured data failure(s):`);

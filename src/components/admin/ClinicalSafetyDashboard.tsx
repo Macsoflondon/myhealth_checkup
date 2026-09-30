@@ -7,7 +7,17 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertTriangle, ShieldAlert, Activity, Brain, ServerCog, Volume2, VolumeX, Lock, Unlock } from "lucide-react";
+import {
+  AlertTriangle,
+  ShieldAlert,
+  Activity,
+  Brain,
+  ServerCog,
+  Volume2,
+  VolumeX,
+  Lock,
+  Unlock,
+} from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 type Severity = "critical" | "high" | "medium" | "low";
@@ -41,8 +51,10 @@ const severityStyle: Record<Severity, string> = {
 const errorTypeToSeverity = (t: string | null): Severity => {
   if (!t) return "low";
   const s = t.toLowerCase();
-  if (s.includes("safety") || s.includes("clinical") || s.includes("critical")) return "critical";
-  if (s.includes("timeout") || s.includes("rate_limit") || s.includes("auth")) return "high";
+  if (s.includes("safety") || s.includes("clinical") || s.includes("critical"))
+    return "critical";
+  if (s.includes("timeout") || s.includes("rate_limit") || s.includes("auth"))
+    return "high";
   return "medium";
 };
 
@@ -69,10 +81,28 @@ export function ClinicalSafetyDashboard() {
 
   const fetchAll = useCallback(async () => {
     const [incidents, aiOps, runs, frz] = await Promise.all([
-      supabase.from("soc_incidents").select("id,severity,title,summary,first_seen_at,status").order("first_seen_at", { ascending: false }).limit(50),
-      supabase.from("ai_operation_logs").select("id,job_type,model,success,error_type,error_message,created_at").eq("success", false).order("created_at", { ascending: false }).limit(30),
-      supabase.from("engine_runs").select("id,skill,scope,status,current_stage,started_at").in("status", ["failed", "blocked"]).order("started_at", { ascending: false }).limit(30),
-      supabase.from("engine_freezes").select("id,path,reason,active,created_at,created_by").eq("active", true).order("created_at", { ascending: false }),
+      supabase
+        .from("soc_incidents")
+        .select("id,severity,title,summary,first_seen_at,status")
+        .order("first_seen_at", { ascending: false })
+        .limit(50),
+      supabase
+        .from("ai_operation_logs")
+        .select("id,job_type,model,success,error_type,error_message,created_at")
+        .eq("success", false)
+        .order("created_at", { ascending: false })
+        .limit(30),
+      supabase
+        .from("engine_runs")
+        .select("id,skill,scope,status,current_stage,started_at")
+        .in("status", ["failed", "blocked"])
+        .order("started_at", { ascending: false })
+        .limit(30),
+      supabase
+        .from("engine_freezes")
+        .select("id,path,reason,active,created_at,created_by")
+        .eq("active", true)
+        .order("created_at", { ascending: false }),
     ]);
 
     const merged: StreamEvent[] = [];
@@ -123,16 +153,29 @@ export function ClinicalSafetyDashboard() {
     return () => clearInterval(t);
   }, [fetchAll]);
 
-  const filtered = useMemo(() => events.filter((e) => filter.has(e.severity)), [events, filter]);
+  const filtered = useMemo(
+    () => events.filter((e) => filter.has(e.severity)),
+    [events, filter],
+  );
   const counts = useMemo(() => {
-    const c: Record<Severity, number> = { critical: 0, high: 0, medium: 0, low: 0 };
+    const c: Record<Severity, number> = {
+      critical: 0,
+      high: 0,
+      medium: 0,
+      low: 0,
+    };
     events.forEach((e) => (c[e.severity] += 1));
     return c;
   }, [events]);
 
   const globalFreeze = freezes.find((f) => f.path === "*");
 
-  const logAdmin = async (action: string, meta: Record<string, unknown>, success = true, err?: string) => {
+  const logAdmin = async (
+    action: string,
+    meta: Record<string, unknown>,
+    success = true,
+    err?: string,
+  ) => {
     await supabase.from("admin_activity_log").insert({
       admin_user_id: user?.id ?? null,
       action,
@@ -157,16 +200,31 @@ export function ClinicalSafetyDashboard() {
     setLoading(true);
     const reason = `[EMERGENCY ${new Date().toISOString()}] ${emergencyReason.trim()}`;
     const { error } = await supabase.from("engine_freezes").upsert(
-      { path: "*", reason, active: true, created_by: user?.id ?? null, unfrozen_at: null, unfrozen_by: null, unfreeze_reason: null },
+      {
+        path: "*",
+        reason,
+        active: true,
+        created_by: user?.id ?? null,
+        unfrozen_at: null,
+        unfrozen_by: null,
+        unfreeze_reason: null,
+      },
       { onConflict: "path" },
     );
     await logAdmin("emergency_freeze", { reason }, !error, error?.message);
     setLoading(false);
     if (error) {
-      toast({ title: "Freeze failed", description: error.message, variant: "destructive" });
+      toast({
+        title: "Freeze failed",
+        description: error.message,
+        variant: "destructive",
+      });
       return;
     }
-    toast({ title: "Global freeze active", description: "All write skills will refuse." });
+    toast({
+      title: "Global freeze active",
+      description: "All write skills will refuse.",
+    });
     setEmergencyReason("");
     setConfirmText("");
     fetchAll();
@@ -188,10 +246,19 @@ export function ClinicalSafetyDashboard() {
       })
       .eq("path", "*")
       .eq("active", true);
-    await logAdmin("emergency_unfreeze", { reason: unfreezeReason.trim() }, !error, error?.message);
+    await logAdmin(
+      "emergency_unfreeze",
+      { reason: unfreezeReason.trim() },
+      !error,
+      error?.message,
+    );
     setLoading(false);
     if (error) {
-      toast({ title: "Release failed", description: error.message, variant: "destructive" });
+      toast({
+        title: "Release failed",
+        description: error.message,
+        variant: "destructive",
+      });
       return;
     }
     toast({ title: "Global freeze released" });
@@ -208,17 +275,33 @@ export function ClinicalSafetyDashboard() {
 
   return (
     <div className="container mx-auto space-y-6 p-6">
-      <audio ref={audioRef} src="data:audio/wav;base64,UklGRnwAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YVgAAAA=" preload="auto" />
+      <audio
+        ref={audioRef}
+        src="data:audio/wav;base64,UklGRnwAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YVgAAAA="
+        preload="auto"
+      />
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight flex items-center gap-2">
-            <ShieldAlert className="h-6 w-6 text-red-600" /> Clinical Safety Monitor
+            <ShieldAlert className="h-6 w-6 text-red-600" /> Clinical Safety
+            Monitor
           </h1>
-          <p className="text-sm text-muted-foreground">Live severity stream · SOC incidents · AI decisions · execution engine</p>
+          <p className="text-sm text-muted-foreground">
+            Live severity stream · SOC incidents · AI decisions · execution
+            engine
+          </p>
         </div>
-        <Button variant="outline" size="sm" onClick={() => setSoundOn((s) => !s)}>
-          {soundOn ? <Volume2 className="mr-2 h-4 w-4" /> : <VolumeX className="mr-2 h-4 w-4" />}
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => setSoundOn((s) => !s)}
+        >
+          {soundOn ? (
+            <Volume2 className="mr-2 h-4 w-4" />
+          ) : (
+            <VolumeX className="mr-2 h-4 w-4" />
+          )}
           Critical alert sound: {soundOn ? "on" : "off"}
         </Button>
       </div>
@@ -226,7 +309,9 @@ export function ClinicalSafetyDashboard() {
       {globalFreeze && (
         <Alert className="border-red-600 bg-red-50 dark:bg-red-950/30">
           <Lock className="h-4 w-4" />
-          <AlertTitle className="text-red-700 dark:text-red-300">Global write freeze active</AlertTitle>
+          <AlertTitle className="text-red-700 dark:text-red-300">
+            Global write freeze active
+          </AlertTitle>
           <AlertDescription className="space-y-3">
             <div className="text-sm">{globalFreeze.reason}</div>
             <div className="flex gap-2">
@@ -236,7 +321,11 @@ export function ClinicalSafetyDashboard() {
                 onChange={(e) => setUnfreezeReason(e.target.value)}
                 className="max-w-md"
               />
-              <Button variant="outline" onClick={releaseFreeze} disabled={loading}>
+              <Button
+                variant="outline"
+                onClick={releaseFreeze}
+                disabled={loading}
+              >
                 <Unlock className="mr-2 h-4 w-4" /> Release
               </Button>
             </div>
@@ -261,23 +350,45 @@ export function ClinicalSafetyDashboard() {
         <Card className="lg:col-span-2">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
-              <Activity className="h-4 w-4" /> Live event stream ({filtered.length})
+              <Activity className="h-4 w-4" /> Live event stream (
+              {filtered.length})
             </CardTitle>
           </CardHeader>
           <CardContent className="max-h-[600px] overflow-y-auto space-y-2">
-            {filtered.length === 0 && <p className="text-sm text-muted-foreground">No events match current filters.</p>}
+            {filtered.length === 0 && (
+              <p className="text-sm text-muted-foreground">
+                No events match current filters.
+              </p>
+            )}
             {filtered.map((e) => (
-              <div key={e.id} className="flex items-start gap-3 rounded border p-3">
-                <Badge className={severityStyle[e.severity]}>{e.severity}</Badge>
+              <div
+                key={e.id}
+                className="flex items-start gap-3 rounded border p-3"
+              >
+                <Badge className={severityStyle[e.severity]}>
+                  {e.severity}
+                </Badge>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 text-sm font-medium">
-                    {e.source === "ai_operation" && <Brain className="h-3 w-3" />}
-                    {e.source === "engine_run" && <ServerCog className="h-3 w-3" />}
-                    {e.source === "soc_incident" && <ShieldAlert className="h-3 w-3" />}
+                    {e.source === "ai_operation" && (
+                      <Brain className="h-3 w-3" />
+                    )}
+                    {e.source === "engine_run" && (
+                      <ServerCog className="h-3 w-3" />
+                    )}
+                    {e.source === "soc_incident" && (
+                      <ShieldAlert className="h-3 w-3" />
+                    )}
                     <span className="truncate">{e.title}</span>
                   </div>
-                  {e.detail && <div className="mt-1 line-clamp-2 text-xs text-muted-foreground">{e.detail}</div>}
-                  <div className="mt-1 text-[10px] uppercase text-muted-foreground">{new Date(e.at).toLocaleString("en-GB")}</div>
+                  {e.detail && (
+                    <div className="mt-1 line-clamp-2 text-xs text-muted-foreground">
+                      {e.detail}
+                    </div>
+                  )}
+                  <div className="mt-1 text-[10px] uppercase text-muted-foreground">
+                    {new Date(e.at).toLocaleString("en-GB")}
+                  </div>
                 </div>
               </div>
             ))}
@@ -287,12 +398,15 @@ export function ClinicalSafetyDashboard() {
         <Card className={globalFreeze ? "border-brand-navy" : "border-red-300"}>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-base">
-              <AlertTriangle className="h-4 w-4 text-red-600" /> Emergency override
+              <AlertTriangle className="h-4 w-4 text-red-600" /> Emergency
+              override
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             <p className="text-xs text-muted-foreground">
-              Inserts a wildcard freeze (<code>path=*</code>). All write skills in the execution engine will refuse until released. Audit-logged to
+              Inserts a wildcard freeze (<code>path=*</code>). All write skills
+              in the execution engine will refuse until released. Audit-logged
+              to
               <code> admin_activity_log</code>.
             </p>
             <Textarea
@@ -308,7 +422,12 @@ export function ClinicalSafetyDashboard() {
               onChange={(e) => setConfirmText(e.target.value)}
               disabled={!!globalFreeze}
             />
-            <Button variant="destructive" className="w-full" onClick={triggerEmergencyFreeze} disabled={loading || !!globalFreeze}>
+            <Button
+              variant="destructive"
+              className="w-full"
+              onClick={triggerEmergencyFreeze}
+              disabled={loading || !!globalFreeze}
+            >
               <Lock className="mr-2 h-4 w-4" />
               {globalFreeze ? "Freeze already active" : "FREEZE ALL WRITES"}
             </Button>

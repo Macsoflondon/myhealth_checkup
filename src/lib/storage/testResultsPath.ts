@@ -22,7 +22,8 @@ export const TEST_RESULTS_ALLOWED_MIME_TYPES = [
   "image/heif",
 ] as const;
 
-export type TestResultsMimeType = (typeof TEST_RESULTS_ALLOWED_MIME_TYPES)[number];
+export type TestResultsMimeType =
+  (typeof TEST_RESULTS_ALLOWED_MIME_TYPES)[number];
 
 const UUID_PATTERN =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -47,7 +48,9 @@ export const buildTestResultObjectKey = (
   now: number = Date.now(),
 ): string => {
   if (!UUID_PATTERN.test(userId)) {
-    throw new Error("A valid authenticated user id is required to upload a result");
+    throw new Error(
+      "A valid authenticated user id is required to upload a result",
+    );
   }
   const safeName = sanitiseSegment(originalFileName) || "result";
   return `${userId}/${now}-${safeName}`;
@@ -72,6 +75,8 @@ export const assertUploadableFile = (file: {
   if (
     !(TEST_RESULTS_ALLOWED_MIME_TYPES as readonly string[]).includes(file.type)
   ) {
-    throw new Error("Only PDF documents and JPEG, PNG, WebP or HEIC images are accepted.");
+    throw new Error(
+      "Only PDF documents and JPEG, PNG, WebP or HEIC images are accepted.",
+    );
   }
 };

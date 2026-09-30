@@ -1,89 +1,99 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.0';
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
 const supabase = createClient(
-  Deno.env.get('SUPABASE_URL') ?? '',
-  Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? Deno.env.get('SUPABASE_ANON_KEY') ?? ''
+  Deno.env.get("SUPABASE_URL") ?? "",
+  Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ??
+    Deno.env.get("SUPABASE_ANON_KEY") ??
+    "",
 );
 
 const RATE_LIMIT_MAX = 5; // per IP per window
 const RATE_LIMIT_WINDOW_MIN = 10;
 
 const HEALTH_CATEGORIES = [
-  'Heart Health',
-  'Metabolic Health',
-  'Cancer Screening',
-  'Hormonal Health',
-  'Thyroid Health',
-  'Nutritional Deficiencies',
-  'Liver & Kidney Health',
-  'Bone Health',
-  'Sexual Health',
-  'Mental Wellbeing Markers',
-  'Immune Health',
-  'Diabetes Risk',
+  "Heart Health",
+  "Metabolic Health",
+  "Cancer Screening",
+  "Hormonal Health",
+  "Thyroid Health",
+  "Nutritional Deficiencies",
+  "Liver & Kidney Health",
+  "Bone Health",
+  "Sexual Health",
+  "Mental Wellbeing Markers",
+  "Immune Health",
+  "Diabetes Risk",
 ];
 
 serve(async (req) => {
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+    const openAIApiKey = Deno.env.get("OPENAI_API_KEY");
     if (!openAIApiKey) {
-      throw new Error('OpenAI API key not configured');
+      throw new Error("OpenAI API key not configured");
     }
 
     // Per-IP rate limit to prevent abuse of the paid OpenAI endpoint
     const ip =
-      req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
-      req.headers.get('cf-connecting-ip') ??
-      'unknown';
+      req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+      req.headers.get("cf-connecting-ip") ??
+      "unknown";
     const windowStart = new Date(
-      Date.now() - RATE_LIMIT_WINDOW_MIN * 60_000
+      Date.now() - RATE_LIMIT_WINDOW_MIN * 60_000,
     ).toISOString();
     const { count: recentCount } = await supabase
-      .from('api_rate_limits')
-      .select('*', { count: 'exact', head: true })
-      .eq('client_key', ip)
-      .eq('endpoint', 'hidden-gap-detector')
-      .gte('window_start', windowStart);
+      .from("api_rate_limits")
+      .select("*", { count: "exact", head: true })
+      .eq("client_key", ip)
+      .eq("endpoint", "hidden-gap-detector")
+      .gte("window_start", windowStart);
     if ((recentCount ?? 0) >= RATE_LIMIT_MAX) {
       return new Response(
-        JSON.stringify({ error: 'Too many requests. Please try again shortly.' }),
-        { status: 429, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({
+          error: "Too many requests. Please try again shortly.",
+        }),
+        {
+          status: 429,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
-    await supabase.from('api_rate_limits').insert({
+    await supabase.from("api_rate_limits").insert({
       client_key: ip,
-      endpoint: 'hidden-gap-detector',
+      endpoint: "hidden-gap-detector",
       window_start: new Date().toISOString(),
       request_count: 1,
     });
 
     const body = await req.json();
-    const { age, gender, lifestyle, lastCheckupYears, existingConditions } = body;
+    const { age, gender, lifestyle, lastCheckupYears, existingConditions } =
+      body;
 
     // Derive user id ONLY from a verified JWT; never trust a client-supplied id.
     let verifiedUserId: string | null = null;
-    const authHeader = req.headers.get('Authorization') ?? '';
-    if (authHeader.toLowerCase().startsWith('bearer ')) {
+    const authHeader = req.headers.get("Authorization") ?? "";
+    if (authHeader.toLowerCase().startsWith("bearer ")) {
       const token = authHeader.slice(7).trim();
       if (token) {
         try {
-          const { data: userData, error: userErr } = await supabase.auth.getUser(token);
+          const { data: userData, error: userErr } =
+            await supabase.auth.getUser(token);
           if (!userErr && userData?.user?.id) {
             verifiedUserId = userData.user.id;
           }
         } catch (e) {
-          console.warn('hidden-gap-detector: failed to verify JWT', e);
+          console.warn("hidden-gap-detector: failed to verify JWT", e);
         }
       }
     }
@@ -91,44 +101,58 @@ serve(async (req) => {
     // Paid AI calls are restricted to signed-in users so anonymous callers cannot spend credits.
     if (!verifiedUserId) {
       return new Response(
-        JSON.stringify({ error: 'Please sign in to run the gap analysis.' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ error: "Please sign in to run the gap analysis." }),
+        {
+          status: 401,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
-    if (!age || typeof age !== 'number' || age < 18 || age > 120) {
+    if (!age || typeof age !== "number" || age < 18 || age > 120) {
       return new Response(
-        JSON.stringify({ error: 'A valid age (18–120) is required' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ error: "A valid age (18–120) is required" }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
-    if (!gender || !['male', 'female', 'other'].includes(gender)) {
+    if (!gender || !["male", "female", "other"].includes(gender)) {
       return new Response(
-        JSON.stringify({ error: 'A valid gender is required' }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({ error: "A valid gender is required" }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
     // Fetch available tests from trusted providers
     const { data: availableTests, error: testsError } = await supabase
-      .from('provider_tests')
-      .select('test_name, provider_id, price, category, description, is_active')
-      .eq('is_active', true)
-      .in('provider_id', ['medichecks', 'lola-health', 'goodbody-clinic']);
+      .from("provider_tests")
+      .select("test_name, provider_id, price, category, description, is_active")
+      .eq("is_active", true)
+      .in("provider_id", ["medichecks", "lola-health", "goodbody-clinic"]);
 
     if (testsError) {
-      console.error('Error fetching tests:', testsError);
-      throw new Error('Unable to fetch available tests');
+      console.error("Error fetching tests:", testsError);
+      throw new Error("Unable to fetch available tests");
     }
 
-    const testsByCategory = (availableTests ?? []).reduce<Record<string, Array<{ name: string; provider: string; price: number | null }>>>((acc, test: any) => {
-      const cat = test.category ?? 'General';
+    const testsByCategory = (availableTests ?? []).reduce<
+      Record<
+        string,
+        Array<{ name: string; provider: string; price: number | null }>
+      >
+    >((acc, test: any) => {
+      const cat = test.category ?? "General";
       if (!acc[cat]) acc[cat] = [];
       const providerNames: Record<string, string> = {
-        'medichecks': 'Medichecks',
-        'lola-health': 'Lola Health',
-        'goodbody-clinic': 'GoodBody Clinic',
+        medichecks: "Medichecks",
+        "lola-health": "Lola Health",
+        "goodbody-clinic": "GoodBody Clinic",
       };
       acc[cat].push({
         name: test.test_name,
@@ -142,17 +166,17 @@ serve(async (req) => {
       .slice(0, 80)
       .map((t: any) => {
         const providerNames: Record<string, string> = {
-          'medichecks': 'Medichecks',
-          'lola-health': 'Lola Health',
-          'goodbody-clinic': 'GoodBody Clinic',
+          medichecks: "Medichecks",
+          "lola-health": "Lola Health",
+          "goodbody-clinic": "GoodBody Clinic",
         };
-        return `- ${t.test_name} (${providerNames[t.provider_id] ?? t.provider_id}, £${t.price ?? 'TBC'}, category: ${t.category ?? 'General'})`;
+        return `- ${t.test_name} (${providerNames[t.provider_id] ?? t.provider_id}, £${t.price ?? "TBC"}, category: ${t.category ?? "General"})`;
       })
-      .join('\n');
+      .join("\n");
 
-    const sanitizedConditions = (existingConditions ?? '')
+    const sanitizedConditions = (existingConditions ?? "")
       .toString()
-      .replace(/[<>]/g, '')
+      .replace(/[<>]/g, "")
       .substring(0, 200);
 
     const prompt = `You are a UK preventive health screening advisor. Analyse the following patient profile and identify which of these health categories represent GAPS in their preventive health screening. Base your analysis on NHS and NICE preventive screening guidelines for the UK.
@@ -160,11 +184,11 @@ serve(async (req) => {
 PATIENT PROFILE:
 - Age: ${age}
 - Gender: ${gender}
-- Lifestyle: ${lifestyle ?? 'not specified'}
-- Years since last full health check: ${lastCheckupYears ?? 'unknown'}
-- Existing conditions or known concerns: ${sanitizedConditions || 'none specified'}
+- Lifestyle: ${lifestyle ?? "not specified"}
+- Years since last full health check: ${lastCheckupYears ?? "unknown"}
+- Existing conditions or known concerns: ${sanitizedConditions || "none specified"}
 
-HEALTH CATEGORIES TO ASSESS: ${HEALTH_CATEGORIES.join(', ')}
+HEALTH CATEGORIES TO ASSESS: ${HEALTH_CATEGORIES.join(", ")}
 
 AVAILABLE TESTS FROM OUR PROVIDERS (use ONLY these — do not invent tests):
 ${availableTestsForPrompt}
@@ -208,27 +232,30 @@ Rules:
 - Include all 12 categories in your response
 - coverageScore should reflect how well-screened this profile likely is`;
 
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
+    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
       headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${openAIApiKey}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: 'gpt-4o-mini',
+        model: "gpt-4o-mini",
         messages: [
-          { role: 'system', content: prompt },
-          { role: 'user', content: `Analyse preventive health gaps for a ${age}-year-old ${gender} with ${lifestyle ?? 'unspecified'} lifestyle.` },
+          { role: "system", content: prompt },
+          {
+            role: "user",
+            content: `Analyse preventive health gaps for a ${age}-year-old ${gender} with ${lifestyle ?? "unspecified"} lifestyle.`,
+          },
         ],
         max_tokens: 2000,
         temperature: 0.2,
-        response_format: { type: 'json_object' },
+        response_format: { type: "json_object" },
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('OpenAI API error:', errorText);
+      console.error("OpenAI API error:", errorText);
       throw new Error(`OpenAI API error: ${response.status}`);
     }
 
@@ -239,17 +266,21 @@ Rules:
     try {
       result = JSON.parse(content);
     } catch (parseError) {
-      console.error('Failed to parse AI response:', content);
-      throw new Error('Failed to parse AI response');
+      console.error("Failed to parse AI response:", content);
+      throw new Error("Failed to parse AI response");
     }
 
     // Validate and sanitise the disclaimer
-    if (!result.medicalDisclaimer?.includes('not') && !result.medicalDisclaimer?.includes('advice')) {
-      result.medicalDisclaimer = "This analysis is for general wellness information only and does not constitute medical advice. Please consult your GP or healthcare professional for personalised medical guidance.";
+    if (
+      !result.medicalDisclaimer?.includes("not") &&
+      !result.medicalDisclaimer?.includes("advice")
+    ) {
+      result.medicalDisclaimer =
+        "This analysis is for general wellness information only and does not constitute medical advice. Please consult your GP or healthcare professional for personalised medical guidance.";
     }
 
     // Clamp coverage score
-    if (typeof result.coverageScore === 'number') {
+    if (typeof result.coverageScore === "number") {
       result.coverageScore = Math.max(0, Math.min(100, result.coverageScore));
     } else {
       result.coverageScore = 0;
@@ -261,7 +292,9 @@ Rules:
         ...gap,
         recommendedTests: (gap.recommendedTests ?? []).map((rec: any) => {
           const dbTest = (availableTests ?? []).find((t: any) =>
-            t.test_name?.toLowerCase().includes(rec.testName?.toLowerCase()?.substring(0, 20))
+            t.test_name
+              ?.toLowerCase()
+              .includes(rec.testName?.toLowerCase()?.substring(0, 20)),
           ) as any;
           return {
             ...rec,
@@ -274,30 +307,33 @@ Rules:
     // Store result only for the authenticated user (never a client-supplied id).
     if (verifiedUserId) {
       try {
-        await supabase.from('health_queries').insert({
+        await supabase.from("health_queries").insert({
           user_id: verifiedUserId,
-          query_text: `Hidden Gap Detector — age:${age} gender:${gender} lifestyle:${lifestyle ?? 'unknown'}`,
+          query_text: `Hidden Gap Detector — age:${age} gender:${gender} lifestyle:${lifestyle ?? "unknown"}`,
           age,
           gender,
           ai_response: result,
         });
       } catch (storageError) {
-        console.error('Failed to store gap analysis:', storageError);
+        console.error("Failed to store gap analysis:", storageError);
       }
     }
 
     return new Response(JSON.stringify(result), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
-
   } catch (error) {
-    console.error('Error in hidden-gap-detector:', error);
+    console.error("Error in hidden-gap-detector:", error);
     return new Response(
       JSON.stringify({
-        error: 'Unable to run gap analysis at this time. Please try again.',
-        medicalDisclaimer: "This analysis is for general wellness information only and does not constitute medical advice. Please consult your GP or healthcare professional for personalised medical guidance.",
+        error: "Unable to run gap analysis at this time. Please try again.",
+        medicalDisclaimer:
+          "This analysis is for general wellness information only and does not constitute medical advice. Please consult your GP or healthcare professional for personalised medical guidance.",
       }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
     );
   }
 });

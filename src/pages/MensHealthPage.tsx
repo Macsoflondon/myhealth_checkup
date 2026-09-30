@@ -20,9 +20,21 @@ const MensHealthPage = () => (
     filters={["All"]}
     benefitsTitle="Why Choose Men's Health Testing?"
     benefits={[
-      { icon: Shield, title: "Early Detection", description: "Identify health issues before symptoms develop" },
-      { icon: Activity, title: "Optimise Performance", description: "Maximise energy, strength, and overall male vitality" },
-      { icon: Users, title: "Preventive Care", description: "Take control of your health with proactive screening" },
+      {
+        icon: Shield,
+        title: "Early Detection",
+        description: "Identify health issues before symptoms develop",
+      },
+      {
+        icon: Activity,
+        title: "Optimise Performance",
+        description: "Maximise energy, strength, and overall male vitality",
+      },
+      {
+        icon: Users,
+        title: "Preventive Care",
+        description: "Take control of your health with proactive screening",
+      },
     ]}
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Men's Health" }]}
     compareUrl="/compare?category=mens-health"

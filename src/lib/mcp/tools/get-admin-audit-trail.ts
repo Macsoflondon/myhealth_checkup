@@ -1,6 +1,12 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { DENIED, fail, logAdminToolCall, ok, requireAdmin } from "../admin-guard";
+import {
+  DENIED,
+  fail,
+  logAdminToolCall,
+  ok,
+  requireAdmin,
+} from "../admin-guard";
 
 export default defineTool({
   name: "get_admin_audit_trail",
@@ -8,10 +14,26 @@ export default defineTool({
   description:
     "Recent administrative activity, role changes and audit log entries: action names, actor user IDs and timestamps only. Record payloads are deliberately omitted so no personal data is returned.",
   inputSchema: {
-    days: z.number().int().min(1).max(180).default(14).describe("Lookback window in days."),
-    limit: z.number().int().min(1).max(200).default(50).describe("Maximum entries per log."),
+    days: z
+      .number()
+      .int()
+      .min(1)
+      .max(180)
+      .default(14)
+      .describe("Lookback window in days."),
+    limit: z
+      .number()
+      .int()
+      .min(1)
+      .max(200)
+      .default(50)
+      .describe("Maximum entries per log."),
   },
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false,
+  },
   handler: async (args, ctx) => {
     const session = await requireAdmin(ctx);
     if (!session) return DENIED;
@@ -21,7 +43,9 @@ export default defineTool({
     const [adminLog, roleLog, auditLog] = await Promise.all([
       client
         .from("admin_activity_log")
-        .select("id, admin_user_id, action, resource_type, resource_id, success, error_message, created_at")
+        .select(
+          "id, admin_user_id, action, resource_type, resource_id, success, error_message, created_at",
+        )
         .gte("created_at", since)
         .order("created_at", { ascending: false })
         .limit(args.limit),
@@ -33,7 +57,9 @@ export default defineTool({
         .limit(args.limit),
       client
         .from("audit_logs")
-        .select("id, user_id, action, table_name, record_id, reason_code, purpose, data_classification, created_at")
+        .select(
+          "id, user_id, action, table_name, record_id, reason_code, purpose, data_classification, created_at",
+        )
         .gte("created_at", since)
         .order("created_at", { ascending: false })
         .limit(args.limit),

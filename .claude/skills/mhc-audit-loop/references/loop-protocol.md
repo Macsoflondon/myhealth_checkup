@@ -44,13 +44,13 @@ Attack list, minimum:
 
 ## Evidence standards
 
-| Claim | Acceptable evidence |
-|---|---|
-| Code behaves this way | `file:line` plus the quoted line |
-| Data looks like this | the SQL and its result |
-| Check passes | the command and its real output |
-| Page renders | Playwright smoke result, or the route's test |
-| Fix works | the failing check, then the same check passing |
+| Claim                 | Acceptable evidence                            |
+| --------------------- | ---------------------------------------------- |
+| Code behaves this way | `file:line` plus the quoted line               |
+| Data looks like this  | the SQL and its result                         |
+| Check passes          | the command and its real output                |
+| Page renders          | Playwright smoke result, or the route's test   |
+| Fix works             | the failing check, then the same check passing |
 
 Anything else is `UNVERIFIED`. `UNVERIFIED` items go in the summary by name.
 

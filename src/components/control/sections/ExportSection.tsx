@@ -21,7 +21,10 @@ export default function ExportSection() {
   const exportTable = async (table: string) => {
     setBusy(table);
     try {
-      const { data } = await (supabase as any).from(table).select("*").limit(5000);
+      const { data } = await (supabase as any)
+        .from(table)
+        .select("*")
+        .limit(5000);
       const json = JSON.stringify(data ?? [], null, 2);
       const blob = new Blob([json], { type: "application/json" });
       const url = URL.createObjectURL(blob);
@@ -36,15 +39,29 @@ export default function ExportSection() {
   };
 
   return (
-    <SectionShell title="Export Centre" description="Download snapshots of operational data (max 5000 rows / table)." status="stub">
+    <SectionShell
+      title="Export Centre"
+      description="Download snapshots of operational data (max 5000 rows / table)."
+      status="stub"
+    >
       <div className="grid sm:grid-cols-2 gap-3">
         {EXPORTABLE.map((e) => (
-          <div key={e.table} className="rounded-xl border bg-card p-4 flex items-center justify-between">
+          <div
+            key={e.table}
+            className="rounded-xl border bg-card p-4 flex items-center justify-between"
+          >
             <div>
               <div className="text-sm font-medium">{e.label}</div>
-              <div className="text-xs text-muted-foreground font-mono">{e.table}</div>
+              <div className="text-xs text-muted-foreground font-mono">
+                {e.table}
+              </div>
             </div>
-            <Button size="sm" variant="outline" onClick={() => exportTable(e.table)} disabled={busy === e.table}>
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => exportTable(e.table)}
+              disabled={busy === e.table}
+            >
               <Download className="w-3.5 h-3.5 mr-1" />
               {busy === e.table ? "…" : "JSON"}
             </Button>

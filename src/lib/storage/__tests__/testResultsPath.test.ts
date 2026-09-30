@@ -11,14 +11,20 @@ const USER_B = "99999999-8888-4777-8666-555555555555";
 
 describe("buildTestResultObjectKey", () => {
   it("places the object beneath the authenticated user's id", () => {
-    const key = buildTestResultObjectKey(USER_A, "results.pdf", 1_700_000_000_000);
+    const key = buildTestResultObjectKey(
+      USER_A,
+      "results.pdf",
+      1_700_000_000_000,
+    );
     expect(key.split("/")[0]).toBe(USER_A);
     expect(key).toBe(`${USER_A}/1700000000000-results.pdf`);
   });
 
   it("refuses to build a key without a valid user id", () => {
     expect(() => buildTestResultObjectKey("", "results.pdf")).toThrow();
-    expect(() => buildTestResultObjectKey("anonymous", "results.pdf")).toThrow();
+    expect(() =>
+      buildTestResultObjectKey("anonymous", "results.pdf"),
+    ).toThrow();
   });
 
   it("neutralises path traversal and separators in the file name", () => {

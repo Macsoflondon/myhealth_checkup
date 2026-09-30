@@ -6,12 +6,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export type MedichecksSortOption = 
-  | "best-selling" 
-  | "name-asc" 
-  | "name-desc" 
-  | "price-asc" 
-  | "price-desc";
+export type MedichecksSortOption =
+  "best-selling" | "name-asc" | "name-desc" | "price-asc" | "price-desc";
 
 interface SortControlProps {
   value: MedichecksSortOption;
@@ -31,7 +27,10 @@ const SortControl = ({ value, onChange, resultCount }: SortControlProps) => {
         <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
           Sort By
         </span>
-        <Select value={value} onValueChange={(v) => onChange(v as MedichecksSortOption)}>
+        <Select
+          value={value}
+          onValueChange={(v) => onChange(v as MedichecksSortOption)}
+        >
           <SelectTrigger className="w-[200px] bg-background">
             <SelectValue placeholder="Best selling" />
           </SelectTrigger>

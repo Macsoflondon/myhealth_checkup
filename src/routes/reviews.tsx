@@ -8,7 +8,8 @@ export const Route = createFileRoute("/reviews")({
   head: () =>
     buildRouteHead({
       title: "Provider Reviews | myhealth checkup",
-      description: "Verified review ratings for the UK private test providers we compare, alongside accreditation and service detail.",
+      description:
+        "Verified review ratings for the UK private test providers we compare, alongside accreditation and service detail.",
       path: "/reviews",
     }),
   component: ReviewSystem,

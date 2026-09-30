@@ -34,7 +34,10 @@ export function getErrorStack(error: unknown): string | undefined {
  * Convenience wrapper that returns a structured object suitable for logging
  * or for serialising into a JSON response without leaking stack traces in prod.
  */
-export function describeError(error: unknown): { message: string; name?: string } {
+export function describeError(error: unknown): {
+  message: string;
+  name?: string;
+} {
   if (error instanceof Error) {
     return { message: error.message, name: error.name };
   }

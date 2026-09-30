@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { 
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -20,25 +20,25 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { supabase } from "@/integrations/supabase/client";
-import { 
-  PROVIDER_DETAILS, 
-  PROVIDER_TURNAROUND_TIMES, 
+import {
+  PROVIDER_DETAILS,
+  PROVIDER_TURNAROUND_TIMES,
   PROVIDER_COLLECTION_METHODS,
   getAllProviders,
   getProviderLogo,
-  getProviderName
+  getProviderName,
 } from "@/constants/providers";
-import { 
-  TestTube2, 
-  Clock, 
-  MapPin, 
-  Shield, 
+import {
+  TestTube2,
+  Clock,
+  MapPin,
+  Shield,
   Check,
   X,
   ArrowRight,
   BarChart3,
   List,
-  Search
+  Search,
 } from "lucide-react";
 
 interface ProviderTestData {
@@ -112,7 +112,9 @@ export default function ProviderComparisonPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   // The `search` query param (used by goal/symptom "Compare prices" deep links)
   // seeds the same filter the on-page search input drives.
-  const [searchTerm, setSearchTerm] = useState<string>(() => searchParams.get("search") ?? "");
+  const [searchTerm, setSearchTerm] = useState<string>(
+    () => searchParams.get("search") ?? "",
+  );
   const [selectedProviders, setSelectedProviders] = useState<string[]>([]);
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [activeTab, setActiveTab] = useState<string>(() =>
@@ -120,7 +122,10 @@ export default function ProviderComparisonPage() {
   );
   const autoSelectedRef = useRef(false);
 
-  const searchTermTokens = useMemo(() => searchTokens(searchTerm), [searchTerm]);
+  const searchTermTokens = useMemo(
+    () => searchTokens(searchTerm),
+    [searchTerm],
+  );
 
   const updateSearchTerm = (value: string) => {
     setSearchTerm(value);
@@ -139,16 +144,16 @@ export default function ProviderComparisonPage() {
 
   // Fetch all standalone (non add-on) provider tests
   const { data: allTests, isLoading } = useQuery({
-    queryKey: ['provider-comparison-tests'],
+    queryKey: ["provider-comparison-tests"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('provider_tests')
+        .from("provider_tests")
         .select(
-          'id, provider_id, test_name, price, category, biomarker_count, home_kit_available, clinic_visit_available, sample_type, collection_method, turnaround_days_text, turnaround_raw, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189'
+          "id, provider_id, test_name, price, category, biomarker_count, home_kit_available, clinic_visit_available, sample_type, collection_method, turnaround_days_text, turnaround_raw, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189",
         )
-        .eq('is_active', true)
-        .or('is_addon.is.null,is_addon.eq.false')
-        .order('test_name');
+        .eq("is_active", true)
+        .or("is_addon.is.null,is_addon.eq.false")
+        .order("test_name");
 
       if (error) throw error;
       return (data ?? []) as ProviderTestData[];
@@ -157,17 +162,21 @@ export default function ProviderComparisonPage() {
 
   // Cross-provider comparable groups, computed in the database
   const { data: comparisonGroups } = useQuery({
-    queryKey: ['comparison-test-groups'],
+    queryKey: ["comparison-test-groups"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('comparison_test_groups')
-        .select('provider_test_id, provider_id, test_name, category, group_key, group_provider_count')
-        .gte('group_provider_count', 2);
+        .from("comparison_test_groups")
+        .select(
+          "provider_test_id, provider_id, test_name, category, group_key, group_provider_count",
+        )
+        .gte("group_provider_count", 2);
 
       if (error) throw error;
       return (data ?? []).filter(
         (row): row is ComparisonGroupRow =>
-          Boolean(row.provider_test_id) && Boolean(row.provider_id) && Boolean(row.group_key)
+          Boolean(row.provider_test_id) &&
+          Boolean(row.provider_id) &&
+          Boolean(row.group_key),
       );
     },
   });
@@ -181,9 +190,9 @@ export default function ProviderComparisonPage() {
   // Calculate stats per provider
   const providerStats = useMemo(() => {
     if (!allTests) return {};
-    
+
     const stats: Record<string, ProviderStats> = {};
-    
+
     allTests.forEach((test) => {
       if (!stats[test.provider_id]) {
         stats[test.provider_id] = {
@@ -195,23 +204,27 @@ export default function ProviderComparisonPage() {
           avg_price: null,
         };
       }
-      
+
       const s = stats[test.provider_id];
       s.test_count++;
-      
+
       if (test.category && !s.categories.includes(test.category)) {
         s.categories.push(test.category);
       }
-      
+
       if (test.price !== null) {
-        if (s.min_price === null || test.price < s.min_price) s.min_price = test.price;
-        if (s.max_price === null || test.price > s.max_price) s.max_price = test.price;
+        if (s.min_price === null || test.price < s.min_price)
+          s.min_price = test.price;
+        if (s.max_price === null || test.price > s.max_price)
+          s.max_price = test.price;
       }
     });
 
     // Calculate averages
     Object.keys(stats).forEach((providerId) => {
-      const providerTests = allTests.filter(t => t.provider_id === providerId && t.price !== null);
+      const providerTests = allTests.filter(
+        (t) => t.provider_id === providerId && t.price !== null,
+      );
       if (providerTests.length > 0) {
         const total = providerTests.reduce((sum, t) => sum + (t.price || 0), 0);
         stats[providerId].avg_price = total / providerTests.length;
@@ -229,7 +242,9 @@ export default function ProviderComparisonPage() {
     > = {};
 
     providers.forEach((provider) => {
-      const rows = (allTests ?? []).filter((t) => t.provider_id === provider.id);
+      const rows = (allTests ?? []).filter(
+        (t) => t.provider_id === provider.id,
+      );
 
       const turnaround =
         modeValue(rows.map((t) => t.turnaround_days_text)) ??
@@ -244,9 +259,12 @@ export default function ProviderComparisonPage() {
         "N/A";
 
       const liveAccreditations: string[] = [];
-      if (rows.some((t) => t.lab_ukas_accredited)) liveAccreditations.push("UKAS accredited");
-      if (rows.some((t) => t.lab_cqc_regulated)) liveAccreditations.push("CQC Regulated");
-      if (rows.some((t) => t.lab_iso15189)) liveAccreditations.push("ISO 15189");
+      if (rows.some((t) => t.lab_ukas_accredited))
+        liveAccreditations.push("UKAS accredited");
+      if (rows.some((t) => t.lab_cqc_regulated))
+        liveAccreditations.push("CQC Regulated");
+      if (rows.some((t) => t.lab_iso15189))
+        liveAccreditations.push("ISO 15189");
 
       facts[provider.id] = {
         turnaround,
@@ -254,7 +272,7 @@ export default function ProviderComparisonPage() {
         accreditations:
           liveAccreditations.length > 0
             ? liveAccreditations
-            : PROVIDER_DETAILS[provider.id]?.accreditations ?? [],
+            : (PROVIDER_DETAILS[provider.id]?.accreditations ?? []),
       };
     });
 
@@ -264,7 +282,9 @@ export default function ProviderComparisonPage() {
   // Get unique categories
   const categories = useMemo(() => {
     if (!allTests) return [];
-    return [...new Set(allTests.map(t => t.category).filter(Boolean))] as string[];
+    return [
+      ...new Set(allTests.map((t) => t.category).filter(Boolean)),
+    ] as string[];
   }, [allTests]);
 
   /**
@@ -276,7 +296,11 @@ export default function ProviderComparisonPage() {
 
     const groups = new Map<
       string,
-      { label: string; names: string[]; byProvider: Record<string, ProviderTestData> }
+      {
+        label: string;
+        names: string[];
+        byProvider: Record<string, ProviderTestData>;
+      }
     >();
 
     comparisonGroups.forEach((row) => {
@@ -291,7 +315,8 @@ export default function ProviderComparisonPage() {
         byProvider: {} as Record<string, ProviderTestData>,
       };
       // Prefer the shortest name in the group as the display label
-      if (row.test_name.length < existing.label.length) existing.label = row.test_name;
+      if (row.test_name.length < existing.label.length)
+        existing.label = row.test_name;
       existing.names.push(row.test_name);
       existing.byProvider[row.provider_id] = test;
       groups.set(row.group_key, existing);
@@ -303,15 +328,26 @@ export default function ProviderComparisonPage() {
 
     if (searchTermTokens.length === 0) return comparable;
 
-    const matched = comparable.filter(([, group]) => matchesSearch(group.names, searchTermTokens));
+    const matched = comparable.filter(([, group]) =>
+      matchesSearch(group.names, searchTermTokens),
+    );
     // No match for the search term: show the full comparable list rather than an empty page.
     return matched.length > 0 ? matched : comparable;
-  }, [comparisonGroups, testsById, selectedProviders, categoryFilter, searchTermTokens]);
+  }, [
+    comparisonGroups,
+    testsById,
+    selectedProviders,
+    categoryFilter,
+    searchTermTokens,
+  ]);
 
   /** True when a search term is active but matched nothing, so the list is unfiltered. */
   const searchFellBack = useMemo(() => {
-    if (searchTermTokens.length === 0 || groupedTests.length === 0) return false;
-    return !groupedTests.some(([, group]) => matchesSearch(group.names, searchTermTokens));
+    if (searchTermTokens.length === 0 || groupedTests.length === 0)
+      return false;
+    return !groupedTests.some(([, group]) =>
+      matchesSearch(group.names, searchTermTokens),
+    );
   }, [groupedTests, searchTermTokens]);
 
   /**
@@ -331,7 +367,13 @@ export default function ProviderComparisonPage() {
 
     const tally = new Map<string, number>();
     byGroup.forEach((rows) => {
-      if (!matchesSearch(rows.map((r) => r.test_name), searchTermTokens)) return;
+      if (
+        !matchesSearch(
+          rows.map((r) => r.test_name),
+          searchTermTokens,
+        )
+      )
+        return;
       const providerIds = new Set(rows.map((r) => r.provider_id));
       if (providerIds.size < 2) return;
       providerIds.forEach((id) => tally.set(id, (tally.get(id) ?? 0) + 1));
@@ -351,9 +393,9 @@ export default function ProviderComparisonPage() {
   }, [comparisonGroups, searchTermTokens, selectedProviders.length, providers]);
 
   const toggleProvider = (providerId: string) => {
-    setSelectedProviders(prev => {
+    setSelectedProviders((prev) => {
       if (prev.includes(providerId)) {
-        return prev.filter(id => id !== providerId);
+        return prev.filter((id) => id !== providerId);
       }
       if (prev.length >= 4) {
         return prev;
@@ -369,8 +411,7 @@ export default function ProviderComparisonPage() {
 
   return (
     <MainLayout>
-      <Helmet>
-      </Helmet>
+      <Helmet></Helmet>
 
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
@@ -380,7 +421,8 @@ export default function ProviderComparisonPage() {
             accent="Side-by-Side Analysis"
           />
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Select 2-4 providers to compare their test offerings, prices, and capabilities
+            Select 2-4 providers to compare their test offerings, prices, and
+            capabilities
           </p>
         </div>
 
@@ -397,32 +439,32 @@ export default function ProviderComparisonPage() {
               {providers.map((provider) => {
                 const isSelected = selectedProviders.includes(provider.id);
                 const stats = providerStats[provider.id];
-                
+
                 return (
                   <div
                     key={provider.id}
                     onClick={() => toggleProvider(provider.id)}
                     className={`
                       relative p-4 rounded-lg border-2 cursor-pointer transition-all
-                      ${isSelected 
-                        ? 'border-primary bg-primary/5 shadow-md' 
-                        : 'border-border hover:border-primary/50 hover:bg-muted/50'
+                      ${
+                        isSelected
+                          ? "border-primary bg-primary/5 shadow-md"
+                          : "border-border hover:border-primary/50 hover:bg-muted/50"
                       }
-                      ${selectedProviders.length >= 4 && !isSelected ? 'opacity-50 cursor-not-allowed' : ''}
+                      ${selectedProviders.length >= 4 && !isSelected ? "opacity-50 cursor-not-allowed" : ""}
                     `}
                   >
                     <div className="flex items-start gap-3">
-                      <Checkbox 
-                        checked={isSelected}
-                        className="mt-1"
-                      />
+                      <Checkbox checked={isSelected} className="mt-1" />
                       <div className="flex-1 min-w-0">
                         <img
                           src={provider.logo}
                           alt={provider.name}
                           className="h-8 w-auto object-contain mb-2"
                         />
-                        <p className="font-medium text-sm truncate">{provider.name}</p>
+                        <p className="font-medium text-sm truncate">
+                          {provider.name}
+                        </p>
                         {isLoading ? (
                           <Skeleton className="h-4 w-16 mt-1" />
                         ) : (
@@ -442,9 +484,16 @@ export default function ProviderComparisonPage() {
         {selectedProviders.length >= 2 ? (
           <>
             {/* Tabs for Overview vs Test Comparison */}
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
+            <Tabs
+              value={activeTab}
+              onValueChange={setActiveTab}
+              className="mb-8"
+            >
               <TabsList className="grid w-full max-w-md mx-auto grid-cols-2">
-                <TabsTrigger value="overview" className="flex items-center gap-2">
+                <TabsTrigger
+                  value="overview"
+                  className="flex items-center gap-2"
+                >
                   <BarChart3 className="h-4 w-4" />
                   Overview
                 </TabsTrigger>
@@ -460,16 +509,23 @@ export default function ProviderComparisonPage() {
                   <table className="w-full border-collapse">
                     <thead>
                       <tr className="border-b">
-                        <th className="text-left p-4 font-semibold text-muted-foreground">Feature</th>
+                        <th className="text-left p-4 font-semibold text-muted-foreground">
+                          Feature
+                        </th>
                         {selectedProviders.map((providerId) => (
-                          <th key={providerId} className="p-4 text-center min-w-[180px]">
+                          <th
+                            key={providerId}
+                            className="p-4 text-center min-w-[180px]"
+                          >
                             <div className="flex flex-col items-center gap-2">
                               <img
                                 src={getProviderLogo(providerId)}
                                 alt={getProviderName(providerId)}
                                 className="h-10 w-auto object-contain"
                               />
-                              <span className="font-semibold">{getProviderName(providerId)}</span>
+                              <span className="font-semibold">
+                                {getProviderName(providerId)}
+                              </span>
                             </div>
                           </th>
                         ))}
@@ -499,7 +555,8 @@ export default function ProviderComparisonPage() {
                         {selectedProviders.map((providerId) => (
                           <td key={providerId} className="p-4 text-center">
                             <span className="text-lg font-semibold">
-                              {providerStats[providerId]?.categories.length || 0}
+                              {providerStats[providerId]?.categories.length ||
+                                0}
                             </span>
                           </td>
                         ))}
@@ -514,10 +571,13 @@ export default function ProviderComparisonPage() {
                             <td key={providerId} className="p-4 text-center">
                               {stats && stats.min_price !== null ? (
                                 <span className="text-sm">
-                                  {formatPrice(stats.min_price)} - {formatPrice(stats.max_price)}
+                                  {formatPrice(stats.min_price)} -{" "}
+                                  {formatPrice(stats.max_price)}
                                 </span>
                               ) : (
-                                <span className="text-muted-foreground">N/A</span>
+                                <span className="text-muted-foreground">
+                                  N/A
+                                </span>
                               )}
                             </td>
                           );
@@ -530,7 +590,9 @@ export default function ProviderComparisonPage() {
                         {selectedProviders.map((providerId) => (
                           <td key={providerId} className="p-4 text-center">
                             <span className="font-semibold text-primary">
-                              {formatPrice(providerStats[providerId]?.avg_price || null)}
+                              {formatPrice(
+                                providerStats[providerId]?.avg_price || null,
+                              )}
                             </span>
                           </td>
                         ))}
@@ -579,18 +641,25 @@ export default function ProviderComparisonPage() {
                           </div>
                         </td>
                         {selectedProviders.map((providerId) => {
-                          const accreditations = providerFacts[providerId]?.accreditations ?? [];
+                          const accreditations =
+                            providerFacts[providerId]?.accreditations ?? [];
                           return (
                             <td key={providerId} className="p-4 text-center">
                               <div className="flex flex-wrap gap-1 justify-center">
                                 {accreditations.length > 0 ? (
                                   accreditations.map((acc) => (
-                                    <Badge key={acc} variant="outline" className="text-xs">
+                                    <Badge
+                                      key={acc}
+                                      variant="outline"
+                                      className="text-xs"
+                                    >
                                       {acc}
                                     </Badge>
                                   ))
                                 ) : (
-                                  <span className="text-muted-foreground">N/A</span>
+                                  <span className="text-muted-foreground">
+                                    N/A
+                                  </span>
                                 )}
                               </div>
                             </td>
@@ -631,15 +700,24 @@ export default function ProviderComparisonPage() {
                       className="pl-9"
                     />
                   </div>
-                  <span className="font-medium text-sm">Filter by category:</span>
-                  <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                  <span className="font-medium text-sm">
+                    Filter by category:
+                  </span>
+                  <Select
+                    value={categoryFilter}
+                    onValueChange={setCategoryFilter}
+                  >
                     <SelectTrigger className="w-[200px]">
                       <SelectValue placeholder="All categories" />
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="all">All Categories</SelectItem>
                       {categories.map((cat) => (
-                        <SelectItem key={cat} value={cat} className="capitalize">
+                        <SelectItem
+                          key={cat}
+                          value={cat}
+                          className="capitalize"
+                        >
                           {cat}
                         </SelectItem>
                       ))}
@@ -649,7 +727,8 @@ export default function ProviderComparisonPage() {
 
                 {searchFellBack ? (
                   <p className="text-sm text-muted-foreground mb-6">
-                    No comparable tests matched &ldquo;{searchTerm.trim()}&rdquo;, so all comparable tests are shown.
+                    No comparable tests matched &ldquo;{searchTerm.trim()}
+                    &rdquo;, so all comparable tests are shown.
                   </p>
                 ) : (
                   <div className="mb-6" />
@@ -660,9 +739,14 @@ export default function ProviderComparisonPage() {
                     <table className="w-full border-collapse">
                       <thead>
                         <tr className="border-b bg-muted/50">
-                          <th className="text-left p-4 font-semibold">Test Name</th>
+                          <th className="text-left p-4 font-semibold">
+                            Test Name
+                          </th>
                           {selectedProviders.map((providerId) => (
-                            <th key={providerId} className="p-4 text-center min-w-[160px]">
+                            <th
+                              key={providerId}
+                              className="p-4 text-center min-w-[160px]"
+                            >
                               <img
                                 src={getProviderLogo(providerId)}
                                 alt={getProviderName(providerId)}
@@ -674,14 +758,20 @@ export default function ProviderComparisonPage() {
                       </thead>
                       <tbody>
                         {groupedTests.map(([groupKey, group], index) => (
-                          <tr key={groupKey} className={index % 2 === 0 ? 'bg-muted/20' : ''}>
+                          <tr
+                            key={groupKey}
+                            className={index % 2 === 0 ? "bg-muted/20" : ""}
+                          >
                             <td className="p-4">
                               <span className="font-medium">{group.label}</span>
                             </td>
                             {selectedProviders.map((providerId) => {
                               const test = group.byProvider[providerId];
                               return (
-                                <td key={providerId} className="p-4 text-center">
+                                <td
+                                  key={providerId}
+                                  className="p-4 text-center"
+                                >
                                   {test ? (
                                     <div className="space-y-1">
                                       <div className="font-bold text-primary">
@@ -692,10 +782,20 @@ export default function ProviderComparisonPage() {
                                       </div>
                                       <div className="flex justify-center gap-2">
                                         {test.home_kit_available && (
-                                          <Badge variant="outline" className="text-xs">Home</Badge>
+                                          <Badge
+                                            variant="outline"
+                                            className="text-xs"
+                                          >
+                                            Home
+                                          </Badge>
                                         )}
                                         {test.clinic_visit_available && (
-                                          <Badge variant="outline" className="text-xs">Clinic</Badge>
+                                          <Badge
+                                            variant="outline"
+                                            className="text-xs"
+                                          >
+                                            Clinic
+                                          </Badge>
                                         )}
                                       </div>
                                     </div>
@@ -715,9 +815,11 @@ export default function ProviderComparisonPage() {
                 ) : (
                   <div className="text-center py-12 bg-muted/30 rounded-lg">
                     <TestTube2 className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                    <h3 className="text-lg font-semibold mb-2">No matching tests found</h3>
+                    <h3 className="text-lg font-semibold mb-2">
+                      No matching tests found
+                    </h3>
                     <p className="text-muted-foreground">
-                      {categoryFilter !== "all" 
+                      {categoryFilter !== "all"
                         ? "Try selecting a different category or 'All Categories'"
                         : "These providers don't have overlapping tests to compare"}
                     </p>
@@ -730,9 +832,13 @@ export default function ProviderComparisonPage() {
           <Card className="text-center py-12">
             <CardContent>
               <Shield className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Select at least 2 providers</h3>
+              <h3 className="text-xl font-semibold mb-2">
+                Select at least 2 providers
+              </h3>
               <p className="text-muted-foreground max-w-md mx-auto">
-                Choose 2-4 providers from the list above to see a detailed side-by-side comparison of their test offerings, prices, and features.
+                Choose 2-4 providers from the list above to see a detailed
+                side-by-side comparison of their test offerings, prices, and
+                features.
               </p>
             </CardContent>
           </Card>
@@ -741,9 +847,7 @@ export default function ProviderComparisonPage() {
         {/* Back Link */}
         <div className="mt-8 text-center">
           <Button asChild variant="outline">
-            <Link to="/trusted-providers">
-              ← Back to All Providers
-            </Link>
+            <Link to="/trusted-providers">← Back to All Providers</Link>
           </Button>
         </div>
       </div>

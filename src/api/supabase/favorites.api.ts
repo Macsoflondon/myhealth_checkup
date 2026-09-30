@@ -13,7 +13,6 @@ export interface Favorite {
 }
 
 class FavoritesApi {
-
   /**
    * Get all favorites for a user
    */
@@ -35,7 +34,7 @@ class FavoritesApi {
    */
   async getFavoritesByCategory(
     userId: string,
-    category: string
+    category: string,
   ): Promise<ApiResponse<Favorite[]>> {
     try {
       const { data, error } = await supabase
@@ -55,10 +54,10 @@ class FavoritesApi {
    */
   async getFavoriteTestIds(
     userId: string,
-    category: string
+    category: string,
   ): Promise<ApiResponse<string[]>> {
     const { data, error } = await this.getFavoritesByCategory(userId, category);
-    
+
     if (error || !data) {
       return { data: null, error };
     }
@@ -69,7 +68,9 @@ class FavoritesApi {
   /**
    * Add a favorite
    */
-  async addFavorite(favorite: Omit<Favorite, "id" | "created_at">): Promise<ApiResponse<Favorite>> {
+  async addFavorite(
+    favorite: Omit<Favorite, "id" | "created_at">,
+  ): Promise<ApiResponse<Favorite>> {
     try {
       const { data, error } = await supabase
         .from("favorites")
@@ -89,7 +90,7 @@ class FavoritesApi {
   async removeFavorite(
     userId: string,
     testId: string,
-    category: string
+    category: string,
   ): Promise<ApiResponse<boolean>> {
     try {
       const { error } = await supabase
@@ -111,7 +112,7 @@ class FavoritesApi {
   async isFavorited(
     userId: string,
     testId: string,
-    category: string
+    category: string,
   ): Promise<boolean> {
     const { data } = await this.getFavoritesByCategory(userId, category);
     return data?.some((f) => f.test_id === testId) ?? false;

@@ -11,7 +11,10 @@
  * before a provider is wired up. Never throws.
  */
 
-export type AnalyticsProps = Record<string, string | number | boolean | null | undefined>;
+export type AnalyticsProps = Record<
+  string,
+  string | number | boolean | null | undefined
+>;
 
 declare global {
   interface Window {
@@ -44,7 +47,6 @@ export function trackEvent(event: string, props: AnalyticsProps = {}): void {
     }
 
     if (import.meta.env.DEV) {
-       
       console.debug("[analytics]", event, props);
     }
   } catch {
@@ -61,8 +63,11 @@ export const analytics = {
     surface: "goodbody_bento" | "accredited_providers_bar" | string;
   }) => trackEvent("kit_tile_click", props),
 
-  testPageView: (props: { path: string; test_slug?: string; category?: string }) =>
-    trackEvent("test_page_view", props),
+  testPageView: (props: {
+    path: string;
+    test_slug?: string;
+    category?: string;
+  }) => trackEvent("test_page_view", props),
 
   recommendationAttempt: (props: {
     surface: "homepage" | "recommendations_page" | string;
@@ -88,4 +93,3 @@ export const analytics = {
     authenticated: boolean;
   }) => trackEvent("recommendation_failure", props),
 };
-

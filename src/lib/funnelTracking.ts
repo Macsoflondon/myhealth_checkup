@@ -31,7 +31,7 @@ export async function trackFunnelEvent(
     provider_id?: string;
     revenue_amount?: number;
     currency?: string;
-  } = {}
+  } = {},
 ) {
   try {
     await supabase.from("funnel_events").insert({

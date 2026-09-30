@@ -8,7 +8,8 @@ export const Route = createFileRoute("/trusted-providers")({
   head: () =>
     buildRouteHead({
       title: "Trusted UK Test Providers",
-      description: "Profiles of the UKAS-accredited and CQC-regulated providers we compare, including how each collects samples and reports results.",
+      description:
+        "Profiles of the UKAS-accredited and CQC-regulated providers we compare, including how each collects samples and reports results.",
       path: "/trusted-providers",
     }),
   component: TrustedProvidersPage,

@@ -7,22 +7,22 @@ const AccreditationCards = () => {
       title: "UKAS Accredited",
       subtitle: "Labs",
       bgClass: "bg-primary/10",
-      iconClass: "text-primary"
+      iconClass: "text-primary",
     },
     {
       icon: FileCheck,
       title: "CQC Regulated",
       subtitle: "Providers",
       bgClass: "bg-secondary/10",
-      iconClass: "text-secondary"
+      iconClass: "text-secondary",
     },
     {
       icon: Award,
       title: "ISO 15189",
       subtitle: "Certified",
       bgClass: "bg-primary/10",
-      iconClass: "text-primary"
-    }
+      iconClass: "text-primary",
+    },
   ];
 
   return (
@@ -30,15 +30,15 @@ const AccreditationCards = () => {
       <div className="container mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 md:gap-6 max-w-4xl mx-auto">
           {accreditations.map((item, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="bg-white rounded-xl p-3 sm:p-4 flex items-center gap-3 shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 group animate-fade-in"
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div 
+              <div
                 className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0 transition-transform duration-300 group-hover:scale-110 ${item.bgClass}`}
               >
-                <item.icon 
+                <item.icon
                   className={`w-5 h-5 sm:w-6 sm:h-6 transition-transform duration-300 ${item.iconClass}`}
                 />
               </div>

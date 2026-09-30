@@ -1,15 +1,15 @@
 import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
   ResponsiveContainer,
   ReferenceLine,
-  ReferenceArea
+  ReferenceArea,
 } from "recharts";
 import { TrendingUp } from "lucide-react";
 
@@ -33,17 +33,17 @@ export function BiomarkerTrendChart({
   unit = "",
   referenceMin,
   referenceMax,
-  currentValue
+  currentValue,
 }: BiomarkerTrendChartProps) {
   const chartData = useMemo(() => {
     const sortedData = [...data]
       .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-      .map(point => ({
+      .map((point) => ({
         ...point,
         formattedDate: new Date(point.date).toLocaleDateString("en-GB", {
           day: "numeric",
-          month: "short"
-        })
+          month: "short",
+        }),
       }));
 
     // Add current value if provided
@@ -51,7 +51,7 @@ export function BiomarkerTrendChart({
       sortedData.push({
         value: currentValue,
         date: new Date().toISOString(),
-        formattedDate: "Today"
+        formattedDate: "Today",
       });
     }
 
@@ -59,14 +59,14 @@ export function BiomarkerTrendChart({
   }, [data, currentValue]);
 
   const yDomain = useMemo(() => {
-    const allValues = chartData.map(d => d.value);
+    const allValues = chartData.map((d) => d.value);
     if (referenceMin !== undefined) allValues.push(referenceMin);
     if (referenceMax !== undefined) allValues.push(referenceMax);
-    
+
     const min = Math.min(...allValues);
     const max = Math.max(...allValues);
     const padding = (max - min) * 0.1;
-    
+
     return [Math.max(0, min - padding), max + padding];
   }, [chartData, referenceMin, referenceMax]);
 
@@ -81,8 +81,8 @@ export function BiomarkerTrendChart({
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground text-center py-8">
-            Not enough historical data to show a trend. 
-            At least 2 readings are required.
+            Not enough historical data to show a trend. At least 2 readings are
+            required.
           </p>
         </CardContent>
       </Card>
@@ -95,15 +95,22 @@ export function BiomarkerTrendChart({
         <CardTitle className="text-sm flex items-center gap-2">
           <TrendingUp className="h-4 w-4 text-primary" />
           {biomarkerName} Trend
-          {unit && <span className="text-xs font-normal text-muted-foreground">({unit})</span>}
+          {unit && (
+            <span className="text-xs font-normal text-muted-foreground">
+              ({unit})
+            </span>
+          )}
         </CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-[200px] w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={chartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+            <LineChart
+              data={chartData}
+              margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+            >
               <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-              
+
               {/* Normal range area */}
               {referenceMin !== undefined && referenceMax !== undefined && (
                 <ReferenceArea
@@ -114,44 +121,47 @@ export function BiomarkerTrendChart({
                   stroke="none"
                 />
               )}
-              
+
               {/* Reference lines */}
               {referenceMin !== undefined && (
-                <ReferenceLine 
-                  y={referenceMin} 
-                  stroke="hsl(var(--primary))" 
+                <ReferenceLine
+                  y={referenceMin}
+                  stroke="hsl(var(--primary))"
                   strokeDasharray="3 3"
                   strokeOpacity={0.5}
                 />
               )}
               {referenceMax !== undefined && (
-                <ReferenceLine 
-                  y={referenceMax} 
-                  stroke="hsl(var(--primary))" 
+                <ReferenceLine
+                  y={referenceMax}
+                  stroke="hsl(var(--primary))"
                   strokeDasharray="3 3"
                   strokeOpacity={0.5}
                 />
               )}
-              
-              <XAxis 
-                dataKey="formattedDate" 
+
+              <XAxis
+                dataKey="formattedDate"
                 tick={{ fontSize: 12 }}
                 className="fill-muted-foreground"
               />
-              <YAxis 
+              <YAxis
                 domain={yDomain}
                 tick={{ fontSize: 12 }}
                 className="fill-muted-foreground"
                 width={40}
               />
-              <Tooltip 
-                contentStyle={{ 
+              <Tooltip
+                contentStyle={{
                   backgroundColor: "hsl(var(--card))",
                   border: "1px solid hsl(var(--border))",
-                  borderRadius: "var(--radius)"
+                  borderRadius: "var(--radius)",
                 }}
                 labelStyle={{ color: "hsl(var(--foreground))" }}
-                formatter={(value: number) => [`${value} ${unit}`, biomarkerName]}
+                formatter={(value: number) => [
+                  `${value} ${unit}`,
+                  biomarkerName,
+                ]}
               />
               <Line
                 type="monotone"
@@ -164,12 +174,18 @@ export function BiomarkerTrendChart({
             </LineChart>
           </ResponsiveContainer>
         </div>
-        
+
         {/* Legend */}
         {(referenceMin !== undefined || referenceMax !== undefined) && (
           <div className="flex items-center justify-center gap-4 mt-4 text-xs text-muted-foreground">
             <div className="flex items-center gap-1">
-              <div className="w-8 h-0.5 bg-primary opacity-50" style={{ backgroundImage: "repeating-linear-gradient(90deg, transparent, transparent 3px, hsl(var(--primary)) 3px, hsl(var(--primary)) 6px)" }} />
+              <div
+                className="w-8 h-0.5 bg-primary opacity-50"
+                style={{
+                  backgroundImage:
+                    "repeating-linear-gradient(90deg, transparent, transparent 3px, hsl(var(--primary)) 3px, hsl(var(--primary)) 6px)",
+                }}
+              />
               <span>Normal Range</span>
             </div>
             <div className="flex items-center gap-1">

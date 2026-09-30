@@ -31,18 +31,18 @@ export interface TestPageData {
   description: string;
   category: string;
   breadcrumbTitle: string;
-  
+
   // SEO
   metaTitle: string;
   metaDescription: string;
-  
+
   // Content
   biomarkerSections: TestBiomarkerSection[];
   highlights?: TestHighlight[];
   whyChooseItems: string[];
   whyChooseTitle?: string;
   featureBadges: TestFeatureBadge[];
-  
+
   // Providers
   providers: TestProvider[];
 }

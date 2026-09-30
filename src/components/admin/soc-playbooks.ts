@@ -41,7 +41,8 @@ export const socPlaybooks: Record<string, SocPlaybook> = {
       {
         key: "acknowledge_scraper_alerts_for_entity",
         label: "Acknowledge all matching scraper alerts",
-        description: "Sets acknowledged=true on every scraper_alerts row for this provider + alert_type.",
+        description:
+          "Sets acknowledged=true on every scraper_alerts row for this provider + alert_type.",
       },
       {
         key: "reverse_acknowledge_scraper_alerts_for_entity",
@@ -63,7 +64,8 @@ export const socPlaybooks: Record<string, SocPlaybook> = {
       {
         key: "resolve_operational_alerts_for_entity",
         label: "Resolve all matching operational alerts",
-        description: "Sets is_resolved=true on every operational_alerts row for this (source, entity_type, entity_name).",
+        description:
+          "Sets is_resolved=true on every operational_alerts row for this (source, entity_type, entity_name).",
       },
       {
         key: "reverse_resolve_operational_alerts_for_entity",
@@ -118,14 +120,16 @@ export const socPlaybooks: Record<string, SocPlaybook> = {
 };
 
 export function playbookForSource(source: string): SocPlaybook {
-  return socPlaybooks[source] ?? {
-    source,
-    title: "Generic incident playbook",
-    steps: [
-      "Inspect the sample signal IDs and the entity value.",
-      "Check the corresponding source table for recent activity.",
-      "Resolve with a note describing the root cause and any mitigation.",
-    ],
-    actions: [],
-  };
+  return (
+    socPlaybooks[source] ?? {
+      source,
+      title: "Generic incident playbook",
+      steps: [
+        "Inspect the sample signal IDs and the entity value.",
+        "Check the corresponding source table for recent activity.",
+        "Resolve with a note describing the root cause and any mitigation.",
+      ],
+      actions: [],
+    }
+  );
 }

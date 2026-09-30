@@ -1,9 +1,10 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.51.0';
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
 interface MFAVerificationResult {
@@ -17,95 +18,110 @@ interface MFAVerificationResult {
 
 const decodeJwtPayload = (token: string): Record<string, unknown> | null => {
   try {
-    const [, payload] = token.split('.');
+    const [, payload] = token.split(".");
     if (!payload) return null;
 
-    const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
-    const padded = base64.padEnd(base64.length + ((4 - (base64.length % 4)) % 4), '=');
+    const base64 = payload.replace(/-/g, "+").replace(/_/g, "/");
+    const padded = base64.padEnd(
+      base64.length + ((4 - (base64.length % 4)) % 4),
+      "=",
+    );
     return JSON.parse(atob(padded));
   } catch (error) {
-    console.error('Failed to decode JWT payload:', error);
+    console.error("Failed to decode JWT payload:", error);
     return null;
   }
 };
 
 serve(async (req) => {
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const authHeader = req.headers.get('Authorization');
+    const authHeader = req.headers.get("Authorization");
     if (!authHeader) {
-      console.error('No authorization header provided');
+      console.error("No authorization header provided");
       return new Response(
-        JSON.stringify({ 
-          error: 'Unauthorized: No authorization header',
+        JSON.stringify({
+          error: "Unauthorized: No authorization header",
           isAdmin: false,
           hasMFA: false,
           mfaVerified: false,
           requiresMFA: false,
           userId: null,
-          message: 'Authentication required'
+          message: "Authentication required",
         } as MFAVerificationResult),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        {
+          status: 401,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
-    const accessToken = authHeader.replace(/^Bearer\s+/i, '').trim();
+    const accessToken = authHeader.replace(/^Bearer\s+/i, "").trim();
 
-    const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
-    const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')!;
-    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
-    
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+    const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+
     // Create client with user's token to verify identity
     const userClient = createClient(supabaseUrl, supabaseAnonKey, {
-      global: { headers: { Authorization: authHeader } }
+      global: { headers: { Authorization: authHeader } },
     });
-    
-    const { data: { user }, error: userError } = await userClient.auth.getUser();
+
+    const {
+      data: { user },
+      error: userError,
+    } = await userClient.auth.getUser();
     if (userError || !user) {
-      console.error('Failed to get user:', userError);
+      console.error("Failed to get user:", userError);
       return new Response(
-        JSON.stringify({ 
-          error: 'Unauthorized: Invalid token',
+        JSON.stringify({
+          error: "Unauthorized: Invalid token",
           isAdmin: false,
           hasMFA: false,
           mfaVerified: false,
           requiresMFA: false,
           userId: null,
-          message: 'Invalid authentication token'
+          message: "Invalid authentication token",
         } as MFAVerificationResult),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        {
+          status: 401,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
     // Check admin role membership directly; has_role() is reserved for
     // contexts that should additionally enforce an AAL2 session.
     const adminClient = createClient(supabaseUrl, supabaseServiceKey);
-    
+
     const { data: adminRoleRow, error: roleError } = await adminClient
-      .from('user_roles')
-      .select('role')
-      .eq('user_id', user.id)
-      .eq('role', 'admin')
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", user.id)
+      .eq("role", "admin")
       .maybeSingle();
 
     const isAdmin = !!adminRoleRow;
 
     if (roleError) {
-      console.error('Failed to check admin role:', roleError);
+      console.error("Failed to check admin role:", roleError);
       return new Response(
-        JSON.stringify({ 
-          error: 'Failed to verify permissions',
+        JSON.stringify({
+          error: "Failed to verify permissions",
           isAdmin: false,
           hasMFA: false,
           mfaVerified: false,
           requiresMFA: false,
           userId: user.id,
-          message: 'Error checking admin status'
+          message: "Error checking admin status",
         } as MFAVerificationResult),
-        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
@@ -113,39 +129,47 @@ serve(async (req) => {
     if (!isAdmin) {
       console.log(`User ${user.id} is not an admin`);
       return new Response(
-        JSON.stringify({ 
+        JSON.stringify({
           isAdmin: false,
           hasMFA: false,
           mfaVerified: false,
           requiresMFA: false,
           userId: user.id,
-          message: 'User is not an admin'
+          message: "User is not an admin",
         } as MFAVerificationResult),
-        { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        {
+          status: 200,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
     // For admins, check MFA status
-    const { data: mfaFactors, error: mfaError } = await userClient.auth.mfa.listFactors();
-    
+    const { data: mfaFactors, error: mfaError } =
+      await userClient.auth.mfa.listFactors();
+
     if (mfaError) {
-      console.error('Failed to check MFA factors:', mfaError);
+      console.error("Failed to check MFA factors:", mfaError);
       return new Response(
-        JSON.stringify({ 
-          error: 'Failed to verify MFA status',
+        JSON.stringify({
+          error: "Failed to verify MFA status",
           isAdmin: true,
           hasMFA: false,
           mfaVerified: false,
           requiresMFA: true,
           userId: user.id,
-          message: 'Error checking MFA status'
+          message: "Error checking MFA status",
         } as MFAVerificationResult),
-        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        {
+          status: 500,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
     // Check if user has any verified TOTP factors
-    const verifiedTotpFactors = mfaFactors?.totp?.filter(f => f.status === 'verified') || [];
+    const verifiedTotpFactors =
+      mfaFactors?.totp?.filter((f) => f.status === "verified") || [];
     const hasMFA = verifiedTotpFactors.length > 0;
 
     // Check the current session's AAL (Authenticator Assurance Level) directly
@@ -154,7 +178,7 @@ serve(async (req) => {
     // session for auth.mfa.getAuthenticatorAssuranceLevel(), which caused the
     // admin UI to remain stuck on the MFA screen after a valid code.
     const tokenPayload = decodeJwtPayload(accessToken);
-    const mfaVerified = tokenPayload?.aal === 'aal2';
+    const mfaVerified = tokenPayload?.aal === "aal2";
 
     const result: MFAVerificationResult = {
       isAdmin: true,
@@ -162,37 +186,40 @@ serve(async (req) => {
       mfaVerified,
       requiresMFA: true, // Admins always require MFA for privileged operations
       userId: user.id,
-      message: hasMFA 
-        ? (mfaVerified 
-            ? 'Admin verified with MFA' 
-            : 'MFA verification required for this session')
-        : 'MFA setup required for admin operations'
+      message: hasMFA
+        ? mfaVerified
+          ? "Admin verified with MFA"
+          : "MFA verification required for this session"
+        : "MFA setup required for admin operations",
     };
 
-    console.log(`Admin MFA check for ${user.id}: hasMFA=${hasMFA}, mfaVerified=${mfaVerified}`);
+    console.log(
+      `Admin MFA check for ${user.id}: hasMFA=${hasMFA}, mfaVerified=${mfaVerified}`,
+    );
 
     // Always 200: "MFA setup/step-up required" is a normal state, not an error.
     // Returning 403 made the client treat an expected response as a failure
     // (blank admin screen) and polluted error monitoring.
-    return new Response(
-      JSON.stringify(result),
-      { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    );
-
-
+    return new Response(JSON.stringify(result), {
+      status: 200,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
   } catch (error) {
-    console.error('Error in verify-admin-mfa function:', error);
+    console.error("Error in verify-admin-mfa function:", error);
     return new Response(
-      JSON.stringify({ 
-        error: 'Internal server error',
+      JSON.stringify({
+        error: "Internal server error",
         isAdmin: false,
         hasMFA: false,
         mfaVerified: false,
         requiresMFA: false,
         userId: null,
-        message: 'Internal server error'
+        message: "Internal server error",
       }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
     );
   }
 });

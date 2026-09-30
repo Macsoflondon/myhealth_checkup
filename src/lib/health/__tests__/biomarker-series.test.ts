@@ -32,9 +32,15 @@ const observation = (
 describe("biomarker series", () => {
   it("trusts only confirmed and validated observations", () => {
     expect(isTrusted(observation({ id: "a" }))).toBe(true);
-    expect(isTrusted(observation({ id: "b", verificationStatus: "unverified" }))).toBe(false);
-    expect(isTrusted(observation({ id: "c", validationStatus: "failed" }))).toBe(false);
-    expect(isTrusted(observation({ id: "d", validationStatus: "overridden" }))).toBe(true);
+    expect(
+      isTrusted(observation({ id: "b", verificationStatus: "unverified" })),
+    ).toBe(false);
+    expect(
+      isTrusted(observation({ id: "c", validationStatus: "failed" })),
+    ).toBe(false);
+    expect(
+      isTrusted(observation({ id: "d", validationStatus: "overridden" })),
+    ).toBe(true);
   });
 
   it("excludes unverified observations from the series entirely", () => {
@@ -61,8 +67,16 @@ describe("biomarker series", () => {
 
   it("computes absolute change, percentage change and interval", () => {
     const series = buildBiomarkerSeries([
-      observation({ id: "prev", collectedAt: "2026-01-01T00:00:00Z", canonicalValue: 40 }),
-      observation({ id: "latest", collectedAt: "2026-01-31T00:00:00Z", canonicalValue: 60 }),
+      observation({
+        id: "prev",
+        collectedAt: "2026-01-01T00:00:00Z",
+        canonicalValue: 40,
+      }),
+      observation({
+        id: "latest",
+        collectedAt: "2026-01-31T00:00:00Z",
+        canonicalValue: 60,
+      }),
     ]);
     expect(series.absoluteChange).toBe(20);
     expect(series.percentageChange).toBe(50);
@@ -72,16 +86,34 @@ describe("biomarker series", () => {
 
   it("calls small movement stable rather than a trend", () => {
     const series = buildBiomarkerSeries([
-      observation({ id: "prev", collectedAt: "2026-01-01T00:00:00Z", canonicalValue: 100 }),
-      observation({ id: "latest", collectedAt: "2026-02-01T00:00:00Z", canonicalValue: 103 }),
+      observation({
+        id: "prev",
+        collectedAt: "2026-01-01T00:00:00Z",
+        canonicalValue: 100,
+      }),
+      observation({
+        id: "latest",
+        collectedAt: "2026-02-01T00:00:00Z",
+        canonicalValue: 103,
+      }),
     ]);
     expect(series.direction).toBe("stable");
   });
 
   it("refuses to compare values recorded in different units", () => {
     const series = buildBiomarkerSeries([
-      observation({ id: "prev", collectedAt: "2026-01-01T00:00:00Z", canonicalValue: 40, canonicalUnit: "ug/L" }),
-      observation({ id: "latest", collectedAt: "2026-02-01T00:00:00Z", canonicalValue: 60, canonicalUnit: "nmol/L" }),
+      observation({
+        id: "prev",
+        collectedAt: "2026-01-01T00:00:00Z",
+        canonicalValue: 40,
+        canonicalUnit: "ug/L",
+      }),
+      observation({
+        id: "latest",
+        collectedAt: "2026-02-01T00:00:00Z",
+        canonicalValue: 60,
+        canonicalUnit: "nmol/L",
+      }),
     ]);
     expect(series.absoluteChange).toBeNull();
     expect(series.percentageChange).toBeNull();
@@ -90,8 +122,16 @@ describe("biomarker series", () => {
 
   it("withholds percentage change against a zero baseline", () => {
     const series = buildBiomarkerSeries([
-      observation({ id: "prev", collectedAt: "2026-01-01T00:00:00Z", canonicalValue: 0 }),
-      observation({ id: "latest", collectedAt: "2026-02-01T00:00:00Z", canonicalValue: 5 }),
+      observation({
+        id: "prev",
+        collectedAt: "2026-01-01T00:00:00Z",
+        canonicalValue: 0,
+      }),
+      observation({
+        id: "latest",
+        collectedAt: "2026-02-01T00:00:00Z",
+        canonicalValue: 5,
+      }),
     ]);
     expect(series.absoluteChange).toBe(5);
     expect(series.percentageChange).toBeNull();
@@ -111,7 +151,9 @@ describe("biomarker series", () => {
       observation({ id: "recent", collectedAt: "2026-05-01T00:00:00Z" }),
     ];
     expect(
-      filterByDateRange(points, { from: "2026-01-01T00:00:00Z" }).map((p) => p.id),
+      filterByDateRange(points, { from: "2026-01-01T00:00:00Z" }).map(
+        (p) => p.id,
+      ),
     ).toEqual(["recent"]);
   });
 

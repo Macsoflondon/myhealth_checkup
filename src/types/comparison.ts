@@ -7,7 +7,7 @@ import type {
   CollectionMethod,
   CollectionFeeType,
   ClinicalReviewType,
-} from '@/lib/comparisonFormat';
+} from "@/lib/comparisonFormat";
 
 export interface EnhancedTestData {
   id: string;
@@ -27,7 +27,8 @@ export interface EnhancedTestData {
 
   // Features — legacy (kept for back-compat)
   turnaroundDays: number;
-  sampleType: SampleType | 'finger-prick' | 'venous' | 'urine' | 'saliva' | 'multiple';
+  sampleType:
+    SampleType | "finger-prick" | "venous" | "urine" | "saliva" | "multiple";
   homeKitAvailable: boolean;
   clinicVisitAvailable: boolean;
 
@@ -50,7 +51,7 @@ export interface EnhancedTestData {
   // Meta
   description: string;
   url: string | null;
-  dataSource?: 'live' | 'cache' | 'database';
+  dataSource?: "live" | "cache" | "database";
   lastUpdated?: string;
 }
 
@@ -82,14 +83,14 @@ export interface ComparisonFilters {
   // New standardised filter groups
   sampleTypes: SampleType[];
   collectionMethods: CollectionMethod[];
-  feeFilter: 'all' | 'none' | 'additional';
-  clinicalReview: Array<'included' | 'optional' | 'not_included'>;
+  feeFilter: "all" | "none" | "additional";
+  clinicalReview: Array<"included" | "optional" | "not_included">;
 }
 
 export type SortOption =
-  | 'price-asc'
-  | 'price-desc'
-  | 'turnaround-asc'
-  | 'turnaround-desc'
-  | 'biomarkers-desc'
-  | 'total-cost-asc';
+  | "price-asc"
+  | "price-desc"
+  | "turnaround-asc"
+  | "turnaround-desc"
+  | "biomarkers-desc"
+  | "total-cost-asc";

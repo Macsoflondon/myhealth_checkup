@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { TableCell } from "@/components/ui/table";
@@ -15,11 +14,11 @@ interface OrderActionProps {
 
 const OrderAction = ({ item, onPlaceOrder }: OrderActionProps) => {
   const isMobile = useIsMobile();
-  
+
   return (
     <TableCell key={`${item.id}-order`} className="text-center">
-      <Button 
-        size="sm" 
+      <Button
+        size="sm"
         className="w-full"
         disabled={item.available === false}
         onClick={() => onPlaceOrder(item.id, item.provider)}

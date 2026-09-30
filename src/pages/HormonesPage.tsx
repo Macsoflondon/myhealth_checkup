@@ -20,9 +20,21 @@ const HormonesPage = () => (
     filters={["All"]}
     benefitsTitle="Why Test Your Hormones?"
     benefits={[
-      { icon: Activity, title: "Optimise Energy", description: "Balance hormones to boost energy and reduce fatigue" },
-      { icon: Heart, title: "Improve Mood", description: "Stabilise mood through hormone optimisation" },
-      { icon: Shield, title: "Prevent Disease", description: "Early detection of hormonal imbalances" },
+      {
+        icon: Activity,
+        title: "Optimise Energy",
+        description: "Balance hormones to boost energy and reduce fatigue",
+      },
+      {
+        icon: Heart,
+        title: "Improve Mood",
+        description: "Stabilise mood through hormone optimisation",
+      },
+      {
+        icon: Shield,
+        title: "Prevent Disease",
+        description: "Early detection of hormonal imbalances",
+      },
     ]}
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Hormones" }]}
     compareUrl="/compare?category=hormones"

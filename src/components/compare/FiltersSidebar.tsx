@@ -22,29 +22,29 @@ interface FiltersSidebarProps {
   // Search
   searchQuery: string;
   onSearchChange: (value: string) => void;
-  
+
   // Providers
   providers: Provider[];
   selectedProvider: string;
   onProviderChange: (value: string) => void;
-  
+
   // Price range
   priceRange: { min: string; max: string };
   onPriceRangeChange: (range: { min: string; max: string }) => void;
-  
+
   // Categories
   categories: string[];
   selectedCategory: string;
   onCategoryChange: (value: string) => void;
-  
+
   // Sample method (legacy single-select, kept)
   sampleMethod: string;
   onSampleMethodChange: (value: string) => void;
-  
+
   // Fasting
   fastingRequired: string;
   onFastingChange: (value: string) => void;
-  
+
   // GP Review
   gpReview: boolean;
   onGpReviewChange: (value: boolean) => void;
@@ -54,14 +54,16 @@ interface FiltersSidebarProps {
   onSampleTypesChange?: (next: string[]) => void;
   collectionMethods?: string[];
   onCollectionMethodsChange?: (next: string[]) => void;
-  feeFilter?: 'all' | 'none' | 'additional';
-  onFeeFilterChange?: (next: 'all' | 'none' | 'additional') => void;
-  clinicalReview?: Array<'included' | 'optional' | 'not_included'>;
-  onClinicalReviewChange?: (next: Array<'included' | 'optional' | 'not_included'>) => void;
-  
+  feeFilter?: "all" | "none" | "additional";
+  onFeeFilterChange?: (next: "all" | "none" | "additional") => void;
+  clinicalReview?: Array<"included" | "optional" | "not_included">;
+  onClinicalReviewChange?: (
+    next: Array<"included" | "optional" | "not_included">,
+  ) => void;
+
   // Clear all
   onClearFilters: () => void;
-  
+
   // Mobile visibility
   isVisible?: boolean;
   onClose?: () => void;
@@ -97,13 +99,15 @@ export const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
   onClose,
 }) => {
   const toggle = <T extends string>(list: T[] | undefined, value: T): T[] =>
-    list?.includes(value) ? list.filter(v => v !== value) : [...(list ?? []), value];
+    list?.includes(value)
+      ? list.filter((v) => v !== value)
+      : [...(list ?? []), value];
 
   return (
     <aside
       className={cn(
         "lg:w-80 flex-shrink-0",
-        isVisible ? "block" : "hidden lg:block"
+        isVisible ? "block" : "hidden lg:block",
       )}
     >
       <div className="bg-card rounded-2xl p-6 border border-border sticky top-24 shadow-xs">
@@ -206,13 +210,15 @@ export const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
                 <button
                   key={category}
                   onClick={() =>
-                    onCategoryChange(selectedCategory === category ? "" : category)
+                    onCategoryChange(
+                      selectedCategory === category ? "" : category,
+                    )
                   }
                   className={cn(
                     "px-3 py-1.5 rounded-lg text-xs font-medium transition-colors capitalize",
                     selectedCategory === category
                       ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                      : "bg-muted text-muted-foreground hover:bg-muted/80",
                   )}
                 >
                   {category}
@@ -276,15 +282,20 @@ export const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
                 Sample type
               </Label>
               <div className="space-y-2">
-                {([
-                  ['finger_prick', 'Finger-prick'],
-                  ['venous', 'Venous blood draw'],
-                  ['saliva', 'Saliva'],
-                  ['urine', 'Urine'],
-                  ['stool', 'Stool'],
-                  ['buccal_swab', 'Buccal swab'],
-                ] as const).map(([value, label]) => (
-                  <label key={value} className="flex items-center gap-2 cursor-pointer">
+                {(
+                  [
+                    ["finger_prick", "Finger-prick"],
+                    ["venous", "Venous blood draw"],
+                    ["saliva", "Saliva"],
+                    ["urine", "Urine"],
+                    ["stool", "Stool"],
+                    ["buccal_swab", "Buccal swab"],
+                  ] as const
+                ).map(([value, label]) => (
+                  <label
+                    key={value}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
                     <Checkbox
                       checked={sampleTypes?.includes(value) ?? false}
                       onCheckedChange={() =>
@@ -305,19 +316,26 @@ export const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
                 Collection method
               </Label>
               <div className="space-y-2">
-                {([
-                  ['home_kit', 'Home kit included'],
-                  ['clinic', 'Clinic appointment'],
-                  ['home_visit', 'Home visit'],
-                  ['mobile_phleb', 'Mobile phlebotomy'],
-                  ['third_party_phleb', 'Third-party phlebotomy'],
-                  ['self_arranged', 'Self-arranged'],
-                ] as const).map(([value, label]) => (
-                  <label key={value} className="flex items-center gap-2 cursor-pointer">
+                {(
+                  [
+                    ["home_kit", "Home kit included"],
+                    ["clinic", "Clinic appointment"],
+                    ["home_visit", "Home visit"],
+                    ["mobile_phleb", "Mobile phlebotomy"],
+                    ["third_party_phleb", "Third-party phlebotomy"],
+                    ["self_arranged", "Self-arranged"],
+                  ] as const
+                ).map(([value, label]) => (
+                  <label
+                    key={value}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
                     <Checkbox
                       checked={collectionMethods?.includes(value) ?? false}
                       onCheckedChange={() =>
-                        onCollectionMethodsChange(toggle(collectionMethods, value))
+                        onCollectionMethodsChange(
+                          toggle(collectionMethods, value),
+                        )
                       }
                     />
                     <span className="text-sm text-foreground">{label}</span>
@@ -334,8 +352,10 @@ export const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
                 Additional collection fees
               </Label>
               <Select
-                value={feeFilter ?? 'all'}
-                onValueChange={(v) => onFeeFilterChange(v as 'all' | 'none' | 'additional')}
+                value={feeFilter ?? "all"}
+                onValueChange={(v) =>
+                  onFeeFilterChange(v as "all" | "none" | "additional")
+                }
               >
                 <SelectTrigger className="bg-background">
                   <SelectValue placeholder="Any" />
@@ -343,7 +363,9 @@ export const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
                 <SelectContent>
                   <SelectItem value="all">Any</SelectItem>
                   <SelectItem value="none">No additional fees</SelectItem>
-                  <SelectItem value="additional">Has additional fees</SelectItem>
+                  <SelectItem value="additional">
+                    Has additional fees
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -356,12 +378,17 @@ export const FiltersSidebar: React.FC<FiltersSidebarProps> = ({
                 Clinical review
               </Label>
               <div className="space-y-2">
-                {([
-                  ['included', 'Included in price'],
-                  ['optional', 'Optional add-on'],
-                  ['not_included', 'Not included'],
-                ] as const).map(([value, label]) => (
-                  <label key={value} className="flex items-center gap-2 cursor-pointer">
+                {(
+                  [
+                    ["included", "Included in price"],
+                    ["optional", "Optional add-on"],
+                    ["not_included", "Not included"],
+                  ] as const
+                ).map(([value, label]) => (
+                  <label
+                    key={value}
+                    className="flex items-center gap-2 cursor-pointer"
+                  >
                     <Checkbox
                       checked={clinicalReview?.includes(value) ?? false}
                       onCheckedChange={() =>

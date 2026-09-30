@@ -33,7 +33,9 @@ export const StoredBiomarkerAnalysis = () => {
   const [selectedReadings, setSelectedReadings] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [analysing, setAnalysing] = useState(false);
-  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
+  const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(
+    null,
+  );
 
   useEffect(() => {
     loadBiomarkerReadings();
@@ -41,15 +43,15 @@ export const StoredBiomarkerAnalysis = () => {
 
   const loadBiomarkerReadings = async () => {
     if (!user) return;
-    
+
     setLoading(true);
     const { data, error } = await healthDataApi.getBiomarkerReadings(user.id);
-    
+
     if (error) {
       toast({
         title: "Failed to load biomarkers",
         description: "Could not retrieve your stored biomarker readings.",
-        variant: "destructive"
+        variant: "destructive",
       });
     } else {
       setReadings(data || []);
@@ -58,10 +60,8 @@ export const StoredBiomarkerAnalysis = () => {
   };
 
   const handleSelectReading = (id: string) => {
-    setSelectedReadings(prev => 
-      prev.includes(id) 
-        ? prev.filter(r => r !== id)
-        : [...prev, id]
+    setSelectedReadings((prev) =>
+      prev.includes(id) ? prev.filter((r) => r !== id) : [...prev, id],
     );
   };
 
@@ -69,7 +69,7 @@ export const StoredBiomarkerAnalysis = () => {
     if (selectedReadings.length === readings.length) {
       setSelectedReadings([]);
     } else {
-      setSelectedReadings(readings.map(r => r.id));
+      setSelectedReadings(readings.map((r) => r.id));
     }
   };
 
@@ -78,7 +78,7 @@ export const StoredBiomarkerAnalysis = () => {
       toast({
         title: "No biomarkers selected",
         description: "Please select at least one biomarker reading to analyse.",
-        variant: "destructive"
+        variant: "destructive",
       });
       return;
     }
@@ -87,21 +87,23 @@ export const StoredBiomarkerAnalysis = () => {
     setAnalysisResult(null);
 
     try {
-      const selectedData = readings.filter(r => selectedReadings.includes(r.id));
-      
-      const biomarkerEntries = selectedData.map(r => ({
+      const selectedData = readings.filter((r) =>
+        selectedReadings.includes(r.id),
+      );
+
+      const biomarkerEntries = selectedData.map((r) => ({
         name: r.biomarker_name,
         value: r.value,
         unit: r.unit || "",
         referenceMin: r.reference_range_min,
-        referenceMax: r.reference_range_max
+        referenceMax: r.reference_range_max,
       }));
 
       const { data, error } = await supabase.functions.invoke(
         "blood-test-analysis",
         {
-          body: { readings: biomarkerEntries }
-        }
+          body: { readings: biomarkerEntries },
+        },
       );
 
       if (error) {
@@ -115,7 +117,7 @@ export const StoredBiomarkerAnalysis = () => {
       setAnalysisResult(data);
       toast({
         title: "Analysis Complete",
-        description: "Your stored biomarker readings have been analysed."
+        description: "Your stored biomarker readings have been analysed.",
       });
     } catch (err) {
       console.error("Analysis error:", err);
@@ -123,7 +125,7 @@ export const StoredBiomarkerAnalysis = () => {
       toast({
         title: "Analysis Failed",
         description: message,
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
       setAnalysing(false);
@@ -151,13 +153,12 @@ export const StoredBiomarkerAnalysis = () => {
         </CardHeader>
         <CardContent className="px-0 pb-0">
           <p className="text-muted-foreground mb-4">
-            You don't have any stored biomarker readings yet. Upload test results or manually enter biomarker values to get started.
+            You don't have any stored biomarker readings yet. Upload test
+            results or manually enter biomarker values to get started.
           </p>
           <div className="flex gap-3">
             <Button asChild variant="outline">
-              <Link to="/blood-test-analysis">
-                Enter Biomarkers Manually
-              </Link>
+              <Link to="/blood-test-analysis">Enter Biomarkers Manually</Link>
             </Button>
           </div>
         </CardContent>
@@ -166,14 +167,17 @@ export const StoredBiomarkerAnalysis = () => {
   }
 
   // Group readings by date for better organisation
-  const groupedReadings = readings.reduce((acc, reading) => {
-    const date = format(new Date(reading.recorded_at), "yyyy-MM-dd");
-    if (!acc[date]) {
-      acc[date] = [];
-    }
-    acc[date].push(reading);
-    return acc;
-  }, {} as Record<string, BiomarkerReading[]>);
+  const groupedReadings = readings.reduce(
+    (acc, reading) => {
+      const date = format(new Date(reading.recorded_at), "yyyy-MM-dd");
+      if (!acc[date]) {
+        acc[date] = [];
+      }
+      acc[date].push(reading);
+      return acc;
+    },
+    {} as Record<string, BiomarkerReading[]>,
+  );
 
   return (
     <Card className="border-2">
@@ -187,17 +191,17 @@ export const StoredBiomarkerAnalysis = () => {
         {!analysisResult ? (
           <>
             <p className="text-sm text-muted-foreground">
-              Select the biomarker readings you'd like to analyse with AI. Our system will provide insights and recommendations based on your results.
+              Select the biomarker readings you'd like to analyse with AI. Our
+              system will provide insights and recommendations based on your
+              results.
             </p>
 
             {/* Selection Controls */}
             <div className="flex items-center justify-between">
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={handleSelectAll}
-              >
-                {selectedReadings.length === readings.length ? "Deselect All" : "Select All"}
+              <Button variant="ghost" size="sm" onClick={handleSelectAll}>
+                {selectedReadings.length === readings.length
+                  ? "Deselect All"
+                  : "Select All"}
               </Button>
               <Badge variant="secondary">
                 {selectedReadings.length} of {readings.length} selected
@@ -213,18 +217,20 @@ export const StoredBiomarkerAnalysis = () => {
                   </p>
                   <div className="space-y-2">
                     {dateReadings.map((reading) => (
-                      <div 
+                      <div
                         key={reading.id}
                         className={`flex items-center gap-3 p-3 rounded-lg border transition-colors cursor-pointer ${
-                          selectedReadings.includes(reading.id) 
-                            ? "border-brand-pink bg-brand-pink/5" 
+                          selectedReadings.includes(reading.id)
+                            ? "border-brand-pink bg-brand-pink/5"
                             : "border-border hover:border-brand-pink/50"
                         }`}
                         onClick={() => handleSelectReading(reading.id)}
                       >
-                        <Checkbox 
+                        <Checkbox
                           checked={selectedReadings.includes(reading.id)}
-                          onCheckedChange={() => handleSelectReading(reading.id)}
+                          onCheckedChange={() =>
+                            handleSelectReading(reading.id)
+                          }
                         />
                         <FlaskConical className="w-4 h-4 text-brand-turquoise" />
                         <div className="flex-1 min-w-0">
@@ -234,16 +240,16 @@ export const StoredBiomarkerAnalysis = () => {
                           <p className="text-xs text-muted-foreground">
                             {reading.value} {reading.unit}
                             {reading.status && (
-                              <Badge 
-                                variant="outline" 
+                              <Badge
+                                variant="outline"
                                 className={`ml-2 text-xs ${
-                                  reading.status === 'normal' 
-                                    ? 'border-green-500 text-green-600' 
-                                    : reading.status === 'high' 
-                                    ? 'border-orange-500 text-orange-600'
-                                    : reading.status === 'low'
-                                    ? 'border-blue-500 text-blue-600'
-                                    : 'border-red-500 text-red-600'
+                                  reading.status === "normal"
+                                    ? "border-green-500 text-green-600"
+                                    : reading.status === "high"
+                                      ? "border-orange-500 text-orange-600"
+                                      : reading.status === "low"
+                                        ? "border-blue-500 text-blue-600"
+                                        : "border-red-500 text-red-600"
                                 }`}
                               >
                                 {reading.status}
@@ -259,7 +265,7 @@ export const StoredBiomarkerAnalysis = () => {
             </div>
 
             {/* Analyse Button */}
-            <Button 
+            <Button
               onClick={handleAnalyse}
               disabled={selectedReadings.length === 0 || analysing}
               className="w-full bg-brand-pink hover:bg-brand-pink/90"
@@ -288,41 +294,50 @@ export const StoredBiomarkerAnalysis = () => {
             </Alert>
 
             {/* Key Findings */}
-            {analysisResult.keyFindings && analysisResult.keyFindings.length > 0 && (
-              <div>
-                <h4 className="font-semibold text-brand-navy mb-2">Key Findings</h4>
-                <ul className="space-y-1">
-                  {analysisResult.keyFindings.map((finding, index) => (
-                    <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
-                      <span className="text-brand-pink">•</span>
-                      {finding}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            {analysisResult.keyFindings &&
+              analysisResult.keyFindings.length > 0 && (
+                <div>
+                  <h4 className="font-semibold text-brand-navy mb-2">
+                    Key Findings
+                  </h4>
+                  <ul className="space-y-1">
+                    {analysisResult.keyFindings.map((finding, index) => (
+                      <li
+                        key={index}
+                        className="text-sm text-muted-foreground flex items-start gap-2"
+                      >
+                        <span className="text-brand-pink">•</span>
+                        {finding}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
             {/* Recommendations */}
-            {analysisResult.recommendations && analysisResult.recommendations.length > 0 && (
-              <div>
-                <h4 className="font-semibold text-brand-navy mb-2">Recommendations</h4>
-                <ul className="space-y-1">
-                  {analysisResult.recommendations.map((rec, index) => (
-                    <li key={index} className="text-sm text-muted-foreground flex items-start gap-2">
-                      <span className="text-brand-turquoise">→</span>
-                      {rec}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+            {analysisResult.recommendations &&
+              analysisResult.recommendations.length > 0 && (
+                <div>
+                  <h4 className="font-semibold text-brand-navy mb-2">
+                    Recommendations
+                  </h4>
+                  <ul className="space-y-1">
+                    {analysisResult.recommendations.map((rec, index) => (
+                      <li
+                        key={index}
+                        className="text-sm text-muted-foreground flex items-start gap-2"
+                      >
+                        <span className="text-brand-turquoise">→</span>
+                        {rec}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
             {/* Actions */}
             <div className="flex gap-3 pt-2">
-              <Button 
-                variant="outline" 
-                onClick={() => setAnalysisResult(null)}
-              >
+              <Button variant="outline" onClick={() => setAnalysisResult(null)}>
                 Analyse Different Biomarkers
               </Button>
               <Button asChild className="bg-brand-pink hover:bg-brand-pink/90">

@@ -8,12 +8,12 @@ export interface RecommendationPreferences {
 
 export const preferencesApi = {
   async getRecommendationPreferences(
-    userId: string
+    userId: string,
   ): Promise<RecommendationPreferences | null> {
     const { data, error } = await supabase
       .from("user_preferences")
       .select(
-        "recommendation_price_weight, recommendation_speed_weight, recommendation_comprehensiveness_weight"
+        "recommendation_price_weight, recommendation_speed_weight, recommendation_comprehensiveness_weight",
       )
       .eq("user_id", userId)
       .maybeSingle();
@@ -36,7 +36,7 @@ export const preferencesApi = {
 
   async saveRecommendationPreferences(
     userId: string,
-    preferences: RecommendationPreferences
+    preferences: RecommendationPreferences,
   ): Promise<{ success: boolean; error?: string }> {
     // First, check if a preferences record exists
     const { data: existingPrefs } = await supabase
@@ -52,7 +52,8 @@ export const preferencesApi = {
         .update({
           recommendation_price_weight: preferences.price,
           recommendation_speed_weight: preferences.speed,
-          recommendation_comprehensiveness_weight: preferences.comprehensiveness,
+          recommendation_comprehensiveness_weight:
+            preferences.comprehensiveness,
         })
         .eq("user_id", userId);
 

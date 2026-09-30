@@ -19,7 +19,7 @@ const roleCache = new Map<string, { authorized: boolean; at: number }>();
 
 interface AdminRouteProps {
   children: React.ReactNode;
-  requiredRole?: 'admin' | 'moderator';
+  requiredRole?: "admin" | "moderator";
 }
 
 /**
@@ -31,17 +31,21 @@ interface AdminRouteProps {
  *    admin content renders. This is mandatory under Cyber Essentials Plus v3.3.
  * 3. Loading and error states never reveal admin UI structure.
  */
-export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps) => {
+export const AdminRoute = ({
+  children,
+  requiredRole = "admin",
+}: AdminRouteProps) => {
   const { user, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
   const cacheKey = user ? `${user.id}:${requiredRole}` : null;
   const cached = cacheKey ? roleCache.get(cacheKey) : undefined;
-  const cacheFresh = !!cached && Date.now() - cached.at < ROLE_CACHE_TTL_MS && cached.authorized;
+  const cacheFresh =
+    !!cached && Date.now() - cached.at < ROLE_CACHE_TTL_MS && cached.authorized;
   const [isVerifying, setIsVerifying] = useState(!cacheFresh);
   const [isAuthorized, setIsAuthorized] = useState(cacheFresh);
 
   // MFA gate (only meaningful for admins; moderators are not currently MFA-gated).
-  const enforceMFA = requiredRole === 'admin';
+  const enforceMFA = requiredRole === "admin";
   const mfa = useAdminMFA();
 
   useEffect(() => {
@@ -57,7 +61,11 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
 
       const key = `${user.id}:${requiredRole}`;
       const entry = roleCache.get(key);
-      if (entry && Date.now() - entry.at < ROLE_CACHE_TTL_MS && entry.authorized) {
+      if (
+        entry &&
+        Date.now() - entry.at < ROLE_CACHE_TTL_MS &&
+        entry.authorized
+      ) {
         roleCache.set(key, { authorized: true, at: Date.now() });
         setIsAuthorized(true);
         setIsVerifying(false);
@@ -66,16 +74,19 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
 
       // Never let a wedged network call hold the admin UI hostage.
       const timeout = new Promise<never>((_, reject) =>
-        setTimeout(() => reject(new Error('Role verification timed out')), ROLE_QUERY_TIMEOUT_MS),
+        setTimeout(
+          () => reject(new Error("Role verification timed out")),
+          ROLE_QUERY_TIMEOUT_MS,
+        ),
       );
 
       try {
         const { data: roleRow, error } = await Promise.race([
           supabase
-            .from('user_roles')
-            .select('role')
-            .eq('user_id', user.id)
-            .eq('role', requiredRole)
+            .from("user_roles")
+            .select("role")
+            .eq("user_id", user.id)
+            .eq("role", requiredRole)
             .maybeSingle(),
           timeout,
         ]);
@@ -83,13 +94,16 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
         if (cancelled) return;
 
         if (error) {
-          logger.error('Error verifying admin role:', error);
+          logger.error("Error verifying admin role:", error);
           navigate("/");
           return;
         }
 
         if (!roleRow) {
-          logger.warn('Unauthorized admin access attempt:', { userId: user.id, requiredRole });
+          logger.warn("Unauthorized admin access attempt:", {
+            userId: user.id,
+            requiredRole,
+          });
           navigate("/");
           return;
         }
@@ -98,7 +112,7 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
         setIsAuthorized(true);
       } catch (error) {
         if (cancelled) return;
-        logger.error('Admin verification failed:', error);
+        logger.error("Admin verification failed:", error);
         navigate("/");
       } finally {
         if (!cancelled) setIsVerifying(false);
@@ -106,7 +120,9 @@ export const AdminRoute = ({ children, requiredRole = 'admin' }: AdminRouteProps
     };
 
     verifyAdminAccess();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [user, authLoading, navigate, requiredRole]);
 
   if (authLoading || isVerifying || (enforceMFA && mfa.isLoading)) {

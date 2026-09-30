@@ -6,15 +6,18 @@
 import { logger } from "@/lib/logger";
 
 export class UserPreferencesService {
-  private static readonly PREFIX = 'myhealthcheckup';
+  private static readonly PREFIX = "myhealthcheckup";
 
   // Storage key generators
   static keys = {
-    favoriteOrder: (userId: string) => `${this.PREFIX}-favorite-order-${userId}`,
+    favoriteOrder: (userId: string) =>
+      `${this.PREFIX}-favorite-order-${userId}`,
     orderSort: (userId: string) => `${this.PREFIX}-order-sort-${userId}`,
     savedFilters: (userId: string) => `${this.PREFIX}-saved-filters-${userId}`,
-    recentSearches: (userId: string) => `${this.PREFIX}-recent-searches-${userId}`,
-    compareSelection: (userId: string) => `${this.PREFIX}-compare-selection-${userId}`,
+    recentSearches: (userId: string) =>
+      `${this.PREFIX}-recent-searches-${userId}`,
+    compareSelection: (userId: string) =>
+      `${this.PREFIX}-compare-selection-${userId}`,
     theme: () => `${this.PREFIX}-theme`,
     cookieConsent: () => `${this.PREFIX}-cookie-consent`,
   };
@@ -70,7 +73,10 @@ export class UserPreferencesService {
     return this.get(this.keys.savedFilters(userId), {});
   }
 
-  static setSavedFilters(userId: string, filters: Record<string, unknown>): void {
+  static setSavedFilters(
+    userId: string,
+    filters: Record<string, unknown>,
+  ): void {
     this.set(this.keys.savedFilters(userId), filters);
   }
 
@@ -81,17 +87,17 @@ export class UserPreferencesService {
 
   static addRecentSearch(userId: string, search: string, maxItems = 10): void {
     const searches = this.getRecentSearches(userId);
-    const filtered = searches.filter(s => s !== search);
+    const filtered = searches.filter((s) => s !== search);
     const updated = [search, ...filtered].slice(0, maxItems);
     this.set(this.keys.recentSearches(userId), updated);
   }
 
   // Theme operations (not user-specific)
-  static getTheme(): 'light' | 'dark' | 'system' {
-    return this.get(this.keys.theme(), 'system');
+  static getTheme(): "light" | "dark" | "system" {
+    return this.get(this.keys.theme(), "system");
   }
 
-  static setTheme(theme: 'light' | 'dark' | 'system'): void {
+  static setTheme(theme: "light" | "dark" | "system"): void {
     this.set(this.keys.theme(), theme);
   }
 
@@ -106,8 +112,8 @@ export class UserPreferencesService {
 
   // Clear all user-specific data
   static clearUserData(userId: string): void {
-    Object.values(this.keys).forEach(keyFn => {
-      if (typeof keyFn === 'function') {
+    Object.values(this.keys).forEach((keyFn) => {
+      if (typeof keyFn === "function") {
         try {
           const key = keyFn(userId);
           if (key.includes(userId)) {

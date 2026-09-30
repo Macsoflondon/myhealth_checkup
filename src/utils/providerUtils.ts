@@ -1,23 +1,33 @@
 // Provider utility functions
 
-import { getProviderLogo as getCanonicalProviderLogo, getProviderName } from "@/constants/providers";
+import {
+  getProviderLogo as getCanonicalProviderLogo,
+  getProviderName,
+} from "@/constants/providers";
 
 export const providerLogos: Record<string, string> = {
-  "medichecks": "https://www.medichecks.com/static/version1720697605/frontend/Medichecks/default/en_GB/images/logo.svg",
-  "randox": "https://www.randoxhealth.com/wp-content/themes/developer starter theme/images/logo.svg",
-  "randox-health": "https://www.randoxhealth.com/wp-content/themes/developer starter theme/images/logo.svg",
-  "goodbody-clinic": "https://www.goodbodyclinic.com/wp-content/uploads/2023/01/goodbody-clinic-logo.svg",
-  "goodbody": "https://www.goodbodyclinic.com/wp-content/uploads/2023/01/goodbody-clinic-logo.svg",
-  "london-medical-laboratory": "https://www.londonmedicallaboratory.co.uk/assets/images/lml-logo.svg",
-  "lola-health": "https://lolahealth.com/wp-content/uploads/2023/06/lola-health-logo.svg",
+  medichecks:
+    "https://www.medichecks.com/static/version1720697605/frontend/Medichecks/default/en_GB/images/logo.svg",
+  randox:
+    "https://www.randoxhealth.com/wp-content/themes/developer starter theme/images/logo.svg",
+  "randox-health":
+    "https://www.randoxhealth.com/wp-content/themes/developer starter theme/images/logo.svg",
+  "goodbody-clinic":
+    "https://www.goodbodyclinic.com/wp-content/uploads/2023/01/goodbody-clinic-logo.svg",
+  goodbody:
+    "https://www.goodbodyclinic.com/wp-content/uploads/2023/01/goodbody-clinic-logo.svg",
+  "london-medical-laboratory":
+    "https://www.londonmedicallaboratory.co.uk/assets/images/lml-logo.svg",
+  "lola-health":
+    "https://lolahealth.com/wp-content/uploads/2023/06/lola-health-logo.svg",
 };
 
 export const providerDisplayNames: Record<string, string> = {
-  "medichecks": "Medichecks",
-  "randox": "Randox Health",
+  medichecks: "Medichecks",
+  randox: "Randox Health",
   "randox-health": "Randox Health",
   "goodbody-clinic": "Goodbody Clinic",
-  "goodbody": "Goodbody Clinic",
+  goodbody: "Goodbody Clinic",
   "london-medical-laboratory": "London Medical Laboratory",
   "lola-health": "Lola Health",
 };
@@ -29,5 +39,9 @@ export const getProviderLogo = (providerId: string): string => {
 
 export const getProviderDisplayName = (providerId: string): string => {
   const normalised = providerId.toLowerCase().replace(/\s+/g, "-");
-  return providerDisplayNames[normalised] || getProviderName(normalised) || providerId.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+  return (
+    providerDisplayNames[normalised] ||
+    getProviderName(normalised) ||
+    providerId.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
+  );
 };

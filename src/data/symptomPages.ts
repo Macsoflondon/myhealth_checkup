@@ -27,7 +27,12 @@ export const symptomPages: SymptomPageData[] = [
       {
         name: "Full Blood Count",
         why: "Screens for anaemia and infection markers that commonly cause fatigue",
-        keyBiomarkers: ["Haemoglobin", "Red Blood Cells", "White Blood Cells", "Platelets"],
+        keyBiomarkers: [
+          "Haemoglobin",
+          "Red Blood Cells",
+          "White Blood Cells",
+          "Platelets",
+        ],
         searchQuery: "full+blood+count",
       },
       {
@@ -187,7 +192,13 @@ export const symptomPages: SymptomPageData[] = [
       {
         name: "Male Hormone Profile",
         why: "Low testosterone is the most common hormonal cause of reduced libido in men",
-        keyBiomarkers: ["Total Testosterone", "Free Testosterone", "SHBG", "LH", "FSH"],
+        keyBiomarkers: [
+          "Total Testosterone",
+          "Free Testosterone",
+          "SHBG",
+          "LH",
+          "FSH",
+        ],
         searchQuery: "male+hormone",
       },
       {

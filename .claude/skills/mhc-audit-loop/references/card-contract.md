@@ -37,18 +37,18 @@ Adapters are part of the surface — a field lost in an adapter looks like a car
 
 Per card, each field is PASS only with evidence it renders from real data:
 
-| Field | Rule | Common failure |
-|---|---|---|
-| Test name | Cleaned of provider marketing suffixes, never truncated mid-name | `cleanTestName` stripping a legitimate `-` segment |
-| Biomarker count | Renders the real count; absent data shows an honest empty state, never `0` styled as a value | adapter defaulting `biomarker_count ?? 0` |
-| Biomarker list | Available on the card or one click away on the detail page; full list, not a sample | truncated list with no "view all" |
-| Price | GBP, `£`, correct decimals; "from" prefix only when the row genuinely is a starting price | `price_from` not passed through an adapter |
-| Add-on costs | Phlebotomy / GP review shown separately where they apply | add-ons absent entirely from `total_expected_cost` |
-| Turnaround | Real value; missing data reads as unavailable, not invented | `"Not stated"` masking a value the DB does have |
-| Sample method | Real value | as above |
-| Location options | Home kit / clinic / both, matching `home_kit_available` / `clinic_visit_available` / `collection_options` | flags ignored by an adapter |
-| Provider | Named and attributed on the card | provider only visible on hover |
-| Accreditation | UKAS / CQC / ISO 15189 status surfaced where claimed | claim rendered with no backing field |
+| Field            | Rule                                                                                                      | Common failure                                     |
+| ---------------- | --------------------------------------------------------------------------------------------------------- | -------------------------------------------------- |
+| Test name        | Cleaned of provider marketing suffixes, never truncated mid-name                                          | `cleanTestName` stripping a legitimate `-` segment |
+| Biomarker count  | Renders the real count; absent data shows an honest empty state, never `0` styled as a value              | adapter defaulting `biomarker_count ?? 0`          |
+| Biomarker list   | Available on the card or one click away on the detail page; full list, not a sample                       | truncated list with no "view all"                  |
+| Price            | GBP, `£`, correct decimals; "from" prefix only when the row genuinely is a starting price                 | `price_from` not passed through an adapter         |
+| Add-on costs     | Phlebotomy / GP review shown separately where they apply                                                  | add-ons absent entirely from `total_expected_cost` |
+| Turnaround       | Real value; missing data reads as unavailable, not invented                                               | `"Not stated"` masking a value the DB does have    |
+| Sample method    | Real value                                                                                                | as above                                           |
+| Location options | Home kit / clinic / both, matching `home_kit_available` / `clinic_visit_available` / `collection_options` | flags ignored by an adapter                        |
+| Provider         | Named and attributed on the card                                                                          | provider only visible on hover                     |
+| Accreditation    | UKAS / CQC / ISO 15189 status surfaced where claimed                                                      | claim rendered with no backing field               |
 
 Missing data is shown as missing. Placeholder, invented, or defaulted values are a FAIL,
 not a cosmetic issue — the platform's product is trust.

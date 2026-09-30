@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
+import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,13 +7,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Label } from '@/components/ui/label';
-import { Slider } from '@/components/ui/slider';
-import { Switch } from '@/components/ui/switch';
-import { Bell, BellOff } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import { Switch } from "@/components/ui/switch";
+import { Bell, BellOff } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface AddPriceAlertButtonProps {
   testId: string;
@@ -23,12 +23,12 @@ interface AddPriceAlertButtonProps {
   currentPrice: number;
 }
 
-export const AddPriceAlertButton = ({ 
-  testId, 
+export const AddPriceAlertButton = ({
+  testId,
   testName,
-  provider, 
+  provider,
   userId,
-  currentPrice
+  currentPrice,
 }: AddPriceAlertButtonProps) => {
   const [open, setOpen] = useState(false);
   const [threshold, setThreshold] = useState(10);
@@ -45,11 +45,11 @@ export const AddPriceAlertButton = ({
   const checkExistingAlert = async () => {
     try {
       const { data, error } = await supabase
-        .from('price_alert_preferences')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('test_id', testId)
-        .eq('provider', provider)
+        .from("price_alert_preferences")
+        .select("*")
+        .eq("user_id", userId)
+        .eq("test_id", testId)
+        .eq("provider", provider)
         .single();
 
       if (data) {
@@ -70,23 +70,23 @@ export const AddPriceAlertButton = ({
       if (hasAlert && alertId) {
         // Update existing alert
         const { error } = await supabase
-          .from('price_alert_preferences')
+          .from("price_alert_preferences")
           .update({
             threshold_percentage: threshold,
             enabled,
           })
-          .eq('id', alertId);
+          .eq("id", alertId);
 
         if (error) throw error;
 
         toast({
-          title: 'Alert Updated',
+          title: "Alert Updated",
           description: `You'll be notified when ${testName} drops by ${threshold}% or more`,
         });
       } else {
         // Create new alert
         const { error } = await supabase
-          .from('price_alert_preferences')
+          .from("price_alert_preferences")
           .insert({
             user_id: userId,
             test_id: testId,
@@ -99,7 +99,7 @@ export const AddPriceAlertButton = ({
 
         setHasAlert(true);
         toast({
-          title: 'Alert Created',
+          title: "Alert Created",
           description: `You'll be notified when ${testName} drops by ${threshold}% or more`,
         });
       }
@@ -107,11 +107,11 @@ export const AddPriceAlertButton = ({
       setOpen(false);
       checkExistingAlert();
     } catch (error) {
-      console.error('Error saving alert:', error);
+      console.error("Error saving alert:", error);
       toast({
-        title: 'Error',
-        description: 'Failed to save price alert',
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to save price alert",
+        variant: "destructive",
       });
     } finally {
       setLoading(false);
@@ -124,25 +124,25 @@ export const AddPriceAlertButton = ({
     setLoading(true);
     try {
       const { error } = await supabase
-        .from('price_alert_preferences')
+        .from("price_alert_preferences")
         .delete()
-        .eq('id', alertId);
+        .eq("id", alertId);
 
       if (error) throw error;
 
       setHasAlert(false);
       setAlertId(null);
       toast({
-        title: 'Alert Removed',
-        description: 'Price alert deleted successfully',
+        title: "Alert Removed",
+        description: "Price alert deleted successfully",
       });
       setOpen(false);
     } catch (error) {
-      console.error('Error deleting alert:', error);
+      console.error("Error deleting alert:", error);
       toast({
-        title: 'Error',
-        description: 'Failed to delete alert',
-        variant: 'destructive',
+        title: "Error",
+        description: "Failed to delete alert",
+        variant: "destructive",
       });
     } finally {
       setLoading(false);
@@ -212,11 +212,11 @@ export const AddPriceAlertButton = ({
             </div>
             {enabled && (
               <p className="text-sm text-muted-foreground">
-                You'll be notified when the price drops to{' '}
+                You'll be notified when the price drops to{" "}
                 <span className="font-semibold text-green-600">
                   £{(currentPrice * (1 - threshold / 100)).toFixed(2)}
-                </span>
-                {' '}or lower
+                </span>{" "}
+                or lower
               </p>
             )}
           </div>
@@ -232,11 +232,8 @@ export const AddPriceAlertButton = ({
               Delete Alert
             </Button>
           )}
-          <Button
-            onClick={handleSave}
-            disabled={loading}
-          >
-            {loading ? 'Saving...' : hasAlert ? 'Update Alert' : 'Create Alert'}
+          <Button onClick={handleSave} disabled={loading}>
+            {loading ? "Saving..." : hasAlert ? "Update Alert" : "Create Alert"}
           </Button>
         </div>
       </DialogContent>

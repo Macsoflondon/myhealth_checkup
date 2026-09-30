@@ -1,6 +1,12 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { DENIED, fail, logAdminToolCall, ok, requireAdmin } from "../admin-guard";
+import {
+  DENIED,
+  fail,
+  logAdminToolCall,
+  ok,
+  requireAdmin,
+} from "../admin-guard";
 
 export default defineTool({
   name: "list_scraper_alerts",
@@ -8,11 +14,22 @@ export default defineTool({
   description:
     "List open scraper alerts (newest first) with severity, provider and counts. Operational data only — no patient or personal data.",
   inputSchema: {
-    include_acknowledged: z.boolean().default(false).describe("Include alerts already acknowledged."),
-    severity: z.string().trim().optional().describe("Filter to a single severity, e.g. 'critical'."),
+    include_acknowledged: z
+      .boolean()
+      .default(false)
+      .describe("Include alerts already acknowledged."),
+    severity: z
+      .string()
+      .trim()
+      .optional()
+      .describe("Filter to a single severity, e.g. 'critical'."),
     limit: z.number().int().min(1).max(200).default(50),
   },
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false,
+  },
   handler: async (args, ctx) => {
     const session = await requireAdmin(ctx);
     if (!session) return DENIED;

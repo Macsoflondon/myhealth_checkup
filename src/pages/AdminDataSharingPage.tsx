@@ -27,7 +27,9 @@ export default function AdminDataSharingPage() {
     void (async () => {
       let q = supabase
         .from("data_sharing_grants")
-        .select("id, user_id, recipient_email, recipient_org, purpose, status, granted_at, expires_at, last_accessed_at, access_count, revoked_reason")
+        .select(
+          "id, user_id, recipient_email, recipient_org, purpose, status, granted_at, expires_at, last_accessed_at, access_count, revoked_reason",
+        )
         .order("granted_at", { ascending: false })
         .limit(500);
       if (statusFilter !== "all") q = q.eq("status", statusFilter);
@@ -47,7 +49,8 @@ export default function AdminDataSharingPage() {
       <div>
         <h1 className="text-2xl font-bold">Data sharing grants</h1>
         <p className="text-sm text-muted-foreground">
-          Audit trail of every patient-issued FHIR sharing grant. Read-only — patients manage their own revocations.
+          Audit trail of every patient-issued FHIR sharing grant. Read-only —
+          patients manage their own revocations.
         </p>
       </div>
 
@@ -67,7 +70,9 @@ export default function AdminDataSharingPage() {
         {loading ? (
           <div className="text-sm text-muted-foreground">Loading…</div>
         ) : rows.length === 0 ? (
-          <div className="text-sm text-muted-foreground">No grants recorded.</div>
+          <div className="text-sm text-muted-foreground">
+            No grants recorded.
+          </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -85,22 +90,50 @@ export default function AdminDataSharingPage() {
               <tbody>
                 {rows.map((r) => (
                   <tr key={r.id} className="border-b last:border-0 align-top">
-                    <td className="py-2 pr-4 whitespace-nowrap">{new Date(r.granted_at).toLocaleString("en-GB")}</td>
-                    <td className="py-2 pr-4 font-mono text-xs">{r.user_id.slice(0, 8)}…</td>
+                    <td className="py-2 pr-4 whitespace-nowrap">
+                      {new Date(r.granted_at).toLocaleString("en-GB")}
+                    </td>
+                    <td className="py-2 pr-4 font-mono text-xs">
+                      {r.user_id.slice(0, 8)}…
+                    </td>
                     <td className="py-2 pr-4">
                       <div>{r.recipient_email}</div>
-                      {r.recipient_org && <div className="text-xs text-muted-foreground">{r.recipient_org}</div>}
+                      {r.recipient_org && (
+                        <div className="text-xs text-muted-foreground">
+                          {r.recipient_org}
+                        </div>
+                      )}
                     </td>
                     <td className="py-2 pr-4 max-w-md">
                       {r.purpose}
-                      {r.revoked_reason && <div className="text-xs text-destructive mt-1">Revoked: {r.revoked_reason}</div>}
+                      {r.revoked_reason && (
+                        <div className="text-xs text-destructive mt-1">
+                          Revoked: {r.revoked_reason}
+                        </div>
+                      )}
                     </td>
-                    <td className="py-2 pr-4"><Badge variant={r.status === "active" ? "default" : "secondary"}>{r.status}</Badge></td>
+                    <td className="py-2 pr-4">
+                      <Badge
+                        variant={
+                          r.status === "active" ? "default" : "secondary"
+                        }
+                      >
+                        {r.status}
+                      </Badge>
+                    </td>
                     <td className="py-2 pr-4">
                       {r.access_count}×
-                      {r.last_accessed_at && <div className="text-xs text-muted-foreground">{new Date(r.last_accessed_at).toLocaleDateString("en-GB")}</div>}
+                      {r.last_accessed_at && (
+                        <div className="text-xs text-muted-foreground">
+                          {new Date(r.last_accessed_at).toLocaleDateString(
+                            "en-GB",
+                          )}
+                        </div>
+                      )}
                     </td>
-                    <td className="py-2 pr-4 whitespace-nowrap">{new Date(r.expires_at).toLocaleDateString("en-GB")}</td>
+                    <td className="py-2 pr-4 whitespace-nowrap">
+                      {new Date(r.expires_at).toLocaleDateString("en-GB")}
+                    </td>
                   </tr>
                 ))}
               </tbody>

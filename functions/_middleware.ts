@@ -145,7 +145,10 @@ export const onRequest: PagesFunction<Env> = async (ctx) => {
     const headers = new Headers(snapshotRes.headers);
     headers.set("X-Prerendered", "true");
     headers.set("Vary", "User-Agent");
-    headers.set("Cache-Control", "public, max-age=300, stale-while-revalidate=86400");
+    headers.set(
+      "Cache-Control",
+      "public, max-age=300, stale-while-revalidate=86400",
+    );
     return new Response(snapshotRes.body, {
       status: 200,
       headers,

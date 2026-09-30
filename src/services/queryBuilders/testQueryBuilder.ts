@@ -10,10 +10,9 @@ import type { ComparePanelConfig } from "@/lib/comparePanels";
 const COMPARE_SELECT =
   "id, test_name, provider_id, category, canonical_category, price, description, is_active, image_url, url, biomarkers_list, biomarker_count, turnaround_days_text, turnaround_raw, sample_type, collection_method, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, created_at, updated_at";
 
-
 const DEFAULT_LIMIT = 600;
 
-const escapeIlike = (s: string) => s.replace(/[%,()]/g, ' ').trim();
+const escapeIlike = (s: string) => s.replace(/[%,()]/g, " ").trim();
 
 /**
  * Query builder for test-related database queries
@@ -28,75 +27,76 @@ export class TestQueryBuilder {
   /** Panel matching: optional canonical narrowing + test-name fragments. */
   static buildPanelQuery(panel: ComparePanelConfig) {
     let query = supabase
-      .from('provider_tests')
+      .from("provider_tests")
       .select(COMPARE_SELECT)
-      .eq('is_active', true)
-      .gt('price', 0)
-      .order('price', { ascending: true })
+      .eq("is_active", true)
+      .gt("price", 0)
+      .order("price", { ascending: true })
       .limit(DEFAULT_LIMIT);
 
     if (panel.canonicals && panel.canonicals.length > 0) {
-      query = query.in('canonical_category', [...panel.canonicals]);
+      query = query.in("canonical_category", [...panel.canonicals]);
     }
     query = query.or(
-      panel.includeNames.map((n) => `test_name.ilike.%${escapeIlike(n)}%`).join(','),
+      panel.includeNames
+        .map((n) => `test_name.ilike.%${escapeIlike(n)}%`)
+        .join(","),
     );
     for (const ex of panel.excludeNames ?? []) {
-      query = query.not('test_name', 'ilike', `%${escapeIlike(ex)}%`);
+      query = query.not("test_name", "ilike", `%${escapeIlike(ex)}%`);
     }
     return query;
   }
 
-  static buildCategoryQuery(category: string, providers: string[] = ['all']) {
+  static buildCategoryQuery(category: string, providers: string[] = ["all"]) {
     let query = supabase
-      .from('provider_tests')
+      .from("provider_tests")
       .select(COMPARE_SELECT)
-      .eq('is_active', true)
-      .order('price', { ascending: true })
+      .eq("is_active", true)
+      .order("price", { ascending: true })
       .limit(DEFAULT_LIMIT);
 
-    if (category && category !== 'all') {
+    if (category && category !== "all") {
       const nameFilter = getNameFilterForSlug(category);
       if (nameFilter) {
         if (nameFilter.canonicals && nameFilter.canonicals.length > 0) {
-          query = query.in('canonical_category', nameFilter.canonicals);
+          query = query.in("canonical_category", nameFilter.canonicals);
         }
         const orConditions = nameFilter.includeNames
-          .map(n => `test_name.ilike.%${escapeIlike(n)}%`)
-          .join(',');
+          .map((n) => `test_name.ilike.%${escapeIlike(n)}%`)
+          .join(",");
         query = query.or(orConditions);
         if (nameFilter.excludeNames) {
           for (const ex of nameFilter.excludeNames) {
-            query = query.not('test_name', 'ilike', `%${escapeIlike(ex)}%`);
+            query = query.not("test_name", "ilike", `%${escapeIlike(ex)}%`);
           }
         }
       } else {
         const canonicals = getCanonicalCategoriesForSlug(category);
         if (canonicals && canonicals.length > 0) {
-          query = query.in('canonical_category', canonicals);
+          query = query.in("canonical_category", canonicals);
         } else {
           const categorySearchTerms = getCategorySearchTerms(category);
           const orConditions = [
             `category.ilike.%${category}%`,
             `canonical_category.ilike.%${category}%`,
             `test_name.ilike.%${category}%`,
-            ...categorySearchTerms.map(term => `test_name.ilike.%${term}%`),
-            ...categorySearchTerms.map(term => `description.ilike.%${term}%`),
-          ].join(',');
+            ...categorySearchTerms.map((term) => `test_name.ilike.%${term}%`),
+            ...categorySearchTerms.map((term) => `description.ilike.%${term}%`),
+          ].join(",");
           query = query.or(orConditions);
         }
       }
     }
 
-    if (!providers.includes('all')) {
-      query = query.in('provider_id', providers);
+    if (!providers.includes("all")) {
+      query = query.in("provider_id", providers);
     } else {
-      query = query.in('provider_id', getSupportedProviderIds());
+      query = query.in("provider_id", getSupportedProviderIds());
     }
 
     return query;
   }
-
 
   /**
    * Build search query for tests. Scopes to the active category (if any)
@@ -105,41 +105,41 @@ export class TestQueryBuilder {
    */
   static buildSearchQuery(
     searchTerm: string,
-    providers: string[] = ['all'],
+    providers: string[] = ["all"],
     category?: string,
   ) {
     if (!searchTerm.trim()) {
-      throw new Error('Search term cannot be empty');
+      throw new Error("Search term cannot be empty");
     }
 
-    const safeTerm = searchTerm.replace(/[(),]/g, ' ').trim();
+    const safeTerm = searchTerm.replace(/[(),]/g, " ").trim();
 
     let query = supabase
-      .from('provider_tests')
+      .from("provider_tests")
       .select(COMPARE_SELECT)
-      .eq('is_active', true)
+      .eq("is_active", true)
       .or(
         [
           `test_name.ilike.%${safeTerm}%`,
           `description.ilike.%${safeTerm}%`,
           `category.ilike.%${safeTerm}%`,
           `canonical_category.ilike.%${safeTerm}%`,
-        ].join(',')
+        ].join(","),
       )
-      .order('price', { ascending: true })
+      .order("price", { ascending: true })
       .limit(DEFAULT_LIMIT);
 
-    if (category && category !== 'all') {
+    if (category && category !== "all") {
       const canonicals = getCanonicalCategoriesForSlug(category);
       if (canonicals && canonicals.length > 0) {
-        query = query.in('canonical_category', canonicals);
+        query = query.in("canonical_category", canonicals);
       }
     }
 
-    if (!providers.includes('all')) {
-      query = query.in('provider_id', providers);
+    if (!providers.includes("all")) {
+      query = query.in("provider_id", providers);
     } else {
-      query = query.in('provider_id', getSupportedProviderIds());
+      query = query.in("provider_id", getSupportedProviderIds());
     }
 
     return query;
@@ -150,9 +150,9 @@ export class TestQueryBuilder {
    */
   static buildCategoriesQuery() {
     return supabase
-      .from('provider_tests')
-      .select('category, canonical_category')
-      .eq('is_active', true)
-      .in('provider_id', getSupportedProviderIds());
+      .from("provider_tests")
+      .select("category, canonical_category")
+      .eq("is_active", true)
+      .in("provider_id", getSupportedProviderIds());
   }
 }

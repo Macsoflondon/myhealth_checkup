@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Bookmark } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import React, { useState } from "react";
+import { Bookmark } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -9,10 +9,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 interface SaveComparisonDialogProps {
   onSave: (name: string, notes?: string) => Promise<unknown>;
@@ -20,22 +20,26 @@ interface SaveComparisonDialogProps {
   testCount: number;
 }
 
-export function SaveComparisonDialog({ onSave, disabled, testCount }: SaveComparisonDialogProps) {
+export function SaveComparisonDialog({
+  onSave,
+  disabled,
+  testCount,
+}: SaveComparisonDialogProps) {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState('');
-  const [notes, setNotes] = useState('');
+  const [name, setName] = useState("");
+  const [notes, setNotes] = useState("");
   const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async () => {
     if (!name.trim()) return;
-    
+
     setIsSaving(true);
     try {
       const result = await onSave(name.trim(), notes.trim() || undefined);
       if (result) {
         setOpen(false);
-        setName('');
-        setNotes('');
+        setName("");
+        setNotes("");
       }
     } finally {
       setIsSaving(false);
@@ -45,8 +49,8 @@ export function SaveComparisonDialog({ onSave, disabled, testCount }: SaveCompar
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           disabled={disabled || testCount < 2}
           className="gap-2"
         >
@@ -58,7 +62,8 @@ export function SaveComparisonDialog({ onSave, disabled, testCount }: SaveCompar
         <DialogHeader>
           <DialogTitle className="font-heading">Save Comparison</DialogTitle>
           <DialogDescription>
-            Save this comparison of {testCount} tests to access it later from your dashboard.
+            Save this comparison of {testCount} tests to access it later from
+            your dashboard.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 py-4">
@@ -86,12 +91,12 @@ export function SaveComparisonDialog({ onSave, disabled, testCount }: SaveCompar
           <Button variant="outline" onClick={() => setOpen(false)}>
             Cancel
           </Button>
-          <Button 
-            onClick={handleSave} 
+          <Button
+            onClick={handleSave}
             disabled={!name.trim() || isSaving}
             className="bg-[#e70d69] hover:bg-[#e70d69]/90"
           >
-            {isSaving ? 'Saving...' : 'Save Comparison'}
+            {isSaving ? "Saving..." : "Save Comparison"}
           </Button>
         </DialogFooter>
       </DialogContent>

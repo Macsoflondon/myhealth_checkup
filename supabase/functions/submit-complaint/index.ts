@@ -5,7 +5,6 @@ import { Resend } from "https://esm.sh/resend@2.0.0";
 const RATE_LIMIT_MAX = 5; // max submissions per IP
 const RATE_LIMIT_WINDOW_MIN = 60; // minutes
 
-
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -42,12 +41,17 @@ const json = (data: unknown, status = 200) =>
   });
 
 const esc = (s: string) =>
-  s.replace(/[&<>"']/g, (c) =>
-    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]!),
+  s.replace(
+    /[&<>"']/g,
+    (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        c
+      ]!,
   );
 
 serve(async (req: Request) => {
-  if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
+  if (req.method === "OPTIONS")
+    return new Response(null, { headers: corsHeaders });
   if (req.method !== "POST") return json({ error: "Method not allowed" }, 405);
 
   try {
@@ -73,7 +77,9 @@ serve(async (req: Request) => {
       return json({ error: "Please choose a valid category." }, 400);
     if (message.length < 20)
       return json(
-        { error: "Please provide at least 20 characters describing the issue." },
+        {
+          error: "Please provide at least 20 characters describing the issue.",
+        },
         400,
       );
     if (!consent)
@@ -180,6 +186,9 @@ serve(async (req: Request) => {
     return json({ ok: true, reference });
   } catch (err) {
     console.error("[submit-complaint] error", err);
-    return json({ error: "Something went wrong. Please try again later." }, 500);
+    return json(
+      { error: "Something went wrong. Please try again later." },
+      500,
+    );
   }
 });

@@ -4,15 +4,20 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 import { z } from "https://esm.sh/zod@3.23.8";
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-service-key, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, x-service-key, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 // Shared error helper — narrows `unknown` thrown values to a string message.
 function getErrorMessage(e: unknown): string {
   if (e instanceof Error) return e.message;
-  if (typeof e === 'string') return e;
-  try { return JSON.stringify(e); } catch { return String(e); }
+  if (typeof e === "string") return e;
+  try {
+    return JSON.stringify(e);
+  } catch {
+    return String(e);
+  }
 }
 
 // Runtime schemas for DB rows — guarantees TS sees concrete types, never `unknown`.
@@ -37,11 +42,13 @@ const MasterTestSchema = z.object({
 type ProviderTestZ = z.infer<typeof ProviderTestSchema>;
 type MasterTestZ = z.infer<typeof MasterTestSchema>;
 
-const RequestBodySchema = z.object({
-  dryRun: z.boolean().optional().default(true),
-  confidenceThreshold: z.number().min(0).max(100).optional().default(75),
-  batchSize: z.number().int().min(1).max(50).optional().default(10),
-}).default({});
+const RequestBodySchema = z
+  .object({
+    dryRun: z.boolean().optional().default(true),
+    confidenceThreshold: z.number().min(0).max(100).optional().default(75),
+    batchSize: z.number().int().min(1).max(50).optional().default(10),
+  })
+  .default({});
 
 interface ProviderTest {
   id: string;
@@ -87,32 +94,32 @@ interface MappingResult {
   }>;
 }
 
-const OPENAI_API_KEY = Deno.env.get('OPENAI_API_KEY');
-const SUPABASE_URL = Deno.env.get('SUPABASE_URL')!;
-const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
+const OPENAI_API_KEY = Deno.env.get("OPENAI_API_KEY");
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 
 // Provider ID to prefix mapping
 const PROVIDER_PREFIXES: Record<string, string> = {
-  'medichecks': 'MED',
-  'lola-health': 'LOL',
-  'goodbody-clinic': 'GOO',
-  'london-medical-laboratory': 'LML',
-  'randox': 'RAN',
+  medichecks: "MED",
+  "lola-health": "LOL",
+  "goodbody-clinic": "GOO",
+  "london-medical-laboratory": "LML",
+  randox: "RAN",
 };
 
 async function generateProviderTestId(
   supabase: ReturnType<typeof createClient>,
-  providerId: string
+  providerId: string,
 ): Promise<string> {
-  const prefix = PROVIDER_PREFIXES[providerId] || 'UNK';
-  
+  const prefix = PROVIDER_PREFIXES[providerId] || "UNK";
+
   // Get highest existing sequence number for this provider
   const { data: existing } = await supabase
-    .from('provider_test_mapping')
-    .select('provider_test_id')
-    .eq('provider_id', providerId)
-    .like('provider_test_id', `${prefix}%`)
-    .order('provider_test_id', { ascending: false })
+    .from("provider_test_mapping")
+    .select("provider_test_id")
+    .eq("provider_id", providerId)
+    .like("provider_test_id", `${prefix}%`)
+    .order("provider_test_id", { ascending: false })
     .limit(1);
 
   let nextSequence = 1;
@@ -123,49 +130,53 @@ async function generateProviderTestId(
     }
   }
 
-  return `${prefix}${nextSequence.toString().padStart(3, '0')}`;
+  return `${prefix}${nextSequence.toString().padStart(3, "0")}`;
 }
 
 async function callOpenAIWithRetry(
   prompt: string,
-  maxRetries = 3
+  maxRetries = 3,
 ): Promise<{ mappings: AIMapping[] }> {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       console.log(`OpenAI API call attempt ${attempt}/${maxRetries}`);
-      
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${OPENAI_API_KEY}`,
-          'Content-Type': 'application/json',
+
+      const response = await fetch(
+        "https://api.openai.com/v1/chat/completions",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${OPENAI_API_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "gpt-5-2025-08-07",
+            messages: [
+              {
+                role: "system",
+                content:
+                  "You are a medical test mapping expert. Analyze blood tests and match them to standardized master tests based on semantic similarity, clinical purpose, and biomarker alignment. Always return valid JSON.",
+              },
+              {
+                role: "user",
+                content: prompt,
+              },
+            ],
+            max_completion_tokens: 4000,
+          }),
         },
-        body: JSON.stringify({
-          model: 'gpt-5-2025-08-07',
-          messages: [
-            {
-              role: 'system',
-              content: 'You are a medical test mapping expert. Analyze blood tests and match them to standardized master tests based on semantic similarity, clinical purpose, and biomarker alignment. Always return valid JSON.'
-            },
-            {
-              role: 'user',
-              content: prompt
-            }
-          ],
-          max_completion_tokens: 4000,
-        }),
-      });
+      );
 
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`OpenAI API error (${response.status}):`, errorText);
-        
+
         if (response.status === 429 || response.status >= 500) {
           // Retry on rate limits or server errors
           if (attempt < maxRetries) {
             const delay = Math.pow(2, attempt) * 1000; // Exponential backoff
             console.log(`Retrying after ${delay}ms...`);
-            await new Promise(resolve => setTimeout(resolve, delay));
+            await new Promise((resolve) => setTimeout(resolve, delay));
             continue;
           }
         }
@@ -174,34 +185,33 @@ async function callOpenAIWithRetry(
 
       const data = await response.json();
       const content = data.choices[0].message.content;
-      
+
       // Parse JSON response
       const jsonMatch = content.match(/\{[\s\S]*\}/);
       if (!jsonMatch) {
-        throw new Error('No JSON found in OpenAI response');
+        throw new Error("No JSON found in OpenAI response");
       }
-      
+
       const parsed = JSON.parse(jsonMatch[0]);
       return parsed;
-      
     } catch (error) {
       console.error(`Attempt ${attempt} failed:`, error);
       if (attempt === maxRetries) {
         throw error;
       }
       // Wait before retry
-      await new Promise(resolve => setTimeout(resolve, 2000 * attempt));
+      await new Promise((resolve) => setTimeout(resolve, 2000 * attempt));
     }
   }
-  
-  throw new Error('All retry attempts failed');
+
+  throw new Error("All retry attempts failed");
 }
 
 async function processBatch(
   providerTests: ProviderTestZ[],
   masterTests: MasterTestZ[],
   supabase: ReturnType<typeof createClient>,
-  dryRun: boolean
+  dryRun: boolean,
 ): Promise<{
   mapped: number;
   review: number;
@@ -210,21 +220,23 @@ async function processBatch(
   reviewNeeded: Array<Record<string, unknown>>;
 }> {
   console.log(`Processing batch of ${providerTests.length} tests`);
-  
+
   const prompt = `You are a medical test mapping expert. Your task is to match provider blood tests to standardized master tests based on semantic similarity.
 
 PROVIDER TESTS TO MAP:
-${providerTests.map(t => `- ${t.test_name} (${t.category || 'Uncategorized'}): ${t.description || 'No description available'}`).join('\n')}
+${providerTests.map((t) => `- ${t.test_name} (${t.category || "Uncategorized"}): ${t.description || "No description available"}`).join("\n")}
 
 MASTER TESTS DATABASE:
-${masterTests.map(t => {
-  const biomarkers = Array.isArray(t.biomarkers) 
-    ? t.biomarkers.join(', ') 
-    : (typeof t.biomarkers === 'object' && t.biomarkers !== null)
-      ? JSON.stringify(t.biomarkers)
-      : 'No biomarkers listed';
-  return `- ${t.test_name} (${t.category}${t.subcategory ? ' / ' + t.subcategory : ''}): ${t.description}\n  Biomarkers: ${biomarkers}`;
-}).join('\n\n')}
+${masterTests
+  .map((t) => {
+    const biomarkers = Array.isArray(t.biomarkers)
+      ? t.biomarkers.join(", ")
+      : typeof t.biomarkers === "object" && t.biomarkers !== null
+        ? JSON.stringify(t.biomarkers)
+        : "No biomarkers listed";
+    return `- ${t.test_name} (${t.category}${t.subcategory ? " / " + t.subcategory : ""}): ${t.description}\n  Biomarkers: ${biomarkers}`;
+  })
+  .join("\n\n")}
 
 For each provider test, identify the best matching master test. Return JSON in this exact format:
 {
@@ -257,7 +269,7 @@ Only include matches with confidence ≥ 60. If no good match exists, omit that 
   try {
     aiResponse = await callOpenAIWithRetry(prompt);
   } catch (error) {
-    console.error('Failed to get AI response:', error);
+    console.error("Failed to get AI response:", error);
     throw error;
   }
 
@@ -268,40 +280,55 @@ Only include matches with confidence ≥ 60. If no good match exists, omit that 
   const reviewNeeded: Array<Record<string, unknown>> = [];
 
   for (const mapping of aiResponse.mappings) {
-    const providerTest = providerTests.find(t => t.test_name === mapping.provider_test_name);
+    const providerTest = providerTests.find(
+      (t) => t.test_name === mapping.provider_test_name,
+    );
     if (!providerTest) {
       console.warn(`Provider test not found: ${mapping.provider_test_name}`);
       continue;
     }
 
-    console.log(`${providerTest.test_name} → ${mapping.master_test_name} (${mapping.confidence_score}%): ${mapping.reasoning}`);
+    console.log(
+      `${providerTest.test_name} → ${mapping.master_test_name} (${mapping.confidence_score}%): ${mapping.reasoning}`,
+    );
 
     if (mapping.confidence_score >= 75) {
       // High confidence - auto-map (Day 1: 75% threshold for launch blitz)
       if (!dryRun) {
         try {
-          const providerTestId = await generateProviderTestId(supabase, providerTest.provider_id);
-          
+          const providerTestId = await generateProviderTestId(
+            supabase,
+            providerTest.provider_id,
+          );
+
           const { error: insertError } = await supabase
-            .from('provider_test_mapping')
+            .from("provider_test_mapping")
             .insert({
               provider_id: providerTest.provider_id,
               provider_test_id: providerTestId,
               provider_test_name: providerTest.test_name,
               test_master_id: mapping.master_test_id,
               current_price: providerTest.price,
-              availability_status: 'available',
+              availability_status: "available",
               last_scraped_at: new Date().toISOString(),
             });
 
           if (insertError) {
-            console.error(`Failed to insert mapping for ${providerTest.test_name}:`, insertError);
+            console.error(
+              `Failed to insert mapping for ${providerTest.test_name}:`,
+              insertError,
+            );
             continue;
           }
 
-          console.log(`✓ Mapped: ${providerTest.test_name} → ${mapping.master_test_name}`);
+          console.log(
+            `✓ Mapped: ${providerTest.test_name} → ${mapping.master_test_name}`,
+          );
         } catch (error) {
-          console.error(`Error creating mapping for ${providerTest.test_name}:`, error);
+          console.error(
+            `Error creating mapping for ${providerTest.test_name}:`,
+            error,
+          );
           continue;
         }
       }
@@ -321,20 +348,28 @@ Only include matches with confidence ≥ 60. If no good match exists, omit that 
         test: providerTest.test_name,
         suggestions: [mapping],
       });
-      console.log(`? Review needed: ${providerTest.test_name} (${mapping.confidence_score}%)`);
+      console.log(
+        `? Review needed: ${providerTest.test_name} (${mapping.confidence_score}%)`,
+      );
     } else {
       // Low confidence - skip
       skipped++;
-      console.log(`✗ Skipped: ${providerTest.test_name} (${mapping.confidence_score}% too low)`);
+      console.log(
+        `✗ Skipped: ${providerTest.test_name} (${mapping.confidence_score}% too low)`,
+      );
     }
   }
 
   // Handle provider tests with no AI suggestions (confidence < 60)
-  const suggestedTests = new Set(aiResponse.mappings.map(m => m.provider_test_name));
+  const suggestedTests = new Set(
+    aiResponse.mappings.map((m) => m.provider_test_name),
+  );
   for (const providerTest of providerTests) {
     if (!suggestedTests.has(providerTest.test_name)) {
       skipped++;
-      console.log(`✗ Skipped: ${providerTest.test_name} (no suitable match found)`);
+      console.log(
+        `✗ Skipped: ${providerTest.test_name} (no suitable match found)`,
+      );
     }
   }
 
@@ -342,66 +377,88 @@ Only include matches with confidence ≥ 60. If no good match exists, omit that 
 }
 
 serve(async (req) => {
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
     // Authentication: support service-key bypass OR admin JWT
-    const serviceKeyHeader = req.headers.get('x-service-key');
-    const authHeader = req.headers.get('Authorization');
+    const serviceKeyHeader = req.headers.get("x-service-key");
+    const authHeader = req.headers.get("Authorization");
     let supabase: ReturnType<typeof createClient>;
 
     if (serviceKeyHeader && serviceKeyHeader === SUPABASE_SERVICE_ROLE_KEY) {
       // Service-key bypass for automated/CLI invocations
-      console.log('Authorized via service-key bypass');
+      console.log("Authorized via service-key bypass");
       supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
     } else if (authHeader) {
       // Standard admin JWT flow
-      const SUPABASE_ANON_KEY = Deno.env.get('SUPABASE_ANON_KEY')!;
-      
+      const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
+
       const userClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-        global: { headers: { Authorization: authHeader } }
+        global: { headers: { Authorization: authHeader } },
       });
-      
-      const { data: { user }, error: userError } = await userClient.auth.getUser();
+
+      const {
+        data: { user },
+        error: userError,
+      } = await userClient.auth.getUser();
       if (userError || !user) {
-        console.error('Failed to get user:', userError);
+        console.error("Failed to get user:", userError);
         return new Response(
-          JSON.stringify({ error: 'Unauthorized: Invalid token' }),
-          { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          JSON.stringify({ error: "Unauthorized: Invalid token" }),
+          {
+            status: 401,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
         );
       }
 
       supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-      
-      const { data: isAdmin, error: roleError } = await supabase.rpc('has_role', {
-        _user_id: user.id,
-        _role: 'admin'
-      });
+
+      const { data: isAdmin, error: roleError } = await supabase.rpc(
+        "has_role",
+        {
+          _user_id: user.id,
+          _role: "admin",
+        },
+      );
 
       if (roleError) {
-        console.error('Failed to check admin role:', roleError);
+        console.error("Failed to check admin role:", roleError);
         return new Response(
-          JSON.stringify({ error: 'Failed to verify permissions' }),
-          { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          JSON.stringify({ error: "Failed to verify permissions" }),
+          {
+            status: 500,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
         );
       }
 
       if (!isAdmin) {
-        console.error(`User ${user.id} attempted admin operation without admin role`);
+        console.error(
+          `User ${user.id} attempted admin operation without admin role`,
+        );
         return new Response(
-          JSON.stringify({ error: 'Forbidden: Admin access required' }),
-          { status: 403, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+          JSON.stringify({ error: "Forbidden: Admin access required" }),
+          {
+            status: 403,
+            headers: { ...corsHeaders, "Content-Type": "application/json" },
+          },
         );
       }
 
       console.log(`Admin ${user.id} authorized for AI test mapper operation`);
     } else {
-      console.error('No authorization provided');
+      console.error("No authorization provided");
       return new Response(
-        JSON.stringify({ error: 'Unauthorized: No authorization header or service key' }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({
+          error: "Unauthorized: No authorization header or service key",
+        }),
+        {
+          status: 401,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
 
@@ -414,26 +471,32 @@ serve(async (req) => {
     const bodyParse = RequestBodySchema.safeParse(rawBody);
     if (!bodyParse.success) {
       return new Response(
-        JSON.stringify({ error: 'Invalid request body', details: bodyParse.error.flatten() }),
-        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        JSON.stringify({
+          error: "Invalid request body",
+          details: bodyParse.error.flatten(),
+        }),
+        {
+          status: 400,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
       );
     }
     const { dryRun, confidenceThreshold, batchSize } = bodyParse.data;
 
-    console.log('=== AI Test Mapper Started ===');
-    console.log(`Mode: ${dryRun ? 'DRY RUN' : 'LIVE'}`);
+    console.log("=== AI Test Mapper Started ===");
+    console.log(`Mode: ${dryRun ? "DRY RUN" : "LIVE"}`);
     console.log(`Confidence threshold: ${confidenceThreshold}`);
     console.log(`Batch size: ${batchSize}`);
 
     if (!OPENAI_API_KEY) {
-      throw new Error('OPENAI_API_KEY not configured');
+      throw new Error("OPENAI_API_KEY not configured");
     }
 
     // Fetch all master tests
     const { data: masterTests_raw, error: masterError } = await supabase
-      .from('tests_master')
-      .select('id, test_name, category, subcategory, description, biomarkers')
-      .eq('is_active', true);
+      .from("tests_master")
+      .select("id, test_name, category, subcategory, description, biomarkers")
+      .eq("is_active", true);
 
     if (masterError) throw masterError;
     const masterTests = z.array(MasterTestSchema).parse(masterTests_raw ?? []);
@@ -441,38 +504,44 @@ serve(async (req) => {
 
     // Fetch unmapped provider tests
     const { data: allProviderTests_raw, error: providerError } = await supabase
-      .from('provider_tests')
-      .select('id, provider_id, test_name, category, description, price')
-      .eq('is_active', true);
+      .from("provider_tests")
+      .select("id, provider_id, test_name, category, description, price")
+      .eq("is_active", true);
 
     if (providerError) throw providerError;
-    const allProviderTests = z.array(ProviderTestSchema).parse(allProviderTests_raw ?? []);
+    const allProviderTests = z
+      .array(ProviderTestSchema)
+      .parse(allProviderTests_raw ?? []);
 
     // Filter out already mapped tests
     const { data: existingMappings } = await supabase
-      .from('provider_test_mapping')
-      .select('provider_id, provider_test_name');
+      .from("provider_test_mapping")
+      .select("provider_id, provider_test_name");
 
     const mappedTestKeys = new Set(
-      existingMappings?.map(m => `${m.provider_id}:${m.provider_test_name}`) || []
+      existingMappings?.map(
+        (m) => `${m.provider_id}:${m.provider_test_name}`,
+      ) || [],
     );
 
     const unmappedTests = allProviderTests.filter(
-      t => !mappedTestKeys.has(`${t.provider_id}:${t.test_name}`)
+      (t) => !mappedTestKeys.has(`${t.provider_id}:${t.test_name}`),
     );
 
-    console.log(`Found ${unmappedTests.length} unmapped provider tests (${allProviderTests.length} total)`);
+    console.log(
+      `Found ${unmappedTests.length} unmapped provider tests (${allProviderTests.length} total)`,
+    );
 
     if (unmappedTests.length === 0) {
       return new Response(
         JSON.stringify({
-          message: 'No unmapped tests found',
+          message: "No unmapped tests found",
           total_processed: 0,
           high_confidence_mapped: 0,
           medium_confidence_review: 0,
           low_confidence_skipped: 0,
         }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+        { headers: { ...corsHeaders, "Content-Type": "application/json" } },
       );
     }
 
@@ -488,9 +557,16 @@ serve(async (req) => {
     // Process in batches
     for (let i = 0; i < unmappedTests.length; i += batchSize) {
       const batch = unmappedTests.slice(i, i + batchSize);
-      console.log(`\n--- Processing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(unmappedTests.length / batchSize)} ---`);
+      console.log(
+        `\n--- Processing batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(unmappedTests.length / batchSize)} ---`,
+      );
 
-      const batchResult = await processBatch(batch, masterTests, supabase, dryRun);
+      const batchResult = await processBatch(
+        batch,
+        masterTests,
+        supabase,
+        dryRun,
+      );
 
       result.total_processed += batch.length;
       result.high_confidence_mapped += batchResult.mapped;
@@ -501,36 +577,34 @@ serve(async (req) => {
 
       // Add delay between batches to respect rate limits
       if (i + batchSize < unmappedTests.length) {
-        console.log('Waiting 2s before next batch...');
-        await new Promise(resolve => setTimeout(resolve, 2000));
+        console.log("Waiting 2s before next batch...");
+        await new Promise((resolve) => setTimeout(resolve, 2000));
       }
     }
 
-    console.log('\n=== AI Test Mapper Complete ===');
+    console.log("\n=== AI Test Mapper Complete ===");
     console.log(`Total processed: ${result.total_processed}`);
     console.log(`High confidence mapped: ${result.high_confidence_mapped}`);
-    console.log(`Medium confidence (review): ${result.medium_confidence_review}`);
+    console.log(
+      `Medium confidence (review): ${result.medium_confidence_review}`,
+    );
     console.log(`Low confidence (skipped): ${result.low_confidence_skipped}`);
 
-    return new Response(
-      JSON.stringify(result),
-      {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 200,
-      }
-    );
-
+    return new Response(JSON.stringify(result), {
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 200,
+    });
   } catch (error) {
-    console.error('AI Test Mapper error:', error);
+    console.error("AI Test Mapper error:", error);
     return new Response(
       JSON.stringify({
         error: getErrorMessage(error),
         details: error instanceof Error ? error.stack : undefined,
       }),
       {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
         status: 500,
-      }
+      },
     );
   }
 });

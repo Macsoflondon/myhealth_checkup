@@ -119,7 +119,9 @@ export const AT_HOME_SECTIONS: AtHomeSectionDef[] = [
   },
 ];
 
-export function findAtHomeSection(slug: string | null | undefined): AtHomeSectionDef | null {
+export function findAtHomeSection(
+  slug: string | null | undefined,
+): AtHomeSectionDef | null {
   if (!slug) return null;
   return AT_HOME_SECTIONS.find((s) => s.slug === slug) ?? null;
 }

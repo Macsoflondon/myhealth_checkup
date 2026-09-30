@@ -15,7 +15,9 @@ export const GlobalComparisonBar = () => {
     <ComparisonBar
       selectedTests={compareItems}
       onRemoveTest={(id) => compareStore.remove(id)}
-      onCompare={() => navigate(compareResultsPath(compareItems.map((t) => t.id)))}
+      onCompare={() =>
+        navigate(compareResultsPath(compareItems.map((t) => t.id)))
+      }
       onClearAll={() => compareStore.clear()}
     />
   );

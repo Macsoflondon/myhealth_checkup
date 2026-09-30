@@ -7,9 +7,23 @@ import { ArrowRight, Target, Shield, Clock } from "lucide-react";
 import { goalPages } from "@/data/goalPages";
 
 const BENEFITS = [
-  { icon: Target, title: "Outcome-led matching", description: "Start with the goal you're working towards and see the panels that support it" },
-  { icon: Shield, title: "UKAS accredited labs", description: "Every listed provider uses UKAS-accredited UK laboratories" },
-  { icon: Clock, title: "Clear turnaround", description: "Typical result times shown alongside price and biomarker coverage" },
+  {
+    icon: Target,
+    title: "Outcome-led matching",
+    description:
+      "Start with the goal you're working towards and see the panels that support it",
+  },
+  {
+    icon: Shield,
+    title: "UKAS accredited labs",
+    description: "Every listed provider uses UKAS-accredited UK laboratories",
+  },
+  {
+    icon: Clock,
+    title: "Clear turnaround",
+    description:
+      "Typical result times shown alongside price and biomarker coverage",
+  },
 ] as const;
 
 const CompareByGoalPage = () => {
@@ -31,15 +45,21 @@ const CompareByGoalPage = () => {
       <StandardPageHero
         title="Compare by goal"
         strapline="Start with the outcome you're working towards and see the panels that support it, with prices and biomarker coverage side by side."
-        stats={[`${goalPages.length} health goals covered`, "UKAS accredited labs"]}
+        stats={[
+          `${goalPages.length} health goals covered`,
+          "UKAS accredited labs",
+        ]}
       />
 
       <section className="py-9 sm:py-14 lg:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white min-h-[60vh]">
         <div className="max-w-6xl mx-auto">
-
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {goalPages.map((goal) => (
-              <Link key={goal.slug} to={`/compare/goals/${goal.slug}`} className="group block h-full">
+              <Link
+                key={goal.slug}
+                to={`/compare/goals/${goal.slug}`}
+                className="group block h-full"
+              >
                 <div className="h-full rounded-2xl border border-[#081129]/10 bg-white shadow-[0_2px_12px_rgba(8,17,41,0.06)] p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-[#22c0d4]/60 hover:shadow-[0_8px_24px_rgba(8,17,41,0.10)]">
                   <div className="flex items-center gap-3 mb-3">
                     <div
@@ -52,7 +72,9 @@ const CompareByGoalPage = () => {
                       <h3 className="text-lg font-heading font-bold text-[#081129] group-hover:text-[#22c0d4] transition-colors">
                         {goal.name}
                       </h3>
-                      <p className="text-xs text-[#081129]/65 mt-0.5">{goal.shortDescription}</p>
+                      <p className="text-xs text-[#081129]/65 mt-0.5">
+                        {goal.shortDescription}
+                      </p>
                     </div>
                   </div>
                   <p className="text-sm text-[#081129]/80 mb-4 line-clamp-2">

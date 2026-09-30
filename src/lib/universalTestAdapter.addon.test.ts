@@ -7,7 +7,8 @@ import {
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 import type { CategoryTestItem } from "@/components/category/CategoryPageLayout";
 
-const NOTE = "Add-on biomarker only. Must be purchased with a full blood panel kit.";
+const NOTE =
+  "Add-on biomarker only. Must be purchased with a full blood panel kit.";
 
 const providerRow: ProviderTestCardData = {
   id: "abc",

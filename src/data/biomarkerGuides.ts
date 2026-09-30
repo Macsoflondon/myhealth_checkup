@@ -33,7 +33,12 @@ export type BiomarkerGuide = {
   /** Comparison hub the CTA links to. */
   compareHref: string;
   /** Category for the index hub grouping. */
-  category: "Hormones" | "Vitamins & Minerals" | "Organ Health" | "Inflammation & Immunity" | "General";
+  category:
+    | "Hormones"
+    | "Vitamins & Minerals"
+    | "Organ Health"
+    | "Inflammation & Immunity"
+    | "General";
 };
 
 export const biomarkerGuides: BiomarkerGuide[] = [
@@ -43,14 +48,27 @@ export const biomarkerGuides: BiomarkerGuide[] = [
     title: "Testosterone Test UK — Compare Private Blood Tests",
     description:
       "Compare private testosterone blood tests in the UK. See total and free testosterone, SHBG, prices and turnaround times from CQC-regulated providers.",
-    strapline: "Total and free testosterone, SHBG, and what the numbers typically mean.",
+    strapline:
+      "Total and free testosterone, SHBG, and what the numbers typically mean.",
     intro:
       "A testosterone test measures the level of testosterone in your blood. Private testosterone tests in the UK typically measure total testosterone, free testosterone and SHBG (sex hormone binding globulin) so you can see both the total amount and how much is biologically available.",
     biomarkers: [
-      { name: "Total testosterone", what: "The combined amount of testosterone in your blood, both bound and free." },
-      { name: "Free testosterone", what: "The fraction not bound to proteins — the portion considered biologically active." },
-      { name: "SHBG", what: "A protein that binds testosterone. High SHBG can reduce the free testosterone available to your body." },
-      { name: "Albumin", what: "Used alongside SHBG to calculate free testosterone accurately." },
+      {
+        name: "Total testosterone",
+        what: "The combined amount of testosterone in your blood, both bound and free.",
+      },
+      {
+        name: "Free testosterone",
+        what: "The fraction not bound to proteins — the portion considered biologically active.",
+      },
+      {
+        name: "SHBG",
+        what: "A protein that binds testosterone. High SHBG can reduce the free testosterone available to your body.",
+      },
+      {
+        name: "Albumin",
+        what: "Used alongside SHBG to calculate free testosterone accurately.",
+      },
     ],
     whyItMatters: [
       "Low testosterone is associated with low energy, reduced libido, mood changes and loss of muscle mass.",
@@ -85,14 +103,27 @@ export const biomarkerGuides: BiomarkerGuide[] = [
     title: "Low Testosterone Symptoms — Signs and Tests UK",
     description:
       "Recognise the signs of low testosterone in men. Common symptoms, who should test, and how to compare private testosterone tests from UK providers.",
-    strapline: "What low testosterone can feel like — and when a test is worth considering.",
+    strapline:
+      "What low testosterone can feel like — and when a test is worth considering.",
     intro:
       "Low testosterone (sometimes called low T or male hypogonadism) can cause a cluster of symptoms that build up gradually. Recognising the pattern is the first step; a blood test from an accredited UK lab is how clinicians confirm whether levels are actually low.",
     biomarkers: [
-      { name: "Total testosterone", what: "The headline measurement clinicians use to confirm low T." },
-      { name: "Free testosterone", what: "The active fraction — sometimes low even when total testosterone looks normal." },
-      { name: "LH & FSH", what: "Pituitary hormones that help identify whether the cause is testicular or pituitary." },
-      { name: "Prolactin & oestradiol", what: "Often included in advanced male hormone panels to give a fuller picture." },
+      {
+        name: "Total testosterone",
+        what: "The headline measurement clinicians use to confirm low T.",
+      },
+      {
+        name: "Free testosterone",
+        what: "The active fraction — sometimes low even when total testosterone looks normal.",
+      },
+      {
+        name: "LH & FSH",
+        what: "Pituitary hormones that help identify whether the cause is testicular or pituitary.",
+      },
+      {
+        name: "Prolactin & oestradiol",
+        what: "Often included in advanced male hormone panels to give a fuller picture.",
+      },
     ],
     whyItMatters: [
       "Symptoms overlap with many other conditions (thyroid issues, low iron, depression) — testing helps narrow it down.",
@@ -127,13 +158,23 @@ export const biomarkerGuides: BiomarkerGuide[] = [
     title: "Cortisol Test UK — Compare Private Blood Tests",
     description:
       "Compare private cortisol tests from accredited UK labs. Understand stress hormone levels, sample timing and prices side-by-side.",
-    strapline: "Your body's primary stress hormone — and how it's typically measured.",
+    strapline:
+      "Your body's primary stress hormone — and how it's typically measured.",
     intro:
       "A cortisol test measures the level of cortisol — your body's primary stress hormone — in blood, saliva or urine. Private cortisol tests in the UK are available from CQC-regulated providers, with most clinical labs preferring a morning blood sample taken between 8 and 10am.",
     biomarkers: [
-      { name: "Serum cortisol", what: "Total cortisol in the blood — the standard clinical measurement." },
-      { name: "Salivary cortisol", what: "Useful for assessing the diurnal rhythm across the day." },
-      { name: "ACTH", what: "Pituitary hormone that drives cortisol release; sometimes tested alongside cortisol." },
+      {
+        name: "Serum cortisol",
+        what: "Total cortisol in the blood — the standard clinical measurement.",
+      },
+      {
+        name: "Salivary cortisol",
+        what: "Useful for assessing the diurnal rhythm across the day.",
+      },
+      {
+        name: "ACTH",
+        what: "Pituitary hormone that drives cortisol release; sometimes tested alongside cortisol.",
+      },
     ],
     whyItMatters: [
       "Cortisol follows a daily curve — highest in the morning, lowest around midnight.",
@@ -172,11 +213,26 @@ export const biomarkerGuides: BiomarkerGuide[] = [
     intro:
       "Ferritin is a protein that stores iron in your body — measuring it is the most reliable single test for iron deficiency. A full iron profile also measures serum iron, transferrin and transferrin saturation to distinguish low stores from other causes of low iron.",
     biomarkers: [
-      { name: "Ferritin", what: "The main store of iron in your body — low ferritin is the earliest sign of iron deficiency." },
-      { name: "Serum iron", what: "The amount of iron currently circulating in your blood." },
-      { name: "Transferrin", what: "The protein that carries iron around the body." },
-      { name: "Transferrin saturation", what: "How much of your transferrin is actually carrying iron." },
-      { name: "TIBC", what: "Total iron-binding capacity — your blood's ability to bind iron." },
+      {
+        name: "Ferritin",
+        what: "The main store of iron in your body — low ferritin is the earliest sign of iron deficiency.",
+      },
+      {
+        name: "Serum iron",
+        what: "The amount of iron currently circulating in your blood.",
+      },
+      {
+        name: "Transferrin",
+        what: "The protein that carries iron around the body.",
+      },
+      {
+        name: "Transferrin saturation",
+        what: "How much of your transferrin is actually carrying iron.",
+      },
+      {
+        name: "TIBC",
+        what: "Total iron-binding capacity — your blood's ability to bind iron.",
+      },
     ],
     whyItMatters: [
       "Iron deficiency is one of the most common nutritional deficiencies, particularly in women of reproductive age.",
@@ -207,11 +263,15 @@ export const biomarkerGuides: BiomarkerGuide[] = [
     title: "Vitamin D Blood Test UK — Compare Private Tests",
     description:
       "Compare private vitamin D blood tests in the UK. Check your 25-OH vitamin D level with home finger-prick or clinic tests from accredited labs.",
-    strapline: "25-OH vitamin D is the standard measurement of your vitamin D status.",
+    strapline:
+      "25-OH vitamin D is the standard measurement of your vitamin D status.",
     intro:
       "A vitamin D blood test measures 25-hydroxyvitamin D — known as 25-OH D — which is the form clinicians use to assess vitamin D status. In the UK, deficiency is common between October and March when sunlight exposure is limited.",
     biomarkers: [
-      { name: "25-OH Vitamin D", what: "The storage form of vitamin D and the standard clinical measurement." },
+      {
+        name: "25-OH Vitamin D",
+        what: "The storage form of vitamin D and the standard clinical measurement.",
+      },
     ],
     whyItMatters: [
       "Vitamin D supports bone health, immune function and muscle function.",
@@ -242,14 +302,27 @@ export const biomarkerGuides: BiomarkerGuide[] = [
     title: "Thyroid Test UK — TSH, FT4 and FT3 Compared",
     description:
       "Compare private thyroid blood tests in the UK. Understand TSH, FT4, FT3 and thyroid antibodies from CQC-regulated providers.",
-    strapline: "TSH, FT4, FT3 and thyroid antibodies — what each marker actually tells you.",
+    strapline:
+      "TSH, FT4, FT3 and thyroid antibodies — what each marker actually tells you.",
     intro:
       "A thyroid test measures the hormones that regulate your metabolism. A basic thyroid screen looks at TSH (thyroid stimulating hormone), while an advanced panel adds FT4, FT3 and thyroid antibodies to give a complete picture of how your thyroid is functioning.",
     biomarkers: [
-      { name: "TSH", what: "Made by the pituitary — the most sensitive single screen for thyroid problems." },
-      { name: "Free T4 (FT4)", what: "The main hormone produced by the thyroid gland." },
-      { name: "Free T3 (FT3)", what: "The active hormone that drives metabolism in your cells." },
-      { name: "TPO antibodies", what: "Raised in autoimmune thyroid conditions such as Hashimoto's." },
+      {
+        name: "TSH",
+        what: "Made by the pituitary — the most sensitive single screen for thyroid problems.",
+      },
+      {
+        name: "Free T4 (FT4)",
+        what: "The main hormone produced by the thyroid gland.",
+      },
+      {
+        name: "Free T3 (FT3)",
+        what: "The active hormone that drives metabolism in your cells.",
+      },
+      {
+        name: "TPO antibodies",
+        what: "Raised in autoimmune thyroid conditions such as Hashimoto's.",
+      },
     ],
     whyItMatters: [
       "Thyroid issues are common and often missed — symptoms overlap with stress, low iron and menopause.",
@@ -284,12 +357,27 @@ export const biomarkerGuides: BiomarkerGuide[] = [
     intro:
       "A liver function test (LFT) is a blood test that checks how well your liver is working. It measures a panel of enzymes and proteins — ALT, AST, ALP, GGT, bilirubin and albumin — that can flag liver stress, damage or disease.",
     biomarkers: [
-      { name: "ALT", what: "An enzyme released when liver cells are damaged — often the first marker to rise." },
+      {
+        name: "ALT",
+        what: "An enzyme released when liver cells are damaged — often the first marker to rise.",
+      },
       { name: "AST", what: "Another liver enzyme; useful read alongside ALT." },
-      { name: "ALP", what: "Raised in bile duct issues and some bone conditions." },
-      { name: "GGT", what: "Sensitive to alcohol intake and bile duct problems." },
-      { name: "Bilirubin", what: "A breakdown product of red blood cells; high levels can cause jaundice." },
-      { name: "Albumin", what: "The main protein made by the liver; low levels suggest chronic liver impairment." },
+      {
+        name: "ALP",
+        what: "Raised in bile duct issues and some bone conditions.",
+      },
+      {
+        name: "GGT",
+        what: "Sensitive to alcohol intake and bile duct problems.",
+      },
+      {
+        name: "Bilirubin",
+        what: "A breakdown product of red blood cells; high levels can cause jaundice.",
+      },
+      {
+        name: "Albumin",
+        what: "The main protein made by the liver; low levels suggest chronic liver impairment.",
+      },
     ],
     whyItMatters: [
       "Many liver conditions are silent in their early stages — testing can catch issues before symptoms appear.",
@@ -320,14 +408,27 @@ export const biomarkerGuides: BiomarkerGuide[] = [
     title: "Kidney Function Test UK — Creatinine, eGFR & Urea",
     description:
       "Compare private kidney function tests in the UK. Check creatinine, eGFR, urea and electrolytes from CQC-regulated providers.",
-    strapline: "Creatinine, eGFR, urea and electrolytes — the standard kidney markers.",
+    strapline:
+      "Creatinine, eGFR, urea and electrolytes — the standard kidney markers.",
     intro:
       "A kidney function test measures how well your kidneys are filtering waste. The standard panel includes creatinine, eGFR (estimated glomerular filtration rate), urea and electrolytes such as sodium and potassium.",
     biomarkers: [
-      { name: "Creatinine", what: "A waste product cleared by the kidneys — the headline marker of kidney function." },
-      { name: "eGFR", what: "A calculation that estimates how well your kidneys are filtering blood." },
-      { name: "Urea", what: "Another waste product; affected by protein intake, hydration and kidney function." },
-      { name: "Sodium & potassium", what: "Electrolytes regulated by the kidneys." },
+      {
+        name: "Creatinine",
+        what: "A waste product cleared by the kidneys — the headline marker of kidney function.",
+      },
+      {
+        name: "eGFR",
+        what: "A calculation that estimates how well your kidneys are filtering blood.",
+      },
+      {
+        name: "Urea",
+        what: "Another waste product; affected by protein intake, hydration and kidney function.",
+      },
+      {
+        name: "Sodium & potassium",
+        what: "Electrolytes regulated by the kidneys.",
+      },
     ],
     whyItMatters: [
       "Chronic kidney disease is often silent until later stages — early detection is valuable.",
@@ -358,12 +459,19 @@ export const biomarkerGuides: BiomarkerGuide[] = [
     title: "CRP Test UK — Inflammation Blood Test Compared",
     description:
       "Compare private CRP and hs-CRP tests in the UK. Measure inflammation and cardiovascular risk from accredited UK labs.",
-    strapline: "C-reactive protein — the most common marker of inflammation in the blood.",
+    strapline:
+      "C-reactive protein — the most common marker of inflammation in the blood.",
     intro:
       "A CRP test measures C-reactive protein in your blood, a marker that rises with inflammation. A high-sensitivity CRP (hs-CRP) test can also be used as part of cardiovascular risk assessment.",
     biomarkers: [
-      { name: "CRP", what: "Standard C-reactive protein — rises with infection, injury or chronic inflammation." },
-      { name: "hs-CRP", what: "High-sensitivity CRP — used to detect low-grade inflammation linked to cardiovascular risk." },
+      {
+        name: "CRP",
+        what: "Standard C-reactive protein — rises with infection, injury or chronic inflammation.",
+      },
+      {
+        name: "hs-CRP",
+        what: "High-sensitivity CRP — used to detect low-grade inflammation linked to cardiovascular risk.",
+      },
     ],
     whyItMatters: [
       "Chronic low-grade inflammation is linked to cardiovascular disease and metabolic conditions.",
@@ -394,14 +502,27 @@ export const biomarkerGuides: BiomarkerGuide[] = [
     title: "Autoimmune Blood Test UK — ANA, RF, TPO Compared",
     description:
       "Compare private autoimmune blood tests in the UK. Screen for ANA, rheumatoid factor, TPO and coeliac antibodies from accredited labs.",
-    strapline: "How autoimmune conditions are typically screened in private UK testing.",
+    strapline:
+      "How autoimmune conditions are typically screened in private UK testing.",
     intro:
       "Autoimmune blood tests look for antibodies your immune system has produced against your own tissues. Common screening tests include ANA (antinuclear antibodies), rheumatoid factor, anti-CCP, TPO antibodies and coeliac screening.",
     biomarkers: [
-      { name: "ANA", what: "A general screen for autoimmune disease, often raised in lupus and related conditions." },
-      { name: "Rheumatoid factor", what: "Used to help assess rheumatoid arthritis." },
-      { name: "Anti-CCP", what: "A more specific marker for rheumatoid arthritis than rheumatoid factor alone." },
-      { name: "TPO antibodies", what: "Raised in autoimmune thyroid disease such as Hashimoto's." },
+      {
+        name: "ANA",
+        what: "A general screen for autoimmune disease, often raised in lupus and related conditions.",
+      },
+      {
+        name: "Rheumatoid factor",
+        what: "Used to help assess rheumatoid arthritis.",
+      },
+      {
+        name: "Anti-CCP",
+        what: "A more specific marker for rheumatoid arthritis than rheumatoid factor alone.",
+      },
+      {
+        name: "TPO antibodies",
+        what: "Raised in autoimmune thyroid disease such as Hashimoto's.",
+      },
       { name: "tTG IgA", what: "First-line screen for coeliac disease." },
     ],
     whyItMatters: [
@@ -433,14 +554,27 @@ export const biomarkerGuides: BiomarkerGuide[] = [
     title: "Finger-Prick Blood Test UK — How It Works & What to Test",
     description:
       "Compare private finger-prick blood tests in the UK. Convenient home kits from accredited labs covering thyroid, hormones, vitamins and more.",
-    strapline: "Convenient home testing — what works on a finger-prick sample and what doesn't.",
+    strapline:
+      "Convenient home testing — what works on a finger-prick sample and what doesn't.",
     intro:
       "A finger-prick blood test lets you collect a small blood sample at home, then post it to an accredited UK lab. Most common biomarkers — thyroid, vitamins, hormones, cholesterol and HbA1c — can be measured reliably from a finger-prick sample.",
     biomarkers: [
-      { name: "Thyroid (TSH, FT4, FT3)", what: "Routinely tested via finger-prick by UKAS-accredited labs." },
-      { name: "Vitamins (D, B12, folate)", what: "All commonly tested from a small finger-prick sample." },
-      { name: "Hormones", what: "Testosterone, oestradiol, progesterone and others available via home kit." },
-      { name: "HbA1c & cholesterol", what: "Used to monitor diabetes risk and cardiovascular health." },
+      {
+        name: "Thyroid (TSH, FT4, FT3)",
+        what: "Routinely tested via finger-prick by UKAS-accredited labs.",
+      },
+      {
+        name: "Vitamins (D, B12, folate)",
+        what: "All commonly tested from a small finger-prick sample.",
+      },
+      {
+        name: "Hormones",
+        what: "Testosterone, oestradiol, progesterone and others available via home kit.",
+      },
+      {
+        name: "HbA1c & cholesterol",
+        what: "Used to monitor diabetes risk and cardiovascular health.",
+      },
     ],
     whyItMatters: [
       "Home finger-prick kits remove the need to visit a clinic for many tests.",
@@ -471,15 +605,31 @@ export const biomarkerGuides: BiomarkerGuide[] = [
     title: "Female Hormone Test UK — Compare Private Tests",
     description:
       "Compare private female hormone tests in the UK. Oestradiol, progesterone, LH, FSH, AMH and prolactin from CQC-regulated providers.",
-    strapline: "Oestradiol, progesterone, LH, FSH, AMH and prolactin — what each measures.",
+    strapline:
+      "Oestradiol, progesterone, LH, FSH, AMH and prolactin — what each measures.",
     intro:
       "A female hormone test measures the hormones that regulate your menstrual cycle, fertility and perimenopause. The right panel and timing depend on what you're trying to understand — cycle health, fertility, perimenopause or PCOS.",
     biomarkers: [
-      { name: "Oestradiol", what: "The main form of oestrogen — changes across the cycle and falls in menopause." },
-      { name: "Progesterone", what: "Rises after ovulation; tested mid-luteal phase to confirm ovulation." },
-      { name: "LH & FSH", what: "Pituitary hormones that drive the cycle. Raised FSH is a marker of perimenopause." },
-      { name: "AMH", what: "A marker of ovarian reserve, commonly used in fertility assessment." },
-      { name: "Prolactin", what: "Raised levels can disrupt the cycle and affect fertility." },
+      {
+        name: "Oestradiol",
+        what: "The main form of oestrogen — changes across the cycle and falls in menopause.",
+      },
+      {
+        name: "Progesterone",
+        what: "Rises after ovulation; tested mid-luteal phase to confirm ovulation.",
+      },
+      {
+        name: "LH & FSH",
+        what: "Pituitary hormones that drive the cycle. Raised FSH is a marker of perimenopause.",
+      },
+      {
+        name: "AMH",
+        what: "A marker of ovarian reserve, commonly used in fertility assessment.",
+      },
+      {
+        name: "Prolactin",
+        what: "Raised levels can disrupt the cycle and affect fertility.",
+      },
     ],
     whyItMatters: [
       "Cycle timing matters — most hormone tests are best collected on specific days of your cycle.",
@@ -510,15 +660,31 @@ export const biomarkerGuides: BiomarkerGuide[] = [
     title: "Globulin Blood Test UK — What Globulins Are & How to Test",
     description:
       "Understand globulin levels on a UK blood test. What alpha, beta and gamma globulins measure, why they matter for liver, kidney and immune health, and where to test privately.",
-    strapline: "Alpha, beta and gamma globulins — what they measure and what the numbers typically suggest.",
+    strapline:
+      "Alpha, beta and gamma globulins — what they measure and what the numbers typically suggest.",
     intro:
       "Globulins are a group of proteins made by your liver and immune system that circulate in your blood alongside albumin. On a UK private blood test, globulin is usually reported as total globulin (calculated from total protein minus albumin) and as an albumin/globulin (A/G) ratio, with specialist panels also breaking it down into alpha-1, alpha-2, beta and gamma fractions through serum protein electrophoresis.",
     biomarkers: [
-      { name: "Total globulin", what: "The combined level of all non-albumin proteins in serum. Calculated as total protein minus albumin." },
-      { name: "Albumin/globulin (A/G) ratio", what: "The balance between albumin and globulin. A shift up or down can point to liver, kidney or immune system changes." },
-      { name: "Alpha-1 & alpha-2 globulins", what: "Acute-phase proteins that rise with inflammation, infection or tissue injury." },
-      { name: "Beta globulins", what: "Includes transferrin (iron transport) and complement proteins involved in immune response." },
-      { name: "Gamma globulins (immunoglobulins)", what: "Antibodies produced by the immune system — IgG, IgA, IgM. Reported individually on immunoglobulin panels." },
+      {
+        name: "Total globulin",
+        what: "The combined level of all non-albumin proteins in serum. Calculated as total protein minus albumin.",
+      },
+      {
+        name: "Albumin/globulin (A/G) ratio",
+        what: "The balance between albumin and globulin. A shift up or down can point to liver, kidney or immune system changes.",
+      },
+      {
+        name: "Alpha-1 & alpha-2 globulins",
+        what: "Acute-phase proteins that rise with inflammation, infection or tissue injury.",
+      },
+      {
+        name: "Beta globulins",
+        what: "Includes transferrin (iron transport) and complement proteins involved in immune response.",
+      },
+      {
+        name: "Gamma globulins (immunoglobulins)",
+        what: "Antibodies produced by the immune system — IgG, IgA, IgM. Reported individually on immunoglobulin panels.",
+      },
     ],
     whyItMatters: [
       "Low globulin can suggest reduced protein production by the liver or protein loss through the kidneys or gut.",
@@ -562,5 +728,5 @@ export const guidesBySlug = (slug: string) =>
   biomarkerGuides.find((g) => g.slug === slug);
 
 export const guideCategories = Array.from(
-  new Set(biomarkerGuides.map((g) => g.category))
+  new Set(biomarkerGuides.map((g) => g.category)),
 );

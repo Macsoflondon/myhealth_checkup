@@ -20,9 +20,21 @@ const VitaminDeficiencyPage = () => (
     filters={["All"]}
     benefitsTitle="Why Test for Vitamin Deficiencies?"
     benefits={[
-      { icon: Zap, title: "Boost Energy", description: "Address fatigue from B12, iron and vitamin D deficiency" },
-      { icon: Shield, title: "Strengthen Immunity", description: "Vitamins C, D and zinc support a strong immune system" },
-      { icon: Sun, title: "Improve Mood", description: "Vitamin D, B12 and folate support mental wellbeing" },
+      {
+        icon: Zap,
+        title: "Boost Energy",
+        description: "Address fatigue from B12, iron and vitamin D deficiency",
+      },
+      {
+        icon: Shield,
+        title: "Strengthen Immunity",
+        description: "Vitamins C, D and zinc support a strong immune system",
+      },
+      {
+        icon: Sun,
+        title: "Improve Mood",
+        description: "Vitamin D, B12 and folate support mental wellbeing",
+      },
     ]}
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Vitamins" }]}
     compareUrl="/compare?category=vitamins"

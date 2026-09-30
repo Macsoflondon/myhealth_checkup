@@ -13,7 +13,7 @@ export const HealthScoreCard = () => {
   useEffect(() => {
     const loadScore = async () => {
       if (!user) return;
-      
+
       setLoading(true);
       const { data } = await healthDataApi.getLatestHealthScore(user.id);
       setScore(data);
@@ -52,7 +52,9 @@ export const HealthScoreCard = () => {
 
   return (
     <Card className="p-6 border-2">
-      <h3 className="text-xl font-semibold mb-6 text-[#081129]">Health Scores</h3>
+      <h3 className="text-xl font-semibold mb-6 text-[#081129]">
+        Health Scores
+      </h3>
 
       {!score ? (
         <div className="text-center py-8">
@@ -96,7 +98,9 @@ export const HealthScoreCard = () => {
               </div>
             </div>
             <div>
-              <p className="text-sm text-muted-foreground mb-1">Overall Health Score</p>
+              <p className="text-sm text-muted-foreground mb-1">
+                Overall Health Score
+              </p>
               <p className="text-lg font-semibold text-[#081129]">
                 {getScoreLabel(score.overall_score)}
               </p>

@@ -5,14 +5,14 @@
 
 These six items are everything still standing between the current state and a genuinely closed Phase 0. Phase 1 does not begin until all six are resolved or explicitly deferred with a recorded decision. **No production Health Intelligence tables are to be created while this list is open.** The existing marketplace, provider, catalogue, SEO and referral functionality is preserved throughout — none of these actions touches it.
 
-| Item | State after the fourth pass (14 Sep 2026) |
-| --- | --- |
-| W1 profiles vs user_profiles | **Investigation complete; retirement plan and rollback written.** Migration deliberately not executed |
-| W2 migration drift | **Parity enforcement fixed and self-tested; inventory and exclusion policy published** (`docs/MIGRATION_RECONCILIATION.md`). Marker backfill and near-miss correction outstanding; live remote diff unproven until `SUPABASE_DB_URL` exists |
-| W3 dashboard-only settings | Blocked — needs Supabase dashboard access. Now also carries the `allowed_mime_types` setting from W4 |
-| W4 bucket hardening | **Partial.** 20 MB limit set and verified; MIME allow-list not settable through the supported operation, enforced in application code only |
-| W5 storage prefix test | **Done.** Shared helper, 10 positive and negative tests, running in CI |
-| W6 architecture gap mapping | **Mapping complete; ten decisions ratified as direction.** No retirement executed, no Phase 1 table created |
+| Item                         | State after the fourth pass (14 Sep 2026)                                                                                                                                                                                                   |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| W1 profiles vs user_profiles | **Investigation complete; retirement plan and rollback written.** Migration deliberately not executed                                                                                                                                       |
+| W2 migration drift           | **Parity enforcement fixed and self-tested; inventory and exclusion policy published** (`docs/MIGRATION_RECONCILIATION.md`). Marker backfill and near-miss correction outstanding; live remote diff unproven until `SUPABASE_DB_URL` exists |
+| W3 dashboard-only settings   | Blocked — needs Supabase dashboard access. Now also carries the `allowed_mime_types` setting from W4                                                                                                                                        |
+| W4 bucket hardening          | **Partial.** 20 MB limit set and verified; MIME allow-list not settable through the supported operation, enforced in application code only                                                                                                  |
+| W5 storage prefix test       | **Done.** Shared helper, 10 positive and negative tests, running in CI                                                                                                                                                                      |
+| W6 architecture gap mapping  | **Mapping complete; ten decisions ratified as direction.** No retirement executed, no Phase 1 table created                                                                                                                                 |
 
 ---
 
@@ -34,7 +34,7 @@ Evidence is recorded in full in the third-pass section of the audit document. In
 1. Retire `public.profiles` in its own reviewed, reversible migration, separate from any feature work. Zero-risk on current evidence: no data, no grants, no dependents, no code path. Include the rollback statement in the migration comment.
 2. Rename `handle_new_user_profile()` to match the table it writes, in the same migration.
 3. Regenerate `src/integrations/supabase/types.ts` afterwards so the dead `profiles` row type disappears.
-4. Record the key-convention decision for Phase 1: `profiles.id` *is* the auth user id, whereas `user_profiles` uses a surrogate `id` plus `user_id`. `health_profiles` follows the `user_profiles` convention, because a health profile must eventually be separable from an account to support family profiles.
+4. Record the key-convention decision for Phase 1: `profiles.id` _is_ the auth user id, whereas `user_profiles` uses a surrogate `id` plus `user_id`. `health_profiles` follows the `user_profiles` convention, because a health profile must eventually be separable from an account to support family profiles.
 5. Regression-test signup end to end — a new auth user must still produce a `user_profiles`, `user_preferences` and `user_roles` row.
 
 **Acceptance:** one profile table; the trigger writes to it and is proven to fire on a real signup; no code or generated type references the retired table; auth and marketplace flows regression-tested.
@@ -47,13 +47,13 @@ Evidence is recorded in full in the third-pass section of the audit document. In
 
 ### Enumerated
 
-| Set | Count |
-| --- | --- |
-| Applied and committed | 267 |
-| Applied with no committed file | 126 |
-| of which timestamp near-miss (`+1s` CLI skew) | 12 |
-| of which true orphans | 114 |
-| Committed but never applied | 0 |
+| Set                                           | Count |
+| --------------------------------------------- | ----- |
+| Applied and committed                         | 267   |
+| Applied with no committed file                | 126   |
+| of which timestamp near-miss (`+1s` CLI skew) | 12    |
+| of which true orphans                         | 114   |
+| Committed but never applied                   | 0     |
 
 All 114 are classified in the audit document. The headline: **62 are pure catalogue DML** (junk-row cleanup, category normalisation, deduplication, price and stock corrections), 17 are security changes, and only **13 are schema-bearing** (4 `CREATE TABLE`, 8 `ADD COLUMN`, 1 authorised destructive). Every row carries `name`, `created_by` and the complete `statements` array, so nothing is lost — this is the owner's own work applied through the Lovable migration tool and never written back as files, not unattributed out-of-band SQL.
 
@@ -130,12 +130,12 @@ Actions:
 
 Every canonical entity in project knowledge is mapped against the live schema in the third-pass section of the audit document:
 
-| Class | Count |
-| --- | --- |
-| Exists and usable | 9 |
-| Exists but unsuitable or empty scaffolding | 7 |
-| Name collision requiring a decision | 5 |
-| Missing | 19 |
+| Class                                      | Count |
+| ------------------------------------------ | ----- |
+| Exists and usable                          | 9     |
+| Exists but unsuitable or empty scaffolding | 7     |
+| Name collision requiring a decision        | 5     |
+| Missing                                    | 19    |
 
 **Observation contract readiness:** no existing table supplies more than roughly half the required fields. `clinical_biomarker_history` is closest and still lacks the source/canonical value split, specimen, method, source page and text, extraction method and confidence, validation status, verification status and verifier. Phase 1 designs `observations` fresh.
 
@@ -143,12 +143,12 @@ Every canonical entity in project knowledge is mapped against the live schema in
 
 These are proposals. None has been executed, and a Phase 1 migration written against the plan's literal entity names would clash with a live table in each case.
 
-| Collision | Proposed decision | Why |
-| --- | --- | --- |
-| `biomarkers` vs `biomarker_hub` | **Keep and extend `biomarker_hub`.** Do not create `biomarkers` | 1,552 rows, already declared canonical by the uncommitted 29 Aug work, HNSW pgvector index, public catalogue read, 4,434 mapping rows, `match_biomarkers()` and the Human Context Engine all depend on it |
-| `audit_logs` | **Keep and extend.** Do not create a second | Live with 6 rows and exactly the planned shape, including `reason_code`, `purpose`, `data_classification`, `siem_exported_at` |
-| `ai_prompt_versions` | **Keep.** Populate rather than replace | Exists, empty, correct shape |
-| `consent_records` vs `user_consents` / `clinical_consent_records` | **Extend `clinical_consent_records`, retire `user_consents`** | Better shape (`expires_at`, `ip_hash`, `metadata`, `version`) and already referenced by `clinical_patient_uploads.consent_record_id`. Both empty, so free now and expensive later |
+| Collision                                                                                                  | Proposed decision                                                                                                                                                                                                   | Why                                                                                                                                                                                                                                                                                                               |
+| ---------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `biomarkers` vs `biomarker_hub`                                                                            | **Keep and extend `biomarker_hub`.** Do not create `biomarkers`                                                                                                                                                     | 1,552 rows, already declared canonical by the uncommitted 29 Aug work, HNSW pgvector index, public catalogue read, 4,434 mapping rows, `match_biomarkers()` and the Human Context Engine all depend on it                                                                                                         |
+| `audit_logs`                                                                                               | **Keep and extend.** Do not create a second                                                                                                                                                                         | Live with 6 rows and exactly the planned shape, including `reason_code`, `purpose`, `data_classification`, `siem_exported_at`                                                                                                                                                                                     |
+| `ai_prompt_versions`                                                                                       | **Keep.** Populate rather than replace                                                                                                                                                                              | Exists, empty, correct shape                                                                                                                                                                                                                                                                                      |
+| `consent_records` vs `user_consents` / `clinical_consent_records`                                          | **Extend `clinical_consent_records`, retire `user_consents`**                                                                                                                                                       | Better shape (`expires_at`, `ip_hash`, `metadata`, `version`) and already referenced by `clinical_patient_uploads.consent_record_id`. Both empty, so free now and expensive later                                                                                                                                 |
 | `observations` / `reference_ranges` vs `biomarker_readings` / `test_results` / `clinical_reference_ranges` | **New `observations`; retire `biomarker_readings`, `clinical_biomarker_history` and `test_results`; keep `clinical_reference_ranges` as the definitions table and add a separate per-observation historical range** | Neither existing table meets the observation contract. `clinical_biomarker_history` stores `ai_interpretation` and `trend_direction` on the observation row, which violates the rule that AI never creates a trusted observation and that trend mathematics is derived, not recorded as fact. All three are empty |
 
 Also to ratify: `uploaded_test_results` holds the only two rows of real user health data on the platform. The proposal is to migrate them into `clinical_patient_uploads` plus the new `observations` and retire the table — its `parsed_data` jsonb blob is precisely the undifferentiated shape the observation contract exists to replace.
@@ -167,13 +167,13 @@ Phase 0 closes (P0.11) when W1, W2, W4, W5 and W6 are done and W3 is either done
 
 ## Worklist outcome — 14 September 2026 (fifth pass)
 
-| Item | Outcome |
-| --- | --- |
-| W1 — profile model | **DONE.** `user_profiles` confirmed canonical; `public.profiles` retired in an isolated reversible migration after a clean live preflight (0 rows, 0 grants, 0 triggers, 0 inbound FKs, 0 dependent views, 0 referencing functions). `handle_new_user_profile()` deliberately not renamed — bound to the reserved `auth.users` trigger; a `COMMENT` records the true target. Signup regression green. |
-| W2 — migration drift | **DONE in the repository.** 93 non-executing marker files committed, 33 catalogue-DML versions excluded by written policy, parity tooling enforces both, 12 tests green. No historical DDL or DML replayed. Live remote diff still blocked by B5. |
-| W3 — dashboard-only controls | **OPEN, external.** Auth password/MFA policy, backups/PITR, cron inventory, live grants and storage `allowed_mime_types` all require Supabase dashboard access. Application-level enforcement stays in `src/lib/storage/testResultsPath.ts`. Not claimed as verified. |
-| W4 — bucket hardening | **DONE as far as the supported interface allows.** `test-results` private, 20 MB limit verified. MIME allow-list enforced in application code; the bucket-level setting is a dashboard residual. |
-| W5 — storage prefix | **DONE.** `<uid>/` invariant centralised, 10 positive and negative tests (traversal, prefix spoofing, cross-user) running in CI. |
-| W6 — architecture decisions | **DONE.** All ten ratified as direction and now implemented in the groundwork migration: `biomarker_hub`, `audit_logs`, `ai_prompt_versions` and `clinical_consent_records` kept canonical; `observations` created fresh with no interpretation field; per-observation historical ranges; `diagnostic_reports` and `specimens` new; contextual ranges added for cycle-aware modelling. |
+| Item                         | Outcome                                                                                                                                                                                                                                                                                                                                                                                               |
+| ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| W1 — profile model           | **DONE.** `user_profiles` confirmed canonical; `public.profiles` retired in an isolated reversible migration after a clean live preflight (0 rows, 0 grants, 0 triggers, 0 inbound FKs, 0 dependent views, 0 referencing functions). `handle_new_user_profile()` deliberately not renamed — bound to the reserved `auth.users` trigger; a `COMMENT` records the true target. Signup regression green. |
+| W2 — migration drift         | **DONE in the repository.** 93 non-executing marker files committed, 33 catalogue-DML versions excluded by written policy, parity tooling enforces both, 12 tests green. No historical DDL or DML replayed. Live remote diff still blocked by B5.                                                                                                                                                     |
+| W3 — dashboard-only controls | **OPEN, external.** Auth password/MFA policy, backups/PITR, cron inventory, live grants and storage `allowed_mime_types` all require Supabase dashboard access. Application-level enforcement stays in `src/lib/storage/testResultsPath.ts`. Not claimed as verified.                                                                                                                                 |
+| W4 — bucket hardening        | **DONE as far as the supported interface allows.** `test-results` private, 20 MB limit verified. MIME allow-list enforced in application code; the bucket-level setting is a dashboard residual.                                                                                                                                                                                                      |
+| W5 — storage prefix          | **DONE.** `<uid>/` invariant centralised, 10 positive and negative tests (traversal, prefix spoofing, cross-user) running in CI.                                                                                                                                                                                                                                                                      |
+| W6 — architecture decisions  | **DONE.** All ten ratified as direction and now implemented in the groundwork migration: `biomarker_hub`, `audit_logs`, `ai_prompt_versions` and `clinical_consent_records` kept canonical; `observations` created fresh with no interpretation field; per-observation historical ranges; `diagnostic_reports` and `specimens` new; contextual ranges added for cycle-aware modelling.                |
 
 **Exit condition restated:** W1, W2, W4, W5 and W6 are done. W3 is not done and cannot be done from this session. Phase 0 therefore stays IN PROGRESS with P0.10 and P0.11 BLOCKED on B4 and B5 — it is not being marked complete on the strength of everything else passing.

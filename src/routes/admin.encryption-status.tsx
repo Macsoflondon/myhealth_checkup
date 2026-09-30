@@ -4,10 +4,13 @@ import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 import { AdminRoute } from "@/components/auth/AdminRoute";
 import { AdminShell } from "@/components/admin/AdminShell";
 
-const AdminEncryptionStatusPage = lazy(() => import("@/pages/AdminEncryptionStatusPage"));
+const AdminEncryptionStatusPage = lazy(
+  () => import("@/pages/AdminEncryptionStatusPage"),
+);
 
 export const Route = createFileRoute("/admin/encryption-status")({
-  head: () => buildPrivateRouteHead("Encryption Status | Admin | myhealth checkup"),
+  head: () =>
+    buildPrivateRouteHead("Encryption Status | Admin | myhealth checkup"),
   component: () => (
     <AdminRoute>
       <AdminShell>

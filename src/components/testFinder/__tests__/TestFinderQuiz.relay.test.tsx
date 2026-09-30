@@ -7,13 +7,25 @@ import { TestProviders } from "@/test/test-providers";
 // Mock framer-motion to avoid animation issues in tests
 vi.mock("framer-motion", () => ({
   motion: {
-    div: ({ children, ...props }: any) => <div {...filterDomProps(props)}>{children}</div>,
+    div: ({ children, ...props }: any) => (
+      <div {...filterDomProps(props)}>{children}</div>
+    ),
   },
   AnimatePresence: ({ children }: any) => <>{children}</>,
 }));
 
 function filterDomProps(props: Record<string, any>) {
-  const { initial, animate, exit, transition, custom, whileHover, whileTap, variants, ...rest } = props;
+  const {
+    initial,
+    animate,
+    exit,
+    transition,
+    custom,
+    whileHover,
+    whileTap,
+    variants,
+    ...rest
+  } = props;
   return rest;
 }
 
@@ -23,7 +35,8 @@ vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
     functions: { invoke: (...args: unknown[]) => mockInvoke(...args) },
     auth: {
-      getSession: () => Promise.resolve({ data: { session: { user: { id: "test-user" } } } }),
+      getSession: () =>
+        Promise.resolve({ data: { session: { user: { id: "test-user" } } } }),
     },
   },
 }));
@@ -37,7 +50,9 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
 
   it("renders gender question as the first step", () => {
     render(<TestFinderQuiz />, { wrapper: TestProviders });
-    expect(screen.getByText("How would you describe your gender?")).toBeInTheDocument();
+    expect(
+      screen.getByText("How would you describe your gender?"),
+    ).toBeInTheDocument();
     expect(screen.getByText("Male")).toBeInTheDocument();
     expect(screen.getByText("Female")).toBeInTheDocument();
     expect(screen.getByText("Neither")).toBeInTheDocument();
@@ -52,7 +67,9 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
   it("navigates Male → health concerns when Male is selected", () => {
     render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Male"));
-    expect(screen.getByText("Do you have any health concerns or areas of interest?")).toBeInTheDocument();
+    expect(
+      screen.getByText("Do you have any health concerns or areas of interest?"),
+    ).toBeInTheDocument();
     expect(screen.getByText("Hormones")).toBeInTheDocument();
     expect(screen.getByText("Thyroid")).toBeInTheDocument();
     expect(screen.getByText("Prostate")).toBeInTheDocument();
@@ -61,7 +78,9 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
   it("navigates Female → health concerns when Female is selected", () => {
     render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Female"));
-    expect(screen.getByText("Do you have any health concerns or areas of interest?")).toBeInTheDocument();
+    expect(
+      screen.getByText("Do you have any health concerns or areas of interest?"),
+    ).toBeInTheDocument();
     expect(screen.getByText("Hormones")).toBeInTheDocument();
     expect(screen.getByText("Thyroid")).toBeInTheDocument();
     // No Prostate for females
@@ -71,28 +90,40 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
   it("shows contact fallback for Neither/Prefer not to say", () => {
     render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Neither"));
-    expect(screen.getByText(/direct you to the correct test/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/direct you to the correct test/i),
+    ).toBeInTheDocument();
     expect(screen.getByText("Contact us")).toBeInTheDocument();
   });
 
   it("navigates back correctly", () => {
     render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Male"));
-    expect(screen.getByText("Do you have any health concerns or areas of interest?")).toBeInTheDocument();
+    expect(
+      screen.getByText("Do you have any health concerns or areas of interest?"),
+    ).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("Back"));
-    expect(screen.getByText("How would you describe your gender?")).toBeInTheDocument();
+    expect(
+      screen.getByText("How would you describe your gender?"),
+    ).toBeInTheDocument();
   });
 
   it("progresses through Male → Thyroid → No → symptoms branch", () => {
     render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Male"));
     fireEvent.click(screen.getByText("Thyroid"));
-    expect(screen.getByText("Have you been diagnosed with a thyroid condition?")).toBeInTheDocument();
+    expect(
+      screen.getByText("Have you been diagnosed with a thyroid condition?"),
+    ).toBeInTheDocument();
 
     fireEvent.click(screen.getByText("No"));
-    expect(screen.getByText("Are you experiencing any of the following symptoms?")).toBeInTheDocument();
-    expect(screen.getByText(/Weight gain, fatigue, low mood/)).toBeInTheDocument();
+    expect(
+      screen.getByText("Are you experiencing any of the following symptoms?"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/Weight gain, fatigue, low mood/),
+    ).toBeInTheDocument();
   });
 
   it("shows Additional Context step on terminal node before AI handover", () => {
@@ -102,8 +133,12 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
 
     // Should show the Additional Context step
     expect(screen.getByText("Additional Context")).toBeInTheDocument();
-    expect(screen.getByText(/Any specific concerns or details about your lifestyle/)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /See Results/ })).toBeInTheDocument();
+    expect(
+      screen.getByText(/Any specific concerns or details about your lifestyle/),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /See Results/ }),
+    ).toBeInTheDocument();
   });
 
   it("calls ai-human-context with path and user context on See Results", async () => {
@@ -112,7 +147,16 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
         medicalDisclaimer: "Disclaimer",
         analysis: "Analysis",
         recommendedTests: [
-          { testName: "Thyroid Function", provider: "Medichecks", providerId: "mc", price: 39, reason: "Thyroid check", category: "Thyroid", urgency: "high", confidence: 92 },
+          {
+            testName: "Thyroid Function",
+            provider: "Medichecks",
+            providerId: "mc",
+            price: 39,
+            reason: "Thyroid check",
+            category: "Thyroid",
+            urgency: "high",
+            confidence: 92,
+          },
         ],
         generalGuidance: "Guidance",
         whenToSeeDoctor: "See GP if symptoms persist",
@@ -127,27 +171,34 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     fireEvent.click(screen.getByText("Male"));
     fireEvent.click(screen.getByText("Thyroid"));
     fireEvent.click(screen.getByText("No"));
-    fireEvent.click(screen.getByText(/Weight gain, fatigue, low mood, sensitivity to cold/));
+    fireEvent.click(
+      screen.getByText(/Weight gain, fatigue, low mood, sensitivity to cold/),
+    );
 
     // Should show Additional Context step
     expect(screen.getByText("Additional Context")).toBeInTheDocument();
 
     // Type in specific concerns
     const textarea = screen.getByRole("textbox");
-    fireEvent.change(textarea, { target: { value: "I have been feeling very cold and tired for 6 months" } });
+    fireEvent.change(textarea, {
+      target: { value: "I have been feeling very cold and tired for 6 months" },
+    });
 
     // Click See Results
     fireEvent.click(screen.getByRole("button", { name: /See Results/ }));
 
     // Should show analysing state
     await waitFor(() => {
-      expect(screen.getByText(/Clinically analysing your results/)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Clinically analysing your results/),
+      ).toBeInTheDocument();
     });
 
     // Verify call to ai-human-context with combined path and user context
     expect(mockInvoke).toHaveBeenCalledWith("ai-human-context", {
       body: {
-        query_text: "Path: Male \u2192 Thyroid \u2192 No \u2192 Weight gain, fatigue, low mood, sensitivity to cold | User Context: I have been feeling very cold and tired for 6 months",
+        query_text:
+          "Path: Male \u2192 Thyroid \u2192 No \u2192 Weight gain, fatigue, low mood, sensitivity to cold | User Context: I have been feeling very cold and tired for 6 months",
         gender: "male",
         age: null,
         method_preference: null,
@@ -167,7 +218,16 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
         medicalDisclaimer: "Disclaimer",
         analysis: "Bowel analysis",
         recommendedTests: [
-          { testName: "qFIT Test", provider: "Medichecks", providerId: "mc", price: 49, reason: "Bowel screening", category: "Bowel", urgency: "medium", confidence: 88 },
+          {
+            testName: "qFIT Test",
+            provider: "Medichecks",
+            providerId: "mc",
+            price: 49,
+            reason: "Bowel screening",
+            category: "Bowel",
+            urgency: "medium",
+            confidence: 88,
+          },
         ],
         generalGuidance: "Guidance",
         whenToSeeDoctor: "See GP",
@@ -187,7 +247,9 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     fireEvent.click(screen.getByRole("button", { name: /See Results/ }));
 
     await waitFor(() => {
-      expect(screen.getByText(/Clinically analysing your results/)).toBeInTheDocument();
+      expect(
+        screen.getByText(/Clinically analysing your results/),
+      ).toBeInTheDocument();
     });
 
     expect(mockInvoke).toHaveBeenCalledWith("ai-human-context", {
@@ -212,12 +274,17 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     fireEvent.click(screen.getByText("Back"));
 
     // Should be back at health concerns
-    expect(screen.getByText("Do you have any health concerns or areas of interest?")).toBeInTheDocument();
+    expect(
+      screen.getByText("Do you have any health concerns or areas of interest?"),
+    ).toBeInTheDocument();
     expect(screen.getByText("Bowel")).toBeInTheDocument();
   });
 
   it("shows error toast on API failure and returns from loading", async () => {
-    mockInvoke.mockResolvedValue({ data: null, error: new Error("Network error") });
+    mockInvoke.mockResolvedValue({
+      data: null,
+      error: new Error("Network error"),
+    });
     const { toast } = await import("sonner");
 
     render(<TestFinderQuiz />, { wrapper: TestProviders });
@@ -228,7 +295,9 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     fireEvent.click(screen.getByRole("button", { name: /See Results/ }));
 
     await waitFor(() => {
-      expect(toast.error).toHaveBeenCalledWith("Unable to generate recommendations. Please try again.");
+      expect(toast.error).toHaveBeenCalledWith(
+        "Unable to generate recommendations. Please try again.",
+      );
     });
   });
 
@@ -257,14 +326,18 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     });
 
     fireEvent.click(screen.getByText("Retake quiz"));
-    expect(screen.getByText("How would you describe your gender?")).toBeInTheDocument();
+    expect(
+      screen.getByText("How would you describe your gender?"),
+    ).toBeInTheDocument();
   });
 
   it("navigates Female → Hormones → menopause branch correctly", () => {
     render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Female"));
     fireEvent.click(screen.getByText("Hormones"));
-    expect(screen.getByText("Which of these most applies to you?")).toBeInTheDocument();
+    expect(
+      screen.getByText("Which of these most applies to you?"),
+    ).toBeInTheDocument();
     expect(screen.getByText(/menopause/i)).toBeInTheDocument();
 
     fireEvent.click(screen.getByText(/menopause/i));

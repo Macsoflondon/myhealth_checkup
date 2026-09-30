@@ -1,20 +1,20 @@
-import { useEffect, useCallback, useRef } from 'react';
-import { useAuth } from '@/context/AuthContext';
-import { toast } from 'sonner';
+import { useEffect, useCallback, useRef } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
 
 /**
  * UK Cyber Essentials Compliance: Idle Session Timeout
- * 
+ *
  * Automatically logs out users after a period of inactivity.
  * Default: 30 minutes (configurable)
- * 
+ *
  * This addresses the Cyber Essentials requirement for:
  * "User access control - accounts should be locked after a period of inactivity"
  */
 
 const DEFAULT_TIMEOUT_MS = 30 * 60 * 1000; // 30 minutes idle
 const ABSOLUTE_MAX_MS = 12 * 60 * 60 * 1000; // 12-hour hard cap (CE+ session control)
-const ABSOLUTE_START_KEY = 'mhc.session.startedAt';
+const ABSOLUTE_START_KEY = "mhc.session.startedAt";
 const WARNING_BEFORE_MS = 2 * 60 * 1000; // 2 minutes warning
 
 interface UseIdleSessionTimeoutOptions {
@@ -24,7 +24,9 @@ interface UseIdleSessionTimeoutOptions {
   onTimeout?: () => void;
 }
 
-export function useIdleSessionTimeout(options: UseIdleSessionTimeoutOptions = {}) {
+export function useIdleSessionTimeout(
+  options: UseIdleSessionTimeoutOptions = {},
+) {
   const { user, signOut } = useAuth();
   const {
     timeoutMs = DEFAULT_TIMEOUT_MS,
@@ -50,16 +52,16 @@ export function useIdleSessionTimeout(options: UseIdleSessionTimeoutOptions = {}
 
   const handleTimeout = useCallback(async () => {
     clearTimers();
-    
+
     if (onTimeout) {
       onTimeout();
     }
-    
-    toast.warning('Session expired due to inactivity', {
-      description: 'You have been logged out for security.',
+
+    toast.warning("Session expired due to inactivity", {
+      description: "You have been logged out for security.",
       duration: 5000,
     });
-    
+
     await signOut();
   }, [clearTimers, onTimeout, signOut]);
 
@@ -67,9 +69,10 @@ export function useIdleSessionTimeout(options: UseIdleSessionTimeoutOptions = {}
     if (onWarning) {
       onWarning();
     }
-    
-    toast.info('Session expiring soon', {
-      description: 'Your session will expire in 2 minutes due to inactivity. Move your mouse or press a key to stay logged in.',
+
+    toast.info("Session expiring soon", {
+      description:
+        "Your session will expire in 2 minutes due to inactivity. Move your mouse or press a key to stay logged in.",
       duration: 10000,
     });
   }, [onWarning]);
@@ -98,7 +101,11 @@ export function useIdleSessionTimeout(options: UseIdleSessionTimeoutOptions = {}
   useEffect(() => {
     if (!user) {
       clearTimers();
-      try { localStorage.removeItem(ABSOLUTE_START_KEY); } catch { /* ignore */ }
+      try {
+        localStorage.removeItem(ABSOLUTE_START_KEY);
+      } catch {
+        /* ignore */
+      }
       return;
     }
 
@@ -106,9 +113,11 @@ export function useIdleSessionTimeout(options: UseIdleSessionTimeoutOptions = {}
     // re-auth after ABSOLUTE_MAX_MS regardless of activity.
     let absoluteStart: number;
     try {
-      const stored = Number(localStorage.getItem(ABSOLUTE_START_KEY) ?? '');
-      absoluteStart = Number.isFinite(stored) && stored > 0 ? stored : Date.now();
-      if (!stored) localStorage.setItem(ABSOLUTE_START_KEY, String(absoluteStart));
+      const stored = Number(localStorage.getItem(ABSOLUTE_START_KEY) ?? "");
+      absoluteStart =
+        Number.isFinite(stored) && stored > 0 ? stored : Date.now();
+      if (!stored)
+        localStorage.setItem(ABSOLUTE_START_KEY, String(absoluteStart));
     } catch {
       absoluteStart = Date.now();
     }
@@ -118,9 +127,13 @@ export function useIdleSessionTimeout(options: UseIdleSessionTimeoutOptions = {}
       return;
     }
     const absoluteTimer = setTimeout(() => {
-      try { localStorage.removeItem(ABSOLUTE_START_KEY); } catch { /* ignore */ }
-      toast.warning('Session reached its maximum length', {
-        description: 'Please sign in again to continue.',
+      try {
+        localStorage.removeItem(ABSOLUTE_START_KEY);
+      } catch {
+        /* ignore */
+      }
+      toast.warning("Session reached its maximum length", {
+        description: "Please sign in again to continue.",
         duration: 5000,
       });
       handleTimeout();
@@ -128,12 +141,12 @@ export function useIdleSessionTimeout(options: UseIdleSessionTimeoutOptions = {}
 
     // Activity events to monitor
     const events = [
-      'mousedown',
-      'mousemove',
-      'keydown',
-      'scroll',
-      'touchstart',
-      'click',
+      "mousedown",
+      "mousemove",
+      "keydown",
+      "scroll",
+      "touchstart",
+      "click",
     ];
 
     // Set initial timers
@@ -146,7 +159,7 @@ export function useIdleSessionTimeout(options: UseIdleSessionTimeoutOptions = {}
 
     // Handle visibility change (user switches tabs)
     const handleVisibilityChange = () => {
-      if (document.visibilityState === 'visible') {
+      if (document.visibilityState === "visible") {
         // Check if session should have expired while tab was hidden
         const elapsed = Date.now() - lastActivityRef.current;
         if (elapsed >= timeoutMs) {
@@ -157,7 +170,7 @@ export function useIdleSessionTimeout(options: UseIdleSessionTimeoutOptions = {}
         }
       }
     };
-    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
 
     return () => {
       clearTimers();
@@ -165,9 +178,16 @@ export function useIdleSessionTimeout(options: UseIdleSessionTimeoutOptions = {}
       events.forEach((event) => {
         document.removeEventListener(event, handleActivity);
       });
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [user, resetTimers, handleActivity, handleTimeout, clearTimers, timeoutMs]);
+  }, [
+    user,
+    resetTimers,
+    handleActivity,
+    handleTimeout,
+    clearTimers,
+    timeoutMs,
+  ]);
 
   return {
     resetTimers,

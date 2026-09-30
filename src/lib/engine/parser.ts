@@ -16,18 +16,78 @@ const SEPARATOR_RX = /\s+[—–-]\s+/;
 const KEYWORD_MAP: Array<{ skill: SkillId; patterns: RegExp[] }> = [
   { skill: "FREEZE", patterns: [/\bfreeze\b/i, /\block\s+(this|the)\s+/i] },
   { skill: "UNFREEZE", patterns: [/\bunfreeze\b/i, /\bunlock\b/i] },
-  { skill: "CHECKPOINT", patterns: [/\bcheckpoint\b/i, /\bsnapshot\b/i, /\bsave\s+state\b/i] },
-  { skill: "REVERT", patterns: [/\brevert\b/i, /\broll\s*back\b/i, /\brestore\s+(the\s+)?checkpoint\b/i] },
+  {
+    skill: "CHECKPOINT",
+    patterns: [/\bcheckpoint\b/i, /\bsnapshot\b/i, /\bsave\s+state\b/i],
+  },
+  {
+    skill: "REVERT",
+    patterns: [
+      /\brevert\b/i,
+      /\broll\s*back\b/i,
+      /\brestore\s+(the\s+)?checkpoint\b/i,
+    ],
+  },
   { skill: "RESUME", patterns: [/\bresume\b/i, /\bcontinue\s+from\b/i] },
-  { skill: "COMPLETE", patterns: [/\bcomplete\b/i, /\bclose\s+(the\s+)?task\b/i, /\bmark\s+done\b/i] },
-  { skill: "AUDIT", patterns: [/\baudit\b/i, /\binspect\b/i, /\breview\s+(the\s+)?(code|system)\b/i, /\bscan\b/i] },
-  { skill: "VERIFY", patterns: [/\bverify\b/i, /\bvalidate\b/i, /\btest\s+that\b/i] },
+  {
+    skill: "COMPLETE",
+    patterns: [
+      /\bcomplete\b/i,
+      /\bclose\s+(the\s+)?task\b/i,
+      /\bmark\s+done\b/i,
+    ],
+  },
+  {
+    skill: "AUDIT",
+    patterns: [
+      /\baudit\b/i,
+      /\binspect\b/i,
+      /\breview\s+(the\s+)?(code|system)\b/i,
+      /\bscan\b/i,
+    ],
+  },
+  {
+    skill: "VERIFY",
+    patterns: [/\bverify\b/i, /\bvalidate\b/i, /\btest\s+that\b/i],
+  },
   { skill: "REGRESSION", patterns: [/\bregression\b/i, /\bre-?test\b/i] },
-  { skill: "SECURE", patterns: [/\bsecure\b/i, /\bharden\b/i, /\bsecurity\s+fix\b/i, /\bowasp\b/i] },
-  { skill: "OPTIMISE", patterns: [/\boptimi[sz]e\b/i, /\bperformance\b/i, /\bspeed\s+up\b/i] },
-  { skill: "POLISH", patterns: [/\bpolish\b/i, /\bui\s+tweak\b/i, /\bspacing\b/i, /\bux\b/i] },
-  { skill: "DEBUG", patterns: [/\bdebug\b/i, /\bdiagnose\b/i, /\bwhy\s+is\b/i, /\broot\s+cause\b/i] },
-  { skill: "PATCH", patterns: [/\bpatch\b/i, /\bfix\b/i, /\bupdate\b/i, /\bchange\b/i, /\bedit\b/i, /\bmodify\b/i] },
+  {
+    skill: "SECURE",
+    patterns: [
+      /\bsecure\b/i,
+      /\bharden\b/i,
+      /\bsecurity\s+fix\b/i,
+      /\bowasp\b/i,
+    ],
+  },
+  {
+    skill: "OPTIMISE",
+    patterns: [/\boptimi[sz]e\b/i, /\bperformance\b/i, /\bspeed\s+up\b/i],
+  },
+  {
+    skill: "POLISH",
+    patterns: [/\bpolish\b/i, /\bui\s+tweak\b/i, /\bspacing\b/i, /\bux\b/i],
+  },
+  {
+    skill: "DEBUG",
+    patterns: [
+      /\bdebug\b/i,
+      /\bdiagnose\b/i,
+      /\bwhy\s+is\b/i,
+      /\broot\s+cause\b/i,
+    ],
+  },
+  {
+    skill: "PATCH",
+    patterns: [
+      /\bpatch\b/i,
+      /\bfix\b/i,
+      /\bupdate\b/i,
+      /\bchange\b/i,
+      /\bedit\b/i,
+      /\bmodify\b/i,
+    ],
+  },
 ];
 
 export function parseDeterministic(command: string): ParseResult | null {
@@ -82,20 +142,40 @@ function extractScope(text: string): string {
   return "unspecified";
 }
 
-export async function parseWithAiFallback(command: string): Promise<ParseResult> {
+export async function parseWithAiFallback(
+  command: string,
+): Promise<ParseResult> {
   const det = parseDeterministic(command);
   if (det && det.confidence >= 0.7) return det;
 
-  const { data, error } = await supabase.functions.invoke("parse-command", { body: { command } });
+  const { data, error } = await supabase.functions.invoke("parse-command", {
+    body: { command },
+  });
   if (error || !data || typeof data !== "object" || !("skill" in data)) {
-    return det ?? {
-      skill: "AUDIT", scope: "unspecified", notes: command, confidence: 0,
-      parser: "deterministic", rationale: "No match; defaulting to AUDIT (read-only).",
-    };
+    return (
+      det ?? {
+        skill: "AUDIT",
+        scope: "unspecified",
+        notes: command,
+        confidence: 0,
+        parser: "deterministic",
+        rationale: "No match; defaulting to AUDIT (read-only).",
+      }
+    );
   }
-  const d = data as { skill: SkillId; scope: string; notes: string; confidence: number; rationale: string };
+  const d = data as {
+    skill: SkillId;
+    scope: string;
+    notes: string;
+    confidence: number;
+    rationale: string;
+  };
   return {
-    skill: d.skill, scope: d.scope || "unspecified", notes: d.notes || command,
-    confidence: d.confidence ?? 0.5, parser: "ai", rationale: d.rationale ?? "AI-parsed.",
+    skill: d.skill,
+    scope: d.scope || "unspecified",
+    notes: d.notes || command,
+    confidence: d.confidence ?? 0.5,
+    parser: "ai",
+    rationale: d.rationale ?? "AI-parsed.",
   };
 }

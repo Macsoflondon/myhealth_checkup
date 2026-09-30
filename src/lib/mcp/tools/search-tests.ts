@@ -16,13 +16,35 @@ export default defineTool({
   description:
     "Search the myhealth checkup catalogue of private UK diagnostic tests. Filter by keyword, category, provider, and price. Returns test name, provider, price (GBP), turnaround, biomarker count, and URL.",
   inputSchema: {
-    query: z.string().trim().optional().describe("Keyword to match against test name or description."),
-    category: z.string().trim().optional().describe("Category slug (e.g. 'womens-health', 'cancer-screening', 'hormones')."),
-    provider: z.string().trim().optional().describe("Provider name (e.g. 'Medichecks', 'Randox', 'Goodbody')."),
-    max_price: z.number().positive().optional().describe("Maximum total expected cost in GBP."),
+    query: z
+      .string()
+      .trim()
+      .optional()
+      .describe("Keyword to match against test name or description."),
+    category: z
+      .string()
+      .trim()
+      .optional()
+      .describe(
+        "Category slug (e.g. 'womens-health', 'cancer-screening', 'hormones').",
+      ),
+    provider: z
+      .string()
+      .trim()
+      .optional()
+      .describe("Provider name (e.g. 'Medichecks', 'Randox', 'Goodbody')."),
+    max_price: z
+      .number()
+      .positive()
+      .optional()
+      .describe("Maximum total expected cost in GBP."),
     limit: z.number().int().min(1).max(50).default(20),
   },
-  annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false,
+  },
   handler: async ({ query, category, provider, max_price, limit }) => {
     let q = anonClient()
       .from("unified_provider_tests")
@@ -37,7 +59,10 @@ export default defineTool({
 
     const { data, error } = await q;
     if (error) {
-      return { content: [{ type: "text", text: `Error: ${error.message}` }], isError: true };
+      return {
+        content: [{ type: "text", text: `Error: ${error.message}` }],
+        isError: true,
+      };
     }
     return {
       content: [{ type: "text", text: JSON.stringify(data ?? [], null, 2) }],

@@ -39,11 +39,19 @@ export default function AutomationsSection() {
   const failedJobs = jobs.filter(([, r]) => r.status === "failed").length;
 
   return (
-    <SectionShell title="Automation Centre" description="Cron jobs, schedulers, and background workers." status="live">
+    <SectionShell
+      title="Automation Centre"
+      description="Cron jobs, schedulers, and background workers."
+      status="live"
+    >
       <div className="grid grid-cols-3 gap-3 mb-6">
         <StatCard label="Distinct jobs" value={jobs.length} />
         <StatCard label="Recent runs" value={rows.length} />
-        <StatCard label="Failed (latest run)" value={failedJobs} tone={failedJobs > 0 ? "bad" : "good"} />
+        <StatCard
+          label="Failed (latest run)"
+          value={failedJobs}
+          tone={failedJobs > 0 ? "bad" : "good"}
+        />
       </div>
 
       {loading ? (
@@ -68,24 +76,40 @@ export default function AutomationsSection() {
                   <td className="px-3 py-2 font-medium">{name}</td>
                   <td className="px-3 py-2">
                     <span className="inline-flex items-center gap-2">
-                      <HealthDot state={r.status === "failed" ? "bad" : r.status ? "good" : "idle"} />
+                      <HealthDot
+                        state={
+                          r.status === "failed"
+                            ? "bad"
+                            : r.status
+                              ? "good"
+                              : "idle"
+                        }
+                      />
                       {r.status ?? "—"}
                     </span>
                   </td>
                   <td className="px-3 py-2 text-xs text-muted-foreground tabular-nums">
-                    {r.started_at ? new Date(r.started_at).toLocaleString() : "—"}
+                    {r.started_at
+                      ? new Date(r.started_at).toLocaleString()
+                      : "—"}
                   </td>
                   <td className="px-3 py-2 text-right tabular-nums text-xs">
                     {r.duration_ms != null ? `${r.duration_ms} ms` : "—"}
                   </td>
-                  <td className="px-3 py-2 text-xs text-rose-600 max-w-[280px] truncate" title={r.error_message ?? undefined}>
+                  <td
+                    className="px-3 py-2 text-xs text-rose-600 max-w-[280px] truncate"
+                    title={r.error_message ?? undefined}
+                  >
                     {r.error_message ?? ""}
                   </td>
                 </tr>
               ))}
               {jobs.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-3 py-8 text-center text-muted-foreground text-sm">
+                  <td
+                    colSpan={5}
+                    className="px-3 py-8 text-center text-muted-foreground text-sm"
+                  >
                     No cron runs recorded yet.
                   </td>
                 </tr>

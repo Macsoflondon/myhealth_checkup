@@ -10,7 +10,6 @@ import { baseTestId } from "@/lib/collectionVariants";
 // predates the clinical review / collection fee fields.
 const STORAGE_KEY = "mhc:compare:v2";
 
-
 let items: CompareTestData[] = load();
 const listeners = new Set<() => void>();
 
@@ -34,7 +33,6 @@ function load(): CompareTestData[] {
     return [];
   }
 }
-
 
 function persist() {
   try {
@@ -106,4 +104,3 @@ export function useCompareItems(): CompareTestData[] {
     () => EMPTY_COMPARE as CompareTestData[],
   );
 }
-

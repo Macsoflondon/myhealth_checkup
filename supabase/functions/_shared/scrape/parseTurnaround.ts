@@ -29,7 +29,9 @@ function pickUpper(a: number, b: number | null): number {
   return b === null ? a : Math.max(a, b);
 }
 
-export function parseTurnaround(input: string | null | undefined): TurnaroundParseResult {
+export function parseTurnaround(
+  input: string | null | undefined,
+): TurnaroundParseResult {
   const raw = (input ?? "").toString().trim();
   if (!raw) {
     return { raw: null, hours: null, days: null, unit: "not_stated" };
@@ -52,7 +54,12 @@ export function parseTurnaround(input: string | null | undefined): TurnaroundPar
     const hi = parseInt(rangeMatch[2], 10);
     const tail = rangeMatch[3];
     if (HOUR_WORDS.test(tail)) {
-      return { raw, hours: hi, days: Math.max(1, Math.ceil(hi / 24)), unit: "hours" };
+      return {
+        raw,
+        hours: hi,
+        days: Math.max(1, Math.ceil(hi / 24)),
+        unit: "hours",
+      };
     }
     if (DAY_WORDS.test(tail)) {
       return { raw, hours: hi * 24, days: hi, unit: "days" };
@@ -65,7 +72,12 @@ export function parseTurnaround(input: string | null | undefined): TurnaroundPar
     const n = parseInt(singleMatch[1], 10);
     const tail = singleMatch[2];
     if (HOUR_WORDS.test(tail)) {
-      return { raw, hours: n, days: Math.max(1, Math.ceil(n / 24)), unit: "hours" };
+      return {
+        raw,
+        hours: n,
+        days: Math.max(1, Math.ceil(n / 24)),
+        unit: "hours",
+      };
     }
     if (DAY_WORDS.test(tail)) {
       return { raw, hours: n * 24, days: n, unit: "days" };

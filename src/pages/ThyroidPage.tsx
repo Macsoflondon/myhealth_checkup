@@ -20,9 +20,21 @@ const ThyroidPage = () => (
     filters={["All"]}
     benefitsTitle="Why Test Your Thyroid?"
     benefits={[
-      { icon: Activity, title: "Energy & Metabolism", description: "Thyroid hormones regulate metabolism and energy" },
-      { icon: TestTube2, title: "Early Detection", description: "Identify thyroid disorders before symptoms worsen" },
-      { icon: Users, title: "Treatment Monitoring", description: "Track and optimise thyroid medication" },
+      {
+        icon: Activity,
+        title: "Energy & Metabolism",
+        description: "Thyroid hormones regulate metabolism and energy",
+      },
+      {
+        icon: TestTube2,
+        title: "Early Detection",
+        description: "Identify thyroid disorders before symptoms worsen",
+      },
+      {
+        icon: Users,
+        title: "Treatment Monitoring",
+        description: "Track and optimise thyroid medication",
+      },
     ]}
     breadcrumbs={[{ label: "Home", href: "/" }, { label: "Thyroid" }]}
     compareUrl="/compare?category=thyroid"

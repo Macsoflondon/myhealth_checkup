@@ -24,19 +24,21 @@ const SectionHeading = ({
   animate = true,
 }: SectionHeadingProps) => {
   return (
-    <div className={cn(
-      "text-center mb-4 sm:mb-6",
-      animate && "animate-fade-in",
-      className
-    )}>
-      <h2 className={cn(
-        "text-2xl sm:text-3xl md:text-[2rem] font-heading font-bold leading-[1.15] tracking-tight",
-        titleClassName
-      )}>
+    <div
+      className={cn(
+        "text-center mb-4 sm:mb-6",
+        animate && "animate-fade-in",
+        className,
+      )}
+    >
+      <h2
+        className={cn(
+          "text-2xl sm:text-3xl md:text-[2rem] font-heading font-bold leading-[1.15] tracking-tight",
+          titleClassName,
+        )}
+      >
         <span>{title}</span>
-        <span className={cn(gradientClassName)}>
-          {gradientText}
-        </span>
+        <span className={cn(gradientClassName)}>{gradientText}</span>
       </h2>
     </div>
   );

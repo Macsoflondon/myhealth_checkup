@@ -1,5 +1,18 @@
-import { Heart, Droplet, Activity, Zap, Apple, Bug, Users, Stethoscope, Shield, TestTube2, HeartPulse, Flame } from "lucide-react";
-import type { LucideIcon } from 'lucide-react';
+import {
+  Heart,
+  Droplet,
+  Activity,
+  Zap,
+  Apple,
+  Bug,
+  Users,
+  Stethoscope,
+  Shield,
+  TestTube2,
+  HeartPulse,
+  Flame,
+} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 export interface WellnessCategory {
   id: string;
@@ -19,9 +32,14 @@ export const wellnessCategories: WellnessCategory[] = [
     colorClass: "bg-emerald-500",
     colorHex: "#10B981",
     icon: HeartPulse,
-    description: "Comprehensive health markers for longevity and preventive care",
+    description:
+      "Comprehensive health markers for longevity and preventive care",
     testCount: 3,
-    tests: ["Full Blood Count Test", "Cardiac Risk Blood Test", "Thyroid Blood Test"]
+    tests: [
+      "Full Blood Count Test",
+      "Cardiac Risk Blood Test",
+      "Thyroid Blood Test",
+    ],
   },
   {
     id: "iron-tests",
@@ -31,7 +49,7 @@ export const wellnessCategories: WellnessCategory[] = [
     icon: Droplet,
     description: "Iron levels, ferritin, and anaemia screening",
     testCount: 2,
-    tests: ["Anaemia Blood Test", "Full Blood Count Test"]
+    tests: ["Anaemia Blood Test", "Full Blood Count Test"],
   },
   {
     id: "heart-health",
@@ -41,7 +59,7 @@ export const wellnessCategories: WellnessCategory[] = [
     icon: Heart,
     description: "Cardiovascular risk assessment and heart health monitoring",
     testCount: 2,
-    tests: ["Cardiac Risk Blood Test", "Full Blood Count Test"]
+    tests: ["Cardiac Risk Blood Test", "Full Blood Count Test"],
   },
   {
     id: "energy-tests",
@@ -51,7 +69,7 @@ export const wellnessCategories: WellnessCategory[] = [
     icon: Zap,
     description: "Fatigue, tiredness, and energy level testing",
     testCount: 3,
-    tests: ["Tiredness Blood Test", "Thyroid Blood Test", "Anaemia Blood Test"]
+    tests: ["Tiredness Blood Test", "Thyroid Blood Test", "Anaemia Blood Test"],
   },
   {
     id: "nutrition-tests",
@@ -61,7 +79,7 @@ export const wellnessCategories: WellnessCategory[] = [
     icon: Apple,
     description: "Vitamin levels and nutritional deficiency screening",
     testCount: 2,
-    tests: ["Anaemia Blood Test", "Tiredness Blood Test"]
+    tests: ["Anaemia Blood Test", "Tiredness Blood Test"],
   },
   {
     id: "allergy-testing",
@@ -71,7 +89,7 @@ export const wellnessCategories: WellnessCategory[] = [
     icon: Shield,
     description: "Allergy screening and immune response testing",
     testCount: 1,
-    tests: ["Full Blood Count Test"]
+    tests: ["Full Blood Count Test"],
   },
   {
     id: "sexual-health",
@@ -81,7 +99,7 @@ export const wellnessCategories: WellnessCategory[] = [
     icon: Users,
     description: "Comprehensive sexual health and hormone screening",
     testCount: 2,
-    tests: ["Hepatitis Screening Blood Test", "Blood Group Blood Test"]
+    tests: ["Hepatitis Screening Blood Test", "Blood Group Blood Test"],
   },
   {
     id: "gp-monitoring",
@@ -91,7 +109,12 @@ export const wellnessCategories: WellnessCategory[] = [
     icon: Stethoscope,
     description: "Routine health checks and general practitioner monitoring",
     testCount: 4,
-    tests: ["Full Blood Count Test", "Thyroid Blood Test", "Liver Blood Test", "Kidney Blood Test"]
+    tests: [
+      "Full Blood Count Test",
+      "Thyroid Blood Test",
+      "Liver Blood Test",
+      "Kidney Blood Test",
+    ],
   },
   {
     id: "antibody-tests",
@@ -101,7 +124,10 @@ export const wellnessCategories: WellnessCategory[] = [
     icon: TestTube2,
     description: "Antibody screening and autoimmune disease detection",
     testCount: 2,
-    tests: ["Thyroid Function with Antibodies Test", "Autoimmune Disease Blood Test"]
+    tests: [
+      "Thyroid Function with Antibodies Test",
+      "Autoimmune Disease Blood Test",
+    ],
   },
   {
     id: "infection-tests",
@@ -111,7 +137,7 @@ export const wellnessCategories: WellnessCategory[] = [
     icon: Bug,
     description: "Infectious disease screening and pathogen detection",
     testCount: 2,
-    tests: ["Hepatitis Screening Blood Test", "Helicobacter Pylori Blood Test"]
+    tests: ["Hepatitis Screening Blood Test", "Helicobacter Pylori Blood Test"],
   },
   {
     id: "immunity-tests",
@@ -121,7 +147,7 @@ export const wellnessCategories: WellnessCategory[] = [
     icon: Shield,
     description: "Immune system function and defence assessment",
     testCount: 2,
-    tests: ["Full Blood Count Test", "Autoimmune Disease Blood Test"]
+    tests: ["Full Blood Count Test", "Autoimmune Disease Blood Test"],
   },
   {
     id: "autoimmunity-tests",
@@ -131,7 +157,10 @@ export const wellnessCategories: WellnessCategory[] = [
     icon: Flame,
     description: "Autoimmune condition screening and monitoring",
     testCount: 2,
-    tests: ["Autoimmune Disease Blood Test", "Thyroid Function with Antibodies Test"]
+    tests: [
+      "Autoimmune Disease Blood Test",
+      "Thyroid Function with Antibodies Test",
+    ],
   },
   {
     id: "liver-health",
@@ -141,7 +170,7 @@ export const wellnessCategories: WellnessCategory[] = [
     icon: Heart,
     description: "Liver function testing and hepatic health monitoring",
     testCount: 2,
-    tests: ["Hepatitis Screening Blood Test", "Liver Blood Test"]
+    tests: ["Hepatitis Screening Blood Test", "Liver Blood Test"],
   },
   {
     id: "kidney-health",
@@ -151,6 +180,6 @@ export const wellnessCategories: WellnessCategory[] = [
     icon: Droplet,
     description: "Kidney function assessment and renal health screening",
     testCount: 1,
-    tests: ["Kidney Blood Test"]
-  }
+    tests: ["Kidney Blood Test"],
+  },
 ];

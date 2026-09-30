@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import type { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 
-export type RoleState = { session: Session | null; user: User | null; isAdmin: boolean; loading: boolean };
+export type RoleState = {
+  session: Session | null;
+  user: User | null;
+  isAdmin: boolean;
+  loading: boolean;
+};
 
 export function useAuth(): RoleState {
   const [session, setSession] = useState<Session | null>(null);
@@ -14,9 +19,13 @@ export function useAuth(): RoleState {
       setSession(s);
       if (s?.user) {
         setTimeout(() => {
-          supabase.from("user_roles").select("role").eq("user_id", s.user.id).then(({ data }) => {
-            setIsAdmin(!!data?.some((r) => r.role === "admin"));
-          });
+          supabase
+            .from("user_roles")
+            .select("role")
+            .eq("user_id", s.user.id)
+            .then(({ data }) => {
+              setIsAdmin(!!data?.some((r) => r.role === "admin"));
+            });
         }, 0);
       } else {
         setIsAdmin(false);
@@ -25,10 +34,14 @@ export function useAuth(): RoleState {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       if (data.session?.user) {
-        supabase.from("user_roles").select("role").eq("user_id", data.session.user.id).then(({ data: roles }) => {
-          setIsAdmin(!!roles?.some((r) => r.role === "admin"));
-          setLoading(false);
-        });
+        supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", data.session.user.id)
+          .then(({ data: roles }) => {
+            setIsAdmin(!!roles?.some((r) => r.role === "admin"));
+            setLoading(false);
+          });
       } else {
         setLoading(false);
       }

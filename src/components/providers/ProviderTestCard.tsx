@@ -64,7 +64,11 @@ interface ProviderTestCardProps {
  * ProviderTestCard — backwards-compatible wrapper that renders the universal
  * test card (matching the /at-home-tests design).
  */
-export default function ProviderTestCard({ test, onClick, turnaroundTime }: ProviderTestCardProps) {
+export default function ProviderTestCard({
+  test,
+  onClick,
+  turnaroundTime,
+}: ProviderTestCardProps) {
   const data = fromProviderTest({
     ...test,
     turnaround_days_text: test.turnaround_days_text || turnaroundTime || null,

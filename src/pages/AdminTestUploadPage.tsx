@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Loader2, Upload, CheckCircle2, XCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -26,63 +32,61 @@ const AdminTestUploadPage: React.FC = () => {
 
       // Prepare all tests
       const allTests = [
-        ...medichecksTests.map(test => ({
-          provider_id: 'medichecks',
+        ...medichecksTests.map((test) => ({
+          provider_id: "medichecks",
           test_name: test.name,
           price: test.price,
           url: test.url,
           category: test.category,
           description: test.description,
-          is_active: true
+          is_active: true,
         })),
-        ...londonLaboratoryTests.map(test => ({
-          provider_id: 'london-medical-laboratory',
+        ...londonLaboratoryTests.map((test) => ({
+          provider_id: "london-medical-laboratory",
           test_name: test.name,
           price: test.price,
           url: test.url,
           category: test.category,
           description: test.description,
-          is_active: true
-        }))
+          is_active: true,
+        })),
       ];
 
       // Insert tests one by one
       for (const test of allTests) {
         // Check if test already exists
         const { data: existing } = await supabase
-          .from('provider_tests')
-          .select('id')
-          .eq('provider_id', test.provider_id)
-          .eq('test_name', test.test_name)
+          .from("provider_tests")
+          .select("id")
+          .eq("provider_id", test.provider_id)
+          .eq("test_name", test.test_name)
           .maybeSingle();
 
         if (existing) {
           // Update existing test
           const { error } = await supabase
-            .from('provider_tests')
+            .from("provider_tests")
             .update({
               price: test.price,
               url: test.url,
               category: test.category,
               description: test.description,
-              is_active: test.is_active
+              is_active: test.is_active,
             })
-            .eq('id', existing.id);
+            .eq("id", existing.id);
 
           if (error) {
-            console.error('Error updating test:', error);
+            console.error("Error updating test:", error);
             errorCount++;
           } else {
             insertedCount++;
           }
         } else {
           // Insert new test
-          const { error } = await supabase
-            .from('provider_tests')
-            .insert(test);
+          const { error } = await supabase.from("provider_tests").insert(test);
 
           if (error) {
-            console.error('Error inserting test:', error);
+            console.error("Error inserting test:", error);
             errorCount++;
           } else {
             insertedCount++;
@@ -92,18 +96,17 @@ const AdminTestUploadPage: React.FC = () => {
 
       setUploadResult({
         success: errorCount === 0,
-        message: `Successfully processed ${insertedCount} tests${errorCount > 0 ? ` with ${errorCount} errors` : ''}`,
+        message: `Successfully processed ${insertedCount} tests${errorCount > 0 ? ` with ${errorCount} errors` : ""}`,
         inserted: insertedCount,
-        errors: errorCount
+        errors: errorCount,
       });
-
     } catch (error) {
-      console.error('Upload error:', error);
+      console.error("Upload error:", error);
       setUploadResult({
         success: false,
-        message: 'Failed to upload tests',
+        message: "Failed to upload tests",
         inserted: 0,
-        errors: 1
+        errors: 1,
       });
     } finally {
       setIsUploading(false);
@@ -136,7 +139,9 @@ const AdminTestUploadPage: React.FC = () => {
                 </div>
 
                 {uploadResult && (
-                  <Alert variant={uploadResult.success ? "default" : "destructive"}>
+                  <Alert
+                    variant={uploadResult.success ? "default" : "destructive"}
+                  >
                     {uploadResult.success ? (
                       <CheckCircle2 className="h-4 w-4" />
                     ) : (
@@ -146,7 +151,9 @@ const AdminTestUploadPage: React.FC = () => {
                       <p className="font-medium">{uploadResult.message}</p>
                       <ul className="mt-2 text-sm space-y-1">
                         <li>Processed: {uploadResult.inserted}</li>
-                        {uploadResult.errors > 0 && <li>Errors: {uploadResult.errors}</li>}
+                        {uploadResult.errors > 0 && (
+                          <li>Errors: {uploadResult.errors}</li>
+                        )}
                       </ul>
                     </AlertDescription>
                   </Alert>

@@ -11,7 +11,11 @@ import ComparisonSectionHeading from "@/components/sections/ComparisonSectionHea
 import type { CompareTestData } from "@/services/CompareService";
 import { Button } from "@/components/ui/button";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
-import { useCompareTestsData, type CompareFilters, defaultFilters } from "@/hooks/queries/useCompareTestsData";
+import {
+  useCompareTestsData,
+  type CompareFilters,
+  defaultFilters,
+} from "@/hooks/queries/useCompareTestsData";
 import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
 import { getProviderRating } from "@/constants/providerRatings";
 import { getCategoryPinColor } from "@/data/categoryColors";
@@ -22,12 +26,22 @@ import { getCompareHeader } from "@/data/compareCategoryBenefits";
 import { Scale, Shield, Clock, Search } from "lucide-react";
 
 const COMPARE_BENEFITS = [
-  { icon: Scale, title: "Like-for-like comparison", description: "Price, biomarker coverage and sample method side by side" },
-  { icon: Shield, title: "UKAS accredited labs", description: "Every listed provider uses UKAS-accredited UK laboratories" },
-  { icon: Clock, title: "Clear turnaround", description: "Typical result times shown on every listing" },
+  {
+    icon: Scale,
+    title: "Like-for-like comparison",
+    description: "Price, biomarker coverage and sample method side by side",
+  },
+  {
+    icon: Shield,
+    title: "UKAS accredited labs",
+    description: "Every listed provider uses UKAS-accredited UK laboratories",
+  },
+  {
+    icon: Clock,
+    title: "Clear turnaround",
+    description: "Typical result times shown on every listing",
+  },
 ] as const;
-
-
 
 const resolveCategoryColor = (test: CompareTestData): string => {
   const cat = test.category || "";
@@ -39,7 +53,6 @@ const resolveCategoryColor = (test: CompareTestData): string => {
 };
 
 const PAGE_SIZE = 24;
-
 
 const CompareTests = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -55,7 +68,6 @@ const CompareTests = () => {
 
   const navigate = useNavigate();
 
-
   const selectedTests = useCompareItems();
 
   const { tests, isLoading, urlCategory } = useCompareTestsData(filters);
@@ -63,19 +75,20 @@ const CompareTests = () => {
   // The ?category= slug drives the whole browse view; read it directly so the
   // first render is already scoped to the category.
   const queryCategory = searchParams.get("category") || "";
-  const effectiveCategory = filters.selectedCategory || urlCategory || queryCategory || "general-health";
-  const { data: recommendedTests = [], isLoading: isLoadingRecommended } = useRecommendedTests(
-    effectiveCategory,
-    8
-  );
+  const effectiveCategory =
+    filters.selectedCategory ||
+    urlCategory ||
+    queryCategory ||
+    "general-health";
+  const { data: recommendedTests = [], isLoading: isLoadingRecommended } =
+    useRecommendedTests(effectiveCategory, 8);
 
   useEffect(() => {
     const next = urlCategory || queryCategory;
     if (next && filters.selectedCategory !== next) {
-      setFilters(prev => ({ ...prev, selectedCategory: next }));
+      setFilters((prev) => ({ ...prev, selectedCategory: next }));
     }
   }, [urlCategory, queryCategory, filters.selectedCategory]);
-
 
   const handleToggleSelect = useCallback((test: CompareTestData) => {
     compareStore.toggle(test);
@@ -94,14 +107,14 @@ const CompareTests = () => {
       const next = new URLSearchParams(searchParams);
       next.delete("openCompare");
       setSearchParams(next, { replace: true });
-      if (selectedTests.length >= 2) navigate(compareResultsPath(selectedTests.map((t) => t.id)));
+      if (selectedTests.length >= 2)
+        navigate(compareResultsPath(selectedTests.map((t) => t.id)));
     }
   }, [searchParams, selectedTests, setSearchParams, navigate]);
 
-
   const isSelected = useCallback(
-    (id: string) => selectedTests.some(t => t.id === id),
-    [selectedTests]
+    (id: string) => selectedTests.some((t) => t.id === id),
+    [selectedTests],
   );
 
   const hasSearch = filters.searchQuery.trim().length > 0;
@@ -132,7 +145,6 @@ const CompareTests = () => {
     setVisibleCount(PAGE_SIZE);
   }, [filters.selectedCategory, filters.searchQuery, urlCategory]);
 
-
   // A search that matches nothing falls back to the unfiltered list rather than
   // stranding the user on an empty page.
   const searchFellBack = hasSearch && !isLoading && tests.length === 0;
@@ -152,14 +164,17 @@ const CompareTests = () => {
     const rating = getProviderRating(test.provider);
     return (
       <div key={test.id} className="w-full">
-
         <UnifiedTestCard
           category={test.category || "Health"}
           categoryColor={resolveCategoryColor(test)}
           name={test.name}
-          description={test.description || "Comprehensive health screening test"}
+          description={
+            test.description || "Comprehensive health screening test"
+          }
           biomarkers={test.biomarkerCount ?? 0}
-          results={test.features?.turnaround || `${test.turnaroundDays ?? "2-3"} days`}
+          results={
+            test.features?.turnaround || `${test.turnaroundDays ?? "2-3"} days`
+          }
           collection={test.features?.collection || "Home kit"}
           rating={rating?.rating}
           reviews={rating?.reviews}
@@ -178,7 +193,9 @@ const CompareTests = () => {
             sample_type: test.features?.collection ?? null,
             biomarker_count: test.biomarkerCount ?? null,
             url: test.url ?? null,
-            biomarkers_list: (test.biomarkersList ?? []).map((value) => ({ value })),
+            biomarkers_list: (test.biomarkersList ?? []).map((value) => ({
+              value,
+            })),
             turnaround_days_text: test.features?.turnaround ?? null,
             base_price: null,
             collection_options: null,
@@ -192,52 +209,81 @@ const CompareTests = () => {
     <ErrorBoundary>
       <div className="min-h-screen flex flex-col">
         <Helmet>
-          <script type="application/ld+json">{JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "CollectionPage",
-            "name": "Compare Blood Tests",
-            "description": "Compare private blood tests from Medichecks, Randox, and more UK providers.",
-            "url": "https://myhealthcheckup.co.uk/compare",
-            "isPartOf": { "@type": "WebSite", "name": "myhealth checkup", "url": "https://myhealthcheckup.co.uk" },
-            "breadcrumb": {
-              "@type": "BreadcrumbList",
-              "itemListElement": [
-                { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://myhealthcheckup.co.uk" },
-                { "@type": "ListItem", "position": 2, "name": "Compare Tests" }
-              ]
-            }
-          })}</script>
-          <script type="application/ld+json">{JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "FAQPage",
-            "mainEntity": [
-              {
-                "@type": "Question",
-                "name": "How do I compare private blood tests in the UK?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Use myhealth checkup to compare price, biomarker coverage, sample method, and typical turnaround across UKAS-accredited providers including Medichecks, Randox and more. Filter by category, then select up to four tests to compare side-by-side." }
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "CollectionPage",
+              name: "Compare Blood Tests",
+              description:
+                "Compare private blood tests from Medichecks, Randox, and more UK providers.",
+              url: "https://myhealthcheckup.co.uk/compare",
+              isPartOf: {
+                "@type": "WebSite",
+                name: "myhealth checkup",
+                url: "https://myhealthcheckup.co.uk",
               },
-              {
-                "@type": "Question",
-                "name": "Are the labs UKAS accredited?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Yes. We only list providers whose laboratories hold UKAS accreditation (ISO 15189 where applicable) and whose clinics are CQC regulated. Accreditation status is shown on every provider profile." }
+              breadcrumb: {
+                "@type": "BreadcrumbList",
+                itemListElement: [
+                  {
+                    "@type": "ListItem",
+                    position: 1,
+                    name: "Home",
+                    item: "https://myhealthcheckup.co.uk",
+                  },
+                  { "@type": "ListItem", position: 2, name: "Compare Tests" },
+                ],
               },
-              {
-                "@type": "Question",
-                "name": "Do I need a GP referral to book a private blood test?",
-                "acceptedAnswer": { "@type": "Answer", "text": "No GP referral is required for the tests listed on myhealth checkup. You can book directly through the provider. Some specialist tests may include an optional GP review of your results." }
-              },
-              {
-                "@type": "Question",
-                "name": "How long do results take?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Typical turnaround is 2–5 working days from sample receipt for most blood tests, though times vary by provider and test type. Estimated turnaround is shown on each test card." }
-              },
-              {
-                "@type": "Question",
-                "name": "Is myhealth checkup free to use?",
-                "acceptedAnswer": { "@type": "Answer", "text": "Yes. The comparison platform is free for users. We may earn a referral fee when you book through a provider link, which never affects the price you pay or the ranking of results." }
-              }
-            ]
-          })}</script>
+            })}
+          </script>
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              mainEntity: [
+                {
+                  "@type": "Question",
+                  name: "How do I compare private blood tests in the UK?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Use myhealth checkup to compare price, biomarker coverage, sample method, and typical turnaround across UKAS-accredited providers including Medichecks, Randox and more. Filter by category, then select up to four tests to compare side-by-side.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Are the labs UKAS accredited?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes. We only list providers whose laboratories hold UKAS accreditation (ISO 15189 where applicable) and whose clinics are CQC regulated. Accreditation status is shown on every provider profile.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Do I need a GP referral to book a private blood test?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "No GP referral is required for the tests listed on myhealth checkup. You can book directly through the provider. Some specialist tests may include an optional GP review of your results.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "How long do results take?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Typical turnaround is 2–5 working days from sample receipt for most blood tests, though times vary by provider and test type. Estimated turnaround is shown on each test card.",
+                  },
+                },
+                {
+                  "@type": "Question",
+                  name: "Is myhealth checkup free to use?",
+                  acceptedAnswer: {
+                    "@type": "Answer",
+                    text: "Yes. The comparison platform is free for users. We may earn a referral fee when you book through a provider link, which never affects the price you pay or the ranking of results.",
+                  },
+                },
+              ],
+            })}
+          </script>
         </Helmet>
 
         <MainLayout mainClassName="flex-1 bg-white">
@@ -267,12 +313,17 @@ const CompareTests = () => {
                     Compare by goal
                   </h2>
                   <p className="text-sm sm:text-base text-[#081129]/80 mt-1.5">
-                    Know what you want to achieve — longevity, performance, weight loss, prevention —
-                    and see which tests get you there.
+                    Know what you want to achieve — longevity, performance,
+                    weight loss, prevention — and see which tests get you there.
                   </p>
                   <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#22c0d4] group-hover:text-[#e70d69] transition-colors mt-3">
                     Browse goals{" "}
-                    <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
+                    <span
+                      aria-hidden="true"
+                      className="transition-transform group-hover:translate-x-0.5"
+                    >
+                      →
+                    </span>
                   </span>
                 </Link>
 
@@ -287,12 +338,17 @@ const CompareTests = () => {
                     Compare by symptom
                   </h2>
                   <p className="text-sm sm:text-base text-[#081129]/80 mt-1.5">
-                    Tired, low mood, unexplained weight change — see the tests and biomarkers commonly
-                    used to investigate each symptom.
+                    Tired, low mood, unexplained weight change — see the tests
+                    and biomarkers commonly used to investigate each symptom.
                   </p>
                   <span className="inline-flex items-center gap-1 text-sm font-semibold text-[#e70d69] group-hover:text-[#22c0d4] transition-colors mt-3">
                     Browse symptoms{" "}
-                    <span aria-hidden="true" className="transition-transform group-hover:translate-x-0.5">→</span>
+                    <span
+                      aria-hidden="true"
+                      className="transition-transform group-hover:translate-x-0.5"
+                    >
+                      →
+                    </span>
                   </span>
                 </Link>
               </div>
@@ -329,14 +385,18 @@ const CompareTests = () => {
 
               {searchFellBack && (
                 <p className="text-sm text-[#081129]/70 mb-6">
-                  No tests matched &ldquo;{filters.searchQuery.trim()}&rdquo;. Showing all tests instead.
+                  No tests matched &ldquo;{filters.searchQuery.trim()}&rdquo;.
+                  Showing all tests instead.
                 </p>
               )}
 
               {showLoading ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                   {Array.from({ length: 8 }).map((_, i) => (
-                    <div key={i} className="h-[420px] bg-[#081129]/5 animate-pulse rounded-2xl" />
+                    <div
+                      key={i}
+                      className="h-[420px] bg-[#081129]/5 animate-pulse rounded-2xl"
+                    />
                   ))}
                 </div>
               ) : displayTests.length === 0 ? (
@@ -355,24 +415,25 @@ const CompareTests = () => {
                         onClick={() => setVisibleCount((c) => c + PAGE_SIZE)}
                         className="rounded-full border border-[#22c0d4]/60 px-6 py-2.5 text-sm font-semibold text-[#0a8fa0] transition-colors hover:bg-[#22c0d4] hover:text-white"
                       >
-                        Show more tests ({displayTests.length - visibleCount} remaining)
+                        Show more tests ({displayTests.length - visibleCount}{" "}
+                        remaining)
                       </button>
                     </div>
                   )}
                 </>
               )}
-
             </div>
           </section>
 
-
           <CategoryPageBottom
             benefitsTitle="Why compare with myhealth checkup?"
-            benefits={[COMPARE_BENEFITS[0], COMPARE_BENEFITS[1], COMPARE_BENEFITS[2]]}
+            benefits={[
+              COMPARE_BENEFITS[0],
+              COMPARE_BENEFITS[1],
+              COMPARE_BENEFITS[2],
+            ]}
           />
         </MainLayout>
-
-
       </div>
     </ErrorBoundary>
   );

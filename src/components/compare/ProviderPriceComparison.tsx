@@ -2,7 +2,13 @@ import { Link } from "@/lib/router-compat";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { TrendingDown, TrendingUp, Minus, ExternalLink, Award } from "lucide-react";
+import {
+  TrendingDown,
+  TrendingUp,
+  Minus,
+  ExternalLink,
+  Award,
+} from "lucide-react";
 
 interface Provider {
   name: string;
@@ -17,24 +23,43 @@ interface ProviderPriceComparisonProps {
   testName: string;
 }
 
-const ProviderPriceComparison = ({ providers, testName }: ProviderPriceComparisonProps) => {
+const ProviderPriceComparison = ({
+  providers,
+  testName,
+}: ProviderPriceComparisonProps) => {
   if (providers.length < 2) return null;
 
   const sortedByPrice = [...providers].sort((a, b) => a.price - b.price);
   const lowestPrice = sortedByPrice[0].price;
   const highestPrice = sortedByPrice[sortedByPrice.length - 1].price;
-  const averagePrice = providers.reduce((sum, p) => sum + p.price, 0) / providers.length;
+  const averagePrice =
+    providers.reduce((sum, p) => sum + p.price, 0) / providers.length;
   const priceDifference = highestPrice - lowestPrice;
   const savingsPercentage = Math.round((priceDifference / highestPrice) * 100);
 
   const getPriceIndicator = (price: number) => {
     if (price === lowestPrice) {
-      return { icon: TrendingDown, color: "text-[#22c0d4]", label: "Lowest", bg: "bg-[#22c0d4]/10" };
+      return {
+        icon: TrendingDown,
+        color: "text-[#22c0d4]",
+        label: "Lowest",
+        bg: "bg-[#22c0d4]/10",
+      };
     }
     if (price === highestPrice) {
-      return { icon: TrendingUp, color: "text-[#e70d69]", label: "Highest", bg: "bg-[#e70d69]/10" };
+      return {
+        icon: TrendingUp,
+        color: "text-[#e70d69]",
+        label: "Highest",
+        bg: "bg-[#e70d69]/10",
+      };
     }
-    return { icon: Minus, color: "text-white/78", label: "Mid-range", bg: "bg-white/5" };
+    return {
+      icon: Minus,
+      color: "text-white/78",
+      label: "Mid-range",
+      bg: "bg-white/5",
+    };
   };
 
   return (
@@ -46,7 +71,10 @@ const ProviderPriceComparison = ({ providers, testName }: ProviderPriceCompariso
             Price Comparison
           </span>
           {savingsPercentage > 0 && (
-            <Badge variant="secondary" className="bg-[#22c0d4]/20 text-[#22c0d4]">
+            <Badge
+              variant="secondary"
+              className="bg-[#22c0d4]/20 text-[#22c0d4]"
+            >
               Save up to {savingsPercentage}%
             </Badge>
           )}
@@ -75,25 +103,36 @@ const ProviderPriceComparison = ({ providers, testName }: ProviderPriceCompariso
             const indicator = getPriceIndicator(provider.price);
             const IconComponent = indicator.icon;
             const isLowest = provider.price === lowestPrice;
-            
+
             return (
-              <div 
+              <div
                 key={provider.name}
                 className={`flex items-center justify-between p-3 rounded-lg border transition-colors ${
-                  isLowest ? 'border-[#22c0d4]/40 bg-[#22c0d4]/10' : 'border-white/10 hover:bg-white/5'
+                  isLowest
+                    ? "border-[#22c0d4]/40 bg-[#22c0d4]/10"
+                    : "border-white/10 hover:bg-white/5"
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
-                    isLowest ? 'bg-[#22c0d4] text-white' : 'bg-white/10 text-white/78'
-                  }`}>
+                  <div
+                    className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+                      isLowest
+                        ? "bg-[#22c0d4] text-white"
+                        : "bg-white/10 text-white/78"
+                    }`}
+                  >
                     {index + 1}
                   </div>
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-white">{provider.name}</span>
+                      <span className="font-medium text-white">
+                        {provider.name}
+                      </span>
                       {isLowest && (
-                        <Badge variant="secondary" className="text-xs bg-[#22c0d4]/20 text-[#22c0d4]">
+                        <Badge
+                          variant="secondary"
+                          className="text-xs bg-[#22c0d4]/20 text-[#22c0d4]"
+                        >
                           Best Value
                         </Badge>
                       )}
@@ -105,12 +144,14 @@ const ProviderPriceComparison = ({ providers, testName }: ProviderPriceCompariso
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-3">
                   <div className="text-right">
                     <div className="flex items-center gap-1">
                       <IconComponent className={`w-4 h-4 ${indicator.color}`} />
-                      <span className={`font-bold ${isLowest ? 'text-[#22c0d4]' : 'text-white'}`}>
+                      <span
+                        className={`font-bold ${isLowest ? "text-[#22c0d4]" : "text-white"}`}
+                      >
                         £{provider.price}
                       </span>
                     </div>
@@ -120,8 +161,20 @@ const ProviderPriceComparison = ({ providers, testName }: ProviderPriceCompariso
                       </span>
                     )}
                   </div>
-                  <Button size="sm" className={isLowest ? "bg-[#22c0d4] hover:bg-[#e70d69] text-white" : "bg-white/10 hover:bg-white/20 text-white border-white/20"} asChild>
-                    <a href={provider.bookingUrl} target="_blank" rel="noopener noreferrer">
+                  <Button
+                    size="sm"
+                    className={
+                      isLowest
+                        ? "bg-[#22c0d4] hover:bg-[#e70d69] text-white"
+                        : "bg-white/10 hover:bg-white/20 text-white border-white/20"
+                    }
+                    asChild
+                  >
+                    <a
+                      href={provider.bookingUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       Book
                       <ExternalLink className="w-3 h-3 ml-1" />
                     </a>
@@ -135,7 +188,8 @@ const ProviderPriceComparison = ({ providers, testName }: ProviderPriceCompariso
         {/* CTA */}
         <div className="mt-4 pt-4 border-t border-white/10">
           <p className="text-xs text-white/78 text-center">
-            Prices shown are for standard home test kits. Clinic visit costs may vary.
+            Prices shown are for standard home test kits. Clinic visit costs may
+            vary.
           </p>
         </div>
       </CardContent>

@@ -3,7 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Brain, Sparkles, ChevronLeft, RotateCcw } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { RecommendationResults, type AIAnalysisResult } from "@/components/ai/RecommendationEngine";
+import {
+  RecommendationResults,
+  type AIAnalysisResult,
+} from "@/components/ai/RecommendationEngine";
 import { trackFunnelEvent } from "@/lib/funnelTracking";
 
 // ─── Decision Tree (Medichecks V13 Logic Map) ───────────────────────────────────────
@@ -33,7 +36,12 @@ const DECISION_TREE: Record<string, DecisionNode> = {
       { label: "Male", next_node: "m_2", products: [], is_terminal: false },
       { label: "Female", next_node: "f_2", products: [], is_terminal: false },
       { label: "Neither", next_node: "o_2", products: [], is_terminal: false },
-      { label: "Prefer not to say", next_node: "o_2", products: [], is_terminal: false },
+      {
+        label: "Prefer not to say",
+        next_node: "o_2",
+        products: [],
+        is_terminal: false,
+      },
     ],
   },
   m_2: {
@@ -42,16 +50,71 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "General health check", next_node: "juno_results", products: ["optimal-health-blood-test", "well-man-advanced-blood-test", "health-and-lifestyle-check-blood-test", "core-health-blood-test"], is_terminal: true },
-      { label: "Hormones", next_node: "m_hormones_symptoms", products: [], is_terminal: false },
-      { label: "Thyroid", next_node: "m_thyroid_diagnosis", products: [], is_terminal: false },
-      { label: "Fertility", next_node: "m_fertility", products: [], is_terminal: false },
-      { label: "Nutrition", next_node: "m_nutrition_diet", products: [], is_terminal: false },
-      { label: "Fitness", next_node: "m_fitness_exercise_type", products: [], is_terminal: false },
-      { label: "Bowel", next_node: "juno_results", products: ["qfit-bowel-cancer-test"], is_terminal: true },
-      { label: "Prostate", next_node: "juno_results", products: ["psa-prostate-specific-antigen-blood-test"], is_terminal: true },
-      { label: "Skin", next_node: "juno_results", products: ["skin-iq-blood-test"], is_terminal: true },
-      { label: "Weight Management", next_node: "juno_results", products: ["weight-loss-injection-glp-1-monitoring-blood-test"], is_terminal: true },
+      {
+        label: "General health check",
+        next_node: "juno_results",
+        products: [
+          "optimal-health-blood-test",
+          "well-man-advanced-blood-test",
+          "health-and-lifestyle-check-blood-test",
+          "core-health-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "Hormones",
+        next_node: "m_hormones_symptoms",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "Thyroid",
+        next_node: "m_thyroid_diagnosis",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "Fertility",
+        next_node: "m_fertility",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "Nutrition",
+        next_node: "m_nutrition_diet",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "Fitness",
+        next_node: "m_fitness_exercise_type",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "Bowel",
+        next_node: "juno_results",
+        products: ["qfit-bowel-cancer-test"],
+        is_terminal: true,
+      },
+      {
+        label: "Prostate",
+        next_node: "juno_results",
+        products: ["psa-prostate-specific-antigen-blood-test"],
+        is_terminal: true,
+      },
+      {
+        label: "Skin",
+        next_node: "juno_results",
+        products: ["skin-iq-blood-test"],
+        is_terminal: true,
+      },
+      {
+        label: "Weight Management",
+        next_node: "juno_results",
+        products: ["weight-loss-injection-glp-1-monitoring-blood-test"],
+        is_terminal: true,
+      },
     ],
   },
   f_2: {
@@ -60,15 +123,65 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "General health check", next_node: "juno_results", products: ["optimal-health-blood-test", "well-woman-advanced-blood-test", "health-and-lifestyle-check-blood-test", "core-health-blood-test"], is_terminal: true },
-      { label: "Hormones", next_node: "f_hormones_symptoms", products: [], is_terminal: false },
-      { label: "Thyroid", next_node: "f_thyroid_diagnosis", products: [], is_terminal: false },
-      { label: "Fertility", next_node: "f_fertility", products: [], is_terminal: false },
-      { label: "Nutrition", next_node: "f_nutrition_diet", products: [], is_terminal: false },
-      { label: "Fitness", next_node: "f_fitness_exercise_type", products: [], is_terminal: false },
-      { label: "Bowel", next_node: "juno_results", products: ["qfit-bowel-cancer-test"], is_terminal: true },
-      { label: "Skin", next_node: "juno_results", products: ["skin-iq-blood-test"], is_terminal: true },
-      { label: "Weight Management", next_node: "juno_results", products: ["weight-loss-injection-glp-1-monitoring-blood-test"], is_terminal: true },
+      {
+        label: "General health check",
+        next_node: "juno_results",
+        products: [
+          "optimal-health-blood-test",
+          "well-woman-advanced-blood-test",
+          "health-and-lifestyle-check-blood-test",
+          "core-health-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "Hormones",
+        next_node: "f_hormones_symptoms",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "Thyroid",
+        next_node: "f_thyroid_diagnosis",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "Fertility",
+        next_node: "f_fertility",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "Nutrition",
+        next_node: "f_nutrition_diet",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "Fitness",
+        next_node: "f_fitness_exercise_type",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "Bowel",
+        next_node: "juno_results",
+        products: ["qfit-bowel-cancer-test"],
+        is_terminal: true,
+      },
+      {
+        label: "Skin",
+        next_node: "juno_results",
+        products: ["skin-iq-blood-test"],
+        is_terminal: true,
+      },
+      {
+        label: "Weight Management",
+        next_node: "juno_results",
+        products: ["weight-loss-injection-glp-1-monitoring-blood-test"],
+        is_terminal: true,
+      },
     ],
   },
   o_2: {
@@ -84,12 +197,50 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "I am experiencing low libido and/or lack of muscle", next_node: "juno_results", products: ["male-hormone-check-blood-test", "testosterone-blood-test"], is_terminal: true },
-      { label: "I am experiencing lack of energy and/or low mood", next_node: "juno_results", products: ["well-man-advanced-blood-test"], is_terminal: true },
-      { label: "I struggle to maintain an erection", next_node: "juno_results", products: ["erectile-dysfunction-ed-blood-test"], is_terminal: true },
-      { label: "I take testosterone supplements (TRT)", next_node: "juno_results", products: ["trt-check-plus-testosterone-replacement-therapy-blood-test", "male-hormone-check-blood-test", "testosterone-blood-test"], is_terminal: true },
-      { label: "I am experiencing male pattern baldness", next_node: "juno_results", products: ["male-hormone-check-blood-test"], is_terminal: true },
-      { label: "None apply to me, I just want a hormone MOT", next_node: "juno_results", products: ["ultimate-performance-blood-test", "male-hormone-check-blood-test", "testosterone-blood-test"], is_terminal: true },
+      {
+        label: "I am experiencing low libido and/or lack of muscle",
+        next_node: "juno_results",
+        products: ["male-hormone-check-blood-test", "testosterone-blood-test"],
+        is_terminal: true,
+      },
+      {
+        label: "I am experiencing lack of energy and/or low mood",
+        next_node: "juno_results",
+        products: ["well-man-advanced-blood-test"],
+        is_terminal: true,
+      },
+      {
+        label: "I struggle to maintain an erection",
+        next_node: "juno_results",
+        products: ["erectile-dysfunction-ed-blood-test"],
+        is_terminal: true,
+      },
+      {
+        label: "I take testosterone supplements (TRT)",
+        next_node: "juno_results",
+        products: [
+          "trt-check-plus-testosterone-replacement-therapy-blood-test",
+          "male-hormone-check-blood-test",
+          "testosterone-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I am experiencing male pattern baldness",
+        next_node: "juno_results",
+        products: ["male-hormone-check-blood-test"],
+        is_terminal: true,
+      },
+      {
+        label: "None apply to me, I just want a hormone MOT",
+        next_node: "juno_results",
+        products: [
+          "ultimate-performance-blood-test",
+          "male-hormone-check-blood-test",
+          "testosterone-blood-test",
+        ],
+        is_terminal: true,
+      },
     ],
   },
   m_thyroid_diagnosis: {
@@ -98,8 +249,18 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "Yes", next_node: "m_thyroid_condition_yes", products: [], is_terminal: false },
-      { label: "No", next_node: "m_thyroid_condition_no", products: [], is_terminal: false },
+      {
+        label: "Yes",
+        next_node: "m_thyroid_condition_yes",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "No",
+        next_node: "m_thyroid_condition_no",
+        products: [],
+        is_terminal: false,
+      },
     ],
   },
   m_thyroid_condition_yes: {
@@ -108,8 +269,21 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "Thyroid function", next_node: "juno_results", products: ["thyroid-function-blood-test", "thyroid-function-antibodies-blood-test"], is_terminal: true },
-      { label: "Thyroid function and nutrition", next_node: "juno_results", products: ["advanced-thyroid-function-blood-test"], is_terminal: true },
+      {
+        label: "Thyroid function",
+        next_node: "juno_results",
+        products: [
+          "thyroid-function-blood-test",
+          "thyroid-function-antibodies-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "Thyroid function and nutrition",
+        next_node: "juno_results",
+        products: ["advanced-thyroid-function-blood-test"],
+        is_terminal: true,
+      },
     ],
   },
   m_thyroid_condition_no: {
@@ -118,10 +292,45 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "Weight gain, fatigue, low mood, sensitivity to cold", next_node: "juno_results", products: ["advanced-thyroid-function-blood-test", "thyroid-function-blood-test", "thyroid-function-antibodies-blood-test"], is_terminal: true },
-      { label: "Weight loss, agitation and sensitivity to heat", next_node: "juno_results", products: ["advanced-thyroid-function-blood-test", "thyroid-function-blood-test", "thyroid-function-antibodies-blood-test"], is_terminal: true },
-      { label: "No, but have a family history of thyroid disorders", next_node: "juno_results", products: ["thyroid-function-antibodies-blood-test", "thyroid-function-blood-test"], is_terminal: true },
-      { label: "None of these apply / just curious", next_node: "juno_results", products: ["well-man-advanced-blood-test", "advanced-thyroid-function-blood-test", "thyroid-function-blood-test"], is_terminal: true },
+      {
+        label: "Weight gain, fatigue, low mood, sensitivity to cold",
+        next_node: "juno_results",
+        products: [
+          "advanced-thyroid-function-blood-test",
+          "thyroid-function-blood-test",
+          "thyroid-function-antibodies-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "Weight loss, agitation and sensitivity to heat",
+        next_node: "juno_results",
+        products: [
+          "advanced-thyroid-function-blood-test",
+          "thyroid-function-blood-test",
+          "thyroid-function-antibodies-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "No, but have a family history of thyroid disorders",
+        next_node: "juno_results",
+        products: [
+          "thyroid-function-antibodies-blood-test",
+          "thyroid-function-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "None of these apply / just curious",
+        next_node: "juno_results",
+        products: [
+          "well-man-advanced-blood-test",
+          "advanced-thyroid-function-blood-test",
+          "thyroid-function-blood-test",
+        ],
+        is_terminal: true,
+      },
     ],
   },
   m_fertility: {
@@ -130,11 +339,40 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "I'm worried about my testosterone levels", next_node: "juno_results", products: ["testosterone-blood-test", "male-hormone-check-blood-test"], is_terminal: true },
-      { label: "I have a low libido", next_node: "juno_results", products: ["well-man-advanced-blood-test", "male-hormone-check-blood-test", "testosterone-blood-test"], is_terminal: true },
-      { label: "I'm about to start IVF", next_node: "juno_results", products: ["ivf-fertility-viral-screen"], is_terminal: true },
-      { label: "I'm thinking about having children in the future", next_node: "juno_results", products: ["male-fertility-hormones-blood-test"], is_terminal: true },
-      { label: "None of these apply / just curious", next_node: "juno_results", products: ["male-fertility-hormones-blood-test"], is_terminal: true },
+      {
+        label: "I'm worried about my testosterone levels",
+        next_node: "juno_results",
+        products: ["testosterone-blood-test", "male-hormone-check-blood-test"],
+        is_terminal: true,
+      },
+      {
+        label: "I have a low libido",
+        next_node: "juno_results",
+        products: [
+          "well-man-advanced-blood-test",
+          "male-hormone-check-blood-test",
+          "testosterone-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I'm about to start IVF",
+        next_node: "juno_results",
+        products: ["ivf-fertility-viral-screen"],
+        is_terminal: true,
+      },
+      {
+        label: "I'm thinking about having children in the future",
+        next_node: "juno_results",
+        products: ["male-fertility-hormones-blood-test"],
+        is_terminal: true,
+      },
+      {
+        label: "None of these apply / just curious",
+        next_node: "juno_results",
+        products: ["male-fertility-hormones-blood-test"],
+        is_terminal: true,
+      },
     ],
   },
   m_nutrition_diet: {
@@ -143,13 +381,68 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "I eat a plant-based diet", next_node: "juno_results", products: ["vitamin-b12-active-blood-test", "nutrition-check-blood-test"], is_terminal: true },
-      { label: "I think my diet could be healthier", next_node: "juno_results", products: ["health-and-lifestyle-check-blood-test", "nutrition-check-blood-test"], is_terminal: true },
-      { label: "I want to monitor my vitamin and nutrient levels", next_node: "juno_results", products: ["health-and-lifestyle-check-blood-test", "vitamin-d-25-oh-blood-test", "nutrition-check-blood-test"], is_terminal: true },
-      { label: "I eat a keto/paleo/low carb diet", next_node: "juno_results", products: ["ultimate-performance-blood-test", "nutrition-check-blood-test"], is_terminal: true },
-      { label: "My health condition affects my diet and nutrition", next_node: "juno_results", products: ["well-man-advanced-blood-test", "nutrition-check-blood-test"], is_terminal: true },
-      { label: "I'm experiencing symptoms such as low energy", next_node: "juno_results", products: ["well-man-advanced-blood-test", "vitamin-d-25-oh-blood-test", "tiredness-and-fatigue-check-blood-test"], is_terminal: true },
-      { label: "None of the above", next_node: "juno_results", products: ["well-man-advanced-blood-test"], is_terminal: true },
+      {
+        label: "I eat a plant-based diet",
+        next_node: "juno_results",
+        products: [
+          "vitamin-b12-active-blood-test",
+          "nutrition-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I think my diet could be healthier",
+        next_node: "juno_results",
+        products: [
+          "health-and-lifestyle-check-blood-test",
+          "nutrition-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I want to monitor my vitamin and nutrient levels",
+        next_node: "juno_results",
+        products: [
+          "health-and-lifestyle-check-blood-test",
+          "vitamin-d-25-oh-blood-test",
+          "nutrition-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I eat a keto/paleo/low carb diet",
+        next_node: "juno_results",
+        products: [
+          "ultimate-performance-blood-test",
+          "nutrition-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "My health condition affects my diet and nutrition",
+        next_node: "juno_results",
+        products: [
+          "well-man-advanced-blood-test",
+          "nutrition-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I'm experiencing symptoms such as low energy",
+        next_node: "juno_results",
+        products: [
+          "well-man-advanced-blood-test",
+          "vitamin-d-25-oh-blood-test",
+          "tiredness-and-fatigue-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "None of the above",
+        next_node: "juno_results",
+        products: ["well-man-advanced-blood-test"],
+        is_terminal: true,
+      },
     ],
   },
   m_fitness_exercise_type: {
@@ -158,11 +451,44 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "Endurance sports", next_node: "m_fitness_endurance", products: [], is_terminal: false },
-      { label: "Strength training", next_node: "m_fitness_strength", products: [], is_terminal: false },
-      { label: "A mix of strength and endurance", next_node: "m_fitness_mixture", products: [], is_terminal: false },
-      { label: "Gym / exercise classes", next_node: "juno_results", products: ["ultimate-performance-blood-test", "baseline-fitness-blood-test", "advanced-fitness-blood-test"], is_terminal: true },
-      { label: "None of these / I want to transform my fitness", next_node: "juno_results", products: ["well-man-advanced-blood-test", "ultimate-performance-blood-test", "baseline-fitness-blood-test"], is_terminal: true },
+      {
+        label: "Endurance sports",
+        next_node: "m_fitness_endurance",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "Strength training",
+        next_node: "m_fitness_strength",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "A mix of strength and endurance",
+        next_node: "m_fitness_mixture",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "Gym / exercise classes",
+        next_node: "juno_results",
+        products: [
+          "ultimate-performance-blood-test",
+          "baseline-fitness-blood-test",
+          "advanced-fitness-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "None of these / I want to transform my fitness",
+        next_node: "juno_results",
+        products: [
+          "well-man-advanced-blood-test",
+          "ultimate-performance-blood-test",
+          "baseline-fitness-blood-test",
+        ],
+        is_terminal: true,
+      },
     ],
   },
   m_fitness_endurance: {
@@ -171,8 +497,21 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "I want to be in the best shape for my training", next_node: "juno_results", products: ["ultimate-performance-blood-test", "baseline-fitness-blood-test"], is_terminal: true },
-      { label: "I have concerns about my performance", next_node: "juno_results", products: ["ultimate-performance-blood-test"], is_terminal: true },
+      {
+        label: "I want to be in the best shape for my training",
+        next_node: "juno_results",
+        products: [
+          "ultimate-performance-blood-test",
+          "baseline-fitness-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I have concerns about my performance",
+        next_node: "juno_results",
+        products: ["ultimate-performance-blood-test"],
+        is_terminal: true,
+      },
     ],
   },
   m_fitness_strength: {
@@ -181,10 +520,46 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "I want to be in the best shape for my training", next_node: "juno_results", products: ["ultimate-performance-blood-test", "baseline-fitness-blood-test", "advanced-fitness-blood-test"], is_terminal: true },
-      { label: "I have concerns about my performance", next_node: "juno_results", products: ["ultimate-performance-blood-test", "sports-hormone-check-blood-test"], is_terminal: true },
-      { label: "I take testosterone supplements", next_node: "juno_results", products: ["trt-check-plus-testosterone-replacement-therapy-blood-test", "male-hormone-check-blood-test", "ultimate-performance-blood-test", "sports-hormone-check-blood-test"], is_terminal: true },
-      { label: "I want to optimise my physique", next_node: "juno_results", products: ["ultimate-performance-blood-test", "male-hormone-check-blood-test", "testosterone-blood-test"], is_terminal: true },
+      {
+        label: "I want to be in the best shape for my training",
+        next_node: "juno_results",
+        products: [
+          "ultimate-performance-blood-test",
+          "baseline-fitness-blood-test",
+          "advanced-fitness-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I have concerns about my performance",
+        next_node: "juno_results",
+        products: [
+          "ultimate-performance-blood-test",
+          "sports-hormone-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I take testosterone supplements",
+        next_node: "juno_results",
+        products: [
+          "trt-check-plus-testosterone-replacement-therapy-blood-test",
+          "male-hormone-check-blood-test",
+          "ultimate-performance-blood-test",
+          "sports-hormone-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I want to optimise my physique",
+        next_node: "juno_results",
+        products: [
+          "ultimate-performance-blood-test",
+          "male-hormone-check-blood-test",
+          "testosterone-blood-test",
+        ],
+        is_terminal: true,
+      },
     ],
   },
   m_fitness_mixture: {
@@ -193,10 +568,46 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "I want to be in the best shape for my training", next_node: "juno_results", products: ["ultimate-performance-blood-test", "baseline-fitness-blood-test", "advanced-fitness-blood-test"], is_terminal: true },
-      { label: "I have concerns about my performance", next_node: "juno_results", products: ["ultimate-performance-blood-test", "sports-hormone-check-blood-test"], is_terminal: true },
-      { label: "I take testosterone supplements", next_node: "juno_results", products: ["trt-check-plus-testosterone-replacement-therapy-blood-test", "ultimate-performance-blood-test", "male-hormone-check-blood-test", "sports-hormone-check-blood-test"], is_terminal: true },
-      { label: "I want to optimise my physique", next_node: "juno_results", products: ["ultimate-performance-blood-test", "male-hormone-check-blood-test", "testosterone-blood-test"], is_terminal: true },
+      {
+        label: "I want to be in the best shape for my training",
+        next_node: "juno_results",
+        products: [
+          "ultimate-performance-blood-test",
+          "baseline-fitness-blood-test",
+          "advanced-fitness-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I have concerns about my performance",
+        next_node: "juno_results",
+        products: [
+          "ultimate-performance-blood-test",
+          "sports-hormone-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I take testosterone supplements",
+        next_node: "juno_results",
+        products: [
+          "trt-check-plus-testosterone-replacement-therapy-blood-test",
+          "ultimate-performance-blood-test",
+          "male-hormone-check-blood-test",
+          "sports-hormone-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I want to optimise my physique",
+        next_node: "juno_results",
+        products: [
+          "ultimate-performance-blood-test",
+          "male-hormone-check-blood-test",
+          "testosterone-blood-test",
+        ],
+        is_terminal: true,
+      },
     ],
   },
   f_hormones_symptoms: {
@@ -205,10 +616,30 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "I have symptoms that may be hormone-related", next_node: "f_hormones_symptoms_2", products: [], is_terminal: false },
-      { label: "I am interested in my fertility", next_node: "f_fertility", products: [], is_terminal: false },
-      { label: "I am going through or have been through menopause", next_node: "f_hormones_menopause", products: [], is_terminal: false },
-      { label: "I am just curious about my hormones", next_node: "f_hormones_curious", products: [], is_terminal: false },
+      {
+        label: "I have symptoms that may be hormone-related",
+        next_node: "f_hormones_symptoms_2",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "I am interested in my fertility",
+        next_node: "f_fertility",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "I am going through or have been through menopause",
+        next_node: "f_hormones_menopause",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "I am just curious about my hormones",
+        next_node: "f_hormones_curious",
+        products: [],
+        is_terminal: false,
+      },
     ],
   },
   f_hormones_symptoms_2: {
@@ -217,10 +648,42 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "Hot flushes, night sweats and mood swings", next_node: "juno_results", products: ["female-hormone-check-blood-test", "menopause-check-blood-test"], is_terminal: true },
-      { label: "Changes to my menstrual cycle such as heavier or irregular periods", next_node: "juno_results", products: ["female-hormone-check-blood-test", "thyroid-function-blood-test", "polycystic-ovary-syndrome-check-blood-test"], is_terminal: true },
-      { label: "Irregular periods, acne, oily skin and increased body hair", next_node: "juno_results", products: ["polycystic-ovary-syndrome-check-blood-test"], is_terminal: true },
-      { label: "Weight gain, low mood, low energy and sensitivity to cold", next_node: "juno_results", products: ["advanced-thyroid-function-blood-test", "thyroid-function-blood-test", "thyroid-function-antibodies-blood-test"], is_terminal: true },
+      {
+        label: "Hot flushes, night sweats and mood swings",
+        next_node: "juno_results",
+        products: [
+          "female-hormone-check-blood-test",
+          "menopause-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label:
+          "Changes to my menstrual cycle such as heavier or irregular periods",
+        next_node: "juno_results",
+        products: [
+          "female-hormone-check-blood-test",
+          "thyroid-function-blood-test",
+          "polycystic-ovary-syndrome-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "Irregular periods, acne, oily skin and increased body hair",
+        next_node: "juno_results",
+        products: ["polycystic-ovary-syndrome-check-blood-test"],
+        is_terminal: true,
+      },
+      {
+        label: "Weight gain, low mood, low energy and sensitivity to cold",
+        next_node: "juno_results",
+        products: [
+          "advanced-thyroid-function-blood-test",
+          "thyroid-function-blood-test",
+          "thyroid-function-antibodies-blood-test",
+        ],
+        is_terminal: true,
+      },
     ],
   },
   f_thyroid_diagnosis: {
@@ -229,8 +692,18 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "Yes", next_node: "f_thyroid_condition_yes", products: [], is_terminal: false },
-      { label: "No", next_node: "f_thyroid_condition_no", products: [], is_terminal: false },
+      {
+        label: "Yes",
+        next_node: "f_thyroid_condition_yes",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "No",
+        next_node: "f_thyroid_condition_no",
+        products: [],
+        is_terminal: false,
+      },
     ],
   },
   f_thyroid_condition_yes: {
@@ -239,8 +712,21 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "Thyroid function", next_node: "juno_results", products: ["thyroid-function-blood-test", "thyroid-function-antibodies-blood-test"], is_terminal: true },
-      { label: "Thyroid function and nutrition", next_node: "juno_results", products: ["advanced-thyroid-function-blood-test"], is_terminal: true },
+      {
+        label: "Thyroid function",
+        next_node: "juno_results",
+        products: [
+          "thyroid-function-blood-test",
+          "thyroid-function-antibodies-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "Thyroid function and nutrition",
+        next_node: "juno_results",
+        products: ["advanced-thyroid-function-blood-test"],
+        is_terminal: true,
+      },
     ],
   },
   f_thyroid_condition_no: {
@@ -249,10 +735,45 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "Weight gain, fatigue, low mood, sensitivity to cold", next_node: "juno_results", products: ["advanced-thyroid-function-blood-test", "thyroid-function-blood-test", "thyroid-function-antibodies-blood-test"], is_terminal: true },
-      { label: "Weight loss, agitation and sensitivity to heat", next_node: "juno_results", products: ["advanced-thyroid-function-blood-test", "thyroid-function-blood-test", "thyroid-function-antibodies-blood-test"], is_terminal: true },
-      { label: "No, but have a family history of thyroid disorders", next_node: "juno_results", products: ["thyroid-function-antibodies-blood-test", "thyroid-function-blood-test"], is_terminal: true },
-      { label: "None of these apply / just curious", next_node: "juno_results", products: ["well-woman-advanced-blood-test", "advanced-thyroid-function-blood-test", "thyroid-function-blood-test"], is_terminal: true },
+      {
+        label: "Weight gain, fatigue, low mood, sensitivity to cold",
+        next_node: "juno_results",
+        products: [
+          "advanced-thyroid-function-blood-test",
+          "thyroid-function-blood-test",
+          "thyroid-function-antibodies-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "Weight loss, agitation and sensitivity to heat",
+        next_node: "juno_results",
+        products: [
+          "advanced-thyroid-function-blood-test",
+          "thyroid-function-blood-test",
+          "thyroid-function-antibodies-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "No, but have a family history of thyroid disorders",
+        next_node: "juno_results",
+        products: [
+          "thyroid-function-antibodies-blood-test",
+          "thyroid-function-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "None of these apply / just curious",
+        next_node: "juno_results",
+        products: [
+          "well-woman-advanced-blood-test",
+          "advanced-thyroid-function-blood-test",
+          "thyroid-function-blood-test",
+        ],
+        is_terminal: true,
+      },
     ],
   },
   f_fertility: {
@@ -261,11 +782,44 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "I want to check if I am pregnant", next_node: "juno_results", products: ["pregnancy-blood-test"], is_terminal: true },
-      { label: "I'm planning to get pregnant / thinking about children in the future", next_node: "juno_results", products: ["well-woman-advanced-blood-test", "advanced-female-fertility-blood-test"], is_terminal: true },
-      { label: "I am planning to start IVF", next_node: "juno_results", products: ["anti-mullerian-hormone-amh-blood-test", "ivf-fertility-viral-screen", "advanced-female-fertility-blood-test"], is_terminal: true },
-      { label: "I am currently pregnant", next_node: "juno_results", products: ["pregnancy-progress-blood-test"], is_terminal: true },
-      { label: "I've recently had a baby", next_node: "juno_results", products: ["well-woman-advanced-blood-test"], is_terminal: true },
+      {
+        label: "I want to check if I am pregnant",
+        next_node: "juno_results",
+        products: ["pregnancy-blood-test"],
+        is_terminal: true,
+      },
+      {
+        label:
+          "I'm planning to get pregnant / thinking about children in the future",
+        next_node: "juno_results",
+        products: [
+          "well-woman-advanced-blood-test",
+          "advanced-female-fertility-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I am planning to start IVF",
+        next_node: "juno_results",
+        products: [
+          "anti-mullerian-hormone-amh-blood-test",
+          "ivf-fertility-viral-screen",
+          "advanced-female-fertility-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I am currently pregnant",
+        next_node: "juno_results",
+        products: ["pregnancy-progress-blood-test"],
+        is_terminal: true,
+      },
+      {
+        label: "I've recently had a baby",
+        next_node: "juno_results",
+        products: ["well-woman-advanced-blood-test"],
+        is_terminal: true,
+      },
     ],
   },
   f_hormones_menopause: {
@@ -274,8 +828,19 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "I am taking HRT", next_node: "juno_results", products: ["hrt-check-blood-test"], is_terminal: true },
-      { label: "I am experiencing symptoms such as hot flushes, night sweats and mood swings", next_node: "juno_results", products: ["menopause-check-blood-test"], is_terminal: true },
+      {
+        label: "I am taking HRT",
+        next_node: "juno_results",
+        products: ["hrt-check-blood-test"],
+        is_terminal: true,
+      },
+      {
+        label:
+          "I am experiencing symptoms such as hot flushes, night sweats and mood swings",
+        next_node: "juno_results",
+        products: ["menopause-check-blood-test"],
+        is_terminal: true,
+      },
     ],
   },
   f_hormones_curious: {
@@ -284,8 +849,24 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "I want to monitor my hormone levels over time", next_node: "juno_results", products: ["female-hormone-check-blood-test", "female-hormone-check-advanced-blood-test"], is_terminal: true },
-      { label: "I want reassurance that my hormone levels are right for me", next_node: "juno_results", products: ["female-hormone-check-blood-test", "female-hormone-check-advanced-blood-test"], is_terminal: true },
+      {
+        label: "I want to monitor my hormone levels over time",
+        next_node: "juno_results",
+        products: [
+          "female-hormone-check-blood-test",
+          "female-hormone-check-advanced-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I want reassurance that my hormone levels are right for me",
+        next_node: "juno_results",
+        products: [
+          "female-hormone-check-blood-test",
+          "female-hormone-check-advanced-blood-test",
+        ],
+        is_terminal: true,
+      },
     ],
   },
   f_nutrition_diet: {
@@ -294,13 +875,64 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "I eat a plant-based diet", next_node: "juno_results", products: ["vitamin-b12-active-blood-test", "nutrition-check-blood-test"], is_terminal: true },
-      { label: "I think my diet could be healthier", next_node: "juno_results", products: ["health-and-lifestyle-check-blood-test", "nutrition-check-blood-test"], is_terminal: true },
-      { label: "I want to monitor my vitamin and nutrient levels", next_node: "juno_results", products: ["vitamin-d-25-oh-blood-test", "nutrition-check-blood-test"], is_terminal: true },
-      { label: "I eat a keto/paleo/low carb diet", next_node: "juno_results", products: ["ultimate-performance-blood-test", "nutrition-check-blood-test"], is_terminal: true },
-      { label: "My condition means I eat a restrictive diet", next_node: "juno_results", products: ["well-woman-advanced-blood-test", "nutrition-check-blood-test"], is_terminal: true },
-      { label: "I'm experiencing symptoms such as low energy", next_node: "juno_results", products: ["well-woman-advanced-blood-test", "iron-deficiency-check-blood-test", "tiredness-and-fatigue-check-blood-test"], is_terminal: true },
-      { label: "None of the above", next_node: "juno_results", products: ["well-woman-advanced-blood-test"], is_terminal: true },
+      {
+        label: "I eat a plant-based diet",
+        next_node: "juno_results",
+        products: [
+          "vitamin-b12-active-blood-test",
+          "nutrition-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I think my diet could be healthier",
+        next_node: "juno_results",
+        products: [
+          "health-and-lifestyle-check-blood-test",
+          "nutrition-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I want to monitor my vitamin and nutrient levels",
+        next_node: "juno_results",
+        products: ["vitamin-d-25-oh-blood-test", "nutrition-check-blood-test"],
+        is_terminal: true,
+      },
+      {
+        label: "I eat a keto/paleo/low carb diet",
+        next_node: "juno_results",
+        products: [
+          "ultimate-performance-blood-test",
+          "nutrition-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "My condition means I eat a restrictive diet",
+        next_node: "juno_results",
+        products: [
+          "well-woman-advanced-blood-test",
+          "nutrition-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I'm experiencing symptoms such as low energy",
+        next_node: "juno_results",
+        products: [
+          "well-woman-advanced-blood-test",
+          "iron-deficiency-check-blood-test",
+          "tiredness-and-fatigue-check-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "None of the above",
+        next_node: "juno_results",
+        products: ["well-woman-advanced-blood-test"],
+        is_terminal: true,
+      },
     ],
   },
   f_fitness_exercise_type: {
@@ -309,11 +941,43 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "Endurance sport", next_node: "f_fitness_endurance", products: [], is_terminal: false },
-      { label: "Strength training", next_node: "f_fitness_strength", products: [], is_terminal: false },
-      { label: "A mixture of strength and endurance", next_node: "f_fitness_mixture", products: [], is_terminal: false },
-      { label: "Gym / exercise classes", next_node: "juno_results", products: ["baseline-fitness-blood-test", "advanced-fitness-blood-test"], is_terminal: true },
-      { label: "None of these / I want to transform my fitness", next_node: "juno_results", products: ["well-woman-advanced-blood-test", "baseline-fitness-blood-test", "advanced-fitness-blood-test"], is_terminal: true },
+      {
+        label: "Endurance sport",
+        next_node: "f_fitness_endurance",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "Strength training",
+        next_node: "f_fitness_strength",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "A mixture of strength and endurance",
+        next_node: "f_fitness_mixture",
+        products: [],
+        is_terminal: false,
+      },
+      {
+        label: "Gym / exercise classes",
+        next_node: "juno_results",
+        products: [
+          "baseline-fitness-blood-test",
+          "advanced-fitness-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "None of these / I want to transform my fitness",
+        next_node: "juno_results",
+        products: [
+          "well-woman-advanced-blood-test",
+          "baseline-fitness-blood-test",
+          "advanced-fitness-blood-test",
+        ],
+        is_terminal: true,
+      },
     ],
   },
   f_fitness_endurance: {
@@ -322,8 +986,18 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "I want to be in the best shape for my training", next_node: "juno_results", products: ["baseline-fitness-blood-test"], is_terminal: true },
-      { label: "I have concerns about my performance", next_node: "juno_results", products: ["ultimate-performance-blood-test"], is_terminal: true },
+      {
+        label: "I want to be in the best shape for my training",
+        next_node: "juno_results",
+        products: ["baseline-fitness-blood-test"],
+        is_terminal: true,
+      },
+      {
+        label: "I have concerns about my performance",
+        next_node: "juno_results",
+        products: ["ultimate-performance-blood-test"],
+        is_terminal: true,
+      },
     ],
   },
   f_fitness_strength: {
@@ -332,9 +1006,31 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "I want to be in the best shape for my training", next_node: "juno_results", products: ["ultimate-performance-blood-test", "baseline-fitness-blood-test", "advanced-fitness-blood-test"], is_terminal: true },
-      { label: "I have concerns about my performance", next_node: "juno_results", products: ["ultimate-performance-blood-test", "advanced-fitness-blood-test"], is_terminal: true },
-      { label: "I want to optimise my physique", next_node: "juno_results", products: ["ultimate-performance-blood-test"], is_terminal: true },
+      {
+        label: "I want to be in the best shape for my training",
+        next_node: "juno_results",
+        products: [
+          "ultimate-performance-blood-test",
+          "baseline-fitness-blood-test",
+          "advanced-fitness-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I have concerns about my performance",
+        next_node: "juno_results",
+        products: [
+          "ultimate-performance-blood-test",
+          "advanced-fitness-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I want to optimise my physique",
+        next_node: "juno_results",
+        products: ["ultimate-performance-blood-test"],
+        is_terminal: true,
+      },
     ],
   },
   f_fitness_mixture: {
@@ -343,8 +1039,25 @@ const DECISION_TREE: Record<string, DecisionNode> = {
     description: "",
     type: "question",
     answers: [
-      { label: "I want to be in the best shape for my training", next_node: "juno_results", products: ["ultimate-performance-blood-test", "baseline-fitness-blood-test", "advanced-fitness-blood-test"], is_terminal: true },
-      { label: "I have concerns about my progress", next_node: "juno_results", products: ["ultimate-performance-blood-test", "advanced-fitness-blood-test"], is_terminal: true },
+      {
+        label: "I want to be in the best shape for my training",
+        next_node: "juno_results",
+        products: [
+          "ultimate-performance-blood-test",
+          "baseline-fitness-blood-test",
+          "advanced-fitness-blood-test",
+        ],
+        is_terminal: true,
+      },
+      {
+        label: "I have concerns about my progress",
+        next_node: "juno_results",
+        products: [
+          "ultimate-performance-blood-test",
+          "advanced-fitness-blood-test",
+        ],
+        is_terminal: true,
+      },
     ],
   },
 };
@@ -386,13 +1099,17 @@ const AnalysingState = () => {
           Clinically analysing your results{".".repeat(dots)}
         </h3>
         <p className="text-[#081129]/60 text-sm max-w-sm mx-auto">
-          Cross-referencing your profile with our accredited provider database to find your best-matched options.
+          Cross-referencing your profile with our accredited provider database
+          to find your best-matched options.
         </p>
       </div>
       <div className="w-64 h-1.5 bg-[#081129]/10 rounded-full overflow-hidden">
         <motion.div
           className="h-full bg-gradient-to-r from-[#22c0d4] to-[#0a2540] rounded-full"
-          animate={{ width: ["20%", "80%", "20%"], marginLeft: ["0%", "10%", "0%"] }}
+          animate={{
+            width: ["20%", "80%", "20%"],
+            marginLeft: ["0%", "10%", "0%"],
+          }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         />
       </div>
@@ -415,7 +1132,8 @@ const ContactFallback = ({ onRestart }: { onRestart: () => void }) => (
       To make sure we direct you to the correct test
     </h3>
     <p className="text-[#081129]/60 text-sm max-w-md mx-auto">
-      We recommend contacting our customer care team — we're always happy to help.
+      We recommend contacting our customer care team — we're always happy to
+      help.
     </p>
     <div className="pt-4">
       <a
@@ -444,7 +1162,12 @@ interface AdditionalContextProps {
   onBack: () => void;
 }
 
-const AdditionalContextStep = ({ userContext, onContextChange, onSubmit, onBack }: AdditionalContextProps) => (
+const AdditionalContextStep = ({
+  userContext,
+  onContextChange,
+  onSubmit,
+  onBack,
+}: AdditionalContextProps) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
@@ -472,7 +1195,8 @@ const AdditionalContextStep = ({ userContext, onContextChange, onSubmit, onBack 
         className="block text-sm font-medium text-[#081129]"
         style={{ fontFamily: "'Montserrat', sans-serif" }}
       >
-        Any specific concerns or details about your lifestyle you would like the AI to assess? (e.g., symptoms, diet, or specific goals)
+        Any specific concerns or details about your lifestyle you would like the
+        AI to assess? (e.g., symptoms, diet, or specific goals)
       </label>
       <textarea
         id="specific-concerns"
@@ -528,7 +1252,6 @@ export const TestFinderQuiz = () => {
   // reading a table nothing ever wrote to for this surface.
   useEffect(() => {
     void trackFunnelEvent("quiz_start");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const genderFromHistory = (): string | null => {
@@ -544,7 +1267,11 @@ export const TestFinderQuiz = () => {
     return [...history.map((h) => h.answerLabel), finalAnswer];
   };
 
-  const submitToAI = async (pathLabels: string[], gender: string | null, context: string) => {
+  const submitToAI = async (
+    pathLabels: string[],
+    gender: string | null,
+    context: string,
+  ) => {
     setIsAnalysing(true);
 
     const pathString = pathLabels.join(" \u2192 ");
@@ -557,21 +1284,32 @@ export const TestFinderQuiz = () => {
         data: { session },
       } = await supabase.auth.getSession();
       if (!session) {
-        toast.error("Please sign in to see your personalised recommendations.", {
-          action: { label: "Sign in", onClick: () => { window.location.href = "/auth"; } },
-        });
+        toast.error(
+          "Please sign in to see your personalised recommendations.",
+          {
+            action: {
+              label: "Sign in",
+              onClick: () => {
+                window.location.href = "/auth";
+              },
+            },
+          },
+        );
         setIsAnalysing(false);
         setShowContextStep(true);
         return;
       }
-      const { data, error } = await supabase.functions.invoke("ai-human-context", {
-        body: {
-          query_text: queryText,
-          gender: gender,
-          age: null,
-          method_preference: null,
+      const { data, error } = await supabase.functions.invoke(
+        "ai-human-context",
+        {
+          body: {
+            query_text: queryText,
+            gender: gender,
+            age: null,
+            method_preference: null,
+          },
         },
-      });
+      );
 
       if (error) throw error;
       setAiResult(data as AIAnalysisResult);
@@ -587,18 +1325,33 @@ export const TestFinderQuiz = () => {
   const handleAnswer = (answer: DecisionAnswer) => {
     if (answer.is_terminal) {
       const pathLabels = buildPathLabels(answer.label);
-      const gender = genderFromHistory() ?? (history.length === 0 && answer.label.toLowerCase() === "male" ? "male" : answer.label.toLowerCase() === "female" ? "female" : null);
+      const gender =
+        genderFromHistory() ??
+        (history.length === 0 && answer.label.toLowerCase() === "male"
+          ? "male"
+          : answer.label.toLowerCase() === "female"
+            ? "female"
+            : null);
 
-      setHistory((prev) => [...prev, { nodeId: currentNodeId, answerLabel: answer.label }]);
+      setHistory((prev) => [
+        ...prev,
+        { nodeId: currentNodeId, answerLabel: answer.label },
+      ]);
       setPendingPathLabels(pathLabels);
       setPendingGender(gender);
       setShowContextStep(true);
     } else if (answer.next_node === "o_2") {
-      setHistory((prev) => [...prev, { nodeId: currentNodeId, answerLabel: answer.label }]);
+      setHistory((prev) => [
+        ...prev,
+        { nodeId: currentNodeId, answerLabel: answer.label },
+      ]);
       setDirection(1);
       setCurrentNodeId("o_2");
     } else {
-      setHistory((prev) => [...prev, { nodeId: currentNodeId, answerLabel: answer.label }]);
+      setHistory((prev) => [
+        ...prev,
+        { nodeId: currentNodeId, answerLabel: answer.label },
+      ]);
       setDirection(1);
       setCurrentNodeId(answer.next_node);
     }
@@ -699,7 +1452,10 @@ export const TestFinderQuiz = () => {
   }
 
   // ─── Contact form ───
-  if (currentNode?.type === "terminal" || currentNode?.type === "contact_form") {
+  if (
+    currentNode?.type === "terminal" ||
+    currentNode?.type === "contact_form"
+  ) {
     return (
       <div className="bg-white border border-[#081129]/10 rounded-2xl overflow-hidden">
         <ContactFallback onRestart={handleRestart} />

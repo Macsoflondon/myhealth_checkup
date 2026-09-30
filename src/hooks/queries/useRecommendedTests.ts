@@ -30,7 +30,7 @@ function applyCategoryFilter(query: any, category: string) {
     query = query.or(
       nameFilter.includeNames
         .map((n) => `test_name.ilike.%${escapeIlike(n)}%`)
-        .join(",")
+        .join(","),
     );
     if (nameFilter.excludeNames) {
       for (const ex of nameFilter.excludeNames) {
@@ -86,7 +86,8 @@ export function useRecommendedTests(category: string, limit: number = 8) {
           .limit(limit * 2);
         fallbackQuery = applyCategoryFilter(fallbackQuery, category);
 
-        const { data: fallbackData, error: fallbackError } = await fallbackQuery;
+        const { data: fallbackData, error: fallbackError } =
+          await fallbackQuery;
         if (fallbackError) {
           logger.error("Error fetching fallback tests:", fallbackError);
           return TestDataTransformer.transformMultiple(popularData || []);
@@ -94,7 +95,8 @@ export function useRecommendedTests(category: string, limit: number = 8) {
 
         const allTests = [...(popularData || []), ...(fallbackData || [])];
         const uniqueTests = allTests.filter(
-          (test, index, self) => self.findIndex((t) => t.id === test.id) === index
+          (test, index, self) =>
+            self.findIndex((t) => t.id === test.id) === index,
         );
 
         const providerCount: Record<string, number> = {};
@@ -105,7 +107,9 @@ export function useRecommendedTests(category: string, limit: number = 8) {
           return true;
         });
 
-        return TestDataTransformer.transformMultiple(diverseTests.slice(0, limit));
+        return TestDataTransformer.transformMultiple(
+          diverseTests.slice(0, limit),
+        );
       } catch (error) {
         logger.error("Error in useRecommendedTests:", error);
         return [];

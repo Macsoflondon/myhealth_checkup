@@ -1,5 +1,11 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Wand2, Eye, AlertTriangle } from "lucide-react";
@@ -14,7 +20,13 @@ interface NormalizeResponse {
   updated?: number;
   wouldUpdate?: number;
   shifts: Record<string, number>;
-  sample: Array<{ id: string; provider_id: string; from: string; to: string; test_name: string }>;
+  sample: Array<{
+    id: string;
+    provider_id: string;
+    from: string;
+    to: string;
+    test_name: string;
+  }>;
   error?: string;
 }
 
@@ -27,9 +39,12 @@ export const NormalizeCategoriesCard = () => {
     setBusy(dryRun ? "preview" : "apply");
     setResult(null);
     try {
-      const { data, error } = await supabase.functions.invoke("normalize-test-categories", {
-        body: { dryRun },
-      });
+      const { data, error } = await supabase.functions.invoke(
+        "normalize-test-categories",
+        {
+          body: { dryRun },
+        },
+      );
       if (error) throw error;
       setResult(data as NormalizeResponse);
       toast({
@@ -57,18 +72,32 @@ export const NormalizeCategoriesCard = () => {
           Normalise Test Categories
         </CardTitle>
         <CardDescription>
-          Re-parses every active provider test in place and re-derives its category from the test name. Use this to fix
-          mistags (e.g. cardiovascular panels sitting under Liver Health) without a full purge or re-scrape.
+          Re-parses every active provider test in place and re-derives its
+          category from the test name. Use this to fix mistags (e.g.
+          cardiovascular panels sitting under Liver Health) without a full purge
+          or re-scrape.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex flex-wrap gap-2">
-          <Button variant="outline" onClick={() => run(true)} disabled={busy !== null}>
-            {busy === "preview" ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Eye className="h-4 w-4 mr-2" />}
+          <Button
+            variant="outline"
+            onClick={() => run(true)}
+            disabled={busy !== null}
+          >
+            {busy === "preview" ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <Eye className="h-4 w-4 mr-2" />
+            )}
             Preview changes (dry run)
           </Button>
           <Button onClick={() => run(false)} disabled={busy !== null}>
-            {busy === "apply" ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Wand2 className="h-4 w-4 mr-2" />}
+            {busy === "apply" ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <Wand2 className="h-4 w-4 mr-2" />
+            )}
             Apply normalisation
           </Button>
         </div>
@@ -85,7 +114,9 @@ export const NormalizeCategoriesCard = () => {
             <div className="flex flex-wrap gap-2">
               <Badge variant="outline">Scanned: {result.scanned}</Badge>
               <Badge variant={result.dryRun ? "secondary" : "default"}>
-                {result.dryRun ? `Would update: ${result.wouldUpdate ?? 0}` : `Updated: ${result.updated ?? 0}`}
+                {result.dryRun
+                  ? `Would update: ${result.wouldUpdate ?? 0}`
+                  : `Updated: ${result.updated ?? 0}`}
               </Badge>
             </div>
 
@@ -94,7 +125,10 @@ export const NormalizeCategoriesCard = () => {
                 <h4 className="font-semibold mb-1">Category shifts</h4>
                 <ul className="space-y-1 text-muted-foreground">
                   {Object.entries(result.shifts).map(([shift, count]) => (
-                    <li key={shift} className="flex justify-between border-b py-1">
+                    <li
+                      key={shift}
+                      className="flex justify-between border-b py-1"
+                    >
                       <span>{shift}</span>
                       <span className="font-mono">{count}</span>
                     </li>
@@ -109,9 +143,10 @@ export const NormalizeCategoriesCard = () => {
                 <ul className="space-y-1 text-xs text-muted-foreground">
                   {result.sample.map((s) => (
                     <li key={s.id}>
-                      <span className="font-medium">{s.provider_id}</span> · {s.test_name} ·{" "}
-                      <span className="text-destructive">{s.from || "∅"}</span> →{" "}
-                      <span className="text-primary">{s.to}</span>
+                      <span className="font-medium">{s.provider_id}</span> ·{" "}
+                      {s.test_name} ·{" "}
+                      <span className="text-destructive">{s.from || "∅"}</span>{" "}
+                      → <span className="text-primary">{s.to}</span>
                     </li>
                   ))}
                 </ul>

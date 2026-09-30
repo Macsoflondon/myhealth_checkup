@@ -25,7 +25,10 @@ const isPlainObject = (value: unknown): value is JsonLdNode =>
   typeof value === "object" && value !== null && !Array.isArray(value);
 
 /** Recursively collects nested objects carrying an @type. */
-const collectTypedNodes = (value: unknown, out: JsonLdNode[] = []): JsonLdNode[] => {
+const collectTypedNodes = (
+  value: unknown,
+  out: JsonLdNode[] = [],
+): JsonLdNode[] => {
   if (Array.isArray(value)) {
     value.forEach((v) => collectTypedNodes(v, out));
     return out;
@@ -72,7 +75,10 @@ export const validateJsonLd = (
       issues.push({ node: label, message: 'missing "@type"' });
     } else {
       if (seenRootTypes.has(rootType)) {
-        issues.push({ node: label, message: `duplicate root @type "${rootType}"` });
+        issues.push({
+          node: label,
+          message: `duplicate root @type "${rootType}"`,
+        });
       }
       seenRootTypes.add(rootType);
     }
@@ -80,10 +86,16 @@ export const validateJsonLd = (
     const url = root["url"];
     if (typeof url === "string") {
       if (!url.startsWith("https://")) {
-        issues.push({ node: label, message: `url must be absolute, got "${url}"` });
+        issues.push({
+          node: label,
+          message: `url must be absolute, got "${url}"`,
+        });
       }
       if (url.includes("www.myhealthcheckup.co.uk")) {
-        issues.push({ node: label, message: "url uses the www host instead of the apex domain" });
+        issues.push({
+          node: label,
+          message: "url uses the www host instead of the apex domain",
+        });
       }
       if (options.expectedUrl && url !== options.expectedUrl) {
         issues.push({
@@ -94,10 +106,16 @@ export const validateJsonLd = (
     }
 
     collectTypedNodes(root).forEach((node) => {
-      const type = typeof node["@type"] === "string" ? (node["@type"] as string) : "unknown";
+      const type =
+        typeof node["@type"] === "string"
+          ? (node["@type"] as string)
+          : "unknown";
       Object.entries(node).forEach(([key, value]) => {
         if (value === null || value === undefined || value === "") {
-          issues.push({ node: `${label}.${type}`, message: `field "${key}" is empty` });
+          issues.push({
+            node: `${label}.${type}`,
+            message: `field "${key}" is empty`,
+          });
         }
       });
     });
@@ -107,7 +125,10 @@ export const validateJsonLd = (
 };
 
 /** Throws when the graph is invalid — used by build-time validation scripts. */
-export const assertValidJsonLd = (graph: unknown, options: ValidateOptions = {}): void => {
+export const assertValidJsonLd = (
+  graph: unknown,
+  options: ValidateOptions = {},
+): void => {
   const issues = validateJsonLd(graph, options);
   if (issues.length > 0) {
     throw new Error(
@@ -152,10 +173,13 @@ export const buildProviderSchema = ({
     };
   }
 
-  return [provider, buildBreadcrumbSchema([
-    { name: "Providers", url: `${SITE_URL}/providers` },
-    { name: providerName, url },
-  ])];
+  return [
+    provider,
+    buildBreadcrumbSchema([
+      { name: "Providers", url: `${SITE_URL}/providers` },
+      { name: providerName, url },
+    ]),
+  ];
 };
 
 interface TestSchemaInput {

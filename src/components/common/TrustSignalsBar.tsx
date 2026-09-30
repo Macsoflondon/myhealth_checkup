@@ -1,4 +1,11 @@
-import { Shield, FlaskConical, MapPin, Clock, Stethoscope, type LucideIcon } from "lucide-react";
+import {
+  Shield,
+  FlaskConical,
+  MapPin,
+  Clock,
+  Stethoscope,
+  type LucideIcon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type TrustSignal = { icon: LucideIcon; text: string };
@@ -16,7 +23,10 @@ const DEFAULT_ITEMS: TrustSignal[] = [
   { icon: Stethoscope, text: "No GP referral needed" },
 ];
 
-const TrustSignalsBar = ({ items = DEFAULT_ITEMS, className }: TrustSignalsBarProps) => {
+const TrustSignalsBar = ({
+  items = DEFAULT_ITEMS,
+  className,
+}: TrustSignalsBarProps) => {
   return (
     <div
       className={cn(
