@@ -29,3 +29,4 @@
 - [x] Apply the canonical eight-colour category palette to navigation pills and universal test-card category tags; verify populated women’s and cancer routes plus the at-home adapter path.
 - [x] Update all five homepage hero slides and verify responsive copy avoids people at six widths.
 - [x] Show active tests without images (All Tests/catalogue), brand-tile fallback; report 5 uncategorised tests
+- [ ] Security: Assisted Test Finder and Hidden Gap Detector AI calls restricted to signed-in users
