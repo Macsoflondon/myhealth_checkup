@@ -26,7 +26,18 @@ const NAV_FILE_PREFIX = "NavigationItems";
 const SITEMAP_PATH = "public/sitemap.xml";
 
 const COMPARE_SLUG_RE = /\/compare\?category=([a-z0-9-]+)/g;
-const TESTS_PATH_RE = /\/tests\/([a-z0-9-]+)/g;
+// Anchored to the path root: /provider/<id>/tests/<uuid> test detail URLs are
+// not category slugs and must not be audited as such.
+const TESTS_PATH_RE = /^(?:https?:\/\/[^/]+)?\/tests\/([a-z0-9-]+)\/?(?:[?#].*)?$/g;
+
+// /tests/<slug> pages with their own route file (e.g. tests.cancer.tsx) are
+// canonical pages in their own right; the DB slug redirect only applies to the
+// generic tests.$category fallback, so they are not redirected URLs.
+const STATIC_TEST_SLUGS = new Set(
+  readdirSync("src/routes")
+    .map((f) => /^tests\.([a-z0-9-]+)\.tsx$/.exec(f)?.[1])
+    .filter(Boolean),
+);
 const ANY_CAT_QS_RE = /[?&]category=([a-z0-9-]+)/g;
 
 const url = process.env.VITE_SUPABASE_URL;
@@ -59,7 +70,8 @@ function collectSitemapSlugs() {
   const tests = new Set();
   const queries = new Set();
   for (const loc of locs) {
-    for (const m of loc.matchAll(TESTS_PATH_RE)) tests.add(m[1]);
+    for (const m of loc.trim().matchAll(TESTS_PATH_RE))
+      if (!STATIC_TEST_SLUGS.has(m[1])) tests.add(m[1]);
     for (const m of loc.matchAll(ANY_CAT_QS_RE)) queries.add(m[1]);
   }
   return {
