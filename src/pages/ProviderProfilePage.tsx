@@ -308,6 +308,7 @@ const ProviderProfilePage = () => {
                     <p className="font-medium text-foreground text-sm md:text-base mb-1">
                       Website
                     </p>
+                    <AffiliateCommissionNote className="mb-1" />
                     <a
                       href={websiteUrl || provider.website}
                       {...externalLinkProps}
@@ -318,7 +319,6 @@ const ProviderProfilePage = () => {
                         .replace("https://", "")
                         .replace("http://", "")}
                     </a>
-                    <AffiliateCommissionNote className="mt-1" />
                   </div>
                 )}
                 {provider.phone && (

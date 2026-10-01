@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { Star } from "lucide-react";
 import { Link } from "@/lib/router-compat";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
@@ -244,6 +245,7 @@ const FeaturedProvidersGlass = () => {
                     >
                       Visit Site
                     </a>
+                    <AffiliateCommissionNote className="text-center" />
                   </div>
                 </div>
               </article>

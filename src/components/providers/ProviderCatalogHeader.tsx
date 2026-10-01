@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { Link } from "@/lib/router-compat";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -96,6 +97,7 @@ const ProviderCatalogHeader = ({
                 <ExternalLink className="ml-2 h-4 w-4" />
               </a>
             </Button>
+            <AffiliateCommissionNote className="mt-2 max-w-xs text-white/80" />
           </div>
         </div>
 
