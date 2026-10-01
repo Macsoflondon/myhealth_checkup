@@ -62,14 +62,21 @@ describe("handleAffiliateAnchorClick", () => {
       source_page: "/tests",
       destination_host: "www.randoxhealth.com",
     });
-    expect(Object.keys(p!).sort()).toEqual(
-      ["click_id", "destination_host", "placement", "provider_id", "source_page", "test_id"],
-    );
+    expect(Object.keys(p!).sort()).toEqual([
+      "click_id",
+      "destination_host",
+      "placement",
+      "provider_id",
+      "source_page",
+      "test_id",
+    ]);
     expect(send).toHaveBeenCalledOnce();
   });
   it("ignores non-provider links", () => {
     document.body.innerHTML = `<a href="https://example.com">x</a>`;
-    expect(handleAffiliateAnchorClick(document.querySelector("a")!, "/", vi.fn())).toBeNull();
+    expect(
+      handleAffiliateAnchorClick(document.querySelector("a")!, "/", vi.fn()),
+    ).toBeNull();
   });
   it("never throws when sending fails", () => {
     document.body.innerHTML = `<a href="https://medichecks.com/x">x</a>`;
@@ -85,7 +92,10 @@ describe("handleAffiliateAnchorClick", () => {
 
 describe("conversion CSV parsing", () => {
   it("splits quoted fields", () => {
-    expect(splitCsv('a,"b,""c"""\r\n1,2')).toEqual([["a", 'b,"c"'], ["1", "2"]]);
+    expect(splitCsv('a,"b,""c"""\r\n1,2')).toEqual([
+      ["a", 'b,"c"'],
+      ["1", "2"],
+    ]);
   });
   it("normalises status, money and UK dates", () => {
     expect(normaliseStatus("Approved")).toBe("confirmed");

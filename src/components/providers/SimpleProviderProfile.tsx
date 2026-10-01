@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { Mail, Phone, ExternalLink } from "lucide-react";
 
 interface Category {
@@ -132,6 +133,7 @@ const SimpleProviderProfile = ({
                 <ExternalLink className="h-5 w-5 text-muted-foreground" />
                 Visit website
               </a>
+              <AffiliateCommissionNote />
             </div>
             {closingNote && (
               <p className="mt-4 text-muted-foreground font-sans leading-relaxed">

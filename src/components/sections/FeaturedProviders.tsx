@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -261,6 +262,7 @@ const FeaturedProviders = () => {
                       </a>
                     </Button>
                   </div>
+                  <AffiliateCommissionNote className="mt-2 text-center" />
                 </CardContent>
               </Card>
             );
