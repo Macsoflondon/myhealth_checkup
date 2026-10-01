@@ -63,6 +63,7 @@ import { Route as WellnessRouteImport } from './routes/wellness'
 import { Route as WomensHealthRouteImport } from './routes/womens-health'
 import { Route as AboutIndexRouteImport } from './routes/about.index'
 import { Route as AboutMedicalReviewRouteImport } from './routes/about.medical-review'
+import { Route as AdminAffiliateRouteImport } from './routes/admin.affiliate'
 import { Route as AdminAlertRoutingRouteImport } from './routes/admin.alert-routing'
 import { Route as AdminAuditConsoleRouteImport } from './routes/admin.audit-console'
 import { Route as AdminBiomarkerAuditRouteImport } from './routes/admin.biomarker-audit'
@@ -425,6 +426,11 @@ const AboutIndexRoute = AboutIndexRouteImport.update({
 const AboutMedicalReviewRoute = AboutMedicalReviewRouteImport.update({
   id: '/about/medical-review',
   path: '/about/medical-review',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAffiliateRoute = AdminAffiliateRouteImport.update({
+  id: '/admin/affiliate',
+  path: '/admin/affiliate',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAlertRoutingRoute = AdminAlertRoutingRouteImport.update({
@@ -958,6 +964,7 @@ export interface FileRoutesByFullPath {
   '/wellness': typeof WellnessRoute
   '/womens-health': typeof WomensHealthRoute
   '/about/medical-review': typeof AboutMedicalReviewRoute
+  '/admin/affiliate': typeof AdminAffiliateRoute
   '/admin/alert-routing': typeof AdminAlertRoutingRoute
   '/admin/audit-console': typeof AdminAuditConsoleRoute
   '/admin/biomarker-audit': typeof AdminBiomarkerAuditRoute
@@ -1105,6 +1112,7 @@ export interface FileRoutesByTo {
   '/wellness': typeof WellnessRoute
   '/womens-health': typeof WomensHealthRoute
   '/about/medical-review': typeof AboutMedicalReviewRoute
+  '/admin/affiliate': typeof AdminAffiliateRoute
   '/admin/alert-routing': typeof AdminAlertRoutingRoute
   '/admin/audit-console': typeof AdminAuditConsoleRoute
   '/admin/biomarker-audit': typeof AdminBiomarkerAuditRoute
@@ -1254,6 +1262,7 @@ export interface FileRoutesById {
   '/wellness': typeof WellnessRoute
   '/womens-health': typeof WomensHealthRoute
   '/about/medical-review': typeof AboutMedicalReviewRoute
+  '/admin/affiliate': typeof AdminAffiliateRoute
   '/admin/alert-routing': typeof AdminAlertRoutingRoute
   '/admin/audit-console': typeof AdminAuditConsoleRoute
   '/admin/biomarker-audit': typeof AdminBiomarkerAuditRoute
@@ -1404,6 +1413,7 @@ export interface FileRouteTypes {
     | '/wellness'
     | '/womens-health'
     | '/about/medical-review'
+    | '/admin/affiliate'
     | '/admin/alert-routing'
     | '/admin/audit-console'
     | '/admin/biomarker-audit'
@@ -1551,6 +1561,7 @@ export interface FileRouteTypes {
     | '/wellness'
     | '/womens-health'
     | '/about/medical-review'
+    | '/admin/affiliate'
     | '/admin/alert-routing'
     | '/admin/audit-console'
     | '/admin/biomarker-audit'
@@ -1699,6 +1710,7 @@ export interface FileRouteTypes {
     | '/wellness'
     | '/womens-health'
     | '/about/medical-review'
+    | '/admin/affiliate'
     | '/admin/alert-routing'
     | '/admin/audit-console'
     | '/admin/biomarker-audit'
@@ -1848,6 +1860,7 @@ export interface RootRouteChildren {
   WellnessRoute: typeof WellnessRoute
   WomensHealthRoute: typeof WomensHealthRoute
   AboutMedicalReviewRoute: typeof AboutMedicalReviewRoute
+  AdminAffiliateRoute: typeof AdminAffiliateRoute
   AdminAlertRoutingRoute: typeof AdminAlertRoutingRoute
   AdminAuditConsoleRoute: typeof AdminAuditConsoleRoute
   AdminBiomarkerAuditRoute: typeof AdminBiomarkerAuditRoute
@@ -2315,6 +2328,13 @@ declare module '@tanstack/react-router' {
       path: '/about/medical-review'
       fullPath: '/about/medical-review'
       preLoaderRoute: typeof AboutMedicalReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/affiliate': {
+      id: '/admin/affiliate'
+      path: '/admin/affiliate'
+      fullPath: '/admin/affiliate'
+      preLoaderRoute: typeof AdminAffiliateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/alert-routing': {
@@ -3039,6 +3059,7 @@ const rootRouteChildren: RootRouteChildren = {
   WellnessRoute: WellnessRoute,
   WomensHealthRoute: WomensHealthRoute,
   AboutMedicalReviewRoute: AboutMedicalReviewRoute,
+  AdminAffiliateRoute: AdminAffiliateRoute,
   AdminAlertRoutingRoute: AdminAlertRoutingRoute,
   AdminAuditConsoleRoute: AdminAuditConsoleRoute,
   AdminBiomarkerAuditRoute: AdminBiomarkerAuditRoute,

@@ -1091,13 +1091,47 @@ var get_admin_audit_trail_default = defineTool20({
   })
 });
 
+// src/lib/mcp/tools/get-affiliate-performance.ts
+import { defineTool as defineTool21 } from "npm:@lovable.dev/mcp-js@0.26.3";
+import { z as z19 } from "npm:zod@^3.24.2";
+var get_affiliate_performance_default = defineTool21({
+  name: "get_affiliate_performance",
+  title: "Get affiliate performance",
+  description: "Affiliate click and conversion totals computed in the database for the last N days: clicks, conversions, conversion rate and commission in GBP, broken down by provider, by placement and by both. Aggregates only; click records hold no IP address, user agent or account details. Commission never influences ranking.",
+  inputSchema: {
+    days: z19.number().int().min(1).max(730).default(30),
+    provider: z19.string().min(1).max(100).optional()
+  },
+  annotations: {
+    readOnlyHint: true,
+    idempotentHint: true,
+    openWorldHint: false
+  },
+  handler: async (args, ctx) => runAdminTool(ctx, "get_affiliate_performance", args, async ({ client }) => {
+    const to = /* @__PURE__ */ new Date();
+    const from = new Date(to.getTime() - args.days * 864e5);
+    const { data, error } = await client.rpc("affiliate_performance", {
+      p_from: from.toISOString(),
+      p_to: to.toISOString(),
+      p_provider: args.provider ?? null
+    });
+    if (error) return { error: error.message };
+    return {
+      payload: {
+        window_days: args.days,
+        ...data ?? {}
+      }
+    };
+  })
+});
+
 // src/lib/mcp/index.ts
 var projectRef = "clvuioagsgfadynuvodj";
 var mcp_default = defineMcp({
   name: "myhealth-checkup-mcp",
   title: "myhealth checkup",
   version: "0.3.0",
-  instructions: "Tools for myhealth checkup, the UK private diagnostics comparison platform. Use search_tests, get_test, compare_tests, find_tests_by_biomarker, list_categories, list_providers and get_provider to compare private blood tests and cancer screening across every listed provider. Each provider and test carries its accreditation flags and an accreditation_status (confirmed, not_confirmed or failed); only describe a provider as accredited when the status is confirmed (prices in GBP, turnaround in days). list_my_favourites, save_favourite and remove_favourite act on the signed-in user's saved tests. The admin tools (get_platform_health, list_scraper_alerts, get_catalogue_coverage, list_stale_tests, get_data_quality, get_price_movements, get_security_posture, get_performance_summary, get_business_summary, get_admin_audit_trail) are strictly read-only: scraper and job health, catalogue freshness and quality, pricing movements, security posture metadata, anonymous performance aggregates and aggregate business totals. They require the admin role and every call, including denied attempts, is audit-logged. They return no patient data; some include pseudonymous user IDs, and free-text fields are truncated. Rules: prices are provider-published and can change, so always show the updated_at date alongside any price. Never rank or recommend a provider on commercial grounds; order only by the criteria the user asks for. Disclose affiliate relationships where present. Do not imply any NHS integration. State that results are for comparison only and are not medical advice. This platform is decision infrastructure only; never present results as medical advice or diagnosis.",
+  instructions: "Tools for myhealth checkup, the UK private diagnostics comparison platform. Use search_tests, get_test, compare_tests, find_tests_by_biomarker, list_categories, list_providers and get_provider to compare private blood tests and cancer screening across every listed provider. Each provider and test carries its accreditation flags and an accreditation_status (confirmed, not_confirmed or failed); only describe a provider as accredited when the status is confirmed (prices in GBP, turnaround in days). list_my_favourites, save_favourite and remove_favourite act on the signed-in user's saved tests. The admin tools (get_platform_health, list_scraper_alerts, get_catalogue_coverage, list_stale_tests, get_data_quality, get_price_movements, get_security_posture, get_performance_summary, get_business_summary, get_admin_audit_trail, get_affiliate_performance) are strictly read-only: scraper and job health, catalogue freshness and quality, pricing movements, security posture metadata, anonymous performance aggregates and aggregate business totals. They require the admin role and every call, including denied attempts, is audit-logged. They return no patient data; some include pseudonymous user IDs, and free-text fields are truncated. Rules: prices are provider-published and can change, so always show the updated_at date alongside any price. Never rank or recommend a provider on commercial grounds; order only by the criteria the user asks for. Disclose affiliate relationships where present. Do not imply any NHS integration. State that results are for comparison only and are not medical advice. This platform is decision infrastructure only; never present results as medical advice or diagnosis.",
   auth: auth.oauth.issuer({
     issuer: `https://${projectRef}.supabase.co/auth/v1`,
     acceptedAudiences: "authenticated"
@@ -1122,7 +1156,8 @@ var mcp_default = defineMcp({
     get_security_posture_default,
     get_performance_summary_default,
     get_business_summary_default,
-    get_admin_audit_trail_default
+    get_admin_audit_trail_default,
+    get_affiliate_performance_default
   ]
 });
 
