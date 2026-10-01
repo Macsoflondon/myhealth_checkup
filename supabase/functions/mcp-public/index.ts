@@ -411,7 +411,10 @@ function createRateLimiter(limit = PUBLIC_RATE_LIMIT, windowMs = PUBLIC_RATE_WIN
       }
       existing.count += 1;
       if (existing.count > limit) {
-        const retry = Math.max(1, Math.ceil((existing.windowStart + windowMs - now) / 1e3));
+        const retry = Math.max(
+          1,
+          Math.ceil((existing.windowStart + windowMs - now) / 1e3)
+        );
         return { allowed: false, retryAfterSeconds: retry };
       }
       return { allowed: true, retryAfterSeconds: 0 };
@@ -430,10 +433,14 @@ function clientIp(headers) {
 function withRateLimit(handler, limiter = createRateLimiter()) {
   return (request) => {
     if (request.method === "OPTIONS") return handler(request);
-    const { allowed, retryAfterSeconds } = limiter.check(clientIp(request.headers));
+    const { allowed, retryAfterSeconds } = limiter.check(
+      clientIp(request.headers)
+    );
     if (!allowed) {
       return new Response(
-        JSON.stringify({ error: "Too many requests. Limit is 60 per minute per IP address." }),
+        JSON.stringify({
+          error: "Too many requests. Limit is 60 per minute per IP address."
+        }),
         {
           status: 429,
           headers: {

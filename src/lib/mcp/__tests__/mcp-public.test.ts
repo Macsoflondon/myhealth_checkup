@@ -45,14 +45,16 @@ describe("public MCP server", () => {
   it("has no authentication configured and all tools are read-only", () => {
     const def = publicMcp as unknown as { auth?: unknown };
     expect(def.auth).toBeUndefined();
-    for (const t of PUBLIC_TOOLS) expect(t.annotations?.readOnlyHint).toBe(true);
+    for (const t of PUBLIC_TOOLS)
+      expect(t.annotations?.readOnlyHint).toBe(true);
   });
 });
 
 describe("rate limiter", () => {
   it("allows 60 requests per window then blocks", () => {
     const rl = createRateLimiter(60, 60_000);
-    for (let i = 0; i < 60; i++) expect(rl.check("1.2.3.4", 1000).allowed).toBe(true);
+    for (let i = 0; i < 60; i++)
+      expect(rl.check("1.2.3.4", 1000).allowed).toBe(true);
     const blocked = rl.check("1.2.3.4", 1000);
     expect(blocked.allowed).toBe(false);
     expect(blocked.retryAfterSeconds).toBe(60);
@@ -68,8 +70,12 @@ describe("rate limiter", () => {
   });
 
   it("reads the client IP from proxy headers", () => {
-    expect(clientIp(new Headers({ "x-forwarded-for": "9.9.9.9, 10.0.0.1" }))).toBe("9.9.9.9");
-    expect(clientIp(new Headers({ "cf-connecting-ip": "8.8.8.8" }))).toBe("8.8.8.8");
+    expect(
+      clientIp(new Headers({ "x-forwarded-for": "9.9.9.9, 10.0.0.1" })),
+    ).toBe("9.9.9.9");
+    expect(clientIp(new Headers({ "cf-connecting-ip": "8.8.8.8" }))).toBe(
+      "8.8.8.8",
+    );
     expect(clientIp(new Headers())).toBe("unknown");
   });
 
@@ -77,7 +83,10 @@ describe("rate limiter", () => {
     const inner = vi.fn(async () => new Response("ok"));
     const handler = withRateLimit(inner, createRateLimiter(1, 60_000));
     const req = () =>
-      new Request("https://x/mcp", { method: "POST", headers: { "x-forwarded-for": "1.1.1.1" } });
+      new Request("https://x/mcp", {
+        method: "POST",
+        headers: { "x-forwarded-for": "1.1.1.1" },
+      });
     expect((await handler(req())).status).toBe(200);
     const res = await handler(req());
     expect(res.status).toBe(429);
