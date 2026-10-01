@@ -48,7 +48,10 @@ export default defineConfig({
       clientAbortBoundary(),
       mcpPlugin(),
       // Anonymous, read-only catalogue server: supabase/functions/mcp-public
-      mcpPlugin({ mcpEntry: "src/lib/mcp/public.ts", functionName: "mcp-public" }),
+      mcpPlugin({
+        mcpEntry: "src/lib/mcp/public.ts",
+        functionName: "mcp-public",
+      }),
     ],
     // react-helmet-async ships CommonJS; bundle it so named exports interop under SSR.
     ssr: { noExternal: ["react-helmet-async"] },

@@ -7,7 +7,10 @@ export const PUBLIC_RATE_WINDOW_MS = 60_000;
 type Bucket = { count: number; windowStart: number };
 
 export type RateLimiter = {
-  check: (key: string, now?: number) => { allowed: boolean; retryAfterSeconds: number };
+  check: (
+    key: string,
+    now?: number,
+  ) => { allowed: boolean; retryAfterSeconds: number };
   size: () => number;
 };
 
@@ -33,7 +36,10 @@ export function createRateLimiter(
       }
       existing.count += 1;
       if (existing.count > limit) {
-        const retry = Math.max(1, Math.ceil((existing.windowStart + windowMs - now) / 1000));
+        const retry = Math.max(
+          1,
+          Math.ceil((existing.windowStart + windowMs - now) / 1000),
+        );
         return { allowed: false, retryAfterSeconds: retry };
       }
       return { allowed: true, retryAfterSeconds: 0 };
@@ -53,14 +59,21 @@ export function clientIp(headers: Headers): string {
 
 type Handler = (request: Request) => Response | Promise<Response>;
 
-export function withRateLimit(handler: Handler, limiter: RateLimiter = createRateLimiter()): Handler {
+export function withRateLimit(
+  handler: Handler,
+  limiter: RateLimiter = createRateLimiter(),
+): Handler {
   return (request) => {
     // CORS preflights are free so browsers can still discover the server.
     if (request.method === "OPTIONS") return handler(request);
-    const { allowed, retryAfterSeconds } = limiter.check(clientIp(request.headers));
+    const { allowed, retryAfterSeconds } = limiter.check(
+      clientIp(request.headers),
+    );
     if (!allowed) {
       return new Response(
-        JSON.stringify({ error: "Too many requests. Limit is 60 per minute per IP address." }),
+        JSON.stringify({
+          error: "Too many requests. Limit is 60 per minute per IP address.",
+        }),
         {
           status: 429,
           headers: {
@@ -80,7 +93,9 @@ type DenoLike = { serve: (handler: Handler) => unknown };
 // The generated function entry ends with Deno.serve(createSupabaseHandler(...))
 // and offers no middleware hook, so wrap Deno.serve before that line runs.
 // No-op outside Deno (Vite build, manifest extraction, unit tests).
-export function installDenoServeRateLimit(target: unknown = globalThis): boolean {
+export function installDenoServeRateLimit(
+  target: unknown = globalThis,
+): boolean {
   const deno = (target as { Deno?: DenoLike }).Deno;
   if (!deno || typeof deno.serve !== "function") return false;
   const original = deno.serve.bind(deno);
