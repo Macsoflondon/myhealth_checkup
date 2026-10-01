@@ -186,7 +186,6 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
                       <AffiliateCommissionNote className="mt-1 max-w-[200px]" />
                     )}
                     {provider.url ? null : (
-                    ) : (
                       <Button asChild variant="outline" size="sm">
                         <Link to={`/provider/${provider.providerId}`}>
                           View Provider
@@ -291,7 +290,6 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
                   <AffiliateCommissionNote className="mt-2 text-center" />
                 )}
                 {provider.url ? null : (
-                ) : (
                   <Button asChild variant="outline" className="w-full">
                     <Link to={`/provider/${provider.providerId}`}>
                       View {provider.providerName}
