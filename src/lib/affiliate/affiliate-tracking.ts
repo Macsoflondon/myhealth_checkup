@@ -50,7 +50,11 @@ export function sanitiseSourcePage(pathname: string): string {
 /** Best guess when the link carries no explicit placement. */
 export function inferPlacement(pathname: string): AffiliatePlacement {
   const p = pathname.toLowerCase();
-  if (/^\/(quiz|assisted-test-finder|test-finder\/recommendations|recommendations)/.test(p))
+  if (
+    /^\/(quiz|assisted-test-finder|test-finder\/recommendations|recommendations)/.test(
+      p,
+    )
+  )
     return "quiz";
   if (/^\/(compare|test-finder\/compare|comparison)/.test(p))
     return "comparison";
@@ -64,7 +68,9 @@ export function appendClickId(
   href: string,
   providerId: string,
   clickId: string,
-  providers: Readonly<Record<string, AffiliateProviderConfig>> = AFFILIATE_PROVIDERS,
+  providers: Readonly<
+    Record<string, AffiliateProviderConfig>
+  > = AFFILIATE_PROVIDERS,
 ): string {
   const param = providers[providerId]?.subIdParam;
   if (!param) return href;
@@ -152,7 +158,9 @@ export function handleAffiliateAnchorClick(
 }
 
 /** Installs one delegated listener covering every outbound provider link. */
-export function installAffiliateClickTracking(doc: Document = document): () => void {
+export function installAffiliateClickTracking(
+  doc: Document = document,
+): () => void {
   const listener = (event: MouseEvent): void => {
     // Left click and middle click open the link; ignore right click.
     if (event.button !== 0 && event.button !== 1) return;

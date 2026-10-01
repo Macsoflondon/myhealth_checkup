@@ -1,3 +1,5 @@
+import { AFFILIATE_PROVIDERS } from "./affiliate-config";
+
 /**
  * Parses an affiliate network CSV export into conversion rows.
  * Header names vary by network, so common aliases are accepted.
@@ -16,7 +18,12 @@ export type ConversionRow = {
   converted_at: string;
 };
 
-export type ParseResult = { rows: ConversionRow[]; errors: string[] };
+export type ParseResult = {
+  rows: ConversionRow[];
+  errors: string[];
+  /** Rows dropped because a later row had the same provider and reference. */
+  duplicatesDropped: number;
+};
 
 const ALIASES: Record<string, keyof ConversionRow> = {
   click_id: "click_id",
@@ -84,7 +91,16 @@ export function normaliseStatus(raw: string): ConversionStatus | null {
     return "pending";
   if (["confirmed", "approved", "validated", "paid", "accepted"].includes(s))
     return "confirmed";
-  if (["reversed", "declined", "rejected", "cancelled", "canceled", "void"].includes(s))
+  if (
+    [
+      "reversed",
+      "declined",
+      "rejected",
+      "cancelled",
+      "canceled",
+      "void",
+    ].includes(s)
+  )
     return "reversed";
   return null;
 }
@@ -98,11 +114,21 @@ export function parseMoney(raw: string): number | null {
 
 export function parseDate(raw: string): string | null {
   const s = raw.trim();
-  const uk = /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?$/.exec(s);
+  const uk =
+    /^(\d{1,2})\/(\d{1,2})\/(\d{4})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?$/.exec(
+      s,
+    );
   if (uk) {
     const [, d, m, y, hh = "0", mm = "0", ss = "0"] = uk;
     const date = new Date(
-      Date.UTC(Number(y), Number(m) - 1, Number(d), Number(hh), Number(mm), Number(ss)),
+      Date.UTC(
+        Number(y),
+        Number(m) - 1,
+        Number(d),
+        Number(hh),
+        Number(mm),
+        Number(ss),
+      ),
     );
     if (date.getUTCDate() !== Number(d) || date.getUTCMonth() !== Number(m) - 1)
       return null;
@@ -118,10 +144,21 @@ export function parseConversionsCsv(
 ): ParseResult {
   const table = splitCsv(text.replace(/^\uFEFF/, ""));
   const errors: string[] = [];
-  if (table.length < 2) return { rows: [], errors: ["The file has no data rows."] };
+  if (table.length < 2)
+    return {
+      rows: [],
+      errors: ["The file has no data rows."],
+      duplicatesDropped: 0,
+    };
 
   const header = table[0].map(
-    (h) => ALIASES[h.trim().toLowerCase().replace(/[\s-]+/g, "_")] ?? null,
+    (h) =>
+      ALIASES[
+        h
+          .trim()
+          .toLowerCase()
+          .replace(/[\s-]+/g, "_")
+      ] ?? null,
   );
   for (const required of ["network_reference", "converted_at"] as const) {
     if (!header.includes(required))
@@ -129,7 +166,7 @@ export function parseConversionsCsv(
   }
   if (!header.includes("provider_id") && !defaultProviderId)
     errors.push("Choose a provider, or include a provider column.");
-  if (errors.length) return { rows: [], errors };
+  if (errors.length) return { rows: [], errors, duplicatesDropped: 0 };
 
   const rows: ConversionRow[] = [];
   table.slice(1).forEach((cells, idx) => {
@@ -143,9 +180,12 @@ export function parseConversionsCsv(
     const status = normaliseStatus(get("status"));
     const provider = get("provider_id") || defaultProviderId || "";
     if (!reference) return void errors.push(`Row ${line}: no reference.`);
-    if (!convertedAt) return void errors.push(`Row ${line}: date not recognised.`);
+    if (!convertedAt)
+      return void errors.push(`Row ${line}: date not recognised.`);
     if (!status) return void errors.push(`Row ${line}: status not recognised.`);
     if (!provider) return void errors.push(`Row ${line}: no provider.`);
+    if (!Object.hasOwn(AFFILIATE_PROVIDERS, provider))
+      return void errors.push(`Row ${line}: unknown provider "${provider}".`);
     const click = get("click_id");
     rows.push({
       click_id: click || null,
@@ -157,5 +197,18 @@ export function parseConversionsCsv(
       converted_at: convertedAt,
     });
   });
-  return { rows, errors };
+  // Keep the last row for each (provider, reference) so one file never
+  // updates the same conversion twice.
+  const byKey = new Map<string, ConversionRow>();
+  for (const r of rows) {
+    const key = `${r.provider_id}\u0000${r.network_reference}`;
+    byKey.delete(key);
+    byKey.set(key, r);
+  }
+  const unique = [...byKey.values()];
+  return {
+    rows: unique,
+    errors,
+    duplicatesDropped: rows.length - unique.length,
+  };
 }
