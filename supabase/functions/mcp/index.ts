@@ -1097,7 +1097,7 @@ import { z as z19 } from "npm:zod@^3.24.2";
 var get_affiliate_performance_default = defineTool21({
   name: "get_affiliate_performance",
   title: "Get affiliate performance",
-  description: "Affiliate click and conversion totals computed in the database for the last N days: clicks, conversions, conversion rate and commission in GBP, broken down by provider, by placement and by both. Aggregates only; click records hold no IP address, user agent or account details. Commission never influences ranking.",
+  description: "Affiliate click and conversion totals computed in the database for the last N days: clicks, conversions, conversion rate (share of clicks that led to a matched conversion; conversions without a matched click are counted separately as unattributed) and commission in GBP, broken down by provider, by placement and by both. Aggregates only; click records hold no IP address, user agent or account details. Commission never influences ranking.",
   inputSchema: {
     days: z19.number().int().min(1).max(730).default(30),
     provider: z19.string().min(1).max(100).optional()
