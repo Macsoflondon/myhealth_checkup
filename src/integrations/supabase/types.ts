@@ -101,6 +101,80 @@ export type Database = {
         }
         Relationships: []
       }
+      affiliate_clicks: {
+        Row: {
+          click_id: string
+          clicked_at: string
+          destination_host: string
+          placement: string
+          provider_id: string
+          source_page: string
+          test_id: string | null
+        }
+        Insert: {
+          click_id: string
+          clicked_at?: string
+          destination_host: string
+          placement: string
+          provider_id: string
+          source_page: string
+          test_id?: string | null
+        }
+        Update: {
+          click_id?: string
+          clicked_at?: string
+          destination_host?: string
+          placement?: string
+          provider_id?: string
+          source_page?: string
+          test_id?: string | null
+        }
+        Relationships: []
+      }
+      affiliate_conversions: {
+        Row: {
+          click_id: string | null
+          commission_gbp: number | null
+          converted_at: string
+          id: string
+          imported_at: string
+          network_reference: string
+          order_value_gbp: number | null
+          provider_id: string
+          status: string
+        }
+        Insert: {
+          click_id?: string | null
+          commission_gbp?: number | null
+          converted_at: string
+          id?: string
+          imported_at?: string
+          network_reference: string
+          order_value_gbp?: number | null
+          provider_id: string
+          status?: string
+        }
+        Update: {
+          click_id?: string | null
+          commission_gbp?: number | null
+          converted_at?: string
+          id?: string
+          imported_at?: string
+          network_reference?: string
+          order_value_gbp?: number | null
+          provider_id?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "affiliate_conversions_click_id_fkey"
+            columns: ["click_id"]
+            isOneToOne: false
+            referencedRelation: "affiliate_clicks"
+            referencedColumns: ["click_id"]
+          },
+        ]
+      }
       ai_operation_logs: {
         Row: {
           cache_hit: boolean | null
@@ -8296,6 +8370,10 @@ export type Database = {
       }
     }
     Functions: {
+      affiliate_performance: {
+        Args: { p_from: string; p_provider?: string; p_to: string }
+        Returns: Json
+      }
       apply_audit_retention: {
         Args: never
         Returns: {
@@ -8350,6 +8428,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      import_affiliate_conversions: { Args: { p_rows: Json }; Returns: Json }
       import_terminology_codes: {
         Args: {
           p_payload: Json
