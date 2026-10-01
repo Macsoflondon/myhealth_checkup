@@ -96,6 +96,7 @@ import listScraperAlerts from "../tools/list-scraper-alerts";
 import getCatalogueCoverage from "../tools/get-catalogue-coverage";
 import listStaleTests from "../tools/list-stale-tests";
 import getDataQuality from "../tools/get-data-quality";
+import getAffiliatePerformance from "../tools/get-affiliate-performance";
 
 const USER = "11111111-1111-4111-8111-111111111111";
 const T1 = "22222222-2222-4222-8222-222222222222";
@@ -590,9 +591,21 @@ const adminTools: Array<
   ["get_catalogue_coverage", getCatalogueCoverage, { stale_after_days: 30 }],
   ["list_stale_tests", listStaleTests, { stale_after_days: 30, limit: 50 }],
   ["get_data_quality", getDataQuality, { sample_size: 5 }],
+  ["get_affiliate_performance", getAffiliatePerformance, { days: 30 }],
 ];
 
 describe("admin tools", () => {
+  it("get_affiliate_performance aggregates in SQL with provider filter", async () => {
+    state.rpc.has_role = { data: true };
+    state.rpc.affiliate_performance = { data: { totals: { clicks: 4 } } };
+    const r = await run(getAffiliatePerformance, { days: 7, provider: "randox" });
+    const call = state.rpcCalls.find((c) => c.fn === "affiliate_performance");
+    const a = call?.args as { p_from: string; p_to: string; p_provider: string };
+    expect(a.p_provider).toBe("randox");
+    expect(Date.parse(a.p_to) - Date.parse(a.p_from)).toBe(7 * 86_400_000);
+    expect(r.structuredContent?.totals).toEqual({ clicks: 4 });
+  });
+
   it.each(adminTools)(
     "%s is read-only and denies non-admins with a logged attempt",
     async (name, tool, args) => {

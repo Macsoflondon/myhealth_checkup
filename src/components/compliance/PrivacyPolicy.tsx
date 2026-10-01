@@ -208,6 +208,27 @@ const PrivacyPolicy = () => {
         <p className="text-brand-navy mt-4 font-medium">
           We do not sell your personal data.
         </p>
+        <h3 className="text-lg font-semibold mt-6 mb-2">
+          Booking link clicks and commission
+        </h3>
+        <p className="text-brand-navy mb-2">
+          When you click a booking or provider link, we record a random click
+          reference, the time, the provider, the test, the page you clicked
+          from (without any query string), where on the page the link was, and
+          the provider&apos;s website address. We do not record your IP address,
+          browser details, name, email or account. Nothing is stored on your
+          device. Where a provider&apos;s affiliate network supports it, the
+          random reference is added to the link so the network can tell us if
+          a booking followed.
+        </p>
+        <p className="text-brand-navy mb-2">
+          We use this to measure which links are used and to reconcile
+          commission we may earn. Commission does not change the price you pay
+          or how we rank results. Our lawful basis is legitimate interests.
+        </p>
+        <p className="text-brand-navy">
+          Click records are deleted automatically after 24 months.
+        </p>
       </Card>
 
       <Card className="p-6">
