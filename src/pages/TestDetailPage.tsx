@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
@@ -463,12 +464,20 @@ const TestDetailPage = () => {
                       className="w-full bg-primary hover:bg-primary/90"
                       asChild
                     >
-                      <a href={bookingUrl} {...externalLinkProps}>
+                      <a
+                        href={bookingUrl}
+                        {...externalLinkProps}
+                        data-affiliate-placement="detail"
+                      >
                         Book
                         <ExternalLink className="w-4 h-4 ml-2" />
                       </a>
                     </Button>
-                  ) : (
+                  ) : null}
+                  {bookingUrl && (
+                    <AffiliateCommissionNote className="text-center" />
+                  )}
+                  {bookingUrl ? null : (
                     <Button size="lg" className="w-full" asChild>
                       <Link to={`/provider/${providerId}`}>View Provider</Link>
                     </Button>

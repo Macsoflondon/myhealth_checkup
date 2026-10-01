@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import React from "react";
 import { Link } from "@/lib/router-compat";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -174,11 +175,17 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
                             testName,
                           )}
                           {...externalLinkProps}
+                          data-affiliate-placement="comparison"
                         >
                           Book Now
                           <ExternalLink className="h-3.5 w-3.5 ml-1" />
                         </a>
                       </Button>
+                      ) : null}
+                    {provider.url && (
+                      <AffiliateCommissionNote className="mt-1 max-w-[200px]" />
+                    )}
+                    {provider.url ? null : (
                     ) : (
                       <Button asChild variant="outline" size="sm">
                         <Link to={`/provider/${provider.providerId}`}>
@@ -273,11 +280,17 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
                         testName,
                       )}
                       {...externalLinkProps}
+                      data-affiliate-placement="comparison"
                     >
                       Book
                       <ExternalLink className="h-4 w-4 ml-2" />
                     </a>
                   </Button>
+                ) : null}
+                {provider.url && (
+                  <AffiliateCommissionNote className="mt-2 text-center" />
+                )}
+                {provider.url ? null : (
                 ) : (
                   <Button asChild variant="outline" className="w-full">
                     <Link to={`/provider/${provider.providerId}`}>

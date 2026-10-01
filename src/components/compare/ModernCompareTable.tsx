@@ -389,6 +389,8 @@ export const ModernCompareTable = ({
                               test.name,
                             )}
                             {...externalLinkProps}
+                            data-affiliate-placement="comparison"
+                            data-affiliate-test-id={test.id}
                           >
                             <ShoppingCart className="h-3.5 w-3.5 mr-1" />
                             <span className="hidden sm:inline">Book Now</span>

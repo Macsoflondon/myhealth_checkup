@@ -618,7 +618,13 @@ export default function ProviderTestDetailModal({
                 asChild
                 className="flex-1 h-14 text-base font-semibold rounded-full bg-[#e70d69] hover:bg-[#22c0d4] text-white transition-colors duration-300 shadow-md"
               >
-                <a href={test.url} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={test.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-affiliate-placement="detail"
+                  data-affiliate-test-id={test.id}
+                >
                   Book
                   <ExternalLink className="w-4 h-4 ml-2" />
                 </a>
