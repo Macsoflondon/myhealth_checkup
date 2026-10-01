@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import React from "react";
 import { Link } from "@/lib/router-compat";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -396,6 +397,9 @@ export const ModernCompareTable = ({
                             <span className="hidden sm:inline">Book Now</span>
                           </a>
                         </Button>
+                      ) : null}
+                      {test.url ? (
+                        <AffiliateCommissionNote className="mt-1 max-w-[180px]" />
                       ) : (
                         <Button
                           onClick={() =>

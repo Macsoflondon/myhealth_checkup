@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ExternalLink } from "lucide-react";
@@ -55,6 +56,7 @@ const ProviderComparisonSidebar = ({
                 <ExternalLink className="w-4 h-4 ml-2" />
               </a>
             </Button>
+            <AffiliateCommissionNote className="mt-2 text-center" />
           </div>
         ))}
 

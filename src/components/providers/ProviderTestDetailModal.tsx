@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { useNavigate } from "@/lib/router-compat";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -629,6 +630,9 @@ export default function ProviderTestDetailModal({
                   <ExternalLink className="w-4 h-4 ml-2" />
                 </a>
               </Button>
+            ) : null}
+            {test.url ? (
+              <AffiliateCommissionNote className="basis-full text-center" />
             ) : (
               <Button
                 disabled

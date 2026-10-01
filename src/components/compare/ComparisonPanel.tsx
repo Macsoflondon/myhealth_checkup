@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import React, { useState } from "react";
 import { CompareTestData } from "@/services/CompareService";
 import {
@@ -264,10 +265,15 @@ export const ComparisonPanel = ({
                             href={test.url}
                             target="_blank"
                             rel="noopener noreferrer"
+                            data-affiliate-placement="comparison"
+                            data-affiliate-test-id={test.id}
                           >
                             Order Now
                           </a>
                         </Button>
+                      ) : null}
+                      {test.url ? (
+                        <AffiliateCommissionNote className="mt-1 max-w-[200px]" />
                       ) : (
                         <Button
                           className="bg-muted text-muted-foreground font-medium px-6"
