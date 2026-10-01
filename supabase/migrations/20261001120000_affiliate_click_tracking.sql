@@ -85,7 +85,7 @@ begin
 
   with src as (
     select
-      nullif(trim(r->>'click_id'), '') as click_raw,
+      case when trim(r->>'click_id') ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' then lower(trim(r->>'click_id')) end as click_raw,
       trim(r->>'provider_id') as provider_id,
       trim(r->>'network_reference') as network_reference,
       coalesce(nullif(lower(trim(r->>'status')), ''), 'pending') as status,
@@ -94,15 +94,18 @@ begin
       (r->>'converted_at')::timestamptz as converted_at
     from jsonb_array_elements(p_rows) r
   ), dedup as (
-    select distinct on (provider_id, network_reference) *
+    -- One row per (provider_id, network_reference). If duplicates exist and only
+    -- one carries a valid click id, max(click_raw) over the partition keeps it.
+    select distinct on (provider_id, network_reference)
+      max(click_raw) over (partition by provider_id, network_reference) as click_raw,
+      provider_id, network_reference, status, order_value_gbp, commission_gbp, converted_at
     from src
     where provider_id <> '' and network_reference <> ''
     order by provider_id, network_reference, converted_at desc
   ), resolved as (
     select d.*, c.click_id
     from dedup d
-    left join public.affiliate_clicks c
-      on c.click_id = case when d.click_raw ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' then d.click_raw::uuid end
+    left join public.affiliate_clicks c on c.click_id = d.click_raw::uuid
   ), up as (
     insert into public.affiliate_conversions
       (click_id, provider_id, network_reference, status, order_value_gbp, commission_gbp, converted_at)
@@ -172,6 +175,9 @@ begin
       coalesce(k.placement, v.placement) as placement,
       coalesce(k.clicks, 0) as clicks,
       coalesce(v.conversions, 0) as conversions,
+      -- Only conversions with a matched click count towards conversion_rate;
+      -- unattributed conversions previously pushed the rate above 100 per cent.
+      case when coalesce(k.placement, v.placement) = 'unattributed' then 0 else coalesce(v.conversions, 0) end as attributed,
       coalesce(v.confirmed, 0) as confirmed,
       coalesce(v.reversed, 0) as reversed,
       coalesce(v.commission_gbp, 0) as commission_gbp,
@@ -187,29 +193,29 @@ begin
       select jsonb_build_object(
         'clicks', coalesce(sum(clicks), 0),
         'conversions', coalesce(sum(conversions), 0),
-        'conversion_rate', case when sum(clicks) > 0 then round(sum(conversions)::numeric / sum(clicks), 4) end,
+        'conversion_rate', case when sum(clicks) > 0 then round(sum(attributed)::numeric / sum(clicks), 4) end,
         'commission_gbp', round(coalesce(sum(commission_gbp), 0), 2),
         'order_value_gbp', round(coalesce(sum(order_value_gbp), 0), 2))
       from merged),
     'by_provider', coalesce((
       select jsonb_agg(jsonb_build_object(
         'provider_id', provider_id, 'clicks', clicks, 'conversions', conversions,
-        'conversion_rate', case when clicks > 0 then round(conversions::numeric / clicks, 4) end,
+        'conversion_rate', case when clicks > 0 then round(attributed::numeric / clicks, 4) end,
         'commission_gbp', round(commission_gbp, 2)) order by clicks desc)
-      from (select provider_id, sum(clicks) clicks, sum(conversions) conversions, sum(commission_gbp) commission_gbp
+      from (select provider_id, sum(clicks) clicks, sum(conversions) conversions, sum(attributed) attributed, sum(commission_gbp) commission_gbp
             from merged group by provider_id) p), '[]'::jsonb),
     'by_placement', coalesce((
       select jsonb_agg(jsonb_build_object(
         'placement', placement, 'clicks', clicks, 'conversions', conversions,
-        'conversion_rate', case when clicks > 0 then round(conversions::numeric / clicks, 4) end,
+        'conversion_rate', case when clicks > 0 then round(attributed::numeric / clicks, 4) end,
         'commission_gbp', round(commission_gbp, 2)) order by clicks desc)
-      from (select placement, sum(clicks) clicks, sum(conversions) conversions, sum(commission_gbp) commission_gbp
+      from (select placement, sum(clicks) clicks, sum(conversions) conversions, sum(attributed) attributed, sum(commission_gbp) commission_gbp
             from merged group by placement) p), '[]'::jsonb),
     'by_provider_placement', coalesce((
       select jsonb_agg(jsonb_build_object(
         'provider_id', provider_id, 'placement', placement, 'clicks', clicks, 'conversions', conversions,
         'confirmed', confirmed, 'reversed', reversed,
-        'conversion_rate', case when clicks > 0 then round(conversions::numeric / clicks, 4) end,
+        'conversion_rate', case when clicks > 0 then round(attributed::numeric / clicks, 4) end,
         'commission_gbp', round(commission_gbp, 2)) order by provider_id, placement)
       from merged), '[]'::jsonb)
   ) into v_result;

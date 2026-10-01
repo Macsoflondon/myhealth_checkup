@@ -623,7 +623,7 @@
       {
         "name": "get_affiliate_performance",
         "title": "Get affiliate performance",
-        "description": "Affiliate click and conversion totals computed in the database for the last N days: clicks, conversions, conversion rate and commission in GBP, broken down by provider, by placement and by both. Aggregates only; click records hold no IP address, user agent or account details. Commission never influences ranking.",
+        "description": "Affiliate click and conversion totals computed in the database for the last N days: clicks, conversions, conversion rate (share of clicks that led to a matched conversion; conversions without a matched click are counted separately as unattributed) and commission in GBP, broken down by provider, by placement and by both. Aggregates only; click records hold no IP address, user agent or account details. Commission never influences ranking.",
         "annotations": {
           "readOnlyHint": true,
           "idempotentHint": true,
