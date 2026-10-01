@@ -73,6 +73,7 @@ const groups: Array<{ label: string; items: NavItem[] }> = [
       },
       { title: "Data refresh", url: "/admin/data-refresh", icon: Database },
       { title: "Test upload", url: "/admin/test-upload", icon: Upload },
+      { title: "Affiliate", url: "/admin/affiliate", icon: Database },
     ],
   },
   {
