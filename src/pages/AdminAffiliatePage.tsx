@@ -205,6 +205,13 @@ export default function AdminAffiliatePage() {
           ))}
         </div>
       )}
+      {t && (
+        <p className="text-xs text-muted-foreground">
+          Conversion rate is the share of clicks that led to a matched
+          conversion; conversions without a matched click are counted
+          separately as unattributed.
+        </p>
+      )}
 
       {perf.data && (
         <div className="grid gap-4 lg:grid-cols-2">
