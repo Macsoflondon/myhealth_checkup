@@ -26,6 +26,8 @@ create index if not exists affiliate_clicks_provider_idx on public.affiliate_cli
 grant insert on public.affiliate_clicks to anon, authenticated;
 grant select on public.affiliate_clicks to authenticated;
 grant all on public.affiliate_clicks to service_role;
+revoke all on public.affiliate_clicks from anon;
+grant insert on public.affiliate_clicks to anon;
 
 alter table public.affiliate_clicks enable row level security;
 
@@ -57,6 +59,7 @@ create index if not exists affiliate_conversions_converted_idx on public.affilia
 
 grant select, insert, update, delete on public.affiliate_conversions to authenticated;
 grant all on public.affiliate_conversions to service_role;
+revoke all on public.affiliate_conversions from anon;
 
 alter table public.affiliate_conversions enable row level security;
 
@@ -90,19 +93,23 @@ begin
       nullif(r->>'commission_gbp', '')::numeric as commission_gbp,
       (r->>'converted_at')::timestamptz as converted_at
     from jsonb_array_elements(p_rows) r
+  ), dedup as (
+    select distinct on (provider_id, network_reference) *
+    from src
+    where provider_id <> '' and network_reference <> ''
+    order by provider_id, network_reference, converted_at desc
   ), resolved as (
-    select s.*, c.click_id
-    from src s
+    select d.*, c.click_id
+    from dedup d
     left join public.affiliate_clicks c
-      on s.click_raw ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
-     and c.click_id = s.click_raw::uuid
+      on c.click_id = case when d.click_raw ~* '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$' then d.click_raw::uuid end
   ), up as (
     insert into public.affiliate_conversions
       (click_id, provider_id, network_reference, status, order_value_gbp, commission_gbp, converted_at)
     select click_id, provider_id, network_reference, status, order_value_gbp, commission_gbp, converted_at
     from resolved
     on conflict (provider_id, network_reference) do update set
-      click_id = excluded.click_id,
+      click_id = coalesce(excluded.click_id, public.affiliate_conversions.click_id),
       status = excluded.status,
       order_value_gbp = excluded.order_value_gbp,
       commission_gbp = excluded.commission_gbp,
@@ -215,6 +222,7 @@ revoke all on function public.affiliate_performance(timestamptz, timestamptz, te
 grant execute on function public.affiliate_performance(timestamptz, timestamptz, text) to authenticated;
 
 -- Retention: delete clicks older than 24 months, daily at 03:40 UTC.
+-- Unschedule first so re-running this file never creates a duplicate job.
 select cron.unschedule('affiliate-clicks-retention')
 where exists (select 1 from cron.job where jobname = 'affiliate-clicks-retention');
 
