@@ -189,3 +189,9 @@ verify_jwt = false
 # in memory, never stored).
 [functions.public-api]
 verify_jwt = false
+
+# Public MCP server (anonymous, read-only catalogue tools only)
+# Security: no favourites or admin tools, anon-key reads under RLS,
+# in-function rate limit of 60 requests/min per IP.
+[functions.mcp-public]
+verify_jwt = false
