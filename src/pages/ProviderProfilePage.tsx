@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { useParams, Link } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
 import MainLayout from "@/layouts/MainLayout";
@@ -310,12 +311,14 @@ const ProviderProfilePage = () => {
                     <a
                       href={websiteUrl || provider.website}
                       {...externalLinkProps}
+                      data-affiliate-placement="provider_page"
                       className="hover:underline text-sm md:text-base break-all touch-manipulation text-green-800"
                     >
                       {provider.website
                         .replace("https://", "")
                         .replace("http://", "")}
                     </a>
+                    <AffiliateCommissionNote className="mt-1" />
                   </div>
                 )}
                 {provider.phone && (

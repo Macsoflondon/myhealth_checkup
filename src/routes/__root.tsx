@@ -196,6 +196,15 @@ function RootComponent() {
     void import("@/lib/webVitals").then((m) => m.installWebVitals());
   }, []);
 
+  // One delegated listener logs every outbound provider link click.
+  useEffect(() => {
+    let uninstall: (() => void) | undefined;
+    void import("@/lib/affiliate/affiliate-tracking").then((m) => {
+      uninstall = m.installAffiliateClickTracking();
+    });
+    return () => uninstall?.();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <I18nextProvider i18n={i18nInstance}>

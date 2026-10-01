@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { canBookDirect } from "@/lib/booking-link-state";
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
@@ -763,6 +764,7 @@ export const UniversalTestDetailModal: React.FC<{
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`Book ${test.test_name} on the provider's website (opens in a new tab)`}
+                data-affiliate-test-id={test.id}
                 onClick={() => {
                   void trackFunnelEvent("provider_click", {
                     provider_id: test.provider_id,
@@ -810,6 +812,9 @@ export const UniversalTestDetailModal: React.FC<{
               </a>
             )}
           </div>
+          {canBookDirect(test.url, test.url_verified) && (
+            <AffiliateCommissionNote className="mt-2 text-center" />
+          )}
         </div>
       </div>
     </div>,

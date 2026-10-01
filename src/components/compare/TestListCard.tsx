@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import React from "react";
 import { Link } from "@/lib/router-compat";
 import { CheckCircle, Clock, Shield, Star, Plus, Check } from "lucide-react";
@@ -180,11 +181,16 @@ export const TestListCard: React.FC<TestListCardProps> = ({
                   test.name,
                 )}
                 {...externalLinkProps}
+                data-affiliate-test-id={test.id}
               >
                 Book with {test.provider}
               </a>
             </Button>
-          ) : (
+          ) : null}
+          {test.url && (
+            <AffiliateCommissionNote className="mt-2 max-w-[220px] md:ml-auto" />
+          )}
+          {test.url ? null : (
             // No provider URL to book against — let the click fall through
             // to the card's own `Link` (internal detail page) instead of
             // swallowing it. Previously this stopped propagation with no

@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 /**
  * DiagnosticTestComparison
@@ -642,11 +643,16 @@ function ComparisonTable({
                       href={t.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      data-affiliate-placement="comparison"
                       className="inline-flex items-center gap-1.5 rounded-full px-3 py-2 text-xs font-semibold text-white"
                       style={{ background: colorFor(t.provider_name) }}
                     >
                       Book <ExternalLink className="h-3 w-3" />
                     </a>
+                  ) : null}
+                  {t.url ? (
+                    <AffiliateCommissionNote className="mt-1 max-w-[180px]" />
+
                   ) : (
                     <span className="text-xs text-brand-navy">{DASH}</span>
                   )}

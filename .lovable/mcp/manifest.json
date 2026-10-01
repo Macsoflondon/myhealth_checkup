@@ -619,6 +619,35 @@
           "$schema": "http://json-schema.org/draft-07/schema#"
         },
         "outputSchema": null
+      },
+      {
+        "name": "get_affiliate_performance",
+        "title": "Get affiliate performance",
+        "description": "Affiliate click and conversion totals computed in the database for the last N days: clicks, conversions, conversion rate and commission in GBP, broken down by provider, by placement and by both. Aggregates only; click records hold no IP address, user agent or account details. Commission never influences ranking.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "type": "object",
+          "properties": {
+            "days": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 730,
+              "default": 30
+            },
+            "provider": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            }
+          },
+          "additionalProperties": false,
+          "$schema": "http://json-schema.org/draft-07/schema#"
+        },
+        "outputSchema": null
       }
     ]
   }

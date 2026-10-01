@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { useMemo } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { TestRecord } from "@/types/testFinder";
@@ -67,7 +68,10 @@ const ProviderHeaderCell = ({ test }: { test: TestRecord }) => (
 );
 
 const BookButton = ({ test }: { test: TestRecord }) => (
+  <>
   <a
+    data-affiliate-placement="comparison"
+    data-affiliate-test-id={test.id}
     href={test.book_url || test.source_url || "#"}
     target="_blank"
     rel="noopener noreferrer"
@@ -75,6 +79,8 @@ const BookButton = ({ test }: { test: TestRecord }) => (
   >
     Book now
   </a>
+  <AffiliateCommissionNote className="mt-2 text-center" />
+  </>
 );
 
 /** Spec §4 — redesigned comparison table with sticky label rail. */

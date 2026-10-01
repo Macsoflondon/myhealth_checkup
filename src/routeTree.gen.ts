@@ -63,6 +63,7 @@ import { Route as WellnessRouteImport } from './routes/wellness'
 import { Route as WomensHealthRouteImport } from './routes/womens-health'
 import { Route as AboutIndexRouteImport } from './routes/about.index'
 import { Route as AboutMedicalReviewRouteImport } from './routes/about.medical-review'
+import { Route as AdminAffiliateRouteImport } from './routes/admin.affiliate'
 import { Route as AdminAlertRoutingRouteImport } from './routes/admin.alert-routing'
 import { Route as AdminAuditConsoleRouteImport } from './routes/admin.audit-console'
 import { Route as AdminBiomarkerAuditRouteImport } from './routes/admin.biomarker-audit'
@@ -145,6 +146,7 @@ import { Route as TestsMensHealthRouteImport } from './routes/tests.mens-health'
 import { Route as TestsVitaminsRouteImport } from './routes/tests.vitamins'
 import { Route as TestsWomensHealthRouteImport } from './routes/tests.womens-health'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
+import { Route as ApiPublicAffiliateClickRouteImport } from './routes/api/public/affiliate-click'
 import { Route as ApiPublicBlogAggregateRouteImport } from './routes/api/public/blog-aggregate'
 import { Route as CompareGoalsIndexRouteImport } from './routes/compare.goals.index'
 import { Route as CompareGoalsGoalSlugRouteImport } from './routes/compare.goals.$goalSlug'
@@ -424,6 +426,11 @@ const AboutIndexRoute = AboutIndexRouteImport.update({
 const AboutMedicalReviewRoute = AboutMedicalReviewRouteImport.update({
   id: '/about/medical-review',
   path: '/about/medical-review',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAffiliateRoute = AdminAffiliateRouteImport.update({
+  id: '/admin/affiliate',
+  path: '/admin/affiliate',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminAlertRoutingRoute = AdminAlertRoutingRouteImport.update({
@@ -848,6 +855,11 @@ const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
   path: '/.lovable/oauth/consent',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicAffiliateClickRoute = ApiPublicAffiliateClickRouteImport.update({
+  id: '/api/public/affiliate-click',
+  path: '/api/public/affiliate-click',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiPublicBlogAggregateRoute = ApiPublicBlogAggregateRouteImport.update({
   id: '/api/public/blog-aggregate',
   path: '/api/public/blog-aggregate',
@@ -952,6 +964,7 @@ export interface FileRoutesByFullPath {
   '/wellness': typeof WellnessRoute
   '/womens-health': typeof WomensHealthRoute
   '/about/medical-review': typeof AboutMedicalReviewRoute
+  '/admin/affiliate': typeof AdminAffiliateRoute
   '/admin/alert-routing': typeof AdminAlertRoutingRoute
   '/admin/audit-console': typeof AdminAuditConsoleRoute
   '/admin/biomarker-audit': typeof AdminBiomarkerAuditRoute
@@ -1035,6 +1048,7 @@ export interface FileRoutesByFullPath {
   '/providers/': typeof ProvidersIndexRoute
   '/randox/': typeof RandoxIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/api/public/affiliate-click': typeof ApiPublicAffiliateClickRoute
   '/api/public/blog-aggregate': typeof ApiPublicBlogAggregateRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
@@ -1098,6 +1112,7 @@ export interface FileRoutesByTo {
   '/wellness': typeof WellnessRoute
   '/womens-health': typeof WomensHealthRoute
   '/about/medical-review': typeof AboutMedicalReviewRoute
+  '/admin/affiliate': typeof AdminAffiliateRoute
   '/admin/alert-routing': typeof AdminAlertRoutingRoute
   '/admin/audit-console': typeof AdminAuditConsoleRoute
   '/admin/biomarker-audit': typeof AdminBiomarkerAuditRoute
@@ -1181,6 +1196,7 @@ export interface FileRoutesByTo {
   '/providers': typeof ProvidersIndexRoute
   '/randox': typeof RandoxIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/api/public/affiliate-click': typeof ApiPublicAffiliateClickRoute
   '/api/public/blog-aggregate': typeof ApiPublicBlogAggregateRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
@@ -1246,6 +1262,7 @@ export interface FileRoutesById {
   '/wellness': typeof WellnessRoute
   '/womens-health': typeof WomensHealthRoute
   '/about/medical-review': typeof AboutMedicalReviewRoute
+  '/admin/affiliate': typeof AdminAffiliateRoute
   '/admin/alert-routing': typeof AdminAlertRoutingRoute
   '/admin/audit-console': typeof AdminAuditConsoleRoute
   '/admin/biomarker-audit': typeof AdminBiomarkerAuditRoute
@@ -1329,6 +1346,7 @@ export interface FileRoutesById {
   '/providers/': typeof ProvidersIndexRoute
   '/randox/': typeof RandoxIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
+  '/api/public/affiliate-click': typeof ApiPublicAffiliateClickRoute
   '/api/public/blog-aggregate': typeof ApiPublicBlogAggregateRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
@@ -1395,6 +1413,7 @@ export interface FileRouteTypes {
     | '/wellness'
     | '/womens-health'
     | '/about/medical-review'
+    | '/admin/affiliate'
     | '/admin/alert-routing'
     | '/admin/audit-console'
     | '/admin/biomarker-audit'
@@ -1478,6 +1497,7 @@ export interface FileRouteTypes {
     | '/providers/'
     | '/randox/'
     | '/.lovable/oauth/consent'
+    | '/api/public/affiliate-click'
     | '/api/public/blog-aggregate'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
@@ -1541,6 +1561,7 @@ export interface FileRouteTypes {
     | '/wellness'
     | '/womens-health'
     | '/about/medical-review'
+    | '/admin/affiliate'
     | '/admin/alert-routing'
     | '/admin/audit-console'
     | '/admin/biomarker-audit'
@@ -1624,6 +1645,7 @@ export interface FileRouteTypes {
     | '/providers'
     | '/randox'
     | '/.lovable/oauth/consent'
+    | '/api/public/affiliate-click'
     | '/api/public/blog-aggregate'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
@@ -1688,6 +1710,7 @@ export interface FileRouteTypes {
     | '/wellness'
     | '/womens-health'
     | '/about/medical-review'
+    | '/admin/affiliate'
     | '/admin/alert-routing'
     | '/admin/audit-console'
     | '/admin/biomarker-audit'
@@ -1771,6 +1794,7 @@ export interface FileRouteTypes {
     | '/providers/'
     | '/randox/'
     | '/.lovable/oauth/consent'
+    | '/api/public/affiliate-click'
     | '/api/public/blog-aggregate'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
@@ -1836,6 +1860,7 @@ export interface RootRouteChildren {
   WellnessRoute: typeof WellnessRoute
   WomensHealthRoute: typeof WomensHealthRoute
   AboutMedicalReviewRoute: typeof AboutMedicalReviewRoute
+  AdminAffiliateRoute: typeof AdminAffiliateRoute
   AdminAlertRoutingRoute: typeof AdminAlertRoutingRoute
   AdminAuditConsoleRoute: typeof AdminAuditConsoleRoute
   AdminBiomarkerAuditRoute: typeof AdminBiomarkerAuditRoute
@@ -1917,6 +1942,7 @@ export interface RootRouteChildren {
   ProvidersIndexRoute: typeof ProvidersIndexRoute
   RandoxIndexRoute: typeof RandoxIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
+  ApiPublicAffiliateClickRoute: typeof ApiPublicAffiliateClickRoute
   ApiPublicBlogAggregateRoute: typeof ApiPublicBlogAggregateRoute
   ProviderProviderIdIndexRoute: typeof ProviderProviderIdIndexRoute
   ApiPublicDiagnosticsAbortsRoute: typeof ApiPublicDiagnosticsAbortsRoute
@@ -2302,6 +2328,13 @@ declare module '@tanstack/react-router' {
       path: '/about/medical-review'
       fullPath: '/about/medical-review'
       preLoaderRoute: typeof AboutMedicalReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/affiliate': {
+      id: '/admin/affiliate'
+      path: '/admin/affiliate'
+      fullPath: '/admin/affiliate'
+      preLoaderRoute: typeof AdminAffiliateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/alert-routing': {
@@ -2878,6 +2911,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DotlovableOauthConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/affiliate-click': {
+      id: '/api/public/affiliate-click'
+      path: '/api/public/affiliate-click'
+      fullPath: '/api/public/affiliate-click'
+      preLoaderRoute: typeof ApiPublicAffiliateClickRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/public/blog-aggregate': {
       id: '/api/public/blog-aggregate'
       path: '/api/public/blog-aggregate'
@@ -3019,6 +3059,7 @@ const rootRouteChildren: RootRouteChildren = {
   WellnessRoute: WellnessRoute,
   WomensHealthRoute: WomensHealthRoute,
   AboutMedicalReviewRoute: AboutMedicalReviewRoute,
+  AdminAffiliateRoute: AdminAffiliateRoute,
   AdminAlertRoutingRoute: AdminAlertRoutingRoute,
   AdminAuditConsoleRoute: AdminAuditConsoleRoute,
   AdminBiomarkerAuditRoute: AdminBiomarkerAuditRoute,
@@ -3101,6 +3142,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProvidersIndexRoute: ProvidersIndexRoute,
   RandoxIndexRoute: RandoxIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
+  ApiPublicAffiliateClickRoute: ApiPublicAffiliateClickRoute,
   ApiPublicBlogAggregateRoute: ApiPublicBlogAggregateRoute,
   ProviderProviderIdIndexRoute: ProviderProviderIdIndexRoute,
   ApiPublicDiagnosticsAbortsRoute: ApiPublicDiagnosticsAbortsRoute,

@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import React, { useMemo } from "react";
 import { Plus, Check } from "lucide-react";
 import type { CompareTestData } from "@/types";
@@ -537,9 +538,10 @@ export const ProviderComparisonTable: React.FC<
               }
               render={(t) => {
                 const available = !!t.url && t.url !== "#";
-                return available ? (
+                const link = available ? (
                   <a
                     href={t.url}
+                    data-affiliate-placement="comparison"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block w-full text-center rounded-full"
@@ -560,6 +562,15 @@ export const ProviderComparisonTable: React.FC<
                   >
                     Book Now
                   </a>
+                ) : null;
+                const note = available ? (
+                  <AffiliateCommissionNote className="mt-1 text-center" />
+                ) : null;
+                return available ? (
+                  <>
+                    {link}
+                    {note}
+                  </>
                 ) : (
                   <button
                     type="button"

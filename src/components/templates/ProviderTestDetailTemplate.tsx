@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import Header from "@/components/layout/Header";
 import { Link, useNavigate } from "@/lib/router-compat";
 import { useEffect, useState } from "react";
@@ -206,6 +207,7 @@ const BookingButton = ({
         <a
           href={buildProviderBookingUrl(testUrl, providerConfig.id)}
           {...externalLinkProps}
+          data-affiliate-placement="detail"
           className="flex items-center justify-center"
         >
           {providerConfig.ctaButtonText}
@@ -213,6 +215,7 @@ const BookingButton = ({
         </a>
       </Button>
 
+      <AffiliateCommissionNote className="text-center" />
       <p className="text-xs text-center text-muted-foreground">
         You'll be redirected to {providerConfig.name}'s secure booking platform
       </p>
@@ -967,10 +970,16 @@ export default function ProviderTestDetailTemplate({
                 )}
               </p>
               <Button size="lg" asChild>
-                <a href={test.url} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={test.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-affiliate-placement="detail"
+                >
                   Book Your Test Now
                 </a>
               </Button>
+              <AffiliateCommissionNote className="mt-3 text-center" />
             </CardContent>
           </Card>
         </div>

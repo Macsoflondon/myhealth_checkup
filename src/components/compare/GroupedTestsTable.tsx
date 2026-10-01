@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import React, { useState, useMemo } from "react";
 import {
   Table,
@@ -489,10 +490,15 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
                                       href={test.url}
                                       target="_blank"
                                       rel="noopener noreferrer"
+                                      data-affiliate-placement="comparison"
+                                      data-affiliate-test-id={test.id}
                                     >
                                       Order
                                     </a>
                                   </Button>
+                                ) : null}
+                                {test.url ? (
+                                  <AffiliateCommissionNote className="mt-1 max-w-[180px]" />
                                 ) : (
                                   <Button
                                     size="sm"

@@ -1,3 +1,4 @@
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { useNavigate } from "@/lib/router-compat";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -618,11 +619,20 @@ export default function ProviderTestDetailModal({
                 asChild
                 className="flex-1 h-14 text-base font-semibold rounded-full bg-[#e70d69] hover:bg-[#22c0d4] text-white transition-colors duration-300 shadow-md"
               >
-                <a href={test.url} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={test.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-affiliate-placement="detail"
+                  data-affiliate-test-id={test.id}
+                >
                   Book
                   <ExternalLink className="w-4 h-4 ml-2" />
                 </a>
               </Button>
+            ) : null}
+            {test.url ? (
+              <AffiliateCommissionNote className="basis-full text-center" />
             ) : (
               <Button
                 disabled
