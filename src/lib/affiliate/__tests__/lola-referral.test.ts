@@ -60,3 +60,20 @@ describe("Lola Health referral attribution", () => {
     );
   });
 });
+
+describe("openAffiliateUrl", () => {
+  it("opens the attributed Lola URL", async () => {
+    const { openAffiliateUrl } = await import("../affiliate-tracking");
+    const open = vi.spyOn(window, "open").mockReturnValue(null);
+    vi.stubGlobal("navigator", { sendBeacon: () => true });
+    openAffiliateUrl("https://lolahealth.com/products/albumin", {
+      placement: "card",
+    });
+    expect(open).toHaveBeenCalledWith(
+      "https://lolahealth.com/products/albumin?snowball=myhealthcheckup",
+      "_blank",
+      "noopener,noreferrer",
+    );
+    vi.unstubAllGlobals();
+  });
+});

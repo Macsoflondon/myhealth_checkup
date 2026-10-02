@@ -1,3 +1,4 @@
+import { openAffiliateUrl } from "@/lib/affiliate/affiliate-tracking";
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { canBookDirect } from "@/lib/booking-link-state";
 import React, { useEffect, useRef, useState } from "react";
@@ -918,7 +919,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
     // undefined/null (not selected by this caller's query, or never checked) still opens the URL
     // as before, so this only ever tightens behaviour where the data is actually known-bad.
     if (canBookDirect(test.url, test.url_verified)) {
-      window.open(test.url, "_blank", "noopener,noreferrer");
+      openAffiliateUrl(test.url, { placement: "card", testId: test.id });
     } else {
       window.location.href = `/contact?test=${encodeURIComponent(test.id)}`;
     }

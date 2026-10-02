@@ -219,3 +219,25 @@ export function installAffiliateClickTracking(
     doc.removeEventListener("auxclick", listener, true);
   };
 }
+
+/**
+ * For buttons that open a provider URL with window.open (no anchor):
+ * applies referral/sub-ID attribution, logs the click and opens the link.
+ */
+export function openAffiliateUrl(
+  href: string,
+  options: { placement?: AffiliatePlacement; testId?: string | null } = {},
+): void {
+  let target = href;
+  try {
+    const a = document.createElement("a");
+    a.href = href;
+    if (options.placement) a.dataset.affiliatePlacement = options.placement;
+    if (options.testId) a.dataset.affiliateTestId = options.testId;
+    if (handleAffiliateAnchorClick(a, window.location.pathname))
+      target = a.href;
+  } catch {
+    target = href;
+  }
+  window.open(target, "_blank", "noopener,noreferrer");
+}
