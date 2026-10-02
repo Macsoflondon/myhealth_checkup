@@ -1,3 +1,4 @@
+import { openAffiliateUrl } from "@/lib/affiliate/affiliate-tracking";
 import { useState, useEffect, useMemo } from "react";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { useSearchParams, Link } from "@/lib/router-compat";
@@ -136,7 +137,7 @@ export default function CancerComparisonPage() {
 
   const handleBookTest = (test: EnhancedTestData) => {
     if (test.url) {
-      window.open(test.url, "_blank", "noopener,noreferrer");
+      openAffiliateUrl(test.url, { placement: "comparison", testId: test.id });
     }
   };
 

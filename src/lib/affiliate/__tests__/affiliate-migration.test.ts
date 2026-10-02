@@ -16,7 +16,9 @@ describe("affiliate migration matches live database", () => {
       "max(click_raw) over (partition by provider_id, network_reference) as click_raw",
     );
     expect(sql).toContain("on c.click_id = d.click_raw::uuid");
-    expect(sql).toMatch(/then lower\(trim\(r->>'click_id'\)\) end as click_raw/);
+    expect(sql).toMatch(
+      /then lower\(trim\(r->>'click_id'\)\) end as click_raw/,
+    );
   });
 
   it("bases conversion rate on attributed conversions only", () => {

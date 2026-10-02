@@ -83,6 +83,48 @@ export function appendClickId(
   }
 }
 
+/**
+ * Adds the provider's referral parameter (if configured) without changing
+ * the path, so the visitor still lands on the specific test page. An
+ * existing value for the same parameter is left alone.
+ */
+export function appendReferral(
+  href: string,
+  providerId: string,
+  providers: Readonly<
+    Record<string, AffiliateProviderConfig>
+  > = AFFILIATE_PROVIDERS,
+): string {
+  const ref = providers[providerId]?.referral;
+  if (!ref) return href;
+  try {
+    const url = new URL(href);
+    if (url.protocol !== "https:" && url.protocol !== "http:") return href;
+    if (!url.searchParams.has(ref.param))
+      url.searchParams.set(ref.param, ref.value);
+    return url.toString();
+  } catch {
+    return href;
+  }
+}
+
+/** Full outbound URL: referral parameter plus sub-ID click id. */
+export function buildAffiliateUrl(
+  href: string,
+  providerId: string,
+  clickId: string,
+  providers: Readonly<
+    Record<string, AffiliateProviderConfig>
+  > = AFFILIATE_PROVIDERS,
+): string {
+  return appendClickId(
+    appendReferral(href, providerId, providers),
+    providerId,
+    clickId,
+    providers,
+  );
+}
+
 export function newClickId(): string {
   return crypto.randomUUID();
 }
@@ -134,7 +176,7 @@ export function handleAffiliateAnchorClick(
 
     anchor.dataset.affiliateHref = original;
     const clickId = newClickId();
-    anchor.href = appendClickId(original, providerId, clickId);
+    anchor.href = buildAffiliateUrl(original, providerId, clickId);
 
     const declared = anchor.closest<HTMLElement>("[data-affiliate-placement]")
       ?.dataset.affiliatePlacement;
@@ -176,4 +218,26 @@ export function installAffiliateClickTracking(
     doc.removeEventListener("click", listener, true);
     doc.removeEventListener("auxclick", listener, true);
   };
+}
+
+/**
+ * For buttons that open a provider URL with window.open (no anchor):
+ * applies referral/sub-ID attribution, logs the click and opens the link.
+ */
+export function openAffiliateUrl(
+  href: string,
+  options: { placement?: AffiliatePlacement; testId?: string | null } = {},
+): void {
+  let target = href;
+  try {
+    const a = document.createElement("a");
+    a.href = href;
+    if (options.placement) a.dataset.affiliatePlacement = options.placement;
+    if (options.testId) a.dataset.affiliateTestId = options.testId;
+    if (handleAffiliateAnchorClick(a, window.location.pathname))
+      target = a.href;
+  } catch {
+    target = href;
+  }
+  window.open(target, "_blank", "noopener,noreferrer");
 }

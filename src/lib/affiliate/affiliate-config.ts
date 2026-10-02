@@ -9,6 +9,25 @@ export type AffiliateProviderConfig = {
   hosts: readonly string[];
   /** Query parameter that carries our click_id, or null if not configured. */
   subIdParam: string | null;
+  /**
+   * Referral attribution added to every outbound link for this provider.
+   * `param`/`value` are appended to the destination URL so the landing page
+   * keeps its path. Internal configuration only; never render `discountCode`.
+   */
+  referral?: AffiliateReferralConfig;
+};
+
+export type AffiliateReferralConfig = {
+  /** Network the programme runs on. */
+  network: string;
+  /** The owner's referral short link (reference only, not used for routing). */
+  link: string;
+  /** Owner's discount code. Not shown to customers until confirmed. */
+  discountCode: string;
+  /** Query parameter the network's on-site script reads. */
+  param: string;
+  /** Value for that parameter (the affiliate's code). */
+  value: string;
 };
 
 export const AFFILIATE_PROVIDERS: Readonly<
@@ -20,7 +39,20 @@ export const AFFILIATE_PROVIDERS: Readonly<
     hosts: ["londonmedicallaboratory.com"],
     subIdParam: null,
   },
-  "lola-health": { hosts: ["lolahealth.com"], subIdParam: null },
+  "lola-health": {
+    hosts: ["lolahealth.com"],
+    subIdParam: null,
+    // Social Snowball: the short link redirects to `<page>?snowball=<code>`
+    // and referral.js on lolahealth.com reads that parameter (verified
+    // 02/10/2026). Appending it directly keeps the visitor on the test page.
+    referral: {
+      network: "social-snowball",
+      link: "https://referrals.lolahealth.com/myhealthcheckup",
+      discountCode: "myhealthcheckup",
+      param: "snowball",
+      value: "myhealthcheckup",
+    },
+  },
   "goodbody-clinic": { hosts: ["goodbodyclinic.com"], subIdParam: null },
   "london-health-company": {
     hosts: ["londonhealthcompany.co.uk"],
