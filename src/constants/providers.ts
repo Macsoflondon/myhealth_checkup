@@ -43,7 +43,7 @@ export const PROVIDER_WEBSITES: Record<string, string> = {
   medichecks: "https://medichecks.com",
   randox: "https://randoxhealth.com/en-GB",
   "london-medical-laboratory": "https://londonmedicallaboratory.com",
-  "lola-health": "https://referrals.lolahealth.com/myhealthcheckup",
+  "lola-health": "https://lolahealth.com",
   "goodbody-clinic": "https://goodbodyclinic.com",
   "london-health-company": "https://londonhealthcompany.co.uk",
   "medical-diagnosis": "https://www.medical-diagnosis.co.uk",
