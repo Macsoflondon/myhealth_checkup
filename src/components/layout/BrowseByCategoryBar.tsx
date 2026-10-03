@@ -390,7 +390,7 @@ export default function BrowseByCategoryBar({
                     aria-label={mobileOpen ? "Close menu" : "Open menu"}
                     aria-expanded={mobileOpen}
                     aria-controls="mobile-menu"
-                    className="flex flex-col items-end justify-center gap-[5px] min-w-11 min-h-11 p-2 bg-transparent border-0 shadow-none focus:outline-hidden cursor-pointer"
+                    className="flex flex-col items-end justify-center gap-[5px] min-w-11 min-h-11 p-2 rounded-xl bg-white border border-[#e70d69]/15 shadow-[0_4px_14px_-4px_rgba(231,13,105,0.45)] active:shadow-[0_2px_8px_-2px_rgba(231,13,105,0.5)] transition-shadow focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#e70d69] cursor-pointer"
                   >
                     <div className="h-[3px] w-9 rounded-full bg-[#081129]" />
                     <div className="h-[3px] w-6 rounded-full bg-[#e70d69]" />
@@ -568,7 +568,7 @@ export default function BrowseByCategoryBar({
                 type="button"
                 onClick={() => setMobileOpen(true)}
                 aria-label="Open menu"
-                className="flex flex-col items-end justify-center gap-[5px] min-w-11 min-h-11 p-2 rounded-xl bg-white/90 backdrop-blur-md border border-[#081129]/10 shadow-[0_8px_24px_-8px_rgba(8,17,41,0.35)] focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#e70d69] cursor-pointer"
+                className="flex flex-col items-end justify-center gap-[5px] min-w-11 min-h-11 p-2 rounded-xl bg-white/90 backdrop-blur-md border border-[#e70d69]/15 shadow-[0_6px_18px_-6px_rgba(231,13,105,0.5)] focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#e70d69] cursor-pointer"
               >
                 <div className="h-[3px] w-9 rounded-full bg-[#081129]" />
                 <div className="h-[3px] w-6 rounded-full bg-[#e70d69]" />
