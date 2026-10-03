@@ -153,7 +153,7 @@ export const detailedProviders = [
   {
     id: "lola-health",
     name: "Lola Health",
-    website: "https://referrals.lolahealth.com/myhealthcheckup",
+    website: "https://lolahealth.com",
     phone: "020 3870 3444",
     email: "hello@lolahealth.com",
     accreditation: "NHS-accredited laboratories (ISO 15189)",
