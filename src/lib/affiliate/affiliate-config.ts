@@ -39,20 +39,7 @@ export const AFFILIATE_PROVIDERS: Readonly<
     hosts: ["londonmedicallaboratory.com"],
     subIdParam: null,
   },
-  "lola-health": {
-    hosts: ["lolahealth.com"],
-    subIdParam: null,
-    // Social Snowball: the short link redirects to `<page>?snowball=<code>`
-    // and referral.js on lolahealth.com reads that parameter (verified
-    // 02/10/2026). Appending it directly keeps the visitor on the test page.
-    referral: {
-      network: "social-snowball",
-      link: "https://referrals.lolahealth.com/myhealthcheckup",
-      discountCode: "myhealthcheckup",
-      param: "snowball",
-      value: "myhealthcheckup",
-    },
-  },
+  "lola-health": { hosts: ["lolahealth.com"], subIdParam: null },
   "goodbody-clinic": { hosts: ["goodbodyclinic.com"], subIdParam: null },
   "london-health-company": {
     hosts: ["londonhealthcompany.co.uk"],
