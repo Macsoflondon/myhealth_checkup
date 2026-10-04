@@ -2,6 +2,10 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
 import {
+  lolaPanelBiomarkers,
+  lolaTurnaround,
+} from "../_shared/scrape/lola-catalogue.ts";
+import {
   parseTurnaround,
   upsertWithProvenance,
   startScrapeRun,
@@ -9,17 +13,6 @@ import {
   newCounters,
 } from "../_shared/scrape/index.ts";
 
-function extractTurnaroundText(md: string): string | null {
-  const patterns = [
-    /(?:turnaround|results?(?:\s+in)?|report(?:ed)?\s+within|delivered\s+within|available\s+within)[^.\n]{0,80}/i,
-    /(?:next\s+(?:working\s+)?day|same\s+day|24[\s-]?48\s*hours?|\d+\s*[-–]\s*\d+\s*(?:hours?|working\s+days?|days?)|\d+\s*(?:hours?|working\s+days?|days?))/i,
-  ];
-  for (const p of patterns) {
-    const m = md.match(p);
-    if (m) return m[0].trim();
-  }
-  return null;
-}
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -477,18 +470,21 @@ Deno.serve(async (req) => {
       }
 
       const isPeakInsights70 = slug === "peak-insights";
+      const panelBiomarkers = lolaPanelBiomarkers(title);
       const verifiedBiomarkers = isPeakInsights70
         ? [...PEAK_INSIGHTS_70_BIOMARKERS]
-        : biomarkers;
-      const verifiedBiomarkerCount = isPeakInsights70
-        ? PEAK_INSIGHTS_70_BIOMARKERS.length
-        : biomarkerCount || verifiedBiomarkers.length || null;
+        : (panelBiomarkers ?? biomarkers);
+      // The count always equals the stored list; the page's stated number is
+      // only used when no list could be captured at all.
+      const verifiedBiomarkerCount =
+        verifiedBiomarkers.length > 0
+          ? verifiedBiomarkers.length
+          : biomarkerCount || null;
       const isAddon =
         markdown.toLowerCase().includes("add-on") ||
         markdown.toLowerCase().includes("can only be added");
-      const turnaroundRaw = isPeakInsights70
-        ? "Results in 2 Working Days"
-        : extractTurnaroundText(markdown);
+      // Turnaround comes from the shared Lola catalogue (product-page values).
+      const turnaroundRaw = lolaTurnaround(title);
 
       products.push({
         test_name: title,
@@ -604,6 +600,7 @@ Deno.serve(async (req) => {
               home_kit_available: row.home_kit_available,
               clinic_visit_available: row.clinic_visit_available,
               was_price: row.original_price ?? null,
+              turnaround_days_text: row.turnaround_raw,
             })
             .eq("id", res.providerTestId);
         }

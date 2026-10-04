@@ -1,3 +1,4 @@
+import { displayBiomarkerCount } from "@/lib/resolve-test-fields";
 import { CategoryTestItem } from "@/components/category/CategoryPageLayout";
 import { getProviderRating } from "@/constants/providerRatings";
 import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
@@ -94,7 +95,10 @@ export function mapProviderTestRow(
     price: `£${priceNum.toFixed(priceNum % 1 === 0 ? 0 : 2)}`,
     turnaround,
     turnaroundDays,
-    biomarkerCount: row.biomarker_count ?? biomarkers.length ?? 0,
+    biomarkerCount: displayBiomarkerCount({
+      biomarker_count: row.biomarker_count,
+      biomarkers_list: biomarkers,
+    }),
     rating: rating?.rating,
     reviews: rating?.reviews,
     title: row.test_name,

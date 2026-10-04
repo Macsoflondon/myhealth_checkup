@@ -275,7 +275,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     id: "lola-health",
     name: "Lola Health",
     logo: "/lovable-uploads/provider-lola-health.png",
-    turnaround: "2-4 working days",
+    turnaround: "2 working days",
     badgeText: "Lola Health Blood Test",
     features: [
       {
@@ -287,8 +287,8 @@ export const providerConfigs: Record<string, ProviderConfig> = {
         description: "All results reviewed by qualified doctors",
       },
       {
-        title: "NHS-Accredited Labs",
-        description: "ISO 15189 certified laboratories",
+        title: "UKAS-Accredited Labs",
+        description: "UKAS-accredited laboratories (ISO 15189)",
       },
       {
         title: "Mobile App Results",
@@ -317,8 +317,8 @@ export const providerConfigs: Record<string, ProviderConfig> = {
           text: "Trained phlebotomist visits for venous blood draw (not finger-prick)",
         },
         {
-          bold: "NHS-Accredited Testing:",
-          text: "ISO 15189 certified laboratories for accurate results",
+          bold: "UKAS-Accredited Testing:",
+          text: "UKAS-accredited laboratories (ISO 15189)",
         },
         {
           bold: "Doctor-Reviewed Results:",
@@ -332,7 +332,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     },
     quickInfo: {
       sampleType: "Venous blood (at-home phlebotomy)",
-      labProcessing: "NHS-accredited (ISO 15189)",
+      labProcessing: "UKAS-accredited laboratories (ISO 15189)",
       resultsDelivery: "Lola Health app with doctor insights",
       supportEmail: "support@lolahealth.com",
     },
@@ -340,7 +340,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       "Book your at-home blood test with Lola Health today. Professional phlebotomy service with doctor-reviewed results delivered to your app.",
     ctaButtonText: "Book",
     aboutText:
-      "blood test with professional at-home phlebotomy. All results are processed in NHS-accredited laboratories and reviewed by qualified doctors.",
+      "blood test with professional at-home phlebotomy. All results are processed in UKAS-accredited laboratories (ISO 15189) and reviewed by qualified doctors.",
     canonicalBase: "https://myhealthcheckup.co.uk/lola-health",
   },
 

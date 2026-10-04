@@ -48,6 +48,16 @@ export const PROVIDER_WEBSITES: Record<string, string> = {
   "london-health-company": "https://londonhealthcompany.co.uk",
   "medical-diagnosis": "https://www.medical-diagnosis.co.uk",
   clinilabs: "https://www.clinilabs.co.uk",
+  "blue-horizon": "https://bluehorizonbloodtests.co.uk/",
+  "private-blood-tests-spire": "https://privatebloodtests.co.uk/",
+  "london-blood-tests": "https://londonbloodtests.uk/",
+  "youth-revisited": "https://www.youth-revisited.co.uk/",
+  "manual-trt": "https://www.manual.co",
+  "manual-hrt": "https://www.manual.co",
+  "functional-dx": "https://functionaldx.com",
+  onedaytests: "https://www.onedaytests.com",
+  "london-laboratory": "https://www.londonlaboratory.co.uk",
+  "the-doctors-laboratory": "https://www.tdlpathology.com",
 };
 
 const PROVIDER_ALIASES: Record<string, string> = {
@@ -131,7 +141,7 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
 export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
   "goodbody-clinic": "3-5 days",
   medichecks: "3-6 days",
-  "lola-health": "4 days",
+  "lola-health": "2 working days",
   "london-medical-laboratory": "Next day (in-store) / 3-4 days (home kit)",
   randox: "2-3 days",
   "london-health-company": "4-8 days",
