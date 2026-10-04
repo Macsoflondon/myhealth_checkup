@@ -3,6 +3,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
 import {
   lolaPanelBiomarkers,
+  lolaPriceModel,
+  lolaSampleType,
   lolaTurnaround,
 } from "../_shared/scrape/lola-catalogue.ts";
 import {
@@ -429,19 +431,21 @@ Deno.serve(async (req) => {
       }
       if (!title) return;
 
-      const collectionBasePrice = extractCollectionBasePrice(collectionProduct);
-      const collectionHeadlinePrice = Number.isFinite(
-        Number(collectionProduct?.variants?.[0]?.price),
-      )
-        ? Number(collectionProduct.variants[0].price)
-        : null;
+      // Price model from the live Shopify variants: price = kit (lowest)
+      // variant; clinic/home-visit fees stored separately as the difference.
+      const priceModel = lolaPriceModel(
+        Array.isArray(collectionProduct?.variants)
+          ? collectionProduct.variants
+          : [],
+      );
+      const collectionBasePrice =
+        priceModel?.base_price ?? extractCollectionBasePrice(collectionProduct);
 
       const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
       const markdownPrice = priceMatch
         ? parseFloat(priceMatch[1].replace(",", ""))
         : null;
-      const price =
-        collectionHeadlinePrice ?? collectionBasePrice ?? markdownPrice;
+      const price = priceModel?.price ?? markdownPrice;
 
       const origMatch = markdown.match(/~~£([\d,]+\.\d{2})~~/);
       const originalPrice = origMatch
