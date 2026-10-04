@@ -237,7 +237,7 @@ const FeaturedProvidersGlass = () => {
                     </Link>
                     <a
                       href={buildProviderWebsiteUrl(
-                        `https://${p.website}`,
+                        toHttpsUrl(p.website),
                         p.id,
                       )}
                       {...externalLinkProps}

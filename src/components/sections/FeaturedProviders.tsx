@@ -252,7 +252,7 @@ const FeaturedProviders = () => {
                     >
                       <a
                         href={buildProviderWebsiteUrl(
-                          `https://${provider.website}`,
+                          toHttpsUrl(provider.website),
                           provider.id,
                         )}
                         {...externalLinkProps}
