@@ -154,6 +154,9 @@ import { Route as CompareSymptomsIndexRouteImport } from './routes/compare.sympt
 import { Route as CompareSymptomsSymptomSlugRouteImport } from './routes/compare.symptoms.$symptomSlug'
 import { Route as ProviderProviderIdIndexRouteImport } from './routes/provider.$providerId.index'
 import { Route as ApiPublicDiagnosticsAbortsRouteImport } from './routes/api/public/diagnostics.aborts'
+import { Route as ApiPublicRetestReminderSendRouteImport } from './routes/api/public/retest-reminder/send'
+import { Route as ApiPublicRetestReminderSubscribeRouteImport } from './routes/api/public/retest-reminder/subscribe'
+import { Route as ApiPublicRetestReminderUnsubscribeRouteImport } from './routes/api/public/retest-reminder/unsubscribe'
 import { Route as ProviderProviderIdTestsIndexRouteImport } from './routes/provider.$providerId.tests.index'
 import { Route as ProviderProviderIdTestsTestIdRouteImport } from './routes/provider.$providerId.tests.$testId'
 
@@ -897,6 +900,24 @@ const ApiPublicDiagnosticsAbortsRoute =
     path: '/api/public/diagnostics/aborts',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiPublicRetestReminderSendRoute =
+  ApiPublicRetestReminderSendRouteImport.update({
+    id: '/api/public/retest-reminder/send',
+    path: '/api/public/retest-reminder/send',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicRetestReminderSubscribeRoute =
+  ApiPublicRetestReminderSubscribeRouteImport.update({
+    id: '/api/public/retest-reminder/subscribe',
+    path: '/api/public/retest-reminder/subscribe',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPublicRetestReminderUnsubscribeRoute =
+  ApiPublicRetestReminderUnsubscribeRouteImport.update({
+    id: '/api/public/retest-reminder/unsubscribe',
+    path: '/api/public/retest-reminder/unsubscribe',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ProviderProviderIdTestsIndexRoute =
   ProviderProviderIdTestsIndexRouteImport.update({
     id: '/provider/$providerId/tests/',
@@ -1056,6 +1077,9 @@ export interface FileRoutesByFullPath {
   '/compare/symptoms/': typeof CompareSymptomsIndexRoute
   '/provider/$providerId/': typeof ProviderProviderIdIndexRoute
   '/api/public/diagnostics/aborts': typeof ApiPublicDiagnosticsAbortsRoute
+  '/api/public/retest-reminder/send': typeof ApiPublicRetestReminderSendRoute
+  '/api/public/retest-reminder/subscribe': typeof ApiPublicRetestReminderSubscribeRoute
+  '/api/public/retest-reminder/unsubscribe': typeof ApiPublicRetestReminderUnsubscribeRoute
   '/provider/$providerId/tests/$testId': typeof ProviderProviderIdTestsTestIdRoute
   '/provider/$providerId/tests/': typeof ProviderProviderIdTestsIndexRoute
 }
@@ -1204,6 +1228,9 @@ export interface FileRoutesByTo {
   '/compare/symptoms': typeof CompareSymptomsIndexRoute
   '/provider/$providerId': typeof ProviderProviderIdIndexRoute
   '/api/public/diagnostics/aborts': typeof ApiPublicDiagnosticsAbortsRoute
+  '/api/public/retest-reminder/send': typeof ApiPublicRetestReminderSendRoute
+  '/api/public/retest-reminder/subscribe': typeof ApiPublicRetestReminderSubscribeRoute
+  '/api/public/retest-reminder/unsubscribe': typeof ApiPublicRetestReminderUnsubscribeRoute
   '/provider/$providerId/tests/$testId': typeof ProviderProviderIdTestsTestIdRoute
   '/provider/$providerId/tests': typeof ProviderProviderIdTestsIndexRoute
 }
@@ -1354,6 +1381,9 @@ export interface FileRoutesById {
   '/compare/symptoms/': typeof CompareSymptomsIndexRoute
   '/provider/$providerId/': typeof ProviderProviderIdIndexRoute
   '/api/public/diagnostics/aborts': typeof ApiPublicDiagnosticsAbortsRoute
+  '/api/public/retest-reminder/send': typeof ApiPublicRetestReminderSendRoute
+  '/api/public/retest-reminder/subscribe': typeof ApiPublicRetestReminderSubscribeRoute
+  '/api/public/retest-reminder/unsubscribe': typeof ApiPublicRetestReminderUnsubscribeRoute
   '/provider/$providerId/tests/$testId': typeof ProviderProviderIdTestsTestIdRoute
   '/provider/$providerId/tests/': typeof ProviderProviderIdTestsIndexRoute
 }
@@ -1505,6 +1535,9 @@ export interface FileRouteTypes {
     | '/compare/symptoms/'
     | '/provider/$providerId/'
     | '/api/public/diagnostics/aborts'
+    | '/api/public/retest-reminder/send'
+    | '/api/public/retest-reminder/subscribe'
+    | '/api/public/retest-reminder/unsubscribe'
     | '/provider/$providerId/tests/$testId'
     | '/provider/$providerId/tests/'
   fileRoutesByTo: FileRoutesByTo
@@ -1653,6 +1686,9 @@ export interface FileRouteTypes {
     | '/compare/symptoms'
     | '/provider/$providerId'
     | '/api/public/diagnostics/aborts'
+    | '/api/public/retest-reminder/send'
+    | '/api/public/retest-reminder/subscribe'
+    | '/api/public/retest-reminder/unsubscribe'
     | '/provider/$providerId/tests/$testId'
     | '/provider/$providerId/tests'
   id:
@@ -1802,6 +1838,9 @@ export interface FileRouteTypes {
     | '/compare/symptoms/'
     | '/provider/$providerId/'
     | '/api/public/diagnostics/aborts'
+    | '/api/public/retest-reminder/send'
+    | '/api/public/retest-reminder/subscribe'
+    | '/api/public/retest-reminder/unsubscribe'
     | '/provider/$providerId/tests/$testId'
     | '/provider/$providerId/tests/'
   fileRoutesById: FileRoutesById
@@ -1946,6 +1985,9 @@ export interface RootRouteChildren {
   ApiPublicBlogAggregateRoute: typeof ApiPublicBlogAggregateRoute
   ProviderProviderIdIndexRoute: typeof ProviderProviderIdIndexRoute
   ApiPublicDiagnosticsAbortsRoute: typeof ApiPublicDiagnosticsAbortsRoute
+  ApiPublicRetestReminderSendRoute: typeof ApiPublicRetestReminderSendRoute
+  ApiPublicRetestReminderSubscribeRoute: typeof ApiPublicRetestReminderSubscribeRoute
+  ApiPublicRetestReminderUnsubscribeRoute: typeof ApiPublicRetestReminderUnsubscribeRoute
   ProviderProviderIdTestsTestIdRoute: typeof ProviderProviderIdTestsTestIdRoute
   ProviderProviderIdTestsIndexRoute: typeof ProviderProviderIdTestsIndexRoute
 }
@@ -2967,6 +3009,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicDiagnosticsAbortsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/retest-reminder/send': {
+      id: '/api/public/retest-reminder/send'
+      path: '/api/public/retest-reminder/send'
+      fullPath: '/api/public/retest-reminder/send'
+      preLoaderRoute: typeof ApiPublicRetestReminderSendRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/retest-reminder/subscribe': {
+      id: '/api/public/retest-reminder/subscribe'
+      path: '/api/public/retest-reminder/subscribe'
+      fullPath: '/api/public/retest-reminder/subscribe'
+      preLoaderRoute: typeof ApiPublicRetestReminderSubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/retest-reminder/unsubscribe': {
+      id: '/api/public/retest-reminder/unsubscribe'
+      path: '/api/public/retest-reminder/unsubscribe'
+      fullPath: '/api/public/retest-reminder/unsubscribe'
+      preLoaderRoute: typeof ApiPublicRetestReminderUnsubscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/provider/$providerId/tests/': {
       id: '/provider/$providerId/tests/'
       path: '/provider/$providerId/tests'
@@ -3146,6 +3209,10 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicBlogAggregateRoute: ApiPublicBlogAggregateRoute,
   ProviderProviderIdIndexRoute: ProviderProviderIdIndexRoute,
   ApiPublicDiagnosticsAbortsRoute: ApiPublicDiagnosticsAbortsRoute,
+  ApiPublicRetestReminderSendRoute: ApiPublicRetestReminderSendRoute,
+  ApiPublicRetestReminderSubscribeRoute: ApiPublicRetestReminderSubscribeRoute,
+  ApiPublicRetestReminderUnsubscribeRoute:
+    ApiPublicRetestReminderUnsubscribeRoute,
   ProviderProviderIdTestsTestIdRoute: ProviderProviderIdTestsTestIdRoute,
   ProviderProviderIdTestsIndexRoute: ProviderProviderIdTestsIndexRoute,
 }
