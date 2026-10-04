@@ -98,7 +98,7 @@ const FeaturedProviders = () => {
         "Wellness Focus",
         "Innovative",
       ],
-      website: "https://lolahealth.com",
+      website: "lolahealth.com",
     },
     {
       id: "clinilabs",
