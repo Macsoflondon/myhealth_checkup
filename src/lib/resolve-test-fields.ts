@@ -76,6 +76,22 @@ export const resolveAccreditationsFromRow = (
   return flags.length > 0 ? flags : null;
 };
 
+export interface BiomarkerCountRowFields {
+  biomarker_count?: number | null;
+  biomarkers_list?: unknown;
+}
+
+/**
+ * The biomarker count to display. When the row carries a list, the count is
+ * its length, so the badge can never disagree with the markers shown. The
+ * stored number is only used for rows with no list at all.
+ */
+export const displayBiomarkerCount = (row: BiomarkerCountRowFields): number => {
+  const list = row.biomarkers_list;
+  if (Array.isArray(list) && list.length > 0) return list.length;
+  return row.biomarker_count ?? 0;
+};
+
 /**
  * Turnaround text fit for display. Some provider feeds captured fragments such
  * as "results" with no actual timeframe; showing those is worse than showing

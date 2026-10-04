@@ -236,7 +236,7 @@ export function adaptProviderTestRow(row: ProviderTestRow): TestRecord | null {
     provider: display.name,
     provider_logo: display.logo,
     price: Number(row.price),
-    biomarkers: row.biomarker_count ?? 0,
+    biomarkers: displayBiomarkerCount(row),
     turnaround_label: row.turnaround_days_text || "Contact provider",
     sample_type: normSampleType(row.sample_type),
     collection_method: normCollectionMethod(

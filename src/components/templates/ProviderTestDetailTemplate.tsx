@@ -618,7 +618,7 @@ export default function ProviderTestDetailTemplate({
             turnaroundTime:
               t.turnaround_days_text || t.turnaround_raw || "Contact provider",
             collectionMethod: t.collection_method || "Contact provider",
-            biomarkerCount: t.biomarker_count || undefined,
+            biomarkerCount: displayBiomarkerCount(t) || undefined,
             url: t.url || undefined,
             rating: provRating?.rating,
             reviews: provRating?.reviewsFormatted,
@@ -771,7 +771,7 @@ export default function ProviderTestDetailTemplate({
               {/* Biomarkers Section */}
               <BiomarkersSection
                 biomarkers={biomarkers}
-                biomarkerCount={test.biomarker_count}
+                biomarkerCount={displayBiomarkerCount(test)}
               />
 
               {/* Provider's own detail, verbatim */}
@@ -812,7 +812,7 @@ export default function ProviderTestDetailTemplate({
                       collectionMethod:
                         getTestSampleType(test) ||
                         providerConfig.quickInfo.sampleType,
-                      biomarkerCount: test.biomarker_count || undefined,
+                      biomarkerCount: displayBiomarkerCount(test) || undefined,
                       url: test.url || undefined,
                       rating: getProviderRating(providerConfig.id)?.rating,
                       reviews: getProviderRating(providerConfig.id)
