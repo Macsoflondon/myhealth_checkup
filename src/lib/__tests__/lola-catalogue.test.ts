@@ -15,6 +15,7 @@ const EXPECTED_COUNTS: Record<string, number> = {
   "Female Hormones Clarity 31": 31,
   "Female Active Boost 39": 39,
   "Male Hormones Clarity 14": 14,
+  "Core Health 45": 45,
   Urinalysis: 18,
 };
 
