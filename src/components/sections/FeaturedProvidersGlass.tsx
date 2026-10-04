@@ -8,6 +8,7 @@ import { getProviderProfileRoute } from "@/utils/providerRoutes";
 import {
   buildProviderWebsiteUrl,
   externalLinkProps,
+  toHttpsUrl,
 } from "@/utils/urlTracking";
 import { getProviderRating } from "@/constants/providerRatings";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
