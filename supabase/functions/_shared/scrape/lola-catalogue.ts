@@ -240,6 +240,159 @@ export function lolaPanelBiomarkers(testName: string): string[] | null {
   return list ? [...list] : null;
 }
 
+// ---------------------------------------------------------------------------
+// Price model
+// ---------------------------------------------------------------------------
+
+export interface LolaVariant {
+  title: string;
+  price: number | string;
+}
+
+export interface LolaPriceModel {
+  price: number;
+  base_price: number;
+  clinic_phlebotomy_cost: number;
+  home_phlebotomy_cost: number;
+  clinic_visit_available: boolean;
+  home_phlebotomy_option: boolean;
+  home_kit_available: boolean;
+  /** Kit price + clinic fee: the venous route deriveCollectionVariants shows. */
+  total_expected_cost: number;
+}
+
+const CLINIC_VARIANT = /venous draw at a clinic/i;
+const HOME_VISIT_VARIANT = /phlebotomist for a home visit/i;
+const SELF_KIT_VARIANT = /autodraw|finger\s*-?prick/i;
+
+const round2 = (n: number): number => Math.round(n * 100) / 100;
+
+/**
+ * Turn Lola's Shopify variants into the platform's price model: `price` is
+ * the lowest variant (the kit price) and phlebotomy is stored separately as
+ * the difference between each draw variant and that kit price. Returns null
+ * when the variants carry no usable price.
+ */
+export function lolaPriceModel(
+  variants: readonly LolaVariant[],
+): LolaPriceModel | null {
+  const priced = variants
+    .map((v) => ({ title: v.title, price: Number(v.price) }))
+    .filter((v) => Number.isFinite(v.price) && v.price > 0);
+  if (priced.length === 0) return null;
+  const kit = Math.min(...priced.map((v) => v.price));
+  if (priced.length === 1) {
+    return {
+      price: kit,
+      base_price: kit,
+      clinic_phlebotomy_cost: 0,
+      home_phlebotomy_cost: 0,
+      clinic_visit_available: false,
+      home_phlebotomy_option: false,
+      home_kit_available: false,
+      total_expected_cost: kit,
+    };
+  }
+  const clinic = priced.find((v) => CLINIC_VARIANT.test(v.title));
+  const home = priced.find((v) => HOME_VISIT_VARIANT.test(v.title));
+  const clinicFee = clinic ? round2(clinic.price - kit) : 0;
+  const homeFee = home ? round2(home.price - kit) : 0;
+  return {
+    price: kit,
+    base_price: kit,
+    clinic_phlebotomy_cost: clinicFee,
+    home_phlebotomy_cost: homeFee,
+    clinic_visit_available: !!clinic,
+    home_phlebotomy_option: !!home,
+    home_kit_available: priced.some((v) => SELF_KIT_VARIANT.test(v.title)),
+    total_expected_cost: round2(kit + clinicFee),
+  };
+}
+
+/** Sample type matching the variants, so the card shows the right routes. */
+export function lolaSampleType(model: LolaPriceModel): string | null {
+  const venous = model.clinic_visit_available || model.home_phlebotomy_option;
+  if (model.home_kit_available && venous) return "Finger-prick or venous";
+  if (venous) return "Venous";
+  return null;
+}
+
+/**
+ * Multi-variant products as read from https://lolahealth.com/products.json on
+ * 04/10/2026, keyed by Shopify handle (= provider_test_id). The scraper reads
+ * the live feed on every run; this snapshot only lets the migration correct
+ * live rows without waiting for a scrape. The gift card is not a test.
+ */
+export const LOLA_VARIANT_SNAPSHOT: Readonly<
+  Record<string, { testName: string; variants: readonly LolaVariant[] }>
+> = {
+  "peak-insights": { testName: "Peak Insights 70", variants: [
+    { title: "Phlebotomist for a Home Visit", price: 235 },
+    { title: "Book a venous draw at a clinic", price: 235 },
+    { title: "Arrange your own Phlebotomist", price: 200 },
+  ] },
+  "vital-check": { testName: "Vital Check 56", variants: [
+    { title: "Phlebotomist for a Home Visit", price: 190 },
+    { title: "Book a venous draw at a clinic", price: 190 },
+    { title: "Arrange your own Phlebotomist", price: 155 },
+  ] },
+  "core-health": { testName: "Core Health 45", variants: [
+    { title: "Phlebotomist for a Home Visit", price: 160 },
+    { title: "Book a venous draw at a clinic", price: 160 },
+    { title: "Arrange your own Phlebotomist", price: 125 },
+  ] },
+  "female-hormones-clarity": { testName: "Female Hormones Clarity 31", variants: [
+    { title: "Phlebotomist for a Home Visit", price: 155 },
+    { title: "Book a venous draw at a clinic", price: 155 },
+    { title: "Arrange your own Phlebotomist", price: 120 },
+  ] },
+  "female-active-boost": { testName: "Female Active Boost 39", variants: [
+    { title: "Phlebotomist for a Home Visit", price: 180 },
+    { title: "Book a venous draw at a clinic", price: 180 },
+    { title: "Arrange your own Phlebotomist", price: 145 },
+  ] },
+  "male-active-boost": { testName: "Male Active Boost 36", variants: [
+    { title: "Phlebotomist for a Home Visit", price: 175 },
+    { title: "Book a venous draw at a clinic", price: 175 },
+    { title: "Arrange your own Phlebotomist", price: 140 },
+  ] },
+  "male-hormones-clarity": { testName: "Male Hormones Clarity 14", variants: [
+    { title: "Autodraw device (upper arm)", price: 110 },
+    { title: "Phlebotomist for a Home Visit", price: 145 },
+    { title: "Book a venous draw at a clinic", price: 145 },
+  ] },
+  "cardiovascular-health": { testName: "Cardiovascular Health", variants: [
+    { title: "Autodraw device (upper arm)", price: 83 },
+    { title: "Fingerprick", price: 83 },
+    { title: "Phlebotomist for a Home Visit", price: 118 },
+    { title: "Book a venous draw at a clinic", price: 118 },
+  ] },
+  "liver-kidney-function": { testName: "Liver & Kidney Function", variants: [
+    { title: "Autodraw device (upper arm)", price: 81 },
+    { title: "Fingerprick", price: 81 },
+    { title: "Phlebotomist for a Home Visit", price: 116 },
+    { title: "Book a venous draw at a clinic", price: 116 },
+  ] },
+  "thyroid-hormonal-function": { testName: "Thyroid & Hormonal Function", variants: [
+    { title: "Autodraw device (upper arm)", price: 119 },
+    { title: "Fingerprick", price: 119 },
+    { title: "Phlebotomist for a Home Visit", price: 154 },
+    { title: "Book a venous draw at a clinic", price: 154 },
+  ] },
+  "blood-health": { testName: "Blood Health 6", variants: [
+    { title: "Autodraw device (upper arm)", price: 89 },
+    { title: "Fingerprick", price: 89 },
+    { title: "Phlebotomist for a Home Visit", price: 124 },
+    { title: "Book a venous draw at a clinic", price: 124 },
+  ] },
+  "female-hormones-7": { testName: "Female Hormones 7", variants: [
+    { title: "Autodraw device (upper arm)", price: 95 },
+    { title: "Fingerprick", price: 95 },
+    { title: "Phlebotomist for a Home Visit", price: 130 },
+    { title: "Book a venous draw at a clinic", price: 130 },
+  ] },
+};
+
 const sqlText = (s: string): string => `'${s.replace(/'/g, "''")}'`;
 const sqlLikeEscape = (s: string): string => s.replace(/[\\%_]/g, "\\$&");
 
