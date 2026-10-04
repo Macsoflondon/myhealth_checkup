@@ -45,7 +45,7 @@ export const detailedProviders = [
   {
     id: "blue-horizon",
     name: "Blue Horizon",
-    website: "https://bluehorizonbloodtests.co.uk/",
+    website: getProviderWebsite("blue-horizon"),
     coreServices: "150+ tests: thyroid, fatigue, hormones, wellness",
     tests: "150+ tests available",
     sampleCollection: "Home kits, clinic visits, home nurse",
@@ -58,7 +58,7 @@ export const detailedProviders = [
   {
     id: "private-blood-tests-spire",
     name: "Private Blood Tests (Spire)",
-    website: "https://privatebloodtests.co.uk/",
+    website: getProviderWebsite("private-blood-tests-spire"),
     coreServices: "400+ tests: health screening, hormones, fatigue",
     tests: "400+ tests available",
     sampleCollection: "Spire hospitals, clinics",
@@ -71,7 +71,7 @@ export const detailedProviders = [
   {
     id: "london-blood-tests",
     name: "London Blood Tests",
-    website: "https://londonbloodtests.uk/",
+    website: getProviderWebsite("london-blood-tests"),
     phone: "0204 577 3090",
     email: "info@londonbloodtests.uk",
     supportHours: "Mon-Fri 9am-6pm, Sat 10am-4pm",
@@ -87,7 +87,7 @@ export const detailedProviders = [
   {
     id: "youth-revisited",
     name: "Youth Revisited",
-    website: "https://www.youth-revisited.co.uk/",
+    website: getProviderWebsite("youth-revisited"),
     phone: "03301 242 970",
     email: "support@youth-revisited.co.uk",
     supportHours: "Mon-Fri 9am-5pm",
@@ -104,7 +104,7 @@ export const detailedProviders = [
   {
     id: "manual-trt",
     name: "Manual (TRT)",
-    website: "https://www.manual.co",
+    website: getProviderWebsite("manual-trt"),
     phone: "0203 808 0064",
     email: "support@manual.co",
     supportHours: "Mon-Fri 9am-6pm",
@@ -121,7 +121,7 @@ export const detailedProviders = [
   {
     id: "manual-hrt",
     name: "Manual (HRT - via partner)",
-    website: "https://www.manual.co",
+    website: getProviderWebsite("manual-hrt"),
     phone: "0203 808 0064",
     email: "support@manual.co",
     supportHours: "Mon-Fri 9am-6pm",
@@ -138,7 +138,7 @@ export const detailedProviders = [
   {
     id: "functional-dx",
     name: "Functional DX",
-    website: "https://functionaldx.com",
+    website: getProviderWebsite("functional-dx"),
     phone: "0330 043 2501",
     email: "hello@functionaldx.com",
     supportHours: "Mon-Fri 9am-5pm (Practitioner access only)",
@@ -158,19 +158,20 @@ export const detailedProviders = [
     website: getProviderWebsite("lola-health"),
     phone: "020 3870 3444",
     email: "hello@lolahealth.com",
-    accreditation: "NHS-accredited laboratories (ISO 15189)",
+    accreditation: "UKAS-accredited laboratories (ISO 15189)",
     coreServices:
       "70+ biomarkers across comprehensive health panels, at-home phlebotomy service, clinic appointments, individual biomarker testing",
     tests:
-      "40+ blood tests including comprehensive panels and individual biomarkers",
+      "100+ tests including health panels, individual biomarkers and add-ons",
     sampleCollection:
       "At-home nurse visit (venous blood draw) or clinic appointment",
-    turnaroundTime: "Results in 6-7 working days",
+    turnaroundTime:
+      "2 working days (3-4 weeks for epigenetic and gut microbiome tests)",
     customerReviews: "4.6/5 (Trustpilot, 160+ reviews)",
     keyDifferentiators:
       "At-home phlebotomy service (not finger-prick), doctor-reviewed results, app-powered insights, comprehensive and individual testing options, from £120",
     description:
-      "Modern health testing platform with at-home professional phlebotomy service or clinic appointments. 70+ biomarkers analysed with NHS-accredited labs, doctor-reviewed results delivered via app. Tests from £120.",
+      "Modern health testing platform with at-home professional phlebotomy service or clinic appointments. 70+ biomarkers analysed in UKAS-accredited laboratories (ISO 15189), doctor-reviewed results delivered via app. Tests from £120.",
   },
   {
     id: "goodbody-clinic",
@@ -197,7 +198,7 @@ export const detailedProviders = [
   {
     id: "onedaytests",
     name: "OneDayTests",
-    website: "https://www.onedaytests.com",
+    website: getProviderWebsite("onedaytests"),
     phone: "0203 633 1488",
     email: "info@onedaytests.com",
     supportHours: "Mon-Sun 8am-8pm",
@@ -238,7 +239,7 @@ export const detailedProviders = [
   {
     id: "london-laboratory",
     name: "London Laboratory",
-    website: "https://www.londonlaboratory.co.uk",
+    website: getProviderWebsite("london-laboratory"),
     coreServices:
       "General health checks, vitamins, hormones, allergy testing, fertility",
     tests: "Comprehensive health, hormone and allergy testing",
@@ -254,7 +255,7 @@ export const detailedProviders = [
   {
     id: "the-doctors-laboratory",
     name: "The Doctors Laboratory",
-    website: "https://www.tdlpathology.com",
+    website: getProviderWebsite("the-doctors-laboratory"),
     phone: "020 7307 7373",
     email: "pathology@tdlpathology.com",
     accreditation: "UKAS accredited (ISO 15189), CQC-registered",
