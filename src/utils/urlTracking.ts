@@ -20,6 +20,11 @@ const DEFAULT_UTM: UTMParams = {
 /**
  * Build a URL with UTM tracking parameters
  */
+export function toHttpsUrl(hostOrUrl: string): string {
+  const stripped = hostOrUrl.trim().replace(/^https?:\/\//i, "");
+  return `https://${stripped}`;
+}
+
 export function buildTrackedUrl(baseUrl: string, params?: UTMParams): string {
   const mergedParams = { ...DEFAULT_UTM, ...params };
 

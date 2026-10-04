@@ -8,6 +8,7 @@ import { getProviderProfileRoute } from "@/utils/providerRoutes";
 import {
   buildProviderWebsiteUrl,
   externalLinkProps,
+  toHttpsUrl,
 } from "@/utils/urlTracking";
 import { getProviderRating } from "@/constants/providerRatings";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
@@ -81,7 +82,7 @@ const PROVIDERS: ProviderEntry[] = [
     description:
       "Modern testing platform focused on women's health and wellness with a tailored, design-led experience.",
     tags: ["Women's Health", "Modern Platform", "Wellness Focus"],
-    website: "https://lolahealth.com",
+    website: "lolahealth.com",
     glow: "#E8604C",
     glowRgb: "232,96,76",
   },
@@ -237,7 +238,7 @@ const FeaturedProvidersGlass = () => {
                     </Link>
                     <a
                       href={buildProviderWebsiteUrl(
-                        `https://${p.website}`,
+                        toHttpsUrl(p.website),
                         p.id,
                       )}
                       {...externalLinkProps}

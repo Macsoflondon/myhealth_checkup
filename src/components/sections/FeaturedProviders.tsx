@@ -13,6 +13,7 @@ import { getProviderProfileRoute } from "@/utils/providerRoutes";
 import {
   buildProviderWebsiteUrl,
   externalLinkProps,
+  toHttpsUrl,
 } from "@/utils/urlTracking";
 import { getProviderRating } from "@/constants/providerRatings";
 
@@ -98,7 +99,7 @@ const FeaturedProviders = () => {
         "Wellness Focus",
         "Innovative",
       ],
-      website: "https://lolahealth.com",
+      website: "lolahealth.com",
     },
     {
       id: "clinilabs",
@@ -252,7 +253,7 @@ const FeaturedProviders = () => {
                     >
                       <a
                         href={buildProviderWebsiteUrl(
-                          `https://${provider.website}`,
+                          toHttpsUrl(provider.website),
                           provider.id,
                         )}
                         {...externalLinkProps}
