@@ -1,3 +1,4 @@
+import { displayBiomarkerCount } from "@/lib/resolve-test-fields";
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import Header from "@/components/layout/Header";
 import { Link, useNavigate } from "@/lib/router-compat";

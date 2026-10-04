@@ -1,3 +1,4 @@
+import { displayBiomarkerCount } from "@/lib/resolve-test-fields";
 /**
  * Convert a live `provider_tests` row (Supabase) into the canonical TestRecord
  * shape used by the Assisted Test Finder. The DB columns for sample_type,
