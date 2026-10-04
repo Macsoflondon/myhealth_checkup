@@ -431,5 +431,19 @@ export function buildLolaCatalogueSql(): string {
     "update public.provider_tests set biomarker_count = jsonb_array_length(biomarkers_list) where provider_id = 'lola-health' and jsonb_typeof(biomarkers_list) = 'array' and jsonb_array_length(biomarkers_list) > 0;",
     "",
   );
+  lines.push(
+    "-- 4. Price model: price = kit price, phlebotomy stored separately.",
+    "--    Single-variant products keep their price with no fees or draw flags.",
+    "update public.provider_tests set base_price = price, total_expected_cost = price, clinic_phlebotomy_cost = 0, home_phlebotomy_cost = 0, clinic_visit_available = false, home_phlebotomy_option = false, home_kit_available = false where provider_id = 'lola-health' and price is not null;",
+  );
+  for (const [handle, { variants }] of Object.entries(LOLA_VARIANT_SNAPSHOT)) {
+    const m = lolaPriceModel(variants);
+    if (!m) continue;
+    const sample = lolaSampleType(m);
+    lines.push(
+      `update public.provider_tests set price = ${m.price}, base_price = ${m.base_price}, total_expected_cost = ${m.total_expected_cost}, clinic_phlebotomy_cost = ${m.clinic_phlebotomy_cost}, home_phlebotomy_cost = ${m.home_phlebotomy_cost}, clinic_visit_available = ${m.clinic_visit_available}, home_phlebotomy_option = ${m.home_phlebotomy_option}, home_kit_available = ${m.home_kit_available}${sample ? `, sample_type = ${sqlText(sample)}` : ""} where provider_id = 'lola-health' and provider_test_id = ${sqlText(handle)};`,
+    );
+  }
+  lines.push("");
   return lines.join("\n");
 }
