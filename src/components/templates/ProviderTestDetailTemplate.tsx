@@ -43,6 +43,7 @@ import {
 import { seo } from "@/lib/seo";
 import { getProviderLogo } from "@/constants/providers";
 import { TestProviderPriceTable } from "@/components/compare/TestProviderPriceTable";
+import { RetestReminderCard } from "@/components/retest-reminder/retest-reminder-card";
 import { getProviderRating } from "@/constants/providerRatings";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import RelatedLinks from "@/components/seo/RelatedLinks";
@@ -821,6 +822,12 @@ export default function ProviderTestDetailTemplate({
                   ]}
                 />
               )}
+
+              <RetestReminderCard
+                interestType="test"
+                interestSlug={testId || String(test.id)}
+                interestLabel={test.test_name}
+              />
 
               {/* Sample Collection Options */}
               <CollectionOptionsSection test={test} />
