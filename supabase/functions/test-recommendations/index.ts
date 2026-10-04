@@ -129,18 +129,30 @@ serve(async (req) => {
   const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
   const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
   const rateClient = createClient(supabaseUrl, supabaseServiceKey);
-  let clientKey = `ip:${clientIp}`;
+  // Paid AI calls require a verified signed-in user.
+  let verifiedUserId: string | null = null;
   const authHeader = req.headers.get("Authorization");
   if (authHeader?.startsWith("Bearer ")) {
     try {
       const { data: userData } = await rateClient.auth.getUser(
         authHeader.replace("Bearer ", ""),
       );
-      if (userData?.user?.id) clientKey = `user:${userData.user.id}`;
+      verifiedUserId = userData?.user?.id ?? null;
     } catch (_) {
-      /* fall back to IP */
+      verifiedUserId = null;
     }
   }
+  if (!verifiedUserId) {
+    return new Response(
+      JSON.stringify({ error: "Please sign in to get recommendations." }),
+      {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      },
+    );
+  }
+  const clientKey = `user:${verifiedUserId}`;
+  void clientIp;
   const allowed = await checkPersistentRateLimit(
     rateClient,
     "test-recommendations",
