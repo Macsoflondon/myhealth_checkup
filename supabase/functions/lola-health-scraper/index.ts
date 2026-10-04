@@ -3,6 +3,8 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
 import {
   lolaPanelBiomarkers,
+  lolaPriceModel,
+  lolaSampleType,
   lolaTurnaround,
 } from "../_shared/scrape/lola-catalogue.ts";
 import {
@@ -429,19 +431,21 @@ Deno.serve(async (req) => {
       }
       if (!title) return;
 
-      const collectionBasePrice = extractCollectionBasePrice(collectionProduct);
-      const collectionHeadlinePrice = Number.isFinite(
-        Number(collectionProduct?.variants?.[0]?.price),
-      )
-        ? Number(collectionProduct.variants[0].price)
-        : null;
+      // Price model from the live Shopify variants: price = kit (lowest)
+      // variant; clinic/home-visit fees stored separately as the difference.
+      const priceModel = lolaPriceModel(
+        Array.isArray(collectionProduct?.variants)
+          ? collectionProduct.variants
+          : [],
+      );
+      const collectionBasePrice =
+        priceModel?.base_price ?? extractCollectionBasePrice(collectionProduct);
 
       const priceMatch = markdown.match(/£([\d,]+\.\d{2})/);
       const markdownPrice = priceMatch
         ? parseFloat(priceMatch[1].replace(",", ""))
         : null;
-      const price =
-        collectionHeadlinePrice ?? collectionBasePrice ?? markdownPrice;
+      const price = priceModel?.price ?? markdownPrice;
 
       const origMatch = markdown.match(/~~£([\d,]+\.\d{2})~~/);
       const originalPrice = origMatch
@@ -519,6 +523,16 @@ Deno.serve(async (req) => {
           verifiedBiomarkers.length > 0 ? verifiedBiomarkers : null,
         biomarker_count: verifiedBiomarkerCount,
         ...collectionFor(title, slug),
+        // Variant-derived fields override the name-based defaults.
+        clinic_visit_available: priceModel?.clinic_visit_available ?? false,
+        home_kit_available: priceModel?.home_kit_available ?? false,
+        home_phlebotomy_option: priceModel?.home_phlebotomy_option ?? false,
+        clinic_phlebotomy_cost: priceModel?.clinic_phlebotomy_cost ?? 0,
+        home_phlebotomy_cost: priceModel?.home_phlebotomy_cost ?? 0,
+        total_expected_cost: priceModel?.total_expected_cost ?? price,
+        ...(priceModel && lolaSampleType(priceModel)
+          ? { sample_type: lolaSampleType(priceModel) }
+          : {}),
         turnaround_raw: turnaroundRaw,
         scraped_at: new Date().toISOString(),
         url_verified: true,
@@ -599,6 +613,11 @@ Deno.serve(async (req) => {
               image_url: row.image_url,
               home_kit_available: row.home_kit_available,
               clinic_visit_available: row.clinic_visit_available,
+              home_phlebotomy_option: row.home_phlebotomy_option,
+              base_price: row.base_price,
+              clinic_phlebotomy_cost: row.clinic_phlebotomy_cost,
+              home_phlebotomy_cost: row.home_phlebotomy_cost,
+              total_expected_cost: row.total_expected_cost,
               was_price: row.original_price ?? null,
               turnaround_days_text: row.turnaround_raw,
             })
