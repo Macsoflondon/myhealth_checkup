@@ -1,9 +1,11 @@
+import { getProviderWebsite } from "@/constants/providers";
+
 // Comprehensive provider data with contact details, services, and performance metrics
 export const detailedProviders = [
   {
     id: "medichecks",
     name: "Medichecks",
-    website: "https://www.medichecks.com",
+    website: getProviderWebsite("medichecks"),
     phone: "03450 600 600",
     email: "support@medichecks.com",
     accreditation: "UKAS-accredited laboratories (ISO 15189)",
@@ -24,7 +26,7 @@ export const detailedProviders = [
   {
     id: "randox",
     name: "Randox Health",
-    website: "https://randoxhealth.com/en-GB/",
+    website: getProviderWebsite("randox"),
     phone: "0800 254 5130",
     locations: "50+ clinics across the UK & Ireland",
     accreditation: "UKAS accredited and FDA approved",
@@ -153,7 +155,7 @@ export const detailedProviders = [
   {
     id: "lola-health",
     name: "Lola Health",
-    website: "https://lolahealth.com",
+    website: getProviderWebsite("lola-health"),
     phone: "020 3870 3444",
     email: "hello@lolahealth.com",
     accreditation: "NHS-accredited laboratories (ISO 15189)",
@@ -173,7 +175,7 @@ export const detailedProviders = [
   {
     id: "goodbody-clinic",
     name: "GoodBody Clinic",
-    website: "https://goodbodyclinic.com",
+    website: getProviderWebsite("goodbody-clinic"),
     phone: "01225 444 144",
     email: "clinic@goodbodywellness.co.uk",
     accreditation: "CQC regulated",
@@ -217,7 +219,7 @@ export const detailedProviders = [
   {
     id: "london-medical-laboratory",
     name: "London Medical Laboratory",
-    website: "https://www.londonmedicallaboratory.com",
+    website: getProviderWebsite("london-medical-laboratory"),
     phone: "020 7183 6122",
     email: "info@londonmedicallaboratory.co.uk",
     accreditation: "UKAS accredited laboratory (ISO 15189)",
@@ -277,7 +279,7 @@ export const detailedProviders = [
   {
     id: "clinilabs",
     name: "Clinilabs",
-    website: "https://www.clinilabs.co.uk",
+    website: getProviderWebsite("clinilabs"),
     email: "info@clinilabs.co.uk",
     accreditation: "UKAS accredited laboratory (ISO 15189)",
     coreServices:
@@ -296,7 +298,7 @@ export const detailedProviders = [
   {
     id: "london-health-company",
     name: "London Health Company",
-    website: "https://londonhealthcompany.co.uk",
+    website: getProviderWebsite("london-health-company"),
     accreditation: "UKAS-accredited partner laboratories (ISO 15189)",
     coreServices:
       "Private blood tests, hormone profiles, comprehensive wellness screens, sexual health diagnostics, corporate wellness packages",
@@ -314,7 +316,7 @@ export const detailedProviders = [
   {
     id: "medical-diagnosis",
     name: "Medical Diagnosis",
-    website: "https://www.medical-diagnosis.co.uk",
+    website: getProviderWebsite("medical-diagnosis"),
     accreditation: "UKAS-accredited partner laboratories",
     coreServices:
       "Specialist diagnostic blood testing, advanced health screening and rapid turnaround pathology",

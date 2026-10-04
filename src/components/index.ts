@@ -17,7 +17,6 @@ export { SaveProviderButton } from "./common/SaveProviderButton";
 export { default as Hero } from "./sections/Hero";
 export { default as TestCategories } from "./sections/TestCategories";
 export { default as FeaturedTests } from "./sections/FeaturedTests";
-export { default as FeaturedProviders } from "./sections/FeaturedProviders";
 export { default as Testimonials } from "./sections/Testimonials";
 export { default as CallToAction } from "./sections/CallToAction";
 
