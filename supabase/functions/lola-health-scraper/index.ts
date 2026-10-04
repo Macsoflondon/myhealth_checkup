@@ -2,6 +2,10 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
 import {
+  lolaPanelBiomarkers,
+  lolaTurnaround,
+} from "../_shared/scrape/lola-catalogue.ts";
+import {
   parseTurnaround,
   upsertWithProvenance,
   startScrapeRun,
@@ -477,18 +481,21 @@ Deno.serve(async (req) => {
       }
 
       const isPeakInsights70 = slug === "peak-insights";
+      const panelBiomarkers = lolaPanelBiomarkers(title);
       const verifiedBiomarkers = isPeakInsights70
         ? [...PEAK_INSIGHTS_70_BIOMARKERS]
-        : biomarkers;
-      const verifiedBiomarkerCount = isPeakInsights70
-        ? PEAK_INSIGHTS_70_BIOMARKERS.length
-        : biomarkerCount || verifiedBiomarkers.length || null;
+        : (panelBiomarkers ?? biomarkers);
+      // The count always equals the stored list; the page's stated number is
+      // only used when no list could be captured at all.
+      const verifiedBiomarkerCount =
+        verifiedBiomarkers.length > 0
+          ? verifiedBiomarkers.length
+          : biomarkerCount || null;
       const isAddon =
         markdown.toLowerCase().includes("add-on") ||
         markdown.toLowerCase().includes("can only be added");
-      const turnaroundRaw = isPeakInsights70
-        ? "Results in 2 Working Days"
-        : extractTurnaroundText(markdown);
+      // Turnaround comes from the shared Lola catalogue (product-page values).
+      const turnaroundRaw = lolaTurnaround(title);
 
       products.push({
         test_name: title,
@@ -575,6 +582,7 @@ Deno.serve(async (req) => {
           biomarker_count: row.biomarker_count,
           biomarkers_list: row.biomarkers_list,
           turnaround_raw: row.turnaround_raw,
+          turnaround_days_text: row.turnaround_raw,
           turnaround_hours: turnaround.hours,
           turnaround_days: turnaround.days,
           turnaround_unit: turnaround.unit,
