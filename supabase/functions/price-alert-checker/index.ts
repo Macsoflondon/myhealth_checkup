@@ -124,6 +124,23 @@ serve(async (req) => {
           .single();
 
         const testName = testData?.test_name || "Health Test";
+        const escapeHtml = (v: unknown): string =>
+          String(v ?? "").replace(
+            /[&<>"']/g,
+            (c) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              })[c] as string,
+          );
+        const safeTestName = escapeHtml(testName);
+        const safeProvider = escapeHtml(alert.provider);
+        const subjectTestName = String(testName)
+          .replace(/[\r\n]+/g, " ")
+          .slice(0, 150);
 
         // Send email notification
         try {
@@ -131,11 +148,11 @@ serve(async (req) => {
             from: "myhealth checkup <support@myhealthcheckup.co.uk>",
             reply_to: "support@myhealthcheckup.co.uk",
             to: [userData.user.email],
-            subject: `🎉 Price Drop Alert: ${testName}`,
+            subject: `🎉 Price Drop Alert: ${subjectTestName}`,
             html: `
               <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
                 <h1 style="color: #FA6980;">Great News! Price Drop Detected</h1>
-                <p>The price for <strong>${testName}</strong> from <strong>${alert.provider}</strong> has dropped!</p>
+                <p>The price for <strong>${safeTestName}</strong> from <strong>${safeProvider}</strong> has dropped!</p>
                 
                 <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin: 20px 0;">
                   <h2 style="color: #3A5F85; margin-top: 0;">Price Details</h2>
@@ -151,7 +168,7 @@ serve(async (req) => {
                   </p>
                 </div>
                 
-                <p>This matches your alert threshold of ${alert.threshold_percentage}% or more.</p>
+                <p>This matches your alert threshold of ${escapeHtml(alert.threshold_percentage)}% or more.</p>
                 
                 <a href="https://myhealthcheckup.co.uk/compare" 
                    style="display: inline-block; background-color: #FA6980; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin: 20px 0;">
