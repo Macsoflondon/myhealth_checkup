@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { toast } from "@/components/ui/sonner";
-import { KeyRound, Loader2, Copy } from "lucide-react";
+import { KeyRound, Loader2 } from "lucide-react";
 
 type IssueResponse = {
   success?: boolean;
@@ -63,22 +63,16 @@ export const AdminRecoveryTokenPanel = () => {
         toast.error(await readError(error));
         return;
       }
-      if (data?.success && data.token) {
-        setIssuedToken(data.token);
+      if (data?.success) {
+        setIssuedToken(email);
         setExpiresInMinutes(data.expiresInMinutes ?? 15);
-        toast.success("Recovery token issued. Share it out of band.");
+        toast.success("Recovery token emailed to the administrator.");
       } else {
         toast.error(data?.error || "Could not issue a recovery token.");
       }
     } finally {
       setLoading(false);
     }
-  };
-
-  const copyToken = async () => {
-    if (!issuedToken) return;
-    await navigator.clipboard.writeText(issuedToken);
-    toast.success("Token copied to clipboard.");
   };
 
   return (
@@ -89,9 +83,9 @@ export const AdminRecoveryTokenPanel = () => {
           Issue admin recovery token
         </CardTitle>
         <CardDescription>
-          Generates a single-use token so an existing administrator who has lost
-          their password or multi-factor device can regain access. Tokens expire
-          quickly and never grant new privileges.
+          Emails a single-use token to the administrator's registered address
+          so they can regain access. Tokens expire quickly and never grant new
+          privileges.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -115,32 +109,16 @@ export const AdminRecoveryTokenPanel = () => {
                 Issuing…
               </>
             ) : (
-              "Issue token"
+              "Email token"
             )}
           </Button>
         </form>
 
         {issuedToken && (
           <Alert>
-            <AlertDescription className="space-y-2">
-              <p className="text-sm">
-                Shown once only. Send it to the administrator through a trusted
-                channel — it expires in {expiresInMinutes} minutes and works a
-                single time.
-              </p>
-              <div className="flex items-center gap-2">
-                <code className="flex-1 break-all rounded bg-muted px-2 py-1 text-xs">
-                  {issuedToken}
-                </code>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={copyToken}
-                >
-                  <Copy className="h-3.5 w-3.5" />
-                </Button>
-              </div>
+            <AlertDescription className="text-sm">
+              A token was sent to {issuedToken}. It expires in{" "}
+              {expiresInMinutes} minutes and works a single time.
             </AlertDescription>
           </Alert>
         )}

@@ -151,6 +151,38 @@ const handleIssue = async (req: Request, body: Record<string, unknown>) => {
     });
   if (insertErr) throw insertErr;
 
+  // Deliver the token ONLY to the target account's registered email address,
+  // so the issuing admin never sees it and cannot take over the account.
+  const resendKey = Deno.env.get("RESEND_API_KEY");
+  if (!resendKey) {
+    await admin
+      .from("admin_recovery_tokens")
+      .update({ used_at: new Date().toISOString() })
+      .eq("token_hash", await sha256Hex(token));
+    return json({ error: "Recovery email is not configured" }, 503);
+  }
+  const mailRes = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${resendKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: "myhealth checkup <support@myhealthcheckup.co.uk>",
+      to: [target.email],
+      subject: "Your administrator recovery token",
+      text: `A recovery token was requested for your administrator account.\n\nToken: ${token}\n\nIt expires in ${TOKEN_TTL_MINUTES} minutes and can be used once at https://myhealthcheckup.co.uk/admin/recovery.\n\nIf you did not expect this, contact the other administrators immediately.`,
+    }),
+  });
+  if (!mailRes.ok) {
+    console.error("admin-recovery: email send failed", mailRes.status);
+    await admin
+      .from("admin_recovery_tokens")
+      .update({ used_at: new Date().toISOString() })
+      .eq("token_hash", await sha256Hex(token));
+    return json({ error: "Could not send the recovery email" }, 502);
+  }
+
   console.log("admin-recovery: token issued", {
     issuedBy: caller.id,
     targetUserId: target.id,
@@ -160,7 +192,7 @@ const handleIssue = async (req: Request, body: Record<string, unknown>) => {
 
   return json({
     success: true,
-    token,
+    delivered: true,
     expiresAt,
     expiresInMinutes: TOKEN_TTL_MINUTES,
   });
