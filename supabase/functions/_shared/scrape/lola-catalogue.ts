@@ -168,6 +168,9 @@ export const LOLA_PANEL_BIOMARKERS: Readonly<Record<string, readonly string[]>> 
       "Total Testosterone",
       "Free Androgen Index (FAI)",
       "Free Testosterone",
+      // SHBG is measured (Free Androgen Index is derived from it); it was
+      // omitted from the 44-name paste, so we add it to reach Lola's 45.
+      "SHBG",
       "Active (bioavailable) Vitamin B12",
       "Magnesium",
       "Vitamin D (25-OH)",
