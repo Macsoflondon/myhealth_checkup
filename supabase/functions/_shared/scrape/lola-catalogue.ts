@@ -171,33 +171,85 @@ export const LOLA_PANEL_BIOMARKERS: Readonly<Record<string, readonly string[]>> 
 
 export const LOLA_DEFAULT_TURNAROUND = "2 working days";
 
-interface TurnaroundRule {
-  pattern: RegExp;
+export interface LolaTurnaroundRule {
+  /** "prefix": name starts with value; "exact": whole name. Case-insensitive. */
+  match: "prefix" | "exact";
+  value: string;
   text: string;
 }
 
 /** First match wins. Anything unmatched gets LOLA_DEFAULT_TURNAROUND. */
-const LOLA_TURNAROUND_RULES: readonly TurnaroundRule[] = [
-  { pattern: /^urinalysis\b/i, text: "24-48 hours" },
-  { pattern: /^(truage|truhealth)\b/i, text: "3-4 weeks" },
-  { pattern: /^gutid\b/i, text: "3-4 weeks" },
+export const LOLA_TURNAROUND_RULES: readonly LolaTurnaroundRule[] = [
+  { match: "prefix", value: "Urinalysis", text: "24-48 hours" },
+  // Covers TruAge, TruHealth and TruAge + TruHealth.
+  { match: "prefix", value: "TruAge", text: "3-4 weeks" },
+  { match: "prefix", value: "TruHealth", text: "3-4 weeks" },
+  { match: "prefix", value: "GutID", text: "3-4 weeks" },
   // Both sickle cell add-on pages state a longer processing time.
-  { pattern: /^sickle cell anemia$/i, text: "35 working days" },
+  { match: "exact", value: "Sickle Cell Anemia", text: "35 working days" },
   {
-    pattern: /^sickle cell hemoglobin electrophoresis$/i,
+    match: "exact",
+    value: "Sickle Cell Hemoglobin Electrophoresis",
     text: "5 working days",
   },
-  // Peak Insights 70: the product page says 2 working days but Lola's FAQ
-  // says 4. We follow the product page, as for every other Lola test.
+  // Peak Insights 70 deliberately uses the default: Lola's product page says
+  // 2 working days but its FAQ says 4. We follow the product page, as for
+  // every other Lola test. Core Health 45 also uses the default.
 ];
 
+const ruleMatches = (rule: LolaTurnaroundRule, name: string): boolean => {
+  const n = name.trim().toLowerCase();
+  const v = rule.value.toLowerCase();
+  return rule.match === "exact" ? n === v : n.startsWith(v);
+};
+
 export function lolaTurnaround(testName: string): string {
-  const name = testName.trim();
-  const rule = LOLA_TURNAROUND_RULES.find((r) => r.pattern.test(name));
+  const rule = LOLA_TURNAROUND_RULES.find((r) => ruleMatches(r, testName));
   return rule ? rule.text : LOLA_DEFAULT_TURNAROUND;
 }
 
 export function lolaPanelBiomarkers(testName: string): string[] | null {
   const list = LOLA_PANEL_BIOMARKERS[testName.trim()];
   return list ? [...list] : null;
+}
+
+const sqlText = (s: string): string => `'${s.replace(/'/g, "''")}'`;
+const sqlLikeEscape = (s: string): string => s.replace(/[\\%_]/g, "\\$&");
+
+/**
+ * SQL that applies this catalogue to provider_tests. Used to generate the
+ * committed migration, and by a unit test that fails if the two drift apart.
+ * Names are matched with ILIKE (never =) so curly apostrophes are safe.
+ */
+export function buildLolaCatalogueSql(): string {
+  const lines: string[] = [
+    "-- Generated from supabase/functions/_shared/scrape/lola-catalogue.ts.",
+    "-- Do not hand-edit: change the catalogue and regenerate.",
+    "",
+    "-- 1. Turnaround: default first, then the specific rules in reverse order",
+    "--    so the first matching rule wins, as in lolaTurnaround().",
+    `update public.provider_tests set turnaround_days_text = ${sqlText(LOLA_DEFAULT_TURNAROUND)}, turnaround_not_stated = false where provider_id = 'lola-health';`,
+  ];
+  for (const rule of [...LOLA_TURNAROUND_RULES].reverse()) {
+    const pattern =
+      rule.match === "exact"
+        ? sqlLikeEscape(rule.value)
+        : `${sqlLikeEscape(rule.value)}%`;
+    lines.push(
+      `update public.provider_tests set turnaround_days_text = ${sqlText(rule.text)}, turnaround_not_stated = false where provider_id = 'lola-health' and btrim(test_name) ilike ${sqlText(pattern)};`,
+    );
+  }
+  lines.push("", "-- 2. Verified panel biomarker lists.");
+  for (const [name, list] of Object.entries(LOLA_PANEL_BIOMARKERS)) {
+    lines.push(
+      `update public.provider_tests set biomarkers_list = ${sqlText(JSON.stringify(list))}::jsonb, biomarkers_not_stated = false where provider_id = 'lola-health' and btrim(test_name) ilike ${sqlText(sqlLikeEscape(name))};`,
+    );
+  }
+  lines.push(
+    "",
+    "-- 3. The stored count always equals the stored list for Lola rows.",
+    "update public.provider_tests set biomarker_count = jsonb_array_length(biomarkers_list) where provider_id = 'lola-health' and jsonb_typeof(biomarkers_list) = 'array' and jsonb_array_length(biomarkers_list) > 0;",
+    "",
+  );
+  return lines.join("\n");
 }
