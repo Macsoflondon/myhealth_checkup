@@ -94,6 +94,7 @@ describe("Lola accreditation wording", () => {
   it("no file under src calls Lola's labs NHS-accredited", () => {
     const offenders = walk("src")
       .filter((f) => /\.(ts|tsx|json)$/.test(f))
+      .filter((f) => !f.endsWith("lola-catalogue.test.ts"))
       .filter((f) => {
         const text = readFileSync(f, "utf8");
         return /lola/i.test(text) && /NHS-accredited/i.test(text);

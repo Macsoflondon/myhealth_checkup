@@ -13,10 +13,12 @@ describe("provider website single source of truth", () => {
     },
   );
 
-  it("detailedProviders entries match PROVIDER_WEBSITES", () => {
-    const canonical = detailedProviders.filter((p) => p.id in PROVIDER_WEBSITES);
-    expect(canonical.length).toBeGreaterThan(0);
-    for (const p of canonical) {
+  it("every detailedProviders entry has a PROVIDER_WEBSITES URL and matches it", () => {
+    const missing = detailedProviders
+      .filter((p) => !(p.id in PROVIDER_WEBSITES))
+      .map((p) => p.id);
+    expect(missing).toEqual([]);
+    for (const p of detailedProviders) {
       expect(p.website, p.id).toBe(PROVIDER_WEBSITES[p.id]);
     }
   });
