@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import {
   PROVIDER_LOGOS,
-  PROVIDER_WEBSITES,
+  getProviderWebsite,
   PROVIDER_TURNAROUND_TIMES,
   PROVIDER_COLLECTION_METHODS,
 } from "@/constants/providers";
