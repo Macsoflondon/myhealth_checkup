@@ -36,9 +36,6 @@ export function withLazyLoading<P extends object>(
 export const LazyTestCategories = lazy(
   () => import("../sections/TestCategories"),
 );
-export const LazyFeaturedProviders = lazy(
-  () => import("../sections/FeaturedProviders"),
-);
 
 export const LazyHealthBenefitsInfographic = lazy(
   () => import("../sections/HealthBenefitsInfographic"),
@@ -63,15 +60,6 @@ export const TestCategories = () => (
       fallback={<LoadingSpinner message="Loading test categories..." />}
     >
       <LazyTestCategories />
-    </Suspense>
-  </ErrorBoundary>
-);
-export const FeaturedProviders = () => (
-  <ErrorBoundary>
-    <Suspense
-      fallback={<LoadingSpinner message="Loading featured providers..." />}
-    >
-      <LazyFeaturedProviders />
     </Suspense>
   </ErrorBoundary>
 );

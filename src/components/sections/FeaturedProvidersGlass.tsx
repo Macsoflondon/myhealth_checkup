@@ -10,6 +10,7 @@ import {
   externalLinkProps,
   toHttpsUrl,
 } from "@/utils/urlTracking";
+import { getProviderWebsite } from "@/constants/providers";
 import { getProviderRating } from "@/constants/providerRatings";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 
@@ -20,12 +21,11 @@ interface ProviderEntry {
   tagline: string;
   description: string;
   tags: string[];
-  website: string;
   glow: string; // hex
   glowRgb: string; // r,g,b
 }
 
-const PROVIDERS: ProviderEntry[] = [
+export const PROVIDERS: ProviderEntry[] = [
   {
     id: "medichecks",
     name: "Medichecks",
@@ -34,7 +34,6 @@ const PROVIDERS: ProviderEntry[] = [
     description:
       "Award-winning home and clinic blood testing with doctor-reviewed results and comprehensive health MOTs.",
     tags: ["Health MOTs", "Doctor Reviews", "UKAS Accredited"],
-    website: "medichecks.com",
     glow: "#e70d69",
     glowRgb: "231,13,105",
   },
@@ -46,7 +45,6 @@ const PROVIDERS: ProviderEntry[] = [
     description:
       "Comprehensive wellness profiles with GP follow-ups across a nationwide network of CQC-regulated clinics.",
     tags: ["GP Follow-ups", "CQC Regulated", "Nationwide"],
-    website: "health.goodbodyclinic.com",
     glow: "#009B8D",
     glowRgb: "0,155,141",
   },
@@ -58,7 +56,6 @@ const PROVIDERS: ProviderEntry[] = [
     description:
       "Global diagnostics provider offering advanced health checks across UKAS-accredited and FDA-approved facilities.",
     tags: ["UKAS Accredited", "FDA Approved", "Advanced Diagnostics"],
-    website: "randoxhealth.com/en-GB",
     glow: "#2D4BA0",
     glowRgb: "45,75,160",
   },
@@ -70,7 +67,6 @@ const PROVIDERS: ProviderEntry[] = [
     description:
       "UKAS-accredited central laboratory offering next-day in-store results and home finger-prick kits delivered across the UK.",
     tags: ["UKAS Accredited", "Next-Day Results", "Home Kits"],
-    website: "londonmedicallaboratory.com",
     glow: "#1565C0",
     glowRgb: "21,101,192",
   },
@@ -82,7 +78,6 @@ const PROVIDERS: ProviderEntry[] = [
     description:
       "Modern testing platform focused on women's health and wellness with a tailored, design-led experience.",
     tags: ["Women's Health", "Modern Platform", "Wellness Focus"],
-    website: "lolahealth.com",
     glow: "#E8604C",
     glowRgb: "232,96,76",
   },
@@ -94,7 +89,6 @@ const PROVIDERS: ProviderEntry[] = [
     description:
       "UKAS-accredited clinical laboratory delivering a wide range of diagnostic and health screening tests across the UK.",
     tags: ["UKAS Accredited", "Clinical Lab", "Diagnostics"],
-    website: "clinilabs.co.uk",
     glow: "#2E7D32",
     glowRgb: "46,125,50",
   },
@@ -106,7 +100,6 @@ const PROVIDERS: ProviderEntry[] = [
     description:
       "London-based comprehensive testing offering accessible, affordable private blood tests and health checks.",
     tags: ["Health Checks", "Blood Tests", "Affordable"],
-    website: "londonhealthcompany.co.uk",
     glow: "#3b82f6",
     glowRgb: "59,130,246",
   },
@@ -118,7 +111,6 @@ const PROVIDERS: ProviderEntry[] = [
     description:
       "Specialist diagnostics with typically fast turnaround blood testing and health screening across the UK.",
     tags: ["Fast Results", "Specialist Testing", "UK Wide"],
-    website: "medical-diagnosis.co.uk",
     glow: "#E53935",
     glowRgb: "229,57,53",
   },
@@ -238,7 +230,7 @@ const FeaturedProvidersGlass = () => {
                     </Link>
                     <a
                       href={buildProviderWebsiteUrl(
-                        toHttpsUrl(p.website),
+                        toHttpsUrl(getProviderWebsite(p.id)),
                         p.id,
                       )}
                       {...externalLinkProps}

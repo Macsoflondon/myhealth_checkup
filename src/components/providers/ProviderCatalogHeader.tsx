@@ -51,7 +51,7 @@ const ProviderCatalogHeader = ({
   features,
 }: ProviderCatalogHeaderProps) => {
   const providerLogo = PROVIDER_LOGOS[providerId];
-  const providerWebsite = PROVIDER_WEBSITES[providerId];
+  const providerWebsite = getProviderWebsite(providerId);
   const turnaroundTime = PROVIDER_TURNAROUND_TIMES[providerId] || "2-5 days";
   const collectionMethod = PROVIDER_COLLECTION_METHODS[providerId] || "Varies";
 

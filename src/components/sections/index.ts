@@ -12,7 +12,6 @@ export { default as AccreditationLogos } from "./AccreditationLogos";
 export { default as BrandVideoSection } from "./BrandVideoSection";
 export { default as CallToAction } from "./CallToAction";
 export { default as Enhanced3StepProcess } from "./Enhanced3StepProcess";
-export { default as FeaturedProviders } from "./FeaturedProviders";
 export { FeaturedPublications } from "./FeaturedPublications";
 export { default as FeaturedTests } from "./FeaturedTests";
 export { default as FinalCTA } from "./FinalCTA";
