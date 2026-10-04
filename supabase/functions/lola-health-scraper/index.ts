@@ -13,17 +13,6 @@ import {
   newCounters,
 } from "../_shared/scrape/index.ts";
 
-function extractTurnaroundText(md: string): string | null {
-  const patterns = [
-    /(?:turnaround|results?(?:\s+in)?|report(?:ed)?\s+within|delivered\s+within|available\s+within)[^.\n]{0,80}/i,
-    /(?:next\s+(?:working\s+)?day|same\s+day|24[\s-]?48\s*hours?|\d+\s*[-–]\s*\d+\s*(?:hours?|working\s+days?|days?)|\d+\s*(?:hours?|working\s+days?|days?))/i,
-  ];
-  for (const p of patterns) {
-    const m = md.match(p);
-    if (m) return m[0].trim();
-  }
-  return null;
-}
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -582,7 +571,6 @@ Deno.serve(async (req) => {
           biomarker_count: row.biomarker_count,
           biomarkers_list: row.biomarkers_list,
           turnaround_raw: row.turnaround_raw,
-          turnaround_days_text: row.turnaround_raw,
           turnaround_hours: turnaround.hours,
           turnaround_days: turnaround.days,
           turnaround_unit: turnaround.unit,
@@ -612,6 +600,7 @@ Deno.serve(async (req) => {
               home_kit_available: row.home_kit_available,
               clinic_visit_available: row.clinic_visit_available,
               was_price: row.original_price ?? null,
+              turnaround_days_text: row.turnaround_raw,
             })
             .eq("id", res.providerTestId);
         }
