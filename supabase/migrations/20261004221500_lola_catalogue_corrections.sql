@@ -4,6 +4,7 @@
 -- 1. Turnaround: default first, then the specific rules in reverse order
 --    so the first matching rule wins, as in lolaTurnaround().
 update public.provider_tests set turnaround_days_text = '2 working days', turnaround_not_stated = false where provider_id = 'lola-health';
+update public.provider_tests set turnaround_days_text = '2-3 working days', turnaround_not_stated = false where provider_id = 'lola-health' and btrim(test_name) ilike 'Peak Insights 70';
 update public.provider_tests set turnaround_days_text = '5 working days', turnaround_not_stated = false where provider_id = 'lola-health' and btrim(test_name) ilike 'Sickle Cell Hemoglobin Electrophoresis';
 update public.provider_tests set turnaround_days_text = '35 working days', turnaround_not_stated = false where provider_id = 'lola-health' and btrim(test_name) ilike 'Sickle Cell Anemia';
 update public.provider_tests set turnaround_days_text = '3-4 weeks', turnaround_not_stated = false where provider_id = 'lola-health' and btrim(test_name) ilike 'GutID%';

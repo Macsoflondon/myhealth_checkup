@@ -219,9 +219,9 @@ export const LOLA_TURNAROUND_RULES: readonly LolaTurnaroundRule[] = [
     value: "Sickle Cell Hemoglobin Electrophoresis",
     text: "5 working days",
   },
-  // Peak Insights 70 deliberately uses the default: Lola's product page says
-  // 2 working days but its FAQ says 4. We follow the product page, as for
-  // every other Lola test. Core Health 45 also uses the default.
+  // The site owner confirmed Peak Insights 70 results take 2 to 3 working
+  // days (Lola's FAQ says 4). Core Health 45 uses the default.
+  { match: "exact", value: "Peak Insights 70", text: "2-3 working days" },
 ];
 
 const ruleMatches = (rule: LolaTurnaroundRule, name: string): boolean => {
