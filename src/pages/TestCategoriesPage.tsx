@@ -46,6 +46,8 @@ const BENEFITS_TUPLE: [
 ] = [BENEFITS[0], BENEFITS[1], BENEFITS[2]];
 
 const PILL_LABEL = "All Test Categories";
+const SUBTITLE =
+  "Every clinically validated test from our trusted UK providers, filterable by category.";
 const BENEFITS_TITLE = "Why Compare Through myhealth checkup?";
 
 const TestCategoriesPage = () => {
@@ -66,6 +68,7 @@ const TestCategoriesPage = () => {
         seoDescription={SEO.description}
         canonicalUrl={SEO.canonical}
         pillLabel={PILL_LABEL}
+        subtitle={SUBTITLE}
         benefits={BENEFITS_TUPLE}
         benefitsTitle={BENEFITS_TITLE}
       >
@@ -81,6 +84,7 @@ const TestCategoriesPage = () => {
         seoDescription={SEO.description}
         canonicalUrl={SEO.canonical}
         pillLabel={PILL_LABEL}
+        subtitle={SUBTITLE}
         benefits={BENEFITS_TUPLE}
         benefitsTitle={BENEFITS_TITLE}
       >
@@ -99,6 +103,7 @@ const TestCategoriesPage = () => {
         seoDescription={SEO.description}
         canonicalUrl={SEO.canonical}
         pillLabel={PILL_LABEL}
+        subtitle={SUBTITLE}
         benefits={BENEFITS_TUPLE}
         benefitsTitle={BENEFITS_TITLE}
       >
@@ -115,7 +120,7 @@ const TestCategoriesPage = () => {
       canonicalUrl={SEO.canonical}
       pillLabel={PILL_LABEL}
       headline="Browse Tests by Category"
-      subtitle="Every clinically validated test from our trusted UK providers, filterable by category."
+      subtitle={SUBTITLE}
       searchPlaceholder="Search by test name, biomarker, or category…"
       trustStats={[
         { value: "50,000+", label: "Tests Compared" },
