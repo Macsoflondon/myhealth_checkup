@@ -177,9 +177,10 @@ Deno.serve(async (req) => {
     );
 
     if (!aiRes.ok) {
-      const txt = await aiRes.text();
+      console.error(`translate: AI gateway responded ${aiRes.status}`);
+      await aiRes.body?.cancel();
       return new Response(
-        JSON.stringify({ error: "AI gateway error", detail: txt }),
+        JSON.stringify({ error: "Translation is temporarily unavailable" }),
         {
           status:
             aiRes.status === 429 || aiRes.status === 402 ? aiRes.status : 502,
