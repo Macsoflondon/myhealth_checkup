@@ -1,5 +1,7 @@
 /**
- * Registry of provider blog sources.
+ * Registry of provider blog sources (Deno copy for the blog-aggregate edge
+ * function). Must stay identical to src/lib/blog/sources.ts — a vitest
+ * (src/lib/blog/sources-parity.test.ts) fails if the two drift apart.
  *
  * Aggregator pattern only: we read public feeds/sitemaps and store the title,
  * the provider's own meta description, the hero image and a canonical link
