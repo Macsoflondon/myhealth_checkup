@@ -23,8 +23,8 @@ update public.provider_tests set biomarkers_list = '["pH","Glucose (Urine)","Ket
 update public.provider_tests set biomarker_count = jsonb_array_length(biomarkers_list) where provider_id = 'lola-health' and jsonb_typeof(biomarkers_list) = 'array' and jsonb_array_length(biomarkers_list) > 0;
 
 -- 4. Price model: price = kit price, phlebotomy stored separately.
---    Single-variant products keep their price with no fees or draw flags.
-update public.provider_tests set base_price = price, total_expected_cost = price, clinic_phlebotomy_cost = 0, home_phlebotomy_cost = 0, clinic_visit_available = false, home_phlebotomy_option = false, home_kit_available = false where provider_id = 'lola-health' and price is not null;
+--    Single-variant products keep their price with no fees, and keep their existing collection flags.
+update public.provider_tests set base_price = price, total_expected_cost = price, clinic_phlebotomy_cost = 0, home_phlebotomy_cost = 0 where provider_id = 'lola-health' and price is not null;
 update public.provider_tests set price = 200, base_price = 200, total_expected_cost = 235, clinic_phlebotomy_cost = 35, home_phlebotomy_cost = 35, clinic_visit_available = true, home_phlebotomy_option = true, home_kit_available = false, sample_type = 'Venous' where provider_id = 'lola-health' and provider_test_id = 'peak-insights';
 update public.provider_tests set price = 155, base_price = 155, total_expected_cost = 190, clinic_phlebotomy_cost = 35, home_phlebotomy_cost = 35, clinic_visit_available = true, home_phlebotomy_option = true, home_kit_available = false, sample_type = 'Venous' where provider_id = 'lola-health' and provider_test_id = 'vital-check';
 update public.provider_tests set price = 125, base_price = 125, total_expected_cost = 160, clinic_phlebotomy_cost = 35, home_phlebotomy_cost = 35, clinic_visit_available = true, home_phlebotomy_option = true, home_kit_available = false, sample_type = 'Venous' where provider_id = 'lola-health' and provider_test_id = 'core-health';
