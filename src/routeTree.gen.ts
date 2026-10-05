@@ -147,7 +147,6 @@ import { Route as TestsVitaminsRouteImport } from './routes/tests.vitamins'
 import { Route as TestsWomensHealthRouteImport } from './routes/tests.womens-health'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as ApiPublicAffiliateClickRouteImport } from './routes/api/public/affiliate-click'
-import { Route as ApiPublicBlogAggregateRouteImport } from './routes/api/public/blog-aggregate'
 import { Route as CompareGoalsIndexRouteImport } from './routes/compare.goals.index'
 import { Route as CompareGoalsGoalSlugRouteImport } from './routes/compare.goals.$goalSlug'
 import { Route as CompareSymptomsIndexRouteImport } from './routes/compare.symptoms.index'
@@ -863,11 +862,6 @@ const ApiPublicAffiliateClickRoute = ApiPublicAffiliateClickRouteImport.update({
   path: '/api/public/affiliate-click',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicBlogAggregateRoute = ApiPublicBlogAggregateRouteImport.update({
-  id: '/api/public/blog-aggregate',
-  path: '/api/public/blog-aggregate',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const CompareGoalsIndexRoute = CompareGoalsIndexRouteImport.update({
   id: '/goals/',
   path: '/goals/',
@@ -1070,7 +1064,6 @@ export interface FileRoutesByFullPath {
   '/randox/': typeof RandoxIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/api/public/affiliate-click': typeof ApiPublicAffiliateClickRoute
-  '/api/public/blog-aggregate': typeof ApiPublicBlogAggregateRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
   '/compare/goals/': typeof CompareGoalsIndexRoute
@@ -1221,7 +1214,6 @@ export interface FileRoutesByTo {
   '/randox': typeof RandoxIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/api/public/affiliate-click': typeof ApiPublicAffiliateClickRoute
-  '/api/public/blog-aggregate': typeof ApiPublicBlogAggregateRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
   '/compare/goals': typeof CompareGoalsIndexRoute
@@ -1374,7 +1366,6 @@ export interface FileRoutesById {
   '/randox/': typeof RandoxIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/api/public/affiliate-click': typeof ApiPublicAffiliateClickRoute
-  '/api/public/blog-aggregate': typeof ApiPublicBlogAggregateRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
   '/compare/goals/': typeof CompareGoalsIndexRoute
@@ -1528,7 +1519,6 @@ export interface FileRouteTypes {
     | '/randox/'
     | '/.lovable/oauth/consent'
     | '/api/public/affiliate-click'
-    | '/api/public/blog-aggregate'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
     | '/compare/goals/'
@@ -1679,7 +1669,6 @@ export interface FileRouteTypes {
     | '/randox'
     | '/.lovable/oauth/consent'
     | '/api/public/affiliate-click'
-    | '/api/public/blog-aggregate'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
     | '/compare/goals'
@@ -1831,7 +1820,6 @@ export interface FileRouteTypes {
     | '/randox/'
     | '/.lovable/oauth/consent'
     | '/api/public/affiliate-click'
-    | '/api/public/blog-aggregate'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
     | '/compare/goals/'
@@ -1982,7 +1970,6 @@ export interface RootRouteChildren {
   RandoxIndexRoute: typeof RandoxIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   ApiPublicAffiliateClickRoute: typeof ApiPublicAffiliateClickRoute
-  ApiPublicBlogAggregateRoute: typeof ApiPublicBlogAggregateRoute
   ProviderProviderIdIndexRoute: typeof ProviderProviderIdIndexRoute
   ApiPublicDiagnosticsAbortsRoute: typeof ApiPublicDiagnosticsAbortsRoute
   ApiPublicRetestReminderSendRoute: typeof ApiPublicRetestReminderSendRoute
@@ -2960,13 +2947,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicAffiliateClickRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/blog-aggregate': {
-      id: '/api/public/blog-aggregate'
-      path: '/api/public/blog-aggregate'
-      fullPath: '/api/public/blog-aggregate'
-      preLoaderRoute: typeof ApiPublicBlogAggregateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/compare/goals/': {
       id: '/compare/goals/'
       path: '/goals'
@@ -3206,7 +3186,6 @@ const rootRouteChildren: RootRouteChildren = {
   RandoxIndexRoute: RandoxIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   ApiPublicAffiliateClickRoute: ApiPublicAffiliateClickRoute,
-  ApiPublicBlogAggregateRoute: ApiPublicBlogAggregateRoute,
   ProviderProviderIdIndexRoute: ProviderProviderIdIndexRoute,
   ApiPublicDiagnosticsAbortsRoute: ApiPublicDiagnosticsAbortsRoute,
   ApiPublicRetestReminderSendRoute: ApiPublicRetestReminderSendRoute,
