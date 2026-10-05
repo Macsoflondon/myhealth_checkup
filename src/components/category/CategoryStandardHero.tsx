@@ -3,6 +3,12 @@ import { useId } from "react";
 interface CategoryStandardHeroProps {
   /** Category name shown at the top of the hero, e.g. "Cancer Screening" */
   pillLabel: string;
+  /**
+   * One or two sentences describing what the category covers. Rendered as
+   * visible intro text beneath the heading, so both readers and crawlers see
+   * the page's specific focus. Omitted on pages that have no intro copy.
+   */
+  subtitle?: string;
   /** Semantic heading level. Use h1 for standalone page titles, h2 when nested inside a page that already has an h1. */
   as?: "h1" | "h2";
 }
@@ -10,10 +16,12 @@ interface CategoryStandardHeroProps {
 /**
  * CategoryStandardHero
  * Minimal category header used across all category landing pages.
- * Shows only the category name on a navy background with a tricolour divider.
+ * Shows the category name, an optional descriptive intro, and a tricolour
+ * divider on a navy background.
  */
 export function CategoryStandardHero({
   pillLabel,
+  subtitle,
   as = "h1",
 }: CategoryStandardHeroProps) {
   const headingId = useId();
@@ -93,6 +101,14 @@ export function CategoryStandardHero({
               className="flex-shrink-0 h-px w-8 sm:w-12 bg-[#e70d69]"
             />
           </div>
+
+          {/* Descriptive intro: what this category covers, shown beneath the
+              heading so the listing below it has visible context. */}
+          {subtitle ? (
+            <p className="mx-auto mt-4 sm:mt-5 max-w-2xl text-center text-sm sm:text-base leading-relaxed text-white/85">
+              {subtitle}
+            </p>
+          ) : null}
 
           {/* Tricolour divider */}
           <div
