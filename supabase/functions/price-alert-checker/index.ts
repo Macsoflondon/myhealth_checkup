@@ -196,9 +196,7 @@ serve(async (req) => {
             price_drop: matchingDrop.change_percentage,
           });
 
-          console.log(
-            `Alert sent successfully for ${testName} to ${userData.user.email}`,
-          );
+          console.log(`Alert sent successfully for alert ${alert.id}`);
         } catch (emailError) {
           console.error(
             `Failed to send email for alert ${alert.id}:`,
