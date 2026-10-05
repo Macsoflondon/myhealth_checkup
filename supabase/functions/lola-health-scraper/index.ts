@@ -4,7 +4,7 @@ import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
 import {
   lolaPanelBiomarkers,
   lolaPriceModel,
-  lolaSampleType,
+  lolaCollectionFields,
   lolaTurnaround,
 } from "../_shared/scrape/lola-catalogue.ts";
 import {

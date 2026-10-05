@@ -6,6 +6,7 @@ import {
   LOLA_VARIANT_SNAPSHOT,
   lolaPriceModel,
   lolaSampleType,
+  lolaCollectionFields,
   buildLolaCatalogueSql,
   lolaTurnaround,
 } from "../../../supabase/functions/_shared/scrape/lola-catalogue";
@@ -171,16 +172,56 @@ describe("Lola price model", () => {
     });
   });
 
-  it("single-variant products keep their price with no fees or flags", () => {
-    expect(lolaPriceModel([{ title: "Default Title", price: "39.00" }])).toEqual({
+  it("single-variant products keep their price with no fees and carry no flags", () => {
+    const m = lolaPriceModel([{ title: "Default Title", price: "39.00" }])!;
+    expect(m).toEqual({
       price: 39,
       base_price: 39,
       clinic_phlebotomy_cost: 0,
       home_phlebotomy_cost: 0,
-      clinic_visit_available: false,
-      home_phlebotomy_option: false,
-      home_kit_available: false,
       total_expected_cost: 39,
     });
+    expect("clinic_visit_available" in m).toBe(false);
+    expect("home_kit_available" in m).toBe(false);
+    expect("home_phlebotomy_option" in m).toBe(false);
+    expect(lolaSampleType(m)).toBeNull();
+  });
+
+  it("a posted kit keeps home_kit_available after the scraper merge", () => {
+    const m = lolaPriceModel([{ title: "Default Title", price: "299.00" }]);
+    const fields = lolaCollectionFields("TruAge Test", "truage-test", m);
+    expect(fields.home_kit_available).toBe(true);
+    expect(fields.clinic_visit_available).toBe(false);
+    expect(fields.sample_type).toBe("Finger-prick");
+  });
+
+  it("a single biomarker keeps clinic_visit_available after the scraper merge", () => {
+    const m = lolaPriceModel([{ title: "Default Title", price: "29.00" }]);
+    const fields = lolaCollectionFields("Albumin", "albumin", m);
+    expect(fields.clinic_visit_available).toBe(true);
+    expect(fields.home_kit_available).toBe(false);
+    expect(fields.sample_type).toBe("Venous");
+    expect(fields.home_phlebotomy_option).toBeUndefined();
+  });
+
+  it("multi-variant flags override the name-based defaults", () => {
+    const m = lolaPriceModel([
+      { title: "Fingerprick", price: "125.00" },
+      { title: "Book a venous draw at a clinic", price: "160.00" },
+      { title: "Phlebotomist for a Home Visit", price: "160.00" },
+    ]);
+    expect(lolaCollectionFields("Core Health 45", "core-health-45", m)).toMatchObject({
+      clinic_visit_available: true,
+      home_kit_available: true,
+      home_phlebotomy_option: true,
+      sample_type: "Finger-prick or venous",
+    });
+  });
+
+  it("migration step 4 base statement touches no flag columns", () => {
+    const base = buildLolaCatalogueSql()
+      .split("\n")
+      .find((l) => l.includes("set base_price = price"))!;
+    expect(base).not.toMatch(/clinic_visit_available|home_kit_available|home_phlebotomy_option/);
   });
 });
