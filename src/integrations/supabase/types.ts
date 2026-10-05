@@ -8389,6 +8389,10 @@ export type Database = {
         Args: { p_body?: Json; p_url: string }
         Returns: number
       }
+      call_with_cron_secret: {
+        Args: { p_body?: Json; p_timeout_ms?: number; p_url: string }
+        Returns: number
+      }
       call_with_publishable_key: {
         Args: { p_body?: Json; p_timeout_ms?: number; p_url: string }
         Returns: number
