@@ -4,7 +4,7 @@ import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
 import {
   lolaPanelBiomarkers,
   lolaPriceModel,
-  lolaSampleType,
+  lolaCollectionFields,
   lolaTurnaround,
 } from "../_shared/scrape/lola-catalogue.ts";
 import {
@@ -220,25 +220,8 @@ import {
  * (home visit) or in clinic — they are NOT self-collected finger-prick kits.
  * Only the posted DNA kits (TruAge / TruHealth / Biological Kit) are home kits.
  */
-const POSTED_KIT_PATTERN =
-  /truage|truhealth|tru\s*diagnostic|biological\s*kit|dna/i;
-
-const collectionFor = (title: string, slug: string) => {
-  const isPostedKit = POSTED_KIT_PATTERN.test(`${title} ${slug}`);
-  return isPostedKit
-    ? {
-        sample_type: "Finger-prick",
-        collection_method: "Home kit",
-        home_kit_available: true,
-        clinic_visit_available: false,
-      }
-    : {
-        sample_type: "Venous",
-        collection_method: "Phlebotomy (nurse visit or clinic)",
-        home_kit_available: false,
-        clinic_visit_available: true,
-      };
-};
+// Name-based collection defaults live in lolaCollectionDefaults() in the
+// shared catalogue, merged with variant flags by lolaCollectionFields().
 
 async function mapLola(apiKey: string): Promise<string[]> {
   const links = await firecrawlMap(
@@ -522,17 +505,12 @@ Deno.serve(async (req) => {
         biomarkers_list:
           verifiedBiomarkers.length > 0 ? verifiedBiomarkers : null,
         biomarker_count: verifiedBiomarkerCount,
-        ...collectionFor(title, slug),
-        // Variant-derived fields override the name-based defaults.
-        clinic_visit_available: priceModel?.clinic_visit_available ?? false,
-        home_kit_available: priceModel?.home_kit_available ?? false,
-        home_phlebotomy_option: priceModel?.home_phlebotomy_option ?? false,
+        // Name-based defaults; variant flags and sample type win only for
+        // multi-variant products.
+        ...lolaCollectionFields(title, slug, priceModel),
         clinic_phlebotomy_cost: priceModel?.clinic_phlebotomy_cost ?? 0,
         home_phlebotomy_cost: priceModel?.home_phlebotomy_cost ?? 0,
         total_expected_cost: priceModel?.total_expected_cost ?? price,
-        ...(priceModel && lolaSampleType(priceModel)
-          ? { sample_type: lolaSampleType(priceModel) }
-          : {}),
         turnaround_raw: turnaroundRaw,
         scraped_at: new Date().toISOString(),
         url_verified: true,
@@ -611,9 +589,13 @@ Deno.serve(async (req) => {
               category: row.category,
               description: row.description,
               image_url: row.image_url,
+              // Already merged by lolaCollectionFields: name-based defaults
+              // unless the product has more than one variant.
               home_kit_available: row.home_kit_available,
               clinic_visit_available: row.clinic_visit_available,
-              home_phlebotomy_option: row.home_phlebotomy_option,
+              ...(row.home_phlebotomy_option !== undefined
+                ? { home_phlebotomy_option: row.home_phlebotomy_option }
+                : {}),
               base_price: row.base_price,
               clinic_phlebotomy_cost: row.clinic_phlebotomy_cost,
               home_phlebotomy_cost: row.home_phlebotomy_cost,
