@@ -104,11 +104,12 @@ async function fetchText(
   url: string,
   timeoutMs = 20000,
   attempts = 2,
+  backoffMs = 800,
 ): Promise<string | null> {
   for (let attempt = 0; attempt < attempts; attempt += 1) {
     const text = await fetchOnce(url, timeoutMs);
     if (text) return text;
-    if (attempt < attempts - 1) await sleep(800 * (attempt + 1));
+    if (attempt < attempts - 1) await sleep(backoffMs * (attempt + 1));
   }
   return null;
 }
@@ -324,7 +325,7 @@ async function collectForSource(source: BlogSource): Promise<AggregatedPost[]> {
     const batch = source.urls.slice(i, i + batchSize);
     const results = await Promise.all(
       batch.map(async (url) => {
-        const xml = await fetchText(url);
+        const xml = await fetchText(url, 20000, 5, 6000);
         if (!xml) return [] as AggregatedPost[];
         return source.type === "atom"
           ? parseAtom(xml, source, url)
