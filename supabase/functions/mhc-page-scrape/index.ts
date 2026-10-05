@@ -214,7 +214,7 @@ async function getUrls(
 
 Deno.serve(async (req) => {
   const u = new URL(req.url);
-  if (u.searchParams.get("secret") !== SECRET)
+  if (!SECRET || u.searchParams.get("secret") !== SECRET)
     return new Response("unauthorized", { status: 401 });
   const startedAt = new Date().toISOString();
   const providerId = u.searchParams.get("provider") || "";

@@ -64,7 +64,7 @@ function stripHtml(html: string | null | undefined): string | null {
 
 Deno.serve(async (req: Request) => {
   const url = new URL(req.url);
-  if (url.searchParams.get("secret") !== SECRET) {
+  if (!SECRET || url.searchParams.get("secret") !== SECRET) {
     return new Response(JSON.stringify({ error: "unauthorised" }), {
       status: 401,
       headers: { "Content-Type": "application/json" },
