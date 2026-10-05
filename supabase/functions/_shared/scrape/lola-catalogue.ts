@@ -254,9 +254,14 @@ export interface LolaPriceModel {
   base_price: number;
   clinic_phlebotomy_cost: number;
   home_phlebotomy_cost: number;
-  clinic_visit_available: boolean;
-  home_phlebotomy_option: boolean;
-  home_kit_available: boolean;
+  /**
+   * Collection flags are only asserted when the variants prove them (more
+   * than one priced variant). Single-variant products omit them so the
+   * name-based defaults from lolaCollectionDefaults() stay in force.
+   */
+  clinic_visit_available?: boolean;
+  home_phlebotomy_option?: boolean;
+  home_kit_available?: boolean;
   /** Kit price + clinic fee: the venous route deriveCollectionVariants shows. */
   total_expected_cost: number;
 }
@@ -271,7 +276,8 @@ const round2 = (n: number): number => Math.round(n * 100) / 100;
  * Turn Lola's Shopify variants into the platform's price model: `price` is
  * the lowest variant (the kit price) and phlebotomy is stored separately as
  * the difference between each draw variant and that kit price. Returns null
- * when the variants carry no usable price.
+ * when the variants carry no usable price. Single-variant products carry no
+ * collection flags.
  */
 export function lolaPriceModel(
   variants: readonly LolaVariant[],
@@ -287,9 +293,6 @@ export function lolaPriceModel(
       base_price: kit,
       clinic_phlebotomy_cost: 0,
       home_phlebotomy_cost: 0,
-      clinic_visit_available: false,
-      home_phlebotomy_option: false,
-      home_kit_available: false,
       total_expected_cost: kit,
     };
   }
@@ -309,8 +312,80 @@ export function lolaPriceModel(
   };
 }
 
-/** Sample type matching the variants, so the card shows the right routes. */
+/** True when the model carries variant-derived collection flags. */
+export function hasLolaVariantFlags(model: LolaPriceModel): boolean {
+  return (
+    model.clinic_visit_available !== undefined &&
+    model.home_kit_available !== undefined &&
+    model.home_phlebotomy_option !== undefined
+  );
+}
+
+/**
+ * Lola's posted DNA kits (TruAge / TruHealth / Biological Kit) are home kits;
+ * everything else is a venous draw (home visit or clinic).
+ */
+export const LOLA_POSTED_KIT_PATTERN =
+  /truage|truhealth|tru\s*diagnostic|biological\s*kit|dna/i;
+
+export interface LolaCollectionFields {
+  sample_type: string;
+  collection_method: string;
+  home_kit_available: boolean;
+  clinic_visit_available: boolean;
+  home_phlebotomy_option?: boolean;
+}
+
+/** Name-based collection defaults, used when the variants prove nothing. */
+export function lolaCollectionDefaults(
+  title: string,
+  slug: string,
+): LolaCollectionFields {
+  return LOLA_POSTED_KIT_PATTERN.test(`${title} ${slug}`)
+    ? {
+        sample_type: "Finger-prick",
+        collection_method: "Home kit",
+        home_kit_available: true,
+        clinic_visit_available: false,
+      }
+    : {
+        sample_type: "Venous",
+        collection_method: "Phlebotomy (nurse visit or clinic)",
+        home_kit_available: false,
+        clinic_visit_available: true,
+      };
+}
+
+/**
+ * The scraper's merge: name-based defaults, overridden by variant flags and
+ * sample type only for multi-variant products.
+ */
+export function lolaCollectionFields(
+  title: string,
+  slug: string,
+  model: LolaPriceModel | null,
+): LolaCollectionFields {
+  const defaults = lolaCollectionDefaults(title, slug);
+  if (
+    !model ||
+    model.clinic_visit_available === undefined ||
+    model.home_kit_available === undefined ||
+    model.home_phlebotomy_option === undefined
+  ) {
+    return defaults;
+  }
+  return {
+    ...defaults,
+    clinic_visit_available: model.clinic_visit_available,
+    home_kit_available: model.home_kit_available,
+    home_phlebotomy_option: model.home_phlebotomy_option,
+    sample_type: lolaSampleType(model) ?? defaults.sample_type,
+  };
+}
+
+/** Sample type matching the variants; null when the variants prove nothing. */
 export function lolaSampleType(model: LolaPriceModel): string | null {
+  if (!hasLolaVariantFlags(model)) return null;
   const venous = model.clinic_visit_available || model.home_phlebotomy_option;
   if (model.home_kit_available && venous) return "Finger-prick or venous";
   if (venous) return "Venous";
@@ -433,15 +508,18 @@ export function buildLolaCatalogueSql(): string {
   );
   lines.push(
     "-- 4. Price model: price = kit price, phlebotomy stored separately.",
-    "--    Single-variant products keep their price with no fees or draw flags.",
-    "update public.provider_tests set base_price = price, total_expected_cost = price, clinic_phlebotomy_cost = 0, home_phlebotomy_cost = 0, clinic_visit_available = false, home_phlebotomy_option = false, home_kit_available = false where provider_id = 'lola-health' and price is not null;",
+    "--    Single-variant products keep their price with no fees, and keep their existing collection flags.",
+    "update public.provider_tests set base_price = price, total_expected_cost = price, clinic_phlebotomy_cost = 0, home_phlebotomy_cost = 0 where provider_id = 'lola-health' and price is not null;",
   );
   for (const [handle, { variants }] of Object.entries(LOLA_VARIANT_SNAPSHOT)) {
     const m = lolaPriceModel(variants);
     if (!m) continue;
     const sample = lolaSampleType(m);
+    const flags = hasLolaVariantFlags(m)
+      ? `, clinic_visit_available = ${m.clinic_visit_available}, home_phlebotomy_option = ${m.home_phlebotomy_option}, home_kit_available = ${m.home_kit_available}`
+      : "";
     lines.push(
-      `update public.provider_tests set price = ${m.price}, base_price = ${m.base_price}, total_expected_cost = ${m.total_expected_cost}, clinic_phlebotomy_cost = ${m.clinic_phlebotomy_cost}, home_phlebotomy_cost = ${m.home_phlebotomy_cost}, clinic_visit_available = ${m.clinic_visit_available}, home_phlebotomy_option = ${m.home_phlebotomy_option}, home_kit_available = ${m.home_kit_available}${sample ? `, sample_type = ${sqlText(sample)}` : ""} where provider_id = 'lola-health' and provider_test_id = ${sqlText(handle)};`,
+      `update public.provider_tests set price = ${m.price}, base_price = ${m.base_price}, total_expected_cost = ${m.total_expected_cost}, clinic_phlebotomy_cost = ${m.clinic_phlebotomy_cost}, home_phlebotomy_cost = ${m.home_phlebotomy_cost}${flags}${sample ? `, sample_type = ${sqlText(sample)}` : ""} where provider_id = 'lola-health' and provider_test_id = ${sqlText(handle)};`,
     );
   }
   lines.push("");
