@@ -54,7 +54,7 @@ describe("Lola turnaround", () => {
   it.each([
     ["Albumin", "2 working days"],
     ["Core Health 45", "2 working days"],
-    ["Peak Insights 70", "2 working days"],
+    ["Peak Insights 70", "2-3 working days"],
     ["Urinalysis", "24-48 hours"],
     ["TruAge Test", "3-4 weeks"],
     ["TruHealth Test", "3-4 weeks"],
