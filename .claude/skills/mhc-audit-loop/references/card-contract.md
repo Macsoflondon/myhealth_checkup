@@ -13,7 +13,7 @@ Amend this file when a rule is missing. Do not audit against unwritten standards
 Do not trust the list below — it is a starting point that goes stale. Regenerate:
 
 ```
-rg -l "UniversalTestCard|UnifiedTestCard|ProviderTestCard|TestListCard|MedichecksTestCard" src/
+rg -l "UniversalTestCard|UnifiedTestCard|ProviderTestCard|MedichecksTestCard" src/
 rg -ln "test_name|provider_tests" src/components src/pages src/routes
 ```
 
@@ -25,8 +25,8 @@ run — verify each still exists and add anything new:
 - `src/components/cards/UnifiedTestCard.tsx` — legacy prop shim over `UniversalTestCard`
 - `src/components/providers/ProviderTestCard.tsx`, `ProviderTestsGrid.tsx`
 - `src/components/providers/medichecks/MedichecksTestCard.tsx`
-- `src/components/compare/TestListCard.tsx`, `ModernCompareTable.tsx`, `TestProviderPriceTable.tsx`
-- `src/components/sections/MostPopularTestsSection.tsx`, `FeaturedTests.tsx`, `HeroPopularTests.tsx`, `LiveComparisonCard.tsx`
+- `src/components/compare/TestProviderPriceTable.tsx`
+- `src/components/sections/HeroPopularTests.tsx`, `LiveComparisonCard.tsx`
 - `src/components/category/CategoryPageLayout.tsx`
 - `src/components/search/IntelligentSearch.tsx`
 
