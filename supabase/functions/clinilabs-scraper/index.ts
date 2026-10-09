@@ -206,9 +206,22 @@ Deno.serve(async (req) => {
       const inStock = variant?.available !== false && price !== null;
 
       const bodyText = stripHtml(p.body_html || "");
-      const biomarkers = extractBiomarkersFromHtml(p.body_html || "");
-      const biomarkersList = biomarkers.length > 0 ? biomarkers : null;
-      const biomarkerCount = biomarkersList?.length ?? null;
+      const parsedBio = await fetchProductBiomarkers(
+        p.handle,
+        p.body_html || "",
+      );
+      const biomarkersList =
+        parsedBio.biomarkers.length > 0 ? parsedBio.biomarkers : null;
+      const countDecision = reconcileBiomarkerCount(
+        biomarkersList,
+        parsedBio.statedCount,
+        p.title,
+      );
+      if (countDecision.mismatch) {
+        counters.errors.push({ test: p.title, message: countDecision.mismatch });
+      }
+      // With no list, never store a stated number on its own.
+      const biomarkerCount = biomarkersList ? countDecision.count : null;
       const turnaroundRaw = extractTurnaroundText(bodyText);
       const parsedTurn = parseTurnaround(turnaroundRaw);
       const category = determineCategory(p.title, bodyText, p.tags || []);
