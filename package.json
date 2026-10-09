@@ -147,7 +147,10 @@
     "qs": "^6.16.0",
     "js-yaml": "^5.4.1",
     "@tanstack/router-core": "^1.171.34",
-    "ip-address": "^10.7.1"
+    "ip-address": "^10.7.1",
+    "@modelcontextprotocol/sdk": "^1.31.0",
+    "esbuild": "^0.28.1",
+    "postcss-selector-parser": "^7.1.6"
   },
   "resolutions": {
     "@hono/node-server": "^2.0.12",
@@ -157,6 +160,9 @@
     "js-yaml": "^5.4.1",
     "nanoid": "^3.3.18",
     "@tanstack/router-core": "^1.171.34",
-    "ip-address": "^10.7.1"
+    "ip-address": "^10.7.1",
+    "@modelcontextprotocol/sdk": "^1.31.0",
+    "esbuild": "^0.28.1",
+    "postcss-selector-parser": "^7.1.6"
   }
 }
