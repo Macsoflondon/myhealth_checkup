@@ -909,7 +909,7 @@ export default function BiomarkerLibraryUI() {
               type="button"
               onClick={() => {
                 setInput("");
-                void navigate({ search: {}, replace: true });
+                void navigate({ search: () => ({}), replace: true });
               }}
               style={{
                 marginTop: 20,

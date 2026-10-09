@@ -15,7 +15,9 @@ const optionalString = (v: unknown): string | undefined =>
   typeof v === "string" && v.trim() ? v.trim().slice(0, 120) : undefined;
 
 export const Route = createFileRoute("/biomarker-database")({
-  validateSearch: (raw: Record<string, unknown>) => ({
+  validateSearch: (
+    raw: Record<string, unknown>,
+  ): { search?: string; category?: string; biomarker?: string } => ({
     search: optionalString(raw.search),
     category: optionalString(raw.category),
     biomarker: optionalString(raw.biomarker),

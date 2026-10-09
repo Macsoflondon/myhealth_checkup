@@ -9,8 +9,10 @@ import type { Database } from "@/integrations/supabase/types";
  * truth; the static files in src/components/biomarker-library are unused.
  */
 
-export type BiomarkerLibraryRow =
-  Database["public"]["Views"]["biomarker_library_public"]["Row"];
+export type BiomarkerLibraryRow = Omit<
+  Database["public"]["Views"]["biomarker_library_public"]["Row"],
+  "related_articles" | "reviewed_by" | "updated_at"
+>;
 
 export interface LibraryEntry {
   id: string;
