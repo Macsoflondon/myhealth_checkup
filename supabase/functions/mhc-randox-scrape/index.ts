@@ -9,6 +9,7 @@
 // authenticate correctly until you do, by design.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { htmlToText } from "../_shared/scrape/html.ts";
+import { parseRandoxWhatsIncluded } from "../_shared/scrape/biomarkerParsers.ts";
 const SECRET = Deno.env.get("MHC_SYNC_SECRET") ?? "";
 const PROVIDER = "randox";
 const SITEMAPS = ["https://randoxhealth.com/sitemap.xml"];
@@ -140,8 +141,8 @@ function extractJsonLdDescription(html) {
 function extractDescriptionScraped(html, name) {
   const jsonLd = extractJsonLdDescription(html);
   if (jsonLd) return jsonLd;
-  const cleanedHtml = html.replace(/<script[\s\S]*?<\/script>/gi, " ");
-  const txt = stripTags(cleanedHtml);
+  // htmlToText drops script and style blocks itself.
+  const txt = stripTags(html);
   let startIdx = 0;
   if (name) {
     const idx = txt.indexOf(name);
@@ -192,7 +193,10 @@ function parsePage(html) {
   let sample = "Venous";
   if (/finger-?prick/i.test(txt)) sample = "Finger-prick or venous";
   const descriptionScraped = extractDescriptionScraped(html, name);
-  return { name, price, taText, taDays, sample, descriptionScraped };
+  // Itemised markers come from the page's own `whats_included` state.
+  // Panel-only products publish panel names, not markers: bios stays empty.
+  const bios = parseRandoxWhatsIncluded(html).biomarkers;
+  return { name, price, taText, taDays, sample, descriptionScraped, bios };
 }
 Deno.serve(async (req) => {
   const u = new URL(req.url);
@@ -223,7 +227,7 @@ Deno.serve(async (req) => {
     );
   const { data: rows } = await supabase
     .from("provider_tests")
-    .select("id,test_name,url")
+    .select("id,test_name,url,biomarkers_list")
     .eq("provider_id", PROVIDER)
     .eq("is_active", true);
   const byNorm = new Map();
@@ -273,7 +277,7 @@ Deno.serve(async (req) => {
     const row = bySlug.get(slugRaw(url)) || byNorm.get(norm(p.name));
     if (row) {
       if (!dry) {
-        const upd = {
+        const upd: Record<string, unknown> = {
           url,
           scrape_source_url: url,
           url_verified: true,
@@ -289,6 +293,17 @@ Deno.serve(async (req) => {
           upd.turnaround_not_stated = false;
         }
         if (p.sample) upd.sample_type = p.sample;
+        if (p.bios.length > 0) {
+          upd.biomarkers_list = p.bios;
+          upd.biomarker_count = p.bios.length;
+          upd.biomarkers_not_stated = false;
+        } else if (
+          !Array.isArray(row.biomarkers_list) ||
+          row.biomarkers_list.length === 0
+        ) {
+          // No itemised list published (panel-only page): flag, never invent.
+          upd.biomarkers_not_stated = true;
+        }
         if (p.descriptionScraped) {
           upd.description_scraped = p.descriptionScraped;
           upd.description = p.descriptionScraped;
@@ -307,7 +322,7 @@ Deno.serve(async (req) => {
         turnaround: p.taText,
       });
       if (!dry) {
-        const ins = {
+        const ins: Record<string, unknown> = {
           provider_id: PROVIDER,
           test_name: p.name,
           url,
@@ -319,7 +334,9 @@ Deno.serve(async (req) => {
           price_not_stated: false,
           category: deriveCategory(p.name),
           sample_type: p.sample,
-          biomarkers_not_stated: true,
+          biomarkers_list: p.bios.length > 0 ? p.bios : null,
+          biomarker_count: p.bios.length > 0 ? p.bios.length : null,
+          biomarkers_not_stated: p.bios.length === 0,
           is_active: true,
           last_validated_at: new Date().toISOString(),
         };

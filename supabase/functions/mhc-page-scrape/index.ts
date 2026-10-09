@@ -9,6 +9,7 @@
 // authenticate correctly until you do, by design.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { htmlToText } from "../_shared/scrape/html.ts";
+import { parseMedicalDiagnosisTestsIncluded } from "../_shared/scrape/biomarkerParsers.ts";
 
 const SECRET = Deno.env.get("MHC_SYNC_SECRET") ?? "";
 
@@ -157,18 +158,10 @@ function parsePage(html: string) {
       .match(/(Blood|Urine|Stool|Saliva|Swab|Semen)/i);
     if (sm) sample = sm[1];
   }
-  let bios: string[] = [];
-  const bIdx = html.search(/Tests Included/i);
-  if (bIdx >= 0) {
-    const ul = html
-      .slice(bIdx, bIdx + 6000)
-      .match(/<ul[^>]*>([\s\S]*?)<\/ul>/i);
-    if (ul) {
-      bios = [...ul[1].matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi)]
-        .map((m) => stripTags(m[1]))
-        .filter((x) => x && x.length > 1 && x.length < 120);
-    }
-  }
+  // Read the provider's own "Tests Included" element whole. The previous
+  // version searched a 6,000-character window after the first
+  // case-insensitive "tests included", which on long pages is page furniture.
+  const bios: string[] = parseMedicalDiagnosisTestsIncluded(html);
   const descriptionScraped = extractDescriptionScraped(html, name);
   return {
     name,
@@ -234,7 +227,7 @@ Deno.serve(async (req) => {
   );
   const { data: rows } = await supabase
     .from("provider_tests")
-    .select("id, test_name, biomarker_count")
+    .select("id, test_name, biomarker_count, biomarkers_list")
     .eq("provider_id", providerId)
     .eq("is_active", true);
   const byNorm = new Map<string, any>();
@@ -315,6 +308,14 @@ Deno.serve(async (req) => {
         upd.biomarker_count = p.bios.length;
         upd.biomarkers_list = p.bios;
         upd.biomarkers_not_stated = false;
+      } else if (
+        !Array.isArray(row.biomarkers_list) ||
+        row.biomarkers_list.length === 0
+      ) {
+        // Page publishes no itemised list (e.g. Sputum, Stool Culture /
+        // Bacteria PCR). Never invent names; flag it instead. An existing
+        // list is left untouched.
+        upd.biomarkers_not_stated = true;
       }
       if (p.taText) {
         upd.turnaround_days_text = p.taText;

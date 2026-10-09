@@ -30,6 +30,44 @@ export interface UpsertOptions {
   outOfStock?: boolean;
   /** If true, we allow price to go from >0 to null (product removed). */
   allowPriceClear?: boolean;
+  /**
+   * If true, an existing non-empty biomarkers_list may be replaced with null
+   * or an empty list. Off by default: a parser miss must never wipe a list.
+   */
+  allowBiomarkerClear?: boolean;
+}
+
+function hasList(v: unknown): v is unknown[] {
+  return Array.isArray(v) && v.length > 0;
+}
+
+/**
+ * Safety rail: refuse to replace a stored non-empty biomarker list with
+ * nothing unless the caller opts in. Returns the list and count to write.
+ */
+export function guardBiomarkerList(
+  existing: Record<string, unknown> | null,
+  incomingList: unknown,
+  incomingCount: number | null | undefined,
+  allowClear: boolean,
+  warnings: string[],
+): { list: unknown; count: number | null } {
+  if (
+    !hasList(incomingList) &&
+    !allowClear &&
+    existing &&
+    hasList(existing.biomarkers_list)
+  ) {
+    warnings.push(
+      "refused to replace existing biomarkers_list with an empty list without allowBiomarkerClear",
+    );
+    const kept = existing.biomarkers_list;
+    return { list: kept, count: kept.length };
+  }
+  return {
+    list: incomingList ?? null,
+    count: incomingCount ?? null,
+  };
 }
 
 const REQUIRED_FIELDS = [
@@ -113,6 +151,7 @@ export async function upsertWithProvenance(
     scrapeRunId = null,
     outOfStock = false,
     allowPriceClear = false,
+    allowBiomarkerClear = false,
   } = opts;
 
   try {
@@ -161,6 +200,14 @@ export async function upsertWithProvenance(
       }
     }
 
+    const bio = guardBiomarkerList(
+      existing,
+      input.biomarkers_list,
+      input.biomarker_count,
+      allowBiomarkerClear,
+      warnings,
+    );
+
     const row: Record<string, unknown> = {
       provider_id: input.provider_id,
       test_name: input.test_name,
@@ -169,8 +216,8 @@ export async function upsertWithProvenance(
       collection_fee: input.collection_fee ?? null,
       gp_review_fee: input.gp_review_fee ?? null,
       home_visit_fee: input.home_visit_fee ?? null,
-      biomarker_count: input.biomarker_count ?? null,
-      biomarkers_list: input.biomarkers_list ?? null,
+      biomarker_count: bio.count,
+      biomarkers_list: bio.list,
       turnaround_raw: input.turnaround_raw ?? null,
       turnaround_hours: input.turnaround_hours ?? null,
       turnaround_days: input.turnaround_days ?? null,
@@ -182,9 +229,7 @@ export async function upsertWithProvenance(
       url: input.url ?? input.scrape_source_url ?? null,
       last_validated_at: new Date().toISOString(),
       price_not_stated: safePrice === null,
-      biomarkers_not_stated:
-        !Array.isArray(input.biomarkers_list) ||
-        (input.biomarkers_list as unknown[]).length === 0,
+      biomarkers_not_stated: !hasList(bio.list),
       turnaround_not_stated:
         !input.turnaround_unit || input.turnaround_unit === "not_stated",
     };
