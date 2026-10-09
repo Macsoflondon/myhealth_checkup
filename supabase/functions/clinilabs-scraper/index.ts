@@ -8,11 +8,18 @@ import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
 import {
   upsertWithProvenance,
   parseTurnaround,
-  normaliseBiomarkers,
   startScrapeRun,
   finishScrapeRun,
   newCounters,
+  acquireRateToken,
+  getProviderRateLimit,
 } from "../_shared/scrape/index.ts";
+import {
+  parseClinilabsBodyHtml,
+  parseClinilabsProductPage,
+  reconcileBiomarkerCount,
+  type ParsedBiomarkers,
+} from "../_shared/scrape/biomarkerParsers.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -76,19 +83,35 @@ function determineCategory(
   return "General Health";
 }
 
-function extractBiomarkersFromHtml(html: string): string[] {
-  const items = new Set<string>();
-  const liRe = /<li[^>]*>([\s\S]*?)<\/li>/gi;
-  let m: RegExpExecArray | null;
-  while ((m = liRe.exec(html)) !== null) {
-    const text = stripHtml(m[1]);
-    if (!text || text.length < 2 || text.length > 80) continue;
-    if (/\b(add to|buy|log in|reviews?|delivery|privacy)\b/i.test(text))
-      continue;
-    items.add(text);
-    if (items.size > 200) break;
+/**
+ * Markers live in the rendered product page as `details.bio-acc` accordions,
+ * not in Shopify `body_html` (which has no `<li>` list). Read the page first
+ * and fall back to the legacy `<li>` parse only when it has no accordions.
+ */
+async function fetchProductBiomarkers(
+  handle: string,
+  bodyHtml: string,
+): Promise<ParsedBiomarkers & { source: "page" | "body_html" | "none" }> {
+  try {
+    await acquireRateToken(PROVIDER_ID, getProviderRateLimit(PROVIDER_ID));
+    const res = await fetch(`${SHOPIFY_BASE}/products/${handle}`, {
+      headers: { "User-Agent": "MyHealthCheckup/1.0", Accept: "text/html" },
+    });
+    if (res.ok) {
+      const parsed = parseClinilabsProductPage(await res.text());
+      if (parsed.biomarkers.length > 0) return { ...parsed, source: "page" };
+    } else {
+      await res.body?.cancel();
+    }
+  } catch (_e) {
+    // Fall through to the body_html parse.
   }
-  return normaliseBiomarkers(Array.from(items));
+  const fallback = parseClinilabsBodyHtml(bodyHtml);
+  return {
+    biomarkers: fallback,
+    statedCount: null,
+    source: fallback.length > 0 ? "body_html" : "none",
+  };
 }
 
 function extractTurnaroundText(text: string): string | null {
