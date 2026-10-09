@@ -51,11 +51,17 @@ const DAY_MS = 86_400_000;
 const QUIET_AFTER_MS = 2 * DAY_MS;
 
 const REASON_LABEL: Record<ClickExclusionReason, string> = {
-  burst: "Fast repeat sweep",
+  sweep: "Page sweep",
+  burst: "Rapid clicks from one address",
   headless: "Automation browser",
   bot: "Crawler",
 };
-const REASON_ORDER: ClickExclusionReason[] = ["burst", "headless", "bot"];
+const REASON_ORDER: ClickExclusionReason[] = [
+  "sweep",
+  "burst",
+  "headless",
+  "bot",
+];
 
 export default function ClicksSection() {
   const [range] = useOsRange();
@@ -128,7 +134,7 @@ function ClicksBody({
             label="Qualified clicks"
             value={formatInt(totals.qualified)}
             delta={formatDelta(totals.qualified, summary.previous.qualified)}
-            hint={`Previous ${win.days} days: ${formatInt(summary.previous.qualified)}`}
+            hint={`Previous ${win.days} days to the same time of day: ${formatInt(summary.previous.qualified)}`}
           />
           <KpiTile
             label="All recorded clicks"
@@ -350,14 +356,14 @@ function ExcludedPanel({
   source: SourceInfo;
 }) {
   const { method, totals, excluded_bursts: bursts } = summary;
-  const flaggedOnly = totals.excluded - (totals.excluded_by_reason.burst ?? 0);
+  const flaggedOnly = totals.excluded - (totals.excluded_by_reason.sweep ?? 0);
 
   let emptyText = "No automated traffic in this period.";
   if (totals.excluded > 0) {
     emptyText =
       flaggedOnly > 0
-        ? `No fast repeat sweeps in this period. The ${formatInt(totals.excluded)} excluded clicks came from automation browsers or crawlers.`
-        : "No fast repeat sweeps in this period.";
+        ? `No page sweeps in this period. The ${formatInt(totals.excluded)} excluded clicks were flagged on arrival.`
+        : "No page sweeps in this period.";
   }
 
   return (

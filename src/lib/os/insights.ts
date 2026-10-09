@@ -519,6 +519,16 @@ function topProvider(
   return { providerId: top.provider_id, clicks: top.clicks };
 }
 
+/**
+ * Anyone can record a click with any source_page, so a page path only goes
+ * into facts and insights (and from there into the AI briefing prompt) when
+ * it looks like a plain site path.
+ */
+const SAFE_PAGE_PATH = /^\/[A-Za-z0-9/._~%-]{0,120}$/;
+export function safePagePath(path: string): string {
+  return SAFE_PAGE_PATH.test(path) ? path : "an unlisted page";
+}
+
 function largestBurst(clicks: ClicksSummary) {
   const bursts = Array.isArray(clicks.excluded_bursts)
     ? clicks.excluded_bursts.filter(
@@ -648,7 +658,7 @@ function clickFacts(add: AddFact, input: InsightInput, d: Derived) {
     add(
       "clicks.largest_burst_page",
       "Page hit by the largest automated sweep",
-      burst.source_page,
+      safePagePath(burst.source_page),
       "text",
     );
     add(
@@ -1045,8 +1055,8 @@ function excludedClicksRule(ctx: RuleContext): Insight[] {
   if (!clicks || !isNum(excluded) || excluded <= 0) return [];
   const burst = largestBurst(clicks);
   const lead = burst
-    ? `The largest sweep was ${plural(burst.clicks, "click", "clicks")} on ${burst.source_page} on ${formatDate(burst.started_at)}.`
-    : "They came from automation browsers or crawlers flagged on arrival.";
+    ? `The largest sweep was ${plural(burst.clicks, "click", "clicks")} on ${safePagePath(burst.source_page)} on ${formatDate(burst.started_at)}.`
+    : "They were flagged on arrival as automated traffic.";
   return [
     {
       id: "clicks.excluded",

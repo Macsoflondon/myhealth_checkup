@@ -246,7 +246,7 @@ function AffiliateRevenue({
             label="Commission"
             value={<Money value={totals.commission_gbp} />}
             delta={formatDelta(totals.commission_gbp, previous.commission_gbp)}
-            hint={`Previous ${win.days} days: ${formatGbp(previous.commission_gbp)}`}
+            hint={`Previous ${win.days} days to the same time of day: ${formatGbp(previous.commission_gbp)}`}
           />
           <KpiTile
             label="Confirmed"

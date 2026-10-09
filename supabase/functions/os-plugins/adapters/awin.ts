@@ -1,6 +1,7 @@
 // Awin adapter: reads the publisher's transactions for the last 90 London
-// days (three 30-day requests, as Awin allows at most 31 days per request)
-// and stores them in affiliate_conversions through
+// days (three 30-day requests, as Awin allows at most 31 days per request),
+// plus those validated or declined in the last 30 days whatever their sale
+// date, so a late decline on an older sale still lands, and stores them in affiliate_conversions through
 // os_upsert_network_conversions, which links each one to our click when its
 // clickRef is one of our click ids. Parsing lives in awin-normalise.ts (pure,
 // tested). The access token never appears in a URL that is logged: errors
@@ -103,10 +104,17 @@ async function sync(ctx: AdapterContext): Promise<AdapterResult> {
   const advertiserMap = stringMap(ctx.config, "advertiser_map");
   const windows = awinWindows(ctx.now);
 
+  const requests = windows.map((w) =>
+    awinTransactionsUrl(settings.publisherId, w),
+  );
+  const latest = windows[windows.length - 1];
+  if (latest) {
+    requests.push(
+      awinTransactionsUrl(settings.publisherId, latest, "validation"),
+    );
+  }
   const batches = await Promise.all(
-    windows.map((w) =>
-      awinGet(ctx, settings, awinTransactionsUrl(settings.publisherId, w)),
-    ),
+    requests.map((url) => awinGet(ctx, settings, url)),
   );
   const normalised = normaliseAwinTransactions(batches, advertiserMap);
 

@@ -138,15 +138,21 @@ export function awinWindows(now: Date): AwinWindow[] {
   return out;
 }
 
+/**
+ * dateType "transaction" selects by sale date; "validation" by the date the
+ * advertiser confirmed or declined it, which catches status changes on sales
+ * older than the transaction windows.
+ */
 export function awinTransactionsUrl(
   publisherId: string,
   window: AwinWindow,
+  dateType: "transaction" | "validation" = "transaction",
 ): string {
   const params = new URLSearchParams({
     startDate: window.startDate,
     endDate: window.endDate,
     timezone: AWIN_TIMEZONE,
-    dateType: "transaction",
+    dateType,
   });
   return `${AWIN_API_BASE}/publishers/${encodeURIComponent(publisherId)}/transactions/?${params}`;
 }

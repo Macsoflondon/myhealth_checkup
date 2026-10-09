@@ -49,9 +49,10 @@ results and one indexed snapshots query, which keeps them fast.
 
 - **Qualified clicks.** A click is excluded from qualified clicks when
   `traffic_flag` is set at ingest (`headless` automation browser, `bot`
-  crawler, `burst` more than 10 clicks a minute from one address), or when 10
-  or more clicks hit the same page within 120 seconds of each other. Excluded
-  clicks stay in the raw totals and the dashboard lists each excluded burst.
+  crawler, `burst` more than 10 clicks a minute from one address), or when it
+  falls inside a 120-second span holding 10 or more clicks on the same page
+  (reason `sweep`). Excluded clicks stay in the raw totals, and the Clicks
+  section lists each page sweep.
   The 180 clicks on `/provider/lola-health` between 02:02 and 02:05 UTC on
   4 October 2026 (one session clicking every Lola Health test) are the reason
   for this rule; against production data the rule separates exactly those 180.
@@ -59,6 +60,10 @@ results and one indexed snapshots query, which keeps them fast.
   the client address only to set `traffic_flag`, then discards both. If the
   frontend deploys before the migration, the endpoint retries the insert
   without the label so no click is lost.
+- **Comparisons.** Each change figure compares the window with the same
+  number of London calendar days before it (`os_previous_window`). While the
+  current window is still running, the previous one stops at the same London
+  time of day, so a part day is never set against a full one.
 - **Revenue.** Reversed conversions are shown but never counted. Commission is
   what the network reports, not cash received. Commission never affects
   ranking.
@@ -69,6 +74,9 @@ results and one indexed snapshots query, which keeps them fast.
   fallback on). Each returned point must cite fact ids, and every number in it
   must match a number in the facts it cites. Points that fail are dropped and
   counted. Without `ANTHROPIC_API_KEY` the page shows the rule-based insights.
+  Page paths come from visitors, so a path that is not a plain site path
+  reaches the briefing as "an unlisted page", and the prompt tells Claude to
+  treat every value as data.
 
 ## Connecting plugins
 
@@ -148,6 +156,14 @@ says the edge function did not answer.
   RLS policy evaluation order. PR #64 restores the file, scopes `admin_funnel`
   to `authenticated` and gates `trackFunnelEvent` on analytics consent. The
   AI OS does not read this table.
+- **Direct inserts skip the ingest labels.** The click endpoint writes to
+  `affiliate_clicks` with the public key, so a script can insert rows through
+  the Data API without a `traffic_flag`. The 120-second sweep rule still
+  catches fast runs; slow scripted inserts would count as qualified. Moving
+  the insert behind a server-only credential would close this.
+- **Manual sync cooldown.** The 60-second cooldown reads the sync log, which
+  is written when a run finishes, so two manual syncs started together can
+  both run. Only admins can start one, and the hourly cron is unaffected.
 - **No GA4 tag in the codebase.** `src/lib/analytics.ts` forwards events to
   `gtag` only if a tag is already on the page.
 
@@ -155,7 +171,8 @@ says the edge function did not answer.
 
 - SQL: `bash scripts/sql-tests/run-ai-os.sh` replays the affiliate and AI OS
   migrations twice on a disposable local Postgres with Supabase stand-ins and
-  runs 68 assertions (burst exclusion, London days, MFA gating, Vault
+  runs 82 assertions (sweep and burst exclusion, London days and clock
+  changes, the previous window, MFA gating, Vault
   write-only access, conversion upserts, revenue totals, cron jobs).
 - Unit: `src/lib/os/__tests__/` and
   `src/lib/affiliate/__tests__/traffic-quality.test.ts` (vitest).

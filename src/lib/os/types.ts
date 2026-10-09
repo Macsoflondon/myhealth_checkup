@@ -16,7 +16,12 @@ export type {
   OsTestResponse,
 } from "../../../supabase/functions/_shared/os/contract";
 
-export type ClickExclusionReason = "burst" | "headless" | "bot";
+/**
+ * sweep: 10+ clicks on one page within 120 seconds. burst: one address
+ * clicking faster than a person can (flagged at ingest). headless and bot:
+ * flagged at ingest from the user agent.
+ */
+export type ClickExclusionReason = "sweep" | "burst" | "headless" | "bot";
 
 export type ClicksSummary = {
   from: string;
@@ -33,7 +38,8 @@ export type ClicksSummary = {
     excluded: number;
     excluded_by_reason: Partial<Record<ClickExclusionReason, number>>;
   };
-  previous: { raw: number; qualified: number };
+  /** Cut at the same London time of day while the current window runs. */
+  previous: { raw: number; qualified: number; from?: string; to?: string };
   daily: { day: string; qualified: number; excluded: number }[];
   by_provider: { provider_id: string; clicks: number; share: number | null }[];
   by_placement: { placement: string; clicks: number; share: number | null }[];
@@ -73,7 +79,12 @@ export type RevenueSummary = {
     unattributed: number;
     missing_commission: number;
   };
-  previous: { conversions: number; commission_gbp: number };
+  previous: {
+    conversions: number;
+    commission_gbp: number;
+    from?: string;
+    to?: string;
+  };
   daily: { day: string; conversions: number; commission_gbp: number }[];
   by_provider: {
     provider_id: string;

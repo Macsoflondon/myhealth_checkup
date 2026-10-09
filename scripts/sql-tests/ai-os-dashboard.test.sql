@@ -79,7 +79,7 @@ create temp table s as
 select pg_temp.eq('raw clicks', (j->'totals'->>'raw')::int, 195) from s;
 select pg_temp.eq('qualified clicks', (j->'totals'->>'qualified')::int, 14) from s;
 select pg_temp.eq('excluded clicks', (j->'totals'->>'excluded')::int, 181) from s;
-select pg_temp.eq('excluded burst', (j->'totals'->'excluded_by_reason'->>'burst')::int, 180) from s;
+select pg_temp.eq('excluded sweep', (j->'totals'->'excluded_by_reason'->>'sweep')::int, 180) from s;
 select pg_temp.eq('excluded headless', (j->'totals'->'excluded_by_reason'->>'headless')::int, 1) from s;
 select pg_temp.eq('previous raw', (j->'previous'->>'raw')::int, 2) from s;
 select pg_temp.eq('previous qualified', (j->'previous'->>'qualified')::int, 2) from s;
@@ -105,6 +105,45 @@ select pg_temp.eq('placement shares sum', (select sum((p->>'clicks')::int) from 
 
 select pg_temp.expect_error('range reversed', $q$select public.os_clicks_summary('2026-10-08Z', '2026-10-01Z')$q$, '22023');
 select pg_temp.expect_error('range too long', $q$select public.os_clicks_summary('2024-01-01Z', '2026-10-01Z')$q$, '22023');
+
+-- Sweep rule edges, ingest bursts, and the previous window across the
+-- 29 March 2026 clock change. Dates sit well clear of the October data.
+reset role;
+insert into public.affiliate_clicks (click_id, clicked_at, provider_id, source_page, placement, destination_host)
+select gen_random_uuid(), '2026-03-27 10:00Z'::timestamptz + (i * interval '24 seconds'), 'medichecks', '/spread', 'card', 'medichecks.com'
+from generate_series(0, 9) i;
+insert into public.affiliate_clicks (click_id, clicked_at, provider_id, source_page, placement, destination_host)
+select gen_random_uuid(), '2026-03-27 11:00Z'::timestamptz + (i * interval '10 seconds'), 'randox', '/swept', 'card', 'randoxhealth.com'
+from generate_series(0, 9) i;
+insert into public.affiliate_clicks (click_id, clicked_at, provider_id, source_page, placement, destination_host, traffic_flag) values
+  (gen_random_uuid(), '2026-03-27 12:00Z', 'medichecks', '/tests/a', 'card', 'medichecks.com', 'burst'),
+  (gen_random_uuid(), '2026-03-27 12:05Z', 'medichecks', '/tests/b', 'card', 'medichecks.com', 'burst'),
+  -- 00:30 GMT on 19 Mar: inside the previous 7 London days (19 to 25 Mar)
+  (gen_random_uuid(), '2026-03-19 00:30Z', 'medichecks', '/compare', 'card', 'medichecks.com', null),
+  -- 23:30 GMT on 18 Mar: before them
+  (gen_random_uuid(), '2026-03-18 23:30Z', 'medichecks', '/compare', 'card', 'medichecks.com', null);
+set role authenticated;
+select pg_temp.as_user('00000000-0000-0000-0000-00000000000a', 'aal2');
+create temp table m as
+  select public.os_clicks_summary('2026-03-26 00:00Z', '2026-04-01 23:00Z') as j;
+select pg_temp.eq('march raw', (j->'totals'->>'raw')::int, 22) from m;
+select pg_temp.eq('10 clicks over 216 s stay qualified', (j->'totals'->>'qualified')::int, 10) from m;
+select pg_temp.eq('march sweep', (j->'totals'->'excluded_by_reason'->>'sweep')::int, 10) from m;
+select pg_temp.eq('march ingest burst', (j->'totals'->'excluded_by_reason'->>'burst')::int, 2) from m;
+select pg_temp.eq('only the page sweep is listed', jsonb_array_length(j->'excluded_bursts'), 1) from m;
+select pg_temp.eq('listed sweep page', j->'excluded_bursts'->0->>'source_page', '/swept') from m;
+select pg_temp.eq('listed sweep size', (j->'excluded_bursts'->0->>'clicks')::int, 10) from m;
+select pg_temp.eq('previous starts at London midnight', (j->'previous'->>'from')::timestamptz, '2026-03-19 00:00Z'::timestamptz) from m;
+select pg_temp.eq('previous ends at current start', (j->'previous'->>'to')::timestamptz, '2026-03-26 00:00Z'::timestamptz) from m;
+select pg_temp.eq('previous counts London days only', (j->'previous'->>'raw')::int, 1) from m;
+-- A window still running is compared with the same part of the previous one.
+select pg_temp.eq('running window cut at the same time of day',
+  (select w.prev_to = ((now() at time zone 'Europe/London') - interval '7 days') at time zone 'Europe/London'
+      and w.prev_from = (d.today - 13)::timestamp at time zone 'Europe/London'
+   from (select (now() at time zone 'Europe/London')::date as today) d,
+        public.os_previous_window(
+          (d.today - 6)::timestamp at time zone 'Europe/London',
+          (d.today + 1)::timestamp at time zone 'Europe/London') w), true);
 
 -- ---------- access control ----------
 select pg_temp.as_user('00000000-0000-0000-0000-00000000000a', 'aal1');

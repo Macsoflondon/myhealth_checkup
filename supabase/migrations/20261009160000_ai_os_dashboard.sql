@@ -193,17 +193,19 @@ begin
     delete from vault.secrets where id = v_id;
     v_action := 'os_plugin_secret_removed';
   elsif v_id is null then
-    perform vault.create_secret(v_value, v_name, 'AI OS plugin credential');
+    v_id := vault.create_secret(v_value, v_name, 'AI OS plugin credential');
     v_action := 'os_plugin_secret_set';
   else
     perform vault.update_secret(v_id, v_value);
     v_action := 'os_plugin_secret_set';
   end if;
 
-  -- Audit trail without the value.
+  -- Audit trail without the value. audit_logs.record_id is uuid, so it
+  -- holds the Vault secret id; the readable name goes in new_data.
   insert into public.audit_logs (action, table_name, record_id, user_id, new_data)
-  values (v_action, 'vault.secrets', v_name, auth.uid(),
-          jsonb_build_object('plugin_id', p_plugin, 'key', p_key));
+  values (v_action, 'vault.secrets', v_id, auth.uid(),
+          jsonb_build_object('plugin_id', p_plugin, 'key', p_key,
+                             'secret_name', v_name));
 end;
 $$;
 
@@ -261,14 +263,55 @@ grant execute on function public.os_get_plugin_secrets(text) to service_role;
 -- 4. Provider click summary
 -- ---------------------------------------------------------------------------
 
+-- The comparison window for [p_from, p_to): the same number of London
+-- calendar days immediately before it, starting at the same London time of
+-- day (so a clock change does not shift it by an hour). While the current
+-- window is still running, the previous one is cut at the same point, so a
+-- part day is compared with the same part of a day.
+create or replace function public.os_previous_window(
+  p_from timestamptz,
+  p_to timestamptz,
+  out prev_from timestamptz,
+  out prev_to timestamptz
+)
+language plpgsql
+stable
+set search_path = public
+as $$
+declare
+  v_days integer;
+  v_shift interval;
+begin
+  v_days := ((p_to - interval '1 microsecond') at time zone 'Europe/London')::date
+          - (p_from at time zone 'Europe/London')::date + 1;
+  v_shift := make_interval(days => v_days);
+  prev_from := ((p_from at time zone 'Europe/London') - v_shift) at time zone 'Europe/London';
+  prev_to := least(
+    ((least(p_to, now()) at time zone 'Europe/London') - v_shift) at time zone 'Europe/London',
+    p_from
+  );
+  if prev_to < prev_from then
+    prev_to := prev_from;
+  end if;
+end;
+$$;
+
+revoke all on function public.os_previous_window(timestamptz, timestamptz) from public, anon;
+grant execute on function public.os_previous_window(timestamptz, timestamptz) to authenticated, service_role;
+
 -- Clicks on outbound provider links for [p_from, p_to), compared with the
--- window of the same length immediately before it.
+-- same number of London calendar days immediately before it. When the
+-- current window is still running (it ends after now), the previous window
+-- is cut at the same London time of day, so a part day is never set
+-- against a full one.
 --
--- A click is excluded from "qualified" clicks when it carries an ingest flag,
--- or when 10 or more clicks hit the same source page within 120 seconds either
--- side of it (an automated sweep, such as the run of 180 clicks on
--- /provider/lola-health on 4 October 2026). Excluded clicks are still counted
--- and reported, never silently dropped. Days are Europe/London calendar days.
+-- A click is excluded from "qualified" clicks when it carries an ingest flag
+-- ('headless', 'bot', or 'burst' for one address clicking faster than a
+-- person can), or when it falls inside a 120-second span holding 10 or more
+-- clicks on the same source page: reason 'sweep', such as the run of 180
+-- clicks on /provider/lola-health on 4 October 2026. Excluded clicks are
+-- still counted and reported, never silently dropped. Days are
+-- Europe/London calendar days.
 create or replace function public.os_clicks_summary(
   p_from timestamptz,
   p_to timestamptz
@@ -281,6 +324,7 @@ set search_path = public
 as $$
 declare
   v_prev_from timestamptz;
+  v_prev_to timestamptz;
   v_result jsonb;
 begin
   if not public.has_role(auth.uid(), 'admin') then
@@ -290,26 +334,40 @@ begin
      or p_to - p_from > interval '400 days' then
     raise exception 'Invalid date range' using errcode = '22023';
   end if;
-  v_prev_from := p_from - (p_to - p_from);
+  select w.prev_from, w.prev_to into v_prev_from, v_prev_to
+  from public.os_previous_window(p_from, p_to) w;
 
   with base as (
+    -- fwd: clicks on the same page in the 120 seconds from this one.
     select
       c.clicked_at, c.provider_id, c.test_id, c.source_page, c.placement, c.traffic_flag,
       count(*) over (
         partition by c.source_page
         order by c.clicked_at
-        range between interval '120 seconds' preceding and interval '120 seconds' following
-      ) as neighbours
+        range between current row and interval '120 seconds' following
+      ) as fwd
     from public.affiliate_clicks c
     where c.clicked_at >= v_prev_from - interval '120 seconds'
       and c.clicked_at < p_to + interval '120 seconds'
-  ), classified as (
+  ), swept as (
+    -- A click is in a sweep when some 120-second span that starts at or
+    -- before it, and reaches it, holds 10 or more clicks.
     select
       b.*,
-      b.clicked_at >= p_from as is_current,
-      coalesce(b.traffic_flag, case when b.neighbours >= 10 then 'burst' end) as excluded_reason
+      coalesce(bool_or(b.fwd >= 10) over (
+        partition by b.source_page
+        order by b.clicked_at
+        range between interval '120 seconds' preceding and current row
+      ), false) as in_sweep
     from base b
-    where b.clicked_at >= v_prev_from and b.clicked_at < p_to
+  ), classified as (
+    select
+      s.*,
+      s.clicked_at >= p_from as is_current,
+      coalesce(s.traffic_flag, case when s.in_sweep then 'sweep' end) as excluded_reason
+    from swept s
+    where (s.clicked_at >= p_from and s.clicked_at < p_to)
+       or (s.clicked_at >= v_prev_from and s.clicked_at < v_prev_to)
   ), cur as (
     select * from classified where is_current
   ), qual as (
@@ -344,7 +402,7 @@ begin
         true
       ) as starts_group
     from cur c
-    where c.excluded_reason = 'burst'
+    where c.excluded_reason = 'sweep'
   ), burst_groups as (
     select
       r.*,
@@ -394,7 +452,12 @@ begin
       from totals t
     ),
     'previous', (
-      select jsonb_build_object('raw', t.prev_raw, 'qualified', t.prev_qualified)
+      select jsonb_build_object(
+        'raw', t.prev_raw,
+        'qualified', t.prev_qualified,
+        'from', v_prev_from,
+        'to', v_prev_to
+      )
       from totals t
     ),
     'daily', coalesce((
@@ -476,7 +539,8 @@ grant execute on function public.os_clicks_summary(timestamptz, timestamptz) to 
 -- ---------------------------------------------------------------------------
 
 -- Affiliate commission for [p_from, p_to) from affiliate_conversions (CSV
--- imports and network syncs), compared with the window before it. Reversed
+-- imports and network syncs), compared with the window before it (see
+-- os_previous_window). Reversed
 -- conversions are reported but never counted as revenue. All amounts GBP.
 create or replace function public.os_revenue_summary(
   p_from timestamptz,
@@ -490,6 +554,7 @@ set search_path = public
 as $$
 declare
   v_prev_from timestamptz;
+  v_prev_to timestamptz;
   v_result jsonb;
 begin
   if not public.has_role(auth.uid(), 'admin') then
@@ -499,12 +564,14 @@ begin
      or p_to - p_from > interval '400 days' then
     raise exception 'Invalid date range' using errcode = '22023';
   end if;
-  v_prev_from := p_from - (p_to - p_from);
+  select w.prev_from, w.prev_to into v_prev_from, v_prev_to
+  from public.os_previous_window(p_from, p_to) w;
 
   with conv as (
     select v.*, v.converted_at >= p_from as is_current
     from public.affiliate_conversions v
-    where v.converted_at >= v_prev_from and v.converted_at < p_to
+    where (v.converted_at >= p_from and v.converted_at < p_to)
+       or (v.converted_at >= v_prev_from and v.converted_at < v_prev_to)
   ), cur as (
     select * from conv where is_current
   ), days as (
@@ -547,7 +614,9 @@ begin
     'previous', (
       select jsonb_build_object(
         'conversions', count(*) filter (where status <> 'reversed'),
-        'commission_gbp', round(coalesce(sum(commission_gbp) filter (where status <> 'reversed'), 0), 2)
+        'commission_gbp', round(coalesce(sum(commission_gbp) filter (where status <> 'reversed'), 0), 2),
+        'from', v_prev_from,
+        'to', v_prev_to
       )
       from conv where not is_current
     ),

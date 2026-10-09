@@ -114,6 +114,12 @@ describe("request URLs", () => {
     expect(url.searchParams.has("accessToken")).toBe(false);
   });
 
+  it("can select by validation date to catch late status changes", () => {
+    const url = new URL(awinTransactionsUrl("123456", window, "validation"));
+    expect(url.searchParams.get("dateType")).toBe("validation");
+    expect(url.searchParams.get("startDate")).toBe("2026-07-12T00:00:00");
+  });
+
   it("adds the access token as a query parameter for the retry", () => {
     expect(awinWithAccessToken("https://api.awin.com/accounts", "a b&c")).toBe(
       "https://api.awin.com/accounts?accessToken=a%20b%26c",
@@ -483,14 +489,18 @@ function windowOf(url: URL): string {
 }
 
 describe("awin adapter", () => {
-  it("reads three windows and upserts the GBP transactions as source awin", async () => {
+  it("reads three windows plus recent validations and upserts the GBP transactions as source awin", async () => {
     const { ctx, calls, rpcCalls } = context((url) =>
       windowOf(url).startsWith("2026-09-10")
         ? [tx({ id: 1 }), tx({ id: 2, advertiserId: 555 })]
         : [tx({ id: 3, commissionAmount: { amount: 1, currency: "EUR" } })],
     );
     const out = await awin.sync(ctx);
-    expect(calls).toHaveLength(3);
+    expect(calls).toHaveLength(4);
+    expect(
+      calls.filter((c) => c.url.searchParams.get("dateType") === "validation")
+        .length,
+    ).toBe(1);
     expect(
       calls.every(
         (c) =>
@@ -520,9 +530,9 @@ describe("awin adapter", () => {
         : new HttpError(401, "api.awin.com answered 401", ""),
     );
     await awin.sync(ctx);
-    expect(calls).toHaveLength(6);
+    expect(calls).toHaveLength(8);
     const retries = calls.filter((c) => c.url.searchParams.has("accessToken"));
-    expect(retries).toHaveLength(3);
+    expect(retries).toHaveLength(4);
     expect(retries.every((c) => !c.init?.headers?.Authorization)).toBe(true);
   });
 

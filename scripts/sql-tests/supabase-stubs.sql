@@ -106,7 +106,7 @@ create table public.audit_logs (
   id uuid primary key default gen_random_uuid(),
   action text not null,
   table_name text not null,
-  record_id text,
+  record_id uuid,
   user_id uuid references auth.users (id) on delete set null,
   new_data jsonb,
   created_at timestamptz not null default now()
