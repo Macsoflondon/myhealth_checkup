@@ -1052,6 +1052,24 @@ export type Database = {
           },
         ]
       }
+      biomarker_lock_state: {
+        Row: {
+          id: number
+          key_hash: string
+          locked_at: string
+        }
+        Insert: {
+          id?: number
+          key_hash: string
+          locked_at?: string
+        }
+        Update: {
+          id?: number
+          key_hash?: string
+          locked_at?: string
+        }
+        Relationships: []
+      }
       biomarker_readings: {
         Row: {
           appointment_id: string | null
@@ -8675,6 +8693,7 @@ export type Database = {
       }
       mhc_sync_secret: { Args: never; Returns: string }
       refresh_provider_test_biomarkers: { Args: never; Returns: Json }
+      refresh_provider_test_biomarkers_impl: { Args: never; Returns: Json }
       regenerate_mfa_backup_codes: { Args: never; Returns: string[] }
       resolve_canonical_category: {
         Args: { _provider_id: string; _source_section: string }

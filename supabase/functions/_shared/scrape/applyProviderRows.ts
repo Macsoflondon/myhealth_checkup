@@ -15,6 +15,8 @@
 // deno-lint-ignore no-explicit-any
 type SupabaseLike = any;
 
+import { looksTruncated } from "./biomarkerParsers.ts";
+
 export interface ProviderDatasetRow {
   test_name?: string | null;
   url?: string | null;
@@ -178,8 +180,18 @@ export async function applyProviderRows(
       Array.isArray(item.biomarkers_list) &&
       item.biomarkers_list.length > 0
     ) {
-      patch.biomarkers_list = item.biomarkers_list;
-      patch.biomarker_count = item.biomarkers_list.length;
+      // External datasets have arrived clipped to a fixed character budget
+      // (labels such as "High-Densi", "Uric ac", "Pancrea"). Refuse them and
+      // keep the stored list rather than publish a cut-off name.
+      if (looksTruncated(item.biomarkers_list, toNumber(item.biomarker_count))) {
+        result.errors.push({
+          test_name: name || null,
+          message: `biomarkers_list rejected as truncated (${item.biomarkers_list.length} names, stated ${item.biomarker_count ?? "n/a"})`,
+        });
+      } else {
+        patch.biomarkers_list = item.biomarkers_list;
+        patch.biomarker_count = item.biomarkers_list.length;
+      }
     }
     if (typeof item.turnaround_raw === "string" && item.turnaround_raw.trim()) {
       patch.turnaround_raw = item.turnaround_raw.trim();
