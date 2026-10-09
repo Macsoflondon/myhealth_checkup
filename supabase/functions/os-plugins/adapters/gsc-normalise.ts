@@ -97,9 +97,27 @@ export function gscWindowEnding(endDate: string, days: number): GscWindow {
   return { startDate: addDays(endDate, -(days - 1)), endDate };
 }
 
-/** The daily series window: 90 days ending yesterday in London. */
+/**
+ * Google publishes final data two or three days late, so the daily request
+ * reaches this many days further back. trimGscDaily then keeps the 90 days
+ * ending on the newest published day.
+ */
+export const GSC_PUBLISH_LAG_DAYS = 7;
+
+/** The daily request: 97 days ending yesterday in London. */
 export function gscDailyWindow(now: Date): GscWindow {
-  return gscWindowEnding(gscYesterday(now), GSC_DAILY_DAYS);
+  return gscWindowEnding(
+    gscYesterday(now),
+    GSC_DAILY_DAYS + GSC_PUBLISH_LAG_DAYS,
+  );
+}
+
+/** The `days` calendar days ending on the series' newest day. */
+export function trimGscDaily(daily: GscDaily, days: number): GscDaily {
+  const last = daily.days[daily.days.length - 1]?.date;
+  if (!last) return daily;
+  const first = addDays(last, -(days - 1));
+  return { ...daily, days: daily.days.filter((d) => d.date >= first) };
 }
 
 /** 7, 28 and 90 day windows ending on endDate. */

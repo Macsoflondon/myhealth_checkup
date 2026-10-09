@@ -24,6 +24,7 @@ import {
   ga4TopPagesRequest,
   parseGa4Batch,
   parseGa4Channels,
+  ga4RequestedDays,
   parseGa4Daily,
   parseGa4Outbound,
   parseGa4PropertyId,
@@ -150,7 +151,11 @@ async function sync(ctx: AdapterContext): Promise<AdapterResult> {
   ]);
 
   const [dailyReport, ...pageReports] = mainReports;
-  const daily = parseGa4Daily(dailyReport, propertyId);
+  const daily = parseGa4Daily(
+    dailyReport,
+    propertyId,
+    ga4RequestedDays(dailyReport, ctx.now),
+  );
   const topPages: Ga4TopPages = {
     ranges: toRanged(pageReports.map(parseGa4TopPages)),
   };

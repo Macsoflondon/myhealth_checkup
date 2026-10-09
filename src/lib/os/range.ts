@@ -103,3 +103,21 @@ export function previousNDays<T extends { date: string }>(
   const start = addDays(end, -(days - 1));
   return rows.filter((r) => r.date >= start && r.date <= end);
 }
+
+/**
+ * True when data reaches back to the start of the comparison window, so a
+ * change against it means something. `since` is the first record (first
+ * click, earliest conversion); with no records there is nothing to compare.
+ * Summaries from before 9 Oct 2026 carry neither field and count as covered.
+ */
+export function previousCovered(
+  since: string | null | undefined,
+  previousFrom: string | undefined,
+): boolean {
+  if (since === undefined || previousFrom === undefined) return true;
+  if (since === null) return false;
+  const a = Date.parse(since);
+  const b = Date.parse(previousFrom);
+  if (!Number.isFinite(a) || !Number.isFinite(b)) return true;
+  return a <= b;
+}

@@ -60,9 +60,15 @@ export function formatDelta(
   if (previous === 0) {
     if (current === 0)
       return { ratio: 0, direction: "flat", text: "no change" };
-    return { ratio: null, direction: "up", text: "new this period" };
+    return {
+      ratio: null,
+      direction: current > 0 ? "up" : "down",
+      text: "new this period",
+    };
   }
-  const ratio = (current - previous) / previous;
+  // Divide by the size of the base so a negative base (a Stripe net loss)
+  // still reads as up when the figure improves.
+  const ratio = (current - previous) / Math.abs(previous);
   if (Math.abs(ratio) < 0.005) {
     return { ratio: 0, direction: "flat", text: "no change" };
   }

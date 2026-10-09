@@ -13,7 +13,8 @@ import type {
 export const METRICOOL_API_BASE = "https://app.metricool.com/api";
 /** Days of posts and follower totals each sync reads, today included. */
 export const METRICOOL_DAYS = 90;
-export const METRICOOL_MAX_POSTS = 200;
+/** Posts kept per network: 90 days at five a day. */
+export const METRICOOL_MAX_POSTS = 450;
 export const METRICOOL_MAX_UNMAPPED_KEYS = 40;
 export const METRICOOL_NETWORKS: readonly SocialNetwork[] = [
   "facebook",
@@ -681,7 +682,8 @@ function newestFirst(a: SocialPost, b: SocialPost): number {
 /**
  * Joins the endpoint batches: one entry per network and id (a reel wins over
  * the same item listed as a post, since it carries play counts), newest
- * first, at most METRICOOL_MAX_POSTS.
+ * first, at most METRICOOL_MAX_POSTS per network. Networks that had more are
+ * listed in `truncated`.
  */
 export function buildMetricoolPosts(
   networks: readonly SocialNetwork[],
@@ -700,11 +702,25 @@ export function buildMetricoolPosts(
       }
     }
   }
+  const perNetwork = new Map<SocialNetwork, SocialPost[]>();
+  for (const post of byKey.values()) {
+    const list = perNetwork.get(post.network) ?? [];
+    list.push(post);
+    perNetwork.set(post.network, list);
+  }
+  const kept: SocialPost[] = [];
+  const truncated: SocialNetwork[] = [];
+  for (const [network, list] of perNetwork) {
+    list.sort(newestFirst);
+    if (list.length > METRICOOL_MAX_POSTS) truncated.push(network);
+    kept.push(...list.slice(0, METRICOOL_MAX_POSTS));
+  }
   return {
     networks: [...networks],
-    posts: [...byKey.values()].sort(newestFirst).slice(0, METRICOOL_MAX_POSTS),
+    posts: kept.sort(newestFirst),
     unmapped_keys: [...unmapped].sort().slice(0, METRICOOL_MAX_UNMAPPED_KEYS),
     errors: [...errors],
+    truncated: METRICOOL_NETWORKS.filter((n) => truncated.includes(n)),
   };
 }
 

@@ -12,6 +12,7 @@ import {
   ga4TopPagesRequest,
   parseGa4Batch,
   parseGa4Channels,
+  ga4RequestedDays,
   parseGa4Daily,
   parseGa4Outbound,
   parseGa4PropertyId,
@@ -180,6 +181,42 @@ describe("parseGa4Daily", () => {
 
   it("returns no days for an empty report", () => {
     expect(parseGa4Daily({}, "1").days).toEqual([]);
+  });
+
+  it("fills every requested day, so an outage reads as zero visits", () => {
+    const out = parseGa4Daily(
+      report(["date"], SHUFFLED, [
+        [["20261002"], ["1", "40", "20", "4", "8", "12"]],
+      ]),
+      "1",
+      { from: "2026-10-01", to: "2026-10-08" },
+    );
+    expect(out.days.map((d) => d.date)).toEqual([
+      "2026-10-01",
+      "2026-10-02",
+      "2026-10-03",
+      "2026-10-04",
+      "2026-10-05",
+      "2026-10-06",
+      "2026-10-07",
+      "2026-10-08",
+    ]);
+    expect(out.days[7].sessions).toBe(0);
+    expect(out.days[1].sessions).toBeGreaterThan(0);
+  });
+
+  it("works out the requested days in the property's time zone", () => {
+    const now = new Date("2026-10-09T23:30:00Z");
+    expect(ga4RequestedDays({}, now)).toEqual({
+      from: "2026-07-12",
+      to: "2026-10-09",
+    });
+    expect(
+      ga4RequestedDays({ metadata: { timeZone: "America/New_York" } }, now),
+    ).toEqual({ from: "2026-07-11", to: "2026-10-08" });
+    expect(
+      ga4RequestedDays({ metadata: { timeZone: "Not/AZone" } }, now).to,
+    ).toBe("2026-10-09");
   });
 
   it("refuses a report that leaves out a requested metric", () => {

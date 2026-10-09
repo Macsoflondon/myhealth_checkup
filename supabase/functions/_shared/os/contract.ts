@@ -225,6 +225,11 @@ export type MetricoolPosts = {
   /** Field names Metricool returned that the mapping ignored, for checking the mapping. */
   unmapped_keys: string[];
   errors: { network: SocialNetwork; message: string }[];
+  /**
+   * Networks whose posts hit the per-network limit, so their oldest posts in
+   * the window are missing. Absent in snapshots written before 9 Oct 2026.
+   */
+  truncated?: SocialNetwork[];
 };
 
 /** metricool / followers: daily follower totals, oldest first. */

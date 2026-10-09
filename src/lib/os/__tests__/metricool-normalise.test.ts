@@ -499,6 +499,27 @@ describe("buildMetricoolPosts", () => {
     expect(out.posts.find((p) => p.network === "instagram")?.type).toBe("reel");
   });
 
+  it("caps each network separately, so one busy network does not crowd out the others", () => {
+    const at = (i: number) =>
+      new Date(Date.UTC(2026, 8, 1) + i * 3_600_000).toISOString();
+    const instagram = Array.from({ length: METRICOOL_MAX_POSTS + 1 }, (_, i) =>
+      post({ id: `ig${i}`, network: "instagram", published_at: at(i + 100) }),
+    );
+    const facebook = Array.from({ length: 30 }, (_, i) =>
+      post({ id: `fb${i}`, network: "facebook", published_at: at(i) }),
+    );
+    const out = buildMetricoolPosts(
+      ["facebook", "instagram"],
+      [{ posts: [...instagram, ...facebook], unmappedKeys: [] }],
+      [],
+    );
+    expect(out.posts.filter((p) => p.network === "facebook")).toHaveLength(30);
+    expect(out.posts.filter((p) => p.network === "instagram")).toHaveLength(
+      METRICOOL_MAX_POSTS,
+    );
+    expect(out.truncated).toEqual(["instagram"]);
+  });
+
   it("sorts newest first with undated posts last, and caps the list", () => {
     const many = Array.from({ length: METRICOOL_MAX_POSTS + 5 }, (_, i) =>
       post({
@@ -517,12 +538,14 @@ describe("buildMetricoolPosts", () => {
     expect(out.posts).toHaveLength(METRICOOL_MAX_POSTS);
     expect(out.posts[0].id).toBe(String(METRICOOL_MAX_POSTS + 4));
     expect(out.posts.some((p) => p.id === "undated")).toBe(false);
+    expect(out.truncated).toEqual(["instagram"]);
     const few = buildMetricoolPosts(
       ["instagram"],
       [{ posts: [undated, many[0], many[1]], unmappedKeys: [] }],
       [],
     );
     expect(few.posts.map((p) => p.id)).toEqual(["1", "0", "undated"]);
+    expect(few.truncated).toEqual([]);
   });
 
   it("deduplicates and caps unmapped keys and passes errors through", () => {

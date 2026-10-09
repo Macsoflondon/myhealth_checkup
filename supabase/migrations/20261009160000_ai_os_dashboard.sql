@@ -524,7 +524,10 @@ begin
       from (select * from bursts order by clicks desc, started_at limit 5) b
     ), '[]'::jsonb),
     'last_click_at', (select max(clicked_at) from public.affiliate_clicks),
-    'last_qualified_click_at', (select max(clicked_at) from qual)
+    'last_qualified_click_at', (select max(clicked_at) from qual),
+    -- The first recorded click. A previous window that starts before it
+    -- is only partly covered, so the dashboard shows no comparison.
+    'tracking_since', (select min(clicked_at) from public.affiliate_clicks)
   ) into v_result;
 
   return v_result;
@@ -661,7 +664,10 @@ begin
       ) s
     ), '[]'::jsonb),
     'last_converted_at', (select max(converted_at) from public.affiliate_conversions),
-    'last_imported_at', (select max(imported_at) from public.affiliate_conversions)
+    'last_imported_at', (select max(imported_at) from public.affiliate_conversions),
+    -- The earliest conversion on record. A previous window that starts
+    -- before it may be only partly covered, so no comparison is shown.
+    'earliest_converted_at', (select min(converted_at) from public.affiliate_conversions)
   ) into v_result;
 
   return v_result;
@@ -729,14 +735,22 @@ begin
     from valid
     order by network_reference, converted_at desc
   ), moved as (
-    -- An advertiser mapped after its first sync was stored under a
-    -- placeholder provider (e.g. awin-12345). Drop that copy so the
-    -- transaction is counted once, under the provider it now maps to.
+    -- The same transaction filed under another provider is a stale copy:
+    -- an advertiser mapped after its first sync (stored as awin-12345), or a
+    -- CSV import of the same sale. Drop it so the sale counts once, under
+    -- the provider it now maps to. CSV rows carry no network, so one only
+    -- counts as the same sale when its date is within two days.
     delete from public.affiliate_conversions a
     using dedup d
-    where a.source = p_source
-      and a.network_reference = d.network_reference
+    where a.network_reference = d.network_reference
       and a.provider_id <> d.provider_id
+      and (
+        a.source = p_source
+        or (
+          a.source = 'csv'
+          and abs(extract(epoch from (a.converted_at - d.converted_at))) <= 172800
+        )
+      )
   ), resolved as (
     select d.*, c.click_id
     from dedup d

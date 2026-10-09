@@ -136,6 +136,7 @@ select pg_temp.eq('listed sweep size', (j->'excluded_bursts'->0->>'clicks')::int
 select pg_temp.eq('previous starts at London midnight', (j->'previous'->>'from')::timestamptz, '2026-03-19 00:00Z'::timestamptz) from m;
 select pg_temp.eq('previous ends at current start', (j->'previous'->>'to')::timestamptz, '2026-03-26 00:00Z'::timestamptz) from m;
 select pg_temp.eq('previous counts London days only', (j->'previous'->>'raw')::int, 1) from m;
+select pg_temp.eq('tracking since first click', (j->>'tracking_since')::timestamptz, '2026-03-18 23:30Z'::timestamptz) from m;
 -- A window still running is compared with the same part of the previous one.
 select pg_temp.eq('running window cut at the same time of day',
   (select w.prev_to = ((now() at time zone 'Europe/London') - interval '7 days') at time zone 'Europe/London'
@@ -223,9 +224,12 @@ select pg_temp.eq('top revenue provider', j->'by_provider'->0->>'provider_id', '
 reset role;
 
 -- An advertiser mapped after its first sync moves to the mapped provider
--- instead of being counted twice. Rows from other sources are left alone.
+-- instead of being counted twice. A CSV copy of the same sale (same
+-- reference, within two days) goes too; a CSV row that only shares the
+-- reference stays.
 insert into public.affiliate_conversions (provider_id, network_reference, status, commission_gbp, converted_at, source)
-values ('lola-health', 'AW9', 'pending', 3, '2026-10-06T09:00:00Z', 'csv');
+values ('lola-health', 'AW9', 'pending', 3, '2026-10-06T10:00:00Z', 'csv'),
+       ('randox', 'AW9', 'confirmed', 5, '2026-06-01T10:00:00Z', 'csv');
 set role service_role;
 select public.os_upsert_network_conversions('awin', $j$[
   {"provider_id":"awin-999","network_reference":"AW9","status":"pending","commission_gbp":"3","converted_at":"2026-10-06T09:00:00Z"}
@@ -236,7 +240,7 @@ select pg_temp.eq('remap summary', public.os_upsert_network_conversions('awin', 
 ]$j$), '{"received": 2, "upserted": 1, "matched": 0, "rejected": 1}'::jsonb);
 reset role;
 select pg_temp.eq('placeholder row removed', (select count(*) from public.affiliate_conversions where provider_id = 'awin-999'), 0::bigint);
-select pg_temp.eq('remapped row kept once', (select string_agg(provider_id || '/' || source || '/' || status, ',' order by source) from public.affiliate_conversions where network_reference = 'AW9'), 'goodbody-clinic/awin/confirmed,lola-health/csv/pending');
+select pg_temp.eq('remapped row kept once', (select string_agg(provider_id || '/' || source || '/' || status, ',' order by source) from public.affiliate_conversions where network_reference = 'AW9'), 'goodbody-clinic/awin/confirmed,randox/csv/confirmed');
 
 -- ---------- schedules ----------
 select pg_temp.eq('sync job scheduled', (select schedule from cron.job where jobname = 'os-plugins-sync'), '23 * * * *');

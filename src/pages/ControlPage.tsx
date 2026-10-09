@@ -20,6 +20,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import {
   Sheet,
   SheetContent,
@@ -155,7 +156,15 @@ export default function ControlPage() {
         </div>
       </div>
 
-      <CommandDialog open={paletteOpen} onOpenChange={setPaletteOpen}>
+      <CommandDialog
+        open={paletteOpen}
+        onOpenChange={setPaletteOpen}
+        label="Go to a section"
+      >
+        <DialogTitle className="sr-only">Go to a section</DialogTitle>
+        <DialogDescription className="sr-only">
+          Type a section name, then press Enter to open it.
+        </DialogDescription>
         <CommandInput placeholder="Go to a section" />
         <CommandList>
           <CommandEmpty>No section matches.</CommandEmpty>
@@ -274,7 +283,7 @@ function RangePicker() {
   const [range, setRange] = useOsRange();
   return (
     <div
-      role="radiogroup"
+      role="group"
       aria-label="Date range"
       className="flex shrink-0 rounded-md border bg-background p-0.5"
     >
@@ -282,11 +291,11 @@ function RangePicker() {
         <button
           key={r}
           type="button"
-          role="radio"
-          aria-checked={range === r}
+          aria-pressed={range === r}
+          aria-label={`Last ${rangeDays(r)} days`}
           onClick={() => setRange(r)}
           className={cn(
-            "h-9 min-w-[2.75rem] rounded px-2 text-xs font-medium tabular-nums transition-colors",
+            "h-10 min-w-[2.75rem] rounded px-2 text-xs font-medium tabular-nums transition-colors",
             range === r
               ? "bg-foreground text-background"
               : "text-muted-foreground hover:text-foreground",

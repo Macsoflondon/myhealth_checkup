@@ -179,6 +179,22 @@ describe("configToForm and formToConfig", () => {
     }
   });
 
+  it("accepts only known provider ids as Awin map values", () => {
+    const bad = formToConfig(
+      plugin("awin"),
+      { publisher_id: "42", advertiser_map: "12345=randox-health" },
+      null,
+    );
+    expect(bad.ok).toBe(false);
+    if (!bad.ok) expect(bad.errors.advertiser_map).toContain("randox-health");
+    const good = formToConfig(
+      plugin("awin"),
+      { publisher_id: "42", advertiser_map: "12345=randox" },
+      null,
+    );
+    expect(good.ok).toBe(true);
+  });
+
   it("compares form values", () => {
     expect(sameFormValues({ a: "1" }, { a: "1" })).toBe(true);
     expect(sameFormValues({ a: "1" }, { a: "2" })).toBe(false);

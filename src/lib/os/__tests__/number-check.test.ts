@@ -128,6 +128,66 @@ describe("checkPoint", () => {
   it("treats number words as numbers", () => {
     expect(checkPoint("Two plugins are failing.", [clicks]).ok).toBe(false);
   });
+
+  it("does not let digits from a cited date or time stand for other figures", () => {
+    const lastAt = fact({
+      id: "clicks.last_click_at",
+      label: "Last provider click of any kind",
+      value: "4 Oct, 14:05 London time",
+      unit: "text",
+    });
+    expect(
+      checkPoint("The last click was at 14:05 on 4 Oct.", [lastAt]).ok,
+    ).toBe(true);
+    expect(checkPoint("The last click was 14 days ago.", [lastAt])).toEqual({
+      ok: false,
+      offending: ["14"],
+    });
+    const gsc = fact({
+      id: "gsc.clicks",
+      label: "Search clicks",
+      value: 530,
+      period: "28 days to 6 Oct",
+    });
+    expect(checkPoint("Search clicks fell 6%.", [gsc]).ok).toBe(false);
+    expect(
+      checkPoint("Search clicks were 530 in the 28 days to 6 Oct.", [gsc]).ok,
+    ).toBe(true);
+  });
+
+  it("checks teens, zero, compounds and vague amounts", () => {
+    const fifteen = fact({ id: "d", value: 15, unit: "days" });
+    expect(checkPoint("No clicks for fifteen days.", [fifteen]).ok).toBe(true);
+    expect(checkPoint("No clicks for sixteen days.", [fifteen]).ok).toBe(false);
+    expect(checkPoint("Clicks rose from zero.", [clicks]).ok).toBe(false);
+    expect(checkPoint("Twenty-five clicks arrived.", [clicks]).ok).toBe(false);
+    const twentyFive = fact({ id: "c25", value: 25 });
+    expect(checkPoint("Twenty-five clicks arrived.", [twentyFive]).ok).toBe(
+      true,
+    );
+    expect(checkPoint("Hundreds of clicks arrived.", [clicks]).ok).toBe(false);
+  });
+
+  it("matches £ only to money, % only to percentages and plain only to counts", () => {
+    const pounds = fact({ id: "r", value: 45.5, unit: "gbp" });
+    expect(checkPoint("Commission rose 46%.", [pounds]).ok).toBe(false);
+    expect(checkPoint("Clicks earned £1,234.", [clicks]).ok).toBe(false);
+    expect(checkPoint("Commission was 45.50.", [pounds]).ok).toBe(false);
+    expect(checkPoint("Commission was £45.50.", [pounds]).ok).toBe(true);
+  });
+
+  it("rejects a direction word that contradicts the cited change", () => {
+    const changePct = fact({
+      id: "clicks.change_pct",
+      label: "Change in qualified provider clicks",
+      value: -12.5,
+      unit: "percent",
+    });
+    expect(checkPoint("Clicks rose 12.5%.", [changePct]).ok).toBe(false);
+    expect(checkPoint("Clicks fell 12.5%.", [changePct]).ok).toBe(true);
+    expect(checkPoint("Clicks changed by −12.5%.", [changePct]).ok).toBe(true);
+    expect(checkPoint("Clicks changed by +12.5%.", [changePct]).ok).toBe(false);
+  });
 });
 
 describe("validateBrief", () => {

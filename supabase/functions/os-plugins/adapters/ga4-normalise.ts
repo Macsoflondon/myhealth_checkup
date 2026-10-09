@@ -292,8 +292,40 @@ function emptyDay(date: string): Ga4Day {
   };
 }
 
-/** ga4 / daily: oldest first, with zero rows for any day missing between the first and last. */
-export function parseGa4Daily(report: Ga4Report, propertyId: string): Ga4Daily {
+/**
+ * The days ga4DailyRequest asks for (90daysAgo to yesterday) in the
+ * property's time zone, taken from the report metadata. Europe/London when
+ * the report does not say or names a zone this runtime does not know.
+ */
+export function ga4RequestedDays(
+  report: Ga4Report,
+  now: Date,
+): { from: string; to: string } {
+  const tz = isRecord(report.metadata) ? report.metadata.timeZone : undefined;
+  let today: string;
+  try {
+    today = new Intl.DateTimeFormat("en-CA", {
+      timeZone: typeof tz === "string" && tz !== "" ? tz : "Europe/London",
+    }).format(now);
+  } catch {
+    today = new Intl.DateTimeFormat("en-CA", {
+      timeZone: "Europe/London",
+    }).format(now);
+  }
+  return { from: addDays(today, -90), to: addDays(today, -1) };
+}
+
+/**
+ * ga4 / daily: oldest first, one row per day. With `requested`, every day
+ * from its start to its end is present, so days with no recorded visits (a
+ * site outage, say) read as zero instead of shortening the series. Without
+ * it, gaps between the first and last returned day are zero-filled.
+ */
+export function parseGa4Daily(
+  report: Ga4Report,
+  propertyId: string,
+  requested?: { from: string; to: string },
+): Ga4Daily {
   const metricNames = DAY_FIELDS.map((field) => DAILY_METRICS[field]);
   const byDate = new Map<string, Ga4Day>();
   for (const row of readGa4Rows(report, ["date"], metricNames)) {
@@ -309,9 +341,10 @@ export function parseGa4Daily(report: Ga4Report, propertyId: string): Ga4Daily {
   }
   const dates = [...byDate.keys()].sort();
   const days: Ga4Day[] = [];
-  if (dates.length > 0) {
-    const last = dates[dates.length - 1];
-    for (let d = dates[0]; d <= last; d = addDays(d, 1)) {
+  const first = requested?.from ?? dates[0];
+  const last = requested?.to ?? dates[dates.length - 1];
+  if (first && last) {
+    for (let d = first; d <= last; d = addDays(d, 1)) {
       days.push(byDate.get(d) ?? emptyDay(d));
     }
   }

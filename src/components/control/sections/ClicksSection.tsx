@@ -39,7 +39,12 @@ import {
   placementName,
   providerName,
 } from "@/lib/os/format";
-import { snapshotRangeKey, type OsRange, type OsWindow } from "@/lib/os/range";
+import {
+  previousCovered,
+  snapshotRangeKey,
+  type OsRange,
+  type OsWindow,
+} from "@/lib/os/range";
 import type { ClickExclusionReason, ClicksSummary } from "@/lib/os/types";
 import { Link } from "@/lib/router-compat";
 import { getOsPlugin } from "../../../../supabase/functions/_shared/os/catalog";
@@ -125,6 +130,10 @@ function ClicksBody({
     window: win.label,
   };
   const { totals } = summary;
+  const covered = previousCovered(
+    summary.tracking_since,
+    summary.previous.from,
+  );
 
   return (
     <>
@@ -133,8 +142,15 @@ function ClicksBody({
           <KpiTile
             label="Qualified clicks"
             value={formatInt(totals.qualified)}
-            delta={formatDelta(totals.qualified, summary.previous.qualified)}
-            hint={`Previous ${win.days} days to the same time of day: ${formatInt(summary.previous.qualified)}`}
+            delta={formatDelta(
+              totals.qualified,
+              covered ? summary.previous.qualified : null,
+            )}
+            hint={
+              covered
+                ? `Previous ${win.days} days to the same time of day: ${formatInt(summary.previous.qualified)}`
+                : `Click tracking started after the previous ${win.days} days began`
+            }
           />
           <KpiTile
             label="All recorded clicks"

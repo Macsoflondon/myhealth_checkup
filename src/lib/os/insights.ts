@@ -30,10 +30,12 @@ import {
   addDays,
   lastNDays,
   osWindow,
+  previousCovered,
   previousNDays,
   rangeDays,
   type OsRange,
 } from "@/lib/os/range";
+import { followerChange } from "@/lib/os/series";
 import type {
   ClicksSummary,
   OsFact,
@@ -173,13 +175,13 @@ function round2(n: number): number {
 
 /** Percentage change from previous to current, one decimal place. */
 function changePct(current: number, previous: number): number {
-  return round1(((current - previous) / previous) * 100);
+  return round1(((current - previous) / Math.abs(previous)) * 100);
 }
 
 /** True when |current - previous| is at least minPct percent of previous. */
 function changedBy(current: number, previous: number, minPct: number) {
   // Whole-number arithmetic, so 12 against 10 is exactly 20%.
-  return Math.abs(current - previous) * 100 >= minPct * previous;
+  return Math.abs(current - previous) * 100 >= minPct * Math.abs(previous);
 }
 
 const pctFmt = new Intl.NumberFormat("en-GB", { maximumFractionDigits: 1 });
@@ -350,17 +352,14 @@ function followerFigures(
         .sort(byDate);
       if (points.length === 0) continue;
       const latest = points[points.length - 1];
-      const cutoff = addDays(latest.date, -days);
-      let base: { date: string; value: number } | null = null;
-      for (const p of points) {
-        if (p.date <= cutoff) base = p;
-      }
-      // A series shorter than the window starts from its first day.
-      if (!base && points[0].date < latest.date) base = points[0];
+      // The same base day as the Social section's change figure.
+      const change = followerChange(points, days);
       out.push({
         network,
         latest: { date: latest.date, value: latest.value },
-        base: base ? { date: base.date, value: base.value } : null,
+        base: change
+          ? { date: change.base.date, value: change.base.value }
+          : null,
       });
       break;
     }
@@ -375,21 +374,31 @@ function postFigures(
   if (!posts || !Array.isArray(posts.posts)) return null;
   const from = osWindow(input.range, input.now).from.getTime();
   const to = input.now.getTime();
-  const times = posts.posts
-    .map((p) => (p ? timeOf(p.published_at) : null))
-    .filter((t): t is number => t !== null);
-  // At the cap the payload may stop short of the window's start.
-  if (posts.posts.length >= POSTS_CAP) {
+  // Snapshots written before the per-network limit kept 200 posts in all
+  // and say nothing about truncation: at the cap they may stop short of the
+  // window's start.
+  if (!Array.isArray(posts.truncated) && posts.posts.length >= POSTS_CAP) {
+    const times = posts.posts
+      .map((p) => (p ? timeOf(p.published_at) : null))
+      .filter((t): t is number => t !== null);
     const oldest = times.length > 0 ? Math.min(...times) : null;
     if (oldest === null || oldest > from) return null;
   }
+  // A network whose read failed or hit the limit has no reliable count.
+  const unreliable = new Set<string>([
+    ...(Array.isArray(posts.errors) ? posts.errors.map((e) => e?.network) : []),
+    ...(Array.isArray(posts.truncated) ? posts.truncated : []),
+  ]);
   const networks = Array.isArray(posts.networks)
-    ? NETWORKS.filter((n) => posts.networks.includes(n))
+    ? NETWORKS.filter((n) => posts.networks.includes(n) && !unreliable.has(n))
     : [];
-  return {
-    count: times.filter((t) => t >= from && t <= to).length,
-    networks,
-  };
+  if (networks.length === 0) return null;
+  const count = posts.posts.filter((p) => {
+    if (!p || !networks.includes(p.network)) return false;
+    const t = timeOf(p.published_at);
+    return t !== null && t >= from && t <= to;
+  }).length;
+  return { count, networks };
 }
 
 /** The latest check per address, skipping malformed entries. */
@@ -591,19 +600,23 @@ function clickFacts(add: AddFact, input: InsightInput, d: Derived) {
   const c = input.clicks;
   if (!c || !c.totals || !c.previous) return;
   const { qualified, raw, excluded } = c.totals;
-  const previous = c.previous.qualified;
+  // No comparison when click tracking started inside the previous window.
+  const covered = previousCovered(c.tracking_since, c.previous.from);
+  const previous = covered ? c.previous.qualified : null;
   const allTime = "all recorded clicks";
 
   add("clicks.qualified", "Qualified provider clicks", qualified);
   add("clicks.raw", "All recorded provider clicks, automated included", raw);
   add("clicks.excluded", "Provider clicks excluded as automated", excluded);
-  add(
-    "clicks.previous_qualified",
-    "Qualified provider clicks in the previous period",
-    previous,
-    "count",
-    `previous ${d.days} days`,
-  );
+  if (previous !== null) {
+    add(
+      "clicks.previous_qualified",
+      "Qualified provider clicks in the previous period",
+      previous,
+      "count",
+      `previous ${d.days} days`,
+    );
+  }
   if (isNum(qualified) && isNum(previous) && previous > 0) {
     add(
       "clicks.change_pct",
@@ -692,7 +705,7 @@ function revenueFacts(add: AddFact, input: InsightInput, d: Derived) {
     "Conversions not matched to a provider click",
     t.unattributed,
   );
-  if (r.previous) {
+  if (r.previous && previousCovered(r.earliest_converted_at, r.previous.from)) {
     add(
       "revenue.previous_commission",
       "Affiliate commission in the previous period",
@@ -1081,6 +1094,9 @@ function clickChangeRule(ctx: RuleContext): Insight[] {
   const current = clicks?.totals?.qualified;
   const previous = clicks?.previous?.qualified;
   if (!isNum(current) || !isNum(previous)) return [];
+  if (!previousCovered(clicks?.tracking_since, clicks?.previous?.from)) {
+    return [];
+  }
   if (previous < CLICK_CHANGE_MIN_PREVIOUS) return [];
   if (!changedBy(current, previous, CLICK_CHANGE_MIN_PCT)) return [];
   const pct = changePct(current, previous);

@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   addDays,
   gscDailyWindow,
+  trimGscDaily,
   gscQueryBody,
   gscQueryPath,
   gscRangeWindows,
@@ -54,6 +55,21 @@ describe("London dates", () => {
     expect(gscYesterday(new Date("2026-10-09T23:30:00Z"))).toBe("2026-10-09");
   });
 
+  it("trims the daily series to the days ending on its newest day", () => {
+    const days = Array.from({ length: 95 }, (_, i) => ({
+      date: addDays("2026-07-04", i),
+      clicks: 1,
+      impressions: 10,
+      ctr: 0.1,
+      position: 5,
+    }));
+    const out = trimGscDaily({ site_url: "sc-domain:x", days }, 90);
+    expect(out.days).toHaveLength(90);
+    expect(out.days[0].date).toBe("2026-07-09");
+    expect(out.days[89].date).toBe("2026-10-06");
+    expect(trimGscDaily({ site_url: "x", days: [] }, 90).days).toEqual([]);
+  });
+
   it("adds days across month and year ends", () => {
     expect(addDays("2026-12-31", 1)).toBe("2027-01-01");
     expect(addDays("2026-03-01", -1)).toBe("2026-02-28");
@@ -61,8 +77,9 @@ describe("London dates", () => {
 
   it("builds windows that end yesterday and include their end day", () => {
     const now = new Date("2026-10-09T10:00:00Z");
+    // 90 days plus 7 for Google's publishing delay.
     expect(gscDailyWindow(now)).toEqual({
-      startDate: "2026-07-11",
+      startDate: "2026-07-04",
       endDate: "2026-10-08",
     });
     expect(gscWindowEnding("2026-10-08", 7)).toEqual({

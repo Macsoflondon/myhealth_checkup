@@ -1,5 +1,10 @@
 import { useCallback, useMemo } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { useSearchParams } from "@/lib/router-compat";
 import {
   fetchBriefing,
@@ -15,7 +20,12 @@ import {
   syncPlugins,
   testPlugin,
 } from "@/api/supabase/os.api";
-import { osWindow, parseOsRange, type OsRange } from "@/lib/os/range";
+import {
+  isOsRange,
+  osWindow,
+  parseOsRange,
+  type OsRange,
+} from "@/lib/os/range";
 import type { OsFact, OsInsightInput, PluginSnapshotRow } from "@/lib/os/types";
 
 const MIN = 60_000;
@@ -29,15 +39,45 @@ export const osKeys = {
   syncLog: ["os", "sync-log"] as const,
   status: ["os", "status"] as const,
   secrets: ["os", "secrets"] as const,
-  brief: (hash: string) => ["os", "brief", hash] as const,
+  brief: (key: string) => ["os", "brief", key] as const,
 };
 
-/** Dashboard range from ?range= (7d | 28d | 90d), shared by every section. */
+const RANGE_STORAGE_KEY = "mhc-os-range";
+
+/** The range last picked in this tab, so links between sections keep it. */
+function rememberedRange(): OsRange | null {
+  try {
+    const v = window.sessionStorage.getItem(RANGE_STORAGE_KEY);
+    return isOsRange(v) ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+function rememberRange(range: OsRange): void {
+  try {
+    window.sessionStorage.setItem(RANGE_STORAGE_KEY, range);
+  } catch {
+    // Storage blocked: the range still lives in the address.
+  }
+}
+
+/**
+ * Dashboard range (7d | 28d | 90d), shared by every section. ?range= wins;
+ * without it, the range last picked in this tab, so a link from one section
+ * to another opens the same period.
+ */
 export function useOsRange(): [OsRange, (next: OsRange) => void] {
   const [params, setParams] = useSearchParams();
-  const range = parseOsRange(params.get("range"));
+  const fromUrl = params.get("range");
+  const range = isOsRange(fromUrl)
+    ? fromUrl
+    : typeof window === "undefined"
+      ? parseOsRange(null)
+      : (rememberedRange() ?? parseOsRange(null));
   const setRange = useCallback(
-    (next: OsRange) =>
+    (next: OsRange) => {
+      rememberRange(next);
       setParams(
         (prev) => {
           const p = new URLSearchParams(prev);
@@ -45,7 +85,8 @@ export function useOsRange(): [OsRange, (next: OsRange) => void] {
           return p;
         },
         { replace: true },
-      ),
+      );
+    },
     [setParams],
   );
   return [range, setRange];
@@ -182,24 +223,29 @@ export function useSetPluginSecret() {
   });
 }
 
-/** Stable hash of the facts so the briefing is cached until a figure changes. */
-export function factsHash(facts: OsFact[]): string {
-  return facts
-    .map((f) => `${f.id}=${f.value}`)
-    .sort()
-    .join("|");
-}
-
+/**
+ * The AI briefing for one range, written at most once an hour. The figures
+ * refresh every few minutes, but a new briefing is only asked for when the
+ * range or the hour changes, and the previous one stays on screen while it
+ * is written. The result carries the facts that were sent, so its citations
+ * show the figures Claude actually saw.
+ */
 export function useBriefing(
   facts: OsFact[],
   insights: OsInsightInput[],
   enabled: boolean,
+  range: OsRange,
 ) {
+  const hour = Math.floor(Date.now() / (60 * MIN));
   return useQuery({
-    queryKey: osKeys.brief(factsHash(facts)),
-    queryFn: () => fetchBriefing(facts, insights),
+    queryKey: osKeys.brief(`${range}:${hour}`),
+    queryFn: async () => ({
+      facts,
+      brief: await fetchBriefing(facts, insights),
+    }),
     enabled: enabled && facts.length > 0,
-    staleTime: 30 * MIN,
+    placeholderData: keepPreviousData,
+    staleTime: Infinity,
     gcTime: 60 * MIN,
     retry: 0,
   });

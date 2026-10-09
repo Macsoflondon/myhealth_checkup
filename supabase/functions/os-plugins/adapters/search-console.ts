@@ -18,6 +18,7 @@ import {
   GSC_GOOGLE_BASE,
   GSC_SCOPE,
   GSC_TOP_ROWS,
+  gscDailyWindow,
   gscQueryBody,
   gscQueryPath,
   gscRangeWindows,
@@ -30,6 +31,7 @@ import {
   parseGscTopPages,
   parseGscTopQueries,
   toRanged,
+  trimGscDaily,
   type GscQueryBody,
 } from "./gsc-normalise.ts";
 import {
@@ -195,12 +197,17 @@ async function sync(ctx: AdapterContext): Promise<AdapterResult> {
 
   // Daily first, on its own: it settles which credential route works before
   // the six ranged requests run in parallel.
-  const dailyWindow = gscWindowEnding(yesterday, GSC_DAILY_DAYS);
-  const daily = parseGscDaily(
-    await client.query(
-      gscQueryBody(dailyWindow, ["date"], GSC_DAILY_ROW_LIMIT),
+  // The request reaches back past 90 days so that, after Google's
+  // publishing delay, the series still holds 90 days of data.
+  const dailyWindow = gscDailyWindow(ctx.now);
+  const daily = trimGscDaily(
+    parseGscDaily(
+      await client.query(
+        gscQueryBody(dailyWindow, ["date"], GSC_DAILY_ROW_LIMIT),
+      ),
+      siteUrl,
     ),
-    siteUrl,
+    GSC_DAILY_DAYS,
   );
 
   // Ranged windows end on the newest day Google has published, the same day

@@ -94,6 +94,29 @@ function oldest(a: string | null, b: string | null): string | null {
   return Date.parse(a) <= Date.parse(b) ? a : b;
 }
 
+/** Posts a snapshot written before 9 Oct 2026 kept across all networks. */
+const LEGACY_POST_CAP = 200;
+
+/**
+ * True when the stored posts for `network` stop after the window starts,
+ * because the sync kept only the newest posts.
+ */
+function cutShort(
+  posts: MetricoolPosts | null,
+  network: SocialNetwork,
+  fromMs: number,
+): boolean {
+  if (!posts) return false;
+  const legacy =
+    !Array.isArray(posts.truncated) && posts.posts.length >= LEGACY_POST_CAP;
+  if (!legacy && !(posts.truncated ?? []).includes(network)) return false;
+  const times = posts.posts
+    .filter((p) => legacy || p.network === network)
+    .map((p) => Date.parse(p.published_at ?? ""))
+    .filter(Number.isFinite);
+  return times.length === 0 || Math.min(...times) > fromMs;
+}
+
 /** "+12", "−3" or "No change". */
 function formatSigned(n: number): string {
   if (n === 0) return "No change";
@@ -265,7 +288,10 @@ function SocialBody({
                   followersFailed={followerErrors.some((e) => e.network === n)}
                   posts={windowPosts.filter((p) => p.network === n)}
                   postsRead={posts !== null}
-                  postsIncomplete={postErrors.some((e) => e.network === n)}
+                  postsIncomplete={
+                    postErrors.some((e) => e.network === n) ||
+                    cutShort(posts, n, win.from.getTime())
+                  }
                   days={days}
                   win={win}
                   updatedAt={cardUpdatedAt}
@@ -299,6 +325,9 @@ function SocialBody({
               <PostFeed
                 key={`${filter}:${win.range}`}
                 posts={windowPosts.filter((p) => shown.includes(p.network))}
+                cutShort={shown.some((n) =>
+                  cutShort(posts, n, win.from.getTime()),
+                )}
               />
             )}
             <SourceLine
@@ -604,7 +633,13 @@ function FollowerCharts({
 // Recent posts
 // ---------------------------------------------------------------------------
 
-function PostFeed({ posts }: { posts: SocialPost[] }) {
+function PostFeed({
+  posts,
+  cutShort,
+}: {
+  posts: SocialPost[];
+  cutShort: boolean;
+}) {
   const [visible, setVisible] = useState(PAGE_SIZE);
   if (posts.length === 0) {
     return (
@@ -627,6 +662,8 @@ function PostFeed({ posts }: { posts: SocialPost[] }) {
         <p className="text-xs text-muted-foreground" aria-live="polite">
           Showing {formatInt(shown.length)} of {formatInt(posts.length)}{" "}
           {posts.length === 1 ? "post" : "posts"}
+          {cutShort &&
+            ". The sync keeps the newest posts only, so the oldest in this period are missing"}
         </p>
         {visible < posts.length && (
           <Button

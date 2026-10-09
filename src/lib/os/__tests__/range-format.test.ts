@@ -7,6 +7,7 @@ import {
   parseOsRange,
   previousNDays,
   snapshotRangeKey,
+  previousCovered,
 } from "@/lib/os/range";
 import {
   daysSince,
@@ -77,6 +78,18 @@ describe("OS range windows", () => {
   });
 });
 
+describe("previousCovered", () => {
+  it("compares only when records reach back to the previous window", () => {
+    const prevFrom = "2026-09-25T23:00:00.000Z";
+    expect(previousCovered("2026-09-01T10:00:00Z", prevFrom)).toBe(true);
+    expect(previousCovered("2026-10-01T10:00:00Z", prevFrom)).toBe(false);
+    expect(previousCovered(null, prevFrom)).toBe(false);
+    // Older summaries without these fields keep their comparison.
+    expect(previousCovered(undefined, prevFrom)).toBe(true);
+    expect(previousCovered("2026-10-01T10:00:00Z", undefined)).toBe(true);
+  });
+});
+
 describe("OS formatting", () => {
   it("formats numbers and money in en-GB", () => {
     expect(formatInt(12345)).toBe("12,345");
@@ -98,6 +111,16 @@ describe("OS formatting", () => {
       text: "−50% vs previous",
     });
     expect(formatDelta(105, 100).text).toBe("+5.0% vs previous");
+    // A negative base: -£100 to +£50 is an improvement.
+    expect(formatDelta(50, -100)).toMatchObject({
+      direction: "up",
+      text: "+150% vs previous",
+    });
+    expect(formatDelta(-150, -100)).toMatchObject({
+      direction: "down",
+      text: "−50% vs previous",
+    });
+    expect(formatDelta(-5, 0).direction).toBe("down");
     expect(formatDelta(null, 3).direction).toBe("none");
   });
 

@@ -59,6 +59,8 @@ export type ClicksSummary = {
   }[];
   last_click_at: string | null;
   last_qualified_click_at: string | null;
+  /** The first recorded click. Absent from summaries before 9 Oct 2026. */
+  tracking_since?: string | null;
 };
 
 export type RevenueSummary = {
@@ -95,6 +97,8 @@ export type RevenueSummary = {
   by_source: { source: string; conversions: number; commission_gbp: number }[];
   last_converted_at: string | null;
   last_imported_at: string | null;
+  /** The earliest conversion on record. Absent before 9 Oct 2026. */
+  earliest_converted_at?: string | null;
 };
 
 export type PluginSnapshotRow = {

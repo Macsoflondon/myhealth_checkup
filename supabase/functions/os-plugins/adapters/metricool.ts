@@ -17,6 +17,7 @@ import {
   FOLLOWER_METRICS,
   isValidTimeZone,
   METRICOOL_DAYS,
+  METRICOOL_MAX_POSTS,
   metricoolPostEndpoints,
   metricoolPostsUrl,
   metricoolProfilesUrl,
@@ -258,6 +259,11 @@ async function sync(ctx: AdapterContext): Promise<AdapterResult> {
   });
 
   const posts = buildMetricoolPosts(networks, batches, postErrors);
+  for (const network of posts.truncated ?? []) {
+    warnings.push(
+      `${NETWORK_LABELS[network]} had more than ${METRICOOL_MAX_POSTS} posts in the last ${METRICOOL_DAYS} days, so its oldest posts were not stored`,
+    );
+  }
   const followers = buildMetricoolFollowers(series, followerErrors);
   const period = { period_start: span.from, period_end: span.to };
 

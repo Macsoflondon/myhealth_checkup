@@ -50,6 +50,7 @@ import {
   type Insight,
   type InsightInput,
 } from "@/lib/os/insights";
+import { previousCovered } from "@/lib/os/range";
 import type {
   ClicksSummary,
   OsBriefResponse,
@@ -103,6 +104,18 @@ const LINK_LABELS: Record<string, string> = {
 
 const AI_OFF_NOTE =
   "AI briefing is off: add an Anthropic API key in Plugins to turn it on.";
+const AI_DISABLED_NOTE =
+  "The AI briefing is turned off in Plugins, so the rule-based insights are shown.";
+const AI_NOT_READY_NOTE =
+  "The AI briefing is not ready: check its settings in Plugins.";
+
+/** Why the AI briefing is unavailable, from the plugin's own status. */
+function aiOffNote(status: OsStatusResponse | undefined): string {
+  const ai = status?.plugins.find((p) => p.plugin_id === "ai_briefing");
+  if (ai && !ai.enabled) return AI_DISABLED_NOTE;
+  if (ai && ai.missing_secrets.length === 0) return AI_NOT_READY_NOTE;
+  return AI_OFF_NOTE;
+}
 
 const LIMITATIONS = [
   "Insights come from fixed rules in src/lib/os/insights.ts. They flag problems and changes; they do not explain causes.",
@@ -162,7 +175,12 @@ export default function CommandSection() {
     !snapshots.isLoading &&
     !status.isLoading;
   const aiAvailable = status.data?.ai_available === true;
-  const briefing = useBriefing(facts, briefInsights, aiAvailable && settled);
+  const briefing = useBriefing(
+    facts,
+    briefInsights,
+    aiAvailable && settled,
+    range,
+  );
 
   const clicksState: QueryState<ClicksSummary> = {
     data: clicks.data,
@@ -196,9 +214,10 @@ export default function CommandSection() {
       <BriefingPanel
         loading={!settled}
         status={statusState}
-        brief={briefing.data}
+        brief={briefing.data?.brief}
         briefLoading={aiAvailable && briefing.isLoading}
         briefError={briefing.error}
+        briefFacts={briefing.data?.facts}
         facts={facts}
         insights={insights}
         windowLabel={win.label}
@@ -270,7 +289,7 @@ export default function CommandSection() {
           snapshots: rows,
           status: statusState,
           syncLog: syncLog.data,
-          brief: briefing.data,
+          brief: briefing.data?.brief,
           now,
         })}
         status={statusState}
@@ -354,6 +373,7 @@ function BriefingPanel({
   brief,
   briefLoading,
   briefError,
+  briefFacts,
   facts,
   insights,
   windowLabel,
@@ -364,6 +384,8 @@ function BriefingPanel({
   brief: OsBriefResponse | undefined;
   briefLoading: boolean;
   briefError: unknown;
+  /** The facts the briefing was written from. */
+  briefFacts: OsFact[] | undefined;
   facts: OsFact[];
   insights: Insight[];
   windowLabel: string;
@@ -385,7 +407,7 @@ function BriefingPanel({
   }
 
   if (brief && brief.mode === "ai" && brief.points.length > 0) {
-    return <AiBriefing brief={brief} facts={facts} />;
+    return <AiBriefing brief={brief} facts={briefFacts ?? facts} />;
   }
 
   const aiAvailable = status.data?.ai_available === true;
@@ -394,7 +416,7 @@ function BriefingPanel({
   if (!status.data && status.error) {
     note = `The AI briefing could not be checked: ${errorSentence(status.error)} Showing the rule-based insights instead.`;
   } else if (!aiAvailable) {
-    note = AI_OFF_NOTE;
+    note = aiOffNote(status.data);
     showPluginsLink = true;
   } else if (briefError) {
     note = `The AI briefing failed: ${errorSentence(briefError)} Showing the rule-based insights instead.`;
@@ -402,7 +424,7 @@ function BriefingPanel({
     note =
       "There are no figures for Claude to summarise yet, so the rule-based insights are shown.";
   } else if (brief.mode === "unavailable") {
-    note = AI_OFF_NOTE;
+    note = aiOffNote(status.data);
     showPluginsLink = true;
   } else {
     const removed =
@@ -696,7 +718,12 @@ function headlineTiles({
       label: clicksLabel,
       to: "/control/clicks",
       value: formatInt(totals.qualified),
-      delta: formatDelta(totals.qualified, previous.qualified),
+      delta: formatDelta(
+        totals.qualified,
+        previousCovered(clicks.data.tracking_since, previous.from)
+          ? previous.qualified
+          : null,
+      ),
       hint: `${formatInt(totals.raw)} recorded, ${formatInt(totals.excluded)} automated left out · ${windowLabel}`,
     };
   } else if (clicks.loading) {
@@ -735,7 +762,12 @@ function headlineTiles({
             label: commissionLabel,
             to: "/control/revenue",
             value: formatGbp(totals.commission_gbp),
-            delta: formatDelta(totals.commission_gbp, previous.commission_gbp),
+            delta: formatDelta(
+              totals.commission_gbp,
+              previousCovered(revenue.data.earliest_converted_at, previous.from)
+                ? previous.commission_gbp
+                : null,
+            ),
             hint: `${formatInt(totals.conversions)} ${totals.conversions === 1 ? "conversion" : "conversions"}, ${formatGbp(totals.commission_pending_gbp)} pending · ${windowLabel}`,
           };
   } else if (revenue.loading) {
@@ -1024,11 +1056,23 @@ function sourceRows({
         };
       }
       if (!status.data.ai_available) {
+        const ai = status.data.plugins.find((p) => p.plugin_id === plugin.id);
+        if (ai && !ai.enabled) {
+          return {
+            plugin,
+            tone: "idle",
+            label: "Turned off",
+            detail: "Turn the AI briefing on in Plugins",
+          };
+        }
         return {
           plugin,
           tone: "idle",
           label: "Not connected",
-          detail: "Needs an Anthropic API key",
+          detail:
+            ai && ai.missing_secrets.length === 0
+              ? "Check its settings in Plugins"
+              : "Needs an Anthropic API key",
         };
       }
       if (brief?.mode === "failed") {

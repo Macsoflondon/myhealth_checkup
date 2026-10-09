@@ -43,6 +43,7 @@ import {
 import {
   addDays,
   lastNDays,
+  previousCovered,
   previousNDays,
   type OsWindow,
 } from "@/lib/os/range";
@@ -189,6 +190,7 @@ function AffiliateRevenue({
   awinFetchedAt: string | null;
 }) {
   const { totals, previous } = summary;
+  const covered = previousCovered(summary.earliest_converted_at, previous.from);
   const source = {
     label: CONVERSIONS_SOURCE,
     updatedAt: summary.last_imported_at,
@@ -245,8 +247,15 @@ function AffiliateRevenue({
           <KpiTile
             label="Commission"
             value={<Money value={totals.commission_gbp} />}
-            delta={formatDelta(totals.commission_gbp, previous.commission_gbp)}
-            hint={`Previous ${win.days} days to the same time of day: ${formatGbp(previous.commission_gbp)}`}
+            delta={formatDelta(
+              totals.commission_gbp,
+              covered ? previous.commission_gbp : null,
+            )}
+            hint={
+              covered
+                ? `Previous ${win.days} days to the same time of day: ${formatGbp(previous.commission_gbp)}`
+                : `Conversion records start after the previous ${win.days} days began`
+            }
           />
           <KpiTile
             label="Confirmed"
@@ -268,7 +277,10 @@ function AffiliateRevenue({
           <KpiTile
             label="Conversions"
             value={formatInt(totals.conversions)}
-            delta={formatDelta(totals.conversions, previous.conversions)}
+            delta={formatDelta(
+              totals.conversions,
+              covered ? previous.conversions : null,
+            )}
             hint="Confirmed and pending"
           />
           <KpiTile

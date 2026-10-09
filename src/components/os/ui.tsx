@@ -289,11 +289,11 @@ export function ErrorNote({ error }: { error: unknown }) {
 export function Limitations({ items }: { items: string[] }) {
   if (items.length === 0) return null;
   return (
-    <details className="rounded-lg border bg-muted/20 px-3 py-2 text-xs">
-      <summary className="cursor-pointer select-none font-medium">
+    <details className="rounded-lg border bg-muted/20 px-3 text-xs">
+      <summary className="cursor-pointer select-none py-3 font-medium">
         Known limitations
       </summary>
-      <ul className="mt-2 list-disc space-y-1 pl-4 text-muted-foreground">
+      <ul className="mb-3 list-disc space-y-1 pl-4 text-muted-foreground">
         {items.map((t) => (
           <li key={t}>{t}</li>
         ))}
@@ -499,7 +499,7 @@ export function DailyChart({
         </ResponsiveContainer>
       </div>
       <details className="text-xs">
-        <summary className="cursor-pointer select-none text-muted-foreground">
+        <summary className="cursor-pointer select-none py-3 text-muted-foreground">
           Show as table
         </summary>
         <div className="mt-2 max-h-64 overflow-auto">
