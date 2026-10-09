@@ -151,6 +151,7 @@ export async function upsertWithProvenance(
     scrapeRunId = null,
     outOfStock = false,
     allowPriceClear = false,
+    allowBiomarkerClear = false,
   } = opts;
 
   try {
@@ -199,6 +200,14 @@ export async function upsertWithProvenance(
       }
     }
 
+    const bio = guardBiomarkerList(
+      existing,
+      input.biomarkers_list,
+      input.biomarker_count,
+      allowBiomarkerClear,
+      warnings,
+    );
+
     const row: Record<string, unknown> = {
       provider_id: input.provider_id,
       test_name: input.test_name,
@@ -207,8 +216,8 @@ export async function upsertWithProvenance(
       collection_fee: input.collection_fee ?? null,
       gp_review_fee: input.gp_review_fee ?? null,
       home_visit_fee: input.home_visit_fee ?? null,
-      biomarker_count: input.biomarker_count ?? null,
-      biomarkers_list: input.biomarkers_list ?? null,
+      biomarker_count: bio.count,
+      biomarkers_list: bio.list,
       turnaround_raw: input.turnaround_raw ?? null,
       turnaround_hours: input.turnaround_hours ?? null,
       turnaround_days: input.turnaround_days ?? null,
@@ -220,9 +229,7 @@ export async function upsertWithProvenance(
       url: input.url ?? input.scrape_source_url ?? null,
       last_validated_at: new Date().toISOString(),
       price_not_stated: safePrice === null,
-      biomarkers_not_stated:
-        !Array.isArray(input.biomarkers_list) ||
-        (input.biomarkers_list as unknown[]).length === 0,
+      biomarkers_not_stated: !hasList(bio.list),
       turnaround_not_stated:
         !input.turnaround_unit || input.turnaround_unit === "not_stated",
     };
