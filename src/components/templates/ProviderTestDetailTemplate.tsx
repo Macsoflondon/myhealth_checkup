@@ -50,6 +50,12 @@ import { detailedProviders } from "@/data/compare/detailedProviders";
 import RelatedLinks from "@/components/seo/RelatedLinks";
 import { resolveCategorySlug } from "@/lib/internal-links";
 import { deriveCollectionVariants } from "@/lib/collectionVariants";
+import { useQuery } from "@tanstack/react-query";
+import {
+  biomarkerLibraryHref,
+  testBiomarkerChipsQuery,
+  type TestBiomarkerChip,
+} from "@/services/BiomarkerLibraryService";
 
 export interface ProviderTestData {
   id: string;
@@ -116,12 +122,6 @@ function ProviderVerbatimSection({
       </CardContent>
     </Card>
   );
-}
-
-interface BiomarkerInfo {
-  biomarker_name: string;
-  description: string;
-  category: string;
 }
 
 interface ComparisonProviderOption {
@@ -242,64 +242,39 @@ const BookingButton = ({
   );
 };
 
-// Biomarkers Section Component
+// Biomarkers Section Component — chips come from provider_test_biomarkers
+// (provider's raw label) joined to biomarker_library_public by biomarker_id.
 const BiomarkersSection = ({
-  biomarkers,
+  providerTestId,
+  fallbackLabels,
   biomarkerCount,
 }: {
-  biomarkers: string[] | null | undefined;
+  providerTestId: string;
+  fallbackLabels: string[] | null | undefined;
   biomarkerCount: number | null | undefined;
 }) => {
-  const [biomarkerDetails, setBiomarkerDetails] = useState<
-    Record<string, BiomarkerInfo>
-  >({});
-  const [loading, setLoading] = useState(false);
   const [showAll, setShowAll] = useState(false);
+  const chipsQ = useQuery(testBiomarkerChipsQuery(providerTestId));
+  const linkedChips = chipsQ.data ?? [];
+  const chips: TestBiomarkerChip[] =
+    linkedChips.length > 0
+      ? linkedChips
+      : (fallbackLabels ?? []).map((label) => ({ label, entry: null }));
+  const loading = chipsQ.isPending && providerTestId.length > 0;
 
-  useEffect(() => {
-    const fetchBiomarkerDetails = async () => {
-      if (!biomarkers || biomarkers.length === 0) return;
-
-      setLoading(true);
-      try {
-        const { data, error } = await supabase
-          .from("biomarkers_library")
-          .select("biomarker_name, description, category")
-          .in("biomarker_name", biomarkers);
-
-        if (!error && data) {
-          const details: Record<string, BiomarkerInfo> = {};
-          data.forEach((item) => {
-            if (!item.biomarker_name) return;
-            details[item.biomarker_name.toLowerCase()] = {
-              biomarker_name: item.biomarker_name,
-              description: item.description ?? "",
-              category: item.category ?? "Uncategorised",
-            };
-          });
-          setBiomarkerDetails(details);
-        }
-      } catch (err) {
-        console.error("Error fetching biomarker details:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchBiomarkerDetails();
-  }, [biomarkers]);
-
-  if (!biomarkers || biomarkers.length === 0) {
+  if (!loading && chips.length === 0) {
     return null;
   }
 
   const incomplete =
-    typeof biomarkerCount === "number" && biomarkerCount > biomarkers.length;
+    typeof biomarkerCount === "number" && biomarkerCount > chips.length;
   const heading = incomplete
-    ? `Biomarkers tested — showing ${biomarkers.length} of ${biomarkerCount} published by the provider`
-    : `Biomarkers tested (${biomarkers.length})`;
-  const visibleBiomarkers = showAll ? biomarkers : biomarkers.slice(0, 5);
-  const hiddenCount = biomarkers.length - 5;
+    ? `Biomarkers tested — showing ${chips.length} of ${biomarkerCount} published by the provider`
+    : `Biomarkers tested (${chips.length})`;
+  const visibleChips = showAll ? chips : chips.slice(0, 5);
+  const hiddenCount = chips.length - 5;
+  const chipClass =
+    "flex items-center gap-2 p-2 rounded-md border bg-muted/30 hover:bg-muted/50 transition-colors";
 
   return (
     <Card>
@@ -311,8 +286,8 @@ const BiomarkersSection = ({
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground mb-4">
-          This test analyses the following biomarkers. Hover over each for more
-          information.
+          This test analyses the following biomarkers. Linked markers open in
+          our biomarker library.
         </p>
         {loading ? (
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -323,33 +298,37 @@ const BiomarkersSection = ({
         ) : (
           <TooltipProvider>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {visibleBiomarkers.map((biomarker, index) => {
-                const details = biomarkerDetails[biomarker.toLowerCase()];
-
+              {visibleChips.map((chip, index) => {
+                if (!chip.entry) {
+                  return (
+                    <div key={index} className={chipClass}>
+                      <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
+                      <span className="text-sm truncate">{chip.label}</span>
+                    </div>
+                  );
+                }
+                const entry = chip.entry;
                 return (
                   <Tooltip key={index}>
                     <TooltipTrigger asChild>
-                      <div className="flex items-center gap-2 p-2 rounded-md border bg-muted/30 hover:bg-muted/50 transition-colors cursor-help">
+                      <a
+                        href={biomarkerLibraryHref(entry.slug)}
+                        className={`${chipClass} hover:border-primary`}
+                      >
                         <CheckCircle2 className="h-4 w-4 text-primary shrink-0" />
-                        <span className="text-sm truncate">{biomarker}</span>
-                        {details && (
-                          <Info className="h-3 w-3 text-muted-foreground shrink-0 ml-auto" />
-                        )}
-                      </div>
+                        <span className="text-sm truncate">{chip.label}</span>
+                        <Info className="h-3 w-3 text-muted-foreground shrink-0 ml-auto" />
+                      </a>
                     </TooltipTrigger>
                     <TooltipContent side="top" className="max-w-xs">
-                      {details ? (
-                        <div>
-                          <p className="font-semibold">
-                            {details.biomarker_name}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {details.category}
-                          </p>
-                          <p className="text-sm mt-1">{details.description}</p>
-                        </div>
-                      ) : (
-                        <p>{biomarker}</p>
+                      <p className="font-semibold">{entry.name}</p>
+                      {entry.category && (
+                        <p className="text-xs text-muted-foreground">
+                          {entry.category}
+                        </p>
+                      )}
+                      {entry.description && (
+                        <p className="text-sm mt-1">{entry.description}</p>
                       )}
                     </TooltipContent>
                   </Tooltip>
@@ -771,7 +750,8 @@ export default function ProviderTestDetailTemplate({
 
               {/* Biomarkers Section */}
               <BiomarkersSection
-                biomarkers={biomarkers}
+                providerTestId={test.id}
+                fallbackLabels={biomarkers}
                 biomarkerCount={displayBiomarkerCount(test)}
               />
 
