@@ -293,6 +293,17 @@ Deno.serve(async (req) => {
           upd.turnaround_not_stated = false;
         }
         if (p.sample) upd.sample_type = p.sample;
+        if (p.bios.length > 0) {
+          upd.biomarkers_list = p.bios;
+          upd.biomarker_count = p.bios.length;
+          upd.biomarkers_not_stated = false;
+        } else if (
+          !Array.isArray(row.biomarkers_list) ||
+          row.biomarkers_list.length === 0
+        ) {
+          // No itemised list published (panel-only page): flag, never invent.
+          upd.biomarkers_not_stated = true;
+        }
         if (p.descriptionScraped) {
           upd.description_scraped = p.descriptionScraped;
           upd.description = p.descriptionScraped;
@@ -323,7 +334,9 @@ Deno.serve(async (req) => {
           price_not_stated: false,
           category: deriveCategory(p.name),
           sample_type: p.sample,
-          biomarkers_not_stated: true,
+          biomarkers_list: p.bios.length > 0 ? p.bios : null,
+          biomarker_count: p.bios.length > 0 ? p.bios.length : null,
+          biomarkers_not_stated: p.bios.length === 0,
           is_active: true,
           last_validated_at: new Date().toISOString(),
         };
