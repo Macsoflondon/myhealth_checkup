@@ -88,7 +88,13 @@ const formatUkDate = (iso: string | null): string | null => {
   return d.toLocaleDateString("en-GB", { timeZone: "Europe/London" });
 };
 
-const TextSection = ({ title, body }: { title: string; body: string | null }) =>
+const TextSection = ({
+  title,
+  body,
+}: {
+  title: string;
+  body: string | null;
+}) =>
   body ? (
     <div>
       <h4 style={headingStyle}>{title}</h4>
@@ -150,7 +156,9 @@ const StructuredRanges = ({ data }: { data: SexRanges }) => (
             <div style={{ fontWeight: 700, color: COLORS.navy, fontSize: 13 }}>
               {p.title}
             </div>
-            <div style={{ color: COLORS.accent, fontWeight: 800, fontSize: 14 }}>
+            <div
+              style={{ color: COLORS.accent, fontWeight: 800, fontSize: 14 }}
+            >
               {p.range}
             </div>
           </div>
@@ -817,9 +825,7 @@ export default function BiomarkerLibraryUI() {
       <div
         style={{ maxWidth: 1100, margin: "0 auto", padding: "12px 24px 64px" }}
       >
-        {pinned && (
-          <div style={{ marginBottom: 32 }}>{renderCard(pinned)}</div>
-        )}
+        {pinned && <div style={{ marginBottom: 32 }}>{renderCard(pinned)}</div>}
         {pages.isPending && (
           <p style={{ color: COLORS.muted, fontSize: 14 }}>
             Loading biomarkers…

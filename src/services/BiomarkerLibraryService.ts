@@ -186,7 +186,10 @@ export const biomarkerLibraryHref = (slug: string): string =>
 
 export interface TestBiomarkerChip {
   label: string;
-  entry: Pick<LibraryEntry, "slug" | "name" | "description" | "category"> | null;
+  entry: Pick<
+    LibraryEntry,
+    "slug" | "name" | "description" | "category"
+  > | null;
 }
 
 export async function fetchTestBiomarkerChips(

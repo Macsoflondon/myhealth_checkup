@@ -124,7 +124,6 @@ function ProviderVerbatimSection({
   );
 }
 
-
 interface ComparisonProviderOption {
   id: string;
   providerId: string;
