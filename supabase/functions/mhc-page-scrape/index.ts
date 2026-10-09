@@ -227,7 +227,7 @@ Deno.serve(async (req) => {
   );
   const { data: rows } = await supabase
     .from("provider_tests")
-    .select("id, test_name, biomarker_count")
+    .select("id, test_name, biomarker_count, biomarkers_list")
     .eq("provider_id", providerId)
     .eq("is_active", true);
   const byNorm = new Map<string, any>();
@@ -308,6 +308,14 @@ Deno.serve(async (req) => {
         upd.biomarker_count = p.bios.length;
         upd.biomarkers_list = p.bios;
         upd.biomarkers_not_stated = false;
+      } else if (
+        !Array.isArray(row.biomarkers_list) ||
+        row.biomarkers_list.length === 0
+      ) {
+        // Page publishes no itemised list (e.g. Sputum, Stool Culture /
+        // Bacteria PCR). Never invent names; flag it instead. An existing
+        // list is left untouched.
+        upd.biomarkers_not_stated = true;
       }
       if (p.taText) {
         upd.turnaround_days_text = p.taText;
