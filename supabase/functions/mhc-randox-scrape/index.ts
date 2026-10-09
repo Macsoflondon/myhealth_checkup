@@ -141,8 +141,8 @@ function extractJsonLdDescription(html) {
 function extractDescriptionScraped(html, name) {
   const jsonLd = extractJsonLdDescription(html);
   if (jsonLd) return jsonLd;
-  const cleanedHtml = html.replace(/<script[\s\S]*?<\/script>/gi, " ");
-  const txt = stripTags(cleanedHtml);
+  // htmlToText drops script and style blocks itself.
+  const txt = stripTags(html);
   let startIdx = 0;
   if (name) {
     const idx = txt.indexOf(name);
