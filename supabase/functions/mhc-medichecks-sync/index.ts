@@ -19,6 +19,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { internalErrorResponse } from "../_shared/errors.ts";
 import { htmlToText } from "../_shared/scrape/html.ts";
+import { reconcileBiomarkerCount } from "../_shared/scrape/biomarkerParsers.ts";
 
 const SECRET = Deno.env.get("MHC_SYNC_SECRET") ?? "";
 const PROVIDER = "medichecks";
@@ -206,10 +207,28 @@ Deno.serve(async (req: Request) => {
 
       const { data: existing } = await supabase
         .from("provider_tests")
-        .select("id")
+        .select("id, biomarkers_list")
         .eq("provider_id", PROVIDER)
         .eq("url", productUrl)
         .maybeSingle();
+
+      // The info_biomarkers_N tag is a separate figure from the itemised list
+      // (written by the product-page pass). The stored count follows the
+      // list; a different tag figure is kept in the run errors, not stored.
+      const storedList: string[] = Array.isArray(existing?.biomarkers_list)
+        ? existing.biomarkers_list.filter(
+            (x: unknown): x is string => typeof x === "string",
+          )
+        : [];
+      if (storedList.length > 0) {
+        const decision = reconcileBiomarkerCount(
+          storedList,
+          tg.biomarkers,
+          p.title,
+        );
+        row.biomarker_count = decision.count;
+        if (decision.mismatch) errors.push(decision.mismatch);
+      }
 
       let rowId: string | null = null;
       if (existing?.id) {
