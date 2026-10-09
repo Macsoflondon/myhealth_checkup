@@ -9,6 +9,7 @@
 // authenticate correctly until you do, by design.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { htmlToText } from "../_shared/scrape/html.ts";
+import { parseRandoxWhatsIncluded } from "../_shared/scrape/biomarkerParsers.ts";
 const SECRET = Deno.env.get("MHC_SYNC_SECRET") ?? "";
 const PROVIDER = "randox";
 const SITEMAPS = ["https://randoxhealth.com/sitemap.xml"];
@@ -192,7 +193,10 @@ function parsePage(html) {
   let sample = "Venous";
   if (/finger-?prick/i.test(txt)) sample = "Finger-prick or venous";
   const descriptionScraped = extractDescriptionScraped(html, name);
-  return { name, price, taText, taDays, sample, descriptionScraped };
+  // Itemised markers come from the page's own `whats_included` state.
+  // Panel-only products publish panel names, not markers: bios stays empty.
+  const bios = parseRandoxWhatsIncluded(html).biomarkers;
+  return { name, price, taText, taDays, sample, descriptionScraped, bios };
 }
 Deno.serve(async (req) => {
   const u = new URL(req.url);
@@ -223,7 +227,7 @@ Deno.serve(async (req) => {
     );
   const { data: rows } = await supabase
     .from("provider_tests")
-    .select("id,test_name,url")
+    .select("id,test_name,url,biomarkers_list")
     .eq("provider_id", PROVIDER)
     .eq("is_active", true);
   const byNorm = new Map();
