@@ -183,6 +183,22 @@ select pg_temp.eq('by source', j->'by_source'->0->>'source', 'awin') from r;
 select pg_temp.eq('top revenue provider', j->'by_provider'->0->>'provider_id', 'medichecks') from r;
 reset role;
 
+-- An advertiser mapped after its first sync moves to the mapped provider
+-- instead of being counted twice. Rows from other sources are left alone.
+insert into public.affiliate_conversions (provider_id, network_reference, status, commission_gbp, converted_at, source)
+values ('lola-health', 'AW9', 'pending', 3, '2026-10-06T09:00:00Z', 'csv');
+set role service_role;
+select public.os_upsert_network_conversions('awin', $j$[
+  {"provider_id":"awin-999","network_reference":"AW9","status":"pending","commission_gbp":"3","converted_at":"2026-10-06T09:00:00Z"}
+]$j$);
+select pg_temp.eq('remap summary', public.os_upsert_network_conversions('awin', $j$[
+  {"provider_id":"goodbody-clinic","network_reference":"AW9","status":"confirmed","commission_gbp":"3","converted_at":"2026-10-06T09:00:00Z"},
+  {"provider_id":"awin-999","network_reference":"AW9","status":"pending","commission_gbp":"3","converted_at":"2026-10-06T08:00:00Z"}
+]$j$), '{"received": 2, "upserted": 1, "matched": 0, "rejected": 1}'::jsonb);
+reset role;
+select pg_temp.eq('placeholder row removed', (select count(*) from public.affiliate_conversions where provider_id = 'awin-999'), 0::bigint);
+select pg_temp.eq('remapped row kept once', (select string_agg(provider_id || '/' || source || '/' || status, ',' order by source) from public.affiliate_conversions where network_reference = 'AW9'), 'goodbody-clinic/awin/confirmed,lola-health/csv/pending');
+
 -- ---------- schedules ----------
 select pg_temp.eq('sync job scheduled', (select schedule from cron.job where jobname = 'os-plugins-sync'), '23 * * * *');
 select pg_temp.eq('retention job scheduled', (select count(*) from cron.job where jobname = 'os-plugin-sync-log-retention'), 1::bigint);

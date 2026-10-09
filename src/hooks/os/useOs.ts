@@ -150,7 +150,7 @@ export function useSyncPlugins() {
 export function useTestPlugin() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: testPlugin,
+    mutationFn: (pluginId: string) => testPlugin(pluginId),
     onSettled: () => void qc.invalidateQueries({ queryKey: osKeys.syncLog }),
   });
 }
@@ -158,7 +158,8 @@ export function useTestPlugin() {
 export function useSavePluginSettings() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: savePluginSettings,
+    mutationFn: (v: Parameters<typeof savePluginSettings>[0]) =>
+      savePluginSettings(v),
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: osKeys.settings });
       void qc.invalidateQueries({ queryKey: osKeys.status });
@@ -169,6 +170,9 @@ export function useSavePluginSettings() {
 export function useSetPluginSecret() {
   const qc = useQueryClient();
   return useMutation({
+    // The value is a credential: drop the settled mutation (and its
+    // variables) from the cache as soon as nothing observes it.
+    gcTime: 0,
     mutationFn: (v: { scope: string; key: string; value: string }) =>
       setPluginSecret(v.scope, v.key, v.value),
     onSuccess: () => {

@@ -654,9 +654,20 @@ begin
       and status in ('pending', 'confirmed', 'reversed')
       and converted_at is not null
   ), dedup as (
-    select distinct on (provider_id, network_reference) *
+    -- A network's transaction reference is unique within that network, so
+    -- one reference maps to one row whatever provider it is filed under.
+    select distinct on (network_reference) *
     from valid
-    order by provider_id, network_reference, converted_at desc
+    order by network_reference, converted_at desc
+  ), moved as (
+    -- An advertiser mapped after its first sync was stored under a
+    -- placeholder provider (e.g. awin-12345). Drop that copy so the
+    -- transaction is counted once, under the provider it now maps to.
+    delete from public.affiliate_conversions a
+    using dedup d
+    where a.source = p_source
+      and a.network_reference = d.network_reference
+      and a.provider_id <> d.provider_id
   ), resolved as (
     select d.*, c.click_id
     from dedup d

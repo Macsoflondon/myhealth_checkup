@@ -158,7 +158,9 @@ export function KpiTile({
       {loading ? (
         <Skeleton className="mt-2 h-7 w-20" />
       ) : (
-        <div className="mt-1 truncate text-2xl font-semibold tabular-nums">
+        // Wrap rather than truncate: a cut-off figure reads as a different
+        // number. Two tiles share a 360px row, so phones get a smaller size.
+        <div className="mt-1 break-words text-xl font-semibold leading-tight tabular-nums sm:text-2xl">
           {value}
         </div>
       )}
