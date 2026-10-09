@@ -37,6 +37,15 @@ export class HttpError extends Error {
   }
 }
 
+/**
+ * Text for a caught value that is safe to store or show: an Error's message,
+ * otherwise a fixed fallback. The raw value is never stringified, so a stack
+ * trace or an object dump cannot reach a response or the sync log.
+ */
+export function errorText(e: unknown, fallback: string): string {
+  return e instanceof Error && e.message ? e.message : fallback;
+}
+
 /** Removes query strings and token-like substrings from text bound for logs. */
 export function redact(text: string, secrets: string[] = []): string {
   let out = text;
@@ -97,7 +106,7 @@ export function createHttp(
           "",
         );
       }
-      const msg = e instanceof Error ? e.message : String(e);
+      const msg = errorText(e, "network error");
       throw new HttpError(
         0,
         redact(`Could not reach ${hostOf(url)}: ${msg}`, secrets),

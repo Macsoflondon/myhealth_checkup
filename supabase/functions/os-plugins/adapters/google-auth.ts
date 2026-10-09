@@ -251,7 +251,7 @@ export function describeGoogleError(e: unknown, service: string): Error {
       e.body,
     );
   }
-  return e instanceof Error ? e : new Error(String(e));
+  return e instanceof Error ? e : new Error("The Google token request failed.");
 }
 
 /**

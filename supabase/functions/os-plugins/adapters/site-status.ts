@@ -2,6 +2,7 @@
 // redirects, timed, and classified by site-status-check.ts (which spots
 // Lovable's "No published build" placeholder as well as plain errors).
 import type { SiteCheck, SiteStatusChecks } from "../../_shared/os/contract.ts";
+import { errorText } from "../lib/http.ts";
 import {
   classifySiteResponse,
   headersToRecord,
@@ -82,7 +83,7 @@ async function checkUrl(ctx: AdapterContext, url: string): Promise<SiteCheck> {
   } catch (e) {
     // http.raw throws HttpError (status 0, message already redacted) for
     // network failures and timeouts.
-    const message = e instanceof Error ? e.message : String(e);
+    const message = errorText(e, "The request failed.").slice(0, 300);
     return {
       url,
       checked_at: checkedAt,

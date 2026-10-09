@@ -13,7 +13,6 @@ import type {
   OsSyncTrigger,
   OsTestResponse,
 } from "../../_shared/os/contract.ts";
-import { getErrorMessage } from "../../_shared/errors.ts";
 import { getAdapter } from "../adapters/index.ts";
 import type {
   AdapterContext,
@@ -21,7 +20,7 @@ import type {
   PluginAdapter,
   RpcClient,
 } from "../adapters/types.ts";
-import { createHttp, redact } from "./http.ts";
+import { createHttp, errorText, redact } from "./http.ts";
 import {
   assessReadiness,
   createVaultReader,
@@ -97,8 +96,8 @@ function secretList(state: PluginState): string[] {
 
 /** Error text safe for the sync log and the dashboard. */
 function failureMessage(e: unknown, secrets: string[]): string {
-  const raw = e instanceof Error ? e.message : getErrorMessage(e);
-  return clip(redact(raw || "The plugin failed without a message.", secrets));
+  const raw = errorText(e, "The plugin failed without a message.");
+  return clip(redact(raw, secrets));
 }
 
 function withTimeLimit<T>(

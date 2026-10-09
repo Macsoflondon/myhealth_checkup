@@ -7,7 +7,7 @@ import type {
   Ga4OutboundClicks,
   Ga4TopPages,
 } from "../../_shared/os/contract.ts";
-import { HttpError } from "../lib/http.ts";
+import { errorText, HttpError } from "../lib/http.ts";
 import { describeGoogleError, googleAccessToken } from "./google-auth.ts";
 import {
   asGa4Report,
@@ -139,7 +139,7 @@ async function sync(ctx: AdapterContext): Promise<AdapterResult> {
     (e: unknown): OutboundOutcome => ({
       ok: false,
       status: e instanceof HttpError ? e.status : null,
-      message: e instanceof Error ? e.message : String(e),
+      message: errorText(e, "The outbound clicks report failed."),
     }),
   );
 

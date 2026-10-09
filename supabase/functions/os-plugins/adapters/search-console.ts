@@ -9,7 +9,7 @@ import type {
   GscTopQueries,
   OsRangeKey,
 } from "../../_shared/os/contract.ts";
-import { HttpError } from "../lib/http.ts";
+import { errorText, HttpError } from "../lib/http.ts";
 import { describeGoogleError, googleAccessToken } from "./google-auth.ts";
 import {
   GSC_DAILY_DAYS,
@@ -62,7 +62,7 @@ function siteUrlFrom(config: Record<string, unknown>): string {
 }
 
 function errorMessage(e: unknown): string {
-  const text = (e instanceof Error ? e.message : String(e)).trim();
+  const text = errorText(e, "The request failed").trim();
   return /[.!?]$/.test(text) ? text : `${text}.`;
 }
 
