@@ -28,8 +28,10 @@ jobs:
       - name: Install dependencies
         run: npm install --package-lock-only --ignore-scripts --legacy-peer-deps
 
+      # Fails on any high or critical advisory unless it is listed in
+      # scripts/check-npm-audit.mjs with a reason and an expiry date.
       - name: Run npm audit (high & critical)
-        run: npm audit --audit-level=high
+        run: node scripts/check-npm-audit.mjs
 
       - name: Generate JSON report
         if: always()
