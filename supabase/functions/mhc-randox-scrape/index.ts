@@ -277,7 +277,7 @@ Deno.serve(async (req) => {
     const row = bySlug.get(slugRaw(url)) || byNorm.get(norm(p.name));
     if (row) {
       if (!dry) {
-        const upd = {
+        const upd: Record<string, unknown> = {
           url,
           scrape_source_url: url,
           url_verified: true,
@@ -322,7 +322,7 @@ Deno.serve(async (req) => {
         turnaround: p.taText,
       });
       if (!dry) {
-        const ins = {
+        const ins: Record<string, unknown> = {
           provider_id: PROVIDER,
           test_name: p.name,
           url,
