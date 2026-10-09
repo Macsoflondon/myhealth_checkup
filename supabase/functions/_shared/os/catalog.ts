@@ -202,13 +202,15 @@ export const OS_PLUGINS: readonly OsPluginDefinition[] = [
       {
         key: "site_url",
         label: "Search Console property",
-        help: "Exactly as Search Console lists it, e.g. https://www.myhealthcheckup.co.uk/ or sc-domain:myhealthcheckup.co.uk.",
+        help: "Exactly as Search Console lists it, e.g. https://myhealthcheckup.co.uk/ or sc-domain:myhealthcheckup.co.uk.",
         type: "text",
         required: true,
-        placeholder: "https://www.myhealthcheckup.co.uk/",
+        placeholder: "https://myhealthcheckup.co.uk/",
       },
     ],
-    defaultConfig: { site_url: "https://www.myhealthcheckup.co.uk/" },
+    // The site redirects www to the apex, and the connected Google account
+    // has access to the apex URL-prefix property (checked 9 Oct 2026).
+    defaultConfig: { site_url: "https://myhealthcheckup.co.uk/" },
     datasets: ["daily", "top_queries", "top_pages"],
     docsUrl:
       "https://developers.google.com/webmaster-tools/v1/searchanalytics/query",
