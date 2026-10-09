@@ -1,7 +1,6 @@
 import { useState, useMemo } from "react";
 import { biomarkers, categories, categoryIcons, COLORS } from "./biomarkerData";
 import { StandardPageHero } from "@/components/layout/StandardPageHero";
-import { RetestReminderCard } from "@/components/retest-reminder/retest-reminder-card";
 
 const RangeBar = ({ ranges, sex = "both" }: any) => {
   const data =
@@ -600,13 +599,6 @@ const BiomarkerCard = ({ biomarker, isExpanded, onToggle }: any) => {
                 </span>
               ))}
             </div>
-          </div>
-          <div className="mt-5">
-            <RetestReminderCard
-              interestType="biomarker"
-              interestSlug={String(biomarker.id)}
-              interestLabel={String(biomarker.name)}
-            />
           </div>
           <div
             style={{
