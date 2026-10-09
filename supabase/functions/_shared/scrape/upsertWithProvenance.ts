@@ -30,6 +30,44 @@ export interface UpsertOptions {
   outOfStock?: boolean;
   /** If true, we allow price to go from >0 to null (product removed). */
   allowPriceClear?: boolean;
+  /**
+   * If true, an existing non-empty biomarkers_list may be replaced with null
+   * or an empty list. Off by default: a parser miss must never wipe a list.
+   */
+  allowBiomarkerClear?: boolean;
+}
+
+function hasList(v: unknown): v is unknown[] {
+  return Array.isArray(v) && v.length > 0;
+}
+
+/**
+ * Safety rail: refuse to replace a stored non-empty biomarker list with
+ * nothing unless the caller opts in. Returns the list and count to write.
+ */
+export function guardBiomarkerList(
+  existing: Record<string, unknown> | null,
+  incomingList: unknown,
+  incomingCount: number | null | undefined,
+  allowClear: boolean,
+  warnings: string[],
+): { list: unknown; count: number | null } {
+  if (
+    !hasList(incomingList) &&
+    !allowClear &&
+    existing &&
+    hasList(existing.biomarkers_list)
+  ) {
+    warnings.push(
+      "refused to replace existing biomarkers_list with an empty list without allowBiomarkerClear",
+    );
+    const kept = existing.biomarkers_list;
+    return { list: kept, count: kept.length };
+  }
+  return {
+    list: incomingList ?? null,
+    count: incomingCount ?? null,
+  };
 }
 
 const REQUIRED_FIELDS = [
