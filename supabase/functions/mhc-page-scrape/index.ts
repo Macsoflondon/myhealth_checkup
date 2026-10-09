@@ -9,6 +9,7 @@
 // authenticate correctly until you do, by design.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { htmlToText } from "../_shared/scrape/html.ts";
+import { parseMedicalDiagnosisTestsIncluded } from "../_shared/scrape/biomarkerParsers.ts";
 
 const SECRET = Deno.env.get("MHC_SYNC_SECRET") ?? "";
 
@@ -157,18 +158,10 @@ function parsePage(html: string) {
       .match(/(Blood|Urine|Stool|Saliva|Swab|Semen)/i);
     if (sm) sample = sm[1];
   }
-  let bios: string[] = [];
-  const bIdx = html.search(/Tests Included/i);
-  if (bIdx >= 0) {
-    const ul = html
-      .slice(bIdx, bIdx + 6000)
-      .match(/<ul[^>]*>([\s\S]*?)<\/ul>/i);
-    if (ul) {
-      bios = [...ul[1].matchAll(/<li[^>]*>([\s\S]*?)<\/li>/gi)]
-        .map((m) => stripTags(m[1]))
-        .filter((x) => x && x.length > 1 && x.length < 120);
-    }
-  }
+  // Read the provider's own "Tests Included" element whole. The previous
+  // version searched a 6,000-character window after the first
+  // case-insensitive "tests included", which on long pages is page furniture.
+  const bios: string[] = parseMedicalDiagnosisTestsIncluded(html);
   const descriptionScraped = extractDescriptionScraped(html, name);
   return {
     name,
