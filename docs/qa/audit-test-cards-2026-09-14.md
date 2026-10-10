@@ -142,3 +142,58 @@ original report pointed at. Not yet audited to the same depth:
   explanations) — not reviewed this pass
 - `formatTurnaround()`'s data coverage (finding #8) — not queried
 - The actual CI run of everything marked UNVERIFIED above
+
+---
+
+# Pass 2 — 2026-09-28
+
+Picked back up per the list above. Re-verified all four pass-1 fixes and the drift-guard
+script survived the 210 commits that landed on `main` between passes (merges, PR #38
+itself, an unrelated `core-systems` audit, and continued Lovable churn) — all four still
+present, `node scripts/audit-card-external-links.mjs` still exits 0 (4 checked, 0
+unlabelled). Confirmed the separate `core-systems` audit (`docs/qa/audit-core-systems-2026-09-21.md`)
+independently re-checked and confirmed the same primary-link finding from pass 1 (no
+overlap or contradiction) and did not touch the accreditation or turnaround findings
+below — this pass is genuinely new ground, not a re-run of someone else's work.
+
+## Counts
+
+- Checks run this pass: 4 (biomarker-list rendering, location-options coverage query,
+  turnaround-data coverage query, a copy-rule spot-check on 5 card-adjacent files)
+- PASS: 3
+- FAIL, flagged and NOT fixed (same compliance-adjacent reasoning as finding #7): 1
+- Code changes this pass: none — the one new finding is data-backed but not something to
+  silently code around, same as finding #7
+
+## Findings
+
+| # | surface | contract rule | verdict | evidence | fix |
+|---|---|---|---|---|---|
+| 11 | `BiomarkerChipList.tsx`, consumed by `UniversalTestCard`'s modal | full biomarker list available, not a sample | **PASS** | Shows the first 5 with a "Show N more" toggle — the full stored list is one click away, not truncated. When the stored list is shorter than the provider's own published count, the heading says so explicitly ("We are still collecting the individual names") rather than presenting the short list as complete, and is careful to frame it as *our* capture gap, never as the provider withholding data. The 3-chip preview on the card face itself (`UniversalTestCard.tsx:1341`) makes no completeness claim — no heading, no count — so it doesn't need the same guard. | none needed |
+| 12 | `provider_tests` location flags, all 8 providers | home-kit/clinic-visit must be known, not silently defaulted | **PASS** | `select count(*) filter (where home_kit_available is null and clinic_visit_available is null) from provider_tests where is_active` → **0 across every provider**. Every active row has at least one of the two flags meaningfully set — no "both unknown" gap for the rendering layer to paper over. (Whether an individual `false` value was itself verified at scrape time, versus a lazy scraper default, is a backend/scraper-pipeline question — out of scope for a card-*rendering* audit, noted so it isn't mistaken for a checked item.) | none needed |
+| 13 | 5 card-adjacent files (`UniversalTestCard.tsx`, `TestListCard.tsx`, `DreamHealthShowcase.tsx`, `MostPopularTestsSection.tsx`, `ProviderTestDetailModal.tsx`) | Great British English, no marketing hype, no outcome guarantees | **PASS** (sampled, not exhaustive) | Grepped for `guarantee`, `amazing`, `best-in-class`, `revolutioniz-`, `cure`, `diagnose your`, `life-chang-` — zero hits. Grepped for `color` in non-CSS contexts (excluding `className`, `style`, `UTC_`-prefixed tokens, `*Color` variable names) — zero hits; all "color" occurrences are legitimate CSS-property/variable spelling, not user-facing copy. Not a full copy audit — 5 files, not all 19 surfaces. | none needed |
+| 14 | `ProviderTestDetailModal.tsx` `formatTurnaround()` | turnaround must be real or honestly absent, never invented | **FAIL — flagged, not fixed** | Same fallback pattern as finding #7, now quantified: `select count(*) filter (where turnaround_days_text is not null and turnaround_days_text <> '') from provider_tests where is_active` per provider. **Lola Health: 12/108 active tests (11%) have real turnaround data** — the other 96 fall through `test.turnaround_days_text \|\| goodbodyStatic?.turnaround \|\| formatTurnaround(test.provider_id)` to the hardcoded `"3–5 working days"` guess. **Randox: 28/67 (42%)** real, 39 tests hitting the hardcoded `"24 hours"` guess. Every other provider is ≥88% real (`clinilabs` 125/139, `medical-diagnosis` 121/154, `goodbody-clinic`/`london-health-company`/`london-medical-laboratory` all 100%). Also newly visible in the same query: `randox`'s biomarker data is thinner than assumed — `biomarkers_list`/`biomarker_count` set on only 49–50/67 rows (73–75%), the one real gap in an otherwise-clean finding #11. | **not fixed**, same reasoning as #7: `CLAUDE.md` doesn't establish whether these hardcoded per-provider turnaround times are a verified fact never migrated into the row schema, or a stale placeholder — deleting the fallback for ~135 real listings (96 Lola + 39 Randox) on that uncertainty is a product call, not something to make unilaterally mid-audit. Grouping with #7 as one decision: whoever can confirm current published turnaround/accreditation for Medichecks, Lola Health and Randox should either backfill the real `turnaround_days_text`/`lab_*` columns (correct fix, makes both fallback maps dead code) or explicitly cite the fallback maps' provenance in `ProviderTestDetailModal.tsx` so they're recorded facts rather than uncited assertions. |
+
+## Adversarial review (pass 2)
+
+- Re-ran the drift-guard script rather than trusting that it "should still pass" after
+  210 commits — it does (4 checked, 0 unlabelled).
+- Checked for a second audit's work colliding with this one before writing anything:
+  confirmed `docs/qa/audit-core-systems-2026-09-21.md` covers different ground (Crux
+  Control, the AI Human Context Engine, a broken-link/booking-URL gap distinct from this
+  ledger's link-honesty findings) and its one card-contract-adjacent re-check (the
+  primary-link finding) reached the same conclusion pass 1 did, independently.
+- Tried to find a reason finding #14 might already be someone else's fixed problem before
+  writing it up as new — grepped the core-systems ledger for `formatTurnaround`,
+  `lab_ukas_accredited`, `lab_cqc_regulated`, `lab_iso15189`, `getAccreditations`: zero
+  hits. Genuinely unaddressed.
+
+## Exit status
+
+Not a clean pass — one real finding, correctly not fixed. The loop's exit condition (two
+consecutive zero-finding passes) isn't met. What a pass 3 should cover: the remaining
+"what pass 2 still owes" items not reached this time (a full 19-surface copy-rule pass
+rather than a 5-file sample; a same-test-three-surfaces cross-check for location-option
+*consistency*, not just coverage — this pass confirmed the data exists, not that every
+surface renders it identically), plus revisiting findings #7 and #14 once/if someone
+resolves the underlying data question.
