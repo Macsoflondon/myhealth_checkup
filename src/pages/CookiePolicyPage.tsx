@@ -157,14 +157,9 @@ const CookiePolicyPage = () => {
                     </p>
                     <Button
                       onClick={() => {
-                        try {
-                          localStorage.removeItem("cookieConsent");
-                        } catch {
-                          /* storage unavailable */
-                        }
-                        window.dispatchEvent(
-                          new CustomEvent("cookie-preferences:open"),
-                        );
+                        // Reopen the Cookiebot banner so the visitor can
+                        // change or withdraw consent.
+                        window.Cookiebot?.renew();
                       }}
                     >
                       Manage Cookie Preferences

@@ -78,7 +78,7 @@
         { "key": "Cross-Origin-Resource-Policy", "value": "same-site" },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.gpteng.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.openai.com https://api.firecrawl.dev https://storage.googleapis.com https://nominatim.openstreetmap.org; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests; report-uri /csp-report; report-to csp-endpoint"
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.gpteng.co https://consent.cookiebot.com https://consentcdn.cookiebot.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https:; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://api.openai.com https://api.firecrawl.dev https://storage.googleapis.com https://nominatim.openstreetmap.org https://consent.cookiebot.com https://consentcdn.cookiebot.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests; report-uri /csp-report; report-to csp-endpoint"
         },
         {
           "key": "Reporting-Endpoints",
