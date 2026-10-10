@@ -25,6 +25,7 @@ describe("trackFunnelEvent", () => {
   beforeEach(() => {
     localStorage.clear();
     sessionStorage.clear();
+    delete window.Cookiebot;
     insert.mockReset();
     insert.mockResolvedValue({ error: null });
     vi.mocked(supabase.from).mockClear();
@@ -106,9 +107,7 @@ describe("trackFunnelEvent", () => {
     setConsent(true);
     vi.spyOn(Storage.prototype, "getItem").mockImplementation((key) => {
       if (key === "mhc_session_id") throw new Error("SecurityError");
-      return key === "cookieConsent"
-        ? JSON.stringify({ necessary: true, analytics: true })
-        : null;
+      return null;
     });
 
     await expect(trackFunnelEvent("quiz_start")).resolves.toBeUndefined();
