@@ -151,7 +151,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         },
         { rel: "dns-prefetch", href: "https://storage.googleapis.com" },
       ],
-      scripts: [{ type: "application/ld+json", children: ORG_JSONLD }],
+      scripts: [
+        // Cookiebot must be the first script in the document head so its
+        // auto-blocking mode can intercept every later script.
+        {
+          id: "Cookiebot",
+          src: "https://consent.cookiebot.com/uc.js",
+          "data-cbid": "8a435b14-6f4f-4015-93f4-f2ffe5d6f9ff",
+          "data-blockingmode": "auto",
+          type: "text/javascript",
+        },
+        { type: "application/ld+json", children: ORG_JSONLD },
+      ],
     }),
     shellComponent: RootShell,
     component: RootComponent,

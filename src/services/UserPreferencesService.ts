@@ -19,7 +19,6 @@ export class UserPreferencesService {
     compareSelection: (userId: string) =>
       `${this.PREFIX}-compare-selection-${userId}`,
     theme: () => `${this.PREFIX}-theme`,
-    cookieConsent: () => `${this.PREFIX}-cookie-consent`,
   };
 
   // Generic get/set methods with type safety
@@ -99,15 +98,6 @@ export class UserPreferencesService {
 
   static setTheme(theme: "light" | "dark" | "system"): void {
     this.set(this.keys.theme(), theme);
-  }
-
-  // Cookie consent (not user-specific)
-  static getCookieConsent(): boolean {
-    return this.get(this.keys.cookieConsent(), false);
-  }
-
-  static setCookieConsent(consent: boolean): void {
-    this.set(this.keys.cookieConsent(), consent);
   }
 
   // Clear all user-specific data

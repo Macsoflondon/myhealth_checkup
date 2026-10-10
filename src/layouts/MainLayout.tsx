@@ -1,7 +1,6 @@
 import { ReactNode } from "react";
 import { useLocation } from "@/lib/router-compat";
 import Footer from "@/components/layout/Footer";
-import CookieConsent from "@/components/compliance/CookieConsent";
 import SiteBreadcrumb from "@/components/common/SiteBreadcrumb";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 
@@ -42,7 +41,6 @@ export const MainLayout = ({
         </main>
         {!hideFooter && <Footer />}
       </div>
-      <CookieConsent />
     </div>
   );
 };
