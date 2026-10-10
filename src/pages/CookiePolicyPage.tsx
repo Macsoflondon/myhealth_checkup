@@ -168,7 +168,7 @@ const CookiePolicyPage = () => {
                       onClick={() => {
                         // Reopen the Cookiebot banner so the visitor can
                         // change or withdraw consent.
-                        window.Cookiebot?.renew();
+                        getCookiebot()?.renew();
                       }}
                     >
                       Manage Cookie Preferences
