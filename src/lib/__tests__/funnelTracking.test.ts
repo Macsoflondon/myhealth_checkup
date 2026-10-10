@@ -11,21 +11,21 @@ import { trackFunnelEvent } from "@/lib/funnelTracking";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 function setConsent(analytics: boolean): void {
-  localStorage.setItem(
-    "cookieConsent",
-    JSON.stringify({
+  window.Cookiebot = {
+    consent: {
       necessary: true,
-      analytics,
+      statistics: analytics,
       marketing: false,
-      functional: false,
-    }),
-  );
+      preferences: false,
+    },
+  };
 }
 
 describe("trackFunnelEvent", () => {
   beforeEach(() => {
     localStorage.clear();
     sessionStorage.clear();
+    delete window.Cookiebot;
     insert.mockReset();
     insert.mockResolvedValue({ error: null });
     vi.mocked(supabase.from).mockClear();
@@ -107,9 +107,7 @@ describe("trackFunnelEvent", () => {
     setConsent(true);
     vi.spyOn(Storage.prototype, "getItem").mockImplementation((key) => {
       if (key === "mhc_session_id") throw new Error("SecurityError");
-      return key === "cookieConsent"
-        ? JSON.stringify({ necessary: true, analytics: true })
-        : null;
+      return null;
     });
 
     await expect(trackFunnelEvent("quiz_start")).resolves.toBeUndefined();
