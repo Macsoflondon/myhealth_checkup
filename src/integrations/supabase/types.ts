@@ -110,6 +110,7 @@ export type Database = {
           provider_id: string
           source_page: string
           test_id: string | null
+          traffic_flag: string | null
         }
         Insert: {
           click_id: string
@@ -119,6 +120,7 @@ export type Database = {
           provider_id: string
           source_page: string
           test_id?: string | null
+          traffic_flag?: string | null
         }
         Update: {
           click_id?: string
@@ -128,6 +130,7 @@ export type Database = {
           provider_id?: string
           source_page?: string
           test_id?: string | null
+          traffic_flag?: string | null
         }
         Relationships: []
       }
@@ -141,6 +144,7 @@ export type Database = {
           network_reference: string
           order_value_gbp: number | null
           provider_id: string
+          source: string
           status: string
         }
         Insert: {
@@ -152,6 +156,7 @@ export type Database = {
           network_reference: string
           order_value_gbp?: number | null
           provider_id: string
+          source?: string
           status?: string
         }
         Update: {
@@ -163,6 +168,7 @@ export type Database = {
           network_reference?: string
           order_value_gbp?: number | null
           provider_id?: string
+          source?: string
           status?: string
         }
         Relationships: [
@@ -4038,6 +4044,90 @@ export type Database = {
           registration_number?: string | null
           slug?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      os_plugin_settings: {
+        Row: {
+          config: Json
+          enabled: boolean
+          plugin_id: string
+          updated_at: string
+          updated_by: string | null
+        }
+        Insert: {
+          config?: Json
+          enabled?: boolean
+          plugin_id: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Update: {
+          config?: Json
+          enabled?: boolean
+          plugin_id?: string
+          updated_at?: string
+          updated_by?: string | null
+        }
+        Relationships: []
+      }
+      os_plugin_snapshots: {
+        Row: {
+          dataset: string
+          fetched_at: string
+          payload: Json
+          period_end: string | null
+          period_start: string | null
+          plugin_id: string
+        }
+        Insert: {
+          dataset: string
+          fetched_at?: string
+          payload: Json
+          period_end?: string | null
+          period_start?: string | null
+          plugin_id: string
+        }
+        Update: {
+          dataset?: string
+          fetched_at?: string
+          payload?: Json
+          period_end?: string | null
+          period_start?: string | null
+          plugin_id?: string
+        }
+        Relationships: []
+      }
+      os_plugin_sync_log: {
+        Row: {
+          finished_at: string | null
+          id: number
+          message: string | null
+          plugin_id: string
+          records: number | null
+          started_at: string
+          status: string
+          trigger: string
+        }
+        Insert: {
+          finished_at?: string | null
+          id?: never
+          message?: string | null
+          plugin_id: string
+          records?: number | null
+          started_at?: string
+          status: string
+          trigger: string
+        }
+        Update: {
+          finished_at?: string | null
+          id?: never
+          message?: string | null
+          plugin_id?: string
+          records?: number | null
+          started_at?: string
+          status?: string
+          trigger?: string
         }
         Relationships: []
       }
@@ -8692,6 +8782,27 @@ export type Database = {
         Returns: Json
       }
       mhc_sync_secret: { Args: never; Returns: string }
+      os_clicks_summary: {
+        Args: { p_from: string; p_to: string }
+        Returns: Json
+      }
+      os_get_plugin_secrets: { Args: { p_plugin: string }; Returns: Json }
+      os_plugin_secret_status: {
+        Args: never
+        Returns: {
+          plugin_id: string
+          secret_key: string
+          updated_at: string
+        }[]
+      }
+      os_previous_window: {
+        Args: { p_from: string; p_to: string }
+        Returns: Record<string, unknown>
+      }
+      os_revenue_summary: {
+        Args: { p_from: string; p_to: string }
+        Returns: Json
+      }
       refresh_provider_test_biomarkers: { Args: never; Returns: Json }
       refresh_provider_test_biomarkers_impl: { Args: never; Returns: Json }
       regenerate_mfa_backup_codes: { Args: never; Returns: string[] }
