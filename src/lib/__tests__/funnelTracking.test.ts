@@ -11,15 +11,14 @@ import { trackFunnelEvent } from "@/lib/funnelTracking";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 function setConsent(analytics: boolean): void {
-  localStorage.setItem(
-    "cookieConsent",
-    JSON.stringify({
+  window.Cookiebot = {
+    consent: {
       necessary: true,
-      analytics,
+      statistics: analytics,
       marketing: false,
-      functional: false,
-    }),
-  );
+      preferences: false,
+    },
+  };
 }
 
 describe("trackFunnelEvent", () => {
