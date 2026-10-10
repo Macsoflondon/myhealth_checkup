@@ -6,6 +6,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import PageBanner from "@/components/sections/PageBanner";
 
+/** Cookiebot CMP API, present on window once uc.js has loaded. */
+interface CookiebotApi {
+  /** Reopen the consent banner so the visitor can change or withdraw consent. */
+  renew: () => void;
+}
+
+const getCookiebot = (): CookiebotApi | undefined =>
+  (window as Window & { Cookiebot?: CookiebotApi }).Cookiebot;
+
 const CookiePolicyPage = () => {
   return (
     <div className="min-h-screen flex flex-col">
