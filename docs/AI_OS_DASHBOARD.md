@@ -1,6 +1,6 @@
 # AI OS dashboard (Crux Control)
 
-_Last updated 2026-10-09._
+_Last updated 2026-10-11._
 
 The AI OS is the rebuilt Crux Control admin portal at `/control`. It keeps every
 existing Crux Control section and adds a plugin layer that pulls clicks,
@@ -67,6 +67,19 @@ results and one indexed snapshots query, which keeps them fast.
 - **Revenue.** Reversed conversions are shown but never counted. Commission is
   what the network reports, not cash received. Commission never affects
   ranking.
+- **Conversion import.** `os_upsert_network_conversions` keeps one row per
+  network reference. A row with the same reference under another provider is
+  treated as a stale copy and deleted. That covers an advertiser mapped after
+  its first sync (stored as `awin-12345`) and a CSV import of the same sale
+  dated within two days. The sale is then stored under the provider it now
+  maps to. Since migration `20261011150000`, the click link survives the
+  move. The row takes the incoming `clickRef` when it is one of our clicks,
+  otherwise the click already stored on it, otherwise the click from the
+  deleted copy. If more than one copy is deleted, the one closest in time to
+  the sale gives its click, and the lower click id settles a tie. Before that
+  migration, the copy's click was lost and the sale showed as unattributed.
+  A carried click counts towards the sync's "Matched to a click", the same
+  test the Revenue section uses for attributed conversions.
 - **Snapshots.** Every payload records when it was fetched; every panel shows
   the source, the window and the age of the data.
 - **AI briefing.** The Command centre sends the dashboard's figures (facts) and
@@ -133,7 +146,9 @@ The Plugins page and the hourly sync pick it up from the catalogue.
 
 1. Apply `supabase/migrations/20261009160000_ai_os_dashboard.sql` (tables,
    RPCs, Vault functions, the `os-plugins-sync` and
-   `os-plugin-sync-log-retention` cron jobs).
+   `os-plugin-sync-log-retention` cron jobs), then
+   `20261011150000_os_conversions_keep_click_on_move.sql` (replaces
+   `os_upsert_network_conversions` so a moved conversion keeps its click).
 2. Deploy the `os-plugins` edge function (`verify_jwt = false`; it checks the
    caller itself).
 3. Open `/control/plugins`, run **Test connection** on each plugin you set up,
@@ -171,8 +186,9 @@ says the edge function did not answer.
 
 - SQL: `bash scripts/sql-tests/run-ai-os.sh` replays the affiliate and AI OS
   migrations twice on a disposable local Postgres with Supabase stand-ins and
-  runs 82 assertions (sweep and burst exclusion, London days and clock
+  runs 115 assertions (sweep and burst exclusion, London days and clock
   changes, the previous window, MFA gating, Vault
-  write-only access, conversion upserts, revenue totals, cron jobs).
+  write-only access, conversion upserts, clicks carried from moved copies,
+  revenue totals, cron jobs).
 - Unit: `src/lib/os/__tests__/` and
   `src/lib/affiliate/__tests__/traffic-quality.test.ts` (vitest).

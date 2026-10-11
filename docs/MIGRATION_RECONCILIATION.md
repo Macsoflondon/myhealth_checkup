@@ -85,6 +85,39 @@ migration file committed to this repository.** Changes made in the dashboard or 
 editor are what caused this drift. To catch any recurrence, set the `SUPABASE_DB_URL`
 repository secret so the remote half of `migration-parity.yml` actually runs.
 
+## Update, 11 October 2026: October drift closed
+
+Between 5 and 9 October, eight migrations were applied to production through the
+Lovable migration tool without a file reaching this repository, and one file reached the
+repository under a version production never recorded. Both directions are now closed.
+
+- **Eight production-only versions restored verbatim:** `20261005004752`
+  (lola_catalogue_corrections) and seven `20261009*` biomarker migrations (hub synonyms,
+  missing hub entries, the library clean-up with `entity_type` and its views, the biomarker
+  data-layer lock, and the Clinilabs biomarker lists). Each file carries the standard
+  header and the md5 of the recorded statement, and was checked byte for byte against
+  `schema_migrations`.
+- **Three replay adaptations.** `20261009065418`, `20261009091226` and `20261009110924`
+  each open with a check that raised an exception unless production's catalogue data was
+  present. That data was loaded outside migrations or came from the scrapers, so a fresh
+  database stopped at the first of them. Each check now reports with a notice instead.
+  The rest of each file runs unchanged and matches only the rows that exist. Production
+  ran the original checks, and they passed.
+- **`20261004221500_lola_catalogue_corrections.sql` removed.** Production ran an earlier
+  draft of that file and recorded it as `20261005004752`, with comment lines stripped.
+  The only later addition, Peak Insights 70 at "2-3 working days", is already in
+  production's data, from a direct write at 14:47 UTC on 5 October. The unit test that
+  compared that file with `buildLolaCatalogueSql()` is removed with it. A catalogue change
+  now goes in a new migration.
+- **Known fresh-build differences (data only):** Peak Insights 70 replays as "2 working
+  days"; `20261009065616` creates fewer hub entries than production and may create two
+  malformed ALEX entries from a seeded Clinilabs row; and each fresh database generates
+  its own biomarker lock key. None affects the schema.
+
+Check, 11 October 2026: the repository's versions, excluding the new
+`20261011150000`, hash to the same md5 as production's 420 recorded versions
+(`d128230038a24c378820d52a33170158`).
+
 The sections below are the original 14 September inventory, kept for the record.
 
 ## The numbers

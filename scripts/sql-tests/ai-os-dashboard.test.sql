@@ -1,4 +1,5 @@
--- Assertions for supabase/migrations/20261009160000_ai_os_dashboard.sql.
+-- Assertions for supabase/migrations/20261009160000_ai_os_dashboard.sql and
+-- 20261011150000_os_conversions_keep_click_on_move.sql.
 -- Run with scripts/sql-tests/run-ai-os.sh.
 \set ON_ERROR_STOP 1
 \pset pager off
@@ -241,6 +242,174 @@ select pg_temp.eq('remap summary', public.os_upsert_network_conversions('awin', 
 reset role;
 select pg_temp.eq('placeholder row removed', (select count(*) from public.affiliate_conversions where provider_id = 'awin-999'), 0::bigint);
 select pg_temp.eq('remapped row kept once', (select string_agg(provider_id || '/' || source || '/' || status, ',' order by source) from public.affiliate_conversions where network_reference = 'AW9'), 'goodbody-clinic/awin/confirmed,randox/csv/confirmed');
+
+-- ---------- click carried from a moved copy (20261011150000) ----------
+-- A stale copy removed by the upsert hands its click to the replacement row
+-- when that row has no click of its own. Precedence: the incoming row's own
+-- click_ref, then a click already stored on the row, then the carried click.
+-- A carried click counts as matched. Incoming rows below are filed under
+-- goodbody-clinic at 2026-10-06 12:00Z unless stated.
+insert into public.affiliate_clicks (click_id, clicked_at, provider_id, source_page, placement, destination_host) values
+  ('0a000000-0000-4000-8000-000000000001', '2026-10-06 08:00Z', 'lola-health', '/compare', 'comparison', 'lolahealth.com'),
+  ('0b000000-0000-4000-8000-000000000001', '2026-10-06 08:00Z', 'goodbody-clinic', '/compare', 'comparison', 'goodbodyclinic.com'),
+  ('0b000000-0000-4000-8000-000000000002', '2026-10-06 08:00Z', 'lola-health', '/compare', 'comparison', 'lolahealth.com'),
+  ('0c000000-0000-4000-8000-000000000001', '2026-10-07 08:00Z', 'randox', '/compare', 'comparison', 'randoxhealth.com'),
+  ('0e000000-0000-4000-8000-000000000001', '2026-10-04 08:00Z', 'lola-health', '/compare', 'comparison', 'lolahealth.com'),
+  ('0e000000-0000-4000-8000-000000000002', '2026-10-04 08:00Z', 'lola-health', '/compare', 'comparison', 'lolahealth.com'),
+  ('0f000000-0000-4000-8000-000000000001', '2026-10-06 08:00Z', 'goodbody-clinic', '/compare', 'comparison', 'goodbodyclinic.com'),
+  ('0f000000-0000-4000-8000-000000000002', '2026-10-06 08:00Z', 'lola-health', '/compare', 'comparison', 'lolahealth.com'),
+  ('0f000000-0000-4000-8000-000000000003', '2026-10-06 08:00Z', 'randox', '/compare', 'comparison', 'randoxhealth.com'),
+  ('0f000000-0000-4000-8000-000000000004', '2026-10-06 08:00Z', 'lola-health', '/compare', 'comparison', 'lolahealth.com'),
+  ('1a000000-0000-4000-8000-000000000001', '2026-10-06 08:00Z', 'goodbody-clinic', '/compare', 'comparison', 'goodbodyclinic.com'),
+  ('1a000000-0000-4000-8000-000000000002', '2026-10-06 08:00Z', 'lola-health', '/compare', 'comparison', 'lolahealth.com'),
+  ('1a000000-0000-4000-8000-000000000003', '2026-10-06 08:00Z', 'lola-health', '/compare', 'comparison', 'lolahealth.com');
+
+-- Stale copies already on file. Rows are filed under other providers, so each
+-- is a candidate for removal when the network row for its reference arrives.
+insert into public.affiliate_conversions (provider_id, network_reference, status, converted_at, source, click_id) values
+  -- (a) CSV copy with a click, two hours before the network row
+  ('lola-health', 'CARRY-A', 'pending', '2026-10-06 10:00Z', 'csv', '0a000000-0000-4000-8000-000000000001'),
+  -- (b) CSV copies whose click loses to the incoming row's own click_ref (B1)
+  -- or wins because the incoming click_ref is not one of ours (B2)
+  ('lola-health', 'CARRY-B1', 'pending', '2026-10-06 10:00Z', 'csv', '0b000000-0000-4000-8000-000000000002'),
+  ('lola-health', 'CARRY-B2', 'pending', '2026-10-06 10:00Z', 'csv', '0b000000-0000-4000-8000-000000000002'),
+  -- (d) CSV copy without a click
+  ('lola-health', 'CARRY-D', 'pending', '2026-10-06 10:00Z', 'csv', null),
+  -- (e) E1 is one second outside the two-day window and stays; E2 sits
+  -- exactly on the boundary and moves
+  ('lola-health', 'CARRY-E1', 'pending', '2026-10-04 11:59:59Z', 'csv', '0e000000-0000-4000-8000-000000000001'),
+  ('lola-health', 'CARRY-E2', 'pending', '2026-10-04 12:00:00Z', 'csv', '0e000000-0000-4000-8000-000000000002'),
+  -- (f) F1: an unmapped-advertiser copy three hours early holding the lower
+  -- click id, and a CSV copy one hour late; the closer copy wins.
+  ('awin-555', 'CARRY-F1', 'pending', '2026-10-06 09:00Z', 'awin', '0f000000-0000-4000-8000-000000000001'),
+  ('lola-health', 'CARRY-F1', 'pending', '2026-10-06 13:00Z', 'csv', '0f000000-0000-4000-8000-000000000002'),
+  -- F2: two copies an hour either side; the tie goes to the lower click id,
+  -- which is inserted second so physical order cannot decide it.
+  ('lola-health', 'CARRY-F2', 'pending', '2026-10-06 11:00Z', 'csv', '0f000000-0000-4000-8000-000000000004'),
+  ('randox', 'CARRY-F2', 'pending', '2026-10-06 13:00Z', 'csv', '0f000000-0000-4000-8000-000000000003');
+
+-- Each batch, and the summary it must return on the first run and on every
+-- rerun. Kept in a table so the idempotency check replays the exact input.
+create temp table carry_batch (name text primary key, rows jsonb not null, want jsonb not null);
+grant select on carry_batch to service_role;
+insert into carry_batch values
+  ('a', $j$[{"provider_id":"goodbody-clinic","network_reference":"CARRY-A","status":"confirmed","converted_at":"2026-10-06T12:00:00Z"}]$j$,
+   '{"received": 1, "upserted": 1, "matched": 1, "rejected": 0}'),
+  ('b', $j$[
+     {"provider_id":"goodbody-clinic","network_reference":"CARRY-B1","status":"pending","converted_at":"2026-10-06T12:00:00Z","click_ref":" 0B000000-0000-4000-8000-000000000001 "},
+     {"provider_id":"goodbody-clinic","network_reference":"CARRY-B2","status":"pending","converted_at":"2026-10-06T12:00:00Z","click_ref":"ffffffff-ffff-4fff-8fff-ffffffffffff"}
+   ]$j$, '{"received": 2, "upserted": 2, "matched": 2, "rejected": 0}'),
+  ('c', $j$[{"provider_id":"randox","network_reference":"CARRY-C","status":"confirmed","converted_at":"2026-10-07T09:00:00Z"}]$j$,
+   '{"received": 1, "upserted": 1, "matched": 1, "rejected": 0}'),
+  ('d', $j$[{"provider_id":"goodbody-clinic","network_reference":"CARRY-D","status":"pending","converted_at":"2026-10-06T12:00:00Z"}]$j$,
+   '{"received": 1, "upserted": 1, "matched": 0, "rejected": 0}'),
+  ('e', $j$[
+     {"provider_id":"goodbody-clinic","network_reference":"CARRY-E1","status":"pending","converted_at":"2026-10-06T12:00:00Z"},
+     {"provider_id":"goodbody-clinic","network_reference":"CARRY-E2","status":"pending","converted_at":"2026-10-06T12:00:00Z"}
+   ]$j$, '{"received": 2, "upserted": 2, "matched": 1, "rejected": 0}'),
+  ('f', $j$[
+     {"provider_id":"goodbody-clinic","network_reference":"CARRY-F1","status":"pending","converted_at":"2026-10-06T12:00:00Z"},
+     {"provider_id":"goodbody-clinic","network_reference":"CARRY-F2","status":"pending","converted_at":"2026-10-06T12:00:00Z"}
+   ]$j$, '{"received": 2, "upserted": 2, "matched": 2, "rejected": 0}'),
+  ('h', $j$[
+     {"provider_id":"goodbody-clinic","network_reference":"CARRY-H1","status":"confirmed","converted_at":"2026-10-06T12:00:00Z"},
+     {"provider_id":"goodbody-clinic","network_reference":"CARRY-H2","status":"confirmed","converted_at":"2026-10-06T12:00:00Z"}
+   ]$j$, '{"received": 2, "upserted": 2, "matched": 2, "rejected": 0}');
+
+-- One row per reference, as provider/source/click (- for none).
+create function pg_temp.carry_rows(p_ref text) returns text language sql as $$
+  select string_agg(provider_id || '/' || source || '/' || coalesce(click_id::text, '-'), ',' order by provider_id)
+  from public.affiliate_conversions where network_reference = p_ref
+$$;
+
+set role service_role;
+-- (c) setup: the first sync files the sale under the unmapped advertiser with
+-- its click; the advertiser is then mapped to randox (batch c).
+select pg_temp.eq('carry: unmapped advertiser stored with its click', public.os_upsert_network_conversions('awin', $j$[
+  {"provider_id":"awin-12345","network_reference":"CARRY-C","status":"pending","converted_at":"2026-10-07T09:00:00Z","click_ref":"0c000000-0000-4000-8000-000000000001"}
+]$j$), '{"received": 1, "upserted": 1, "matched": 1, "rejected": 0}'::jsonb);
+-- (h) setup: H1 is already synced with its own click, H2 without one.
+select pg_temp.eq('carry: rows to update stored', public.os_upsert_network_conversions('awin', $j$[
+  {"provider_id":"goodbody-clinic","network_reference":"CARRY-H1","status":"pending","converted_at":"2026-10-06T12:00:00Z","click_ref":"1a000000-0000-4000-8000-000000000001"},
+  {"provider_id":"goodbody-clinic","network_reference":"CARRY-H2","status":"pending","converted_at":"2026-10-06T12:00:00Z"}
+]$j$), '{"received": 2, "upserted": 2, "matched": 1, "rejected": 0}'::jsonb);
+reset role;
+-- (h) a later CSV import files each sale again under another provider, with a
+-- different click.
+insert into public.affiliate_conversions (provider_id, network_reference, status, converted_at, source, click_id) values
+  ('lola-health', 'CARRY-H1', 'pending', '2026-10-06 10:00Z', 'csv', '1a000000-0000-4000-8000-000000000002'),
+  ('lola-health', 'CARRY-H2', 'pending', '2026-10-06 10:00Z', 'csv', '1a000000-0000-4000-8000-000000000003');
+
+set role service_role;
+select pg_temp.eq('carry: first run summary ' || name, public.os_upsert_network_conversions('awin', rows), want)
+from carry_batch order by name;
+reset role;
+
+-- (a) the CSV copy's click moves onto the Awin row and counts as matched
+select pg_temp.eq('carry: (a) CSV click carried, CSV copy removed', pg_temp.carry_rows('CARRY-A'),
+  'goodbody-clinic/awin/0a000000-0000-4000-8000-000000000001');
+-- (b) the incoming row's own click wins; a click_ref that is not one of our
+-- clicks is no click at all, so the copy's click is carried
+select pg_temp.eq('carry: (b) own click_ref beats the carried click', pg_temp.carry_rows('CARRY-B1'),
+  'goodbody-clinic/awin/0b000000-0000-4000-8000-000000000001');
+select pg_temp.eq('carry: (b) unknown click_ref falls back to the carried click', pg_temp.carry_rows('CARRY-B2'),
+  'goodbody-clinic/awin/0b000000-0000-4000-8000-000000000002');
+-- (c) remapped advertiser keeps its click under the mapped provider
+select pg_temp.eq('carry: (c) remap keeps the click', pg_temp.carry_rows('CARRY-C'),
+  'randox/awin/0c000000-0000-4000-8000-000000000001');
+-- (d) nothing to carry
+select pg_temp.eq('carry: (d) copy without a click leaves none', pg_temp.carry_rows('CARRY-D'),
+  'goodbody-clinic/awin/-');
+-- (e) one second outside the window: not moved, keeps its own click, gives
+-- none away; exactly on the boundary: moved, click carried
+select pg_temp.eq('carry: (e) copy outside two days stays with its click', pg_temp.carry_rows('CARRY-E1'),
+  'goodbody-clinic/awin/-,lola-health/csv/0e000000-0000-4000-8000-000000000001');
+select pg_temp.eq('carry: (e) copy at exactly two days moves its click', pg_temp.carry_rows('CARRY-E2'),
+  'goodbody-clinic/awin/0e000000-0000-4000-8000-000000000002');
+-- (f) closest copy in time wins; on a tie, the lower click id
+select pg_temp.eq('carry: (f) closest copy wins', pg_temp.carry_rows('CARRY-F1'),
+  'goodbody-clinic/awin/0f000000-0000-4000-8000-000000000002');
+select pg_temp.eq('carry: (f) tie goes to the lower click id', pg_temp.carry_rows('CARRY-F2'),
+  'goodbody-clinic/awin/0f000000-0000-4000-8000-000000000003');
+-- (h) a click already stored on the row is never replaced by a carried one;
+-- an empty one is filled
+select pg_temp.eq('carry: (h) stored click beats the carried click', pg_temp.carry_rows('CARRY-H1'),
+  'goodbody-clinic/awin/1a000000-0000-4000-8000-000000000001');
+select pg_temp.eq('carry: (h) empty stored click is filled', pg_temp.carry_rows('CARRY-H2'),
+  'goodbody-clinic/awin/1a000000-0000-4000-8000-000000000003');
+
+-- (g) rerunning every batch returns the same summary and changes no row
+create temp table carry_before as
+  select network_reference, provider_id, source, status, click_id, converted_at
+  from public.affiliate_conversions where network_reference like 'CARRY-%';
+set role service_role;
+select pg_temp.eq('carry: (g) rerun summary ' || name, public.os_upsert_network_conversions('awin', rows), want)
+from carry_batch order by name;
+reset role;
+select pg_temp.eq('carry: (g) rerun changes no row', (
+  select count(*) from (
+    (select network_reference, provider_id, source, status, click_id, converted_at
+       from public.affiliate_conversions where network_reference like 'CARRY-%'
+     except all select * from carry_before)
+    union all
+    (select * from carry_before
+     except all select network_reference, provider_id, source, status, click_id, converted_at
+       from public.affiliate_conversions where network_reference like 'CARRY-%')
+  ) diff), 0::bigint);
+select pg_temp.eq('carry: (g) one row per reference except E1', (select count(*) from carry_before), 12::bigint);
+
+-- The re-created function keeps its security and grants.
+select pg_temp.eq('carry: still security invoker with fixed search_path',
+  (select not prosecdef and proconfig = array['search_path=public']
+   from pg_proc where oid = 'public.os_upsert_network_conversions(text, jsonb)'::regprocedure), true);
+select pg_temp.eq('carry: executable by service_role only',
+  (select string_agg(r || '=' || has_function_privilege(r, 'public.os_upsert_network_conversions(text, jsonb)', 'execute'), ',' order by r)
+   from unnest(array['anon', 'authenticated', 'service_role']) r),
+  'anon=false,authenticated=false,service_role=true');
+select pg_temp.eq('carry: no execute for PUBLIC',
+  (select count(*) from pg_proc p, aclexplode(p.proacl) a
+   where p.oid = 'public.os_upsert_network_conversions(text, jsonb)'::regprocedure
+     and a.grantee = 0 and a.privilege_type = 'EXECUTE'), 0::bigint);
 
 -- ---------- schedules ----------
 select pg_temp.eq('sync job scheduled', (select schedule from cron.job where jobname = 'os-plugins-sync'), '23 * * * *');

@@ -80,16 +80,6 @@ describe("Lola turnaround", () => {
   });
 });
 
-describe("Lola migration stays in step with the catalogue", () => {
-  it("committed migration equals the generated SQL", () => {
-    const sql = readFileSync(
-      "supabase/migrations/20261004221500_lola_catalogue_corrections.sql",
-      "utf8",
-    );
-    expect(sql).toBe(buildLolaCatalogueSql());
-  });
-});
-
 const walk = (dir: string): string[] =>
   readdirSync(dir).flatMap((entry) => {
     const full = join(dir, entry);

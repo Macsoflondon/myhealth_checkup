@@ -472,8 +472,9 @@ const sqlText = (s: string): string => `'${s.replace(/'/g, "''")}'`;
 const sqlLikeEscape = (s: string): string => s.replace(/[\\%_]/g, "\\$&");
 
 /**
- * SQL that applies this catalogue to provider_tests. Used to generate the
- * committed migration, and by a unit test that fails if the two drift apart.
+ * SQL that applies this catalogue to provider_tests. When the catalogue
+ * changes, put this output in a new migration; never edit one that has been
+ * applied (production recorded the first run as 20261005004752).
  * Names are matched with ILIKE (never =) so curly apostrophes are safe.
  */
 export function buildLolaCatalogueSql(): string {
