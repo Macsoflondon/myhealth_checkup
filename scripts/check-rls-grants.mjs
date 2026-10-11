@@ -23,6 +23,11 @@ const DIR = "supabase/migrations";
 // are applied by 20260927190000_reconcile_out_of_band_production_state.sql.
 // Grandfathered by exact file (or file and table) so the rule still applies to
 // everything new.
+//
+// Restored verbatim on 2026-10-11 (applied in production on 2026-10-09): the
+// biomarker lock table enables RLS and revokes all from anon and authenticated
+// in the same file, leaving only postgres and service_role, which is exactly
+// production's ACL. It needs no GRANT.
 const BASELINE_FILES = new Set([
   "20260630110630_enterprise_operational_intelligence_platform.sql",
 ]);
@@ -31,6 +36,7 @@ const BASELINE = new Set([
   "20260829113822_biomarker_canonical_phase4_taxonomy.sql:biomarker_category_map",
   "20260829234959_provider_test_biomarkers_link_table.sql:provider_test_biomarkers",
   "20260831120014_provider_tests_biomarkers_list_junk_guard.sql:known_scrape_junk_labels",
+  "20261009091920_biomarker_layer_lock_20261009.sql:biomarker_lock_state",
 ]);
 
 const files = readdirSync(DIR)
