@@ -26,6 +26,8 @@ run "${HERE}/supabase-stubs.sql"
 run supabase/migrations/20261001120000_affiliate_click_tracking.sql
 run supabase/migrations/20261009160000_ai_os_dashboard.sql
 run supabase/migrations/20261009160000_ai_os_dashboard.sql
+run supabase/migrations/20261011150000_os_conversions_keep_click_on_move.sql
+run supabase/migrations/20261011150000_os_conversions_keep_click_on_move.sql
 
 out="$(psql -d "${DB}" -q -v ON_ERROR_STOP=1 -f "${HERE}/ai-os-dashboard.test.sql" 2>&1)" || {
   echo "${out}" | grep -E "FAIL|ERROR" || echo "${out}"
