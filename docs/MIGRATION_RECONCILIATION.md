@@ -93,31 +93,39 @@ repository under a version production never recorded. Both directions are now cl
 
 - **Eight production-only versions restored** (five verbatim, three with the replay
   adaptations below): `20261005004752`
-  (lola_catalogue_corrections) and seven `20261009*` biomarker migrations (hub synonyms,
-  missing hub entries, the library clean-up with `entity_type` and its views, the biomarker
-  data-layer lock, and the Clinilabs biomarker lists). Each file carries the standard
+  (lola_catalogue_corrections) and seven `20261009*` biomarker migrations (two hub synonym
+  batches, missing hub entries, the library clean-up with `entity_type` and its views, the
+  biomarker data-layer lock, the Clinilabs biomarker lists, and hub labels for Clinilabs). Each file carries the standard
   header and the md5 of the recorded statement in `schema_migrations`. The five verbatim
-  files match it byte for byte; each adapted file differs from it in one line only.
+  files match it byte for byte; each adapted file differs from it in one line, apart from the header.
 - **Three replay adaptations.** `20261009065418`, `20261009091226` and `20261009110924`
-  each open with a check that raised an exception unless production's catalogue data was
+  each contain a check that raised an exception unless production's catalogue data was
   present. That data was loaded outside migrations or came from the scrapers, so a fresh
   database stopped at the first of them. Each check now reports with a notice instead.
   The rest of each file runs unchanged and matches only the rows that exist. Production
   ran the original checks, and they passed.
 - **`20261004221500_lola_catalogue_corrections.sql` removed.** Production ran an earlier
-  draft of that file and recorded it as `20261005004752`, with comment lines stripped.
+  draft of that file and recorded it as `20261005004752` (commit `3b2f4fb`, with comment lines and leading and
+  trailing blank lines removed).
   The only later addition, Peak Insights 70 at "2-3 working days", is already in
   production's data, from a direct write at 14:47 UTC on 5 October. The unit test that
   compared that file with `buildLolaCatalogueSql()` is removed with it. A catalogue change
   now goes in a new migration.
-- **Known fresh-build differences (data only):** Peak Insights 70 replays as "2 working
-  days"; `20261009065616` creates fewer hub entries than production and may create two
-  malformed ALEX entries from a seeded Clinilabs row; and each fresh database generates
-  its own biomarker lock key. None affects the schema.
+- **Known fresh-build differences (data only),** confirmed on the PR #67 Supabase preview
+  rebuild on 13 October:
+  - Peak Insights 70 replays as "2 working days".
+  - The preview has 5 hub rows tagged `provider_test_audit_2026-10-09` (from
+    `20261009065616` and `20261009111016`); production has 206.
+  - Two of those 5 are malformed: `{"value": "Total IgE"} (specific IgE)` and
+    `{"value": "300 Individual Allergens"} (specific IgE)`. The Clinilabs ALEX row seeded by
+    `20260405134122` stores its list as `{"value": …}` objects.
+  - Each fresh database generates its own biomarker lock key.
+
+  None affects the schema.
 
 Check, 11 October 2026: the repository's versions, excluding the new
 `20261011150000`, hash to the same md5 as production's 420 recorded versions
-(`d128230038a24c378820d52a33170158`).
+(`d128230038a24c378820d52a33170158`, the md5 of the sorted versions joined by commas).
 
 The sections below are the original 14 September inventory, kept for the record.
 

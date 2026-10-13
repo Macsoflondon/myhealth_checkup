@@ -1,6 +1,6 @@
 # AI OS dashboard (Crux Control)
 
-_Last updated 2026-10-11._
+_Last updated 2026-10-13._
 
 The AI OS is the rebuilt Crux Control admin portal at `/control`. It keeps every
 existing Crux Control section and adds a plugin layer that pulls clicks,
@@ -67,19 +67,21 @@ results and one indexed snapshots query, which keeps them fast.
 - **Revenue.** Reversed conversions are shown but never counted. Commission is
   what the network reports, not cash received. Commission never affects
   ranking.
-- **Conversion import.** `os_upsert_network_conversions` keeps one row per
-  network reference. A row with the same reference under another provider is
-  treated as a stale copy and deleted when it came from the same network, or
-  from a CSV import dated within two days of the sale. Rows from other
-  networks are kept. That covers an advertiser mapped after its first sync
+- **Conversion import.** `os_upsert_network_conversions` stores each synced
+  transaction once, under the provider it maps to. A row with the same
+  reference under another provider is treated as a stale copy and deleted
+  when it came from the same network, or from a CSV import dated within two
+  days of the sale. Rows from other networks, and CSV rows further apart, are
+  kept. That covers an advertiser mapped after its first sync
   (stored as `awin-12345`) and a CSV import of the same sale. The sale is
   then stored under the provider it now maps to. Since migration
   `20261011150000`, the click link survives the move. The row takes the
-  incoming `clickRef` when it is one of our clicks, otherwise the click
+  incoming `click_ref` when it is one of our clicks, otherwise the click
   already stored on it, otherwise the click from a deleted copy. If more than
   one deleted copy has a click, the one closest in time to the sale gives it,
   and the lower click id settles a tie. Before that migration, the copy's
-  click was lost and the sale showed as unattributed. A carried click counts
+  click was lost, so a sale whose synced row had no click of its own showed as
+  unattributed. A carried click counts
   towards the sync's "Matched to a click". The Revenue section's attributed
   figure uses the same click test but leaves out reversed sales.
 - **Snapshots.** Every payload records when it was fetched; every panel shows

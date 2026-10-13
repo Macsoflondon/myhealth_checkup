@@ -14,7 +14,7 @@
 --      20261009160000, which never replaced a stored click with nothing);
 --   3. the click from a removed copy: of the removed copies that have a
 --      click, the one closest in time to the incoming sale, then the lowest
---      click_id, so a rerun picks the same one.
+--      click_id, so the same starting rows always give the same click.
 -- A carried click counts towards "matched", like a stored click kept by the
 -- upsert already did: matched is the number of rows this call stored that
 -- are linked to a click, reversed ones included. os_revenue_summary's
@@ -28,8 +28,9 @@
 -- moved / resolved CTEs and the click_id conflict rule change. Because
 -- resolved reads moved, the stale-copy delete now finishes before the
 -- insert starts; the two touch different rows, so the result is the same.
--- The work stays linear in batch size: the conflict rule looks a row's own
--- click up again only when the stored and incoming clicks differ.
+-- The work stays linear in batch size: the conflict rule checks the row's
+-- reference against a hashed set of the references whose incoming click is
+-- one of ours, built once per call.
 
 -- Used by the os-plugins edge function to store transactions pulled from an
 -- affiliate network API. Same conflict key as import_affiliate_conversions,
@@ -89,9 +90,9 @@ begin
     -- an advertiser mapped after its first sync (stored as awin-12345), or a
     -- CSV import of the same sale. Drop it so the sale counts once, under
     -- the provider it now maps to. CSV rows carry no network, so one only
-    -- counts as the same sale when its date is within two days. The copy's
-    -- click link is kept: its click_id is returned here and carried onto the
-    -- replacement row when that row has no click of its own.
+    -- counts as the same sale when its date is within two days. The copies'
+    -- click_ids are returned here; resolved carries one onto the replacement
+    -- row when that row has neither its own click nor a stored one.
     delete from public.affiliate_conversions a
     using dedup d
     where a.network_reference = d.network_reference
@@ -106,8 +107,9 @@ begin
     returning a.network_reference, a.click_id,
       abs(extract(epoch from (a.converted_at - d.converted_at))) as gap
   ), resolved as (
-    -- One row per reference (dedup), so distinct on keeps every incoming row
-    -- and picks the closest removed copy's click, then the lowest click_id.
+    -- One row per reference (dedup), so distinct on keeps every incoming row.
+    -- Of the removed copies that have a click, it picks the one closest in
+    -- time to the incoming sale, then the lowest click_id.
     select distinct on (d.network_reference)
       d.*, c.click_id as own_click_id, coalesce(c.click_id, m.click_id) as click_id
     from dedup d
@@ -123,17 +125,14 @@ begin
     from resolved
     on conflict (provider_id, network_reference) do update set
       -- The incoming row's own click wins, then the click already stored on
-      -- this row, then the carried click (excluded.click_id when the incoming
-      -- row has none). network_reference is unique in resolved (dedup).
+      -- this row, then the carried click. excluded.click_id is the own click
+      -- when the reference is in the set below, else the carried click or
+      -- null. The set is uncorrelated, so it is hashed once per call.
       click_id = case
-        when excluded.click_id is null
-          or public.affiliate_conversions.click_id is not distinct from excluded.click_id
-          then coalesce(excluded.click_id, public.affiliate_conversions.click_id)
-        when public.affiliate_conversions.click_id is null then excluded.click_id
-        else coalesce(
-          (select r.own_click_id from resolved r
-            where r.network_reference = excluded.network_reference),
-          public.affiliate_conversions.click_id)
+        when excluded.network_reference in
+            (select r.network_reference from resolved r where r.own_click_id is not null)
+          then excluded.click_id
+        else coalesce(public.affiliate_conversions.click_id, excluded.click_id)
       end,
       status = excluded.status,
       order_value_gbp = excluded.order_value_gbp,

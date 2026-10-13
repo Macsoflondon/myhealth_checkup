@@ -474,13 +474,14 @@ const sqlLikeEscape = (s: string): string => s.replace(/[\\%_]/g, "\\$&");
 /**
  * SQL that applies this catalogue to provider_tests. When the catalogue
  * changes, put this output in a new migration; never edit one that has been
- * applied (production recorded the first run as 20261005004752).
+ * applied (production recorded an earlier output, without the Peak Insights
+ * 70 rule, as 20261005004752).
  * Names are matched with ILIKE (never =) so curly apostrophes are safe.
  */
 export function buildLolaCatalogueSql(): string {
   const lines: string[] = [
     "-- Generated from supabase/functions/_shared/scrape/lola-catalogue.ts.",
-    "-- Do not hand-edit: change the catalogue and regenerate.",
+    "-- Do not hand-edit. After a catalogue change, generate a new migration.",
     "",
     "-- 1. Turnaround: default first, then the specific rules in reverse order",
     "--    so the first matching rule wins, as in lolaTurnaround().",

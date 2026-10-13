@@ -7,7 +7,9 @@
 -- Replay adaptation (2026-10-11): the recorded check raised an exception when any
 -- duplicate or canonical name had no biomarker_hub row. Those rows exist only in the
 -- hub data production loaded outside migrations, so a fresh database stopped here
--- and lost the entity_type column, its index and both views. The check now reports
+-- and lost the entity_type column and its check constraint, the
+-- provider_test_biomarkers (biomarker_id) index, and both views
+-- (biomarker_library_public, biomarker_data_quality). The check now reports
 -- missing names with a notice; the schema changes apply and the data fixes match
 -- only the rows that exist. Production ran the original check, which passed.
 
