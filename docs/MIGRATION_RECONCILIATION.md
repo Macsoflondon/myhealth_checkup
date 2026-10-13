@@ -91,12 +91,13 @@ Between 5 and 9 October, eight migrations were applied to production through the
 Lovable migration tool without a file reaching this repository, and one file reached the
 repository under a version production never recorded. Both directions are now closed.
 
-- **Eight production-only versions restored verbatim:** `20261005004752`
+- **Eight production-only versions restored** (five verbatim, three with the replay
+  adaptations below): `20261005004752`
   (lola_catalogue_corrections) and seven `20261009*` biomarker migrations (hub synonyms,
   missing hub entries, the library clean-up with `entity_type` and its views, the biomarker
   data-layer lock, and the Clinilabs biomarker lists). Each file carries the standard
-  header and the md5 of the recorded statement, and was checked byte for byte against
-  `schema_migrations`.
+  header and the md5 of the recorded statement in `schema_migrations`. The five verbatim
+  files match it byte for byte; each adapted file differs from it in one line only.
 - **Three replay adaptations.** `20261009065418`, `20261009091226` and `20261009110924`
   each open with a check that raised an exception unless production's catalogue data was
   present. That data was loaded outside migrations or came from the scrapers, so a fresh

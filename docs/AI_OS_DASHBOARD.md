@@ -69,17 +69,19 @@ results and one indexed snapshots query, which keeps them fast.
   ranking.
 - **Conversion import.** `os_upsert_network_conversions` keeps one row per
   network reference. A row with the same reference under another provider is
-  treated as a stale copy and deleted. That covers an advertiser mapped after
-  its first sync (stored as `awin-12345`) and a CSV import of the same sale
-  dated within two days. The sale is then stored under the provider it now
-  maps to. Since migration `20261011150000`, the click link survives the
-  move. The row takes the incoming `clickRef` when it is one of our clicks,
-  otherwise the click already stored on it, otherwise the click from the
-  deleted copy. If more than one copy is deleted, the one closest in time to
-  the sale gives its click, and the lower click id settles a tie. Before that
-  migration, the copy's click was lost and the sale showed as unattributed.
-  A carried click counts towards the sync's "Matched to a click", the same
-  test the Revenue section uses for attributed conversions.
+  treated as a stale copy and deleted when it came from the same network, or
+  from a CSV import dated within two days of the sale. Rows from other
+  networks are kept. That covers an advertiser mapped after its first sync
+  (stored as `awin-12345`) and a CSV import of the same sale. The sale is
+  then stored under the provider it now maps to. Since migration
+  `20261011150000`, the click link survives the move. The row takes the
+  incoming `clickRef` when it is one of our clicks, otherwise the click
+  already stored on it, otherwise the click from a deleted copy. If more than
+  one deleted copy has a click, the one closest in time to the sale gives it,
+  and the lower click id settles a tie. Before that migration, the copy's
+  click was lost and the sale showed as unattributed. A carried click counts
+  towards the sync's "Matched to a click". The Revenue section's attributed
+  figure uses the same click test but leaves out reversed sales.
 - **Snapshots.** Every payload records when it was fetched; every panel shows
   the source, the window and the age of the data.
 - **AI briefing.** The Command centre sends the dashboard's figures (facts) and
@@ -186,7 +188,7 @@ says the edge function did not answer.
 
 - SQL: `bash scripts/sql-tests/run-ai-os.sh` replays the affiliate and AI OS
   migrations twice on a disposable local Postgres with Supabase stand-ins and
-  runs 115 assertions (sweep and burst exclusion, London days and clock
+  runs 122 assertions (sweep and burst exclusion, London days and clock
   changes, the previous window, MFA gating, Vault
   write-only access, conversion upserts, clicks carried from moved copies,
   revenue totals, cron jobs).

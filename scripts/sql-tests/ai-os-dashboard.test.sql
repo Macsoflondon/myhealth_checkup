@@ -262,7 +262,10 @@ insert into public.affiliate_clicks (click_id, clicked_at, provider_id, source_p
   ('0f000000-0000-4000-8000-000000000004', '2026-10-06 08:00Z', 'lola-health', '/compare', 'comparison', 'lolahealth.com'),
   ('1a000000-0000-4000-8000-000000000001', '2026-10-06 08:00Z', 'goodbody-clinic', '/compare', 'comparison', 'goodbodyclinic.com'),
   ('1a000000-0000-4000-8000-000000000002', '2026-10-06 08:00Z', 'lola-health', '/compare', 'comparison', 'lolahealth.com'),
-  ('1a000000-0000-4000-8000-000000000003', '2026-10-06 08:00Z', 'lola-health', '/compare', 'comparison', 'lolahealth.com');
+  ('1a000000-0000-4000-8000-000000000003', '2026-10-06 08:00Z', 'lola-health', '/compare', 'comparison', 'lolahealth.com'),
+  ('1b000000-0000-4000-8000-000000000001', '2026-10-06 08:00Z', 'goodbody-clinic', '/compare', 'comparison', 'goodbodyclinic.com'),
+  ('1b000000-0000-4000-8000-000000000002', '2026-10-06 08:00Z', 'goodbody-clinic', '/compare', 'comparison', 'goodbodyclinic.com'),
+  ('1c000000-0000-4000-8000-000000000001', '2026-10-06 08:00Z', 'randox', '/compare', 'comparison', 'randoxhealth.com');
 
 -- Stale copies already on file. Rows are filed under other providers, so each
 -- is a candidate for removal when the network row for its reference arrives.
@@ -286,7 +289,10 @@ insert into public.affiliate_conversions (provider_id, network_reference, status
   -- F2: two copies an hour either side; the tie goes to the lower click id,
   -- which is inserted second so physical order cannot decide it.
   ('lola-health', 'CARRY-F2', 'pending', '2026-10-06 11:00Z', 'csv', '0f000000-0000-4000-8000-000000000004'),
-  ('randox', 'CARRY-F2', 'pending', '2026-10-06 13:00Z', 'csv', '0f000000-0000-4000-8000-000000000003');
+  ('randox', 'CARRY-F2', 'pending', '2026-10-06 13:00Z', 'csv', '0f000000-0000-4000-8000-000000000003'),
+  -- (j) the closest copy has no click; the farther copy's click is carried
+  ('lola-health', 'CARRY-J', 'pending', '2026-10-06 12:00Z', 'csv', null),
+  ('randox', 'CARRY-J', 'pending', '2026-10-07 12:00Z', 'csv', '1c000000-0000-4000-8000-000000000001');
 
 -- Each batch, and the summary it must return on the first run and on every
 -- rerun. Kept in a table so the idempotency check replays the exact input.
@@ -314,7 +320,11 @@ insert into carry_batch values
   ('h', $j$[
      {"provider_id":"goodbody-clinic","network_reference":"CARRY-H1","status":"confirmed","converted_at":"2026-10-06T12:00:00Z"},
      {"provider_id":"goodbody-clinic","network_reference":"CARRY-H2","status":"confirmed","converted_at":"2026-10-06T12:00:00Z"}
-   ]$j$, '{"received": 2, "upserted": 2, "matched": 2, "rejected": 0}');
+   ]$j$, '{"received": 2, "upserted": 2, "matched": 2, "rejected": 0}'),
+  ('i', $j$[{"provider_id":"goodbody-clinic","network_reference":"CARRY-I","status":"confirmed","converted_at":"2026-10-06T12:00:00Z","click_ref":"1b000000-0000-4000-8000-000000000002"}]$j$,
+   '{"received": 1, "upserted": 1, "matched": 1, "rejected": 0}'),
+  ('j', $j$[{"provider_id":"goodbody-clinic","network_reference":"CARRY-J","status":"pending","converted_at":"2026-10-06T12:00:00Z"}]$j$,
+   '{"received": 1, "upserted": 1, "matched": 1, "rejected": 0}');
 
 -- One row per reference, as provider/source/click (- for none).
 create function pg_temp.carry_rows(p_ref text) returns text language sql as $$
@@ -333,6 +343,10 @@ select pg_temp.eq('carry: rows to update stored', public.os_upsert_network_conve
   {"provider_id":"goodbody-clinic","network_reference":"CARRY-H1","status":"pending","converted_at":"2026-10-06T12:00:00Z","click_ref":"1a000000-0000-4000-8000-000000000001"},
   {"provider_id":"goodbody-clinic","network_reference":"CARRY-H2","status":"pending","converted_at":"2026-10-06T12:00:00Z"}
 ]$j$), '{"received": 2, "upserted": 2, "matched": 1, "rejected": 0}'::jsonb);
+-- (i) setup: already synced with one of our clicks; the next sync reports another.
+select pg_temp.eq('carry: (i) row stored with a click', public.os_upsert_network_conversions('awin', $j$[
+  {"provider_id":"goodbody-clinic","network_reference":"CARRY-I","status":"pending","converted_at":"2026-10-06T12:00:00Z","click_ref":"1b000000-0000-4000-8000-000000000001"}
+]$j$), '{"received": 1, "upserted": 1, "matched": 1, "rejected": 0}'::jsonb);
 reset role;
 -- (h) a later CSV import files each sale again under another provider, with a
 -- different click.
@@ -377,6 +391,12 @@ select pg_temp.eq('carry: (h) stored click beats the carried click', pg_temp.car
   'goodbody-clinic/awin/1a000000-0000-4000-8000-000000000001');
 select pg_temp.eq('carry: (h) empty stored click is filled', pg_temp.carry_rows('CARRY-H2'),
   'goodbody-clinic/awin/1a000000-0000-4000-8000-000000000003');
+-- (i) the incoming row's own click replaces a click already stored on the row
+select pg_temp.eq('carry: (i) own click_ref beats a stored click', pg_temp.carry_rows('CARRY-I'),
+  'goodbody-clinic/awin/1b000000-0000-4000-8000-000000000002');
+-- (j) copies without a click are skipped when choosing the closest copy
+select pg_temp.eq('carry: (j) closest copy with a click wins', pg_temp.carry_rows('CARRY-J'),
+  'goodbody-clinic/awin/1c000000-0000-4000-8000-000000000001');
 
 -- (g) rerunning every batch returns the same summary and changes no row
 create temp table carry_before as
@@ -396,7 +416,7 @@ select pg_temp.eq('carry: (g) rerun changes no row', (
      except all select network_reference, provider_id, source, status, click_id, converted_at
        from public.affiliate_conversions where network_reference like 'CARRY-%')
   ) diff), 0::bigint);
-select pg_temp.eq('carry: (g) one row per reference except E1', (select count(*) from carry_before), 12::bigint);
+select pg_temp.eq('carry: (g) one row per reference except E1', (select count(*) from carry_before), 14::bigint);
 
 -- The re-created function keeps its security and grants.
 select pg_temp.eq('carry: still security invoker with fixed search_path',
