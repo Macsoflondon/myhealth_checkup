@@ -3,14 +3,14 @@
 // field too (verbatim, no LLM rewrite) — description must always be the provider's own text.
 // 2026-09-21: this file was previously deployed straight from the Supabase dashboard and
 // not tracked in this repo at all — pulled in here for reviewability as part of a platform
-// audit. SECRET below intentionally has NO hardcoded fallback in this copy: the deployed
-// function's real fallback value is a rotated secret that must never be committed to git.
-// Set the MHC_SYNC_SECRET edge function secret in the Supabase dashboard; this file will not
-// authenticate correctly until you do, by design.
+// audit.
+// 2026-10-13: ?secret= is checked by ../_shared/mhc-auth.ts against the Vault entry
+// mhc_sync_secret, the value the cron jobs send, read through public.mhc_sync_secret().
+// MHC_SYNC_SECRET is only a fallback for when that read fails. No secret is committed here.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { parseRandoxWhatsIncluded } from "../_shared/scrape/biomarkerParsers.ts";
-const SECRET = Deno.env.get("MHC_SYNC_SECRET") ?? "";
+import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
 const PROVIDER = "randox";
 const SITEMAPS = ["https://randoxhealth.com/sitemap.xml"];
 const URLMATCH = /\/en-GB\/product\//i;
@@ -200,17 +200,17 @@ function parsePage(html) {
 }
 Deno.serve(async (req) => {
   const u = new URL(req.url);
-  if (!SECRET || u.searchParams.get("secret") !== SECRET)
-    return new Response("unauthorized", { status: 401 });
+  const supabase = createClient(
+    Deno.env.get("SUPABASE_URL"),
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),
+  );
+  const auth = await checkMhcSyncSecret(u, supabase, "mhc-randox-scrape");
+  if (!auth.ok) return new Response("unauthorized", { status: 401 });
   const startedAt = new Date().toISOString();
   const debug = u.searchParams.get("debug");
   const dry = u.searchParams.get("dry") === "1";
   const offset = parseInt(u.searchParams.get("offset") || "0");
   const limit = parseInt(u.searchParams.get("limit") || "20");
-  const supabase = createClient(
-    Deno.env.get("SUPABASE_URL"),
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),
-  );
   const urls = await getUrls();
   if (debug === "sitemap")
     return new Response(
@@ -225,14 +225,28 @@ Deno.serve(async (req) => {
       ),
       { headers: { "content-type": "application/json" } },
     );
-  const { data: rows } = await supabase
+  // Inactive rows are loaded too, so a deactivated test is matched and left
+  // alone rather than re-inserted as a new active row.
+  const { data: allRows, error: rowsError } = await supabase
     .from("provider_tests")
-    .select("id,test_name,url,biomarkers_list")
-    .eq("provider_id", PROVIDER)
-    .eq("is_active", true);
+    .select("id,test_name,url,biomarkers_list,price,is_active")
+    .eq("provider_id", PROVIDER);
+  if (rowsError || !allRows) {
+    return new Response(
+      JSON.stringify({
+        ok: false,
+        error: rowsError?.message ?? "provider_tests read returned no data",
+      }),
+      { status: 500, headers: { "content-type": "application/json" } },
+    );
+  }
+  const rows = allRows.filter((r) => r.is_active);
   const byNorm = new Map();
   const bySlug = new Map();
-  for (const r of rows || []) {
+  // Inactive first so an active row with the same slug or name wins.
+  for (const r of [...allRows].sort(
+    (a, b) => Number(a.is_active) - Number(b.is_active),
+  )) {
     byNorm.set(norm(r.test_name), r);
     if (r.url) bySlug.set(slugRaw(r.url), r);
   }
@@ -242,7 +256,9 @@ Deno.serve(async (req) => {
   const skippedNoNameOrPrice = [];
   let updated = 0,
     inserted = 0,
-    redir = 0;
+    redir = 0,
+    failedWrites = 0;
+  const writeErrors: Array<Record<string, unknown>> = [];
   for (const url of slice) {
     let html = "";
     let finalUrl = url;
@@ -275,7 +291,25 @@ Deno.serve(async (req) => {
       continue;
     }
     const row = bySlug.get(slugRaw(url)) || byNorm.get(norm(p.name));
+    if (row && !row.is_active) {
+      skippedNoNameOrPrice.push({
+        url,
+        name: p.name,
+        price: p.price,
+        reason: "deactivated_row",
+      });
+      continue;
+    }
     if (row) {
+      const prevPrice = Number(row.price);
+      if (prevPrice > 0 && Math.abs(p.price - prevPrice) / prevPrice > 0.5) {
+        writeErrors.push({
+          id: row.id,
+          url,
+          error: `price jump ${prevPrice} -> ${p.price}; row not written`,
+        });
+        continue;
+      }
       if (!dry) {
         const upd: Record<string, unknown> = {
           url,
@@ -310,9 +344,17 @@ Deno.serve(async (req) => {
           upd.description_source = "scraped_verbatim";
           upd.description_generated_at = new Date().toISOString();
         }
-        await supabase.from("provider_tests").update(upd).eq("id", row.id);
+        const { error } = await supabase
+          .from("provider_tests")
+          .update(upd)
+          .eq("id", row.id);
+        if (error) {
+          failedWrites++;
+          writeErrors.push({ id: row.id, url, error: error.message });
+        } else updated++;
+      } else {
+        updated++;
       }
-      updated++;
     } else {
       newItems.push({
         test_name: p.name,
@@ -354,7 +396,10 @@ Deno.serve(async (req) => {
           ins.description_generated_at = new Date().toISOString();
         }
         const { error } = await supabase.from("provider_tests").insert(ins);
-        if (!error) inserted++;
+        if (error) {
+          failedWrites++;
+          writeErrors.push({ url, name: p.name, error: error.message });
+        } else inserted++;
       }
     }
   }
@@ -364,13 +409,18 @@ Deno.serve(async (req) => {
       scraper_function: "mhc-randox-scrape",
       started_at: startedAt,
       finished_at: new Date().toISOString(),
-      status: "success",
+      status:
+        writeErrors.length === 0
+          ? "success"
+          : failedWrites > 0 && updated + inserted === 0
+            ? "error"
+            : "partial",
       tests_seen: slice.length,
       tests_new: inserted,
       tests_updated: updated,
       tests_deactivated: 0,
       tests_unchanged: Math.max(0, slice.length - inserted - updated - redir),
-      errors: [],
+      errors: writeErrors.slice(0, 50),
       metadata: {
         total_product_urls: urls.length,
         existing_active: rows?.length || 0,

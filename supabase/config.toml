@@ -203,3 +203,25 @@ verify_jwt = false
 # Vault and are never returned.
 [functions.os-plugins]
 verify_jwt = false
+
+# mhc-* catalogue and price sync, run every 6 hours by the mhc-* cron jobs
+# through net.http_get with no Authorization header, so the gateway must not
+# require a JWT. Security: ?secret= is checked in code against the Vault entry
+# mhc_sync_secret (supabase/functions/_shared/mhc-auth.ts).
+[functions.mhc-shopify-sync]
+verify_jwt = false
+
+[functions.mhc-shopify-rich-sync]
+verify_jwt = false
+
+[functions.mhc-medichecks-sync]
+verify_jwt = false
+
+[functions.mhc-lml-scrape]
+verify_jwt = false
+
+[functions.mhc-page-scrape]
+verify_jwt = false
+
+[functions.mhc-randox-scrape]
+verify_jwt = false

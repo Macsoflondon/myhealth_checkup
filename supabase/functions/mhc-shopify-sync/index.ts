@@ -13,15 +13,21 @@
 // not be invoked against this provider's rows any more.
 // 2026-09-21: this file was previously deployed straight from the Supabase dashboard and
 // not tracked in this repo at all — pulled in here for reviewability as part of a platform
-// audit. SECRET below intentionally has NO hardcoded fallback in this copy: the deployed
-// function's real fallback value is a rotated secret that must never be committed to git.
-// Set the MHC_SYNC_SECRET edge function secret in the Supabase dashboard; this file will not
-// authenticate correctly until you do, by design.
+// audit.
+// 2026-10-13: ?secret= is checked by ../_shared/mhc-auth.ts against the Vault entry
+// mhc_sync_secret, the value the cron jobs send, read through public.mhc_sync_secret().
+// MHC_SYNC_SECRET is only a fallback for when that read fails. No secret is committed here.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { internalErrorResponse } from "../_shared/errors.ts";
 import { htmlToText } from "../_shared/scrape/html.ts";
-
-const SECRET = Deno.env.get("MHC_SYNC_SECRET") ?? "";
+import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
+import {
+  hasLolaVariantFlags,
+  lolaPanelBiomarkers,
+  lolaPriceModel,
+  lolaSampleType,
+  lolaTurnaround,
+} from "../_shared/scrape/lola-catalogue.ts";
 
 function stripHtml(html: string | null | undefined): string | null {
   if (!html) return null;
@@ -58,7 +64,12 @@ const PROVIDERS: Record<
 
 Deno.serve(async (req: Request) => {
   const url = new URL(req.url);
-  if (!SECRET || url.searchParams.get("secret") !== SECRET) {
+  const supabase = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+  );
+  const auth = await checkMhcSyncSecret(url, supabase, "mhc-shopify-sync");
+  if (!auth.ok) {
     return new Response(JSON.stringify({ error: "unauthorised" }), {
       status: 401,
       headers: { "Content-Type": "application/json" },
@@ -79,10 +90,6 @@ Deno.serve(async (req: Request) => {
   );
   const dryRun = url.searchParams.get("dry") === "1";
 
-  const supabase = createClient(
-    Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-  );
   const started = new Date().toISOString();
   let runId: string | null = null;
   if (!dryRun) {
@@ -146,7 +153,20 @@ Deno.serve(async (req: Request) => {
         continue;
       }
 
-      const basePrice = parseFloat(p?.variants?.[0]?.price ?? "");
+      // Lola: kit-price model (migration 20261005004752). price is the cheapest
+      // variant; clinic and home phlebotomy fees are stored separately.
+      const lola =
+        provider === "lola-health"
+          ? lolaPriceModel(
+              (Array.isArray(p?.variants) ? p.variants : []).map((v: any) => ({
+                title: String(v?.title ?? ""),
+                price: v?.price,
+              })),
+            )
+          : null;
+      const basePrice = lola
+        ? lola.price
+        : parseFloat(p?.variants?.[0]?.price ?? "");
       if (!Number.isFinite(basePrice) || basePrice <= 0) {
         noPrice++;
         continue;
@@ -162,13 +182,27 @@ Deno.serve(async (req: Request) => {
         base_price: basePrice,
         price: basePrice,
         category: category,
-        total_expected_cost: basePrice, // collection fees unknown for these — TEC = base for now
+        // Non-Lola: collection fees unknown for these, so TEC = base for now.
+        total_expected_cost: lola ? lola.total_expected_cost : basePrice,
         collection_fee: 0,
         turnaround_unit: "not_stated", // not published in feed — never fabricate
         is_active: true,
         last_validated_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       };
+      if (lola) {
+        row.clinic_phlebotomy_cost = lola.clinic_phlebotomy_cost;
+        row.home_phlebotomy_cost = lola.home_phlebotomy_cost;
+        // Multi-variant products only. Single-variant rows keep their stored
+        // flags and sample type (GutID = Stool, Urinalysis = Urine).
+        if (hasLolaVariantFlags(lola)) {
+          row.clinic_visit_available = lola.clinic_visit_available;
+          row.home_phlebotomy_option = lola.home_phlebotomy_option;
+          row.home_kit_available = lola.home_kit_available;
+          const sampleType = lolaSampleType(lola);
+          if (sampleType) row.sample_type = sampleType;
+        }
+      }
       if (descriptionScraped) {
         row.description_scraped = descriptionScraped;
         row.description = descriptionScraped;
@@ -182,6 +216,8 @@ Deno.serve(async (req: Request) => {
             handle,
             title,
             basePrice,
+            total_expected_cost: row.total_expected_cost,
+            clinic_phlebotomy_cost: row.clinic_phlebotomy_cost ?? null,
             category,
             has_description: !!descriptionScraped,
           });
@@ -209,9 +245,29 @@ Deno.serve(async (req: Request) => {
         rowId = existing.id;
         updated++;
       } else {
+        // Lola: turnaround and panel biomarkers come from the catalogue only
+        // when a product is new. Updates leave them alone, so hand corrections
+        // made since (as for Peak Insights 70) are never overwritten.
+        const panel =
+          provider === "lola-health" ? lolaPanelBiomarkers(title) : null;
+        const insertRow =
+          provider === "lola-health"
+            ? {
+                ...row,
+                turnaround_days_text: lolaTurnaround(title),
+                turnaround_not_stated: false,
+                ...(panel
+                  ? {
+                      biomarkers_list: panel,
+                      biomarker_count: panel.length,
+                      biomarkers_not_stated: false,
+                    }
+                  : {}),
+              }
+            : row;
         const { data: ins, error } = await supabase
           .from("provider_tests")
-          .insert(row)
+          .insert(insertRow)
           .select("id")
           .single();
         if (!error) {
@@ -253,8 +309,8 @@ Deno.serve(async (req: Request) => {
           provider_test_id: rowId,
           provider_id: provider,
           test_name: title,
-          price: basePrice,
-          total_expected_cost: basePrice,
+          price: row.price,
+          total_expected_cost: row.total_expected_cost,
           scrape_source_url: productUrl,
         });
       } catch (_e) {}
