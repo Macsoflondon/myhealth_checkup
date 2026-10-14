@@ -8,6 +8,7 @@ import {
   lolaSampleType,
   lolaCollectionFields,
   buildLolaCatalogueSql,
+  isLolaTestProduct,
   lolaTurnaround,
 } from "../../../supabase/functions/_shared/scrape/lola-catalogue";
 import { deriveCollectionVariants } from "@/lib/collectionVariants";
@@ -214,4 +215,22 @@ describe("Lola price model", () => {
       .find((l) => l.includes("set base_price = price"))!;
     expect(base).not.toMatch(/clinic_visit_available|home_kit_available|home_phlebotomy_option/);
   });
+});
+
+describe("Lola product types", () => {
+  it.each(["add-on", "Health Check", "biological-age", " Health Check "])(
+    "%s is a test",
+    (t) => expect(isLolaTestProduct(t)).toBe(true),
+  );
+  // Product types in Lola's feed on 14/10/2026 that are not tests.
+  it.each([
+    "Weight loss",
+    "Erectile dysfunction",
+    "Hair loss",
+    "Premature ejaculation",
+    "giftcard",
+    "",
+    null,
+    undefined,
+  ])("%s is not a test", (t) => expect(isLolaTestProduct(t)).toBe(false));
 });

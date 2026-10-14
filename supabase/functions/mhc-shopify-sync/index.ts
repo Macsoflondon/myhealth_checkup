@@ -23,6 +23,7 @@ import { htmlToText } from "../_shared/scrape/html.ts";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
 import {
   hasLolaVariantFlags,
+  isLolaTestProduct,
   lolaPanelBiomarkers,
   lolaPriceModel,
   lolaSampleType,
@@ -52,7 +53,9 @@ const PROVIDERS: Record<
   },
   "lola-health": {
     domain: "https://lolahealth.com",
+    // Allowlist first: Lola's feed also sells medicines (see lola-catalogue.ts).
     junk: (title, ptype, tags) =>
+      !isLolaTestProduct(ptype) ||
       ptype.toLowerCase() === "giftcard" ||
       tags.includes("giftcard") ||
       tags.includes("category:gift-card") ||
