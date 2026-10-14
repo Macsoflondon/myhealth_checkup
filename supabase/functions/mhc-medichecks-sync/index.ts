@@ -16,6 +16,7 @@
 // v7 (2026-10-13): ?secret= is checked by ../_shared/mhc-auth.ts against the Vault entry
 // mhc_sync_secret, the value the cron jobs send, read through public.mhc_sync_secret().
 // MHC_SYNC_SECRET is only a fallback for when that read fails. No secret is committed here.
+// v8 (2026-10-14): collection-method add-ons are skipped and deactivated, like clinic visits.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { internalErrorResponse } from "../_shared/errors.ts";
 import { htmlToText } from "../_shared/scrape/html.ts";
@@ -136,7 +137,14 @@ Deno.serve(async (req: Request) => {
       const handle: string = p.handle ?? "";
       const productUrl = `${BASE}/products/${handle}`;
 
-      if (/^clinic-visit/i.test(handle) || /gift ?card/i.test(p.title ?? "")) {
+      // Clinic visits, gift cards and collection-method add-ons (nurse visit,
+      // partner clinic, urine collection) are not tests. The junk branch also
+      // deactivates any stored row for them.
+      if (
+        /^(clinic-visit|collection-method)/i.test(handle) ||
+        String(p.product_type ?? "").toLowerCase() === "collection method" ||
+        /gift ?card/i.test(p.title ?? "")
+      ) {
         skippedJunk++;
         if (!dryRun) {
           await supabase
