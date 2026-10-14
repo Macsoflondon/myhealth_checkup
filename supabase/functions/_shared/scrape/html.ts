@@ -122,9 +122,13 @@ function readTagName(html: string, start: number): string {
   return html.slice(start, end).toLowerCase();
 }
 
-/** Index of the matching `</name ...>` end tag (case-insensitive), or -1. */
-function findEndTag(html: string, name: string, from: number): number {
-  const lower = html.toLowerCase();
+/**
+ * Index of the matching `</name ...>` end tag (case-insensitive), or -1.
+ * `lower` is html.toLowerCase(), computed once per stripTags call: lowering
+ * the page here, once per script or style element, made a 200 KB page cost
+ * about 40 ms of CPU.
+ */
+function findEndTag(lower: string, name: string, from: number): number {
   let i = from;
   while ((i = lower.indexOf("</" + name, i)) !== -1) {
     const after = lower[i + 2 + name.length];
@@ -151,19 +155,25 @@ export function stripTags(
 ): string {
   let out = "";
   let i = 0;
+  let lower: string | null = null;
+  const commentEnd = /--!?>/g;
   while (i < html.length) {
     const ch = html[i];
     if (ch !== "<") {
-      out += ch;
-      i++;
+      // Copy the whole run of text up to the next "<" in one slice.
+      const lt = html.indexOf("<", i);
+      const stop = lt === -1 ? html.length : lt;
+      out += html.slice(i, stop);
+      i = stop;
       continue;
     }
     const next = html[i + 1];
 
     // Comment: <!-- ... --> (also tolerates the `--!>` end browsers accept).
     if (html.startsWith("<!--", i)) {
-      const close = /--!?>/.exec(html.slice(i + 4));
-      i = close ? i + 4 + close.index + close[0].length : html.length;
+      commentEnd.lastIndex = i + 4;
+      const close = commentEnd.exec(html);
+      i = close ? close.index + close[0].length : html.length;
       out += " ";
       continue;
     }
@@ -193,7 +203,8 @@ export function stripTags(
     out += lineBreak ? "\n" : " ";
 
     if (!closing && RAW_TEXT_ELEMENTS.has(name) && html[i - 2] !== "/") {
-      const end = findEndTag(html, name, i);
+      lower ??= html.toLowerCase();
+      const end = findEndTag(lower, name, i);
       i = end === -1 ? html.length : endOfTag(html, end + 2);
     }
   }
