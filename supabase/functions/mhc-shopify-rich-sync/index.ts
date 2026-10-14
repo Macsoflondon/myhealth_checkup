@@ -10,6 +10,10 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
+import {
+  fetchShopifyFeedPage,
+  shopifyFeedUrl,
+} from "../_shared/scrape/shopify-feed.ts";
 
 const PROVIDERS: Record<string, { domain: string; junk: (p: any) => boolean }> =
   {
@@ -182,15 +186,26 @@ Deno.serve(async (req) => {
       headers: { "content-type": "application/json" },
     });
 
+  // Falls back to the database's copy when Shopify refuses the edge (429).
+  // A page that cannot be read ends the feed; when page 1 cannot be read the
+  // run writes nothing and records the reason.
   const products: any[] = [];
+  const feedSources: string[] = [];
+  let feedError: string | null = null;
   for (let page = 1; page <= 6; page++) {
-    const resp = await fetch(
-      `${cfg.domain}/products.json?limit=250&page=${page}`,
-      { headers: { "User-Agent": "myhealthcheckup-sync/1.0" } },
-    );
-    if (!resp.ok) break;
-    const j = await resp.json();
-    const batch = j.products || [];
+    let batch: any[];
+    try {
+      const fp = await fetchShopifyFeedPage(
+        shopifyFeedUrl(cfg.domain, page),
+        supabase,
+        { headers: { "User-Agent": "myhealthcheckup-sync/1.0" } },
+      );
+      batch = fp.products;
+      feedSources.push(fp.source);
+    } catch (e) {
+      if (page === 1) feedError = e instanceof Error ? e.message : String(e);
+      break;
+    }
     if (batch.length === 0) break;
     products.push(...batch);
     if (batch.length < 250) break;
@@ -312,16 +327,23 @@ Deno.serve(async (req) => {
       scraper_function: "mhc-shopify-rich-sync",
       started_at: startedAt,
       finished_at: new Date().toISOString(),
-      status:
-        writeErrors.length || reviewRatio > 0.25 ? "partial" : "success",
+      status: feedError
+        ? "error"
+        : writeErrors.length || reviewRatio > 0.25
+          ? "partial"
+          : "success",
       tests_seen: totalRows,
       tests_new: 0,
       tests_updated: written,
       tests_deactivated: 0,
       tests_unchanged: Math.max(0, totalRows - written),
-      errors: writeErrors.slice(0, 50),
+      errors: [
+        ...(feedError ? [`feed: ${feedError}`.slice(0, 300)] : []),
+        ...writeErrors.slice(0, 50),
+      ],
       metadata: {
         feed_products: feed.length,
+        feed_sources: feedSources,
         confident: confidentCount,
         needs_review: needsReview,
         needs_review_ratio: +reviewRatio.toFixed(2),
@@ -341,6 +363,8 @@ Deno.serve(async (req) => {
         fuzzy,
         min_score: minScore,
         feed_products: feed.length,
+        feed_sources: feedSources,
+        feed_error: feedError,
         db_active: rows?.length || 0,
         confident: confidentCount,
         needs_review: (rows?.length || 0) - confidentCount,
