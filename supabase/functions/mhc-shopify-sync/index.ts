@@ -22,7 +22,12 @@ import { internalErrorResponse } from "../_shared/errors.ts";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
 import {
+  fetchShopifyFeedPage,
+  shopifyFeedUrl,
+} from "../_shared/scrape/shopify-feed.ts";
+import {
   hasLolaVariantFlags,
+  isLolaTestProduct,
   lolaPanelBiomarkers,
   lolaPriceModel,
   lolaSampleType,
@@ -52,7 +57,9 @@ const PROVIDERS: Record<
   },
   "lola-health": {
     domain: "https://lolahealth.com",
+    // Allowlist first: Lola's feed also sells medicines (see lola-catalogue.ts).
     junk: (title, ptype, tags) =>
+      !isLolaTestProduct(ptype) ||
       ptype.toLowerCase() === "giftcard" ||
       tags.includes("giftcard") ||
       tags.includes("category:gift-card") ||
@@ -117,8 +124,10 @@ Deno.serve(async (req: Request) => {
   const sample: unknown[] = [];
 
   try {
-    const res = await fetch(
-      `${cfg.domain}/products.json?limit=${limit}&page=${page}`,
+    // Falls back to the database's copy when Shopify refuses the edge (429).
+    const feed = await fetchShopifyFeedPage(
+      shopifyFeedUrl(cfg.domain, page, limit),
+      supabase,
       {
         headers: {
           "User-Agent":
@@ -126,9 +135,7 @@ Deno.serve(async (req: Request) => {
         },
       },
     );
-    if (!res.ok) throw new Error(`products.json HTTP ${res.status}`);
-    const body = await res.json();
-    const products: any[] = body?.products ?? [];
+    const products: any[] = feed.products;
 
     for (const p of products) {
       seen++;
@@ -338,6 +345,7 @@ Deno.serve(async (req: Request) => {
         provider,
         dry: dryRun,
         page,
+        feed_source: feed.source,
         seen,
         updated,
         inserted,

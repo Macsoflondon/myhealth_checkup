@@ -322,6 +322,29 @@ export function hasLolaVariantFlags(model: LolaPriceModel): boolean {
 }
 
 /**
+ * Shopify product types Lola uses for tests, lower-cased. On 14/10/2026 the
+ * same feed also carried prescription and pharmacy medicines (types such as
+ * "Weight loss", "Erectile dysfunction", "Hair loss") and gift cards. The
+ * platform compares diagnostic tests only and must never list a medicine,
+ * so any other type is skipped. A new test type stays out until it is added
+ * here.
+ */
+export const LOLA_TEST_PRODUCT_TYPES: ReadonlySet<string> = new Set([
+  "add-on",
+  "health check",
+  "biological-age",
+]);
+
+export function isLolaTestProduct(
+  productType: string | null | undefined,
+): boolean {
+  const type = String(productType ?? "")
+    .trim()
+    .toLowerCase();
+  return LOLA_TEST_PRODUCT_TYPES.has(type);
+}
+
+/**
  * Lola's posted DNA kits (TruAge / TruHealth / Biological Kit) are home kits;
  * everything else is a venous draw (home visit or clinic).
  */
