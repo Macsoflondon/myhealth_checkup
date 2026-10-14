@@ -3,14 +3,13 @@
 // field too (verbatim, no LLM rewrite) — description must always be the provider's own text.
 // 2026-09-21: this file was previously deployed straight from the Supabase dashboard and
 // not tracked in this repo at all — pulled in here for reviewability as part of a platform
-// audit. SECRET below intentionally has NO hardcoded fallback in this copy: the deployed
-// function's real fallback value is a rotated secret that must never be committed to git.
-// Set the MHC_SYNC_SECRET edge function secret in the Supabase dashboard; this file will not
-// authenticate correctly until you do, by design.
+// audit.
+// 2026-10-13: ?secret= is checked by ../_shared/mhc-auth.ts against the Vault entry
+// mhc_sync_secret, the value the cron jobs send, read through public.mhc_sync_secret().
+// MHC_SYNC_SECRET is only a fallback for when that read fails. No secret is committed here.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { htmlToText } from "../_shared/scrape/html.ts";
-
-const SECRET = Deno.env.get("MHC_SYNC_SECRET") ?? "";
+import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
 
 const PROVIDERS: Record<string, { domain: string; junk: (p: any) => boolean }> =
   {
@@ -151,11 +150,16 @@ function stripHtml(html: string | null | undefined): string | null {
 
 Deno.serve(async (req) => {
   const url = new URL(req.url);
-  // Fail closed: an unset secret must never match an empty/missing query parameter.
-  if (!SECRET)
+  const supabase = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+  );
+  // Fail closed: no configured secret (Vault or env) answers 503; a wrong or
+  // missing ?secret= answers 401.
+  const auth = await checkMhcSyncSecret(url, supabase, "mhc-shopify-rich-sync");
+  if (!auth.ok && auth.reason === "not_configured")
     return new Response("sync secret not configured", { status: 503 });
-  if (url.searchParams.get("secret") !== SECRET)
-    return new Response("unauthorized", { status: 401 });
+  if (!auth.ok) return new Response("unauthorized", { status: 401 });
   const startedAt = new Date().toISOString();
   const providerId = url.searchParams.get("provider") || "";
   const dry = url.searchParams.get("dry") === "1";
@@ -167,10 +171,6 @@ Deno.serve(async (req) => {
       JSON.stringify({ ok: false, error: "unknown provider" }),
       { status: 400, headers: { "content-type": "application/json" } },
     );
-  const supabase = createClient(
-    Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-  );
   const { data: rows, error: rErr } = await supabase
     .from("provider_tests")
     .select("id, test_name, biomarker_count")
@@ -266,6 +266,7 @@ Deno.serve(async (req) => {
   }
 
   let written = 0;
+  const writeErrors: string[] = [];
   if (!dry) {
     for (const d of decisions) {
       if (!d.confident || d.base_price == null) continue;
@@ -274,12 +275,14 @@ Deno.serve(async (req) => {
         base_price: d.base_price,
         total_expected_cost: d.base_price,
         price: d.base_price,
-        clinic_phlebotomy_cost: d.clinic_fee,
-        home_phlebotomy_cost: d.home_fee,
         price_not_stated: false,
         last_validated_at: new Date().toISOString(),
         scrape_source_url: d.url,
       };
+      // Write a phlebotomy fee only when the feed proves one, so a fee entered
+      // by hand for a product without that variant is not wiped every run.
+      if (d.clinic_fee != null) upd.clinic_phlebotomy_cost = d.clinic_fee;
+      if (d.home_fee != null) upd.home_phlebotomy_cost = d.home_fee;
       if (d.turnaround_text) {
         upd.turnaround_days_text = d.turnaround_text;
         upd.turnaround_days = d.turnaround_days;
@@ -296,6 +299,7 @@ Deno.serve(async (req) => {
         .update(upd)
         .eq("id", d.db_id);
       if (!uErr) written++;
+      else writeErrors.push(`${d.db_id}: ${uErr.message}`.slice(0, 300));
     }
   }
   const confidentCount = decisions.filter((d) => d.confident).length;
@@ -308,13 +312,14 @@ Deno.serve(async (req) => {
       scraper_function: "mhc-shopify-rich-sync",
       started_at: startedAt,
       finished_at: new Date().toISOString(),
-      status: reviewRatio > 0.25 ? "partial" : "success",
+      status:
+        writeErrors.length || reviewRatio > 0.25 ? "partial" : "success",
       tests_seen: totalRows,
       tests_new: 0,
       tests_updated: written,
       tests_deactivated: 0,
       tests_unchanged: Math.max(0, totalRows - written),
-      errors: [],
+      errors: writeErrors.slice(0, 50),
       metadata: {
         feed_products: feed.length,
         confident: confidentCount,

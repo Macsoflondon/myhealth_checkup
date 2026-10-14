@@ -3,15 +3,14 @@
 // field too (verbatim, no LLM rewrite) — description must always be the provider's own text.
 // 2026-09-21: this file was previously deployed straight from the Supabase dashboard and
 // not tracked in this repo at all — pulled in here for reviewability as part of a platform
-// audit. SECRET below intentionally has NO hardcoded fallback in this copy: the deployed
-// function's real fallback value is a rotated secret that must never be committed to git.
-// Set the MHC_SYNC_SECRET edge function secret in the Supabase dashboard; this file will not
-// authenticate correctly until you do, by design.
+// audit.
+// 2026-10-13: ?secret= is checked by ../_shared/mhc-auth.ts against the Vault entry
+// mhc_sync_secret, the value the cron jobs send, read through public.mhc_sync_secret().
+// MHC_SYNC_SECRET is only a fallback for when that read fails. No secret is committed here.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { parseMedicalDiagnosisTestsIncluded } from "../_shared/scrape/biomarkerParsers.ts";
-
-const SECRET = Deno.env.get("MHC_SYNC_SECRET") ?? "";
+import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
 
 const PROVIDERS: Record<
   string,
@@ -207,8 +206,12 @@ async function getUrls(
 
 Deno.serve(async (req) => {
   const u = new URL(req.url);
-  if (!SECRET || u.searchParams.get("secret") !== SECRET)
-    return new Response("unauthorized", { status: 401 });
+  const supabase = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+  );
+  const auth = await checkMhcSyncSecret(u, supabase, "mhc-page-scrape");
+  if (!auth.ok) return new Response("unauthorized", { status: 401 });
   const startedAt = new Date().toISOString();
   const providerId = u.searchParams.get("provider") || "";
   const dry = u.searchParams.get("dry") === "1";
@@ -221,10 +224,6 @@ Deno.serve(async (req) => {
       JSON.stringify({ ok: false, error: "unknown provider" }),
       { status: 400, headers: { "content-type": "application/json" } },
     );
-  const supabase = createClient(
-    Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-  );
   const { data: rows } = await supabase
     .from("provider_tests")
     .select("id, test_name, biomarker_count, biomarkers_list")

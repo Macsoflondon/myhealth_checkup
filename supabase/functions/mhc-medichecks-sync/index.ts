@@ -12,16 +12,16 @@
 // field too (verbatim, no LLM rewrite) — description must always be the provider's own text.
 // v6 (2026-09-21): this file was previously deployed straight from the Supabase dashboard and
 // not tracked in this repo at all — pulled in here for reviewability as part of a platform
-// audit. SECRET below intentionally has NO hardcoded fallback in this copy: the deployed
-// function's real fallback value is a rotated secret that must never be committed to git.
-// Set the MHC_SYNC_SECRET edge function secret in the Supabase dashboard; this file will not
-// authenticate correctly until you do, by design.
+// audit.
+// v7 (2026-10-13): ?secret= is checked by ../_shared/mhc-auth.ts against the Vault entry
+// mhc_sync_secret, the value the cron jobs send, read through public.mhc_sync_secret().
+// MHC_SYNC_SECRET is only a fallback for when that read fails. No secret is committed here.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { internalErrorResponse } from "../_shared/errors.ts";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { reconcileBiomarkerCount } from "../_shared/scrape/biomarkerParsers.ts";
+import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
 
-const SECRET = Deno.env.get("MHC_SYNC_SECRET") ?? "";
 const PROVIDER = "medichecks";
 const BASE = "https://www.medichecks.com";
 const CLINIC_FEE = 35;
@@ -65,7 +65,12 @@ function stripHtml(html: string | null | undefined): string | null {
 
 Deno.serve(async (req: Request) => {
   const url = new URL(req.url);
-  if (!SECRET || url.searchParams.get("secret") !== SECRET) {
+  const supabase = createClient(
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+  );
+  const auth = await checkMhcSyncSecret(url, supabase, "mhc-medichecks-sync");
+  if (!auth.ok) {
     return new Response(JSON.stringify({ error: "unauthorised" }), {
       status: 401,
       headers: { "Content-Type": "application/json" },
@@ -78,11 +83,6 @@ Deno.serve(async (req: Request) => {
     250,
   );
   const dryRun = url.searchParams.get("dry") === "1";
-
-  const supabase = createClient(
-    Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-  );
 
   const started = new Date().toISOString();
   let runId: string | null = null;
