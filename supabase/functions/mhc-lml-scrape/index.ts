@@ -130,9 +130,9 @@ Deno.serve(async (req) => {
   const dry = u.searchParams.get("dry") === "1";
   const offset = parseInt(u.searchParams.get("offset") || "0");
   const limit = parseInt(u.searchParams.get("limit") || "20");
-  const { data: allActive } = await supabase
+  const { data: allActive, error: selectError } = await supabase
     .from("provider_tests")
-    .select("id,test_name,url")
+    .select("id,test_name,url,price")
     .eq("provider_id", PROVIDER)
     .eq("is_active", true);
   const rows = (allActive || []).filter((r) => /\/product\//.test(r.url || ""));
@@ -142,7 +142,11 @@ Deno.serve(async (req) => {
   const slice = rows.slice(offset, offset + limit);
   const results = [];
   let written = 0,
-    skipped = 0;
+    skipped = 0,
+    failedWrites = 0;
+  const writeErrors: Array<Record<string, unknown>> = [];
+  if (selectError)
+    writeErrors.push({ stage: "select", error: selectError.message });
   for (const row of slice) {
     let html = "";
     let finalUrl = row.url;
@@ -169,6 +173,18 @@ Deno.serve(async (req) => {
     if (!p.price || p.price <= 0) {
       skipped++;
       results.push({ db_name: row.test_name, skipped: "no price" });
+      continue;
+    }
+    // The price is the first £ on the page, so a large jump is more likely a
+    // parse error than a real change. Hold it for review.
+    const prevPrice = Number(row.price);
+    if (prevPrice > 0 && Math.abs(p.price - prevPrice) / prevPrice > 0.5) {
+      skipped++;
+      writeErrors.push({
+        id: row.id,
+        test_name: row.test_name,
+        error: `price jump ${prevPrice} -> ${p.price}; row not written`,
+      });
       continue;
     }
     if (results.length < 12)
@@ -207,7 +223,14 @@ Deno.serve(async (req) => {
         .from("provider_tests")
         .update(upd)
         .eq("id", row.id);
-      if (!error) written++;
+      if (error) {
+        failedWrites++;
+        writeErrors.push({
+          id: row.id,
+          test_name: row.test_name,
+          error: error.message,
+        });
+      } else written++;
     }
   }
   const redirectRatio = slice.length ? skipped / slice.length : 0;
@@ -219,13 +242,18 @@ Deno.serve(async (req) => {
       scraper_function: "mhc-lml-scrape",
       started_at: startedAt,
       finished_at: new Date().toISOString(),
-      status: runStatus,
+      status:
+        selectError || (failedWrites > 0 && written === 0)
+          ? "error"
+          : writeErrors.length > 0
+            ? "partial"
+            : runStatus,
       tests_seen: slice.length,
       tests_new: 0,
       tests_updated: written,
       tests_deactivated: 0,
       tests_unchanged: Math.max(0, slice.length - written - skipped),
-      errors: [],
+      errors: writeErrors.slice(0, 50),
       metadata: {
         candidates: rows.length,
         skipped,

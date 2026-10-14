@@ -176,7 +176,6 @@ Deno.serve(async (req: Request) => {
         collection_fee: collectionFee,
         gp_review_included: true,
         total_expected_cost: basePrice + collectionFee,
-        is_active: true,
         last_validated_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       };
@@ -245,7 +244,8 @@ Deno.serve(async (req: Request) => {
       } else {
         const { data: ins, error } = await supabase
           .from("provider_tests")
-          .insert(row)
+          // is_active is set only on insert, so a manual deactivation sticks.
+          .insert({ ...row, is_active: true })
           .select("id")
           .single();
         if (!error) {
