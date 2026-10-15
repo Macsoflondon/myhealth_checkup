@@ -3421,6 +3421,24 @@ export type Database = {
         }
         Relationships: []
       }
+      mhc_feed_requests: {
+        Row: {
+          feed_url: string
+          request_id: number
+          requested_at: string
+        }
+        Insert: {
+          feed_url: string
+          request_id: number
+          requested_at?: string
+        }
+        Update: {
+          feed_url?: string
+          request_id?: number
+          requested_at?: string
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           consent_ip: unknown
@@ -8781,6 +8799,8 @@ export type Database = {
         Args: { p_days?: number; p_limit?: number }
         Returns: Json
       }
+      mhc_feed_page: { Args: { p_url: string }; Returns: Json }
+      mhc_prefetch_shopify_feeds: { Args: never; Returns: number }
       mhc_sync_secret: { Args: never; Returns: string }
       os_clicks_summary: {
         Args: { p_from: string; p_to: string }
@@ -8801,6 +8821,14 @@ export type Database = {
       }
       os_revenue_summary: {
         Args: { p_from: string; p_to: string }
+        Returns: Json
+      }
+      os_set_plugin_secret: {
+        Args: { p_key: string; p_plugin: string; p_value: string }
+        Returns: undefined
+      }
+      os_upsert_network_conversions: {
+        Args: { p_rows: Json; p_source: string }
         Returns: Json
       }
       refresh_provider_test_biomarkers: { Args: never; Returns: Json }
