@@ -264,6 +264,19 @@ Deno.serve(async (req) => {
     const cacheMap = new Map(cached.map((row) => [row.test_id, row]));
     const cutoff = Date.now() - CACHE_TTL_MS;
 
+    const knownRows: Array<{ id: string; provider_id: string; url: string | null }> =
+      sb
+        ? ((
+            await sb
+              .from("provider_tests")
+              .select("id, provider_id, url")
+              .in("id", ids)
+          ).data ?? [])
+        : [];
+    const knownTests = new Map(knownRows.map((row) => [row.id, row]));
+    const normaliseUrl = (value: string | null | undefined): string =>
+      (value ?? "").trim().replace(/[?#].*$/, "").replace(/\/+$/, "").toLowerCase();
+
     const results = await Promise.all(
       parsed.data.items.map(async (item) => {
         const hit = cacheMap.get(item.id);
@@ -284,11 +297,19 @@ Deno.serve(async (req) => {
         }
         try {
           const fresh = await scrapeProductPage(item);
-          if (sb) {
+          // Only cache when the caller's id genuinely belongs to this provider
+          // and URL in the catalogue — never trust caller-chosen ids.
+          const known = knownTests.get(item.id);
+          if (
+            sb &&
+            known &&
+            known.provider_id === item.provider_id &&
+            normaliseUrl(known.url) === normaliseUrl(item.url)
+          ) {
             await sb.from("popular_test_enrichment_cache").upsert({
               test_id: item.id,
-              provider_id: item.provider_id,
-              url: item.url,
+              provider_id: known.provider_id,
+              url: known.url,
               title: fresh.title,
               description: fresh.description,
               image_url: fresh.image_url,

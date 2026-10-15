@@ -235,7 +235,6 @@ const handleRedeem = async (req: Request, body: Record<string, unknown>) => {
 
   if (invalid) {
     console.warn("admin-recovery: invalid redeem attempt", {
-      email,
       ip: clientIp(req),
     });
     return json(
