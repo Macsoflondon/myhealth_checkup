@@ -41,9 +41,11 @@ interface AlertPayload {
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+// Resend only sends from verified domains. notify.www.myhealthcheckup.co.uk
+// was never verified (Resend answered 403 on 16 October 2026), so the default
+// is the address every other emailer here already sends from.
 const FROM_ADDRESS =
-  Deno.env.get("ALERT_FROM_ADDRESS") ??
-  "alerts@notify.www.myhealthcheckup.co.uk";
+  Deno.env.get("ALERT_FROM_ADDRESS") ?? "support@myhealthcheckup.co.uk";
 
 const INTRO: Record<AlertPayload["alert_type"], string> = {
   cron_failure:
