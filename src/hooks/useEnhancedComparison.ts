@@ -266,7 +266,9 @@ export function useEnhancedComparison() {
     try {
       const { data, error } = await supabase
         .from("saved_comparisons")
-        .select("*")
+        .select(
+          "id, user_id, comparison_name, test_ids, category, notes, created_at, updated_at",
+        )
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
 

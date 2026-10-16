@@ -35,7 +35,9 @@ export const useProvidersByTestType = ({
       // Search for similar tests across all providers
       let query = supabase
         .from("provider_tests")
-        .select("*")
+        .select(
+          "id, test_name, provider_id, price, original_price, biomarker_count, sample_type, home_kit_available, clinic_visit_available, gp_consultation_included, url, description, category",
+        )
         .eq("is_active", true)
         .order("price", { ascending: true });
 
@@ -94,7 +96,9 @@ export const useProvidersByCategory = (category: string, enabled = true) => {
     queryFn: async (): Promise<ProviderTestRow[]> => {
       const { data, error } = await supabase
         .from("provider_tests")
-        .select("*")
+        .select(
+          "id, test_name, provider_id, price, original_price, biomarker_count, sample_type, home_kit_available, clinic_visit_available, gp_consultation_included, url, description, category",
+        )
         .eq("is_active", true)
         .or(
           `canonical_category.ilike.%${category}%,category.ilike.%${category.replace(/-/g, " ")}%`,

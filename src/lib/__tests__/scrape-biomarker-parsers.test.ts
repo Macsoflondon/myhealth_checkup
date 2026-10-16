@@ -37,13 +37,16 @@ describe("Clinilabs bio-acc parser", () => {
 });
 
 describe("placeholder filter", () => {
-  it.each(["1 Biomarker", "35 Biomarkers", "35\u00a0BIOMARKERS", "10 markers", "35&nbsp;Biomarkers"])(
-    "drops %s",
-    (s) => {
-      expect(isBiomarkerNoise(s)).toBe(true);
-      expect(normaliseBiomarkers([s, "Ferritin"])).toEqual(["Ferritin"]);
-    },
-  );
+  it.each([
+    "1 Biomarker",
+    "35 Biomarkers",
+    "35\u00a0BIOMARKERS",
+    "10 markers",
+    "35&nbsp;Biomarkers",
+  ])("drops %s", (s) => {
+    expect(isBiomarkerNoise(s)).toBe(true);
+    expect(normaliseBiomarkers([s, "Ferritin"])).toEqual(["Ferritin"]);
+  });
 });
 
 describe("Medical Diagnosis Tests Included parser", () => {

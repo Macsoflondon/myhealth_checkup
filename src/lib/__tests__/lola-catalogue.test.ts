@@ -67,7 +67,11 @@ describe("Lola turnaround", () => {
   });
 
   it("never returns an empty turnaround", () => {
-    for (const name of ["", "Anything new", ...Object.keys(LOLA_PANEL_BIOMARKERS)]) {
+    for (const name of [
+      "",
+      "Anything new",
+      ...Object.keys(LOLA_PANEL_BIOMARKERS),
+    ]) {
       expect(lolaTurnaround(name).trim()).not.toBe("");
     }
   });
@@ -101,13 +105,19 @@ describe("Lola accreditation wording", () => {
 
   it("Lola is described with UKAS-accredited laboratories (ISO 15189)", () => {
     const lola = detailedProviders.find((p) => p.id === "lola-health");
-    expect(lola?.accreditation).toBe("UKAS-accredited laboratories (ISO 15189)");
+    expect(lola?.accreditation).toBe(
+      "UKAS-accredited laboratories (ISO 15189)",
+    );
   });
 });
 
 describe("Lola price model", () => {
   const models = Object.entries(LOLA_VARIANT_SNAPSHOT).map(
-    ([handle, entry]) => ({ handle, ...entry, model: lolaPriceModel(entry.variants)! }),
+    ([handle, entry]) => ({
+      handle,
+      ...entry,
+      model: lolaPriceModel(entry.variants)!,
+    }),
   );
 
   it.each([
@@ -130,8 +140,14 @@ describe("Lola price model", () => {
       expect(model.price).toBe(Math.min(...prices));
       const clinic = variants.find((v) => /clinic/i.test(v.title));
       const home = variants.find((v) => /home visit/i.test(v.title));
-      if (clinic) expect(model.price + model.clinic_phlebotomy_cost).toBe(Number(clinic.price));
-      if (home) expect(model.price + model.home_phlebotomy_cost).toBe(Number(home.price));
+      if (clinic)
+        expect(model.price + model.clinic_phlebotomy_cost).toBe(
+          Number(clinic.price),
+        );
+      if (home)
+        expect(model.price + model.home_phlebotomy_cost).toBe(
+          Number(home.price),
+        );
       expect(model.clinic_phlebotomy_cost).toBeGreaterThan(0);
       const routes = deriveCollectionVariants({
         id: handle,
@@ -142,7 +158,9 @@ describe("Lola price model", () => {
       expect(venous.basePrice).toBe(model.price);
       expect(venous.total).toBe(model.total_expected_cost);
       expect(venous.secondary?.total).toBe(Number(home!.price));
-      expect(routes.some((v) => v.route === "home_kit")).toBe(model.home_kit_available);
+      expect(routes.some((v) => v.route === "home_kit")).toBe(
+        model.home_kit_available,
+      );
     },
   );
 
@@ -201,7 +219,9 @@ describe("Lola price model", () => {
       { title: "Book a venous draw at a clinic", price: "160.00" },
       { title: "Phlebotomist for a Home Visit", price: "160.00" },
     ]);
-    expect(lolaCollectionFields("Core Health 45", "core-health-45", m)).toMatchObject({
+    expect(
+      lolaCollectionFields("Core Health 45", "core-health-45", m),
+    ).toMatchObject({
       clinic_visit_available: true,
       home_kit_available: true,
       home_phlebotomy_option: true,
@@ -213,7 +233,9 @@ describe("Lola price model", () => {
     const base = buildLolaCatalogueSql()
       .split("\n")
       .find((l) => l.includes("set base_price = price"))!;
-    expect(base).not.toMatch(/clinic_visit_available|home_kit_available|home_phlebotomy_option/);
+    expect(base).not.toMatch(
+      /clinic_visit_available|home_kit_available|home_phlebotomy_option/,
+    );
   });
 });
 

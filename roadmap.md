@@ -32,3 +32,4 @@
 - [ ] Security: Assisted Test Finder and Hidden Gap Detector AI calls restricted to signed-in users
 - [ ] Security: Assisted Test Finder and Hidden Gap Detector AI calls restricted to signed-in users
 - [x] Reformat the whole site and verify types, unit tests and production build.
+- [x] Speed pass: right-size logos (WebP), Shopify card image resizing, keepalive web-vitals beacon, React Query biomarker library, explicit column lists, restore 28 Sep plan file.

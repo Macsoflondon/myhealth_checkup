@@ -1,8 +1,6 @@
 // Web Vitals RUM reporter. Batches samples and beacons them to the ingest edge function.
 // Only runs in the browser, only in production, and only once per page.
 
-import { supabase } from "@/integrations/supabase/client";
-
 type MetricName = "LCP" | "CLS" | "INP" | "FCP" | "TTFB" | "FID";
 type Rating = "good" | "needs-improvement" | "poor";
 
@@ -21,12 +19,25 @@ const BATCH: Sample[] = [];
 let flushTimer: number | null = null;
 let installed = false;
 
-function deviceType(): Sample["device_type"] {
-  if (typeof navigator === "undefined") return "unknown";
-  const ua = navigator.userAgent.toLowerCase();
-  if (/tablet|ipad/.test(ua)) return "tablet";
+/** Browsers cap keepalive request bodies at 64 KB; stay below with margin. */
+const MAX_BODY_BYTES = 60_000;
+
+export function classifyDevice(
+  userAgent: string,
+  maxTouchPoints: number,
+): Sample["device_type"] {
+  const ua = userAgent.toLowerCase();
+  if (/ipad|tablet/.test(ua)) return "tablet";
+  if (ua.includes("android") && !ua.includes("mobi")) return "tablet";
+  // iPadOS 13+ reports a desktop Safari (Macintosh) user agent.
+  if (ua.includes("macintosh") && maxTouchPoints > 1) return "tablet";
   if (/mobi|android|iphone/.test(ua)) return "mobile";
   return "desktop";
+}
+
+function deviceType(): Sample["device_type"] {
+  if (typeof navigator === "undefined") return "unknown";
+  return classifyDevice(navigator.userAgent, navigator.maxTouchPoints ?? 0);
 }
 
 function connectionType(): string | undefined {
@@ -49,13 +60,49 @@ function sessionHash(): string {
   }
 }
 
-async function flush(): Promise<void> {
+/** Splits samples into JSON bodies that each stay under MAX_BODY_BYTES. */
+export function chunkBodies(samples: Sample[]): string[] {
+  const bodies: string[] = [];
+  let current: Sample[] = [];
+  for (const s of samples) {
+    const next = [...current, s];
+    if (
+      current.length > 0 &&
+      JSON.stringify({ samples: next }).length > MAX_BODY_BYTES
+    ) {
+      bodies.push(JSON.stringify({ samples: current }));
+      current = [s];
+    } else {
+      current = next;
+    }
+  }
+  if (current.length > 0) bodies.push(JSON.stringify({ samples: current }));
+  return bodies;
+}
+
+function flush(): void {
   if (BATCH.length === 0) return;
   const samples = BATCH.splice(0, BATCH.length);
-  try {
-    await supabase.functions.invoke("web-vitals-ingest", { body: { samples } });
-  } catch {
-    // Silent — RUM must not throw into user code paths.
+  const baseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+  const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as
+    string | undefined;
+  if (!baseUrl || !key) return;
+  for (const body of chunkBodies(samples)) {
+    try {
+      // keepalive lets the request outlive pagehide, where mobile LCP/CLS land.
+      void fetch(`${baseUrl}/functions/v1/web-vitals-ingest`, {
+        method: "POST",
+        keepalive: true,
+        headers: {
+          "content-type": "application/json",
+          apikey: key,
+          authorization: `Bearer ${key}`,
+        },
+        body,
+      }).catch(() => undefined);
+    } catch {
+      // Silent — RUM must not throw into user code paths.
+    }
   }
 }
 
@@ -100,7 +147,6 @@ export async function installWebVitals(): Promise<void> {
   const device = deviceType();
   const connection = connectionType();
   const hash = sessionHash();
-  const route = window.location.pathname;
 
   const report =
     (metric: MetricName) =>
@@ -114,7 +160,8 @@ export async function installWebVitals(): Promise<void> {
         metric,
         value: m.value,
         rating: m.rating,
-        route,
+        // Read at report time so client-side navigations are attributed correctly.
+        route: window.location.pathname,
         device_type: device,
         connection_type: connection,
         session_hash: hash,

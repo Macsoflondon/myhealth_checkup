@@ -13,17 +13,17 @@ export interface Provider {
 }
 
 export const PROVIDER_LOGOS: Record<string, string> = {
-  medichecks: "/lovable-uploads/provider-medichecks-light.png",
-  randox: "/lovable-uploads/provider-randox.png",
-  "randox-health": "/lovable-uploads/provider-randox.png",
-  "london-medical-laboratory": "/lovable-uploads/provider-london-medical.png",
-  "lola-health": "/lovable-uploads/provider-lola-health.png",
-  "goodbody-clinic": "/lovable-uploads/provider-goodbody-slate-2026.png",
-  goodbody: "/lovable-uploads/provider-goodbody-slate-2026.png",
+  medichecks: "/lovable-uploads/provider-medichecks-light.webp",
+  randox: "/lovable-uploads/provider-randox.webp",
+  "randox-health": "/lovable-uploads/provider-randox.webp",
+  "london-medical-laboratory": "/lovable-uploads/provider-london-medical.webp",
+  "lola-health": "/lovable-uploads/provider-lola-health.webp",
+  "goodbody-clinic": "/lovable-uploads/provider-goodbody-slate-2026.webp",
+  goodbody: "/lovable-uploads/provider-goodbody-slate-2026.webp",
   "london-health-company":
-    "/lovable-uploads/provider-london-health-company.png",
-  "medical-diagnosis": "/lovable-uploads/provider-medical-diagnosis.png",
-  clinilabs: "/lovable-uploads/provider-clinilabs.png",
+    "/lovable-uploads/provider-london-health-company.webp",
+  "medical-diagnosis": "/lovable-uploads/provider-medical-diagnosis.webp",
+  clinilabs: "/lovable-uploads/provider-clinilabs.webp",
 };
 
 export const PROVIDER_NAMES: Record<string, string> = {

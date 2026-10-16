@@ -15,7 +15,7 @@ export const londonLabCompareData: CompareTestData[] = [
       collection: "Venous (clinic)",
       bioMarkers: "12 biomarkers",
     },
-    providerLogo: "/lovable-uploads/provider-london-medical.png",
+    providerLogo: "/lovable-uploads/provider-london-medical.webp",
   },
   {
     id: "lml-vitamin-profile",
@@ -30,7 +30,7 @@ export const londonLabCompareData: CompareTestData[] = [
       collection: "Venous (clinic)",
       bioMarkers: "8 biomarkers",
     },
-    providerLogo: "/lovable-uploads/provider-london-medical.png",
+    providerLogo: "/lovable-uploads/provider-london-medical.webp",
   },
   {
     id: "lml-hormone-check",
@@ -45,7 +45,7 @@ export const londonLabCompareData: CompareTestData[] = [
       collection: "Venous (clinic)",
       bioMarkers: "10 biomarkers",
     },
-    providerLogo: "/lovable-uploads/provider-london-medical.png",
+    providerLogo: "/lovable-uploads/provider-london-medical.webp",
   },
   {
     id: "lml-thyroid-advanced",
@@ -61,7 +61,7 @@ export const londonLabCompareData: CompareTestData[] = [
       collection: "Venous (clinic)",
       bioMarkers: "6 biomarkers",
     },
-    providerLogo: "/lovable-uploads/provider-london-medical.png",
+    providerLogo: "/lovable-uploads/provider-london-medical.webp",
   },
   {
     id: "lml-fertility-female",
@@ -77,7 +77,7 @@ export const londonLabCompareData: CompareTestData[] = [
       collection: "Venous (clinic)",
       bioMarkers: "8 biomarkers",
     },
-    providerLogo: "/lovable-uploads/provider-london-medical.png",
+    providerLogo: "/lovable-uploads/provider-london-medical.webp",
   },
   {
     id: "lml-fertility-male",
@@ -93,7 +93,7 @@ export const londonLabCompareData: CompareTestData[] = [
       collection: "Venous (clinic)",
       bioMarkers: "7 biomarkers",
     },
-    providerLogo: "/lovable-uploads/provider-london-medical.png",
+    providerLogo: "/lovable-uploads/provider-london-medical.webp",
   },
   {
     id: "lml-heart-health",
@@ -109,7 +109,7 @@ export const londonLabCompareData: CompareTestData[] = [
       collection: "Venous (clinic)",
       bioMarkers: "9 biomarkers",
     },
-    providerLogo: "/lovable-uploads/provider-london-medical.png",
+    providerLogo: "/lovable-uploads/provider-london-medical.webp",
   },
   {
     id: "lml-diabetes-screen",
@@ -124,6 +124,6 @@ export const londonLabCompareData: CompareTestData[] = [
       collection: "Venous (clinic)",
       bioMarkers: "5 biomarkers",
     },
-    providerLogo: "/lovable-uploads/provider-london-medical.png",
+    providerLogo: "/lovable-uploads/provider-london-medical.webp",
   },
 ];
