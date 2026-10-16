@@ -27,15 +27,12 @@ import {
   providerName,
 } from "@/lib/os/format";
 import {
-  addDays,
   lastNDays,
-  osWindow,
   previousCovered,
   previousNDays,
   rangeDays,
   type OsRange,
 } from "@/lib/os/range";
-import { followerChange } from "@/lib/os/series";
 import type {
   ClicksSummary,
   OsFact,
@@ -53,13 +50,9 @@ import {
 import type {
   Ga4Daily,
   GscDaily,
-  MetricoolFollowers,
-  MetricoolPosts,
   OsFactUnit,
   SiteCheck,
   SiteStatusChecks,
-  SocialNetwork,
-  StripeDaily,
 } from "../../../supabase/functions/_shared/os/contract";
 
 // ---------------------------------------------------------------------------
@@ -82,8 +75,6 @@ export const STALE_SYNC_HOURS = 3;
 export const GA4_CHANGE_MIN_PCT = 20;
 /** Rule 10: the previous window needs at least this many sessions. */
 export const GA4_CHANGE_MIN_PREVIOUS = 50;
-/** Metricool posts payloads hold at most this many posts. */
-export const POSTS_CAP = 200;
 
 const DAY_MS = 86_400_000;
 const HOUR_MS = 3_600_000;
@@ -94,20 +85,10 @@ const SOURCE = {
   revenue: "Affiliate conversions",
   ga4: "Google Analytics 4",
   gsc: "Google Search Console",
-  social: "Metricool",
-  stripe: "Stripe",
   site: "Site status checks",
   plugins: "Plugin status",
   affiliate: "Affiliate link settings",
 } as const;
-
-const NETWORKS: readonly SocialNetwork[] = ["facebook", "instagram", "tiktok"];
-
-export const NETWORK_NAMES: Record<SocialNetwork, string> = {
-  facebook: "Facebook",
-  instagram: "Instagram",
-  tiktok: "TikTok",
-};
 
 const SEVERITY_RANK: Record<OsInsightSeverity, number> = {
   critical: 0,
@@ -129,9 +110,6 @@ export type InsightInput = {
   revenue?: RevenueSummary | null;
   ga4Daily?: Ga4Daily | null;
   gscDaily?: GscDaily | null;
-  followers?: MetricoolFollowers | null;
-  posts?: MetricoolPosts | null;
-  stripe?: StripeDaily | null;
   site?: SiteStatusChecks | null;
   /**
    * fetched_at of each snapshot, keyed "plugin/dataset". Leave it out while
@@ -165,11 +143,6 @@ function timeOf(iso: string | null | undefined): number | null {
 /** Rounds half away from zero to one decimal place, never returning -0. */
 export function round1(n: number): number {
   const r = Math.round(Math.abs(n) * 10) / 10;
-  return n < 0 && r !== 0 ? -r : r;
-}
-
-function round2(n: number): number {
-  const r = Math.round(Math.abs(n) * 100) / 100;
   return n < 0 && r !== 0 ? -r : r;
 }
 
@@ -284,13 +257,6 @@ function seriesPeriod(w: DailyWindow<unknown>, days: number): string {
 // Derived figures, shared by facts and rules
 // ---------------------------------------------------------------------------
 
-type FollowerFigures = {
-  network: SocialNetwork;
-  latest: { date: string; value: number };
-  /** Latest value on or before the window's start; null without one. */
-  base: { date: string; value: number } | null;
-};
-
 type SyncState = {
   plugin: OsPluginDefinition;
   status: OsPluginStatus;
@@ -317,89 +283,12 @@ type Derived = {
     impressions: number;
     previousClicks: number | null;
   } | null;
-  followers: FollowerFigures[];
-  posts: { count: number; networks: SocialNetwork[] } | null;
-  stripe: {
-    w: DailyWindow<StripeDaily["days"][number]>;
-    net: number;
-    gross: number;
-  } | null;
   checks: SiteCheck[];
   failing: { check: SiteCheck; n: number }[];
   syncPlugins: SyncState[];
   notConnected: OsPluginDefinition[];
   stale: StaleSync[] | null;
 };
-
-function followerFigures(
-  followers: MetricoolFollowers | null | undefined,
-  days: number,
-): FollowerFigures[] {
-  const series =
-    followers && Array.isArray(followers.series) ? followers.series : [];
-  const out: FollowerFigures[] = [];
-  for (const network of NETWORKS) {
-    for (const s of series) {
-      if (!s || s.network !== network || !Array.isArray(s.points)) continue;
-      const points = s.points
-        .filter(
-          (p) =>
-            !!p &&
-            typeof p.date === "string" &&
-            ISO_DATE.test(p.date) &&
-            isNum(p.value),
-        )
-        .sort(byDate);
-      if (points.length === 0) continue;
-      const latest = points[points.length - 1];
-      // The same base day as the Social section's change figure.
-      const change = followerChange(points, days);
-      out.push({
-        network,
-        latest: { date: latest.date, value: latest.value },
-        base: change
-          ? { date: change.base.date, value: change.base.value }
-          : null,
-      });
-      break;
-    }
-  }
-  return out;
-}
-
-function postFigures(
-  input: InsightInput,
-): { count: number; networks: SocialNetwork[] } | null {
-  const posts = input.posts;
-  if (!posts || !Array.isArray(posts.posts)) return null;
-  const from = osWindow(input.range, input.now).from.getTime();
-  const to = input.now.getTime();
-  // Snapshots written before the per-network limit kept 200 posts in all
-  // and say nothing about truncation: at the cap they may stop short of the
-  // window's start.
-  if (!Array.isArray(posts.truncated) && posts.posts.length >= POSTS_CAP) {
-    const times = posts.posts
-      .map((p) => (p ? timeOf(p.published_at) : null))
-      .filter((t): t is number => t !== null);
-    const oldest = times.length > 0 ? Math.min(...times) : null;
-    if (oldest === null || oldest > from) return null;
-  }
-  // A network whose read failed or hit the limit has no reliable count.
-  const unreliable = new Set<string>([
-    ...(Array.isArray(posts.errors) ? posts.errors.map((e) => e?.network) : []),
-    ...(Array.isArray(posts.truncated) ? posts.truncated : []),
-  ]);
-  const networks = Array.isArray(posts.networks)
-    ? NETWORKS.filter((n) => posts.networks.includes(n) && !unreliable.has(n))
-    : [];
-  if (networks.length === 0) return null;
-  const count = posts.posts.filter((p) => {
-    if (!p || !networks.includes(p.network)) return false;
-    const t = timeOf(p.published_at);
-    return t !== null && t >= from && t <= to;
-  }).length;
-  return { count, networks };
-}
 
 /** The latest check per address, skipping malformed entries. */
 export function latestSiteChecks(
@@ -470,7 +359,6 @@ function derive(input: InsightInput): Derived {
 
   const ga4w = dailyWindow(input.ga4Daily?.days, days);
   const gscw = dailyWindow(input.gscDaily?.days, days);
-  const stripew = dailyWindow(input.stripe?.days, days);
 
   const checks = latestSiteChecks(input.site);
   const syncPlugins = syncPluginStates(input.pluginStatus);
@@ -492,13 +380,6 @@ function derive(input: InsightInput): Derived {
       previousClicks: gscw.previous
         ? sumOf(gscw.previous, (d) => d.clicks)
         : null,
-    },
-    followers: followerFigures(input.followers, days),
-    posts: postFigures(input),
-    stripe: stripew && {
-      w: stripew,
-      net: round2(sumOf(stripew.current, (d) => d.net)),
-      gross: round2(sumOf(stripew.current, (d) => d.gross)),
     },
     checks,
     failing: checks
@@ -778,60 +659,6 @@ function trafficFacts(addGa4: AddFact, addGsc: AddFact, d: Derived) {
   }
 }
 
-function socialFacts(add: AddFact, d: Derived) {
-  for (const f of d.followers) {
-    const name = NETWORK_NAMES[f.network];
-    const id = `social.${f.network}`;
-    add(
-      `${id}.followers`,
-      `${name} followers`,
-      f.latest.value,
-      "count",
-      `on ${formatDay(f.latest.date)}`,
-    );
-    if (f.base) {
-      add(
-        `${id}.follower_change`,
-        `Change in ${name} followers`,
-        f.latest.value - f.base.value,
-        "count",
-        `${formatDay(f.base.date)} to ${formatDay(f.latest.date)}`,
-      );
-    }
-  }
-  if (d.followers.length > 0) {
-    const names = d.followers.map((f) => NETWORK_NAMES[f.network]);
-    add(
-      "social.followers_total",
-      `Followers across ${listText(names)}`,
-      sumOf(d.followers, (f) => f.latest.value),
-      "count",
-      "latest daily totals",
-    );
-  }
-  if (d.posts) {
-    const names = d.posts.networks.map((n) => NETWORK_NAMES[n]);
-    const label =
-      names.length > 0
-        ? `Posts published on ${listText(names)}`
-        : "Social posts published";
-    add("social.posts", label, d.posts.count);
-  }
-}
-
-function stripeFacts(add: AddFact, d: Derived) {
-  if (!d.stripe) return;
-  const p = seriesPeriod(d.stripe.w, d.days);
-  add(
-    "stripe.net",
-    "Stripe net revenue after fees and refunds",
-    d.stripe.net,
-    "gbp",
-    p,
-  );
-  add("stripe.gross", "Stripe gross charges", d.stripe.gross, "gbp", p);
-}
-
 function siteFacts(add: AddFact, d: Derived) {
   d.checks.forEach((check, i) => {
     const id = `site.${i + 1}`;
@@ -922,8 +749,6 @@ function factsFrom(input: InsightInput, d: Derived): OsFact[] {
     factAdder(out, SOURCE.gsc, period),
     d,
   );
-  socialFacts(factAdder(out, SOURCE.social, period), d);
-  stripeFacts(factAdder(out, SOURCE.stripe, period), d);
   siteFacts(factAdder(out, SOURCE.site, latest), d);
   pluginFacts(factAdder(out, SOURCE.plugins, "now"), input, d);
   affiliateFacts(factAdder(out, SOURCE.affiliate, "now"), input);
@@ -1164,7 +989,7 @@ function subIdRule(ctx: RuleContext): Insight[] {
       id: "revenue.unmatched",
       severity: "info",
       title: "Conversions cannot be matched to clicks yet",
-      detail: `${lead}Outbound provider links do not carry our click id, so a conversion cannot be traced to the page or test that sent the visitor. Set subIdParam for each network in src/lib/affiliate/affiliate-config.ts (Awin uses clickref).`,
+      detail: `${lead}Outbound provider links do not carry our click id, so a conversion cannot be traced to the page or test that sent the visitor. Set subIdParam for each network in src/lib/affiliate/affiliate-config.ts.`,
       fact_ids: cite(ctx, [
         "affiliate.subid_configured",
         "affiliate.providers",
@@ -1186,7 +1011,7 @@ function noConversionsRule(ctx: RuleContext): Insight[] {
       severity: "info",
       title: "No conversions recorded yet",
       detail:
-        "No affiliate conversions have been imported or synced. Import a network report on the Affiliate admin page, or connect Awin in Plugins.",
+        "No affiliate conversions have been imported. Upload a network report as CSV on the Affiliate admin page.",
       fact_ids: cite(ctx, ["revenue.conversions", "revenue.commission"]),
       href: "/control/revenue",
     },
@@ -1265,29 +1090,6 @@ function ga4ChangeRule(ctx: RuleContext): Insight[] {
   ];
 }
 
-/** Rule 11 (positive): a network gained followers over the window. */
-function followerGainRule(ctx: RuleContext): Insight[] {
-  const out: Insight[] = [];
-  for (const f of ctx.d.followers) {
-    if (!f.base) continue;
-    const gained = f.latest.value - f.base.value;
-    if (!(gained > 0)) continue;
-    const name = NETWORK_NAMES[f.network];
-    out.push({
-      id: `social.${f.network}.gained`,
-      severity: "positive",
-      title: `${name} gained ${plural(gained, "follower", "followers")}`,
-      detail: `${name} followers went from ${formatInt(f.base.value)} on ${formatDay(f.base.date)} to ${formatInt(f.latest.value)} on ${formatDay(f.latest.date)}.`,
-      fact_ids: cite(ctx, [
-        `social.${f.network}.follower_change`,
-        `social.${f.network}.followers`,
-      ]),
-      href: "/control/social",
-    });
-  }
-  return out;
-}
-
 /** Every rule, in the order insights of equal severity are listed. */
 const INSIGHT_RULES: readonly Rule[] = [
   siteDownRule,
@@ -1300,7 +1102,6 @@ const INSIGHT_RULES: readonly Rule[] = [
   notConnectedRule,
   staleSyncRule,
   ga4ChangeRule,
-  followerGainRule,
 ];
 
 /**

@@ -36,7 +36,6 @@ import {
 const CATEGORIES: { id: OsPluginCategory; label: string }[] = [
   { id: "clicks", label: "Clicks" },
   { id: "traffic", label: "Traffic" },
-  { id: "social", label: "Social" },
   { id: "revenue", label: "Revenue" },
   { id: "platform", label: "Platform" },
 ];

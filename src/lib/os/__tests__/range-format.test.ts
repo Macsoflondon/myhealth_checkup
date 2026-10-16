@@ -137,6 +137,6 @@ describe("OS formatting", () => {
 
   it("names providers", () => {
     expect(providerName("lola-health")).toBe("Lola Health");
-    expect(providerName("awin-12345")).toBe("Awin 12345");
+    expect(providerName("new_network-12345")).toBe("New Network 12345");
   });
 });

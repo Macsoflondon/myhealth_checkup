@@ -24,6 +24,25 @@ function plugin(id: string): OsPluginDefinition {
   return p;
 }
 
+/**
+ * A plugin with one field of each type. No catalogue plugin uses a map field
+ * today, so the map tests use this one.
+ */
+const FORM_PLUGIN: Pick<OsPluginDefinition, "id" | "config" | "defaultConfig"> =
+  {
+    id: "form_test",
+    config: [
+      { key: "account_id", label: "Account", help: "", type: "text" },
+      { key: "regions", label: "Regions", help: "", type: "list" },
+      { key: "aliases", label: "Aliases", help: "", type: "map" },
+    ],
+    defaultConfig: {
+      account_id: "1001",
+      regions: ["north", "south"],
+      aliases: {},
+    },
+  };
+
 const READY = {
   enabled: true,
   ready: true,
@@ -33,10 +52,10 @@ const READY = {
 
 describe("parseList", () => {
   it("trims, drops empty items and keeps the first of any repeats", () => {
-    expect(parseList(" facebook, instagram ,, facebook ,tiktok,")).toEqual([
-      "facebook",
-      "instagram",
-      "tiktok",
+    expect(parseList(" north, south ,, north ,east,")).toEqual([
+      "north",
+      "south",
+      "east",
     ]);
   });
 
@@ -53,9 +72,7 @@ describe("parseList", () => {
   });
 
   it("formats a saved list back to comma-separated text", () => {
-    expect(formatList(["facebook", " instagram ", "", 3])).toBe(
-      "facebook, instagram, 3",
-    );
+    expect(formatList(["north", " south ", "", 3])).toBe("north, south, 3");
     expect(formatList(undefined)).toBe("");
   });
 });
@@ -117,44 +134,42 @@ describe("parseMap", () => {
 
 describe("configToForm and formToConfig", () => {
   it("starts from the catalogue defaults", () => {
-    expect(configToForm(plugin("metricool"), null)).toEqual({
-      user_id: "5383189",
-      blog_id: "6977338",
-      timezone: "Europe/London",
-      networks: "facebook, instagram, tiktok",
+    expect(configToForm(plugin("site_status"), null)).toEqual({
+      urls: "https://www.myhealthcheckup.co.uk/, https://myhealthcheckup.co.uk/",
+    });
+    expect(configToForm(FORM_PLUGIN, null)).toEqual({
+      account_id: "1001",
+      regions: "north, south",
+      aliases: "",
     });
   });
 
   it("overlays saved values on the defaults", () => {
-    const form = configToForm(plugin("awin"), {
-      publisher_id: 42,
-      advertiser_map: { "1": "medichecks" },
+    const form = configToForm(FORM_PLUGIN, {
+      account_id: 42,
+      aliases: { "1": "medichecks" },
     });
     expect(form).toEqual({
-      publisher_id: "42",
-      advertiser_map: "1=medichecks",
+      account_id: "42",
+      regions: "north, south",
+      aliases: "1=medichecks",
     });
   });
 
   it("stores only values that differ from the default", () => {
-    const metricool = plugin("metricool");
-    const form = configToForm(metricool, null);
-    expect(formToConfig(metricool, form, null)).toEqual({
+    const form = configToForm(FORM_PLUGIN, null);
+    expect(formToConfig(FORM_PLUGIN, form, null)).toEqual({
       ok: true,
       config: {},
     });
     expect(
-      formToConfig(
-        metricool,
-        { ...form, networks: "facebook, instagram" },
-        null,
-      ),
-    ).toEqual({ ok: true, config: { networks: ["facebook", "instagram"] } });
+      formToConfig(FORM_PLUGIN, { ...form, regions: "north" }, null),
+    ).toEqual({ ok: true, config: { regions: ["north"] } });
   });
 
   it("keeps saved keys the form does not show", () => {
-    const stripe = plugin("stripe");
-    expect(formToConfig(stripe, {}, { note: "kept" })).toEqual({
+    const ai = plugin("ai_briefing");
+    expect(formToConfig(ai, {}, { note: "kept" })).toEqual({
       ok: true,
       config: { note: "kept" },
     });
@@ -168,31 +183,25 @@ describe("configToForm and formToConfig", () => {
 
   it("returns the map error against its field", () => {
     const result = formToConfig(
-      plugin("awin"),
-      { publisher_id: "42", advertiser_map: "12345 medichecks" },
+      FORM_PLUGIN,
+      { account_id: "42", regions: "north", aliases: "12345 medichecks" },
       null,
     );
     expect(result.ok).toBe(false);
     if (!result.ok) {
-      expect(Object.keys(result.errors)).toEqual(["advertiser_map"]);
-      expect(result.errors.advertiser_map).toContain("Line 1");
+      expect(Object.keys(result.errors)).toEqual(["aliases"]);
+      expect(result.errors.aliases).toContain("Line 1");
     }
   });
 
-  it("accepts only known provider ids as Awin map values", () => {
-    const bad = formToConfig(
-      plugin("awin"),
-      { publisher_id: "42", advertiser_map: "12345=randox-health" },
-      null,
-    );
-    expect(bad.ok).toBe(false);
-    if (!bad.ok) expect(bad.errors.advertiser_map).toContain("randox-health");
-    const good = formToConfig(
-      plugin("awin"),
-      { publisher_id: "42", advertiser_map: "12345=randox" },
-      null,
-    );
-    expect(good.ok).toBe(true);
+  it("stores a parsed map", () => {
+    expect(
+      formToConfig(
+        FORM_PLUGIN,
+        { account_id: "1001", regions: "north, south", aliases: "1=randox" },
+        null,
+      ),
+    ).toEqual({ ok: true, config: { aliases: { "1": "randox" } } });
   });
 
   it("compares form values", () => {
@@ -328,11 +337,11 @@ describe("errorText", () => {
 
 describe("checkSecretValue", () => {
   it("refuses an empty value, which would remove the stored one", () => {
-    expect(checkSecretValue("AWIN_API_TOKEN", "   ")).not.toBeNull();
+    expect(checkSecretValue("ANTHROPIC_API_KEY", "   ")).not.toBeNull();
   });
 
   it("accepts a plain token", () => {
-    expect(checkSecretValue("AWIN_API_TOKEN", "abc123")).toBeNull();
+    expect(checkSecretValue("ANTHROPIC_API_KEY", "abc123")).toBeNull();
   });
 
   it("checks a service account key without repeating it", () => {

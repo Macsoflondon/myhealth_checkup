@@ -1,23 +1,28 @@
 # AI OS dashboard (Crux Control)
 
-_Last updated 2026-10-13._
+_Last updated 2026-10-16._
 
 The AI OS is the rebuilt Crux Control admin portal at `/control`. It keeps every
 existing Crux Control section and adds a plugin layer that pulls clicks,
-traffic, social and revenue data into one place. Access needs the admin role
-with an MFA (AAL2) session, the same gate as before.
+traffic and revenue data into one place. Access needs the admin role with an
+MFA (AAL2) session, the same gate as before.
+
+On 16 October 2026 the site owner chose not to connect Stripe, Awin or
+Metricool, so the dashboard no longer offers those plugins, the Social media
+section or the Stripe and Awin panels on Revenue. `/control/social` now falls
+back to the Command centre like any unknown section. Affiliate revenue comes
+from CSV imports only.
 
 ## Sections
 
-| Group      | Section                                                                                        | Source                                                                    |
-| ---------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| Command    | Command centre (`/control/command`, the default)                                               | Every source below, plus the AI briefing                                  |
-| Growth     | Provider clicks (`/control/clicks`)                                                            | `affiliate_clicks` via `os_clicks_summary` (live)                         |
-| Growth     | Traffic and search (`/control/traffic`)                                                        | GA4 and Search Console plugin snapshots                                   |
-| Growth     | Social media (`/control/social`)                                                               | Metricool plugin snapshots (Facebook, Instagram, TikTok)                  |
-| Growth     | Revenue (`/control/revenue`)                                                                   | `affiliate_conversions` via `os_revenue_summary`, Awin and Stripe plugins |
-| Operations | Platform health, live metrics, crawls, automations, audits, providers, logs, alerts, SOC Watch | Unchanged Crux Control sections                                           |
-| System     | Plugins (`/control/plugins`), search, export                                                   | Plugin manager, sync history                                              |
+| Group      | Section                                                                                        | Source                                                                               |
+| ---------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Command    | Command centre (`/control/command`, the default)                                               | Every source below, plus the AI briefing                                             |
+| Growth     | Provider clicks (`/control/clicks`)                                                            | `affiliate_clicks` via `os_clicks_summary` (live)                                    |
+| Growth     | Traffic and search (`/control/traffic`)                                                        | GA4 and Search Console plugin snapshots                                              |
+| Growth     | Revenue (`/control/revenue`)                                                                   | `affiliate_conversions` (CSV imports on `/admin/affiliate`) via `os_revenue_summary` |
+| Operations | Platform health, live metrics, crawls, automations, audits, providers, logs, alerts, SOC Watch | Unchanged Crux Control sections                                                      |
+| System     | Plugins (`/control/plugins`), search, export                                                   | Plugin manager, sync history                                                         |
 
 `/control/analytics` now redirects to `/control/clicks`. The old analytics
 section read raw `funnel_events` in the browser (capped at 1,000 rows) and
@@ -34,10 +39,8 @@ ago), and each panel says which window it shows.
  visitor click ──► /api/public/affiliate-click ──► affiliate_clicks ─┐
  CSV import (/admin/affiliate) ──────────────────► affiliate_conversions ─┤
                                                                      ├─► os_clicks_summary / os_revenue_summary (RPC, admin + MFA)
- pg_cron (hourly :23) ─► os-plugins edge function ─► adapters ─► GA4, Search Console,
-                                                     │           Metricool, Awin, Stripe, site status
+ pg_cron (hourly :23) ─► os-plugins edge function ─► adapters ─► GA4, Search Console, site status
                                                      ├─► os_plugin_snapshots (latest normalised payload per dataset)
-                                                     ├─► affiliate_conversions (Awin transactions)
                                                      └─► os_plugin_sync_log (every attempt, 90 days)
  dashboard ─► RPCs + one snapshots query (React Query cache) ─► sections
 ```
@@ -67,7 +70,10 @@ results and one indexed snapshots query, which keeps them fast.
 - **Revenue.** Reversed conversions are shown but never counted. Commission is
   what the network reports, not cash received. Commission never affects
   ranking.
-- **Conversion import.** `os_upsert_network_conversions` stores each synced
+- **Network conversion sync.** No plugin calls
+  `os_upsert_network_conversions` since the Awin plugin was removed on
+  16 October 2026. The RPC stays in the database for a future network sync,
+  and any rows with `source = 'awin'` still count. It stores each synced
   transaction once, under the provider it maps to. A row with the same
   reference under another provider is treated as a stale copy and deleted
   when it came from the same network, or from a CSV import dated within two
@@ -103,20 +109,20 @@ through `os_set_plugin_secret` and cannot be read back by the browser. A value
 set as an edge function environment variable with the same name takes
 precedence over Vault.
 
-| Plugin                   | Needs                                                                                                                                                 | Notes                                                                                                                                |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| Site status              | Nothing                                                                                                                                               | Checks `https://www.myhealthcheckup.co.uk/` and the apex hourly                                                                      |
-| Google Analytics 4       | `GOOGLE_SERVICE_ACCOUNT_JSON` (shared Google scope) and the GA4 property ID                                                                           | Add the service account as a Viewer in GA4. This codebase does not load a GA4 tag; GA4 only has data if the tag is added another way |
-| Google Search Console    | The Lovable connector keys (`LOVABLE_API_KEY`, `GOOGLE_SEARCH_CONSOLE_API_KEY`) already used by `gsc-resubmit-sitemap`, or the Google service account | Property defaults to `https://myhealthcheckup.co.uk/`                                                                                |
-| Social media (Metricool) | `METRICOOL_USER_TOKEN`                                                                                                                                | Brand "Myhealth Checkup" (user 5383189, brand 6977338) is pre-filled. Metricool's API needs the Advanced or Custom plan              |
-| Awin                     | `AWIN_API_TOKEN` and the publisher ID; optional advertiser to provider map                                                                            | Pulls 90 days in three 30-day windows into `affiliate_conversions` (`source = 'awin'`)                                               |
-| Stripe                   | `STRIPE_SECRET_KEY` (restricted key, read access to balance transactions)                                                                             | GBP only, up to 2,000 transactions per sync                                                                                          |
-| AI briefing              | `ANTHROPIC_API_KEY`                                                                                                                                   | Optional                                                                                                                             |
+| Plugin                | Needs                                                                                                                                                 | Notes                                                                                                                                |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Site status           | Nothing                                                                                                                                               | Checks `https://www.myhealthcheckup.co.uk/` and the apex hourly                                                                      |
+| Google Analytics 4    | `GOOGLE_SERVICE_ACCOUNT_JSON` (shared Google scope) and the GA4 property ID                                                                           | Add the service account as a Viewer in GA4. This codebase does not load a GA4 tag; GA4 only has data if the tag is added another way |
+| Google Search Console | The Lovable connector keys (`LOVABLE_API_KEY`, `GOOGLE_SEARCH_CONSOLE_API_KEY`) already used by `gsc-resubmit-sitemap`, or the Google service account | Property defaults to `https://myhealthcheckup.co.uk/`                                                                                |
+| AI briefing           | `ANTHROPIC_API_KEY`                                                                                                                                   | Optional                                                                                                                             |
 
 Conversions only match clicks when the provider's affiliate link carries our
 click id. Set `subIdParam` per provider in
-`src/lib/affiliate/affiliate-config.ts` (for Awin, `clickref`). All are `null`
-today, so every conversion shows as unattributed.
+`src/lib/affiliate/affiliate-config.ts`. All are `null` today, so every
+conversion shows as unattributed.
+
+The **Conversion import** card is native: upload the network's transactions
+report as CSV on `/admin/affiliate` and the Revenue section picks it up.
 
 ## Adding a plugin
 
