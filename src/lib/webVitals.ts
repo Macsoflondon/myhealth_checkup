@@ -148,7 +148,6 @@ export async function installWebVitals(): Promise<void> {
   const device = deviceType();
   const connection = connectionType();
   const hash = sessionHash();
-  const route = window.location.pathname;
 
   const report =
     (metric: MetricName) =>
@@ -162,7 +161,8 @@ export async function installWebVitals(): Promise<void> {
         metric,
         value: m.value,
         rating: m.rating,
-        route,
+        // Read at report time so client-side navigations are attributed correctly.
+        route: window.location.pathname,
         device_type: device,
         connection_type: connection,
         session_hash: hash,
