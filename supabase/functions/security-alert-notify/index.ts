@@ -46,6 +46,7 @@ const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 // is the address every other emailer here already sends from.
 const FROM_ADDRESS =
   Deno.env.get("ALERT_FROM_ADDRESS") ?? "support@myhealthcheckup.co.uk";
+const RESEND_TEST_SENDER = "onboarding@resend.dev";
 
 const INTRO: Record<AlertPayload["alert_type"], string> = {
   cron_failure:
@@ -199,21 +200,33 @@ Deno.serve(async (req) => {
 
     const html = renderHtml(payload);
 
-    const resp = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${RESEND_API_KEY}`,
-      },
-      body: JSON.stringify({
-        from: `MHC Alerts <${FROM_ADDRESS}>`,
-        to,
-        subject: payload.subject,
-        html,
-      }),
-    });
+    const send = (from: string) =>
+      fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: `MHC Alerts <${from}>`,
+          to,
+          subject: payload.subject,
+          html,
+        }),
+      });
 
-    const body = await resp.text();
+    let resp = await send(FROM_ADDRESS);
+    let body = await resp.text();
+    // Until a sending domain is verified in Resend, it rejects every other
+    // sender with 403. Its own test sender still reaches the Resend account
+    // owner's inbox, so an alert is not lost while the domain is set up.
+    if (resp.status === 403 && /domain is not verified/i.test(body)) {
+      console.warn(
+        "alert sender domain not verified; using Resend's test sender",
+      );
+      resp = await send(RESEND_TEST_SENDER);
+      body = await resp.text();
+    }
     if (!resp.ok) {
       console.error("resend failed", resp.status, body);
       return new Response(
