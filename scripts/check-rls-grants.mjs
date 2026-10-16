@@ -28,6 +28,11 @@ const DIR = "supabase/migrations";
 // biomarker lock table enables RLS and revokes all from anon and authenticated
 // in the same file, leaving only postgres and service_role, which is exactly
 // production's ACL. It needs no GRANT.
+//
+// Restored verbatim on 2026-10-16 (applied in production that day outside the
+// repo): landing_signups enables RLS, revokes all from anon and keeps
+// Supabase's default privileges for authenticated and service_role behind
+// admin-only RLS policies. That matches production's ACL, so it has no GRANT.
 const BASELINE_FILES = new Set([
   "20260630110630_enterprise_operational_intelligence_platform.sql",
 ]);
@@ -37,6 +42,7 @@ const BASELINE = new Set([
   "20260829234959_provider_test_biomarkers_link_table.sql:provider_test_biomarkers",
   "20260831120014_provider_tests_biomarkers_list_junk_guard.sql:known_scrape_junk_labels",
   "20261009091920_biomarker_layer_lock_20261009.sql:biomarker_lock_state",
+  "20261016122323_create_landing_signups.sql:landing_signups",
 ]);
 
 const files = readdirSync(DIR)

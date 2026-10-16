@@ -1,9 +1,12 @@
 // Sends Cyber Essentials operational alerts (cron failures, RLS failures,
-// backup-restore failures) to every enabled recipient in security_alert_recipients.
+// backup-restore failures) and system health alerts (a system stopped
+// responding, or recovered) to every enabled recipient in
+// security_alert_recipients whose alert_types include the alert's type.
 //
-// Triggered server-side (by Postgres trigger on cron_run_log) and from the
-// backup-restore script. Public endpoint (verify_jwt=false) but rate-limited
-// and only accepts a fixed payload shape — no data leakage risk.
+// Triggered server-side (by Postgres trigger on cron_run_log, and by
+// system_health_check() every ten minutes) and from the backup-restore
+// script. Public endpoint (verify_jwt=false) but rate-limited and only
+// accepts a fixed payload shape — no data leakage risk.
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
@@ -14,8 +17,15 @@ const corsHeaders = {
 };
 
 interface AlertPayload {
-  alert_type: "cron_failure" | "rls_failure" | "backup_restore_failure";
+  alert_type:
+    | "cron_failure"
+    | "rls_failure"
+    | "backup_restore_failure"
+    | "system_down"
+    | "system_recovered";
   subject: string;
+  /** One line per affected system (system health alerts). */
+  lines?: string[];
   job_name?: string;
   started_at?: string;
   finished_at?: string;
@@ -35,6 +45,18 @@ const FROM_ADDRESS =
   Deno.env.get("ALERT_FROM_ADDRESS") ??
   "alerts@notify.www.myhealthcheckup.co.uk";
 
+const INTRO: Record<AlertPayload["alert_type"], string> = {
+  cron_failure:
+    "Automated Cyber Essentials operational alert. Attach this email to the quarterly evidence pack.",
+  rls_failure:
+    "Automated Cyber Essentials operational alert. Attach this email to the quarterly evidence pack.",
+  backup_restore_failure:
+    "Automated Cyber Essentials operational alert. Attach this email to the quarterly evidence pack.",
+  system_down:
+    "These myhealth checkup systems stopped responding as they should. The health check runs every ten minutes and emails again when each one recovers.",
+  system_recovered: "These myhealth checkup systems are working again.",
+};
+
 function renderHtml(p: AlertPayload): string {
   const rows: [string, string | undefined][] = [
     ["Alert type", p.alert_type],
@@ -53,13 +75,26 @@ function renderHtml(p: AlertPayload): string {
         `<tr><td style="padding:6px 12px;border:1px solid #eee;font-weight:600">${k}</td><td style="padding:6px 12px;border:1px solid #eee"><code>${escapeHtml(String(v))}</code></td></tr>`,
     )
     .join("");
+  const lines = Array.isArray(p.lines)
+    ? p.lines
+        .filter((l) => typeof l === "string" && l.trim() !== "")
+        .slice(0, 50)
+    : [];
+  const linesBlock = lines.length
+    ? `<ul style="padding-left:20px;line-height:1.5">${lines
+        .map((l) => `<li>${escapeHtml(l.slice(0, 600))}</li>`)
+        .join("")}</ul>`
+    : "";
+  const intro =
+    INTRO[p.alert_type] ?? "Automated myhealth checkup operational alert.";
   const detailsBlock = p.details
     ? `<h3 style="margin-top:24px">Details</h3><pre style="background:#f6f8fa;padding:12px;border-radius:6px;font-size:12px;overflow:auto">${escapeHtml(JSON.stringify(p.details, null, 2))}</pre>`
     : "";
   return `<div style="font-family:-apple-system,Segoe UI,Roboto,sans-serif;color:#111">
     <h2 style="color:#e70d69;margin:0 0 12px">${escapeHtml(p.subject)}</h2>
-    <p style="color:#444">Automated Cyber Essentials operational alert. Attach this email to the quarterly evidence pack.</p>
-    <table style="border-collapse:collapse;border:1px solid #eee">${tbody}</table>
+    <p style="color:#444">${escapeHtml(intro)}</p>
+    ${linesBlock}
+    ${tbody ? `<table style="border-collapse:collapse;border:1px solid #eee">${tbody}</table>` : ""}
     ${detailsBlock}
     <p style="color:#888;font-size:12px;margin-top:24px">myhealth checkup — operational monitoring</p>
   </div>`;

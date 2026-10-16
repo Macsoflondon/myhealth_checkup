@@ -41,6 +41,12 @@ export type AdapterResult = {
   records: number;
   /** Non-fatal problems, joined into the sync log message. */
   warnings?: string[];
+  /**
+   * The sync ran and its data was saved, but what it measures is failing
+   * (site status: an address did not answer properly). Logged as "error" so
+   * the sync log and health checks show the failure, not "ok".
+   */
+  failed?: boolean;
 };
 
 export type PluginAdapter = {

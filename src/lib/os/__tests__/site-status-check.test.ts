@@ -239,6 +239,18 @@ describe("site_status adapter", () => {
     expect(out.warnings).toEqual([
       `${SITE}: The host answered 404: Lovable reports no published build. Republish the project in Lovable.`,
     ]);
+    // A down address marks the run failed, so the sync log reads "error".
+    expect(out.failed).toBe(true);
+  });
+
+  it("marks the run as not failed when every address answers", async () => {
+    const ctx = fakeContext([APEX, SITE], {
+      [APEX]: { status: 200, url: SITE, text: REAL_PAGE, ms: 312 },
+      [SITE]: { status: 200, url: SITE, text: REAL_PAGE, ms: 120 },
+    });
+    const out = await siteStatus.sync(ctx);
+    expect(out.failed).toBe(false);
+    expect(out.warnings).toEqual([]);
   });
 
   it("records a network failure with no status", async () => {
@@ -257,6 +269,7 @@ describe("site_status adapter", () => {
       latency_ms: null,
       problem: "www.myhealthcheckup.co.uk did not answer within 15 s.",
     });
+    expect(out.failed).toBe(true);
   });
 
   it("reports the status, time and redirect from a test", async () => {
