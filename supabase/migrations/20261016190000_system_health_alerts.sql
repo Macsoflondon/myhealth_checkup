@@ -27,8 +27,9 @@
 -- minutes old. A check that turns down sends one email listing every check
 -- that turned down in that run; a check still down 24 hours after its last
 -- email is repeated in a reminder; a recovery sends one email. Alert emails
--- are best effort: a failed send is retried on the next run because
--- last_alerted_at is only set once the request is queued.
+-- are best effort: if queuing the request fails, the whole run rolls back
+-- and the next run tries again, but a send that Resend rejects is not
+-- retried.
 
 create table if not exists public.system_health_state (
   check_id text primary key,
@@ -96,17 +97,13 @@ declare
   v_down_ids text[] := '{}';
   v_still_ids text[] := '{}';
   v_up_ids text[] := '{}';
+  -- This run's verdicts: {check_id, label, ok, detail, threshold}. ok is null
+  -- when there is no verdict yet (a probe still pending); threshold is the
+  -- number of failures in a row before the check counts as down.
+  v_results jsonb := '[]';
+  v_more jsonb;
   r record;
 begin
-  create temporary table if not exists pg_temp.health_results (
-    check_id text primary key,
-    label text not null,
-    ok boolean,          -- null: no verdict this run (probe still pending)
-    detail text,
-    threshold integer not null default 1
-  ) on commit drop;
-  truncate pg_temp.health_results;
-
   -- 1. HTTP probes requested by the previous run.
   for v_probe in select * from public.system_health_probes loop
     select status_code, headers, content, timed_out, error_msg
@@ -145,14 +142,14 @@ begin
       end;
     end if;
 
-    insert into pg_temp.health_results (check_id, label, ok, detail, threshold)
-    values (
-      v_probe.probe_id,
-      case when v_probe.probe_id = 'ai_engine' then 'AI test finder (ai-human-context)'
+    v_results := v_results || jsonb_build_array(jsonb_build_object(
+      'check_id', v_probe.probe_id,
+      'label', case when v_probe.probe_id = 'ai_engine' then 'AI test finder (ai-human-context)'
         else 'Public site ' || substr(v_probe.probe_id, 6) end,
-      v_ok, v_detail,
-      2
-    );
+      'ok', v_ok,
+      'detail', v_detail,
+      'threshold', 2
+    ));
   end loop;
 
   -- 2. Request this run's probes.
@@ -177,30 +174,35 @@ begin
     set request_id = excluded.request_id, requested_at = excluded.requested_at;
 
   -- 3. Price sync: a good scrape_runs row per provider in 13 hours.
-  insert into pg_temp.health_results (check_id, label, ok, detail)
-  select 'price_sync:' || p,
-         'Price sync: ' || p,
-         s.last_good is not null and s.last_good > v_now - interval '13 hours',
-         case when s.last_good is null or s.last_good <= v_now - interval '13 hours'
-           then format('No successful mhc-* sync since %s.',
-             coalesce(to_char(s.last_good at time zone 'Europe/London', 'DD Mon YYYY HH24:MI'), 'records began'))
-         end
+  select coalesce(jsonb_agg(jsonb_build_object(
+           'check_id', 'price_sync:' || p,
+           'label', 'Price sync: ' || p,
+           'ok', s.last_good is not null and s.last_good > v_now - interval '13 hours',
+           'detail', case when s.last_good is null or s.last_good <= v_now - interval '13 hours'
+             then format('No successful mhc-* sync since %s.',
+               coalesce(to_char(s.last_good at time zone 'Europe/London', 'DD Mon YYYY HH24:MI'), 'records began'))
+           end,
+           'threshold', 1)), '[]')
+    into v_more
   from unnest(v_providers) p
   left join lateral (
     select max(started_at) as last_good from public.scrape_runs
     where provider_id = p and status in ('success', 'partial')
       and started_at > v_now - interval '30 days'
   ) s on true;
+  v_results := v_results || v_more;
 
   -- 4. Cron: the latest run of every active job that ran in the last 26 hours.
-  insert into pg_temp.health_results (check_id, label, ok, detail)
-  select 'cron:' || j.jobname,
-         'Scheduled job ' || j.jobname,
-         d.status = 'succeeded',
-         case when d.status <> 'succeeded'
-           then format('Last run at %s ended %s: %s',
-             to_char(d.start_time at time zone 'Europe/London', 'DD Mon HH24:MI'),
-             d.status, left(coalesce(d.return_message, ''), 300)) end
+  select coalesce(jsonb_agg(jsonb_build_object(
+           'check_id', 'cron:' || j.jobname,
+           'label', 'Scheduled job ' || j.jobname,
+           'ok', d.status = 'succeeded',
+           'detail', case when d.status <> 'succeeded'
+             then format('Last run at %s ended %s: %s',
+               to_char(d.start_time at time zone 'Europe/London', 'DD Mon HH24:MI'),
+               d.status, left(coalesce(d.return_message, ''), 300)) end,
+           'threshold', 1)), '[]')
+    into v_more
   from cron.job j
   join lateral (
     select status, start_time, return_message from cron.job_run_details
@@ -209,37 +211,49 @@ begin
   where j.active and j.jobname is not null
     and d.start_time > v_now - interval '26 hours'
     and d.status in ('succeeded', 'failed');
+  v_results := v_results || v_more;
 
   -- 5. AI OS hourly sync.
-  insert into pg_temp.health_results (check_id, label, ok, detail)
-  select 'os_plugins_sync', 'AI OS hourly sync',
-         max(started_at) > v_now - interval '3 hours',
-         case when coalesce(max(started_at), '-infinity') <= v_now - interval '3 hours'
-           then format('No AI OS sync logged since %s.',
-             coalesce(to_char(max(started_at) at time zone 'Europe/London', 'DD Mon HH24:MI'), 'records began')) end
+  select jsonb_build_array(jsonb_build_object(
+           'check_id', 'os_plugins_sync',
+           'label', 'AI OS hourly sync',
+           'ok', max(started_at) > v_now - interval '3 hours',
+           'detail', case when coalesce(max(started_at), '-infinity') <= v_now - interval '3 hours'
+             then format('No AI OS sync logged since %s.',
+               coalesce(to_char(max(started_at) at time zone 'Europe/London', 'DD Mon HH24:MI'), 'records began')) end,
+           'threshold', 1))
+    into v_more
   from public.os_plugin_sync_log;
+  v_results := v_results || v_more;
 
   -- 6. Enabled AI OS plugins: down when the last two syncs both failed.
-  insert into pg_temp.health_results (check_id, label, ok, detail)
-  select 'plugin:' || s.plugin_id, 'AI OS plugin ' || s.plugin_id,
-         not (count(*) = 2 and bool_and(l.status = 'error')),
-         case when count(*) = 2 and bool_and(l.status = 'error')
-           then left(max(l.message) filter (where l.rn = 1), 500) end
-  from public.os_plugin_settings s
-  join lateral (
-    select status, message, row_number() over (order by started_at desc) rn
-    from public.os_plugin_sync_log
-    where plugin_id = s.plugin_id and status in ('ok', 'error')
-    order by started_at desc limit 2
-  ) l on true
-  where s.enabled and s.plugin_id <> 'site_status'
-  group by s.plugin_id;
+  select coalesce(jsonb_agg(x), '[]') into v_more
+  from (
+    select jsonb_build_object(
+             'check_id', 'plugin:' || s.plugin_id,
+             'label', 'AI OS plugin ' || s.plugin_id,
+             'ok', not (count(*) = 2 and bool_and(l.status = 'error')),
+             'detail', case when count(*) = 2 and bool_and(l.status = 'error')
+               then left(max(l.message) filter (where l.rn = 1), 500) end,
+             'threshold', 1) as x
+    from public.os_plugin_settings s
+    join lateral (
+      select status, message, row_number() over (order by started_at desc) rn
+      from public.os_plugin_sync_log
+      where plugin_id = s.plugin_id and status in ('ok', 'error')
+      order by started_at desc limit 2
+    ) l on true
+    where s.enabled and s.plugin_id <> 'site_status'
+    group by s.plugin_id
+  ) per_plugin;
+  v_results := v_results || v_more;
 
   -- 7. Apply results to the stored state and collect transitions.
   for r in
     select h.*, st.status as prev_status, st.consecutive_failures as prev_failures,
            st.last_alerted_at, st.failing_since
-    from pg_temp.health_results h
+    from jsonb_to_recordset(v_results)
+      as h(check_id text, label text, ok boolean, detail text, threshold integer)
     left join public.system_health_state st on st.check_id = h.check_id
     where h.ok is not null
   loop
@@ -313,7 +327,8 @@ begin
   end if;
 
   return jsonb_build_object(
-    'checked', (select count(*) from pg_temp.health_results where ok is not null),
+    'checked', (select count(*) from jsonb_array_elements(v_results) e
+      where jsonb_typeof(e->'ok') = 'boolean'),
     'down', (select count(*) from public.system_health_state where status = 'down'),
     'alerted_down', cardinality(v_down),
     'reminded', cardinality(v_still),
