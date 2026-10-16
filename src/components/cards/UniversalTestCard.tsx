@@ -1013,7 +1013,9 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               cardImageUrl &&
               brokenImageSrc !== cardImageUrl ? (
                 <img
-                  src={cardImageUrl}
+                  src={shopifyImageUrl(cardImageUrl, CARD_IMAGE_DISPLAY_WIDTH)}
+                  width={CARD_IMAGE_DISPLAY_WIDTH}
+                  height={CARD_IMAGE_DISPLAY_WIDTH}
                   alt={`${test.test_name} test kit from ${meta.displayName}`}
                   loading="lazy"
                   decoding="async"
