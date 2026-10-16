@@ -15,7 +15,8 @@ const routeFiles = readdirSync(resolve(root, "src/routes")).filter(
   (f) => /\.tsx?$/.test(f) && !f.startsWith("__root") && !f.startsWith("api."),
 );
 
-const escapeRe = (s: string): string => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+const escapeRe = (s: string): string =>
+  s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 const routePatterns: RegExp[] = routeFiles.map((file) => {
   const segments = file

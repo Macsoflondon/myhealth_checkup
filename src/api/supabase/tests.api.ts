@@ -41,6 +41,12 @@ export interface ProviderTest {
   updated_at: string;
 }
 
+const TEST_COLUMNS =
+  "id, test_name, category, subcategory, description, detailed_description, test_code, biomarkers, sample_type, fasting_required, typical_turnaround_days, preparation_instructions, clinical_significance, who_should_take, popularity_score, is_active, created_at, updated_at";
+
+const PROVIDER_TEST_COLUMNS =
+  "id, provider_id, provider_test_id, provider_test_name, test_master_id, current_price, original_price, discount_percentage, turnaround_time_days, sample_collection_method, availability_status, provider_url, accreditations, last_scraped_at, created_at, updated_at";
+
 class TestsApi {
   /**
    * Get all active tests
@@ -49,7 +55,7 @@ class TestsApi {
     try {
       const { data, error } = await supabase
         .from("tests_master")
-        .select("*")
+        .select(TEST_COLUMNS)
         .eq("is_active", true);
 
       return { data: data as Test[], error };
@@ -65,7 +71,7 @@ class TestsApi {
     try {
       const { data, error } = await supabase
         .from("tests_master")
-        .select("*")
+        .select(TEST_COLUMNS)
         .eq("category", category)
         .eq("is_active", true);
 
@@ -115,7 +121,7 @@ class TestsApi {
     try {
       const { data, error } = await supabase
         .from("provider_test_mapping")
-        .select("*")
+        .select(PROVIDER_TEST_COLUMNS)
         .eq("test_master_id", testMasterId)
         .eq("availability_status", "available");
 
@@ -135,7 +141,7 @@ class TestsApi {
     try {
       let query = supabase
         .from("provider_test_mapping")
-        .select("*")
+        .select(PROVIDER_TEST_COLUMNS)
         .eq("availability_status", "available");
 
       if (providers && providers.length > 0 && !providers.includes("all")) {
@@ -157,7 +163,7 @@ class TestsApi {
     try {
       const { data, error } = await supabase
         .from("tests_master")
-        .select("*")
+        .select(TEST_COLUMNS)
         .eq("is_active", true)
         .order("popularity_score", { ascending: false })
         .limit(limit);

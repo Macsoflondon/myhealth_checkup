@@ -85,8 +85,7 @@ function flush(): void {
   const samples = BATCH.splice(0, BATCH.length);
   const baseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
   const key = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as
-    | string
-    | undefined;
+    string | undefined;
   if (!baseUrl || !key) return;
   for (const body of chunkBodies(samples)) {
     try {

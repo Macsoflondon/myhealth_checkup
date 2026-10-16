@@ -131,7 +131,7 @@ export class LiveDataService {
   ): Promise<CompareTestData[]> {
     let query = supabase
       .from("provider_tests")
-      .select("*")
+      .select("id, test_name, category, price, is_active, description")
       .eq("provider_id", providerId)
       .eq("is_active", true);
 

@@ -15,8 +15,7 @@ export function shopifyImageUrl(
     return src;
   }
   const isShopify =
-    url.hostname === "cdn.shopify.com" ||
-    url.pathname.startsWith("/cdn/shop/");
+    url.hostname === "cdn.shopify.com" || url.pathname.startsWith("/cdn/shop/");
   if (!isShopify) return src;
   url.searchParams.set("width", String(Math.round(displayWidth * density)));
   url.searchParams.set("format", "webp");
