@@ -296,17 +296,18 @@ async function runOne(
       typeof out.records === "number" && Number.isFinite(out.records)
         ? Math.max(0, Math.round(out.records))
         : null;
+    const status = out.failed === true ? "error" : "ok";
     await writeLog(runtime, {
       plugin_id: state.plugin.id,
       trigger,
-      status: "ok",
+      status,
       started_at: started,
       records,
       message,
     });
     return {
       plugin_id: state.plugin.id,
-      status: "ok",
+      status,
       records,
       message,
       duration_ms: Date.now() - started.getTime(),
