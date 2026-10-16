@@ -182,6 +182,8 @@ export const FeaturedPublications = () => {
                       <img
                         src={publication.logo}
                         alt={`${publication.name} logo`}
+                        width={200}
+                        height={112}
                         className="relative z-10 h-20 sm:h-24 md:h-28 w-auto max-w-[200px] object-contain"
                         loading="lazy"
                         decoding="async"

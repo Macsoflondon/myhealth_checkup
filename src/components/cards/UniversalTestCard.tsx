@@ -27,6 +27,10 @@ import { displayTurnaround } from "@/lib/resolve-test-fields";
 import { baseTestId, type CollectionVariant } from "@/lib/collectionVariants";
 import { formatTestCardHeadline } from "@/utils/format-test-card-headline";
 import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
+import { shopifyImageUrl } from "@/lib/shopify-image";
+
+/** Largest rendered width of the card's product image, in CSS pixels. */
+const CARD_IMAGE_DISPLAY_WIDTH = 325;
 import { trackFunnelEvent } from "@/lib/funnelTracking";
 import {
   categoryMenuIconFor,
