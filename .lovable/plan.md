@@ -1,102 +1,101 @@
-# Why some provider tests are missing from the site: findings and recommended fixes
+# Performance and accuracy audit (read-only), ranked by mobile impact
 
-Nothing has been changed yet. All counts below come from live database queries run on 28/09/2026.
+No files changed. Some findings are confirmed now. Items marked **[to measure]** need a production build and live queries. Those run after you approve; they write only to `dist/` and `/tmp`.
 
-## 1. Active vs inactive counts
+## Confirmed so far (ranked)
 
-Total: 751 active, 167 inactive (918 rows).
+1. **SSR HTML is not cached at the edge (affects TTFB)**
+   - Evidence: nothing in `src/routes`, `src/server.ts` or `vite.config.ts` sets Cache-Control on HTML. No nitro `routeRules` either. The only HTML caching is in `functions/_middleware.ts`: line 112 sets `max-age=0, must-revalidate` for humans, and lines 149–150 set `max-age=300, swr=86400` for bot snapshots only. The `/index.html` rule in `public/_headers:47` never matches SSR output.
+   - Also: Lovable hosting (Worker), not Cloudflare Pages, now serves the live domain. That means `functions/_middleware.ts` and `public/_headers` may not run in production at all. **[to measure]** with `curl -I` on the live domain.
+   - Fix: add `headers: () => ({ "Cache-Control": "public, max-age=0, s-maxage=300, stale-while-revalidate=86400" })` to anonymous public routes (index, category, provider, test detail, biomarker database). Leave admin, control, account and `/api` routes uncached.
+   - Expected saving: TTFB p75 from about 1.05 s to under 200 ms on edge hits. Risk: medium, because a cached page must not carry a logged-in user's data. Auth is client-side, so public SSR HTML is user-neutral. Verify that before shipping.
 
-| Provider | Active | Inactive |
-|---|---|---|
-| Medichecks | 200 | 6 |
-| Medical Diagnosis | 154 | 80 |
-| Clinilabs | 139 | 17 |
-| Lola Health | 108 | 0 |
-| Randox | 67 | 11 |
-| London Medical Laboratory | 36 | 1 |
-| Goodbody Clinic | 31 | 1 |
-| London Health Company | 16 | 51 |
+2. **Root route ships every font weight on every page (affects mobile FCP/LCP and CSS)**
+   - Evidence: `src/routes/__root.tsx:4-21` loads 16 weight files: Montserrat 400–800 (5), DM Sans 400/500/700, EB Garamond 400/500/600 plus 400 and 500 italic, Lora 400, Lato 400/700.
+   - No font files are preloaded.
+   - **[to measure]** which families and weights the compiled CSS actually uses. Likely unused: Lora, Lato, Garamond 600 and both Garamond italics.
+   - Fix: remove the unused imports and preload the two above-the-fold woff2 files.
+   - Expected saving: about 60–120 KB of fonts. Risk: low.
 
-`provider_tests` has no column that records why a test was switched off. The only status column is `data_status`. Reasons below were rebuilt from test names, URLs, prices, whether an active twin exists, and the migrations and scrapers that deactivate rows.
+3. **Root route mounts too much up front (affects JS payload)**
+   - Evidence: `__root.tsx:24` initialises i18n and its language detector at module scope. Lines 44–52 import AuthProvider, SessionSecurityProvider, FloatingNavDock, AutoTranslatePage, GlobalComparisonBar, TestPageViewTracker and GlobalPageBackground eagerly. HelmetProvider is also included (lines 38 and 223).
+   - Can be deferred after first paint with `lazyWithRetry` plus a client-only mount, with no change in behaviour:
+     - AutoTranslatePage (only does anything when the language isn't English)
+     - GlobalComparisonBar (empty until a test is selected)
+     - FloatingNavDock (appears on scroll)
+     - TestPageViewTracker
+     - both Toasters
+   - Keep eager:
+     - AuthProvider and SessionSecurityProvider, because they wrap children (they could init lazily inside but stay mounted)
+     - i18n, because SSR text needs it
+     - Cookiebot (`__root.tsx:154-162`): it must stay first and blocking for auto-blocking consent to work. Don't defer it.
+   - Expected saving: **[to measure]**, likely 30–80 KB gzip off the entry chunk. Risk: low to medium.
 
-Caveat: 76 inactive rows show `updated_at` = today. That timestamp comes from today's booking-link fix, which reset their check status. It does not mean they were deactivated today.
+4. **Images (mobile bytes and possible LCP)**
+   - Press logos (`public/images/logos/*.png`, rendered by `src/components/sections/FeaturedPublications.tsx:11+`): 17 PNGs of 63–150 KB each, about 1.8 MB total, at 1024–1264 px for a logo shown at roughly 120×40. `mirror.webp` is already 24 KB.
+     - Fix: re-export as about 240 px WebP (each under 10 KB) and add width/height, `loading="lazy"` and `decoding="async"`.
+     - Saving: about 1.7 MB. Risk: none.
+   - Large files with no reference in `src`, so delete after a broader check:
+     - `public/assets/kit-*.png`, six files of 1.4–1.6 MB at 1354×1428
+     - `src/assets/hero/hero-gym-selfie.png` (1.37 MB)
+     - `public/kits/advanced-well-man.png` (1.2 MB)
+   - **Accuracy/compliance:** `public/lovable-uploads/providers/thriva@480.png` and `thriva@320.png` still exist, and Thriva is a banned provider. Delete them.
+   - **[to measure]** width/height, lazy, decoding and srcset on each remaining image over 100 KB.
 
-## 2. Inactive tests grouped by reason
+5. **Unbounded and `select("*")` reads (data payload)**
+   - 49 `select("*")` calls in `src`. The public-facing ones:
+     - `ProviderTestDetailTemplate.tsx:582`
+     - `CancerComparisonPage.tsx:86`
+     - `MedichecksTestsCatalogPage.tsx:50`
+     - `MedichecksMensHealthPage.tsx:27`
+     - `useProvidersByTestType.ts:38,97`
+     - `useRecommendedTests.ts:63,82`
+     - `useEnhancedComparison.ts:269`
+     - `LiveDataService.ts:134`
+     - `api/supabase/tests.api.ts:52,68,118,138,160`
+   - `provider_tests` has 91 columns, so `*` drags in raw scrape HTML and description text.
+   - Large caps:
+     - `useAllTests.ts:61`: `.limit(1000)` over 19 columns
+     - `BiomarkerLibraryService.ts:139`: `.range(0,4999)`
+     - Admin pages at `.limit(5000)`: `AdminOpsPage` 69 and 103, `AdminPerformancePage` 98, `CrawlsSection` 75, `ExportSection` 27
+   - Hooks fetching in `useEffect` instead of React Query: `useBiomarkersLibrary`, `useSavedProviders`, `useFavoritesApi`, `useUserRole`, `use-auth`, `useAdminMFA`.
+   - `useTestCatalogue` was not found under that name. **[to measure]** the closest equivalent.
+   - **[to measure]** row counts and payload KB for each call on live data.
+   - Fix: explicit column lists, server pagination or loader-fed queries, and React Query for the `useEffect` hooks.
 
-**A. Correctly removed: junk, non-tests or scrape errors (about 27)**
-- Medichecks (6): "404 Not Found", plus five "collection method" / "home collection kit is included" fragments.
-- Randox (3): "Thank you for your patience.", "Flu Vaccine", "HPV Vaccine - 1 dose". The last two are vaccines; the Randox cleanup migration and the live scraper's junk rule handle these.
-- Medical Diagnosis (5): Deposit 50, Deposit 100, Pathology services, Vitamin B12 shots, Premium Report (now attached as an add-on).
-- Goodbody (1): GP Consultation.
-- London Health Company (about 12): Preparing for your Blood Test (x2), Purple/Yellow/Extra tube and lancet packs, Replacement kits (x4), Fatigue Kit Replacement, Venous blood collection appointment, Venous Collection Kit.
+6. **`unified_provider_tests` readers (accuracy)**
+   - Readers:
+     - `src/services/CompareService.ts:126`
+     - `src/lib/seo/test-seo.functions.ts:23` (SSR, so it also adds to TTFB)
+     - MCP tools: `search-tests:69`, `get-test:65`, `compare-tests:70`, `save-favourite:24`, `list-my-favourites:52`, `get-data-quality:35`
+   - **[to measure]** whether any reader dedupes by id, uses `.single()`, counts rows or depends on the mapping columns. Old `count` results (e.g. `get-data-quality`, `search-tests`) were inflated by the 127 duplicate rows, and the new numbers will be lower and correct.
 
-**B. Correctly removed: duplicates with a live equivalent (about 42)**
-- Medical Diagnosis (24): old `[slug]`-suffixed profile rows (Thyroid, Kidney profile, Women's Hormones, Metabolic Panel, and so on). Each has an active twin.
-- Randox (7): Everyman Complete, Everywoman, Signature, General Health Quickdraw, AMH Quickdraw, PSA Quickdraw, Thyroid Blood Test. Each has an active twin (Randox URL-collision migration).
-- Clinilabs (14 of 17): placeholder rows pointing at the Clinilabs homepage, deactivated by the 05/08 and 06/08 duplicate migrations. The real "... Blood Test" product rows are active.
-- London Medical Laboratory (1): Allergy Complete (active twin exists).
-- London Health Company (2): Advanced Prostate Screening, TSH Blood Test Kit (price-conflict duplicates with active twins).
+7. **Router preload**
+   - `src/router.tsx:23-28`: `defaultPreload` is unset and `defaultPreloadStaleTime` is 0, which is correct when React Query is in use.
+   - `defaultPreload: "intent"` (plus `defaultPreloadDelay: 50`) is safe: loaders that call `ensureQueryData` warm the 10-minute query cache. Loaders that hit Supabase directly would refetch on every hover. **[to measure]** list those loaders first.
+   - Saving: faster page changes on tap or hover. Risk: low.
 
-**C. Removed with no live equivalent: likely wrong (see section 4, about 60)**
-- Medical Diagnosis: single tests and cultures deactivated by `deactivate_medical_diagnosis_non_test_items` (16/08) and later clean-ups.
-- London Health Company: about 23 real test kits with no URL and no price, left over from the `london_health_company_full_cleanup` migration.
-- Clinilabs: 3 placeholder rows with no real product row.
-- Randox: Food Sensitivity Test.
+8. **Web Vitals beacon (data accuracy, explains the missing mobile LCP)**
+   - Confirmed:
+     - The flush uses `supabase.functions.invoke` (`webVitals.ts:56`), which is an ordinary fetch with no keepalive. It gets cancelled on `pagehide` and `visibilitychange` (lines 131–136). That is exactly when mobile LCP and CLS are reported, so mobile samples get lost.
+     - The route is captured once at line 103, so all client-side navigations are tagged with the landing route.
+   - **Correction:** Android tablets are *not* classed as desktop. Line 28 matches `android` and labels them **mobile**. Only iPadOS 13+ (which reports a Mac user agent) lands in desktop.
+   - Fix, needing no edge-function change:
+     - Flush with `fetch(\`${SUPABASE_URL}/functions/v1/web-vitals-ingest\`, { method: "POST", keepalive: true, headers: { "content-type": "application/json", apikey, authorization: \`Bearer ${anonKey}\` }, body })`. Keep it under 64 KB.
+     - Read `location.pathname` inside `report()` instead of once at install.
+     - Treat `android` without `mobi` as tablet, and `Macintosh` with touch points as tablet.
+   - Risk: low. CORS preflight still works with keepalive.
 
-**Automatic deactivation paths (these run on every scrape):**
-- `mhc-shopify-sync` and `mhc-medichecks-sync` switch a product off when it matches the provider's junk rule.
-- `_shared/scrape/upsertWithProvenance.ts` switches off a live row that scrapes at £1 or less. There are currently 0 rows at or below £1.
+9. **Leaflet and the clinic map**
+   - `package.json:81,91,92` lists `leaflet`, `react-leaflet` and `react-leaflet-cluster`, but nothing in `src` imports them. They are dead dependencies, so they can't load on any page.
+   - Fix: remove all three. Do the same for recharts and framer-motion if the build confirms they're unused or admin-only.
 
-## 3. Front-end filters that hide active tests
+## Next steps after approval (read-only, outputs only)
 
-| Filter | File and condition | Active tests hidden |
-|---|---|---|
-| Missing image | `useAllTests.ts`: `.not("image_url","is",null)` | 17 (Clinilabs 13, Randox 2, Lola 1, Medichecks 1) |
-| Missing category | `useAllTests.ts`: `.not("canonical_category","is",null)` | 5 (overlap with the missing-image rows) |
-| Missing URL | `useAllTests.ts`: `.not("url","is",null)` | 0 |
-| Missing price | `ProviderTestsGrid.tsx`, `useTestCatalogue.ts`, `useRecommendedTests.ts`, `useAtHomeTests.ts`, `useDynamicComparisonPanels.ts` | 2 (Randox) |
-| Price of £0 or less | `useAtHomeTests.ts`, `useDynamicComparisonPanels.ts`: `.gt("price",0)` | 0 beyond the 2 above |
-| Junk name | `is-junk-test-name.ts` via `ProviderTestsGrid`, `useAtHomeTests`, `useCompareTestsData` | 7 active rows match (Medichecks 5, Randox 2). These are junk that is still active. |
-| Add-ons | `useAtHomeTests.ts`: `.eq("is_addon", false)` | 75 hidden from At-home only (by design) |
-| Home-kit route | `useAtHomeTests.ts`: `hasHomeKitRoute` | At-home only (by design) |
-| Thriva exclusion | `useDynamicComparisonPanels.ts`, `StartJourneySection.tsx` | 0 (no Thriva rows) |
-| Row cap | `useAllTests.ts` and `useTestCatalogue.ts`: `.limit(1000)` | 0 today (751 active), but it will bite above 1,000 |
-
-Not filters (no test hidden by these):
-- **Link-check status:** after today's fix it only changes Book to Enquire, and never hides a card. 22 active rows have a genuine failed check.
-- **Biomarkers:** 38 active rows have no biomarkers, but no list query filters on biomarkers.
-
-Net result: the All Tests page hides 17 active tests. Provider pages hide at most 2 (no price) plus the 7 junk matches.
-
-Open item: the `unified_provider_tests` view returns 879 rows against 751 active tests. The extra 128 rows are not name duplicates (0 found), so the view's joins are probably producing them. This needs checking separately.
-
-## 4. Tests that look wrongly deactivated
-
-**Medical Diagnosis (priced, no active twin):**
-- Adeno / Rota Virus Antigen, ALP Isoenzymes, Estriol Free E3, Glycoprotein Polymorphism GPIa, Haemoglobinopathy Screen, HCV Real Time PCR, Human Papilloma Virus (HPV) 20 Low & High Risk Subtypes, LDH isoenzymes, Lipoprotein Electrophoresis, Protein Electrophoresis, Omega 3/6, Prothrombin Time / INR, RBC Folate, Reticulocytes, Urine Examination, Yersinia IgA IgG, Zika IgG IgM.
-- Comprehensive Profile SP9, Full Health Assessment - Men, Full Health Assessment - Women, Testosterone – Key Markers (its stored name has a garbled dash).
-- Cultures: 15 priced "Culture – ..." rows and 15 unpriced "... Swab" rows are both inactive. As a result, no culture test from Medical Diagnosis is live at all. One set should be live.
-
-**London Health Company (no URL and no price, so they can't simply be switched back on):**
-- Advanced Hair Loss Blood Test, Blood Count Test (both variants), High-Sensitivity CRP, Folate Blood Test Kit (x2), Iron Profile / Iron Status Profile, TRT Monitoring Blood Test Bundle, Early Pregnancy Blood Test, Nutrients (Ferritin, Vitamin D, B12) Blood Test (x2), Vitamin D Blood Test (x2), At-Home Vitamin B12, At-Home Thyroid Function, At-Home HbA1c, Cortisol Blood Test Kit, Total Testosterone / Testosterone (x3), Progesterone Hormone Test, Menopause Hormone Panel (x2), Health Check Blood Test (24 Biomarkers), Chlamydia & Gonorrhoea STI Urine Test.
-- Some of these are older copies of the 16 active products. The clear gaps are hair loss, blood count, hs-CRP, folate, iron profile, TRT bundle, Vitamin D, progesterone, the 24-biomarker health check and the STI test.
-
-**Clinilabs (homepage placeholder, no real product row):**
-- Alphafetoprotein level (AFP), Anti Mullerian Hormone (AMH), ALEX² Allergy Test (300 Allergens).
-
-**Randox:**
-- Food Sensitivity Test (£178).
-
-## Recommended fixes (not applied)
-
-1. **Record a reason when a test is switched off.** Add nullable `deactivated_reason` and `deactivated_at` columns to `provider_tests` through a new additive migration. Populate them from the scrapers' junk and suspicious-price paths, and in every future clean-up migration.
-2. **London Health Company:** re-run its Shopify sync and check why 23 real kits lack a URL and price. It is probably the handle-matching in the `full_cleanup` migration. Reactivate only rows that come back with a real product URL and price.
-3. **Medical Diagnosis:** review the 21 single tests and profiles listed above against the provider's live site. Reactivate verified ones through a data change, and fix the garbled "Testosterone – Key Markers" name. Choose one culture set (priced or swab), fill in missing prices, and reactivate it.
-4. **Clinilabs:** find the real product URLs for AFP, AMH and ALEX² and restore them. Otherwise leave them off.
-5. **Randox Food Sensitivity Test:** confirm it is still sold. Reactivate if so.
-6. **Seven active junk rows** (Medichecks 5, Randox 2): switch them off so the database matches what the site already hides.
-7. **All Tests page:** stop requiring an image. Show the card with the brand tile instead (as `UniversalTestCard` already supports), so the 17 imageless tests appear. Fill in the 5 missing categories.
-8. **Row cap:** replace the `.limit(1000)` on `useAllTests` and `useTestCatalogue` with paging before the catalogue grows past 1,000.
-9. **View row count:** check why `unified_provider_tests` returns 879 rows for 751 active tests.
-
-Every data change above should be checked against the provider's live page. None will bulk-reactivate rows.
+- Run `vite build`. From the SSR HTML for `/`, list each preloaded or render-blocking JS and CSS file with its gzip size. Grep the chunks for recharts, leaflet and framer-motion. Check that the hero `<link rel=preload imagesrcset>` (`src/routes/index.tsx:26-34`) matches the rendered `<picture>` candidates in `hero-slides.ts` / `HeroMasthead.tsx`.
+- Run `curl -I` on the live `/` and a test page to see real Cache-Control headers and the hosting layer.
+- Grep the built CSS for each font family and weight.
+- Run live row counts and payload sizes for item 5.
+- Read each `unified_provider_tests` reader for dedupe or count logic.
+- Check width, height, lazy, decoding and srcset on each image over 100 KB.
+- Deliver one final ranked table: issue, file:line, saving, risk, exact change. No source edits.
