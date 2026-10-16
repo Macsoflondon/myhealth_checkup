@@ -14,17 +14,7 @@ import type {
   OsSecretSource,
   OsSyncResult,
 } from "../../../supabase/functions/_shared/os/contract";
-import { AFFILIATE_PROVIDERS } from "@/lib/affiliate/affiliate-config";
 import type { PluginSyncLogRow } from "./types";
-
-/**
- * Map fields whose values must be one of our provider ids, so a typo
- * ("randox-health") cannot file conversions under a provider that does not
- * exist and count them twice next to a CSV import.
- */
-const PROVIDER_VALUE_FIELDS: Record<string, string> = {
-  awin: "advertiser_map",
-};
 
 // ---------------------------------------------------------------------------
 // Field values
@@ -229,16 +219,6 @@ export function formToConfig(
       if (!result.ok) {
         errors[field.key] = result.error;
         continue;
-      }
-      if (PROVIDER_VALUE_FIELDS[plugin.id] === field.key) {
-        const unknown = Object.values(result.value).filter(
-          (v) => !Object.prototype.hasOwnProperty.call(AFFILIATE_PROVIDERS, v),
-        );
-        if (unknown.length > 0) {
-          errors[field.key] =
-            `Use a provider id from this list: ${Object.keys(AFFILIATE_PROVIDERS).join(", ")}. Not recognised: ${[...new Set(unknown)].join(", ")}.`;
-          continue;
-        }
       }
       parsed = result.value;
     } else {

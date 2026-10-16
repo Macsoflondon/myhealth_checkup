@@ -1,18 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
-  bestPost,
   ctr,
   dayNumber,
   daySpan,
-  followerChange,
-  postInteractions,
-  postsInWindow,
   ratio,
   sumBy,
-  totalInteractions,
   weightedPosition,
-  type FollowerPoint,
-  type InteractionMetrics,
 } from "@/lib/os/series";
 
 type Day = {
@@ -21,24 +14,6 @@ type Day = {
   users: number | null;
   label: string;
 };
-
-type Post = {
-  id: string;
-  published_at: string | null;
-  metrics: InteractionMetrics;
-};
-
-function metrics(m: Partial<InteractionMetrics> = {}): InteractionMetrics {
-  return { likes: null, comments: null, shares: null, saves: null, ...m };
-}
-
-function post(
-  id: string,
-  publishedAt: string | null,
-  m: Partial<InteractionMetrics> = {},
-): Post {
-  return { id, published_at: publishedAt, metrics: metrics(m) };
-}
 
 describe("sumBy", () => {
   it("adds up one numeric field", () => {
@@ -152,181 +127,5 @@ describe("dayNumber and daySpan", () => {
         { date: "2026-09-29" },
       ]),
     ).toBe(4);
-  });
-});
-
-describe("followerChange", () => {
-  const points: FollowerPoint[] = [
-    { date: "2026-09-01", value: 900 },
-    { date: "2026-09-10", value: 940 },
-    { date: "2026-09-11", value: 950 },
-    { date: "2026-10-01", value: 1000 },
-    { date: "2026-10-09", value: 1012 },
-  ];
-
-  it("compares the last point with the point N days earlier", () => {
-    // 28 days before 9 Oct is 11 Sep.
-    expect(followerChange(points, 28)).toEqual({
-      latest: { date: "2026-10-09", value: 1012 },
-      base: { date: "2026-09-11", value: 950 },
-      change: 62,
-      days: 28,
-    });
-  });
-
-  it("uses the closest point when the exact day is missing", () => {
-    // 7 days before 9 Oct is 2 Oct; 1 Oct is the closest point.
-    const result = followerChange(points, 7);
-    expect(result?.base).toEqual({ date: "2026-10-01", value: 1000 });
-    expect(result?.change).toBe(12);
-    expect(result?.days).toBe(8);
-  });
-
-  it("falls back to the earliest point when the series is short", () => {
-    const result = followerChange(points, 90);
-    expect(result?.base).toEqual({ date: "2026-09-01", value: 900 });
-    expect(result?.change).toBe(112);
-    expect(result?.days).toBe(38);
-  });
-
-  it("prefers the earlier point on a tie", () => {
-    const result = followerChange(
-      [
-        { date: "2026-10-01", value: 10 },
-        { date: "2026-10-03", value: 12 },
-        { date: "2026-10-09", value: 20 },
-      ],
-      7,
-    );
-    // 2 Oct is the target; 1 Oct and 3 Oct are both one day away.
-    expect(result?.base.date).toBe("2026-10-01");
-  });
-
-  it("reports losses as a negative change", () => {
-    expect(
-      followerChange(
-        [
-          { date: "2026-10-08", value: 50 },
-          { date: "2026-10-09", value: 47 },
-        ],
-        7,
-      )?.change,
-    ).toBe(-3);
-  });
-
-  it("does not depend on input order", () => {
-    const shuffled = [points[3], points[0], points[4], points[2], points[1]];
-    expect(followerChange(shuffled, 28)).toEqual(followerChange(points, 28));
-  });
-
-  it("returns null without two usable points on different days", () => {
-    expect(followerChange([], 28)).toBeNull();
-    expect(followerChange([{ date: "2026-10-09", value: 5 }], 28)).toBeNull();
-    expect(
-      followerChange(
-        [
-          { date: "2026-10-09", value: 5 },
-          { date: "2026-10-09", value: 6 },
-        ],
-        28,
-      ),
-    ).toBeNull();
-    expect(
-      followerChange(
-        [
-          { date: "bad", value: 5 },
-          { date: "2026-10-09", value: 6 },
-        ],
-        28,
-      ),
-    ).toBeNull();
-  });
-});
-
-describe("postsInWindow", () => {
-  const posts = [
-    post("a", "2026-10-09T08:00:00.000Z"),
-    post("b", "2026-10-01T00:00:00.000Z"),
-    post("c", null),
-    post("d", "2026-09-30T22:59:59.000Z"),
-    post("e", "not a date"),
-  ];
-
-  it("keeps posts from the start (inclusive) to the end (exclusive)", () => {
-    const out = postsInWindow(
-      posts,
-      "2026-10-01T00:00:00.000Z",
-      "2026-10-09T08:00:00.000Z",
-    );
-    expect(out.map((p) => p.id)).toEqual(["b"]);
-  });
-
-  it("keeps the original order and drops undated posts", () => {
-    const out = postsInWindow(
-      posts,
-      "2026-09-01T00:00:00.000Z",
-      "2026-10-10T00:00:00.000Z",
-    );
-    expect(out.map((p) => p.id)).toEqual(["a", "b", "d"]);
-  });
-
-  it("compares instants, not strings", () => {
-    // 23:30 on 30 Sep in UTC+01:00 is 22:30 UTC, before the window.
-    const out = postsInWindow(
-      [post("x", "2026-09-30T23:30:00+01:00")],
-      "2026-09-30T23:00:00.000Z",
-      "2026-10-02T00:00:00.000Z",
-    );
-    expect(out).toEqual([]);
-  });
-
-  it("returns nothing for no posts or an unreadable window", () => {
-    expect(
-      postsInWindow([], "2026-10-01T00:00:00Z", "2026-10-09T00:00:00Z"),
-    ).toEqual([]);
-    expect(postsInWindow(posts, "", "2026-10-09T00:00:00Z")).toEqual([]);
-  });
-});
-
-describe("post interactions", () => {
-  it("adds likes, comments, shares and saves that were reported", () => {
-    expect(
-      postInteractions(
-        post("a", null, { likes: 10, comments: 2, shares: 1, saves: 3 }),
-      ),
-    ).toBe(16);
-    expect(postInteractions(post("b", null, { likes: 4 }))).toBe(4);
-    expect(postInteractions(post("c", null, { likes: 0 }))).toBe(0);
-  });
-
-  it("returns null when nothing was reported", () => {
-    expect(postInteractions(post("a", null))).toBeNull();
-  });
-
-  it("totals across posts, null only when none reported", () => {
-    expect(totalInteractions([])).toBeNull();
-    expect(totalInteractions([post("a", null), post("b", null)])).toBeNull();
-    expect(
-      totalInteractions([
-        post("a", null, { likes: 2 }),
-        post("b", null),
-        post("c", null, { comments: 3, saves: 1 }),
-      ]),
-    ).toBe(6);
-  });
-
-  it("finds the post with the most interactions", () => {
-    const list = [
-      post("new", null, { likes: 5 }),
-      post("none", null),
-      post("top", null, { likes: 4, shares: 4 }),
-      post("tie", null, { comments: 8 }),
-    ];
-    expect(bestPost(list)).toEqual({ post: list[2], interactions: 8 });
-  });
-
-  it("has no best post without interaction figures", () => {
-    expect(bestPost([])).toBeNull();
-    expect(bestPost([post("a", null)])).toBeNull();
   });
 });

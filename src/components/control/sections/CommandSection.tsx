@@ -45,7 +45,6 @@ import {
   buildInsights,
   formatFactValue,
   latestSiteChecks,
-  NETWORK_NAMES,
   toInsightInputs,
   type Insight,
   type InsightInput,
@@ -71,11 +70,7 @@ import {
 import type {
   Ga4Daily,
   GscDaily,
-  MetricoolFollowers,
-  MetricoolPosts,
   SiteStatusChecks,
-  SocialNetwork,
-  StripeDaily,
 } from "../../../../supabase/functions/_shared/os/contract";
 
 const PLUGINS_HREF = "/control/plugins";
@@ -99,7 +94,6 @@ const LINK_LABELS: Record<string, string> = {
   "/control/clicks": "Open Provider clicks",
   "/control/revenue": "Open Revenue",
   "/control/traffic": "Open Traffic and search",
-  "/control/social": "Open Social media",
 };
 
 const AI_OFF_NOTE =
@@ -119,7 +113,7 @@ function aiOffNote(status: OsStatusResponse | undefined): string {
 
 const LIMITATIONS = [
   "Insights come from fixed rules in src/lib/os/insights.ts. They flag problems and changes; they do not explain causes.",
-  "Provider clicks and commission are live and include today so far. Google Analytics, Search Console and social figures cover complete days up to their last hourly sync.",
+  "Provider clicks and commission are live and include today so far. Google Analytics and Search Console figures cover complete days up to their last hourly sync.",
   "Google Analytics 4 (GA4) user totals add up each day's users, so someone who visits on two days counts twice.",
   ...(getOsPlugin("ai_briefing")?.limitations ?? []),
 ];
@@ -150,13 +144,6 @@ export default function CommandSection() {
       revenue: revenue.data ?? null,
       ga4Daily: snapshotPayload<Ga4Daily>(rows, "ga4", "daily"),
       gscDaily: snapshotPayload<GscDaily>(rows, "search_console", "daily"),
-      followers: snapshotPayload<MetricoolFollowers>(
-        rows,
-        "metricool",
-        "followers",
-      ),
-      posts: snapshotPayload<MetricoolPosts>(rows, "metricool", "posts"),
-      stripe: snapshotPayload<StripeDaily>(rows, "stripe", "daily"),
       site: snapshotPayload<SiteStatusChecks>(rows, "site_status", "checks"),
       snapshotsFetchedAt: rows ? fetchedAtByDataset(rows) : undefined,
       pluginStatus: status.data ?? null,
@@ -276,9 +263,9 @@ export default function CommandSection() {
         </KpiGrid>
         <p className="text-[11px] leading-snug text-muted-foreground">
           Clicks and commission come live from our own database for the{" "}
-          {win.label}. Google Analytics 4, Search Console and Metricool figures
-          come from the last hourly sync and cover complete days. Site status is
-          the latest hourly check.
+          {win.label}. Google Analytics 4 and Search Console figures come from
+          the last hourly sync and cover complete days. Site status is the
+          latest hourly check.
         </p>
       </section>
 
@@ -755,7 +742,7 @@ function headlineTiles({
             label: commissionLabel,
             to: "/control/revenue",
             value: <QuietValue>None recorded</QuietValue>,
-            hint: "No conversions imported yet. Import a report or connect Awin.",
+            hint: "No conversions imported yet. Import a network report as CSV.",
           }
         : {
             key: "commission",
@@ -842,35 +829,6 @@ function headlineTiles({
           hasRows("search_console"),
         ));
 
-  // Social followers
-  const socialLabel = "Social followers";
-  const total = f.get("social.followers_total");
-  const totalValue = numValue(total);
-  const perNetwork = (Object.keys(NETWORK_NAMES) as SocialNetwork[])
-    .map((n) => {
-      const v = numValue(f.get(`social.${n}.followers`));
-      return v === null ? null : `${NETWORK_NAMES[n]} ${formatInt(v)}`;
-    })
-    .filter((s): s is string => s !== null);
-  const socialTile: TileModel =
-    total && totalValue !== null
-      ? {
-          key: "social",
-          label: socialLabel,
-          to: "/control/social",
-          value: formatInt(totalValue),
-          hint: perNetwork.join(" · "),
-        }
-      : (snapshotFallback("social", socialLabel, "/control/social") ??
-        missingTile(
-          "social",
-          socialLabel,
-          "metricool",
-          "Metricool",
-          status,
-          hasRows("metricool"),
-        ));
-
   // Site status
   const siteLabel = "Site status";
   const checks = latestSiteChecks(site);
@@ -914,14 +872,7 @@ function headlineTiles({
     };
   }
 
-  return [
-    clicksTile,
-    commissionTile,
-    ga4Tile,
-    searchTile,
-    socialTile,
-    siteTile,
-  ];
+  return [clicksTile, commissionTile, ga4Tile, searchTile, siteTile];
 }
 
 // ---------------------------------------------------------------------------

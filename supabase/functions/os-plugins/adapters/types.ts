@@ -20,7 +20,7 @@ export type AdapterContext = {
   /** Credentials by key: edge function env first, then Vault. */
   secrets: Record<string, string>;
   http: Http;
-  /** Service-role client, for adapters that write rows (Awin). */
+  /** Service-role client, for adapters that need to write rows. */
   db: RpcClient;
   /** Previous payload of each of this plugin's datasets, keyed by dataset. */
   previous: Record<string, unknown>;

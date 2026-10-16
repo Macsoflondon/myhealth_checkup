@@ -66,8 +66,8 @@ export function formatDelta(
       text: "new this period",
     };
   }
-  // Divide by the size of the base so a negative base (a Stripe net loss)
-  // still reads as up when the figure improves.
+  // Divide by the size of the base so a negative base still reads as up
+  // when the figure improves.
   const ratio = (current - previous) / Math.abs(previous);
   if (Math.abs(ratio) < 0.005) {
     return { ratio: 0, direction: "flat", text: "no change" };

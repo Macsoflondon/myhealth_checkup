@@ -21,7 +21,6 @@ import {
   Sparkles,
   MousePointerClick,
   BarChart3,
-  Share2,
   PoundSterling,
   Plug,
 } from "lucide-react";
@@ -89,22 +88,10 @@ export const CONTROL_SECTIONS: ControlSection[] = [
     component: lazy(() => import("./sections/TrafficSection")),
   },
   {
-    slug: "social",
-    title: "Social media",
-    short: "Social",
-    description:
-      "Followers and recent posts on Facebook, Instagram and TikTok.",
-    icon: Share2,
-    status: "live",
-    group: "growth",
-    usesRange: true,
-    component: lazy(() => import("./sections/SocialSection")),
-  },
-  {
     slug: "revenue",
     title: "Revenue",
     short: "Revenue",
-    description: "Affiliate commission and direct payments.",
+    description: "Affiliate commission from imported network reports.",
     icon: PoundSterling,
     status: "live",
     group: "growth",
