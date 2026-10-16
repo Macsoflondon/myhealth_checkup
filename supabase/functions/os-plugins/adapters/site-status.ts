@@ -121,6 +121,9 @@ export const adapter: PluginAdapter = {
       datasets: [{ dataset: "checks", payload }],
       records: latest.length,
       warnings,
+      // Saved either way, so the dashboard keeps the history, but a down
+      // address logs this run as an error instead of "ok".
+      failed: latest.some((c) => !c.ok),
     };
   },
 
