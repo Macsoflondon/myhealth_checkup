@@ -48,7 +48,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   medichecks: {
     id: "medichecks",
     name: "Medichecks",
-    logo: "/lovable-uploads/provider-medichecks-new-v3.png",
+    logo: "/lovable-uploads/provider-medichecks-new-v3.webp",
     turnaround: "3 working days",
     badgeText: "Medichecks Blood Test",
     features: [
@@ -130,7 +130,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   "goodbody-clinic": {
     id: "goodbody-clinic",
     name: "GoodBody Clinic",
-    logo: "/lovable-uploads/provider-goodbody-slate-2026.png",
+    logo: "/lovable-uploads/provider-goodbody-slate-2026.webp",
     turnaround: "2-3 working days",
     badgeText: "GoodBody Clinic Blood Test",
     features: [
@@ -201,7 +201,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   randox: {
     id: "randox",
     name: "Randox Health",
-    logo: "/lovable-uploads/provider-randox.png",
+    logo: "/lovable-uploads/provider-randox.webp",
     turnaround: "3-5 working days",
     badgeText: "Randox Health Test",
     features: [
@@ -274,7 +274,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   "lola-health": {
     id: "lola-health",
     name: "Lola Health",
-    logo: "/lovable-uploads/provider-lola-health.png",
+    logo: "/lovable-uploads/provider-lola-health.webp",
     turnaround: "2 working days",
     badgeText: "Lola Health Blood Test",
     features: [
@@ -347,7 +347,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   "london-medical-laboratory": {
     id: "london-medical-laboratory",
     name: "London Medical Laboratory",
-    logo: "/lovable-uploads/provider-london-medical.png",
+    logo: "/lovable-uploads/provider-london-medical.webp",
     turnaround: "1-2 working days",
     badgeText: "London Medical Laboratory Test",
     features: [
@@ -421,7 +421,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   clinilabs: {
     id: "clinilabs",
     name: "Clinilabs",
-    logo: "/lovable-uploads/provider-clinilabs.png",
+    logo: "/lovable-uploads/provider-clinilabs.webp",
     turnaround: "2-5 working days",
     badgeText: "Clinilabs Blood Test",
     features: [
@@ -488,7 +488,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   "london-health-company": {
     id: "london-health-company",
     name: "London Health Company",
-    logo: "/lovable-uploads/provider-london-health-company.png",
+    logo: "/lovable-uploads/provider-london-health-company.webp",
     turnaround: "2-4 working days",
     badgeText: "London Health Company Blood Test",
     features: [
@@ -554,7 +554,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   "medical-diagnosis": {
     id: "medical-diagnosis",
     name: "Medical Diagnosis",
-    logo: "/lovable-uploads/provider-medical-diagnosis.png",
+    logo: "/lovable-uploads/provider-medical-diagnosis.webp",
     turnaround: "2-5 working days",
     badgeText: "Medical Diagnosis Blood Test",
     features: [

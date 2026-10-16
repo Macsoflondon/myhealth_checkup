@@ -8,22 +8,22 @@ export const FeaturedPublications = () => {
     {
       name: "Bloomberg",
       url: "https://www.bloomberg.com",
-      logo: "/images/logos/bloomberg.png",
+      logo: "/images/logos/bloomberg.webp",
     },
     {
       name: "The Guardian",
       url: "https://www.theguardian.com",
-      logo: "/images/logos/the-guardian.png",
+      logo: "/images/logos/the-guardian.webp",
     },
     {
       name: "Cosmopolitan",
       url: "https://www.cosmopolitan.com",
-      logo: "/images/logos/cosmopolitan.png",
+      logo: "/images/logos/cosmopolitan.webp",
     },
     {
       name: "TechCrunch",
       url: "https://www.techcrunch.com",
-      logo: "/images/logos/techcrunch.png",
+      logo: "/images/logos/techcrunch.webp",
     },
     {
       name: "The Mirror",
@@ -33,62 +33,62 @@ export const FeaturedPublications = () => {
     {
       name: "Metro",
       url: "https://metro.co.uk",
-      logo: "/images/logos/metro.png",
+      logo: "/images/logos/metro.webp",
     },
     {
       name: "Daily Mail",
       url: "https://www.dailymail.co.uk",
-      logo: "/images/logos/daily-mail.png",
+      logo: "/images/logos/daily-mail.webp",
     },
     {
       name: "Daily Express",
       url: "https://www.express.co.uk",
-      logo: "/images/logos/daily-express.png",
+      logo: "/images/logos/daily-express.webp",
     },
     {
       name: "London Daily News",
       url: "https://www.londondaily.news",
-      logo: "/images/logos/london-daily-news.png",
+      logo: "/images/logos/london-daily-news.webp",
     },
     {
       name: "The Independent",
       url: "https://www.independent.co.uk",
-      logo: "/images/logos/the-independent.png",
+      logo: "/images/logos/the-independent.webp",
     },
     {
       name: "BBC",
       url: "https://www.bbc.co.uk",
-      logo: "/images/logos/bbc.png",
+      logo: "/images/logos/bbc.webp",
     },
     {
       name: "The Sunday Times",
       url: "https://www.thetimes.co.uk",
-      logo: "/images/logos/sunday-times.png",
+      logo: "/images/logos/sunday-times.webp",
     },
     {
       name: "Marketing Week",
       url: "https://www.marketingweek.com",
-      logo: "/images/logos/marketing-week.png",
+      logo: "/images/logos/marketing-week.webp",
     },
     {
       name: "woman&home",
       url: "https://www.womanandhome.com",
-      logo: "/images/logos/woman-and-home.png",
+      logo: "/images/logos/woman-and-home.webp",
     },
     {
       name: "Men's Health",
       url: "https://www.menshealth.com",
-      logo: "/images/logos/mens-health.png",
+      logo: "/images/logos/mens-health.webp",
     },
     {
       name: "VOGUE",
       url: "https://www.vogue.co.uk",
-      logo: "/images/logos/vogue.png",
+      logo: "/images/logos/vogue.webp",
     },
     {
       name: "Healthista",
       url: "https://www.healthista.com",
-      logo: "/images/logos/healthista.png",
+      logo: "/images/logos/healthista.webp",
     },
   ];
 

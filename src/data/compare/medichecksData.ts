@@ -15,7 +15,7 @@ export const medichecksCompareData: CompareTestData[] = [
       collection: "Finger-prick or Venous",
       bioMarkers: "4 biomarkers",
     },
-    providerLogo: "/lovable-uploads/provider-medichecks-new-v3.png",
+    providerLogo: "/lovable-uploads/provider-medichecks-new-v3.webp",
   },
   {
     id: "medichecks-male-hormone",
@@ -31,7 +31,7 @@ export const medichecksCompareData: CompareTestData[] = [
       collection: "Finger-prick or Venous",
       bioMarkers: "4 biomarkers",
     },
-    providerLogo: "/lovable-uploads/provider-medichecks-new-v3.png",
+    providerLogo: "/lovable-uploads/provider-medichecks-new-v3.webp",
   },
   {
     id: "medichecks-ultimate-performance",
@@ -47,7 +47,7 @@ export const medichecksCompareData: CompareTestData[] = [
       collection: "Finger-prick or Venous",
       bioMarkers: "4 biomarkers",
     },
-    providerLogo: "/lovable-uploads/provider-medichecks-new-v3.png",
+    providerLogo: "/lovable-uploads/provider-medichecks-new-v3.webp",
   },
   {
     id: "medichecks-advanced-thyroid",
@@ -63,7 +63,7 @@ export const medichecksCompareData: CompareTestData[] = [
       collection: "Finger-prick or Venous",
       bioMarkers: "4 biomarkers",
     },
-    providerLogo: "/lovable-uploads/provider-medichecks-new-v3.png",
+    providerLogo: "/lovable-uploads/provider-medichecks-new-v3.webp",
   },
   {
     id: "medichecks-well-woman-advanced",
@@ -79,7 +79,7 @@ export const medichecksCompareData: CompareTestData[] = [
       collection: "Finger-prick or Venous",
       bioMarkers: "4 biomarkers",
     },
-    providerLogo: "/lovable-uploads/provider-medichecks-new-v3.png",
+    providerLogo: "/lovable-uploads/provider-medichecks-new-v3.webp",
   },
   {
     id: "medichecks-well-man-advanced",
@@ -95,7 +95,7 @@ export const medichecksCompareData: CompareTestData[] = [
       collection: "Finger-prick or Venous",
       bioMarkers: "4 biomarkers",
     },
-    providerLogo: "/lovable-uploads/provider-medichecks-new-v3.png",
+    providerLogo: "/lovable-uploads/provider-medichecks-new-v3.webp",
   },
   {
     id: "medichecks-thyroid-function",
@@ -111,7 +111,7 @@ export const medichecksCompareData: CompareTestData[] = [
       collection: "Finger-prick or Venous",
       bioMarkers: "4 biomarkers",
     },
-    providerLogo: "/lovable-uploads/provider-medichecks-new-v3.png",
+    providerLogo: "/lovable-uploads/provider-medichecks-new-v3.webp",
   },
   {
     id: "medichecks-vitamin-d",
@@ -127,6 +127,6 @@ export const medichecksCompareData: CompareTestData[] = [
       collection: "Finger-prick or Venous",
       bioMarkers: "4 biomarkers",
     },
-    providerLogo: "/lovable-uploads/provider-medichecks-new-v3.png",
+    providerLogo: "/lovable-uploads/provider-medichecks-new-v3.webp",
   },
 ];

@@ -15,35 +15,35 @@ export const ProviderLogo = ({
     const normalizedName = providerName.toLowerCase();
 
     if (normalizedName.includes("medichecks")) {
-      return "/lovable-uploads/provider-medichecks-light.png";
+      return "/lovable-uploads/provider-medichecks-light.webp";
     }
 
     if (normalizedName.includes("goodbody")) {
-      return "/lovable-uploads/provider-goodbody-slate-2026.png";
+      return "/lovable-uploads/provider-goodbody-slate-2026.webp";
     }
 
     if (normalizedName.includes("randox")) {
-      return "/lovable-uploads/provider-randox.png";
+      return "/lovable-uploads/provider-randox.webp";
     }
 
     if (normalizedName.includes("london medical laboratory")) {
-      return "/lovable-uploads/provider-london-medical.png";
+      return "/lovable-uploads/provider-london-medical.webp";
     }
 
     if (normalizedName.includes("lola")) {
-      return "/lovable-uploads/provider-lola-health.png";
+      return "/lovable-uploads/provider-lola-health.webp";
     }
 
     if (normalizedName.includes("clinilabs")) {
-      return "/lovable-uploads/provider-clinilabs.png";
+      return "/lovable-uploads/provider-clinilabs.webp";
     }
 
     if (normalizedName.includes("london health")) {
-      return "/lovable-uploads/provider-london-health-company.png";
+      return "/lovable-uploads/provider-london-health-company.webp";
     }
 
     if (normalizedName.includes("medical diagnosis")) {
-      return "/lovable-uploads/provider-medical-diagnosis.png";
+      return "/lovable-uploads/provider-medical-diagnosis.webp";
     }
 
     return null;

@@ -239,10 +239,10 @@ export class LiveDataService {
 
   private static getProviderLogo(providerId: string): string {
     const logos: Record<string, string> = {
-      medichecks: "/lovable-uploads/provider-medichecks-new-v3.png",
+      medichecks: "/lovable-uploads/provider-medichecks-new-v3.webp",
       "london-medical-laboratory":
-        "/lovable-uploads/provider-london-medical.png",
-      goodbody: "/lovable-uploads/provider-goodbody-slate-2026.png",
+        "/lovable-uploads/provider-london-medical.webp",
+      goodbody: "/lovable-uploads/provider-goodbody-slate-2026.webp",
     };
     return logos[providerId] || "";
   }
