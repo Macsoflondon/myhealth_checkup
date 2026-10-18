@@ -246,6 +246,7 @@ function RootComponent() {
                 <GlobalHreflang />
                 <TestPageViewTracker />
                 {!isAdminArea && <FloatingNavDock />}
+                {!isAdminArea && <SiteAssistant />}
                 <AutoTranslatePage />
                 {!isAdminArea && <GlobalComparisonBar />}
                 <ErrorBoundary>
