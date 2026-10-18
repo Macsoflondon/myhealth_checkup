@@ -204,8 +204,8 @@ const Index = () => {
                   your greatest <span className="text-brand-pink">asset.</span>
                 </h2>
 
-                <div className="text-left mb-6">
-                  <p className="text-on-dark-subtle text-sm sm:text-base leading-relaxed">
+                <div className="text-center mb-6">
+                  <p className="text-on-dark-subtle text-sm sm:text-base leading-relaxed mx-auto max-w-[68ch]">
                     At myhealth checkup, everyone deserves access to
                     transparent, trustworthy health information. Our mission is
                     to make it simple to compare private health tests from
