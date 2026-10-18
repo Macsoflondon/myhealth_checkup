@@ -179,7 +179,15 @@ function RootShell({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        {children}
+        {/* React's own container. Cookiebot's uc.js appends a hidden
+            __uspapiLocator iframe to <body> while the page is still
+            streaming; without this wrapper it can land inside a Suspense
+            boundary's markers and fail hydration (or be deleted by React).
+            Appended to <body> it now sits beside this div, where React
+            skips unexpected nodes. display: contents keeps layout as before. */}
+        <div id="app-root" style={{ display: "contents" }}>
+          {children}
+        </div>
         {/* Static, crawlable medical disclaimer + reviewer attribution (E-E-A-T). */}
         <p hidden id="static-medical-disclaimer" data-purpose="seo-eeat">
           <strong>Medical disclaimer:</strong> This site provides comparison
