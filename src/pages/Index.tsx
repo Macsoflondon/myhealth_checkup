@@ -196,7 +196,7 @@ const Index = () => {
           <section aria-label="Your health and live comparison" className="overflow-hidden bg-surface border border-brand-navy/5 shadow-e3 rounded-xl p-3 sm:p-6 mx-3 sm:mx-10 mt-0 mb-6 sm:mb-8">
             <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] items-center gap-10 lg:gap-16 rounded-xl bg-brand-navy px-5 py-8 sm:p-10 lg:px-10 lg:py-10">
               <div className="min-w-0">
-                <h2 className="font-heading font-extrabold text-2xl sm:text-3xl xl:text-4xl leading-tight text-white mb-6 text-center lg:text-left">
+                <h2 className="font-heading font-extrabold text-2xl sm:text-3xl lg:text-2xl xl:text-3xl leading-tight text-white mb-6 text-center lg:text-left">
                   Your <span className="text-brand-turquoise">health</span> is your
                   greatest <span className="text-brand-pink">asset.</span>
                 </h2>
@@ -227,7 +227,7 @@ const Index = () => {
                   <p className="text-on-dark-subtle text-sm sm:text-base leading-relaxed">
                     Answer 6 quick questions and our AI will match you to the best-fit tests from {activeTestCount.toLocaleString("en-GB")} accredited options.
                   </p>
-                  <Button asChild variant="brandPill" size="lg" className="font-heading bg-brand-turquoise text-white hover:bg-brand-pink">
+                  <Button asChild variant="brandPill" size="lg" className="rounded-full font-heading bg-brand-turquoise text-white hover:bg-brand-pink">
                   <Link
                     to="/find-test"
                     aria-label="Take the Health Quiz — find the right private blood test"

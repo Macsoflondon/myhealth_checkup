@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Match the supplied homepage screenshot’s trust strip and mission/live-comparison section; verify desktop and mobile.
+- [x] Match the supplied homepage screenshot’s trust strip and mission/live-comparison section; verify desktop and mobile.
 
 - [x] Delete inactive £0–£1 Medical Diagnosis junk rows + linked history (136 rows).
 - [x] Guard upsertWithProvenance: new inserts with price ≤ £1 stay inactive with a `suspicious_price` warning (deployed to all 8 scrapers).
