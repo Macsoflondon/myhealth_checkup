@@ -3334,6 +3334,66 @@ export type Database = {
         }
         Relationships: []
       }
+      landing_signups: {
+        Row: {
+          consent_given: boolean
+          consent_ip: unknown
+          consent_text_version: string
+          consent_user_agent: string | null
+          created_at: string
+          email: string
+          first_name: string
+          id: string
+          interests: string[]
+          page_source: string
+          referrer_host: string | null
+          unsubscribed_at: string | null
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+        }
+        Insert: {
+          consent_given: boolean
+          consent_ip?: unknown
+          consent_text_version: string
+          consent_user_agent?: string | null
+          created_at?: string
+          email: string
+          first_name: string
+          id?: string
+          interests: string[]
+          page_source?: string
+          referrer_host?: string | null
+          unsubscribed_at?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Update: {
+          consent_given?: boolean
+          consent_ip?: unknown
+          consent_text_version?: string
+          consent_user_agent?: string | null
+          created_at?: string
+          email?: string
+          first_name?: string
+          id?: string
+          interests?: string[]
+          page_source?: string
+          referrer_host?: string | null
+          unsubscribed_at?: string | null
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Relationships: []
+      }
       live_comparison_panels: {
         Row: {
           created_at: string
@@ -3436,6 +3496,42 @@ export type Database = {
           feed_url?: string
           request_id?: number
           requested_at?: string
+        }
+        Relationships: []
+      }
+      mhc_manual_runs: {
+        Row: {
+          error: string | null
+          id: number
+          job_name: string
+          provider_id: string
+          request_id: number | null
+          requested_at: string
+          requested_by: string | null
+          run_after: string
+          sent_at: string | null
+        }
+        Insert: {
+          error?: string | null
+          id?: never
+          job_name: string
+          provider_id: string
+          request_id?: number | null
+          requested_at?: string
+          requested_by?: string | null
+          run_after: string
+          sent_at?: string | null
+        }
+        Update: {
+          error?: string | null
+          id?: never
+          job_name?: string
+          provider_id?: string
+          request_id?: number | null
+          requested_at?: string
+          requested_by?: string | null
+          run_after?: string
+          sent_at?: string | null
         }
         Relationships: []
       }
@@ -6985,6 +7081,57 @@ export type Database = {
         }
         Relationships: []
       }
+      system_health_probes: {
+        Row: {
+          probe_id: string
+          request_id: number
+          requested_at: string
+        }
+        Insert: {
+          probe_id: string
+          request_id: number
+          requested_at?: string
+        }
+        Update: {
+          probe_id?: string
+          request_id?: number
+          requested_at?: string
+        }
+        Relationships: []
+      }
+      system_health_state: {
+        Row: {
+          check_id: string
+          consecutive_failures: number
+          detail: string | null
+          failing_since: string | null
+          label: string
+          last_alerted_at: string | null
+          last_checked_at: string | null
+          status: string
+        }
+        Insert: {
+          check_id: string
+          consecutive_failures?: number
+          detail?: string | null
+          failing_since?: string | null
+          label: string
+          last_alerted_at?: string | null
+          last_checked_at?: string | null
+          status?: string
+        }
+        Update: {
+          check_id?: string
+          consecutive_failures?: number
+          detail?: string | null
+          failing_since?: string | null
+          label?: string
+          last_alerted_at?: string | null
+          last_checked_at?: string | null
+          status?: string
+        }
+        Relationships: []
+      }
       test_categories: {
         Row: {
           created_at: string
@@ -8645,6 +8792,8 @@ export type Database = {
       }
     }
     Functions: {
+      admin_price_sync_status: { Args: never; Returns: Json }
+      admin_request_price_sync: { Args: { p_provider?: string }; Returns: Json }
       affiliate_performance: {
         Args: { p_from: string; p_provider?: string; p_to: string }
         Returns: Json
@@ -8800,7 +8949,20 @@ export type Database = {
         Returns: Json
       }
       mhc_feed_page: { Args: { p_url: string }; Returns: Json }
+      mhc_is_price_sync_command: {
+        Args: { p_command: string }
+        Returns: boolean
+      }
       mhc_prefetch_shopify_feeds: { Args: never; Returns: number }
+      mhc_price_sync_jobs: {
+        Args: never
+        Returns: {
+          job_name: string
+          provider_id: string
+          reads_shopify_feed: boolean
+        }[]
+      }
+      mhc_process_manual_runs: { Args: never; Returns: number }
       mhc_sync_secret: { Args: never; Returns: string }
       os_clicks_summary: {
         Args: { p_from: string; p_to: string }
@@ -8847,6 +9009,7 @@ export type Database = {
         Returns: string
       }
       sanitize_popular_provider_tests: { Args: never; Returns: undefined }
+      system_health_check: { Args: never; Returns: Json }
     }
     Enums: {
       app_role: "admin" | "moderator" | "user"
