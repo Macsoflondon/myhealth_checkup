@@ -258,7 +258,7 @@ const Index = () => {
                   </div>
                 </div>
               </div>
-              <HomepageLiveComparison className="justify-self-center" />
+              <HomepageLiveComparison className="justify-self-center pb-[72px] lg:justify-self-end lg:self-start lg:mr-[calc(0.5cm_-_40px)]" />
             </div>
           </section>
 
