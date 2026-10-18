@@ -199,7 +199,7 @@ const Index = () => {
           >
             <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] items-center gap-10 lg:gap-16 rounded-xl bg-brand-navy px-5 py-8 sm:p-10 lg:px-10 lg:py-10">
               <div className="min-w-0">
-                <h2 className="font-heading font-extrabold text-2xl sm:text-3xl lg:text-2xl xl:text-3xl leading-tight text-white mb-6 text-center lg:text-left">
+                <h2 className="font-heading font-extrabold text-2xl sm:text-3xl lg:text-2xl xl:text-3xl leading-tight text-white mb-6 text-center">
                   Your <span className="text-brand-turquoise">health</span> is
                   your greatest <span className="text-brand-pink">asset.</span>
                 </h2>
