@@ -193,20 +193,24 @@ const Index = () => {
           <div id="comparison-anchor" aria-hidden="true" />
 
           {/* Hero CTA — Slogan + Health Quiz entry point */}
-          <section aria-label="Your health and live comparison" className="overflow-hidden bg-surface border border-brand-navy/5 shadow-e3 rounded-xl p-3 sm:p-6 mx-3 sm:mx-10 mt-0 mb-6 sm:mb-8">
+          <section
+            aria-label="Your health and live comparison"
+            className="overflow-hidden bg-surface border border-brand-navy/5 shadow-e3 rounded-xl p-3 sm:p-6 mx-3 sm:mx-10 mt-0 mb-6 sm:mb-8"
+          >
             <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] items-center gap-10 lg:gap-16 rounded-xl bg-brand-navy px-5 py-8 sm:p-10 lg:px-10 lg:py-10">
               <div className="min-w-0">
                 <h2 className="font-heading font-extrabold text-2xl sm:text-3xl lg:text-2xl xl:text-3xl leading-tight text-white mb-6 text-center lg:text-left">
-                  Your <span className="text-brand-turquoise">health</span> is your
-                  greatest <span className="text-brand-pink">asset.</span>
+                  Your <span className="text-brand-turquoise">health</span> is
+                  your greatest <span className="text-brand-pink">asset.</span>
                 </h2>
 
                 <div className="text-left mb-6">
                   <p className="text-on-dark-subtle text-sm sm:text-base leading-relaxed">
-                    At myhealth checkup, everyone deserves access to transparent, trustworthy health
-                    information. Our mission is to make it simple to compare private health tests from
-                    accredited UK providers – all of which meet rigorous quality standards, including
-                    UKAS accreditation and CQC regulation.
+                    At myhealth checkup, everyone deserves access to
+                    transparent, trustworthy health information. Our mission is
+                    to make it simple to compare private health tests from
+                    accredited UK providers – all of which meet rigorous quality
+                    standards, including UKAS accreditation and CQC regulation.
                   </p>
                 </div>
 
@@ -218,22 +222,28 @@ const Index = () => {
                 </div>
 
                 <div className="flex flex-col items-center gap-6 w-full text-center">
-                  <h2
-                    className="font-heading text-xl sm:text-2xl font-bold text-white leading-tight"
-                  >
+                  <h2 className="font-heading text-xl sm:text-2xl font-bold text-white leading-tight">
                     Not sure what test you need?
                   </h2>
 
                   <p className="text-on-dark-subtle text-sm sm:text-base leading-relaxed">
-                    Answer 6 quick questions and our AI will match you to the best-fit tests from {activeTestCount.toLocaleString("en-GB")} accredited options.
+                    Answer 6 quick questions and our AI will match you to the
+                    best-fit tests from{" "}
+                    {activeTestCount.toLocaleString("en-GB")} accredited
+                    options.
                   </p>
-                  <Button asChild variant="brandPill" size="lg" className="rounded-full font-heading bg-brand-turquoise text-white hover:bg-brand-pink">
-                  <Link
-                    to="/find-test"
-                    aria-label="Take the Health Quiz — find the right private blood test"
+                  <Button
+                    asChild
+                    variant="brandPill"
+                    size="lg"
+                    className="rounded-full font-heading bg-brand-turquoise text-white hover:bg-brand-pink"
                   >
-                    Take the Health Quiz
-                  </Link>
+                    <Link
+                      to="/find-test"
+                      aria-label="Take the Health Quiz — find the right private blood test"
+                    >
+                      Take the Health Quiz
+                    </Link>
                   </Button>
 
                   <div className="flex flex-wrap items-center justify-center gap-2 text-on-dark-subtle text-xs">

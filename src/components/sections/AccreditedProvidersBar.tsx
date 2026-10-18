@@ -14,7 +14,11 @@ const trustItems: TrustItem[] = [
   { label: "No GP Referral Needed" },
 ];
 
-const underlineColors = ["bg-brand-turquoise", "bg-brand-pink", "bg-brand-navy"];
+const underlineColors = [
+  "bg-brand-turquoise",
+  "bg-brand-pink",
+  "bg-brand-navy",
+];
 
 /**
  * Trust signals bar — static standards row.
