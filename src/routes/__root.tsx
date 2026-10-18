@@ -46,6 +46,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { SessionSecurityProvider } from "@/components/security/SessionSecurityProvider";
 import { ScrollToTop } from "@/components/common/ScrollToTop";
 import FloatingNavDock from "@/components/common/FloatingNavDock";
+import { SiteAssistant } from "@/components/assistant/site-assistant";
 import { GlobalHreflang } from "@/components/seo/GlobalHreflang";
 import TestPageViewTracker from "@/components/analytics/TestPageViewTracker";
 import GlobalPageBackground from "@/components/layout/GlobalPageBackground";
