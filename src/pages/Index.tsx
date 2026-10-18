@@ -198,7 +198,7 @@ const Index = () => {
             className="overflow-hidden bg-surface border border-brand-navy/5 shadow-e3 rounded-xl p-3 sm:p-6 mx-3 sm:mx-10 mt-0 mb-6 sm:mb-8"
           >
             <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] items-center gap-10 lg:gap-16 rounded-xl bg-brand-navy px-5 py-8 sm:p-10 lg:px-10 lg:py-10">
-              <div className="min-w-0">
+              <div className="min-w-0 lg:self-start">
                 <h2 className="font-heading font-extrabold text-2xl sm:text-3xl lg:text-2xl xl:text-3xl leading-tight text-white mb-6 text-center">
                   Your <span className="text-brand-turquoise">health</span> is
                   your greatest <span className="text-brand-pink">asset.</span>
@@ -258,7 +258,7 @@ const Index = () => {
                   </div>
                 </div>
               </div>
-              <HomepageLiveComparison className="justify-self-center" />
+              <HomepageLiveComparison className="justify-self-center pb-[72px] lg:justify-self-end lg:self-start lg:mr-[calc(0.5cm_-_40px)]" />
             </div>
           </section>
 
