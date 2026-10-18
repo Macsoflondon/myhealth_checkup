@@ -48,6 +48,7 @@ import { RetestReminderCard } from "@/components/retest-reminder/retest-reminder
 import { getProviderRating } from "@/constants/providerRatings";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import RelatedLinks from "@/components/seo/RelatedLinks";
+import { RelatedTestsSection } from "@/components/tests/related-tests-section";
 import { resolveCategorySlug } from "@/lib/internal-links";
 import { deriveCollectionVariants } from "@/lib/collectionVariants";
 import { useQuery } from "@tanstack/react-query";
@@ -972,6 +973,8 @@ export default function ProviderTestDetailTemplate({
           </Card>
         </div>
       </div>
+
+      <RelatedTestsSection testId={test.id} />
 
       <RelatedLinks
         categorySlug={resolveCategorySlug(test.category)}
