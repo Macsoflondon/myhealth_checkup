@@ -209,8 +209,9 @@ const Index = () => {
                     At myhealth checkup, everyone deserves access to
                     transparent, trustworthy health information. Our mission is
                     to make it simple to compare private health tests from
-                    accredited UK providers – all of which meet rigorous quality
-                    standards, including UKAS accreditation and CQC regulation.
+                    accredited UK providers,
+                    {"\n\u00a0"}all of which meet rigorous quality standards,
+                    including UKAS accreditation and CQC regulation.
                   </p>
                 </div>
 
