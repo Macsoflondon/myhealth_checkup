@@ -2,9 +2,6 @@ import { Link } from "@/lib/router-compat";
 import { HomepageLiveComparison } from "@/components/sections/homepage-live-comparison";
 
 const StartJourneySection = () => {
-  return () => clearInterval(interval);
-  }, [maxLen]);
-
   return (
     <section className="w-full bg-gradient-to-b from-slate-50 to-white py-12 sm:py-16">
       <div className="max-w-[1480px] mx-auto px-4 sm:px-6">
