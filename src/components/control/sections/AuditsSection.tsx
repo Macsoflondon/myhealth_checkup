@@ -23,7 +23,7 @@ const TASKS: AuditTask[] = [
     description: "Re-scrape live provider pages and flag biomarker mismatches.",
     fn: "audit-biomarkers",
     body: { limit: 25 },
-    detailsTo: "/admin/biomarker-audit",
+    detailsTo: "/control/biomarker-audit",
   },
   {
     id: "normalize-categories",
@@ -44,7 +44,7 @@ const TASKS: AuditTask[] = [
     description:
       "Capture current Supabase advisor findings and diff against baseline.",
     fn: "security-scan-snapshot",
-    detailsTo: "/admin/security-diff",
+    detailsTo: "/control/security-diff",
   },
   {
     id: "leaked-passwords",
@@ -138,11 +138,7 @@ export default function AuditsSection() {
   };
 
   return (
-    <SectionShell
-      title="Audit Centre"
-      description="One-click audits across data quality, content, security and SEO."
-      status="live"
-    >
+    <SectionShell title="Audit Centre">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         <StatCard
           label="Biomarker audits (recent)"

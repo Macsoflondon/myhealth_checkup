@@ -114,75 +114,69 @@ const AdminTestUploadPage: React.FC = () => {
   };
 
   return (
-    <>
-      <div className="min-h-screen flex flex-col bg-[#081129]">
-        <main className="flex-grow container mx-auto px-4 py-8">
-          <Card className="max-w-2xl mx-auto">
-            <CardHeader>
-              <CardTitle>Upload Provider Tests</CardTitle>
-              <CardDescription>
-                Upload Medichecks and London Laboratory tests to the database
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-4">
-                <div className="flex items-start gap-3 p-4 border rounded-lg">
-                  <Upload className="h-5 w-5 text-muted-foreground mt-0.5" />
-                  <div>
-                    <p className="font-medium">Tests to Upload:</p>
-                    <ul className="text-sm text-muted-foreground mt-2 space-y-1">
-                      <li>• 18 Medichecks tests</li>
-                      <li>• 8 London Medical Laboratory tests</li>
-                      <li>• Total: 26 tests</li>
-                    </ul>
-                  </div>
-                </div>
-
-                {uploadResult && (
-                  <Alert
-                    variant={uploadResult.success ? "default" : "destructive"}
-                  >
-                    {uploadResult.success ? (
-                      <CheckCircle2 className="h-4 w-4" />
-                    ) : (
-                      <XCircle className="h-4 w-4" />
-                    )}
-                    <AlertDescription>
-                      <p className="font-medium">{uploadResult.message}</p>
-                      <ul className="mt-2 text-sm space-y-1">
-                        <li>Processed: {uploadResult.inserted}</li>
-                        {uploadResult.errors > 0 && (
-                          <li>Errors: {uploadResult.errors}</li>
-                        )}
-                      </ul>
-                    </AlertDescription>
-                  </Alert>
-                )}
-
-                <Button
-                  onClick={handleUploadTests}
-                  disabled={isUploading}
-                  className="w-full"
-                  size="lg"
-                >
-                  {isUploading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Uploading Tests...
-                    </>
-                  ) : (
-                    <>
-                      <Upload className="mr-2 h-4 w-4" />
-                      Upload Tests to Database
-                    </>
-                  )}
-                </Button>
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Upload Provider Tests</CardTitle>
+          <CardDescription>
+            Upload Medichecks and London Laboratory tests to the database
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="space-y-4">
+            <div className="flex items-start gap-3 p-4 border rounded-lg">
+              <Upload className="h-5 w-5 text-muted-foreground mt-0.5" />
+              <div>
+                <p className="font-medium">Tests to Upload:</p>
+                <ul className="text-sm text-muted-foreground mt-2 space-y-1">
+                  <li>• 18 Medichecks tests</li>
+                  <li>• 8 London Medical Laboratory tests</li>
+                  <li>• Total: 26 tests</li>
+                </ul>
               </div>
-            </CardContent>
-          </Card>
-        </main>
-      </div>
-    </>
+            </div>
+
+            {uploadResult && (
+              <Alert variant={uploadResult.success ? "default" : "destructive"}>
+                {uploadResult.success ? (
+                  <CheckCircle2 className="h-4 w-4" />
+                ) : (
+                  <XCircle className="h-4 w-4" />
+                )}
+                <AlertDescription>
+                  <p className="font-medium">{uploadResult.message}</p>
+                  <ul className="mt-2 text-sm space-y-1">
+                    <li>Processed: {uploadResult.inserted}</li>
+                    {uploadResult.errors > 0 && (
+                      <li>Errors: {uploadResult.errors}</li>
+                    )}
+                  </ul>
+                </AlertDescription>
+              </Alert>
+            )}
+
+            <Button
+              onClick={handleUploadTests}
+              disabled={isUploading}
+              className="w-full"
+              size="lg"
+            >
+              {isUploading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Uploading Tests...
+                </>
+              ) : (
+                <>
+                  <Upload className="mr-2 h-4 w-4" />
+                  Upload Tests to Database
+                </>
+              )}
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
 

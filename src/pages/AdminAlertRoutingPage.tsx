@@ -3,7 +3,6 @@
  * CRUD over security_alert_recipients + optional test-alert trigger.
  */
 import { useEffect, useState } from "react";
-import { Helmet } from "react-helmet-async";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -182,134 +181,117 @@ const AdminAlertRoutingPage = () => {
   };
 
   return (
-    <div className="container mx-auto py-8 space-y-6">
-      <Helmet>
-        <title>Alert routing — myhealth checkup</title>
-        <meta name="robots" content="noindex,nofollow" />
-      </Helmet>
-
-      <div className="flex items-center justify-between gap-4 flex-wrap">
-        <div>
-          <h1 className="text-3xl font-bold">Alert routing</h1>
-          <p className="text-sm text-muted-foreground">
-            Who gets paged for which alerts. Changes are logged in the audit
-            console.
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={sendTestAlert}
-            disabled={testing}
-          >
-            <Send className="h-4 w-4 mr-1" />{" "}
-            {testing ? "Sending…" : "Send test alert"}
-          </Button>
-          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <DialogTrigger asChild>
-              <Button size="sm" onClick={openCreate}>
-                <Plus className="h-4 w-4 mr-1" /> Add recipient
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>
-                  {editing ? "Edit recipient" : "Add recipient"}
-                </DialogTitle>
-              </DialogHeader>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-4"
-              >
-                <div className="space-y-1">
-                  <Label htmlFor="email">Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    {...form.register("email")}
-                    placeholder="ops@example.com"
-                  />
-                  {form.formState.errors.email && (
-                    <p className="text-xs text-destructive">
-                      {form.formState.errors.email.message}
-                    </p>
-                  )}
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="label">Label (optional)</Label>
-                  <Input
-                    id="label"
-                    {...form.register("label")}
-                    placeholder="On-call rotation"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label>Alert types</Label>
-                  <div className="grid grid-cols-2 gap-2 max-h-56 overflow-y-auto border rounded p-3">
-                    {ALERT_TYPE_OPTIONS.map((opt) => {
-                      const checked = form
-                        .watch("alert_types")
-                        .includes(opt.value);
-                      return (
-                        <label
-                          key={opt.value}
-                          className="flex items-center gap-2 text-sm cursor-pointer"
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-end gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={sendTestAlert}
+          disabled={testing}
+        >
+          <Send className="h-4 w-4 mr-1" />{" "}
+          {testing ? "Sending…" : "Send test alert"}
+        </Button>
+        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+          <DialogTrigger asChild>
+            <Button size="sm" onClick={openCreate}>
+              <Plus className="h-4 w-4 mr-1" /> Add recipient
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>
+                {editing ? "Edit recipient" : "Add recipient"}
+              </DialogTitle>
+            </DialogHeader>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <div className="space-y-1">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  {...form.register("email")}
+                  placeholder="ops@example.com"
+                />
+                {form.formState.errors.email && (
+                  <p className="text-xs text-destructive">
+                    {form.formState.errors.email.message}
+                  </p>
+                )}
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="label">Label (optional)</Label>
+                <Input
+                  id="label"
+                  {...form.register("label")}
+                  placeholder="On-call rotation"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Alert types</Label>
+                <div className="grid grid-cols-2 gap-2 max-h-56 overflow-y-auto border rounded p-3">
+                  {ALERT_TYPE_OPTIONS.map((opt) => {
+                    const checked = form
+                      .watch("alert_types")
+                      .includes(opt.value);
+                    return (
+                      <label
+                        key={opt.value}
+                        className="flex items-center gap-2 text-sm cursor-pointer"
+                      >
+                        <Checkbox
+                          checked={checked}
+                          onCheckedChange={(v) => {
+                            const cur = form.getValues("alert_types");
+                            form.setValue(
+                              "alert_types",
+                              v
+                                ? [...cur, opt.value]
+                                : cur.filter((x) => x !== opt.value),
+                              { shouldValidate: true },
+                            );
+                          }}
+                        />
+                        <span className="font-mono text-xs">{opt.value}</span>
+                        <Badge
+                          variant="outline"
+                          className="ml-auto text-[10px]"
                         >
-                          <Checkbox
-                            checked={checked}
-                            onCheckedChange={(v) => {
-                              const cur = form.getValues("alert_types");
-                              form.setValue(
-                                "alert_types",
-                                v
-                                  ? [...cur, opt.value]
-                                  : cur.filter((x) => x !== opt.value),
-                                { shouldValidate: true },
-                              );
-                            }}
-                          />
-                          <span className="font-mono text-xs">{opt.value}</span>
-                          <Badge
-                            variant="outline"
-                            className="ml-auto text-[10px]"
-                          >
-                            {opt.group}
-                          </Badge>
-                        </label>
-                      );
-                    })}
-                  </div>
-                  {form.formState.errors.alert_types && (
-                    <p className="text-xs text-destructive">
-                      {form.formState.errors.alert_types.message}
-                    </p>
-                  )}
+                          {opt.group}
+                        </Badge>
+                      </label>
+                    );
+                  })}
                 </div>
-                <div className="flex items-center gap-2">
-                  <Switch
-                    id="enabled"
-                    checked={form.watch("enabled")}
-                    onCheckedChange={(v) => form.setValue("enabled", v)}
-                  />
-                  <Label htmlFor="enabled">Enabled</Label>
-                </div>
-                <DialogFooter>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setDialogOpen(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button type="submit" disabled={form.formState.isSubmitting}>
-                    {editing ? "Save" : "Add"}
-                  </Button>
-                </DialogFooter>
-              </form>
-            </DialogContent>
-          </Dialog>
-        </div>
+                {form.formState.errors.alert_types && (
+                  <p className="text-xs text-destructive">
+                    {form.formState.errors.alert_types.message}
+                  </p>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                <Switch
+                  id="enabled"
+                  checked={form.watch("enabled")}
+                  onCheckedChange={(v) => form.setValue("enabled", v)}
+                />
+                <Label htmlFor="enabled">Enabled</Label>
+              </div>
+              <DialogFooter>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setDialogOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={form.formState.isSubmitting}>
+                  {editing ? "Save" : "Add"}
+                </Button>
+              </DialogFooter>
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <Card>

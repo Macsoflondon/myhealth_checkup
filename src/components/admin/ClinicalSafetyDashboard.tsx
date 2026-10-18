@@ -274,24 +274,14 @@ export function ClinicalSafetyDashboard() {
   };
 
   return (
-    <div className="container mx-auto space-y-6 p-6">
+    <div className="space-y-6">
       <audio
         ref={audioRef}
         src="data:audio/wav;base64,UklGRnwAAABXQVZFZm10IBAAAAABAAEAESsAACJWAAACABAAZGF0YVgAAAA="
         preload="auto"
       />
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight flex items-center gap-2">
-            <ShieldAlert className="h-6 w-6 text-red-600" /> Clinical Safety
-            Monitor
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Live severity stream · SOC incidents · AI decisions · execution
-            engine
-          </p>
-        </div>
+      <div className="flex flex-wrap items-center justify-end gap-2">
         <Button
           variant="outline"
           size="sm"

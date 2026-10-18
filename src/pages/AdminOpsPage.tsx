@@ -1,8 +1,6 @@
 import { useMemo } from "react";
-import { Helmet } from "react-helmet-async";
 import { useQuery } from "@tanstack/react-query";
 import {
-  Activity,
   AlertTriangle,
   CheckCircle2,
   Clock,
@@ -156,229 +154,215 @@ export default function AdminOpsPage() {
   });
 
   return (
-    <>
-      <Helmet>
-        <title>Ops dashboard — myhealth checkup</title>
-        <meta name="robots" content="noindex,nofollow" />
-      </Helmet>
-      <div className="mx-auto max-w-7xl space-y-6 px-4 py-6">
-        <header className="flex items-center justify-between">
-          <div>
-            <h1 className="flex items-center gap-2 text-2xl font-semibold text-foreground">
-              <Activity className="h-6 w-6 text-primary" />
-              Operations dashboard
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              Cron jobs and edge functions over the last {HOURS} hours.
-            </p>
-          </div>
-          <Button
-            variant="outline"
-            onClick={() => {
-              void cronQuery.refetch();
-              void edgeQuery.refetch();
-            }}
-          >
-            <RefreshCw className="mr-2 h-4 w-4" />
-            Refresh
-          </Button>
-        </header>
+    <div className="space-y-6">
+      <header className="flex flex-wrap items-center justify-between gap-2">
+        <p className="text-sm text-muted-foreground">
+          Cron jobs and edge functions over the last {HOURS} hours.
+        </p>
+        <Button
+          variant="outline"
+          onClick={() => {
+            void cronQuery.refetch();
+            void edgeQuery.refetch();
+          }}
+        >
+          <RefreshCw className="mr-2 h-4 w-4" />
+          Refresh
+        </Button>
+      </header>
 
-        <Tabs defaultValue="cron">
-          <TabsList>
-            <TabsTrigger value="cron">
-              <Clock className="mr-1 h-3 w-3" />
-              Cron jobs
-            </TabsTrigger>
-            <TabsTrigger value="edge">
-              <Zap className="mr-1 h-3 w-3" />
-              Edge functions
-            </TabsTrigger>
-          </TabsList>
+      <Tabs defaultValue="cron">
+        <TabsList>
+          <TabsTrigger value="cron">
+            <Clock className="mr-1 h-3 w-3" />
+            Cron jobs
+          </TabsTrigger>
+          <TabsTrigger value="edge">
+            <Zap className="mr-1 h-3 w-3" />
+            Edge functions
+          </TabsTrigger>
+        </TabsList>
 
-          <TabsContent value="cron" className="mt-4">
-            <Card variant="outlined" className="p-4">
-              {cronQuery.isPending ? (
-                <div className="space-y-2">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Skeleton key={i} className="h-10" />
-                  ))}
-                </div>
-              ) : cronQuery.isError ? (
-                <div className="space-y-3 py-6 text-center">
-                  <AlertTriangle className="mx-auto h-6 w-6 text-error" />
-                  <p className="text-sm text-foreground">
-                    Couldn't load cron run history.
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {(cronQuery.error as Error).message}
-                  </p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => void cronQuery.refetch()}
-                  >
-                    Try again
-                  </Button>
-                </div>
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Job</TableHead>
-                      <TableHead className="text-right">Runs</TableHead>
-                      <TableHead className="text-right">Errors</TableHead>
-                      <TableHead className="text-right">Success</TableHead>
-                      <TableHead className="text-right">Avg ms</TableHead>
-                      <TableHead>Last status</TableHead>
-                      <TableHead>Last run</TableHead>
+        <TabsContent value="cron" className="mt-4">
+          <Card variant="outlined" className="p-4">
+            {cronQuery.isPending ? (
+              <div className="space-y-2">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Skeleton key={i} className="h-10" />
+                ))}
+              </div>
+            ) : cronQuery.isError ? (
+              <div className="space-y-3 py-6 text-center">
+                <AlertTriangle className="mx-auto h-6 w-6 text-error" />
+                <p className="text-sm text-foreground">
+                  Couldn't load cron run history.
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {(cronQuery.error as Error).message}
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => void cronQuery.refetch()}
+                >
+                  Try again
+                </Button>
+              </div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Job</TableHead>
+                    <TableHead className="text-right">Runs</TableHead>
+                    <TableHead className="text-right">Errors</TableHead>
+                    <TableHead className="text-right">Success</TableHead>
+                    <TableHead className="text-right">Avg ms</TableHead>
+                    <TableHead>Last status</TableHead>
+                    <TableHead>Last run</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {(cronQuery.data ?? []).map((r) => (
+                    <TableRow key={r.job_name}>
+                      <TableCell className="font-mono text-xs">
+                        {r.job_name}
+                      </TableCell>
+                      <TableCell className="text-right font-mono">
+                        {r.runs}
+                      </TableCell>
+                      <TableCell className="text-right font-mono">
+                        {r.errors > 0 ? (
+                          <Badge className="bg-error text-error-foreground">
+                            {r.errors}
+                          </Badge>
+                        ) : (
+                          <span className="text-muted-foreground">0</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right font-mono">
+                        {successRate(r.runs, r.errors)}
+                      </TableCell>
+                      <TableCell className="text-right font-mono">
+                        {Math.round(r.avg_ms)}
+                      </TableCell>
+                      <TableCell>
+                        {r.last_status === "error" ? (
+                          <AlertTriangle className="inline h-4 w-4 text-error" />
+                        ) : (
+                          <CheckCircle2 className="inline h-4 w-4 text-primary" />
+                        )}
+                        <span className="ml-1 capitalize">{r.last_status}</span>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {formatSocDateTime(r.last_started)}
+                      </TableCell>
                     </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {(cronQuery.data ?? []).map((r) => (
-                      <TableRow key={r.job_name}>
-                        <TableCell className="font-mono text-xs">
-                          {r.job_name}
-                        </TableCell>
-                        <TableCell className="text-right font-mono">
-                          {r.runs}
-                        </TableCell>
-                        <TableCell className="text-right font-mono">
-                          {r.errors > 0 ? (
-                            <Badge className="bg-error text-error-foreground">
-                              {r.errors}
-                            </Badge>
-                          ) : (
-                            <span className="text-muted-foreground">0</span>
-                          )}
-                        </TableCell>
-                        <TableCell className="text-right font-mono">
-                          {successRate(r.runs, r.errors)}
-                        </TableCell>
-                        <TableCell className="text-right font-mono">
-                          {Math.round(r.avg_ms)}
-                        </TableCell>
-                        <TableCell>
-                          {r.last_status === "error" ? (
-                            <AlertTriangle className="inline h-4 w-4 text-error" />
-                          ) : (
-                            <CheckCircle2 className="inline h-4 w-4 text-primary" />
-                          )}
-                          <span className="ml-1 capitalize">
-                            {r.last_status}
-                          </span>
-                        </TableCell>
-                        <TableCell className="text-muted-foreground">
-                          {formatSocDateTime(r.last_started)}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                    {(cronQuery.data ?? []).length === 0 && (
-                      <TableRow>
-                        <TableCell
-                          colSpan={7}
-                          className="py-8 text-center text-muted-foreground"
-                        >
-                          No cron runs in this window.
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              )}
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="edge" className="mt-4">
-            <Card variant="outlined" className="p-4">
-              {edgeQuery.isPending ? (
-                <div className="space-y-2">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Skeleton key={i} className="h-10" />
                   ))}
-                </div>
-              ) : edgeQuery.isError ? (
-                <div className="space-y-3 py-6 text-center">
-                  <AlertTriangle className="mx-auto h-6 w-6 text-error" />
-                  <p className="text-sm text-foreground">
-                    Couldn't load edge function activity.
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {(edgeQuery.error as Error).message}
-                  </p>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => void edgeQuery.refetch()}
-                  >
-                    Try again
-                  </Button>
-                </div>
-              ) : (
-                <Table>
-                  <TableHeader>
+                  {(cronQuery.data ?? []).length === 0 && (
                     <TableRow>
-                      <TableHead>Function</TableHead>
-                      <TableHead className="text-right">Calls</TableHead>
-                      <TableHead className="text-right">Errors</TableHead>
-                      <TableHead className="text-right">Success</TableHead>
-                      <TableHead className="text-right">p95 ms</TableHead>
-                      <TableHead>Last error</TableHead>
-                      <TableHead>Last called</TableHead>
+                      <TableCell
+                        colSpan={7}
+                        className="py-8 text-center text-muted-foreground"
+                      >
+                        No cron runs in this window.
+                      </TableCell>
                     </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {(edgeQuery.data ?? []).map((r) => (
-                      <TableRow key={r.function_name}>
-                        <TableCell className="font-mono text-xs">
-                          {r.function_name}
-                        </TableCell>
-                        <TableCell className="text-right font-mono">
-                          {r.calls}
-                        </TableCell>
-                        <TableCell className="text-right font-mono">
-                          {r.errors > 0 ? (
-                            <Badge className="bg-error text-error-foreground">
-                              {r.errors}
-                            </Badge>
-                          ) : (
-                            <span className="text-muted-foreground">0</span>
-                          )}
-                        </TableCell>
-                        <TableCell className="text-right font-mono">
-                          {successRate(r.calls, r.errors)}
-                        </TableCell>
-                        <TableCell className="text-right font-mono">
-                          {r.p95_ms ?? "—"}
-                        </TableCell>
-                        <TableCell
-                          className="max-w-xs truncate text-xs text-muted-foreground"
-                          title={r.last_error ?? ""}
-                        >
-                          {r.last_error ?? "—"}
-                        </TableCell>
-                        <TableCell className="text-muted-foreground">
-                          {formatSocDateTime(r.last_called)}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                    {(edgeQuery.data ?? []).length === 0 && (
-                      <TableRow>
-                        <TableCell
-                          colSpan={7}
-                          className="py-8 text-center text-muted-foreground"
-                        >
-                          No edge function calls in this window.
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
-              )}
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </>
+                  )}
+                </TableBody>
+              </Table>
+            )}
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="edge" className="mt-4">
+          <Card variant="outlined" className="p-4">
+            {edgeQuery.isPending ? (
+              <div className="space-y-2">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Skeleton key={i} className="h-10" />
+                ))}
+              </div>
+            ) : edgeQuery.isError ? (
+              <div className="space-y-3 py-6 text-center">
+                <AlertTriangle className="mx-auto h-6 w-6 text-error" />
+                <p className="text-sm text-foreground">
+                  Couldn't load edge function activity.
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  {(edgeQuery.error as Error).message}
+                </p>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => void edgeQuery.refetch()}
+                >
+                  Try again
+                </Button>
+              </div>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Function</TableHead>
+                    <TableHead className="text-right">Calls</TableHead>
+                    <TableHead className="text-right">Errors</TableHead>
+                    <TableHead className="text-right">Success</TableHead>
+                    <TableHead className="text-right">p95 ms</TableHead>
+                    <TableHead>Last error</TableHead>
+                    <TableHead>Last called</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {(edgeQuery.data ?? []).map((r) => (
+                    <TableRow key={r.function_name}>
+                      <TableCell className="font-mono text-xs">
+                        {r.function_name}
+                      </TableCell>
+                      <TableCell className="text-right font-mono">
+                        {r.calls}
+                      </TableCell>
+                      <TableCell className="text-right font-mono">
+                        {r.errors > 0 ? (
+                          <Badge className="bg-error text-error-foreground">
+                            {r.errors}
+                          </Badge>
+                        ) : (
+                          <span className="text-muted-foreground">0</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right font-mono">
+                        {successRate(r.calls, r.errors)}
+                      </TableCell>
+                      <TableCell className="text-right font-mono">
+                        {r.p95_ms ?? "—"}
+                      </TableCell>
+                      <TableCell
+                        className="max-w-xs truncate text-xs text-muted-foreground"
+                        title={r.last_error ?? ""}
+                      >
+                        {r.last_error ?? "—"}
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">
+                        {formatSocDateTime(r.last_called)}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                  {(edgeQuery.data ?? []).length === 0 && (
+                    <TableRow>
+                      <TableCell
+                        colSpan={7}
+                        className="py-8 text-center text-muted-foreground"
+                      >
+                        No edge function calls in this window.
+                      </TableCell>
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+            )}
+          </Card>
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 }

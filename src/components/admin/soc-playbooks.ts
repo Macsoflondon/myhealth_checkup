@@ -32,7 +32,7 @@ export const socPlaybooks: Record<string, SocPlaybook> = {
     source: "scraper-alert",
     title: "Scraper alert playbook",
     steps: [
-      "Open /admin/scrapers and check the provider's last successful run.",
+      "Open Crux Control > Scrapers (/control/scrapers) and check the provider's last successful run.",
       "Look at the alert_type — count regressions usually indicate a template change on the provider site.",
       "Trigger a manual re-scrape if the change is transient; open a ticket to update selectors if not.",
       "Use the action below to acknowledge every open alert for this (provider, alert_type) pair in one go.",

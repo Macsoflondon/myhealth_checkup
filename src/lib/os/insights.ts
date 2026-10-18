@@ -1011,7 +1011,7 @@ function noConversionsRule(ctx: RuleContext): Insight[] {
       severity: "info",
       title: "No conversions recorded yet",
       detail:
-        "No affiliate conversions have been imported. Upload a network report as CSV on the Affiliate admin page.",
+        "No affiliate conversions have been imported. Upload a network report as CSV in Affiliate imports.",
       fact_ids: cite(ctx, ["revenue.conversions", "revenue.commission"]),
       href: "/control/revenue",
     },

@@ -3,11 +3,7 @@ import { SectionShell } from "../SectionShell";
 
 export default function SocWatchSection() {
   return (
-    <SectionShell
-      title="SOC Watch"
-      description="Read-only security operations monitoring across existing audit, alert and function telemetry."
-      status="live"
-    >
+    <SectionShell title="SOC Watch">
       <SocWatchDashboard embedded />
     </SectionShell>
   );

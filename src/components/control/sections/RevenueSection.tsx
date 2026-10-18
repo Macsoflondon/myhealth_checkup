@@ -1,6 +1,6 @@
 /**
  * Revenue: affiliate commission from os_revenue_summary, over the
- * conversions imported as CSV on /admin/affiliate. Reversed conversions are
+ * conversions imported as CSV on /control/affiliate. Reversed conversions are
  * shown but never counted. Commission has no part in provider ranking.
  */
 import { Download } from "lucide-react";
@@ -146,12 +146,12 @@ function AffiliateRevenue({
           title="No affiliate revenue recorded yet"
           action={
             <Button asChild variant="outline" size="sm" className="h-10">
-              <Link to="/admin/affiliate">Import a network report</Link>
+              <Link to="/control/affiliate">Import a network report</Link>
             </Button>
           }
         >
           Revenue shows here once you upload an affiliate network report as a
-          CSV file on the Affiliate admin page.
+          CSV file in Affiliate imports.
         </EmptyState>
       </Panel>
     );
@@ -328,11 +328,11 @@ function ImportPanel() {
       <div className="space-y-3">
         <p className="text-sm text-muted-foreground">
           Download the transactions report from the affiliate network and upload
-          the CSV file on the Affiliate admin page. Importing the same report
-          again updates its rows instead of adding duplicates.
+          the CSV file in Affiliate imports. Importing the same report again
+          updates its rows instead of adding duplicates.
         </p>
         <Button asChild variant="outline" size="sm" className="h-10">
-          <Link to="/admin/affiliate">Open the import page</Link>
+          <Link to="/control/affiliate">Open the import page</Link>
         </Button>
       </div>
     </Panel>

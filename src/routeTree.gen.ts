@@ -63,27 +63,10 @@ import { Route as WellnessRouteImport } from './routes/wellness'
 import { Route as WomensHealthRouteImport } from './routes/womens-health'
 import { Route as AboutIndexRouteImport } from './routes/about.index'
 import { Route as AboutMedicalReviewRouteImport } from './routes/about.medical-review'
-import { Route as AdminAffiliateRouteImport } from './routes/admin.affiliate'
-import { Route as AdminAlertRoutingRouteImport } from './routes/admin.alert-routing'
-import { Route as AdminAuditConsoleRouteImport } from './routes/admin.audit-console'
-import { Route as AdminBiomarkerAuditRouteImport } from './routes/admin.biomarker-audit'
-import { Route as AdminBiomarkerValidationRouteImport } from './routes/admin.biomarker-validation'
-import { Route as AdminChangeLogRouteImport } from './routes/admin.change-log'
-import { Route as AdminClinicalSafetyRouteImport } from './routes/admin.clinical-safety'
-import { Route as AdminDataRefreshRouteImport } from './routes/admin.data-refresh'
-import { Route as AdminDataSharingRouteImport } from './routes/admin.data-sharing'
-import { Route as AdminEncryptionStatusRouteImport } from './routes/admin.encryption-status'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminSectionRouteImport } from './routes/admin.$section'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
-import { Route as AdminOpsRouteImport } from './routes/admin.ops'
-import { Route as AdminPerformanceRouteImport } from './routes/admin.performance'
 import { Route as AdminRecoveryRouteImport } from './routes/admin.recovery'
-import { Route as AdminScrapersRouteImport } from './routes/admin.scrapers'
-import { Route as AdminSecurityDiffRouteImport } from './routes/admin.security-diff'
-import { Route as AdminSeoStatusRouteImport } from './routes/admin.seo-status'
-import { Route as AdminSocWatchRouteImport } from './routes/admin.soc-watch'
-import { Route as AdminTestDashboardRouteImport } from './routes/admin.test-dashboard'
-import { Route as AdminTestMapperRouteImport } from './routes/admin.test-mapper'
-import { Route as AdminTestUploadRouteImport } from './routes/admin.test-upload'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as BlogFerritinVsIronComparisonGuideRouteImport } from './routes/blog.ferritin-vs-iron-comparison-guide'
 import { Route as BlogPrivateBloodTestCostGuideRouteImport } from './routes/blog.private-blood-test-cost-guide'
@@ -430,55 +413,14 @@ const AboutMedicalReviewRoute = AboutMedicalReviewRouteImport.update({
   path: '/about/medical-review',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminAffiliateRoute = AdminAffiliateRouteImport.update({
-  id: '/admin/affiliate',
-  path: '/admin/affiliate',
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminAlertRoutingRoute = AdminAlertRoutingRouteImport.update({
-  id: '/admin/alert-routing',
-  path: '/admin/alert-routing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminAuditConsoleRoute = AdminAuditConsoleRouteImport.update({
-  id: '/admin/audit-console',
-  path: '/admin/audit-console',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminBiomarkerAuditRoute = AdminBiomarkerAuditRouteImport.update({
-  id: '/admin/biomarker-audit',
-  path: '/admin/biomarker-audit',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminBiomarkerValidationRoute =
-  AdminBiomarkerValidationRouteImport.update({
-    id: '/admin/biomarker-validation',
-    path: '/admin/biomarker-validation',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AdminChangeLogRoute = AdminChangeLogRouteImport.update({
-  id: '/admin/change-log',
-  path: '/admin/change-log',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminClinicalSafetyRoute = AdminClinicalSafetyRouteImport.update({
-  id: '/admin/clinical-safety',
-  path: '/admin/clinical-safety',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminDataRefreshRoute = AdminDataRefreshRouteImport.update({
-  id: '/admin/data-refresh',
-  path: '/admin/data-refresh',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminDataSharingRoute = AdminDataSharingRouteImport.update({
-  id: '/admin/data-sharing',
-  path: '/admin/data-sharing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminEncryptionStatusRoute = AdminEncryptionStatusRouteImport.update({
-  id: '/admin/encryption-status',
-  path: '/admin/encryption-status',
+const AdminSectionRoute = AdminSectionRouteImport.update({
+  id: '/admin/$section',
+  path: '/admin/$section',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
@@ -486,54 +428,9 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminOpsRoute = AdminOpsRouteImport.update({
-  id: '/admin/ops',
-  path: '/admin/ops',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminPerformanceRoute = AdminPerformanceRouteImport.update({
-  id: '/admin/performance',
-  path: '/admin/performance',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminRecoveryRoute = AdminRecoveryRouteImport.update({
   id: '/admin/recovery',
   path: '/admin/recovery',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminScrapersRoute = AdminScrapersRouteImport.update({
-  id: '/admin/scrapers',
-  path: '/admin/scrapers',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminSecurityDiffRoute = AdminSecurityDiffRouteImport.update({
-  id: '/admin/security-diff',
-  path: '/admin/security-diff',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminSeoStatusRoute = AdminSeoStatusRouteImport.update({
-  id: '/admin/seo-status',
-  path: '/admin/seo-status',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminSocWatchRoute = AdminSocWatchRouteImport.update({
-  id: '/admin/soc-watch',
-  path: '/admin/soc-watch',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminTestDashboardRoute = AdminTestDashboardRouteImport.update({
-  id: '/admin/test-dashboard',
-  path: '/admin/test-dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminTestMapperRoute = AdminTestMapperRouteImport.update({
-  id: '/admin/test-mapper',
-  path: '/admin/test-mapper',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminTestUploadRoute = AdminTestUploadRouteImport.update({
-  id: '/admin/test-upload',
-  path: '/admin/test-upload',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BlogIndexRoute = BlogIndexRouteImport.update({
@@ -979,27 +876,9 @@ export interface FileRoutesByFullPath {
   '/wellness': typeof WellnessRoute
   '/womens-health': typeof WomensHealthRoute
   '/about/medical-review': typeof AboutMedicalReviewRoute
-  '/admin/affiliate': typeof AdminAffiliateRoute
-  '/admin/alert-routing': typeof AdminAlertRoutingRoute
-  '/admin/audit-console': typeof AdminAuditConsoleRoute
-  '/admin/biomarker-audit': typeof AdminBiomarkerAuditRoute
-  '/admin/biomarker-validation': typeof AdminBiomarkerValidationRoute
-  '/admin/change-log': typeof AdminChangeLogRoute
-  '/admin/clinical-safety': typeof AdminClinicalSafetyRoute
-  '/admin/data-refresh': typeof AdminDataRefreshRoute
-  '/admin/data-sharing': typeof AdminDataSharingRoute
-  '/admin/encryption-status': typeof AdminEncryptionStatusRoute
+  '/admin/$section': typeof AdminSectionRoute
   '/admin/login': typeof AdminLoginRoute
-  '/admin/ops': typeof AdminOpsRoute
-  '/admin/performance': typeof AdminPerformanceRoute
   '/admin/recovery': typeof AdminRecoveryRoute
-  '/admin/scrapers': typeof AdminScrapersRoute
-  '/admin/security-diff': typeof AdminSecurityDiffRoute
-  '/admin/seo-status': typeof AdminSeoStatusRoute
-  '/admin/soc-watch': typeof AdminSocWatchRoute
-  '/admin/test-dashboard': typeof AdminTestDashboardRoute
-  '/admin/test-mapper': typeof AdminTestMapperRoute
-  '/admin/test-upload': typeof AdminTestUploadRoute
   '/blog/ferritin-vs-iron-comparison-guide': typeof BlogFerritinVsIronComparisonGuideRoute
   '/blog/private-blood-test-cost-guide': typeof BlogPrivateBloodTestCostGuideRoute
   '/blog/testosterone-levels-by-age': typeof BlogTestosteroneLevelsByAgeRoute
@@ -1047,6 +926,7 @@ export interface FileRoutesByFullPath {
   '/tests/vitamins': typeof TestsVitaminsRoute
   '/tests/womens-health': typeof TestsWomensHealthRoute
   '/about/': typeof AboutIndexRoute
+  '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/category/': typeof CategoryIndexRoute
   '/clinilabs/': typeof ClinilabsIndexRoute
@@ -1129,27 +1009,9 @@ export interface FileRoutesByTo {
   '/wellness': typeof WellnessRoute
   '/womens-health': typeof WomensHealthRoute
   '/about/medical-review': typeof AboutMedicalReviewRoute
-  '/admin/affiliate': typeof AdminAffiliateRoute
-  '/admin/alert-routing': typeof AdminAlertRoutingRoute
-  '/admin/audit-console': typeof AdminAuditConsoleRoute
-  '/admin/biomarker-audit': typeof AdminBiomarkerAuditRoute
-  '/admin/biomarker-validation': typeof AdminBiomarkerValidationRoute
-  '/admin/change-log': typeof AdminChangeLogRoute
-  '/admin/clinical-safety': typeof AdminClinicalSafetyRoute
-  '/admin/data-refresh': typeof AdminDataRefreshRoute
-  '/admin/data-sharing': typeof AdminDataSharingRoute
-  '/admin/encryption-status': typeof AdminEncryptionStatusRoute
+  '/admin/$section': typeof AdminSectionRoute
   '/admin/login': typeof AdminLoginRoute
-  '/admin/ops': typeof AdminOpsRoute
-  '/admin/performance': typeof AdminPerformanceRoute
   '/admin/recovery': typeof AdminRecoveryRoute
-  '/admin/scrapers': typeof AdminScrapersRoute
-  '/admin/security-diff': typeof AdminSecurityDiffRoute
-  '/admin/seo-status': typeof AdminSeoStatusRoute
-  '/admin/soc-watch': typeof AdminSocWatchRoute
-  '/admin/test-dashboard': typeof AdminTestDashboardRoute
-  '/admin/test-mapper': typeof AdminTestMapperRoute
-  '/admin/test-upload': typeof AdminTestUploadRoute
   '/blog/ferritin-vs-iron-comparison-guide': typeof BlogFerritinVsIronComparisonGuideRoute
   '/blog/private-blood-test-cost-guide': typeof BlogPrivateBloodTestCostGuideRoute
   '/blog/testosterone-levels-by-age': typeof BlogTestosteroneLevelsByAgeRoute
@@ -1197,6 +1059,7 @@ export interface FileRoutesByTo {
   '/tests/vitamins': typeof TestsVitaminsRoute
   '/tests/womens-health': typeof TestsWomensHealthRoute
   '/about': typeof AboutIndexRoute
+  '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
   '/category': typeof CategoryIndexRoute
   '/clinilabs': typeof ClinilabsIndexRoute
@@ -1281,27 +1144,9 @@ export interface FileRoutesById {
   '/wellness': typeof WellnessRoute
   '/womens-health': typeof WomensHealthRoute
   '/about/medical-review': typeof AboutMedicalReviewRoute
-  '/admin/affiliate': typeof AdminAffiliateRoute
-  '/admin/alert-routing': typeof AdminAlertRoutingRoute
-  '/admin/audit-console': typeof AdminAuditConsoleRoute
-  '/admin/biomarker-audit': typeof AdminBiomarkerAuditRoute
-  '/admin/biomarker-validation': typeof AdminBiomarkerValidationRoute
-  '/admin/change-log': typeof AdminChangeLogRoute
-  '/admin/clinical-safety': typeof AdminClinicalSafetyRoute
-  '/admin/data-refresh': typeof AdminDataRefreshRoute
-  '/admin/data-sharing': typeof AdminDataSharingRoute
-  '/admin/encryption-status': typeof AdminEncryptionStatusRoute
+  '/admin/$section': typeof AdminSectionRoute
   '/admin/login': typeof AdminLoginRoute
-  '/admin/ops': typeof AdminOpsRoute
-  '/admin/performance': typeof AdminPerformanceRoute
   '/admin/recovery': typeof AdminRecoveryRoute
-  '/admin/scrapers': typeof AdminScrapersRoute
-  '/admin/security-diff': typeof AdminSecurityDiffRoute
-  '/admin/seo-status': typeof AdminSeoStatusRoute
-  '/admin/soc-watch': typeof AdminSocWatchRoute
-  '/admin/test-dashboard': typeof AdminTestDashboardRoute
-  '/admin/test-mapper': typeof AdminTestMapperRoute
-  '/admin/test-upload': typeof AdminTestUploadRoute
   '/blog/ferritin-vs-iron-comparison-guide': typeof BlogFerritinVsIronComparisonGuideRoute
   '/blog/private-blood-test-cost-guide': typeof BlogPrivateBloodTestCostGuideRoute
   '/blog/testosterone-levels-by-age': typeof BlogTestosteroneLevelsByAgeRoute
@@ -1349,6 +1194,7 @@ export interface FileRoutesById {
   '/tests/vitamins': typeof TestsVitaminsRoute
   '/tests/womens-health': typeof TestsWomensHealthRoute
   '/about/': typeof AboutIndexRoute
+  '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
   '/category/': typeof CategoryIndexRoute
   '/clinilabs/': typeof ClinilabsIndexRoute
@@ -1434,27 +1280,9 @@ export interface FileRouteTypes {
     | '/wellness'
     | '/womens-health'
     | '/about/medical-review'
-    | '/admin/affiliate'
-    | '/admin/alert-routing'
-    | '/admin/audit-console'
-    | '/admin/biomarker-audit'
-    | '/admin/biomarker-validation'
-    | '/admin/change-log'
-    | '/admin/clinical-safety'
-    | '/admin/data-refresh'
-    | '/admin/data-sharing'
-    | '/admin/encryption-status'
+    | '/admin/$section'
     | '/admin/login'
-    | '/admin/ops'
-    | '/admin/performance'
     | '/admin/recovery'
-    | '/admin/scrapers'
-    | '/admin/security-diff'
-    | '/admin/seo-status'
-    | '/admin/soc-watch'
-    | '/admin/test-dashboard'
-    | '/admin/test-mapper'
-    | '/admin/test-upload'
     | '/blog/ferritin-vs-iron-comparison-guide'
     | '/blog/private-blood-test-cost-guide'
     | '/blog/testosterone-levels-by-age'
@@ -1502,6 +1330,7 @@ export interface FileRouteTypes {
     | '/tests/vitamins'
     | '/tests/womens-health'
     | '/about/'
+    | '/admin/'
     | '/blog/'
     | '/category/'
     | '/clinilabs/'
@@ -1584,27 +1413,9 @@ export interface FileRouteTypes {
     | '/wellness'
     | '/womens-health'
     | '/about/medical-review'
-    | '/admin/affiliate'
-    | '/admin/alert-routing'
-    | '/admin/audit-console'
-    | '/admin/biomarker-audit'
-    | '/admin/biomarker-validation'
-    | '/admin/change-log'
-    | '/admin/clinical-safety'
-    | '/admin/data-refresh'
-    | '/admin/data-sharing'
-    | '/admin/encryption-status'
+    | '/admin/$section'
     | '/admin/login'
-    | '/admin/ops'
-    | '/admin/performance'
     | '/admin/recovery'
-    | '/admin/scrapers'
-    | '/admin/security-diff'
-    | '/admin/seo-status'
-    | '/admin/soc-watch'
-    | '/admin/test-dashboard'
-    | '/admin/test-mapper'
-    | '/admin/test-upload'
     | '/blog/ferritin-vs-iron-comparison-guide'
     | '/blog/private-blood-test-cost-guide'
     | '/blog/testosterone-levels-by-age'
@@ -1652,6 +1463,7 @@ export interface FileRouteTypes {
     | '/tests/vitamins'
     | '/tests/womens-health'
     | '/about'
+    | '/admin'
     | '/blog'
     | '/category'
     | '/clinilabs'
@@ -1735,27 +1547,9 @@ export interface FileRouteTypes {
     | '/wellness'
     | '/womens-health'
     | '/about/medical-review'
-    | '/admin/affiliate'
-    | '/admin/alert-routing'
-    | '/admin/audit-console'
-    | '/admin/biomarker-audit'
-    | '/admin/biomarker-validation'
-    | '/admin/change-log'
-    | '/admin/clinical-safety'
-    | '/admin/data-refresh'
-    | '/admin/data-sharing'
-    | '/admin/encryption-status'
+    | '/admin/$section'
     | '/admin/login'
-    | '/admin/ops'
-    | '/admin/performance'
     | '/admin/recovery'
-    | '/admin/scrapers'
-    | '/admin/security-diff'
-    | '/admin/seo-status'
-    | '/admin/soc-watch'
-    | '/admin/test-dashboard'
-    | '/admin/test-mapper'
-    | '/admin/test-upload'
     | '/blog/ferritin-vs-iron-comparison-guide'
     | '/blog/private-blood-test-cost-guide'
     | '/blog/testosterone-levels-by-age'
@@ -1803,6 +1597,7 @@ export interface FileRouteTypes {
     | '/tests/vitamins'
     | '/tests/womens-health'
     | '/about/'
+    | '/admin/'
     | '/blog/'
     | '/category/'
     | '/clinilabs/'
@@ -1887,27 +1682,9 @@ export interface RootRouteChildren {
   WellnessRoute: typeof WellnessRoute
   WomensHealthRoute: typeof WomensHealthRoute
   AboutMedicalReviewRoute: typeof AboutMedicalReviewRoute
-  AdminAffiliateRoute: typeof AdminAffiliateRoute
-  AdminAlertRoutingRoute: typeof AdminAlertRoutingRoute
-  AdminAuditConsoleRoute: typeof AdminAuditConsoleRoute
-  AdminBiomarkerAuditRoute: typeof AdminBiomarkerAuditRoute
-  AdminBiomarkerValidationRoute: typeof AdminBiomarkerValidationRoute
-  AdminChangeLogRoute: typeof AdminChangeLogRoute
-  AdminClinicalSafetyRoute: typeof AdminClinicalSafetyRoute
-  AdminDataRefreshRoute: typeof AdminDataRefreshRoute
-  AdminDataSharingRoute: typeof AdminDataSharingRoute
-  AdminEncryptionStatusRoute: typeof AdminEncryptionStatusRoute
+  AdminSectionRoute: typeof AdminSectionRoute
   AdminLoginRoute: typeof AdminLoginRoute
-  AdminOpsRoute: typeof AdminOpsRoute
-  AdminPerformanceRoute: typeof AdminPerformanceRoute
   AdminRecoveryRoute: typeof AdminRecoveryRoute
-  AdminScrapersRoute: typeof AdminScrapersRoute
-  AdminSecurityDiffRoute: typeof AdminSecurityDiffRoute
-  AdminSeoStatusRoute: typeof AdminSeoStatusRoute
-  AdminSocWatchRoute: typeof AdminSocWatchRoute
-  AdminTestDashboardRoute: typeof AdminTestDashboardRoute
-  AdminTestMapperRoute: typeof AdminTestMapperRoute
-  AdminTestUploadRoute: typeof AdminTestUploadRoute
   BlogFerritinVsIronComparisonGuideRoute: typeof BlogFerritinVsIronComparisonGuideRoute
   BlogPrivateBloodTestCostGuideRoute: typeof BlogPrivateBloodTestCostGuideRoute
   BlogTestosteroneLevelsByAgeRoute: typeof BlogTestosteroneLevelsByAgeRoute
@@ -1954,6 +1731,7 @@ export interface RootRouteChildren {
   TestsVitaminsRoute: typeof TestsVitaminsRoute
   TestsWomensHealthRoute: typeof TestsWomensHealthRoute
   AboutIndexRoute: typeof AboutIndexRoute
+  AdminIndexRoute: typeof AdminIndexRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CategoryIndexRoute: typeof CategoryIndexRoute
   ClinilabsIndexRoute: typeof ClinilabsIndexRoute
@@ -2359,74 +2137,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutMedicalReviewRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/affiliate': {
-      id: '/admin/affiliate'
-      path: '/admin/affiliate'
-      fullPath: '/admin/affiliate'
-      preLoaderRoute: typeof AdminAffiliateRouteImport
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/alert-routing': {
-      id: '/admin/alert-routing'
-      path: '/admin/alert-routing'
-      fullPath: '/admin/alert-routing'
-      preLoaderRoute: typeof AdminAlertRoutingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/audit-console': {
-      id: '/admin/audit-console'
-      path: '/admin/audit-console'
-      fullPath: '/admin/audit-console'
-      preLoaderRoute: typeof AdminAuditConsoleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/biomarker-audit': {
-      id: '/admin/biomarker-audit'
-      path: '/admin/biomarker-audit'
-      fullPath: '/admin/biomarker-audit'
-      preLoaderRoute: typeof AdminBiomarkerAuditRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/biomarker-validation': {
-      id: '/admin/biomarker-validation'
-      path: '/admin/biomarker-validation'
-      fullPath: '/admin/biomarker-validation'
-      preLoaderRoute: typeof AdminBiomarkerValidationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/change-log': {
-      id: '/admin/change-log'
-      path: '/admin/change-log'
-      fullPath: '/admin/change-log'
-      preLoaderRoute: typeof AdminChangeLogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/clinical-safety': {
-      id: '/admin/clinical-safety'
-      path: '/admin/clinical-safety'
-      fullPath: '/admin/clinical-safety'
-      preLoaderRoute: typeof AdminClinicalSafetyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/data-refresh': {
-      id: '/admin/data-refresh'
-      path: '/admin/data-refresh'
-      fullPath: '/admin/data-refresh'
-      preLoaderRoute: typeof AdminDataRefreshRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/data-sharing': {
-      id: '/admin/data-sharing'
-      path: '/admin/data-sharing'
-      fullPath: '/admin/data-sharing'
-      preLoaderRoute: typeof AdminDataSharingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/encryption-status': {
-      id: '/admin/encryption-status'
-      path: '/admin/encryption-status'
-      fullPath: '/admin/encryption-status'
-      preLoaderRoute: typeof AdminEncryptionStatusRouteImport
+    '/admin/$section': {
+      id: '/admin/$section'
+      path: '/admin/$section'
+      fullPath: '/admin/$section'
+      preLoaderRoute: typeof AdminSectionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/login': {
@@ -2436,74 +2158,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/ops': {
-      id: '/admin/ops'
-      path: '/admin/ops'
-      fullPath: '/admin/ops'
-      preLoaderRoute: typeof AdminOpsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/performance': {
-      id: '/admin/performance'
-      path: '/admin/performance'
-      fullPath: '/admin/performance'
-      preLoaderRoute: typeof AdminPerformanceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/recovery': {
       id: '/admin/recovery'
       path: '/admin/recovery'
       fullPath: '/admin/recovery'
       preLoaderRoute: typeof AdminRecoveryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/scrapers': {
-      id: '/admin/scrapers'
-      path: '/admin/scrapers'
-      fullPath: '/admin/scrapers'
-      preLoaderRoute: typeof AdminScrapersRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/security-diff': {
-      id: '/admin/security-diff'
-      path: '/admin/security-diff'
-      fullPath: '/admin/security-diff'
-      preLoaderRoute: typeof AdminSecurityDiffRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/seo-status': {
-      id: '/admin/seo-status'
-      path: '/admin/seo-status'
-      fullPath: '/admin/seo-status'
-      preLoaderRoute: typeof AdminSeoStatusRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/soc-watch': {
-      id: '/admin/soc-watch'
-      path: '/admin/soc-watch'
-      fullPath: '/admin/soc-watch'
-      preLoaderRoute: typeof AdminSocWatchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/test-dashboard': {
-      id: '/admin/test-dashboard'
-      path: '/admin/test-dashboard'
-      fullPath: '/admin/test-dashboard'
-      preLoaderRoute: typeof AdminTestDashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/test-mapper': {
-      id: '/admin/test-mapper'
-      path: '/admin/test-mapper'
-      fullPath: '/admin/test-mapper'
-      preLoaderRoute: typeof AdminTestMapperRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/test-upload': {
-      id: '/admin/test-upload'
-      path: '/admin/test-upload'
-      fullPath: '/admin/test-upload'
-      preLoaderRoute: typeof AdminTestUploadRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/blog/': {
@@ -3102,27 +2761,9 @@ const rootRouteChildren: RootRouteChildren = {
   WellnessRoute: WellnessRoute,
   WomensHealthRoute: WomensHealthRoute,
   AboutMedicalReviewRoute: AboutMedicalReviewRoute,
-  AdminAffiliateRoute: AdminAffiliateRoute,
-  AdminAlertRoutingRoute: AdminAlertRoutingRoute,
-  AdminAuditConsoleRoute: AdminAuditConsoleRoute,
-  AdminBiomarkerAuditRoute: AdminBiomarkerAuditRoute,
-  AdminBiomarkerValidationRoute: AdminBiomarkerValidationRoute,
-  AdminChangeLogRoute: AdminChangeLogRoute,
-  AdminClinicalSafetyRoute: AdminClinicalSafetyRoute,
-  AdminDataRefreshRoute: AdminDataRefreshRoute,
-  AdminDataSharingRoute: AdminDataSharingRoute,
-  AdminEncryptionStatusRoute: AdminEncryptionStatusRoute,
+  AdminSectionRoute: AdminSectionRoute,
   AdminLoginRoute: AdminLoginRoute,
-  AdminOpsRoute: AdminOpsRoute,
-  AdminPerformanceRoute: AdminPerformanceRoute,
   AdminRecoveryRoute: AdminRecoveryRoute,
-  AdminScrapersRoute: AdminScrapersRoute,
-  AdminSecurityDiffRoute: AdminSecurityDiffRoute,
-  AdminSeoStatusRoute: AdminSeoStatusRoute,
-  AdminSocWatchRoute: AdminSocWatchRoute,
-  AdminTestDashboardRoute: AdminTestDashboardRoute,
-  AdminTestMapperRoute: AdminTestMapperRoute,
-  AdminTestUploadRoute: AdminTestUploadRoute,
   BlogFerritinVsIronComparisonGuideRoute:
     BlogFerritinVsIronComparisonGuideRoute,
   BlogPrivateBloodTestCostGuideRoute: BlogPrivateBloodTestCostGuideRoute,
@@ -3170,6 +2811,7 @@ const rootRouteChildren: RootRouteChildren = {
   TestsVitaminsRoute: TestsVitaminsRoute,
   TestsWomensHealthRoute: TestsWomensHealthRoute,
   AboutIndexRoute: AboutIndexRoute,
+  AdminIndexRoute: AdminIndexRoute,
   BlogIndexRoute: BlogIndexRoute,
   CategoryIndexRoute: CategoryIndexRoute,
   ClinilabsIndexRoute: ClinilabsIndexRoute,

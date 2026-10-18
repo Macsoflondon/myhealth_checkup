@@ -207,14 +207,8 @@ const AdminPerformancePage = () => {
   );
 
   return (
-    <div className="container mx-auto py-8 space-y-6">
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold">Runtime performance</h1>
-          <p className="text-sm text-muted-foreground">
-            Slowest edge functions, worst Web Vitals, cron durations.
-          </p>
-        </div>
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-end gap-2">
         <Select value={window} onValueChange={(v) => setWindow(v as Window)}>
           <SelectTrigger className="w-32">
             <SelectValue />

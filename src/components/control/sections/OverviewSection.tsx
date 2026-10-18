@@ -99,11 +99,7 @@ export default function OverviewSection() {
           : "bad";
 
   return (
-    <SectionShell
-      title="Executive Overview"
-      description="Snapshot of platform health across data, scrapers, and alerts."
-      status="live"
-    >
+    <SectionShell title="Executive Overview">
       {loading ? (
         <div className="flex items-center gap-2 text-muted-foreground text-sm py-12">
           <Loader2 className="w-4 h-4 animate-spin" /> Loading metrics…

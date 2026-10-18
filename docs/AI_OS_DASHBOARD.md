@@ -1,11 +1,18 @@
 # AI OS dashboard (Crux Control)
 
-_Last updated 2026-10-16._
+_Last updated 2026-10-18._
 
-The AI OS is the rebuilt Crux Control admin portal at `/control`. It keeps every
-existing Crux Control section and adds a plugin layer that pulls clicks,
-traffic and revenue data into one place. Access needs the admin role with an
-MFA (AAL2) session, the same gate as before.
+The AI OS is the rebuilt Crux Control admin portal at `/control`, and since
+18 October 2026 the only admin dashboard. It keeps every existing Crux Control
+section, adds a plugin layer that pulls clicks, traffic and revenue data into
+one place, and holds the pages that used to sit under `/admin/*`. Access needs
+the admin role with an MFA (AAL2) session, the same gate as before. Sign in at
+`/admin/login`; it lands you on `/control`, and `/control` sends signed-out
+visitors back to it.
+
+Old `/admin/<page>` links redirect to `/control/<page>` (same slug, through
+`src/routes/admin.$section.tsx`), and `/admin` redirects to `/control`. Only
+`/admin/login` and `/admin/recovery` remain as their own pages.
 
 On 16 October 2026 the site owner chose not to connect Stripe, Awin or
 Metricool, so the dashboard no longer offers those plugins, the Social media
@@ -15,14 +22,22 @@ from CSV imports only.
 
 ## Sections
 
-| Group      | Section                                                                                        | Source                                                                               |
-| ---------- | ---------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
-| Command    | Command centre (`/control/command`, the default)                                               | Every source below, plus the AI briefing                                             |
-| Growth     | Provider clicks (`/control/clicks`)                                                            | `affiliate_clicks` via `os_clicks_summary` (live)                                    |
-| Growth     | Traffic and search (`/control/traffic`)                                                        | GA4 and Search Console plugin snapshots                                              |
-| Growth     | Revenue (`/control/revenue`)                                                                   | `affiliate_conversions` (CSV imports on `/admin/affiliate`) via `os_revenue_summary` |
-| Operations | Platform health, live metrics, crawls, automations, audits, providers, logs, alerts, SOC Watch | Unchanged Crux Control sections                                                      |
-| System     | Plugins (`/control/plugins`), search, export                                                   | Plugin manager, sync history                                                         |
+| Group      | Section                                                                                          | Source                                                                                 |
+| ---------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
+| Command    | Command centre (`/control/command`, the default)                                                 | Every source below, plus the AI briefing                                               |
+| Growth     | Provider clicks (`/control/clicks`)                                                              | `affiliate_clicks` via `os_clicks_summary` (live)                                      |
+| Growth     | Traffic and search (`/control/traffic`)                                                          | GA4 and Search Console plugin snapshots                                                |
+| Growth     | Revenue (`/control/revenue`)                                                                     | `affiliate_conversions` (CSV imports on `/control/affiliate`) via `os_revenue_summary` |
+| Growth     | Affiliate imports (`/control/affiliate`)                                                         | CSV import of network reports into `affiliate_conversions`                             |
+| Catalogue  | Test catalogue, scrapers, data refresh, test mapper, test upload, biomarker audit and validation | Former `/admin/*` pages, unchanged behaviour                                           |
+| Operations | Platform health, live metrics, crawls, automations, audits, providers, logs, alerts              | Unchanged Crux Control sections                                                        |
+| Operations | Ops status, performance, SEO status, clinical safety, change log                                 | Former `/admin/*` pages, unchanged behaviour                                           |
+| Security   | SOC Watch, audit console, alert routing, encryption status, security diff, data sharing          | SOC Watch section plus former `/admin/*` pages                                         |
+| System     | Plugins (`/control/plugins`), search, export                                                     | Plugin manager, sync history                                                           |
+
+The scraper and data refresh sections still call the older `*-scraper` and
+`run-all-scrapers` functions and read `scraping_jobs`. The scheduled `mhc-*`
+price sync does not use them; see CLAUDE.md.
 
 `/control/analytics` now redirects to `/control/clicks`. The old analytics
 section read raw `funnel_events` in the browser (capped at 1,000 rows) and
@@ -37,7 +52,7 @@ ago), and each panel says which window it shows.
 
 ```
  visitor click ──► /api/public/affiliate-click ──► affiliate_clicks ─┐
- CSV import (/admin/affiliate) ──────────────────► affiliate_conversions ─┤
+ CSV import (/control/affiliate) ────────────────► affiliate_conversions ─┤
                                                                      ├─► os_clicks_summary / os_revenue_summary (RPC, admin + MFA)
  pg_cron (hourly :23) ─► os-plugins edge function ─► adapters ─► GA4, Search Console, site status
                                                      ├─► os_plugin_snapshots (latest normalised payload per dataset)
@@ -122,7 +137,7 @@ click id. Set `subIdParam` per provider in
 conversion shows as unattributed.
 
 The **Conversion import** card is native: upload the network's transactions
-report as CSV on `/admin/affiliate` and the Revenue section picks it up.
+report as CSV on `/control/affiliate` and the Revenue section picks it up.
 
 ## Adding a plugin
 

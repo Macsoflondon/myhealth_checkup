@@ -23,7 +23,6 @@ export default function AdminDataSharingPage() {
   const [statusFilter, setStatusFilter] = useState<string>("all");
 
   useEffect(() => {
-    document.title = "Admin · Data sharing grants";
     void (async () => {
       let q = supabase
         .from("data_sharing_grants")
@@ -45,15 +44,7 @@ export default function AdminDataSharingPage() {
   }, {});
 
   return (
-    <div className="p-6 space-y-4">
-      <div>
-        <h1 className="text-2xl font-bold">Data sharing grants</h1>
-        <p className="text-sm text-muted-foreground">
-          Audit trail of every patient-issued FHIR sharing grant. Read-only —
-          patients manage their own revocations.
-        </p>
-      </div>
-
+    <div className="space-y-4">
       <div className="flex gap-2 flex-wrap">
         {["all", "active", "revoked", "expired", "consumed"].map((s) => (
           <button
