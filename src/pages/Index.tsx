@@ -195,7 +195,7 @@ const Index = () => {
           {/* Hero CTA — Slogan + Health Quiz entry point */}
           <section
             aria-label="Your health and live comparison"
-            className="overflow-hidden bg-surface border border-brand-navy/5 shadow-e3 rounded-xl p-3 sm:p-6 mx-3 sm:mx-10 mt-0 mb-6 sm:mb-8"
+            className="overflow-hidden bg-surface border border-brand-navy/5 shadow-e3 rounded-xl p-3 sm:p-6 mx-0 mt-0 mb-6 sm:mb-8"
           >
             <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] items-center gap-10 lg:gap-16 rounded-xl bg-brand-navy px-5 py-8 sm:p-10 lg:px-10 lg:py-10">
               <div className="min-w-0 lg:self-start">
