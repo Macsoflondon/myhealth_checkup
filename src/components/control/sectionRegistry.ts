@@ -27,7 +27,6 @@ import {
   Handshake,
   LayoutDashboard,
   RefreshCw,
-  Database,
   Map as MapIcon,
   Upload,
   FlaskConical,
@@ -146,28 +145,17 @@ export const CONTROL_SECTIONS: ControlSection[] = [
   },
   {
     slug: "scrapers",
-    title: "Scraper jobs",
-    short: "Scrapers",
+    title: "Price sync and scrapers",
+    short: "Price sync",
     description:
-      "Manual runs of the older scraper functions, with job history, alerts and category checks. The scheduled mhc-* price sync runs on its own.",
+      "Run the live price sync for one provider or all, see each provider's last and next sync, and check scraper alerts and category mapping.",
     icon: RefreshCw,
     status: "live",
     group: "catalogue",
     usesRange: false,
     component: lazy(() => import("@/pages/AdminScraperDashboardPage")),
   },
-  {
-    slug: "data-refresh",
-    title: "Data refresh",
-    short: "Data refresh",
-    description:
-      "Run the older per-provider scrapers by hand, with the database copy as backup. The scheduled mhc-* price sync runs on its own.",
-    icon: Database,
-    status: "live",
-    group: "catalogue",
-    usesRange: false,
-    component: lazy(() => import("@/pages/AdminDataRefreshPage")),
-  },
+
   {
     slug: "test-mapper",
     title: "Test mapper",
@@ -472,10 +460,13 @@ export const CONTROL_SECTIONS: ControlSection[] = [
 /**
  * Retired slugs and where they now live. "analytics" read raw funnel_events
  * client-side (capped at 1,000 rows, automated clicks included); the Clicks
- * and Revenue sections replace it with server-side summaries.
+ * and Revenue sections replace it with server-side summaries. "data-refresh"
+ * ran the older per-provider scrapers; the Price sync section runs the live
+ * mhc-* jobs instead.
  */
 export const SECTION_ALIASES: Record<string, string> = {
   analytics: "clicks",
+  "data-refresh": "scrapers",
 };
 
 export const getSection = (slug: string) =>

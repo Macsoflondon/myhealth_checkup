@@ -22,22 +22,24 @@ from CSV imports only.
 
 ## Sections
 
-| Group      | Section                                                                                          | Source                                                                                 |
-| ---------- | ------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
-| Command    | Command centre (`/control/command`, the default)                                                 | Every source below, plus the AI briefing                                               |
-| Growth     | Provider clicks (`/control/clicks`)                                                              | `affiliate_clicks` via `os_clicks_summary` (live)                                      |
-| Growth     | Traffic and search (`/control/traffic`)                                                          | GA4 and Search Console plugin snapshots                                                |
-| Growth     | Revenue (`/control/revenue`)                                                                     | `affiliate_conversions` (CSV imports on `/control/affiliate`) via `os_revenue_summary` |
-| Growth     | Affiliate imports (`/control/affiliate`)                                                         | CSV import of network reports into `affiliate_conversions`                             |
-| Catalogue  | Test catalogue, scrapers, data refresh, test mapper, test upload, biomarker audit and validation | Former `/admin/*` pages, unchanged behaviour                                           |
-| Operations | Platform health, live metrics, crawls, automations, audits, providers, logs, alerts              | Unchanged Crux Control sections                                                        |
-| Operations | Ops status, performance, SEO status, clinical safety, change log                                 | Former `/admin/*` pages, unchanged behaviour                                           |
-| Security   | SOC Watch, audit console, alert routing, encryption status, security diff, data sharing          | SOC Watch section plus former `/admin/*` pages                                         |
-| System     | Plugins (`/control/plugins`), search, export                                                     | Plugin manager, sync history                                                           |
+| Group      | Section                                                                                 | Source                                                                                 |
+| ---------- | --------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| Command    | Command centre (`/control/command`, the default)                                        | Every source below, plus the AI briefing                                               |
+| Growth     | Provider clicks (`/control/clicks`)                                                     | `affiliate_clicks` via `os_clicks_summary` (live)                                      |
+| Growth     | Traffic and search (`/control/traffic`)                                                 | GA4 and Search Console plugin snapshots                                                |
+| Growth     | Revenue (`/control/revenue`)                                                            | `affiliate_conversions` (CSV imports on `/control/affiliate`) via `os_revenue_summary` |
+| Growth     | Affiliate imports (`/control/affiliate`)                                                | CSV import of network reports into `affiliate_conversions`                             |
+| Catalogue  | Test catalogue, price sync, test mapper, test upload, biomarker audit and validation    | Former `/admin/*` pages; price sync runs the `mhc-*` jobs                              |
+| Operations | Platform health, live metrics, crawls, automations, audits, providers, logs, alerts     | Unchanged Crux Control sections                                                        |
+| Operations | Ops status, performance, SEO status, clinical safety, change log                        | Former `/admin/*` pages, unchanged behaviour                                           |
+| Security   | SOC Watch, audit console, alert routing, encryption status, security diff, data sharing | SOC Watch section plus former `/admin/*` pages                                         |
+| System     | Plugins (`/control/plugins`), search, export                                            | Plugin manager, sync history                                                           |
 
-The scraper and data refresh sections still call the older `*-scraper` and
-`run-all-scrapers` functions and read `scraping_jobs`. The scheduled `mhc-*`
-price sync does not use them; see CLAUDE.md.
+Since 18 October 2026 the Price sync section (`/control/scrapers`) and the
+Crawls section run the live `mhc-*` price sync by hand through
+`admin_request_price_sync()`, which queues the same jobs pg_cron runs every six
+hours, with the same spacing. `/control/data-refresh`, which ran the older
+per-provider scrapers, redirects to `/control/scrapers`. See CLAUDE.md.
 
 `/control/analytics` now redirects to `/control/clicks`. The old analytics
 section read raw `funnel_events` in the browser (capped at 1,000 rows) and

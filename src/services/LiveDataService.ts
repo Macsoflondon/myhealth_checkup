@@ -166,43 +166,6 @@ export class LiveDataService {
   }
 
   /**
-   * Manually trigger a scrape for a provider
-   */
-  static async refreshProviderData(providerId: string): Promise<boolean> {
-    try {
-      const scraperMap: Record<string, string> = {
-        medichecks: "scrape-medichecks",
-        "london-medical-laboratory": "scrape-london-lab",
-        goodbody: "scrape-goodbody",
-      };
-
-      const scraperFunction = scraperMap[providerId];
-      if (!scraperFunction) {
-        return false;
-      }
-
-      const { data, error } = await supabase.functions.invoke(scraperFunction);
-
-      if (error) {
-        logger.error(`Refresh error for ${providerId}:`, error);
-        return false;
-      }
-
-      // Clear cache for this provider
-      this.cache.forEach((_, key) => {
-        if (key.startsWith(providerId)) {
-          this.cache.delete(key);
-        }
-      });
-
-      return data?.success || false;
-    } catch (error) {
-      logger.error(`Failed to refresh provider data:`, error);
-      return false;
-    }
-  }
-
-  /**
    * Clear all cached data
    */
   static clearCache(): void {
