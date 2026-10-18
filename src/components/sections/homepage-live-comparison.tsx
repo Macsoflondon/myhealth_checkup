@@ -2,7 +2,11 @@ import { forwardRef, type HTMLAttributes } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { getHomepageComparison, HOMEPAGE_COMPARISON_PANELS, type HomepageComparisonPanel } from "@/services/homepage-comparison-service";
+import {
+  getHomepageComparison,
+  HOMEPAGE_COMPARISON_PANELS,
+  type HomepageComparisonPanel,
+} from "@/services/homepage-comparison-service";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -44,7 +48,9 @@ export const HomepageLiveComparison = forwardRef<
           Live catalogue
         </span>
       </div>
-      <p className="mb-2 text-[10px] text-brand-navy/60">Sorted by total expected cost, low to high</p>
+      <p className="mb-2 text-[10px] text-brand-navy/60">
+        Sorted by total expected cost, low to high
+      </p>
       <div className="min-h-64" aria-live="polite">
         {isPending ? (
           <p className="py-8 text-sm text-brand-navy/60">
@@ -88,7 +94,9 @@ export const HomepageLiveComparison = forwardRef<
                       currency: "GBP",
                     })}
                   </p>
-                  <p className="text-[9px] text-brand-navy/60">Total expected cost</p>
+                  <p className="text-[9px] text-brand-navy/60">
+                    Total expected cost
+                  </p>
                 </div>
               </div>
               <p className="mt-1 text-[10px] leading-relaxed text-brand-navy/60">
@@ -99,12 +107,25 @@ export const HomepageLiveComparison = forwardRef<
               </p>
               {(test.collection_fee_amount ?? 0) > 0 && (
                 <p className="mt-1 text-[10px] text-brand-navy/60">
-                  {test.price?.toLocaleString("en-GB", { style: "currency", currency: "GBP" })} test + {test.collection_fee_amount?.toLocaleString("en-GB", { style: "currency", currency: "GBP" })} clinic draw
+                  {test.price?.toLocaleString("en-GB", {
+                    style: "currency",
+                    currency: "GBP",
+                  })}{" "}
+                  test +{" "}
+                  {test.collection_fee_amount?.toLocaleString("en-GB", {
+                    style: "currency",
+                    currency: "GBP",
+                  })}{" "}
+                  clinic draw
                 </p>
               )}
               {(test.clinical_review_fee ?? 0) > 0 && (
                 <p className="mt-1 text-[10px] text-brand-navy/60">
-                  Clinical review: {test.clinical_review_fee?.toLocaleString("en-GB", { style: "currency", currency: "GBP" })}
+                  Clinical review:{" "}
+                  {test.clinical_review_fee?.toLocaleString("en-GB", {
+                    style: "currency",
+                    currency: "GBP",
+                  })}
                 </p>
               )}
               {test.updated_at && (
