@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Match all three homepage live comparison capsules and assign distinct full blood count, thyroid and liver sections.
+- [x] Match all three homepage live comparison capsules and assign distinct full blood count, thyroid and liver sections.
 
 - [x] Match the supplied homepage screenshot’s trust strip and mission/live-comparison section; verify desktop and mobile.
 
