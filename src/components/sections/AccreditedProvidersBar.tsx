@@ -14,14 +14,7 @@ const trustItems: TrustItem[] = [
   { label: "No GP Referral Needed" },
 ];
 
-const underlineColors = [
-  "#22c0d4",
-  "#e70d69",
-  "#081129",
-  "#22c0d4",
-  "#e70d69",
-  "#081129",
-];
+const underlineColors = ["bg-brand-turquoise", "bg-brand-pink", "bg-brand-navy"];
 
 /**
  * Trust signals bar — static standards row.
@@ -30,21 +23,21 @@ const AccreditedProvidersBar = () => {
   return (
     <section
       aria-label="Accredited provider standards"
-      className="bg-white border-t-2 border-t-[#e70d69] border-b-2 border-b-[#22c0d4]"
+      className="bg-white border-t-2 border-t-brand-pink border-b-2 border-b-brand-turquoise"
     >
-      <div className="container mx-auto px-5 sm:px-4 py-4 sm:py-5">
+      <div className="container mx-auto px-5 sm:px-4 py-3 sm:py-4">
         <Reveal variant="fade">
-          <p className="hidden md:block text-center font-[Montserrat] font-semibold text-[#081129] text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)] xl:text-[clamp(1.3rem,2.05vw,2rem)] xl:whitespace-nowrap leading-tight mb-0.5 px-4">
+          <p className="text-center font-heading font-semibold text-brand-navy text-lg md:text-2xl xl:text-3xl leading-tight mb-1 px-2">
             {HERO_CAPTION}
           </p>
         </Reveal>
 
         {/* Editorial standards header */}
-        <div className="flex flex-col items-center mt-0 mb-4 sm:mb-5">
-          <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-[#081129]/40 mb-2">
+        <div className="flex flex-col items-center mt-0 mb-3">
+          <div className="text-[10px] font-bold uppercase text-brand-navy/40 mb-2">
             Our clinical standards
           </div>
-          <div className="w-8 h-[2px] bg-[#22c0d4]" />
+          <div className="w-8 h-0.5 bg-brand-turquoise" />
         </div>
 
         {/* Underline grid — condensed spacing */}
@@ -53,15 +46,11 @@ const AccreditedProvidersBar = () => {
           data-testid="accreditors-mobile-grid"
         >
           {trustItems.map((item, idx) => (
-            <div key={item.label} className="group">
+            <div key={item.label} className="min-w-0 lg:justify-self-center">
               <div
-                className="w-6 h-1.5 mb-0.5 rounded-full"
-                style={{
-                  backgroundColor:
-                    underlineColors[idx % underlineColors.length],
-                }}
+                className={`w-5 h-1 mb-1 rounded-full ${underlineColors[idx % underlineColors.length]}`}
               />
-              <h3 className="whitespace-nowrap text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.04em] sm:tracking-[0.14em] text-[#081129] leading-tight">
+              <h3 className="text-[9px] sm:text-[10px] font-bold uppercase text-brand-navy leading-tight">
                 {item.label}
               </h3>
             </div>
