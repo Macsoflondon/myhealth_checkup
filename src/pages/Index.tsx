@@ -10,6 +10,8 @@ import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 import { useActiveTestCount } from "@/hooks/queries/useActiveTestCount";
 import { Shield } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { HomepageLiveComparison } from "@/components/sections/homepage-live-comparison";
 
 // Hero LCP preloading is owned by the route head() in src/routes/index.tsx —
 // duplicating it here downloaded a second, unused hero image on every visit.
@@ -183,7 +185,7 @@ const Index = () => {
 
           {/* Accredited standards bar — sits directly under the slogan */}
           <Suspense fallback={<SectionFallback />}>
-            <div className="bg-white pt-4 sm:pt-5 pb-6 sm:pb-8">
+            <div className="bg-white px-3 sm:px-6 pt-4 pb-6">
               <AccreditedProvidersBar />
             </div>
           </Suspense>
@@ -191,55 +193,60 @@ const Index = () => {
           <div id="comparison-anchor" aria-hidden="true" />
 
           {/* Hero CTA — Slogan + Health Quiz entry point */}
-          <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-4 sm:px-6 py-6 sm:py-8 mx-3 sm:mx-6 mt-0 mb-6 sm:mb-8">
-            <div className="relative overflow-hidden rounded-[22px] bg-[#081129] px-4 sm:px-6 lg:px-[34px] py-14 sm:py-[72px] text-center">
-              <div className="absolute -right-[50px] -top-[60px] w-[260px] h-[260px] rounded-full bg-[#22c0d4]/[0.12]" />
-              <div className="absolute right-[120px] -bottom-[110px] w-[240px] h-[240px] rounded-full bg-[#e70d69]/10" />
-              <div className="relative">
-                <h2 className="font-extrabold text-[clamp(1.9rem,7.5vw,3rem)] tracking-[-0.02em] leading-[1.15] text-white m-0 font-[Montserrat] break-words max-w-4xl mx-auto mb-8 sm:mb-10">
-                  Your <span className="text-[#22c0d4]">health</span> is your
-                  greatest <span className="text-[#e70d69]">asset.</span>
+          <section
+            aria-label="Your health and live comparison"
+            className="overflow-hidden bg-surface border border-brand-navy/5 shadow-e3 rounded-xl p-3 sm:p-6 mx-3 sm:mx-10 mt-0 mb-6 sm:mb-8"
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] items-center gap-10 lg:gap-16 rounded-xl bg-brand-navy px-5 py-8 sm:p-10 lg:px-10 lg:py-10">
+              <div className="min-w-0">
+                <h2 className="font-heading font-extrabold text-2xl sm:text-3xl lg:text-2xl xl:text-3xl leading-tight text-white mb-6 text-center lg:text-left">
+                  Your <span className="text-brand-turquoise">health</span> is
+                  your greatest <span className="text-brand-pink">asset.</span>
                 </h2>
 
-                <div className="max-w-3xl mx-auto text-left space-y-4 mb-8 sm:mb-10">
-                  <p className="text-white/85 text-base sm:text-lg leading-relaxed">
-                    At myhealth checkup, we believe everyone deserves access to
+                <div className="text-left mb-6">
+                  <p className="text-on-dark-subtle text-sm sm:text-base leading-relaxed">
+                    At myhealth checkup, everyone deserves access to
                     transparent, trustworthy health information. Our mission is
-                    to empower you to take control of your health by making it
-                    simple to compare private health tests from accredited UK
-                    providers.
-                  </p>
-                  <p className="text-white/85 text-base sm:text-lg leading-relaxed">
-                    We only feature providers that meet rigorous quality
+                    to make it simple to compare private health tests from
+                    accredited UK providers – all of which meet rigorous quality
                     standards, including UKAS accreditation and CQC regulation.
                   </p>
                 </div>
 
-                <div className="w-3/4 mx-auto mb-8">
+                <div className="w-full mb-6">
                   <div
-                    className="h-[2px] w-full rounded-full bg-gradient-to-r from-[#22c0d4] via-[#e70d69] to-[#22c0d4]"
+                    className="h-0.5 w-full bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise"
                     aria-hidden="true"
                   />
                 </div>
 
-                <div className="flex flex-col items-center gap-4 sm:gap-5 w-full max-w-3xl mx-auto mb-6 sm:mb-8">
-                  <h2
-                    className="text-[clamp(1.35rem,5vw,2.6rem)] font-bold text-white leading-[1.15] tracking-tight text-center px-2"
-                    style={{ fontFamily: "'Montserrat', sans-serif" }}
-                  >
+                <div className="flex flex-col items-center gap-6 w-full text-center">
+                  <h2 className="font-heading text-xl sm:text-2xl font-bold text-white leading-tight">
                     Not sure what test you need?
                   </h2>
 
-                  <Link
-                    to="/find-test"
-                    aria-label="Take the Health Quiz — find the right private blood test"
-                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-gradient-to-r from-[#22c0d4] to-[#1aa8bb] hover:from-[#1aa8bb] hover:to-[#22c0d4] text-[#081129] font-bold text-base sm:text-lg px-7 sm:px-9 py-3.5 sm:py-4 rounded-full shadow-lg shadow-[#22c0d4]/25 transition-all hover:scale-[1.02]"
-                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  <p className="text-on-dark-subtle text-sm sm:text-base leading-relaxed">
+                    Answer 6 quick questions and our AI will match you to the
+                    best-fit tests from{" "}
+                    {activeTestCount.toLocaleString("en-GB")} accredited
+                    options.
+                  </p>
+                  <Button
+                    asChild
+                    variant="brandPill"
+                    size="lg"
+                    className="rounded-full font-heading bg-brand-turquoise text-white hover:bg-brand-pink"
                   >
-                    Take the Health Quiz
-                  </Link>
+                    <Link
+                      to="/find-test"
+                      aria-label="Take the Health Quiz — find the right private blood test"
+                    >
+                      Take the Health Quiz
+                    </Link>
+                  </Button>
 
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-y-0 gap-x-2 text-white text-xs">
+                  <div className="flex flex-wrap items-center justify-center gap-2 text-on-dark-subtle text-xs">
                     <span className="flex items-center gap-1">
                       <Shield className="w-3 h-3 shrink-0" /> No account
                       required
@@ -250,12 +257,8 @@ const Index = () => {
                     <span>100% free</span>
                   </div>
                 </div>
-                <p className="text-white text-base sm:text-lg leading-relaxed text-center max-w-2xl mx-auto">
-                  Answer 6 quick questions and our AI will analyse{" "}
-                  {activeTestCount.toLocaleString("en-GB")} accredited tests to
-                  find your best-matched options, with transparent pricing.
-                </p>
               </div>
+              <HomepageLiveComparison className="justify-self-center" />
             </div>
           </section>
 
