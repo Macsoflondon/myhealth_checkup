@@ -41,7 +41,7 @@ const SUPABASE_ANON_KEY =
 /**
  * Cached MFA verification result, keyed by user id.
  *
- * Every /admin/* route mount previously re-ran the `verify-admin-mfa` edge
+ * Every admin route mount previously re-ran the `verify-admin-mfa` edge
  * function. If that call was slow (or never settled) the guard stayed in its
  * loading state, which made the whole admin app look frozen: sidebar links
  * changed the URL but only ever rendered the spinner. Caching the last known

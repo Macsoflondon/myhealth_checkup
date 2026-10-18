@@ -39,11 +39,7 @@ export default function ExportSection() {
   };
 
   return (
-    <SectionShell
-      title="Export Centre"
-      description="Download snapshots of operational data (max 5000 rows / table)."
-      status="stub"
-    >
+    <SectionShell title="Export Centre">
       <div className="grid sm:grid-cols-2 gap-3">
         {EXPORTABLE.map((e) => (
           <div

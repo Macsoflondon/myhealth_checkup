@@ -302,35 +302,21 @@ function AdminTestDashboardContent() {
       .join(" ");
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
-      <div className="border-b border-border bg-card">
-        <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between gap-3 mb-1 flex-wrap">
-            <div className="flex items-center gap-3">
-              <span className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-pink/10">
-                <LayoutDashboard className="w-5 h-5 text-brand-pink" />
-              </span>
-              <h1 className="text-2xl font-bold text-foreground font-montserrat tracking-tight">
-                Test catalogue dashboard
-              </h1>
-            </div>
-            <Link
-              to="/admin/biomarker-audit"
-              className="inline-flex items-center gap-2 rounded-md bg-brand-pink px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-brand-pink/90"
-            >
-              Open biomarker audit →
-            </Link>
-          </div>
-          <p className="text-muted-foreground text-sm">
-            Master catalogue with provider pricing — {combinedRows.length}{" "}
-            master tests, {providerTests?.length ?? 0} provider listings
-          </p>
-        </div>
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-end gap-2">
+        <Link
+          to="/control/biomarker-audit"
+          className="inline-flex items-center gap-2 rounded-md bg-brand-pink px-4 py-2 text-sm font-semibold text-primary-foreground shadow-sm transition hover:bg-brand-pink/90"
+        >
+          Open biomarker audit →
+        </Link>
       </div>
+      <p className="text-sm text-muted-foreground">
+        {combinedRows.length} master tests, {providerTests?.length ?? 0}{" "}
+        provider listings
+      </p>
 
-      {/* Stats bar */}
-      <div className="container mx-auto px-4 py-6">
+      <div>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
           {[
             {

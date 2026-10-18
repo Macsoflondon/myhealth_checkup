@@ -91,7 +91,7 @@ const KIND_LABEL: Record<OsPluginKind, string> = {
 };
 
 const INTERNAL_LINK_LABEL: Record<string, string> = {
-  "/admin/affiliate": "Import conversions on the Affiliate admin page",
+  "/control/affiliate": "Import conversions in Affiliate imports",
 };
 
 // The shared Input is styled for the public site (white, navy placeholder).

@@ -320,53 +320,43 @@ const AdminAuditConsolePage = () => {
   }, [filtered]);
 
   return (
-    <div className="container mx-auto py-8 space-y-6">
-      <div className="flex items-center justify-between gap-4 flex-wrap">
-        <div>
-          <h1 className="text-3xl font-bold">Audit console</h1>
-          <p className="text-sm text-muted-foreground">
-            Unified view across all audit surfaces.
-          </p>
-        </div>
-        <div className="flex gap-2 items-center">
-          <Select value={source} onValueChange={(v) => setSource(v as Source)}>
-            <SelectTrigger className="w-48">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All sources</SelectItem>
-              <SelectItem value="audit_logs">Data (audit_logs)</SelectItem>
-              <SelectItem value="admin_activity_log">Admin activity</SelectItem>
-              <SelectItem value="role_audit_log">Role changes</SelectItem>
-              <SelectItem value="protected_call_log">
-                Protected calls
-              </SelectItem>
-              <SelectItem value="csp_reports">CSP violations</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select
-            value={window}
-            onValueChange={(v) => setWindow(v as typeof window)}
-          >
-            <SelectTrigger className="w-28">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1h">1h</SelectItem>
-              <SelectItem value="24h">24h</SelectItem>
-              <SelectItem value="7d">7d</SelectItem>
-              <SelectItem value="30d">30d</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={exportCsv}
-            disabled={filtered.length === 0}
-          >
-            <Download className="h-4 w-4 mr-1" /> CSV
-          </Button>
-        </div>
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-end gap-2">
+        <Select value={source} onValueChange={(v) => setSource(v as Source)}>
+          <SelectTrigger className="w-48">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All sources</SelectItem>
+            <SelectItem value="audit_logs">Data (audit_logs)</SelectItem>
+            <SelectItem value="admin_activity_log">Admin activity</SelectItem>
+            <SelectItem value="role_audit_log">Role changes</SelectItem>
+            <SelectItem value="protected_call_log">Protected calls</SelectItem>
+            <SelectItem value="csp_reports">CSP violations</SelectItem>
+          </SelectContent>
+        </Select>
+        <Select
+          value={window}
+          onValueChange={(v) => setWindow(v as typeof window)}
+        >
+          <SelectTrigger className="w-28">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="1h">1h</SelectItem>
+            <SelectItem value="24h">24h</SelectItem>
+            <SelectItem value="7d">7d</SelectItem>
+            <SelectItem value="30d">30d</SelectItem>
+          </SelectContent>
+        </Select>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={exportCsv}
+          disabled={filtered.length === 0}
+        >
+          <Download className="h-4 w-4 mr-1" /> CSV
+        </Button>
       </div>
 
       <Card>

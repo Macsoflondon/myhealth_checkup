@@ -75,8 +75,6 @@ export default function LogsSection() {
   return (
     <SectionShell
       title="System Logs"
-      description="Unified audit view across every source (last 300 events)."
-      status="live"
       actions={
         <div className="flex items-center gap-2">
           <Select

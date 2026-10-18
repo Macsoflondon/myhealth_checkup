@@ -30,11 +30,7 @@ export default function LiveMetricsSection() {
   }, []);
 
   return (
-    <SectionShell
-      title="Live Operational Metrics"
-      description="Last 60 minutes across security & access surfaces."
-      status="beta"
-    >
+    <SectionShell title="Live Operational Metrics">
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         <StatCard
           label="Rate-limit events (1h)"

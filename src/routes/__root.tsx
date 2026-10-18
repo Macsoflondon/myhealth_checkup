@@ -33,6 +33,7 @@ import {
   Outlet,
   Scripts,
   useRouter,
+  useRouterState,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { HelmetProvider } from "react-helmet-async";
@@ -200,6 +201,11 @@ const PageFallback = () => (
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  // Crux Control and the admin sign-in pages are a separate app: no public
+  // backdrop, floating nav or comparison bar over them.
+  const isAdminArea = useRouterState({
+    select: (s) => /^\/(control|admin)(\/|$)/.test(s.location.pathname),
+  });
 
   // ported from main.tsx — Web Vitals RUM reporter (no-op in dev)
   useEffect(() => {
@@ -227,12 +233,12 @@ function RootComponent() {
               <Sonner />
               <TooltipProvider>
                 <ScrollToTop />
-                <GlobalPageBackground />
+                {!isAdminArea && <GlobalPageBackground />}
                 <GlobalHreflang />
                 <TestPageViewTracker />
-                <FloatingNavDock />
+                {!isAdminArea && <FloatingNavDock />}
                 <AutoTranslatePage />
-                <GlobalComparisonBar />
+                {!isAdminArea && <GlobalComparisonBar />}
                 <ErrorBoundary>
                   <Suspense fallback={<PageFallback />}>
                     <Outlet />

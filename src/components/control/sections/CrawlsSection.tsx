@@ -150,8 +150,6 @@ export default function CrawlsSection() {
   return (
     <SectionShell
       title="Crawl & Scrape Centre"
-      description="Trigger scrapers, watch live runs, and verify catalogue freshness."
-      status="live"
       actions={
         <div className="flex gap-2">
           <Button

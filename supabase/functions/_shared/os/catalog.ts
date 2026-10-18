@@ -97,13 +97,12 @@ export const OS_PLUGINS: readonly OsPluginDefinition[] = [
     name: "Conversion import",
     category: "revenue",
     kind: "native",
-    summary:
-      "Affiliate conversions uploaded as CSV on the Affiliate admin page.",
+    summary: "Affiliate conversions uploaded as CSV in Affiliate imports.",
     secretGroups: [],
     config: [],
     defaultConfig: {},
     datasets: [],
-    docsUrl: "/admin/affiliate",
+    docsUrl: "/control/affiliate",
     limitations: [
       "Revenue appears only after someone imports the network's report.",
     ],

@@ -160,15 +160,8 @@ export function SeoStatusDashboard() {
   const okCount = checks.filter((c) => c.status === "ok").length;
 
   return (
-    <div className="container mx-auto p-6 space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">SEO Status</h1>
-          <p className="text-sm text-muted-foreground">
-            Crawlability signals — sitemap, robots.txt, and live 404 checks for
-            public routes.
-          </p>
-        </div>
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-end gap-2">
         <Button
           variant="outline"
           size="sm"

@@ -53,7 +53,7 @@ const AdminAuth = () => {
           return;
         }
         if (roleRow) {
-          navigate("/admin/test-dashboard");
+          navigate("/control");
         } else {
           // Regular user — silently send them home, keep their session intact.
           navigate("/");
@@ -98,7 +98,7 @@ const AdminAuth = () => {
       }
 
       toast.success("Admin access verified!");
-      navigate("/admin/test-dashboard");
+      navigate("/control");
     } catch (err) {
       logger.error("Admin verification error:", err);
       toast.error("Verification failed.");
@@ -229,10 +229,11 @@ const AdminAuth = () => {
           </div>
 
           <h1 className="text-xl font-semibold text-white text-center mb-1">
-            Admin Portal
+            Crux Control
           </h1>
           <p className="text-white/78 text-sm text-center mb-8">
-            Restricted access. Authorised personnel only.
+            Admin sign-in. Have your authenticator app ready for the second
+            step.
           </p>
 
           {/* Lockout warning */}

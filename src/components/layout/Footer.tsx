@@ -176,13 +176,6 @@ const StayInformedSection = () => {
               </Link>
               {" · "}
               <Link
-                to="/admin/login"
-                className="inline-block py-1.5 underline hover:text-brand-pink transition-colors"
-              >
-                Admin login
-              </Link>
-              {" · "}
-              <Link
                 to="/control"
                 className="inline-block py-1.5 underline hover:text-brand-pink transition-colors"
               >

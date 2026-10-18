@@ -85,11 +85,7 @@ export default function ProvidersSection() {
   }, []);
 
   return (
-    <SectionShell
-      title="Provider Monitoring"
-      description="Per-provider catalog size and most recent scrape outcome."
-      status="live"
-    >
+    <SectionShell title="Provider Monitoring">
       <div className="grid grid-cols-3 gap-3 mb-6">
         <StatCard label="Providers tracked" value={rows.length} />
         <StatCard

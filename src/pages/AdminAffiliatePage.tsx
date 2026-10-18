@@ -132,15 +132,7 @@ export default function AdminAffiliatePage() {
   const t = perf.data?.totals;
 
   return (
-    <div className="space-y-6 p-4 md:p-6">
-      <div>
-        <h1 className="text-2xl font-semibold">Affiliate performance</h1>
-        <p className="text-sm text-muted-foreground">
-          Clicks on booking links and conversions imported from affiliate
-          networks. Commission never affects ranking.
-        </p>
-      </div>
-
+    <div className="space-y-6">
       <Card>
         <CardContent className="grid gap-4 pt-6 sm:grid-cols-3">
           <div>
@@ -208,8 +200,8 @@ export default function AdminAffiliatePage() {
       {t && (
         <p className="text-xs text-muted-foreground">
           Conversion rate is the share of clicks that led to a matched
-          conversion; conversions without a matched click are counted
-          separately as unattributed.
+          conversion; conversions without a matched click are counted separately
+          as unattributed.
         </p>
       )}
 

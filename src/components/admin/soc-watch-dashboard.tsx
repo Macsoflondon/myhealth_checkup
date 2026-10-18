@@ -1,10 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link } from "@/lib/router-compat";
 import {
   Activity,
   AlertTriangle,
-  Eye,
   Gauge,
   LockKeyhole,
   RefreshCw,
@@ -251,36 +249,33 @@ export function SocWatchDashboard({
                 Admin + MFA
               </Badge>
             </div>
-            <h1
-              className={cn(
-                "font-heading text-3xl font-semibold",
-                embedded ? "text-foreground" : "text-primary-foreground",
-              )}
-            >
-              SOC Watch
-            </h1>
-            <p
-              className={cn(
-                "mt-2 text-sm",
-                embedded
-                  ? "text-muted-foreground"
-                  : "text-primary-foreground/70",
-              )}
-            >
-              Read-only security operations visibility across audit logs,
-              alerts, protected calls, CSP reports, cron jobs and edge function
-              health.
-            </p>
+            {/* ControlPage already shows the title and description. */}
+            {!embedded && (
+              <>
+                <h1
+                  className={cn(
+                    "font-heading text-3xl font-semibold",
+                    embedded ? "text-foreground" : "text-primary-foreground",
+                  )}
+                >
+                  SOC Watch
+                </h1>
+                <p
+                  className={cn(
+                    "mt-2 text-sm",
+                    embedded
+                      ? "text-muted-foreground"
+                      : "text-primary-foreground/70",
+                  )}
+                >
+                  Read-only security operations visibility across audit logs,
+                  alerts, protected calls, CSP reports, cron jobs and edge
+                  function health.
+                </p>
+              </>
+            )}
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            {embedded && (
-              <Button asChild variant="outline" size="sm">
-                <Link to="/admin/soc-watch">
-                  <Eye className="mr-2 h-4 w-4" />
-                  Full screen
-                </Link>
-              </Button>
-            )}
             <Button
               variant={embedded ? "default" : "secondary"}
               onClick={() => void dashboardQuery.refetch()}

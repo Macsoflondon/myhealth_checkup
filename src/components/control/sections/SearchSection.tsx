@@ -48,11 +48,7 @@ export default function SearchSection() {
   };
 
   return (
-    <SectionShell
-      title="Global Search"
-      description="Search across tests, providers and logs."
-      status="stub"
-    >
+    <SectionShell title="Global Search">
       <div className="flex gap-2 mb-6">
         <Input
           placeholder="Search…"

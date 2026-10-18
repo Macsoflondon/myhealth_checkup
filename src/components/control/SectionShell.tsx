@@ -2,36 +2,27 @@ import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
 interface SectionShellProps {
+  /** Names the region for assistive tech; the visible title is ControlPage's. */
   title: string;
-  description?: string;
-  status?: "live" | "beta" | "stub";
   actions?: ReactNode;
   children: ReactNode;
 }
 
-export function SectionShell({
-  title,
-  description,
-  status,
-  actions,
-  children,
-}: SectionShellProps) {
+/**
+ * Body wrapper for a Crux Control section. ControlPage already shows the
+ * section's title, status and description in its header, so this only adds
+ * the action row and labels the region.
+ */
+export function SectionShell({ title, actions, children }: SectionShellProps) {
   return (
-    <div className="space-y-6">
-      <header className="flex items-start justify-between gap-4 flex-wrap">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-semibold tracking-tight">{title}</h1>
-            {status && <StatusBadge status={status} />}
-          </div>
-          {description && (
-            <p className="mt-1 text-sm text-muted-foreground">{description}</p>
-          )}
+    <section aria-label={title} className="space-y-6">
+      {actions && (
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          {actions}
         </div>
-        {actions && <div className="flex items-center gap-2">{actions}</div>}
-      </header>
+      )}
       <div>{children}</div>
-    </div>
+    </section>
   );
 }
 

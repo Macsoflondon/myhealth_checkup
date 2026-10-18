@@ -32,13 +32,10 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/portal",
   "/control",
 
-  // Admin
+  // Admin sign-in; every other /admin/* path redirects into /control
+  "/admin",
   "/admin/login",
-  "/admin/test-upload",
-  "/admin/data-refresh",
-  "/admin/scrapers",
-  "/admin/test-mapper",
-  "/admin/test-dashboard",
+  "/admin/recovery",
   "/typography-showcase",
   "/hidden-gap-detector",
 

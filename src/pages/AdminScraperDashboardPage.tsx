@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import React, { useState, useEffect, useMemo } from "react";
-import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -454,258 +453,229 @@ const AdminScraperDashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#081129]">
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <div className="max-w-4xl mx-auto space-y-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-white">
-                Scraper Dashboard
-              </h1>
-              <p className="text-white/90">
-                Manage and monitor provider data scrapers
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                onClick={fetchJobs}
-                disabled={isLoadingJobs}
-              >
-                <RefreshCw
-                  className={`h-4 w-4 mr-2 ${isLoadingJobs ? "animate-spin" : ""}`}
-                />
-                Refresh
-              </Button>
-              <Button
-                onClick={runAllScrapers}
-                disabled={runningScrapers.size > 0}
-              >
-                <Play className="h-4 w-4 mr-2" />
-                Run All Scrapers
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={smartRescrape}
-                disabled={runningScrapers.size > 0}
-                title="Retry only providers that failed, are stuck, or returned no data"
-              >
-                <Wand2 className="h-4 w-4 mr-2" />
-                Smart Re-scrape ({getSmartRescrapeTargets().length})
-              </Button>
-            </div>
-          </div>
+    <div className="space-y-6">
+      <div className="flex flex-wrap items-center justify-end gap-2">
+        <Button variant="outline" onClick={fetchJobs} disabled={isLoadingJobs}>
+          <RefreshCw
+            className={`h-4 w-4 mr-2 ${isLoadingJobs ? "animate-spin" : ""}`}
+          />
+          Refresh
+        </Button>
+        <Button onClick={runAllScrapers} disabled={runningScrapers.size > 0}>
+          <Play className="h-4 w-4 mr-2" />
+          Run All Scrapers
+        </Button>
+        <Button
+          variant="secondary"
+          onClick={smartRescrape}
+          disabled={runningScrapers.size > 0}
+          title="Retry only providers that failed, are stuck, or returned no data"
+        >
+          <Wand2 className="h-4 w-4 mr-2" />
+          Smart Re-scrape ({getSmartRescrapeTargets().length})
+        </Button>
+      </div>
 
-          {(loadError || countsError) && (
-            <Alert variant="destructive">
-              <AlertTriangle className="h-4 w-4" />
+      {(loadError || countsError) && (
+        <Alert variant="destructive">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription className="text-sm">
+            {[loadError, countsError].filter(Boolean).join(" ")}
+          </AlertDescription>
+        </Alert>
+      )}
+
+      <LeakedPasswordProtectionStatus />
+
+      <ScraperAlertsPanel />
+
+      <NormalizeCategoriesCard />
+
+      <Card>
+        <CardHeader className="pb-3">
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-primary" />
+                Refresh Popular Tests
+              </CardTitle>
+              <CardDescription>
+                Scrape each provider's curated best-sellers page and update{" "}
+                <code>is_popular</code>, <code>popularity_rank</code> and{" "}
+                <code>image_url</code>. Runs as your admin user.
+              </CardDescription>
+            </div>
+            <Button
+              onClick={refreshPopularTests}
+              disabled={isRefreshingPopular}
+            >
+              {isRefreshingPopular ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Refreshing...
+                </>
+              ) : (
+                <>
+                  <Sparkles className="h-4 w-4 mr-2" />
+                  Refresh Popular Tests
+                </>
+              )}
+            </Button>
+          </div>
+        </CardHeader>
+        {popularResult && (
+          <CardContent className="pt-0">
+            <Alert>
               <AlertDescription className="text-sm">
-                {[loadError, countsError].filter(Boolean).join(" ")}
+                {popularResult}
               </AlertDescription>
             </Alert>
-          )}
+          </CardContent>
+        )}
+      </Card>
 
-          <LeakedPasswordProtectionStatus />
+      <Alert>
+        <Clock className="h-4 w-4" />
+        <AlertDescription>
+          <strong>Scheduled scraping:</strong> All provider scrapers run
+          automatically every 6 hours, with a daily health check that creates
+          alerts when any provider drops below its expected test count.
+        </AlertDescription>
+      </Alert>
 
-          <ScraperAlertsPanel />
+      <div className="grid gap-4">
+        {PROVIDERS.map((provider) => {
+          const job = getJobForProvider(provider.id);
+          const isRunning = runningScrapers.has(provider.id);
+          const testCount = testCounts[provider.id] || 0;
 
-          <NormalizeCategoriesCard />
-
-          <Card>
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between gap-4 flex-wrap">
-                <div>
-                  <CardTitle className="text-lg flex items-center gap-2">
-                    <Sparkles className="h-5 w-5 text-primary" />
-                    Refresh Popular Tests
-                  </CardTitle>
-                  <CardDescription>
-                    Scrape each provider's curated best-sellers page and update{" "}
-                    <code>is_popular</code>, <code>popularity_rank</code> and{" "}
-                    <code>image_url</code>. Runs as your admin user.
-                  </CardDescription>
-                </div>
-                <Button
-                  onClick={refreshPopularTests}
-                  disabled={isRefreshingPopular}
-                >
-                  {isRefreshingPopular ? (
-                    <>
-                      <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                      Refreshing...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="h-4 w-4 mr-2" />
-                      Refresh Popular Tests
-                    </>
-                  )}
-                </Button>
-              </div>
-            </CardHeader>
-            {popularResult && (
-              <CardContent className="pt-0">
-                <Alert>
-                  <AlertDescription className="text-sm">
-                    {popularResult}
-                  </AlertDescription>
-                </Alert>
-              </CardContent>
-            )}
-          </Card>
-
-          <Alert>
-            <Clock className="h-4 w-4" />
-            <AlertDescription>
-              <strong>Scheduled scraping:</strong> All provider scrapers run
-              automatically every 6 hours, with a daily health check that
-              creates alerts when any provider drops below its expected test
-              count.
-            </AlertDescription>
-          </Alert>
-
-          <div className="grid gap-4">
-            {PROVIDERS.map((provider) => {
-              const job = getJobForProvider(provider.id);
-              const isRunning = runningScrapers.has(provider.id);
-              const testCount = testCounts[provider.id] || 0;
-
-              return (
-                <Card key={provider.id}>
-                  <CardHeader className="pb-3">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <CardTitle className="text-lg">
-                          {provider.name}
-                        </CardTitle>
-                        <CardDescription>
-                          {testCount} active tests • Last scraped:{" "}
-                          {formatDate(job?.last_scraped || null)}
-                        </CardDescription>
-                      </div>
-                      <div className="flex items-center gap-2 flex-wrap justify-end">
-                        {getStatusBadge(job?.status)}
+          return (
+            <Card key={provider.id}>
+              <CardHeader className="pb-3">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle className="text-lg">{provider.name}</CardTitle>
+                    <CardDescription>
+                      {testCount} active tests • Last scraped:{" "}
+                      {formatDate(job?.last_scraped || null)}
+                    </CardDescription>
+                  </div>
+                  <div className="flex items-center gap-2 flex-wrap justify-end">
+                    {getStatusBadge(job?.status)}
+                    <Button
+                      size="sm"
+                      onClick={() => runScraper(provider)}
+                      disabled={isRunning}
+                    >
+                      {isRunning ? (
+                        <>
+                          <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                          Running...
+                        </>
+                      ) : (
+                        <>
+                          <Play className="h-4 w-4 mr-2" />
+                          Run Now
+                        </>
+                      )}
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
                         <Button
                           size="sm"
-                          onClick={() => runScraper(provider)}
+                          variant="destructive"
                           disabled={isRunning}
                         >
-                          {isRunning ? (
-                            <>
-                              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                              Running...
-                            </>
-                          ) : (
-                            <>
-                              <Play className="h-4 w-4 mr-2" />
-                              Run Now
-                            </>
-                          )}
+                          <Trash2 className="h-4 w-4 mr-2" />
+                          Purge & Re-scrape
                         </Button>
-                        <AlertDialog>
-                          <AlertDialogTrigger asChild>
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                              disabled={isRunning}
-                            >
-                              <Trash2 className="h-4 w-4 mr-2" />
-                              Purge & Re-scrape
-                            </Button>
-                          </AlertDialogTrigger>
-                          <AlertDialogContent>
-                            <AlertDialogHeader>
-                              <AlertDialogTitle>
-                                Purge all {provider.name} tests?
-                              </AlertDialogTitle>
-                              <AlertDialogDescription>
-                                This will{" "}
-                                <strong>
-                                  permanently delete all {testCount} active rows
-                                </strong>{" "}
-                                in
-                                <code className="mx-1">
-                                  provider_tests
-                                </code> for <strong>{provider.name}</strong>,
-                                then immediately re-trigger the scraper so the
-                                improved parser repopulates everything from
-                                scratch. Cannot be undone.
-                              </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                              <AlertDialogCancel>Cancel</AlertDialogCancel>
-                              <AlertDialogAction
-                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                                onClick={() => purgeAndRescrape(provider)}
-                              >
-                                Yes, purge and re-scrape
-                              </AlertDialogAction>
-                            </AlertDialogFooter>
-                          </AlertDialogContent>
-                        </AlertDialog>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  {job &&
-                    Boolean(job.error_message) &&
-                    job.status === "failed" && (
-                      <CardContent className="pt-0">
-                        <Alert variant="destructive">
-                          <AlertTriangle className="h-4 w-4" />
-                          <AlertDescription className="text-sm">
-                            {formatErrorMessage(job.error_message)}
-                          </AlertDescription>
-                        </Alert>
-                      </CardContent>
-                    )}
-                </Card>
-              );
-            })}
-          </div>
-
-          <ScrapeRunLogPanel />
-
-          <SectionMappingAuditPanel />
-
-          <CategoryVerificationPanel />
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">
-                Recent Scraping Activity
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {jobs.length === 0 ? (
-                <p className="text-muted-foreground text-sm">
-                  No scraping activity recorded yet.
-                </p>
-              ) : (
-                <div className="space-y-2">
-                  {jobs.slice(0, 10).map((job) => (
-                    <div
-                      key={job.id}
-                      className="flex items-center justify-between text-sm py-2 border-b last:border-0"
-                    >
-                      <div className="flex items-center gap-2">
-                        {getStatusBadge(job.status)}
-                        <span className="font-medium">
-                          {PROVIDERS.find((p) => p.id === job.provider_id)
-                            ?.name || job.provider_id}
-                        </span>
-                      </div>
-                      <span className="text-muted-foreground">
-                        {formatDate(job.updated_at)}
-                      </span>
-                    </div>
-                  ))}
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Purge all {provider.name} tests?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription>
+                            This will{" "}
+                            <strong>
+                              permanently delete all {testCount} active rows
+                            </strong>{" "}
+                            in
+                            <code className="mx-1">
+                              provider_tests
+                            </code> for <strong>{provider.name}</strong>, then
+                            immediately re-trigger the scraper so the improved
+                            parser repopulates everything from scratch. Cannot
+                            be undone.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                            onClick={() => purgeAndRescrape(provider)}
+                          >
+                            Yes, purge and re-scrape
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
                 </div>
+              </CardHeader>
+              {job && Boolean(job.error_message) && job.status === "failed" && (
+                <CardContent className="pt-0">
+                  <Alert variant="destructive">
+                    <AlertTriangle className="h-4 w-4" />
+                    <AlertDescription className="text-sm">
+                      {formatErrorMessage(job.error_message)}
+                    </AlertDescription>
+                  </Alert>
+                </CardContent>
               )}
-            </CardContent>
-          </Card>
-        </div>
-      </main>
-      <Footer />
+            </Card>
+          );
+        })}
+      </div>
+
+      <ScrapeRunLogPanel />
+
+      <SectionMappingAuditPanel />
+
+      <CategoryVerificationPanel />
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Recent Scraping Activity</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {jobs.length === 0 ? (
+            <p className="text-muted-foreground text-sm">
+              No scraping activity recorded yet.
+            </p>
+          ) : (
+            <div className="space-y-2">
+              {jobs.slice(0, 10).map((job) => (
+                <div
+                  key={job.id}
+                  className="flex items-center justify-between text-sm py-2 border-b last:border-0"
+                >
+                  <div className="flex items-center gap-2">
+                    {getStatusBadge(job.status)}
+                    <span className="font-medium">
+                      {PROVIDERS.find((p) => p.id === job.provider_id)?.name ||
+                        job.provider_id}
+                    </span>
+                  </div>
+                  <span className="text-muted-foreground">
+                    {formatDate(job.updated_at)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 };

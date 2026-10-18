@@ -587,16 +587,6 @@ const Auth = () => {
               <div className="mt-1 flex items-center justify-center gap-3 pt-2 border-t border-white/20">
                 <button
                   type="button"
-                  onClick={() => navigate("/admin/login")}
-                  className="text-xs text-white/90 hover:text-white hover:underline transition-colors"
-                >
-                  Admin
-                </button>
-                <span aria-hidden="true" className="text-xs text-white/78">
-                  &middot;
-                </span>
-                <button
-                  type="button"
                   onClick={() => navigate("/control")}
                   className="text-xs text-white/90 hover:text-white hover:underline transition-colors"
                 >

@@ -132,7 +132,7 @@ export const ScraperAlertsPanel: React.FC = () => {
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0">
+      <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-3 space-y-0">
         <div>
           <CardTitle className="flex items-center gap-2">
             <AlertTriangle className="h-5 w-5 text-warning" />

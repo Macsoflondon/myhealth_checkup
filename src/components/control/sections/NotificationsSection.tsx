@@ -47,11 +47,7 @@ export default function NotificationsSection() {
   ).length;
 
   return (
-    <SectionShell
-      title="Notification Centre"
-      description="Open alerts from every subsystem."
-      status="live"
-    >
+    <SectionShell title="Notification Centre">
       <div className="grid grid-cols-3 gap-3 mb-6">
         <StatCard
           label="Open alerts"

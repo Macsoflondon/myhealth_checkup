@@ -39,11 +39,7 @@ export default function AutomationsSection() {
   const failedJobs = jobs.filter(([, r]) => r.status === "failed").length;
 
   return (
-    <SectionShell
-      title="Automation Centre"
-      description="Cron jobs, schedulers, and background workers."
-      status="live"
-    >
+    <SectionShell title="Automation Centre">
       <div className="grid grid-cols-3 gap-3 mb-6">
         <StatCard label="Distinct jobs" value={jobs.length} />
         <StatCard label="Recent runs" value={rows.length} />
