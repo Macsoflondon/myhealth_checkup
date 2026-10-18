@@ -502,7 +502,8 @@ Deno.serve(async (req) => {
     Deno.env.get("SUPABASE_PUBLISHABLE_KEY") ||
     "";
   const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
-  const openaiApiKey = Deno.env.get("OPENAI_API_KEY") || "";
+  const openaiApiKey =
+    Deno.env.get("OPENAI_API_KEY") || Deno.env.get("Open_AI_API_KEY") || "";
 
   if (!supabaseUrl || !supabaseAnonKey || !supabaseServiceKey) {
     return jsonResponse(
