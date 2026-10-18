@@ -6,7 +6,9 @@ import { getHomepageComparison } from "@/services/homepage-comparison-service";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export interface HomepageLiveComparisonProps extends HTMLAttributes<HTMLDivElement> {}
+export interface HomepageLiveComparisonProps extends HTMLAttributes<HTMLDivElement> {
+  "aria-label"?: string;
+}
 
 /** Compact, live clinic catalogue preview for the homepage mission section. */
 export const HomepageLiveComparison = forwardRef<HTMLDivElement, HomepageLiveComparisonProps>(
