@@ -46,7 +46,10 @@ const StartJourneySection = () => {
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-          <HomepageLiveComparison panel="thyroid" className="max-w-none h-full" />
+          <HomepageLiveComparison
+            panel="thyroid"
+            className="max-w-none h-full"
+          />
           <HomepageLiveComparison panel="liver" className="max-w-none h-full" />
         </div>
       </div>
