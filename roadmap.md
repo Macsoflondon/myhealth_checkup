@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Match all three homepage live comparison capsules and assign distinct full blood count, thyroid and liver sections.
+
 - [x] Match the supplied homepage screenshot’s trust strip and mission/live-comparison section; verify desktop and mobile.
 
 - [x] Delete inactive £0–£1 Medical Diagnosis junk rows + linked history (136 rows).

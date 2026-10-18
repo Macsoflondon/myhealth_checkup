@@ -12,7 +12,10 @@ const { query } = vi.hoisted(() => ({
   },
 }));
 vi.mock("@/integrations/supabase/client", () => ({ supabase: query }));
-import { getHomepageComparison } from "@/services/homepage-comparison-service";
+import {
+  getHomepageComparison,
+  HOMEPAGE_COMPARISON_PANELS,
+} from "@/services/homepage-comparison-service";
 
 describe("homepage comparison read", () => {
   beforeEach(() => {
@@ -42,4 +45,26 @@ describe("homepage comparison read", () => {
     });
     await expect(getHomepageComparison()).rejects.toThrow("Unavailable");
   });
+  it.each(["full-blood-count", "thyroid", "liver"] as const)(
+    "queries the distinct %s section",
+    async (panel) => {
+      query.order.mockResolvedValue({ data: [], error: null });
+      await getHomepageComparison(panel);
+      expect(query.or).toHaveBeenCalledWith(
+        HOMEPAGE_COMPARISON_PANELS[panel].filter,
+      );
+      const names = {
+        "full-blood-count": "blood count",
+        thyroid: "thyroid",
+        liver: "liver",
+      };
+      expect(HOMEPAGE_COMPARISON_PANELS[panel].filter).toContain(names[panel]);
+      for (const other of Object.keys(names) as (keyof typeof names)[]) {
+        if (other !== panel)
+          expect(HOMEPAGE_COMPARISON_PANELS[panel].filter).not.toContain(
+            names[other],
+          );
+      }
+    },
+  );
 });
