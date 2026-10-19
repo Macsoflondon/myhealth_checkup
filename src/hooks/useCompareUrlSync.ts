@@ -27,6 +27,8 @@ interface CompareUrlSync {
   isHydrating: boolean;
   /** Ids present in the URL that no longer resolve to a live test. */
   missingIds: string[];
+  /** True when a ?panel= comparison drives the view (rows not in the store). */
+  isPanelView: boolean;
 }
 
 export function useCompareUrlSync(): CompareUrlSync {
@@ -61,11 +63,7 @@ export function useCompareUrlSync(): CompareUrlSync {
     () => parseComparePanel(searchParams.get(COMPARE_PANEL_PARAM)),
     [searchParams],
   );
-  const panelApplied = useRef<string>("");
-  const shouldLoadPanel =
-    Boolean(panelSlug) &&
-    urlIds.length === 0 &&
-    panelApplied.current !== panelSlug;
+  const shouldLoadPanel = Boolean(panelSlug) && urlIds.length === 0;
 
   const { data: panelTests, isFetching: isPanelFetching } = useQuery({
     queryKey: ["compare", "panel", panelSlug],
@@ -74,12 +72,8 @@ export function useCompareUrlSync(): CompareUrlSync {
     staleTime: 5 * 60 * 1000,
   });
 
-  useEffect(() => {
-    if (!panelSlug || !panelTests || panelApplied.current === panelSlug) return;
-    panelApplied.current = panelSlug;
-    hydratedFromUrl.current = true;
-    if (panelTests.length > 0) compareStore.set(panelTests);
-  }, [panelSlug, panelTests]);
+  // Panel rows (including "not listed" placeholders) render straight from the
+  // query and are never written into the global compare selection.
 
   // URL -> store (once, on arrival with ids).
   useEffect(() => {
@@ -116,7 +110,7 @@ export function useCompareUrlSync(): CompareUrlSync {
   const { data: refreshed } = useQuery({
     queryKey: ["compare", "refresh", refreshKey],
     queryFn: () => CompareService.getTestsByIds(refreshIds),
-    enabled: refreshIds.length > 0,
+    enabled: refreshIds.length > 0 && !shouldLoadPanel,
     staleTime: 0,
     gcTime: 0,
   });
@@ -161,9 +155,10 @@ export function useCompareUrlSync(): CompareUrlSync {
   );
 
   return {
-    selected,
+    selected: shouldLoadPanel ? (panelTests ?? []) : selected,
     isHydrating:
       (shouldHydrate && isFetching) || (shouldLoadPanel && isPanelFetching),
     missingIds,
+    isPanelView: shouldLoadPanel,
   };
 }

@@ -1,0 +1,10 @@
+{
+  "components": [
+    {
+      "name": "LiveCatalogueComparison",
+      "usage": "Show a compact provider comparison using source-backed prices, coverage and update timestamps.",
+      "examples": [{ "label": "Provider panel", "code": "<LiveCatalogueComparison panel={comparisonPanel} variant=\"compact\" size=\"default\" />" }],
+      "antipatterns": ["Do not use screenshot images or invented prices as live catalogue data.", "Do not repeat the same health-test panel in simultaneous homepage slots."]
+    }
+  ]
+}

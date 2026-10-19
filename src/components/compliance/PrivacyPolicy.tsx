@@ -213,13 +213,13 @@ const PrivacyPolicy = () => {
         </h3>
         <p className="text-brand-navy mb-2">
           When you click a booking or provider link, we record a random click
-          reference, the time, the provider, the test, the page you clicked
-          from (without any query string), where on the page the link was, and
-          the provider&apos;s website address. We do not record your IP address,
+          reference, the time, the provider, the test, the page you clicked from
+          (without any query string), where on the page the link was, and the
+          provider&apos;s website address. We do not record your IP address,
           browser details, name, email or account. Nothing is stored on your
           device. Where a provider&apos;s affiliate network supports it, the
-          random reference is added to the link so the network can tell us if
-          a booking followed.
+          random reference is added to the link so the network can tell us if a
+          booking followed.
         </p>
         <p className="text-brand-navy mb-2">
           We use this to measure which links are used and to reconcile
@@ -229,6 +229,24 @@ const PrivacyPolicy = () => {
         <p className="text-brand-navy">
           Click records are deleted automatically after 24 months.
         </p>
+      </Card>
+
+      <Card className="p-6" id="site-assistant">
+        <h2 className="text-xl font-semibold mb-4">Site assistant</h2>
+        <ul className="list-disc space-y-2 pl-5 text-brand-navy">
+          <li>
+            Questions you type into the site assistant are sent to an AI
+            provider through Lovable&apos;s AI gateway to generate a reply.
+          </li>
+          <li>Your questions are not stored on our servers.</li>
+          <li>
+            Chat history is kept only in your own browser. You can clear it at
+            any time with &quot;New conversation&quot;.
+          </li>
+          <li>
+            Please do not enter personal health information into the assistant.
+          </li>
+        </ul>
       </Card>
 
       <Card className="p-6">

@@ -130,6 +130,7 @@ import { Route as TestsVitaminsRouteImport } from './routes/tests.vitamins'
 import { Route as TestsWomensHealthRouteImport } from './routes/tests.womens-health'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as ApiPublicAffiliateClickRouteImport } from './routes/api/public/affiliate-click'
+import { Route as ApiPublicAssistantRouteImport } from './routes/api/public/assistant'
 import { Route as CompareGoalsIndexRouteImport } from './routes/compare.goals.index'
 import { Route as CompareGoalsGoalSlugRouteImport } from './routes/compare.goals.$goalSlug'
 import { Route as CompareSymptomsIndexRouteImport } from './routes/compare.symptoms.index'
@@ -759,6 +760,11 @@ const ApiPublicAffiliateClickRoute = ApiPublicAffiliateClickRouteImport.update({
   path: '/api/public/affiliate-click',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicAssistantRoute = ApiPublicAssistantRouteImport.update({
+  id: '/api/public/assistant',
+  path: '/api/public/assistant',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CompareGoalsIndexRoute = CompareGoalsIndexRouteImport.update({
   id: '/goals/',
   path: '/goals/',
@@ -944,6 +950,7 @@ export interface FileRoutesByFullPath {
   '/randox/': typeof RandoxIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/api/public/affiliate-click': typeof ApiPublicAffiliateClickRoute
+  '/api/public/assistant': typeof ApiPublicAssistantRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
   '/compare/goals/': typeof CompareGoalsIndexRoute
@@ -1077,6 +1084,7 @@ export interface FileRoutesByTo {
   '/randox': typeof RandoxIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/api/public/affiliate-click': typeof ApiPublicAffiliateClickRoute
+  '/api/public/assistant': typeof ApiPublicAssistantRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
   '/compare/goals': typeof CompareGoalsIndexRoute
@@ -1212,6 +1220,7 @@ export interface FileRoutesById {
   '/randox/': typeof RandoxIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/api/public/affiliate-click': typeof ApiPublicAffiliateClickRoute
+  '/api/public/assistant': typeof ApiPublicAssistantRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
   '/compare/goals/': typeof CompareGoalsIndexRoute
@@ -1348,6 +1357,7 @@ export interface FileRouteTypes {
     | '/randox/'
     | '/.lovable/oauth/consent'
     | '/api/public/affiliate-click'
+    | '/api/public/assistant'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
     | '/compare/goals/'
@@ -1481,6 +1491,7 @@ export interface FileRouteTypes {
     | '/randox'
     | '/.lovable/oauth/consent'
     | '/api/public/affiliate-click'
+    | '/api/public/assistant'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
     | '/compare/goals'
@@ -1615,6 +1626,7 @@ export interface FileRouteTypes {
     | '/randox/'
     | '/.lovable/oauth/consent'
     | '/api/public/affiliate-click'
+    | '/api/public/assistant'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
     | '/compare/goals/'
@@ -1748,6 +1760,7 @@ export interface RootRouteChildren {
   RandoxIndexRoute: typeof RandoxIndexRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   ApiPublicAffiliateClickRoute: typeof ApiPublicAffiliateClickRoute
+  ApiPublicAssistantRoute: typeof ApiPublicAssistantRoute
   ProviderProviderIdIndexRoute: typeof ProviderProviderIdIndexRoute
   ApiPublicDiagnosticsAbortsRoute: typeof ApiPublicDiagnosticsAbortsRoute
   ApiPublicRetestReminderSendRoute: typeof ApiPublicRetestReminderSendRoute
@@ -2606,6 +2619,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicAffiliateClickRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/assistant': {
+      id: '/api/public/assistant'
+      path: '/api/public/assistant'
+      fullPath: '/api/public/assistant'
+      preLoaderRoute: typeof ApiPublicAssistantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/compare/goals/': {
       id: '/compare/goals/'
       path: '/goals'
@@ -2828,6 +2848,7 @@ const rootRouteChildren: RootRouteChildren = {
   RandoxIndexRoute: RandoxIndexRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   ApiPublicAffiliateClickRoute: ApiPublicAffiliateClickRoute,
+  ApiPublicAssistantRoute: ApiPublicAssistantRoute,
   ProviderProviderIdIndexRoute: ProviderProviderIdIndexRoute,
   ApiPublicDiagnosticsAbortsRoute: ApiPublicDiagnosticsAbortsRoute,
   ApiPublicRetestReminderSendRoute: ApiPublicRetestReminderSendRoute,

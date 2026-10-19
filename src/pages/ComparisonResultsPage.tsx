@@ -10,7 +10,8 @@ import { compareStore } from "@/stores/compareStore";
 import { useCompareUrlSync } from "@/hooks/useCompareUrlSync";
 
 const ComparisonResultsPage = () => {
-  const { selected, isHydrating, missingIds } = useCompareUrlSync();
+  const { selected, isHydrating, missingIds, isPanelView } =
+    useCompareUrlSync();
   const navigate = useNavigate();
 
   return (
@@ -67,12 +68,14 @@ const ComparisonResultsPage = () => {
                   >
                     Add more tests
                   </Button>
-                  <Button
-                    onClick={() => compareStore.clear()}
-                    className="rounded-full bg-brand-turquoise px-8 text-white hover:bg-brand-pink"
-                  >
-                    Clear selection
-                  </Button>
+                  {!isPanelView && (
+                    <Button
+                      onClick={() => compareStore.clear()}
+                      className="rounded-full bg-brand-turquoise px-8 text-white hover:bg-brand-pink"
+                    >
+                      Clear selection
+                    </Button>
+                  )}
                 </div>
 
                 <p className="mt-8 text-center text-xs text-muted-foreground">

@@ -19,7 +19,15 @@ export interface ComparePanelConfig {
 export const COMPARE_PANELS: Record<string, ComparePanelConfig> = {
   "full-blood-count": {
     label: "Full Blood Count",
-    includeNames: ["full blood count", "complete blood count"],
+    // Standalone haematology profiles are FBC (+ differential) listings under
+    // another name; multi-panel biochemistry bundles are excluded.
+    includeNames: [
+      "full blood count",
+      "complete blood count",
+      "hematology profile",
+      "haematology profile",
+    ],
+    excludeNames: ["biochemistry", "iron and fbc"],
   },
   thyroid: {
     label: "Thyroid Function",

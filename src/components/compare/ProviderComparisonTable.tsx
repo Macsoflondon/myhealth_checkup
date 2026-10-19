@@ -1,5 +1,5 @@
-import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import React, { useMemo } from "react";
+import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { Plus, Check } from "lucide-react";
 import type { CompareTestData } from "@/types";
 import { PROVIDER_LOGOS } from "@/constants/providers";
@@ -48,7 +48,7 @@ const DIVIDER = "#e2e8f0";
 const MUTED = "#94a3b8";
 
 const MIN_COLS = 3;
-const MAX_COLS = 5;
+const MAX_COLS = 8;
 
 type Slot = CompareTestData | null;
 
@@ -122,7 +122,15 @@ const Row: React.FC<RowProps> = ({
       </th>
       {slots.map((slot, i) => (
         <td key={i} style={cellBase(bg)}>
-          {slot ? render(slot, i) : (placeholder ?? <Dash />)}
+          {slot ? (
+            slot.available === false ? (
+              <Dash />
+            ) : (
+              render(slot, i)
+            )
+          ) : (
+            (placeholder ?? <Dash />)
+          )}
         </td>
       ))}
     </tr>
@@ -254,7 +262,7 @@ export const ProviderComparisonTable: React.FC<
                       scope="col"
                       style={{
                         background: NAVY,
-                        minWidth: 220,
+                        minWidth: 170,
                         padding: "20px 16px",
                         verticalAlign: "top",
                       }}
@@ -270,7 +278,7 @@ export const ProviderComparisonTable: React.FC<
                     style={{
                       background: NAVY,
                       color: "#ffffff",
-                      minWidth: 220,
+                      minWidth: 170,
                       padding: "20px 16px",
                       textAlign: "left",
                       verticalAlign: "top",
@@ -340,7 +348,19 @@ export const ProviderComparisonTable: React.FC<
                             lineHeight: 1,
                           }}
                         >
-                          {formatPrice(test.price)}
+                          {test.available === false ? (
+                            <span
+                              style={{
+                                fontSize: 12,
+                                fontWeight: 500,
+                                color: "rgba(255,255,255,0.6)",
+                              }}
+                            >
+                              Not offered
+                            </span>
+                          ) : (
+                            formatPrice(test.price)
+                          )}
                         </div>
                       </div>
                     </div>
@@ -538,38 +558,31 @@ export const ProviderComparisonTable: React.FC<
               }
               render={(t) => {
                 const available = !!t.url && t.url !== "#";
-                const link = available ? (
-                  <a
-                    href={t.url}
-                    data-affiliate-placement="comparison"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block w-full text-center rounded-full"
-                    style={{
-                      background: PINK,
-                      color: "#ffffff",
-                      padding: "10px 14px",
-                      fontSize: 13,
-                      fontFamily: "'Montserrat', sans-serif",
-                      fontWeight: 600,
-                    }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.background = TURQUOISE)
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.background = PINK)
-                    }
-                  >
-                    Book Now
-                  </a>
-                ) : null;
-                const note = available ? (
-                  <AffiliateCommissionNote className="mt-1 text-center" />
-                ) : null;
                 return available ? (
                   <>
-                    {link}
-                    {note}
+                    <a
+                      href={t.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-full text-center rounded-full"
+                      style={{
+                        background: PINK,
+                        color: "#ffffff",
+                        padding: "10px 14px",
+                        fontSize: 13,
+                        fontFamily: "'Montserrat', sans-serif",
+                        fontWeight: 600,
+                      }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.background = TURQUOISE)
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.background = PINK)
+                      }
+                    >
+                      Book Now
+                    </a>
+                    <AffiliateCommissionNote className="mt-1 text-center" />
                   </>
                 ) : (
                   <button
