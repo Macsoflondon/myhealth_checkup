@@ -10,6 +10,10 @@ import { baseTestId } from "@/lib/collectionVariants";
 // predates the clinical review / collection fee fields.
 const STORAGE_KEY = "mhc:compare:v2";
 
+/** Placeholder "not listed" columns are view-only and never selectable. */
+export const isPlaceholderTest = (t: CompareTestData): boolean =>
+  t.available === false || t.id.startsWith("unlisted-");
+
 let items: CompareTestData[] = load();
 const listeners = new Set<() => void>();
 
@@ -24,6 +28,7 @@ function load(): CompareTestData[] {
     const parsed = JSON.parse(raw) as CompareTestData[];
     const seen = new Set<string>();
     return parsed.filter((t) => {
+      if (isPlaceholderTest(t)) return false;
       t.id = baseTestId(t.id);
       if (seen.has(t.id)) return false;
       seen.add(t.id);
@@ -64,6 +69,7 @@ export const compareStore = {
     return items.some((t) => t.id === id);
   },
   add(test: CompareTestData) {
+    if (isPlaceholderTest(test)) return;
     if (items.some((t) => t.id === test.id)) return;
     items = [...items, test];
     emit();
@@ -79,7 +85,7 @@ export const compareStore = {
     else this.add(test);
   },
   set(next: CompareTestData[]) {
-    items = next;
+    items = next.filter((t) => !isPlaceholderTest(t));
     emit();
   },
   clear() {

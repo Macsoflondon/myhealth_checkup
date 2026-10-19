@@ -1,6 +1,4 @@
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { Link } from "@/lib/router-compat";
 import SponsoredBadge from "@/components/compliance/SponsoredBadge";
 import {
@@ -8,508 +6,354 @@ import {
   MapPin,
   Clock,
   Beaker,
-  DollarSign,
   Award,
   RefreshCw,
-  Shield,
   ShieldCheck,
   Scale,
   AlertTriangle,
-  Users,
   FileSearch,
+  Stethoscope,
 } from "lucide-react";
 
 /**
  * /how-we-rank
  *
- * YMYL audit requirement: 1,200+ words covering ranking criteria, reviewer
- * credentials, update cadence and conflict-of-interest policy. Content is
- * static (no DB) so it is fully crawlable in the SSR/prerender shell.
+ * YMYL requirement: ranking criteria, inclusion criteria, update cadence,
+ * conflict-of-interest policy and limitations. Static content so it stays
+ * fully crawlable in the SSR/prerender shell.
  */
-const HowWeRank = () => {
-  return (
-    <article className="container mx-auto px-4 py-10 max-w-4xl">
-      <div className="mb-10">
-        <p className="text-lg text-muted-foreground mt-4 text-center max-w-2xl mx-auto">
-          myhealth checkup is an independent UK comparison platform for private
-          diagnostic tests. This page explains exactly how we choose providers,
-          how we rank them, who reviews our clinical content, and how our
-          commercial relationships are kept separate from editorial decisions.
-        </p>
-        <p className="text-xs text-muted-foreground text-center mt-3">
-          Last reviewed:{" "}
-          {new Date().toLocaleDateString("en-GB", {
-            month: "long",
-            year: "numeric",
-          })}{" "}
-          · Reviewed by{" "}
-          <Link
-            to="/about/medical-review"
-            className="text-primary underline underline-offset-2"
-          >
-            Nathanial Smith, Registered Healthcare Professional (HCPC reg.
-            PA43353)
-          </Link>
+
+type Item = {
+  readonly icon: React.ComponentType<{ className?: string }>;
+  readonly title: string;
+  readonly body: string;
+};
+
+const SORT_OPTIONS: readonly Item[] = [
+  {
+    icon: MapPin,
+    title: "Nearest clinic",
+    body: "Providers with collection options closest to your postcode.",
+  },
+  {
+    icon: Clock,
+    title: "Turnaround",
+    body: "Typical days from sample receipt to result, as published by the provider.",
+  },
+  {
+    icon: Beaker,
+    title: "Most biomarkers",
+    body: "Comprehensiveness of the test panel.",
+  },
+  {
+    icon: Award,
+    title: "Accreditation strength",
+    body: "UKAS ISO 15189 laboratory accreditation and CQC clinic registration take precedence.",
+  },
+];
+
+const INCLUSION: readonly string[] = [
+  "Samples processed in a UKAS-accredited ISO 15189 laboratory, or for clinic-based services, a CQC-registered facility.",
+  "Lawful UK operation, complying with UK GDPR, the Data Protection Act 2018 and applicable MHRA guidance.",
+  "Transparent pricing, published sample-collection methods and a documented complaints and results-query process.",
+  "A clinically interpretable result, such as a doctor-reviewed report, GP-friendly PDF or biomarker reference ranges.",
+];
+
+const CADENCE: readonly Item[] = [
+  {
+    icon: RefreshCw,
+    title: "Prices and availability",
+    body: "Refreshed automatically from provider websites about every 6 hours.",
+  },
+  {
+    icon: FileSearch,
+    title: "Provider profiles",
+    body: "Accreditation, contact details and services re-checked at least quarterly, and on any detected change.",
+  },
+  {
+    icon: Stethoscope,
+    title: "Clinical explainers",
+    body: "Biomarker library reviewed annually by our clinical reviewer, or sooner when UK guidance changes.",
+  },
+  {
+    icon: Scale,
+    title: "Regulatory pages",
+    body: "This page, privacy and terms reviewed at least annually and version-controlled in our codebase.",
+  },
+];
+
+const INDEPENDENCE: readonly Item[] = [
+  {
+    icon: Scale,
+    title: "No pay-to-rank",
+    body: "Affiliate status never changes a provider’s position in the default total price sort.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "No editorial gifts",
+    body: "Our clinical reviewer receives no payment, equity, free testing or in-kind benefit from any listed provider.",
+  },
+  {
+    icon: TrendingUp,
+    title: "No exclusivity",
+    body: "Non-affiliate providers appear above affiliate providers whenever their total price is lower.",
+  },
+  {
+    icon: FileSearch,
+    title: "Full disclosure",
+    body: "Sponsored placements are labelled, visually separated and excluded from the organic comparison.",
+  },
+];
+
+const SectionHeading = ({
+  eyebrow,
+  title,
+  intro,
+}: {
+  eyebrow: string;
+  title: string;
+  intro?: string;
+}) => (
+  <header className="mb-8 max-w-2xl">
+    <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#22c0d4]">
+      {eyebrow}
+    </p>
+    <h2 className="mt-2 font-heading text-2xl sm:text-3xl font-extrabold tracking-tight text-[#081129]">
+      {title}
+    </h2>
+    {intro ? (
+      <p className="mt-3 text-sm sm:text-base leading-relaxed text-muted-foreground">
+        {intro}
+      </p>
+    ) : null}
+  </header>
+);
+
+const TileGrid = ({ items }: { items: readonly Item[] }) => (
+  <div className="grid gap-4 sm:grid-cols-2">
+    {items.map(({ icon: Icon, title, body }) => (
+      <div
+        key={title}
+        className="rounded-2xl border border-slate-200 bg-white p-5 transition-colors hover:border-[#22c0d4]/60"
+      >
+        <span className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#22c0d4]/10">
+          <Icon className="h-4 w-4 text-[#0e7490]" />
+        </span>
+        <h3 className="font-heading text-base font-bold text-[#081129]">
+          {title}
+        </h3>
+        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+          {body}
         </p>
       </div>
+    ))}
+  </div>
+);
 
-      <div className="space-y-6">
-        {/* ===================== Reviewer ===================== */}
-        <Card className="border-2 border-primary/20">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <ShieldCheck
-                className="w-5 h-5 text-primary"
-                aria-hidden="true"
-              />
-              Clinical review
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="prose prose-sm max-w-none text-muted-foreground">
-            <p>
-              Comparison and biomarker explainer content is reviewed by a named,
-              registered UK healthcare professional. Our current Clinical
-              Reviewer is{" "}
-              <strong className="text-foreground">Nathanial Smith</strong>, a
-              Registered Healthcare Professional registered with the Health and
-              Care Professions Council under registration number{" "}
-              <span className="inline-flex items-center rounded-md border border-transparent bg-secondary px-2 py-0.5 font-mono text-xs font-semibold text-secondary-foreground">
-                PA43353
-              </span>
-              .
-            </p>
-            <p>
-              Reviewer credentials, scope of review, and a link to verify
-              registration on the HCPC public register live on our dedicated{" "}
-              <Link
-                to="/about/medical-review"
-                className="text-primary underline underline-offset-2"
-              >
-                Medical Review &amp; Editorial Standards
-              </Link>{" "}
-              page. We deliberately distinguish between clinical content
-              (reviewed) and commercial data — prices, turnarounds,
-              accreditation claims (sourced from providers and refreshed by
-              automated feeds).
-            </p>
-          </CardContent>
-        </Card>
+/** Date of the last clinical review of this page. Update when re-reviewed. */
+const LAST_REVIEWED = "October 2026";
 
-        {/* ===================== Ranking method ===================== */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-primary" aria-hidden="true" />
-              Ranking criteria
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="prose prose-sm max-w-none text-muted-foreground">
-            <p>
-              By default, comparison results are ordered by{" "}
-              <strong>Total Price</strong>, calculated as the advertised test
-              price plus any mandatory fees we are aware of (for example
-              required phlebotomy or GP consultation costs). Where a fee is
-              optional, it is excluded from the default sort and surfaced on the
-              test card.
-            </p>
-            <p>You can re-sort comparison results by any of the following:</p>
-            <ul className="space-y-2 mt-3 not-prose">
-              <li className="flex items-start gap-2">
-                <MapPin
-                  className="w-4 h-4 text-primary mt-0.5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span>
-                  <strong className="text-foreground">Nearest clinic</strong> —
-                  providers with collection options closest to your postcode.
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Clock
-                  className="w-4 h-4 text-primary mt-0.5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span>
-                  <strong className="text-foreground">Turnaround</strong> —
-                  typical days from sample receipt to result, as published by
-                  the provider.
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Beaker
-                  className="w-4 h-4 text-primary mt-0.5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span>
-                  <strong className="text-foreground">Most biomarkers</strong> —
-                  comprehensiveness of the test panel.
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Award
-                  className="w-4 h-4 text-primary mt-0.5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span>
-                  <strong className="text-foreground">
-                    Accreditation strength
-                  </strong>{" "}
-                  — UKAS ISO 15189 lab accreditation and CQC clinic registration
-                  take precedence.
-                </span>
-              </li>
-            </ul>
-            <p className="mt-4">
-              Sponsored placements, where present, are always labelled{" "}
-              <span className="inline-flex items-center rounded-md border border-transparent bg-secondary px-2 py-0.5 text-xs font-semibold text-secondary-foreground">
-                Ad
-              </span>{" "}
-              or{" "}
-              <span className="inline-flex items-center rounded-md border border-transparent bg-secondary px-2 py-0.5 text-xs font-semibold text-secondary-foreground">
-                Sponsored
-              </span>{" "}
-              and never re-order the default Total Price ranking silently. They
-              are visually separated from the organic comparison.
-            </p>
-          </CardContent>
-        </Card>
+const HowWeRank = () => {
+  return (
+    <article className="container mx-auto max-w-5xl px-4 sm:px-6 py-12 sm:py-16">
+      {/* Intro */}
+      <div className="mx-auto max-w-3xl text-center">
+        <p className="text-base sm:text-lg leading-relaxed text-muted-foreground">
+          myhealth checkup is an independent UK comparison platform for private
+          diagnostic tests. This page explains how we choose providers, how we
+          order results, and how our commercial relationships are kept separate
+          from editorial decisions.
+        </p>
+        <div className="mt-5 inline-flex flex-wrap items-center justify-center gap-x-2 gap-y-1 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-xs text-muted-foreground">
+          <ShieldCheck
+            className="h-3.5 w-3.5 text-[#0e7490]"
+            aria-hidden="true"
+          />
+          <span>Last reviewed {LAST_REVIEWED}</span>
+          <span aria-hidden="true">·</span>
+          <Link
+            to="/about/medical-review"
+            className="font-semibold text-[#0e7490] underline underline-offset-2"
+          >
+            Reviewed by Nathanial Smith, Registered Healthcare Professional
+            (HCPC reg. PA43353)
+          </Link>
+        </div>
+      </div>
 
-        {/* ===================== Inclusion criteria ===================== */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <FileSearch className="w-5 h-5 text-primary" aria-hidden="true" />
-              Provider inclusion criteria
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="prose prose-sm max-w-none text-muted-foreground">
-            <p>To be listed on myhealth checkup, a provider must:</p>
-            <ul className="space-y-2 mt-3 not-prose">
-              <li className="flex items-start gap-2">
-                <Shield
-                  className="w-4 h-4 text-primary mt-0.5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span>
-                  Process samples in a{" "}
-                  <strong className="text-foreground">UKAS-accredited</strong>{" "}
-                  ISO 15189 laboratory (or, for clinic-based services, in a{" "}
-                  <strong className="text-foreground">CQC-registered</strong>{" "}
-                  facility).
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Shield
-                  className="w-4 h-4 text-primary mt-0.5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span>
-                  Operate lawfully in the United Kingdom and comply with the{" "}
-                  <strong className="text-foreground">UK GDPR</strong>,{" "}
-                  <strong className="text-foreground">
-                    Data Protection Act 2018
-                  </strong>
-                  , and applicable{" "}
-                  <strong className="text-foreground">MHRA</strong> guidance.
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Shield
-                  className="w-4 h-4 text-primary mt-0.5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span>
-                  Publish transparent pricing, sample-collection methods, and a
-                  documented complaints/results-query process.
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Shield
-                  className="w-4 h-4 text-primary mt-0.5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span>
-                  Provide a clinically interpretable result (e.g.
-                  doctor-reviewed report, GP-friendly PDF, or biomarker
-                  reference ranges).
-                </span>
-              </li>
-            </ul>
-            <p className="mt-4">
-              Providers that fail an accreditation check, that we cannot reach
-              for verification, or that we observe making unsupported clinical
-              claims are removed from comparison until the issue is resolved. We
-              do not attempt to be exhaustive — we prioritise depth of vetting
-              over breadth of listings.
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* ===================== Update cadence ===================== */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <RefreshCw className="w-5 h-5 text-primary" aria-hidden="true" />
-              Update cadence
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="prose prose-sm max-w-none text-muted-foreground">
-            <p>Different content types are refreshed on different schedules:</p>
-            <ul className="space-y-2 mt-3 not-prose">
-              <li className="flex items-start gap-2">
-                <Clock
-                  className="w-4 h-4 text-primary mt-0.5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span>
-                  <strong className="text-foreground">
-                    Prices &amp; availability
-                  </strong>{" "}
-                  — refreshed daily via automated provider feeds and
-                  Firecrawl-based scrapers, with a typical lag of under 24
-                  hours.
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Clock
-                  className="w-4 h-4 text-primary mt-0.5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span>
-                  <strong className="text-foreground">Provider profiles</strong>{" "}
-                  (accreditation, contact details, services) — manually
-                  re-checked at least quarterly and on any feed-detected change.
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Clock
-                  className="w-4 h-4 text-primary mt-0.5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span>
-                  <strong className="text-foreground">
-                    Clinical explainers &amp; biomarker library
-                  </strong>{" "}
-                  — reviewed annually by our Clinical Reviewer, or sooner when
-                  NICE/UK guidance changes.
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <Clock
-                  className="w-4 h-4 text-primary mt-0.5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span>
-                  <strong className="text-foreground">Regulatory pages</strong>{" "}
-                  (this page, privacy, terms) — reviewed at least annually and
-                  version-controlled in our codebase.
-                </span>
-              </li>
-            </ul>
-            <p className="mt-4">
-              Where a provider's website changes after our daily refresh, the
-              provider's own site is the authoritative source. We surface the
-              "last verified" timestamp on provider pages where applicable.
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* ===================== Conflicts of interest ===================== */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Scale className="w-5 h-5 text-primary" aria-hidden="true" />
-              Conflict-of-interest policy
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="prose prose-sm max-w-none text-muted-foreground">
-            <p>
-              myhealth checkup operates affiliate and referral relationships
-              with some of the providers we list. This is how a free-to-use
-              comparison service is funded. We treat commercial relationships as
-              completely separate from editorial decisions, and we make those
-              relationships visible.
-            </p>
-            <p>Our policy:</p>
-            <ul className="space-y-2 mt-3 not-prose">
-              <li className="flex items-start gap-2">
-                <DollarSign
-                  className="w-4 h-4 text-primary mt-0.5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span>
-                  <strong className="text-foreground">No pay-to-rank.</strong>{" "}
-                  Affiliate status does not change a provider's position in the
-                  default Total Price sort. Sponsored placements are visually
-                  distinct, labelled, and excluded from the organic comparison.
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <DollarSign
-                  className="w-4 h-4 text-primary mt-0.5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span>
-                  <strong className="text-foreground">
-                    No editorial gifts.
-                  </strong>{" "}
-                  Our Clinical Reviewer receives no payment, equity, free
-                  testing, or in-kind benefit from any listed provider.
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <DollarSign
-                  className="w-4 h-4 text-primary mt-0.5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span>
-                  <strong className="text-foreground">Disclosure.</strong>{" "}
-                  Outbound provider links carry an{" "}
-                  <Link
-                    to="/affiliate-disclosure"
-                    className="text-primary underline underline-offset-2"
-                  >
-                    affiliate disclosure
-                  </Link>{" "}
-                  and our affiliate relationships are listed publicly.
-                </span>
-              </li>
-              <li className="flex items-start gap-2">
-                <DollarSign
-                  className="w-4 h-4 text-primary mt-0.5 flex-shrink-0"
-                  aria-hidden="true"
-                />
-                <span>
-                  <strong className="text-foreground">
-                    No exclusivity for ranking.
-                  </strong>{" "}
-                  Non-affiliate providers can and do appear above affiliate
-                  providers in default rankings when their Total Price is lower.
-                </span>
-              </li>
-            </ul>
-            <p className="mt-4">
-              We comply in full with the UK Competition and Markets Authority
-              (CMA) and the Digital Markets, Competition and Consumers Act 2024.
-              Where mandatory fees are known they are included in displayed
-              prices; where they are optional or variable they are surfaced
-              separately on the test card.
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* ===================== Independence ===================== */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="w-5 h-5 text-primary" aria-hidden="true" />
-              Independence
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="prose prose-sm max-w-none text-muted-foreground">
-            <p>
-              myhealth checkup is an independent comparison platform. We do not
-              own a laboratory, employ phlebotomists, hold a CQC registration,
-              or process diagnostic samples ourselves. All testing, reporting
-              and clinical follow-up is conducted by the third-party providers
-              we list.
-            </p>
-            <p>
-              We do not accept payment to remove providers, suppress
-              unfavourable information, or promote a specific test outcome. If
-              you believe a listing is inaccurate or misleading, please contact
-              us at{" "}
-              <a
-                href="mailto:support@myhealthcheckup.co.uk"
-                className="text-primary underline underline-offset-2"
-              >
-                support@myhealthcheckup.co.uk
-              </a>{" "}
-              and we will investigate within five working days.
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* ===================== Limitations ===================== */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <AlertTriangle
-                className="w-5 h-5 text-primary"
-                aria-hidden="true"
-              />
-              Limitations &amp; what we are not
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="prose prose-sm max-w-none text-muted-foreground">
-            <p>
-              This site provides comparison information only. It is not a
-              clinical service and does not constitute medical advice,
-              diagnosis, or prescription. Comparing tests is not a substitute
-              for consulting your GP, and abnormal results from any private test
-              should always be reviewed by a suitably qualified clinician.
-            </p>
-            <p>
-              We do not cover every UK provider. Where a provider does not meet
-              our inclusion criteria, declines to provide verifiable
-              accreditation evidence, or does not publish transparent pricing,
-              we will not list them. Absence from our comparison is not a
-              comment on the safety or quality of any non-listed provider.
-            </p>
-            <p>
-              The default sort is price-led because price is the most
-              consistently verifiable comparison axis. It is not a
-              recommendation. The cheapest test for a given panel is not
-              necessarily the most appropriate test for your individual
-              situation.
-            </p>
-          </CardContent>
-        </Card>
-
-        <div className="mt-8 p-6 bg-primary/5 rounded-lg border border-primary/20">
-          <h2 className="text-lg font-semibold text-foreground mb-3">
-            CMA &amp; DMCC compliance
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            myhealth checkup operates in full compliance with the Competition
-            and Markets Authority (CMA) and the Digital Markets, Competition and
-            Consumers Act 2024. Prices include all mandatory fees where known,
-            sponsored listings are clearly marked, ranking criteria are
-            disclosed in plain English on this page, and our affiliate
-            relationships are documented in our{" "}
-            <Link
-              to="/affiliate-disclosure"
-              className="text-primary underline underline-offset-2"
-            >
-              affiliate disclosure
-            </Link>
-            .
+      <div className="mt-14 space-y-16">
+        {/* Ranking */}
+        <section>
+          <SectionHeading
+            eyebrow="Ranking"
+            title="How results are ordered"
+            intro="By default, comparison results are ordered by total price: the advertised test price plus any mandatory fees we are aware of, such as required phlebotomy or GP consultation costs. Optional fees are excluded from the default sort and shown on the test card instead."
+          />
+          <p className="mb-4 text-sm font-semibold text-[#081129]">
+            You can re-sort any comparison by:
           </p>
+          <TileGrid items={SORT_OPTIONS} />
+          <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
+            The default sort is price-led because price is the most consistently
+            verifiable comparison axis. It is not a recommendation, and the
+            cheapest test for a panel is not necessarily the most appropriate
+            test for you.
+          </p>
+        </section>
 
-          <div className="mt-4 pt-4 border-t border-primary/10">
-            <p className="text-sm text-muted-foreground mb-3">
-              When a placement involves a commercial arrangement we always label
-              it visibly with one of these badges and a tooltip explaining the
-              relationship:
+        {/* Inclusion */}
+        <section>
+          <SectionHeading
+            eyebrow="Standards"
+            title="Which providers we list"
+            intro="We prioritise depth of vetting over breadth of listings. To appear on myhealth checkup, a provider must meet all four criteria below."
+          />
+          <ol className="space-y-3">
+            {INCLUSION.map((item, index) => (
+              <li
+                key={item}
+                className="flex items-start gap-4 rounded-2xl border border-slate-200 bg-white p-5"
+              >
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#081129] font-heading text-xs font-bold text-white">
+                  {index + 1}
+                </span>
+                <span className="text-sm leading-relaxed text-muted-foreground">
+                  {item}
+                </span>
+              </li>
+            ))}
+          </ol>
+          <p className="mt-6 text-sm leading-relaxed text-muted-foreground">
+            Providers that fail an accreditation check, that we cannot reach for
+            verification, or that we observe making unsupported clinical claims
+            are removed from comparison until the issue is resolved.
+          </p>
+        </section>
+
+        {/* Independence */}
+        <section className="rounded-3xl bg-[#081129] px-6 py-10 sm:px-10 sm:py-12">
+          <header className="mb-8 max-w-2xl">
+            <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#22c0d4]">
+              Independence
             </p>
-            <div className="flex flex-wrap items-center gap-2">
+            <h2 className="mt-2 font-heading text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+              Commercial relationships, kept separate
+            </h2>
+            <p className="mt-3 text-sm sm:text-base leading-relaxed text-white/75">
+              We operate affiliate and referral relationships with some listed
+              providers. That is how a free comparison service is funded. It
+              never influences where a provider appears.
+            </p>
+          </header>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {INDEPENDENCE.map(({ icon: Icon, title, body }) => (
+              <div
+                key={title}
+                className="rounded-2xl border border-white/10 bg-white/5 p-5"
+              >
+                <span className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#22c0d4]/15">
+                  <Icon className="h-4 w-4 text-[#22c0d4]" />
+                </span>
+                <h3 className="font-heading text-base font-bold text-white">
+                  {title}
+                </h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-white/70">
+                  {body}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="mt-8 border-t border-white/10 pt-6">
+            <p className="text-sm leading-relaxed text-white/75">
+              Where a placement involves a commercial arrangement, we label it
+              visibly:
+            </p>
+            <div className="mt-3 flex flex-wrap items-center gap-2">
               <SponsoredBadge variant="sponsored" />
               <SponsoredBadge variant="promoted" />
               <SponsoredBadge variant="affiliate" />
             </div>
+            <p className="mt-5 text-sm leading-relaxed text-white/75">
+              We comply in full with the Competition and Markets Authority and
+              the Digital Markets, Competition and Consumers Act 2024. Our
+              relationships are documented in our{" "}
+              <Link
+                to="/affiliate-disclosure"
+                className="font-semibold text-[#22c0d4] underline underline-offset-2"
+              >
+                affiliate disclosure
+              </Link>
+              .
+            </p>
           </div>
+        </section>
 
-          <p className="text-sm text-muted-foreground mt-4">
-            Disagree with a ranking, a label, or a listing? Raise it via our{" "}
+        {/* Cadence */}
+        <section>
+          <SectionHeading
+            eyebrow="Accuracy"
+            title="How often the data is refreshed"
+            intro="Different content types are checked on different schedules. Where a provider's website changes after our refresh, the provider's own site is the authoritative source."
+          />
+          <TileGrid items={CADENCE} />
+        </section>
+
+        {/* Limitations */}
+        <section className="rounded-3xl border border-amber-200 bg-amber-50/60 p-6 sm:p-8">
+          <div className="flex items-start gap-3">
+            <AlertTriangle
+              className="mt-0.5 h-5 w-5 shrink-0 text-amber-600"
+              aria-hidden="true"
+            />
+            <div>
+              <h2 className="font-heading text-xl font-bold text-[#081129]">
+                What we are not
+              </h2>
+              <div className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
+                <p>
+                  This site provides comparison information only. It is not a
+                  clinical service and does not constitute medical advice,
+                  diagnosis or prescription. We do not own a laboratory, employ
+                  phlebotomists or process diagnostic samples. Abnormal results
+                  from any private test should be reviewed by a suitably
+                  qualified clinician.
+                </p>
+                <p>
+                  We do not cover every UK provider, and absence from our
+                  comparison is not a comment on the safety or quality of any
+                  provider we do not list.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Contact */}
+        <section className="rounded-3xl border border-slate-200 bg-slate-50 p-6 sm:p-8 text-center">
+          <h2 className="font-heading text-xl font-bold text-[#081129]">
+            Think a listing is wrong?
+          </h2>
+          <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Email{" "}
+            <a
+              href="mailto:support@myhealthcheckup.co.uk"
+              className="font-semibold text-[#0e7490] underline underline-offset-2"
+            >
+              support@myhealthcheckup.co.uk
+            </a>{" "}
+            and we will investigate within five working days, or raise it
+            through our{" "}
             <Link
               to="/complaints"
-              className="text-primary underline underline-offset-2"
+              className="font-semibold text-[#0e7490] underline underline-offset-2"
             >
-              feedback &amp; complaints process
-            </Link>{" "}
-            — we acknowledge within 2 business days and respond fully within 10.
+              feedback and complaints process
+            </Link>
+            . We acknowledge within two business days and respond fully within
+            ten.
           </p>
-        </div>
+        </section>
       </div>
     </article>
   );

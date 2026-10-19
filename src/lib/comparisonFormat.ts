@@ -74,6 +74,12 @@ export const REVIEW_INCLUDED_TYPES: ClinicalReviewType[] = [
 export const formatPrice = (n: number | null | undefined): string =>
   n == null || Number.isNaN(n) ? "—" : `£${n.toFixed(2)}`;
 
+/** Money for fee labels: whole pounds stay whole (£35), others keep pence (£3.99). */
+export const formatFeeAmount = (n: number): string =>
+  Number.isInteger(Math.round(n * 100) / 100)
+    ? `£${Math.round(n)}`
+    : `£${n.toFixed(2)}`;
+
 /**
  * Format the "Additional Collection Fees" cell.
  * Returns "None" when no fee, "+£35" for fixed, "from £50" for from, etc.
@@ -83,14 +89,20 @@ export function formatCollectionFee(
   amount: number | null | undefined,
 ): { label: string; isFree: boolean } {
   if (!type || type === "none") return { label: "None", isFree: true };
-  if (type === "self_arranged")
-    return { label: "Patient arranges own phlebotomy", isFree: false };
+  if (type === "self_arranged") {
+    return amount != null && amount > 0
+      ? {
+          label: `Free if self-arranged, or from ${formatFeeAmount(amount)}`,
+          isFree: false,
+        }
+      : { label: "Patient arranges own phlebotomy", isFree: false };
+  }
   if (type === "varies")
     return { label: "Price varies by location", isFree: false };
   if (amount == null) return { label: "—", isFree: true };
   if (type === "from")
-    return { label: `from £${amount.toFixed(0)}`, isFree: false };
-  return { label: `+£${amount.toFixed(0)}`, isFree: false };
+    return { label: `from ${formatFeeAmount(amount)}`, isFree: false };
+  return { label: `+${formatFeeAmount(amount)}`, isFree: false };
 }
 
 /**
@@ -105,7 +117,7 @@ export function formatClinicalReview(
   const isAvailable = type !== "not_available" && type !== "not_included";
   let label = REVIEW_LABELS[type];
   if (type === "optional" && fee != null)
-    label = `Optional (+£${fee.toFixed(0)})`;
+    label = `Optional (+${formatFeeAmount(fee)})`;
   return { label, isIncluded, isAvailable };
 }
 

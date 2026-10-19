@@ -10,6 +10,9 @@ import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
 import { useActiveTestCount } from "@/hooks/queries/useActiveTestCount";
 import { Shield } from "lucide-react";
+import { LiveCatalogueComparison } from "@/design-system/live-catalogue-comparison";
+import { useHomepageComparisons } from "@/hooks/use-homepage-comparisons";
+import { selectHomepageComparisons } from "@/lib/homepage-comparisons";
 
 // Hero LCP preloading is owned by the route head() in src/routes/index.tsx —
 // duplicating it here downloaded a second, unused hero image on every visit.
@@ -18,15 +21,12 @@ import { Shield } from "lucide-react";
 import HeroMasthead from "@/components/sections/HeroMasthead";
 
 const PartnersGrid = lazy(() => import("@/components/sections/PartnersGrid"));
-const JourneySimplified = lazy(
-  () => import("@/components/sections/JourneySimplified"),
-);
 const PartnerShowcaseGrid = lazy(
   () => import("@/components/sections/PartnerShowcaseGrid"),
 );
-const FeaturedPublications = lazy(() =>
-  import("@/components/sections/FeaturedPublications").then((m) => ({
-    default: m.FeaturedPublications,
+const DecisionInfrastructureSection = lazy(() =>
+  import("@/components/sections/DecisionInfrastructureSection").then((m) => ({
+    default: m.DecisionInfrastructureSection,
   })),
 );
 
@@ -77,6 +77,11 @@ const Index = () => {
   usePerformanceOptimization();
   useMobileOptimization();
   const activeTestCount = useActiveTestCount();
+  const { data: comparisonPanels = [] } = useHomepageComparisons();
+  const { upper: upperComparison } = selectHomepageComparisons(
+    comparisonPanels,
+    0,
+  );
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -192,69 +197,66 @@ const Index = () => {
 
           {/* Hero CTA — Slogan + Health Quiz entry point */}
           <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-4 sm:px-6 py-6 sm:py-8 mx-3 sm:mx-6 mt-0 mb-6 sm:mb-8">
-            <div className="relative overflow-hidden rounded-[22px] bg-[#081129] px-4 sm:px-6 lg:px-[34px] py-14 sm:py-[72px] text-center">
+            <div className="relative overflow-hidden rounded-[22px] bg-[#081129] px-4 sm:px-8 lg:px-12 py-8 sm:py-10 lg:py-12">
               <div className="absolute -right-[50px] -top-[60px] w-[260px] h-[260px] rounded-full bg-[#22c0d4]/[0.12]" />
               <div className="absolute right-[120px] -bottom-[110px] w-[240px] h-[240px] rounded-full bg-[#e70d69]/10" />
               <div className="relative">
-                <h2 className="font-extrabold text-[clamp(1.9rem,7.5vw,3rem)] tracking-[-0.02em] leading-[1.15] text-white m-0 font-[Montserrat] break-words max-w-4xl mx-auto mb-8 sm:mb-10">
-                  Your <span className="text-[#22c0d4]">health</span> is your
-                  greatest <span className="text-[#e70d69]">asset.</span>
-                </h2>
+                <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)] gap-8 sm:gap-10 lg:gap-12 items-center">
+                  <div className="flex flex-col gap-5 2xl:gap-8 text-left">
+                    <h2 className="font-extrabold text-[clamp(1.6rem,3.4vw,2.5rem)] tracking-[-0.02em] leading-[1.15] text-white m-0 font-[Montserrat] text-center">
+                      Your <span className="text-[#22c0d4]">health</span> is
+                      your greatest{" "}
+                      <span className="text-[#e70d69]">asset.</span>
+                    </h2>
 
-                <div className="max-w-3xl mx-auto text-left space-y-4 mb-8 sm:mb-10">
-                  <p className="text-white/85 text-base sm:text-lg leading-relaxed">
-                    At myhealth checkup, we believe everyone deserves access to
-                    transparent, trustworthy health information. Our mission is
-                    to empower you to take control of your health by making it
-                    simple to compare private health tests from accredited UK
-                    providers.
-                  </p>
-                  <p className="text-white/85 text-base sm:text-lg leading-relaxed">
-                    We only feature providers that meet rigorous quality
-                    standards, including UKAS accreditation and CQC regulation.
-                  </p>
-                </div>
+                    <p className="text-white/85 text-sm sm:text-base leading-relaxed m-0 2xl:text-lg">
+                      At myhealth checkup, everyone deserves access to
+                      transparent, trustworthy health information. Our mission
+                      is to make it simple to compare private health tests from
+                      accredited UK providers. Every provider we list uses a
+                      UKAS-accredited laboratory or a CQC-registered clinic.
+                    </p>
 
-                <div className="w-3/4 mx-auto mb-8">
-                  <div
-                    className="h-[2px] w-full rounded-full bg-gradient-to-r from-[#22c0d4] via-[#e70d69] to-[#22c0d4]"
-                    aria-hidden="true"
-                  />
-                </div>
+                    <div
+                      className="h-[2px] w-full rounded-full bg-gradient-to-r from-[#22c0d4] via-[#e70d69] to-[#22c0d4]"
+                      aria-hidden="true"
+                    />
 
-                <div className="flex flex-col items-center gap-4 sm:gap-5 w-full max-w-3xl mx-auto mb-6 sm:mb-8">
-                  <h2
-                    className="text-[clamp(1.35rem,5vw,2.6rem)] font-bold text-white leading-[1.15] tracking-tight text-center px-2"
-                    style={{ fontFamily: "'Montserrat', sans-serif" }}
-                  >
-                    Not sure what test you need?
-                  </h2>
+                    <h3 className="text-[clamp(1.2rem,2.8vw,1.85rem)] font-bold text-white leading-[1.15] tracking-tight font-[Montserrat] m-0 text-center">
+                      Not sure what test you need?
+                    </h3>
+                    <p className="text-white/85 text-sm sm:text-base leading-relaxed m-0 text-center 2xl:text-lg">
+                      Answer 6 quick questions and our AI will match you to the
+                      best-fit tests from{" "}
+                      {activeTestCount.toLocaleString("en-GB")} accredited
+                      options.
+                    </p>
 
-                  <Link
-                    to="/find-test"
-                    aria-label="Take the Health Quiz — find the right private blood test"
-                    className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-gradient-to-r from-[#22c0d4] to-[#1aa8bb] hover:from-[#1aa8bb] hover:to-[#22c0d4] text-[#081129] font-bold text-base sm:text-lg px-7 sm:px-9 py-3.5 sm:py-4 rounded-full shadow-lg shadow-[#22c0d4]/25 transition-all hover:scale-[1.02]"
-                    style={{ fontFamily: "'Montserrat', sans-serif" }}
-                  >
-                    Take the Health Quiz
-                  </Link>
+                    <div className="flex flex-col items-center gap-4">
+                      <Link
+                        to="/find-test"
+                        aria-label="Take the Health Quiz: find the right private blood test"
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-[#0e7490] hover:bg-[#0b5e73] text-white font-bold font-[Montserrat] text-base px-8 py-3.5 rounded-full shadow-lg shadow-[#22c0d4]/25 transition-all hover:scale-[1.02]"
+                      >
+                        Take the Health Quiz
+                      </Link>
+                      <div className="flex flex-wrap justify-center items-center gap-x-3 gap-y-1 text-white/80 text-xs 2xl:text-sm">
+                        <span className="flex items-center gap-1">
+                          <Shield className="w-3 h-3 shrink-0" /> No account
+                          required
+                        </span>
+                        <span>Takes 2 minutes</span>
+                        <span>100% free</span>
+                      </div>
+                    </div>
+                  </div>
 
-                  <div className="flex flex-col sm:flex-row items-center justify-center gap-y-0 gap-x-2 text-white text-xs">
-                    <span className="flex items-center gap-1">
-                      <Shield className="w-3 h-3 shrink-0" /> No account
-                      required
-                    </span>
-                    <span className="hidden sm:inline">{"\n"}</span>
-                    <span>Takes 2 minutes</span>
-                    <span className="hidden sm:inline">{"\n"}</span>
-                    <span>100% free</span>
+                  <div className="flex w-full justify-end">
+                    <div className="w-full max-w-[400px] xl:max-w-[460px] 2xl:max-w-[520px]">
+                      <LiveCatalogueComparison panel={upperComparison} />
+                    </div>
                   </div>
                 </div>
-                <p className="text-white text-base sm:text-lg leading-relaxed text-center max-w-2xl mx-auto">
-                  Answer 6 quick questions and our AI will analyse{" "}
-                  {activeTestCount.toLocaleString("en-GB")} accredited tests to
-                  find your best-matched options, with transparent pricing.
-                </p>
               </div>
             </div>
           </section>
@@ -271,11 +273,6 @@ const Index = () => {
             </SectionReveal>
           </Suspense>
 
-          <Suspense fallback={<SectionFallback />}>
-            <SectionReveal delay={0.1}>
-              <JourneySimplified />
-            </SectionReveal>
-          </Suspense>
 
           <Suspense fallback={<SectionFallback />}>
             <SectionReveal delay={0.15}>
@@ -285,7 +282,7 @@ const Index = () => {
 
           <Suspense fallback={<SectionFallback />}>
             <SectionReveal delay={0.1}>
-              <FeaturedPublications />
+              <DecisionInfrastructureSection />
             </SectionReveal>
           </Suspense>
 

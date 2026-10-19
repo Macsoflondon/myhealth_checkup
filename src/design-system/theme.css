@@ -1,0 +1,19 @@
+/* Self-hosted brand headings so attached consumers render Montserrat without
+   importing the preview app's route tree. */
+@import "@fontsource/montserrat/latin-400.css";
+@import "@fontsource/montserrat/latin-500.css";
+@import "@fontsource/montserrat/latin-600.css";
+@import "@fontsource/montserrat/latin-700.css";
+@import "@fontsource/montserrat/latin-800.css";
+@import "tailwindcss";
+
+/* Keep attached library utilities discoverable independently of the preview. */
+@source "./";
+
+@theme {
+  --color-brand-turquoise: #22c0d4;
+  --color-brand-pink: #e70d69;
+  --color-brand-navy: #081129;
+  --color-surface-warm: hsl(60 14% 98%);
+  --font-heading: Montserrat, ui-sans-serif, system-ui, sans-serif;
+}

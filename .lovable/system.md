@@ -1,0 +1,6 @@
+# myhealth checkup design system
+Use British English, clinical clarity and the existing semantic Tailwind tokens. Never substitute raw colour values for brand tokens. Montserrat headings use sentence case; comparison labels and prices remain legible on pearl surfaces. Keep clinical interpretations independent from commercial comparisons.
+
+The compact comparison component accepts a panel of source-backed rows, merges className and forwards its ref. Import it through the library barrel, which loads the self-contained design-system/theme.css automatically. Direct component imports must import that theme once. Do not import the preview site's styles.css into consumer projects; use the consumer's own data layer to supply panels. Catalogue prices and timestamps must come from provider data, not demonstration fixtures. Missing information stays explicitly unavailable. The lowest-shown badge compares only the rows displayed, not the entire market. Avoid medical guarantees and never describe the platform as a medical provider.
+
+All three homepage comparison slots use the same compact component. Full blood count is reserved for the upper slot; lower slots are selected from distinct remaining panel identities. Do not render screenshot images in place of live data.

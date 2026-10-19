@@ -5,6 +5,7 @@ import {
   resolveCollection,
   resolveAccreditationsFromRow,
 } from "@/lib/resolve-test-fields";
+import { formatFeeAmount } from "@/lib/comparisonFormat";
 
 /**
  * Minimal structural shape the transformer needs. Database rows expose these
@@ -31,6 +32,10 @@ export interface LiveTestRow {
   /** Real recorded collection fee, when the provider charges one. */
   collection_fee_type?: string | null;
   collection_fee_amount?: number | null;
+  /** Provider fee-rule explanation from unified_provider_tests. */
+  collection_fee_note?: string | null;
+  /** When the 6-hourly sync last confirmed the row on the provider site. */
+  price_checked_at?: string | null;
   /** Real recorded clinical review position for this test. */
   clinical_review_type?: string | null;
   clinical_review_fee?: number | null;
@@ -70,15 +75,6 @@ const toCollectionFeeType = (
   v && (COLLECTION_FEE_TYPES as readonly string[]).includes(v)
     ? (v as CollectionFeeType)
     : null;
-
-/**
- * Providers that publish a home phlebotomy visit as a paid alternative to the
- * in-clinic appointment already covered by the collection fee (GBP).
- */
-const HOME_VISIT_FEES: Record<string, number | undefined> = {
-  "goodbody-clinic": 20,
-  "london-medical-laboratory": 80,
-};
 
 const toClinicalReviewType = (
   v: string | null | undefined,
@@ -159,7 +155,7 @@ export class TestDataTransformer {
         typeof test.collection_fee_amount === "number"
           ? test.collection_fee_amount
           : null,
-      collectionFeeNote: TestDataTransformer.resolveCollectionFeeNote(test),
+      collectionFeeNote: test.collection_fee_note ?? null,
       clinicalReviewType: toClinicalReviewType(test.clinical_review_type),
       clinicalReviewFee:
         typeof test.clinical_review_fee === "number"
@@ -297,26 +293,6 @@ export class TestDataTransformer {
   }
 
   /**
-   * Build a plain-English disclaimer for fee cells that need extra context.
-   * Currently used for Goodbody's home-visit phlebotomy surcharge.
-   */
-  private static resolveCollectionFeeNote(test: LiveTestRow): string | null {
-    const feeType = toCollectionFeeType(test.collection_fee_type);
-    if (feeType !== "fixed" && feeType !== "from") return null;
-    const amount =
-      typeof test.collection_fee_amount === "number"
-        ? test.collection_fee_amount
-        : null;
-    if (amount == null) return null;
-
-    const homeVisitFee = HOME_VISIT_FEES[test.provider_id];
-    if (homeVisitFee == null) return null;
-
-    const total = (test.price || 0) + amount;
-    return `The total shown (£${total.toFixed(0)}) includes a £${amount.toFixed(0)} phlebotomy fee for an in-clinic appointment. A home phlebotomy visit is available instead for £${homeVisitFee.toFixed(0)}.`;
-  }
-
-  /**
    * Build a plain-English disclaimer for the clinical review cell when a
    * provider's optional add-on needs extra context.
    * Currently used for Medical Diagnosis's Premium Report add-on.
@@ -330,6 +306,6 @@ export class TestDataTransformer {
         ? test.clinical_review_fee
         : null;
     if (fee == null) return null;
-    return `Medical Diagnosis offer a Premium Report service for an extra £${fee.toFixed(0)}.`;
+    return `Medical Diagnosis offer a Premium Report service for an extra ${formatFeeAmount(fee)}.`;
   }
 }

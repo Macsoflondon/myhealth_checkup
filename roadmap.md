@@ -1,5 +1,9 @@
 # Roadmap
 
+- [x] Repair the Human Context Engine's case-sensitive OpenAI secret lookup with regression tests, preserving its provider, model and recommendations.
+- [ ] Activate and verify the Human Context Engine secret-name repair — blocked until this draft is accepted and the edge function is deployed from the main thread.
+- [x] Unify the three homepage comparison tables with the approved compact layout and prevent duplicate test panels.
+
 - [x] Delete inactive £0–£1 Medical Diagnosis junk rows + linked history (136 rows).
 - [x] Guard upsertWithProvenance: new inserts with price ≤ £1 stay inactive with a `suspicious_price` warning (deployed to all 8 scrapers).
 - [x] Verify no active £0–£1 rows remain (0 rows).
@@ -33,3 +37,17 @@
 - [ ] Security: Assisted Test Finder and Hidden Gap Detector AI calls restricted to signed-in users
 - [x] Reformat the whole site and verify types, unit tests and production build.
 - [x] Speed pass: right-size logos (WebP), Shopify card image resizing, keepalive web-vitals beacon, React Query biomarker library, explicit column lists, restore 28 Sep plan file.
+
+## Code review fixes (Blood Taken Media Section draft, 19/10/2026)
+
+- [x] 1. Collection fee rules table + view staged as a draft migration (applies on accept); types.ts regenerates on accept
+- [x] 2. Hardcoded Clinilabs fee removed; fees read from unified_provider_tests
+- [x] 3. Fee labels: self-arranged wording, pence formatting, tests
+- [x] 4. Panel view no longer writes placeholders into the compare tray; store guards; tests
+- [x] 5. Homepage card: "Price checked", fee line, new footnote
+- [x] 6. Assistant: lazy panel, plugins removed, server hardening, fee data, storage guards, privacy copy
+- [x] 7. Decision infrastructure copy and image alt corrected
+- [x] 8. How We Rank reviewer, fixed review date, refresh copy
+- [x] 9. Homepage mission copy and accessible quiz button colour
+- [x] 10. Test finder: anonymous, 8/min and 30/day per IP, Deno tests (deploy from main chat after accept)
+- [x] 11. Em dashes removed from touched copy

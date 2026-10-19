@@ -51,6 +51,7 @@ import TestPageViewTracker from "@/components/analytics/TestPageViewTracker";
 import GlobalPageBackground from "@/components/layout/GlobalPageBackground";
 import { AutoTranslatePage } from "@/components/i18n/AutoTranslatePage";
 import { GlobalComparisonBar } from "@/components/compare/GlobalComparisonBar";
+import { SiteAssistant } from "@/components/assistant/site-assistant";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { reportLovableError } from "@/lib/lovable-error-reporting";
 import { lazyWithRetry } from "@/lib/lazyWithRetry";
@@ -245,6 +246,7 @@ function RootComponent() {
                 <GlobalHreflang />
                 <TestPageViewTracker />
                 {!isAdminArea && <FloatingNavDock />}
+                <SiteAssistant />
                 <AutoTranslatePage />
                 {!isAdminArea && <GlobalComparisonBar />}
                 <ErrorBoundary>

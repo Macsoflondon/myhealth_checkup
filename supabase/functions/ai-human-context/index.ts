@@ -3,107 +3,31 @@ import { createClient } from "npm:@supabase/supabase-js@2.51.0";
 import { generateText } from "npm:ai";
 import { z } from "npm:zod";
 import { createOpenAI } from "npm:@ai-sdk/openai";
+import { resolveOpenAiApiKey } from "./configuration.ts";
+import { DAILY_ENDPOINT, MINUTE_LIMIT, clientIpFrom, decideDailyCap } from "./rate-limit.ts";
 
-type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[];
+type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 type SupabaseClient = ReturnType<typeof createClient<Database>>;
 
 interface Database {
   public: {
     Tables: {
       api_rate_limits: {
-        Row: {
-          id: string;
-          endpoint: string;
-          client_key: string;
-          request_count: number;
-          window_start: string;
-          created_at: string | null;
-        };
-        Insert: {
-          id?: string;
-          endpoint: string;
-          client_key: string;
-          request_count?: number;
-          window_start: string;
-          created_at?: string | null;
-        };
-        Update: {
-          id?: string;
-          endpoint?: string;
-          client_key?: string;
-          request_count?: number;
-          window_start?: string;
-          created_at?: string | null;
-        };
+        Row: { id: string; endpoint: string; client_key: string; request_count: number; window_start: string; created_at: string | null };
+        Insert: { id?: string; endpoint: string; client_key: string; request_count?: number; window_start: string; created_at?: string | null };
+        Update: { id?: string; endpoint?: string; client_key?: string; request_count?: number; window_start?: string; created_at?: string | null };
       };
       ai_operation_logs: {
-        Row: {
-          id: string;
-          job_type: string;
-          user_id: string | null;
-          latency_ms: number | null;
-          success: boolean | null;
-          error_type: string | null;
-          error_message: string | null;
-          model: string | null;
-          metadata: Json | null;
-        };
-        Insert: {
-          id?: string;
-          job_type: string;
-          user_id?: string | null;
-          latency_ms?: number | null;
-          success?: boolean | null;
-          error_type?: string | null;
-          error_message?: string | null;
-          model?: string | null;
-          metadata?: Json | null;
-        };
-        Update: {
-          id?: string;
-          job_type?: string;
-          user_id?: string | null;
-          latency_ms?: number | null;
-          success?: boolean | null;
-          error_type?: string | null;
-          error_message?: string | null;
-          model?: string | null;
-          metadata?: Json | null;
-        };
+        Row: { id: string; job_type: string; user_id: string | null; latency_ms: number | null; success: boolean | null; error_type: string | null; error_message: string | null; model: string | null; metadata: Json | null };
+        Insert: { id?: string; job_type: string; user_id?: string | null; latency_ms?: number | null; success?: boolean | null; error_type?: string | null; error_message?: string | null; model?: string | null; metadata?: Json | null };
+        Update: { id?: string; job_type?: string; user_id?: string | null; latency_ms?: number | null; success?: boolean | null; error_type?: string | null; error_message?: string | null; model?: string | null; metadata?: Json | null };
       };
       health_queries: {
-        Row: {
-          id: string;
-          user_id: string;
-          query_text: string;
-          age: number | null;
-          gender: string | null;
-          ai_response: Json | null;
-        };
-        Insert: {
-          id?: string;
-          user_id: string;
-          query_text: string;
-          age?: number | null;
-          gender?: string | null;
-          ai_response?: Json | null;
-        };
-        Update: {
-          id?: string;
-          user_id?: string;
-          query_text?: string;
-          age?: number | null;
-          gender?: string | null;
-          ai_response?: Json | null;
-        };
+        Row: { id: string; user_id: string; query_text: string; age: number | null; gender: string | null; ai_response: Json | null };
+        Insert: { id?: string; user_id: string; query_text: string; age?: number | null; gender?: string | null; ai_response?: Json | null };
+        Update: { id?: string; user_id?: string; query_text?: string; age?: number | null; gender?: string | null; ai_response?: Json | null };
       };
-      provider_tests: {
+      unified_provider_tests: {
         Row: ProviderTestRow;
         Insert: Record<string, never>;
         Update: Record<string, never>;
@@ -138,6 +62,7 @@ interface CandidateTest {
   biomarkers: string[];
   url: string | null;
   score: number;
+  collectionFeeNote: string | null;
 }
 
 interface AnalysisResult {
@@ -153,6 +78,7 @@ interface AnalysisResult {
     urgency: Urgency;
     confidence: number;
     actualTestId?: string;
+    collectionFeeNote?: string | null;
   }>;
   generalGuidance: string;
   whenToSeeDoctor: string;
@@ -164,8 +90,9 @@ interface ProviderTestRow {
   test_name: string;
   provider_id: string;
   price: number | null;
-  category: string | null;
-  canonical_category: string | null;
+  total_expected_cost: number | null;
+  collection_fee_note: string | null;
+  category_primary: string | null;
   description: string | null;
   biomarker_count: number | null;
   sample_type: string | null;
@@ -188,22 +115,17 @@ const aiResponseSchema = z.object({
   analysis: z.string().min(20).max(900),
   generalGuidance: z.string().min(20).max(700),
   whenToSeeDoctor: z.string().min(20).max(700),
-  recommendedTests: z
-    .array(
-      z.object({
-        actualTestId: z.string().optional(),
-        testName: z.string().min(1),
-        provider: z.string().min(1),
-        providerId: z.string().min(1),
-        price: z.number().nullable(),
-        reason: z.string().min(20).max(500),
-        category: z.string().min(1),
-        urgency: z.enum(["low", "medium", "high"]),
-        confidence: z.number().min(0).max(100),
-      }),
-    )
-    .min(1)
-    .max(3),
+  recommendedTests: z.array(z.object({
+    actualTestId: z.string().optional(),
+    testName: z.string().min(1),
+    provider: z.string().min(1),
+    providerId: z.string().min(1),
+    price: z.number().nullable(),
+    reason: z.string().min(20).max(500),
+    category: z.string().min(1),
+    urgency: z.enum(["low", "medium", "high"]),
+    confidence: z.number().min(0).max(100),
+  })).min(1).max(3),
 });
 
 const providerNames: Record<string, string> = {
@@ -219,69 +141,14 @@ const providerNames: Record<string, string> = {
 };
 
 const queryGroups: Array<{ keywords: string[]; boosts: string[] }> = [
-  {
-    keywords: ["fatigue", "tired", "energy", "hair", "weight", "cold"],
-    boosts: [
-      "thyroid",
-      "iron",
-      "ferritin",
-      "vitamin",
-      "b12",
-      "folate",
-      "wellness",
-    ],
-  },
-  {
-    keywords: ["thyroid", "tsh", "t3", "t4"],
-    boosts: ["thyroid", "tsh", "t3", "t4"],
-  },
-  {
-    keywords: [
-      "hormone",
-      "menopause",
-      "cycle",
-      "period",
-      "fertility",
-      "testosterone",
-    ],
-    boosts: [
-      "hormone",
-      "menopause",
-      "fertility",
-      "testosterone",
-      "oestradiol",
-      "amh",
-    ],
-  },
-  {
-    keywords: ["heart", "cholesterol", "cardio", "blood pressure"],
-    boosts: ["heart", "cholesterol", "lipid", "cardio", "hba1c"],
-  },
-  {
-    keywords: ["gut", "digest", "bowel", "stomach"],
-    boosts: ["gut", "digest", "microbiome", "stool"],
-  },
-  {
-    keywords: ["cancer", "screening", "prostate", "psa", "tumour", "tumor"],
-    boosts: [
-      "psa",
-      "prostate",
-      "tumour",
-      "tumor",
-      "cancer",
-      "cea",
-      "ca-125",
-      "afp",
-    ],
-  },
-  {
-    keywords: ["fitness", "sport", "performance", "training"],
-    boosts: ["sport", "performance", "fitness", "testosterone", "cortisol"],
-  },
-  {
-    keywords: ["general", "wellness", "prevent", "check", "overall"],
-    boosts: ["general", "wellness", "advanced", "ultimate", "comprehensive"],
-  },
+  { keywords: ["fatigue", "tired", "energy", "hair", "weight", "cold"], boosts: ["thyroid", "iron", "ferritin", "vitamin", "b12", "folate", "wellness"] },
+  { keywords: ["thyroid", "tsh", "t3", "t4"], boosts: ["thyroid", "tsh", "t3", "t4"] },
+  { keywords: ["hormone", "menopause", "cycle", "period", "fertility", "testosterone"], boosts: ["hormone", "menopause", "fertility", "testosterone", "oestradiol", "amh"] },
+  { keywords: ["heart", "cholesterol", "cardio", "blood pressure"], boosts: ["heart", "cholesterol", "lipid", "cardio", "hba1c"] },
+  { keywords: ["gut", "digest", "bowel", "stomach"], boosts: ["gut", "digest", "microbiome", "stool"] },
+  { keywords: ["cancer", "screening", "prostate", "psa", "tumour", "tumor"], boosts: ["psa", "prostate", "tumour", "tumor", "cancer", "cea", "ca-125", "afp"] },
+  { keywords: ["fitness", "sport", "performance", "training"], boosts: ["sport", "performance", "fitness", "testosterone", "cortisol"] },
+  { keywords: ["general", "wellness", "prevent", "check", "overall"], boosts: ["general", "wellness", "advanced", "ultimate", "comprehensive"] },
 ];
 
 function jsonResponse(body: unknown, status = 200): Response {
@@ -292,16 +159,13 @@ function jsonResponse(body: unknown, status = 200): Response {
 }
 
 function cleanText(value: string): string {
-  return value
-    .replace(/[\x00-\x1F\x7F]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
+  return value.replace(/[\x00-\x1F\x7F]/g, " ").replace(/\s+/g, " ").trim();
 }
 
 function readBiomarkers(value: unknown): string[] {
   if (!Array.isArray(value)) return [];
   return value
-    .map((item) => (typeof item === "string" ? cleanText(item) : ""))
+    .map((item) => typeof item === "string" ? cleanText(item) : "")
     .filter(Boolean)
     .slice(0, 20);
 }
@@ -311,18 +175,14 @@ function clampConfidence(value: number): number {
 }
 
 function stripJsonFences(text: string): string {
-  return text
-    .replace(/^```(?:json)?\s*/i, "")
-    .replace(/\s*```$/i, "")
-    .trim();
+  return text.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "").trim();
 }
 
-function scoreCandidate(
-  row: ProviderTestRow,
-  request: AiHumanContextRequest,
-): CandidateTest {
+function scoreCandidate(row: ProviderTestRow, request: AiHumanContextRequest): CandidateTest {
   const biomarkers = readBiomarkers(row.biomarkers_list);
-  const category = row.canonical_category || row.category || "general-health";
+  const category = row.category_primary || "general-health";
+  // Total expected cost includes any mandatory collection fee.
+  const totalCost = row.total_expected_cost ?? row.price;
   const provider = providerNames[row.provider_id] || row.provider_id;
   const haystack = [
     row.test_name,
@@ -331,9 +191,7 @@ function scoreCandidate(
     row.description || "",
     row.sample_type || "",
     biomarkers.join(" "),
-  ]
-    .join(" ")
-    .toLowerCase();
+  ].join(" ").toLowerCase();
   const query = request.query_text.toLowerCase();
   const tokens = query.split(/[^a-z0-9]+/).filter((token) => token.length > 2);
 
@@ -343,35 +201,25 @@ function scoreCandidate(
   }
   for (const group of queryGroups) {
     if (group.keywords.some((keyword) => query.includes(keyword))) {
-      score +=
-        group.boosts.filter((boost) => haystack.includes(boost)).length * 12;
+      score += group.boosts.filter((boost) => haystack.includes(boost)).length * 12;
     }
   }
   if (row.is_popular) score += 8;
   if (row.popularity_rank) score += Math.max(0, 7 - row.popularity_rank);
   score += Math.min(row.biomarker_count || 0, 60) / 6;
-  if (request.method_preference === "home" && row.home_kit_available)
-    score += 10;
-  if (request.method_preference === "clinic" && row.clinic_visit_available)
-    score += 10;
-  if (
-    request.gender === "male" &&
-    /female|women|ovarian|menopause|amh|pregnancy/.test(haystack)
-  )
-    score -= 25;
-  if (
-    request.gender === "female" &&
-    /male|men's|prostate|psa|testosterone/.test(haystack)
-  )
-    score -= 18;
-  if (row.price != null && row.price <= 100) score += 3;
+  if (request.method_preference === "home" && row.home_kit_available) score += 10;
+  if (request.method_preference === "clinic" && row.clinic_visit_available) score += 10;
+  if (request.gender === "male" && /female|women|ovarian|menopause|amh|pregnancy/.test(haystack)) score -= 25;
+  if (request.gender === "female" && /male|men's|prostate|psa|testosterone/.test(haystack)) score -= 18;
+  if (totalCost != null && totalCost <= 100) score += 3;
 
   return {
     id: row.id,
     testName: row.test_name,
     provider,
     providerId: row.provider_id,
-    price: row.price,
+    price: totalCost,
+    collectionFeeNote: row.collection_fee_note,
     category,
     description: row.description || "",
     biomarkerCount: row.biomarker_count || 0,
@@ -384,20 +232,13 @@ function scoreCandidate(
   };
 }
 
-function fallbackResult(
-  request: AiHumanContextRequest,
-  candidates: CandidateTest[],
-): AnalysisResult {
+function fallbackResult(request: AiHumanContextRequest, candidates: CandidateTest[]): AnalysisResult {
   const selected = candidates.slice(0, 3);
   return {
-    medicalDisclaimer:
-      "This information is for educational purposes only and is not medical advice. myhealth checkup does not provide medical care, diagnosis, or treatment. Always discuss symptoms or test results with your GP or another qualified healthcare professional.",
-    analysis:
-      "Based on your stated wellness interests, these tests appear most relevant for comparing private diagnostic options. The suggestions prioritise matching biomarkers, sample method preference, transparent pricing and provider availability.",
-    generalGuidance:
-      "Use these recommendations as a comparison starting point. Check each provider page for the full biomarker list, sample requirements, typical turnaround and any separate phlebotomy or clinical review costs before booking.",
-    whenToSeeDoctor:
-      "Speak to your GP or a qualified healthcare professional if symptoms are persistent, worsening, unexplained, or affecting daily life. Seek urgent medical help for severe, sudden, or concerning symptoms.",
+    medicalDisclaimer: "This information is for educational purposes only and is not medical advice. myhealth checkup does not provide medical care, diagnosis, or treatment. Always discuss symptoms or test results with your GP or another qualified healthcare professional.",
+    analysis: "Based on your stated wellness interests, these tests appear most relevant for comparing private diagnostic options. The suggestions prioritise matching biomarkers, sample method preference, transparent pricing and provider availability.",
+    generalGuidance: "Use these recommendations as a comparison starting point. Check each provider page for the full biomarker list, sample requirements, typical turnaround and any separate phlebotomy or clinical review costs before booking.",
+    whenToSeeDoctor: "Speak to your GP or a qualified healthcare professional if symptoms are persistent, worsening, unexplained, or affecting daily life. Seek urgent medical help for severe, sudden, or concerning symptoms.",
     hasRecommendations: selected.length > 0,
     recommendedTests: selected.map((test, index) => ({
       testName: test.testName,
@@ -407,19 +248,14 @@ function fallbackResult(
       reason: `${test.testName} matches the themes in your query and includes ${test.biomarkerCount || "multiple"} listed biomarker${test.biomarkerCount === 1 ? "" : "s"} for comparison.`,
       category: test.category,
       urgency: index === 0 ? "medium" : "low",
-      confidence: clampConfidence(
-        86 - index * 7 + Math.min(test.score, 20) / 2,
-      ),
+      confidence: clampConfidence(86 - index * 7 + Math.min(test.score, 20) / 2),
       actualTestId: test.id,
+      collectionFeeNote: test.collectionFeeNote,
     })),
   };
 }
 
-async function getOptionalUserId(
-  supabaseUrl: string,
-  supabaseAnonKey: string,
-  req: Request,
-): Promise<string | null> {
+async function getOptionalUserId(supabaseUrl: string, supabaseAnonKey: string, req: Request): Promise<string | null> {
   const authHeader = req.headers.get("Authorization");
   if (!authHeader?.startsWith("Bearer ")) return null;
   const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
@@ -430,10 +266,7 @@ async function getOptionalUserId(
   return data.user.id;
 }
 
-async function checkRateLimit(
-  supabase: SupabaseClient,
-  clientKey: string,
-): Promise<boolean> {
+async function checkRateLimit(supabase: SupabaseClient, clientKey: string): Promise<boolean> {
   const endpoint = "ai-human-context";
   const windowStart = new Date(Date.now() - 60_000).toISOString();
   const { data, error } = await supabase
@@ -455,7 +288,7 @@ async function checkRateLimit(
     return true;
   }
   const row = data as { id: string; request_count: number };
-  if (Number(row.request_count) >= 8) return false;
+  if (Number(row.request_count) >= MINUTE_LIMIT) return false;
   await supabase
     .from("api_rate_limits")
     .update({ request_count: Number(row.request_count) + 1 })
@@ -463,17 +296,46 @@ async function checkRateLimit(
   return true;
 }
 
+/** Rolling 24-hour cap per IP, stored in api_rate_limits. */
+async function checkDailyCap(supabase: SupabaseClient, clientKey: string): Promise<boolean> {
+  const { data, error } = await supabase
+    .from("api_rate_limits")
+    .select("id, request_count, window_start")
+    .eq("endpoint", DAILY_ENDPOINT)
+    .eq("client_key", clientKey)
+    .order("window_start", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (error) return true;
+  const row = data as { id: string; request_count: number; window_start: string } | null;
+  const decision = decideDailyCap(row, Date.now());
+  if (!decision.allowed) return false;
+  if (decision.action === "start") {
+    if (row) {
+      await supabase
+        .from("api_rate_limits")
+        .update({ request_count: 1, window_start: new Date().toISOString() })
+        .eq("id", row.id);
+    } else {
+      await supabase.from("api_rate_limits").insert({
+        endpoint: DAILY_ENDPOINT,
+        client_key: clientKey,
+        request_count: 1,
+        window_start: new Date().toISOString(),
+      });
+    }
+  } else if (row) {
+    await supabase
+      .from("api_rate_limits")
+      .update({ request_count: decision.nextCount })
+      .eq("id", row.id);
+  }
+  return true;
+}
+
 async function logOperation(
   supabase: SupabaseClient,
-  details: {
-    userId: string | null;
-    latencyMs: number;
-    success: boolean;
-    errorType?: string;
-    errorMessage?: string;
-    model?: string;
-    recommendationsCount?: number;
-  },
+  details: { userId: string | null; latencyMs: number; success: boolean; errorType?: string; errorMessage?: string; model?: string; recommendationsCount?: number },
 ): Promise<void> {
   await supabase.from("ai_operation_logs").insert({
     job_type: "ai-human-context",
@@ -497,71 +359,42 @@ Deno.serve(async (req) => {
 
   const startedAt = Date.now();
   const supabaseUrl = Deno.env.get("SUPABASE_URL") || "";
-  const supabaseAnonKey =
-    Deno.env.get("SUPABASE_ANON_KEY") ||
-    Deno.env.get("SUPABASE_PUBLISHABLE_KEY") ||
-    "";
+  const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY") || Deno.env.get("SUPABASE_PUBLISHABLE_KEY") || "";
   const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
-  const openaiApiKey =
-    Deno.env.get("OPENAI_API_KEY") || Deno.env.get("Open_AI_API_KEY") || "";
+  const openaiApiKey = resolveOpenAiApiKey((name) => Deno.env.get(name));
 
   if (!supabaseUrl || !supabaseAnonKey || !supabaseServiceKey) {
-    return jsonResponse(
-      { error: "Recommendation service is not configured" },
-      500,
-    );
+    return jsonResponse({ error: "Recommendation service is not configured" }, 500);
   }
   if (!openaiApiKey) {
-    return jsonResponse(
-      { error: "AI recommendation service is not configured" },
-      500,
-    );
+    return jsonResponse({ error: "AI recommendation service is not configured" }, 500);
   }
 
   const serviceClient = createClient<Database>(supabaseUrl, supabaseServiceKey);
   const userId = await getOptionalUserId(supabaseUrl, supabaseAnonKey, req);
-  // Paid AI calls are restricted to signed-in users so anonymous callers cannot spend credits.
-  if (!userId) {
-    return jsonResponse(
-      { error: "Please sign in to get personalised recommendations." },
-      401,
-    );
-  }
-  const clientIp =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
-  const clientKey = userId ? `user:${userId}` : `ip:${clientIp}`;
+  // Anonymous visitors are welcome; limits are keyed by IP for everyone.
+  const clientKey = `ip:${clientIpFrom(req.headers)}`;
 
   try {
     const rawBody = await req.json();
     const parsed = requestSchema.safeParse(rawBody);
     if (!parsed.success) {
-      return jsonResponse(
-        {
-          error:
-            "Please enter a short wellness goal or health interest before generating recommendations.",
-        },
-        400,
-      );
+      return jsonResponse({ error: "Please enter a short wellness goal or health interest before generating recommendations." }, 400);
     }
     const body = parsed.data;
 
     const allowed = await checkRateLimit(serviceClient, clientKey);
     if (!allowed) {
-      return jsonResponse(
-        {
-          error:
-            "Too many recommendation requests. Please wait a minute before trying again.",
-        },
-        429,
-      );
+      return jsonResponse({ error: "Too many recommendation requests. Please wait a minute before trying again." }, 429);
+    }
+    const withinDailyCap = await checkDailyCap(serviceClient, clientKey);
+    if (!withinDailyCap) {
+      return jsonResponse({ error: "You've reached today's limit for recommendations. Please try again tomorrow." }, 429);
     }
 
     const { data: rows, error: testsError } = await serviceClient
-      .from("provider_tests")
-      .select(
-        "id, test_name, provider_id, price, category, canonical_category, description, biomarker_count, sample_type, home_kit_available, clinic_visit_available, biomarkers_list, url, is_popular, popularity_rank",
-      )
-      .eq("is_active", true)
+      .from("unified_provider_tests")
+      .select("id, test_name, provider_id, price, total_expected_cost, collection_fee_note, category_primary, description, biomarker_count, sample_type, home_kit_available, clinic_visit_available, biomarkers_list, url, is_popular, popularity_rank")
       .not("price", "is", null)
       .order("is_popular", { ascending: false, nullsFirst: false })
       .order("price", { ascending: true })
@@ -577,15 +410,11 @@ Deno.serve(async (req) => {
 
     if (candidates.length === 0) {
       return jsonResponse({
-        medicalDisclaimer:
-          "This information is for educational purposes only and is not medical advice. Please consult your GP or healthcare professional regarding any health concerns or symptoms.",
-        analysis:
-          "No matching active tests are available to compare at the moment.",
+        medicalDisclaimer: "This information is for educational purposes only and is not medical advice. Please consult your GP or healthcare professional regarding any health concerns or symptoms.",
+        analysis: "No matching active tests are available to compare at the moment.",
         recommendedTests: [],
-        generalGuidance:
-          "Please try a broader wellness goal or check back once provider data has refreshed.",
-        whenToSeeDoctor:
-          "Speak to your GP or a qualified healthcare professional if symptoms are persistent, worsening, unexplained, or affecting daily life.",
+        generalGuidance: "Please try a broader wellness goal or check back once provider data has refreshed.",
+        whenToSeeDoctor: "Speak to your GP or a qualified healthcare professional if symptoms are persistent, worsening, unexplained, or affecting daily life.",
         hasRecommendations: false,
       });
     }
@@ -611,45 +440,35 @@ Deno.serve(async (req) => {
     try {
       const { text } = await generateText({
         model: openai("gpt-4o-mini"),
-        system: `You are an AI powering myhealth checkup's AI Wellness Recommendations. myhealth checkup is a UK private diagnostics comparison platform, not a medical provider. Use British English. Never diagnose, never claim a test confirms or rules out disease, and never imply NHS integration. Recommend only tests from the supplied candidate list.`,
+        system: `You are an AI powering myhealth checkup's AI Wellness Recommendations. myhealth checkup is a UK private diagnostics comparison platform, not a medical provider. Use British English. Never diagnose, never claim a test confirms or rules out disease, and never imply NHS integration. Recommend only tests from the supplied candidate list. Each candidate's price is the total expected cost in GBP, including any mandatory collection fee.`,
         prompt: `User request:\n${JSON.stringify(body)}\n\nCandidate tests:\n${JSON.stringify(candidatesForAi)}\n\nReturn ONLY a valid JSON object matching this TypeScript shape, with no markdown or commentary:\n{\n  "analysis": string,\n  "generalGuidance": string,\n  "whenToSeeDoctor": string,\n  "recommendedTests": [\n    {\n      "actualTestId": string,\n      "testName": string,\n      "provider": string,\n      "providerId": string,\n      "price": number | null,\n      "reason": string,\n      "category": string,\n      "urgency": "low" | "medium" | "high",\n      "confidence": number\n    }\n  ]\n}\n\nRecommend 1 to 3 tests.`,
         temperature: 0.2,
       });
 
-      const parsedAi = aiResponseSchema.safeParse(
-        JSON.parse(stripJsonFences(text)),
-      );
+      const parsedAi = aiResponseSchema.safeParse(JSON.parse(stripJsonFences(text)));
       if (!parsedAi.success) {
-        console.error(
-          "[ai-human-context] AI response schema validation failed:",
-          JSON.stringify(parsedAi.error.issues),
-        );
+        console.error("[ai-human-context] AI response schema validation failed:", JSON.stringify(parsedAi.error.issues));
         throw new Error("AI response did not match recommendation schema");
       }
       const object = parsedAi.data;
 
-      const candidateById = new Map(
-        candidates.map((candidate) => [candidate.id, candidate]),
-      );
-      const normalisedRecommendations = object.recommendedTests.map(
-        (recommendation, index) => {
-          const candidate = recommendation.actualTestId
-            ? candidateById.get(recommendation.actualTestId)
-            : candidates[index];
-          const safeCandidate = candidate || candidates[index] || candidates[0];
-          return {
-            testName: safeCandidate.testName,
-            provider: safeCandidate.provider,
-            providerId: safeCandidate.providerId,
-            price: safeCandidate.price,
-            reason: recommendation.reason,
-            category: safeCandidate.category,
-            urgency: recommendation.urgency,
-            confidence: clampConfidence(recommendation.confidence),
-            actualTestId: safeCandidate.id,
-          };
-        },
-      );
+      const candidateById = new Map(candidates.map((candidate) => [candidate.id, candidate]));
+      const normalisedRecommendations = object.recommendedTests.map((recommendation, index) => {
+        const candidate = recommendation.actualTestId ? candidateById.get(recommendation.actualTestId) : candidates[index];
+        const safeCandidate = candidate || candidates[index] || candidates[0];
+        return {
+          testName: safeCandidate.testName,
+          provider: safeCandidate.provider,
+          providerId: safeCandidate.providerId,
+          price: safeCandidate.price,
+          reason: recommendation.reason,
+          category: safeCandidate.category,
+          urgency: recommendation.urgency,
+          confidence: clampConfidence(recommendation.confidence),
+          actualTestId: safeCandidate.id,
+          collectionFeeNote: safeCandidate.collectionFeeNote,
+        };
+      });
 
       result = {
         medicalDisclaimer: fallback.medicalDisclaimer,
@@ -660,12 +479,8 @@ Deno.serve(async (req) => {
         hasRecommendations: normalisedRecommendations.length > 0,
       };
     } catch (aiError) {
-      const aiMessage =
-        aiError instanceof Error ? aiError.message : "Unknown AI error";
-      console.error(
-        "[ai-human-context] AI generation failed, using fallback:",
-        aiMessage,
-      );
+      const aiMessage = aiError instanceof Error ? aiError.message : "Unknown AI error";
+      console.error("[ai-human-context] AI generation failed, using fallback:", aiMessage);
       await logOperation(serviceClient, {
         userId,
         latencyMs: Date.now() - startedAt,
@@ -696,8 +511,7 @@ Deno.serve(async (req) => {
 
     return jsonResponse(result);
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Unknown recommendation error";
+    const message = error instanceof Error ? error.message : "Unknown recommendation error";
     console.error("[ai-human-context] Fatal error:", message);
     await logOperation(serviceClient, {
       userId,
@@ -706,9 +520,6 @@ Deno.serve(async (req) => {
       errorType: "generation_error",
       errorMessage: message.slice(0, 500),
     });
-    return jsonResponse(
-      { error: "Unable to generate recommendations. Please try again." },
-      500,
-    );
+    return jsonResponse({ error: "Unable to generate recommendations. Please try again." }, 500);
   }
 });

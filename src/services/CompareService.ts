@@ -12,6 +12,31 @@ import { TestQueryBuilder } from "./queryBuilders/testQueryBuilder";
 import { getComparePanel } from "@/lib/comparePanels";
 import { compareCategories } from "@/constants/categories";
 import { LiveDataService } from "./LiveDataService";
+import { providers as coreProviders } from "@/constants/providers";
+
+/** unified_provider_tests columns read for URL-resolved comparisons. */
+interface UnifiedCompareRow {
+  id: string | null;
+  test_name: string | null;
+  provider_id: string | null;
+  category_primary: string | null;
+  price: number | null;
+  description: string | null;
+  url: string | null;
+  biomarker_count: number | null;
+  biomarkers_list: unknown;
+  turnaround_days_text: string | null;
+  sample_type: string | null;
+  collection_method: string | null;
+  collection_fee_type: string | null;
+  collection_fee_amount: number | null;
+  collection_fee_note: string | null;
+  clinical_review_type: string | null;
+  clinical_review_fee: number | null;
+  lab_ukas_accredited: boolean | null;
+  lab_cqc_regulated: boolean | null;
+  lab_iso15189: boolean | null;
+}
 
 // Re-export for backwards compatibility
 export type { CompareTestData };
@@ -125,9 +150,10 @@ export class CompareService {
       const { data, error } = await supabase
         .from("unified_provider_tests")
         .select(
-          "id, test_name, provider_id, category_primary, price, description, url, biomarker_count, biomarkers_list, turnaround_days_text, sample_type, collection_method, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189",
+          "id, test_name, provider_id, category_primary, price, description, url, biomarker_count, biomarkers_list, turnaround_days_text, sample_type, collection_method, collection_fee_type, collection_fee_amount, collection_fee_note, clinical_review_type, clinical_review_fee, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189",
         )
-        .in("id", unique);
+        .in("id", unique)
+        .returns<UnifiedCompareRow[]>();
 
       if (error) {
         logger.error("Error fetching tests by id:", error);
@@ -152,6 +178,7 @@ export class CompareService {
           collection_method: row.collection_method ?? null,
           collection_fee_type: row.collection_fee_type ?? null,
           collection_fee_amount: row.collection_fee_amount ?? null,
+          collection_fee_note: row.collection_fee_note ?? null,
           clinical_review_type: row.clinical_review_type ?? null,
           clinical_review_fee: row.clinical_review_fee ?? null,
           lab_ukas_accredited: row.lab_ukas_accredited ?? null,
@@ -200,17 +227,41 @@ export class CompareService {
     const tests = TestDataTransformer.transformMultiple(data ?? []);
     const cheapestByProvider = new Map<string, CompareTestData>();
 
+    const totalOf = (t: CompareTestData) =>
+      t.price +
+      (t.collectionFeeType === "fixed" || t.collectionFeeType === "from"
+        ? (t.collectionFeeAmount ?? 0)
+        : 0);
     for (const test of tests) {
       if (!test.price || test.price <= 0) continue;
       const key = test.provider || test.id;
       const current = cheapestByProvider.get(key);
-      if (!current || test.price < current.price)
+      if (!current || totalOf(test) < totalOf(current))
         cheapestByProvider.set(key, test);
     }
 
-    return Array.from(cheapestByProvider.values())
-      .sort((a, b) => a.price - b.price)
+    const listed = Array.from(cheapestByProvider.values())
+      .sort((a, b) => totalOf(a) - totalOf(b))
       .slice(0, limit);
+
+    // Show every provider we cover: those without an equivalent listing get
+    // an explicit "not listed" column rather than being silently hidden.
+    const covered = new Set(listed.map((t) => t.provider.toLowerCase()));
+    const unlisted: CompareTestData[] = coreProviders
+      .filter((p) => !covered.has(p.name.toLowerCase()))
+      .map((p) => ({
+        id: `unlisted-${p.id}`,
+        name: "Not listed by this provider",
+        provider: p.name,
+        providerLogo: p.logo,
+        price: 0,
+        category: panel.label,
+        description: "",
+        available: false,
+        features: { turnaround: "", collection: "" },
+      }));
+
+    return [...listed, ...unlisted].slice(0, Math.max(limit, listed.length));
   }
 
   static async searchTests(
