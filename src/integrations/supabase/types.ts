@@ -4884,6 +4884,36 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_collection_fee_rules: {
+        Row: {
+          fee_amount: number | null
+          fee_type: string
+          note: string | null
+          provider_id: string
+          route: string
+          source_url: string
+          verified_at: string
+        }
+        Insert: {
+          fee_amount?: number | null
+          fee_type: string
+          note?: string | null
+          provider_id: string
+          route: string
+          source_url: string
+          verified_at: string
+        }
+        Update: {
+          fee_amount?: number | null
+          fee_type?: string
+          note?: string | null
+          provider_id?: string
+          route?: string
+          source_url?: string
+          verified_at?: string
+        }
+        Relationships: []
+      }
       provider_image_audit: {
         Row: {
           category: string | null
@@ -8585,6 +8615,7 @@ export type Database = {
           clinical_review_fee: number | null
           clinical_review_type: string | null
           collection_fee_amount: number | null
+          collection_fee_note: string | null
           collection_fee_type: string | null
           collection_method: string | null
           description: string | null
@@ -8601,6 +8632,7 @@ export type Database = {
           original_price: number | null
           popularity_rank: number | null
           price: number | null
+          price_checked_at: string | null
           provider_id: string | null
           provider_name: string | null
           sample_type: string | null
