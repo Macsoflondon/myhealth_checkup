@@ -213,7 +213,7 @@ WITH (security_invoker = on) AS
     sample_type AS sample_type_raw,
     COALESCE(collection_method, m_collection_method) AS collection_method,
     eff_collection_fee_type AS collection_fee_type,
-    eff_collection_fee_amount AS collection_fee_amount,
+    eff_collection_fee_amount::numeric(6,2) AS collection_fee_amount,
     COALESCE(clinical_review_type, m_clinical_review_type) AS clinical_review_type,
     COALESCE(clinical_review_fee, m_clinical_review_fee) AS clinical_review_fee,
     COALESCE(price, 0::numeric) +
