@@ -21,6 +21,10 @@ import { getProviderRating } from "@/constants/providerRatings";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import type { CompareTestData } from "@/types";
 import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
+import {
+  describeBiomarkers,
+  stripCollectionFeeText,
+} from "@/lib/resolve-test-fields";
 import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
 import { excerptTestDescription } from "@/lib/test-summary";
 import { displayTurnaround } from "@/lib/resolve-test-fields";
@@ -166,8 +170,8 @@ function collectionLabel(t: UniversalTestData): string {
 /** Full collection detail for the detail modal — never guesses. */
 function collectionDetail(t: UniversalTestData): string {
   if (t.route_variant) return t.route_variant.detail;
-  if (t.collection_method && t.collection_method.trim())
-    return t.collection_method.trim();
+  const method = stripCollectionFeeText(t.collection_method);
+  if (method) return method;
 
   const s = (t.sample_type || "").toLowerCase();
   const sample = s.includes("finger")
@@ -435,9 +439,12 @@ export const UniversalTestDetailModal: React.FC<{
                     fontFamily: "'DM Sans',sans-serif",
                   }}
                 >
-                  {test.biomarker_count != null && test.biomarker_count > 0
-                    ? `${test.biomarker_count} ${measurementNoun(test, isAllergy).plural}`
-                    : `${measurementNoun(test, isAllergy).plural.charAt(0).toUpperCase()}${measurementNoun(test, isAllergy).plural.slice(1)} not published`}
+                  {describeBiomarkers(test).count === null &&
+                  normalizeBiomarkers(test.biomarkers_list).length > 0
+                    ? describeBiomarkers(test).label
+                    : test.biomarker_count != null && test.biomarker_count > 0
+                      ? `${test.biomarker_count} ${measurementNoun(test, isAllergy).plural}`
+                      : `${measurementNoun(test, isAllergy).plural.charAt(0).toUpperCase()}${measurementNoun(test, isAllergy).plural.slice(1)} not published`}
                 </div>
                 <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>
                   {test.biomarker_count != null && test.biomarker_count > 0
@@ -1397,9 +1404,12 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
             >
               <span className="flex items-center gap-1 flex-shrink-0">
                 <FlaskConical size={12} color={UTC_TURQUOISE} />
-                {test.biomarker_count && test.biomarker_count > 0
-                  ? `${test.biomarker_count} ${measurementNoun(test, isAllergy).plural}`
-                  : "Not stated"}
+                {describeBiomarkers(test).count === null &&
+                normalizeBiomarkers(test.biomarkers_list).length > 0
+                  ? describeBiomarkers(test).label
+                  : test.biomarker_count && test.biomarker_count > 0
+                    ? `${test.biomarker_count} ${measurementNoun(test, isAllergy).plural}`
+                    : "Not stated"}
               </span>
               <span className="flex items-center gap-1 flex-shrink-0">
                 <Clock size={12} color={UTC_TURQUOISE} />

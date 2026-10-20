@@ -39,7 +39,7 @@ export const sanitiseTurnaroundText = (
   if (!value) return null;
   const cleaned = value
     .split(/\]\(|https?:\/\//)[0]
-    .replace(/[\s\]\[(),;|-]+$/, "")
+    .replace(/[\s\][(),;|-]+$/, "")
     .trim();
   return cleaned.length > 0 ? cleaned : null;
 };
@@ -53,14 +53,56 @@ export const resolveTurnaround = (
   PROVIDER_TURNAROUND_TIMES[providerId] ||
   "2-5 days";
 
+/**
+ * Remove fee wording such as "(phlebotomy fee £21)" from collection text.
+ * Fees come from provider_collection_fee_rules and are shown in their own
+ * row, so a stale amount baked into scraped text must never be displayed.
+ */
+export const stripCollectionFeeText = (
+  value: string | null | undefined,
+): string => {
+  if (!value) return "";
+  return value
+    .replace(/\s*\([^)]*\bfees?\b[^)]*\)/gi, "")
+    .replace(/\s*[,;:\u2014\u2013-]+\s*$/, "")
+    .trim();
+};
+
+export interface ParsedCollection {
+  homeKit: boolean;
+  clinic: boolean;
+  label: string;
+}
+
+/**
+ * Classify collection text. A plain "blood" sample with no finger-prick or
+ * home-kit wording is a venous draw, matching unified_provider_tests.
+ */
+export const parseCollection = (collection: string): ParsedCollection => {
+  const cleaned = stripCollectionFeeText(collection);
+  const s = cleaned.toLowerCase();
+  const homeKit = /finger-?prick|home kit|at-?home/.test(s);
+  const clinic = /venous|clinic/.test(s) || (!homeKit && /\bblood\b/.test(s));
+  let label = cleaned || "\u2014";
+  if (homeKit && clinic) label = "At-home kit & venous draw";
+  else if (homeKit) label = "At-home kit";
+  else if (clinic) label = "Venous draw";
+  return { homeKit, clinic, label };
+};
+
+const isPlainBlood = (value: string): boolean =>
+  /^(whole\s+)?blood(\s+sample)?$/i.test(value);
+
 export const resolveCollection = (
   row: CollectionRowFields,
   providerId: string,
-): string =>
-  row.collection_method?.trim() ||
-  row.sample_type?.trim() ||
-  PROVIDER_COLLECTION_METHODS[providerId] ||
-  "Varies";
+): string => {
+  const value =
+    stripCollectionFeeText(row.collection_method) ||
+    stripCollectionFeeText(row.sample_type);
+  if (value) return isPlainBlood(value) ? "Venous blood draw" : value;
+  return PROVIDER_COLLECTION_METHODS[providerId] || "Varies";
+};
 
 /**
  * Accreditation badges built from the row's real boolean flags. Returns null
@@ -105,4 +147,55 @@ export const displayTurnaround = (
   if (/\d/.test(cleaned)) return cleaned;
   if (/\b(same|next)\s+day\b/i.test(cleaned)) return cleaned;
   return null;
+};
+
+/**
+ * True when a biomarker list entry names a whole panel (for example "Full
+ * Blood Count (FBC) + Differential" or "Liver Profile") rather than a single
+ * marker. Such entries must not be counted as one biomarker.
+ */
+export const isPanelEntry = (name: string): boolean => {
+  const n = name.trim();
+  if (!n) return false;
+  if (/\b(full blood count|complete blood count|fbc)\b/i.test(n)) return true;
+  return /\b(profile|panel)$/i.test(n.replace(/\s*\([^)]*\)\s*$/, ""));
+};
+
+const listEntries = (list: unknown): string[] => {
+  if (!Array.isArray(list)) return [];
+  return list
+    .map((item: unknown) => {
+      if (typeof item === "string") return item.trim();
+      if (item && typeof item === "object" && "value" in item) {
+        const v = (item as { value: unknown }).value;
+        return typeof v === "string" ? v.trim() : "";
+      }
+      return "";
+    })
+    .filter((v) => v.length > 0);
+};
+
+/**
+ * Biomarker count and display label. When any listed entry is a panel the
+ * provider has not itemised, the count is null and the label is the
+ * provider's own entries, so a panel never shows as a bare number.
+ */
+export const describeBiomarkers = (
+  row: BiomarkerCountRowFields,
+): { count: number | null; label: string } => {
+  const entries = listEntries(row.biomarkers_list);
+  if (entries.some(isPanelEntry)) {
+    return { count: null, label: entries.join(" + ") };
+  }
+  const count =
+    entries.length > 0
+      ? entries.length
+      : row.biomarker_count != null && row.biomarker_count > 0
+        ? row.biomarker_count
+        : null;
+  if (count === null) return { count: null, label: "Not stated by provider" };
+  return {
+    count,
+    label: `${count} ${count === 1 ? "biomarker" : "biomarkers"}`,
+  };
 };

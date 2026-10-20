@@ -9,6 +9,8 @@ import {
   formatClinicalReview,
   computeTotalExpectedCost,
 } from "@/lib/comparisonFormat";
+import { describeBiomarkers, parseCollection } from "@/lib/resolve-test-fields";
+import { headerPriceParts } from "@/lib/comparison-header-price";
 import {
   Tooltip,
   TooltipContent,
@@ -51,23 +53,6 @@ const MIN_COLS = 3;
 const MAX_COLS = 8;
 
 type Slot = CompareTestData | null;
-
-interface ParsedCollection {
-  homeKit: boolean;
-  clinic: boolean;
-  label: string;
-}
-
-const parseCollection = (collection: string): ParsedCollection => {
-  const s = (collection || "").toLowerCase();
-  const homeKit = /finger-?prick|home kit|at-?home/.test(s);
-  const clinic = /venous|clinic/.test(s);
-  let label = collection || "—";
-  if (homeKit && clinic) label = "At-home kit & venous draw";
-  else if (homeKit) label = "At-home kit";
-  else if (clinic) label = "Venous draw";
-  return { homeKit, clinic, label };
-};
 
 const formatPrice = (price: number): string =>
   price == null || Number.isNaN(price) ? "—" : `£${price.toFixed(2)}`;
@@ -359,7 +344,19 @@ export const ProviderComparisonTable: React.FC<
                               Not offered
                             </span>
                           ) : (
-                            formatPrice(test.price)
+                            (() => {
+                              const parts = headerPriceParts(test);
+                              return (
+                                <>
+                                  {formatPrice(parts.total)}
+                                  {parts.breakdown && (
+                                    <span className="mt-1 block text-[11px] font-medium leading-snug text-white/75">
+                                      {parts.breakdown}
+                                    </span>
+                                  )}
+                                </>
+                              );
+                            })()
                           )}
                         </div>
                       </div>
@@ -375,7 +372,14 @@ export const ProviderComparisonTable: React.FC<
               index={0}
               slots={slots}
               render={(t) => (
-                <span className="font-semibold">{t.biomarkerCount ?? "—"}</span>
+                <span className="font-semibold">
+                  {
+                    describeBiomarkers({
+                      biomarker_count: t.biomarkerCount,
+                      biomarkers_list: t.biomarkersList,
+                    }).label
+                  }
+                </span>
               )}
             />
             <Row

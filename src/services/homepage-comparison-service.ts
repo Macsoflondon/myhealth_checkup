@@ -3,7 +3,11 @@ import { PROVIDER_NAMES, getSupportedProviderIds } from "@/constants/providers";
 import type { CatalogueComparisonPanel } from "@/design-system/live-catalogue-comparison";
 import { COMPARE_PANELS } from "@/lib/comparePanels";
 import { matchesComparisonName } from "@/lib/homepage-comparisons";
-import { formatCollectionFee, type CollectionFeeType } from "@/lib/comparisonFormat";
+import { describeBiomarkers } from "@/lib/resolve-test-fields";
+import {
+  formatCollectionFee,
+  type CollectionFeeType,
+} from "@/lib/comparisonFormat";
 
 interface HomepageComparisonRow {
   id: string | null;
@@ -12,6 +16,7 @@ interface HomepageComparisonRow {
   price: number | null;
   total_expected_cost: number | null;
   biomarker_count: number | null;
+  biomarkers_list: unknown;
   turnaround_days_text: string | null;
   updated_at: string | null;
   price_checked_at: string | null;
@@ -22,14 +27,24 @@ interface HomepageComparisonRow {
   collection_fee_amount: number | null;
 }
 
-const FEE_TYPES: readonly CollectionFeeType[] = ["none", "fixed", "from", "varies", "self_arranged"];
+const FEE_TYPES: readonly CollectionFeeType[] = [
+  "none",
+  "fixed",
+  "from",
+  "varies",
+  "self_arranged",
+];
 
 /** Short fee line under each homepage price, from the row's fee rule. */
-export function homepageFeeLabel(type: string | null, amount: number | null): string | null {
+export function homepageFeeLabel(
+  type: string | null,
+  amount: number | null,
+): string | null {
   const feeType = FEE_TYPES.find((t) => t === type);
   if (!feeType || feeType === "none") return null;
   const { label } = formatCollectionFee(feeType, amount);
-  if (feeType === "fixed" || feeType === "from") return `Includes blood draw ${label.replace(/^\+/, "")}`;
+  if (feeType === "fixed" || feeType === "from")
+    return `Includes blood draw ${label.replace(/^\+/, "")}`;
   return label;
 }
 
@@ -39,7 +54,7 @@ export async function getHomepageComparisonPanels(): Promise<
   const { data, error } = await supabase
     .from("unified_provider_tests")
     .select(
-      "id, provider_id, test_name, price, total_expected_cost, biomarker_count, turnaround_days_text, updated_at, price_checked_at, clinic_visit_available, home_kit_available, collection_method, collection_fee_type, collection_fee_amount",
+      "id, provider_id, test_name, price, total_expected_cost, biomarker_count, biomarkers_list, turnaround_days_text, updated_at, price_checked_at, clinic_visit_available, home_kit_available, collection_method, collection_fee_type, collection_fee_amount",
     )
     .eq("is_addon", false)
     .in("provider_id", getSupportedProviderIds())
@@ -85,16 +100,21 @@ export async function getHomepageComparisonPanels(): Promise<
           price <= 0
         )
           return [];
+        const markers = describeBiomarkers(row);
         return [
           {
             id: row.id,
             provider: PROVIDER_NAMES[row.provider_id] ?? row.provider_id,
             testName: row.test_name,
             price,
-            biomarkers: row.biomarker_count,
+            biomarkers: markers.count,
+            biomarkerLabel: markers.label,
             turnaround: row.turnaround_days_text,
             priceCheckedAt: row.price_checked_at,
-            feeLabel: homepageFeeLabel(row.collection_fee_type, row.collection_fee_amount),
+            feeLabel: homepageFeeLabel(
+              row.collection_fee_type,
+              row.collection_fee_amount,
+            ),
           },
         ];
       })

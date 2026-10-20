@@ -6,6 +6,8 @@ export interface CatalogueComparisonRow {
   testName: string;
   price: number;
   biomarkers: number | null;
+  /** Display text for the biomarker count; panel tests list their entries. */
+  biomarkerLabel?: string | null;
   turnaround: string | null;
   /** When the provider site last confirmed the price. */
   priceCheckedAt: string | null;
@@ -84,16 +86,19 @@ export const LiveCatalogueComparison = forwardRef<
                 {row.testName}
               </p>
               <p className="m-0 text-xs leading-relaxed text-brand-navy/65">
-                {row.biomarkers === null
-                  ? "Biomarkers not stated"
-                  : `${row.biomarkers} biomarkers`}{" "}
+                {row.biomarkerLabel
+                  ? row.biomarkerLabel
+                  : row.biomarkers === null
+                    ? "Biomarkers not stated"
+                    : `${row.biomarkers} biomarkers`}{" "}
                 ·{" "}
                 {row.turnaround
                   ? `Typical results: ${row.turnaround}`
                   : "Turnaround not stated"}
               </p>
               <p className="mb-0 mt-1 text-xs text-brand-navy/60">
-                {row.priceCheckedAt && !Number.isNaN(Date.parse(row.priceCheckedAt))
+                {row.priceCheckedAt &&
+                !Number.isNaN(Date.parse(row.priceCheckedAt))
                   ? `Price checked ${new Date(row.priceCheckedAt).toLocaleDateString("en-GB", { timeZone: "Europe/London" })}`
                   : "Update date not available"}
               </p>
@@ -118,9 +123,8 @@ export const LiveCatalogueComparison = forwardRef<
         )}
       </div>
       <p className="my-4 text-xs leading-relaxed text-brand-navy/65">
-        Prices are checked on provider websites about every 6 hours. Confirm
-        the current price and any extra charges with the provider before
-        booking.
+        Prices are checked on provider websites about every 6 hours. Confirm the
+        current price and any extra charges with the provider before booking.
       </p>
       {panel && (
         <a

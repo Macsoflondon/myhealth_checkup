@@ -1,4 +1,5 @@
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
+import { stripCollectionFeeText } from "@/lib/resolve-test-fields";
 import { useNavigate } from "@/lib/router-compat";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -183,8 +184,8 @@ const getCollectionDetail = (
   sampleType?: string | null,
   collectionOptions?: ProviderCollectionOption[] | null,
 ): string => {
-  if (collectionMethod && collectionMethod.trim())
-    return collectionMethod.trim();
+  const method = stripCollectionFeeText(collectionMethod);
+  if (method) return method;
   const st = (sampleType || "").toLowerCase();
   const sample = st.includes("finger")
     ? "Finger-prick blood sample"
