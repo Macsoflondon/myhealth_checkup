@@ -85,7 +85,9 @@ describe("describeBiomarkers", () => {
       "Full Blood Count (FBC)",
       ...Array.from({ length: 43 }, (_, i) => `Marker ${i + 1}`),
     ];
-    expect(describeBiomarkers({ biomarker_count: 44, biomarkers_list: list })).toEqual({
+    expect(
+      describeBiomarkers({ biomarker_count: 44, biomarkers_list: list }),
+    ).toEqual({
       count: null,
       label: "44 tests listed, including 1 panel",
     });

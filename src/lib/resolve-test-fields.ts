@@ -163,7 +163,9 @@ export const isPanelEntry = (name: string): boolean => {
   // clauses joined by separators or connecting words.
   const core = n.replace(/\s*\([^)]*\)\s*$/, "");
   if (!/\b(profile|panel)$/i.test(core)) return false;
-  if (/[+,;:/]|\s[-–—]\s|\b(and|with|of|for|from|in|including|via)\b/i.test(core))
+  if (
+    /[+,;:/]|\s[-–—]\s|\b(and|with|of|for|from|in|including|via)\b/i.test(core)
+  )
     return false;
   return core.split(/\s+/).length <= 5;
 };
