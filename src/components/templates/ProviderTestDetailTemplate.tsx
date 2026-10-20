@@ -1,3 +1,4 @@
+import type { CollectionFeeType } from "@/lib/comparisonFormat";
 import {
   describeBiomarkers,
   displayBiomarkerCount,
@@ -80,7 +81,9 @@ export interface ProviderTestData {
   who_should_test?: string | null;
   sample_type?: string | null;
   collection_method?: string | null;
-  collection_fee_type?: string | null;
+  collection_fee_type?: CollectionFeeType | null;
+  collection_fee_note?: string | null;
+  price_checked_at?: string | null;
   collection_fee_amount?: number | null;
 
   home_phlebotomy_cost?: number | null;
