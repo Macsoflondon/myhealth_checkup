@@ -447,11 +447,12 @@ export const usePopularTestsFromDatabase = (
  * Prioritizes tests marked as is_popular=true
  */
 export const usePopularTestsForNavigation = () => {
+  const queryClient = useQueryClient();
   return useQuery({
     queryKey: ["popular-tests-navigation"],
     queryFn: async (): Promise<PopularTest[]> => {
       // First try to get tests marked as popular
-      const { data: popularData, error: popularError } = await supabase
+      const { data: rawNavData, error: popularError } = await supabase
         .from("provider_tests")
         .select(
           "id, test_name, provider_id, price, category, sample_type, collection_method, url, biomarker_count, popularity_rank, turnaround_days_text",
@@ -461,6 +462,16 @@ export const usePopularTestsForNavigation = () => {
         .not("price", "is", null)
         .order("popularity_rank", { ascending: true, nullsFirst: false })
         .limit(8);
+
+      const popularData = rawNavData
+        ? mergeActiveRows(
+            rawNavData,
+            await loadViewPricing(
+              queryClient,
+              rawNavData.map((r) => r.id),
+            ),
+          )
+        : null;
 
       if (!popularError && popularData && popularData.length >= 4) {
         return popularData.map((test) => ({
@@ -512,7 +523,7 @@ export const usePopularTestsForNavigation = () => {
       const providerCounts: Record<string, number> = {};
       const diverseTests: PopularTest[] = [];
 
-      for (const test of data) {
+      for (const test of pricedFallback) {
         const providerId = test.provider_id;
         const currentCount = providerCounts[providerId] || 0;
 
