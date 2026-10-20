@@ -1,6 +1,7 @@
 import {
   fetchViewPricing,
   mergeActiveRows,
+  viewCollectionFee,
   viewFeeLabel,
 } from "@/lib/viewPricing";
 import type { CollectionFeeType } from "@/lib/comparisonFormat";
@@ -882,8 +883,15 @@ export default function ProviderTestDetailTemplate({
                     <>
                       <div className="text-center py-2">
                         <span className="text-3xl font-bold text-primary">
-                          £{test.price.toFixed(2)}
+                          £{(test.total_expected_cost ?? test.price).toFixed(2)}
                         </span>
+                        {(viewCollectionFee(test) ?? 0) > 0 && (
+                          <p className="text-sm text-muted-foreground mt-1">
+                            £{test.price.toFixed(2)} test + £
+                            {(viewCollectionFee(test) ?? 0).toFixed(2)}{" "}
+                            collection fee
+                          </p>
+                        )}
                         {hasDiscount && (
                           <>
                             <span className="text-lg text-muted-foreground line-through ml-2">
