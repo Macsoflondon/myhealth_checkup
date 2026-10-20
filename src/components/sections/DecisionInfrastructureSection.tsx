@@ -32,11 +32,11 @@ export const DecisionInfrastructureSection = () => (
       {/* Copy */}
       <div className="flex flex-col justify-center px-6 py-12 sm:px-10 lg:px-14 lg:py-14">
         <div className="mb-4 flex items-center gap-3">
-          <span className="h-px w-8 bg-brand-turquoise" aria-hidden="true" />
+          <span className="h-px w-8 sm:w-12 bg-brand-pink" aria-hidden="true" />
           <span className="font-heading text-xs sm:text-sm font-bold uppercase tracking-[0.25em] text-brand-turquoise">
             Why myhealth checkup
           </span>
-          <span className="h-px w-8 bg-brand-turquoise" aria-hidden="true" />
+          <span className="h-px w-8 sm:w-12 bg-brand-pink" aria-hidden="true" />
         </div>
 
         <h2 className="font-heading text-[clamp(1.6rem,2.9vw,2.5rem)] font-extrabold leading-[1.12] tracking-tight text-white">
