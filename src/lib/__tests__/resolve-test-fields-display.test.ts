@@ -73,6 +73,38 @@ describe("describeBiomarkers", () => {
   it("matches names ending in profile or panel", () => {
     expect(isPanelEntry("Liver Profile")).toBe(true);
     expect(isPanelEntry("Thyroid panel")).toBe(true);
+    expect(isPanelEntry("UK allergy panel")).toBe(true);
+  });
+  it("ignores profile or panel inside a longer phrase", () => {
+    expect(isPanelEntry("Cholesterol, part of lipid profile")).toBe(false);
+    expect(isPanelEntry("Ferritin and iron profile")).toBe(false);
+    expect(isPanelEntry("Panel review")).toBe(false);
+  });
+  it("44-entry list with one FBC entry", () => {
+    const list = [
+      "Full Blood Count (FBC)",
+      ...Array.from({ length: 43 }, (_, i) => `Marker ${i + 1}`),
+    ];
+    expect(describeBiomarkers({ biomarker_count: 44, biomarkers_list: list })).toEqual({
+      count: null,
+      label: "44 tests listed, including 1 panel",
+    });
+  });
+  it("18-entry list with two panel entries", () => {
+    const list = [
+      "Liver Profile",
+      "Kidney panel",
+      ...Array.from({ length: 16 }, (_, i) => `Marker ${i + 1}`),
+    ];
+    expect(describeBiomarkers({ biomarkers_list: list })).toEqual({
+      count: null,
+      label: "18 tests listed, including 2 panels",
+    });
+  });
+  it("singular label for one marker", () => {
+    expect(describeBiomarkers({ biomarkers_list: ["Ferritin"] }).label).toBe(
+      "1 biomarker",
+    );
   });
 });
 
