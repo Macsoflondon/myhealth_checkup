@@ -15,6 +15,10 @@ export {
   type TurnaroundParseResult,
 } from "./parseTurnaround.ts";
 export { normaliseBiomarkers } from "./normaliseBiomarkers.ts";
+export {
+  sanitiseBiomarkerEntries,
+  isBiomarkerDebris,
+} from "./sanitiseBiomarkerEntries.ts";
 export { isJunkTestName } from "./isJunkTestName.ts";
 export {
   writeHistorySnapshot,
