@@ -20,13 +20,53 @@ This skill composes with `mhc-skill-os`: its pipeline stages and refusal rules s
 2. **Every finding and every pass carries evidence.** `file:line`, a query result, a command's output. Nothing passes because it looked right.
 3. **You do not get to say it is fixed until you have tried to break it.** See `references/loop-protocol.md`.
 
+## Fix what you find, in the same pass — standing instruction, 2026-10-20
+
+The user has explicitly told this skill, more than once, not to split a task from what
+it turns up along the way: *"if you come across something... fix it also at the same
+time, don't leave it till the last and report... if you find something while doing a
+task, fix it simultaneously, do the whole thing together... then bring it all back to
+me and say it's all completed and I've also found these issues and I've completed those
+as well."* This overrides the instinct to flag-and-defer. Default to fixing, in the same
+pass, not to reporting-and-waiting.
+
+In practice, for this skill:
+
+- A finding with a safe, honest default — missing data shown as missing (`null`, "Not
+  stated", an absent section), a mislabelled control relabelled correctly, a drift-guard
+  gap closed — gets fixed the moment it's found, not written up as "blocked" and left for
+  later. This is most findings. Two real examples from this audit that were *correctly*
+  fixed immediately, no deferral: the `DreamHealthShowcase` filmstrip's unlabelled
+  external link, and `categoryTestMapper.ts`'s false "Home Kit" default.
+- What earlier passes called "blocked, needs a human decision" — the Medichecks
+  accreditation fallback, the Randox turnaround fallback — turned out, once asked, not to
+  need a judgement call about *what the real data is*; they needed a decision about
+  *whether to stop guessing*, and the safe, honest default (show missing as missing) was
+  always available the whole time. Don't wait to be asked for that kind of fix again:
+  apply the honest default and fix it in the same pass it's found in, the same way the
+  always-fixed findings above were handled. Still say what was found and what the fix
+  was — the ledger and the report don't get shorter, only the gap between finding and
+  fixing does.
+- Genuinely blocked still exists, but it's narrower than it was: something that needs
+  information this session cannot get at all (a live external site this sandbox can't
+  reach, a fact only a specific person knows and hasn't said), or a change serious enough
+  that even a safe default would be a real design/business decision someone else should
+  see before it ships (not just "I don't know if a label is accurate" — that's the
+  common case above, and it isn't this). When something really is blocked, name it
+  plainly and say exactly what would unblock it — don't let "blocked" become a way to
+  avoid a fix that was actually available.
+- One task, one report. When a task turns up unrelated issues, fix those too, in the
+  same session, before reporting — then report all of it together as done: the thing
+  asked for, plus what else got fixed along the way. Don't close out the asked-for part
+  and separately list the rest as "optional, not done, not part of this task."
+
 ## Loop
 
 ```
 INVENTORY → AUDIT → FIX → RE-VERIFY → ADVERSARIAL REVIEW → REGRESSION → (repeat)
 ```
 
-Exit only when a full pass produces zero new findings **twice in a row**, or when remaining items are genuinely blocked. Blocked items are named, with what unblocks them. A first clean pass is not an exit — it is the reason to run one more.
+Exit only when a full pass produces zero new findings **twice in a row**, or when remaining items are genuinely blocked in the narrow sense above — not "uncertain," which has a fix. Blocked items are named, with what unblocks them. A first clean pass is not an exit — it is the reason to run one more.
 
 **INVENTORY** — rebuild the surface list from the code every run. Never reuse a list from memory or from a previous session's notes; that is exactly how surfaces get missed after an upstream edit. Method in `references/card-contract.md`.
 
@@ -68,6 +108,10 @@ The ledger is the report. The chat summary points at it and names the counts —
 - If a check could not be run, say which and why, in the summary, not only in the ledger.
 - Do not describe a fix as verified in production. This repo deploys to Cloudflare Pages and production has been observed serving stale content; verified means verified in the codebase and the checks above.
 - If the loop hits its second clean pass, say so plainly and stop. Do not keep polishing.
+- One report, not a staged one: if fixing the asked-for thing turned up other issues and
+  they got fixed too (per "Fix what you find" above), report all of it together as
+  done — the task, plus what else was found and fixed — rather than closing the task and
+  separately listing the rest as outstanding.
 
 ## Drift guard — the part that actually stops the regressions
 

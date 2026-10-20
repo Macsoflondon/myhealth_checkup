@@ -197,3 +197,144 @@ rather than a 5-file sample; a same-test-three-surfaces cross-check for location
 *consistency*, not just coverage — this pass confirmed the data exists, not that every
 surface renders it identically), plus revisiting findings #7 and #14 once/if someone
 resolves the underlying data question.
+
+---
+
+# Pass 3 — 2026-10-20
+
+Picked back up on the user's request to re-verify everything is working and keep
+fixing until it is. Significant drift since pass 2: ~15 more Lovable commits plus one
+large dead-code cleanup (`23a1bcb6`, gpt-engineer-app bot, 19 files/2446 lines, pure
+deletions) that removed three files from the original inventory —
+`MostPopularTestsSection.tsx` (the component the user's *original* report was about),
+`TestListCard.tsx`, and `ClinicTestsSection.tsx`. Confirmed before relying on anything:
+these were genuine dead-code removals (zero additions in that commit), not a silent
+regression — `MostPopularTestsSection`'s functional role on the homepage is now filled
+by `HeroPopularTests.tsx`, already in this ledger's inventory and already verified safe.
+
+## Counts
+
+- Surfaces re-inventoried from code: 16 live (down from pass 1's 19 — 3 deleted, 4
+  newly found missing from the drift-guard's own list, now added)
+- Checks run this pass: 7
+- FAIL, fixed (real logic bug, not a data-judgment call): 1
+- Drift-guard coverage gaps found and fixed: 2
+- Previously-flagged findings re-queried: 2 — one fully resolved since pass 1/2, one
+  narrowed (partially resolved)
+- Full copy-rule sweep (all 16 surfaces, not pass 2's 5-file sample): clean
+
+## Re-verification: everything from passes 1–2 held
+
+All four pass-1 fixes, the pass-2 confirmations, and the drift-guard script itself were
+re-checked against current code rather than assumed:
+- Price-honesty fix (`price: test.price ?? null`) — intact, comment and all.
+- `DreamHealthShowcase` filmstrip button — intact.
+- `node scripts/audit-card-external-links.mjs` — runs clean, but see finding #15 below;
+  it was quietly checking less than it used to before this pass's fix.
+- Biomarker-list and copy-rule passes — re-run at full scope (16 surfaces, not 5), still
+  clean; see below.
+
+## Findings
+
+| # | surface | contract rule | verdict | evidence | fix |
+|---|---|---|---|---|---|
+| 15 | `scripts/audit-card-external-links.mjs` | the drift guard must actually see every external-nav mechanism in use | **FAIL → FIXED** | `UniversalTestCard.tsx`'s `handleBook` was refactored from a literal `window.open(test.url, ...)` to `openAffiliateUrl(test.url, ...)` (a new helper in `src/lib/affiliate/affiliate-tracking.ts`, added to centralise affiliate-tracking attribution — confirmed by reading it that it still ends in `window.open(target, "_blank", "noopener,noreferrer")`, so no behaviour regression, just a textual one). The guard's pattern list only matched the literal string `window.open(`, so it silently stopped checking this call site — checked-count dropped from 4 to 2 with no warning. Also found 4 live card surfaces missing from the guard's own `CARD_SURFACES` list (`MedichecksMensHealthPage.tsx`, `MedichecksTestsCatalogPage.tsx`, `ProviderComparisonPage.tsx`, `SimilarTestsSection.tsx`) that existed before pass 1 but were never added. | Added `/openAffiliateUrl\(/` to `EXTERNAL_NAV_PATTERNS`; added the 4 missing surfaces to `CARD_SURFACES`; added a dated header comment explaining exactly this failure mode so the next refactor-through-a-new-helper gets caught the same day, not the next audit. Re-ran: 3 checked (up from 2), 0 unlabelled — confirmed the `openAffiliateUrl` call site is itself honestly labelled (`handleBook`, `aria-label="Book {test} on the provider's website (opens in a new tab)"`). |
+| 16 | `src/lib/categoryTestMapper.ts` `mapProviderTestRow` | location claims must be real, never a default dressed up as data | **FAIL → FIXED** | `collection = row.home_kit_available && row.clinic_visit_available ? "Home Kit / Clinic" : row.clinic_visit_available ? "Clinic" : "Home Kit"` — the final `else` returned `"Home Kit"` whenever `clinic_visit_available` was falsy, **including when `home_kit_available` was also false or null**. Queried Supabase: 2 live Medichecks rows have both flags falsy right now, so this mislabelled 2 real tests "Home Kit" with zero supporting data. This is a **confirmed cross-surface consistency bug**, not just a single-surface honesty one: `ProviderTestsGrid.tsx` (via `fromProviderTest`, direct boolean passthrough) would correctly show "Not stated" for one of these exact rows, while `CategoryPageLayout.tsx` (via this mapper → `fromCategoryTestItem`'s regex round-trip) showed "At-home kit" for the *same test* — traced the regex both ways by hand to confirm. | Added an explicit `home_kit_available` check before falling through, so the `else` is reached only when neither flag is true, and returns `"Not stated"` (matching the honest-fallback convention already used in `unifiedCardAdapter.ts` and `UniversalTestCard.tsx`'s own `collectionLabel`/`collectionDetail`, which already handles this case correctly and was the reference for what "correct" looks like here). Re-traced all four boolean combinations through both surfaces' full pipelines by hand post-fix — they now agree in every case. Added `src/lib/categoryTestMapper.locationHonesty.test.ts` (5 cases) as the drift guard — not executed in this sandbox (same `npm ci` / private-registry constraint as every prior Vitest file in this audit), written to the same structure as the already-passing `unifiedCardAdapter.price.test.ts`. |
+| 7 (revisit) | `ProviderTestDetailModal.tsx` `getAccreditations()` | — | **RESOLVED since pass 1** | Re-queried the same coverage check from pass 1: **every provider is now at 100% real `lab_ukas_accredited`/`lab_cqc_regulated`/`lab_iso15189` coverage** except `clinilabs` (138/143, 96%) — Medichecks went from 0/200 to 195/195, Lola Health from 0/108 to 107/107. Someone backfilled the real columns since pass 1; confirmed `getAccreditations()`'s "row's real flags win" precedence is unchanged and still correct, so the hardcoded fallback map is now live dead code for all but a handful of rows. | No code change needed — the underlying data question this finding was blocked on has been answered. Worth a follow-up cleanup (remove the now-near-dead fallback map) but that's tidying, not a defect; not done this pass to keep the diff to confirmed bugs. |
+| 14 (revisit) | `ProviderTestDetailModal.tsx` `formatTurnaround()` | — | **Narrowed — Lola Health resolved, Randox still real** | Re-queried: **Lola Health is now 107/107 (100%) real turnaround data**, up from 12/108 at pass 2 — resolved. **Randox is still only 28/65 (43%)** — essentially unchanged (was 28/67, 42%) — 37 live Randox tests still show the hardcoded `"24 hours"` guess, not their own data. `clinilabs` (125/143, 87%) and `medical-diagnosis` (121/154, 79%) have smaller, longer-standing gaps. | Still not fixed, same reasoning as before, now scoped to Randox specifically: deleting the fallback for 37 real listings on the question of whether "24 hours" is a verified-but-unmigrated fact or a stale guess is still a product call this audit can't make. |
+
+## Full copy-rule sweep (all 16 surfaces)
+
+Pass 2 sampled 5 files; this pass swept all 16 current surfaces for marketing hype
+(`guarantee`, `amazing`, `best-in-class`, `revolutioniz-`, `cure`, `diagnose your`,
+`life-chang-`, `miracle`, `breakthrough`) and Americanisms in user-facing copy
+(`color`/`organize`/`analyze`/`favorite`/`personalize` outside CSS/class-name contexts).
+Zero hits either way. Clean.
+
+## Adversarial review (pass 3)
+
+- Did not trust the drift guard's "0 unlabelled" result at face value — traced where its
+  checked-count had quietly dropped and found the real cause (finding #15) before
+  concluding the guard itself needed fixing, not just re-running it.
+- Did not trust "both passed" on a provider-comparison check — hand-traced all four
+  boolean combinations through *both* surfaces' actual code paths (not just one) to
+  confirm finding #16's fix produces agreement, since the whole point of the finding was
+  that two surfaces had been disagreeing silently.
+- Re-queried both previously-flagged findings against live data rather than assuming
+  "flagged, not fixed" meant "still true" — one had been resolved by someone else
+  entirely, one had partially resolved; reporting either as still fully open would have
+  been stale, not cautious.
+- Confirmed the big Oct 5 deletion commit was pure cleanup (checked the commit's own
+  diff stat: 2446 deletions, 0 additions) before trusting that nothing needed rebuilding
+  to replace the 3 removed files.
+
+## Exit status
+
+Not a clean pass — this pass found and fixed 2 real bugs (one in the audit tooling
+itself, one a genuine cross-surface data bug), so the loop's two-consecutive-zero-finding
+exit condition isn't met; a pass 3 that finds bugs can't be one of the two clean passes
+needed to stop. What remains open: the Randox turnaround gap (narrowed finding #14,
+blocked on the same product decision as before), and the optional cleanup of the
+now-near-dead accreditation fallback map (finding #7, not a defect). A pass 4 re-check of
+this pass's two fixes, run clean, would be the first of the two passes needed to close
+the loop.
+
+## Finding #14 — resolved by explicit user decision (2026-10-20, same day)
+
+The product/compliance decision this finding was blocked on has been made: the user
+asked directly to fix the Randox turnaround gap. That decision resolves the uncertainty
+this finding was flagged on — whether the hardcoded "24 hours" was a real-but-unmigrated
+fact or a stale guess no longer matters once the owner has said to stop presenting it as
+that test's own data.
+
+**Fix:** `formatTurnaround()` in `ProviderTestDetailModal.tsx` now returns `null` for
+`randox`/`randox-health` instead of the hardcoded `"24 hours"`. The call site
+(`test.turnaround_days_text || goodbodyStatic?.turnaround || formatTurnaround(...) ||
+"Not stated"`) already had the right shape for this — it just needed the function to be
+honest about not knowing, and a final fallback added for when it says so. Scoped
+narrowly to Randox, the provider actually asked about and the one with the largest gap
+(37/65 active tests, 57%, relying on the guess) — `medichecks`, `goodbody-clinic`,
+`lola-health`, `london-medical-laboratory`, and `tuli-health`'s entries in the same map
+are untouched; each of those providers has real data on ≥79% of its rows (confirmed in
+earlier passes), so wasn't flagged as needing this, and widening the fix to them wasn't
+part of what was asked.
+
+**A bug I had to fix to fix the bug:** the function originally returned
+`defaults[providerId.toLowerCase()] || "2–5 working days"`. Simply setting Randox's map
+entries to `null` would NOT have worked with that `||` — `null || "2–5 working days"`
+evaluates to the generic guess, reintroducing the exact same class of fabricated-data
+problem one level up. Changed the lookup to `id in defaults ? defaults[id] : "2–5 working
+days"` so an explicit `null` is distinguished from "not in the map at all" (which still
+correctly falls through to the generic guess for a provider with no entry).
+
+**Verification:** exported `formatTurnaround` (previously module-private) and added
+`src/components/providers/ProviderTestDetailModal.turnaroundHonesty.test.ts` (5 cases,
+including the specific `in`-vs-`||` regression this fix depended on). Re-ran
+`node scripts/audit-card-external-links.mjs` after the edit — 3 checked, 0 unlabelled,
+unaffected. Could not execute the new Vitest file in this sandbox, same constraint as
+every other test added in this audit.
+
+This closes finding #14. Finding #7 (the near-dead accreditation fallback map) remains
+open as an optional cleanup, not asked about this time.
+
+## Finding #7 — cleanup done, same day as finding #14, per the same standing instruction
+
+Re-queried before touching anything: real `lab_ukas_accredited`/`lab_cqc_regulated`/
+`lab_iso15189` coverage is ≥96% for every provider; only **5 active rows system-wide
+(all `clinilabs`)** still have none of the three flags set. Worth noting on the way
+past: `clinilabs` had no entry in the old hardcoded map at all, so those 5 rows were
+never getting the "verified-sounding" per-provider guess the map gave everyone else —
+they were falling through to the map's own generic fallback (`["CQC regulated", "GDPR
+compliant"]`), a second, blinder layer of the same fabrication.
+
+**Fix:** deleted the entire hardcoded map from `getAccreditations()`. It now returns the
+row's real flags, mapped to display strings, or an honest `[]` when a row has none —
+never a guess. Exported the function (previously module-private) for testability and
+added `ProviderTestDetailModal.accreditationHonesty.test.ts` (4 cases). Wrapped the
+"Standards & Accreditation" section in `accreditations.length > 0 &&` so the ~5
+`clinilabs` rows with nothing real to show get a clean, absent section rather than an
+honest-but-visually-broken empty heading. Re-ran `node scripts/audit-card-external-links.mjs`
+after the edit: 3 checked, 0 unlabelled, unaffected.
+
+This closes finding #7. Both findings left open at the end of pass 3 are now resolved —
+nothing outstanding from this audit as of 2026-10-20.

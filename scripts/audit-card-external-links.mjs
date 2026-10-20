@@ -7,14 +7,29 @@
  * test-detail page, never the provider's external URL. The provider's URL may
  * appear only on an explicit, separately labelled booking action.
  *
- * This script scans the known card-rendering surfaces for `target="_blank"`
- * and `window.open(` — the two ways an external navigation gets wired up —
- * and requires each one to sit near the word "book" (an aria-label, visible
- * button text, or a `handleBook`-style identifier), the one honest label for
- * "this leaves the site to buy something". Anything else is flagged: it's
- * either an unlabelled external link (the DreamHealthShowcase filmstrip bug,
- * fixed 2026-09-14) or a mislabelled one (the TestListCard "View details"
- * bug, fixed the same day).
+ * This script scans the known card-rendering surfaces for every known way an
+ * external navigation gets wired up — `target="_blank"`, `window.open(`, the
+ * `...externalLinkProps` spread, and the `openAffiliateUrl(` helper that
+ * replaced a direct `window.open()` call in `UniversalTestCard.tsx` on
+ * 2026-10-?? — and requires each one to sit near the word "book" (an
+ * aria-label, visible button text, or a `handleBook`-style identifier), the
+ * one honest label for "this leaves the site to buy something". Anything
+ * else is flagged: it's either an unlabelled external link (the
+ * DreamHealthShowcase filmstrip bug, fixed 2026-09-14) or a mislabelled one
+ * (the TestListCard "View details" bug, fixed the same day).
+ *
+ * TEND THIS LIST (2026-10-20 note): `EXTERNAL_NAV_PATTERNS` found only 2
+ * matches on a pass-3 re-check where it previously found 4 — not because
+ * anything got more honest, but because `handleBook` had been refactored
+ * from a literal `window.open(test.url, ...)` to `openAffiliateUrl(test.url,
+ * ...)` (a legitimate change — centralises affiliate-tracking attribution,
+ * confirmed by reading `src/lib/affiliate/affiliate-tracking.ts` that it
+ * still ends in `window.open(target, "_blank", ...)`), and the literal string
+ * `window.open(` no longer appears in the card file at all. A drift guard
+ * built on literal text match is only as good as its pattern list — when a
+ * card surface starts routing through a new shared helper, add that helper's
+ * call-site text here too, the same day, or this script quietly stops
+ * checking anything that goes through it.
  *
  * This is a scoped, high-signal check over the card surfaces specifically —
  * not a repo-wide external-link auditor. Legitimate external links elsewhere
@@ -38,13 +53,18 @@ const CARD_SURFACES = [
   "src/components/sections/DreamHealthShowcase.tsx",
   "src/components/compare/RecommendedTestsCarousel.tsx",
   "src/components/ai/RecommendationEngine.tsx",
+  "src/components/tests/SimilarTestsSection.tsx",
   "src/pages/CompareTests.tsx",
+  "src/pages/MedichecksMensHealthPage.tsx",
+  "src/pages/MedichecksTestsCatalogPage.tsx",
+  "src/pages/ProviderComparisonPage.tsx",
 ];
 
 const EXTERNAL_NAV_PATTERNS = [
   /target=["']_blank["']/,
   /window\.open\(/,
   /\.\.\.externalLinkProps/, // src/utils/urlTracking.ts — sets target="_blank" via spread
+  /openAffiliateUrl\(/, // src/lib/affiliate/affiliate-tracking.ts — wraps window.open() for button-triggered bookings
 ];
 const BOOK_WORD_RE = /book/i;
 

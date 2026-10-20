@@ -86,12 +86,18 @@ export function mapProviderTestRow(
   const turnaround = row.turnaround_days_text || "Typical 3–5 days";
   const match = turnaround.match(/(\d+)/);
   const turnaroundDays = match ? parseInt(match[1], 10) : 5;
+  // Neither flag true falls through to "Home Kit" below only by omission —
+  // that previously claimed home-kit availability for a row with no real
+  // support for it (2 live Medichecks rows as of 2026-10-20). Must read as
+  // genuinely unknown, not default to either option.
   const collection =
     row.home_kit_available && row.clinic_visit_available
       ? "Home Kit / Clinic"
-      : row.clinic_visit_available
-        ? "Clinic"
-        : "Home Kit";
+      : row.home_kit_available
+        ? "Home Kit"
+        : row.clinic_visit_available
+          ? "Clinic"
+          : "Not stated";
 
   return {
     id: row.id,
