@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { Plus, Check } from "lucide-react";
 import type { CompareTestData } from "@/types";
 import { PROVIDER_LOGOS } from "@/constants/providers";
