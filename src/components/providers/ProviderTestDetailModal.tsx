@@ -1,3 +1,4 @@
+import { viewCollectionFee, viewFeeLabel } from "@/lib/viewPricing";
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { stripCollectionFeeText } from "@/lib/resolve-test-fields";
 import { useNavigate } from "@/lib/router-compat";
@@ -258,13 +259,14 @@ const getStoredCollectionOptions = (
     );
   }
 
-  if (
-    test.clinic_visit_available &&
-    typeof test.clinic_phlebotomy_cost === "number"
-  ) {
+  // Clinic fee comes from unified_provider_tests (provider_collection_fee_rules).
+  const clinicFee = viewCollectionFee(test);
+  if (test.clinic_visit_available && clinicFee != null) {
+    const feeLabel = viewFeeLabel(test);
     options.push({
       method: "Venous clinic draw",
-      price_modifier: test.clinic_phlebotomy_cost,
+      price_modifier: clinicFee,
+      ...(feeLabel ? { note: feeLabel } : {}),
     });
   }
   if (
