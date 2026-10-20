@@ -42,7 +42,7 @@ export const ProviderTestsGrid = ({
       const { data, error } = await supabase
         .from("provider_tests")
         .select(
-          "id, test_name, image_url, price, base_price, clinic_phlebotomy_cost, home_phlebotomy_cost, category, sample_type, collection_method, measurement_type, who_should_test, home_kit_available, clinic_visit_available, url, url_verified, biomarker_count, biomarkers_list, description, what_is_tested, preparation_notes, test_limitations, turnaround_days_text, collection_options, popularity_rank, is_popular, is_addon, purchase_notes, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189",
+          "id, test_name, image_url, price, base_price, home_phlebotomy_cost, category, sample_type, collection_method, measurement_type, who_should_test, home_kit_available, clinic_visit_available, url, url_verified, biomarker_count, biomarkers_list, description, what_is_tested, preparation_notes, test_limitations, turnaround_days_text, collection_options, popularity_rank, is_popular, is_addon, purchase_notes, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189",
         )
         .eq("provider_id", dbId)
         .eq("is_active", true)
@@ -103,7 +103,9 @@ export const ProviderTestsGrid = ({
             turnaround_days_text: t.turnaround_days_text ?? null,
             base_price: t.base_price ?? null,
             collection_options: t.collection_options ?? null,
-            clinic_phlebotomy_cost: t.clinic_phlebotomy_cost ?? null,
+            total_expected_cost: t.total_expected_cost ?? null,
+            collection_fee_type: t.collection_fee_type ?? null,
+            collection_fee_amount: t.collection_fee_amount ?? null,
             home_phlebotomy_cost: t.home_phlebotomy_cost ?? null,
             price_from: hasStartingPrice(t),
             categoryColor: branding?.primary || "#e70d69",
@@ -126,7 +128,9 @@ export const ProviderTestsGrid = ({
             collection_method: t.collection_method ?? null,
             home_kit_available: t.home_kit_available ?? null,
             clinic_visit_available: t.clinic_visit_available ?? null,
-            clinic_phlebotomy_cost: t.clinic_phlebotomy_cost ?? null,
+            total_expected_cost: t.total_expected_cost ?? null,
+            collection_fee_type: t.collection_fee_type ?? null,
+            collection_fee_amount: t.collection_fee_amount ?? null,
             home_phlebotomy_cost: t.home_phlebotomy_cost ?? null,
           });
           const single = variants.length === 1 && variants[0].fee <= 0;

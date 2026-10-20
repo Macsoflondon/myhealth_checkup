@@ -238,7 +238,9 @@ const getStoredCollectionOptions = (
       collection_method: test.collection_method,
       home_kit_available: test.home_kit_available,
       clinic_visit_available: test.clinic_visit_available,
-      clinic_phlebotomy_cost: test.clinic_phlebotomy_cost,
+      total_expected_cost: test.total_expected_cost,
+      collection_fee_type: test.collection_fee_type,
+      collection_fee_amount: test.collection_fee_amount,
       home_phlebotomy_cost: test.home_phlebotomy_cost,
     })
   ) {

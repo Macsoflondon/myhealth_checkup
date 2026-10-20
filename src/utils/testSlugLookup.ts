@@ -26,7 +26,7 @@ export interface TestData {
   collection_method?: string | null;
   collection_fee_type?: string | null;
   collection_fee_amount?: number | null;
-  clinic_phlebotomy_cost?: number | null;
+
   home_phlebotomy_cost?: number | null;
   home_kit_available?: boolean | null;
   clinic_visit_available?: boolean | null;
@@ -68,7 +68,7 @@ const SELECT_FIELDS = `
   biomarkers_list, biomarker_count, image_url, is_addon, 
   original_price, discount_percentage, symptoms, conditions, who_should_test,
   sample_type, collection_method, collection_fee_type, collection_fee_amount,
-  clinic_phlebotomy_cost, home_phlebotomy_cost, home_kit_available,
+  home_phlebotomy_cost, home_kit_available,
   clinic_visit_available, home_phlebotomy_option, turnaround_days_text,
   turnaround_raw, clinical_review_type, clinical_review_fee, gp_review_included,
   total_expected_cost, what_is_tested, preparation_notes, test_limitations

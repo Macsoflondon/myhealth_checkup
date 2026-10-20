@@ -1,3 +1,4 @@
+import type { CollectionFeeType } from "@/lib/comparisonFormat";
 import { openAffiliateUrl } from "@/lib/affiliate/affiliate-tracking";
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { canBookDirect } from "@/lib/booking-link-state";
@@ -83,7 +84,7 @@ export interface UniversalTestData {
   clinic_visit_available?: boolean;
   /** Raw collection_options from provider_tests — parsed per provider */
   collection_options?: unknown;
-  clinic_phlebotomy_cost?: number | null;
+  collection_fee_type?: CollectionFeeType | null;
   home_phlebotomy_cost?: number | null;
   is_addon?: boolean;
   purchase_notes?: string | null;
