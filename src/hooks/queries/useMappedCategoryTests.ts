@@ -98,9 +98,7 @@ export function useMappedCategoryTests(
           queryClient,
           ((data ?? []) as unknown as ProviderTestRow[]).map((r) => r.id),
         ),
-      ).flatMap((row) =>
-        mapProviderTestRowVariants(row, badgeColor),
-      );
+      ).flatMap((row) => mapProviderTestRowVariants(row, badgeColor));
     },
     staleTime: 5 * 60 * 1000,
   });

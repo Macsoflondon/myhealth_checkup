@@ -61,8 +61,6 @@ describe("deriveCollectionVariants", () => {
       collection_fee_amount: 40,
     });
     expect(variantFeeNote(kit)).toBeNull();
-    expect(variantFeeNote(clinic)).toBe(
-      "£69.00 test + blood draw £40",
-    );
+    expect(variantFeeNote(clinic)).toBe("£69.00 test + blood draw £40");
   });
 });

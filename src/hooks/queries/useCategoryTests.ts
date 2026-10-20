@@ -63,9 +63,7 @@ export function useCategoryTests(
           queryClient,
           (data as unknown as ProviderTestRow[]).map((r) => r.id),
         ),
-      ).flatMap((row) =>
-        mapProviderTestRowVariants(row, badgeColor),
-      );
+      ).flatMap((row) => mapProviderTestRowVariants(row, badgeColor));
 
       if (!sub) return mapped;
       return mapped.filter((t) =>

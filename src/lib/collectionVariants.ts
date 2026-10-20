@@ -173,7 +173,10 @@ export function pickVariant(
 /** "£69.00 kit + £40.00 clinic draw" style breakdown, or null when there is no fee. */
 export function variantFeeNote(variant: CollectionVariant): string | null {
   if (variant.fee <= 0) return null;
-  if (variant.feeLabel && (variant.route === "clinic" || variant.route === "venous")) {
+  if (
+    variant.feeLabel &&
+    (variant.route === "clinic" || variant.route === "venous")
+  ) {
     return `£${variant.basePrice.toFixed(2)} test + blood draw ${variant.feeLabel.replace(/^\+/, "")}`;
   }
   const label =

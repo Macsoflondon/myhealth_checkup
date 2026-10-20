@@ -615,31 +615,29 @@ export default function ProviderTestDetailTemplate({
       const options: ComparisonProviderOption[] = mergeActiveRows(
         siblingTests ?? [],
         siblingPricing,
-      ).map(
-        (t) => {
-          const provRating = getProviderRating(t.provider_id);
-          return {
-            id: t.id,
-            providerId: t.provider_id,
-            providerName:
-              detailedProviders.find((p) => p.id === t.provider_id)?.name ||
-              t.provider_id,
-            price: t.total_expected_cost ?? t.price ?? 0,
-            feeLabel: viewFeeLabel(t),
-            turnaroundTime:
-              t.turnaround_days_text || t.turnaround_raw || "Contact provider",
-            collectionMethod:
-              stripCollectionFeeText(t.collection_method) || "Contact provider",
-            biomarkerCount:
-              describeBiomarkers(t).count === null
-                ? undefined
-                : displayBiomarkerCount(t) || undefined,
-            url: t.url || undefined,
-            rating: provRating?.rating,
-            reviews: provRating?.reviewsFormatted,
-          };
-        },
-      );
+      ).map((t) => {
+        const provRating = getProviderRating(t.provider_id);
+        return {
+          id: t.id,
+          providerId: t.provider_id,
+          providerName:
+            detailedProviders.find((p) => p.id === t.provider_id)?.name ||
+            t.provider_id,
+          price: t.total_expected_cost ?? t.price ?? 0,
+          feeLabel: viewFeeLabel(t),
+          turnaroundTime:
+            t.turnaround_days_text || t.turnaround_raw || "Contact provider",
+          collectionMethod:
+            stripCollectionFeeText(t.collection_method) || "Contact provider",
+          biomarkerCount:
+            describeBiomarkers(t).count === null
+              ? undefined
+              : displayBiomarkerCount(t) || undefined,
+          url: t.url || undefined,
+          rating: provRating?.rating,
+          reviews: provRating?.reviewsFormatted,
+        };
+      });
 
       setOtherProviders(options);
     };

@@ -189,7 +189,7 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
                           <ExternalLink className="h-3.5 w-3.5 ml-1" />
                         </a>
                       </Button>
-                      ) : null}
+                    ) : null}
                     {provider.url && (
                       <AffiliateCommissionNote className="mt-1 max-w-[200px]" />
                     )}
