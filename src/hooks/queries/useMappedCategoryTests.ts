@@ -1,4 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { loadViewPricing, mergeActiveRows } from "@/lib/viewPricing";
 import { supabase } from "@/integrations/supabase/client";
 import { CategoryTestItem } from "@/components/category/CategoryPageLayout";
 import {
@@ -69,6 +70,7 @@ export function useMappedCategoryTests(
   slug: string | null,
   badgeColor: string,
 ) {
+  const queryClient = useQueryClient();
   return useQuery({
     queryKey: ["mapped-category-tests", slug],
     enabled: !!slug,
@@ -90,7 +92,13 @@ export function useMappedCategoryTests(
         .order("price", { ascending: true });
       if (error) throw error;
 
-      return ((data ?? []) as unknown as ProviderTestRow[]).flatMap((row) =>
+      return mergeActiveRows(
+        (data ?? []) as unknown as ProviderTestRow[],
+        await loadViewPricing(
+          queryClient,
+          ((data ?? []) as unknown as ProviderTestRow[]).map((r) => r.id),
+        ),
+      ).flatMap((row) =>
         mapProviderTestRowVariants(row, badgeColor),
       );
     },

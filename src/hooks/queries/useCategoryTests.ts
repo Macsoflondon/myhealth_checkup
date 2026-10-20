@@ -1,4 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { loadViewPricing, mergeActiveRows } from "@/lib/viewPricing";
 import { supabase } from "@/integrations/supabase/client";
 import { CategoryTestItem } from "@/components/category/CategoryPageLayout";
 import {
@@ -17,6 +18,7 @@ export function useCategoryTests(
   subcategory?: string | null,
 ) {
   const sub = findSubcategory(canonicalCategory, subcategory ?? null);
+  const queryClient = useQueryClient();
   return useQuery({
     queryKey: ["category-tests-db", canonicalCategory, sub?.slug ?? null],
     queryFn: async (): Promise<CategoryTestItem[]> => {
@@ -55,7 +57,13 @@ export function useCategoryTests(
 
       const badgeColor =
         BADGE_COLOR_BY_CATEGORY[canonicalCategory] || "#3B82F6";
-      const mapped = (data as unknown as ProviderTestRow[]).flatMap((row) =>
+      const mapped = mergeActiveRows(
+        data as unknown as ProviderTestRow[],
+        await loadViewPricing(
+          queryClient,
+          (data as unknown as ProviderTestRow[]).map((r) => r.id),
+        ),
+      ).flatMap((row) =>
         mapProviderTestRowVariants(row, badgeColor),
       );
 

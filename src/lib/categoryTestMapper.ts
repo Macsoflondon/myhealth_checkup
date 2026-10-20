@@ -7,6 +7,10 @@ import {
   type CollectionVariant,
 } from "@/lib/collectionVariants";
 import { categoryMenuIconFor } from "@/components/header/menuIcons";
+import {
+  formatFeeAmount,
+  type CollectionFeeType,
+} from "@/lib/comparisonFormat";
 
 export const PROVIDER_NAMES: Record<string, string> = {
   medichecks: "Medichecks",
@@ -37,7 +41,7 @@ export const BADGE_COLOR_BY_CATEGORY: Record<string, string> = {
 
 /** Columns required to build a CategoryTestItem from provider_tests. */
 export const CATEGORY_TEST_COLUMNS =
-  "id,provider_id,test_name,description,price,base_price,url,image_url,biomarker_count,biomarkers_list,turnaround_days_text,is_popular,popularity_rank,sample_type,home_kit_available,clinic_visit_available,clinic_phlebotomy_cost,home_phlebotomy_cost,category,source_section_label,canonical_category,is_addon,purchase_notes";
+  "id,provider_id,test_name,description,price,base_price,url,image_url,biomarker_count,biomarkers_list,turnaround_days_text,is_popular,popularity_rank,sample_type,home_kit_available,clinic_visit_available,home_phlebotomy_cost,category,source_section_label,canonical_category,is_addon,purchase_notes";
 
 export interface ProviderTestRow {
   id: string;
@@ -56,7 +60,10 @@ export interface ProviderTestRow {
   sample_type: string | null;
   home_kit_available: boolean | null;
   clinic_visit_available: boolean | null;
-  clinic_phlebotomy_cost: number | null;
+  /** Price fields merged from unified_provider_tests (see viewPricing). */
+  total_expected_cost?: number | null;
+  collection_fee_type?: CollectionFeeType | null;
+  collection_fee_amount?: number | null;
   home_phlebotomy_cost: number | null;
   category: string | null;
   source_section_label: string | null;
@@ -133,7 +140,7 @@ export function mapProviderTestRowVariants(
     price: `£${variant.total.toFixed(variant.total % 1 === 0 ? 0 : 2)}`,
     collection:
       variant.fee > 0
-        ? `${variant.label} (+£${variant.fee.toFixed(variant.fee % 1 === 0 ? 0 : 2)})`
+        ? `${variant.label} (${variant.feeLabel ?? `+${formatFeeAmount(variant.fee)}`})`
         : variant.label,
   }));
 }
