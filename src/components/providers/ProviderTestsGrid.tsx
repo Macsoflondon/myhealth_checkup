@@ -1,4 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { loadViewPricing, mergeActiveRows } from "@/lib/viewPricing";
 import { supabase } from "@/integrations/supabase/client";
 import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -36,6 +37,7 @@ export const ProviderTestsGrid = ({
   const branding = getBranding(providerDisplayName);
   const rating = getProviderRating(providerDisplayName);
 
+  const queryClient = useQueryClient();
   const { data, isLoading } = useQuery({
     queryKey: ["provider-tests-grid", dbId, limit],
     queryFn: async () => {
@@ -52,7 +54,16 @@ export const ProviderTestsGrid = ({
         .order("popularity_rank", { ascending: true, nullsFirst: false })
         .limit(limit);
       if (error) throw error;
-      return (data ?? []).filter((test) => !isJunkTestName(test.test_name));
+      const rows = (data ?? []).filter(
+        (test) => !isJunkTestName(test.test_name),
+      );
+      return mergeActiveRows(
+        rows,
+        await loadViewPricing(
+          queryClient,
+          rows.map((r) => r.id),
+        ),
+      );
     },
   });
 
