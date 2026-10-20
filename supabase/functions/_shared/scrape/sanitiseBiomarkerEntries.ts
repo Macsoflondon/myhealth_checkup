@@ -49,7 +49,10 @@ export function isBiomarkerDebris(raw: string): boolean {
   if (/[?!:]$/.test(entry)) return true;
   if (/\.(\s|$)/.test(entry)) return true;
   if (entry.length > MAX_LENGTH) return true;
-  const words = entry.replace(/\([^)]*\)/g, " ").trim().split(/\s+/);
+  const words = entry
+    .replace(/\([^)]*\)/g, " ")
+    .trim()
+    .split(/\s+/);
   if (words.length > MAX_WORDS) return true;
   return false;
 }
