@@ -158,7 +158,16 @@ export const isPanelEntry = (name: string): boolean => {
   const n = name.trim();
   if (!n) return false;
   if (/\b(full blood count|complete blood count|fbc)\b/i.test(n)) return true;
-  return /\b(profile|panel)$/i.test(n.replace(/\s*\([^)]*\)\s*$/, ""));
+  // The entry itself must be a panel name ("Liver Profile", "UK allergy
+  // panel"), not a longer phrase that merely contains the word, so reject
+  // clauses joined by separators or connecting words.
+  const core = n.replace(/\s*\([^)]*\)\s*$/, "");
+  if (!/\b(profile|panel)$/i.test(core)) return false;
+  if (
+    /[+,;:/]|\s[-–—]\s|\b(and|with|of|for|from|in|including|via)\b/i.test(core)
+  )
+    return false;
+  return core.split(/\s+/).length <= 5;
 };
 
 const listEntries = (list: unknown): string[] => {
@@ -184,8 +193,15 @@ export const describeBiomarkers = (
   row: BiomarkerCountRowFields,
 ): { count: number | null; label: string } => {
   const entries = listEntries(row.biomarkers_list);
-  if (entries.some(isPanelEntry)) {
-    return { count: null, label: entries.join(" + ") };
+  const panels = entries.filter(isPanelEntry).length;
+  if (panels > 0) {
+    if (entries.length <= 3) {
+      return { count: null, label: entries.join(" + ") };
+    }
+    return {
+      count: null,
+      label: `${entries.length} tests listed, including ${panels} ${panels === 1 ? "panel" : "panels"}`,
+    };
   }
   const count =
     entries.length > 0
