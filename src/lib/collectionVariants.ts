@@ -8,6 +8,9 @@
  * variants so each listing can show the honest total for its own route.
  */
 
+import type { CollectionFeeType } from "@/lib/comparisonFormat";
+import { viewCollectionFee, viewFeeLabel } from "@/lib/viewPricing";
+
 export type CollectionRoute =
   "home_kit" | "clinic" | "home_visit" | "venous" | "standard";
 
@@ -19,7 +22,11 @@ export interface CollectionVariantSource {
   collection_method?: string | null;
   home_kit_available?: boolean | null;
   clinic_visit_available?: boolean | null;
-  clinic_phlebotomy_cost?: number | null;
+  /** View-derived (unified_provider_tests) total; the clinic fee is total − price. */
+  total_expected_cost?: number | null;
+  collection_fee_type?: CollectionFeeType | null;
+  collection_fee_amount?: number | null;
+  /** Home-nurse fee: the fee rules table has no home-nurse route, so this stays on provider_tests. */
   home_phlebotomy_cost?: number | null;
 }
 
@@ -47,6 +54,8 @@ export interface CollectionVariant {
   total: number;
   /** Second route priced on the same card (nurse home visit alongside clinic). */
   secondary?: CollectionVariantSecondary;
+  /** Collection fee label from the view (e.g. "from £30"), on clinic routes only. */
+  feeLabel?: string | null;
 }
 
 const ROUTE_LABELS: Record<CollectionRoute, string> = {
@@ -114,7 +123,8 @@ export function deriveCollectionVariants(
     variants.push(makeVariant(source, "home_kit", basePrice, 0));
   }
 
-  const clinicFee = num(source.clinic_phlebotomy_cost);
+  const clinicFee = viewCollectionFee(source);
+  const clinicFeeLabel = viewFeeLabel(source);
   const hasClinic =
     !!source.clinic_visit_available || (clinicFee != null && clinicFee > 0);
 
@@ -127,6 +137,7 @@ export function deriveCollectionVariants(
   if (hasClinic && hasHomeVisit) {
     // Both professional-draw routes live on one listing, clinic priced first.
     const venous = makeVariant(source, "venous", basePrice, clinicFee ?? 0);
+    venous.feeLabel = clinicFeeLabel;
     venous.secondary = {
       route: "home_visit",
       label: ROUTE_LABELS.home_visit,
@@ -135,7 +146,9 @@ export function deriveCollectionVariants(
     };
     variants.push(venous);
   } else if (hasClinic) {
-    variants.push(makeVariant(source, "clinic", basePrice, clinicFee ?? 0));
+    const clinic = makeVariant(source, "clinic", basePrice, clinicFee ?? 0);
+    clinic.feeLabel = clinicFeeLabel;
+    variants.push(clinic);
   } else if (hasHomeVisit) {
     variants.push(makeVariant(source, "home_visit", basePrice, homeVisitFee));
   }
@@ -160,6 +173,9 @@ export function pickVariant(
 /** "£69.00 kit + £40.00 clinic draw" style breakdown, or null when there is no fee. */
 export function variantFeeNote(variant: CollectionVariant): string | null {
   if (variant.fee <= 0) return null;
+  if (variant.feeLabel && (variant.route === "clinic" || variant.route === "venous")) {
+    return `£${variant.basePrice.toFixed(2)} test + blood draw ${variant.feeLabel.replace(/^\+/, "")}`;
+  }
   const label =
     variant.route === "clinic" || variant.route === "venous"
       ? "clinic blood draw"
