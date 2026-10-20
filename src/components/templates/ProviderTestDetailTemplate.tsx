@@ -1,3 +1,8 @@
+import {
+  fetchViewPricing,
+  mergeActiveRows,
+  viewFeeLabel,
+} from "@/lib/viewPricing";
 import type { CollectionFeeType } from "@/lib/comparisonFormat";
 import {
   describeBiomarkers,
@@ -598,9 +603,17 @@ export default function ProviderTestDetailTemplate({
         .in("id", siblingIds)
         .eq("is_active", true);
 
+      const siblingPricing = await fetchViewPricing(
+        (siblingTests ?? []).map((t) => t.id),
+      );
       if (cancelled) return;
 
-      const options: ComparisonProviderOption[] = (siblingTests ?? []).map(
+      // Sibling prices come only from unified_provider_tests; a sibling the
+      // view doesn't list is not an active comparable test, so it is dropped.
+      const options: ComparisonProviderOption[] = mergeActiveRows(
+        siblingTests ?? [],
+        siblingPricing,
+      ).map(
         (t) => {
           const provRating = getProviderRating(t.provider_id);
           return {
@@ -609,7 +622,8 @@ export default function ProviderTestDetailTemplate({
             providerName:
               detailedProviders.find((p) => p.id === t.provider_id)?.name ||
               t.provider_id,
-            price: t.price || 0,
+            price: t.total_expected_cost ?? t.price ?? 0,
+            feeLabel: viewFeeLabel(t),
             turnaroundTime:
               t.turnaround_days_text || t.turnaround_raw || "Contact provider",
             collectionMethod:
@@ -807,6 +821,7 @@ export default function ProviderTestDetailTemplate({
                       providerId: providerConfig.id,
                       providerName: providerConfig.name,
                       price: test.total_expected_cost ?? test.price ?? 0,
+                      feeLabel: viewFeeLabel(test),
                       turnaroundTime:
                         getTestTurnaround(test) || providerConfig.turnaround,
                       collectionMethod:
