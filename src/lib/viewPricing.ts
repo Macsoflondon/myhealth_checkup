@@ -6,6 +6,7 @@
  * provider_collection_fee_rules. The view's `id` is provider_tests.id, so the
  * two map 1:1.
  */
+import type { QueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import {
   formatCollectionFee,
@@ -89,6 +90,26 @@ export async function fetchViewPricing(
 /** Stable React Query key fragment for a set of ids. */
 export function viewPricingKey(ids: readonly string[]): string {
   return Array.from(new Set(ids)).sort().join(",");
+}
+
+/** Query options for the pricing request, keyed by the ids it covers. */
+export function viewPricingQueryOptions(ids: readonly string[]) {
+  return {
+    queryKey: ["view-pricing", viewPricingKey(ids)] as const,
+    queryFn: async (): Promise<ViewPricing[]> =>
+      Array.from((await fetchViewPricing(ids)).values()),
+    staleTime: 5 * 60 * 1000,
+  };
+}
+
+/** Fetch (or reuse cached) view pricing through React Query; one request per consumer. */
+export async function loadViewPricing(
+  queryClient: QueryClient,
+  ids: readonly string[],
+): Promise<Map<string, ViewPricing>> {
+  if (ids.length === 0) return new Map();
+  const rows = await queryClient.fetchQuery(viewPricingQueryOptions(ids));
+  return new Map(rows.map((r) => [r.id, r]));
 }
 
 /**
