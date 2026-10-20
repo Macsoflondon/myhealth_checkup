@@ -596,7 +596,7 @@ export default function ProviderTestDetailTemplate({
       if (cancelled) return;
 
       const options: ComparisonProviderOption[] = (siblingTests ?? []).map(
-        (t: any) => {
+        (t) => {
           const provRating = getProviderRating(t.provider_id);
           return {
             id: t.id,
