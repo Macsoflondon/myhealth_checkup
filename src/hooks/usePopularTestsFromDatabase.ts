@@ -1,6 +1,7 @@
 import type { CollectionFeeType } from "@/lib/comparisonFormat";
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { loadViewPricing, mergeActiveRows } from "@/lib/viewPricing";
 import { supabase } from "@/integrations/supabase/client";
 
 const WEBSITE_ENRICHMENT_PROVIDERS = new Set([
@@ -313,6 +314,7 @@ export const usePopularTestsFromDatabase = (
   options: PopularTestsOptions = {},
 ) => {
   const lean = options.lean === true;
+  const queryClient = useQueryClient();
   return useQuery({
     queryKey: ["popular-tests-database", limit, lean],
     queryFn: async (): Promise<PopularTest[]> => {
@@ -330,7 +332,17 @@ export const usePopularTestsFromDatabase = (
 
       // The column list is chosen at runtime, so PostgREST's literal-select
       // inference can't type the rows; narrow to the known pool row shape.
-      const popularData = rawPopularData as unknown as PoolRow[] | null;
+      const poolRows = rawPopularData as unknown as PoolRow[] | null;
+      // Price fields come only from unified_provider_tests.
+      const popularData = poolRows
+        ? mergeActiveRows(
+            poolRows,
+            await loadViewPricing(
+              queryClient,
+              poolRows.map((r) => r.id),
+            ),
+          )
+        : null;
 
       if (!popularError && popularData && popularData.length > 0) {
         const mappedTests = popularData.map((test) => ({
@@ -384,12 +396,19 @@ export const usePopularTestsFromDatabase = (
       if (!data || data.length === 0) {
         return [];
       }
+      const pricedFallback = mergeActiveRows(
+        data,
+        await loadViewPricing(
+          queryClient,
+          data.map((r) => r.id),
+        ),
+      );
 
       // Ensure variety across providers - max 2 tests per provider
       const providerCounts: Record<string, number> = {};
       const diverseTests: PopularTest[] = [];
 
-      for (const test of data) {
+      for (const test of pricedFallback) {
         const providerId = test.provider_id;
         const currentCount = providerCounts[providerId] || 0;
 
@@ -481,6 +500,13 @@ export const usePopularTestsForNavigation = () => {
       if (!data || data.length === 0) {
         return [];
       }
+      const pricedFallback = mergeActiveRows(
+        data,
+        await loadViewPricing(
+          queryClient,
+          data.map((r) => r.id),
+        ),
+      );
 
       // Ensure variety - max 2 per provider, return top 8
       const providerCounts: Record<string, number> = {};
