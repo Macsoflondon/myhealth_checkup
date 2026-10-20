@@ -36,8 +36,13 @@ export function isBiomarkerDebris(raw: string): boolean {
 
   const entry = stripEntryMarkup(original);
   if (!entry) return true;
-  // Company footer lines ("London Health Company (LHC) Ltd").
-  if (/\b(?:ltd|limited|plc|llp)\b/i.test(entry)) return true;
+  // Company footer and address lines ("London Health Company (LHC) Ltd").
+  if (/\b(?:ltd|limited|plc|llp|united kingdom)\b/i.test(entry)) return true;
+  // Product titles ("Cortisol Blood Test Kit", "Iron Blood Test (5 Parameters)").
+  if (/\b(?:blood test|test kit)\b/i.test(entry)) return true;
+  if (/\(\d+\s+(?:biomarkers?|parameters?|markers?|tests?)\b/i.test(entry)) {
+    return true;
+  }
   // Table/title separators only appear in page titles.
   if (entry.includes("|")) return true;
   // Sentences: questions, exclamations, lead-ins and full stops.
