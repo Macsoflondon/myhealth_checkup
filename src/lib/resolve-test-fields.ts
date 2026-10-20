@@ -194,5 +194,8 @@ export const describeBiomarkers = (
         ? row.biomarker_count
         : null;
   if (count === null) return { count: null, label: "Not stated by provider" };
-  return { count, label: `${count} ${count === 1 ? "biomarker" : "biomarkers"}` };
+  return {
+    count,
+    label: `${count} ${count === 1 ? "biomarker" : "biomarkers"}`,
+  };
 };

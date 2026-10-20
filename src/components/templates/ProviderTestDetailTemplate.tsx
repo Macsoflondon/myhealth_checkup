@@ -275,11 +275,12 @@ const BiomarkersSection = ({
   });
   const incomplete =
     typeof biomarkerCount === "number" && biomarkerCount > chips.length;
-  const heading = panel.count === null && chips.length > 0
-    ? `Biomarkers tested: ${panel.label}`
-    : incomplete
-    ? `Biomarkers tested — showing ${chips.length} of ${biomarkerCount} published by the provider`
-    : `Biomarkers tested (${chips.length})`;
+  const heading =
+    panel.count === null && chips.length > 0
+      ? `Biomarkers tested: ${panel.label}`
+      : incomplete
+        ? `Biomarkers tested — showing ${chips.length} of ${biomarkerCount} published by the provider`
+        : `Biomarkers tested (${chips.length})`;
   const visibleChips = showAll ? chips : chips.slice(0, 5);
   const hiddenCount = chips.length - 5;
   const chipClass =

@@ -10,12 +10,20 @@ import { headerPriceParts } from "@/lib/comparison-header-price";
 
 describe("headerPriceParts", () => {
   it("Clinilabs FBC shows the total with a blood draw line", () => {
-    const r = headerPriceParts({ price: 50, collectionFeeType: "from", collectionFeeAmount: 30 });
+    const r = headerPriceParts({
+      price: 50,
+      collectionFeeType: "from",
+      collectionFeeAmount: 30,
+    });
     expect(`£${r.total.toFixed(2)}`).toBe("£80.00");
     expect(r.breakdown).toBe("Test £50.00 + blood draw from £30");
   });
   it("Medichecks FBC self-arranged keeps the test price with no extra line", () => {
-    const r = headerPriceParts({ price: 59, collectionFeeType: "self_arranged", collectionFeeAmount: 35 });
+    const r = headerPriceParts({
+      price: 59,
+      collectionFeeType: "self_arranged",
+      collectionFeeAmount: 35,
+    });
     expect(`£${r.total.toFixed(2)}`).toBe("£59.00");
     expect(r.breakdown).toBeNull();
   });
@@ -26,18 +34,41 @@ describe("describeBiomarkers", () => {
     const list = ["Full Blood Count (FBC) + Differential", "ESR"];
     expect(isPanelEntry(list[0])).toBe(true);
     expect(isPanelEntry("ESR")).toBe(false);
-    expect(describeBiomarkers({ biomarker_count: 2, biomarkers_list: list })).toEqual({
+    expect(
+      describeBiomarkers({ biomarker_count: 2, biomarkers_list: list }),
+    ).toEqual({
       count: null,
       label: "Full Blood Count (FBC) + Differential + ESR",
     });
   });
   it("counts a normal 15-item list", () => {
-    const list = ["Haemoglobin", "Haematocrit", "RBC", "MCV", "MCH", "MCHC", "RDW", "WBC",
-      "Neutrophils", "Lymphocytes", "Monocytes", "Eosinophils", "Basophils", "Platelets", "MPV"];
-    expect(describeBiomarkers({ biomarkers_list: list })).toEqual({ count: 15, label: "15 biomarkers" });
+    const list = [
+      "Haemoglobin",
+      "Haematocrit",
+      "RBC",
+      "MCV",
+      "MCH",
+      "MCHC",
+      "RDW",
+      "WBC",
+      "Neutrophils",
+      "Lymphocytes",
+      "Monocytes",
+      "Eosinophils",
+      "Basophils",
+      "Platelets",
+      "MPV",
+    ];
+    expect(describeBiomarkers({ biomarkers_list: list })).toEqual({
+      count: 15,
+      label: "15 biomarkers",
+    });
   });
   it("handles an empty list", () => {
-    expect(describeBiomarkers({ biomarkers_list: [] })).toEqual({ count: null, label: "Not stated by provider" });
+    expect(describeBiomarkers({ biomarkers_list: [] })).toEqual({
+      count: null,
+      label: "Not stated by provider",
+    });
   });
   it("matches names ending in profile or panel", () => {
     expect(isPanelEntry("Liver Profile")).toBe(true);
@@ -55,14 +86,21 @@ describe("parseCollection", () => {
     expect(parseCollection(input).label).toBe(label);
   });
   it("resolveCollection treats plain blood as venous", () => {
-    expect(resolveCollection({ sample_type: "Blood" }, "medichecks")).toBe("Venous blood draw");
+    expect(resolveCollection({ sample_type: "Blood" }, "medichecks")).toBe(
+      "Venous blood draw",
+    );
   });
 });
 
 describe("stripCollectionFeeText", () => {
   it("removes stale phlebotomy fee wording", () => {
-    const raw = "In-clinic appointment — venous blood draw (phlebotomy fee £21)";
-    expect(stripCollectionFeeText(raw)).toBe("In-clinic appointment — venous blood draw");
-    expect(resolveCollection({ collection_method: raw }, "medical-diagnosis")).not.toMatch(/£/);
+    const raw =
+      "In-clinic appointment — venous blood draw (phlebotomy fee £21)";
+    expect(stripCollectionFeeText(raw)).toBe(
+      "In-clinic appointment — venous blood draw",
+    );
+    expect(
+      resolveCollection({ collection_method: raw }, "medical-diagnosis"),
+    ).not.toMatch(/£/);
   });
 });

@@ -4,7 +4,10 @@ import type { CatalogueComparisonPanel } from "@/design-system/live-catalogue-co
 import { COMPARE_PANELS } from "@/lib/comparePanels";
 import { matchesComparisonName } from "@/lib/homepage-comparisons";
 import { describeBiomarkers } from "@/lib/resolve-test-fields";
-import { formatCollectionFee, type CollectionFeeType } from "@/lib/comparisonFormat";
+import {
+  formatCollectionFee,
+  type CollectionFeeType,
+} from "@/lib/comparisonFormat";
 
 interface HomepageComparisonRow {
   id: string | null;
@@ -24,14 +27,24 @@ interface HomepageComparisonRow {
   collection_fee_amount: number | null;
 }
 
-const FEE_TYPES: readonly CollectionFeeType[] = ["none", "fixed", "from", "varies", "self_arranged"];
+const FEE_TYPES: readonly CollectionFeeType[] = [
+  "none",
+  "fixed",
+  "from",
+  "varies",
+  "self_arranged",
+];
 
 /** Short fee line under each homepage price, from the row's fee rule. */
-export function homepageFeeLabel(type: string | null, amount: number | null): string | null {
+export function homepageFeeLabel(
+  type: string | null,
+  amount: number | null,
+): string | null {
   const feeType = FEE_TYPES.find((t) => t === type);
   if (!feeType || feeType === "none") return null;
   const { label } = formatCollectionFee(feeType, amount);
-  if (feeType === "fixed" || feeType === "from") return `Includes blood draw ${label.replace(/^\+/, "")}`;
+  if (feeType === "fixed" || feeType === "from")
+    return `Includes blood draw ${label.replace(/^\+/, "")}`;
   return label;
 }
 
@@ -98,7 +111,10 @@ export async function getHomepageComparisonPanels(): Promise<
             biomarkerLabel: markers.label,
             turnaround: row.turnaround_days_text,
             priceCheckedAt: row.price_checked_at,
-            feeLabel: homepageFeeLabel(row.collection_fee_type, row.collection_fee_amount),
+            feeLabel: homepageFeeLabel(
+              row.collection_fee_type,
+              row.collection_fee_amount,
+            ),
           },
         ];
       })

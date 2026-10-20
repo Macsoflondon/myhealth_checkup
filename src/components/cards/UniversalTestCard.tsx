@@ -443,8 +443,8 @@ export const UniversalTestDetailModal: React.FC<{
                   normalizeBiomarkers(test.biomarkers_list).length > 0
                     ? describeBiomarkers(test).label
                     : test.biomarker_count != null && test.biomarker_count > 0
-                    ? `${test.biomarker_count} ${measurementNoun(test, isAllergy).plural}`
-                    : `${measurementNoun(test, isAllergy).plural.charAt(0).toUpperCase()}${measurementNoun(test, isAllergy).plural.slice(1)} not published`}
+                      ? `${test.biomarker_count} ${measurementNoun(test, isAllergy).plural}`
+                      : `${measurementNoun(test, isAllergy).plural.charAt(0).toUpperCase()}${measurementNoun(test, isAllergy).plural.slice(1)} not published`}
                 </div>
                 <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 11 }}>
                   {test.biomarker_count != null && test.biomarker_count > 0
@@ -1408,8 +1408,8 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                 normalizeBiomarkers(test.biomarkers_list).length > 0
                   ? describeBiomarkers(test).label
                   : test.biomarker_count && test.biomarker_count > 0
-                  ? `${test.biomarker_count} ${measurementNoun(test, isAllergy).plural}`
-                  : "Not stated"}
+                    ? `${test.biomarker_count} ${measurementNoun(test, isAllergy).plural}`
+                    : "Not stated"}
               </span>
               <span className="flex items-center gap-1 flex-shrink-0">
                 <Clock size={12} color={UTC_TURQUOISE} />
