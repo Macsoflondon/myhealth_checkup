@@ -1,4 +1,8 @@
-import { displayBiomarkerCount } from "@/lib/resolve-test-fields";
+import {
+  describeBiomarkers,
+  displayBiomarkerCount,
+  stripCollectionFeeText,
+} from "@/lib/resolve-test-fields";
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import Header from "@/components/layout/Header";
 import { Link, useNavigate } from "@/lib/router-compat";
@@ -266,9 +270,14 @@ const BiomarkersSection = ({
     return null;
   }
 
+  const panel = describeBiomarkers({
+    biomarkers_list: chips.map((c) => c.label),
+  });
   const incomplete =
     typeof biomarkerCount === "number" && biomarkerCount > chips.length;
-  const heading = incomplete
+  const heading = panel.count === null && chips.length > 0
+    ? `Biomarkers tested: ${panel.label}`
+    : incomplete
     ? `Biomarkers tested — showing ${chips.length} of ${biomarkerCount} published by the provider`
     : `Biomarkers tested (${chips.length})`;
   const visibleChips = showAll ? chips : chips.slice(0, 5);
@@ -433,7 +442,7 @@ function getTestTurnaround(test: ProviderTestData): string {
 }
 
 function getTestSampleType(test: ProviderTestData): string {
-  return test.sample_type || test.collection_method || "";
+  return test.sample_type || stripCollectionFeeText(test.collection_method);
 }
 
 function formatCurrency(value: number | null | undefined): string {
@@ -597,8 +606,12 @@ export default function ProviderTestDetailTemplate({
             price: t.price || 0,
             turnaroundTime:
               t.turnaround_days_text || t.turnaround_raw || "Contact provider",
-            collectionMethod: t.collection_method || "Contact provider",
-            biomarkerCount: displayBiomarkerCount(t) || undefined,
+            collectionMethod:
+              stripCollectionFeeText(t.collection_method) || "Contact provider",
+            biomarkerCount:
+              describeBiomarkers(t).count === null
+                ? undefined
+                : displayBiomarkerCount(t) || undefined,
             url: t.url || undefined,
             rating: provRating?.rating,
             reviews: provRating?.reviewsFormatted,

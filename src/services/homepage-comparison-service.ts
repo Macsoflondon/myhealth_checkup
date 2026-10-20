@@ -3,6 +3,7 @@ import { PROVIDER_NAMES, getSupportedProviderIds } from "@/constants/providers";
 import type { CatalogueComparisonPanel } from "@/design-system/live-catalogue-comparison";
 import { COMPARE_PANELS } from "@/lib/comparePanels";
 import { matchesComparisonName } from "@/lib/homepage-comparisons";
+import { describeBiomarkers } from "@/lib/resolve-test-fields";
 import { formatCollectionFee, type CollectionFeeType } from "@/lib/comparisonFormat";
 
 interface HomepageComparisonRow {
@@ -12,6 +13,7 @@ interface HomepageComparisonRow {
   price: number | null;
   total_expected_cost: number | null;
   biomarker_count: number | null;
+  biomarkers_list: unknown;
   turnaround_days_text: string | null;
   updated_at: string | null;
   price_checked_at: string | null;
@@ -39,7 +41,7 @@ export async function getHomepageComparisonPanels(): Promise<
   const { data, error } = await supabase
     .from("unified_provider_tests")
     .select(
-      "id, provider_id, test_name, price, total_expected_cost, biomarker_count, turnaround_days_text, updated_at, price_checked_at, clinic_visit_available, home_kit_available, collection_method, collection_fee_type, collection_fee_amount",
+      "id, provider_id, test_name, price, total_expected_cost, biomarker_count, biomarkers_list, turnaround_days_text, updated_at, price_checked_at, clinic_visit_available, home_kit_available, collection_method, collection_fee_type, collection_fee_amount",
     )
     .eq("is_addon", false)
     .in("provider_id", getSupportedProviderIds())
@@ -85,13 +87,15 @@ export async function getHomepageComparisonPanels(): Promise<
           price <= 0
         )
           return [];
+        const markers = describeBiomarkers(row);
         return [
           {
             id: row.id,
             provider: PROVIDER_NAMES[row.provider_id] ?? row.provider_id,
             testName: row.test_name,
             price,
-            biomarkers: row.biomarker_count,
+            biomarkers: markers.count,
+            biomarkerLabel: markers.label,
             turnaround: row.turnaround_days_text,
             priceCheckedAt: row.price_checked_at,
             feeLabel: homepageFeeLabel(row.collection_fee_type, row.collection_fee_amount),
