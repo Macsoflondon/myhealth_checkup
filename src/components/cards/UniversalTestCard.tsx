@@ -1,3 +1,5 @@
+import { viewFeeLabel } from "@/lib/viewPricing";
+import { formatFeeAmount } from "@/lib/comparisonFormat";
 import type { CollectionFeeType } from "@/lib/comparisonFormat";
 import { openAffiliateUrl } from "@/lib/affiliate/affiliate-tracking";
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
@@ -85,11 +87,23 @@ export interface UniversalTestData {
   /** Raw collection_options from provider_tests — parsed per provider */
   collection_options?: unknown;
   collection_fee_type?: CollectionFeeType | null;
+  collection_fee_note?: string | null;
   home_phlebotomy_cost?: number | null;
   is_addon?: boolean;
   purchase_notes?: string | null;
   /** Collection-route listing this card represents (kit vs professional draw). */
   route_variant?: CollectionVariant | null;
+}
+
+function collectionFeeText(
+  test: UniversalTestData,
+  variant: CollectionVariant | null,
+): string | null {
+  if (variant) {
+    if (variant.fee <= 0) return null;
+    return variant.feeLabel ?? `+${formatFeeAmount(variant.fee)}`;
+  }
+  return viewFeeLabel(test);
 }
 
 /** Short verbatim excerpt of the provider description (or factual generated summary) for the card. */
@@ -248,13 +262,8 @@ export const UniversalTestDetailModal: React.FC<{
   const variant = test.route_variant ?? null;
   const displayPrice = variant?.total ?? test.total_expected_cost ?? test.price;
   const secondaryRoute = variant?.secondary ?? null;
-  const collectionFee = variant
-    ? variant.fee > 0
-      ? variant.fee
-      : null
-    : test.collection_fee_amount != null && test.collection_fee_amount > 0
-      ? test.collection_fee_amount
-      : null;
+  // Fee label from unified_provider_tests, worded as in the comparison table.
+  const collectionFee = collectionFeeText(test, variant);
 
   // Close on Escape and lock background scroll while the modal is open.
   React.useEffect(() => {
@@ -383,7 +392,7 @@ export const UniversalTestDetailModal: React.FC<{
                     marginTop: 2,
                   }}
                 >
-                  incl. Collection Fee: +£{collectionFee.toFixed(2)}
+                  Collection fee: {collectionFee}
                 </div>
               )}
               {secondaryRoute && (
@@ -883,13 +892,8 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
   const variant = test.route_variant ?? null;
   const displayPrice = variant?.total ?? test.total_expected_cost ?? test.price;
   const secondaryRoute = variant?.secondary ?? null;
-  const collectionFee = variant
-    ? variant.fee > 0
-      ? variant.fee
-      : null
-    : test.collection_fee_amount != null && test.collection_fee_amount > 0
-      ? test.collection_fee_amount
-      : null;
+  // Fee label from unified_provider_tests, worded as in the comparison table.
+  const collectionFee = collectionFeeText(test, variant);
 
   useEffect(
     () => () => {
@@ -1490,7 +1494,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                     fontWeight: 600,
                   }}
                 >
-                  Collection Fee: +£{collectionFee.toFixed(2)}
+                  Collection fee: {collectionFee}
                 </span>
               </div>
             )}
