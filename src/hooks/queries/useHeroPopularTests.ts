@@ -1,11 +1,18 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import type { CollectionFeeType } from "@/lib/comparisonFormat";
+import { loadViewPricing, mergeActiveRows } from "@/lib/viewPricing";
 import { supabase } from "@/integrations/supabase/client";
 
 export interface HeroPopularTest {
   id: string;
   testName: string;
   providerId: string;
+  /** Price fields from unified_provider_tests (single source of truth). */
+  price: number | null;
   totalExpectedCost: number | null;
+  collectionFeeType: CollectionFeeType | null;
+  collectionFeeAmount: number | null;
+  collectionFeeNote: string | null;
   biomarkerCount: number | null;
   url: string | null;
   canonicalCategory: string | null;
@@ -67,6 +74,7 @@ function parseBiomarkersList(raw: unknown): string[] {
 }
 
 export function useHeroPopularTests() {
+  const queryClient = useQueryClient();
   return useQuery({
     queryKey: ["hero-popular-tests"],
     staleTime: 10 * 60 * 1000,
@@ -75,7 +83,7 @@ export function useHeroPopularTests() {
         const { data, error } = await supabase
           .from("provider_tests")
           .select(
-            "id, test_name, provider_id, total_expected_cost, biomarker_count, url, canonical_category, clinical_review_type, biomarkers_list, turnaround_days_text, image_url, image_is_stock, description, sample_type, collection_method, collection_options, measurement_type, who_should_test, home_kit_available, clinic_visit_available, is_addon",
+            "id, test_name, provider_id, biomarker_count, url, canonical_category, clinical_review_type, biomarkers_list, turnaround_days_text, image_url, image_is_stock, description, sample_type, collection_method, collection_options, measurement_type, who_should_test, home_kit_available, clinic_visit_available, is_addon",
           )
           .eq("is_popular", true)
           .eq("is_active", true)
@@ -94,66 +102,74 @@ export function useHeroPopularTests() {
           return [];
         }
 
-        return data.map((row: Record<string, unknown>) => ({
-          id: String(row.id ?? ""),
-          testName: String(row.test_name ?? "Unknown Test"),
-          providerId: String(row.provider_id ?? ""),
-          totalExpectedCost:
-            typeof row.total_expected_cost === "number"
-              ? row.total_expected_cost
-              : null,
-          biomarkerCount:
-            typeof row.biomarker_count === "number"
-              ? row.biomarker_count
-              : null,
-          url: typeof row.url === "string" ? row.url : null,
-          canonicalCategory:
-            typeof row.canonical_category === "string"
-              ? row.canonical_category
-              : null,
-          clinicalReviewType:
-            typeof row.clinical_review_type === "string"
-              ? row.clinical_review_type
-              : null,
-          biomarkersList: parseBiomarkersList(row.biomarkers_list),
-          turnaroundDaysText:
-            typeof row.turnaround_days_text === "string"
-              ? row.turnaround_days_text
-              : null,
-          imageUrl: typeof row.image_url === "string" ? row.image_url : null,
-          imageIsStock:
-            typeof row.image_is_stock === "boolean" ? row.image_is_stock : null,
-          description:
-            typeof row.description === "string" ? row.description : null,
-          sampleType:
-            typeof row.sample_type === "string" ? row.sample_type : null,
-          collectionMethod:
-            typeof row.collection_method === "string"
-              ? row.collection_method
-              : null,
-          collectionOptions: row.collection_options ?? null,
-          measurementType:
-            typeof row.measurement_type === "string"
-              ? row.measurement_type
-              : null,
-          whoShouldTest:
-            typeof row.who_should_test === "string"
-              ? row.who_should_test
-              : null,
-          homeKitAvailable:
-            typeof row.home_kit_available === "boolean"
-              ? row.home_kit_available
-              : null,
-          clinicVisitAvailable:
-            typeof row.clinic_visit_available === "boolean"
-              ? row.clinic_visit_available
-              : null,
-          isAddon: typeof row.is_addon === "boolean" ? row.is_addon : null,
-        }));
+        return mapHeroRows(
+          data as unknown as Array<Record<string, unknown> & { id: unknown }>,
+          await loadViewPricing(
+            queryClient,
+            data.map((r) => String(r.id)),
+          ),
+        );
       } catch (e) {
         console.error("[useHeroPopularTests] Unexpected error in queryFn:", e);
         return [];
       }
     },
   });
+}
+
+/**
+ * Map provider_tests metadata rows to hero cards, taking every price field
+ * from the view. Rows the view doesn't list (inactive) are dropped.
+ */
+export function mapHeroRows(
+  rows: ReadonlyArray<Record<string, unknown> & { id: unknown }>,
+  pricing: Map<string, import("@/lib/viewPricing").ViewPricing>,
+): HeroPopularTest[] {
+  return mergeActiveRows(rows, pricing).map((row) => ({
+    id: String(row.id ?? ""),
+    testName: String(row.test_name ?? "Unknown Test"),
+    providerId: String(row.provider_id ?? ""),
+    price: row.price,
+    totalExpectedCost: row.total_expected_cost,
+    collectionFeeType: row.collection_fee_type,
+    collectionFeeAmount: row.collection_fee_amount,
+    collectionFeeNote: row.collection_fee_note,
+    biomarkerCount:
+      typeof row.biomarker_count === "number" ? row.biomarker_count : null,
+    url: typeof row.url === "string" ? row.url : null,
+    canonicalCategory:
+      typeof row.canonical_category === "string"
+        ? row.canonical_category
+        : null,
+    clinicalReviewType:
+      typeof row.clinical_review_type === "string"
+        ? row.clinical_review_type
+        : null,
+    biomarkersList: parseBiomarkersList(row.biomarkers_list),
+    turnaroundDaysText:
+      typeof row.turnaround_days_text === "string"
+        ? row.turnaround_days_text
+        : null,
+    imageUrl: typeof row.image_url === "string" ? row.image_url : null,
+    imageIsStock:
+      typeof row.image_is_stock === "boolean" ? row.image_is_stock : null,
+    description: typeof row.description === "string" ? row.description : null,
+    sampleType: typeof row.sample_type === "string" ? row.sample_type : null,
+    collectionMethod:
+      typeof row.collection_method === "string" ? row.collection_method : null,
+    collectionOptions: row.collection_options ?? null,
+    measurementType:
+      typeof row.measurement_type === "string" ? row.measurement_type : null,
+    whoShouldTest:
+      typeof row.who_should_test === "string" ? row.who_should_test : null,
+    homeKitAvailable:
+      typeof row.home_kit_available === "boolean"
+        ? row.home_kit_available
+        : null,
+    clinicVisitAvailable:
+      typeof row.clinic_visit_available === "boolean"
+        ? row.clinic_visit_available
+        : null,
+    isAddon: typeof row.is_addon === "boolean" ? row.is_addon : null,
+  }));
 }
