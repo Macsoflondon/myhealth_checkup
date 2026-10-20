@@ -14,6 +14,7 @@ import {
   startScrapeRun,
   finishScrapeRun,
   newCounters,
+  sanitiseBiomarkerEntries,
 } from "../_shared/scrape/index.ts";
 
 const corsHeaders = {
@@ -98,7 +99,9 @@ function extractBiomarkers(markdown: string): string[] {
       out.push(clean);
     }
   }
-  return normaliseBiomarkers(out);
+  // Firecrawl markdown carries headings, links, footer lines and marketing
+  // sentences that mention marker names; keep only real marker names.
+  return normaliseBiomarkers(sanitiseBiomarkerEntries(out));
 }
 
 /** Look for anything that reads like turnaround language on the page. */
