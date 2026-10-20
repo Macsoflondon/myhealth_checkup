@@ -586,7 +586,6 @@ export const ProviderComparisonTable: React.FC<
                     >
                       Book Now
                     </a>
-                    <AffiliateCommissionNote className="mt-1 text-center" />
                   </>
                 ) : (
                   <button
