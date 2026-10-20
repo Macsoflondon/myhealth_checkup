@@ -35,44 +35,36 @@ interface ProviderTestDetailModalProps {
 }
 
 /**
- * Accreditation badges. The row's real flags win; the hardcoded provider map is
- * only used when the row states none of them.
+ * Accreditation badges, from the row's real flags only.
+ *
+ * Previously fell back to a hardcoded per-provider guess (e.g. claiming
+ * "UKAS accredited lab" for every Medichecks test) whenever a row had none
+ * of the three flags set. Removed 2026-10-20: real `lab_ukas_accredited` /
+ * `lab_cqc_regulated` / `lab_iso15189` coverage is now ≥96% for every
+ * provider, and the 5 remaining rows that still had none of the three set
+ * (all `clinilabs`) weren't even covered by the old map — `clinilabs` had
+ * no entry in it, so those 5 rows were silently getting a SECOND fabricated
+ * guess ("CQC regulated", "GDPR compliant") from the map's own generic
+ * fallback. An empty array here now means exactly what it says: no
+ * accreditation claimed for this specific test, not "unknown, guess
+ * something." The render site hides the whole section when this is empty
+ * rather than show an honest-but-blank "Standards & Accreditation" heading.
  */
-const getAccreditations = (
+export const getAccreditations = (
   test: Pick<
     ProviderTestCardData,
     "provider_id" | "lab_ukas_accredited" | "lab_cqc_regulated" | "lab_iso15189"
   >,
 ): string[] => {
   const fromRow = resolveAccreditationsFromRow(test);
-  if (fromRow) {
-    return fromRow.map((flag) =>
-      flag === "UKAS"
-        ? "UKAS accredited lab"
-        : flag === "CQC"
-          ? "CQC regulated"
-          : flag,
-    );
-  }
-
-  const providerId = test.provider_id;
-  const map: Record<string, string[]> = {
-    medichecks: ["UKAS accredited lab", "ISO 15189", "CQC regulated"],
-    goodbody: ["CQC regulated", "ISO 15189", "GP-reviewed"],
-    "goodbody-clinic": ["CQC regulated", "ISO 15189", "GP-reviewed"],
-    "randox-health": ["UKAS accredited lab", "ISO 15189", "50+ UK clinics"],
-    randox: ["UKAS accredited lab", "ISO 15189", "50+ UK clinics"],
-    "lola-health": ["UKAS accredited lab", "ISO 15189", "GMC-reviewed"],
-    lola: ["CQC regulated", "UKAS accredited lab"],
-    "london-medical-laboratory": [
-      "UKAS accredited lab",
-      "ISO 15189",
-      "GDPR compliant",
-    ],
-    "tuli-health": ["CQC regulated", "UKAS accredited lab"],
-    tuli: ["CQC regulated", "UKAS accredited lab"],
-  };
-  return map[providerId.toLowerCase()] || ["CQC regulated", "GDPR compliant"];
+  if (!fromRow) return [];
+  return fromRow.map((flag) =>
+    flag === "UKAS"
+      ? "UKAS accredited lab"
+      : flag === "CQC"
+        ? "CQC regulated"
+        : flag,
+  );
 };
 
 const getProviderTagline = (providerId: string): string => {
@@ -546,25 +538,29 @@ export default function ProviderTestDetailModal({
             )}
           </section>
 
-          {/* Standards & accreditation */}
-          <section>
-            <h4 className="text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-3">
-              Standards &amp; Accreditation
-            </h4>
-            <div className="flex flex-wrap gap-x-6 gap-y-2">
-              {accreditations.map((acc) => (
-                <span
-                  key={acc}
-                  className="inline-flex items-center gap-2 text-sm text-[#081129]/85"
-                >
-                  <span className="w-5 h-5 rounded-full border border-[#22c0d4] flex items-center justify-center text-[#22c0d4]">
-                    <Check className="w-3 h-3" strokeWidth={3} />
+          {/* Standards & accreditation — hidden entirely when the row has
+              no real accreditation flags, rather than show an honest-but-
+              empty heading (affects ~5 clinilabs rows as of 2026-10-20). */}
+          {accreditations.length > 0 && (
+            <section>
+              <h4 className="text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-3">
+                Standards &amp; Accreditation
+              </h4>
+              <div className="flex flex-wrap gap-x-6 gap-y-2">
+                {accreditations.map((acc) => (
+                  <span
+                    key={acc}
+                    className="inline-flex items-center gap-2 text-sm text-[#081129]/85"
+                  >
+                    <span className="w-5 h-5 rounded-full border border-[#22c0d4] flex items-center justify-center text-[#22c0d4]">
+                      <Check className="w-3 h-3" strokeWidth={3} />
+                    </span>
+                    {acc}
                   </span>
-                  {acc}
-                </span>
-              ))}
-            </div>
-          </section>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* Collection options (when multiple) */}
           {collectionOptions && collectionOptions.length > 1 && (

@@ -316,3 +316,25 @@ every other test added in this audit.
 
 This closes finding #14. Finding #7 (the near-dead accreditation fallback map) remains
 open as an optional cleanup, not asked about this time.
+
+## Finding #7 — cleanup done, same day as finding #14, per the same standing instruction
+
+Re-queried before touching anything: real `lab_ukas_accredited`/`lab_cqc_regulated`/
+`lab_iso15189` coverage is ≥96% for every provider; only **5 active rows system-wide
+(all `clinilabs`)** still have none of the three flags set. Worth noting on the way
+past: `clinilabs` had no entry in the old hardcoded map at all, so those 5 rows were
+never getting the "verified-sounding" per-provider guess the map gave everyone else —
+they were falling through to the map's own generic fallback (`["CQC regulated", "GDPR
+compliant"]`), a second, blinder layer of the same fabrication.
+
+**Fix:** deleted the entire hardcoded map from `getAccreditations()`. It now returns the
+row's real flags, mapped to display strings, or an honest `[]` when a row has none —
+never a guess. Exported the function (previously module-private) for testability and
+added `ProviderTestDetailModal.accreditationHonesty.test.ts` (4 cases). Wrapped the
+"Standards & Accreditation" section in `accreditations.length > 0 &&` so the ~5
+`clinilabs` rows with nothing real to show get a clean, absent section rather than an
+honest-but-visually-broken empty heading. Re-ran `node scripts/audit-card-external-links.mjs`
+after the edit: 3 checked, 0 unlabelled, unaffected.
+
+This closes finding #7. Both findings left open at the end of pass 3 are now resolved —
+nothing outstanding from this audit as of 2026-10-20.
