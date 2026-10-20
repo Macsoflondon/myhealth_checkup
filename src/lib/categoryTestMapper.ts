@@ -79,7 +79,9 @@ export function mapProviderTestRow(
 ): CategoryTestItem {
   const providerName = PROVIDER_NAMES[row.provider_id] || row.provider_id;
   const rating = getProviderRating(row.provider_id);
-  const priceNum = Number(row.price ?? row.base_price ?? 0);
+  const priceNum = Number(
+    row.total_expected_cost ?? row.price ?? row.base_price ?? 0,
+  );
   const biomarkers = normalizeBiomarkers(row.biomarkers_list).slice(0, 6);
   const turnaround = row.turnaround_days_text || "Typical 3–5 days";
   const match = turnaround.match(/(\d+)/);
