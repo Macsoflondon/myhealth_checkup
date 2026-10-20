@@ -22,7 +22,6 @@ const corsHeaders = {
 
 const PROVIDER_ID = "medical-diagnosis";
 const WOO_BASE = "https://www.medical-diagnosis.co.uk";
-const DEFAULT_CLINIC_FEE = 21; // fallback only; per-test fee is parsed from the provider's own copy
 
 /** Provider's site-wide page furniture (address, nav, "Recent Posts") — never a test description. */
 const BOILERPLATE_PREFIX =
@@ -35,13 +34,7 @@ function isBoilerplate(text: string): boolean {
   );
 }
 
-/** "Phlebotomy service fee: £21." → 21 */
-export function extractPhlebotomyFee(text: string): number | null {
-  const m = text.match(/phlebotomy[^.£]{0,40}£\s*(\d+(?:\.\d{1,2})?)/i);
-  if (!m) return null;
-  const value = Number(m[1]);
-  return Number.isFinite(value) ? value : null;
-}
+export { extractPhlebotomyFee } from "./fees.ts";
 
 interface WooPrices {
   price: string;

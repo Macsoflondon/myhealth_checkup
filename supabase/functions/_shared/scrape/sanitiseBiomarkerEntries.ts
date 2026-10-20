@@ -36,6 +36,8 @@ export function isBiomarkerDebris(raw: string): boolean {
 
   const entry = stripEntryMarkup(original);
   if (!entry) return true;
+  // Company footer lines ("London Health Company (LHC) Ltd").
+  if (/\b(?:ltd|limited|plc|llp)\b/i.test(entry)) return true;
   // Table/title separators only appear in page titles.
   if (entry.includes("|")) return true;
   // Sentences: questions, exclamations, lead-ins and full stops.
