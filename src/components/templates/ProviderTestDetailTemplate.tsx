@@ -1,4 +1,10 @@
 import {
+  fetchViewPricing,
+  mergeActiveRows,
+  viewFeeLabel,
+} from "@/lib/viewPricing";
+import type { CollectionFeeType } from "@/lib/comparisonFormat";
+import {
   describeBiomarkers,
   displayBiomarkerCount,
   stripCollectionFeeText,
@@ -80,9 +86,11 @@ export interface ProviderTestData {
   who_should_test?: string | null;
   sample_type?: string | null;
   collection_method?: string | null;
-  collection_fee_type?: string | null;
+  collection_fee_type?: CollectionFeeType | null;
+  collection_fee_note?: string | null;
+  price_checked_at?: string | null;
   collection_fee_amount?: number | null;
-  clinic_phlebotomy_cost?: number | null;
+
   home_phlebotomy_cost?: number | null;
   home_kit_available?: boolean | null;
   clinic_visit_available?: boolean | null;
@@ -129,6 +137,8 @@ function ProviderVerbatimSection({
 }
 
 interface ComparisonProviderOption {
+  /** Collection fee label from the view, e.g. "from £30". */
+  feeLabel?: string | null;
   id: string;
   providerId: string;
   providerName: string;
@@ -460,7 +470,9 @@ function CollectionOptionsSection({ test }: { test: ProviderTestData }) {
     collection_method: test.collection_method,
     home_kit_available: test.home_kit_available,
     clinic_visit_available: test.clinic_visit_available,
-    clinic_phlebotomy_cost: test.clinic_phlebotomy_cost,
+    total_expected_cost: test.total_expected_cost,
+    collection_fee_type: test.collection_fee_type,
+    collection_fee_amount: test.collection_fee_amount,
     home_phlebotomy_cost: test.home_phlebotomy_cost,
   });
 
@@ -593,32 +605,39 @@ export default function ProviderTestDetailTemplate({
         .in("id", siblingIds)
         .eq("is_active", true);
 
+      const siblingPricing = await fetchViewPricing(
+        (siblingTests ?? []).map((t) => t.id),
+      );
       if (cancelled) return;
 
-      const options: ComparisonProviderOption[] = (siblingTests ?? []).map(
-        (t) => {
-          const provRating = getProviderRating(t.provider_id);
-          return {
-            id: t.id,
-            providerId: t.provider_id,
-            providerName:
-              detailedProviders.find((p) => p.id === t.provider_id)?.name ||
-              t.provider_id,
-            price: t.price || 0,
-            turnaroundTime:
-              t.turnaround_days_text || t.turnaround_raw || "Contact provider",
-            collectionMethod:
-              stripCollectionFeeText(t.collection_method) || "Contact provider",
-            biomarkerCount:
-              describeBiomarkers(t).count === null
-                ? undefined
-                : displayBiomarkerCount(t) || undefined,
-            url: t.url || undefined,
-            rating: provRating?.rating,
-            reviews: provRating?.reviewsFormatted,
-          };
-        },
-      );
+      // Sibling prices come only from unified_provider_tests; a sibling the
+      // view doesn't list is not an active comparable test, so it is dropped.
+      const options: ComparisonProviderOption[] = mergeActiveRows(
+        siblingTests ?? [],
+        siblingPricing,
+      ).map((t) => {
+        const provRating = getProviderRating(t.provider_id);
+        return {
+          id: t.id,
+          providerId: t.provider_id,
+          providerName:
+            detailedProviders.find((p) => p.id === t.provider_id)?.name ||
+            t.provider_id,
+          price: t.total_expected_cost ?? t.price ?? 0,
+          feeLabel: viewFeeLabel(t),
+          turnaroundTime:
+            t.turnaround_days_text || t.turnaround_raw || "Contact provider",
+          collectionMethod:
+            stripCollectionFeeText(t.collection_method) || "Contact provider",
+          biomarkerCount:
+            describeBiomarkers(t).count === null
+              ? undefined
+              : displayBiomarkerCount(t) || undefined,
+          url: t.url || undefined,
+          rating: provRating?.rating,
+          reviews: provRating?.reviewsFormatted,
+        };
+      });
 
       setOtherProviders(options);
     };
@@ -802,6 +821,7 @@ export default function ProviderTestDetailTemplate({
                       providerId: providerConfig.id,
                       providerName: providerConfig.name,
                       price: test.total_expected_cost ?? test.price ?? 0,
+                      feeLabel: viewFeeLabel(test),
                       turnaroundTime:
                         getTestTurnaround(test) || providerConfig.turnaround,
                       collectionMethod:

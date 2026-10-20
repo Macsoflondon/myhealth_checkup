@@ -29,7 +29,9 @@ const toCardData = (t: PopularTest): ProviderTestCardData => ({
   turnaround_days_text: t.turnaround_days_text ?? null,
   base_price: t.base_price ?? null,
   collection_options: (t.collection_options as any) ?? null,
-  clinic_phlebotomy_cost: t.clinic_phlebotomy_cost ?? null,
+  total_expected_cost: t.total_expected_cost ?? null,
+  collection_fee_type: t.collection_fee_type ?? null,
+  collection_fee_amount: t.collection_fee_amount ?? null,
   home_phlebotomy_cost: t.home_phlebotomy_cost ?? null,
   image_url: resolveTestCardImage({
     providerId: t.provider_id,

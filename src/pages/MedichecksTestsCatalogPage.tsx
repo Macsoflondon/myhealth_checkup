@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { loadViewPricing, mergeActiveRows } from "@/lib/viewPricing";
 import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 import MainLayout from "@/layouts/MainLayout";
@@ -42,6 +43,7 @@ const MedichecksTestsCatalogPage = () => {
     null,
   );
 
+  const queryClient = useQueryClient();
   const { data: tests, isLoading } = useQuery({
     queryKey: ["medichecks-tests"],
     queryFn: async () => {
@@ -52,7 +54,14 @@ const MedichecksTestsCatalogPage = () => {
         .eq("is_active", true)
         .order("test_name");
       if (error) throw error;
-      return data;
+      const rows = data ?? [];
+      return mergeActiveRows(
+        rows,
+        await loadViewPricing(
+          queryClient,
+          rows.map((r) => r.id),
+        ),
+      );
     },
   });
 

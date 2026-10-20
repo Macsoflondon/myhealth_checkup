@@ -1,3 +1,4 @@
+import type { CollectionFeeType } from "@/lib/comparisonFormat";
 import { UniversalTestCard } from "@/components/cards/UniversalTestCard";
 import { fromProviderTest } from "@/lib/universalTestAdapter";
 
@@ -31,7 +32,9 @@ export interface ProviderTestCardData {
   turnaround_days_text?: string | null;
   base_price?: number | null;
   collection_options?: unknown;
-  clinic_phlebotomy_cost?: number | null;
+  total_expected_cost?: number | null;
+  collection_fee_type?: CollectionFeeType | null;
+  collection_fee_amount?: number | null;
   home_phlebotomy_cost?: number | null;
   reviews?: number | null;
   categoryColor?: string | null;

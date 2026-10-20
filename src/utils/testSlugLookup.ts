@@ -1,4 +1,6 @@
+import type { CollectionFeeType } from "@/lib/comparisonFormat";
 import { supabase } from "@/integrations/supabase/client";
+import { fetchViewPricing, mergeViewPricing } from "@/lib/viewPricing";
 import {
   getGoodbodyTestBySlug,
   testNameToSlug,
@@ -24,9 +26,11 @@ export interface TestData {
   who_should_test?: string | null;
   sample_type?: string | null;
   collection_method?: string | null;
-  collection_fee_type?: string | null;
+  collection_fee_type?: CollectionFeeType | null;
+  collection_fee_note?: string | null;
+  price_checked_at?: string | null;
   collection_fee_amount?: number | null;
-  clinic_phlebotomy_cost?: number | null;
+
   home_phlebotomy_cost?: number | null;
   home_kit_available?: boolean | null;
   clinic_visit_available?: boolean | null;
@@ -67,17 +71,16 @@ const SELECT_FIELDS = `
   id, test_name, category, description, url, price, provider_test_id, 
   biomarkers_list, biomarker_count, image_url, is_addon, 
   original_price, discount_percentage, symptoms, conditions, who_should_test,
-  sample_type, collection_method, collection_fee_type, collection_fee_amount,
-  clinic_phlebotomy_cost, home_phlebotomy_cost, home_kit_available,
+  sample_type, collection_method, home_phlebotomy_cost, home_kit_available,
   clinic_visit_available, home_phlebotomy_option, turnaround_days_text,
   turnaround_raw, clinical_review_type, clinical_review_fee, gp_review_included,
-  total_expected_cost, what_is_tested, preparation_notes, test_limitations
+  what_is_tested, preparation_notes, test_limitations
 `;
 
 /**
  * Finds a test by provider_test_id, UUID id, or slug generated from test_name
  */
-export async function findTestByIdOrSlug(
+async function findRawTestByIdOrSlug(
   providerId: string,
   testId: string,
 ): Promise<TestData | null> {
@@ -167,6 +170,20 @@ export async function findTestByIdOrSlug(
   }
 
   return null;
+}
+
+/**
+ * Finds a test by provider_test_id, UUID id, or slug, with every price field
+ * taken from unified_provider_tests. A test missing from the view keeps its
+ * bare price and shows no fee or total.
+ */
+export async function findTestByIdOrSlug(
+  ...args: Parameters<typeof findRawTestByIdOrSlug>
+): Promise<TestData | null> {
+  const test = await findRawTestByIdOrSlug(...args);
+  if (!test) return null;
+  const pricing = await fetchViewPricing([test.id]);
+  return mergeViewPricing(test, pricing.get(test.id));
 }
 
 /**

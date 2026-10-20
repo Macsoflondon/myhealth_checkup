@@ -1,3 +1,4 @@
+import type { CollectionFeeType } from "@/lib/comparisonFormat";
 import { supabase } from "@/integrations/supabase/client";
 import { ApiResponse } from "./base";
 
@@ -29,7 +30,9 @@ export interface ProviderTestData {
   measurement_type?: string | null;
   base_price?: number | null;
   collection_options?: unknown;
-  clinic_phlebotomy_cost?: number | null;
+  total_expected_cost?: number | null;
+  collection_fee_type?: CollectionFeeType | null;
+  collection_fee_amount?: number | null;
   home_phlebotomy_cost?: number | null;
   lab_ukas_accredited?: boolean | null;
   lab_cqc_regulated?: boolean | null;

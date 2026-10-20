@@ -23,7 +23,10 @@ interface ProviderTestOption {
   id: string;
   providerId: string;
   providerName: string;
+  /** Total expected cost from unified_provider_tests. */
   price: number;
+  /** Collection fee label from the view (formatCollectionFee), or null. */
+  feeLabel?: string | null;
   turnaroundTime: string;
   collectionMethod: string;
   biomarkerCount?: number;
@@ -128,6 +131,11 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
                     <span className="text-lg font-bold text-primary">
                       £{provider.price.toFixed(2)}
                     </span>
+                    {provider.feeLabel && (
+                      <span className="block text-xs text-muted-foreground">
+                        Blood draw: {provider.feeLabel}
+                      </span>
+                    )}
                     {provider.price === lowestPrice && (
                       <Badge className="ml-2 bg-green-100 text-green-800 text-xs">
                         Lowest
@@ -181,7 +189,7 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
                           <ExternalLink className="h-3.5 w-3.5 ml-1" />
                         </a>
                       </Button>
-                      ) : null}
+                    ) : null}
                     {provider.url && (
                       <AffiliateCommissionNote className="mt-1 max-w-[200px]" />
                     )}
@@ -237,6 +245,11 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
                     <span className="text-xl font-bold text-primary">
                       £{provider.price.toFixed(2)}
                     </span>
+                    {provider.feeLabel && (
+                      <span className="block text-xs text-muted-foreground">
+                        Blood draw: {provider.feeLabel}
+                      </span>
+                    )}
                   </div>
                 </div>
 
