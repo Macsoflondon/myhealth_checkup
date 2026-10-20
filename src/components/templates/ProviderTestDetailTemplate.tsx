@@ -137,6 +137,8 @@ function ProviderVerbatimSection({
 }
 
 interface ComparisonProviderOption {
+  /** Collection fee label from the view, e.g. "from £30". */
+  feeLabel?: string | null;
   id: string;
   providerId: string;
   providerName: string;
