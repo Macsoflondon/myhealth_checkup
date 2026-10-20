@@ -60,6 +60,20 @@ const ComparisonResultsPage = () => {
                   <ProviderComparisonTable tests={selected} />
                 </div>
 
+                <div className="mt-4 space-y-1 text-center text-xs text-muted-foreground">
+                  <p>
+                    Prices, turnaround times and inclusions are taken from
+                    provider listings and can change. Turnaround times are
+                    typical and not guaranteed. myhealth checkup does not
+                    provide medical care or diagnosis.
+                  </p>
+                  <p>
+                    We may earn a commission if you book through this link.
+                    This does not change the price you pay or how we rank
+                    results.
+                  </p>
+                </div>
+
                 <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
                   <Button
                     variant="outline"
@@ -77,13 +91,6 @@ const ComparisonResultsPage = () => {
                     </Button>
                   )}
                 </div>
-
-                <p className="mt-8 text-center text-xs text-muted-foreground">
-                  Prices, turnaround times and inclusions are taken from
-                  provider listings and can change. Turnaround times are
-                  typical, not guaranteed. myhealth checkup does not provide
-                  medical care or diagnoses.
-                </p>
               </>
             )}
           </div>
