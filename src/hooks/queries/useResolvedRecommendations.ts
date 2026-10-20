@@ -1,4 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { loadViewPricing, mergeViewPricing } from "@/lib/viewPricing";
 import { supabase } from "@/integrations/supabase/client";
 import type { UniversalTestData } from "@/components/cards/UniversalTestCard";
 
@@ -12,7 +13,7 @@ const SELECT = `
   id, provider_id, test_name, description, price, category, sample_type,
   biomarker_count, biomarkers_list, url, image_url, home_kit_available, clinic_visit_available,
   turnaround_days_text, base_price, collection_options, is_popular,
-  collection_fee_amount, total_expected_cost, symptoms, who_should_test
+  symptoms, who_should_test
 `;
 
 async function resolveOne(rec: RecInput): Promise<UniversalTestData | null> {
@@ -45,11 +46,22 @@ export function useResolvedRecommendations(recs: RecInput[]) {
   const key = recs
     .map((r) => r.actualTestId || `${r.providerId}:${r.testName}`)
     .join("|");
+  const queryClient = useQueryClient();
   return useQuery({
     queryKey: ["resolved-recommendations", key],
     queryFn: async () => {
       const results = await Promise.all(recs.map(resolveOne));
-      return results;
+      // One pricing request for every resolved test; prices come only from
+      // unified_provider_tests, and a test the view doesn't list is dropped.
+      const pricing = await loadViewPricing(
+        queryClient,
+        results.flatMap((r) => (r ? [r.id] : [])),
+      );
+      return results.map((r): UniversalTestData | null => {
+        if (!r) return null;
+        const p = pricing.get(r.id);
+        return p ? mergeViewPricing(r, p) : null;
+      });
     },
     enabled: recs.length > 0,
     staleTime: 5 * 60 * 1000,

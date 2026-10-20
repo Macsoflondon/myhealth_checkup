@@ -1,3 +1,4 @@
+import type { CollectionFeeType } from "@/lib/comparisonFormat";
 import { supabase } from "@/integrations/supabase/client";
 import { ApiResponse } from "./base";
 
@@ -29,7 +30,9 @@ export interface ProviderTestData {
   measurement_type?: string | null;
   base_price?: number | null;
   collection_options?: unknown;
-  clinic_phlebotomy_cost?: number | null;
+  total_expected_cost?: number | null;
+  collection_fee_type?: CollectionFeeType | null;
+  collection_fee_amount?: number | null;
   home_phlebotomy_cost?: number | null;
   lab_ukas_accredited?: boolean | null;
   lab_cqc_regulated?: boolean | null;
@@ -180,27 +183,6 @@ class ProvidersApi {
     providerId: string,
   ): Promise<ApiResponse<ProviderTestData[]>> {
     return await this.getProviderTests(providerId);
-  }
-
-  /**
-   * Trigger provider scraper edge function. Requires service-role bearer
-   * (cron / admin invocation) — will return 401 from the browser.
-   */
-  async triggerProviderScrape(
-    providerId: string,
-  ): Promise<ApiResponse<unknown>> {
-    try {
-      const { data, error } = await supabase.functions.invoke(
-        "provider-scraper",
-        {
-          body: { providerId, action: "scrape" },
-        },
-      );
-
-      return { data, error };
-    } catch (error) {
-      return { data: null, error: error as Error };
-    }
   }
 }
 

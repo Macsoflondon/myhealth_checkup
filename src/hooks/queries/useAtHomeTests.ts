@@ -1,4 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import type { CollectionFeeType } from "@/lib/comparisonFormat";
+import { loadViewPricing, mergeActiveRows } from "@/lib/viewPricing";
 import { supabase } from "@/integrations/supabase/client";
 import { isJunkTestName } from "@/utils/is-junk-test-name";
 import { hasHomeKitRoute } from "@/lib/collectionVariants";
@@ -25,12 +27,16 @@ export interface AtHomeTest {
   is_popular: boolean;
   is_addon: boolean;
   collection_options: Record<string, unknown> | null;
-  clinic_phlebotomy_cost: number | null;
+  total_expected_cost: number | null;
+  collection_fee_type: CollectionFeeType | null;
+  collection_fee_amount: number | null;
+  collection_fee_note: string | null;
   home_phlebotomy_cost: number | null;
   url_verified: boolean | null;
 }
 
 export const useAtHomeTests = (category?: string, search?: string) => {
+  const queryClient = useQueryClient();
   return useQuery({
     queryKey: ["at-home-tests", category, search],
     queryFn: async () => {
@@ -42,7 +48,7 @@ export const useAtHomeTests = (category?: string, search?: string) => {
           turnaround_days_text, biomarker_count, biomarkers_list,
           description, who_should_test, symptoms, conditions, url, image_url,
           home_kit_available, clinic_visit_available, is_popular, is_addon,
-           collection_options, clinic_phlebotomy_cost, home_phlebotomy_cost, url_verified
+           collection_options, home_phlebotomy_cost, url_verified
         `,
         )
         .eq("is_active", true)
@@ -65,7 +71,14 @@ export const useAtHomeTests = (category?: string, search?: string) => {
 
       const { data, error } = await query;
       if (error) throw error;
-      const rows = (data || []) as unknown as AtHomeTest[];
+      const raw = (data || []) as unknown as AtHomeTest[];
+      const rows: AtHomeTest[] = mergeActiveRows(
+        raw,
+        await loadViewPricing(
+          queryClient,
+          raw.map((r) => r.id),
+        ),
+      );
       // Only self-collected home kits belong on this page; a row whose only
       // home option is a nurse/clinic venous draw is listed elsewhere.
       return rows.filter(

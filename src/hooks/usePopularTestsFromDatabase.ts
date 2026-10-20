@@ -1,5 +1,7 @@
+import type { CollectionFeeType } from "@/lib/comparisonFormat";
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { loadViewPricing, mergeActiveRows } from "@/lib/viewPricing";
 import { supabase } from "@/integrations/supabase/client";
 
 const WEBSITE_ENRICHMENT_PROVIDERS = new Set([
@@ -216,7 +218,9 @@ export interface PopularTest {
     price_modifier: number;
     note?: string;
   }>;
-  clinic_phlebotomy_cost?: number | null;
+  total_expected_cost?: number | null;
+  collection_fee_type?: CollectionFeeType | null;
+  collection_fee_amount?: number | null;
   home_phlebotomy_cost?: number | null;
   is_popular?: boolean;
   is_addon?: boolean;
@@ -265,10 +269,10 @@ function parseMarkers(raw: unknown): string[] {
  */
 /** Columns needed to rank and render a card, minus the heavy prose fields. */
 const LEAN_POOL_COLUMNS =
-  "id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, image_url, turnaround_days_text, base_price, clinic_phlebotomy_cost, home_phlebotomy_cost, is_popular, is_addon";
+  "id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, image_url, turnaround_days_text, base_price, home_phlebotomy_cost, is_popular, is_addon";
 
 const FULL_POOL_COLUMNS =
-  "id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, biomarkers_list, description, image_url, turnaround_days_text, base_price, collection_options, clinic_phlebotomy_cost, home_phlebotomy_cost, is_popular, is_addon";
+  "id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, biomarkers_list, description, image_url, turnaround_days_text, base_price, collection_options, home_phlebotomy_cost, is_popular, is_addon";
 
 interface PoolRow {
   id: string;
@@ -288,7 +292,9 @@ interface PoolRow {
   turnaround_days_text: string | null;
   base_price: number | null;
   collection_options?: unknown;
-  clinic_phlebotomy_cost: number | null;
+  total_expected_cost: number | null;
+  collection_fee_type: CollectionFeeType | null;
+  collection_fee_amount: number | null;
   home_phlebotomy_cost: number | null;
   is_popular: boolean | null;
   is_addon: boolean | null;
@@ -308,6 +314,7 @@ export const usePopularTestsFromDatabase = (
   options: PopularTestsOptions = {},
 ) => {
   const lean = options.lean === true;
+  const queryClient = useQueryClient();
   return useQuery({
     queryKey: ["popular-tests-database", limit, lean],
     queryFn: async (): Promise<PopularTest[]> => {
@@ -325,7 +332,17 @@ export const usePopularTestsFromDatabase = (
 
       // The column list is chosen at runtime, so PostgREST's literal-select
       // inference can't type the rows; narrow to the known pool row shape.
-      const popularData = rawPopularData as unknown as PoolRow[] | null;
+      const poolRows = rawPopularData as unknown as PoolRow[] | null;
+      // Price fields come only from unified_provider_tests.
+      const popularData = poolRows
+        ? mergeActiveRows(
+            poolRows,
+            await loadViewPricing(
+              queryClient,
+              poolRows.map((r) => r.id),
+            ),
+          )
+        : null;
 
       if (!popularError && popularData && popularData.length > 0) {
         const mappedTests = popularData.map((test) => ({
@@ -349,7 +366,9 @@ export const usePopularTestsFromDatabase = (
           turnaround_days_text: (test as any).turnaround_days_text || undefined,
           base_price: (test as any).base_price ?? undefined,
           collection_options: (test as any).collection_options || undefined,
-          clinic_phlebotomy_cost: test.clinic_phlebotomy_cost,
+          total_expected_cost: test.total_expected_cost,
+          collection_fee_type: test.collection_fee_type,
+          collection_fee_amount: test.collection_fee_amount,
           home_phlebotomy_cost: test.home_phlebotomy_cost,
           is_popular: (test as any).is_popular ?? undefined,
           is_addon: test.is_addon ?? undefined,
@@ -377,12 +396,19 @@ export const usePopularTestsFromDatabase = (
       if (!data || data.length === 0) {
         return [];
       }
+      const pricedFallback = mergeActiveRows(
+        data,
+        await loadViewPricing(
+          queryClient,
+          data.map((r) => r.id),
+        ),
+      );
 
       // Ensure variety across providers - max 2 tests per provider
       const providerCounts: Record<string, number> = {};
       const diverseTests: PopularTest[] = [];
 
-      for (const test of data) {
+      for (const test of pricedFallback) {
         const providerId = test.provider_id;
         const currentCount = providerCounts[providerId] || 0;
 
@@ -421,11 +447,12 @@ export const usePopularTestsFromDatabase = (
  * Prioritizes tests marked as is_popular=true
  */
 export const usePopularTestsForNavigation = () => {
+  const queryClient = useQueryClient();
   return useQuery({
     queryKey: ["popular-tests-navigation"],
     queryFn: async (): Promise<PopularTest[]> => {
       // First try to get tests marked as popular
-      const { data: popularData, error: popularError } = await supabase
+      const { data: rawNavData, error: popularError } = await supabase
         .from("provider_tests")
         .select(
           "id, test_name, provider_id, price, category, sample_type, collection_method, url, biomarker_count, popularity_rank, turnaround_days_text",
@@ -435,6 +462,16 @@ export const usePopularTestsForNavigation = () => {
         .not("price", "is", null)
         .order("popularity_rank", { ascending: true, nullsFirst: false })
         .limit(8);
+
+      const popularData = rawNavData
+        ? mergeActiveRows(
+            rawNavData,
+            await loadViewPricing(
+              queryClient,
+              rawNavData.map((r) => r.id),
+            ),
+          )
+        : null;
 
       if (!popularError && popularData && popularData.length >= 4) {
         return popularData.map((test) => ({
@@ -474,12 +511,19 @@ export const usePopularTestsForNavigation = () => {
       if (!data || data.length === 0) {
         return [];
       }
+      const pricedFallback = mergeActiveRows(
+        data,
+        await loadViewPricing(
+          queryClient,
+          data.map((r) => r.id),
+        ),
+      );
 
       // Ensure variety - max 2 per provider, return top 8
       const providerCounts: Record<string, number> = {};
       const diverseTests: PopularTest[] = [];
 
-      for (const test of data) {
+      for (const test of pricedFallback) {
         const providerId = test.provider_id;
         const currentCount = providerCounts[providerId] || 0;
 

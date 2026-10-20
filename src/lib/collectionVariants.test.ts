@@ -9,7 +9,9 @@ describe("deriveCollectionVariants", () => {
       sample_type: "Finger-prick",
       home_kit_available: true,
       clinic_visit_available: true,
-      clinic_phlebotomy_cost: 40,
+      total_expected_cost: 109,
+      collection_fee_type: "fixed",
+      collection_fee_amount: 40,
       home_phlebotomy_cost: 60,
     });
 
@@ -33,7 +35,7 @@ describe("deriveCollectionVariants", () => {
       sample_type: "Venous",
       home_kit_available: false,
       clinic_visit_available: true,
-      clinic_phlebotomy_cost: 0,
+      total_expected_cost: 69,
       home_phlebotomy_cost: 0,
     });
     expect(variants).toHaveLength(1);
@@ -54,11 +56,11 @@ describe("deriveCollectionVariants", () => {
       sample_type: "Finger-prick",
       home_kit_available: true,
       clinic_visit_available: true,
-      clinic_phlebotomy_cost: 40,
+      total_expected_cost: 109,
+      collection_fee_type: "fixed",
+      collection_fee_amount: 40,
     });
     expect(variantFeeNote(kit)).toBeNull();
-    expect(variantFeeNote(clinic)).toBe(
-      "£69.00 test + £40.00 clinic blood draw",
-    );
+    expect(variantFeeNote(clinic)).toBe("£69.00 test + blood draw £40");
   });
 });

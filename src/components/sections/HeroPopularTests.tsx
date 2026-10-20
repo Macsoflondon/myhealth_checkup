@@ -6,14 +6,18 @@ import {
 import { SectionSkeleton } from "@/components/common/SectionSkeleton";
 import { SectionHeading } from "@/components/ui/section-heading";
 
-function toUniversalTest(
+export function toUniversalTest(
   test: import("@/hooks/queries/useHeroPopularTests").HeroPopularTest,
 ): UniversalTestData {
   return {
     id: test.id,
     provider_id: test.providerId,
     test_name: test.testName,
+    price: test.price,
     total_expected_cost: test.totalExpectedCost,
+    collection_fee_type: test.collectionFeeType,
+    collection_fee_amount: test.collectionFeeAmount,
+    collection_fee_note: test.collectionFeeNote,
     biomarker_count: test.biomarkerCount,
     url: test.url,
     category: test.canonicalCategory,

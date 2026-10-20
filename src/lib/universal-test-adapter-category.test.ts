@@ -34,7 +34,10 @@ describe("universal card category accents", () => {
       is_popular: false,
       is_addon: false,
       collection_options: null,
-      clinic_phlebotomy_cost: null,
+      total_expected_cost: 39,
+      collection_fee_type: null,
+      collection_fee_amount: null,
+      collection_fee_note: null,
       home_phlebotomy_cost: null,
     } satisfies AtHomeTest;
 
