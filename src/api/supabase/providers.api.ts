@@ -184,27 +184,6 @@ class ProvidersApi {
   ): Promise<ApiResponse<ProviderTestData[]>> {
     return await this.getProviderTests(providerId);
   }
-
-  /**
-   * Trigger provider scraper edge function. Requires service-role bearer
-   * (cron / admin invocation) — will return 401 from the browser.
-   */
-  async triggerProviderScrape(
-    providerId: string,
-  ): Promise<ApiResponse<unknown>> {
-    try {
-      const { data, error } = await supabase.functions.invoke(
-        "provider-scraper",
-        {
-          body: { providerId, action: "scrape" },
-        },
-      );
-
-      return { data, error };
-    } catch (error) {
-      return { data: null, error: error as Error };
-    }
-  }
 }
 
 export const providersApi = new ProvidersApi();

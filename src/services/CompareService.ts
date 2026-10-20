@@ -11,7 +11,6 @@ import {
 import { TestQueryBuilder } from "./queryBuilders/testQueryBuilder";
 import { getComparePanel } from "@/lib/comparePanels";
 import { compareCategories } from "@/constants/categories";
-import { LiveDataService } from "./LiveDataService";
 import { providers as coreProviders } from "@/constants/providers";
 
 /** unified_provider_tests columns read for URL-resolved comparisons. */
@@ -78,37 +77,8 @@ export class CompareService {
     if (cached) return cached;
 
     try {
-      // If specific providers requested, try live data first
-      if (providers.length > 0 && providers[0] !== "all") {
-        const liveResults: CompareTestData[] = [];
-
-        for (const providerId of providers) {
-          const { data, source } = await LiveDataService.getLiveTestData(
-            providerId,
-            category,
-          );
-          // Attach data source metadata to each test
-          const enrichedData = data.map((test) => ({
-            ...test,
-            dataSource: source,
-            lastUpdated: new Date().toISOString(),
-          }));
-          liveResults.push(...enrichedData);
-
-          if (source === "live") {
-            logger.info(`Using live data for ${providerId}`);
-          } else {
-            logger.info(`Using ${source} data for ${providerId}`);
-          }
-        }
-
-        if (liveResults.length > 0) {
-          cacheService.set(cacheKey, liveResults);
-          return liveResults;
-        }
-      }
-
-      // Fallback to database query
+      // provider_tests is kept current by the six-hourly mhc-* price sync, so
+      // comparisons always read it rather than scraping on page load.
       const query = TestQueryBuilder.buildCategoryQuery(category, providers);
       const { data, error } = await query;
 
