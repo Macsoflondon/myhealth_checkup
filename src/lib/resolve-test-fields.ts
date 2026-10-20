@@ -39,7 +39,7 @@ export const sanitiseTurnaroundText = (
   if (!value) return null;
   const cleaned = value
     .split(/\]\(|https?:\/\//)[0]
-    .replace(/[\s\]\[(),;|-]+$/, "")
+    .replace(/[\s\][(),;|-]+$/, "")
     .trim();
   return cleaned.length > 0 ? cleaned : null;
 };
