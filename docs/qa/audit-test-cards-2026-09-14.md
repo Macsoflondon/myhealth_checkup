@@ -278,3 +278,41 @@ blocked on the same product decision as before), and the optional cleanup of the
 now-near-dead accreditation fallback map (finding #7, not a defect). A pass 4 re-check of
 this pass's two fixes, run clean, would be the first of the two passes needed to close
 the loop.
+
+## Finding #14 — resolved by explicit user decision (2026-10-20, same day)
+
+The product/compliance decision this finding was blocked on has been made: the user
+asked directly to fix the Randox turnaround gap. That decision resolves the uncertainty
+this finding was flagged on — whether the hardcoded "24 hours" was a real-but-unmigrated
+fact or a stale guess no longer matters once the owner has said to stop presenting it as
+that test's own data.
+
+**Fix:** `formatTurnaround()` in `ProviderTestDetailModal.tsx` now returns `null` for
+`randox`/`randox-health` instead of the hardcoded `"24 hours"`. The call site
+(`test.turnaround_days_text || goodbodyStatic?.turnaround || formatTurnaround(...) ||
+"Not stated"`) already had the right shape for this — it just needed the function to be
+honest about not knowing, and a final fallback added for when it says so. Scoped
+narrowly to Randox, the provider actually asked about and the one with the largest gap
+(37/65 active tests, 57%, relying on the guess) — `medichecks`, `goodbody-clinic`,
+`lola-health`, `london-medical-laboratory`, and `tuli-health`'s entries in the same map
+are untouched; each of those providers has real data on ≥79% of its rows (confirmed in
+earlier passes), so wasn't flagged as needing this, and widening the fix to them wasn't
+part of what was asked.
+
+**A bug I had to fix to fix the bug:** the function originally returned
+`defaults[providerId.toLowerCase()] || "2–5 working days"`. Simply setting Randox's map
+entries to `null` would NOT have worked with that `||` — `null || "2–5 working days"`
+evaluates to the generic guess, reintroducing the exact same class of fabricated-data
+problem one level up. Changed the lookup to `id in defaults ? defaults[id] : "2–5 working
+days"` so an explicit `null` is distinguished from "not in the map at all" (which still
+correctly falls through to the generic guess for a provider with no entry).
+
+**Verification:** exported `formatTurnaround` (previously module-private) and added
+`src/components/providers/ProviderTestDetailModal.turnaroundHonesty.test.ts` (5 cases,
+including the specific `in`-vs-`||` regression this fix depended on). Re-ran
+`node scripts/audit-card-external-links.mjs` after the edit — 3 checked, 0 unlabelled,
+unaffected. Could not execute the new Vitest file in this sandbox, same constraint as
+every other test added in this audit.
+
+This closes finding #14. Finding #7 (the near-dead accreditation fallback map) remains
+open as an optional cleanup, not asked about this time.

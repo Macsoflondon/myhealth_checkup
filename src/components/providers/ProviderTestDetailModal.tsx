@@ -87,19 +87,29 @@ const getProviderTagline = (providerId: string): string => {
   return "Trusted UK health testing provider";
 };
 
-const formatTurnaround = (providerId: string): string => {
-  const defaults: Record<string, string> = {
+/**
+ * Per-provider turnaround guess, used only when a test has no real
+ * `turnaround_days_text` of its own. Returns null for a provider we've
+ * decided not to guess for — currently Randox, where the fallback was a
+ * blanket "24 hours" for every test regardless of what that specific test
+ * actually measures, and real data backs only 28/65 (43%) of Randox's
+ * active tests (2026-10-20 audit, finding #14 — the other providers below
+ * still have real data on ≥79% of their rows, so weren't re-scoped here).
+ */
+export const formatTurnaround = (providerId: string): string | null => {
+  const defaults: Record<string, string | null> = {
     medichecks: "2-3 working days",
     "goodbody-clinic": "3–5 working days",
     goodbody: "3–5 working days",
-    "randox-health": "24 hours",
-    randox: "24 hours",
+    "randox-health": null,
+    randox: null,
     "lola-health": "3–5 working days",
     "london-medical-laboratory": "Next day (in-store)",
     "tuli-health": "Same day – 24 hrs",
     tuli: "Same day – 24 hrs",
   };
-  return defaults[providerId.toLowerCase()] || "2–5 working days";
+  const id = providerId.toLowerCase();
+  return id in defaults ? defaults[id] : "2–5 working days";
 };
 
 const PROVIDER_DEFAULT_COLLECTION_OPTIONS: Record<
@@ -328,7 +338,8 @@ export default function ProviderTestDetailModal({
   const turnaround =
     test.turnaround_days_text ||
     goodbodyStatic?.turnaround ||
-    formatTurnaround(test.provider_id);
+    formatTurnaround(test.provider_id) ||
+    "Not stated";
   const storedCollectionOptions = getStoredCollectionOptions(test);
   const collectionOptions: ProviderCollectionOption[] | null =
     goodbodyStatic?.collectionOptions &&
