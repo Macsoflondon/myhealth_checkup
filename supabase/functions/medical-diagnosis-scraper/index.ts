@@ -34,6 +34,7 @@ function isBoilerplate(text: string): boolean {
   );
 }
 
+import { resolveScrapedFee } from "./fees.ts";
 export { extractPhlebotomyFee } from "./fees.ts";
 
 interface WooPrices {
@@ -248,10 +249,13 @@ Deno.serve(async (req) => {
       // Verbatim provider copy only — never the site-wide page furniture, never a synthesised sentence.
       const desc =
         candidateDesc && !isBoilerplate(candidateDesc) ? candidateDesc : null;
-      const clinicFee =
-        extractPhlebotomyFee(cleanShort + " " + cleanLong) ??
-        DEFAULT_CLINIC_FEE;
       const price = priceFromWoo(p.prices, "price");
+      // Store a fee only when the provider's own copy states one; displayed
+      // fees come from provider_collection_fee_rules.
+      const { clinicFee, totalExpectedCost } = resolveScrapedFee(
+        cleanShort + " " + cleanLong,
+        price,
+      );
       const regular = priceFromWoo(p.prices, "regular_price");
       const wasPrice = regular && regular !== price ? regular : null;
       const category = determineCategory(niceName, desc, p.categories || []);
@@ -274,7 +278,7 @@ Deno.serve(async (req) => {
           collection_fee: clinicFee,
           home_visit_fee: null,
           gp_review_fee: 0,
-          total_expected_cost: price === null ? null : price + clinicFee,
+          total_expected_cost: totalExpectedCost,
           biomarker_count: biomarkerCount,
           biomarkers_list: biomarkersList,
           turnaround_raw: turnaroundRaw,
@@ -313,7 +317,7 @@ Deno.serve(async (req) => {
             clinic_visit_available: true,
             phlebotomy_included: false,
             clinic_phlebotomy_cost: clinicFee,
-            total_expected_cost: price === null ? null : price + clinicFee,
+            total_expected_cost: totalExpectedCost,
             lab_ukas_accredited: true,
             url_verified: true,
             url_verified_at: new Date().toISOString(),
