@@ -34,7 +34,6 @@ const BASE_ROW: ProviderTestRow = {
   sample_type: null,
   home_kit_available: null,
   clinic_visit_available: null,
-  clinic_phlebotomy_cost: null,
   home_phlebotomy_cost: null,
   category: null,
   source_section_label: null,
