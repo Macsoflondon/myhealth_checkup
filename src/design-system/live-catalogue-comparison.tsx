@@ -69,51 +69,61 @@ export const LiveCatalogueComparison = forwardRef<
         {panel?.rows.map((row, index) => (
           <div
             key={row.id}
-            className={`grid grid-cols-[minmax(0,1fr)_auto] gap-3 rounded-lg border p-3 ${index === 0 ? "border-brand-turquoise/20 bg-brand-turquoise/8" : "border-transparent border-b-brand-navy/5"}`}
+            className={`rounded-lg border p-3 ${index === 0 ? "border-brand-turquoise/20 bg-brand-turquoise/8" : "border-transparent border-b-brand-navy/5"}`}
           >
-            <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-1.5">
-                <span className="font-heading text-sm font-bold">
-                  {row.provider}
-                </span>
-                {index === 0 && (
-                  <span className="rounded-full bg-brand-pink px-2 py-0.5 text-xs font-semibold text-white">
-                    Lowest shown
+            {/* Two-column grid: text takes what's left, price stays natural
+                width. The fee line lives under the row on mobile so it can't
+                squeeze the text column into one-word-per-line wrapping. */}
+            <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className="font-heading text-sm font-bold">
+                    {row.provider}
                   </span>
+                  {index === 0 && (
+                    <span className="shrink-0 whitespace-nowrap rounded-full bg-brand-pink px-2 py-0.5 text-xs font-semibold text-white">
+                      Lowest shown
+                    </span>
+                  )}
+                </div>
+                <p className="mb-0 mt-1 text-xs leading-relaxed text-brand-navy/70">
+                  {row.testName}
+                </p>
+                <p className="m-0 text-xs leading-relaxed text-brand-navy/65">
+                  {row.biomarkerLabel
+                    ? row.biomarkerLabel
+                    : row.biomarkers === null
+                      ? "Biomarkers not stated"
+                      : `${row.biomarkers} biomarkers`}{" "}
+                  ·{" "}
+                  {row.turnaround
+                    ? `Typical results: ${row.turnaround}`
+                    : "Turnaround not stated"}
+                </p>
+                <p className="mb-0 mt-1 text-xs text-brand-navy/60">
+                  {row.priceCheckedAt &&
+                  !Number.isNaN(Date.parse(row.priceCheckedAt))
+                    ? `Price checked ${new Date(row.priceCheckedAt).toLocaleDateString("en-GB", { timeZone: "Europe/London" })}`
+                    : "Update date not available"}
+                </p>
+              </div>
+              <div className="shrink-0 text-right">
+                <div className="whitespace-nowrap font-heading text-lg font-extrabold tabular-nums">
+                  {currency.format(row.price)}
+                </div>
+                <div className="text-xs text-brand-navy/65">Total cost</div>
+                {row.feeLabel && (
+                  <div className="mt-1 hidden max-w-[11rem] text-xs leading-snug text-brand-navy/65 sm:block">
+                    {row.feeLabel}
+                  </div>
                 )}
               </div>
-              <p className="mb-0 mt-1 text-xs leading-relaxed text-brand-navy/70">
-                {row.testName}
-              </p>
-              <p className="m-0 text-xs leading-relaxed text-brand-navy/65">
-                {row.biomarkerLabel
-                  ? row.biomarkerLabel
-                  : row.biomarkers === null
-                    ? "Biomarkers not stated"
-                    : `${row.biomarkers} biomarkers`}{" "}
-                ·{" "}
-                {row.turnaround
-                  ? `Typical results: ${row.turnaround}`
-                  : "Turnaround not stated"}
-              </p>
-              <p className="mb-0 mt-1 text-xs text-brand-navy/60">
-                {row.priceCheckedAt &&
-                !Number.isNaN(Date.parse(row.priceCheckedAt))
-                  ? `Price checked ${new Date(row.priceCheckedAt).toLocaleDateString("en-GB", { timeZone: "Europe/London" })}`
-                  : "Update date not available"}
-              </p>
             </div>
-            <div className="text-right">
-              <div className="whitespace-nowrap font-heading text-lg font-extrabold tabular-nums">
-                {currency.format(row.price)}
+            {row.feeLabel && (
+              <div className="mt-2 text-xs leading-snug text-brand-navy/65 sm:hidden">
+                {row.feeLabel}
               </div>
-              <div className="text-xs text-brand-navy/65">Total cost</div>
-              {row.feeLabel && (
-                <div className="mt-1 max-w-[11rem] text-xs leading-snug text-brand-navy/65">
-                  {row.feeLabel}
-                </div>
-              )}
-            </div>
+            )}
           </div>
         ))}
         {!panel && (
