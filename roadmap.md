@@ -1,7 +1,7 @@
 # Roadmap
 
 - [x] Inspect and save the two supplied replacement logos in the video reference collection.
-- [ ] Replace the video reference logo — awaiting the owner's choice of turquoise or pink checkup lettering.
+- [x] Replace the old transparent video reference logo with the owner's chosen turquoise checkup version; preserve original files.
 
 - [x] Correct home-kit postage allocation and verify route-specific clinic pricing without database changes or publishing.
 
