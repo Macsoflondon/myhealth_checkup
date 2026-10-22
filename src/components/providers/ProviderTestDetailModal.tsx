@@ -1,4 +1,3 @@
-import { viewCollectionFee, viewFeeLabel } from "@/lib/viewPricing";
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { stripCollectionFeeText } from "@/lib/resolve-test-fields";
 import { useNavigate } from "@/lib/router-compat";
@@ -26,7 +25,7 @@ import { getProviderLogo } from "@/constants/providers";
 import { resolveAccreditationsFromRow } from "@/lib/resolve-test-fields";
 import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
 import { resolveTestSummary } from "@/lib/test-summary";
-import { hasHomeKitRoute } from "@/lib/collectionVariants";
+import { deriveCollectionVariants } from "@/lib/collectionVariants";
 
 interface ProviderTestDetailModalProps {
   test: ProviderTestCardData | null;
@@ -208,6 +207,18 @@ const getCollectionDetail = (
 const getStoredCollectionOptions = (
   test: ProviderTestCardData,
 ): ProviderCollectionOption[] | null => {
+  if (test.collection_route_pricing) {
+    return deriveCollectionVariants(test).flatMap((variant) => [
+      {
+        method: variant.label,
+        price: variant.total,
+        ...(variant.feeLabel ? { note: variant.feeLabel } : {}),
+      },
+      ...(variant.secondary
+        ? [{ method: variant.secondary.label, price: variant.secondary.total }]
+        : []),
+    ]);
+  }
   if (Array.isArray(test.collection_options)) {
     const stored = test.collection_options.flatMap((option: unknown) => {
       if (!option || typeof option !== "object") return [];
@@ -228,58 +239,12 @@ const getStoredCollectionOptions = (
     if (stored.length > 0) return stored;
   }
 
-  const options: ProviderCollectionOption[] = [];
-
-  // The self-collected kit is usually the cheapest route — never let the
-  // phlebotomy costs synthesise a list that hides it.
-  if (
-    hasHomeKitRoute({
-      id: test.id,
-      price: test.price,
-      base_price: test.base_price,
-      sample_type: test.sample_type,
-      collection_method: test.collection_method,
-      home_kit_available: test.home_kit_available,
-      clinic_visit_available: test.clinic_visit_available,
-      total_expected_cost: test.total_expected_cost,
-      collection_fee_type: test.collection_fee_type,
-      collection_fee_amount: test.collection_fee_amount,
-      home_phlebotomy_cost: test.home_phlebotomy_cost,
-    })
-  ) {
-    const providerDefaults =
-      PROVIDER_DEFAULT_COLLECTION_OPTIONS[test.provider_id.toLowerCase()] ?? [];
-    const defaultKit = providerDefaults.find((option) =>
-      /finger|home kit/i.test(option.method),
-    );
-    options.push(
-      defaultKit ?? {
-        method: "Finger-prick home kit",
-        price_modifier: 0,
-        note: "Included",
-      },
-    );
-  }
-
-  // Clinic fee comes from unified_provider_tests (provider_collection_fee_rules).
-  const clinicFee = viewCollectionFee(test);
-  if (test.clinic_visit_available && clinicFee != null) {
-    const feeLabel = viewFeeLabel(test);
-    options.push({
-      method: "Venous clinic draw",
-      price_modifier: clinicFee,
-      ...(feeLabel ? { note: feeLabel } : {}),
-    });
-  }
-  if (
-    typeof test.home_phlebotomy_cost === "number" &&
-    test.home_phlebotomy_cost > 0
-  ) {
-    options.push({
-      method: "Home phlebotomy visit",
-      price_modifier: test.home_phlebotomy_cost,
-    });
-  }
+  const options = deriveCollectionVariants(test).flatMap((variant) => [
+    { method: variant.label, price: variant.total },
+    ...(variant.secondary
+      ? [{ method: variant.secondary.label, price: variant.secondary.total }]
+      : []),
+  ]);
   return options.length > 0 ? options : null;
 };
 

@@ -11,6 +11,7 @@ import {
   formatFeeAmount,
   type CollectionFeeType,
 } from "@/lib/comparisonFormat";
+import type { ViewPricing } from "@/lib/viewPricing";
 
 export const PROVIDER_NAMES: Record<string, string> = {
   medichecks: "Medichecks",
@@ -64,6 +65,7 @@ export interface ProviderTestRow {
   total_expected_cost?: number | null;
   collection_fee_type?: CollectionFeeType | null;
   collection_fee_amount?: number | null;
+  collection_route_pricing?: ViewPricing["collection_route_pricing"];
   home_phlebotomy_cost: number | null;
   category: string | null;
   source_section_label: string | null;

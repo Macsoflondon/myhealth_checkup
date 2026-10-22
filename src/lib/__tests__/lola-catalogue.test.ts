@@ -152,6 +152,14 @@ describe("Lola price model", () => {
       const routes = deriveCollectionVariants({
         id: handle,
         ...model,
+        collection_route_pricing: {
+          home_kit: { fee: 0, feeLabel: null, total: model.price },
+          clinic: {
+            fee: model.clinic_phlebotomy_cost,
+            feeLabel: null,
+            total: model.total_expected_cost,
+          },
+        },
         sample_type: lolaSampleType(model),
       });
       const venous = routes.find((v) => v.route === "venous")!;

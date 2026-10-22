@@ -8,6 +8,7 @@ import {
   mergeViewPricing,
   toViewPricing,
   viewFeeLabel,
+  viewCollectionFee,
   type ViewPricing,
 } from "@/lib/viewPricing";
 import { mapHeroRows } from "@/hooks/queries/useHeroPopularTests";
@@ -79,6 +80,51 @@ const rawRows = [
 ];
 
 describe("view pricing merge", () => {
+  it("resolves the additional clinic route from the public £35 rule, not £3.99 postage", () => {
+    const row = toViewPricing(
+      {
+        id: "lml",
+        provider_id: "london-medical-laboratory",
+        price: 45,
+        sample_type: "multiple",
+        home_kit_available: true,
+        clinic_visit_available: true,
+        collection_fee_type: "fixed",
+        collection_fee_amount: 3.99,
+        total_expected_cost: 48.99,
+      },
+      [
+        {
+          provider_id: "london-medical-laboratory",
+          route: "clinic_only",
+          fee_type: "fixed",
+          fee_amount: 35,
+        },
+      ],
+    );
+    expect(row.collection_route_pricing?.home_kit?.total).toBe(48.99);
+    expect(row.collection_route_pricing?.clinic).toEqual({
+      fee: 35,
+      feeLabel: "+£35",
+      total: 80,
+    });
+  });
+
+  it("collection fees exclude the £10 mandatory clinical review", () => {
+    const row = toViewPricing({
+      id: "review",
+      price: 45,
+      clinic_visit_available: true,
+      collection_fee_type: "fixed",
+      collection_fee_amount: 35,
+      clinical_review_type: "included",
+      clinical_review_fee: 10,
+      total_expected_cost: 90,
+    });
+    expect(viewCollectionFee(row)).toBe(35);
+    expect(row.collection_route_pricing?.clinic?.total).toBe(90);
+  });
+
   it("takes totals and fees from the view, not provider_tests", () => {
     const merged = mergeActiveRows(rawRows, pricing);
     expect(merged.map((r) => r.total_expected_cost)).toEqual([63, 80, 59]);

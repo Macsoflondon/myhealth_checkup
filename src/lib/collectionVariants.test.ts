@@ -12,6 +12,10 @@ describe("deriveCollectionVariants", () => {
       total_expected_cost: 109,
       collection_fee_type: "fixed",
       collection_fee_amount: 40,
+      collection_route_pricing: {
+        home_kit: { fee: 0, feeLabel: null, total: 69 },
+        clinic: { fee: 40, feeLabel: "+£40", total: 109 },
+      },
       home_phlebotomy_cost: 60,
     });
 
@@ -59,8 +63,61 @@ describe("deriveCollectionVariants", () => {
       total_expected_cost: 109,
       collection_fee_type: "fixed",
       collection_fee_amount: 40,
+      collection_route_pricing: {
+        home_kit: { fee: 0, feeLabel: null, total: 69 },
+        clinic: { fee: 40, feeLabel: "+£40", total: 109 },
+      },
     });
     expect(variantFeeNote(kit)).toBeNull();
     expect(variantFeeNote(clinic)).toBe("£69.00 test + blood draw £40");
+  });
+
+  it("adds £3.99 postage to the £45 kit without inventing a clinic or nurse route", () => {
+    const variants = deriveCollectionVariants({
+      id: "lml-kit",
+      price: 45,
+      sample_type: "multiple",
+      home_kit_available: true,
+      clinic_visit_available: false,
+      home_phlebotomy_cost: 80,
+      collection_fee_type: "fixed",
+      collection_fee_amount: 3.99,
+      total_expected_cost: 48.99,
+    });
+    expect(
+      variants.map((variant) => [variant.route, variant.fee, variant.total]),
+    ).toEqual([["home_kit", 3.99, 48.99]]);
+  });
+
+  it("uses separate £3.99 kit postage and £35 clinic charges", () => {
+    const variants = deriveCollectionVariants({
+      id: "lml-both",
+      price: 45,
+      home_kit_available: true,
+      clinic_visit_available: true,
+      collection_route_pricing: {
+        home_kit: { fee: 3.99, feeLabel: "+£3.99", total: 48.99 },
+        clinic: { fee: 35, feeLabel: "+£35", total: 80 },
+      },
+    });
+    expect(
+      variants.map((variant) => [variant.route, variant.fee, variant.total]),
+    ).toEqual([
+      ["home_kit", 3.99, 48.99],
+      ["clinic", 35, 80],
+    ]);
+  });
+
+  it("does not turn mandatory review into a blood-draw fee", () => {
+    const [clinic] = deriveCollectionVariants({
+      id: "review",
+      price: 45,
+      clinic_visit_available: true,
+      collection_fee_type: "fixed",
+      collection_fee_amount: 35,
+      total_expected_cost: 90,
+    });
+    expect(clinic.fee).toBe(35);
+    expect(clinic.total).toBe(90);
   });
 });
