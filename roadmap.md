@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Inspect and save the two supplied replacement logos in the video reference collection; confirm which version to use before replacement.
+
 - [x] Correct home-kit postage allocation and verify route-specific clinic pricing without database changes or publishing.
 
 - [x] Repair the Human Context Engine's case-sensitive OpenAI secret lookup with regression tests, preserving its provider, model and recommendations.
