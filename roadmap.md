@@ -41,6 +41,7 @@
 - [ ] Security: Assisted Test Finder and Hidden Gap Detector AI calls restricted to signed-in users
 - [ ] Security: Assisted Test Finder and Hidden Gap Detector AI calls restricted to signed-in users
 - [x] Reformat the whole site and verify types, unit tests and production build.
+- [ ] "Know What's Inside" 30s video ad: references, plan and music approved; stills in review — family frame must keep the two-dad couple (user pinned this on v2; v3 already does); then animate, stitch, check.
 - [x] Speed pass: right-size logos (WebP), Shopify card image resizing, keepalive web-vitals beacon, React Query biomarker library, explicit column lists, restore 28 Sep plan file.
 
 ## Code review fixes (Blood Taken Media Section draft, 19/10/2026)
