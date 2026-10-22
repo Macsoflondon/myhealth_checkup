@@ -3,6 +3,7 @@ import {
   mergeActiveRows,
   viewCollectionFee,
   viewFeeLabel,
+  type ViewPricing,
 } from "@/lib/viewPricing";
 import type { CollectionFeeType } from "@/lib/comparisonFormat";
 import {
@@ -91,6 +92,7 @@ export interface ProviderTestData {
   collection_fee_note?: string | null;
   price_checked_at?: string | null;
   collection_fee_amount?: number | null;
+  collection_route_pricing?: ViewPricing["collection_route_pricing"];
 
   home_phlebotomy_cost?: number | null;
   home_kit_available?: boolean | null;
@@ -474,6 +476,7 @@ function CollectionOptionsSection({ test }: { test: ProviderTestData }) {
     total_expected_cost: test.total_expected_cost,
     collection_fee_type: test.collection_fee_type,
     collection_fee_amount: test.collection_fee_amount,
+    collection_route_pricing: test.collection_route_pricing,
     home_phlebotomy_cost: test.home_phlebotomy_cost,
   });
 
