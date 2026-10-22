@@ -226,10 +226,7 @@ export const CategoryVerificationPanel = () => {
       "image_url",
       "issues",
     ];
-    const esc = (v: unknown) => {
-      const s = v == null ? "" : String(v);
-      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-    };
+    const esc = csvSafeCell;
     const rows = mismatches.map((m) =>
       [
         m.provider_name,

@@ -109,7 +109,7 @@ export default function AdminTestMapperPage() {
         ]),
       ),
     ]
-      .map((row) => row.join(","))
+      .map((row) => csvSafeRow(row))
       .join("\n");
 
     const blob = new Blob([csvContent], { type: "text/csv" });
