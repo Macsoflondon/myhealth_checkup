@@ -1,4 +1,5 @@
 import type { CollectionFeeType } from "@/lib/comparisonFormat";
+import type { ViewPricing } from "@/lib/viewPricing";
 import { UniversalTestCard } from "@/components/cards/UniversalTestCard";
 import { fromProviderTest } from "@/lib/universalTestAdapter";
 
@@ -35,6 +36,7 @@ export interface ProviderTestCardData {
   total_expected_cost?: number | null;
   collection_fee_type?: CollectionFeeType | null;
   collection_fee_amount?: number | null;
+  collection_route_pricing?: ViewPricing["collection_route_pricing"];
   home_phlebotomy_cost?: number | null;
   reviews?: number | null;
   categoryColor?: string | null;

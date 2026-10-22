@@ -117,6 +117,7 @@ export const ProviderTestsGrid = ({
             total_expected_cost: t.total_expected_cost ?? null,
             collection_fee_type: t.collection_fee_type ?? null,
             collection_fee_amount: t.collection_fee_amount ?? null,
+            collection_route_pricing: t.collection_route_pricing,
             home_phlebotomy_cost: t.home_phlebotomy_cost ?? null,
             price_from: hasStartingPrice(t),
             categoryColor: branding?.primary || "#e70d69",
