@@ -214,7 +214,9 @@ const getStoredCollectionOptions = (
         price: variant.total,
         ...(variant.feeLabel ? { note: variant.feeLabel } : {}),
       },
-      ...(variant.secondary ? [{ method: variant.secondary.label, price: variant.secondary.total }] : []),
+      ...(variant.secondary
+        ? [{ method: variant.secondary.label, price: variant.secondary.total }]
+        : []),
     ]);
   }
   if (Array.isArray(test.collection_options)) {
@@ -239,7 +241,9 @@ const getStoredCollectionOptions = (
 
   const options = deriveCollectionVariants(test).flatMap((variant) => [
     { method: variant.label, price: variant.total },
-    ...(variant.secondary ? [{ method: variant.secondary.label, price: variant.secondary.total }] : []),
+    ...(variant.secondary
+      ? [{ method: variant.secondary.label, price: variant.secondary.total }]
+      : []),
   ]);
   return options.length > 0 ? options : null;
 };
