@@ -124,13 +124,14 @@ const PartnersGrid = () => {
                       hover:border-[#22c0d4]/30 bg-white"
                   >
                     {(() => {
-                      const { src, srcSet } = getProviderLogoSrcSet(
-                        provider.id,
-                      );
+                      const { src, srcSet, width, height } =
+                        getProviderLogoSrcSet(provider.id);
                       return (
                         <img
                           src={src}
                           srcSet={srcSet}
+                          width={width}
+                          height={height}
                           alt={`${provider.name} logo`}
                           className={`w-auto object-contain transition-all duration-300 group-hover:scale-110 ${
                             LOGO_SIZE[provider.id] ?? DEFAULT_LOGO_SIZE

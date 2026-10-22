@@ -30,3 +30,10 @@ dist-ssr
 # Build artifacts / CLI temp
 *.tsbuildinfo
 supabase/.temp/
+
+# Nitro/Wrangler build output and local dev state. Must stay ignored: Tailwind
+# v4 auto-detects class names from every non-ignored file, so a build output
+# folder left in the tree leaks into the SSR CSS pass and gives the server
+# HTML a stylesheet hash the client build never emitted.
+.output/
+.wrangler/state/

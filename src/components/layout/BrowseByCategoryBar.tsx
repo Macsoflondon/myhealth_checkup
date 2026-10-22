@@ -22,6 +22,7 @@ import { MobileAccountLinks } from "@/components/header/MobileAccountLinks";
 import { useAuth } from "@/context/AuthContext";
 
 import { CategoryPillDropdown } from "@/components/layout/CategoryPillDropdown";
+import { BrandWordmark } from "@/components/brand/BrandWordmark";
 import {
   Sheet,
   SheetContent,
@@ -112,7 +113,9 @@ export default function BrowseByCategoryBar({
 
       setMeasuring(false);
     };
-    compute();
+    // No synchronous compute() here: reading offsetWidth straight after the
+    // commit forces a layout. ResizeObserver delivers its first callback once
+    // layout has run anyway, so the initial measurement comes from there.
     document.fonts?.ready.then(compute).catch(() => {});
     const ro = new ResizeObserver(compute);
     if (barRef.current) ro.observe(barRef.current);
@@ -345,10 +348,7 @@ export default function BrowseByCategoryBar({
                 to="/"
                 className="flex items-center no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] leading-none whitespace-nowrap text-[clamp(30px,6.6vw,88px)] py-1 md:py-2"
               >
-                <span className="transition-colors duration-300 ease-out text-[#081129]">
-                  myhealth
-                </span>
-                <span className="text-[#22c0d4]">checkup</span>
+                <BrandWordmark />
               </Link>
               {placement === "hero" && (
                 <p className="m-0 mt-1 md:mt-2 text-left">
@@ -356,7 +356,9 @@ export default function BrowseByCategoryBar({
                     <span className="transition-colors duration-300 ease-out text-[#081129]">
                       Your{" "}
                     </span>
-                    <span className="text-[#22c0d4]">health.</span>
+                    {/* Small tagline text: the darker turquoise from the brand
+                        health scale meets 4.5:1 on white; #22c0d4 is 2.2:1. */}
+                    <span className="text-health-700">health.</span>
                     <span className="transition-colors duration-300 ease-out text-[#081129]">
                       {" "}
                       Your{" "}
@@ -410,7 +412,7 @@ export default function BrowseByCategoryBar({
                   <nav className="px-3 py-4 overflow-y-auto flex-1">
                     <div className="space-y-6">
                       <div>
-                        <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/40 mb-3">
+                        <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/70 mb-3">
                           Account
                         </h3>
                         <MobileAccountLinks
@@ -418,7 +420,7 @@ export default function BrowseByCategoryBar({
                         />
                       </div>
                       <div>
-                        <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/40 mb-3">
+                        <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/70 mb-3">
                           Language
                         </h3>
                         <LanguageAccordion
@@ -426,7 +428,7 @@ export default function BrowseByCategoryBar({
                         />
                       </div>
                       <div>
-                        <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/40 mb-3">
+                        <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/70 mb-3">
                           Test Categories
                         </h3>
                         <div className="grid grid-cols-1 gap-2">
@@ -508,7 +510,7 @@ export default function BrowseByCategoryBar({
                       </div>
                       {moreNavigationSections.map((section) => (
                         <div key={section.title}>
-                          <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/40 mb-3">
+                          <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/70 mb-3">
                             {section.title}
                           </h3>
                           <div className="grid grid-cols-1 gap-2">
@@ -562,7 +564,10 @@ export default function BrowseByCategoryBar({
                   : "opacity-0 -translate-y-3 pointer-events-none"
               }`}
               data-testid="mobile-sticky-menu-trigger"
-              aria-hidden={!mobileBarOut || mobileOpen}
+              // inert, not aria-hidden: while the trigger is faded out it must
+              // also leave the tab order, or keyboard users land on a button
+              // that screen readers are told does not exist.
+              inert={!mobileBarOut || mobileOpen}
             >
               <button
                 type="button"

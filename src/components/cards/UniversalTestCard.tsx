@@ -34,10 +34,12 @@ import { displayTurnaround } from "@/lib/resolve-test-fields";
 import { baseTestId, type CollectionVariant } from "@/lib/collectionVariants";
 import { formatTestCardHeadline } from "@/utils/format-test-card-headline";
 import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
-import { shopifyImageUrl } from "@/lib/shopify-image";
+import { shopifyImageSrcSet, shopifyImageUrl } from "@/lib/shopify-image";
 
 /** Largest rendered width of the card's product image, in CSS pixels. */
 const CARD_IMAGE_DISPLAY_WIDTH = 325;
+const CARD_IMAGE_SIZES =
+  "(min-width: 1024px) 18vw, (min-width: 640px) 40vw, calc(100vw - 66px)";
 import { trackFunnelEvent } from "@/lib/funnelTracking";
 import {
   categoryMenuIconFor,
@@ -1030,6 +1032,13 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               brokenImageSrc !== cardImageUrl ? (
                 <img
                   src={shopifyImageUrl(cardImageUrl, CARD_IMAGE_DISPLAY_WIDTH)}
+                  srcSet={shopifyImageSrcSet(cardImageUrl, [
+                    CARD_IMAGE_DISPLAY_WIDTH,
+                    CARD_IMAGE_DISPLAY_WIDTH * 2,
+                  ])}
+                  // Rendered widths measured on the homepage grids: about
+                  // 100vw - 66px on phones, 40vw on tablets, 18vw from 1024px.
+                  sizes={CARD_IMAGE_SIZES}
                   width={CARD_IMAGE_DISPLAY_WIDTH}
                   height={CARD_IMAGE_DISPLAY_WIDTH}
                   alt={`${test.test_name} test kit from ${meta.displayName}`}

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { shopifyImageUrl } from "@/lib/shopify-image";
+import { shopifyImageSrcSet, shopifyImageUrl } from "@/lib/shopify-image";
 
 describe("shopifyImageUrl", () => {
   it("requests a 2x WebP variant for the displayed width", () => {
@@ -23,5 +23,25 @@ describe("shopifyImageUrl", () => {
       "https://example.com/a.png",
     );
     expect(shopifyImageUrl("/local/a.png", 325)).toBe("/local/a.png");
+  });
+});
+
+describe("shopifyImageSrcSet", () => {
+  it("lists one WebP candidate per width with a w descriptor", () => {
+    expect(
+      shopifyImageSrcSet(
+        "https://cdn.shopify.com/s/files/1/kit.png?v=9",
+        [325, 650],
+      ),
+    ).toBe(
+      "https://cdn.shopify.com/s/files/1/kit.png?v=9&width=325&format=webp 325w, " +
+        "https://cdn.shopify.com/s/files/1/kit.png?v=9&width=650&format=webp 650w",
+    );
+  });
+
+  it("returns undefined for images Shopify cannot resize", () => {
+    expect(shopifyImageSrcSet("https://example.com/a.png", [325])).toBe(
+      undefined,
+    );
   });
 });

@@ -1,3 +1,4 @@
+import { PROVIDER_LOGO_ASSETS } from "@/constants/providerLogoAssets";
 // Provider-specific configuration for test detail pages
 // This file contains all the unique content for each provider
 
@@ -130,7 +131,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   "goodbody-clinic": {
     id: "goodbody-clinic",
     name: "GoodBody Clinic",
-    logo: "/lovable-uploads/provider-goodbody-slate-2026.webp",
+    logo: PROVIDER_LOGO_ASSETS["goodbody-clinic"].src,
     turnaround: "2-3 working days",
     badgeText: "GoodBody Clinic Blood Test",
     features: [
@@ -201,7 +202,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   randox: {
     id: "randox",
     name: "Randox Health",
-    logo: "/lovable-uploads/provider-randox.webp",
+    logo: PROVIDER_LOGO_ASSETS.randox.src,
     turnaround: "3-5 working days",
     badgeText: "Randox Health Test",
     features: [
@@ -274,7 +275,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   "lola-health": {
     id: "lola-health",
     name: "Lola Health",
-    logo: "/lovable-uploads/provider-lola-health.webp",
+    logo: PROVIDER_LOGO_ASSETS["lola-health"].src,
     turnaround: "2 working days",
     badgeText: "Lola Health Blood Test",
     features: [
@@ -347,7 +348,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   "london-medical-laboratory": {
     id: "london-medical-laboratory",
     name: "London Medical Laboratory",
-    logo: "/lovable-uploads/provider-london-medical.webp",
+    logo: PROVIDER_LOGO_ASSETS["london-medical-laboratory"].src,
     turnaround: "1-2 working days",
     badgeText: "London Medical Laboratory Test",
     features: [
@@ -421,7 +422,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   clinilabs: {
     id: "clinilabs",
     name: "Clinilabs",
-    logo: "/lovable-uploads/provider-clinilabs.webp",
+    logo: PROVIDER_LOGO_ASSETS.clinilabs.src,
     turnaround: "2-5 working days",
     badgeText: "Clinilabs Blood Test",
     features: [
@@ -488,7 +489,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   "london-health-company": {
     id: "london-health-company",
     name: "London Health Company",
-    logo: "/lovable-uploads/provider-london-health-company.webp",
+    logo: PROVIDER_LOGO_ASSETS["london-health-company"].src,
     turnaround: "2-4 working days",
     badgeText: "London Health Company Blood Test",
     features: [
@@ -554,7 +555,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
   "medical-diagnosis": {
     id: "medical-diagnosis",
     name: "Medical Diagnosis",
-    logo: "/lovable-uploads/provider-medical-diagnosis.webp",
+    logo: PROVIDER_LOGO_ASSETS["medical-diagnosis"].src,
     turnaround: "2-5 working days",
     badgeText: "Medical Diagnosis Blood Test",
     features: [

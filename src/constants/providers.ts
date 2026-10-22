@@ -3,6 +3,11 @@
  * Used across CompareService, ProviderService, and components
  */
 
+import {
+  PROVIDER_LOGO_ASSETS,
+  PROVIDER_RESPONSIVE_LOGO_ASSETS,
+} from "@/constants/providerLogoAssets";
+
 export interface Provider {
   id: string;
   name: string;
@@ -12,18 +17,19 @@ export interface Provider {
   accreditations?: string[];
 }
 
+const LOGOS = PROVIDER_LOGO_ASSETS;
+
 export const PROVIDER_LOGOS: Record<string, string> = {
-  medichecks: "/lovable-uploads/provider-medichecks-light.webp",
-  randox: "/lovable-uploads/provider-randox.webp",
-  "randox-health": "/lovable-uploads/provider-randox.webp",
-  "london-medical-laboratory": "/lovable-uploads/provider-london-medical.webp",
-  "lola-health": "/lovable-uploads/provider-lola-health.webp",
-  "goodbody-clinic": "/lovable-uploads/provider-goodbody-slate-2026.webp",
-  goodbody: "/lovable-uploads/provider-goodbody-slate-2026.webp",
-  "london-health-company":
-    "/lovable-uploads/provider-london-health-company.webp",
-  "medical-diagnosis": "/lovable-uploads/provider-medical-diagnosis.webp",
-  clinilabs: "/lovable-uploads/provider-clinilabs.webp",
+  medichecks: LOGOS.medichecks.src,
+  randox: LOGOS.randox.src,
+  "randox-health": LOGOS.randox.src,
+  "london-medical-laboratory": LOGOS["london-medical-laboratory"].src,
+  "lola-health": LOGOS["lola-health"].src,
+  "goodbody-clinic": LOGOS["goodbody-clinic"].src,
+  goodbody: LOGOS["goodbody-clinic"].src,
+  "london-health-company": LOGOS["london-health-company"].src,
+  "medical-diagnosis": LOGOS["medical-diagnosis"].src,
+  clinilabs: LOGOS.clinilabs.src,
 };
 
 export const PROVIDER_NAMES: Record<string, string> = {
@@ -185,31 +191,23 @@ export function getProviderLogo(providerId: string): string {
 }
 
 /**
- * Returns responsive srcSet (1x/2x/3x) for provider logos.
- * Generated assets live in /lovable-uploads/providers/{id}@{160,320,480}.png
- * Falls back to the original logo when no responsive set exists.
+ * Returns the logo with its intrinsic size, plus a 1x/2x/3x srcSet where a
+ * responsive set exists (see PROVIDER_RESPONSIVE_LOGO_ASSETS). Falls back to
+ * the single logo file otherwise.
  */
-const PROVIDERS_WITH_RESPONSIVE_LOGOS = new Set<string>([
-  "lola-health",
-  "goodbody-clinic",
-  "london-health-company",
-  "medical-diagnosis",
-  "clinilabs",
-]);
-
 export function getProviderLogoSrcSet(providerId: string): {
   src: string;
   srcSet?: string;
+  width?: number;
+  height?: number;
 } {
   const normalizedId = normalizeProviderId(providerId);
-  const fallback = getProviderLogo(normalizedId);
-  if (!PROVIDERS_WITH_RESPONSIVE_LOGOS.has(normalizedId))
-    return { src: fallback };
-  const base = `/lovable-uploads/providers/${normalizedId}`;
-  return {
-    src: `${base}@160.png`,
-    srcSet: `${base}@160.png 1x, ${base}@320.png 2x, ${base}@480.png 3x`,
-  };
+  const responsive = PROVIDER_RESPONSIVE_LOGO_ASSETS[normalizedId];
+  if (responsive) return responsive;
+  const single =
+    PROVIDER_LOGO_ASSETS[normalizedId as keyof typeof PROVIDER_LOGO_ASSETS];
+  if (single) return single;
+  return { src: getProviderLogo(normalizedId) };
 }
 
 export function getProviderName(providerId: string): string {

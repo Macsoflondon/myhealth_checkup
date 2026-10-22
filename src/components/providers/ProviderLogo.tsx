@@ -1,4 +1,5 @@
 import React from "react";
+import { PROVIDER_LOGO_ASSETS } from "@/constants/providerLogoAssets";
 
 interface ProviderLogoProps {
   provider: string;
@@ -15,35 +16,35 @@ export const ProviderLogo = ({
     const normalizedName = providerName.toLowerCase();
 
     if (normalizedName.includes("medichecks")) {
-      return "/lovable-uploads/provider-medichecks-light.webp";
+      return PROVIDER_LOGO_ASSETS.medichecks.src;
     }
 
     if (normalizedName.includes("goodbody")) {
-      return "/lovable-uploads/provider-goodbody-slate-2026.webp";
+      return PROVIDER_LOGO_ASSETS["goodbody-clinic"].src;
     }
 
     if (normalizedName.includes("randox")) {
-      return "/lovable-uploads/provider-randox.webp";
+      return PROVIDER_LOGO_ASSETS.randox.src;
     }
 
     if (normalizedName.includes("london medical laboratory")) {
-      return "/lovable-uploads/provider-london-medical.webp";
+      return PROVIDER_LOGO_ASSETS["london-medical-laboratory"].src;
     }
 
     if (normalizedName.includes("lola")) {
-      return "/lovable-uploads/provider-lola-health.webp";
+      return PROVIDER_LOGO_ASSETS["lola-health"].src;
     }
 
     if (normalizedName.includes("clinilabs")) {
-      return "/lovable-uploads/provider-clinilabs.webp";
+      return PROVIDER_LOGO_ASSETS.clinilabs.src;
     }
 
     if (normalizedName.includes("london health")) {
-      return "/lovable-uploads/provider-london-health-company.webp";
+      return PROVIDER_LOGO_ASSETS["london-health-company"].src;
     }
 
     if (normalizedName.includes("medical diagnosis")) {
-      return "/lovable-uploads/provider-medical-diagnosis.webp";
+      return PROVIDER_LOGO_ASSETS["medical-diagnosis"].src;
     }
 
     return null;
