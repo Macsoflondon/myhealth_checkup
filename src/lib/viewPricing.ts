@@ -39,7 +39,9 @@ export interface ViewPricing {
   collection_fee_note: string | null;
   total_expected_cost: number | null;
   price_checked_at: string | null;
-  collection_route_pricing?: Partial<Record<"home_kit" | "clinic", RoutePricing>>;
+  collection_route_pricing?: Partial<
+    Record<"home_kit" | "clinic", RoutePricing>
+  >;
 }
 
 export type ViewPricingFields = Omit<ViewPricing, "id">;
@@ -70,16 +72,24 @@ export function toViewPricing(
 ): ViewPricing {
   const price = toNum(row.price);
   const selectedRoute = row.home_kit_available === true ? "home_kit" : "clinic";
-  const selectedFee = viewCollectionFee({
-    collection_fee_type: toFeeType(row.collection_fee_type),
-    collection_fee_amount: toNum(row.collection_fee_amount),
-  }) ?? 0;
-  const reviewFee = typeof row.clinical_review_type === "string" &&
-    !["optional", "not_included", "not_available"].includes(row.clinical_review_type)
-    ? toNum(row.clinical_review_fee) ?? 0 : 0;
+  const selectedFee =
+    viewCollectionFee({
+      collection_fee_type: toFeeType(row.collection_fee_type),
+      collection_fee_amount: toNum(row.collection_fee_amount),
+    }) ?? 0;
+  const reviewFee =
+    typeof row.clinical_review_type === "string" &&
+    !["optional", "not_included", "not_available"].includes(
+      row.clinical_review_type,
+    )
+      ? (toNum(row.clinical_review_fee) ?? 0)
+      : 0;
   const routes: ViewPricing["collection_route_pricing"] = {};
   for (const route of ["home_kit", "clinic"] as const) {
-    const available = route === "home_kit" ? row.home_kit_available : row.clinic_visit_available;
+    const available =
+      route === "home_kit"
+        ? row.home_kit_available
+        : row.clinic_visit_available;
     if (available !== true || price == null) continue;
     if (route === selectedRoute) {
       routes[route] = {
@@ -88,21 +98,38 @@ export function toViewPricing(
           collection_fee_type: toFeeType(row.collection_fee_type),
           collection_fee_amount: toNum(row.collection_fee_amount),
         }),
-        total: toNum(row.total_expected_cost) ?? price + selectedFee + reviewFee,
+        total:
+          toNum(row.total_expected_cost) ?? price + selectedFee + reviewFee,
       };
       continue;
     }
     // The view exposes its cheapest route only. Resolve an additional blood
     // route from the same public rules, never from stale scraper fee columns.
-    if (row.sample_type != null && !["venous", "finger_prick", "multiple"].includes(String(row.sample_type))) continue;
-    const providerRules = rules.filter((rule) => rule.provider_id === row.provider_id);
-    const rule = providerRules.find((entry) => entry.route === (route === "clinic" ? "clinic_only" : "home_kit"))
-      ?? providerRules.find((entry) => entry.route === "any");
+    if (
+      row.sample_type != null &&
+      !["venous", "finger_prick", "multiple"].includes(String(row.sample_type))
+    )
+      continue;
+    const providerRules = rules.filter(
+      (rule) => rule.provider_id === row.provider_id,
+    );
+    const rule =
+      providerRules.find(
+        (entry) =>
+          entry.route === (route === "clinic" ? "clinic_only" : "home_kit"),
+      ) ?? providerRules.find((entry) => entry.route === "any");
     if (!rule) continue;
-    const fee = viewCollectionFee({ collection_fee_type: rule.fee_type, collection_fee_amount: rule.fee_amount }) ?? 0;
+    const fee =
+      viewCollectionFee({
+        collection_fee_type: rule.fee_type,
+        collection_fee_amount: rule.fee_amount,
+      }) ?? 0;
     routes[route] = {
       fee,
-      feeLabel: viewFeeLabel({ collection_fee_type: rule.fee_type, collection_fee_amount: rule.fee_amount }),
+      feeLabel: viewFeeLabel({
+        collection_fee_type: rule.fee_type,
+        collection_fee_amount: rule.fee_amount,
+      }),
       total: Math.round((price + fee + reviewFee) * 100) / 100,
     };
   }
@@ -136,20 +163,36 @@ export async function fetchViewPricing(
       .select(VIEW_PRICING_COLUMNS)
       .in("id", chunk);
     if (error) throw error;
-    rawRows.push(...(data ?? []) as unknown as Record<string, unknown>[]);
+    rawRows.push(...((data ?? []) as unknown as Record<string, unknown>[]));
   }
-  const providers = Array.from(new Set(rawRows
-    .filter((row) => row.home_kit_available === true && row.clinic_visit_available === true)
-    .map((row) => String(row.provider_id))));
+  const providers = Array.from(
+    new Set(
+      rawRows
+        .filter(
+          (row) =>
+            row.home_kit_available === true &&
+            row.clinic_visit_available === true,
+        )
+        .map((row) => String(row.provider_id)),
+    ),
+  );
   const rules: CollectionFeeRule[] = [];
   if (providers.length > 0) {
-    const { data, error } = await supabase.from("provider_collection_fee_rules")
-      .select("provider_id, route, fee_type, fee_amount").in("provider_id", providers);
+    const { data, error } = await supabase
+      .from("provider_collection_fee_rules")
+      .select("provider_id, route, fee_type, fee_amount")
+      .in("provider_id", providers);
     if (error) throw error;
     for (const row of data ?? []) {
       const feeType = toFeeType(row.fee_type);
-      if (!feeType || !["any", "home_kit", "clinic_only"].includes(row.route)) continue;
-      rules.push({ provider_id: row.provider_id, route: row.route as CollectionFeeRule["route"], fee_type: feeType, fee_amount: toNum(row.fee_amount) });
+      if (!feeType || !["any", "home_kit", "clinic_only"].includes(row.route))
+        continue;
+      rules.push({
+        provider_id: row.provider_id,
+        route: row.route as CollectionFeeRule["route"],
+        fee_type: feeType,
+        fee_amount: toNum(row.fee_amount),
+      });
     }
   }
   for (const raw of rawRows) {
@@ -240,7 +283,8 @@ export function viewCollectionFee(p: {
   collection_fee_amount?: number | null;
 }): number | null {
   if (!p.collection_fee_type) return null;
-  if (p.collection_fee_type !== "fixed" && p.collection_fee_type !== "from") return 0;
+  if (p.collection_fee_type !== "fixed" && p.collection_fee_type !== "from")
+    return 0;
   return toNum(p.collection_fee_amount);
 }
 

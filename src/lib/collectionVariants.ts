@@ -9,7 +9,11 @@
  */
 
 import type { CollectionFeeType } from "@/lib/comparisonFormat";
-import { viewCollectionFee, viewFeeLabel, type RoutePricing } from "@/lib/viewPricing";
+import {
+  viewCollectionFee,
+  viewFeeLabel,
+  type RoutePricing,
+} from "@/lib/viewPricing";
 
 export type CollectionRoute =
   "home_kit" | "clinic" | "home_visit" | "venous" | "standard";
@@ -24,7 +28,9 @@ export interface CollectionVariantSource {
   clinic_visit_available?: boolean | null;
   /** View-derived total for its selected collection route. */
   total_expected_cost?: number | null;
-  collection_route_pricing?: Partial<Record<"home_kit" | "clinic", RoutePricing>>;
+  collection_route_pricing?: Partial<
+    Record<"home_kit" | "clinic", RoutePricing>
+  >;
   collection_fee_type?: CollectionFeeType | null;
   collection_fee_amount?: number | null;
   /** Home-nurse fee: the fee rules table has no home-nurse route, so this stays on provider_tests. */
@@ -125,30 +131,42 @@ export function deriveCollectionVariants(
   const clinicPricing = source.collection_route_pricing?.clinic;
 
   if (hasHomeKitRoute(source)) {
-    const kit = makeVariant(source, "home_kit", basePrice, kitPricing?.fee ?? selectedFee);
+    const kit = makeVariant(
+      source,
+      "home_kit",
+      basePrice,
+      kitPricing?.fee ?? selectedFee,
+    );
     kit.feeLabel = kitPricing?.feeLabel ?? selectedLabel;
     kit.total = kitPricing?.total ?? source.total_expected_cost ?? kit.total;
     variants.push(kit);
   }
 
-  const clinicFee = clinicPricing?.fee ?? (source.home_kit_available ? null : viewCollectionFee(source));
-  const clinicFeeLabel = clinicPricing?.feeLabel ?? (source.home_kit_available ? null : selectedLabel);
+  const clinicFee =
+    clinicPricing?.fee ??
+    (source.home_kit_available ? null : viewCollectionFee(source));
+  const clinicFeeLabel =
+    clinicPricing?.feeLabel ??
+    (source.home_kit_available ? null : selectedLabel);
   // A charge is not evidence of clinic availability. If an alternate route
   // lacks verified pricing, do not invent a free or postage-priced clinic.
-  const hasClinic = !!source.clinic_visit_available &&
+  const hasClinic =
+    !!source.clinic_visit_available &&
     (!source.home_kit_available || clinicPricing != null);
 
   const homeVisitFee = num(source.home_phlebotomy_cost);
   const hasHomeVisit =
     homeVisitFee != null &&
     homeVisitFee > 0 &&
-    (!!source.clinic_visit_available || (!source.home_kit_available && mentionsVenous(source.sample_type)));
+    (!!source.clinic_visit_available ||
+      (!source.home_kit_available && mentionsVenous(source.sample_type)));
 
   if (hasClinic && hasHomeVisit) {
     // Both professional-draw routes live on one listing, clinic priced first.
     const venous = makeVariant(source, "venous", basePrice, clinicFee ?? 0);
     venous.feeLabel = clinicFeeLabel;
-    venous.total = clinicPricing?.total ?? source.total_expected_cost ?? venous.total;
+    venous.total =
+      clinicPricing?.total ?? source.total_expected_cost ?? venous.total;
     venous.secondary = {
       route: "home_visit",
       label: ROUTE_LABELS.home_visit,
@@ -159,7 +177,8 @@ export function deriveCollectionVariants(
   } else if (hasClinic) {
     const clinic = makeVariant(source, "clinic", basePrice, clinicFee ?? 0);
     clinic.feeLabel = clinicFeeLabel;
-    clinic.total = clinicPricing?.total ?? source.total_expected_cost ?? clinic.total;
+    clinic.total =
+      clinicPricing?.total ?? source.total_expected_cost ?? clinic.total;
     variants.push(clinic);
   } else if (hasHomeVisit) {
     variants.push(makeVariant(source, "home_visit", basePrice, homeVisitFee));
