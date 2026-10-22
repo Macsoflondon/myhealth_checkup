@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Correct home-kit postage allocation and verify route-specific clinic pricing without database changes or publishing.
+- [x] Correct home-kit postage allocation and verify route-specific clinic pricing without database changes or publishing.
 
 - [x] Repair the Human Context Engine's case-sensitive OpenAI secret lookup with regression tests, preserving its provider, model and recommendations.
 - [ ] Activate and verify the Human Context Engine secret-name repair — blocked until this draft is accepted and the edge function is deployed from the main thread.
