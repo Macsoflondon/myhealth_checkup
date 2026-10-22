@@ -1,5 +1,5 @@
 import { lazy, Suspense, useState } from "react";
-import assistantMark from "@/assets/assistant/assistant-mark.png";
+import assistantMark from "@/assets/assistant/assistant-mark-96.webp";
 import { useLocation } from "@/lib/router-compat";
 import { cn } from "@/lib/utils";
 
@@ -56,7 +56,9 @@ export const SiteAssistant = () => {
         <button
           type="button"
           onClick={() => setOpen((o) => !o)}
-          aria-label={open ? "Close AI assistant chat" : "Open AI assistant chat"}
+          aria-label={
+            open ? "Close AI assistant chat" : "Open AI assistant chat"
+          }
           aria-expanded={open}
           className="flex size-14 shrink-0 items-center justify-center rounded-full border-2 border-brand-turquoise bg-white/90 shadow-md backdrop-blur-xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-turquoise focus-visible:ring-offset-2 sm:size-16"
         >
@@ -65,6 +67,10 @@ export const SiteAssistant = () => {
             alt=""
             width={36}
             height={36}
+            // Decorative launcher icon: low priority so React does not emit a
+            // <link rel="preload"> for it ahead of the stylesheet and hero.
+            fetchPriority="low"
+            decoding="async"
             className="size-9 sm:size-11"
           />
         </button>

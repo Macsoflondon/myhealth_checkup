@@ -41,9 +41,10 @@ const AccreditedProvidersBar = () => {
 
         {/* Editorial standards header */}
         <div className="flex flex-col items-center mt-0 mb-4 sm:mb-5">
-          <div className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-[#081129]/40 mb-2">
+          {/* h2 so the six standards below (h3) sit under a section heading. */}
+          <h2 className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-[#081129]/70 mb-2">
             Our clinical standards
-          </div>
+          </h2>
           <div className="w-8 h-[2px] bg-[#22c0d4]" />
         </div>
 

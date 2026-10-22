@@ -1,24 +1,6 @@
-// ported from main.tsx — brand typography, self-hosted via @fontsource.
-// Latin-only subsets: the default entry points ship cyrillic/vietnamese too,
-// which no page on the platform renders.
-import "@fontsource/montserrat/latin-400.css";
-import "@fontsource/montserrat/latin-500.css";
-import "@fontsource/montserrat/latin-600.css";
-import "@fontsource/montserrat/latin-700.css";
-import "@fontsource/montserrat/latin-800.css";
-import "@fontsource/dm-sans/latin-400.css";
-import "@fontsource/dm-sans/latin-500.css";
-import "@fontsource/dm-sans/latin-700.css";
-// Editorial + secondary faces, self-hosted so no render-blocking Google Fonts
-// stylesheet sits in front of first paint.
-import "@fontsource/eb-garamond/latin-400.css";
-import "@fontsource/eb-garamond/latin-500.css";
-import "@fontsource/eb-garamond/latin-600.css";
-import "@fontsource/eb-garamond/latin-400-italic.css";
-import "@fontsource/eb-garamond/latin-500-italic.css";
-import "@fontsource/lora/latin-400.css";
-import "@fontsource/lato/latin-400.css";
-import "@fontsource/lato/latin-700.css";
+// Brand typography is self-hosted via @fontsource and imported from
+// src/styles.css, so the @font-face rules ship inside the one render-blocking
+// stylesheet instead of a second CSS request.
 
 // ported from main.tsx — i18next initialisation (module-scope, side-effect import)
 import i18nInstance from "../i18n/config";
@@ -55,6 +37,7 @@ import { SiteAssistant } from "@/components/assistant/site-assistant";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { reportLovableError } from "@/lib/lovable-error-reporting";
 import { lazyWithRetry } from "@/lib/lazyWithRetry";
+import { loadCookiebot } from "@/lib/consent";
 
 const ORG_JSONLD = JSON.stringify({
   "@context": "https://schema.org",
@@ -137,6 +120,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         },
       ],
       links: [
+        // Warm the Cookiebot connections so the banner script, loaded after
+        // hydration, does not pay DNS and TLS set-up on top.
+        { rel: "preconnect", href: "https://consent.cookiebot.com" },
+        { rel: "preconnect", href: "https://consentcdn.cookiebot.com" },
         { rel: "stylesheet", href: appCss },
         { rel: "icon", type: "image/png", href: "/favicon.png" },
         { rel: "apple-touch-icon", href: "/favicon.png" },
@@ -154,15 +141,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         { rel: "dns-prefetch", href: "https://storage.googleapis.com" },
       ],
       scripts: [
-        // Cookiebot must be the first script in the document head so its
-        // auto-blocking mode can intercept every later script.
-        {
-          id: "Cookiebot",
-          src: "https://consent.cookiebot.com/uc.js",
-          "data-cbid": "8a435b14-6f4f-4015-93f4-f2ffe5d6f9ff",
-          "data-blockingmode": "auto",
-          type: "text/javascript",
-        },
+        // Cookiebot is not in the server-rendered head. RootShell loads
+        // it after hydration: see loadCookiebot() in src/lib/consent.ts.
         { type: "application/ld+json", children: ORG_JSONLD },
       ],
     }),
@@ -174,6 +154,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 );
 
 function RootShell({ children }: { children: React.ReactNode }) {
+  // Consent banner. Loaded here, after hydration, so uc.js cannot insert its
+  // dialog into <body> ahead of React's markup. The shell renders for every
+  // route, including the not-found and error pages.
+  useEffect(() => {
+    loadCookiebot();
+  }, []);
+
   return (
     <html lang="en-GB" suppressHydrationWarning>
       <head>

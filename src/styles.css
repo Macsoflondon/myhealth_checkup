@@ -1,5 +1,23 @@
-/* Montserrat + DM Sans loaded via @fontsource in main.tsx */
-/* Remote fonts (Lora, JetBrains Mono, EB Garamond) are loaded via <link> in src/routes/__root.tsx */
+/* Brand fonts, self-hosted via @fontsource. Latin-only subsets: the default
+   entry points also ship cyrillic/vietnamese, which no page renders. Imported
+   here rather than from JavaScript so the @font-face rules arrive in this one
+   render-blocking stylesheet instead of a second CSS request. */
+@import "@fontsource/montserrat/latin-400.css";
+@import "@fontsource/montserrat/latin-500.css";
+@import "@fontsource/montserrat/latin-600.css";
+@import "@fontsource/montserrat/latin-700.css";
+@import "@fontsource/montserrat/latin-800.css";
+@import "@fontsource/dm-sans/latin-400.css";
+@import "@fontsource/dm-sans/latin-500.css";
+@import "@fontsource/dm-sans/latin-700.css";
+@import "@fontsource/eb-garamond/latin-400.css";
+@import "@fontsource/eb-garamond/latin-500.css";
+@import "@fontsource/eb-garamond/latin-600.css";
+@import "@fontsource/eb-garamond/latin-400-italic.css";
+@import "@fontsource/eb-garamond/latin-500-italic.css";
+@import "@fontsource/lora/latin-400.css";
+@import "@fontsource/lato/latin-400.css";
+@import "@fontsource/lato/latin-700.css";
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));

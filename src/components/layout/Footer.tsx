@@ -148,7 +148,7 @@ const StayInformedSection = () => {
               Company No. 16589056. All rights reserved.
             </p>
             <p className="text-[10px] sm:text-[11px] text-white/78 leading-snug text-center break-words">
-              <span className="text-brand-pink font-semibold">
+              <span className="text-brand-pink-on-dark font-semibold">
                 Medical disclaimer:
               </span>{" "}
               This site provides comparison information only and does not
@@ -214,7 +214,7 @@ const StayInformedSection = () => {
               <button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="bg-brand-turquoise hover:bg-brand-pink disabled:opacity-60 text-white font-heading font-extrabold text-xs uppercase tracking-[0.1em] px-4 py-2.5 rounded-lg transition-colors duration-200"
+                className="bg-brand-turquoise hover:bg-brand-pink disabled:opacity-60 text-brand-navy hover:text-white font-heading font-extrabold text-xs uppercase tracking-[0.1em] px-4 py-2.5 rounded-lg transition-colors duration-200"
               >
                 {loading ? "Subscribing…" : "Subscribe"}
               </button>
@@ -242,7 +242,7 @@ const StayInformedSection = () => {
             </div>
             <p className="font-heading font-bold text-xs sm:text-sm md:text-base text-white">
               Your <span className="text-brand-turquoise">health.</span> Your{" "}
-              <span className="text-brand-pink">choice.</span> One{" "}
+              <span className="text-brand-pink-on-dark">choice.</span> One{" "}
               <span className="text-white">trusted</span> platform.
             </p>
           </div>

@@ -21,14 +21,10 @@ import {
   PromptInputTextarea,
   type PromptInputMessage,
 } from "@/components/ai-elements/prompt-input";
-import {
-  Tool,
-  ToolContent,
-  ToolHeader,
-} from "@/components/ai-elements/tool";
+import { Tool, ToolContent, ToolHeader } from "@/components/ai-elements/tool";
 import { Shimmer } from "@/components/ai-elements/shimmer";
 import { Button } from "@/components/ui/button";
-import assistantMark from "@/assets/assistant/assistant-mark.png";
+import assistantMark from "@/assets/assistant/assistant-mark-96.webp";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
 
@@ -79,7 +75,10 @@ function parseCatalogueOutput(output: unknown): CatalogueTest[] | null {
   if (!Array.isArray(tests)) return null;
   return tests.flatMap((t) => {
     if (typeof t !== "object" || t === null) return [];
-    const { name, provider, totalExpectedCostGbp } = t as Record<string, unknown>;
+    const { name, provider, totalExpectedCostGbp } = t as Record<
+      string,
+      unknown
+    >;
     return typeof name === "string" &&
       typeof provider === "string" &&
       typeof totalExpectedCostGbp === "number"
@@ -105,7 +104,9 @@ const CatalogueSearchResult = ({ output }: { output: unknown }) => {
             <span className="font-medium">{t.name}</span>
             <span className="text-brand-navy/60"> · {t.provider}</span>
           </span>
-          <span className="shrink-0 font-semibold">£{t.totalExpectedCostGbp.toFixed(2)}</span>
+          <span className="shrink-0 font-semibold">
+            £{t.totalExpectedCostGbp.toFixed(2)}
+          </span>
         </li>
       ))}
     </ul>
@@ -294,4 +295,3 @@ export const ChatPanel = ({ onClose }: { onClose: () => void }) => {
     </div>
   );
 };
-

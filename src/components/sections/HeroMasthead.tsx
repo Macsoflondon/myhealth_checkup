@@ -12,6 +12,8 @@ export default function HeroMasthead({
 }) {
   const [i, setI] = useState(0);
   const activeIndex = i % SLIDES.length;
+  // Highest slide index shown so far; slides beyond the next one stay unmounted.
+  const slidesReached = Math.min(i, SLIDES.length - 1);
   const firstSlideRef = useRef<HTMLImageElement>(null);
   const [firstLoaded, setFirstLoaded] = useState(false);
   useEffect(() => {
@@ -87,6 +89,11 @@ export default function HeroMasthead({
           // Slides 2..n only mount once the browser is idle after first paint,
           // so they never compete with the LCP image for bandwidth.
           if (n > 0 && !deferredMounted) return null;
+          // Photos load one step ahead of the rotation: the next slide's photo
+          // now, each later one when its predecessor shows. Every slide sits in
+          // the viewport, so loading="lazy" alone would fetch all of them at
+          // once, alongside the first-screen requests.
+          const photoMounted = n <= slidesReached + 1;
 
           const active = n === activeIndex;
           const commonStyle = {
@@ -133,27 +140,37 @@ export default function HeroMasthead({
               data-testid={`hero-slide-${n + 1}`}
               data-active={active}
             >
-              <picture>
-                {s.mobileAvifSrcSet ? (
+              {photoMounted ? (
+                <picture>
+                  {s.mobileAvifSrcSet ? (
+                    <source
+                      media="(max-width: 639px)"
+                      type="image/avif"
+                      srcSet={s.mobileAvifSrcSet}
+                      sizes="100vw"
+                    />
+                  ) : null}
+                  {s.mobileWebpSrcSet ? (
+                    <source
+                      media="(max-width: 639px)"
+                      type="image/webp"
+                      srcSet={s.mobileWebpSrcSet}
+                      sizes="100vw"
+                    />
+                  ) : null}
                   <source
-                    media="(max-width: 639px)"
                     type="image/avif"
-                    srcSet={s.mobileAvifSrcSet}
+                    srcSet={s.avifSrcSet}
                     sizes="100vw"
                   />
-                ) : null}
-                {s.mobileWebpSrcSet ? (
                   <source
-                    media="(max-width: 639px)"
                     type="image/webp"
-                    srcSet={s.mobileWebpSrcSet}
+                    srcSet={s.webpSrcSet}
                     sizes="100vw"
                   />
-                ) : null}
-                <source type="image/avif" srcSet={s.avifSrcSet} sizes="100vw" />
-                <source type="image/webp" srcSet={s.webpSrcSet} sizes="100vw" />
-                {img}
-              </picture>
+                  {img}
+                </picture>
+              ) : null}
 
               {s.headline ? (
                 <div
