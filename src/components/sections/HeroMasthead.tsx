@@ -84,6 +84,10 @@ export default function HeroMasthead() {
 
         <div
           className="absolute inset-0"
+          style={{
+            ["--copy-width-t" as string]: HERO_COPY.copyWidthTablet,
+            ["--copy-width-d" as string]: HERO_COPY.copyWidthDesktop,
+          }}
           data-testid="hero-slide-1"
           data-active="true"
         >
