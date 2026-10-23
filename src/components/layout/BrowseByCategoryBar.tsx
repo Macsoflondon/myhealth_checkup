@@ -346,13 +346,13 @@ export default function BrowseByCategoryBar({
             <div className="flex flex-col min-w-0 pr-14">
               <Link
                 to="/"
-                className="flex items-center no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] leading-none whitespace-nowrap text-[clamp(36px,7.6vw,108px)] py-1 md:py-2"
+                className="flex items-center no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] leading-none whitespace-nowrap text-[clamp(24px,7.4vw,108px)] py-1 md:py-2"
               >
                 <BrandWordmark />
               </Link>
               {placement === "hero" && (
                 <p className="m-0 mt-1 md:mt-2 text-left">
-                  <span className="block font-[Montserrat] font-bold text-[clamp(14px,3.4vw,28px)] uppercase tracking-[0.14em] sm:tracking-[0.22em] leading-snug">
+                  <span className="block font-[Montserrat] font-bold text-[clamp(11px,3.3vw,28px)] uppercase tracking-[0.12em] sm:tracking-[0.22em] leading-snug">
                     <span className="transition-colors duration-300 ease-out text-[#081129]">
                       Your{" "}
                     </span>
