@@ -32,6 +32,8 @@ export default function HeroMasthead() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+    video.muted = true;
+    video.defaultMuted = true;
     video.playbackRate = HERO_PLAYBACK_RATE;
     if (reducedMotion) {
       video.pause();
@@ -43,6 +45,11 @@ export default function HeroMasthead() {
     const resume = () => {
       void video.play().catch(() => undefined);
     };
+    const onPlaying = () => {
+      video.playbackRate = HERO_PLAYBACK_RATE;
+    };
+    video.addEventListener("playing", onPlaying);
+    video.addEventListener("canplay", resume);
     const onPause = () => {
       if (!video.ended) resume();
     };
@@ -51,6 +58,8 @@ export default function HeroMasthead() {
     resume();
     return () => {
       video.removeEventListener("pause", onPause);
+      video.removeEventListener("playing", onPlaying);
+      video.removeEventListener("canplay", resume);
       document.removeEventListener("visibilitychange", resume);
     };
   }, [reducedMotion]);
@@ -82,7 +91,7 @@ export default function HeroMasthead() {
       {/* White breathing space between the pink brand-bar line and the video */}
       <div
         aria-hidden
-        className="order-2 -mx-3 sm:-mx-6 md:mx-0 h-4 sm:h-5 bg-white"
+        className="order-2 -mx-3 sm:-mx-6 md:mx-0 h-0 bg-white"
       />
 
       <div className="relative overflow-hidden mt-0 -mx-3 sm:-mx-6 md:mx-0 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-20 md:rounded-2xl md:border md:border-[rgba(34,192,212,0.35)] md:shadow-[0_0_0_1px_rgba(34,192,212,0.20),0_8px_28px_rgba(34,192,212,0.18)]">

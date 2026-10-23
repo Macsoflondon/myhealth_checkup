@@ -113,7 +113,7 @@ export function CategoryPillDropdown({
         aria-expanded={hasDropdown ? open : undefined}
         className={`group inline-flex items-center rounded-full no-underline transition-colors duration-200 shrink-0 ${
           dense
-            ? "gap-1 px-1 py-2"
+            ? "gap-1 px-1 py-2 2xl:px-2"
             : "gap-0.5 px-1 py-2 2xl:gap-1 2xl:px-2 2xl:py-2.5"
         } ${compact ? "sm:py-2.5" : "sm:py-2.5"} ${
           highlighted ? "" : "hover:bg-brand-pink/10"
@@ -138,7 +138,7 @@ export function CategoryPillDropdown({
             highlighted ? "font-bold" : "font-bold"
           } ${
             dense
-              ? "text-[13px] xl:text-[14px] tracking-[-0.01em]"
+              ? "text-[13px] xl:text-[14px] 2xl:text-[16px] tracking-[-0.01em]"
               : "text-xs sm:text-[12px] tracking-[-0.02em] 2xl:text-sm 2xl:tracking-normal"
           }`}
 
