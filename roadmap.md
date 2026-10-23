@@ -1,5 +1,8 @@
 # Roadmap
 
+- [x] Make the homepage hero video clickable through to myhealthcheckup.co.uk; verified at five phone sizes and desktop.
+- [ ] Update the hero e2e spec's stale wordmark/headline thresholds — the project's Playwright runner also cannot launch here (its browser build is missing libglib-2.0.so.0).
+
 - [x] Inspect and save the two supplied replacement logos in the video reference collection.
 - [x] Replace the old transparent video reference logo with the owner's chosen turquoise checkup version; preserve original files.
 
