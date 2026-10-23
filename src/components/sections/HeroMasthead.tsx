@@ -37,8 +37,22 @@ export default function HeroMasthead() {
       video.pause();
       return;
     }
-    // Autoplay can be rejected (e.g. low-power mode); the poster stays visible.
-    void video.play().catch(() => undefined);
+    // Keep the loop running no matter what: browsers can pause background
+    // video on scroll, tab visibility changes or power saving, so any pause
+    // that we did not ask for is immediately reversed.
+    const resume = () => {
+      void video.play().catch(() => undefined);
+    };
+    const onPause = () => {
+      if (!video.ended) resume();
+    };
+    video.addEventListener("pause", onPause);
+    document.addEventListener("visibilitychange", resume);
+    resume();
+    return () => {
+      video.removeEventListener("pause", onPause);
+      document.removeEventListener("visibilitychange", resume);
+    };
   }, [reducedMotion]);
 
   const mobilePlacement =
@@ -100,7 +114,7 @@ export default function HeroMasthead() {
             loop
             playsInline
             autoPlay={!reducedMotion}
-            preload="metadata"
+            preload="auto"
             aria-label={HERO_COPY.alt}
           >
             <source src={heroVideoWebm.url} type="video/webm" />
