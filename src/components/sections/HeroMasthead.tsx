@@ -123,7 +123,7 @@ export default function HeroMasthead() {
           >
             <video
               ref={videoRef}
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolute inset-0 h-full w-full object-cover object-[80%_center] sm:object-center"
               poster={HERO_POSTER_SRC}
               muted
               loop
