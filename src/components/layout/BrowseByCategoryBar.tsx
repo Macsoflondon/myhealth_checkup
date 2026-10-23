@@ -356,9 +356,9 @@ export default function BrowseByCategoryBar({
                     <span className="transition-colors duration-300 ease-out text-[#081129]">
                       Your{" "}
                     </span>
-                    {/* Small tagline text: the darker turquoise from the brand
-                        health scale meets 4.5:1 on white; #22c0d4 is 2.2:1. */}
-                    <span className="text-health-700">health.</span>
+                    {/* Slogan "health." in brand turquoise (#22c0d4) — the
+                        same token the footer and logo mark use. */}
+                    <span className="text-brand-turquoise">health.</span>
                     <span className="transition-colors duration-300 ease-out text-[#081129]">
                       {" "}
                       Your{" "}
