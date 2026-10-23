@@ -36,13 +36,20 @@ const CANCER_TYPE_COLORS: Record<string, string> = {
     "bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300",
 };
 
-function testIncludesBiomarker(
+/**
+ * Whether a test includes a given cancer biomarker. Checks only the test's
+ * real `biomarkersList` — a test name or marketing description mentioning a
+ * biomarker's name is not evidence the test actually measures it, and a
+ * false "included" claim here is exactly the kind of unbacked claim this
+ * audit's card contract rules out, doubly so on a cancer-screening page.
+ * A test with no real biomarkers list (`null`) can never show as included.
+ */
+export function testIncludesBiomarker(
   test: EnhancedTestData,
   biomarker: CancerBiomarker,
 ): boolean {
+  if (!test.biomarkersList || test.biomarkersList.length === 0) return false;
   const biomarkersList = test.biomarkersList.map((b) => b.toLowerCase());
-  const testName = test.testName.toLowerCase();
-  const description = test.description.toLowerCase();
 
   const searchTerms = [
     biomarker.name.toLowerCase(),
@@ -50,12 +57,7 @@ function testIncludesBiomarker(
     ...biomarker.name.toLowerCase().split(" "),
   ];
 
-  return searchTerms.some(
-    (term) =>
-      biomarkersList.some((b) => b.includes(term)) ||
-      testName.includes(term) ||
-      description.includes(term),
-  );
+  return searchTerms.some((term) => biomarkersList.some((b) => b.includes(term)));
 }
 
 export function CancerBiomarkerGroup({

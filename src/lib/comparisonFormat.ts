@@ -124,15 +124,20 @@ export function formatClinicalReview(
 /**
  * Total Expected Cost = base price + mandatory collection fee
  * (Optional clinician review is *not* added — it's opt-in.)
+ *
+ * A null `basePrice` means the real price isn't known — returning null here
+ * (rather than treating it as £0 and silently adding fees on top) is what
+ * lets a caller show "POA"/"Not stated" instead of a fabricated total.
  */
 export function computeTotalExpectedCost(
-  basePrice: number,
+  basePrice: number | null,
   collectionFeeType: CollectionFeeType | null | undefined,
   collectionFeeAmount: number | null | undefined,
   clinicalReviewType?: ClinicalReviewType | null,
   clinicalReviewFee?: number | null,
-): number {
-  let total = basePrice || 0;
+): number | null {
+  if (basePrice == null) return null;
+  let total = basePrice;
   if (collectionFeeType === "fixed" && collectionFeeAmount)
     total += collectionFeeAmount;
   // 'from' is a minimum — include it as the conservative estimate

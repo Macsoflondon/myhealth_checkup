@@ -469,13 +469,16 @@ export const ProviderComparisonTable: React.FC<
               index={4}
               slots={slots}
               render={(t) => {
-                const total = computeTotalExpectedCost(
-                  t.price,
-                  t.collectionFeeType,
-                  t.collectionFeeAmount,
-                  t.clinicalReviewType,
-                  t.clinicalReviewFee,
-                );
+                // t.price is always a real number here, so this never
+                // actually falls back — the `?? t.price` is type narrowing.
+                const total =
+                  computeTotalExpectedCost(
+                    t.price,
+                    t.collectionFeeType,
+                    t.collectionFeeAmount,
+                    t.clinicalReviewType,
+                    t.clinicalReviewFee,
+                  ) ?? t.price;
                 return (
                   <span style={{ color: NAVY, fontWeight: 800, fontSize: 16 }}>
                     {formatPrice(total)}

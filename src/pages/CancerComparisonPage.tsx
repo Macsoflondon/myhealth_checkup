@@ -46,6 +46,7 @@ import {
 } from "@/constants/providers";
 import { EnhancedTestData } from "@/types/comparison";
 import PageBanner from "@/components/sections/PageBanner";
+import { getTestDetailUrl } from "@/utils/providerRoutes";
 
 const CANCER_TYPE_ICONS: Record<string, React.ElementType> = {
   all: Shield,
@@ -319,11 +320,18 @@ export default function CancerComparisonPage() {
                               className="h-6 object-contain"
                             />
                             <Badge variant="secondary">
-                              £{test.basePrice.toFixed(2)}
+                              {test.basePrice != null
+                                ? `£${test.basePrice.toFixed(2)}`
+                                : "POA"}
                             </Badge>
                           </div>
                           <CardTitle className="text-base line-clamp-2">
-                            {test.testName}
+                            <Link
+                              to={getTestDetailUrl(test.providerId, test.id)}
+                              className="hover:underline"
+                            >
+                              {test.testName}
+                            </Link>
                           </CardTitle>
                           <CardDescription className="line-clamp-2">
                             {test.description}
@@ -332,11 +340,14 @@ export default function CancerComparisonPage() {
                         <CardContent>
                           <div className="flex flex-wrap gap-2 mb-4 text-xs">
                             <Badge variant="outline">
-                              {test.biomarkerCount} biomarkers
+                              {test.biomarkerCount != null
+                                ? `${test.biomarkerCount} biomarkers`
+                                : "Biomarkers not stated"}
                             </Badge>
                             <Badge variant="outline">
-                              {test.turnaroundDays} day
-                              {test.turnaroundDays !== 1 ? "s" : ""}
+                              {test.turnaroundDays != null
+                                ? `${test.turnaroundDays} day${test.turnaroundDays !== 1 ? "s" : ""}`
+                                : "Turnaround not stated"}
                             </Badge>
                             {test.gpConsultationIncluded && (
                               <Badge className="bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">
@@ -368,13 +379,24 @@ export default function CancerComparisonPage() {
                                 </>
                               )}
                             </Button>
+                            <Button variant="outline" size="sm" asChild>
+                              <Link
+                                to={getTestDetailUrl(test.providerId, test.id)}
+                              >
+                                View details
+                              </Link>
+                            </Button>
                             {test.url && (
                               <Button
                                 variant="default"
                                 size="sm"
+                                aria-label={`Book ${test.testName} on ${test.provider}'s website (opens in a new tab)`}
                                 onClick={() => handleBookTest(test)}
                               >
                                 <ExternalLink className="h-4 w-4" />
+                                <span className="sr-only sm:not-sr-only sm:ml-1">
+                                  Book
+                                </span>
                               </Button>
                             )}
                           </div>

@@ -17,8 +17,8 @@ export interface EnhancedTestData {
   providerLogo: string;
   category: string;
 
-  // Pricing
-  basePrice: number;
+  // Pricing — null means the real price is not known; never coerce to 0
+  basePrice: number | null;
   gpConsultationIncluded: boolean;
   gpConsultationCost: number | null;
   phlebotomyIncluded: boolean;
@@ -26,11 +26,11 @@ export interface EnhancedTestData {
   totalEstimatedCost: number;
 
   // Features — legacy (kept for back-compat)
-  turnaroundDays: number;
+  turnaroundDays: number | null;
   sampleType:
     SampleType | "finger-prick" | "venous" | "urine" | "saliva" | "multiple";
-  homeKitAvailable: boolean;
-  clinicVisitAvailable: boolean;
+  homeKitAvailable: boolean | null;
+  clinicVisitAvailable: boolean | null;
 
   // Standardised comparison fields
   sampleTypeCode: SampleType | null;
@@ -39,11 +39,12 @@ export interface EnhancedTestData {
   collectionFeeAmount: number | null;
   clinicalReviewType: ClinicalReviewType | null;
   clinicalReviewFee: number | null;
-  totalExpectedCost: number;
+  totalExpectedCost: number | null;
 
-  // Biomarkers
-  biomarkerCount: number;
-  biomarkersList: string[];
+  // Biomarkers — null means no real list/count is known; never inferred
+  // from free-text keyword matching
+  biomarkerCount: number | null;
+  biomarkersList: string[] | null;
 
   // Quality
   accreditations: string[];
