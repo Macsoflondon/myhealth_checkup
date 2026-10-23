@@ -78,6 +78,8 @@ export default function HeroMasthead() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !videoAllowed) return;
+    video.muted = true;
+    video.defaultMuted = true;
     video.playbackRate = HERO_PLAYBACK_RATE;
     if (reducedMotion) {
       video.pause();
@@ -89,6 +91,11 @@ export default function HeroMasthead() {
     const resume = () => {
       void video.play().catch(() => undefined);
     };
+    const onPlaying = () => {
+      video.playbackRate = HERO_PLAYBACK_RATE;
+    };
+    video.addEventListener("playing", onPlaying);
+    video.addEventListener("canplay", resume);
     const onPause = () => {
       if (!video.ended) resume();
     };
@@ -97,6 +104,8 @@ export default function HeroMasthead() {
     resume();
     return () => {
       video.removeEventListener("pause", onPause);
+      video.removeEventListener("playing", onPlaying);
+      video.removeEventListener("canplay", resume);
       document.removeEventListener("visibilitychange", resume);
     };
   }, [reducedMotion, videoAllowed]);
@@ -128,7 +137,7 @@ export default function HeroMasthead() {
       {/* White breathing space between the pink brand-bar line and the video */}
       <div
         aria-hidden
-        className="order-2 -mx-3 sm:-mx-6 md:mx-0 h-4 sm:h-5 bg-white"
+        className="order-2 -mx-3 sm:-mx-6 md:mx-0 h-0 bg-white"
       />
 
       <div className="relative overflow-hidden mt-0 -mx-3 sm:-mx-6 md:mx-0 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-20 md:rounded-2xl md:border md:border-[rgba(34,192,212,0.35)] md:shadow-[0_0_0_1px_rgba(34,192,212,0.20),0_8px_28px_rgba(34,192,212,0.18)]">
@@ -152,52 +161,59 @@ export default function HeroMasthead() {
           data-testid="hero-slide-1"
           data-active="true"
         >
-          {/* Hero photo: visible from first paint and the LCP element. The
-              route head preloads the matching AVIF candidate. */}
-          <picture>
-            <source
-              type="image/avif"
-              srcSet={FIRST_SLIDE_AVIF_SRCSET}
-              sizes="100vw"
-            />
-            <source
-              type="image/webp"
-              srcSet={HERO_POSTER_WEBP_SRCSET}
-              sizes="100vw"
-            />
-            <img
-              ref={posterRef}
-              src={HERO_POSTER_SRC}
-              alt={HERO_COPY.alt}
-              width={1920}
-              height={1080}
-              sizes="100vw"
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-              onLoad={() => setPosterLoaded(true)}
-              className="hero-slide absolute inset-0 h-full w-full object-cover"
-            />
-          </picture>
-          {videoAllowed && (
-            <video
-              ref={videoRef}
-              className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${videoPlaying ? "opacity-100" : "opacity-0"}`}
-              muted
-              loop
-              playsInline
-              autoPlay
-              preload="auto"
-              aria-hidden
-              onPlaying={() => setVideoPlaying(true)}
-            >
-              <source src={heroVideoWebm.url} type="video/webm" />
-              <source src={heroVideoMp4.url} type="video/mp4" />
-            </video>
-          )}
+          {/* The whole video area links to the live site. */}
+          <a
+            href="https://myhealthcheckup.co.uk"
+            aria-label="myhealth checkup — visit myhealthcheckup.co.uk"
+            className="hero-slide absolute inset-0 block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-turquoise"
+          >
+            {/* Hero photo: visible from first paint and the LCP element. The
+                route head preloads the matching AVIF candidate. */}
+            <picture>
+              <source
+                type="image/avif"
+                srcSet={FIRST_SLIDE_AVIF_SRCSET}
+                sizes="100vw"
+              />
+              <source
+                type="image/webp"
+                srcSet={HERO_POSTER_WEBP_SRCSET}
+                sizes="100vw"
+              />
+              <img
+                ref={posterRef}
+                src={HERO_POSTER_SRC}
+                alt={HERO_COPY.alt}
+                width={1920}
+                height={1080}
+                sizes="100vw"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                onLoad={() => setPosterLoaded(true)}
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            </picture>
+            {videoAllowed && (
+              <video
+                ref={videoRef}
+                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${videoPlaying ? "opacity-100" : "opacity-0"}`}
+                muted
+                loop
+                playsInline
+                autoPlay
+                preload="auto"
+                aria-hidden
+                onPlaying={() => setVideoPlaying(true)}
+              >
+                <source src={heroVideoWebm.url} type="video/webm" />
+                <source src={heroVideoMp4.url} type="video/mp4" />
+              </video>
+            )}
+          </a>
 
           <div
-            className={`absolute inset-0 z-10 flex px-5 sm:items-center sm:px-10 sm:pb-0 sm:pt-0 md:px-12 lg:px-16 xl:px-20 ${mobilePlacement} ${desktopGradient} ${HERO_COPY.align === "right" ? "justify-end text-right" : "justify-start text-left"}`}
+            className={`pointer-events-none absolute inset-0 z-10 flex px-5 sm:items-center sm:px-10 sm:pb-0 sm:pt-0 md:px-12 lg:px-16 xl:px-20 ${mobilePlacement} ${desktopGradient} ${HERO_COPY.align === "right" ? "justify-end text-right" : "justify-start text-left"}`}
           >
             <div className="@container w-full max-w-4xl text-primary-foreground sm:w-[var(--copy-width-t)] sm:min-w-[19rem] lg:w-[var(--copy-width-d)]">
               {HERO_COPY.eyebrow ? (
@@ -236,7 +252,7 @@ export default function HeroMasthead() {
           </div>
         </div>
 
-        <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
         {/* Turquoise section dividers — inside the rounded stage so they stop at the curve */}
         <div className="absolute top-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#22c0d4]" />
