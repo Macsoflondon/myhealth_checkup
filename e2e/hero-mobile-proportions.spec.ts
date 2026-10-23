@@ -93,7 +93,7 @@ for (const bp of BREAKPOINTS) {
     test("Hero image wrapper occupies a healthy share of viewport", async ({
       page,
     }) => {
-      const slide = page.locator("img.hero-slide").first();
+      const slide = page.locator(".hero-slide").first();
       await expect(slide).toBeVisible();
       const box = await slide.boundingBox();
       expect(box).not.toBeNull();
