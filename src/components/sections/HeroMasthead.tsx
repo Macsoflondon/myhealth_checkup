@@ -9,7 +9,8 @@ import {
   HERO_POSTER_WEBP_SRCSET,
   FIRST_SLIDE_LQIP,
 } from "@/components/sections/hero-slides";
-import heroVideo from "@/assets/hero/hero-video.mp4.asset.json";
+import heroVideoMp4 from "@/assets/hero/hero-video.mp4.asset.json";
+import heroVideoWebm from "@/assets/hero/hero-video.webm.asset.json";
 
 /** The ad runs at half speed so the loop feels calm behind the copy. */
 const HERO_PLAYBACK_RATE = 0.5;
@@ -94,7 +95,6 @@ export default function HeroMasthead() {
           <video
             ref={videoRef}
             className="hero-slide absolute inset-0 h-full w-full object-cover"
-            src={heroVideo.url}
             poster={HERO_POSTER_SRC}
             muted
             loop
@@ -102,7 +102,10 @@ export default function HeroMasthead() {
             autoPlay={!reducedMotion}
             preload="metadata"
             aria-label={HERO_COPY.alt}
-          />
+          >
+            <source src={heroVideoWebm.url} type="video/webm" />
+            <source src={heroVideoMp4.url} type="video/mp4" />
+          </video>
           {/* Invisible poster img: warms the LCP candidate and flips the
               placeholder off once it is cached. */}
           <img
