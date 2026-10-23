@@ -20,6 +20,8 @@ export interface LiveTestRow {
   description: string | null;
   is_active: boolean | null;
   url: string | null;
+  /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
+  url_verified?: boolean | null;
   /** Authoritative stored biomarker total (provider_tests.biomarker_count). */
   biomarker_count?: number | null;
   biomarkers_list?: unknown;
@@ -150,6 +152,7 @@ export class TestDataTransformer {
       turnaroundDays: this.resolveTurnaroundDays(test),
       userRating: undefined,
       url: test.url || undefined,
+      url_verified: test.url_verified ?? null,
       collectionFeeType: toCollectionFeeType(test.collection_fee_type),
       collectionFeeAmount:
         typeof test.collection_fee_amount === "number"

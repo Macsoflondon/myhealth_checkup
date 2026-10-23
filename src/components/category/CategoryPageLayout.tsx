@@ -37,6 +37,8 @@ export interface CategoryTestItem {
   tag: string;
   collection?: string;
   url?: string;
+  /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
+  url_verified?: boolean | null;
   /** Provider product-packaging image */
   imageUrl?: string;
   collectionOptions?: unknown;

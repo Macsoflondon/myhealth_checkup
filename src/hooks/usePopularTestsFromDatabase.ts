@@ -207,6 +207,8 @@ export interface PopularTest {
   turnaround_time: string;
   sample_type: string;
   url: string;
+  /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
+  url_verified?: boolean | null;
   popularity_rank?: number;
   markers?: string[];
   description?: string;
@@ -269,10 +271,10 @@ function parseMarkers(raw: unknown): string[] {
  */
 /** Columns needed to rank and render a card, minus the heavy prose fields. */
 const LEAN_POOL_COLUMNS =
-  "id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, image_url, turnaround_days_text, base_price, home_phlebotomy_cost, is_popular, is_addon";
+  "id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, url_verified, biomarker_count, popularity_rank, image_url, turnaround_days_text, base_price, home_phlebotomy_cost, is_popular, is_addon";
 
 const FULL_POOL_COLUMNS =
-  "id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, popularity_rank, biomarkers_list, description, image_url, turnaround_days_text, base_price, collection_options, home_phlebotomy_cost, is_popular, is_addon";
+  "id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, url_verified, biomarker_count, popularity_rank, biomarkers_list, description, image_url, turnaround_days_text, base_price, collection_options, home_phlebotomy_cost, is_popular, is_addon";
 
 interface PoolRow {
   id: string;
@@ -284,6 +286,7 @@ interface PoolRow {
   collection_method: string | null;
   measurement_type: string | null;
   url: string | null;
+  url_verified?: boolean | null;
   biomarker_count: number | null;
   popularity_rank: number | null;
   biomarkers_list?: unknown;
@@ -359,6 +362,7 @@ export const usePopularTestsFromDatabase = (
           collection_method: (test as any).collection_method || undefined,
           measurement_type: (test as any).measurement_type || undefined,
           url: test.url || "",
+          url_verified: (test as any).url_verified ?? null,
           popularity_rank: test.popularity_rank || undefined,
           markers: parseMarkers(test.biomarkers_list),
           description: test.description || undefined,
@@ -381,7 +385,7 @@ export const usePopularTestsFromDatabase = (
       const { data, error } = await supabase
         .from("provider_tests")
         .select(
-          "id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, biomarker_count, biomarkers_list, description, turnaround_days_text",
+          "id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, url_verified, biomarker_count, biomarkers_list, description, turnaround_days_text",
         )
         .eq("is_active", true)
         .not("price", "is", null)
@@ -427,6 +431,7 @@ export const usePopularTestsFromDatabase = (
             collection_method: (test as any).collection_method || undefined,
             measurement_type: (test as any).measurement_type || undefined,
             url: test.url || "",
+            url_verified: (test as any).url_verified ?? null,
             markers: parseMarkers(test.biomarkers_list),
             description: test.description || undefined,
           });

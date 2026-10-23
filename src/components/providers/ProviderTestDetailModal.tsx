@@ -21,6 +21,7 @@ import { formatTestPrice } from "@/lib/utils";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import { compareResultsPath } from "@/lib/compareUrl";
 import type { CompareTestData } from "@/types";
+import { canBookDirect } from "@/lib/booking-link-state";
 import { getProviderLogo } from "@/constants/providers";
 import { resolveAccreditationsFromRow } from "@/lib/resolve-test-fields";
 import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
@@ -353,6 +354,7 @@ export default function ProviderTestDetailModal({
       providerLogo: "",
       biomarkerCount: displayedBiomarkerCount,
       url: test.url || undefined,
+      url_verified: test.url_verified ?? null,
     };
     if (inCompare) {
       compareStore.remove(test.id);
@@ -591,7 +593,7 @@ export default function ProviderTestDetailModal({
               )}
             </Button>
 
-            {test.url ? (
+            {canBookDirect(test.url, test.url_verified) ? (
               <Button
                 asChild
                 className="flex-1 h-14 text-base font-semibold rounded-full bg-[#e70d69] hover:bg-[#22c0d4] text-white transition-colors duration-300 shadow-md"
@@ -608,7 +610,7 @@ export default function ProviderTestDetailModal({
                 </a>
               </Button>
             ) : null}
-            {test.url ? (
+            {canBookDirect(test.url, test.url_verified) ? (
               <AffiliateCommissionNote className="basis-full text-center" />
             ) : (
               <Button
@@ -620,7 +622,7 @@ export default function ProviderTestDetailModal({
             )}
           </div>
 
-          {test.url && (
+          {canBookDirect(test.url, test.url_verified) && (
             <p className="text-center text-xs text-[#081129]/50">
               You'll be taken to {providerName}'s website to complete your
               booking.
