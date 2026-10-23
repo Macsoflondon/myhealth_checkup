@@ -603,7 +603,7 @@ export default function BrowseByCategoryBar({
               >
                 <div
                   ref={stripRef}
-                  className={`flex min-w-0 items-center gap-y-0 flex-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${placement === "hero" ? "flex-none justify-center overflow-visible gap-x-1 xl:gap-x-2 2xl:gap-x-4" : `flex-1 justify-start overflow-x-auto ${useStraddle ? "gap-x-0" : "gap-x-0 2xl:gap-x-1"}`}`}
+                  className={`flex min-w-0 items-center gap-y-0 flex-nowrap [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${placement === "hero" ? "flex-none justify-center overflow-visible gap-x-0 2xl:gap-x-3" : `flex-1 justify-start overflow-x-auto ${useStraddle ? "gap-x-0" : "gap-x-0 2xl:gap-x-1"}`}`}
                   data-testid="category-pill-strip"
                 >
                   {items.map((item, index) => {
@@ -650,7 +650,7 @@ export default function BrowseByCategoryBar({
                     className={`group inline-flex items-center rounded-full transition-colors duration-200 ${moreOpen ? "bg-brand-pink/10" : "hover:bg-brand-pink/10"} ${placement === "hero" ? "gap-1 px-1 2xl:px-2.5 py-2.5" : useStraddle ? "gap-1.5 px-2.5 py-2" : "gap-0.5 px-1 py-2 2xl:gap-1 2xl:px-2 2xl:py-2.5"}`}
                   >
                     <span
-                      className={`font-bold font-[Montserrat] whitespace-nowrap text-[#081129] group-hover:text-brand-pink ${placement === "hero" ? "text-[14px] 2xl:text-[17px] tracking-[-0.01em]" : useStraddle ? "text-[12.5px] lg:text-[13px] tracking-[-0.02em]" : "text-xs sm:text-[12px] tracking-[-0.02em] 2xl:text-sm 2xl:tracking-normal"}`}
+                      className={`font-bold font-[Montserrat] whitespace-nowrap text-[#081129] group-hover:text-brand-pink ${placement === "hero" ? "text-[13px] xl:text-[14px] 2xl:text-[16px] tracking-[-0.01em]" : useStraddle ? "text-[12.5px] lg:text-[13px] tracking-[-0.02em]" : "text-xs sm:text-[12px] tracking-[-0.02em] 2xl:text-sm 2xl:tracking-normal"}`}
                     >
                       More
                     </span>
