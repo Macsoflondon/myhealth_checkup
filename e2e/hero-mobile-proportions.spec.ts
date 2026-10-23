@@ -114,11 +114,11 @@ for (const bp of BREAKPOINTS) {
       );
       expect(overflow).toBeLessThanOrEqual(1);
     });
-    test("every slide headline sits on two lines at one shared size", async ({
+    test("the hero headline sits on two lines and fits its copy area", async ({
       page,
     }) => {
       await page
-        .locator('[data-testid="hero-slide-5"]')
+        .locator('[data-testid="hero-slide-1"]')
         .waitFor({ state: "attached" });
       const metrics = await page.evaluate(() =>
         Array.from(
@@ -139,12 +139,11 @@ for (const bp of BREAKPOINTS) {
           return { size: cs.fontSize, lines, fits: widest <= width + 1 };
         }),
       );
-      expect(metrics).toHaveLength(5);
+      expect(metrics).toHaveLength(1);
       for (const m of metrics) {
         expect(m.lines).toBe(2);
         expect(m.fits).toBe(true);
       }
-      expect(new Set(metrics.map((m) => m.size)).size).toBe(1);
     });
   });
 }
