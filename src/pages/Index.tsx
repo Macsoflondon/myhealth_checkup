@@ -5,6 +5,10 @@ import MainLayout from "@/layouts/MainLayout";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import SectionReveal from "@/components/ui/SectionReveal";
 import { LazyMount } from "@/components/common/LazyMount";
+import {
+  HydrateOnVisible,
+  lazyPreloadable,
+} from "@/components/common/HydrateOnVisible";
 import { SectionSkeleton } from "@/components/common/SectionSkeleton";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
@@ -20,11 +24,15 @@ import { selectHomepageComparisons } from "@/lib/homepage-comparisons";
 // Above-the-fold: eager
 import HeroMasthead from "@/components/sections/HeroMasthead";
 
-const PartnersGrid = lazy(() => import("@/components/sections/PartnersGrid"));
+// Server-rendered sections below the hero: HydrateOnVisible keeps their HTML
+// and loads their code only when the visitor scrolls near them.
+const PartnersGrid = lazyPreloadable(
+  () => import("@/components/sections/PartnersGrid"),
+);
 const PartnerShowcaseGrid = lazy(
   () => import("@/components/sections/PartnerShowcaseGrid"),
 );
-const DecisionInfrastructureSection = lazy(() =>
+const DecisionInfrastructureSection = lazyPreloadable(() =>
   import("@/components/sections/DecisionInfrastructureSection").then((m) => ({
     default: m.DecisionInfrastructureSection,
   })),
@@ -45,7 +53,7 @@ const ClinicAndHelpSection = lazy(
 );
 const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
 
-const StartJourneySection = lazy(
+const StartJourneySection = lazyPreloadable(
   () => import("@/components/sections/StartJourneySection"),
 );
 
@@ -53,7 +61,7 @@ const NewsletterSection = lazy(
   () => import("@/components/sections/NewsletterSection"),
 );
 
-const HeroPopularTests = lazy(() =>
+const HeroPopularTests = lazyPreloadable(() =>
   import("@/components/sections/HeroPopularTests").then((m) => ({
     default: m.HeroPopularTests,
   })),
@@ -73,11 +81,52 @@ const ClinicHelpSkeleton = () => (
   <SectionSkeleton tone="white" cards={2} minHeight={500} />
 );
 
+// Rendered as one module-level element so homepage re-renders (data hooks,
+// context updates) hand React the same element and it skips this subtree.
+// A changed element would make React hydrate these sections at once instead
+// of waiting for HydrateOnVisible, and load all their code up front.
+const DEFERRED_SECTIONS = (
+  <>
+    <HydrateOnVisible load={PartnersGrid.preload}>
+      <Suspense fallback={<SectionFallback />}>
+        <SectionReveal>
+          <PartnersGrid />
+        </SectionReveal>
+      </Suspense>
+    </HydrateOnVisible>
+
+    <HydrateOnVisible load={HeroPopularTests.preload}>
+      <Suspense fallback={<SectionFallback />}>
+        <SectionReveal delay={0.05}>
+          <HeroPopularTests />
+        </SectionReveal>
+      </Suspense>
+    </HydrateOnVisible>
+
+    <HydrateOnVisible load={StartJourneySection.preload}>
+      <Suspense fallback={<SectionFallback />}>
+        <SectionReveal delay={0.15}>
+          <StartJourneySection />
+        </SectionReveal>
+      </Suspense>
+    </HydrateOnVisible>
+
+    <HydrateOnVisible load={DecisionInfrastructureSection.preload}>
+      <Suspense fallback={<SectionFallback />}>
+        <SectionReveal delay={0.1}>
+          <DecisionInfrastructureSection />
+        </SectionReveal>
+      </Suspense>
+    </HydrateOnVisible>
+  </>
+);
+
 const Index = () => {
   usePerformanceOptimization();
   useMobileOptimization();
   const activeTestCount = useActiveTestCount();
-  const { data: comparisonPanels = [] } = useHomepageComparisons();
+  const { data: comparisonPanels = [], isPending: comparisonsLoading } =
+    useHomepageComparisons();
   const { upper: upperComparison } = selectHomepageComparisons(
     comparisonPanels,
     0,
@@ -253,7 +302,10 @@ const Index = () => {
 
                   <div className="flex w-full justify-end">
                     <div className="w-full max-w-[400px] xl:max-w-[460px] 2xl:max-w-[520px]">
-                      <LiveCatalogueComparison panel={upperComparison} />
+                      <LiveCatalogueComparison
+                        panel={upperComparison}
+                        loading={comparisonsLoading}
+                      />
                     </div>
                   </div>
                 </div>
@@ -261,30 +313,7 @@ const Index = () => {
             </div>
           </section>
 
-          <Suspense fallback={<SectionFallback />}>
-            <SectionReveal>
-              <PartnersGrid />
-            </SectionReveal>
-          </Suspense>
-
-          <Suspense fallback={<SectionFallback />}>
-            <SectionReveal delay={0.05}>
-              <HeroPopularTests />
-            </SectionReveal>
-          </Suspense>
-
-
-          <Suspense fallback={<SectionFallback />}>
-            <SectionReveal delay={0.15}>
-              <StartJourneySection />
-            </SectionReveal>
-          </Suspense>
-
-          <Suspense fallback={<SectionFallback />}>
-            <SectionReveal delay={0.1}>
-              <DecisionInfrastructureSection />
-            </SectionReveal>
-          </Suspense>
+          {DEFERRED_SECTIONS}
 
           <LazyMount
             minHeight={800}
