@@ -115,20 +115,27 @@ export default function HeroMasthead() {
           data-testid="hero-slide-1"
           data-active="true"
         >
-          <video
-            ref={videoRef}
-            className="hero-slide absolute inset-0 h-full w-full object-cover"
-            poster={HERO_POSTER_SRC}
-            muted
-            loop
-            playsInline
-            autoPlay={!reducedMotion}
-            preload="auto"
-            aria-label={HERO_COPY.alt}
+          {/* The whole video area links to the live site. */}
+          <a
+            href="https://myhealthcheckup.co.uk"
+            aria-label="myhealth checkup — visit myhealthcheckup.co.uk"
+            className="hero-slide absolute inset-0 block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-turquoise"
           >
-            <source src={heroVideoWebm.url} type="video/webm" />
-            <source src={heroVideoMp4.url} type="video/mp4" />
-          </video>
+            <video
+              ref={videoRef}
+              className="absolute inset-0 h-full w-full object-cover"
+              poster={HERO_POSTER_SRC}
+              muted
+              loop
+              playsInline
+              autoPlay={!reducedMotion}
+              preload="auto"
+              aria-label={HERO_COPY.alt}
+            >
+              <source src={heroVideoWebm.url} type="video/webm" />
+              <source src={heroVideoMp4.url} type="video/mp4" />
+            </video>
+          </a>
           {/* Invisible poster img: warms the LCP candidate and flips the
               placeholder off once it is cached. */}
           <img
@@ -147,7 +154,7 @@ export default function HeroMasthead() {
           />
 
           <div
-            className={`absolute inset-0 z-10 flex px-5 sm:items-center sm:px-10 sm:pb-0 sm:pt-0 md:px-12 lg:px-16 xl:px-20 ${mobilePlacement} ${desktopGradient} ${HERO_COPY.align === "right" ? "justify-end text-right" : "justify-start text-left"}`}
+            className={`pointer-events-none absolute inset-0 z-10 flex px-5 sm:items-center sm:px-10 sm:pb-0 sm:pt-0 md:px-12 lg:px-16 xl:px-20 ${mobilePlacement} ${desktopGradient} ${HERO_COPY.align === "right" ? "justify-end text-right" : "justify-start text-left"}`}
           >
             <div className="@container w-full max-w-4xl text-primary-foreground sm:w-[var(--copy-width-t)] sm:min-w-[19rem] lg:w-[var(--copy-width-d)]">
               {HERO_COPY.eyebrow ? (
@@ -186,7 +193,7 @@ export default function HeroMasthead() {
           </div>
         </div>
 
-        <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
         {/* Turquoise section dividers — inside the rounded stage so they stop at the curve */}
         <div className="absolute top-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#22c0d4]" />
