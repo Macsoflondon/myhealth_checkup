@@ -338,3 +338,308 @@ after the edit: 3 checked, 0 unlabelled, unaffected.
 
 This closes finding #7. Both findings left open at the end of pass 3 are now resolved —
 nothing outstanding from this audit as of 2026-10-20.
+
+# Pass 4 — 2026-10-23
+
+Run via `[AUDIT-LOOP] test-cards`, same day the branch was reset fresh from `main` after
+PR #79 merged. **Not a clean pass** — a full inventory rebuild (required every run, per
+the contract; the previous list was reused across passes 1–3 with only incremental
+additions, and that is exactly how a surface gets missed) turned up three previously
+un-inventoried surfaces, one of which is the most severe single defect found in this
+entire audit to date.
+
+## Counts
+
+- Surfaces inventoried: 18 card/listing-rendering surfaces confirmed live (plus 1
+  confirmed dead, see finding #28), rebuilt fresh from `rg`, not reused from memory
+- New surfaces found this pass, never in any prior pass's inventory or the drift guard:
+  `src/pages/CancerComparisonPage.tsx` (+ its `useEnhancedComparison.ts` hook and
+  `CancerBiomarkerGroup.tsx`/`EnhancedComparisonTable.tsx` children),
+  `src/components/search/IntelligentSearch.tsx`, `src/components/header/MegaMenuDropdown.tsx`
+- Findings: 11 (#17–#25, #27–#28 — #26 not used, to avoid double-counting finding #17's
+  fix under two numbers), all fixed this pass — see "Fix what you find" standing
+  instruction; nothing deferred
+- Re-verified and still holding: price-honesty (`unifiedCardAdapter.ts`), the
+  location-label fix (`categoryTestMapper.ts`), the Randox turnaround fix and
+  accreditation-fallback cleanup (`ProviderTestDetailModal.tsx`) — all survived PR #80's
+  unrelated merge into this branch intact (re-read after the merge, not assumed)
+- Also reviewed and found clean (not a finding): `src/lib/viewPricing.ts`, a new pricing
+  layer added since pass 3 (part of #80) — every field is genuinely nullable end-to-end,
+  `toNum()` never coerces a missing value to `0`. Worth recording so a future pass doesn't
+  have to re-derive this from scratch.
+- `node scripts/audit-card-external-links.mjs`: 3 → 5 checked (3 new surfaces added,
+  each now 0 unlabelled) across every edit in this pass
+- UNVERIFIED (tooling): `npm run lint`, `npm test -- --run`, `npm run build`,
+  `npm run test:smoke` — same sandbox constraint as every prior pass (no `node_modules`,
+  no registry access here); see "Verification" below
+
+## How the new surfaces were found
+
+The contract's inventory method (`rg -l "UniversalTestCard|UnifiedTestCard|..."` plus a
+broader `rg -ln "test_name|provider_tests"` reconciled against routes) was re-run from
+scratch rather than reusing the 16-surface list the drift guard already had. The broader
+grep surfaced several files the narrower card-component grep missed because they don't
+use any of the shared card components at all — they hand-roll their own markup. Each was
+individually traced to confirm whether it actually renders a test card/row (not every
+hit on `provider_tests`/`test_name` does) before being added to scope.
+
+## Finding #17 — `CancerComparisonPage.tsx` has no internal link anywhere on the surface
+
+**Contract rule:** primary click target must be our own test-detail page.
+**Evidence:** `src/pages/CancerComparisonPage.tsx` (browse-grid card, ~L305–384 before
+the fix) and `src/components/compare/EnhancedComparisonTable.tsx` (compare-tab card,
+~L88–120 before the fix) — neither file contained `getTestDetailUrl`,
+`getTestUrlFromProviderName`, `providerRoutes`, or any `/tests/` path, confirmed by
+grep across all three files that make up this surface (the third,
+`CancerBiomarkerGroup.tsx`, renders no links at all). The browse-grid card's only
+actions were "Compare"/"Remove" (internal state toggles, not navigation) and an
+icon-only external booking button — there was no path to our own site at all, worse
+than every previously-fixed instance of this bug class, which at least had an internal
+modal or `Link` as the primary target.
+**Fix:** added an internal `<Link to={getTestDetailUrl(providerId, id)}>` wrapping the
+test name on both cards, plus an explicit "View details" button on the browse grid.
+Verified `getTestDetailUrl`/the route resolve by raw `provider_tests.id` (checked
+`src/lib/seo/test-seo.functions.ts:25`, `.eq("id", data.testId)`), which is exactly what
+`test.id` is on this surface.
+
+## Finding #18 — icon-only "book" button with no visible or accessible label
+
+**Contract rule:** external URL only on an "explicit, separately labelled" action.
+**Evidence:** `CancerComparisonPage.tsx` browse-grid card's booking button was
+`<Button variant="default" size="sm" onClick={...}><ExternalLink className="h-4 w-4" /></Button>`
+— an icon with no `aria-label` and no visible text. A screen-reader user gets no
+indication of what the button does or that it leaves the site.
+**Fix:** added `aria-label="Book {testName} on {provider}'s website (opens in a new
+tab)"` plus a visible "Book" label (hidden below `sm` breakpoint via `sr-only
+sm:not-sr-only`, matching the icon-button space constraint), matching
+`UniversalTestCard`'s established pattern (pass 1, finding #2).
+
+## Finding #19 — price defaulted to `£0.00` on a null real price
+
+**Contract rule:** missing price must read as missing, never invented (same rule as
+pass 1 finding #6, independently broken here).
+**Evidence:** `useEnhancedComparison.ts` (pre-fix) `const basePrice = test.price || 0;`
+— identical bug shape to the original `unifiedCardAdapter.ts` bug, in a completely
+separate adapter this audit hadn't looked at before.
+**Fix:** `test.price ?? null`; widened `EnhancedTestData.basePrice`/`totalExpectedCost`
+to `number | null` and `computeTotalExpectedCost()` (`src/lib/comparisonFormat.ts`,
+shared by 3 call sites) to accept/return `number | null`, returning `null` up front
+when `basePrice` is null rather than treating it as `0` inside the shared function too.
+The other 2 callers (`ProviderComparisonTable.tsx`, `comparison-header-price.ts`) always
+pass a real non-null price by their own types, so this is a pure widening — confirmed by
+reading both call sites — but needed a `?? t.price`/`?? base` type-narrowing fallback to
+keep TypeScript happy, since the exact point of the fix is that the function's return
+type genuinely changed. Neither caller's runtime behaviour changes.
+
+## Finding #20 — biomarker count and list invented from the test's free-text description
+
+**Contract rule:** biomarker count/list must be real; absent data reads as absent.
+**Evidence:** `useEnhancedComparison.ts` (pre-fix):
+`biomarkerCount: test.biomarker_count || extractBiomarkerCount(test.description ?? null)`
+and the equivalent for `biomarkersList`. `extractBiomarkerCount` kept-word-matched a
+fixed 12-word list (`cholesterol`, `glucose`, `hba1c`, …) against the description and, if
+**zero** of those words matched, still returned a fabricated floor of `5` via
+`keywords.filter(...).length || 5`. `extractBiomarkers` did the equivalent for the list,
+substring-matching 34 hardcoded biomarker names against the description. Queried
+Supabase (`clvuioagsgfadynuvodj`, 2026-10-23): of 135 active cancer-related rows, 125
+(93%) already have a real `biomarkers_list` and 134 (99%) a real `biomarker_count` — so
+removing the fallback is safe and does not regress the feature into uselessness for the
+~7% of rows left honestly blank.
+**Fix:** `test.biomarker_count ?? null` / `(test.biomarkers_list as string[] | null) ??
+null`; deleted both `extractBiomarkerCount` and `extractBiomarkers` entirely (dead code
+that existed only to fabricate). Widened the two fields on `EnhancedTestData` to nullable.
+
+## Finding #21 — turnaround defaulted to a flat 3 days
+
+**Contract rule:** turnaround must be real or honestly absent (same rule as pass-3
+finding #14's Randox case, independently broken here across every provider).
+**Evidence:** `turnaroundDays: parseTurnaroundDays(test.turnaround_days_text) || 3`.
+Supabase: 124/135 (92%) of the same cancer-related rows have real turnaround text.
+**Fix:** `?? null` instead of `|| 3`; widened `EnhancedTestData.turnaroundDays` to
+`number | null`.
+
+## Finding #22 — home-kit availability defaulted to `true` on a null flag
+
+**Contract rule:** location flags must reflect the real `home_kit_available` /
+`clinic_visit_available` columns (same rule as pass-3 finding #16, independently broken
+here).
+**Evidence:** `homeKitAvailable: test.home_kit_available ?? true,
+clinicVisitAvailable: test.clinic_visit_available ?? false`. A row with both flags
+genuinely null would show a confident "home kit available, no clinic visit" claim with
+no real data behind either half. Supabase: for this specific cancer-related subset both
+flags are 100% populated today (135/135), so the practical exposure right now is low —
+recorded honestly rather than oversold — but the trap is real for any future null row and
+for any other `useEnhancedComparison` consumer.
+**Fix:** `?? null` for both; widened both fields on `EnhancedTestData` to nullable.
+
+## Finding #23 — accreditations hardcoded `["UKAS", "CQC"]` for every single test
+
+**Contract rule:** UKAS/CQC/ISO claims must be backed by a real field (same rule as pass
+1/pass-3 finding #7, but worse here: not a per-provider fallback map applied only when
+flags are missing — a flat, unconditional hardcode applied to **every test on the page,
+real flags or not**).
+**Evidence:** `accreditations: ["UKAS", "CQC"]`, unconditional, in every object this
+function ever returned. Supabase: 135/135 of the cancer-related rows checked do have at
+least one real `lab_*` flag set today, so the badges happened to not be contradicted by
+reality on this specific page as it stands — but the claim was never actually sourced
+from any row's data, and a `clinilabs`-only-`lab_iso15189` test (the exact shape finding
+#7 found 5 real rows of) would have shown an uncontradicted but wrong "UKAS, CQC" badge
+set instead of "ISO 15189".
+**Fix:** `accreditations: resolveAccreditationsFromRow(test) ?? []` — reused the same
+shared helper (`src/lib/resolve-test-fields.ts`) the pass-3 fix to
+`ProviderTestDetailModal.tsx` introduced, rather than writing a second implementation.
+Added `lab_ukas_accredited`/`lab_cqc_regulated`/`lab_iso15189` to `RawTestRow` (the
+`.select("*")` query already fetched these columns; they just weren't read).
+
+## Finding #24 — a cancer-biomarker "included" checkmark could come from marketing copy, not data
+
+**Contract rule:** a claim must be backed by a real field — doubly so for a clinically-
+flavoured claim on the cancer-screening comparison page specifically.
+**Evidence:** `CancerBiomarkerGroup.tsx`'s `testIncludesBiomarker()` (pre-fix) returned
+true if the biomarker's name matched the real `biomarkersList` **or** `test.testName`
+**or** `test.description`. A test whose marketing description happened to mention "PSA
+levels" in passing — with no real biomarkers-list evidence it tests for PSA at all —
+would show a green "included" checkmark next to that cancer marker. This is squarely
+the kind of unbacked claim the contract rules out, on the one page where getting it
+wrong carries the most weight.
+**Fix:** removed the `testName`/`description` fallback entirely; the function now
+checks only the real `biomarkersList`, and returns `false` immediately when it's `null`
+or empty rather than falling through to the free-text match. Exported the function
+(previously module-private) for testability.
+**Scope note:** the remaining word-splitting fuzzy match (`biomarker.name.split(" ")`)
+against the *real* list can still over-match on a shared word between two different
+biomarker names (e.g. "antigen" matching both PSA and CEA) — that's a matching-precision
+question, not a fabricated-data question, and rewriting the matching algorithm itself
+would be scope creep beyond this pass's finding; noted for a future pass to pick up on
+its own terms if it's worth doing.
+
+## Finding #25 — the type-widening above would have silently broken "Best Value"/"Fastest Results"
+
+**Caught during adversarial review, before shipping — not a pre-existing bug.** Once
+`totalExpectedCost`/`turnaroundDays` became nullable to fix #19/#21, the existing
+`comparisonResult` ranking logic (`test.totalExpectedCost < (best?.totalExpectedCost ??
+Infinity)`) would have silently miscrowned a test with an *unknown* price/turnaround as
+"Best Value"/"Fastest Results" — `null < 500` evaluates `true` in JS because `null`
+coerces to `0` in a numeric comparison. Separately, `t.biomarkersList.map(...)` would
+throw outright (`Cannot read properties of null (reading 'map')`) the moment two
+selected tests included one with no real biomarkers list — a real crash on the Compare
+tab, not just a display bug, reachable any time a user compares a test from the ~7% of
+rows with no real `biomarkers_list`.
+**Fix:** added explicit `!= null` guards to the `bestValue`/`fastestResults` reduces, and
+`?? []`/`?? 0` guards everywhere `biomarkersList`/`biomarkerCount` get read inside
+`comparisonResult`'s `useMemo`. Logged here rather than folded silently into #19–#23
+because this is exactly the "circle back and try to break your own fix" step the loop
+protocol requires — these would not have existed if #19–#23 had been shipped without it.
+
+## Finding #27 — `IntelligentSearch.tsx`'s site search: every result's only action leaves the site, mislabelled "View Details"
+
+**Contract rule:** primary click target internal; CTA label must match its destination
+(the exact pattern pass 1 finding #4 fixed in dead code — this is the same pattern, live).
+**Evidence:** `src/components/search/IntelligentSearch.tsx` (pre-fix, ~L247–259):
+`<Button asChild size="sm"><a href={r.url || "#"} target="_blank" rel="noopener
+noreferrer">View Details</a></Button>` was the **only** action on every search result
+row. Confirmed this component is genuinely live: it's the platform's site-search feature
+(backed by `useSearchTestsQuery`), not dead code like several previously-fixed instances
+of this bug pattern. A visitor who searches for a test and clicks "View Details" — the
+single available action — is sent straight to the provider's external site in a new tab,
+with a label implying they're about to see more detail on our own site.
+**Fix:** added an internal `<Link to={getTestDetailUrl(r.provider_id, r.id)}>` wrapping
+the result's title, kept "View Details" as a second button but pointed it at the same
+internal URL (so the label now matches its destination), and added a separate,
+explicitly-labelled "Book" button (`aria-label` + visible text + icon) for the external
+URL, shown only `{r.url && (...)}`.
+
+## Finding #28 — `MegaMenuDropdown.tsx`: same whole-row-external pattern, confirmed dead code
+
+**Contract rule:** as above.
+**Evidence:** both of this component's test-listing blocks (`filteredPopularTests`,
+`goodbodyTests`-backed `filteredTests`) rendered the **entire row** as `<a href={href}
+target="_blank">` whenever `test.url` was an absolute URL — not a sub-button, the whole
+clickable card. Before fixing it, traced whether this component is actually reachable:
+`rg` found it's only imported by `src/components/header/NavigationMenu.tsx`, which is
+only re-exported (as `NavigationItems`, data only — not the component) by
+`NavigationItems.tsx`, which is imported only by `CategoryPillDropdown.tsx` (for its
+*data array*, not the dropdown component) and a sitemap-links test. The live header
+(`Header.tsx` → `BrowseByCategoryBar.tsx`) uses `CategoryPillDropdown`/`MoreDropdownMenu`
+instead and never imports `MegaMenuDropdown` or `NavigationMenu` (the component) at all.
+**This is confirmed dead code** — the same situation as pass 1's `TestListCard.tsx`.
+**Fix:** applied anyway, per pass 1's own precedent ("the fix still lands — it's live
+code reachable the moment someone wires it up, and leaving a landmine because 'nothing
+uses it today' isn't a real defense"). The DB-backed block now always links to
+`getTestDetailUrl(test.provider_id, test.id)`. The static-Goodbody-data block (whose ids
+like `"Goodbody061"` are not real `provider_tests.id` values, so a canonical detail URL
+can't be safely derived for it) keeps its pre-existing internal fallback path
+(`/book/${test.id}`) rather than this pass guessing a new, unverifiable destination for
+an already-disconnected static dataset — out of scope to redesign that dataset here.
+Impact recorded honestly: **zero today**, real the moment the component is wired up.
+
+## Adversarial review
+
+- **Null/empty**: every new nullable field (`basePrice`, `turnaroundDays`,
+  `biomarkerCount`, `biomarkersList`, `homeKitAvailable`, `clinicVisitAvailable`,
+  `totalExpectedCost`) traced through every consumer in all 5 files that touch
+  `EnhancedTestData` (confirmed via `rg -l "EnhancedTestData" src/` — exactly 5, all
+  checked): `EnhancedComparisonTable.tsx` was already using falsy-checks (`||
+  <Dash/>`, `? ... : <Dash/>`, `formatPrice()` which already accepted null) for every
+  one of these fields — it was the *adapter* lying to an already-honest consumer, the
+  same pattern as every other fix in this audit. `CancerComparisonPage.tsx`'s own grid
+  needed new explicit `!= null` branches, added.
+- **The crash case** (#25) was found specifically by asking "what happens when two
+  selected tests are compared and one has a null biomarkersList" rather than only
+  checking each field's display in isolation — the display-only check would have missed
+  it, since no single field's render path crashes on its own.
+- **SSR**: none of this pass's fixes touch `window`/`document`/`localStorage` at module
+  or render scope.
+- **Mobile**: the new "Book" button label on `IntelligentSearch.tsx`/`CancerComparisonPage.tsx`
+  uses the same `sr-only sm:not-sr-only` pattern already used elsewhere in the codebase
+  for icon-button labels at narrow widths — not a new pattern invented for this fix.
+- **The other callers**: `computeTotalExpectedCost`'s 2 other call sites
+  (`ProviderComparisonTable.tsx`, `comparison-header-price.ts`) traced individually;
+  both always pass a real non-null price by their own types, so the widening is
+  behaviour-neutral for them — confirmed by reading both, not assumed.
+- **Data**: ran 2 Supabase queries against `clvuioagsgfadynuvodj` (coverage for
+  biomarkers/count, price/turnaround/location-flags/accreditation on the 135 active
+  cancer-related rows) rather than assuming the fallbacks were covering for mostly-empty
+  data or mostly-redundant with real data.
+- **Tried to defeat the drift guard**: confirmed the new `aria-label`-based "Book" labels
+  on `IntelligentSearch.tsx`/`CancerComparisonPage.tsx` are actually caught by
+  `BOOK_WORD_RE` (the guard checks 25 lines of surrounding context, and the aria-label
+  text itself contains "Book" within that window) — re-ran the script after each edit
+  rather than assuming the pattern-match would work from reading the regex alone.
+
+## Verification
+
+Ran and passed:
+
+- `node scripts/audit-card-external-links.mjs` after every edit in this pass — 3 → 4 → 5
+  external navigations checked as each new surface was added and fixed, 0 unlabelled
+  throughout, exit 0 every time.
+- 2 direct Supabase queries against `clvuioagsgfadynuvodj` (quoted above, findings
+  #20/#21/#22/#23).
+- Hand-traced every one of findings #17–#28 through its actual code path, including the
+  5-file consumer sweep for finding #25's crash case.
+
+**UNVERIFIED — could not run in this sandbox**, same constraint as every prior pass (no
+`node_modules`, no private-registry access here):
+
+- `npm run lint`
+- `npm test -- --run` — including 2 new Vitest files this pass adds:
+  `src/hooks/useEnhancedComparison.honesty.test.ts` (9 cases) and
+  `src/components/compare/CancerBiomarkerGroup.honesty.test.ts` (5 cases), both written
+  to match this repo's existing passing test style but not executed by any tool here.
+- `npm run build`
+- `npm run test:smoke`
+
+## Drift guard
+
+`scripts/audit-card-external-links.mjs`'s `CARD_SURFACES` grew from 16 to 19:
+`EnhancedComparisonTable.tsx`, `CancerComparisonPage.tsx`,
+`src/components/search/IntelligentSearch.tsx`, `src/components/header/MegaMenuDropdown.tsx`.
+
+## Exit status
+
+Not a clean pass — 11 findings (#17–#25, #27–#28), all fixed, none deferred. The loop's
+two-consecutive-zero-finding exit condition is not met. A pass 5 that rebuilds the
+inventory fresh again and re-verifies every fix from this pass (especially #25's crash
+guard and the 3 newly-added drift-guard surfaces) is the next step, and would be the
+first of the two clean passes needed to close the loop if it finds nothing new.

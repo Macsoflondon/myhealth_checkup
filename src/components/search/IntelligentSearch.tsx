@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import React, { useState, useEffect, useMemo } from "react";
-import { Search, Brain, TrendingUp, X } from "lucide-react";
-import { useSearchParams } from "@/lib/router-compat";
+import { Search, Brain, TrendingUp, X, ExternalLink } from "lucide-react";
+import { Link, useSearchParams } from "@/lib/router-compat";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -12,6 +12,7 @@ import {
   getSupportedProviderIds,
   normalizeProviderId,
 } from "@/constants/providers";
+import { getTestDetailUrl } from "@/utils/providerRoutes";
 
 const POPULAR_SEARCHES = [
   "Thyroid function",
@@ -205,7 +206,12 @@ const IntelligentSearch = () => {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-2 flex-wrap">
                       <h3 className="font-semibold text-lg text-brand-navy">
-                        {r.test_name}
+                        <Link
+                          to={getTestDetailUrl(r.provider_id ?? "", r.id)}
+                          className="hover:underline"
+                        >
+                          {r.test_name}
+                        </Link>
                       </h3>
                       {r.canonical_category && (
                         <Badge variant="outline" className="text-xs">
@@ -244,19 +250,30 @@ const IntelligentSearch = () => {
                         £{r.price}
                       </div>
                     )}
-                    <Button
-                      asChild
-                      size="sm"
-                      className="bg-brand-pink hover:bg-brand-pink/90 text-white"
-                    >
-                      <a
-                        href={r.url || "#"}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        View Details
-                      </a>
-                    </Button>
+                    <div className="flex gap-2 justify-end">
+                      <Button asChild size="sm" variant="outline">
+                        <Link to={getTestDetailUrl(r.provider_id ?? "", r.id)}>
+                          View Details
+                        </Link>
+                      </Button>
+                      {r.url && (
+                        <Button
+                          asChild
+                          size="sm"
+                          className="bg-brand-pink hover:bg-brand-pink/90 text-white"
+                        >
+                          <a
+                            href={r.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`Book ${r.test_name} on ${r.provider_id ? String(r.provider_id).replace(/-/g, " ") : "the provider"}'s website (opens in a new tab)`}
+                          >
+                            <ExternalLink className="h-4 w-4 mr-1" />
+                            Book
+                          </a>
+                        </Button>
+                      )}
+                    </div>
                   </div>
                 </div>
               </Card>

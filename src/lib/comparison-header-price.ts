@@ -24,14 +24,17 @@ export function headerPriceParts(t: HeaderPriceInput): {
   total: number;
   breakdown: string | null;
 } {
-  const total = computeTotalExpectedCost(
-    t.price,
-    t.collectionFeeType,
-    t.collectionFeeAmount,
-    t.clinicalReviewType,
-    t.clinicalReviewFee,
-  );
   const base = t.price || 0;
+  // t.price is always a real number here, so computeTotalExpectedCost never
+  // actually returns null — the `?? base` is just type narrowing.
+  const total =
+    computeTotalExpectedCost(
+      t.price,
+      t.collectionFeeType,
+      t.collectionFeeAmount,
+      t.clinicalReviewType,
+      t.clinicalReviewFee,
+    ) ?? base;
   if (Math.abs(total - base) < 0.005) return { total, breakdown: null };
 
   const parts = [`Test ${formatPrice(base)}`];

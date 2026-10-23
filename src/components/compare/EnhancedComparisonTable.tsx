@@ -11,6 +11,7 @@ import {
   Wallet,
   Calculator,
 } from "lucide-react";
+import { Link } from "@/lib/router-compat";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,6 +23,7 @@ import {
   formatCollectionFee,
   formatClinicalReview,
 } from "@/lib/comparisonFormat";
+import { getTestDetailUrl } from "@/utils/providerRoutes";
 
 interface EnhancedComparisonTableProps {
   result: ComparisonResult;
@@ -106,7 +108,12 @@ export function EnhancedComparisonTable({
                   />
                 )}
                 <CardTitle className="text-lg font-heading">
-                  {test.testName}
+                  <Link
+                    to={getTestDetailUrl(test.providerId, test.id)}
+                    className="hover:underline"
+                  >
+                    {test.testName}
+                  </Link>
                 </CardTitle>
                 <p className="text-sm text-muted-foreground">{test.provider}</p>
                 <div className="text-xl font-bold text-[#e70d69] mt-1">

@@ -6,6 +6,7 @@ import type { GoodbodyTest } from "@/data/goodbodyTests";
 import { useDropdownAccessibility } from "@/hooks/useDropdownAccessibility";
 import { PopularTest } from "@/hooks/usePopularTestsFromDatabase";
 import { formatBiomarkerCount } from "@/utils/formatBiomarkers";
+import { getTestDetailUrl } from "@/utils/providerRoutes";
 
 interface MegaMenuDropdownProps {
   itemName: string;
@@ -149,17 +150,10 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
             </div>
             {filteredPopularTests.length > 0 ? (
               filteredPopularTests.map((test) => {
-                const isExternal =
-                  test.url &&
-                  (test.url.startsWith("http://") ||
-                    test.url.startsWith("https://"));
-                const href = test.url || `/compare?test=${test.id}`;
-                const commonProps = {
-                  key: test.id,
-                  className:
-                    "state-layer group block p-3 rounded-lg transition-shadow border border-transparent hover:border-brand-navy dark:hover:border-gray-700",
-                  onClick: handleItemClick,
-                };
+                // Primary click target is always our own test-detail page —
+                // never test.url (the provider's external site), regardless
+                // of whether it's set. See card-contract.md, "Link rules".
+                const href = getTestDetailUrl(test.provider_id, test.id);
                 const content = (
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
@@ -184,17 +178,13 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                     </div>
                   </div>
                 );
-                return isExternal ? (
-                  <a
-                    {...commonProps}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                return (
+                  <Link
+                    key={test.id}
+                    className="state-layer group block p-3 rounded-lg transition-shadow border border-transparent hover:border-brand-navy dark:hover:border-gray-700"
+                    onClick={handleItemClick}
+                    to={href}
                   >
-                    {content}
-                  </a>
-                ) : (
-                  <Link {...commonProps} to={href}>
                     {content}
                   </Link>
                 );
@@ -215,17 +205,13 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
             </div>
             {filteredTests.length > 0 ? (
               filteredTests.map((test) => {
-                const isExternal =
-                  test.url &&
-                  (test.url.startsWith("http://") ||
-                    test.url.startsWith("https://"));
-                const href = test.url || `/book/${test.id}`;
-                const commonProps = {
-                  key: test.id,
-                  className:
-                    "state-layer group block p-3 rounded-lg transition-shadow border border-transparent hover:border-brand-navy dark:hover:border-gray-700",
-                  onClick: handleItemClick,
-                };
+                // Primary click target is always internal, never test.url —
+                // same rule as the popular-tests block above. This static
+                // Goodbody dataset predates the canonical detail route and
+                // its ids aren't real provider_tests rows, so it keeps its
+                // existing internal fallback path rather than a new,
+                // unverifiable destination guessed at here.
+                const href = `/book/${test.id}`;
                 const content = (
                   <div className="flex items-start justify-between">
                     <div className="flex-1 min-w-0">
@@ -248,17 +234,13 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                     </div>
                   </div>
                 );
-                return isExternal ? (
-                  <a
-                    {...commonProps}
-                    href={href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                return (
+                  <Link
+                    key={test.id}
+                    className="state-layer group block p-3 rounded-lg transition-shadow border border-transparent hover:border-brand-navy dark:hover:border-gray-700"
+                    onClick={handleItemClick}
+                    to={href}
                   >
-                    {content}
-                  </a>
-                ) : (
-                  <Link {...commonProps} to={href}>
                     {content}
                   </Link>
                 );
