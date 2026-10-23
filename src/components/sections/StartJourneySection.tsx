@@ -5,7 +5,8 @@ import { useHomepageComparisons } from "@/hooks/use-homepage-comparisons";
 import { selectHomepageComparisons } from "@/lib/homepage-comparisons";
 
 const StartJourneySection = () => {
-  const { data: panels = [] } = useHomepageComparisons();
+  const { data: panels = [], isPending: comparisonsLoading } =
+    useHomepageComparisons();
   const [syncIdx, setSyncIdx] = useState(0);
   useEffect(() => {
     const interval = setInterval(() => setSyncIdx((index) => index + 1), 30000);
@@ -57,8 +58,8 @@ const StartJourneySection = () => {
           </div>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-          <LiveCatalogueComparison panel={left} />
-          <LiveCatalogueComparison panel={right} />
+          <LiveCatalogueComparison panel={left} loading={comparisonsLoading} />
+          <LiveCatalogueComparison panel={right} loading={comparisonsLoading} />
         </div>
       </div>
     </section>

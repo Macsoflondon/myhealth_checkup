@@ -24,6 +24,12 @@ export interface CatalogueComparisonPanel {
 
 export interface LiveCatalogueComparisonProps extends HTMLAttributes<HTMLElement> {
   panel: CatalogueComparisonPanel | null;
+  /**
+   * True while prices are still loading. Shows placeholder rows the size of
+   * real ones, so the card neither claims prices are unavailable nor grows
+   * and pushes the page down when they arrive.
+   */
+  loading?: boolean;
   variant?: "compact";
   size?: "default";
 }
@@ -33,19 +39,70 @@ const currency = new Intl.NumberFormat("en-GB", {
   currency: "GBP",
 });
 
+/**
+ * Placeholder sized like a typical loaded price row (heights measured on the
+ * homepage at 390, 820 and 1440px): two-line test name, a meta line that
+ * wraps on phones, the fee line under the row on phones and beside the price
+ * from the sm breakpoint.
+ */
+const PlaceholderRow = () => (
+  <div
+    className="rounded-lg border border-transparent border-b-brand-navy/5 p-3"
+    aria-hidden="true"
+  >
+    <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+      <div className="min-w-0">
+        <div className="flex h-5 items-center">
+          <span className="h-3.5 w-28 rounded bg-brand-navy/10" />
+        </div>
+        <div className="mt-1 flex h-10 flex-col justify-center gap-2">
+          <span className="h-3 w-48 max-w-full rounded bg-brand-navy/5" />
+          <span className="h-3 w-32 max-w-full rounded bg-brand-navy/5" />
+        </div>
+        <div className="flex h-10 items-center sm:h-5">
+          <span className="h-3 w-52 max-w-full rounded bg-brand-navy/5" />
+        </div>
+        <div className="mt-1 flex h-4 items-center">
+          <span className="h-3 w-32 rounded bg-brand-navy/5" />
+        </div>
+      </div>
+      <div className="shrink-0 text-right">
+        <div className="flex h-7 items-center justify-end">
+          <span className="h-5 w-16 rounded bg-brand-navy/10" />
+        </div>
+        <div className="flex h-4 items-center justify-end">
+          <span className="h-3 w-14 rounded bg-brand-navy/5" />
+        </div>
+        <div className="mt-1 hidden h-12 sm:block" />
+      </div>
+    </div>
+    <div className="mt-2 h-5 sm:hidden" />
+  </div>
+);
+
 /** Compact, independently priced provider comparison with source timestamps. */
 export const LiveCatalogueComparison = forwardRef<
   HTMLElement,
   LiveCatalogueComparisonProps
 >(
   (
-    { panel, className = "", variant = "compact", size = "default", ...props },
+    {
+      panel,
+      loading = false,
+      className = "",
+      variant = "compact",
+      size = "default",
+      ...props
+    },
     ref,
   ) => (
     <article
       {...props}
       ref={ref}
-      data-comparison-panel={panel?.slug ?? "unavailable"}
+      data-comparison-panel={
+        panel?.slug ?? (loading ? "loading" : "unavailable")
+      }
+      aria-busy={loading && !panel ? true : undefined}
       data-variant={variant}
       data-size={size}
       className={`flex h-full min-w-0 flex-col rounded-[2rem] border border-brand-navy bg-white p-5 text-brand-navy shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 ring-slate-200/60 sm:p-6 ${className}`}
@@ -53,12 +110,15 @@ export const LiveCatalogueComparison = forwardRef<
       <header className="mb-4 flex items-start justify-between gap-3">
         <div className="min-w-0">
           <h3 className="m-0 font-heading text-lg font-bold leading-snug tracking-normal">
-            {panel?.name ?? "Comparison unavailable"}
+            {panel?.name ??
+              (loading ? "Loading live prices" : "Comparison unavailable")}
           </h3>
-          {panel && (
+          {panel ? (
             <p className="mb-0 mt-1 text-xs text-brand-navy/65">
               {panel.methodLabel}
             </p>
+          ) : (
+            loading && <div className="mt-1 h-4" aria-hidden="true" />
           )}
         </div>
         <span className="shrink-0 rounded-full bg-brand-turquoise/10 px-2 py-1 text-xs font-semibold">
@@ -126,7 +186,10 @@ export const LiveCatalogueComparison = forwardRef<
             )}
           </div>
         ))}
-        {!panel && (
+        {!panel &&
+          loading &&
+          [0, 1, 2, 3].map((i) => <PlaceholderRow key={i} />)}
+        {!panel && !loading && (
           <p className="text-sm text-brand-navy/70">
             Live prices are currently unavailable.
           </p>
@@ -136,6 +199,9 @@ export const LiveCatalogueComparison = forwardRef<
         Prices are checked on provider websites about every 6 hours. Confirm the
         current price and any extra charges with the provider before booking.
       </p>
+      {!panel && loading && (
+        <div className="mt-auto min-h-11" aria-hidden="true" />
+      )}
       {panel && (
         <a
           href={`/compare/results?panel=${encodeURIComponent(panel.slug)}`}
