@@ -145,7 +145,7 @@ The Supabase project is external/unmanaged by Lovable. Read-only SQL **was** ava
 4. Provenance rigour exists for catalogue data but has **no equivalent for user-derived health data** — `biomarker_readings` has no source/parser/confidence/verified-by column set comparable to `description_source`.
 5. `log_data_access_with_reason` fails soft and is only called where a developer remembers to call it; consider a trigger-backed guarantee on C3/C4 tables.
 6. Retention: `audit_retention_policy` + `apply_audit_retention()` cover logs; there is **no documented retention or erasure path for uploaded health documents or derived readings**.
-7. `OPENAI_API_KEY` remains invalid — `ai-human-context` has silently served non-AI fallbacks since 23 July 2026. Any Phase 1 feature depending on interpretation inherits this failure.
+7. `OPENAI_API_KEY` remains invalid — `ai-human-context` has silently served non-AI fallbacks since 23 July 2026. Any Phase 1 feature depending on interpretation inherits this failure. **Update 23 October 2026:** resolved. The key was set again by 20 October, and a real `ai-human-context` query now returns a `gpt-4o-mini` recommendation (see CLAUDE.md).
 
 ### Regression coverage required for Phase 1
 
