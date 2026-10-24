@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Clarify the homepage UK private blood-test comparison offer and search snippet; preserve layout, branding and comparison links.
+
 - [x] Make the homepage hero video clickable through to myhealthcheckup.co.uk; verified at five phone sizes and desktop.
 - [ ] Update the hero e2e spec's stale wordmark/headline thresholds — the project's Playwright runner also cannot launch here (its browser build is missing libglib-2.0.so.0).
 

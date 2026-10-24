@@ -79,7 +79,7 @@ const ORG_JSONLD = JSON.stringify({
         url: "https://myhealthcheckup.co.uk/og-image.png",
       },
       description:
-        "UK private health testing comparison marketplace. Compare blood tests, cancer screening, hormone panels, and fertility tests from regulated UK providers.",
+        "UK private blood-test comparison platform. Compare provider-listed prices, biomarkers, collection options and typical turnaround times. Information only, not medical care.",
       address: { "@type": "PostalAddress", addressCountry: "GB" },
       sameAs: ["https://twitter.com/myhealthcheckup"],
     },
