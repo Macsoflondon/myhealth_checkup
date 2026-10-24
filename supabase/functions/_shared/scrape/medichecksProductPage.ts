@@ -67,8 +67,10 @@ function readSection(doc: string, heading: string): string | null {
   if (!body) return null;
 
   for (const boundary of SECTION_BOUNDARIES) {
-    const at = body.indexOf(boundary, 30);
-    if (at > 0) body = body.slice(0, at);
+    // Search from the start: once CSS is removed the next heading can sit at
+    // index 0, and a fixed offset would let the heading through as prose.
+    const at = body.indexOf(boundary);
+    if (at >= 0) body = body.slice(0, at);
   }
   body = body.trim().replace(/[.,;:\s]+$/, "");
 
