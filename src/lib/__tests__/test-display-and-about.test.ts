@@ -22,13 +22,11 @@ describe("getTestDisplayName", () => {
   });
 
   it("links OGTT to diabetes, glucose and HbA1c pages", () => {
-    expect(getRelatedTestLinks("OGTT 0' 60' 120'").map((l) => l.href)).toEqual(
-      [
-        "/tests/diabetes",
-        "/biomarker-database?search=glucose",
-        "/biomarker-database?search=HbA1c",
-      ],
-    );
+    expect(getRelatedTestLinks("OGTT 0' 60' 120'").map((l) => l.href)).toEqual([
+      "/tests/diabetes",
+      "/biomarker-database?search=glucose",
+      "/biomarker-database?search=HbA1c",
+    ]);
   });
 });
 
@@ -44,8 +42,7 @@ describe("buildTestHead", () => {
   const meta = head.meta as unknown as Array<Record<string, string>>;
   const title = meta.find((m) => "title" in m)?.title ?? "";
   const ogTitle = meta.find((m) => m.property === "og:title")?.content ?? "";
-  const description =
-    meta.find((m) => m.name === "description")?.content ?? "";
+  const description = meta.find((m) => m.name === "description")?.content ?? "";
 
   it("uses the display name in title, og:title and description", () => {
     expect(title).toContain("Oral Glucose Tolerance Test (OGTT)");
@@ -69,7 +66,9 @@ describe("buildTestAboutCopy", () => {
         biomarkerCount: 1,
         panelAboutText: PANEL,
       }),
-    ).toBe("The Oestrone Blood Test from Medichecks measures 1 biomarker: Oestrone.");
+    ).toBe(
+      "The Oestrone Blood Test from Medichecks measures 1 biomarker: Oestrone.",
+    );
   });
 
   it("lists up to three biomarkers", () => {
