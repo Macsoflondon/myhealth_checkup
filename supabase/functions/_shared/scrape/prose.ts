@@ -15,8 +15,7 @@
 const STYLE_ELEMENT = /<style\b[^>]*>[\s\S]*?(?:<\/style\s*>|$)/gi;
 
 /** Rules whose selector starts with `#`, `.` or `@` (ids, classes, at-rules). */
-const SYMBOL_SELECTOR_RULE =
-  /(?:[#.@][^\s{}]+\s*(?:[,>+~]\s*)?)+\{[^{}]*\}/g;
+const SYMBOL_SELECTOR_RULE = /(?:[#.@][^\s{}]+\s*(?:[,>+~]\s*)?)+\{[^{}]*\}/g;
 
 /** Rules on bare element selectors, e.g. `p { margin: 0 }` or `div.x > a { … }`. */
 const ELEMENT_SELECTOR_RULE =
