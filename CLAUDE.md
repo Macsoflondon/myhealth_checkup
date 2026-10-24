@@ -14,7 +14,7 @@ The package is still named `vite_react_shadcn_ts` in `package.json` — a leftov
 
 - `npm run dev` — `vite dev` (TanStack Start dev server; Playwright's default `baseURL` assumes it serves on `localhost:8080`)
 - `npm run build` / `npm run build:dev` — `vite build` (production / development-mode)
-- `npm run prebuild` — chained pre-build gate: `scripts/check-secrets.sh` → `scripts/check-rls-grants.mjs` → `scripts/generate-sitemap.ts` → `scripts/seo-regression.mjs`. Runs automatically before `build` via npm's lifecycle hook; do not skip it when diagnosing a build that "works locally" but fails in CI.
+- `npm run prebuild` — chained pre-build gate: `scripts/check-secrets.sh` → `scripts/check-rls-grants.mjs` → `scripts/audit-card-external-links.mjs` → `scripts/generate-sitemap.ts` → `scripts/seo-regression.mjs`. Runs automatically before `build` via npm's lifecycle hook; do not skip it when diagnosing a build that "works locally" but fails in CI. **Corrected 2026-10-23** — `audit-card-external-links.mjs` (added by the test-card audit's pass 4) was missing from this list; verified against `package.json` directly rather than assumed.
 - `npm run lint` — ESLint (flat config in `eslint.config.js`)
 - `npm run format` — Prettier, writes in place
 - `npm test` — Vitest, watch mode by default (jsdom, globals on). Tests live alongside source as `src/**/*.{test,spec}.{ts,tsx}`.

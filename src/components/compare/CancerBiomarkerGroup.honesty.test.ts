@@ -45,6 +45,7 @@ const baseTest: EnhancedTestData = {
   description:
     "Recommended for men concerned about their PSA levels and prostate health.",
   url: "https://example.com/test",
+  urlVerified: null,
   dataSource: "database",
 };
 

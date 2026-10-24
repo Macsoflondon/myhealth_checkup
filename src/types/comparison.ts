@@ -52,6 +52,8 @@ export interface EnhancedTestData {
   // Meta
   description: string;
   url: string | null;
+  /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
+  urlVerified: boolean | null;
   dataSource?: "live" | "cache" | "database";
   lastUpdated?: string;
 }

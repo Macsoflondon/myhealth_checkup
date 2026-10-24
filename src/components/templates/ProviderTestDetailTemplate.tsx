@@ -49,6 +49,7 @@ import {
   useUrlValidation,
   getProviderFallbackUrl,
 } from "@/hooks/useUrlValidation";
+import { canBookDirect } from "@/lib/booking-link-state";
 import {
   buildProviderBookingUrl,
   externalLinkProps,
@@ -75,6 +76,8 @@ export interface ProviderTestData {
   category: string;
   description: string;
   url: string;
+  /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
+  url_verified?: boolean | null;
   price: number | null;
   provider_test_id?: string;
   biomarkers_list?: string[] | null;
@@ -150,6 +153,7 @@ interface ComparisonProviderOption {
   collectionMethod: string;
   biomarkerCount?: number;
   url?: string;
+  url_verified?: boolean | null;
   rating?: number;
   reviews?: string;
 }
@@ -203,12 +207,15 @@ const NotFoundState = ({ providerName }: { providerName: string }) => {
 // Booking Button Component with URL validation and fallback
 const BookingButton = ({
   testUrl,
+  urlVerified,
   providerConfig,
 }: {
   testUrl: string;
+  /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
+  urlVerified?: boolean | null;
   providerConfig: ProviderConfig;
 }) => {
-  const { isValid, isLoading } = useUrlValidation(testUrl);
+  const { isLoading } = useUrlValidation(testUrl);
   const fallbackUrl = getProviderFallbackUrl(providerConfig.id);
 
   if (isLoading) {
@@ -216,6 +223,28 @@ const BookingButton = ({
       <div className="space-y-3">
         <Skeleton className="h-11 w-full" />
         <Skeleton className="h-4 w-48 mx-auto" />
+      </div>
+    );
+  }
+
+  // The provider's last automated check of this exact listing's link failed —
+  // go straight to their general catalogue rather than a known-broken URL.
+  if (urlVerified === false) {
+    return (
+      <div className="space-y-3">
+        <p className="text-xs text-center text-muted-foreground">
+          This test's direct booking link needs checking.
+        </p>
+        <Button variant="outline" size="lg" className="w-full" asChild>
+          <a
+            href={fallbackUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center"
+          >
+            Browse all {providerConfig.name} tests
+          </a>
+        </Button>
       </div>
     );
   }
@@ -638,6 +667,7 @@ export default function ProviderTestDetailTemplate({
               ? undefined
               : displayBiomarkerCount(t) || undefined,
           url: t.url || undefined,
+          url_verified: t.url_verified ?? null,
           rating: provRating?.rating,
           reviews: provRating?.reviewsFormatted,
         };
@@ -928,6 +958,7 @@ export default function ProviderTestDetailTemplate({
 
                   <BookingButton
                     testUrl={test.url}
+                    urlVerified={test.url_verified}
                     providerConfig={providerConfig}
                   />
                 </CardContent>
@@ -1002,16 +1033,28 @@ export default function ProviderTestDetailTemplate({
                   `your ${test.test_name}`,
                 )}
               </p>
-              <Button size="lg" asChild>
-                <a
-                  href={test.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  data-affiliate-placement="detail"
-                >
-                  Book Your Test Now
-                </a>
-              </Button>
+              {canBookDirect(test.url, test.url_verified) ? (
+                <Button size="lg" asChild>
+                  <a
+                    href={test.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-affiliate-placement="detail"
+                  >
+                    Book Your Test Now
+                  </a>
+                </Button>
+              ) : (
+                <Button variant="outline" size="lg" asChild>
+                  <a
+                    href={getProviderFallbackUrl(providerConfig.id)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Browse all {providerConfig.name} tests
+                  </a>
+                </Button>
+              )}
               <AffiliateCommissionNote className="mt-3 text-center" />
             </CardContent>
           </Card>

@@ -181,6 +181,7 @@ const MostPopularTestsPage = () => {
         tag,
         collection: t.sample_type || "Blood sample",
         url: t.url || undefined,
+        url_verified: t.url_verified ?? null,
         imageUrl: t.image_url,
         collectionOptions: t.collection_options,
         isAddon: t.is_addon,

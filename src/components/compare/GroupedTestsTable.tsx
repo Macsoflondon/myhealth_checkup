@@ -27,6 +27,7 @@ import {
   Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { canBookDirect } from "@/lib/booking-link-state";
 import { ProviderTestRow } from "@/hooks/queries/useProvidersByTestType";
 import { getProviderLogo, getProviderDisplayName } from "@/utils/providerUtils";
 
@@ -479,7 +480,7 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
                                   />
                                 </Button>
 
-                                {test.url ? (
+                                {canBookDirect(test.url, test.urlVerified) ? (
                                   <Button
                                     size="sm"
                                     className="bg-primary hover:bg-primary/90 gap-1"
@@ -497,7 +498,7 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
                                     </a>
                                   </Button>
                                 ) : null}
-                                {test.url ? (
+                                {canBookDirect(test.url, test.urlVerified) ? (
                                   <AffiliateCommissionNote className="mt-1 max-w-[180px]" />
                                 ) : (
                                   <Button

@@ -29,6 +29,8 @@ export interface RawTestRow {
   phlebotomy_included?: boolean | null;
   phlebotomy_cost?: number | null;
   url?: string | null;
+  /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
+  url_verified?: boolean | null;
   updated_at?: string | null;
   lab_ukas_accredited?: boolean | null;
   lab_cqc_regulated?: boolean | null;
@@ -125,6 +127,7 @@ export function transformRawTestToEnhanced(
     accreditations: resolveAccreditationsFromRow(test) ?? [],
     description: test.description || "",
     url: test.url ?? null,
+    urlVerified: test.url_verified ?? null,
     dataSource: "database",
     lastUpdated: test.updated_at ?? undefined,
   };

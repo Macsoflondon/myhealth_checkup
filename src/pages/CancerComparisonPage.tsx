@@ -1,4 +1,5 @@
 import { openAffiliateUrl } from "@/lib/affiliate/affiliate-tracking";
+import { canBookDirect } from "@/lib/booking-link-state";
 import { useState, useEffect, useMemo } from "react";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { useSearchParams, Link } from "@/lib/router-compat";
@@ -137,7 +138,7 @@ export default function CancerComparisonPage() {
     selectedTests.some((t) => t.id === testId);
 
   const handleBookTest = (test: EnhancedTestData) => {
-    if (test.url) {
+    if (canBookDirect(test.url, test.urlVerified)) {
       openAffiliateUrl(test.url, { placement: "comparison", testId: test.id });
     }
   };
@@ -386,7 +387,7 @@ export default function CancerComparisonPage() {
                                 View details
                               </Link>
                             </Button>
-                            {test.url && (
+                            {canBookDirect(test.url, test.urlVerified) && (
                               <Button
                                 variant="default"
                                 size="sm"
