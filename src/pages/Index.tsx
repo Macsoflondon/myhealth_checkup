@@ -109,15 +109,20 @@ const DEFERRED_SECTIONS = (
         </SectionReveal>
       </Suspense>
     </HydrateOnVisible>
-
-    <HydrateOnVisible load={DecisionInfrastructureSection.preload}>
-      <Suspense fallback={<SectionFallback />}>
-        <SectionReveal delay={0.1}>
-          <DecisionInfrastructureSection />
-        </SectionReveal>
-      </Suspense>
-    </HydrateOnVisible>
   </>
+);
+
+// "Why myhealth checkup" was moved below "Trusted by users" at the site owner's
+// request. It stays a module-level element for the same reason as
+// DEFERRED_SECTIONS: homepage re-renders must hand React the same element.
+const DECISION_SECTION = (
+  <HydrateOnVisible load={DecisionInfrastructureSection.preload}>
+    <Suspense fallback={<SectionFallback />}>
+      <SectionReveal delay={0.1}>
+        <DecisionInfrastructureSection />
+      </SectionReveal>
+    </Suspense>
+  </HydrateOnVisible>
 );
 
 const Index = () => {
@@ -246,6 +251,8 @@ const Index = () => {
               </SectionReveal>
             </Suspense>
           </LazyMount>
+
+          {DECISION_SECTION}
 
           <LazyMount
             minHeight={500}
