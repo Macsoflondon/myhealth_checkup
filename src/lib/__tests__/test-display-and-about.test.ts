@@ -41,7 +41,7 @@ describe("buildTestHead", () => {
     priceGbp: 63,
     biomarkerCount: 1,
   });
-  const meta = head.meta as Array<Record<string, string>>;
+  const meta = head.meta as unknown as Array<Record<string, string>>;
   const title = meta.find((m) => "title" in m)?.title ?? "";
   const ogTitle = meta.find((m) => m.property === "og:title")?.content ?? "";
   const description =

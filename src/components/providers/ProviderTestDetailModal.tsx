@@ -1,4 +1,5 @@
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
+import { sanitiseProviderProse } from "../../../supabase/functions/_shared/scrape/prose";
 import { stripCollectionFeeText } from "@/lib/resolve-test-fields";
 import { useNavigate } from "@/lib/router-compat";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
