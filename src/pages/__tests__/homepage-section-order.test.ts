@@ -27,11 +27,7 @@ const showcase = readFileSync(
 );
 
 /** Text between the first `start` marker and the next `end` marker. */
-const sliceBetween = (
-  source: string,
-  start: string,
-  end: string,
-): string => {
+const sliceBetween = (source: string, start: string, end: string): string => {
   const from = source.indexOf(start);
   if (from === -1) throw new Error(`Missing block: ${start}`);
   const to = source.indexOf(end, from);
@@ -73,10 +69,9 @@ const assertAscending = (
       `${marker} renders more than once in ${block}`,
     ).toBe(1);
     if (index > 0) {
-      expect(
-        position,
-        `${marker} is out of order in ${block}`,
-      ).toBeGreaterThan(source.indexOf(markers[index - 1]));
+      expect(position, `${marker} is out of order in ${block}`).toBeGreaterThan(
+        source.indexOf(markers[index - 1]),
+      );
     }
   });
 };
