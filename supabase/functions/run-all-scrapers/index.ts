@@ -102,6 +102,15 @@ async function recordFailureAlerts(
   if (error) console.error("Failed to insert scraper_alerts:", error.message);
 }
 
+function escapeHtml(value: unknown): string {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 async function sendAdminNotification(
   supabase: ReturnType<typeof createClient>,
   subject: string,
@@ -177,14 +186,14 @@ function generateEmailHtml(
     .map(
       (r) => `
     <tr>
-      <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">${r.provider}</td>
+      <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">${escapeHtml(r.provider)}</td>
       <td style="padding: 8px 12px; border-bottom: 1px solid #eee;">
         <span style="color: ${r.success ? "#22c0d4" : "#e70d69"}; font-weight: 600;">
           ${r.success ? (r.dispatched ? "→ Dispatched" : "✓ Success") : "✗ Failed"}
         </span>
       </td>
       <td style="padding: 8px 12px; border-bottom: 1px solid #eee; font-size: 12px; color: #666;">
-        ${r.message}
+        ${escapeHtml(r.message)}
       </td>
     </tr>
   `,
