@@ -1,4 +1,5 @@
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
+import { sanitiseProviderProse } from "../../../supabase/functions/_shared/scrape/prose";
 import { stripCollectionFeeText } from "@/lib/resolve-test-fields";
 import { useNavigate } from "@/lib/router-compat";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -489,9 +490,18 @@ export default function ProviderTestDetailModal({
             {/* Provider's own wording, captured verbatim from their test page. */}
             {(
               [
-                ["What you can learn from this test", test.what_is_tested],
-                ["How to prepare", test.preparation_notes],
-                ["Test limitations", test.test_limitations],
+                [
+                  "What you can learn from this test",
+                  sanitiseProviderProse(test.what_is_tested),
+                ],
+                [
+                  "How to prepare",
+                  sanitiseProviderProse(test.preparation_notes),
+                ],
+                [
+                  "Test limitations",
+                  sanitiseProviderProse(test.test_limitations),
+                ],
               ] as const
             ).map(([heading, body]) =>
               body ? (

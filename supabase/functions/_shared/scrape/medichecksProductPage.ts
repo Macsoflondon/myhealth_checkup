@@ -13,6 +13,7 @@
 
 import { normaliseBiomarkers } from "./normaliseBiomarkers.ts";
 import { htmlToText } from "./html.ts";
+import { sanitiseProviderProse } from "./prose.ts";
 
 export interface MedichecksPageDetail {
   biomarkers: string[];
@@ -60,15 +61,20 @@ function readSection(doc: string, heading: string): string | null {
   const found = marker.exec(doc);
   if (!found) return null;
   const start = found.index + found[0].length;
-  let body = toPlainText(doc.slice(start, start + SECTION_LIMIT));
+  let body = sanitiseProviderProse(
+    toPlainText(doc.slice(start, start + SECTION_LIMIT)),
+  );
+  if (!body) return null;
 
   for (const boundary of SECTION_BOUNDARIES) {
-    const at = body.indexOf(boundary, 30);
-    if (at > 0) body = body.slice(0, at);
+    // Search from the start: once CSS is removed the next heading can sit at
+    // index 0, and a fixed offset would let the heading through as prose.
+    const at = body.indexOf(boundary);
+    if (at >= 0) body = body.slice(0, at);
   }
   body = body.trim().replace(/[.,;:\s]+$/, "");
 
-  if (body.length <= 20) return null;
+  if (body.length <= 20 || !sanitiseProviderProse(body)) return null;
   return /[.!?]$/.test(body) ? body : `${body}.`;
 }
 

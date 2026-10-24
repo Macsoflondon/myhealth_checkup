@@ -1,3 +1,4 @@
+import { getTestDisplayName } from "@/lib/test-display-name";
 import {
   buildProviderSchema,
   buildTestSchema,
@@ -222,15 +223,16 @@ export const buildTestHead = ({
 }: TestHeadInput) => {
   const path = `/provider/${providerId}/tests/${testId}`;
   const url = canonicalUrl(path);
-  const title = `${testName} — ${providerName} | myhealth checkup`;
-  const description = `Compare the ${testName} from ${providerName} against other accredited UK providers. Biomarkers, sample method, typical turnaround and pricing side-by-side.`;
+  const displayName = getTestDisplayName(testName);
+  const title = `${displayName} — ${providerName} | myhealth checkup`;
+  const description = `Compare the ${displayName} from ${providerName} against other accredited UK providers. Biomarkers, sample method, typical turnaround and pricing side-by-side.`;
   const base = buildRouteHead({ title, description, path });
 
   return {
     ...base,
     scripts: toJsonLdScripts(
       buildTestSchema({
-        testName,
+        testName: displayName,
         providerName,
         providerId,
         url,
