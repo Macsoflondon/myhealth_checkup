@@ -1,4 +1,3 @@
-import { Helmet } from "react-helmet-async";
 import { lazy, Suspense } from "react";
 import { Link } from "@/lib/router-compat";
 import MainLayout from "@/layouts/MainLayout";
@@ -132,104 +131,12 @@ const Index = () => {
     0,
   );
 
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "MedicalBusiness",
-    name: "myhealth checkup - UK's Leading Health Test Comparison Platform",
-    description:
-      "Compare private blood tests, health screenings, and wellness services across 10+ leading UK providers. Hospital-grade testing with high-street convenience for health-conscious adults aged 30-60.",
-    url: "https://myhealthcheckup.co.uk",
-    sameAs: [
-      "https://www.facebook.com/myhealthcheckupuk",
-      "https://www.twitter.com/myhealthcheckup",
-      "https://www.instagram.com/myhealthcheckup_uk",
-    ],
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "2/369 Clapham Road",
-      addressLocality: "London",
-      postalCode: "SW9 9BT",
-      addressCountry: "GB",
-    },
-    audience: {
-      "@type": "Audience",
-      audienceType: "Health-conscious adults aged 25-65",
-      geographicArea: {
-        "@type": "Country",
-        name: "United Kingdom",
-      },
-    },
-    offers: {
-      "@type": "AggregateOffer",
-      priceCurrency: "GBP",
-      lowPrice: "29",
-      highPrice: "299",
-      offerCount: "100+",
-    },
-    openingHoursSpecification: {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-      ],
-      opens: "00:00",
-      closes: "23:59",
-    },
-  };
-
   // Organization + WebSite JSON-LD live once, site-wide, in src/routes/__root.tsx.
   // Repeating them here duplicated ~2 KB of markup in every homepage response.
 
   return (
     <ErrorBoundary>
       <MainLayout>
-        <Helmet>
-          {/* Hero preload lives in the route head() — see src/routes/index.tsx. */}
-
-          {/* Title, description, canonical, og:* and twitter:* are owned by the
-              route head() in src/routes/index.tsx — single source of truth. */}
-          <meta
-            name="keywords"
-            content="private blood tests UK, health screening comparison, blood test prices UK, hormone testing, vitamin tests, cancer screening, health MOT UK, at-home blood tests, private health tests comparison"
-          />
-          <meta property="og:site_name" content="myhealth checkup" />
-          <meta
-            property="og:image"
-            content="https://myhealthcheckup.co.uk/og-image.png"
-          />
-          <meta property="og:locale" content="en_GB" />
-
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:site" content="@myhealthcheckup" />
-          <meta
-            name="twitter:image"
-            content="https://myhealthcheckup.co.uk/og-image.png"
-          />
-
-          <meta
-            name="robots"
-            content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
-          />
-
-          <link rel="manifest" href="/manifest.json" />
-          <meta name="theme-color" content="#22c0d4" />
-          <meta name="mobile-web-app-capable" content="yes" />
-          <meta
-            name="apple-mobile-web-app-status-bar-style"
-            content="default"
-          />
-          <meta name="apple-mobile-web-app-title" content="myhealth checkup" />
-
-          <script type="application/ld+json">
-            {JSON.stringify(structuredData)}
-          </script>
-        </Helmet>
-
         <div>
           <div className="mt-0 mx-0">
             <HeroMasthead />
@@ -259,11 +166,12 @@ const Index = () => {
                     </h2>
 
                     <p className="text-white/85 text-sm sm:text-base leading-relaxed m-0 2xl:text-lg">
-                      At myhealth checkup, everyone deserves access to
-                      transparent, trustworthy health information. Our mission
-                      is to make it simple to compare private health tests from
-                      accredited UK providers. Every provider we list uses a
-                      UKAS-accredited laboratory or a CQC-registered clinic.
+                      Compare private blood tests in the UK with myhealth
+                      checkup. See prices, biomarkers, collection options and
+                      typical turnaround times side by side, using provider
+                      listings. Every provider we list uses a UKAS-accredited
+                      laboratory or a CQC-regulated clinic. We provide
+                      comparison information, not medical care or diagnosis.
                     </p>
 
                     <div
