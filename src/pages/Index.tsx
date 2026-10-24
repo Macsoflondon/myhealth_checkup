@@ -170,8 +170,8 @@ const Index = () => {
                       checkup. See prices, biomarkers, collection options and
                       typical turnaround times side by side, using provider
                       listings. Every provider we list uses a UKAS-accredited
-                      laboratory or a CQC-regulated clinic. We provide comparison
-                      information, not medical care or diagnosis.
+                      laboratory or a CQC-regulated clinic. We provide
+                      comparison information, not medical care or diagnosis.
                     </p>
 
                     <div
