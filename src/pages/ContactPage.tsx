@@ -157,12 +157,15 @@ const ContactPage = () => {
         <script type="application/ld+json">
           {serializeJsonLd({
             "@context": "https://schema.org",
-            "@type": ["ContactPage", "MedicalBusiness", "LocalBusiness"],
+            "@type": "ContactPage",
             name: "myhealth checkup",
-            legalName: "MYHEALTHCHECKUP LTD",
-            description:
-              "Independent UK platform comparing private health tests from accredited providers.",
             url: "https://myhealthcheckup.co.uk/contact",
+            description:
+              "Contact myhealth checkup, an independent UK comparison platform for private blood tests and cancer screening from accredited providers.",
+            mainEntity: {
+              "@type": "Organization",
+              name: "myhealth checkup",
+              legalName: "MYHEALTHCHECKUP LTD",
             email: "support@myhealthcheckup.co.uk",
             address: {
               "@type": "PostalAddress",
