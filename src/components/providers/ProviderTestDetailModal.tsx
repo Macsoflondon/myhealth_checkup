@@ -493,7 +493,10 @@ export default function ProviderTestDetailModal({
                   "What you can learn from this test",
                   sanitiseProviderProse(test.what_is_tested),
                 ],
-                ["How to prepare", sanitiseProviderProse(test.preparation_notes)],
+                [
+                  "How to prepare",
+                  sanitiseProviderProse(test.preparation_notes),
+                ],
                 [
                   "Test limitations",
                   sanitiseProviderProse(test.test_limitations),
