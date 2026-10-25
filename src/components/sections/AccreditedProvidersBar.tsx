@@ -30,22 +30,27 @@ const AccreditedProvidersBar = () => {
   return (
     <section
       aria-label="Accredited provider standards"
-      className="bg-white border-t-2 border-t-[#e70d69] border-b-2 border-b-[#22c0d4]"
+      className="bg-white"
     >
-      <div className="container mx-auto px-5 sm:px-4 py-4 sm:py-5">
+      <div
+        aria-hidden="true"
+        className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise"
+      />
+      <div className="container mx-auto px-5 sm:px-4 py-6 sm:py-8">
         <Reveal variant="fade">
           <p className="hidden md:block text-center font-[Montserrat] font-semibold text-[#081129] text-[clamp(1.05rem,5vw,1.9rem)] sm:text-[clamp(1.3rem,3.4vw,2.65rem)] xl:text-[clamp(1.3rem,2.05vw,2rem)] xl:whitespace-nowrap leading-tight mb-0.5 px-4">
             {HERO_CAPTION}
           </p>
         </Reveal>
 
-        {/* Editorial standards header */}
-        <div className="flex flex-col items-center mt-0 mb-4 sm:mb-5">
+        {/* Editorial standards header — shared eyebrow pattern */}
+        <div className="mt-0 mb-5 sm:mb-6 flex items-center justify-center gap-3">
+          <span className="h-px w-8 sm:w-12 bg-brand-pink" aria-hidden="true" />
           {/* h2 so the six standards below (h3) sit under a section heading. */}
-          <h2 className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.25em] text-[#081129]/70 mb-2">
+          <h2 className="font-heading text-[13px] sm:text-sm font-bold uppercase tracking-[0.25em] text-brand-turquoise">
             Our clinical standards
           </h2>
-          <div className="w-8 h-[2px] bg-[#22c0d4]" />
+          <span className="h-px w-8 sm:w-12 bg-brand-pink" aria-hidden="true" />
         </div>
 
         {/* Underline grid — condensed spacing */}
