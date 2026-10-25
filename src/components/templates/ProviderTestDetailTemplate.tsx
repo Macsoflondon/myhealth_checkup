@@ -85,6 +85,7 @@ export interface ProviderTestData {
   biomarkers_list?: string[] | null;
   biomarker_count?: number | null;
   image_url?: string | null;
+  gallery_image_urls?: string[] | null;
   is_addon?: boolean;
   original_price?: number | null;
   discount_percentage?: number | null;
