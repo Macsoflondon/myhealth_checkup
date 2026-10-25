@@ -150,13 +150,13 @@ const Index = () => {
             <PartnersGrid />
           </Suspense>
 
-          <div className="h-6 sm:h-8 bg-white" aria-hidden="true" />
+          <div className="h-3 sm:h-4 bg-white" aria-hidden="true" />
 
           <div id="comparison-anchor" aria-hidden="true" />
 
           {/* Hero CTA — Slogan + Health Quiz entry point */}
-          <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-4 sm:px-6 py-6 sm:py-8 mx-3 sm:mx-6 mt-0 mb-6 sm:mb-8">
-            <div className="relative overflow-hidden rounded-[22px] bg-[#081129] px-4 sm:px-8 lg:px-12 py-8 sm:py-10 lg:py-12">
+          <section className="w-full rounded-2xl overflow-hidden bg-brand-navy">
+            <div className="homepage-section-inner relative overflow-hidden py-8 sm:py-10">
               <div className="absolute -right-[50px] -top-[60px] w-[260px] h-[260px] rounded-full bg-[#22c0d4]/[0.12]" />
               <div className="absolute right-[120px] -bottom-[110px] w-[240px] h-[240px] rounded-full bg-[#e70d69]/10" />
               <div className="relative">
@@ -226,17 +226,9 @@ const Index = () => {
 
           {DEFERRED_SECTIONS}
 
-          <LazyMount
-            minHeight={800}
-            className="bg-brand-navy"
-            fallback={<PartnerShowcaseSkeleton />}
-          >
-            <Suspense fallback={<PartnerShowcaseSkeleton />}>
-              <SectionReveal delay={0.1}>
-                <PartnerShowcaseGrid />
-              </SectionReveal>
-            </Suspense>
-          </LazyMount>
+          <Suspense fallback={<PartnerShowcaseSkeleton />}>
+            <PartnerShowcaseGrid />
+          </Suspense>
 
           <LazyMount
             minHeight={500}
