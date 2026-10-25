@@ -41,12 +41,7 @@ export interface UnifiedTestCardProps {
  */
 export function UnifiedTestCard(props: UnifiedTestCardProps) {
   const data = fromLegacyUnified(props);
-  return (
-    <UniversalTestCard
-      test={data}
-      className={props.className}
-    />
-  );
+  return <UniversalTestCard test={data} className={props.className} />;
 }
 
 export default UnifiedTestCard;

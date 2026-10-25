@@ -24,11 +24,20 @@ export function TestCardImage({
   const showImage = source !== null && source !== failedSource;
 
   return (
-    <div className={cn("h-full w-full min-h-0 overflow-hidden bg-white", className)}>
+    <div
+      className={cn(
+        "h-full w-full min-h-0 overflow-hidden bg-white",
+        className,
+      )}
+    >
       {showImage ? (
         <img
           src={displayWidth ? shopifyImageUrl(source, displayWidth) : source}
-          srcSet={displayWidth ? shopifyImageSrcSet(source, [displayWidth, displayWidth * 2]) : undefined}
+          srcSet={
+            displayWidth
+              ? shopifyImageSrcSet(source, [displayWidth, displayWidth * 2])
+              : undefined
+          }
           sizes={sizes}
           alt={`${testName} by ${providerName}`}
           loading="lazy"

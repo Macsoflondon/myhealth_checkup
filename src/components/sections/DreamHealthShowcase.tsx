@@ -112,7 +112,8 @@ const descriptionFor = (t: PopularTest): string => {
   return `${cleanName(t.test_name)} from ${t.provider_name}.`;
 };
 
-const resolveImage = (t: PopularTest): string | null => t.image_url?.trim() || null;
+const resolveImage = (t: PopularTest): string | null =>
+  t.image_url?.trim() || null;
 
 const ALLOWED_PROVIDERS = [
   "lola-health",
