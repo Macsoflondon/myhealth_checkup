@@ -5597,6 +5597,7 @@ export type Database = {
           description_source: string | null
           discount_percentage: number | null
           field_completeness_score: number | null
+          gallery_image_urls: string[]
           gender_specific: string | null
           goals: string[] | null
           gp_consultation_cost: number | null
@@ -5690,6 +5691,7 @@ export type Database = {
           description_source?: string | null
           discount_percentage?: number | null
           field_completeness_score?: number | null
+          gallery_image_urls?: string[]
           gender_specific?: string | null
           goals?: string[] | null
           gp_consultation_cost?: number | null
@@ -5783,6 +5785,7 @@ export type Database = {
           description_source?: string | null
           discount_percentage?: number | null
           field_completeness_score?: number | null
+          gallery_image_urls?: string[]
           gender_specific?: string | null
           goals?: string[] | null
           gp_consultation_cost?: number | null

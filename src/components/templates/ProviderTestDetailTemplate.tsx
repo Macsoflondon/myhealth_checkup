@@ -59,6 +59,8 @@ import {
   getTestDisplayName,
 } from "@/lib/test-display-name";
 import { buildTestAboutCopy } from "@/lib/test-about-copy";
+import { resolveGalleryImages } from "@/lib/test-gallery";
+import { TestImageGallery } from "@/components/tests/TestImageGallery";
 import { getProviderLogo } from "@/constants/providers";
 import { TestProviderPriceTable } from "@/components/compare/TestProviderPriceTable";
 import { RetestReminderCard } from "@/components/retest-reminder/retest-reminder-card";
@@ -85,6 +87,7 @@ export interface ProviderTestData {
   biomarkers_list?: string[] | null;
   biomarker_count?: number | null;
   image_url?: string | null;
+  gallery_image_urls?: string[] | null;
   is_addon?: boolean;
   original_price?: number | null;
   discount_percentage?: number | null;
@@ -745,6 +748,11 @@ export default function ProviderTestDetailTemplate({
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             {/* Main Content */}
             <div className="md:col-span-2 space-y-8">
+              <TestImageGallery
+                images={resolveGalleryImages(test)}
+                testName={displayName}
+                providerName={providerConfig.name}
+              />
               {/* About This Test */}
               <Card>
                 <CardHeader>

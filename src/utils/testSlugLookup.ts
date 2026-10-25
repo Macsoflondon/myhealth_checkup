@@ -18,6 +18,7 @@ export interface TestData {
   biomarkers_list?: string[] | null;
   biomarker_count?: number | null;
   image_url?: string | null;
+  gallery_image_urls?: string[] | null;
   is_addon?: boolean;
   original_price?: number | null;
   discount_percentage?: number | null;
@@ -69,7 +70,7 @@ function generateSlugVariations(slug: string): string[] {
 
 const SELECT_FIELDS = `
   id, test_name, category, description, url, price, provider_test_id, 
-  biomarkers_list, biomarker_count, image_url, is_addon, 
+  biomarkers_list, biomarker_count, image_url, gallery_image_urls, is_addon, 
   original_price, discount_percentage, symptoms, conditions, who_should_test,
   sample_type, collection_method, home_phlebotomy_cost, home_kit_available,
   clinic_visit_available, home_phlebotomy_option, turnaround_days_text,
