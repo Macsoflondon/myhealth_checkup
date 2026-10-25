@@ -48,7 +48,7 @@ const PartnersGrid = () => {
   const items = [...providers, ...providers, ...providers, ...providers];
 
   return (
-    <section className="py-6 sm:py-8 md:py-10 bg-[#081129] relative overflow-hidden">
+    <section className="py-6 sm:py-8 bg-brand-navy relative overflow-hidden rounded-2xl">
       {/* Decorative half-circles */}
       <div className="absolute top-0 right-0 w-72 h-72 bg-brand-turquoise/5 rounded-full translate-x-1/3 -translate-y-1/3" />
       <div className="absolute bottom-0 left-0 w-56 h-56 bg-brand-pink/5 rounded-full -translate-x-1/3 translate-y-1/3" />
@@ -76,7 +76,7 @@ const PartnersGrid = () => {
       <div className="absolute top-[40%] right-[20%] w-60 h-60 bg-brand-pink/[0.03] rounded-full" />
       <div className="absolute bottom-[50%] left-[85%] w-36 h-36 bg-brand-turquoise/[0.03] rounded-full" />
 
-      <div className="container mx-auto px-4 sm:px-6 relative">
+      <div className="homepage-section-inner relative">
         {/* Section label */}
         <EyebrowBadge size="md" tone="onDark" className="mb-2" />
 
@@ -88,7 +88,7 @@ const PartnersGrid = () => {
         />
 
         <div
-          className="relative overflow-hidden full-bleed"
+          className="relative overflow-hidden"
           style={{
             maskImage:
               "linear-gradient(to right, transparent 0%, black 3%, black 97%, transparent 100%)",

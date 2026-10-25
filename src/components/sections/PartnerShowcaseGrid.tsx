@@ -74,7 +74,7 @@ const PartnerShowcaseGrid = () => {
   return (
     <section
       data-hq-images
-      className="w-full py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden min-h-[800px] [&_img]:[image-rendering:high-quality] [&_img]:[-webkit-backface-visibility:hidden] [&_img]:transform-gpu"
+      className="w-full pb-6 sm:pb-8 bg-brand-navy relative overflow-hidden min-h-[800px] [&_img]:[image-rendering:high-quality] [&_img]:[-webkit-backface-visibility:hidden] [&_img]:transform-gpu"
     >
       <NavyDecorativeCircles />
 
