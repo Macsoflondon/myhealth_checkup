@@ -1,17 +1,16 @@
 import { describe, expect, it } from "vitest";
-import lolaAddonKitAsset from "@/assets/providers/lola-health-addon-kit.png.asset.json";
 import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
 import { fromCategoryTestItem } from "@/lib/universalTestAdapter";
 
 describe("resolveTestCardImage", () => {
-  it("uses the supplied kit image for Lola Health add-ons", () => {
+  it("uses the provider product image for Lola Health add-ons", () => {
     expect(
       resolveTestCardImage({
         providerId: "lola-health",
         isAddon: true,
         imageUrl: "https://provider.example/unwanted.jpg",
       }),
-    ).toBe(lolaAddonKitAsset.url);
+    ).toBe("https://provider.example/unwanted.jpg");
   });
 
   it("keeps a Lola Health standalone test image", () => {
@@ -36,7 +35,7 @@ describe("resolveTestCardImage", () => {
     ).toBe(imageUrl);
   });
 
-  it("returns null for a test with no image so the card shows the brand tile", () => {
+  it("returns null for a test with no image so the card shows the neutral placeholder", () => {
     expect(
       resolveTestCardImage({
         providerId: "clinilabs",

@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      _img_check_20261025: {
+        Row: {
+          id: string | null
+          image_url: string | null
+          provider_id: string | null
+          req: number | null
+        }
+        Insert: {
+          id?: string | null
+          image_url?: string | null
+          provider_id?: string | null
+          req?: number | null
+        }
+        Update: {
+          id?: string | null
+          image_url?: string | null
+          provider_id?: string | null
+          req?: number | null
+        }
+        Relationships: []
+      }
+      _img_jobs_20261025: {
+        Row: {
+          mode: string | null
+          prov: string | null
+          req: number | null
+        }
+        Insert: {
+          mode?: string | null
+          prov?: string | null
+          req?: number | null
+        }
+        Update: {
+          mode?: string | null
+          prov?: string | null
+          req?: number | null
+        }
+        Relationships: []
+      }
       admin_activity_log: {
         Row: {
           action: string
@@ -5412,6 +5451,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      provider_test_image_backup_20261025: {
+        Row: {
+          backed_up_at: string | null
+          gallery_image_urls: string[] | null
+          image_is_stock: boolean | null
+          image_url: string | null
+          provider_id: string | null
+          provider_test_id: string
+          reason: string | null
+        }
+        Insert: {
+          backed_up_at?: string | null
+          gallery_image_urls?: string[] | null
+          image_is_stock?: boolean | null
+          image_url?: string | null
+          provider_id?: string | null
+          provider_test_id: string
+          reason?: string | null
+        }
+        Update: {
+          backed_up_at?: string | null
+          gallery_image_urls?: string[] | null
+          image_is_stock?: boolean | null
+          image_url?: string | null
+          provider_id?: string | null
+          provider_test_id?: string
+          reason?: string | null
+        }
+        Relationships: []
       }
       provider_test_mapping: {
         Row: {

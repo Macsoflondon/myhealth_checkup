@@ -11,6 +11,7 @@ import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailMo
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 import { isGenericDescription, resolveTestSummary } from "@/lib/test-summary";
 import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
+import { TestCardImage } from "@/components/tests/test-card-image";
 import { useTestDetailsByIds } from "@/hooks/queries/useTestDetailsByIds";
 
 const withFrom = (s: string) => (s && !/^from\b/i.test(s) ? `from ${s}` : s);
@@ -111,66 +112,8 @@ const descriptionFor = (t: PopularTest): string => {
   return `${cleanName(t.test_name)} from ${t.provider_name}.`;
 };
 
-const PLACEHOLDER_PATTERNS = [
-  /\/kits\/kit-(navy|turquoise|pink|black|white|coral)\.jpg$/i,
-  /lovableproject\.com\/lovable-uploads\//i,
-];
-
-const PROVIDER_FALLBACK_IMAGES: Partial<
-  Record<PopularTest["provider_id"], string>
-> = {
-  // Only use provider fallbacks that are NOT product-specific.
-  // A Randox thyroid-kit image would misrepresent every other Randox test,
-  // so we intentionally omit it — tests without a real image are filtered out.
-  "london-medical-laboratory":
-    "https://www.londonmedicallaboratory.com/build/images/site/banners/homepage-banner-mobile.jpg",
-};
-
-const normalizeImageUrl = (
-  url?: string | null,
-  providerId?: string,
-  pageUrl?: string | null,
-) => {
-  if (!url) return null;
-  if (/^https?:\/\//i.test(url)) return url;
-  if (url.startsWith("//")) return `https:${url}`;
-  if (!url.startsWith("/")) return null;
-
-  try {
-    if (pageUrl) return new URL(url, pageUrl).toString();
-    if (providerId === "lola-health")
-      return new URL(url, "https://lolahealth.com").toString();
-    if (providerId === "london-medical-laboratory")
-      return new URL(url, "https://www.londonmedicallaboratory.com").toString();
-  } catch {
-    return null;
-  }
-
-  return null;
-};
-
-const isRealProviderImage = (url?: string | null): url is string =>
-  !!url &&
-  /^https?:\/\//i.test(url) &&
-  !PLACEHOLDER_PATTERNS.some((re) => re.test(url)) &&
-  !/\/image\/gb\.png(?:\?|$)/i.test(url) &&
-  !/randox-health-white-red-dot/i.test(url);
-
-const resolveImage = (t: PopularTest): string | null => {
-  const preferredImage = resolveTestCardImage({
-    providerId: t.provider_id,
-    isAddon: t.is_addon,
-    imageUrl: t.image_url,
-  });
-
-  return preferredImage?.startsWith("/__l5e/assets-v1/")
-    ? preferredImage
-    : isRealProviderImage(
-          normalizeImageUrl(preferredImage, t.provider_id, t.url),
-        )
-      ? normalizeImageUrl(preferredImage, t.provider_id, t.url)!
-      : (PROVIDER_FALLBACK_IMAGES[t.provider_id] ?? null);
-};
+const resolveImage = (t: PopularTest): string | null =>
+  t.image_url?.trim() || null;
 
 const ALLOWED_PROVIDERS = [
   "lola-health",
@@ -194,7 +137,6 @@ const NON_TEST_PATTERNS = [
 const isDisplayablePopularTest = (t: PopularTest) =>
   ALLOWED_PROVIDER_SET.has(t.provider_id) &&
   !!t.url &&
-  !!resolveImage(t) &&
   (t.provider_id !== "lola-health" || t.is_popular === true) &&
   !NON_TEST_PATTERNS.some((pattern) => pattern.test(t.test_name));
 
@@ -443,17 +385,13 @@ const DreamHealthShowcase = () => {
                     type="button"
                     onClick={() => setSelectedTest(t)}
                     aria-label={`View details for ${cleanName(t.test_name)}`}
-                    className="relative flex-shrink-0 w-[42vw] sm:w-[26vw] md:w-[19vw] lg:w-[17vw] aspect-square rounded-2xl overflow-hidden shadow-lg bg-[#f6f7f9]"
+                    className="relative flex-shrink-0 w-[42vw] sm:w-[26vw] md:w-[19vw] lg:w-[17vw] aspect-square rounded-2xl overflow-hidden shadow-lg bg-white"
                   >
-                    <img
-                      src={resolveImage(t)!}
-                      alt={cleanName(t.test_name)}
-                      loading="lazy"
-                      onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).style.display =
-                          "none";
-                      }}
-                      className="w-full h-full object-contain p-4"
+                    <TestCardImage
+                      imageUrl={resolveImage(t)}
+                      testName={t.test_name}
+                      providerName={t.provider_name}
+                      className="p-4"
                     />
                   </button>
                 ))}
@@ -490,31 +428,15 @@ const DreamHealthShowcase = () => {
                     <button
                       type="button"
                       onClick={open}
-                      className="relative aspect-[4/3] overflow-hidden bg-[#f6f7f9] block flex-shrink-0 w-full"
+                      className="relative aspect-[4/3] overflow-hidden bg-white block flex-shrink-0 w-full"
                       aria-label={`View details for ${cleanName(t.test_name)}`}
                     >
-                      <img
-                        src={resolveImage(t)!}
-                        alt={t.test_name}
-                        loading="lazy"
-                        onError={(e) => {
-                          const fallback =
-                            PROVIDER_FALLBACK_IMAGES[t.provider_id];
-                          if (fallback && e.currentTarget.src !== fallback) {
-                            e.currentTarget.src = fallback;
-                            return;
-                          }
-                          (e.currentTarget as HTMLImageElement).style.display =
-                            "none";
-                        }}
-                        className="w-full h-full object-contain p-4"
+                      <TestCardImage
+                        imageUrl={resolveImage(t)}
+                        testName={t.test_name}
+                        providerName={t.provider_name}
+                        className="p-4"
                       />
-                      {t.provider_id === "randox" && (
-                        <span
-                          aria-hidden="true"
-                          className="pointer-events-none absolute top-3 right-3 h-10 w-20 rounded-md bg-[#f6f7f9]"
-                        />
-                      )}
                     </button>
                     <div className="p-5 flex flex-col flex-1">
                       <p className="text-[11px] font-semibold tracking-wide uppercase text-[#22c0d4]">

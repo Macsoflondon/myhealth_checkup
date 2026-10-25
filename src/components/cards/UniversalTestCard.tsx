@@ -33,8 +33,7 @@ import { excerptTestDescription } from "@/lib/test-summary";
 import { displayTurnaround } from "@/lib/resolve-test-fields";
 import { baseTestId, type CollectionVariant } from "@/lib/collectionVariants";
 import { formatTestCardHeadline } from "@/utils/format-test-card-headline";
-import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
-import { shopifyImageSrcSet, shopifyImageUrl } from "@/lib/shopify-image";
+import { TestCardImage } from "@/components/tests/test-card-image";
 
 /** Largest rendered width of the card's product image, in CSS pixels. */
 const CARD_IMAGE_DISPLAY_WIDTH = 325;
@@ -78,7 +77,7 @@ export interface UniversalTestData {
   url?: string | null;
   /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
   url_verified?: boolean | null;
-  /** Provider product-packaging image shown as the card's resting state */
+  /** Provider product image shown as the card's resting state. */
   image_url?: string | null;
   /** True when image_url is an on-brand generic stock photo, not a provider product photo */
   image_is_stock?: boolean | null;
@@ -854,12 +853,6 @@ export interface UniversalTestCardProps {
   /** Optional override for the click handler. If omitted, opens the detail modal. */
   onOpenDetail?: () => void;
   className?: string;
-  /**
-   * At-rest face of the card. "image" (default) shows the provider's kit photo.
-   * "brand" always shows the branded navy-gradient tile with the provider logo
-   * and test name — used on toolbar-reached category listings.
-   */
-  defaultFace?: "image" | "brand";
 }
 
 export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
@@ -867,19 +860,11 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
   headline,
   onOpenDetail,
   className,
-  defaultFace = "image",
 }) => {
   const cardHeadline = formatTestCardHeadline(headline ?? test.test_name);
-  const cardImageUrl = resolveTestCardImage({
-    providerId: test.provider_id,
-    isAddon: test.is_addon,
-    imageUrl: test.image_url,
-  });
   const [internalOpen, setInternalOpen] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const hoverIntentTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  /** Tracks a broken/expired image link so the card degrades to the branded placeholder. */
-  const [brokenImageSrc, setBrokenImageSrc] = useState<string | null>(null);
   const meta = getProviderMeta(test.provider_id);
   const logo = getProviderLogo(test.provider_id) || meta.logo;
   const biomarkers = normalizeBiomarkers(test.biomarkers_list);
@@ -1004,7 +989,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
         <div className="relative flex flex-1 flex-col">
           {/* Product image layer */}
           <div
-            aria-hidden="true"
+            aria-hidden={showDetails}
             className={`absolute inset-0 z-10 flex flex-col bg-white transition-opacity duration-[1500ms] ease-in-out motion-reduce:transition-none ${showDetails ? "opacity-0 pointer-events-none" : "opacity-100"}`}
           >
             {test.is_addon && (
@@ -1027,59 +1012,13 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               </span>
             )}
             <div className="flex flex-1 items-center justify-center overflow-hidden p-4">
-              {defaultFace === "image" &&
-              cardImageUrl &&
-              brokenImageSrc !== cardImageUrl ? (
-                <img
-                  src={shopifyImageUrl(cardImageUrl, CARD_IMAGE_DISPLAY_WIDTH)}
-                  srcSet={shopifyImageSrcSet(cardImageUrl, [
-                    CARD_IMAGE_DISPLAY_WIDTH,
-                    CARD_IMAGE_DISPLAY_WIDTH * 2,
-                  ])}
-                  // Rendered widths measured on the homepage grids: about
-                  // 100vw - 66px on phones, 40vw on tablets, 18vw from 1024px.
-                  sizes={CARD_IMAGE_SIZES}
-                  width={CARD_IMAGE_DISPLAY_WIDTH}
-                  height={CARD_IMAGE_DISPLAY_WIDTH}
-                  alt={`${test.test_name} test kit from ${meta.displayName}`}
-                  loading="lazy"
-                  decoding="async"
-                  className="h-full w-full object-contain"
-                  onError={() => {
-                    setBrokenImageSrc(cardImageUrl);
-                  }}
-                />
-              ) : (
-                <div
-                  className="flex h-full w-full flex-col items-center justify-center gap-3 rounded-xl px-4 text-center"
-                  style={{
-                    background:
-                      "linear-gradient(155deg, rgba(8,17,41,0.94), rgba(34,192,212,0.35))",
-                  }}
-                >
-                  {logo ? (
-                    <span className="flex h-12 w-24 items-center justify-center rounded-lg bg-white p-1.5">
-                      <img
-                        src={logo}
-                        alt=""
-                        className="h-full w-full object-contain"
-                      />
-                    </span>
-                  ) : null}
-                  <span
-                    className="line-clamp-3"
-                    style={{
-                      fontFamily: "'Montserrat',sans-serif",
-                      fontWeight: 700,
-                      fontSize: 14,
-                      lineHeight: 1.35,
-                      color: "#ffffff",
-                    }}
-                  >
-                    {cardHeadline}
-                  </span>
-                </div>
-              )}
+              <TestCardImage
+                imageUrl={test.image_is_stock ? null : test.image_url}
+                testName={test.test_name}
+                providerName={meta.displayName}
+                displayWidth={CARD_IMAGE_DISPLAY_WIDTH}
+                sizes={CARD_IMAGE_SIZES}
+              />
             </div>
 
             {/* Caption strip */}

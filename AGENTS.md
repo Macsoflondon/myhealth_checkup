@@ -1,5 +1,7 @@
 # Architecture decisions
 
+- Test-card pictures share TestCardImage and use source product URLs with a neutral failure fallback; provider identity logos remain separate so image behaviour cannot drift across listings.
+
 - Collection variants use the view's selected-route pricing and public provider fee rules for additional routes; availability flags, not charges, establish clinic options so postage and clinical review cannot become blood-draw fees.
 
 - Public MCP server lives in `src/lib/mcp/public.ts` and is generated into `supabase/functions/mcp-public`. It needs no sign-in, has seven read-only catalogue tools and allows 60 requests per minute per IP through a `Deno.serve` wrapper. Why: the SDK can't set sign-in per tool and has no middleware hook.

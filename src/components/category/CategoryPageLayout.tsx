@@ -263,7 +263,6 @@ export function CategoryPageLayout({
                 {filtered.map((test) => (
                   <UnifiedTestCard
                     key={test.id}
-                    defaultFace="brand"
                     category={categoryAccent ?? test.tag}
                     categoryColor={
                       categoryAccent
