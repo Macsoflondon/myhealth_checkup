@@ -191,13 +191,13 @@ export default function HeroMasthead() {
                 fetchPriority="high"
                 decoding="async"
                 onLoad={() => setPosterLoaded(true)}
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-cover object-[80%_center] sm:object-center"
               />
             </picture>
             {videoAllowed && (
               <video
                 ref={videoRef}
-                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${videoPlaying ? "opacity-100" : "opacity-0"}`}
+                className={`absolute inset-0 h-full w-full object-cover object-[80%_center] sm:object-center transition-opacity duration-700 ${videoPlaying ? "opacity-100" : "opacity-0"}`}
                 muted
                 loop
                 playsInline
@@ -256,7 +256,7 @@ export default function HeroMasthead() {
 
         {/* Turquoise section dividers — inside the rounded stage so they stop at the curve */}
         <div className="absolute top-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#22c0d4]" />
-        <div className="absolute bottom-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#22c0d4]" />
+        <div className="absolute bottom-0 inset-x-0 w-full max-w-none z-10 h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       </div>
     </section>
   );

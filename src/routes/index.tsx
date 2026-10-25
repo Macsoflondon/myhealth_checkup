@@ -10,14 +10,25 @@ import { buildRouteHead } from "@/lib/seo/route-head";
 export const Route = createFileRoute("/")({
   head: () => {
     const base = buildRouteHead({
-      title: "Compare private blood tests UK | myhealth checkup",
+      title: "Compare UK private blood test prices | myhealth checkup",
       description:
-        "Compare private blood tests and health checks from UKAS-accredited labs and CQC-regulated UK clinics. Clear prices, biomarkers and turnaround times.",
+        "Compare UK private blood test prices, biomarkers, collection options and typical turnaround times. See provider-listed costs for home kits and clinic tests.",
       path: "/",
     });
 
     return {
       ...base,
+      meta: [
+        ...base.meta,
+        { property: "og:locale", content: "en_GB" },
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:site", content: "@myhealthcheckup" },
+        {
+          name: "robots",
+          content:
+            "index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1",
+        },
+      ],
       links: [
         ...base.links,
         // The hero <picture> lists AVIF first, so preload AVIF and tag it with
