@@ -185,32 +185,9 @@ async function findRawTestByIdOrSlug(
     .eq("is_active", true);
 
   if (allTests) {
-    // Try exact slug match first
-    const slugMatch = allTests.find(
-      (t) => generateTestSlug(t.test_name) === testId,
-    );
-    if (slugMatch) {
-      return parseTestData(slugMatch);
-    }
-
-    // Try partial match - URL slug contained in provider_test_id or vice versa
-    const partialMatch = allTests.find(
-      (t) =>
-        t.provider_test_id?.includes(testId) ||
-        testId.includes(t.provider_test_id || ""),
-    );
-    if (partialMatch) {
-      return parseTestData(partialMatch);
-    }
-
-    // Try matching slug variations against test names
-    for (const variation of variations) {
-      const nameMatch = allTests.find(
-        (t) => generateTestSlug(t.test_name) === variation,
-      );
-      if (nameMatch) {
-        return parseTestData(nameMatch);
-      }
+    const match = matchTestBySlug(testId, allTests);
+    if (match) {
+      return parseTestData(match);
     }
   }
 
