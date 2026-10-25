@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Align homepage section widths and rounded provider corners, tighten excess gaps, separate clinical standards text and markers, and identify/remove the blank navy block.
+
 - [x] Replace all test-card brand pictures with source product images and a shared neutral fallback; verified sports/Clinilabs listings at 375px, without migrations.
 
 - [x] Clarify the homepage UK private blood-test comparison offer and search snippet; preserve layout, branding and comparison links.
