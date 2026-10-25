@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Replace all test-card brand pictures with source product images and a shared neutral fallback; test and verify sports/Clinilabs listings at 375px, without migrations.
+- [x] Replace all test-card brand pictures with source product images and a shared neutral fallback; verified sports/Clinilabs listings at 375px, without migrations.
 
 - [x] Clarify the homepage UK private blood-test comparison offer and search snippet; preserve layout, branding and comparison links.
 

@@ -24,6 +24,7 @@ import {
   formatClinicalReview,
 } from "@/lib/comparisonFormat";
 import { getTestDetailUrl } from "@/utils/providerRoutes";
+import { TestCardImage } from "@/components/tests/test-card-image";
 
 interface EnhancedComparisonTableProps {
   result: ComparisonResult;
@@ -98,15 +99,12 @@ export function EnhancedComparisonTable({
                 <X className="h-4 w-4" />
               </Button>
               <CardHeader className="pb-2">
-                {test.providerLogo && (
-                  <img
-                    src={test.providerLogo}
-                    alt={test.provider}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-8 object-contain mb-2"
-                  />
-                )}
+                <TestCardImage
+                  imageUrl={test.image_url}
+                  testName={test.testName}
+                  providerName={test.provider}
+                  className="h-8 mb-2"
+                />
                 <CardTitle className="text-lg font-heading">
                   <Link
                     to={getTestDetailUrl(test.providerId, test.id)}
