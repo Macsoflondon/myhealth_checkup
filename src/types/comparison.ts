@@ -15,6 +15,7 @@ export interface EnhancedTestData {
   provider: string;
   providerId: string;
   providerLogo: string;
+  image_url?: string | null;
   category: string;
 
   // Pricing — null means the real price is not known; never coerce to 0

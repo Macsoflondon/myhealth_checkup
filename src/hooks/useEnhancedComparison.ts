@@ -29,6 +29,7 @@ export interface RawTestRow {
   phlebotomy_included?: boolean | null;
   phlebotomy_cost?: number | null;
   url?: string | null;
+  image_url?: string | null;
   updated_at?: string | null;
   lab_ukas_accredited?: boolean | null;
   lab_cqc_regulated?: boolean | null;
@@ -100,6 +101,7 @@ export function transformRawTestToEnhanced(
     provider: providerName,
     providerId: providerId,
     providerLogo: providerLogo,
+    image_url: rawTest.image_url ?? null,
     category: test.category || "General Health",
     basePrice,
     gpConsultationIncluded: test.gp_consultation_included || false,
