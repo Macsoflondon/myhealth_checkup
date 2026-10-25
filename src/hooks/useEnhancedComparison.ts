@@ -30,6 +30,11 @@ export interface RawTestRow {
   phlebotomy_cost?: number | null;
   url?: string | null;
   image_url?: string | null;
+  collection_method?: EnhancedTestData["collectionMethod"];
+  collection_fee_type?: EnhancedTestData["collectionFeeType"];
+  collection_fee_amount?: number | null;
+  clinical_review_type?: EnhancedTestData["clinicalReviewType"];
+  clinical_review_fee?: number | null;
   updated_at?: string | null;
   lab_ukas_accredited?: boolean | null;
   lab_cqc_regulated?: boolean | null;
@@ -61,7 +66,7 @@ const parseTurnaroundDays = (
 export function transformRawTestToEnhanced(
   rawTest: RawTestRow,
 ): EnhancedTestData {
-  const test = rawTest as RawTestRow & Record<string, any>;
+  const test = rawTest;
   const basePrice = test.price ?? null;
   const gpCost = test.gp_consultation_included
     ? 0
