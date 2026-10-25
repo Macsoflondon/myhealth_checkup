@@ -40,10 +40,10 @@ describe("matchTestBySlug", () => {
   });
 
   it("prefers the shortest provider_test_id on partial matches", () => {
-    const short = { test_name: "A", provider_test_id: "abc-ferritin" };
-    const long = { test_name: "B", provider_test_id: "abc-ferritin-extended" };
-    expect(matchTestBySlug("zzz", [long, short])).toBe(short);
-    expect(matchTestBySlug("zzz", [short, long])).toBe(short);
+    const short = { test_name: "A", provider_test_id: "x-ferritin" };
+    const long = { test_name: "B", provider_test_id: "x-ferritin-long" };
+    expect(matchTestBySlug("ferritin", [long, short])).toBe(short);
+    expect(matchTestBySlug("ferritin", [short, long])).toBe(short);
   });
 
   it("skips rows with null or blank provider_test_id in partial matching", () => {
