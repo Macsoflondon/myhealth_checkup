@@ -45,12 +45,12 @@ const AccreditedProvidersBar = () => {
 
         {/* Editorial standards header — shared eyebrow pattern */}
         <div className="mt-0 mb-5 sm:mb-6 flex items-center justify-center gap-3">
-          <span className="h-px w-8 sm:w-12 bg-brand-pink" aria-hidden="true" />
+          <span className="h-px w-6 sm:w-12 bg-brand-pink" aria-hidden="true" />
           {/* h2 so the six standards below (h3) sit under a section heading. */}
-          <h2 className="font-heading text-[13px] sm:text-sm font-bold uppercase tracking-[0.25em] text-brand-turquoise">
+          <h2 className="font-heading whitespace-nowrap text-[13px] sm:text-sm font-bold uppercase tracking-[0.18em] sm:tracking-[0.25em] text-brand-turquoise">
             Our clinical standards
           </h2>
-          <span className="h-px w-8 sm:w-12 bg-brand-pink" aria-hidden="true" />
+          <span className="h-px w-6 sm:w-12 bg-brand-pink" aria-hidden="true" />
         </div>
 
         {/* Underline grid — condensed spacing */}
