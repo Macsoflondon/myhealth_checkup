@@ -43,12 +43,14 @@ const deferredBlock = sliceBetween(
 const pageBody = homepage.slice(homepage.indexOf("const Index = () => {"));
 
 const DEFERRED_ORDER: readonly string[] = [
-  "<PartnersGrid />",
+  "<AccreditedProvidersBar />",
   "<HeroPopularTests />",
   "<StartJourneySection />",
 ];
 
 const BODY_ORDER: readonly string[] = [
+  "<HeroMasthead />",
+  "<PartnersGrid />",
   "{DEFERRED_SECTIONS}",
   "<PartnerShowcaseGrid />",
   "<TestimonialCarousel />",

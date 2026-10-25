@@ -197,7 +197,7 @@ export default function HeroMasthead() {
 
         {/* Turquoise section dividers — inside the rounded stage so they stop at the curve */}
         <div className="absolute top-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#22c0d4]" />
-        <div className="absolute bottom-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#22c0d4]" />
+        <div className="absolute bottom-0 inset-x-0 w-full max-w-none z-10 h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       </div>
     </section>
   );

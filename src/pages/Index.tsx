@@ -86,13 +86,11 @@ const ClinicHelpSkeleton = () => (
 // of waiting for HydrateOnVisible, and load all their code up front.
 const DEFERRED_SECTIONS = (
   <>
-    <HydrateOnVisible load={PartnersGrid.preload}>
-      <Suspense fallback={<SectionFallback />}>
-        <SectionReveal>
-          <PartnersGrid />
-        </SectionReveal>
-      </Suspense>
-    </HydrateOnVisible>
+    <Suspense fallback={<SectionFallback />}>
+      <SectionReveal>
+        <AccreditedProvidersBar />
+      </SectionReveal>
+    </Suspense>
 
     <HydrateOnVisible load={HeroPopularTests.preload}>
       <Suspense fallback={<SectionFallback />}>
@@ -147,12 +145,12 @@ const Index = () => {
             <HeroMasthead />
           </div>
 
-          {/* Accredited standards bar — sits directly under the slogan */}
+          {/* Trusted providers carousel — sits directly under the hero */}
           <Suspense fallback={<SectionFallback />}>
-            <div className="bg-white pt-4 sm:pt-5 pb-6 sm:pb-8">
-              <AccreditedProvidersBar />
-            </div>
+            <PartnersGrid />
           </Suspense>
+
+          <div className="h-6 sm:h-8 bg-white" aria-hidden="true" />
 
           <div id="comparison-anchor" aria-hidden="true" />
 
