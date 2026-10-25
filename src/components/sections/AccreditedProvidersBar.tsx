@@ -20,10 +20,7 @@ const trustItems: TrustItem[] = [
  */
 const AccreditedProvidersBar = () => {
   return (
-    <section
-      aria-label="Accredited provider standards"
-      className="bg-white"
-    >
+    <section aria-label="Accredited provider standards" className="bg-white">
       <div
         aria-hidden="true"
         className="h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise"
@@ -51,7 +48,10 @@ const AccreditedProvidersBar = () => {
           data-testid="accreditors-mobile-grid"
         >
           {trustItems.map((item) => (
-            <div key={item.label} className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-2">
+            <div
+              key={item.label}
+              className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)] items-center gap-2"
+            >
               <div
                 aria-hidden="true"
                 className={`w-4 h-1 rounded-full shrink-0 ${item.markerClassName}`}
