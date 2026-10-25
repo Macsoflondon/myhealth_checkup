@@ -78,13 +78,16 @@ export function transformRawTestToEnhanced(
   const providerLogo = PROVIDER_LOGOS[providerId] || "";
 
   const sampleTypeCode = test.sample_type ?? null;
-  const collectionMethod = (test.collection_method ?? null) as EnhancedTestData["collectionMethod"];
-  const collectionFeeType = (test.collection_fee_type ?? null) as EnhancedTestData["collectionFeeType"];
+  const collectionMethod = (test.collection_method ??
+    null) as EnhancedTestData["collectionMethod"];
+  const collectionFeeType = (test.collection_fee_type ??
+    null) as EnhancedTestData["collectionFeeType"];
   const collectionFeeAmount =
     test.collection_fee_amount != null
       ? Number(test.collection_fee_amount)
       : null;
-  const clinicalReviewType = (test.clinical_review_type ?? null) as EnhancedTestData["clinicalReviewType"];
+  const clinicalReviewType = (test.clinical_review_type ??
+    null) as EnhancedTestData["clinicalReviewType"];
   const clinicalReviewFee =
     test.clinical_review_fee != null ? Number(test.clinical_review_fee) : null;
 
