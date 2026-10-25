@@ -66,9 +66,7 @@ export function transformRawTestToEnhanced(
   const gpCost = test.gp_consultation_included
     ? 0
     : test.gp_consultation_cost || 0;
-  const phlebCost = test.phlebotomy_included
-    ? 0
-    : test.phlebotomy_cost || 0;
+  const phlebCost = test.phlebotomy_included ? 0 : test.phlebotomy_cost || 0;
 
   const providerId = test.provider_id ?? "";
   const providerName = PROVIDER_NAMES[providerId] || providerId;
@@ -83,9 +81,7 @@ export function transformRawTestToEnhanced(
       : null;
   const clinicalReviewType = test.clinical_review_type ?? null;
   const clinicalReviewFee =
-    test.clinical_review_fee != null
-      ? Number(test.clinical_review_fee)
-      : null;
+    test.clinical_review_fee != null ? Number(test.clinical_review_fee) : null;
 
   const totalExpectedCost = computeTotalExpectedCost(
     basePrice,
@@ -196,9 +192,7 @@ export function useEnhancedComparison() {
     // Find most comprehensive
     const mostComprehensive = selectedTests.reduce(
       (most, test) =>
-        (test.biomarkerCount ?? 0) > (most?.biomarkerCount ?? 0)
-          ? test
-          : most,
+        (test.biomarkerCount ?? 0) > (most?.biomarkerCount ?? 0) ? test : most,
       selectedTests[0],
     );
 

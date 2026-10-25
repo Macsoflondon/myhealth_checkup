@@ -107,7 +107,6 @@ export default function CancerComparisonPage() {
     }
   };
 
-
   return (
     <>
       <Helmet></Helmet>
