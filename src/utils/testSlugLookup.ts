@@ -78,6 +78,50 @@ const SELECT_FIELDS = `
   what_is_tested, preparation_notes, test_limitations
 `;
 
+interface SlugMatchRow {
+  test_name: string;
+  provider_test_id?: string | null;
+}
+
+/**
+ * Pure slug matching over an already-fetched row list. Order matters:
+ * exact name slug first, then name variations, and only then a guarded
+ * partial match on provider_test_id. Rows with a null/blank provider_test_id
+ * are skipped (testId.includes("") would otherwise match every one of them),
+ * and partial matches prefer the shortest provider_test_id so the result is
+ * deterministic rather than array-order dependent. Returns null when nothing
+ * matches so the caller shows the 404 instead of an arbitrary test.
+ */
+export function matchTestBySlug<T extends SlugMatchRow>(
+  testId: string,
+  rows: readonly T[],
+): T | null {
+  const slugMatch = rows.find((t) => generateTestSlug(t.test_name) === testId);
+  if (slugMatch) return slugMatch;
+
+  const variations = generateSlugVariations(testId);
+  for (const variation of variations) {
+    const nameMatch = rows.find(
+      (t) => generateTestSlug(t.test_name) === variation,
+    );
+    if (nameMatch) return nameMatch;
+  }
+
+  const partialCandidates = rows
+    .filter((t) => {
+      const pid = t.provider_test_id?.trim();
+      if (!pid) return false;
+      return pid.includes(testId) || testId.includes(pid);
+    })
+    .sort((a, b) => {
+      const pa = a.provider_test_id!.trim();
+      const pb = b.provider_test_id!.trim();
+      return pa.length - pb.length || pa.localeCompare(pb);
+    });
+
+  return partialCandidates[0] ?? null;
+}
+
 /**
  * Finds a test by provider_test_id, UUID id, or slug generated from test_name
  */
