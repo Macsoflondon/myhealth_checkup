@@ -112,16 +112,19 @@ describe("describeBiomarkers", () => {
 
 describe("parseCollection", () => {
   it.each([
-    ["Blood", "Venous draw"],
+    ["Blood", "Blood"],
     ["Venous blood", "Venous draw"],
     ["Finger-prick blood", "At-home kit"],
     ["Finger-prick or Venous", "At-home kit & venous draw"],
+    ["Capillary blood (QuickDraw upper-arm device)", "At-home kit"],
+    ["Nail clipping", "At-home kit"],
+    ["Saliva", "At-home kit"],
   ])("%s → %s", (input, label) => {
     expect(parseCollection(input).label).toBe(label);
   });
-  it("resolveCollection treats plain blood as venous", () => {
+  it("resolveCollection never treats bare blood as venous", () => {
     expect(resolveCollection({ sample_type: "Blood" }, "medichecks")).toBe(
-      "Venous blood draw",
+      "Blood sample",
     );
   });
 });
