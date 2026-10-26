@@ -46,6 +46,9 @@ export interface CategoryTestItem {
   purchaseNotes?: string | null;
   /** Collection-route listing this card represents. */
   routeVariant?: CollectionVariant | null;
+  /** Real provider flags; text heuristics are only used when these are absent. */
+  homeKitAvailable?: boolean | null;
+  clinicVisitAvailable?: boolean | null;
 }
 
 interface BenefitItem {
