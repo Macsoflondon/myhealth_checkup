@@ -21,6 +21,7 @@ import {
   withLovableAiGatewayRunIdHeader,
 } from "@/lib/assistant/run-id";
 import type { Database } from "@/integrations/supabase/types";
+import { sampleTypeLabel } from "@/lib/sampleType";
 
 // Public, sign-in free: bounded by a per-address limit and input caps.
 const allow = createRateLimiter(10, 60_000);
