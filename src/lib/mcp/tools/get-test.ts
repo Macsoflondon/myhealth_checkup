@@ -8,6 +8,7 @@ import {
   toNumber,
   withAccreditation,
 } from "../shared";
+import { sampleTypeLabel } from "../../sampleType";
 
 export const TEST_DETAIL_COLUMNS =
   "id, provider_id, provider_name, test_name, description, is_addon, category_primary, price, original_price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, biomarker_count, biomarkers_list, biomarkers_listed, turnaround_days_text, sample_type, collection_method, location_options, home_kit_available, clinic_visit_available, url, url_verified, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, scraped_at, updated_at";
@@ -70,7 +71,10 @@ export default defineTool({
     if (!data) return fail("Not found");
     const test = data as unknown as TestDetail & Record<string, unknown>;
     return ok({
-      test: withAccreditation(test),
+      test: withAccreditation({
+        ...test,
+        sample_type: sampleTypeLabel(test.sample_type),
+      }),
       limitations: testLimitations(test),
       note: PRICE_NOTE,
     });

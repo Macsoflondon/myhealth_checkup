@@ -96,7 +96,8 @@ export default defineTool({
       offset: args.offset,
       sort: args.sort,
       results: ((data ?? []) as unknown as Array<Record<string, unknown>>).map(
-        (r) => withAccreditation(r),
+        (r) =>
+          withAccreditation({ ...r, sample_type: sampleTypeLabel(r.sample_type) }),
       ),
       note: PRICE_NOTE,
     });
