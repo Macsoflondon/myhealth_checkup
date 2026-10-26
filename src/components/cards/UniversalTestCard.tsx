@@ -34,6 +34,7 @@ import { displayTurnaround } from "@/lib/resolve-test-fields";
 import { baseTestId, type CollectionVariant } from "@/lib/collectionVariants";
 import { formatTestCardHeadline } from "@/utils/format-test-card-headline";
 import { TestCardImage } from "@/components/tests/test-card-image";
+import { describeSampleType } from "@/lib/sampleType";
 
 /** Largest rendered width of the card's product image, in CSS pixels. */
 const CARD_IMAGE_DISPLAY_WIDTH = 325;

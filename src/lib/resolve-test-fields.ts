@@ -2,6 +2,7 @@ import {
   PROVIDER_TURNAROUND_TIMES,
   PROVIDER_COLLECTION_METHODS,
 } from "@/constants/providers";
+import { describeSampleType } from "@/lib/sampleType";
 
 /**
  * Shared "real row data first" resolvers for provider_tests rows.
@@ -75,14 +76,19 @@ export interface ParsedCollection {
 }
 
 /**
- * Classify collection text. A plain "blood" sample with no finger-prick or
- * home-kit wording is a venous draw, matching unified_provider_tests.
+ * Classify collection text. The bare word "blood" never implies a clinic or
+ * venous draw; capillary/QuickDraw, nail, saliva, stool and urine kits are
+ * home collection routes.
  */
 export const parseCollection = (collection: string): ParsedCollection => {
   const cleaned = stripCollectionFeeText(collection);
   const s = cleaned.toLowerCase();
-  const homeKit = /finger-?prick|home kit|at-?home/.test(s);
-  const clinic = /venous|clinic/.test(s) || (!homeKit && /\bblood\b/.test(s));
+  const info = describeSampleType(s);
+  const homeKit =
+    /finger-?prick|home kit|at-?home/.test(s) ||
+    (info.isHomeCollectable && !/clinic/.test(s));
+  const clinic =
+    /venous|clinic|phlebotom|blood draw/.test(s) && !/\bno venous\b/.test(s);
   let label = cleaned || "\u2014";
   if (homeKit && clinic) label = "At-home kit & venous draw";
   else if (homeKit) label = "At-home kit";
@@ -97,10 +103,13 @@ export const resolveCollection = (
   row: CollectionRowFields,
   providerId: string,
 ): string => {
-  const value =
-    stripCollectionFeeText(row.collection_method) ||
-    stripCollectionFeeText(row.sample_type);
-  if (value) return isPlainBlood(value) ? "Venous blood draw" : value;
+  const method = stripCollectionFeeText(row.collection_method);
+  if (method) return isPlainBlood(method) ? "Blood sample" : method;
+  const sample = stripCollectionFeeText(row.sample_type);
+  if (sample) {
+    if (isPlainBlood(sample)) return "Blood sample";
+    return describeSampleType(sample).label ?? sample;
+  }
   return PROVIDER_COLLECTION_METHODS[providerId] || "Varies";
 };
 
