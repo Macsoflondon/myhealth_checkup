@@ -92,7 +92,7 @@ const toCategoryTestItem = (test: AtHomeTest): CategoryTestItem => {
     title: cleanName(test.test_name),
     desc:
       test.description ||
-      `At-home ${(describeSampleType(test.sample_type).label ?? "self-collected").toLowerCase()} test analysed by a UKAS-accredited UK lab.`,
+      `At-home test (${describeSampleType(test.sample_type).label ?? "self-collected sample"}) analysed by a UKAS-accredited UK lab.`,
     biomarkers,
     tag,
     collection: test.sample_type || "At-home kit",
