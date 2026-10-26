@@ -68,12 +68,9 @@ export const buildTestSummary = (input: TestSummaryInput): string => {
 
   const rawCollection = tidy(input.collectionMethod) || tidy(input.sampleType);
   // Feeds store bare tokens ("venous", "finger-prick"), which read badly in a
-  // sentence — expand them into proper sample descriptions.
-  const collection = /sample|swab|kit|visit|draw/i.test(rawCollection)
-    ? lowerFirst(rawCollection)
-    : rawCollection
-      ? `a ${lowerFirst(rawCollection)} blood sample`
-      : "";
+  // sentence — expand them via the shared sample helper. "blood sample" is
+  // only ever added to genuine blood samples.
+  const collection = describeCollection(rawCollection);
   const collectionOptions: string[] = [];
   if (input.homeKitAvailable) collectionOptions.push("an at-home kit");
   if (input.clinicVisitAvailable)
