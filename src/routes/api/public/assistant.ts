@@ -21,6 +21,7 @@ import {
   withLovableAiGatewayRunIdHeader,
 } from "@/lib/assistant/run-id";
 import type { Database } from "@/integrations/supabase/types";
+import { sampleTypeLabel } from "@/lib/sampleType";
 
 // Public, sign-in free: bounded by a per-address limit and input caps.
 const allow = createRateLimiter(10, 60_000);
@@ -204,7 +205,7 @@ async function handle(request: Request): Promise<Response> {
                 : [],
               biomarkerCount: r.biomarker_count,
               turnaround: r.turnaround_days_text,
-              sampleType: r.sample_type,
+              sampleType: sampleTypeLabel(r.sample_type),
               homeKit: r.home_kit_available,
               clinic: r.clinic_visit_available,
               updatedAt: r.updated_at,

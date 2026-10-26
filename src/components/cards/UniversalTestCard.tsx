@@ -34,6 +34,7 @@ import { displayTurnaround } from "@/lib/resolve-test-fields";
 import { baseTestId, type CollectionVariant } from "@/lib/collectionVariants";
 import { formatTestCardHeadline } from "@/utils/format-test-card-headline";
 import { TestCardImage } from "@/components/tests/test-card-image";
+import { describeSampleType } from "@/lib/sampleType";
 
 /** Largest rendered width of the card's product image, in CSS pixels. */
 const CARD_IMAGE_DISPLAY_WIDTH = 325;
@@ -163,7 +164,7 @@ function isFingerPrickOnly(sampleType?: string | null): boolean {
 
 /** Route labels produced by deriveCollectionVariants, e.g. "Clinic blood draw (+£40)". */
 const ROUTE_VARIANT_LABEL =
-  /^(At-home finger-prick kit|Clinic blood draw|Nurse home visit|Standard collection)/i;
+  /^(At-home (finger-prick )?kit|Clinic blood draw|Nurse home visit|Standard collection)/i;
 
 /** Short, honest sample/collection descriptor for the compact card. */
 function collectionLabel(t: UniversalTestData): string {
@@ -171,12 +172,10 @@ function collectionLabel(t: UniversalTestData): string {
   if (t.route_variant) return t.route_variant.label;
   const raw = (t.sample_type || "").trim();
   if (ROUTE_VARIANT_LABEL.test(raw)) return raw;
-  const s = raw.toLowerCase();
-  if (s.includes("finger")) return "Finger-prick";
-  if (s.includes("venous") || s.includes("blood draw")) return "Venous draw";
-  if (s.includes("saliva")) return "Saliva";
-  if (s.includes("urine")) return "Urine";
-  if (s.includes("swab")) return "Swab";
+  const info = describeSampleType(raw);
+  if (info.token === "capillary") return "QuickDraw device (no finger-prick)";
+  if (info.token === "venous") return "Venous draw";
+  if (info.token && info.label) return info.label;
   if (t.home_kit_available && t.clinic_visit_available) return "Home or clinic";
   if (t.home_kit_available) return "At-home kit";
   if (t.clinic_visit_available) return "Clinic visit";
@@ -189,12 +188,11 @@ function collectionDetail(t: UniversalTestData): string {
   const method = stripCollectionFeeText(t.collection_method);
   if (method) return method;
 
-  const s = (t.sample_type || "").toLowerCase();
-  const sample = s.includes("finger")
-    ? "Finger-prick blood sample"
-    : s.includes("venous") || s.includes("blood draw")
-      ? "Venous blood draw"
-      : t.sample_type?.trim() || null;
+  const info = describeSampleType(t.sample_type);
+  const sample =
+    info.token === "finger_prick"
+      ? "Finger-prick blood sample"
+      : info.label || null;
   const setting =
     t.home_kit_available && t.clinic_visit_available
       ? "home kit or clinic appointment"

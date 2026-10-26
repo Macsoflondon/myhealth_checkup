@@ -5,7 +5,8 @@
  */
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
-import { decodeEntities } from "../_shared/scrape/html.ts";
+import { decodeEntities, htmlToText } from "../_shared/scrape/html.ts";
+import { deriveRandoxSample } from "../mhc-randox-scrape/sample.ts";
 import {
   upsertWithProvenance,
   parseTurnaround,
@@ -22,7 +23,9 @@ const corsHeaders = {
 
 const PROVIDER_ID = "randox";
 
-// Randox: clinic-based tests include phlebotomy in listed price; home kits are finger-prick (no fee).
+// Randox: clinic-based tests include phlebotomy in listed price; home kits carry no collection fee.
+// 2026-10-26: sample_type comes from deriveRandoxSample; images are owned by randox-kit-images,
+// so this function no longer writes image_url; excluded products are skipped.
 const HOME_KIT_FEE = 0;
 const CLINIC_VISIT_FEE = 0;
 
@@ -273,22 +276,6 @@ function extractPrice(html: string): {
   return { current, original };
 }
 
-function extractImageUrl(html: string): string | null {
-  const patterns = [
-    /property="og:image"\s+content="([^"]+)"/i,
-    /src="(https:\/\/[^"]+\.(?:jpg|jpeg|png|webp)[^"]*)"/i,
-  ];
-  for (const pattern of patterns) {
-    const m = html.match(pattern);
-    if (m && m[1]) {
-      let url = m[1];
-      if (url.startsWith("//")) url = "https:" + url;
-      else if (url.startsWith("/")) url = "https://randoxhealth.com" + url;
-      return url;
-    }
-  }
-  return null;
-}
 
 function extractBiomarkersList(html: string): string[] | null {
   const biomarkers: string[] = [];
@@ -419,6 +406,14 @@ function determineTestType(url: string): "clinic" | "home" {
   return url.includes("/product/home/") ? "home" : "clinic";
 }
 
+function productPath(url: string): string {
+  const m = url
+    .replace(/[?#].*$/, "")
+    .replace(/\/+$/, "")
+    .match(/\/product\/(.+)$/i);
+  return m ? m[1].toLowerCase() : "";
+}
+
 function providerTestIdFromUrl(url: string): string {
   const parts = url.split("/");
   const slug = parts[parts.length - 1] || url;
@@ -546,7 +541,20 @@ Deno.serve(async (req) => {
       const fUrls = await discoverUrlsWithFirecrawl(firecrawlApiKey);
       fUrls.forEach((u) => allUrls.add(u));
     }
-    const productUrls = Array.from(allUrls).slice(0, 60);
+    const { data: exclRows } = await supabase
+      .from("provider_test_exclusions")
+      .select("product_path")
+      .eq("provider_id", PROVIDER_ID);
+    const excludedPaths = new Set(
+      (exclRows ?? []).map((r: { product_path: string | null }) =>
+        String(r.product_path ?? "")
+          .toLowerCase()
+          .replace(/\/+$/, ""),
+      ),
+    );
+    const productUrls = Array.from(allUrls)
+      .filter((u) => !excludedPaths.has(productPath(u)))
+      .slice(0, 60);
     counters.tests_seen = productUrls.length;
     console.log(`[randox] scraping ${productUrls.length} URLs`);
 
@@ -559,15 +567,25 @@ Deno.serve(async (req) => {
         const description = extractDescription(html);
         const { current: price, original: wasPrice } = extractPrice(html);
         const inStock = price !== null && price > 0;
-        const imageUrl = extractImageUrl(html);
         const biomarkersList = extractBiomarkersList(html);
         const biomarkerCount = extractBiomarkerCount(html, biomarkersList);
         const category = determineCategory(title, description || "", url);
         const testType = determineTestType(url);
         const turnaroundRaw = extractTurnaround(html);
         const parsedTurn = parseTurnaround(turnaroundRaw);
+        const sampleType = deriveRandoxSample(
+          url,
+          htmlToText(html),
+          description,
+          title,
+          biomarkersList ?? [],
+        );
         const collectionMethod =
-          testType === "home" ? "Home finger-prick kit" : "Clinic phlebotomy";
+          sampleType === null
+            ? null
+            : testType === "home"
+              ? `Home kit: ${sampleType}`
+              : "Clinic appointment: sample taken by a trained professional";
 
         const result = await upsertWithProvenance(
           supabase,
@@ -589,7 +607,7 @@ Deno.serve(async (req) => {
             turnaround_hours: parsedTurn.hours,
             turnaround_days: parsedTurn.days,
             turnaround_unit: parsedTurn.unit,
-            sample_type: testType === "home" ? "Finger-prick" : "Venous blood",
+            sample_type: sampleType,
             collection_method: collectionMethod,
             in_stock: inStock,
             scrape_source_url: url,
@@ -613,7 +631,6 @@ Deno.serve(async (req) => {
             .update({
               description,
               category,
-              image_url: imageUrl,
               original_price: wasPrice,
               home_kit_available: testType === "home",
               clinic_visit_available: testType === "clinic",

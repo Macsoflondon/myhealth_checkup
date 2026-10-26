@@ -4,9 +4,18 @@ import type { ProviderTestCardData } from "@/components/providers/ProviderTestCa
 import type { CategoryTestItem } from "@/components/category/CategoryPageLayout";
 import type { CollectionVariant } from "@/lib/collectionVariants";
 import { categoryMenuIconFor } from "@/components/header/menuIcons";
+import { mentionsHomeSample } from "@/lib/sampleType";
 
 const resolvedCategoryColor = (category?: string | null): string =>
   categoryMenuIconFor(category).color;
+
+/** Fallbacks only for inputs without real home/clinic flags. */
+const textSuggestsHome = (text?: string | null): boolean =>
+  /home|finger|kit|saliva|stool|nail|capillary|quick\s?draw|urine|swab/i.test(
+    text ?? "",
+  ) || mentionsHomeSample(text);
+const textSuggestsClinic = (text?: string | null): boolean =>
+  /clinic|venous|in-person/i.test(text ?? "");
 
 /** Adapter: AtHomeTest (provider_tests row) → UniversalTestData */
 export function fromAtHomeTest(t: AtHomeTest): UniversalTestData {
@@ -125,8 +134,9 @@ export function fromCategoryTestItem(t: CategoryTestItem): UniversalTestData {
     url: t.url,
     image_url: t.imageUrl ?? null,
     is_popular: !!t.popular,
-    home_kit_available: /home|finger|kit/i.test(t.collection || ""),
-    clinic_visit_available: /clinic|venous|in-person/i.test(t.collection || ""),
+    home_kit_available: t.homeKitAvailable ?? textSuggestsHome(t.collection),
+    clinic_visit_available:
+      t.clinicVisitAvailable ?? textSuggestsClinic(t.collection),
     is_addon: !!t.isAddon,
     purchase_notes: t.purchaseNotes ?? null,
     route_variant: t.routeVariant ?? null,
@@ -150,6 +160,8 @@ export interface LegacyUnifiedProps {
   badge?: string;
   categoryColor?: string;
   routeVariant?: CollectionVariant | null;
+  homeKitAvailable?: boolean | null;
+  clinicVisitAvailable?: boolean | null;
 }
 
 export function fromLegacyUnified(p: LegacyUnifiedProps): UniversalTestData {
@@ -180,8 +192,14 @@ export function fromLegacyUnified(p: LegacyUnifiedProps): UniversalTestData {
     url: p.url ?? fromDetails?.url ?? null,
     image_url: fromDetails?.image_url ?? null,
     is_popular: /popular/i.test(p.badge || ""),
-    home_kit_available: /home|finger|kit/i.test(p.collection || ""),
-    clinic_visit_available: /clinic|venous|in-person/i.test(p.collection || ""),
+    home_kit_available:
+      p.homeKitAvailable ??
+      p.testDetails?.home_kit_available ??
+      textSuggestsHome(p.collection),
+    clinic_visit_available:
+      p.clinicVisitAvailable ??
+      p.testDetails?.clinic_visit_available ??
+      textSuggestsClinic(p.collection),
     collection_options: fromDetails?.collection_options,
     is_addon: fromDetails?.is_addon ?? false,
     purchase_notes: fromDetails?.purchase_notes ?? null,

@@ -14,45 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      _img_check_20261025: {
-        Row: {
-          id: string | null
-          image_url: string | null
-          provider_id: string | null
-          req: number | null
-        }
-        Insert: {
-          id?: string | null
-          image_url?: string | null
-          provider_id?: string | null
-          req?: number | null
-        }
-        Update: {
-          id?: string | null
-          image_url?: string | null
-          provider_id?: string | null
-          req?: number | null
-        }
-        Relationships: []
-      }
-      _img_jobs_20261025: {
-        Row: {
-          mode: string | null
-          prov: string | null
-          req: number | null
-        }
-        Insert: {
-          mode?: string | null
-          prov?: string | null
-          req?: number | null
-        }
-        Update: {
-          mode?: string | null
-          prov?: string | null
-          req?: number | null
-        }
-        Relationships: []
-      }
       admin_activity_log: {
         Row: {
           action: string
@@ -5301,6 +5262,30 @@ export type Database = {
           },
         ]
       }
+      provider_test_exclusions: {
+        Row: {
+          created_at: string
+          excluded_by: string
+          product_path: string
+          provider_id: string
+          reason: string
+        }
+        Insert: {
+          created_at?: string
+          excluded_by?: string
+          product_path: string
+          provider_id: string
+          reason: string
+        }
+        Update: {
+          created_at?: string
+          excluded_by?: string
+          product_path?: string
+          provider_id?: string
+          reason?: string
+        }
+        Relationships: []
+      }
       provider_test_history: {
         Row: {
           biomarker_count: number | null
@@ -9097,6 +9082,7 @@ export type Database = {
         Args: { p_rows: Json; p_source: string }
         Returns: Json
       }
+      provider_test_product_path: { Args: { u: string }; Returns: string }
       refresh_provider_test_biomarkers: { Args: never; Returns: Json }
       refresh_provider_test_biomarkers_impl: { Args: never; Returns: Json }
       regenerate_mfa_backup_codes: { Args: never; Returns: string[] }

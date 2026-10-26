@@ -32,6 +32,9 @@ export interface UnifiedTestCardProps {
   testDetails?: ProviderTestCardData;
   /** Collection-route listing this card represents. */
   routeVariant?: CollectionVariant | null;
+  /** Real provider flags; preferred over collection-text heuristics. */
+  homeKitAvailable?: boolean | null;
+  clinicVisitAvailable?: boolean | null;
 }
 
 /**
