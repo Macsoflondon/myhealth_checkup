@@ -28,22 +28,23 @@ import { getProviderRating } from "@/constants/providerRatings";
 import { AT_HOME_SECTIONS, findAtHomeSection } from "@/config/atHomeSections";
 import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
 import { categoryMenuIconFor } from "@/components/header/menuIcons";
+import { describeSampleType } from "@/lib/sampleType";
 
 const SEO = {
-  title: "At Home Test Kits | Compare UK Finger-Prick Tests | myhealth checkup",
+  title: "Compare UK At-Home Health Test Kits | myhealth checkup",
   description:
-    "Compare at home test kits from UKAS-accredited UK providers. Finger-prick blood tests posted to your door, with prices, biomarkers and typical turnaround times.",
+    "Compare at-home test kits from UKAS-accredited UK providers. Home test kits posted to your door: finger-prick, QuickDraw, saliva, stool and urine samples, with prices, biomarkers and typical turnaround times.",
   keywords:
-    "at home test kits, at home blood test, home testing kit, finger prick test, private blood test UK",
+    "at home test kits, at home blood test, home testing kit, finger prick test, saliva test, stool test, private blood test UK",
   canonical: "https://myhealthcheckup.co.uk/at-home-tests",
 };
 
 const HERO_BENEFITS = [
   {
     icon: Home,
-    title: "Delivered to Your Door",
+    title: "Delivered to your door",
     description:
-      "Finger-prick kits shipped directly to your home across the UK",
+      "Home test kits posted to your door: finger-prick, QuickDraw, saliva, stool and urine samples",
   },
   {
     icon: Shield,
@@ -91,13 +92,15 @@ const toCategoryTestItem = (test: AtHomeTest): CategoryTestItem => {
     title: cleanName(test.test_name),
     desc:
       test.description ||
-      `At-home ${test.sample_type || "finger-prick"} test analysed by a UKAS-accredited UK lab.`,
+      `At-home ${(describeSampleType(test.sample_type).label ?? "self-collected").toLowerCase()} test analysed by a UKAS-accredited UK lab.`,
     biomarkers,
     tag,
-    collection: test.sample_type || "Finger-prick",
+    collection: test.sample_type || "At-home kit",
     url: test.url || undefined,
     imageUrl: test.image_url || undefined,
     collectionOptions: test.collection_options,
+    homeKitAvailable: test.home_kit_available,
+    clinicVisitAvailable: test.clinic_visit_available,
   } satisfies CategoryTestItem;
 };
 
