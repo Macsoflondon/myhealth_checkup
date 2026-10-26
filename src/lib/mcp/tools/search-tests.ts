@@ -8,6 +8,7 @@ import {
   PRICE_NOTE,
   withAccreditation,
 } from "../shared";
+import { sampleTypeLabel } from "../../sampleType";
 
 export const LISTING_COLUMNS =
   "id, test_name, provider_id, provider_name, biomarker_count, price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, turnaround_days_text, sample_type, collection_method, location_options, home_kit_available, clinic_visit_available, url, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, updated_at";

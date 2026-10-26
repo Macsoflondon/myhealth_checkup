@@ -140,3 +140,9 @@ export function mentionsHomeSample(text: string | null | undefined): boolean {
   if (/home|kit/.test(s)) return true;
   return describeSampleType(s).isHomeCollectable;
 }
+
+/** User/model-facing label for a raw value or view token; null stays null. */
+export function sampleTypeLabel(raw: unknown): string | null {
+  if (typeof raw !== "string" || !raw.trim()) return null;
+  return describeSampleType(raw).label;
+}

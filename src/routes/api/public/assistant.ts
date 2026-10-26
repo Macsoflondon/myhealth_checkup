@@ -204,7 +204,7 @@ async function handle(request: Request): Promise<Response> {
                 : [],
               biomarkerCount: r.biomarker_count,
               turnaround: r.turnaround_days_text,
-              sampleType: r.sample_type,
+              sampleType: sampleTypeLabel(r.sample_type),
               homeKit: r.home_kit_available,
               clinic: r.clinic_visit_available,
               updatedAt: r.updated_at,
