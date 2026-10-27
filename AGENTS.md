@@ -1,5 +1,7 @@
 # Architecture decisions
 
+- Randox scrapers share their pure sample parser under `_shared/scrape`, because edge deployment bundles include shared files but not sibling function folders.
+
 - Homepage bands use the hero's available outer width and homepage-section-inner for shared gutters; the featured partner is not hidden behind a lazy-mount reveal, so empty navy reservations cannot precede its heading.
 
 - Test-card pictures share TestCardImage and use source product URLs with a neutral failure fallback; provider identity logos remain separate so image behaviour cannot drift across listings.
