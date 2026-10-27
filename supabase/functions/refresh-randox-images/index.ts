@@ -12,7 +12,8 @@ Deno.serve((req) => {
     return new Response("ok", { headers: corsHeaders });
   return new Response(
     JSON.stringify({
-      error: "Retired 2026-10-26. Randox images are managed by randox-kit-images.",
+      error:
+        "Retired 2026-10-26. Randox images are managed by randox-kit-images.",
     }),
     {
       status: 410,
