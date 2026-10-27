@@ -1,7 +1,7 @@
 # Roadmap
 
-- [ ] Confirm Cloudflare Pages deployment of the current homepage and At-Home Tests page.
-- [ ] Verify stored Randox kit images and connect any missing test-card, at-home and comparison display paths; no migrations.
+- [x] Confirm Cloudflare Pages deployment of the current homepage and At-Home Tests page: eb26cd13 succeeded at https://f6ae8a6e.myhealthcheckup.pages.dev.
+- [x] Verify stored Randox kit images in test cards and at-home listings; add the missing active comparison-table photo using TestCardImage, retaining provider logos. Verified at 375px and 1280px; 20 targeted tests and changed-file lint passed, automatic build OK; no migrations.
 
 - [x] Align homepage section widths and rounded provider corners, tighten excess gaps, separate clinical standards text and markers, and remove the empty navy padding above Featured Partner; verified at 375px, 768px and 1351px with no horizontal overflow, order tests passed.
 
