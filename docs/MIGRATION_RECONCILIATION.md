@@ -127,6 +127,50 @@ Check, 11 October 2026: the repository's versions, excluding the new
 `20261011150000`, hash to the same md5 as production's 420 recorded versions
 (`d128230038a24c378820d52a33170158`, the md5 of the sorted versions joined by commas).
 
+## Update, 27 October 2026: late-October drift closed
+
+Between 23 and 26 October, nine migrations were applied to production directly
+(`created_by` support@myhealthcheckup.co.uk) without a file reaching this repository. The
+remote parity check caught all nine on run #1032 of `migration-parity.yml`.
+
+- **Nine production-only versions restored** (six verbatim, three with the replay
+  adaptation below). Each file carries the standard header and the md5 of the recorded
+  statement in `schema_migrations`, and each recorded statement was checked against that
+  md5 before the file was written.
+
+  | Version          | Name                                           |
+  | ---------------- | ---------------------------------------------- |
+  | `20261023005220` | clinilabs_single_marker_canonical_category     |
+  | `20261025203717` | provider_tests_gallery_image_urls              |
+  | `20261026124821` | provider_test_exclusions                       |
+  | `20261026140133` | randox_sample_types_correct_20261026           |
+  | `20261026140150` | randox_kit_images_schedule (adapted)           |
+  | `20261026140250` | randox_kit_images_rerun_after_scrape (adapted) |
+  | `20261026140754` | randox_remove_non_blood_listings (adapted)     |
+  | `20261026141533` | unified_view_sample_tokens_capillary_nail      |
+  | `20261026141546` | randox_collection_method_casing                |
+
+- **One replay adaptation, applied to three files.** `20261026140150`, `20261026140250`
+  and `20261026140754` each ended with one-off `net.http_get` calls that started
+  production's Randox scrapers immediately. The URL includes the Vault secret
+  `mhc_sync_secret`, which no migration creates. On a fresh database the URL is null and
+  pg_net rejects the insert into `net.http_request_queue` with a not-null violation
+  (confirmed against production's pg_net 0.20.3 with a rolled-back probe). Those calls
+  now run only when the secret exists and report a notice otherwise. The cron job
+  `randox-kit-images` and every other statement replay unchanged. Production ran the
+  original calls.
+- **`randox-kit-images` edge function committed.** The cron job above calls it every six
+  hours, but it existed only in the Supabase dashboard (version 2, deployed 26 October).
+  Its source is now in `supabase/functions/randox-kit-images/`, formatted to the repository
+  style with no change in behaviour, and registered in `supabase/config.toml` with
+  `verify_jwt = false` like the `mhc-*` functions.
+
+Check, 27 October 2026: the repository holds 439 versions, and they hash to the same md5
+as production's 439 recorded versions (`7e8699e3390657111bdb9cbe5ff8dff9`).
+
+Cause: changes applied straight to production again. The rule in the 28 September update
+stands: commit the migration file first, then apply it.
+
 The sections below are the original 14 September inventory, kept for the record.
 
 ## The numbers
