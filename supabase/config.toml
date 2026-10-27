@@ -225,3 +225,6 @@ verify_jwt = false
 
 [functions.mhc-randox-scrape]
 verify_jwt = false
+
+[functions.randox-kit-images]
+verify_jwt = false
