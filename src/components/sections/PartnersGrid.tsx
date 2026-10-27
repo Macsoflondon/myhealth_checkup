@@ -48,7 +48,7 @@ const PartnersGrid = () => {
   const items = [...providers, ...providers, ...providers, ...providers];
 
   return (
-    <section className="py-6 sm:py-8 bg-brand-navy relative overflow-hidden rounded-2xl">
+    <section className="py-6 sm:py-8 bg-brand-navy relative overflow-hidden rounded-none sm:rounded-2xl">
       {/* Decorative half-circles */}
       <div className="absolute top-0 right-0 w-72 h-72 bg-brand-turquoise/5 rounded-full translate-x-1/3 -translate-y-1/3" />
       <div className="absolute bottom-0 left-0 w-56 h-56 bg-brand-pink/5 rounded-full -translate-x-1/3 translate-y-1/3" />
