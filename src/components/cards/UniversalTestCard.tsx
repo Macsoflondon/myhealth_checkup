@@ -34,6 +34,7 @@ import { displayTurnaround } from "@/lib/resolve-test-fields";
 import { baseTestId, type CollectionVariant } from "@/lib/collectionVariants";
 import { formatTestCardHeadline } from "@/utils/format-test-card-headline";
 import { TestCardImage } from "@/components/tests/test-card-image";
+import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
 import { describeSampleType } from "@/lib/sampleType";
 
 /** Largest rendered width of the card's product image, in CSS pixels. */
@@ -1011,7 +1012,11 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
             )}
             <div className="flex flex-1 items-center justify-center overflow-hidden p-4">
               <TestCardImage
-                imageUrl={test.image_is_stock ? null : test.image_url}
+                imageUrl={resolveTestCardImage({
+                  providerId: test.provider_id,
+                  isAddon: test.is_addon,
+                  imageUrl: test.image_is_stock ? null : test.image_url,
+                })}
                 testName={test.test_name}
                 providerName={meta.displayName}
                 displayWidth={CARD_IMAGE_DISPLAY_WIDTH}
@@ -1082,7 +1087,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               cursor: "pointer",
             }}
           >
-            View details
+            {test.is_addon ? "Add-on" : "View details"}
           </button>
 
           {/* Body */}
