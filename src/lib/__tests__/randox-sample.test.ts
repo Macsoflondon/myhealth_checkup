@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   deriveRandoxSample,
   SAMPLE,
-} from "../../../supabase/functions/mhc-randox-scrape/sample";
+} from "../../../supabase/functions/_shared/scrape/randoxSample";
 
 const HOME = "https://randoxhealth.com/en-GB/product/home/";
 const CLINIC = "https://randoxhealth.com/en-GB/product/clinic/";

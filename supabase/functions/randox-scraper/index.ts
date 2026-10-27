@@ -6,7 +6,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
 import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
 import { decodeEntities, htmlToText } from "../_shared/scrape/html.ts";
-import { deriveRandoxSample } from "../mhc-randox-scrape/sample.ts";
+import { deriveRandoxSample } from "../_shared/scrape/randoxSample.ts";
 import {
   upsertWithProvenance,
   parseTurnaround,

@@ -7,7 +7,7 @@
 // 2026-10-13: ?secret= is checked by ../_shared/mhc-auth.ts against the Vault entry
 // mhc_sync_secret, the value the cron jobs send, read through public.mhc_sync_secret().
 // MHC_SYNC_SECRET is only a fallback for when that read fails. No secret is committed here.
-// 2026-10-26: (a) sample_type comes from ./sample.ts deriveRandoxSample, which reads only
+// 2026-10-26: (a) sample_type comes from ../_shared/scrape/randoxSample.ts deriveRandoxSample, which reads only
 // the product's own section and uses the URL for home kit versus clinic. The old rule
 // ("Venous unless finger-prick appears anywhere") picked up cross-sell cards. A null
 // sample (home kit page with no stated method) never overwrites an existing value.
@@ -19,7 +19,7 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { parseRandoxWhatsIncluded } from "../_shared/scrape/biomarkerParsers.ts";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
-import { deriveRandoxSample } from "./sample.ts";
+import { deriveRandoxSample } from "../_shared/scrape/randoxSample.ts";
 const PROVIDER = "randox";
 const SITEMAPS = ["https://randoxhealth.com/sitemap.xml"];
 const URLMATCH = /\/en-GB\/product\//i;
