@@ -164,9 +164,19 @@ remote parity check caught all nine on run #1032 of `migration-parity.yml`.
   Its source is now in `supabase/functions/randox-kit-images/`, formatted to the repository
   style with no change in behaviour, and registered in `supabase/config.toml` with
   `verify_jwt = false` like the `mhc-*` functions.
+- **`provider_test_exclusions` privileges set explicitly.** `20261026124821` created the
+  table with RLS but no GRANT, so Supabase defaults gave anon and authenticated every
+  privilege on it, including TRUNCATE, which RLS does not cover. The RLS/GRANTS lint
+  flagged it. The restored file stays verbatim and is grandfathered in
+  `scripts/check-rls-grants.mjs`. New migration
+  `20261027234500_provider_test_exclusions_explicit_grants.sql` revokes everything from
+  PUBLIC, anon and authenticated, grants SELECT to authenticated (RLS keeps it admin only)
+  and ALL to service_role. It was dry-run against production in a rolled-back block, then
+  applied to production on 27 October under its file version. The recorded statement's md5
+  matches the committed file (`e329352feff9fb5e0822a48b56757489`).
 
-Check, 27 October 2026: the repository holds 439 versions, and they hash to the same md5
-as production's 439 recorded versions (`7e8699e3390657111bdb9cbe5ff8dff9`).
+Check, 27 October 2026: the repository holds 440 versions, and they hash to the same md5
+as production's 440 recorded versions (`399f79708d03b5ef6a033c4ac87be1ba`).
 
 Cause: changes applied straight to production again. The rule in the 28 September update
 stands: commit the migration file first, then apply it.
