@@ -21,6 +21,7 @@ import { selectHomepageComparisons } from "@/lib/homepage-comparisons";
 // duplicating it here downloaded a second, unused hero image on every visit.
 
 // Above-the-fold: eager
+import { HomepageSearchBand } from "@/components/sections/homepage-search-band";
 import HeroMasthead from "@/components/sections/HeroMasthead";
 
 // Server-rendered sections below the hero: HydrateOnVisible keeps their HTML
@@ -150,12 +151,12 @@ const Index = () => {
             <PartnersGrid />
           </Suspense>
 
-          <div className="h-3 sm:h-4 bg-white" aria-hidden="true" />
+          <HomepageSearchBand />
 
           <div id="comparison-anchor" aria-hidden="true" />
 
           {/* Hero CTA — Slogan + Health Quiz entry point */}
-          <section className="w-full rounded-2xl overflow-hidden bg-brand-navy">
+          <section className="w-full rounded-none sm:rounded-2xl overflow-hidden bg-brand-navy">
             <div className="homepage-section-inner relative overflow-hidden py-8 sm:py-10">
               <div className="absolute -right-[50px] -top-[60px] w-[260px] h-[260px] rounded-full bg-[#22c0d4]/[0.12]" />
               <div className="absolute right-[120px] -bottom-[110px] w-[240px] h-[240px] rounded-full bg-[#e70d69]/10" />
@@ -196,7 +197,7 @@ const Index = () => {
                       <Link
                         to="/find-test"
                         aria-label="Take the Health Quiz: find the right private blood test"
-                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-[#0e7490] hover:bg-[#0b5e73] text-white font-bold font-[Montserrat] text-base px-8 py-3.5 rounded-full shadow-lg shadow-[#22c0d4]/25 transition-all hover:scale-[1.02]"
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-brand-turquoise text-brand-navy hover:bg-brand-pink hover:text-white focus-visible:bg-brand-pink focus-visible:text-white focus-visible:outline-none font-bold font-[Montserrat] text-base px-8 py-3.5 rounded-full shadow-[0_8px_24px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-[1.02]"
                       >
                         Take the Health Quiz
                       </Link>
