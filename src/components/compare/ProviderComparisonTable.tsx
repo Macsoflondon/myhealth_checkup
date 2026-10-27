@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { TestCardImage } from "@/components/tests/test-card-image";
 import { Plus, Check } from "lucide-react";
 import type { CompareTestData } from "@/types";
 import { PROVIDER_LOGOS } from "@/constants/providers";
@@ -268,6 +269,14 @@ export const ProviderComparisonTable: React.FC<
                       verticalAlign: "top",
                     }}
                   >
+                    {test.available !== false && (
+                      <TestCardImage
+                        imageUrl={test.image_url}
+                        testName={test.name}
+                        providerName={test.provider}
+                        className="mb-3 h-36 rounded-lg"
+                      />
+                    )}
                     <div className="flex items-start gap-3">
                       <div
                         className="rounded-lg flex-shrink-0 flex items-center justify-center"
