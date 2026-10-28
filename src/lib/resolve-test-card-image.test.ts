@@ -66,3 +66,23 @@ describe("resolveTestCardImage", () => {
     expect(adapted.image_url).toBeNull();
   });
 });
+
+describe("Clinilabs named boxes", () => {
+  it("replaces lifestyle photos with a named box for the three affected tests", () => {
+    for (const testName of [
+      "Menopause Profile",
+      "Measles, Mumps & Rubella (MMR) Blood Test",
+      "Hepatitis B Core Antibody (IgM) Blood Test",
+    ]) {
+      const url = resolveTestCardImage({ providerId: "clinilabs", imageUrl: "https://x/photo.webp", testName });
+      expect(url).not.toBe("https://x/photo.webp");
+      expect(url).not.toBe(CLINILABS_GENERIC_KIT_URL);
+    }
+  });
+
+  it("leaves other Clinilabs tests with their own box", () => {
+    expect(
+      resolveTestCardImage({ providerId: "clinilabs", imageUrl: "https://x/own.webp", testName: "Menopause Blood Test" }),
+    ).toBe("https://x/own.webp");
+  });
+});
