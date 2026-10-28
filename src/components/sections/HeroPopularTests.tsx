@@ -43,8 +43,8 @@ export function HeroPopularTests() {
 
   if (isLoading) {
     return (
-      <section className="w-full py-10 sm:py-14 bg-white">
-        <div className="container mx-auto px-4">
+      <section className="w-full py-6 sm:py-8 bg-white">
+        <div className="homepage-section-inner">
           <SectionSkeleton tone="white" cards={4} minHeight={320} />
         </div>
       </section>
@@ -56,8 +56,8 @@ export function HeroPopularTests() {
   }
 
   return (
-    <section className="w-full py-10 sm:py-14 bg-white">
-      <div className="container mx-auto px-4">
+    <section className="w-full py-6 sm:py-8 bg-white">
+      <div className="homepage-section-inner">
         <div className="text-center mb-2 sm:mb-3 md:mb-4">
           <div className="flex items-center justify-center gap-2 mb-2">
             <div className="h-px w-6 sm:w-9 bg-brand-pink" />

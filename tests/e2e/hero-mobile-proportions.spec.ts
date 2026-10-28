@@ -51,23 +51,24 @@ for (const bp of BREAKPOINTS) {
     });
 
     test("Wordmark stays inside hero card", async ({ page }) => {
-      const wordmark = page.locator("text=myhealth").first();
+      // The wordmark is an SVG logo (role="img"), 1em tall, so its rendered
+      // height is the font size it inherits from the brand-bar link.
+      const wordmark = page
+        .getByRole("img", { name: "myhealth checkup" })
+        .first();
       const box = await wordmark.boundingBox();
       expect(box).not.toBeNull();
       if (!box) return;
       expect(box.x + box.width).toBeLessThanOrEqual(bp.width);
-      const fs = px(
-        await wordmark.evaluate((el) => getComputedStyle(el).fontSize),
-      );
-      expect(fs).toBeGreaterThanOrEqual(20);
-      expect(fs).toBeLessThanOrEqual(36);
+      expect(box.height).toBeGreaterThanOrEqual(20);
+      expect(box.height).toBeLessThanOrEqual(36);
     });
 
     test("supporting copy renders at mobile size and wraps cleanly", async ({
       page,
     }) => {
       const supportingCopy = page.getByText(
-        "Prices, biomarkers and turnaround for UK blood tests and cancer screening.",
+        "Compare UK private blood tests by price, biomarkers and typical turnaround time.",
       );
       await expect(supportingCopy).toBeVisible();
       const fs = px(
@@ -84,16 +85,30 @@ for (const bp of BREAKPOINTS) {
         name: "Compare private blood tests.",
       });
       await expect(headline).toBeVisible();
-      const box = await headline.boundingBox();
-      expect(box).not.toBeNull();
-      if (!box) return;
-      expect(box!.width).toBeLessThanOrEqual(bp.width * 0.9);
+      // The h1 is a block, so its own box always spans the copy column. What
+      // matters is the text: every line must fit inside the column and the
+      // viewport, with no line clipped or pushed past the edge.
+      const fit = await headline.evaluate((h) => {
+        const column = h.parentElement!.getBoundingClientRect();
+        const range = document.createRange();
+        range.selectNodeContents(h);
+        const lines = Array.from(range.getClientRects());
+        return {
+          columnLeft: column.left,
+          columnRight: column.right,
+          textLeft: Math.min(...lines.map((r) => r.left)),
+          textRight: Math.max(...lines.map((r) => r.right)),
+        };
+      });
+      expect(fit.textLeft).toBeGreaterThanOrEqual(fit.columnLeft - 1);
+      expect(fit.textRight).toBeLessThanOrEqual(fit.columnRight + 1);
+      expect(fit.textRight).toBeLessThanOrEqual(bp.width);
     });
 
     test("Hero image wrapper occupies a healthy share of viewport", async ({
       page,
     }) => {
-      const slide = page.locator("img.hero-slide").first();
+      const slide = page.locator(".hero-slide").first();
       await expect(slide).toBeVisible();
       const box = await slide.boundingBox();
       expect(box).not.toBeNull();

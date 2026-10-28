@@ -7,7 +7,7 @@ import { defineMcp } from "npm:@lovable.dev/mcp-js@0.26.3";
 
 // src/lib/mcp/tools/search-tests.ts
 import { defineTool } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z } from "npm:zod@^3.24.2";
+import { z } from "npm:zod@^4.6.6";
 
 // src/lib/mcp/shared.ts
 import { createClient } from "npm:@supabase/supabase-js@2.111.0";
@@ -74,6 +74,93 @@ function biomarkerNames(list) {
   }).filter((s) => s.length > 0);
 }
 
+// src/lib/sampleType.ts
+var BLOOD = /* @__PURE__ */ new Set([
+  "venous",
+  "finger_prick",
+  "capillary",
+  "multiple"
+]);
+var HOME = /* @__PURE__ */ new Set([
+  "finger_prick",
+  "capillary",
+  "nail",
+  "saliva",
+  "stool",
+  "urine",
+  "urine_or_swab",
+  "buccal_swab"
+]);
+var TOKENS = /* @__PURE__ */ new Set([
+  "venous",
+  "finger_prick",
+  "capillary",
+  "nail",
+  "saliva",
+  "stool",
+  "urine",
+  "urine_or_swab",
+  "buccal_swab",
+  "multiple"
+]);
+function tokenFor(raw) {
+  const s = raw.trim().toLowerCase();
+  if (!s) return null;
+  if (TOKENS.has(s)) return s;
+  const hasVenous = /venous|blood draw|phlebotom/.test(s);
+  const hasUrineSwab = /urine|swab/.test(s);
+  if (hasVenous && hasUrineSwab) return "multiple";
+  if (/capillary|quick\s?draw|tasso|upper.arm/.test(s)) return "capillary";
+  if (/finger/.test(s)) return hasVenous ? "multiple" : "finger_prick";
+  if (hasVenous) return "venous";
+  if (/nail/.test(s)) return "nail";
+  if (/stool|faec|fec/.test(s)) return "stool";
+  if (/cheek|buccal/.test(s)) return "buccal_swab";
+  if (/saliva/.test(s)) return "saliva";
+  if (/urine/.test(s) && /swab/.test(s)) return "urine_or_swab";
+  if (/urine/.test(s)) return "urine";
+  if (/swab/.test(s)) return "urine_or_swab";
+  return null;
+}
+var LABELS = {
+  venous: "Venous blood draw",
+  finger_prick: "Finger-prick",
+  capillary: "QuickDraw upper-arm device (no finger-prick)",
+  saliva: "Saliva",
+  stool: "Stool sample",
+  nail: "Nail clipping",
+  urine: "Urine",
+  urine_or_swab: "Urine or swab",
+  buccal_swab: "Cheek swab",
+  multiple: "Multiple sample types"
+};
+function describeSampleType(raw) {
+  const text = (raw ?? "").trim();
+  const token = tokenFor(text);
+  if (!token) {
+    return {
+      token: null,
+      label: text || null,
+      isBlood: false,
+      isHomeCollectable: false
+    };
+  }
+  let label = LABELS[token];
+  if (token === "multiple" && /blood/i.test(text) && /urine|swab/i.test(text)) {
+    label = "Blood and urine or swab";
+  }
+  return {
+    token,
+    label,
+    isBlood: BLOOD.has(token),
+    isHomeCollectable: HOME.has(token)
+  };
+}
+function sampleTypeLabel(raw) {
+  if (typeof raw !== "string" || !raw.trim()) return null;
+  return describeSampleType(raw).label;
+}
+
 // src/lib/mcp/tools/search-tests.ts
 var LISTING_COLUMNS = "id, test_name, provider_id, provider_name, biomarker_count, price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, turnaround_days_text, sample_type, collection_method, location_options, home_kit_available, clinic_visit_available, url, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, updated_at";
 var SORTS = {
@@ -130,7 +217,7 @@ var search_tests_default = defineTool({
       offset: args.offset,
       sort: args.sort,
       results: (data ?? []).map(
-        (r) => withAccreditation(r)
+        (r) => withAccreditation({ ...r, sample_type: sampleTypeLabel(r.sample_type) })
       ),
       note: PRICE_NOTE
     });
@@ -139,7 +226,7 @@ var search_tests_default = defineTool({
 
 // src/lib/mcp/tools/get-test.ts
 import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z2 } from "npm:zod@^3.24.2";
+import { z as z2 } from "npm:zod@^4.6.6";
 var TEST_DETAIL_COLUMNS = "id, provider_id, provider_name, test_name, description, is_addon, category_primary, price, original_price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, biomarker_count, biomarkers_list, biomarkers_listed, turnaround_days_text, sample_type, collection_method, location_options, home_kit_available, clinic_visit_available, url, url_verified, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, scraped_at, updated_at";
 function testLimitations(t) {
   const out = [];
@@ -183,7 +270,10 @@ var get_test_default = defineTool2({
     if (!data) return fail("Not found");
     const test = data;
     return ok({
-      test: withAccreditation(test),
+      test: withAccreditation({
+        ...test,
+        sample_type: sampleTypeLabel(test.sample_type)
+      }),
       limitations: testLimitations(test),
       note: PRICE_NOTE
     });
@@ -249,7 +339,7 @@ var list_categories_default = defineTool4({
 
 // src/lib/mcp/tools/get-provider.ts
 import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z3 } from "npm:zod@^3.24.2";
+import { z as z3 } from "npm:zod@^4.6.6";
 var get_provider_default = defineTool5({
   name: "get_provider",
   title: "Get provider",
@@ -275,7 +365,7 @@ var get_provider_default = defineTool5({
 
 // src/lib/mcp/tools/compare-tests.ts
 import { defineTool as defineTool6 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z4 } from "npm:zod@^3.24.2";
+import { z as z4 } from "npm:zod@^4.6.6";
 function biomarkerOverlap(tests) {
   const sets = tests.map((t) => ({
     id: t.id,
@@ -321,6 +411,7 @@ var compare_tests_default = defineTool6({
     const table = ordered.map(
       ({ biomarkers_list, ...rest }) => withAccreditation({
         ...rest,
+        sample_type: sampleTypeLabel(rest.sample_type),
         biomarkers_listed: biomarkerNames(biomarkers_list).length
       })
     );
@@ -335,7 +426,7 @@ var compare_tests_default = defineTool6({
 
 // src/lib/mcp/tools/find-tests-by-biomarker.ts
 import { defineTool as defineTool7 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z5 } from "npm:zod@^3.24.2";
+import { z as z5 } from "npm:zod@^4.6.6";
 var find_tests_by_biomarker_default = defineTool7({
   name: "find_tests_by_biomarker",
   title: "Find tests by biomarker",

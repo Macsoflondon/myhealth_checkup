@@ -25,10 +25,24 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install dependencies
-        run: npm install --package-lock-only --ignore-scripts --legacy-peer-deps
+      # Audit the committed lockfile exactly as deploy.yml installs it (npm ci).
+      # The previous `npm install --package-lock-only` rewrote the lock in CI,
+      # so the scan checked a file nobody ships, and it never refreshed stale
+      # nested entries because they still satisfied their ranges.
+      - name: Install dependencies from the committed lockfile
+        run: npm ci --ignore-scripts --no-audit --fund=false --legacy-peer-deps
+
+      # Lovable patches package-lock.json entry by entry, which can strand an
+      # old nested copy (the cause of the zod GHSA-mrhx-c7xc-m3w5 failures).
+      # This names any such copy and how to remove it, so a new advisory
+      # against an old copy is caught as a lockfile fault, not a mystery.
+      - name: Check lockfile for stale nested copies
+        run: |
+          NPM_SEMVER="$(dirname "$(dirname "$(realpath "$(command -v npm)")")")/node_modules/semver"
+          NPM_SEMVER="$NPM_SEMVER" node scripts/check-lockfile-stale-copies.mjs
 
       - name: Run npm audit (high & critical)
+        if: always()
         run: npm audit --audit-level=high
 
       - name: Generate JSON report

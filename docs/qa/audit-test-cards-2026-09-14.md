@@ -766,3 +766,25 @@ but this specific, narrowly-scoped gap — `url_verified` coverage — is now cl
 every real card-rendering surface found by tracing actual data consumers rather than
 re-running the same surface list. Two explicitly-identified items were left alone on
 purpose (dead code, pre-existing unrelated bug) rather than silently expanded into.
+
+### Addendum (2026-10-28) — rebased onto 194 newer `main` commits
+
+Merging current `main` into this branch resolved seven conflicts. Six were overlaps where
+`main` had added image fields beside this pass's `url_verified` fields; both were kept.
+`CancerComparisonPage.tsx` now loads through `getCancerTests()` (`select("*")` on the
+`unified_provider_tests` view) instead of its old effect. The view exposes `url_verified`
+and the rows still pass through `transformToEnhanced`, so this pass's `canBookDirect` gates
+there keep working.
+
+A fresh sweep of every `href={…url}` and `openAffiliateUrl(` call found one database-backed
+surface this pass had missed:
+
+- **Finding #31:** `IntelligentSearch.tsx` (`/search`) showed its "Book" button on `r.url`
+  alone. `testsApi.searchTests` now selects `url_verified`, and the button uses
+  `canBookDirect(r.url, r.url_verified)`.
+
+Left alone on purpose: `ProviderPriceComparison.tsx` and `ProviderComparisonSidebar.tsx`
+render inside `TestPageTemplate` on the editorial `/test/*` pages, whose provider links are
+hand-written constants with no `provider_tests` row, so `url_verified` does not exist for
+them. Whether those hardcoded links should come from `provider_tests` is a separate
+question.

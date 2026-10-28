@@ -3,9 +3,32 @@ import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 
 import { cn } from "@/lib/utils";
 
-const TooltipProvider = TooltipPrimitive.Provider;
+// Tracks whether a TooltipProvider is already above this tooltip. The app
+// root no longer mounts one: importing it there put Radix Tooltip and Floating
+// UI (~100 KB of source) into the entry script every page loads. A Tooltip
+// with no provider above it now brings its own, with Radix's defaults.
+const HasProviderContext = React.createContext(false);
 
-const Tooltip = TooltipPrimitive.Root;
+const TooltipProvider = ({
+  children,
+  ...props
+}: React.ComponentProps<typeof TooltipPrimitive.Provider>) => (
+  <TooltipPrimitive.Provider {...props}>
+    <HasProviderContext.Provider value={true}>
+      {children}
+    </HasProviderContext.Provider>
+  </TooltipPrimitive.Provider>
+);
+
+const Tooltip = (props: React.ComponentProps<typeof TooltipPrimitive.Root>) => {
+  const hasProvider = React.useContext(HasProviderContext);
+  const root = <TooltipPrimitive.Root {...props} />;
+  return hasProvider ? (
+    root
+  ) : (
+    <TooltipPrimitive.Provider>{root}</TooltipPrimitive.Provider>
+  );
+};
 
 const TooltipTrigger = TooltipPrimitive.Trigger;
 

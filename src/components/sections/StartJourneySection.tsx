@@ -5,7 +5,8 @@ import { useHomepageComparisons } from "@/hooks/use-homepage-comparisons";
 import { selectHomepageComparisons } from "@/lib/homepage-comparisons";
 
 const StartJourneySection = () => {
-  const { data: panels = [] } = useHomepageComparisons();
+  const { data: panels = [], isPending: comparisonsLoading } =
+    useHomepageComparisons();
   const [syncIdx, setSyncIdx] = useState(0);
   useEffect(() => {
     const interval = setInterval(() => setSyncIdx((index) => index + 1), 30000);
@@ -14,9 +15,9 @@ const StartJourneySection = () => {
   const { left, right } = selectHomepageComparisons(panels, syncIdx);
 
   return (
-    <section className="w-full bg-gradient-to-b from-slate-50 to-white py-12 sm:py-16">
-      <div className="max-w-[1480px] mx-auto px-4 sm:px-6">
-        <div className="relative bg-white rounded-[2rem] border border-brand-navy shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 ring-slate-200/60 overflow-hidden mb-8 lg:mb-12 transition-transform duration-700 ease-out hover:-translate-y-1">
+    <section className="w-full bg-gradient-to-b from-slate-50 to-white py-6 sm:py-8">
+      <div className="homepage-section-inner">
+        <div className="relative bg-white rounded-2xl border border-brand-navy shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 ring-slate-200/60 overflow-hidden mb-6 sm:mb-8 transition-transform duration-700 ease-out hover:-translate-y-1">
           <div className="p-6 sm:p-8 md:p-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-10">
             <div className="flex-1 text-center lg:text-left">
               <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
@@ -56,9 +57,9 @@ const StartJourneySection = () => {
             </div>
           </div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-stretch">
-          <LiveCatalogueComparison panel={left} />
-          <LiveCatalogueComparison panel={right} />
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch">
+          <LiveCatalogueComparison panel={left} loading={comparisonsLoading} />
+          <LiveCatalogueComparison panel={right} loading={comparisonsLoading} />
         </div>
       </div>
     </section>

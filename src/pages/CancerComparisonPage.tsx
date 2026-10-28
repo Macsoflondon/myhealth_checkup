@@ -1,6 +1,9 @@
 import { openAffiliateUrl } from "@/lib/affiliate/affiliate-tracking";
 import { canBookDirect } from "@/lib/booking-link-state";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getCancerTests } from "@/services/cancer-tests";
+import { TestCardImage } from "@/components/tests/test-card-image";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { useSearchParams, Link } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
@@ -37,14 +40,8 @@ import { SaveComparisonDialog } from "@/components/compare/SaveComparisonDialog"
 import { useEnhancedComparison } from "@/hooks/useEnhancedComparison";
 import {
   CANCER_TYPES,
-  CANCER_SEARCH_TERMS,
   getCancerTypeById,
 } from "@/data/compare/cancerBiomarkers";
-import { supabase } from "@/integrations/supabase/client";
-import {
-  getProviderLogo as getProviderLogoFn,
-  PROVIDER_DETAILS,
-} from "@/constants/providers";
 import { EnhancedTestData } from "@/types/comparison";
 import PageBanner from "@/components/sections/PageBanner";
 import { getTestDetailUrl } from "@/utils/providerRoutes";
@@ -61,8 +58,6 @@ const CANCER_TYPE_ICONS: Record<string, React.ElementType> = {
 
 export default function CancerComparisonPage() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [cancerTests, setCancerTests] = useState<EnhancedTestData[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [activeCancerType, setActiveCancerType] = useState(
     searchParams.get("type") || "all",
   );
@@ -78,41 +73,11 @@ export default function CancerComparisonPage() {
     transformToEnhanced,
   } = useEnhancedComparison();
 
-  // Fetch cancer-related tests
-  useEffect(() => {
-    async function fetchCancerTests() {
-      setIsLoading(true);
-      try {
-        const { data, error } = await supabase
-          .from("provider_tests")
-          .select("*")
-          .eq("is_active", true);
-
-        if (error) throw error;
-
-        // Filter for cancer-related tests
-        const cancerRelatedTests = (data || []).filter((test) => {
-          const searchText =
-            `${test.test_name} ${test.description || ""} ${test.category || ""}`.toLowerCase();
-          return CANCER_SEARCH_TERMS.some((term) =>
-            searchText.includes(term.toLowerCase()),
-          );
-        });
-
-        // Transform to enhanced format
-        const enhanced = cancerRelatedTests.map((test) =>
-          transformToEnhanced(test),
-        );
-        setCancerTests(enhanced);
-      } catch (err) {
-        console.error("Error fetching cancer tests:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchCancerTests();
-  }, [transformToEnhanced]);
+  const { data: cancerTests = [], isLoading } = useQuery({
+    queryKey: ["cancer-comparison-tests"],
+    queryFn: getCancerTests,
+    select: (rows) => rows.map(transformToEnhanced),
+  });
 
   // Filter tests by cancer type
   const filteredTests = useMemo(() => {
@@ -141,10 +106,6 @@ export default function CancerComparisonPage() {
     if (canBookDirect(test.url, test.urlVerified)) {
       openAffiliateUrl(test.url, { placement: "comparison", testId: test.id });
     }
-  };
-
-  const getProviderLogo = (providerId: string) => {
-    return getProviderLogoFn(providerId);
   };
 
   return (
@@ -313,12 +274,11 @@ export default function CancerComparisonPage() {
                       >
                         <CardHeader className="pb-3">
                           <div className="flex items-center justify-between mb-2">
-                            <img
-                              src={getProviderLogo(test.providerId)}
-                              alt={test.provider}
-                              loading="lazy"
-                              decoding="async"
-                              className="h-6 object-contain"
+                            <TestCardImage
+                              imageUrl={test.image_url}
+                              testName={test.testName}
+                              providerName={test.provider}
+                              className="h-6 w-24"
                             />
                             <Badge variant="secondary">
                               {test.basePrice != null

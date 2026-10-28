@@ -6,7 +6,7 @@
 import i18nInstance from "../i18n/config";
 import { I18nextProvider } from "react-i18next";
 
-import { useEffect, Suspense } from "react";
+import { lazy, useEffect, useState, Suspense } from "react";
 import type { QueryClient } from "@tanstack/react-query";
 import { QueryClientProvider } from "@tanstack/react-query";
 import {
@@ -21,9 +21,7 @@ import {
 import { HelmetProvider } from "react-helmet-async";
 
 import appCss from "../styles.css?url";
-import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/context/AuthContext";
 import { SessionSecurityProvider } from "@/components/security/SessionSecurityProvider";
 import { ScrollToTop } from "@/components/common/ScrollToTop";
@@ -39,6 +37,35 @@ import { reportLovableError } from "@/lib/lovable-error-reporting";
 import { lazyWithRetry } from "@/lib/lazyWithRetry";
 import { loadCookiebot } from "@/lib/consent";
 
+// The Radix toast renderer (and its dismissable-layer and collection code)
+// loads once the browser is idle instead of in the entry script. Nothing is
+// lost before it mounts: useToast() keeps toasts in a module-level store that
+// the renderer reads when it subscribes. Sonner stays eager because its
+// Toaster drops toasts fired before it mounts.
+const LazyToaster = lazy(() =>
+  import("@/components/ui/toaster").then((m) => ({ default: m.Toaster })),
+);
+
+function DeferredToaster() {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    const idle =
+      window.requestIdleCallback ??
+      ((cb: () => void) => window.setTimeout(cb, 1500));
+    const id = idle(() => setReady(true), { timeout: 4000 });
+    return () => {
+      if (window.cancelIdleCallback && typeof id === "number")
+        window.cancelIdleCallback(id);
+    };
+  }, []);
+  if (!ready) return null;
+  return (
+    <Suspense fallback={null}>
+      <LazyToaster />
+    </Suspense>
+  );
+}
+
 const ORG_JSONLD = JSON.stringify({
   "@context": "https://schema.org",
   "@graph": [
@@ -52,7 +79,7 @@ const ORG_JSONLD = JSON.stringify({
         url: "https://myhealthcheckup.co.uk/og-image.png",
       },
       description:
-        "UK private health testing comparison marketplace. Compare blood tests, cancer screening, hormone panels, and fertility tests from regulated UK providers.",
+        "UK private blood-test comparison platform. Compare provider-listed prices, biomarkers, collection options and typical turnaround times. Information only, not medical care.",
       address: { "@type": "PostalAddress", addressCountry: "GB" },
       sameAs: ["https://twitter.com/myhealthcheckup"],
     },
@@ -223,25 +250,21 @@ function RootComponent() {
         <AuthProvider>
           <SessionSecurityProvider>
             <HelmetProvider>
-              {/* Toasters intentionally kept outside TooltipProvider so toast
-                state changes don't trigger tooltip context re-renders. */}
-              <Toaster />
+              <DeferredToaster />
               <Sonner />
-              <TooltipProvider>
-                <ScrollToTop />
-                {!isAdminArea && <GlobalPageBackground />}
-                <GlobalHreflang />
-                <TestPageViewTracker />
-                {!isAdminArea && <FloatingNavDock />}
-                <SiteAssistant />
-                <AutoTranslatePage />
-                {!isAdminArea && <GlobalComparisonBar />}
-                <ErrorBoundary>
-                  <Suspense fallback={<PageFallback />}>
-                    <Outlet />
-                  </Suspense>
-                </ErrorBoundary>
-              </TooltipProvider>
+              <ScrollToTop />
+              {!isAdminArea && <GlobalPageBackground />}
+              <GlobalHreflang />
+              <TestPageViewTracker />
+              {!isAdminArea && <FloatingNavDock />}
+              <SiteAssistant />
+              <AutoTranslatePage />
+              {!isAdminArea && <GlobalComparisonBar />}
+              <ErrorBoundary>
+                <Suspense fallback={<PageFallback />}>
+                  <Outlet />
+                </Suspense>
+              </ErrorBoundary>
             </HelmetProvider>
           </SessionSecurityProvider>
         </AuthProvider>

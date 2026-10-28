@@ -5262,6 +5262,30 @@ export type Database = {
           },
         ]
       }
+      provider_test_exclusions: {
+        Row: {
+          created_at: string
+          excluded_by: string
+          product_path: string
+          provider_id: string
+          reason: string
+        }
+        Insert: {
+          created_at?: string
+          excluded_by?: string
+          product_path: string
+          provider_id: string
+          reason: string
+        }
+        Update: {
+          created_at?: string
+          excluded_by?: string
+          product_path?: string
+          provider_id?: string
+          reason?: string
+        }
+        Relationships: []
+      }
       provider_test_history: {
         Row: {
           biomarker_count: number | null
@@ -5412,6 +5436,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      provider_test_image_backup_20261025: {
+        Row: {
+          backed_up_at: string | null
+          gallery_image_urls: string[] | null
+          image_is_stock: boolean | null
+          image_url: string | null
+          provider_id: string | null
+          provider_test_id: string
+          reason: string | null
+        }
+        Insert: {
+          backed_up_at?: string | null
+          gallery_image_urls?: string[] | null
+          image_is_stock?: boolean | null
+          image_url?: string | null
+          provider_id?: string | null
+          provider_test_id: string
+          reason?: string | null
+        }
+        Update: {
+          backed_up_at?: string | null
+          gallery_image_urls?: string[] | null
+          image_is_stock?: boolean | null
+          image_url?: string | null
+          provider_id?: string | null
+          provider_test_id?: string
+          reason?: string | null
+        }
+        Relationships: []
       }
       provider_test_mapping: {
         Row: {
@@ -5597,6 +5651,7 @@ export type Database = {
           description_source: string | null
           discount_percentage: number | null
           field_completeness_score: number | null
+          gallery_image_urls: string[]
           gender_specific: string | null
           goals: string[] | null
           gp_consultation_cost: number | null
@@ -5690,6 +5745,7 @@ export type Database = {
           description_source?: string | null
           discount_percentage?: number | null
           field_completeness_score?: number | null
+          gallery_image_urls?: string[]
           gender_specific?: string | null
           goals?: string[] | null
           gp_consultation_cost?: number | null
@@ -5783,6 +5839,7 @@ export type Database = {
           description_source?: string | null
           discount_percentage?: number | null
           field_completeness_score?: number | null
+          gallery_image_urls?: string[]
           gender_specific?: string | null
           goals?: string[] | null
           gp_consultation_cost?: number | null
@@ -9025,6 +9082,7 @@ export type Database = {
         Args: { p_rows: Json; p_source: string }
         Returns: Json
       }
+      provider_test_product_path: { Args: { u: string }; Returns: string }
       refresh_provider_test_biomarkers: { Args: never; Returns: Json }
       refresh_provider_test_biomarkers_impl: { Args: never; Returns: Json }
       regenerate_mfa_backup_codes: { Args: never; Returns: string[] }

@@ -33,6 +33,12 @@ const DIR = "supabase/migrations";
 // repo): landing_signups enables RLS, revokes all from anon and keeps
 // Supabase's default privileges for authenticated and service_role behind
 // admin-only RLS policies. That matches production's ACL, so it has no GRANT.
+//
+// Restored verbatim on 2026-10-27 (applied in production on 2026-10-26 outside
+// the repo): provider_test_exclusions enables RLS with an admin-only SELECT
+// policy but has no GRANT, so it took Supabase's default privileges.
+// 20261027234500_provider_test_exclusions_explicit_grants.sql sets its
+// privileges explicitly (anon none, authenticated SELECT, service_role ALL).
 const BASELINE_FILES = new Set([
   "20260630110630_enterprise_operational_intelligence_platform.sql",
 ]);
@@ -43,6 +49,7 @@ const BASELINE = new Set([
   "20260831120014_provider_tests_biomarkers_list_junk_guard.sql:known_scrape_junk_labels",
   "20261009091920_biomarker_layer_lock_20261009.sql:biomarker_lock_state",
   "20261016122323_create_landing_signups.sql:landing_signups",
+  "20261026124821_provider_test_exclusions.sql:provider_test_exclusions",
 ]);
 
 const files = readdirSync(DIR)

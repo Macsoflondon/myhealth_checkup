@@ -157,21 +157,25 @@ const ContactPage = () => {
         <script type="application/ld+json">
           {serializeJsonLd({
             "@context": "https://schema.org",
-            "@type": ["ContactPage", "MedicalBusiness", "LocalBusiness"],
+            "@type": "ContactPage",
             name: "myhealth checkup",
-            legalName: "MYHEALTHCHECKUP LTD",
-            description:
-              "Independent UK platform comparing private health tests from accredited providers.",
             url: "https://myhealthcheckup.co.uk/contact",
-            email: "support@myhealthcheckup.co.uk",
-            address: {
-              "@type": "PostalAddress",
-              streetAddress: "2/369 Clapham Road",
-              addressLocality: "London",
-              postalCode: "SW9 9BT",
-              addressCountry: "GB",
+            description:
+              "Contact myhealth checkup, an independent UK comparison platform for private blood tests and cancer screening from accredited providers.",
+            mainEntity: {
+              "@type": "Organization",
+              name: "myhealth checkup",
+              legalName: "MYHEALTHCHECKUP LTD",
+              email: "support@myhealthcheckup.co.uk",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "2/369 Clapham Road",
+                addressLocality: "London",
+                postalCode: "SW9 9BT",
+                addressCountry: "GB",
+              },
+              areaServed: "GB",
             },
-            areaServed: "GB",
             isPartOf: {
               "@type": "WebSite",
               name: "myhealth checkup",

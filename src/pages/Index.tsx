@@ -1,10 +1,13 @@
-import { Helmet } from "react-helmet-async";
 import { lazy, Suspense } from "react";
 import { Link } from "@/lib/router-compat";
 import MainLayout from "@/layouts/MainLayout";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import SectionReveal from "@/components/ui/SectionReveal";
 import { LazyMount } from "@/components/common/LazyMount";
+import {
+  HydrateOnVisible,
+  lazyPreloadable,
+} from "@/components/common/HydrateOnVisible";
 import { SectionSkeleton } from "@/components/common/SectionSkeleton";
 import { usePerformanceOptimization } from "@/hooks/usePerformanceOptimization";
 import { useMobileOptimization } from "@/hooks/use-mobile";
@@ -18,13 +21,18 @@ import { selectHomepageComparisons } from "@/lib/homepage-comparisons";
 // duplicating it here downloaded a second, unused hero image on every visit.
 
 // Above-the-fold: eager
+import { HomepageSearchBand } from "@/components/sections/homepage-search-band";
 import HeroMasthead from "@/components/sections/HeroMasthead";
 
-const PartnersGrid = lazy(() => import("@/components/sections/PartnersGrid"));
+// Server-rendered sections below the hero: HydrateOnVisible keeps their HTML
+// and loads their code only when the visitor scrolls near them.
+const PartnersGrid = lazyPreloadable(
+  () => import("@/components/sections/PartnersGrid"),
+);
 const PartnerShowcaseGrid = lazy(
   () => import("@/components/sections/PartnerShowcaseGrid"),
 );
-const DecisionInfrastructureSection = lazy(() =>
+const DecisionInfrastructureSection = lazyPreloadable(() =>
   import("@/components/sections/DecisionInfrastructureSection").then((m) => ({
     default: m.DecisionInfrastructureSection,
   })),
@@ -45,7 +53,7 @@ const ClinicAndHelpSection = lazy(
 );
 const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
 
-const StartJourneySection = lazy(
+const StartJourneySection = lazyPreloadable(
   () => import("@/components/sections/StartJourneySection"),
 );
 
@@ -53,7 +61,7 @@ const NewsletterSection = lazy(
   () => import("@/components/sections/NewsletterSection"),
 );
 
-const HeroPopularTests = lazy(() =>
+const HeroPopularTests = lazyPreloadable(() =>
   import("@/components/sections/HeroPopularTests").then((m) => ({
     default: m.HeroPopularTests,
   })),
@@ -73,65 +81,59 @@ const ClinicHelpSkeleton = () => (
   <SectionSkeleton tone="white" cards={2} minHeight={500} />
 );
 
+// Rendered as one module-level element so homepage re-renders (data hooks,
+// context updates) hand React the same element and it skips this subtree.
+// A changed element would make React hydrate these sections at once instead
+// of waiting for HydrateOnVisible, and load all their code up front.
+const DEFERRED_SECTIONS = (
+  <>
+    <Suspense fallback={<SectionFallback />}>
+      <SectionReveal>
+        <AccreditedProvidersBar />
+      </SectionReveal>
+    </Suspense>
+
+    <HydrateOnVisible load={HeroPopularTests.preload}>
+      <Suspense fallback={<SectionFallback />}>
+        <SectionReveal delay={0.05}>
+          <HeroPopularTests />
+        </SectionReveal>
+      </Suspense>
+    </HydrateOnVisible>
+
+    <HydrateOnVisible load={StartJourneySection.preload}>
+      <Suspense fallback={<SectionFallback />}>
+        <SectionReveal delay={0.15}>
+          <StartJourneySection />
+        </SectionReveal>
+      </Suspense>
+    </HydrateOnVisible>
+  </>
+);
+
+// "Why myhealth checkup" was moved below "Trusted by users" at the site owner's
+// request. It stays a module-level element for the same reason as
+// DEFERRED_SECTIONS: homepage re-renders must hand React the same element.
+const DECISION_SECTION = (
+  <HydrateOnVisible load={DecisionInfrastructureSection.preload}>
+    <Suspense fallback={<SectionFallback />}>
+      <SectionReveal delay={0.1}>
+        <DecisionInfrastructureSection />
+      </SectionReveal>
+    </Suspense>
+  </HydrateOnVisible>
+);
+
 const Index = () => {
   usePerformanceOptimization();
   useMobileOptimization();
   const activeTestCount = useActiveTestCount();
-  const { data: comparisonPanels = [] } = useHomepageComparisons();
+  const { data: comparisonPanels = [], isPending: comparisonsLoading } =
+    useHomepageComparisons();
   const { upper: upperComparison } = selectHomepageComparisons(
     comparisonPanels,
     0,
   );
-
-  const structuredData = {
-    "@context": "https://schema.org",
-    "@type": "MedicalBusiness",
-    name: "myhealth checkup - UK's Leading Health Test Comparison Platform",
-    description:
-      "Compare private blood tests, health screenings, and wellness services across 10+ leading UK providers. Hospital-grade testing with high-street convenience for health-conscious adults aged 30-60.",
-    url: "https://myhealthcheckup.co.uk",
-    sameAs: [
-      "https://www.facebook.com/myhealthcheckupuk",
-      "https://www.twitter.com/myhealthcheckup",
-      "https://www.instagram.com/myhealthcheckup_uk",
-    ],
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: "2/369 Clapham Road",
-      addressLocality: "London",
-      postalCode: "SW9 9BT",
-      addressCountry: "GB",
-    },
-    audience: {
-      "@type": "Audience",
-      audienceType: "Health-conscious adults aged 25-65",
-      geographicArea: {
-        "@type": "Country",
-        name: "United Kingdom",
-      },
-    },
-    offers: {
-      "@type": "AggregateOffer",
-      priceCurrency: "GBP",
-      lowPrice: "29",
-      highPrice: "299",
-      offerCount: "100+",
-    },
-    openingHoursSpecification: {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-      ],
-      opens: "00:00",
-      closes: "23:59",
-    },
-  };
 
   // Organization + WebSite JSON-LD live once, site-wide, in src/routes/__root.tsx.
   // Repeating them here duplicated ~2 KB of markup in every homepage response.
@@ -139,65 +141,23 @@ const Index = () => {
   return (
     <ErrorBoundary>
       <MainLayout>
-        <Helmet>
-          {/* Hero preload lives in the route head() — see src/routes/index.tsx. */}
-
-          {/* Title, description, canonical, og:* and twitter:* are owned by the
-              route head() in src/routes/index.tsx — single source of truth. */}
-          <meta
-            name="keywords"
-            content="private blood tests UK, health screening comparison, blood test prices UK, hormone testing, vitamin tests, cancer screening, health MOT UK, at-home blood tests, private health tests comparison"
-          />
-          <meta property="og:site_name" content="myhealth checkup" />
-          <meta
-            property="og:image"
-            content="https://myhealthcheckup.co.uk/og-image.png"
-          />
-          <meta property="og:locale" content="en_GB" />
-
-          <meta name="twitter:card" content="summary_large_image" />
-          <meta name="twitter:site" content="@myhealthcheckup" />
-          <meta
-            name="twitter:image"
-            content="https://myhealthcheckup.co.uk/og-image.png"
-          />
-
-          <meta
-            name="robots"
-            content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
-          />
-
-          <link rel="manifest" href="/manifest.json" />
-          <meta name="theme-color" content="#22c0d4" />
-          <meta name="mobile-web-app-capable" content="yes" />
-          <meta
-            name="apple-mobile-web-app-status-bar-style"
-            content="default"
-          />
-          <meta name="apple-mobile-web-app-title" content="myhealth checkup" />
-
-          <script type="application/ld+json">
-            {JSON.stringify(structuredData)}
-          </script>
-        </Helmet>
-
         <div>
           <div className="mt-0 mx-0">
             <HeroMasthead />
           </div>
 
-          {/* Accredited standards bar — sits directly under the slogan */}
+          {/* Trusted providers carousel — sits directly under the hero */}
           <Suspense fallback={<SectionFallback />}>
-            <div className="bg-white pt-4 sm:pt-5 pb-6 sm:pb-8">
-              <AccreditedProvidersBar />
-            </div>
+            <PartnersGrid />
           </Suspense>
+
+          <HomepageSearchBand />
 
           <div id="comparison-anchor" aria-hidden="true" />
 
           {/* Hero CTA — Slogan + Health Quiz entry point */}
-          <section className="rounded-[28px] overflow-hidden bg-[#F5F5F5] border border-[#081129]/[0.06] shadow-[0_30px_80px_rgba(8,17,41,0.10)] px-4 sm:px-6 py-6 sm:py-8 mx-3 sm:mx-6 mt-0 mb-6 sm:mb-8">
-            <div className="relative overflow-hidden rounded-[22px] bg-[#081129] px-4 sm:px-8 lg:px-12 py-8 sm:py-10 lg:py-12">
+          <section className="w-full rounded-none sm:rounded-2xl overflow-hidden bg-brand-navy">
+            <div className="homepage-section-inner relative overflow-hidden py-8 sm:py-10">
               <div className="absolute -right-[50px] -top-[60px] w-[260px] h-[260px] rounded-full bg-[#22c0d4]/[0.12]" />
               <div className="absolute right-[120px] -bottom-[110px] w-[240px] h-[240px] rounded-full bg-[#e70d69]/10" />
               <div className="relative">
@@ -210,11 +170,12 @@ const Index = () => {
                     </h2>
 
                     <p className="text-white/85 text-sm sm:text-base leading-relaxed m-0 2xl:text-lg">
-                      At myhealth checkup, everyone deserves access to
-                      transparent, trustworthy health information. Our mission
-                      is to make it simple to compare private health tests from
-                      accredited UK providers. Every provider we list uses a
-                      UKAS-accredited laboratory or a CQC-registered clinic.
+                      Compare private blood tests in the UK with myhealth
+                      checkup. See prices, biomarkers, collection options and
+                      typical turnaround times side by side, using provider
+                      listings. Every provider we list uses a UKAS-accredited
+                      laboratory or a CQC-regulated clinic. We provide
+                      comparison information, not medical care or diagnosis.
                     </p>
 
                     <div
@@ -236,7 +197,7 @@ const Index = () => {
                       <Link
                         to="/find-test"
                         aria-label="Take the Health Quiz: find the right private blood test"
-                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-[#0e7490] hover:bg-[#0b5e73] text-white font-bold font-[Montserrat] text-base px-8 py-3.5 rounded-full shadow-lg shadow-[#22c0d4]/25 transition-all hover:scale-[1.02]"
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-brand-turquoise text-brand-navy hover:bg-brand-pink hover:text-white focus-visible:bg-brand-pink focus-visible:text-white focus-visible:outline-none font-bold font-[Montserrat] text-base px-8 py-3.5 rounded-full shadow-[0_8px_24px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-[1.02]"
                       >
                         Take the Health Quiz
                       </Link>
@@ -251,9 +212,12 @@ const Index = () => {
                     </div>
                   </div>
 
-                  <div className="flex w-full justify-end">
+                  <div className="flex w-full justify-center lg:justify-end">
                     <div className="w-full max-w-[400px] xl:max-w-[460px] 2xl:max-w-[520px]">
-                      <LiveCatalogueComparison panel={upperComparison} />
+                      <LiveCatalogueComparison
+                        panel={upperComparison}
+                        loading={comparisonsLoading}
+                      />
                     </div>
                   </div>
                 </div>
@@ -261,42 +225,11 @@ const Index = () => {
             </div>
           </section>
 
-          <Suspense fallback={<SectionFallback />}>
-            <SectionReveal>
-              <PartnersGrid />
-            </SectionReveal>
+          {DEFERRED_SECTIONS}
+
+          <Suspense fallback={<PartnerShowcaseSkeleton />}>
+            <PartnerShowcaseGrid />
           </Suspense>
-
-          <Suspense fallback={<SectionFallback />}>
-            <SectionReveal delay={0.05}>
-              <HeroPopularTests />
-            </SectionReveal>
-          </Suspense>
-
-
-          <Suspense fallback={<SectionFallback />}>
-            <SectionReveal delay={0.15}>
-              <StartJourneySection />
-            </SectionReveal>
-          </Suspense>
-
-          <Suspense fallback={<SectionFallback />}>
-            <SectionReveal delay={0.1}>
-              <DecisionInfrastructureSection />
-            </SectionReveal>
-          </Suspense>
-
-          <LazyMount
-            minHeight={800}
-            className="bg-brand-navy"
-            fallback={<PartnerShowcaseSkeleton />}
-          >
-            <Suspense fallback={<PartnerShowcaseSkeleton />}>
-              <SectionReveal delay={0.1}>
-                <PartnerShowcaseGrid />
-              </SectionReveal>
-            </Suspense>
-          </LazyMount>
 
           <LazyMount
             minHeight={500}
@@ -309,6 +242,8 @@ const Index = () => {
               </SectionReveal>
             </Suspense>
           </LazyMount>
+
+          {DECISION_SECTION}
 
           <LazyMount
             minHeight={500}

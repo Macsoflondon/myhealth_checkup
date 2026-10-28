@@ -29,18 +29,13 @@ import { getBranding } from "@/data/providerBranding";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { getProviderRating } from "@/constants/providerRatings";
 import { ProviderTestsGrid } from "@/components/providers/ProviderTestsGrid";
+import { normalizeProviderId } from "@/constants/providers";
 
 const ProviderProfilePage = () => {
   const { providerId } = useParams();
 
-  // Match provider by exact ID first, then by partial match
-  const provider = detailedProviders.find((p) => {
-    const lowerId = p.id.toLowerCase();
-    const lowerProviderId = providerId?.toLowerCase() || "";
-    return (
-      lowerId === lowerProviderId || lowerId.startsWith(lowerProviderId + "-")
-    );
-  });
+  const canonicalProviderId = normalizeProviderId(providerId ?? "");
+  const provider = detailedProviders.find((p) => p.id === canonicalProviderId);
 
   if (!provider) {
     return (

@@ -8,6 +8,7 @@ import {
   PRICE_NOTE,
   withAccreditation,
 } from "../shared";
+import { sampleTypeLabel } from "../../sampleType";
 
 type CompareRow = {
   id: string;
@@ -88,6 +89,7 @@ export default defineTool({
     const table = ordered.map(({ biomarkers_list, ...rest }) =>
       withAccreditation({
         ...rest,
+        sample_type: sampleTypeLabel(rest.sample_type),
         biomarkers_listed: biomarkerNames(biomarkers_list).length,
       }),
     );

@@ -22,7 +22,7 @@ Deno.serve(async (req) => {
     return new Response("ok", { headers: corsHeaders });
 
   try {
-    const { email, outcome } = await req.json().catch(() => ({}));
+    const { email, outcome, password } = await req.json().catch(() => ({}));
     if (typeof email !== "string" || email.length > 254) {
       return new Response(JSON.stringify({ error: "bad email" }), {
         status: 400,
@@ -45,13 +45,30 @@ Deno.serve(async (req) => {
       Date.now() - WINDOW_MIN * 60_000,
     ).toISOString();
 
-    // Record failed attempt if the client tells us the sign-in failed.
-    if (outcome === "failure") {
-      await supabase.from("api_rate_limits").insert({
-        client_key: key,
-        endpoint: "auth:signin",
-        window_start: new Date().toISOString(),
-      });
+    // Record a failed attempt only after verifying it here, so callers cannot
+    // fill someone else's bucket by simply claiming a failure.
+    if (
+      outcome === "failure" &&
+      typeof password === "string" &&
+      password.length > 0 &&
+      password.length <= 1024
+    ) {
+      const verifier = createClient(
+        Deno.env.get("SUPABASE_URL")!,
+        Deno.env.get("SUPABASE_ANON_KEY")!,
+        { auth: { persistSession: false, autoRefreshToken: false } },
+      );
+      const { data: signIn, error: signInError } =
+        await verifier.auth.signInWithPassword({ email, password });
+      if (signIn?.session) {
+        await verifier.auth.signOut({ scope: "local" }).catch(() => {});
+      } else if (signInError && signInError.status === 400) {
+        await supabase.from("api_rate_limits").insert({
+          client_key: key,
+          endpoint: "auth:signin",
+          window_start: new Date().toISOString(),
+        });
+      }
     }
 
     const { count } = await supabase

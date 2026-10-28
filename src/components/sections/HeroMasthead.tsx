@@ -1,40 +1,35 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
 
-import { SLIDES, FIRST_SLIDE_LQIP } from "@/components/sections/hero-slides";
+import {
+  HERO_COPY,
+  HERO_POSTER_SRC,
+  HERO_POSTER_WEBP_SRCSET,
+  FIRST_SLIDE_AVIF_SRCSET,
+  FIRST_SLIDE_LQIP,
+} from "@/components/sections/hero-slides";
+import heroVideoMp4 from "@/assets/hero/hero-video.mp4.asset.json";
+import heroVideoWebm from "@/assets/hero/hero-video.webm.asset.json";
 
-export default function HeroMasthead({
-  rotateMs = 15000,
-}: {
-  rotateMs?: number;
-}) {
-  const [i, setI] = useState(0);
-  const activeIndex = i % SLIDES.length;
-  // Highest slide index shown so far; slides beyond the next one stay unmounted.
-  const slidesReached = Math.min(i, SLIDES.length - 1);
-  const firstSlideRef = useRef<HTMLImageElement>(null);
-  const [firstLoaded, setFirstLoaded] = useState(false);
-  useEffect(() => {
-    // Cached images can finish before hydration attaches onLoad.
-    if (firstSlideRef.current?.complete) setFirstLoaded(true);
-  }, []);
+/** The ad runs at half speed so the loop feels calm behind the copy. */
+const HERO_PLAYBACK_RATE = 0.5;
 
-  // Defer mounting the non-LCP slides until the browser is idle after first paint.
-  const [deferredMounted, setDeferredMounted] = useState(false);
+export default function HeroMasthead() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const posterRef = useRef<HTMLImageElement>(null);
+  const [posterLoaded, setPosterLoaded] = useState(false);
   useEffect(() => {
-    const schedule =
-      window.requestIdleCallback ??
-      ((cb: IdleRequestCallback) =>
-        window.setTimeout(cb as unknown as TimerHandler, 1200));
-    const id = schedule(() => setDeferredMounted(true), { timeout: 3000 });
-    return () => {
-      if (window.cancelIdleCallback && typeof id === "number") {
-        window.cancelIdleCallback(id);
-      }
-    };
+    // The photo can finish loading before hydration attaches onLoad.
+    if (posterRef.current?.complete) setPosterLoaded(true);
   }, []);
+  // The ~3.6 MB loop is fetched only after the page has loaded and the
+  // browser is idle, so it never competes with the HTML, CSS, scripts and the
+  // hero photo for bandwidth. Until it is playing, the responsive photo below
+  // (AVIF/WebP, 11-60 KB) is the visible hero and the LCP element.
+  const [videoAllowed, setVideoAllowed] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   const [reducedMotion, setReducedMotion] = useState(false);
   useEffect(() => {
@@ -45,12 +40,84 @@ export default function HeroMasthead({
     mq.addEventListener?.("change", onChange);
     return () => mq.removeEventListener?.("change", onChange);
   }, []);
-  const advance = useCallback(() => setI((n) => n + 1), []);
+
   useEffect(() => {
-    const ms = reducedMotion ? Math.max(1200, rotateMs) : rotateMs;
-    const id = setTimeout(advance, ms);
-    return () => clearTimeout(id);
-  }, [activeIndex, advance, reducedMotion, rotateMs]);
+    if (reducedMotion) return;
+    const connection = (
+      navigator as Navigator & {
+        connection?: { saveData?: boolean; effectiveType?: string };
+      }
+    ).connection;
+    // Visitors who asked to save data, or are on a 2G-class connection, keep
+    // the photo: the loop would cost them megabytes for a background effect.
+    if (
+      connection?.saveData ||
+      /(^|-)2g$/.test(connection?.effectiveType ?? "")
+    ) {
+      return;
+    }
+    let idleId: number | undefined;
+    let timerId: number | undefined;
+    const allow = () => setVideoAllowed(true);
+    const scheduleIdle = () => {
+      if (window.requestIdleCallback) {
+        idleId = window.requestIdleCallback(allow, { timeout: 3000 });
+      } else {
+        timerId = window.setTimeout(allow, 1000);
+      }
+    };
+    if (document.readyState === "complete") scheduleIdle();
+    else window.addEventListener("load", scheduleIdle, { once: true });
+    return () => {
+      window.removeEventListener("load", scheduleIdle);
+      if (idleId !== undefined) window.cancelIdleCallback?.(idleId);
+      if (timerId !== undefined) window.clearTimeout(timerId);
+    };
+  }, [reducedMotion]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !videoAllowed) return;
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playbackRate = HERO_PLAYBACK_RATE;
+    if (reducedMotion) {
+      video.pause();
+      return;
+    }
+    // Keep the loop running no matter what: browsers can pause background
+    // video on scroll, tab visibility changes or power saving, so any pause
+    // that we did not ask for is immediately reversed.
+    const resume = () => {
+      void video.play().catch(() => undefined);
+    };
+    const onPlaying = () => {
+      video.playbackRate = HERO_PLAYBACK_RATE;
+    };
+    video.addEventListener("playing", onPlaying);
+    video.addEventListener("canplay", resume);
+    const onPause = () => {
+      if (!video.ended) resume();
+    };
+    video.addEventListener("pause", onPause);
+    document.addEventListener("visibilitychange", resume);
+    resume();
+    return () => {
+      video.removeEventListener("pause", onPause);
+      video.removeEventListener("playing", onPlaying);
+      video.removeEventListener("canplay", resume);
+      document.removeEventListener("visibilitychange", resume);
+    };
+  }, [reducedMotion, videoAllowed]);
+
+  const mobilePlacement =
+    HERO_COPY.copyPlacementMobile === "bottom"
+      ? "items-end pb-20 bg-gradient-to-t from-brand-navy/95 via-brand-navy/55 to-transparent"
+      : "items-start pt-16 bg-gradient-to-b from-brand-navy/90 via-brand-navy/45 to-transparent";
+  const desktopGradient =
+    HERO_COPY.align === "right"
+      ? "sm:bg-gradient-to-l sm:from-brand-navy/90 sm:via-brand-navy/50 sm:to-transparent"
+      : "sm:bg-gradient-to-r sm:from-brand-navy/90 sm:via-brand-navy/50 sm:to-transparent";
 
   return (
     <section className="rounded-t-none rounded-b-none overflow-visible bg-[#081129] md:bg-white border-0 sm:border sm:border-b-0 sm:border-white/10 md:border-0 shadow-[0_30px_80px_rgba(8,17,41,0.10)] md:shadow-none px-3 sm:px-6 md:px-0 pt-0 pb-0 min-h-[68svh] sm:min-h-[100svh] flex flex-col">
@@ -67,178 +134,129 @@ export default function HeroMasthead({
         <BrowseByCategoryBar compact placement="hero" />
       </div>
 
-      {/* White breathing space between the pink brand-bar line and the photo */}
+      {/* White breathing space between the pink brand-bar line and the video */}
       <div
         aria-hidden
-        className="order-2 -mx-3 sm:-mx-6 md:mx-0 h-4 sm:h-5 bg-white"
+        className="order-2 -mx-3 sm:-mx-6 md:mx-0 h-0 bg-white"
       />
 
       <div className="relative overflow-hidden mt-0 -mx-3 sm:-mx-6 md:mx-0 flex-1 min-h-[34svh] sm:min-h-0 bg-[#081129] order-3 pb-16 md:pb-20 md:rounded-2xl md:border md:border-[rgba(34,192,212,0.35)] md:shadow-[0_0_0_1px_rgba(34,192,212,0.20),0_8px_28px_rgba(34,192,212,0.18)]">
-        {/* Blurred LQIP + gradient placeholder — fades out once slide 1 paints */}
+        {/* Blurred LQIP + gradient placeholder — fades out once the poster paints */}
         <div
           aria-hidden
-          className={`absolute inset-0 scale-110 bg-cover bg-center blur-2xl transition-opacity duration-500 ${firstLoaded ? "opacity-0" : "opacity-100"}`}
+          className={`absolute inset-0 scale-110 bg-cover bg-center blur-2xl transition-opacity duration-500 ${posterLoaded ? "opacity-0" : "opacity-100"}`}
           style={{ backgroundImage: `url("${FIRST_SLIDE_LQIP}")` }}
         />
         <div
           aria-hidden
-          className={`absolute inset-0 bg-gradient-to-b from-[#081129]/40 via-[#081129]/10 to-[#081129]/60 transition-opacity duration-500 ${firstLoaded ? "opacity-0" : "opacity-100"}`}
+          className={`absolute inset-0 bg-gradient-to-b from-[#081129]/40 via-[#081129]/10 to-[#081129]/60 transition-opacity duration-500 ${posterLoaded ? "opacity-0" : "opacity-100"}`}
         />
 
-        {SLIDES.map((s, n) => {
-          // Slides 2..n only mount once the browser is idle after first paint,
-          // so they never compete with the LCP image for bandwidth.
-          if (n > 0 && !deferredMounted) return null;
-          // Photos load one step ahead of the rotation: the next slide's photo
-          // now, each later one when its predecessor shows. Every slide sits in
-          // the viewport, so loading="lazy" alone would fetch all of them at
-          // once, alongside the first-screen requests.
-          const photoMounted = n <= slidesReached + 1;
+        <div
+          className="absolute inset-0"
+          style={{
+            ["--copy-width-t" as string]: HERO_COPY.copyWidthTablet,
+            ["--copy-width-d" as string]: HERO_COPY.copyWidthDesktop,
+          }}
+          data-testid="hero-slide-1"
+          data-active="true"
+        >
+          {/* The whole video area links to the live site. */}
+          <a
+            href="https://myhealthcheckup.co.uk"
+            aria-label="myhealth checkup — visit myhealthcheckup.co.uk"
+            className="hero-slide absolute inset-0 block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-turquoise"
+          >
+            {/* Hero photo: visible from first paint and the LCP element. The
+                route head preloads the matching AVIF candidate. */}
+            <picture>
+              <source
+                type="image/avif"
+                srcSet={FIRST_SLIDE_AVIF_SRCSET}
+                sizes="100vw"
+              />
+              <source
+                type="image/webp"
+                srcSet={HERO_POSTER_WEBP_SRCSET}
+                sizes="100vw"
+              />
+              <img
+                ref={posterRef}
+                src={HERO_POSTER_SRC}
+                alt={HERO_COPY.alt}
+                width={1920}
+                height={1080}
+                sizes="100vw"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                onLoad={() => setPosterLoaded(true)}
+                className="absolute inset-0 h-full w-full object-cover object-[80%_center] sm:object-center"
+              />
+            </picture>
+            {videoAllowed && (
+              <video
+                ref={videoRef}
+                className={`absolute inset-0 h-full w-full object-cover object-[80%_center] sm:object-center transition-opacity duration-700 ${videoPlaying ? "opacity-100" : "opacity-0"}`}
+                muted
+                loop
+                playsInline
+                autoPlay
+                preload="auto"
+                aria-hidden
+                onPlaying={() => setVideoPlaying(true)}
+              >
+                <source src={heroVideoWebm.url} type="video/webm" />
+                <source src={heroVideoMp4.url} type="video/mp4" />
+              </video>
+            )}
+          </a>
 
-          const active = n === activeIndex;
-          const commonStyle = {
-            opacity: active ? 1 : 0,
-            ["--pos-m" as string]: s.posMobile,
-            ["--pos-t" as string]: s.posTablet,
-            ["--pos-d" as string]: s.posDesktop,
-            ["--copy-width-t" as string]: s.copyWidthTablet,
-            ["--copy-width-d" as string]: s.copyWidthDesktop,
-          };
-          const mobilePlacement =
-            s.copyPlacementMobile === "bottom"
-              ? "items-end pb-20 bg-gradient-to-t from-brand-navy/95 via-brand-navy/55 to-transparent"
-              : "items-start pt-16 bg-gradient-to-b from-brand-navy/90 via-brand-navy/45 to-transparent";
-          const desktopGradient =
-            s.align === "right"
-              ? "sm:bg-gradient-to-l sm:from-brand-navy/90 sm:via-brand-navy/50 sm:to-transparent"
-              : "sm:bg-gradient-to-r sm:from-brand-navy/90 sm:via-brand-navy/50 sm:to-transparent";
-          const img = (
-            <img
-              key={`i-${n}`}
-              ref={n === 0 ? firstSlideRef : undefined}
-              src={s.src}
-              srcSet={s.webpSrcSet}
-              alt={s.alt}
-              aria-hidden={active ? undefined : true}
-              width={1920}
-              height={1080}
-              sizes="100vw"
-              loading={n === 0 ? "eager" : "lazy"}
-              fetchPriority={n === 0 ? "high" : "low"}
-              decoding="async"
-              onLoad={n === 0 ? () => setFirstLoaded(true) : undefined}
-              className={`hero-slide absolute inset-0 h-full w-full ${s.fit === "contain" ? "object-contain" : "object-cover"}`}
-            />
-          );
-
-          return (
-            <div
-              key={`slide-${n}`}
-              aria-hidden={active ? undefined : true}
-              className="absolute inset-0 transition-opacity duration-500"
-              style={commonStyle}
-              data-testid={`hero-slide-${n + 1}`}
-              data-active={active}
-            >
-              {photoMounted ? (
-                <picture>
-                  {s.mobileAvifSrcSet ? (
-                    <source
-                      media="(max-width: 639px)"
-                      type="image/avif"
-                      srcSet={s.mobileAvifSrcSet}
-                      sizes="100vw"
-                    />
-                  ) : null}
-                  {s.mobileWebpSrcSet ? (
-                    <source
-                      media="(max-width: 639px)"
-                      type="image/webp"
-                      srcSet={s.mobileWebpSrcSet}
-                      sizes="100vw"
-                    />
-                  ) : null}
-                  <source
-                    type="image/avif"
-                    srcSet={s.avifSrcSet}
-                    sizes="100vw"
-                  />
-                  <source
-                    type="image/webp"
-                    srcSet={s.webpSrcSet}
-                    sizes="100vw"
-                  />
-                  {img}
-                </picture>
+          <div
+            className={`pointer-events-none absolute inset-0 z-10 flex px-5 sm:items-center sm:px-10 sm:pb-0 sm:pt-0 md:px-12 lg:px-16 xl:px-20 ${mobilePlacement} ${desktopGradient} ${HERO_COPY.align === "right" ? "justify-end text-right" : "justify-start text-left"}`}
+          >
+            <div className="@container w-full max-w-4xl text-primary-foreground sm:w-[var(--copy-width-t)] sm:min-w-[19rem] lg:w-[var(--copy-width-d)]">
+              {HERO_COPY.eyebrow ? (
+                <p className="mb-3 whitespace-nowrap text-xs font-bold uppercase tracking-[0.18em] text-brand-turquoise sm:text-sm">
+                  {HERO_COPY.eyebrow}
+                </p>
               ) : null}
-
-              {s.headline ? (
-                <div
-                  className={`absolute inset-0 z-10 flex px-5 sm:items-center sm:px-10 sm:pb-0 sm:pt-0 md:px-12 lg:px-16 xl:px-20 ${mobilePlacement} ${desktopGradient} ${s.align === "right" ? "justify-end text-right" : "justify-start text-left"}`}
+              <h1 className="font-display text-[clamp(1.5rem,10cqw,3.5rem)] font-extrabold leading-[1.12]">
+                {HERO_COPY.headlineLines
+                  ? HERO_COPY.headlineLines.map((line) => (
+                      <span key={line} className="block whitespace-nowrap">
+                        {line}{" "}
+                      </span>
+                    ))
+                  : HERO_COPY.headline}
+              </h1>
+              {HERO_COPY.supportingCopy ? (
+                <p
+                  className={`mt-3 max-w-[40ch] text-[clamp(0.875rem,3.4cqw,1.125rem)] [text-wrap:pretty] font-medium leading-relaxed text-primary-foreground/90 sm:mt-4 ${
+                    HERO_COPY.align === "right" ? "ml-auto" : ""
+                  }`}
                 >
-                  <div className="@container w-full max-w-4xl text-primary-foreground sm:w-[var(--copy-width-t)] sm:min-w-[19rem] lg:w-[var(--copy-width-d)]">
-                    {s.eyebrow ? (
-                      <p className="mb-3 whitespace-nowrap text-xs font-bold uppercase tracking-[0.18em] text-brand-turquoise sm:text-sm">
-                        {s.eyebrow}
-                      </p>
-                    ) : null}
-                    {n === 0 ? (
-                      <h1 className="font-display text-[clamp(1.5rem,10cqw,3.5rem)] font-extrabold leading-[1.12]">
-                        {s.headlineLines
-                          ? s.headlineLines.map((line) => (
-                              <span
-                                key={line}
-                                className="block whitespace-nowrap"
-                              >
-                                {line}{" "}
-                              </span>
-                            ))
-                          : s.headline}
-                      </h1>
-                    ) : (
-                      <h2 className="font-display text-[clamp(1.5rem,10cqw,3.5rem)] font-extrabold leading-[1.12]">
-                        {s.headlineLines
-                          ? s.headlineLines.map((line) => (
-                              <span
-                                key={line}
-                                className="block whitespace-nowrap"
-                              >
-                                {line}{" "}
-                              </span>
-                            ))
-                          : s.headline}
-                      </h2>
-                    )}
-                    {s.supportingCopy ? (
-                      <p
-                        className={`mt-3 max-w-[40ch] text-[clamp(0.875rem,3.4cqw,1.125rem)] [text-wrap:pretty] font-medium leading-relaxed text-primary-foreground/90 sm:mt-4 ${
-                          s.align === "right" ? "ml-auto" : ""
-                        }`}
-                      >
-                        {s.supportingCopy}
-                      </p>
-                    ) : null}
-                    <div
-                      aria-hidden
-                      className={`mt-4 flex h-1 w-28 overflow-hidden rounded-full sm:mt-5 sm:w-36 ${
-                        s.align === "right" ? "ml-auto" : ""
-                      }`}
-                    >
-                      <span className="w-2/3 bg-brand-turquoise" />
-                      <span className="w-1/3 bg-brand-pink" />
-                    </div>
-                  </div>
-                </div>
+                  {HERO_COPY.supportingCopy}
+                </p>
               ) : null}
+              <div
+                aria-hidden
+                className={`mt-4 flex h-1 w-28 overflow-hidden rounded-full sm:mt-5 sm:w-36 ${
+                  HERO_COPY.align === "right" ? "ml-auto" : ""
+                }`}
+              >
+                <span className="w-2/3 bg-brand-turquoise" />
+                <span className="w-1/3 bg-brand-pink" />
+              </div>
             </div>
-          );
-        })}
+          </div>
+        </div>
 
-        <div className="absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
 
         {/* Turquoise section dividers — inside the rounded stage so they stop at the curve */}
         <div className="absolute top-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#22c0d4]" />
-        <div className="absolute bottom-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#22c0d4]" />
+        <div className="absolute bottom-0 inset-x-0 w-full max-w-none z-10 h-[3px] bg-gradient-to-r from-brand-turquoise via-brand-pink to-brand-turquoise" />
       </div>
     </section>
   );

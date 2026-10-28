@@ -1,4 +1,5 @@
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
+import { sanitiseProviderProse } from "../../../supabase/functions/_shared/scrape/prose";
 import { stripCollectionFeeText } from "@/lib/resolve-test-fields";
 import { useNavigate } from "@/lib/router-compat";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
@@ -27,6 +28,7 @@ import { resolveAccreditationsFromRow } from "@/lib/resolve-test-fields";
 import { BiomarkerChipList } from "@/components/tests/BiomarkerChipList";
 import { resolveTestSummary } from "@/lib/test-summary";
 import { deriveCollectionVariants } from "@/lib/collectionVariants";
+import { describeSampleType, homeKitSampleLabel } from "@/lib/sampleType";
 
 interface ProviderTestDetailModalProps {
   test: ProviderTestCardData | null;
@@ -168,16 +170,21 @@ const getCollectionLabel = (
   collectionOptions?: ProviderCollectionOption[] | null,
 ): string => {
   const st = (sampleType || "").toLowerCase();
+  const info = describeSampleType(sampleType);
+  const kit = homeKitSampleLabel(sampleType);
   if (collectionOptions && collectionOptions.length > 0) {
     const m = collectionOptions[0].method.toLowerCase();
-    if (m.includes("finger") || m.includes("home kit")) return "At-home kit";
+    if (m.includes("finger") || m.includes("home kit") || m.includes("at-home"))
+      return kit && kit !== "finger-prick" ? `At-home kit (${kit})` : "At-home kit";
     if (m.includes("clinic")) return "In-clinic";
     if (m.includes("home")) return "Home visit";
     return collectionOptions[0].method;
   }
-  if (st.includes("finger") || st.includes("home")) return "At-home kit";
-  if (st.includes("clinic") || st.includes("venous")) return "In-clinic";
-  if (sampleType) return sampleType;
+  if (info.isHomeCollectable)
+    return kit && kit !== "finger-prick" ? `At-home kit (${kit})` : "At-home kit";
+  if (st.includes("home")) return "At-home kit";
+  if (st.includes("clinic") || info.token === "venous") return "In-clinic";
+  if (info.label) return info.label;
   return "Not stated";
 };
 
@@ -189,12 +196,11 @@ const getCollectionDetail = (
 ): string => {
   const method = stripCollectionFeeText(collectionMethod);
   if (method) return method;
-  const st = (sampleType || "").toLowerCase();
-  const sample = st.includes("finger")
-    ? "Finger-prick blood sample"
-    : st.includes("venous") || st.includes("blood draw")
-      ? "Venous blood draw"
-      : sampleType?.trim() || null;
+  const info = describeSampleType(sampleType);
+  const sample =
+    info.token === "finger_prick"
+      ? "Finger-prick blood sample"
+      : info.label || null;
   const setting =
     collectionOptions && collectionOptions.length > 0
       ? collectionOptions.map((o) => o.method).join(" or ")
@@ -491,9 +497,18 @@ export default function ProviderTestDetailModal({
             {/* Provider's own wording, captured verbatim from their test page. */}
             {(
               [
-                ["What you can learn from this test", test.what_is_tested],
-                ["How to prepare", test.preparation_notes],
-                ["Test limitations", test.test_limitations],
+                [
+                  "What you can learn from this test",
+                  sanitiseProviderProse(test.what_is_tested),
+                ],
+                [
+                  "How to prepare",
+                  sanitiseProviderProse(test.preparation_notes),
+                ],
+                [
+                  "Test limitations",
+                  sanitiseProviderProse(test.test_limitations),
+                ],
               ] as const
             ).map(([heading, body]) =>
               body ? (

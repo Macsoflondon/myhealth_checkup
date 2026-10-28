@@ -143,6 +143,23 @@ class HealthDataApi {
   }
 
   async deleteTestResult(id: string): Promise<ApiResponse<null>> {
+    // Remove the stored file first so previously issued signed links stop
+    // working; the row is only deleted once the object is gone.
+    const { data: row, error: readError } = await supabase
+      .from("uploaded_test_results")
+      .select("file_url")
+      .eq("id", id)
+      .maybeSingle();
+    if (readError) return { data: null, error: readError };
+
+    const path = row?.file_url;
+    if (path && !path.startsWith("http://") && !path.startsWith("https://")) {
+      const { error: storageError } = await supabase.storage
+        .from(TEST_RESULTS_BUCKET)
+        .remove([path]);
+      if (storageError) return { data: null, error: storageError };
+    }
+
     const { error } = await supabase
       .from("uploaded_test_results")
       .delete()

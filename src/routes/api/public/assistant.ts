@@ -3,24 +3,27 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { createClient } from "@supabase/supabase-js";
 import {
   convertToModelMessages,
+  createUIMessageStreamResponse,
   isStepCount,
   streamText,
   tool,
-  type UIMessage,
 } from "ai";
 import { z } from "zod";
 import {
   ASSISTANT_INSTRUCTIONS,
-  ASSISTANT_MAX_HISTORY,
   ASSISTANT_MODEL,
   createRateLimiter,
-  sanitiseUserText,
 } from "@/lib/assistant/assistant-prompt";
 import {
   createLovableAiGatewayRunIdFetch,
   withLovableAiGatewayRunIdHeader,
 } from "@/lib/assistant/run-id";
 import type { Database } from "@/integrations/supabase/types";
+import { sampleTypeLabel } from "@/lib/sampleType";
+import {
+  sanitiseSignedHistory,
+  signAssistantStream,
+} from "@/lib/assistant/signed-history.server";
 
 // Public, sign-in free: bounded by a per-address limit and input caps.
 const allow = createRateLimiter(10, 60_000);
@@ -73,37 +76,6 @@ function catalogueClient() {
 }
 
 const MAX_BODY_BYTES = 64 * 1024;
-const MAX_ASSISTANT_TEXT = 4000;
-
-type SanitiseResult = { messages: UIMessage[] } | { error: 400 };
-
-/**
- * Keep only user/assistant messages and their text parts. Anything else a
- * client sends (system prompts, tool parts, reasoning) is dropped.
- */
-function sanitiseMessages(raw: unknown): SanitiseResult {
-  if (!Array.isArray(raw) || raw.length === 0) return { error: 400 };
-  const out: UIMessage[] = [];
-  for (const entry of raw.slice(-ASSISTANT_MAX_HISTORY)) {
-    if (typeof entry !== "object" || entry === null) return { error: 400 };
-    const m = entry as { id?: unknown; role?: unknown; parts?: unknown };
-    if (m.role !== "user" && m.role !== "assistant") continue;
-    if (!Array.isArray(m.parts)) return { error: 400 };
-    const role = m.role;
-    const parts = m.parts.flatMap((p: unknown) => {
-      if (typeof p !== "object" || p === null) return [];
-      const part = p as { type?: unknown; text?: unknown };
-      if (part.type !== "text" || typeof part.text !== "string") return [];
-      const text =
-        role === "user"
-          ? sanitiseUserText(part.text)
-          : part.text.slice(0, MAX_ASSISTANT_TEXT);
-      return [{ type: "text" as const, text }];
-    });
-    out.push({ id: typeof m.id === "string" ? m.id : crypto.randomUUID(), role, parts });
-  }
-  return out.length > 0 ? { messages: out } : { error: 400 };
-}
 
 async function handle(request: Request): Promise<Response> {
   const ip =
@@ -114,7 +86,9 @@ async function handle(request: Request): Promise<Response> {
     return json(429, "You're sending messages quickly. Please wait a minute.");
 
   const apiKey = process.env["LOVABLE_API_KEY"];
-  if (!apiKey) return json(500, "The assistant is not configured.");
+  const chatSigningSecret = process.env["CHAT_SIGNING_SECRET"];
+  if (!apiKey || !chatSigningSecret)
+    return json(500, "The assistant is not configured.");
 
   const declared = Number(request.headers.get("content-length") ?? "0");
   if (declared > MAX_BODY_BYTES) return json(413, "Request too large.");
@@ -127,12 +101,24 @@ async function handle(request: Request): Promise<Response> {
   } catch {
     return json(400, "Invalid request.");
   }
-  const sanitised = sanitiseMessages(
+  const sanitised = await sanitiseSignedHistory(
     typeof body === "object" && body !== null && "messages" in body
       ? (body as { messages: unknown }).messages
       : null,
+    chatSigningSecret,
   );
-  if ("error" in sanitised) return json(400, "Invalid request.");
+  if ("error" in sanitised) {
+    console.warn(
+      JSON.stringify({
+        timestamp: new Date().toISOString(),
+        endpoint: "/api/public/assistant",
+        reason: sanitised.reason,
+      }),
+    );
+    const response = json(400, "Invalid request.");
+    response.headers.set("X-Chat-Restart", "true");
+    return response;
+  }
   const messages = sanitised.messages;
 
   const db = catalogueClient();
@@ -204,7 +190,7 @@ async function handle(request: Request): Promise<Response> {
                 : [],
               biomarkerCount: r.biomarker_count,
               turnaround: r.turnaround_days_text,
-              sampleType: r.sample_type,
+              sampleType: sampleTypeLabel(r.sample_type),
               homeKit: r.home_kit_available,
               clinic: r.clinic_visit_available,
               updatedAt: r.updated_at,
@@ -228,9 +214,14 @@ async function handle(request: Request): Promise<Response> {
   });
 
   return withLovableAiGatewayRunIdHeader(
-    result.toUIMessageStreamResponse({
-      originalMessages: messages,
-      sendReasoning: false,
+    createUIMessageStreamResponse({
+      stream: result
+        .toUIMessageStream({
+          originalMessages: messages,
+          generateMessageId: () => crypto.randomUUID(),
+          sendReasoning: false,
+        })
+        .pipeThrough(signAssistantStream(chatSigningSecret)),
     }),
     runIdFetch,
   );

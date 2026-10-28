@@ -20,6 +20,7 @@ export interface TestData {
   biomarkers_list?: string[] | null;
   biomarker_count?: number | null;
   image_url?: string | null;
+  gallery_image_urls?: string[] | null;
   is_addon?: boolean;
   original_price?: number | null;
   discount_percentage?: number | null;
@@ -71,13 +72,57 @@ function generateSlugVariations(slug: string): string[] {
 
 const SELECT_FIELDS = `
   id, test_name, category, description, url, url_verified, price, provider_test_id,
-  biomarkers_list, biomarker_count, image_url, is_addon, 
+  biomarkers_list, biomarker_count, image_url, gallery_image_urls, is_addon, 
   original_price, discount_percentage, symptoms, conditions, who_should_test,
   sample_type, collection_method, home_phlebotomy_cost, home_kit_available,
   clinic_visit_available, home_phlebotomy_option, turnaround_days_text,
   turnaround_raw, clinical_review_type, clinical_review_fee, gp_review_included,
   what_is_tested, preparation_notes, test_limitations
 `;
+
+interface SlugMatchRow {
+  test_name: string;
+  provider_test_id?: string | null;
+}
+
+/**
+ * Pure slug matching over an already-fetched row list. Order matters:
+ * exact name slug first, then name variations, and only then a guarded
+ * partial match on provider_test_id. Rows with a null/blank provider_test_id
+ * are skipped (testId.includes("") would otherwise match every one of them),
+ * and partial matches prefer the shortest provider_test_id so the result is
+ * deterministic rather than array-order dependent. Returns null when nothing
+ * matches so the caller shows the 404 instead of an arbitrary test.
+ */
+export function matchTestBySlug<T extends SlugMatchRow>(
+  testId: string,
+  rows: readonly T[],
+): T | null {
+  const slugMatch = rows.find((t) => generateTestSlug(t.test_name) === testId);
+  if (slugMatch) return slugMatch;
+
+  const variations = generateSlugVariations(testId);
+  for (const variation of variations) {
+    const nameMatch = rows.find(
+      (t) => generateTestSlug(t.test_name) === variation,
+    );
+    if (nameMatch) return nameMatch;
+  }
+
+  const partialCandidates = rows
+    .filter((t) => {
+      const pid = t.provider_test_id?.trim();
+      if (!pid) return false;
+      return pid.includes(testId) || testId.includes(pid);
+    })
+    .sort((a, b) => {
+      const pa = a.provider_test_id!.trim();
+      const pb = b.provider_test_id!.trim();
+      return pa.length - pb.length || pa.localeCompare(pb);
+    });
+
+  return partialCandidates[0] ?? null;
+}
 
 /**
  * Finds a test by provider_test_id, UUID id, or slug generated from test_name
@@ -142,32 +187,9 @@ async function findRawTestByIdOrSlug(
     .eq("is_active", true);
 
   if (allTests) {
-    // Try exact slug match first
-    const slugMatch = allTests.find(
-      (t) => generateTestSlug(t.test_name) === testId,
-    );
-    if (slugMatch) {
-      return parseTestData(slugMatch);
-    }
-
-    // Try partial match - URL slug contained in provider_test_id or vice versa
-    const partialMatch = allTests.find(
-      (t) =>
-        t.provider_test_id?.includes(testId) ||
-        testId.includes(t.provider_test_id || ""),
-    );
-    if (partialMatch) {
-      return parseTestData(partialMatch);
-    }
-
-    // Try matching slug variations against test names
-    for (const variation of variations) {
-      const nameMatch = allTests.find(
-        (t) => generateTestSlug(t.test_name) === variation,
-      );
-      if (nameMatch) {
-        return parseTestData(nameMatch);
-      }
+    const match = matchTestBySlug(testId, allTests);
+    if (match) {
+      return parseTestData(match);
     }
   }
 

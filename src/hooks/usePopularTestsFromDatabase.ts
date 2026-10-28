@@ -385,7 +385,7 @@ export const usePopularTestsFromDatabase = (
       const { data, error } = await supabase
         .from("provider_tests")
         .select(
-          "id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, url_verified, biomarker_count, biomarkers_list, description, turnaround_days_text",
+          "id, test_name, provider_id, price, category, sample_type, collection_method, measurement_type, url, url_verified, image_url, biomarker_count, biomarkers_list, description, turnaround_days_text",
         )
         .eq("is_active", true)
         .not("price", "is", null)
@@ -434,6 +434,7 @@ export const usePopularTestsFromDatabase = (
             url_verified: (test as any).url_verified ?? null,
             markers: parseMarkers(test.biomarkers_list),
             description: test.description || undefined,
+            image_url: test.image_url ?? undefined,
           });
         }
       }

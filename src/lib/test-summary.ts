@@ -6,6 +6,7 @@
  * count, sample method, turnaround, provider name) — nothing is invented, so
  * the copy stays compliant and useful for both visitors and crawlers.
  */
+import { describeSampleType } from "@/lib/sampleType";
 
 export interface TestSummaryInput {
   readonly testName: string;
@@ -36,6 +37,28 @@ const measurementLabel = (count: number, type?: string | null): string => {
 
 const tidy = (value?: string | null): string =>
   (value ?? "").trim().replace(/\s+/g, " ");
+
+/** Lower-case the first letter unless the word is a brand such as "QuickDraw". */
+const softLower = (value: string): string =>
+  /^[A-Z][a-z]+[A-Z]/.test(value)
+    ? value
+    : value.charAt(0).toLowerCase() + value.slice(1);
+
+const describeCollection = (raw: string): string => {
+  if (!raw) return "";
+  if (/sample|swab|kit|visit|draw|appointment/i.test(raw)) return softLower(raw);
+  const info = describeSampleType(raw);
+  if (info.token === "finger_prick") return "a finger-prick blood sample";
+  if (info.token === "multiple") return softLower(info.label ?? raw);
+  if (info.token && info.label) {
+    const label = softLower(info.label);
+    return /sample|clipping|device|draw|\)$/i.test(label)
+      ? `a ${label}`
+      : `a ${label} sample`;
+  }
+  return `a ${softLower(raw)} sample`;
+};
+
 
 const lowerFirst = (value: string): string =>
   value.length > 1 && value.slice(1) === value.slice(1).toLowerCase()
@@ -68,12 +91,9 @@ export const buildTestSummary = (input: TestSummaryInput): string => {
 
   const rawCollection = tidy(input.collectionMethod) || tidy(input.sampleType);
   // Feeds store bare tokens ("venous", "finger-prick"), which read badly in a
-  // sentence — expand them into proper sample descriptions.
-  const collection = /sample|swab|kit|visit|draw/i.test(rawCollection)
-    ? lowerFirst(rawCollection)
-    : rawCollection
-      ? `a ${lowerFirst(rawCollection)} blood sample`
-      : "";
+  // sentence — expand them via the shared sample helper. "blood sample" is
+  // only ever added to genuine blood samples.
+  const collection = describeCollection(rawCollection);
   const collectionOptions: string[] = [];
   if (input.homeKitAvailable) collectionOptions.push("an at-home kit");
   if (input.clinicVisitAvailable)

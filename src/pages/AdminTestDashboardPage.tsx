@@ -33,6 +33,7 @@ import {
   Download,
 } from "lucide-react";
 import { logger } from "@/lib/logger";
+import { csvSafeRow } from "@/lib/csv-safe";
 
 type SortField =
   | "test_name"
@@ -275,7 +276,7 @@ function AdminTestDashboardContent() {
       const prices = r.providers
         .map((p) => p.price)
         .filter((p): p is number => p !== null);
-      return [
+      return csvSafeRow([
         r.test_name,
         r.category,
         r.sample_type || "",
@@ -283,9 +284,9 @@ function AdminTestDashboardContent() {
         r.providers.map((p) => p.provider_id).join("; "),
         prices.length ? Math.min(...prices) : "",
         prices.length ? Math.max(...prices) : "",
-      ].join(",");
+      ]);
     });
-    const csv = [headers.join(","), ...rows].join("\n");
+    const csv = [csvSafeRow(headers), ...rows].join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");

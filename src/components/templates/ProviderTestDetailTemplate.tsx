@@ -54,7 +54,14 @@ import {
   buildProviderBookingUrl,
   externalLinkProps,
 } from "@/utils/urlTracking";
-import { seo } from "@/lib/seo";
+import { sanitiseProviderProse } from "../../../supabase/functions/_shared/scrape/prose";
+import {
+  getRelatedTestLinks,
+  getTestDisplayName,
+} from "@/lib/test-display-name";
+import { buildTestAboutCopy } from "@/lib/test-about-copy";
+import { resolveGalleryImages } from "@/lib/test-gallery";
+import { TestImageGallery } from "@/components/tests/TestImageGallery";
 import { getProviderLogo } from "@/constants/providers";
 import { TestProviderPriceTable } from "@/components/compare/TestProviderPriceTable";
 import { RetestReminderCard } from "@/components/retest-reminder/retest-reminder-card";
@@ -83,6 +90,7 @@ export interface ProviderTestData {
   biomarkers_list?: string[] | null;
   biomarker_count?: number | null;
   image_url?: string | null;
+  gallery_image_urls?: string[] | null;
   is_addon?: boolean;
   original_price?: number | null;
   discount_percentage?: number | null;
@@ -124,7 +132,8 @@ function ProviderVerbatimSection({
   title: string;
   body?: string | null;
 }) {
-  if (!body || body.trim().length === 0) return null;
+  const prose = sanitiseProviderProse(body);
+  if (!prose) return null;
   return (
     <Card>
       <CardHeader>
@@ -132,7 +141,7 @@ function ProviderVerbatimSection({
       </CardHeader>
       <CardContent>
         <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
-          {body}
+          {prose}
         </p>
         <p className="mt-4 text-xs text-muted-foreground/70">
           Published by the provider. Shown in their own words.
@@ -695,33 +704,17 @@ export default function ProviderTestDetailTemplate({
     ? test.biomarkers_list
     : null;
 
-  const { title: pageTitle, description: pageDescription } = seo.test(
-    test.test_name,
-    {
-      providerName: providerConfig.name,
-      priceGbp: test.price ?? null,
-    },
-  );
-  const canonicalUrl = `${providerConfig.canonicalBase}/${testId}`;
-
-  const productSchema = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: test.test_name,
-    description: test.description,
-    category: test.category,
-    brand: { "@type": "Brand", name: providerConfig.name },
-    ...(test.price != null && {
-      offers: {
-        "@type": "Offer",
-        url: canonicalUrl,
-        priceCurrency: "GBP",
-        price: test.price,
-        availability: "https://schema.org/InStock",
-        seller: { "@type": "Organization", name: providerConfig.name },
-      },
-    }),
-  };
+  // Title, description, og:* , canonical and Product JSON-LD come from the
+  // route's server-rendered head(); this template only adds noindex for add-ons.
+  const displayName = getTestDisplayName(test.test_name);
+  const relatedTestLinks = getRelatedTestLinks(test.test_name);
+  const aboutCopy = buildTestAboutCopy({
+    testName: displayName,
+    providerName: providerConfig.name,
+    biomarkers,
+    biomarkerCount: test.biomarker_count ?? null,
+    panelAboutText: providerConfig.aboutText,
+  });
 
   const hasDiscount =
     test.original_price && test.original_price > (test.price || 0);
@@ -730,21 +723,12 @@ export default function ProviderTestDetailTemplate({
 
   return (
     <>
-      <Helmet>
-        <title>{pageTitle}</title>
-        <meta name="description" content={pageDescription} />
-        {test.is_addon && <meta name="robots" content="noindex, nofollow" />}
-        {test.is_addon && <meta name="googlebot" content="noindex, nofollow" />}
-        <meta property="og:title" content={pageTitle} />
-        <meta property="og:description" content={pageDescription} />
-        <meta property="og:type" content="product" />
-        <link rel="canonical" href={canonicalUrl} />
-        {!test.is_addon && (
-          <script type="application/ld+json">
-            {JSON.stringify(productSchema)}
-          </script>
-        )}
-      </Helmet>
+      {test.is_addon && (
+        <Helmet>
+          <meta name="robots" content="noindex, nofollow" />
+          <meta name="googlebot" content="noindex, nofollow" />
+        </Helmet>
+      )}
 
       <Header />
 
@@ -778,7 +762,12 @@ export default function ProviderTestDetailTemplate({
           </div>
 
           {/* Test Header */}
-          <h1 className="text-4xl font-bold mb-4">{test.test_name}</h1>
+          <h1 className="text-4xl font-bold mb-2">{displayName}</h1>
+          {displayName !== test.test_name && (
+            <p className="text-sm text-muted-foreground mb-4">
+              Provider's test name: {test.test_name}
+            </p>
+          )}
           <p className="text-xl text-muted-foreground mb-8">
             {test.description}
           </p>
@@ -789,16 +778,20 @@ export default function ProviderTestDetailTemplate({
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             {/* Main Content */}
             <div className="md:col-span-2 space-y-8">
+              <TestImageGallery
+                images={resolveGalleryImages(test)}
+                testName={displayName}
+                providerName={providerConfig.name}
+              />
               {/* About This Test */}
               <Card>
                 <CardHeader>
                   <CardTitle>About This Blood Test</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <p className="text-muted-foreground">
-                    The {test.test_name} from {providerConfig.name} is a{" "}
-                    {providerConfig.aboutText}
-                  </p>
+                  {aboutCopy && (
+                    <p className="text-muted-foreground">{aboutCopy}</p>
+                  )}
                   <div className="grid sm:grid-cols-2 gap-4 pt-4">
                     {providerConfig.features.map((feature, index) => (
                       <div key={index} className="flex items-start space-x-3">
@@ -1060,6 +1053,29 @@ export default function ProviderTestDetailTemplate({
           </Card>
         </div>
       </div>
+
+      {relatedTestLinks.length > 0 && (
+        <nav
+          aria-label="Related tests and biomarkers"
+          className="container mx-auto px-4 max-w-5xl pb-8"
+        >
+          <h2 className="text-lg font-semibold text-navy mb-3">
+            Related tests and biomarkers
+          </h2>
+          <ul className="flex flex-wrap gap-x-6 gap-y-2">
+            {relatedTestLinks.map((link) => (
+              <li key={link.href}>
+                <a
+                  href={link.href}
+                  className="text-primary underline underline-offset-4"
+                >
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
 
       <RelatedLinks
         categorySlug={resolveCategorySlug(test.category)}
