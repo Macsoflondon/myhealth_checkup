@@ -111,6 +111,9 @@ export function normalizeProviderFromName(providerName: string): string {
   if (name.includes("goodbody")) return "goodbody-clinic";
   if (name.includes("lola")) return "lola-health";
   if (name.includes("randox")) return "randox";
+  if (name.includes("london-health-company")) return "london-health-company";
+  if (name.includes("clinilabs")) return "clinilabs";
+  if (name.includes("medical-diagnosis")) return "medical-diagnosis";
   if (name.includes("london")) return "london-medical-laboratory";
 
   return providerName;

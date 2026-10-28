@@ -5,6 +5,7 @@ import {
   getProviderProfileRoute,
   getProviderRoute,
   getTestDetailUrl,
+  normalizeProviderFromName,
 } from "../providerRoutes";
 
 const providerIds = [
@@ -19,6 +20,14 @@ const providerIds = [
 ];
 
 describe("Provider navigation", () => {
+  it.each([
+    ["London Health Company", "london-health-company"],
+    ["London Medical Laboratory", "london-medical-laboratory"],
+    ["Medical Diagnosis", "medical-diagnosis"],
+    ["Clinilabs", "clinilabs"],
+  ])("keeps %s test links with the correct provider", (name, id) => {
+    expect(normalizeProviderFromName(name)).toBe(id);
+  });
   it.each(providerIds)(
     "links %s to its registered profile and test route",
     (id) => {
