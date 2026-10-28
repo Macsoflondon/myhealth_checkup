@@ -22,6 +22,7 @@ The package is still named `vite_react_shadcn_ts` in `package.json` — a leftov
 - `npm run security:check` — `scripts/check-secrets.sh` + `scripts/check-rls-grants.mjs` on their own, outside the full prebuild chain
 - `npm run seo:check` / `npm run seo:structured-data` / `npm run sitemap` — SEO regression, structured-data validation, and sitemap generation scripts, individually
 - `npm run audit:biomarker-references` — `scripts/audit-biomarker-references.mjs`
+- `node scripts/check-lockfile-stale-copies.mjs` — fails if `package-lock.json` keeps a nested copy that the hoisted copy already satisfies. Lovable maintains `bun.lock` and patches `package-lock.json` entry by entry, which stranded `@modelcontextprotocol/sdk/node_modules/zod@4.4.3` and failed every Dependency Vulnerability Scan run in October 2026. Deploy runs `npm ci` on `package-lock.json`, so that file is what ships. The scan workflow runs this check after `npm ci`; fix a hit with `npm dedupe` or by deleting the named entry and running `npm install --package-lock-only --ignore-scripts --legacy-peer-deps`.
 - `npm run preview` — preview a production build
 - Supabase edge function tests (e.g. `supabase/functions/*/index.test.ts`, where present) are **Deno tests**, not part of `npm test` — they need `deno test` with network/env access against a running (local or deployed) function.
 
