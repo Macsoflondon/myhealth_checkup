@@ -1138,7 +1138,7 @@ const ContactFallback = ({ onRestart }: { onRestart: () => void }) => (
     <div className="pt-4">
       <a
         href="mailto:support@myhealthcheckup.co.uk"
-        className="inline-flex items-center gap-2 bg-[#22c0d4] hover:bg-[#1aa8bb] text-[#081129] font-semibold text-sm px-6 py-3 rounded-full transition-colors"
+        className="inline-flex items-center gap-2 bg-[#22c0d4] hover:bg-[#1aa8bb] text-white font-semibold text-sm px-6 py-3 rounded-full transition-colors"
       >
         Contact us
       </a>
