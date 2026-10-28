@@ -7,6 +7,7 @@ import {
   HERO_COPY,
   HERO_POSTER_SRC,
   HERO_POSTER_WEBP_SRCSET,
+  FIRST_SLIDE_AVIF_SRCSET,
   FIRST_SLIDE_LQIP,
 } from "@/components/sections/hero-slides";
 import heroVideoMp4 from "@/assets/hero/hero-video.mp4.asset.json";
@@ -17,7 +18,18 @@ const HERO_PLAYBACK_RATE = 0.5;
 
 export default function HeroMasthead() {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const posterRef = useRef<HTMLImageElement>(null);
   const [posterLoaded, setPosterLoaded] = useState(false);
+  useEffect(() => {
+    // The photo can finish loading before hydration attaches onLoad.
+    if (posterRef.current?.complete) setPosterLoaded(true);
+  }, []);
+  // The ~3.6 MB loop is fetched only after the page has loaded and the
+  // browser is idle, so it never competes with the HTML, CSS, scripts and the
+  // hero photo for bandwidth. Until it is playing, the responsive photo below
+  // (AVIF/WebP, 11-60 KB) is the visible hero and the LCP element.
+  const [videoAllowed, setVideoAllowed] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   const [reducedMotion, setReducedMotion] = useState(false);
   useEffect(() => {
@@ -30,8 +42,42 @@ export default function HeroMasthead() {
   }, []);
 
   useEffect(() => {
+    if (reducedMotion) return;
+    const connection = (
+      navigator as Navigator & {
+        connection?: { saveData?: boolean; effectiveType?: string };
+      }
+    ).connection;
+    // Visitors who asked to save data, or are on a 2G-class connection, keep
+    // the photo: the loop would cost them megabytes for a background effect.
+    if (
+      connection?.saveData ||
+      /(^|-)2g$/.test(connection?.effectiveType ?? "")
+    ) {
+      return;
+    }
+    let idleId: number | undefined;
+    let timerId: number | undefined;
+    const allow = () => setVideoAllowed(true);
+    const scheduleIdle = () => {
+      if (window.requestIdleCallback) {
+        idleId = window.requestIdleCallback(allow, { timeout: 3000 });
+      } else {
+        timerId = window.setTimeout(allow, 1000);
+      }
+    };
+    if (document.readyState === "complete") scheduleIdle();
+    else window.addEventListener("load", scheduleIdle, { once: true });
+    return () => {
+      window.removeEventListener("load", scheduleIdle);
+      if (idleId !== undefined) window.cancelIdleCallback?.(idleId);
+      if (timerId !== undefined) window.clearTimeout(timerId);
+    };
+  }, [reducedMotion]);
+
+  useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !videoAllowed) return;
     video.muted = true;
     video.defaultMuted = true;
     video.playbackRate = HERO_PLAYBACK_RATE;
@@ -62,7 +108,7 @@ export default function HeroMasthead() {
       video.removeEventListener("canplay", resume);
       document.removeEventListener("visibilitychange", resume);
     };
-  }, [reducedMotion]);
+  }, [reducedMotion, videoAllowed]);
 
   const mobilePlacement =
     HERO_COPY.copyPlacementMobile === "bottom"
@@ -121,37 +167,50 @@ export default function HeroMasthead() {
             aria-label="myhealth checkup — visit myhealthcheckup.co.uk"
             className="hero-slide absolute inset-0 block focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-turquoise"
           >
-            <video
-              ref={videoRef}
-              className="absolute inset-0 h-full w-full object-cover object-[80%_center] sm:object-center"
-              poster={HERO_POSTER_SRC}
-              muted
-              loop
-              playsInline
-              autoPlay={!reducedMotion}
-              preload="auto"
-              aria-label={HERO_COPY.alt}
-            >
-              <source src={heroVideoWebm.url} type="video/webm" />
-              <source src={heroVideoMp4.url} type="video/mp4" />
-            </video>
+            {/* Hero photo: visible from first paint and the LCP element. The
+                route head preloads the matching AVIF candidate. */}
+            <picture>
+              <source
+                type="image/avif"
+                srcSet={FIRST_SLIDE_AVIF_SRCSET}
+                sizes="100vw"
+              />
+              <source
+                type="image/webp"
+                srcSet={HERO_POSTER_WEBP_SRCSET}
+                sizes="100vw"
+              />
+              <img
+                ref={posterRef}
+                src={HERO_POSTER_SRC}
+                alt={HERO_COPY.alt}
+                width={1920}
+                height={1080}
+                sizes="100vw"
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+                onLoad={() => setPosterLoaded(true)}
+                className="absolute inset-0 h-full w-full object-cover object-[80%_center] sm:object-center"
+              />
+            </picture>
+            {videoAllowed && (
+              <video
+                ref={videoRef}
+                className={`absolute inset-0 h-full w-full object-cover object-[80%_center] sm:object-center transition-opacity duration-700 ${videoPlaying ? "opacity-100" : "opacity-0"}`}
+                muted
+                loop
+                playsInline
+                autoPlay
+                preload="auto"
+                aria-hidden
+                onPlaying={() => setVideoPlaying(true)}
+              >
+                <source src={heroVideoWebm.url} type="video/webm" />
+                <source src={heroVideoMp4.url} type="video/mp4" />
+              </video>
+            )}
           </a>
-          {/* Invisible poster img: warms the LCP candidate and flips the
-              placeholder off once it is cached. */}
-          <img
-            src={HERO_POSTER_SRC}
-            srcSet={HERO_POSTER_WEBP_SRCSET}
-            alt=""
-            aria-hidden
-            width={1920}
-            height={1080}
-            sizes="100vw"
-            loading="eager"
-            fetchPriority="high"
-            decoding="async"
-            onLoad={() => setPosterLoaded(true)}
-            className="absolute inset-0 h-full w-full object-cover opacity-0 pointer-events-none"
-          />
 
           <div
             className={`pointer-events-none absolute inset-0 z-10 flex px-5 sm:items-center sm:px-10 sm:pb-0 sm:pt-0 md:px-12 lg:px-16 xl:px-20 ${mobilePlacement} ${desktopGradient} ${HERO_COPY.align === "right" ? "justify-end text-right" : "justify-start text-left"}`}
