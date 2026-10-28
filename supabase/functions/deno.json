@@ -1,3 +1,4 @@
 {
-  "nodeModulesDir": "auto"
+  "nodeModulesDir": "auto",
+  "links": ["./_npm-stubs/esbuild", "./_npm-stubs/vite"]
 }
