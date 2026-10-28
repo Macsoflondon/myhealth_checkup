@@ -1017,7 +1017,7 @@ export default function ProviderTestDetailTemplate({
             <CardContent className="py-8 text-center">
               <SectionHeading
                 title="Ready to Take Control"
-                gradientText="of Your Health?"
+                gradientText=" of Your Health?"
                 className="mb-4"
               />
               <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
