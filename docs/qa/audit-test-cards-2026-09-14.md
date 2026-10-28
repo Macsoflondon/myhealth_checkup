@@ -643,3 +643,148 @@ two-consecutive-zero-finding exit condition is not met. A pass 5 that rebuilds t
 inventory fresh again and re-verifies every fix from this pass (especially #25's crash
 guard and the 3 newly-added drift-guard surfaces) is the next step, and would be the
 first of the two clean passes needed to close the loop if it finds nothing new.
+
+## Pass 5 — closing the `url_verified` coverage gap left open since PR #47 (2026-10-23)
+
+Requested directly (not a fresh `[AUDIT-LOOP]` inventory pass): `audit-core-systems-2026-09-21.md`
+Pass 3 had wired `provider_tests.url_verified` into `UniversalTestCard`'s three open-link
+checks, but only threaded the real column into 2 of the ~30 query sites that feed it
+(`useAtHomeTests`, `ProviderTestsGrid`) — every other card surface kept opening `test.url`
+with no regard for whether the provider's own last link check had failed. This pass closes
+that list.
+
+### Finding #29 — the canonical test-detail page's own "Book" button used a fake, dead validity check
+
+`src/components/templates/ProviderTestDetailTemplate.tsx`'s `BookingButton` — the primary
+CTA on `/provider/:providerId/tests/:testId`, the single canonical URL for every provider's
+every test — called `useUrlValidation(testUrl)`, destructured `isValid`, and then never
+read it anywhere in the render. The hook itself only does client-side string shape checks
+("does this parse as a URL, does it avoid literal `undefined`/`null`") and says so in its
+own comment: it cannot check reachability from the browser (CORS). The real signal —
+`provider_tests.url_verified`, populated by the `mhc-*` scrapers' actual server-side link
+checks — was never read on this page at all. Fixed by removing the dead `isValid`
+destructure, adding a real `urlVerified` prop sourced from `test.url_verified`, and routing
+to the existing (previously secondary-only) "Browse all provider tests" fallback as the
+primary state whenever `url_verified === false`. The second, lower "Book Your Test Now" CTA
+on the same page had the identical unconditional-open bug; same fix, same fallback.
+
+### Finding #30 — four more direct `<a href={…url} target="_blank">` opens with no `url_verified` check
+
+Found by tracing every consumer of `CompareTestData`/`EnhancedTestData`/`ProviderTestRow`-
+shaped card data that renders a provider link, not by re-grepping the contract's example
+list (which this pass confirmed is stale — `TestProviderPriceTable.tsx` and
+`GroupedTestsTable.tsx` weren't on it):
+
+- `src/components/compare/ProviderComparisonTable.tsx` — `Book Now`, gated only by
+  `!!t.url && t.url !== "#"`.
+- `src/components/providers/ProviderTestDetailModal.tsx` — `Book`, 3 separate `test.url ?`
+  checks (button, affiliate note, redirect copy).
+- `src/components/compare/GroupedTestsTable.tsx` — `Order`, on the provider-comparison
+  table's expanded rows.
+- `src/pages/CancerComparisonPage.tsx` — `Book` (via `handleBookTest`/`openAffiliateUrl`);
+  already fixed in pass 4 to add an internal "View details" link alongside it, but the
+  external action itself still had no `url_verified` gate.
+- `src/components/compare/TestProviderPriceTable.tsx` — `Book Now`/`Book`, 2 layouts
+  (desktop table + mobile cards) × 2 render branches each = 4 occurrences.
+
+All five switched from ad hoc truthiness checks to the shared
+`canBookDirect(url, url_verified)` helper (`src/lib/booking-link-state.ts`, already used by
+`UniversalTestCard` since PR #47) rather than each re-deriving the same three-state logic —
+one helper, one place to get the `null`-vs-`false` distinction right.
+
+### The data plumbing this needed
+
+None of the above compiled without the underlying `url_verified` column actually reaching
+these components, so the full chain was fixed end to end rather than gating on data that
+was never fetched:
+
+| Layer | Files |
+|---|---|
+| Supabase `.select()` strings | `testSlugLookup.ts` (canonical test-detail query), `testQueryBuilder.ts` (`COMPARE_SELECT`, `PANEL_VIEW_SELECT`), `CompareService.ts` (`unified_provider_tests` id lookup), `categoryTestMapper.ts` (`CATEGORY_TEST_COLUMNS`), `usePopularTestsFromDatabase.ts` (lean/full pool columns + fallback), `useHeroPopularTests.ts`, `useResolvedRecommendations.ts`, `useProvidersByTestType.ts` (both exports) |
+| Row/interface types | `TestData`/`ProviderTestData`/`ComparisonProviderOption` (template), `LiveTestRow`, `UnifiedCompareRow`, `RawTestRow`, `PoolRow`/`PopularTest`, `HeroPopularTest`, `CategoryTestItem`, `ProviderTestRow` (useProvidersByTestType), `ProviderTestOption` (price table), `CompareTestData`, `EnhancedTestData` |
+| Mapping functions | `TestDataTransformer.transformSingle`, `transformRawTestToEnhanced`, `mapProviderTestRow`, `mapHeroRows`, both `usePopularTestsFromDatabase` branches, both `useProvidersByTestType`/`useProvidersByCategory` branches |
+| Adapters | `universalTestAdapter.ts`'s `fromCategoryTestItem` and `fromLegacyUnified` (`fromAtHomeTest`/`fromProviderTest` already carried it since PR #47) |
+| Render-site pass-throughs (object literal only, no new logic) | `HeroPopularTests.tsx`, `RecommendedTestsCarousel.tsx`, `CompareTests.tsx`, `MostPopularTestsPage.tsx`, `DreamHealthShowcase.tsx`, `ProviderTestDetailTemplate.tsx`'s sibling-provider comparison rows |
+
+### Explicitly checked and left alone
+
+- `useClinicTests.ts` — genuinely dead code (exported from `src/hooks/index.ts`, imported
+  nowhere else); adding `url_verified` to a hook nothing calls would be noise, not coverage.
+- `SimilarTestsSection.tsx` — doesn't select `url` at all; its cards link to the internal
+  provider route only. No external-link risk to begin with.
+- `ProviderComparisonPage.tsx` — stats/accreditation overview; doesn't select or render
+  `url`. Not a booking-link surface.
+- `usePopularTestsForNavigation` (same file as the fixed hook) — `MegaMenuDropdown.tsx`
+  already documents (and pass 4's finding #28 confirmed) that it never opens `test.url` for
+  this data; left unchanged rather than adding an unused field.
+- `GroupedTestsTable.tsx`'s "View" fallback still links to a guessed
+  `/${provider}/${encodeURIComponent(testName)}` route rather than the canonical
+  `/provider/:providerId/tests/:testId` — a pre-existing link-rules issue, not a
+  `url_verified` one. More rows will now reach this branch (anything `url_verified === false`
+  falls through to it), which is more exposure of an existing bug, not a new one. Flagged
+  here rather than fixed, since the fix is a different, larger change (resolving the real
+  canonical URL for every row in this table) than this pass's scope.
+
+### Verification
+
+- `npx tsc --noEmit -p tsconfig.json` — 0 errors, repo-wide, after fixing the one real
+  fallout (`CancerBiomarkerGroup.honesty.test.ts`'s `EnhancedTestData` fixture needed
+  `urlVerified: null` added once the field became required).
+- `npm run build` — full production build, including the entire `prebuild` chain (secrets
+  check, RLS grants check, **`audit-card-external-links.mjs`** — not listed in CLAUDE.md's
+  prebuild description, confirmed by reading `package.json` directly — sitemap generation,
+  SEO regression). Succeeded end to end.
+- `node scripts/audit-card-external-links.mjs` directly — "5 external navigation(s) checked,
+  0 unlabelled" (unchanged count; this pass added gating conditions, not new external links
+  or new labels).
+- `npx vitest run` — 1010/1014 passing. The same 4 pre-existing failures as every prior
+  pass in this repo (`categoryMapping.test.ts`, blocked by this sandbox's own network
+  policy on live Supabase queries — confirmed by checking out `main` with a clean
+  `git stash` and re-running: identical 4 failures, same file, pre-existing).
+- `npx eslint` scoped to the 25 changed files: 2 new formatting-only issues from this pass's
+  own edits (long lines), fixed with `npx prettier --write`; the remaining 4 pre-existing
+  errors in `useEnhancedComparison.ts` (an `any`, 3 ternary-formatting nits) were confirmed
+  pre-existing on `main` via the same stash-and-compare method, not touched.
+- **UNVERIFIED — could not run in this sandbox**: `npm run lint` (repo-wide; ~31k
+  pre-existing issues, confirmed in PR #47 not to gate CI), `npm run test:smoke` (needs a
+  running dev server + Playwright browser session this pass did not start).
+
+### Drift guard
+
+Not added this pass. `url_verified` coverage is a data-completeness property across ~25
+files, not a single renderable pattern `audit-card-external-links.mjs`'s regex approach can
+check — the script already verifies every external link is labelled, which is a different
+rule. A machine check for "does every surface that can render a booking link actually read
+`url_verified` before doing so" would need its own script; flagged as a follow-up, not
+built here, since it wasn't asked for and deserves its own design pass rather than being
+bolted on at the end of this one.
+
+### Exit status
+
+Not a clean pass by the loop's own definition (30 findings fixed total across passes 1–5),
+but this specific, narrowly-scoped gap — `url_verified` coverage — is now closed across
+every real card-rendering surface found by tracing actual data consumers rather than
+re-running the same surface list. Two explicitly-identified items were left alone on
+purpose (dead code, pre-existing unrelated bug) rather than silently expanded into.
+
+### Addendum (2026-10-28) — rebased onto 194 newer `main` commits
+
+Merging current `main` into this branch resolved seven conflicts. Six were overlaps where
+`main` had added image fields beside this pass's `url_verified` fields; both were kept.
+`CancerComparisonPage.tsx` now loads through `getCancerTests()` (`select("*")` on the
+`unified_provider_tests` view) instead of its old effect. The view exposes `url_verified`
+and the rows still pass through `transformToEnhanced`, so this pass's `canBookDirect` gates
+there keep working.
+
+A fresh sweep of every `href={…url}` and `openAffiliateUrl(` call found one database-backed
+surface this pass had missed:
+
+- **Finding #31:** `IntelligentSearch.tsx` (`/search`) showed its "Book" button on `r.url`
+  alone. `testsApi.searchTests` now selects `url_verified`, and the button uses
+  `canBookDirect(r.url, r.url_verified)`.
+
+Left alone on purpose: `ProviderPriceComparison.tsx` and `ProviderComparisonSidebar.tsx`
+render inside `TestPageTemplate` on the editorial `/test/*` pages, whose provider links are
+hand-written constants with no `provider_tests` row, so `url_verified` does not exist for
+them. Whether those hardcoded links should come from `provider_tests` is a separate
+question.

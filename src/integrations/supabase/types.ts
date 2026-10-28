@@ -9083,6 +9083,7 @@ export type Database = {
         Returns: Json
       }
       provider_test_product_path: { Args: { u: string }; Returns: string }
+      reconcile_delisted_provider_tests: { Args: never; Returns: Json }
       refresh_provider_test_biomarkers: { Args: never; Returns: Json }
       refresh_provider_test_biomarkers_impl: { Args: never; Returns: Json }
       regenerate_mfa_backup_codes: { Args: never; Returns: string[] }

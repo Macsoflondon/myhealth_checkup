@@ -9,6 +9,9 @@ lerna-debug.log*
 
 node_modules
 dist
+# Vendored npm runtime files for edge functions keep the package's own dist/
+# layout (see supabase/functions/_vendor/README.md).
+!supabase/functions/_vendor/**/dist/
 dist-ssr
 *.local
 

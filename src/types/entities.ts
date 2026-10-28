@@ -40,6 +40,8 @@ export interface CompareTestData extends Test {
   turnaroundDays?: number;
   userRating?: number;
   url?: string; // Provider booking URL
+  /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
+  url_verified?: boolean | null;
 
   // Standardised comparison fields (optional — populated from DB when available)
   sampleTypeCode?:

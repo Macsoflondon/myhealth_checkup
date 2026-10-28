@@ -17,6 +17,10 @@ export interface Test {
   clinical_significance?: string;
   who_should_take?: string;
   popularity_score?: number;
+  /** provider_tests.url (provider booking page); set by searchTests. */
+  url?: string | null;
+  /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
+  url_verified?: boolean | null;
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -92,7 +96,7 @@ class TestsApi {
       const { data, error } = await supabase
         .from("provider_tests")
         .select(
-          "id, test_name, provider_id, category, canonical_category, description, biomarkers_list, biomarker_count, price, url, image_url, is_active, created_at, updated_at",
+          "id, test_name, provider_id, category, canonical_category, description, biomarkers_list, biomarker_count, price, url, url_verified, image_url, is_active, created_at, updated_at",
         )
         .eq("is_active", true)
         .or(

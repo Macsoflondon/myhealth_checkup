@@ -3,6 +3,7 @@ import { TestCardImage } from "@/components/tests/test-card-image";
 import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
 import { Plus, Check } from "lucide-react";
 import type { CompareTestData } from "@/types";
+import { canBookDirect } from "@/lib/booking-link-state";
 import { PROVIDER_LOGOS } from "@/constants/providers";
 import {
   COLLECTION_METHOD_LABELS,
@@ -577,7 +578,7 @@ export const ProviderComparisonTable: React.FC<
                 </button>
               }
               render={(t) => {
-                const available = !!t.url && t.url !== "#";
+                const available = canBookDirect(t.url, t.url_verified);
                 return available ? (
                   <>
                     <a

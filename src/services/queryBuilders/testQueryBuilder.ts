@@ -9,14 +9,14 @@ import type { ComparePanelConfig } from "@/lib/comparePanels";
 import type { LiveTestRow } from "@/services/transformers/testDataTransformer";
 
 const COMPARE_SELECT =
-  "id, test_name, provider_id, category, canonical_category, price, description, is_active, image_url, url, biomarkers_list, biomarker_count, turnaround_days_text, turnaround_raw, sample_type, collection_method, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, created_at, updated_at";
+  "id, test_name, provider_id, category, canonical_category, price, description, is_active, image_url, url, url_verified, biomarkers_list, biomarker_count, turnaround_days_text, turnaround_raw, sample_type, collection_method, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, created_at, updated_at";
 
 /**
  * Panel comparisons read unified_provider_tests so provider collection fee
  * rules (and their notes) reach the comparison table.
  */
 const PANEL_VIEW_SELECT =
-  "id, test_name, provider_id, category:category_primary, price, description, image_url, url, biomarkers_list, biomarker_count, turnaround_days_text, sample_type:sample_type_raw, collection_method, collection_fee_type, collection_fee_amount, collection_fee_note, clinical_review_type, clinical_review_fee, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, price_checked_at";
+  "id, test_name, provider_id, category:category_primary, price, description, image_url, url, url_verified, biomarkers_list, biomarker_count, turnaround_days_text, sample_type:sample_type_raw, collection_method, collection_fee_type, collection_fee_amount, collection_fee_note, clinical_review_type, clinical_review_fee, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, price_checked_at";
 
 const DEFAULT_LIMIT = 600;
 

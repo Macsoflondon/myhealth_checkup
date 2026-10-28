@@ -26,6 +26,7 @@ const toCardData = (t: PopularTest): ProviderTestCardData => ({
   sample_type: t.sample_type ?? null,
   biomarker_count: t.biomarker_count ?? null,
   url: t.url ?? null,
+  url_verified: t.url_verified ?? null,
   biomarkers_list: (t.markers as any) ?? null,
   turnaround_days_text: t.turnaround_days_text ?? null,
   base_price: t.base_price ?? null,

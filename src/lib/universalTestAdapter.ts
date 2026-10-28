@@ -140,6 +140,7 @@ export function fromCategoryTestItem(t: CategoryTestItem): UniversalTestData {
     is_addon: !!t.isAddon,
     purchase_notes: t.purchaseNotes ?? null,
     route_variant: t.routeVariant ?? null,
+    url_verified: t.url_verified ?? null,
   };
 }
 
@@ -204,5 +205,6 @@ export function fromLegacyUnified(p: LegacyUnifiedProps): UniversalTestData {
     is_addon: fromDetails?.is_addon ?? false,
     purchase_notes: fromDetails?.purchase_notes ?? null,
     route_variant: p.routeVariant ?? null,
+    url_verified: fromDetails?.url_verified ?? null,
   };
 }

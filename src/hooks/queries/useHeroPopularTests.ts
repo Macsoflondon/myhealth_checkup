@@ -15,6 +15,8 @@ export interface HeroPopularTest {
   collectionFeeNote: string | null;
   biomarkerCount: number | null;
   url: string | null;
+  /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
+  urlVerified: boolean | null;
   canonicalCategory: string | null;
   clinicalReviewType: string | null;
   biomarkersList: string[];
@@ -83,7 +85,7 @@ export function useHeroPopularTests() {
         const { data, error } = await supabase
           .from("provider_tests")
           .select(
-            "id, test_name, provider_id, biomarker_count, url, canonical_category, clinical_review_type, biomarkers_list, turnaround_days_text, image_url, image_is_stock, description, sample_type, collection_method, collection_options, measurement_type, who_should_test, home_kit_available, clinic_visit_available, is_addon",
+            "id, test_name, provider_id, biomarker_count, url, url_verified, canonical_category, clinical_review_type, biomarkers_list, turnaround_days_text, image_url, image_is_stock, description, sample_type, collection_method, collection_options, measurement_type, who_should_test, home_kit_available, clinic_visit_available, is_addon",
           )
           .eq("is_popular", true)
           .eq("is_active", true)
@@ -137,6 +139,8 @@ export function mapHeroRows(
     biomarkerCount:
       typeof row.biomarker_count === "number" ? row.biomarker_count : null,
     url: typeof row.url === "string" ? row.url : null,
+    urlVerified:
+      typeof row.url_verified === "boolean" ? row.url_verified : null,
     canonicalCategory:
       typeof row.canonical_category === "string"
         ? row.canonical_category

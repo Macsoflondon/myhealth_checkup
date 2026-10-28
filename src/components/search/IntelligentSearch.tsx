@@ -13,6 +13,7 @@ import {
   normalizeProviderId,
 } from "@/constants/providers";
 import { getTestDetailUrl } from "@/utils/providerRoutes";
+import { canBookDirect } from "@/lib/booking-link-state";
 
 const POPULAR_SEARCHES = [
   "Thyroid function",
@@ -256,7 +257,7 @@ const IntelligentSearch = () => {
                           View Details
                         </Link>
                       </Button>
-                      {r.url && (
+                      {canBookDirect(r.url, r.url_verified) && (
                         <Button
                           asChild
                           size="sm"
