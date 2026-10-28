@@ -78,9 +78,13 @@ export function resolveTestCardImage({
     const named = group?.boxes.find((b) => b.pattern.test(name));
     if (named) return named.url;
   }
+  // Owner decision 28/10/2026: every Medical Diagnosis test shows its designed kit box.
+  if (provider.includes("medical-diagnosis") && testName) {
+    const box = medicalDiagnosisKitBox(testName);
+    if (box) return box;
+  }
   const own = imageUrl?.trim();
   if (own) return own;
   if (isClinilabs(providerId)) return CLINILABS_GENERIC_KIT_URL;
-  if (provider.includes("medical-diagnosis") && testName) return medicalDiagnosisKitBox(testName);
   return null;
 }
