@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { RotateCcw, X } from "lucide-react";
@@ -27,6 +27,7 @@ import { Button } from "@/components/ui/button";
 import assistantMark from "@/assets/assistant/assistant-mark-96.webp";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
+import { assistantChatFetch, ChatHistoryRejectedError } from "@/lib/assistant/chat-transport";
 
 export const STORAGE_KEY = "mhc-assistant-messages";
 const SUGGESTIONS = [
@@ -114,9 +115,10 @@ const CatalogueSearchResult = ({ output }: { output: unknown }) => {
 };
 
 export const ChatPanel = ({ onClose }: { onClose: () => void }) => {
+  const [restarted, setRestarted] = useState(false);
   const initial = useMemo(loadMessages, []);
   const transport = useMemo(
-    () => new DefaultChatTransport({ api: "/api/public/assistant" }),
+    () => new DefaultChatTransport({ api: "/api/public/assistant", fetch: assistantChatFetch }),
     [],
   );
   const { messages, sendMessage, status, stop, setMessages } = useChat({
@@ -124,6 +126,12 @@ export const ChatPanel = ({ onClose }: { onClose: () => void }) => {
     messages: initial,
     transport,
     onError: (error) => {
+      if (error instanceof ChatHistoryRejectedError) {
+        setMessages([]);
+        clearMessages();
+        setRestarted(true);
+        return;
+      }
       const msg = error.message.includes("429")
         ? "You're sending messages quickly. Please wait a minute."
         : error.message.includes("402")
@@ -137,7 +145,8 @@ export const ChatPanel = ({ onClose }: { onClose: () => void }) => {
 
   useEffect(() => {
     if (status === "ready" || status === "error") {
-      saveMessages(messages);
+      if (messages.length) saveMessages(messages);
+      else clearMessages();
       textareaRef.current?.focus();
     }
   }, [messages, status]);
@@ -147,6 +156,7 @@ export const ChatPanel = ({ onClose }: { onClose: () => void }) => {
   const submit = (message: PromptInputMessage) => {
     const text = message.text.trim();
     if (!text || busy) return;
+    setRestarted(false);
     void sendMessage({ text });
   };
 
@@ -154,6 +164,7 @@ export const ChatPanel = ({ onClose }: { onClose: () => void }) => {
     stop();
     setMessages([]);
     clearMessages();
+    setRestarted(false);
     textareaRef.current?.focus();
   };
 
@@ -205,6 +216,11 @@ export const ChatPanel = ({ onClose }: { onClose: () => void }) => {
 
       <Conversation className="flex-1">
         <ConversationContent>
+          {restarted && (
+            <p role="status" className="text-sm text-brand-navy">
+              Your chat has restarted. Please ask your question again.
+            </p>
+          )}
           {messages.length === 0 ? (
             <ConversationEmptyState
               icon={

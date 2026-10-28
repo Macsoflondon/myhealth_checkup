@@ -1,6 +1,6 @@
 # Architecture decisions
 
-- Public assistant history accepts assistant-role text only with a bounded-age Web Crypto HMAC proof issued on completed server streams; signatures bind reply ID, exact text parts and timestamp using the server-only gateway credential with domain separation, preserving anonymous multi-turn chat without trusting browser roles.
+- Public assistant history uses only the dedicated server-only CHAT_SIGNING_SECRET for bounded-age reply proofs; validate every supplied assistant reply before truncation, reject invalid history with HTTP 400 and timestamp/endpoint/reason-only logs, and reset client history so untrusted roles never reach the model.
 
 - Error-boundary diagnostics render only after the existing server admin/MFA endpoint verifies the current user; failed, pending or signed-out checks render no diagnostic DOM so public fallback pages never expose the tab or stack.
 
