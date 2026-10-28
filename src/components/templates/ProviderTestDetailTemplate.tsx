@@ -779,7 +779,11 @@ export default function ProviderTestDetailTemplate({
             {/* Main Content */}
             <div className="md:col-span-2 space-y-8">
               <TestImageGallery
-                images={resolveGalleryImages(test)}
+                images={resolveGalleryImages(test, {
+                  providerId: test.provider_id,
+                  isAddon: test.is_addon,
+                  testName: test.test_name,
+                })}
                 testName={displayName}
                 providerName={providerConfig.name}
               />
