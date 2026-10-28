@@ -80,6 +80,21 @@ Deno.serve(async (req) => {
       Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
     );
 
+    // Signed-in users only: verify the caller's session server-side.
+    const jwt = (req.headers.get("Authorization") ?? "").replace(
+      /^Bearer\s+/i,
+      "",
+    );
+    const { data: authData } = jwt
+      ? await supabase.auth.getUser(jwt)
+      : { data: { user: null } };
+    if (!authData.user) {
+      return new Response(JSON.stringify({ error: "Sign-in required" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
     // Per-IP rate limiting via api_rate_limits
     const ip =
       (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() ||
