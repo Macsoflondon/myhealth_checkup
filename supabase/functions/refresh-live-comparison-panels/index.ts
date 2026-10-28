@@ -261,6 +261,8 @@ Deno.serve(async (req) => {
         newRows.push({ ...row, price });
         continue;
       }
+      // Drop rows whose source test is no longer an active listing.
+      if (!sourceTest && normaliseText(row.sourceTestName) !== "") continue;
       newRows.push(row);
     }
     await supabase
