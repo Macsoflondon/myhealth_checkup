@@ -144,7 +144,6 @@ export class ErrorBoundary extends Component<Props, State> {
                   </details>
                 </AdminErrorDetails>
               )}
-
             </CardContent>
           </Card>
         </div>
