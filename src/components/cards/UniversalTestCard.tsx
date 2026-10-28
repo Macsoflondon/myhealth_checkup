@@ -1,3 +1,4 @@
+import { isExcludedListing } from "@/lib/excluded-listings";
 import { viewFeeLabel } from "@/lib/viewPricing";
 import { formatFeeAmount } from "@/lib/comparisonFormat";
 import type { CollectionFeeType } from "@/lib/comparisonFormat";
