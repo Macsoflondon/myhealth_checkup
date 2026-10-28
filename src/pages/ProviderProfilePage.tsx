@@ -35,9 +35,7 @@ const ProviderProfilePage = () => {
   const { providerId } = useParams();
 
   const canonicalProviderId = normalizeProviderId(providerId ?? "");
-  const provider = detailedProviders.find(
-    (p) => p.id === canonicalProviderId,
-  );
+  const provider = detailedProviders.find((p) => p.id === canonicalProviderId);
 
   if (!provider) {
     return (
