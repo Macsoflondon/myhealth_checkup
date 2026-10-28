@@ -3,7 +3,6 @@ import {
   UniversalTestCard,
   type UniversalTestData,
 } from "@/components/cards/UniversalTestCard";
-import { SectionSkeleton } from "@/components/common/SectionSkeleton";
 import { SectionHeading } from "@/components/ui/section-heading";
 
 export function toUniversalTest(
@@ -42,10 +41,24 @@ export function HeroPopularTests() {
   const { data: tests, isLoading, error } = useHeroPopularTests();
 
   if (isLoading) {
+    // Same box as the loaded section (heading plus eight cards per grid
+    // breakpoint, measured from the live page) so the cards arrive without
+    // pushing the rest of the homepage down. This is also the server HTML.
     return (
-      <section className="w-full py-6 sm:py-8 bg-white">
-        <div className="homepage-section-inner">
-          <SectionSkeleton tone="white" cards={4} minHeight={320} />
+      <section aria-hidden="true" className="w-full py-6 sm:py-8 bg-white">
+        <div className="homepage-section-inner animate-pulse">
+          <div className="h-[118px] sm:h-[125px] lg:h-[131px] flex flex-col items-center justify-center gap-3">
+            <div className="h-3 w-40 rounded-full bg-slate-200/70" />
+            <div className="h-8 w-2/3 max-w-sm rounded-lg bg-slate-200/70" />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {Array.from({ length: 8 }, (_, index) => (
+              <div
+                key={index}
+                className="h-[426px] sm:h-[433px] lg:h-[447px] rounded-2xl bg-slate-200/70"
+              />
+            ))}
+          </div>
         </div>
       </section>
     );

@@ -409,7 +409,7 @@ const DreamHealthShowcase = () => {
               Array.from({ length: 9 }).map((_, i) => (
                 <Skeleton
                   key={i}
-                  className="h-[420px] rounded-2xl bg-black/5"
+                  className="h-[600px] rounded-2xl bg-black/5"
                 />
               ))}
 

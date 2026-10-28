@@ -3,7 +3,9 @@ import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import FeaturedPartnerWheel from "@/components/sections/FeaturedPartnerWheel";
-import faceGridAsset from "@/assets/goodbody-face-grid.jpg.asset.json";
+// 480x720 greyscale WebP (35 KB). The kit faces show it in a band at most
+// 196px wide, blended and greyscaled, so the 1024x1536 JPEG (277 KB) was waste.
+import faceGridSrc from "@/assets/goodbody-face-grid-480.webp";
 
 const DreamHealthShowcase = lazy(
   () => import("@/components/sections/DreamHealthShowcase"),
@@ -78,13 +80,25 @@ const PartnerShowcaseGrid = () => {
     >
       <NavyDecorativeCircles />
 
-      <FeaturedPartnerWheel faceTexture={faceGridAsset.url} />
+      <FeaturedPartnerWheel faceTexture={faceGridSrc} />
 
-      <SafeBlock name="Test Categories" fallback={<BlockSkeleton />}>
+      {/* Fallback heights match the loaded blocks at each breakpoint so the
+          section does not grow under the visitor while its code arrives. */}
+      <SafeBlock
+        name="Test Categories"
+        fallback={
+          <BlockSkeleton height="min-h-[1276px] sm:min-h-[996px] lg:min-h-[1130px]" />
+        }
+      >
         <TestCategoriesSection />
       </SafeBlock>
 
-      <SafeBlock name="Most Popular Tests" fallback={<BlockSkeleton />}>
+      <SafeBlock
+        name="Most Popular Tests"
+        fallback={
+          <BlockSkeleton height="min-h-[6150px] sm:min-h-[3670px] lg:min-h-[2450px]" />
+        }
+      >
         <DreamHealthShowcase />
       </SafeBlock>
 
