@@ -192,7 +192,9 @@ function parsePage(html: string) {
   // case-insensitive "tests included", which on long pages is page furniture.
   const bios: string[] = parseMedicalDiagnosisTestsIncluded(html);
   const descriptionScraped = extractDescriptionScraped(html, name);
+  const imageUrl = extractOgImage(html);
   return {
+    imageUrl,
     name,
     price,
     taText,
@@ -381,6 +383,7 @@ Deno.serve(async (req) => {
         upd.turnaround_not_stated = false;
       }
       if (p.sample) upd.sample_type = p.sample;
+      if (p.imageUrl && !row.image_url) upd.image_url = p.imageUrl;
       if (p.descriptionScraped) {
         upd.description_scraped = p.descriptionScraped;
         upd.description = p.descriptionScraped;
