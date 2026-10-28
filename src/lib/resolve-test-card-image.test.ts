@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { CLINILABS_GENERIC_KIT_URL, resolveTestCardImage } from "@/lib/resolve-test-card-image";
 import { fromCategoryTestItem } from "@/lib/universalTestAdapter";
 import lolaAddonKit from "@/assets/providers/lola-addon-blood-test-kit.png.asset.json";
+import clinilabsQfitBox from "@/assets/providers/clinilabs-qfit-box.png";
 
 describe("resolveTestCardImage", () => {
   it("uses the owner's uploaded kit image for Lola Health add-ons", () => {
@@ -68,6 +69,11 @@ describe("resolveTestCardImage", () => {
 });
 
 describe("Clinilabs named boxes", () => {
+  it("uses the matching stool-test box for Clinilabs qFIT only", () => {
+    const testName = "Quantitative Faecal Immunochemical Test (qFIT)";
+    expect(resolveTestCardImage({ providerId: "clinilabs", testName, imageUrl: "https://x/old.webp" })).toBe(clinilabsQfitBox);
+    expect(resolveTestCardImage({ providerId: "medichecks", testName, imageUrl: "https://x/own.webp" })).toBe("https://x/own.webp");
+  });
   it("replaces lifestyle photos with a named box for the three affected tests", () => {
     for (const testName of [
       "Menopause Profile",
