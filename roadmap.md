@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Isolate assistant reply signing in CHAT_SIGNING_SECRET; reject invalid assistant history with private-safe logs, restart the chat and verify valid/edited requests end-to-end.
+- [x] Isolate assistant reply signing in CHAT_SIGNING_SECRET; reject invalid assistant history with private-safe logs and restart the chat. Live valid reply HTTP 200, edited/unsigned HTTP 400 and timestamp/endpoint/reason-only logs verified; browser storage cleared and restart message visible; 15 tests passed and automatic build OK. Not published.
 
 - [x] Repair provider directory/profile/test navigation: canonical Randox links and alias redirects, distinct London provider matching; all eight populated profiles and test details browser-verified, 15 regression tests and changed-link lint passed, automatic build OK; no database changes or publishing.
 
