@@ -38,6 +38,7 @@ const toCardData = (t: PopularTest): ProviderTestCardData => ({
     providerId: t.provider_id,
     isAddon: t.is_addon,
     imageUrl: t.image_url,
+    testName: t.test_name,
   }),
   is_addon: t.is_addon ?? false,
 });

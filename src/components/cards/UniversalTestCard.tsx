@@ -1016,6 +1016,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
                   providerId: test.provider_id,
                   isAddon: test.is_addon,
                   imageUrl: test.image_is_stock ? null : test.image_url,
+                  testName: test.test_name,
                 })}
                 testName={test.test_name}
                 providerName={meta.displayName}
