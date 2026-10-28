@@ -1,5 +1,7 @@
 # Architecture decisions
 
+- Error-boundary diagnostics render only after the existing server admin/MFA endpoint verifies the current user; failed, pending or signed-out checks render no diagnostic DOM so public fallback pages never expose the tab or stack.
+
 - Provider navigation and profile lookup use the shared provider-ID normaliser; legacy aliases redirect to canonical profiles so directory links and catalogue lookups cannot disagree.
 
 - Randox scrapers share their pure sample parser under `_shared/scrape`, because edge deployment bundles include shared files but not sibling function folders.

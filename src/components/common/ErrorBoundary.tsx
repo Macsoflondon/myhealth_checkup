@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import cqcLogo from "@/assets/compliance/cqc-logo.png";
 import { logger } from "@/lib/logger";
+import { AdminErrorDetails } from "./admin-error-details";
 
 interface Props {
   children: ReactNode;
@@ -105,42 +106,44 @@ export class ErrorBoundary extends Component<Props, State> {
               </div>
 
               {error && (
-                <details className="text-left rounded-md border border-border bg-muted/40">
-                  <summary className="cursor-pointer select-none px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground">
-                    Technical details (tap to expand)
-                  </summary>
-                  <div className="px-3 pb-3 pt-1 space-y-2">
-                    <div className="text-xs font-mono break-words text-destructive">
-                      {error.name}: {error.message}
-                    </div>
-                    <pre className="text-[11px] font-mono whitespace-pre-wrap break-words max-h-60 overflow-auto rounded bg-background p-2 border border-border">
-                      {error.stack ?? "(no stack)"}
-                    </pre>
-                    {errorInfo?.componentStack && (
-                      <pre className="text-[11px] font-mono whitespace-pre-wrap break-words max-h-40 overflow-auto rounded bg-background p-2 border border-border">
-                        {errorInfo.componentStack}
+                <AdminErrorDetails>
+                  <details className="text-left rounded-md border border-border bg-muted/40">
+                    <summary className="cursor-pointer select-none px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground">
+                      Technical details (tap to expand)
+                    </summary>
+                    <div className="px-3 pb-3 pt-1 space-y-2">
+                      <div className="text-xs font-mono break-words text-destructive">
+                        {error.name}: {error.message}
+                      </div>
+                      <pre className="text-[11px] font-mono whitespace-pre-wrap break-words max-h-60 overflow-auto rounded bg-background p-2 border border-border">
+                        {error.stack ?? "(no stack)"}
                       </pre>
-                    )}
-                    <Button
-                      onClick={this.handleCopy}
-                      variant="secondary"
-                      size="sm"
-                      className="w-full"
-                    >
-                      {copied ? (
-                        <>
-                          <Check className="w-4 h-4 mr-2" />
-                          Copied
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-4 h-4 mr-2" />
-                          Copy details
-                        </>
+                      {errorInfo?.componentStack && (
+                        <pre className="text-[11px] font-mono whitespace-pre-wrap break-words max-h-40 overflow-auto rounded bg-background p-2 border border-border">
+                          {errorInfo.componentStack}
+                        </pre>
                       )}
-                    </Button>
-                  </div>
-                </details>
+                      <Button
+                        onClick={this.handleCopy}
+                        variant="secondary"
+                        size="sm"
+                        className="w-full"
+                      >
+                        {copied ? (
+                          <>
+                            <Check className="w-4 h-4 mr-2" />
+                            Copied
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-4 h-4 mr-2" />
+                            Copy details
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </details>
+                </AdminErrorDetails>
               )}
 
               <div className="flex items-center justify-center pt-2 border-t border-border">
