@@ -16,7 +16,8 @@ export const AdminErrorDetails = ({ children }: { children: ReactNode }) => {
       queueMicrotask(() => {
         if (request.disposed) return;
         void verifyErrorDiagnosticsAccess().then((verified) => {
-          if (!request.disposed && request.version === version) setAllowed(verified);
+          if (!request.disposed && request.version === version)
+            setAllowed(verified);
         });
       });
     };
