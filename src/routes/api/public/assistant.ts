@@ -3,18 +3,16 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { createClient } from "@supabase/supabase-js";
 import {
   convertToModelMessages,
+  createUIMessageStreamResponse,
   isStepCount,
   streamText,
   tool,
-  type UIMessage,
 } from "ai";
 import { z } from "zod";
 import {
   ASSISTANT_INSTRUCTIONS,
-  ASSISTANT_MAX_HISTORY,
   ASSISTANT_MODEL,
   createRateLimiter,
-  sanitiseUserText,
 } from "@/lib/assistant/assistant-prompt";
 import {
   createLovableAiGatewayRunIdFetch,
@@ -22,6 +20,7 @@ import {
 } from "@/lib/assistant/run-id";
 import type { Database } from "@/integrations/supabase/types";
 import { sampleTypeLabel } from "@/lib/sampleType";
+import { sanitiseSignedHistory, signAssistantStream } from "@/lib/assistant/signed-history.server";
 
 // Public, sign-in free: bounded by a per-address limit and input caps.
 const allow = createRateLimiter(10, 60_000);
@@ -74,37 +73,6 @@ function catalogueClient() {
 }
 
 const MAX_BODY_BYTES = 64 * 1024;
-const MAX_ASSISTANT_TEXT = 4000;
-
-type SanitiseResult = { messages: UIMessage[] } | { error: 400 };
-
-/**
- * Keep only user/assistant messages and their text parts. Anything else a
- * client sends (system prompts, tool parts, reasoning) is dropped.
- */
-function sanitiseMessages(raw: unknown): SanitiseResult {
-  if (!Array.isArray(raw) || raw.length === 0) return { error: 400 };
-  const out: UIMessage[] = [];
-  for (const entry of raw.slice(-ASSISTANT_MAX_HISTORY)) {
-    if (typeof entry !== "object" || entry === null) return { error: 400 };
-    const m = entry as { id?: unknown; role?: unknown; parts?: unknown };
-    if (m.role !== "user" && m.role !== "assistant") continue;
-    if (!Array.isArray(m.parts)) return { error: 400 };
-    const role = m.role;
-    const parts = m.parts.flatMap((p: unknown) => {
-      if (typeof p !== "object" || p === null) return [];
-      const part = p as { type?: unknown; text?: unknown };
-      if (part.type !== "text" || typeof part.text !== "string") return [];
-      const text =
-        role === "user"
-          ? sanitiseUserText(part.text)
-          : part.text.slice(0, MAX_ASSISTANT_TEXT);
-      return [{ type: "text" as const, text }];
-    });
-    out.push({ id: typeof m.id === "string" ? m.id : crypto.randomUUID(), role, parts });
-  }
-  return out.length > 0 ? { messages: out } : { error: 400 };
-}
 
 async function handle(request: Request): Promise<Response> {
   const ip =
@@ -128,10 +96,11 @@ async function handle(request: Request): Promise<Response> {
   } catch {
     return json(400, "Invalid request.");
   }
-  const sanitised = sanitiseMessages(
+  const sanitised = await sanitiseSignedHistory(
     typeof body === "object" && body !== null && "messages" in body
       ? (body as { messages: unknown }).messages
       : null,
+    apiKey,
   );
   if ("error" in sanitised) return json(400, "Invalid request.");
   const messages = sanitised.messages;
@@ -229,9 +198,12 @@ async function handle(request: Request): Promise<Response> {
   });
 
   return withLovableAiGatewayRunIdHeader(
-    result.toUIMessageStreamResponse({
-      originalMessages: messages,
-      sendReasoning: false,
+    createUIMessageStreamResponse({
+      stream: result.toUIMessageStream({
+        originalMessages: messages,
+        generateMessageId: () => crypto.randomUUID(),
+        sendReasoning: false,
+      }).pipeThrough(signAssistantStream(apiKey)),
     }),
     runIdFetch,
   );
