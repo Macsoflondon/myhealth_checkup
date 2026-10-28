@@ -4,7 +4,7 @@ import {
   assertEquals,
   assert,
 } from "https://deno.land/std@0.224.0/assert/mod.ts";
-import { z } from "npm:zod";
+import { z } from "npm:zod@^4.6.6";
 
 const SampleSchema = z.object({
   metric: z.enum(["LCP", "CLS", "INP", "FCP", "TTFB", "FID"]),

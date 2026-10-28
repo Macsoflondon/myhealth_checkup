@@ -5,7 +5,7 @@ const corsHeaders = {
   "Access-Control-Allow-Headers":
     "authorization, x-client-info, apikey, content-type",
 };
-import { z } from "https://esm.sh/zod@3.23.8";
+import { z } from "npm:zod@^4.6.6";
 import { decodeEntities, htmlToText } from "../_shared/scrape/html.ts";
 
 const RATE_LIMIT_MAX = 20; // max calls per IP per window

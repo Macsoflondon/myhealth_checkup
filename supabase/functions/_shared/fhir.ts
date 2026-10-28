@@ -1,6 +1,6 @@
 // Shared FHIR R4 builders + Zod contracts for interoperability validation.
 // Used by the fhir-export edge function and by unit tests (Deno + Vitest via npm:zod).
-import { z } from "npm:zod@3.23.8";
+import { z } from "npm:zod@^4.6.6";
 
 export const FHIR_BASE_URL = "https://myhealthcheckup.co.uk/fhir";
 

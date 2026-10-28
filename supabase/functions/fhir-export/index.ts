@@ -13,7 +13,7 @@
 //   POST /grants              -> create grant { recipient_email, recipient_org?, purpose, expires_in_days? }
 //   POST /grants/:id/revoke   -> revoke grant { reason }
 //   GET  /shared/:token       -> anonymous fetch by grant access token (recipient view)
-import { createClient } from "npm:@supabase/supabase-js@2";
+import { createClient, type SupabaseClient } from "npm:@supabase/supabase-js@2";
 import {
   buildBundle,
   buildCapabilityStatement,
@@ -73,10 +73,7 @@ function randomToken(bytes = 32): string {
     .join("");
 }
 
-async function fetchUserData(
-  supabase: ReturnType<typeof createClient>,
-  userId: string,
-) {
+async function fetchUserData(supabase: SupabaseClient, userId: string) {
   const [uploadsRes, readingsRes] = await Promise.all([
     supabase
       .from("uploaded_test_results")
@@ -97,10 +94,7 @@ async function fetchUserData(
   };
 }
 
-async function activeConsent(
-  supabase: ReturnType<typeof createClient>,
-  userId: string,
-) {
+async function activeConsent(supabase: SupabaseClient, userId: string) {
   const { data } = await supabase
     .from("user_consents")
     .select("id")
@@ -115,7 +109,7 @@ async function activeConsent(
 }
 
 async function auditRead(
-  supabase: ReturnType<typeof createClient>,
+  supabase: SupabaseClient,
   reason: string,
   purpose: string,
 ) {

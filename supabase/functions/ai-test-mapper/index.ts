@@ -1,7 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.51.0";
-import { z } from "https://esm.sh/zod@3.23.8";
+import { z } from "npm:zod@^4.6.6";
 import { internalErrorResponse } from "../_shared/errors.ts";
 
 const corsHeaders = {
@@ -38,7 +38,10 @@ const RequestBodySchema = z
     confidenceThreshold: z.number().min(0).max(100).optional().default(75),
     batchSize: z.number().int().min(1).max(50).optional().default(10),
   })
-  .default({});
+  // prefault, not default: in zod 4 a default skips parsing, so .default({})
+  // would return {} with dryRun undefined. prefault runs {} through the
+  // schema, so a missing body still means a dry run.
+  .prefault({});
 
 interface ProviderTest {
   id: string;
@@ -114,7 +117,9 @@ async function generateProviderTestId(
 
   let nextSequence = 1;
   if (existing && existing.length > 0) {
-    const match = existing[0].provider_test_id.match(/\d+$/);
+    const latest = (existing[0] as { provider_test_id: string })
+      .provider_test_id;
+    const match = latest.match(/\d+$/);
     if (match) {
       nextSequence = parseInt(match[0]) + 1;
     }
@@ -206,8 +211,8 @@ async function processBatch(
   mapped: number;
   review: number;
   skipped: number;
-  mappingsCreated: Array<Record<string, unknown>>;
-  reviewNeeded: Array<Record<string, unknown>>;
+  mappingsCreated: MappingResult["mappings_created"];
+  reviewNeeded: MappingResult["review_needed"];
 }> {
   console.log(`Processing batch of ${providerTests.length} tests`);
 
@@ -266,8 +271,8 @@ Only include matches with confidence ≥ 60. If no good match exists, omit that 
   let mapped = 0;
   let review = 0;
   let skipped = 0;
-  const mappingsCreated: Array<Record<string, unknown>> = [];
-  const reviewNeeded: Array<Record<string, unknown>> = [];
+  const mappingsCreated: MappingResult["mappings_created"] = [];
+  const reviewNeeded: MappingResult["review_needed"] = [];
 
   for (const mapping of aiResponse.mappings) {
     const providerTest = providerTests.find(

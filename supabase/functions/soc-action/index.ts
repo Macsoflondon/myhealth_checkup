@@ -2,7 +2,7 @@
 // Admin-only. Every action is safe to re-run and reversible (or a no-op if already applied).
 
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { z } from "npm:zod";
+import { z } from "npm:zod@^4.6.6";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",

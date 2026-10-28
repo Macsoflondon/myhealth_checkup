@@ -3,7 +3,7 @@
 // no live DB writes.
 
 import { assertEquals } from "https://deno.land/std@0.224.0/assert/mod.ts";
-import { z } from "npm:zod";
+import { z } from "npm:zod@^4.6.6";
 
 // Mirror of the schema in index.ts — keep in sync.
 const BodySchema = z.object({

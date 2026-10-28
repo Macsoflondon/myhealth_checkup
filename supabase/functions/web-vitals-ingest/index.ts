@@ -3,7 +3,7 @@
 // No PII is stored; session_hash is a client-supplied opaque short string.
 
 import { createClient } from "npm:@supabase/supabase-js@2";
-import { z } from "npm:zod";
+import { z } from "npm:zod@^4.6.6";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
