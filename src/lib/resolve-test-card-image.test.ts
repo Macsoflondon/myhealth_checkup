@@ -161,8 +161,8 @@ describe("Medical Diagnosis designed kit boxes", () => {
     const url = resolveTestCardImage({ providerId: "medical-diagnosis", testName: "Bone Profile", imageUrl: null });
     expect(url).toContain("md-kit-bone-profile.png");
   });
-  it("keeps the provider's own photo when one exists", () => {
+  it("prefers the designed box over a stored provider photo", () => {
     const url = resolveTestCardImage({ providerId: "medical-diagnosis", testName: "Bone Profile", imageUrl: "https://example.com/own.jpg" });
-    expect(url).toBe("https://example.com/own.jpg");
+    expect(url).toContain("md-kit-bone-profile.png");
   });
 });
