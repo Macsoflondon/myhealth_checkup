@@ -53,6 +53,9 @@ jobs:
             echo "::error::Repository secret SUPABASE_SERVICE_ROLE_KEY is not set, so the Supabase advisor scan did not run. Add it under Settings > Secrets and variables > Actions."
             exit 1
           fi
+          # Reports the key's format, role and project (never the key), so a
+          # wrong value fails with its cause instead of a bare 401.
+          node scripts/check-supabase-service-key.mjs
           # --fail-with-body: a 401/500 must fail the gate. Without it the error
           # JSON had no error_count, which the next step read as zero findings.
           curl -sS --fail-with-body -X POST "$SUPABASE_URL/functions/v1/security-scan-snapshot" \
