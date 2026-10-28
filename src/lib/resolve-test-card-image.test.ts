@@ -5,7 +5,7 @@ import {
 } from "@/lib/resolve-test-card-image";
 import { fromCategoryTestItem } from "@/lib/universalTestAdapter";
 import lolaAddonKit from "@/assets/providers/lola-addon-blood-test-kit.png.asset.json";
-import clinilabsQfitBox from "@/assets/providers/clinilabs-qfit-box-complete.png.asset.json";
+import clinilabsQfitBox from "@/assets/providers/clinilabs-qfit-box-accreditation.png.asset.json";
 
 describe("resolveTestCardImage", () => {
   it("uses the owner's uploaded kit image for Lola Health add-ons", () => {
