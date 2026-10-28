@@ -48,6 +48,19 @@ export function homepageFeeLabel(
   return label;
 }
 
+/**
+ * Server-side pre-filter: only rows whose name contains a panel fragment.
+ * The exact word-boundary match still runs below; this just stops the
+ * homepage downloading the whole catalogue (about 100 KB) to keep a few rows.
+ */
+const PANEL_NAME_FILTER = [
+  ...new Set(
+    Object.values(COMPARE_PANELS).flatMap((config) => config.includeNames),
+  ),
+]
+  .map((fragment) => `test_name.ilike.%${fragment}%`)
+  .join(",");
+
 export async function getHomepageComparisonPanels(): Promise<
   CatalogueComparisonPanel[]
 > {
@@ -60,6 +73,7 @@ export async function getHomepageComparisonPanels(): Promise<
     .not("test_name", "ilike", "blood draw appointment")
     .in("provider_id", getSupportedProviderIds())
     .gt("price", 0)
+    .or(PANEL_NAME_FILTER)
     .limit(2000)
     .returns<HomepageComparisonRow[]>();
   if (error) throw error;

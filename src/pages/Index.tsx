@@ -38,7 +38,7 @@ const DecisionInfrastructureSection = lazyPreloadable(() =>
   })),
 );
 
-const AccreditedProvidersBar = lazy(
+const AccreditedProvidersBar = lazyPreloadable(
   () => import("@/components/sections/AccreditedProvidersBar"),
 );
 
@@ -87,11 +87,13 @@ const ClinicHelpSkeleton = () => (
 // of waiting for HydrateOnVisible, and load all their code up front.
 const DEFERRED_SECTIONS = (
   <>
-    <Suspense fallback={<SectionFallback />}>
-      <SectionReveal>
-        <AccreditedProvidersBar />
-      </SectionReveal>
-    </Suspense>
+    <HydrateOnVisible load={AccreditedProvidersBar.preload}>
+      <Suspense fallback={<SectionFallback />}>
+        <SectionReveal>
+          <AccreditedProvidersBar />
+        </SectionReveal>
+      </Suspense>
+    </HydrateOnVisible>
 
     <HydrateOnVisible load={HeroPopularTests.preload}>
       <Suspense fallback={<SectionFallback />}>
@@ -227,9 +229,20 @@ const Index = () => {
 
           {DEFERRED_SECTIONS}
 
-          <Suspense fallback={<PartnerShowcaseSkeleton />}>
-            <PartnerShowcaseGrid />
-          </Suspense>
+          {/* Mounts on approach: this section pulls the kit wheel, test
+              categories and popular tests (about 100 KB of data and its own
+              code), none of which the first screen needs. The wide margin
+              gives its data time to land before the visitor reaches it. */}
+          <LazyMount
+            minHeight={800}
+            rootMargin="2000px 0px"
+            className="bg-brand-navy"
+            fallback={<PartnerShowcaseSkeleton />}
+          >
+            <Suspense fallback={<PartnerShowcaseSkeleton />}>
+              <PartnerShowcaseGrid />
+            </Suspense>
+          </LazyMount>
 
           <LazyMount
             minHeight={500}
