@@ -86,7 +86,9 @@ async function handle(request: Request): Promise<Response> {
     return json(429, "You're sending messages quickly. Please wait a minute.");
 
   const apiKey = process.env["LOVABLE_API_KEY"];
-  if (!apiKey) return json(500, "The assistant is not configured.");
+  const chatSigningSecret = process.env["CHAT_SIGNING_SECRET"];
+  if (!apiKey || !chatSigningSecret)
+    return json(500, "The assistant is not configured.");
 
   const declared = Number(request.headers.get("content-length") ?? "0");
   if (declared > MAX_BODY_BYTES) return json(413, "Request too large.");
@@ -103,9 +105,20 @@ async function handle(request: Request): Promise<Response> {
     typeof body === "object" && body !== null && "messages" in body
       ? (body as { messages: unknown }).messages
       : null,
-    apiKey,
+    chatSigningSecret,
   );
-  if ("error" in sanitised) return json(400, "Invalid request.");
+  if ("error" in sanitised) {
+    console.warn(
+      JSON.stringify({
+        timestamp: new Date().toISOString(),
+        endpoint: "/api/public/assistant",
+        reason: sanitised.reason,
+      }),
+    );
+    const response = json(400, "Invalid request.");
+    response.headers.set("X-Chat-Restart", "true");
+    return response;
+  }
   const messages = sanitised.messages;
 
   const db = catalogueClient();
@@ -208,7 +221,7 @@ async function handle(request: Request): Promise<Response> {
           generateMessageId: () => crypto.randomUUID(),
           sendReasoning: false,
         })
-        .pipeThrough(signAssistantStream(apiKey)),
+        .pipeThrough(signAssistantStream(chatSigningSecret)),
     }),
     runIdFetch,
   );

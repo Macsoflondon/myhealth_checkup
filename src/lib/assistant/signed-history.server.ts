@@ -83,11 +83,17 @@ const verifyReply = async (
 export const sanitiseSignedHistory = async (
   raw: unknown,
   secret: string,
-): Promise<{ messages: UIMessage[] } | { error: 400 }> => {
-  if (!Array.isArray(raw) || raw.length === 0) return { error: 400 };
+): Promise<
+  | { messages: UIMessage[] }
+  | { error: 400; reason: "invalid_request" | "invalid_assistant_reply" }
+> => {
+  if (!Array.isArray(raw) || raw.length === 0)
+    return { error: 400, reason: "invalid_request" };
   const messages: UIMessage[] = [];
-  for (const entry of raw.slice(-ASSISTANT_MAX_HISTORY)) {
-    if (!entry || typeof entry !== "object") return { error: 400 };
+  // Verify the whole request, including replies outside the model context window.
+  for (const entry of raw) {
+    if (!entry || typeof entry !== "object")
+      return { error: 400, reason: "invalid_request" };
     const m = entry as {
       id?: unknown;
       role?: unknown;
@@ -95,7 +101,14 @@ export const sanitiseSignedHistory = async (
       metadata?: unknown;
     };
     if (m.role !== "user" && m.role !== "assistant") continue;
-    if (!Array.isArray(m.parts)) return { error: 400 };
+    if (!Array.isArray(m.parts))
+      return {
+        error: 400,
+        reason:
+          m.role === "assistant"
+            ? "invalid_assistant_reply"
+            : "invalid_request",
+      };
     const texts = m.parts.flatMap((part: unknown) => {
       if (
         !part ||
@@ -113,7 +126,7 @@ export const sanitiseSignedHistory = async (
       m.role === "assistant" &&
       !(await verifyReply(secret, id, texts, m.metadata))
     )
-      continue;
+      return { error: 400, reason: "invalid_assistant_reply" };
     messages.push({
       id,
       role: m.role,
@@ -124,8 +137,8 @@ export const sanitiseSignedHistory = async (
     });
   }
   return messages.some((message) => message.role === "user")
-    ? { messages }
-    : { error: 400 };
+    ? { messages: messages.slice(-ASSISTANT_MAX_HISTORY) }
+    : { error: 400, reason: "invalid_request" };
 };
 
 /** Sign only completed streams, using exactly the text parts delivered to the browser. */
