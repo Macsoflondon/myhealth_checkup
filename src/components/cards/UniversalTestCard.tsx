@@ -854,7 +854,12 @@ export interface UniversalTestCardProps {
   className?: string;
 }
 
-export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
+export const UniversalTestCard: React.FC<UniversalTestCardProps> = (props) =>
+  isExcludedListing(props.test.provider_id, props.test.test_name) ? null : (
+    <UniversalTestCardInner {...props} />
+  );
+
+const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
   test,
   headline,
   onOpenDetail,
