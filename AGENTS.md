@@ -22,3 +22,4 @@
 - The upper comparison reserves full blood count; deduplicate panel slugs before rotating the lower pair so no test panel appears in multiple slots.
 - Reusable library exports live in the self-contained `src/design-system` subtree; preview routes and data services stay outside it so attached consumers receive no application dependencies.
 - The library barrel imports its self-contained theme, not the preview stylesheet, so attached consumers receive the comparison utilities and tokens without site-wide application styling.
+- Medical Diagnosis kit boxes are pre-rendered per test name in `src/assets/providers/medical-diagnosis-kits` and only used when a test has no product photo of its own, so a working provider photo always wins.
