@@ -1,7 +1,7 @@
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { createClient } from "npm:@supabase/supabase-js@2.51.0";
 import { generateText } from "npm:ai";
-import { z } from "npm:zod";
+import { z } from "npm:zod@^4.6.6";
 import { createOpenAI } from "npm:@ai-sdk/openai";
 import { resolveOpenAiApiKey } from "./configuration.ts";
 import { DAILY_ENDPOINT, MINUTE_LIMIT, clientIpFrom, decideDailyCap } from "./rate-limit.ts";
