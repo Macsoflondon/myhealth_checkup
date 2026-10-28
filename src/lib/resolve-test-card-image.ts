@@ -3,7 +3,7 @@ import clinilabsVenousKit from "@/assets/providers/clinilabs-venous-blood-test-k
 import clinilabsMenopauseBox from "@/assets/providers/clinilabs-menopause-box.png.asset.json";
 import clinilabsMmrBox from "@/assets/providers/clinilabs-mmr-box.png.asset.json";
 import clinilabsHepBBox from "@/assets/providers/clinilabs-hepb-box.png.asset.json";
-import clinilabsQfitBox from "@/assets/providers/clinilabs-qfit-box-complete.png.asset.json";
+import clinilabsQfitBox from "@/assets/providers/clinilabs-qfit-box-accreditation.png.asset.json";
 import goodbodyBabyBox from "@/assets/providers/goodbody-baby-box.png.asset.json";
 import goodbodyPaternityBox from "@/assets/providers/goodbody-paternity-box.png.asset.json";
 import goodbodyStockholmBox from "@/assets/providers/goodbody-stockholm-box.png.asset.json";
