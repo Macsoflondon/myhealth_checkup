@@ -15,7 +15,9 @@ const signingKey = (secret: string) =>
   );
 
 const payload = (id: string, texts: string[], issuedAt: number) =>
-  encoder.encode(JSON.stringify(["mhc-assistant-history-v1", id, texts, issuedAt]));
+  encoder.encode(
+    JSON.stringify(["mhc-assistant-history-v1", id, texts, issuedAt]),
+  );
 
 export const signAssistantReply = async (
   secret: string,
@@ -42,17 +44,39 @@ const verifyReply = async (
   texts: string[],
   metadata: unknown,
 ): Promise<boolean> => {
-  if (!metadata || typeof metadata !== "object" || !("historyProof" in metadata)) return false;
+  if (
+    !metadata ||
+    typeof metadata !== "object" ||
+    !("historyProof" in metadata)
+  )
+    return false;
   const proof = metadata.historyProof;
-  if (!proof || typeof proof !== "object" || !("signature" in proof) || !("issuedAt" in proof)) return false;
+  if (
+    !proof ||
+    typeof proof !== "object" ||
+    !("signature" in proof) ||
+    !("issuedAt" in proof)
+  )
+    return false;
   const { signature, issuedAt } = proof;
   if (
-    typeof signature !== "string" || !/^[a-f0-9]{64}$/.test(signature) ||
-    typeof issuedAt !== "number" || !Number.isSafeInteger(issuedAt) ||
-    issuedAt > Date.now() || Date.now() - issuedAt > MAX_AGE_MS
-  ) return false;
-  const bytes = Uint8Array.from(signature.match(/.{2}/g) ?? [], (pair) => Number.parseInt(pair, 16));
-  return crypto.subtle.verify("HMAC", await signingKey(secret), bytes, payload(id, texts, issuedAt));
+    typeof signature !== "string" ||
+    !/^[a-f0-9]{64}$/.test(signature) ||
+    typeof issuedAt !== "number" ||
+    !Number.isSafeInteger(issuedAt) ||
+    issuedAt > Date.now() ||
+    Date.now() - issuedAt > MAX_AGE_MS
+  )
+    return false;
+  const bytes = Uint8Array.from(signature.match(/.{2}/g) ?? [], (pair) =>
+    Number.parseInt(pair, 16),
+  );
+  return crypto.subtle.verify(
+    "HMAC",
+    await signingKey(secret),
+    bytes,
+    payload(id, texts, issuedAt),
+  );
 };
 
 /** Only authenticated server replies may become assistant-role model context. */
@@ -64,18 +88,44 @@ export const sanitiseSignedHistory = async (
   const messages: UIMessage[] = [];
   for (const entry of raw.slice(-ASSISTANT_MAX_HISTORY)) {
     if (!entry || typeof entry !== "object") return { error: 400 };
-    const m = entry as { id?: unknown; role?: unknown; parts?: unknown; metadata?: unknown };
+    const m = entry as {
+      id?: unknown;
+      role?: unknown;
+      parts?: unknown;
+      metadata?: unknown;
+    };
     if (m.role !== "user" && m.role !== "assistant") continue;
     if (!Array.isArray(m.parts)) return { error: 400 };
     const texts = m.parts.flatMap((part: unknown) => {
-      if (!part || typeof part !== "object" || !("type" in part) || part.type !== "text" || !("text" in part) || typeof part.text !== "string") return [];
+      if (
+        !part ||
+        typeof part !== "object" ||
+        !("type" in part) ||
+        part.type !== "text" ||
+        !("text" in part) ||
+        typeof part.text !== "string"
+      )
+        return [];
       return [m.role === "user" ? sanitiseUserText(part.text) : part.text];
     });
     const id = typeof m.id === "string" ? m.id : crypto.randomUUID();
-    if (m.role === "assistant" && !(await verifyReply(secret, id, texts, m.metadata))) continue;
-    messages.push({ id, role: m.role, parts: texts.map((text) => ({ type: "text", text: m.role === "assistant" ? text.slice(0, MAX_REPLY_TEXT) : text })) });
+    if (
+      m.role === "assistant" &&
+      !(await verifyReply(secret, id, texts, m.metadata))
+    )
+      continue;
+    messages.push({
+      id,
+      role: m.role,
+      parts: texts.map((text) => ({
+        type: "text",
+        text: m.role === "assistant" ? text.slice(0, MAX_REPLY_TEXT) : text,
+      })),
+    });
   }
-  return messages.some((message) => message.role === "user") ? { messages } : { error: 400 };
+  return messages.some((message) => message.role === "user")
+    ? { messages }
+    : { error: 400 };
 };
 
 /** Sign only completed streams, using exactly the text parts delivered to the browser. */
@@ -87,9 +137,12 @@ export const signAssistantStream = (secret: string) => {
       if (chunk.type === "start") state.id = chunk.messageId ?? "";
       if (chunk.type === "error" || chunk.type === "abort") state.failed = true;
       if (chunk.type === "text-start") texts.set(chunk.id, "");
-      if (chunk.type === "text-delta") texts.set(chunk.id, (texts.get(chunk.id) ?? "") + chunk.delta);
+      if (chunk.type === "text-delta")
+        texts.set(chunk.id, (texts.get(chunk.id) ?? "") + chunk.delta);
       if (chunk.type === "finish" && state.id && !state.failed) {
-        const historyProof = await signAssistantReply(secret, state.id, [...texts.values()]);
+        const historyProof = await signAssistantReply(secret, state.id, [
+          ...texts.values(),
+        ]);
         controller.enqueue({ ...chunk, messageMetadata: { historyProof } });
       } else controller.enqueue(chunk);
     },

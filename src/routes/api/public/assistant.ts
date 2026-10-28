@@ -20,7 +20,10 @@ import {
 } from "@/lib/assistant/run-id";
 import type { Database } from "@/integrations/supabase/types";
 import { sampleTypeLabel } from "@/lib/sampleType";
-import { sanitiseSignedHistory, signAssistantStream } from "@/lib/assistant/signed-history.server";
+import {
+  sanitiseSignedHistory,
+  signAssistantStream,
+} from "@/lib/assistant/signed-history.server";
 
 // Public, sign-in free: bounded by a per-address limit and input caps.
 const allow = createRateLimiter(10, 60_000);
@@ -199,11 +202,13 @@ async function handle(request: Request): Promise<Response> {
 
   return withLovableAiGatewayRunIdHeader(
     createUIMessageStreamResponse({
-      stream: result.toUIMessageStream({
-        originalMessages: messages,
-        generateMessageId: () => crypto.randomUUID(),
-        sendReasoning: false,
-      }).pipeThrough(signAssistantStream(apiKey)),
+      stream: result
+        .toUIMessageStream({
+          originalMessages: messages,
+          generateMessageId: () => crypto.randomUUID(),
+          sendReasoning: false,
+        })
+        .pipeThrough(signAssistantStream(apiKey)),
     }),
     runIdFetch,
   );
