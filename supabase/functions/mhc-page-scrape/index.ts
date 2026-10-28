@@ -259,7 +259,7 @@ Deno.serve(async (req) => {
   const { data: rows, error: rowsError } = await supabase
     .from("provider_tests")
     .select(
-      "id, test_name, biomarker_count, biomarkers_list, clinic_phlebotomy_cost",
+      "id, test_name, biomarker_count, biomarkers_list, clinic_phlebotomy_cost, image_url",
     )
     .eq("provider_id", providerId)
     .eq("is_active", true);
