@@ -1,6 +1,0 @@
-{
-  "name": "esbuild",
-  "version": "0.27.7",
-  "description": "Empty stand-in for esbuild in Supabase edge function bundles. See ../README.md.",
-  "main": "index.js"
-}

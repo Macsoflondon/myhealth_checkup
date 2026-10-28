@@ -1,6 +1,0 @@
-{
-  "name": "vite",
-  "version": "8.3.5",
-  "description": "Empty stand-in for vite in Supabase edge function bundles. See ../README.md.",
-  "main": "index.js"
-}
