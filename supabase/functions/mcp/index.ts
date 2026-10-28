@@ -7,7 +7,7 @@ import { auth, defineMcp } from "npm:@lovable.dev/mcp-js@0.26.3";
 
 // src/lib/mcp/tools/search-tests.ts
 import { defineTool } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z } from "npm:zod@^3.24.2";
+import { z } from "npm:zod@^4.6.6";
 
 // src/lib/mcp/shared.ts
 import { createClient } from "npm:@supabase/supabase-js@2.111.0";
@@ -252,7 +252,7 @@ var search_tests_default = defineTool({
 
 // src/lib/mcp/tools/get-test.ts
 import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z2 } from "npm:zod@^3.24.2";
+import { z as z2 } from "npm:zod@^4.6.6";
 var TEST_DETAIL_COLUMNS = "id, provider_id, provider_name, test_name, description, is_addon, category_primary, price, original_price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, biomarker_count, biomarkers_list, biomarkers_listed, turnaround_days_text, sample_type, collection_method, location_options, home_kit_available, clinic_visit_available, url, url_verified, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, scraped_at, updated_at";
 function testLimitations(t) {
   const out = [];
@@ -365,7 +365,7 @@ var list_categories_default = defineTool4({
 
 // src/lib/mcp/tools/get-provider.ts
 import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z3 } from "npm:zod@^3.24.2";
+import { z as z3 } from "npm:zod@^4.6.6";
 var get_provider_default = defineTool5({
   name: "get_provider",
   title: "Get provider",
@@ -391,7 +391,7 @@ var get_provider_default = defineTool5({
 
 // src/lib/mcp/tools/compare-tests.ts
 import { defineTool as defineTool6 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z4 } from "npm:zod@^3.24.2";
+import { z as z4 } from "npm:zod@^4.6.6";
 function biomarkerOverlap(tests) {
   const sets = tests.map((t) => ({
     id: t.id,
@@ -452,7 +452,7 @@ var compare_tests_default = defineTool6({
 
 // src/lib/mcp/tools/find-tests-by-biomarker.ts
 import { defineTool as defineTool7 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z5 } from "npm:zod@^3.24.2";
+import { z as z5 } from "npm:zod@^4.6.6";
 var find_tests_by_biomarker_default = defineTool7({
   name: "find_tests_by_biomarker",
   title: "Find tests by biomarker",
@@ -510,7 +510,7 @@ var find_tests_by_biomarker_default = defineTool7({
 
 // src/lib/mcp/tools/list-my-favourites.ts
 import { defineTool as defineTool8 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z6 } from "npm:zod@^3.24.2";
+import { z as z6 } from "npm:zod@^4.6.6";
 var list_my_favourites_default = defineTool8({
   name: "list_my_favourites",
   title: "List my saved tests",
@@ -556,7 +556,7 @@ var list_my_favourites_default = defineTool8({
 
 // src/lib/mcp/tools/save-favourite.ts
 import { defineTool as defineTool9 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z7 } from "npm:zod@^3.24.2";
+import { z as z7 } from "npm:zod@^4.6.6";
 var save_favourite_default = defineTool9({
   name: "save_favourite",
   title: "Save a test to my favourites",
@@ -603,7 +603,7 @@ var save_favourite_default = defineTool9({
 
 // src/lib/mcp/tools/remove-favourite.ts
 import { defineTool as defineTool10 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z8 } from "npm:zod@^3.24.2";
+import { z as z8 } from "npm:zod@^4.6.6";
 var remove_favourite_default = defineTool10({
   name: "remove_favourite",
   title: "Remove a test from my favourites",
@@ -629,7 +629,7 @@ var remove_favourite_default = defineTool10({
 
 // src/lib/mcp/tools/get-platform-health.ts
 import { defineTool as defineTool11 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z9 } from "npm:zod@^3.24.2";
+import { z as z9 } from "npm:zod@^4.6.6";
 
 // src/lib/mcp/admin-guard.ts
 var DENIED = {
@@ -749,7 +749,7 @@ var get_platform_health_default = defineTool11({
 
 // src/lib/mcp/tools/list-scraper-alerts.ts
 import { defineTool as defineTool12 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z10 } from "npm:zod@^3.24.2";
+import { z as z10 } from "npm:zod@^4.6.6";
 var list_scraper_alerts_default = defineTool12({
   name: "list_scraper_alerts",
   title: "List scraper alerts",
@@ -788,7 +788,7 @@ var list_scraper_alerts_default = defineTool12({
 
 // src/lib/mcp/tools/get-catalogue-coverage.ts
 import { defineTool as defineTool13 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z11 } from "npm:zod@^3.24.2";
+import { z as z11 } from "npm:zod@^4.6.6";
 var get_catalogue_coverage_default = defineTool13({
   name: "get_catalogue_coverage",
   title: "Get catalogue coverage",
@@ -876,7 +876,7 @@ var get_catalogue_coverage_default = defineTool13({
 
 // src/lib/mcp/tools/list-stale-tests.ts
 import { defineTool as defineTool14 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z12 } from "npm:zod@^3.24.2";
+import { z as z12 } from "npm:zod@^4.6.6";
 var list_stale_tests_default = defineTool14({
   name: "list_stale_tests",
   title: "List stale tests",
@@ -914,7 +914,7 @@ var list_stale_tests_default = defineTool14({
 
 // src/lib/mcp/tools/get-data-quality.ts
 import { defineTool as defineTool15 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z13 } from "npm:zod@^3.24.2";
+import { z as z13 } from "npm:zod@^4.6.6";
 var DATA_QUALITY_CHECKS = {
   missing_biomarkers: "biomarker_count.is.null,biomarker_count.eq.0,biomarkers_listed.is.null,biomarkers_listed.eq.0",
   missing_or_placeholder_price: "price.is.null,price.lte.1",
@@ -959,7 +959,7 @@ var get_data_quality_default = defineTool15({
 
 // src/lib/mcp/tools/get-price-movements.ts
 import { defineTool as defineTool16 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z14 } from "npm:zod@^3.24.2";
+import { z as z14 } from "npm:zod@^4.6.6";
 var get_price_movements_default = defineTool16({
   name: "get_price_movements",
   title: "Get price movements",
@@ -997,7 +997,7 @@ var get_price_movements_default = defineTool16({
 
 // src/lib/mcp/tools/get-security-posture.ts
 import { defineTool as defineTool17 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z15 } from "npm:zod@^3.24.2";
+import { z as z15 } from "npm:zod@^4.6.6";
 var get_security_posture_default = defineTool17({
   name: "get_security_posture",
   title: "Get security posture",
@@ -1075,7 +1075,7 @@ var get_security_posture_default = defineTool17({
 
 // src/lib/mcp/tools/get-performance-summary.ts
 import { defineTool as defineTool18 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z16 } from "npm:zod@^3.24.2";
+import { z as z16 } from "npm:zod@^4.6.6";
 var get_performance_summary_default = defineTool18({
   name: "get_performance_summary",
   title: "Get performance summary",
@@ -1106,7 +1106,7 @@ var get_performance_summary_default = defineTool18({
 
 // src/lib/mcp/tools/get-business-summary.ts
 import { defineTool as defineTool19 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z17 } from "npm:zod@^3.24.2";
+import { z as z17 } from "npm:zod@^4.6.6";
 var get_business_summary_default = defineTool19({
   name: "get_business_summary",
   title: "Get business summary",
@@ -1144,7 +1144,7 @@ var get_business_summary_default = defineTool19({
 
 // src/lib/mcp/tools/get-admin-audit-trail.ts
 import { defineTool as defineTool20 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z18 } from "npm:zod@^3.24.2";
+import { z as z18 } from "npm:zod@^4.6.6";
 var get_admin_audit_trail_default = defineTool20({
   name: "get_admin_audit_trail",
   title: "Get admin audit trail",
@@ -1184,7 +1184,7 @@ var get_admin_audit_trail_default = defineTool20({
 
 // src/lib/mcp/tools/get-affiliate-performance.ts
 import { defineTool as defineTool21 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z19 } from "npm:zod@^3.24.2";
+import { z as z19 } from "npm:zod@^4.6.6";
 var get_affiliate_performance_default = defineTool21({
   name: "get_affiliate_performance",
   title: "Get affiliate performance",

@@ -7,7 +7,7 @@ import { defineMcp } from "npm:@lovable.dev/mcp-js@0.26.3";
 
 // src/lib/mcp/tools/search-tests.ts
 import { defineTool } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z } from "npm:zod@^3.24.2";
+import { z } from "npm:zod@^4.6.6";
 
 // src/lib/mcp/shared.ts
 import { createClient } from "npm:@supabase/supabase-js@2.111.0";
@@ -226,7 +226,7 @@ var search_tests_default = defineTool({
 
 // src/lib/mcp/tools/get-test.ts
 import { defineTool as defineTool2 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z2 } from "npm:zod@^3.24.2";
+import { z as z2 } from "npm:zod@^4.6.6";
 var TEST_DETAIL_COLUMNS = "id, provider_id, provider_name, test_name, description, is_addon, category_primary, price, original_price, collection_fee_type, collection_fee_amount, clinical_review_type, clinical_review_fee, total_expected_cost, biomarker_count, biomarkers_list, biomarkers_listed, turnaround_days_text, sample_type, collection_method, location_options, home_kit_available, clinic_visit_available, url, url_verified, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189, scraped_at, updated_at";
 function testLimitations(t) {
   const out = [];
@@ -339,7 +339,7 @@ var list_categories_default = defineTool4({
 
 // src/lib/mcp/tools/get-provider.ts
 import { defineTool as defineTool5 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z3 } from "npm:zod@^3.24.2";
+import { z as z3 } from "npm:zod@^4.6.6";
 var get_provider_default = defineTool5({
   name: "get_provider",
   title: "Get provider",
@@ -365,7 +365,7 @@ var get_provider_default = defineTool5({
 
 // src/lib/mcp/tools/compare-tests.ts
 import { defineTool as defineTool6 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z4 } from "npm:zod@^3.24.2";
+import { z as z4 } from "npm:zod@^4.6.6";
 function biomarkerOverlap(tests) {
   const sets = tests.map((t) => ({
     id: t.id,
@@ -426,7 +426,7 @@ var compare_tests_default = defineTool6({
 
 // src/lib/mcp/tools/find-tests-by-biomarker.ts
 import { defineTool as defineTool7 } from "npm:@lovable.dev/mcp-js@0.26.3";
-import { z as z5 } from "npm:zod@^3.24.2";
+import { z as z5 } from "npm:zod@^4.6.6";
 var find_tests_by_biomarker_default = defineTool7({
   name: "find_tests_by_biomarker",
   title: "Find tests by biomarker",
