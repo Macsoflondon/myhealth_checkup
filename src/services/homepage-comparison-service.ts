@@ -57,6 +57,7 @@ export async function getHomepageComparisonPanels(): Promise<
       "id, provider_id, test_name, price, total_expected_cost, biomarker_count, biomarkers_list, turnaround_days_text, updated_at, price_checked_at, clinic_visit_available, home_kit_available, collection_method, collection_fee_type, collection_fee_amount",
     )
     .eq("is_addon", false)
+    .not("test_name", "ilike", "blood draw appointment")
     .in("provider_id", getSupportedProviderIds())
     .gt("price", 0)
     .limit(2000)
