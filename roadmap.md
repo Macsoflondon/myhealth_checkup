@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Repair provider directory/profile/test navigation and verify all eight provider journeys plus legacy profile aliases; no database changes.
+
 - [x] Confirm Cloudflare Pages deployment of the current homepage and At-Home Tests page: eb26cd13 succeeded at https://f6ae8a6e.myhealthcheckup.pages.dev.
 - [x] Verify stored Randox kit images in test cards and at-home listings; add the missing active comparison-table photo using TestCardImage, retaining provider logos. Verified at 375px and 1280px; 20 targeted tests and changed-file lint passed, automatic build OK; no migrations.
 
