@@ -38,6 +38,7 @@ export class TestQueryBuilder {
       .from("unified_provider_tests")
       .select(PANEL_VIEW_SELECT)
       .gt("price", 0)
+      .not("test_name", "ilike", "blood draw appointment")
       .order("price", { ascending: true })
       .limit(DEFAULT_LIMIT);
 

@@ -1,3 +1,4 @@
+import { isExcludedListing } from "@/lib/excluded-listings";
 import { viewFeeLabel } from "@/lib/viewPricing";
 import { formatFeeAmount } from "@/lib/comparisonFormat";
 import type { CollectionFeeType } from "@/lib/comparisonFormat";
@@ -854,7 +855,12 @@ export interface UniversalTestCardProps {
   className?: string;
 }
 
-export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
+export const UniversalTestCard: React.FC<UniversalTestCardProps> = (props) =>
+  isExcludedListing(props.test.provider_id, props.test.test_name) ? null : (
+    <UniversalTestCardInner {...props} />
+  );
+
+const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
   test,
   headline,
   onOpenDetail,
