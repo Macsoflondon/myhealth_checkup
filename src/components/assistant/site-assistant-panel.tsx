@@ -27,7 +27,10 @@ import { Button } from "@/components/ui/button";
 import assistantMark from "@/assets/assistant/assistant-mark-96.webp";
 import { Link } from "@tanstack/react-router";
 import { cn } from "@/lib/utils";
-import { assistantChatFetch, ChatHistoryRejectedError } from "@/lib/assistant/chat-transport";
+import {
+  assistantChatFetch,
+  ChatHistoryRejectedError,
+} from "@/lib/assistant/chat-transport";
 
 export const STORAGE_KEY = "mhc-assistant-messages";
 const SUGGESTIONS = [
@@ -118,7 +121,11 @@ export const ChatPanel = ({ onClose }: { onClose: () => void }) => {
   const [restarted, setRestarted] = useState(false);
   const initial = useMemo(loadMessages, []);
   const transport = useMemo(
-    () => new DefaultChatTransport({ api: "/api/public/assistant", fetch: assistantChatFetch }),
+    () =>
+      new DefaultChatTransport({
+        api: "/api/public/assistant",
+        fetch: assistantChatFetch,
+      }),
     [],
   );
   const { messages, sendMessage, status, stop, setMessages } = useChat({

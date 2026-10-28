@@ -108,11 +108,13 @@ async function handle(request: Request): Promise<Response> {
     chatSigningSecret,
   );
   if ("error" in sanitised) {
-    console.warn(JSON.stringify({
-      timestamp: new Date().toISOString(),
-      endpoint: "/api/public/assistant",
-      reason: sanitised.reason,
-    }));
+    console.warn(
+      JSON.stringify({
+        timestamp: new Date().toISOString(),
+        endpoint: "/api/public/assistant",
+        reason: sanitised.reason,
+      }),
+    );
     const response = json(400, "Invalid request.");
     response.headers.set("X-Chat-Restart", "true");
     return response;

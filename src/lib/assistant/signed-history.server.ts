@@ -104,7 +104,10 @@ export const sanitiseSignedHistory = async (
     if (!Array.isArray(m.parts))
       return {
         error: 400,
-        reason: m.role === "assistant" ? "invalid_assistant_reply" : "invalid_request",
+        reason:
+          m.role === "assistant"
+            ? "invalid_assistant_reply"
+            : "invalid_request",
       };
     const texts = m.parts.flatMap((part: unknown) => {
       if (
