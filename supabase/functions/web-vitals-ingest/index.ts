@@ -78,7 +78,8 @@ Deno.serve(async (req) => {
     .from("web_vitals")
     .insert(parsed.data.samples);
   if (error) {
-    return new Response(JSON.stringify({ error: error.message }), {
+    console.error("web-vitals-ingest insert failed", { code: error.code });
+    return new Response(JSON.stringify({ error: "Unable to record measurement." }), {
       status: 500,
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
