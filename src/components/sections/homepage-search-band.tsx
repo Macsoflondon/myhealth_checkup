@@ -21,7 +21,7 @@ export const HomepageSearchBand = () => (
         </div>
         <button
           type="submit"
-          className="h-12 shrink-0 rounded-full bg-brand-turquoise px-5 font-heading text-sm font-bold text-brand-navy shadow-lg transition-colors hover:bg-brand-pink hover:text-white focus-visible:bg-brand-pink focus-visible:text-white focus-visible:outline-none"
+          className="h-12 shrink-0 rounded-full bg-brand-turquoise px-5 font-heading text-sm font-bold text-white shadow-glow-teal transition-colors hover:bg-brand-pink hover:shadow-glow-pink focus-visible:bg-brand-pink focus-visible:shadow-glow-pink focus-visible:outline-none"
         >
           Search
         </button>

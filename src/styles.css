@@ -172,6 +172,16 @@ body {
   display: none;
 }
 
+/* Mild halo around a button, using the existing glow tokens so the
+   shadow sits evenly on every side against the navy backdrop. */
+@utility shadow-glow-teal {
+  box-shadow: var(--shadow-glow-teal);
+}
+@utility shadow-glow-pink {
+  box-shadow: var(--shadow-glow-pink);
+}
+
+
 /* ============================================================
    DESIGN TOKENS — single source of truth (Phase 1 foundation)
    Elevation, motion, spacing, radius. Consumed by Tailwind

@@ -197,7 +197,7 @@ const Index = () => {
                       <Link
                         to="/find-test"
                         aria-label="Take the Health Quiz: find the right private blood test"
-                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-brand-turquoise text-brand-navy hover:bg-brand-pink hover:text-white focus-visible:bg-brand-pink focus-visible:text-white focus-visible:outline-none font-bold font-[Montserrat] text-base px-8 py-3.5 rounded-full shadow-[0_8px_24px_rgba(0,0,0,0.35)] transition-all duration-200 hover:scale-[1.02]"
+                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-brand-turquoise text-white shadow-glow-teal hover:bg-brand-pink hover:shadow-glow-pink focus-visible:bg-brand-pink focus-visible:shadow-glow-pink focus-visible:outline-none font-bold font-[Montserrat] text-base px-8 py-3.5 rounded-full transition-all duration-200 hover:scale-[1.02]"
                       >
                         Take the Health Quiz
                       </Link>
