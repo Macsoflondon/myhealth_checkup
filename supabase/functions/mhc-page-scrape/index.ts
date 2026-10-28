@@ -68,10 +68,37 @@ function extractJsonLdDescription(html: string): string | null {
   }
   return best && best.length > 40 ? best.slice(0, 4000) : null;
 }
+// 2026-10-28: the provider's own og:description carries the full verbatim
+// product copy. Prefer it; the position-bounded slice captured site menus.
+function decodeAttr(s: string): string {
+  return s
+    .replace(/&#(\d+);/g, (_, n: string) => String.fromCharCode(Number(n)))
+    .replace(/&quot;/g, '"')
+    .replace(/&#039;|&apos;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&");
+}
+function extractOgDescription(html: string): string | null {
+  const m = html.match(/property="og:description"\s+content="([^"]+)"/i);
+  if (!m) return null;
+  const val = decodeAttr(m[1]).replace(/[ \t]+/g, " ").trim();
+  if (val.length < 40 || GENERIC_COMPANY_BOILERPLATE.test(val)) return null;
+  return val.slice(0, 4000);
+}
+function extractOgImage(html: string): string | null {
+  const m = html.match(/property="og:image"\s+content="(https:\/\/[^"]+)"/i);
+  return m ? decodeAttr(m[1]) : null;
+}
+function looksLikePageFurniture(s: string): boolean {
+  return /No products in the cart|Recent Posts|Kid&#8217;s Health|-->/i.test(s);
+}
 function extractDescriptionScraped(
   html: string,
   name: string | null,
 ): string | null {
+  const ogDesc = extractOgDescription(html);
+  if (ogDesc) return ogDesc;
   const jsonLd = extractJsonLdDescription(html);
   if (jsonLd) return stripTags(jsonLd).slice(0, 4000);
   const text = stripTags(html);
@@ -94,7 +121,10 @@ function extractDescriptionScraped(
     if (i >= 0 && i < endIdx) endIdx = i;
   }
   const slice = text.slice(startIdx, endIdx).trim();
-  return slice && slice.length > 20 && !GENERIC_COMPANY_BOILERPLATE.test(slice)
+  return slice &&
+    slice.length > 20 &&
+    !GENERIC_COMPANY_BOILERPLATE.test(slice) &&
+    !looksLikePageFurniture(slice)
     ? slice.slice(0, 4000)
     : null;
 }
@@ -162,7 +192,9 @@ function parsePage(html: string) {
   // case-insensitive "tests included", which on long pages is page furniture.
   const bios: string[] = parseMedicalDiagnosisTestsIncluded(html);
   const descriptionScraped = extractDescriptionScraped(html, name);
+  const imageUrl = extractOgImage(html);
   return {
+    imageUrl,
     name,
     price,
     taText,
@@ -227,7 +259,7 @@ Deno.serve(async (req) => {
   const { data: rows, error: rowsError } = await supabase
     .from("provider_tests")
     .select(
-      "id, test_name, biomarker_count, biomarkers_list, clinic_phlebotomy_cost",
+      "id, test_name, biomarker_count, biomarkers_list, clinic_phlebotomy_cost, image_url",
     )
     .eq("provider_id", providerId)
     .eq("is_active", true);
@@ -351,6 +383,15 @@ Deno.serve(async (req) => {
         upd.turnaround_not_stated = false;
       }
       if (p.sample) upd.sample_type = p.sample;
+      // The provider's og:image is often a dead link; store it only if it loads.
+      if (p.imageUrl && !row.image_url) {
+        try {
+          const head = await fetch(p.imageUrl, { method: "HEAD" });
+          if (head.ok) upd.image_url = p.imageUrl;
+        } catch {
+          // Unreachable image: leave image_url empty so the neutral fallback shows.
+        }
+      }
       if (p.descriptionScraped) {
         upd.description_scraped = p.descriptionScraped;
         upd.description = p.descriptionScraped;
