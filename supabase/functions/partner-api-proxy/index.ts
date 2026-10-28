@@ -23,6 +23,7 @@
 // codified and the P0 architecture item is met.
 import { corsHeaders } from "npm:@supabase/supabase-js@2/cors";
 import { internalErrorResponse } from "../_shared/errors.ts";
+import { constantTimeEqual } from "../_shared/mhc-auth.ts";
 
 interface PartnerConfig {
   tokenUrl: string;
@@ -126,6 +127,19 @@ async function fetchToken(cfg: PartnerConfig): Promise<string> {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS")
     return new Response("ok", { headers: corsHeaders });
+
+  // Server-to-server only: callers must present the service-role key.
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+  const presented = (req.headers.get("Authorization") ?? "").replace(
+    /^Bearer\s+/i,
+    "",
+  );
+  if (!serviceKey || !presented || !constantTimeEqual(presented, serviceKey)) {
+    return new Response(JSON.stringify({ error: "unauthorised" }), {
+      status: 401,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
+    });
+  }
 
   // Stub: partner configuration is opt-in. Until a partner is onboarded this
   // endpoint returns a discovery payload describing what secrets are needed.

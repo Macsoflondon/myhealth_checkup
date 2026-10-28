@@ -12,6 +12,7 @@ import {
 } from "@/services/CompareService";
 import { logger } from "@/lib/logger";
 import { isJunkTestName } from "@/utils/is-junk-test-name";
+import { describeSampleType } from "@/lib/sampleType";
 
 // Query keys
 export const compareQueryKeys = {
@@ -61,15 +62,21 @@ function applyLocalFilters(
     );
   }
 
-  // Sample method filter
+  // Sample method filter. "finger-prick" covers home blood samples, including
+  // capillary blood from the QuickDraw upper-arm device (never venous).
   if (filters.sampleMethod && filters.sampleMethod !== "all") {
     filtered = filtered.filter((test) => {
       const collection = (test.features?.collection || "").toLowerCase();
+      const token = describeSampleType(collection).token;
+      const isHomeBlood = token === "finger_prick" || token === "capillary";
       switch (filters.sampleMethod) {
         case "finger-prick":
-          return collection.includes("finger") || collection.includes("prick");
+          return isHomeBlood || /finger|prick/.test(collection);
         case "venous":
-          return collection.includes("clinic") || collection.includes("venous");
+          return (
+            !isHomeBlood &&
+            (collection.includes("clinic") || collection.includes("venous"))
+          );
         case "home-phlebotomy":
           return collection.includes("home") && collection.includes("nurse");
         default:

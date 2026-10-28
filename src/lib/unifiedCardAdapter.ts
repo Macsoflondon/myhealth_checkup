@@ -52,6 +52,8 @@ export function toUnifiedCardProps(
     biomarkers: test.biomarker_count ?? 0,
     results: test.turnaround_days_text ?? "Not stated",
     collection: test.sample_type ?? "Not stated",
+    homeKitAvailable: test.home_kit_available ?? null,
+    clinicVisitAvailable: test.clinic_visit_available ?? null,
 
     // A genuinely unpriced test must reach UniversalTestCard as null so it
     // renders "POA" — defaulting to 0 here previously made it display the

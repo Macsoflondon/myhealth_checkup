@@ -1,3 +1,5 @@
+import { normalizeProviderId } from "@/constants/providers";
+
 /**
  * Centralized provider route configuration
  * Maps database provider_id values to their URL route paths
@@ -47,8 +49,8 @@ export const PROVIDER_PROFILE_ROUTE_MAP: Record<string, string> = {
   medichecks: "/provider/medichecks",
   goodbody: "/provider/goodbody-clinic",
   "goodbody-clinic": "/provider/goodbody-clinic",
-  randox: "/provider/randox-health",
-  "randox-health": "/provider/randox-health",
+  randox: "/provider/randox",
+  "randox-health": "/provider/randox",
   "lola-health": "/provider/lola-health",
   "london-medical-laboratory": "/provider/london-medical-laboratory",
   "london-health-company": "/provider/london-health-company",
@@ -57,7 +59,7 @@ export const PROVIDER_PROFILE_ROUTE_MAP: Record<string, string> = {
 };
 
 export function getProviderProfileRoute(providerId: string): string {
-  const normalizedId = providerId.toLowerCase();
+  const normalizedId = normalizeProviderId(providerId);
   return (
     PROVIDER_PROFILE_ROUTE_MAP[normalizedId] || `/provider/${normalizedId}`
   );
@@ -69,7 +71,7 @@ export function getProviderProfileRoute(providerId: string): string {
  * @returns The URL path for the provider's test detail pages
  */
 export function getProviderRoute(providerId: string): string {
-  const normalizedId = providerId.toLowerCase();
+  const normalizedId = normalizeProviderId(providerId);
   return PROVIDER_ROUTE_MAP[normalizedId] || "/compare";
 }
 
@@ -79,7 +81,7 @@ export function getProviderRoute(providerId: string): string {
  * @returns The display name for the provider
  */
 export function getProviderDisplayName(providerId: string): string {
-  const normalizedId = providerId.toLowerCase();
+  const normalizedId = normalizeProviderId(providerId);
   return PROVIDER_DISPLAY_NAMES[normalizedId] || providerId;
 }
 
@@ -109,6 +111,9 @@ export function normalizeProviderFromName(providerName: string): string {
   if (name.includes("goodbody")) return "goodbody-clinic";
   if (name.includes("lola")) return "lola-health";
   if (name.includes("randox")) return "randox";
+  if (name.includes("london-health-company")) return "london-health-company";
+  if (name.includes("clinilabs")) return "clinilabs";
+  if (name.includes("medical-diagnosis")) return "medical-diagnosis";
   if (name.includes("london")) return "london-medical-laboratory";
 
   return providerName;

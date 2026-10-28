@@ -225,3 +225,9 @@ verify_jwt = false
 
 [functions.mhc-randox-scrape]
 verify_jwt = false
+
+# Randox kit box images, run every 6 hours by the randox-kit-images cron job
+# (migration 20261026140150) through net.http_get with no Authorization header.
+# Security: ?secret= is checked in code against the Vault entry mhc_sync_secret.
+[functions.randox-kit-images]
+verify_jwt = false

@@ -1,3 +1,4 @@
+import { isExcludedListing } from "@/lib/excluded-listings";
 import { viewFeeLabel } from "@/lib/viewPricing";
 import { formatFeeAmount } from "@/lib/comparisonFormat";
 import type { CollectionFeeType } from "@/lib/comparisonFormat";
@@ -33,8 +34,9 @@ import { excerptTestDescription } from "@/lib/test-summary";
 import { displayTurnaround } from "@/lib/resolve-test-fields";
 import { baseTestId, type CollectionVariant } from "@/lib/collectionVariants";
 import { formatTestCardHeadline } from "@/utils/format-test-card-headline";
+import { TestCardImage } from "@/components/tests/test-card-image";
 import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
-import { shopifyImageSrcSet, shopifyImageUrl } from "@/lib/shopify-image";
+import { describeSampleType } from "@/lib/sampleType";
 
 /** Largest rendered width of the card's product image, in CSS pixels. */
 const CARD_IMAGE_DISPLAY_WIDTH = 325;
@@ -78,7 +80,7 @@ export interface UniversalTestData {
   url?: string | null;
   /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
   url_verified?: boolean | null;
-  /** Provider product-packaging image shown as the card's resting state */
+  /** Provider product image shown as the card's resting state. */
   image_url?: string | null;
   /** True when image_url is an on-brand generic stock photo, not a provider product photo */
   image_is_stock?: boolean | null;
@@ -164,7 +166,7 @@ function isFingerPrickOnly(sampleType?: string | null): boolean {
 
 /** Route labels produced by deriveCollectionVariants, e.g. "Clinic blood draw (+£40)". */
 const ROUTE_VARIANT_LABEL =
-  /^(At-home finger-prick kit|Clinic blood draw|Nurse home visit|Standard collection)/i;
+  /^(At-home (finger-prick )?kit|Clinic blood draw|Nurse home visit|Standard collection)/i;
 
 /** Short, honest sample/collection descriptor for the compact card. */
 function collectionLabel(t: UniversalTestData): string {
@@ -172,12 +174,10 @@ function collectionLabel(t: UniversalTestData): string {
   if (t.route_variant) return t.route_variant.label;
   const raw = (t.sample_type || "").trim();
   if (ROUTE_VARIANT_LABEL.test(raw)) return raw;
-  const s = raw.toLowerCase();
-  if (s.includes("finger")) return "Finger-prick";
-  if (s.includes("venous") || s.includes("blood draw")) return "Venous draw";
-  if (s.includes("saliva")) return "Saliva";
-  if (s.includes("urine")) return "Urine";
-  if (s.includes("swab")) return "Swab";
+  const info = describeSampleType(raw);
+  if (info.token === "capillary") return "QuickDraw device (no finger-prick)";
+  if (info.token === "venous") return "Venous draw";
+  if (info.token && info.label) return info.label;
   if (t.home_kit_available && t.clinic_visit_available) return "Home or clinic";
   if (t.home_kit_available) return "At-home kit";
   if (t.clinic_visit_available) return "Clinic visit";
@@ -190,12 +190,11 @@ function collectionDetail(t: UniversalTestData): string {
   const method = stripCollectionFeeText(t.collection_method);
   if (method) return method;
 
-  const s = (t.sample_type || "").toLowerCase();
-  const sample = s.includes("finger")
-    ? "Finger-prick blood sample"
-    : s.includes("venous") || s.includes("blood draw")
-      ? "Venous blood draw"
-      : t.sample_type?.trim() || null;
+  const info = describeSampleType(t.sample_type);
+  const sample =
+    info.token === "finger_prick"
+      ? "Finger-prick blood sample"
+      : info.label || null;
   const setting =
     t.home_kit_available && t.clinic_visit_available
       ? "home kit or clinic appointment"
@@ -854,32 +853,23 @@ export interface UniversalTestCardProps {
   /** Optional override for the click handler. If omitted, opens the detail modal. */
   onOpenDetail?: () => void;
   className?: string;
-  /**
-   * At-rest face of the card. "image" (default) shows the provider's kit photo.
-   * "brand" always shows the branded navy-gradient tile with the provider logo
-   * and test name — used on toolbar-reached category listings.
-   */
-  defaultFace?: "image" | "brand";
 }
 
-export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
+export const UniversalTestCard: React.FC<UniversalTestCardProps> = (props) =>
+  isExcludedListing(props.test.provider_id, props.test.test_name) ? null : (
+    <UniversalTestCardInner {...props} />
+  );
+
+const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
   test,
   headline,
   onOpenDetail,
   className,
-  defaultFace = "image",
 }) => {
   const cardHeadline = formatTestCardHeadline(headline ?? test.test_name);
-  const cardImageUrl = resolveTestCardImage({
-    providerId: test.provider_id,
-    isAddon: test.is_addon,
-    imageUrl: test.image_url,
-  });
   const [internalOpen, setInternalOpen] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
   const hoverIntentTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  /** Tracks a broken/expired image link so the card degrades to the branded placeholder. */
-  const [brokenImageSrc, setBrokenImageSrc] = useState<string | null>(null);
   const meta = getProviderMeta(test.provider_id);
   const logo = getProviderLogo(test.provider_id) || meta.logo;
   const biomarkers = normalizeBiomarkers(test.biomarkers_list);
@@ -1004,7 +994,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
         <div className="relative flex flex-1 flex-col">
           {/* Product image layer */}
           <div
-            aria-hidden="true"
+            aria-hidden={showDetails}
             className={`absolute inset-0 z-10 flex flex-col bg-white transition-opacity duration-[1500ms] ease-in-out motion-reduce:transition-none ${showDetails ? "opacity-0 pointer-events-none" : "opacity-100"}`}
           >
             {test.is_addon && (
@@ -1027,59 +1017,18 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               </span>
             )}
             <div className="flex flex-1 items-center justify-center overflow-hidden p-4">
-              {defaultFace === "image" &&
-              cardImageUrl &&
-              brokenImageSrc !== cardImageUrl ? (
-                <img
-                  src={shopifyImageUrl(cardImageUrl, CARD_IMAGE_DISPLAY_WIDTH)}
-                  srcSet={shopifyImageSrcSet(cardImageUrl, [
-                    CARD_IMAGE_DISPLAY_WIDTH,
-                    CARD_IMAGE_DISPLAY_WIDTH * 2,
-                  ])}
-                  // Rendered widths measured on the homepage grids: about
-                  // 100vw - 66px on phones, 40vw on tablets, 18vw from 1024px.
-                  sizes={CARD_IMAGE_SIZES}
-                  width={CARD_IMAGE_DISPLAY_WIDTH}
-                  height={CARD_IMAGE_DISPLAY_WIDTH}
-                  alt={`${test.test_name} test kit from ${meta.displayName}`}
-                  loading="lazy"
-                  decoding="async"
-                  className="h-full w-full object-contain"
-                  onError={() => {
-                    setBrokenImageSrc(cardImageUrl);
-                  }}
-                />
-              ) : (
-                <div
-                  className="flex h-full w-full flex-col items-center justify-center gap-3 rounded-xl px-4 text-center"
-                  style={{
-                    background:
-                      "linear-gradient(155deg, rgba(8,17,41,0.94), rgba(34,192,212,0.35))",
-                  }}
-                >
-                  {logo ? (
-                    <span className="flex h-12 w-24 items-center justify-center rounded-lg bg-white p-1.5">
-                      <img
-                        src={logo}
-                        alt=""
-                        className="h-full w-full object-contain"
-                      />
-                    </span>
-                  ) : null}
-                  <span
-                    className="line-clamp-3"
-                    style={{
-                      fontFamily: "'Montserrat',sans-serif",
-                      fontWeight: 700,
-                      fontSize: 14,
-                      lineHeight: 1.35,
-                      color: "#ffffff",
-                    }}
-                  >
-                    {cardHeadline}
-                  </span>
-                </div>
-              )}
+              <TestCardImage
+                imageUrl={resolveTestCardImage({
+                  providerId: test.provider_id,
+                  isAddon: test.is_addon,
+                  imageUrl: test.image_is_stock ? null : test.image_url,
+                  testName: test.test_name,
+                })}
+                testName={test.test_name}
+                providerName={meta.displayName}
+                displayWidth={CARD_IMAGE_DISPLAY_WIDTH}
+                sizes={CARD_IMAGE_SIZES}
+              />
             </div>
 
             {/* Caption strip */}
@@ -1145,7 +1094,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = ({
               cursor: "pointer",
             }}
           >
-            View details
+            {test.is_addon ? "Add-on" : "View details"}
           </button>
 
           {/* Body */}

@@ -128,6 +128,28 @@ const aiResponseSchema = z.object({
   })).min(1).max(3),
 });
 
+// 2026-10-26: unified_provider_tests.sample_type is a token (venous, capillary, ...).
+// Show users and the model a label; capillary is the QuickDraw home device, never venous.
+// Mirrors src/lib/sampleType.ts.
+const SAMPLE_LABELS: Record<string, string> = {
+  venous: "Venous blood draw",
+  finger_prick: "Finger-prick",
+  capillary: "QuickDraw upper-arm device (no finger-prick)",
+  saliva: "Saliva",
+  stool: "Stool sample",
+  nail: "Nail clipping",
+  urine: "Urine",
+  urine_or_swab: "Urine or swab",
+  buccal_swab: "Cheek swab",
+  multiple: "Multiple sample types",
+};
+
+function sampleTypeLabel(raw: string | null): string {
+  const s = (raw ?? "").trim();
+  if (!s) return "Not stated";
+  return SAMPLE_LABELS[s.toLowerCase()] ?? s;
+}
+
 const providerNames: Record<string, string> = {
   medichecks: "Medichecks",
   randox: "Randox Health",
@@ -223,7 +245,7 @@ function scoreCandidate(row: ProviderTestRow, request: AiHumanContextRequest): C
     category,
     description: row.description || "",
     biomarkerCount: row.biomarker_count || 0,
-    sampleType: row.sample_type || "Blood sample",
+    sampleType: sampleTypeLabel(row.sample_type),
     homeKitAvailable: row.home_kit_available === true,
     clinicVisitAvailable: row.clinic_visit_available === true,
     biomarkers,

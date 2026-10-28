@@ -30,10 +30,11 @@ export interface UnifiedTestCardProps {
   onCompareToggle?: () => void;
   className?: string;
   testDetails?: ProviderTestCardData;
-  /** At-rest face: kit photo (default) or branded provider-logo tile. */
-  defaultFace?: "image" | "brand";
   /** Collection-route listing this card represents. */
   routeVariant?: CollectionVariant | null;
+  /** Real provider flags; preferred over collection-text heuristics. */
+  homeKitAvailable?: boolean | null;
+  clinicVisitAvailable?: boolean | null;
 }
 
 /**
@@ -43,13 +44,7 @@ export interface UnifiedTestCardProps {
  */
 export function UnifiedTestCard(props: UnifiedTestCardProps) {
   const data = fromLegacyUnified(props);
-  return (
-    <UniversalTestCard
-      test={data}
-      className={props.className}
-      defaultFace={props.defaultFace}
-    />
-  );
+  return <UniversalTestCard test={data} className={props.className} />;
 }
 
 export default UnifiedTestCard;

@@ -7,10 +7,19 @@
 // 2026-10-13: ?secret= is checked by ../_shared/mhc-auth.ts against the Vault entry
 // mhc_sync_secret, the value the cron jobs send, read through public.mhc_sync_secret().
 // MHC_SYNC_SECRET is only a fallback for when that read fails. No secret is committed here.
+// 2026-10-26: (a) sample_type comes from ../_shared/scrape/randoxSample.ts deriveRandoxSample, which reads only
+// the product's own section and uses the URL for home kit versus clinic. The old rule
+// ("Venous unless finger-prick appears anywhere") picked up cross-sell cards. A null
+// sample (home kit page with no stated method) never overwrites an existing value.
+// (b) Rolling window: with no ?offset= the next offset comes from the latest scrape_runs
+// row (offset + limit), wrapping to 0, so every product URL is covered across cron runs.
+// (c) Products listed in provider_test_exclusions are dropped before slicing.
+// This function never writes image_url (randox-kit-images owns Randox images).
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { parseRandoxWhatsIncluded } from "../_shared/scrape/biomarkerParsers.ts";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
+import { deriveRandoxSample } from "../_shared/scrape/randoxSample.ts";
 const PROVIDER = "randox";
 const SITEMAPS = ["https://randoxhealth.com/sitemap.xml"];
 const URLMATCH = /\/en-GB\/product\//i;
@@ -164,7 +173,14 @@ function extractDescriptionScraped(html, name) {
   const slice = txt.slice(startIdx, endIdx).trim();
   return slice && slice.length > 20 ? slice.slice(0, 4000) : null;
 }
-function parsePage(html) {
+function productPath(u) {
+  const m = u
+    .replace(/[?#].*$/, "")
+    .replace(/\/+$/, "")
+    .match(/\/product\/(.+)$/i);
+  return m ? m[1].toLowerCase() : "";
+}
+function parsePage(html, url) {
   const name = extractName(html);
   let price = null;
   const pm = stripTags(html).match(/£\s*([\d,]+(?:\.\d{2})?)/);
@@ -190,12 +206,17 @@ function parsePage(html) {
       taText = `Results in ${m[1]} working days`;
     }
   }
-  let sample = "Venous";
-  if (/finger-?prick/i.test(txt)) sample = "Finger-prick or venous";
   const descriptionScraped = extractDescriptionScraped(html, name);
   // Itemised markers come from the page's own `whats_included` state.
   // Panel-only products publish panel names, not markers: bios stays empty.
   const bios = parseRandoxWhatsIncluded(html).biomarkers;
+  const sample = deriveRandoxSample(
+    url,
+    stripTags(html),
+    extractJsonLdDescription(html),
+    name,
+    bios,
+  );
   return { name, price, taText, taDays, sample, descriptionScraped, bios };
 }
 Deno.serve(async (req) => {
@@ -209,9 +230,44 @@ Deno.serve(async (req) => {
   const startedAt = new Date().toISOString();
   const debug = u.searchParams.get("debug");
   const dry = u.searchParams.get("dry") === "1";
-  const offset = parseInt(u.searchParams.get("offset") || "0");
   const limit = parseInt(u.searchParams.get("limit") || "20");
-  const urls = await getUrls();
+  const sitemapUrls = await getUrls();
+  const { data: exclRows } = await supabase
+    .from("provider_test_exclusions")
+    .select("product_path")
+    .eq("provider_id", PROVIDER);
+  const excludedPaths = new Set(
+    (exclRows || []).map((r) =>
+      String(r.product_path || "")
+        .toLowerCase()
+        .replace(/\/+$/, ""),
+    ),
+  );
+  const excludedUrls = sitemapUrls.filter((x) =>
+    excludedPaths.has(productPath(x)),
+  );
+  const urls = sitemapUrls.filter((x) => !excludedPaths.has(productPath(x)));
+  let offset = 0;
+  const offsetParam = u.searchParams.get("offset");
+  if (offsetParam !== null) {
+    offset = parseInt(offsetParam) || 0;
+  } else {
+    const { data: lastRun } = await supabase
+      .from("scrape_runs")
+      .select("metadata")
+      .eq("provider_id", PROVIDER)
+      .eq("scraper_function", "mhc-randox-scrape")
+      .order("started_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    const meta = lastRun?.metadata || {};
+    const prevOffset = Number(meta.offset);
+    const prevLimit = Number(meta.limit);
+    if (Number.isFinite(prevOffset) && Number.isFinite(prevLimit)) {
+      offset = prevOffset + prevLimit;
+    }
+    if (offset < 0 || offset >= urls.length) offset = 0;
+  }
   if (debug === "sitemap")
     return new Response(
       JSON.stringify(
@@ -276,7 +332,7 @@ Deno.serve(async (req) => {
       redir++;
       continue;
     }
-    const p = parsePage(html);
+    const p = parsePage(html, url);
     if (p.name && /\bvaccin/i.test(p.name)) {
       skippedNoNameOrPrice.push({
         url,
@@ -426,6 +482,7 @@ Deno.serve(async (req) => {
         existing_active: rows?.length || 0,
         redirected_skipped: redir,
         skipped_no_name_or_price: skippedNoNameOrPrice.length,
+        excluded_urls: excludedUrls,
         offset,
         limit,
         dry,
@@ -443,6 +500,9 @@ Deno.serve(async (req) => {
         total_product_urls: urls.length,
         existing_active: rows?.length || 0,
         processed: slice.length,
+        offset,
+        limit,
+        excluded_urls: excludedUrls,
         updated,
         inserted,
         new_count: newItems.length,

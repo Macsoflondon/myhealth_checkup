@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { loadViewPricing, mergeActiveRows } from "@/lib/viewPricing";
-import { supabase } from "@/integrations/supabase/client";
+import { getProviderGridTests } from "@/services/provider-grid-tests";
 import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getProviderRating } from "@/constants/providerRatings";
@@ -41,19 +41,7 @@ export const ProviderTestsGrid = ({
   const { data, isLoading } = useQuery({
     queryKey: ["provider-tests-grid", dbId, limit],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("provider_tests")
-        .select(
-          "id, test_name, image_url, price, base_price, home_phlebotomy_cost, category, sample_type, collection_method, measurement_type, who_should_test, home_kit_available, clinic_visit_available, url, url_verified, biomarker_count, biomarkers_list, description, what_is_tested, preparation_notes, test_limitations, turnaround_days_text, collection_options, popularity_rank, is_popular, is_addon, purchase_notes, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189",
-        )
-        .eq("provider_id", dbId)
-        .eq("is_active", true)
-        .not("price", "is", null)
-        .order("is_addon", { ascending: true, nullsFirst: true })
-        .order("is_popular", { ascending: false, nullsFirst: false })
-        .order("popularity_rank", { ascending: true, nullsFirst: false })
-        .limit(limit);
-      if (error) throw error;
+      const data = await getProviderGridTests(dbId, limit);
       const rows = (data ?? []).filter(
         (test) => !isJunkTestName(test.test_name),
       );
@@ -150,7 +138,6 @@ export const ProviderTestsGrid = ({
           return variants.map((variant) => (
             <UnifiedTestCard
               key={variant.variantId}
-              defaultFace="brand"
               routeVariant={single ? null : variant}
               {...toUnifiedCardProps(card, {
                 provider: providerDisplayName,

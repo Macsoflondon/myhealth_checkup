@@ -1,5 +1,16 @@
 # Roadmap
 
+- [x] Isolate assistant reply signing in CHAT_SIGNING_SECRET; reject invalid assistant history with private-safe logs and restart the chat. Live valid reply HTTP 200, edited/unsigned HTTP 400 and timestamp/endpoint/reason-only logs verified; browser storage cleared and restart message visible; 15 tests passed and automatic build OK. Not published.
+
+- [x] Repair provider directory/profile/test navigation: canonical Randox links and alias redirects, distinct London provider matching; all eight populated profiles and test details browser-verified, 15 regression tests and changed-link lint passed, automatic build OK; no database changes or publishing.
+
+- [x] Confirm Cloudflare Pages deployment of the current homepage and At-Home Tests page: eb26cd13 succeeded at https://f6ae8a6e.myhealthcheckup.pages.dev.
+- [x] Verify stored Randox kit images in test cards and at-home listings; add the missing active comparison-table photo using TestCardImage, retaining provider logos. Verified at 375px and 1280px; 20 targeted tests and changed-file lint passed, automatic build OK; no migrations.
+
+- [x] Align homepage section widths and rounded provider corners, tighten excess gaps, separate clinical standards text and markers, and remove the empty navy padding above Featured Partner; verified at 375px, 768px and 1351px with no horizontal overflow, order tests passed.
+
+- [x] Replace all test-card brand pictures with source product images and a shared neutral fallback; verified sports/Clinilabs listings at 375px, without migrations.
+
 - [x] Clarify the homepage UK private blood-test comparison offer and search snippet; preserve layout, branding and comparison links.
 
 - [x] Make the homepage hero video clickable through to myhealthcheckup.co.uk; verified at five phone sizes and desktop.

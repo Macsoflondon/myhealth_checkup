@@ -14,6 +14,7 @@ import {
   viewFeeLabel,
   type RoutePricing,
 } from "@/lib/viewPricing";
+import { describeSampleType, homeKitSampleLabel } from "@/lib/sampleType";
 
 export type CollectionRoute =
   "home_kit" | "clinic" | "home_visit" | "venous" | "standard";
@@ -99,17 +100,46 @@ export function hasHomeKitRoute(source: CollectionVariantSource): boolean {
   return !source.sample_type || !mentionsVenous(source.sample_type);
 }
 
+/** Home-kit label/detail depend on the actual sample (saliva, QuickDraw, etc.). */
+function homeKitText(sampleType?: string | null): {
+  label: string;
+  detail: string;
+} {
+  const kit = homeKitSampleLabel(sampleType);
+  if (!kit) {
+    return {
+      label: "At-home kit",
+      detail: "Sample you collect yourself at home",
+    };
+  }
+  if (kit === "finger-prick") {
+    return {
+      label: ROUTE_LABELS.home_kit,
+      detail: ROUTE_DETAILS.home_kit,
+    };
+  }
+  const info = describeSampleType(sampleType);
+  return {
+    label: `At-home kit (${kit})`,
+    detail: `${info.label ?? kit} sample you collect yourself at home`,
+  };
+}
+
 function makeVariant(
   source: CollectionVariantSource,
   route: CollectionRoute,
   basePrice: number,
   fee: number,
 ): CollectionVariant {
+  const text =
+    route === "home_kit"
+      ? homeKitText(source.sample_type)
+      : { label: ROUTE_LABELS[route], detail: ROUTE_DETAILS[route] };
   return {
     variantId: `${source.id}::${route}`,
     route,
-    label: ROUTE_LABELS[route],
-    detail: ROUTE_DETAILS[route],
+    label: text.label,
+    detail: text.detail,
     basePrice,
     fee,
     total: Math.round((basePrice + fee) * 100) / 100,

@@ -29,6 +29,12 @@ export interface RawTestRow {
   phlebotomy_included?: boolean | null;
   phlebotomy_cost?: number | null;
   url?: string | null;
+  image_url?: string | null;
+  collection_method?: string | null;
+  collection_fee_type?: string | null;
+  collection_fee_amount?: number | null;
+  clinical_review_type?: string | null;
+  clinical_review_fee?: number | null;
   updated_at?: string | null;
   lab_ukas_accredited?: boolean | null;
   lab_cqc_regulated?: boolean | null;
@@ -60,31 +66,30 @@ const parseTurnaroundDays = (
 export function transformRawTestToEnhanced(
   rawTest: RawTestRow,
 ): EnhancedTestData {
-  const test = rawTest as RawTestRow & Record<string, any>;
+  const test = rawTest;
   const basePrice = test.price ?? null;
   const gpCost = test.gp_consultation_included
     ? 0
     : test.gp_consultation_cost || 0;
-  const phlebCost = test.phlebotomy_included
-    ? 0
-    : test.phlebotomy_cost || 0;
+  const phlebCost = test.phlebotomy_included ? 0 : test.phlebotomy_cost || 0;
 
   const providerId = test.provider_id ?? "";
   const providerName = PROVIDER_NAMES[providerId] || providerId;
   const providerLogo = PROVIDER_LOGOS[providerId] || "";
 
   const sampleTypeCode = test.sample_type ?? null;
-  const collectionMethod = test.collection_method ?? null;
-  const collectionFeeType = test.collection_fee_type ?? null;
+  const collectionMethod = (test.collection_method ??
+    null) as EnhancedTestData["collectionMethod"];
+  const collectionFeeType = (test.collection_fee_type ??
+    null) as EnhancedTestData["collectionFeeType"];
   const collectionFeeAmount =
     test.collection_fee_amount != null
       ? Number(test.collection_fee_amount)
       : null;
-  const clinicalReviewType = test.clinical_review_type ?? null;
+  const clinicalReviewType = (test.clinical_review_type ??
+    null) as EnhancedTestData["clinicalReviewType"];
   const clinicalReviewFee =
-    test.clinical_review_fee != null
-      ? Number(test.clinical_review_fee)
-      : null;
+    test.clinical_review_fee != null ? Number(test.clinical_review_fee) : null;
 
   const totalExpectedCost = computeTotalExpectedCost(
     basePrice,
@@ -100,6 +105,7 @@ export function transformRawTestToEnhanced(
     provider: providerName,
     providerId: providerId,
     providerLogo: providerLogo,
+    image_url: rawTest.image_url ?? null,
     category: test.category || "General Health",
     basePrice,
     gpConsultationIncluded: test.gp_consultation_included || false,
@@ -194,9 +200,7 @@ export function useEnhancedComparison() {
     // Find most comprehensive
     const mostComprehensive = selectedTests.reduce(
       (most, test) =>
-        (test.biomarkerCount ?? 0) > (most?.biomarkerCount ?? 0)
-          ? test
-          : most,
+        (test.biomarkerCount ?? 0) > (most?.biomarkerCount ?? 0) ? test : most,
       selectedTests[0],
     );
 

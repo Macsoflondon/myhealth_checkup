@@ -107,7 +107,9 @@ export function toViewPricing(
     // route from the same public rules, never from stale scraper fee columns.
     if (
       row.sample_type != null &&
-      !["venous", "finger_prick", "multiple"].includes(String(row.sample_type))
+      !["venous", "finger_prick", "capillary", "multiple"].includes(
+        String(row.sample_type),
+      )
     )
       continue;
     const providerRules = rules.filter(
