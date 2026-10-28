@@ -10,14 +10,12 @@ describe("assistant rejection transport", () => {
   it("signals a restart for rejected history HTTP 400", async () => {
     vi.stubGlobal(
       "fetch",
-      vi
-        .fn()
-        .mockResolvedValue(
-          new Response(JSON.stringify({ error: "Invalid request." }), {
-            status: 400,
-            headers: { "X-Chat-Restart": "true" },
-          }),
-        ),
+      vi.fn().mockResolvedValue(
+        new Response(JSON.stringify({ error: "Invalid request." }), {
+          status: 400,
+          headers: { "X-Chat-Restart": "true" },
+        }),
+      ),
     );
     await expect(
       assistantChatFetch("/api/public/assistant"),
