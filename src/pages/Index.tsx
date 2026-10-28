@@ -213,7 +213,7 @@ const Index = () => {
                   </div>
 
                   <div className="flex w-full justify-center lg:justify-end">
-                    <div className="w-full max-w-[400px] xl:max-w-[460px] 2xl:max-w-[520px]">
+                    <div className="w-full max-w-none sm:max-w-[400px] xl:max-w-[460px] 2xl:max-w-[520px]">
                       <LiveCatalogueComparison
                         panel={upperComparison}
                         loading={comparisonsLoading}
