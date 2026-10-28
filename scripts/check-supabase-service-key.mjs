@@ -9,7 +9,13 @@
  * whitespace from a paste) instead of a bare 401 or row-level-security error.
  *
  * Usage: node scripts/check-supabase-service-key.mjs [expected-project-ref]
- * Set ALLOW_SB_SECRET=1 where an sb_secret_ key is acceptable (supabase-js).
+ *
+ * Set REQUIRE_SB_SECRET=1 when the key goes to an edge function that compares
+ * the bearer string with its own SUPABASE_SERVICE_ROLE_KEY (security-scan-
+ * snapshot, promote-provider-tests). In this project that runtime value is an
+ * sb_secret_ key, the same one stored in Vault as service_role_key, so a
+ * genuine legacy service_role JWT still gets a 401. supabase-js callers
+ * (Blog aggregate) accept either form.
  */
 const EXPECTED_REF = process.argv[2] || "clvuioagsgfadynuvodj";
 const raw = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
@@ -24,13 +30,7 @@ if (raw !== raw.trim())
 const key = raw.trim();
 
 if (key.startsWith("sb_secret_")) {
-  facts.push("format: new secret API key (sb_secret_)");
-  // supabase-js accepts these (client.server.ts handles them); the advisor
-  // edge function compares against its legacy JWT and does not.
-  if (process.env.ALLOW_SB_SECRET !== "1")
-    problems.push(
-      "security-scan-snapshot only accepts the legacy service_role JWT, so it will answer 401 to an sb_secret_ key",
-    );
+  facts.push("format: secret API key (sb_secret_)");
 } else if (key.startsWith("sb_publishable_")) {
   facts.push("format: publishable key (sb_publishable_)");
   problems.push("this is the public publishable key, not a service-role key");
@@ -56,6 +56,11 @@ if (key.startsWith("sb_secret_")) {
       );
       if (payload.role !== "service_role")
         problems.push(`the JWT role is "${payload.role}", not "service_role"`);
+      else if (process.env.REQUIRE_SB_SECRET === "1")
+        problems.push(
+          "this is a valid legacy service_role key, but the edge function compares it with its own key, " +
+            "which in this project is the sb_secret_ secret key (Supabase > Project Settings > API Keys > Secret keys)",
+        );
       if (payload.ref && payload.ref !== EXPECTED_REF)
         problems.push(
           `the key belongs to project "${payload.ref}", not "${EXPECTED_REF}"`,
