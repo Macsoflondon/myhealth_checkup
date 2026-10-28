@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
+import { CLINILABS_GENERIC_KIT_URL, resolveTestCardImage } from "@/lib/resolve-test-card-image";
 import { fromCategoryTestItem } from "@/lib/universalTestAdapter";
 import lolaAddonKit from "@/assets/providers/lola-addon-blood-test-kit.png.asset.json";
 
@@ -38,14 +38,13 @@ describe("resolveTestCardImage", () => {
   });
 
   it("returns null for a test with no image so the card shows the neutral placeholder", () => {
-    expect(
-      resolveTestCardImage({
-        providerId: "clinilabs",
-        isAddon: false,
-        imageUrl: null,
-      }),
-    ).toBeNull();
-    expect(resolveTestCardImage({ providerId: "clinilabs" })).toBeNull();
+    expect(resolveTestCardImage({ providerId: "medichecks", imageUrl: null })).toBeNull();
+  });
+
+  it("falls back to the generic Clinilabs box only when no product photo exists", () => {
+    expect(resolveTestCardImage({ providerId: "clinilabs", imageUrl: null })).toBe(CLINILABS_GENERIC_KIT_URL);
+    const own = "https://provider.example/clinilabs-box.webp";
+    expect(resolveTestCardImage({ providerId: "clinilabs", imageUrl: own })).toBe(own);
   });
 
   it("carries a missing category-page image through as null, not a broken URL", () => {
