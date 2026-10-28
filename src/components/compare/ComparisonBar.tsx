@@ -107,52 +107,35 @@ export const ComparisonBar = ({
 
   const isEmpty = selectedTests.length === 0;
 
-  // === RESTING (HOLOGRAPHIC) EMPTY STATE ===========================
-  if (isEmpty) {
-    return (
-      <div
-        className={cn(
-          "fixed bottom-0 left-0 right-0 z-40 pointer-events-none transition-all duration-500 ease-out",
-          revealClass,
-        )}
+  // Reserve page space equal to the tray's height while it is on screen,
+  // so the fixed tray never covers content (e.g. the quiz button).
+  const trayRef = React.useRef<HTMLDivElement | null>(null);
+  const trayShown = !isEmpty && hasReached;
+  React.useEffect(() => {
+    const root = document.documentElement;
+    const el = trayRef.current;
+    if (!trayShown || !el) {
+      root.style.removeProperty("--compare-tray-h");
+      return;
+    }
+    const sync = () =>
+      root.style.setProperty("--compare-tray-h", `${el.offsetHeight}px`);
+    sync();
+    const obs = new ResizeObserver(sync);
+    obs.observe(el);
+    return () => {
+      obs.disconnect();
+      root.style.removeProperty("--compare-tray-h");
+    };
+  }, [trayShown]);
 
-        role="region"
-        aria-label="Comparison tray (empty)"
-        aria-live="polite"
-      >
-        {/* Mobile: floating badge bottom-right */}
-        <div className="sm:hidden flex justify-end px-3 pb-3">
-          <div className="pointer-events-auto inline-flex items-center gap-1.5 rounded-full compare-tray-surface px-3 py-1.5 text-xs font-semibold text-brand-navy/70">
-            <Scale className="h-3.5 w-3.5" aria-hidden="true" />
-            0/5
-          </div>
-        </div>
-
-        {/* Desktop: frosted resting strip */}
-        <div className="hidden sm:block">
-          <div className="page-inset-x pb-3">
-            <div className="pointer-events-auto compare-tray-surface rounded-t-2xl border-b-0 px-5 py-3 flex items-center justify-center gap-2 text-sm text-brand-navy/70">
-              <Scale
-                className="h-4 w-4 text-brand-navy/50"
-                aria-hidden="true"
-              />
-              <span>
-                Select up to 5 tests to compare prices, biomarkers &amp;
-                collection methods.
-              </span>
-              <span className="ml-2 rounded-full border border-brand-navy/15 bg-white/60 px-2 py-0.5 text-xs font-semibold text-brand-navy/60">
-                0/5
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Empty tray stays hidden: there is nothing to compare until a test is selected.
+  if (isEmpty) return null;
 
   // === ACTIVE TRAY ================================================
   return (
     <div
+      ref={trayRef}
       className={cn(
         "fixed bottom-0 left-0 right-0 z-40 compare-tray-active animate-slideUp transition-all duration-500 ease-out",
         revealClass,
