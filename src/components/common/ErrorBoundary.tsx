@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import cqcLogo from "@/assets/compliance/cqc-logo.png";
 import { logger } from "@/lib/logger";
+import { AdminErrorDetails } from "./admin-error-details";
 
 interface Props {
   children: ReactNode;
@@ -105,6 +106,7 @@ export class ErrorBoundary extends Component<Props, State> {
               </div>
 
               {error && (
+                <AdminErrorDetails>
                 <details className="text-left rounded-md border border-border bg-muted/40">
                   <summary className="cursor-pointer select-none px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground">
                     Technical details (tap to expand)
@@ -141,6 +143,7 @@ export class ErrorBoundary extends Component<Props, State> {
                     </Button>
                   </div>
                 </details>
+                </AdminErrorDetails>
               )}
 
               <div className="flex items-center justify-center pt-2 border-t border-border">
