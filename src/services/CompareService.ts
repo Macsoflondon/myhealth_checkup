@@ -22,6 +22,7 @@ interface UnifiedCompareRow {
   price: number | null;
   description: string | null;
   url: string | null;
+  url_verified: boolean | null;
   image_url: string | null;
   biomarker_count: number | null;
   biomarkers_list: unknown;
@@ -121,7 +122,7 @@ export class CompareService {
       const { data, error } = await supabase
         .from("unified_provider_tests")
         .select(
-          "id, test_name, provider_id, category_primary, price, description, url, image_url, biomarker_count, biomarkers_list, turnaround_days_text, sample_type, collection_method, collection_fee_type, collection_fee_amount, collection_fee_note, clinical_review_type, clinical_review_fee, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189",
+          "id, test_name, provider_id, category_primary, price, description, url, url_verified, image_url, biomarker_count, biomarkers_list, turnaround_days_text, sample_type, collection_method, collection_fee_type, collection_fee_amount, collection_fee_note, clinical_review_type, clinical_review_fee, lab_ukas_accredited, lab_cqc_regulated, lab_iso15189",
         )
         .in("id", unique)
         .returns<UnifiedCompareRow[]>();
@@ -142,6 +143,7 @@ export class CompareService {
           description: row.description ?? null,
           is_active: true,
           url: row.url ?? null,
+          url_verified: row.url_verified ?? null,
           image_url: row.image_url ?? null,
           biomarker_count: row.biomarker_count ?? null,
           biomarkers_list: row.biomarkers_list ?? null,

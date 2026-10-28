@@ -142,6 +142,7 @@ export const RecommendedTestsCarousel: React.FC<
                     sample_type: test.features?.collection ?? null,
                     biomarker_count: test.biomarkerCount ?? null,
                     url: test.url ?? null,
+                    url_verified: test.url_verified ?? null,
                     image_url: test.image_is_stock ? null : test.image_url,
                     biomarkers_list: (test.biomarkersList ?? []).map(
                       (value) => ({ value }),

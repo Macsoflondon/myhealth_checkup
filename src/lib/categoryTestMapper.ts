@@ -42,7 +42,7 @@ export const BADGE_COLOR_BY_CATEGORY: Record<string, string> = {
 
 /** Columns required to build a CategoryTestItem from provider_tests. */
 export const CATEGORY_TEST_COLUMNS =
-  "id,provider_id,test_name,description,price,base_price,url,image_url,biomarker_count,biomarkers_list,turnaround_days_text,is_popular,popularity_rank,sample_type,home_kit_available,clinic_visit_available,home_phlebotomy_cost,category,source_section_label,canonical_category,is_addon,purchase_notes";
+  "id,provider_id,test_name,description,price,base_price,url,url_verified,image_url,biomarker_count,biomarkers_list,turnaround_days_text,is_popular,popularity_rank,sample_type,home_kit_available,clinic_visit_available,home_phlebotomy_cost,category,source_section_label,canonical_category,is_addon,purchase_notes";
 
 export interface ProviderTestRow {
   id: string;
@@ -52,6 +52,8 @@ export interface ProviderTestRow {
   price: number | null;
   base_price: number | null;
   url: string | null;
+  /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
+  url_verified?: boolean | null;
   image_url: string | null;
   biomarker_count: number | null;
   biomarkers_list: unknown;
@@ -124,6 +126,7 @@ export function mapProviderTestRow(
     tag: "All",
     collection,
     url: row.url || undefined,
+    url_verified: row.url_verified ?? null,
     imageUrl: row.image_url || undefined,
     isAddon: !!row.is_addon,
     purchaseNotes: row.purchase_notes ?? null,

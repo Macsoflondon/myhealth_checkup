@@ -20,6 +20,7 @@ export function toUniversalTest(
     collection_fee_note: test.collectionFeeNote,
     biomarker_count: test.biomarkerCount,
     url: test.url,
+    url_verified: test.urlVerified,
     category: test.canonicalCategory,
     turnaround_days_text: test.turnaroundDaysText,
     biomarkers_list: test.biomarkersList,

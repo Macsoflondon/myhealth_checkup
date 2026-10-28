@@ -13,6 +13,8 @@ export interface TestData {
   category: string;
   description: string;
   url: string;
+  /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
+  url_verified?: boolean | null;
   price: number | null;
   provider_test_id?: string;
   biomarkers_list?: string[] | null;
@@ -69,7 +71,7 @@ function generateSlugVariations(slug: string): string[] {
 }
 
 const SELECT_FIELDS = `
-  id, test_name, category, description, url, price, provider_test_id, 
+  id, test_name, category, description, url, url_verified, price, provider_test_id,
   biomarkers_list, biomarker_count, image_url, gallery_image_urls, is_addon, 
   original_price, discount_percentage, symptoms, conditions, who_should_test,
   sample_type, collection_method, home_phlebotomy_cost, home_kit_available,

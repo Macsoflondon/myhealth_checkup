@@ -18,6 +18,7 @@ import {
   externalLinkProps,
 } from "@/utils/urlTracking";
 import { getProviderLogo } from "@/constants/providers";
+import { canBookDirect } from "@/lib/booking-link-state";
 
 interface ProviderTestOption {
   id: string;
@@ -31,6 +32,7 @@ interface ProviderTestOption {
   collectionMethod: string;
   biomarkerCount?: number;
   url?: string;
+  url_verified?: boolean | null;
   rating?: number;
   reviews?: string;
 }
@@ -170,7 +172,7 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
                     </span>
                   </td>
                   <td className="py-4 text-right">
-                    {provider.url ? (
+                    {canBookDirect(provider.url, provider.url_verified) ? (
                       <Button
                         asChild
                         size="sm"
@@ -190,10 +192,13 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
                         </a>
                       </Button>
                     ) : null}
-                    {provider.url && (
+                    {canBookDirect(provider.url, provider.url_verified) && (
                       <AffiliateCommissionNote className="mt-1 max-w-[200px]" />
                     )}
-                    {provider.url ? null : (
+                    {canBookDirect(
+                      provider.url,
+                      provider.url_verified,
+                    ) ? null : (
                       <Button asChild variant="outline" size="sm">
                         <Link to={`/provider/${provider.providerId}`}>
                           View Provider
@@ -280,7 +285,7 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
                   </div>
                 </div>
 
-                {provider.url ? (
+                {canBookDirect(provider.url, provider.url_verified) ? (
                   <Button
                     asChild
                     className="w-full bg-primary hover:bg-primary/90"
@@ -299,10 +304,10 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
                     </a>
                   </Button>
                 ) : null}
-                {provider.url && (
+                {canBookDirect(provider.url, provider.url_verified) && (
                   <AffiliateCommissionNote className="mt-2 text-center" />
                 )}
-                {provider.url ? null : (
+                {canBookDirect(provider.url, provider.url_verified) ? null : (
                   <Button asChild variant="outline" className="w-full">
                     <Link to={`/provider/${provider.providerId}`}>
                       View {provider.providerName}

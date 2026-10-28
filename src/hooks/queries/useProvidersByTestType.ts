@@ -14,6 +14,8 @@ export interface ProviderTestRow {
   clinicVisitAvailable: boolean;
   gpReviewIncluded: boolean;
   url?: string;
+  /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
+  urlVerified?: boolean | null;
   description?: string;
   category?: string;
 }
@@ -36,7 +38,7 @@ export const useProvidersByTestType = ({
       let query = supabase
         .from("provider_tests")
         .select(
-          "id, test_name, provider_id, price, original_price, biomarker_count, sample_type, home_kit_available, clinic_visit_available, gp_consultation_included, url, description, category",
+          "id, test_name, provider_id, price, original_price, biomarker_count, sample_type, home_kit_available, clinic_visit_available, gp_consultation_included, url, url_verified, description, category",
         )
         .eq("is_active", true)
         .order("price", { ascending: true });
@@ -80,6 +82,7 @@ export const useProvidersByTestType = ({
         clinicVisitAvailable: row.clinic_visit_available || false,
         gpReviewIncluded: row.gp_consultation_included || false,
         url: row.url || undefined,
+        urlVerified: row.url_verified ?? null,
         description: row.description || undefined,
         category: row.category || undefined,
       }));
@@ -97,7 +100,7 @@ export const useProvidersByCategory = (category: string, enabled = true) => {
       const { data, error } = await supabase
         .from("provider_tests")
         .select(
-          "id, test_name, provider_id, price, original_price, biomarker_count, sample_type, home_kit_available, clinic_visit_available, gp_consultation_included, url, description, category",
+          "id, test_name, provider_id, price, original_price, biomarker_count, sample_type, home_kit_available, clinic_visit_available, gp_consultation_included, url, url_verified, description, category",
         )
         .eq("is_active", true)
         .or(
@@ -127,6 +130,7 @@ export const useProvidersByCategory = (category: string, enabled = true) => {
         clinicVisitAvailable: row.clinic_visit_available || false,
         gpReviewIncluded: row.gp_consultation_included || false,
         url: row.url || undefined,
+        urlVerified: row.url_verified ?? null,
         description: row.description || undefined,
         category: row.category || undefined,
       }));
