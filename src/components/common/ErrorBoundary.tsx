@@ -2,7 +2,6 @@ import React, { Component, ErrorInfo, ReactNode } from "react";
 import { AlertTriangle, RefreshCw, RotateCw, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import cqcLogo from "@/assets/compliance/cqc-logo.png";
 import { logger } from "@/lib/logger";
 import { AdminErrorDetails } from "./admin-error-details";
 
@@ -146,13 +145,6 @@ export class ErrorBoundary extends Component<Props, State> {
                 </AdminErrorDetails>
               )}
 
-              <div className="flex items-center justify-center pt-2 border-t border-border">
-                <img
-                  src={cqcLogo}
-                  alt="CQC Regulated"
-                  className="h-6 w-auto opacity-70"
-                />
-              </div>
             </CardContent>
           </Card>
         </div>
