@@ -4,6 +4,7 @@ import clinilabsMenopauseBox from "@/assets/providers/clinilabs-menopause-box.pn
 import clinilabsMmrBox from "@/assets/providers/clinilabs-mmr-box.png.asset.json";
 import clinilabsHepBBox from "@/assets/providers/clinilabs-hepb-box.png.asset.json";
 import clinilabsQfitBox from "@/assets/providers/clinilabs-qfit-box-accreditation.png.asset.json";
+import { medicalDiagnosisKitBox } from "@/lib/medical-diagnosis-kit-boxes";
 import goodbodyBabyBox from "@/assets/providers/goodbody-baby-box.png.asset.json";
 import goodbodyPaternityBox from "@/assets/providers/goodbody-paternity-box.png.asset.json";
 import goodbodyStockholmBox from "@/assets/providers/goodbody-stockholm-box.png.asset.json";
@@ -80,5 +81,6 @@ export function resolveTestCardImage({
   const own = imageUrl?.trim();
   if (own) return own;
   if (isClinilabs(providerId)) return CLINILABS_GENERIC_KIT_URL;
+  if (provider.includes("medical-diagnosis") && testName) return medicalDiagnosisKitBox(testName);
   return null;
 }

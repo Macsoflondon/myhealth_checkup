@@ -155,3 +155,14 @@ describe("Goodbody named boxes", () => {
     ).toBe("https://x/own.webp");
   });
 });
+
+describe("Medical Diagnosis designed kit boxes", () => {
+  it("gives a photo-less Medical Diagnosis test its designed box", () => {
+    const url = resolveTestCardImage({ providerId: "medical-diagnosis", testName: "Bone Profile", imageUrl: null });
+    expect(url).toContain("md-kit-bone-profile.png");
+  });
+  it("keeps the provider's own photo when one exists", () => {
+    const url = resolveTestCardImage({ providerId: "medical-diagnosis", testName: "Bone Profile", imageUrl: "https://example.com/own.jpg" });
+    expect(url).toBe("https://example.com/own.jpg");
+  });
+});
