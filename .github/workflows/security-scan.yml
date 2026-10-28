@@ -35,26 +35,39 @@ jobs:
       - name: Invoke security-scan-snapshot
         id: scan
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          # Public project URL (also hardcoded in src/integrations/supabase/client.ts),
+          # so the gate depends on one secret, not two.
+          SUPABASE_URL: https://clvuioagsgfadynuvodj.supabase.co
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          # GitHub withholds repository secrets from Dependabot and fork PRs.
+          SECRETS_WITHHELD: ${{ github.event_name == 'pull_request' && (github.actor == 'dependabot[bot]' || github.event.pull_request.head.repo.fork) }}
         run: |
-          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
-            echo "::warning::SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY missing — skipping advisor scan."
-            echo '{"skipped":true}' > scan.json
-            exit 0
+          if [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
+            if [ "$SECRETS_WITHHELD" = "true" ]; then
+              echo "::warning::GitHub withholds secrets from this pull request, so the advisor scan cannot run here. It runs on merge to main."
+              echo '{"skipped":true}' > scan.json
+              exit 0
+            fi
+            # Previously this skipped with exit 0, so the gate reported a pass
+            # on every run while checking nothing.
+            echo "::error::Repository secret SUPABASE_SERVICE_ROLE_KEY is not set, so the Supabase advisor scan did not run. Add it under Settings > Secrets and variables > Actions."
+            exit 1
           fi
-          curl -sS -X POST "$SUPABASE_URL/functions/v1/security-scan-snapshot" \
+          # --fail-with-body: a 401/500 must fail the gate. Without it the error
+          # JSON had no error_count, which the next step read as zero findings.
+          curl -sS --fail-with-body -X POST "$SUPABASE_URL/functions/v1/security-scan-snapshot" \
             -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" \
             -H "Content-Type: application/json" \
             -d '{}' \
-            -o scan.json
+            -o scan.json || { cat scan.json 2>/dev/null; echo "::error::security-scan-snapshot call failed."; exit 1; }
           cat scan.json
       - name: Enforce regression gate
         run: |
           if grep -q '"skipped":true' scan.json; then exit 0; fi
           node -e '
             const r = JSON.parse(require("fs").readFileSync("scan.json","utf8"));
-            const errs = r.error_count ?? 0;
+            if (typeof r.error_count !== "number") { console.error("FAIL: unexpected scan response (no error_count)"); process.exit(1); }
+            const errs = r.error_count;
             const added = r.diff?.added_count ?? 0;
             console.log("errors:", errs, "added:", added, "warnings:", r.warn_count);
             if (errs > 0) { console.error("FAIL: error-level findings present"); process.exit(1); }
