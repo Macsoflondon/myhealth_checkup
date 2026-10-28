@@ -383,7 +383,15 @@ Deno.serve(async (req) => {
         upd.turnaround_not_stated = false;
       }
       if (p.sample) upd.sample_type = p.sample;
-      if (p.imageUrl && !row.image_url) upd.image_url = p.imageUrl;
+      // The provider's og:image is often a dead link; store it only if it loads.
+      if (p.imageUrl && !row.image_url) {
+        try {
+          const head = await fetch(p.imageUrl, { method: "HEAD" });
+          if (head.ok) upd.image_url = p.imageUrl;
+        } catch {
+          // Unreachable image: leave image_url empty so the neutral fallback shows.
+        }
+      }
       if (p.descriptionScraped) {
         upd.description_scraped = p.descriptionScraped;
         upd.description = p.descriptionScraped;
