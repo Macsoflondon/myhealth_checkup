@@ -86,3 +86,23 @@ describe("Clinilabs named boxes", () => {
     ).toBe("https://x/own.webp");
   });
 });
+
+describe("Goodbody named boxes", () => {
+  it("replaces lifestyle photos with a named box", () => {
+    for (const testName of [
+      "Early Baby Gender Blood Test",
+      "Prenatal Paternity Test",
+      "Stockholm3 Prostate Cancer Screening Blood Test",
+    ]) {
+      expect(resolveTestCardImage({ providerId: "goodbody-clinic", imageUrl: "https://x/p.webp", testName })).not.toBe(
+        "https://x/p.webp",
+      );
+    }
+  });
+
+  it("keeps real kit photos for other Goodbody tests", () => {
+    expect(
+      resolveTestCardImage({ providerId: "goodbody-clinic", imageUrl: "https://x/own.webp", testName: "Testosterone Blood Test" }),
+    ).toBe("https://x/own.webp");
+  });
+});
