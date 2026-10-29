@@ -1,5 +1,8 @@
 # Roadmap
 
+- [x] Match the "Take Control of Your Health Today" panel to the test cards' turquoise border and glow, give the two live catalogue panels below it a navy outline that warms to turquoise on hover, and give all three buttons a navy border with alternate hover fills (turquoise↔pink, white→navy). Verified computed border/glow values identical to a test card at rest and hover, and at 1280/768/393px; 1,131 tests passed, changed-file lint clean, automatic build OK. Preview only; no database changes.
+
+
 - [x] Audit all 446 stored provider articles: 236 missing images, 11 logo images, 2 broken URLs; shared renderer supplies local topic illustrations, category guides now use live articles, hub shows actual check date. Six feeds verified current; Randox public index has no article links in retrieved HTML, LML says no articles found. 1,131 tests passed; changed-file lint, SEO and automatic build passed; phone/desktop images verified. Full lint has pre-existing errors; smoke runner browser executable missing. No database writes.
 
 - [x] Remove category biomarker truncation and retain confirmed zero-fee venous collection variants; 1,128 tests passed, changed-file lint clean, automatic build OK. Medichecks currently publishes 34 biomarkers, clinic £35 and home nurse £59. No catalogue writes; specific modal browser verification remains unconfirmed because the test was not found in the tried category filters.
