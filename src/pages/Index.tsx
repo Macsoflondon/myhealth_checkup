@@ -220,6 +220,7 @@ const Index = () => {
                       <LiveCatalogueComparison
                         panel={upperComparison}
                         loading={comparisonsLoading}
+                        size="compact"
                       />
                     </div>
                   </div>
