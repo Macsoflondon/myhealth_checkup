@@ -5,6 +5,7 @@ import type { CategoryTestItem } from "@/components/category/CategoryPageLayout"
 import type { CollectionVariant } from "@/lib/collectionVariants";
 import { categoryMenuIconFor } from "@/components/header/menuIcons";
 import { mentionsHomeSample } from "@/lib/sampleType";
+import { isTestAddon } from "@/lib/test-addon-status";
 
 const resolvedCategoryColor = (category?: string | null): string =>
   categoryMenuIconFor(category).color;
@@ -43,7 +44,7 @@ export function fromAtHomeTest(t: AtHomeTest): UniversalTestData {
     collection_fee_type: t.collection_fee_type,
     collection_fee_amount: t.collection_fee_amount,
     home_phlebotomy_cost: t.home_phlebotomy_cost,
-    is_addon: t.is_addon ?? false,
+    is_addon: isTestAddon(t),
     url_verified: t.url_verified,
   };
 }
@@ -76,7 +77,7 @@ export function fromProviderTest(t: ProviderTestCardData): UniversalTestData {
     collection_fee_type: t.collection_fee_type,
     collection_fee_amount: t.collection_fee_amount,
     home_phlebotomy_cost: t.home_phlebotomy_cost,
-    is_addon: !!t.is_addon,
+    is_addon: isTestAddon(t),
     purchase_notes: t.purchase_notes ?? null,
     url_verified: t.url_verified,
   };

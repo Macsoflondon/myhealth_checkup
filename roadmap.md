@@ -1,5 +1,7 @@
 # Roadmap
 
+- [x] Correct Lola add-on presentation when the stored flag contradicts explicit provider evidence; Omega listing and detail gallery verified with orange kit, all 89 provider-grid add-on buttons match orange images, homepage exclusion regression passed; 1,126 tests passed, lint has no errors and automatic build OK. Preview only; stored flags/scraper unchanged, no database changes.
+
 - [x] Balance both homepage test showcases across all eight providers without inventing popularity; all eight providers and kit images verified, Medical Diagnosis modal opened, mobile overflow absent, 1,119 tests passed and automatic build OK. Preview only; no database changes.
 
 - [x] Isolate assistant reply signing in CHAT_SIGNING_SECRET; reject invalid assistant history with private-safe logs and restart the chat. Live valid reply HTTP 200, edited/unsigned HTTP 400 and timestamp/endpoint/reason-only logs verified; browser storage cleared and restart message visible; 15 tests passed and automatic build OK. Not published.

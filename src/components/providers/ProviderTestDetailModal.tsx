@@ -1,4 +1,5 @@
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
+import { isTestAddon } from "@/lib/test-addon-status";
 import { sanitiseProviderProse } from "../../../supabase/functions/_shared/scrape/prose";
 import { stripCollectionFeeText } from "@/lib/resolve-test-fields";
 import { useNavigate } from "@/lib/router-compat";
@@ -175,13 +176,17 @@ const getCollectionLabel = (
   if (collectionOptions && collectionOptions.length > 0) {
     const m = collectionOptions[0].method.toLowerCase();
     if (m.includes("finger") || m.includes("home kit") || m.includes("at-home"))
-      return kit && kit !== "finger-prick" ? `At-home kit (${kit})` : "At-home kit";
+      return kit && kit !== "finger-prick"
+        ? `At-home kit (${kit})`
+        : "At-home kit";
     if (m.includes("clinic")) return "In-clinic";
     if (m.includes("home")) return "Home visit";
     return collectionOptions[0].method;
   }
   if (info.isHomeCollectable)
-    return kit && kit !== "finger-prick" ? `At-home kit (${kit})` : "At-home kit";
+    return kit && kit !== "finger-prick"
+      ? `At-home kit (${kit})`
+      : "At-home kit";
   if (st.includes("home")) return "At-home kit";
   if (st.includes("clinic") || info.token === "venous") return "In-clinic";
   if (info.label) return info.label;
@@ -289,6 +294,7 @@ export default function ProviderTestDetailModal({
   const navigate = useNavigate();
   const compareItems = useCompareItems();
   if (!test) return null;
+  const isAddon = isTestAddon(test);
   const inCompare = compareStore.has(test.id);
 
   const branding = getBranding(test.provider_id);
@@ -457,7 +463,7 @@ export default function ProviderTestDetailModal({
 
         {/* Body */}
         <div className="p-6 space-y-6 bg-[#f6f7fb]">
-          {test.is_addon && (
+          {isAddon && (
             <div className="rounded-lg border border-amber-400 bg-amber-50 p-3 text-sm text-amber-900">
               <strong className="block mb-0.5">Add-on only</strong>
               {test.purchase_notes

@@ -102,4 +102,17 @@ describe("homepage provider coverage", () => {
       "goodbody-clinic-a",
     ]);
   });
+  it("excludes Lola add-ons whose stored flag contradicts provider evidence", () => {
+    expect(
+      selectHomepageProviderTests([
+        {
+          ...candidates[0],
+          test_name: "Omega 6:3 Ratio (ARA:EPA)",
+          is_addon: false,
+          description:
+            "This add-on measures the balance between arachidonic acid (ARA) and eicosapentaenoic acid (EPA).",
+        },
+      ]),
+    ).toEqual([]);
+  });
 });

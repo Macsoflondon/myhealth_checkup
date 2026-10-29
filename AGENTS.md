@@ -1,5 +1,7 @@
 # Architecture decisions
 
+- Lola add-on presentation and homepage eligibility share a source-backed status resolver; explicit provider add-on categories or opening descriptions override a conflicting false flag without altering stored catalogue data.
+
 - Both homepage test showcases share a bounded per-provider catalogue query and round-robin selection, so global popularity flags cannot exclude providers; unranked catalogue selections never gain popularity badges.
 
 - Public assistant history uses only the dedicated server-only CHAT_SIGNING_SECRET for bounded-age reply proofs; validate every supplied assistant reply before truncation, reject invalid history with HTTP 400 and timestamp/endpoint/reason-only logs, and reset client history so untrusted roles never reach the model.
