@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Audit provider article image failures and freshness; repair source-backed image handling and verify provider feed coverage without schema changes.
+
 - [x] Remove category biomarker truncation and retain confirmed zero-fee venous collection variants; 1,128 tests passed, changed-file lint clean, automatic build OK. Medichecks currently publishes 34 biomarkers, clinic £35 and home nurse £59. No catalogue writes; specific modal browser verification remains unconfirmed because the test was not found in the tried category filters.
 
 - [x] Correct Lola add-on presentation when the stored flag contradicts explicit provider evidence; Omega listing and detail gallery verified with orange kit, all 89 provider-grid add-on buttons match orange images, homepage exclusion regression passed; 1,126 tests passed, lint has no errors and automatic build OK. Preview only; stored flags/scraper unchanged, no database changes.
