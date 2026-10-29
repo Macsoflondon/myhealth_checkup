@@ -62,18 +62,18 @@ export function HeroPopularTests() {
           <div className="flex items-center justify-center gap-2 mb-2">
             <div className="h-px w-6 sm:w-9 bg-brand-pink" />
             <span className="text-sm sm:text-base font-semibold uppercase tracking-[0.22em] text-brand-turquoise">
-              Popular this week
+              Across our providers
             </span>
             <div className="h-px w-6 sm:w-9 bg-brand-pink" />
           </div>
           <SectionHeading
-            title="Popular tests"
+            title="Explore tests"
             gradientText=" this week"
             titleClassName="text-tertiary"
           />
           <p className="text-sm sm:text-base font-semibold text-tertiary mx-auto leading-snug mt-1.5 text-center max-w-2xl">
-            Trending private blood tests and health screens chosen by our
-            visitors.
+            Compare tests from all eight providers. We prioritise provider-listed
+            popular tests where rankings are available; other selections are unranked.
           </p>
         </div>
 

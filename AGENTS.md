@@ -1,5 +1,7 @@
 # Architecture decisions
 
+- Both homepage test showcases share a bounded per-provider catalogue query and round-robin selection, so global popularity flags cannot exclude providers; unranked catalogue selections never gain popularity badges.
+
 - Public assistant history uses only the dedicated server-only CHAT_SIGNING_SECRET for bounded-age reply proofs; validate every supplied assistant reply before truncation, reject invalid history with HTTP 400 and timestamp/endpoint/reason-only logs, and reset client history so untrusted roles never reach the model.
 
 - Error-boundary diagnostics render only after the existing server admin/MFA endpoint verifies the current user; failed, pending or signed-out checks render no diagnostic DOM so public fallback pages never expose the tab or stack.
