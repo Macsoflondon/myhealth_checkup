@@ -1,4 +1,5 @@
 import { displayBiomarkerCount } from "@/lib/resolve-test-fields";
+import { isTestAddon } from "@/lib/test-addon-status";
 import { CategoryTestItem } from "@/components/category/CategoryPageLayout";
 import { getProviderRating } from "@/constants/providerRatings";
 import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
@@ -128,7 +129,7 @@ export function mapProviderTestRow(
     url: row.url || undefined,
     url_verified: row.url_verified ?? null,
     imageUrl: row.image_url || undefined,
-    isAddon: !!row.is_addon,
+    isAddon: isTestAddon(row),
     purchaseNotes: row.purchase_notes ?? null,
   };
 }

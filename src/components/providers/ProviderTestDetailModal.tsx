@@ -1,4 +1,5 @@
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
+import { isTestAddon } from "@/lib/test-addon-status";
 import { sanitiseProviderProse } from "../../../supabase/functions/_shared/scrape/prose";
 import { stripCollectionFeeText } from "@/lib/resolve-test-fields";
 import { useNavigate } from "@/lib/router-compat";
@@ -289,6 +290,7 @@ export default function ProviderTestDetailModal({
   const navigate = useNavigate();
   const compareItems = useCompareItems();
   if (!test) return null;
+  const isAddon = isTestAddon(test);
   const inCompare = compareStore.has(test.id);
 
   const branding = getBranding(test.provider_id);
@@ -457,7 +459,7 @@ export default function ProviderTestDetailModal({
 
         {/* Body */}
         <div className="p-6 space-y-6 bg-[#f6f7fb]">
-          {test.is_addon && (
+          {isAddon && (
             <div className="rounded-lg border border-amber-400 bg-amber-50 p-3 text-sm text-amber-900">
               <strong className="block mb-0.5">Add-on only</strong>
               {test.purchase_notes

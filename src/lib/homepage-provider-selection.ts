@@ -1,3 +1,5 @@
+import { isTestAddon } from "./test-addon-status";
+
 export const HOMEPAGE_PROVIDER_IDS = [
   "lola-health",
   "goodbody-clinic",
@@ -16,6 +18,8 @@ export interface ShowcaseCandidate {
   price: number | null;
   url: string | null;
   is_addon?: boolean | null;
+  category?: string | null;
+  description?: string | null;
   is_popular?: boolean | null;
   popularity_rank?: number | null;
 }
@@ -33,7 +37,7 @@ export function selectHomepageProviderTests<T extends ShowcaseCandidate>(
       !test.url ||
       test.price == null ||
       test.price <= 0 ||
-      test.is_addon === true ||
+      isTestAddon(test) ||
       /appointment|consultation|microsuction|coming soon/i.test(
         test.test_name,
       ) ||

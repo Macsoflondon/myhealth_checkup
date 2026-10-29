@@ -61,6 +61,7 @@ import {
 } from "@/lib/test-display-name";
 import { buildTestAboutCopy } from "@/lib/test-about-copy";
 import { resolveGalleryImages } from "@/lib/test-gallery";
+import { isTestAddon } from "@/lib/test-addon-status";
 import { TestImageGallery } from "@/components/tests/TestImageGallery";
 import { getProviderLogo } from "@/constants/providers";
 import { TestProviderPriceTable } from "@/components/compare/TestProviderPriceTable";
@@ -719,6 +720,7 @@ export default function ProviderTestDetailTemplate({
     test.original_price && test.original_price > (test.price || 0);
   const providerLogo =
     providerConfig.logo || getProviderLogo(providerConfig.id);
+  const isAddon = isTestAddon({ ...test, provider_id: providerConfig.id });
 
   return (
     <>
@@ -749,7 +751,7 @@ export default function ProviderTestDetailTemplate({
             />
             <div className="flex flex-wrap gap-2 mb-2">
               <Badge variant="secondary">{providerConfig.badgeText}</Badge>
-              {test.is_addon && (
+              {isAddon && (
                 <Badge
                   variant="outline"
                   className="border-amber-500 text-amber-700"
@@ -772,7 +774,7 @@ export default function ProviderTestDetailTemplate({
           </p>
 
           {/* Add-on Warning */}
-          {test.is_addon && <AddonWarning providerName={providerConfig.name} />}
+          {isAddon && <AddonWarning providerName={providerConfig.name} />}
 
           <div className="grid md:grid-cols-3 gap-8 mb-12">
             {/* Main Content */}
@@ -780,7 +782,7 @@ export default function ProviderTestDetailTemplate({
               <TestImageGallery
                 images={resolveGalleryImages(test, {
                   providerId: providerConfig.id,
-                  isAddon: test.is_addon,
+                  isAddon,
                   testName: test.test_name,
                 })}
                 testName={displayName}
