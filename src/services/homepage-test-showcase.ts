@@ -30,7 +30,14 @@ export async function getHomepageShowcaseTests() {
   );
   const candidates = pools.flat().flatMap((test) => {
     if (!test.id || !test.provider_id || !test.test_name) return [];
-    return [{ ...test, id: test.id, provider_id: test.provider_id, test_name: test.test_name }];
+    return [
+      {
+        ...test,
+        id: test.id,
+        provider_id: test.provider_id,
+        test_name: test.test_name,
+      },
+    ];
   });
   return selectHomepageProviderTests(candidates).map((test) => ({
     ...test,
