@@ -11,9 +11,9 @@ import { serializeJsonLd } from "@/lib/seo/json-ld";
 export const Route = createFileRoute("/")({
   head: () => {
     const base = buildRouteHead({
-      title: "Compare private blood tests UK | myhealth checkup",
+      title: "Private blood test comparison UK | myhealth checkup",
       description:
-        "Compare UK private blood test prices, biomarkers, collection options and typical turnaround times. See provider-listed costs for home kits and clinic tests.",
+        "Compare private blood tests from UK providers. Check prices, biomarkers, collection fees and typical result times, then book with your chosen provider.",
       path: "/",
     });
 
@@ -27,9 +27,9 @@ export const Route = createFileRoute("/")({
             "@type": "WebPage",
             "@id": "https://myhealthcheckup.co.uk/#page",
             url: "https://myhealthcheckup.co.uk",
-            name: "Compare private blood tests UK",
+            name: "Private blood test comparison UK",
             description:
-              "Compare UK provider-listed blood test prices, biomarkers and collection options.",
+              "Compare private blood tests from UK providers by listed price, biomarkers, collection options, additional collection fees and typical result times. Book directly with your chosen provider.",
             inLanguage: "en-GB",
             isPartOf: { "@id": "https://myhealthcheckup.co.uk/#website" },
             publisher: { "@id": "https://myhealthcheckup.co.uk/#organization" },

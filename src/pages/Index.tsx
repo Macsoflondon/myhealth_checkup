@@ -175,9 +175,10 @@ const Index = () => {
 
                     <p className="text-white/85 text-sm sm:text-base leading-relaxed m-0 2xl:text-lg">
                       Compare private blood tests in the UK with myhealth
-                      checkup. See prices, biomarkers, collection options and
-                      typical turnaround times side by side, using provider
-                      listings. Every provider we list uses a UKAS-accredited
+                      checkup. Compare provider-listed prices, biomarkers,
+                      collection options, additional collection fees and typical
+                      result times side by side. Book directly with your chosen
+                      provider. Every provider we list uses a UKAS-accredited
                       laboratory or a CQC-regulated clinic. We provide
                       comparison information, not medical care or diagnosis.
                     </p>
