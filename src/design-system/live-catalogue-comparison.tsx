@@ -223,9 +223,10 @@ export const LiveCatalogueComparison = forwardRef<
                   )}
                 </div>
                 {size === "compact" ? (
-                  /* Compact rows let the test name run on into the biomarker
-                     and turnaround text, so a row that takes three lines at
-                     the default rhythm takes two here. */
+                  /* Compact rows run the test name on into the biomarker and
+                     turnaround text, and let the collection fee share the
+                     "Price checked" line, so each row carries the same three
+                     lines of information the default rhythm shows over four. */
                   <p
                     className={`mb-0 ${SIZE[size].gap} text-xs ${SIZE[size].copy}`}
                   >
@@ -272,7 +273,7 @@ export const LiveCatalogueComparison = forwardRef<
                 )}
               </div>
             </div>
-            {row.feeLabel && (
+            {row.feeLabel && size !== "compact" && (
               <div className="mt-2 text-xs leading-snug text-brand-navy/65 sm:hidden">
                 {row.feeLabel}
               </div>
