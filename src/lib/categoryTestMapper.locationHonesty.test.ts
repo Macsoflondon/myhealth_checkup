@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { mapProviderTestRow, mapProviderTestRowVariants, type ProviderTestRow } from "@/lib/categoryTestMapper";
+import {
+  mapProviderTestRow,
+  mapProviderTestRowVariants,
+  type ProviderTestRow,
+} from "@/lib/categoryTestMapper";
 
 /**
  * Regression guard for a real bug found during the 2026-10-20 test-card audit
@@ -43,19 +47,25 @@ const BASE_ROW: ProviderTestRow = {
 describe("mapProviderTestRow collection-label honesty", () => {
   it("keeps all 36 supplied biomarkers instead of counting a six-marker preview", () => {
     const biomarkers = Array.from({ length: 36 }, (_, i) => `Marker ${i + 1}`);
-    const item = mapProviderTestRow({ ...BASE_ROW, biomarker_count: 36, biomarkers_list: biomarkers }, "");
+    const item = mapProviderTestRow(
+      { ...BASE_ROW, biomarker_count: 36, biomarkers_list: biomarkers },
+      "",
+    );
     expect(item.biomarkerCount).toBe(36);
     expect(item.biomarkers).toEqual(biomarkers);
   });
 
   it("preserves venous clinic and home-nurse options even with no selected collection fee", () => {
-    const items = mapProviderTestRowVariants({
-      ...BASE_ROW,
-      sample_type: "venous",
-      home_kit_available: false,
-      clinic_visit_available: true,
-      home_phlebotomy_cost: 59,
-    }, "");
+    const items = mapProviderTestRowVariants(
+      {
+        ...BASE_ROW,
+        sample_type: "venous",
+        home_kit_available: false,
+        clinic_visit_available: true,
+        home_phlebotomy_cost: 59,
+      },
+      "",
+    );
     expect(items).toHaveLength(1);
     expect(items[0].routeVariant?.route).toBe("venous");
     expect(items[0].routeVariant?.secondary?.fee).toBe(59);
