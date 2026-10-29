@@ -101,17 +101,15 @@ async function activeConsent(
   supabase: ReturnType<typeof createClient>,
   userId: string,
 ) {
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("user_consents")
-    .select("id")
+    .select("consent_given, consent_withdrawn_date")
     .eq("user_id", userId)
     .eq("consent_type", CONSENT_TYPE)
-    .eq("consent_given", true)
-    .is("consent_withdrawn_date", null)
     .order("consent_date", { ascending: false })
     .limit(1)
     .maybeSingle();
-  return !!data;
+  return !error && data?.consent_given === true && !data.consent_withdrawn_date;
 }
 
 async function auditRead(
@@ -173,6 +171,9 @@ Deno.serve(async (req) => {
       return json(410, { error: "grant_expired" });
     }
     try {
+      if (!(await activeConsent(svc, grant.user_id as string))) {
+        return json(403, { error: "consent_required" });
+      }
       const { uploads, readings } = await fetchUserData(
         svc,
         grant.user_id as string,
@@ -194,7 +195,7 @@ Deno.serve(async (req) => {
         "DATA_SHARING_GRANT_ACCESS",
         `Recipient accessed grant ${grant.id}`,
       );
-      return fhirJson(200, bundle);
+      return fhirJson(200, bundle, { "Cache-Control": "no-store" });
     } catch (e) {
       return json(500, {
         error: e instanceof Error ? e.message : "export_failed",
@@ -252,22 +253,14 @@ Deno.serve(async (req) => {
         if (error) return json(400, { error: error.message });
         return json(200, { active: true });
       }
-      const { data: latest } = await supabase
+      const { error } = await supabase
         .from("user_consents")
-        .select("id")
+        .update({ consent_withdrawn_date: new Date().toISOString() })
         .eq("user_id", userId)
         .eq("consent_type", CONSENT_TYPE)
         .eq("consent_given", true)
-        .is("consent_withdrawn_date", null)
-        .order("consent_date", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      if (latest?.id) {
-        await supabase
-          .from("user_consents")
-          .update({ consent_withdrawn_date: new Date().toISOString() })
-          .eq("id", latest.id);
-      }
+        .is("consent_withdrawn_date", null);
+      if (error) return json(500, { error: "consent_withdrawal_failed" });
       return json(200, { active: false });
     }
   }

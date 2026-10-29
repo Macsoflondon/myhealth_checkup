@@ -1,5 +1,8 @@
 # Architecture decisions
 
+- FHIR shared reads require the owner's latest export consent and prohibit response caching; withdrawal updates all active export-consent records so older grants cannot restore access.
+- Translation quotas use the server-verified user ID and fail closed on quota-storage errors, because request forwarding headers are caller-controlled.
+
 - Public comparison metadata and JSON-LD belong in route heads through the shared SEO builders; test Product offers use provider-listed prices and omit unverified stock claims, so SSR and visible catalogue evidence cannot diverge.
 
 - Provider article listings share one live query and image renderer; valid source images take priority, with local topic illustrations on missing or failed images, so category guides cannot silently use dated fixtures.

@@ -95,18 +95,25 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Per-IP rate limiting via api_rate_limits
-    const ip =
-      (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() ||
-      "unknown";
+    // Quotas follow the verified account, never caller-supplied forwarding headers.
+    const clientKey = `translate:user:${authData.user.id}`;
     const windowStart = new Date(
       Date.now() - RATE_LIMIT_WINDOW_MIN * 60_000,
     ).toISOString();
-    const { count } = await supabase
+    const { count, error: quotaError } = await supabase
       .from("api_rate_limits")
       .select("id", { count: "exact", head: true })
-      .eq("client_key", `translate:${ip}`)
+      .eq("client_key", clientKey)
       .gte("window_start", windowStart);
+    if (quotaError) {
+      return new Response(
+        JSON.stringify({ error: "Translation is temporarily unavailable" }),
+        {
+          status: 503,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
     if ((count ?? 0) >= RATE_LIMIT_MAX) {
       return new Response(JSON.stringify({ error: "Rate limit exceeded" }), {
         status: 429,
@@ -117,11 +124,22 @@ Deno.serve(async (req) => {
         },
       });
     }
-    await supabase.from("api_rate_limits").insert({
-      client_key: `translate:${ip}`,
-      endpoint: "translate",
-      window_start: new Date().toISOString(),
-    });
+    const { error: recordError } = await supabase
+      .from("api_rate_limits")
+      .insert({
+        client_key: clientKey,
+        endpoint: "translate",
+        window_start: new Date().toISOString(),
+      });
+    if (recordError) {
+      return new Response(
+        JSON.stringify({ error: "Translation is temporarily unavailable" }),
+        {
+          status: 503,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
+    }
 
     // Look up cache
     const hashes = await Promise.all((texts as string[]).map(sha1));
