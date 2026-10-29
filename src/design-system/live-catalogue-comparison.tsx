@@ -96,6 +96,16 @@ const rowMeta = (row: CatalogueComparisonRow): string =>
   }`;
 
 /**
+ * "Price checked 29/10/2026", or an explicit note when no date is stored.
+ */
+const priceCheckedLabel = (row: CatalogueComparisonRow): string =>
+  row.priceCheckedAt && !Number.isNaN(Date.parse(row.priceCheckedAt))
+    ? `Price checked ${new Date(row.priceCheckedAt).toLocaleDateString("en-GB", {
+        timeZone: "Europe/London",
+      })}`
+    : "Update date not available";
+
+/**
  * Placeholder sized like a typical loaded price row (heights measured on the
  * homepage at 390, 820 and 1440px): two-line test name, a meta line that
  * wraps on phones, the fee line under the row on phones and beside the price
@@ -242,10 +252,10 @@ export const LiveCatalogueComparison = forwardRef<
                 <p
                   className={`mb-0 ${SIZE[size].gap} text-xs text-brand-navy/60`}
                 >
-                  {row.priceCheckedAt &&
-                  !Number.isNaN(Date.parse(row.priceCheckedAt))
-                    ? `Price checked ${new Date(row.priceCheckedAt).toLocaleDateString("en-GB", { timeZone: "Europe/London" })}`
-                    : "Update date not available"}
+                  {priceCheckedLabel(row)}
+                  {size === "compact" && row.feeLabel
+                    ? ` · ${row.feeLabel}`
+                    : ""}
                 </p>
               </div>
               <div className="shrink-0 text-right">
@@ -253,7 +263,7 @@ export const LiveCatalogueComparison = forwardRef<
                   {currency.format(row.price)}
                 </div>
                 <div className="text-xs text-brand-navy/65">Total cost</div>
-                {row.feeLabel && (
+                {row.feeLabel && size !== "compact" && (
                   <div
                     className={`${SIZE[size].gap} hidden max-w-[11rem] text-xs leading-snug text-brand-navy/65 sm:block`}
                   >
