@@ -72,8 +72,9 @@ export function HeroPopularTests() {
             titleClassName="text-tertiary"
           />
           <p className="text-sm sm:text-base font-semibold text-tertiary mx-auto leading-snug mt-1.5 text-center max-w-2xl">
-            Compare tests from all eight providers. We prioritise provider-listed
-            popular tests where rankings are available; other selections are unranked.
+            Compare tests from all eight providers. We prioritise
+            provider-listed popular tests where rankings are available; other
+            selections are unranked.
           </p>
         </div>
 

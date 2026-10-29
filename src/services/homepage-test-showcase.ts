@@ -9,23 +9,25 @@ const SHOWCASE_COLUMNS =
 
 export async function getHomepageShowcaseTests() {
   // Fetch a bounded pool per provider, so global ranks cannot crowd out a provider.
-  const pools = await Promise.all(HOMEPAGE_PROVIDER_IDS.map(async (providerId) => {
-    const { data, error } = await supabase
-      .from("unified_provider_tests")
-      .select(SHOWCASE_COLUMNS)
-      .eq("provider_id", providerId)
-      .eq("is_addon", false)
-      .gt("price", 0)
-      .not("url", "is", null)
-      .not("test_name", "ilike", "%appointment%")
-      .not("test_name", "ilike", "%consultation%")
-      .order("is_popular", { ascending: false, nullsFirst: false })
-      .order("popularity_rank", { ascending: true, nullsFirst: false })
-      .order("test_name", { ascending: true })
-      .limit(12);
-    if (error) throw error;
-    return data ?? [];
-  }));
+  const pools = await Promise.all(
+    HOMEPAGE_PROVIDER_IDS.map(async (providerId) => {
+      const { data, error } = await supabase
+        .from("unified_provider_tests")
+        .select(SHOWCASE_COLUMNS)
+        .eq("provider_id", providerId)
+        .eq("is_addon", false)
+        .gt("price", 0)
+        .not("url", "is", null)
+        .not("test_name", "ilike", "%appointment%")
+        .not("test_name", "ilike", "%consultation%")
+        .order("is_popular", { ascending: false, nullsFirst: false })
+        .order("popularity_rank", { ascending: true, nullsFirst: false })
+        .order("test_name", { ascending: true })
+        .limit(12);
+      if (error) throw error;
+      return data ?? [];
+    }),
+  );
   return selectHomepageProviderTests(pools.flat()).map((test) => ({
     ...test,
     category: test.category_primary,
@@ -33,7 +35,9 @@ export async function getHomepageShowcaseTests() {
   }));
 }
 
-export type HomepageShowcaseTest = Awaited<ReturnType<typeof getHomepageShowcaseTests>>[number];
+export type HomepageShowcaseTest = Awaited<
+  ReturnType<typeof getHomepageShowcaseTests>
+>[number];
 
 export const homepageShowcaseQueryOptions = {
   queryKey: ["homepage-provider-showcase", "eight-providers"] as const,

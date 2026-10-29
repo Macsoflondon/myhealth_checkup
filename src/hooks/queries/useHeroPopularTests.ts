@@ -78,10 +78,11 @@ function parseBiomarkersList(raw: unknown): string[] {
 export function useHeroPopularTests() {
   return useQuery({
     ...homepageShowcaseQueryOptions,
-    select: (tests): HeroPopularTest[] => mapHeroRows(
-      tests,
-      new Map(tests.map((test) => [test.id, toViewPricing(test)])),
-    ),
+    select: (tests): HeroPopularTest[] =>
+      mapHeroRows(
+        tests,
+        new Map(tests.map((test) => [test.id, toViewPricing(test)])),
+      ),
   });
 }
 

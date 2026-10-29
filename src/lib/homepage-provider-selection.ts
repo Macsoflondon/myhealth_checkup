@@ -34,19 +34,25 @@ export function selectHomepageProviderTests<T extends ShowcaseCandidate>(
       test.price == null ||
       test.price <= 0 ||
       test.is_addon === true ||
-      /appointment|consultation|microsuction|coming soon/i.test(test.test_name) ||
+      /appointment|consultation|microsuction|coming soon/i.test(
+        test.test_name,
+      ) ||
       seen.has(key)
-    ) return false;
+    )
+      return false;
     seen.add(key);
     return true;
   });
   const buckets = HOMEPAGE_PROVIDER_IDS.map((providerId) =>
-    eligible.filter((test) => test.provider_id === providerId).sort((a, b) =>
-      Number(b.is_popular === true) - Number(a.is_popular === true) ||
-      (a.popularity_rank ?? Infinity) - (b.popularity_rank ?? Infinity) ||
-      a.test_name.localeCompare(b.test_name, "en-GB") ||
-      a.id.localeCompare(b.id),
-    ),
+    eligible
+      .filter((test) => test.provider_id === providerId)
+      .sort(
+        (a, b) =>
+          Number(b.is_popular === true) - Number(a.is_popular === true) ||
+          (a.popularity_rank ?? Infinity) - (b.popularity_rank ?? Infinity) ||
+          a.test_name.localeCompare(b.test_name, "en-GB") ||
+          a.id.localeCompare(b.id),
+      ),
   );
   const result: T[] = [];
   for (const round of [0, 1, 2]) {

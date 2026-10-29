@@ -1,10 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "@/lib/router-compat";
-import {
-  usePopularTestsFromDatabase,
-  type PopularTest,
-} from "@/hooks/usePopularTestsFromDatabase";
+import { type PopularTest } from "@/hooks/usePopularTestsFromDatabase";
+import { useHomepagePopularShowcase } from "@/hooks/queries/use-homepage-test-showcase";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatTestPrice } from "@/lib/utils";
 import ProviderTestDetailModal from "@/components/providers/ProviderTestDetailModal";
@@ -115,144 +113,19 @@ const descriptionFor = (t: PopularTest): string => {
 };
 
 const resolveImage = (t: PopularTest): string | null =>
-  t.image_url?.trim() || null;
-
-const ALLOWED_PROVIDERS = [
-  "lola-health",
-  "goodbody-clinic",
-  "medichecks",
-  "randox",
-  "london-medical-laboratory",
-] as const;
-
-const ALLOWED_PROVIDER_SET = new Set<string>(ALLOWED_PROVIDERS);
-
-const NON_TEST_PATTERNS = [
-  /blood draw appointment/i,
-  /appointment/i,
-  /consultation/i,
-  /microsuction/i,
-  /mole screening/i,
-  /coming soon/i,
-];
-
-const isDisplayablePopularTest = (t: PopularTest) =>
-  ALLOWED_PROVIDER_SET.has(t.provider_id) &&
-  !!t.url &&
-  (t.provider_id !== "lola-health" || t.is_popular === true) &&
-  !NON_TEST_PATTERNS.some((pattern) => pattern.test(t.test_name));
-
-const getPriorityScore = (t: PopularTest) => {
-  const hasPopularityFlag = t.is_popular === true ? 1000 : 0;
-  const rankBoost = t.popularity_rank
-    ? Math.max(0, 200 - t.popularity_rank)
-    : 0;
-  const bloodTestBoost =
-    /blood test|home test|test kit|health test|screen/i.test(t.test_name)
-      ? 25
-      : 0;
-  const validPriceBoost =
-    (typeof t.price === "number" && t.price > 0) ||
-    (typeof t.base_price === "number" && t.base_price > 0)
-      ? 80
-      : 0;
-  const validDescriptionBoost = t.description?.trim() ? 40 : 0;
-  const validImageBoost = resolveImage(t) ? 120 : -300;
-  return (
-    hasPopularityFlag +
-    rankBoost +
-    bloodTestBoost +
-    validPriceBoost +
-    validDescriptionBoost +
-    validImageBoost
-  );
-};
-
-const interleaveByProvider = (tests: PopularTest[]): PopularTest[] => {
-  const groups = new Map<string, PopularTest[]>();
-  for (const t of tests) {
-    const arr = groups.get(t.provider_id) ?? [];
-    arr.push(t);
-    groups.set(t.provider_id, arr);
-  }
-  const buckets = Array.from(groups.values());
-  const out: PopularTest[] = [];
-  let added = true;
-  while (added) {
-    added = false;
-    for (const b of buckets) {
-      const next = b.shift();
-      if (next) {
-        out.push(next);
-        added = true;
-      }
-    }
-  }
-  return out;
-};
+  resolveTestCardImage({
+    providerId: t.provider_id,
+    testName: t.test_name,
+    isAddon: t.is_addon,
+    imageUrl: t.image_url,
+  });
 
 const DreamHealthShowcase = () => {
   const navigate = useNavigate();
-  // Lean pool: descriptions and biomarker lists are fetched only for the
-  // handful of tests that end up on screen (see enrichedTests below).
-  const { data: popularTests, isLoading } = usePopularTestsFromDatabase(500, {
-    lean: true,
-  });
+  const { data: popularTests, isLoading } = useHomepagePopularShowcase();
   const trackRef = useRef<HTMLDivElement>(null);
   const [selectedTest, setSelectedTest] = useState<PopularTest | null>(null);
-
-  const orderedTests = useMemo(() => {
-    if (!popularTests) return [];
-    const valid = popularTests.filter(isDisplayablePopularTest);
-    const seenPerProvider = new Set<string>();
-    const deduped = valid.filter((t) => {
-      const key = `${t.provider_id}::${cleanName(t.test_name).toLowerCase()}`;
-      if (seenPerProvider.has(key)) return false;
-      seenPerProvider.add(key);
-      return true;
-    });
-    const perProvider = new Map<string, number>();
-    const capped = deduped.filter((t) => {
-      const n = perProvider.get(t.provider_id) ?? 0;
-      if (n >= 3) return false;
-      perProvider.set(t.provider_id, n + 1);
-      return true;
-    });
-
-    const sorted = [...capped].sort((a, b) => {
-      const scoreDiff = getPriorityScore(b) - getPriorityScore(a);
-      if (scoreDiff !== 0) return scoreDiff;
-      const priceA = Number.isFinite(a.price)
-        ? a.price
-        : Number.POSITIVE_INFINITY;
-      const priceB = Number.isFinite(b.price)
-        ? b.price
-        : Number.POSITIVE_INFINITY;
-      if (priceA !== priceB) return priceA - priceB;
-      return cleanName(a.test_name).localeCompare(cleanName(b.test_name));
-    });
-
-    const byProvider = new Map<string, PopularTest[]>();
-    for (const test of sorted) {
-      const bucket = byProvider.get(test.provider_id) ?? [];
-      bucket.push(test);
-      byProvider.set(test.provider_id, bucket);
-    }
-
-    const guaranteedCoverage: PopularTest[] = [];
-    for (const providerId of ALLOWED_PROVIDERS) {
-      const next = byProvider.get(providerId)?.shift();
-      if (next) guaranteedCoverage.push(next);
-    }
-
-    const remainder = interleaveByProvider(
-      ALLOWED_PROVIDERS.flatMap(
-        (providerId) => byProvider.get(providerId) ?? [],
-      ),
-    );
-
-    return [...guaranteedCoverage, ...remainder].slice(0, 9);
-  }, [popularTests]);
+  const orderedTests = popularTests ?? [];
 
   const visibleIds = useMemo(
     () => orderedTests.map((t) => t.id),
@@ -337,15 +210,16 @@ const DreamHealthShowcase = () => {
         <div className="flex items-center justify-center gap-3 mb-4">
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />
           <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
-            Our Partners' Most Popular Tests
+            Tests from all eight providers
           </span>
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />
         </div>
         <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight text-[#08122b]">
-          Find Your Perfect Test Match
+          Find your perfect test match
         </h2>
         <p className="mt-4 text-base lg:text-lg text-[#081129]/70 max-w-2xl mx-auto whitespace-pre-line">
-          {"\n"}
+          Compare provider-listed popular tests and unranked catalogue
+          selections.
         </p>
         <div className="mt-6 flex justify-center">
           <button
@@ -414,8 +288,8 @@ const DreamHealthShowcase = () => {
               ))}
 
             {!isLoading &&
-              orderedTests.map((t, i) => {
-                const isMostChosen = i < 3;
+              enrichedTests.map((t) => {
+                const isMostChosen = t.is_popular === true;
                 const open = () => setSelectedTest(t);
                 return (
                   <article
@@ -424,7 +298,7 @@ const DreamHealthShowcase = () => {
                   >
                     {isMostChosen && (
                       <span className="absolute top-3 left-3 z-10 text-[10px] font-semibold uppercase tracking-wider text-white bg-[#e70d69] px-2.5 py-1 rounded-full shadow-sm">
-                        Most chosen
+                        Provider-listed popular
                       </span>
                     )}
                     <button
