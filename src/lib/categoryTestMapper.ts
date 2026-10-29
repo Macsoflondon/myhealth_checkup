@@ -87,7 +87,7 @@ export function mapProviderTestRow(
   const priceNum = Number(
     row.total_expected_cost ?? row.price ?? row.base_price ?? 0,
   );
-  const biomarkers = normalizeBiomarkers(row.biomarkers_list).slice(0, 6);
+  const biomarkers = normalizeBiomarkers(row.biomarkers_list);
   const turnaround = row.turnaround_days_text || "Typical 3–5 days";
   const match = turnaround.match(/(\d+)/);
   const turnaroundDays = match ? parseInt(match[1], 10) : 5;
@@ -144,7 +144,7 @@ export function mapProviderTestRowVariants(
 ): CategoryTestItem[] {
   const base = mapProviderTestRow(row, badgeColor);
   const variants = deriveCollectionVariants(row);
-  if (variants.length === 1 && variants[0].fee <= 0) return [base];
+  if (variants.length === 1 && variants[0].route === "standard") return [base];
 
   return variants.map((variant: CollectionVariant) => ({
     ...base,

@@ -1,5 +1,7 @@
 # Architecture decisions
 
+- Category mappings retain full biomarker lists and confirmed collection variants, including zero-fee routes, so previews cannot truncate modal counts or lose home-nurse availability.
+
 - Lola add-on presentation and homepage eligibility share a source-backed status resolver; explicit provider add-on categories or opening descriptions override a conflicting false flag without altering stored catalogue data.
 
 - Both homepage test showcases share a bounded per-provider catalogue query and round-robin selection, so global popularity flags cannot exclude providers; unranked catalogue selections never gain popularity badges.
