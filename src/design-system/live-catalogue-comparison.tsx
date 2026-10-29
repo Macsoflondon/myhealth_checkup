@@ -39,7 +39,31 @@ export interface LiveCatalogueComparisonProps extends HTMLAttributes<HTMLElement
    * the lower homepage slots and attached consumers already render.
    */
   size?: "default" | "compact";
+  /**
+   * Outline colour. "turquoise" is the default and matches the test cards the
+   * panel sits beside. "navy" is for slots where the panel is the section's
+   * own container: a navy outline at rest that warms to turquoise on hover.
+   */
+  tone?: "turquoise" | "navy";
 }
+
+/**
+ * Outline per tone. Both share the same card shape and shadow; only the
+ * border, ring and hover accent differ, so a panel can read as a sibling of
+ * the test cards or as a navy container without a caller overriding classes.
+ */
+const TONE = {
+  turquoise: {
+    rest: "border-brand-turquoise/35 ring-brand-turquoise/20",
+    hover:
+      "hover:border-brand-turquoise/70 hover:ring-brand-turquoise/30 hover:shadow-[0_30px_80px_-20px_rgba(34,192,212,0.40),0_8px_24px_-8px_rgba(34,192,212,0.22)]",
+  },
+  navy: {
+    rest: "border-brand-navy/70 ring-brand-navy/15",
+    hover:
+      "hover:border-brand-turquoise hover:ring-brand-turquoise/30 hover:shadow-[0_30px_80px_-20px_rgba(34,192,212,0.40),0_8px_24px_-8px_rgba(34,192,212,0.22)]",
+  },
+} as const;
 
 const currency = new Intl.NumberFormat("en-GB", {
   style: "currency",
@@ -161,6 +185,7 @@ export const LiveCatalogueComparison = forwardRef<
       className = "",
       variant = "compact",
       size = "default",
+      tone = "turquoise",
       ...props
     },
     ref,
@@ -174,7 +199,7 @@ export const LiveCatalogueComparison = forwardRef<
       aria-busy={loading && !panel ? true : undefined}
       data-variant={variant}
       data-size={size}
-      className={`flex h-full min-w-0 flex-col rounded-[2rem] border border-brand-turquoise/35 bg-white ${SIZE[size].card} text-brand-navy shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 ring-brand-turquoise/20 ${className}`}
+      className={`flex h-full min-w-0 flex-col rounded-[2rem] border bg-white ${SIZE[size].card} text-brand-navy shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 transition-[border-color,box-shadow,ring-color] duration-300 ${TONE[tone].rest} ${TONE[tone].hover} ${className}`}
     >
       <header
         className={`${SIZE[size].header} flex items-start justify-between gap-3`}
