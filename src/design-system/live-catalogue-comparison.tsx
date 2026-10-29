@@ -31,7 +31,14 @@ export interface LiveCatalogueComparisonProps extends HTMLAttributes<HTMLElement
    */
   loading?: boolean;
   variant?: "compact";
-  size?: "default";
+  /**
+   * "compact" tightens the card's vertical rhythm for slots where it sits
+   * beside a text column and must not make the section taller than that
+   * column. Every line of provider data stays visible — only the spacing,
+   * small-text leading and panel padding shrink. "default" keeps the rhythm
+   * the lower homepage slots and attached consumers already render.
+   */
+  size?: "default" | "compact";
 }
 
 const currency = new Intl.NumberFormat("en-GB", {
@@ -40,14 +47,47 @@ const currency = new Intl.NumberFormat("en-GB", {
 });
 
 /**
+ * Vertical rhythm per size. Prices, provider names, test names, biomarker and
+ * turnaround text, collection fees, the last-checked date and the compare link
+ * are all rendered at both sizes; "compact" only shortens the space around
+ * them, and never drops a row below the 12px small-text floor.
+ */
+const SIZE = {
+  default: {
+    card: "p-5 sm:p-6",
+    header: "mb-4",
+    title: "text-lg",
+    method: "mt-1",
+    row: "p-3",
+    rowGrid: "gap-3",
+    provider: "text-sm",
+    copy: "leading-relaxed",
+    gap: "mt-1",
+    footer: "my-4",
+  },
+  compact: {
+    card: "p-4 sm:p-5",
+    header: "mb-3",
+    title: "text-base",
+    method: "mt-0.5",
+    row: "p-2.5",
+    rowGrid: "gap-2.5",
+    provider: "text-[13px] leading-tight",
+    copy: "leading-snug",
+    gap: "mt-0.5",
+    footer: "my-3",
+  },
+} as const;
+
+/**
  * Placeholder sized like a typical loaded price row (heights measured on the
  * homepage at 390, 820 and 1440px): two-line test name, a meta line that
  * wraps on phones, the fee line under the row on phones and beside the price
  * from the sm breakpoint.
  */
-const PlaceholderRow = () => (
+const PlaceholderRow = ({ tight = false }: { tight?: boolean }) => (
   <div
-    className="rounded-lg border border-transparent border-b-brand-navy/5 p-3"
+    className={`rounded-lg border border-transparent border-b-brand-navy/5 ${tight ? "p-2.5" : "p-3"}`}
     aria-hidden="true"
   >
     <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
