@@ -25,13 +25,19 @@ describe("provider offer evidence", () => {
   it.each([null, undefined, 0, -1, Number.NaN, Number.POSITIVE_INFINITY])(
     "omits unsupported offer price %s",
     (priceGbp) => {
-      expect(buildTestSchema({ ...input, priceGbp })[1]?.offers).toBeUndefined();
+      expect(
+        buildTestSchema({ ...input, priceGbp })[1]?.offers,
+      ).toBeUndefined();
     },
   );
 
   it("prevents source text breaking out of a JSON-LD script", () => {
-    const serialised = serializeJsonLd({ name: "</script><script>alert(1)</script>" });
+    const serialised = serializeJsonLd({
+      name: "</script><script>alert(1)</script>",
+    });
     expect(serialised).not.toContain("<");
-    expect(JSON.parse(serialised)).toEqual({ name: "</script><script>alert(1)</script>" });
+    expect(JSON.parse(serialised)).toEqual({
+      name: "</script><script>alert(1)</script>",
+    });
   });
 });
