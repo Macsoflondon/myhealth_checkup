@@ -1,7 +1,7 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import type { CollectionFeeType } from "@/lib/comparisonFormat";
-import { loadViewPricing, mergeActiveRows } from "@/lib/viewPricing";
-import { supabase } from "@/integrations/supabase/client";
+import { mergeActiveRows, toViewPricing } from "@/lib/viewPricing";
+import { homepageShowcaseQueryOptions } from "@/services/homepage-test-showcase";
 
 export interface HeroPopularTest {
   id: string;
@@ -76,46 +76,13 @@ function parseBiomarkersList(raw: unknown): string[] {
 }
 
 export function useHeroPopularTests() {
-  const queryClient = useQueryClient();
   return useQuery({
-    queryKey: ["hero-popular-tests"],
-    staleTime: 10 * 60 * 1000,
-    queryFn: async (): Promise<HeroPopularTest[]> => {
-      try {
-        const { data, error } = await supabase
-          .from("provider_tests")
-          .select(
-            "id, test_name, provider_id, biomarker_count, url, url_verified, canonical_category, clinical_review_type, biomarkers_list, turnaround_days_text, image_url, image_is_stock, description, sample_type, collection_method, collection_options, measurement_type, who_should_test, home_kit_available, clinic_visit_available, is_addon",
-          )
-          .eq("is_popular", true)
-          .eq("is_active", true)
-          .order("popularity_rank", { ascending: true, nullsFirst: false })
-          .limit(16);
-
-        if (error) {
-          console.error("[useHeroPopularTests] Supabase query error:", error);
-          return [];
-        }
-
-        if (!data || !Array.isArray(data) || data.length === 0) {
-          console.warn(
-            "[useHeroPopularTests] No data returned from provider_tests",
-          );
-          return [];
-        }
-
-        return mapHeroRows(
-          data as unknown as Array<Record<string, unknown> & { id: unknown }>,
-          await loadViewPricing(
-            queryClient,
-            data.map((r) => String(r.id)),
-          ),
-        );
-      } catch (e) {
-        console.error("[useHeroPopularTests] Unexpected error in queryFn:", e);
-        return [];
-      }
-    },
+    ...homepageShowcaseQueryOptions,
+    select: (tests): HeroPopularTest[] =>
+      mapHeroRows(
+        tests,
+        new Map(tests.map((test) => [test.id, toViewPricing(test)])),
+      ),
   });
 }
 
