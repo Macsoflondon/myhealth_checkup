@@ -20,6 +20,7 @@
 - The Human Context Engine resolves OpenAI credentials through its local configuration helper, preferring the canonical secret and accepting the existing legacy name so deployed naming differences do not disable recommendations.
 - Homepage comparison slots share one cached service-layer catalogue query and a single compact presentation component, so their appearance and panel allocation cannot drift.
 - The upper comparison reserves full blood count; deduplicate panel slugs before rotating the lower pair so no test panel appears in multiple slots.
+- The upper comparison renders at the component's compact size and its text column stretches to the card's height, so the quiz block's bottom edge always meets the card's bottom edge instead of leaving a gap under it. Why: the card beside a text column must not make the section taller than that column.
 - Reusable library exports live in the self-contained `src/design-system` subtree; preview routes and data services stay outside it so attached consumers receive no application dependencies.
 - The library barrel imports its self-contained theme, not the preview stylesheet, so attached consumers receive the comparison utilities and tokens without site-wide application styling.
 - Medical Diagnosis kit boxes are pre-rendered per test name in `src/assets/providers/medical-diagnosis-kits` and take priority over stored provider photos for that provider, so every Medical Diagnosis card looks consistent.
