@@ -145,16 +145,22 @@ export const LiveCatalogueComparison = forwardRef<
       aria-busy={loading && !panel ? true : undefined}
       data-variant={variant}
       data-size={size}
-      className={`flex h-full min-w-0 flex-col rounded-[2rem] border border-brand-navy bg-white p-5 text-brand-navy shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 ring-slate-200/60 sm:p-6 ${className}`}
+      className={`flex h-full min-w-0 flex-col rounded-[2rem] border border-brand-navy bg-white ${SIZE[size].card} text-brand-navy shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 ring-slate-200/60 ${className}`}
     >
-      <header className="mb-4 flex items-start justify-between gap-3">
+      <header
+        className={`${SIZE[size].header} flex items-start justify-between gap-3`}
+      >
         <div className="min-w-0">
-          <h3 className="m-0 font-heading text-lg font-bold leading-snug tracking-normal">
+          <h3
+            className={`m-0 font-heading ${SIZE[size].title} font-bold leading-snug tracking-normal`}
+          >
             {panel?.name ??
               (loading ? "Loading live prices" : "Comparison unavailable")}
           </h3>
           {panel ? (
-            <p className="mb-0 mt-1 text-xs text-brand-navy/65">
+            <p
+              className={`mb-0 ${SIZE[size].method} text-xs text-brand-navy/65`}
+            >
               {panel.methodLabel}
             </p>
           ) : (
@@ -169,15 +175,19 @@ export const LiveCatalogueComparison = forwardRef<
         {panel?.rows.map((row, index) => (
           <div
             key={row.id}
-            className={`rounded-lg border p-3 ${index === 0 ? "border-brand-turquoise/20 bg-brand-turquoise/8" : "border-transparent border-b-brand-navy/5"}`}
+            className={`rounded-lg border ${SIZE[size].row} ${index === 0 ? "border-brand-turquoise/20 bg-brand-turquoise/8" : "border-transparent border-b-brand-navy/5"}`}
           >
             {/* Two-column grid: text takes what's left, price stays natural
                 width. The fee line lives under the row on mobile so it can't
                 squeeze the text column into one-word-per-line wrapping. */}
-            <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
+            <div
+              className={`grid grid-cols-[minmax(0,1fr)_auto] items-start ${SIZE[size].rowGrid}`}
+            >
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-1.5">
-                  <span className="font-heading text-sm font-bold">
+                  <span
+                    className={`font-heading ${SIZE[size].provider} font-bold`}
+                  >
                     {row.provider}
                   </span>
                   {index === 0 && (
@@ -186,10 +196,14 @@ export const LiveCatalogueComparison = forwardRef<
                     </span>
                   )}
                 </div>
-                <p className="mb-0 mt-1 text-xs leading-relaxed text-brand-navy/70">
+                <p
+                  className={`mb-0 ${SIZE[size].gap} text-xs ${SIZE[size].copy} text-brand-navy/70`}
+                >
                   {row.testName}
                 </p>
-                <p className="m-0 text-xs leading-relaxed text-brand-navy/65">
+                <p
+                  className={`m-0 text-xs ${SIZE[size].copy} text-brand-navy/65`}
+                >
                   {row.biomarkerLabel
                     ? row.biomarkerLabel
                     : row.biomarkers === null
@@ -200,7 +214,9 @@ export const LiveCatalogueComparison = forwardRef<
                     ? `Typical results: ${row.turnaround}`
                     : "Turnaround not stated"}
                 </p>
-                <p className="mb-0 mt-1 text-xs text-brand-navy/60">
+                <p
+                  className={`mb-0 ${SIZE[size].gap} text-xs text-brand-navy/60`}
+                >
                   {row.priceCheckedAt &&
                   !Number.isNaN(Date.parse(row.priceCheckedAt))
                     ? `Price checked ${new Date(row.priceCheckedAt).toLocaleDateString("en-GB", { timeZone: "Europe/London" })}`
@@ -213,7 +229,9 @@ export const LiveCatalogueComparison = forwardRef<
                 </div>
                 <div className="text-xs text-brand-navy/65">Total cost</div>
                 {row.feeLabel && (
-                  <div className="mt-1 hidden max-w-[11rem] text-xs leading-snug text-brand-navy/65 sm:block">
+                  <div
+                    className={`${SIZE[size].gap} hidden max-w-[11rem] text-xs leading-snug text-brand-navy/65 sm:block`}
+                  >
                     {row.feeLabel}
                   </div>
                 )}
@@ -228,14 +246,18 @@ export const LiveCatalogueComparison = forwardRef<
         ))}
         {!panel &&
           loading &&
-          [0, 1, 2, 3].map((i) => <PlaceholderRow key={i} />)}
+          [0, 1, 2, 3].map((i) => (
+            <PlaceholderRow key={i} tight={size === "compact"} />
+          ))}
         {!panel && !loading && (
           <p className="text-sm text-brand-navy/70">
             Live prices are currently unavailable.
           </p>
         )}
       </div>
-      <p className="my-4 text-xs leading-relaxed text-brand-navy/65">
+      <p
+        className={`${SIZE[size].footer} text-xs leading-relaxed text-brand-navy/65`}
+      >
         Prices are checked on provider websites about every 6 hours. Confirm the
         current price and any extra charges with the provider before booking.
       </p>
