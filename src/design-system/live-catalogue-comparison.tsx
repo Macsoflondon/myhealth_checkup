@@ -185,6 +185,7 @@ export const LiveCatalogueComparison = forwardRef<
       className = "",
       variant = "compact",
       size = "default",
+      tone = "turquoise",
       ...props
     },
     ref,
@@ -198,7 +199,7 @@ export const LiveCatalogueComparison = forwardRef<
       aria-busy={loading && !panel ? true : undefined}
       data-variant={variant}
       data-size={size}
-      className={`flex h-full min-w-0 flex-col rounded-[2rem] border border-brand-turquoise/35 bg-white ${SIZE[size].card} text-brand-navy shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 ring-brand-turquoise/20 ${className}`}
+      className={`flex h-full min-w-0 flex-col rounded-[2rem] border bg-white ${SIZE[size].card} text-brand-navy shadow-[0_30px_80px_-20px_rgba(8,17,41,0.35),0_8px_24px_-8px_rgba(8,17,41,0.18)] ring-1 transition-[border-color,box-shadow,ring-color] duration-300 ${TONE[tone].rest} ${TONE[tone].hover} ${className}`}
     >
       <header
         className={`${SIZE[size].header} flex items-start justify-between gap-3`}
