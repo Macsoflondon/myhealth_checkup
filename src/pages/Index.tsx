@@ -161,8 +161,12 @@ const Index = () => {
               <div className="absolute -right-[50px] -top-[60px] w-[260px] h-[260px] rounded-full bg-[#22c0d4]/[0.12]" />
               <div className="absolute right-[120px] -bottom-[110px] w-[240px] h-[240px] rounded-full bg-[#e70d69]/10" />
               <div className="relative">
-                <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)] gap-8 sm:gap-10 lg:gap-12 items-center lg:items-start">
-                  <div className="flex flex-col gap-5 2xl:gap-8 text-left">
+                {/* The left column stretches to the comparison card's height
+                    and spreads its blocks across it, so the quiz box's bottom
+                    edge meets the card's bottom edge and no gap can open under
+                    the quiz button. */}
+                <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)] gap-8 sm:gap-10 lg:gap-12 items-center lg:items-stretch">
+                  <div className="flex flex-col gap-5 2xl:gap-8 text-left lg:justify-between">
                     <h2 className="font-extrabold text-[clamp(1.6rem,3.4vw,2.25rem)] tracking-[-0.02em] leading-[1.15] text-white m-0 font-[Montserrat] text-center xl:whitespace-nowrap">
                       Your <span className="text-[#22c0d4]">health</span> is
                       your greatest{" "}
@@ -184,34 +188,34 @@ const Index = () => {
                     />
 
                     <div className="mt-4 sm:mt-6 flex flex-col gap-5 rounded-2xl border border-brand-turquoise/40 p-5 sm:p-6 shadow-glow-teal transition-all duration-300 hover:border-brand-pink/60 hover:shadow-glow-pink">
-                    <h3 className="text-[clamp(1.2rem,2.8vw,1.85rem)] font-bold text-white leading-[1.15] tracking-tight font-[Montserrat] m-0 text-center">
-                      Not sure what test you need?
-                    </h3>
-                    <p className="text-white/85 text-sm sm:text-base leading-relaxed m-0 text-center 2xl:text-lg">
-                      Answer a few quick questions and our AI will match you
-                      with the best-fit tests from{" "}
-                      {activeTestCount.toLocaleString("en-GB")} accredited
-                      options. The more you tell us, the more closely we can
-                      match your test options.
-                    </p>
+                      <h3 className="text-[clamp(1.2rem,2.8vw,1.85rem)] font-bold text-white leading-[1.15] tracking-tight font-[Montserrat] m-0 text-center">
+                        Not sure what test you need?
+                      </h3>
+                      <p className="text-white/85 text-sm sm:text-base leading-relaxed m-0 text-center 2xl:text-lg">
+                        Answer a few quick questions and our AI will match you
+                        with the best-fit tests from{" "}
+                        {activeTestCount.toLocaleString("en-GB")} accredited
+                        options. The more you tell us, the more closely we can
+                        match your test options.
+                      </p>
 
-                    <div className="flex flex-col items-center gap-4">
-                      <Link
-                        to="/find-test"
-                        aria-label="Take the Health Quiz: find the right private blood test"
-                        className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-brand-turquoise text-white shadow-glow-teal hover:bg-brand-pink hover:shadow-glow-pink focus-visible:bg-brand-pink focus-visible:shadow-glow-pink focus-visible:outline-none font-bold font-[Montserrat] text-base px-8 py-3.5 rounded-full transition-all duration-200 hover:scale-[1.02]"
-                      >
-                        Take the Health Quiz
-                      </Link>
-                      <div className="flex flex-wrap justify-center items-center gap-x-3 gap-y-1 text-white/80 text-xs 2xl:text-sm">
-                        <span className="flex items-center gap-1">
-                          <Shield className="w-3 h-3 shrink-0" /> No account
-                          required
-                        </span>
-                        <span>Takes 2 minutes</span>
-                        <span>100% free</span>
+                      <div className="flex flex-col items-center gap-4">
+                        <Link
+                          to="/find-test"
+                          aria-label="Take the Health Quiz: find the right private blood test"
+                          className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-brand-turquoise text-white shadow-glow-teal hover:bg-brand-pink hover:shadow-glow-pink focus-visible:bg-brand-pink focus-visible:shadow-glow-pink focus-visible:outline-none font-bold font-[Montserrat] text-base px-8 py-3.5 rounded-full transition-all duration-200 hover:scale-[1.02]"
+                        >
+                          Take the Health Quiz
+                        </Link>
+                        <div className="flex flex-wrap justify-center items-center gap-x-3 gap-y-1 text-white/80 text-xs 2xl:text-sm">
+                          <span className="flex items-center gap-1">
+                            <Shield className="w-3 h-3 shrink-0" /> No account
+                            required
+                          </span>
+                          <span>Takes 2 minutes</span>
+                          <span>100% free</span>
+                        </div>
                       </div>
-                    </div>
                     </div>
                   </div>
 
@@ -220,6 +224,7 @@ const Index = () => {
                       <LiveCatalogueComparison
                         panel={upperComparison}
                         loading={comparisonsLoading}
+                        size="compact"
                       />
                     </div>
                   </div>
