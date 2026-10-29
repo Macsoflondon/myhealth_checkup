@@ -56,25 +56,9 @@ export default function HeroMasthead() {
     ) {
       return;
     }
-    let idleId: number | undefined;
-    let timerId: number | undefined;
-    const allow = () => setVideoAllowed(true);
-    const scheduleIdle = () => {
-      if (window.requestIdleCallback) {
-        idleId = window.requestIdleCallback(allow, { timeout: 3000 });
-      } else {
-        timerId = window.setTimeout(allow, 1000);
-      }
-    };
     // Start fetching straight away so the loop is buffered and playing as
     // soon as the page opens, rather than waiting for idle time.
-    void scheduleIdle;
-    allow();
-    return () => {
-      window.removeEventListener("load", scheduleIdle);
-      if (idleId !== undefined) window.cancelIdleCallback?.(idleId);
-      if (timerId !== undefined) window.clearTimeout(timerId);
-    };
+    setVideoAllowed(true);
   }, [reducedMotion]);
 
   useEffect(() => {
