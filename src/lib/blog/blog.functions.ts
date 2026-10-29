@@ -35,7 +35,7 @@ export const getAggregatedBlogArticles = createServerFn({
   const { data, error } = await supabasePublic
     .from("provider_blog_posts")
     .select(
-      "title, excerpt, url, image_url, provider_name, category, published_at",
+      "title, excerpt, url, image_url, provider_name, category, published_at, last_seen_at",
     )
     .order("published_at", { ascending: false })
     .limit(500);
@@ -50,5 +50,6 @@ export const getAggregatedBlogArticles = createServerFn({
     provider: row.provider_name,
     category: row.category,
     date: row.published_at,
+    checkedAt: row.last_seen_at,
   }));
 });
