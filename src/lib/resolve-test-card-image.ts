@@ -5,6 +5,7 @@ import clinilabsMmrBox from "@/assets/providers/clinilabs-mmr-box.png.asset.json
 import clinilabsHepBBox from "@/assets/providers/clinilabs-hepb-box.png.asset.json";
 import clinilabsQfitBox from "@/assets/providers/clinilabs-qfit-box-accreditation.png.asset.json";
 import { medicalDiagnosisKitBox } from "@/lib/medical-diagnosis-kit-boxes";
+import { lmlSharpKitImage } from "@/lib/lml-kit-images";
 import goodbodyBabyBox from "@/assets/providers/goodbody-baby-box.png.asset.json";
 import goodbodyPaternityBox from "@/assets/providers/goodbody-paternity-box.png.asset.json";
 import goodbodyStockholmBox from "@/assets/providers/goodbody-stockholm-box.png.asset.json";
@@ -82,6 +83,10 @@ export function resolveTestCardImage({
   if (provider.includes("medical-diagnosis") && testName) {
     const box = medicalDiagnosisKitBox(testName);
     if (box) return box;
+  }
+  if (provider.includes("london-medical") && testName) {
+    const sharp = lmlSharpKitImage(testName);
+    if (sharp) return sharp;
   }
   const own = imageUrl?.trim();
   if (own) return own;
