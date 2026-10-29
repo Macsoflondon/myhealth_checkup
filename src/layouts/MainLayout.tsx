@@ -33,7 +33,7 @@ export const MainLayout = ({
           outside so the mask never clips them. */}
       <div className="page-surface-inner flex flex-1 flex-col bg-white">
         {!hideHeader && !isHome && (
-          <BrowseByCategoryBar variant="flush" placement="straddle" />
+          <BrowseByCategoryBar placement="straddle" />
         )}
         <main id="main-content" className={mainClassName} tabIndex={-1}>
           {!isCompare && <SiteBreadcrumb />}
