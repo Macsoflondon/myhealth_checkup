@@ -100,9 +100,12 @@ const rowMeta = (row: CatalogueComparisonRow): string =>
  */
 const priceCheckedLabel = (row: CatalogueComparisonRow): string =>
   row.priceCheckedAt && !Number.isNaN(Date.parse(row.priceCheckedAt))
-    ? `Price checked ${new Date(row.priceCheckedAt).toLocaleDateString("en-GB", {
-        timeZone: "Europe/London",
-      })}`
+    ? `Price checked ${new Date(row.priceCheckedAt).toLocaleDateString(
+        "en-GB",
+        {
+          timeZone: "Europe/London",
+        },
+      )}`
     : "Update date not available";
 
 /**
