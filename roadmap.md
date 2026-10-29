@@ -1,6 +1,6 @@
 # Roadmap
 
-- [ ] Clarify the homepage comparison offer, search snippet and matching WebPage description; verify visible copy and metadata without inferring search performance below 100 homepage impressions.
+- [x] Clarify the homepage comparison offer, search snippet and matching WebPage description; visible copy and SSR/social metadata browser-verified, 46 regression tests passed, changed-file lint and SEO check clean, automatic build OK. No search-performance diagnosis below 100 homepage impressions; reaches live on next publish.
 
 - [x] Optimise blood-test comparison titles, social metadata and source-priced Product/MedicalTest, CollectionPage and breadcrumb JSON-LD; remove hidden FAQ markup and root image overrides. Six routes verified in SSR HTML and populated comparison page checked; 1,139 tests passed, final 42 SEO regressions passed, SEO validation and changed-file lint clean, automatic build OK. Preview only; no catalogue writes or publishing. Existing nine SEO warnings remain non-blocking.
 
