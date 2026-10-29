@@ -179,18 +179,20 @@ const Index = () => {
                     </p>
 
                     <div
-                      className="h-[2px] w-full rounded-full bg-gradient-to-r from-[#22c0d4] via-[#e70d69] to-[#22c0d4]"
+                      className="mt-6 sm:mt-8 h-[2px] w-full rounded-full bg-gradient-to-r from-[#22c0d4] via-[#e70d69] to-[#22c0d4]"
                       aria-hidden="true"
                     />
 
+                    <div className="mt-4 sm:mt-6 flex flex-col gap-5 rounded-2xl border border-brand-turquoise/40 p-5 sm:p-6 shadow-glow-teal transition-all duration-300 hover:border-brand-pink/60 hover:shadow-glow-pink">
                     <h3 className="text-[clamp(1.2rem,2.8vw,1.85rem)] font-bold text-white leading-[1.15] tracking-tight font-[Montserrat] m-0 text-center">
                       Not sure what test you need?
                     </h3>
                     <p className="text-white/85 text-sm sm:text-base leading-relaxed m-0 text-center 2xl:text-lg">
-                      Answer 6 quick questions and our AI will match you to the
-                      best-fit tests from{" "}
+                      Answer a few quick questions and our AI will match you
+                      with the best-fit tests from{" "}
                       {activeTestCount.toLocaleString("en-GB")} accredited
-                      options.
+                      options. The more you tell us, the more closely we can
+                      match your test options.
                     </p>
 
                     <div className="flex flex-col items-center gap-4">
@@ -209,6 +211,7 @@ const Index = () => {
                         <span>Takes 2 minutes</span>
                         <span>100% free</span>
                       </div>
+                    </div>
                     </div>
                   </div>
 
