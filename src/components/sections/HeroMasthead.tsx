@@ -66,8 +66,10 @@ export default function HeroMasthead() {
         timerId = window.setTimeout(allow, 1000);
       }
     };
-    if (document.readyState === "complete") scheduleIdle();
-    else window.addEventListener("load", scheduleIdle, { once: true });
+    // Start fetching straight away so the loop is buffered and playing as
+    // soon as the page opens, rather than waiting for idle time.
+    void scheduleIdle;
+    allow();
     return () => {
       window.removeEventListener("load", scheduleIdle);
       if (idleId !== undefined) window.cancelIdleCallback?.(idleId);
@@ -80,6 +82,7 @@ export default function HeroMasthead() {
     if (!video || !videoAllowed) return;
     video.muted = true;
     video.defaultMuted = true;
+    video.defaultPlaybackRate = HERO_PLAYBACK_RATE;
     video.playbackRate = HERO_PLAYBACK_RATE;
     if (reducedMotion) {
       video.pause();
@@ -92,28 +95,31 @@ export default function HeroMasthead() {
       void video.play().catch(() => undefined);
     };
     const onPlaying = () => {
-      video.playbackRate = HERO_PLAYBACK_RATE;
+      if (video.playbackRate !== HERO_PLAYBACK_RATE) {
+        video.playbackRate = HERO_PLAYBACK_RATE;
+      }
     };
     video.addEventListener("playing", onPlaying);
-    video.addEventListener("canplay", resume);
     const onPause = () => {
       if (!video.ended) resume();
     };
     video.addEventListener("pause", onPause);
-    document.addEventListener("visibilitychange", resume);
+    const onVisible = () => {
+      if (document.visibilityState === "visible" && video.paused) resume();
+    };
+    document.addEventListener("visibilitychange", onVisible);
     resume();
     return () => {
       video.removeEventListener("pause", onPause);
       video.removeEventListener("playing", onPlaying);
-      video.removeEventListener("canplay", resume);
-      document.removeEventListener("visibilitychange", resume);
+      document.removeEventListener("visibilitychange", onVisible);
     };
   }, [reducedMotion, videoAllowed]);
 
   const mobilePlacement =
     HERO_COPY.copyPlacementMobile === "bottom"
-      ? "items-end pb-20 bg-gradient-to-t from-brand-navy/95 via-brand-navy/55 to-transparent"
-      : "items-start pt-16 bg-gradient-to-b from-brand-navy/90 via-brand-navy/45 to-transparent";
+      ? "items-end pb-20 bg-gradient-to-t from-brand-navy/75 via-brand-navy/30 to-transparent"
+      : "items-start pt-16 bg-gradient-to-b from-brand-navy/70 via-brand-navy/25 to-transparent";
   const desktopGradient =
     HERO_COPY.align === "right"
       ? "sm:bg-gradient-to-l sm:from-brand-navy/90 sm:via-brand-navy/50 sm:to-transparent"
@@ -252,7 +258,7 @@ export default function HeroMasthead() {
           </div>
         </div>
 
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#081129]/20 via-transparent to-[#081129]/30" />
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#081129]/10 via-transparent to-[#081129]/15" />
 
         {/* Turquoise section dividers — inside the rounded stage so they stop at the curve */}
         <div className="absolute top-0 inset-x-0 w-full max-w-none z-10 border-t-2 border-[#22c0d4]" />
