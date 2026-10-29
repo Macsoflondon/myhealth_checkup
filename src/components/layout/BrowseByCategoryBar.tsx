@@ -302,7 +302,17 @@ export default function BrowseByCategoryBar({
               // that screen readers are told does not exist.
               inert={!mobileBarOut || mobileOpen}
             >
-              {menuDrawer}
+              <button
+                type="button"
+                onClick={() => setMobileOpen(true)}
+                aria-label="Open menu"
+                aria-controls="mobile-menu"
+                className="flex flex-col items-end justify-center gap-[5px] min-w-11 min-h-11 p-2 rounded-xl bg-white/90 backdrop-blur-md border border-[#e70d69]/15 shadow-[0_6px_18px_-6px_rgba(231,13,105,0.5)] focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#e70d69] cursor-pointer"
+              >
+                <div className="h-[3px] w-9 rounded-full bg-[#081129]" />
+                <div className="h-[3px] w-6 rounded-full bg-[#e70d69]" />
+                <div className="h-[3px] w-10 rounded-full bg-[#22c0d4]" />
+              </button>
             </div>,
             document.body,
           )
