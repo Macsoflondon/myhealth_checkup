@@ -106,10 +106,13 @@ Deno.serve(async (req) => {
       .eq("client_key", clientKey)
       .gte("window_start", windowStart);
     if (quotaError) {
-      return new Response(JSON.stringify({ error: "Translation is temporarily unavailable" }), {
-        status: 503,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+      return new Response(
+        JSON.stringify({ error: "Translation is temporarily unavailable" }),
+        {
+          status: 503,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
     }
     if ((count ?? 0) >= RATE_LIMIT_MAX) {
       return new Response(JSON.stringify({ error: "Rate limit exceeded" }), {
@@ -121,16 +124,21 @@ Deno.serve(async (req) => {
         },
       });
     }
-    const { error: recordError } = await supabase.from("api_rate_limits").insert({
-      client_key: clientKey,
-      endpoint: "translate",
-      window_start: new Date().toISOString(),
-    });
-    if (recordError) {
-      return new Response(JSON.stringify({ error: "Translation is temporarily unavailable" }), {
-        status: 503,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
+    const { error: recordError } = await supabase
+      .from("api_rate_limits")
+      .insert({
+        client_key: clientKey,
+        endpoint: "translate",
+        window_start: new Date().toISOString(),
       });
+    if (recordError) {
+      return new Response(
+        JSON.stringify({ error: "Translation is temporarily unavailable" }),
+        {
+          status: 503,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        },
+      );
     }
 
     // Look up cache
