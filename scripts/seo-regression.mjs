@@ -92,8 +92,12 @@ for (const p of missingPrerender) {
 
 // ---- 5. Root route sanity -------------------------------------------------
 const rootRoute = readFileSync(resolve(ROOT, "src/routes/__root.tsx"), "utf8");
-for (const tag of ["og:type", "og:site_name", "og:image"]) {
+for (const tag of ["og:type", "og:site_name"]) {
   if (!rootRoute.includes(`"${tag}"`)) fail.push(`__root.tsx missing ${tag}`);
+}
+for (const tag of ["og:image", "twitter:image"]) {
+  if (rootRoute.includes(`"${tag}"`))
+    fail.push(`__root.tsx must not override leaf-route ${tag}`);
 }
 if (!rootRoute.includes("application/ld+json"))
   fail.push("__root.tsx missing Organization JSON-LD");

@@ -122,12 +122,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         { name: "geo.region", content: "GB" },
         { name: "geo.placename", content: "United Kingdom" },
         { property: "og:type", content: "website" },
-        {
-          property: "og:image",
-          content: "https://myhealthcheckup.co.uk/og-image.png",
-        },
-        { property: "og:image:width", content: "1200" },
-        { property: "og:image:height", content: "630" },
         // og:title / og:description / og:url are intentionally NOT set here.
         // Each route supplies its own self-referencing social metadata via
         // buildRouteHead(), so a hardcoded homepage default would leak onto
@@ -135,10 +129,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         { property: "og:site_name", content: "myhealth checkup" },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:site", content: "@myhealthcheckup" },
-        {
-          name: "twitter:image",
-          content: "https://myhealthcheckup.co.uk/og-image.png",
-        },
         { name: "theme-color", content: "#081129" },
         { name: "mobile-web-app-capable", content: "yes" },
         {

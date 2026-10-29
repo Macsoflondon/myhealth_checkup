@@ -1,5 +1,7 @@
 # Architecture decisions
 
+- Public comparison metadata and JSON-LD belong in route heads through the shared SEO builders; test Product offers use provider-listed prices and omit unverified stock claims, so SSR and visible catalogue evidence cannot diverge.
+
 - Provider article listings share one live query and image renderer; valid source images take priority, with local topic illustrations on missing or failed images, so category guides cannot silently use dated fixtures.
 
 - Category mappings retain full biomarker lists and confirmed collection variants, including zero-fee routes, so previews cannot truncate modal counts or lose home-nurse availability.

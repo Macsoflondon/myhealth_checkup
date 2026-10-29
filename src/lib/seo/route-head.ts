@@ -1,5 +1,7 @@
 import { getTestDisplayName } from "@/lib/test-display-name";
+import { serializeJsonLd } from "@/lib/seo/json-ld";
 import {
+  buildBreadcrumbSchema,
   buildProviderSchema,
   buildTestSchema,
   type JsonLdNode,
@@ -54,6 +56,8 @@ export const buildRouteHead = ({
       { property: "og:type", content: type },
       { name: "twitter:title", content: title },
       { name: "twitter:description", content: description },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:locale", content: "en_GB" },
     ],
     links: [{ rel: "canonical", href: url }],
   };
@@ -98,7 +102,7 @@ export const buildArticleHead = ({
     scripts: [
       {
         type: "application/ld+json",
-        children: JSON.stringify({
+        children: serializeJsonLd({
           "@context": "https://schema.org",
           "@type": "Article",
           headline: title,
@@ -138,9 +142,10 @@ export const buildCollectionHead = ({
     scripts: [
       {
         type: "application/ld+json",
-        children: JSON.stringify({
+        children: serializeJsonLd({
           "@context": "https://schema.org",
           "@type": "CollectionPage",
+          "@id": `${url}#page`,
           name: title,
           description,
           url,
@@ -150,12 +155,26 @@ export const buildCollectionHead = ({
             name: "myhealth checkup",
             url: SITE_URL,
           },
-          about: { "@type": "MedicalTest", name: title },
+          about: {
+            "@type": "Thing",
+            name: "Private diagnostic test comparison",
+          },
+          breadcrumb: { "@id": `${url}#breadcrumb` },
           provider: {
             "@type": "Organization",
             name: "MYHEALTHCHECKUP LTD",
             url: SITE_URL,
           },
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: serializeJsonLd({
+          ...buildBreadcrumbSchema([
+            { name: "Home", url: SITE_URL },
+            { name: title.split(" | ")[0] ?? title, url },
+          ]),
+          "@id": `${url}#breadcrumb`,
         }),
       },
     ],
@@ -224,8 +243,19 @@ export const buildTestHead = ({
   const path = `/provider/${providerId}/tests/${testId}`;
   const url = canonicalUrl(path);
   const displayName = getTestDisplayName(testName);
-  const title = `${displayName} — ${providerName} | myhealth checkup`;
-  const description = `Compare the ${displayName} from ${providerName} against other accredited UK providers. Biomarkers, sample method, typical turnaround and pricing side-by-side.`;
+  const fullTitle = `${displayName} | ${providerName} | myhealth checkup`;
+  const shortTitle = `${displayName} | myhealth checkup`;
+  const title =
+    fullTitle.length < 60
+      ? fullTitle
+      : shortTitle.length < 60
+        ? shortTitle
+        : `${displayName.slice(0, 38).trimEnd()}… | myhealth checkup`;
+  const fullDescription = `Compare ${displayName} from ${providerName} with UK providers. Check prices, biomarkers, sample collection options and typical result times.`;
+  const description =
+    fullDescription.length <= 160
+      ? fullDescription
+      : `${fullDescription.slice(0, 159).replace(/\s+\S*$/, "")}…`;
   const base = buildRouteHead({ title, description, path });
 
   return {
@@ -247,5 +277,5 @@ export const buildTestHead = ({
 const toJsonLdScripts = (graph: readonly JsonLdNode[]) =>
   graph.map((node) => ({
     type: "application/ld+json",
-    children: JSON.stringify(node),
+    children: serializeJsonLd(node),
   }));

@@ -192,7 +192,7 @@ interface TestSchemaInput {
   readonly biomarkerCount?: number | null;
 }
 
-/** MedicalTest (+ Offer) and BreadcrumbList graph for a test detail page. */
+/** MedicalTest, source-priced Product and BreadcrumbList for a test page. */
 export const buildTestSchema = ({
   testName,
   providerName,
@@ -205,15 +205,24 @@ export const buildTestSchema = ({
   const test: JsonLdNode = {
     "@context": "https://schema.org",
     "@type": "MedicalTest",
+    "@id": `${url}#medical-test`,
     name: testName,
     description,
     url,
     inLanguage: "en-GB",
-    usedToDiagnose: undefined,
     provider: { "@type": "Organization", name: providerName },
   };
-  // Never ship undefined placeholders into the graph.
-  delete test.usedToDiagnose;
+
+  const product: JsonLdNode = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": `${url}#product`,
+    name: testName,
+    description,
+    url,
+    brand: { "@type": "Organization", name: providerName },
+    isRelatedTo: { "@id": `${url}#medical-test` },
+  };
 
   if (biomarkerCount != null && biomarkerCount > 0) {
     test.subjectOf = {
@@ -222,12 +231,11 @@ export const buildTestSchema = ({
     };
   }
 
-  if (priceGbp != null && priceGbp > 0) {
-    test.offers = {
+  if (priceGbp != null && Number.isFinite(priceGbp) && priceGbp > 0) {
+    product.offers = {
       "@type": "Offer",
       price: priceGbp.toFixed(2),
       priceCurrency: "GBP",
-      availability: "https://schema.org/InStock",
       url,
       seller: { "@type": "Organization", name: providerName },
     };
@@ -235,6 +243,7 @@ export const buildTestSchema = ({
 
   return [
     test,
+    product,
     buildBreadcrumbSchema([
       { name: "Providers", url: `${SITE_URL}/providers` },
       { name: providerName, url: `${SITE_URL}/provider/${providerId}` },
