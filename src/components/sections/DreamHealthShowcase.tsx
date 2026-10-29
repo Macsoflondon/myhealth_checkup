@@ -125,7 +125,7 @@ const DreamHealthShowcase = () => {
   const { data: popularTests, isLoading } = useHomepagePopularShowcase();
   const trackRef = useRef<HTMLDivElement>(null);
   const [selectedTest, setSelectedTest] = useState<PopularTest | null>(null);
-  const orderedTests = popularTests ?? [];
+  const orderedTests = useMemo(() => popularTests ?? [], [popularTests]);
 
   const visibleIds = useMemo(
     () => orderedTests.map((t) => t.id),
