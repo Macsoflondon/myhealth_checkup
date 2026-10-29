@@ -80,6 +80,22 @@ const SIZE = {
 } as const;
 
 /**
+ * Biomarker count and typical turnaround for one row, with an explicit
+ * "not stated" line when a provider listing carries neither.
+ */
+const rowMeta = (row: CatalogueComparisonRow): string =>
+  `${
+    row.biomarkerLabel ??
+    (row.biomarkers === null
+      ? "Biomarkers not stated"
+      : `${row.biomarkers} biomarkers`)
+  } · ${
+    row.turnaround
+      ? `Typical results: ${row.turnaround}`
+      : "Turnaround not stated"
+  }`;
+
+/**
  * Placeholder sized like a typical loaded price row (heights measured on the
  * homepage at 390, 820 and 1440px): two-line test name, a meta line that
  * wraps on phones, the fee line under the row on phones and beside the price
@@ -196,24 +212,33 @@ export const LiveCatalogueComparison = forwardRef<
                     </span>
                   )}
                 </div>
-                <p
-                  className={`mb-0 ${SIZE[size].gap} text-xs ${SIZE[size].copy} text-brand-navy/70`}
-                >
-                  {row.testName}
-                </p>
-                <p
-                  className={`m-0 text-xs ${SIZE[size].copy} text-brand-navy/65`}
-                >
-                  {row.biomarkerLabel
-                    ? row.biomarkerLabel
-                    : row.biomarkers === null
-                      ? "Biomarkers not stated"
-                      : `${row.biomarkers} biomarkers`}{" "}
-                  ·{" "}
-                  {row.turnaround
-                    ? `Typical results: ${row.turnaround}`
-                    : "Turnaround not stated"}
-                </p>
+                {size === "compact" ? (
+                  /* Compact rows let the test name run on into the biomarker
+                     and turnaround text, so a row that takes three lines at
+                     the default rhythm takes two here. */
+                  <p
+                    className={`mb-0 ${SIZE[size].gap} text-xs ${SIZE[size].copy}`}
+                  >
+                    <span className="font-semibold text-brand-navy/75">
+                      {row.testName}
+                    </span>
+                    {" · "}
+                    <span className="text-brand-navy/65">{rowMeta(row)}</span>
+                  </p>
+                ) : (
+                  <>
+                    <p
+                      className={`mb-0 ${SIZE[size].gap} text-xs ${SIZE[size].copy} text-brand-navy/70`}
+                    >
+                      {row.testName}
+                    </p>
+                    <p
+                      className={`m-0 text-xs ${SIZE[size].copy} text-brand-navy/65`}
+                    >
+                      {rowMeta(row)}
+                    </p>
+                  </>
+                )}
                 <p
                   className={`mb-0 ${SIZE[size].gap} text-xs text-brand-navy/60`}
                 >
