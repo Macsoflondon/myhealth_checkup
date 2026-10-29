@@ -1,6 +1,8 @@
 import React, { useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Link } from "@/lib/router-compat";
-import { blogArticles } from "@/data/blogArticles";
+import { providerArticlesQuery } from "@/lib/blog/article-query";
+import { ArticleImage } from "@/components/tests/ArticleImage";
 import { selectTopicArticles } from "@/lib/blog/topic-relevance";
 
 interface CategoryGuidesProps {
@@ -30,9 +32,10 @@ export const CategoryGuides: React.FC<CategoryGuidesProps> = ({
   topic,
   limit = 3,
 }) => {
+  const { data: liveArticles = [] } = useQuery(providerArticlesQuery);
   const articles = useMemo(
-    () => selectTopicArticles(blogArticles, topic, limit),
-    [topic, limit],
+    () => selectTopicArticles(liveArticles, topic, limit),
+    [liveArticles, topic, limit],
   );
 
   if (articles.length === 0) return null;
@@ -52,15 +55,7 @@ export const CategoryGuides: React.FC<CategoryGuidesProps> = ({
             key={article.url}
             className="group flex flex-col bg-white rounded-2xl border border-[#081129]/15 overflow-hidden transition-all duration-200 hover:border-[#22c0d4] hover:shadow-lg hover:-translate-y-0.5"
           >
-            {article.image ? (
-              <img
-                src={article.image}
-                alt={article.title}
-                loading="lazy"
-                decoding="async"
-                className="h-40 w-full object-cover"
-              />
-            ) : null}
+            <ArticleImage article={article} className="h-40" />
             <div className="flex flex-col flex-1 p-5">
               <div className="flex items-center gap-2 mb-3">
                 <span className="text-[11px] font-semibold uppercase tracking-wider text-[#22c0d4]">

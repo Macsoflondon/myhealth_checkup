@@ -2,13 +2,11 @@ import React, { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { StandardPageHero } from "@/components/layout/StandardPageHero";
-import { Helmet } from "react-helmet-async";
-import { serializeJsonLd } from "@/lib/seo/json-ld";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Search } from "lucide-react";
-import { blogArticles } from "@/data/blogArticles";
-import { getAggregatedBlogArticles } from "@/lib/blog/blog.functions";
+import { providerArticlesQuery } from "@/lib/blog/article-query";
+import { ArticleImage } from "@/components/tests/ArticleImage";
 import type { BlogArticle } from "@/types/blog.types";
 
 /**
@@ -92,18 +90,9 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({
 }) => (
   <article className="group flex flex-col bg-white rounded-2xl border border-brand-navy overflow-hidden transition-all duration-200 hover:border-[#22c0d4] hover:shadow-lg hover:-translate-y-0.5">
     <div className="relative aspect-[16/9] overflow-hidden bg-[#f0f4fa]">
-      <img
-        src={
-          article.image && !overusedImages.has(article.image)
-            ? article.image
-            : fallbackImage(article)
-        }
-        alt={article.title}
-        loading="lazy"
-        onError={(e) => {
-          (e.currentTarget as HTMLImageElement).src = fallbackImage(article);
-        }}
-
+      <ArticleImage
+        article={article}
+        unsuitable={overusedImages.has(article.image)}
         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
       />
 
@@ -187,17 +176,9 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({
 const PAGE_SIZE = 12;
 
 const HealthBlogPage: React.FC = () => {
-  const { data: liveArticles } = useQuery({
-    queryKey: ["provider-blog-posts"],
-    queryFn: () => getAggregatedBlogArticles(),
-    staleTime: 30 * 60 * 1000,
-  });
-
-  const articles: BlogArticle[] = useMemo(
-    () =>
-      liveArticles && liveArticles.length > 0 ? liveArticles : blogArticles,
-    [liveArticles],
-  );
+  const { data: articles = [] } = useQuery(providerArticlesQuery);
+  const checkedAt = articles.reduce((latest, article) =>
+    article.checkedAt && article.checkedAt > latest ? article.checkedAt : latest, "");
 
   const categories = useMemo(() => {
     const set = new Set<string>(["All Articles"]);
@@ -282,25 +263,6 @@ const HealthBlogPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <Helmet>
-        <meta property="og:type" content="website" />
-        <meta property="og:locale" content="en_GB" />
-        <script type="application/ld+json">
-          {serializeJsonLd({
-            "@context": "https://schema.org",
-            "@type": "Blog",
-            name: "myhealth checkup Health Resource Hub",
-            description:
-              "Expert insights, health tips, and the latest research on preventive healthcare.",
-            url: "https://myhealthcheckup.co.uk/blog",
-            publisher: {
-              "@type": "Organization",
-              name: "MYHEALTHCHECKUP LTD",
-              url: "https://myhealthcheckup.co.uk",
-            },
-          })}
-        </script>
-      </Helmet>
       <Header />
       <main className="flex-grow">
         {/* Standardised navy hero */}
@@ -311,7 +273,7 @@ const HealthBlogPage: React.FC = () => {
             `${articles.length} articles`,
             `${allProviders.length} providers`,
             `${categories.length - 1} topics`,
-            "Updated daily",
+            checkedAt ? `Last checked ${new Date(checkedAt).toLocaleDateString("en-GB")}` : "Last check unavailable",
           ]}
         />
 

@@ -1,5 +1,7 @@
 # Architecture decisions
 
+- Provider article listings share one live query and image renderer; valid source images take priority, with local topic illustrations on missing or failed images, so category guides cannot silently use dated fixtures.
+
 - Category mappings retain full biomarker lists and confirmed collection variants, including zero-fee routes, so previews cannot truncate modal counts or lose home-nurse availability.
 
 - Lola add-on presentation and homepage eligibility share a source-backed status resolver; explicit provider add-on categories or opening descriptions override a conflicting false flag without altering stored catalogue data.
