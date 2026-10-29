@@ -1,5 +1,6 @@
-// @vitest-environment node
 import { readFileSync } from "node:fs";
+import { webcrypto } from "node:crypto";
+import { Request, Response } from "undici";
 import { resolve } from "node:path";
 import { runInNewContext } from "node:vm";
 import { transpileModule, ModuleKind } from "typescript";
@@ -14,7 +15,7 @@ function loadHandler(name: string, createClient: () => unknown) {
   const holder: { handler?: Handler } = {};
   runInNewContext(transpileModule(source, { compilerOptions: { module: ModuleKind.None } }).outputText, {
     Deno: { env: { get: () => "test-config" }, serve: (handler: Handler) => { holder.handler = handler; } },
-    createClient, Request, Response, URL, TextEncoder, crypto, console,
+    createClient, Request, Response, URL, TextEncoder, crypto: webcrypto, console,
     buildBundle: vi.fn(() => ({ entry: [] })), validateBundle: (bundle: unknown) => bundle,
   });
   if (!holder.handler) throw new Error("Missing handler");
