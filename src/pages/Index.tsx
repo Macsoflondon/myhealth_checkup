@@ -161,8 +161,12 @@ const Index = () => {
               <div className="absolute -right-[50px] -top-[60px] w-[260px] h-[260px] rounded-full bg-[#22c0d4]/[0.12]" />
               <div className="absolute right-[120px] -bottom-[110px] w-[240px] h-[240px] rounded-full bg-[#e70d69]/10" />
               <div className="relative">
-                <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)] gap-8 sm:gap-10 lg:gap-12 items-center lg:items-start">
-                  <div className="flex flex-col gap-5 2xl:gap-8 text-left">
+                {/* The left column stretches to the comparison card's height
+                    and spreads its blocks across it, so the quiz box's bottom
+                    edge meets the card's bottom edge and no gap can open under
+                    the quiz button. */}
+                <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)] gap-8 sm:gap-10 lg:gap-12 items-center lg:items-stretch">
+                  <div className="flex flex-col gap-5 2xl:gap-8 text-left lg:justify-between">
                     <h2 className="font-extrabold text-[clamp(1.6rem,3.4vw,2.25rem)] tracking-[-0.02em] leading-[1.15] text-white m-0 font-[Montserrat] text-center xl:whitespace-nowrap">
                       Your <span className="text-[#22c0d4]">health</span> is
                       your greatest{" "}
