@@ -32,9 +32,7 @@ export const MainLayout = ({
           in the brand navy. Overlays (cookie banner, comparison bar) stay
           outside so the mask never clips them. */}
       <div className="page-surface-inner flex flex-1 flex-col bg-white">
-        {!hideHeader && !isHome && (
-          <BrowseByCategoryBar placement="straddle" />
-        )}
+        {!hideHeader && !isHome && <BrowseByCategoryBar placement="straddle" />}
         <main id="main-content" className={mainClassName} tabIndex={-1}>
           {!isCompare && <SiteBreadcrumb />}
           {children}
