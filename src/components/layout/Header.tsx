@@ -14,7 +14,7 @@ const Header = ({ className }: HeaderProps) => {
   return (
     <ErrorBoundary>
       <div className={className}>
-        <BrowseByCategoryBar variant="flush" placement="straddle" />
+        <BrowseByCategoryBar placement="straddle" />
       </div>
     </ErrorBoundary>
   );

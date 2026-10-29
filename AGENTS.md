@@ -1,5 +1,7 @@
 # Architecture decisions
 
+- Site navigation lives only in the brand bar's menu drawer at every width; the desktop category pill toolbar was removed on 29 October 2026 and must not be reintroduced. Why: the owner wanted a single navigation entry point and the toolbar duplicated the drawer.
+
 - FHIR shared reads require the owner's latest export consent and prohibit response caching; withdrawal updates all active export-consent records so older grants cannot restore access.
 - Translation quotas use the server-verified user ID and fail closed on quota-storage errors, because request forwarding headers are caller-controlled.
 - Approved access hardening keeps health-score writes and rejected scrape-label reads internal, and restricts kit-image listing without changing public image delivery; database changes remain drafts for Claude to apply.
