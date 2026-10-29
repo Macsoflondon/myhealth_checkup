@@ -113,16 +113,20 @@ describe("test detail metadata", () => {
     expect(canonicalOf(head)).not.toBe(`${SITE}/provider/medichecks`);
   });
 
-  it("emits a valid MedicalTest graph with a GBP offer", () => {
+  it("emits a medical test and source-priced product with a GBP offer", () => {
     const graph = (head.scripts ?? []).map((s) => JSON.parse(s.children));
     expect(graph.map((n) => n["@type"])).toEqual([
       "MedicalTest",
+      "Product",
       "BreadcrumbList",
     ]);
     expect(validateJsonLd(graph[0], { expectedUrl: url })).toEqual([]);
-    expect(graph[0].offers.priceCurrency).toBe("GBP");
-    expect(graph[0].offers.price).toBe("69.00");
-    expect(graph[1].itemListElement).toHaveLength(3);
+    expect(graph[0].offers).toBeUndefined();
+    expect(graph[1].offers.priceCurrency).toBe("GBP");
+    expect(graph[1].offers.price).toBe("69.00");
+    expect(graph[1].offers.seller.name).toBe("Medichecks");
+    expect(graph[1].offers.availability).toBeUndefined();
+    expect(graph[2].itemListElement).toHaveLength(3);
   });
 
   it("drops the offer when no price is known rather than shipping an empty field", () => {
@@ -132,7 +136,7 @@ describe("test detail metadata", () => {
       testId: "abc",
       testName: "Vitamin D Test",
     });
-    const node = JSON.parse((noPrice.scripts ?? [])[0].children);
+    const node = JSON.parse((noPrice.scripts ?? [])[1].children);
     expect(node.offers).toBeUndefined();
     expect(
       validateJsonLd(node, {

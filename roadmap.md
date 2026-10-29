@@ -1,5 +1,7 @@
 # Roadmap
 
+- [ ] Optimise blood-test comparison titles, route metadata and source-backed structured data; verify SSR HTML, SEO checks and regressions without changing catalogue data or publishing.
+
 - [x] Match the "Take Control of Your Health Today" panel to the test cards' turquoise border and glow, give the two live catalogue panels below it a navy outline that warms to turquoise on hover, and give all three buttons a navy border with alternate hover fills (turquoise↔pink, white→navy). Verified computed border/glow values identical to a test card at rest and hover, and at 1280/768/393px; 1,131 tests passed, changed-file lint clean, automatic build OK. Preview only; no database changes.
 
 

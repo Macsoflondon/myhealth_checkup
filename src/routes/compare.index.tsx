@@ -1,15 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { buildRouteHead } from "@/lib/seo/route-head";
+import { buildCollectionHead } from "@/lib/seo/route-head";
 import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 
 const CompareTests = lazy(() => import("@/pages/CompareTests"));
 
 export const Route = createFileRoute("/compare/")({
   head: () =>
-    buildRouteHead({
-      title: "Compare UK blood tests | myhealth checkup",
+    buildCollectionHead({
+      title: "Blood test price comparison UK | myhealth checkup",
       description:
-        "Compare private blood tests across UK providers: price in GBP, biomarkers included, sample method and typical turnaround from UKAS-accredited labs.",
+        "Compare private blood test prices across UK providers. Check biomarkers, home kits, clinic collection, additional fees and typical turnaround times.",
       path: "/compare",
     }),
   component: CompareTests,
