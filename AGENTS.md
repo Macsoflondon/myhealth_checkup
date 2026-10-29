@@ -2,6 +2,7 @@
 
 - FHIR shared reads require the owner's latest export consent and prohibit response caching; withdrawal updates all active export-consent records so older grants cannot restore access.
 - Translation quotas use the server-verified user ID and fail closed on quota-storage errors, because request forwarding headers are caller-controlled.
+- Approved access hardening keeps health-score writes and rejected scrape-label reads internal, and restricts kit-image listing without changing public image delivery; database changes remain drafts for Claude to apply.
 
 - Public comparison metadata and JSON-LD belong in route heads through the shared SEO builders; test Product offers use provider-listed prices and omit unverified stock claims, so SSR and visible catalogue evidence cannot diverge.
 
