@@ -155,7 +155,10 @@ export const buildCollectionHead = ({
             name: "myhealth checkup",
             url: SITE_URL,
           },
-          about: { "@type": "Thing", name: "Private diagnostic test comparison" },
+          about: {
+            "@type": "Thing",
+            name: "Private diagnostic test comparison",
+          },
           breadcrumb: { "@id": `${url}#breadcrumb` },
           provider: {
             "@type": "Organization",
@@ -242,15 +245,17 @@ export const buildTestHead = ({
   const displayName = getTestDisplayName(testName);
   const fullTitle = `${displayName} | ${providerName} | myhealth checkup`;
   const shortTitle = `${displayName} | myhealth checkup`;
-  const title = fullTitle.length < 60
-    ? fullTitle
-    : shortTitle.length < 60
-      ? shortTitle
-      : `${displayName.slice(0, 38).trimEnd()}… | myhealth checkup`;
+  const title =
+    fullTitle.length < 60
+      ? fullTitle
+      : shortTitle.length < 60
+        ? shortTitle
+        : `${displayName.slice(0, 38).trimEnd()}… | myhealth checkup`;
   const fullDescription = `Compare ${displayName} from ${providerName} with UK providers. Check prices, biomarkers, sample collection options and typical result times.`;
-  const description = fullDescription.length <= 160
-    ? fullDescription
-    : `${fullDescription.slice(0, 159).replace(/\s+\S*$/, "")}…`;
+  const description =
+    fullDescription.length <= 160
+      ? fullDescription
+      : `${fullDescription.slice(0, 159).replace(/\s+\S*$/, "")}…`;
   const base = buildRouteHead({ title, description, path });
 
   return {

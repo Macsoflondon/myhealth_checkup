@@ -21,9 +21,7 @@ export const fetchTestSeoSummary = createServerFn({ method: "GET" })
   .handler(async ({ data }): Promise<TestSeoSummary | null> => {
     const { data: row, error } = await supabase
       .from("unified_provider_tests")
-      .select(
-        "test_name, provider_name, price, biomarker_count",
-      )
+      .select("test_name, provider_name, price, biomarker_count")
       .eq("id", data.testId)
       .maybeSingle();
 

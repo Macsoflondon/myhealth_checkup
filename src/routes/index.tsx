@@ -19,21 +19,24 @@ export const Route = createFileRoute("/")({
 
     return {
       ...base,
-      scripts: [{
-        type: "application/ld+json",
-        children: serializeJsonLd({
-          "@context": "https://schema.org",
-          "@type": "WebPage",
-          "@id": "https://myhealthcheckup.co.uk/#page",
-          url: "https://myhealthcheckup.co.uk",
-          name: "Compare private blood tests UK",
-          description: "Compare UK provider-listed blood test prices, biomarkers and collection options.",
-          inLanguage: "en-GB",
-          isPartOf: { "@id": "https://myhealthcheckup.co.uk/#website" },
-          publisher: { "@id": "https://myhealthcheckup.co.uk/#organization" },
-          about: { "@type": "Thing", name: "Private blood test comparison" },
-        }),
-      }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: serializeJsonLd({
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "@id": "https://myhealthcheckup.co.uk/#page",
+            url: "https://myhealthcheckup.co.uk",
+            name: "Compare private blood tests UK",
+            description:
+              "Compare UK provider-listed blood test prices, biomarkers and collection options.",
+            inLanguage: "en-GB",
+            isPartOf: { "@id": "https://myhealthcheckup.co.uk/#website" },
+            publisher: { "@id": "https://myhealthcheckup.co.uk/#organization" },
+            about: { "@type": "Thing", name: "Private blood test comparison" },
+          }),
+        },
+      ],
       meta: [
         ...base.meta,
         { name: "twitter:site", content: "@myhealthcheckup" },
