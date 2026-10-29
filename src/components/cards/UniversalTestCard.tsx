@@ -1035,7 +1035,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
             <div className="flex items-end justify-between gap-3 border-t border-brand-navy px-4 py-3">
               <div className="min-w-0">
                 <div
-                  className="line-clamp-2"
+                  className="line-clamp-2 min-h-[2.6em]"
                   style={{
                     fontFamily: "'Montserrat',sans-serif",
                     fontWeight: 700,
