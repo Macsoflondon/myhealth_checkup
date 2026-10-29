@@ -18,6 +18,8 @@ export interface BlogArticle {
   category: string;
   /** Publication date in YYYY-MM-DD format */
   date: string;
+  /** Time the provider feed last confirmed this article, separate from publication. */
+  checkedAt?: string;
 }
 
 export type BlogCategory =
