@@ -212,6 +212,7 @@ const Index = () => {
                         <span>100% free</span>
                       </div>
                     </div>
+                    </div>
                   </div>
 
                   <div className="flex w-full justify-center lg:justify-end">
