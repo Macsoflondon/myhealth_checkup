@@ -176,13 +176,17 @@ const getCollectionLabel = (
   if (collectionOptions && collectionOptions.length > 0) {
     const m = collectionOptions[0].method.toLowerCase();
     if (m.includes("finger") || m.includes("home kit") || m.includes("at-home"))
-      return kit && kit !== "finger-prick" ? `At-home kit (${kit})` : "At-home kit";
+      return kit && kit !== "finger-prick"
+        ? `At-home kit (${kit})`
+        : "At-home kit";
     if (m.includes("clinic")) return "In-clinic";
     if (m.includes("home")) return "Home visit";
     return collectionOptions[0].method;
   }
   if (info.isHomeCollectable)
-    return kit && kit !== "finger-prick" ? `At-home kit (${kit})` : "At-home kit";
+    return kit && kit !== "finger-prick"
+      ? `At-home kit (${kit})`
+      : "At-home kit";
   if (st.includes("home")) return "At-home kit";
   if (st.includes("clinic") || info.token === "venous") return "In-clinic";
   if (info.label) return info.label;

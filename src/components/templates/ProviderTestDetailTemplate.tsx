@@ -870,7 +870,6 @@ export default function ProviderTestDetailTemplate({
                 />
               )}
 
-
               {/* Sample Collection Options */}
               <CollectionOptionsSection test={test} />
 
