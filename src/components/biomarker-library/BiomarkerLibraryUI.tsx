@@ -20,7 +20,6 @@ import {
   normaliseReferenceRanges,
   type RangeBand,
   type RangeKey,
-  type RangeSex,
   type SexRanges,
 } from "./biomarker-ranges";
 
