@@ -68,7 +68,7 @@ const CompareBySymptomPage = () => {
                     >
                       {symptom.icon}
                     </div>
-                    <h3 className="text-lg font-heading font-bold text-[#081129] group-hover:text-[#22c0d4] transition-colors">
+                    <h3 className="type-card-title text-[#081129] group-hover:text-[#22c0d4] transition-colors">
                       {symptom.name}
                     </h3>
                   </div>
