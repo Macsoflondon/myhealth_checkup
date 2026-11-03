@@ -129,7 +129,7 @@ export function CategoryPillDropdown({
         }
       >
         <Icon
-          className={`${dense ? "hidden xl:block w-[15px] h-[15px] shrink-0" : "w-[14px] h-[14px] shrink-0 2xl:w-[17px] 2xl:h-[17px]"} group-hover:!text-brand-pink`}
+          className={`${dense ? "hidden 2xl:block w-[15px] h-[15px] shrink-0" : "w-[14px] h-[14px] shrink-0 2xl:w-[17px] 2xl:h-[17px]"} group-hover:!text-brand-pink`}
           style={{ color: isActiveParent ? PINK : color }}
           strokeWidth={2}
         />
@@ -151,7 +151,7 @@ export function CategoryPillDropdown({
 
         {hasDropdown && (
           <ChevronDown
-            className={`text-[#081129]/45 transition-transform duration-300 shrink-0 ${dense ? "hidden xl:block w-[12px] h-[12px]" : "w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px]"} group-hover:text-brand-pink ${open ? "rotate-180" : ""}`}
+            className={`text-[#081129]/45 transition-transform duration-300 shrink-0 ${dense ? "hidden 2xl:block w-[12px] h-[12px]" : "w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px]"} group-hover:text-brand-pink ${open ? "rotate-180" : ""}`}
           />
         )}
       </Link>
