@@ -63,6 +63,8 @@ const CompareTests = () => {
     // Goal/symptom "Compare prices" links arrive as /compare?search=vitamin+d,
     // so the URL seeds the same search field the toolbar input drives.
     searchQuery: searchParams.get("search") || "",
+    // Biomarker library provider links arrive as ?provider=<provider_id>.
+    selectedProvider: searchParams.get("provider") || "all",
   }));
 
   const navigate = useNavigate();

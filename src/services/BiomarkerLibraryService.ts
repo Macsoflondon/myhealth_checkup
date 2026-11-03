@@ -106,10 +106,23 @@ export interface LibraryPage {
   nextOffset: number | null;
 }
 
+/**
+ * Categories holding allergen extracts and infection markers rather than
+ * physiological biomarkers. They are listed after the biomarker library.
+ */
+export const NON_BIOMARKER_CATEGORIES = [
+  "Allergy & Immunology",
+  "Infectious Disease",
+] as const;
+export type LibraryScope = "biomarkers" | "other";
+
+const NON_BIOMARKER_FILTER = `(${NON_BIOMARKER_CATEGORIES.map((c) => `"${c}"`).join(",")})`;
+
 export async function fetchLibraryPage(params: {
   search: string;
   category: string;
   offset: number;
+  scope?: LibraryScope;
 }): Promise<LibraryPage> {
   let query = supabase
     .from("biomarker_library_public")
@@ -118,6 +131,12 @@ export async function fetchLibraryPage(params: {
     .order("biomarker_name", { ascending: true })
     .range(params.offset, params.offset + BIOMARKER_PAGE_SIZE - 1);
   if (params.category) query = query.eq("category", params.category);
+  else if (params.scope === "other")
+    query = query.in("category", [...NON_BIOMARKER_CATEGORIES]);
+  else if (params.scope === "biomarkers")
+    query = query.or(
+      `category.is.null,category.not.in.${NON_BIOMARKER_FILTER}`,
+    );
   const filter = buildSearchFilter(params.search);
   if (filter) query = query.or(filter);
   const { data, error, count } = await query;
@@ -158,11 +177,15 @@ export async function fetchLibraryEntryBySlug(
   return data ? toLibraryEntry(data) : null;
 }
 
-export const libraryPagesQuery = (search: string, category: string) =>
+export const libraryPagesQuery = (
+  search: string,
+  category: string,
+  scope: LibraryScope = "biomarkers",
+) =>
   infiniteQueryOptions({
-    queryKey: ["biomarker-library", "pages", search, category],
+    queryKey: ["biomarker-library", "pages", search, category, scope],
     queryFn: ({ pageParam }) =>
-      fetchLibraryPage({ search, category, offset: pageParam }),
+      fetchLibraryPage({ search, category, offset: pageParam, scope }),
     initialPageParam: 0,
     getNextPageParam: (last: LibraryPage) => last.nextOffset ?? undefined,
   });
@@ -235,3 +258,44 @@ export const testBiomarkerChipsQuery = (providerTestId: string) =>
     queryFn: () => fetchTestBiomarkerChips(providerTestId),
     enabled: providerTestId.length > 0,
   });
+
+// ---------- providers offering a biomarker ----------
+
+export interface BiomarkerProviderLink {
+  providerId: string;
+  testCount: number;
+}
+
+export async function fetchBiomarkerProviders(
+  biomarkerId: string,
+): Promise<BiomarkerProviderLink[]> {
+  const { data, error } = await supabase
+    .from("biomarker_provider_comparison")
+    .select("provider_id, provider_test_id")
+    .eq("biomarker_id", biomarkerId)
+    .range(0, 1999);
+  if (error) throw error;
+  const byProvider = new Map<string, Set<string>>();
+  (data ?? []).forEach((r) => {
+    if (!r.provider_id || !r.provider_test_id) return;
+    const set = byProvider.get(r.provider_id) ?? new Set<string>();
+    set.add(r.provider_test_id);
+    byProvider.set(r.provider_id, set);
+  });
+  return Array.from(byProvider.entries())
+    .map(([providerId, tests]) => ({ providerId, testCount: tests.size }))
+    .sort((a, b) => b.testCount - a.testCount);
+}
+
+export const biomarkerProvidersQuery = (biomarkerId: string) =>
+  queryOptions({
+    queryKey: ["biomarker-library", "providers", biomarkerId],
+    queryFn: () => fetchBiomarkerProviders(biomarkerId),
+    enabled: biomarkerId.length > 0,
+  });
+
+export const biomarkerProviderCompareHref = (
+  biomarkerName: string,
+  providerId: string,
+): string =>
+  `/compare?search=${encodeURIComponent(biomarkerName)}&provider=${encodeURIComponent(providerId)}`;
