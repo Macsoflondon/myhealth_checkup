@@ -51,7 +51,7 @@ export const buildRouteHead = ({
   image,
 }: RouteHeadInput) => {
   const url = canonicalUrl(path);
-  const imageMeta = image
+  const imageMeta: { property?: string; name?: string; content: string }[] = image
     ? [
         { property: "og:image", content: image.url },
         { property: "og:image:width", content: "1200" },
