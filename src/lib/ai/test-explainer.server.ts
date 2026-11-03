@@ -1,5 +1,5 @@
 import { createAnthropic } from "@ai-sdk/anthropic";
-import { streamText } from "ai";
+import { streamText, type LanguageModel } from "ai";
 import { z } from "zod";
 import { createLovableAiGatewayRunIdFetch } from "./run-id";
 import type {
@@ -187,7 +187,11 @@ export async function explainTest(
 
   try {
     const result = streamText({
-      model: anthropic(TEST_EXPLAINER_MODEL),
+      // The Anthropic adapter resolves the hoisted @ai-sdk/provider copy while
+      // ai's streamText types resolve the nested one; the two LanguageModelV4
+      // declarations differ only in one finish-reason literal. The runtime
+      // contract is identical, so a double assertion bridges the type split.
+      model: anthropic(TEST_EXPLAINER_MODEL) as unknown as LanguageModel,
       maxOutputTokens: 16000,
       maxRetries: 0,
       temperature: 0.2,
