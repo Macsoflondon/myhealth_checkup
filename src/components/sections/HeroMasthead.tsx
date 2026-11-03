@@ -29,7 +29,6 @@ export default function HeroMasthead() {
   // hero photo for bandwidth. Until it is playing, the responsive photo below
   // (AVIF/WebP, 11-60 KB) is the visible hero and the LCP element.
   const [videoAllowed, setVideoAllowed] = useState(false);
-  const [videoPlaying, setVideoPlaying] = useState(false);
 
   const [reducedMotion, setReducedMotion] = useState(false);
   useEffect(() => {
@@ -175,17 +174,16 @@ export default function HeroMasthead() {
             {videoAllowed && (
               <video
                 ref={videoRef}
-                className={`absolute inset-0 h-full w-full object-cover object-[80%_center] sm:object-center transition-opacity duration-700 ${videoPlaying ? "opacity-100" : "opacity-0"}`}
+                className={`absolute inset-0 h-full w-full object-cover object-[80%_center] sm:object-center`}
                 muted
                 loop
                 playsInline
                 autoPlay
                 preload="auto"
                 aria-hidden
-                onPlaying={() => setVideoPlaying(true)}
               >
-                <source src={heroVideoWebm.url} type="video/webm" />
                 <source src={heroVideoMp4.url} type="video/mp4" />
+                <source src={heroVideoWebm.url} type="video/webm" />
               </video>
             )}
           </a>
