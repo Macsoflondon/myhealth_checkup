@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { buildRouteHead } from "@/lib/seo/route-head";
+import { buildRouteHead, DEFAULT_SHARE_IMAGE_URL } from "@/lib/seo/route-head";
 import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 import { symptomPages } from "@/data/symptomPages";
 
@@ -16,6 +16,10 @@ export const Route = createFileRoute("/compare/symptoms/$symptomSlug")({
         ? `Compare private blood tests for ${name.toLowerCase()}: price in GBP, biomarkers included, sample method and typical turnaround across UKAS-accredited UK providers.`
         : "Compare private blood tests by symptom: price in GBP, biomarkers included, sample method and typical turnaround across UKAS-accredited UK providers.",
       path: `/compare/symptoms/${params.symptomSlug}`,
+      image: {
+        url: DEFAULT_SHARE_IMAGE_URL,
+        alt: `myhealth checkup: compare private blood tests for ${name.toLowerCase()}`,
+      },
     });
   },
   component: SymptomDetailPage,

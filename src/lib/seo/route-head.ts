@@ -18,7 +18,12 @@ interface RouteHeadInput {
   readonly path: string;
   /** Open Graph type; defaults to "website". */
   readonly type?: "website" | "article";
+  /** Absolute https share image (1200x630) for og:image and twitter:image. */
+  readonly image?: { readonly url: string; readonly alt: string };
 }
+
+/** Site share card served from public/og-image.png (1200x630). */
+export const DEFAULT_SHARE_IMAGE_URL = `${SITE_URL}/og-image.png`;
 
 /**
  * Normalises a route path so canonical and og:url always describe the same
@@ -43,8 +48,19 @@ export const buildRouteHead = ({
   description,
   path,
   type = "website",
+  image,
 }: RouteHeadInput) => {
   const url = canonicalUrl(path);
+  const imageMeta = image
+    ? [
+        { property: "og:image", content: image.url },
+        { property: "og:image:width", content: "1200" },
+        { property: "og:image:height", content: "630" },
+        { property: "og:image:alt", content: image.alt },
+        { name: "twitter:image", content: image.url },
+        { name: "twitter:image:alt", content: image.alt },
+      ]
+    : [];
 
   return {
     meta: [
@@ -58,6 +74,7 @@ export const buildRouteHead = ({
       { name: "twitter:description", content: description },
       { name: "twitter:card", content: "summary_large_image" },
       { property: "og:locale", content: "en_GB" },
+      ...imageMeta,
     ],
     links: [{ rel: "canonical", href: url }],
   };
