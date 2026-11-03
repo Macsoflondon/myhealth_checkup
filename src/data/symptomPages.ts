@@ -223,4 +223,344 @@ export const symptomPages: SymptomPageData[] = [
     whenToSeeGP:
       "If low libido is accompanied by erectile dysfunction, absent periods, or discharge from the nipples, seek medical advice promptly.",
   },
+  {
+    slug: "brain-fog",
+    name: "Brain Fog",
+    icon: "🧠",
+    colorHex: "#22c0d4",
+    shortDescription: "Poor concentration, forgetfulness or slowed thinking",
+    clinicalExplanation:
+      "Brain fog describes difficulty concentrating, remembering or thinking clearly. It is not a diagnosis in itself, but it is commonly linked to treatable factors such as low vitamin B12 or folate, an underactive thyroid, low iron stores, poor blood sugar control or low vitamin D. Blood testing can help identify or rule out these physical contributors.",
+    recommendedTests: [
+      {
+        name: "Vitamin B12 & Folate",
+        why: "Low B12 or folate can affect memory, concentration and energy",
+        keyBiomarkers: ["Vitamin B12", "Active B12", "Folate"],
+        searchQuery: "b12",
+      },
+      {
+        name: "Thyroid Function",
+        why: "An underactive thyroid commonly slows thinking and causes forgetfulness",
+        keyBiomarkers: ["TSH", "Free T4", "Free T3"],
+        searchQuery: "thyroid",
+      },
+      {
+        name: "Iron Profile",
+        why: "Low iron stores can reduce concentration before anaemia develops",
+        keyBiomarkers: ["Ferritin", "Iron", "Transferrin Saturation"],
+        searchQuery: "iron",
+      },
+      {
+        name: "Vitamin D",
+        why: "Low vitamin D is common in the UK and linked to tiredness and low mood",
+        keyBiomarkers: ["25-OH Vitamin D"],
+        searchQuery: "vitamin+d",
+      },
+    ],
+    whenToSeeGP:
+      "If confusion comes on suddenly, or you notice slurred speech, facial drooping or weakness in an arm or leg, call 999 immediately. For memory problems that are getting worse over weeks or months, speak to your GP.",
+  },
+  {
+    slug: "joint-pain",
+    name: "Joint Pain & Stiffness",
+    icon: "🦴",
+    colorHex: "#081129",
+    shortDescription: "Aching, swollen or stiff joints",
+    clinicalExplanation:
+      "Joint pain has many causes, from wear and tear to inflammation. Blood tests cannot replace a clinical examination or imaging, but they can measure markers of inflammation, check for antibodies associated with rheumatoid arthritis, and measure uric acid, which is raised in gout.",
+    recommendedTests: [
+      {
+        name: "Arthritis Screen",
+        why: "Combines markers used to investigate inflammatory joint conditions",
+        keyBiomarkers: ["Rheumatoid Factor", "Anti-CCP", "CRP"],
+        searchQuery: "arthritis",
+      },
+      {
+        name: "Inflammation (CRP)",
+        why: "C-reactive protein (CRP) rises when there is inflammation in the body",
+        keyBiomarkers: ["CRP", "hs-CRP"],
+        searchQuery: "crp",
+      },
+      {
+        name: "Rheumatoid Factor",
+        why: "An antibody often present in rheumatoid arthritis",
+        keyBiomarkers: ["Rheumatoid Factor"],
+        searchQuery: "rheumatoid",
+      },
+      {
+        name: "Uric Acid",
+        why: "High uric acid levels are associated with gout",
+        keyBiomarkers: ["Uric Acid"],
+        searchQuery: "uric+acid",
+      },
+    ],
+    whenToSeeGP:
+      "If a joint is suddenly hot, red and swollen, especially with a fever, seek same-day medical advice. See your GP if stiffness lasts more than 30 minutes each morning or pain persists for several weeks.",
+  },
+  {
+    slug: "bloating",
+    name: "Bloating & Digestive Discomfort",
+    icon: "🫄",
+    colorHex: "#e70d69",
+    shortDescription: "Ongoing bloating, wind or changes in bowel habit",
+    clinicalExplanation:
+      "Bloating and digestive discomfort are often linked to diet, stress or irritable bowel syndrome. Blood tests can check for coeliac disease (an immune reaction to gluten) and allergy antibodies, and look at liver function. Coeliac testing is only reliable while you are still eating gluten.",
+    recommendedTests: [
+      {
+        name: "Coeliac Screen",
+        why: "Detects antibodies associated with coeliac disease",
+        keyBiomarkers: ["Tissue Transglutaminase IgA (tTG)", "Total IgA"],
+        searchQuery: "coeliac",
+      },
+      {
+        name: "Allergy Profile",
+        why: "Measures IgE antibodies to common food and environmental allergens",
+        keyBiomarkers: ["Total IgE", "Specific IgE"],
+        searchQuery: "allergy",
+      },
+      {
+        name: "Liver Function",
+        why: "Checks how well the liver is working, which can affect digestion",
+        keyBiomarkers: ["ALT", "ALP", "GGT", "Bilirubin", "Albumin"],
+        searchQuery: "liver",
+      },
+    ],
+    whenToSeeGP:
+      "See your GP if you have unexplained weight loss, blood in your stools, difficulty swallowing, persistent vomiting, or a change in bowel habit lasting more than three weeks.",
+  },
+  {
+    slug: "hot-flushes",
+    name: "Hot Flushes & Night Sweats",
+    icon: "🌡️",
+    colorHex: "#22c0d4",
+    shortDescription: "Sudden heat, sweating or disturbed sleep",
+    clinicalExplanation:
+      "Hot flushes and night sweats are common during perimenopause and menopause. Menopause is usually recognised from symptoms in women over 45, but hormone tests can be useful for younger women and can help rule out other causes, such as an overactive thyroid.",
+    recommendedTests: [
+      {
+        name: "Menopause Hormone Profile",
+        why: "Measures the hormones that change through perimenopause",
+        keyBiomarkers: ["FSH", "LH", "Oestradiol"],
+        searchQuery: "menopause",
+      },
+      {
+        name: "Female Hormone Profile",
+        why: "A broader look at reproductive hormones",
+        keyBiomarkers: ["Oestradiol", "Progesterone", "Testosterone", "Prolactin"],
+        searchQuery: "female+hormone",
+      },
+      {
+        name: "Thyroid Function",
+        why: "An overactive thyroid can cause heat intolerance and sweating",
+        keyBiomarkers: ["TSH", "Free T4", "Free T3"],
+        searchQuery: "thyroid",
+      },
+    ],
+    whenToSeeGP:
+      "See your GP if night sweats come with unexplained weight loss, fever or swollen glands, or if bleeding returns after your periods have stopped.",
+  },
+  {
+    slug: "frequent-illness",
+    name: "Frequent Infections",
+    icon: "🛡️",
+    colorHex: "#081129",
+    shortDescription: "Catching colds often or slow to recover",
+    clinicalExplanation:
+      "Picking up infections often, or taking a long time to recover, can have many causes, including stress and poor sleep. Blood tests can look at white blood cells, which fight infection, and at nutrients such as vitamin D, iron and zinc that support normal immune function.",
+    recommendedTests: [
+      {
+        name: "Full Blood Count",
+        why: "Measures white blood cells and checks for anaemia",
+        keyBiomarkers: ["White Blood Cells", "Neutrophils", "Lymphocytes", "Haemoglobin"],
+        searchQuery: "full+blood+count",
+      },
+      {
+        name: "Vitamin D",
+        why: "Vitamin D supports normal immune function and is often low in UK winters",
+        keyBiomarkers: ["25-OH Vitamin D"],
+        searchQuery: "vitamin+d",
+      },
+      {
+        name: "Iron Profile",
+        why: "Low iron stores can leave you run down",
+        keyBiomarkers: ["Ferritin", "Iron"],
+        searchQuery: "iron",
+      },
+    ],
+    whenToSeeGP:
+      "See your GP if you need antibiotics repeatedly, have infections that keep returning, persistent mouth ulcers, or swollen glands that do not go down.",
+  },
+  {
+    slug: "muscle-cramps",
+    name: "Muscle Weakness & Cramps",
+    icon: "💪",
+    colorHex: "#e70d69",
+    shortDescription: "Cramps, twitching or unexplained muscle weakness",
+    clinicalExplanation:
+      "Muscle cramps are common and often linked to exercise or dehydration. Blood tests can check minerals that muscles rely on, such as magnesium and calcium, and creatine kinase (CK), an enzyme released when muscle is damaged. Some medicines, including statins, can also affect muscles.",
+    recommendedTests: [
+      {
+        name: "Magnesium",
+        why: "Low magnesium is associated with cramps and muscle twitching",
+        keyBiomarkers: ["Magnesium"],
+        searchQuery: "magnesium",
+      },
+      {
+        name: "Creatine Kinase",
+        why: "Raised CK levels indicate muscle strain or damage",
+        keyBiomarkers: ["Creatine Kinase (CK)"],
+        searchQuery: "creatine+kinase",
+      },
+      {
+        name: "Sports Profile",
+        why: "Combines markers relevant to training, recovery and muscle health",
+        keyBiomarkers: ["Creatine Kinase", "Testosterone", "Cortisol", "Ferritin"],
+        searchQuery: "sports",
+      },
+      {
+        name: "Vitamin D",
+        why: "Low vitamin D is linked to muscle weakness and aches",
+        keyBiomarkers: ["25-OH Vitamin D"],
+        searchQuery: "vitamin+d",
+      },
+    ],
+    whenToSeeGP:
+      "Seek urgent medical advice if muscle pain comes with dark or tea-coloured urine. See your GP if weakness is getting worse, such as difficulty climbing stairs or rising from a chair.",
+  },
+  {
+    slug: "irregular-periods",
+    name: "Irregular or Heavy Periods",
+    icon: "🩸",
+    colorHex: "#22c0d4",
+    shortDescription: "Unpredictable cycles or heavy bleeding",
+    clinicalExplanation:
+      "Irregular periods can be linked to hormonal conditions such as polycystic ovary syndrome (PCOS) or thyroid problems. Heavy periods can lower iron stores and lead to anaemia. Blood tests can measure reproductive hormones, thyroid function and iron levels.",
+    recommendedTests: [
+      {
+        name: "PCOS Profile",
+        why: "Measures hormones commonly assessed when PCOS is being considered",
+        keyBiomarkers: ["Testosterone", "SHBG", "LH", "FSH", "DHEA-S"],
+        searchQuery: "pcos",
+      },
+      {
+        name: "Female Hormone Profile",
+        why: "Checks the hormones that regulate your cycle",
+        keyBiomarkers: ["Oestradiol", "Progesterone", "LH", "FSH", "Prolactin"],
+        searchQuery: "female+hormone",
+      },
+      {
+        name: "Iron Profile",
+        why: "Heavy bleeding can reduce iron stores",
+        keyBiomarkers: ["Ferritin", "Iron", "Haemoglobin"],
+        searchQuery: "iron",
+      },
+      {
+        name: "Thyroid Function",
+        why: "Thyroid problems can disrupt the menstrual cycle",
+        keyBiomarkers: ["TSH", "Free T4"],
+        searchQuery: "thyroid",
+      },
+    ],
+    whenToSeeGP:
+      "See your GP if you bleed between periods, after sex or after the menopause, or if you have severe pelvic pain. Seek urgent help for very heavy bleeding with dizziness or fainting.",
+  },
+  {
+    slug: "sleep-problems",
+    name: "Sleep Problems",
+    icon: "🌙",
+    colorHex: "#081129",
+    shortDescription: "Trouble getting to sleep, staying asleep or waking refreshed",
+    clinicalExplanation:
+      "Poor sleep is most often linked to stress, routine or lifestyle. Some physical factors can contribute, including an overactive thyroid, changes in the stress hormone cortisol, and low iron stores, which are associated with restless legs.",
+    recommendedTests: [
+      {
+        name: "Cortisol",
+        why: "Measures the body's main stress hormone",
+        keyBiomarkers: ["Cortisol"],
+        searchQuery: "cortisol",
+      },
+      {
+        name: "Thyroid Function",
+        why: "An overactive thyroid can make it hard to sleep",
+        keyBiomarkers: ["TSH", "Free T4", "Free T3"],
+        searchQuery: "thyroid",
+      },
+      {
+        name: "Iron Profile",
+        why: "Low ferritin is associated with restless legs at night",
+        keyBiomarkers: ["Ferritin", "Iron"],
+        searchQuery: "iron",
+      },
+      {
+        name: "Magnesium",
+        why: "Magnesium plays a role in normal muscle and nerve function",
+        keyBiomarkers: ["Magnesium"],
+        searchQuery: "magnesium",
+      },
+    ],
+    whenToSeeGP:
+      "See your GP if you are falling asleep during the day or while driving, if a partner notices you stop breathing or gasp in your sleep, or if poor sleep lasts more than three months.",
+  },
+  {
+    slug: "skin-breakouts",
+    name: "Adult Acne & Skin Breakouts",
+    icon: "✨",
+    colorHex: "#e70d69",
+    shortDescription: "Persistent spots or breakouts in adulthood",
+    clinicalExplanation:
+      "Acne in adulthood can be influenced by hormones, particularly androgens such as testosterone. Blood tests can measure these hormones and sex hormone binding globulin (SHBG), a protein that affects how much hormone is active. Allergy and liver tests are sometimes considered alongside them.",
+    recommendedTests: [
+      {
+        name: "Hormone Profile",
+        why: "Measures androgens linked to oil production in the skin",
+        keyBiomarkers: ["Testosterone", "Free Androgen Index", "SHBG", "DHEA-S"],
+        searchQuery: "hormone",
+      },
+      {
+        name: "Allergy Profile",
+        why: "Checks IgE antibodies to common allergens",
+        keyBiomarkers: ["Total IgE", "Specific IgE"],
+        searchQuery: "allergy",
+      },
+      {
+        name: "Liver Function",
+        why: "Often checked before and during some acne treatments",
+        keyBiomarkers: ["ALT", "ALP", "GGT", "Bilirubin"],
+        searchQuery: "liver",
+      },
+    ],
+    whenToSeeGP:
+      "See your GP if acne is painful, leaving scars or affecting your wellbeing, or if it comes with excess hair growth or irregular periods. Seek urgent help for a sudden widespread or blistering rash.",
+  },
+  {
+    slug: "excessive-thirst",
+    name: "Excessive Thirst",
+    icon: "💧",
+    colorHex: "#22c0d4",
+    shortDescription: "Feeling thirsty often or needing to urinate more",
+    clinicalExplanation:
+      "Feeling very thirsty and passing urine more often, especially at night, can be early signs of raised blood sugar. Blood tests can measure HbA1c, which reflects average blood sugar over about three months, and check kidney function.",
+    recommendedTests: [
+      {
+        name: "Diabetes Check (HbA1c)",
+        why: "Shows average blood sugar over the past two to three months",
+        keyBiomarkers: ["HbA1c"],
+        searchQuery: "hba1c",
+      },
+      {
+        name: "Diabetes Profile",
+        why: "A broader look at blood sugar control",
+        keyBiomarkers: ["HbA1c", "Glucose", "Insulin"],
+        searchQuery: "diabetes",
+      },
+      {
+        name: "Kidney Function",
+        why: "Checks how well your kidneys filter the blood",
+        keyBiomarkers: ["eGFR", "Creatinine", "Urea"],
+        searchQuery: "kidney",
+      },
+    ],
+    whenToSeeGP:
+      "See your GP promptly if thirst comes with weight loss, tiredness or blurred vision. Seek urgent help (NHS 111 or 999) if you feel very unwell, are vomiting or have fruity-smelling breath.",
+  },
 ];
