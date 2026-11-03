@@ -13,8 +13,8 @@ import {
 import heroVideoMp4 from "@/assets/hero/hero-video.mp4.asset.json";
 import heroVideoWebm from "@/assets/hero/hero-video.webm.asset.json";
 
-/** The ad runs at half speed so the loop feels calm behind the copy. */
-const HERO_PLAYBACK_RATE = 0.5;
+/** Normal speed: half speed made still scenes look frozen. */
+const HERO_PLAYBACK_RATE = 1;
 
 export default function HeroMasthead() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -29,7 +29,6 @@ export default function HeroMasthead() {
   // hero photo for bandwidth. Until it is playing, the responsive photo below
   // (AVIF/WebP, 11-60 KB) is the visible hero and the LCP element.
   const [videoAllowed, setVideoAllowed] = useState(false);
-  const [videoPlaying, setVideoPlaying] = useState(false);
 
   const [reducedMotion, setReducedMotion] = useState(false);
   useEffect(() => {
@@ -72,30 +71,17 @@ export default function HeroMasthead() {
       video.pause();
       return;
     }
-    // Keep the loop running no matter what: browsers can pause background
-    // video on scroll, tab visibility changes or power saving, so any pause
-    // that we did not ask for is immediately reversed.
+    // Native `loop` handles restarts; we only resume after the tab becomes
+    // visible again, so we never fight the browser's own loop reset.
     const resume = () => {
       void video.play().catch(() => undefined);
     };
-    const onPlaying = () => {
-      if (video.playbackRate !== HERO_PLAYBACK_RATE) {
-        video.playbackRate = HERO_PLAYBACK_RATE;
-      }
-    };
-    video.addEventListener("playing", onPlaying);
-    const onPause = () => {
-      if (!video.ended) resume();
-    };
-    video.addEventListener("pause", onPause);
     const onVisible = () => {
       if (document.visibilityState === "visible" && video.paused) resume();
     };
     document.addEventListener("visibilitychange", onVisible);
     resume();
     return () => {
-      video.removeEventListener("pause", onPause);
-      video.removeEventListener("playing", onPlaying);
       document.removeEventListener("visibilitychange", onVisible);
     };
   }, [reducedMotion, videoAllowed]);
@@ -188,17 +174,16 @@ export default function HeroMasthead() {
             {videoAllowed && (
               <video
                 ref={videoRef}
-                className={`absolute inset-0 h-full w-full object-cover object-[80%_center] sm:object-center transition-opacity duration-700 ${videoPlaying ? "opacity-100" : "opacity-0"}`}
+                className={`absolute inset-0 h-full w-full object-cover object-[80%_center] sm:object-center`}
                 muted
                 loop
                 playsInline
                 autoPlay
                 preload="auto"
                 aria-hidden
-                onPlaying={() => setVideoPlaying(true)}
               >
-                <source src={heroVideoWebm.url} type="video/webm" />
                 <source src={heroVideoMp4.url} type="video/mp4" />
+                <source src={heroVideoWebm.url} type="video/webm" />
               </video>
             )}
           </a>
