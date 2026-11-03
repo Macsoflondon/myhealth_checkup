@@ -23,12 +23,8 @@ export const GoogleSignInButton = ({
           redirectTo: `${window.location.origin}${
             nextPath && nextPath.startsWith("/") && !nextPath.startsWith("//")
               ? nextPath
-              : "/dashboard"
+              : "/health-dashboard"
           }`,
-          queryParams: {
-            access_type: "offline",
-            prompt: "consent",
-          },
         },
       });
       if (error) {
