@@ -57,9 +57,6 @@ const StartJourneySection = lazyPreloadable(
   () => import("@/components/sections/StartJourneySection"),
 );
 
-const TestExplainerSection = lazyPreloadable(
-  () => import("@/components/sections/TestExplainerSection"),
-);
 
 const NewsletterSection = lazy(
   () => import("@/components/sections/NewsletterSection"),
@@ -112,14 +109,8 @@ const DEFERRED_SECTIONS = (
         </SectionReveal>
       </Suspense>
     </HydrateOnVisible>
-
-    <HydrateOnVisible load={TestExplainerSection.preload}>
-      <Suspense fallback={<SectionFallback />}>
-        <SectionReveal delay={0.2}>
-          <TestExplainerSection />
-        </SectionReveal>
-      </Suspense>
-    </HydrateOnVisible>
+    {/* Test explainer archived 03/11/2026 at the owner's request; component
+        kept in src/components/sections/TestExplainerSection.tsx to restore. */}
   </>
 );
 

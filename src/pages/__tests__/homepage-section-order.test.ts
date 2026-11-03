@@ -46,7 +46,6 @@ const DEFERRED_ORDER: readonly string[] = [
   "<AccreditedProvidersBar />",
   "<HeroPopularTests />",
   "<StartJourneySection />",
-  "<TestExplainerSection />",
 ];
 
 const BODY_ORDER: readonly string[] = [
