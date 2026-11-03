@@ -44,7 +44,7 @@ export const CategoryGuides: React.FC<CategoryGuidesProps> = ({
     <section className="mb-12" aria-labelledby="category-guides-heading">
       <h2
         id="category-guides-heading"
-        className="font-heading text-center text-2xl sm:text-3xl font-bold text-[#081129] mb-8"
+        className="type-section-title text-center text-[#081129] mb-8"
       >
         {heading}
       </h2>
