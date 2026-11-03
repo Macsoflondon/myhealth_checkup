@@ -404,7 +404,10 @@ const ReferenceRanges = ({ entry }: { entry: LibraryEntry }) => {
             gap: 10,
           }}
         >
-          {(sexText ? [[sex === "male" ? "Male" : "Female", sexText]] : textRanges).map(([label, value]) => (
+          {(sexText
+            ? [[sex === "male" ? "Male" : "Female", sexText]]
+            : textRanges
+          ).map(([label, value]) => (
             <div
               key={label}
               style={{
