@@ -2,6 +2,11 @@ import { createAnthropic } from "@ai-sdk/anthropic";
 import { streamText } from "ai";
 import { z } from "zod";
 import { createLovableAiGatewayRunIdFetch } from "./run-id";
+import type {
+  ExplainableTest,
+  TestExplanation,
+  TestExplainerResult,
+} from "./test-explainer.types";
 
 /**
  * Claude-powered plain-English test explainer (homepage "Understand any test"
@@ -22,36 +27,12 @@ const RATE_LIMIT_MAX = 6;
 export const TEST_EXPLAINER_DISCLAIMER =
   "This is general information about what the test measures, written from the provider's listed details. It is not medical advice, a diagnosis, or a recommendation that you need this test. If you have symptoms that concern you, speak to your GP or call NHS 111.";
 
-export interface ExplainableTest {
-  id: string;
-  testName: string;
-  providerName: string;
-  description: string | null;
-  price: number | null;
-  biomarkerCount: number | null;
-  biomarkersList: string[] | null;
-  sampleType: string | null;
-  collectionMethod: string | null;
-  turnaroundText: string | null;
-  category: string | null;
-}
-
 const explanationSchema = z.object({
   summary: z.string().min(20).max(600),
   whatItMeasures: z.array(z.string().min(3).max(200)).min(1).max(8),
   whoMightConsider: z.string().min(10).max(400),
   collectionExplained: z.string().min(5).max(300),
-});
-
-export type TestExplanation = z.infer<typeof explanationSchema>;
-
-export interface TestExplainerResult {
-  explanation: TestExplanation;
-  source: "ai" | "fallback";
-  disclaimer: string;
-  promptVersion: string;
-  model: string;
-}
+}) satisfies z.ZodType<TestExplanation>;
 
 const SYSTEM_PROMPT = `You write plain-English explanations of private blood tests for myhealth checkup, a UK comparison platform.
 

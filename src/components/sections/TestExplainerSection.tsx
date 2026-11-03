@@ -7,7 +7,7 @@ import {
   listExplainableTests,
   explainTestForVisitor,
 } from "@/lib/ai/test-explainer.functions";
-import type { TestExplainerResult } from "@/lib/ai/test-explainer.server";
+import type { TestExplainerResult } from "@/lib/ai/test-explainer.types";
 
 /**
  * Homepage "Understand any test" panel. The visitor picks a live catalogue

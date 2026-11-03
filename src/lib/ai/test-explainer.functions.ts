@@ -2,7 +2,10 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequest } from "@tanstack/react-start";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/integrations/supabase/types";
-import type { ExplainableTest, TestExplainerResult } from "./test-explainer.server";
+import type {
+  ExplainableTest,
+  TestExplainerResult,
+} from "./test-explainer.types";
 
 /**
  * Public, read-only server functions behind the homepage "Understand any test"
