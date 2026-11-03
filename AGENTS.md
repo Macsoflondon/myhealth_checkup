@@ -1,6 +1,6 @@
 # Architecture decisions
 
-- Site navigation lives only in the brand bar's menu drawer at every width; the desktop category pill toolbar was removed on 29 October 2026 and must not be reintroduced. Why: the owner wanted a single navigation entry point and the toolbar duplicated the drawer.
+- Navigation: the brand-bar menu drawer is the full nav at every width; a desktop-only category pill row (DesktopCategoryToolbar, homepage hero) was restored on 03/11/2026 at the owner's request. Why: the owner wants quick category access on desktop while keeping one complete menu.
 
 - FHIR shared reads require the owner's latest export consent and prohibit response caching; withdrawal updates all active export-consent records so older grants cannot restore access.
 - Translation quotas use the server-verified user ID and fail closed on quota-storage errors, because request forwarding headers are caller-controlled.

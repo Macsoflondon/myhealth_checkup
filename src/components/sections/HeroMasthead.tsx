@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
+import { DesktopCategoryToolbar } from "@/components/layout/DesktopCategoryToolbar";
 
 import {
   HERO_COPY,
@@ -109,6 +110,7 @@ export default function HeroMasthead() {
           turquoise divider form the top edge, mirroring the bottom divider. */}
       <div className="relative -mx-3 sm:-mx-6 md:mx-0 mt-0 order-1 flex flex-wrap items-center bg-white pb-0 md:pb-1 lg:bg-transparent lg:pb-0">
         <BrowseByCategoryBar placement="hero" />
+        <DesktopCategoryToolbar />
       </div>
 
       {/* White breathing space between the pink brand-bar line and the video */}
