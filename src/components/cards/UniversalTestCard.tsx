@@ -1098,7 +1098,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
               cursor: "pointer",
             }}
           >
-            {test.is_addon ? "Add-on" : "View details"}
+            View details
           </button>
 
           {/* Body */}
