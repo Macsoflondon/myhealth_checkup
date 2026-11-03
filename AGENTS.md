@@ -41,3 +41,5 @@
 - The library barrel imports its self-contained theme, not the preview stylesheet, so attached consumers receive the comparison utilities and tokens without site-wide application styling.
 - Medical Diagnosis kit boxes are pre-rendered per test name in `src/assets/providers/medical-diagnosis-kits` and take priority over stored provider photos for that provider, so every Medical Diagnosis card looks consistent.
 - The homepage test explainer lives in `src/lib/ai/` (types / server-only Claude call / public server functions) with the UI in `src/components/sections/TestExplainerSection.tsx`; explanations are zod-validated with a catalogue-only fallback and a fixed server-side disclaimer. Why: AI output must never reach the page unvalidated, and anonymous homepage traffic is cost-controlled by a per-test cache plus per-IP limit instead of sign-in.
+
+- Page, section and card headings use the shared type-page-title / type-section-title / type-card-title / type-body utilities in src/styles.css, sized to the homepage standard. Why: per-file hardcoded sizes caused heading drift across pages.
