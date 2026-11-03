@@ -23,6 +23,7 @@
     "sitemap": "npx tsx scripts/generate-sitemap.ts"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.94",
     "@ai-sdk/openai": "^4.0.96",
     "@ai-sdk/react": "^4.0.147",
     "@fontsource/dm-sans": "^5.2.8",
