@@ -36,7 +36,7 @@ const AccreditedProvidersBar = () => {
         <div className="mt-0 mb-6 sm:mb-8 flex items-center justify-center gap-3">
           <span className="h-px w-6 sm:w-12 bg-brand-pink" aria-hidden="true" />
           {/* h2 so the six standards below (h3) sit under a section heading. */}
-          <h2 className="min-w-0 text-center font-heading text-sm font-bold uppercase text-brand-turquoise">
+          <h2 className="min-w-0 text-center font-heading text-2xl sm:text-3xl md:text-4xl font-bold leading-[1.15] tracking-tight text-brand-navy">
             Our clinical standards
           </h2>
           <span className="h-px w-6 sm:w-12 bg-brand-pink" aria-hidden="true" />
@@ -54,9 +54,9 @@ const AccreditedProvidersBar = () => {
             >
               <div
                 aria-hidden="true"
-                className={`w-4 h-1 rounded-full shrink-0 ${item.markerClassName}`}
+                className={`w-5 h-1.5 rounded-full shrink-0 ${item.markerClassName}`}
               />
-              <h3 className="min-w-0 text-xs font-bold text-brand-navy leading-relaxed">
+              <h3 className="min-w-0 text-sm sm:text-base font-semibold text-brand-navy leading-snug">
                 {item.label}
               </h3>
             </div>
