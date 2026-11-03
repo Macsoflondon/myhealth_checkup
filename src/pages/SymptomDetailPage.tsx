@@ -105,7 +105,7 @@ const SymptomDetailPage = () => {
                   <Button
                     asChild
                     size="sm"
-                    className="bg-[#22c0d4] hover:bg-[#e70d69] text-white rounded-full text-xs"
+                    className="bg-[#22c0d4] hover:bg-[#e70d69] text-white rounded-full text-sm"
                   >
                     <Link to={`/compare?search=${test.searchQuery}`}>
                       <Search className="w-3.5 h-3.5 mr-1" />
@@ -113,7 +113,7 @@ const SymptomDetailPage = () => {
                     </Link>
                   </Button>
                 </div>
-                <p className="text-sm text-[#081129]/80 mb-3">{test.why}</p>
+                <p className="text-base text-[#081129]/80 mb-3">{test.why}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {test.keyBiomarkers.map((b) => (
                     <Badge
@@ -137,7 +137,7 @@ const SymptomDetailPage = () => {
                 <h3 className="type-card-title text-[#081129] mb-1">
                   When to see your GP
                 </h3>
-                <p className="text-sm text-[#081129]/75">
+                <p className="text-base text-[#081129]/75">
                   {symptom.whenToSeeGP}
                 </p>
               </div>
