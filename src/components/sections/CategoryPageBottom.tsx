@@ -31,7 +31,7 @@ const CategoryPageBottom = ({
   return (
     <section className="bg-white px-4 sm:px-8 lg:px-10 py-10 sm:py-12">
       <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-        <h2 className="font-heading text-center text-2xl sm:text-3xl font-bold text-[#081129] mb-8">
+        <h2 className="type-section-title text-center text-[#081129] mb-8">
           {benefitsTitle}
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 sm:gap-6 mb-10">
