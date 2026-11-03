@@ -90,7 +90,7 @@ export function StandardPageHero({
           />
           <Heading
             id={headingId}
-            className="whitespace-pre-line font-bold text-center m-0 text-white text-xl sm:text-2xl md:text-[33px]"
+            className="whitespace-pre-line type-page-title text-center m-0 text-white"
             style={{
               fontFamily: "Montserrat, 'Helvetica Neue', sans-serif",
               letterSpacing: "0.04em",
@@ -109,7 +109,7 @@ export function StandardPageHero({
 
         {strapline ? (
           <p
-            className="text-center mx-auto mt-4 text-sm sm:text-base"
+            className="text-center mx-auto mt-4 type-body"
             style={{
               color: "rgba(255,255,255,0.78)",
               maxWidth: 680,

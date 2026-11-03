@@ -68,14 +68,14 @@ const CompareBySymptomPage = () => {
                     >
                       {symptom.icon}
                     </div>
-                    <h3 className="text-lg font-heading font-bold text-[#081129] group-hover:text-[#22c0d4] transition-colors">
+                    <h3 className="type-card-title text-[#081129] group-hover:text-[#22c0d4] transition-colors">
                       {symptom.name}
                     </h3>
                   </div>
-                  <p className="text-sm text-[#081129]/80 mb-4">
+                  <p className="text-base text-[#081129]/80 mb-4">
                     {symptom.shortDescription}
                   </p>
-                  <span className="flex items-center text-sm font-semibold text-[#22c0d4] group-hover:text-[#e70d69] transition-colors">
+                  <span className="flex items-center text-base font-semibold text-[#22c0d4] group-hover:text-[#e70d69] transition-colors">
                     View recommended tests
                     <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
                   </span>

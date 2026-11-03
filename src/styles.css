@@ -1577,3 +1577,35 @@ html {
   --os-grid: #232b3a;
   --os-surface: hsl(222.2 84% 4.9%);
 }
+
+/* Platform type scale — mirrors the homepage standard so every page shares
+   one set of heading, eyebrow and body sizes. */
+@utility type-page-title {
+  font-family: Montserrat, "Helvetica Neue", sans-serif;
+  font-weight: 700;
+  line-height: 1.15;
+  font-size: 1.875rem;
+  @media (min-width: 640px) { font-size: 2.25rem; }
+  @media (min-width: 768px) { font-size: 2.5rem; }
+}
+@utility type-section-title {
+  font-family: Montserrat, "Helvetica Neue", sans-serif;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-size: 1.5rem;
+  @media (min-width: 640px) { font-size: 1.875rem; }
+  @media (min-width: 768px) { font-size: 2.25rem; }
+}
+@utility type-card-title {
+  font-family: Montserrat, "Helvetica Neue", sans-serif;
+  font-weight: 700;
+  line-height: 1.3;
+  font-size: 1.125rem;
+  @media (min-width: 640px) { font-size: 1.25rem; }
+}
+@utility type-body {
+  line-height: 1.7;
+  font-size: 1rem;
+  @media (min-width: 768px) { font-size: 1.0625rem; }
+}

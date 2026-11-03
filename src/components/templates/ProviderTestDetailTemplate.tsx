@@ -198,7 +198,7 @@ const NotFoundState = ({ providerName }: { providerName: string }) => {
         </Button>
         <Card>
           <CardContent className="py-12 text-center">
-            <h2 className="text-2xl font-bold mb-4">Test Not Found</h2>
+            <h2 className="type-section-title mb-4">Test not found</h2>
             <p className="text-muted-foreground mb-6">
               The {providerName} test you're looking for doesn't exist or has
               been removed.
@@ -537,7 +537,7 @@ function CollectionOptionsSection({ test }: { test: ProviderTestData }) {
               )}
               <div className="flex-1">
                 <div className="flex items-center justify-between gap-4">
-                  <h3 className="font-semibold">{variant.label}</h3>
+                  <h3 className="type-card-title">{variant.label}</h3>
                   <span className="font-bold text-primary">
                     {formatCurrency(variant.total)}
                   </span>
@@ -763,7 +763,7 @@ export default function ProviderTestDetailTemplate({
           </div>
 
           {/* Test Header */}
-          <h1 className="text-4xl font-bold mb-2">{displayName}</h1>
+          <h1 className="type-page-title mb-2">{displayName}</h1>
           {displayName !== test.test_name && (
             <p className="text-sm text-muted-foreground mb-4">
               Provider's test name: {test.test_name}
@@ -1058,7 +1058,7 @@ export default function ProviderTestDetailTemplate({
           aria-label="Related tests and biomarkers"
           className="container mx-auto px-4 max-w-5xl pb-8"
         >
-          <h2 className="text-lg font-semibold text-navy mb-3">
+          <h2 className="type-section-title text-navy mb-3">
             Related tests and biomarkers
           </h2>
           <ul className="flex flex-wrap gap-x-6 gap-y-2">

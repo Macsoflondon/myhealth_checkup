@@ -71,7 +71,7 @@ const BAND_COLOUR: Record<RangeKey, { fg: string; bg: string }> = {
 const headingStyle = {
   color: COLORS.accent,
   fontWeight: 700,
-  fontSize: 12,
+  fontSize: 14,
   textTransform: "uppercase",
   letterSpacing: "0.07em",
   marginBottom: 8,
@@ -79,7 +79,7 @@ const headingStyle = {
 const bodyStyle = {
   color: COLORS.text,
   lineHeight: 1.75,
-  fontSize: 14,
+  fontSize: 16,
   whiteSpace: "pre-line",
 } as const;
 
@@ -160,7 +160,7 @@ const StructuredRanges = ({ data }: { data: SexRanges }) => (
               padding: "10px 14px",
             }}
           >
-            <div style={{ fontWeight: 700, color: COLORS.navy, fontSize: 13 }}>
+            <div style={{ fontWeight: 700, color: COLORS.navy, fontSize: 14 }}>
               {p.title}
             </div>
             <div
@@ -191,14 +191,14 @@ const StructuredRanges = ({ data }: { data: SexRanges }) => (
               style={{
                 fontWeight: 800,
                 color: COLORS.navy,
-                fontSize: 13,
+                fontSize: 14,
                 minWidth: 130,
               }}
             >
               {s.title}: {s.range}
             </span>
             {s.meaning && (
-              <span style={{ color: COLORS.muted, fontSize: 13 }}>
+              <span style={{ color: COLORS.muted, fontSize: 14 }}>
                 {s.meaning}
               </span>
             )}
@@ -247,7 +247,7 @@ const StructuredRanges = ({ data }: { data: SexRanges }) => (
                       padding: "10px 14px",
                       fontWeight: 700,
                       color: c,
-                      fontSize: 13,
+                      fontSize: 14,
                     }}
                   >
                     {v}
@@ -288,7 +288,7 @@ const StructuredRanges = ({ data }: { data: SexRanges }) => (
                   marginBottom: 4,
                   fontWeight: 800,
                   color: BAND_COLOUR[b.key].fg,
-                  fontSize: 13,
+                  fontSize: 14,
                 }}
               >
                 <span>{b.label}</span>
@@ -298,7 +298,7 @@ const StructuredRanges = ({ data }: { data: SexRanges }) => (
                 <p
                   style={{
                     color: COLORS.text,
-                    fontSize: 13,
+                    fontSize: 14,
                     lineHeight: 1.6,
                     margin: 0,
                   }}
@@ -346,7 +346,7 @@ const ReferenceRanges = ({ entry }: { entry: LibraryEntry }) => {
         >
           <span
             style={{
-              fontSize: 13,
+              fontSize: 14,
               color: COLORS.muted,
               lineHeight: "32px",
               marginRight: 4,
@@ -366,7 +366,7 @@ const ReferenceRanges = ({ entry }: { entry: LibraryEntry }) => {
                 borderRadius: 8,
                 padding: "6px 16px",
                 fontWeight: 700,
-                fontSize: 13,
+                fontSize: 14,
                 cursor: "pointer",
               }}
             >
@@ -387,7 +387,7 @@ const ReferenceRanges = ({ entry }: { entry: LibraryEntry }) => {
             borderRadius: 10,
             padding: "12px 14px",
             color: COLORS.muted,
-            fontSize: 13,
+            fontSize: 14,
             margin: 0,
           }}
         >
@@ -416,7 +416,7 @@ const ReferenceRanges = ({ entry }: { entry: LibraryEntry }) => {
                 padding: "14px 16px",
                 color: COLORS.normal,
                 fontWeight: 700,
-                fontSize: 13,
+                fontSize: 14,
               }}
             >
               {label}: {value}
@@ -434,7 +434,7 @@ const ProviderLinks = ({ entry }: { entry: LibraryEntry }) => {
   const providers = q.data ?? [];
   if (q.isPending) {
     return (
-      <p style={{ color: COLORS.muted, fontSize: 13, marginBottom: 16 }}>
+      <p style={{ color: COLORS.muted, fontSize: 14, marginBottom: 16 }}>
         Loading providers…
       </p>
     );
@@ -468,7 +468,7 @@ const ProviderLinks = ({ entry }: { entry: LibraryEntry }) => {
               borderRadius: 10,
               color: COLORS.navy,
               fontWeight: 700,
-              fontSize: 13,
+              fontSize: 14,
               textDecoration: "none",
               background: "#fff",
             }}
@@ -555,14 +555,7 @@ const BiomarkerCard = ({
               flexWrap: "wrap",
             }}
           >
-            <span
-              style={{
-                fontFamily: "Montserrat, 'Helvetica Neue', sans-serif",
-                fontWeight: 700,
-                color: COLORS.navy,
-                fontSize: 16,
-              }}
-            >
+            <span className="type-card-title" style={{ color: COLORS.navy }}>
               {entry.name}
             </span>
             {entry.abbreviation && entry.abbreviation !== entry.name && (
@@ -581,7 +574,7 @@ const BiomarkerCard = ({
             )}
           </div>
           {subtitle && (
-            <div style={{ color: COLORS.muted, fontSize: 13, marginTop: 3 }}>
+            <div style={{ color: COLORS.muted, fontSize: 14, marginTop: 3 }}>
               {subtitle}
             </div>
           )}
@@ -607,7 +600,7 @@ const BiomarkerCard = ({
               style={{
                 color: COLORS.navy,
                 fontWeight: 700,
-                fontSize: 13,
+                fontSize: 14,
                 marginBottom: 16,
               }}
             >
@@ -669,7 +662,7 @@ const BiomarkerCard = ({
                 </>
               )}
               {facts.length > 0 && (
-                <p style={{ color: COLORS.muted, fontSize: 13 }}>
+                <p style={{ color: COLORS.muted, fontSize: 14 }}>
                   {facts.join(" · ")}
                 </p>
               )}
@@ -877,7 +870,7 @@ export default function BiomarkerLibraryUI() {
                 padding: "10px 30px 10px 14px",
                 border: `1px solid ${COLORS.border}`,
                 borderRadius: 10,
-                fontSize: 13,
+                fontSize: 14,
                 fontWeight: 600,
                 color: COLORS.navy,
                 background: COLORS.lightBg,
@@ -914,7 +907,7 @@ export default function BiomarkerLibraryUI() {
         style={{ maxWidth: 1100, margin: "0 auto", padding: "20px 24px 4px" }}
       >
         {pages.isSuccess && (
-          <p style={{ color: COLORS.muted, fontSize: 13 }}>
+          <p style={{ color: COLORS.muted, fontSize: 14 }}>
             Showing{" "}
             <strong style={{ color: COLORS.navy }}>{loaded.length}</strong> of{" "}
             <strong style={{ color: COLORS.navy }}>{total}</strong> biomarkers
@@ -963,14 +956,7 @@ export default function BiomarkerLibraryUI() {
               >
                 {iconFor(cat)}
               </div>
-              <h2
-                style={{
-                  fontFamily: "Montserrat, 'Helvetica Neue', sans-serif",
-                  color: COLORS.navy,
-                  fontSize: "clamp(18px,3vw,26px)",
-                  fontWeight: 700,
-                }}
-              >
+              <h2 className="type-section-title" style={{ color: COLORS.navy }}>
                 {cat}
               </h2>
             </div>
@@ -982,17 +968,12 @@ export default function BiomarkerLibraryUI() {
         {!category && otherLoaded.length > 0 && (
           <div style={{ marginTop: 32 }}>
             <h2
-              style={{
-                fontFamily: "Montserrat, 'Helvetica Neue', sans-serif",
-                color: COLORS.navy,
-                fontSize: "clamp(18px,3vw,26px)",
-                fontWeight: 700,
-                marginBottom: 6,
-              }}
+              className="type-section-title"
+              style={{ color: COLORS.navy, marginBottom: 6 }}
             >
               Allergens and infection markers
             </h2>
-            <p style={{ color: COLORS.muted, fontSize: 13, marginBottom: 20 }}>
+            <p style={{ color: COLORS.muted, fontSize: 14, marginBottom: 20 }}>
               These are allergen extracts and infection tests rather than
               biomarkers. They are listed here for reference.
             </p>
@@ -1078,7 +1059,7 @@ export default function BiomarkerLibraryUI() {
       </div>
       <div style={{ background: COLORS.navy, padding: "32px 24px" }}>
         <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>
-          <p style={{ color: "#8fa3bf", fontSize: 13, lineHeight: 1.8 }}>
+          <p style={{ color: "#8fa3bf", fontSize: 14, lineHeight: 1.8 }}>
             ⚕️ <strong style={{ color: "#c8d8e8" }}>Medical disclaimer:</strong>{" "}
             This library is for educational purposes only and does not
             constitute medical advice. Always discuss results with a qualified

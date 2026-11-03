@@ -71,7 +71,7 @@ export const ProviderTestsGrid = ({
     <section className="mb-8 md:mb-12">
       <div className="flex items-end justify-between mb-6">
         <div>
-          <h2 className="text-2xl md:text-3xl font-heading font-bold text-on-dark">
+          <h2 className="type-section-title text-on-dark">
             Tests from {providerDisplayName}
           </h2>
           <p className="text-on-dark-muted text-sm mt-1">

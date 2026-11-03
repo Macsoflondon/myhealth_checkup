@@ -42,18 +42,16 @@ export const QuizCTABanner = ({
               marginBottom: "8px",
             }}
           >
-            Not Sure Where to Start?
+            Not sure where to start?
           </p>
           <h2
-            className="font-heading"
+            className="type-section-title"
             style={{
               color: "#ffffff",
-              fontSize: "clamp(22px, 3vw, 28px)",
-              fontWeight: 700,
               margin: 0,
             }}
           >
-            Find the Right Health Test for You
+            Find the right health test for you
           </h2>
         </div>
         <Link

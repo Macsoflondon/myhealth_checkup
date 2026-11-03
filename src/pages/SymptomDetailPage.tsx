@@ -79,7 +79,7 @@ const SymptomDetailPage = () => {
               {symptom.icon}
             </div>
             <div className="min-w-0">
-              <h2 className="text-xl sm:text-2xl font-heading font-bold text-[#081129] mb-3">
+              <h2 className="type-section-title text-[#081129] mb-3">
                 Why test for {symptom.name.toLowerCase()}?
               </h2>
               <p className="text-[#081129]/80 leading-relaxed">
@@ -89,7 +89,7 @@ const SymptomDetailPage = () => {
           </div>
 
           {/* Recommended tests */}
-          <h2 className="text-xl sm:text-2xl font-heading font-bold text-[#081129] mb-5">
+          <h2 className="type-section-title text-[#081129] mb-5">
             Recommended tests
           </h2>
           <div className="space-y-4 mb-10">
@@ -99,13 +99,13 @@ const SymptomDetailPage = () => {
                 className="rounded-2xl border border-[#081129]/10 bg-white shadow-[0_2px_12px_rgba(8,17,41,0.06)] p-5"
               >
                 <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
-                  <h3 className="text-lg font-heading font-bold text-[#081129]">
+                  <h3 className="type-card-title text-[#081129]">
                     {test.name}
                   </h3>
                   <Button
                     asChild
                     size="sm"
-                    className="bg-[#22c0d4] hover:bg-[#e70d69] text-white rounded-full text-xs"
+                    className="bg-[#22c0d4] hover:bg-[#e70d69] text-white rounded-full text-sm"
                   >
                     <Link to={`/compare?search=${test.searchQuery}`}>
                       <Search className="w-3.5 h-3.5 mr-1" />
@@ -113,7 +113,7 @@ const SymptomDetailPage = () => {
                     </Link>
                   </Button>
                 </div>
-                <p className="text-sm text-[#081129]/80 mb-3">{test.why}</p>
+                <p className="text-base text-[#081129]/80 mb-3">{test.why}</p>
                 <div className="flex flex-wrap gap-1.5">
                   {test.keyBiomarkers.map((b) => (
                     <Badge
@@ -134,10 +134,10 @@ const SymptomDetailPage = () => {
             <div className="flex items-start gap-3">
               <AlertTriangle className="w-5 h-5 text-[#e70d69] flex-shrink-0 mt-0.5" />
               <div>
-                <h3 className="font-heading font-semibold text-[#081129] mb-1">
+                <h3 className="type-card-title text-[#081129] mb-1">
                   When to see your GP
                 </h3>
-                <p className="text-sm text-[#081129]/75">
+                <p className="text-base text-[#081129]/75">
                   {symptom.whenToSeeGP}
                 </p>
               </div>
