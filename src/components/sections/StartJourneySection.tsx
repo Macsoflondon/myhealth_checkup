@@ -39,7 +39,7 @@ const StartJourneySection = () => {
                 </span>
                 <div className="h-px w-8 sm:w-12 bg-brand-pink" />
               </div>
-              <h2 className="font-heading font-bold text-[#081129] leading-[1.15] tracking-tight text-3xl sm:text-[2.25rem] lg:text-[2.5rem] mb-3">
+              <h2 className="font-heading font-bold text-[#081129] leading-[1.15] tracking-tight text-2xl sm:text-3xl md:text-4xl mb-3">
                 Take Control of Your Health Today
               </h2>
               <p className="text-base sm:text-lg text-brand-navy leading-relaxed max-w-2xl mx-auto lg:mx-0">

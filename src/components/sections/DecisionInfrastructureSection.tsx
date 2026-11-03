@@ -39,7 +39,7 @@ export const DecisionInfrastructureSection = () => (
           <span className="h-px w-8 sm:w-12 bg-brand-pink" aria-hidden="true" />
         </div>
 
-        <h2 className="font-heading text-[clamp(1.6rem,2.9vw,2.5rem)] font-extrabold leading-[1.12] tracking-tight text-white">
+        <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold leading-[1.12] tracking-tight text-white">
           Decision infrastructure.
           <br />
           Not a marketplace.

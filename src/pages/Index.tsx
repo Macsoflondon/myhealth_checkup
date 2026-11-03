@@ -170,7 +170,7 @@ const Index = () => {
                     the quiz button. */}
                 <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)] gap-8 sm:gap-10 lg:gap-12 items-center lg:items-stretch">
                   <div className="flex flex-col gap-5 2xl:gap-8 text-left lg:justify-between">
-                    <h2 className="font-extrabold text-[clamp(1.6rem,3.4vw,2.25rem)] tracking-[-0.02em] leading-[1.15] text-white m-0 font-[Montserrat] text-center xl:whitespace-nowrap">
+                    <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl tracking-[-0.02em] leading-[1.15] text-white m-0 font-[Montserrat] text-center xl:whitespace-nowrap">
                       Your <span className="text-[#22c0d4]">health</span> is
                       your greatest{" "}
                       <span className="text-[#e70d69]">asset.</span>
