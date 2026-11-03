@@ -13,8 +13,8 @@ import {
 import heroVideoMp4 from "@/assets/hero/hero-video.mp4.asset.json";
 import heroVideoWebm from "@/assets/hero/hero-video.webm.asset.json";
 
-/** The ad runs at half speed so the loop feels calm behind the copy. */
-const HERO_PLAYBACK_RATE = 0.5;
+/** Normal speed: half speed made still scenes look frozen. */
+const HERO_PLAYBACK_RATE = 1;
 
 export default function HeroMasthead() {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -72,30 +72,17 @@ export default function HeroMasthead() {
       video.pause();
       return;
     }
-    // Keep the loop running no matter what: browsers can pause background
-    // video on scroll, tab visibility changes or power saving, so any pause
-    // that we did not ask for is immediately reversed.
+    // Native `loop` handles restarts; we only resume after the tab becomes
+    // visible again, so we never fight the browser's own loop reset.
     const resume = () => {
       void video.play().catch(() => undefined);
     };
-    const onPlaying = () => {
-      if (video.playbackRate !== HERO_PLAYBACK_RATE) {
-        video.playbackRate = HERO_PLAYBACK_RATE;
-      }
-    };
-    video.addEventListener("playing", onPlaying);
-    const onPause = () => {
-      if (!video.ended) resume();
-    };
-    video.addEventListener("pause", onPause);
     const onVisible = () => {
       if (document.visibilityState === "visible" && video.paused) resume();
     };
     document.addEventListener("visibilitychange", onVisible);
     resume();
     return () => {
-      video.removeEventListener("pause", onPause);
-      video.removeEventListener("playing", onPlaying);
       document.removeEventListener("visibilitychange", onVisible);
     };
   }, [reducedMotion, videoAllowed]);
