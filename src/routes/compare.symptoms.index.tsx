@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { buildRouteHead } from "@/lib/seo/route-head";
+import { buildRouteHead, DEFAULT_SHARE_IMAGE_URL } from "@/lib/seo/route-head";
 import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 
 const CompareBySymptomPage = lazy(() => import("@/pages/CompareBySymptomPage"));
@@ -11,6 +11,10 @@ export const Route = createFileRoute("/compare/symptoms/")({
       description:
         "Compare private blood tests by symptom — fatigue, hair loss, low mood and more — on price in GBP, biomarkers included and typical turnaround.",
       path: "/compare/symptoms",
+      image: {
+        url: DEFAULT_SHARE_IMAGE_URL,
+        alt: "myhealth checkup: compare private blood tests by symptom",
+      },
     }),
   component: CompareBySymptomPage,
 });
