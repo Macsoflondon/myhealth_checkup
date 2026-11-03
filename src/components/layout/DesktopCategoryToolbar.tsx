@@ -19,11 +19,13 @@ export function DesktopCategoryToolbar() {
   return (
     <nav
       aria-label="Browse by category"
-      className="hidden lg:flex w-full justify-center bg-white px-3 py-1.5"
+      className="hidden lg:flex w-full justify-center overflow-x-auto bg-white px-3 py-1.5 [scrollbar-width:none]"
       data-testid="browse-by-category-bar"
     >
       <div className="flex flex-nowrap items-center justify-center gap-x-0 2xl:gap-x-3">
-        {primaryNavigationItems.map((item) => {
+        {primaryNavigationItems
+          .filter((item) => item.name in ICONS)
+          .map((item) => {
           const { Icon, color } = ICONS[item.name] ?? {
             Icon: Star,
             color: TURQUOISE,
