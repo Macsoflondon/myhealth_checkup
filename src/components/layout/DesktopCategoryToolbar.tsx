@@ -19,12 +19,12 @@ export function DesktopCategoryToolbar() {
   return (
     <nav
       aria-label="Browse by category"
-      className="hidden lg:flex w-full justify-center overflow-x-auto bg-white px-3 py-1.5 [scrollbar-width:none]"
+      className="hidden lg:flex w-full overflow-x-auto bg-white px-3 py-1.5 [scrollbar-width:none]"
       data-testid="browse-by-category-bar"
     >
-      <div className="flex flex-nowrap items-center justify-center gap-x-0 2xl:gap-x-3">
+      <div className="mx-auto flex w-max flex-nowrap items-center gap-x-0 2xl:gap-x-3">
         {primaryNavigationItems
-          .filter((item) => item.name in ICONS)
+          .filter((item) => item.name in ICONS && item.name !== "How It Works")
           .map((item) => {
           const { Icon, color } = ICONS[item.name] ?? {
             Icon: Star,
