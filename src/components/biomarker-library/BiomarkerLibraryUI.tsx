@@ -10,8 +10,11 @@ import {
   libraryCategoriesQuery,
   libraryEntryQuery,
   libraryPagesQuery,
+  biomarkerProvidersQuery,
+  biomarkerProviderCompareHref,
   type LibraryEntry,
 } from "@/services/BiomarkerLibraryService";
+import { getProviderName } from "@/constants/providers";
 import {
   hasAnyRange,
   normaliseReferenceRanges,
@@ -94,13 +97,18 @@ const TextSection = ({
 }: {
   title: string;
   body: string | null;
-}) =>
-  body ? (
-    <div>
-      <h4 style={headingStyle}>{title}</h4>
+}) => (
+  <div>
+    <h4 style={headingStyle}>{title}</h4>
+    {body ? (
       <p style={bodyStyle}>{body}</p>
-    </div>
-  ) : null;
+    ) : (
+      <p style={{ ...bodyStyle, color: COLORS.muted, fontStyle: "italic" }}>
+        Not yet available for this biomarker.
+      </p>
+    )}
+  </div>
+);
 
 const RangeBar = ({ bands }: { bands: RangeBand[] }) => (
   <div
@@ -312,21 +320,31 @@ const ReferenceRanges = ({ entry }: { entry: LibraryEntry }) => {
     () => normaliseReferenceRanges(entry.referenceRanges),
     [entry.referenceRanges],
   );
-  const hasSexSplit = Boolean(ranges.male && ranges.female);
-  const [sex, setSex] = useState<RangeSex>(hasSexSplit ? "male" : "both");
+  const hasSexSplit = Boolean(ranges.male || ranges.female);
+  const [sex, setSex] = useState<"male" | "female">("male");
   const textRanges = [
     entry.normalRangeMale ? ["Male", entry.normalRangeMale] : null,
     entry.normalRangeFemale ? ["Female", entry.normalRangeFemale] : null,
   ].flatMap((r) => (r ? [r] : []));
 
-  if (!hasAnyRange(ranges) && textRanges.length === 0) return null;
-  const data = ranges[sex] ?? ranges.both ?? ranges.male ?? ranges.female;
+  const hasRanges = hasAnyRange(ranges) || textRanges.length > 0;
+  const data: SexRanges | undefined = ranges[sex] ?? ranges.both;
+  const sexText =
+    sex === "male" ? entry.normalRangeMale : entry.normalRangeFemale;
 
   return (
     <div style={{ marginBottom: 20 }}>
       <h4 style={{ ...headingStyle, marginBottom: 12 }}>Reference ranges</h4>
-      {hasSexSplit && (
-        <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+      {hasRanges && (
+        <div
+          style={{
+            display: "flex",
+            gap: 8,
+            marginBottom: 16,
+            flexWrap: "wrap",
+            alignItems: "center",
+          }}
+        >
           <span
             style={{
               fontSize: 13,
@@ -356,9 +374,28 @@ const ReferenceRanges = ({ entry }: { entry: LibraryEntry }) => {
               {s === "male" ? "♂ Male" : "♀ Female"}
             </button>
           ))}
+          {!hasSexSplit && (
+            <span style={{ fontSize: 12, color: COLORS.muted }}>
+              The same guideline range applies to both sexes.
+            </span>
+          )}
         </div>
       )}
-      {data ? (
+      {!hasRanges ? (
+        <p
+          style={{
+            background: COLORS.lightBg,
+            borderRadius: 10,
+            padding: "12px 14px",
+            color: COLORS.muted,
+            fontSize: 13,
+            margin: 0,
+          }}
+        >
+          Reference range not yet available. Each laboratory publishes its own
+          range with your results, so use the range printed on your report.
+        </p>
+      ) : data ? (
         <StructuredRanges data={data} />
       ) : (
         <div
@@ -368,7 +405,7 @@ const ReferenceRanges = ({ entry }: { entry: LibraryEntry }) => {
             gap: 10,
           }}
         >
-          {textRanges.map(([label, value]) => (
+          {(sexText ? [[sex === "male" ? "Male" : "Female", sexText]] : textRanges).map(([label, value]) => (
             <div
               key={label}
               style={{
@@ -386,6 +423,61 @@ const ReferenceRanges = ({ entry }: { entry: LibraryEntry }) => {
           ))}
         </div>
       )}
+    </div>
+  );
+};
+
+const ProviderLinks = ({ entry }: { entry: LibraryEntry }) => {
+  const q = useQuery(biomarkerProvidersQuery(entry.id));
+  const providers = q.data ?? [];
+  if (q.isPending) {
+    return (
+      <p style={{ color: COLORS.muted, fontSize: 13, marginBottom: 16 }}>
+        Loading providers…
+      </p>
+    );
+  }
+  if (providers.length === 0) return null;
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <h4 style={{ ...headingStyle, marginBottom: 12 }}>
+        Available from {providers.length} provider
+        {providers.length === 1 ? "" : "s"}
+      </h4>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))",
+          gap: 8,
+        }}
+      >
+        {providers.map((p) => (
+          <a
+            key={p.providerId}
+            href={biomarkerProviderCompareHref(entry.name, p.providerId)}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: 8,
+              minHeight: 44,
+              padding: "10px 14px",
+              border: `1px solid ${COLORS.accent}`,
+              borderRadius: 10,
+              color: COLORS.navy,
+              fontWeight: 700,
+              fontSize: 13,
+              textDecoration: "none",
+              background: "#fff",
+            }}
+          >
+            <span>{getProviderName(p.providerId)}</span>
+            <span style={{ color: COLORS.muted, fontWeight: 600 }}>
+              {p.testCount} test{p.testCount === 1 ? "" : "s"} →
+            </span>
+          </a>
+        ))}
+      </div>
     </div>
   );
 };
@@ -539,7 +631,7 @@ const BiomarkerCard = ({
               body={entry.clinicalSignificance}
             />
           </div>
-          <ReferenceRanges entry={entry} />
+          <ReferenceRanges key={entry.id} entry={entry} />
           {(entry.synonyms.length > 0 || facts.length > 0) && (
             <div style={{ marginBottom: 16 }}>
               {entry.synonyms.length > 0 && (
@@ -581,11 +673,10 @@ const BiomarkerCard = ({
               )}
             </div>
           )}
-          {reviewed && (
-            <p style={{ color: COLORS.muted, fontSize: 12, marginBottom: 12 }}>
-              Last reviewed {reviewed}
-            </p>
-          )}
+          <ProviderLinks entry={entry} />
+          <p style={{ color: COLORS.muted, fontSize: 12, marginBottom: 12 }}>
+            {reviewed ? `Last reviewed ${reviewed}` : "Not yet reviewed"}
+          </p>
           <div
             style={{
               padding: "10px 14px",
@@ -635,6 +726,14 @@ export default function BiomarkerLibraryUI() {
     ...libraryPagesQuery(search, category),
     placeholderData: keepPreviousData,
   });
+  const otherPages = useInfiniteQuery({
+    ...libraryPagesQuery(search, "", "other"),
+    enabled: !category && pages.isSuccess && !pages.hasNextPage,
+  });
+  const otherLoaded = useMemo(
+    () => otherPages.data?.pages.flatMap((p) => p.entries) ?? [],
+    [otherPages.data],
+  );
   const categoriesQ = useQuery(libraryCategoriesQuery());
   const pinnedQ = useQuery({
     ...libraryEntryQuery(openSlug ?? ""),
@@ -878,6 +977,48 @@ export default function BiomarkerLibraryUI() {
             </div>
           </div>
         ))}
+        {!category && otherLoaded.length > 0 && (
+          <div style={{ marginTop: 32 }}>
+            <h2
+              style={{
+                fontFamily: "Montserrat, 'Helvetica Neue', sans-serif",
+                color: COLORS.navy,
+                fontSize: "clamp(18px,3vw,26px)",
+                fontWeight: 700,
+                marginBottom: 6,
+              }}
+            >
+              Allergens and infection markers
+            </h2>
+            <p style={{ color: COLORS.muted, fontSize: 13, marginBottom: 20 }}>
+              These are allergen extracts and infection tests rather than
+              biomarkers. They are listed here for reference.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {otherLoaded.map(renderCard)}
+            </div>
+            {otherPages.hasNextPage && (
+              <div style={{ textAlign: "center", marginTop: 16 }}>
+                <button
+                  type="button"
+                  onClick={() => void otherPages.fetchNextPage()}
+                  disabled={otherPages.isFetchingNextPage}
+                  style={{
+                    background: COLORS.accent,
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: 10,
+                    padding: "12px 28px",
+                    fontWeight: 700,
+                    cursor: "pointer",
+                  }}
+                >
+                  {otherPages.isFetchingNextPage ? "Loading…" : "Show more"}
+                </button>
+              </div>
+            )}
+          </div>
+        )}
         {pages.hasNextPage && (
           <div style={{ textAlign: "center" }}>
             <button
