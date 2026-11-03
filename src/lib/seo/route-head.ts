@@ -22,6 +22,13 @@ interface RouteHeadInput {
   readonly image?: { readonly url: string; readonly alt: string };
 }
 
+type HeadMetaEntry = {
+  title?: string;
+  property?: string;
+  name?: string;
+  content?: string;
+};
+
 /** Site share card served from public/og-image.png (1200x630). */
 export const DEFAULT_SHARE_IMAGE_URL = `${SITE_URL}/og-image.png`;
 
@@ -51,7 +58,7 @@ export const buildRouteHead = ({
   image,
 }: RouteHeadInput) => {
   const url = canonicalUrl(path);
-  const imageMeta: { property?: string; name?: string; content: string }[] = image
+  const imageMeta: HeadMetaEntry[] = image
     ? [
         { property: "og:image", content: image.url },
         { property: "og:image:width", content: "1200" },
@@ -62,8 +69,7 @@ export const buildRouteHead = ({
       ]
     : [];
 
-  return {
-    meta: [
+  const meta: HeadMetaEntry[] = [
       { title },
       { name: "description", content: description },
       { property: "og:title", content: title },
@@ -75,7 +81,10 @@ export const buildRouteHead = ({
       { name: "twitter:card", content: "summary_large_image" },
       { property: "og:locale", content: "en_GB" },
       ...imageMeta,
-    ],
+    ];
+
+  return {
+    meta,
     links: [{ rel: "canonical", href: url }],
   };
 };
