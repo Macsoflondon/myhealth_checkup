@@ -122,7 +122,7 @@ const ProfileSettings = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-semibold mb-2">Profile Settings</h2>
+        <h2 className="type-section-title mb-2">Profile Settings</h2>
         <p className="text-muted-foreground">
           Manage your personal information
         </p>

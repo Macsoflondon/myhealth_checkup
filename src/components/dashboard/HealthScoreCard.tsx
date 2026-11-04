@@ -52,7 +52,7 @@ export const HealthScoreCard = () => {
 
   return (
     <Card className="p-6 border-2">
-      <h3 className="text-xl font-semibold mb-6 text-[#081129]">
+      <h3 className="type-card-title mb-6 text-[#081129]">
         Health Scores
       </h3>
 

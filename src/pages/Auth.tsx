@@ -304,7 +304,7 @@ const Auth = () => {
         <Header />
         <main className="flex-grow flex items-center justify-center py-12 px-4 text-primary bg-tertiary">
           <div className="max-w-md w-full">
-            <h2 className="text-2xl text-center mb-6 text-[#22c0d4] font-medium">
+            <h2 className="type-section-title text-center mb-6 text-[#22c0d4]">
               Reset Password
             </h2>
 
@@ -388,7 +388,7 @@ const Auth = () => {
       <Header />
       <main className="flex-grow flex items-center justify-center py-12 px-4 text-primary bg-tertiary">
         <div className="max-w-md w-full">
-          <h2 className="text-2xl text-center mb-6 text-primary font-medium">
+          <h2 className="type-section-title text-center mb-6 text-primary">
             {isSignUp ? "Create an Account" : "Sign In"}
           </h2>
 

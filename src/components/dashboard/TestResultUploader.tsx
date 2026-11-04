@@ -105,7 +105,7 @@ export const TestResultUploader = ({
 
   return (
     <Card className="p-6 border-2">
-      <h3 className="text-xl font-semibold mb-4 text-[#081129]">
+      <h3 className="type-card-title mb-4 text-[#081129]">
         Upload Test Result
       </h3>
 
