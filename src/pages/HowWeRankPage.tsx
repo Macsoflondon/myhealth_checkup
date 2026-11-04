@@ -13,7 +13,7 @@ const HowWeRankPage = () => {
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner
-          title="How We Rank"
+          title="How we rank"
           subtitle="Understanding our transparent methodology for comparing and ranking health test providers."
         />
         <HowWeRank />

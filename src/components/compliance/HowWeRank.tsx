@@ -118,7 +118,7 @@ const SectionHeading = ({
     <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#22c0d4]">
       {eyebrow}
     </p>
-    <h2 className="mt-2 font-heading text-2xl sm:text-3xl font-extrabold tracking-tight text-[#081129]">
+    <h2 className="mt-2 type-section-title text-[#081129]">
       {title}
     </h2>
     {intro ? (
@@ -139,7 +139,7 @@ const TileGrid = ({ items }: { items: readonly Item[] }) => (
         <span className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#22c0d4]/10">
           <Icon className="h-4 w-4 text-[#0e7490]" />
         </span>
-        <h3 className="font-heading text-base font-bold text-[#081129]">
+        <h3 className="type-card-title text-[#081129]">
           {title}
         </h3>
         <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
@@ -236,7 +236,7 @@ const HowWeRank = () => {
             <p className="font-heading text-xs font-bold uppercase tracking-[0.22em] text-[#22c0d4]">
               Independence
             </p>
-            <h2 className="mt-2 font-heading text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+            <h2 className="mt-2 type-section-title text-white">
               Commercial relationships, kept separate
             </h2>
             <p className="mt-3 text-sm sm:text-base leading-relaxed text-white/75">
@@ -254,7 +254,7 @@ const HowWeRank = () => {
                 <span className="mb-3 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#22c0d4]/15">
                   <Icon className="h-4 w-4 text-[#22c0d4]" />
                 </span>
-                <h3 className="font-heading text-base font-bold text-white">
+                <h3 className="type-card-title text-white">
                   {title}
                 </h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-white/70">
@@ -307,7 +307,7 @@ const HowWeRank = () => {
               aria-hidden="true"
             />
             <div>
-              <h2 className="font-heading text-xl font-bold text-[#081129]">
+              <h2 className="type-section-title text-[#081129]">
                 What we are not
               </h2>
               <div className="mt-3 space-y-3 text-sm leading-relaxed text-muted-foreground">
@@ -331,7 +331,7 @@ const HowWeRank = () => {
 
         {/* Contact */}
         <section className="rounded-3xl border border-slate-200 bg-slate-50 p-6 sm:p-8 text-center">
-          <h2 className="font-heading text-xl font-bold text-[#081129]">
+          <h2 className="type-section-title text-[#081129]">
             Think a listing is wrong?
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">

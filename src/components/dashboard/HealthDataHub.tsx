@@ -175,7 +175,7 @@ export const HealthDataHub = () => {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-semibold text-brand-navy mb-2">
+                <h3 className="type-card-title text-brand-navy mb-2">
                   AI Blood Test Analysis
                 </h3>
                 <p className="text-muted-foreground mb-4">
@@ -204,7 +204,7 @@ export const HealthDataHub = () => {
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="text-xl font-semibold text-brand-navy mb-2">
+                <h3 className="type-card-title text-brand-navy mb-2">
                   Hidden Gap Detector
                 </h3>
                 <p className="text-muted-foreground mb-4">
@@ -229,7 +229,7 @@ export const HealthDataHub = () => {
           <StoredBiomarkerAnalysis />
 
           <Card className="p-6 border-2">
-            <h3 className="text-xl font-semibold mb-4 text-brand-navy">
+            <h3 className="type-card-title mb-4 text-brand-navy">
               Getting Started
             </h3>
             <div className="space-y-4">
@@ -288,7 +288,7 @@ export const HealthDataHub = () => {
         </TabsContent>
 
         <TabsContent value="favorites">
-          <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">
+          <h2 className="type-section-title mb-3 sm:mb-4">
             Saved Tests & Services
           </h2>
           {isLoading ? (
@@ -374,7 +374,7 @@ export const HealthDataHub = () => {
         </TabsContent>
 
         <TabsContent value="providers">
-          <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">
+          <h2 className="type-section-title mb-3 sm:mb-4">
             Saved Providers
           </h2>
           {isLoading ? (
@@ -463,7 +463,7 @@ export const HealthDataHub = () => {
         </TabsContent>
 
         <TabsContent value="orders">
-          <h2 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">
+          <h2 className="type-section-title mb-3 sm:mb-4">
             My Orders & Results
           </h2>
           {isLoading ? (

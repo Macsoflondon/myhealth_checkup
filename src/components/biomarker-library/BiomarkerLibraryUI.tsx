@@ -791,7 +791,7 @@ export default function BiomarkerLibraryUI() {
       }}
     >
       <StandardPageHero
-        title="Complete Biomarker Reference Library"
+        title="Complete biomarker reference library"
         strapline="What every blood test marker means, in plain English and grounded in clinical evidence."
         stats={[
           ...(total > 0 && !search && !category

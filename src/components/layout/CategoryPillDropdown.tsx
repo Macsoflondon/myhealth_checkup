@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { Link, useLocation } from "@/lib/router-compat";
 import { ChevronDown } from "lucide-react";
 import type { PrimaryNavItem } from "@/components/header/NavigationItems";
+import { wellnessCategoryVisuals } from "@/components/layout/wellness-category-visuals";
 
 const PINK = "#e70d69";
 const NAVY = "#081129";
@@ -56,7 +57,10 @@ export function CategoryPillDropdown({
     /^view all/i.test(s.name),
   );
   const twoColumn = subItems.length > 5;
-  const panelWidth = twoColumn ? 460 : 280;
+  const visualGrid =
+    subItems.length > 0 &&
+    subItems.every((s) => Boolean(wellnessCategoryVisuals[s.path]));
+  const panelWidth = visualGrid ? 940 : twoColumn ? 460 : 280;
 
   const measure = () => {
     const el = wrapRef.current;
@@ -177,6 +181,55 @@ export function CategoryPillDropdown({
             }}
             className="overflow-hidden rounded-2xl border border-white/50 bg-white/85 backdrop-blur-xl shadow-[0_24px_60px_rgba(8,17,41,0.22)] animate-in fade-in-0 slide-in-from-top-1 duration-150"
           >
+            {visualGrid ? (
+              <ul className="grid grid-cols-5 gap-2.5 p-3">
+                {subItems.map((sub) => {
+                  const v = wellnessCategoryVisuals[sub.path];
+                  if (!v) return null;
+                  const active = currentUrl === sub.path;
+                  return (
+                    <li key={sub.path + sub.name}>
+                      <Link
+                        to={sub.path}
+                        role="menuitem"
+                        aria-label={sub.name}
+                        aria-current={active ? "page" : undefined}
+                        onClick={() => setOpen(false)}
+                        className={`group/card relative block aspect-[3/4] overflow-hidden rounded-2xl no-underline ring-1 transition-shadow ${
+                          active
+                            ? "ring-2 ring-brand-pink"
+                            : "ring-black/10 hover:ring-2 hover:ring-brand-turquoise"
+                        }`}
+                      >
+                        <img
+                          src={v.image}
+                          alt=""
+                          width={420}
+                          height={560}
+                          loading="lazy"
+                          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover/card:scale-105"
+                        />
+                        <span className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/5 to-black/75" />
+                        <span className="absolute left-3 right-3 top-3 font-[Montserrat] text-[17px] font-semibold leading-tight text-white">
+                          {v.title}
+                        </span>
+                        <span className="absolute bottom-3 left-2.5 right-2.5 flex flex-wrap gap-1">
+                          {v.biomarkers.map((b) => (
+                            <span
+                              key={b}
+                              className="inline-flex items-center gap-1 rounded-full border border-white/25 bg-black/30 px-2 py-0.5 font-[Montserrat] text-[10px] font-medium text-white backdrop-blur-sm"
+                            >
+                              <span className="h-1 w-1 rounded-[1px] bg-white" />
+                              {b}
+                            </span>
+                          ))}
+                        </span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
             <ul
               className={`p-2.5 gap-0.5 ${twoColumn ? "grid grid-cols-2" : "flex flex-col"}`}
             >
@@ -216,6 +269,7 @@ export function CategoryPillDropdown({
                 );
               })}
             </ul>
+            )}
 
             <div className="flex items-center justify-between gap-3 border-t border-[#081129]/[0.07] bg-[#081129]/[0.035] px-4 py-3">
               <span

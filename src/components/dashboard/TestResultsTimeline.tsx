@@ -88,7 +88,7 @@ export const TestResultsTimeline = () => {
           <div className="flex items-start justify-between">
             <div className="flex-1">
               <div className="flex items-center gap-3 mb-2">
-                <h3 className="text-lg font-semibold text-[#081129]">
+                <h3 className="type-card-title text-[#081129]">
                   {result.test_name}
                 </h3>
                 {index === 0 && (
