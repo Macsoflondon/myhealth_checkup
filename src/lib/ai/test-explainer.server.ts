@@ -2,6 +2,7 @@ import { createAnthropic } from "@ai-sdk/anthropic";
 import { streamText, type LanguageModel } from "ai";
 import { z } from "zod";
 import { createLovableAiGatewayRunIdFetch } from "./run-id";
+import { isTestExplainerEnabled } from "./test-explainer.config";
 import type {
   ExplainableTest,
   TestExplanation,
@@ -16,6 +17,9 @@ import type {
  * with a deterministic fallback, and the disclaimer is attached server-side.
  */
 
+// Single model constant. The Lovable AI gateway takes provider-prefixed ids
+// ("provider/model"), the same form as ASSISTANT_MODEL and the edge functions'
+// gateway calls. Change the model here only.
 export const TEST_EXPLAINER_MODEL = "anthropic/claude-sonnet-5";
 export const TEST_EXPLAINER_PROMPT_VERSION = "test-explainer-v1";
 
@@ -23,11 +27,21 @@ const GATEWAY_BASE_URL = "https://ai.gateway.lovable.dev/v1";
 const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
 const RATE_LIMIT_MAX = 6;
+const RATE_LIMIT_MAX_KEYS = 10_000;
+
+/**
+ * Output cap sized to the schema below. Its longest valid answer is
+ * 600 + 8 x 200 + 400 + 300 = 2,900 characters of text plus about 150
+ * characters of JSON keys and punctuation. At roughly 4 characters per token
+ * for British English prose that is about 760 tokens; 900 leaves headroom
+ * without paying for runaway output. A longer answer fails validation anyway.
+ */
+export const TEST_EXPLAINER_MAX_OUTPUT_TOKENS = 900;
 
 export const TEST_EXPLAINER_DISCLAIMER =
   "This is general information about what the test measures, written from the provider's listed details. It is not medical advice, a diagnosis, or a recommendation that you need this test. If you have symptoms that concern you, speak to your GP or call NHS 111.";
 
-const explanationSchema = z.object({
+export const explanationSchema = z.object({
   summary: z.string().min(20).max(600),
   whatItMeasures: z.array(z.string().min(3).max(200)).min(1).max(8),
   whoMightConsider: z.string().min(10).max(400),
@@ -73,9 +87,7 @@ export function buildFallbackExplanation(
   const collection = [
     test.sampleType ? `Sample: ${test.sampleType}` : null,
     test.collectionMethod ? `collection: ${test.collectionMethod}` : null,
-    test.turnaroundText
-      ? `typical result time: ${test.turnaroundText}`
-      : null,
+    test.turnaroundText ? `typical result time: ${test.turnaroundText}` : null,
   ]
     .filter(Boolean)
     .join("; ");
@@ -94,7 +106,10 @@ export function buildFallbackExplanation(
 function sanitise(value: string | null, max = 1000): string {
   if (!value) return "";
   // Strip control characters and cap length (guardrail: input cap 1,000).
-  return value.replace(/[\u0000-\u001F\u007F]/g, " ").slice(0, max).trim();
+  return value
+    .replace(/[\u0000-\u001F\u007F]/g, " ") // eslint-disable-line no-control-regex -- stripping control characters is the point
+    .slice(0, max)
+    .trim();
 }
 
 function buildUserPrompt(test: ExplainableTest): string {
@@ -139,8 +154,18 @@ export function extractJsonObject(raw: string): unknown {
   }
 }
 
-// Best-effort in-memory cache and rate limiter. Explanations are deterministic
-// per catalogue row, so caching by test id removes repeat model cost entirely.
+// In-memory cache and rate limiter, per server instance. Explanations are
+// deterministic per catalogue row, so caching by test id removes repeat model
+// cost on a warm instance.
+//
+// NOT sufficient for public traffic: each instance and each cold start grants
+// a fresh allowance, so the limit is not global. A shared, database-backed
+// limiter is required before re-enabling the explainer. The repo's existing
+// api_rate_limits pattern (quiz-recommendations, auth-throttle) is a
+// non-atomic read-then-write that needs the service-role key and fails open,
+// so it is not reused here. TEST_EXPLAINER_SHARED_RATE_LIMIT in
+// test-explainer.config.ts stays false, and isTestExplainerEnabled() fails
+// closed, until that limiter exists.
 const explanationCache = new Map<
   string,
   { result: TestExplainerResult; expiresAt: number }
@@ -148,6 +173,11 @@ const explanationCache = new Map<
 const ipHits = new Map<string, { count: number; windowStart: number }>();
 
 export function isRateLimited(ip: string, now = Date.now()): boolean {
+  if (ipHits.size > RATE_LIMIT_MAX_KEYS) {
+    for (const [key, hit] of ipHits) {
+      if (now - hit.windowStart > RATE_LIMIT_WINDOW_MS) ipHits.delete(key);
+    }
+  }
   const entry = ipHits.get(ip);
   if (!entry || now - entry.windowStart > RATE_LIMIT_WINDOW_MS) {
     ipHits.set(ip, { count: 1, windowStart: now });
@@ -157,13 +187,20 @@ export function isRateLimited(ip: string, now = Date.now()): boolean {
   return entry.count > RATE_LIMIT_MAX;
 }
 
+export interface ExplainTestOptions {
+  /** Defaults to isTestExplainerEnabled(); tests pass true explicitly. */
+  enabled?: boolean;
+}
+
+/**
+ * clientAddress must come from trustedClientAddress() (client-address.ts).
+ * Null means no trusted platform header, so the model is not called.
+ */
 export async function explainTest(
   test: ExplainableTest,
-  clientIp: string,
+  clientAddress: string | null,
+  options: ExplainTestOptions = {},
 ): Promise<TestExplainerResult> {
-  const cached = explanationCache.get(test.id);
-  if (cached && cached.expiresAt > Date.now()) return cached.result;
-
   const fallback: TestExplainerResult = {
     explanation: buildFallbackExplanation(test),
     source: "fallback",
@@ -172,7 +209,13 @@ export async function explainTest(
     model: TEST_EXPLAINER_MODEL,
   };
 
-  if (isRateLimited(clientIp)) return fallback;
+  // Defence in depth: the server function already refuses when disabled.
+  if (!(options.enabled ?? isTestExplainerEnabled())) return fallback;
+
+  const cached = explanationCache.get(test.id);
+  if (cached && cached.expiresAt > Date.now()) return cached.result;
+  if (!clientAddress) return fallback;
+  if (isRateLimited(clientAddress)) return fallback;
 
   const apiKey = process.env["LOVABLE_API_KEY"];
   if (!apiKey) return fallback;
@@ -192,7 +235,7 @@ export async function explainTest(
       // declarations differ only in one finish-reason literal. The runtime
       // contract is identical, so a double assertion bridges the type split.
       model: anthropic(TEST_EXPLAINER_MODEL) as unknown as LanguageModel,
-      maxOutputTokens: 16000,
+      maxOutputTokens: TEST_EXPLAINER_MAX_OUTPUT_TOKENS,
       maxRetries: 0,
       temperature: 0.2,
       system: SYSTEM_PROMPT,

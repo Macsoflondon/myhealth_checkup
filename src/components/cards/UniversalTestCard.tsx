@@ -847,6 +847,56 @@ export const UniversalTestDetailModal: React.FC<{
 };
 
 // ─── Card ────────────────────────────────────────────────────────────────────
+// ─── Add-on marker ───────────────────────────────────────────────────────────
+// Add-on tests cannot be bought on their own, so the card says so in words,
+// separately from the "View details" button. Text carries the meaning; the
+// amber styling is secondary (dark amber on cream, contrast above 7:1).
+export const ADDON_MARKER_LABEL = "Add-on";
+export const ADDON_MARKER_TEXT = "Only sold with a main test";
+
+const AddonMarker: React.FC<{ compact?: boolean; className?: string }> = ({
+  compact = false,
+  className,
+}) => (
+  <span
+    data-testid={compact ? "addon-marker-compact" : "addon-marker"}
+    className={`inline-flex flex-col items-start ${className ?? ""}`}
+    style={{
+      background: "#fffbeb",
+      color: "#92400e",
+      border: "1px solid #f59e0b",
+      borderRadius: compact ? 20 : 10,
+      padding: compact ? "2px 8px" : "4px 9px",
+      lineHeight: 1.25,
+    }}
+  >
+    <span
+      style={{
+        fontFamily: "'Montserrat',sans-serif",
+        fontSize: 10,
+        fontWeight: 700,
+        textTransform: "uppercase",
+        letterSpacing: "0.06em",
+      }}
+    >
+      {ADDON_MARKER_LABEL}
+    </span>
+    {compact ? (
+      <span className="sr-only">{`: ${ADDON_MARKER_TEXT.toLowerCase()}`}</span>
+    ) : (
+      <span
+        style={{
+          fontFamily: "'DM Sans',sans-serif",
+          fontSize: 11,
+          fontWeight: 600,
+        }}
+      >
+        {ADDON_MARKER_TEXT}
+      </span>
+    )}
+  </span>
+);
+
 export interface UniversalTestCardProps {
   test: UniversalTestData;
   /** Display-only title override. The underlying catalogue name remains unchanged. */
@@ -1002,23 +1052,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
             className={`absolute inset-0 z-10 flex flex-col bg-white transition-opacity duration-[1500ms] ease-in-out motion-reduce:transition-none ${showDetails ? "opacity-0 pointer-events-none" : "opacity-100"}`}
           >
             {test.is_addon && (
-              <span
-                className="absolute left-3 top-3 z-20"
-                style={{
-                  background: "#fffbeb",
-                  color: "#d97706",
-                  border: "1px solid #fbbf2480",
-                  fontFamily: "'Montserrat',sans-serif",
-                  fontSize: 10,
-                  fontWeight: 700,
-                  padding: "2px 8px",
-                  borderRadius: 20,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                }}
-              >
-                Add-on
-              </span>
+              <AddonMarker className="absolute left-3 top-3 z-20" />
             )}
             <div className="flex flex-1 items-center justify-center overflow-hidden p-4">
               <TestCardImage
@@ -1148,24 +1182,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
               </div>
 
               <div className="flex items-center gap-1.5 flex-shrink-0">
-                {test.is_addon && (
-                  <span
-                    style={{
-                      background: "#fffbeb",
-                      color: "#d97706",
-                      border: "1px solid #fbbf2480",
-                      fontFamily: "'Montserrat',sans-serif",
-                      fontSize: 10,
-                      fontWeight: 700,
-                      padding: "2px 8px",
-                      borderRadius: 20,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.06em",
-                    }}
-                  >
-                    Add-on
-                  </span>
-                )}
+                {test.is_addon && <AddonMarker compact />}
                 <span
                   aria-hidden={!test.is_popular}
                   style={{

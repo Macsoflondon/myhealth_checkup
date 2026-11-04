@@ -7,14 +7,24 @@ import {
   listExplainableTests,
   explainTestForVisitor,
 } from "@/lib/ai/test-explainer.functions";
-import type { TestExplainerResult } from "@/lib/ai/test-explainer.types";
+import { isTestExplainerEnabled } from "@/lib/ai/test-explainer.config";
+import {
+  isExplainerRefusal,
+  type TestExplainerResult,
+} from "@/lib/ai/test-explainer.types";
 
 /**
  * Homepage "Understand any test" panel. The visitor picks a live catalogue
  * test and Claude explains, in plain English, what it measures — strictly
  * from the provider's listed details, with a fixed server-side disclaimer.
+ *
+ * Archived: renders nothing while TEST_EXPLAINER_ENABLED is off (see
+ * src/lib/ai/test-explainer.config.ts), so mounting it again shows no dead UI.
  */
-export const TestExplainerSection = () => {
+export const TestExplainerSection = () =>
+  isTestExplainerEnabled() ? <TestExplainerPanel /> : null;
+
+const TestExplainerPanel = () => {
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [result, setResult] = useState<TestExplainerResult | null>(null);
@@ -49,6 +59,10 @@ export const TestExplainerSection = () => {
     setError(null);
     try {
       const explanation = await explain({ data: { testId: selectedId } });
+      if (isExplainerRefusal(explanation)) {
+        setError(explanation.message);
+        return;
+      }
       if (!explanation) {
         setError("We could not load that test just now. Please try another.");
         return;
@@ -72,8 +86,7 @@ export const TestExplainerSection = () => {
             id="test-explainer-heading"
             className="font-extrabold text-[clamp(1.5rem,3.2vw,2.1rem)] tracking-[-0.02em] leading-[1.15] text-white m-0 font-[Montserrat]"
           >
-            Understand{" "}
-            <span className="text-[#22c0d4]">any test</span> in plain
+            Understand <span className="text-[#22c0d4]">any test</span> in plain
             English
           </h2>
           <p className="text-white/85 text-sm sm:text-base leading-relaxed mt-3 mb-0">
@@ -98,16 +111,15 @@ export const TestExplainerSection = () => {
               setSelectedId(null);
             }}
             placeholder={
-              listLoading ? "Loading the live catalogue…" : "e.g. full blood count, thyroid, vitamin D"
+              listLoading
+                ? "Loading the live catalogue…"
+                : "e.g. full blood count, thyroid, vitamin D"
             }
             className="w-full rounded-xl border border-white/20 bg-white px-4 py-3 text-sm sm:text-base text-brand-navy placeholder:text-brand-navy/50 focus:outline-none focus:ring-2 focus:ring-brand-turquoise"
           />
 
           {filtered.length > 0 && (
-            <ul
-              className="mt-3 grid gap-2"
-              aria-label="Matching tests"
-            >
+            <ul className="mt-3 grid gap-2" aria-label="Matching tests">
               {filtered.map((option) => (
                 <li key={option.id}>
                   <button
@@ -127,8 +139,7 @@ export const TestExplainerSection = () => {
                     <span className="font-semibold">{option.testName}</span>
                     <span className="block text-xs text-white/60 mt-0.5">
                       {option.providerName}
-                      {option.price != null &&
-                        ` · £${option.price.toFixed(2)}`}
+                      {option.price != null && ` · £${option.price.toFixed(2)}`}
                       {option.biomarkerCount != null &&
                         ` · ${option.biomarkerCount} biomarkers`}
                     </span>

@@ -1,0 +1,190 @@
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import type { Database } from "@/integrations/supabase/types";
+import { trustedClientAddress } from "./client-address";
+import { isTestExplainerEnabled } from "./test-explainer.config";
+import type {
+  ExplainableTest,
+  TestExplainerRefusal,
+  TestExplainerResponse,
+  TestExplainerResult,
+} from "./test-explainer.types";
+
+/**
+ * Handler bodies for the explainer server functions, kept apart from
+ * createServerFn so they can be unit tested with injected dependencies.
+ * Catalogue reads use the publishable key (public SELECT policy); the model
+ * call stays in test-explainer.server.ts.
+ */
+
+const EXPLAINER_COLUMNS =
+  "id, provider_name, test_name, description, price, biomarker_count, biomarkers_list, sample_type, collection_method, turnaround_days_text, category_primary, url";
+
+type ExplainerRow = {
+  id: string | null;
+  provider_name: string | null;
+  test_name: string | null;
+  description: string | null;
+  price: number | null;
+  biomarker_count: number | null;
+  biomarkers_list: unknown;
+  sample_type: string | null;
+  collection_method: string | null;
+  turnaround_days_text: string | null;
+  category_primary: string | null;
+  url: string | null;
+};
+
+export const TEST_EXPLAINER_DISABLED_MESSAGE =
+  "The test explainer is not available at the moment.";
+
+export const EXPLAINER_REFUSAL: TestExplainerRefusal = {
+  refused: true,
+  reason: "disabled",
+  message: TEST_EXPLAINER_DISABLED_MESSAGE,
+};
+
+export function createPublicClient(): SupabaseClient<Database> | null {
+  const url = process.env["SUPABASE_URL"];
+  const key =
+    process.env["SUPABASE_PUBLISHABLE_KEY"] ?? process.env["SUPABASE_ANON_KEY"];
+  if (!url || !key) return null;
+  return createClient<Database>(url, key, {
+    auth: { persistSession: false, autoRefreshToken: false },
+    global: {
+      fetch: (input, init) => {
+        const headers = new Headers(init?.headers);
+        if (
+          key.startsWith("sb_") &&
+          headers.get("Authorization") === `Bearer ${key}`
+        ) {
+          headers.delete("Authorization");
+        }
+        headers.set("apikey", key);
+        return fetch(input, { ...init, headers });
+      },
+    },
+  });
+}
+
+function toBiomarkerList(value: unknown): string[] | null {
+  if (!Array.isArray(value)) return null;
+  const list = value.filter((item): item is string => typeof item === "string");
+  return list.length > 0 ? list : null;
+}
+
+function toExplainableTest(row: ExplainerRow): ExplainableTest | null {
+  if (!row.id || !row.test_name || !row.provider_name) return null;
+  return {
+    id: row.id,
+    testName: row.test_name,
+    providerName: row.provider_name,
+    description: row.description,
+    price: row.price,
+    biomarkerCount: row.biomarker_count,
+    biomarkersList: toBiomarkerList(row.biomarkers_list),
+    sampleType: row.sample_type,
+    collectionMethod: row.collection_method,
+    turnaroundText: row.turnaround_days_text,
+    category: row.category_primary,
+  };
+}
+
+export interface ExplainableTestOption {
+  id: string;
+  testName: string;
+  providerName: string;
+  price: number | null;
+  biomarkerCount: number | null;
+}
+
+const TEST_ID_PATTERN = /^[0-9a-f-]{36}$/i;
+
+export function validateExplainInput(input: unknown): { testId: string } {
+  const testId =
+    input && typeof input === "object" && "testId" in input
+      ? (input as { testId: unknown }).testId
+      : undefined;
+  if (typeof testId !== "string" || !TEST_ID_PATTERN.test(testId)) {
+    throw new Error("A valid test id is required");
+  }
+  return { testId };
+}
+
+export interface ExplainerDeps {
+  enabled?: boolean;
+  getClient?: () => SupabaseClient<Database> | null;
+}
+
+/** Bounded list for the homepage picker: real tests with a provider page. */
+export async function listExplainableTestsHandler(
+  deps: ExplainerDeps = {},
+): Promise<ExplainableTestOption[]> {
+  if (!(deps.enabled ?? isTestExplainerEnabled())) return [];
+  const supabase = (deps.getClient ?? createPublicClient)();
+  if (!supabase) return [];
+
+  const { data, error } = await supabase
+    .from("unified_provider_tests")
+    .select(EXPLAINER_COLUMNS)
+    .eq("is_addon", false)
+    .gt("price", 0)
+    .not("url", "is", null)
+    .not("test_name", "ilike", "%appointment%")
+    .not("test_name", "ilike", "%consultation%")
+    .order("test_name", { ascending: true })
+    .limit(900);
+
+  if (error || !data) return [];
+
+  return (data as unknown as ExplainerRow[]).flatMap((row) => {
+    const test = toExplainableTest(row);
+    if (!test) return [];
+    return [
+      {
+        id: test.id,
+        testName: test.testName,
+        providerName: test.providerName,
+        price: test.price,
+        biomarkerCount: test.biomarkerCount,
+      },
+    ];
+  });
+}
+
+export interface ExplainHandlerDeps extends ExplainerDeps {
+  headers: Headers;
+  explain?: (
+    test: ExplainableTest,
+    clientAddress: string | null,
+  ) => Promise<TestExplainerResult>;
+}
+
+export async function explainTestHandler(
+  data: { testId: string },
+  deps: ExplainHandlerDeps,
+): Promise<TestExplainerResponse> {
+  // Checked before any catalogue read or model call.
+  if (!(deps.enabled ?? isTestExplainerEnabled())) return EXPLAINER_REFUSAL;
+
+  const supabase = (deps.getClient ?? createPublicClient)();
+  if (!supabase) return null;
+
+  const { data: row, error } = await supabase
+    .from("unified_provider_tests")
+    .select(EXPLAINER_COLUMNS)
+    .eq("id", data.testId)
+    .maybeSingle();
+
+  if (error || !row) return null;
+  const test = toExplainableTest(row as unknown as ExplainerRow);
+  if (!test) return null;
+
+  const clientAddress = trustedClientAddress(deps.headers);
+  const explain =
+    deps.explain ??
+    (async (t: ExplainableTest, address: string | null) => {
+      const { explainTest } = await import("./test-explainer.server");
+      return explainTest(t, address);
+    });
+  return explain(test, clientAddress);
+}

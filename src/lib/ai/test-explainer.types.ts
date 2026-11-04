@@ -32,3 +32,19 @@ export interface TestExplainerResult {
   promptVersion: string;
   model: string;
 }
+
+/** Returned instead of an explanation when the explainer will not answer. */
+export interface TestExplainerRefusal {
+  refused: true;
+  reason: "disabled";
+  message: string;
+}
+
+export type TestExplainerResponse =
+  TestExplainerResult | TestExplainerRefusal | null;
+
+export function isExplainerRefusal(
+  value: TestExplainerResponse,
+): value is TestExplainerRefusal {
+  return value !== null && "refused" in value && value.refused === true;
+}
