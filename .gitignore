@@ -40,3 +40,7 @@ supabase/.temp/
 # HTML a stylesheet hash the client build never emitted.
 .output/
 .wrangler/state/
+
+# Playwright run output
+/test-results/
+/playwright-report/
