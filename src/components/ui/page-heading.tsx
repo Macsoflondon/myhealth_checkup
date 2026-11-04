@@ -33,7 +33,7 @@ const PageHeading = ({
         className,
       )}
     >
-      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold leading-[1.05] tracking-tight">
+      <h1 className="type-page-title tracking-tight">
         <span className="text-[#081129] block mb-2">{title}</span>
         {accent && (
           <span className="text-[#081129] inline-block">{accent}</span>

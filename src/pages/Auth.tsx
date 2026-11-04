@@ -389,7 +389,7 @@ const Auth = () => {
       <main className="flex-grow flex items-center justify-center py-12 px-4 text-primary bg-tertiary">
         <div className="max-w-md w-full">
           <h2 className="type-section-title text-center mb-6 text-primary">
-            {isSignUp ? "Create an Account" : "Sign In"}
+            {isSignUp ? "Create an account" : "Sign in"}
           </h2>
 
           {/* Account Lockout Warning */}
@@ -547,7 +547,7 @@ const Auth = () => {
               disabled={loading || (!isSignUp && isLocked)}
               className="w-full flex items-center justify-center gap-2 bg-[#22c0d4] text-[#e70d69] text-base rounded drop-shadow-md font-medium"
             >
-              {loading ? "Processing..." : isSignUp ? "Sign Up" : "Sign In"}
+              {loading ? "Processing..." : isSignUp ? "Sign up" : "Sign in"}
             </Button>
 
             <div className="relative my-4">

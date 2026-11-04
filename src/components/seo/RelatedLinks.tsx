@@ -30,7 +30,7 @@ export const RelatedLinks = ({
   return (
     <nav aria-label="Related pages" className={`bg-white ${className}`}>
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6 py-10 border-t border-brand-navy">
-        <h2 className="text-lg font-semibold text-navy mb-6">{heading}</h2>
+        <h2 className="type-card-title text-navy mb-6">{heading}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {groups.map((group) => (
             <div key={group.title}>
