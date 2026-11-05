@@ -18,7 +18,7 @@ import { detailedProviders } from "@/data/compare/detailedProviders";
 
 const EXPECTED_COUNTS: Record<string, number> = {
   "Vital Check 56": 55,
-  "Female Hormones Clarity 31": 31,
+  "Female hormones Clarity 31": 31,
   "Female Active Boost 39": 39,
   "Male Hormones Clarity 14": 14,
   "Core Health 45": 45,
@@ -124,7 +124,7 @@ describe("Lola price model", () => {
     ["Peak Insights 70", 200],
     ["Vital Check 56", 155],
     ["Core Health 45", 125],
-    ["Female Hormones Clarity 31", 120],
+    ["Female hormones Clarity 31", 120],
     ["Female Active Boost 39", 145],
     ["Male Active Boost 36", 140],
   ])("%s shows the kit price £%i", (name, kit) => {
