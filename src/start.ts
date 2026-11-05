@@ -28,6 +28,18 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
   }
 });
 
+// Lovable hosting ignores public/_headers and vercel.json, so security
+// headers are attached here to every server response (pages, server routes,
+// server functions).
+const securityHeadersMiddleware = createMiddleware().server(async ({ next, request }) => {
+  const result = await next();
+  const host = request.headers.get("x-forwarded-host") ?? new URL(request.url).host;
+  if (result.response instanceof Response) {
+    result.response = applySecurityHeaders(result.response, host);
+  }
+  return result;
+});
+
 // Start installs this automatically when src/start.ts is absent; defining the
 // file opts out, so re-add it explicitly to keep server functions protected
 // from cross-site requests.
