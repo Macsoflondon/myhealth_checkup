@@ -23,7 +23,7 @@ const CookiePolicyPage = () => {
       <main className="flex-grow bg-white">
         <PageBanner
           title="Cookie policy"
-          subtitle="This Cookie policy explains how myhealthcheckup Ltd uses cookies and similar technologies."
+          subtitle="This cookie policy explains how myhealthcheckup Ltd uses cookies and similar technologies."
         />
 
         <div className="container mx-auto px-4 py-12">

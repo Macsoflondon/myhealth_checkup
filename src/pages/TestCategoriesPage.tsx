@@ -45,7 +45,7 @@ const BENEFITS_TUPLE: [
   (typeof BENEFITS)[2],
 ] = [BENEFITS[0], BENEFITS[1], BENEFITS[2]];
 
-const PILL_LABEL = "All Test categories";
+const PILL_LABEL = "All test categories";
 const SUBTITLE =
   "Every clinically validated test from our trusted UK providers, filterable by category.";
 const BENEFITS_TITLE = "Why Compare Through myhealth checkup?";

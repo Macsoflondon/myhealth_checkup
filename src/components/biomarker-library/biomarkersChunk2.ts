@@ -301,7 +301,7 @@ export const biomarkersChunk2 = [
       "Cholesterol Panel",
       "ApoB",
       "LDL",
-      "Cardiac Risk assessment",
+      "Cardiac risk assessment",
     ],
   },
   {

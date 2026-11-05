@@ -450,7 +450,7 @@ export const biomarkersChunk3 = [
       "Lipid Panel",
       "Triglycerides",
       "CRP",
-      "Cardiovascular Risk assessment",
+      "Cardiovascular risk assessment",
     ],
   },
   {

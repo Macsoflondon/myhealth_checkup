@@ -510,7 +510,7 @@ export const UniversalTestDetailModal: React.FC<{
                     marginBottom: 8,
                   }}
                 >
-                  Additional Collection options
+                  Additional collection options
                 </div>
                 <p
                   style={{

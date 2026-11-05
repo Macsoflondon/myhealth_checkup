@@ -220,7 +220,7 @@ export default function ClientPortal() {
               <Card className="p-6">
                 <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
                   <TrendingUp className="h-6 w-6" />
-                  Recent Health insights
+                  Recent health insights
                 </h2>
                 {insights.length > 0 ? (
                   <div className="space-y-4">

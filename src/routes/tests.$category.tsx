@@ -15,7 +15,7 @@ export const Route = createFileRoute("/tests/$category")({
   head: ({ params }) => {
     const label = toLabel(params.category);
     return buildRouteHead({
-      title: `${label} Blood Tests compared | myhealth checkup`,
+      title: `${label} blood tests compared | myhealth checkup`,
       description: `Compare ${label.toLowerCase()} blood tests from UK providers: biomarkers included, sample methods, turnaround times and prices in GBP.`,
       path: `/tests/${params.category}`,
     });
