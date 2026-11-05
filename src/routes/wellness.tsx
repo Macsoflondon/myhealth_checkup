@@ -9,7 +9,7 @@ export const Route = createFileRoute("/wellness")({
   validateSearch: validateSubcategorySearch,
   head: ({ match }) =>
     buildSubcategoryHead({
-      title: "Wellness blood test comparison UK | myhealth checkup",
+      title: "General health blood tests UK | myhealth checkup",
       description:
         "Compare wellness blood test prices from UK providers. Check full biomarker lists, home and clinic collection options, fees and typical result times.",
       path: "/wellness",
