@@ -11,6 +11,7 @@ import "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { isClientAbort } from "./lib/is-client-abort";
 import { attachSupabaseAuth } from "@/integrations/supabase/auth-attacher";
+import { applySecurityHeaders } from "./lib/security-headers";
 
 const errorMiddleware = createMiddleware().server(async ({ next }) => {
   try {
@@ -34,10 +35,7 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
 const securityHeadersMiddleware = createMiddleware().server(async ({ next, request }) => {
   const result = await next();
   const host = request.headers.get("x-forwarded-host") ?? new URL(request.url).host;
-  if (result.response instanceof Response) {
-    result.response = applySecurityHeaders(result.response, host);
-  }
-  return result;
+  return { ...result, response: applySecurityHeaders(result.response, host) };
 });
 
 // Start installs this automatically when src/start.ts is absent; defining the
@@ -49,5 +47,5 @@ const csrfMiddleware = createCsrfMiddleware({
 
 export const startInstance = createStart(() => ({
   functionMiddleware: [attachSupabaseAuth],
-  requestMiddleware: [errorMiddleware, csrfMiddleware],
+  requestMiddleware: [securityHeadersMiddleware, errorMiddleware, csrfMiddleware],
 }));
