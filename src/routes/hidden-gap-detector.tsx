@@ -9,7 +9,7 @@ const HiddenGapDetectorPage = lazy(
 export const Route = createFileRoute("/hidden-gap-detector")({
   head: () =>
     buildRouteHead({
-      title: "Hidden Gap Detector | myhealth checkup",
+      title: "Hidden gap detector | myhealth checkup",
       description:
         "Find the biomarkers your current blood test panel leaves out, and see which UK tests cover them.",
       path: "/hidden-gap-detector",

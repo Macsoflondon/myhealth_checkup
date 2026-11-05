@@ -7,7 +7,7 @@ const PrivacyPolicyPage = lazy(() => import("@/pages/PrivacyPolicyPage"));
 export const Route = createFileRoute("/privacy-policy")({
   head: () =>
     buildRouteHead({
-      title: "Privacy Policy | myhealth checkup",
+      title: "Privacy policy | myhealth checkup",
       description:
         "How myhealth checkup collects, uses and protects your personal data under UK GDPR and the Data Protection Act 2018.",
       path: "/privacy-policy",

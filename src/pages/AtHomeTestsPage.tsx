@@ -31,7 +31,7 @@ import { categoryMenuIconFor } from "@/components/header/menuIcons";
 import { describeSampleType } from "@/lib/sampleType";
 
 const SEO = {
-  title: "Compare UK At-Home Health Test Kits | myhealth checkup",
+  title: "Compare UK at-home health test kits | myhealth checkup",
   description:
     "Compare at-home test kits from UKAS-accredited UK providers. Home test kits posted to your door: finger-prick, QuickDraw, saliva, stool and urine samples, with prices, biomarkers and typical turnaround times.",
   keywords:
@@ -48,12 +48,12 @@ const HERO_BENEFITS = [
   },
   {
     icon: Shield,
-    title: "UKAS Accredited Labs",
+    title: "UKAS accredited labs",
     description: "Every sample analysed by UKAS-accredited UK laboratories",
   },
   {
     icon: Clock,
-    title: "Fast Online Results",
+    title: "Fast online results",
     description: "Typical turnaround in a few days, delivered securely online",
   },
 ] as const;
@@ -117,7 +117,7 @@ const StatusShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
         <CategoryPageBottom
           topic="At Home Test Kits"
           guidesTitle="At Home Test Kit Guides"
-          benefitsTitle="Why Choose At Home Testing?"
+          benefitsTitle="Why choose at home testing?"
           benefits={[HERO_BENEFITS[0], HERO_BENEFITS[1], HERO_BENEFITS[2]]}
         />
       </main>
@@ -259,13 +259,13 @@ const AtHomeTestsPage: React.FC = () => {
       searchPlaceholder="Search by test name or biomarker…"
       trustStats={[
         { value: `${tests.length}`, label: `${section.label} Kits` },
-        { value: "UKAS", label: "Accredited Labs" },
-        { value: "Fast", label: "Online Results" },
+        { value: "UKAS", label: "Accredited labs" },
+        { value: "Fast", label: "Online results" },
       ]}
       filters={filters}
       tests={tests}
       categoryAccent="At Home Test Kits"
-      benefitsTitle="Why Choose At Home Testing?"
+      benefitsTitle="Why choose at home testing?"
       benefits={[HERO_BENEFITS[0], HERO_BENEFITS[1], HERO_BENEFITS[2]]}
       breadcrumbs={[
         { label: "Home", href: "/" },

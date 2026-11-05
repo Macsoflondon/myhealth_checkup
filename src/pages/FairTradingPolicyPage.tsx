@@ -12,7 +12,7 @@ const FairTradingPolicyPage = () => {
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner
-          title="Fair Trading Policy"
+          title="Fair trading policy"
           subtitle="Our commitment to fair, transparent, and ethical trading practices."
         />
         <FairTradingPolicy />

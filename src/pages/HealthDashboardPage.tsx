@@ -31,7 +31,7 @@ const HealthDashboardPage = () => {
   return (
     <>
       <Helmet>
-        <title>My Dashboard | myhealth checkup</title>
+        <title>My dashboard | myhealth checkup</title>
         <meta
           name="description"
           content="Manage your saved tests, providers, orders, profile and health data in one place on myhealth checkup."

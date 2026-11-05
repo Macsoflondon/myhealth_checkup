@@ -4,18 +4,18 @@ import { Heart, Clock, Shield } from "lucide-react";
 
 const MaleHormoneTestPage = () => {
   const testData: TestPageData = {
-    title: "Male Hormone Test",
+    title: "Male hormone test",
     description:
       "Measure testosterone, prolactin levels and other key male hormones to detect imbalances that may be impacting mood, libido, energy levels and overall wellbeing.",
     category: "Hormones",
-    breadcrumbTitle: "Male Hormone Test",
-    metaTitle: "Male Hormone Test - Compare UK Providers | MyHealth Checkup",
+    breadcrumbTitle: "Male hormone test",
+    metaTitle: "Male hormone test - Compare UK Providers | MyHealth Checkup",
     metaDescription:
       "Compare Male Hormone Tests from top UK providers. Test testosterone, DHEA, cortisol and other key male hormones affecting energy, mood and performance.",
 
     biomarkerSections: [
       {
-        title: "Primary Hormones",
+        title: "Primary hormones",
         markers: [
           "Total Testosterone",
           "Free Testosterone",
@@ -24,7 +24,7 @@ const MaleHormoneTestPage = () => {
         ],
       },
       {
-        title: "Supporting Markers",
+        title: "Supporting markers",
         markers: [
           "Sex Hormone Binding Globulin (SHBG)",
           "Luteinising Hormone (LH)",
@@ -35,9 +35,9 @@ const MaleHormoneTestPage = () => {
     ],
 
     featureBadges: [
-      { icon: Shield, label: "UKAS Accredited" },
-      { icon: Clock, label: "Fast Results" },
-      { icon: Heart, label: "Actionable Insights" },
+      { icon: Shield, label: "UKAS accredited" },
+      { icon: Clock, label: "Fast results" },
+      { icon: Heart, label: "Actionable insights" },
     ],
 
     whyChooseTitle: "Why Test Male Hormones?",

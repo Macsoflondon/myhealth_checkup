@@ -47,7 +47,7 @@ const ProviderProfilePage = () => {
               The provider you're looking for doesn't exist.
             </p>
             <Button asChild variant="skeuomorphic">
-              <Link to="/compare">Browse All Tests</Link>
+              <Link to="/compare">Browse all tests</Link>
             </Button>
           </div>
         </main>

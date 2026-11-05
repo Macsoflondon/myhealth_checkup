@@ -9,7 +9,7 @@ const TestosteroneLevelsByAgePage = lazy(
 export const Route = createFileRoute("/blog/testosterone-levels-by-age")({
   head: () =>
     buildArticleHead({
-      title: "Normal Testosterone Levels by Age (UK Guide)",
+      title: "Normal testosterone levels by age (UK guide)",
       description:
         "An independent UK guide to typical testosterone levels by age, what the numbers mean, and how to compare private testosterone tests.",
       path: "/blog/testosterone-levels-by-age",

@@ -206,10 +206,10 @@ const Index = () => {
                       <div className="flex flex-col items-center gap-4">
                         <Link
                           to="/find-test"
-                          aria-label="Take the Health Quiz: find the right private blood test"
+                          aria-label="Take the health quiz: find the right private blood test"
                           className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-brand-turquoise text-white shadow-glow-teal hover:bg-brand-pink hover:shadow-glow-pink focus-visible:bg-brand-pink focus-visible:shadow-glow-pink focus-visible:outline-none font-bold font-[Montserrat] text-base px-8 py-3.5 rounded-full transition-all duration-200 hover:scale-[1.02]"
                         >
-                          Take the Health Quiz
+                          Take the health quiz
                         </Link>
                         <div className="flex flex-wrap justify-center items-center gap-x-3 gap-y-1 text-white/80 text-xs 2xl:text-sm">
                           <span className="flex items-center gap-1">

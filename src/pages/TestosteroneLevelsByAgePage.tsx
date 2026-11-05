@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { BASE_URL } from "@/lib/seo";
 
 const SLUG = "testosterone-levels-by-age";
-const TITLE = "Normal Testosterone Levels by Age (UK Guide)";
+const TITLE = "Normal testosterone levels by age (UK guide)";
 const DESCRIPTION =
   "An independent UK guide to typical testosterone levels by age, what the numbers mean, and how to compare private testosterone tests on myhealth checkup.";
 const CANONICAL = `${BASE_URL}/blog/${SLUG}`;

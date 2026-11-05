@@ -9,7 +9,7 @@ const LondonMedicalLaboratoryPage = lazy(
 export const Route = createFileRoute("/london-medical-laboratory/")({
   head: () =>
     buildRouteHead({
-      title: "London Medical Laboratory Tests | myhealth checkup",
+      title: "London Medical Laboratory tests | myhealth checkup",
       description:
         "Compare London Medical Laboratory blood tests, biomarkers, sample methods and prices in GBP.",
       path: "/london-medical-laboratory",

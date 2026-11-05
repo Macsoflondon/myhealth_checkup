@@ -81,7 +81,7 @@ const AdminScraperDashboardPage: React.FC = () => {
             <div>
               <CardTitle className="text-lg flex items-center gap-2">
                 <Sparkles className="h-5 w-5 text-primary" />
-                Refresh Popular Tests
+                Refresh Popular tests
               </CardTitle>
               <CardDescription>
                 Scrape each provider's curated best-sellers page and update{" "}
@@ -101,7 +101,7 @@ const AdminScraperDashboardPage: React.FC = () => {
               ) : (
                 <>
                   <Sparkles className="h-4 w-4 mr-2" />
-                  Refresh Popular Tests
+                  Refresh Popular tests
                 </>
               )}
             </Button>

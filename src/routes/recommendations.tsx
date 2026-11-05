@@ -7,7 +7,7 @@ const RecommendationsPage = lazy(() => import("@/pages/RecommendationsPage"));
 export const Route = createFileRoute("/recommendations")({
   head: () =>
     buildRouteHead({
-      title: "Your Test Recommendations | myhealth checkup",
+      title: "Your test recommendations | myhealth checkup",
       description:
         "Review private blood tests matched to your answers, with biomarkers, prices in GBP and turnaround times side by side.",
       path: "/recommendations",

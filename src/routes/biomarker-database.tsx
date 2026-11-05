@@ -39,7 +39,7 @@ export const Route = createFileRoute("/biomarker-database")({
   },
   head: () =>
     buildRouteHead({
-      title: "Complete Biomarker Reference Library | myhealth checkup",
+      title: "Complete biomarker reference library | myhealth checkup",
       description:
         "A reference library of the biomarkers measured by UK private blood tests, what each one indicates and which panels include it.",
       path: "/biomarker-database",

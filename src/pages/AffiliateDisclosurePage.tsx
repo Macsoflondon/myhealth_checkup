@@ -12,7 +12,7 @@ const AffiliateDisclosurePage = () => {
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner
-          title="Affiliate Disclosure"
+          title="Affiliate disclosure"
           subtitle="Full transparency about our commercial relationships and how we fund our platform."
         />
         <AffiliateDisclosure />

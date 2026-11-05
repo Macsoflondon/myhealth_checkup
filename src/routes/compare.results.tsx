@@ -9,7 +9,7 @@ const ComparisonResultsPage = lazy(
 export const Route = createFileRoute("/compare/results")({
   head: () =>
     buildRouteHead({
-      title: "Your Test Comparison | myhealth checkup",
+      title: "Your test comparison | myhealth checkup",
       description:
         "Your selected private blood tests side by side: price in GBP, biomarkers included, sample method and typical turnaround.",
       path: "/compare/results",

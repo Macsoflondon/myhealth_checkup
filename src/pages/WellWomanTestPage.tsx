@@ -4,19 +4,19 @@ import { Heart, Clock, Shield } from "lucide-react";
 
 const WellWomanTestPage = () => {
   const testData: TestPageData = {
-    title: "Well Woman Blood Test",
+    title: "Well woman blood test",
     description:
       "Comprehensive female health screening including hormone analysis, fertility markers, general health indicators and nutritional status tailored specifically for women.",
     category: "Women's Health",
     breadcrumbTitle: "Well Woman Test",
     metaTitle:
-      "Well Woman Blood Test - Compare UK Providers | MyHealth Checkup",
+      "Well woman blood test - Compare UK Providers | MyHealth Checkup",
     metaDescription:
       "Compare Well Woman Tests from top UK providers. Comprehensive female health screening including hormones, fertility, and general health markers.",
 
     biomarkerSections: [
       {
-        title: "Female Hormones",
+        title: "Female hormones",
         markers: [
           "Oestradiol (Estrogen)",
           "Progesterone",
@@ -39,7 +39,7 @@ const WellWomanTestPage = () => {
 
     highlights: [
       {
-        title: "Key Areas Covered",
+        title: "Key areas covered",
         items: [
           "Menstrual cycle health and regularity",
           "Fertility and reproductive health",
@@ -53,9 +53,9 @@ const WellWomanTestPage = () => {
     ],
 
     featureBadges: [
-      { icon: Shield, label: "UKAS Accredited" },
-      { icon: Clock, label: "Fast Results" },
-      { icon: Heart, label: "Female Focus" },
+      { icon: Shield, label: "UKAS accredited" },
+      { icon: Clock, label: "Fast results" },
+      { icon: Heart, label: "Female focus" },
     ],
 
     whyChooseTitle: "Why Choose Well Woman Testing?",

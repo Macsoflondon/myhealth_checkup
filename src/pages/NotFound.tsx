@@ -55,7 +55,7 @@ const NotFound = () => {
   return (
     <>
       <Helmet>
-        <title>Page Not Found (404) | myhealth checkup</title>
+        <title>Page not found (404) | myhealth checkup</title>
         <meta name="robots" content="noindex, follow" />
         {/* Honoured by Prerender.io / Rendertron / Cloudflare prerender — promotes
             this SPA shell to a real HTTP 404 for crawlers that pre-render. */}

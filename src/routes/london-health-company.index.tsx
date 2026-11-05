@@ -9,7 +9,7 @@ const LondonHealthCompanyPage = lazy(
 export const Route = createFileRoute("/london-health-company/")({
   head: () =>
     buildRouteHead({
-      title: "London Health Company Tests & Prices | myhealth checkup",
+      title: "London Health Company tests & prices | myhealth checkup",
       description:
         "Compare London Health Company blood tests, biomarkers, turnaround times and transparent prices in GBP.",
       path: "/london-health-company",

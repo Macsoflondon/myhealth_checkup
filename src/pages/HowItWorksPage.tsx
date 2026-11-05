@@ -26,7 +26,7 @@ const HowItWorksPage = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-5xl mx-auto">
               <h2 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8 text-center text-[#081120]">
-                Frequently Asked Questions
+                Frequently asked questions
               </h2>
 
               <div className="space-y-6">

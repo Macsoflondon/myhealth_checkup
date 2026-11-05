@@ -144,7 +144,7 @@ export default function ClientPortal() {
   return (
     <>
       <Helmet>
-        <title>Health Portal | myhealth checkup</title>
+        <title>Health portal | myhealth checkup</title>
         <meta
           name="description"
           content="Access your test results, appointments, and health insights"
@@ -174,7 +174,7 @@ export default function ClientPortal() {
                   <FileText className="h-6 w-6 text-secondary" />
                 </div>
                 <div>
-                  <p className="text-sm text-muted-foreground">Test Results</p>
+                  <p className="text-sm text-muted-foreground">Test results</p>
                   <p className="text-2xl font-bold">{testResults.length}</p>
                 </div>
               </div>
@@ -210,17 +210,17 @@ export default function ClientPortal() {
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="overview">Overview</TabsTrigger>
 
-              <TabsTrigger value="results">Test Results</TabsTrigger>
-              <TabsTrigger value="insights">Health Insights</TabsTrigger>
+              <TabsTrigger value="results">Test results</TabsTrigger>
+              <TabsTrigger value="insights">Health insights</TabsTrigger>
               <TabsTrigger value="profile">Profile</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6">
-              {/* Health Insights */}
+              {/* Health insights */}
               <Card className="p-6">
                 <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
                   <TrendingUp className="h-6 w-6" />
-                  Recent Health Insights
+                  Recent Health insights
                 </h2>
                 {insights.length > 0 ? (
                   <div className="space-y-4">
@@ -250,7 +250,7 @@ export default function ClientPortal() {
 
             <TabsContent value="results">
               <Card className="p-6">
-                <h2 className="text-2xl font-bold mb-4">Test Results</h2>
+                <h2 className="text-2xl font-bold mb-4">Test results</h2>
                 {testResults.length > 0 ? (
                   <div className="space-y-4">
                     {testResults.map((result) => (
@@ -274,7 +274,7 @@ export default function ClientPortal() {
                               rel="noopener noreferrer"
                               className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
                             >
-                              View Report
+                              View report
                             </a>
                           )}
                         </div>
@@ -291,7 +291,7 @@ export default function ClientPortal() {
 
             <TabsContent value="insights">
               <Card className="p-6">
-                <h2 className="text-2xl font-bold mb-4">All Health Insights</h2>
+                <h2 className="text-2xl font-bold mb-4">All health insights</h2>
                 {insights.length > 0 ? (
                   <div className="space-y-4">
                     {insights.map((insight) => (
@@ -340,7 +340,7 @@ export default function ClientPortal() {
                   </div>
                   <div>
                     <label className="text-sm font-medium text-muted-foreground">
-                      Date of Birth
+                      Date of birth
                     </label>
                     <p className="text-lg">
                       {profile?.date_of_birth || "Not set"}

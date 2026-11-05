@@ -7,7 +7,7 @@ const HiddenGapDetectorPage = () => {
   return (
     <>
       <Helmet>
-        <title>Hidden Gap Detector | myhealth checkup</title>
+        <title>Hidden gap detector | myhealth checkup</title>
         <meta
           name="description"
           content="Discover which preventive health screenings you may be missing. Our AI-powered Hidden Gap Detector analyses your profile against NHS and NICE guidelines to identify health testing gaps."
@@ -23,7 +23,7 @@ const HiddenGapDetectorPage = () => {
 
         <meta
           property="og:title"
-          content="Hidden Gap Detector | myhealth checkup"
+          content="Hidden gap detector | myhealth checkup"
         />
         <meta
           property="og:description"
@@ -38,7 +38,7 @@ const HiddenGapDetectorPage = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
-          content="Hidden Gap Detector | myhealth checkup"
+          content="Hidden gap detector | myhealth checkup"
         />
         <meta
           name="twitter:description"

@@ -4,18 +4,18 @@ import { Heart, Clock, Shield } from "lucide-react";
 
 const IronProfileTestPage = () => {
   const testData: TestPageData = {
-    title: "Iron Profile Test",
+    title: "Iron profile test",
     description:
       "Comprehensive iron status testing to check for iron deficiency, anaemia, or iron overload. Essential for energy levels and overall health assessment.",
     category: "Blood Tests",
-    breadcrumbTitle: "Iron Profile Test",
-    metaTitle: "Iron Profile Test - Compare UK Providers | MyHealth Checkup",
+    breadcrumbTitle: "Iron profile test",
+    metaTitle: "Iron profile test - Compare UK Providers | MyHealth Checkup",
     metaDescription:
       "Compare Iron Profile Tests from top UK providers. Check for iron deficiency, anaemia and iron overload with comprehensive iron status testing.",
 
     biomarkerSections: [
       {
-        title: "Iron Markers",
+        title: "Iron markers",
         markers: [
           "Serum Iron",
           "Ferritin (iron stores)",
@@ -24,7 +24,7 @@ const IronProfileTestPage = () => {
         ],
       },
       {
-        title: "Related Tests",
+        title: "Related tests",
         markers: [
           "Haemoglobin levels",
           "Red blood cell count",
@@ -36,7 +36,7 @@ const IronProfileTestPage = () => {
 
     highlights: [
       {
-        title: "Signs of Iron Deficiency",
+        title: "Signs of iron deficiency",
         items: [
           "Fatigue and weakness",
           "Pale skin, nails or inner eyelids",
@@ -50,9 +50,9 @@ const IronProfileTestPage = () => {
     ],
 
     featureBadges: [
-      { icon: Shield, label: "UKAS Accredited" },
-      { icon: Clock, label: "Fast Results" },
-      { icon: Heart, label: "Energy Insights" },
+      { icon: Shield, label: "UKAS accredited" },
+      { icon: Clock, label: "Fast results" },
+      { icon: Heart, label: "Energy insights" },
     ],
 
     whyChooseTitle: "Why Test Iron Levels?",

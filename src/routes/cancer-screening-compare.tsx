@@ -7,7 +7,7 @@ const CancerComparisonPage = lazy(() => import("@/pages/CancerComparisonPage"));
 export const Route = createFileRoute("/cancer-screening-compare")({
   head: () =>
     buildRouteHead({
-      title: "Compare Private Cancer Screening UK",
+      title: "Compare private cancer screening UK",
       description:
         "Compare private cancer screening panels from accredited UK providers by biomarkers covered, price and turnaround time.",
       path: "/cancer-screening-compare",

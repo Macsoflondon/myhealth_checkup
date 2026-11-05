@@ -7,7 +7,7 @@ const ComplaintsPage = lazy(() => import("@/pages/ComplaintsPage"));
 export const Route = createFileRoute("/complaints")({
   head: () =>
     buildRouteHead({
-      title: "Complaints and Feedback | myhealth checkup",
+      title: "Complaints and feedback | myhealth checkup",
       description:
         "How to raise a complaint or send feedback about myhealth checkup, and what happens after you contact us.",
       path: "/complaints",

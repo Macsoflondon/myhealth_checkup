@@ -7,7 +7,7 @@ const DiabetesTestingPage = lazy(() => import("@/pages/DiabetesTestingPage"));
 export const Route = createFileRoute("/tests/diabetes")({
   head: () =>
     buildCollectionHead({
-      title: "Diabetes Blood Tests UK | Compare",
+      title: "Diabetes blood tests UK | Compare",
       description:
         "Compare private diabetes and blood sugar tests including HbA1c, fasting glucose and insulin, with clear UK pricing.",
       path: "/tests/diabetes",

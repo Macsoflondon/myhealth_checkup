@@ -13,9 +13,9 @@ const WomensHealthPage = () => (
     subtitle="Comprehensive female health screening — hormones, fertility, menopause, and PCOS — designed for women's unique needs."
     searchPlaceholder="Search by symptom or test — e.g. 'irregular periods', 'menopause'"
     trustStats={[
-      { value: "50,000+", label: "Tests Compared" },
-      { value: "4.8★", label: "Average Rating" },
-      { value: "6", label: "Trusted Providers" },
+      { value: "50,000+", label: "Tests compared" },
+      { value: "4.8★", label: "Average rating" },
+      { value: "6", label: "Trusted providers" },
     ]}
     filters={["All"]}
     benefitsTitle="Why Choose Women's Health Testing?"
@@ -27,12 +27,12 @@ const WomensHealthPage = () => (
       },
       {
         icon: Baby,
-        title: "Fertility Planning",
+        title: "Fertility planning",
         description: "Comprehensive fertility and reproductive health insights",
       },
       {
         icon: Users,
-        title: "Lifelong Wellness",
+        title: "Lifelong wellness",
         description: "Monitor and optimise health throughout every life stage",
       },
     ]}

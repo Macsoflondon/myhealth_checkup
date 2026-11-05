@@ -46,7 +46,7 @@ describe("selectTopicArticles", () => {
 
 describe("guidesHeadingFor", () => {
   it("builds a page-specific heading", () => {
-    expect(guidesHeadingFor("Why Choose At Home Testing?")).toBe(
+    expect(guidesHeadingFor("Why choose at home testing?")).toBe(
       "At Home Guides",
     );
     expect(guidesHeadingFor("Women's Health")).toBe("Women's Health Guides");

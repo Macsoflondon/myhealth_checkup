@@ -9,7 +9,7 @@ const ProviderComparisonPage = lazy(
 export const Route = createFileRoute("/providers/compare")({
   head: () =>
     buildRouteHead({
-      title: "Compare UK Test Providers",
+      title: "Compare UK test providers",
       description:
         "Compare UK private test providers on accreditation, catalogue size, pricing and typical turnaround before you book.",
       path: "/providers/compare",

@@ -26,7 +26,7 @@ const TrustCentrePage = () => {
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner
-          title="Trust Centre"
+          title="Trust centre"
           subtitle="Transparency about the security, privacy and data-protection controls we operate."
         />
 
@@ -108,7 +108,7 @@ const TrustCentrePage = () => {
                 <CardContent className="text-sm text-muted-foreground">
                   Non-essential cookies are loaded only after consent. See our{" "}
                   <Link to="/cookies" className="underline">
-                    Cookie Policy
+                    Cookie policy
                   </Link>{" "}
                   for the full list of cookies and the providers behind them.
                 </CardContent>
@@ -124,7 +124,7 @@ const TrustCentrePage = () => {
                   You can request access, correction, deletion or export of your
                   personal data at any time. See the{" "}
                   <Link to="/privacy-policy" className="underline">
-                    Privacy Policy
+                    Privacy policy
                   </Link>{" "}
                   for the full process and statutory response times.
                 </CardContent>

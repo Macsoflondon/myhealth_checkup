@@ -12,7 +12,7 @@ const PrivacyPolicyPage = () => {
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner
-          title="Privacy Policy"
+          title="Privacy policy"
           subtitle="How we collect, use, and protect your personal data in compliance with UK GDPR."
         />
         <PrivacyPolicy />

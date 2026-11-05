@@ -170,14 +170,14 @@ const ResetPassword = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Reset Password | myhealth checkup</title>
+        <title>Reset password | myhealth checkup</title>
         <meta name="robots" content="noindex, follow" />
       </Helmet>
       <Header />
       <main className="flex-grow flex items-center justify-center py-12 px-4 text-primary bg-tertiary">
         <div className="max-w-md w-full">
           <h2 className="text-2xl text-center mb-6 text-[#22c0d4] font-medium">
-            Set New Password
+            Set new password
           </h2>
 
           <p className="text-sm text-[#22c0d4] text-center mb-6">
@@ -256,7 +256,7 @@ const ResetPassword = () => {
               disabled={loading}
               className="w-full flex items-center justify-center gap-2 bg-[#22c0d4] text-[#e70d69] text-base rounded drop-shadow-md font-medium"
             >
-              {loading ? "Resetting..." : "Reset Password"}
+              {loading ? "Resetting..." : "Reset password"}
             </Button>
 
             <div className="text-center mt-4">

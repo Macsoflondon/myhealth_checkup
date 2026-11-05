@@ -14,7 +14,7 @@ const AccessibilityPage = () => {
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner
-          title="Accessibility Statement"
+          title="Accessibility statement"
           subtitle="We're committed to ensuring our website is accessible to everyone, regardless of ability or technology used."
         />
 
@@ -92,7 +92,7 @@ const AccessibilityPage = () => {
 
             <Card className="mb-8">
               <CardHeader>
-                <CardTitle>Standards Compliance</CardTitle>
+                <CardTitle>Standards compliance</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <p>
@@ -111,7 +111,7 @@ const AccessibilityPage = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Feedback & Support</CardTitle>
+                <CardTitle>Feedback & support</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="mb-4">

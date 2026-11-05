@@ -318,7 +318,7 @@ const AdminPerformancePage = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Worst Web Vitals (by poor count, p75)</CardTitle>
+          <CardTitle>Worst web vitals (by poor count, p75)</CardTitle>
         </CardHeader>
         <CardContent>
           {loading ? (
