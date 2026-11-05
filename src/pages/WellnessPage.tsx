@@ -294,7 +294,7 @@ const WellnessPage = () => {
         ]}
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "General Wellness" },
+          { label: "General health tests" },
         ]}
         compareUrl="/compare?category=wellness"
       />
