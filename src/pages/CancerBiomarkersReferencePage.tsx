@@ -509,7 +509,7 @@ const CancerBiomarkersReferencePage = () => {
                           <Link
                             to={`/cancer-screening-compare?type=${marker.id === "psa" ? "prostate" : marker.id === "ca125" ? "ovarian" : marker.id === "fit" ? "bowel" : marker.id === "ca15-3" ? "breast" : "multi"}`}
                           >
-                            Compare {marker.shortName} Tests
+                            Compare {marker.shortName} tests
                           </Link>
                         </Button>
                       </div>
