@@ -216,7 +216,7 @@ export const SLUG_TO_CANONICAL_CATEGORIES: Record<string, string[]> = {
  * Sub-category slugs that aren't a clean 1:1 with canonical_category.
  * Narrow results by test_name pattern, optionally scoped to one or more
  * canonical categories. Used by buildCategoryQuery to support nav items
- * like "Menopause Tests", "Female Hormone Tests" etc.
+ * like "Menopause tests", "Female hormone tests" etc.
  */
 export interface SlugNameFilter {
   canonicals?: string[];
@@ -346,7 +346,7 @@ export function getCategorySearchTerms(category: string): string[] {
 export const compareCategories = [
   {
     id: "blood-tests",
-    name: "Blood Tests",
+    name: "Blood tests",
     description: "Comprehensive blood analysis and health markers",
     searchTerms: [
       "blood",
@@ -358,7 +358,7 @@ export const compareCategories = [
   },
   {
     id: "hormones",
-    name: "Hormone Tests",
+    name: "Hormone tests",
     description: "Thyroid, testosterone, and reproductive hormones",
     searchTerms: [
       "hormone",
@@ -371,7 +371,7 @@ export const compareCategories = [
   },
   {
     id: "thyroid",
-    name: "Thyroid Tests",
+    name: "Thyroid tests",
     description: "Thyroid function and antibody testing",
     searchTerms: [
       "thyroid",
@@ -384,7 +384,7 @@ export const compareCategories = [
   },
   {
     id: "vitamins",
-    name: "Vitamin & Mineral Tests",
+    name: "Vitamin & mineral tests",
     description: "Essential nutrients and deficiency screening",
     searchTerms: [
       "vitamin",
@@ -400,7 +400,7 @@ export const compareCategories = [
   },
   {
     id: "liver",
-    name: "Liver Health Tests",
+    name: "Liver health tests",
     description: "Liver function and enzyme testing",
     searchTerms: [
       "liver",
@@ -413,13 +413,13 @@ export const compareCategories = [
   },
   {
     id: "diabetes",
-    name: "Diabetes Testing",
+    name: "Diabetes testing",
     description: "Blood sugar and glucose monitoring",
     searchTerms: ["diabetes", "glucose", "hba1c", "blood sugar", "diabetic"],
   },
   {
     id: "cancer-screening",
-    name: "Cancer Screening",
+    name: "Cancer screening",
     description: "Early detection and preventive screening",
     searchTerms: [
       "cancer",
@@ -433,7 +433,7 @@ export const compareCategories = [
   },
   {
     id: "heart-health",
-    name: "Heart Health",
+    name: "Heart health",
     description: "Cardiovascular risk and cholesterol testing",
     searchTerms: [
       "heart",
@@ -448,7 +448,7 @@ export const compareCategories = [
   },
   {
     id: "mens-health",
-    name: "Men's Health",
+    name: "Men's health",
     description: "Comprehensive men's health screening and monitoring",
     searchTerms: [
       "mens",
@@ -461,7 +461,7 @@ export const compareCategories = [
   },
   {
     id: "womens-health",
-    name: "Women's Health",
+    name: "Women's health",
     description: "Comprehensive women's health screening and monitoring",
     searchTerms: [
       "womens",
@@ -475,7 +475,7 @@ export const compareCategories = [
   },
   {
     id: "fertility",
-    name: "Fertility - Prenatal",
+    name: "Fertility - prenatal",
     description: "Reproductive health and fertility assessments",
     searchTerms: [
       "fertility",
@@ -489,7 +489,7 @@ export const compareCategories = [
   },
   {
     id: "general-health",
-    name: "General Health",
+    name: "General health",
     description: "Comprehensive health screening packages",
     searchTerms: [
       "general",
@@ -501,7 +501,7 @@ export const compareCategories = [
   },
   {
     id: "allergy-testing",
-    name: "Allergy Testing",
+    name: "Allergy testing",
     description: "Food and environmental allergy screening",
     searchTerms: [
       "allergy",
@@ -513,7 +513,7 @@ export const compareCategories = [
   },
   {
     id: "sports-performance-tests",
-    name: "Sports Performance Tests",
+    name: "Sports performance tests",
     description: "Athletic performance optimization and health monitoring",
     searchTerms: [
       "sports",
@@ -525,7 +525,7 @@ export const compareCategories = [
   },
   {
     id: "weight-loss-tests",
-    name: "Weight Loss Tests",
+    name: "Weight loss tests",
     description: "Weight management and metabolic health screening",
     searchTerms: [
       "weight loss",
@@ -538,7 +538,7 @@ export const compareCategories = [
   },
   {
     id: "longevity-tests",
-    name: "Longevity Tests",
+    name: "Longevity tests",
     description:
       "Comprehensive health markers for longevity and preventive care",
     searchTerms: [
@@ -551,7 +551,7 @@ export const compareCategories = [
   },
   {
     id: "sexual-health",
-    name: "Sexual Health",
+    name: "Sexual health",
     description: "STI screening and sexual wellness testing",
     searchTerms: [
       "sexual",
@@ -566,7 +566,7 @@ export const compareCategories = [
   },
   {
     id: "gut-health",
-    name: "Gut Health",
+    name: "Gut health",
     description: "Digestive health, microbiome and food sensitivity testing",
     searchTerms: [
       "gut",
@@ -580,7 +580,7 @@ export const compareCategories = [
   },
   {
     id: "genetic-testing",
-    name: "Genetic Testing",
+    name: "Genetic testing",
     description: "DNA-based health and predisposition screening",
     searchTerms: ["genetic", "dna", "genome", "hereditary", "predisposition"],
   },
@@ -594,5 +594,5 @@ export const getCategoryFromTestName = (testName: string): string => {
       return category.name;
     }
   }
-  return "General Health";
+  return "General health";
 };
