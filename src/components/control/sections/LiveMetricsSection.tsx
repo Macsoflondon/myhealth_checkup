@@ -30,7 +30,7 @@ export default function LiveMetricsSection() {
   }, []);
 
   return (
-    <SectionShell title="Live Operational Metrics">
+    <SectionShell title="Live operational metrics">
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
         <StatCard
           label="Rate-limit events (1h)"

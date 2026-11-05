@@ -9,7 +9,7 @@ const AffiliateDisclosurePage = lazy(
 export const Route = createFileRoute("/affiliate-disclosure")({
   head: () =>
     buildRouteHead({
-      title: "Affiliate Disclosure | myhealth checkup",
+      title: "Affiliate disclosure | myhealth checkup",
       description:
         "How myhealth checkup earns revenue, and why affiliate relationships never influence rankings or comparisons.",
       path: "/affiliate-disclosure",

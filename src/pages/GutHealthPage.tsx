@@ -4,21 +4,21 @@ import { Shield, Activity, Heart } from "lucide-react";
 const GutHealthPage = () => (
   <DbCategoryPage
     canonicalCategory="gut"
-    seoTitle="Gut Health Tests | myhealth checkup"
+    seoTitle="Gut health tests | myhealth checkup"
     pillLabel="Gut Health"
     seoDescription="Compare gut health and microbiome tests from trusted UK providers — digestive markers, food intolerance and bacterial analysis."
     seoKeywords="gut health test, microbiome test, food intolerance, digestive health"
     canonicalUrl="https://myhealthcheckup.co.uk/tests/gut"
-    headline="Gut Health & Microbiome Testing"
+    headline="Gut health & microbiome testing"
     subtitle="Advanced testing for digestive health, food intolerances and the gut-body connection."
     searchPlaceholder="Search by symptom or test — e.g. 'bloating', 'microbiome'"
     trustStats={[
-      { value: "12,000+", label: "Tests Compared" },
-      { value: "4.6★", label: "Average Rating" },
-      { value: "5", label: "Trusted Providers" },
+      { value: "12,000+", label: "Tests compared" },
+      { value: "4.6★", label: "Average rating" },
+      { value: "5", label: "Trusted providers" },
     ]}
     filters={["All"]}
-    benefitsTitle="Why Test Your Gut?"
+    benefitsTitle="Why test your gut?"
     benefits={[
       {
         icon: Shield,
@@ -32,7 +32,7 @@ const GutHealthPage = () => (
       },
       {
         icon: Heart,
-        title: "Whole-Body Health",
+        title: "Whole-body health",
         description: "Gut bacteria affect cholesterol and energy",
       },
     ]}

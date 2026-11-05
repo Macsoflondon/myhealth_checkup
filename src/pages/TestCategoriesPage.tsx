@@ -10,7 +10,7 @@ import {
 import { useAllTests } from "@/hooks/queries/useAllTests";
 
 const SEO = {
-  title: "Test Categories | myhealth checkup",
+  title: "Test categories | myhealth checkup",
   description:
     "Browse every clinically validated private health test from trusted UK providers. Filter by category and compare prices, biomarkers, and turnaround times.",
   keywords:
@@ -21,19 +21,19 @@ const SEO = {
 const BENEFITS = [
   {
     icon: Shield,
-    title: "UKAS-Accredited Labs",
+    title: "UKAS-accredited labs",
     description:
       "Every listed test is processed by an accredited UK laboratory",
   },
   {
     icon: FlaskConical,
-    title: "Transparent Pricing",
+    title: "Transparent pricing",
     description:
       "Full biomarker lists and total costs shown up front — no hidden fees",
   },
   {
     icon: Scale,
-    title: "Editorially Independent",
+    title: "Editorially independent",
     description:
       "Comparison ranking is never influenced by provider commercials",
   },
@@ -45,7 +45,7 @@ const BENEFITS_TUPLE: [
   (typeof BENEFITS)[2],
 ] = [BENEFITS[0], BENEFITS[1], BENEFITS[2]];
 
-const PILL_LABEL = "All Test Categories";
+const PILL_LABEL = "All test categories";
 const SUBTITLE =
   "Every clinically validated test from our trusted UK providers, filterable by category.";
 const BENEFITS_TITLE = "Why Compare Through myhealth checkup?";
@@ -119,19 +119,19 @@ const TestCategoriesPage = () => {
       seoKeywords={SEO.keywords}
       canonicalUrl={SEO.canonical}
       pillLabel={PILL_LABEL}
-      headline="Browse Tests by Category"
+      headline="Browse tests by category"
       subtitle={SUBTITLE}
       searchPlaceholder="Search by test name, biomarker, or category…"
       trustStats={[
-        { value: "50,000+", label: "Tests Compared" },
-        { value: "4.8★", label: "Average Rating" },
-        { value: "8", label: "Trusted Providers" },
+        { value: "50,000+", label: "Tests compared" },
+        { value: "4.8★", label: "Average rating" },
+        { value: "8", label: "Trusted providers" },
       ]}
       filters={filters}
       tests={tests}
       benefitsTitle={BENEFITS_TITLE}
       benefits={BENEFITS_TUPLE}
-      breadcrumbs={[{ label: "Home", href: "/" }, { label: "Test Categories" }]}
+      breadcrumbs={[{ label: "Home", href: "/" }, { label: "Test categories" }]}
       compareUrl="/compare"
     />
   );

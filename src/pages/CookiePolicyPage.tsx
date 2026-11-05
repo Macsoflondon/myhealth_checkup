@@ -22,8 +22,8 @@ const CookiePolicyPage = () => {
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner
-          title="Cookie Policy"
-          subtitle="This Cookie Policy explains how myhealthcheckup Ltd uses cookies and similar technologies."
+          title="Cookie policy"
+          subtitle="This cookie policy explains how myhealthcheckup Ltd uses cookies and similar technologies."
         />
 
         <div className="container mx-auto px-4 py-12">
@@ -46,7 +46,7 @@ const CookiePolicyPage = () => {
 
             <Card className="mb-8">
               <CardHeader>
-                <CardTitle>What Are Cookies?</CardTitle>
+                <CardTitle>What are cookies?</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="mb-4">
@@ -63,12 +63,12 @@ const CookiePolicyPage = () => {
 
             <Card className="mb-8">
               <CardHeader>
-                <CardTitle>Types of Cookies We Use</CardTitle>
+                <CardTitle>Types of cookies we use</CardTitle>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="border-l-4 border-green-500 pl-4">
                   <h3 className="font-semibold text-green-800 mb-2">
-                    Strictly Necessary Cookies
+                    Strictly necessary cookies
                   </h3>
                   <p className="text-sm text-muted-foreground mb-2">
                     Required for Website functionality (e.g., login, security).
@@ -82,7 +82,7 @@ const CookiePolicyPage = () => {
                 </div>
                 <div className="border-l-4 border-blue-500 pl-4">
                   <h3 className="font-semibold text-blue-800 mb-2">
-                    Performance & Analytics Cookies
+                    Performance & analytics cookies
                   </h3>
                   <p className="text-sm text-muted-foreground mb-2">
                     Help us understand how visitors use our Website.
@@ -96,7 +96,7 @@ const CookiePolicyPage = () => {
                 </div>
                 <div className="border-l-4 border-purple-500 pl-4">
                   <h3 className="font-semibold text-purple-800 mb-2">
-                    Functional Cookies
+                    Functional cookies
                   </h3>
                   <p className="text-sm text-muted-foreground mb-2">
                     Remember preferences (e.g., saved tests).
@@ -110,7 +110,7 @@ const CookiePolicyPage = () => {
                 </div>
                 <div className="border-l-4 border-orange-500 pl-4">
                   <h3 className="font-semibold text-orange-800 mb-2">
-                    Marketing Cookies
+                    Marketing cookies
                   </h3>
                   <p className="text-sm text-muted-foreground mb-2">
                     Used for personalised advertising (only with your consent).
@@ -127,19 +127,19 @@ const CookiePolicyPage = () => {
 
             <Card className="mb-8">
               <CardHeader>
-                <CardTitle>Cookie Duration</CardTitle>
+                <CardTitle>Cookie duration</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <h4 className="font-semibold mb-2">Session Cookies</h4>
+                    <h4 className="font-semibold mb-2">Session cookies</h4>
                     <p className="text-sm text-muted-foreground">
                       Deleted when you close your browser. Used for essential
                       site functionality.
                     </p>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-2">Persistent Cookies</h4>
+                    <h4 className="font-semibold mb-2">Persistent cookies</h4>
                     <p className="text-sm text-muted-foreground">
                       Remain on your device for a set period (typically 1-24
                       months) for preferences and analytics.
@@ -151,7 +151,7 @@ const CookiePolicyPage = () => {
 
             <Card className="mb-8">
               <CardHeader>
-                <CardTitle>Managing Your Cookie Preferences</CardTitle>
+                <CardTitle>Managing your cookie preferences</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="mb-4">
@@ -159,7 +159,7 @@ const CookiePolicyPage = () => {
                 </p>
                 <div className="space-y-4">
                   <div className="bg-primary/5 p-4 rounded-lg">
-                    <h4 className="font-semibold mb-2">Our Cookie Settings</h4>
+                    <h4 className="font-semibold mb-2">Our cookie settings</h4>
                     <p className="text-sm text-muted-foreground mb-3">
                       Use our cookie preference centre to control which types of
                       cookies you accept.
@@ -175,7 +175,7 @@ const CookiePolicyPage = () => {
                     </Button>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-2">Browser Settings</h4>
+                    <h4 className="font-semibold mb-2">Browser settings</h4>
                     <p className="text-sm text-muted-foreground">
                       Most browsers allow you to control cookies through their
                       settings. Note that disabling cookies may affect website
@@ -188,7 +188,7 @@ const CookiePolicyPage = () => {
 
             <Card className="mb-8">
               <CardHeader>
-                <CardTitle>Third-Party Cookies</CardTitle>
+                <CardTitle>Third-party cookies</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="mb-4">
@@ -217,7 +217,7 @@ const CookiePolicyPage = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Contact Us</CardTitle>
+                <CardTitle>Contact us</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="mb-4">

@@ -93,7 +93,7 @@ const ReviewSystem = () => {
       <Header />
       <div className="max-w-4xl mx-auto p-6">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-4">Customer Reviews</h1>
+          <h1 className="text-3xl font-bold mb-4">Customer reviews</h1>
 
           {/* Review Summary */}
           <Card className="p-6 mb-6">
@@ -161,7 +161,7 @@ const ReviewSystem = () => {
                 className="border rounded px-3 py-1 text-sm"
               >
                 <option value="all">All Reviews</option>
-                <option value="fast-results">Fast Results</option>
+                <option value="fast-results">Fast results</option>
                 <option value="good-value">Good Value</option>
                 <option value="comprehensive">Comprehensive</option>
                 <option value="professional-staff">Professional Staff</option>

@@ -39,7 +39,7 @@ export default function ExportSection() {
   };
 
   return (
-    <SectionShell title="Export Centre">
+    <SectionShell title="Export centre">
       <div className="grid sm:grid-cols-2 gap-3">
         {EXPORTABLE.map((e) => (
           <div

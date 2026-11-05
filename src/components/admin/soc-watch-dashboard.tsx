@@ -185,7 +185,7 @@ export function SocWatchDashboard({
     queryFn: async () => {
       const response = await socWatchApi.getDashboard({ days: Number(days) });
       if (!response.data)
-        throw response.error ?? new Error("SOC Watch data unavailable");
+        throw response.error ?? new Error("SOC watch data unavailable");
       return { dashboard: response.data, partialError: response.error };
     },
     staleTime: 30_000,
@@ -258,7 +258,7 @@ export function SocWatchDashboard({
                     embedded ? "text-foreground" : "text-primary-foreground",
                   )}
                 >
-                  SOC Watch
+                  SOC watch
                 </h1>
                 <p
                   className={cn(
@@ -579,7 +579,7 @@ export function SocWatchDashboard({
             <AlertDescription>
               {dashboardQuery.error instanceof Error
                 ? dashboardQuery.error.message
-                : "SOC Watch data could not be loaded."}
+                : "SOC watch data could not be loaded."}
             </AlertDescription>
           </Alert>
         )}

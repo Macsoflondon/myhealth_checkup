@@ -9,7 +9,7 @@ const AssistedTestFinderPage = lazy(
 export const Route = createFileRoute("/assisted-test-finder")({
   head: () =>
     buildRouteHead({
-      title: "Assisted Test Finder | myhealth checkup",
+      title: "Assisted test finder | myhealth checkup",
       description:
         "Guided help choosing a private blood test, matching your symptoms and health goals to relevant biomarkers and panels.",
       path: "/assisted-test-finder",

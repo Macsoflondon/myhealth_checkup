@@ -110,7 +110,7 @@ export const HealthDataHub = () => {
               >
                 0
               </p>
-              <p className="text-sm text-muted-foreground">Test Results</p>
+              <p className="text-sm text-muted-foreground">Test results</p>
             </div>
           </div>
         </Card>
@@ -142,7 +142,7 @@ export const HealthDataHub = () => {
           </TabsTrigger>
           <TabsTrigger value="results" className="flex items-center gap-2">
             <FileText className="h-4 w-4" />
-            Test Results
+            Test results
           </TabsTrigger>
           <TabsTrigger value="upload" className="flex items-center gap-2">
             <Upload className="h-4 w-4" />
@@ -154,7 +154,7 @@ export const HealthDataHub = () => {
           </TabsTrigger>
           <TabsTrigger value="providers" className="flex items-center gap-2">
             <Building2 className="h-4 w-4" />
-            Saved Providers
+            Saved providers
           </TabsTrigger>
           <TabsTrigger value="orders" className="flex items-center gap-2">
             <Package className="h-4 w-4" />
@@ -176,7 +176,7 @@ export const HealthDataHub = () => {
               </div>
               <div className="flex-1">
                 <h3 className="type-card-title text-brand-navy mb-2">
-                  AI Blood Test Analysis
+                  AI blood test analysis
                 </h3>
                 <p className="text-muted-foreground mb-4">
                   Get instant AI-powered explanations of your biomarker
@@ -205,7 +205,7 @@ export const HealthDataHub = () => {
               </div>
               <div className="flex-1">
                 <h3 className="type-card-title text-brand-navy mb-2">
-                  Hidden Gap Detector
+                  Hidden gap detector
                 </h3>
                 <p className="text-muted-foreground mb-4">
                   Discover which preventive health screenings you may be
@@ -230,7 +230,7 @@ export const HealthDataHub = () => {
 
           <Card className="p-6 border-2">
             <h3 className="type-card-title mb-4 text-brand-navy">
-              Getting Started
+              Getting started
             </h3>
             <div className="space-y-4">
               <div className="flex items-start gap-4 p-4 bg-muted/50 rounded-lg">
@@ -239,7 +239,7 @@ export const HealthDataHub = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold mb-1 text-brand-navy">
-                    Upload Your Test Results
+                    Upload your test results
                   </h4>
                   <p className="text-sm text-muted-foreground">
                     Start by uploading previous blood test results or health
@@ -253,7 +253,7 @@ export const HealthDataHub = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold mb-1 text-brand-navy">
-                    Track Your Biomarkers
+                    Track your biomarkers
                   </h4>
                   <p className="text-sm text-muted-foreground">
                     View trends for key health markers like cholesterol, vitamin
@@ -267,7 +267,7 @@ export const HealthDataHub = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold mb-1 text-brand-navy">
-                    Get AI-Powered Insights
+                    Get AI-powered insights
                   </h4>
                   <p className="text-sm text-muted-foreground">
                     Use our AI analysis tool to understand your results and
@@ -289,7 +289,7 @@ export const HealthDataHub = () => {
 
         <TabsContent value="favorites">
           <h2 className="type-section-title mb-3 sm:mb-4">
-            Saved Tests & Services
+            Saved tests & services
           </h2>
           {isLoading ? (
             <div className="flex justify-center p-8">
@@ -300,7 +300,7 @@ export const HealthDataHub = () => {
               <CardContent className="pt-6 text-center">
                 <p>You haven't saved any favorites yet.</p>
                 <Button className="mt-4" onClick={() => navigate("/compare")}>
-                  Browse Tests
+                  Browse tests
                 </Button>
               </CardContent>
             </Card>
@@ -363,7 +363,7 @@ export const HealthDataHub = () => {
                         }
                         className="text-xs sm:text-sm"
                       >
-                        View Details
+                        View details
                       </Button>
                     </div>
                   </CardContent>
@@ -375,7 +375,7 @@ export const HealthDataHub = () => {
 
         <TabsContent value="providers">
           <h2 className="type-section-title mb-3 sm:mb-4">
-            Saved Providers
+            Saved providers
           </h2>
           {isLoading ? (
             <div className="flex justify-center p-8">
@@ -439,7 +439,7 @@ export const HealthDataHub = () => {
                         <Link
                           to={`/provider/${provider.provider_id.toLowerCase()}`}
                         >
-                          View Profile
+                          View profile
                         </Link>
                       </Button>
                       <Button
@@ -452,7 +452,7 @@ export const HealthDataHub = () => {
                         }
                         className="text-xs sm:text-sm"
                       >
-                        Browse Tests
+                        Browse tests
                       </Button>
                     </div>
                   </CardContent>
@@ -464,7 +464,7 @@ export const HealthDataHub = () => {
 
         <TabsContent value="orders">
           <h2 className="type-section-title mb-3 sm:mb-4">
-            My Orders & Results
+            My orders & results
           </h2>
           {isLoading ? (
             <div className="flex justify-center p-8">
@@ -475,7 +475,7 @@ export const HealthDataHub = () => {
               <CardContent className="pt-6 text-center">
                 <p>You haven't placed any orders yet.</p>
                 <Button className="mt-4" onClick={() => navigate("/compare")}>
-                  Browse Tests
+                  Browse tests
                 </Button>
               </CardContent>
             </Card>

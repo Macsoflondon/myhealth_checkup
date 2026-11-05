@@ -1153,7 +1153,7 @@ const ContactFallback = ({ onRestart }: { onRestart: () => void }) => (
   </motion.div>
 );
 
-// ─── Additional Context Step ────────────────────────────────────────────────────
+// ─── Additional context Step ────────────────────────────────────────────────────
 
 interface AdditionalContextProps {
   userContext: string;
@@ -1181,7 +1181,7 @@ const AdditionalContextStep = ({
           className="text-xl sm:text-2xl font-bold text-[#081129]"
           style={{ fontFamily: "'Montserrat', sans-serif" }}
         >
-          Additional Context
+          Additional context
         </h2>
       </div>
       <p className="text-[#081129]/60 text-sm max-w-md mx-auto">
@@ -1395,7 +1395,7 @@ export const TestFinderQuiz = () => {
     setPendingGender(null);
   };
 
-  // ─── Additional Context step ───
+  // ─── Additional context step ───
   if (showContextStep) {
     return (
       <AdditionalContextStep
@@ -1428,7 +1428,7 @@ export const TestFinderQuiz = () => {
                 className="text-2xl font-bold text-[#081129]"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
-                Your Personalised Results
+                Your personalised results
               </h2>
             </div>
             <p className="text-[#081129]/60 text-sm">

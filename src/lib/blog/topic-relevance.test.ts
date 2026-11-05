@@ -47,8 +47,8 @@ describe("selectTopicArticles", () => {
 describe("guidesHeadingFor", () => {
   it("builds a page-specific heading", () => {
     expect(guidesHeadingFor("Why Choose At Home Testing?")).toBe(
-      "At Home Guides",
+      "At home guides",
     );
-    expect(guidesHeadingFor("Women's Health")).toBe("Women's Health Guides");
+    expect(guidesHeadingFor("Women's Health")).toBe("Women's health guides");
   });
 });

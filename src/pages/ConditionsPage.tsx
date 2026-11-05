@@ -87,7 +87,7 @@ const ConditionsPage = () => {
 
         <main className="flex-1 bg-background">
           <PageBanner
-            title="Health Conditions"
+            title="Health conditions"
             accent="Testing"
             subtitle="Specialised testing for specific health conditions and symptoms. Get answers and take control of your health."
           >
@@ -106,7 +106,7 @@ const ConditionsPage = () => {
                   variant="outline"
                   className="w-full sm:w-auto border-white text-white hover:bg-white/10 whitespace-nowrap"
                 >
-                  Compare All Tests
+                  Compare all tests
                 </Button>
               </Link>
             </div>
@@ -117,7 +117,7 @@ const ConditionsPage = () => {
               <div className="max-w-6xl mx-auto">
                 <div className="text-center mb-12">
                   <h2 className="text-3xl font-bold mb-4 text-[#081129]">
-                    Browse by Health Condition
+                    Browse by health condition
                   </h2>
                   <p className="text-lg text-muted-foreground">
                     Find the right tests for your specific health concerns
@@ -159,7 +159,7 @@ const ConditionsPage = () => {
                               className="w-full text-white transition-colors"
                               style={{ backgroundColor: condition.colorHex }}
                             >
-                              View Tests
+                              View tests
                             </Button>
                           </Link>
                         </CardContent>

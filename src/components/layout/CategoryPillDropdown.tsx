@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { displayLabel } from "@/lib/display-label";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "@/lib/router-compat";
 import { ChevronDown } from "lucide-react";
@@ -150,7 +151,7 @@ export function CategoryPillDropdown({
             color: isActiveParent ? PINK : open ? "#127f8e" : "#081129",
           }}
         >
-          {displayName ?? item.name}
+          {displayName ?? displayLabel(item.name)}
         </span>
 
         {hasDropdown && (
@@ -192,7 +193,6 @@ export function CategoryPillDropdown({
                       <Link
                         to={sub.path}
                         role="menuitem"
-                        aria-label={sub.name}
                         aria-current={active ? "page" : undefined}
                         onClick={() => setOpen(false)}
                         className={`group/card relative block aspect-[3/4] overflow-hidden rounded-2xl no-underline ring-1 transition-shadow ${
@@ -263,7 +263,7 @@ export function CategoryPillDropdown({
                           strokeWidth={2}
                         />
                       </span>
-                      <span className="truncate">{sub.name}</span>
+                      <span className="truncate">{displayLabel(sub.name)}</span>
                     </Link>
                   </li>
                 );
@@ -276,7 +276,7 @@ export function CategoryPillDropdown({
                 className="text-[10px] font-bold uppercase tracking-[0.18em]"
                 style={{ color: `${NAVY}66` }}
               >
-                {item.name}
+                {displayLabel(item.name)}
               </span>
               {viewAll && (
                 <Link

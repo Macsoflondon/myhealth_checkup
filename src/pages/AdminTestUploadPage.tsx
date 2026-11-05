@@ -117,7 +117,7 @@ const AdminTestUploadPage: React.FC = () => {
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <CardTitle>Upload Provider Tests</CardTitle>
+          <CardTitle>Upload provider tests</CardTitle>
           <CardDescription>
             Upload Medichecks and London Laboratory tests to the database
           </CardDescription>

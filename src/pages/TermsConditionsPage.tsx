@@ -14,7 +14,7 @@ const TermsConditionsPage = () => {
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner
-          title="Terms & Conditions"
+          title="Terms & conditions"
           subtitle="Please read these terms carefully before using our services."
         />
 
@@ -120,7 +120,7 @@ const TermsConditionsPage = () => {
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <h4 className="font-semibold mb-2">Test Bookings</h4>
+                    <h4 className="font-semibold mb-2">Test bookings</h4>
                     <p className="text-sm text-muted-foreground">
                       When you book a test through our platform, you enter into
                       a direct contract with the test provider. We act as an
@@ -137,7 +137,7 @@ const TermsConditionsPage = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold mb-2">
-                      Cancellations & Refunds
+                      Cancellations & refunds
                     </h4>
                     <p className="text-sm text-muted-foreground">
                       Cancellation and refund policies are determined by
@@ -178,7 +178,7 @@ const TermsConditionsPage = () => {
                   Policy, which complies with UK GDPR requirements.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  By using our service, you consent to our Privacy Policy and
+                  By using our service, you consent to our Privacy policy and
                   cookie usage as outlined in our Cookie Policy.
                 </p>
               </CardContent>

@@ -7,7 +7,7 @@ const AboutUsPage = lazy(() => import("@/pages/AboutUsPage"));
 export const Route = createFileRoute("/about/")({
   head: () =>
     buildRouteHead({
-      title: "About myhealth checkup | Our Mission",
+      title: "About myhealth checkup | Our mission",
       description:
         "How myhealth checkup compares UK private diagnostics independently, with transparent pricing, full biomarker lists and accredited providers only.",
       path: "/about",

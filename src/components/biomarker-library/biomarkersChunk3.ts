@@ -13,10 +13,10 @@ export const biomarkersChunk3 = [
     unit: "Positive / Negative",
     ranges: {
       both: {
-        normal: { range: "Negative (HBsAg)", label: "No Active Hepatitis B" },
+        normal: { range: "Negative (HBsAg)", label: "No active hepatitis B" },
         high: {
           range: "Positive (HBsAg)",
-          label: "Active Hepatitis B Infection",
+          label: "Active hepatitis B infection",
           meaning:
             "Hepatitis B virus is present. Assess for acute vs chronic infection with HBe antigen, HBV DNA, and liver function tests.",
         },
@@ -48,10 +48,10 @@ export const biomarkersChunk3 = [
     unit: "Positive / Negative",
     ranges: {
       both: {
-        normal: { range: "Non-Reactive", label: "No HCV Antibodies Detected" },
+        normal: { range: "Non-Reactive", label: "No HCV antibodies detected" },
         high: {
           range: "Reactive",
-          label: "HCV Antibodies Detected",
+          label: "HCV antibodies detected",
           meaning:
             "Either current or previous HCV infection. HCV RNA PCR is required to confirm active infection (PCR positive = active infection; PCR negative = cleared infection).",
         },
@@ -175,7 +175,7 @@ export const biomarkersChunk3 = [
         normal: { range: "1.0–3.5 µmol/L", label: "Normal" },
         high: {
           range: "> 3.5 µmol/L",
-          label: "Elevated (Toxicity Risk)",
+          label: "Elevated (toxicity risk)",
           meaning:
             "Vitamin A toxicity (hypervitaminosis A) — liver damage, headaches, bone abnormalities, teratogenicity in pregnancy.",
         },
@@ -207,7 +207,7 @@ export const biomarkersChunk3 = [
       both: {
         low: {
           range: "< 11 µmol/L",
-          label: "Deficient (Scurvy Range)",
+          label: "Deficient (scurvy range)",
           meaning:
             "Scurvy risk — bleeding gums, easy bruising, corkscrew hairs, fatigue, impaired wound healing.",
         },
@@ -330,7 +330,7 @@ export const biomarkersChunk3 = [
       both: {
         low: {
           range: "< 0.2 ng/mL (MK-7)",
-          label: "Low / Deficient",
+          label: "Low / deficient",
           meaning:
             "Impaired MGP activation — risk of arterial calcification, reduced bone mineralisation.",
         },
@@ -384,7 +384,7 @@ export const biomarkersChunk3 = [
         normal: { range: "0.9–1.9 µmol/L", label: "Normal" },
         high: {
           range: "> 2.5 µmol/L",
-          label: "Toxic (Selenosis)",
+          label: "Toxic (selenosis)",
           meaning:
             "Hair loss, nail brittleness, garlic breath, nausea, peripheral neuropathy — most often from excess supplement use.",
         },
@@ -416,25 +416,25 @@ export const biomarkersChunk3 = [
       both: {
         low: {
           range: "< 4%",
-          label: "High Risk",
+          label: "High risk",
           meaning:
             "High cardiovascular and inflammatory risk zone — associated with increased heart attack risk, cognitive decline, and poor inflammatory control.",
         },
         borderline: {
           range: "4–8%",
-          label: "Intermediate Risk",
+          label: "Intermediate risk",
           meaning:
             "Room for improvement — target 8% or above for optimal cardiovascular protection.",
         },
         normal: {
           range: "8–11%",
-          label: "Target / Optimal",
+          label: "Target / optimal",
           meaning:
             "Optimal cardiovascular and anti-inflammatory protection. The target range according to Omega-3 Index guidelines.",
         },
         high: {
           range: "> 11%",
-          label: "Very High",
+          label: "Very high",
           meaning:
             "Possible excessive supplementation. Generally safe but rarely achievable without very high fish intake or supplements.",
         },
@@ -450,7 +450,7 @@ export const biomarkersChunk3 = [
       "Lipid Panel",
       "Triglycerides",
       "CRP",
-      "Cardiovascular Risk Assessment",
+      "Cardiovascular risk assessment",
     ],
   },
   {
@@ -620,12 +620,12 @@ export const biomarkersChunk3 = [
         },
         normal: {
           range: "0.8–1.5",
-          label: "Normal / Indeterminate",
+          label: "Normal / indeterminate",
           meaning: "Non-specific — further clinical context required.",
         },
         high: {
           range: "> 2.0",
-          label: "High (De Ritis Ratio)",
+          label: "High (De Ritis ratio)",
           meaning:
             "Alcoholic liver disease strongly suggested. Also elevated in cirrhosis (late stage), liver ischaemia, or Wilson's disease.",
         },
@@ -699,7 +699,7 @@ export const biomarkersChunk3 = [
         normal: { range: "2–12 ng/mL", label: "Normal" },
         high: {
           range: "> 12 ng/mL",
-          label: "High — Leptin Resistance",
+          label: "High — leptin resistance",
           meaning:
             "Obesity, high fat mass, or leptin resistance. High leptin with high BMI indicates resistance — the signal is not being heard.",
         },
@@ -714,7 +714,7 @@ export const biomarkersChunk3 = [
         normal: { range: "3–18 ng/mL", label: "Normal" },
         high: {
           range: "> 18 ng/mL",
-          label: "High — Leptin Resistance",
+          label: "High — leptin resistance",
           meaning:
             "Obesity or leptin resistance — appetite regulation impaired.",
         },
@@ -758,7 +758,7 @@ export const biomarkersChunk3 = [
         },
         high: {
           range: "> 30 mg/mmol",
-          label: "Macroalbuminuria (Overt Nephropathy)",
+          label: "Macroalbuminuria (overt nephropathy)",
           meaning:
             "Significant protein leak — established kidney disease. Requires specialist nephrology review and intensive management.",
         },

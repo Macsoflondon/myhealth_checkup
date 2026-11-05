@@ -8,7 +8,7 @@ const RecommendationsPage = () => {
   return (
     <>
       <Helmet>
-        <title>Health Recommendations | myhealth checkup</title>
+        <title>Health recommendations | myhealth checkup</title>
         <meta
           name="description"
           content="Get personalised health test recommendations from our AI-powered wellness assistant. Discover relevant tests from trusted UK providers based on your wellness goals and health interests."
@@ -25,7 +25,7 @@ const RecommendationsPage = () => {
         {/* Open Graph tags */}
         <meta
           property="og:title"
-          content="Health Recommendations | myhealth checkup"
+          content="Health recommendations | myhealth checkup"
         />
         <meta
           property="og:description"
@@ -41,7 +41,7 @@ const RecommendationsPage = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
-          content="Health Recommendations | myhealth checkup"
+          content="Health recommendations | myhealth checkup"
         />
         <meta
           name="twitter:description"

@@ -5,7 +5,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 const resources = [
   {
     icon: BookOpen,
-    title: "Health Hub",
+    title: "Health hub",
     description:
       "In-depth articles on tests, conditions and what your results mean.",
     link: "/blog",
@@ -20,7 +20,7 @@ const resources = [
   },
   {
     icon: MessageCircle,
-    title: "Contact Us",
+    title: "Contact us",
     description: "Get in touch with our team for personalised support.",
     link: "/contact",
     accent: "turquoise" as const,

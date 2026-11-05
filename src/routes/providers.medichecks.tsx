@@ -9,7 +9,7 @@ const MedichecksTestsCatalogPage = lazy(
 export const Route = createFileRoute("/providers/medichecks")({
   head: () =>
     buildRouteHead({
-      title: "Medichecks Tests — Full Range & Prices",
+      title: "Medichecks tests — full range & prices",
       description:
         "Browse the full Medichecks blood test range. Compare prices, biomarkers and typical turnaround times against other accredited UK providers.",
       path: "/providers/medichecks",

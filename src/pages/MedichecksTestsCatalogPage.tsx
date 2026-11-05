@@ -123,7 +123,7 @@ const MedichecksTestsCatalogPage = () => {
   return (
     <MainLayout>
       <Helmet>
-        <title>Medichecks Tests Catalogue | myhealth checkup</title>
+        <title>Medichecks tests catalogue | myhealth checkup</title>
         <meta
           name="description"
           content="Browse all Medichecks blood tests. Home test kits and clinic appointments available. Compare prices and book your private health screening."

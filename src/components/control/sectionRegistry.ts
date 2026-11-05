@@ -352,8 +352,8 @@ export const CONTROL_SECTIONS: ControlSection[] = [
   },
   {
     slug: "soc-watch",
-    title: "SOC Watch",
-    short: "SOC Watch",
+    title: "SOC watch",
+    short: "SOC watch",
     description:
       "Read-only security operations monitoring and signal correlation.",
     icon: Siren,

@@ -9,7 +9,7 @@ const FairTradingPolicyPage = lazy(
 export const Route = createFileRoute("/fair-trading")({
   head: () =>
     buildRouteHead({
-      title: "Fair Trading Statement | myhealth checkup",
+      title: "Fair trading statement | myhealth checkup",
       description:
         "Our commitments on transparent pricing, honest comparison and CMA-compliant consumer information.",
       path: "/fair-trading",

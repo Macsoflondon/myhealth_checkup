@@ -80,11 +80,11 @@ const PartnerShowcaseGrid = () => {
 
       <FeaturedPartnerWheel faceTexture={faceGridAsset.url} />
 
-      <SafeBlock name="Test Categories" fallback={<BlockSkeleton />}>
+      <SafeBlock name="Test categories" fallback={<BlockSkeleton />}>
         <TestCategoriesSection />
       </SafeBlock>
 
-      <SafeBlock name="Most Popular Tests" fallback={<BlockSkeleton />}>
+      <SafeBlock name="Most popular tests" fallback={<BlockSkeleton />}>
         <DreamHealthShowcase />
       </SafeBlock>
 

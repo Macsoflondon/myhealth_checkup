@@ -7,7 +7,7 @@ const ConditionsPage = lazy(() => import("@/pages/ConditionsPage"));
 export const Route = createFileRoute("/conditions")({
   head: () =>
     buildRouteHead({
-      title: "Blood Tests by Condition | myhealth checkup",
+      title: "Blood tests by condition | myhealth checkup",
       description:
         "Find private blood tests relevant to specific health conditions, with biomarker detail and side-by-side UK provider pricing.",
       path: "/conditions",

@@ -6,7 +6,7 @@ import { MainLayout } from "@/layouts/MainLayout";
 import { biomarkerGuides, guideCategories } from "@/data/biomarkerGuides";
 import { BASE_URL } from "@/lib/seo";
 
-const TITLE = "Health Test Guides UK — Biomarkers Explained | myhealth checkup";
+const TITLE = "Health test guides UK — biomarkers explained | myhealth checkup";
 const DESCRIPTION =
   "Plain-English guides to UK private blood tests and biomarkers — testosterone, cortisol, thyroid, vitamin D, ferritin, liver, kidney and more.";
 
@@ -36,7 +36,7 @@ const BiomarkerGuidesIndexPage = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 text-white">
         <header className="mb-12 max-w-3xl">
           <h1 className="font-display text-4xl lg:text-5xl font-semibold tracking-tight mb-4">
-            Health Test Guides
+            Health test guides
           </h1>
           <p className="text-lg text-white/75">
             Plain-English explainers of the biomarkers behind UK private blood

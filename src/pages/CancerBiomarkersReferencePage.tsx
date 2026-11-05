@@ -289,7 +289,7 @@ const CancerBiomarkersReferencePage = () => {
 
       <main className="min-h-screen bg-background">
         <PageBanner
-          title="Cancer Biomarkers Reference Library"
+          title="Cancer biomarkers reference library"
           subtitle="A comprehensive guide to understanding tumour markers, what they measure, and their role in cancer screening and monitoring."
         >
           <Badge className="mb-4 bg-primary/20 text-primary border-primary/30 absolute top-4 left-1/2 -translate-x-1/2 hidden">
@@ -302,7 +302,7 @@ const CancerBiomarkersReferencePage = () => {
               className="w-full sm:w-auto bg-primary hover:bg-primary/90 whitespace-nowrap"
               asChild
             >
-              <Link to="/cancer-screening-compare">Compare Cancer Tests</Link>
+              <Link to="/cancer-screening-compare">Compare cancer tests</Link>
             </Button>
             <Button
               size="lg"
@@ -310,7 +310,7 @@ const CancerBiomarkersReferencePage = () => {
               className="w-full sm:w-auto border-white/30 text-white hover:bg-white/10 whitespace-nowrap"
               asChild
             >
-              <Link to="/tests/cancer">View Cancer Screening</Link>
+              <Link to="/tests/cancer">View cancer screening</Link>
             </Button>
           </div>
         </PageBanner>
@@ -332,7 +332,7 @@ const CancerBiomarkersReferencePage = () => {
                     </div>
                     <div>
                       <h2 className="text-lg font-semibold mb-2">
-                        Understanding Tumour Markers
+                        Understanding tumour markers
                       </h2>
                       <p className="text-muted-foreground text-sm leading-relaxed">
                         Tumour markers are substances—usually proteins—produced
@@ -526,7 +526,7 @@ const CancerBiomarkersReferencePage = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-2xl font-heading font-bold text-center mb-8">
-                Key Points to Remember
+                Key points to remember
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card>
@@ -606,7 +606,7 @@ const CancerBiomarkersReferencePage = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-2xl sm:text-3xl font-heading font-bold text-white mb-4">
-                Ready to Compare Cancer Screening Tests?
+                Ready to compare cancer screening tests?
               </h2>
               <p className="text-white/90 mb-6">
                 Compare cancer screening tests from trusted UK providers. Find
@@ -620,7 +620,7 @@ const CancerBiomarkersReferencePage = () => {
                   asChild
                 >
                   <Link to="/cancer-screening-compare">
-                    Compare Cancer Tests
+                    Compare cancer tests
                   </Link>
                 </Button>
               </div>

@@ -7,7 +7,7 @@ const HormonesPage = lazy(() => import("@/pages/HormonesPage"));
 export const Route = createFileRoute("/hormones")({
   head: () =>
     buildRouteHead({
-      title: "Hormone Blood Tests UK | Compare Prices",
+      title: "Hormone blood tests UK | Compare prices",
       description:
         "Compare private hormone panels covering testosterone, oestradiol, cortisol and more, with full biomarker detail and UK pricing.",
       path: "/hormones",

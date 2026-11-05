@@ -9,7 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { BASE_URL } from "@/lib/seo";
 
 const SLUG = "total-vs-free-testosterone";
-const TITLE = "Total vs Free Testosterone: UK Guide";
+const TITLE = "Total vs free testosterone: UK guide";
 const DESCRIPTION =
   "Independent UK guide explaining total vs free testosterone, why free testosterone levels matter for men's health, and how to compare private tests.";
 const CANONICAL = `${BASE_URL}/blog/${SLUG}`;

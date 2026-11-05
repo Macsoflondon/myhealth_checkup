@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { displayLabel } from "@/lib/display-label";
 import { Link, useLocation } from "@/lib/router-compat";
 import { ChevronDown } from "lucide-react";
 import { useNavigationData } from "@/hooks/useNavigationData";
@@ -114,13 +115,13 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
 
   // All navigation items for single row layout
   const allNavItems = primaryNavigationItems.filter(
-    (item) => item.name !== "How It Works",
+    (item) => item.name !== "How it works",
   );
 
-  const highlightedItems: string[] = ["Most Popular Tests"];
+  const highlightedItems: string[] = ["Most popular tests"];
 
   const renderNavItem = (item: PrimaryNavItem) => {
-    const isPopularTests = item.name === "Most Popular Tests";
+    const isPopularTests = item.name === "Most popular tests";
     const hasAccent = highlightedItems.includes(item.name);
     const isDropdownOpen = activeDropdown === item.name;
     const hasDropdown =
@@ -147,7 +148,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
               }`}
               onClick={(e) => handleDropdownToggle(e, item.name)}
             >
-              {item.name}
+              {displayLabel(item.name)}
               <ChevronDown
                 className={`w-4 h-4 lg:w-5 lg:h-5 transition-transform ${
                   isDropdownOpen ? "rotate-180" : ""
@@ -156,7 +157,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             </button>
             {isDropdownOpen && item.dropdownItems && (
               <NavItemDropdown
-                title={item.name}
+                title={displayLabel(item.name)}
                 items={item.dropdownItems}
                 onItemClick={handleItemClick}
                 onClose={handleCloseDropdown}
@@ -172,7 +173,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             }`}
             onClick={handleItemClick}
           >
-            {item.name}
+            {displayLabel(item.name)}
           </Link>
         )}
       </div>
@@ -224,7 +225,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
 
       <nav
         className={`relative ${className}`}
-        aria-label="Main Navigation"
+        aria-label="Main navigation"
         style={{ position: "relative", zIndex: 100, overflow: "visible" }}
       >
         {/* Mobile: Single wrapped row */}

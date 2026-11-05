@@ -403,7 +403,7 @@ export const ProviderComparisonTable: React.FC<
               render={(t) => <span>{t.features?.turnaround || "—"}</span>}
             />
             <Row
-              label="Collection Method"
+              label="Collection method"
               index={2}
               slots={slots}
               render={(t) => {
@@ -430,7 +430,7 @@ export const ProviderComparisonTable: React.FC<
               }}
             />
             <Row
-              label="Additional Collection Fees"
+              label="Additional collection fees"
               index={3}
               slots={slots}
               render={(t) => {
@@ -480,7 +480,7 @@ export const ProviderComparisonTable: React.FC<
               }}
             />
             <Row
-              label="Total Expected Cost"
+              label="Total expected cost"
               index={4}
               slots={slots}
               render={(t) => {
@@ -502,7 +502,7 @@ export const ProviderComparisonTable: React.FC<
               }}
             />
             <Row
-              label="Clinical Review"
+              label="Clinical review"
               index={5}
               slots={slots}
               render={(t) => {

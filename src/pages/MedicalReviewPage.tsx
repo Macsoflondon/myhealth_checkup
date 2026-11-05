@@ -65,7 +65,7 @@ const MedicalReviewPage = () => {
 
       <main className="flex-grow bg-background">
         <PageBanner
-          title="Medical Review"
+          title="Medical review"
           accent="& Editorial Standards"
           subtitle="Who reviews our clinical content, what they review, and how to verify their registration."
         />

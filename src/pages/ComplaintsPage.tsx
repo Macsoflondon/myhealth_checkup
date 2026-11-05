@@ -141,7 +141,7 @@ const ComplaintsPage: React.FC = () => {
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner
-          title="Feedback & Complaints"
+          title="Feedback & complaints"
           subtitle="Tell us what we got wrong, what we got right, or raise a formal dispute. Every submission is logged, acknowledged, and answered within our published SLA."
         />
 

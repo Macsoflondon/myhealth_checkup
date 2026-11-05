@@ -129,7 +129,7 @@ export default function BloodTestAnalysisPage() {
       loadPreviousQueries();
 
       toast({
-        title: "Analysis Complete",
+        title: "Analysis complete",
         description: "Your blood test results have been analysed.",
       });
     } catch (err) {
@@ -137,7 +137,7 @@ export default function BloodTestAnalysisPage() {
       const message = err instanceof Error ? err.message : "Analysis failed";
       setError(message);
       toast({
-        title: "Analysis Failed",
+        title: "Analysis failed",
         description: message,
         variant: "destructive",
       });
@@ -167,7 +167,7 @@ export default function BloodTestAnalysisPage() {
             </div>
 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4">
-              Understand Your Blood Test Results
+              Understand your blood test results
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
               Enter your biomarker readings and receive instant, AI-powered

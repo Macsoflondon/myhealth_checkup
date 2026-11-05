@@ -14,7 +14,7 @@ const panel = (slug: string): CatalogueComparisonPanel => ({
 
 describe("homepage comparison coordination", () => {
   it("keeps male and female hormone tests in different panels", () => {
-    expect(matchesComparisonName("Female Hormones 7", "male hormone")).toBe(
+    expect(matchesComparisonName("Female hormones 7", "male hormone")).toBe(
       false,
     );
     expect(

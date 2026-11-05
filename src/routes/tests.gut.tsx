@@ -7,7 +7,7 @@ const GutHealthPage = lazy(() => import("@/pages/GutHealthPage"));
 export const Route = createFileRoute("/tests/gut")({
   head: () =>
     buildCollectionHead({
-      title: "Gut Health Tests UK | Compare Prices",
+      title: "Gut health tests UK | Compare prices",
       description:
         "Compare private gut health tests including coeliac, microbiome and digestive panels from UK providers.",
       path: "/tests/gut",

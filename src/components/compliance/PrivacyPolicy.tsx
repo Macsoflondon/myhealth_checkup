@@ -34,7 +34,7 @@ const PrivacyPolicy = () => {
         </h2>
         <p className="text-brand-navy leading-relaxed mb-4">
           myhealthcheckup Ltd ("we", "our", "us") is committed to protecting
-          your personal data. This Privacy Policy explains how we collect,
+          your personal data. This privacy policy explains how we collect,
           process, and protect your personal information when you use
           myhealthcheckup.co.uk ("Website"). We comply fully with the UK General
           Data Protection Regulation (UK GDPR), the Data Protection Act 2018,
@@ -310,7 +310,7 @@ const PrivacyPolicy = () => {
       <Card className="p-6">
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
           <Mail className="h-5 w-5 text-health-600" />
-          11. Contact Us
+          11. Contact us
         </h2>
         <div className="flex items-center gap-3">
           <Mail className="h-4 w-4 text-brand-navy" />

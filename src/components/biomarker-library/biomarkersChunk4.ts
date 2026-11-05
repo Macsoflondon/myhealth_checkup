@@ -75,7 +75,7 @@ export const biomarkersChunk4 = [
         normal: { range: "0.10–0.57 ng/mL (fasting AM)", label: "Normal" },
         high: {
           range: "> 0.57 ng/mL",
-          label: "Elevated Resorption",
+          label: "Elevated resorption",
           meaning:
             "Bone breakdown exceeding normal — high fracture risk, hyperparathyroidism, hyperthyroidism, Paget's, steroid use, or bone metastases.",
         },
@@ -385,7 +385,7 @@ export const biomarkersChunk4 = [
         normal: { range: "< 450 mU/L", label: "Normal" },
         borderline: {
           range: "450–1000 mU/L",
-          label: "Mildly Elevated",
+          label: "Mildly elevated",
           meaning:
             "Stress (macroprolactin), medication effect (antipsychotics, metoclopramide), or hypothyroidism.",
         },
@@ -397,7 +397,7 @@ export const biomarkersChunk4 = [
         },
         veryHigh: {
           range: "> 5000 mU/L",
-          label: "Very High",
+          label: "Very high",
           meaning:
             "Almost certainly a prolactinoma (macroprolactinoma if > 5000). Dopamine agonist therapy highly effective.",
         },
@@ -406,7 +406,7 @@ export const biomarkersChunk4 = [
         normal: { range: "< 600 mU/L (non-pregnant)", label: "Normal" },
         borderline: {
           range: "600–1500 mU/L",
-          label: "Mildly Elevated",
+          label: "Mildly elevated",
           meaning:
             "Stress, medication, macroprolactin (inactive form), or hypothyroidism.",
         },
@@ -418,7 +418,7 @@ export const biomarkersChunk4 = [
         },
         veryHigh: {
           range: "> 5000 mU/L",
-          label: "Very High",
+          label: "Very high",
           meaning:
             "Likely macroprolactinoma. Cabergoline first-line — highly effective.",
         },

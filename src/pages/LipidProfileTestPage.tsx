@@ -4,18 +4,18 @@ import { Heart, Clock, Shield } from "lucide-react";
 
 const LipidProfileTestPage = () => {
   const testData: TestPageData = {
-    title: "Lipid Profile Test",
+    title: "Lipid profile test",
     description:
       "Comprehensive cholesterol testing to assess your cardiovascular risk and heart health. Essential for monitoring and preventing heart disease.",
     category: "Heart Health",
-    breadcrumbTitle: "Lipid Profile Test",
-    metaTitle: "Lipid Profile Test - Compare UK Providers | MyHealth Checkup",
+    breadcrumbTitle: "Lipid profile test",
+    metaTitle: "Lipid profile test - Compare UK Providers | MyHealth Checkup",
     metaDescription:
       "Compare Lipid Profile Tests from top UK providers. Check cholesterol levels, heart disease risk and cardiovascular health.",
 
     biomarkerSections: [
       {
-        title: "Cholesterol Markers",
+        title: "Cholesterol markers",
         markers: [
           "Total Cholesterol",
           "LDL Cholesterol (bad)",
@@ -24,7 +24,7 @@ const LipidProfileTestPage = () => {
         ],
       },
       {
-        title: "Risk Assessment",
+        title: "Risk assessment",
         markers: [
           "Cholesterol ratios",
           "Cardiovascular risk scoring",
@@ -36,7 +36,7 @@ const LipidProfileTestPage = () => {
 
     highlights: [
       {
-        title: "Optimal Cholesterol Levels",
+        title: "Optimal cholesterol levels",
         items: [
           "Total Cholesterol: <5.0 mmol/L (<193 mg/dL)",
           "LDL Cholesterol: <3.0 mmol/L (<116 mg/dL)",
@@ -49,8 +49,8 @@ const LipidProfileTestPage = () => {
     ],
 
     featureBadges: [
-      { icon: Shield, label: "UKAS Accredited" },
-      { icon: Clock, label: "Fast Results" },
+      { icon: Shield, label: "UKAS accredited" },
+      { icon: Clock, label: "Fast results" },
       { icon: Heart, label: "Heart Health" },
     ],
 

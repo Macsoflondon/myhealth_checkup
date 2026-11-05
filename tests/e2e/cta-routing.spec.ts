@@ -106,7 +106,7 @@ test.describe("CTA routing", () => {
 
 test.describe("Key CTA destinations", () => {
   const CANONICAL: ReadonlyArray<readonly [string, string, RegExp]> = [
-    ["/", "Take the Health Quiz", /\/find-test/],
+    ["/", "Take the health quiz", /\/find-test/],
     ["/compare", "Compare by symptom", /\/compare\/symptoms/],
     ["/compare", "Compare by goal", /\/compare\/goals/],
   ];

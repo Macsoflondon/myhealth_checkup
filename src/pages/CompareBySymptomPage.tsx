@@ -35,7 +35,7 @@ const CompareBySymptomPage = () => {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "MedicalWebPage",
-            name: "Compare Tests by Symptom",
+            name: "Compare tests by Symptom",
             description: "Find the right blood test based on your symptoms.",
             url: "https://myhealthcheckup.co.uk/compare/symptoms",
           })}

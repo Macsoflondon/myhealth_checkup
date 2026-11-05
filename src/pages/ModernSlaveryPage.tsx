@@ -12,7 +12,7 @@ const ModernSlaveryPage = () => {
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner
-          title="Modern Slavery Statement"
+          title="Modern slavery statement"
           subtitle="Our commitment to preventing modern slavery and human trafficking in our operations and supply chain."
         />
         <ModernSlaveryStatement />

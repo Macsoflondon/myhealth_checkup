@@ -221,27 +221,27 @@ const WellnessPage = () => {
         subtitle={mapped.subtitle}
         searchPlaceholder="Search by symptom or test — e.g. 'cholesterol', 'vitamin D'"
         trustStats={[
-          { value: "50,000+", label: "Tests Compared" },
-          { value: "4.8\u2605", label: "Average Rating" },
-          { value: "6", label: "Trusted Providers" },
+          { value: "50,000+", label: "Tests compared" },
+          { value: "4.8\u2605", label: "Average rating" },
+          { value: "6", label: "Trusted providers" },
         ]}
         filters={["All"]}
-        benefitsTitle="Why Choose Wellness Testing?"
+        benefitsTitle="Why choose wellness testing?"
         benefits={[
           {
             icon: ShieldCheck,
-            title: "Early Insight",
+            title: "Early insight",
             description: "Spot changes in key markers before symptoms appear",
           },
           {
             icon: Activity,
-            title: "Track Progress",
+            title: "Track progress",
             description:
               "Monitor how lifestyle changes affect your results over time",
           },
           {
             icon: HeartPulse,
-            title: "Preventative Care",
+            title: "Preventative care",
             description: "Build a clearer picture of your long-term health",
           },
         ]}
@@ -259,7 +259,7 @@ const WellnessPage = () => {
     return (
       <DbCategoryPage
         canonicalCategory="wellness"
-        seoTitle="Wellness Tests | myhealth checkup"
+        seoTitle="Wellness tests | myhealth checkup"
         pillLabel="General Wellness"
         seoDescription="Compare wellness blood tests from UKAS-accredited UK providers, with clear pricing, biomarker lists and typical turnaround times."
         seoKeywords="wellness blood tests, health screening, liver test, kidney test, cholesterol test, vitamin test"
@@ -268,27 +268,27 @@ const WellnessPage = () => {
         subtitle="Compare wellness and preventative blood tests from accredited UK providers — full biomarker lists, transparent pricing and typical turnaround times."
         searchPlaceholder="Search by symptom or test — e.g. 'cholesterol', 'vitamin D'"
         trustStats={[
-          { value: "50,000+", label: "Tests Compared" },
-          { value: "4.8\u2605", label: "Average Rating" },
-          { value: "6", label: "Trusted Providers" },
+          { value: "50,000+", label: "Tests compared" },
+          { value: "4.8\u2605", label: "Average rating" },
+          { value: "6", label: "Trusted providers" },
         ]}
         filters={["All"]}
-        benefitsTitle="Why Choose Wellness Testing?"
+        benefitsTitle="Why choose wellness testing?"
         benefits={[
           {
             icon: ShieldCheck,
-            title: "Early Insight",
+            title: "Early insight",
             description: "Spot changes in key markers before symptoms appear",
           },
           {
             icon: Activity,
-            title: "Track Progress",
+            title: "Track progress",
             description:
               "Monitor how lifestyle changes affect your results over time",
           },
           {
             icon: HeartPulse,
-            title: "Preventative Care",
+            title: "Preventative care",
             description: "Build a clearer picture of your long-term health",
           },
         ]}
@@ -321,7 +321,7 @@ const WellnessPage = () => {
       <main className="min-h-screen bg-background">
         <CategoryStandardHero pillLabel="General Wellness" />
 
-        {/* Browse Tests by Category */}
+        {/* Browse tests by category */}
         <section
           style={{
             background: "#ffffff",
@@ -497,7 +497,7 @@ const WellnessPage = () => {
                         gap: 8,
                       }}
                     >
-                      View Tests
+                      View tests
                       <span
                         style={{
                           display: "inline-block",
@@ -557,7 +557,7 @@ const WellnessPage = () => {
                     margin: 0,
                   }}
                 >
-                  Find the Right Health Test for You
+                  Find the right health test for you
                 </h2>
               </div>
               <Link
@@ -574,7 +574,7 @@ const WellnessPage = () => {
                   textDecoration: "none",
                 }}
               >
-                Start Your Quiz →
+                Start your quiz →
               </Link>
             </div>
           </div>

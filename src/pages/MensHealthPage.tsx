@@ -13,26 +13,26 @@ const MensHealthPage = () => (
     subtitle="Comprehensive male health screening including testosterone, prostate health, erectile dysfunction, and complete wellness testing tailored for men's unique health needs."
     searchPlaceholder="Search by symptom or test — e.g. 'testosterone', 'prostate'"
     trustStats={[
-      { value: "50,000+", label: "Tests Compared" },
-      { value: "4.8★", label: "Average Rating" },
-      { value: "6", label: "Trusted Providers" },
+      { value: "50,000+", label: "Tests compared" },
+      { value: "4.8★", label: "Average rating" },
+      { value: "6", label: "Trusted providers" },
     ]}
     filters={["All"]}
     benefitsTitle="Why Choose Men's Health Testing?"
     benefits={[
       {
         icon: Shield,
-        title: "Early Detection",
+        title: "Early detection",
         description: "Identify health issues before symptoms develop",
       },
       {
         icon: Activity,
-        title: "Optimise Performance",
+        title: "Optimise performance",
         description: "Maximise energy, strength, and overall male vitality",
       },
       {
         icon: Users,
-        title: "Preventive Care",
+        title: "Preventive care",
         description: "Take control of your health with proactive screening",
       },
     ]}

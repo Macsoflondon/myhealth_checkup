@@ -14,12 +14,12 @@ export const biomarkersChunk5 = [
         normal: { range: "< 2 nmol/L (morning)", label: "Normal" },
         borderline: {
           range: "2–10 nmol/L",
-          label: "Borderline — Synacthen Test Required",
+          label: "Borderline — Synacthen Test required",
           meaning: "Intermediate range — an ACTH stimulation test is required.",
         },
         high: {
           range: "> 10 nmol/L",
-          label: "Elevated — CAH Likely",
+          label: "Elevated — CAH likely",
           meaning: "NC-CAH likely; > 30–100 nmol/L suggests classic CAH.",
         },
       },
@@ -123,7 +123,7 @@ export const biomarkersChunk5 = [
         normal: { range: "< 3.4 mmol/L", label: "Optimal" },
         borderline: {
           range: "3.4–4.9 mmol/L",
-          label: "Borderline High",
+          label: "Borderline high",
           meaning:
             "Moderate cardiovascular risk — lifestyle modification and risk factor assessment.",
         },
@@ -163,7 +163,7 @@ export const biomarkersChunk5 = [
         normal: { range: "< 0.77 mmol/L", label: "Normal" },
         borderline: {
           range: "0.77–1.5 mmol/L",
-          label: "Borderline Elevated",
+          label: "Borderline elevated",
           meaning:
             "Metabolic syndrome, insulin resistance, or high refined carbohydrate diet.",
         },
@@ -256,11 +256,11 @@ export const biomarkersChunk5 = [
       both: {
         normal: {
           range: "Negative",
-          label: "Negative — No Red Cell Sensitisation",
+          label: "Negative — no red cell sensitisation",
         },
         high: {
           range: "Positive",
-          label: "Positive — Red Cells Coated",
+          label: "Positive — red cells coated",
           meaning:
             "Autoimmune haemolytic anaemia (AIHA), drug-induced haemolysis, haemolytic disease of newborn, or haemolytic transfusion reaction.",
         },
@@ -290,10 +290,10 @@ export const biomarkersChunk5 = [
     unit: "Positive / Negative",
     ranges: {
       both: {
-        normal: { range: "Negative", label: "JAK2 Mutation Not Detected" },
+        normal: { range: "Negative", label: "JAK2 mutation not detected" },
         high: {
           range: "Positive",
-          label: "JAK2 V617F Mutation Detected",
+          label: "JAK2 V617F mutation detected",
           meaning:
             "Myeloproliferative neoplasm confirmed (PV, ET, or myelofibrosis). Urgent haematology referral and bone marrow biopsy required.",
         },
@@ -334,7 +334,7 @@ export const biomarkersChunk5 = [
         normal: { range: "30–143 nmol/L", label: "Normal" },
         high: {
           range: "> 200 nmol/L",
-          label: "Elevated (Toxicity Risk)",
+          label: "Elevated (toxicity risk)",
           meaning:
             "High-dose supplement use — chronic excess causes sensory neuropathy.",
         },
@@ -469,7 +469,7 @@ export const biomarkersChunk5 = [
     ranges: {
       both: {
         normal: { range: "< 6 µmol/L (fasting)", label: "Normal" },
-        borderline: { range: "6–14 µmol/L", label: "Mildly Elevated" },
+        borderline: { range: "6–14 µmol/L", label: "Mildly elevated" },
         high: {
           range: "14–40 µmol/L",
           label: "Elevated",
@@ -477,7 +477,7 @@ export const biomarkersChunk5 = [
         },
         veryHigh: {
           range: "> 40 µmol/L",
-          label: "Markedly Elevated",
+          label: "Markedly elevated",
           meaning:
             "Intrahepatic cholestasis of pregnancy (ICP) — high stillbirth risk, early delivery indicated.",
         },
@@ -503,23 +503,23 @@ export const biomarkersChunk5 = [
       both: {
         low: {
           range: "< 1.0 mg/L",
-          label: "Low Cardiovascular Inflammatory Risk",
+          label: "Low cardiovascular inflammatory risk",
         },
         borderline: {
           range: "1.0–3.0 mg/L",
-          label: "Average Cardiovascular Inflammatory Risk",
+          label: "Average cardiovascular inflammatory risk",
           meaning:
             "Moderate subclinical inflammation — consider lifestyle optimisation.",
         },
         high: {
           range: "3.0–10.0 mg/L",
-          label: "High Cardiovascular Inflammatory Risk",
+          label: "High cardiovascular inflammatory risk",
           meaning:
             "Elevated vascular inflammation — strong predictor of future cardiovascular events.",
         },
         veryHigh: {
           range: "> 10.0 mg/L",
-          label: "Acute Inflammation Present",
+          label: "Acute inflammation present",
           meaning:
             "Likely acute inflammatory process — does not reflect chronic cardiovascular risk.",
         },
@@ -553,7 +553,7 @@ export const biomarkersChunk5 = [
         normal: { range: "< 70 (using pmol/L ÷ mIU/L)", label: "Normal" },
         high: {
           range: "> 70",
-          label: "Elevated — Primary Hyperaldosteronism Suspected",
+          label: "Elevated — primary hyperaldosteronism suspected",
           meaning: "Confirmatory testing and adrenal imaging required.",
         },
       },

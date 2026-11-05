@@ -67,7 +67,7 @@ export const QuizCTABanner = ({
             textDecoration: "none",
           }}
         >
-          Start Your Quiz →
+          Start your quiz →
         </Link>
       </div>
     </div>

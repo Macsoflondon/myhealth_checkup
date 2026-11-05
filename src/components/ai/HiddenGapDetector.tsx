@@ -196,8 +196,8 @@ function CoverageScoreRing({ score }: { score: number }) {
     score >= 70
       ? "Good Coverage"
       : score >= 40
-        ? "Moderate Coverage"
-        : "Low Coverage";
+        ? "Moderate coverage"
+        : "Low coverage";
 
   return (
     <div className="flex flex-col items-center gap-2">
@@ -305,7 +305,7 @@ const HiddenGapDetector = () => {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold text-brand-navy">
-              Your Gap Analysis
+              Your gap analysis
             </h2>
             <p className="text-sm text-muted-foreground mt-1">
               Based on your profile — not medical advice
@@ -455,7 +455,7 @@ const HiddenGapDetector = () => {
           </div>
         </div>
         <h1 className="text-2xl sm:text-3xl font-bold text-brand-navy">
-          Hidden Gap Detector
+          Hidden gap detector
         </h1>
         <p className="text-muted-foreground text-sm sm:text-base max-w-md mx-auto">
           Discover which preventive health screenings you may be missing — based

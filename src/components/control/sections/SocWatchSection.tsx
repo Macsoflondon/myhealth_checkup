@@ -3,7 +3,7 @@ import { SectionShell } from "../SectionShell";
 
 export default function SocWatchSection() {
   return (
-    <SectionShell title="SOC Watch">
+    <SectionShell title="SOC watch">
       <SocWatchDashboard embedded />
     </SectionShell>
   );

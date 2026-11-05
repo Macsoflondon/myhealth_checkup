@@ -29,7 +29,7 @@ const AffiliateDisclosure = () => {
       </Card>
 
       <Card className="p-6">
-        <h2 className="text-xl font-semibold mb-4">Our Standards</h2>
+        <h2 className="text-xl font-semibold mb-4">Our standards</h2>
         <div className="space-y-4">
           <div className="flex items-start gap-3">
             <CheckCircle className="h-5 w-5 text-green-600 mt-1" />

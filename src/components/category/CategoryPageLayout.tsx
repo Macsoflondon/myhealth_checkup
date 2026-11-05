@@ -274,7 +274,7 @@ export function CategoryPageLayout({
                         ? categoryMenuIconFor(categoryAccent).color
                         : test.badgeColor
                     }
-                    badge={test.popular ? "Most Popular" : test.badge}
+                    badge={test.popular ? "Most popular" : test.badge}
                     name={test.title}
                     description={test.desc}
                     biomarkers={test.biomarkerCount}

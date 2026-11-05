@@ -7,7 +7,7 @@ const MedicalDiagnosisPage = lazy(() => import("@/pages/MedicalDiagnosisPage"));
 export const Route = createFileRoute("/medical-diagnosis/")({
   head: () =>
     buildRouteHead({
-      title: "Medical Diagnosis Blood Tests & Prices | myhealth checkup",
+      title: "Medical Diagnosis blood tests & prices | myhealth checkup",
       description:
         "Compare Medical Diagnosis blood tests, biomarkers, turnaround times and prices in GBP.",
       path: "/medical-diagnosis",

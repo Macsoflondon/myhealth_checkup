@@ -9,7 +9,7 @@ const IntelligentSearchPage = lazy(
 export const Route = createFileRoute("/search")({
   head: () =>
     buildRouteHead({
-      title: "Search UK Blood Tests",
+      title: "Search UK blood tests",
       description:
         "Search hundreds of private blood tests from UK providers by name, biomarker or category.",
       path: "/search",

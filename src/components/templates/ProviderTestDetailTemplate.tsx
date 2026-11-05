@@ -204,7 +204,7 @@ const NotFoundState = ({ providerName }: { providerName: string }) => {
               been removed.
             </p>
             <Button asChild>
-              <Link to="/compare">Browse All Tests</Link>
+              <Link to="/compare">Browse all tests</Link>
             </Button>
           </CardContent>
         </Card>
@@ -523,7 +523,7 @@ function CollectionOptionsSection({ test }: { test: ProviderTestData }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Sample Collection Options</CardTitle>
+        <CardTitle>Sample collection options</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         {variants.map((variant, index) => (
@@ -587,7 +587,7 @@ function ClinicalReviewSection({ test }: { test: ProviderTestData }) {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Stethoscope className="h-5 w-5 text-primary" />
-          Clinical Review
+          Clinical review
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -791,7 +791,7 @@ export default function ProviderTestDetailTemplate({
               {/* About This Test */}
               <Card>
                 <CardHeader>
-                  <CardTitle>About This Blood Test</CardTitle>
+                  <CardTitle>About this blood test</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {aboutCopy && (
@@ -840,7 +840,7 @@ export default function ProviderTestDetailTemplate({
               {/* Conditions Section */}
               <ConditionsSection conditions={test.conditions} />
 
-              {/* Clinical Review */}
+              {/* Clinical review */}
               <ClinicalReviewSection test={test} />
 
               {/* Compare Across Providers */}
@@ -870,10 +870,10 @@ export default function ProviderTestDetailTemplate({
                 />
               )}
 
-              {/* Sample Collection Options */}
+              {/* Sample collection options */}
               <CollectionOptionsSection test={test} />
 
-              {/* Why Choose Provider */}
+              {/* Why Choose provider */}
               <Card>
                 <CardHeader>
                   <CardTitle>{providerConfig.whyChoose.title}</CardTitle>
@@ -898,7 +898,7 @@ export default function ProviderTestDetailTemplate({
               {/* Booking Card */}
               <Card className="sticky top-6">
                 <CardHeader>
-                  <CardTitle>Book This Test</CardTitle>
+                  <CardTitle>Book this test</CardTitle>
                   <p className="text-sm text-muted-foreground">
                     {test.category}
                   </p>
@@ -959,7 +959,7 @@ export default function ProviderTestDetailTemplate({
               {/* Quick Info Card */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Quick Information</CardTitle>
+                  <CardTitle className="text-base">Quick information</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm">
                   <div>
@@ -1015,7 +1015,7 @@ export default function ProviderTestDetailTemplate({
           <Card className="bg-primary/5 border-primary/20">
             <CardContent className="py-8 text-center">
               <SectionHeading
-                title="Ready to Take Control"
+                title="Ready to take control"
                 gradientText=" of Your Health?"
                 className="mb-4"
               />
@@ -1033,7 +1033,7 @@ export default function ProviderTestDetailTemplate({
                     rel="noopener noreferrer"
                     data-affiliate-placement="detail"
                   >
-                    Book Your Test Now
+                    Book your test now
                   </a>
                 </Button>
               ) : (

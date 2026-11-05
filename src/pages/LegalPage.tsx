@@ -19,62 +19,62 @@ import {
 
 const legalPages = [
   {
-    title: "Privacy Policy",
+    title: "Privacy policy",
     path: "/privacy-policy",
     icon: Shield,
     description: "How we collect, use, and protect your personal data.",
   },
   {
-    title: "Terms & Conditions",
+    title: "Terms & conditions",
     path: "/terms",
     icon: FileText,
     description: "The terms governing your use of our platform.",
   },
   {
-    title: "Cookie Policy",
+    title: "Cookie policy",
     path: "/cookies",
     icon: Cookie,
     description: "How we use cookies and similar technologies.",
   },
   {
-    title: "Modern Slavery Statement",
+    title: "Modern slavery statement",
     path: "/modern-slavery",
     icon: Users,
     description: "Our commitment to preventing modern slavery.",
   },
   {
-    title: "Affiliate Disclosure",
+    title: "Affiliate disclosure",
     path: "/affiliate-disclosure",
     icon: Handshake,
     description: "How we earn revenue and maintain editorial independence.",
   },
   {
-    title: "Fair Trading Policy",
+    title: "Fair trading policy",
     path: "/fair-trading",
     icon: Scale,
     description: "Our commitment to fair and transparent trading practices.",
   },
   {
-    title: "How We Rank",
+    title: "How we rank",
     path: "/how-we-rank",
     icon: Award,
     description: "Our methodology for ranking and comparing providers.",
   },
   {
-    title: "Accessibility Statement",
+    title: "Accessibility statement",
     path: "/accessibility",
     icon: Accessibility,
     description: "Our commitment to accessible, inclusive digital experiences.",
   },
   {
-    title: "Medical Review & Editorial Standards",
+    title: "Medical review & editorial standards",
     path: "/about/medical-review",
     icon: Stethoscope,
     description:
       "Clinical content reviewed by Nathanial Smith, Registered Healthcare Professional (HCPC reg. PA43353).",
   },
   {
-    title: "Feedback & Complaints",
+    title: "Feedback & complaints",
     path: "/complaints",
     icon: MessageSquareWarning,
     description:

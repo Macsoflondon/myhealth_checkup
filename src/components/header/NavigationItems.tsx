@@ -13,7 +13,7 @@ export interface PrimaryNavItem {
 
 export const primaryNavigationItems: PrimaryNavItem[] = [
   {
-    name: "Most Popular Tests",
+    name: "Most popular tests",
     path: "/popular-tests",
     hasDropdown: false,
     megaMenu: false,
@@ -24,26 +24,26 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
     hasDropdown: true,
     megaMenu: true,
     dropdownItems: [
-      { name: "General Health Checks", path: "/wellness" },
+      { name: "General health checks", path: "/wellness" },
       {
-        name: "Heart Health Tests",
+        name: "Heart health tests",
         path: "/wellness?subcategory=heart-health",
       },
-      { name: "Cholesterol Tests", path: "/wellness?subcategory=cholesterol" },
-      { name: "Diabetes Tests", path: "/wellness?subcategory=diabetes" },
+      { name: "Cholesterol tests", path: "/wellness?subcategory=cholesterol" },
+      { name: "Diabetes tests", path: "/wellness?subcategory=diabetes" },
       {
-        name: "Iron & Anaemia Tests",
+        name: "Iron and anaemia tests",
         path: "/wellness?subcategory=iron-anaemia",
       },
-      { name: "Liver Health Tests", path: "/wellness?subcategory=liver" },
-      { name: "Kidney Tests", path: "/wellness?subcategory=kidney" },
+      { name: "Liver tests", path: "/wellness?subcategory=liver" },
+      { name: "Kidney tests", path: "/wellness?subcategory=kidney" },
       {
-        name: "Vitamin & Nutrition Tests",
+        name: "Vitamins and nutrition tests",
         path: "/wellness?subcategory=vitamins",
       },
-      { name: "Allergy Tests", path: "/wellness?subcategory=allergy" },
-      { name: "Thyroid Tests", path: "/wellness?subcategory=thyroid" },
-      { name: "View All Wellness Tests", path: "/wellness" },
+      { name: "Allergy tests", path: "/wellness?subcategory=allergy" },
+      { name: "Thyroid tests", path: "/wellness?subcategory=thyroid" },
+      { name: "View all wellness tests", path: "/wellness" },
     ],
   },
   {
@@ -58,12 +58,12 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
         path: "/womens-health?subcategory=hormones",
       },
       {
-        name: "Female Fertility Tests",
+        name: "Female fertility tests",
         path: "/womens-health?subcategory=fertility",
       },
       { name: "Menopause Tests", path: "/womens-health?subcategory=menopause" },
-      { name: "PCOS Tests", path: "/womens-health?subcategory=pcos" },
-      { name: "Thyroid Tests", path: "/womens-health?subcategory=thyroid" },
+      { name: "PCOS tests", path: "/womens-health?subcategory=pcos" },
+      { name: "Thyroid tests", path: "/womens-health?subcategory=thyroid" },
       { name: "View All Women's Tests", path: "/womens-health" },
     ],
   },
@@ -74,16 +74,16 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
     megaMenu: true,
     dropdownItems: [
       { name: "Men's Health Checks", path: "/mens-health" },
-      { name: "Male Hormone Tests", path: "/mens-health?subcategory=hormones" },
+      { name: "Male hormone tests", path: "/mens-health?subcategory=hormones" },
       {
-        name: "Male Fertility Tests",
+        name: "Male fertility tests",
         path: "/mens-health?subcategory=fertility",
       },
       {
-        name: "Testosterone Tests",
+        name: "Testosterone tests",
         path: "/mens-health?subcategory=testosterone",
       },
-      { name: "Prostate Tests", path: "/mens-health?subcategory=prostate" },
+      { name: "Prostate tests", path: "/mens-health?subcategory=prostate" },
       { name: "View All Men's Tests", path: "/mens-health" },
     ],
   },
@@ -95,18 +95,18 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
     dropdownItems: [
       { name: "Sports Performance Tests", path: "/sports-performance" },
       {
-        name: "Sports Hormone Tests",
+        name: "Sports hormone tests",
         path: "/sports-performance?subcategory=hormones",
       },
       {
-        name: "Testosterone Tests",
+        name: "Testosterone tests",
         path: "/sports-performance?subcategory=testosterone",
       },
       {
-        name: "Energy & Fatigue Tests",
+        name: "Energy & fatigue tests",
         path: "/sports-performance?subcategory=energy",
       },
-      { name: "View All Sports Tests", path: "/sports-performance" },
+      { name: "View all sports tests", path: "/sports-performance" },
     ],
   },
   {
@@ -115,25 +115,25 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
     hasDropdown: true,
     megaMenu: true,
     dropdownItems: [
-      { name: "Fertility Tests", path: "/fertility-tests" },
+      { name: "Fertility tests", path: "/fertility-tests" },
       {
-        name: "Female Fertility Tests",
+        name: "Female fertility tests",
         path: "/fertility-tests?subcategory=female-fertility",
       },
       {
-        name: "Male Fertility Tests",
+        name: "Male fertility tests",
         path: "/fertility-tests?subcategory=male-fertility",
       },
-      { name: "AMH Fertility Test", path: "/fertility-tests?subcategory=amh" },
+      { name: "AMH fertility test", path: "/fertility-tests?subcategory=amh" },
       {
-        name: "Prenatal / NIPT Tests",
+        name: "Prenatal / NIPT tests",
         path: "/fertility-tests?subcategory=prenatal",
       },
       {
-        name: "Pregnancy Tests",
+        name: "Pregnancy tests",
         path: "/fertility-tests?subcategory=pregnancy",
       },
-      { name: "View All Fertility Tests", path: "/fertility-tests" },
+      { name: "View all fertility tests", path: "/fertility-tests" },
     ],
   },
   {
@@ -142,21 +142,21 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
     hasDropdown: true,
     megaMenu: true,
     dropdownItems: [
-      { name: "Cancer Screening Tests", path: "/tests/cancer" },
+      { name: "Cancer screening tests", path: "/tests/cancer" },
       {
-        name: "Bowel Cancer Screening",
+        name: "Bowel cancer screening",
         path: "/tests/cancer?subcategory=bowel",
       },
       {
-        name: "Prostate Cancer PSA",
+        name: "Prostate cancer PSA",
         path: "/tests/cancer?subcategory=prostate",
       },
       {
-        name: "Cervical Cancer HPV",
+        name: "Cervical cancer HPV",
         path: "/tests/cancer?subcategory=cervical",
       },
-      { name: "Lung Cancer Screening", path: "/tests/cancer?subcategory=lung" },
-      { name: "View All Cancer Tests", path: "/tests/cancer" },
+      { name: "Lung cancer screening", path: "/tests/cancer?subcategory=lung" },
+      { name: "View all cancer tests", path: "/tests/cancer" },
     ],
   },
   {
@@ -165,45 +165,45 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
     hasDropdown: true,
     megaMenu: true,
     dropdownItems: [
-      { name: "All At-Home Tests", path: "/at-home-tests" },
+      { name: "All at-home tests", path: "/at-home-tests" },
       { name: "Women's Home Tests", path: "/at-home-tests?subcategory=womens" },
       { name: "Men's Home Tests", path: "/at-home-tests?subcategory=mens" },
       {
-        name: "General Health Home Tests",
+        name: "General health home tests",
         path: "/at-home-tests?subcategory=general",
       },
       {
-        name: "Allergy Home Tests",
+        name: "Allergy home tests",
         path: "/at-home-tests?subcategory=allergy",
       },
-      { name: "View All Home Tests", path: "/at-home-tests" },
+      { name: "View all home tests", path: "/at-home-tests" },
     ],
   },
-  { name: "How It Works", path: "/how-it-works", hasDropdown: false },
+  { name: "How it works", path: "/how-it-works", hasDropdown: false },
 ];
 
 export const moreNavigationSections = [
   {
     title: "About",
     items: [
-      { name: "About Us", path: "/about" },
-      { name: "Frequently Asked Questions", path: "/faqs" },
+      { name: "About us", path: "/about" },
+      { name: "Frequently asked questions", path: "/faqs" },
     ],
   },
   {
     title: "Services",
     items: [
-      { name: "Our Providers", path: "/trusted-providers" },
-      { name: "Assisted Test Finder", path: "/assisted-test-finder" },
+      { name: "Our providers", path: "/trusted-providers" },
+      { name: "Assisted test finder", path: "/assisted-test-finder" },
     ],
   },
   {
     title: "Compare",
     items: [
-      { name: "Compare Tests", path: "/compare" },
-      { name: "Compare Providers", path: "/providers/compare" },
-      { name: "Compare by Goal", path: "/compare/goals" },
-      { name: "Compare by Symptom", path: "/compare/symptoms" },
+      { name: "Compare tests", path: "/compare" },
+      { name: "Compare providers", path: "/providers/compare" },
+      { name: "Compare by goal", path: "/compare/goals" },
+      { name: "Compare by symptom", path: "/compare/symptoms" },
     ],
   },
   {
@@ -211,14 +211,14 @@ export const moreNavigationSections = [
     items: [
       { name: "Health Resources Hub", path: "/health-blog" },
       {
-        name: "Complete Biomarker Reference Library",
+        name: "Complete biomarker reference library",
         path: "/biomarker-database",
       },
     ],
   },
   {
     title: "Contact",
-    items: [{ name: "Contact Us", path: "/contact" }],
+    items: [{ name: "Contact us", path: "/contact" }],
   },
 ];
 

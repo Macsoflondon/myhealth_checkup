@@ -16,7 +16,7 @@ export const useNavigationData = () => {
    */
   const getFilteredCategories = (itemName: string) => {
     switch (itemName) {
-      case "Most Popular Tests":
+      case "Most popular tests":
         return compareCategories.filter((cat) =>
           [
             "general-health",
@@ -44,7 +44,7 @@ export const useNavigationData = () => {
           ),
         );
 
-      case "Sports-Fitness Health":
+      case "Sports-fitness health":
         return compareCategories.filter((cat) =>
           [
             "fitness-health",

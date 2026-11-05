@@ -96,13 +96,13 @@ const CategoryLandingPage: React.FC = () => {
       <MainLayout>
         <div className="min-h-[60vh] flex items-center justify-center">
           <div className="text-center max-w-md">
-            <h1 className="text-2xl font-bold mb-4">Category Not Found</h1>
+            <h1 className="text-2xl font-bold mb-4">Category not found</h1>
             <p className="text-muted-foreground mb-6">
               We couldn't find tests for this category. Browse our available
               categories below.
             </p>
             <Button asChild>
-              <Link to="/compare">Browse All Tests</Link>
+              <Link to="/compare">Browse all tests</Link>
             </Button>
           </div>
         </div>
@@ -268,7 +268,7 @@ const CategoryLandingPage: React.FC = () => {
             {/* Health Concerns Section */}
             <section className="mb-12 bg-muted/30 rounded-2xl p-8">
               <h2 className="text-2xl font-bold text-foreground mb-6">
-                Common Health Concerns
+                Common health concerns
               </h2>
               <p className="text-muted-foreground mb-6">
                 Consider testing if you're experiencing any of these symptoms or
@@ -324,7 +324,7 @@ const CategoryLandingPage: React.FC = () => {
             {/* FAQs Section */}
             <section className="mb-12">
               <h2 className="text-2xl font-bold text-foreground mb-6">
-                Frequently Asked Questions
+                Frequently asked questions
               </h2>
               <Accordion type="single" collapsible className="w-full">
                 {content.faqs.map((faq, idx) => (
@@ -343,7 +343,7 @@ const CategoryLandingPage: React.FC = () => {
             {/* Related Categories */}
             <section className="mb-12">
               <h2 className="text-xl font-bold text-foreground mb-4">
-                Related Test Categories
+                Related test categories
               </h2>
               <div className="flex flex-wrap gap-3">
                 {content.relatedCategories.map((relatedSlug) => (
@@ -368,7 +368,7 @@ const CategoryLandingPage: React.FC = () => {
             {/* CTA Section */}
             <section className="bg-gradient-to-r from-primary to-primary/80 rounded-2xl p-8 text-center text-white">
               <h2 className="text-2xl font-bold mb-4">
-                Ready to Take Control of Your Health?
+                Ready to take control of your health?
               </h2>
               <p className="text-white/90 mb-6 max-w-2xl mx-auto">
                 Compare {content.name.toLowerCase()} from trusted UK providers.
@@ -393,7 +393,7 @@ const CategoryLandingPage: React.FC = () => {
                   className="w-full sm:w-auto bg-white/10 border-white/30 text-white hover:bg-white/20 whitespace-nowrap"
                   asChild
                 >
-                  <Link to="/how-it-works">How It Works</Link>
+                  <Link to="/how-it-works">How it works</Link>
                 </Button>
               </div>
             </section>

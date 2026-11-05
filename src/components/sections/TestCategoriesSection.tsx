@@ -7,7 +7,7 @@ const categories = [
     tag: "Blood Testing",
     tagVariant: "pink" as const,
     count: "1,400+ Tests",
-    title: "Blood Tests & Panels",
+    title: "Blood tests & panels",
     description:
       "Individual biomarkers to comprehensive wellness panels. In-clinic or at-home phlebotomy from UKAS-accredited laboratories.",
     link: "/wellness",
@@ -31,7 +31,7 @@ const categories = [
     tag: "Wellness",
     tagVariant: "pink" as const,
     count: "600+ Panels",
-    title: "Wellness & Longevity",
+    title: "Wellness & longevity",
     centerTitle: true,
     description:
       "Advanced diagnostics for health optimisation. Biological age testing, hormones, cardiovascular risk, and micronutrient status.",
@@ -44,7 +44,7 @@ const categories = [
     tag: "At Home Test Kits",
     tagVariant: "teal" as const,
     count: "300+ Kits",
-    title: "At-Home Test Kits",
+    title: "At-home test kits",
     description:
       "Convenient finger-prick and sample collection kits delivered to your door. UKAS-accredited lab analysis with results typically returned within days — no clinic visit needed.",
     link: "/at-home-tests",

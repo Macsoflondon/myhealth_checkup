@@ -9,7 +9,7 @@ const SportsPerformancePage = lazy(
 export const Route = createFileRoute("/sports-performance")({
   head: () =>
     buildRouteHead({
-      title: "Sports and Fitness Blood Tests UK",
+      title: "Sports and fitness blood tests UK",
       description:
         "Compare blood tests for training, recovery and performance, covering iron status, hormones, inflammation and energy markers.",
       path: "/sports-performance",

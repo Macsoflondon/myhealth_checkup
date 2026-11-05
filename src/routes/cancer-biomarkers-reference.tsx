@@ -9,7 +9,7 @@ const CancerBiomarkersReferencePage = lazy(
 export const Route = createFileRoute("/cancer-biomarkers-reference")({
   head: () =>
     buildRouteHead({
-      title: "Cancer Biomarkers Reference Guide",
+      title: "Cancer biomarkers reference guide",
       description:
         "A plain-English reference to tumour markers and screening biomarkers used in private cancer screening in the UK.",
       path: "/cancer-biomarkers-reference",

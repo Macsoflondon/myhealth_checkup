@@ -22,19 +22,19 @@ interface SitemapSection {
 
 const siteStructure: SitemapSection[] = [
   {
-    title: "Main Pages",
+    title: "Main pages",
     icon: Home,
     links: [
       { name: "Home", path: "/" },
-      { name: "Compare Tests", path: "/compare" },
-      { name: "Test Categories", path: "/test-categories" },
+      { name: "Compare tests", path: "/compare" },
+      { name: "Test categories", path: "/test-categories" },
       { name: "Intelligent Search", path: "/search" },
-      { name: "How It Works", path: "/how-it-works" },
-      { name: "About Us", path: "/about" },
+      { name: "How it works", path: "/how-it-works" },
+      { name: "About us", path: "/about" },
     ],
   },
   {
-    title: "Health Testing Services",
+    title: "Health testing services",
     icon: FlaskConical,
     links: [
       { name: "Cancer Screening", path: "/tests/cancer" },
@@ -47,27 +47,27 @@ const siteStructure: SitemapSection[] = [
     ],
   },
   {
-    title: "Information & Support",
+    title: "Information & support",
     icon: Info,
     links: [
       { name: "FAQs", path: "/faqs" },
       { name: "Health Resources", path: "/blog" },
-      { name: "Contact Us", path: "/contact" },
+      { name: "Contact us", path: "/contact" },
       { name: "Partners", path: "/partners" },
     ],
   },
   {
-    title: "Legal & Compliance",
+    title: "Legal & compliance",
     icon: ShieldCheck,
     links: [
-      { name: "Privacy Policy", path: "/privacy-policy" },
-      { name: "Terms & Conditions", path: "/terms" },
-      { name: "Cookie Policy", path: "/cookies" },
+      { name: "Privacy policy", path: "/privacy-policy" },
+      { name: "Terms & conditions", path: "/terms" },
+      { name: "Cookie policy", path: "/cookies" },
       { name: "Accessibility", path: "/accessibility" },
     ],
   },
   {
-    title: "User Account",
+    title: "User account",
     icon: UserRound,
     links: [
       { name: "Sign In / Register", path: "/auth" },

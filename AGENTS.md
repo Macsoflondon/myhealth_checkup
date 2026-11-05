@@ -43,3 +43,6 @@
 - The homepage test explainer lives in `src/lib/ai/` (types / server-only Claude call / public server functions) with the UI in `src/components/sections/TestExplainerSection.tsx`; explanations are zod-validated with a catalogue-only fallback and a fixed server-side disclaimer. Why: AI output must never reach the page unvalidated, and anonymous homepage traffic is cost-controlled by a per-test cache plus per-IP limit instead of sign-in.
 
 - Page, section and card headings use the shared type-page-title / type-section-title / type-card-title / type-body utilities in src/styles.css, sized to the homepage standard. Why: per-file hardcoded sizes caused heading drift across pages.
+
+- Security headers (CSP, X-Frame-Options, Permissions-Policy, HSTS, nosniff, Referrer-Policy) are set by request middleware in src/start.ts from src/lib/security-headers.ts; zod runs jitless (src/lib/zod-jitless.ts, first import of each entry) so the CSP needs no unsafe-eval. Why: Lovable hosting ignores public/_headers and vercel.json.
+- Category names that double as catalogue keys stay unchanged in data; menus render them through displayLabel() in src/lib/display-label.ts. Why: sentence-case display must not break catalogue matching.

@@ -15,7 +15,7 @@ const AboutUsPage = () => {
       <Header />
 
       <StandardPageHero
-        title="About Us"
+        title="About us"
         strapline="Decision infrastructure for UK private diagnostics."
       />
 
@@ -24,7 +24,7 @@ const AboutUsPage = () => {
           {/* Mission Statement */}
           <section className="mb-16">
             <h2 className="font-montserrat font-bold text-3xl md:text-4xl text-[#081129] mb-6">
-              Our Mission Statement
+              Our mission statement
             </h2>
             <div className="h-1 w-24 bg-gradient-to-r from-[#22c0d4] to-[#e70d69] mb-8 rounded-full" />
             <div className="font-['DM_Sans'] text-[#081129]/85 text-lg leading-relaxed space-y-5">
@@ -63,10 +63,10 @@ const AboutUsPage = () => {
             </div>
           </section>
 
-          {/* Our Core Mission */}
+          {/* Our core mission */}
           <section className="mb-16">
             <h3 className="font-montserrat font-bold text-2xl md:text-3xl text-[#081129] mb-4">
-              Our Core Mission
+              Our core mission
             </h3>
             <div className="h-0.5 w-16 bg-[#22c0d4] mb-6 rounded-full" />
             <div className="font-['DM_Sans'] text-[#081129]/85 text-base md:text-lg leading-relaxed space-y-4">
@@ -91,7 +91,7 @@ const AboutUsPage = () => {
           {/* AI Diagnostic Integration Engine */}
           <section className="mb-16">
             <h3 className="font-montserrat font-bold text-2xl md:text-3xl text-[#081129] mb-4">
-              Our AI Diagnostic Integration Engine
+              Our AI diagnostic integration engine
             </h3>
             <div className="h-0.5 w-16 bg-[#e70d69] mb-6 rounded-full" />
             <div className="font-['DM_Sans'] text-[#081129]/85 text-base md:text-lg leading-relaxed space-y-4">
@@ -101,7 +101,7 @@ const AboutUsPage = () => {
                 diagnostics market.
               </p>
               <p>
-                Our AI Diagnostic Integration Engine converts private test
+                Our AI diagnostic integration engine converts private test
                 results into NHS-compatible structured data format using HL7
                 FHIR R4 standards and, with your explicit consent, feeds them
                 directly into your NHS health record. Your private diagnostic
@@ -127,10 +127,10 @@ const AboutUsPage = () => {
             </div>
           </section>
 
-          {/* Why Accreditation Matters */}
+          {/* Why accreditation matters */}
           <section className="mb-16">
             <h3 className="font-montserrat font-bold text-2xl md:text-3xl text-[#081129] mb-4">
-              Why Accreditation Matters
+              Why accreditation matters
             </h3>
             <div className="h-0.5 w-16 bg-[#22c0d4] mb-6 rounded-full" />
             <div className="font-['DM_Sans'] text-[#081129]/85 text-base md:text-lg leading-relaxed space-y-4">
@@ -149,10 +149,10 @@ const AboutUsPage = () => {
             </div>
           </section>
 
-          {/* What We Are Building Towards */}
+          {/* What we are building towards */}
           <section className="mb-16">
             <h3 className="font-montserrat font-bold text-2xl md:text-3xl text-[#081129] mb-4">
-              What We Are Building Towards
+              What we are building towards
             </h3>
             <div className="h-0.5 w-16 bg-[#e70d69] mb-6 rounded-full" />
             <div className="font-['DM_Sans'] text-[#081129]/85 text-base md:text-lg leading-relaxed space-y-4">
