@@ -19,7 +19,8 @@ interface RouteCheck {
   note?: string;
 }
 
-const BASE_URL = "https://myhealthcheckup.co.uk";
+/** Sitemap hosts that are this site; their URLs are fetched as same-origin paths. */
+const SITE_HOSTS = new Set(["myhealthcheckup.co.uk", "www.myhealthcheckup.co.uk"]);
 
 async function fetchText(
   url: string,
@@ -107,8 +108,10 @@ export function SeoStatusDashboard() {
     return sitemapUrls.map((u) => {
       try {
         const parsed = new URL(u);
-        if (parsed.origin === BASE_URL)
-          return `${parsed.pathname}${parsed.search}${parsed.hash}` || "/";
+        // Always fetch relative to the current origin so the checks work on
+        // apex, www and preview hosts without widening connect-src.
+        if (SITE_HOSTS.has(parsed.hostname) || parsed.origin === window.location.origin)
+          return `${parsed.pathname}${parsed.search}` || "/";
       } catch {
         // not an absolute URL, keep as-is
       }
