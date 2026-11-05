@@ -61,7 +61,7 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
       <CardHeader>
         <CardTitle className="flex items-center gap-2 text-lg">
           <TestTube className="h-5 w-5 text-primary" />
-          Compare Prices for {testName}
+          Compare prices for {testName}
         </CardTitle>
         <p className="text-sm text-muted-foreground">
           Compare this test across {providers.length} trusted UK providers
