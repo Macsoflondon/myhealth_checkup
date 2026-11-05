@@ -151,7 +151,7 @@ export function CategoryPillDropdown({
             color: isActiveParent ? PINK : open ? "#127f8e" : "#081129",
           }}
         >
-          {displayName ?? item.name}
+          {displayName ?? displayLabel(item.name)}
         </span>
 
         {hasDropdown && (
@@ -193,7 +193,6 @@ export function CategoryPillDropdown({
                       <Link
                         to={sub.path}
                         role="menuitem"
-                        aria-label={sub.name}
                         aria-current={active ? "page" : undefined}
                         onClick={() => setOpen(false)}
                         className={`group/card relative block aspect-[3/4] overflow-hidden rounded-2xl no-underline ring-1 transition-shadow ${
