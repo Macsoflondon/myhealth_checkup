@@ -17,7 +17,7 @@ const FIXTURES: Fixture[] = [
   {
     parentLabel: "Women's Health",
     parentPath: "/womens-health",
-    subLabel: "Menopause Tests",
+    subLabel: "Menopause tests",
     subSlug: "menopause",
   },
   {
@@ -29,7 +29,7 @@ const FIXTURES: Fixture[] = [
   {
     parentLabel: "At Home",
     parentPath: "/at-home-tests",
-    subLabel: "Women's Home Tests",
+    subLabel: "Women's health home kits",
     subSlug: "womens",
   },
 ];

@@ -33,6 +33,16 @@ const DISPLAY_LABELS: Readonly<Record<string, string>> = {
   "Reproductive Hormones": "Reproductive hormones",
   "Advanced Diagnostics": "Advanced diagnostics",
   "Women's Health": "Women's health",
+  "Women's Health Checks": "Women's health checks",
+  "View All Women's Tests": "View all women's tests",
+  "Men's Health Checks": "Men's health checks",
+  "View All Men's Tests": "View all men's tests",
+  "Women's Home Tests": "Women's health home kits",
+  "Men's Home Tests": "Men's health home kits",
+  "Women's Health Home Kits": "Women's health home kits",
+  "Men's Health Home Kits": "Men's health home kits",
+  "Home Tests": "Home tests",
+  "Autoimmune & Immunology": "Autoimmune & immunology",
   "Men's Health": "Men's health",
 };
 

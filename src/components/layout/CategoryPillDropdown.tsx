@@ -167,7 +167,7 @@ export function CategoryPillDropdown({
         createPortal(
           <div
             role="menu"
-            aria-label={`${item.name} subcategories`}
+            aria-label={`${displayLabel(item.name)} subcategories`}
             onMouseEnter={openNow}
             onMouseLeave={scheduleClose}
             style={{
@@ -287,7 +287,7 @@ export function CategoryPillDropdown({
                   className="text-[11px] font-bold font-[Montserrat] no-underline hover:underline whitespace-nowrap"
                   style={{ color: PINK }}
                 >
-                  {viewAll.name}
+                  {displayLabel(viewAll.name)}
                 </Link>
               )}
             </div>

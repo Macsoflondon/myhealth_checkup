@@ -45,7 +45,7 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
   "womens-health": [
     {
       slug: "hormones",
-      label: "Female Hormone Tests",
+      label: "Female hormone tests",
       matchAny: [
         /hormone/i,
         /oestrogen|estrogen/i,
@@ -65,7 +65,7 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
     },
     {
       slug: "menopause",
-      label: "Menopause Tests",
+      label: "Menopause tests",
       matchAny: [/menopaus/i, /perimenopaus/i],
     },
     {
@@ -227,7 +227,7 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
   "at-home": [
     {
       slug: "womens",
-      label: "Women's Health Home Kits",
+      label: "Women's health home kits",
       matchAny: [
         /\bwomen\b|\bwomen's\b|\bfemale\b|menopaus|pcos|ovarian|\bamh\b/i,
       ],
@@ -236,7 +236,7 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
     },
     {
       slug: "mens",
-      label: "Men's Health Home Kits",
+      label: "Men's health home kits",
       matchAny: [/\bmen\b|\bmen's\b|\bmale\b|prostate|\bpsa\b|testosterone/i],
       excludeAny: FEMALE_TERMS,
       siblingCategories: ["mens-health"],
