@@ -8,6 +8,8 @@ import { test, expect, Page } from "@playwright/test";
 
 type Fixture = {
   parentLabel: string;
+  /** Parent row label in the mobile menu drawer. */
+  drawerLabel: string;
   parentPath: string;
   subLabel: string;
   subSlug: string;
@@ -16,18 +18,21 @@ type Fixture = {
 const FIXTURES: Fixture[] = [
   {
     parentLabel: "Women's health",
+    drawerLabel: "Women's health",
     parentPath: "/womens-health",
     subLabel: "Menopause tests",
     subSlug: "menopause",
   },
   {
     parentLabel: "General wellness",
+    drawerLabel: "General wellness",
     parentPath: "/wellness",
     subLabel: "Heart health tests",
     subSlug: "heart-health",
   },
   {
     parentLabel: "Home tests",
+    drawerLabel: "At-home test kits",
     parentPath: "/at-home-tests",
     subLabel: "Women's health home kits",
     subSlug: "womens",
@@ -39,16 +44,17 @@ const SITE = "https://myhealthcheckup.co.uk";
 async function assertSubcategorySEO(page: Page, fx: Fixture) {
   await page.waitForURL(
     new RegExp(`\\${fx.parentPath}\\?subcategory=${fx.subSlug}`),
+    { waitUntil: "commit" },
   );
 
-  // Wait until Helmet has applied the subcategory-specific canonical (not just
-  // the base one). This is the reliable settle signal for per-route head tags.
+  // Wait until the subcategory-specific canonical (not just the base one) is
+  // in the head. This is the reliable settle signal for per-route head tags.
   await page.waitForFunction(
     (expected) => {
-      const el = document.querySelector(
-        'link[rel="canonical"][data-rh="true"]',
-      ) as HTMLLinkElement | null;
-      return !!el && el.href === expected;
+      const els = document.querySelectorAll<HTMLLinkElement>(
+        'link[rel="canonical"]',
+      );
+      return [...els].some((el) => el.href === expected);
     },
     `${SITE}${fx.parentPath}?subcategory=${fx.subSlug}`,
     { timeout: 10_000 },
@@ -59,14 +65,14 @@ async function assertSubcategorySEO(page: Page, fx: Fixture) {
   );
 
   const canonical = await page
-    .locator('link[rel="canonical"][data-rh="true"]')
-    .first()
+    .locator('link[rel="canonical"]')
+    .last()
     .getAttribute("href");
   expect(canonical).toBe(`${SITE}${fx.parentPath}?subcategory=${fx.subSlug}`);
 
   const ogUrl = await page
-    .locator('meta[property="og:url"][data-rh="true"]')
-    .first()
+    .locator('meta[property="og:url"]')
+    .last()
     .getAttribute("content");
   expect(ogUrl).toBe(canonical);
 
@@ -143,7 +149,8 @@ test.describe("Subcategory navigation", () => {
       if (!(await subLink.isVisible().catch(() => false))) {
         const expander = page
           .getByRole("button", {
-            name: new RegExp(`${fx.parentLabel}.*(expand|subcategor)`, "i"),
+            name: `Show ${fx.drawerLabel} subcategories`,
+            exact: true,
           })
           .first();
         if (await expander.count()) await expander.click();
