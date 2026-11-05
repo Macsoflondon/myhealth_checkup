@@ -25,6 +25,9 @@ const SITE_HOSTS = new Set(["myhealthcheckup.co.uk", "www.myhealthcheckup.co.uk"
 async function fetchText(
   url: string,
 ): Promise<{ ok: boolean; status: number; text: string }> {
+  if (/^https?:\/\//i.test(url)) {
+    return { ok: false, status: 0, text: "External URL in sitemap; not fetched" };
+  }
   try {
     const res = await fetch(url, { cache: "no-store" });
     const text = await res.text();
