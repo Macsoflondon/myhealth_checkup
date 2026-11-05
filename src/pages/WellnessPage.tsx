@@ -259,12 +259,12 @@ const WellnessPage = () => {
     return (
       <DbCategoryPage
         canonicalCategory="wellness"
-        seoTitle="Wellness tests | myhealth checkup"
-        pillLabel="General Wellness"
+        seoTitle="General health tests | myhealth checkup"
+        pillLabel="General health"
         seoDescription="Compare wellness blood tests from UKAS-accredited UK providers, with clear pricing, biomarker lists and typical turnaround times."
         seoKeywords="wellness blood tests, health screening, liver test, kidney test, cholesterol test, vitamin test"
         canonicalUrl="https://myhealthcheckup.co.uk/wellness"
-        headline="General Wellness"
+        headline="General health tests"
         subtitle="Compare wellness and preventative blood tests from accredited UK providers — full biomarker lists, transparent pricing and typical turnaround times."
         searchPlaceholder="Search by symptom or test — e.g. 'cholesterol', 'vitamin D'"
         trustStats={[
@@ -319,7 +319,7 @@ const WellnessPage = () => {
       <Header />
 
       <main className="min-h-screen bg-background">
-        <CategoryStandardHero pillLabel="General Wellness" />
+        <CategoryStandardHero pillLabel="General health" />
 
         {/* Browse tests by category */}
         <section

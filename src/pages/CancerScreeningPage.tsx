@@ -5,7 +5,7 @@ const CancerScreeningPage = () => (
   <DbCategoryPage
     canonicalCategory="cancer-screening"
     seoTitle="Cancer screening | myhealth checkup"
-    pillLabel="Cancer Screening"
+    pillLabel="Cancer screening"
     seoDescription="Compare cancer screening tests from leading UK providers. Prostate, bowel, breast, cervical cancer testing and early detection."
     seoKeywords="cancer screening, prostate cancer test, bowel cancer screening, breast cancer markers, multi-cancer detection"
     canonicalUrl="https://myhealthcheckup.co.uk/tests/cancer"
@@ -39,7 +39,7 @@ const CancerScreeningPage = () => (
     breadcrumbs={[
       { label: "Home", href: "/" },
       { label: "Compare tests", href: "/compare" },
-      { label: "Cancer Screening" },
+      { label: "Cancer screening" },
     ]}
     breadcrumbBackLabel="Back to Compare"
   />
