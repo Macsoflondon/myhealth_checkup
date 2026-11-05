@@ -3,11 +3,12 @@
  *
  * The Content-Security-Policy forbids eval. zod v4 probes `new Function("")`
  * when the first object schema is constructed, which browsers report as a CSP
- * violation even though zod falls back safely. Setting jitless on zod's
- * global config before any schema exists disables the probe.
+ * violation even though zod falls back safely. z.config() mutates zod's
+ * shared global config in place, so the setting holds whichever module
+ * loaded zod first.
  */
-type ZodGlobal = { __zod_globalConfig?: Record<string, unknown> };
-const g = globalThis as ZodGlobal;
-g.__zod_globalConfig = { ...(g.__zod_globalConfig ?? {}), jitless: true };
+import { z } from "zod";
+
+z.config({ jitless: true });
 
 export {};
