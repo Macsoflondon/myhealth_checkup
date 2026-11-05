@@ -1,3 +1,4 @@
+import { capitaliseFirst } from "@/lib/display-label";
 /**
  * Category-specific taglines for test cards
  */
@@ -95,9 +96,6 @@ export function getCategoryDisplayName(category: string): string {
   const normalised = category.toLowerCase().trim();
   return (
     categoryDisplayNames[normalised] ||
-    category
-      .split("-")
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(" ")
+    capitaliseFirst(category.split("-").join(" ").toLowerCase())
   );
 }

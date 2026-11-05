@@ -56,3 +56,32 @@ export const toSentenceCase = (text: string): string => {
     })
     .join(" ");
 };
+
+/**
+ * Removes a trailing "tests"/"Tests" (and "testing") so a label can be
+ * joined to other words without doubling it.
+ */
+export const withoutTestsSuffix = (label: string): string =>
+  label.replace(/\s+(tests?|testing|blood tests)$/i, "").trim();
+
+const isAcronymOrProper = (word: string): boolean => {
+  const bare = word.replace(/[^A-Za-z0-9]/g, "");
+  if (bare.length >= 2 && bare === bare.toUpperCase() && /[A-Z]/.test(bare)) return true;
+  if (/\d/.test(bare)) return true;
+  return KEEP_CAPITALISED.has(bare);
+};
+
+/**
+ * Display label for use in the middle of a sentence ("Compare heart health
+ * tests"): lowercases the first letter unless the first word is an acronym
+ * or proper noun ("PCOS", "UK", "NHS").
+ */
+export const labelMidSentence = (label: string): string => {
+  const sentence = toSentenceCase(displayLabel(label));
+  const [first = "", ...rest] = sentence.split(" ");
+  if (isAcronymOrProper(first)) return sentence;
+  return [first.charAt(0).toLowerCase() + first.slice(1), ...rest].join(" ");
+};
+
+/** Capitalises only the first character (for a label at the start of a heading). */
+export const capitaliseFirst = (text: string): string => text.charAt(0).toUpperCase() + text.slice(1);

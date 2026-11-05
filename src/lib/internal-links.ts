@@ -8,6 +8,7 @@
  * Pure data + pure functions: no data fetching, safe to call during SSR.
  */
 
+import { labelMidSentence, withoutTestsSuffix } from "@/lib/display-label";
 import { getCategoryContent } from "@/data/categoryContent";
 import { goalPages } from "@/data/goalPages";
 import { symptomPages } from "@/data/symptomPages";
@@ -157,7 +158,7 @@ export function getCompareLinks(
   if (isLinkableCategory(categorySlug ?? undefined)) {
     const slug = categorySlug as LinkableCategorySlug;
     links.push({
-      label: `Compare ${categoryLabel(slug)} across providers`,
+      label: `Compare ${labelMidSentence(withoutTestsSuffix(categoryLabel(slug)))} tests across providers`,
       to: `/compare?category=${slug}`,
     });
 

@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { labelMidSentence, withoutTestsSuffix } from "@/lib/display-label";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { useParams, Link, useNavigate } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
@@ -241,7 +242,7 @@ const CategoryLandingPage: React.FC = () => {
             {/* Benefits Section */}
             <section className="mb-12">
               <h2 className="text-2xl font-bold text-foreground mb-6">
-                Why Test Your {content.name.replace(" Tests", "")}?
+                Why test your {labelMidSentence(withoutTestsSuffix(content.name))}?
               </h2>
               <div className="grid md:grid-cols-3 gap-6">
                 {content.benefits.map((benefit, idx) => {
@@ -304,7 +305,7 @@ const CategoryLandingPage: React.FC = () => {
             {/* Who Should Test Section */}
             <section className="mb-12">
               <h2 className="text-2xl font-bold text-foreground mb-6">
-                Who Should Consider {content.name}?
+                Who should consider {labelMidSentence(withoutTestsSuffix(content.name))} tests?
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 {content.whoShouldTest.map((who, idx) => (
