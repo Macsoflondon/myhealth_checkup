@@ -43,7 +43,7 @@ describe("Medical Diagnosis phlebotomy fee", () => {
 describe("biomarker list debris", () => {
   it("cleans the real London Health Company male hormone list to its markers", () => {
     const raw = [
-      "# Male Hormone Blood Test Panel (4 Biomarkers Total & free Testosterone & SHBG)",
+      "# Male Hormone Blood Test Panel (4 Biomarkers Total & Free Testosterone & SHBG)",
       "Total Testosterone",
       "Sex Hormone Binding Globulin (SHBG)",
       "Free Testosterone",

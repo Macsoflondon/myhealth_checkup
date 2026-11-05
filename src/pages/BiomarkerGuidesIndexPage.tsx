@@ -6,7 +6,7 @@ import { MainLayout } from "@/layouts/MainLayout";
 import { biomarkerGuides, guideCategories } from "@/data/biomarkerGuides";
 import { BASE_URL } from "@/lib/seo";
 
-const TITLE = "Health test guides UK — Biomarkers Explained | myhealth checkup";
+const TITLE = "Health test guides UK — biomarkers explained | myhealth checkup";
 const DESCRIPTION =
   "Plain-English guides to UK private blood tests and biomarkers — testosterone, cortisol, thyroid, vitamin D, ferritin, liver, kidney and more.";
 
