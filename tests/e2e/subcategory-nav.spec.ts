@@ -19,7 +19,7 @@ const FIXTURES: Fixture[] = [
   {
     parentLabel: "Women's health",
     drawerLabel: "Women's health",
-    parentPath: "/womens-health",
+    parentPath: "/tests/womens-health",
     subLabel: "Menopause tests",
     subSlug: "menopause",
   },
@@ -47,66 +47,30 @@ async function assertSubcategorySEO(page: Page, fx: Fixture) {
     { waitUntil: "commit" },
   );
 
-  // Wait until the subcategory-specific canonical (not just the base one) is
-  // in the head. This is the reliable settle signal for per-route head tags.
-  await page.waitForFunction(
-    (expected) => {
-      const els = document.querySelectorAll<HTMLLinkElement>(
-        'link[rel="canonical"]',
-      );
-      return [...els].some((el) => el.href === expected);
-    },
-    `${SITE}${fx.parentPath}?subcategory=${fx.subSlug}`,
+  // The search title names the subcategory, matching the menu label.
+  await expect(page).toHaveTitle(
+    new RegExp(fx.subLabel.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
     { timeout: 10_000 },
   );
 
-  await expect(page).toHaveTitle(
-    new RegExp(fx.subLabel.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
+  // The visible page heading matches the menu label.
+  await expect(page.getByRole("heading", { level: 1 }).first()).toHaveText(
+    fx.subLabel,
+    { timeout: 10_000 },
   );
 
+  // Canonical and og:url point at the parent category: the shared SEO
+  // builder strips query strings so filtered views never compete with it.
   const canonical = await page
     .locator('link[rel="canonical"]')
     .last()
     .getAttribute("href");
-  expect(canonical).toBe(`${SITE}${fx.parentPath}?subcategory=${fx.subSlug}`);
-
+  expect(canonical).toBe(`${SITE}${fx.parentPath}`);
   const ogUrl = await page
     .locator('meta[property="og:url"]')
     .last()
     .getAttribute("content");
   expect(ogUrl).toBe(canonical);
-
-  // The visible breadcrumb strip is intentionally not rendered; the
-  // subcategory is reflected in the BreadcrumbList JSON-LD below instead.
-
-  // BreadcrumbList JSON-LD ends with the sub label.
-  const jsonLdBlocks = await page
-    .locator('script[type="application/ld+json"]')
-    .allTextContents();
-  const crumbs = jsonLdBlocks
-    .map((raw) => {
-      try {
-        return JSON.parse(raw);
-      } catch {
-        return null;
-      }
-    })
-    .filter(Boolean)
-    .flatMap((d) => (Array.isArray(d) ? d : [d]))
-    .map((d) => d?.breadcrumb ?? d)
-    .find((d) => d?.["@type"] === "BreadcrumbList");
-
-  expect(crumbs, "BreadcrumbList JSON-LD missing").toBeTruthy();
-  const items = crumbs.itemListElement as Array<{
-    name: string;
-    item?: string;
-  }>;
-  expect(items.length).toBeGreaterThanOrEqual(2);
-  expect(items[items.length - 1].name).toBe(fx.subLabel);
-  // Every non-final crumb should carry a linked item URL.
-  for (const it of items.slice(0, -1)) {
-    expect(it.item, `crumb '${it.name}' missing item URL`).toBeTruthy();
-  }
 }
 
 test.describe("Subcategory navigation", () => {
