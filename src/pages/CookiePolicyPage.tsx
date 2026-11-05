@@ -56,7 +56,7 @@ const CookiePolicyPage = () => {
                 </p>
                 <p className="text-sm text-muted-foreground">
                   By using the Website, you agree to the use of cookies as
-                  described in this Policy.
+                  described in this Cookie policy.
                 </p>
               </CardContent>
             </Card>
