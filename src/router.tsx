@@ -2,6 +2,12 @@ import { QueryClient } from "@tanstack/react-query";
 import { createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import { installStaleAssetGuard } from "./lib/stale-asset-guard";
+import { z } from "zod";
+
+// The Content-Security-Policy forbids eval. Without this, zod probes
+// `new Function("")` on first parse, which the browser reports as a CSP
+// violation even though zod then falls back safely.
+z.config({ jitless: true });
 
 export const getRouter = () => {
   // Recover automatically when this tab holds an asset map that no longer
