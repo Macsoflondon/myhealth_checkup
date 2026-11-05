@@ -116,8 +116,9 @@ test.describe("Subcategory navigation", () => {
         .getByRole("link", { name: fx.parentLabel, exact: true })
         .first();
       await pill.hover();
+      // Desktop dropdown entries are exposed as menu items (role="menuitem").
       const subLink = page
-        .getByRole("link", { name: fx.subLabel, exact: true })
+        .getByRole("menuitem", { name: fx.subLabel, exact: true })
         .first();
       await subLink.waitFor({ state: "visible", timeout: 5_000 });
       await subLink.click();
