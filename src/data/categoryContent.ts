@@ -27,7 +27,7 @@ export interface CategoryContent {
 export const categoryContent: Record<string, CategoryContent> = {
   hormones: {
     id: "hormones",
-    name: "Hormone Tests",
+    name: "Hormone tests",
     slug: "hormones",
     title:
       "Hormone blood tests UK | Compare prices from £39 | myhealth checkup",
@@ -111,13 +111,13 @@ export const categoryContent: Record<string, CategoryContent> = {
 
   thyroid: {
     id: "thyroid",
-    name: "Thyroid Tests",
+    name: "Thyroid tests",
     slug: "thyroid",
     title:
       "Thyroid function tests UK | Compare prices from £29 | myhealth checkup",
     metaDescription:
       "Compare thyroid blood tests from trusted UK providers. Check TSH, T3, T4 & thyroid antibodies. Fast results from UKAS accredited labs. Find your perfect test today.",
-    heroTitle: "Thyroid Function Tests",
+    heroTitle: "Thyroid function tests",
     heroSubtitle:
       "Comprehensive thyroid testing to check your metabolism, energy levels, and overall thyroid health",
     introduction:
@@ -200,7 +200,7 @@ export const categoryContent: Record<string, CategoryContent> = {
 
   "general-health": {
     id: "general-health",
-    name: "General Health",
+    name: "General health",
     slug: "general-health",
     title:
       "General health blood tests UK | Full health checks from £49 | myhealth checkup",
@@ -537,7 +537,7 @@ export const categoryContent: Record<string, CategoryContent> = {
 
   "heart-health": {
     id: "heart-health",
-    name: "Heart Health",
+    name: "Heart health",
     slug: "heart-health",
     title:
       "Heart health blood tests UK | Cholesterol & cardiac tests from £39 | myhealth checkup",
@@ -715,7 +715,7 @@ export const categoryContent: Record<string, CategoryContent> = {
 
   vitamins: {
     id: "vitamins",
-    name: "Vitamin Tests",
+    name: "Vitamin tests",
     slug: "vitamins",
     title:
       "Vitamin & mineral blood tests UK | Deficiency tests from £29 | myhealth checkup",
@@ -799,13 +799,13 @@ export const categoryContent: Record<string, CategoryContent> = {
 
   "cancer-screening": {
     id: "cancer-screening",
-    name: "Cancer Screening",
+    name: "Cancer screening",
     slug: "cancer-screening",
     title:
       "Cancer marker blood tests UK | PSA, CEA & CA125 from £39 | myhealth checkup",
     metaDescription:
       "Compare cancer screening blood tests from UK's trusted providers. Check PSA, CEA, CA125 & other tumour markers. Early detection from UKAS accredited laboratories.",
-    heroTitle: "Cancer Marker Blood Tests",
+    heroTitle: "Cancer marker blood tests",
     heroSubtitle: "Tumour marker testing for early detection and peace of mind",
     introduction:
       "Cancer marker blood tests (tumour markers) can support early detection and monitoring of certain cancers. While not diagnostic on their own, elevated markers can prompt further investigation when symptoms or risk factors are present. Our platform compares cancer marker tests from trusted UK providers, all using UKAS-accredited laboratories for reliable results.",

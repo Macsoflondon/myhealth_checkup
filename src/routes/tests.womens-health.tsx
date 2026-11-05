@@ -7,7 +7,7 @@ const WomensHealthPage = lazy(() => import("@/pages/WomensHealthPage"));
 export const Route = createFileRoute("/tests/womens-health")({
   head: () =>
     buildCollectionHead({
-      title: "Women's Health Blood Tests UK | Compare",
+      title: "Women's health blood tests UK | myhealth checkup",
       description:
         "Compare private women's health panels covering hormones, thyroid, iron and fertility markers from UK providers.",
       path: "/tests/womens-health",

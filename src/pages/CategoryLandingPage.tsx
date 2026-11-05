@@ -297,7 +297,7 @@ const CategoryLandingPage: React.FC = () => {
               <section className="mb-12">
                 <GroupedTestsTable
                   tests={providerTests}
-                  title={`Compare ${content.name} from UK Providers`}
+                  title={`Compare ${labelMidSentence(content.name)} from UK providers`}
                 />
               </section>
             ) : null}
@@ -384,7 +384,7 @@ const CategoryLandingPage: React.FC = () => {
                   asChild
                 >
                   <Link to={`/compare?category=${content.slug}`}>
-                    <span className="truncate">Compare {content.name}</span>
+                    <span className="truncate">Compare {labelMidSentence(content.name)}</span>
                     <ArrowRight className="h-4 w-4 shrink-0" />
                   </Link>
                 </Button>
