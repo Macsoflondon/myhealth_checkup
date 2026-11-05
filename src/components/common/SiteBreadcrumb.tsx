@@ -62,7 +62,7 @@ const humanise = (slug: string) =>
   SLUG_LABELS[slug] ??
   decodeURIComponent(slug)
     .replace(/-/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+    .replace(/^\w/, (c) => c.toUpperCase());
 
 const SiteBreadcrumb = () => {
   const { pathname } = useLocation();
