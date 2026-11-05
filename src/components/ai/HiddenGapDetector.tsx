@@ -194,7 +194,7 @@ function CoverageScoreRing({ score }: { score: number }) {
         : "text-red-600";
   const label =
     score >= 70
-      ? "Good Coverage"
+      ? "Good coverage"
       : score >= 40
         ? "Moderate coverage"
         : "Low coverage";

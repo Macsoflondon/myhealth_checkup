@@ -1153,7 +1153,7 @@ const ContactFallback = ({ onRestart }: { onRestart: () => void }) => (
   </motion.div>
 );
 
-// ─── Additional context Step ────────────────────────────────────────────────────
+// ─── Additional context step ────────────────────────────────────────────────────
 
 interface AdditionalContextProps {
   userContext: string;

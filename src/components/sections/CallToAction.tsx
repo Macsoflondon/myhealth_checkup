@@ -21,8 +21,8 @@ const CallToAction = ({ className }: CallToActionProps) => {
       <div className="container mx-auto px-4 relative">
         <div className="max-w-5xl mx-auto text-center">
           <SectionHeading
-            title="Take Control of"
-            gradientText="Your Health Today"
+            title="Take control of"
+            gradientText="your health today"
             className="mb-6"
             titleClassName="text-white"
           />
@@ -36,7 +36,7 @@ const CallToAction = ({ className }: CallToActionProps) => {
               onClick={() => navigate("/assisted-test-finder")}
               className="inline-flex items-center justify-center gap-1.5 flex-1 sm:flex-none sm:w-64 min-w-0 px-4 bg-[#22c0d4] hover:bg-[#e70d69] text-white text-sm sm:text-base font-semibold rounded-xl shadow-lg transition-colors duration-300 whitespace-nowrap"
             >
-              <span className="truncate">Find Your Perfect Test</span>
+              <span className="truncate">Find your perfect test</span>
               <ArrowRight className="w-4 h-4 shrink-0" />
             </Button>
             <Button
@@ -44,7 +44,7 @@ const CallToAction = ({ className }: CallToActionProps) => {
               onClick={() => navigate("/compare")}
               className="inline-flex items-center justify-center gap-1.5 flex-1 sm:flex-none sm:w-64 min-w-0 px-4 bg-[#e70d69] hover:bg-[#22c0d4] text-white text-sm sm:text-base font-semibold rounded-xl shadow-lg transition-colors duration-300 whitespace-nowrap"
             >
-              <span className="truncate">Browse All 200+ Tests</span>
+              <span className="truncate">Browse all 200+ tests</span>
               <ArrowRight className="w-4 h-4 shrink-0" />
             </Button>
           </div>

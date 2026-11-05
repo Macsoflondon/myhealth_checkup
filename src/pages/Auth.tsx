@@ -578,7 +578,7 @@ const Auth = () => {
               >
                 {isSignUp
                   ? "Already have an account? Sign In"
-                  : "Don't have an account? Sign Up"}
+                  : "Don't have an account? Sign up"}
               </button>
             </div>
 

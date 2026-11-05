@@ -34,7 +34,7 @@ const SectionHeading = ({ title }: { title: string }) => (
   </div>
 );
 
-/* ========== Stay informed Section ========== */
+/* ========== Stay informed section ========== */
 const StayInformedSection = () => {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);

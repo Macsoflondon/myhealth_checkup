@@ -188,7 +188,7 @@ export default function CancerComparisonPage() {
               <TabsTrigger value="biomarkers">Biomarkers</TabsTrigger>
             </TabsList>
 
-            {/* Browse tests Tab */}
+            {/* Browse tests tab */}
             <TabsContent value="browse" className="space-y-6">
               {/* Selected Tests Bar */}
               {selectedTests.length > 0 && (

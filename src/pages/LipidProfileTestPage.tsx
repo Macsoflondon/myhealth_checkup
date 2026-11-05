@@ -51,7 +51,7 @@ const LipidProfileTestPage = () => {
     featureBadges: [
       { icon: Shield, label: "UKAS accredited" },
       { icon: Clock, label: "Fast results" },
-      { icon: Heart, label: "Heart Health" },
+      { icon: Heart, label: "Heart health" },
     ],
 
     whyChooseTitle: "Why Test Cholesterol Levels?",

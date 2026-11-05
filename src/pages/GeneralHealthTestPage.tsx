@@ -23,7 +23,7 @@ const GeneralHealthTestPage = () => {
         ],
       },
       {
-        title: "Metabolic Health",
+        title: "Metabolic health",
         markers: [
           "Cholesterol Profile",
           "Diabetes Screening (HbA1c)",
