@@ -23,7 +23,7 @@ const FIXTURES: Fixture[] = [
   {
     parentLabel: "General Wellness",
     parentPath: "/wellness",
-    subLabel: "Heart Health Tests",
+    subLabel: "Heart health tests",
     subSlug: "heart-health",
   },
   {
