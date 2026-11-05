@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { labelMidSentence, withoutTestsSuffix } from "@/lib/display-label";
+import { capitaliseFirst, labelMidSentence, withoutTestsSuffix } from "@/lib/display-label";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { useParams, Link, useNavigate } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
@@ -357,9 +357,7 @@ const CategoryLandingPage: React.FC = () => {
                       variant="secondary"
                       className="cursor-pointer hover:bg-secondary/80 transition-colors"
                     >
-                      {relatedSlug
-                        .replace(/-/g, " ")
-                        .replace(/\b\w/g, (c) => c.toUpperCase())}
+                      {capitaliseFirst(relatedSlug.replace(/-/g, " "))}
                     </Badge>
                   </Link>
                 ))}
