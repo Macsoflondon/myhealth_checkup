@@ -242,7 +242,7 @@ const CategoryLandingPage: React.FC = () => {
             {/* Benefits Section */}
             <section className="mb-12">
               <h2 className="text-2xl font-bold text-foreground mb-6">
-                Why test your {labelMidSentence(withoutTestsSuffix(content.name))}?
+                Why consider {labelMidSentence(withoutTestsSuffix(content.name))} tests?
               </h2>
               <div className="grid md:grid-cols-3 gap-6">
                 {content.benefits.map((benefit, idx) => {
