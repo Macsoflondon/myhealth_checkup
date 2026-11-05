@@ -126,7 +126,7 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
     },
     {
       slug: "iron-anaemia",
-      label: "Iron & anaemia tests",
+      label: "Iron and anaemia tests",
       matchAny: [
         /iron/i,
         /ferritin/i,
@@ -137,7 +137,7 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
     },
     {
       slug: "liver",
-      label: "Liver Health Tests",
+      label: "Liver tests",
       matchAny: [/liver/i, /\balt\b/i, /\bast\b/i, /bilirubin/i, /\bggt\b/i],
       siblingCategories: ["general-health", "liver"],
     },
@@ -149,7 +149,7 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
     },
     {
       slug: "vitamins",
-      label: "Vitamin & nutrition tests",
+      label: "Vitamins and nutrition tests",
       matchAny: [/vitamin/i, /nutrition/i, /\bb12\b/i, /folate/i, /\bd3\b/i],
       siblingCategories: ["general-health", "vitamins"],
     },
@@ -161,7 +161,7 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
     },
     {
       slug: "thyroid",
-      label: "Thyroid Tests",
+      label: "Thyroid tests",
       matchAny: [/thyroid/i, /\btsh\b/i, /\bt3\b/i, /\bt4\b/i],
       siblingCategories: ["general-health", "thyroid"],
     },
