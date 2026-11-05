@@ -229,7 +229,7 @@ export default function CancerComparisonPage() {
                             className="whitespace-nowrap"
                             onClick={() => setActiveTab("compare")}
                           >
-                            Compare {selectedTests.length} Tests
+                            Compare {selectedTests.length} tests
                           </Button>
                         )}
                       </div>
