@@ -37,3 +37,22 @@ const DISPLAY_LABELS: Readonly<Record<string, string>> = {
 };
 
 export const displayLabel = (name: string): string => DISPLAY_LABELS[name] ?? name;
+
+const KEEP_CAPITALISED = new Set([
+  "UK", "NHS", "Medichecks", "Randox", "Lola", "Clinilabs", "Goodbody", "London", "British", "English",
+]);
+
+/**
+ * Sentence case for generated headings: keeps the first word, acronyms and
+ * proper nouns, and lowercases other capitalised words.
+ */
+export const toSentenceCase = (text: string): string => {
+  const words = text.trim().split(/\s+/);
+  return words
+    .map((w, i) => {
+      if (i === 0) return w.charAt(0).toUpperCase() + w.slice(1);
+      if (KEEP_CAPITALISED.has(w.replace(/[^A-Za-z]/g, ""))) return w;
+      return /^[A-Z][a-z'’]+[,:]?$/.test(w) ? w.charAt(0).toLowerCase() + w.slice(1) : w;
+    })
+    .join(" ");
+};
