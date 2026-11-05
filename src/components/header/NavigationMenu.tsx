@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { displayLabel } from "@/lib/display-label";
 import { Link, useLocation } from "@/lib/router-compat";
 import { ChevronDown } from "lucide-react";
 import { useNavigationData } from "@/hooks/useNavigationData";
@@ -147,7 +148,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
               }`}
               onClick={(e) => handleDropdownToggle(e, item.name)}
             >
-              {item.name}
+              {displayLabel(item.name)}
               <ChevronDown
                 className={`w-4 h-4 lg:w-5 lg:h-5 transition-transform ${
                   isDropdownOpen ? "rotate-180" : ""
@@ -156,7 +157,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             </button>
             {isDropdownOpen && item.dropdownItems && (
               <NavItemDropdown
-                title={item.name}
+                title={displayLabel(item.name)}
                 items={item.dropdownItems}
                 onItemClick={handleItemClick}
                 onClose={handleCloseDropdown}
@@ -172,7 +173,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
             }`}
             onClick={handleItemClick}
           >
-            {item.name}
+            {displayLabel(item.name)}
           </Link>
         )}
       </div>

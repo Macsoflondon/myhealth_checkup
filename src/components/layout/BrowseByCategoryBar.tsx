@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { displayLabel } from "@/lib/display-label";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "@/lib/router-compat";
 
@@ -151,7 +152,7 @@ export default function BrowseByCategoryBar({
                             />
                           </span>
                           <span className="text-sm font-semibold text-[#081129] font-[Montserrat] truncate">
-                            {item.name}
+                            {displayLabel(item.name)}
                           </span>
                         </Link>
                         {hasSubs && (
@@ -183,7 +184,7 @@ export default function BrowseByCategoryBar({
                                   className="w-1.5 h-1.5 rounded-full shrink-0"
                                   style={{ background: color }}
                                 />
-                                <span className="truncate">{sub.name}</span>
+                                <span className="truncate">{displayLabel(sub.name)}</span>
                               </Link>
                             </li>
                           ))}
@@ -223,7 +224,7 @@ export default function BrowseByCategoryBar({
                           />
                         </span>
                         <span className="text-sm font-semibold text-[#081129] font-[Montserrat] truncate">
-                          {item.name}
+                          {displayLabel(item.name)}
                         </span>
                       </Link>
                     );

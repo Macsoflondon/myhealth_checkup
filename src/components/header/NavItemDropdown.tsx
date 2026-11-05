@@ -1,4 +1,5 @@
 import React from "react";
+import { displayLabel } from "@/lib/display-label";
 import { useLocation, useNavigate } from "@/lib/router-compat";
 import { X } from "lucide-react";
 import { useDropdownAccessibility } from "@/hooks/useDropdownAccessibility";
@@ -106,7 +107,7 @@ export const NavItemDropdown: React.FC<NavItemDropdownProps> = ({
                         : "text-brand-navy hover:text-brand-pink"
                     }`}
                   >
-                    {item.name}
+                    {displayLabel(item.name)}
                   </span>
                 </a>
               );

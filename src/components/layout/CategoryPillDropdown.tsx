@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { displayLabel } from "@/lib/display-label";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "@/lib/router-compat";
 import { ChevronDown } from "lucide-react";
@@ -263,7 +264,7 @@ export function CategoryPillDropdown({
                           strokeWidth={2}
                         />
                       </span>
-                      <span className="truncate">{sub.name}</span>
+                      <span className="truncate">{displayLabel(sub.name)}</span>
                     </Link>
                   </li>
                 );
@@ -276,7 +277,7 @@ export function CategoryPillDropdown({
                 className="text-[10px] font-bold uppercase tracking-[0.18em]"
                 style={{ color: `${NAVY}66` }}
               >
-                {item.name}
+                {displayLabel(item.name)}
               </span>
               {viewAll && (
                 <Link
