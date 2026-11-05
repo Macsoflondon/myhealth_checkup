@@ -319,7 +319,7 @@ const WellnessPage = () => {
       <Header />
 
       <main className="min-h-screen bg-background">
-        <CategoryStandardHero pillLabel="General health" />
+        <CategoryStandardHero pillLabel="General health tests" />
 
         {/* Browse tests by category */}
         <section
