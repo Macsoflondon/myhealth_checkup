@@ -10,7 +10,7 @@ interface BenefitItem {
 }
 
 interface CategoryPageBottomProps {
-  /** e.g. "Why Choose Cancer Screening?" */
+  /** e.g. "Why choose cancer screening?" */
   benefitsTitle: string;
   benefits: [BenefitItem, BenefitItem, BenefitItem];
   /** Link for the quiz CTA, defaults to /find-test */

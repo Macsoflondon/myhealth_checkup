@@ -79,7 +79,7 @@ const TestStructuredData = ({ data, url }: TestStructuredDataProps) => {
       {
         "@type": "ListItem",
         position: 2,
-        name: "Compare Tests",
+        name: "Compare tests",
         item: "https://myhealthcheckup.co.uk/compare",
       },
       {

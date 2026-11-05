@@ -7,7 +7,7 @@ import {
 import { CategoryPillDropdown } from "@/components/layout/CategoryPillDropdown";
 
 const SHORT_NAMES: Record<string, string> = {
-  "Most Popular Tests": "Most Popular",
+  "Most popular tests": "Most popular",
   "At Home Test Kits": "Home Tests",
 };
 
@@ -24,7 +24,7 @@ export function DesktopCategoryToolbar() {
     >
       <div className="mx-auto flex w-max flex-nowrap items-center gap-x-0 2xl:gap-x-3">
         {primaryNavigationItems
-          .filter((item) => item.name in ICONS && item.name !== "How It Works")
+          .filter((item) => item.name in ICONS && item.name !== "How it works")
           .map((item) => {
           const { Icon, color } = ICONS[item.name] ?? {
             Icon: Star,

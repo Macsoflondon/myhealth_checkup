@@ -59,42 +59,42 @@ export const providerConfigs: Record<string, ProviderConfig> = {
           "Personalised insights and actionable advice from qualified doctors",
       },
       {
-        title: "UKAS Accredited Labs",
+        title: "UKAS accredited labs",
         description:
           "Established in 2001 with ISO 15189 accredited laboratories",
       },
       {
-        title: "Results in 3 Days",
+        title: "Results in 3 days",
         description:
           "Fast turnaround with results in 3 working days (estimated)",
       },
       {
-        title: "Free Delivery",
+        title: "Free delivery",
         description: "Convenient testing options with free delivery",
       },
     ],
     sampleOptions: [
       {
         icon: "clinic",
-        title: "Venous Draw at a Clinic (+£35)",
+        title: "Venous draw at a clinic (+£35)",
         description:
           "Visit one of Medichecks' national clinic partners for a nurse to take your venous blood sample from a vein in your arm. Instructions on how to book are emailed after order processing.",
       },
       {
         icon: "home",
-        title: "Venous Draw at Home with a Nurse (+£59)",
+        title: "Venous draw at home with a nurse (+£59)",
         description:
           "Book a home nurse appointment for a nurse to take your venous blood sample from a vein in your arm at your convenience.",
       },
       {
         icon: "clinic",
-        title: "Self-Arrange Professional Collection (Free)",
+        title: "Self-arrange professional collection (free)",
         description:
           "Make an appointment at a phlebotomy clinic to have your venous blood sample taken. You will be responsible for arranging your appointment and any additional fees.",
       },
     ],
     whyChoose: {
-      title: "Why Choose Medichecks?",
+      title: "Why choose Medichecks?",
       items: [
         {
           bold: "Established in 2001:",
@@ -136,35 +136,35 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     badgeText: "GoodBody Clinic Blood Test",
     features: [
       {
-        title: "Professional Collection",
+        title: "Professional collection",
         description: "Trained phlebotomists at all locations",
       },
       {
-        title: "UKAS Accredited",
+        title: "UKAS accredited",
         description: "ISO 15189 & CQC regulated laboratories",
       },
-      { title: "Fast Results", description: "2-3 working days turnaround" },
+      { title: "Fast results", description: "2-3 working days turnaround" },
       {
-        title: "Walk-In Available",
+        title: "Walk-in available",
         description: "Pre-booked or walk-in appointments",
       },
     ],
     sampleOptions: [
       {
         icon: "clinic",
-        title: "Pharmacy Clinic Visit",
+        title: "Pharmacy clinic visit",
         description:
           "Professional venous blood collection at GoodBody Clinic pharmacy locations across the UK. Walk-in or pre-booked appointments available.",
       },
       {
         icon: "home",
-        title: "Home Nurse Visit",
+        title: "Home nurse visit",
         description:
           "A qualified nurse visits your home to collect your blood sample. Available in select areas for an additional fee.",
       },
     ],
     whyChoose: {
-      title: "Why Choose GoodBody Clinic?",
+      title: "Why choose GoodBody Clinic?",
       items: [
         {
           bold: "Convenient Locations:",
@@ -207,7 +207,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     badgeText: "Randox Health Test",
     features: [
       {
-        title: "Modern Clinics",
+        title: "Modern clinics",
         description: "State-of-the-art health clinic facilities",
       },
       {
@@ -215,30 +215,30 @@ export const providerConfigs: Record<string, ProviderConfig> = {
         description: "Cutting-edge laboratory technology",
       },
       {
-        title: "Expert Consultation",
+        title: "Expert consultation",
         description: "Healthcare professional review included",
       },
       {
-        title: "Comprehensive Testing",
+        title: "Comprehensive testing",
         description: "Extensive biomarker analysis",
       },
     ],
     sampleOptions: [
       {
         icon: "clinic",
-        title: "Randox Health Clinic",
+        title: "Randox Health clinic",
         description:
           "Visit a state-of-the-art Randox Health clinic for professional venous blood collection in a modern, comfortable setting.",
       },
       {
         icon: "home",
-        title: "Home Collection Kit",
+        title: "Home collection kit",
         description:
           "For select tests, convenient at-home finger-prick collection kits are available with prepaid return postage.",
       },
     ],
     whyChoose: {
-      title: "Why Choose Randox Health?",
+      title: "Why choose Randox Health?",
       items: [
         {
           bold: "Global Leader:",
@@ -280,38 +280,38 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     badgeText: "Lola Health Blood Test",
     features: [
       {
-        title: "At-Home Phlebotomy",
+        title: "At-home phlebotomy",
         description: "Professional venous blood collection at your home",
       },
       {
-        title: "Doctor Reviewed",
+        title: "Doctor reviewed",
         description: "All results reviewed by qualified doctors",
       },
       {
-        title: "UKAS-Accredited Labs",
+        title: "UKAS-accredited labs",
         description: "UKAS-accredited laboratories (ISO 15189)",
       },
       {
-        title: "Mobile App Results",
+        title: "Mobile app results",
         description: "Easy-to-use app with personalized insights",
       },
     ],
     sampleOptions: [
       {
         icon: "home",
-        title: "At-Home Phlebotomy",
+        title: "At-home phlebotomy",
         description:
           "A trained phlebotomist visits your home or workplace to collect a venous blood sample. More comfortable than finger-prick with larger sample volumes.",
       },
       {
         icon: "clinic",
-        title: "Partner Clinic Visit",
+        title: "Partner clinic visit",
         description:
           "Visit a Lola Health partner clinic for professional venous blood collection if preferred.",
       },
     ],
     whyChoose: {
-      title: "Why Choose Lola Health?",
+      title: "Why choose Lola Health?",
       items: [
         {
           bold: "Professional At-Home Service:",
@@ -353,38 +353,38 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     badgeText: "London Medical Laboratory Test",
     features: [
       {
-        title: "Same-Day Results",
+        title: "Same-day results",
         description: "Express results available for select tests",
       },
       {
-        title: "UKAS Accredited",
+        title: "UKAS accredited",
         description: "ISO 15189 accredited laboratory",
       },
       {
-        title: "Central London Location",
+        title: "Central London location",
         description: "Convenient Harley Street clinic",
       },
       {
-        title: "Expert Analysis",
+        title: "Expert analysis",
         description: "Specialist doctor review available",
       },
     ],
     sampleOptions: [
       {
         icon: "clinic",
-        title: "Harley Street Clinic",
+        title: "Harley Street clinic",
         description:
           "Visit the prestigious London Medical Laboratory clinic on Harley Street for professional venous blood collection.",
       },
       {
         icon: "home",
-        title: "Home Collection Service",
+        title: "Home collection service",
         description:
           "Professional phlebotomist visits your home in Greater London area for convenient blood collection.",
       },
     ],
     whyChoose: {
-      title: "Why Choose London Medical Laboratory?",
+      title: "Why choose London Medical Laboratory?",
       items: [
         {
           bold: "Fast Turnaround:",
@@ -427,33 +427,33 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     badgeText: "Clinilabs Blood Test",
     features: [
       {
-        title: "UKAS Accredited Labs",
+        title: "UKAS accredited labs",
         description:
           "High-accuracy testing in ISO 15189 accredited laboratories",
       },
       {
-        title: "Nationwide Coverage",
+        title: "Nationwide coverage",
         description: "Clinic locations available across the UK",
       },
       {
-        title: "Fast Turnaround",
+        title: "Fast turnaround",
         description: "Results delivered within 2–5 working days",
       },
       {
-        title: "Wide Test Range",
+        title: "Wide test range",
         description: "Comprehensive menu of blood and health tests",
       },
     ],
     sampleOptions: [
       {
         icon: "clinic",
-        title: "Clinic Visit",
+        title: "Clinic visit",
         description:
           "Visit a Clinilabs partner clinic for professional venous blood collection by a trained phlebotomist.",
       },
     ],
     whyChoose: {
-      title: "Why Choose Clinilabs?",
+      title: "Why choose Clinilabs?",
       items: [
         {
           bold: "Accredited Testing:",
@@ -494,7 +494,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     badgeText: "London Health Company Blood Test",
     features: [
       {
-        title: "Professional Phlebotomy",
+        title: "Professional phlebotomy",
         description: "Trained phlebotomists for accurate sample collection",
       },
       {
@@ -502,24 +502,24 @@ export const providerConfigs: Record<string, ProviderConfig> = {
         description: "Convenient clinic locations across London",
       },
       {
-        title: "Comprehensive Panels",
+        title: "Comprehensive panels",
         description: "Wide range of blood tests and health checks",
       },
       {
-        title: "Fast Results",
+        title: "Fast results",
         description: "Results delivered within 2–4 working days",
       },
     ],
     sampleOptions: [
       {
         icon: "clinic",
-        title: "Clinic Visit",
+        title: "Clinic visit",
         description:
           "Visit a London Health Company clinic for professional venous blood collection by a trained phlebotomist.",
       },
     ],
     whyChoose: {
-      title: "Why Choose London Health Company?",
+      title: "Why choose London Health Company?",
       items: [
         {
           bold: "London Convenience:",
@@ -560,32 +560,32 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     badgeText: "Medical Diagnosis Blood Test",
     features: [
       {
-        title: "Clinic-Based Testing",
+        title: "Clinic-based testing",
         description: "Professional venous blood collection at clinic locations",
       },
       {
-        title: "Wide Test Range",
+        title: "Wide test range",
         description: "Broad menu of diagnostic blood tests and health panels",
       },
       {
-        title: "Competitive Pricing",
+        title: "Competitive pricing",
         description: "Affordable private blood testing options",
       },
       {
-        title: "Results Online",
+        title: "Results online",
         description: "Secure online result delivery within 2–5 working days",
       },
     ],
     sampleOptions: [
       {
         icon: "clinic",
-        title: "Clinic Visit",
+        title: "Clinic visit",
         description:
           "Visit a Medical Diagnosis clinic for professional venous blood collection by trained staff.",
       },
     ],
     whyChoose: {
-      title: "Why Choose Medical Diagnosis?",
+      title: "Why choose Medical Diagnosis?",
       items: [
         {
           bold: "Broad Test Menu:",

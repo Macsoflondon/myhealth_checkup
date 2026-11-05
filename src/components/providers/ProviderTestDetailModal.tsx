@@ -536,7 +536,7 @@ export default function ProviderTestDetailModal({
           {accreditations.length > 0 && (
             <section>
               <h4 className="text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-3">
-                Standards &amp; Accreditation
+                Standards &amp; accreditation
               </h4>
               <div className="flex flex-wrap gap-x-6 gap-y-2">
                 {accreditations.map((acc) => (
@@ -558,7 +558,7 @@ export default function ProviderTestDetailModal({
           {collectionOptions && collectionOptions.length > 1 && (
             <section>
               <h4 className="text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-2">
-                Collection Options
+                Collection options
               </h4>
               <ul className="space-y-1.5">
                 {collectionOptions.map((opt) => (

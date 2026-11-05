@@ -34,7 +34,7 @@ const SectionHeading = ({ title }: { title: string }) => (
   </div>
 );
 
-/* ========== Stay Informed Section ========== */
+/* ========== Stay informed Section ========== */
 const StayInformedSection = () => {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
@@ -70,12 +70,12 @@ const StayInformedSection = () => {
 
   return (
     <div className="bg-white/5 backdrop-blur-xs rounded-2xl border border-white/10 p-4 sm:p-5">
-      {/* Two-column top: Follow Us + Copyright/Disclaimer | Stay Informed */}
+      {/* Two-column top: Follow us + Copyright/Disclaimer | Stay informed */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
-        {/* Left: Follow Us + Copyright + Medical Disclaimer */}
+        {/* Left: Follow us + Copyright + Medical Disclaimer */}
         <div className="w-full flex flex-col items-center text-center h-full">
           <div className="w-full">
-            <SectionHeading title="Follow Us" />
+            <SectionHeading title="Follow us" />
           </div>
           <div className="flex gap-3 mt-1">
             <SocialIcon
@@ -157,14 +157,14 @@ const StayInformedSection = () => {
                 to="/legal"
                 className="inline-block py-1.5 underline hover:text-brand-pink transition-colors"
               >
-                Legal Hub
+                Legal hub
               </Link>
               {" · "}
               <Link
                 to="/trust"
                 className="inline-block py-1.5 underline hover:text-brand-pink transition-colors"
               >
-                Trust &amp; Security
+                Trust &amp; security
               </Link>
             </p>
             <p className="text-[10px] sm:text-[11px] text-white/78 leading-snug text-center break-words">
@@ -185,9 +185,9 @@ const StayInformedSection = () => {
           </div>
         </div>
 
-        {/* Right: Stay Informed */}
+        {/* Right: Stay informed */}
         <div>
-          <SectionHeading title="Stay Informed" />
+          <SectionHeading title="Stay informed" />
           <p className="text-white/90 text-xs sm:text-sm leading-relaxed mb-4">
             New tests, new providers, straight to your inbox. Provider updates
             and platform improvements — when they matter.

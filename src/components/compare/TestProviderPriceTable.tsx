@@ -201,7 +201,7 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
                     ) ? null : (
                       <Button asChild variant="outline" size="sm">
                         <Link to={`/provider/${provider.providerId}`}>
-                          View Provider
+                          View provider
                         </Link>
                       </Button>
                     )}

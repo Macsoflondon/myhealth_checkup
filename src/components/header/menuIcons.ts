@@ -22,9 +22,9 @@ export const MENU_TURQUOISE = "#22c0d4";
 
 export type MenuIconEntry = { Icon: LucideIcon; color: string };
 
-/** Category pills (toolbar strip + drawer Test Categories section). */
+/** Category pills (toolbar strip + drawer Test categories section). */
 export const CATEGORY_MENU_ICONS: Record<string, MenuIconEntry> = {
-  "Most Popular Tests": { Icon: Star, color: MENU_PINK },
+  "Most popular tests": { Icon: Star, color: MENU_PINK },
   "General Wellness": { Icon: Heart, color: MENU_TURQUOISE },
   "Women's Health": { Icon: UserCheck, color: "#7C3AED" },
   "Men's Health": { Icon: User, color: "#3a5f85" },
@@ -37,10 +37,10 @@ export const CATEGORY_MENU_ICONS: Record<string, MenuIconEntry> = {
 export type CanonicalCategoryName = keyof typeof CATEGORY_MENU_ICONS;
 
 const CATEGORY_PARENT_ALIASES: Record<string, CanonicalCategoryName> = {
-  "most-popular": "Most Popular Tests",
-  "most-popular-tests": "Most Popular Tests",
-  popular: "Most Popular Tests",
-  "popular-tests": "Most Popular Tests",
+  "most-popular": "Most popular tests",
+  "most-popular-tests": "Most popular tests",
+  popular: "Most popular tests",
+  "popular-tests": "Most popular tests",
   wellness: "General Wellness",
   "general-health": "General Wellness",
   "general-wellness": "General Wellness",
@@ -155,14 +155,14 @@ export const categoryTextColor = (category?: string | null): string =>
 
 /** Sections inside the More menu / mobile drawer (About, Services, …). */
 export const MORE_SECTION_ICONS: Record<string, MenuIconEntry> = {
-  "About Us": { Icon: Info, color: MENU_TURQUOISE },
-  "Frequently Asked Questions": { Icon: BookOpen, color: "#6366f1" },
-  "Our Providers": { Icon: Users, color: MENU_PINK },
-  "Assisted Test Finder": { Icon: Search, color: "#16a34a" },
-  "Compare Tests": { Icon: BarChart2, color: "#f59e0b" },
+  "About us": { Icon: Info, color: MENU_TURQUOISE },
+  "Frequently asked questions": { Icon: BookOpen, color: "#6366f1" },
+  "Our providers": { Icon: Users, color: MENU_PINK },
+  "Assisted test finder": { Icon: Search, color: "#16a34a" },
+  "Compare tests": { Icon: BarChart2, color: "#f59e0b" },
   "Health Resources Hub": { Icon: BookOpen, color: "#0ea5e9" },
-  "Complete Biomarker Reference Library": { Icon: Library, color: "#8b5cf6" },
-  "Contact Us": { Icon: Phone, color: MENU_PINK },
+  "Complete biomarker reference library": { Icon: Library, color: "#8b5cf6" },
+  "Contact us": { Icon: Phone, color: MENU_PINK },
 };
 
 /** Resolve an icon for any menu item name — categories first, then sections. */

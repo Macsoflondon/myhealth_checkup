@@ -21,40 +21,40 @@ export const MAPPED_WELLNESS_CATEGORIES: Record<string, MappedCategoryDef> = {
   },
   "energy-tests": {
     slug: "energy-fatigue",
-    label: "Energy & Fatigue Tests",
+    label: "Energy & fatigue tests",
     badgeColor: "#f0a500",
     subtitle:
       "Compare tests that investigate tiredness, low energy and related deficiencies.",
   },
   "gp-monitoring": {
     slug: "gp-monitoring",
-    label: "GP Monitoring Tests",
+    label: "GP monitoring tests",
     badgeColor: "#00b4d8",
     subtitle:
       "Compare routine monitoring and general health check panels from accredited UK providers.",
   },
   "antibody-tests": {
     slug: "antibody",
-    label: "Antibody Tests",
+    label: "Antibody tests",
     badgeColor: "#e70d69",
     subtitle: "Compare antibody screening tests from accredited UK providers.",
   },
   "infection-tests": {
     slug: "infection",
-    label: "Infection Tests",
+    label: "Infection tests",
     badgeColor: "#5b9bd5",
     subtitle:
       "Compare infection and infectious disease screening from accredited UK providers.",
   },
   "immunity-tests": {
     slug: "immunity",
-    label: "Immunity Tests",
+    label: "Immunity tests",
     badgeColor: "#f0b429",
     subtitle: "Compare tests assessing immune function and immunity status.",
   },
   "autoimmunity-tests": {
     slug: "autoimmunity",
-    label: "Autoimmunity Tests",
+    label: "Autoimmunity tests",
     badgeColor: "#e70d69",
     subtitle:
       "Compare autoimmune screening and monitoring tests from accredited UK providers.",

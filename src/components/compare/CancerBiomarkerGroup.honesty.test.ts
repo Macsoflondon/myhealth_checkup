@@ -69,7 +69,7 @@ describe("testIncludesBiomarker honesty", () => {
   it("does not mark a test as including a biomarker just because its name mentions a related word", () => {
     const test = {
       ...baseTest,
-      testName: "Prostate Screening Panel",
+      testName: "Prostate screening Panel",
       description: "",
       biomarkersList: null,
     };

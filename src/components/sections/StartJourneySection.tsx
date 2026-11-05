@@ -40,7 +40,7 @@ const StartJourneySection = () => {
                 <div className="h-px w-8 sm:w-12 bg-brand-pink" />
               </div>
               <h2 className="font-heading font-bold text-[#081129] leading-[1.15] tracking-tight text-2xl sm:text-3xl md:text-4xl mb-3">
-                Take Control of Your Health Today
+                Take control of your health today
               </h2>
               <p className="text-base sm:text-lg text-brand-navy leading-relaxed max-w-2xl mx-auto lg:mx-0">
                 Compare trusted, accredited tests from leading UK providers in

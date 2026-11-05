@@ -7,12 +7,12 @@ interface TrustItem {
 }
 
 const trustItems: TrustItem[] = [
-  { label: "UKAS-Accredited Labs", markerClassName: "bg-brand-turquoise" },
-  { label: "CQC-Regulated Clinics", markerClassName: "bg-brand-pink" },
-  { label: "ISO 15189 Certification", markerClassName: "bg-brand-navy" },
-  { label: "GDPR Compliant", markerClassName: "bg-brand-turquoise" },
-  { label: "Transparent Pricing", markerClassName: "bg-brand-pink" },
-  { label: "No GP Referral Needed", markerClassName: "bg-brand-navy" },
+  { label: "UKAS-accredited labs", markerClassName: "bg-brand-turquoise" },
+  { label: "CQC-regulated clinics", markerClassName: "bg-brand-pink" },
+  { label: "ISO 15189 certification", markerClassName: "bg-brand-navy" },
+  { label: "GDPR compliant", markerClassName: "bg-brand-turquoise" },
+  { label: "Transparent pricing", markerClassName: "bg-brand-pink" },
+  { label: "No GP referral needed", markerClassName: "bg-brand-navy" },
 ];
 
 /**

@@ -80,10 +80,10 @@ export default function CatalogSortBar({
           <SelectContent>
             <SelectItem value="name-asc">Name (A–Z)</SelectItem>
             <SelectItem value="name-desc">Name (Z–A)</SelectItem>
-            <SelectItem value="price-asc">Price (Low to High)</SelectItem>
-            <SelectItem value="price-desc">Price (High to Low)</SelectItem>
-            <SelectItem value="biomarkers-desc">Most Biomarkers</SelectItem>
-            <SelectItem value="popularity">Most Popular</SelectItem>
+            <SelectItem value="price-asc">Price (low to high)</SelectItem>
+            <SelectItem value="price-desc">Price (high to low)</SelectItem>
+            <SelectItem value="biomarkers-desc">Most biomarkers</SelectItem>
+            <SelectItem value="popularity">Most popular</SelectItem>
           </SelectContent>
         </Select>
       </div>

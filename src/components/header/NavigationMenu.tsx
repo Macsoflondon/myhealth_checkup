@@ -114,13 +114,13 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
 
   // All navigation items for single row layout
   const allNavItems = primaryNavigationItems.filter(
-    (item) => item.name !== "How It Works",
+    (item) => item.name !== "How it works",
   );
 
-  const highlightedItems: string[] = ["Most Popular Tests"];
+  const highlightedItems: string[] = ["Most popular tests"];
 
   const renderNavItem = (item: PrimaryNavItem) => {
-    const isPopularTests = item.name === "Most Popular Tests";
+    const isPopularTests = item.name === "Most popular tests";
     const hasAccent = highlightedItems.includes(item.name);
     const isDropdownOpen = activeDropdown === item.name;
     const hasDropdown =
@@ -224,7 +224,7 @@ export const NavigationMenu: React.FC<NavigationMenuProps> = ({
 
       <nav
         className={`relative ${className}`}
-        aria-label="Main Navigation"
+        aria-label="Main navigation"
         style={{ position: "relative", zIndex: 100, overflow: "visible" }}
       >
         {/* Mobile: Single wrapped row */}

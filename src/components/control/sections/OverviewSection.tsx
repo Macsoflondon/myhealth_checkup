@@ -99,7 +99,7 @@ export default function OverviewSection() {
           : "bad";
 
   return (
-    <SectionShell title="Executive Overview">
+    <SectionShell title="Executive overview">
       {loading ? (
         <div className="flex items-center gap-2 text-muted-foreground text-sm py-12">
           <Loader2 className="w-4 h-4 animate-spin" /> Loading metrics…

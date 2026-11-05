@@ -60,7 +60,7 @@ export const biomarkersChunk2 = [
         normal: { range: "< 5.0 mmol/L", label: "Desirable" },
         borderline: {
           range: "5.0–6.4 mmol/L",
-          label: "Borderline High",
+          label: "Borderline high",
           meaning: "Consider cardiovascular risk factors.",
         },
         high: {
@@ -92,15 +92,15 @@ export const biomarkersChunk2 = [
       both: {
         low: {
           range: "< 1.4 mmol/L",
-          label: "Very Low (Target for High Risk)",
+          label: "Very low (target for high risk)",
           meaning:
             "Target for those with established cardiovascular disease, diabetes, or very high cardiovascular risk.",
         },
-        optimal: { range: "< 2.0 mmol/L", label: "Optimal (High Risk Target)" },
-        normal: { range: "< 3.0 mmol/L", label: "Near Optimal" },
+        optimal: { range: "< 2.0 mmol/L", label: "Optimal (high risk target)" },
+        normal: { range: "< 3.0 mmol/L", label: "Near optimal" },
         borderline: {
           range: "3.0–4.9 mmol/L",
-          label: "Borderline High",
+          label: "Borderline high",
           meaning:
             "Consider lifestyle modification and cardiovascular risk assessment.",
         },
@@ -147,7 +147,7 @@ export const biomarkersChunk2 = [
         optimal: { range: "> 1.4 mmol/L", label: "Optimal" },
         high: {
           range: "> 2.5 mmol/L",
-          label: "Very High",
+          label: "Very high",
           meaning:
             "Generally protective — very high HDL may occasionally be associated with dysfunctional HDL particles.",
         },
@@ -199,7 +199,7 @@ export const biomarkersChunk2 = [
         },
         high: {
           range: "> 5.6 mmol/L",
-          label: "Very High",
+          label: "Very high",
           meaning:
             "High risk of pancreatitis. Requires urgent assessment and medication alongside lifestyle change.",
         },
@@ -226,15 +226,15 @@ export const biomarkersChunk2 = [
       both: {
         low: {
           range: "< 0.6 g/L",
-          label: "Low (Target for High Risk)",
+          label: "Low (target for high risk)",
           meaning:
             "Target level for very high cardiovascular risk. Achieved with high-intensity statin therapy.",
         },
         optimal: { range: "< 0.8 g/L", label: "Optimal" },
-        normal: { range: "0.6–1.0 g/L", label: "Near Optimal" },
+        normal: { range: "0.6–1.0 g/L", label: "Near optimal" },
         borderline: {
           range: "1.0–1.2 g/L",
-          label: "Borderline High",
+          label: "Borderline high",
           meaning:
             "Consider cardiovascular risk context and lifestyle optimisation.",
         },
@@ -267,7 +267,7 @@ export const biomarkersChunk2 = [
       both: {
         low: {
           range: "< 75 nmol/L (< 30 mg/dL)",
-          label: "Low Risk",
+          label: "Low risk",
           meaning: "Low cardiovascular risk from Lp(a).",
         },
         normal: {
@@ -284,7 +284,7 @@ export const biomarkersChunk2 = [
         },
         veryHigh: {
           range: "> 200 nmol/L (> 80 mg/dL)",
-          label: "Very High",
+          label: "Very high",
           meaning:
             "High lifetime cardiovascular risk. PCSK9 inhibitors and novel Lp(a)-lowering drugs (under development) are relevant.",
         },
@@ -301,7 +301,7 @@ export const biomarkersChunk2 = [
       "Cholesterol Panel",
       "ApoB",
       "LDL",
-      "Cardiac Risk Assessment",
+      "Cardiac Risk assessment",
     ],
   },
   {
@@ -317,20 +317,20 @@ export const biomarkersChunk2 = [
       both: {
         low: {
           range: "< 39 mmol/mol (< 5.7%)",
-          label: "Low / Optimal",
+          label: "Low / optimal",
           meaning:
             "Excellent blood sugar control. Risk of hypoglycaemia if on insulin or medication.",
         },
         normal: { range: "39–47 mmol/mol (5.7–6.4%)", label: "Normal" },
         prediabetes: {
           range: "48–57 mmol/mol (6.5–7.4%)",
-          label: "Pre-diabetes / At Risk",
+          label: "Pre-diabetes / at risk",
           meaning:
             "Impaired glucose regulation — significant risk of progressing to Type 2 diabetes. Lifestyle intervention can reverse this.",
         },
         diabetes: {
           range: "≥ 48 mmol/mol (≥ 6.5%)",
-          label: "Diabetes Diagnostic Threshold",
+          label: "Diabetes diagnostic threshold",
           meaning:
             "A single HbA1c ≥ 48 in the presence of symptoms is diagnostic.",
         },
@@ -362,20 +362,20 @@ export const biomarkersChunk2 = [
       both: {
         low: {
           range: "< 3.5 mmol/L",
-          label: "Low (Hypoglycaemia)",
+          label: "Low (hypoglycaemia)",
           meaning:
             "Can cause shakiness, sweating, confusion. Requires investigation for cause.",
         },
         normal: { range: "3.5–5.5 mmol/L", label: "Normal" },
         prediabetes: {
           range: "5.6–6.9 mmol/L",
-          label: "Impaired Fasting Glucose",
+          label: "Impaired fasting glucose",
           meaning:
             "Pre-diabetes — high risk of progression to Type 2 diabetes.",
         },
         diabetes: {
           range: "≥ 7.0 mmol/L",
-          label: "Diabetes Range",
+          label: "Diabetes range",
           meaning:
             "On two separate occasions, fasting glucose ≥ 7.0 mmol/L is diagnostic of Type 2 diabetes.",
         },
@@ -409,13 +409,13 @@ export const biomarkersChunk2 = [
         normal: { range: "18–60 pmol/L", label: "Normal" },
         borderline: {
           range: "60–100 pmol/L",
-          label: "Borderline Elevated",
+          label: "Borderline elevated",
           meaning:
             "Possible early insulin resistance — assess with HOMA-IR, fasting glucose, lipids, and BMI.",
         },
         high: {
           range: "> 100 pmol/L",
-          label: "High — Insulin Resistance",
+          label: "High — insulin resistance",
           meaning:
             "Significant insulin resistance — often present decades before type 2 diabetes diagnosis. Lifestyle intervention is essential.",
         },
@@ -590,14 +590,14 @@ export const biomarkersChunk2 = [
       both: {
         low: {
           range: "< 135 mmol/L",
-          label: "Low (Hyponatraemia)",
+          label: "Low (hyponatraemia)",
           meaning:
             "Overhydration, heart failure, liver cirrhosis, kidney disease, SIADH, hypothyroidism, Addison's disease, or excessive sweating with hypotonic fluid replacement.",
         },
         normal: { range: "135–145 mmol/L", label: "Normal" },
         high: {
           range: "> 145 mmol/L",
-          label: "High (Hypernatraemia)",
+          label: "High (hypernatraemia)",
           meaning:
             "Dehydration, diabetes insipidus, excessive sweating without water replacement. Causes neurological symptoms.",
         },
@@ -629,14 +629,14 @@ export const biomarkersChunk2 = [
       both: {
         low: {
           range: "< 3.5 mmol/L",
-          label: "Low (Hypokalaemia)",
+          label: "Low (hypokalaemia)",
           meaning:
             "Cardiac arrhythmia risk, muscle weakness, cramps, constipation. Causes: diuretics, vomiting, diarrhoea, magnesium deficiency, hyperaldosteronism.",
         },
         normal: { range: "3.5–5.0 mmol/L", label: "Normal" },
         high: {
           range: "> 5.0 mmol/L",
-          label: "High (Hyperkalaemia)",
+          label: "High (hyperkalaemia)",
           meaning:
             "Cardiac arrest risk at very high levels. Causes: kidney failure, ACE inhibitors/ARBs, potassium-sparing diuretics, Addison's disease, acidosis.",
         },
@@ -668,14 +668,14 @@ export const biomarkersChunk2 = [
       both: {
         low: {
           range: "< 2.1 mmol/L",
-          label: "Low (Hypocalcaemia)",
+          label: "Low (hypocalcaemia)",
           meaning:
             "Vitamin D deficiency, hypoparathyroidism, hypomagnesaemia, malabsorption, or pancreatitis.",
         },
         normal: { range: "2.1–2.6 mmol/L", label: "Normal" },
         high: {
           range: "> 2.6 mmol/L",
-          label: "High (Hypercalcaemia)",
+          label: "High (hypercalcaemia)",
           meaning:
             "Primary hyperparathyroidism (most common), malignancy (bone metastases, PTH-related peptide secretion), sarcoidosis, excess vitamin D, or thyrotoxicosis.",
         },
@@ -702,14 +702,14 @@ export const biomarkersChunk2 = [
       both: {
         low: {
           range: "< 0.8 mmol/L",
-          label: "Low (Hypophosphataemia)",
+          label: "Low (hypophosphataemia)",
           meaning:
             "Malnutrition, malabsorption, vitamin D deficiency, hyperparathyroidism, refeeding syndrome, or excess antacid use.",
         },
         normal: { range: "0.8–1.5 mmol/L", label: "Normal" },
         high: {
           range: "> 1.5 mmol/L",
-          label: "High (Hyperphosphataemia)",
+          label: "High (hyperphosphataemia)",
           meaning:
             "Kidney failure (most common), hypoparathyroidism, excess vitamin D/calcium supplementation, or rhabdomyolysis.",
         },
@@ -742,7 +742,7 @@ export const biomarkersChunk2 = [
       both: {
         low: {
           range: "< 1.6 pmol/L",
-          label: "Low (Hypoparathyroidism)",
+          label: "Low (hypoparathyroidism)",
           meaning:
             "Post-surgical (thyroid/parathyroid surgery), autoimmune, or genetic. Causes hypocalcaemia and tetany.",
         },
@@ -780,23 +780,23 @@ export const biomarkersChunk2 = [
     unit: "mg/L",
     ranges: {
       both: {
-        normal: { range: "< 5 mg/L", label: "Normal (Standard CRP)" },
-        lowRisk: { range: "< 1 mg/L", label: "Low CV Risk (hs-CRP)" },
+        normal: { range: "< 5 mg/L", label: "Normal (standard CRP)" },
+        lowRisk: { range: "< 1 mg/L", label: "Low CV risk (hs-CRP)" },
         avgRisk: {
           range: "1–3 mg/L",
-          label: "Average CV Risk (hs-CRP)",
+          label: "Average CV risk (hs-CRP)",
           meaning:
             "Mild chronic inflammation — associated with metabolic syndrome, cardiovascular risk.",
         },
         elevated: {
           range: "> 3 mg/L",
-          label: "Elevated Cardiovascular Risk (hs-CRP)",
+          label: "Elevated cardiovascular risk (hs-CRP)",
           meaning:
             "High chronic inflammatory state — cardiovascular risk factor if persistent.",
         },
         high: {
           range: "> 10 mg/L",
-          label: "Significant Inflammation",
+          label: "Significant inflammation",
           meaning:
             "Active infection, autoimmune flare, tissue damage. > 100 mg/L suggests serious bacterial infection.",
         },
@@ -841,7 +841,7 @@ export const biomarkersChunk2 = [
         },
         veryHigh: {
           range: "> 30 µmol/L",
-          label: "Very High",
+          label: "Very high",
           meaning:
             "Severe deficiency or homocystinuria (rare genetic disorder). Thrombosis risk markedly elevated.",
         },
@@ -886,7 +886,7 @@ export const biomarkersChunk2 = [
         },
         high: {
           range: "Significantly elevated and rising",
-          label: "Acute MI Likely",
+          label: "Acute MI likely",
           meaning:
             "Rising troponin on serial tests strongly indicates acute myocardial infarction — emergency assessment required.",
         },
@@ -1052,7 +1052,7 @@ export const biomarkersChunk2 = [
         normal: { range: "< 1:40 or Negative", label: "Negative" },
         borderline: {
           range: "1:40 to 1:80",
-          label: "Low Positive",
+          label: "Low positive",
           meaning:
             "Clinically significant only in context of symptoms. Present in up to 20% of healthy adults.",
         },
@@ -1090,10 +1090,10 @@ export const biomarkersChunk2 = [
     unit: "Positive / Negative",
     ranges: {
       both: {
-        normal: { range: "Negative", label: "HIV Not Detected" },
+        normal: { range: "Negative", label: "HIV not detected" },
         high: {
           range: "Reactive / Positive",
-          label: "Reactive — Requires Confirmatory Testing",
+          label: "Reactive — requires confirmatory testing",
           meaning:
             "A reactive result requires confirmatory testing (HIV-1/2 differentiation, HIV RNA PCR). Not all reactive results are true positives — confirmatory testing is essential before diagnosis.",
         },

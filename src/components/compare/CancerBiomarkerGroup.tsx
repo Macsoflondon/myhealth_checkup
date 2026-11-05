@@ -75,7 +75,7 @@ export function CancerBiomarkerGroup({
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="text-lg">Cancer Biomarker Coverage</CardTitle>
+          <CardTitle className="text-lg">Cancer biomarker coverage</CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-muted-foreground text-sm">
@@ -90,7 +90,7 @@ export function CancerBiomarkerGroup({
     <Card>
       <CardHeader>
         <CardTitle className="text-lg flex items-center gap-2">
-          Cancer Biomarker Coverage
+          Cancer biomarker coverage
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>

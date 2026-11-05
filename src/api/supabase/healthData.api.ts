@@ -220,7 +220,7 @@ class HealthDataApi {
     return { data: data as BiomarkerReading[] | null, error };
   }
 
-  // Health Scores
+  // Health scores
   async getLatestHealthScore(
     userId: string,
   ): Promise<ApiResponse<HealthScore>> {

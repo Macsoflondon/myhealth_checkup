@@ -55,12 +55,12 @@ export function SaveComparisonDialog({
           className="gap-2"
         >
           <Bookmark className="w-4 h-4" />
-          Save Comparison
+          Save comparison
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle className="font-heading">Save Comparison</DialogTitle>
+          <DialogTitle className="font-heading">Save comparison</DialogTitle>
           <DialogDescription>
             Save this comparison of {testCount} tests to access it later from
             your dashboard.
@@ -96,7 +96,7 @@ export function SaveComparisonDialog({
             disabled={!name.trim() || isSaving}
             className="bg-[#e70d69] hover:bg-[#e70d69]/90"
           >
-            {isSaving ? "Saving..." : "Save Comparison"}
+            {isSaving ? "Saving..." : "Save comparison"}
           </Button>
         </DialogFooter>
       </DialogContent>

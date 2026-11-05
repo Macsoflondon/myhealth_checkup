@@ -6,7 +6,7 @@ const HowItWorks = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-8 sm:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[hsl(var(--navy))] mb-3">
-            How It Works
+            How it works
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
             Four simple steps to booking your health test
@@ -17,25 +17,25 @@ const HowItWorks = () => {
           {[
             {
               step: "1",
-              title: "Search & Compare",
+              title: "Search & compare",
               description: "Explore tests, review biomarkers, compare pricing",
               icon: Search,
             },
             {
               step: "2",
-              title: "Choose Provider",
+              title: "Choose provider",
               description: "Select a trusted provider that fits your needs",
               icon: Shield,
             },
             {
               step: "3",
-              title: "Book Appointment",
+              title: "Book appointment",
               description: "Secure booking with instant confirmation",
               icon: CheckCircle,
             },
             {
               step: "4",
-              title: "Get Results",
+              title: "Get results",
               description: "Receive results securely within 3-5 days",
               icon: Award,
             },

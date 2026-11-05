@@ -90,7 +90,7 @@ const SEVERITY_PILL: Record<
 };
 
 const LINK_LABELS: Record<string, string> = {
-  "/control/plugins": "Open Plugins",
+  "/control/plugins": "Open plugins",
   "/control/clicks": "Open Provider clicks",
   "/control/revenue": "Open Revenue",
   "/control/traffic": "Open Traffic and search",
@@ -435,7 +435,7 @@ function BriefingPanel({
           <p className="min-w-0 flex-1 text-xs text-muted-foreground">{note}</p>
           {showPluginsLink && (
             <Button asChild variant="outline" size="sm" className="h-10">
-              <Link to={PLUGINS_HREF}>Open Plugins</Link>
+              <Link to={PLUGINS_HREF}>Open plugins</Link>
             </Button>
           )}
         </div>

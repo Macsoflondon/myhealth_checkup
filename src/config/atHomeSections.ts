@@ -47,7 +47,7 @@ export const AT_HOME_SECTIONS: AtHomeSectionDef[] = [
   },
   {
     slug: "vitamins",
-    label: "Vitamins & Nutrition",
+    label: "Vitamins & nutrition",
     desc: "Vitamin D, B12, folate, ferritin and iron status kits",
     icon: "◇",
     accent: "#f0a500",

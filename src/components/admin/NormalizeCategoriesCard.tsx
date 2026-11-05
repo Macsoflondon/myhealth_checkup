@@ -69,7 +69,7 @@ export const NormalizeCategoriesCard = () => {
       <CardHeader>
         <CardTitle className="text-lg flex items-center gap-2">
           <Wand2 className="h-4 w-4" />
-          Normalise Test Categories
+          Normalise Test categories
         </CardTitle>
         <CardDescription>
           Re-parses every active provider test in place and re-derives its

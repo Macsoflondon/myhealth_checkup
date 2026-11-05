@@ -33,7 +33,7 @@ export const PROVIDERS: ProviderEntry[] = [
     tagline: "Your Health, Your Way",
     description:
       "Award-winning home and clinic blood testing with doctor-reviewed results and comprehensive health MOTs.",
-    tags: ["Health MOTs", "Doctor Reviews", "UKAS Accredited"],
+    tags: ["Health MOTs", "Doctor Reviews", "UKAS accredited"],
     glow: "#e70d69",
     glowRgb: "231,13,105",
   },
@@ -44,7 +44,7 @@ export const PROVIDERS: ProviderEntry[] = [
     tagline: "Trusted Health Testing",
     description:
       "Comprehensive wellness profiles with GP follow-ups across a nationwide network of CQC-regulated clinics.",
-    tags: ["GP Follow-ups", "CQC Regulated", "Nationwide"],
+    tags: ["GP Follow-ups", "CQC regulated", "Nationwide"],
     glow: "#009B8D",
     glowRgb: "0,155,141",
   },
@@ -55,7 +55,7 @@ export const PROVIDERS: ProviderEntry[] = [
     tagline: "Excellence in Diagnostics",
     description:
       "Global diagnostics provider offering advanced health checks across UKAS-accredited and FDA-approved facilities.",
-    tags: ["UKAS Accredited", "FDA Approved", "Advanced Diagnostics"],
+    tags: ["UKAS accredited", "FDA Approved", "Advanced Diagnostics"],
     glow: "#2D4BA0",
     glowRgb: "45,75,160",
   },
@@ -66,7 +66,7 @@ export const PROVIDERS: ProviderEntry[] = [
     tagline: "Fast, Accurate Private Blood Testing",
     description:
       "UKAS-accredited central laboratory offering next-day in-store results and home finger-prick kits delivered across the UK.",
-    tags: ["UKAS Accredited", "Next-Day Results", "Home Kits"],
+    tags: ["UKAS accredited", "Next-Day Results", "Home Kits"],
     glow: "#1565C0",
     glowRgb: "21,101,192",
   },
@@ -88,7 +88,7 @@ export const PROVIDERS: ProviderEntry[] = [
     tagline: "Clinical Precision, Trusted Results",
     description:
       "UKAS-accredited clinical laboratory delivering a wide range of diagnostic and health screening tests across the UK.",
-    tags: ["UKAS Accredited", "Clinical Lab", "Diagnostics"],
+    tags: ["UKAS accredited", "Clinical Lab", "Diagnostics"],
     glow: "#2E7D32",
     glowRgb: "46,125,50",
   },
@@ -110,7 +110,7 @@ export const PROVIDERS: ProviderEntry[] = [
     tagline: "Specialist Diagnostics, Faster",
     description:
       "Specialist diagnostics with typically fast turnaround blood testing and health screening across the UK.",
-    tags: ["Fast Results", "Specialist Testing", "UK Wide"],
+    tags: ["Fast results", "Specialist Testing", "UK Wide"],
     glow: "#E53935",
     glowRgb: "229,57,53",
   },
@@ -226,7 +226,7 @@ const FeaturedProvidersGlass = () => {
                         boxShadow: `0 10px 30px -10px rgba(${p.glowRgb}, 0.5)`,
                       }}
                     >
-                      View Profile
+                      View profile
                     </Link>
                     <a
                       href={buildProviderWebsiteUrl(
@@ -236,7 +236,7 @@ const FeaturedProvidersGlass = () => {
                       {...externalLinkProps}
                       className="block w-full py-3 px-4 rounded-xl border border-brand-navy text-brand-navy text-xs font-semibold text-center hover:bg-brand-navy hover:text-on-dark transition-all"
                     >
-                      Visit Site
+                      Visit site
                     </a>
                     <AffiliateCommissionNote className="text-center" />
                   </div>

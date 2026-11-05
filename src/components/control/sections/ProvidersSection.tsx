@@ -85,7 +85,7 @@ export default function ProvidersSection() {
   }, []);
 
   return (
-    <SectionShell title="Provider Monitoring">
+    <SectionShell title="Provider monitoring">
       <div className="grid grid-cols-3 gap-3 mb-6">
         <StatCard label="Providers tracked" value={rows.length} />
         <StatCard

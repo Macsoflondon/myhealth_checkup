@@ -58,7 +58,7 @@ const TestPageTemplate = ({ data }: TestPageTemplateProps) => {
             {/* Test Information */}
             <Card className="mb-6 bg-[#081129] border-[#081129]">
               <CardHeader>
-                <CardTitle className="text-white">What's Included</CardTitle>
+                <CardTitle className="text-white">What's included</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="mb-4 text-white/90 font-normal">

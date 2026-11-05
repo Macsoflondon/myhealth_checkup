@@ -7,7 +7,7 @@ const Enhanced3StepProcess = () => {
       icon: (
         <TestTube className="w-7 h-7 sm:w-8 sm:h-8 text-[hsl(var(--primary))]" />
       ),
-      title: "Choose Your Test",
+      title: "Choose your test",
       description:
         "Browse our curated selection of health tests from trusted UK providers. Compare prices, features, and reviews to find the right test for your needs.",
     },
@@ -16,7 +16,7 @@ const Enhanced3StepProcess = () => {
       icon: (
         <Users className="w-7 h-7 sm:w-8 sm:h-8 text-[hsl(var(--primary))]" />
       ),
-      title: "Book with Provider",
+      title: "Book with provider",
       description:
         "Connect directly with your chosen provider to book your appointment. Our partners offer flexible scheduling including home visits and clinic appointments.",
     },
@@ -25,7 +25,7 @@ const Enhanced3StepProcess = () => {
       icon: (
         <CheckCircle className="w-7 h-7 sm:w-8 sm:h-8 text-[hsl(var(--primary))]" />
       ),
-      title: "Get Your Results",
+      title: "Get your results",
       description:
         "Receive your comprehensive results typically within a few working days. Many providers include expert consultations to help you understand your health data.",
     },

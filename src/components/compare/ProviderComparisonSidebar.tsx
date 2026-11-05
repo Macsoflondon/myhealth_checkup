@@ -14,7 +14,7 @@ const ProviderComparisonSidebar = ({
     <Card className="sticky top-8 bg-[#081129] border-[#081129]">
       <CardHeader>
         <CardTitle className="text-center text-white">
-          Compare Providers
+          Compare providers
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -67,7 +67,7 @@ const ProviderComparisonSidebar = ({
             className="w-full border-white/30 text-white hover:bg-white/10"
             asChild
           >
-            <Link to="/compare">Compare All Tests</Link>
+            <Link to="/compare">Compare all tests</Link>
           </Button>
         </div>
       </CardContent>

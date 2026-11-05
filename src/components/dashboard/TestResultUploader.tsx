@@ -106,7 +106,7 @@ export const TestResultUploader = ({
   return (
     <Card className="p-6 border-2">
       <h3 className="type-card-title mb-4 text-[#081129]">
-        Upload Test Result
+        Upload test result
       </h3>
 
       <div className="space-y-4">
@@ -208,7 +208,7 @@ export const TestResultUploader = ({
           ) : (
             <>
               <Upload className="w-4 h-4 mr-2" />
-              Upload Test Result
+              Upload test result
             </>
           )}
         </Button>

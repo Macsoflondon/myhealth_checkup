@@ -59,11 +59,11 @@ export function CategoryFilters({
             borderColor: TURQUOISE,
           }}
         >
-          <option value="popular">Most Popular</option>
+          <option value="popular">Most popular</option>
           <option value="rating">Highest Rated</option>
           <option value="price-asc">Price: Low → High</option>
           <option value="price-desc">Price: High → Low</option>
-          <option value="biomarkers">Most Biomarkers</option>
+          <option value="biomarkers">Most biomarkers</option>
           <option value="turnaround">Fastest Results</option>
         </select>
       </div>

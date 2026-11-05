@@ -41,7 +41,7 @@ export default function BrowseByCategoryBar({
   const [mobileBarOut, setMobileBarOut] = useState(false);
   const { pathname } = useLocation();
   const [hydrated, setHydrated] = useState(false);
-  const items = primaryNavigationItems.filter((i) => i.name !== "How It Works");
+  const items = primaryNavigationItems.filter((i) => i.name !== "How it works");
 
   useEffect(() => setHydrated(true), []);
 
@@ -117,7 +117,7 @@ export default function BrowseByCategoryBar({
             </div>
             <div>
               <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/70 mb-3">
-                Test Categories
+                Test categories
               </h3>
               <div className="grid grid-cols-1 gap-2">
                 {items.map((item) => {

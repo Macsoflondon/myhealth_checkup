@@ -116,14 +116,14 @@ export const StoredBiomarkerAnalysis = () => {
 
       setAnalysisResult(data);
       toast({
-        title: "Analysis Complete",
+        title: "Analysis complete",
         description: "Your stored biomarker readings have been analysed.",
       });
     } catch (err) {
       console.error("Analysis error:", err);
       const message = err instanceof Error ? err.message : "Analysis failed";
       toast({
-        title: "Analysis Failed",
+        title: "Analysis failed",
         description: message,
         variant: "destructive",
       });
@@ -158,7 +158,7 @@ export const StoredBiomarkerAnalysis = () => {
           </p>
           <div className="flex gap-3">
             <Button asChild variant="outline">
-              <Link to="/blood-test-analysis">Enter Biomarkers Manually</Link>
+              <Link to="/blood-test-analysis">Enter biomarkers manually</Link>
             </Button>
           </div>
         </CardContent>
@@ -200,8 +200,8 @@ export const StoredBiomarkerAnalysis = () => {
             <div className="flex items-center justify-between">
               <Button variant="ghost" size="sm" onClick={handleSelectAll}>
                 {selectedReadings.length === readings.length
-                  ? "Deselect All"
-                  : "Select All"}
+                  ? "Deselect all"
+                  : "Select all"}
               </Button>
               <Badge variant="secondary">
                 {selectedReadings.length} of {readings.length} selected
@@ -293,12 +293,12 @@ export const StoredBiomarkerAnalysis = () => {
               </AlertDescription>
             </Alert>
 
-            {/* Key Findings */}
+            {/* Key findings */}
             {analysisResult.keyFindings &&
               analysisResult.keyFindings.length > 0 && (
                 <div>
                   <h4 className="font-semibold text-brand-navy mb-2">
-                    Key Findings
+                    Key findings
                   </h4>
                   <ul className="space-y-1">
                     {analysisResult.keyFindings.map((finding, index) => (

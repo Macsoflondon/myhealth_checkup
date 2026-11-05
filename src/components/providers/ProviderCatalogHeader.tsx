@@ -81,7 +81,7 @@ const ProviderCatalogHeader = ({
               variant="outline"
               className="text-white border-white/30 hover:bg-white/10"
             >
-              <Link to="/trusted-providers">← All Providers</Link>
+              <Link to="/trusted-providers">← All providers</Link>
             </Button>
             <Button
               asChild
@@ -184,7 +184,7 @@ export const PROVIDER_FEATURES: Record<string, ProviderFeature[]> = {
     },
     {
       icon: <Shield className="h-4 w-4 text-secondary" />,
-      label: "UKAS Accredited",
+      label: "UKAS accredited",
     },
   ],
   randox: [
@@ -198,7 +198,7 @@ export const PROVIDER_FEATURES: Record<string, ProviderFeature[]> = {
     },
     {
       icon: <Shield className="h-4 w-4 text-secondary" />,
-      label: "ISO 15189 Accredited",
+      label: "ISO 15189 accredited",
     },
   ],
   "london-medical-laboratory": [
@@ -212,7 +212,7 @@ export const PROVIDER_FEATURES: Record<string, ProviderFeature[]> = {
     },
     {
       icon: <Shield className="h-4 w-4 text-secondary" />,
-      label: "CQC Regulated",
+      label: "CQC regulated",
     },
   ],
   "lola-health": [
@@ -240,7 +240,7 @@ export const PROVIDER_FEATURES: Record<string, ProviderFeature[]> = {
     },
     {
       icon: <Shield className="h-4 w-4 text-secondary" />,
-      label: "CQC Regulated Providers",
+      label: "CQC regulated providers",
     },
   ],
   "medical-diagnosis": [
@@ -254,7 +254,7 @@ export const PROVIDER_FEATURES: Record<string, ProviderFeature[]> = {
     },
     {
       icon: <Shield className="h-4 w-4 text-secondary" />,
-      label: "UKAS Accredited",
+      label: "UKAS accredited",
     },
   ],
   clinilabs: [
@@ -268,7 +268,7 @@ export const PROVIDER_FEATURES: Record<string, ProviderFeature[]> = {
     },
     {
       icon: <Shield className="h-4 w-4 text-secondary" />,
-      label: "UKAS Accredited",
+      label: "UKAS accredited",
     },
   ],
   "london-health-company": [
@@ -278,7 +278,7 @@ export const PROVIDER_FEATURES: Record<string, ProviderFeature[]> = {
     },
     {
       icon: <Shield className="h-4 w-4 text-secondary" />,
-      label: "CQC Regulated",
+      label: "CQC regulated",
     },
   ],
 };

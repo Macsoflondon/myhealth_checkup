@@ -207,7 +207,7 @@ export const RecommendationResults = ({
               className="font-medium text-[#081129] mb-2"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
-              General Wellness Guidance:
+              General wellness guidance:
             </h4>
             <p className="text-[#081129]/70 text-sm">
               {result.generalGuidance}
@@ -451,7 +451,7 @@ const RecommendationEngine = ({
         <div className="flex items-center justify-center gap-2 mb-4">
           <Brain className="h-8 w-8 text-primary" />
           <h2 className="text-3xl font-bold text-foreground">
-            AI Wellness Recommendations
+            AI wellness recommendations
           </h2>
         </div>
         <p className="text-muted-foreground">
@@ -547,7 +547,7 @@ const RecommendationEngine = ({
 
         <div className="mb-6">
           <label className="block text-sm font-medium mb-2">
-            Wellness Goals or General Health Interests
+            Wellness goals or general health interests
           </label>
           <textarea
             className="w-full p-3 border rounded-md h-24 resize-none"
@@ -587,7 +587,7 @@ const RecommendationEngine = ({
             </div>
             <div>
               <label className="block text-sm font-medium mb-2">
-                Collection Preference
+                Collection preference
               </label>
               <select
                 className="w-full p-2 border rounded-md"

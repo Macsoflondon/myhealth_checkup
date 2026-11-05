@@ -74,7 +74,7 @@ export default function LogsSection() {
 
   return (
     <SectionShell
-      title="System Logs"
+      title="System logs"
       actions={
         <div className="flex items-center gap-2">
           <Select

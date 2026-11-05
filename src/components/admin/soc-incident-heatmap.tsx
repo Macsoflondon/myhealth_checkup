@@ -55,7 +55,7 @@ export function SocIncidentHeatmap({ incidents }: Props) {
         <thead>
           <tr>
             <th className="px-2 py-2 text-left font-medium text-muted-foreground">
-              Source ↓ / Severity →
+              Source ↓ / severity →
             </th>
             {SEVERITY_ORDER.map((s) => (
               <th

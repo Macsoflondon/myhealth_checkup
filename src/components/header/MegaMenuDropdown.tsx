@@ -138,7 +138,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
           )}
         </div>
 
-        {/* Popular Tests from Database */}
+        {/* Popular tests from Database */}
         {filteredPopularTests ? (
           <div className="grid grid-cols-1 gap-2">
             <div className="mb-3">
@@ -200,7 +200,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
           <div className="grid grid-cols-1 gap-2">
             <div className="mb-3">
               <h3 className="text-xs font-bold text-brand-navy dark:text-brand-navy uppercase tracking-wider mb-2">
-                {searchQuery ? `Results for "${searchQuery}"` : "Popular Tests"}
+                {searchQuery ? `Results for "${searchQuery}"` : "Popular tests"}
               </h3>
             </div>
             {filteredTests.length > 0 ? (

@@ -16,7 +16,7 @@ export const biomarkersChunk1 = [
         low: {
           min: null,
           max: 129,
-          label: "Low / Anaemia",
+          label: "Low / anaemia",
           range: "< 130 g/L",
           meaning:
             "Anaemia in men. Investigate cause: iron deficiency, B12/folate, chronic disease, haemolysis, or bone marrow problem.",
@@ -33,7 +33,7 @@ export const biomarkersChunk1 = [
         veryHigh: {
           min: 186,
           max: null,
-          label: "Very High",
+          label: "Very high",
           range: "> 185 g/L",
           meaning:
             "Polycythaemia — increased clotting and stroke risk. Haematology referral needed.",
@@ -43,7 +43,7 @@ export const biomarkersChunk1 = [
         low: {
           min: null,
           max: 119,
-          label: "Low / Anaemia",
+          label: "Low / anaemia",
           range: "< 120 g/L",
           meaning:
             "Anaemia in women. Most common cause: iron deficiency from menstruation. Also consider B12, folate, chronic disease.",
@@ -59,7 +59,7 @@ export const biomarkersChunk1 = [
         veryHigh: {
           min: 166,
           max: null,
-          label: "Very High",
+          label: "Very high",
           range: "> 165 g/L",
           meaning: "Polycythaemia — refer to haematology.",
         },
@@ -244,7 +244,7 @@ export const biomarkersChunk1 = [
         veryHigh: {
           min: 30.0,
           max: null,
-          label: "Very High",
+          label: "Very high",
           range: "> 30 ×10⁹/L",
           meaning:
             "Marked leucocytosis — haematology referral needed to exclude leukaemia or leukaemoid reaction.",
@@ -281,7 +281,7 @@ export const biomarkersChunk1 = [
         low: {
           min: null,
           max: 1.8,
-          label: "Low (Neutropenia)",
+          label: "Low (neutropenia)",
           range: "< 1.8 ×10⁹/L",
           meaning:
             "Increased infection risk. Below 1.0 = severe neutropenia; below 0.5 = life-threatening.",
@@ -295,7 +295,7 @@ export const biomarkersChunk1 = [
         high: {
           min: 7.5,
           max: null,
-          label: "High (Neutrophilia)",
+          label: "High (neutrophilia)",
           range: "> 7.5 ×10⁹/L",
           meaning:
             "Bacterial infection, steroid use, acute inflammation, stress, or myeloproliferative disease.",
@@ -330,7 +330,7 @@ export const biomarkersChunk1 = [
         low: {
           min: null,
           max: 1.0,
-          label: "Low (Lymphopenia)",
+          label: "Low (lymphopenia)",
           range: "< 1.0 ×10⁹/L",
           meaning:
             "Reduced lymphocytes — immunosuppressed. Check for HIV, corticosteroid use, or lymphoma.",
@@ -344,7 +344,7 @@ export const biomarkersChunk1 = [
         high: {
           min: 4.5,
           max: null,
-          label: "High (Lymphocytosis)",
+          label: "High (lymphocytosis)",
           range: "> 4.5 ×10⁹/L",
           meaning:
             "Viral infection (EBV/CMV), pertussis, or haematological malignancy (CLL if persistent).",
@@ -386,7 +386,7 @@ export const biomarkersChunk1 = [
         high: {
           min: 1.0,
           max: null,
-          label: "High (Monocytosis)",
+          label: "High (monocytosis)",
           range: "> 1.0 ×10⁹/L",
           meaning:
             "Chronic infection, autoimmune disease, inflammatory bowel disease, recovery from neutropenia, or rarely monocytic leukaemia.",
@@ -422,7 +422,7 @@ export const biomarkersChunk1 = [
         high: {
           min: 0.5,
           max: 1.5,
-          label: "Mild Eosinophilia",
+          label: "Mild eosinophilia",
           range: "0.5–1.5 ×10⁹/L",
           meaning:
             "Allergic disease, drug reaction, or mild parasitic infection.",
@@ -501,7 +501,7 @@ export const biomarkersChunk1 = [
         low: {
           min: null,
           max: 150,
-          label: "Low (Thrombocytopenia)",
+          label: "Low (thrombocytopenia)",
           range: "< 150 ×10⁹/L",
           meaning:
             "Low platelets. Below 50 = significant bleeding risk; below 20 = major spontaneous bleeding risk.",
@@ -515,7 +515,7 @@ export const biomarkersChunk1 = [
         high: {
           min: 400,
           max: 600,
-          label: "Reactive Thrombocytosis",
+          label: "Reactive thrombocytosis",
           range: "400–600 ×10⁹/L",
           meaning:
             "Often reactive (infection, iron deficiency, post-splenectomy). Rarely thrombotic at this level.",
@@ -523,7 +523,7 @@ export const biomarkersChunk1 = [
         veryHigh: {
           min: 600,
           max: null,
-          label: "Very High",
+          label: "Very high",
           range: "> 600 ×10⁹/L",
           meaning:
             "Investigate for essential thrombocythaemia or other myeloproliferative disorder. Clotting risk.",
@@ -560,7 +560,7 @@ export const biomarkersChunk1 = [
         optimal: {
           min: 80,
           max: 100,
-          label: "Normal (Normocytic)",
+          label: "Normal (normocytic)",
           range: "80–100 fL",
         },
         high: {
@@ -602,7 +602,7 @@ export const biomarkersChunk1 = [
         low: {
           min: null,
           max: 27,
-          label: "Low (Hypochromic)",
+          label: "Low (hypochromic)",
           range: "< 27 pg",
           meaning:
             "Low haemoglobin content per cell — iron deficiency, thalassaemia.",
@@ -611,7 +611,7 @@ export const biomarkersChunk1 = [
         high: {
           min: 32,
           max: null,
-          label: "High (Hyperchromic)",
+          label: "High (hyperchromic)",
           range: "> 32 pg",
           meaning:
             "Large cells with excess haemoglobin — B12/folate deficiency, alcohol excess.",
@@ -646,7 +646,7 @@ export const biomarkersChunk1 = [
         low: {
           min: null,
           max: 315,
-          label: "Low (Hypochromic)",
+          label: "Low (hypochromic)",
           range: "< 315 g/L",
           meaning:
             "Cells are poorly filled with haemoglobin — iron deficiency, thalassaemia.",
@@ -693,7 +693,7 @@ export const biomarkersChunk1 = [
         high: {
           min: 14.5,
           max: null,
-          label: "High (Anisocytosis)",
+          label: "High (anisocytosis)",
           range: "> 14.5%",
           meaning:
             "Variable cell sizes — iron deficiency, B12/folate deficiency, mixed deficiency, haemolysis, or recent transfusion.",
@@ -731,7 +731,7 @@ export const biomarkersChunk1 = [
         high: {
           min: 2.5,
           max: null,
-          label: "High (Active Production)",
+          label: "High (active production)",
           range: "> 2.5%",
           meaning:
             "Active red cell production — haemolytic anaemia, recovery from blood loss, or response to iron/B12 therapy.",
@@ -807,7 +807,7 @@ export const biomarkersChunk1 = [
         borderline: {
           min: 3,
           max: 5,
-          label: "Mildly Elevated",
+          label: "Mildly elevated",
           range: "3–5",
           meaning:
             "Mild stress response, early infection, or low-grade chronic inflammation.",
@@ -852,7 +852,7 @@ export const biomarkersChunk1 = [
         high: {
           min: 225,
           max: 400,
-          label: "Mildly Elevated",
+          label: "Mildly elevated",
           range: "226–400 U/L",
           meaning:
             "Non-specific elevation — liver disease, haemolysis, muscle injury, pulmonary infarction.",
@@ -860,7 +860,7 @@ export const biomarkersChunk1 = [
         veryHigh: {
           min: 400,
           max: null,
-          label: "Significantly Elevated",
+          label: "Significantly elevated",
           range: "> 400 U/L",
           meaning:
             "Significant cell destruction — haematological malignancy, massive haemolysis, severe hepatitis, PE, or cardiac damage.",
@@ -1152,7 +1152,7 @@ export const biomarkersChunk1 = [
         borderline: {
           min: 15,
           max: 30,
-          label: "Mildly Elevated",
+          label: "Mildly elevated",
           range: "15–30 mm/hr",
           meaning: "Non-specific mild inflammation — correlate clinically.",
         },
@@ -1167,7 +1167,7 @@ export const biomarkersChunk1 = [
         veryHigh: {
           min: 100,
           max: null,
-          label: "Very High",
+          label: "Very high",
           range: "> 100 mm/hr",
           meaning:
             "Red flag — investigate urgently for GCA, myeloma, endocarditis, or severe systemic infection.",
@@ -1184,7 +1184,7 @@ export const biomarkersChunk1 = [
         borderline: {
           min: 20,
           max: 40,
-          label: "Mildly Elevated",
+          label: "Mildly elevated",
           range: "20–40 mm/hr",
           meaning: "Non-specific — correlate clinically.",
         },
@@ -1192,7 +1192,7 @@ export const biomarkersChunk1 = [
         veryHigh: {
           min: 100,
           max: null,
-          label: "Very High",
+          label: "Very high",
           range: "> 100 mm/hr",
         },
       },
@@ -1227,7 +1227,7 @@ export const biomarkersChunk1 = [
         high: {
           min: 308,
           max: 1000,
-          label: "Mildly Elevated",
+          label: "Mildly elevated",
           range: "308–1000 U/L",
           meaning:
             "Muscle stress, statin myopathy, or vigorous exercise. Consider stopping statins if symptomatic.",
@@ -1235,7 +1235,7 @@ export const biomarkersChunk1 = [
         veryHigh: {
           min: 1000,
           max: null,
-          label: "Significantly Elevated",
+          label: "Significantly elevated",
           range: "> 1000 U/L",
           meaning:
             "Rhabdomyolysis, inflammatory myopathy, or severe muscle injury. IV fluids urgently if rhabdomyolysis.",
@@ -1247,14 +1247,14 @@ export const biomarkersChunk1 = [
         high: {
           min: 192,
           max: 600,
-          label: "Mildly Elevated",
+          label: "Mildly elevated",
           range: "192–600 U/L",
           meaning: "Muscle stress, exercise, statin effect.",
         },
         veryHigh: {
           min: 600,
           max: null,
-          label: "Significantly Elevated",
+          label: "Significantly elevated",
           range: "> 600 U/L",
           meaning: "Rhabdomyolysis or inflammatory myopathy — urgent review.",
         },
@@ -1299,7 +1299,7 @@ export const biomarkersChunk1 = [
         veryHigh: {
           min: 45,
           max: null,
-          label: "Very High",
+          label: "Very high",
           range: "> 45 g/L",
           meaning:
             "Significant hyperglobulinaemia — myeloma, MGUS, chronic infection (TB, HIV, hepatitis), or sarcoidosis. Serum protein electrophoresis essential.",

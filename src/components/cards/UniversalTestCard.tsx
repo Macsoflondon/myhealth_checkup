@@ -510,7 +510,7 @@ export const UniversalTestDetailModal: React.FC<{
                     marginBottom: 8,
                   }}
                 >
-                  Additional Collection Options
+                  Additional Collection options
                 </div>
                 <p
                   style={{
@@ -723,7 +723,7 @@ export const UniversalTestDetailModal: React.FC<{
                     color: "#475569",
                   }}
                 >
-                  Clinical Review available
+                  Clinical review available
                 </span>
               </div>
               <div className="flex items-center gap-1.5">

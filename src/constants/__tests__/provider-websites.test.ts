@@ -24,7 +24,7 @@ describe("provider website single source of truth", () => {
   });
 
   it.each(PROVIDERS.map((p) => p.id))(
-    "Glass Visit Site href for %s is valid",
+    "Glass Visit site href for %s is valid",
     (id) => {
       const website = getProviderWebsite(id);
       expect(website).not.toBe("");

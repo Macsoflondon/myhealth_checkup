@@ -58,7 +58,7 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
     },
     {
       slug: "fertility",
-      label: "Female Fertility Tests",
+      label: "Female fertility tests",
       matchAny: [/fertility/i, /\bamh\b/i, /ovarian reserve/i],
       excludeAny: MALE_TERMS,
       siblingCategories: ["fertility", "female-fertility"],
@@ -70,7 +70,7 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
     },
     {
       slug: "pcos",
-      label: "PCOS Tests",
+      label: "PCOS tests",
       matchAny: [/pcos/i, /polycystic/i],
     },
     {
@@ -83,50 +83,50 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
   "mens-health": [
     {
       slug: "hormones",
-      label: "Male Hormone Tests",
+      label: "Male hormone tests",
       matchAny: [/hormone/i, /testosterone/i, /dhea/i, /shbg/i],
       siblingCategories: ["hormones"],
     },
     {
       slug: "fertility",
-      label: "Male Fertility Tests",
+      label: "Male fertility tests",
       matchAny: [/fertility/i, /sperm/i, /semen/i],
       excludeAny: FEMALE_TERMS,
       siblingCategories: ["fertility", "male-fertility"],
     },
     {
       slug: "testosterone",
-      label: "Testosterone Tests",
+      label: "Testosterone tests",
       matchAny: [/testosterone/i, /free t\b/i, /dihydrotestosterone|dht/i],
     },
     {
       slug: "prostate",
-      label: "Prostate Tests",
+      label: "Prostate tests",
       matchAny: [/prostate/i, /\bpsa\b/i],
     },
   ],
   wellness: [
     {
       slug: "heart-health",
-      label: "Heart Health Tests",
+      label: "Heart health tests",
       matchAny: [/heart/i, /cardio/i, /cholesterol/i, /lipid/i],
       siblingCategories: ["general-health", "heart", "heart-health"],
     },
     {
       slug: "cholesterol",
-      label: "Cholesterol Tests",
+      label: "Cholesterol tests",
       matchAny: [/cholesterol/i, /lipid/i, /\bldl\b/i, /\bhdl\b/i],
       siblingCategories: ["general-health", "heart"],
     },
     {
       slug: "diabetes",
-      label: "Diabetes Tests",
+      label: "Diabetes tests",
       matchAny: [/diabet/i, /hba1c/i, /glucose/i, /insulin/i],
       siblingCategories: ["general-health", "diabetes"],
     },
     {
       slug: "iron-anaemia",
-      label: "Iron & Anaemia Tests",
+      label: "Iron & anaemia tests",
       matchAny: [
         /iron/i,
         /ferritin/i,
@@ -143,19 +143,19 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
     },
     {
       slug: "kidney",
-      label: "Kidney Tests",
+      label: "Kidney tests",
       matchAny: [/kidney/i, /renal/i, /creatinine/i, /\begfr\b/i, /\burea\b/i],
       siblingCategories: ["general-health", "kidney-health"],
     },
     {
       slug: "vitamins",
-      label: "Vitamin & Nutrition Tests",
+      label: "Vitamin & nutrition tests",
       matchAny: [/vitamin/i, /nutrition/i, /\bb12\b/i, /folate/i, /\bd3\b/i],
       siblingCategories: ["general-health", "vitamins"],
     },
     {
       slug: "allergy",
-      label: "Allergy Tests",
+      label: "Allergy tests",
       matchAny: [/allerg/i, /\bige\b/i, /intoleran/i],
       siblingCategories: ["general-health", "allergy-testing"],
     },
@@ -169,18 +169,18 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
   "sports-performance": [
     {
       slug: "hormones",
-      label: "Sports Hormone Tests",
+      label: "Sports hormone tests",
       matchAny: [/hormone/i, /cortisol/i, /testosterone/i, /dhea/i],
       siblingCategories: ["hormones"],
     },
     {
       slug: "testosterone",
-      label: "Testosterone Tests",
+      label: "Testosterone tests",
       matchAny: [/testosterone/i, /\bfree t\b/i],
     },
     {
       slug: "energy",
-      label: "Energy & Fatigue Tests",
+      label: "Energy & fatigue tests",
       matchAny: [
         /energy/i,
         /fatigue/i,
@@ -195,29 +195,29 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
   fertility: [
     {
       slug: "female-fertility",
-      label: "Female Fertility Tests",
+      label: "Female fertility tests",
       matchAny: FEMALE_TERMS,
       excludeAny: MALE_TERMS,
     },
     {
       slug: "male-fertility",
-      label: "Male Fertility Tests",
+      label: "Male fertility tests",
       matchAny: MALE_TERMS,
       excludeAny: FEMALE_TERMS,
     },
     {
       slug: "amh",
-      label: "AMH Fertility Test",
+      label: "AMH fertility test",
       matchAny: [/\bamh\b/i, /anti[- ]?müllerian|anti[- ]?mullerian/i],
     },
     {
       slug: "prenatal",
-      label: "Prenatal / NIPT Tests",
+      label: "Prenatal / NIPT tests",
       matchAny: [/prenatal/i, /\bnipt\b/i, /non[- ]?invasive prenatal/i],
     },
     {
       slug: "pregnancy",
-      label: "Pregnancy Tests",
+      label: "Pregnancy tests",
       matchAny: [/pregnan/i, /\bhcg\b/i],
     },
   ],
@@ -243,61 +243,61 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
     },
     {
       slug: "general",
-      label: "General Health Home Kits",
+      label: "General health home kits",
       matchAny: [/general|wellness|essential|full body|complete/i],
       siblingCategories: ["general-health"],
     },
     {
       slug: "vitamins",
-      label: "Vitamins & Nutrition Home Kits",
+      label: "Vitamins & nutrition home kits",
       matchAny: [/vitamin|ferritin|iron|folate|b12/i],
       siblingCategories: ["vitamins"],
     },
     {
       slug: "thyroid",
-      label: "Thyroid Home Kits",
+      label: "Thyroid home kits",
       matchAny: [/thyroid|\btsh\b|\bt3\b|\bt4\b/i],
       siblingCategories: ["thyroid"],
     },
     {
       slug: "heart",
-      label: "Heart Health Home Kits",
+      label: "Heart health home kits",
       matchAny: [/heart|cholesterol|lipid|cardio/i],
       siblingCategories: ["heart"],
     },
     {
       slug: "hormones",
-      label: "Hormone Home Kits",
+      label: "Hormone home kits",
       matchAny: [/hormone|cortisol/i],
       siblingCategories: ["hormones"],
     },
     {
       slug: "fertility",
-      label: "Fertility Home Kits",
+      label: "Fertility home kits",
       matchAny: [/fertility|\bamh\b|ovarian reserve/i],
       siblingCategories: ["fertility"],
     },
     {
       slug: "cancer-screening",
-      label: "Cancer Screening Home Kits",
+      label: "Cancer screening home kits",
       matchAny: [/cancer|\bpsa\b|prostate/i],
       siblingCategories: ["cancer-screening"],
     },
     {
       slug: "sexual-health",
-      label: "Sexual Health Home Kits",
+      label: "Sexual health home kits",
       matchAny: [/sexual|\bsti\b|\bstd\b/i],
       siblingCategories: ["sexual-health"],
     },
     {
       slug: "gut",
-      label: "Gut Health Home Kits",
+      label: "Gut health home kits",
       matchAny: [/gut|microbiome|coeliac|celiac/i],
       siblingCategories: ["gut"],
     },
     {
       slug: "sports",
-      label: "Sports & Fitness Home Kits",
+      label: "Sports & fitness home kits",
       matchAny: [/sport|fitness|performance/i],
       siblingCategories: ["sports-performance"],
     },
@@ -305,20 +305,20 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
   "cancer-screening": [
     {
       slug: "bowel",
-      label: "Bowel Cancer Screening",
+      label: "Bowel cancer screening",
       matchAny: [/bowel|colorectal|\bfit\b|colon/i],
     },
     {
       slug: "prostate",
-      label: "Prostate Cancer PSA",
+      label: "Prostate cancer PSA",
       matchAny: [/prostate|\bpsa\b/i],
     },
     {
       slug: "cervical",
-      label: "Cervical Cancer HPV",
+      label: "Cervical cancer HPV",
       matchAny: [/cervical|\bhpv\b/i],
     },
-    { slug: "lung", label: "Lung Cancer Screening", matchAny: [/lung/i] },
+    { slug: "lung", label: "Lung cancer screening", matchAny: [/lung/i] },
   ],
 };
 
