@@ -179,7 +179,7 @@ const TermsConditionsPage = () => {
                 </p>
                 <p className="text-sm text-muted-foreground">
                   By using our service, you consent to our Privacy policy and
-                  cookie usage as outlined in our Cookie Policy.
+                  cookie usage as outlined in our Cookie policy.
                 </p>
               </CardContent>
             </Card>

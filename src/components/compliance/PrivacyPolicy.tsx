@@ -41,7 +41,7 @@ const PrivacyPolicy = () => {
           and the Privacy and Electronic Communications Regulations (PECR).
         </p>
         <p className="text-brand-navy leading-relaxed">
-          By using our Website, you agree to this Privacy Policy.
+          By using our Website, you agree to this Privacy policy.
         </p>
       </Card>
 
