@@ -280,13 +280,13 @@ export const categoryContent: Record<string, CategoryContent> = {
 
   "womens-health": {
     id: "womens-health",
-    name: "Women's Health",
+    name: "Women's health tests",
     slug: "womens-health",
     title:
-      "Women's Health Blood Tests UK | Hormone & Fertility tests from £49 | myhealth checkup",
+      "Women's health blood tests UK | hormone and fertility tests from £49 | myhealth checkup",
     metaDescription:
       "Compare women's health blood tests from trusted UK providers. Check hormones, fertility, menopause markers & more. Discreet home testing with fast results.",
-    heroTitle: "Women's Health",
+    heroTitle: "Women's health tests",
     heroSubtitle:
       "Comprehensive testing designed for women's unique health needs at every life stage",
     introduction:
@@ -364,13 +364,13 @@ export const categoryContent: Record<string, CategoryContent> = {
 
   "mens-health": {
     id: "mens-health",
-    name: "Men's Health",
+    name: "Men's health tests",
     slug: "mens-health",
     title:
-      "Men's Health Blood Tests UK | Testosterone & Prostate tests from £49 | myhealth checkup",
+      "Men's health blood tests UK | testosterone and prostate tests from £49 | myhealth checkup",
     metaDescription:
       "Compare men's health blood tests from leading UK providers. Check testosterone, PSA and heart health from UKAS accredited labs.",
-    heroTitle: "Men's Health Blood Tests",
+    heroTitle: "Men's health tests",
     heroSubtitle:
       "Comprehensive testing for men's unique health needs, from hormones to heart health",
     introduction:

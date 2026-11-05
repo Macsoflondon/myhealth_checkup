@@ -9,7 +9,7 @@ const IronProfileTestPage = () => {
       "Comprehensive iron status testing to check for iron deficiency, anaemia, or iron overload. Essential for energy levels and overall health assessment.",
     category: "Blood Tests",
     breadcrumbTitle: "Iron profile test",
-    metaTitle: "Iron profile test - Compare UK Providers | MyHealth Checkup",
+    metaTitle: "Iron profile test: compare UK providers | myhealth checkup",
     metaDescription:
       "Compare Iron Profile Tests from top UK providers. Check for iron deficiency, anaemia and iron overload with comprehensive iron status testing.",
 
