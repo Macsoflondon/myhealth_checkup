@@ -9,7 +9,7 @@ const MaleHormoneTestPage = () => {
       "Measure testosterone, prolactin levels and other key male hormones to detect imbalances that may be impacting mood, libido, energy levels and overall wellbeing.",
     category: "Hormones",
     breadcrumbTitle: "Male hormone test",
-    metaTitle: "Male hormone test - Compare UK Providers | MyHealth Checkup",
+    metaTitle: "Male hormone test: compare UK providers | myhealth checkup",
     metaDescription:
       "Compare Male Hormone Tests from top UK providers. Test testosterone, DHEA, cortisol and other key male hormones affecting energy, mood and performance.",
 

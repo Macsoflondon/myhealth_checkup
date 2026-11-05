@@ -4,12 +4,12 @@ import { Shield, Activity, Users } from "lucide-react";
 const MensHealthPage = () => (
   <DbCategoryPage
     canonicalCategory="mens-health"
-    seoTitle="Men's Health Tests | myhealth checkup"
-    pillLabel="Men's Health"
+    seoTitle="Men's health tests | myhealth checkup"
+    pillLabel="Men's health"
     seoDescription="Comprehensive men's health testing including testosterone, prostate PSA, erectile dysfunction, and complete male wellness screening from £45."
     seoKeywords="men's health tests, testosterone test, prostate PSA test, male hormones, erectile dysfunction test, well man test"
-    canonicalUrl="https://myhealthcheckup.co.uk/mens-health"
-    headline="Men's Health Blood Tests"
+    canonicalUrl="https://myhealthcheckup.co.uk/tests/mens-health"
+    headline="Men's health tests"
     subtitle="Comprehensive male health screening including testosterone, prostate health, erectile dysfunction, and complete wellness testing tailored for men's unique health needs."
     searchPlaceholder="Search by symptom or test — e.g. 'testosterone', 'prostate'"
     trustStats={[
@@ -18,7 +18,7 @@ const MensHealthPage = () => (
       { value: "6", label: "Trusted providers" },
     ]}
     filters={["All"]}
-    benefitsTitle="Why Choose Men's Health Testing?"
+    benefitsTitle="Why choose men's health testing?"
     benefits={[
       {
         icon: Shield,

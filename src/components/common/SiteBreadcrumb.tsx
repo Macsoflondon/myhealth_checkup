@@ -19,8 +19,8 @@ const HIDDEN_PREFIXES = [
 
 const SLUG_LABELS: Record<string, string> = {
   compare: "Compare tests",
-  "compare-by-symptom": "By Symptom",
-  "compare-by-goal": "By Goal",
+  "compare-by-symptom": "By symptom",
+  "compare-by-goal": "By goal",
   symptoms: "Symptoms",
   goals: "Goals",
   tests: "Tests",
@@ -31,12 +31,12 @@ const SLUG_LABELS: Record<string, string> = {
   "health-resource-hub": "Health Resource Hub",
   blog: "Health Resource Hub",
   "biomarker-database": "Complete biomarker reference library",
-  "cancer-screening": "Cancer Screening",
-  "cancer-screening-compare": "Cancer Screening Compare",
-  "cancer-biomarkers-reference": "Cancer Biomarkers",
-  "blood-test-analysis": "Blood Test Analysis",
+  "cancer-screening": "Cancer screening",
+  "cancer-screening-compare": "Cancer screening compare",
+  "cancer-biomarkers-reference": "Cancer biomarkers",
+  "blood-test-analysis": "Blood test analysis",
   "intelligent-search": "Search",
-  "assisted-test-finder": "Test Finder",
+  "assisted-test-finder": "Test finder",
   "how-it-works": "How it works",
   "how-we-rank": "How we rank",
   "about-us": "About us",
@@ -62,7 +62,7 @@ const humanise = (slug: string) =>
   SLUG_LABELS[slug] ??
   decodeURIComponent(slug)
     .replace(/-/g, " ")
-    .replace(/\b\w/g, (c) => c.toUpperCase());
+    .replace(/^\w/, (c) => c.toUpperCase());
 
 const SiteBreadcrumb = () => {
   const { pathname } = useLocation();

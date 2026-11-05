@@ -71,7 +71,7 @@ const ProviderProfilePage = () => {
   return (
     <MainLayout>
       <Helmet>
-        <title>{`${provider.name} Reviews & Tests | myhealth checkup`}</title>
+        <title>{`${provider.name} reviews and tests | myhealth checkup`}</title>
         <meta
           name="description"
           content={`${provider.name} private health tests reviewed and compared.${
@@ -91,7 +91,7 @@ const ProviderProfilePage = () => {
         <meta property="og:site_name" content="myhealth checkup" />
         <meta
           property="og:title"
-          content={`${provider.name} Reviews & Tests | myhealth checkup`}
+          content={`${provider.name} reviews and tests | myhealth checkup`}
         />
         <meta
           property="og:description"

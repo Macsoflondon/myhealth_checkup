@@ -158,6 +158,8 @@ export default function BrowseByCategoryBar({
                         {hasSubs && (
                           <button
                             type="button"
+                            aria-label={`${isExpanded ? "Hide" : "Show"} ${displayLabel(item.name)} subcategories`}
+                            aria-expanded={isExpanded}
                             onClick={() =>
                               setMobileExpanded((cur) =>
                                 cur === item.name ? null : item.name,

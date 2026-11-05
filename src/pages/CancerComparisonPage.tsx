@@ -188,7 +188,7 @@ export default function CancerComparisonPage() {
               <TabsTrigger value="biomarkers">Biomarkers</TabsTrigger>
             </TabsList>
 
-            {/* Browse tests Tab */}
+            {/* Browse tests tab */}
             <TabsContent value="browse" className="space-y-6">
               {/* Selected Tests Bar */}
               {selectedTests.length > 0 && (
@@ -229,7 +229,7 @@ export default function CancerComparisonPage() {
                             className="whitespace-nowrap"
                             onClick={() => setActiveTab("compare")}
                           >
-                            Compare {selectedTests.length} Tests
+                            Compare {selectedTests.length} tests
                           </Button>
                         )}
                       </div>

@@ -227,7 +227,7 @@ export const buildProviderHead = ({
 }: ProviderHeadInput) => {
   const path = `/provider/${providerId}`;
   const url = canonicalUrl(path);
-  const title = `${providerName} Reviews & Tests | myhealth checkup`;
+  const title = `${providerName} reviews and tests | myhealth checkup`;
   const description = `${providerName} private health tests reviewed and compared. Browse the full test range, prices, accreditations and typical turnaround times.`;
   const base = buildRouteHead({ title, description, path });
 

@@ -9,7 +9,7 @@ const GeneralHealthTestPage = () => {
       "Get a comprehensive overview of your health with testing for cholesterol levels, liver function, iron levels, diabetes risk and more essential health markers.",
     category: "General Health",
     breadcrumbTitle: "General health test",
-    metaTitle: "General health test - Compare UK Providers | MyHealth Checkup",
+    metaTitle: "General health test: compare UK providers | myhealth checkup",
     metaDescription:
       "Compare General Health Tests from top UK providers. Get comprehensive health screening with cholesterol, liver function, diabetes risk and more.",
 
@@ -23,7 +23,7 @@ const GeneralHealthTestPage = () => {
         ],
       },
       {
-        title: "Metabolic Health",
+        title: "Metabolic health",
         markers: [
           "Cholesterol Profile",
           "Diabetes Screening (HbA1c)",

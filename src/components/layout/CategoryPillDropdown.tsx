@@ -167,7 +167,7 @@ export function CategoryPillDropdown({
         createPortal(
           <div
             role="menu"
-            aria-label={`${item.name} subcategories`}
+            aria-label={`${displayLabel(item.name)} subcategories`}
             onMouseEnter={openNow}
             onMouseLeave={scheduleClose}
             style={{
@@ -193,6 +193,7 @@ export function CategoryPillDropdown({
                       <Link
                         to={sub.path}
                         role="menuitem"
+                        aria-label={`${v.title} tests`}
                         aria-current={active ? "page" : undefined}
                         onClick={() => setOpen(false)}
                         className={`group/card relative block aspect-[3/4] overflow-hidden rounded-2xl no-underline ring-1 transition-shadow ${
@@ -213,7 +214,7 @@ export function CategoryPillDropdown({
                         <span className="absolute left-3 right-3 top-3 font-[Montserrat] text-[17px] font-semibold leading-tight text-white">
                           {v.title}
                         </span>
-                        <span className="absolute bottom-3 left-2.5 right-2.5 flex flex-wrap gap-1">
+                        <span aria-hidden="true" className="absolute bottom-3 left-2.5 right-2.5 flex flex-wrap gap-1">
                           {v.biomarkers.map((b) => (
                             <span
                               key={b}
@@ -286,7 +287,7 @@ export function CategoryPillDropdown({
                   className="text-[11px] font-bold font-[Montserrat] no-underline hover:underline whitespace-nowrap"
                   style={{ color: PINK }}
                 >
-                  {viewAll.name}
+                  {displayLabel(viewAll.name)}
                 </Link>
               )}
             </div>

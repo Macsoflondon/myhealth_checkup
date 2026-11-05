@@ -3,6 +3,7 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { isClientAbort } from "./lib/is-client-abort";
+import { applySecurityHeadersForRequest } from "./lib/security-headers";
 import {
   beginRequest,
   endRequest,
@@ -66,6 +67,11 @@ function isH3SwallowedErrorBody(body: string): boolean {
 
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
+    return applySecurityHeadersForRequest(await handle(request, env, ctx), request);
+  },
+};
+
+async function handle(request: Request, env: unknown, ctx: unknown): Promise<Response> {
     const requestId = beginRequest(request);
     try {
       const handler = await getServerEntry();
@@ -94,5 +100,4 @@ export default {
     } finally {
       endRequest(requestId);
     }
-  },
-};
+}

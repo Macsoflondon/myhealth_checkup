@@ -9,7 +9,7 @@ const FemaleHormonesTestPage = () => {
       "Comprehensive female hormone panel measuring oestrogen, progesterone, FSH, LH and other key hormones affecting menstrual cycles, fertility, menopause and overall wellbeing.",
     category: "Hormones",
     breadcrumbTitle: "Female hormone test",
-    metaTitle: "Female hormone test - Compare UK Providers | MyHealth Checkup",
+    metaTitle: "Female hormone test: compare UK providers | myhealth checkup",
     metaDescription:
       "Compare Female Hormone Tests from top UK providers. Test oestrogen, progesterone, FSH, LH and other hormones affecting fertility, cycles and menopause.",
 

@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { capitaliseFirst, labelMidSentence, withoutTestsSuffix } from "@/lib/display-label";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { useParams, Link, useNavigate } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
@@ -241,7 +242,7 @@ const CategoryLandingPage: React.FC = () => {
             {/* Benefits Section */}
             <section className="mb-12">
               <h2 className="text-2xl font-bold text-foreground mb-6">
-                Why Test Your {content.name.replace(" Tests", "")}?
+                Why consider {labelMidSentence(withoutTestsSuffix(content.name))} tests?
               </h2>
               <div className="grid md:grid-cols-3 gap-6">
                 {content.benefits.map((benefit, idx) => {
@@ -296,7 +297,7 @@ const CategoryLandingPage: React.FC = () => {
               <section className="mb-12">
                 <GroupedTestsTable
                   tests={providerTests}
-                  title={`Compare ${content.name} from UK Providers`}
+                  title={`Compare ${labelMidSentence(content.name)} from UK providers`}
                 />
               </section>
             ) : null}
@@ -304,7 +305,7 @@ const CategoryLandingPage: React.FC = () => {
             {/* Who Should Test Section */}
             <section className="mb-12">
               <h2 className="text-2xl font-bold text-foreground mb-6">
-                Who Should Consider {content.name}?
+                Who should consider {labelMidSentence(withoutTestsSuffix(content.name))} tests?
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 {content.whoShouldTest.map((who, idx) => (
@@ -356,9 +357,7 @@ const CategoryLandingPage: React.FC = () => {
                       variant="secondary"
                       className="cursor-pointer hover:bg-secondary/80 transition-colors"
                     >
-                      {relatedSlug
-                        .replace(/-/g, " ")
-                        .replace(/\b\w/g, (c) => c.toUpperCase())}
+                      {capitaliseFirst(relatedSlug.replace(/-/g, " "))}
                     </Badge>
                   </Link>
                 ))}
@@ -383,7 +382,7 @@ const CategoryLandingPage: React.FC = () => {
                   asChild
                 >
                   <Link to={`/compare?category=${content.slug}`}>
-                    <span className="truncate">Compare {content.name}</span>
+                    <span className="truncate">Compare {labelMidSentence(content.name)}</span>
                     <ArrowRight className="h-4 w-4 shrink-0" />
                   </Link>
                 </Button>

@@ -20,6 +20,7 @@ import {
   Flame,
   LucideIcon,
 } from "lucide-react";
+import { capitaliseFirst, labelMidSentence, withoutTestsSuffix } from "@/lib/display-label";
 import { getCategoryDisplayName } from "@/utils/categoryTaglines";
 
 export interface CompareBenefit {
@@ -35,7 +36,7 @@ export interface CompareHeader {
 
 const MAP: Record<string, CompareHeader> = {
   "womens-health": {
-    title: "Women's Health Blood Tests",
+    title: "Women's health blood tests",
     benefits: [
       {
         icon: Heart,
@@ -55,7 +56,7 @@ const MAP: Record<string, CompareHeader> = {
     ],
   },
   "mens-health": {
-    title: "Men's Health Blood Tests",
+    title: "Men's health blood tests",
     benefits: [
       {
         icon: Activity,
@@ -445,7 +446,7 @@ export function getCompareHeader(slug?: string | null): CompareHeader {
   if (hit) return hit;
   const display = getCategoryDisplayName(slug);
   return {
-    title: `${display} Blood Tests`,
+    title: `${capitaliseFirst(labelMidSentence(withoutTestsSuffix(display)))} blood tests`,
     benefits: FALLBACK_BENEFITS,
   };
 }

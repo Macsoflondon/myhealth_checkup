@@ -111,13 +111,13 @@ export const HealthScoreCard = () => {
           <div className="space-y-4">
             <ScoreBar
               icon={Heart}
-              label="Heart Health"
+              label="Heart health"
               score={score.heart_score}
               color="text-[#e70d69]"
             />
             <ScoreBar
               icon={Zap}
-              label="Metabolic Health"
+              label="Metabolic health"
               score={score.metabolic_score}
               color="text-[#22C0D4]"
             />

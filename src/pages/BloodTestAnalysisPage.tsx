@@ -195,7 +195,7 @@ export default function BloodTestAnalysisPage() {
                 <CardHeader className="text-center">
                   <CardTitle className="flex items-center justify-center gap-2">
                     <LogIn className="h-5 w-5" />
-                    Sign In Required
+                    Sign-in required
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="text-center space-y-4">
@@ -205,7 +205,7 @@ export default function BloodTestAnalysisPage() {
                     results.
                   </p>
                   <Button onClick={() => navigate("/auth")}>
-                    Sign In to Continue
+                    Sign in to continue
                   </Button>
                 </CardContent>
               </Card>

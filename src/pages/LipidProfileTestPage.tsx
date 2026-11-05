@@ -9,7 +9,7 @@ const LipidProfileTestPage = () => {
       "Comprehensive cholesterol testing to assess your cardiovascular risk and heart health. Essential for monitoring and preventing heart disease.",
     category: "Heart Health",
     breadcrumbTitle: "Lipid profile test",
-    metaTitle: "Lipid profile test - Compare UK Providers | MyHealth Checkup",
+    metaTitle: "Lipid profile test: compare UK providers | myhealth checkup",
     metaDescription:
       "Compare Lipid Profile Tests from top UK providers. Check cholesterol levels, heart disease risk and cardiovascular health.",
 
@@ -51,7 +51,7 @@ const LipidProfileTestPage = () => {
     featureBadges: [
       { icon: Shield, label: "UKAS accredited" },
       { icon: Clock, label: "Fast results" },
-      { icon: Heart, label: "Heart Health" },
+      { icon: Heart, label: "Heart health" },
     ],
 
     whyChooseTitle: "Why Test Cholesterol Levels?",

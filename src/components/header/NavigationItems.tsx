@@ -24,7 +24,7 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
     hasDropdown: true,
     megaMenu: true,
     dropdownItems: [
-      { name: "General health checks", path: "/wellness" },
+      { name: "General health tests", path: "/wellness" },
       {
         name: "Heart health tests",
         path: "/wellness?subcategory=heart-health",
@@ -52,19 +52,19 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
     hasDropdown: true,
     megaMenu: true,
     dropdownItems: [
-      { name: "Women's Health Checks", path: "/womens-health" },
+      { name: "Women's health checks", path: "/womens-health" },
       {
-        name: "Female Hormone Tests",
+        name: "Female hormone tests",
         path: "/womens-health?subcategory=hormones",
       },
       {
         name: "Female fertility tests",
         path: "/womens-health?subcategory=fertility",
       },
-      { name: "Menopause Tests", path: "/womens-health?subcategory=menopause" },
+      { name: "Menopause tests", path: "/womens-health?subcategory=menopause" },
       { name: "PCOS tests", path: "/womens-health?subcategory=pcos" },
       { name: "Thyroid tests", path: "/womens-health?subcategory=thyroid" },
-      { name: "View All Women's Tests", path: "/womens-health" },
+      { name: "View all women's tests", path: "/womens-health" },
     ],
   },
   {
@@ -73,7 +73,7 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
     hasDropdown: true,
     megaMenu: true,
     dropdownItems: [
-      { name: "Men's Health Checks", path: "/mens-health" },
+      { name: "Men's health checks", path: "/mens-health" },
       { name: "Male hormone tests", path: "/mens-health?subcategory=hormones" },
       {
         name: "Male fertility tests",
@@ -84,7 +84,7 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
         path: "/mens-health?subcategory=testosterone",
       },
       { name: "Prostate tests", path: "/mens-health?subcategory=prostate" },
-      { name: "View All Men's Tests", path: "/mens-health" },
+      { name: "View all men's tests", path: "/mens-health" },
     ],
   },
   {
@@ -93,7 +93,7 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
     hasDropdown: true,
     megaMenu: true,
     dropdownItems: [
-      { name: "Sports Performance Tests", path: "/sports-performance" },
+      { name: "Sports performance tests", path: "/sports-performance" },
       {
         name: "Sports hormone tests",
         path: "/sports-performance?subcategory=hormones",
@@ -166,10 +166,10 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
     megaMenu: true,
     dropdownItems: [
       { name: "All at-home tests", path: "/at-home-tests" },
-      { name: "Women's Home Tests", path: "/at-home-tests?subcategory=womens" },
-      { name: "Men's Home Tests", path: "/at-home-tests?subcategory=mens" },
+      { name: "Women's health at-home test kits", path: "/at-home-tests?subcategory=womens" },
+      { name: "Men's health at-home test kits", path: "/at-home-tests?subcategory=mens" },
       {
-        name: "General health home tests",
+        name: "General health at-home test kits",
         path: "/at-home-tests?subcategory=general",
       },
       {

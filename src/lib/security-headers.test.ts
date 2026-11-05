@@ -33,3 +33,31 @@ describe("security headers", () => {
     expect(buildSecurityHeaders("id-preview--abc.lovable.app")["X-Frame-Options"]).toBeUndefined();
   });
 });
+
+describe("security header hardening", () => {
+  it("never relaxes the policy for a production host behind a spoofed preview header", async () => {
+    const { resolvePolicyHost } = await import("./security-headers");
+    expect(resolvePolicyHost("myhealthcheckup.co.uk", "id-preview--x.lovable.app")).toBe("myhealthcheckup.co.uk");
+    expect(resolvePolicyHost("id-preview--x.lovable.app", "myhealthcheckup.co.uk")).toBe("myhealthcheckup.co.uk");
+    expect(resolvePolicyHost("abc.lovableproject.com", null)).toBe("abc.lovableproject.com");
+  });
+
+  it("treats the editor preview on lovableproject.com as a preview host", () => {
+    expect(isEditorPreviewHost("abc.lovableproject.com")).toBe(true);
+  });
+
+  it("reports violations and allows no font CDN", () => {
+    const csp = buildSecurityHeaders("myhealthcheckup.co.uk")["Content-Security-Policy"];
+    expect(csp).toContain("report-uri /api/public/csp-report");
+    expect(csp).toContain("report-to csp-endpoint");
+    expect(csp).not.toContain("fonts.googleapis.com");
+    expect(csp).not.toContain("fonts.gstatic.com");
+  });
+
+  it("adds headers to fallback error responses", async () => {
+    const { applySecurityHeadersForRequest } = await import("./security-headers");
+    const res = applySecurityHeadersForRequest(new Response(null, { status: 500 }), new Request("https://myhealthcheckup.co.uk/x"));
+    expect(res.headers.get("X-Frame-Options")).toBe("DENY");
+    expect(res.headers.get("Vary")).toContain("X-Forwarded-Host");
+  });
+});

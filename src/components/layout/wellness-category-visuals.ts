@@ -62,7 +62,7 @@ export const wellnessCategoryVisuals: Record<string, CategoryVisual> = {
   "/wellness?subcategory=allergy": {
     title: "Allergy",
     image: allergy,
-    biomarkers: ["Total IgE", "Specific IgE", "Eosinophils"],
+    biomarkers: ["Total IgE", "Specific IgE"],
   },
   "/wellness?subcategory=thyroid": {
     title: "Thyroid",

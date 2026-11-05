@@ -4,12 +4,12 @@ import { Heart, Baby, Users } from "lucide-react";
 const WomensHealthPage = () => (
   <DbCategoryPage
     canonicalCategory="womens-health"
-    seoTitle="Women's Health Tests | myhealth checkup"
-    pillLabel="Women's Health"
+    seoTitle="Women's health tests | myhealth checkup"
+    pillLabel="Women's health"
     seoDescription="Comprehensive women's health testing including hormones, fertility, menopause, and PCOS screening from trusted UK providers. Compare prices and book today."
     seoKeywords="women's health tests, hormone test, fertility test, menopause test, PCOS test, well woman test"
-    canonicalUrl="https://myhealthcheckup.co.uk/womens-health"
-    headline="Women's Health"
+    canonicalUrl="https://myhealthcheckup.co.uk/tests/womens-health"
+    headline="Women's health tests"
     subtitle="Comprehensive female health screening — hormones, fertility, menopause, and PCOS — designed for women's unique needs."
     searchPlaceholder="Search by symptom or test — e.g. 'irregular periods', 'menopause'"
     trustStats={[
@@ -18,11 +18,11 @@ const WomensHealthPage = () => (
       { value: "6", label: "Trusted providers" },
     ]}
     filters={["All"]}
-    benefitsTitle="Why Choose Women's Health Testing?"
+    benefitsTitle="Why choose women's health testing?"
     benefits={[
       {
         icon: Heart,
-        title: "Hormone Balance",
+        title: "Hormone balance",
         description: "Early detection of women's health conditions",
       },
       {

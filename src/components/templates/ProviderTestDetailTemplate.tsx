@@ -873,7 +873,7 @@ export default function ProviderTestDetailTemplate({
               {/* Sample collection options */}
               <CollectionOptionsSection test={test} />
 
-              {/* Why Choose provider */}
+              {/* Why choose this provider */}
               <Card>
                 <CardHeader>
                   <CardTitle>{providerConfig.whyChoose.title}</CardTitle>

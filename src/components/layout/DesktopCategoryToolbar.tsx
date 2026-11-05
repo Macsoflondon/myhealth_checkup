@@ -5,10 +5,11 @@ import {
   MENU_TURQUOISE as TURQUOISE,
 } from "@/components/header/menuIcons";
 import { CategoryPillDropdown } from "@/components/layout/CategoryPillDropdown";
+import { displayLabel } from "@/lib/display-label";
 
 const SHORT_NAMES: Record<string, string> = {
   "Most popular tests": "Most popular",
-  "At Home Test Kits": "Home Tests",
+  "At Home Test Kits": "Home tests",
 };
 
 /**
@@ -38,7 +39,7 @@ export function DesktopCategoryToolbar() {
                 Icon={Icon}
                 compact
                 dense
-                displayName={SHORT_NAMES[item.name] ?? item.name}
+                displayName={SHORT_NAMES[item.name] ?? displayLabel(item.name)}
               />
             </div>
           );

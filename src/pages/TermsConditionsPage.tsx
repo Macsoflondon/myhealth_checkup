@@ -175,11 +175,11 @@ const TermsConditionsPage = () => {
                 <p className="mb-4">
                   Your privacy is important to us. Our collection, use, and
                   protection of your personal data is governed by our Privacy
-                  Policy, which complies with UK GDPR requirements.
+                  policy, which complies with UK GDPR requirements.
                 </p>
                 <p className="text-sm text-muted-foreground">
                   By using our service, you consent to our Privacy policy and
-                  cookie usage as outlined in our Cookie Policy.
+                  cookie usage as outlined in our Cookie policy.
                 </p>
               </CardContent>
             </Card>

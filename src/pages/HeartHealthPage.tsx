@@ -5,7 +5,7 @@ const HeartHealthPage = () => (
   <DbCategoryPage
     canonicalCategory="heart"
     seoTitle="Heart health tests | myhealth checkup"
-    pillLabel="Heart Health"
+    pillLabel="Heart health"
     seoDescription="Compare cardiovascular tests — cholesterol, lipid profiles and cardiac risk assessment — from trusted UK providers."
     seoKeywords="heart health tests, cholesterol test, lipid profile, cardiac risk assessment, cardiovascular screening"
     canonicalUrl="https://myhealthcheckup.co.uk/heart-health"
@@ -36,7 +36,7 @@ const HeartHealthPage = () => (
         description: "Track improvements over time",
       },
     ]}
-    breadcrumbs={[{ label: "Home", href: "/" }, { label: "Heart Health" }]}
+    breadcrumbs={[{ label: "Home", href: "/" }, { label: "Heart health" }]}
     compareUrl="/compare?category=heart-health"
   />
 );

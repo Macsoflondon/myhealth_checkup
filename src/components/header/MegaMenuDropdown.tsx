@@ -139,7 +139,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
           )}
         </div>
 
-        {/* Popular tests from Database */}
+        {/* Popular tests from the database */}
         {filteredPopularTests ? (
           <div className="grid grid-cols-1 gap-2">
             <div className="mb-3">

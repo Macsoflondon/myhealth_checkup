@@ -65,7 +65,7 @@ const SymptomDetailPage = () => {
       </Helmet>
 
       <StandardPageHero
-        title={`Tests for ${symptom.name}`}
+        title={`Tests for ${symptom.name.toLowerCase()}`}
         strapline={symptom.shortDescription}
       />
 

@@ -6,10 +6,10 @@ import { Link } from "@/lib/router-compat";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 
 const COMPARE_HREF_BY_NAME: Record<string, string> = {
-  "Bowel cancer screening": "/tests/cancer",
+  "Bowel Cancer Screening": "/tests/cancer",
   "HPV Cervical Cancer Screening": "/tests/cancer",
   "Early Cancer Screening": "/tests/cancer",
-  "Lung cancer screening": "/tests/cancer",
+  "Lung Cancer Screening": "/tests/cancer",
   "Prostate PSA": "/tests/cancer",
   "Advanced Well Woman": "/tests/womens-health",
   "Female Hormone & Fertility": "/hormones",
@@ -96,7 +96,7 @@ const DEFAULT_KITS: FeaturedKit[] = (() => {
   const P = "Goodbody Clinic";
   return [
     {
-      name: "Bowel cancer screening",
+      name: "Bowel Cancer Screening",
       accent: "#1f55c4",
       sample: "Stool Test",
       provider: P,
@@ -192,7 +192,7 @@ const DEFAULT_KITS: FeaturedKit[] = (() => {
         "TruCheck™ detects circulating tumour cells (CTCs) in the blood to screen for up to 70 solid-organ cancer types and indicate their likely origin. Includes a UK doctor pre-consultation.",
     },
     {
-      name: "Lung cancer screening",
+      name: "Lung Cancer Screening",
       accent: "#e0202a",
       sample: "Blood Test",
       provider: P,

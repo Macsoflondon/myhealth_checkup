@@ -353,7 +353,7 @@ const Auth = () => {
                   onClick={() => setIsForgotPassword(false)}
                   className="hover:underline text-center text-base text-white font-medium"
                 >
-                  Back to Sign In
+                  Back to sign in
                 </button>
               </div>
             </form>
@@ -577,8 +577,8 @@ const Auth = () => {
                 className="hover:underline text-center text-base font-medium !text-white"
               >
                 {isSignUp
-                  ? "Already have an account? Sign In"
-                  : "Don't have an account? Sign Up"}
+                  ? "Already have an account? Sign in"
+                  : "Don't have an account? Sign up"}
               </button>
             </div>
 

@@ -1,7 +1,7 @@
 {
   "common": {
     "signIn": "Sign In",
-    "signUp": "Sign Up",
+    "signUp": "Sign up",
     "search": "Search health tests...",
     "searchPlaceholder": "Search for health tests, conditions, or symptoms",
     "loading": "Loading...",
@@ -85,7 +85,7 @@
       "faqs": "FAQs",
       "mensHealth": "Men's Health",
       "womensHealth": "Women's Health",
-      "heartHealth": "Heart Health",
+      "heartHealth": "Heart health",
       "diabetes": "Diabetes",
       "thyroid": "Thyroid",
       "fertility": "Fertility - Prenatal",
@@ -93,9 +93,9 @@
       "partners": "Partners",
       "accessibility": "Accessibility",
       "sitemap": "Sitemap",
-      "privacyPolicy": "Privacy Policy",
+      "privacyPolicy": "Privacy policy",
       "termsConditions": "Terms & Conditions",
-      "cookiePolicy": "Cookie Policy",
+      "cookiePolicy": "Cookie policy",
       "affiliateDisclosure": "Affiliate Disclosure",
       "modernSlavery": "Modern Slavery Statement"
     }

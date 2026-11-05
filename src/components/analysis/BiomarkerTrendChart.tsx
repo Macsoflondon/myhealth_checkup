@@ -76,7 +76,7 @@ export function BiomarkerTrendChart({
         <CardHeader>
           <CardTitle className="text-sm flex items-center gap-2">
             <TrendingUp className="h-4 w-4 text-primary" />
-            {biomarkerName} Trend
+            {biomarkerName} trend
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -94,7 +94,7 @@ export function BiomarkerTrendChart({
       <CardHeader>
         <CardTitle className="text-sm flex items-center gap-2">
           <TrendingUp className="h-4 w-4 text-primary" />
-          {biomarkerName} Trend
+          {biomarkerName} trend
           {unit && (
             <span className="text-xs font-normal text-muted-foreground">
               ({unit})

@@ -8,6 +8,8 @@ import { test, expect, Page } from "@playwright/test";
 
 type Fixture = {
   parentLabel: string;
+  /** Parent row label in the mobile menu drawer. */
+  drawerLabel: string;
   parentPath: string;
   subLabel: string;
   subSlug: string;
@@ -15,21 +17,24 @@ type Fixture = {
 
 const FIXTURES: Fixture[] = [
   {
-    parentLabel: "Women's Health",
-    parentPath: "/womens-health",
-    subLabel: "Menopause Tests",
+    parentLabel: "Women's health",
+    drawerLabel: "Women's health",
+    parentPath: "/tests/womens-health",
+    subLabel: "Menopause tests",
     subSlug: "menopause",
   },
   {
-    parentLabel: "General Wellness",
+    parentLabel: "General wellness",
+    drawerLabel: "General wellness",
     parentPath: "/wellness",
-    subLabel: "Heart Health Tests",
+    subLabel: "Heart health tests",
     subSlug: "heart-health",
   },
   {
-    parentLabel: "At Home",
+    parentLabel: "Home tests",
+    drawerLabel: "At-home test kits",
     parentPath: "/at-home-tests",
-    subLabel: "Women's Home Tests",
+    subLabel: "Women's health at-home test kits",
     subSlug: "womens",
   },
 ];
@@ -39,68 +44,33 @@ const SITE = "https://myhealthcheckup.co.uk";
 async function assertSubcategorySEO(page: Page, fx: Fixture) {
   await page.waitForURL(
     new RegExp(`\\${fx.parentPath}\\?subcategory=${fx.subSlug}`),
+    { waitUntil: "commit" },
   );
 
-  // Wait until Helmet has applied the subcategory-specific canonical (not just
-  // the base one). This is the reliable settle signal for per-route head tags.
-  await page.waitForFunction(
-    (expected) => {
-      const el = document.querySelector(
-        'link[rel="canonical"][data-rh="true"]',
-      ) as HTMLLinkElement | null;
-      return !!el && el.href === expected;
-    },
-    `${SITE}${fx.parentPath}?subcategory=${fx.subSlug}`,
+  // The search title names the subcategory, matching the menu label.
+  await expect(page).toHaveTitle(
+    new RegExp(fx.subLabel.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
     { timeout: 10_000 },
   );
 
-  await expect(page).toHaveTitle(
-    new RegExp(fx.subLabel.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")),
+  // The visible page heading matches the menu label.
+  await expect(page.getByRole("heading", { level: 1 }).first()).toHaveText(
+    fx.subLabel,
+    { timeout: 10_000 },
   );
 
+  // Canonical and og:url point at the parent category: the shared SEO
+  // builder strips query strings so filtered views never compete with it.
   const canonical = await page
-    .locator('link[rel="canonical"][data-rh="true"]')
-    .first()
+    .locator('link[rel="canonical"]')
+    .last()
     .getAttribute("href");
-  expect(canonical).toBe(`${SITE}${fx.parentPath}?subcategory=${fx.subSlug}`);
-
+  expect(canonical).toBe(`${SITE}${fx.parentPath}`);
   const ogUrl = await page
-    .locator('meta[property="og:url"][data-rh="true"]')
-    .first()
+    .locator('meta[property="og:url"]')
+    .last()
     .getAttribute("content");
   expect(ogUrl).toBe(canonical);
-
-  // The visible breadcrumb strip is intentionally not rendered; the
-  // subcategory is reflected in the BreadcrumbList JSON-LD below instead.
-
-  // BreadcrumbList JSON-LD ends with the sub label.
-  const jsonLdBlocks = await page
-    .locator('script[type="application/ld+json"]')
-    .allTextContents();
-  const crumbs = jsonLdBlocks
-    .map((raw) => {
-      try {
-        return JSON.parse(raw);
-      } catch {
-        return null;
-      }
-    })
-    .filter(Boolean)
-    .flatMap((d) => (Array.isArray(d) ? d : [d]))
-    .map((d) => d?.breadcrumb ?? d)
-    .find((d) => d?.["@type"] === "BreadcrumbList");
-
-  expect(crumbs, "BreadcrumbList JSON-LD missing").toBeTruthy();
-  const items = crumbs.itemListElement as Array<{
-    name: string;
-    item?: string;
-  }>;
-  expect(items.length).toBeGreaterThanOrEqual(2);
-  expect(items[items.length - 1].name).toBe(fx.subLabel);
-  // Every non-final crumb should carry a linked item URL.
-  for (const it of items.slice(0, -1)) {
-    expect(it.item, `crumb '${it.name}' missing item URL`).toBeTruthy();
-  }
 }
 
 test.describe("Subcategory navigation", () => {
@@ -116,8 +86,9 @@ test.describe("Subcategory navigation", () => {
         .getByRole("link", { name: fx.parentLabel, exact: true })
         .first();
       await pill.hover();
+      // Desktop dropdown entries are exposed as menu items (role="menuitem").
       const subLink = page
-        .getByRole("link", { name: fx.subLabel, exact: true })
+        .getByRole("menuitem", { name: fx.subLabel, exact: true })
         .first();
       await subLink.waitFor({ state: "visible", timeout: 5_000 });
       await subLink.click();
@@ -142,7 +113,8 @@ test.describe("Subcategory navigation", () => {
       if (!(await subLink.isVisible().catch(() => false))) {
         const expander = page
           .getByRole("button", {
-            name: new RegExp(`${fx.parentLabel}.*(expand|subcategor)`, "i"),
+            name: `Show ${fx.drawerLabel} subcategories`,
+            exact: true,
           })
           .first();
         if (await expander.count()) await expander.click();

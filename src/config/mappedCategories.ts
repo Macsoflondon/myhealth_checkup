@@ -14,7 +14,7 @@ export interface MappedCategoryDef {
 export const MAPPED_WELLNESS_CATEGORIES: Record<string, MappedCategoryDef> = {
   "longevity-tests": {
     slug: "longevity",
-    label: "Longevity Tests",
+    label: "Longevity tests",
     badgeColor: "#00d4c8",
     subtitle:
       "Compare comprehensive longevity and healthy-ageing panels from accredited UK providers.",

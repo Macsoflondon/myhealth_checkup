@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { labelMidSentence, toSentenceCase } from "@/lib/display-label";
 import {
   useInfiniteQuery,
   useQuery,
@@ -493,7 +494,7 @@ const BiomarkerCard = ({
   isExpanded: boolean;
   onToggle: () => void;
 }) => {
-  const subtitle = [entry.category, entry.unit].filter(Boolean).join(" · ");
+  const subtitle = [entry.category ? toSentenceCase(entry.category) : null, entry.unit].filter(Boolean).join(" · ");
   const primaryText = entry.whatItMeasures ?? entry.description;
   const reviewed = formatUkDate(entry.lastReviewedAt);
   const facts = [
@@ -883,7 +884,7 @@ export default function BiomarkerLibraryUI() {
               <option value="">All categories</option>
               {categories.map((c) => (
                 <option key={c} value={c}>
-                  {c}
+                  {toSentenceCase(c)}
                 </option>
               ))}
             </select>
@@ -911,7 +912,7 @@ export default function BiomarkerLibraryUI() {
             Showing{" "}
             <strong style={{ color: COLORS.navy }}>{loaded.length}</strong> of{" "}
             <strong style={{ color: COLORS.navy }}>{total}</strong> biomarkers
-            {category ? ` in ${category}` : ""}
+            {category ? ` in ${labelMidSentence(category)}` : ""}
             {search ? ` matching "${search}"` : ""}
           </p>
         )}
@@ -957,7 +958,7 @@ export default function BiomarkerLibraryUI() {
                 {iconFor(cat)}
               </div>
               <h2 className="type-section-title" style={{ color: COLORS.navy }}>
-                {cat}
+                {toSentenceCase(cat)}
               </h2>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>

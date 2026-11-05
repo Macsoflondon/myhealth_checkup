@@ -110,7 +110,7 @@ const DECISION_TREE: Record<string, DecisionNode> = {
         is_terminal: true,
       },
       {
-        label: "Weight Management",
+        label: "Weight management",
         next_node: "juno_results",
         products: ["weight-loss-injection-glp-1-monitoring-blood-test"],
         is_terminal: true,
@@ -177,7 +177,7 @@ const DECISION_TREE: Record<string, DecisionNode> = {
         is_terminal: true,
       },
       {
-        label: "Weight Management",
+        label: "Weight management",
         next_node: "juno_results",
         products: ["weight-loss-injection-glp-1-monitoring-blood-test"],
         is_terminal: true,
@@ -1153,7 +1153,7 @@ const ContactFallback = ({ onRestart }: { onRestart: () => void }) => (
   </motion.div>
 );
 
-// ─── Additional context Step ────────────────────────────────────────────────────
+// ─── Additional context step ────────────────────────────────────────────────────
 
 interface AdditionalContextProps {
   userContext: string;

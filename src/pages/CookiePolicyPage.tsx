@@ -23,7 +23,7 @@ const CookiePolicyPage = () => {
       <main className="flex-grow bg-white">
         <PageBanner
           title="Cookie policy"
-          subtitle="This cookie policy explains how myhealthcheckup Ltd uses cookies and similar technologies."
+          subtitle="This Cookie policy explains how myhealthcheckup Ltd uses cookies and similar technologies."
         />
 
         <div className="container mx-auto px-4 py-12">
@@ -56,7 +56,7 @@ const CookiePolicyPage = () => {
                 </p>
                 <p className="text-sm text-muted-foreground">
                   By using the Website, you agree to the use of cookies as
-                  described in this Policy.
+                  described in this Cookie policy.
                 </p>
               </CardContent>
             </Card>
@@ -221,7 +221,7 @@ const CookiePolicyPage = () => {
               </CardHeader>
               <CardContent>
                 <p className="mb-4">
-                  If you have questions about our cookie policy, please contact
+                  If you have questions about our Cookie policy, please contact
                   us:
                 </p>
                 <div className="bg-muted p-4 rounded-lg">

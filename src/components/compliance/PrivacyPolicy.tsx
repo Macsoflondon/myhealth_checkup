@@ -8,7 +8,7 @@ const PrivacyPolicy = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       <div className="text-center mb-12">
-        <PageHeading title="Privacy" accent="Policy" />
+        <PageHeading title="Privacy" accent="policy" />
         <p className="text-brand-navy mt-4">Effective Date: 06/08/2026</p>
       </div>
 
@@ -41,7 +41,7 @@ const PrivacyPolicy = () => {
           and the Privacy and Electronic Communications Regulations (PECR).
         </p>
         <p className="text-brand-navy leading-relaxed">
-          By using our Website, you agree to this Privacy Policy.
+          By using our Website, you agree to this Privacy policy.
         </p>
       </Card>
 
@@ -324,7 +324,7 @@ const PrivacyPolicy = () => {
           variant="outline"
           className="mr-4 bg-[#e70d69] text-white"
         >
-          Print Policy
+          Print policy
         </Button>
         <Button className="bg-[#e70d69]">Download PDF</Button>
       </div>
