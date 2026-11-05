@@ -25,36 +25,36 @@ export const symptomPages: SymptomPageData[] = [
       "Fatigue is one of the most common reasons people seek blood tests. It can stem from iron deficiency, underactive thyroid, vitamin D or B12 deficiency, diabetes, or hormonal imbalances. A targeted blood test can identify — or rule out — the most frequent underlying causes, giving you a clear direction for treatment.",
     recommendedTests: [
       {
-        name: "Full Blood Count",
+        name: "Full blood count",
         why: "Screens for anaemia and infection markers that commonly cause fatigue",
         keyBiomarkers: [
           "Haemoglobin",
-          "Red Blood Cells",
-          "White Blood Cells",
+          "Red blood cells",
+          "White blood cells",
           "Platelets",
         ],
         searchQuery: "full+blood+count",
       },
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "Hypothyroidism is a leading cause of unexplained tiredness",
         keyBiomarkers: ["TSH", "Free T4", "Free T3"],
         searchQuery: "thyroid",
       },
       {
-        name: "Iron Profile",
+        name: "Iron profile",
         why: "Iron deficiency is the most common nutritional deficiency worldwide",
-        keyBiomarkers: ["Ferritin", "Iron", "TIBC", "Transferrin Saturation"],
+        keyBiomarkers: ["Ferritin", "Iron", "TIBC", "Transferrin saturation"],
         searchQuery: "iron",
       },
       {
         name: "Vitamin D",
         why: "Low vitamin D is extremely common in the UK and linked to fatigue and muscle weakness",
-        keyBiomarkers: ["25-OH Vitamin D"],
+        keyBiomarkers: ["25-OH vitamin D"],
         searchQuery: "vitamin+d",
       },
       {
-        name: "Vitamin B12 & Folate",
+        name: "Vitamin B12 & folate",
         why: "Deficiency causes fatigue, brain fog, and neurological symptoms",
         keyBiomarkers: ["Vitamin B12", "Folate"],
         searchQuery: "vitamin+b12",
@@ -65,7 +65,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "low-mood",
-    name: "Low Mood",
+    name: "Low mood",
     icon: "😔",
     colorHex: "#7c3aed",
     shortDescription: "Persistent low mood, anxiety, or emotional changes",
@@ -73,7 +73,7 @@ export const symptomPages: SymptomPageData[] = [
       "While low mood and depression have complex causes, several treatable medical conditions can contribute. Thyroid dysfunction, vitamin D deficiency, iron deficiency anaemia, and hormonal imbalances are all known to affect mood, energy, and cognitive function. Blood testing can identify these physical contributors alongside other care.",
     recommendedTests: [
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "Both hypo- and hyperthyroidism can significantly affect mood and anxiety levels",
         keyBiomarkers: ["TSH", "Free T4", "Free T3"],
         searchQuery: "thyroid",
@@ -81,19 +81,19 @@ export const symptomPages: SymptomPageData[] = [
       {
         name: "Vitamin D",
         why: "Strong correlation between low vitamin D and mood disorders, especially in winter months",
-        keyBiomarkers: ["25-OH Vitamin D"],
+        keyBiomarkers: ["25-OH vitamin D"],
         searchQuery: "vitamin+d",
       },
       {
-        name: "Hormone Profile",
+        name: "Hormone profile",
         why: "Testosterone, oestrogen, and cortisol imbalances can all impact emotional wellbeing",
         keyBiomarkers: ["Testosterone", "Oestradiol", "Cortisol", "DHEA-S"],
         searchQuery: "hormone",
       },
       {
-        name: "Full Blood Count",
+        name: "Full blood count",
         why: "Anaemia is a common but often overlooked contributor to low mood",
-        keyBiomarkers: ["Haemoglobin", "Red Blood Cells", "MCV"],
+        keyBiomarkers: ["Haemoglobin", "Red blood cells", "MCV"],
         searchQuery: "full+blood+count",
       },
     ],
@@ -102,7 +102,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "hair-loss",
-    name: "Hair Loss",
+    name: "Hair loss",
     icon: "💇",
     colorHex: "#f59e0b",
     shortDescription: "Thinning hair, excessive shedding, or bald patches",
@@ -110,31 +110,31 @@ export const symptomPages: SymptomPageData[] = [
       "Hair loss (alopecia) can be triggered by iron deficiency, thyroid disorders, hormonal changes, vitamin deficiencies, and stress. In many cases, identifying and treating the underlying cause can slow or reverse hair loss. Blood tests are typically the first step in investigating unexplained hair thinning.",
     recommendedTests: [
       {
-        name: "Iron Profile",
+        name: "Iron profile",
         why: "Ferritin levels below 70 µg/L are associated with hair shedding even without full anaemia",
         keyBiomarkers: ["Ferritin", "Iron", "TIBC"],
         searchQuery: "iron",
       },
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "Both overactive and underactive thyroid can cause diffuse hair thinning",
         keyBiomarkers: ["TSH", "Free T4", "Free T3"],
         searchQuery: "thyroid",
       },
       {
-        name: "Hormone Profile",
+        name: "Hormone profile",
         why: "Elevated androgens or hormonal shifts (e.g. PCOS, menopause) are common causes",
         keyBiomarkers: ["Testosterone", "DHEA-S", "Oestradiol", "SHBG"],
         searchQuery: "hormone",
       },
       {
-        name: "Vitamin D Test",
+        name: "Vitamin D test",
         why: "Vitamin D deficiency is linked to hair thinning and slow regrowth",
-        keyBiomarkers: ["25-OH Vitamin D"],
+        keyBiomarkers: ["25-OH vitamin D"],
         searchQuery: "vitamin d",
       },
       {
-        name: "Vitamin B12 Test",
+        name: "Vitamin B12 test",
         why: "B12 deficiency independently contributes to hair shedding and fatigue",
         keyBiomarkers: ["Vitamin B12"],
         searchQuery: "vitamin b12",
@@ -145,7 +145,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "weight-gain",
-    name: "Weight Gain",
+    name: "Weight gain",
     icon: "⚖️",
     colorHex: "#22c0d4",
     shortDescription: "Unexplained weight gain or difficulty losing weight",
@@ -153,27 +153,27 @@ export const symptomPages: SymptomPageData[] = [
       "Unexplained weight gain can indicate thyroid dysfunction, insulin resistance, hormonal imbalances, or metabolic issues. If diet and exercise aren't producing expected results, blood tests can reveal whether an underlying medical condition is contributing — allowing targeted intervention rather than guesswork.",
     recommendedTests: [
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "Hypothyroidism slows metabolism and is one of the most common causes of unexplained weight gain",
         keyBiomarkers: ["TSH", "Free T4", "Free T3"],
         searchQuery: "thyroid",
       },
       {
-        name: "Diabetes Check (HbA1c)",
+        name: "Diabetes check (HbA1c)",
         why: "Insulin resistance and pre-diabetes cause the body to store more fat, especially around the abdomen",
-        keyBiomarkers: ["HbA1c", "Fasting Glucose", "Insulin"],
+        keyBiomarkers: ["HbA1c", "Fasting glucose", "Insulin"],
         searchQuery: "diabetes",
       },
       {
-        name: "Hormone Profile",
+        name: "Hormone profile",
         why: "Low testosterone (men) or hormonal shifts (women) can drive weight changes",
         keyBiomarkers: ["Testosterone", "Oestradiol", "Cortisol", "SHBG"],
         searchQuery: "hormone",
       },
       {
-        name: "Lipid Profile",
+        name: "Lipid profile",
         why: "Assesses cardiovascular risk often associated with metabolic weight gain",
-        keyBiomarkers: ["Total Cholesterol", "LDL", "HDL", "Triglycerides"],
+        keyBiomarkers: ["Total cholesterol", "LDL", "HDL", "Triglycerides"],
         searchQuery: "cholesterol",
       },
     ],
@@ -182,7 +182,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "low-libido",
-    name: "Low Libido",
+    name: "Low libido",
     icon: "💜",
     colorHex: "#e70d69",
     shortDescription: "Reduced sex drive or changes in sexual function",
@@ -190,11 +190,11 @@ export const symptomPages: SymptomPageData[] = [
       "Low libido affects both men and women and frequently has a hormonal component. Testosterone deficiency, thyroid disorders, high prolactin, and chronic fatigue from anaemia or vitamin deficiency can all reduce sexual desire. Blood testing helps identify treatable causes so that appropriate support — medical or lifestyle — can be targeted effectively.",
     recommendedTests: [
       {
-        name: "Male Hormone Profile",
+        name: "Male hormone profile",
         why: "Low testosterone is the most common hormonal cause of reduced libido in men",
         keyBiomarkers: [
-          "Total Testosterone",
-          "Free Testosterone",
+          "Total testosterone",
+          "Free testosterone",
           "SHBG",
           "LH",
           "FSH",
@@ -202,13 +202,13 @@ export const symptomPages: SymptomPageData[] = [
         searchQuery: "male+hormone",
       },
       {
-        name: "Female Hormone Profile",
+        name: "Female hormone profile",
         why: "Oestrogen, testosterone, and progesterone imbalances all affect desire and arousal",
         keyBiomarkers: ["Oestradiol", "Testosterone", "Progesterone", "SHBG"],
         searchQuery: "female+hormone",
       },
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "Both overactive and underactive thyroid disrupt libido and energy",
         keyBiomarkers: ["TSH", "Free T4", "Free T3"],
         searchQuery: "thyroid",
@@ -225,7 +225,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "brain-fog",
-    name: "Brain Fog",
+    name: "Brain fog",
     icon: "🧠",
     colorHex: "#22c0d4",
     shortDescription: "Poor concentration, forgetfulness or slowed thinking",
@@ -233,27 +233,27 @@ export const symptomPages: SymptomPageData[] = [
       "Brain fog describes difficulty concentrating, remembering or thinking clearly. It is not a diagnosis in itself, but it is commonly linked to treatable factors such as low vitamin B12 or folate, an underactive thyroid, low iron stores, poor blood sugar control or low vitamin D. Blood testing can help identify or rule out these physical contributors.",
     recommendedTests: [
       {
-        name: "Vitamin B12 & Folate",
+        name: "Vitamin B12 & folate",
         why: "Low B12 or folate can affect memory, concentration and energy",
         keyBiomarkers: ["Vitamin B12", "Active B12", "Folate"],
         searchQuery: "b12",
       },
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "An underactive thyroid commonly slows thinking and causes forgetfulness",
         keyBiomarkers: ["TSH", "Free T4", "Free T3"],
         searchQuery: "thyroid",
       },
       {
-        name: "Iron Profile",
+        name: "Iron profile",
         why: "Low iron stores can reduce concentration before anaemia develops",
-        keyBiomarkers: ["Ferritin", "Iron", "Transferrin Saturation"],
+        keyBiomarkers: ["Ferritin", "Iron", "Transferrin saturation"],
         searchQuery: "iron",
       },
       {
         name: "Vitamin D",
         why: "Low vitamin D is common in the UK and linked to tiredness and low mood",
-        keyBiomarkers: ["25-OH Vitamin D"],
+        keyBiomarkers: ["25-OH vitamin D"],
         searchQuery: "vitamin+d",
       },
     ],
@@ -262,7 +262,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "joint-pain",
-    name: "Joint Pain & Stiffness",
+    name: "Joint pain & stiffness",
     icon: "🦴",
     colorHex: "#081129",
     shortDescription: "Aching, swollen or stiff joints",
@@ -270,9 +270,9 @@ export const symptomPages: SymptomPageData[] = [
       "Joint pain has many causes, from wear and tear to inflammation. Blood tests cannot replace a clinical examination or imaging, but they can measure markers of inflammation, check for antibodies associated with rheumatoid arthritis, and measure uric acid, which is raised in gout.",
     recommendedTests: [
       {
-        name: "Arthritis Screen",
+        name: "Arthritis screen",
         why: "Combines markers used to investigate inflammatory joint conditions",
-        keyBiomarkers: ["Rheumatoid Factor", "Anti-CCP", "CRP"],
+        keyBiomarkers: ["Rheumatoid factor", "Anti-CCP", "CRP"],
         searchQuery: "arthritis",
       },
       {
@@ -282,15 +282,15 @@ export const symptomPages: SymptomPageData[] = [
         searchQuery: "crp",
       },
       {
-        name: "Rheumatoid Factor",
+        name: "Rheumatoid factor",
         why: "An antibody often present in rheumatoid arthritis",
-        keyBiomarkers: ["Rheumatoid Factor"],
+        keyBiomarkers: ["Rheumatoid factor"],
         searchQuery: "rheumatoid",
       },
       {
-        name: "Uric Acid",
+        name: "Uric acid",
         why: "High uric acid levels are associated with gout",
-        keyBiomarkers: ["Uric Acid"],
+        keyBiomarkers: ["Uric acid"],
         searchQuery: "uric+acid",
       },
     ],
@@ -299,7 +299,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "bloating",
-    name: "Bloating & Digestive Discomfort",
+    name: "Bloating & digestive discomfort",
     icon: "🫄",
     colorHex: "#e70d69",
     shortDescription: "Ongoing bloating, wind or changes in bowel habit",
@@ -307,19 +307,19 @@ export const symptomPages: SymptomPageData[] = [
       "Bloating and digestive discomfort are often linked to diet, stress or irritable bowel syndrome. Blood tests can check for coeliac disease (an immune reaction to gluten) and allergy antibodies, and look at liver function. Coeliac testing is only reliable while you are still eating gluten.",
     recommendedTests: [
       {
-        name: "Coeliac Screen",
+        name: "Coeliac screen",
         why: "Detects antibodies associated with coeliac disease",
-        keyBiomarkers: ["Tissue Transglutaminase IgA (tTG)", "Total IgA"],
+        keyBiomarkers: ["Tissue transglutaminase igA (tTG)", "Total igA"],
         searchQuery: "coeliac",
       },
       {
-        name: "Allergy Profile",
+        name: "Allergy profile",
         why: "Measures IgE antibodies to common food and environmental allergens",
         keyBiomarkers: ["Total IgE", "Specific IgE"],
         searchQuery: "allergy",
       },
       {
-        name: "Liver Function",
+        name: "Liver function",
         why: "Checks how well the liver is working, which can affect digestion",
         keyBiomarkers: ["ALT", "ALP", "GGT", "Bilirubin", "Albumin"],
         searchQuery: "liver",
@@ -330,7 +330,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "hot-flushes",
-    name: "Hot Flushes & Night Sweats",
+    name: "Hot flushes & night sweats",
     icon: "🌡️",
     colorHex: "#22c0d4",
     shortDescription: "Sudden heat, sweating or disturbed sleep",
@@ -338,19 +338,19 @@ export const symptomPages: SymptomPageData[] = [
       "Hot flushes and night sweats are common during perimenopause and menopause. Menopause is usually recognised from symptoms in women over 45, but hormone tests can be useful for younger women and can help rule out other causes, such as an overactive thyroid.",
     recommendedTests: [
       {
-        name: "Menopause Hormone Profile",
+        name: "Menopause hormone profile",
         why: "Measures the hormones that change through perimenopause",
         keyBiomarkers: ["FSH", "LH", "Oestradiol"],
         searchQuery: "menopause",
       },
       {
-        name: "Female Hormone Profile",
+        name: "Female hormone profile",
         why: "A broader look at reproductive hormones",
         keyBiomarkers: ["Oestradiol", "Progesterone", "Testosterone", "Prolactin"],
         searchQuery: "female+hormone",
       },
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "An overactive thyroid can cause heat intolerance and sweating",
         keyBiomarkers: ["TSH", "Free T4", "Free T3"],
         searchQuery: "thyroid",
@@ -361,7 +361,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "frequent-illness",
-    name: "Frequent Infections",
+    name: "Frequent infections",
     icon: "🛡️",
     colorHex: "#081129",
     shortDescription: "Catching colds often or slow to recover",
@@ -369,19 +369,19 @@ export const symptomPages: SymptomPageData[] = [
       "Picking up infections often, or taking a long time to recover, can have many causes, including stress and poor sleep. Blood tests can look at white blood cells, which fight infection, and at nutrients such as vitamin D, iron and zinc that support normal immune function.",
     recommendedTests: [
       {
-        name: "Full Blood Count",
+        name: "Full blood count",
         why: "Measures white blood cells and checks for anaemia",
-        keyBiomarkers: ["White Blood Cells", "Neutrophils", "Lymphocytes", "Haemoglobin"],
+        keyBiomarkers: ["White blood cells", "Neutrophils", "Lymphocytes", "Haemoglobin"],
         searchQuery: "full+blood+count",
       },
       {
         name: "Vitamin D",
         why: "Vitamin D supports normal immune function and is often low in UK winters",
-        keyBiomarkers: ["25-OH Vitamin D"],
+        keyBiomarkers: ["25-OH vitamin D"],
         searchQuery: "vitamin+d",
       },
       {
-        name: "Iron Profile",
+        name: "Iron profile",
         why: "Low iron stores can leave you run down",
         keyBiomarkers: ["Ferritin", "Iron"],
         searchQuery: "iron",
@@ -392,7 +392,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "muscle-cramps",
-    name: "Muscle Weakness & Cramps",
+    name: "Muscle weakness & cramps",
     icon: "💪",
     colorHex: "#e70d69",
     shortDescription: "Cramps, twitching or unexplained muscle weakness",
@@ -406,21 +406,21 @@ export const symptomPages: SymptomPageData[] = [
         searchQuery: "magnesium",
       },
       {
-        name: "Creatine Kinase",
+        name: "Creatine kinase",
         why: "Raised CK levels indicate muscle strain or damage",
-        keyBiomarkers: ["Creatine Kinase (CK)"],
+        keyBiomarkers: ["Creatine kinase (CK)"],
         searchQuery: "creatine+kinase",
       },
       {
-        name: "Sports Profile",
+        name: "Sports profile",
         why: "Combines markers relevant to training, recovery and muscle health",
-        keyBiomarkers: ["Creatine Kinase", "Testosterone", "Cortisol", "Ferritin"],
+        keyBiomarkers: ["Creatine kinase", "Testosterone", "Cortisol", "Ferritin"],
         searchQuery: "sports",
       },
       {
         name: "Vitamin D",
         why: "Low vitamin D is linked to muscle weakness and aches",
-        keyBiomarkers: ["25-OH Vitamin D"],
+        keyBiomarkers: ["25-OH vitamin D"],
         searchQuery: "vitamin+d",
       },
     ],
@@ -429,7 +429,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "irregular-periods",
-    name: "Irregular or Heavy Periods",
+    name: "Irregular or heavy periods",
     icon: "🩸",
     colorHex: "#22c0d4",
     shortDescription: "Unpredictable cycles or heavy bleeding",
@@ -437,25 +437,25 @@ export const symptomPages: SymptomPageData[] = [
       "Irregular periods can be linked to hormonal conditions such as polycystic ovary syndrome (PCOS) or thyroid problems. Heavy periods can lower iron stores and lead to anaemia. Blood tests can measure reproductive hormones, thyroid function and iron levels.",
     recommendedTests: [
       {
-        name: "PCOS Profile",
+        name: "PCOS profile",
         why: "Measures hormones commonly assessed when PCOS is being considered",
         keyBiomarkers: ["Testosterone", "SHBG", "LH", "FSH", "DHEA-S"],
         searchQuery: "pcos",
       },
       {
-        name: "Female Hormone Profile",
+        name: "Female hormone profile",
         why: "Checks the hormones that regulate your cycle",
         keyBiomarkers: ["Oestradiol", "Progesterone", "LH", "FSH", "Prolactin"],
         searchQuery: "female+hormone",
       },
       {
-        name: "Iron Profile",
+        name: "Iron profile",
         why: "Heavy bleeding can reduce iron stores",
         keyBiomarkers: ["Ferritin", "Iron", "Haemoglobin"],
         searchQuery: "iron",
       },
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "Thyroid problems can disrupt the menstrual cycle",
         keyBiomarkers: ["TSH", "Free T4"],
         searchQuery: "thyroid",
@@ -466,7 +466,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "sleep-problems",
-    name: "Sleep Problems",
+    name: "Sleep problems",
     icon: "🌙",
     colorHex: "#081129",
     shortDescription: "Trouble getting to sleep, staying asleep or waking refreshed",
@@ -480,13 +480,13 @@ export const symptomPages: SymptomPageData[] = [
         searchQuery: "cortisol",
       },
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "An overactive thyroid can make it hard to sleep",
         keyBiomarkers: ["TSH", "Free T4", "Free T3"],
         searchQuery: "thyroid",
       },
       {
-        name: "Iron Profile",
+        name: "Iron profile",
         why: "Low ferritin is associated with restless legs at night",
         keyBiomarkers: ["Ferritin", "Iron"],
         searchQuery: "iron",
@@ -503,7 +503,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "skin-breakouts",
-    name: "Adult Acne & Skin Breakouts",
+    name: "Adult acne & skin breakouts",
     icon: "✨",
     colorHex: "#e70d69",
     shortDescription: "Persistent spots or breakouts in adulthood",
@@ -511,19 +511,19 @@ export const symptomPages: SymptomPageData[] = [
       "Acne in adulthood can be influenced by hormones, particularly androgens such as testosterone. Blood tests can measure these hormones and sex hormone binding globulin (SHBG), a protein that affects how much hormone is active. Allergy and liver tests are sometimes considered alongside them.",
     recommendedTests: [
       {
-        name: "Hormone Profile",
+        name: "Hormone profile",
         why: "Measures androgens linked to oil production in the skin",
-        keyBiomarkers: ["Testosterone", "Free Androgen Index", "SHBG", "DHEA-S"],
+        keyBiomarkers: ["Testosterone", "Free androgen index", "SHBG", "DHEA-S"],
         searchQuery: "hormone",
       },
       {
-        name: "Allergy Profile",
+        name: "Allergy profile",
         why: "Checks IgE antibodies to common allergens",
         keyBiomarkers: ["Total IgE", "Specific IgE"],
         searchQuery: "allergy",
       },
       {
-        name: "Liver Function",
+        name: "Liver function",
         why: "Often checked before and during some acne treatments",
         keyBiomarkers: ["ALT", "ALP", "GGT", "Bilirubin"],
         searchQuery: "liver",
@@ -534,7 +534,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "excessive-thirst",
-    name: "Excessive Thirst",
+    name: "Excessive thirst",
     icon: "💧",
     colorHex: "#22c0d4",
     shortDescription: "Feeling thirsty often or needing to urinate more",
@@ -542,19 +542,19 @@ export const symptomPages: SymptomPageData[] = [
       "Feeling very thirsty and passing urine more often, especially at night, can be early signs of raised blood sugar. Blood tests can measure HbA1c, which reflects average blood sugar over about three months, and check kidney function.",
     recommendedTests: [
       {
-        name: "Diabetes Check (HbA1c)",
+        name: "Diabetes check (HbA1c)",
         why: "Shows average blood sugar over the past two to three months",
         keyBiomarkers: ["HbA1c"],
         searchQuery: "hba1c",
       },
       {
-        name: "Diabetes Profile",
+        name: "Diabetes profile",
         why: "A broader look at blood sugar control",
         keyBiomarkers: ["HbA1c", "Glucose", "Insulin"],
         searchQuery: "diabetes",
       },
       {
-        name: "Kidney Function",
+        name: "Kidney function",
         why: "Checks how well your kidneys filter the blood",
         keyBiomarkers: ["eGFR", "Creatinine", "Urea"],
         searchQuery: "kidney",
