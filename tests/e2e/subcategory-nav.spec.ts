@@ -34,7 +34,7 @@ const FIXTURES: Fixture[] = [
     parentLabel: "Home tests",
     drawerLabel: "At-home test kits",
     parentPath: "/at-home-tests",
-    subLabel: "Women's health home kits",
+    subLabel: "Women's health at-home test kits",
     subSlug: "womens",
   },
 ];

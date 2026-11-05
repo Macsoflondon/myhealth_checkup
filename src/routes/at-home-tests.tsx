@@ -13,7 +13,9 @@ export const Route = createFileRoute("/at-home-tests")({
       description:
         "Compare at-home test kits from UK providers by price and biomarkers: finger-prick, QuickDraw, saliva, stool and urine samples, analysed by accredited laboratories.",
       path: "/at-home-tests",
-      subLabel: findAtHomeSection(match.search.subcategory)?.label,
+      subLabel: ((label) => (label ? `${label} at-home test kits` : null))(
+        findAtHomeSection(match.search.subcategory)?.label,
+      ),
     }),
   component: AtHomeTestsPage,
 });

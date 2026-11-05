@@ -166,10 +166,10 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
     megaMenu: true,
     dropdownItems: [
       { name: "All at-home tests", path: "/at-home-tests" },
-      { name: "Women's health home kits", path: "/at-home-tests?subcategory=womens" },
-      { name: "Men's health home kits", path: "/at-home-tests?subcategory=mens" },
+      { name: "Women's health at-home test kits", path: "/at-home-tests?subcategory=womens" },
+      { name: "Men's health at-home test kits", path: "/at-home-tests?subcategory=mens" },
       {
-        name: "General health home kits",
+        name: "General health at-home test kits",
         path: "/at-home-tests?subcategory=general",
       },
       {
