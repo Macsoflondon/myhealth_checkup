@@ -72,7 +72,6 @@ export default {
 };
 
 async function handle(request: Request, env: unknown, ctx: unknown): Promise<Response> {
-  {
     const requestId = beginRequest(request);
     try {
       const handler = await getServerEntry();
@@ -101,5 +100,4 @@ async function handle(request: Request, env: unknown, ctx: unknown): Promise<Res
     } finally {
       endRequest(requestId);
     }
-  }
 }

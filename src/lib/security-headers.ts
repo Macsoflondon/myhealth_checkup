@@ -132,7 +132,8 @@ export const applySecurityHeaders = (response: Response, host: string): Response
   const set = (target: Response): Response => {
     for (const [k, v] of Object.entries(headers)) target.headers.set(k, v);
     // The policy depends on the host, so shared caches must key on it.
-    target.headers.append("Vary", "Host, X-Forwarded-Host");
+    const vary = target.headers.get("Vary") ?? "";
+    if (!/x-forwarded-host/i.test(vary)) target.headers.append("Vary", "Host, X-Forwarded-Host");
     return target;
   };
   try {

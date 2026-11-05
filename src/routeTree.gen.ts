@@ -131,6 +131,7 @@ import { Route as TestsWomensHealthRouteImport } from './routes/tests.womens-hea
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 import { Route as ApiPublicAffiliateClickRouteImport } from './routes/api/public/affiliate-click'
 import { Route as ApiPublicAssistantRouteImport } from './routes/api/public/assistant'
+import { Route as ApiPublicCspReportRouteImport } from './routes/api/public/csp-report'
 import { Route as CompareGoalsIndexRouteImport } from './routes/compare.goals.index'
 import { Route as CompareGoalsGoalSlugRouteImport } from './routes/compare.goals.$goalSlug'
 import { Route as CompareSymptomsIndexRouteImport } from './routes/compare.symptoms.index'
@@ -762,6 +763,11 @@ const ApiPublicAssistantRoute = ApiPublicAssistantRouteImport.update({
   path: '/api/public/assistant',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicCspReportRoute = ApiPublicCspReportRouteImport.update({
+  id: '/api/public/csp-report',
+  path: '/api/public/csp-report',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CompareGoalsIndexRoute = CompareGoalsIndexRouteImport.update({
   id: '/goals/',
   path: '/goals/',
@@ -930,6 +936,7 @@ export interface FileRoutesByFullPath {
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/api/public/affiliate-click': typeof ApiPublicAffiliateClickRoute
   '/api/public/assistant': typeof ApiPublicAssistantRoute
+  '/api/public/csp-report': typeof ApiPublicCspReportRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
   '/compare/goals/': typeof CompareGoalsIndexRoute
@@ -1061,6 +1068,7 @@ export interface FileRoutesByTo {
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/api/public/affiliate-click': typeof ApiPublicAffiliateClickRoute
   '/api/public/assistant': typeof ApiPublicAssistantRoute
+  '/api/public/csp-report': typeof ApiPublicCspReportRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
   '/compare/goals': typeof CompareGoalsIndexRoute
@@ -1194,6 +1202,7 @@ export interface FileRoutesById {
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/api/public/affiliate-click': typeof ApiPublicAffiliateClickRoute
   '/api/public/assistant': typeof ApiPublicAssistantRoute
+  '/api/public/csp-report': typeof ApiPublicCspReportRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
   '/compare/goals/': typeof CompareGoalsIndexRoute
@@ -1328,6 +1337,7 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/api/public/affiliate-click'
     | '/api/public/assistant'
+    | '/api/public/csp-report'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
     | '/compare/goals/'
@@ -1459,6 +1469,7 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/api/public/affiliate-click'
     | '/api/public/assistant'
+    | '/api/public/csp-report'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
     | '/compare/goals'
@@ -1591,6 +1602,7 @@ export interface FileRouteTypes {
     | '/.lovable/oauth/consent'
     | '/api/public/affiliate-click'
     | '/api/public/assistant'
+    | '/api/public/csp-report'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
     | '/compare/goals/'
@@ -1722,6 +1734,7 @@ export interface RootRouteChildren {
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
   ApiPublicAffiliateClickRoute: typeof ApiPublicAffiliateClickRoute
   ApiPublicAssistantRoute: typeof ApiPublicAssistantRoute
+  ApiPublicCspReportRoute: typeof ApiPublicCspReportRoute
   ProviderProviderIdIndexRoute: typeof ProviderProviderIdIndexRoute
   ApiPublicDiagnosticsAbortsRoute: typeof ApiPublicDiagnosticsAbortsRoute
   ProviderProviderIdTestsTestIdRoute: typeof ProviderProviderIdTestsTestIdRoute
@@ -2584,6 +2597,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicAssistantRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/csp-report': {
+      id: '/api/public/csp-report'
+      path: '/api/public/csp-report'
+      fullPath: '/api/public/csp-report'
+      preLoaderRoute: typeof ApiPublicCspReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/compare/goals/': {
       id: '/compare/goals/'
       path: '/goals'
@@ -2786,6 +2806,7 @@ const rootRouteChildren: RootRouteChildren = {
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
   ApiPublicAffiliateClickRoute: ApiPublicAffiliateClickRoute,
   ApiPublicAssistantRoute: ApiPublicAssistantRoute,
+  ApiPublicCspReportRoute: ApiPublicCspReportRoute,
   ProviderProviderIdIndexRoute: ProviderProviderIdIndexRoute,
   ApiPublicDiagnosticsAbortsRoute: ApiPublicDiagnosticsAbortsRoute,
   ProviderProviderIdTestsTestIdRoute: ProviderProviderIdTestsTestIdRoute,
