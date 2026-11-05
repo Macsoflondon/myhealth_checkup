@@ -494,7 +494,7 @@ const BiomarkerCard = ({
   isExpanded: boolean;
   onToggle: () => void;
 }) => {
-  const subtitle = [entry.category, entry.unit].filter(Boolean).join(" · ");
+  const subtitle = [entry.category ? toSentenceCase(entry.category) : null, entry.unit].filter(Boolean).join(" · ");
   const primaryText = entry.whatItMeasures ?? entry.description;
   const reviewed = formatUkDate(entry.lastReviewedAt);
   const facts = [
