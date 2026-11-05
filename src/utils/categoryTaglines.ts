@@ -61,7 +61,7 @@ export const categoryDisplayNames: Record<string, string> = {
   fertility: "Fertility tests",
   "general health": "General Health",
   "general-health": "General Health",
-  thyroid: "Thyroid Tests",
+  thyroid: "Thyroid tests",
   "cancer screening": "Cancer Screening",
   "cancer-screening": "Cancer Screening",
   nutrition: "Nutrition Tests",

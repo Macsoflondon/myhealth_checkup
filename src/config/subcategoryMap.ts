@@ -75,7 +75,7 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
     },
     {
       slug: "thyroid",
-      label: "Thyroid Tests",
+      label: "Thyroid tests",
       matchAny: [/thyroid/i, /\btsh\b/i, /\bt3\b/i, /\bt4\b/i],
       siblingCategories: ["thyroid"],
     },
