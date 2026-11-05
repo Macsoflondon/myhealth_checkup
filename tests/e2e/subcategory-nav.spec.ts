@@ -15,19 +15,19 @@ type Fixture = {
 
 const FIXTURES: Fixture[] = [
   {
-    parentLabel: "Women's Health",
+    parentLabel: "Women's health",
     parentPath: "/womens-health",
     subLabel: "Menopause tests",
     subSlug: "menopause",
   },
   {
-    parentLabel: "General Wellness",
+    parentLabel: "General wellness",
     parentPath: "/wellness",
     subLabel: "Heart health tests",
     subSlug: "heart-health",
   },
   {
-    parentLabel: "At Home",
+    parentLabel: "Home tests",
     parentPath: "/at-home-tests",
     subLabel: "Women's health home kits",
     subSlug: "womens",
