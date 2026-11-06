@@ -8,7 +8,7 @@ import { test, expect } from "@playwright/test";
 
 test.beforeEach(async ({ page }) => {
   // Start from a clean compare selection so assertions are unambiguous.
-  await page.addInitScript(() => window.localStorage.removeItem("mhc:compare"));
+  await page.addInitScript(() => window.localStorage.removeItem("mhc:compare:v2"));
 });
 
 test.setTimeout(90_000);
@@ -55,7 +55,7 @@ test("adding a test from the detail modal lands on /compare/results with the ite
   // The store backs persistence across pages — verify it holds exactly this test.
   const stored = await page.evaluate(
     () =>
-      JSON.parse(window.localStorage.getItem("mhc:compare") ?? "[]") as Array<{
+      JSON.parse(window.localStorage.getItem("mhc:compare:v2") ?? "[]") as Array<{
         name: string;
       }>,
   );
@@ -90,13 +90,13 @@ test("a /compare/results deep link rehydrates the selection in a fresh session",
   await page.context().clearCookies();
   await page.goto("about:blank");
   await page.goto(shareUrl, { waitUntil: "domcontentloaded" });
-  await page.evaluate(() => window.localStorage.removeItem("mhc:compare"));
+  await page.evaluate(() => window.localStorage.removeItem("mhc:compare:v2"));
   await page.reload({ waitUntil: "domcontentloaded" });
 
   await expect(page.getByText(/no tests selected yet/i)).toHaveCount(0);
   const stored = await page.evaluate(async () => {
     for (let i = 0; i < 40; i++) {
-      const raw = window.localStorage.getItem("mhc:compare");
+      const raw = window.localStorage.getItem("mhc:compare:v2");
       if (raw && raw !== "[]") return JSON.parse(raw) as Array<{ id: string }>;
       await new Promise((r) => setTimeout(r, 500));
     }

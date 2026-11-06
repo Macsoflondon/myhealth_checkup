@@ -63,8 +63,14 @@ async function fillAndSubmit(page: Page) {
   await expect(
     engine.getByRole("heading", { name: /AI wellness recommendations/i }),
   ).toBeVisible();
-  await engine.locator("textarea").fill("Persistent fatigue and low energy for six weeks");
-  await engine.getByRole("button", { name: /Get wellness recommendations/i }).click();
+  const textarea = engine.locator("textarea");
+  const submit = engine.getByRole("button", { name: /Get wellness recommendations/i });
+  // Typing before hydration is lost, so retry until React enables the button.
+  await expect(async () => {
+    await textarea.fill("Persistent fatigue and low energy for six weeks");
+    await expect(submit).toBeEnabled({ timeout: 1_000 });
+  }).toPass({ timeout: 20_000 });
+  await submit.click();
   return engine;
 }
 
