@@ -120,8 +120,8 @@ test.describe("Key CTA destinations", () => {
       const link = page
         .getByRole("link", { name: new RegExp(label, "i") })
         .first();
-      if ((await link.count()) === 0)
-        test.skip(true, `"${label}" not present on ${from}`);
+      // A missing key CTA is a regression, so fail rather than skip.
+      await expect(link).toBeVisible({ timeout: 20_000 });
       await link.click();
       await expect(page).toHaveURL(expected);
       await expect
