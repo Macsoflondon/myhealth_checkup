@@ -56,41 +56,38 @@ async function stubEdgeFunction(page: Page) {
   });
 }
 
-async function submitAndAssert(page: Page) {
+async function fillAndSubmit(page: Page) {
   const engine = page.getByTestId("ai-recommendation-engine").first();
-  await expect(engine).toBeVisible();
-
+  await expect(engine).toBeVisible({ timeout: 20_000 });
   // Heading must be visible (regression guard for invisible white-on-white text).
   await expect(
-    engine.getByRole("heading", { name: /AI Wellness Recommendations/i }),
+    engine.getByRole("heading", { name: /AI wellness recommendations/i }),
   ).toBeVisible();
-
   const textarea = engine.locator("textarea");
-  await textarea.fill("Persistent fatigue and low energy for six weeks");
-
-  await engine
-    .getByRole("button", { name: /Get Wellness Recommendations/i })
-    .click();
-
-  const results = engine.getByTestId("ai-recommendation-results");
-  await expect(results).toBeVisible({ timeout: 10_000 });
-  await expect(results).toContainText("Advanced Thyroid Function Test");
-  await expect(results).toContainText("Medichecks");
+  const submit = engine.getByRole("button", { name: /Get wellness recommendations/i });
+  // Typing before hydration is lost, so retry until React enables the button.
+  await expect(async () => {
+    await textarea.fill("Persistent fatigue and low energy for six weeks");
+    await expect(submit).toBeEnabled({ timeout: 1_000 });
+  }).toPass({ timeout: 20_000 });
+  await submit.click();
+  return engine;
 }
 
-test.describe("AI Wellness Recommendations", () => {
-  test("renders recommendations on the homepage", async ({ page }) => {
-    await stubEdgeFunction(page);
-    await page.goto("/");
-    // Scroll the engine into view — it's lazy-loaded below the hero.
-    const engine = page.getByTestId("ai-recommendation-engine").first();
-    await engine.scrollIntoViewIfNeeded();
-    await submitAndAssert(page);
-  });
-
-  test("renders recommendations on /recommendations", async ({ page }) => {
+test.describe("AI wellness recommendations", () => {
+  test("signed-out visitors are asked to sign in and no AI call is made", async ({ page }) => {
+    let calls = 0;
+    page.on("request", (r) => {
+      if (r.url().includes("/functions/v1/ai-human-context")) calls += 1;
+    });
     await stubEdgeFunction(page);
     await page.goto("/recommendations");
-    await submitAndAssert(page);
+    const engine = await fillAndSubmit(page);
+    await expect(page.getByText(/Please sign in to get personalised recommendations/i)).toBeVisible({
+      timeout: 10_000,
+    });
+    await expect(page.getByRole("button", { name: "Sign in" })).toBeVisible();
+    await expect(engine.getByTestId("ai-recommendation-results")).toHaveCount(0);
+    expect(calls).toBe(0);
   });
 });

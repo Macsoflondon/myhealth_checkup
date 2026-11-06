@@ -31,18 +31,7 @@ export default function HeroMasthead() {
   // (AVIF/WebP, 11-60 KB) is the visible hero and the LCP element.
   const [videoAllowed, setVideoAllowed] = useState(false);
 
-  const [reducedMotion, setReducedMotion] = useState(false);
   useEffect(() => {
-    if (typeof window === "undefined" || !window.matchMedia) return;
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setReducedMotion(mq.matches);
-    const onChange = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
-    mq.addEventListener?.("change", onChange);
-    return () => mq.removeEventListener?.("change", onChange);
-  }, []);
-
-  useEffect(() => {
-    if (reducedMotion) return;
     const connection = (
       navigator as Navigator & {
         connection?: { saveData?: boolean; effectiveType?: string };
@@ -56,36 +45,40 @@ export default function HeroMasthead() {
     ) {
       return;
     }
-    // Start fetching straight away so the loop is buffered and playing as
-    // soon as the page opens, rather than waiting for idle time.
     setVideoAllowed(true);
-  }, [reducedMotion]);
+  }, []);
 
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !videoAllowed) return;
+    // iOS Safari only autoplays when the muted attribute is present in the
+    // DOM; React's `muted` prop sets the property but not the attribute.
+    video.setAttribute("muted", "");
     video.muted = true;
     video.defaultMuted = true;
     video.defaultPlaybackRate = HERO_PLAYBACK_RATE;
     video.playbackRate = HERO_PLAYBACK_RATE;
-    if (reducedMotion) {
-      video.pause();
-      return;
-    }
-    // Native `loop` handles restarts; we only resume after the tab becomes
-    // visible again, so we never fight the browser's own loop reset.
     const resume = () => {
-      void video.play().catch(() => undefined);
+      if (video.paused) void video.play().catch(() => undefined);
     };
+    // Low-power modes can refuse the first play(); retry once data is ready,
+    // when the tab is shown again, and on the visitor's first interaction.
     const onVisible = () => {
-      if (document.visibilityState === "visible" && video.paused) resume();
+      if (document.visibilityState === "visible") resume();
     };
+    const interactionEvents = ["pointerdown", "touchstart", "scroll", "keydown"] as const;
+    video.addEventListener("canplay", resume);
+    video.addEventListener("pause", onVisible);
     document.addEventListener("visibilitychange", onVisible);
+    for (const e of interactionEvents) window.addEventListener(e, resume, { passive: true });
     resume();
     return () => {
+      video.removeEventListener("canplay", resume);
+      video.removeEventListener("pause", onVisible);
       document.removeEventListener("visibilitychange", onVisible);
+      for (const e of interactionEvents) window.removeEventListener(e, resume);
     };
-  }, [reducedMotion, videoAllowed]);
+  }, [videoAllowed]);
 
   const mobilePlacement =
     HERO_COPY.copyPlacementMobile === "bottom"

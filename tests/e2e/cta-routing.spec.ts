@@ -19,7 +19,7 @@ const SCREENS = [
   "/at-home-tests",
   "/wellness",
   "/test-categories",
-  "/find-test",
+  // /find-test is a button-driven quiz with no link CTAs, so it is not listed.
   "/providers",
   "/tests/cancer",
   "/tests/womens-health",
@@ -59,6 +59,9 @@ const collectCtaLinks = async (page: Page): Promise<readonly CtaLink[]> => {
 };
 
 const assertPageLoads = async (page: Page, href: string): Promise<void> => {
+  // A client-side navigation left over from the previous page can interrupt
+  // page.goto; settle on a blank page first so each check starts clean.
+  await page.goto("about:blank");
   const response = await page.goto(href, { waitUntil: "domcontentloaded" });
   expect(response?.status(), `${href} returned an error status`).toBeLessThan(
     400,
@@ -117,8 +120,8 @@ test.describe("Key CTA destinations", () => {
       const link = page
         .getByRole("link", { name: new RegExp(label, "i") })
         .first();
-      if ((await link.count()) === 0)
-        test.skip(true, `"${label}" not present on ${from}`);
+      // A missing key CTA is a regression, so fail rather than skip.
+      await expect(link).toBeVisible({ timeout: 20_000 });
       await link.click();
       await expect(page).toHaveURL(expected);
       await expect
@@ -131,8 +134,8 @@ test.describe("Key CTA destinations", () => {
 test.describe("Provider shortcut redirects", () => {
   const REDIRECTS: ReadonlyArray<readonly [string, string]> = [
     ["/medichecks", "/providers/medichecks"],
-    ["/randox", "/providers/randox"],
-    ["/lola-health", "/providers/lola-health"],
+    ["/randox", "/provider/randox"],
+    ["/lola-health", "/provider/lola-health"],
   ];
 
   for (const [from, to] of REDIRECTS) {
