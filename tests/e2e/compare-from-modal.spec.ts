@@ -28,14 +28,15 @@ test("adding a test from the detail modal lands on /compare/results with the ite
     await page.waitForTimeout(500);
   }
 
-  await detailsTrigger.scrollIntoViewIfNeeded();
   await expect(detailsTrigger).toBeVisible({ timeout: 30_000 });
 
   const label = (await detailsTrigger.getAttribute("aria-label")) ?? "";
   const testName = label.replace(/^View details for /i, "").trim();
   expect(testName.length).toBeGreaterThan(0);
 
-  await detailsTrigger.click();
+  // The filmstrip scrolls continuously, so the element is never "stable"
+  // for a pointer click; dispatch the click event directly.
+  await detailsTrigger.dispatchEvent("click");
 
   const dialog = page.getByRole("dialog");
   await expect(dialog).toBeVisible();
@@ -74,7 +75,9 @@ test("a /compare/results deep link rehydrates the selection in a fresh session",
     await page.mouse.wheel(0, 1200);
     await page.waitForTimeout(500);
   }
-  await detailsTrigger.click();
+  // The filmstrip scrolls continuously, so the element is never "stable"
+  // for a pointer click; dispatch the click event directly.
+  await detailsTrigger.dispatchEvent("click");
   await page
     .getByRole("dialog")
     .getByRole("button", { name: /compare this test/i })

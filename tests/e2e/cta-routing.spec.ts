@@ -19,7 +19,7 @@ const SCREENS = [
   "/at-home-tests",
   "/wellness",
   "/test-categories",
-  "/find-test",
+  // /find-test is a button-driven quiz with no link CTAs, so it is not listed.
   "/providers",
   "/tests/cancer",
   "/tests/womens-health",
