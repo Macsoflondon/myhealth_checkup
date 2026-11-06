@@ -52,7 +52,7 @@ describe("PromoTicker", () => {
     // provider names case-insensitively — the uppercasing is CSS-only
     // (text-transform), which Testing Library does not apply. Don't assert
     // on promo copy: it changes with marketing campaigns.
-    expect(utils.getAllByText(/goodbody:/i).length).toBeGreaterThanOrEqual(2);
+    expect(utils.getAllByText(/goodbody clinic:/i).length).toBeGreaterThanOrEqual(2);
     expect(utils.getAllByText(/medichecks:/i).length).toBeGreaterThanOrEqual(2);
     expect(utils.getAllByText(/lola health:/i).length).toBeGreaterThanOrEqual(
       2,

@@ -1,3 +1,4 @@
+import { isPromotionalImage } from "@/lib/promotional-images";
 import lolaAddonKit from "@/assets/providers/lola-addon-blood-test-kit.png.asset.json";
 import clinilabsVenousKit from "@/assets/providers/clinilabs-venous-blood-test-kit.png.asset.json";
 import clinilabsMenopauseBox from "@/assets/providers/clinilabs-menopause-box.png.asset.json";
@@ -89,7 +90,7 @@ export function resolveTestCardImage({
     if (sharp) return sharp;
   }
   const own = imageUrl?.trim();
-  if (own) return own;
+  if (own && !isPromotionalImage(own)) return own;
   if (isClinilabs(providerId)) return CLINILABS_GENERIC_KIT_URL;
   return null;
 }

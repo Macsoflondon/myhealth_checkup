@@ -13,6 +13,7 @@ import {
 } from "@/components/sections/hero-slides";
 import heroVideoMp4 from "@/assets/hero/hero-video.mp4.asset.json";
 import heroVideoWebm from "@/assets/hero/hero-video.webm.asset.json";
+import heroVideoMobile from "@/assets/hero/hero-video-mobile.mp4.asset.json";
 
 /** Normal speed: half speed made still scenes look frozen. */
 const HERO_PLAYBACK_RATE = 1;
@@ -39,9 +40,11 @@ export default function HeroMasthead() {
     ).connection;
     // Visitors who asked to save data, or are on a 2G-class connection, keep
     // the photo: the loop would cost them megabytes for a background effect.
+    // Reduced-motion visitors also keep the still poster.
     if (
       connection?.saveData ||
-      /(^|-)2g$/.test(connection?.effectiveType ?? "")
+      /(^|-)2g$/.test(connection?.effectiveType ?? "") ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
     ) {
       return;
     }
@@ -174,9 +177,16 @@ export default function HeroMasthead() {
                 loop
                 playsInline
                 autoPlay
-                preload="auto"
+                preload="metadata"
+                poster={HERO_POSTER_SRC}
                 aria-hidden
               >
+                {/* Phones get a 480p (~0.9 MB) encode; larger screens the 720p loop. */}
+                <source
+                  src={heroVideoMobile.url}
+                  type="video/mp4"
+                  media="(max-width: 767px)"
+                />
                 <source src={heroVideoMp4.url} type="video/mp4" />
                 <source src={heroVideoWebm.url} type="video/webm" />
               </video>

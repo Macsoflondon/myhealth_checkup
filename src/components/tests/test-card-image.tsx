@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { isPromotionalImage } from "@/lib/promotional-images";
 import { shopifyImageSrcSet, shopifyImageUrl } from "@/lib/shopify-image";
 
 interface TestCardImageProps {
@@ -11,9 +12,9 @@ interface TestCardImageProps {
   sizes?: string;
 }
 
-/** Intrinsic size hint for the frame (4:3) so the browser reserves space before load. */
+/** Intrinsic size hint for the frame (1:1) so the browser reserves space before load. */
 const FRAME_WIDTH = 400;
-const FRAME_HEIGHT = 300;
+const FRAME_HEIGHT = 400;
 
 export function TestCardImage({
   imageUrl,
@@ -23,16 +24,17 @@ export function TestCardImage({
   displayWidth,
   sizes,
 }: TestCardImageProps) {
-  const source = imageUrl?.trim() || null;
+  const trimmed = imageUrl?.trim() || null;
+  const source = trimmed && !isPromotionalImage(trimmed) ? trimmed : null;
   const [failedSource, setFailedSource] = useState<string | null>(null);
   const showImage = source !== null && source !== failedSource;
 
   return (
     <div
       className={cn(
-        // One fixed frame for every product picture: same 4:3 box, equal
+        // One fixed frame for every product picture: same square box, equal
         // padding, white ground, picture centred and never cropped.
-        "flex aspect-[4/3] w-full items-center justify-center overflow-hidden bg-white p-3",
+        "flex aspect-square w-full items-center justify-center overflow-hidden bg-white p-3",
         className,
       )}
     >
