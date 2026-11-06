@@ -46,3 +46,6 @@
 
 - Security headers (CSP, X-Frame-Options, Permissions-Policy, HSTS, nosniff, Referrer-Policy) are set by request middleware in src/start.ts from src/lib/security-headers.ts; zod runs jitless (src/lib/zod-jitless.ts, first import of each entry) so the CSP needs no unsafe-eval. Why: Lovable hosting ignores public/_headers and vercel.json.
 - Category names that double as catalogue keys stay unchanged in data; menus render them through displayLabel() in src/lib/display-label.ts. Why: sentence-case display must not break catalogue matching.
+
+- Product photos with baked-in provider promotions are blocked by path in src/lib/promotional-images.ts (checked in TestCardImage and resolveTestCardImage) and fall back to the neutral placeholder. Why: comparison content must not carry provider marketing.
+- Page titles pass through withBrand() in src/lib/seo/route-head.ts so every route and Helmet title ends with the brand once. Why: per-file suffixes drifted.

@@ -18,6 +18,9 @@ export const AFFILIATE_CLICK_RATE_LIMIT = 30;
 const limiter = createRateLimiter(AFFILIATE_CLICK_RATE_LIMIT, 60_000);
 const burstCounter = createRateLimiter(AFFILIATE_BURST_THRESHOLD, 60_000);
 
+/** A valid click payload is well under 1 KB; anything larger is rejected unread. */
+const MAX_CLICK_BODY_BYTES = 4_096;
+
 export const affiliateClickSchema = z.object({
   click_id: z.string().uuid(),
   provider_id: z.string().regex(/^[a-z0-9-]{1,64}$/),
@@ -46,9 +49,13 @@ export async function handleAffiliateClick(
       headers: { "retry-after": String(retryAfterSeconds) },
     });
   }
+  const declared = Number(request.headers.get("content-length") ?? "0");
+  if (declared > MAX_CLICK_BODY_BYTES) return new Response(null, { status: 413 });
   let body: unknown;
   try {
-    body = JSON.parse(await request.text());
+    const text = await request.text();
+    if (text.length > MAX_CLICK_BODY_BYTES) return new Response(null, { status: 413 });
+    body = JSON.parse(text);
   } catch {
     return new Response(null, { status: 400 });
   }
