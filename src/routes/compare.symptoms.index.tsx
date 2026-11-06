@@ -9,7 +9,7 @@ export const Route = createFileRoute("/compare/symptoms/")({
     buildRouteHead({
       title: "Compare blood tests by symptom | myhealth checkup",
       description:
-        "Compare private blood tests by symptom — fatigue, hair loss, low mood and more — on price in GBP, biomarkers included and typical turnaround.",
+        "Compare private blood tests by symptom, from fatigue and hair loss to low mood, on price in GBP, biomarkers included and typical turnaround.",
       path: "/compare/symptoms",
       image: {
         url: DEFAULT_SHARE_IMAGE_URL,

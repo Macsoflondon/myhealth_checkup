@@ -2,10 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { buildRouteHead } from "@/lib/seo/route-head";
 import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 import {
-  libraryCategoriesQuery,
   libraryEntryQuery,
+  libraryIndexQuery,
   libraryPagesQuery,
 } from "@/services/BiomarkerLibraryService";
+import { resolveConsumerCategory } from "@/components/biomarker-library/biomarker-categories";
 
 const BiomarkerDatabasePage = lazy(
   () => import("@/pages/BiomarkerDatabasePage"),
@@ -25,13 +26,15 @@ export const Route = createFileRoute("/biomarker-database")({
   loaderDeps: ({ search }) => search,
   loader: async ({ context, deps }) => {
     const { queryClient } = context;
+    const category = resolveConsumerCategory(deps.category) ?? "";
     // Server-rendered first page keeps the library crawlable; failures fall
-    // back to client fetching rather than breaking the page.
+    // back to client fetching rather than breaking the page. The unfiltered
+    // index feeds the header counts and the category list.
     await Promise.allSettled([
       queryClient.ensureInfiniteQueryData(
-        libraryPagesQuery(deps.search ?? "", deps.category ?? ""),
+        libraryPagesQuery(deps.search ?? "", category),
       ),
-      queryClient.ensureQueryData(libraryCategoriesQuery()),
+      queryClient.ensureQueryData(libraryIndexQuery("", "")),
       deps.biomarker
         ? queryClient.ensureQueryData(libraryEntryQuery(deps.biomarker))
         : Promise.resolve(null),

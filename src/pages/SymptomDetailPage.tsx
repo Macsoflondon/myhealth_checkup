@@ -8,12 +8,14 @@ import { Badge } from "@/components/ui/badge";
 import {
   AlertTriangle,
   ArrowRight,
+  Info,
   Search,
   Activity,
   Shield,
   Clock,
 } from "lucide-react";
 import { symptomPages } from "@/data/symptomPages";
+import { symptomCompareHref } from "@/services/compareFilters";
 import NotFound from "@/pages/NotFound";
 import { buildCompareDetailStructuredData } from "@/lib/seo/compare-structured-data";
 
@@ -88,9 +90,9 @@ const SymptomDetailPage = () => {
             </div>
           </div>
 
-          {/* Recommended tests */}
+          {/* Tests commonly used for this symptom */}
           <h2 className="type-section-title text-[#081129] mb-5">
-            Recommended tests
+            Tests to compare
           </h2>
           <div className="space-y-4 mb-10">
             {symptom.recommendedTests.map((test, i) => (
@@ -105,7 +107,7 @@ const SymptomDetailPage = () => {
                   <Button
                     asChild
                     size="sm"
-                    className="bg-[#22c0d4] hover:bg-[#e70d69] text-white rounded-full text-sm"
+                    className="bg-[#22c0d4] hover:bg-[#e70d69] text-white rounded-full"
                   >
                     <Link to={`/compare?search=${test.searchQuery}`}>
                       <Search className="w-3.5 h-3.5 mr-1" />
@@ -129,6 +131,22 @@ const SymptomDetailPage = () => {
             ))}
           </div>
 
+          {symptom.limitations && (
+            <div className="rounded-xl border border-[#081129]/15 bg-[#081129]/[0.03] p-5 mb-6">
+              <div className="flex items-start gap-3">
+                <Info className="w-5 h-5 text-[#081129]/70 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h3 className="type-card-title text-[#081129] mb-1">
+                    What these tests cannot tell you
+                  </h3>
+                  <p className="text-base text-[#081129]/75">
+                    {symptom.limitations}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* When to see GP */}
           <div className="rounded-xl border border-[#e70d69]/30 bg-[#e70d69]/10 p-5 mb-10">
             <div className="flex items-start gap-3">
@@ -148,19 +166,19 @@ const SymptomDetailPage = () => {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button
               asChild
-              size="lg"
+              size="default"
               className="bg-[#22c0d4] hover:bg-[#e70d69] text-white rounded-xl"
             >
-              <Link
-                to={`/compare?search=${symptom.recommendedTests[0]?.searchQuery || ""}`}
-              >
+              {/* /compare?symptom=<slug> loads every recommended test's
+                  searchQuery for this symptom, not only the first. */}
+              <Link to={symptomCompareHref(symptom.slug)}>
                 Compare all {symptom.name.toLowerCase()} tests
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
             <Button
               asChild
-              size="lg"
+              size="default"
               variant="outline"
               className="rounded-xl border-[#081129]/20 bg-transparent text-[#081129] hover:bg-[#081129]/5 hover:text-[#081129]"
             >
@@ -171,7 +189,8 @@ const SymptomDetailPage = () => {
       </section>
 
       <CategoryPageBottom
-        benefitsTitle={`Why test for ${symptom.name.toLowerCase()}?`}
+        benefitsTitle="How we compare these tests"
+        topic={symptom.name}
         benefits={[BENEFITS[0], BENEFITS[1], BENEFITS[2]]}
       />
     </MainLayout>

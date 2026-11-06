@@ -7,7 +7,7 @@ import {
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import { StandardPageHero } from "@/components/layout/StandardPageHero";
 import {
-  libraryCategoriesQuery,
+  librarySummaryQuery,
   libraryEntryQuery,
   libraryPagesQuery,
   biomarkerProvidersQuery,
@@ -16,12 +16,14 @@ import {
 } from "@/services/BiomarkerLibraryService";
 import { getProviderName } from "@/constants/providers";
 import {
-  hasAnyRange,
-  normaliseReferenceRanges,
+  resolveRangeView,
   type RangeBand,
   type RangeKey,
+  type Sex,
+  type SexRangeContent,
   type SexRanges,
 } from "./biomarker-ranges";
+import { categoryIcon, resolveConsumerCategory } from "./biomarker-categories";
 
 const COLORS = {
   navy: "#081129",
@@ -41,23 +43,6 @@ const COLORS = {
   highBg: "#fee2e2",
 } as const;
 
-const CATEGORY_ICONS: Record<string, string> = {
-  "Full Blood Count": "🩸",
-  "Liver Function": "🫁",
-  "Kidney Function": "🩺",
-  Thyroid: "🦋",
-  Hormones: "⚡",
-  "Vitamins & Minerals": "💊",
-  Cardiovascular: "❤️",
-  "Diabetes & Metabolic": "🍬",
-  Inflammation: "🔥",
-  "Cancer Markers": "🎗️",
-  Nutrition: "🥗",
-  Immunity: "🛡️",
-};
-const iconFor = (category: string | null): string =>
-  (category && CATEGORY_ICONS[category]) || "🧬";
-
 const BAND_COLOUR: Record<RangeKey, { fg: string; bg: string }> = {
   low: { fg: COLORS.low, bg: COLORS.lowBg },
   borderline: { fg: COLORS.warn, bg: COLORS.warnBg },
@@ -68,18 +53,14 @@ const BAND_COLOUR: Record<RangeKey, { fg: string; bg: string }> = {
   veryHigh: { fg: COLORS.high, bg: COLORS.highBg },
 };
 
+// Sizes come from the shared type-* utilities in src/styles.css.
 const headingStyle = {
   color: COLORS.accent,
-  fontWeight: 700,
-  fontSize: 14,
   textTransform: "uppercase",
-  letterSpacing: "0.07em",
   marginBottom: 8,
 } as const;
 const bodyStyle = {
   color: COLORS.text,
-  lineHeight: 1.75,
-  fontSize: 16,
   whiteSpace: "pre-line",
 } as const;
 
@@ -98,11 +79,18 @@ const TextSection = ({
   body: string | null;
 }) => (
   <div>
-    <h4 style={headingStyle}>{title}</h4>
+    <h4 className="type-eyebrow" style={headingStyle}>
+      {title}
+    </h4>
     {body ? (
-      <p style={bodyStyle}>{body}</p>
+      <p className="type-body" style={bodyStyle}>
+        {body}
+      </p>
     ) : (
-      <p style={{ ...bodyStyle, color: COLORS.muted, fontStyle: "italic" }}>
+      <p
+        className="type-body"
+        style={{ ...bodyStyle, color: COLORS.muted, fontStyle: "italic" }}
+      >
         Not yet available for this biomarker.
       </p>
     )}
@@ -314,116 +302,162 @@ const StructuredRanges = ({ data }: { data: SexRanges }) => (
   </>
 );
 
-const ReferenceRanges = ({ entry }: { entry: LibraryEntry }) => {
-  const ranges = useMemo(
-    () => normaliseReferenceRanges(entry.referenceRanges),
-    [entry.referenceRanges],
-  );
-  const hasSexSplit = Boolean(ranges.male || ranges.female);
-  const [sex, setSex] = useState<"male" | "female">("male");
-  const textRanges = [
-    entry.normalRangeMale ? ["Male", entry.normalRangeMale] : null,
-    entry.normalRangeFemale ? ["Female", entry.normalRangeFemale] : null,
-  ].flatMap((r) => (r ? [r] : []));
+const SEX_LABEL: Record<Sex, string> = { male: "Male", female: "Female" };
+const OTHER_SEX: Record<Sex, Sex> = { male: "female", female: "male" };
 
-  const hasRanges = hasAnyRange(ranges) || textRanges.length > 0;
-  const data: SexRanges | undefined = ranges[sex] ?? ranges.both;
-  const sexText =
-    sex === "male" ? entry.normalRangeMale : entry.normalRangeFemale;
+const noteStyle = {
+  background: COLORS.lightBg,
+  borderRadius: 10,
+  padding: "12px 14px",
+  color: COLORS.muted,
+  fontSize: 14,
+  margin: 0,
+} as const;
+
+const TextRangeBox = ({
+  label,
+  value,
+  unit,
+}: {
+  label: string | null;
+  value: string;
+  unit: string | null;
+}) => (
+  <div
+    style={{
+      background: COLORS.normalBg,
+      borderRadius: 12,
+      padding: "14px 16px",
+      color: COLORS.normal,
+      fontWeight: 700,
+      fontSize: 14,
+      marginBottom: 16,
+    }}
+  >
+    {label ? `${label}: ` : ""}
+    {value}
+    {unit ? ` ${unit}` : ""}
+  </div>
+);
+
+const SexContent = ({
+  sex,
+  content,
+  unit,
+}: {
+  sex: Sex;
+  content: SexRangeContent;
+  unit: string | null;
+}) => (
+  <>
+    {content.structured && <StructuredRanges data={content.structured} />}
+    {content.text && (
+      <TextRangeBox label={SEX_LABEL[sex]} value={content.text} unit={unit} />
+    )}
+  </>
+);
+
+/**
+ * Shows the Male / Female toggle only when both sexes have a range. A range
+ * for one sex is labelled as that sex. An unlabelled range is shown as it is,
+ * with no claim that it applies to both sexes.
+ */
+export const ReferenceRanges = ({
+  entry,
+}: {
+  entry: Pick<
+    LibraryEntry,
+    "referenceRanges" | "normalRangeMale" | "normalRangeFemale" | "unit"
+  >;
+}) => {
+  const view = useMemo(
+    () => resolveRangeView(entry),
+    [entry.referenceRanges, entry.normalRangeMale, entry.normalRangeFemale],
+  );
+  const [sex, setSex] = useState<Sex>("male");
 
   return (
-    <div style={{ marginBottom: 20 }}>
-      <h4 style={{ ...headingStyle, marginBottom: 12 }}>Reference ranges</h4>
-      {hasRanges && (
-        <div
-          style={{
-            display: "flex",
-            gap: 8,
-            marginBottom: 16,
-            flexWrap: "wrap",
-            alignItems: "center",
-          }}
-        >
-          <span
-            style={{
-              fontSize: 14,
-              color: COLORS.muted,
-              lineHeight: "32px",
-              marginRight: 4,
-            }}
-          >
-            View ranges for:
-          </span>
-          {(["male", "female"] as const).map((s) => (
-            <button
-              key={s}
-              type="button"
-              onClick={() => setSex(s)}
-              style={{
-                background: sex === s ? COLORS.navy : COLORS.lightBg,
-                color: sex === s ? "#fff" : COLORS.text,
-                border: "none",
-                borderRadius: 8,
-                padding: "6px 16px",
-                fontWeight: 700,
-                fontSize: 14,
-                cursor: "pointer",
-              }}
-            >
-              {s === "male" ? "♂ Male" : "♀ Female"}
-            </button>
-          ))}
-          {!hasSexSplit && (
-            <span style={{ fontSize: 12, color: COLORS.muted }}>
-              The same guideline range applies to both sexes.
-            </span>
-          )}
-        </div>
-      )}
-      {!hasRanges ? (
-        <p
-          style={{
-            background: COLORS.lightBg,
-            borderRadius: 10,
-            padding: "12px 14px",
-            color: COLORS.muted,
-            fontSize: 14,
-            margin: 0,
-          }}
-        >
+    <div style={{ marginBottom: 20 }} data-testid="reference-ranges">
+      <h4
+        className="type-eyebrow"
+        style={{ ...headingStyle, marginBottom: 12 }}
+      >
+        Reference ranges
+      </h4>
+      {view.kind === "none" && (
+        <p style={noteStyle}>
           Reference range not yet available. Each laboratory publishes its own
           range with your results, so use the range printed on your report.
         </p>
-      ) : data ? (
-        <StructuredRanges data={data} />
-      ) : (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))",
-            gap: 10,
-          }}
-        >
-          {(sexText
-            ? [[sex === "male" ? "Male" : "Female", sexText]]
-            : textRanges
-          ).map(([label, value]) => (
-            <div
-              key={label}
+      )}
+      {view.kind === "shared" && <StructuredRanges data={view.shared} />}
+      {view.kind === "single-sex" && (
+        <>
+          <p
+            style={{
+              color: COLORS.navy,
+              fontWeight: 700,
+              fontSize: 14,
+              marginBottom: 12,
+            }}
+          >
+            {SEX_LABEL[view.sex]} range
+          </p>
+          <SexContent sex={view.sex} content={view.content} unit={entry.unit} />
+          {view.shared && <StructuredRanges data={view.shared} />}
+          <p style={noteStyle}>
+            No {SEX_LABEL[OTHER_SEX[view.sex]].toLowerCase()} range is listed
+            for this biomarker.
+          </p>
+        </>
+      )}
+      {view.kind === "split" && (
+        <>
+          <div
+            role="group"
+            aria-label="Show reference ranges for"
+            style={{
+              display: "flex",
+              gap: 8,
+              marginBottom: 16,
+              flexWrap: "wrap",
+              alignItems: "center",
+            }}
+          >
+            <span
               style={{
-                background: COLORS.normalBg,
-                borderRadius: 12,
-                padding: "14px 16px",
-                color: COLORS.normal,
-                fontWeight: 700,
                 fontSize: 14,
+                color: COLORS.muted,
+                lineHeight: "32px",
+                marginRight: 4,
               }}
             >
-              {label}: {value}
-              {entry.unit ? ` ${entry.unit}` : ""}
-            </div>
-          ))}
-        </div>
+              View ranges for:
+            </span>
+            {(["male", "female"] as const).map((s) => (
+              <button
+                key={s}
+                type="button"
+                aria-pressed={sex === s}
+                onClick={() => setSex(s)}
+                style={{
+                  background: sex === s ? COLORS.navy : COLORS.lightBg,
+                  color: sex === s ? "#fff" : COLORS.text,
+                  border: "none",
+                  borderRadius: 8,
+                  padding: "6px 16px",
+                  minHeight: 32,
+                  fontWeight: 700,
+                  fontSize: 14,
+                  cursor: "pointer",
+                }}
+              >
+                {SEX_LABEL[s]}
+              </button>
+            ))}
+          </div>
+          <SexContent sex={sex} content={view[sex]} unit={entry.unit} />
+        </>
       )}
     </div>
   );
@@ -439,12 +473,29 @@ const ProviderLinks = ({ entry }: { entry: LibraryEntry }) => {
       </p>
     );
   }
-  if (providers.length === 0) return null;
+  if (q.isError) {
+    return (
+      <p style={{ color: COLORS.muted, fontSize: 14, marginBottom: 16 }}>
+        We could not load the tests for this biomarker. Please try again.
+      </p>
+    );
+  }
+  if (providers.length === 0) {
+    return (
+      <p style={{ color: COLORS.muted, fontSize: 14, marginBottom: 16 }}>
+        No current test from the providers we compare lists this biomarker.
+      </p>
+    );
+  }
+  const totalTests = providers.reduce((sum, p) => sum + p.testCount, 0);
   return (
     <div style={{ marginBottom: 16 }}>
-      <h4 style={{ ...headingStyle, marginBottom: 12 }}>
-        Available from {providers.length} provider
-        {providers.length === 1 ? "" : "s"}
+      <h4
+        className="type-eyebrow"
+        style={{ ...headingStyle, marginBottom: 12 }}
+      >
+        In {totalTests} test{totalTests === 1 ? "" : "s"} from{" "}
+        {providers.length} provider{providers.length === 1 ? "" : "s"}
       </h4>
       <div
         style={{
@@ -456,7 +507,7 @@ const ProviderLinks = ({ entry }: { entry: LibraryEntry }) => {
         {providers.map((p) => (
           <a
             key={p.providerId}
-            href={biomarkerProviderCompareHref(entry.name, p.providerId)}
+            href={biomarkerProviderCompareHref(entry.id, p.providerId)}
             style={{
               display: "flex",
               justifyContent: "space-between",
@@ -480,6 +531,20 @@ const ProviderLinks = ({ entry }: { entry: LibraryEntry }) => {
           </a>
         ))}
       </div>
+      {providers.length > 1 && (
+        <a
+          href={biomarkerProviderCompareHref(entry.id)}
+          style={{
+            display: "inline-block",
+            marginTop: 12,
+            color: COLORS.accent,
+            fontWeight: 700,
+            fontSize: 14,
+          }}
+        >
+          Compare all {totalTests} tests →
+        </a>
+      )}
     </div>
   );
 };
@@ -493,7 +558,9 @@ const BiomarkerCard = ({
   isExpanded: boolean;
   onToggle: () => void;
 }) => {
-  const subtitle = [entry.category, entry.unit].filter(Boolean).join(" · ");
+  const subtitle = [entry.consumerCategory, entry.unit]
+    .filter(Boolean)
+    .join(" · ");
   const primaryText = entry.whatItMeasures ?? entry.description;
   const reviewed = formatUkDate(entry.lastReviewedAt);
   const facts = [
@@ -544,7 +611,7 @@ const BiomarkerCard = ({
             flexShrink: 0,
           }}
         >
-          {iconFor(entry.category)}
+          {categoryIcon(entry.consumerCategory)}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div
@@ -595,20 +662,6 @@ const BiomarkerCard = ({
         <div
           style={{ borderTop: `1px solid ${COLORS.border}`, padding: "24px" }}
         >
-          {entry.testCount > 0 && (
-            <p
-              style={{
-                color: COLORS.navy,
-                fontWeight: 700,
-                fontSize: 14,
-                marginBottom: 16,
-              }}
-            >
-              Listed in {entry.testCount} test{entry.testCount === 1 ? "" : "s"}{" "}
-              from {entry.providerCount} provider
-              {entry.providerCount === 1 ? "" : "s"}
-            </p>
-          )}
           <div
             style={{
               display: "grid",
@@ -631,7 +684,10 @@ const BiomarkerCard = ({
             <div style={{ marginBottom: 16 }}>
               {entry.synonyms.length > 0 && (
                 <>
-                  <h4 style={{ ...headingStyle, color: COLORS.muted }}>
+                  <h4
+                    className="type-eyebrow"
+                    style={{ ...headingStyle, color: COLORS.muted }}
+                  >
                     Also known as
                   </h4>
                   <div
@@ -701,7 +757,9 @@ export default function BiomarkerLibraryUI() {
   const params = useSearch({ from: "/biomarker-database" });
   const navigate = useNavigate({ from: "/biomarker-database" });
   const search = params.search ?? "";
-  const category = params.category ?? "";
+  // Old links carry raw labels ("Cardiac Markers"); map them to the consumer
+  // category so they land on the merged group.
+  const category = resolveConsumerCategory(params.category) ?? "";
   const openSlug = params.biomarker ?? null;
 
   const [input, setInput] = useState(search);
@@ -721,15 +779,17 @@ export default function BiomarkerLibraryUI() {
     ...libraryPagesQuery(search, category),
     placeholderData: keepPreviousData,
   });
+  // Loads with the main list so the section shows without paging through
+  // every biomarker first.
   const otherPages = useInfiniteQuery({
     ...libraryPagesQuery(search, "", "other"),
-    enabled: !category && pages.isSuccess && !pages.hasNextPage,
+    enabled: !category && pages.isSuccess,
   });
   const otherLoaded = useMemo(
     () => otherPages.data?.pages.flatMap((p) => p.entries) ?? [],
     [otherPages.data],
   );
-  const categoriesQ = useQuery(libraryCategoriesQuery());
+  const summaryQ = useQuery(librarySummaryQuery());
   const pinnedQ = useQuery({
     ...libraryEntryQuery(openSlug ?? ""),
     enabled: Boolean(openSlug),
@@ -740,7 +800,9 @@ export default function BiomarkerLibraryUI() {
     [pages.data],
   );
   const total = pages.data?.pages[0]?.total ?? 0;
-  const categories = categoriesQ.data ?? [];
+  const otherTotal = otherPages.data?.pages[0]?.total ?? 0;
+  const summary = summaryQ.data;
+  const categories = summary?.categories ?? [];
   const pinned =
     pinnedQ.data && !loaded.some((e) => e.slug === pinnedQ.data?.slug)
       ? pinnedQ.data
@@ -749,7 +811,7 @@ export default function BiomarkerLibraryUI() {
   const grouped = useMemo(() => {
     const g = new Map<string, LibraryEntry[]>();
     loaded.forEach((e) => {
-      const key = e.category ?? "Other";
+      const key = e.consumerCategory;
       g.set(key, [...(g.get(key) ?? []), e]);
     });
     return Array.from(g.entries());
@@ -794,8 +856,8 @@ export default function BiomarkerLibraryUI() {
         title="Complete biomarker reference library"
         strapline="What every blood test marker means, in plain English and grounded in clinical evidence."
         stats={[
-          ...(total > 0 && !search && !category
-            ? [`${total.toLocaleString("en-GB")} biomarkers`]
+          ...(summary && summary.biomarkerTotal > 0
+            ? [`${summary.biomarkerTotal.toLocaleString("en-GB")} biomarkers`]
             : []),
           ...(categories.length > 0 ? [`${categories.length} categories`] : []),
           "Linked to live UK test listings",
@@ -882,8 +944,8 @@ export default function BiomarkerLibraryUI() {
             >
               <option value="">All categories</option>
               {categories.map((c) => (
-                <option key={c} value={c}>
-                  {c}
+                <option key={c.label} value={c.label}>
+                  {c.label} ({c.count})
                 </option>
               ))}
             </select>
@@ -954,7 +1016,7 @@ export default function BiomarkerLibraryUI() {
                   fontSize: 20,
                 }}
               >
-                {iconFor(cat)}
+                {categoryIcon(cat)}
               </div>
               <h2 className="type-section-title" style={{ color: COLORS.navy }}>
                 {cat}
@@ -965,6 +1027,26 @@ export default function BiomarkerLibraryUI() {
             </div>
           </div>
         ))}
+        {pages.hasNextPage && (
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <button
+              type="button"
+              onClick={() => void pages.fetchNextPage()}
+              disabled={pages.isFetchingNextPage}
+              style={{
+                background: COLORS.accent,
+                color: "#fff",
+                border: "none",
+                borderRadius: 10,
+                padding: "12px 28px",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+            >
+              {pages.isFetchingNextPage ? "Loading…" : "Show more"}
+            </button>
+          </div>
+        )}
         {!category && otherLoaded.length > 0 && (
           <div style={{ marginTop: 32 }}>
             <h2
@@ -973,9 +1055,13 @@ export default function BiomarkerLibraryUI() {
             >
               Allergens and infection markers
             </h2>
-            <p style={{ color: COLORS.muted, fontSize: 14, marginBottom: 20 }}>
-              These are allergen extracts and infection tests rather than
-              biomarkers. They are listed here for reference.
+            <p
+              className="type-body"
+              style={{ color: COLORS.muted, marginBottom: 20 }}
+            >
+              {otherTotal.toLocaleString("en-GB")} allergen extracts and
+              infection tests{search ? ` matching "${search}"` : ""}. They are
+              not biomarkers, so we list them separately.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {otherLoaded.map(renderCard)}
@@ -1002,60 +1088,38 @@ export default function BiomarkerLibraryUI() {
             )}
           </div>
         )}
-        {pages.hasNextPage && (
-          <div style={{ textAlign: "center" }}>
-            <button
-              type="button"
-              onClick={() => void pages.fetchNextPage()}
-              disabled={pages.isFetchingNextPage}
-              style={{
-                background: COLORS.accent,
-                color: "#fff",
-                border: "none",
-                borderRadius: 10,
-                padding: "12px 28px",
-                fontWeight: 700,
-                cursor: "pointer",
-              }}
-            >
-              {pages.isFetchingNextPage ? "Loading…" : "Show more"}
-            </button>
-          </div>
-        )}
-        {pages.isSuccess && loaded.length === 0 && (
-          <div style={{ textAlign: "center", padding: "80px 20px" }}>
-            <div style={{ fontSize: 56, marginBottom: 16 }}>🔬</div>
-            <h3
-              style={{
-                fontFamily: "Montserrat, 'Helvetica Neue', sans-serif",
-                color: COLORS.navy,
-                fontSize: 22,
-                marginBottom: 8,
-              }}
-            >
-              No biomarkers found
-            </h3>
-            <button
-              type="button"
-              onClick={() => {
-                setInput("");
-                void navigate({ search: () => ({}), replace: true });
-              }}
-              style={{
-                marginTop: 20,
-                background: COLORS.accent,
-                color: "#fff",
-                border: "none",
-                borderRadius: 10,
-                padding: "12px 24px",
-                fontWeight: 700,
-                cursor: "pointer",
-              }}
-            >
-              Reset filters
-            </button>
-          </div>
-        )}
+        {pages.isSuccess &&
+          loaded.length === 0 &&
+          (category || (otherPages.isSuccess && otherLoaded.length === 0)) && (
+            <div style={{ textAlign: "center", padding: "80px 20px" }}>
+              <div style={{ fontSize: 56, marginBottom: 16 }}>🔬</div>
+              <h3
+                className="type-card-title"
+                style={{ color: COLORS.navy, marginBottom: 8 }}
+              >
+                No biomarkers found
+              </h3>
+              <button
+                type="button"
+                onClick={() => {
+                  setInput("");
+                  void navigate({ search: () => ({}), replace: true });
+                }}
+                style={{
+                  marginTop: 20,
+                  background: COLORS.accent,
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 10,
+                  padding: "12px 24px",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                }}
+              >
+                Reset filters
+              </button>
+            </div>
+          )}
       </div>
       <div style={{ background: COLORS.navy, padding: "32px 24px" }}>
         <div style={{ maxWidth: 900, margin: "0 auto", textAlign: "center" }}>

@@ -12,6 +12,9 @@ import { TestQueryBuilder } from "./queryBuilders/testQueryBuilder";
 import { getComparePanel } from "@/lib/comparePanels";
 import { compareCategories } from "@/constants/categories";
 import { providers as coreProviders } from "@/constants/providers";
+import { isJunkTestName } from "@/utils/is-junk-test-name";
+import type { SymptomPageData } from "@/data/symptomPages";
+import { symptomSearchTerms } from "./compareFilters";
 
 /** unified_provider_tests columns read for URL-resolved comparisons. */
 interface UnifiedCompareRow {
@@ -236,6 +239,81 @@ export class CompareService {
       }));
 
     return [...listed, ...unlisted].slice(0, Math.max(limit, listed.length));
+  }
+
+  // ============================================================================
+  // Exact-set modes: ?biomarker= and ?symptom=
+  // ============================================================================
+
+  /**
+   * Rows for every active, supported-provider test linked to a biomarker.
+   * The biomarker library card counts these rows per provider and the
+   * compare page lists them, so both read this one function. Junk scraper
+   * rows are dropped here, as the compare page would drop them. Throws on a
+   * query error so callers can show an error instead of "no tests".
+   */
+  static async getBiomarkerTestRows(
+    biomarkerId: string,
+    providers: string[] = ["all"],
+  ): Promise<LiveTestRow[]> {
+    const { data, error } = await TestQueryBuilder.buildBiomarkerQuery(
+      biomarkerId,
+      providers,
+    ).returns<(LiveTestRow & { ptb?: unknown })[]>();
+    if (error) throw error;
+    const seen = new Set<string>();
+    const rows: LiveTestRow[] = [];
+    for (const row of data ?? []) {
+      if (!row.id || seen.has(row.id) || isJunkTestName(row.test_name))
+        continue;
+      seen.add(row.id);
+      const { ptb: _links, ...test } = row;
+      rows.push(test);
+    }
+    return rows;
+  }
+
+  static async getBiomarkerTests(
+    biomarkerId: string,
+    providers: string[] = ["all"],
+  ): Promise<CompareTestData[]> {
+    const rows = await this.getBiomarkerTestRows(biomarkerId, providers);
+    return TestDataTransformer.transformMultiple(rows);
+  }
+
+  static async getSymptomPage(slug: string): Promise<SymptomPageData | null> {
+    // Loaded on demand so the symptom copy stays out of the compare bundle.
+    const { symptomPages } = await import("@/data/symptomPages");
+    return symptomPages.find((s) => s.slug === slug) ?? null;
+  }
+
+  /**
+   * The union of tests matching each recommended test's search for a symptom,
+   * one entry per test id, in price order. Throws on a query error.
+   */
+  static async getSymptomTests(
+    symptom: SymptomPageData,
+    providers: string[] = ["all"],
+  ): Promise<CompareTestData[]> {
+    const terms = symptomSearchTerms(symptom);
+    const results = await Promise.all(
+      terms.map(async (term) => {
+        const { data, error } = await TestQueryBuilder.buildSearchQuery(
+          term,
+          providers,
+        );
+        if (error) throw error;
+        return (data ?? []) as LiveTestRow[];
+      }),
+    );
+    const byId = new Map<string, LiveTestRow>();
+    for (const row of results.flat()) {
+      if (row.id && !byId.has(row.id)) byId.set(row.id, row);
+    }
+    const unique = Array.from(byId.values()).sort(
+      (a, b) => (a.price ?? 0) - (b.price ?? 0),
+    );
+    return TestDataTransformer.transformMultiple(unique);
   }
 
   static async searchTests(

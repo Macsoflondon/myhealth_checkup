@@ -139,3 +139,59 @@ export function normaliseReferenceRanges(raw: unknown): NormalisedRanges {
 export function hasAnyRange(r: NormalisedRanges): boolean {
   return Boolean(r.both || r.male || r.female);
 }
+
+// ---------- what the reference range block shows ----------
+
+export type Sex = "male" | "female";
+
+/** One sex's range: structured bands, a text range, or both. Never empty. */
+export interface SexRangeContent {
+  structured: SexRanges | null;
+  text: string | null;
+}
+
+export type RangeView =
+  /** No range at all: show the "not yet available" note. */
+  | { kind: "none" }
+  /** Both sexes have data: show the Male / Female toggle. */
+  | { kind: "split"; male: SexRangeContent; female: SexRangeContent }
+  /** One sex has data: label it and say the other has none listed. */
+  | {
+      kind: "single-sex";
+      sex: Sex;
+      content: SexRangeContent;
+      shared: SexRanges | null;
+    }
+  /** Only an unlabelled range: no toggle, no claim about either sex. */
+  | { kind: "shared"; shared: SexRanges };
+
+const textValue = (v: string | null | undefined): string | null => {
+  const t = v?.trim();
+  return t ? t : null;
+};
+
+function sexContent(
+  structured: SexRanges | undefined,
+  text: string | null | undefined,
+): SexRangeContent | null {
+  const t = textValue(text);
+  if (!structured && !t) return null;
+  return { structured: structured ?? null, text: t };
+}
+
+export function resolveRangeView(input: {
+  referenceRanges: unknown;
+  normalRangeMale: string | null;
+  normalRangeFemale: string | null;
+}): RangeView {
+  const ranges = normaliseReferenceRanges(input.referenceRanges);
+  const male = sexContent(ranges.male, input.normalRangeMale);
+  const female = sexContent(ranges.female, input.normalRangeFemale);
+  const shared = ranges.both ?? null;
+  if (male && female) return { kind: "split", male, female };
+  if (male) return { kind: "single-sex", sex: "male", content: male, shared };
+  if (female)
+    return { kind: "single-sex", sex: "female", content: female, shared };
+  if (shared) return { kind: "shared", shared };
+  return { kind: "none" };
+}

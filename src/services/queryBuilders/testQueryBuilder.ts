@@ -20,6 +20,12 @@ const PANEL_VIEW_SELECT =
 
 const DEFAULT_LIMIT = 600;
 
+/** Embedded provider_test_biomarkers link used to filter by biomarker. */
+export const BIOMARKER_LINK_EMBED =
+  "ptb:provider_test_biomarkers!provider_test_biomarkers_provider_test_id_fkey!inner(biomarker_id)";
+/** PostgREST returns at most 1,000 rows; the most-linked marker has ~110. */
+const BIOMARKER_LIMIT = 1000;
+
 const escapeIlike = (s: string) => s.replace(/[%,()]/g, " ").trim();
 
 /**
@@ -104,6 +110,31 @@ export class TestQueryBuilder {
     }
 
     return query;
+  }
+
+  /**
+   * Active tests linked to one biomarker through provider_test_biomarkers,
+   * the same links biomarker_library_public counts. Supported providers only,
+   * optionally narrowed to some. The inner join keeps only linked tests and
+   * returns each test once however many link rows it has.
+   */
+  static buildBiomarkerQuery(
+    biomarkerId: string,
+    providers: string[] = ["all"],
+  ) {
+    const supported = getSupportedProviderIds();
+    const wanted = providers.includes("all")
+      ? supported
+      : providers.filter((p) => supported.includes(p));
+    return supabase
+      .from("provider_tests")
+      .select(`${COMPARE_SELECT}, ${BIOMARKER_LINK_EMBED}`)
+      .eq("is_active", true)
+      .eq("ptb.biomarker_id", biomarkerId)
+      .in("provider_id", wanted)
+      .order("price", { ascending: true })
+      .order("id", { ascending: true })
+      .limit(BIOMARKER_LIMIT);
   }
 
   /**

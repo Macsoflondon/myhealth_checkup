@@ -18,6 +18,12 @@ import { describeSampleType } from "@/lib/sampleType";
 export const compareQueryKeys = {
   tests: (category: string, provider: string, search: string) =>
     ["compare", "tests", category, provider, search] as const,
+  biomarkerTests: (biomarkerId: string, provider: string) =>
+    ["compare", "biomarker-tests", biomarkerId, provider] as const,
+  symptomTests: (symptomSlug: string, provider: string) =>
+    ["compare", "symptom-tests", symptomSlug, provider] as const,
+  symptomPage: (symptomSlug: string) =>
+    ["compare", "symptom-page", symptomSlug] as const,
   categories: () => ["compare", "categories"] as const,
 };
 
@@ -30,6 +36,10 @@ export interface CompareFilters {
   fastingRequired: string;
   gpReview: boolean;
   sortBy: string;
+  /** ?biomarker= library id: list exactly the tests linked to it. */
+  biomarkerId: string | null;
+  /** ?symptom= slug: list the tests behind that symptom's recommendations. */
+  symptomSlug: string | null;
 }
 
 export const defaultFilters: CompareFilters = {
@@ -41,7 +51,35 @@ export const defaultFilters: CompareFilters = {
   fastingRequired: "any",
   gpReview: false,
   sortBy: "price-asc",
+  biomarkerId: null,
+  symptomSlug: null,
 };
+
+/**
+ * Inside a biomarker or symptom set, the search box narrows the set by name,
+ * description or provider instead of replacing it with a text search.
+ */
+export function narrowBySearch(
+  tests: CompareTestData[],
+  searchQuery: string,
+): CompareTestData[] {
+  const term = searchQuery.trim().toLowerCase();
+  if (!term) return tests;
+  return tests.filter((t) =>
+    [t.name, t.description, t.provider].some((v) =>
+      (v ?? "").toLowerCase().includes(term),
+    ),
+  );
+}
+
+/** The junk, local-filter and sort steps every listing goes through. */
+export function processCompareTests(
+  tests: CompareTestData[],
+  filters: CompareFilters,
+): CompareTestData[] {
+  const clean = tests.filter((test) => !isJunkTestName(test.name));
+  return sortTests(applyLocalFilters(clean, filters), filters.sortBy);
+}
 
 // Filter application logic
 function applyLocalFilters(
@@ -146,6 +184,48 @@ export function useCompareTestsData(filters: CompareFilters) {
     staleTime: 10 * 60 * 1000, // 10 minutes
   });
 
+  const providerFilter =
+    filters.selectedProvider === "all" ? ["all"] : [filters.selectedProvider];
+  const biomarkerId = filters.biomarkerId;
+  const symptomSlug = biomarkerId ? null : filters.symptomSlug;
+
+  // Biomarker mode: errors surface (no catch) so the page can say the load
+  // failed rather than claim there are no tests.
+  const biomarkerQuery = useQuery({
+    queryKey: compareQueryKeys.biomarkerTests(
+      biomarkerId ?? "",
+      filters.selectedProvider,
+    ),
+    queryFn: () =>
+      CompareService.getBiomarkerTests(biomarkerId as string, providerFilter),
+    enabled: Boolean(biomarkerId),
+    staleTime: 2 * 60 * 1000,
+  });
+
+  const symptomPageQuery = useQuery({
+    queryKey: compareQueryKeys.symptomPage(symptomSlug ?? ""),
+    queryFn: () => CompareService.getSymptomPage(symptomSlug as string),
+    enabled: Boolean(symptomSlug),
+    staleTime: Infinity,
+  });
+  const symptomPage = symptomPageQuery.data ?? null;
+
+  const symptomTestsQuery = useQuery({
+    queryKey: compareQueryKeys.symptomTests(
+      symptomSlug ?? "",
+      filters.selectedProvider,
+    ),
+    queryFn: () =>
+      CompareService.getSymptomTests(
+        symptomPage as NonNullable<typeof symptomPage>,
+        providerFilter,
+      ),
+    enabled: Boolean(symptomSlug && symptomPage),
+    staleTime: 2 * 60 * 1000,
+  });
+
+  const setMode = biomarkerId ? "biomarker" : symptomSlug ? "symptom" : null;
+
   // Tests query
   const testsQuery = useQuery({
     queryKey: compareQueryKeys.tests(
@@ -153,13 +233,9 @@ export function useCompareTestsData(filters: CompareFilters) {
       filters.selectedProvider,
       filters.searchQuery,
     ),
+    enabled: setMode === null,
     queryFn: async () => {
       try {
-        const providerFilter =
-          filters.selectedProvider === "all"
-            ? ["all"]
-            : [filters.selectedProvider];
-
         let results: CompareTestData[] = [];
 
         if (filters.searchQuery.trim()) {
@@ -185,13 +261,28 @@ export function useCompareTestsData(filters: CompareFilters) {
     staleTime: 2 * 60 * 1000, // 2 minutes
   });
 
+  const activeQuery =
+    setMode === "biomarker"
+      ? biomarkerQuery
+      : setMode === "symptom"
+        ? symptomTestsQuery
+        : testsQuery;
+
   // Apply local filters and sorting
   const processedTests = useMemo(() => {
-    if (!testsQuery.data) return [];
-    const clean = testsQuery.data.filter((test) => !isJunkTestName(test.name));
-    const filtered = applyLocalFilters(clean, filters);
-    return sortTests(filtered, filters.sortBy);
-  }, [testsQuery.data, filters]);
+    if (!activeQuery.data) return [];
+    const base = setMode
+      ? narrowBySearch(activeQuery.data, filters.searchQuery)
+      : activeQuery.data;
+    return processCompareTests(base, filters);
+  }, [activeQuery.data, filters, setMode]);
+
+  const symptomNotFound =
+    setMode === "symptom" && symptomPageQuery.isSuccess && !symptomPage;
+  const isLoading =
+    setMode === "symptom"
+      ? symptomPageQuery.isLoading || symptomTestsQuery.isLoading
+      : activeQuery.isLoading;
 
   // Clear cache
   const clearCache = useCallback(() => {
@@ -204,16 +295,22 @@ export function useCompareTestsData(filters: CompareFilters) {
     categories: categoriesQuery.data || [],
     urlCategory,
 
+    // Exact-set modes
+    setMode,
+    symptomPage,
+    symptomNotFound,
+    isError: activeQuery.isError || symptomPageQuery.isError,
+
     // Loading states
-    isLoading: testsQuery.isLoading,
+    isLoading,
     isCategoriesLoading: categoriesQuery.isLoading,
 
     // Error states
-    error: testsQuery.error,
+    error: activeQuery.error,
     categoriesError: categoriesQuery.error,
 
     // Refetch
-    refetch: testsQuery.refetch,
+    refetch: activeQuery.refetch,
     refetchCategories: categoriesQuery.refetch,
 
     // Utilities

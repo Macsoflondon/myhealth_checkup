@@ -1,12 +1,22 @@
 import { infiniteQueryOptions, queryOptions } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import type { Database } from "@/integrations/supabase/types";
+import {
+  compareConsumerCategories,
+  consumerCategoryFor,
+  isSeparateSectionCategory,
+  rawFilterFor,
+  resolveConsumerCategory,
+} from "@/components/biomarker-library/biomarker-categories";
+import { CompareService } from "@/services/CompareService";
+import { biomarkerCompareHref } from "@/services/compareFilters";
 
 /**
  * Read-only access to the live biomarker library
  * (`public.biomarker_library_public`) and the provider-test → biomarker links
  * (`public.provider_test_biomarkers`). The database is the single source of
- * truth; the static files in src/components/biomarker-library are unused.
+ * truth. Raw category labels map to consumer categories in
+ * src/components/biomarker-library/biomarker-categories.ts.
  */
 
 export type BiomarkerLibraryRow = Omit<
@@ -18,7 +28,10 @@ export interface LibraryEntry {
   id: string;
   slug: string;
   name: string;
+  /** Raw label from the view. */
   category: string | null;
+  /** Consumer category the library groups and labels the entry under. */
+  consumerCategory: string;
   abbreviation: string | null;
   description: string | null;
   whatItMeasures: string | null;
@@ -55,6 +68,7 @@ export function toLibraryEntry(row: BiomarkerLibraryRow): LibraryEntry | null {
     slug: row.slug,
     name: row.biomarker_name,
     category: clean(row.category),
+    consumerCategory: consumerCategoryFor(row.category, row.slug),
     abbreviation: clean(row.abbreviation),
     description: clean(row.description),
     whatItMeasures: clean(row.what_it_measures),
@@ -106,63 +120,175 @@ export interface LibraryPage {
   nextOffset: number | null;
 }
 
-/**
- * Categories holding allergen extracts and infection markers rather than
- * physiological biomarkers. They are listed after the biomarker library.
- */
-export const NON_BIOMARKER_CATEGORIES = [
-  "Allergy & Immunology",
-  "Infectious Disease",
-] as const;
+/** "biomarkers" is the main list; "other" holds allergens and infection markers. */
 export type LibraryScope = "biomarkers" | "other";
 
-const NON_BIOMARKER_FILTER = `(${NON_BIOMARKER_CATEGORIES.map((c) => `"${c}"`).join(",")})`;
-
-export async function fetchLibraryPage(params: {
-  search: string;
+/** One row of the library index: enough to order, group, count and page. */
+export interface LibraryIndexRow {
+  slug: string;
+  rawCategory: string | null;
   category: string;
-  offset: number;
-  scope?: LibraryScope;
-}): Promise<LibraryPage> {
-  let query = supabase
-    .from("biomarker_library_public")
-    .select(LIBRARY_COLUMNS, { count: "exact" })
-    .order("category", { ascending: true, nullsFirst: false })
-    .order("biomarker_name", { ascending: true })
-    .range(params.offset, params.offset + BIOMARKER_PAGE_SIZE - 1);
-  if (params.category) query = query.eq("category", params.category);
-  else if (params.scope === "other")
-    query = query.in("category", [...NON_BIOMARKER_CATEGORIES]);
-  else if (params.scope === "biomarkers")
-    query = query.or(
-      `category.is.null,category.not.in.${NON_BIOMARKER_FILTER}`,
-    );
-  const filter = buildSearchFilter(params.search);
-  if (filter) query = query.or(filter);
-  const { data, error, count } = await query;
-  if (error) throw error;
-  const entries = (data ?? []).flatMap((row) => {
-    const entry = toLibraryEntry(row);
-    return entry ? [entry] : [];
-  });
-  const total = count ?? entries.length;
-  const next = params.offset + BIOMARKER_PAGE_SIZE;
-  return { entries, total, nextOffset: next < total ? next : null };
+  separate: boolean;
 }
 
-export async function fetchLibraryCategories(): Promise<string[]> {
+/** PostgREST returns at most 1,000 rows per request (Supabase max-rows). */
+export const POSTGREST_MAX_ROWS = 1000;
+
+const quoteList = (values: readonly string[]): string =>
+  `(${values.map((v) => `"${v.replace(/["\\]/g, "")}"`).join(",")})`;
+
+/**
+ * PostgREST filters for one consumer category, run against the raw labels
+ * that map to it (see biomarker-categories.ts) plus slug overrides.
+ */
+export function categoryFilterParts(consumerLabel: string): {
+  or: string | null;
+  inRaw: string[] | null;
+  notSlugs: string | null;
+} {
+  const f = rawFilterFor(consumerLabel);
+  const notSlugs = f.excludeSlugs.length ? quoteList(f.excludeSlugs) : null;
+  if (f.includeSlugs.length === 0) {
+    return { or: null, inRaw: f.rawLabels, notSlugs };
+  }
+  return {
+    or: `category.in.${quoteList(f.rawLabels)},slug.in.${quoteList(f.includeSlugs)}`,
+    inRaw: null,
+    notSlugs,
+  };
+}
+
+/** Order consumer categories, keeping the server's name order inside each. */
+export function orderLibraryIndex(
+  rows: { slug: string | null; category: string | null }[],
+  consumerCategory?: string,
+): LibraryIndexRow[] {
+  const out = rows.flatMap((r): LibraryIndexRow[] => {
+    if (!r.slug) return [];
+    const category = consumerCategoryFor(r.category, r.slug);
+    if (consumerCategory && category !== consumerCategory) return [];
+    return [
+      {
+        slug: r.slug,
+        rawCategory: clean(r.category),
+        category,
+        separate: isSeparateSectionCategory(category),
+      },
+    ];
+  });
+  return out.sort((a, b) => compareConsumerCategories(a.category, b.category));
+}
+
+/**
+ * Every library row matching the search and category, as slugs in display
+ * order. Reads past the 1,000-row cap in chunks: a single request used to
+ * stop at 1,000 rows and under-count the categories.
+ */
+export async function fetchLibraryIndex(params: {
+  search: string;
+  category: string;
+}): Promise<LibraryIndexRow[]> {
+  const consumer = resolveConsumerCategory(params.category);
+  const searchFilter = buildSearchFilter(params.search);
+  const rows: { slug: string | null; category: string | null }[] = [];
+  for (let offset = 0; ; offset += POSTGREST_MAX_ROWS) {
+    let query = supabase
+      .from("biomarker_library_public")
+      .select("slug, category")
+      .order("biomarker_name", { ascending: true })
+      .order("id", { ascending: true })
+      .range(offset, offset + POSTGREST_MAX_ROWS - 1);
+    if (consumer) {
+      const parts = categoryFilterParts(consumer);
+      if (parts.inRaw) query = query.in("category", parts.inRaw);
+      if (parts.or) query = query.or(parts.or);
+      if (parts.notSlugs) query = query.not("slug", "in", parts.notSlugs);
+    }
+    if (searchFilter) query = query.or(searchFilter);
+    const { data, error } = await query;
+    if (error) throw error;
+    rows.push(...(data ?? []));
+    if ((data ?? []).length < POSTGREST_MAX_ROWS) break;
+  }
+  return orderLibraryIndex(rows, consumer ?? undefined);
+}
+
+export interface LibraryCategoryCount {
+  label: string;
+  count: number;
+}
+export interface LibrarySummary {
+  /** Entries in the main list (allergens and infection markers excluded). */
+  biomarkerTotal: number;
+  /** Entries in the allergens and infection markers section. */
+  otherTotal: number;
+  /** Main-list consumer categories with entries, in display order. */
+  categories: LibraryCategoryCount[];
+}
+
+export function summariseLibraryIndex(rows: LibraryIndexRow[]): LibrarySummary {
+  const counts = new Map<string, number>();
+  let otherTotal = 0;
+  rows.forEach((r) => {
+    if (r.separate) {
+      otherTotal += 1;
+      return;
+    }
+    counts.set(r.category, (counts.get(r.category) ?? 0) + 1);
+  });
+  const categories = Array.from(counts.entries())
+    .map(([label, count]) => ({ label, count }))
+    .sort((a, b) => compareConsumerCategories(a.label, b.label));
+  return {
+    biomarkerTotal: rows.length - otherTotal,
+    otherTotal,
+    categories,
+  };
+}
+
+/** Rows for one list. A chosen category shows all its rows in the main list. */
+export function scopeLibraryIndex(
+  rows: LibraryIndexRow[],
+  scope: LibraryScope,
+  category: string,
+): LibraryIndexRow[] {
+  if (category) return scope === "biomarkers" ? rows : [];
+  return rows.filter((r) => (scope === "other" ? r.separate : !r.separate));
+}
+
+export async function fetchLibraryEntriesBySlugs(
+  slugs: string[],
+): Promise<LibraryEntry[]> {
+  if (slugs.length === 0) return [];
   const { data, error } = await supabase
     .from("biomarker_library_public")
-    .select("category")
-    .not("category", "is", null)
-    .range(0, 4999);
+    .select(LIBRARY_COLUMNS)
+    .in("slug", slugs);
   if (error) throw error;
-  const set = new Set<string>();
-  (data ?? []).forEach((r) => {
-    const c = clean(r.category);
-    if (c) set.add(c);
+  const bySlug = new Map<string, LibraryEntry>();
+  (data ?? []).forEach((row) => {
+    const entry = toLibraryEntry(row);
+    if (entry) bySlug.set(entry.slug, entry);
   });
-  return Array.from(set).sort((a, b) => a.localeCompare(b));
+  return slugs.flatMap((slug) => {
+    const e = bySlug.get(slug);
+    return e ? [e] : [];
+  });
+}
+
+export function pageOfIndex(
+  rows: LibraryIndexRow[],
+  offset: number,
+): { slugs: string[]; total: number; nextOffset: number | null } {
+  const slugs = rows
+    .slice(offset, offset + BIOMARKER_PAGE_SIZE)
+    .map((r) => r.slug);
+  const next = offset + BIOMARKER_PAGE_SIZE;
+  return {
+    slugs,
+    total: rows.length,
+    nextOffset: next < rows.length ? next : null,
+  };
 }
 
 export async function fetchLibraryEntryBySlug(
@@ -177,6 +303,18 @@ export async function fetchLibraryEntryBySlug(
   return data ? toLibraryEntry(data) : null;
 }
 
+export const libraryIndexQuery = (search: string, category: string) =>
+  queryOptions({
+    queryKey: ["biomarker-library", "index", search, category],
+    queryFn: () => fetchLibraryIndex({ search, category }),
+  });
+
+export const librarySummaryQuery = () =>
+  queryOptions({
+    ...libraryIndexQuery("", ""),
+    select: summariseLibraryIndex,
+  });
+
 export const libraryPagesQuery = (
   search: string,
   category: string,
@@ -184,16 +322,19 @@ export const libraryPagesQuery = (
 ) =>
   infiniteQueryOptions({
     queryKey: ["biomarker-library", "pages", search, category, scope],
-    queryFn: ({ pageParam }) =>
-      fetchLibraryPage({ search, category, offset: pageParam, scope }),
+    queryFn: async ({ pageParam, client }): Promise<LibraryPage> => {
+      const index = await client.ensureQueryData(
+        libraryIndexQuery(search, category),
+      );
+      const page = pageOfIndex(
+        scopeLibraryIndex(index, scope, category),
+        pageParam,
+      );
+      const entries = await fetchLibraryEntriesBySlugs(page.slugs);
+      return { entries, total: page.total, nextOffset: page.nextOffset };
+    },
     initialPageParam: 0,
     getNextPageParam: (last: LibraryPage) => last.nextOffset ?? undefined,
-  });
-
-export const libraryCategoriesQuery = () =>
-  queryOptions({
-    queryKey: ["biomarker-library", "categories"],
-    queryFn: fetchLibraryCategories,
   });
 
 export const libraryEntryQuery = (slug: string) =>
@@ -266,25 +407,34 @@ export interface BiomarkerProviderLink {
   testCount: number;
 }
 
+/**
+ * Tests per provider for a biomarker, counted from the same rows the
+ * /compare?biomarker= page lists (CompareService.getBiomarkerTestRows):
+ * active tests from supported providers, junk rows removed.
+ */
 export async function fetchBiomarkerProviders(
   biomarkerId: string,
 ): Promise<BiomarkerProviderLink[]> {
-  const { data, error } = await supabase
-    .from("biomarker_provider_comparison")
-    .select("provider_id, provider_test_id")
-    .eq("biomarker_id", biomarkerId)
-    .range(0, 1999);
-  if (error) throw error;
+  const rows = await CompareService.getBiomarkerTestRows(biomarkerId);
+  return countTestsByProvider(rows);
+}
+
+export function countTestsByProvider(
+  rows: { id: string; provider_id: string }[],
+): BiomarkerProviderLink[] {
   const byProvider = new Map<string, Set<string>>();
-  (data ?? []).forEach((r) => {
-    if (!r.provider_id || !r.provider_test_id) return;
+  rows.forEach((r) => {
+    if (!r.provider_id || !r.id) return;
     const set = byProvider.get(r.provider_id) ?? new Set<string>();
-    set.add(r.provider_test_id);
+    set.add(r.id);
     byProvider.set(r.provider_id, set);
   });
   return Array.from(byProvider.entries())
     .map(([providerId, tests]) => ({ providerId, testCount: tests.size }))
-    .sort((a, b) => b.testCount - a.testCount);
+    .sort(
+      (a, b) =>
+        b.testCount - a.testCount || a.providerId.localeCompare(b.providerId),
+    );
 }
 
 export const biomarkerProvidersQuery = (biomarkerId: string) =>
@@ -294,8 +444,30 @@ export const biomarkerProvidersQuery = (biomarkerId: string) =>
     enabled: biomarkerId.length > 0,
   });
 
+/** Link from a biomarker card to exactly the tests it counted. */
 export const biomarkerProviderCompareHref = (
-  biomarkerName: string,
-  providerId: string,
-): string =>
-  `/compare?search=${encodeURIComponent(biomarkerName)}&provider=${encodeURIComponent(providerId)}`;
+  biomarkerId: string,
+  providerId?: string | null,
+): string => biomarkerCompareHref(biomarkerId, providerId);
+
+/** Name of a library entry, for the /compare?biomarker= heading. */
+export async function fetchLibraryEntryNameById(
+  id: string,
+): Promise<{ id: string; slug: string; name: string } | null> {
+  const { data, error } = await supabase
+    .from("biomarker_library_public")
+    .select("id, slug, biomarker_name")
+    .eq("id", id)
+    .maybeSingle();
+  if (error) throw error;
+  if (!data?.id || !data.slug || !data.biomarker_name) return null;
+  return { id: data.id, slug: data.slug, name: data.biomarker_name };
+}
+
+export const libraryEntryNameQuery = (id: string) =>
+  queryOptions({
+    queryKey: ["biomarker-library", "name", id],
+    queryFn: () => fetchLibraryEntryNameById(id),
+    enabled: id.length > 0,
+    staleTime: 30 * 60 * 1000,
+  });
