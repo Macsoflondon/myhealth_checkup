@@ -13,7 +13,7 @@ const DISPLAY_LABELS: Readonly<Record<string, string>> = {
   "Thyroid Tests": "Thyroid tests",
   "Female Hormone Tests": "Female hormone tests",
   "Menopause Tests": "Menopause tests",
-  "Sports & Fitness": "Sports & fitness",
+  "Sports & Fitness": "Fitness tests",
   "Sports Performance Tests": "Sports performance tests",
   "Fertility - Prenatal": "Fertility - prenatal",
   "Cancer Screening": "Cancer screening",
