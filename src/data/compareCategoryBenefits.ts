@@ -20,6 +20,7 @@ import {
   Flame,
   LucideIcon,
 } from "lucide-react";
+import { capitaliseFirst, labelMidSentence, withoutTestsSuffix } from "@/lib/display-label";
 import { getCategoryDisplayName } from "@/utils/categoryTaglines";
 
 export interface CompareBenefit {
@@ -35,7 +36,7 @@ export interface CompareHeader {
 
 const MAP: Record<string, CompareHeader> = {
   "womens-health": {
-    title: "Women's Health Blood Tests",
+    title: "Women's health blood tests",
     benefits: [
       {
         icon: Heart,
@@ -44,27 +45,27 @@ const MAP: Record<string, CompareHeader> = {
       },
       {
         icon: Baby,
-        title: "Fertility Planning",
+        title: "Fertility planning",
         description: "Comprehensive fertility and reproductive insights",
       },
       {
         icon: Users,
-        title: "Lifelong Wellness",
+        title: "Lifelong wellness",
         description: "Monitor and optimise health through every life stage",
       },
     ],
   },
   "mens-health": {
-    title: "Men's Health Blood Tests",
+    title: "Men's health blood tests",
     benefits: [
       {
         icon: Activity,
-        title: "Performance & Energy",
+        title: "Performance & energy",
         description: "Track testosterone, vitality and athletic markers",
       },
       {
         icon: Shield,
-        title: "Prostate & Risk",
+        title: "Prostate & risk",
         description: "PSA and key screening for early detection",
       },
       {
@@ -75,207 +76,207 @@ const MAP: Record<string, CompareHeader> = {
     ],
   },
   hormones: {
-    title: "Hormone Blood Tests",
+    title: "Hormone blood tests",
     benefits: [
       {
         icon: Scale,
-        title: "Understand Your Balance",
+        title: "Understand your balance",
         description: "Identify hormonal imbalances affecting mood and energy",
       },
       {
         icon: TrendingUp,
-        title: "Track Changes",
+        title: "Track changes",
         description: "Monitor levels with age, lifestyle or treatment",
       },
       {
         icon: Sparkles,
-        title: "Personalised Insights",
+        title: "Personalised insights",
         description: "Actionable recommendations from your hormone profile",
       },
     ],
   },
   thyroid: {
-    title: "Thyroid Blood Tests",
+    title: "Thyroid blood tests",
     benefits: [
       {
         icon: Activity,
-        title: "Full Thyroid Picture",
+        title: "Full thyroid picture",
         description: "TSH, T3, T4 and antibodies in a single panel",
       },
       {
         icon: Zap,
-        title: "Energy & Metabolism",
+        title: "Energy & metabolism",
         description: "Explain fatigue, weight or temperature changes",
       },
       {
         icon: TrendingUp,
-        title: "Treatment Tracking",
+        title: "Treatment tracking",
         description: "Monitor thyroid function and medication response",
       },
     ],
   },
   "general-health": {
-    title: "General Health Blood Tests",
+    title: "General health blood tests",
     benefits: [
       {
         icon: Stethoscope,
-        title: "Whole-Body Overview",
+        title: "Whole-body overview",
         description: "Liver, kidney, blood and metabolic markers in one test",
       },
       {
         icon: Shield,
-        title: "Early Detection",
+        title: "Early detection",
         description: "Spot issues before symptoms develop",
       },
       {
         icon: TrendingUp,
-        title: "Yearly Baseline",
+        title: "Yearly baseline",
         description: "Build a year-on-year picture of your health",
       },
     ],
   },
   fertility: {
-    title: "Fertility Blood Tests",
+    title: "Fertility blood tests",
     benefits: [
       {
         icon: Baby,
-        title: "Reproductive Insight",
+        title: "Reproductive insight",
         description: "Key hormones for conception planning",
       },
       {
         icon: Dna,
-        title: "Ovarian Reserve",
+        title: "Ovarian reserve",
         description: "AMH and related markers for egg reserve",
       },
       {
         icon: Target,
-        title: "Inform Next Steps",
+        title: "Inform next steps",
         description: "Decide on timing, treatment or specialist support",
       },
     ],
   },
   "heart-health": {
-    title: "Heart Health Blood Tests",
+    title: "Heart health blood tests",
     benefits: [
       {
         icon: Heart,
-        title: "Cardiac Risk Profile",
+        title: "Cardiac risk profile",
         description: "Cholesterol, lipids and inflammation markers",
       },
       {
         icon: Activity,
-        title: "Early Warning",
+        title: "Early warning",
         description: "Detect issues before symptoms appear",
       },
       {
         icon: TrendingUp,
-        title: "Track Improvements",
+        title: "Track improvements",
         description: "Measure lifestyle and treatment impact",
       },
     ],
   },
   diabetes: {
-    title: "Diabetes Blood Tests",
+    title: "Diabetes blood tests",
     benefits: [
       {
         icon: Droplet,
-        title: "Blood Sugar Control",
+        title: "Blood sugar control",
         description: "HbA1c and glucose for diabetes screening",
       },
       {
         icon: Shield,
-        title: "Prevention Focus",
+        title: "Prevention focus",
         description: "Catch prediabetes early",
       },
       {
         icon: TrendingUp,
-        title: "Manage & Monitor",
+        title: "Manage & monitor",
         description: "Track control and treatment response",
       },
     ],
   },
   vitamins: {
-    title: "Vitamin & Mineral Blood Tests",
+    title: "Vitamin & mineral blood tests",
     benefits: [
       {
         icon: Sun,
-        title: "Spot Deficiencies",
+        title: "Spot deficiencies",
         description: "Vitamin D, B12, iron and more",
       },
       {
         icon: Apple,
-        title: "Optimise Nutrition",
+        title: "Optimise nutrition",
         description: "Tailor diet and supplements to your levels",
       },
       {
         icon: Zap,
-        title: "Restore Energy",
+        title: "Restore energy",
         description: "Address fatigue and immunity gaps",
       },
     ],
   },
   "cancer-screening": {
-    title: "Cancer Screening Blood Tests",
+    title: "Cancer screening blood tests",
     benefits: [
       {
         icon: Microscope,
-        title: "Early Detection",
+        title: "Early detection",
         description: "Biomarker screening for common cancers",
       },
       {
         icon: Shield,
-        title: "Peace of Mind",
+        title: "Peace of mind",
         description: "Proactive checks alongside NHS screening",
       },
       {
         icon: Target,
-        title: "Targeted Markers",
+        title: "Targeted markers",
         description: "Specific tumour and risk markers",
       },
     ],
   },
   menopause: {
-    title: "Menopause Blood Tests",
+    title: "Menopause blood tests",
     benefits: [
       {
         icon: Sparkles,
-        title: "Hormone Clarity",
+        title: "Hormone clarity",
         description: "FSH, LH and oestrogen for menopausal status",
       },
       {
         icon: Flame,
-        title: "Symptom Insight",
+        title: "Symptom insight",
         description: "Understand hot flushes, sleep and mood changes",
       },
       {
         icon: Target,
-        title: "Confident Decisions",
+        title: "Confident decisions",
         description: "Inform HRT and lifestyle choices with data",
       },
     ],
   },
   "female-fertility": {
-    title: "Female Fertility Blood Tests",
+    title: "Female fertility blood tests",
     benefits: [
       {
         icon: Dna,
-        title: "Ovarian Reserve",
+        title: "Ovarian reserve",
         description: "AMH and key reproductive hormones",
       },
       {
         icon: Baby,
-        title: "Cycle Health",
+        title: "Cycle health",
         description: "Understand ovulation and cycle hormones",
       },
       {
         icon: Target,
-        title: "Conception Planning",
+        title: "Conception planning",
         description: "Data to guide your fertility journey",
       },
     ],
   },
   "female-hormones": {
-    title: "Female Hormone Blood Tests",
+    title: "Female hormone blood tests",
     benefits: [
       {
         icon: Scale,
@@ -284,58 +285,58 @@ const MAP: Record<string, CompareHeader> = {
       },
       {
         icon: Heart,
-        title: "Mood & Energy",
+        title: "Mood & energy",
         description: "Link symptoms back to hormonal patterns",
       },
       {
         icon: TrendingUp,
-        title: "Track Over Time",
+        title: "Track over time",
         description: "Monitor cycles, perimenopause and treatment",
       },
     ],
   },
   pcos: {
-    title: "PCOS Blood Tests",
+    title: "PCOS blood tests",
     benefits: [
       {
         icon: Scale,
-        title: "Hormonal Profile",
+        title: "Hormonal profile",
         description: "Testosterone, LH/FSH ratio and key markers",
       },
       {
         icon: Droplet,
-        title: "Insulin & Metabolism",
+        title: "Insulin & metabolism",
         description: "Glucose and insulin resistance markers",
       },
       {
         icon: Target,
-        title: "Manage Symptoms",
+        title: "Manage symptoms",
         description: "Inform treatment and lifestyle changes",
       },
     ],
   },
   "male-hormones": {
-    title: "Male Hormone Blood Tests",
+    title: "Male hormone blood tests",
     benefits: [
       {
         icon: Activity,
-        title: "Testosterone Levels",
+        title: "Testosterone levels",
         description: "Total and free testosterone with key partners",
       },
       {
         icon: Zap,
-        title: "Energy & Drive",
+        title: "Energy & drive",
         description: "Link mood, libido and performance to hormones",
       },
       {
         icon: TrendingUp,
-        title: "Track & Optimise",
+        title: "Track & optimise",
         description: "Monitor TRT or lifestyle changes",
       },
     ],
   },
   "male-fertility": {
-    title: "Male Fertility Blood Tests",
+    title: "Male fertility blood tests",
     benefits: [
       {
         icon: Dna,
@@ -344,72 +345,72 @@ const MAP: Record<string, CompareHeader> = {
       },
       {
         icon: Microscope,
-        title: "Sperm Health Context",
+        title: "Sperm health context",
         description: "Markers that influence sperm quality",
       },
       {
         icon: Target,
-        title: "Inform Next Steps",
+        title: "Inform next steps",
         description: "Data to guide fertility planning",
       },
     ],
   },
   testosterone: {
-    title: "Testosterone Blood Tests",
+    title: "Testosterone blood tests",
     benefits: [
       {
         icon: Activity,
-        title: "Total & Free",
+        title: "Total & free",
         description: "Full testosterone picture with SHBG",
       },
       {
         icon: Zap,
-        title: "Vitality Markers",
+        title: "Vitality markers",
         description: "Energy, mood and performance context",
       },
       {
         icon: TrendingUp,
-        title: "TRT Monitoring",
+        title: "TRT monitoring",
         description: "Track therapy safely over time",
       },
     ],
   },
   prostate: {
-    title: "Prostate Blood Tests",
+    title: "Prostate blood tests",
     benefits: [
       {
         icon: Shield,
-        title: "PSA Screening",
+        title: "PSA screening",
         description: "Early detection marker for prostate health",
       },
       {
         icon: Microscope,
-        title: "Risk Insight",
+        title: "Risk insight",
         description: "Context for family history and age",
       },
       {
         icon: Target,
-        title: "Specialist Referral",
+        title: "Specialist referral",
         description: "Inform conversations with your GP",
       },
     ],
   },
   amh: {
-    title: "AMH Blood Tests",
+    title: "AMH blood tests",
     benefits: [
       {
         icon: Dna,
-        title: "Ovarian Reserve",
+        title: "Ovarian reserve",
         description: "Anti-Müllerian Hormone for egg reserve",
       },
       {
         icon: Baby,
-        title: "Fertility Planning",
+        title: "Fertility planning",
         description: "Inform conception and IVF timing",
       },
       {
         icon: Target,
-        title: "Personal Baseline",
+        title: "Personal baseline",
         description: "Track changes over time",
       },
     ],
@@ -419,17 +420,17 @@ const MAP: Record<string, CompareHeader> = {
 const FALLBACK_BENEFITS: [CompareBenefit, CompareBenefit, CompareBenefit] = [
   {
     icon: Shield,
-    title: "Trusted Providers",
+    title: "Trusted providers",
     description: "UKAS-accredited labs and CQC-regulated clinics",
   },
   {
     icon: FlaskConical,
-    title: "Transparent Pricing",
+    title: "Transparent pricing",
     description: "Clear, side-by-side test comparisons",
   },
   {
     icon: Zap,
-    title: "Typical Fast Results",
+    title: "Typical fast results",
     description: "Most results returned in a few working days",
   },
 ];
@@ -437,7 +438,7 @@ const FALLBACK_BENEFITS: [CompareBenefit, CompareBenefit, CompareBenefit] = [
 export function getCompareHeader(slug?: string | null): CompareHeader {
   if (!slug || slug === "all") {
     return {
-      title: "Compare Private Blood Tests",
+      title: "Compare private blood tests",
       benefits: FALLBACK_BENEFITS,
     };
   }
@@ -445,7 +446,7 @@ export function getCompareHeader(slug?: string | null): CompareHeader {
   if (hit) return hit;
   const display = getCategoryDisplayName(slug);
   return {
-    title: `${display} Blood Tests`,
+    title: `${capitaliseFirst(labelMidSentence(withoutTestsSuffix(display)))} blood tests`,
     benefits: FALLBACK_BENEFITS,
   };
 }

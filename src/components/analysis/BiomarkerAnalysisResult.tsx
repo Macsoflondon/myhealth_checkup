@@ -86,7 +86,7 @@ function getStatusBadge(status: BiomarkerAnalysisItem["status"]) {
     low: "Low",
     high: "High",
     "borderline-low": "Borderline Low",
-    "borderline-high": "Borderline High",
+    "borderline-high": "Borderline high",
     unknown: "Unknown",
   };
 
@@ -246,7 +246,7 @@ export function BiomarkerAnalysisResult({
 
                   {/* Explanation */}
                   <div className="space-y-2">
-                    <h4 className="text-sm font-medium">What This Means</h4>
+                    <h4 className="text-sm font-medium">What this means</h4>
                     <p className="text-sm text-muted-foreground">
                       {biomarker.explanation}
                     </p>
@@ -256,7 +256,7 @@ export function BiomarkerAnalysisResult({
                   {biomarker.implications && (
                     <div className="space-y-2">
                       <h4 className="text-sm font-medium">
-                        Potential Implications
+                        Potential implications
                       </h4>
                       <p className="text-sm text-muted-foreground">
                         {biomarker.implications}

@@ -24,6 +24,9 @@ export type AffiliatePlacement = (typeof AFFILIATE_PLACEMENTS)[number];
 
 export const AFFILIATE_CLICK_ENDPOINT = "/api/public/affiliate-click";
 
+const TEST_UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export type AffiliateClickPayload = {
   click_id: string;
   provider_id: string;
@@ -175,11 +178,34 @@ export function handleAffiliateAnchorClick(
     if (!providerId) return null;
 
     anchor.dataset.affiliateHref = original;
-    const clickId = newClickId();
-    anchor.href = buildAffiliateUrl(original, providerId, clickId);
-
     const declared = anchor.closest<HTMLElement>("[data-affiliate-placement]")
       ?.dataset.affiliatePlacement;
+    const placement = isAffiliatePlacement(declared)
+      ? declared
+      : inferPlacement(pathname);
+    const testIdAttr =
+      anchor.closest<HTMLElement>("[data-affiliate-test-id]")?.dataset
+        .affiliateTestId ?? null;
+    const clickId = newClickId();
+    // Catalogue tests go through the server redirect, which records the click
+    // and sends the visitor to the catalogue's verified URL.
+    if (testIdAttr && TEST_UUID_RE.test(testIdAttr)) {
+      const q = new URLSearchParams({
+        test: testIdAttr,
+        pl: placement,
+        src: sanitiseSourcePage(pathname),
+      });
+      anchor.href = `${AFFILIATE_CLICK_ENDPOINT}?${q.toString()}`;
+      return {
+        click_id: clickId,
+        provider_id: providerId,
+        test_id: testIdAttr,
+        source_page: sanitiseSourcePage(pathname),
+        placement,
+        destination_host: url.hostname.toLowerCase(),
+      };
+    }
+    anchor.href = buildAffiliateUrl(original, providerId, clickId);
     const payload: AffiliateClickPayload = {
       click_id: clickId,
       provider_id: providerId,

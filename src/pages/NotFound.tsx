@@ -25,10 +25,10 @@ const POPULAR_DESTINATIONS = [
 ];
 
 const POPULAR_CATEGORIES = [
-  { label: "General Health", href: "/test/general-health" },
-  { label: "Heart Health", href: "/tests/heart" },
+  { label: "General health", href: "/tests/general-health" },
+  { label: "Heart health", href: "/tests/heart" },
   { label: "Hormones", href: "/hormones" },
-  { label: "Thyroid", href: "/thyroid" },
+  { label: "Thyroid", href: "/tests/thyroid" },
   { label: "Diabetes", href: "/tests/diabetes" },
   { label: "Vitamins", href: "/tests/vitamins" },
 ];
@@ -55,7 +55,7 @@ const NotFound = () => {
   return (
     <>
       <Helmet>
-        <title>Page Not Found (404) | myhealth checkup</title>
+        <title>Page not found (404) | myhealth checkup</title>
         <meta name="robots" content="noindex, follow" />
         {/* Honoured by Prerender.io / Rendertron / Cloudflare prerender — promotes
             this SPA shell to a real HTTP 404 for crawlers that pre-render. */}

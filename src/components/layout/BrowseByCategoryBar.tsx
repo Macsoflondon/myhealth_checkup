@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { displayLabel } from "@/lib/display-label";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "@/lib/router-compat";
 
@@ -42,6 +43,7 @@ export default function BrowseByCategoryBar({
   const [scrolled, setScrolled] = useState(false);
   const mobileBarRef = useRef<HTMLDivElement>(null);
   const [mobileBarOut, setMobileBarOut] = useState(false);
+  const stickyTriggerRef = useRef<HTMLButtonElement>(null);
   const { pathname } = useLocation();
   const [hydrated, setHydrated] = useState(false);
   const items = categoryNavigationItems;
@@ -97,6 +99,15 @@ export default function BrowseByCategoryBar({
       <SheetContent
         side="right"
         id="mobile-menu"
+        // Opened from the floating trigger mid-page: return focus there
+        // without scrolling, instead of to the brand-bar trigger at the top.
+        onCloseAutoFocus={(event) => {
+          if (!mobileBarOut) return;
+          event.preventDefault();
+          requestAnimationFrame(() =>
+            stickyTriggerRef.current?.focus({ preventScroll: true }),
+          );
+        }}
         className="w-[85vw] max-w-[340px] bg-[#f7f7f8] border-l border-[#081129]/10 p-0 flex flex-col"
       >
         <SheetHeader className="px-4 py-4 border-b border-[#081129]/10 text-left">
@@ -120,7 +131,7 @@ export default function BrowseByCategoryBar({
             </div>
             <div>
               <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/70 mb-3">
-                Test Categories
+                Test categories
               </h3>
               <div className="grid grid-cols-1 gap-2">
                 {items.map((item) => {
@@ -154,12 +165,14 @@ export default function BrowseByCategoryBar({
                             />
                           </span>
                           <span className="text-sm font-semibold text-[#081129] font-[Montserrat] truncate">
-                            {item.name}
+                            {displayLabel(item.name)}
                           </span>
                         </Link>
                         {hasSubs && (
                           <button
                             type="button"
+                            aria-label={`${isExpanded ? "Hide" : "Show"} ${displayLabel(item.name)} subcategories`}
+                            aria-expanded={isExpanded}
                             onClick={() =>
                               setMobileExpanded((cur) =>
                                 cur === item.name ? null : item.name,
@@ -186,7 +199,9 @@ export default function BrowseByCategoryBar({
                                   className="w-1.5 h-1.5 rounded-full shrink-0"
                                   style={{ background: color }}
                                 />
-                                <span className="truncate">{sub.name}</span>
+                                <span className="truncate">
+                                  {displayLabel(sub.name)}
+                                </span>
                               </Link>
                             </li>
                           ))}
@@ -226,7 +241,7 @@ export default function BrowseByCategoryBar({
                           />
                         </span>
                         <span className="text-sm font-semibold text-[#081129] font-[Montserrat] truncate">
-                          {item.name}
+                          {displayLabel(item.name)}
                         </span>
                       </Link>
                     );
@@ -255,7 +270,7 @@ export default function BrowseByCategoryBar({
             <div className="flex flex-col min-w-0 pr-14">
               <Link
                 to="/"
-                className="flex items-center no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] leading-none whitespace-nowrap text-[clamp(24px,6.3vw,120px)] max-sm:text-[clamp(24px,7.6vw,40px)] xl:text-[clamp(24px,8.2vw,120px)] py-1 md:py-2"
+                className="flex items-center no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] min-h-11 leading-none whitespace-nowrap text-[clamp(24px,6.3vw,120px)] max-sm:text-[clamp(24px,7.6vw,40px)] xl:text-[clamp(24px,8.2vw,120px)] py-1 md:py-2"
               >
                 <BrandWordmark />
               </Link>
@@ -308,6 +323,7 @@ export default function BrowseByCategoryBar({
               inert={!mobileBarOut || mobileOpen}
             >
               <button
+                ref={stickyTriggerRef}
                 type="button"
                 onClick={() => setMobileOpen(true)}
                 aria-label="Open menu"

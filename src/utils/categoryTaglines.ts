@@ -1,3 +1,4 @@
+import { capitaliseFirst } from "@/lib/display-label";
 /**
  * Category-specific taglines for test cards
  */
@@ -52,52 +53,49 @@ export function getCategoryTagline(category: string): string {
  * Display-friendly category names
  */
 export const categoryDisplayNames: Record<string, string> = {
-  hormones: "Hormone Tests",
-  "hormone-tests": "Hormone Tests",
-  "women's health": "Women's Health",
-  "womens-health": "Women's Health",
-  "men's health": "Men's Health",
-  "mens-health": "Men's Health",
-  fertility: "Fertility Tests",
-  "general health": "General Health",
-  "general-health": "General Health",
-  thyroid: "Thyroid Tests",
-  "cancer screening": "Cancer Screening",
-  "cancer-screening": "Cancer Screening",
-  nutrition: "Nutrition Tests",
-  "heart health": "Heart Health",
-  "heart-health": "Heart Health",
-  diabetes: "Diabetes Tests",
-  "sports-performance": "Sports Performance",
-  "sports-performance-tests": "Sports Performance Tests",
-  "fitness-health": "Sports-Fitness Health",
-  "at-home-tests": "At Home Test Kits",
-  "longevity-tests": "Longevity Tests",
-  "iron-tests": "Iron Tests",
-  "energy-tests": "Energy Tests",
-  "nutrition-tests": "Nutrition Tests",
-  "allergy-testing": "Allergy Testing",
-  "sexual-health": "Sexual Health",
-  "gp-monitoring": "GP Monitoring",
-  "antibody-tests": "Antibody Tests",
-  "infection-tests": "Infection Tests",
-  "immunity-tests": "Immunity Tests",
-  "autoimmunity-tests": "Autoimmunity Tests",
-  "liver-health": "Liver Health",
-  "kidney-health": "Kidney Health",
-  "weight-loss-tests": "Weight Loss Tests",
-  "popular-tests": "Popular Tests",
-  vitamins: "Vitamin and Mineral Tests",
-  "vitamin-mineral": "Vitamin and Mineral Tests",
+  hormones: "Hormone tests",
+  "hormone-tests": "Hormone tests",
+  "women's health": "Women's health",
+  "womens-health": "Women's health",
+  "men's health": "Men's health",
+  "mens-health": "Men's health",
+  fertility: "Fertility tests",
+  "general health": "General health",
+  "general-health": "General health",
+  thyroid: "Thyroid tests",
+  "cancer screening": "Cancer screening",
+  "cancer-screening": "Cancer screening",
+  nutrition: "Nutrition tests",
+  "heart health": "Heart health",
+  "heart-health": "Heart health",
+  diabetes: "Diabetes tests",
+  "sports-performance": "Sports performance",
+  "sports-performance-tests": "Sports performance tests",
+  "fitness-health": "Sports-fitness health",
+  "at-home-tests": "At home test kits",
+  "longevity-tests": "Longevity tests",
+  "iron-tests": "Iron tests",
+  "energy-tests": "Energy tests",
+  "nutrition-tests": "Nutrition tests",
+  "allergy-testing": "Allergy testing",
+  "sexual-health": "Sexual health",
+  "gp-monitoring": "GP monitoring",
+  "antibody-tests": "Antibody tests",
+  "infection-tests": "Infection tests",
+  "immunity-tests": "Immunity tests",
+  "autoimmunity-tests": "Autoimmunity tests",
+  "liver-health": "Liver health",
+  "kidney-health": "Kidney health",
+  "weight-loss-tests": "Weight loss tests",
+  "popular-tests": "Popular tests",
+  vitamins: "Vitamin and mineral tests",
+  "vitamin-mineral": "Vitamin and mineral tests",
 };
 
 export function getCategoryDisplayName(category: string): string {
   const normalised = category.toLowerCase().trim();
   return (
     categoryDisplayNames[normalised] ||
-    category
-      .split("-")
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(" ")
+    capitaliseFirst(category.split("-").join(" ").toLowerCase())
   );
 }

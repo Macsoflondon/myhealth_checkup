@@ -882,7 +882,7 @@ function GscTable({
 function PluginsButton() {
   return (
     <Button asChild variant="outline" size="sm" className="h-10">
-      <Link to="/control/plugins">Open Plugins</Link>
+      <Link to="/control/plugins">Open plugins</Link>
     </Button>
   );
 }

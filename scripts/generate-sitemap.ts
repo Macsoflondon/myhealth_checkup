@@ -528,12 +528,6 @@ const rawEntries: SitemapEntry[] = [
     priority: "0.6",
   },
   {
-    path: "/providers/medichecks",
-    lastmod: "2026-04-20",
-    changefreq: "weekly",
-    priority: "0.7",
-  },
-  {
     path: "/medichecks/mens-health",
     lastmod: "2026-04-20",
     changefreq: "monthly",
@@ -695,11 +689,6 @@ async function fetchDynamicEntries(): Promise<SitemapEntry[]> {
         path: `/provider/${providerId}`,
         changefreq: "weekly",
         priority: "0.8",
-      });
-      out.push({
-        path: `/provider/${providerId}/tests`,
-        changefreq: "weekly",
-        priority: "0.7",
       });
     }
 

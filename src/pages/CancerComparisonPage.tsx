@@ -119,18 +119,18 @@ export default function CancerComparisonPage() {
 
       <main className="min-h-screen bg-background">
         <PageBanner
-          title="Compare Cancer Screening Tests"
+          title="Compare cancer screening tests"
           subtitle="Compare cancer screening blood tests from trusted UK providers. Find the right test for prostate, ovarian, bowel, and other cancer markers."
         >
           <div className="flex flex-wrap gap-4 justify-center mt-6">
             <Badge variant="outline" className="text-white border-white/30">
               <Shield className="h-4 w-4 mr-1" />
-              UKAS Accredited Labs
+              UKAS accredited labs
             </Badge>
             {filteredTests.length > 0 && (
               <Badge variant="outline" className="text-white border-white/30">
                 {[...new Set(filteredTests.map((t) => t.providerId))].length}{" "}
-                Trusted Providers
+                Trusted providers
               </Badge>
             )}
             <Link
@@ -181,14 +181,14 @@ export default function CancerComparisonPage() {
             className="space-y-6"
           >
             <TabsList className="grid w-full max-w-md grid-cols-3">
-              <TabsTrigger value="browse">Browse Tests</TabsTrigger>
+              <TabsTrigger value="browse">Browse tests</TabsTrigger>
               <TabsTrigger value="compare" disabled={selectedTests.length < 2}>
                 Compare ({selectedTests.length})
               </TabsTrigger>
               <TabsTrigger value="biomarkers">Biomarkers</TabsTrigger>
             </TabsList>
 
-            {/* Browse Tests Tab */}
+            {/* Browse tests tab */}
             <TabsContent value="browse" className="space-y-6">
               {/* Selected Tests Bar */}
               {selectedTests.length > 0 && (
@@ -229,7 +229,7 @@ export default function CancerComparisonPage() {
                             className="whitespace-nowrap"
                             onClick={() => setActiveTab("compare")}
                           >
-                            Compare {selectedTests.length} Tests
+                            Compare {selectedTests.length} tests
                           </Button>
                         )}
                       </div>
@@ -375,7 +375,7 @@ export default function CancerComparisonPage() {
                 <>
                   <div className="flex justify-between items-center">
                     <h2 className="text-xl font-semibold">
-                      Side-by-Side Comparison
+                      Side-by-side comparison
                     </h2>
                     <SaveComparisonDialog
                       onSave={saveComparison}
@@ -408,7 +408,7 @@ export default function CancerComparisonPage() {
                 <Card className="border-dashed">
                   <CardContent className="py-8 text-center">
                     <p className="text-muted-foreground">
-                      Select tests from the "Browse Tests" tab to see detailed
+                      Select tests from the "Browse tests" tab to see detailed
                       biomarker coverage comparison.
                     </p>
                   </CardContent>

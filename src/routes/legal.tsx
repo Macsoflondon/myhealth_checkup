@@ -7,7 +7,7 @@ const LegalPage = lazy(() => import("@/pages/LegalPage"));
 export const Route = createFileRoute("/legal")({
   head: () =>
     buildRouteHead({
-      title: "Legal Information | myhealth checkup",
+      title: "Legal information | myhealth checkup",
       description:
         "Legal notices for myhealth checkup, including company information, terms of use and regulatory disclosures.",
       path: "/legal",

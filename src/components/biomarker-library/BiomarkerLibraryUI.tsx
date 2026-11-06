@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { labelMidSentence, toSentenceCase } from "@/lib/display-label";
 import {
   useInfiniteQuery,
   useQuery,
@@ -558,7 +559,10 @@ const BiomarkerCard = ({
   isExpanded: boolean;
   onToggle: () => void;
 }) => {
-  const subtitle = [entry.consumerCategory, entry.unit]
+  const subtitle = [
+    entry.consumerCategory ? toSentenceCase(entry.consumerCategory) : null,
+    entry.unit,
+  ]
     .filter(Boolean)
     .join(" · ");
   const primaryText = entry.whatItMeasures ?? entry.description;
@@ -847,7 +851,7 @@ export default function BiomarkerLibraryUI() {
   return (
     <div
       style={{
-        fontFamily: "'Lato','Helvetica Neue',sans-serif",
+        fontFamily: "Montserrat,'Helvetica Neue',sans-serif",
         background: COLORS.lightBg,
         minHeight: "100vh",
       }}
@@ -945,7 +949,7 @@ export default function BiomarkerLibraryUI() {
               <option value="">All categories</option>
               {categories.map((c) => (
                 <option key={c.label} value={c.label}>
-                  {c.label} ({c.count})
+                  {toSentenceCase(c.label)} ({c.count})
                 </option>
               ))}
             </select>
@@ -973,7 +977,7 @@ export default function BiomarkerLibraryUI() {
             Showing{" "}
             <strong style={{ color: COLORS.navy }}>{loaded.length}</strong> of{" "}
             <strong style={{ color: COLORS.navy }}>{total}</strong> biomarkers
-            {category ? ` in ${category}` : ""}
+            {category ? ` in ${labelMidSentence(category)}` : ""}
             {search ? ` matching "${search}"` : ""}
           </p>
         )}
@@ -1019,7 +1023,7 @@ export default function BiomarkerLibraryUI() {
                 {categoryIcon(cat)}
               </div>
               <h2 className="type-section-title" style={{ color: COLORS.navy }}>
-                {cat}
+                {toSentenceCase(cat)}
               </h2>
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>

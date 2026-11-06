@@ -9,7 +9,7 @@ const BiomarkerGuidesIndexPage = lazy(
 export const Route = createFileRoute("/guides/")({
   head: () =>
     buildRouteHead({
-      title: "Biomarker Guides | myhealth checkup",
+      title: "Biomarker guides | myhealth checkup",
       description:
         "In-depth guides explaining what each biomarker measures, why it matters and how to interpret private test results.",
       path: "/guides",

@@ -65,7 +65,7 @@ const cellBase = (bg: string): React.CSSProperties => ({
   background: bg,
   minWidth: 160,
   fontSize: 14,
-  fontFamily: "'DM Sans', system-ui, sans-serif",
+  fontFamily: "Montserrat, system-ui, sans-serif",
   padding: "14px 16px",
   color: NAVY,
   textAlign: "center",
@@ -138,7 +138,7 @@ const PlaceholderHeader: React.FC = () => (
     <div
       className="mt-2"
       style={{
-        fontFamily: "'DM Sans', system-ui, sans-serif",
+        fontFamily: "Montserrat, system-ui, sans-serif",
         fontSize: 12,
         color: "rgba(255,255,255,0.5)",
       }}
@@ -296,7 +296,7 @@ export const ProviderComparisonTable: React.FC<
                         {(() => {
                           const logo = resolveLogo(test);
                           return logo ? (
-                            <img
+                            <img width={160} height={64}
                               src={logo}
                               alt={`${test.provider} logo`}
                               className="max-w-full max-h-full object-contain"
@@ -326,7 +326,7 @@ export const ProviderComparisonTable: React.FC<
                         <div
                           className="provider-test-name line-clamp-2 mt-0.5"
                           style={{
-                            fontFamily: "'DM Sans', system-ui, sans-serif",
+                            fontFamily: "Montserrat, system-ui, sans-serif",
                             fontSize: 12,
                             color: "#ffffff",
                             opacity: 0.85,
@@ -403,7 +403,7 @@ export const ProviderComparisonTable: React.FC<
               render={(t) => <span>{t.features?.turnaround || "—"}</span>}
             />
             <Row
-              label="Collection Method"
+              label="Collection method"
               index={2}
               slots={slots}
               render={(t) => {
@@ -430,7 +430,7 @@ export const ProviderComparisonTable: React.FC<
               }}
             />
             <Row
-              label="Additional Collection Fees"
+              label="Additional collection fees"
               index={3}
               slots={slots}
               render={(t) => {
@@ -480,7 +480,7 @@ export const ProviderComparisonTable: React.FC<
               }}
             />
             <Row
-              label="Total Expected Cost"
+              label="Total expected cost"
               index={4}
               slots={slots}
               render={(t) => {
@@ -502,7 +502,7 @@ export const ProviderComparisonTable: React.FC<
               }}
             />
             <Row
-              label="Clinical Review"
+              label="Clinical review"
               index={5}
               slots={slots}
               render={(t) => {

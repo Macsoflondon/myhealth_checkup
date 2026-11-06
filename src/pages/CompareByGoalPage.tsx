@@ -35,7 +35,7 @@ const CompareByGoalPage = () => {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "MedicalWebPage",
-            name: "Compare Tests by Goal",
+            name: "Compare tests by goal",
             description: "Choose blood tests based on your health goals.",
             url: "https://myhealthcheckup.co.uk/compare/goals",
           })}

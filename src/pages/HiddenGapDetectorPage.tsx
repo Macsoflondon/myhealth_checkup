@@ -7,10 +7,10 @@ const HiddenGapDetectorPage = () => {
   return (
     <>
       <Helmet>
-        <title>Hidden Gap Detector | myhealth checkup</title>
+        <title>Hidden gap detector | myhealth checkup</title>
         <meta
           name="description"
-          content="Discover which preventive health screenings you may be missing. Our AI-powered Hidden Gap Detector analyses your profile against NHS and NICE guidelines to identify health testing gaps."
+          content="Discover which preventive health screenings you may be missing. Our AI-powered Hidden gap detector analyses your profile against NHS and NICE guidelines to identify health testing gaps."
         />
         <meta
           name="keywords"
@@ -23,7 +23,7 @@ const HiddenGapDetectorPage = () => {
 
         <meta
           property="og:title"
-          content="Hidden Gap Detector | myhealth checkup"
+          content="Hidden gap detector | myhealth checkup"
         />
         <meta
           property="og:description"
@@ -38,7 +38,7 @@ const HiddenGapDetectorPage = () => {
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
-          content="Hidden Gap Detector | myhealth checkup"
+          content="Hidden gap detector | myhealth checkup"
         />
         <meta
           name="twitter:description"
@@ -49,7 +49,7 @@ const HiddenGapDetectorPage = () => {
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "WebApplication",
-            name: "Hidden Gap Detector",
+            name: "Hidden gap detector",
             description:
               "AI-powered preventive health gap analysis tool based on NHS and NICE screening guidelines",
             url: "https://myhealthcheckup.co.uk/hidden-gap-detector",

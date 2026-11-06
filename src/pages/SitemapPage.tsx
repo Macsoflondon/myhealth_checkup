@@ -22,55 +22,55 @@ interface SitemapSection {
 
 const siteStructure: SitemapSection[] = [
   {
-    title: "Main Pages",
+    title: "Main pages",
     icon: Home,
     links: [
       { name: "Home", path: "/" },
-      { name: "Compare Tests", path: "/compare" },
-      { name: "Test Categories", path: "/test-categories" },
-      { name: "Intelligent Search", path: "/search" },
-      { name: "How It Works", path: "/how-it-works" },
-      { name: "About Us", path: "/about" },
+      { name: "Compare tests", path: "/compare" },
+      { name: "Test categories", path: "/test-categories" },
+      { name: "Intelligent search", path: "/search" },
+      { name: "How it works", path: "/how-it-works" },
+      { name: "About us", path: "/about" },
     ],
   },
   {
-    title: "Health Testing Services",
+    title: "Health testing services",
     icon: FlaskConical,
     links: [
-      { name: "Cancer Screening", path: "/tests/cancer" },
-      { name: "Diabetes Testing", path: "/tests/diabetes" },
-      { name: "Heart Health", path: "/tests/heart" },
-      { name: "Vitamin Deficiency", path: "/tests/vitamins" },
-      { name: "Gut Health", path: "/tests/gut" },
-      { name: "Men's Health", path: "/tests/mens-health" },
-      { name: "Women's Health", path: "/tests/womens-health" },
+      { name: "Cancer screening", path: "/tests/cancer" },
+      { name: "Diabetes testing", path: "/tests/diabetes" },
+      { name: "Heart health", path: "/tests/heart" },
+      { name: "Vitamin deficiency", path: "/tests/vitamins" },
+      { name: "Gut health", path: "/tests/gut" },
+      { name: "Men's health", path: "/tests/mens-health" },
+      { name: "Women's health", path: "/tests/womens-health" },
     ],
   },
   {
-    title: "Information & Support",
+    title: "Information & support",
     icon: Info,
     links: [
       { name: "FAQs", path: "/faqs" },
-      { name: "Health Resources", path: "/blog" },
-      { name: "Contact Us", path: "/contact" },
+      { name: "Health resources", path: "/blog" },
+      { name: "Contact us", path: "/contact" },
       { name: "Partners", path: "/partners" },
     ],
   },
   {
-    title: "Legal & Compliance",
+    title: "Legal & compliance",
     icon: ShieldCheck,
     links: [
-      { name: "Privacy Policy", path: "/privacy-policy" },
-      { name: "Terms & Conditions", path: "/terms" },
-      { name: "Cookie Policy", path: "/cookies" },
+      { name: "Privacy policy", path: "/privacy-policy" },
+      { name: "Terms and conditions", path: "/terms" },
+      { name: "Cookie policy", path: "/cookies" },
       { name: "Accessibility", path: "/accessibility" },
     ],
   },
   {
-    title: "User Account",
+    title: "User account",
     icon: UserRound,
     links: [
-      { name: "Sign In / Register", path: "/auth" },
+      { name: "Sign in / register", path: "/auth" },
       { name: "Dashboard", path: "/health-dashboard" },
     ],
   },
@@ -85,8 +85,7 @@ const SitemapPage = () => {
       <Header />
       <main className="flex-grow bg-[#f7f9fc]">
         <PageBanner
-          title="Site"
-          accent="Map"
+          title="Site map"
           subtitle="Navigate our complete site structure and find exactly what you're looking for."
         />
 

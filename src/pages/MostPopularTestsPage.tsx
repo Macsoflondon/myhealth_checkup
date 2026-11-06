@@ -27,7 +27,7 @@ import { getProviderRating } from "@/constants/providerRatings";
 import { categoryMenuIconFor } from "@/components/header/menuIcons";
 
 const SEO = {
-  title: "Most Popular Tests | myhealth checkup",
+  title: "Most popular tests | myhealth checkup",
   description:
     "Discover our most popular health tests, trusted by thousands of customers. Compare the best-selling blood tests from UK providers.",
   keywords:
@@ -38,17 +38,17 @@ const SEO = {
 const HERO_BENEFITS = [
   {
     icon: Star,
-    title: "Trusted by Thousands",
+    title: "Trusted by thousands",
     description: "Our highest-rated tests chosen by customers across the UK",
   },
   {
     icon: TrendingUp,
-    title: "Comprehensive Insights",
+    title: "Comprehensive insights",
     description: "Thorough biomarker panels for a complete health picture",
   },
   {
     icon: Shield,
-    title: "Accredited Labs",
+    title: "Accredited labs",
     description: "All tests processed by UKAS-accredited laboratories",
   },
 ] as const;
@@ -72,12 +72,12 @@ const StatusShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
-        <CategoryStandardHero pillLabel="Most Popular" />
+        <CategoryStandardHero pillLabel="Most popular" />
         <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12 xl:px-16 bg-[#08122b] min-h-[60vh]">
           <div className="max-w-6xl mx-auto">{children}</div>
         </section>
         <CategoryPageBottom
-          benefitsTitle="Why Choose Our Most Popular Tests?"
+          benefitsTitle="Why choose our most popular tests?"
           benefits={[HERO_BENEFITS[0], HERO_BENEFITS[1], HERO_BENEFITS[2]]}
         />
       </main>
@@ -164,7 +164,7 @@ const MostPopularTestsPage = () => {
         providerId: t.provider_id,
         popular: idx < 3,
         badge: tag,
-        badgeColor: categoryMenuIconFor("Most Popular Tests").color,
+        badgeColor: categoryMenuIconFor("Most popular tests").color,
         provider: t.provider_name,
         priceNum: t.price,
         price: hasStartingPrice(t) ? `from £${t.price}` : `£${t.price}`,
@@ -224,39 +224,39 @@ const MostPopularTestsPage = () => {
       seoDescription={SEO.description}
       seoKeywords={SEO.keywords}
       canonicalUrl={SEO.canonical}
-      pillLabel="Most Popular"
-      headline="Most Popular Tests"
+      pillLabel="Most popular"
+      headline="Most popular tests"
       subtitle="Compare the best-selling health tests from trusted UK providers, chosen by thousands of customers."
       searchPlaceholder="Search popular tests..."
       trustStats={[
-        { value: "50,000+", label: "Customers Served" },
-        { value: "4.8★", label: "Average Rating" },
-        { value: "9+", label: "Trusted Providers" },
+        { value: "50,000+", label: "Customers served" },
+        { value: "4.8★", label: "Average rating" },
+        { value: "9+", label: "Trusted providers" },
       ]}
       filters={filters}
       tests={tests}
-      categoryAccent="Most Popular Tests"
-      benefitsTitle="Why Choose Our Most Popular Tests?"
+      categoryAccent="Most popular tests"
+      benefitsTitle="Why choose our most popular tests?"
       benefits={[
         {
           icon: Star,
-          title: "Trusted by Thousands",
+          title: "Trusted by thousands",
           description:
             "Our highest-rated tests chosen by customers across the UK",
         },
         {
           icon: TrendingUp,
-          title: "Comprehensive Insights",
+          title: "Comprehensive insights",
           description:
             "Thorough biomarker panels for a complete health picture",
         },
         {
           icon: Shield,
-          title: "Accredited Labs",
+          title: "Accredited labs",
           description: "All tests processed by UKAS-accredited laboratories",
         },
       ]}
-      breadcrumbs={[{ label: "Home", href: "/" }, { label: "Popular Tests" }]}
+      breadcrumbs={[{ label: "Home", href: "/" }, { label: "Popular tests" }]}
     />
   );
 };

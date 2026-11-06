@@ -56,36 +56,36 @@ export const symptomPages: SymptomPageData[] = [
       "Tiredness that does not improve with rest has many causes, including stress, poor sleep and low mood. Some physical causes show up in a blood test. These include anaemia (a low level of red blood cells or haemoglobin), an underactive thyroid, low iron stores, raised blood sugar and low vitamin B12. A test can help you and your GP rule these in or out.",
     recommendedTests: [
       {
-        name: "Full Blood Count",
+        name: "Full blood count",
         why: "Checks for anaemia, a common physical cause of tiredness",
         keyBiomarkers: [
           "Haemoglobin",
-          "Red Blood Cells",
-          "White Blood Cells",
+          "Red blood cells",
+          "White blood cells",
           "Platelets",
         ],
         searchQuery: "full+blood+count",
       },
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "An underactive thyroid (hypothyroidism) can cause tiredness, weight gain and feeling cold",
         keyBiomarkers: ["TSH", "Free T4", "Free T3"],
         searchQuery: "thyroid",
       },
       {
-        name: "Iron Profile",
+        name: "Iron profile",
         why: "Ferritin shows your iron stores, which can run low before anaemia develops",
-        keyBiomarkers: ["Ferritin", "Iron", "TIBC", "Transferrin Saturation"],
+        keyBiomarkers: ["Ferritin", "Iron", "TIBC", "Transferrin saturation"],
         searchQuery: "iron",
       },
       {
-        name: "Diabetes Check (HbA1c)",
+        name: "Diabetes check (HbA1c)",
         why: "Raised blood sugar can cause tiredness, thirst and passing more urine",
         keyBiomarkers: ["HbA1c"],
         searchQuery: "hba1c",
       },
       {
-        name: "Vitamin B12 & Folate",
+        name: "Vitamin B12 & folate",
         why: "Low levels can cause tiredness, pins and needles and problems with memory",
         keyBiomarkers: ["Vitamin B12", "Folate"],
         searchQuery: "vitamin+b12",
@@ -93,7 +93,7 @@ export const symptomPages: SymptomPageData[] = [
       {
         name: "Vitamin D",
         why: "Low vitamin D is common in UK winters and can cause muscle aches and weakness",
-        keyBiomarkers: ["25-OH Vitamin D"],
+        keyBiomarkers: ["25-OH vitamin D"],
         searchQuery: "vitamin+d",
       },
     ],
@@ -104,7 +104,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "low-mood",
-    name: "Low Mood",
+    name: "Low mood",
     icon: "😔",
     colorHex: "#7c3aed",
     shortDescription: "Persistent low mood, anxiety, or emotional changes",
@@ -112,19 +112,19 @@ export const symptomPages: SymptomPageData[] = [
       "Low mood and depression have many causes. Some physical conditions can affect mood and energy, including thyroid problems, anaemia and hormone changes in men or around the menopause. A blood test can check for these alongside other care from your GP.",
     recommendedTests: [
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "An overactive or underactive thyroid can affect mood, anxiety and sleep",
         keyBiomarkers: ["TSH", "Free T4", "Free T3"],
         searchQuery: "thyroid",
       },
       {
-        name: "Full Blood Count",
+        name: "Full blood count",
         why: "Anaemia causes tiredness and low energy, which can feel like low mood",
-        keyBiomarkers: ["Haemoglobin", "Red Blood Cells", "MCV"],
+        keyBiomarkers: ["Haemoglobin", "Red blood cells", "MCV"],
         searchQuery: "full+blood+count",
       },
       {
-        name: "Hormone Profile",
+        name: "Hormone profile",
         why: "Low testosterone in men and changing hormone levels around the menopause can affect mood",
         keyBiomarkers: ["Testosterone", "Oestradiol", "SHBG", "FSH"],
         searchQuery: "hormone",
@@ -132,7 +132,7 @@ export const symptomPages: SymptomPageData[] = [
       {
         name: "Vitamin D",
         why: "Some studies link low vitamin D with low mood, but the evidence is mixed. Testing makes most sense if you get little sun on your skin",
-        keyBiomarkers: ["25-OH Vitamin D"],
+        keyBiomarkers: ["25-OH vitamin D"],
         searchQuery: "vitamin+d",
       },
     ],
@@ -143,7 +143,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "hair-loss",
-    name: "Hair Loss",
+    name: "Hair loss",
     icon: "💇",
     colorHex: "#f59e0b",
     shortDescription: "Thinning hair, excessive shedding, or bald patches",
@@ -151,19 +151,19 @@ export const symptomPages: SymptomPageData[] = [
       "Hair loss (alopecia) has many causes. Male and female pattern hair loss run in families and do not show up in a blood test. Other causes include stress, illness, weight loss, low iron stores, thyroid problems and hormone changes. A blood test can check for some of these.",
     recommendedTests: [
       {
-        name: "Iron Profile",
+        name: "Iron profile",
         why: "Low ferritin, a measure of iron stores, is linked to hair shedding even without anaemia",
         keyBiomarkers: ["Ferritin", "Iron", "TIBC"],
         searchQuery: "iron",
       },
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "An overactive or underactive thyroid can cause thinning across the scalp",
         keyBiomarkers: ["TSH", "Free T4", "Free T3"],
         searchQuery: "thyroid",
       },
       {
-        name: "Hormone Profile",
+        name: "Hormone profile",
         why: "Raised androgens (male-type hormones), for example in PCOS, can thin hair on the top of the head. Most useful for women who also have irregular periods or excess hair growth",
         keyBiomarkers: ["Testosterone", "SHBG", "DHEA-S", "Oestradiol"],
         searchQuery: "hormone",
@@ -176,7 +176,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "weight-gain",
-    name: "Weight Gain",
+    name: "Weight gain",
     icon: "⚖️",
     colorHex: "#22c0d4",
     shortDescription: "Unexplained weight gain or difficulty losing weight",
@@ -184,27 +184,27 @@ export const symptomPages: SymptomPageData[] = [
       "Most weight gain relates to diet, activity, sleep, medicines or age. A few medical conditions can contribute, including an underactive thyroid, polycystic ovary syndrome (PCOS) and type 2 diabetes. A blood test can check for these and for related risks such as raised cholesterol.",
     recommendedTests: [
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "An underactive thyroid can cause weight gain, tiredness and feeling cold",
         keyBiomarkers: ["TSH", "Free T4", "Free T3"],
         searchQuery: "thyroid",
       },
       {
-        name: "Diabetes Check (HbA1c)",
+        name: "Diabetes check (HbA1c)",
         why: "HbA1c shows your average blood sugar over about three months and can pick up prediabetes and type 2 diabetes",
-        keyBiomarkers: ["HbA1c", "Fasting Glucose", "Insulin"],
+        keyBiomarkers: ["HbA1c", "Fasting glucose", "Insulin"],
         searchQuery: "diabetes",
       },
       {
-        name: "Hormone Profile",
+        name: "Hormone profile",
         why: "Low testosterone in men and PCOS in women are both linked to weight gain",
         keyBiomarkers: ["Testosterone", "Oestradiol", "SHBG"],
         searchQuery: "hormone",
       },
       {
-        name: "Lipid Profile",
+        name: "Lipid profile",
         why: "Weight gain can come with raised cholesterol, which affects heart health",
-        keyBiomarkers: ["Total Cholesterol", "LDL", "HDL", "Triglycerides"],
+        keyBiomarkers: ["Total cholesterol", "LDL", "HDL", "Triglycerides"],
         searchQuery: "cholesterol",
       },
     ],
@@ -215,7 +215,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "low-libido",
-    name: "Low Libido",
+    name: "Low libido",
     icon: "💜",
     colorHex: "#e70d69",
     shortDescription: "Reduced sex drive or changes in sexual function",
@@ -223,11 +223,11 @@ export const symptomPages: SymptomPageData[] = [
       "Low libido affects men and women and often has more than one cause, including stress, relationship factors, medicines and tiredness. Hormones can play a part. Low testosterone, thyroid problems and high prolactin (a hormone made by the pituitary gland in the brain) can all reduce sex drive. A blood test can check for these.",
     recommendedTests: [
       {
-        name: "Male Hormone Profile",
+        name: "Male hormone profile",
         why: "Low testosterone can reduce sex drive in men. Levels peak in the morning, so most providers ask for a morning sample",
         keyBiomarkers: [
-          "Total Testosterone",
-          "Free Testosterone",
+          "Total testosterone",
+          "Free testosterone",
           "SHBG",
           "LH",
           "FSH",
@@ -235,13 +235,13 @@ export const symptomPages: SymptomPageData[] = [
         searchQuery: "male+hormone",
       },
       {
-        name: "Female Hormone Profile",
+        name: "Female hormone profile",
         why: "Hormone levels change through the cycle and around the menopause, and these changes can affect desire",
         keyBiomarkers: ["Oestradiol", "Testosterone", "Progesterone", "SHBG"],
         searchQuery: "female+hormone",
       },
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "An overactive or underactive thyroid can lower libido and energy",
         keyBiomarkers: ["TSH", "Free T4", "Free T3"],
         searchQuery: "thyroid",
@@ -260,7 +260,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "brain-fog",
-    name: "Brain Fog",
+    name: "Brain fog",
     icon: "🧠",
     colorHex: "#22c0d4",
     shortDescription: "Poor concentration, forgetfulness or slowed thinking",
@@ -268,31 +268,31 @@ export const symptomPages: SymptomPageData[] = [
       "Brain fog describes difficulty concentrating, remembering or thinking clearly. It is not a diagnosis in itself. Common causes include stress, poor sleep and the menopause. Some physical causes show up in a blood test, such as low vitamin B12 or folate, an underactive thyroid, anaemia, low iron stores and raised blood sugar.",
     recommendedTests: [
       {
-        name: "Vitamin B12 & Folate",
+        name: "Vitamin B12 & folate",
         why: "Low B12 or folate can affect memory, concentration and energy",
         keyBiomarkers: ["Vitamin B12", "Active B12", "Folate"],
         searchQuery: "b12",
       },
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "An underactive thyroid can slow thinking and cause forgetfulness",
         keyBiomarkers: ["TSH", "Free T4", "Free T3"],
         searchQuery: "thyroid",
       },
       {
-        name: "Full Blood Count",
+        name: "Full blood count",
         why: "Anaemia reduces the oxygen your blood carries and can affect concentration",
-        keyBiomarkers: ["Haemoglobin", "Red Blood Cells", "MCV"],
+        keyBiomarkers: ["Haemoglobin", "Red blood cells", "MCV"],
         searchQuery: "full+blood+count",
       },
       {
-        name: "Iron Profile",
+        name: "Iron profile",
         why: "Iron stores can run low before anaemia develops",
-        keyBiomarkers: ["Ferritin", "Iron", "Transferrin Saturation"],
+        keyBiomarkers: ["Ferritin", "Iron", "Transferrin saturation"],
         searchQuery: "iron",
       },
       {
-        name: "Diabetes Check (HbA1c)",
+        name: "Diabetes check (HbA1c)",
         why: "Shows your average blood sugar over about three months",
         keyBiomarkers: ["HbA1c"],
         searchQuery: "hba1c",
@@ -305,7 +305,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "joint-pain",
-    name: "Joint Pain & Stiffness",
+    name: "Joint pain & stiffness",
     icon: "🦴",
     colorHex: "#081129",
     shortDescription: "Aching, swollen or stiff joints",
@@ -313,9 +313,9 @@ export const symptomPages: SymptomPageData[] = [
       "Joint pain has many causes, from wear and tear to inflammation. Blood tests cannot replace a clinical examination or imaging. They can measure markers of inflammation, check for antibodies linked to rheumatoid arthritis, and measure uric acid, which is raised in gout.",
     recommendedTests: [
       {
-        name: "Arthritis Screen",
+        name: "Arthritis screen",
         why: "Combines markers used to investigate inflammatory joint conditions",
-        keyBiomarkers: ["Rheumatoid Factor", "Anti-CCP", "CRP"],
+        keyBiomarkers: ["Rheumatoid factor", "Anti-CCP", "CRP"],
         searchQuery: "arthritis",
       },
       {
@@ -325,15 +325,15 @@ export const symptomPages: SymptomPageData[] = [
         searchQuery: "crp",
       },
       {
-        name: "Rheumatoid Factor",
+        name: "Rheumatoid factor",
         why: "An antibody found in many people with rheumatoid arthritis, and in some people without it",
-        keyBiomarkers: ["Rheumatoid Factor"],
+        keyBiomarkers: ["Rheumatoid factor"],
         searchQuery: "rheumatoid",
       },
       {
-        name: "Uric Acid",
+        name: "Uric acid",
         why: "High uric acid levels are linked to gout",
-        keyBiomarkers: ["Uric Acid"],
+        keyBiomarkers: ["Uric acid"],
         searchQuery: "uric+acid",
       },
     ],
@@ -344,7 +344,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "bloating",
-    name: "Bloating & Digestive Discomfort",
+    name: "Bloating & digestive discomfort",
     icon: "🫄",
     colorHex: "#e70d69",
     shortDescription: "Ongoing bloating, wind or changes in bowel habit",
@@ -352,15 +352,15 @@ export const symptomPages: SymptomPageData[] = [
       "Bloating and digestive discomfort often relate to diet, stress or irritable bowel syndrome (IBS), a common long-term condition of the gut. NICE lists a small set of blood tests that doctors use to rule out other causes in people with IBS-type symptoms. These check for coeliac disease (an immune reaction to gluten), anaemia and inflammation. Coeliac testing only works while you are still eating gluten.",
     recommendedTests: [
       {
-        name: "Coeliac Screen",
+        name: "Coeliac screen",
         why: "Looks for tissue transglutaminase (tTG) antibodies, which most people with coeliac disease make. Keep eating gluten in more than one meal a day for at least six weeks before the test. Choose an antibody blood test, as a genetic coeliac test cannot diagnose the condition",
-        keyBiomarkers: ["Tissue Transglutaminase IgA (tTG)", "Total IgA"],
+        keyBiomarkers: ["Tissue transglutaminase IgA (tTG)", "Total IgA"],
         searchQuery: "coeliac",
       },
       {
-        name: "Full Blood Count",
+        name: "Full blood count",
         why: "Checks for anaemia, which can point to coeliac disease or another bowel condition",
-        keyBiomarkers: ["Haemoglobin", "Red Blood Cells", "MCV"],
+        keyBiomarkers: ["Haemoglobin", "Red blood cells", "MCV"],
         searchQuery: "full+blood+count",
       },
       {
@@ -383,7 +383,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "hot-flushes",
-    name: "Hot Flushes & Night Sweats",
+    name: "Hot flushes & night sweats",
     icon: "🌡️",
     colorHex: "#22c0d4",
     shortDescription: "Sudden heat, sweating or disturbed sleep",
@@ -391,13 +391,13 @@ export const symptomPages: SymptomPageData[] = [
       "Hot flushes and night sweats are common during perimenopause (the years before periods stop) and menopause. NICE advises that women over 45 with typical symptoms do not need a blood test for a diagnosis. Testing can help women aged 40 to 45 or under 40, and can check for other causes such as an overactive thyroid.",
     recommendedTests: [
       {
-        name: "Menopause Hormone Profile",
+        name: "Menopause hormone profile",
         why: "FSH (follicle-stimulating hormone) rises as the ovaries slow down. NICE suggests this test for women aged 40 to 45, or under 40, with symptoms",
         keyBiomarkers: ["FSH", "LH", "Oestradiol"],
         searchQuery: "menopause",
       },
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "An overactive thyroid can cause heat intolerance and sweating",
         keyBiomarkers: ["TSH", "Free T4", "Free T3"],
         searchQuery: "thyroid",
@@ -410,7 +410,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "frequent-illness",
-    name: "Frequent Infections",
+    name: "Frequent infections",
     icon: "🛡️",
     colorHex: "#081129",
     shortDescription: "Catching colds often or slow to recover",
@@ -418,10 +418,10 @@ export const symptomPages: SymptomPageData[] = [
       "Picking up infections often, or taking a long time to recover, has many causes, including stress and poor sleep. Blood tests can look at white blood cells, which fight infection, and at nutrients such as vitamin D and iron that support normal immune function.",
     recommendedTests: [
       {
-        name: "Full Blood Count",
+        name: "Full blood count",
         why: "Measures white blood cells and checks for anaemia",
         keyBiomarkers: [
-          "White Blood Cells",
+          "White blood cells",
           "Neutrophils",
           "Lymphocytes",
           "Haemoglobin",
@@ -431,11 +431,11 @@ export const symptomPages: SymptomPageData[] = [
       {
         name: "Vitamin D",
         why: "Vitamin D supports normal immune function, and levels often drop in UK winters",
-        keyBiomarkers: ["25-OH Vitamin D"],
+        keyBiomarkers: ["25-OH vitamin D"],
         searchQuery: "vitamin+d",
       },
       {
-        name: "Iron Profile",
+        name: "Iron profile",
         why: "Low iron stores can leave you tired and slow to recover",
         keyBiomarkers: ["Ferritin", "Iron"],
         searchQuery: "iron",
@@ -448,7 +448,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "muscle-cramps",
-    name: "Muscle Weakness & Cramps",
+    name: "Muscle weakness & cramps",
     icon: "💪",
     colorHex: "#e70d69",
     shortDescription: "Cramps, twitching or unexplained muscle weakness",
@@ -462,21 +462,21 @@ export const symptomPages: SymptomPageData[] = [
         searchQuery: "magnesium",
       },
       {
-        name: "Bone Profile (Calcium)",
+        name: "Bone profile (calcium)",
         why: "Low calcium can cause cramps and tingling in the hands and around the mouth",
         keyBiomarkers: ["Calcium", "Albumin", "Phosphate", "ALP"],
         searchQuery: "calcium",
       },
       {
-        name: "Creatine Kinase",
+        name: "Creatine kinase",
         why: "Raised CK shows muscle strain or damage",
-        keyBiomarkers: ["Creatine Kinase (CK)"],
+        keyBiomarkers: ["Creatine kinase (CK)"],
         searchQuery: "creatine+kinase",
       },
       {
         name: "Vitamin D",
         why: "Low vitamin D can cause muscle aches and weakness",
-        keyBiomarkers: ["25-OH Vitamin D"],
+        keyBiomarkers: ["25-OH vitamin D"],
         searchQuery: "vitamin+d",
       },
     ],
@@ -487,7 +487,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "irregular-periods",
-    name: "Irregular or Heavy Periods",
+    name: "Irregular or heavy periods",
     icon: "🩸",
     colorHex: "#22c0d4",
     shortDescription: "Unpredictable cycles or heavy bleeding",
@@ -495,19 +495,19 @@ export const symptomPages: SymptomPageData[] = [
       "Irregular periods can be linked to polycystic ovary syndrome (PCOS), which the NHS now calls polyendocrine metabolic ovarian syndrome (PMOS), or to thyroid or prolactin problems. Heavy periods can lower iron and lead to anaemia. For heavy periods, NICE advises a full blood count and does not advise routine hormone tests.",
     recommendedTests: [
       {
-        name: "Full Blood Count",
+        name: "Full blood count",
         why: "Checks for anaemia caused by heavy bleeding. NICE advises this test for anyone with heavy periods",
-        keyBiomarkers: ["Haemoglobin", "Red Blood Cells", "MCV"],
+        keyBiomarkers: ["Haemoglobin", "Red blood cells", "MCV"],
         searchQuery: "full+blood+count",
       },
       {
-        name: "PCOS Profile",
+        name: "PCOS profile",
         why: "Measures androgens (male-type hormones), which are often raised in PCOS. Most useful if your periods are irregular",
         keyBiomarkers: ["Testosterone", "SHBG", "LH", "FSH", "DHEA-S"],
         searchQuery: "pcos",
       },
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "Thyroid problems can disrupt the cycle. NICE does not advise this test for heavy periods alone, unless you have other thyroid symptoms",
         keyBiomarkers: ["TSH", "Free T4"],
         searchQuery: "thyroid",
@@ -526,7 +526,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "sleep-problems",
-    name: "Sleep Problems",
+    name: "Sleep problems",
     icon: "🌙",
     colorHex: "#081129",
     shortDescription:
@@ -535,15 +535,15 @@ export const symptomPages: SymptomPageData[] = [
       "Poor sleep most often relates to stress, anxiety, routine, caffeine, alcohol or shift work. Blood tests cannot diagnose sleep disorders such as insomnia or sleep apnoea (pauses in breathing during sleep). They can check for two physical factors: an overactive thyroid, and low iron stores, which are linked to restless legs syndrome (an urge to move your legs in the evening or at night).",
     recommendedTests: [
       {
-        name: "Thyroid Function",
+        name: "Thyroid function",
         why: "An overactive thyroid can cause poor sleep, sweating and a racing heart",
         keyBiomarkers: ["TSH", "Free T4", "Free T3"],
         searchQuery: "thyroid",
       },
       {
-        name: "Iron Profile",
+        name: "Iron profile",
         why: "Low ferritin is linked to restless legs syndrome. Most useful if you feel an urge to move your legs at night",
-        keyBiomarkers: ["Ferritin", "Iron", "Transferrin Saturation"],
+        keyBiomarkers: ["Ferritin", "Iron", "Transferrin saturation"],
         searchQuery: "iron",
       },
     ],
@@ -554,7 +554,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "skin-breakouts",
-    name: "Adult Acne & Skin Breakouts",
+    name: "Adult acne & skin breakouts",
     icon: "✨",
     colorHex: "#e70d69",
     shortDescription: "Persistent spots or breakouts in adulthood",
@@ -562,12 +562,12 @@ export const symptomPages: SymptomPageData[] = [
       "Adult acne often relates to hormone changes around periods, pregnancy or the menopause, and to some medicines and skin products. Most people with acne do not need a blood test. Hormone tests help when acne comes with signs of raised androgens (male-type hormones), such as irregular periods or excess facial or body hair. These signs can point to polycystic ovary syndrome (PCOS).",
     recommendedTests: [
       {
-        name: "PCOS Hormone Profile",
+        name: "PCOS hormone profile",
         why: "Measures androgens and sex hormone binding globulin (SHBG), a protein that controls how much testosterone is active. Consider it only if you also have irregular periods or excess hair growth",
         keyBiomarkers: [
           "Testosterone",
           "SHBG",
-          "Free Androgen Index",
+          "Free androgen index",
           "LH",
           "FSH",
         ],
@@ -581,7 +581,7 @@ export const symptomPages: SymptomPageData[] = [
   },
   {
     slug: "excessive-thirst",
-    name: "Excessive Thirst",
+    name: "Excessive thirst",
     icon: "💧",
     colorHex: "#22c0d4",
     shortDescription: "Feeling thirsty often or needing to urinate more",
@@ -589,19 +589,19 @@ export const symptomPages: SymptomPageData[] = [
       "Feeling very thirsty and passing urine more often, especially at night, can be early signs of raised blood sugar. Blood tests can measure HbA1c, which reflects your average blood sugar over about three months, and check kidney function.",
     recommendedTests: [
       {
-        name: "Diabetes Check (HbA1c)",
+        name: "Diabetes check (HbA1c)",
         why: "Shows your average blood sugar over about three months",
         keyBiomarkers: ["HbA1c"],
         searchQuery: "hba1c",
       },
       {
-        name: "Diabetes Profile",
+        name: "Diabetes profile",
         why: "A broader look at blood sugar control",
         keyBiomarkers: ["HbA1c", "Glucose", "Insulin"],
         searchQuery: "diabetes",
       },
       {
-        name: "Kidney Function",
+        name: "Kidney function",
         why: "Checks how well your kidneys filter the blood",
         keyBiomarkers: ["eGFR", "Creatinine", "Urea"],
         searchQuery: "kidney",

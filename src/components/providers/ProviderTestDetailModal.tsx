@@ -384,7 +384,7 @@ export default function ProviderTestDetailModal({
         <div className="bg-[#081129] text-white p-6 pb-7 pr-14">
           <div className="flex items-start gap-4">
             <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center shrink-0 shadow-md">
-              <img
+              <img width={160} height={64}
                 src={providerLogo}
                 alt={providerName}
                 loading="lazy"
@@ -536,7 +536,7 @@ export default function ProviderTestDetailModal({
           {accreditations.length > 0 && (
             <section>
               <h4 className="text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-3">
-                Standards &amp; Accreditation
+                Standards &amp; accreditation
               </h4>
               <div className="flex flex-wrap gap-x-6 gap-y-2">
                 {accreditations.map((acc) => (
@@ -558,7 +558,7 @@ export default function ProviderTestDetailModal({
           {collectionOptions && collectionOptions.length > 1 && (
             <section>
               <h4 className="text-xs font-bold text-[#081129] uppercase tracking-[0.15em] mb-2">
-                Collection Options
+                Collection options
               </h4>
               <ul className="space-y-1.5">
                 {collectionOptions.map((opt) => (

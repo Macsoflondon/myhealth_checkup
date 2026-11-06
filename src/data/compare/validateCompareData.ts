@@ -38,6 +38,7 @@ const KNOWN_PROVIDER_NAMES = new Set<string>([
   ...Object.values(PROVIDER_NAMES),
   // Legacy/display aliases that historically appear in static datasets.
   "Randox",
+  "Goodbody Clinic",
   "GoodBody Clinic",
   "Goodbody Clinic",
 ]);

@@ -29,7 +29,7 @@ import { cn } from "@/lib/utils";
  */
 const buttonVariants = cva(
   [
-    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md",
+    "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md max-sm:min-h-11 max-sm:min-w-11",
     "font-medium select-none",
     "transition-[transform,box-shadow,background-color,color,border-color]",
     "duration-standard ease-emphasized",
@@ -74,7 +74,8 @@ const buttonVariants = cva(
       // The single source of button sizes. Pages set colour, radius and
       // weight through className and must not override height, padding or
       // font size. default and lg meet the 44px touch target; sm is for
-      // dense desktop toolbars only.
+      // dense desktop toolbars only, and the base class lifts every size to
+      // a 44px minimum below 640px so phone touch targets hold regardless.
       //   sm      36px tall, 14px text
       //   default 44px tall, 16px text
       //   lg      52px tall, 16px text

@@ -14,7 +14,7 @@ const TermsConditionsPage = () => {
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner
-          title="Terms & Conditions"
+          title="Terms and conditions"
           subtitle="Please read these terms carefully before using our services."
         />
 
@@ -36,8 +36,8 @@ const TermsConditionsPage = () => {
               <CardContent>
                 <p>
                   By accessing and using myhealth checkup's website and
-                  services, you accept and agree to be bound by these Terms and
-                  Conditions. If you do not agree to these terms, please do not
+                  services, you accept and agree to be bound by these terms and
+                  conditions. If you do not agree to these terms, please do not
                   use our services.
                 </p>
               </CardContent>
@@ -120,7 +120,7 @@ const TermsConditionsPage = () => {
               <CardContent>
                 <div className="space-y-4">
                   <div>
-                    <h4 className="font-semibold mb-2">Test Bookings</h4>
+                    <h4 className="font-semibold mb-2">Test bookings</h4>
                     <p className="text-sm text-muted-foreground">
                       When you book a test through our platform, you enter into
                       a direct contract with the test provider. We act as an
@@ -137,7 +137,7 @@ const TermsConditionsPage = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold mb-2">
-                      Cancellations & Refunds
+                      Cancellations & refunds
                     </h4>
                     <p className="text-sm text-muted-foreground">
                       Cancellation and refund policies are determined by
@@ -175,11 +175,11 @@ const TermsConditionsPage = () => {
                 <p className="mb-4">
                   Your privacy is important to us. Our collection, use, and
                   protection of your personal data is governed by our Privacy
-                  Policy, which complies with UK GDPR requirements.
+                  policy, which complies with UK GDPR requirements.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  By using our service, you consent to our Privacy Policy and
-                  cookie usage as outlined in our Cookie Policy.
+                  By using our service, you consent to our privacy policy and
+                  cookie usage as outlined in our cookie policy.
                 </p>
               </CardContent>
             </Card>
@@ -223,7 +223,7 @@ const TermsConditionsPage = () => {
               </CardHeader>
               <CardContent>
                 <p className="mb-4">
-                  For questions about these Terms & Conditions, please contact
+                  For questions about these terms and conditions, please contact
                   us:
                 </p>
                 <div className="bg-muted p-4 rounded-lg">

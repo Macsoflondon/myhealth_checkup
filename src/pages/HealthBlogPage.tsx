@@ -51,7 +51,7 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({
       <div
         className="uppercase"
         style={{
-          fontFamily: "DM Sans, sans-serif",
+          fontFamily: "Montserrat, sans-serif",
           fontSize: 11,
           color: "#94a3b8",
           letterSpacing: "0.08em",
@@ -74,7 +74,7 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({
       <p
         className="line-clamp-3 mb-4 flex-1"
         style={{
-          fontFamily: "DM Sans, sans-serif",
+          fontFamily: "Montserrat, sans-serif",
           fontSize: 13,
           color: "#64748b",
           lineHeight: 1.55,
@@ -85,7 +85,7 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({
       <div className="flex items-center justify-between mt-auto pt-2 border-t border-[#f0f4fa]">
         <span
           style={{
-            fontFamily: "DM Sans, sans-serif",
+            fontFamily: "Montserrat, sans-serif",
             fontSize: 12,
             color: "#94a3b8",
           }}
@@ -98,7 +98,7 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({
           rel="noopener noreferrer"
           className="hover:underline"
           style={{
-            fontFamily: "DM Sans, sans-serif",
+            fontFamily: "Montserrat, sans-serif",
             fontSize: 13,
             color: "#22c0d4",
             fontWeight: 500,
@@ -241,7 +241,7 @@ const HealthBlogPage: React.FC = () => {
                       : "bg-white text-[#081129] border border-[#081129] hover:bg-[#f0f4fa]"
                   }`}
                   style={{
-                    fontFamily: "DM Sans, sans-serif",
+                    fontFamily: "Montserrat, sans-serif",
                     fontSize: 13,
                     fontWeight: 500,
                     padding: "6px 16px",
@@ -269,7 +269,7 @@ const HealthBlogPage: React.FC = () => {
               placeholder="Search articles…"
               className="w-full rounded-full border border-[#081129] bg-white pl-10 pr-4 py-2.5 outline-hidden focus:ring-2 focus:ring-[#22c0d4] focus:border-transparent"
               style={{
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Montserrat, sans-serif",
                 fontSize: 14,
                 color: "#081129",
               }}
@@ -280,7 +280,7 @@ const HealthBlogPage: React.FC = () => {
           <div className="flex flex-wrap items-center gap-3 mb-10">
             <span
               style={{
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Montserrat, sans-serif",
                 fontSize: 12,
                 color: "#64748b",
               }}
@@ -300,7 +300,7 @@ const HealthBlogPage: React.FC = () => {
                       : "bg-white text-brand-navy border-brand-navy hover:border-[#081129]"
                   }`}
                   style={{
-                    fontFamily: "DM Sans, sans-serif",
+                    fontFamily: "Montserrat, sans-serif",
                     fontSize: 12,
                     fontWeight: 500,
                     padding: "4px 12px",
@@ -318,7 +318,7 @@ const HealthBlogPage: React.FC = () => {
             <div
               className="text-center py-16"
               style={{
-                fontFamily: "DM Sans, sans-serif",
+                fontFamily: "Montserrat, sans-serif",
                 fontSize: 14,
                 color: "#64748b",
               }}
@@ -379,7 +379,7 @@ const HealthBlogPage: React.FC = () => {
                         onClick={() => setVisibleCount((n) => n + PAGE_SIZE)}
                         className="rounded-full border border-[#081129] hover:bg-[#f0f4fa] transition-colors"
                         style={{
-                          fontFamily: "DM Sans, sans-serif",
+                          fontFamily: "Montserrat, sans-serif",
                           fontSize: 14,
                           fontWeight: 500,
                           color: "#081129",

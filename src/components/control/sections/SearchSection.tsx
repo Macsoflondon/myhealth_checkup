@@ -48,7 +48,7 @@ export default function SearchSection() {
   };
 
   return (
-    <SectionShell title="Global Search">
+    <SectionShell title="Global search">
       <div className="flex gap-2 mb-6">
         <Input
           placeholder="Search…"

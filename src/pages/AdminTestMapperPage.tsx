@@ -203,7 +203,7 @@ export default function AdminTestMapperPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Execute Mapping</CardTitle>
+            <CardTitle>Execute mapping</CardTitle>
             <CardDescription>
               Run the AI test mapper to automatically create mappings between
               provider tests and master tests. Dry run mode previews results
@@ -350,7 +350,7 @@ export default function AdminTestMapperPage() {
             {result.mappings_created.length > 0 && (
               <Card>
                 <CardHeader>
-                  <CardTitle>High Confidence Mappings Created</CardTitle>
+                  <CardTitle>High confidence mappings created</CardTitle>
                   <CardDescription>
                     {result.mappings_created.length} test mappings with ≥
                     {confidenceThreshold}% confidence

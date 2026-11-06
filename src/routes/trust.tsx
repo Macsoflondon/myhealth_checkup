@@ -7,7 +7,7 @@ const TrustCentrePage = lazy(() => import("@/pages/TrustCentrePage"));
 export const Route = createFileRoute("/trust")({
   head: () =>
     buildRouteHead({
-      title: "Trust Centre | myhealth checkup",
+      title: "Trust centre | myhealth checkup",
       description:
         "How we vet providers, protect your data and keep our comparisons independent, with our security and compliance standards.",
       path: "/trust",

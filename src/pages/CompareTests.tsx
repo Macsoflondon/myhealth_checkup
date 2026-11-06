@@ -439,7 +439,7 @@ const CompareTests = () => {
                         : "Search tests or providers"
                     }
                     aria-label="Search tests"
-                    className="w-full rounded-full border border-[#081129]/15 bg-white py-2.5 pl-9 pr-4 text-sm text-[#081129] placeholder:text-[#081129]/50 focus:border-[#22c0d4] focus:outline-none focus:ring-1 focus:ring-[#22c0d4]"
+                    className="min-h-11 w-full rounded-full border border-[#081129]/15 bg-white py-2.5 pl-9 pr-4 text-sm text-[#081129] placeholder:text-[#081129]/50 focus:border-[#22c0d4] focus:outline-none focus:ring-1 focus:ring-[#22c0d4]"
                   />
                 </div>
               </div>

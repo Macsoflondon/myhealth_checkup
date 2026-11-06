@@ -24,7 +24,7 @@ const PartnersPage = () => {
           accreditation: "UKAS",
         },
         {
-          name: "GoodBody Clinic",
+          name: "Goodbody Clinic",
           specialty: "Clinic-based health screening",
           accreditation: "CQC",
         },
@@ -100,7 +100,7 @@ const PartnersPage = () => {
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4 text-[#081129]">
-                Our Partnership Standards
+                Our partnership standards
               </h2>
               <p className="text-[#081129] font-medium text-base">
                 Every partner meets our strict quality criteria
@@ -130,7 +130,7 @@ const PartnersPage = () => {
           <div className="container mx-auto px-4">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold mb-4 text-[#081129]">
-                Partner Network
+                Partner network
               </h2>
               <p className="text-xl text-[#081129]">
                 Curated providers across all health testing categories
@@ -170,7 +170,7 @@ const PartnersPage = () => {
                             size="sm"
                             className="w-full"
                           >
-                            <Link to="/providers">View Tests</Link>
+                            <Link to="/providers">View tests</Link>
                           </Button>
                         </CardContent>
                       </Card>
@@ -187,14 +187,14 @@ const PartnersPage = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl font-bold text-center mb-12 text-[#081129]">
-                Why Providers Partner With Us
+                Why providers partner with us
               </h2>
               <div className="grid md:grid-cols-2 gap-8">
                 <Card className="p-6">
                   <div className="flex items-center gap-4 mb-4">
                     <Users className="h-8 w-8 text-[#081129]" />
                     <h3 className="text-xl font-semibold">
-                      Reach More Customers
+                      Reach more customers
                     </h3>
                   </div>
                   <p className="text-muted-foreground">
@@ -206,7 +206,7 @@ const PartnersPage = () => {
                   <div className="flex items-center gap-4 mb-4">
                     <TrendingUp className="h-8 w-8 text-[#081129]" />
                     <h3 className="text-xl font-semibold">
-                      Increase Visibility
+                      Increase visibility
                     </h3>
                   </div>
                   <p className="text-muted-foreground">
@@ -217,7 +217,7 @@ const PartnersPage = () => {
                 <Card className="p-6">
                   <div className="flex items-center gap-4 mb-4">
                     <Shield className="h-8 w-8 text-[#081129]" />
-                    <h3 className="text-xl font-semibold">Quality Assurance</h3>
+                    <h3 className="text-xl font-semibold">Quality assurance</h3>
                   </div>
                   <p className="text-muted-foreground">
                     Join a network of trusted providers committed to the highest
@@ -228,7 +228,7 @@ const PartnersPage = () => {
                   <div className="flex items-center gap-4 mb-4">
                     <Award className="h-8 w-8 text-[#081129]" />
                     <h3 className="text-xl font-semibold">
-                      Industry Recognition
+                      Industry recognition
                     </h3>
                   </div>
                   <p className="text-muted-foreground">
@@ -241,12 +241,12 @@ const PartnersPage = () => {
           </div>
         </section>
 
-        {/* Become a Partner */}
+        {/* Become a partner */}
         <section className="py-16 bg-primary/5">
           <div className="container mx-auto px-4">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-3xl font-bold mb-6 text-[#081129]">
-                Become a Partner
+                Become a partner
               </h2>
               <p className="text-xl text-[#081129] mb-8">
                 Are you a healthcare provider interested in joining our network?
@@ -255,7 +255,7 @@ const PartnersPage = () => {
               <div className="grid md:grid-cols-2 gap-6 mb-8">
                 <Card className="p-6">
                   <h3 className="font-semibold mb-2">
-                    Partnership Requirements
+                    Partnership requirements
                   </h3>
                   <ul className="text-sm text-muted-foreground space-y-1">
                     <li>• UKAS or equivalent accreditation</li>
@@ -265,7 +265,7 @@ const PartnersPage = () => {
                   </ul>
                 </Card>
                 <Card className="p-6">
-                  <h3 className="font-semibold mb-2">What We Offer</h3>
+                  <h3 className="font-semibold mb-2">What we offer</h3>
                   <ul className="text-sm text-muted-foreground space-y-1">
                     <li>• Marketing support</li>
                     <li>• Technology integration</li>
@@ -275,7 +275,7 @@ const PartnersPage = () => {
                 </Card>
               </div>
               <Button asChild size="lg">
-                <Link to="/contact">Apply to Become a Partner</Link>
+                <Link to="/contact">Apply to become a partner</Link>
               </Button>
             </div>
           </div>

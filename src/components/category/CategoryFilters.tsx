@@ -52,18 +52,18 @@ export function CategoryFilters({
         <select
           value={sort}
           onChange={(e) => onSortChange(e.target.value)}
-          className="rounded-lg px-3 py-2 text-xs font-semibold cursor-pointer outline-hidden border-2"
+          className="min-h-11 rounded-lg px-3 py-2 text-xs font-semibold cursor-pointer outline-hidden border-2"
           style={{
             background: "hsl(var(--background))",
             color: TURQUOISE,
             borderColor: TURQUOISE,
           }}
         >
-          <option value="popular">Most Popular</option>
+          <option value="popular">Most popular</option>
           <option value="rating">Highest Rated</option>
           <option value="price-asc">Price: Low → High</option>
           <option value="price-desc">Price: High → Low</option>
-          <option value="biomarkers">Most Biomarkers</option>
+          <option value="biomarkers">Most biomarkers</option>
           <option value="turnaround">Fastest Results</option>
         </select>
       </div>

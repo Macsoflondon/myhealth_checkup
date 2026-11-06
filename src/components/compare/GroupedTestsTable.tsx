@@ -53,7 +53,7 @@ interface TestGroup {
 
 export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
   tests,
-  title = "Tests by Type",
+  title = "Tests by type",
   onFavorite,
   favoriteIds = [],
 }) => {
@@ -190,10 +190,10 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
 
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={expandAll}>
-            Expand All
+            Expand all
           </Button>
           <Button variant="outline" size="sm" onClick={collapseAll}>
-            Collapse All
+            Collapse all
           </Button>
         </div>
       </div>
@@ -368,7 +368,7 @@ export const GroupedTestsTable: React.FC<GroupedTestsTableProps> = ({
 
                             <TableCell className="pl-8">
                               <div className="flex items-center gap-3">
-                                <img
+                                <img width={160} height={64}
                                   src={getProviderLogo(test.provider)}
                                   alt={test.provider}
                                   className="h-6 w-auto object-contain"

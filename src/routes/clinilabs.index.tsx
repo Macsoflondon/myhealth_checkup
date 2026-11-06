@@ -7,7 +7,7 @@ const ClinilabsPage = lazy(() => import("@/pages/ClinilabsPage"));
 export const Route = createFileRoute("/clinilabs/")({
   head: () =>
     buildRouteHead({
-      title: "Clinilabs Blood Tests & Prices | myhealth checkup",
+      title: "Clinilabs blood tests & prices | myhealth checkup",
       description:
         "Compare Clinilabs blood tests, biomarkers, turnaround times and prices in GBP from UKAS-accredited laboratories.",
       path: "/clinilabs",

@@ -15,7 +15,7 @@ export const Route = createFileRoute("/guides/$slug")({
   head: ({ params }) => {
     const label = toLabel(params.slug);
     return buildRouteHead({
-      title: `${label} Guide | myhealth checkup`,
+      title: `${label} guide | myhealth checkup`,
       description: `What ${label} measures, why it matters and its limitations, with UK tests that include it and their prices in GBP.`,
       path: `/guides/${params.slug}`,
       type: "article",

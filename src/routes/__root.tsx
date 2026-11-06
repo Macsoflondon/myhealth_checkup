@@ -21,6 +21,7 @@ import {
 import { HelmetProvider } from "react-helmet-async";
 
 import appCss from "../styles.css?url";
+import montserrat400Url from "@fontsource/montserrat/files/montserrat-latin-400-normal.woff2?url";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { AuthProvider } from "@/context/AuthContext";
 import { SessionSecurityProvider } from "@/components/security/SessionSecurityProvider";
@@ -31,7 +32,7 @@ import TestPageViewTracker from "@/components/analytics/TestPageViewTracker";
 import GlobalPageBackground from "@/components/layout/GlobalPageBackground";
 import { AutoTranslatePage } from "@/components/i18n/AutoTranslatePage";
 import { GlobalComparisonBar } from "@/components/compare/GlobalComparisonBar";
-import { SiteAssistant } from "@/components/assistant/site-assistant";
+import { SiteAssistant, LAUNCHER_PAGE_CLEARANCE } from "@/components/assistant/site-assistant";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { reportLovableError } from "@/lib/lovable-error-reporting";
 import { lazyWithRetry } from "@/lib/lazyWithRetry";
@@ -141,6 +142,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         // hydration, does not pay DNS and TLS set-up on top.
         { rel: "preconnect", href: "https://consent.cookiebot.com" },
         { rel: "preconnect", href: "https://consentcdn.cookiebot.com" },
+        {
+          rel: "preload",
+          as: "font",
+          type: "font/woff2",
+          href: montserrat400Url,
+          crossOrigin: "anonymous",
+        },
         { rel: "stylesheet", href: appCss },
         { rel: "icon", type: "image/png", href: "/favicon.png" },
         { rel: "apple-touch-icon", href: "/favicon.png" },
@@ -183,7 +191,7 @@ function RootShell({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
+      <body className={LAUNCHER_PAGE_CLEARANCE}>
         {/* React's own container. Cookiebot's uc.js appends a hidden
             __uspapiLocator iframe to <body> while the page is still
             streaming; without this wrapper it can land inside a Suspense

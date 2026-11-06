@@ -7,7 +7,7 @@ const TrustedProvidersPage = lazy(() => import("@/pages/TrustedProvidersPage"));
 export const Route = createFileRoute("/trusted-providers")({
   head: () =>
     buildRouteHead({
-      title: "Trusted UK Test Providers",
+      title: "Trusted UK test providers",
       description:
         "Profiles of the UKAS-accredited and CQC-regulated providers we compare, including how each collects samples and reports results.",
       path: "/trusted-providers",

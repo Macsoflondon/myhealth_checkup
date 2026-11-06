@@ -28,7 +28,7 @@ const ModernSlaveryStatement = () => {
       </Card>
 
       <Card className="p-6">
-        <h2 className="text-xl font-semibold mb-4">Partner Standards</h2>
+        <h2 className="text-xl font-semibold mb-4">Partner standards</h2>
         <div className="space-y-4">
           <div className="flex items-start gap-3">
             <CheckCircle className="h-5 w-5 text-green-600 mt-1" />
@@ -49,7 +49,7 @@ const ModernSlaveryStatement = () => {
       </Card>
 
       <Card className="p-6">
-        <h2 className="text-xl font-semibold mb-4">Zero Tolerance Policy</h2>
+        <h2 className="text-xl font-semibold mb-4">Zero tolerance policy</h2>
         <div className="bg-red-50 p-4 rounded-lg">
           <p className="text-brand-navy font-medium">
             We maintain a zero‑tolerance policy towards slavery, forced labour,

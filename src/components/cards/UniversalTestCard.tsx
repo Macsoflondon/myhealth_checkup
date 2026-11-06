@@ -1,3 +1,4 @@
+import { normaliseMedicalAcronyms } from "@/lib/medical-acronyms";
 import { isExcludedListing } from "@/lib/excluded-listings";
 import { isTestAddon } from "@/lib/test-addon-status";
 import { viewFeeLabel } from "@/lib/viewPricing";
@@ -319,6 +320,8 @@ export const UniversalTestDetailModal: React.FC<{
                   }}
                 >
                   <img
+                    width={160}
+                    height={64}
                     src={logo}
                     alt={meta.displayName}
                     className="w-full h-full object-contain"
@@ -348,7 +351,7 @@ export const UniversalTestDetailModal: React.FC<{
                     lineHeight: 1.2,
                   }}
                 >
-                  {test.test_name}
+                  {normaliseMedicalAcronyms(test.test_name)}
                 </div>
               </div>
             </div>
@@ -378,7 +381,7 @@ export const UniversalTestDetailModal: React.FC<{
                 style={{
                   color: "rgba(255,255,255,0.6)",
                   fontSize: 12,
-                  fontFamily: "'DM Sans',sans-serif",
+                  fontFamily: "Montserrat,sans-serif",
                 }}
               >
                 {variant?.route === "venous"
@@ -390,7 +393,7 @@ export const UniversalTestDetailModal: React.FC<{
                   style={{
                     color: "#f59e0b",
                     fontSize: 11,
-                    fontFamily: "'DM Sans',sans-serif",
+                    fontFamily: "Montserrat,sans-serif",
                     marginTop: 2,
                   }}
                 >
@@ -413,7 +416,7 @@ export const UniversalTestDetailModal: React.FC<{
                     style={{
                       color: "rgba(255,255,255,0.6)",
                       fontSize: 11,
-                      fontFamily: "'DM Sans',sans-serif",
+                      fontFamily: "Montserrat,sans-serif",
                     }}
                   >
                     Total expected cost (nurse home visit)
@@ -430,7 +433,7 @@ export const UniversalTestDetailModal: React.FC<{
                     style={{
                       color: "#fff",
                       fontSize: 13,
-                      fontFamily: "'DM Sans',sans-serif",
+                      fontFamily: "Montserrat,sans-serif",
                     }}
                   >
                     {displayTurnaround(test.turnaround_days_text)}
@@ -448,7 +451,7 @@ export const UniversalTestDetailModal: React.FC<{
                   style={{
                     color: "#fff",
                     fontSize: 13,
-                    fontFamily: "'DM Sans',sans-serif",
+                    fontFamily: "Montserrat,sans-serif",
                   }}
                 >
                   {describeBiomarkers(test).count === null &&
@@ -472,7 +475,7 @@ export const UniversalTestDetailModal: React.FC<{
                   style={{
                     color: "#fff",
                     fontSize: 13,
-                    fontFamily: "'DM Sans',sans-serif",
+                    fontFamily: "Montserrat,sans-serif",
                   }}
                 >
                   {collectionDetail(test)}
@@ -510,11 +513,11 @@ export const UniversalTestDetailModal: React.FC<{
                     marginBottom: 8,
                   }}
                 >
-                  Additional Collection Options
+                  Additional collection options
                 </div>
                 <p
                   style={{
-                    fontFamily: "'DM Sans',sans-serif",
+                    fontFamily: "Montserrat,sans-serif",
                     fontSize: 12,
                     color: "#64748b",
                     marginBottom: 10,
@@ -538,7 +541,7 @@ export const UniversalTestDetailModal: React.FC<{
                       <div className="flex items-center justify-between">
                         <span
                           style={{
-                            fontFamily: "'DM Sans',sans-serif",
+                            fontFamily: "Montserrat,sans-serif",
                             fontSize: 13,
                             color: UTC_NAVY,
                           }}
@@ -559,7 +562,7 @@ export const UniversalTestDetailModal: React.FC<{
                       {a.description && (
                         <div
                           style={{
-                            fontFamily: "'DM Sans',sans-serif",
+                            fontFamily: "Montserrat,sans-serif",
                             fontSize: 11,
                             color: "#94a3b8",
                             marginTop: 2,
@@ -591,7 +594,7 @@ export const UniversalTestDetailModal: React.FC<{
             </div>
             <p
               style={{
-                fontFamily: "'DM Sans',sans-serif",
+                fontFamily: "Montserrat,sans-serif",
                 fontSize: 14,
                 color: "#475569",
                 lineHeight: 1.6,
@@ -618,7 +621,7 @@ export const UniversalTestDetailModal: React.FC<{
               </div>
               <p
                 style={{
-                  fontFamily: "'DM Sans',sans-serif",
+                  fontFamily: "Montserrat,sans-serif",
                   fontSize: 14,
                   color: "#475569",
                   lineHeight: 1.6,
@@ -658,7 +661,7 @@ export const UniversalTestDetailModal: React.FC<{
                       background: "#fff5f9",
                       color: UTC_PINK,
                       border: `1px solid ${UTC_PINK}30`,
-                      fontFamily: "'DM Sans',sans-serif",
+                      fontFamily: "Montserrat,sans-serif",
                       fontSize: 12,
                       padding: "4px 10px",
                       borderRadius: 20,
@@ -691,7 +694,7 @@ export const UniversalTestDetailModal: React.FC<{
                   <CheckCircle size={16} color={UTC_TURQUOISE} />
                   <span
                     style={{
-                      fontFamily: "'DM Sans',sans-serif",
+                      fontFamily: "Montserrat,sans-serif",
                       fontSize: 13,
                       color: "#475569",
                     }}
@@ -705,7 +708,7 @@ export const UniversalTestDetailModal: React.FC<{
                   <CheckCircle size={16} color={UTC_TURQUOISE} />
                   <span
                     style={{
-                      fontFamily: "'DM Sans',sans-serif",
+                      fontFamily: "Montserrat,sans-serif",
                       fontSize: 13,
                       color: "#475569",
                     }}
@@ -718,19 +721,19 @@ export const UniversalTestDetailModal: React.FC<{
                 <CheckCircle size={16} color={UTC_TURQUOISE} />
                 <span
                   style={{
-                    fontFamily: "'DM Sans',sans-serif",
+                    fontFamily: "Montserrat,sans-serif",
                     fontSize: 13,
                     color: "#475569",
                   }}
                 >
-                  Clinical Review available
+                  Clinical review available
                 </span>
               </div>
               <div className="flex items-center gap-1.5">
                 <CheckCircle size={16} color={UTC_TURQUOISE} />
                 <span
                   style={{
-                    fontFamily: "'DM Sans',sans-serif",
+                    fontFamily: "Montserrat,sans-serif",
                     fontSize: 13,
                     color: "#475569",
                   }}
@@ -751,7 +754,7 @@ export const UniversalTestDetailModal: React.FC<{
           >
             <p
               style={{
-                fontFamily: "'DM Sans',sans-serif",
+                fontFamily: "Montserrat,sans-serif",
                 fontSize: 12,
                 color: "#64748b",
                 margin: 0,
@@ -886,7 +889,7 @@ const AddonMarker: React.FC<{ compact?: boolean; className?: string }> = ({
     ) : (
       <span
         style={{
-          fontFamily: "'DM Sans',sans-serif",
+          fontFamily: "'Montserrat',sans-serif",
           fontSize: 11,
           fontWeight: 600,
         }}
@@ -1054,7 +1057,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
             {test.is_addon && (
               <AddonMarker className="absolute left-3 top-3 z-20" />
             )}
-            <div className="flex flex-1 items-center justify-center overflow-hidden p-4">
+            <div className="flex flex-1 items-center justify-center overflow-hidden px-4 py-2">
               <TestCardImage
                 imageUrl={resolveTestCardImage({
                   providerId: test.provider_id,
@@ -1087,7 +1090,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                 <div
                   className="truncate"
                   style={{
-                    fontFamily: "'DM Sans',sans-serif",
+                    fontFamily: "Montserrat,sans-serif",
                     fontSize: 11,
                     color: UTC_NAVY,
                     marginTop: 2,
@@ -1119,20 +1122,27 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
               e.stopPropagation();
               handleOpen();
             }}
-            className={`absolute right-3 top-3 z-20 transition-opacity duration-[1500ms] ease-in-out motion-reduce:transition-none ${showDetails ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+            // Transparent 44px hit area around the small visual pill.
+            className={`absolute right-1 top-1 z-20 flex min-h-11 min-w-11 items-center justify-center p-2 transition-opacity duration-[1500ms] ease-in-out motion-reduce:transition-none ${showDetails ? "opacity-0 pointer-events-none" : "opacity-100"}`}
             style={{
-              background: "rgba(8,17,41,0.86)",
-              color: "#ffffff",
-              fontFamily: "'Montserrat',sans-serif",
-              fontWeight: 700,
-              fontSize: 11,
-              padding: "5px 10px",
-              borderRadius: 20,
+              background: "transparent",
               border: "none",
               cursor: "pointer",
             }}
           >
-            View details
+            <span
+              style={{
+                background: "rgba(8,17,41,0.86)",
+                color: "#ffffff",
+                fontFamily: "'Montserrat',sans-serif",
+                fontWeight: 700,
+                fontSize: 11,
+                padding: "5px 10px",
+                borderRadius: 20,
+              }}
+            >
+              View details
+            </span>
           </button>
 
           {/* Body */}
@@ -1145,7 +1155,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                 <div
                   style={{
                     width: 40,
-                    height: 40,
+                    height: 44,
                     background: "#ffffff",
                     border: "1px solid #e2e8f0",
                     borderRadius: 8,
@@ -1156,6 +1166,8 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                 >
                   {logo ? (
                     <img
+                      width={160}
+                      height={64}
                       src={logo}
                       alt={meta.displayName}
                       className="w-full h-full object-contain"
@@ -1215,7 +1227,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                 <div
                   className="flex items-center gap-2 mb-2 flex-wrap"
                   style={{
-                    fontFamily: "'DM Sans',sans-serif",
+                    fontFamily: "Montserrat,sans-serif",
                     fontSize: 11,
                     color: UTC_NAVY,
                     minHeight: 18,
@@ -1286,7 +1298,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
               <p
                 className="line-clamp-2 mb-1"
                 style={{
-                  fontFamily: "'DM Sans',sans-serif",
+                  fontFamily: "Montserrat,sans-serif",
                   fontSize: 11,
                   fontWeight: 600,
                   color: "#b45309",
@@ -1327,7 +1339,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
             <p
               className="line-clamp-2 mb-3"
               style={{
-                fontFamily: "'DM Sans',sans-serif",
+                fontFamily: "Montserrat,sans-serif",
                 fontSize: 13,
                 color: UTC_NAVY,
                 lineHeight: 1.5,
@@ -1349,14 +1361,14 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                   style={{
                     background: UTC_TINT,
                     color: UTC_NAVY,
-                    fontFamily: "'DM Sans',sans-serif",
+                    fontFamily: "Montserrat,sans-serif",
                     fontSize: 11,
                     padding: "2px 8px",
                     borderRadius: 12,
                     maxWidth: "40%",
                   }}
                 >
-                  {b}
+                  {normaliseMedicalAcronyms(b)}
                 </span>
               ))}
               {biomarkers.length > 3 && (
@@ -1365,7 +1377,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                   style={{
                     background: UTC_TINT,
                     color: UTC_NAVY,
-                    fontFamily: "'DM Sans',sans-serif",
+                    fontFamily: "Montserrat,sans-serif",
                     fontSize: 11,
                     padding: "2px 8px",
                     borderRadius: 12,
@@ -1380,7 +1392,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
             <div
               className="flex items-center gap-x-3 mb-3 overflow-hidden whitespace-nowrap"
               style={{
-                fontFamily: "'DM Sans',sans-serif",
+                fontFamily: "Montserrat,sans-serif",
                 fontSize: 12,
                 color: UTC_NAVY,
                 minHeight: 20,
@@ -1428,7 +1440,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
               <span
                 className="truncate ml-2"
                 style={{
-                  fontFamily: "'DM Sans',sans-serif",
+                  fontFamily: "Montserrat,sans-serif",
                   fontSize: 11,
                   color: UTC_NAVY,
                 }}
@@ -1441,7 +1453,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
               <div
                 className="flex items-center justify-between"
                 style={{
-                  fontFamily: "'DM Sans',sans-serif",
+                  fontFamily: "Montserrat,sans-serif",
                   fontSize: 11,
                   color: UTC_NAVY,
                   opacity: 0.85,
@@ -1460,7 +1472,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
               <div
                 className="mb-3 flex items-center gap-1"
                 style={{
-                  fontFamily: "'DM Sans',sans-serif",
+                  fontFamily: "Montserrat,sans-serif",
                   fontSize: 11,
                   color: "#d97706",
                 }}
@@ -1502,7 +1514,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                 </span>
                 <span
                   style={{
-                    fontFamily: "'DM Sans',sans-serif",
+                    fontFamily: "Montserrat,sans-serif",
                     fontSize: 11,
                     color: "#92400e",
                     lineHeight: 1.4,
@@ -1528,7 +1540,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                   fontFamily: "'Montserrat',sans-serif",
                   fontWeight: 700,
                   fontSize: 12,
-                  height: 40,
+                  height: 44,
                   padding: "0 12px",
                   borderRadius: 20,
                   border: `1.5px solid ${UTC_NAVY}`,
@@ -1552,7 +1564,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                   fontFamily: "'Montserrat',sans-serif",
                   fontWeight: 700,
                   fontSize: 12,
-                  height: 40,
+                  height: 44,
                   padding: "0 12px",
                   borderRadius: 20,
                   border: "none",

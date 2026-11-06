@@ -83,7 +83,7 @@ const providerContacts: {
   email?: string;
 }[] = [
   { name: "Medichecks", phone: "0345 060 0600" },
-  { name: "GoodBody Clinic", phone: "01225 444 144" },
+  { name: "Goodbody Clinic", phone: "01225 444 144" },
   { name: "Randox Health", phone: "028 9442 2413" },
   { name: "London Medical Laboratory", phone: "0207 183 6122" },
   { name: "Clinilabs", phone: "020 4525 8805" },
@@ -187,7 +187,7 @@ const ContactPage = () => {
       <Header />
       <main className="flex-grow bg-[#081129] md:bg-white">
         <StandardPageHero
-          title="Contact Us"
+          title="Contact us"
           strapline="Whether you're testing for the first time or proactively monitoring your health, we're here to support you every step of the way."
         />
         <div className="container mx-auto px-4 py-12 bg-white">
@@ -198,7 +198,7 @@ const ContactPage = () => {
               <div ref={formCardRef}>
                 <Card className="text-[#081129]">
                   <CardHeader>
-                    <CardTitle>Send Us a Message</CardTitle>
+                    <CardTitle>Send us a message</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <Form {...form}>
@@ -456,7 +456,7 @@ const ContactPage = () => {
             <div className="mt-6 w-full lg:max-w-[calc(50%-0.75rem)]">
               <Card className="text-[#081129]">
                 <CardHeader>
-                  <CardTitle>Emergency Medical Situations</CardTitle>
+                  <CardTitle>Emergency medical situations</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="border border-destructive/30 rounded-lg p-4 bg-destructive">

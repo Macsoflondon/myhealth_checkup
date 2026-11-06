@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
+import { displayLabel } from "@/lib/display-label";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "@/lib/router-compat";
 import { ChevronDown } from "lucide-react";
@@ -276,7 +277,7 @@ export function CategoryPillDropdown({
             color: isActiveParent ? PINK : open ? "#127f8e" : "#081129",
           }}
         >
-          {item.name}
+          {displayLabel(item.name)}
         </span>
 
         {hasDropdown && (
@@ -294,7 +295,7 @@ export function CategoryPillDropdown({
             ref={panelRef}
             id={panelId}
             role="group"
-            aria-label={`${item.name} subcategories`}
+            aria-label={`${displayLabel(item.name)} subcategories`}
             data-testid="category-panel"
             onPointerEnter={onPointerEnter}
             onPointerLeave={onPointerLeave}
@@ -309,7 +310,7 @@ export function CategoryPillDropdown({
               zIndex: 9999,
               width: panelWidth,
             }}
-            className="overflow-hidden rounded-2xl border border-white/50 bg-white/85 backdrop-blur-xl shadow-[0_24px_60px_rgba(8,17,41,0.22)] animate-in fade-in-0 slide-in-from-top-1 duration-150"
+            className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_24px_60px_rgba(8,17,41,0.22)] animate-in fade-in-0 slide-in-from-top-1 duration-150"
           >
             {visualGrid ? (
               <ul className="grid grid-cols-5 gap-2.5 p-3">
@@ -321,34 +322,38 @@ export function CategoryPillDropdown({
                     <li key={sub.path + sub.name}>
                       <Link
                         to={sub.path}
-                        aria-label={sub.name}
+                        aria-label={`${v.title} tests`}
                         aria-current={active ? "page" : undefined}
                         onClick={() => setOpen(false)}
-                        className={`group/card relative block aspect-[3/4] overflow-hidden rounded-2xl no-underline ring-1 transition-shadow ${
+                        className={`group/card flex h-full flex-col overflow-hidden rounded-2xl bg-white p-1.5 no-underline ring-1 transition-shadow ${
                           active
                             ? "ring-2 ring-brand-pink"
                             : "ring-black/10 hover:ring-2 hover:ring-brand-turquoise"
                         }`}
                       >
-                        <img
-                          src={v.image}
-                          alt=""
-                          width={420}
-                          height={560}
-                          loading="lazy"
-                          className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover/card:scale-105"
-                        />
-                        <span className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/5 to-black/75" />
-                        <span className="absolute left-3 right-3 top-3 font-[Montserrat] text-[17px] font-semibold leading-tight text-white">
+                        <span className="relative block aspect-[3/4] overflow-hidden rounded-xl">
+                          <img
+                            src={v.image}
+                            alt=""
+                            width={420}
+                            height={560}
+                            loading="lazy"
+                            className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover/card:scale-105"
+                          />
+                        </span>
+                        <span className="px-1.5 pt-2 font-[Montserrat] text-[15px] font-semibold leading-tight text-brand-navy">
                           {v.title}
                         </span>
-                        <span className="absolute bottom-3 left-2.5 right-2.5 flex flex-wrap gap-1">
+                        <span
+                          aria-hidden="true"
+                          className="flex flex-wrap gap-1 px-1 pb-1 pt-1.5"
+                        >
                           {v.biomarkers.map((b) => (
                             <span
                               key={b}
-                              className="inline-flex items-center gap-1 rounded-full border border-white/25 bg-black/30 px-2 py-0.5 font-[Montserrat] text-[10px] font-medium text-white backdrop-blur-sm"
+                              className="inline-flex items-center gap-1 rounded-full border border-brand-turquoise/40 bg-white px-2 py-0.5 font-[Montserrat] text-[10px] font-medium text-brand-navy"
                             >
-                              <span className="h-1 w-1 rounded-[1px] bg-white" />
+                              <span className="h-1 w-1 rounded-[1px] bg-brand-turquoise" />
                               {b}
                             </span>
                           ))}
@@ -391,7 +396,9 @@ export function CategoryPillDropdown({
                             strokeWidth={2}
                           />
                         </span>
-                        <span className="truncate">{sub.name}</span>
+                        <span className="truncate">
+                          {displayLabel(sub.name)}
+                        </span>
                       </Link>
                     </li>
                   );
@@ -399,12 +406,12 @@ export function CategoryPillDropdown({
               </ul>
             )}
 
-            <div className="flex items-center justify-between gap-3 border-t border-[#081129]/[0.07] bg-[#081129]/[0.035] px-4 py-3">
+            <div className="flex items-center justify-between gap-3 border-t border-[#081129]/[0.07] bg-white px-4 py-3">
               <span
                 className="text-[10px] font-bold uppercase tracking-[0.18em]"
                 style={{ color: `${NAVY}66` }}
               >
-                {item.name}
+                {displayLabel(item.name)}
               </span>
               {viewAll && (
                 <Link
@@ -413,7 +420,7 @@ export function CategoryPillDropdown({
                   className="text-[11px] font-bold font-[Montserrat] no-underline hover:underline whitespace-nowrap"
                   style={{ color: PINK }}
                 >
-                  {viewAll.name}
+                  {displayLabel(viewAll.name)}
                 </Link>
               )}
             </div>

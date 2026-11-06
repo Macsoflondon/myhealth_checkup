@@ -218,7 +218,7 @@ export const AdminMFAGuard = ({
             <div className="mx-auto mb-4 w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center">
               <Shield className="h-8 w-8 text-amber-600" />
             </div>
-            <CardTitle>MFA Required for Admin Access</CardTitle>
+            <CardTitle>MFA required for admin access</CardTitle>
             <CardDescription>
               Multi-factor authentication is required for all admin operations
               to protect sensitive data.
@@ -263,7 +263,7 @@ export const AdminMFAGuard = ({
                     Scan this QR code with your authenticator app:
                   </p>
                   <div className="flex justify-center">
-                    <img
+                    <img width={192} height={192}
                       src={qrCode}
                       alt="MFA QR Code"
                       className="w-48 h-48 border rounded-lg"
@@ -329,7 +329,7 @@ export const AdminMFAGuard = ({
             <div className="mx-auto mb-4 w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center">
               <Key className="h-8 w-8 text-primary" />
             </div>
-            <CardTitle>Verify Your Identity</CardTitle>
+            <CardTitle>Verify your identity</CardTitle>
             <CardDescription>
               Enter your authenticator code to access admin features.
             </CardDescription>

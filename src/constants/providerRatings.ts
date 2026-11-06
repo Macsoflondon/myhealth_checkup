@@ -45,6 +45,7 @@ const PROVIDER_ALIASES: Record<string, string> = {
 const PROVIDER_NAME_MAP: Record<string, string> = {
   Medichecks: "medichecks",
   "GoodBody Clinic": "goodbody-clinic",
+  "Goodbody Clinic": "goodbody-clinic",
   "Randox Health": "randox",
   "London Medical Laboratory": "london-medical-laboratory",
   "Lola Health": "lola-health",

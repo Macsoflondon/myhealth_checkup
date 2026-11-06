@@ -122,7 +122,7 @@ const ProfileSettings = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="type-section-title mb-2">Profile Settings</h2>
+        <h2 className="type-section-title mb-2">Profile settings</h2>
         <p className="text-muted-foreground">
           Manage your personal information
         </p>
@@ -161,7 +161,7 @@ const ProfileSettings = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="dateOfBirth">Date of Birth</Label>
+              <Label htmlFor="dateOfBirth">Date of birth</Label>
               <Input
                 id="dateOfBirth"
                 type="date"

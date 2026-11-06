@@ -4,18 +4,18 @@ import { Heart, Clock, Shield } from "lucide-react";
 
 const FemaleHormonesTestPage = () => {
   const testData: TestPageData = {
-    title: "Female Hormone Test",
+    title: "Female hormone test",
     description:
       "Comprehensive female hormone panel measuring oestrogen, progesterone, FSH, LH and other key hormones affecting menstrual cycles, fertility, menopause and overall wellbeing.",
     category: "Hormones",
-    breadcrumbTitle: "Female Hormone Test",
-    metaTitle: "Female Hormone Test - Compare UK Providers | MyHealth Checkup",
+    breadcrumbTitle: "Female hormone test",
+    metaTitle: "Female hormone test: compare UK providers | myhealth checkup",
     metaDescription:
       "Compare Female Hormone Tests from top UK providers. Test oestrogen, progesterone, FSH, LH and other hormones affecting fertility, cycles and menopause.",
 
     biomarkerSections: [
       {
-        title: "Primary Hormones",
+        title: "Primary hormones",
         markers: [
           "Oestradiol (E2)",
           "Progesterone",
@@ -24,7 +24,7 @@ const FemaleHormonesTestPage = () => {
         ],
       },
       {
-        title: "Supporting Markers",
+        title: "Supporting markers",
         markers: [
           "Prolactin",
           "Testosterone",
@@ -35,9 +35,9 @@ const FemaleHormonesTestPage = () => {
     ],
 
     featureBadges: [
-      { icon: Shield, label: "UKAS Accredited" },
-      { icon: Clock, label: "Fast Results" },
-      { icon: Heart, label: "Actionable Insights" },
+      { icon: Shield, label: "UKAS accredited" },
+      { icon: Clock, label: "Fast results" },
+      { icon: Heart, label: "Actionable insights" },
     ],
 
     whyChooseTitle: "Why Test Female Hormones?",

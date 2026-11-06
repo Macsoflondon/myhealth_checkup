@@ -1,3 +1,4 @@
+import { normaliseMedicalAcronyms } from "@/lib/medical-acronyms";
 /**
  * Plain-English display names for abbreviated provider test names.
  *
@@ -37,7 +38,7 @@ const findRule = (testName: string | null | undefined) =>
 
 /** Display name for headings and metadata; the raw name when no rule applies. */
 export const getTestDisplayName = (testName: string): string =>
-  findRule(testName)?.displayName ?? testName;
+  findRule(testName)?.displayName ?? normaliseMedicalAcronyms(testName);
 
 /** True when the display name differs from the provider's own test name. */
 export const hasPlainEnglishName = (testName: string): boolean =>

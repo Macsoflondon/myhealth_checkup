@@ -23,7 +23,7 @@ export interface AtHomeSectionDef {
 export const AT_HOME_SECTIONS: AtHomeSectionDef[] = [
   {
     slug: "womens",
-    label: "Women's Health",
+    label: "Women's health",
     desc: "Female hormone, menopause and PCOS finger-prick kits",
     icon: "◈",
     accent: "#e70d69",
@@ -31,7 +31,7 @@ export const AT_HOME_SECTIONS: AtHomeSectionDef[] = [
   },
   {
     slug: "mens",
-    label: "Men's Health",
+    label: "Men's health",
     desc: "Testosterone, prostate and male wellbeing kits",
     icon: "⬡",
     accent: "#22c0d4",
@@ -39,7 +39,7 @@ export const AT_HOME_SECTIONS: AtHomeSectionDef[] = [
   },
   {
     slug: "general",
-    label: "General Health",
+    label: "General health",
     desc: "Broad wellness panels covering everyday health markers",
     icon: "⊕",
     accent: "#22c0d4",
@@ -47,7 +47,7 @@ export const AT_HOME_SECTIONS: AtHomeSectionDef[] = [
   },
   {
     slug: "vitamins",
-    label: "Vitamins & Nutrition",
+    label: "Vitamins & nutrition",
     desc: "Vitamin D, B12, folate, ferritin and iron status kits",
     icon: "◇",
     accent: "#f0a500",
@@ -63,7 +63,7 @@ export const AT_HOME_SECTIONS: AtHomeSectionDef[] = [
   },
   {
     slug: "heart",
-    label: "Heart Health",
+    label: "Heart health",
     desc: "Cholesterol, lipids and cardiovascular risk markers",
     icon: "♡",
     accent: "#e70d69",
@@ -87,7 +87,7 @@ export const AT_HOME_SECTIONS: AtHomeSectionDef[] = [
   },
   {
     slug: "cancer-screening",
-    label: "Cancer Screening",
+    label: "Cancer screening",
     desc: "PSA and other screening markers collected at home",
     icon: "⬟",
     accent: "#9b59b6",
@@ -95,7 +95,7 @@ export const AT_HOME_SECTIONS: AtHomeSectionDef[] = [
   },
   {
     slug: "sexual-health",
-    label: "Sexual Health",
+    label: "Sexual health",
     desc: "Confidential home sampling for sexual health screening",
     icon: "◬",
     accent: "#9b59b6",
@@ -103,7 +103,7 @@ export const AT_HOME_SECTIONS: AtHomeSectionDef[] = [
   },
   {
     slug: "gut",
-    label: "Gut Health",
+    label: "Gut health",
     desc: "Coeliac risk and gut microbiome home sampling kits",
     icon: "◐",
     accent: "#f0a500",
@@ -111,7 +111,7 @@ export const AT_HOME_SECTIONS: AtHomeSectionDef[] = [
   },
   {
     slug: "sports",
-    label: "Sports & Fitness",
+    label: "Sports & fitness",
     desc: "Performance and recovery markers for active people",
     icon: "⟳",
     accent: "#22c0d4",

@@ -1,5 +1,5 @@
 /**
- * Custom hook for Compare Tests page data fetching
+ * Custom hook for Compare tests page data fetching
  * Centralises all test comparison data operations with React Query
  */
 

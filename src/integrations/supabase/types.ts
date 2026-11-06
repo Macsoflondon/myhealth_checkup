@@ -101,6 +101,24 @@ export type Database = {
         }
         Relationships: []
       }
+      affiliate_click_rate_limits: {
+        Row: {
+          hits: number
+          ip_hash: string
+          window_start: string
+        }
+        Insert: {
+          hits?: number
+          ip_hash: string
+          window_start: string
+        }
+        Update: {
+          hits?: number
+          ip_hash?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
       affiliate_clicks: {
         Row: {
           click_id: string
@@ -8883,6 +8901,10 @@ export type Database = {
     Functions: {
       admin_price_sync_status: { Args: never; Returns: Json }
       admin_request_price_sync: { Args: { p_provider?: string }; Returns: Json }
+      affiliate_click_rate_hit: {
+        Args: { p_ip_hash: string; p_limit?: number }
+        Returns: boolean
+      }
       affiliate_performance: {
         Args: { p_from: string; p_provider?: string; p_to: string }
         Returns: Json

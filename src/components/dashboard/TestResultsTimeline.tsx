@@ -124,7 +124,7 @@ export const TestResultsTimeline = () => {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      View File
+                      View file
                     </a>
                   </Button>
                 )}

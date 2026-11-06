@@ -119,7 +119,7 @@ const NotificationHistoryPage = () => {
       <main className="flex-1 container mx-auto px-4 py-8 max-w-7xl">
         <div className="mb-6">
           <h1 className="text-3xl font-bold text-foreground mb-2">
-            Notification History
+            Notification history
           </h1>
           <p className="text-muted-foreground">
             View all notifications sent to your account
@@ -134,7 +134,7 @@ const NotificationHistoryPage = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>All Notifications</CardTitle>
+            <CardTitle>All notifications</CardTitle>
             <CardDescription>
               A complete record of all email and SMS notifications sent
             </CardDescription>

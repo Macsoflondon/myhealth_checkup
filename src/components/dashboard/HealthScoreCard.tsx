@@ -53,7 +53,7 @@ export const HealthScoreCard = () => {
   return (
     <Card className="p-6 border-2">
       <h3 className="type-card-title mb-6 text-[#081129]">
-        Health Scores
+        Health scores
       </h3>
 
       {!score ? (
@@ -111,25 +111,25 @@ export const HealthScoreCard = () => {
           <div className="space-y-4">
             <ScoreBar
               icon={Heart}
-              label="Heart Health"
+              label="Heart health"
               score={score.heart_score}
               color="text-[#e70d69]"
             />
             <ScoreBar
               icon={Zap}
-              label="Metabolic Health"
+              label="Metabolic health"
               score={score.metabolic_score}
               color="text-[#22C0D4]"
             />
             <ScoreBar
               icon={Droplet}
-              label="Hormonal Balance"
+              label="Hormonal balance"
               score={score.hormonal_score}
               color="text-primary"
             />
             <ScoreBar
               icon={Apple}
-              label="Nutritional Status"
+              label="Nutritional status"
               score={score.nutritional_score}
               color="text-green-600"
             />

@@ -165,11 +165,11 @@ export function EnhancedComparisonTable({
             ))}
           </div>
 
-          {/* 3. Collection Method */}
+          {/* 3. Collection method */}
           <div className="grid gap-4 items-center" style={gridCols}>
             <div className="p-4 text-sm font-medium flex items-center gap-2">
               <Check className="w-4 h-4 text-muted-foreground" />
-              Collection Method
+              Collection method
             </div>
             {tests.map((test) => (
               <div key={test.id} className="p-4 text-center text-sm">
@@ -185,11 +185,11 @@ export function EnhancedComparisonTable({
             ))}
           </div>
 
-          {/* 4. Additional Collection Fees */}
+          {/* 4. Additional collection fees */}
           <div className="grid gap-4 items-center" style={gridCols}>
             <div className="p-4 text-sm font-medium flex items-center gap-2">
               <Wallet className="w-4 h-4 text-muted-foreground" />
-              Additional Collection Fees
+              Additional collection fees
             </div>
             {tests.map((test) => {
               const fee = formatCollectionFee(
@@ -212,14 +212,14 @@ export function EnhancedComparisonTable({
             })}
           </div>
 
-          {/* 5. Total Expected Cost — flagship row */}
+          {/* 5. Total expected cost — flagship row */}
           <div
             className="grid gap-4 items-center bg-primary/5 rounded-lg"
             style={gridCols}
           >
             <div className="p-4 text-sm font-bold flex items-center gap-2">
               <Calculator className="w-4 h-4" />
-              Total Expected Cost
+              Total expected cost
             </div>
             {tests.map((test) => (
               <div
@@ -231,11 +231,11 @@ export function EnhancedComparisonTable({
             ))}
           </div>
 
-          {/* 6. Clinical Review */}
+          {/* 6. Clinical review */}
           <div className="grid gap-4 items-center bg-muted/30" style={gridCols}>
             <div className="p-4 text-sm font-medium flex items-center gap-2">
               <Stethoscope className="w-4 h-4 text-muted-foreground" />
-              Clinical Review
+              Clinical review
             </div>
             {tests.map((test) => {
               const r = formatClinicalReview(
@@ -299,7 +299,7 @@ export function EnhancedComparisonTable({
                 className="w-full bg-[#e70d69] hover:bg-[#e70d69]/90"
                 onClick={() => onBookTest(test)}
               >
-                Book This Test
+                Book this test
               </Button>
             </div>
           ))}

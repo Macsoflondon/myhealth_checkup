@@ -27,32 +27,32 @@ export interface CategoryContent {
 export const categoryContent: Record<string, CategoryContent> = {
   hormones: {
     id: "hormones",
-    name: "Hormone Tests",
+    name: "Hormone tests",
     slug: "hormones",
     title:
-      "Hormone Blood Tests UK | Compare Prices from £39 | myhealth checkup",
+      "Hormone blood tests UK | Compare prices from £39 | myhealth checkup",
     metaDescription:
       "Compare hormone blood tests from UK's leading private providers. Check testosterone, oestrogen, cortisol and more from UKAS accredited labs.",
-    heroTitle: "Hormone Blood Tests",
+    heroTitle: "Hormone tests",
     heroSubtitle:
       "Understand your hormonal balance with comprehensive hormone testing from trusted UK providers",
     introduction:
       "Hormones are chemical messengers that regulate virtually every function in your body, from metabolism and mood to sleep and reproduction. A hormone blood test can reveal imbalances that may be causing symptoms like fatigue, weight changes, mood swings, or fertility issues. Our platform compares hormone tests from UKAS-accredited UK laboratories, helping you find the right test at the best price.",
     benefits: [
       {
-        title: "Understand Your Balance",
+        title: "Understand your balance",
         description:
           "Identify hormonal imbalances that could be affecting your energy, mood, weight, and overall wellbeing.",
         icon: "Scale",
       },
       {
-        title: "Track Changes Over Time",
+        title: "Track changes over time",
         description:
           "Monitor how your hormone levels change with age, lifestyle modifications, or treatment.",
         icon: "TrendingUp",
       },
       {
-        title: "Personalised Insights",
+        title: "Personalised insights",
         description:
           "Get actionable recommendations based on your unique hormonal profile.",
         icon: "Sparkles",
@@ -111,32 +111,32 @@ export const categoryContent: Record<string, CategoryContent> = {
 
   thyroid: {
     id: "thyroid",
-    name: "Thyroid Tests",
+    name: "Thyroid tests",
     slug: "thyroid",
     title:
-      "Thyroid Function Tests UK | Compare Prices from £29 | myhealth checkup",
+      "Thyroid function tests UK | Compare prices from £29 | myhealth checkup",
     metaDescription:
       "Compare thyroid blood tests from trusted UK providers. Check TSH, T3, T4 & thyroid antibodies. Fast results from UKAS accredited labs. Find your perfect test today.",
-    heroTitle: "Thyroid Function Tests",
+    heroTitle: "Thyroid tests",
     heroSubtitle:
       "Comprehensive thyroid testing to check your metabolism, energy levels, and overall thyroid health",
     introduction:
       "Your thyroid gland controls your metabolism, affecting everything from your weight and energy levels to your heart rate and body temperature. Thyroid disorders are common, affecting around 1 in 20 people in the UK, yet often go undiagnosed. Our platform helps you compare thyroid tests from leading UK providers, ensuring you get accurate results from UKAS-accredited laboratories.",
     benefits: [
       {
-        title: "Complete Thyroid Picture",
+        title: "Complete thyroid picture",
         description:
           "Go beyond basic TSH testing with comprehensive panels that include T3, T4, and thyroid antibodies.",
         icon: "Activity",
       },
       {
-        title: "Early Detection",
+        title: "Early detection",
         description:
           "Identify thyroid issues early, before they significantly impact your health and quality of life.",
         icon: "Search",
       },
       {
-        title: "Monitor Treatment",
+        title: "Monitor treatment",
         description:
           "Track your thyroid function if you're on medication or managing a thyroid condition.",
         icon: "LineChart",
@@ -200,32 +200,32 @@ export const categoryContent: Record<string, CategoryContent> = {
 
   "general-health": {
     id: "general-health",
-    name: "General Health",
+    name: "General health",
     slug: "general-health",
     title:
-      "General Health Blood Tests UK | Full Health Checks from £49 | myhealth checkup",
+      "General health blood tests UK | Full health checks from £49 | myhealth checkup",
     metaDescription:
       "Compare comprehensive health check blood tests from UK's top private providers. Cholesterol, liver, kidney function and more from UKAS accredited labs.",
-    heroTitle: "General Health Blood Tests",
+    heroTitle: "General health tests",
     heroSubtitle:
       "Comprehensive health screening to understand your overall wellbeing and catch issues early",
     introduction:
       "A general health blood test provides a comprehensive snapshot of your overall health, screening for common conditions and identifying potential issues before they become serious. These tests typically cover multiple body systems including liver function, kidney function, cholesterol, blood sugar, and key vitamins. Regular health checks are one of the most proactive steps you can take for your long-term wellbeing.",
     benefits: [
       {
-        title: "Complete Health Overview",
+        title: "Complete health overview",
         description:
           "Screen multiple body systems in one test, from heart health to organ function and nutrient levels.",
         icon: "Heart",
       },
       {
-        title: "Early Warning System",
+        title: "Early warning system",
         description:
           "Detect potential health issues before symptoms appear, enabling early intervention.",
         icon: "AlertCircle",
       },
       {
-        title: "Baseline Tracking",
+        title: "Baseline tracking",
         description:
           "Establish your personal health baseline and track changes over time.",
         icon: "BarChart3",
@@ -280,32 +280,32 @@ export const categoryContent: Record<string, CategoryContent> = {
 
   "womens-health": {
     id: "womens-health",
-    name: "Women's Health",
+    name: "Women's health tests",
     slug: "womens-health",
     title:
-      "Women's Health Blood Tests UK | Hormone & Fertility Tests from £49 | myhealth checkup",
+      "Women's health blood tests UK | hormone and fertility tests from £49 | myhealth checkup",
     metaDescription:
       "Compare women's health blood tests from trusted UK providers. Check hormones, fertility, menopause markers & more. Discreet home testing with fast results.",
-    heroTitle: "Women's Health",
+    heroTitle: "Women's health tests",
     heroSubtitle:
       "Comprehensive testing designed for women's unique health needs at every life stage",
     introduction:
       "Women's health testing addresses the unique hormonal and physiological needs at every life stage, from reproductive health and fertility to perimenopause and beyond. Our platform compares women's health tests from leading UK providers, helping you understand your hormonal balance, fertility potential, and overall wellbeing with tests designed specifically for female biology.",
     benefits: [
       {
-        title: "Life Stage Support",
+        title: "Life stage support",
         description:
           "Tests designed for every stage - from fertility planning to menopause management.",
         icon: "Heart",
       },
       {
-        title: "Hormone Insights",
+        title: "Hormone insights",
         description:
           "Understand your unique hormonal profile and how it affects your health and symptoms.",
         icon: "Activity",
       },
       {
-        title: "Fertility Assessment",
+        title: "Fertility assessment",
         description:
           "Check ovarian reserve and reproductive hormones for family planning decisions.",
         icon: "Baby",
@@ -364,32 +364,32 @@ export const categoryContent: Record<string, CategoryContent> = {
 
   "mens-health": {
     id: "mens-health",
-    name: "Men's Health",
+    name: "Men's health tests",
     slug: "mens-health",
     title:
-      "Men's Health Blood Tests UK | Testosterone & Prostate Tests from £49 | myhealth checkup",
+      "Men's health blood tests UK | testosterone and prostate tests from £49 | myhealth checkup",
     metaDescription:
       "Compare men's health blood tests from leading UK providers. Check testosterone, PSA and heart health from UKAS accredited labs.",
-    heroTitle: "Men's Health Blood Tests",
+    heroTitle: "Men's health tests",
     heroSubtitle:
       "Comprehensive testing for men's unique health needs, from hormones to heart health",
     introduction:
       "Men's health testing focuses on the specific health concerns that affect men, including testosterone levels, prostate health, cardiovascular risk, and metabolic function. Many men put off health checks, but regular testing can catch issues early when they're most treatable. Our platform compares men's health tests from trusted UK providers, making it easy to take control of your health.",
     benefits: [
       {
-        title: "Testosterone Insights",
+        title: "Testosterone insights",
         description:
           "Understand your testosterone levels and how they affect energy, mood, and vitality.",
         icon: "Zap",
       },
       {
-        title: "Prostate Screening",
+        title: "Prostate screening",
         description:
           "PSA testing for early detection of prostate issues, especially important for men over 50.",
         icon: "Shield",
       },
       {
-        title: "Heart Health Focus",
+        title: "Heart health focus",
         description:
           "Men's tests often emphasise cardiovascular markers given higher male heart disease risk.",
         icon: "Heart",
@@ -453,32 +453,32 @@ export const categoryContent: Record<string, CategoryContent> = {
 
   fertility: {
     id: "fertility",
-    name: "Fertility Tests",
+    name: "Fertility tests",
     slug: "fertility",
     title:
-      "Fertility Blood Tests UK | AMH & Hormone Tests from £49 | myhealth checkup",
+      "Fertility blood tests UK | AMH & hormone tests from £49 | myhealth checkup",
     metaDescription:
       "Compare fertility blood tests from UK's leading providers. Check AMH, FSH, LH & reproductive hormones. Discreet home testing. Results reviewed by fertility specialists.",
-    heroTitle: "Fertility Blood Tests",
+    heroTitle: "Fertility tests",
     heroSubtitle:
       "Comprehensive fertility testing to support your family planning journey",
     introduction:
       "Fertility testing provides valuable insights into your reproductive health, whether you're planning to conceive soon or want to understand your fertility potential for the future. These tests measure key hormones like AMH (Anti-Müllerian Hormone), FSH, and LH that indicate ovarian reserve and reproductive function. Our platform compares fertility tests from specialist UK providers.",
     benefits: [
       {
-        title: "Know Your Fertility",
+        title: "Know your fertility",
         description:
           "Understand your ovarian reserve and reproductive hormone levels for informed family planning.",
         icon: "Baby",
       },
       {
-        title: "Plan Ahead",
+        title: "Plan ahead",
         description:
           "Get insights that help you make decisions about timing and fertility preservation options.",
         icon: "Calendar",
       },
       {
-        title: "Specialist Support",
+        title: "Specialist support",
         description:
           "Many tests include review by fertility specialists who can explain your results.",
         icon: "Users",
@@ -537,32 +537,32 @@ export const categoryContent: Record<string, CategoryContent> = {
 
   "heart-health": {
     id: "heart-health",
-    name: "Heart Health",
+    name: "Heart health",
     slug: "heart-health",
     title:
-      "Heart Health Blood Tests UK | Cholesterol & Cardiac Tests from £39 | myhealth checkup",
+      "Heart health blood tests UK | Cholesterol & cardiac tests from £39 | myhealth checkup",
     metaDescription:
       "Compare heart health blood tests from trusted UK providers. Check cholesterol, triglycerides, inflammation markers & cardiac risk. Fast results from UKAS labs.",
-    heroTitle: "Heart Health Blood Tests",
+    heroTitle: "Heart health tests",
     heroSubtitle:
       "Comprehensive cardiac screening to assess your cardiovascular risk and heart health",
     introduction:
       "Heart disease remains the leading cause of death in the UK, yet it's largely preventable with early detection and lifestyle changes. Heart health blood tests measure key markers like cholesterol, triglycerides, and inflammation that indicate cardiovascular risk. Our platform compares cardiac tests from UKAS-accredited UK providers, helping you take proactive steps to protect your heart.",
     benefits: [
       {
-        title: "Know Your Risk",
+        title: "Know your risk",
         description:
           "Assess your cardiovascular risk with comprehensive lipid panels and cardiac markers.",
         icon: "Heart",
       },
       {
-        title: "Beyond Basic Cholesterol",
+        title: "Beyond basic cholesterol",
         description:
           "Advanced tests measure particle size, inflammation, and emerging cardiac risk markers.",
         icon: "Activity",
       },
       {
-        title: "Track Progress",
+        title: "Track progress",
         description:
           "Monitor how diet, exercise, and medication affect your heart health markers.",
         icon: "TrendingUp",
@@ -626,32 +626,32 @@ export const categoryContent: Record<string, CategoryContent> = {
 
   diabetes: {
     id: "diabetes",
-    name: "Diabetes Tests",
+    name: "Diabetes tests",
     slug: "diabetes",
     title:
-      "Diabetes Blood Tests UK | HbA1c & Glucose Tests from £29 | myhealth checkup",
+      "Diabetes blood tests UK | HbA1c & glucose tests from £29 | myhealth checkup",
     metaDescription:
       "Compare diabetes blood tests from UK's trusted providers. Check HbA1c, fasting glucose & insulin resistance. Monitor blood sugar control. Fast, accurate results.",
-    heroTitle: "Diabetes Blood Tests",
+    heroTitle: "Diabetes tests",
     heroSubtitle:
       "Comprehensive blood sugar testing to detect, monitor, and manage diabetes",
     introduction:
       "Diabetes affects over 4.9 million people in the UK, with many more undiagnosed or at risk. Blood tests for diabetes measure how well your body manages blood sugar, helping detect pre-diabetes early when lifestyle changes can prevent progression. Our platform compares diabetes tests from trusted UK providers, whether you're screening for risk or monitoring an existing condition.",
     benefits: [
       {
-        title: "Early Detection",
+        title: "Early detection",
         description:
           "Identify pre-diabetes early when lifestyle changes can prevent type 2 diabetes.",
         icon: "AlertCircle",
       },
       {
-        title: "Monitor Control",
+        title: "Monitor control",
         description:
           "HbA1c shows your average blood sugar over 2-3 months for effective management.",
         icon: "LineChart",
       },
       {
-        title: "Comprehensive Screening",
+        title: "Comprehensive screening",
         description:
           "Advanced tests assess insulin resistance and metabolic function.",
         icon: "Activity",
@@ -715,32 +715,32 @@ export const categoryContent: Record<string, CategoryContent> = {
 
   vitamins: {
     id: "vitamins",
-    name: "Vitamin Tests",
+    name: "Vitamin tests",
     slug: "vitamins",
     title:
-      "Vitamin & Mineral Blood Tests UK | Deficiency Tests from £29 | myhealth checkup",
+      "Vitamin & mineral blood tests UK | Deficiency tests from £29 | myhealth checkup",
     metaDescription:
       "Compare vitamin and mineral blood tests from UK providers. Check vitamin D, B12, iron, folate & more. Identify deficiencies affecting your energy and health.",
-    heroTitle: "Vitamin & Mineral Blood Tests",
+    heroTitle: "Vitamin and mineral tests",
     heroSubtitle:
       "Identify nutritional deficiencies that could be affecting your energy, mood, and overall health",
     introduction:
       "Vitamins and minerals are essential for hundreds of bodily functions, yet deficiencies are surprisingly common in the UK. Low vitamin D affects around 1 in 5 adults, while B12 deficiency is common in vegetarians and older adults. A blood test can identify deficiencies causing symptoms like fatigue, brain fog, or poor immunity, enabling targeted supplementation.",
     benefits: [
       {
-        title: "Identify Deficiencies",
+        title: "Identify deficiencies",
         description:
           "Discover specific nutrient gaps that may be causing unexplained symptoms.",
         icon: "Search",
       },
       {
-        title: "Optimise Supplementation",
+        title: "Optimise supplementation",
         description:
           "Stop guessing - know exactly which supplements your body actually needs.",
         icon: "Pill",
       },
       {
-        title: "Boost Energy",
+        title: "Boost energy",
         description:
           "Address iron, B12, and vitamin D deficiencies that commonly cause fatigue.",
         icon: "Zap",
@@ -799,31 +799,31 @@ export const categoryContent: Record<string, CategoryContent> = {
 
   "cancer-screening": {
     id: "cancer-screening",
-    name: "Cancer Screening",
+    name: "Cancer screening",
     slug: "cancer-screening",
     title:
-      "Cancer Marker Blood Tests UK | PSA, CEA & CA125 from £39 | myhealth checkup",
+      "Cancer marker blood tests UK | PSA, CEA & CA125 from £39 | myhealth checkup",
     metaDescription:
       "Compare cancer screening blood tests from UK's trusted providers. Check PSA, CEA, CA125 & other tumour markers. Early detection from UKAS accredited laboratories.",
-    heroTitle: "Cancer Marker Blood Tests",
+    heroTitle: "Cancer screening tests",
     heroSubtitle: "Tumour marker testing for early detection and peace of mind",
     introduction:
       "Cancer marker blood tests (tumour markers) can support early detection and monitoring of certain cancers. While not diagnostic on their own, elevated markers can prompt further investigation when symptoms or risk factors are present. Our platform compares cancer marker tests from trusted UK providers, all using UKAS-accredited laboratories for reliable results.",
     benefits: [
       {
-        title: "Early Detection Support",
+        title: "Early detection support",
         description:
           "Tumour markers can help detect some cancers earlier when treatment is most effective.",
         icon: "Search",
       },
       {
-        title: "Monitor Treatment",
+        title: "Monitor treatment",
         description:
           "Track marker levels during and after treatment to assess effectiveness.",
         icon: "Activity",
       },
       {
-        title: "Peace of Mind",
+        title: "Peace of mind",
         description:
           "For those with family history or concerns, regular screening provides reassurance.",
         icon: "Shield",

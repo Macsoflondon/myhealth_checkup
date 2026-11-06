@@ -2,14 +2,12 @@ import React from "react";
 import { Shield, Mail, Phone, MapPin, Clock, FileText } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import PageHeading from "@/components/ui/page-heading";
 
 const PrivacyPolicy = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       <div className="text-center mb-12">
-        <PageHeading title="Privacy" accent="Policy" />
-        <p className="text-brand-navy mt-4">Effective Date: 06/08/2026</p>
+        <p className="text-brand-navy mt-4">Effective date: 06/08/2026</p>
       </div>
 
       <div className="bg-blue-50 p-4 rounded-lg mb-6">
@@ -34,14 +32,14 @@ const PrivacyPolicy = () => {
         </h2>
         <p className="text-brand-navy leading-relaxed mb-4">
           myhealthcheckup Ltd ("we", "our", "us") is committed to protecting
-          your personal data. This Privacy Policy explains how we collect,
+          your personal data. This privacy policy explains how we collect,
           process, and protect your personal information when you use
           myhealthcheckup.co.uk ("Website"). We comply fully with the UK General
           Data Protection Regulation (UK GDPR), the Data Protection Act 2018,
           and the Privacy and Electronic Communications Regulations (PECR).
         </p>
         <p className="text-brand-navy leading-relaxed">
-          By using our Website, you agree to this Privacy Policy.
+          By using our website, you agree to this privacy policy.
         </p>
       </Card>
 
@@ -310,7 +308,7 @@ const PrivacyPolicy = () => {
       <Card className="p-6">
         <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
           <Mail className="h-5 w-5 text-health-600" />
-          11. Contact Us
+          11. Contact us
         </h2>
         <div className="flex items-center gap-3">
           <Mail className="h-4 w-4 text-brand-navy" />
@@ -324,7 +322,7 @@ const PrivacyPolicy = () => {
           variant="outline"
           className="mr-4 bg-[#e70d69] text-white"
         >
-          Print Policy
+          Print policy
         </Button>
         <Button className="bg-[#e70d69]">Download PDF</Button>
       </div>

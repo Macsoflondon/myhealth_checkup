@@ -4,18 +4,18 @@ import { Heart, Clock, Shield } from "lucide-react";
 
 const GeneralHealthTestPage = () => {
   const testData: TestPageData = {
-    title: "General Health Test",
+    title: "General health test",
     description:
       "Get a comprehensive overview of your health with testing for cholesterol levels, liver function, iron levels, diabetes risk and more essential health markers.",
     category: "General Health",
-    breadcrumbTitle: "General Health Test",
-    metaTitle: "General Health Test - Compare UK Providers | MyHealth Checkup",
+    breadcrumbTitle: "General health test",
+    metaTitle: "General health test: compare UK providers | myhealth checkup",
     metaDescription:
       "Compare General Health Tests from top UK providers. Get comprehensive health screening with cholesterol, liver function, diabetes risk and more.",
 
     biomarkerSections: [
       {
-        title: "Blood Health",
+        title: "Blood health",
         markers: [
           "Full Blood Count (FBC)",
           "Iron Status",
@@ -23,7 +23,7 @@ const GeneralHealthTestPage = () => {
         ],
       },
       {
-        title: "Metabolic Health",
+        title: "Metabolic health",
         markers: [
           "Cholesterol Profile",
           "Diabetes Screening (HbA1c)",
@@ -33,9 +33,9 @@ const GeneralHealthTestPage = () => {
     ],
 
     featureBadges: [
-      { icon: Shield, label: "UKAS Accredited" },
-      { icon: Clock, label: "Fast Results" },
-      { icon: Heart, label: "Health Insights" },
+      { icon: Shield, label: "UKAS accredited" },
+      { icon: Clock, label: "Fast results" },
+      { icon: Heart, label: "Health insights" },
     ],
 
     whyChooseTitle: "Why Choose a General Health Test?",

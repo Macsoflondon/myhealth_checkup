@@ -122,13 +122,24 @@ describe("HeroMasthead video gate", () => {
     expect(el.className).not.toContain("opacity-0");
   });
 
-  it("lists the smaller H.264 MP4 first and keeps the WebM as a fallback", () => {
+  it("serves phones the 480p MP4, then the smaller H.264 MP4 before the WebM fallback", () => {
     render(<HeroMasthead />);
     fireLoadThenIdle();
-    const types = Array.from(video()!.querySelectorAll("source")).map((s) =>
-      s.getAttribute("type"),
-    );
-    expect(types).toEqual(["video/mp4", "video/webm"]);
+    const sources = Array.from(video()!.querySelectorAll("source"));
+    expect(sources.map((s) => s.getAttribute("type"))).toEqual([
+      "video/mp4",
+      "video/mp4",
+      "video/webm",
+    ]);
+    expect(sources[0].getAttribute("media")).toBe("(max-width: 767px)");
+    expect(sources[0].getAttribute("src")).toMatch(/480p\.mp4$/);
+    expect(sources[1].hasAttribute("media")).toBe(false);
+  });
+
+  it("sets the muted attribute in the DOM so iOS Safari allows autoplay", () => {
+    render(<HeroMasthead />);
+    fireLoadThenIdle();
+    expect(video()!.hasAttribute("muted")).toBe(true);
   });
 
   it("mounts straight after idle time when the page has already loaded", () => {

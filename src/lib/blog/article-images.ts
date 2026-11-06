@@ -1,8 +1,8 @@
-import clinicalImage from "@/assets/articles/clinical-education.jpg";
-import nutritionImage from "@/assets/articles/nutrition-education.jpg";
-import wellbeingImage from "@/assets/articles/wellbeing-education.jpg";
-import mriImage from "@/assets/articles/mri-education.jpg";
-import skinImage from "@/assets/articles/skin-education.jpg";
+import clinicalImage from "@/assets/articles/clinical-education.webp";
+import nutritionImage from "@/assets/articles/nutrition-education.webp";
+import wellbeingImage from "@/assets/articles/wellbeing-education.webp";
+import mriImage from "@/assets/articles/mri-education.webp";
+import skinImage from "@/assets/articles/skin-education.webp";
 import type { BlogArticle } from "@/types/blog.types";
 
 export function isArticleImage(url: string | null | undefined): boolean {

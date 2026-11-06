@@ -31,7 +31,7 @@ import { categoryMenuIconFor } from "@/components/header/menuIcons";
 import { describeSampleType } from "@/lib/sampleType";
 
 const SEO = {
-  title: "Compare UK At-Home Health Test Kits | myhealth checkup",
+  title: "Compare UK at-home health test kits | myhealth checkup",
   description:
     "Compare at-home test kits from UKAS-accredited UK providers. Home test kits posted to your door: finger-prick, QuickDraw, saliva, stool and urine samples, with prices, biomarkers and typical turnaround times.",
   keywords:
@@ -48,12 +48,12 @@ const HERO_BENEFITS = [
   },
   {
     icon: Shield,
-    title: "UKAS Accredited Labs",
+    title: "UKAS accredited labs",
     description: "Every sample analysed by UKAS-accredited UK laboratories",
   },
   {
     icon: Clock,
-    title: "Fast Online Results",
+    title: "Fast online results",
     description: "Typical turnaround in a few days, delivered securely online",
   },
 ] as const;
@@ -110,14 +110,14 @@ const StatusShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="flex-1">
-        <CategoryStandardHero pillLabel="At Home Test Kits" />
+        <CategoryStandardHero pillLabel="At-home test kits" />
         <section className="pt-8 pb-[72px] px-4 sm:px-6 lg:px-10 bg-white min-h-[60vh]">
           <div className="max-w-[1280px] mx-auto">{children}</div>
         </section>
         <CategoryPageBottom
-          topic="At Home Test Kits"
+          topic="At-home test kits"
           guidesTitle="At Home Test Kit Guides"
-          benefitsTitle="Why Choose At Home Testing?"
+          benefitsTitle="Why choose at home testing?"
           benefits={[HERO_BENEFITS[0], HERO_BENEFITS[1], HERO_BENEFITS[2]]}
         />
       </main>
@@ -239,7 +239,7 @@ const AtHomeTestsPage: React.FC = () => {
       <StatusShell>
         <div className="mt-10 mb-10 text-center">
           <p className="text-[#060b18] font-medium max-w-2xl mx-auto">
-            At Home Test Kits are grouped for easy convenience.
+            At-home test kits are grouped by health area.
           </p>
         </div>
         <AtHomeSectionGrid counts={counts} />
@@ -249,27 +249,27 @@ const AtHomeTestsPage: React.FC = () => {
 
   return (
     <CategoryPageLayout
-      seoTitle={`${section.label} At Home Test Kits | myhealth checkup`}
-      seoDescription={`Compare ${section.label.toLowerCase()} at home test kits from UKAS-accredited UK labs, with prices, biomarkers and typical turnaround times.`}
+      seoTitle={`${section.label} at-home test kits | myhealth checkup`}
+      seoDescription={`Compare ${section.label.toLowerCase()} at-home test kits from UKAS-accredited UK labs, with prices, biomarkers and typical turnaround times.`}
       seoKeywords={SEO.keywords}
       canonicalUrl={`${SEO.canonical}?subcategory=${section.slug}`}
-      pillLabel={`${section.label} At Home Test Kits`}
-      headline={`${section.label} At Home Test Kits`}
+      pillLabel={`${section.label} at-home test kits`}
+      headline={`${section.label} at-home test kits`}
       subtitle={section.desc}
       searchPlaceholder="Search by test name or biomarker…"
       trustStats={[
-        { value: `${tests.length}`, label: `${section.label} Kits` },
-        { value: "UKAS", label: "Accredited Labs" },
-        { value: "Fast", label: "Online Results" },
+        { value: `${tests.length}`, label: `${section.label} kits` },
+        { value: "UKAS", label: "Accredited labs" },
+        { value: "Fast", label: "Online results" },
       ]}
       filters={filters}
       tests={tests}
       categoryAccent="At Home Test Kits"
-      benefitsTitle="Why Choose At Home Testing?"
+      benefitsTitle="Why choose at home testing?"
       benefits={[HERO_BENEFITS[0], HERO_BENEFITS[1], HERO_BENEFITS[2]]}
       breadcrumbs={[
         { label: "Home", href: "/" },
-        { label: "At Home Test Kits", href: "/at-home-tests" },
+        { label: "At-home test kits", href: "/at-home-tests" },
         { label: section.label },
       ]}
     />

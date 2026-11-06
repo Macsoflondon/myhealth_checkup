@@ -1,3 +1,4 @@
+import { toSentenceCase } from "@/lib/display-label";
 import type { BlogArticle } from "@/types/blog.types";
 
 /**
@@ -146,7 +147,7 @@ export const selectTopicArticles = (
   return picked;
 };
 
-/** "At Home Test Kits" -> "At Home Test Kit Guides". */
+/** "At Home Test Kits" -> "At home test kit guides" (sentence case). */
 export const guidesHeadingFor = (topic: string): string => {
   const cleaned = (topic || "Health")
     .replace(/^why choose\s+/i, "")
@@ -154,5 +155,5 @@ export const guidesHeadingFor = (topic: string): string => {
     .replace(/\s+testing$/i, "")
     .replace(/\s+tests?$/i, "")
     .trim();
-  return `${cleaned || "Health"} Guides`;
+  return toSentenceCase(`${cleaned || "Health"} guides`);
 };

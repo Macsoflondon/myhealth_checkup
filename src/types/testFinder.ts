@@ -1,4 +1,4 @@
-// Assisted Test Finder — typed data model (spec §7)
+// Assisted test finder — typed data model (spec §7)
 
 export type SexRestriction = "male_only" | "female_only" | "none";
 

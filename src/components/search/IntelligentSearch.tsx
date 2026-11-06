@@ -103,7 +103,7 @@ const IntelligentSearch = () => {
     <div className="max-w-4xl mx-auto p-6">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold mb-4 text-navy">
-          Find Your Perfect Health Test
+          Find your perfect health test
         </h1>
         <p className="text-brand-navy">
           Search across {roundedTestCount}+ tests from {providerCount} UK
@@ -148,7 +148,7 @@ const IntelligentSearch = () => {
           <div className="flex items-center gap-2 mb-4">
             <TrendingUp className="h-5 w-5 text-health-600" />
             <h2 className="text-lg font-semibold text-[#081129]">
-              Popular Searches
+              Popular searches
             </h2>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -254,7 +254,7 @@ const IntelligentSearch = () => {
                     <div className="flex gap-2 justify-end">
                       <Button asChild size="sm" variant="outline">
                         <Link to={getTestDetailUrl(r.provider_id ?? "", r.id)}>
-                          View Details
+                          View details
                         </Link>
                       </Button>
                       {canBookDirect(r.url, r.url_verified) && (

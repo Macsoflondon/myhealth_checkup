@@ -9,7 +9,7 @@ const GeneralHealthTestPage = lazy(
 export const Route = createFileRoute("/test/general-health")({
   head: () =>
     buildRouteHead({
-      title: "General Health Blood Tests Compared | myhealth checkup",
+      title: "General health blood tests compared | myhealth checkup",
       description:
         "Compare general health blood test panels from UK providers: biomarkers included, turnaround times and prices in GBP.",
       path: "/test/general-health",

@@ -138,7 +138,7 @@ export default function AuditsSection() {
   };
 
   return (
-    <SectionShell title="Audit Centre">
+    <SectionShell title="Audit centre">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         <StatCard
           label="Biomarker audits (recent)"

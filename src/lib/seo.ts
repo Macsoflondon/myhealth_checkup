@@ -27,7 +27,7 @@ export const seo = {
   category: (name: string, opts?: { priceFrom?: number }) => {
     const price = opts?.priceFrom ? ` from £${opts.priceFrom}` : "";
     return {
-      title: withSuffix(`${name} Tests in the UK — Compare Prices${price}`),
+      title: withSuffix(`${name} tests in the UK — compare prices${price}`),
       description: trimDesc(
         `Compare ${name.toLowerCase()} tests from accredited UK providers${price}. Side-by-side prices, biomarkers and turnaround times to help you choose with confidence.`,
       ),
@@ -78,7 +78,7 @@ export const seo = {
         ? ` Rated ${opts.rating}/5 from ${opts.reviewCount.toLocaleString()} reviews.`
         : "";
     return {
-      title: withSuffix(`${providerName} Reviews & Tests`),
+      title: withSuffix(`${providerName} reviews and tests`),
       description: trimDesc(
         `${providerName} private health tests reviewed and compared.${ratingBit} Browse the full test range, prices, accreditations and turnaround times.`,
       ),
@@ -86,7 +86,7 @@ export const seo = {
   },
 
   providerCatalog: (providerName: string, testCount?: number) => ({
-    title: withSuffix(`${providerName} Tests — Browse the Full Range`),
+    title: withSuffix(`${providerName} tests — browse the full range`),
     description: trimDesc(
       `Browse ${
         testCount ? `${testCount}+ ` : ""

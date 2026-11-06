@@ -1,0 +1,2 @@
+CREATE POLICY "__deny_all_api" ON public.affiliate_click_rate_limits AS RESTRICTIVE FOR ALL TO anon, authenticated USING (false) WITH CHECK (false);
+-- Rollback: DROP POLICY "__deny_all_api" ON public.affiliate_click_rate_limits;

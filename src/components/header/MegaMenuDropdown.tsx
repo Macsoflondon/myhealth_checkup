@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { displayLabel } from "@/lib/display-label";
 import { Link } from "@/lib/router-compat";
 import { ChevronDown, Search, X } from "lucide-react";
 import { getCategoryPinColor } from "@/data/categoryColors";
@@ -138,7 +139,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
           )}
         </div>
 
-        {/* Popular Tests from Database */}
+        {/* Popular tests from the database */}
         {filteredPopularTests ? (
           <div className="grid grid-cols-1 gap-2">
             <div className="mb-3">
@@ -200,7 +201,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
           <div className="grid grid-cols-1 gap-2">
             <div className="mb-3">
               <h3 className="text-xs font-bold text-brand-navy dark:text-brand-navy uppercase tracking-wider mb-2">
-                {searchQuery ? `Results for "${searchQuery}"` : "Popular Tests"}
+                {searchQuery ? `Results for "${searchQuery}"` : "Popular tests"}
               </h3>
             </div>
             {filteredTests.length > 0 ? (
@@ -278,7 +279,7 @@ export const MegaMenuDropdown: React.FC<MegaMenuDropdownProps> = ({
                       />
                       <div className="flex-1 min-w-0">
                         <h3 className="text-base font-semibold text-foreground mb-1">
-                          {category.name}
+                          {displayLabel(category.name)}
                         </h3>
                         <p className="text-sm text-muted-foreground leading-tight">
                           {category.description}

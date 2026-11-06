@@ -47,7 +47,7 @@ export default function NotificationsSection() {
   ).length;
 
   return (
-    <SectionShell title="Notification Centre">
+    <SectionShell title="Notification centre">
       <div className="grid grid-cols-3 gap-3 mb-6">
         <StatCard
           label="Open alerts"
@@ -55,7 +55,7 @@ export default function NotificationsSection() {
           tone={open.length > 0 ? "warn" : "good"}
         />
         <StatCard
-          label="Critical / High"
+          label="Critical / high"
           value={critical}
           tone={critical > 0 ? "bad" : "good"}
         />

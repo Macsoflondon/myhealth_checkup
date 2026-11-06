@@ -9,13 +9,13 @@ const VitaminDTestPage = () => {
       "Check your vitamin D levels to assess bone health, immune function, and overall wellbeing. Essential for those with limited sun exposure or dietary intake.",
     category: "Vitamins",
     breadcrumbTitle: "Vitamin D Test",
-    metaTitle: "Vitamin D Test - Compare UK Providers | MyHealth Checkup",
+    metaTitle: "Vitamin D Test - Compare UK Providers | myhealth checkup",
     metaDescription:
       "Compare Vitamin D Tests from top UK providers. Check your vitamin D levels for bone health, immune function and overall wellbeing.",
 
     biomarkerSections: [
       {
-        title: "What We Measure",
+        title: "What we measure",
         markers: [
           "25-Hydroxyvitamin D",
           "Total vitamin D status",
@@ -23,7 +23,7 @@ const VitaminDTestPage = () => {
         ],
       },
       {
-        title: "Health Benefits",
+        title: "Health benefits",
         markers: [
           "Bone health support",
           "Immune system function",
@@ -34,7 +34,7 @@ const VitaminDTestPage = () => {
 
     highlights: [
       {
-        title: "Vitamin D Reference Ranges",
+        title: "Vitamin D reference ranges",
         items: [
           "Deficient: <30 nmol/L (<12 ng/mL)",
           "Insufficient: 30-50 nmol/L (12-20 ng/mL)",
@@ -47,9 +47,9 @@ const VitaminDTestPage = () => {
     ],
 
     featureBadges: [
-      { icon: Shield, label: "UKAS Accredited" },
-      { icon: Clock, label: "Fast Results" },
-      { icon: Heart, label: "Easy Collection" },
+      { icon: Shield, label: "UKAS accredited" },
+      { icon: Clock, label: "Fast results" },
+      { icon: Heart, label: "Easy collection" },
     ],
 
     whyChooseTitle: "Why Test Vitamin D?",

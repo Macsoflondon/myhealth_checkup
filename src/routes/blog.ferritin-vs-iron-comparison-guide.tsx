@@ -10,7 +10,7 @@ export const Route = createFileRoute("/blog/ferritin-vs-iron-comparison-guide")(
   {
     head: () =>
       buildArticleHead({
-        title: "Ferritin vs Iron: Which Blood Test Do You Need?",
+        title: "Ferritin vs iron: Which blood test do you need?",
         description:
           "Independent UK guide comparing ferritin and serum iron blood tests: what each measures, when to test and how to read your results.",
         path: "/blog/ferritin-vs-iron-comparison-guide",

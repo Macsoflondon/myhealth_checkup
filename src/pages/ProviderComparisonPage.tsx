@@ -417,7 +417,7 @@ export default function ProviderComparisonPage() {
         {/* Header */}
         <div className="text-center mb-8">
           <PageHeading
-            title="Compare Providers"
+            title="Compare providers"
             accent="Side-by-Side Analysis"
           />
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -457,7 +457,7 @@ export default function ProviderComparisonPage() {
                     <div className="flex items-start gap-3">
                       <Checkbox checked={isSelected} className="mt-1" />
                       <div className="flex-1 min-w-0">
-                        <img
+                        <img width={160} height={64}
                           src={provider.logo}
                           alt={provider.name}
                           className="h-8 w-auto object-contain mb-2"
@@ -499,7 +499,7 @@ export default function ProviderComparisonPage() {
                 </TabsTrigger>
                 <TabsTrigger value="tests" className="flex items-center gap-2">
                   <List className="h-4 w-4" />
-                  Compare Tests
+                  Compare tests
                 </TabsTrigger>
               </TabsList>
 
@@ -518,7 +518,7 @@ export default function ProviderComparisonPage() {
                             className="p-4 text-center min-w-[180px]"
                           >
                             <div className="flex flex-col items-center gap-2">
-                              <img
+                              <img width={160} height={64}
                                 src={getProviderLogo(providerId)}
                                 alt={getProviderName(providerId)}
                                 className="h-10 w-auto object-contain"
@@ -667,14 +667,14 @@ export default function ProviderComparisonPage() {
                         })}
                       </tr>
 
-                      {/* View Catalog */}
+                      {/* View catalog */}
                       <tr>
-                        <td className="p-4 font-medium">Browse Tests</td>
+                        <td className="p-4 font-medium">Browse tests</td>
                         {selectedProviders.map((providerId) => (
                           <td key={providerId} className="p-4 text-center">
                             <Button asChild size="sm">
                               <Link to={`/provider/${providerId}/tests`}>
-                                View Catalog
+                                View catalog
                               </Link>
                             </Button>
                           </td>
@@ -711,7 +711,7 @@ export default function ProviderComparisonPage() {
                       <SelectValue placeholder="All categories" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="all">All Categories</SelectItem>
+                      <SelectItem value="all">All categories</SelectItem>
                       {categories.map((cat) => (
                         <SelectItem
                           key={cat}
@@ -747,7 +747,7 @@ export default function ProviderComparisonPage() {
                               key={providerId}
                               className="p-4 text-center min-w-[160px]"
                             >
-                              <img
+                              <img width={160} height={64}
                                 src={getProviderLogo(providerId)}
                                 alt={getProviderName(providerId)}
                                 className="h-8 w-auto object-contain mx-auto"
@@ -820,7 +820,7 @@ export default function ProviderComparisonPage() {
                     </h3>
                     <p className="text-muted-foreground">
                       {categoryFilter !== "all"
-                        ? "Try selecting a different category or 'All Categories'"
+                        ? "Try selecting a different category or 'All categories'"
                         : "These providers don't have overlapping tests to compare"}
                     </p>
                   </div>
@@ -847,7 +847,7 @@ export default function ProviderComparisonPage() {
         {/* Back Link */}
         <div className="mt-8 text-center">
           <Button asChild variant="outline">
-            <Link to="/trusted-providers">← Back to All Providers</Link>
+            <Link to="/trusted-providers">← Back to all providers</Link>
           </Button>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { normaliseMedicalAcronyms } from "@/lib/medical-acronyms";
 import {
   fetchViewPricing,
   mergeActiveRows,
@@ -704,7 +705,7 @@ export default function ProviderTestDetailTemplate({
 
   // Parse biomarkers from JSON if needed
   const biomarkers = Array.isArray(test.biomarkers_list)
-    ? test.biomarkers_list
+    ? test.biomarkers_list.map(normaliseMedicalAcronyms)
     : null;
 
   // Title, description, og:* , canonical and Product JSON-LD come from the
@@ -741,6 +742,8 @@ export default function ProviderTestDetailTemplate({
           {/* Provider Badge */}
           <div className="mb-6">
             <img
+              width={160}
+              height={64}
               src={providerLogo}
               alt={providerConfig.name}
               loading="lazy"
@@ -843,7 +846,7 @@ export default function ProviderTestDetailTemplate({
               {/* Conditions Section */}
               <ConditionsSection conditions={test.conditions} />
 
-              {/* Clinical Review */}
+              {/* Clinical review */}
               <ClinicalReviewSection test={test} />
 
               {/* Compare Across Providers */}
@@ -873,10 +876,10 @@ export default function ProviderTestDetailTemplate({
                 />
               )}
 
-              {/* Sample Collection Options */}
+              {/* Sample collection options */}
               <CollectionOptionsSection test={test} />
 
-              {/* Why Choose Provider */}
+              {/* Why choose this provider */}
               <Card>
                 <CardHeader>
                   <h3 className="type-card-title">

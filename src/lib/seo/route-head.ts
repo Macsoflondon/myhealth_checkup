@@ -50,13 +50,23 @@ export const canonicalUrl = (path: string): string => {
  * and canonical) so every public page ships unique, crawlable metadata during
  * server rendering rather than relying on the site-wide defaults.
  */
+const BRAND = "myhealth checkup";
+
+/** Ensures every page title carries the brand suffix exactly once. */
+export const withBrand = (title: string): string => {
+  if (title.toLowerCase().includes(BRAND)) return title;
+  const topic = title.split(" | ")[0]?.trim() || title;
+  return `${topic} | ${BRAND}`;
+};
+
 export const buildRouteHead = ({
-  title,
+  title: rawTitle,
   description,
   path,
   type = "website",
   image,
 }: RouteHeadInput) => {
+  const title = withBrand(rawTitle);
   const url = canonicalUrl(path);
   const imageMeta: HeadMetaEntry[] = image
     ? [
@@ -96,7 +106,7 @@ export const buildRouteHead = ({
  */
 export const buildPrivateRouteHead = (title: string) => ({
   meta: [
-    { title },
+    { title: withBrand(title) },
     { name: "robots", content: "noindex, nofollow" },
     { name: "googlebot", content: "noindex, nofollow" },
   ],
@@ -227,7 +237,7 @@ export const buildProviderHead = ({
 }: ProviderHeadInput) => {
   const path = `/provider/${providerId}`;
   const url = canonicalUrl(path);
-  const title = `${providerName} Reviews & Tests | myhealth checkup`;
+  const title = `${providerName} reviews and tests | myhealth checkup`;
   const description = `${providerName} private health tests reviewed and compared. Browse the full test range, prices, accreditations and typical turnaround times.`;
   const base = buildRouteHead({ title, description, path });
 

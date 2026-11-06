@@ -15,7 +15,7 @@ const AssistedTestFinderPage = () => {
       <div className="min-h-screen bg-white text-[#081129] flex flex-col">
         <Header />
         <StandardPageHero
-          title="Assisted Test Finder"
+          title="Assisted test finder"
           strapline="A short, private questionnaire — no account required. We'll suggest tests that fit your goals and pre-fill the comparison filters."
         />
         <main className="flex-1 container mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">

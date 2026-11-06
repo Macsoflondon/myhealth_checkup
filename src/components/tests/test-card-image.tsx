@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { isPromotionalImage } from "@/lib/promotional-images";
 import { shopifyImageSrcSet, shopifyImageUrl } from "@/lib/shopify-image";
 
 interface TestCardImageProps {
@@ -11,6 +12,10 @@ interface TestCardImageProps {
   sizes?: string;
 }
 
+/** Intrinsic size hint for the frame (1:1) so the browser reserves space before load. */
+const FRAME_WIDTH = 400;
+const FRAME_HEIGHT = 400;
+
 export function TestCardImage({
   imageUrl,
   testName,
@@ -19,14 +24,17 @@ export function TestCardImage({
   displayWidth,
   sizes,
 }: TestCardImageProps) {
-  const source = imageUrl?.trim() || null;
+  const trimmed = imageUrl?.trim() || null;
+  const source = trimmed && !isPromotionalImage(trimmed) ? trimmed : null;
   const [failedSource, setFailedSource] = useState<string | null>(null);
   const showImage = source !== null && source !== failedSource;
 
   return (
     <div
       className={cn(
-        "h-full w-full min-h-0 overflow-hidden bg-white",
+        // One fixed frame for every product picture: same square box, equal
+        // padding, white ground, picture centred and never cropped.
+        "flex aspect-square w-full items-center justify-center overflow-hidden bg-white p-3",
         className,
       )}
     >
@@ -40,9 +48,11 @@ export function TestCardImage({
           }
           sizes={sizes}
           alt={`${testName} by ${providerName}`}
+          width={FRAME_WIDTH}
+          height={FRAME_HEIGHT}
           loading="lazy"
           decoding="async"
-          className="h-full w-full object-contain"
+          className="h-full w-full object-contain object-center"
           onError={() => setFailedSource(source)}
         />
       ) : (

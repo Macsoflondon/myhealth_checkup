@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { displayLabel } from "@/lib/display-label";
 import { useNavigate } from "@/lib/router-compat";
 import { X, ChevronDown, User, LayoutDashboard, LogOut } from "lucide-react";
 import { useDropdownAccessibility } from "@/hooks/useDropdownAccessibility";
@@ -153,7 +154,7 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
                       {accountIcon(item.name)}
                     </span>
                     <span className="text-[12.5px] font-semibold font-[Montserrat] text-[#081129] group-hover/acct:text-white transition-colors whitespace-nowrap">
-                      {item.name}
+                      {displayLabel(item.name)}
                     </span>
                   </a>
                 ))}
@@ -201,7 +202,7 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
                             />
                           </span>
                           <span className="text-sm font-semibold text-[#081129] font-[Montserrat] truncate">
-                            {item.name}
+                            {displayLabel(item.name)}
                           </span>
                         </a>
                         {hasSubs && (
@@ -235,7 +236,7 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
                                   className="w-1.5 h-1.5 rounded-full shrink-0"
                                   style={{ background: color }}
                                 />
-                                <span className="truncate">{sub.name}</span>
+                                <span className="truncate">{displayLabel(sub.name)}</span>
                               </a>
                             </li>
                           ))}

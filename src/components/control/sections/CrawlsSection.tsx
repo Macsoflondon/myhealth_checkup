@@ -106,7 +106,7 @@ export default function CrawlsSection() {
 
   return (
     <SectionShell
-      title="Crawl & Scrape Centre"
+      title="Crawl & scrape centre"
       actions={
         <div className="flex gap-2">
           <Button

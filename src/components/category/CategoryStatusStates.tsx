@@ -1,3 +1,4 @@
+import { withBrand } from "@/lib/seo/route-head";
 import React from "react";
 import { Link } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
@@ -40,7 +41,7 @@ export const CategoryStatusShell: React.FC<ShellProps> = ({
 }) => (
   <>
     <Helmet>
-      <title>{seoTitle}</title>
+      <title>{withBrand(seoTitle)}</title>
       <meta name="description" content={seoDescription} />
       <link rel="canonical" href={canonicalUrl} />
     </Helmet>

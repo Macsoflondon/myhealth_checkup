@@ -12,6 +12,7 @@ import {
 } from "@/components/sections/hero-slides";
 import heroVideoMp4 from "@/assets/hero/hero-video.mp4.asset.json";
 import heroVideoWebm from "@/assets/hero/hero-video.webm.asset.json";
+import heroVideoMobile from "@/assets/hero/hero-video-mobile.mp4.asset.json";
 
 /** Normal speed: half speed made still scenes look frozen. */
 const HERO_PLAYBACK_RATE = 1;
@@ -24,8 +25,9 @@ export default function HeroMasthead() {
     // The photo can finish loading before hydration attaches onLoad.
     if (posterRef.current?.complete) setPosterLoaded(true);
   }, []);
-  // The ~2.9 MB loop is fetched only after the window "load" event and then an
-  // idle callback, so it never competes with the HTML, CSS, scripts and the
+  // The loop (a ~0.9 MB 480p encode on phones, ~2.9 MB 720p on larger
+  // screens) is fetched only after the window "load" event and then an idle
+  // callback, so it never competes with the HTML, CSS, scripts and the
   // hero photo for bandwidth. Until it is playing, the responsive photo below
   // (AVIF/WebP, 11-44 KB) is the visible hero and the LCP element.
   const [videoAllowed, setVideoAllowed] = useState(false);
@@ -89,23 +91,46 @@ export default function HeroMasthead() {
   useEffect(() => {
     const video = videoRef.current;
     if (!video || !showVideo) return;
+    // iOS Safari only autoplays when the muted attribute is present in the
+    // DOM; React's `muted` prop sets the property but not the attribute.
+    video.setAttribute("muted", "");
     video.muted = true;
     video.defaultMuted = true;
     video.defaultPlaybackRate = HERO_PLAYBACK_RATE;
     video.playbackRate = HERO_PLAYBACK_RATE;
-    // Native `loop` handles restarts. play() runs once on mount and again
-    // when the tab becomes visible, so we never fight the browser's own loop
-    // reset.
+    // Native `loop` handles restarts, which never fire "pause". play() runs on
+    // mount, and is retried when data is ready, when the tab is shown again,
+    // after a pause while visible, and on the visitor's first interaction,
+    // because low-power modes can refuse the first play().
     const resume = () => {
-      void video.play()?.catch(() => undefined);
+      if (video.paused) void video.play()?.catch(() => undefined);
     };
     const onVisible = () => {
-      if (document.visibilityState === "visible" && video.paused) resume();
+      if (document.visibilityState === "visible") resume();
     };
+    const interactionEvents = [
+      "pointerdown",
+      "touchstart",
+      "scroll",
+      "keydown",
+    ] as const;
+    const detachInteraction = () => {
+      for (const e of interactionEvents) window.removeEventListener(e, resume);
+    };
+    video.addEventListener("canplay", resume);
+    video.addEventListener("pause", onVisible);
+    video.addEventListener("playing", detachInteraction);
     document.addEventListener("visibilitychange", onVisible);
+    for (const e of interactionEvents) {
+      window.addEventListener(e, resume, { passive: true });
+    }
     resume();
     return () => {
+      video.removeEventListener("canplay", resume);
+      video.removeEventListener("pause", onVisible);
+      video.removeEventListener("playing", detachInteraction);
       document.removeEventListener("visibilitychange", onVisible);
+      detachInteraction();
       video.pause();
     };
   }, [showVideo]);
@@ -208,11 +233,18 @@ export default function HeroMasthead() {
                 aria-hidden
                 onPlaying={() => setVideoPlaying(true)}
               >
-                {/* MP4 first, by measurement: the H.264 MP4 is 2,879,053 bytes
-                    and the VP9 WebM 2,942,488 bytes (same 1280x720, 24 s cut,
-                    checked 4 November 2026), and H.264 has hardware decoding
-                    on every target browser. The WebM stays as the fallback
-                    for browsers without H.264. */}
+                {/* Phones (up to 767px) get the 480p H.264 encode (918,935
+                    bytes). Larger screens take MP4 first, by measurement: the
+                    720p H.264 MP4 is 2,879,053 bytes and the VP9 WebM
+                    2,942,488 bytes (same 1280x720, 24 s cut, checked 4
+                    November 2026), and H.264 has hardware decoding on every
+                    target browser. The WebM stays as the fallback for
+                    browsers without H.264. */}
+                <source
+                  src={heroVideoMobile.url}
+                  type="video/mp4"
+                  media="(max-width: 767px)"
+                />
                 <source src={heroVideoMp4.url} type="video/mp4" />
                 <source src={heroVideoWebm.url} type="video/webm" />
               </video>

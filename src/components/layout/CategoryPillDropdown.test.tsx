@@ -20,6 +20,7 @@ import {
   categoryNavigationItems,
   primaryNavigationItems,
 } from "@/components/header/NavigationItems";
+import { displayLabel } from "@/lib/display-label";
 
 const wellness = primaryNavigationItems.find(
   (i) => i.name === "General Wellness",
@@ -38,7 +39,8 @@ function renderPill() {
       <button type="button">Outside</button>
     </div>,
   );
-  const pill = screen.getByRole("link", { name: "General Wellness" });
+  // The pill shows the sentence-case display label of the catalogue name.
+  const pill = screen.getByRole("link", { name: "General wellness" });
   return { ...utils, pill };
 }
 
@@ -92,7 +94,7 @@ describe("CategoryPillDropdown", () => {
     expect(pill).toHaveAttribute("aria-expanded", "true");
     expect(pill.getAttribute("aria-controls")).toBe(panel()!.id);
     expect(
-      screen.getByRole("link", { name: "Heart Health Tests" }),
+      screen.getByRole("link", { name: "Heart health tests" }),
     ).toHaveAttribute("href", "/wellness?subcategory=heart-health");
   });
 
@@ -131,7 +133,7 @@ describe("CategoryPillDropdown", () => {
     fireEvent.keyDown(pill, { key: "ArrowDown" });
     expect(panel()).not.toBeNull();
     expect(document.activeElement).toBe(
-      screen.getByRole("link", { name: "General Health Checks" }),
+      screen.getByRole("link", { name: "General health tests" }),
     );
 
     fireEvent.keyDown(window, { key: "Escape" });
@@ -164,7 +166,7 @@ describe("CategoryPillDropdown", () => {
 
   it("does not open a panel for a category without subcategories", () => {
     const popular = primaryNavigationItems.find(
-      (i) => i.name === "Most Popular Tests",
+      (i) => i.name === "Most popular tests",
     )!;
     render(
       <CategoryPillDropdown
@@ -175,7 +177,7 @@ describe("CategoryPillDropdown", () => {
         dense
       />,
     );
-    const pill = screen.getByRole("link", { name: "Most Popular Tests" });
+    const pill = screen.getByRole("link", { name: "Most popular tests" });
     expect(pill).not.toHaveAttribute("aria-expanded");
     expect(tap(pill)).toBe(true);
     expect(panel()).toBeNull();
@@ -188,9 +190,14 @@ describe("DesktopCategoryToolbar", () => {
     const labels = screen
       .getAllByTestId("category-pill")
       .map((el) => el.textContent?.trim());
-    expect(labels).toEqual(categoryNavigationItems.map((i) => i.name));
-    expect(labels).toContain("Most Popular Tests");
-    expect(labels).toContain("At Home Test Kits");
-    expect(labels).not.toContain("How It Works");
+    expect(labels).toEqual(
+      categoryNavigationItems.map((i) => displayLabel(i.name)),
+    );
+    expect(labels).toContain("Most popular tests");
+    expect(labels).toContain("At-home test kits");
+    expect(labels).not.toContain("How it works");
+    // No short names: the row and the drawer use the same labels.
+    expect(labels).not.toContain("Home tests");
+    expect(labels).not.toContain("Most popular");
   });
 });

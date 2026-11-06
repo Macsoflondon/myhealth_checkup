@@ -1,4 +1,5 @@
 import React from "react";
+import { labelMidSentence, withoutTestsSuffix } from "@/lib/display-label";
 import { Sparkles } from "lucide-react";
 import {
   Carousel,
@@ -82,8 +83,9 @@ export const RecommendedTestsCarousel: React.FC<
         <div className="flex items-center gap-2">
           <Sparkles className="h-5 w-5 text-primary" />
           <h2 className="text-xl font-bold text-foreground">
-            Recommended {displayName}
-            {displayName.toLowerCase().endsWith("tests") ? "" : " Tests"}
+            {category
+              ? `Recommended ${labelMidSentence(withoutTestsSuffix(displayName))} tests`
+              : "Recommended tests"}
           </h2>
         </div>
         <p className="text-sm text-muted-foreground hidden sm:block">

@@ -1,3 +1,4 @@
+import { normaliseMedicalAcronyms } from "@/lib/medical-acronyms";
 import { CompareTestData } from "@/types";
 import { PROVIDER_LOGOS, PROVIDER_NAMES } from "@/constants/providers";
 import {
@@ -110,7 +111,8 @@ const toBiomarkerNames = (raw: unknown): string[] => {
       }
       return "";
     })
-    .filter((name) => name.trim().length > 0);
+    .filter((name) => name.trim().length > 0)
+    .map(normaliseMedicalAcronyms);
 };
 
 /**

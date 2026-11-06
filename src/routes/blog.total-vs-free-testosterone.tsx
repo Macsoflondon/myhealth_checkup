@@ -9,7 +9,7 @@ const TotalVsFreeTestosteroneGuidePage = lazy(
 export const Route = createFileRoute("/blog/total-vs-free-testosterone")({
   head: () =>
     buildArticleHead({
-      title: "Total vs Free Testosterone: UK Guide",
+      title: "Total vs free testosterone: UK guide",
       description:
         "Independent UK guide explaining total vs free testosterone, why free testosterone matters, and how to compare private tests.",
       path: "/blog/total-vs-free-testosterone",

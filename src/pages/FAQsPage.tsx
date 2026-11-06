@@ -38,7 +38,7 @@ import {
 import { StandardPageHero } from "@/components/layout/StandardPageHero";
 const faqCategories = [
   {
-    title: "Getting Started",
+    title: "Getting started",
     icon: <TrendingUp className="h-5 w-5" />,
     faqs: [
       {
@@ -78,7 +78,7 @@ const faqCategories = [
     ],
   },
   {
-    title: "Tests & Results",
+    title: "Tests & results",
     icon: <FileCheck className="h-5 w-5" />,
     faqs: [
       {
@@ -126,7 +126,7 @@ const faqCategories = [
     ],
   },
   {
-    title: "Understanding Your Results",
+    title: "Understanding your results",
     icon: <FileCheck className="h-5 w-5" />,
     faqs: [
       {
@@ -156,7 +156,7 @@ const faqCategories = [
     ],
   },
   {
-    title: "Sample Collection & Testing Process",
+    title: "Sample collection & testing process",
     icon: <FileCheck className="h-5 w-5" />,
     faqs: [
       {
@@ -227,7 +227,7 @@ const faqCategories = [
     ],
   },
   {
-    title: "Booking & Payment",
+    title: "Booking & payment",
     icon: <Shield className="h-5 w-5" />,
     faqs: [
       {
@@ -265,7 +265,7 @@ const faqCategories = [
     ],
   },
   {
-    title: "Delivery & Logistics",
+    title: "Delivery & logistics",
     icon: <Mail className="h-5 w-5" />,
     faqs: [
       {
@@ -295,7 +295,7 @@ const faqCategories = [
     ],
   },
   {
-    title: "Privacy & Data Security",
+    title: "Privacy & data security",
     icon: <Shield className="h-5 w-5" />,
     faqs: [
       {
@@ -326,7 +326,7 @@ const faqCategories = [
     ],
   },
   {
-    title: "Medical & Clinical Questions",
+    title: "Medical & clinical questions",
     icon: <FileCheck className="h-5 w-5" />,
     faqs: [
       {
@@ -356,7 +356,7 @@ const faqCategories = [
     ],
   },
   {
-    title: "Comparisons & Choosing Providers",
+    title: "Comparisons & choosing providers",
     icon: <TrendingUp className="h-5 w-5" />,
     faqs: [
       {
@@ -459,7 +459,7 @@ const FAQsPage = () => {
 
       <main className="flex-grow bg-background">
         <StandardPageHero
-          title="Frequently Asked Questions"
+          title="Frequently asked questions"
           strapline="Straight answers on private testing, accreditation, pricing and what happens to your data."
         >
           {/* Search Bar */}

@@ -1,4 +1,6 @@
+import { withBrand } from "@/lib/seo/route-head";
 import React, { useMemo } from "react";
+import { capitaliseFirst, labelMidSentence, withoutTestsSuffix } from "@/lib/display-label";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
 import { useParams, Link, useNavigate } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
@@ -96,13 +98,13 @@ const CategoryLandingPage: React.FC = () => {
       <MainLayout>
         <div className="min-h-[60vh] flex items-center justify-center">
           <div className="text-center max-w-md">
-            <h1 className="text-2xl font-bold mb-4">Category Not Found</h1>
+            <h1 className="text-2xl font-bold mb-4">Category not found</h1>
             <p className="text-muted-foreground mb-6">
               We couldn't find tests for this category. Browse our available
               categories below.
             </p>
             <Button asChild>
-              <Link to="/compare">Browse All Tests</Link>
+              <Link to="/compare">Browse all tests</Link>
             </Button>
           </div>
         </div>
@@ -114,7 +116,7 @@ const CategoryLandingPage: React.FC = () => {
     <ErrorBoundary>
       <div className="min-h-screen flex flex-col bg-background">
         <Helmet>
-          <title>{content.title}</title>
+          <title>{withBrand(content.title)}</title>
           <meta name="description" content={content.metaDescription} />
           <meta name="keywords" content={content.keywords.join(", ")} />
           <link
@@ -241,7 +243,7 @@ const CategoryLandingPage: React.FC = () => {
             {/* Benefits Section */}
             <section className="mb-12">
               <h2 className="text-2xl font-bold text-foreground mb-6">
-                Why Test Your {content.name.replace(" Tests", "")}?
+                Why consider {labelMidSentence(withoutTestsSuffix(content.name))} tests?
               </h2>
               <div className="grid md:grid-cols-3 gap-6">
                 {content.benefits.map((benefit, idx) => {
@@ -268,7 +270,7 @@ const CategoryLandingPage: React.FC = () => {
             {/* Health Concerns Section */}
             <section className="mb-12 bg-muted/30 rounded-2xl p-8">
               <h2 className="text-2xl font-bold text-foreground mb-6">
-                Common Health Concerns
+                Common health concerns
               </h2>
               <p className="text-muted-foreground mb-6">
                 Consider testing if you're experiencing any of these symptoms or
@@ -296,7 +298,7 @@ const CategoryLandingPage: React.FC = () => {
               <section className="mb-12">
                 <GroupedTestsTable
                   tests={providerTests}
-                  title={`Compare ${content.name} from UK Providers`}
+                  title={`Compare ${labelMidSentence(content.name)} from UK providers`}
                 />
               </section>
             ) : null}
@@ -304,7 +306,7 @@ const CategoryLandingPage: React.FC = () => {
             {/* Who Should Test Section */}
             <section className="mb-12">
               <h2 className="text-2xl font-bold text-foreground mb-6">
-                Who Should Consider {content.name}?
+                Who should consider {labelMidSentence(withoutTestsSuffix(content.name))} tests?
               </h2>
               <div className="grid sm:grid-cols-2 gap-4">
                 {content.whoShouldTest.map((who, idx) => (
@@ -324,7 +326,7 @@ const CategoryLandingPage: React.FC = () => {
             {/* FAQs Section */}
             <section className="mb-12">
               <h2 className="text-2xl font-bold text-foreground mb-6">
-                Frequently Asked Questions
+                Frequently asked questions
               </h2>
               <Accordion type="single" collapsible className="w-full">
                 {content.faqs.map((faq, idx) => (
@@ -343,7 +345,7 @@ const CategoryLandingPage: React.FC = () => {
             {/* Related Categories */}
             <section className="mb-12">
               <h2 className="text-xl font-bold text-foreground mb-4">
-                Related Test Categories
+                Related test categories
               </h2>
               <div className="flex flex-wrap gap-3">
                 {content.relatedCategories.map((relatedSlug) => (
@@ -356,9 +358,7 @@ const CategoryLandingPage: React.FC = () => {
                       variant="secondary"
                       className="cursor-pointer hover:bg-secondary/80 transition-colors"
                     >
-                      {relatedSlug
-                        .replace(/-/g, " ")
-                        .replace(/\b\w/g, (c) => c.toUpperCase())}
+                      {capitaliseFirst(relatedSlug.replace(/-/g, " "))}
                     </Badge>
                   </Link>
                 ))}
@@ -368,7 +368,7 @@ const CategoryLandingPage: React.FC = () => {
             {/* CTA Section */}
             <section className="bg-gradient-to-r from-primary to-primary/80 rounded-2xl p-8 text-center text-white">
               <h2 className="text-2xl font-bold mb-4">
-                Ready to Take Control of Your Health?
+                Ready to take control of your health?
               </h2>
               <p className="text-white/90 mb-6 max-w-2xl mx-auto">
                 Compare {content.name.toLowerCase()} from trusted UK providers.
@@ -383,7 +383,7 @@ const CategoryLandingPage: React.FC = () => {
                   asChild
                 >
                   <Link to={`/compare?category=${content.slug}`}>
-                    <span className="truncate">Compare {content.name}</span>
+                    <span className="truncate">Compare {labelMidSentence(content.name)}</span>
                     <ArrowRight className="h-4 w-4 shrink-0" />
                   </Link>
                 </Button>
@@ -393,7 +393,7 @@ const CategoryLandingPage: React.FC = () => {
                   className="w-full sm:w-auto bg-white/10 border-white/30 text-white hover:bg-white/20 whitespace-nowrap"
                   asChild
                 >
-                  <Link to="/how-it-works">How It Works</Link>
+                  <Link to="/how-it-works">How it works</Link>
                 </Button>
               </div>
             </section>

@@ -126,13 +126,13 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     ).toBeInTheDocument();
   });
 
-  it("shows Additional Context step on terminal node before AI handover", () => {
+  it("shows Additional context step on terminal node before AI handover", () => {
     render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Male"));
     fireEvent.click(screen.getByText("Bowel"));
 
-    // Should show the Additional Context step
-    expect(screen.getByText("Additional Context")).toBeInTheDocument();
+    // Should show the Additional context step
+    expect(screen.getByText("Additional context")).toBeInTheDocument();
     expect(
       screen.getByText(/Any specific concerns or details about your lifestyle/),
     ).toBeInTheDocument();
@@ -175,8 +175,8 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
       screen.getByText(/Weight gain, fatigue, low mood, sensitivity to cold/),
     );
 
-    // Should show Additional Context step
-    expect(screen.getByText("Additional Context")).toBeInTheDocument();
+    // Should show Additional context step
+    expect(screen.getByText("Additional context")).toBeInTheDocument();
 
     // Type in specific concerns
     const textarea = screen.getByRole("textbox");
@@ -207,7 +207,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
 
     // Wait for results
     await waitFor(() => {
-      expect(screen.getByText("Your Personalised Results")).toBeInTheDocument();
+      expect(screen.getByText("Your personalised results")).toBeInTheDocument();
     });
     expect(await screen.findByText("Thyroid Function")).toBeInTheDocument();
   });
@@ -241,7 +241,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     fireEvent.click(screen.getByText("Bowel"));
 
     // Context step appears
-    expect(screen.getByText("Additional Context")).toBeInTheDocument();
+    expect(screen.getByText("Additional context")).toBeInTheDocument();
 
     // Click See Results without typing anything
     fireEvent.click(screen.getByRole("button", { name: /See Results/ }));
@@ -262,13 +262,13 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     });
   });
 
-  it("allows going back from Additional Context step", () => {
+  it("allows going back from Additional context step", () => {
     render(<TestFinderQuiz />, { wrapper: TestProviders });
     fireEvent.click(screen.getByText("Male"));
     fireEvent.click(screen.getByText("Bowel"));
 
     // Context step
-    expect(screen.getByText("Additional Context")).toBeInTheDocument();
+    expect(screen.getByText("Additional context")).toBeInTheDocument();
 
     // Click Back
     fireEvent.click(screen.getByText("Back"));
@@ -322,7 +322,7 @@ describe("TestFinderQuiz — Medichecks Decision Tree", () => {
     fireEvent.click(screen.getByRole("button", { name: /See Results/ }));
 
     await waitFor(() => {
-      expect(screen.getByText("Your Personalised Results")).toBeInTheDocument();
+      expect(screen.getByText("Your personalised results")).toBeInTheDocument();
     });
 
     fireEvent.click(screen.getByText("Retake quiz"));

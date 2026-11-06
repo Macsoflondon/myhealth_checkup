@@ -305,7 +305,7 @@ const Auth = () => {
         <main className="flex-grow flex items-center justify-center py-12 px-4 text-primary bg-tertiary">
           <div className="max-w-md w-full">
             <h2 className="type-section-title text-center mb-6 text-[#22c0d4]">
-              Reset Password
+              Reset password
             </h2>
 
             <p className="text-sm text-[#081129] text-center mb-6">
@@ -344,7 +344,7 @@ const Auth = () => {
                 disabled={loading}
                 className="w-full flex items-center justify-center gap-2 bg-[#22c0d4] text-[#e70d69] text-base rounded drop-shadow-md font-medium"
               >
-                {loading ? "Sending..." : "Send Reset Link"}
+                {loading ? "Sending..." : "Send reset link"}
               </Button>
 
               <div className="text-center mt-4">
@@ -353,7 +353,7 @@ const Auth = () => {
                   onClick={() => setIsForgotPassword(false)}
                   className="hover:underline text-center text-base text-white font-medium"
                 >
-                  Back to Sign In
+                  Back to sign in
                 </button>
               </div>
             </form>
@@ -367,7 +367,7 @@ const Auth = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Helmet>
-        <title>Sign In or Create Account | myhealth checkup</title>
+        <title>Sign in or create account | myhealth checkup</title>
         <meta
           name="description"
           content="Sign in or create your myhealth checkup account to compare private UK health tests, save favourites and track orders across accredited providers."
@@ -376,7 +376,7 @@ const Auth = () => {
         <meta name="robots" content="noindex, follow" />
         <meta
           property="og:title"
-          content="Sign In or Create Account | myhealth checkup"
+          content="Sign in or create account | myhealth checkup"
         />
         <meta
           property="og:description"
@@ -577,8 +577,8 @@ const Auth = () => {
                 className="hover:underline text-center text-base font-medium !text-white"
               >
                 {isSignUp
-                  ? "Already have an account? Sign In"
-                  : "Don't have an account? Sign Up"}
+                  ? "Already have an account? Sign in"
+                  : "Don't have an account? Sign up"}
               </button>
             </div>
 

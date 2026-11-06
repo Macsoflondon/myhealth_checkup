@@ -25,7 +25,7 @@ import {
 const wellnessCategoryCards = [
   {
     id: "longevity-tests",
-    name: "Longevity Tests",
+    name: "Longevity tests",
     desc: "Comprehensive health markers for longevity and preventive care",
     icon: "⟳",
     accent: "#00d4c8",
@@ -33,7 +33,7 @@ const wellnessCategoryCards = [
   },
   {
     id: "iron-tests",
-    name: "Iron Tests",
+    name: "Iron tests",
     desc: "Iron levels, ferritin, and anaemia screening",
     icon: "◈",
     accent: "#e70d69",
@@ -41,7 +41,7 @@ const wellnessCategoryCards = [
   },
   {
     id: "heart-health",
-    name: "Heart Health",
+    name: "Heart health",
     desc: "Cardiovascular risk assessment and heart health monitoring",
     icon: "♡",
     accent: "#ff4d6d",
@@ -49,7 +49,7 @@ const wellnessCategoryCards = [
   },
   {
     id: "energy-tests",
-    name: "Energy Tests",
+    name: "Energy tests",
     desc: "Fatigue, tiredness, and energy level testing",
     icon: "◎",
     accent: "#f0a500",
@@ -57,7 +57,7 @@ const wellnessCategoryCards = [
   },
   {
     id: "nutrition-tests",
-    name: "Nutrition Tests",
+    name: "Nutrition tests",
     desc: "Vitamin levels and nutritional deficiency screening",
     icon: "◇",
     accent: "#00c896",
@@ -65,7 +65,7 @@ const wellnessCategoryCards = [
   },
   {
     id: "allergy-testing",
-    name: "Allergy Tests",
+    name: "Allergy tests",
     desc: "Allergy screening and immune response testing",
     icon: "◉",
     accent: "#ff7043",
@@ -73,7 +73,7 @@ const wellnessCategoryCards = [
   },
   {
     id: "sexual-health",
-    name: "Sexual Health",
+    name: "Sexual health",
     desc: "Comprehensive sexual health and hormone screening",
     icon: "⬡",
     accent: "#9b59b6",
@@ -81,7 +81,7 @@ const wellnessCategoryCards = [
   },
   {
     id: "antibody-tests",
-    name: "Antibody Tests",
+    name: "Antibody tests",
     desc: "Antibody screening and autoimmune disease detection",
     icon: "⋈",
     accent: "#e70d69",
@@ -89,7 +89,7 @@ const wellnessCategoryCards = [
   },
   {
     id: "infection-tests",
-    name: "Infection Tests",
+    name: "Infection tests",
     desc: "Infectious disease screening and pathogen detection",
     icon: "⬟",
     accent: "#5b9bd5",
@@ -97,7 +97,7 @@ const wellnessCategoryCards = [
   },
   {
     id: "immunity-tests",
-    name: "Immunity Tests",
+    name: "Immunity tests",
     desc: "Immune system function and defence assessment",
     icon: "◬",
     accent: "#f0b429",
@@ -113,7 +113,7 @@ const wellnessCategoryCards = [
   },
   {
     id: "liver-health",
-    name: "Liver Health",
+    name: "Liver health",
     desc: "Liver function testing and hepatic health monitoring",
     icon: "⬢",
     accent: "#ff5c5c",
@@ -121,7 +121,7 @@ const wellnessCategoryCards = [
   },
   {
     id: "kidney-health",
-    name: "Kidney Health",
+    name: "Kidney health",
     desc: "Kidney function assessment and renal health screening",
     icon: "◐",
     accent: "#00d4c8",
@@ -129,7 +129,7 @@ const wellnessCategoryCards = [
   },
   {
     id: "gut-health",
-    name: "Gut Health",
+    name: "Gut health",
     desc: "Digestive health, microbiome and food intolerance testing",
     icon: "◍",
     accent: "#00c896",
@@ -221,27 +221,27 @@ const WellnessPage = () => {
         subtitle={mapped.subtitle}
         searchPlaceholder="Search by symptom or test — e.g. 'cholesterol', 'vitamin D'"
         trustStats={[
-          { value: "50,000+", label: "Tests Compared" },
-          { value: "4.8\u2605", label: "Average Rating" },
-          { value: "6", label: "Trusted Providers" },
+          { value: "50,000+", label: "Tests compared" },
+          { value: "4.8\u2605", label: "Average rating" },
+          { value: "6", label: "Trusted providers" },
         ]}
         filters={["All"]}
-        benefitsTitle="Why Choose Wellness Testing?"
+        benefitsTitle="Why choose wellness testing?"
         benefits={[
           {
             icon: ShieldCheck,
-            title: "Early Insight",
+            title: "Early insight",
             description: "Spot changes in key markers before symptoms appear",
           },
           {
             icon: Activity,
-            title: "Track Progress",
+            title: "Track progress",
             description:
               "Monitor how lifestyle changes affect your results over time",
           },
           {
             icon: HeartPulse,
-            title: "Preventative Care",
+            title: "Preventative care",
             description: "Build a clearer picture of your long-term health",
           },
         ]}
@@ -259,42 +259,42 @@ const WellnessPage = () => {
     return (
       <DbCategoryPage
         canonicalCategory="wellness"
-        seoTitle="Wellness Tests | myhealth checkup"
-        pillLabel="General Wellness"
+        seoTitle="General health tests | myhealth checkup"
+        pillLabel="General health"
         seoDescription="Compare wellness blood tests from UKAS-accredited UK providers, with clear pricing, biomarker lists and typical turnaround times."
         seoKeywords="wellness blood tests, health screening, liver test, kidney test, cholesterol test, vitamin test"
         canonicalUrl="https://myhealthcheckup.co.uk/wellness"
-        headline="General Wellness"
+        headline="General health tests"
         subtitle="Compare wellness and preventative blood tests from accredited UK providers — full biomarker lists, transparent pricing and typical turnaround times."
         searchPlaceholder="Search by symptom or test — e.g. 'cholesterol', 'vitamin D'"
         trustStats={[
-          { value: "50,000+", label: "Tests Compared" },
-          { value: "4.8\u2605", label: "Average Rating" },
-          { value: "6", label: "Trusted Providers" },
+          { value: "50,000+", label: "Tests compared" },
+          { value: "4.8\u2605", label: "Average rating" },
+          { value: "6", label: "Trusted providers" },
         ]}
         filters={["All"]}
-        benefitsTitle="Why Choose Wellness Testing?"
+        benefitsTitle="Why choose wellness testing?"
         benefits={[
           {
             icon: ShieldCheck,
-            title: "Early Insight",
+            title: "Early insight",
             description: "Spot changes in key markers before symptoms appear",
           },
           {
             icon: Activity,
-            title: "Track Progress",
+            title: "Track progress",
             description:
               "Monitor how lifestyle changes affect your results over time",
           },
           {
             icon: HeartPulse,
-            title: "Preventative Care",
+            title: "Preventative care",
             description: "Build a clearer picture of your long-term health",
           },
         ]}
         breadcrumbs={[
           { label: "Home", href: "/" },
-          { label: "General Wellness" },
+          { label: "General health tests" },
         ]}
         compareUrl="/compare?category=wellness"
       />
@@ -319,9 +319,9 @@ const WellnessPage = () => {
       <Header />
 
       <main className="min-h-screen bg-background">
-        <CategoryStandardHero pillLabel="General Wellness" />
+        <CategoryStandardHero pillLabel="General health tests" />
 
-        {/* Browse Tests by Category */}
+        {/* Browse tests by category */}
         <section
           style={{
             background: "#ffffff",
@@ -497,7 +497,7 @@ const WellnessPage = () => {
                         gap: 8,
                       }}
                     >
-                      View Tests
+                      View tests
                       <span
                         style={{
                           display: "inline-block",
@@ -557,7 +557,7 @@ const WellnessPage = () => {
                     margin: 0,
                   }}
                 >
-                  Find the Right Health Test for You
+                  Find the right health test for you
                 </h2>
               </div>
               <Link
@@ -574,7 +574,7 @@ const WellnessPage = () => {
                   textDecoration: "none",
                 }}
               >
-                Start Your Quiz →
+                Start your quiz →
               </Link>
             </div>
           </div>

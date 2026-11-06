@@ -1,93 +1,165 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { createClient } from "@supabase/supabase-js";
 import { z } from "zod";
-import { clientIp, createRateLimiter } from "@/lib/mcp/rate-limit";
-import { AFFILIATE_PLACEMENTS } from "@/lib/affiliate/affiliate-tracking";
+import { clientIp } from "@/lib/mcp/rate-limit";
 import {
-  AFFILIATE_BURST_THRESHOLD,
-  classifyTraffic,
-} from "@/lib/affiliate/traffic-quality";
+  AFFILIATE_PLACEMENTS,
+  buildAffiliateUrl,
+  isAffiliatePlacement,
+  newClickId,
+  sanitiseSourcePage,
+} from "@/lib/affiliate/affiliate-tracking";
+import { AFFILIATE_PROVIDERS } from "@/lib/affiliate/affiliate-config";
+import {
+  AFFILIATE_CLICKS_PER_WINDOW,
+  hashVisitor,
+  isCatalogueTestId,
+  verifiedProviderUrl,
+} from "@/lib/affiliate/click-redirect";
+import { classifyTraffic } from "@/lib/affiliate/traffic-quality";
 
 /**
- * Logs one outbound affiliate click. No IP, user agent or account data is
- * stored. The IP is used only for the in-memory rate limit (30 per minute)
- * and the burst counter; the user agent only to label automated traffic
- * (traffic_flag), then both are discarded.
+ * The only write path for booking clicks. Anonymous visitors have no direct
+ * database write access; this handler validates against the catalogue,
+ * rate-limits on a salted IP hash (20 per 10 minutes) and writes with the
+ * server-only key. Stored: provider, test, time, bot flag, plus the route
+ * and placement label. No IP, user agent or account data.
  */
-export const AFFILIATE_CLICK_RATE_LIMIT = 30;
-const limiter = createRateLimiter(AFFILIATE_CLICK_RATE_LIMIT, 60_000);
-const burstCounter = createRateLimiter(AFFILIATE_BURST_THRESHOLD, 60_000);
+const MAX_CLICK_BODY_BYTES = 4_096;
 
 export const affiliateClickSchema = z.object({
   click_id: z.string().uuid(),
   provider_id: z.string().regex(/^[a-z0-9-]{1,64}$/),
   test_id: z.string().max(200).nullable(),
-  source_page: z
-    .string()
-    .min(1)
-    .max(300)
-    .regex(/^\/[^?#]*$/),
+  source_page: z.string().min(1).max(300).regex(/^\/[^?#]*$/),
   placement: z.enum(AFFILIATE_PLACEMENTS),
-  destination_host: z
-    .string()
-    .min(1)
-    .max(253)
-    .regex(/^[a-z0-9.-]+$/),
+  destination_host: z.string().min(1).max(253).regex(/^[a-z0-9.-]+$/),
 });
 
-export async function handleAffiliateClick(
-  request: Request,
-): Promise<Response> {
+type Admin = (typeof import("@/integrations/supabase/client.server"))["supabaseAdmin"];
+
+async function adminClient(): Promise<Admin | null> {
+  if (!process.env["SUPABASE_SERVICE_ROLE_KEY"]) return null;
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+  return supabaseAdmin;
+}
+
+async function withinRateLimit(admin: Admin, request: Request): Promise<boolean> {
   const ip = clientIp(request.headers);
-  const { allowed, retryAfterSeconds } = limiter.check(ip);
-  if (!allowed) {
-    return new Response(null, {
-      status: 429,
-      headers: { "retry-after": String(retryAfterSeconds) },
-    });
-  }
+  const secret = process.env["SUPABASE_SERVICE_ROLE_KEY"] ?? "";
+  const ipHash = await hashVisitor(ip, secret);
+  const { data, error } = await admin.rpc("affiliate_click_rate_hit", {
+    p_ip_hash: ipHash,
+    p_limit: AFFILIATE_CLICKS_PER_WINDOW,
+  });
+  return !error && data === true;
+}
+
+async function lookupTest(admin: Admin, testId: string) {
+  const { data } = await admin
+    .from("provider_tests")
+    .select("id, provider_id, url, is_active")
+    .eq("id", testId)
+    .maybeSingle();
+  return data && data.is_active !== false ? data : null;
+}
+
+async function record(
+  admin: Admin,
+  row: {
+    click_id: string;
+    provider_id: string;
+    test_id: string | null;
+    source_page: string;
+    placement: (typeof AFFILIATE_PLACEMENTS)[number];
+    destination_host: string;
+  },
+  request: Request,
+): Promise<boolean> {
+  const traffic_flag = classifyTraffic(request.headers.get("user-agent"), false);
+  const { error } = await admin.from("affiliate_clicks").insert({ ...row, traffic_flag });
+  return !error;
+}
+
+/** POST beacon: provider-level links. Provider and test must exist in the catalogue. */
+export async function handleAffiliateClick(request: Request): Promise<Response> {
+  const declared = Number(request.headers.get("content-length") ?? "0");
+  if (declared > MAX_CLICK_BODY_BYTES) return new Response(null, { status: 413 });
   let body: unknown;
   try {
-    body = JSON.parse(await request.text());
+    const text = await request.text();
+    if (text.length > MAX_CLICK_BODY_BYTES) return new Response(null, { status: 413 });
+    body = JSON.parse(text);
   } catch {
     return new Response(null, { status: 400 });
   }
   const parsed = affiliateClickSchema.safeParse(body);
   if (!parsed.success) return new Response(null, { status: 400 });
-
-  const url = process.env["SUPABASE_URL"] ?? process.env["VITE_SUPABASE_URL"];
-  const key =
-    process.env["SUPABASE_PUBLISHABLE_KEY"] ??
-    process.env["VITE_SUPABASE_PUBLISHABLE_KEY"];
-  if (!url || !key) return new Response(null, { status: 503 });
-
-  const supabase = createClient(url, key, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  });
-  // Without a real address every request shares one bucket, so skip the
-  // burst label rather than flag genuine visitors together.
-  const overBurst = ip !== "unknown" && !burstCounter.check(ip).allowed;
-  const traffic_flag = classifyTraffic(
-    request.headers.get("user-agent"),
-    overBurst,
-  );
-
-  // Insert only, no .select(): anon has no read access to this table.
-  let { error } = await supabase
-    .from("affiliate_clicks")
-    .insert({ ...parsed.data, traffic_flag });
-  // Deploys can run ahead of the migration that adds traffic_flag. Never
-  // lose the click over the label: retry without it.
-  if (error && /traffic_flag/.test(`${error.message} ${error.details ?? ""}`)) {
-    ({ error } = await supabase.from("affiliate_clicks").insert(parsed.data));
+  if (!(parsed.data.provider_id in AFFILIATE_PROVIDERS)) {
+    return new Response(null, { status: 400 });
   }
-  if (error) return new Response(null, { status: 502 });
-  return new Response(null, { status: 204 });
+  const admin = await adminClient();
+  if (!admin) return new Response(null, { status: 503 });
+
+  let testId: string | null = null;
+  if (parsed.data.test_id !== null) {
+    if (!isCatalogueTestId(parsed.data.test_id)) return new Response(null, { status: 400 });
+    const test = await lookupTest(admin, parsed.data.test_id);
+    if (!test || test.provider_id !== parsed.data.provider_id) {
+      return new Response(null, { status: 400 });
+    }
+    testId = test.id;
+  }
+  if (!(await withinRateLimit(admin, request))) {
+    return new Response(null, { status: 429, headers: { "retry-after": "600" } });
+  }
+  const ok = await record(admin, { ...parsed.data, test_id: testId }, request);
+  return new Response(null, { status: ok ? 204 : 502 });
+}
+
+/**
+ * GET redirect: /api/public/affiliate-click?test=<uuid>&pl=<placement>&src=<path>.
+ * Redirects only to the catalogue's own URL for that test; a URL in the
+ * request is never used. Over the rate limit the visitor is still sent to
+ * the provider, but the click is not recorded.
+ */
+export async function handleAffiliateRedirect(request: Request): Promise<Response> {
+  const params = new URL(request.url).searchParams;
+  const testId = params.get("test");
+  if (!isCatalogueTestId(testId)) return new Response("Unknown test", { status: 400 });
+  const admin = await adminClient();
+  if (!admin) return new Response(null, { status: 503 });
+  const test = await lookupTest(admin, testId);
+  const destination = test ? verifiedProviderUrl(test.url, test.provider_id) : null;
+  if (!test || !destination) return new Response("Unknown test", { status: 404 });
+
+  const pl = params.get("pl");
+  const placement = isAffiliatePlacement(pl) ? pl : "card";
+  const clickId = newClickId();
+  if (await withinRateLimit(admin, request)) {
+    await record(
+      admin,
+      {
+        click_id: clickId,
+        provider_id: test.provider_id,
+        test_id: test.id,
+        source_page: sanitiseSourcePage(params.get("src") ?? "/"),
+        placement,
+        destination_host: destination.hostname.toLowerCase(),
+      },
+      request,
+    );
+  }
+  const location = buildAffiliateUrl(destination.toString(), test.provider_id, clickId);
+  return new Response(null, {
+    status: 302,
+    headers: { location, "cache-control": "no-store", "referrer-policy": "no-referrer" },
+  });
 }
 
 export const Route = createFileRoute("/api/public/affiliate-click")({
   server: {
     handlers: {
+      GET: ({ request }) => handleAffiliateRedirect(request),
       POST: ({ request }) => handleAffiliateClick(request),
     },
   },

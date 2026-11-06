@@ -330,7 +330,7 @@ export function MfaEnrollment() {
                   code, then type the 6-digit code it shows.
                 </p>
                 <div className="flex justify-center">
-                  <img
+                  <img width={192} height={192}
                     src={qrCode}
                     alt="Two-step verification QR code"
                     className="w-48 h-48 bg-white p-2 rounded"

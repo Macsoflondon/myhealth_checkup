@@ -10,7 +10,7 @@ import allergy from "@/assets/wellness/allergy.webp";
 import thyroid from "@/assets/wellness/thyroid.webp";
 
 export interface CategoryVisual {
-  /** Short card title shown over the image. */
+  /** Card title; must match the destination category page heading. */
   title: string;
   image: string;
   /** Representative biomarkers commonly measured in this category. */
@@ -22,27 +22,27 @@ export const wellnessCategoryVisuals: Record<string, CategoryVisual> = {
   "/wellness": {
     title: "General health",
     image: general,
-    biomarkers: ["Full blood count", "Liver", "Kidney"],
+    biomarkers: ["Full blood count", "ALT", "eGFR"],
   },
   "/wellness?subcategory=heart-health": {
-    title: "Heart",
+    title: "Heart health",
     image: heart,
     biomarkers: ["hs-CRP", "ApoB", "Lp(a)"],
   },
   "/wellness?subcategory=cholesterol": {
-    title: "Lipids",
+    title: "Cholesterol",
     image: cholesterol,
     biomarkers: ["LDL", "HDL", "Triglycerides"],
   },
   "/wellness?subcategory=diabetes": {
-    title: "Metabolism",
+    title: "Diabetes",
     image: diabetes,
     biomarkers: ["Glucose", "HbA1c", "Insulin"],
   },
   "/wellness?subcategory=iron-anaemia": {
-    title: "Iron",
+    title: "Iron and anaemia",
     image: iron,
-    biomarkers: ["Ferritin", "Iron", "Haemoglobin"],
+    biomarkers: ["Ferritin", "Serum iron", "Transferrin saturation"],
   },
   "/wellness?subcategory=liver": {
     title: "Liver",
@@ -55,7 +55,7 @@ export const wellnessCategoryVisuals: Record<string, CategoryVisual> = {
     biomarkers: ["Creatinine", "eGFR", "Urea"],
   },
   "/wellness?subcategory=vitamins": {
-    title: "Vitamins",
+    title: "Vitamins and nutrition",
     image: vitamins,
     biomarkers: ["Vitamin D", "B12", "Folate"],
   },

@@ -5,7 +5,7 @@ import { SectionHeading } from "@/components/ui/section-heading";
 const resources = [
   {
     icon: BookOpen,
-    title: "Health Hub",
+    title: "Health hub",
     description:
       "In-depth articles on tests, conditions and what your results mean.",
     link: "/blog",

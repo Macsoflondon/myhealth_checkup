@@ -76,7 +76,7 @@ export function CategoryCompareDrawer({
             size="sm"
             className="text-xs font-bold text-white bg-gradient-to-r from-brand-turquoise to-brand-pink hover:opacity-90 border-0"
           >
-            <Link to={compareLink}>Compare Now →</Link>
+            <Link to={compareLink}>Compare now →</Link>
           </Button>
         </div>
       </div>

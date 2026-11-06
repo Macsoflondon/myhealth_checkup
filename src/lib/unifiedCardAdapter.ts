@@ -1,3 +1,4 @@
+import { normaliseMedicalAcronyms } from "@/lib/medical-acronyms";
 import type { ProviderTestCardData } from "@/components/providers/ProviderTestCard";
 import type { UnifiedTestCardProps } from "@/components/cards/UnifiedTestCard";
 
@@ -8,7 +9,7 @@ import type { UnifiedTestCardProps } from "@/components/cards/UnifiedTestCard";
  * "TruCheck™ - Early Cancer Screening Blood Test".
  */
 export const cleanTestName = (raw: string): string =>
-  raw
+  normaliseMedicalAcronyms(raw)
     .replace(/\s*\|\s*Book Online today.*$/i, "")
     .replace(/\s*\|\s*Lola Health.*$/i, "")
     .replace(/\s*[—–-]\s*\d+\s*Biomarkers?.*$/i, "")
