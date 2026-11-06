@@ -91,3 +91,5 @@
 - [x] 10. Test finder: anonymous, 8/min and 30/day per IP, Deno tests (deploy from main chat after accept)
 - [x] 11. Em dashes removed from touched copy
 - [x] Swapped "Trusted by users" and "Why myhealth checkup" on the homepage and placed "Featured Partner of the Month" above the moved section; order guarded by a unit test.
+
+- [x] 06/11/2026 open items: acronym normaliser at render time (IgG etc.), font weights trimmed, article images to WebP + img dimensions, Cookiebot no-shift guard, comparison tray lazy + 16 unused packages removed, 44px touch targets in shared components, chat button hides on scroll-down (<640px), drawer scroll-position fix, deep scan reviewed, e2e 69/69 per project. Not published; no database changes.

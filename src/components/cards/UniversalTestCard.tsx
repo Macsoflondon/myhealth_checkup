@@ -1343,7 +1343,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                     maxWidth: "40%",
                   }}
                 >
-                  {b}
+                  {normaliseMedicalAcronyms(b)}
                 </span>
               ))}
               {biomarkers.length > 3 && (

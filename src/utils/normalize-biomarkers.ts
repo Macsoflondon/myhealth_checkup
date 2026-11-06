@@ -1,3 +1,5 @@
+import { normaliseMedicalAcronyms } from "@/lib/medical-acronyms";
+
 /**
  * Shared normaliser for `provider_tests.biomarkers_list`.
  *
@@ -21,12 +23,12 @@ export function normalizeBiomarkers(list: BiomarkerListInput): string[] {
   for (const entry of list) {
     if (typeof entry === "string") {
       const v = entry.trim();
-      if (v) out.push(v);
+      if (v) out.push(normaliseMedicalAcronyms(v));
       continue;
     }
     if (entry && typeof entry === "object") {
       const value = (entry as { value?: unknown }).value;
-      if (typeof value === "string" && value.trim()) out.push(value.trim());
+      if (typeof value === "string" && value.trim()) out.push(normaliseMedicalAcronyms(value.trim()));
     }
   }
   return out;
