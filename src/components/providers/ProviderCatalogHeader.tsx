@@ -62,7 +62,7 @@ const ProviderCatalogHeader = ({
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
           <div className="flex items-center gap-4">
             <div className="w-14 h-14 rounded-xl bg-white shadow-md flex items-center justify-center p-2">
-              <img
+              <img width={160} height={64}
                 src={providerLogo}
                 alt={`${providerName} logo`}
                 className="w-full h-full object-contain"

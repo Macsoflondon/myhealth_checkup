@@ -63,7 +63,7 @@ export const ProviderLogo = ({
   }
 
   return (
-    <img
+    <img width={160} height={64}
       src={logoSrc}
       alt={`${provider} logo`}
       className={className}

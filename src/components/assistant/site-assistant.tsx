@@ -1,6 +1,7 @@
 import { lazy, Suspense, useState } from "react";
 import assistantMark from "@/assets/assistant/assistant-mark-96.webp";
 import { cn } from "@/lib/utils";
+import { useHideOnScrollDown } from "@/hooks/use-hide-on-scroll-down";
 
 // The chat panel pulls in the AI SDK and markdown renderer, so it loads only
 // when the visitor opens the assistant.
@@ -18,12 +19,15 @@ const ChatPanel = lazy(() =>
  */
 // The launcher sits beside the dock (to its left) at the same baseline, so it
 // only needs one row of page-bottom clearance at every width.
-const LAUNCHER_POSITION = "bottom-4 right-[56px] sm:bottom-6 sm:right-[76px]";
+const LAUNCHER_POSITION = "bottom-4 right-[64px] sm:bottom-6 sm:right-[76px]";
 /** Page-end clearance so the last links and fields scroll clear of the launcher. */
 export const LAUNCHER_PAGE_CLEARANCE = "pb-[84px] sm:pb-[100px]";
 
 export const SiteAssistant = () => {
   const [open, setOpen] = useState(false);
+  // On phones the launcher steps aside while the visitor scrolls down, so it
+  // never sits over content they are moving past.
+  const scrollingDown = useHideOnScrollDown();
 
   return (
     <>
@@ -34,8 +38,9 @@ export const SiteAssistant = () => {
       )}
       <div
         className={cn(
-          "fixed z-[60] flex items-center gap-2",
+          "fixed z-[60] flex items-center gap-2 transition-all duration-200",
           LAUNCHER_POSITION,
+          scrollingDown && !open && "pointer-events-none translate-y-4 opacity-0",
           open && "hidden sm:flex",
         )}
       >

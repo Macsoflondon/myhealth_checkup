@@ -457,7 +457,7 @@ export default function ProviderComparisonPage() {
                     <div className="flex items-start gap-3">
                       <Checkbox checked={isSelected} className="mt-1" />
                       <div className="flex-1 min-w-0">
-                        <img
+                        <img width={160} height={64}
                           src={provider.logo}
                           alt={provider.name}
                           className="h-8 w-auto object-contain mb-2"
@@ -518,7 +518,7 @@ export default function ProviderComparisonPage() {
                             className="p-4 text-center min-w-[180px]"
                           >
                             <div className="flex flex-col items-center gap-2">
-                              <img
+                              <img width={160} height={64}
                                 src={getProviderLogo(providerId)}
                                 alt={getProviderName(providerId)}
                                 className="h-10 w-auto object-contain"
@@ -747,7 +747,7 @@ export default function ProviderComparisonPage() {
                               key={providerId}
                               className="p-4 text-center min-w-[160px]"
                             >
-                              <img
+                              <img width={160} height={64}
                                 src={getProviderLogo(providerId)}
                                 alt={getProviderName(providerId)}
                                 className="h-8 w-auto object-contain mx-auto"

@@ -296,7 +296,7 @@ export const ProviderComparisonTable: React.FC<
                         {(() => {
                           const logo = resolveLogo(test);
                           return logo ? (
-                            <img
+                            <img width={160} height={64}
                               src={logo}
                               alt={`${test.provider} logo`}
                               className="max-w-full max-h-full object-contain"

@@ -205,7 +205,7 @@ const StayInformedSection = () => {
                 onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                 placeholder="Your email address"
                 aria-label="Email address"
-                className="w-full rounded-lg px-3 py-2.5 text-white text-sm placeholder:text-white/35 outline-hidden transition-colors focus:border-brand-turquoise"
+                className="w-full rounded-lg min-h-11 px-3 py-2.5 text-white text-sm placeholder:text-white/35 outline-hidden transition-colors focus:border-brand-turquoise"
                 style={{
                   background: "rgba(255,255,255,0.08)",
                   border: `1.5px solid ${error ? "#e70d69" : "rgba(34,192,212,0.28)"}`,
@@ -214,7 +214,7 @@ const StayInformedSection = () => {
               <button
                 onClick={handleSubmit}
                 disabled={loading}
-                className="bg-brand-turquoise hover:bg-brand-pink disabled:opacity-60 text-brand-navy hover:text-white font-heading font-extrabold text-xs uppercase tracking-[0.1em] px-4 py-2.5 rounded-lg transition-colors duration-200"
+                className="bg-brand-turquoise hover:bg-brand-pink disabled:opacity-60 text-brand-navy hover:text-white font-heading font-extrabold text-xs uppercase tracking-[0.1em] min-h-11 px-4 py-2.5 rounded-lg transition-colors duration-200"
               >
                 {loading ? "Subscribing…" : "Subscribe"}
               </button>
@@ -270,7 +270,7 @@ const SocialIcon = ({
     rel="noopener noreferrer"
     aria-label={`Follow us on ${label}`}
     style={style}
-    className="w-10 h-10 rounded-full flex items-center justify-center transition-transform hover:scale-110 text-white shadow-md"
+    className="w-11 h-11 rounded-full flex items-center justify-center transition-transform hover:scale-110 text-white shadow-md"
   >
     {children}
   </a>

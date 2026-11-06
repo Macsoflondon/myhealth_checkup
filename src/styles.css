@@ -7,10 +7,8 @@
 @import "@fontsource/montserrat/latin-600.css";
 @import "@fontsource/montserrat/latin-700.css";
 @import "@fontsource/montserrat/latin-800.css";
-@import "@fontsource/eb-garamond/latin-400.css";
-@import "@fontsource/eb-garamond/latin-500.css";
 @import "@fontsource/eb-garamond/latin-600.css";
-@import "@fontsource/eb-garamond/latin-400-italic.css";
+@import "@fontsource/eb-garamond/latin-700.css";
 @import "@fontsource/eb-garamond/latin-500-italic.css";
 @import "tailwindcss";
 
@@ -1590,4 +1588,12 @@ html {
   line-height: 1.7;
   font-size: 1rem;
   @media (min-width: 768px) { font-size: 1.0625rem; }
+}
+
+/* Cookiebot's banner must float over the page, never push content down
+   (no layout shift when uc.js injects it after hydration). */
+#CybotCookiebotDialog {
+  position: fixed !important;
+  top: auto !important;
+  bottom: 0 !important;
 }

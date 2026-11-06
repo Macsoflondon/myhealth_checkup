@@ -15,7 +15,7 @@ export const DecisionInfrastructureSection = () => (
     <div className="grid grid-cols-1 lg:grid-cols-2">
       {/* Photograph */}
       <div className="relative min-h-[260px] sm:min-h-[340px] lg:min-h-[520px] overflow-hidden">
-        <img
+        <img width={1200} height={800}
           src={clinicBloodDraw.url}
           alt="A nurse taking a blood sample from a patient's arm"
           loading="lazy"

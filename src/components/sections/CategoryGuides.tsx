@@ -79,7 +79,7 @@ export const CategoryGuides: React.FC<CategoryGuidesProps> = ({
                   href={article.url}
                   target="_blank"
                   rel="noopener noreferrer nofollow"
-                  className="text-sm font-semibold text-[#e70d69] hover:text-[#22c0d4] transition-colors"
+                  className="inline-flex min-h-11 items-center text-sm font-semibold text-[#e70d69] hover:text-[#22c0d4] transition-colors"
                 >
                   Read article →
                 </a>
@@ -92,7 +92,7 @@ export const CategoryGuides: React.FC<CategoryGuidesProps> = ({
       <div className="text-center mt-6">
         <Link
           to="/blog"
-          className="text-sm font-semibold text-[#081129] underline underline-offset-4 hover:text-[#22c0d4] transition-colors"
+          className="inline-flex min-h-11 items-center text-sm font-semibold text-[#081129] underline underline-offset-4 hover:text-[#22c0d4] transition-colors"
         >
           View all articles
         </Link>

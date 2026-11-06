@@ -474,7 +474,7 @@ function KitFace({
                   borderLeft: `0.9cqw solid ${accent}`,
                   paddingLeft: "3.5%",
                   fontFamily: BODY,
-                  fontWeight: 900,
+                  fontWeight: 800,
                   fontSize: "5.4cqw",
                   lineHeight: 1.18,
                   color: "#0e1b3d",

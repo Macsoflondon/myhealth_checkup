@@ -78,7 +78,7 @@ export function TestImageGallery({
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
-        <img
+        <img width={600} height={600}
           key={images[safeIndex]}
           src={images[safeIndex]}
           alt={galleryImageAlt(safeIndex, testName, providerName)}
@@ -128,7 +128,7 @@ export function TestImageGallery({
                     : "border-border hover:border-[#081129]/40"
                 }`}
               >
-                <img
+                <img width={600} height={600}
                   src={src}
                   alt=""
                   loading={index === 0 ? "eager" : "lazy"}

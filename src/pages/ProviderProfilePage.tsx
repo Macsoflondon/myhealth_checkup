@@ -308,7 +308,7 @@ const ProviderProfilePage = () => {
                       href={websiteUrl || provider.website}
                       {...externalLinkProps}
                       data-affiliate-placement="provider_page"
-                      className="hover:underline text-sm md:text-base break-all touch-manipulation text-green-800"
+                      className="inline-flex min-h-11 items-center hover:underline text-sm md:text-base break-all touch-manipulation text-green-800"
                     >
                       {provider.website
                         .replace("https://", "")
@@ -323,7 +323,7 @@ const ProviderProfilePage = () => {
                     </p>
                     <a
                       href={`tel:${provider.phone}`}
-                      className="text-muted-foreground text-sm md:text-base hover:text-primary touch-manipulation"
+                      className="inline-flex min-h-11 items-center text-muted-foreground text-sm md:text-base hover:text-primary touch-manipulation"
                     >
                       {provider.phone}
                     </a>
@@ -336,7 +336,7 @@ const ProviderProfilePage = () => {
                     </p>
                     <a
                       href={`mailto:${provider.email}`}
-                      className="text-muted-foreground text-sm md:text-base break-all hover:text-primary touch-manipulation"
+                      className="inline-flex min-h-11 items-center text-muted-foreground text-sm md:text-base break-all hover:text-primary touch-manipulation"
                     >
                       {provider.email}
                     </a>

@@ -1,3 +1,4 @@
+import { normaliseMedicalAcronyms } from "@/lib/medical-acronyms";
 import {
   fetchViewPricing,
   mergeActiveRows,
@@ -701,7 +702,7 @@ export default function ProviderTestDetailTemplate({
 
   // Parse biomarkers from JSON if needed
   const biomarkers = Array.isArray(test.biomarkers_list)
-    ? test.biomarkers_list
+    ? test.biomarkers_list.map(normaliseMedicalAcronyms)
     : null;
 
   // Title, description, og:* , canonical and Product JSON-LD come from the
@@ -737,7 +738,7 @@ export default function ProviderTestDetailTemplate({
         <div className="container mx-auto px-4 max-w-5xl">
           {/* Provider Badge */}
           <div className="mb-6">
-            <img
+            <img width={160} height={64}
               src={providerLogo}
               alt={providerConfig.name}
               loading="lazy"

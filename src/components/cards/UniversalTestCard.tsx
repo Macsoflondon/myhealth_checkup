@@ -1,3 +1,4 @@
+import { normaliseMedicalAcronyms } from "@/lib/medical-acronyms";
 import { isExcludedListing } from "@/lib/excluded-listings";
 import { isTestAddon } from "@/lib/test-addon-status";
 import { viewFeeLabel } from "@/lib/viewPricing";
@@ -318,7 +319,7 @@ export const UniversalTestDetailModal: React.FC<{
                     padding: 6,
                   }}
                 >
-                  <img
+                  <img width={160} height={64}
                     src={logo}
                     alt={meta.displayName}
                     className="w-full h-full object-contain"
@@ -348,7 +349,7 @@ export const UniversalTestDetailModal: React.FC<{
                     lineHeight: 1.2,
                   }}
                 >
-                  {test.test_name}
+                  {normaliseMedicalAcronyms(test.test_name)}
                 </div>
               </div>
             </div>
@@ -1085,20 +1086,23 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
               e.stopPropagation();
               handleOpen();
             }}
-            className={`absolute right-3 top-3 z-20 transition-opacity duration-[1500ms] ease-in-out motion-reduce:transition-none ${showDetails ? "opacity-0 pointer-events-none" : "opacity-100"}`}
-            style={{
-              background: "rgba(8,17,41,0.86)",
-              color: "#ffffff",
-              fontFamily: "'Montserrat',sans-serif",
-              fontWeight: 700,
-              fontSize: 11,
-              padding: "5px 10px",
-              borderRadius: 20,
-              border: "none",
-              cursor: "pointer",
-            }}
+            // Transparent 44px hit area around the small visual pill.
+            className={`absolute right-1 top-1 z-20 flex min-h-11 min-w-11 items-center justify-center p-2 transition-opacity duration-[1500ms] ease-in-out motion-reduce:transition-none ${showDetails ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+            style={{ background: "transparent", border: "none", cursor: "pointer" }}
           >
-            View details
+            <span
+              style={{
+                background: "rgba(8,17,41,0.86)",
+                color: "#ffffff",
+                fontFamily: "'Montserrat',sans-serif",
+                fontWeight: 700,
+                fontSize: 11,
+                padding: "5px 10px",
+                borderRadius: 20,
+              }}
+            >
+              View details
+            </span>
           </button>
 
           {/* Body */}
@@ -1111,7 +1115,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                 <div
                   style={{
                     width: 40,
-                    height: 40,
+                    height: 44,
                     background: "#ffffff",
                     border: "1px solid #e2e8f0",
                     borderRadius: 8,
@@ -1121,7 +1125,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                   className="flex items-center justify-center"
                 >
                   {logo ? (
-                    <img
+                    <img width={160} height={64}
                       src={logo}
                       alt={meta.displayName}
                       className="w-full h-full object-contain"
@@ -1511,7 +1515,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                   fontFamily: "'Montserrat',sans-serif",
                   fontWeight: 700,
                   fontSize: 12,
-                  height: 40,
+                  height: 44,
                   padding: "0 12px",
                   borderRadius: 20,
                   border: `1.5px solid ${UTC_NAVY}`,
@@ -1535,7 +1539,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                   fontFamily: "'Montserrat',sans-serif",
                   fontWeight: 700,
                   fontSize: 12,
-                  height: 40,
+                  height: 44,
                   padding: "0 12px",
                   borderRadius: 20,
                   border: "none",

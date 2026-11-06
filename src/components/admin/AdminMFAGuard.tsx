@@ -263,7 +263,7 @@ export const AdminMFAGuard = ({
                     Scan this QR code with your authenticator app:
                   </p>
                   <div className="flex justify-center">
-                    <img
+                    <img width={192} height={192}
                       src={qrCode}
                       alt="MFA QR Code"
                       className="w-48 h-48 border rounded-lg"

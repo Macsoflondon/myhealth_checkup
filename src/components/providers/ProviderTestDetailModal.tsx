@@ -384,7 +384,7 @@ export default function ProviderTestDetailModal({
         <div className="bg-[#081129] text-white p-6 pb-7 pr-14">
           <div className="flex items-start gap-4">
             <div className="w-14 h-14 rounded-xl bg-white flex items-center justify-center shrink-0 shadow-md">
-              <img
+              <img width={160} height={64}
                 src={providerLogo}
                 alt={providerName}
                 loading="lazy"

@@ -85,7 +85,7 @@ const TestCategoriesSection = () => {
               className="group relative flex flex-col justify-end min-h-[285px] sm:min-h-[352px] lg:min-h-[390px] rounded-2xl overflow-hidden"
             >
               {/* Background image */}
-              <img
+              <img width={600} height={400}
                 src={cat.image}
                 alt=""
                 aria-hidden="true"

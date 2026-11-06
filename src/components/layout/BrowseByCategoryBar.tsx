@@ -40,6 +40,7 @@ export default function BrowseByCategoryBar({
   const [scrolled, setScrolled] = useState(false);
   const mobileBarRef = useRef<HTMLDivElement>(null);
   const [mobileBarOut, setMobileBarOut] = useState(false);
+  const stickyTriggerRef = useRef<HTMLButtonElement>(null);
   const { pathname } = useLocation();
   const [hydrated, setHydrated] = useState(false);
   const items = primaryNavigationItems.filter((i) => i.name !== "How it works");
@@ -95,6 +96,13 @@ export default function BrowseByCategoryBar({
       <SheetContent
         side="right"
         id="mobile-menu"
+        // Opened from the floating trigger mid-page: return focus there
+        // without scrolling, instead of to the brand-bar trigger at the top.
+        onCloseAutoFocus={(event) => {
+          if (!mobileBarOut) return;
+          event.preventDefault();
+          requestAnimationFrame(() => stickyTriggerRef.current?.focus({ preventScroll: true }));
+        }}
         className="w-[85vw] max-w-[340px] bg-[#f7f7f8] border-l border-[#081129]/10 p-0 flex flex-col"
       >
         <SheetHeader className="px-4 py-4 border-b border-[#081129]/10 text-left">
@@ -255,7 +263,7 @@ export default function BrowseByCategoryBar({
             <div className="flex flex-col min-w-0 pr-14">
               <Link
                 to="/"
-                className="flex items-center no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] leading-none whitespace-nowrap text-[clamp(24px,6.3vw,120px)] max-sm:text-[clamp(24px,7.6vw,40px)] xl:text-[clamp(24px,8.2vw,120px)] py-1 md:py-2"
+                className="flex items-center no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] min-h-11 leading-none whitespace-nowrap text-[clamp(24px,6.3vw,120px)] max-sm:text-[clamp(24px,7.6vw,40px)] xl:text-[clamp(24px,8.2vw,120px)] py-1 md:py-2"
               >
                 <BrandWordmark />
               </Link>
@@ -306,6 +314,7 @@ export default function BrowseByCategoryBar({
               inert={!mobileBarOut || mobileOpen}
             >
               <button
+                ref={stickyTriggerRef}
                 type="button"
                 onClick={() => setMobileOpen(true)}
                 aria-label="Open menu"
