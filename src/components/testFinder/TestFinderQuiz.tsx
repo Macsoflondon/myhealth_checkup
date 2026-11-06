@@ -8,6 +8,7 @@ import {
   type AIAnalysisResult,
 } from "@/components/ai/RecommendationEngine";
 import { trackFunnelEvent } from "@/lib/funnelTracking";
+import { type QuizNodeId } from "@/lib/quiz/quiz-node-ids";
 
 // ─── Decision Tree (Medichecks V13 Logic Map) ───────────────────────────────────────
 
@@ -26,7 +27,7 @@ interface DecisionNode {
   answers: DecisionAnswer[];
 }
 
-const DECISION_TREE: Record<string, DecisionNode> = {
+const DECISION_TREE: Record<QuizNodeId, DecisionNode> = {
   gender: {
     id: "gender",
     question: "How would you describe your gender?",
@@ -1243,7 +1244,7 @@ export const TestFinderQuiz = () => {
   const [pendingPathLabels, setPendingPathLabels] = useState<string[]>([]);
   const [pendingGender, setPendingGender] = useState<string | null>(null);
 
-  const currentNode = DECISION_TREE[currentNodeId];
+  const currentNode = DECISION_TREE[currentNodeId as QuizNodeId];
   const stepCount = history.length + 1;
   const progress = Math.min(19 + history.length * 10, 100);
 
@@ -1251,7 +1252,7 @@ export const TestFinderQuiz = () => {
   // by audit: zero rows since 2026-07-31), so Historical Analytics' conversion chart was
   // reading a table nothing ever wrote to for this surface.
   useEffect(() => {
-    void trackFunnelEvent("quiz_start");
+    void trackFunnelEvent("quiz_start", { quiz_node_id: "gender" });
   }, []);
 
   const genderFromHistory = (): string | null => {
@@ -1313,7 +1314,7 @@ export const TestFinderQuiz = () => {
 
       if (error) throw error;
       setAiResult(data as AIAnalysisResult);
-      void trackFunnelEvent("quiz_complete");
+      void trackFunnelEvent("quiz_complete", { quiz_node_id: currentNodeId });
     } catch {
       toast.error("Unable to generate recommendations. Please try again.");
       setIsAnalysing(false);

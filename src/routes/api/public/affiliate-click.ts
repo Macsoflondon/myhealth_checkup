@@ -32,7 +32,8 @@ export const affiliateClickSchema = z.object({
   test_id: z.string().max(200).nullable(),
   source_page: z.string().min(1).max(300).regex(/^\/[^?#]*$/),
   placement: z.enum(AFFILIATE_PLACEMENTS),
-  destination_host: z.string().min(1).max(253).regex(/^[a-z0-9.-]+$/),
+  // Accepted for older clients but ignored: the server derives the host.
+  destination_host: z.string().max(253).optional(),
 });
 
 type Admin = (typeof import("@/integrations/supabase/client.server"))["supabaseAdmin"];
@@ -80,8 +81,40 @@ async function record(
   return !error;
 }
 
-/** POST beacon: provider-level links. Provider and test must exist in the catalogue. */
-export async function handleAffiliateClick(request: Request): Promise<Response> {
+export type AffiliateClickRow = {
+  click_id: string;
+  provider_id: string;
+  test_id: string | null;
+  source_page: string;
+  placement: (typeof AFFILIATE_PLACEMENTS)[number];
+  destination_host: string;
+};
+
+export type AffiliateBeaconDeps = {
+  lookupTest: (testId: string) => Promise<{ id: string; provider_id: string; url: string | null } | null>;
+  withinLimit: (request: Request) => Promise<boolean>;
+  insert: (row: AffiliateClickRow) => Promise<boolean>;
+};
+
+/** Host recorded for a click: never the browser's claim. */
+export function serverDestinationHost(
+  providerId: string,
+  catalogueUrl: string | null,
+): string | null {
+  if (catalogueUrl !== null) {
+    return verifiedProviderUrl(catalogueUrl, providerId)?.hostname.toLowerCase() ?? null;
+  }
+  return AFFILIATE_PROVIDERS[providerId]?.hosts[0] ?? null;
+}
+
+/**
+ * POST beacon: provider-level links. Provider and test must exist in the
+ * catalogue. Any destination_host in the body is ignored; the server derives it.
+ */
+export async function handleAffiliateBeacon(
+  request: Request,
+  deps: AffiliateBeaconDeps,
+): Promise<Response> {
   const declared = Number(request.headers.get("content-length") ?? "0");
   if (declared > MAX_CLICK_BODY_BYTES) return new Response(null, { status: 413 });
   let body: unknown;
@@ -94,26 +127,37 @@ export async function handleAffiliateClick(request: Request): Promise<Response> 
   }
   const parsed = affiliateClickSchema.safeParse(body);
   if (!parsed.success) return new Response(null, { status: 400 });
-  if (!(parsed.data.provider_id in AFFILIATE_PROVIDERS)) {
+  const { click_id, provider_id, source_page, placement } = parsed.data;
+  if (!Object.prototype.hasOwnProperty.call(AFFILIATE_PROVIDERS, provider_id)) {
     return new Response(null, { status: 400 });
   }
-  const admin = await adminClient();
-  if (!admin) return new Response(null, { status: 503 });
 
   let testId: string | null = null;
+  let catalogueUrl: string | null = null;
   if (parsed.data.test_id !== null) {
     if (!isCatalogueTestId(parsed.data.test_id)) return new Response(null, { status: 400 });
-    const test = await lookupTest(admin, parsed.data.test_id);
-    if (!test || test.provider_id !== parsed.data.provider_id) {
-      return new Response(null, { status: 400 });
-    }
+    const test = await deps.lookupTest(parsed.data.test_id);
+    if (!test || test.provider_id !== provider_id) return new Response(null, { status: 400 });
     testId = test.id;
+    catalogueUrl = test.url ?? "";
   }
-  if (!(await withinRateLimit(admin, request))) {
+  const destination_host = serverDestinationHost(provider_id, catalogueUrl);
+  if (!destination_host) return new Response(null, { status: 400 });
+  if (!(await deps.withinLimit(request))) {
     return new Response(null, { status: 429, headers: { "retry-after": "600" } });
   }
-  const ok = await record(admin, { ...parsed.data, test_id: testId }, request);
+  const ok = await deps.insert({ click_id, provider_id, test_id: testId, source_page, placement, destination_host });
   return new Response(null, { status: ok ? 204 : 502 });
+}
+
+export async function handleAffiliateClick(request: Request): Promise<Response> {
+  const admin = await adminClient();
+  if (!admin) return new Response(null, { status: 503 });
+  return handleAffiliateBeacon(request, {
+    lookupTest: (id) => lookupTest(admin, id),
+    withinLimit: (req) => withinRateLimit(admin, req),
+    insert: (row) => record(admin, row, request),
+  });
 }
 
 /**

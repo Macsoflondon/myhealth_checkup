@@ -793,9 +793,7 @@ export const UniversalTestDetailModal: React.FC<{
                 onClick={() => {
                   void trackFunnelEvent("provider_click", {
                     provider_id: test.provider_id,
-                    entity_type: "test",
-                    entity_id: test.id,
-                    entity_name: test.test_name,
+                    test_id: test.id,
                   });
                 }}
                 className="flex items-center justify-center gap-2 rounded-full"
@@ -924,9 +922,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
     e.stopPropagation();
     void trackFunnelEvent("provider_click", {
       provider_id: test.provider_id,
-      entity_type: "test",
-      entity_id: test.id,
-      entity_name: test.test_name,
+      test_id: test.id,
     });
     // url_verified is explicitly false only after a failed scraper_alerts URL health check —
     // undefined/null (not selected by this caller's query, or never checked) still opens the URL

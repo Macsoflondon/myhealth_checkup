@@ -36,9 +36,7 @@ describe("UniversalTestDetailModal provider link", () => {
     expect(trackFunnelEvent).toHaveBeenCalledTimes(1);
     expect(trackFunnelEvent).toHaveBeenCalledWith("provider_click", {
       provider_id: "medichecks",
-      entity_type: "test",
-      entity_id: "t-1",
-      entity_name: "Thyroid Function Blood Test",
+      test_id: "t-1",
     });
   });
 });

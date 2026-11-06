@@ -132,6 +132,7 @@ import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.
 import { Route as ApiPublicAffiliateClickRouteImport } from './routes/api/public/affiliate-click'
 import { Route as ApiPublicAssistantRouteImport } from './routes/api/public/assistant'
 import { Route as ApiPublicCspReportRouteImport } from './routes/api/public/csp-report'
+import { Route as ApiPublicQuizEventRouteImport } from './routes/api/public/quiz-event'
 import { Route as CompareGoalsIndexRouteImport } from './routes/compare.goals.index'
 import { Route as CompareGoalsGoalSlugRouteImport } from './routes/compare.goals.$goalSlug'
 import { Route as CompareSymptomsIndexRouteImport } from './routes/compare.symptoms.index'
@@ -768,6 +769,11 @@ const ApiPublicCspReportRoute = ApiPublicCspReportRouteImport.update({
   path: '/api/public/csp-report',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicQuizEventRoute = ApiPublicQuizEventRouteImport.update({
+  id: '/api/public/quiz-event',
+  path: '/api/public/quiz-event',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CompareGoalsIndexRoute = CompareGoalsIndexRouteImport.update({
   id: '/goals/',
   path: '/goals/',
@@ -937,6 +943,7 @@ export interface FileRoutesByFullPath {
   '/api/public/affiliate-click': typeof ApiPublicAffiliateClickRoute
   '/api/public/assistant': typeof ApiPublicAssistantRoute
   '/api/public/csp-report': typeof ApiPublicCspReportRoute
+  '/api/public/quiz-event': typeof ApiPublicQuizEventRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
   '/compare/goals/': typeof CompareGoalsIndexRoute
@@ -1069,6 +1076,7 @@ export interface FileRoutesByTo {
   '/api/public/affiliate-click': typeof ApiPublicAffiliateClickRoute
   '/api/public/assistant': typeof ApiPublicAssistantRoute
   '/api/public/csp-report': typeof ApiPublicCspReportRoute
+  '/api/public/quiz-event': typeof ApiPublicQuizEventRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
   '/compare/goals': typeof CompareGoalsIndexRoute
@@ -1203,6 +1211,7 @@ export interface FileRoutesById {
   '/api/public/affiliate-click': typeof ApiPublicAffiliateClickRoute
   '/api/public/assistant': typeof ApiPublicAssistantRoute
   '/api/public/csp-report': typeof ApiPublicCspReportRoute
+  '/api/public/quiz-event': typeof ApiPublicQuizEventRoute
   '/compare/goals/$goalSlug': typeof CompareGoalsGoalSlugRoute
   '/compare/symptoms/$symptomSlug': typeof CompareSymptomsSymptomSlugRoute
   '/compare/goals/': typeof CompareGoalsIndexRoute
@@ -1338,6 +1347,7 @@ export interface FileRouteTypes {
     | '/api/public/affiliate-click'
     | '/api/public/assistant'
     | '/api/public/csp-report'
+    | '/api/public/quiz-event'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
     | '/compare/goals/'
@@ -1470,6 +1480,7 @@ export interface FileRouteTypes {
     | '/api/public/affiliate-click'
     | '/api/public/assistant'
     | '/api/public/csp-report'
+    | '/api/public/quiz-event'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
     | '/compare/goals'
@@ -1603,6 +1614,7 @@ export interface FileRouteTypes {
     | '/api/public/affiliate-click'
     | '/api/public/assistant'
     | '/api/public/csp-report'
+    | '/api/public/quiz-event'
     | '/compare/goals/$goalSlug'
     | '/compare/symptoms/$symptomSlug'
     | '/compare/goals/'
@@ -1735,6 +1747,7 @@ export interface RootRouteChildren {
   ApiPublicAffiliateClickRoute: typeof ApiPublicAffiliateClickRoute
   ApiPublicAssistantRoute: typeof ApiPublicAssistantRoute
   ApiPublicCspReportRoute: typeof ApiPublicCspReportRoute
+  ApiPublicQuizEventRoute: typeof ApiPublicQuizEventRoute
   ProviderProviderIdIndexRoute: typeof ProviderProviderIdIndexRoute
   ApiPublicDiagnosticsAbortsRoute: typeof ApiPublicDiagnosticsAbortsRoute
   ProviderProviderIdTestsTestIdRoute: typeof ProviderProviderIdTestsTestIdRoute
@@ -2604,6 +2617,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicCspReportRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/quiz-event': {
+      id: '/api/public/quiz-event'
+      path: '/api/public/quiz-event'
+      fullPath: '/api/public/quiz-event'
+      preLoaderRoute: typeof ApiPublicQuizEventRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/compare/goals/': {
       id: '/compare/goals/'
       path: '/goals'
@@ -2807,6 +2827,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicAffiliateClickRoute: ApiPublicAffiliateClickRoute,
   ApiPublicAssistantRoute: ApiPublicAssistantRoute,
   ApiPublicCspReportRoute: ApiPublicCspReportRoute,
+  ApiPublicQuizEventRoute: ApiPublicQuizEventRoute,
   ProviderProviderIdIndexRoute: ProviderProviderIdIndexRoute,
   ApiPublicDiagnosticsAbortsRoute: ApiPublicDiagnosticsAbortsRoute,
   ProviderProviderIdTestsTestIdRoute: ProviderProviderIdTestsTestIdRoute,

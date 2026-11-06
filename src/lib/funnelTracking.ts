@@ -1,4 +1,5 @@
-import { supabase } from "@/integrations/supabase/client";
+/** Matches QUIZ_EVENT_ENDPOINT in @/lib/quiz/quiz-event (kept literal so the browser bundle skips the server schema). */
+const QUIZ_EVENT_ENDPOINT = "/api/public/quiz-event";
 import { hasConsent } from "@/lib/consent";
 
 /**
@@ -9,9 +10,9 @@ import { hasConsent } from "@/lib/consent";
  * - The id lasts for one browser-tab session. The cross-session id this
  *   module used to keep in localStorage ("mhc_anon_id") is no longer
  *   created, and any existing one is deleted.
- * - Never throws and never blocks the UI. supabase-js reports a refused
- *   insert (for example an RLS rejection) as `error` rather than throwing,
- *   so that case is checked explicitly.
+ * - Signed-in and signed-out visitors alike post to /api/public/quiz-event,
+ *   the single write path; the browser never writes to the database.
+ * - Never throws and never blocks the UI.
  */
 
 const SESSION_KEY = "mhc_session_id";
@@ -47,14 +48,7 @@ function warnInDev(message: string, detail: unknown): void {
 
 export async function trackFunnelEvent(
   funnel_stage: FunnelStage,
-  options: {
-    entity_type?: string;
-    entity_id?: string;
-    entity_name?: string;
-    provider_id?: string;
-    revenue_amount?: number;
-    currency?: string;
-  } = {},
+  options: { quiz_node_id?: string; provider_id?: string; test_id?: string } = {},
 ): Promise<void> {
   if (typeof window === "undefined") return;
   dropLegacyAnonymousId();
@@ -63,19 +57,29 @@ export async function trackFunnelEvent(
   const session_id = sessionId();
   if (!session_id) return;
 
+  const body: Record<string, string> = {
+    event: funnel_stage,
+    session_id,
+    occurred_at: new Date().toISOString(),
+  };
+  if (funnel_stage === "provider_click") {
+    if (!options.provider_id || !options.test_id) return;
+    body.provider_id = options.provider_id;
+    body.test_id = options.test_id;
+  } else {
+    if (!options.quiz_node_id) return;
+    body.quiz_node_id = options.quiz_node_id;
+  }
+
   try {
-    const { error } = await supabase.from("funnel_events").insert({
-      session_id,
-      anonymous_id: null,
-      funnel_stage,
-      entity_type: options.entity_type ?? null,
-      entity_id: options.entity_id ?? null,
-      entity_name: options.entity_name ?? null,
-      provider_id: options.provider_id ?? null,
-      revenue_amount: options.revenue_amount ?? null,
-      currency: options.currency ?? null,
+    const res = await fetch(QUIZ_EVENT_ENDPOINT, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body),
+      keepalive: true,
+      credentials: "omit",
     });
-    if (error) warnInDev("Funnel tracking refused:", error.message);
+    if (!res.ok) warnInDev("Funnel tracking refused:", res.status);
   } catch (e) {
     warnInDev("Funnel tracking error:", e);
   }
