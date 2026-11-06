@@ -33,12 +33,12 @@ const BiomarkerGuidesIndexPage = () => {
         </script>
       </Helmet>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 text-white">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16 text-[#081129]">
         <header className="mb-12 max-w-3xl">
           <h1 className="font-display text-4xl lg:text-5xl font-semibold tracking-tight mb-4">
             Health test guides
           </h1>
-          <p className="text-lg text-white/75">
+          <p className="text-lg text-slate-600">
             Plain-English explainers of the biomarkers behind UK private blood
             tests — what each one measures, why it matters, and how to compare
             providers with confidence.
@@ -55,12 +55,12 @@ const BiomarkerGuidesIndexPage = () => {
                   <Link
                     key={g.slug}
                     to={`/guides/${g.slug}`}
-                    className="group rounded-2xl border border-white/10 bg-white/5 p-6 hover:bg-white/10 hover:border-[#22c0d4]/40 transition"
+                    className="group rounded-2xl border border-slate-200 bg-white p-6 hover:bg-slate-50 hover:border-[#22c0d4]/40 transition"
                   >
-                    <h3 className="font-semibold text-lg text-white mb-2 group-hover:text-[#22c0d4] transition">
+                    <h3 className="font-semibold text-lg text-[#081129] mb-2 group-hover:text-[#22c0d4] transition">
                       {g.keyword}
                     </h3>
-                    <p className="text-sm text-white/90 mb-4 line-clamp-2">
+                    <p className="text-sm text-slate-700 mb-4 line-clamp-2">
                       {g.strapline}
                     </p>
                     <span className="inline-flex items-center text-sm text-[#22c0d4]">

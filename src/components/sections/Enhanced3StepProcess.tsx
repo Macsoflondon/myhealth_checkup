@@ -32,7 +32,7 @@ const Enhanced3StepProcess = () => {
   ];
 
   return (
-    <section className="py-10 sm:py-14 bg-muted/30">
+    <section className="py-10 sm:py-14 bg-slate-50">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
           {steps.map((step) => (

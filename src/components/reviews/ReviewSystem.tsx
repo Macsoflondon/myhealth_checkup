@@ -91,7 +91,8 @@ const ReviewSystem = () => {
   return (
     <>
       <Header />
-      <div className="max-w-4xl mx-auto p-6">
+      <div className="bg-white">
+      <div className="max-w-4xl mx-auto p-6 text-[#081129]">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-4">Customer reviews</h1>
 
@@ -250,6 +251,7 @@ const ReviewSystem = () => {
             </Card>
           ))}
         </div>
+      </div>
       </div>
     </>
   );

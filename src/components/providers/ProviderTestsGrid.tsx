@@ -71,10 +71,10 @@ export const ProviderTestsGrid = ({
     <section className="mb-8 md:mb-12">
       <div className="flex items-end justify-between mb-6">
         <div>
-          <h2 className="type-section-title text-on-dark">
+          <h2 className="type-section-title text-[#081129]">
             Tests from {providerDisplayName}
           </h2>
-          <p className="text-on-dark-muted text-sm mt-1">
+          <p className="text-slate-600 text-sm mt-1">
             {data.length} tests available
           </p>
         </div>
