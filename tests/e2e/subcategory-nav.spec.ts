@@ -85,12 +85,16 @@ test.describe("Subcategory navigation", () => {
       const pill = page
         .getByRole("link", { name: fx.parentLabel, exact: true })
         .first();
-      await pill.hover();
       // Desktop dropdown entries are exposed as menu items (role="menuitem").
       const subLink = page
         .getByRole("menuitem", { name: fx.subLabel, exact: true })
         .first();
-      await subLink.waitFor({ state: "visible", timeout: 5_000 });
+      // Hovering before hydration does nothing, so retry until the panel opens.
+      await expect(async () => {
+        await page.mouse.move(0, 0);
+        await pill.hover();
+        await subLink.waitFor({ state: "visible", timeout: 1_500 });
+      }).toPass({ timeout: 30_000 });
       await subLink.click();
       await assertSubcategorySEO(page, fx);
     });
@@ -105,21 +109,23 @@ test.describe("Subcategory navigation", () => {
       const hamburger = page
         .getByRole("button", { name: /menu|open menu|navigation/i })
         .first();
-      await hamburger.click();
-      // Expand the parent row, then tap the sub link.
       const subLink = page
         .getByRole("link", { name: fx.subLabel, exact: true })
         .first();
-      if (!(await subLink.isVisible().catch(() => false))) {
-        const expander = page
-          .getByRole("button", {
-            name: `Show ${fx.drawerLabel} subcategories`,
-            exact: true,
-          })
-          .first();
-        if (await expander.count()) await expander.click();
-      }
-      await subLink.waitFor({ state: "visible", timeout: 5_000 });
+      const expander = page
+        .getByRole("button", {
+          name: `Show ${fx.drawerLabel} subcategories`,
+          exact: true,
+        })
+        .first();
+      // Taps before hydration are ignored, so retry opening the drawer and
+      // expanding the parent row until the sub link shows.
+      await expect(async () => {
+        if (!(await expander.isVisible().catch(() => false))) await hamburger.click();
+        await expander.waitFor({ state: "visible", timeout: 1_500 });
+        if (!(await subLink.isVisible().catch(() => false))) await expander.click();
+        await subLink.waitFor({ state: "visible", timeout: 1_500 });
+      }).toPass({ timeout: 30_000 });
       await subLink.click();
       await assertSubcategorySEO(page, fx);
     });
