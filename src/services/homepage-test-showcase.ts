@@ -51,7 +51,7 @@ export type HomepageShowcaseTest = Awaited<
 >[number];
 
 export const homepageShowcaseQueryOptions = {
-  queryKey: ["homepage-provider-showcase", "eight-providers"] as const,
+  queryKey: ["homepage-provider-showcase", "all-providers"] as const,
   queryFn: getHomepageShowcaseTests,
   staleTime: 10 * 60 * 1000,
 };

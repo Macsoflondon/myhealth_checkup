@@ -50,6 +50,7 @@ export const AFFILIATE_PROVIDERS: Readonly<
     subIdParam: null,
   },
   clinilabs: { hosts: ["clinilabs.co.uk"], subIdParam: null },
+  "sports-blood-tests": { hosts: ["sportsbloodtests.co.uk"], subIdParam: null },
 };
 
 /** Returns the provider id that owns a hostname, or null. */

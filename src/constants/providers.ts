@@ -43,6 +43,7 @@ export const PROVIDER_NAMES: Record<string, string> = {
   "london-health-company": "London Health Company",
   "medical-diagnosis": "Medical Diagnosis",
   clinilabs: "Clinilabs",
+  "sports-blood-tests": "Sports Blood Tests",
 };
 
 export const PROVIDER_WEBSITES: Record<string, string> = {
@@ -54,6 +55,7 @@ export const PROVIDER_WEBSITES: Record<string, string> = {
   "london-health-company": "https://londonhealthcompany.co.uk",
   "medical-diagnosis": "https://www.medical-diagnosis.co.uk",
   clinilabs: "https://www.clinilabs.co.uk",
+  "sports-blood-tests": "https://www.sportsbloodtests.co.uk",
   "blue-horizon": "https://bluehorizonbloodtests.co.uk/",
   "private-blood-tests-spire": "https://privatebloodtests.co.uk/",
   "london-blood-tests": "https://londonbloodtests.uk/",

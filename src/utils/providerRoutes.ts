@@ -24,6 +24,7 @@ export const PROVIDER_ROUTE_MAP: Record<string, string> = {
   "randox-health": "/randox", // Alias
   clinilabs: "/clinilabs",
   "medical-diagnosis": "/medical-diagnosis",
+  "sports-blood-tests": "/provider/sports-blood-tests",
 };
 
 // Provider display names
@@ -38,6 +39,7 @@ export const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
   "randox-health": "Randox Health",
   clinilabs: "Clinilabs",
   "medical-diagnosis": "Medical Diagnosis",
+  "sports-blood-tests": "Sports Blood Tests",
 };
 
 /**
@@ -56,6 +58,7 @@ export const PROVIDER_PROFILE_ROUTE_MAP: Record<string, string> = {
   "london-health-company": "/provider/london-health-company",
   clinilabs: "/provider/clinilabs",
   "medical-diagnosis": "/provider/medical-diagnosis",
+  "sports-blood-tests": "/provider/sports-blood-tests",
 };
 
 export function getProviderProfileRoute(providerId: string): string {
@@ -114,6 +117,7 @@ export function normalizeProviderFromName(providerName: string): string {
   if (name.includes("london-health-company")) return "london-health-company";
   if (name.includes("clinilabs")) return "clinilabs";
   if (name.includes("medical-diagnosis")) return "medical-diagnosis";
+  if (name.includes("sports-blood") || name.includes("sportsblood")) return "sports-blood-tests";
   if (name.includes("london")) return "london-medical-laboratory";
 
   return providerName;

@@ -42,13 +42,11 @@ describe("homepage provider coverage", () => {
       "clinilabs",
     ]);
   });
-  it("includes all eight before a provider repeats in the lower nine-card section", () => {
+  it("shows all nine providers once each in the lower nine-card section", () => {
     const selected = selectHomepageProviderTests(candidates, 9);
     expect(selected).toHaveLength(9);
-    expect(
-      new Set(selected.slice(0, 8).map((test) => test.provider_id)).size,
-    ).toBe(8);
-    expect(selected[8].provider_id).toBe("lola-health");
+    expect(new Set(selected.map((test) => test.provider_id)).size).toBe(9);
+    expect(selected[8].provider_id).toBe("sports-blood-tests");
   });
   it("never fabricates popularity for unranked providers", () => {
     const selected = selectHomepageProviderTests(candidates, 8);

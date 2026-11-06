@@ -9,6 +9,7 @@ export const HOMEPAGE_PROVIDER_IDS = [
   "london-health-company",
   "medical-diagnosis",
   "clinilabs",
+  "sports-blood-tests",
 ] as const;
 
 export interface ShowcaseCandidate {

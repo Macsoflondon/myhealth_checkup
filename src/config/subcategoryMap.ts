@@ -191,6 +191,14 @@ export const SUBCATEGORY_MAP: Record<string, SubcategoryDef[]> = {
       ],
       siblingCategories: ["general-health"],
     },
+    { slug: "running", label: "Running tests", matchAny: [/runner/i, /running/i] },
+    { slug: "cycling", label: "Cycling tests", matchAny: [/cyclist/i, /cycling/i] },
+    { slug: "triathlon", label: "Triathlon tests", matchAny: [/triathl/i] },
+    {
+      slug: "strength",
+      label: "Strength & weightlifting tests",
+      matchAny: [/weightlift/i, /strength/i, /crossfit/i],
+    },
   ],
   fertility: [
     {
