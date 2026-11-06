@@ -61,7 +61,7 @@ const siteStructure: SitemapSection[] = [
     icon: ShieldCheck,
     links: [
       { name: "Privacy policy", path: "/privacy-policy" },
-      { name: "Terms & conditions", path: "/terms" },
+      { name: "Terms and conditions", path: "/terms" },
       { name: "Cookie policy", path: "/cookies" },
       { name: "Accessibility", path: "/accessibility" },
     ],
@@ -85,8 +85,7 @@ const SitemapPage = () => {
       <Header />
       <main className="flex-grow bg-[#f7f9fc]">
         <PageBanner
-          title="Site"
-          accent="Map"
+          title="Site map"
           subtitle="Navigate our complete site structure and find exactly what you're looking for."
         />
 

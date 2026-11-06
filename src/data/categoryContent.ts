@@ -33,7 +33,7 @@ export const categoryContent: Record<string, CategoryContent> = {
       "Hormone blood tests UK | Compare prices from £39 | myhealth checkup",
     metaDescription:
       "Compare hormone blood tests from UK's leading private providers. Check testosterone, oestrogen, cortisol and more from UKAS accredited labs.",
-    heroTitle: "Hormone blood tests",
+    heroTitle: "Hormone tests",
     heroSubtitle:
       "Understand your hormonal balance with comprehensive hormone testing from trusted UK providers",
     introduction:
@@ -117,7 +117,7 @@ export const categoryContent: Record<string, CategoryContent> = {
       "Thyroid function tests UK | Compare prices from £29 | myhealth checkup",
     metaDescription:
       "Compare thyroid blood tests from trusted UK providers. Check TSH, T3, T4 & thyroid antibodies. Fast results from UKAS accredited labs. Find your perfect test today.",
-    heroTitle: "Thyroid function tests",
+    heroTitle: "Thyroid tests",
     heroSubtitle:
       "Comprehensive thyroid testing to check your metabolism, energy levels, and overall thyroid health",
     introduction:
@@ -206,7 +206,7 @@ export const categoryContent: Record<string, CategoryContent> = {
       "General health blood tests UK | Full health checks from £49 | myhealth checkup",
     metaDescription:
       "Compare comprehensive health check blood tests from UK's top private providers. Cholesterol, liver, kidney function and more from UKAS accredited labs.",
-    heroTitle: "General health blood tests",
+    heroTitle: "General health tests",
     heroSubtitle:
       "Comprehensive health screening to understand your overall wellbeing and catch issues early",
     introduction:
@@ -459,7 +459,7 @@ export const categoryContent: Record<string, CategoryContent> = {
       "Fertility blood tests UK | AMH & hormone tests from £49 | myhealth checkup",
     metaDescription:
       "Compare fertility blood tests from UK's leading providers. Check AMH, FSH, LH & reproductive hormones. Discreet home testing. Results reviewed by fertility specialists.",
-    heroTitle: "Fertility blood tests",
+    heroTitle: "Fertility tests",
     heroSubtitle:
       "Comprehensive fertility testing to support your family planning journey",
     introduction:
@@ -543,7 +543,7 @@ export const categoryContent: Record<string, CategoryContent> = {
       "Heart health blood tests UK | Cholesterol & cardiac tests from £39 | myhealth checkup",
     metaDescription:
       "Compare heart health blood tests from trusted UK providers. Check cholesterol, triglycerides, inflammation markers & cardiac risk. Fast results from UKAS labs.",
-    heroTitle: "Heart health blood tests",
+    heroTitle: "Heart health tests",
     heroSubtitle:
       "Comprehensive cardiac screening to assess your cardiovascular risk and heart health",
     introduction:
@@ -632,7 +632,7 @@ export const categoryContent: Record<string, CategoryContent> = {
       "Diabetes blood tests UK | HbA1c & glucose tests from £29 | myhealth checkup",
     metaDescription:
       "Compare diabetes blood tests from UK's trusted providers. Check HbA1c, fasting glucose & insulin resistance. Monitor blood sugar control. Fast, accurate results.",
-    heroTitle: "Diabetes blood tests",
+    heroTitle: "Diabetes tests",
     heroSubtitle:
       "Comprehensive blood sugar testing to detect, monitor, and manage diabetes",
     introduction:
@@ -721,7 +721,7 @@ export const categoryContent: Record<string, CategoryContent> = {
       "Vitamin & mineral blood tests UK | Deficiency tests from £29 | myhealth checkup",
     metaDescription:
       "Compare vitamin and mineral blood tests from UK providers. Check vitamin D, B12, iron, folate & more. Identify deficiencies affecting your energy and health.",
-    heroTitle: "Vitamin & mineral blood tests",
+    heroTitle: "Vitamin and mineral tests",
     heroSubtitle:
       "Identify nutritional deficiencies that could be affecting your energy, mood, and overall health",
     introduction:
@@ -805,7 +805,7 @@ export const categoryContent: Record<string, CategoryContent> = {
       "Cancer marker blood tests UK | PSA, CEA & CA125 from £39 | myhealth checkup",
     metaDescription:
       "Compare cancer screening blood tests from UK's trusted providers. Check PSA, CEA, CA125 & other tumour markers. Early detection from UKAS accredited laboratories.",
-    heroTitle: "Cancer marker blood tests",
+    heroTitle: "Cancer screening tests",
     heroSubtitle: "Tumour marker testing for early detection and peace of mind",
     introduction:
       "Cancer marker blood tests (tumour markers) can support early detection and monitoring of certain cancers. While not diagnostic on their own, elevated markers can prompt further investigation when symptoms or risk factors are present. Our platform compares cancer marker tests from trusted UK providers, all using UKAS-accredited laboratories for reliable results.",

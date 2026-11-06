@@ -25,7 +25,7 @@ const legalPages = [
     description: "How we collect, use, and protect your personal data.",
   },
   {
-    title: "Terms & conditions",
+    title: "Terms and conditions",
     path: "/terms",
     icon: FileText,
     description: "The terms governing your use of our platform.",

@@ -2,14 +2,12 @@ import React from "react";
 import { Shield, Mail, Phone, MapPin, Clock, FileText } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import PageHeading from "@/components/ui/page-heading";
 
 const PrivacyPolicy = () => {
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       <div className="text-center mb-12">
-        <PageHeading title="Privacy" accent="policy" />
-        <p className="text-brand-navy mt-4">Effective Date: 06/08/2026</p>
+        <p className="text-brand-navy mt-4">Effective date: 06/08/2026</p>
       </div>
 
       <div className="bg-blue-50 p-4 rounded-lg mb-6">
@@ -41,7 +39,7 @@ const PrivacyPolicy = () => {
           and the Privacy and Electronic Communications Regulations (PECR).
         </p>
         <p className="text-brand-navy leading-relaxed">
-          By using our Website, you agree to this Privacy policy.
+          By using our website, you agree to this privacy policy.
         </p>
       </Card>
 

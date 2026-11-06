@@ -1,3 +1,4 @@
+import { withBrand } from "@/lib/seo/route-head";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -26,7 +27,7 @@ const TestPageTemplate = ({ data }: TestPageTemplateProps) => {
   return (
     <div className="min-h-screen bg-white">
       <Helmet>
-        <title>{data.metaTitle}</title>
+        <title>{withBrand(data.metaTitle)}</title>
         <meta name="description" content={data.metaDescription} />
       </Helmet>
 

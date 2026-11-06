@@ -9,7 +9,7 @@ const FertilityTestsPage = () => (
     seoDescription="Non-invasive prenatal testing (NIPT), fertility screening, gender reveal, and paternity tests during pregnancy. Safe screening from 8 weeks."
     seoKeywords="NIPT, prenatal testing, gender reveal, fertility blood test, AMH test, pregnancy blood test"
     canonicalUrl="https://myhealthcheckup.co.uk/fertility-tests"
-    headline="Fertility & prenatal tests"
+    headline="Fertility and prenatal tests"
     subtitle="Non-invasive prenatal testing, fertility screening, and pregnancy blood tests from trusted UK labs. Safe, accurate, and confidential."
     searchPlaceholder="Search by test type — e.g. 'NIPT', 'gender reveal', 'AMH'"
     trustStats={[

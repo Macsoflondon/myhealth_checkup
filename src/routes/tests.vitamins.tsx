@@ -9,7 +9,7 @@ const VitaminDeficiencyPage = lazy(
 export const Route = createFileRoute("/tests/vitamins")({
   head: () =>
     buildCollectionHead({
-      title: "Vitamin and mineral tests UK | Compare",
+      title: "Vitamin and mineral blood tests UK | myhealth checkup",
       description:
         "Compare private vitamin and mineral tests covering vitamin D, B12, folate, ferritin and more from accredited UK laboratories.",
       path: "/tests/vitamins",

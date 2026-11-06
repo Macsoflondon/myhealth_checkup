@@ -4,12 +4,12 @@ import { Activity, Clock, TrendingUp } from "lucide-react";
 const DiabetesTestingPage = () => (
   <DbCategoryPage
     canonicalCategory="diabetes"
-    seoTitle="Diabetes testing | myhealth checkup"
+    seoTitle="Diabetes blood tests UK | myhealth checkup"
     pillLabel="Diabetes"
     seoDescription="Compare diabetes screening and monitoring tests from UK providers — HbA1c, glucose tolerance and insulin resistance testing."
     seoKeywords="diabetes test, HbA1c test, glucose tolerance, insulin resistance"
     canonicalUrl="https://myhealthcheckup.co.uk/tests/diabetes"
-    headline="Diabetes testing & monitoring"
+    headline="Diabetes tests"
     subtitle="Comprehensive diabetes screening and monitoring tests to manage your metabolic health proactively."
     searchPlaceholder="Search by test — e.g. 'HbA1c', 'glucose'"
     trustStats={[

@@ -1,3 +1,4 @@
+import { withBrand } from "@/lib/seo/route-head";
 import { Link } from "@/lib/router-compat";
 import { Helmet } from "react-helmet-async";
 import { ArrowRight, Beaker, Droplets, ShieldCheck } from "lucide-react";
@@ -177,7 +178,7 @@ export default function FerritinVsIronComparisonGuidePage() {
   return (
     <MainLayout>
       <Helmet>
-        <title>{TITLE}</title>
+        <title>{withBrand(TITLE)}</title>
         <meta name="description" content={DESCRIPTION} />
         <link rel="canonical" href={CANONICAL} />
         <meta property="og:title" content={TITLE} />

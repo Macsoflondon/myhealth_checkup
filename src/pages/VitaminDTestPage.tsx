@@ -9,7 +9,7 @@ const VitaminDTestPage = () => {
       "Check your vitamin D levels to assess bone health, immune function, and overall wellbeing. Essential for those with limited sun exposure or dietary intake.",
     category: "Vitamins",
     breadcrumbTitle: "Vitamin D Test",
-    metaTitle: "Vitamin D Test - Compare UK Providers | MyHealth Checkup",
+    metaTitle: "Vitamin D Test - Compare UK Providers | myhealth checkup",
     metaDescription:
       "Compare Vitamin D Tests from top UK providers. Check your vitamin D levels for bone health, immune function and overall wellbeing.",
 

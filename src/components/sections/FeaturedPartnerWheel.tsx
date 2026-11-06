@@ -19,7 +19,7 @@ const COMPARE_HREF_BY_NAME: Record<string, string> = {
 };
 const compareHrefFor = (k: { name: string; compareHref?: string }) =>
   k.compareHref || COMPARE_HREF_BY_NAME[k.name] || "/compare";
-const GOODBODY_CATALOG_HREF = "/providers/goodbody-clinic";
+const GOODBODY_CATALOG_HREF = "/provider/goodbody-clinic";
 const GOODBODY_PROFILE_HREF = "/provider/goodbody-clinic";
 
 /**

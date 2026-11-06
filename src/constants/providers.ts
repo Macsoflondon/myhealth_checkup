@@ -38,8 +38,8 @@ export const PROVIDER_NAMES: Record<string, string> = {
   "randox-health": "Randox Health",
   "london-medical-laboratory": "London Medical Laboratory",
   "lola-health": "Lola Health",
-  "goodbody-clinic": "GoodBody Clinic",
-  goodbody: "GoodBody Clinic",
+  "goodbody-clinic": "Goodbody Clinic",
+  goodbody: "Goodbody Clinic",
   "london-health-company": "London Health Company",
   "medical-diagnosis": "Medical Diagnosis",
   clinilabs: "Clinilabs",
@@ -80,7 +80,7 @@ export function normalizeProviderId(providerId: string): string {
 export const PROVIDER_DETAILS: Record<string, Provider> = {
   "goodbody-clinic": {
     id: "goodbody-clinic",
-    name: "GoodBody Clinic",
+    name: "Goodbody Clinic",
     logo: PROVIDER_LOGOS["goodbody-clinic"],
     website: PROVIDER_WEBSITES["goodbody-clinic"],
     description: "Premium health screening services",

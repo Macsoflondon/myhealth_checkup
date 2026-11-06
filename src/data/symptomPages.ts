@@ -309,7 +309,7 @@ export const symptomPages: SymptomPageData[] = [
       {
         name: "Coeliac screen",
         why: "Detects antibodies associated with coeliac disease",
-        keyBiomarkers: ["Tissue transglutaminase igA (tTG)", "Total igA"],
+        keyBiomarkers: ["Tissue transglutaminase IgA (tTG)", "Total IgA"],
         searchQuery: "coeliac",
       },
       {

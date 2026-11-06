@@ -1,3 +1,4 @@
+import { withBrand } from "@/lib/seo/route-head";
 import React, { useMemo } from "react";
 import { capitaliseFirst, labelMidSentence, withoutTestsSuffix } from "@/lib/display-label";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
@@ -115,7 +116,7 @@ const CategoryLandingPage: React.FC = () => {
     <ErrorBoundary>
       <div className="min-h-screen flex flex-col bg-background">
         <Helmet>
-          <title>{content.title}</title>
+          <title>{withBrand(content.title)}</title>
           <meta name="description" content={content.metaDescription} />
           <meta name="keywords" content={content.keywords.join(", ")} />
           <link

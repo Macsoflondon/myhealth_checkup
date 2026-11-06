@@ -528,12 +528,6 @@ const rawEntries: SitemapEntry[] = [
     priority: "0.6",
   },
   {
-    path: "/providers/medichecks",
-    lastmod: "2026-04-20",
-    changefreq: "weekly",
-    priority: "0.7",
-  },
-  {
     path: "/medichecks/mens-health",
     lastmod: "2026-04-20",
     changefreq: "monthly",

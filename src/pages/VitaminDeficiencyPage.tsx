@@ -9,7 +9,7 @@ const VitaminDeficiencyPage = () => (
     seoDescription="Compare vitamin and mineral deficiency tests from UK providers — vitamin D, B12, iron and folate testing."
     seoKeywords="vitamin deficiency test, vitamin D test, B12 test, iron studies, folate test"
     canonicalUrl="https://myhealthcheckup.co.uk/tests/vitamins"
-    headline="Vitamin & mineral testing"
+    headline="Vitamin and mineral tests"
     subtitle="Identify hidden vitamin deficiencies affecting your energy, immunity and wellbeing."
     searchPlaceholder="Search by nutrient — e.g. 'vitamin D', 'B12'"
     trustStats={[

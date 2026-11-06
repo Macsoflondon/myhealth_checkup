@@ -9,7 +9,7 @@ const SportsPerformancePage = () => (
     seoDescription="Optimise your fitness and athletic performance with comprehensive health blood tests from trusted UK providers."
     seoKeywords="fitness health tests, bodybuilding blood tests, athletic blood tests, sports nutrition testing, recovery markers"
     canonicalUrl="https://myhealthcheckup.co.uk/sports-performance"
-    headline="Sports-fitness health blood tests"
+    headline="Sports and fitness tests"
     subtitle="Optimise athletic performance with comprehensive biomarker analysis — nutrition, recovery and fitness markers."
     searchPlaceholder="Search by sport or goal — e.g. 'marathon', 'muscle recovery'"
     trustStats={[

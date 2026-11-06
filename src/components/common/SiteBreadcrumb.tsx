@@ -43,7 +43,7 @@ const SLUG_LABELS: Record<string, string> = {
   contact: "Contact",
   faqs: "FAQs",
   "privacy-policy": "Privacy policy",
-  "terms-conditions": "Terms & conditions",
+  "terms-conditions": "Terms and conditions",
   "cookie-policy": "Cookie policy",
   "affiliate-disclosure": "Affiliate disclosure",
   "modern-slavery": "Modern slavery statement",

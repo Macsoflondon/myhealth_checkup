@@ -49,7 +49,7 @@ const DISPLAY_LABELS: Readonly<Record<string, string>> = {
 export const displayLabel = (name: string): string => DISPLAY_LABELS[name] ?? name;
 
 const KEEP_CAPITALISED = new Set([
-  "UK", "NHS", "Medichecks", "Randox", "Lola", "Clinilabs", "Goodbody", "London", "British", "English",
+  "UK", "NHS", "IgA", "IgG", "IgM", "IgE", "HbA1c", "TSH", "PSA", "CRP", "LDL", "HDL", "DHEA", "SHBG", "AMH", "FSH", "LH", "eGFR", "ALT", "GGT", "B12", "D", "Medichecks", "Randox", "Lola", "Clinilabs", "Goodbody", "London", "British", "English",
 ]);
 
 /**

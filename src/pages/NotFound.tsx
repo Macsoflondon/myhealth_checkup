@@ -25,10 +25,10 @@ const POPULAR_DESTINATIONS = [
 ];
 
 const POPULAR_CATEGORIES = [
-  { label: "General Health", href: "/test/general-health" },
+  { label: "General health", href: "/tests/general-health" },
   { label: "Heart health", href: "/tests/heart" },
   { label: "Hormones", href: "/hormones" },
-  { label: "Thyroid", href: "/thyroid" },
+  { label: "Thyroid", href: "/tests/thyroid" },
   { label: "Diabetes", href: "/tests/diabetes" },
   { label: "Vitamins", href: "/tests/vitamins" },
 ];

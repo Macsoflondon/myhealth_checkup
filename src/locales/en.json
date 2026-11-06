@@ -1,6 +1,6 @@
 {
   "common": {
-    "signIn": "Sign In",
+    "signIn": "Sign in",
     "signUp": "Sign up",
     "search": "Search health tests...",
     "searchPlaceholder": "Search for health tests, conditions, or symptoms",
@@ -12,17 +12,17 @@
     "close": "Close",
     "next": "Next",
     "previous": "Previous",
-    "learnMore": "Learn More",
-    "getStarted": "Get Started",
-    "compareTests": "Compare Tests",
-    "bookNow": "Book Now",
-    "viewDetails": "View Details"
+    "learnMore": "Learn more",
+    "getStarted": "Get started",
+    "compareTests": "Compare tests",
+    "bookNow": "Book now",
+    "viewDetails": "View details"
   },
   "navigation": {
     "home": "Home",
-    "compareTests": "Compare Tests",
+    "compareTests": "Compare tests",
     "categories": "Categories",
-    "howItWorks": "How It Works",
+    "howItWorks": "How it works",
     "about": "About",
     "contact": "Contact",
     "blog": "Health Resource Hub",
@@ -30,78 +30,78 @@
     "findClinic": "Find Clinic"
   },
   "hero": {
-    "title": "Your Health is Your Greatest Asset!",
+    "title": "Your health is your greatest asset!",
     "subtitle": "Compare health tests from top UK providers and book the perfect one for you",
     "searchPlaceholder": "Search health tests...",
     "searchPrompt": "Search for health tests, symptoms, or conditions...",
     "popularSearches": "Popular searches:",
-    "bloodTest": "Blood Test",
+    "bloodTest": "Blood test",
     "cholesterol": "Cholesterol",
     "diabetes": "Diabetes",
     "thyroid": "Thyroid",
     "compareProviders": "Compare the UK's leading private health test providers -",
     "allInOnePlace": "All in one place!",
-    "noGPReferral": "No GP Referral Needed",
-    "ukasAccredited": "200+ Available Tests",
-    "atHomeTest": "At-Home Test or In-Clinic Blood Draw",
-    "resultsTime": "Test Results In 3-5 Days *",
+    "noGPReferral": "No GP referral needed",
+    "ukasAccredited": "200+ available tests",
+    "atHomeTest": "At-home test or in-clinic blood draw",
+    "resultsTime": "Test results in 3-5 days *",
     "analyzing": "Analysing...",
-    "startSearch": "Start Your Search",
-    "aiAnalysisResults": "AI Analysis Results",
-    "testsWeOffer": "✅ Tests We Offer:",
-    "testsNotAvailable": "⚠️ Tests Not Available - Alternative Providers:",
-    "compareAvailableTests": "Compare Available Tests",
-    "trustedProviders": "8 Trusted Providers",
-    "availableTests": "200+ Available Tests",
-    "nationwideClinics": "150 + Nationwide Clinics",
-    "ourPartners": "Our Partners",
+    "startSearch": "Start your search",
+    "aiAnalysisResults": "AI analysis results",
+    "testsWeOffer": "✅ Tests we offer:",
+    "testsNotAvailable": "⚠️ Tests not available - alternative providers:",
+    "compareAvailableTests": "Compare available tests",
+    "trustedProviders": "8 trusted providers",
+    "availableTests": "200+ available tests",
+    "nationwideClinics": "150 + nationwide clinics",
+    "ourPartners": "Our partners",
     "healthAsset": "Your health is your greatest asset!",
     "health": "health",
     "asset": "asset",
-    "generalHealthTest": "General Health Test",
-    "maleHormoneTest": "Male Hormone Test",
-    "vitaminDTest": "Vitamin D Test",
-    "ironProfile": "Iron Profile",
-    "wellWomanTest": "Well Woman Test"
+    "generalHealthTest": "General health test",
+    "maleHormoneTest": "Male hormone test",
+    "vitaminDTest": "Vitamin D test",
+    "ironProfile": "Iron profile",
+    "wellWomanTest": "Well woman test"
   },
   "footer": {
     "tagline": "Your health is your greatest asset!",
-    "quickLinks": "Quick Links",
+    "quickLinks": "Quick links",
     "categories": "Categories",
     "support": "Support",
     "legal": "Legal",
-    "followUs": "Follow Us",
+    "followUs": "Follow us",
     "newsletter": "Newsletter",
     "newsletterText": "Stay updated with the latest health insights and test recommendations",
     "emailPlaceholder": "Enter your email",
     "subscribe": "Subscribe",
-    "copyright": "© 2024 My Health Checkup. All rights reserved.",
+    "copyright": "© 2024 myhealth checkup. All rights reserved.",
     "links": {
-      "aboutUs": "About Us",
-      "howItWorks": "How It Works",
+      "aboutUs": "About us",
+      "howItWorks": "How it works",
       "findClinic": "Find Clinic",
       "contact": "Contact",
       "blog": "Health Resource Hub",
       "faqs": "FAQs",
-      "mensHealth": "Men's Health",
-      "womensHealth": "Women's Health",
+      "mensHealth": "Men's health",
+      "womensHealth": "Women's health",
       "heartHealth": "Heart health",
       "diabetes": "Diabetes",
       "thyroid": "Thyroid",
-      "fertility": "Fertility - Prenatal",
+      "fertility": "Fertility - prenatal",
       "support": "Support",
       "partners": "Partners",
       "accessibility": "Accessibility",
       "sitemap": "Sitemap",
       "privacyPolicy": "Privacy policy",
-      "termsConditions": "Terms & Conditions",
+      "termsConditions": "Terms and conditions",
       "cookiePolicy": "Cookie policy",
-      "affiliateDisclosure": "Affiliate Disclosure",
-      "modernSlavery": "Modern Slavery Statement"
+      "affiliateDisclosure": "Affiliate disclosure",
+      "modernSlavery": "Modern slavery statement"
     }
   },
   "language": {
-    "selectLanguage": "Select Language",
+    "selectLanguage": "Select language",
     "english": "English (UK)",
     "french": "Français",
     "spanish": "Español",
@@ -115,52 +115,52 @@
     "japanese": "日本語"
   },
   "womensHealth": {
-    "pageTitle": "Women's Health Blood Tests | Female Hormone & Fertility Testing | My Health Checkup",
+    "pageTitle": "Women's health blood tests | Female hormone & fertility testing | myhealth checkup",
     "metaDescription": "Comprehensive women's health testing including female hormones, menopause, PCOS, fertility AMH, and pregnancy testing from £55.",
     "metaKeywords": "women's health tests, female hormones, menopause test, PCOS test, AMH fertility test, pregnancy test, well woman test",
-    "ogTitle": "Women's Health Blood Tests | My Health Checkup",
+    "ogTitle": "Women's health blood tests | myhealth checkup",
     "ogDescription": "Professional women's health testing including hormones, fertility, and wellness screening",
-    "twitterTitle": "Women's Health Blood Tests | My Health Checkup",
+    "twitterTitle": "Women's health blood tests | myhealth checkup",
     "twitterDescription": "Comprehensive women's health testing with fast results",
-    "badge": "Women's Health",
-    "title": "Women's Health",
+    "badge": "Women's health",
+    "title": "Women's health",
     "subtitle": "Comprehensive female health screening including hormones, fertility, menopause, PCOS, and complete wellness testing designed for women's unique health needs.",
-    "browseAllTests": "Browse All Women's Health Tests",
+    "browseAllTests": "Browse all women's health tests",
     "findClinic": "Find a Clinic",
-    "availableTestsTitle": "Available Women's Health Tests",
+    "availableTestsTitle": "Available women's health tests",
     "availableTestsSubtitle": "Comprehensive testing options for female health and wellness",
     "resultsIn": "Results in",
-    "biomarkersTested": "Biomarkers Tested:",
-    "keyBiomarkers": "Key Biomarkers:",
+    "biomarkersTested": "Biomarkers tested:",
+    "keyBiomarkers": "Key biomarkers:",
     "more": "more",
-    "suitableFor": "Suitable For:",
-    "compareProviders": "Compare Providers",
-    "healthConcernsTitle": "Common Women's Health Concerns",
+    "suitableFor": "Suitable for:",
+    "compareProviders": "Compare providers",
+    "healthConcernsTitle": "Common women's health concerns",
     "healthConcernsSubtitle": "Find the right test for your specific health concerns",
-    "commonSymptoms": "Common Symptoms:",
-    "recommendedTest": "Recommended Test:",
-    "benefitsTitle": "Why Women's Health Testing Matters",
-    "hormoneBenefitTitle": "Hormone Balance",
+    "commonSymptoms": "Common symptoms:",
+    "recommendedTest": "Recommended test:",
+    "benefitsTitle": "Why women's health testing matters",
+    "hormoneBenefitTitle": "Hormone balance",
     "hormoneBenefitDescription": "Monitor and optimise hormone levels throughout life stages",
-    "fertilityBenefitTitle": "Fertility & Family Planning",
+    "fertilityBenefitTitle": "Fertility & family planning",
     "fertilityBenefitDescription": "Assess fertility potential and optimise reproductive health",
-    "preventiveBenefitTitle": "Preventive Care",
+    "preventiveBenefitTitle": "Preventive care",
     "preventiveBenefitDescription": "Early detection and prevention of women's health conditions",
     "tests": {
       "premiumComplete": {
-        "name": "Premium Complete Blood Test",
+        "name": "Premium complete blood test",
         "description": "Comprehensive health analysis including full blood count, organ function, vitamins, and cardiovascular markers",
-        "category": "Complete Health",
+        "category": "Complete health",
         "price": "£199",
         "turnaround": "2-3 days",
         "biomarkers": [
-          "Full Blood Count",
-          "Liver Function",
-          "Kidney Function",
-          "Lipid Profile",
-          "Diabetes Markers",
+          "Full blood count",
+          "Liver function",
+          "Kidney function",
+          "Lipid profile",
+          "Diabetes markers",
           "Vitamins",
-          "Iron Studies"
+          "Iron studies"
         ],
         "suitableFor": [
           "Complete health overview",
@@ -170,18 +170,18 @@
         ]
       },
       "advancedWellWoman": {
-        "name": "Advanced Well Woman Test",
+        "name": "Advanced well woman test",
         "description": "Comprehensive women's health screening including hormones, reproductive health, and cardiovascular markers",
-        "category": "Women's Wellness",
+        "category": "Women's wellness",
         "price": "£149",
         "turnaround": "2-3 days",
         "biomarkers": [
-          "Female Hormones",
-          "Thyroid Function",
-          "Cholesterol Panel",
-          "Blood Sugar",
-          "Liver Function",
-          "Iron Studies"
+          "Female hormones",
+          "Thyroid function",
+          "Cholesterol panel",
+          "Blood sugar",
+          "Liver function",
+          "Iron studies"
         ],
         "suitableFor": [
           "Women 30+",
@@ -191,9 +191,9 @@
         ]
       },
       "menopause": {
-        "name": "Menopause Blood Test",
+        "name": "Menopause blood test",
         "description": "Specialised testing to assess menopausal status and hormone levels during perimenopause and menopause",
-        "category": "Female Hormones",
+        "category": "Female hormones",
         "price": "£89",
         "turnaround": "2 days",
         "biomarkers": [
@@ -202,7 +202,7 @@
           "Oestradiol",
           "Testosterone",
           "SHBG",
-          "Thyroid Function"
+          "Thyroid function"
         ],
         "suitableFor": [
           "Irregular periods",
@@ -213,9 +213,9 @@
         ]
       },
       "femaleHormones": {
-        "name": "Female Hormones Blood Test",
+        "name": "Female hormones blood test",
         "description": "Comprehensive hormone panel including reproductive hormones and cycle regulation markers",
-        "category": "Hormone Health",
+        "category": "Hormone health",
         "price": "£99",
         "turnaround": "1-2 days",
         "biomarkers": [
@@ -235,12 +235,17 @@
         ]
       },
       "amhFertility": {
-        "name": "AMH Fertility Blood Test",
+        "name": "AMH fertility blood test",
         "description": "Anti-Müllerian Hormone testing to assess ovarian reserve and fertility potential",
-        "category": "Fertility Health",
+        "category": "Fertility health",
         "price": "£69",
         "turnaround": "3-5 days",
-        "biomarkers": ["AMH", "FSH", "LH", "Oestradiol"],
+        "biomarkers": [
+          "AMH",
+          "FSH",
+          "LH",
+          "Oestradiol"
+        ],
         "suitableFor": [
           "Family planning",
           "Fertility assessment",
@@ -249,16 +254,16 @@
         ]
       },
       "pregnancy": {
-        "name": "Pregnancy Blood Test",
+        "name": "Pregnancy blood test",
         "description": "Accurate pregnancy testing and early pregnancy health monitoring including key nutrients",
-        "category": "Pregnancy Health",
+        "category": "Pregnancy health",
         "price": "£55",
         "turnaround": "1 day",
         "biomarkers": [
           "hCG",
           "Progesterone",
-          "Thyroid Function",
-          "Iron Studies",
+          "Thyroid function",
+          "Iron studies",
           "Vitamin D",
           "Folate"
         ],
@@ -270,9 +275,9 @@
         ]
       },
       "pcos": {
-        "name": "PCOS Blood Test",
+        "name": "PCOS blood test",
         "description": "Specialised testing for Polycystic Ovary Syndrome including hormones and metabolic markers",
-        "category": "PCOS Health",
+        "category": "PCOS health",
         "price": "£125",
         "turnaround": "2 days",
         "biomarkers": [
@@ -282,7 +287,7 @@
           "FSH",
           "Insulin",
           "HbA1c",
-          "Lipid Profile"
+          "Lipid profile"
         ],
         "suitableFor": [
           "Irregular periods",
@@ -295,7 +300,7 @@
     },
     "healthConcerns": {
       "irregularPeriods": {
-        "name": "Irregular Periods",
+        "name": "Irregular periods",
         "description": "Menstrual cycle irregularities and hormonal imbalances",
         "symptoms": [
           "Missed periods",
@@ -303,10 +308,10 @@
           "Painful periods",
           "Unpredictable cycles"
         ],
-        "recommendedTest": "Female Hormones Blood Test"
+        "recommendedTest": "Female hormones blood test"
       },
       "menopauseSymptoms": {
-        "name": "Menopause Symptoms",
+        "name": "Menopause symptoms",
         "description": "Perimenopause and menopause transition symptoms",
         "symptoms": [
           "Hot flashes",
@@ -314,16 +319,21 @@
           "Mood changes",
           "Sleep disturbances"
         ],
-        "recommendedTest": "Menopause Blood Test"
+        "recommendedTest": "Menopause blood test"
       },
       "pcosSymptoms": {
-        "name": "PCOS Symptoms",
+        "name": "PCOS symptoms",
         "description": "Polycystic Ovary Syndrome related concerns",
-        "symptoms": ["Weight gain", "Acne", "Hair loss", "Irregular periods"],
-        "recommendedTest": "PCOS Blood Test"
+        "symptoms": [
+          "Weight gain",
+          "Acne",
+          "Hair loss",
+          "Irregular periods"
+        ],
+        "recommendedTest": "PCOS blood test"
       },
       "fertilityPlanning": {
-        "name": "Fertility Planning",
+        "name": "Fertility planning",
         "description": "Family planning and reproductive health assessment",
         "symptoms": [
           "Planning pregnancy",
@@ -331,7 +341,7 @@
           "Egg freezing",
           "IVF preparation"
         ],
-        "recommendedTest": "AMH Fertility Blood Test"
+        "recommendedTest": "AMH fertility blood test"
       }
     }
   }

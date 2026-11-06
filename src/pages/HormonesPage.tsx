@@ -4,12 +4,12 @@ import { Activity, Heart, Shield } from "lucide-react";
 const HormonesPage = () => (
   <DbCategoryPage
     canonicalCategory="hormones"
-    seoTitle="Hormone tests | myhealth checkup"
+    seoTitle="Hormone blood tests UK | myhealth checkup"
     pillLabel="Hormones"
     seoDescription="Compare hormone blood tests from trusted UK providers — thyroid, reproductive, stress and metabolic hormones."
     seoKeywords="hormone blood tests, testosterone test, female hormones, cortisol test, fertility hormones"
     canonicalUrl="https://myhealthcheckup.co.uk/hormones"
-    headline="Hormone blood tests"
+    headline="Hormone tests"
     subtitle="Comprehensive hormone testing — reproductive, thyroid, stress and metabolic — from trusted UK providers."
     searchPlaceholder="Search by symptom or test — e.g. 'low energy', 'menopause'"
     trustStats={[

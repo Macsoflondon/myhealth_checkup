@@ -14,7 +14,7 @@ const TermsConditionsPage = () => {
       <Header />
       <main className="flex-grow bg-white">
         <PageBanner
-          title="Terms & conditions"
+          title="Terms and conditions"
           subtitle="Please read these terms carefully before using our services."
         />
 
@@ -36,8 +36,8 @@ const TermsConditionsPage = () => {
               <CardContent>
                 <p>
                   By accessing and using myhealth checkup's website and
-                  services, you accept and agree to be bound by these Terms and
-                  Conditions. If you do not agree to these terms, please do not
+                  services, you accept and agree to be bound by these terms and
+                  conditions. If you do not agree to these terms, please do not
                   use our services.
                 </p>
               </CardContent>
@@ -178,8 +178,8 @@ const TermsConditionsPage = () => {
                   policy, which complies with UK GDPR requirements.
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  By using our service, you consent to our Privacy policy and
-                  cookie usage as outlined in our Cookie policy.
+                  By using our service, you consent to our privacy policy and
+                  cookie usage as outlined in our cookie policy.
                 </p>
               </CardContent>
             </Card>
@@ -223,7 +223,7 @@ const TermsConditionsPage = () => {
               </CardHeader>
               <CardContent>
                 <p className="mb-4">
-                  For questions about these Terms & Conditions, please contact
+                  For questions about these terms and conditions, please contact
                   us:
                 </p>
                 <div className="bg-muted p-4 rounded-lg">
