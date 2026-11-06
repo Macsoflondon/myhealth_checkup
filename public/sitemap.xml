@@ -5035,19 +5035,9 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://myhealthcheckup.co.uk/provider/randox/tests</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://myhealthcheckup.co.uk/provider/medical-diagnosis</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/medical-diagnosis/tests</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://myhealthcheckup.co.uk/provider/london-medical-laboratory</loc>
@@ -5055,19 +5045,9 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://myhealthcheckup.co.uk/provider/london-medical-laboratory/tests</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://myhealthcheckup.co.uk/provider/london-health-company</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/london-health-company/tests</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://myhealthcheckup.co.uk/provider/goodbody-clinic</loc>
@@ -5075,19 +5055,9 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://myhealthcheckup.co.uk/provider/goodbody-clinic/tests</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://myhealthcheckup.co.uk/provider/lola-health</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/lola-health/tests</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://myhealthcheckup.co.uk/provider/clinilabs</loc>
@@ -5095,18 +5065,8 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://myhealthcheckup.co.uk/provider/clinilabs/tests</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://myhealthcheckup.co.uk/provider/medichecks</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://myhealthcheckup.co.uk/provider/medichecks/tests</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
   </url>
 </urlset>

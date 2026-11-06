@@ -175,7 +175,7 @@ export const detailedProviders = [
   },
   {
     id: "goodbody-clinic",
-    name: "GoodBody Clinic",
+    name: "Goodbody Clinic",
     website: getProviderWebsite("goodbody-clinic"),
     phone: "01225 444 144",
     email: "clinic@goodbodywellness.co.uk",
@@ -193,7 +193,7 @@ export const detailedProviders = [
       "Professional venous blood collection, 200+ clinics nationwide, UKAS-accredited lab processing, competitive pricing, convenient nationwide locations",
     partnerRegulation: "GPhC-regulated pharmacy partners",
     description:
-      "Premium health clinic offering comprehensive venous blood testing at more than 200+ Clinic's nationwide. GoodBody Clinic provides professional phlebotomy services with UKAS-accredited laboratory analysis, combining clinical accuracy with convenient high-street accessibility for over 35 different blood tests.",
+      "Premium health clinic offering comprehensive venous blood testing at more than 200+ Clinic's nationwide. Goodbody Clinic provides professional phlebotomy services with UKAS-accredited laboratory analysis, combining clinical accuracy with convenient high-street accessibility for over 35 different blood tests.",
   },
   {
     id: "onedaytests",

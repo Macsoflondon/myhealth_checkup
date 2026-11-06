@@ -690,11 +690,6 @@ async function fetchDynamicEntries(): Promise<SitemapEntry[]> {
         changefreq: "weekly",
         priority: "0.8",
       });
-      out.push({
-        path: `/provider/${providerId}/tests`,
-        changefreq: "weekly",
-        priority: "0.7",
-      });
     }
 
     return out;

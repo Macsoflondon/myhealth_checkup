@@ -11,6 +11,10 @@ interface TestCardImageProps {
   sizes?: string;
 }
 
+/** Intrinsic size hint for the frame (4:3) so the browser reserves space before load. */
+const FRAME_WIDTH = 400;
+const FRAME_HEIGHT = 300;
+
 export function TestCardImage({
   imageUrl,
   testName,
@@ -26,7 +30,9 @@ export function TestCardImage({
   return (
     <div
       className={cn(
-        "h-full w-full min-h-0 overflow-hidden bg-white",
+        // One fixed frame for every product picture: same 4:3 box, equal
+        // padding, white ground, picture centred and never cropped.
+        "flex aspect-[4/3] w-full items-center justify-center overflow-hidden bg-white p-3",
         className,
       )}
     >
@@ -40,9 +46,11 @@ export function TestCardImage({
           }
           sizes={sizes}
           alt={`${testName} by ${providerName}`}
+          width={FRAME_WIDTH}
+          height={FRAME_HEIGHT}
           loading="lazy"
           decoding="async"
-          className="h-full w-full object-contain"
+          className="h-full w-full object-contain object-center"
           onError={() => setFailedSource(source)}
         />
       ) : (

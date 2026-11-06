@@ -65,7 +65,7 @@ const cellBase = (bg: string): React.CSSProperties => ({
   background: bg,
   minWidth: 160,
   fontSize: 14,
-  fontFamily: "'DM Sans', system-ui, sans-serif",
+  fontFamily: "Montserrat, system-ui, sans-serif",
   padding: "14px 16px",
   color: NAVY,
   textAlign: "center",
@@ -138,7 +138,7 @@ const PlaceholderHeader: React.FC = () => (
     <div
       className="mt-2"
       style={{
-        fontFamily: "'DM Sans', system-ui, sans-serif",
+        fontFamily: "Montserrat, system-ui, sans-serif",
         fontSize: 12,
         color: "rgba(255,255,255,0.5)",
       }}
@@ -326,7 +326,7 @@ export const ProviderComparisonTable: React.FC<
                         <div
                           className="provider-test-name line-clamp-2 mt-0.5"
                           style={{
-                            fontFamily: "'DM Sans', system-ui, sans-serif",
+                            fontFamily: "Montserrat, system-ui, sans-serif",
                             fontSize: 12,
                             color: "#ffffff",
                             opacity: 0.85,

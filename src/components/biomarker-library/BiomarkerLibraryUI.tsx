@@ -786,7 +786,7 @@ export default function BiomarkerLibraryUI() {
   return (
     <div
       style={{
-        fontFamily: "'Lato','Helvetica Neue',sans-serif",
+        fontFamily: "Montserrat,'Helvetica Neue',sans-serif",
         background: COLORS.lightBg,
         minHeight: "100vh",
       }}

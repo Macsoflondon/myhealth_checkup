@@ -23,7 +23,7 @@ const GOODBODY_CATALOG_HREF = "/provider/goodbody-clinic";
 const GOODBODY_PROFILE_HREF = "/provider/goodbody-clinic";
 
 /**
- * FeaturedPartnerWheel — Goodbody Clinics
+ * FeaturedPartnerWheel — Goodbody Clinic
  * ------------------------------------------------------------------
  * The "Featured Partner of the Month" rotating test-kit wheel, on its own
  * (no "Goodbody Range" strip). Drop straight into a Lovable / React + TS app.
@@ -36,9 +36,9 @@ const GOODBODY_PROFILE_HREF = "/provider/goodbody-clinic";
  *  • HOVER a card → an info preview crossfades in over the partner blurb.
  *  • CLICK a card → full information modal.
  *
- * Fonts: uses Montserrat / Lato / Lora if loaded in your app (the brand
+ * Fonts: Montserrat (body) and EB Garamond (editorial accent), self-hosted.
  * stack); falls back to system fonts otherwise. To load them, add to index.html:
- *   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Lato:wght@400;700;900&family=Lora:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+ * Fonts: Montserrat (body) and EB Garamond (editorial accent), self-hosted.
  *
  * AUTO-ROTATE SPEED — the `autoDriftSpeed` prop (cards per ms).
  *   0.00009 is the current "very slow" value. Lower = slower. 0 = no drift.
@@ -89,8 +89,8 @@ const FADE0 = 545; // |x| where cards start to fade
 const FADE1 = 920; // |x| where cards are fully faded
 
 const HEAD = "'Montserrat', sans-serif";
-const BODY = "'Lato', sans-serif";
-const SERIF = "'Lora', serif";
+const BODY = "Montserrat, sans-serif";
+const SERIF = "'EB Garamond', serif";
 
 const DEFAULT_KITS: FeaturedKit[] = (() => {
   const P = "Goodbody Clinic";
@@ -363,7 +363,7 @@ function KitFace({
                 } as React.CSSProperties
               }
             >
-              GOODBODY
+              Goodbody Clinic
             </div>
           </div>
         </div>
@@ -498,7 +498,7 @@ function KitFace({
  * ============================================================= */
 export default function FeaturedPartnerWheel({
   kits,
-  partnerName = "Goodbody Clinics",
+  partnerName = "Goodbody Clinic",
   eyebrow = "Featured Partner of the Month",
   blurbItalic = "High-quality private blood tests & cancer screening — accessible, affordable, convenient.",
   blurb = "Clinical-grade accuracy with high-street accessibility. Over 60 blood & wellness tests, processed in UKAS-accredited laboratories and reviewed by a GP.",

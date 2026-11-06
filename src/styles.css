@@ -7,17 +7,11 @@
 @import "@fontsource/montserrat/latin-600.css";
 @import "@fontsource/montserrat/latin-700.css";
 @import "@fontsource/montserrat/latin-800.css";
-@import "@fontsource/dm-sans/latin-400.css";
-@import "@fontsource/dm-sans/latin-500.css";
-@import "@fontsource/dm-sans/latin-700.css";
 @import "@fontsource/eb-garamond/latin-400.css";
 @import "@fontsource/eb-garamond/latin-500.css";
 @import "@fontsource/eb-garamond/latin-600.css";
 @import "@fontsource/eb-garamond/latin-400-italic.css";
 @import "@fontsource/eb-garamond/latin-500-italic.css";
-@import "@fontsource/lora/latin-400.css";
-@import "@fontsource/lato/latin-400.css";
-@import "@fontsource/lato/latin-700.css";
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -134,11 +128,11 @@
   --color-chart-5: hsl(var(--chart-5));
 
   /* Typography */
-  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
-  --font-body: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: Montserrat, ui-sans-serif, system-ui, sans-serif;
+  --font-body: Montserrat, ui-sans-serif, system-ui, sans-serif;
   --font-heading: Montserrat, ui-sans-serif, system-ui, sans-serif;
   --font-elegant: "EB Garamond", Georgia, serif;
-  --font-serif: Lora, ui-serif, Georgia, Cambria, serif;
+  --font-serif: "EB Garamond", ui-serif, Georgia, Cambria, serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Breakpoints */
@@ -458,11 +452,11 @@ body {
     --easing-emphasized-accelerate: cubic-bezier(0.4, 0, 1, 1);
     --easing-standard: cubic-bezier(0.2, 0, 0, 1);
     --font-sans:
-      "DM Sans", ui-sans-serif, system-ui, sans-serif, Apple Color Emoji,
+      Montserrat, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji,
       Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
     --font-heading: Montserrat, ui-sans-serif, system-ui, sans-serif;
     --font-serif:
-      Lora, ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
+      "EB Garamond", ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
     --font-mono:
       ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono,
       Courier New, monospace;
@@ -567,11 +561,11 @@ body {
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
     --font-sans:
-      "DM Sans", ui-sans-serif, system-ui, sans-serif, Apple Color Emoji,
+      Montserrat, ui-sans-serif, system-ui, sans-serif, Apple Color Emoji,
       Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
     --font-heading: Montserrat, ui-sans-serif, system-ui, sans-serif;
     --font-serif:
-      Lora, ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
+      "EB Garamond", ui-serif, Georgia, Cambria, Times New Roman, Times, serif;
     --font-mono:
       ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono,
       Courier New, monospace;
@@ -606,7 +600,7 @@ body {
 
   body {
     background-color: hsl(224, 67%, 10%);
-    font-family: "DM Sans", system-ui, sans-serif;
+    font-family: Montserrat, system-ui, sans-serif;
     color: #081129;
     font-weight: 400;
     font-size: 16px;
@@ -617,7 +611,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Brand Typography Application — Montserrat for all headings, weight contrast vs DM Sans body */
+  /* Brand Typography Application — Montserrat for all headings, weight contrast in body copy */
   h1,
   h2,
   h3,

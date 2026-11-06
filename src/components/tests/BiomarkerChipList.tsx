@@ -89,7 +89,7 @@ export function BiomarkerChipList({
                 ? {
                     background: UTC_TINT,
                     color: UTC_NAVY,
-                    fontFamily: "'DM Sans',sans-serif",
+                    fontFamily: "Montserrat,sans-serif",
                   }
                 : undefined
             }

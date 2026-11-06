@@ -83,7 +83,7 @@ const providerContacts: {
   email?: string;
 }[] = [
   { name: "Medichecks", phone: "0345 060 0600" },
-  { name: "GoodBody Clinic", phone: "01225 444 144" },
+  { name: "Goodbody Clinic", phone: "01225 444 144" },
   { name: "Randox Health", phone: "028 9442 2413" },
   { name: "London Medical Laboratory", phone: "0207 183 6122" },
   { name: "Clinilabs", phone: "020 4525 8805" },

@@ -16,7 +16,7 @@ import type { ViewPricing } from "@/lib/viewPricing";
 
 export const PROVIDER_NAMES: Record<string, string> = {
   medichecks: "Medichecks",
-  "goodbody-clinic": "GoodBody Clinic",
+  "goodbody-clinic": "Goodbody Clinic",
   "lola-health": "Lola Health",
   randox: "Randox Health",
   "london-medical-laboratory": "London Medical Laboratory",

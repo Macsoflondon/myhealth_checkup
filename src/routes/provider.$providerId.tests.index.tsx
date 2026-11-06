@@ -7,6 +7,7 @@ export const Route = createFileRoute("/provider/$providerId/tests/")({
       params: { providerId: params.providerId },
       search: true,
       replace: true,
+      statusCode: 301,
     });
   },
 });

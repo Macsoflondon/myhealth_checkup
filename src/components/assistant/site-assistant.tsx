@@ -1,6 +1,5 @@
 import { lazy, Suspense, useState } from "react";
 import assistantMark from "@/assets/assistant/assistant-mark-96.webp";
-import { useLocation } from "@/lib/router-compat";
 import { cn } from "@/lib/utils";
 
 // The chat panel pulls in the AI SDK and markdown renderer, so it loads only
@@ -17,13 +16,14 @@ const ChatPanel = lazy(() =>
  * button on the homepage, but a Top + Home + Back stack elsewhere, so the space
  * it needs underneath differs by route and the launcher must never sit on it.
  */
-const LAUNCHER_CLEARANCE_HOME = "bottom-[76px]";
-const LAUNCHER_CLEARANCE_DOCK = "bottom-[140px] sm:bottom-[164px]";
+// The launcher sits beside the dock (to its left) at the same baseline, so it
+// only needs one row of page-bottom clearance at every width.
+const LAUNCHER_POSITION = "bottom-4 right-[56px] sm:bottom-6 sm:right-[76px]";
+/** Page-end clearance so the last links and fields scroll clear of the launcher. */
+export const LAUNCHER_PAGE_CLEARANCE = "pb-[84px] sm:pb-[100px]";
 
 export const SiteAssistant = () => {
   const [open, setOpen] = useState(false);
-  const location = useLocation();
-  const isHome = location.pathname === "/";
 
   return (
     <>
@@ -34,19 +34,18 @@ export const SiteAssistant = () => {
       )}
       <div
         className={cn(
-          "fixed right-3 z-[60] flex items-center gap-2 sm:right-6",
-          isHome ? LAUNCHER_CLEARANCE_HOME : LAUNCHER_CLEARANCE_DOCK,
+          "fixed z-[60] flex items-center gap-2",
+          LAUNCHER_POSITION,
           open && "hidden sm:flex",
         )}
       >
-        <span className="relative flex items-center gap-1.5 rounded-xl bg-brand-navy px-3 py-1.5 shadow-md">
+        <span className="relative hidden items-center gap-1.5 rounded-xl sm:flex bg-brand-navy px-3 py-1.5 shadow-md">
           <span
             className="size-1.5 shrink-0 animate-pulse rounded-full bg-brand-turquoise"
             aria-hidden="true"
           />
           <span className="font-heading text-[11px] font-semibold whitespace-nowrap text-white">
-            <span className="hidden sm:inline">AI assistant chat</span>
-            <span className="sm:hidden">AI chat</span>
+            AI assistant chat
           </span>
           <span
             className="absolute -right-1 top-1/2 size-2 -translate-y-1/2 rotate-45 bg-brand-navy"

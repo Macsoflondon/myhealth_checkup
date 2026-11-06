@@ -24,7 +24,7 @@ const PartnersPage = () => {
           accreditation: "UKAS",
         },
         {
-          name: "GoodBody Clinic",
+          name: "Goodbody Clinic",
           specialty: "Clinic-based health screening",
           accreditation: "CQC",
         },

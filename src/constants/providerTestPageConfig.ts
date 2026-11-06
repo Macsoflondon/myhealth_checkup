@@ -130,10 +130,10 @@ export const providerConfigs: Record<string, ProviderConfig> = {
 
   "goodbody-clinic": {
     id: "goodbody-clinic",
-    name: "GoodBody Clinic",
+    name: "Goodbody Clinic",
     logo: PROVIDER_LOGO_ASSETS["goodbody-clinic"].src,
     turnaround: "2-3 working days",
-    badgeText: "GoodBody Clinic Blood Test",
+    badgeText: "Goodbody Clinic Blood Test",
     features: [
       {
         title: "Professional collection",
@@ -154,7 +154,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
         icon: "clinic",
         title: "Pharmacy clinic visit",
         description:
-          "Professional venous blood collection at GoodBody Clinic pharmacy locations across the UK. Walk-in or pre-booked appointments available.",
+          "Professional venous blood collection at Goodbody Clinic pharmacy locations across the UK. Walk-in or pre-booked appointments available.",
       },
       {
         icon: "home",
@@ -164,7 +164,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       },
     ],
     whyChoose: {
-      title: "Why choose GoodBody Clinic?",
+      title: "Why choose Goodbody Clinic?",
       items: [
         {
           bold: "Convenient Locations:",
@@ -192,10 +192,10 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       supportEmail: "info@goodbodyclinic.com",
     },
     ctaText:
-      "Book your test with GoodBody Clinic today for professional venous blood collection at a pharmacy near you. Expert service with fast, reliable results.",
+      "Book your test with Goodbody Clinic today for professional venous blood collection at a pharmacy near you. Expert service with fast, reliable results.",
     ctaButtonText: "Book",
     aboutText:
-      "blood test with professional venous collection at a GoodBody Clinic pharmacy. All tests are processed in UKAS-accredited laboratories with clinical interpretation.",
+      "blood test with professional venous collection at a Goodbody Clinic pharmacy. All tests are processed in UKAS-accredited laboratories with clinical interpretation.",
     canonicalBase: "https://myhealthcheckup.co.uk/goodbody",
   },
 

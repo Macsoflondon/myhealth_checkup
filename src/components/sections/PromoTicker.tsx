@@ -8,7 +8,7 @@ import { useMarqueeTicker } from "@/hooks/useMarqueeTicker";
 
 const promos = [
   {
-    provider: "GoodBody",
+    provider: "Goodbody Clinic",
     text: "5% off all popular blood tests",
     color: "#0bb77e",
   },

@@ -39,7 +39,7 @@ export const PROVIDERS: ProviderEntry[] = [
   },
   {
     id: "goodbody",
-    name: "GOODBODY",
+    name: "Goodbody Clinic",
     displayName: "Goodbody Clinic",
     tagline: "Trusted health testing",
     description:
