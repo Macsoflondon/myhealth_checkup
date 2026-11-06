@@ -130,9 +130,9 @@ test.describe("Key CTA destinations", () => {
 
 test.describe("Provider shortcut redirects", () => {
   const REDIRECTS: ReadonlyArray<readonly [string, string]> = [
-    ["/medichecks", "/providers/medichecks"],
-    ["/randox", "/providers/randox"],
-    ["/lola-health", "/providers/lola-health"],
+    ["/medichecks", "/provider/medichecks"],
+    ["/randox", "/provider/randox"],
+    ["/lola-health", "/provider/lola-health"],
   ];
 
   for (const [from, to] of REDIRECTS) {
