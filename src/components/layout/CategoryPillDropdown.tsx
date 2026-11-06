@@ -180,7 +180,7 @@ export function CategoryPillDropdown({
               zIndex: 9999,
               width: panelWidth,
             }}
-            className="overflow-hidden rounded-2xl border border-white/50 bg-white/85 backdrop-blur-xl shadow-[0_24px_60px_rgba(8,17,41,0.22)] animate-in fade-in-0 slide-in-from-top-1 duration-150"
+            className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_24px_60px_rgba(8,17,41,0.22)] animate-in fade-in-0 slide-in-from-top-1 duration-150"
           >
             {visualGrid ? (
               <ul className="grid grid-cols-5 gap-2.5 p-3">
@@ -273,7 +273,7 @@ export function CategoryPillDropdown({
             </ul>
             )}
 
-            <div className="flex items-center justify-between gap-3 border-t border-[#081129]/[0.07] bg-[#081129]/[0.035] px-4 py-3">
+            <div className="flex items-center justify-between gap-3 border-t border-[#081129]/[0.07] bg-white px-4 py-3">
               <span
                 className="text-[10px] font-bold uppercase tracking-[0.18em]"
                 style={{ color: `${NAVY}66` }}
