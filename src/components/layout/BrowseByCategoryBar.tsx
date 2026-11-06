@@ -4,9 +4,10 @@ import { Link, useLocation } from "@/lib/router-compat";
 
 import { ChevronDown, Star, Info } from "lucide-react";
 import {
-  primaryNavigationItems,
+  categoryNavigationItems,
   moreNavigationSections,
 } from "@/components/header/NavigationItems";
+import { DesktopCategoryToolbar } from "@/components/layout/DesktopCategoryToolbar";
 import {
   CATEGORY_MENU_ICONS as ICONS,
   MORE_SECTION_ICONS,
@@ -24,10 +25,12 @@ import {
 } from "@/components/ui/sheet";
 
 /**
- * Brand bar: the myhealth checkup wordmark plus the menu drawer that carries
- * every category, section, account and language link. The desktop "Browse by
- * Category" pill toolbar was removed on 29 October 2026 — the drawer is now
- * the single navigation entry point at every width.
+ * Shared site header: the myhealth checkup wordmark, the menu drawer that
+ * carries every category, section, account and language link at every width,
+ * and, from 1024px, the desktop category row (DesktopCategoryToolbar) beneath
+ * the brand bar. The homepage hero ("hero" placement), MainLayout and the
+ * legacy Header ("straddle" placement) all render this one component, so the
+ * desktop navigation is the same on every page that carries the header.
  */
 export default function BrowseByCategoryBar({
   placement = "card",
@@ -41,7 +44,7 @@ export default function BrowseByCategoryBar({
   const [mobileBarOut, setMobileBarOut] = useState(false);
   const { pathname } = useLocation();
   const [hydrated, setHydrated] = useState(false);
-  const items = primaryNavigationItems.filter((i) => i.name !== "How It Works");
+  const items = categoryNavigationItems;
 
   useEffect(() => setHydrated(true), []);
 
@@ -284,6 +287,8 @@ export default function BrowseByCategoryBar({
           </div>
         </div>
       </div>
+
+      <DesktopCategoryToolbar />
 
       {/* Floating menu trigger — portalled to <body> so no ancestor transform,
           filter or overflow can trap the fixed positioning. It takes over once

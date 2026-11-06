@@ -182,6 +182,14 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
   { name: "How It Works", path: "/how-it-works", hasDropdown: false },
 ];
 
+/**
+ * The single list of test categories, with their labels, shown in the desktop
+ * category row and in the drawer's Test Categories section: every primary item
+ * except How It Works.
+ */
+export const categoryNavigationItems: PrimaryNavItem[] =
+  primaryNavigationItems.filter((item) => item.name !== "How It Works");
+
 export const moreNavigationSections = [
   {
     title: "About",

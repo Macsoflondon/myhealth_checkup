@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from "react";
 
 import TestCategoryTicker from "@/components/sections/TestCategoryTicker";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
-import { DesktopCategoryToolbar } from "@/components/layout/DesktopCategoryToolbar";
 
 import {
   HERO_COPY,
@@ -25,11 +24,14 @@ export default function HeroMasthead() {
     // The photo can finish loading before hydration attaches onLoad.
     if (posterRef.current?.complete) setPosterLoaded(true);
   }, []);
-  // The ~3.6 MB loop is fetched only after the page has loaded and the
-  // browser is idle, so it never competes with the HTML, CSS, scripts and the
+  // The ~2.9 MB loop is fetched only after the window "load" event and then an
+  // idle callback, so it never competes with the HTML, CSS, scripts and the
   // hero photo for bandwidth. Until it is playing, the responsive photo below
-  // (AVIF/WebP, 11-60 KB) is the visible hero and the LCP element.
+  // (AVIF/WebP, 11-44 KB) is the visible hero and the LCP element.
   const [videoAllowed, setVideoAllowed] = useState(false);
+  // The video stays transparent until "playing" fires, so a frame that has not
+  // decoded yet never covers the photo with a blank box.
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   const [reducedMotion, setReducedMotion] = useState(false);
   useEffect(() => {
@@ -42,7 +44,13 @@ export default function HeroMasthead() {
   }, []);
 
   useEffect(() => {
-    if (reducedMotion) return;
+    // Reduced motion is read live: if the setting switches on, the video is
+    // unmounted (which also stops playback) and the photo shows again.
+    if (reducedMotion) {
+      setVideoAllowed(false);
+      setVideoPlaying(false);
+      return;
+    }
     const connection = (
       navigator as Navigator & {
         connection?: { saveData?: boolean; effectiveType?: string };
@@ -56,26 +64,40 @@ export default function HeroMasthead() {
     ) {
       return;
     }
-    // Start fetching straight away so the loop is buffered and playing as
-    // soon as the page opens, rather than waiting for idle time.
-    setVideoAllowed(true);
+    let idleId: number | undefined;
+    let timerId: number | undefined;
+    const allow = () => setVideoAllowed(true);
+    const scheduleIdle = () => {
+      if (typeof window.requestIdleCallback === "function") {
+        idleId = window.requestIdleCallback(allow, { timeout: 3000 });
+      } else {
+        // Browsers without requestIdleCallback wait one second after load.
+        timerId = window.setTimeout(allow, 1000);
+      }
+    };
+    if (document.readyState === "complete") scheduleIdle();
+    else window.addEventListener("load", scheduleIdle, { once: true });
+    return () => {
+      window.removeEventListener("load", scheduleIdle);
+      if (idleId !== undefined) window.cancelIdleCallback?.(idleId);
+      if (timerId !== undefined) window.clearTimeout(timerId);
+    };
   }, [reducedMotion]);
+
+  const showVideo = videoAllowed && !reducedMotion;
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || !videoAllowed) return;
+    if (!video || !showVideo) return;
     video.muted = true;
     video.defaultMuted = true;
     video.defaultPlaybackRate = HERO_PLAYBACK_RATE;
     video.playbackRate = HERO_PLAYBACK_RATE;
-    if (reducedMotion) {
-      video.pause();
-      return;
-    }
-    // Native `loop` handles restarts; we only resume after the tab becomes
-    // visible again, so we never fight the browser's own loop reset.
+    // Native `loop` handles restarts. play() runs once on mount and again
+    // when the tab becomes visible, so we never fight the browser's own loop
+    // reset.
     const resume = () => {
-      void video.play().catch(() => undefined);
+      void video.play()?.catch(() => undefined);
     };
     const onVisible = () => {
       if (document.visibilityState === "visible" && video.paused) resume();
@@ -84,8 +106,9 @@ export default function HeroMasthead() {
     resume();
     return () => {
       document.removeEventListener("visibilitychange", onVisible);
+      video.pause();
     };
-  }, [reducedMotion, videoAllowed]);
+  }, [showVideo]);
 
   const mobilePlacement =
     HERO_COPY.copyPlacementMobile === "bottom"
@@ -103,14 +126,13 @@ export default function HeroMasthead() {
         className="bg-white border-b-2 border-[#22c0d4] -mx-3 sm:-mx-6 md:mx-0"
       />
 
-      {/* Brand bar: wordmark, slogan and the menu drawer that carries every
-          category and section link. The desktop pill toolbar was removed on
-          29 October 2026, so the drawer is the nav entry point at all widths.
-          No border here — the pink brand-bar line plus the stage's own inner
-          turquoise divider form the top edge, mirroring the bottom divider. */}
+      {/* Brand bar: wordmark, slogan, the menu drawer and, from 1024px, the
+          desktop category row. BrowseByCategoryBar renders the same row on
+          every page that carries the shared header. No border here: the pink
+          brand-bar line plus the stage's own inner turquoise divider form the
+          top edge, mirroring the bottom divider. */}
       <div className="relative -mx-3 sm:-mx-6 md:mx-0 mt-0 order-1 flex flex-wrap items-center bg-white pb-0 md:pb-1 lg:bg-transparent lg:pb-0">
         <BrowseByCategoryBar placement="hero" />
-        <DesktopCategoryToolbar />
       </div>
 
       {/* White breathing space between the pink brand-bar line and the video */}
@@ -173,17 +195,24 @@ export default function HeroMasthead() {
                 className="absolute inset-0 h-full w-full object-cover object-[80%_center] sm:object-center"
               />
             </picture>
-            {videoAllowed && (
+            {showVideo && (
               <video
                 ref={videoRef}
-                className={`absolute inset-0 h-full w-full object-cover object-[80%_center] sm:object-center`}
+                data-testid="hero-video"
+                className={`absolute inset-0 h-full w-full object-cover object-[80%_center] sm:object-center transition-opacity duration-700 ${videoPlaying ? "opacity-100" : "opacity-0"}`}
                 muted
                 loop
                 playsInline
                 autoPlay
                 preload="auto"
                 aria-hidden
+                onPlaying={() => setVideoPlaying(true)}
               >
+                {/* MP4 first, by measurement: the H.264 MP4 is 2,879,053 bytes
+                    and the VP9 WebM 2,942,488 bytes (same 1280x720, 24 s cut,
+                    checked 4 November 2026), and H.264 has hardware decoding
+                    on every target browser. The WebM stays as the fallback
+                    for browsers without H.264. */}
                 <source src={heroVideoMp4.url} type="video/mp4" />
                 <source src={heroVideoWebm.url} type="video/webm" />
               </video>

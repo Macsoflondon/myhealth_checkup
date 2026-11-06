@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, useLocation } from "@/lib/router-compat";
 import { ChevronDown } from "lucide-react";
@@ -17,32 +17,45 @@ interface Props {
     strokeWidth?: number;
   }>;
   compact: boolean;
-  displayName?: string;
-  /** Tighter padding/gaps used by the straddling toolbar so the full row fits one line. */
+  /** Tighter padding/gaps used by the desktop toolbar so the full row fits one line. */
   dense?: boolean;
 }
 
+const FOCUSABLE =
+  'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 /**
- * Category slot inside the floating toolbar dock. Clicking navigates to the
- * parent category; hover/focus reveals the subcategory panel.
+ * One category in the desktop toolbar. The label links to the parent
+ * category; categories with subcategories also open a panel:
  *
- * The panel is `position: fixed` and portalled to the body so the dock's
- * horizontal scroll can never clip it.
+ * - mouse: hovering opens it, and a click on the label follows the link;
+ * - touch or pen: the first tap opens it, a tap on a link inside navigates,
+ *   and a second tap on the label follows the parent link;
+ * - keyboard: Enter follows the link, ArrowDown or Space opens the panel and
+ *   moves focus to its first link, Escape closes it and returns focus.
+ *
+ * The panel closes on a click or tap outside, Escape, focus leaving it and
+ * route change. It is `position: fixed` and portalled to the body so the
+ * toolbar's horizontal scroll and the page-surface mask never clip it.
  */
 export function CategoryPillDropdown({
   item,
   color,
   Icon,
   compact,
-  displayName,
   dense = false,
 }: Props) {
   const location = useLocation();
   const currentUrl = location.pathname + location.search;
   const hasDropdown = Boolean(item.hasDropdown && item.dropdownItems?.length);
+  const panelId = useId();
 
   const wrapRef = useRef<HTMLDivElement>(null);
+  const linkRef = useRef<HTMLAnchorElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
   const closeTimer = useRef<number | null>(null);
+  const lastPointerType = useRef<string | null>(null);
+  const focusFirstOnOpen = useRef(false);
   const [open, setOpen] = useState(false);
   const [anchor, setAnchor] = useState<{ left: number; top: number } | null>(
     null,
@@ -69,33 +82,143 @@ export function CategoryPillDropdown({
     setAnchor({ left: r.left, top: r.bottom + 12 });
   };
 
+  const cancelClose = () => {
+    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    closeTimer.current = null;
+  };
+
   const openNow = () => {
     if (!hasDropdown) return;
-    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    cancelClose();
     measure();
     setOpen(true);
   };
 
+  const close = () => {
+    cancelClose();
+    setOpen(false);
+  };
+
   const scheduleClose = () => {
-    if (closeTimer.current) window.clearTimeout(closeTimer.current);
+    cancelClose();
     closeTimer.current = window.setTimeout(() => setOpen(false), 120);
   };
 
-  // Close on route change / Escape / scroll / resize.
-  useEffect(() => setOpen(false), [location.key]);
+  const isInside = (node: EventTarget | null) =>
+    node instanceof Node &&
+    Boolean(
+      wrapRef.current?.contains(node) || panelRef.current?.contains(node),
+    );
+
+  const panelLinks = () =>
+    Array.from(
+      panelRef.current?.querySelectorAll<HTMLAnchorElement>("a[href]") ?? [],
+    );
+
+  // Close on route change.
+  useEffect(() => close(), [location.key]);
+  useEffect(() => () => cancelClose(), []);
+
+  // While open: follow scroll/resize, close on Escape and on outside presses.
   useEffect(() => {
     if (!open) return;
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      const hadFocus = isInside(document.activeElement);
+      close();
+      if (hadFocus) linkRef.current?.focus();
+    };
+    const onPointerDown = (e: PointerEvent) => {
+      if (!isInside(e.target)) close();
+    };
     const onScrollOrResize = () => measure();
     window.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onPointerDown, true);
     window.addEventListener("resize", onScrollOrResize);
     window.addEventListener("scroll", onScrollOrResize, true);
     return () => {
       window.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onPointerDown, true);
       window.removeEventListener("resize", onScrollOrResize);
       window.removeEventListener("scroll", onScrollOrResize, true);
     };
   }, [open]);
+
+  // Keyboard opening moves focus into the panel once it has rendered.
+  useEffect(() => {
+    if (!open || !anchor || !focusFirstOnOpen.current) return;
+    focusFirstOnOpen.current = false;
+    panelLinks()[0]?.focus();
+  }, [open, anchor]);
+
+  const onLinkPointerDown = (e: React.PointerEvent) => {
+    lastPointerType.current = e.pointerType;
+  };
+
+  const onLinkClick = (e: React.MouseEvent) => {
+    const pointer = lastPointerType.current;
+    lastPointerType.current = null;
+    // Touch and pen have no hover, so the first tap opens the panel instead
+    // of leaving the page. Mouse clicks and Enter follow the link as usual.
+    if (hasDropdown && !open && (pointer === "touch" || pointer === "pen")) {
+      e.preventDefault();
+      openNow();
+    }
+  };
+
+  const onLinkKeyDown = (e: React.KeyboardEvent) => {
+    if (!hasDropdown) return;
+    if (e.key === "ArrowDown" || e.key === " ") {
+      e.preventDefault();
+      if (open) {
+        panelLinks()[0]?.focus();
+      } else {
+        focusFirstOnOpen.current = true;
+        openNow();
+      }
+    }
+  };
+
+  // Keep Tab order natural although the panel sits at the end of <body>:
+  // Tab past the last link continues after this category, Shift+Tab before
+  // the first link returns to the category label. Arrow keys move between links.
+  const onPanelKeyDown = (e: React.KeyboardEvent) => {
+    const links = panelLinks();
+    const index = links.indexOf(document.activeElement as HTMLAnchorElement);
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      const step = e.key === "ArrowDown" ? 1 : -1;
+      links[(index + step + links.length) % links.length]?.focus();
+      return;
+    }
+    if (e.key !== "Tab") return;
+    if (e.shiftKey && index === 0) {
+      e.preventDefault();
+      close();
+      linkRef.current?.focus();
+    } else if (!e.shiftKey && index === links.length - 1) {
+      e.preventDefault();
+      close();
+      const all = Array.from(
+        document.querySelectorAll<HTMLElement>(FOCUSABLE),
+      ).filter((el) => !panelRef.current?.contains(el));
+      const next = all[all.indexOf(linkRef.current as HTMLElement) + 1];
+      (next ?? linkRef.current)?.focus();
+    }
+  };
+
+  const onWrapBlur = (e: React.FocusEvent) => {
+    // Focus moving between the label and the portalled panel keeps it open;
+    // focus moving anywhere else closes it.
+    if (e.relatedTarget && !isInside(e.relatedTarget)) close();
+  };
+
+  const onPointerEnter = (e: React.PointerEvent) => {
+    if (e.pointerType === "mouse") openNow();
+  };
+  const onPointerLeave = (e: React.PointerEvent) => {
+    if (e.pointerType === "mouse") scheduleClose();
+  };
 
   const highlighted = isActiveParent || open;
 
@@ -103,21 +226,24 @@ export function CategoryPillDropdown({
     <div
       ref={wrapRef}
       className="relative shrink-0"
-      onMouseEnter={openNow}
-      onMouseLeave={scheduleClose}
-      onFocus={openNow}
-      onBlur={scheduleClose}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
+      onBlur={onWrapBlur}
     >
       <Link
+        ref={linkRef}
         to={item.path}
+        onPointerDown={onLinkPointerDown}
+        onClick={onLinkClick}
+        onKeyDown={onLinkKeyDown}
         data-testid="category-pill"
         data-category={item.name}
         aria-current={isActiveParent ? "page" : undefined}
-        aria-haspopup={hasDropdown ? "menu" : undefined}
         aria-expanded={hasDropdown ? open : undefined}
+        aria-controls={hasDropdown && open ? panelId : undefined}
         className={`group inline-flex items-center rounded-full no-underline transition-colors duration-200 shrink-0 ${
           dense
-            ? "gap-1 px-1 py-2 2xl:px-2"
+            ? "gap-0.5 px-[3px] py-2 xl:gap-1 xl:px-1"
             : "gap-0.5 px-1 py-2 2xl:gap-1 2xl:px-2 2xl:py-2.5"
         } ${compact ? "sm:py-2.5" : "sm:py-2.5"} ${
           highlighted ? "" : "hover:bg-brand-pink/10"
@@ -142,7 +268,7 @@ export function CategoryPillDropdown({
             highlighted ? "font-bold" : "font-bold"
           } ${
             dense
-              ? "text-[13px] xl:text-[14px] 2xl:text-[16px] tracking-[-0.01em]"
+              ? "text-[12px] tracking-[-0.02em] xl:text-[13.5px] xl:tracking-[-0.01em] 2xl:text-[14.5px]"
               : "text-xs sm:text-[12px] tracking-[-0.02em] 2xl:text-sm 2xl:tracking-normal"
           }`}
 
@@ -150,12 +276,12 @@ export function CategoryPillDropdown({
             color: isActiveParent ? PINK : open ? "#127f8e" : "#081129",
           }}
         >
-          {displayName ?? item.name}
+          {item.name}
         </span>
 
         {hasDropdown && (
           <ChevronDown
-            className={`text-[#081129]/45 transition-transform duration-300 shrink-0 ${dense ? "hidden 2xl:block w-[12px] h-[12px]" : "w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px]"} group-hover:text-brand-pink ${open ? "rotate-180" : ""}`}
+            className={`text-[#081129]/45 transition-transform duration-300 shrink-0 ${dense ? "hidden xl:block w-[11px] h-[11px] 2xl:w-[12px] 2xl:h-[12px]" : "w-[12px] h-[12px] 2xl:w-[14px] 2xl:h-[14px]"} group-hover:text-brand-pink ${open ? "rotate-180" : ""}`}
           />
         )}
       </Link>
@@ -165,10 +291,14 @@ export function CategoryPillDropdown({
         hasDropdown &&
         createPortal(
           <div
-            role="menu"
+            ref={panelRef}
+            id={panelId}
+            role="group"
             aria-label={`${item.name} subcategories`}
-            onMouseEnter={openNow}
-            onMouseLeave={scheduleClose}
+            data-testid="category-panel"
+            onPointerEnter={onPointerEnter}
+            onPointerLeave={onPointerLeave}
+            onKeyDown={onPanelKeyDown}
             style={{
               position: "fixed",
               left: Math.max(
@@ -191,7 +321,6 @@ export function CategoryPillDropdown({
                     <li key={sub.path + sub.name}>
                       <Link
                         to={sub.path}
-                        role="menuitem"
                         aria-label={sub.name}
                         aria-current={active ? "page" : undefined}
                         onClick={() => setOpen(false)}
@@ -230,45 +359,44 @@ export function CategoryPillDropdown({
                 })}
               </ul>
             ) : (
-            <ul
-              className={`p-2.5 gap-0.5 ${twoColumn ? "grid grid-cols-2" : "flex flex-col"}`}
-            >
-              {subItems.map((sub) => {
-                const active = currentUrl === sub.path;
-                return (
-                  <li key={sub.path + sub.name}>
-                    <Link
-                      to={sub.path}
-                      role="menuitem"
-                      aria-current={active ? "page" : undefined}
-                      onClick={() => setOpen(false)}
-                      className={`flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-[13px] font-medium font-[Montserrat] no-underline transition-colors ${
-                        active
-                          ? "text-[#e70d69]"
-                          : "text-[#081129] hover:bg-white"
-                      }`}
-                      style={
-                        active ? { backgroundColor: `${PINK}14` } : undefined
-                      }
-                    >
-                      <span
-                        className="w-7 h-7 rounded-lg inline-flex items-center justify-center shrink-0"
-                        style={{
-                          background: active ? `${PINK}1f` : `${color}1f`,
-                        }}
+              <ul
+                className={`p-2.5 gap-0.5 ${twoColumn ? "grid grid-cols-2" : "flex flex-col"}`}
+              >
+                {subItems.map((sub) => {
+                  const active = currentUrl === sub.path;
+                  return (
+                    <li key={sub.path + sub.name}>
+                      <Link
+                        to={sub.path}
+                        aria-current={active ? "page" : undefined}
+                        onClick={() => setOpen(false)}
+                        className={`flex items-center gap-2.5 px-2.5 py-2 rounded-xl text-[13px] font-medium font-[Montserrat] no-underline transition-colors ${
+                          active
+                            ? "text-[#e70d69]"
+                            : "text-[#081129] hover:bg-white"
+                        }`}
+                        style={
+                          active ? { backgroundColor: `${PINK}14` } : undefined
+                        }
                       >
-                        <Icon
-                          className="w-3.5 h-3.5"
-                          style={{ color: active ? PINK : color }}
-                          strokeWidth={2}
-                        />
-                      </span>
-                      <span className="truncate">{sub.name}</span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
+                        <span
+                          className="w-7 h-7 rounded-lg inline-flex items-center justify-center shrink-0"
+                          style={{
+                            background: active ? `${PINK}1f` : `${color}1f`,
+                          }}
+                        >
+                          <Icon
+                            className="w-3.5 h-3.5"
+                            style={{ color: active ? PINK : color }}
+                            strokeWidth={2}
+                          />
+                        </span>
+                        <span className="truncate">{sub.name}</span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
             )}
 
             <div className="flex items-center justify-between gap-3 border-t border-[#081129]/[0.07] bg-[#081129]/[0.035] px-4 py-3">
@@ -281,7 +409,6 @@ export function CategoryPillDropdown({
               {viewAll && (
                 <Link
                   to={viewAll.path}
-                  role="menuitem"
                   onClick={() => setOpen(false)}
                   className="text-[11px] font-bold font-[Montserrat] no-underline hover:underline whitespace-nowrap"
                   style={{ color: PINK }}
