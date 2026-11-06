@@ -20,7 +20,7 @@ const resources = [
   },
   {
     icon: MessageCircle,
-    title: "Contact Us",
+    title: "Contact us",
     description: "Get in touch with our team for personalised support.",
     link: "/contact",
     accent: "turquoise" as const,
@@ -39,15 +39,15 @@ const ClinicAndHelpSection = () => {
               <div>
                 <div className="flex items-center gap-3 mb-4 justify-center lg:justify-start">
                   <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-                  <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
-                    Here to Help
+                  <span className="type-eyebrow text-brand-turquoise">
+                    Here to help
                   </span>
                   <div className="h-px w-8 sm:w-12 bg-brand-pink" />
                 </div>
 
                 <SectionHeading
-                  title="You're Never Alone on Your"
-                  gradientText="Health Journey"
+                  title="You're never alone on your"
+                  gradientText=" health journey"
                   className="lg:text-left lg:[&>h2]:text-left"
                 />
 
@@ -89,7 +89,7 @@ const ClinicAndHelpSection = () => {
                       />
                     </div>
                     <div>
-                      <h3 className="text-base sm:text-lg font-heading font-semibold text-brand-navy mb-1">
+                      <h3 className="type-card-title text-brand-navy mb-1">
                         {resource.title}
                       </h3>
                       <p className="text-brand-navy font-sans text-xs sm:text-sm leading-relaxed">

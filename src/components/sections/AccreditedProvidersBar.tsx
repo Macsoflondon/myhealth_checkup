@@ -7,12 +7,12 @@ interface TrustItem {
 }
 
 const trustItems: TrustItem[] = [
-  { label: "UKAS-Accredited Labs", markerClassName: "bg-brand-turquoise" },
-  { label: "CQC-Regulated Clinics", markerClassName: "bg-brand-pink" },
-  { label: "ISO 15189 Certification", markerClassName: "bg-brand-navy" },
-  { label: "GDPR Compliant", markerClassName: "bg-brand-turquoise" },
-  { label: "Transparent Pricing", markerClassName: "bg-brand-pink" },
-  { label: "No GP Referral Needed", markerClassName: "bg-brand-navy" },
+  { label: "UKAS-accredited labs", markerClassName: "bg-brand-turquoise" },
+  { label: "CQC-regulated clinics", markerClassName: "bg-brand-pink" },
+  { label: "ISO 15189 certification", markerClassName: "bg-brand-navy" },
+  { label: "GDPR compliant", markerClassName: "bg-brand-turquoise" },
+  { label: "Transparent pricing", markerClassName: "bg-brand-pink" },
+  { label: "No GP referral needed", markerClassName: "bg-brand-navy" },
 ];
 
 /**
@@ -36,7 +36,7 @@ const AccreditedProvidersBar = () => {
         <div className="mt-0 mb-6 sm:mb-8 flex items-center justify-center gap-3">
           <span className="h-px w-6 sm:w-12 bg-brand-pink" aria-hidden="true" />
           {/* h2 so the six standards below (h3) sit under a section heading. */}
-          <h2 className="min-w-0 text-center font-heading text-2xl sm:text-3xl md:text-4xl font-bold leading-[1.15] tracking-tight text-brand-navy">
+          <h2 className="type-section-title min-w-0 text-center text-brand-navy">
             Our clinical standards
           </h2>
           <span className="h-px w-6 sm:w-12 bg-brand-pink" aria-hidden="true" />
@@ -56,7 +56,7 @@ const AccreditedProvidersBar = () => {
                 aria-hidden="true"
                 className={`w-5 h-1.5 rounded-full shrink-0 ${item.markerClassName}`}
               />
-              <h3 className="min-w-0 text-sm sm:text-base font-semibold text-brand-navy leading-snug">
+              <h3 className="type-body min-w-0 font-semibold text-brand-navy">
                 {item.label}
               </h3>
             </div>

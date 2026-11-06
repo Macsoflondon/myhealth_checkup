@@ -58,7 +58,7 @@ const CategoryPageBottom = ({
                   <span className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#22c0d4]/20 text-[#22c0d4]">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </span>
-                  <h3 className="font-heading text-base font-bold text-white mt-4">
+                  <h3 className="type-card-title text-white mt-4">
                     {benefit.title}
                   </h3>
                   <p className="text-sm text-white mt-1.5 leading-relaxed">

@@ -65,7 +65,7 @@ export const CategoryGuides: React.FC<CategoryGuidesProps> = ({
                   {article.provider}
                 </span>
               </div>
-              <h3 className="font-heading text-base font-bold text-[#081129] leading-snug mb-2">
+              <h3 className="type-card-title text-[#081129] mb-2">
                 {article.title}
               </h3>
               <p className="text-sm text-[#081129]/75 leading-relaxed line-clamp-3">

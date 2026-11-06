@@ -31,12 +31,7 @@ const SectionHeading = ({
         className,
       )}
     >
-      <h2
-        className={cn(
-          "text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-[1.15] tracking-tight",
-          titleClassName,
-        )}
-      >
+      <h2 className={cn("type-section-title", titleClassName)}>
         <span>{title}</span>
         <span className={cn(gradientClassName)}>{gradientText}</span>
       </h2>

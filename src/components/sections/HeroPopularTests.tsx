@@ -61,7 +61,7 @@ export function HeroPopularTests() {
         <div className="text-center mb-2 sm:mb-3 md:mb-4">
           <div className="flex items-center justify-center gap-2 mb-2">
             <div className="h-px w-6 sm:w-9 bg-brand-pink" />
-            <span className="text-sm sm:text-base font-semibold uppercase tracking-[0.22em] text-brand-turquoise">
+            <span className="type-eyebrow text-brand-turquoise">
               Across our providers
             </span>
             <div className="h-px w-6 sm:w-9 bg-brand-pink" />

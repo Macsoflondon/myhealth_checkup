@@ -16,7 +16,7 @@ import Header from "@/components/layout/Header";
 import { Link, useNavigate } from "@/lib/router-compat";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Helmet } from "react-helmet-async";
@@ -137,7 +137,7 @@ function ProviderVerbatimSection({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <h3 className="type-card-title">{title}</h3>
       </CardHeader>
       <CardContent>
         <p className="text-muted-foreground leading-relaxed whitespace-pre-line">
@@ -194,17 +194,17 @@ const NotFoundState = ({ providerName }: { providerName: string }) => {
       <div className="container mx-auto px-4 max-w-5xl">
         <Button variant="ghost" onClick={() => navigate(-1)} className="mb-6">
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Go Back
+          Go back
         </Button>
         <Card>
           <CardContent className="py-12 text-center">
-            <h2 className="type-section-title mb-4">Test not found</h2>
+            <h1 className="type-page-title mb-4">Test not found</h1>
             <p className="text-muted-foreground mb-6">
               The {providerName} test you're looking for doesn't exist or has
               been removed.
             </p>
             <Button asChild>
-              <Link to="/compare">Browse All Tests</Link>
+              <Link to="/compare">Browse all tests</Link>
             </Button>
           </CardContent>
         </Card>
@@ -282,13 +282,14 @@ const BookingButton = ({
         <p className="text-xs text-center text-muted-foreground mb-2">
           Link not working?
         </p>
-        <Button variant="outline" size="sm" className="w-full" asChild>
-          <a
-            href={fallbackUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center text-xs"
-          >
+        {/* Long provider names wrap here, so the button may grow taller
+            than 44px; it never shrinks below the default size. */}
+        <Button
+          variant="outline"
+          className="w-full h-auto min-h-11 whitespace-normal py-2 text-center"
+          asChild
+        >
+          <a href={fallbackUrl} target="_blank" rel="noopener noreferrer">
             Browse all {providerConfig.name} tests
           </a>
         </Button>
@@ -340,10 +341,10 @@ const BiomarkersSection = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <h3 className="type-card-title flex items-center gap-2">
           <FlaskConical className="h-5 w-5 text-primary" />
           {heading}
-        </CardTitle>
+        </h3>
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground mb-4">
@@ -424,10 +425,10 @@ const SymptomsSection = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <h3 className="type-card-title flex items-center gap-2">
           <Stethoscope className="h-5 w-5 text-primary" />
-          Symptoms This Test Addresses
-        </CardTitle>
+          Symptoms this test addresses
+        </h3>
       </CardHeader>
       <CardContent>
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -454,10 +455,10 @@ const ConditionsSection = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <h3 className="type-card-title flex items-center gap-2">
           <HeartPulse className="h-5 w-5 text-primary" />
-          Conditions This Test Can Detect
-        </CardTitle>
+          Conditions this test can detect
+        </h3>
       </CardHeader>
       <CardContent>
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
@@ -523,7 +524,7 @@ function CollectionOptionsSection({ test }: { test: ProviderTestData }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Sample Collection Options</CardTitle>
+        <h3 className="type-card-title">Sample collection options</h3>
       </CardHeader>
       <CardContent className="space-y-4">
         {variants.map((variant, index) => (
@@ -537,7 +538,9 @@ function CollectionOptionsSection({ test }: { test: ProviderTestData }) {
               )}
               <div className="flex-1">
                 <div className="flex items-center justify-between gap-4">
-                  <h3 className="type-card-title">{variant.label}</h3>
+                  <h4 className="type-body font-heading font-semibold">
+                    {variant.label}
+                  </h4>
                   <span className="font-bold text-primary">
                     {formatCurrency(variant.total)}
                   </span>
@@ -585,10 +588,10 @@ function ClinicalReviewSection({ test }: { test: ProviderTestData }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <h3 className="type-card-title flex items-center gap-2">
           <Stethoscope className="h-5 w-5 text-primary" />
-          Clinical Review
-        </CardTitle>
+          Clinical review
+        </h3>
       </CardHeader>
       <CardContent>
         <div className="flex items-start gap-3">
@@ -791,7 +794,7 @@ export default function ProviderTestDetailTemplate({
               {/* About This Test */}
               <Card>
                 <CardHeader>
-                  <CardTitle>About This Blood Test</CardTitle>
+                  <h3 className="type-card-title">About this blood test</h3>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {aboutCopy && (
@@ -876,7 +879,9 @@ export default function ProviderTestDetailTemplate({
               {/* Why Choose Provider */}
               <Card>
                 <CardHeader>
-                  <CardTitle>{providerConfig.whyChoose.title}</CardTitle>
+                  <h3 className="type-card-title">
+                    {providerConfig.whyChoose.title}
+                  </h3>
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-3">
@@ -898,7 +903,7 @@ export default function ProviderTestDetailTemplate({
               {/* Booking Card */}
               <Card className="sticky top-6">
                 <CardHeader>
-                  <CardTitle>Book This Test</CardTitle>
+                  <h3 className="type-card-title">Book this test</h3>
                   <p className="text-sm text-muted-foreground">
                     {test.category}
                   </p>
@@ -959,7 +964,7 @@ export default function ProviderTestDetailTemplate({
               {/* Quick Info Card */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Quick Information</CardTitle>
+                  <h3 className="type-card-title">Quick information</h3>
                 </CardHeader>
                 <CardContent className="space-y-3 text-sm">
                   <div>
@@ -992,7 +997,7 @@ export default function ProviderTestDetailTemplate({
                       </p>
                     )}
                     {providerConfig.quickInfo.supportEmail && (
-                      <p className="text-muted-foreground">
+                      <p className="text-muted-foreground break-words [overflow-wrap:anywhere]">
                         Email: {providerConfig.quickInfo.supportEmail}
                       </p>
                     )}
@@ -1015,8 +1020,8 @@ export default function ProviderTestDetailTemplate({
           <Card className="bg-primary/5 border-primary/20">
             <CardContent className="py-8 text-center">
               <SectionHeading
-                title="Ready to Take Control"
-                gradientText=" of Your Health?"
+                title="Ready to take control"
+                gradientText=" of your health?"
                 className="mb-4"
               />
               <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
@@ -1033,7 +1038,7 @@ export default function ProviderTestDetailTemplate({
                     rel="noopener noreferrer"
                     data-affiliate-placement="detail"
                   >
-                    Book Your Test Now
+                    Book your test now
                   </a>
                 </Button>
               ) : (
@@ -1058,7 +1063,7 @@ export default function ProviderTestDetailTemplate({
           aria-label="Related tests and biomarkers"
           className="container mx-auto px-4 max-w-5xl pb-8"
         >
-          <h2 className="type-section-title text-navy mb-3">
+          <h2 className="type-subsection-title text-navy mb-3">
             Related tests and biomarkers
           </h2>
           <ul className="flex flex-wrap gap-x-6 gap-y-2">

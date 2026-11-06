@@ -1,4 +1,6 @@
 import { Link } from "@/lib/router-compat";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface QuizCTABannerProps {
   /** Link for the quiz CTA, defaults to /find-test */
@@ -32,16 +34,7 @@ export const QuizCTABanner = ({
         }}
       >
         <div className="min-w-0 text-center sm:text-left">
-          <p
-            style={{
-              color: "#22c0d4",
-              fontSize: "13px",
-              fontWeight: 700,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              marginBottom: "8px",
-            }}
-          >
+          <p className="type-eyebrow mb-2" style={{ color: "#22c0d4" }}>
             Not sure where to start?
           </p>
           <h2
@@ -56,18 +49,18 @@ export const QuizCTABanner = ({
         </div>
         <Link
           to={quizLink}
-          className="inline-block w-full sm:w-auto shrink-0 whitespace-nowrap text-center px-6 py-3.5 sm:px-9 sm:py-4 transition-transform hover:-translate-y-0.5"
+          className={cn(
+            buttonVariants({ variant: "plain", size: "lg" }),
+            "w-full sm:w-auto shrink-0 font-semibold text-white transition-transform hover:-translate-y-0.5",
+          )}
           style={{
             background: "linear-gradient(135deg, #e70d69 0%, #ff4d6d 100%)",
-            color: "#ffffff",
             border: "none",
-            fontSize: "16px",
-            fontWeight: 600,
             borderRadius: "10px",
             textDecoration: "none",
           }}
         >
-          Start Your Quiz →
+          Start your quiz →
         </Link>
       </div>
     </div>

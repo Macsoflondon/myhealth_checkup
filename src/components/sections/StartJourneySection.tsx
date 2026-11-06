@@ -1,4 +1,6 @@
 import { Link } from "@/lib/router-compat";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
 import { LiveCatalogueComparison } from "@/design-system/live-catalogue-comparison";
 import { useHomepageComparisons } from "@/hooks/use-homepage-comparisons";
@@ -34,13 +36,13 @@ const StartJourneySection = () => {
             <div className="flex-1 text-center lg:text-left">
               <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
                 <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-                <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
-                  Start Your Journey
+                <span className="type-eyebrow text-brand-turquoise">
+                  Start your journey
                 </span>
                 <div className="h-px w-8 sm:w-12 bg-brand-pink" />
               </div>
-              <h2 className="font-heading font-bold text-[#081129] leading-[1.15] tracking-tight text-2xl sm:text-3xl md:text-4xl mb-3">
-                Take Control of Your Health Today
+              <h2 className="type-section-title text-[#081129] mb-3">
+                Take control of your health today
               </h2>
               <p className="text-base sm:text-lg text-brand-navy leading-relaxed max-w-2xl mx-auto lg:mx-0">
                 Compare trusted, accredited tests from leading UK providers in
@@ -52,19 +54,31 @@ const StartJourneySection = () => {
                   turquoise to pink, pink to turquoise, white to navy. */}
               <Link
                 to="/assisted-test-finder"
-                className={`flex-1 h-[60px] inline-flex items-center justify-center px-6 bg-brand-turquoise hover:bg-brand-pink text-white font-semibold text-base rounded-full shadow-[0_8px_28px_-8px_rgba(34,192,212,0.5)] hover:shadow-[0_10px_32px_-8px_rgba(231,13,105,0.6)] transition-all active:scale-[0.98] whitespace-nowrap ${BUTTON_BORDER}`}
+                className={cn(
+                  buttonVariants({ variant: "plain", size: "lg" }),
+                  "w-full sm:w-auto sm:flex-1 bg-brand-turquoise hover:bg-brand-pink text-white font-semibold rounded-full shadow-[0_8px_28px_-8px_rgba(34,192,212,0.5)] hover:shadow-[0_10px_32px_-8px_rgba(231,13,105,0.6)] transition-all active:scale-[0.98]",
+                  BUTTON_BORDER,
+                )}
               >
                 Find your test
               </Link>
               <Link
                 to="/compare/goals"
-                className={`flex-1 h-[60px] inline-flex items-center justify-center px-6 bg-brand-pink hover:bg-brand-turquoise text-white font-semibold text-base rounded-full shadow-[0_8px_28px_-8px_rgba(231,13,105,0.45)] hover:shadow-[0_10px_32px_-8px_rgba(34,192,212,0.6)] transition-all active:scale-[0.98] whitespace-nowrap ${BUTTON_BORDER}`}
+                className={cn(
+                  buttonVariants({ variant: "plain", size: "lg" }),
+                  "w-full sm:w-auto sm:flex-1 bg-brand-pink hover:bg-brand-turquoise text-white font-semibold rounded-full shadow-[0_8px_28px_-8px_rgba(231,13,105,0.45)] hover:shadow-[0_10px_32px_-8px_rgba(34,192,212,0.6)] transition-all active:scale-[0.98]",
+                  BUTTON_BORDER,
+                )}
               >
                 Compare by goal
               </Link>
               <Link
                 to="/compare"
-                className={`flex-1 h-[60px] inline-flex items-center justify-center px-6 bg-white text-brand-navy hover:bg-brand-navy hover:text-white font-semibold text-base rounded-full transition-colors active:scale-[0.98] whitespace-nowrap ${BUTTON_BORDER}`}
+                className={cn(
+                  buttonVariants({ variant: "plain", size: "lg" }),
+                  "w-full sm:w-auto sm:flex-1 bg-white text-brand-navy hover:bg-brand-navy hover:text-white font-semibold rounded-full transition-colors active:scale-[0.98]",
+                  BUTTON_BORDER,
+                )}
               >
                 Browse all tests
               </Link>

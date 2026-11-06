@@ -1,5 +1,7 @@
 import { Check } from "lucide-react";
 import { Link } from "@/lib/router-compat";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import clinicBloodDraw from "@/assets/clinic-blood-draw.jpg.asset.json";
 
 const POINTS: readonly string[] = [
@@ -33,22 +35,22 @@ export const DecisionInfrastructureSection = () => (
       <div className="flex flex-col justify-center px-6 py-12 sm:px-10 lg:px-14 lg:py-14">
         <div className="mb-4 flex items-center gap-3">
           <span className="h-px w-8 sm:w-12 bg-brand-pink" aria-hidden="true" />
-          <span className="font-heading text-xs sm:text-sm font-bold uppercase tracking-[0.25em] text-brand-turquoise">
+          <span className="type-eyebrow text-brand-turquoise">
             Why myhealth checkup
           </span>
           <span className="h-px w-8 sm:w-12 bg-brand-pink" aria-hidden="true" />
         </div>
 
-        <h2 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold leading-[1.12] tracking-tight text-white">
+        <h2 className="type-section-title text-white">
           Decision infrastructure.
           <br />
           Not a marketplace.
         </h2>
 
         <p className="mt-5 max-w-2xl text-sm sm:text-base leading-relaxed text-white/80">
-          Some providers pay us a commission when you book through our links.
-          It never changes the price you pay or the order of results. You get
-          the full picture before you spend a pound on your health.
+          Some providers pay us a commission when you book through our links. It
+          never changes the price you pay or the order of results. You get the
+          full picture before you spend a pound on your health.
         </p>
 
         <ul className="mt-7 space-y-3">
@@ -67,7 +69,10 @@ export const DecisionInfrastructureSection = () => (
         <div className="mt-8">
           <Link
             to="/how-we-rank"
-            className="inline-flex items-center gap-2 rounded-md bg-brand-turquoise px-7 py-3.5 font-heading text-sm font-bold uppercase tracking-[0.08em] text-brand-navy transition-colors hover:bg-[#1aa8bb]"
+            className={cn(
+              buttonVariants({ variant: "plain", size: "lg" }),
+              "rounded-md bg-brand-turquoise font-heading font-bold uppercase tracking-[0.08em] text-brand-navy transition-colors hover:bg-[#1aa8bb]",
+            )}
           >
             Our standards <span aria-hidden="true">→</span>
           </Link>

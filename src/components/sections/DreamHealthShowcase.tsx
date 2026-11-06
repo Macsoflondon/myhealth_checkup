@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 import { useEffect, useMemo, useRef, useState } from "react";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { useNavigate } from "@/lib/router-compat";
 import { type PopularTest } from "@/hooks/usePopularTestsFromDatabase";
 import { useHomepagePopularShowcase } from "@/hooks/queries/use-homepage-test-showcase";
@@ -209,12 +211,12 @@ const DreamHealthShowcase = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="flex items-center justify-center gap-3 mb-4">
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-          <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
+          <span className="type-eyebrow text-brand-turquoise">
             Tests from all eight providers
           </span>
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />
         </div>
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight text-[#08122b]">
+        <h2 className="type-section-title text-[#08122b]">
           Find your perfect test match
         </h2>
         <p className="mt-4 text-base lg:text-lg text-[#081129]/70 max-w-2xl mx-auto whitespace-pre-line">
@@ -224,7 +226,10 @@ const DreamHealthShowcase = () => {
         <div className="mt-6 flex justify-center">
           <button
             onClick={() => navigate("/assisted-test-finder")}
-            className="text-white font-semibold px-7 py-3.5 rounded-full text-sm sm:text-base shadow-lg transition-colors bg-[#22bed3] hover:bg-brand-pink focus:outline-hidden focus-visible:outline-hidden focus-visible:ring-4 focus-visible:ring-[#e70d69] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+            className={cn(
+              buttonVariants({ variant: "plain", size: "lg" }),
+              "text-white font-semibold rounded-full shadow-lg transition-colors bg-[#22bed3] hover:bg-brand-pink focus:outline-hidden focus-visible:outline-hidden focus-visible:ring-4 focus-visible:ring-[#e70d69] focus-visible:ring-offset-2 focus-visible:ring-offset-white",
+            )}
           >
             Get my test match — 60 seconds, free
           </button>
@@ -365,7 +370,10 @@ const DreamHealthShowcase = () => {
                         <button
                           type="button"
                           onClick={open}
-                          className="text-sm font-semibold text-white bg-[#22c0d4] px-4 py-2 rounded-full hover:bg-[#1ba8ba] transition-colors"
+                          className={cn(
+                            buttonVariants({ variant: "plain", size: "sm" }),
+                            "font-semibold text-white bg-[#22c0d4] rounded-full hover:bg-[#1ba8ba] transition-colors",
+                          )}
                         >
                           See what's tested
                         </button>

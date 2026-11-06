@@ -92,9 +92,7 @@ export function StandardPageHero({
             id={headingId}
             className="whitespace-pre-line type-page-title text-center m-0 text-white"
             style={{
-              fontFamily: "Montserrat, 'Helvetica Neue', sans-serif",
               letterSpacing: "0.04em",
-              lineHeight: 1.15,
               paddingBlock: "0.05em",
             }}
           >
@@ -113,7 +111,6 @@ export function StandardPageHero({
             style={{
               color: "rgba(255,255,255,0.78)",
               maxWidth: 680,
-              lineHeight: 1.6,
             }}
           >
             {strapline}
@@ -125,7 +122,7 @@ export function StandardPageHero({
             {stats.map((stat) => (
               <span
                 key={stat}
-                className="inline-flex items-center gap-2 text-[13px] sm:text-sm font-semibold"
+                className="type-small inline-flex items-center gap-2 font-semibold"
                 style={{ color: "rgba(255,255,255,0.92)" }}
               >
                 <span aria-hidden="true" style={{ color: "#22c0d4" }}>

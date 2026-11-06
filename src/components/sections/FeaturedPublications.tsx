@@ -137,13 +137,13 @@ export const FeaturedPublications = () => {
           {/* Section label */}
           <div className="flex items-center justify-center gap-3 mb-3">
             <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-            <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
-              As Seen In
+            <span className="type-eyebrow text-brand-turquoise">
+              As seen in
             </span>
             <div className="h-px w-8 sm:w-12 bg-brand-pink" />
           </div>
 
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold leading-tight text-center mb-8 md:mb-10">
+          <h2 className="type-section-title text-center mb-8 md:mb-10">
             <span className="text-white">Press &amp; Media</span>
           </h2>
 

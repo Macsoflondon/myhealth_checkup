@@ -1578,27 +1578,47 @@ html {
   --os-surface: hsl(222.2 84% 4.9%);
 }
 
-/* Platform type scale — mirrors the homepage standard so every page shares
-   one set of heading, eyebrow and body sizes. */
+/* Platform type scale. One source for every heading, eyebrow and body size.
+   Each step stays at least 1.25x the step below it at every breakpoint, on
+   phones too, so a page title never reads as a section heading.
+   src/styles.type-scale.test.ts checks the ordering.
+
+   px per breakpoint      base   sm 640  md 768  lg 1024
+   page title             32     36      40      48
+   section title          24     28      30      36
+   subsection title       18     18      20      20
+   card title             18     20      20      20
+   body                   16     16      17      17
+   small / meta           14     14      14      14
+   eyebrow (uppercase)    14     14      16      16            */
 @utility type-page-title {
-  font-family: Montserrat, "Helvetica Neue", sans-serif;
+  font-family: var(--font-heading, Montserrat, "Helvetica Neue", sans-serif);
   font-weight: 700;
-  line-height: 1.15;
-  font-size: 1.875rem;
+  line-height: 1.12;
+  font-size: 2rem;
   @media (min-width: 640px) { font-size: 2.25rem; }
   @media (min-width: 768px) { font-size: 2.5rem; }
+  @media (min-width: 1024px) { font-size: 3rem; }
 }
 @utility type-section-title {
-  font-family: Montserrat, "Helvetica Neue", sans-serif;
+  font-family: var(--font-heading, Montserrat, "Helvetica Neue", sans-serif);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.01em;
   font-size: 1.5rem;
-  @media (min-width: 640px) { font-size: 1.875rem; }
-  @media (min-width: 768px) { font-size: 2.25rem; }
+  @media (min-width: 640px) { font-size: 1.75rem; }
+  @media (min-width: 768px) { font-size: 1.875rem; }
+  @media (min-width: 1024px) { font-size: 2.25rem; }
+}
+@utility type-subsection-title {
+  font-family: var(--font-heading, Montserrat, "Helvetica Neue", sans-serif);
+  font-weight: 700;
+  line-height: 1.3;
+  font-size: 1.125rem;
+  @media (min-width: 768px) { font-size: 1.25rem; }
 }
 @utility type-card-title {
-  font-family: Montserrat, "Helvetica Neue", sans-serif;
+  font-family: var(--font-heading, Montserrat, "Helvetica Neue", sans-serif);
   font-weight: 700;
   line-height: 1.3;
   font-size: 1.125rem;
@@ -1608,4 +1628,17 @@ html {
   line-height: 1.7;
   font-size: 1rem;
   @media (min-width: 768px) { font-size: 1.0625rem; }
+}
+@utility type-small {
+  line-height: 1.5;
+  font-size: 0.875rem;
+}
+@utility type-eyebrow {
+  font-family: var(--font-heading, Montserrat, "Helvetica Neue", sans-serif);
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  @media (min-width: 768px) { font-size: 1rem; }
 }

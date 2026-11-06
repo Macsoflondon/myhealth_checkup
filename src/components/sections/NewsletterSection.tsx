@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 import { supabase } from "@/integrations/supabase/client";
@@ -58,14 +60,14 @@ const NewsletterSection = () => {
         <div className="max-w-xl mx-auto text-center">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-            <span className="text-brand-turquoise text-base sm:text-lg font-semibold uppercase tracking-[0.25em]">
-              Stay Informed
+            <span className="type-eyebrow text-brand-turquoise">
+              Stay informed
             </span>
             <div className="h-px w-8 sm:w-12 bg-brand-pink" />
           </div>
           <SectionHeading
             title="New tests. New providers."
-            gradientText="Straight to your inbox."
+            gradientText=" Straight to your inbox."
             titleClassName="text-white"
             gradientClassName="text-brand-turquoise"
           />
@@ -98,7 +100,10 @@ const NewsletterSection = () => {
               <button
                 onClick={() => void handleSubmit()}
                 disabled={submitting}
-                className="bg-brand-turquoise hover:bg-[#1aa8bb] disabled:opacity-60 text-[#081129] font-heading font-extrabold text-xs uppercase tracking-[0.1em] px-6 py-3 rounded-xl transition-colors duration-200 whitespace-nowrap"
+                className={cn(
+                  buttonVariants({ variant: "plain" }),
+                  "bg-brand-turquoise hover:bg-[#1aa8bb] disabled:opacity-60 text-[#081129] font-heading font-extrabold uppercase tracking-[0.1em] rounded-xl transition-colors duration-200",
+                )}
               >
                 {submitting ? "Subscribing…" : "Subscribe"}
               </button>

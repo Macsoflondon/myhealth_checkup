@@ -43,7 +43,7 @@ const Enhanced3StepProcess = () => {
                   {step.number}
                 </span>
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-foreground mb-2 font-heading">
+              <h3 className="type-card-title text-foreground mb-2">
                 {step.title}
               </h3>
               <p className="text-sm text-muted-foreground leading-relaxed">

@@ -1,4 +1,6 @@
 import { lazy, Suspense } from "react";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Link } from "@/lib/router-compat";
 import MainLayout from "@/layouts/MainLayout";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
@@ -56,7 +58,6 @@ const CallToAction = lazy(() => import("@/components/sections/CallToAction"));
 const StartJourneySection = lazyPreloadable(
   () => import("@/components/sections/StartJourneySection"),
 );
-
 
 const NewsletterSection = lazy(
   () => import("@/components/sections/NewsletterSection"),
@@ -170,7 +171,7 @@ const Index = () => {
                     the quiz button. */}
                 <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.7fr)] gap-8 sm:gap-10 lg:gap-12 items-center lg:items-stretch">
                   <div className="flex flex-col gap-5 2xl:gap-8 text-left lg:justify-between">
-                    <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl tracking-[-0.02em] leading-[1.15] text-white m-0 font-[Montserrat] text-center xl:whitespace-nowrap">
+                    <h2 className="type-section-title text-white m-0 text-center xl:whitespace-nowrap">
                       Your <span className="text-[#22c0d4]">health</span> is
                       your greatest{" "}
                       <span className="text-[#e70d69]">asset.</span>
@@ -192,7 +193,7 @@ const Index = () => {
                     />
 
                     <div className="mt-4 sm:mt-6 flex flex-col gap-5 rounded-2xl border border-brand-turquoise/40 p-5 sm:p-6 shadow-glow-teal transition-all duration-300 hover:border-brand-pink/60 hover:shadow-glow-pink">
-                      <h3 className="text-[clamp(1.2rem,2.8vw,1.85rem)] font-bold text-white leading-[1.15] tracking-tight font-[Montserrat] m-0 text-center">
+                      <h3 className="type-card-title text-white m-0 text-center">
                         Not sure what test you need?
                       </h3>
                       <p className="text-white/85 text-sm sm:text-base leading-relaxed m-0 text-center 2xl:text-lg">
@@ -207,7 +208,10 @@ const Index = () => {
                         <Link
                           to="/find-test"
                           aria-label="Take the Health Quiz: find the right private blood test"
-                          className="inline-flex items-center justify-center gap-2 whitespace-nowrap bg-brand-turquoise text-white shadow-glow-teal hover:bg-brand-pink hover:shadow-glow-pink focus-visible:bg-brand-pink focus-visible:shadow-glow-pink focus-visible:outline-none font-bold font-[Montserrat] text-base px-8 py-3.5 rounded-full transition-all duration-200 hover:scale-[1.02]"
+                          className={cn(
+                            buttonVariants({ variant: "plain", size: "lg" }),
+                            "bg-brand-turquoise text-white shadow-glow-teal hover:bg-brand-pink hover:shadow-glow-pink focus-visible:bg-brand-pink focus-visible:shadow-glow-pink focus-visible:outline-none font-bold font-heading rounded-full transition-all duration-200 hover:scale-[1.02]",
+                          )}
                         >
                           Take the Health Quiz
                         </Link>

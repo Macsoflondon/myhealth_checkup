@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "@/lib/router-compat";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 const COMPARE_HREF_BY_NAME: Record<string, string> = {
   "Bowel Cancer Screening": "/tests/cancer",
@@ -682,16 +684,11 @@ export default function FeaturedPartnerWheel({
         <EyebrowBadge label={eyebrow} size="md" tone="onLight" />
 
         <h2
+          className="type-section-title"
           style={{
             margin: "22px 0 0",
-            fontFamily: SERIF,
-            fontWeight: 600,
-            fontSize: 60,
-            lineHeight: 1.04,
             color: "#081129",
-
             textAlign: "center",
-            letterSpacing: "-.01em",
           }}
         >
           {partnerName}
@@ -952,13 +949,11 @@ export default function FeaturedPartnerWheel({
           >
             <Link
               to={GOODBODY_CATALOG_HREF}
+              className={cn(buttonVariants({ variant: "plain", size: "lg" }))}
               style={{
-                display: "inline-block",
                 textDecoration: "none",
                 fontFamily: HEAD,
                 fontWeight: 700,
-                fontSize: 14,
-                padding: "13px 26px",
                 borderRadius: 999,
                 border: "none",
                 color: "#fff",
@@ -972,13 +967,11 @@ export default function FeaturedPartnerWheel({
             </Link>
             <Link
               to={GOODBODY_PROFILE_HREF}
+              className={cn(buttonVariants({ variant: "plain", size: "lg" }))}
               style={{
-                display: "inline-block",
                 textDecoration: "none",
                 fontFamily: HEAD,
                 fontWeight: 700,
-                fontSize: 14,
-                padding: "13px 26px",
                 borderRadius: 999,
                 border: "1px solid #081129",
                 background: "transparent",
@@ -1108,13 +1101,10 @@ export default function FeaturedPartnerWheel({
                     {selKit.provider}
                   </div>
                   <h4
+                    className="type-card-title"
                     style={{
                       margin: "4px 0 0",
-                      fontFamily: SERIF,
-                      fontWeight: 600,
-                      fontSize: 30,
                       color: "#081129",
-                      lineHeight: 1.08,
                     }}
                   >
                     {selKit.name}
@@ -1221,17 +1211,15 @@ export default function FeaturedPartnerWheel({
                     setSelKit(null);
                     setHovered(null);
                   }}
+                  className={cn(
+                    buttonVariants({ variant: "plain", size: "lg" }),
+                  )}
                   style={{
                     flex: "1 1 180px",
                     minWidth: 0,
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
                     textDecoration: "none",
                     fontFamily: HEAD,
                     fontWeight: 700,
-                    fontSize: 15,
-                    padding: 15,
                     borderRadius: 14,
                     border: "none",
                     background: "#22c0d4",
@@ -1248,12 +1236,13 @@ export default function FeaturedPartnerWheel({
                     setSelKit(null);
                     setHovered(null);
                   }}
+                  className={cn(
+                    buttonVariants({ variant: "plain", size: "lg" }),
+                  )}
                   style={{
                     flexShrink: 0,
                     fontFamily: HEAD,
                     fontWeight: 700,
-                    fontSize: 15,
-                    padding: "15px 22px",
                     borderRadius: 14,
                     border: "1px solid #d4dbe4",
                     background: "#fff",

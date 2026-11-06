@@ -5,7 +5,7 @@ const HowItWorks = () => {
     <section className="bg-white py-10 md:py-16">
       <div className="container mx-auto px-4">
         <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[hsl(var(--navy))] mb-3">
+          <h2 className="type-section-title text-[hsl(var(--navy))] mb-3">
             How It Works
           </h2>
           <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -54,7 +54,7 @@ const HowItWorks = () => {
                   </span>
                 </div>
               </div>
-              <h3 className="text-lg font-bold text-[hsl(var(--navy))] mb-2">
+              <h3 className="type-card-title text-[hsl(var(--navy))] mb-2">
                 {item.title}
               </h3>
               <p className="text-sm text-brand-navy">{item.description}</p>

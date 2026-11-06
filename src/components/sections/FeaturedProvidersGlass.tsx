@@ -1,4 +1,6 @@
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Star } from "lucide-react";
 import { Link } from "@/lib/router-compat";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
@@ -179,7 +181,7 @@ const FeaturedProvidersGlass = () => {
 
                     {/* Title + tagline */}
                     <div className="space-y-1">
-                      <h2 className="font-heading text-2xl font-bold text-[#081129] transition-colors">
+                      <h2 className="type-card-title text-[#081129] transition-colors">
                         {p.displayName}
                       </h2>
                       <p
@@ -220,13 +222,16 @@ const FeaturedProvidersGlass = () => {
                   <div className="relative z-10 space-y-3 pt-8">
                     <Link
                       to={getProviderProfileRoute(p.id)}
-                      className="block w-full py-4 px-6 rounded-2xl text-white font-bold text-sm text-center shadow-lg transition-all duration-300 active:scale-95 hover:brightness-110"
+                      className={cn(
+                        buttonVariants({ variant: "plain", size: "lg" }),
+                        "flex w-full rounded-2xl text-white font-bold shadow-lg transition-all duration-300 active:scale-95 hover:brightness-110",
+                      )}
                       style={{
                         background: `linear-gradient(135deg, ${p.glow}, rgba(${p.glowRgb}, 0.78))`,
                         boxShadow: `0 10px 30px -10px rgba(${p.glowRgb}, 0.5)`,
                       }}
                     >
-                      View Profile
+                      View profile
                     </Link>
                     <a
                       href={buildProviderWebsiteUrl(
@@ -234,9 +239,12 @@ const FeaturedProvidersGlass = () => {
                         p.id,
                       )}
                       {...externalLinkProps}
-                      className="block w-full py-3 px-4 rounded-xl border border-brand-navy text-brand-navy text-xs font-semibold text-center hover:bg-brand-navy hover:text-on-dark transition-all"
+                      className={cn(
+                        buttonVariants({ variant: "plain" }),
+                        "flex w-full rounded-xl border border-brand-navy text-brand-navy font-semibold hover:bg-brand-navy hover:text-on-dark transition-all",
+                      )}
                     >
-                      Visit Site
+                      Visit site
                     </a>
                     <AffiliateCommissionNote className="text-center" />
                   </div>

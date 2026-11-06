@@ -7,13 +7,17 @@ import { cn } from "@/lib/utils";
 /**
  * Button — Phase 2 design system primitive.
  *
- * Six canonical variants (Apple/Linear/Stripe-inspired):
+ * Seven canonical variants (Apple/Linear/Stripe-inspired):
  *  - primary      (default): solid navy, high contrast
  *  - secondary   : soft surface, low-contrast on light bg
  *  - tertiary    : outline (formerly `outline`)
  *  - ghost       : transparent, hover surface
  *  - link        : inline text link
  *  - destructive : error-toned solid
+ *  - plain       : no colours; className supplies them (brand CTAs, links)
+ *
+ * Sizes: sm (36px), default (44px) and lg (52px) are the only sizes pages
+ * should use. Do not override height, padding or font size in className.
  *
  * Legacy aliases (`outline`, `gradient`, `shimmer`, `brandPill`, `skeuomorphic`)
  * remain accepted for back-compat and now map to canonical variants so existing
@@ -48,6 +52,10 @@ const buttonVariants = cva(
         link: "h-auto p-0 text-primary underline-offset-4 hover:underline focus-visible:ring-offset-0",
         destructive:
           "bg-error text-error-foreground shadow-e1 hover:shadow-e3 hover:-translate-y-[1px] active:translate-y-0 active:shadow-e1",
+        // No colours of its own: for brand-coloured buttons and links that
+        // set background, text and border through className but take their
+        // size from this file.
+        plain: "",
 
         // Legacy aliases — kept for back-compat, mapped to canonical styles.
         default:
@@ -63,24 +71,30 @@ const buttonVariants = cva(
         skeuomorphic:
           "bg-primary text-primary-foreground shadow-e2 hover:shadow-e4 hover:-translate-y-[1px] active:translate-y-0 active:shadow-e1",
       },
+      // The single source of button sizes. Pages set colour, radius and
+      // weight through className and must not override height, padding or
+      // font size. default and lg meet the 44px touch target; sm is for
+      // dense desktop toolbars only.
+      //   sm      36px tall, 14px text
+      //   default 44px tall, 16px text
+      //   lg      52px tall, 16px text
       size: {
-        // Tightened 8pt scale — sm 32 / md 40 / lg 48 / xl 56.
-        sm: "h-8 px-3 text-sm [&_svg]:size-4",
-        md: "h-10 px-4 text-sm [&_svg]:size-4",
-        lg: "h-12 px-6 text-base [&_svg]:size-5",
+        sm: "h-9 px-3 text-sm [&_svg]:size-4",
+        default: "h-11 px-5 text-base [&_svg]:size-4",
+        lg: "h-13 px-8 text-base [&_svg]:size-5",
         xl: "h-14 px-8 text-base [&_svg]:size-5",
-        icon: "h-10 w-10 [&_svg]:size-4",
-        "icon-sm": "h-8 w-8 [&_svg]:size-4",
-        "icon-lg": "h-12 w-12 [&_svg]:size-5",
+        icon: "h-11 w-11 [&_svg]:size-4",
+        "icon-sm": "h-9 w-9 [&_svg]:size-4",
+        "icon-lg": "h-13 w-13 [&_svg]:size-5",
 
-        // Legacy aliases.
-        default: "h-10 px-4 text-sm [&_svg]:size-4",
-        providerCta: "h-12 px-6 text-base [&_svg]:size-5",
+        // Legacy aliases of the sizes above.
+        md: "h-11 px-5 text-base [&_svg]:size-4",
+        providerCta: "h-13 px-8 text-base [&_svg]:size-5",
       },
     },
     defaultVariants: {
       variant: "primary",
-      size: "md",
+      size: "default",
     },
   },
 );

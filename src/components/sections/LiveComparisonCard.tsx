@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { useDynamicComparisonPanels } from "@/hooks/useDynamicComparisonPanels";
@@ -201,13 +203,11 @@ const LiveComparisonCard = ({
       <div className="p-6 sm:p-8 md:p-10 flex flex-col h-full">
         <div className="flex items-center justify-center gap-3 mb-5">
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />
-          <span className="text-base sm:text-lg font-semibold uppercase tracking-[0.25em] text-brand-turquoise">
-            {eyebrow}
-          </span>
+          <span className="type-eyebrow text-brand-turquoise">{eyebrow}</span>
           <div className="h-px w-8 sm:w-12 bg-brand-pink" />
         </div>
         <h3
-          className="font-heading font-bold text-brand-navy tracking-tight text-2xl sm:text-3xl text-center mb-6 transition-all duration-500 ease-in-out"
+          className="type-card-title text-brand-navy text-center mb-6 transition-all duration-500 ease-in-out"
           style={{ opacity: fading ? 0 : 1 }}
         >
           {test.name}
@@ -267,7 +267,10 @@ const LiveComparisonCard = ({
               <Link
                 to="/compare/results"
                 search={{ panel: test.canonical }}
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-brand-turquoise px-6 py-3 font-heading text-sm font-bold uppercase tracking-[0.08em] text-white shadow-[0_10px_24px_-12px_rgba(8,17,41,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2"
+                className={cn(
+                  buttonVariants({ variant: "plain" }),
+                  "flex w-full rounded-full bg-brand-turquoise font-heading font-bold uppercase tracking-[0.08em] text-white shadow-[0_10px_24px_-12px_rgba(8,17,41,0.6)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-brand-pink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-pink focus-visible:ring-offset-2",
+                )}
               >
                 Compare all providers
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
