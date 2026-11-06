@@ -59,6 +59,9 @@ const collectCtaLinks = async (page: Page): Promise<readonly CtaLink[]> => {
 };
 
 const assertPageLoads = async (page: Page, href: string): Promise<void> => {
+  // A client-side navigation left over from the previous page can interrupt
+  // page.goto; settle on a blank page first so each check starts clean.
+  await page.goto("about:blank");
   const response = await page.goto(href, { waitUntil: "domcontentloaded" });
   expect(response?.status(), `${href} returned an error status`).toBeLessThan(
     400,
