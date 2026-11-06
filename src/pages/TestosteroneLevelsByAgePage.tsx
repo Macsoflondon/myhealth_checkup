@@ -116,17 +116,17 @@ const TestosteroneLevelsByAgePage = () => {
         </script>
       </Helmet>
 
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 text-white">
-        <nav className="text-sm text-white/78 mb-6" aria-label="Breadcrumb">
-          <Link to="/" className="hover:text-white">
+      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 text-[#081129]">
+        <nav className="text-sm text-slate-600 mb-6" aria-label="Breadcrumb">
+          <Link to="/" className="hover:text-[#081129]">
             Home
           </Link>
           <span className="mx-2">/</span>
-          <Link to="/blog" className="hover:text-white">
+          <Link to="/blog" className="hover:text-[#081129]">
             Health Resource Hub
           </Link>
           <span className="mx-2">/</span>
-          <span className="text-white/90">Testosterone Levels by Age</span>
+          <span className="text-slate-700">Testosterone Levels by Age</span>
         </nav>
 
         <header className="mb-10">
@@ -136,7 +136,7 @@ const TestosteroneLevelsByAgePage = () => {
           <h1 className="text-4xl lg:text-5xl font-semibold tracking-tight mb-4">
             Normal testosterone levels by age: a UK guide
           </h1>
-          <p className="text-lg text-white/90 leading-relaxed">
+          <p className="text-lg text-slate-700 leading-relaxed">
             Testosterone shapes energy, mood, libido, body composition and
             long-term cardiometabolic health in men. Levels naturally decline
             with age, but reference ranges and clinical thresholds vary between
@@ -144,7 +144,7 @@ const TestosteroneLevelsByAgePage = () => {
             typical at each life stage and how to choose a private test if you
             want to check your own numbers.
           </p>
-          <p className="text-sm text-white/78 mt-4">
+          <p className="text-sm text-slate-600 mt-4">
             Last reviewed: 19 June 2026 · Editorially independent · Not medical
             advice
           </p>
@@ -180,9 +180,9 @@ const TestosteroneLevelsByAgePage = () => {
             these as orientation only — your own lab report's reference range is
             the one that matters clinically.
           </p>
-          <div className="overflow-x-auto rounded-xl border border-white/10">
+          <div className="overflow-x-auto rounded-xl border border-slate-200">
             <table className="w-full text-sm">
-              <thead className="bg-white/5 text-white/90">
+              <thead className="bg-slate-50 text-slate-700">
                 <tr>
                   <th className="text-left px-4 py-3 font-medium">Age band</th>
                   <th className="text-left px-4 py-3 font-medium">
@@ -193,7 +193,7 @@ const TestosteroneLevelsByAgePage = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/10">
+              <tbody className="divide-y divide-slate-200">
                 {ranges.map((r) => (
                   <tr key={r.age}>
                     <td className="px-4 py-3 font-medium">{r.age}</td>
@@ -204,7 +204,7 @@ const TestosteroneLevelsByAgePage = () => {
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-white/78 mt-3">
+          <p className="text-xs text-slate-600 mt-3">
             Ranges synthesised from UK laboratory reference intervals (The
             Doctors Laboratory, Synnovis, Randox Health). nmol/L is the standard
             UK reporting unit; multiply by 28.84 to convert to ng/dL.
@@ -263,7 +263,7 @@ const TestosteroneLevelsByAgePage = () => {
                 <Beaker className="w-6 h-6 mb-2 text-[#22c0d4]" />
                 <CardTitle className="text-base">Biomarkers covered</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-white/90">
+              <CardContent className="text-sm text-slate-700">
                 Look for total testosterone, SHBG and calculated free
                 testosterone as a minimum. Comprehensive panels add LH, FSH,
                 oestradiol and prolactin.
@@ -274,7 +274,7 @@ const TestosteroneLevelsByAgePage = () => {
                 <Activity className="w-6 h-6 mb-2 text-[#e70d69]" />
                 <CardTitle className="text-base">Sample method</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-white/90">
+              <CardContent className="text-sm text-slate-700">
                 Venous draws at a clinic are the reference standard. At-home
                 finger-prick kits are convenient, though best confirmed venously
                 if a low result is found.
@@ -285,7 +285,7 @@ const TestosteroneLevelsByAgePage = () => {
                 <ShieldCheck className="w-6 h-6 mb-2 text-[#22c0d4]" />
                 <CardTitle className="text-base">Accreditation</CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-white/90">
+              <CardContent className="text-sm text-slate-700">
                 Confirm the analysing laboratory is UKAS-accredited (ISO 15189)
                 and the clinic is CQC-regulated. Both are standard across the
                 providers we list.
@@ -302,7 +302,7 @@ const TestosteroneLevelsByAgePage = () => {
                 <CardHeader>
                   <CardTitle className="text-base">{f.q}</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/90">
+                <CardContent className="text-sm text-slate-700">
                   {f.a}
                 </CardContent>
               </Card>
@@ -310,11 +310,11 @@ const TestosteroneLevelsByAgePage = () => {
           </div>
         </section>
 
-        <section className="rounded-2xl border border-white/10 bg-gradient-to-r from-[#22c0d4]/15 to-[#e70d69]/15 p-6 lg:p-8 mb-10">
+        <section className="rounded-2xl border border-slate-200 bg-gradient-to-r from-[#22c0d4]/15 to-[#e70d69]/15 p-6 lg:p-8 mb-10">
           <h2 className="text-2xl font-semibold mb-2">
             Compare testosterone tests on myhealth checkup
           </h2>
-          <p className="text-white/90 mb-6">
+          <p className="text-slate-700 mb-6">
             Independent, side-by-side comparison of biomarkers, sample method,
             typical turnaround and price across CQC-regulated UK providers. No
             upselling, no pay-to-rank.
@@ -332,7 +332,7 @@ const TestosteroneLevelsByAgePage = () => {
           </div>
         </section>
 
-        <p className="text-xs text-white/78">
+        <p className="text-xs text-slate-600">
           Editorial note: this article is for information only and does not
           constitute medical advice, diagnosis or treatment. Always discuss test
           results with a qualified clinician. myhealth checkup is an independent

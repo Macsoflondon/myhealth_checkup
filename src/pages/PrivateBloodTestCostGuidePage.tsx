@@ -199,17 +199,17 @@ export const PrivateBloodTestCostGuidePage = () => {
         </script>
       </Helmet>
 
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 text-white">
-        <nav className="text-sm text-white/78 mb-6" aria-label="Breadcrumb">
-          <Link to="/" className="hover:text-white">
+      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 text-[#081129]">
+        <nav className="text-sm text-slate-600 mb-6" aria-label="Breadcrumb">
+          <Link to="/" className="hover:text-[#081129]">
             Home
           </Link>
           <span className="mx-2">/</span>
-          <Link to="/blog" className="hover:text-white">
+          <Link to="/blog" className="hover:text-[#081129]">
             Health Resource Hub
           </Link>
           <span className="mx-2">/</span>
-          <span className="text-white/90">Private blood test cost guide</span>
+          <span className="text-slate-700">Private blood test cost guide</span>
         </nav>
 
         <header className="mb-10">
@@ -219,14 +219,14 @@ export const PrivateBloodTestCostGuidePage = () => {
           <h1 className="text-4xl lg:text-5xl font-semibold tracking-tight mb-4">
             How much does a private blood test cost in the UK?
           </h1>
-          <p className="text-lg text-white/90 leading-relaxed">
+          <p className="text-lg text-slate-700 leading-relaxed">
             Private blood tests in the UK range from £19 for a single marker to
             over £900 for premium executive panels. This independent 2026 guide
             breaks down what you actually pay across the major CQC-regulated
             providers, where hidden fees appear, and how to match panel depth to
             what you want to learn.
           </p>
-          <p className="text-sm text-white/78 mt-4">
+          <p className="text-sm text-slate-600 mt-4">
             Last reviewed: 19 July 2026 · Editorially independent · Prices are
             typical retail rates and change frequently
           </p>
@@ -240,9 +240,9 @@ export const PrivateBloodTestCostGuidePage = () => {
             general wellness panel, with entry-level single markers available
             from £19 for basic finger-prick tests.
           </p>
-          <div className="overflow-x-auto rounded-xl border border-white/10">
+          <div className="overflow-x-auto rounded-xl border border-slate-200">
             <table className="w-full text-sm">
-              <thead className="bg-white/5 text-white/90">
+              <thead className="bg-slate-50 text-slate-700">
                 <tr>
                   <th className="text-left px-4 py-3 font-medium">Tier</th>
                   <th className="text-left px-4 py-3 font-medium">
@@ -253,7 +253,7 @@ export const PrivateBloodTestCostGuidePage = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/10">
+              <tbody className="divide-y divide-slate-200">
                 {priceBands.map((b) => (
                   <tr key={b.tier}>
                     <td className="px-4 py-3 font-medium">{b.tier}</td>
@@ -276,9 +276,9 @@ export const PrivateBloodTestCostGuidePage = () => {
             direct-to-consumer providers. Actual prices update frequently —
             always check the live comparison on the panel page.
           </p>
-          <div className="overflow-x-auto rounded-xl border border-white/10">
+          <div className="overflow-x-auto rounded-xl border border-slate-200">
             <table className="w-full text-sm">
-              <thead className="bg-white/5 text-white/90">
+              <thead className="bg-slate-50 text-slate-700">
                 <tr>
                   <th className="text-left px-4 py-3 font-medium">Provider</th>
                   <th className="text-left px-4 py-3 font-medium">
@@ -292,7 +292,7 @@ export const PrivateBloodTestCostGuidePage = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/10">
+              <tbody className="divide-y divide-slate-200">
                 {providerSnapshot.map((p) => (
                   <tr key={p.provider}>
                     <td className="px-4 py-3 font-medium">{p.provider}</td>
@@ -304,7 +304,7 @@ export const PrivateBloodTestCostGuidePage = () => {
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-white/78 mt-3">
+          <p className="text-xs text-slate-600 mt-3">
             Prices sourced from each provider's public UK website, July 2026.
             Includes VAT where applicable. Excludes optional add-ons such as
             consultant review or expedited turnaround.
@@ -326,7 +326,7 @@ export const PrivateBloodTestCostGuidePage = () => {
                 <CardHeader>
                   <CardTitle className="text-base">{h.label}</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/90">
+                <CardContent className="text-sm text-slate-700">
                   {h.detail}
                 </CardContent>
               </Card>
@@ -346,7 +346,7 @@ export const PrivateBloodTestCostGuidePage = () => {
                   Checking a single concern
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-white/90">
+              <CardContent className="text-sm text-slate-700">
                 A single-marker test (vitamin D, TSH, ferritin, PSA) at £19–£45
                 is usually enough when you already know what you want to
                 measure.
@@ -359,7 +359,7 @@ export const PrivateBloodTestCostGuidePage = () => {
                   Baseline or annual review
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-white/90">
+              <CardContent className="text-sm text-slate-700">
                 A general wellness panel at £99–£199 covers thyroid, liver,
                 kidney, cholesterol, iron and key vitamins — the standard MOT
                 for most adults.
@@ -372,7 +372,7 @@ export const PrivateBloodTestCostGuidePage = () => {
                   Symptom investigation
                 </CardTitle>
               </CardHeader>
-              <CardContent className="text-sm text-white/90">
+              <CardContent className="text-sm text-slate-700">
                 An advanced panel at £199–£399 adds hormones, inflammation and
                 advanced lipids — worth it when symptoms don't fit a single
                 system.
@@ -425,7 +425,7 @@ export const PrivateBloodTestCostGuidePage = () => {
                 <CardHeader>
                   <CardTitle className="text-base">{f.q}</CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/90">
+                <CardContent className="text-sm text-slate-700">
                   {f.a}
                 </CardContent>
               </Card>
@@ -433,11 +433,11 @@ export const PrivateBloodTestCostGuidePage = () => {
           </div>
         </section>
 
-        <section className="rounded-2xl border border-white/10 bg-gradient-to-r from-[#22c0d4]/15 to-[#e70d69]/15 p-6 lg:p-8 mb-10">
+        <section className="rounded-2xl border border-slate-200 bg-gradient-to-r from-[#22c0d4]/15 to-[#e70d69]/15 p-6 lg:p-8 mb-10">
           <h2 className="text-2xl font-semibold mb-2">
             Compare live prices across UK providers
           </h2>
-          <p className="text-white/90 mb-6">
+          <p className="text-slate-700 mb-6">
             Independent, side-by-side price comparison across CQC-regulated UK
             laboratories. No pay-to-rank, no upselling — just what each test
             actually costs delivered.
@@ -455,7 +455,7 @@ export const PrivateBloodTestCostGuidePage = () => {
           </div>
         </section>
 
-        <p className="text-xs text-white/78">
+        <p className="text-xs text-slate-600">
           Editorial note: prices in this guide are typical retail rates from
           public provider websites in July 2026 and change frequently. This
           article is for information only and does not constitute medical

@@ -99,17 +99,17 @@ const BiomarkerGuidePage = () => {
         </script>
       </Helmet>
 
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 text-white">
-        <nav className="text-sm text-white/78 mb-6" aria-label="Breadcrumb">
-          <Link to="/" className="hover:text-white">
+      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-16 text-[#081129]">
+        <nav className="text-sm text-slate-600 mb-6" aria-label="Breadcrumb">
+          <Link to="/" className="hover:text-[#081129]">
             Home
           </Link>
           <span className="mx-2">/</span>
-          <Link to="/guides" className="hover:text-white">
+          <Link to="/guides" className="hover:text-[#081129]">
             Guides
           </Link>
           <span className="mx-2">/</span>
-          <span className="text-white/90">{guide.keyword}</span>
+          <span className="text-slate-700">{guide.keyword}</span>
         </nav>
 
         <header className="mb-10">
@@ -119,11 +119,11 @@ const BiomarkerGuidePage = () => {
           <h1 className="font-display text-4xl lg:text-5xl font-semibold tracking-tight mb-4">
             {guide.keyword}
           </h1>
-          <p className="text-lg text-white/90">{guide.strapline}</p>
+          <p className="text-lg text-slate-700">{guide.strapline}</p>
         </header>
 
         <section className="mb-10">
-          <p className="text-base lg:text-lg leading-relaxed text-white/85">
+          <p className="text-base lg:text-lg leading-relaxed text-slate-700">
             {guide.intro}
           </p>
         </section>
@@ -134,13 +134,13 @@ const BiomarkerGuidePage = () => {
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
             {guide.biomarkers.map((b) => (
-              <Card key={b.name} className="bg-white/5 border-white/10">
+              <Card key={b.name} className="bg-slate-50 border-slate-200">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-base text-white">
+                  <CardTitle className="text-base text-[#081129]">
                     {b.name}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="text-sm text-white/90">
+                <CardContent className="text-sm text-slate-700">
                   {b.what}
                 </CardContent>
               </Card>
@@ -152,7 +152,7 @@ const BiomarkerGuidePage = () => {
           <h2 className="text-2xl font-semibold mb-4">Why it matters</h2>
           <ul className="space-y-3">
             {guide.whyItMatters.map((p) => (
-              <li key={p} className="flex gap-3 text-white/85">
+              <li key={p} className="flex gap-3 text-slate-700">
                 <CheckCircle2 className="h-5 w-5 text-[#22c0d4] flex-shrink-0 mt-0.5" />
                 <span>{p}</span>
               </li>
@@ -162,7 +162,7 @@ const BiomarkerGuidePage = () => {
 
         <section className="mb-12">
           <h2 className="text-2xl font-semibold mb-4">How testing works</h2>
-          <ol className="space-y-3 list-decimal list-inside text-white/85">
+          <ol className="space-y-3 list-decimal list-inside text-slate-700">
             {guide.howItWorks.map((s) => (
               <li key={s} className="pl-2">
                 {s}
@@ -171,14 +171,14 @@ const BiomarkerGuidePage = () => {
           </ol>
         </section>
 
-        <section className="mb-12 rounded-2xl border border-white/10 bg-gradient-to-br from-[#22c0d4]/10 to-[#e70d69]/10 p-6 lg:p-8">
+        <section className="mb-12 rounded-2xl border border-slate-200 bg-gradient-to-br from-[#22c0d4]/10 to-[#e70d69]/10 p-6 lg:p-8">
           <div className="flex items-start gap-4 mb-4">
             <ShieldCheck className="h-6 w-6 text-[#22c0d4] flex-shrink-0 mt-1" />
             <div>
               <h2 className="text-xl font-semibold mb-2">
                 Compare {guide.keyword} prices in the UK
               </h2>
-              <p className="text-white/75">
+              <p className="text-slate-600">
                 Side-by-side comparison of CQC-regulated providers and
                 UKAS-accredited laboratories. Transparent pricing, typical
                 turnaround times and sample methods.
@@ -204,10 +204,10 @@ const BiomarkerGuidePage = () => {
             {guide.faqs.map((f) => (
               <div
                 key={f.q}
-                className="border-b border-white/10 pb-5 last:border-0"
+                className="border-b border-slate-200 pb-5 last:border-0"
               >
                 <h3 className="text-lg font-semibold mb-2">{f.q}</h3>
-                <p className="text-white/75 leading-relaxed">{f.a}</p>
+                <p className="text-slate-600 leading-relaxed">{f.a}</p>
               </div>
             ))}
           </div>
@@ -221,17 +221,17 @@ const BiomarkerGuidePage = () => {
                 <Link
                   key={r.slug}
                   to={`/guides/${r.slug}`}
-                  className="block rounded-xl border border-white/10 bg-white/5 p-4 hover:bg-white/10 transition"
+                  className="block rounded-xl border border-slate-200 bg-slate-50 p-4 hover:bg-slate-100 transition"
                 >
-                  <div className="text-sm text-white/78 mb-1">{r.category}</div>
-                  <div className="font-semibold text-white">{r.keyword}</div>
+                  <div className="text-sm text-slate-600 mb-1">{r.category}</div>
+                  <div className="font-semibold text-[#081129]">{r.keyword}</div>
                 </Link>
               ))}
             </div>
           </section>
         )}
 
-        <p className="text-xs text-white/78 mt-12">
+        <p className="text-xs text-slate-600 mt-12">
           This guide is for general information only and does not constitute
           medical advice. Always discuss test results with a qualified
           clinician.
