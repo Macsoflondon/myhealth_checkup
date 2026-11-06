@@ -1,17 +1,22 @@
-# myhealth checkup — robots.txt
+# myhealth checkup robots.txt
 # Indexing is intentionally allowed for all public pages.
-# Only auth, admin, dashboard, and account/private areas are blocked.
+# Only auth, admin, dashboard, and account or private areas are blocked.
+#
+# Content Signals (https://contentsignals.org/)
+# search   = yes : allow building a search index and showing links and short excerpts
+# ai-input = yes : allow use as live input to AI answers (citation, grounding)
+# ai-train = yes : allow use to train or fine-tune AI models
+# Crawlers obey only the most specific matching User-agent group,
+# so every group repeats the same Content-Signal and private-path rules.
 
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Allow: /sitemap.xml
 Disallow: /admin
-Disallow: /admin/
 Disallow: /auth
-Disallow: /auth/
 Disallow: /reset-password
 Disallow: /dashboard
-Disallow: /dashboard/
 Disallow: /health-dashboard
 Disallow: /client-portal
 Disallow: /portal
@@ -20,38 +25,16 @@ Disallow: /notification-history
 Disallow: /feedback
 Disallow: /typography-showcase
 
-# Sitemap — must remain crawlable so Googlebot can discover all public URLs.
-Sitemap: https://myhealthcheckup.co.uk/sitemap.xml
-
-# Major search bots — explicit allow of all public content
+# Major search bots
 User-agent: Googlebot
-Allow: /
-Allow: /sitemap.xml
-Disallow: /admin
-Disallow: /admin/
-Disallow: /auth
-Disallow: /auth/
-Disallow: /reset-password
-Disallow: /dashboard
-Disallow: /dashboard/
-Disallow: /health-dashboard
-Disallow: /client-portal
-Disallow: /portal
-Disallow: /notifications
-Disallow: /notification-history
-Disallow: /feedback
-Disallow: /typography-showcase
-
 User-agent: Bingbot
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Allow: /sitemap.xml
 Disallow: /admin
-Disallow: /admin/
 Disallow: /auth
-Disallow: /auth/
 Disallow: /reset-password
 Disallow: /dashboard
-Disallow: /dashboard/
 Disallow: /health-dashboard
 Disallow: /client-portal
 Disallow: /portal
@@ -62,93 +45,66 @@ Disallow: /typography-showcase
 
 # Social preview crawlers
 User-agent: Twitterbot
-Allow: /
-Allow: /sitemap.xml
-
 User-agent: facebookexternalhit
-Allow: /
-Allow: /sitemap.xml
-
 User-agent: LinkedInBot
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Allow: /sitemap.xml
+Disallow: /admin
+Disallow: /auth
+Disallow: /reset-password
+Disallow: /dashboard
+Disallow: /health-dashboard
+Disallow: /client-portal
+Disallow: /portal
+Disallow: /notifications
+Disallow: /notification-history
+Disallow: /feedback
+Disallow: /typography-showcase
 
-# Throttle aggressive scrapers
+# SEO crawlers, throttled
 User-agent: AhrefsBot
-Crawl-delay: 10
-
 User-agent: SemrushBot
 Crawl-delay: 10
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
+Allow: /
+Disallow: /admin
+Disallow: /auth
+Disallow: /reset-password
+Disallow: /dashboard
+Disallow: /health-dashboard
+Disallow: /client-portal
+Disallow: /portal
+Disallow: /notifications
+Disallow: /notification-history
+Disallow: /feedback
+Disallow: /typography-showcase
 
-# AI crawlers — explicit allow for citation/training discovery
+# AI crawlers, explicit allow for citation and training discovery
 User-agent: GPTBot
-Allow: /
-Allow: /sitemap.xml
-Disallow: /admin
-Disallow: /auth
-Disallow: /dashboard
-Disallow: /client-portal
-Disallow: /portal
-
 User-agent: OAI-SearchBot
-Allow: /
-Allow: /sitemap.xml
-Disallow: /admin
-Disallow: /auth
-Disallow: /dashboard
-Disallow: /client-portal
-Disallow: /portal
-
 User-agent: ChatGPT-User
-Allow: /
-Allow: /sitemap.xml
-Disallow: /admin
-Disallow: /auth
-Disallow: /dashboard
-Disallow: /client-portal
-Disallow: /portal
-
 User-agent: ClaudeBot
-Allow: /
-Allow: /sitemap.xml
-Disallow: /admin
-Disallow: /auth
-Disallow: /dashboard
-Disallow: /client-portal
-Disallow: /portal
-
+User-agent: Claude-SearchBot
+User-agent: Claude-User
 User-agent: Claude-Web
-Allow: /
-Allow: /sitemap.xml
-Disallow: /admin
-Disallow: /auth
-Disallow: /dashboard
-Disallow: /client-portal
-Disallow: /portal
-
 User-agent: PerplexityBot
-Allow: /
-Allow: /sitemap.xml
-Disallow: /admin
-Disallow: /auth
-Disallow: /dashboard
-Disallow: /client-portal
-Disallow: /portal
-
+User-agent: Perplexity-User
 User-agent: Google-Extended
-Allow: /
-Allow: /sitemap.xml
-Disallow: /admin
-Disallow: /auth
-Disallow: /dashboard
-Disallow: /client-portal
-Disallow: /portal
-
 User-agent: Applebot-Extended
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 Allow: /sitemap.xml
 Disallow: /admin
 Disallow: /auth
+Disallow: /reset-password
 Disallow: /dashboard
+Disallow: /health-dashboard
 Disallow: /client-portal
 Disallow: /portal
+Disallow: /notifications
+Disallow: /notification-history
+Disallow: /feedback
+Disallow: /typography-showcase
+
+Sitemap: https://myhealthcheckup.co.uk/sitemap.xml
