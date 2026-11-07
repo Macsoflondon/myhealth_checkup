@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { detailedProviders } from "@/data/compare/detailedProviders";
-import { normalizeProviderId } from "@/constants/providers";
+import { getProviderName, normalizeProviderId } from "@/constants/providers";
 import {
   getProviderProfileRoute,
   getProviderRoute,
@@ -20,6 +20,11 @@ const providerIds = [
 ];
 
 describe("Provider navigation", () => {
+  it("displays EDGE while retaining the stable catalogue ID", () => {
+    expect(getProviderName("sports-blood-tests")).toBe("EDGE");
+    expect(normalizeProviderId("EDGE")).toBe("sports-blood-tests");
+    expect(normalizeProviderFromName("EDGE")).toBe("sports-blood-tests");
+  });
   it.each([
     ["London Health Company", "london-health-company"],
     ["London Medical Laboratory", "london-medical-laboratory"],

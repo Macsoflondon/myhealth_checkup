@@ -3,6 +3,7 @@
  * results to provider_blog_posts with the service-role client.
  */
 import { BLOG_SOURCES, categoriseArticle, type BlogSource } from "./sources";
+import { edgeLinks, edgePublicationDate } from "../edge-source";
 
 const USER_AGENT =
   "Mozilla/5.0 (compatible; myhealthcheckup-aggregator/1.0; +https://myhealthcheckup.co.uk)";
@@ -310,6 +311,47 @@ async function parseSitemapOg(
 }
 
 async function collectForSource(source: BlogSource): Promise<AggregatedPost[]> {
+  if (source.type === "edge-index") {
+    const index = await fetchText(source.urls[0]);
+    if (!index) throw new Error("EDGE article index unavailable");
+    const posts: AggregatedPost[] = [];
+    for (const url of edgeLinks(index, "biomarkers").slice(
+      0,
+      source.maxPages ?? 100,
+    )) {
+      const html = await fetchText(url);
+      if (!html) throw new Error("EDGE article unavailable");
+      const published = edgePublicationDate(html);
+      // The existing table requires a date. Never invent it when the provider omits it.
+      if (!published) continue;
+      const title = firstMatch(html, /<h1[^>]*>([\s\S]*?)<\/h1>/i);
+      if (!title) continue;
+      const intro = firstMatch(
+        html,
+        /<h1[^>]*>[\s\S]*?<\/h1>[\s\S]*?<p[^>]*>([\s\S]*?)<\/p>/i,
+      );
+      const excerpt = truncate(
+        stripHtml(intro ?? metaFrom(html, "description") ?? ""),
+      );
+      const image = metaFrom(html, "og:image");
+      posts.push({
+        provider_id: source.providerId,
+        provider_name: source.providerName,
+        title: stripHtml(title),
+        excerpt,
+        url,
+        image_url:
+          image && !isGenericImage(image) && !/edge-icon/i.test(image)
+            ? image
+            : null,
+        category: categoriseArticle(`${title} ${excerpt}`),
+        published_at: published,
+        source_type: "edge-index",
+        source_url: source.urls[0],
+      });
+    }
+    return posts;
+  }
   if (source.type === "sitemap-og") {
     const results = await Promise.all(
       source.urls.map((url) => parseSitemapOg(source, url)),
@@ -378,7 +420,8 @@ const applyMeta = (post: AggregatedPost, html: string): void => {
       metaFrom(html, "og:image") ??
       metaFrom(html, "twitter:image");
     const resolved = image ? absoluteUrl(image, post.url) : null;
-    if (resolved && !isGenericImage(resolved)) post.image_url = resolved;
+    if (resolved && !isGenericImage(resolved) && !/edge-icon/i.test(resolved))
+      post.image_url = resolved;
   }
 
   if (post.excerpt.length < 60) {
@@ -467,7 +510,9 @@ async function backfillStoredPosts(limit = 200): Promise<number> {
 }
 
 /** Fetch every configured provider blog and upsert the results. */
-export async function runBlogAggregation(): Promise<{
+export async function runBlogAggregation(
+  providerIds?: readonly string[],
+): Promise<{
   totalUpserted: number;
   backfilled: number;
   providers: ProviderRunResult[];
@@ -479,6 +524,7 @@ export async function runBlogAggregation(): Promise<{
   let totalUpserted = 0;
 
   for (const source of BLOG_SOURCES) {
+    if (providerIds && !providerIds.includes(source.providerId)) continue;
     try {
       const posts = await collectForSource(source);
       const deduped = Array.from(

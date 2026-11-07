@@ -6,6 +6,17 @@ const serialiseRules = (rules: { category: string; pattern: RegExp }[]) =>
   rules.map((r) => ({ category: r.category, pattern: r.pattern.toString() }));
 
 describe("blog sources parity (app vs blog-aggregate edge function)", () => {
+  it("includes EDGE's biomarker article index in daily aggregation", () => {
+    expect(
+      web.BLOG_SOURCES.find(
+        (source) => source.providerId === "sports-blood-tests",
+      ),
+    ).toMatchObject({
+      providerName: "EDGE",
+      type: "edge-index",
+      urls: ["https://www.sportsbloodtests.co.uk/biomarkers/"],
+    });
+  });
   it("BLOG_SOURCES are identical", () => {
     expect(deno.BLOG_SOURCES).toEqual(web.BLOG_SOURCES);
   });

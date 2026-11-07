@@ -1,5 +1,12 @@
 # Roadmap
 
+## EDGE provider updates
+- [x] EDGE display maps and homepage provider labels updated; stable sports-blood-tests ID retained.
+- [x] Verified all 12 fixed-product prices (£99–£130), full marker lists and verbatim descriptions; prepared exact-price migration including omitted Advanced Testosterone.
+- [x] Added EDGE's 24 biomarker articles to daily aggregation; verified source publication dates and prepared article migration with no provider-icon heroes.
+- [x] Prepared six-hourly workflow (00:32/06:32/12:32/18:32 UTC) using shared provider upsert, source-price parser and scrape-run logging; 37 regression tests pass.
+- [ ] Activate EDGE catalogue/articles and confirm scheduled refresh/card readback — blocked on Claude applying the onboarding + two follow-up migrations, confirmed CQC partner sign-off, and GitHub workflow activation/server-only secret. No database writes or publishing performed.
+
 - [x] Delete the desktop/tablet category pill toolbar site-wide; the brand bar's menu drawer is now the only navigation entry point at every width, with a sticky trigger once the brand bar scrolls away. Bar absent and drawer opening at 1280/768/375 on / and /popular-tests; 1,147 tests passed, changed-file lint clean, automatic build OK. Preview only; no database changes.
 
 - [x] Clarify the homepage comparison offer, search snippet and matching WebPage description; visible copy and SSR/social metadata browser-verified, 46 regression tests passed, changed-file lint and SEO check clean, automatic build OK. No search-performance diagnosis below 100 homepage impressions; reaches live on next publish.

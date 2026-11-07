@@ -8,7 +8,7 @@
  * back to the provider. No full-text article content is copied.
  */
 
-export type BlogSourceType = "atom" | "rss" | "sitemap-og";
+export type BlogSourceType = "atom" | "rss" | "sitemap-og" | "edge-index";
 
 export interface BlogSource {
   providerId: string;
@@ -49,6 +49,13 @@ const MEDICHECKS_BLOG_HANDLES = [
 ];
 
 export const BLOG_SOURCES: BlogSource[] = [
+  {
+    providerId: "sports-blood-tests",
+    providerName: "EDGE",
+    type: "edge-index",
+    urls: ["https://www.sportsbloodtests.co.uk/biomarkers/"],
+    maxPages: 100,
+  },
   {
     providerId: "medichecks",
     providerName: "Medichecks",

@@ -39,7 +39,7 @@ export const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
   "randox-health": "Randox Health",
   clinilabs: "Clinilabs",
   "medical-diagnosis": "Medical Diagnosis",
-  "sports-blood-tests": "Sports Blood Tests",
+  "sports-blood-tests": "EDGE",
 };
 
 /**
@@ -117,7 +117,12 @@ export function normalizeProviderFromName(providerName: string): string {
   if (name.includes("london-health-company")) return "london-health-company";
   if (name.includes("clinilabs")) return "clinilabs";
   if (name.includes("medical-diagnosis")) return "medical-diagnosis";
-  if (name.includes("sports-blood") || name.includes("sportsblood")) return "sports-blood-tests";
+  if (
+    name === "edge" ||
+    name.includes("sports-blood") ||
+    name.includes("sportsblood")
+  )
+    return "sports-blood-tests";
   if (name.includes("london")) return "london-medical-laboratory";
 
   return providerName;

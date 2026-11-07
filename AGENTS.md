@@ -1,5 +1,7 @@
 # Architecture decisions
 
+- EDGE keeps the sports-blood-tests catalogue ID; exact product prices refresh through the shared provider upsert in a six-hourly GitHub workflow, while biomarker articles join the existing daily source aggregator. Why: stable IDs preserve links and the provider's £35 navigation offer must never replace product prices.
+
 - Navigation: the brand-bar menu drawer is the full nav at every width; a desktop-only category pill row (DesktopCategoryToolbar, homepage hero) was restored on 03/11/2026 at the owner's request. Why: the owner wants quick category access on desktop while keeping one complete menu.
 
 - FHIR shared reads require the owner's latest export consent and prohibit response caching; withdrawal updates all active export-consent records so older grants cannot restore access.

@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+import { getProviderName } from "@/constants/providers";
 import {
   HOMEPAGE_PROVIDER_IDS,
   selectHomepageProviderTests,
@@ -41,6 +42,7 @@ export async function getHomepageShowcaseTests() {
   });
   return selectHomepageProviderTests(candidates).map((test) => ({
     ...test,
+    provider_name: getProviderName(test.provider_id),
     category: test.category_primary,
     canonical_category: test.category_primary,
   }));
