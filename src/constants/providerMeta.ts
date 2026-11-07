@@ -67,13 +67,13 @@ export const PROVIDER_META: Record<
     ukas: false,
     cqc: false,
   },
-  // Flags stay false until the owner's laboratory sign-off is recorded.
+  // Owner sign-off 07/11/2026: UKAS ISO 15189 laboratory, CQC-regulated partner clinics.
   "sports-blood-tests": {
     displayName: "EDGE",
     logo: PROVIDER_LOGO_ASSETS["sports-blood-tests"].src,
     color: "#081129",
-    ukas: false,
-    cqc: false,
+    ukas: true,
+    cqc: true,
   },
 };
 

@@ -619,9 +619,8 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     canonicalBase: "https://myhealthcheckup.co.uk/medical-diagnosis",
   },
 
-  // Copy below restates EDGE's own published service details (checked
-  // 07/11/2026 on sportsbloodtests.co.uk). Accreditation is attributed to the
-  // provider until the owner's laboratory sign-off is recorded.
+  // Service details from sportsbloodtests.co.uk (checked 07/11/2026).
+  // Laboratory accreditation signed off by the site owner on 07/11/2026.
   "sports-blood-tests": {
     id: "sports-blood-tests",
     name: "EDGE",
@@ -645,7 +644,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       {
         title: "Accredited laboratory",
         description:
-          "EDGE states it works only with UKAS ISO 15189 accredited laboratories",
+          "Samples analysed in UKAS ISO 15189 accredited laboratories",
       },
     ],
     sampleOptions: [
@@ -671,7 +670,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
         },
         {
           bold: "Laboratory:",
-          text: "EDGE states samples are analysed by an NHS laboratory with UKAS ISO 15189 accreditation",
+          text: "Samples analysed in a UKAS ISO 15189 accredited laboratory",
         },
         {
           bold: "Turnaround:",
@@ -685,14 +684,14 @@ export const providerConfigs: Record<string, ProviderConfig> = {
     },
     quickInfo: {
       sampleType: "Capillary (finger-prick) home kit",
-      labProcessing: "NHS laboratory, UKAS ISO 15189 (provider-stated)",
+      labProcessing: "UKAS ISO 15189 accredited laboratory",
       resultsDelivery: "Online results with sports doctor review",
     },
     ctaText:
       "Book with EDGE on its website. Prices and availability are checked against the provider's own pages.",
     ctaButtonText: "Book",
     aboutText:
-      "blood test from EDGE, using a home finger-prick kit analysed in a provider-stated UKAS ISO 15189 laboratory.",
+      "blood test from EDGE, using a home finger-prick kit analysed in a UKAS ISO 15189 accredited laboratory.",
     canonicalBase: "https://myhealthcheckup.co.uk/provider/sports-blood-tests",
   },
 };

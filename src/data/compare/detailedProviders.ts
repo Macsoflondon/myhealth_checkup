@@ -282,7 +282,7 @@ export const detailedProviders = [
     name: "EDGE",
     website: getProviderWebsite("sports-blood-tests"),
     accreditation:
-      "Provider states UKAS ISO 15189 laboratories; CQC-regulated partner clinics",
+      "UKAS accredited laboratory (ISO 15189); CQC-regulated partner clinics",
     coreServices:
       "Sport-specific blood test panels for runners, cyclists, triathletes, weightlifters and CrossFit athletes, plus hormone and RED-S tests",
     tests:
@@ -294,7 +294,7 @@ export const detailedProviders = [
     keyDifferentiators:
       "Sport-specific panels, results reviewed by a sports doctor (provider-stated), ISO 27001 data security (provider-stated)",
     description:
-      "EDGE (sportsbloodtests.co.uk) offers blood tests designed around specific sports, with panels for runners, cyclists, triathletes, weightlifters and CrossFit athletes. Samples are collected with a home finger-prick kit. EDGE states it works with an NHS laboratory holding UKAS ISO 15189 accreditation and that results are reviewed by a sports doctor.",
+      "EDGE (sportsbloodtests.co.uk) offers blood tests designed around specific sports, with panels for runners, cyclists, triathletes, weightlifters and CrossFit athletes. Samples are collected with a home finger-prick kit. Samples are analysed in a UKAS-accredited ISO 15189 laboratory, and EDGE states results are reviewed by a sports doctor.",
   },
   {
     id: "clinilabs",

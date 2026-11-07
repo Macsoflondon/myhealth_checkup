@@ -4,7 +4,7 @@ Display name: **EDGE**. Catalogue/provider ID: `sports-blood-tests`.
 
 ## Claude hand-off
 
-No database changes were applied in this task. The owner confirmed on 07/11/2026 that EDGE uses CQC-regulated clinics; this is partner-clinic confirmation, not a claim that EDGE itself is regulated. Record that date and the actual laboratory identity/accreditation evidence before activation. Apply, in order, after checking live migration state and completing the evidence record:
+**Activated 07/11/2026.** Owner signed off EDGE (UKAS ISO 15189 laboratory, CQC-regulated partner clinics) on 07/11/2026. Onboarding applied as a migration; 12 tests refreshed from source by `scripts/edge-price-sync.ts` (superseding the exact-prices draft). Article draft `20261107001600_edge_provider_articles.sql` remains unapplied; the daily article workflow covers it.
 
 1. `20261106234500_onboard_sports_blood_tests.sql` (existing draft onboarding).
 2. `20261107001500_edge_exact_prices_and_name.sql` (12 exact prices, provider-verbatim descriptions and biomarkers, missing Advanced Testosterone, EDGE view label; no TEC calculation changes).

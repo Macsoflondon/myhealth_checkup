@@ -1,14 +1,12 @@
 -- Onboard Sports Blood Tests (EDGE, Humankind Ventures Ltd) as a provider.
--- Compliance: site owner confirmed 06/11/2026 that it is part of Forth (forthwithlife.co.uk)
--- and uses the same UKAS ISO 15189 laboratory as Forth.
+-- Compliance: site owner signed off 07/11/2026 that EDGE uses a UKAS ISO 15189 laboratory
+-- (shared with Forth) and CQC-regulated partner clinics.
 -- Prices and fees scraped 06/11/2026 from sportsbloodtests.co.uk product pages.
--- Collection fees (clinic £45, home nurse £59) from /our-service/how-to-take-a-blood-sample/.
 -- collection_fee_type left NULL so the displayed price equals the kit price (TEC rule unchanged).
 
 ALTER TABLE public.provider_tests DROP CONSTRAINT IF EXISTS provider_tests_valid_provider_id;
 ALTER TABLE public.provider_tests ADD CONSTRAINT provider_tests_valid_provider_id CHECK (provider_id = ANY (ARRAY['medichecks','thriva','randox','london-medical-laboratory','lola-health','goodbody-clinic','tuli-health','london-health-company','medical-diagnosis','clinilabs','sports-blood-tests']));
 
--- Mirror on provider_test_mapping: re-create with the existing list plus the new slug.
 DO $$
 DECLARE def text;
 BEGIN
@@ -51,6 +49,19 @@ INSERT INTO public.provider_tests (
   ('sports-blood-tests', 'sports-blood-tests-blood-test-for-male-triathletes', 'Blood Test for Male Triathletes', 129.0, 129.0, 'https://www.sportsbloodtests.co.uk/blood-tests/triathletes/triathlete-male/', '["Active B12", "Cortisol (9am)", "Creatine Kinase", "Creatinine", "eGFR", "Ferritin", "Haemoglobin", "hs-CRP", "Luteinising Hormone", "Prolactin", "Red Blood Cell", "Testosterone (total)", "Thyroid Stimulating Hormone", "Thyroxine (T4, free direct)", "Triiodothyronine (T3, free)", "Urea", "Vitamin D (25 OH)", "White Blood Cell Count"]'::jsonb, 18, 'Finger-prick', 'Finger-prick kit; clinic or home nurse draw available', true, false, 45, true, 59, true, 'Results within 2 working days', 2, 'days', 'Improve your performance, recovery and overall health with our at-home blood test for male triathletes. Upgrade your body, not just your kit.', 'Improve your performance, recovery and overall health with our at-home blood test for male triathletes. Upgrade your body, not just your kit.', 'scraped_verbatim', 'sports-performance', 'https://www.sportsbloodtests.co.uk/our-service/how-to-take-a-blood-sample/', false, 'partial', true, true, now())
 ON CONFLICT (provider_id, provider_test_id) DO NOTHING;
 
+-- Show the provider as EDGE in the comparison view, preserving the rest of its definition.
+DO $$
+DECLARE definition text;
+BEGIN
+  SELECT pg_get_viewdef('public.unified_provider_tests'::regclass,true) INTO definition;
+  IF position('sports-blood-tests' in definition)=0 THEN
+    IF position('CASE provider_id' in definition)=0 THEN RAISE EXCEPTION 'Provider name CASE changed; review view before applying'; END IF;
+    definition := replace(definition,'CASE provider_id','CASE provider_id WHEN ''sports-blood-tests''::text THEN ''EDGE''::text');
+    EXECUTE 'CREATE OR REPLACE VIEW public.unified_provider_tests WITH (security_invoker=true) AS ' || definition;
+  END IF;
+END $$;
+
 -- Rollback:
 -- UPDATE public.provider_tests SET is_active = false WHERE provider_id = 'sports-blood-tests';
 -- DELETE FROM public.provider_section_category_map WHERE provider_id = 'sports-blood-tests';
+-- Restore the previous unified_provider_tests definition to drop the EDGE label.
