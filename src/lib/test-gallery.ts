@@ -9,6 +9,7 @@
  */
 
 import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
+import { isPromotionalImage } from "@/lib/promotional-images";
 
 export interface GalleryContext {
   providerId?: string | null;
@@ -51,7 +52,9 @@ export function resolveGalleryImages(
 
   // De-duplicate while preserving order, and cap at the two slots the column
   // is designed for.
-  return [...new Set(images)].slice(0, 2);
+  return [...new Set(images)]
+    .filter((image) => !isPromotionalImage(image))
+    .slice(0, 2);
 }
 
 export function galleryImageAlt(

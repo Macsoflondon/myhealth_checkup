@@ -18,8 +18,13 @@ describe("promotional product images", () => {
   });
 
   it("never returns a promotional image for a comparison card", () => {
-    expect(
-      resolveTestCardImage({ providerId: "medichecks", imageUrl: BADGED, testName: "Ultimate Performance Blood Test" }),
-    ).toBeNull();
+    const resolved = resolveTestCardImage({
+      providerId: "medichecks",
+      imageUrl: BADGED,
+      testName: "Ultimate Performance Blood Test",
+    });
+    expect(resolved).not.toBe(BADGED);
+    expect(isPromotionalImage(resolved)).toBe(false);
+    expect(resolved).toContain("ultimate-performance-blood-test.webp");
   });
 });

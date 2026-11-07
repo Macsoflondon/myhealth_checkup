@@ -6,8 +6,29 @@ import {
 import { fromCategoryTestItem } from "@/lib/universalTestAdapter";
 import lolaAddonKit from "@/assets/providers/lola-addon-blood-test-kit.png.asset.json";
 import clinilabsQfitBox from "@/assets/providers/clinilabs-qfit-box-accreditation.png.asset.json";
+import medichecksUltimate from "@/assets/providers/medichecks/ultimate-performance-blood-test.webp.asset.json";
+import medichecksFemale from "@/assets/providers/medichecks/female-hormone-blood-test.webp.asset.json";
 
 describe("resolveTestCardImage", () => {
+  it("uses the verified Ultimate Performance kit instead of its blocked promotional picture", () => {
+    expect(
+      resolveTestCardImage({
+        providerId: "medichecks",
+        testName: "Ultimate Performance Blood Test",
+        imageUrl:
+          "https://x/provider-test-images/medichecks/be04a2b5-6605-4bab-a10f-012f0c788c1b-box.webp",
+      }),
+    ).toBe(medichecksUltimate.url);
+  });
+  it("restores the specific Female Hormone kit when its database image is missing", () => {
+    expect(
+      resolveTestCardImage({
+        providerId: "medichecks",
+        testName: "Female Hormone Blood Test",
+        imageUrl: null,
+      }),
+    ).toBe(medichecksFemale.url);
+  });
   it("uses the owner's uploaded kit image for Lola Health add-ons", () => {
     expect(
       resolveTestCardImage({
@@ -158,11 +179,19 @@ describe("Goodbody named boxes", () => {
 
 describe("Medical Diagnosis designed kit boxes", () => {
   it("gives a photo-less Medical Diagnosis test its designed box", () => {
-    const url = resolveTestCardImage({ providerId: "medical-diagnosis", testName: "Bone Profile", imageUrl: null });
+    const url = resolveTestCardImage({
+      providerId: "medical-diagnosis",
+      testName: "Bone Profile",
+      imageUrl: null,
+    });
     expect(url).toContain("md-kit-bone-profile.png");
   });
   it("prefers the designed box over a stored provider photo", () => {
-    const url = resolveTestCardImage({ providerId: "medical-diagnosis", testName: "Bone Profile", imageUrl: "https://example.com/own.jpg" });
+    const url = resolveTestCardImage({
+      providerId: "medical-diagnosis",
+      testName: "Bone Profile",
+      imageUrl: "https://example.com/own.jpg",
+    });
     expect(url).toContain("md-kit-bone-profile.png");
   });
 });

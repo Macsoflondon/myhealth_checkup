@@ -29,6 +29,7 @@
 - Homepage bands use the hero's available outer width and homepage-section-inner for shared gutters; the featured partner is not hidden behind a lazy-mount reveal, so empty navy reservations cannot precede its heading.
 
 - Test-card pictures share TestCardImage and use source product URLs with a neutral failure fallback; provider identity logos remain separate so image behaviour cannot drift across listings.
+- Audited Medichecks kit-only photographs live in the shared image resolver and take priority for their exact test names; all gallery slots reject blocked promotional images. Why: first-image scraping must not overwrite approved product photography or reintroduce promotions in detail views.
 - Active comparison headers also render TestCardImage from the catalogue image_url alongside their existing provider identity logo, so stored kit photographs appear consistently without replacing provider identification.
 
 - Collection variants use the view's selected-route pricing and public provider fee rules for additional routes; availability flags, not charges, establish clinic options so postage and clinical review cannot become blood-draw fees.

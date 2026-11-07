@@ -1,5 +1,10 @@
 # Roadmap
 
+## Medichecks kit photographs
+- [x] Audit all 192 active Medichecks tests: 191 image URLs return 200, ten blocked promotional assets and one missing image.
+- [x] Retrieve official photographs for all 11 affected tests; preserve the real box artwork and isolate it on white, with per-test source evidence.
+- [x] Ultimate Performance photo loads in sports listing and test details at 1280/375px; screenshots checked, 32 image regressions and all 1,236 unit tests pass, changed-file lint and automatic build clean. Preview only; no database changes or publishing.
+
 ## EDGE provider updates
 - [x] EDGE display maps and homepage provider labels updated; stable sports-blood-tests ID retained.
 - [x] Verified all 12 fixed-product prices (£99–£130), full marker lists and verbatim descriptions; prepared exact-price migration including omitted Advanced Testosterone.

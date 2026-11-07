@@ -1,4 +1,5 @@
 import { isPromotionalImage } from "@/lib/promotional-images";
+import { medichecksKitImage } from "@/lib/medichecks-kit-images";
 import lolaAddonKit from "@/assets/providers/lola-addon-blood-test-kit.png.asset.json";
 import clinilabsVenousKit from "@/assets/providers/clinilabs-venous-blood-test-kit.png.asset.json";
 import clinilabsMenopauseBox from "@/assets/providers/clinilabs-menopause-box.png.asset.json";
@@ -71,6 +72,10 @@ export function resolveTestCardImage({
 }: TestCardImageInput): string | null {
   if (providerId === "lola-health" && isAddon) return lolaAddonKit.url;
   const provider = (providerId ?? "").toLowerCase();
+  if (provider === "medichecks" && testName) {
+    const kit = medichecksKitImage(testName);
+    if (kit) return kit;
+  }
   if (provider && testName) {
     const name = testName
       .trim()
