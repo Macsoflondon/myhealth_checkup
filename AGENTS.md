@@ -17,6 +17,7 @@
 - Lola add-on presentation and homepage eligibility share a source-backed status resolver; explicit provider add-on categories or opening descriptions override a conflicting false flag without altering stored catalogue data.
 
 - Both homepage test showcases share a bounded per-provider catalogue query and round-robin selection, so global popularity flags cannot exclude providers; unranked catalogue selections never gain popularity badges.
+- The shared provider roster includes EDGE, and both homepage showcases render the complete selected set without a separate eight-card cap; configured provider identity never supplies fabricated catalogue rows or accreditation. Why: roster counts and card eligibility must agree without claiming activation is verified.
 
 - Public assistant history uses only the dedicated server-only CHAT_SIGNING_SECRET for bounded-age reply proofs; validate every supplied assistant reply before truncation, reject invalid history with HTTP 400 and timestamp/endpoint/reason-only logs, and reset client history so untrusted roles never reach the model.
 

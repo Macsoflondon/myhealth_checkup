@@ -4,7 +4,7 @@ Display name: **EDGE**. Catalogue/provider ID: `sports-blood-tests`.
 
 ## Claude hand-off
 
-No database changes were applied in this task. Apply, in order, after verifying CQC clinic/partner compliance:
+No database changes were applied in this task. The owner confirmed on 07/11/2026 that EDGE uses CQC-regulated clinics; this is partner-clinic confirmation, not a claim that EDGE itself is regulated. Record that date and the actual laboratory identity/accreditation evidence before activation. Apply, in order, after checking live migration state and completing the evidence record:
 
 1. `20261106234500_onboard_sports_blood_tests.sql` (existing draft onboarding).
 2. `20261107001500_edge_exact_prices_and_name.sql` (12 exact prices, provider-verbatim descriptions and biomarkers, missing Advanced Testosterone, EDGE view label; no TEC calculation changes).
@@ -43,3 +43,5 @@ Check view price parity before/after: only EDGE source prices should change; exi
 ## Outstanding verification
 
 The read-only database check found no EDGE catalogue rows. Live scheduling, successful write logs, public article/card readback and accreditation flags cannot be marked verified until activation. No publish was performed.
+
+The refreshed consolidated hand-off is `docs/claude-pending-work.md`. The preview now includes EDGE in the shared nine-provider directory/partner roster and removes the upper showcase's eight-card cap. Both showcases still require real eligible EDGE rows; no demonstration cards or prices were added.

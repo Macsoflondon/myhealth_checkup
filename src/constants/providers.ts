@@ -30,6 +30,7 @@ export const PROVIDER_LOGOS: Record<string, string> = {
   "london-health-company": LOGOS["london-health-company"].src,
   "medical-diagnosis": LOGOS["medical-diagnosis"].src,
   clinilabs: LOGOS.clinilabs.src,
+  "sports-blood-tests": LOGOS["sports-blood-tests"].src,
 };
 
 export const PROVIDER_NAMES: Record<string, string> = {
@@ -145,6 +146,12 @@ export const PROVIDER_DETAILS: Record<string, Provider> = {
     description: "In-clinic blood testing and diagnostics",
     accreditations: ["UKAS"],
   },
+  "sports-blood-tests": {
+    id: "sports-blood-tests",
+    name: "EDGE",
+    logo: PROVIDER_LOGOS["sports-blood-tests"],
+    website: PROVIDER_WEBSITES["sports-blood-tests"],
+  },
 };
 
 export const PROVIDER_TURNAROUND_TIMES: Record<string, string> = {
@@ -182,6 +189,7 @@ export const providers: Provider[] = [
   PROVIDER_DETAILS["london-health-company"],
   PROVIDER_DETAILS["medical-diagnosis"],
   PROVIDER_DETAILS["clinilabs"],
+  PROVIDER_DETAILS["sports-blood-tests"],
 ];
 
 export function getProviderLogo(providerId: string): string {

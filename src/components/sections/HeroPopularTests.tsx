@@ -72,14 +72,14 @@ export function HeroPopularTests() {
             titleClassName="text-tertiary"
           />
           <p className="text-sm sm:text-base font-semibold text-tertiary mx-auto leading-snug mt-1.5 text-center max-w-2xl">
-            Compare tests from all eight providers. We prioritise
-            provider-listed popular tests where rankings are available; other
-            selections are unranked.
+            Explore our nine-provider catalogue. We prioritise provider-listed
+            popular tests where rankings are available; other selections are
+            unranked.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {tests.slice(0, 8).map((test) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {tests.map((test) => (
             <UniversalTestCard key={test.id} test={toUniversalTest(test)} />
           ))}
         </div>

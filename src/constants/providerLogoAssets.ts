@@ -17,6 +17,7 @@ import goodbodyLogo from "@/assets/providers/logos/provider-goodbody-slate-2026.
 import londonHealthCompanyLogo from "@/assets/providers/logos/provider-london-health-company.webp?no-inline";
 import medicalDiagnosisLogo from "@/assets/providers/logos/provider-medical-diagnosis.webp?no-inline";
 import clinilabsLogo from "@/assets/providers/logos/provider-clinilabs.webp?no-inline";
+import edgeLogo from "@/assets/providers/logos/provider-edge.webp.asset.json";
 
 import lola160 from "@/assets/providers/responsive/lola-health@160.webp?no-inline";
 import lola320 from "@/assets/providers/responsive/lola-health@320.webp?no-inline";
@@ -59,6 +60,7 @@ export const PROVIDER_LOGO_ASSETS = {
   },
   "medical-diagnosis": { src: medicalDiagnosisLogo, width: 480, height: 204 },
   clinilabs: { src: clinilabsLogo, width: 422, height: 140 },
+  "sports-blood-tests": { src: edgeLogo.url, width: 756, height: 216 },
 } as const satisfies Record<string, LogoAsset>;
 
 export interface ResponsiveLogoAsset extends LogoAsset {

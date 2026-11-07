@@ -28,9 +28,9 @@ const candidates: ShowcaseCandidate[] = HOMEPAGE_PROVIDER_IDS.flatMap(
 );
 
 describe("homepage provider coverage", () => {
-  it("represents all eight providers in the upper eight-card section", () => {
-    const selected = selectHomepageProviderTests(candidates, 8);
-    expect(selected).toHaveLength(8);
+  it("represents all nine providers by default without excluding EDGE", () => {
+    const selected = selectHomepageProviderTests(candidates);
+    expect(selected).toHaveLength(9);
     expect(selected.map((test) => test.provider_id)).toEqual([
       "lola-health",
       "goodbody-clinic",
@@ -40,6 +40,7 @@ describe("homepage provider coverage", () => {
       "london-health-company",
       "medical-diagnosis",
       "clinilabs",
+      "sports-blood-tests",
     ]);
   });
   it("shows all nine providers once each in the lower nine-card section", () => {
@@ -49,7 +50,7 @@ describe("homepage provider coverage", () => {
     expect(selected[8].provider_id).toBe("sports-blood-tests");
   });
   it("never fabricates popularity for unranked providers", () => {
-    const selected = selectHomepageProviderTests(candidates, 8);
+    const selected = selectHomepageProviderTests(candidates);
     expect(
       selected
         .filter((test) => test.is_popular)

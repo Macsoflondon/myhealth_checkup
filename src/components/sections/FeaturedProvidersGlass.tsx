@@ -21,8 +21,8 @@ interface ProviderEntry {
   tagline: string;
   description: string;
   tags: string[];
-  glow: string; // hex
-  glowRgb: string; // r,g,b
+  glow?: string; // Provider-specific palette; absent uses platform tokens.
+  glowRgb?: string;
 }
 
 export const PROVIDERS: ProviderEntry[] = [
@@ -114,6 +114,15 @@ export const PROVIDERS: ProviderEntry[] = [
     glow: "#E53935",
     glowRgb: "229,57,53",
   },
+  {
+    id: "sports-blood-tests",
+    name: "EDGE",
+    displayName: "EDGE",
+    tagline: "Sports blood tests",
+    description:
+      "Blood tests for runners, cyclists, triathletes, weightlifters and CrossFit athletes, alongside hormone panels.",
+    tags: ["Sports performance", "Hormones", "Home kits"],
+  },
 ];
 
 const FeaturedProvidersGlass = () => {
@@ -130,11 +139,15 @@ const FeaturedProvidersGlass = () => {
               <article key={p.id} className="group relative">
                 {/* Always-visible coloured border layer */}
                 <div
-                  className="absolute -inset-[2px] rounded-[2.25rem] transition-all duration-500 group-hover:blur-[3px]"
-                  style={{
-                    backgroundImage: `linear-gradient(135deg, rgba(${p.glowRgb},0.9), rgba(${p.glowRgb},0.45))`,
-                    opacity: 1,
-                  }}
+                  className="absolute -inset-[2px] rounded-[2.25rem] transition-all duration-500 group-hover:blur-[3px] bg-brand-turquoise"
+                  style={
+                    p.glowRgb
+                      ? {
+                          backgroundImage: `linear-gradient(135deg, rgba(${p.glowRgb},0.9), rgba(${p.glowRgb},0.45))`,
+                          opacity: 1,
+                        }
+                      : undefined
+                  }
                 />
 
                 <div
@@ -183,7 +196,7 @@ const FeaturedProvidersGlass = () => {
                         {p.displayName}
                       </h2>
                       <p
-                        className="italic text-lg opacity-90"
+                        className="italic text-lg opacity-90 text-brand-navy"
                         style={{
                           fontFamily: "'EB Garamond', Garamond, serif",
                           color: p.glow,
@@ -220,11 +233,15 @@ const FeaturedProvidersGlass = () => {
                   <div className="relative z-10 space-y-3 pt-8">
                     <Link
                       to={getProviderProfileRoute(p.id)}
-                      className="block w-full py-4 px-6 rounded-2xl text-white font-bold text-sm text-center shadow-lg transition-all duration-300 active:scale-95 hover:brightness-110"
-                      style={{
-                        background: `linear-gradient(135deg, ${p.glow}, rgba(${p.glowRgb}, 0.78))`,
-                        boxShadow: `0 10px 30px -10px rgba(${p.glowRgb}, 0.5)`,
-                      }}
+                      className="block w-full py-4 px-6 rounded-2xl text-white font-bold text-sm text-center shadow-lg transition-all duration-300 active:scale-95 hover:brightness-110 bg-brand-pink"
+                      style={
+                        p.glowRgb
+                          ? {
+                              background: `linear-gradient(135deg, ${p.glow}, rgba(${p.glowRgb}, 0.78))`,
+                              boxShadow: `0 10px 30px -10px rgba(${p.glowRgb}, 0.5)`,
+                            }
+                          : undefined
+                      }
                     >
                       View profile
                     </Link>
