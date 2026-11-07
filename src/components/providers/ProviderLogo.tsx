@@ -15,6 +15,10 @@ export const ProviderLogo = ({
   const getProviderLogo = (providerName: string) => {
     const normalizedName = providerName.toLowerCase();
 
+    if (normalizedName === "edge" || normalizedName === "sports-blood-tests") {
+      return PROVIDER_LOGO_ASSETS["sports-blood-tests"].src;
+    }
+
     if (normalizedName.includes("medichecks")) {
       return PROVIDER_LOGO_ASSETS.medichecks.src;
     }
@@ -63,7 +67,9 @@ export const ProviderLogo = ({
   }
 
   return (
-    <img width={160} height={64}
+    <img
+      width={160}
+      height={64}
       src={logoSrc}
       alt={`${provider} logo`}
       className={className}
