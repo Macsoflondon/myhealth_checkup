@@ -22,6 +22,7 @@ export const PROVIDER_NAMES: Record<string, string> = {
   "london-medical-laboratory": "London Medical Laboratory",
   "london-health-company": "London Health Company",
   clinilabs: "Clinilabs",
+  "sports-blood-tests": "EDGE",
   "medical-diagnosis": "Medical Diagnosis",
 };
 

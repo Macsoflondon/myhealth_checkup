@@ -252,6 +252,7 @@ const providerDisplayNames: Record<string, string> = {
   "london-health-company": "London Health Company",
   "medical-diagnosis": "Medical Diagnosis",
   clinilabs: "Clinilabs",
+  "sports-blood-tests": "EDGE",
 };
 
 /** Extract clean biomarker names from the biomarkers_list JSON field */

@@ -278,6 +278,25 @@ export const detailedProviders = [
       "The Doctors Laboratory (TDL) is the UK's largest independent pathology provider, processing over 15 million tests annually. With UKAS accreditation and CQC registration, TDL provides gold-standard diagnostics used by NHS trusts, private hospitals, and leading healthcare providers. Their Wimpole Street clinic offers direct patient access to over 3,000 tests with many results available same day.",
   },
   {
+    id: "sports-blood-tests",
+    name: "EDGE",
+    website: getProviderWebsite("sports-blood-tests"),
+    accreditation:
+      "Provider states UKAS ISO 15189 laboratories; CQC-regulated partner clinics",
+    coreServices:
+      "Sport-specific blood test panels for runners, cyclists, triathletes, weightlifters and CrossFit athletes, plus hormone and RED-S tests",
+    tests:
+      "Fixed-price sport panels by sex, Advanced Testosterone and RED-S MyFORM®",
+    sampleCollection:
+      "Home finger-prick kits returned by post, with CQC-regulated partner clinics",
+    turnaroundTime: "2-3 working days (typical)",
+    customerReviews: "No verified independent rating available",
+    keyDifferentiators:
+      "Sport-specific panels, results reviewed by a sports doctor (provider-stated), ISO 27001 data security (provider-stated)",
+    description:
+      "EDGE (sportsbloodtests.co.uk) offers blood tests designed around specific sports, with panels for runners, cyclists, triathletes, weightlifters and CrossFit athletes. Samples are collected with a home finger-prick kit. EDGE states it works with an NHS laboratory holding UKAS ISO 15189 accreditation and that results are reviewed by a sports doctor.",
+  },
+  {
     id: "clinilabs",
     name: "Clinilabs",
     website: getProviderWebsite("clinilabs"),

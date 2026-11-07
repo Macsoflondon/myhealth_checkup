@@ -67,6 +67,14 @@ export const PROVIDER_META: Record<
     ukas: false,
     cqc: false,
   },
+  // Flags stay false until the owner's laboratory sign-off is recorded.
+  "sports-blood-tests": {
+    displayName: "EDGE",
+    logo: PROVIDER_LOGO_ASSETS["sports-blood-tests"].src,
+    color: "#081129",
+    ukas: false,
+    cqc: false,
+  },
 };
 
 export const getProviderMeta = (providerId: string) =>

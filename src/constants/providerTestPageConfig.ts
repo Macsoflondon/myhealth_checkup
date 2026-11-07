@@ -618,6 +618,83 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       "blood test with professional venous collection at a Medical Diagnosis clinic. Competitive pricing with secure online result delivery.",
     canonicalBase: "https://myhealthcheckup.co.uk/medical-diagnosis",
   },
+
+  // Copy below restates EDGE's own published service details (checked
+  // 07/11/2026 on sportsbloodtests.co.uk). Accreditation is attributed to the
+  // provider until the owner's laboratory sign-off is recorded.
+  "sports-blood-tests": {
+    id: "sports-blood-tests",
+    name: "EDGE",
+    logo: PROVIDER_LOGO_ASSETS["sports-blood-tests"].src,
+    turnaround: "2-3 working days (typical)",
+    badgeText: "EDGE blood test",
+    features: [
+      {
+        title: "Sport-specific panels",
+        description:
+          "Panels built around running, cycling, triathlon, weightlifting and CrossFit",
+      },
+      {
+        title: "Home sample kit",
+        description: "Finger-prick kit posted to you and returned by post",
+      },
+      {
+        title: "Doctor-reviewed results",
+        description: "EDGE states results are reviewed by a sports doctor",
+      },
+      {
+        title: "Accredited laboratory",
+        description:
+          "EDGE states it works only with UKAS ISO 15189 accredited laboratories",
+      },
+    ],
+    sampleOptions: [
+      {
+        icon: "home",
+        title: "Home finger-prick kit",
+        description:
+          "Collect a small capillary sample at home and post it to the laboratory.",
+      },
+      {
+        icon: "clinic",
+        title: "Partner clinic",
+        description:
+          "EDGE works with CQC-regulated partner clinics. Check booking options on the EDGE website.",
+      },
+    ],
+    whyChoose: {
+      title: "About EDGE",
+      items: [
+        {
+          bold: "Sport focus:",
+          text: "Panels grouped by sport and sex, with exact prices shown per test",
+        },
+        {
+          bold: "Laboratory:",
+          text: "EDGE states samples are analysed by an NHS laboratory with UKAS ISO 15189 accreditation",
+        },
+        {
+          bold: "Turnaround:",
+          text: "EDGE lists results in 2-3 working days for most tests; not guaranteed",
+        },
+        {
+          bold: "Data security:",
+          text: "EDGE states it is ISO 27001 certified",
+        },
+      ],
+    },
+    quickInfo: {
+      sampleType: "Capillary (finger-prick) home kit",
+      labProcessing: "NHS laboratory, UKAS ISO 15189 (provider-stated)",
+      resultsDelivery: "Online results with sports doctor review",
+    },
+    ctaText:
+      "Book with EDGE on its website. Prices and availability are checked against the provider's own pages.",
+    ctaButtonText: "Book",
+    aboutText:
+      "blood test from EDGE, using a home finger-prick kit analysed in a provider-stated UKAS ISO 15189 laboratory.",
+    canonicalBase: "https://myhealthcheckup.co.uk/provider/sports-blood-tests",
+  },
 };
 
 export const getProviderConfig = (

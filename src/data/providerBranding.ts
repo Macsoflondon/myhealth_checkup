@@ -42,6 +42,13 @@ export const providerBranding: Record<string, ProviderBrand> = {
     primaryLight: "#E8604C1A",
     accentLight: "#1B4B5A12",
   },
+  edge: {
+    primary: "#081129",
+    accent: "#22c0d4",
+    tagline: "Sport-specific blood tests",
+    primaryLight: "#0811291A",
+    accentLight: "#22c0d412",
+  },
   clinilabs: {
     primary: "#2E7D32",
     accent: "#1565C0",
@@ -138,6 +145,8 @@ export function getBranding(nameOrId: string): ProviderBrand | null {
   if (key.includes("randox")) return providerBranding.randox;
   if (key.includes("lola")) return providerBranding.lola;
   if (key.includes("clinilabs")) return providerBranding.clinilabs;
+  if (key === "edge" || key.includes("sports-blood-tests") || key.includes("sportsbloodtests"))
+    return providerBranding.edge;
   if (key.includes("london health"))
     return providerBranding.londonhealthcompany;
   if (key.includes("medical diagnosis"))

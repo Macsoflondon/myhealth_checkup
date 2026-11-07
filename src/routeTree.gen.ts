@@ -26,6 +26,7 @@ import { Route as ConditionsRouteImport } from './routes/conditions'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CookiesRouteImport } from './routes/cookies'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as EdgeRouteImport } from './routes/edge'
 import { Route as FairTradingRouteImport } from './routes/fair-trading'
 import { Route as FaqsRouteImport } from './routes/faqs'
 import { Route as FeedbackRouteImport } from './routes/feedback'
@@ -102,6 +103,7 @@ import { Route as MedichecksMensHealthRouteImport } from './routes/medichecks.me
 import { Route as ProvidersIndexRouteImport } from './routes/providers.index'
 import { Route as ProvidersClinilabsRouteImport } from './routes/providers.clinilabs'
 import { Route as ProvidersCompareRouteImport } from './routes/providers.compare'
+import { Route as ProvidersEdgeRouteImport } from './routes/providers.edge'
 import { Route as ProvidersGoodbodyClinicRouteImport } from './routes/providers.goodbody-clinic'
 import { Route as ProvidersLolaHealthRouteImport } from './routes/providers.lola-health'
 import { Route as ProvidersLondonHealthCompanyRouteImport } from './routes/providers.london-health-company'
@@ -226,6 +228,11 @@ const CookiesRoute = CookiesRouteImport.update({
 const DashboardRoute = DashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EdgeRoute = EdgeRouteImport.update({
+  id: '/edge',
+  path: '/edge',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FairTradingRoute = FairTradingRouteImport.update({
@@ -616,6 +623,11 @@ const ProvidersCompareRoute = ProvidersCompareRouteImport.update({
   path: '/providers/compare',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProvidersEdgeRoute = ProvidersEdgeRouteImport.update({
+  id: '/providers/edge',
+  path: '/providers/edge',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProvidersGoodbodyClinicRoute = ProvidersGoodbodyClinicRouteImport.update({
   id: '/providers/goodbody-clinic',
   path: '/providers/goodbody-clinic',
@@ -837,6 +849,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/dashboard': typeof DashboardRoute
+  '/edge': typeof EdgeRoute
   '/fair-trading': typeof FairTradingRoute
   '/faqs': typeof FaqsRoute
   '/feedback': typeof FeedbackRoute
@@ -897,6 +910,7 @@ export interface FileRoutesByFullPath {
   '/medichecks/mens-health': typeof MedichecksMensHealthRoute
   '/providers/clinilabs': typeof ProvidersClinilabsRoute
   '/providers/compare': typeof ProvidersCompareRoute
+  '/providers/edge': typeof ProvidersEdgeRoute
   '/providers/goodbody-clinic': typeof ProvidersGoodbodyClinicRoute
   '/providers/lola-health': typeof ProvidersLolaHealthRoute
   '/providers/london-health-company': typeof ProvidersLondonHealthCompanyRoute
@@ -970,6 +984,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/dashboard': typeof DashboardRoute
+  '/edge': typeof EdgeRoute
   '/fair-trading': typeof FairTradingRoute
   '/faqs': typeof FaqsRoute
   '/feedback': typeof FeedbackRoute
@@ -1030,6 +1045,7 @@ export interface FileRoutesByTo {
   '/medichecks/mens-health': typeof MedichecksMensHealthRoute
   '/providers/clinilabs': typeof ProvidersClinilabsRoute
   '/providers/compare': typeof ProvidersCompareRoute
+  '/providers/edge': typeof ProvidersEdgeRoute
   '/providers/goodbody-clinic': typeof ProvidersGoodbodyClinicRoute
   '/providers/lola-health': typeof ProvidersLolaHealthRoute
   '/providers/london-health-company': typeof ProvidersLondonHealthCompanyRoute
@@ -1105,6 +1121,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/cookies': typeof CookiesRoute
   '/dashboard': typeof DashboardRoute
+  '/edge': typeof EdgeRoute
   '/fair-trading': typeof FairTradingRoute
   '/faqs': typeof FaqsRoute
   '/feedback': typeof FeedbackRoute
@@ -1165,6 +1182,7 @@ export interface FileRoutesById {
   '/medichecks/mens-health': typeof MedichecksMensHealthRoute
   '/providers/clinilabs': typeof ProvidersClinilabsRoute
   '/providers/compare': typeof ProvidersCompareRoute
+  '/providers/edge': typeof ProvidersEdgeRoute
   '/providers/goodbody-clinic': typeof ProvidersGoodbodyClinicRoute
   '/providers/lola-health': typeof ProvidersLolaHealthRoute
   '/providers/london-health-company': typeof ProvidersLondonHealthCompanyRoute
@@ -1241,6 +1259,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/dashboard'
+    | '/edge'
     | '/fair-trading'
     | '/faqs'
     | '/feedback'
@@ -1301,6 +1320,7 @@ export interface FileRouteTypes {
     | '/medichecks/mens-health'
     | '/providers/clinilabs'
     | '/providers/compare'
+    | '/providers/edge'
     | '/providers/goodbody-clinic'
     | '/providers/lola-health'
     | '/providers/london-health-company'
@@ -1374,6 +1394,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/dashboard'
+    | '/edge'
     | '/fair-trading'
     | '/faqs'
     | '/feedback'
@@ -1434,6 +1455,7 @@ export interface FileRouteTypes {
     | '/medichecks/mens-health'
     | '/providers/clinilabs'
     | '/providers/compare'
+    | '/providers/edge'
     | '/providers/goodbody-clinic'
     | '/providers/lola-health'
     | '/providers/london-health-company'
@@ -1508,6 +1530,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/cookies'
     | '/dashboard'
+    | '/edge'
     | '/fair-trading'
     | '/faqs'
     | '/feedback'
@@ -1568,6 +1591,7 @@ export interface FileRouteTypes {
     | '/medichecks/mens-health'
     | '/providers/clinilabs'
     | '/providers/compare'
+    | '/providers/edge'
     | '/providers/goodbody-clinic'
     | '/providers/lola-health'
     | '/providers/london-health-company'
@@ -1643,6 +1667,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   CookiesRoute: typeof CookiesRoute
   DashboardRoute: typeof DashboardRoute
+  EdgeRoute: typeof EdgeRoute
   FairTradingRoute: typeof FairTradingRoute
   FaqsRoute: typeof FaqsRoute
   FeedbackRoute: typeof FeedbackRoute
@@ -1702,6 +1727,7 @@ export interface RootRouteChildren {
   MedichecksMensHealthRoute: typeof MedichecksMensHealthRoute
   ProvidersClinilabsRoute: typeof ProvidersClinilabsRoute
   ProvidersCompareRoute: typeof ProvidersCompareRoute
+  ProvidersEdgeRoute: typeof ProvidersEdgeRoute
   ProvidersGoodbodyClinicRoute: typeof ProvidersGoodbodyClinicRoute
   ProvidersLolaHealthRoute: typeof ProvidersLolaHealthRoute
   ProvidersLondonHealthCompanyRoute: typeof ProvidersLondonHealthCompanyRoute
@@ -1873,6 +1899,13 @@ declare module '@tanstack/react-router' {
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/edge': {
+      id: '/edge'
+      path: '/edge'
+      fullPath: '/edge'
+      preLoaderRoute: typeof EdgeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/fair-trading': {
@@ -2407,6 +2440,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProvidersCompareRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/providers/edge': {
+      id: '/providers/edge'
+      path: '/providers/edge'
+      fullPath: '/providers/edge'
+      preLoaderRoute: typeof ProvidersEdgeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/providers/goodbody-clinic': {
       id: '/providers/goodbody-clinic'
       path: '/providers/goodbody-clinic'
@@ -2722,6 +2762,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   CookiesRoute: CookiesRoute,
   DashboardRoute: DashboardRoute,
+  EdgeRoute: EdgeRoute,
   FairTradingRoute: FairTradingRoute,
   FaqsRoute: FaqsRoute,
   FeedbackRoute: FeedbackRoute,
@@ -2782,6 +2823,7 @@ const rootRouteChildren: RootRouteChildren = {
   MedichecksMensHealthRoute: MedichecksMensHealthRoute,
   ProvidersClinilabsRoute: ProvidersClinilabsRoute,
   ProvidersCompareRoute: ProvidersCompareRoute,
+  ProvidersEdgeRoute: ProvidersEdgeRoute,
   ProvidersGoodbodyClinicRoute: ProvidersGoodbodyClinicRoute,
   ProvidersLolaHealthRoute: ProvidersLolaHealthRoute,
   ProvidersLondonHealthCompanyRoute: ProvidersLondonHealthCompanyRoute,
