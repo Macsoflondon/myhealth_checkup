@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 // Index stays eager — it's the LCP route. Everything else is code-split.
 import Index from "@/pages/Index";
 import {
@@ -7,8 +8,22 @@ import {
 } from "@/components/sections/hero-slides";
 import { buildRouteHead } from "@/lib/seo/route-head";
 import { serializeJsonLd } from "@/lib/seo/json-ld";
+import { homepageComparisonQuery } from "@/lib/homepage-comparison-query";
 
 export const Route = createFileRoute("/")({
+  // Seed the same cache read by all three comparison slots before rendering.
+  // An unavailable catalogue must not turn the public homepage into an error.
+  loader: async ({ context }) => {
+    await context.queryClient.prefetchQuery(homepageComparisonQuery);
+    return {
+      comparisonState: dehydrate(context.queryClient, {
+        shouldDehydrateQuery: (query) =>
+          query.state.status === "success" &&
+          query.queryKey[0] === "homepage" &&
+          query.queryKey[1] === "compact-comparisons",
+      }),
+    };
+  },
   head: () => {
     const base = buildRouteHead({
       title: "Private blood test comparison UK | myhealth checkup",
@@ -63,5 +78,14 @@ export const Route = createFileRoute("/")({
       ],
     };
   },
-  component: Index,
+  component: HomepageRoute,
 });
+
+function HomepageRoute() {
+  const { comparisonState } = Route.useLoaderData();
+  return (
+    <HydrationBoundary state={comparisonState}>
+      <Index />
+    </HydrationBoundary>
+  );
+}

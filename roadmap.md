@@ -1,5 +1,9 @@
 # Roadmap
 
+## Homepage SEO Soft 404
+- [x] Prefetch and hydrate the existing live comparison query in the homepage loader, preserving the canonical, prices and comparison journey.
+- [x] Verified HTTP 200 and four source-backed comparison rows without JavaScript, 375/1280px screenshots with no overflow, hydrated prices without errors, populated comparison-link destination, 63 tests, changed-file lint, SEO/structured-data checks and automatic build OK. Preview only; Google classification remains subject to publishing and recrawl.
+
 ## Medichecks kit photographs
 - [x] Audit all 192 active Medichecks tests: 191 image URLs return 200, ten blocked promotional assets and one missing image.
 - [x] Retrieve official photographs for all 11 affected tests; preserve the real box artwork and isolate it on white, with per-test source evidence.

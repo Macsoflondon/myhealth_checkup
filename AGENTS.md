@@ -38,6 +38,7 @@
 - The signed-in MCP server (`src/lib/mcp/index.ts` → `supabase/functions/mcp`) keeps OAuth, admin role checks and audit logging. Why: favourites and admin tools need a verified user.
 - The Human Context Engine resolves OpenAI credentials through its local configuration helper, preferring the canonical secret and accepting the existing legacy name so deployed naming differences do not disable recommendations.
 - Homepage comparison slots share one cached service-layer catalogue query and a single compact presentation component, so their appearance and panel allocation cannot drift.
+- The homepage loader prefetches that shared public comparison query before rendering; query failure keeps the existing unavailable state instead of failing the page. Why: crawlers need source-backed comparison rows in the initial HTML, not a loading-only catalogue.
 - The upper comparison reserves full blood count; deduplicate panel slugs before rotating the lower pair so no test panel appears in multiple slots.
 - The upper comparison renders at the component's compact size and its text column stretches to the card's height, so the quiz block's bottom edge always meets the card's bottom edge instead of leaving a gap under it. Why: the card beside a text column must not make the section taller than that column.
 - Reusable library exports live in the self-contained `src/design-system` subtree; preview routes and data services stay outside it so attached consumers receive no application dependencies.
