@@ -18,7 +18,7 @@ export interface TurnaroundParseResult {
   unit: "hours" | "days" | "not_stated";
 }
 
-const HOUR_WORDS = /(hour|hr|hrs)\b/i;
+const HOUR_WORDS = /\b(hours?|hrs?)\b/i;
 const DAY_WORDS = /(day|business day|working day)/i;
 
 function normaliseDashes(s: string): string {
@@ -92,3 +92,31 @@ export function parseTurnaround(
 
 // Silence unused-import linters when someone lifts pickUpper for future ranges.
 void pickUpper;
+
+export interface TurnaroundColumns {
+  turnaround_raw: string;
+  turnaround_days: number | null;
+  turnaround_hours: number | null;
+  turnaround_unit: "hours" | "days";
+}
+
+/**
+ * The four turnaround columns from one parseTurnaround() result, or null when
+ * the text does not resolve to hours or days (e.g. a sentence fragment such as
+ * "results, but do not provide consultations"). Callers write all four
+ * together so the unit never sits at "not_stated" beside a real duration.
+ */
+export function turnaroundColumns(
+  input: string | null | undefined,
+): TurnaroundColumns | null {
+  const r = parseTurnaround(input);
+  if (r.unit === "not_stated" || !r.raw || (r.days === null && r.hours === null)) {
+    return null;
+  }
+  return {
+    turnaround_raw: r.raw,
+    turnaround_days: r.days,
+    turnaround_hours: r.hours,
+    turnaround_unit: r.unit,
+  };
+}

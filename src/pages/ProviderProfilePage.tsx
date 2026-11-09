@@ -7,7 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
-  Star,
   MapPin,
   Phone,
   Mail,
@@ -27,12 +26,14 @@ import {
 } from "@/utils/urlTracking";
 import { getBranding } from "@/data/providerBranding";
 import QuizCTABanner from "@/components/sections/QuizCTABanner";
-import { getProviderRating } from "@/constants/providerRatings";
+import { ProviderRatingBadge } from "@/components/providers/ProviderRatingBadge";
+import { useProviderRatings } from "@/hooks/queries/useProviderRatings";
 import { ProviderTestsGrid } from "@/components/providers/ProviderTestsGrid";
 import { normalizeProviderId } from "@/constants/providers";
 
 const ProviderProfilePage = () => {
   const { providerId } = useParams();
+  const { getRating } = useProviderRatings();
 
   const canonicalProviderId = normalizeProviderId(providerId ?? "");
   const provider = detailedProviders.find((p) => p.id === canonicalProviderId);
@@ -57,13 +58,8 @@ const ProviderProfilePage = () => {
 
   const brand = getBranding(provider.name);
 
-  const providerRatingData = getProviderRating(provider.name);
-  const ratingData = providerRatingData
-    ? {
-        rating: providerRatingData.rating,
-        reviews: providerRatingData.reviewsFormatted,
-      }
-    : null;
+  const providerRatingData =
+    getRating(provider.id) ?? getRating(provider.name);
   const websiteUrl = provider.website
     ? buildProviderWebsiteUrl(provider.website, provider.id)
     : null;
@@ -76,7 +72,7 @@ const ProviderProfilePage = () => {
           name="description"
           content={`${provider.name} private health tests reviewed and compared.${
             providerRatingData
-              ? ` Rated ${providerRatingData.rating}/5 from ${providerRatingData.reviews.toLocaleString()} reviews.`
+              ? ` Rated ${providerRatingData.rating.toFixed(1)}/5 from ${providerRatingData.reviewCount.toLocaleString("en-GB")} Trustpilot reviews.`
               : ""
           } Browse the full test range, prices, accreditations and turnaround times.`.slice(
             0,
@@ -145,29 +141,14 @@ const ProviderProfilePage = () => {
               )}
 
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 mb-4">
-                {ratingData && (
-                  <div className="flex items-center space-x-1">
-                    <Star className="w-4 h-4 md:w-5 md:h-5 text-yellow-400 fill-current" />
-                    <span
-                      className="font-semibold text-sm md:text-base"
-                      style={{
-                        color: brand ? "#fff" : "hsl(var(--foreground))",
-                      }}
-                    >
-                      {ratingData.rating}
-                    </span>
-                    <span
-                      className="text-sm md:text-base"
-                      style={{
-                        color: brand
-                          ? "rgba(255,255,255,0.7)"
-                          : "hsl(var(--muted-foreground))",
-                      }}
-                    >
-                      ({ratingData.reviews} reviews)
-                    </span>
-                  </div>
-                )}
+                <ProviderRatingBadge
+                  provider={provider.id}
+                  className={
+                    brand
+                      ? "text-sm text-white/90 [&_a]:text-white"
+                      : "text-sm text-foreground"
+                  }
+                />
 
                 {provider.accreditation && (
                   <Badge
@@ -247,17 +228,12 @@ const ProviderProfilePage = () => {
                 </p>
               </div>
             </div>
-            {ratingData && (
+            {providerRatingData && (
               <div className="flex items-center gap-3 p-3 bg-card rounded-lg">
-                <Star className="w-5 h-5 text-yellow-500 flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-medium">
-                    {ratingData.rating}/5 Rating
-                  </p>
-                  <p className="text-xs text-muted-foreground">
-                    {ratingData.reviews} reviews
-                  </p>
-                </div>
+                <ProviderRatingBadge
+                  provider={provider.id}
+                  className="text-sm"
+                />
               </div>
             )}
             <div className="flex items-center gap-3 p-3 bg-card rounded-lg">

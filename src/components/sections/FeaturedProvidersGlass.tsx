@@ -1,5 +1,4 @@
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
-import { Star } from "lucide-react";
 import { Link } from "@/lib/router-compat";
 import { ProviderLogo } from "@/components/providers/ProviderLogo";
 import { SaveProviderButton } from "@/components/common/SaveProviderButton";
@@ -11,7 +10,7 @@ import {
   toHttpsUrl,
 } from "@/utils/urlTracking";
 import { getProviderWebsite } from "@/constants/providers";
-import { getProviderRating } from "@/constants/providerRatings";
+import { ProviderRatingBadge } from "@/components/providers/ProviderRatingBadge";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 
 interface ProviderEntry {
@@ -134,7 +133,6 @@ const FeaturedProvidersGlass = () => {
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
           {PROVIDERS.map((p) => {
-            const canonical = getProviderRating(p.id);
             return (
               <article key={p.id} className="group relative">
                 {/* Always-visible coloured border layer */}
@@ -172,14 +170,6 @@ const FeaturedProvidersGlass = () => {
                         />
                       </div>
                       <div className="flex items-center gap-2">
-                        {canonical && (
-                          <div className="flex items-center gap-1.5 bg-[#f8fafc] px-3 py-1.5 rounded-full border border-brand-navy transition-colors group-hover:border-yellow-500/40">
-                            <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
-                            <span className="text-[#081129] text-xs font-bold">
-                              {canonical.rating}
-                            </span>
-                          </div>
-                        )}
                         <SaveProviderButton
                           isSaved={isProviderSaved(p.id)}
                           onToggle={() =>
@@ -205,11 +195,14 @@ const FeaturedProvidersGlass = () => {
                         {p.tagline}
                       </p>
                       <p className="text-[11px] uppercase tracking-[0.2em] text-brand-navy pt-1">
-                        {canonical
-                          ? `${canonical.reviewsFormatted} reviews · UK Wide`
-                          : "UK Wide"}
+                        UK Wide
                       </p>
                     </div>
+
+                    <ProviderRatingBadge
+                      provider={p.id}
+                      className="text-xs text-brand-navy"
+                    />
 
                     {/* Description */}
                     <p className="text-brand-navy leading-relaxed text-[15px] transition-colors">

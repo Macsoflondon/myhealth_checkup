@@ -22,6 +22,7 @@ import { internalErrorResponse } from "../_shared/errors.ts";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { reconcileBiomarkerCount } from "../_shared/scrape/biomarkerParsers.ts";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
+import { turnaroundColumns } from "../_shared/scrape/parseTurnaround.ts";
 import {
   fetchShopifyFeedPage,
   shopifyFeedUrl,
@@ -206,6 +207,7 @@ Deno.serve(async (req: Request) => {
         row.turnaround_days = tg.results;
         row.turnaround_days_text = `Results in ${tg.results} working days (estimated)`;
         row.turnaround_unit = "days";
+        Object.assign(row, turnaroundColumns(row.turnaround_days_text as string) ?? {});
       } else {
         tagMissTotal++;
       }

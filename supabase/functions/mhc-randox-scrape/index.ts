@@ -19,6 +19,7 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { parseRandoxWhatsIncluded } from "../_shared/scrape/biomarkerParsers.ts";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
+import { turnaroundColumns } from "../_shared/scrape/parseTurnaround.ts";
 import { deriveRandoxSample } from "../_shared/scrape/randoxSample.ts";
 const PROVIDER = "randox";
 const SITEMAPS = ["https://randoxhealth.com/sitemap.xml"];
@@ -381,6 +382,7 @@ Deno.serve(async (req) => {
           upd.turnaround_days_text = p.taText;
           upd.turnaround_days = p.taDays;
           upd.turnaround_not_stated = false;
+          Object.assign(upd, turnaroundColumns(p.taText) ?? {});
         }
         if (p.sample) upd.sample_type = p.sample;
         if (p.bios.length > 0) {
@@ -442,6 +444,7 @@ Deno.serve(async (req) => {
           ins.turnaround_days_text = p.taText;
           ins.turnaround_days = p.taDays;
           ins.turnaround_not_stated = false;
+          Object.assign(ins, turnaroundColumns(p.taText) ?? {});
         } else {
           ins.turnaround_not_stated = true;
         }

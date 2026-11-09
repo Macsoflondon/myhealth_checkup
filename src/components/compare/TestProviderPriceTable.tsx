@@ -1,4 +1,5 @@
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
+import { ProviderRatingBadge } from "@/components/providers/ProviderRatingBadge";
 import React from "react";
 import { Link } from "@/lib/router-compat";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,7 +7,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import {
-  Star,
   Clock,
   ExternalLink,
   Home,
@@ -33,8 +33,6 @@ interface ProviderTestOption {
   biomarkerCount?: number;
   url?: string;
   url_verified?: boolean | null;
-  rating?: number;
-  reviews?: string;
 }
 
 interface TestProviderPriceTableProps {
@@ -117,15 +115,10 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
                         >
                           {provider.providerName}
                         </Link>
-                        {provider.rating && (
-                          <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                            <span>{provider.rating}</span>
-                            {provider.reviews && (
-                              <span>({provider.reviews})</span>
-                            )}
-                          </div>
-                        )}
+                        <ProviderRatingBadge
+                          provider={provider.providerId}
+                          className="block text-xs text-muted-foreground"
+                        />
                       </div>
                     </div>
                   </td>
@@ -239,12 +232,10 @@ export const TestProviderPriceTable: React.FC<TestProviderPriceTableProps> = ({
                     >
                       {provider.providerName}
                     </Link>
-                    {provider.rating && (
-                      <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                        <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                        <span>{provider.rating}</span>
-                      </div>
-                    )}
+                    <ProviderRatingBadge
+                      provider={provider.providerId}
+                      className="block text-xs text-muted-foreground"
+                    />
                   </div>
                   <div className="ml-auto text-right">
                     <span className="text-xl font-bold text-primary">

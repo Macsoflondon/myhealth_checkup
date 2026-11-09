@@ -16,6 +16,7 @@
 type SupabaseLike = any;
 
 import { looksTruncated } from "./biomarkerParsers.ts";
+import { turnaroundColumns } from "./parseTurnaround.ts";
 
 export interface ProviderDatasetRow {
   test_name?: string | null;
@@ -193,9 +194,13 @@ export async function applyProviderRows(
         patch.biomarker_count = item.biomarkers_list.length;
       }
     }
-    if (typeof item.turnaround_raw === "string" && item.turnaround_raw.trim()) {
-      patch.turnaround_raw = item.turnaround_raw.trim();
-    }
+    // Store turnaround only when it parses to hours or days, all four
+    // columns from the same result; sentence fragments are dropped.
+    const ta =
+      typeof item.turnaround_raw === "string"
+        ? turnaroundColumns(item.turnaround_raw)
+        : null;
+    if (ta) Object.assign(patch, ta);
     if (options.scrapeSourceUrl) patch.url_verified_at = nowIso;
 
     const { error: updateError } = await supabase

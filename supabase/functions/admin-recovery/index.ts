@@ -10,6 +10,27 @@ const corsHeaders = {
 const TOKEN_TTL_MINUTES = 15;
 const MIN_PASSWORD_LENGTH = 12;
 
+
+/**
+ * Read the `aal` claim from an already-verified JWT. Decodes only the payload
+ * segment (base64url); signature verification is done by auth.getUser().
+ * Returns null when the token is malformed or carries no string `aal` claim.
+ */
+export function readAalClaim(jwt: string): string | null {
+  const parts = jwt.split(".");
+  if (parts.length !== 3 || !parts[1]) return null;
+  try {
+    const b64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+    const padded = b64 + "=".repeat((4 - (b64.length % 4)) % 4);
+    const payload: unknown = JSON.parse(atob(padded));
+    if (!payload || typeof payload !== "object") return null;
+    const aal = (payload as Record<string, unknown>).aal;
+    return typeof aal === "string" ? aal : null;
+  } catch {
+    return null;
+  }
+}
+
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), {
     status,
@@ -96,9 +117,8 @@ const handleIssue = async (req: Request, body: Record<string, unknown>) => {
     return json({ error: "Authentication required" }, 401);
 
   // Require an admin caller who has completed a second factor.
-  const aal =
-    (caller.app_metadata as Record<string, unknown> | null)?.aal ??
-    (caller as unknown as { aal?: string }).aal;
+  // The user object has no aal field; the claim lives in the verified JWT.
+  const aal = readAalClaim(jwt);
   if (!(await isAdmin(admin, caller.id))) {
     console.warn("admin-recovery: non-admin issue attempt", {
       userId: caller.id,
@@ -106,7 +126,7 @@ const handleIssue = async (req: Request, body: Record<string, unknown>) => {
     });
     return json({ error: "Admin role required" }, 403);
   }
-  if (aal && aal !== "aal2") {
+  if (aal !== "aal2") {
     return json(
       {
         error: "Multi-factor authentication required to issue recovery tokens",

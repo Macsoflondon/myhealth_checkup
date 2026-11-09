@@ -16,7 +16,6 @@ import {
   defaultFilters,
 } from "@/hooks/queries/useCompareTestsData";
 import { useRecommendedTests } from "@/hooks/queries/useRecommendedTests";
-import { getProviderRating } from "@/constants/providerRatings";
 import { getCategoryPinColor } from "@/data/categoryColors";
 import { getBranding } from "@/data/providerBranding";
 import { StandardPageHero } from "@/components/layout/StandardPageHero";
@@ -162,7 +161,6 @@ const CompareTests = () => {
 
   const renderCard = (test: CompareTestData) => {
     const selected = isSelected(test.id);
-    const rating = getProviderRating(test.provider);
     return (
       <div key={test.id} className="w-full">
         <UnifiedTestCard
@@ -177,8 +175,6 @@ const CompareTests = () => {
             test.features?.turnaround || `${test.turnaroundDays ?? "2-3"} days`
           }
           collection={test.features?.collection || "Home kit"}
-          rating={rating?.rating}
-          reviews={rating?.reviews}
           price={test.price}
           provider={test.provider}
           url={test.url}

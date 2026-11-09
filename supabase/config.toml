@@ -231,3 +231,8 @@ verify_jwt = false
 # Security: ?secret= is checked in code against the Vault entry mhc_sync_secret.
 [functions.randox-kit-images]
 verify_jwt = false
+
+# Provider star ratings (Trustpilot), run every 3 hours by pg_cron via
+# call_edge_with_service_role. Security: service-role bearer checked in code.
+[functions.refresh-trustpilot-ratings]
+verify_jwt = false

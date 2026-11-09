@@ -24,7 +24,6 @@ import {
   useAtHomeTests,
   type AtHomeTest,
 } from "@/hooks/queries/useAtHomeTests";
-import { getProviderRating } from "@/constants/providerRatings";
 import { AT_HOME_SECTIONS, findAtHomeSection } from "@/config/atHomeSections";
 import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
 import { categoryMenuIconFor } from "@/components/header/menuIcons";
@@ -71,7 +70,6 @@ const parseTurnaroundDays = (turnaround: string): number => {
 };
 
 const toCategoryTestItem = (test: AtHomeTest): CategoryTestItem => {
-  const providerRating = getProviderRating(test.provider_id);
   const tag = test.category || "General Health";
   const priceNum = test.price ?? 0;
   const biomarkers = normalizeBiomarkers(test.biomarkers_list);
@@ -87,8 +85,6 @@ const toCategoryTestItem = (test: AtHomeTest): CategoryTestItem => {
     turnaround: test.turnaround_days_text || "2–5 days",
     turnaroundDays: parseTurnaroundDays(test.turnaround_days_text || "5"),
     biomarkerCount: test.biomarker_count || biomarkers.length || 0,
-    rating: providerRating?.rating,
-    reviews: providerRating?.reviews,
     title: cleanName(test.test_name),
     desc:
       test.description ||

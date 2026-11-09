@@ -3,7 +3,6 @@ import { loadViewPricing, mergeActiveRows } from "@/lib/viewPricing";
 import { getProviderGridTests } from "@/services/provider-grid-tests";
 import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getProviderRating } from "@/constants/providerRatings";
 import { getBranding } from "@/data/providerBranding";
 import { hasStartingPrice } from "@/hooks/usePopularTestsFromDatabase";
 import { toUnifiedCardProps } from "@/lib/unifiedCardAdapter";
@@ -35,7 +34,6 @@ export const ProviderTestsGrid = ({
 }: Props) => {
   const dbId = PROVIDER_ID_DB_MAP[providerSlug] ?? providerSlug;
   const branding = getBranding(providerDisplayName);
-  const rating = getProviderRating(providerDisplayName);
 
   const queryClient = useQueryClient();
   const { data, isLoading } = useQuery({
@@ -141,8 +139,6 @@ export const ProviderTestsGrid = ({
               routeVariant={single ? null : variant}
               {...toUnifiedCardProps(card, {
                 provider: providerDisplayName,
-                rating: rating?.rating,
-                reviews: rating?.reviews,
                 ctaLabel: t.url ? "View test" : "Compare",
               })}
             />

@@ -10,6 +10,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
+import { turnaroundColumns } from "../_shared/scrape/parseTurnaround.ts";
 const PROVIDER = "london-medical-laboratory";
 function stripTags(s) {
   return htmlToText(s || "");
@@ -209,6 +210,7 @@ Deno.serve(async (req) => {
         upd.turnaround_days_text = p.taText;
         upd.turnaround_days = p.taDays;
         upd.turnaround_not_stated = false;
+        Object.assign(upd, turnaroundColumns(p.taText) ?? {});
       }
       if (p.sample) upd.sample_type = p.sample;
       if (p.clinicFee != null) upd.clinic_phlebotomy_cost = p.clinicFee;

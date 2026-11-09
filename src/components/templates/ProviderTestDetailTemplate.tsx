@@ -66,7 +66,6 @@ import { isTestAddon } from "@/lib/test-addon-status";
 import { TestImageGallery } from "@/components/tests/TestImageGallery";
 import { getProviderLogo } from "@/constants/providers";
 import { TestProviderPriceTable } from "@/components/compare/TestProviderPriceTable";
-import { getProviderRating } from "@/constants/providerRatings";
 import { detailedProviders } from "@/data/compare/detailedProviders";
 import RelatedLinks from "@/components/seo/RelatedLinks";
 import { resolveCategorySlug } from "@/lib/internal-links";
@@ -659,7 +658,6 @@ export default function ProviderTestDetailTemplate({
         siblingTests ?? [],
         siblingPricing,
       ).map((t) => {
-        const provRating = getProviderRating(t.provider_id);
         return {
           id: t.id,
           providerId: t.provider_id,
@@ -678,8 +676,6 @@ export default function ProviderTestDetailTemplate({
               : displayBiomarkerCount(t) || undefined,
           url: t.url || undefined,
           url_verified: t.url_verified ?? null,
-          rating: provRating?.rating,
-          reviews: provRating?.reviewsFormatted,
         };
       });
 
@@ -862,9 +858,6 @@ export default function ProviderTestDetailTemplate({
                         providerConfig.quickInfo.sampleType,
                       biomarkerCount: displayBiomarkerCount(test) || undefined,
                       url: test.url || undefined,
-                      rating: getProviderRating(providerConfig.id)?.rating,
-                      reviews: getProviderRating(providerConfig.id)
-                        ?.reviewsFormatted,
                     },
                     ...otherProviders,
                   ]}

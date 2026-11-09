@@ -21,6 +21,7 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import { internalErrorResponse } from "../_shared/errors.ts";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
+import { turnaroundColumns } from "../_shared/scrape/parseTurnaround.ts";
 import {
   fetchShopifyFeedPage,
   shopifyFeedUrl,
@@ -192,11 +193,12 @@ Deno.serve(async (req: Request) => {
         // Non-Lola: collection fees unknown for these, so TEC = base for now.
         total_expected_cost: lola ? lola.total_expected_cost : basePrice,
         collection_fee: 0,
-        turnaround_unit: "not_stated", // not published in feed — never fabricate
         is_active: true,
         last_validated_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       };
+      // Feed publishes no turnaround; only non-Lola rows default to not stated.
+      if (!lola) row.turnaround_unit = "not_stated";
       if (lola) {
         row.clinic_phlebotomy_cost = lola.clinic_phlebotomy_cost;
         row.home_phlebotomy_cost = lola.home_phlebotomy_cost;
@@ -263,6 +265,9 @@ Deno.serve(async (req: Request) => {
                 ...row,
                 turnaround_days_text: lolaTurnaround(title),
                 turnaround_not_stated: false,
+                // Store raw/days/hours/unit only when the text parses.
+                turnaround_raw: null,
+                ...(turnaroundColumns(lolaTurnaround(title)) ?? {}),
                 ...(panel
                   ? {
                       biomarkers_list: panel,

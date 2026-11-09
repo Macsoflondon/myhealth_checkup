@@ -11,7 +11,6 @@ import {
 import { UnifiedTestCard } from "@/components/cards/UnifiedTestCard";
 import type { CompareTestData } from "@/services/CompareService";
 import { getCategoryDisplayName } from "@/utils/categoryTaglines";
-import { getProviderRating } from "@/constants/providerRatings";
 import { getCategoryPinColor } from "@/data/categoryColors";
 import { getBranding } from "@/data/providerBranding";
 
@@ -103,7 +102,6 @@ export const RecommendedTestsCarousel: React.FC<
       >
         <CarouselContent className="-ml-4">
           {tests.map((test) => {
-            const providerRating = getProviderRating(test.provider);
             const catColor = resolveCategoryColor(
               test.category || category || "general-health",
             );
@@ -123,8 +121,6 @@ export const RecommendedTestsCarousel: React.FC<
                   biomarkers={test.biomarkerCount || 0}
                   results={test.features?.turnaround || "2-5 working days"}
                   collection={test.features?.collection || "Home kit"}
-                  rating={providerRating?.rating}
-                  reviews={providerRating?.reviews}
                   price={test.price}
                   provider={test.provider}
                   url={test.url}

@@ -11,6 +11,7 @@ import { createClient } from "npm:@supabase/supabase-js@2";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { parseMedicalDiagnosisTestsIncluded } from "../_shared/scrape/biomarkerParsers.ts";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
+import { turnaroundColumns } from "../_shared/scrape/parseTurnaround.ts";
 
 const PROVIDERS: Record<
   string,
@@ -381,6 +382,7 @@ Deno.serve(async (req) => {
         upd.turnaround_days = p.taDays;
         upd.turnaround_hours = p.taHours;
         upd.turnaround_not_stated = false;
+        Object.assign(upd, turnaroundColumns(p.taText) ?? {});
       }
       if (p.sample) upd.sample_type = p.sample;
       // The provider's og:image is often a dead link; store it only if it loads.

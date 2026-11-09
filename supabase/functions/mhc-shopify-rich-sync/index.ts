@@ -10,6 +10,7 @@
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
+import { turnaroundColumns } from "../_shared/scrape/parseTurnaround.ts";
 import {
   fetchShopifyFeedPage,
   shopifyFeedUrl,
@@ -302,6 +303,7 @@ Deno.serve(async (req) => {
         upd.turnaround_days_text = d.turnaround_text;
         upd.turnaround_days = d.turnaround_days;
         upd.turnaround_not_stated = false;
+        Object.assign(upd, turnaroundColumns(d.turnaround_text) ?? {});
       }
       if (d.description_scraped) {
         upd.description_scraped = d.description_scraped;

@@ -5,14 +5,15 @@
  *   import {
  *     parsePrice, parseTurnaround, normaliseBiomarkers,
  *     upsertWithProvenance, startScrapeRun, finishScrapeRun,
- *     fetchTrustpilot, acquireRateToken, getProviderRateLimit, isAllowedByRobots,
  *   } from "../_shared/scrape/index.ts";
  */
 
 export { parsePrice, type PriceParseResult } from "./parsePrice.ts";
 export {
   parseTurnaround,
+  turnaroundColumns,
   type TurnaroundParseResult,
+  type TurnaroundColumns,
 } from "./parseTurnaround.ts";
 export { normaliseBiomarkers } from "./normaliseBiomarkers.ts";
 export {
@@ -37,7 +38,6 @@ export {
   newCounters,
   type RunCounters,
 } from "./runs.ts";
-export { fetchTrustpilot, type TrustpilotResult } from "./fetchTrustpilot.ts";
 export {
   isAllowedByRobots,
   acquireRateToken,

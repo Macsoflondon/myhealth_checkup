@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { CategoryTestItem } from "@/components/category/CategoryPageLayout";
-import { getProviderRating } from "@/constants/providerRatings";
 import {
   categoryMenuIconFor,
   resolveCategoryMenuName,
@@ -66,7 +65,6 @@ export function useAllTests() {
 
       return data.map((row): CategoryTestItem => {
         const providerName = PROVIDER_NAMES[row.provider_id] || row.provider_id;
-        const rating = getProviderRating(row.provider_id);
         const priceNum = Number(row.price ?? row.base_price ?? 0);
         const biomarkers = Array.isArray(row.biomarkers_list)
           ? (row.biomarkers_list as unknown[]).map(String).slice(0, 6)
@@ -100,8 +98,6 @@ export function useAllTests() {
           turnaround,
           turnaroundDays,
           biomarkerCount: row.biomarker_count ?? biomarkers.length ?? 0,
-          rating: rating?.rating,
-          reviews: rating?.reviews,
           title: row.test_name,
           desc: row.description || `${row.test_name} from ${providerName}.`,
           biomarkers,

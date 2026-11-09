@@ -18,12 +18,11 @@ import {
   X,
   Syringe,
   Scale,
-  Star,
   Building2,
 } from "lucide-react";
 import { getProviderMeta } from "@/constants/providerMeta";
 import { getProviderLogo } from "@/constants/providers";
-import { getProviderRating } from "@/constants/providerRatings";
+import { ProviderRatingBadge } from "@/components/providers/ProviderRatingBadge";
 import { compareStore, useCompareItems } from "@/stores/compareStore";
 import type { CompareTestData } from "@/types";
 import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
@@ -1189,7 +1188,6 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
 
             {/* Provider trust row */}
             {(() => {
-              const rating = getProviderRating(test.provider_id);
               const isHome =
                 !!test.home_kit_available && !test.clinic_visit_available;
               const isClinic =
@@ -1204,17 +1202,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                     minHeight: 18,
                   }}
                 >
-                  {rating && (
-                    <span
-                      className="flex items-center gap-0.5"
-                      aria-label={`Trustpilot rating ${rating.rating} out of 5`}
-                    >
-                      <Star size={12} color="#D4A843" fill="#D4A843" />
-                      <span style={{ fontWeight: 600, color: UTC_NAVY }}>
-                        {rating.rating.toFixed(1)}
-                      </span>
-                    </span>
-                  )}
+                  <ProviderRatingBadge provider={test.provider_id} />
                   {meta.cqc && (
                     <span
                       className="flex items-center gap-0.5"

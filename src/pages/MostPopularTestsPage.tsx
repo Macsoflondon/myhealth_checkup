@@ -23,7 +23,6 @@ import {
   hasStartingPrice,
   usePopularTestsFromDatabase,
 } from "@/hooks/usePopularTestsFromDatabase";
-import { getProviderRating } from "@/constants/providerRatings";
 import { categoryMenuIconFor } from "@/components/header/menuIcons";
 
 const SEO = {
@@ -157,7 +156,6 @@ const MostPopularTestsPage = () => {
   const tests: CategoryTestItem[] = useMemo(() => {
     if (!popularTests) return [];
     return popularTests.map((t, idx) => {
-      const providerRating = getProviderRating(t.provider_id);
       const tag = t.category || "General Health";
       return {
         id: t.id,
@@ -171,8 +169,6 @@ const MostPopularTestsPage = () => {
         turnaround: t.turnaround_time || "2–5 days",
         turnaroundDays: parseTurnaroundDays(t.turnaround_time || "5"),
         biomarkerCount: t.biomarker_count || 0,
-        rating: providerRating?.rating,
-        reviews: providerRating?.reviews,
         title: cleanName(t.test_name),
         desc:
           t.description ||

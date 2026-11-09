@@ -1,3 +1,4 @@
+import { useProviderRatings } from "@/hooks/queries/useProviderRatings";
 import { useState, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import Header from "@/components/layout/Header";
@@ -28,9 +29,6 @@ export interface CategoryTestItem {
   turnaround: string;
   turnaroundDays: number;
   biomarkerCount: number;
-  /** Verified provider rating — omitted when no real review data exists. */
-  rating?: number;
-  reviews?: number;
   title: string;
   desc: string;
   biomarkers: string[];
@@ -116,6 +114,7 @@ export function CategoryPageLayout({
 }: CategoryPageLayoutProps) {
   const [activeFilter, setActiveFilter] = useState("All");
   const [search, setSearch] = useState("");
+  const { getRating } = useProviderRatings();
   const [sort, setSort] = useState("popular");
   const [compared, setCompared] = useState<CategoryTestItem[]>([]);
 
@@ -156,7 +155,11 @@ export function CategoryPageLayout({
         sorted.sort((a, b) => a.turnaroundDays - b.turnaroundDays);
         break;
       case "rating":
-        sorted.sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
+        sorted.sort(
+          (a, b) =>
+            (getRating(b.providerId ?? b.provider)?.rating ?? 0) -
+            (getRating(a.providerId ?? a.provider)?.rating ?? 0),
+        );
         break;
       case "popular":
       default:
@@ -164,7 +167,7 @@ export function CategoryPageLayout({
         break;
     }
     return sorted;
-  }, [tests, activeFilter, search, sort]);
+  }, [tests, activeFilter, search, sort, getRating]);
 
   const compareItems: CompareItem[] = compared.map((t) => ({
     id: t.id,
@@ -219,14 +222,16 @@ export function CategoryPageLayout({
                   description: t.desc,
                   category: t.tag,
                   brand: { "@type": "Brand", name: t.provider },
-                  aggregateRating:
-                    t.rating && t.reviews && t.reviews > 0
+                  aggregateRating: (() => {
+                    const live = getRating(t.providerId ?? t.provider);
+                    return live
                       ? {
                           "@type": "AggregateRating",
-                          ratingValue: t.rating,
-                          reviewCount: t.reviews,
+                          ratingValue: live.rating,
+                          reviewCount: live.reviewCount,
                         }
-                      : undefined,
+                      : undefined;
+                  })(),
                   offers: {
                     "@type": "Offer",
                     price: t.priceNum,
@@ -285,8 +290,6 @@ export function CategoryPageLayout({
                     results={test.turnaround}
                     collection={test.collection || "Home Kit"}
                     routeVariant={test.routeVariant}
-                    rating={test.rating}
-                    reviews={test.reviews}
                     price={test.priceNum}
                     priceFrom={isFromPriceLabel(test.price)}
                     markers={test.biomarkers}

@@ -1,7 +1,6 @@
 import { displayBiomarkerCount } from "@/lib/resolve-test-fields";
 import { isTestAddon } from "@/lib/test-addon-status";
 import { CategoryTestItem } from "@/components/category/CategoryPageLayout";
-import { getProviderRating } from "@/constants/providerRatings";
 import { normalizeBiomarkers } from "@/utils/normalize-biomarkers";
 import {
   deriveCollectionVariants,
@@ -84,7 +83,6 @@ export function mapProviderTestRow(
   badgeColor: string,
 ): CategoryTestItem {
   const providerName = PROVIDER_NAMES[row.provider_id] || row.provider_id;
-  const rating = getProviderRating(row.provider_id);
   const priceNum = Number(
     row.total_expected_cost ?? row.price ?? row.base_price ?? 0,
   );
@@ -120,8 +118,6 @@ export function mapProviderTestRow(
       biomarker_count: row.biomarker_count,
       biomarkers_list: biomarkers,
     }),
-    rating: rating?.rating,
-    reviews: rating?.reviews,
     title: row.test_name,
     desc: row.description || `${row.test_name} from ${providerName}.`,
     biomarkers,
