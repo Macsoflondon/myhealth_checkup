@@ -5,6 +5,7 @@ import {
   CategoryTestItem,
 } from "./CategoryPageLayout";
 import { useCategoryTests } from "@/hooks/queries/useCategoryTests";
+import { SubcategoryChips } from "./SubcategoryChips";
 import { findSubcategory } from "@/config/subcategoryMap";
 import { resolveCategoryMenuName } from "@/components/header/menuIcons";
 
@@ -76,6 +77,19 @@ export function DbCategoryPage({
     <CategoryPageLayout
       {...layoutProps}
       categoryAccent={resolveCategoryMenuName(canonicalCategory)}
+      subsectionNav={
+        <SubcategoryChips
+          canonicalCategory={canonicalCategory}
+          parentPath={(() => {
+            try {
+              return new URL(rest.canonicalUrl).pathname.replace(/\/$/, "") || "/";
+            } catch {
+              return rest.canonicalUrl;
+            }
+          })()}
+          activeSlug={sub?.slug ?? null}
+        />
+      }
     />
   );
 }

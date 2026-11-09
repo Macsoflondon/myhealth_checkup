@@ -106,6 +106,13 @@ export const primaryNavigationItems: PrimaryNavItem[] = [
         name: "Energy & fatigue tests",
         path: "/sports-performance?subcategory=energy",
       },
+      { name: "Running tests", path: "/sports-performance?subcategory=running" },
+      { name: "Cycling tests", path: "/sports-performance?subcategory=cycling" },
+      { name: "Triathlon tests", path: "/sports-performance?subcategory=triathlon" },
+      {
+        name: "Strength & weightlifting tests",
+        path: "/sports-performance?subcategory=strength",
+      },
       { name: "View all sports tests", path: "/sports-performance" },
     ],
   },

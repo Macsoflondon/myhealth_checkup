@@ -90,6 +90,8 @@ export interface CategoryPageLayoutProps {
   breadcrumbBackLabel?: string;
   /* Optional compare URL */
   compareUrl?: string;
+  /** Optional subsection navigation rendered under the hero. */
+  subsectionNav?: React.ReactNode;
 }
 
 export function CategoryPageLayout({
@@ -108,6 +110,7 @@ export function CategoryPageLayout({
   benefitsTitle,
   benefits,
   breadcrumbs,
+  subsectionNav,
   breadcrumbBackLabel = "Back",
   compareUrl = "/compare",
 }: CategoryPageLayoutProps) {
@@ -247,6 +250,7 @@ export function CategoryPageLayout({
           style={{ paddingBottom: compared.length > 0 ? 80 : 0 }}
         >
           <CategoryStandardHero pillLabel={headline} subtitle={subtitle} />
+          {subsectionNav}
 
           {/* Filter + Sort + Cards */}
           <section className="pt-12 sm:pt-16 pb-10 sm:pb-14 px-4 sm:px-6 lg:px-12 xl:px-16 bg-white">
