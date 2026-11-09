@@ -40,12 +40,9 @@ export default function HeroMasthead() {
     ).connection;
     // Visitors who asked to save data, or are on a 2G-class connection, keep
     // the photo: the loop would cost them megabytes for a background effect.
-    // Reduced-motion visitors also keep the still poster.
-    if (
-      connection?.saveData ||
-      /(^|-)2g$/.test(connection?.effectiveType ?? "") ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
+    // Reduced-motion is not a gate: the owner wants the muted background
+    // loop to play for every visitor (macOS "Reduce motion" froze it).
+    if (connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType ?? "")) {
       return;
     }
     setVideoAllowed(true);
