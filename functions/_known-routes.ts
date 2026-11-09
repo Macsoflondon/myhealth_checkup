@@ -71,6 +71,8 @@ export const STATIC_ROUTES: ReadonlySet<string> = new Set([
   "/providers/clinilabs",
   "/providers/london-health-company",
   "/providers/medical-diagnosis",
+  "/providers/edge",
+  "/edge",
   "/trusted-providers",
   "/clinilabs",
   "/lola-health",

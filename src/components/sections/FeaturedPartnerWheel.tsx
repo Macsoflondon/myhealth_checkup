@@ -896,7 +896,7 @@ export default function FeaturedPartnerWheel({
             padding: "0 8px",
           }}
         >
-          <p className="type-body m-0 font-heading font-medium not-italic text-brand-navy tracking-normal">
+          <p className="m-0 font-heading font-medium not-italic text-brand-turquoise tracking-normal text-sm sm:text-base md:text-lg">
             {blurbItalic}
           </p>
           <p className="type-body mt-[14px] font-heading text-brand-navy/80 tracking-normal">
