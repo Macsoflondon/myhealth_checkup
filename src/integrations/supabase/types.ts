@@ -5103,6 +5103,45 @@ export type Database = {
         }
         Relationships: []
       }
+      provider_ratings: {
+        Row: {
+          checked_at: string | null
+          last_attempt_at: string | null
+          last_error: string | null
+          last_status: string | null
+          provider_id: string
+          rating: number | null
+          review_count: number | null
+          source: string
+          source_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          checked_at?: string | null
+          last_attempt_at?: string | null
+          last_error?: string | null
+          last_status?: string | null
+          provider_id: string
+          rating?: number | null
+          review_count?: number | null
+          source?: string
+          source_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          checked_at?: string | null
+          last_attempt_at?: string | null
+          last_error?: string | null
+          last_status?: string | null
+          provider_id?: string
+          rating?: number | null
+          review_count?: number | null
+          source?: string
+          source_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       provider_section_category_map: {
         Row: {
           canonical_category: string
