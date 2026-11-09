@@ -90,7 +90,6 @@ const FADE1 = 920; // |x| where cards are fully faded
 
 const HEAD = "'Montserrat', sans-serif";
 const BODY = "Montserrat, sans-serif";
-const SERIF = "'EB Garamond', serif";
 
 const DEFAULT_KITS: FeaturedKit[] = (() => {
   const P = "Goodbody Clinic";
@@ -681,19 +680,7 @@ export default function FeaturedPartnerWheel({
       >
         <EyebrowBadge label={eyebrow} size="md" tone="onLight" />
 
-        <h2
-          style={{
-            margin: "22px 0 0",
-            fontFamily: SERIF,
-            fontWeight: 600,
-            fontSize: 60,
-            lineHeight: 1.04,
-            color: "#081129",
-
-            textAlign: "center",
-            letterSpacing: "-.01em",
-          }}
-        >
+        <h2 className="type-section-title mt-[22px] text-center text-brand-navy tracking-normal">
           {partnerName}
         </h2>
 
@@ -846,16 +833,7 @@ export default function FeaturedPartnerWheel({
                   >
                     {preview.provider}
                   </div>
-                  <div
-                    style={{
-                      fontFamily: SERIF,
-                      fontWeight: 600,
-                      fontSize: 26,
-                      color: "#081129",
-                      lineHeight: 1.1,
-                      marginTop: 3,
-                    }}
-                  >
+                  <div className="type-card-title mt-[3px] text-brand-navy tracking-normal">
                     {preview.name}
                   </div>
                   <p
@@ -918,27 +896,10 @@ export default function FeaturedPartnerWheel({
             padding: "0 8px",
           }}
         >
-          <p
-            style={{
-              margin: 0,
-              fontFamily: SERIF,
-              fontStyle: "italic",
-              fontWeight: 500,
-              fontSize: "clamp(18px, 4.5vw, 23px)",
-              lineHeight: 1.4,
-              color: "#081129",
-            }}
-          >
+          <p className="type-body m-0 font-heading font-medium not-italic text-brand-navy tracking-normal">
             {blurbItalic}
           </p>
-          <p
-            style={{
-              margin: "14px 0 0",
-              fontSize: "clamp(14px, 3.6vw, 15.5px)",
-              lineHeight: 1.6,
-              color: "rgba(8,17,41,0.72)",
-            }}
-          >
+          <p className="type-body mt-[14px] font-heading text-brand-navy/80 tracking-normal">
             {blurb}
           </p>
           <div
@@ -1107,16 +1068,7 @@ export default function FeaturedPartnerWheel({
                   >
                     {selKit.provider}
                   </div>
-                  <h4
-                    style={{
-                      margin: "4px 0 0",
-                      fontFamily: SERIF,
-                      fontWeight: 600,
-                      fontSize: 30,
-                      color: "#081129",
-                      lineHeight: 1.08,
-                    }}
-                  >
+                  <h4 className="type-card-title mt-1 text-brand-navy tracking-normal">
                     {selKit.name}
                   </h4>
                   <div
