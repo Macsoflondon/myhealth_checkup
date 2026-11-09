@@ -11,6 +11,7 @@ import { lmlSharpKitImage } from "@/lib/lml-kit-images";
 import goodbodyBabyBox from "@/assets/providers/goodbody-baby-box.png.asset.json";
 import goodbodyPaternityBox from "@/assets/providers/goodbody-paternity-box.png.asset.json";
 import goodbodyStockholmBox from "@/assets/providers/goodbody-stockholm-box.png.asset.json";
+import edgeTestKit from "@/assets/providers/edge-test-kit.png.asset.json";
 
 interface TestCardImageInput {
   providerId?: string | null;
@@ -93,6 +94,10 @@ export function resolveTestCardImage({
   if (provider.includes("london-medical") && testName) {
     const sharp = lmlSharpKitImage(testName);
     if (sharp) return sharp;
+  }
+  // Owner decision 09/11/2026: every EDGE test shows the EDGE test kit image.
+  if (provider.includes("sports-blood-tests") || provider === "edge") {
+    return edgeTestKit.url;
   }
   const own = imageUrl?.trim();
   if (own && !isPromotionalImage(own)) return own;

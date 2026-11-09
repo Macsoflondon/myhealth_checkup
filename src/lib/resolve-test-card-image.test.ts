@@ -8,6 +8,7 @@ import lolaAddonKit from "@/assets/providers/lola-addon-blood-test-kit.png.asset
 import clinilabsQfitBox from "@/assets/providers/clinilabs-qfit-box-accreditation.png.asset.json";
 import medichecksUltimate from "@/assets/providers/medichecks/ultimate-performance-blood-test.webp.asset.json";
 import medichecksFemale from "@/assets/providers/medichecks/female-hormone-blood-test.webp.asset.json";
+import edgeTestKit from "@/assets/providers/edge-test-kit.png.asset.json";
 
 describe("resolveTestCardImage", () => {
   it("uses the verified Ultimate Performance kit instead of its blocked promotional picture", () => {
@@ -44,6 +45,23 @@ describe("resolveTestCardImage", () => {
         imageUrl: null,
       }),
     ).toBe(lolaAddonKit.url);
+  });
+
+  it("uses the owner's EDGE test kit image for every EDGE test", () => {
+    expect(
+      resolveTestCardImage({
+        providerId: "sports-blood-tests",
+        testName: "Ultimate Performance Blood Test",
+        imageUrl: "https://provider.example/edge-stored.jpg",
+      }),
+    ).toBe(edgeTestKit.url);
+    expect(
+      resolveTestCardImage({
+        providerId: "sports-blood-tests",
+        testName: "Fitness Blood Test",
+        imageUrl: null,
+      }),
+    ).toBe(edgeTestKit.url);
   });
 
   it("keeps a Lola Health standalone test image", () => {
