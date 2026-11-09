@@ -37,6 +37,7 @@ import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { reportLovableError } from "@/lib/lovable-error-reporting";
 import { lazyWithRetry } from "@/lib/lazyWithRetry";
 import { loadCookiebot } from "@/lib/consent";
+import { AutoReveal } from "@/components/common/AutoReveal";
 
 // The Radix toast renderer (and its dismissable-layer and collection code)
 // loads once the browser is idle instead of in the entry script. Nothing is
@@ -257,6 +258,7 @@ function RootComponent() {
               {!isAdminArea && <FloatingNavDock />}
               <SiteAssistant />
               <AutoTranslatePage />
+              {!isAdminArea && <AutoReveal />}
               {!isAdminArea && <GlobalComparisonBar />}
               <ErrorBoundary>
                 <Suspense fallback={<PageFallback />}>
