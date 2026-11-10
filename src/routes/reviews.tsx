@@ -7,9 +7,9 @@ const ReviewSystem = lazy(() => import("@/components/reviews/ReviewSystem"));
 export const Route = createFileRoute("/reviews")({
   head: () =>
     buildRouteHead({
-      title: "Provider reviews | myhealth checkup",
+      title: "User reviews | myhealth checkup",
       description:
-        "Verified review ratings for the UK private test providers we compare, alongside accreditation and service detail.",
+        "What people say about comparing private blood tests with myhealth checkup — the same reviews featured on our homepage.",
       path: "/reviews",
     }),
   component: ReviewSystem,
