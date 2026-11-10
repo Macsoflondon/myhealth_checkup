@@ -302,29 +302,44 @@ export default function BrowseByCategoryBar({
       {hydrated && typeof document !== "undefined"
         ? createPortal(
             <div
-              className={`fixed top-3 right-3 z-[1200] transition-all duration-300 ease-out motion-reduce:transition-none ${
+              className={`fixed inset-x-0 top-0 z-[1200] transition-all duration-300 ease-out motion-reduce:transition-none ${
                 mobileBarOut && !mobileOpen
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 -translate-y-3 pointer-events-none"
               }`}
               data-testid="sticky-menu-trigger"
-              // inert, not aria-hidden: while the trigger is faded out it must
-              // also leave the tab order, or keyboard users land on a button
-              // that screen readers are told does not exist.
+              // inert, not aria-hidden: while hidden it must leave the tab order.
               inert={!mobileBarOut || mobileOpen}
             >
-              <button
-                ref={stickyTriggerRef}
-                type="button"
-                onClick={() => setMobileOpen(true)}
-                aria-label="Open menu"
-                aria-controls="mobile-menu"
-                className="flex flex-col items-end justify-center gap-[5px] min-w-11 min-h-11 p-2 rounded-xl bg-white/90 backdrop-blur-md border border-[#e70d69]/15 shadow-[0_6px_18px_-6px_rgba(231,13,105,0.5)] focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#e70d69] cursor-pointer"
-              >
-                <div className="h-[3px] w-9 rounded-full bg-[#081129]" />
-                <div className="h-[3px] w-6 rounded-full bg-[#e70d69]" />
-                <div className="h-[3px] w-10 rounded-full bg-[#22c0d4]" />
-              </button>
+              {/* Phones/tablets: a compact sticky bar so visitors can browse
+                  tests from anywhere on the page. Desktop keeps the floating
+                  menu button only. */}
+              <div className="flex items-center gap-2 bg-white/95 backdrop-blur-md border-b border-[#22c0d4]/40 shadow-[0_6px_18px_-10px_rgba(8,17,41,0.35)] px-3 py-2 pt-[max(0.5rem,env(safe-area-inset-top))] lg:bg-transparent lg:border-0 lg:shadow-none lg:backdrop-blur-none lg:justify-end lg:pointer-events-none">
+                <Link
+                  to="/"
+                  className="lg:hidden min-w-0 flex-1 truncate no-underline font-[Montserrat] font-extrabold tracking-[-0.03em] text-[clamp(15px,4.4vw,20px)] leading-none min-h-12 flex items-center"
+                >
+                  <BrandWordmark />
+                </Link>
+                <Link
+                  to="/compare"
+                  className="lg:hidden shrink-0 inline-flex items-center justify-center min-h-12 px-3 rounded-xl bg-gradient-to-r from-[#22c0d4] to-[#e70d69] text-white text-[15px] font-semibold font-[Montserrat] no-underline shadow-sm"
+                >
+                  Browse tests
+                </Link>
+                <button
+                  ref={stickyTriggerRef}
+                  type="button"
+                  onClick={() => setMobileOpen(true)}
+                  aria-label="Open menu"
+                  aria-controls="mobile-menu"
+                  className="lg:pointer-events-auto shrink-0 flex flex-col items-end justify-center gap-[5px] min-w-12 min-h-12 p-2 rounded-xl bg-white/90 backdrop-blur-md border border-[#e70d69]/15 shadow-[0_6px_18px_-6px_rgba(231,13,105,0.5)] focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#e70d69] cursor-pointer"
+                >
+                  <div className="h-[3px] w-8 rounded-full bg-[#081129]" />
+                  <div className="h-[3px] w-5 rounded-full bg-[#e70d69]" />
+                  <div className="h-[3px] w-9 rounded-full bg-[#22c0d4]" />
+                </button>
+              </div>
             </div>,
             document.body,
           )

@@ -1597,3 +1597,17 @@ html {
   top: auto !important;
   bottom: 0 !important;
 }
+
+/* Mobile reading and tapping comfort (phones only). Shorter visual
+   paragraphs through tighter measure and spacing; every main button gets a
+   48px tap height. */
+@media (max-width: 767px) {
+  main p { max-width: 62ch; }
+  main p + p { margin-top: 0.85em; }
+  .type-body { font-size: 1rem; line-height: 1.6; }
+  main a[class*="rounded"][class*="px-"]:not([class*="rounded-full"][class*="w-"]),
+  main button[class*="px-"] {
+    min-height: 48px;
+  }
+  main [data-slot="button"] { min-height: 48px; font-size: 1rem; }
+}
