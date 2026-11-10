@@ -114,7 +114,7 @@ const DEFERRED_SECTIONS = (
   </>
 );
 
-// "Why myhealth checkup" was moved below "Trusted by users" at the site owner's
+// "Why myhealth checkup" was moved below "Here to help" at the site owner's
 // request. It stays a module-level element for the same reason as
 // DEFERRED_SECTIONS: homepage re-renders must hand React the same element.
 const DECISION_SECTION = (
@@ -253,8 +253,6 @@ const Index = () => {
             </Suspense>
           </LazyMount>
 
-          {DECISION_SECTION}
-
           <LazyMount
             minHeight={500}
             className="bg-white"
@@ -266,6 +264,8 @@ const Index = () => {
               </SectionReveal>
             </Suspense>
           </LazyMount>
+
+          {DECISION_SECTION}
 
           <div id="comparison-end" aria-hidden="true" />
         </div>

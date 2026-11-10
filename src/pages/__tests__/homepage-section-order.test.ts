@@ -54,8 +54,8 @@ const BODY_ORDER: readonly string[] = [
   "{DEFERRED_SECTIONS}",
   "<PartnerShowcaseGrid />",
   "<TestimonialCarousel />",
-  "{DECISION_SECTION}",
   "<ClinicAndHelpSection />",
+  "{DECISION_SECTION}",
 ];
 
 const assertAscending = (
@@ -83,7 +83,7 @@ describe("homepage section order", () => {
     assertAscending(deferredBlock, DEFERRED_ORDER, "DEFERRED_SECTIONS");
   });
 
-  it("puts the featured partner above the testimonials and the why section last", () => {
+  it("puts the featured partner above the testimonials and the why section after here to help", () => {
     assertAscending(pageBody, BODY_ORDER, "the page body");
   });
 
