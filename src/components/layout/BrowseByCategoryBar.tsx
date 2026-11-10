@@ -317,9 +317,15 @@ export default function BrowseByCategoryBar({
               <div className="flex items-center gap-2 bg-white/95 backdrop-blur-md border-b border-[#22c0d4]/40 shadow-[0_6px_18px_-10px_rgba(8,17,41,0.35)] px-3 py-2 pt-[max(0.5rem,env(safe-area-inset-top))] lg:bg-transparent lg:border-0 lg:shadow-none lg:backdrop-blur-none lg:justify-end lg:pointer-events-none">
                 <Link
                   to="/"
-                  className="lg:hidden min-w-0 flex-1 truncate no-underline font-[Montserrat] font-extrabold tracking-[-0.03em] text-[clamp(15px,4.4vw,20px)] leading-none min-h-12 flex items-center"
+                  className="lg:hidden min-w-0 flex-1 no-underline font-[Montserrat] font-extrabold tracking-[-0.02em] text-[clamp(24px,7.6vw,40px)] leading-none flex flex-col justify-center gap-1 py-1"
                 >
                   <BrandWordmark />
+                  <span className="block whitespace-nowrap font-bold text-[clamp(11px,3.3vw,16px)] uppercase tracking-[0.12em] leading-snug">
+                    <span className="text-[#081129]">Your </span>
+                    <span className="text-brand-turquoise">health.</span>
+                    <span className="text-[#081129]"> Your </span>
+                    <span className="text-[#e70d69]">choice.</span>
+                  </span>
                 </Link>
                 <button
                   ref={stickyTriggerRef}
