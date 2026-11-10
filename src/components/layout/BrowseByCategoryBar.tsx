@@ -321,12 +321,6 @@ export default function BrowseByCategoryBar({
                 >
                   <BrandWordmark />
                 </Link>
-                <Link
-                  to="/compare"
-                  className="lg:hidden shrink-0 inline-flex items-center justify-center min-h-12 px-3 rounded-xl bg-gradient-to-r from-[#22c0d4] to-[#e70d69] text-white text-[15px] font-semibold font-[Montserrat] no-underline shadow-sm"
-                >
-                  Browse tests
-                </Link>
                 <button
                   ref={stickyTriggerRef}
                   type="button"
