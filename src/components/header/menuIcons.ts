@@ -157,6 +157,7 @@ export const categoryTextColor = (category?: string | null): string =>
 export const MORE_SECTION_ICONS: Record<string, MenuIconEntry> = {
   "About us": { Icon: Info, color: MENU_TURQUOISE },
   "Frequently asked questions": { Icon: BookOpen, color: "#6366f1" },
+  Reviews: { Icon: Star, color: "#f59e0b" },
   "Our providers": { Icon: Users, color: MENU_PINK },
   "Assisted test finder": { Icon: Search, color: "#16a34a" },
   "Compare tests": { Icon: BarChart2, color: "#f59e0b" },

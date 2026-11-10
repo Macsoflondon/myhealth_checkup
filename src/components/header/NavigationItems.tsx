@@ -195,6 +195,7 @@ export const moreNavigationSections = [
     items: [
       { name: "About us", path: "/about" },
       { name: "Frequently asked questions", path: "/faqs" },
+      { name: "Reviews", path: "/reviews" },
     ],
   },
   {
