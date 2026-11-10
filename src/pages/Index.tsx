@@ -249,9 +249,7 @@ const Index = () => {
             fallback={<TestimonialSkeleton />}
           >
             <Suspense fallback={<TestimonialSkeleton />}>
-              <SectionReveal>
-                <TestimonialCarousel />
-              </SectionReveal>
+              <TestimonialCarousel />
             </Suspense>
           </LazyMount>
 

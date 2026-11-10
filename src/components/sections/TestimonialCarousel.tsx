@@ -113,7 +113,10 @@ const TestimonialCarousel = () => {
   }, []);
 
   return (
-    <section className="py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden">
+    <section
+      className="py-8 sm:py-10 md:py-12 bg-brand-navy relative overflow-hidden"
+      data-reveal="visible"
+    >
       <NavyDecorativeCircles />
 
       <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 relative">
@@ -142,12 +145,12 @@ const TestimonialCarousel = () => {
         >
           <div
             ref={trackRef}
-            className="flex whitespace-nowrap will-change-transform"
+            className="flex items-stretch whitespace-nowrap will-change-transform"
           >
             {items.map((t, i) => (
               <div
                 key={i}
-                className="shrink-0 px-3"
+                className="shrink-0 px-3 self-stretch"
                 style={{ width: `${CARD_WIDTH}px` }}
               >
                 <div className="bg-white border border-white/20 rounded-2xl p-5 sm:p-6 h-full flex flex-col hover:border-brand-turquoise/30 transition-all duration-300">
