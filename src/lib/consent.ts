@@ -81,6 +81,31 @@ export const COOKIEBOT_SRC = "https://consent.cookiebot.com/uc.js";
  * every optional tracker checks hasConsent() above, which denies by default
  * until uc.js has loaded and the visitor has answered the banner.
  */
+/**
+ * Load the banner at the browser's first idle moment after hydration, and
+ * within 2 s at the latest, so uc.js (about 38 KB and 120-140 ms of main
+ * thread on a mid-range phone) does not run in the middle of hydration.
+ * Returns a cleanup function for the calling effect.
+ */
+export function loadCookiebotWhenIdle(): () => void {
+  if (typeof window === "undefined") return () => undefined;
+  const idleWindow = window as Window & {
+    requestIdleCallback?: (
+      cb: () => void,
+      opts?: { timeout: number },
+    ) => number;
+    cancelIdleCallback?: (handle: number) => void;
+  };
+  if (idleWindow.requestIdleCallback) {
+    const handle = idleWindow.requestIdleCallback(() => loadCookiebot(), {
+      timeout: 2000,
+    });
+    return () => idleWindow.cancelIdleCallback?.(handle);
+  }
+  const timer = window.setTimeout(loadCookiebot, 300);
+  return () => window.clearTimeout(timer);
+}
+
 export function loadCookiebot(): void {
   if (typeof document === "undefined") return;
   if (document.getElementById(COOKIEBOT_SCRIPT_ID)) return;

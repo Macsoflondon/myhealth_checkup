@@ -4,12 +4,28 @@
  * Lovable hosting does not read public/_headers or vercel.json, so these are
  * set by request middleware in src/start.ts. The CSP lists only origins the
  * site actually loads: Supabase (REST, auth, realtime, storage), Cookiebot
- * consent, provider product images (any https host) and local video. Fonts
- * are self-hosted through @fontsource, so no font CDN is allowed.
+ * consent, the image hosts in IMAGE_SOURCES and local video. Fonts are
+ * self-hosted through @fontsource, so no font CDN is allowed.
+ *
+ * Admin surfaces (/admin, /control) get a stricter policy with no
+ * third-party origin at all, so a compromised third-party script (the
+ * November 2026 Optimizely "OPTIMJACK" attack class) cannot run where an
+ * admin session lives.
  */
 
-/** Same-origin endpoint that receives CSP violation reports. */
+/**
+ * Same-origin endpoint that receives CSP violation reports on preview and
+ * local hosts. It only logs, so preview traffic never reaches production
+ * security telemetry.
+ */
 export const CSP_REPORT_PATH = "/api/public/csp-report";
+
+/**
+ * Production report sink: the csp-report edge function stores each report in
+ * public.csp_reports, which SOC Watch, soc-cluster (CSP burst detection) and
+ * siem-export read. Reports sent to CSP_REPORT_PATH only reached server logs.
+ */
+export const CSP_REPORT_URL = "https://clvuioagsgfadynuvodj.supabase.co/functions/v1/csp-report";
 
 /** Hosts that always get the strict production policy, whatever headers say. */
 const PRODUCTION_HOSTS = new Set([
@@ -38,6 +54,49 @@ const SUPABASE = "https://clvuioagsgfadynuvodj.supabase.co";
 const SUPABASE_WS = "wss://clvuioagsgfadynuvodj.supabase.co";
 const COOKIEBOT = ["https://consent.cookiebot.com", "https://consentcdn.cookiebot.com"];
 
+/**
+ * Admin surfaces: sign-in, break-glass recovery and Crux Control. They load
+ * no third-party script and get the admin policy below.
+ */
+export const isAdminSurfacePath = (pathname: string): boolean => /^\/(admin|control)(\/|$)/i.test(pathname);
+
+/**
+ * Every host the site displays images from, so img-src no longer allows any
+ * https host. An injected script can otherwise send stolen data out as an
+ * image request, the route skimmers use when connect-src is locked down.
+ * Sources (checked 19 Nov 2026): Supabase Storage (re-hosted test images),
+ * provider_tests.image_url, provider_blog_posts.image_url,
+ * popular_test_enrichment_cache.image_url and hardcoded images in src/.
+ * Shared hosts are narrowed to the path a provider uses. A new provider image
+ * host shows up as an img-src report in SOC Watch; add it here.
+ */
+export const IMAGE_SOURCES = [
+  SUPABASE,
+  "https://cdn.shopify.com/s/",
+  "https://www.medichecks.com",
+  "https://www.medical-diagnosis.co.uk",
+  "https://goodbodyclinic.com",
+  "https://www.goodbodyclinic.com",
+  "https://lolahealth.com",
+  "https://londonhealthcompany.co.uk",
+  "https://www.clinilabs.co.uk",
+  "https://www.londonmedicallaboratory.co.uk",
+  "https://media.londonmedicallaboratory.com",
+  "https://s3.eu-west-2.amazonaws.com/images.londonmedicallaboratory.co.uk/",
+  "https://www.randoxhealth.com",
+  "https://rdxhealthfrontdoor-hncxg6h5atakbrfz.a03.azurefd.net",
+  "https://www.sportsbloodtests.co.uk",
+  "https://d8j0ntlcm91z4.cloudfront.net",
+  "https://cdnimg.co/6a2b056c-f7d8-462b-b44b-f1538c8e93e9/",
+  "https://images.unsplash.com",
+];
+
+/** Extra image hosts that only admin audit screens show (provider_image_audit). */
+const ADMIN_IMAGE_SOURCES = [
+  "https://37e227e1-0d67-4515-b064-99c243036534.lovableproject.com",
+  "https://stesrhplatforma071.blob.core.windows.net",
+];
+
 /** Hosts that render the Lovable editor preview inside an iframe. */
 const EDITOR_FRAME_ANCESTORS = ["https://lovable.dev", "https://*.lovable.dev", "https://*.lovable.app"];
 
@@ -54,34 +113,50 @@ export const isEditorPreviewHost = (host: string): boolean => {
   );
 };
 
-export const buildContentSecurityPolicy = (host: string): string => {
+/** Where a host's CSP reports go: production telemetry, or local logs for previews. */
+export const cspReportEndpoint = (host: string): string =>
+  isEditorPreviewHost(host) ? CSP_REPORT_PATH : CSP_REPORT_URL;
+
+export const buildContentSecurityPolicy = (host: string, pathname = "/"): string => {
   const preview = isEditorPreviewHost(host);
+  const admin = isAdminSurfacePath(pathname);
+  // Cookiebot is the only third-party script on the public site. Admin
+  // surfaces do not load it (see RootShell), so their policy omits it.
+  const thirdParty = admin ? [] : COOKIEBOT;
   const frameAncestors = preview ? ["'self'", ...EDITOR_FRAME_ANCESTORS] : ["'none'"];
   const directives: Record<string, string[]> = {
     "default-src": ["'self'"],
     // TanStack Start streams inline hydration scripts and JSON-LD; no nonce
     // support is available on this hosting, so inline scripts stay allowed.
-    "script-src": ["'self'", "'unsafe-inline'", ...COOKIEBOT, ...(preview ? ["https://cdn.gpteng.co"] : [])],
-    "style-src": ["'self'", "'unsafe-inline'", ...COOKIEBOT],
+    "script-src": ["'self'", "'unsafe-inline'", ...thirdParty, ...(preview ? ["https://cdn.gpteng.co"] : [])],
+    "style-src": ["'self'", "'unsafe-inline'", ...thirdParty],
     "font-src": ["'self'", "data:"],
-    "img-src": ["'self'", "data:", "blob:", "https:"],
+    "img-src": [
+      "'self'",
+      "data:",
+      "blob:",
+      ...IMAGE_SOURCES,
+      ...thirdParty,
+      ...(admin ? ADMIN_IMAGE_SOURCES : []),
+      ...(preview ? EDITOR_FRAME_ANCESTORS : []),
+    ],
     "media-src": ["'self'", "blob:", SUPABASE],
     "connect-src": [
       "'self'",
       SUPABASE,
       SUPABASE_WS,
-      ...COOKIEBOT,
+      ...thirdParty,
       "https://storage.googleapis.com",
       ...(preview ? ["ws:", "wss:"] : []),
     ],
-    "frame-src": ["'self'", ...COOKIEBOT],
+    "frame-src": ["'self'", ...thirdParty],
     "worker-src": ["'self'", "blob:"],
     "manifest-src": ["'self'"],
     "frame-ancestors": frameAncestors,
     "base-uri": ["'self'"],
     "form-action": ["'self'", SUPABASE],
     "object-src": ["'none'"],
-    "report-uri": [CSP_REPORT_PATH],
+    "report-uri": [cspReportEndpoint(host)],
     "report-to": ["csp-endpoint"],
   };
   const parts = Object.entries(directives).map(([k, v]) => `${k} ${v.join(" ")}`);
@@ -110,15 +185,15 @@ export const PERMISSIONS_POLICY = [
   "browsing-topics=()",
 ].join(", ");
 
-export const buildSecurityHeaders = (host: string): Record<string, string> => {
+export const buildSecurityHeaders = (host: string, pathname = "/"): Record<string, string> => {
   const headers: Record<string, string> = {
-    "Content-Security-Policy": buildContentSecurityPolicy(host),
+    "Content-Security-Policy": buildContentSecurityPolicy(host, pathname),
     "Permissions-Policy": PERMISSIONS_POLICY,
     "X-Content-Type-Options": "nosniff",
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
     "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
-    "Reporting-Endpoints": `csp-endpoint="${CSP_REPORT_PATH}"`,
+    "Reporting-Endpoints": `csp-endpoint="${cspReportEndpoint(host)}"`,
   };
   // The editor preview must stay frameable by lovable.dev; everywhere else
   // the site refuses framing outright.
@@ -127,8 +202,8 @@ export const buildSecurityHeaders = (host: string): Record<string, string> => {
 };
 
 /** Returns the response with security headers set, copying it if immutable. */
-export const applySecurityHeaders = (response: Response, host: string): Response => {
-  const headers = buildSecurityHeaders(host);
+export const applySecurityHeaders = (response: Response, host: string, pathname = "/"): Response => {
+  const headers = buildSecurityHeaders(host, pathname);
   const set = (target: Response): Response => {
     for (const [k, v] of Object.entries(headers)) target.headers.set(k, v);
     // The policy depends on the host, so shared caches must key on it.
@@ -144,8 +219,11 @@ export const applySecurityHeaders = (response: Response, host: string): Response
 };
 
 /** Applies security headers using the trusted host resolution for a request. */
-export const applySecurityHeadersForRequest = (response: Response, request: Request): Response =>
-  applySecurityHeaders(
+export const applySecurityHeadersForRequest = (response: Response, request: Request): Response => {
+  const url = new URL(request.url);
+  return applySecurityHeaders(
     response,
-    resolvePolicyHost(new URL(request.url).host, request.headers.get("x-forwarded-host")),
+    resolvePolicyHost(url.host, request.headers.get("x-forwarded-host")),
+    url.pathname,
   );
+};

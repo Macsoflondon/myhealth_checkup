@@ -13,6 +13,7 @@ import {
   createRootRouteWithContext,
   HeadContent,
   Outlet,
+  redirect,
   Scripts,
   useRouter,
   useRouterState,
@@ -36,7 +37,8 @@ import { SiteAssistant, LAUNCHER_PAGE_CLEARANCE } from "@/components/assistant/s
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import { reportLovableError } from "@/lib/lovable-error-reporting";
 import { lazyWithRetry } from "@/lib/lazyWithRetry";
-import { loadCookiebot } from "@/lib/consent";
+import { COOKIEBOT_SCRIPT_ID, loadCookiebotWhenIdle } from "@/lib/consent";
+import { isAdminSurfacePath } from "@/lib/security-headers";
 import { AutoReveal } from "@/components/common/AutoReveal";
 
 // The Radix toast renderer (and its dismissable-layer and collection code)
@@ -106,6 +108,19 @@ const ORG_JSONLD = JSON.stringify({
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   {
+    // Admin surfaces must run without third-party script. A visitor who
+    // reaches /admin or /control by an in-app link from a public page still
+    // has the consent script in memory, so load the admin page as a fresh
+    // document instead; it then gets the admin CSP and no consent script.
+    beforeLoad: ({ location }) => {
+      if (typeof document === "undefined") return;
+      if (
+        isAdminSurfacePath(location.pathname) &&
+        document.getElementById(COOKIEBOT_SCRIPT_ID)
+      ) {
+        throw redirect({ href: location.href, reloadDocument: true });
+      }
+    },
     head: () => ({
       meta: [
         { charSet: "utf-8" },
@@ -182,9 +197,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 function RootShell({ children }: { children: React.ReactNode }) {
   // Consent banner. Loaded here, after hydration, so uc.js cannot insert its
   // dialog into <body> ahead of React's markup. The shell renders for every
-  // route, including the not-found and error pages.
+  // route, including the not-found and error pages. It waits for the first
+  // idle moment (at most 2 s) so it does not compete with hydration on
+  // mobile, and admin surfaces never load it (see beforeLoad above).
   useEffect(() => {
-    loadCookiebot();
+    if (isAdminSurfacePath(window.location.pathname)) return;
+    return loadCookiebotWhenIdle();
   }, []);
 
   return (

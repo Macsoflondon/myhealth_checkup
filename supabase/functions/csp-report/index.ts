@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
 // Cyber Essentials: CSP violation report sink.
 // Accepts application/csp-report and application/reports+json.
 // Rate-limited per IP, payload capped, never reflects input back.
@@ -12,6 +11,43 @@ const corsHeaders = {
 
 const MAX_BODY_BYTES = 16_384;
 const MAX_REPORTS_PER_HOUR = 200;
+
+const MAX_ROWS_PER_REQUEST = 20;
+
+type NormalisedReport = {
+  raw: unknown;
+  documentUri: string | null;
+  directive: string | null;
+  blockedUri: string | null;
+};
+
+const str = (value: unknown, max: number): string | null =>
+  typeof value === "string" && value !== "" ? value.slice(0, max) : null;
+
+/** Turns either CSP report format into one entry per violation. */
+function normaliseReports(parsed: unknown): NormalisedReport[] {
+  const entries = Array.isArray(parsed) ? parsed : [parsed];
+  const out: NormalisedReport[] = [];
+  for (const entry of entries.slice(0, MAX_ROWS_PER_REQUEST)) {
+    if (entry === null || typeof entry !== "object") continue;
+    const record = entry as Record<string, unknown>;
+    // Reporting API entries of another type (deprecation, intervention) are
+    // not CSP violations.
+    if (typeof record.type === "string" && record.type !== "csp-violation") continue;
+    const body = (record["csp-report"] ?? record.body ?? record) as Record<string, unknown>;
+    if (body === null || typeof body !== "object") continue;
+    out.push({
+      raw: entry,
+      documentUri: str(body["document-uri"] ?? body.documentURL ?? record.url, 2048),
+      directive: str(
+        body["violated-directive"] ?? body["effective-directive"] ?? body.effectiveDirective,
+        256,
+      ),
+      blockedUri: str(body["blocked-uri"] ?? body.blockedURL, 2048),
+    });
+  }
+  return out;
+}
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS")
@@ -70,25 +106,23 @@ Deno.serve(async (req) => {
       window_start: new Date().toISOString(),
     });
 
-    // Persist to csp_reports (admin-readable, service-role writable).
-    const r = (parsed as any)?.["csp-report"] ?? parsed;
-    await supabase.from("csp_reports").insert({
+    // Persist to csp_reports (admin-readable, service-role writable), one
+    // row per violation. Legacy report-uri posts one {"csp-report": {...}}
+    // object with kebab-case keys; the Reporting API (report-to, used by
+    // Chromium) posts an array of {type, body: {...}} with camelCase keys.
+    // Both are normalised so SOC Watch and soc-cluster, which read
+    // violated_directive / blocked_uri / document_uri, see every browser.
+    const rows = normaliseReports(parsed).map((r) => ({
       ip_address: ip,
       user_agent: req.headers.get("user-agent")?.slice(0, 512) ?? null,
-      report: parsed,
-      document_uri:
-        typeof r?.["document-uri"] === "string"
-          ? r["document-uri"].slice(0, 2048)
-          : null,
-      violated_directive:
-        typeof r?.["violated-directive"] === "string"
-          ? r["violated-directive"].slice(0, 256)
-          : null,
-      blocked_uri:
-        typeof r?.["blocked-uri"] === "string"
-          ? r["blocked-uri"].slice(0, 2048)
-          : null,
-    });
+      report: r.raw,
+      document_uri: r.documentUri,
+      violated_directive: r.directive,
+      blocked_uri: r.blockedUri,
+    }));
+    if (rows.length > 0) {
+      await supabase.from("csp_reports").insert(rows);
+    }
 
     return new Response(null, { status: 204, headers: corsHeaders });
   } catch {
