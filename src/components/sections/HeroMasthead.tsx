@@ -45,7 +45,35 @@ export default function HeroMasthead() {
     if (connection?.saveData || /(^|-)2g$/.test(connection?.effectiveType ?? "")) {
       return;
     }
-    setVideoAllowed(true);
+    // Mount the <video> (which starts the download) only once the window
+    // load event has fired and the main thread is idle. Setting this straight
+    // after hydration started the loop download while scripts and the hero
+    // photo were still loading, which delayed the page on mobile networks.
+    const idleWindow = window as Window & {
+      requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+      cancelIdleCallback?: (handle: number) => void;
+    };
+    let cancelled = false;
+    let idleHandle: number | undefined;
+    let timer: number | undefined;
+    const allow = () => {
+      if (!cancelled) setVideoAllowed(true);
+    };
+    const scheduleWhenIdle = () => {
+      if (idleWindow.requestIdleCallback) {
+        idleHandle = idleWindow.requestIdleCallback(allow, { timeout: 3000 });
+      } else {
+        timer = window.setTimeout(allow, 1500);
+      }
+    };
+    if (document.readyState === "complete") scheduleWhenIdle();
+    else window.addEventListener("load", scheduleWhenIdle, { once: true });
+    return () => {
+      cancelled = true;
+      window.removeEventListener("load", scheduleWhenIdle);
+      if (idleHandle !== undefined) idleWindow.cancelIdleCallback?.(idleHandle);
+      if (timer !== undefined) window.clearTimeout(timer);
+    };
   }, []);
 
   useEffect(() => {

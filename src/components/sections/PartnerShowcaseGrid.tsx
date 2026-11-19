@@ -3,7 +3,9 @@ import { NavyDecorativeCircles } from "@/components/ui/navy-decorative-circles";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ErrorBoundary } from "@/components/common/ErrorBoundary";
 import FeaturedPartnerWheel from "@/components/sections/FeaturedPartnerWheel";
-import faceGridAsset from "@/assets/goodbody-face-grid.jpg.asset.json";
+// 480px greyscale WebP (43 KB) of the original 1024x1536 JPEG (283 KB). The
+// texture renders at most ~196 CSS px wide and is greyscale-filtered in CSS.
+import faceGridTexture from "@/assets/goodbody-face-grid-480.webp";
 
 const DreamHealthShowcase = lazy(
   () => import("@/components/sections/DreamHealthShowcase"),
@@ -78,7 +80,7 @@ const PartnerShowcaseGrid = () => {
     >
       <NavyDecorativeCircles />
 
-      <FeaturedPartnerWheel faceTexture={faceGridAsset.url} />
+      <FeaturedPartnerWheel faceTexture={faceGridTexture} />
 
       <SafeBlock name="Test categories" fallback={<BlockSkeleton />}>
         <TestCategoriesSection />

@@ -276,6 +276,8 @@ function KitFace({
           <img
             src={texture}
             alt=""
+            loading="lazy"
+            decoding="async"
             style={{
               position: "absolute",
               inset: 0,
