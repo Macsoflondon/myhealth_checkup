@@ -8,7 +8,7 @@
 
 - Site and Edge address helpers validate infrastructure-overwritten Cloudflare/gateway IP literals; callers retain their null/unknown fallback. Why: forwarded lists are caller-controlled and cannot key rate limits or consent evidence.
 
-- Medical Diagnosis interprets offset/limit as one of five batch positions and partitions normalised-path-sorted sitemap matches dynamically. Why: unchanged cron jobs must cover growing catalogues without stale-tail delisting.
+- Medical Diagnosis batches sitemap and stored paths five ways; only priced product pages refresh validation or reverse recent automatic delists, never manual delists. Why: discovery gaps and unreadable prices must not masquerade as freshness.
 
 - Scraper identity matching prefers stored product URLs before name fallbacks; URL verification rejects homepage/non-product redirects. Why: provider renames must not freeze prices or send booking clicks to unrelated pages.
 - Auth throttle accepts only email and check/failure, with bounded strict validation and no password verification. Why: a caller-scoped failure bucket must not become a password oracle.

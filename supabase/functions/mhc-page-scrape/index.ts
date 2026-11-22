@@ -140,6 +140,77 @@ function extractDescriptionScraped(
     : null;
 }
 
+export function medicalDiagnosisPrice(html: string): number | null {
+  const pIdx = html.search(/Price:/i);
+  if (pIdx < 0) return null;
+  const section =
+    html
+      .slice(pIdx)
+      .split(/Sample Requirements|Turnaround Time|Tests Included/i)[0] ?? "";
+  const amount = section.match(
+    /<span\b[^>]*class=["'][^"']*\bwoocommerce-Price-amount\b[^"']*["'][^>]*>([\s\S]*?)<\/bdi>\s*<\/span>/i,
+  );
+  if (!amount) return null;
+  const match = htmlToText(amount[1] ?? "").match(
+    /^£\s*([\d,]+(?:\.\d{1,2})?)$/,
+  );
+  const price = match ? Number(match[1]?.replace(/,/g, "")) : NaN;
+  return Number.isFinite(price) && price > 0 ? price : null;
+}
+
+export function medicalDiagnosisProductPage(
+  html: string,
+  finalUrl: string,
+): boolean {
+  try {
+    const url = new URL(finalUrl);
+    return (
+      url.hostname.replace(/^www\./, "") === "medical-diagnosis.co.uk" &&
+      /\/exam\/(profiles|all-tests)\/.+/i.test(url.pathname) &&
+      /<body\b[^>]*class=["'][^"']*\bsingle-product\b/i.test(html)
+    );
+  } catch {
+    return false;
+  }
+}
+
+export function medicalDiagnosisCandidates(
+  sitemapMatches: string[],
+  storedUrls: Array<string | null>,
+): string[] {
+  const byPath = new Map<string, string>();
+  for (const url of [...sitemapMatches, ...storedUrls]) {
+    const path = normalisedProductPath(url);
+    if (url && path && path !== "/" && !byPath.has(path)) byPath.set(path, url);
+  }
+  return [...byPath.values()];
+}
+
+export function automaticRelistIds(
+  changes: Array<{
+    provider_test_id: string;
+    change_type: string;
+    created_at: string;
+  }>,
+  now: number,
+): Set<string> {
+  const manual = new Set(
+    changes
+      .filter((c) => c.change_type === "delisted_manual")
+      .map((c) => c.provider_test_id),
+  );
+  return new Set(
+    changes
+      .filter(
+        (c) =>
+          c.change_type === "delisted_auto" &&
+          Date.parse(c.created_at) >= now - 14 * 86400000 &&
+          !manual.has(c.provider_test_id),
+      )
+      .map((c) => c.provider_test_id),
+  );
+}
+
 function parsePage(html: string) {
   let name: string | null = null;
   const og = html.match(/property="og:title"\s+content="([^"]+)"/i);
@@ -163,12 +234,7 @@ function parsePage(html: string) {
       if (cleaned) name = cleaned;
     }
   }
-  let price: number | null = null;
-  const pIdx = html.search(/Price:/i);
-  if (pIdx >= 0) {
-    const m = html.slice(pIdx, pIdx + 300).match(/£\s*([\d.,]+)/);
-    if (m) price = parseFloat(m[1].replace(/,/g, ""));
-  }
+  const price = medicalDiagnosisPrice(html);
   let taText: string | null = null,
     taDays: number | null = null,
     taHours: number | null = null;
@@ -251,10 +317,11 @@ async function getUrls(cfg: {
 
 Deno.serve(async (req) => {
   const u = new URL(req.url);
-  const supabase = createClient(
-    Deno.env.get("SUPABASE_URL")!,
-    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
-  );
+  const databaseUrl = Deno.env.get("SUPABASE_URL");
+  const databaseKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  if (!databaseUrl || !databaseKey)
+    return new Response("service unavailable", { status: 503 });
+  const supabase = createClient(databaseUrl, databaseKey);
   const auth = await checkMhcSyncSecret(u, supabase, "mhc-page-scrape");
   if (!auth.ok) return new Response("unauthorized", { status: 401 });
   const startedAt = new Date().toISOString();
@@ -286,13 +353,49 @@ Deno.serve(async (req) => {
   const { data: rows, error: rowsError } = await supabase
     .from("provider_tests")
     .select(
-      "id, test_name, biomarker_count, biomarkers_list, clinic_phlebotomy_cost, image_url, url",
+      "id, test_name, biomarker_count, biomarkers_list, clinic_phlebotomy_cost, image_url, url, price, is_active",
     )
     .eq("provider_id", providerId)
     .eq("is_active", true);
   const runErrors: { url?: string; message: string }[] = [];
   if (rowsError)
     runErrors.push({ message: `catalogue read failed: ${rowsError.message}` });
+  const { data: autoChanges, error: autoError } = await supabase
+    .from("product_change_log")
+    .select("provider_test_id, change_type, created_at")
+    .eq("provider_id", providerId)
+    .eq("change_type", "delisted_auto")
+    .gte("created_at", new Date(Date.now() - 14 * 86400000).toISOString());
+  const autoIds = [
+    ...new Set((autoChanges ?? []).map((c) => String(c.provider_test_id))),
+  ];
+  const { data: manualChanges, error: manualError } = autoIds.length
+    ? await supabase
+        .from("product_change_log")
+        .select("provider_test_id, change_type, created_at")
+        .eq("provider_id", providerId)
+        .eq("change_type", "delisted_manual")
+        .in("provider_test_id", autoIds)
+    : { data: [], error: null };
+  const relistIds = automaticRelistIds(
+    [...(autoChanges ?? []), ...(manualChanges ?? [])],
+    Date.now(),
+  );
+  const { data: hiddenRows, error: hiddenError } =
+    relistIds.size && !autoError && !manualError
+      ? await supabase
+          .from("provider_tests")
+          .select(
+            "id, test_name, biomarker_count, biomarkers_list, clinic_phlebotomy_cost, image_url, url, price, is_active",
+          )
+          .eq("provider_id", providerId)
+          .eq("is_active", false)
+          .in("id", [...relistIds])
+      : { data: [], error: null };
+  for (const error of [autoError, manualError, hiddenError]) {
+    if (error)
+      runErrors.push({ message: "automatic re-list catalogue read failed" });
+  }
   type CatalogueRow = {
     id: string;
     test_name: string;
@@ -301,6 +404,8 @@ Deno.serve(async (req) => {
     clinic_phlebotomy_cost: number | null;
     image_url: string | null;
     url: string | null;
+    price: number | null;
+    is_active: boolean;
   };
   const byNorm = new Map<string, CatalogueRow>();
   const byPath = new Map<string, CatalogueRow>();
@@ -308,6 +413,14 @@ Deno.serve(async (req) => {
     byNorm.set(norm(r.test_name), r);
     const path = normalisedProductPath(r.url);
     if (path) byPath.set(path, r);
+  }
+  // Active identities win over older hidden duplicate rows sharing their URL.
+  for (const r of (hiddenRows ?? []) as CatalogueRow[]) {
+    if (!relistIds.has(r.id)) continue;
+    const path = normalisedProductPath(r.url);
+    if (!path || byPath.has(path)) continue;
+    byPath.set(path, r);
+    if (!byNorm.has(norm(r.test_name))) byNorm.set(norm(r.test_name), r);
   }
   const keySet = new Set([...byNorm.keys()].filter((k) => k.length > 2));
   const {
@@ -327,7 +440,15 @@ Deno.serve(async (req) => {
     batchIndex,
     batchCount,
     sliceSize,
-  } = sitemapBatch(matchedUrls, offset, limit, cfg.batchCount);
+  } = sitemapBatch(
+    medicalDiagnosisCandidates(
+      matchedUrls,
+      [...byPath.values()].map((r) => r.url),
+    ),
+    offset,
+    limit,
+    cfg.batchCount,
+  );
   const batchMetadata = {
     batch_index: batchIndex,
     batch_count: batchCount,
@@ -351,10 +472,12 @@ Deno.serve(async (req) => {
     );
   const results: Record<string, unknown>[] = [];
   let written = 0,
+    relisted = 0,
     matched = 0,
     nameSkips = 0;
   for (const url of slice) {
     let html = "";
+    let finalUrl = url;
     try {
       const r = await fetch(url, {
         headers: { "User-Agent": "myhealthcheckup-sync/1.0" },
@@ -364,6 +487,7 @@ Deno.serve(async (req) => {
         continue;
       }
       html = await r.text();
+      finalUrl = r.url || url;
     } catch (e) {
       runErrors.push({
         url,
@@ -372,6 +496,10 @@ Deno.serve(async (req) => {
       continue;
     }
     const p = parsePage(html);
+    if (!medicalDiagnosisProductPage(html, finalUrl) || p.price === null) {
+      runErrors.push({ url, message: "price not readable" });
+      continue;
+    }
     if (!p.name || p.name.includes("[PARAM]")) {
       nameSkips++;
       continue;
@@ -399,7 +527,22 @@ Deno.serve(async (req) => {
         scrape_source_url: url,
         url_verified: true,
         last_validated_at: new Date().toISOString(),
+        scraped_at: new Date().toISOString(),
       };
+      if (!row.is_active) {
+        // Re-check manual exclusions immediately before restoring an inactive row.
+        const { data: manual, error: manualCheckError } = await supabase
+          .from("product_change_log")
+          .select("id")
+          .eq("provider_id", providerId)
+          .eq("provider_test_id", row.id)
+          .eq("change_type", "delisted_manual")
+          .limit(1);
+        if (manualCheckError || manual?.length || !relistIds.has(row.id))
+          continue;
+        upd.is_active = true;
+        upd.data_status = "partial";
+      }
       if (p.price && p.price > 0) {
         // Keep the stored clinic fee in the comparable total.
         const clinicFee =
@@ -458,12 +601,33 @@ Deno.serve(async (req) => {
         upd.description_source = "scraped_verbatim";
         upd.description_generated_at = new Date().toISOString();
       }
-      const { error } = await supabase
+      const { data: updatedRows, error } = await supabase
         .from("provider_tests")
         .update(upd)
-        .eq("id", row.id);
-      if (!error) written++;
-      else runErrors.push({ url, message: error.message });
+        .eq("id", row.id)
+        .eq("is_active", row.is_active)
+        .select("id");
+      if (!error && updatedRows?.length) {
+        written++;
+        if (!row.is_active) {
+          relisted++;
+          const { error: logError } = await supabase
+            .from("product_change_log")
+            .insert({
+              provider_test_id: row.id,
+              provider_id: providerId,
+              change_type: "relisted_auto",
+              old_value: { is_active: false, price: row.price },
+              new_value: { is_active: true, price: p.price, url },
+              changed_by: "mhc-page-scrape",
+            });
+          if (logError)
+            runErrors.push({
+              url,
+              message: "automatic re-list audit write failed",
+            });
+        }
+      } else if (error) runErrors.push({ url, message: error.message });
     }
   }
   const runStatus =
@@ -489,7 +653,7 @@ Deno.serve(async (req) => {
         ...(sitemapFullyFailed
           ? [{ message: "sitemap fetch failed for all configured sitemaps" }]
           : []),
-        ...runErrors.slice(0, 20),
+        ...runErrors,
       ],
       metadata: {
         ...batchMetadata,
@@ -497,6 +661,7 @@ Deno.serve(async (req) => {
         offset,
         limit,
         matched,
+        relisted,
         dry,
         name_extraction_failures: nameSkips,
         sitemap_fetch_failures: fetchFailures,
@@ -519,6 +684,8 @@ Deno.serve(async (req) => {
         processed: slice.length,
         matched,
         written,
+        relisted,
+        errors: runErrors,
         sitemap_fetch_failures: fetchFailures,
         sample: results,
       },

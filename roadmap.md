@@ -1,5 +1,11 @@
 # Roadmap
 
+## 22 November screening, part 7
+- [x] Parse Medical Diagnosis WooCommerce prices; reject unpriced/non-product pages without refreshing fields.
+- [x] Union sitemap matches, active stored URLs and recent automatic delist URLs before five-way batching; preserve manual delists.
+- [x] All four rules and coverage tested: 10 Deno / 1,355 platform tests, changed-file lint and automatic compilation pass. Deployed v167; five live dry batches attempted 154 paths without catalogue writes. Correct £156/£188/£72 samples and ALEX3 £331 source verified; unpriced Sputum excluded. See docs/SCREENING_PART_7.md; no publishing, migrations or cron changes.
+- [ ] Scheduled price correction and ALEX3 persistence await 12:16–12:28 UTC jobs; four provider 429 responses and one other unreadable listing were recorded during dry checks.
+
 ## Public header and ferritin guide
 - [x] Match inner-page brand sizing and slogan to the homepage; retain the mobile hamburger and sticky bar.
 - [x] Add the desktop category toolbar beneath inner-page branding without duplicating the homepage toolbar.
