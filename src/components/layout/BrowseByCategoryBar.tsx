@@ -26,9 +26,8 @@ import {
 
 /**
  * Brand bar: the myhealth checkup wordmark plus the menu drawer that carries
- * every category, section, account and language link. The desktop "Browse by
- * Category" pill toolbar was removed on 29 October 2026 — the drawer is now
- * the single navigation entry point at every width.
+ * every category, section, account and language link. Desktop category pills
+ * complement the drawer beneath the brand bar on public pages.
  */
 export default function BrowseByCategoryBar({
   placement = "card",
@@ -101,7 +100,9 @@ export default function BrowseByCategoryBar({
         onCloseAutoFocus={(event) => {
           if (!mobileBarOut) return;
           event.preventDefault();
-          requestAnimationFrame(() => stickyTriggerRef.current?.focus({ preventScroll: true }));
+          requestAnimationFrame(() =>
+            stickyTriggerRef.current?.focus({ preventScroll: true }),
+          );
         }}
         className="w-[85vw] max-w-[340px] bg-[#f7f7f8] border-l border-[#081129]/10 p-0 flex flex-col"
       >
@@ -194,7 +195,9 @@ export default function BrowseByCategoryBar({
                                   className="w-1.5 h-1.5 rounded-full shrink-0"
                                   style={{ background: color }}
                                 />
-                                <span className="truncate">{displayLabel(sub.name)}</span>
+                                <span className="truncate">
+                                  {displayLabel(sub.name)}
+                                </span>
                               </Link>
                             </li>
                           ))}
@@ -257,7 +260,7 @@ export default function BrowseByCategoryBar({
       >
         <div
           data-scrolled={scrolled}
-          className={`${placement === "hero" ? "flex flex-col px-4 sm:px-6 md:px-9 min-h-[96px] md:min-h-[120px] py-3 md:py-4" : "flex items-center px-4 sm:px-6 md:px-9 h-24 md:h-[120px]"} transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b-2 bg-white ${placement === "hero" ? "border-[#e70d69]" : "border-[#22c0d4]"}`}
+          className={`flex flex-col px-4 sm:px-6 md:px-9 min-h-[96px] md:min-h-[120px] py-3 md:py-4 transition-[background-color,border-color,box-shadow] duration-300 ease-out border-b-2 bg-white ${placement === "hero" ? "border-brand-pink" : "border-brand-turquoise"}`}
         >
           <div className="flex items-start w-full shrink-0">
             <div className="flex flex-col min-w-0 pr-14">
@@ -267,23 +270,21 @@ export default function BrowseByCategoryBar({
               >
                 <BrandWordmark />
               </Link>
-              {placement === "hero" && (
-                <p className="m-0 mt-1 md:mt-2 text-left">
-                  <span className="block whitespace-nowrap font-[Montserrat] font-bold text-[clamp(11px,2.7vw,32px)] max-sm:text-[clamp(11px,3.3vw,16px)] xl:text-[clamp(11px,3.7vw,32px)] uppercase tracking-[0.12em] sm:tracking-[0.18em] xl:tracking-[0.22em] leading-snug">
-                    <span className="transition-colors duration-300 ease-out text-[#081129]">
-                      Your{" "}
-                    </span>
-                    {/* Slogan "health." in brand turquoise (#22c0d4) — the
-                        same token the footer and logo mark use. */}
-                    <span className="text-brand-turquoise">health.</span>
-                    <span className="transition-colors duration-300 ease-out text-[#081129]">
-                      {" "}
-                      Your{" "}
-                    </span>
-                    <span className="text-[#e70d69]">choice.</span>
+              <p className="m-0 mt-1 md:mt-2 text-left">
+                <span className="block whitespace-nowrap font-[Montserrat] font-bold text-[clamp(11px,2.7vw,32px)] max-sm:text-[clamp(11px,3.3vw,16px)] xl:text-[clamp(11px,3.7vw,32px)] uppercase tracking-[0.12em] sm:tracking-[0.18em] xl:tracking-[0.22em] leading-snug">
+                  <span className="transition-colors duration-300 ease-out text-[#081129]">
+                    Your{" "}
                   </span>
-                </p>
-              )}
+                  {/* Slogan "health." in brand turquoise (#22c0d4) — the
+                        same token the footer and logo mark use. */}
+                  <span className="text-brand-turquoise">health.</span>
+                  <span className="transition-colors duration-300 ease-out text-[#081129]">
+                    {" "}
+                    Your{" "}
+                  </span>
+                  <span className="text-[#e70d69]">choice.</span>
+                </span>
+              </p>
             </div>
           </div>
 

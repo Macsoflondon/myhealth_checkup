@@ -3,6 +3,7 @@ import { useLocation } from "@/lib/router-compat";
 import Footer from "@/components/layout/Footer";
 import SiteBreadcrumb from "@/components/common/SiteBreadcrumb";
 import BrowseByCategoryBar from "@/components/layout/BrowseByCategoryBar";
+import { DesktopCategoryToolbar } from "@/components/layout/DesktopCategoryToolbar";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -32,7 +33,12 @@ export const MainLayout = ({
           in the brand navy. Overlays (cookie banner, comparison bar) stay
           outside so the mask never clips them. */}
       <div className="page-surface-inner flex flex-1 flex-col bg-white">
-        {!hideHeader && !isHome && <BrowseByCategoryBar placement="straddle" />}
+        {!hideHeader && !isHome && (
+          <>
+            <BrowseByCategoryBar placement="straddle" />
+            <DesktopCategoryToolbar />
+          </>
+        )}
         <main id="main-content" className={mainClassName} tabIndex={-1}>
           {!isCompare && <SiteBreadcrumb />}
           {children}

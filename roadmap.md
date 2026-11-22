@@ -1,5 +1,11 @@
 # Roadmap
 
+## Public header and ferritin guide
+- [x] Match inner-page brand sizing and slogan to the homepage; retain the mobile hamburger and sticky bar.
+- [x] Add the desktop category toolbar beneath inner-page branding without duplicating the homepage toolbar.
+- [x] Replace the ferritin-versus-iron navy heading box with the standard white heading area.
+- [x] Verified homepage, compare and guide at 375/768/1280/1689px: slogan visible, one desktop toolbar, no overflow or page errors; category link opens popular tests. Typography regression and changed-file lint pass; automatic compilation clean. Committed without publishing.
+
 ## 22 November screening, part 6
 - [x] Slim compare, search, recommended, panel and category projections; rendered-card/table details and base-ID deduplication preserve prose/markers. Public server evidence preserves subcategory matching, add-on classification and missing-count fallback.
 - [x] Hosted 364 WebPs for 182 mapped kits; 53,547,689 original bytes versus 799,590 at 320px or 1,726,920 at 640px; original maps retained.

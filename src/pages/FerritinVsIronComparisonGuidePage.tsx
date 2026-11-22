@@ -195,25 +195,24 @@ export default function FerritinVsIronComparisonGuidePage() {
       </Helmet>
 
       <article className="bg-white">
-        <header className="bg-[#081129] text-white py-14 sm:py-20">
+        <header className="pt-8 mb-10 text-brand-navy">
           <div className="max-w-4xl mx-auto px-4 sm:px-6">
-            <Badge className="mb-4 bg-white/10 text-white border-white/20">
+            <Badge className="mb-4 bg-brand-turquoise/10 text-brand-navy border-brand-turquoise/30">
               Iron Health Guide
             </Badge>
-            <h1
-              className="text-3xl sm:text-5xl font-bold leading-tight mb-4"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
-            >
+            <h1 className="type-page-title mb-4">
               Ferritin vs Iron: What's the Difference and Which Test Do You
               Need?
             </h1>
-            <p className="text-white/90 text-base sm:text-lg leading-relaxed">
+            <p className="text-brand-navy/80 text-base sm:text-lg leading-relaxed">
               An independent UK guide to two of the most commonly confused blood
               tests. Understand what each result actually means so you can
               choose the right test for fatigue, iron deficiency or ongoing
               monitoring — without paying for markers you don't need.
             </p>
-            <p className="text-white/78 text-sm mt-4">Last updated {UPDATED}</p>
+            <p className="text-brand-navy/70 text-sm mt-4">
+              Last updated {UPDATED}
+            </p>
           </div>
         </header>
 
