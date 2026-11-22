@@ -1,6 +1,6 @@
 # Architecture decisions
 
-- Link checks use bounded waitUntil pools; local rules apply. Why: foreground runs exceed request limits.
+- Link checks use Shopify feeds and bounded waitUntil pools; local rules apply. Why: requests exceed limits.
 
 - App/Edge article decoders have parity; repairs preserve dates.
 - Build-only illustration resizing and prefetched details preserve artwork and SSR text.

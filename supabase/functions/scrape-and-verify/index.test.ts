@@ -195,19 +195,19 @@ Deno.test(
           {
             id: "new",
             provider_id: "lola-health",
-            url: "https://lolahealth.com/products/new",
+            url: "https://lolahealth.com/tests/new",
             url_verified_at: "2026-11-22T05:15:00Z",
           },
           {
             id: "never",
             provider_id: "lola-health",
-            url: "https://lolahealth.com/products/never",
+            url: "https://lolahealth.com/tests/never",
             url_verified_at: null,
           },
           {
             id: "old",
             provider_id: "lola-health",
-            url: "https://lolahealth.com/products/old",
+            url: "https://lolahealth.com/tests/old",
             url_verified_at: "2026-11-21T05:15:00Z",
           },
         ]);
@@ -231,11 +231,7 @@ Deno.test(
       assertEquals(checked.length, 0);
       release?.();
       await Promise.all(tasks);
-      assertEquals(checked, [
-        "/products/never",
-        "/products/old",
-        "/products/new",
-      ]);
+      assertEquals(checked, ["/tests/never", "/tests/old", "/tests/new"]);
       assertEquals(logs[0]?.["status"], "completed");
       const details = logs[0]?.["details"] as Record<string, unknown>;
       assertEquals(details["checked"], 3);

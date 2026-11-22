@@ -1,5 +1,10 @@
 # Roadmap
 
+## 22 November screening, part 9
+- [x] Verify own-domain Shopify product handles against one complete paginated live catalogue per store; retain per-page checks elsewhere, provider pools, 429 handling and the time budget.
+- [x] Preserve incomplete-catalogue state and log provider methods. 16 Deno / 1,355 unit tests and lint/automatic compilation pass. Deployed v198; final scheduled-auth check returned 202 in 788ms, then completed all 748 links in 156.1s: 748 OK, zero broken/rate-limited/inconclusive/not-reached. Fixed Unicode-handle mismatch found during initial live check and acknowledged only its temporary false alert. Per-provider counts in docs/SCREENING_PART_9.md.
+- [x] Saved tested changes without publishing, migrations or cron changes.
+
 ## 22 November screening, part 8
 - [x] Return 202 and retain link verification with EdgeRuntime.waitUntil.
 - [x] Prioritise never/oldest-checked URLs and stop starting work after 330 seconds, retaining provider pools, Lola and 429/redirect handling.

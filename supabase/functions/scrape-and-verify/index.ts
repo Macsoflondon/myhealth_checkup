@@ -23,6 +23,12 @@ import {
   type SupabaseClient,
 } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 import { productRedirectIssue } from "../_shared/scrape/product-url.ts";
+import {
+  shopifyStore,
+  readShopifyCatalogue,
+  catalogueOutcome,
+  type ShopifyCatalogue,
+} from "./shopify-catalogue.ts";
 import { getErrorMessage, internalErrorResponse } from "../_shared/errors.ts";
 import {
   CHECK_START_BUDGET_MS,
@@ -76,6 +82,7 @@ interface CheckResult {
   /** True if the provider was still rate limiting after the 429 retry —
    *  the URL state is unknown, NOT broken. */
   rateLimited?: boolean;
+  inconclusive?: boolean;
 }
 
 // Providers (medichecks, clinilabs) reject bare/Deno requests as bot traffic.
@@ -160,6 +167,24 @@ async function checkUrl(url: string): Promise<CheckResult> {
   }
 }
 
+async function fetchCataloguePage(url: string) {
+  let response = await fetch(url, {
+    headers: REQUEST_HEADERS,
+    redirect: "follow",
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+  });
+  const hit429 = response.status === 429;
+  if (hit429) {
+    await sleep(retryAfterMs(response.headers));
+    response = await fetch(url, {
+      headers: REQUEST_HEADERS,
+      redirect: "follow",
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+    });
+  }
+  return { response, hit429 };
+}
+
 export async function runVerification(
   supabase: SupabaseClient,
   runId: string,
@@ -169,9 +194,25 @@ export async function runVerification(
   const rows: TestRow[] = [];
   const summary: Record<
     string,
-    { total: number; ok: number; broken: number; rateLimited: number }
+    {
+      total: number;
+      ok: number;
+      broken: number;
+      rateLimited: number;
+      inconclusive: number;
+      notReached: number;
+      method: string;
+      catalogueComplete?: boolean;
+    }
   > = {};
-  const counts = { checked: 0, ok: 0, broken: 0, rateLimited: 0 };
+  const counts = {
+    checked: 0,
+    ok: 0,
+    broken: 0,
+    rateLimited: 0,
+    inconclusive: 0,
+  };
+  const catalogues = new Map<string, Promise<ShopifyCatalogue>>();
   const errors: string[] = [];
   let failed = false;
   try {
@@ -199,23 +240,41 @@ export async function runVerification(
       if (!data || data.length < pageSize) break;
     }
 
-    async function processRow(row: TestRow): Promise<{ hit429: boolean }> {
+    async function processRow(
+      row: TestRow,
+      catalogue?: ShopifyCatalogue,
+    ): Promise<{ hit429: boolean }> {
       if (!row.url) return { hit429: false };
-      const result = await checkUrl(row.url);
-      summary[row.provider_id] ??= {
-        total: 0,
-        ok: 0,
-        broken: 0,
-        rateLimited: 0,
-      };
+      const store = shopifyStore(row.provider_id, row.url);
+      const outcome =
+        store && catalogue ? catalogueOutcome(row.url, store, catalogue) : null;
+      const result: CheckResult = outcome
+        ? {
+            ok: outcome === "ok",
+            inconclusive: outcome === "inconclusive",
+            rateLimited:
+              outcome === "inconclusive" && catalogue?.rateLimited === true,
+            issue:
+              outcome === "broken"
+                ? "handle absent from complete Shopify catalogue"
+                : "incomplete Shopify catalogue",
+          }
+        : await checkUrl(row.url);
       const provider = summary[row.provider_id];
+      if (!provider) return { hit429: false };
       provider.total++;
+      provider.notReached--;
       counts.checked++;
       if (result.rateLimited) {
         // Inconclusive: no alert and neither verification field changes.
         provider.rateLimited++;
         counts.rateLimited++;
         return { hit429: result.hit429 ?? false };
+      }
+      if (result.inconclusive) {
+        provider.inconclusive++;
+        counts.inconclusive++;
+        return { hit429: false };
       }
       if (result.ok) {
         provider.ok++;
@@ -260,14 +319,50 @@ export async function runVerification(
       else byProvider.set(row.provider_id, [row]);
     }
     const settled = await Promise.allSettled(
-      Array.from(byProvider.entries(), ([providerId, providerRows]) => {
+      Array.from(byProvider.entries(), async ([providerId, providerRows]) => {
         const config = PROVIDER_CONFIG[providerId] ?? {};
+        const store = providerRows
+          .map((row) => shopifyStore(providerId, row.url))
+          .find((value) => value !== null);
+        const hasHttpRows = providerRows.some(
+          (row) => !shopifyStore(providerId, row.url),
+        );
+        summary[providerId] = {
+          total: 0,
+          ok: 0,
+          broken: 0,
+          rateLimited: 0,
+          inconclusive: 0,
+          notReached: providerRows.length,
+          method: store
+            ? hasHttpRows
+              ? "mixed"
+              : "shopify_catalogue"
+            : "http",
+        };
+        let catalogue: ShopifyCatalogue | undefined;
+        if (store) {
+          let pending = catalogues.get(store);
+          if (!pending) {
+            pending = readShopifyCatalogue(store, {
+              deadline,
+              staggerStartMs: config.staggerStartMs ?? STAGGER_START_MS,
+              staggerMaxMs: STAGGER_MAX_MS,
+              now: Date.now,
+              sleep,
+              fetchPage: fetchCataloguePage,
+            });
+            catalogues.set(store, pending);
+          }
+          catalogue = await pending;
+          summary[providerId].catalogueComplete = catalogue.complete;
+        }
         return runBudgetedPool(providerRows, {
           concurrency: config.concurrency ?? PROVIDER_CONCURRENCY,
           staggerStartMs: config.staggerStartMs ?? STAGGER_START_MS,
           staggerMaxMs: STAGGER_MAX_MS,
           deadline,
-          process: processRow,
+          process: (row) => processRow(row, catalogue),
           now: Date.now,
           sleep,
         });

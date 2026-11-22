@@ -5,6 +5,7 @@ export interface VerificationCounts {
   ok: number;
   broken: number;
   rateLimited: number;
+  inconclusive?: number;
 }
 
 export function oldestFirst<
@@ -26,7 +27,10 @@ export function finalRunDetails(
   const notReached = Math.max(0, total - counts.checked);
   return {
     status:
-      failed || notReached > 0 || counts.rateLimited > 0
+      failed ||
+      notReached > 0 ||
+      counts.rateLimited > 0 ||
+      (counts.inconclusive ?? 0) > 0
         ? "partial"
         : "completed",
     checked: counts.checked,
@@ -34,6 +38,9 @@ export function finalRunDetails(
     broken: counts.broken,
     rate_limited: counts.rateLimited,
     not_reached: notReached,
+    ...((counts.inconclusive ?? 0) > 0
+      ? { inconclusive: counts.inconclusive }
+      : {}),
   };
 }
 
