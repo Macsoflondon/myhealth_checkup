@@ -736,7 +736,9 @@ export default function ProviderTestDetailTemplate({
         <div className="container mx-auto px-4 max-w-5xl">
           {/* Provider Badge */}
           <div className="mb-6">
-            <img width={160} height={64}
+            <img
+              width={160}
+              height={64}
               src={providerLogo}
               alt={providerConfig.name}
               loading="lazy"
@@ -779,6 +781,8 @@ export default function ProviderTestDetailTemplate({
             {/* Main Content */}
             <div className="md:col-span-2 space-y-8">
               <TestImageGallery
+                displayWidth={720}
+                sizes="(min-width: 768px) 62vw, calc(100vw - 32px)"
                 images={resolveGalleryImages(test, {
                   providerId: providerConfig.id,
                   isAddon,

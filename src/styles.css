@@ -2,15 +2,20 @@
    entry points also ship cyrillic/vietnamese, which no page renders. Imported
    here rather than from JavaScript so the @font-face rules arrive in this one
    render-blocking stylesheet instead of a second CSS request. */
-@import "@fontsource/montserrat/latin-400.css";
-@import "@fontsource/montserrat/latin-500.css";
-@import "@fontsource/montserrat/latin-600.css";
-@import "@fontsource/montserrat/latin-700.css";
-@import "@fontsource/montserrat/latin-800.css";
 @import "@fontsource/eb-garamond/latin-600.css";
 @import "@fontsource/eb-garamond/latin-700.css";
 @import "@fontsource/eb-garamond/latin-500-italic.css";
 @import "tailwindcss";
+
+/* Keep the existing family name for legacy typography and the deliberate brand bar. */
+@font-face {
+  font-family: "Montserrat";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("../node_modules/@fontsource-variable/montserrat/files/montserrat-latin-wght-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -624,7 +629,7 @@ body {
   h4,
   h5,
   h6 {
-    font-family: "Montserrat", system-ui, sans-serif;
+    font-family: Montserrat, system-ui, sans-serif;
     font-feature-settings: "ss01", "kern";
   }
   h1 {
@@ -1673,3 +1678,18 @@ html {
 }
 
 .public-accessibility :where(main, footer) :is(p, span, a, div):is([class*="text-[#081129]/50"], [class*="text-[#081129]/40"], [class*="text-[#081129]/60"], [class*="text-muted-foreground/"]) { color: var(--color-muted-foreground); }
+
+/* Measured set width preserves the previous 30px/s marquee, without JS frames. */
+@keyframes catalogue-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(var(--marquee-distance, 0px)); }
+}
+.performance-marquee {
+  animation: catalogue-marquee var(--marquee-duration, 120s) linear infinite;
+  animation-play-state: paused;
+}
+.performance-marquee[data-active="true"] { animation-play-state: running; }
+.performance-marquee:hover { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .performance-marquee { animation: none; }
+}

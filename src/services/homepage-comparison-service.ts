@@ -1,3 +1,4 @@
+import { publicCatalogueRead } from "./public-catalogue-memo";
 import { supabase } from "@/integrations/supabase/client";
 import { PROVIDER_NAMES, getSupportedProviderIds } from "@/constants/providers";
 import type { CatalogueComparisonPanel } from "@/design-system/live-catalogue-comparison";
@@ -9,14 +10,15 @@ import {
   type CollectionFeeType,
 } from "@/lib/comparisonFormat";
 
-interface HomepageComparisonRow {
+export interface HomepageComparisonRow {
   id: string | null;
   provider_id: string | null;
   test_name: string | null;
   price: number | null;
   total_expected_cost: number | null;
   biomarker_count: number | null;
-  biomarkers_list: unknown;
+  biomarkers_list?: unknown;
+  biomarkers_listed?: number | null;
   turnaround_days_text: string | null;
   updated_at: string | null;
   price_checked_at: string | null;
@@ -48,21 +50,62 @@ export function homepageFeeLabel(
   return label;
 }
 
+export const HOMEPAGE_PANEL_COLUMNS =
+  "id, provider_id, test_name, total_expected_cost, biomarker_count, biomarkers_listed, turnaround_days_text, price_checked_at, clinic_visit_available, home_kit_available, collection_method, collection_fee_type, collection_fee_amount";
+export const HOMEPAGE_PANEL_NAME_FILTER = [
+  ...new Set(
+    Object.values(COMPARE_PANELS).flatMap((panel) => panel.includeNames),
+  ),
+]
+  .map((fragment) => `test_name.ilike.%${fragment}%`)
+  .join(",");
+
 export async function getHomepageComparisonPanels(): Promise<
   CatalogueComparisonPanel[]
 > {
-  const { data, error } = await supabase
-    .from("unified_provider_tests")
-    .select(
-      "id, provider_id, test_name, price, total_expected_cost, biomarker_count, biomarkers_list, turnaround_days_text, updated_at, price_checked_at, clinic_visit_available, home_kit_available, collection_method, collection_fee_type, collection_fee_amount",
-    )
-    .eq("is_addon", false)
-    .not("test_name", "ilike", "blood draw appointment")
-    .in("provider_id", getSupportedProviderIds())
-    .gt("price", 0)
-    .limit(2000)
-    .returns<HomepageComparisonRow[]>();
-  if (error) throw error;
+  return publicCatalogueRead("homepage-compact-panels", async () => {
+    const { data, error } = await supabase
+      .from("unified_provider_tests")
+      .select(HOMEPAGE_PANEL_COLUMNS)
+      .eq("is_addon", false)
+      .in("provider_id", getSupportedProviderIds())
+      .gt("price", 0)
+      .or(HOMEPAGE_PANEL_NAME_FILTER)
+      .returns<HomepageComparisonRow[]>();
+    if (error) throw error;
+    const panels = buildHomepageComparisonPanels(data ?? []);
+    const ids = [
+      ...new Set(panels.flatMap((panel) => panel.rows.map((row) => row.id))),
+    ];
+    if (!ids.length) return panels;
+    // Preserve source-backed count/panel labels: heavy arrays only for the rows actually shown.
+    const { data: markerRows, error: markerError } = await supabase
+      .from("unified_provider_tests")
+      .select("id, biomarkers_list, biomarker_count")
+      .in("id", ids);
+    if (markerError) throw markerError;
+    const markers = new Map(
+      (markerRows ?? []).map((row) => [row.id, describeBiomarkers(row)]),
+    );
+    return panels.map((panel) => ({
+      ...panel,
+      rows: panel.rows.map((row) => {
+        const resolved = markers.get(row.id);
+        return resolved
+          ? {
+              ...row,
+              biomarkers: resolved.count,
+              biomarkerLabel: resolved.label,
+            }
+          : row;
+      }),
+    }));
+  });
+}
+
+export function buildHomepageComparisonPanels(
+  data: HomepageComparisonRow[],
+): CatalogueComparisonPanel[] {
   return Object.entries(COMPARE_PANELS).flatMap(([slug, config]) => {
     const matches = (data ?? []).filter((row) => {
       const name = (row.test_name ?? "").toLowerCase();
@@ -101,7 +144,10 @@ export async function getHomepageComparisonPanels(): Promise<
           price <= 0
         )
           return [];
-        const markers = describeBiomarkers(row);
+        const markers = describeBiomarkers({
+          ...row,
+          biomarker_count: row.biomarkers_listed ?? row.biomarker_count,
+        });
         return [
           {
             id: row.id,

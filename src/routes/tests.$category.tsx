@@ -1,4 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
+import {
+  prefetchPublicListing,
+  listingSubcategory,
+} from "@/services/public-listing-prefetch";
+import {
+  CatalogueRouteError,
+  CatalogueRouteNotFound,
+} from "@/components/common/catalogue-route-status";
 import { buildRouteHead } from "@/lib/seo/route-head";
 import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 
@@ -11,6 +19,17 @@ const toLabel = (slug: string): string => {
 };
 
 export const Route = createFileRoute("/tests/$category")({
+  loaderDeps: ({ search }) => ({ subcategory: listingSubcategory(search) }),
+  loader: ({ context, deps, location, params }) =>
+    prefetchPublicListing(
+      context.queryClient,
+      location.pathname,
+      deps.subcategory,
+      params.category,
+    ),
+  errorComponent: CatalogueRouteError,
+  notFoundComponent: CatalogueRouteNotFound,
+
   head: ({ params }) => {
     const label = toLabel(params.category);
     return buildRouteHead({

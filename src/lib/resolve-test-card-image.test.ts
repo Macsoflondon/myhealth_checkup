@@ -8,7 +8,7 @@ import lolaAddonKit from "@/assets/providers/lola-addon-blood-test-kit.png.asset
 import clinilabsQfitBox from "@/assets/providers/clinilabs-qfit-box-accreditation.png.asset.json";
 import medichecksUltimate from "@/assets/providers/medichecks/ultimate-performance-blood-test.webp.asset.json";
 import medichecksFemale from "@/assets/providers/medichecks/female-hormone-blood-test.webp.asset.json";
-import edgeTestKit from "@/assets/providers/edge-test-kit.png.asset.json";
+import edgeTestKit from "@/assets/providers/edge-test-kit-326.webp.asset.json";
 
 describe("resolveTestCardImage", () => {
   it("uses the verified Ultimate Performance kit instead of its blocked promotional picture", () => {

@@ -1,5 +1,9 @@
 # Architecture decisions
 
+- Public catalogue loaders and rendering hooks share query factories; router dehydration restores successful query data once. Why: listing cards must render in initial HTML without duplicate hydration fetches.
+- Public catalogue DTO reads use a bounded five-minute isolate-local memo, never authenticated or clinical data; HTML cache headers remain unchanged until hosting behaviour is verified. Why: repeated public reads should avoid redundant queries without sharing user responses.
+- Product-image sizing uses allowlisted public Storage/Shopify transforms and explicit bundled variants; marquees use measured compositor animation gated by viewport, visibility and reduced motion. Why: source artwork and motion speed must stay unchanged while bandwidth and idle work fall.
+
 - EDGE keeps the sports-blood-tests catalogue ID; exact product prices refresh through the shared provider upsert in a six-hourly GitHub workflow, while biomarker articles join the existing daily source aggregator. Why: stable IDs preserve links and the provider's £35 navigation offer must never replace product prices.
 
 - Navigation: the brand-bar menu drawer is the full nav at every width; a desktop-only category pill row (DesktopCategoryToolbar, homepage hero) was restored on 03/11/2026 at the owner's request. Why: the owner wants quick category access on desktop while keeping one complete menu.

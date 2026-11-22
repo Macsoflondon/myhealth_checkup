@@ -19,10 +19,10 @@ export interface TestDetails {
 
 export type TestDetailsMap = Record<string, TestDetails>;
 
-export function useTestDetailsByIds(ids: readonly string[]): TestDetailsMap {
+export function testDetailsQueryOptions(ids: readonly string[]) {
   const sortedIds = [...ids].filter(Boolean).sort();
 
-  const { data } = useQuery({
+  return {
     queryKey: ["test-details", sortedIds],
     enabled: sortedIds.length > 0,
     staleTime: 30 * 60 * 1000,
@@ -49,7 +49,9 @@ export function useTestDetailsByIds(ids: readonly string[]): TestDetailsMap {
       }
       return map;
     },
-  });
+  };
+}
 
-  return data ?? {};
+export function useTestDetailsByIds(ids: readonly string[]): TestDetailsMap {
+  return useQuery(testDetailsQueryOptions(ids)).data ?? {};
 }

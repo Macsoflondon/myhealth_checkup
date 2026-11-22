@@ -1,48 +1,15 @@
-import { useEffect, useRef } from "react";
+import {
+  useVisibleActivity,
+  useCompositorMarquee,
+} from "@/hooks/use-visible-activity";
 import { Link } from "@/lib/router-compat";
 import { providers, getProviderLogoSrcSet } from "@/constants/providers";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
 
 const PartnersGrid = () => {
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return;
-
-    let animationId: number;
-    let position = 0;
-    const speed = 0.5;
-
-    // Measure actual rendered width of one full set of providers
-    const measureSetWidth = () => {
-      const children = track.children;
-      if (!children.length) return 0;
-      let total = 0;
-      for (let i = 0; i < providers.length && i < children.length; i++) {
-        total += (children[i] as HTMLElement).offsetWidth;
-      }
-      return total;
-    };
-
-    let setWidth = measureSetWidth();
-
-    const animate = () => {
-      if (!setWidth) {
-        setWidth = measureSetWidth();
-      }
-      position -= speed;
-      if (setWidth > 0 && Math.abs(position) >= setWidth) {
-        position += setWidth;
-      }
-      track.style.transform = `translateX(${position}px)`;
-      animationId = requestAnimationFrame(animate);
-    };
-
-    animationId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationId);
-  }, []);
+  const { ref: trackRef, active } = useVisibleActivity<HTMLDivElement>();
+  useCompositorMarquee(trackRef, providers.length);
 
   // Quadruple for seamless loop
   const items = [...providers, ...providers, ...providers, ...providers];
@@ -98,7 +65,8 @@ const PartnersGrid = () => {
         >
           <div
             ref={trackRef}
-            className="flex whitespace-nowrap will-change-transform"
+            data-active={active}
+            className="performance-marquee flex whitespace-nowrap will-change-transform"
           >
             {items.map((provider, index) => {
               const LOGO_SIZE: Record<string, string> = {

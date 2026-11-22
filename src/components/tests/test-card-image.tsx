@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { isPromotionalImage } from "@/lib/promotional-images";
-import { shopifyImageSrcSet, shopifyImageUrl } from "@/lib/shopify-image";
+import { productImageSrcSet, productImageUrl } from "@/lib/shopify-image";
 
 interface TestCardImageProps {
   imageUrl?: string | null;
@@ -10,6 +10,7 @@ interface TestCardImageProps {
   className?: string;
   displayWidth?: number;
   sizes?: string;
+  priority?: boolean;
 }
 
 /** Intrinsic size hint for the frame (1:1) so the browser reserves space before load. */
@@ -21,8 +22,9 @@ export function TestCardImage({
   testName,
   providerName,
   className,
-  displayWidth,
-  sizes,
+  displayWidth = 325,
+  sizes = "(min-width: 1024px) 325px, (min-width: 640px) 40vw, calc(100vw - 66px)",
+  priority = false,
 }: TestCardImageProps) {
   const trimmed = imageUrl?.trim() || null;
   const source = trimmed && !isPromotionalImage(trimmed) ? trimmed : null;
@@ -40,17 +42,18 @@ export function TestCardImage({
     >
       {showImage ? (
         <img
-          src={displayWidth ? shopifyImageUrl(source, displayWidth) : source}
+          src={productImageUrl(source, displayWidth)}
           srcSet={
             displayWidth
-              ? shopifyImageSrcSet(source, [displayWidth, displayWidth * 2])
+              ? productImageSrcSet(source, [displayWidth, displayWidth * 2])
               : undefined
           }
           sizes={sizes}
           alt={`${testName} by ${providerName}`}
           width={FRAME_WIDTH}
           height={FRAME_HEIGHT}
-          loading="lazy"
+          loading={priority ? "eager" : "lazy"}
+          fetchPriority={priority ? "high" : "auto"}
           decoding="async"
           className="h-full w-full object-contain object-center"
           onError={() => setFailedSource(source)}

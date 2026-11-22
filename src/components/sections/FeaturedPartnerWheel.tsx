@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "@/lib/router-compat";
 import { EyebrowBadge } from "@/components/ui/EyebrowBadge";
+import { observeVisibleActivity } from "@/hooks/use-visible-activity";
 
 const COMPARE_HREF_BY_NAME: Record<string, string> = {
   "Bowel Cancer Screening": "/tests/cancer",
@@ -356,11 +357,12 @@ function KitFace({
                 {
                   fontFamily: HEAD,
                   fontWeight: 600,
-                  fontSize: "3.4cqw",
-                  letterSpacing: ".16em",
+                  fontSize: "max(12px, 3.4cqw)",
+                  letterSpacing: ".02em",
                   color: "#0e1b3d",
                   textAlign: "center",
-                  whiteSpace: "nowrap",
+                  whiteSpace: "normal",
+                  overflowWrap: "anywhere",
                 } as React.CSSProperties
               }
             >
@@ -425,7 +427,7 @@ function KitFace({
                   display: "inline-block",
                   fontFamily: HEAD,
                   fontWeight: 700,
-                  fontSize: "3.6cqw",
+                  fontSize: "max(12px, 3.6cqw)",
                   letterSpacing: ".03em",
                   color: "#fff",
                   background: "#0e1b3d",
@@ -476,7 +478,7 @@ function KitFace({
                   paddingLeft: "3.5%",
                   fontFamily: BODY,
                   fontWeight: 800,
-                  fontSize: "5.4cqw",
+                  fontSize: "max(12px, 5.4cqw)",
                   lineHeight: 1.18,
                   color: "#0e1b3d",
                   whiteSpace: "nowrap",
@@ -515,6 +517,7 @@ export default function FeaturedPartnerWheel({
     typeof window !== "undefined" &&
     !!window.matchMedia?.("(hover: hover)").matches;
 
+  const activityRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [hovered, setHovered] = useState<number | null>(null);
   const [selKit, setSelKit] = useState<FeaturedKit | null>(null);
@@ -564,6 +567,11 @@ export default function FeaturedPartnerWheel({
     a.current.vel = 0;
     const base = a.current.target !== null ? a.current.target : a.current.pos;
     a.current.target = base + dir;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      a.current.pos = base + dir;
+      a.current.target = null;
+      apply();
+    }
   };
 
   const startDrag = (e: React.PointerEvent, kit: FeaturedKit | null) => {
@@ -594,6 +602,7 @@ export default function FeaturedPartnerWheel({
       const dPos = -dx * 0.0042;
       st.pos += dPos;
       st.vel = dPos / 16;
+      apply();
     };
     const onUp = () => {
       if (!st.dragging) return;
@@ -611,14 +620,13 @@ export default function FeaturedPartnerWheel({
     window.addEventListener("pointermove", onMove, { passive: false });
     window.addEventListener("pointerup", onUp);
 
-    let last = performance.now();
-    let raf = 0;
+    const clock = { last: performance.now(), raf: 0 };
     const loop = (now: number) => {
-      const dt = Math.min(now - last, 48);
-      last = now;
+      const dt = Math.min(now - clock.last, 48);
+      clock.last = now;
       tick(dt, now);
       apply();
-      raf = requestAnimationFrame(loop);
+      clock.raf = requestAnimationFrame(loop);
     };
     const tick = (dt: number, now: number) => {
       if (st.dragging) return;
@@ -642,10 +650,19 @@ export default function FeaturedPartnerWheel({
       if (now < st.idleUntil) return;
       st.pos += live.current.autoDriftSpeed * dt; // gentle auto drift
     };
-    raf = requestAnimationFrame(loop);
+    const disconnect = activityRef.current
+      ? observeVisibleActivity(activityRef.current, (active) => {
+          cancelAnimationFrame(clock.raf);
+          if (active) {
+            clock.last = performance.now();
+            clock.raf = requestAnimationFrame(loop);
+          }
+        })
+      : undefined;
 
     return () => {
-      cancelAnimationFrame(raf);
+      disconnect?.();
+      cancelAnimationFrame(clock.raf);
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("pointerup", onUp);
     };
@@ -655,7 +672,7 @@ export default function FeaturedPartnerWheel({
   const preview = !selKit && hovered != null ? wheel[hovered] : null;
 
   return (
-    <div style={{ fontFamily: BODY }}>
+    <div ref={activityRef} style={{ fontFamily: BODY }}>
       <style>{`@keyframes gbpop{from{transform:translate(-50%,14px)}to{transform:translate(-50%,0)}}@keyframes gbpopc{from{transform:translateY(10px) scale(.985)}to{transform:translateY(0) scale(1)}}
 .gbp-preview{display:flex;gap:22px;align-items:center;background:rgba(255,255,255,0.97);border-radius:22px;padding:22px 26px;box-shadow:0 30px 70px -22px rgba(0,0,0,.7);border:1px solid rgba(34,192,212,.25)}
 .gbp-face{flex:none;width:88px;height:119px;border-radius:14px;overflow:hidden;box-shadow:0 8px 20px -10px rgba(8,17,41,.45)}

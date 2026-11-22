@@ -1,12 +1,15 @@
 import { useCallback, useRef, useState } from "react";
 import type { KeyboardEvent, TouchEvent } from "react";
 import { galleryImageAlt } from "@/lib/test-gallery";
+import { productImageSrcSet, productImageUrl } from "@/lib/shopify-image";
 
 interface TestImageGalleryProps {
   /** Resolved, de-duplicated image URLs (max 2). Empty renders nothing. */
   images: string[];
   testName: string;
   providerName: string;
+  displayWidth?: number;
+  sizes?: string;
 }
 
 const SWIPE_THRESHOLD_PX = 40;
@@ -21,6 +24,8 @@ export function TestImageGallery({
   images,
   testName,
   providerName,
+  displayWidth = 600,
+  sizes = "(min-width: 1024px) 48vw, calc(100vw - 32px)",
 }: TestImageGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const touchStartX = useRef<number | null>(null);
@@ -78,9 +83,17 @@ export function TestImageGallery({
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
       >
-        <img width={600} height={600}
+        <img
+          width={600}
+          height={600}
           key={images[safeIndex]}
-          src={images[safeIndex]}
+          src={productImageUrl(images[safeIndex] ?? "", displayWidth)}
+          srcSet={productImageSrcSet(images[safeIndex] ?? "", [
+            displayWidth,
+            displayWidth * 2,
+          ])}
+          sizes={sizes}
+          fetchPriority={safeIndex === 0 ? "high" : "auto"}
           alt={galleryImageAlt(safeIndex, testName, providerName)}
           loading={safeIndex === 0 ? "eager" : "lazy"}
           decoding="async"
@@ -128,8 +141,12 @@ export function TestImageGallery({
                     : "border-border hover:border-[#081129]/40"
                 }`}
               >
-                <img width={600} height={600}
-                  src={src}
+                <img
+                  width={600}
+                  height={600}
+                  src={productImageUrl(src, 64)}
+                  srcSet={productImageSrcSet(src, [64, 128])}
+                  sizes="64px"
                   alt=""
                   loading={index === 0 ? "eager" : "lazy"}
                   decoding="async"

@@ -274,9 +274,10 @@ export function CategoryPageLayout({
 
               {/* Cards grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 items-stretch">
-                {filtered.map((test) => (
+                {filtered.map((test, index) => (
                   <UnifiedTestCard
                     key={test.id}
+                    priority={index < 2}
                     category={categoryAccent ?? test.tag}
                     categoryColor={
                       categoryAccent

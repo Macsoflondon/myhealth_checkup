@@ -1,4 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import {
+  CatalogueRouteError,
+  CatalogueRouteNotFound,
+} from "@/components/common/catalogue-route-status";
 import { buildRouteHead } from "@/lib/seo/route-head";
 import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 import {
@@ -37,6 +41,8 @@ export const Route = createFileRoute("/biomarker-database")({
         : Promise.resolve(null),
     ]);
   },
+  errorComponent: CatalogueRouteError,
+  notFoundComponent: CatalogueRouteNotFound,
   head: () =>
     buildRouteHead({
       title: "Complete biomarker reference library | myhealth checkup",

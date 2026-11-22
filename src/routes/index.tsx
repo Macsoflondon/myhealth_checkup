@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 // Index stays eager — it's the LCP route. Everything else is code-split.
 import Index from "@/pages/Index";
 import {
@@ -9,20 +8,27 @@ import {
 import { buildRouteHead } from "@/lib/seo/route-head";
 import { serializeJsonLd } from "@/lib/seo/json-ld";
 import { homepageComparisonQuery } from "@/lib/homepage-comparison-query";
+import {
+  homepageShowcaseQueryOptions,
+  type HomepageShowcaseTest,
+} from "@/services/homepage-test-showcase";
+import { testDetailsQueryOptions } from "@/hooks/queries/useTestDetailsByIds";
 
 export const Route = createFileRoute("/")({
   // Seed the same cache read by all three comparison slots before rendering.
   // An unavailable catalogue must not turn the public homepage into an error.
   loader: async ({ context }) => {
-    await context.queryClient.prefetchQuery(homepageComparisonQuery);
-    return {
-      comparisonState: dehydrate(context.queryClient, {
-        shouldDehydrateQuery: (query) =>
-          query.state.status === "success" &&
-          query.queryKey[0] === "homepage" &&
-          query.queryKey[1] === "compact-comparisons",
-      }),
-    };
+    await Promise.all([
+      context.queryClient.prefetchQuery(homepageComparisonQuery),
+      context.queryClient.prefetchQuery(homepageShowcaseQueryOptions),
+    ]);
+    const showcase = context.queryClient.getQueryData<HomepageShowcaseTest[]>(
+      homepageShowcaseQueryOptions.queryKey,
+    );
+    if (showcase?.length)
+      await context.queryClient.prefetchQuery(
+        testDetailsQueryOptions(showcase.map((test) => test.id)),
+      );
   },
   head: () => {
     const base = buildRouteHead({
@@ -82,10 +88,6 @@ export const Route = createFileRoute("/")({
 });
 
 function HomepageRoute() {
-  const { comparisonState } = Route.useLoaderData();
-  return (
-    <HydrationBoundary state={comparisonState}>
-      <Index />
-    </HydrationBoundary>
-  );
+  // Router-level hydration restores all successfully prefetched public queries once.
+  return <Index />;
 }

@@ -318,7 +318,9 @@ export const UniversalTestDetailModal: React.FC<{
                     padding: 6,
                   }}
                 >
-                  <img width={160} height={64}
+                  <img
+                    width={160}
+                    height={64}
                     src={logo}
                     alt={meta.displayName}
                     className="w-full h-full object-contain"
@@ -847,6 +849,7 @@ export const UniversalTestDetailModal: React.FC<{
 // ─── Card ────────────────────────────────────────────────────────────────────
 export interface UniversalTestCardProps {
   test: UniversalTestData;
+  priority?: boolean;
   /** Display-only title override. The underlying catalogue name remains unchanged. */
   headline?: string;
   /** Optional override for the click handler. If omitted, opens the detail modal. */
@@ -865,6 +868,7 @@ export const UniversalTestCard: React.FC<UniversalTestCardProps> = (props) =>
 const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
   test,
   headline,
+  priority = false,
   onOpenDetail,
   className,
 }) => {
@@ -1026,6 +1030,7 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                 })}
                 testName={test.test_name}
                 providerName={meta.displayName}
+                priority={priority}
                 displayWidth={CARD_IMAGE_DISPLAY_WIDTH}
                 sizes={CARD_IMAGE_SIZES}
               />
@@ -1083,7 +1088,11 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
             }}
             // Transparent 44px hit area around the small visual pill.
             className={`absolute right-1 top-1 z-20 flex min-h-11 min-w-11 items-center justify-center p-2 transition-opacity duration-[1500ms] ease-in-out motion-reduce:transition-none ${showDetails ? "opacity-0 pointer-events-none" : "opacity-100"}`}
-            style={{ background: "transparent", border: "none", cursor: "pointer" }}
+            style={{
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+            }}
           >
             <span
               style={{
@@ -1120,7 +1129,9 @@ const UniversalTestCardInner: React.FC<UniversalTestCardProps> = ({
                   className="flex items-center justify-center"
                 >
                   {logo ? (
-                    <img width={160} height={64}
+                    <img
+                      width={160}
+                      height={64}
                       src={logo}
                       alt={meta.displayName}
                       className="w-full h-full object-contain"

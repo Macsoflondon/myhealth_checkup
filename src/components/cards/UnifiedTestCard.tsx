@@ -8,6 +8,7 @@ import type { CollectionVariant } from "@/lib/collectionVariants";
 
 /* ───────── Backwards-compatible props ───────── */
 export interface UnifiedTestCardProps {
+  priority?: boolean;
   category: string;
   categoryColor?: string;
   badge?: string;
@@ -44,7 +45,13 @@ export interface UnifiedTestCardProps {
  */
 export function UnifiedTestCard(props: UnifiedTestCardProps) {
   const data = fromLegacyUnified(props);
-  return <UniversalTestCard test={data} className={props.className} />;
+  return (
+    <UniversalTestCard
+      test={data}
+      className={props.className}
+      priority={props.priority}
+    />
+  );
 }
 
 export default UnifiedTestCard;

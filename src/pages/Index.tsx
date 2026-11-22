@@ -57,7 +57,6 @@ const StartJourneySection = lazyPreloadable(
   () => import("@/components/sections/StartJourneySection"),
 );
 
-
 const NewsletterSection = lazy(
   () => import("@/components/sections/NewsletterSection"),
 );
@@ -161,8 +160,13 @@ const Index = () => {
           {/* Hero CTA — Slogan + Health Quiz entry point */}
           <section className="w-full rounded-none sm:rounded-2xl overflow-hidden bg-brand-navy">
             <div className="homepage-section-inner relative overflow-hidden py-8 sm:py-10">
-              <div className="absolute -right-[50px] -top-[60px] w-[260px] h-[260px] rounded-full bg-[#22c0d4]/[0.12]" />
-              <div className="absolute right-[120px] -bottom-[110px] w-[240px] h-[240px] rounded-full bg-[#e70d69]/10" />
+              <div
+                className="absolute inset-0 overflow-hidden pointer-events-none"
+                aria-hidden="true"
+              >
+                <div className="absolute -right-[50px] -top-[60px] w-[260px] h-[260px] rounded-full bg-[#22c0d4]/[0.12]" />
+                <div className="absolute right-[120px] -bottom-[110px] w-[240px] h-[240px] rounded-full bg-[#e70d69]/10" />
+              </div>
               <div className="relative">
                 {/* The left column stretches to the comparison card's height
                     and spreads its blocks across it, so the quiz box's bottom

@@ -52,8 +52,11 @@ function applyCategoryFilter(query: any, category: string) {
 /**
  * Fetch recommended tests for a specific category
  */
-export function useRecommendedTests(category: string, limit: number = 8) {
-  return useQuery({
+export function recommendedTestsQueryOptions(
+  category: string,
+  limit: number = 8,
+) {
+  return {
     queryKey: recommendedQueryKeys.byCategory(category),
     queryFn: async (): Promise<CompareTestData[]> => {
       try {
@@ -117,7 +120,11 @@ export function useRecommendedTests(category: string, limit: number = 8) {
     },
     staleTime: 5 * 60 * 1000,
     enabled: true,
-  });
+  };
+}
+
+export function useRecommendedTests(category: string, limit = 8) {
+  return useQuery(recommendedTestsQueryOptions(category, limit));
 }
 
 /**

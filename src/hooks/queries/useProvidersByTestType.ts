@@ -93,52 +93,56 @@ export const useProvidersByTestType = ({
 };
 
 // Hook to get all providers for a specific category
-export const useProvidersByCategory = (category: string, enabled = true) => {
-  return useQuery({
-    queryKey: ["providers-by-category", category],
-    queryFn: async (): Promise<ProviderTestRow[]> => {
-      const { data, error } = await supabase
-        .from("provider_tests")
-        .select(
-          "id, test_name, provider_id, price, original_price, biomarker_count, sample_type, home_kit_available, clinic_visit_available, gp_consultation_included, url, url_verified, description, category",
-        )
-        .eq("is_active", true)
-        .or(
-          `canonical_category.ilike.%${category}%,category.ilike.%${category.replace(/-/g, " ")}%`,
-        )
-        .order("price", { ascending: true });
+export const providersByCategoryQueryOptions = (
+  category: string,
+  enabled = true,
+) => ({
+  queryKey: ["providers-by-category", category],
+  queryFn: async (): Promise<ProviderTestRow[]> => {
+    const { data, error } = await supabase
+      .from("provider_tests")
+      .select(
+        "id, test_name, provider_id, price, original_price, biomarker_count, sample_type, home_kit_available, clinic_visit_available, gp_consultation_included, url, url_verified, description, category",
+      )
+      .eq("is_active", true)
+      .or(
+        `canonical_category.ilike.%${category}%,category.ilike.%${category.replace(/-/g, " ")}%`,
+      )
+      .order("price", { ascending: true });
 
-      if (error) {
-        console.error("Error fetching providers by category:", error);
-        throw error;
-      }
+    if (error) {
+      console.error("Error fetching providers by category:", error);
+      throw error;
+    }
 
-      if (!data || data.length === 0) {
-        return [];
-      }
+    if (!data || data.length === 0) {
+      return [];
+    }
 
-      return data.map((row) => ({
-        id: row.id,
-        testName: row.test_name,
-        provider: row.provider_id,
-        price: row.price || 0,
-        originalPrice: row.original_price || undefined,
-        turnaroundDays: undefined,
-        biomarkerCount: row.biomarker_count || undefined,
-        sampleType: row.sample_type || undefined,
-        homeKitAvailable: row.home_kit_available || false,
-        clinicVisitAvailable: row.clinic_visit_available || false,
-        gpReviewIncluded: row.gp_consultation_included || false,
-        url: row.url || undefined,
-        urlVerified: row.url_verified ?? null,
-        description: row.description || undefined,
-        category: row.category || undefined,
-      }));
-    },
-    enabled: enabled && !!category,
-    staleTime: 5 * 60 * 1000,
-  });
-};
+    return data.map((row) => ({
+      id: row.id,
+      testName: row.test_name,
+      provider: row.provider_id,
+      price: row.price || 0,
+      originalPrice: row.original_price || undefined,
+      turnaroundDays: undefined,
+      biomarkerCount: row.biomarker_count || undefined,
+      sampleType: row.sample_type || undefined,
+      homeKitAvailable: row.home_kit_available || false,
+      clinicVisitAvailable: row.clinic_visit_available || false,
+      gpReviewIncluded: row.gp_consultation_included || false,
+      url: row.url || undefined,
+      urlVerified: row.url_verified ?? null,
+      description: row.description || undefined,
+      category: row.category || undefined,
+    }));
+  },
+  enabled: enabled && !!category,
+  staleTime: 5 * 60 * 1000,
+});
+
+export const useProvidersByCategory = (category: string, enabled = true) =>
+  useQuery(providersByCategoryQueryOptions(category, enabled));
 
 // Group tests by name to show all providers offering similar tests
 export const groupTestsByName = (

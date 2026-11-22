@@ -28,11 +28,20 @@ export function AutoReveal() {
       { rootMargin: "0px 0px -8% 0px", threshold: 0.08 },
     );
 
+    const handled = new WeakSet<HTMLElement>();
+    const scans = { frame: 0, sweep: 0 };
     const scan = () => {
+      scans.frame = 0;
       const fold = window.innerHeight;
       for (const [selector, variant] of TARGETS) {
         document.querySelectorAll<HTMLElement>(selector).forEach((el) => {
-          if (el.hasAttribute("data-reveal") || el.closest("[data-reveal], [role=dialog], nav, header")) return;
+          if (handled.has(el)) return;
+          handled.add(el);
+          if (
+            el.hasAttribute("data-reveal") ||
+            el.closest("[data-reveal], [role=dialog], nav, header")
+          )
+            return;
           if (el.getBoundingClientRect().top < fold) return;
           el.setAttribute("data-reveal-variant", variant);
           el.setAttribute("data-reveal", "hidden");
@@ -48,24 +57,31 @@ export function AutoReveal() {
       ticking = false;
       const limit = window.innerHeight;
       document
-        .querySelectorAll<HTMLElement>('[data-reveal="hidden"][data-reveal-variant]')
+        .querySelectorAll<HTMLElement>(
+          '[data-reveal="hidden"][data-reveal-variant]',
+        )
         .forEach((el) => {
-          if (el.getBoundingClientRect().top < limit) el.setAttribute("data-reveal", "visible");
+          if (el.getBoundingClientRect().top < limit)
+            el.setAttribute("data-reveal", "visible");
         });
     };
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
-      requestAnimationFrame(sweep);
+      scans.sweep = requestAnimationFrame(sweep);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
 
-    const frame = requestAnimationFrame(scan);
+    const scheduleScan = () => {
+      if (!scans.frame) scans.frame = requestAnimationFrame(scan);
+    };
+    scheduleScan();
     // Catch lazily mounted sections.
-    const mutations = new MutationObserver(() => scan());
+    const mutations = new MutationObserver(scheduleScan);
     mutations.observe(document.body, { childList: true, subtree: true });
     return () => {
-      cancelAnimationFrame(frame);
+      cancelAnimationFrame(scans.frame);
+      cancelAnimationFrame(scans.sweep);
       mutations.disconnect();
       window.removeEventListener("scroll", onScroll);
       observer.disconnect();

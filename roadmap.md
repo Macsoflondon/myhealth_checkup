@@ -1,5 +1,14 @@
 # Roadmap
 
+## 22 November performance screening
+- [x] Resize public Storage/Shopify product images with contain transforms and responsive candidates, prioritise the first two listing cards, and optimise EDGE kit/logo assets; other unresizable image hosts remain unchanged.
+- [x] Gate wheel/marquees/timers by viewport, visibility and reduced motion, replace two per-frame marquees with compositor animation, and batch reveal scans.
+- [x] Filter compact homepage reads (677 rows / 442,894 bytes to 52 rows / 23,252 bytes for the main query; selected-row biomarker enrichment additional), hydrate prefetched homepage/listing queries once and memoise public SSR catalogue reads for five minutes. HTML cache headers unchanged: hosting support unverified.
+- [x] Dynamically load non-English locales and replace five Montserrat weights with a 37,956-byte Latin variable font. Existing family name/brand paths retained.
+- [x] Add shared listing loader prefetching and router hydration; local /tests/diabetes and /biomarkers CLS measured 0, not production evidence.
+- [x] Run 1,287 unit tests, final 31 targeted tests, lint (no errors; existing fast-refresh warnings), SEO and automatic compilation; commit without publishing or database changes.
+- [ ] Production performance, locale bundle and uploaded script verification await a local production artefact; none is available in this sandbox. Full uploaded script against preview: 44 checks, `pages with failures: 4` (home/provider decoration and kit text); subsequent corrections passed compilation but final script rerun timed out before emitting results. Homepage reveal/hydration attribute warnings and unresizable-image warnings remain. No claim of complete production verification.
+
 ## 22 November mobile accessibility screening
 - [x] Fix wrapping stats, seven source-backed educational comparisons and similar-test categories; keep educational copy and use tracked catalogue product links.
 - [x] Fix public text sizes, form sizes, targeted tap targets, contrast tokens/quotes, eyebrow, footer and British spelling without changing brand bars.

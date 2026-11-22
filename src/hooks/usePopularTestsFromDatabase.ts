@@ -1,6 +1,10 @@
 import type { CollectionFeeType } from "@/lib/comparisonFormat";
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useQuery,
+  useQueryClient,
+  type QueryClient,
+} from "@tanstack/react-query";
 import { loadViewPricing, mergeActiveRows } from "@/lib/viewPricing";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -313,13 +317,13 @@ interface PopularTestsOptions {
   lean?: boolean;
 }
 
-export const usePopularTestsFromDatabase = (
+export const popularTestsQueryOptions = (
+  queryClient: QueryClient,
   limit: number = 10,
   options: PopularTestsOptions = {},
 ) => {
   const lean = options.lean === true;
-  const queryClient = useQueryClient();
-  return useQuery({
+  return {
     queryKey: ["popular-tests-database", limit, lean],
     queryFn: async (): Promise<PopularTest[]> => {
       // Pull a wide pool of valid provider rows: must have a URL.
@@ -446,13 +450,18 @@ export const usePopularTestsFromDatabase = (
     gcTime: 2 * 60 * 60 * 1000,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-  });
+  };
 };
 
 /**
  * Get popular tests for navigation menu dropdown
  * Prioritizes tests marked as is_popular=true
  */
+export const usePopularTestsFromDatabase = (
+  limit = 10,
+  options: PopularTestsOptions = {},
+) => useQuery(popularTestsQueryOptions(useQueryClient(), limit, options));
+
 export const usePopularTestsForNavigation = () => {
   const queryClient = useQueryClient();
   return useQuery({

@@ -5,56 +5,20 @@ import { getFallbackLabel } from "./fallbackLabels";
 
 // Import translation files
 import enTranslations from "../locales/en.json";
-import frTranslations from "../locales/fr.json";
-import esTranslations from "../locales/es.json";
-import deTranslations from "../locales/de.json";
-import itTranslations from "../locales/it.json";
-import ptTranslations from "../locales/pt.json";
-import ptBrTranslations from "../locales/pt-BR.json";
-import nlTranslations from "../locales/nl.json";
-import plTranslations from "../locales/pl.json";
-import arTranslations from "../locales/ar.json";
-import zhTranslations from "../locales/zh.json";
-import jaTranslations from "../locales/ja.json";
-
-const resources = {
-  en: {
-    translation: enTranslations,
-  },
-  fr: {
-    translation: frTranslations,
-  },
-  es: {
-    translation: esTranslations,
-  },
-  de: {
-    translation: deTranslations,
-  },
-  it: {
-    translation: itTranslations,
-  },
-  pt: {
-    translation: ptTranslations,
-  },
-  "pt-BR": {
-    translation: ptBrTranslations,
-  },
-  nl: {
-    translation: nlTranslations,
-  },
-  pl: {
-    translation: plTranslations,
-  },
-  ar: {
-    translation: arTranslations,
-  },
-  zh: {
-    translation: zhTranslations,
-  },
-  ja: {
-    translation: jaTranslations,
-  },
+const localeLoaders = {
+  fr: () => import("../locales/fr.json"),
+  es: () => import("../locales/es.json"),
+  de: () => import("../locales/de.json"),
+  it: () => import("../locales/it.json"),
+  pt: () => import("../locales/pt.json"),
+  "pt-BR": () => import("../locales/pt-BR.json"),
+  nl: () => import("../locales/nl.json"),
+  pl: () => import("../locales/pl.json"),
+  ar: () => import("../locales/ar.json"),
+  zh: () => import("../locales/zh.json"),
+  ja: () => import("../locales/ja.json"),
 };
+const resources = { en: { translation: enTranslations } };
 
 export const SUPPORTED_LANGUAGES = [
   "en",
@@ -130,10 +94,30 @@ export const syncDocumentLanguage = (code: string) => {
 };
 
 i18n
+  .use({
+    type: "backend" as const,
+    init() {},
+    read(
+      language: string,
+      _namespace: string,
+      callback: (error: unknown, data: unknown) => void,
+    ) {
+      const code = resolveLanguageTag(language);
+      if (!code || code === "en") {
+        callback(null, enTranslations);
+        return;
+      }
+      localeLoaders[code]().then(
+        (module) => callback(null, module.default),
+        (error: unknown) => callback(error, null),
+      );
+    },
+  })
   .use(detector)
   .use(initReactI18next)
   .init({
     resources,
+    partialBundledLanguages: true,
     fallbackLng: "en",
     // No hard-coded `lng` — the detector reads localStorage first so an explicit
     // user choice always beats auto-detection, then falls back to browser/OS.

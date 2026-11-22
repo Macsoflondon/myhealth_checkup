@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { LiveCatalogueComparison } from "@/design-system/live-catalogue-comparison";
 import { useHomepageComparisons } from "@/hooks/use-homepage-comparisons";
 import { selectHomepageComparisons } from "@/lib/homepage-comparisons";
+import { useVisibleActivity } from "@/hooks/use-visible-activity";
 
 /**
  * Outline shared with the test cards above this section: a turquoise edge at
@@ -17,15 +18,20 @@ const BUTTON_BORDER = "border-2 border-brand-navy";
 const StartJourneySection = () => {
   const { data: panels = [], isPending: comparisonsLoading } =
     useHomepageComparisons();
+  const { ref, active } = useVisibleActivity<HTMLElement>();
   const [syncIdx, setSyncIdx] = useState(0);
   useEffect(() => {
+    if (!active) return;
     const interval = setInterval(() => setSyncIdx((index) => index + 1), 30000);
     return () => clearInterval(interval);
-  }, []);
+  }, [active]);
   const { left, right } = selectHomepageComparisons(panels, syncIdx);
 
   return (
-    <section className="w-full bg-gradient-to-b from-slate-50 to-white py-6 sm:py-8">
+    <section
+      ref={ref}
+      className="w-full bg-gradient-to-b from-slate-50 to-white py-6 sm:py-8"
+    >
       <div className="homepage-section-inner">
         <div
           className={`relative bg-white rounded-2xl overflow-hidden mb-6 sm:mb-8 transition-all duration-700 ease-out hover:-translate-y-1 ${PANEL_OUTLINE}`}

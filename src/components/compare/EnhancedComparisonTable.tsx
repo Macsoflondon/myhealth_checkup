@@ -100,6 +100,8 @@ export function EnhancedComparisonTable({
               </Button>
               <CardHeader className="pb-2">
                 <TestCardImage
+                  displayWidth={180}
+                  sizes="180px"
                   imageUrl={test.image_url}
                   testName={test.testName}
                   providerName={test.provider}

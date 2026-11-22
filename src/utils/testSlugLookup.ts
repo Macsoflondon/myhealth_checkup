@@ -1,4 +1,5 @@
 import type { CollectionFeeType } from "@/lib/comparisonFormat";
+import { publicCatalogueRead } from "@/services/public-catalogue-memo";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchViewPricing, mergeViewPricing } from "@/lib/viewPricing";
 import {
@@ -206,10 +207,15 @@ async function findRawTestByIdOrSlug(
 export async function findTestByIdOrSlug(
   ...args: Parameters<typeof findRawTestByIdOrSlug>
 ): Promise<TestData | null> {
-  const test = await findRawTestByIdOrSlug(...args);
-  if (!test) return null;
-  const pricing = await fetchViewPricing([test.id]);
-  return mergeViewPricing(test, pricing.get(test.id));
+  return publicCatalogueRead(
+    JSON.stringify(["test-detail", ...args]),
+    async () => {
+      const test = await findRawTestByIdOrSlug(...args);
+      if (!test) return null;
+      const pricing = await fetchViewPricing([test.id]);
+      return mergeViewPricing(test, pricing.get(test.id));
+    },
+  );
 }
 
 /**

@@ -273,6 +273,8 @@ export const ProviderComparisonTable: React.FC<
                   >
                     {test.available !== false && (
                       <TestCardImage
+                        displayWidth={180}
+                        sizes="180px"
                         imageUrl={resolveTestCardImage({
                           providerId: test.provider,
                           imageUrl: test.image_url,
@@ -296,7 +298,9 @@ export const ProviderComparisonTable: React.FC<
                         {(() => {
                           const logo = resolveLogo(test);
                           return logo ? (
-                            <img width={160} height={64}
+                            <img
+                              width={160}
+                              height={64}
                               src={logo}
                               alt={`${test.provider} logo`}
                               className="max-w-full max-h-full object-contain"

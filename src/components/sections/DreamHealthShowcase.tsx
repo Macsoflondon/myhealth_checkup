@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any -- TODO: type properly; inherited from upstream merge 2026-07-10 */
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "@/lib/router-compat";
 import { type PopularTest } from "@/hooks/usePopularTestsFromDatabase";
 import { useHomepagePopularShowcase } from "@/hooks/queries/use-homepage-test-showcase";
@@ -11,6 +11,10 @@ import { isGenericDescription, resolveTestSummary } from "@/lib/test-summary";
 import { resolveTestCardImage } from "@/lib/resolve-test-card-image";
 import { TestCardImage } from "@/components/tests/test-card-image";
 import { useTestDetailsByIds } from "@/hooks/queries/useTestDetailsByIds";
+import {
+  useVisibleActivity,
+  useCompositorMarquee,
+} from "@/hooks/use-visible-activity";
 
 const withFrom = (s: string) => (s && !/^from\b/i.test(s) ? `from ${s}` : s);
 
@@ -123,7 +127,7 @@ const resolveImage = (t: PopularTest): string | null =>
 const DreamHealthShowcase = () => {
   const navigate = useNavigate();
   const { data: popularTests, isLoading } = useHomepagePopularShowcase();
-  const trackRef = useRef<HTMLDivElement>(null);
+  const { ref: trackRef, active } = useVisibleActivity<HTMLDivElement>();
   const [selectedTest, setSelectedTest] = useState<PopularTest | null>(null);
   const orderedTests = useMemo(() => popularTests ?? [], [popularTests]);
 
@@ -167,42 +171,7 @@ const DreamHealthShowcase = () => {
     [filmstripTests],
   );
 
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track || filmstripTests.length === 0) return;
-
-    let animationId: number;
-    let position = 0;
-    const speed = 0.5;
-
-    const measureSetWidth = () => {
-      const children = track.children;
-      if (!children.length) return 0;
-      let total = 0;
-      for (let i = 0; i < filmstripTests.length && i < children.length; i++) {
-        total += (children[i] as HTMLElement).offsetWidth;
-        const style = window.getComputedStyle(track);
-        const gap = parseFloat(style.columnGap || style.gap || "0");
-        if (i < filmstripTests.length - 1) total += gap;
-      }
-      return total;
-    };
-
-    let setWidth = measureSetWidth();
-
-    const animate = () => {
-      if (!setWidth) setWidth = measureSetWidth();
-      position -= speed;
-      if (setWidth > 0 && Math.abs(position) >= setWidth) {
-        position += setWidth;
-      }
-      track.style.transform = `translateX(${position}px)`;
-      animationId = requestAnimationFrame(animate);
-    };
-
-    animationId = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationId);
-  }, [filmstripTests.length]);
+  useCompositorMarquee(trackRef, filmstripTests.length);
 
   return (
     <section className="bg-white pt-8 pb-12 sm:pt-10 sm:pb-16 md:pt-12 md:pb-20 overflow-hidden">
@@ -244,7 +213,8 @@ const DreamHealthShowcase = () => {
         >
           <div
             ref={trackRef}
-            className="flex gap-3 sm:gap-4 px-4 sm:px-6 will-change-transform"
+            data-active={active}
+            className="performance-marquee flex gap-3 sm:gap-4 px-4 sm:px-6 will-change-transform"
           >
             {isLoading || filmstripTests.length === 0
               ? Array.from({ length: 9 }).map((_, i) => (
@@ -268,6 +238,8 @@ const DreamHealthShowcase = () => {
                       testName={t.test_name}
                       providerName={t.provider_name}
                       className="p-4"
+                      displayWidth={326}
+                      sizes="(min-width: 1024px) 17vw, (min-width: 768px) 19vw, (min-width: 640px) 26vw, 42vw"
                     />
                   </button>
                 ))}
@@ -288,7 +260,7 @@ const DreamHealthShowcase = () => {
               ))}
 
             {!isLoading &&
-              enrichedTests.map((t) => {
+              enrichedTests.map((t, index) => {
                 const isMostChosen = t.is_popular === true;
                 const open = () => setSelectedTest(t);
                 return (
@@ -312,6 +284,9 @@ const DreamHealthShowcase = () => {
                         testName={t.test_name}
                         providerName={t.provider_name}
                         className="p-4"
+                        displayWidth={400}
+                        sizes="(min-width: 1024px) 30vw, (min-width: 640px) 45vw, calc(100vw - 64px)"
+                        priority={index < 2}
                       />
                     </button>
                     <div className="p-5 flex flex-col flex-1">

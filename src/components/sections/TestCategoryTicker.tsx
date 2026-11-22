@@ -51,7 +51,7 @@ const TestCategoryTicker = ({
     <section className={wrapperClass} aria-label="Health test categories">
       <div className={innerPad}>
         <div
-          className="relative overflow-hidden"
+          className="ticker-viewport relative overflow-hidden"
           style={{
             maskImage:
               "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { useDynamicComparisonPanels } from "@/hooks/useDynamicComparisonPanels";
+import { useVisibleActivity } from "@/hooks/use-visible-activity";
 
 export type LiveComparisonPanelData = {
   name: string;
@@ -167,21 +168,27 @@ const LiveComparisonCard = ({
       : dynamicPanels.length > 0
         ? dynamicPanels
         : DEFAULT_LIVE_COMPARISON_PANELS;
+  const { ref, active } = useVisibleActivity<HTMLDivElement>();
   const controlled = panelIndex !== undefined;
   const [internalIdx, setInternalIdx] = useState(0);
   const [fading, setFading] = useState(false);
 
   useEffect(() => {
-    if (controlled || panels.length <= 1) return;
+    if (!active || controlled || panels.length <= 1) return;
+    const timers: { fade?: ReturnType<typeof setTimeout> } = {};
     const interval = setInterval(() => {
       setFading(true);
-      setTimeout(() => {
+      timers.fade = setTimeout(() => {
         setInternalIdx((i) => (i + 1) % panels.length);
         setFading(false);
       }, 500);
     }, rotateMs);
-    return () => clearInterval(interval);
-  }, [panels.length, rotateMs, controlled]);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timers.fade);
+      setFading(false);
+    };
+  }, [panels.length, rotateMs, controlled, active]);
 
   useEffect(() => {
     if (!controlled) return;
@@ -190,12 +197,13 @@ const LiveComparisonCard = ({
     return () => clearTimeout(t);
   }, [panelIndex, controlled]);
 
-  const idx = controlled ? panelIndex! % panels.length : internalIdx;
+  const idx = controlled ? (panelIndex ?? 0) % panels.length : internalIdx;
   const test = panels[idx];
   if (!test) return null;
 
   return (
     <div
+      ref={ref}
       className={`relative bg-[#F8FAFC] rounded-[2rem] border border-brand-navy shadow-[0_30px_80px_-20px_rgba(8,17,41,0.22),0_8px_24px_-8px_rgba(8,17,41,0.10)] ring-1 ring-slate-200/60 overflow-hidden h-full transition-transform duration-700 ease-out hover:-translate-y-1 ${className}`}
     >
       <div className="p-6 sm:p-8 md:p-10 flex flex-col h-full">

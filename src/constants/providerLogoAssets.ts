@@ -17,7 +17,8 @@ import goodbodyLogo from "@/assets/providers/logos/provider-goodbody-slate-2026.
 import londonHealthCompanyLogo from "@/assets/providers/logos/provider-london-health-company.webp?no-inline";
 import medicalDiagnosisLogo from "@/assets/providers/logos/provider-medical-diagnosis.webp?no-inline";
 import clinilabsLogo from "@/assets/providers/logos/provider-clinilabs.webp?no-inline";
-import edgeLogo from "@/assets/providers/logos/provider-edge.webp.asset.json";
+import edgeLogo from "@/assets/providers/logos/provider-edge-320.webp.asset.json";
+import edgeLogo160 from "@/assets/providers/logos/provider-edge-160.webp.asset.json";
 
 import lola160 from "@/assets/providers/responsive/lola-health@160.webp?no-inline";
 import lola320 from "@/assets/providers/responsive/lola-health@320.webp?no-inline";
@@ -60,7 +61,7 @@ export const PROVIDER_LOGO_ASSETS = {
   },
   "medical-diagnosis": { src: medicalDiagnosisLogo, width: 480, height: 204 },
   clinilabs: { src: clinilabsLogo, width: 422, height: 140 },
-  "sports-blood-tests": { src: edgeLogo.url, width: 756, height: 216 },
+  "sports-blood-tests": { src: edgeLogo.url, width: 320, height: 91 },
 } as const satisfies Record<string, LogoAsset>;
 
 export interface ResponsiveLogoAsset extends LogoAsset {
@@ -85,6 +86,12 @@ export const PROVIDER_RESPONSIVE_LOGO_ASSETS: Record<
   string,
   ResponsiveLogoAsset
 > = {
+  "sports-blood-tests": {
+    src: edgeLogo160.url,
+    srcSet: `${edgeLogo160.url} 160w, ${edgeLogo.url} 320w`,
+    width: 160,
+    height: 46,
+  },
   "lola-health": density(lola160, lola320, lola480, 162),
   "goodbody-clinic": density(goodbody160, goodbody320, goodbody480, 249),
   "london-health-company": density(lhc160, lhc320, lhc480, 254),

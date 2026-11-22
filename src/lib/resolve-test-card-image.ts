@@ -11,7 +11,7 @@ import { lmlSharpKitImage } from "@/lib/lml-kit-images";
 import goodbodyBabyBox from "@/assets/providers/goodbody-baby-box.png.asset.json";
 import goodbodyPaternityBox from "@/assets/providers/goodbody-paternity-box.png.asset.json";
 import goodbodyStockholmBox from "@/assets/providers/goodbody-stockholm-box.png.asset.json";
-import edgeTestKit from "@/assets/providers/edge-test-kit.png.asset.json";
+import edgeTestKit from "@/assets/providers/edge-test-kit-326.webp.asset.json";
 
 interface TestCardImageInput {
   providerId?: string | null;
