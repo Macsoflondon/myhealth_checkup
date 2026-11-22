@@ -1,5 +1,7 @@
 # Architecture decisions
 
+- Medical Diagnosis interprets offset/limit as one of five batch positions and partitions normalised-path-sorted sitemap matches dynamically. Why: unchanged cron jobs must cover growing catalogues without stale-tail delisting.
+
 - Scraper identity matching prefers stored product URLs before name fallbacks; URL verification rejects homepage/non-product redirects. Why: provider renames must not freeze prices or send booking clicks to unrelated pages.
 - Auth throttle accepts only email and check/failure, with bounded strict validation and no password verification. Why: a caller-scoped failure bucket must not become a password oracle.
 

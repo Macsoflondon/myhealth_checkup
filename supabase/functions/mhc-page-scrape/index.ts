@@ -9,6 +9,7 @@
 // MHC_SYNC_SECRET is only a fallback for when that read fails. No secret is committed here.
 import { createClient } from "npm:@supabase/supabase-js@2";
 import { normalisedProductPath } from "../_shared/scrape/product-url.ts";
+import { sitemapBatch } from "../_shared/scrape/sitemap-batch.ts";
 import { htmlToText } from "../_shared/scrape/html.ts";
 import { parseMedicalDiagnosisTestsIncluded } from "../_shared/scrape/biomarkerParsers.ts";
 import { checkMhcSyncSecret } from "../_shared/mhc-auth.ts";
@@ -16,9 +17,15 @@ import { turnaroundColumns } from "../_shared/scrape/parseTurnaround.ts";
 
 const PROVIDERS: Record<
   string,
-  { sitemaps: string[]; urlMatch: RegExp; urlExclude: RegExp }
+  {
+    sitemaps: string[];
+    urlMatch: RegExp;
+    urlExclude: RegExp;
+    batchCount: number;
+  }
 > = {
   "medical-diagnosis": {
+    batchCount: 5,
     sitemaps: [
       "https://www.medical-diagnosis.co.uk/product-sitemap.xml",
       "https://www.medical-diagnosis.co.uk/product-sitemap2.xml",
@@ -262,6 +269,20 @@ Deno.serve(async (req) => {
       JSON.stringify({ ok: false, error: "unknown provider" }),
       { status: 400, headers: { "content-type": "application/json" } },
     );
+  if (
+    !Number.isSafeInteger(offset) ||
+    offset < 0 ||
+    !Number.isSafeInteger(limit) ||
+    limit <= 0 ||
+    Math.floor(offset / limit) >= cfg.batchCount
+  )
+    return new Response(
+      JSON.stringify({ ok: false, error: "invalid batch position" }),
+      {
+        status: 400,
+        headers: { "content-type": "application/json" },
+      },
+    );
   const { data: rows, error: rowsError } = await supabase
     .from("provider_tests")
     .select(
@@ -296,16 +317,29 @@ Deno.serve(async (req) => {
   } = await getUrls(cfg);
   const sitemapFullyFailed =
     sitemapsTried > 0 && fetchFailures === sitemapsTried;
-  const allUrls = sitemapUrls.filter(
+  const matchedUrls = sitemapUrls.filter(
     (url) =>
       byPath.has(normalisedProductPath(url) ?? "") || keySet.has(slugNorm(url)),
   );
+  const {
+    orderedUrls: allUrls,
+    slice,
+    batchIndex,
+    batchCount,
+    sliceSize,
+  } = sitemapBatch(matchedUrls, offset, limit, cfg.batchCount);
+  const batchMetadata = {
+    batch_index: batchIndex,
+    batch_count: batchCount,
+    slice_size: sliceSize,
+  };
   if (urlsOnly)
     return new Response(
       JSON.stringify(
         {
           ok: true,
           matched_urls: allUrls.length,
+          ...batchMetadata,
           db_active: rows?.length || 0,
           sitemap_fetch_failures: fetchFailures,
           sample_urls: allUrls.slice(0, 15),
@@ -315,7 +349,6 @@ Deno.serve(async (req) => {
       ),
       { headers: { "content-type": "application/json" } },
     );
-  const slice = allUrls.slice(offset, offset + limit);
   const results: Record<string, unknown>[] = [];
   let written = 0,
     matched = 0,
@@ -459,6 +492,7 @@ Deno.serve(async (req) => {
         ...runErrors.slice(0, 20),
       ],
       metadata: {
+        ...batchMetadata,
         matched_urls: allUrls.length,
         offset,
         limit,
@@ -479,6 +513,7 @@ Deno.serve(async (req) => {
         provider: providerId,
         dry,
         matched_urls: allUrls.length,
+        ...batchMetadata,
         offset,
         limit,
         processed: slice.length,

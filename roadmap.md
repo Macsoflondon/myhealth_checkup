@@ -1,5 +1,9 @@
 # Roadmap
 
+## Medical Diagnosis batch coverage follow-up
+- [x] Partition stable matched paths into five dynamic slices using the existing offset/limit batch positions; preserve urls_only and report batch_index, batch_count and slice_size.
+- [x] Exact coverage tests for 150, 151 and 180 URLs pass (15 Deno tests plus 3 targeted URL tests); automatic compilation clean. Deployed mhc-page-scrape v159 confirmed in logs. All five live URL-only calls return 200 with 152 matched URLs and slice_size=31: batch lengths are 31/31/31/31/28, covering all 152. No cron, migration or catalogue price updates; site not published.
+
 ## 22 November backend screening
 - [x] Remove password verification from auth-throttle; strict 254-character email, check/failure schema and 2KB streaming body cap. Client never sends passwords to the throttle. Live check 200, password field 400; mocked bucket isolation/429 tested.
 - [x] Detect homepage/non-product redirects and prefer stable URLs in both scrapers. Deployed versions: auth-throttle 171, scrape-and-verify 188, mhc-shopify-rich-sync 154, mhc-page-scrape 156, confirmed by edge logs. Dry runs: London Health Company 14/14 matches, Goodbody 58/58, Medical Diagnosis 152 matched URLs, 2/2 sampled pages; written=0. No hand-edited prices or migrations executed.
@@ -7,7 +11,7 @@
 - [x] Upgrade typescript-eslint and its packages to first patched 8.73.0; replace vulnerable minimatch override with 11.0.1+, reconcile both lockfiles. Standard npm ci and stale-copy check pass; npm audit reports zero advisories; existing production package versions unchanged.
 - [x] Remove six inline-colour substring selectors, move provider quote hues and light-surface section text to semantic tokens. 375/1280px homepage/providers have no page errors or horizontal overflow, quotes keep EB Garamond at full opacity without wrapper. 1,290 unit tests, 20 checked Deno tests, changed-file lint (three existing refresh warnings), SEO regression and automatic compilation passed.
 - [ ] Full production build verification remains unavailable: manual builds are disabled by the sandbox workflow; automatic compilation reports build OK, not a verified production artefact.
-- [ ] Claude review of existing Medical Diagnosis cron coverage: five unchanged 30-item batches cover indices 0–149, but live dry run has 152 matched sitemap URLs and catalogue has 153 active rows. The next schedule cannot cover every matched URL; changing cron is prohibited here. No cron or database changes were made.
+- [x] Medical Diagnosis coverage fixed in function v159: existing offsets identify five dynamic partitions rather than a 150-item capacity. No cron or migration changes required.
 
 ## 22 November performance screening
 - [x] Resize public Storage/Shopify product images with contain transforms and responsive candidates, prioritise the first two listing cards, and optimise EDGE kit/logo assets; other unresizable image hosts remain unchanged.
