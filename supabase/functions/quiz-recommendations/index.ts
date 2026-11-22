@@ -135,19 +135,21 @@ Deno.serve(async (req) => {
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Persistent rate limit, keyed by authenticated user when present, otherwise client IP
-    let clientKey = `ip:${clientIp}`;
+    // Require a verified signed-in user: this endpoint spends metered AI credits.
     const authHeader = req.headers.get("Authorization");
-    if (authHeader?.startsWith("Bearer ")) {
-      try {
-        const { data: userData } = await supabase.auth.getUser(
-          authHeader.replace("Bearer ", ""),
-        );
-        if (userData?.user?.id) clientKey = `user:${userData.user.id}`;
-      } catch (_) {
-        /* fall back to IP */
-      }
+    const token = authHeader?.startsWith("Bearer ")
+      ? authHeader.slice("Bearer ".length)
+      : "";
+    const { data: userData, error: authError } = token
+      ? await supabase.auth.getUser(token)
+      : { data: { user: null }, error: null };
+    if (authError || !userData?.user?.id) {
+      return new Response(JSON.stringify({ error: "Sign in required" }), {
+        status: 401,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
     }
+    const clientKey = `user:${userData.user.id}`;
     const allowed = await checkPersistentRateLimit(
       supabase,
       "quiz-recommendations",
