@@ -49,24 +49,7 @@ const MaleHormoneTestPage = () => {
       "Guide lifestyle and treatment decisions",
     ],
 
-    providers: [
-      {
-        name: "Randox Health",
-        price: 33,
-        url: "https://randoxhealth.com/en-GB/at-home/male-health",
-        features: ["8 male hormones", "At-home collection", "Next day results"],
-      },
-      {
-        name: "Medichecks",
-        price: 69,
-        url: "https://medichecks.com/products/male-hormone-blood-test",
-        features: [
-          "Testosterone panel",
-          "3-4 day results",
-          "Finger-prick or venous",
-        ],
-      },
-    ],
+    panel: "male-hormones",
   };
 
   return <TestPageTemplate data={testData} />;

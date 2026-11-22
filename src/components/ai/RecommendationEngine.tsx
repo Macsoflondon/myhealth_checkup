@@ -21,7 +21,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { logger } from "@/lib/logger";
 import { analytics } from "@/lib/analytics";
-import { UniversalTestCard } from "@/components/cards/UniversalTestCard";
+import {
+  UniversalTestCard,
+  type UniversalTestData,
+} from "@/components/cards/UniversalTestCard";
 import { useResolvedRecommendations } from "@/hooks/queries/useResolvedRecommendations";
 
 interface QueryHistoryItem {
@@ -116,7 +119,7 @@ const ResolvedRecommendationList = ({
                 {rec.provider} · {rec.confidence}% match
               </p>
               <p className="text-xs text-[#081129]/80">{rec.reason}</p>
-              <p className="text-[11px] text-[#081129]/50 mt-2 italic">
+              <p className="text-xs text-[#081129]/50 mt-2 italic">
                 Live details unavailable — this test may have been updated.
                 Please browse the catalogue for the latest information.
               </p>
@@ -136,7 +139,7 @@ const ResolvedRecommendationList = ({
                 {rec.confidence}% match
               </span>
             </div>
-            <UniversalTestCard test={test as any} />
+            <UniversalTestCard test={test as unknown as UniversalTestData} />
             {rec.reason && (
               <p className="text-xs text-[#081129]/70 px-1 leading-relaxed border-l-2 border-[#22c0d4]/50 pl-2">
                 <span className="font-semibold text-[#081129]">Why:</span>{" "}
@@ -551,7 +554,7 @@ const RecommendationEngine = ({
           </label>
           <textarea
             className="w-full p-3 border rounded-md h-24 resize-none"
-            placeholder="Describe your wellness goals or general health interests (e.g., energy levels, preventive screening, fitness optimization, general wellness check)..."
+            placeholder="Describe your wellness goals or general health interests (e.g., energy levels, preventive screening, fitness optimisation, general wellness check)..."
             value={symptoms}
             onChange={(e) => setSymptoms(e.target.value)}
           />

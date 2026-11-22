@@ -189,12 +189,12 @@ const FeaturedProvidersGlass = () => {
                         className="italic text-lg opacity-90 text-brand-navy"
                         style={{
                           fontFamily: "'EB Garamond', Garamond, serif",
-                          color: p.glow,
+                          color: `var(--color-quote-${p.id === "goodbody" || p.id === "sports-blood-tests" ? "teal" : p.id === "lola-health" ? "coral" : p.id === "clinilabs" ? "green" : p.id === "medical-diagnosis" ? "red" : p.id === "medichecks" ? "pink" : "blue"})`,
                         }}
                       >
                         {p.tagline}
                       </p>
-                      <p className="text-[11px] uppercase tracking-[0.2em] text-brand-navy pt-1">
+                      <p className="text-xs uppercase tracking-[0.2em] text-brand-navy pt-1">
                         UK Wide
                       </p>
                     </div>
@@ -214,7 +214,7 @@ const FeaturedProvidersGlass = () => {
                       {p.tags.map((t) => (
                         <span
                           key={t}
-                          className="px-3 py-1 rounded-lg bg-[#f0f4fa] border border-brand-navy text-[10px] uppercase font-bold tracking-wider text-brand-navy transition-colors"
+                          className="px-3 py-1 rounded-lg bg-[#f0f4fa] border border-brand-navy text-xs uppercase font-bold tracking-wider text-brand-navy transition-colors"
                         >
                           {t}
                         </span>
@@ -259,7 +259,7 @@ const FeaturedProvidersGlass = () => {
         {/* Trust footer */}
         <div className="border-t border-white/10 pt-10 flex flex-col md:flex-row justify-between items-center gap-4 text-[#081129] text-sm">
           <p>{"\n"}</p>
-          <div className="flex gap-6 uppercase tracking-[0.2em] font-bold text-[10px]">
+          <div className="flex gap-6 uppercase tracking-[0.2em] font-bold text-xs">
             <span className="flex items-center gap-2 text-[#081129]">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
             </span>

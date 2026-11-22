@@ -67,24 +67,7 @@ const WellWomanTestPage = () => {
       "Track menopause transition and symptoms",
     ],
 
-    providers: [
-      {
-        name: "Medichecks",
-        price: 159,
-        url: "https://medichecks.com/products/well-woman-advanced-blood-test",
-        features: ["47 biomarkers", "3-4 day results", "Hormone analysis"],
-      },
-      {
-        name: "London Medical Laboratory",
-        price: 169,
-        url: "https://londonmedicallaboratory.com/product-category/female-health",
-        features: [
-          "Comprehensive panel",
-          "Same day results",
-          "Hormone insights",
-        ],
-      },
-    ],
+    panel: "well-woman",
   };
 
   return <TestPageTemplate data={testData} />;

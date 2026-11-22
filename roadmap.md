@@ -1,5 +1,10 @@
 # Roadmap
 
+## 22 November mobile accessibility screening
+- [x] Fix wrapping stats, seven source-backed educational comparisons and similar-test categories; keep educational copy and use tracked catalogue product links.
+- [x] Fix public text sizes, form sizes, targeted tap targets, contrast tokens/quotes, eyebrow, footer and British spelling without changing brand bars.
+- [x] Verify ten public routes and nine real provider detail pages at 360/390px: no measured unintended overflow or visible text below 12px outside branding; measured fields are 16px. All 1,277 unit tests passed, final 17 focused tests passed, core lint and SEO checks passed, automatic build OK. No publishing or database changes. Fresh Lighthouse contrast scoring and native iOS focus behaviour remain unverified.
+
 ## Claude hand-off and nine-provider coverage
 - [x] Consolidate all pending Claude work in docs/claude-pending-work.md, with activation prerequisites and verification gates; this is a repository hand-off, not a started Claude session.
 - [x] Update current platform provider counts and coverage to nine, including EDGE; preserve source-backed catalogue data and remove the upper showcase's eight-card cap.

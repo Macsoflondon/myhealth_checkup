@@ -5,7 +5,7 @@ export const AFFILIATE_COMMISSION_TEXT =
 
 export function AffiliateCommissionNote({ className }: { className?: string }) {
   return (
-    <p className={cn("text-[11px] leading-snug text-muted-foreground", className)}>
+    <p className={cn("text-[13px] leading-snug text-muted-foreground", className)}>
       {AFFILIATE_COMMISSION_TEXT}
     </p>
   );

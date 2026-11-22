@@ -360,15 +360,15 @@ const ContactPage = () => {
                     {providerContacts.map((provider) => (
                       <div
                         key={provider.name}
-                        className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0"
+                        className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 py-2 border-b border-gray-100 last:border-0"
                       >
-                        <span className="font-medium text-sm">
+                        <span className="min-w-0 font-medium text-sm">
                           {provider.name}
                         </span>
                         {provider.phone ? (
                           <a
                             href={`tel:${provider.phone.replace(/\s/g, "")}`}
-                            className="text-sm text-[#22c0d4] hover:text-[#e70d69] font-medium transition-colors"
+                            className="inline-flex min-h-11 min-w-6 items-center text-sm text-brand-turquoise-text hover:text-[#e70d69] font-medium transition-colors"
                           >
                             {provider.phone}
                           </a>
@@ -377,7 +377,7 @@ const ContactPage = () => {
                             href={provider.liveChat}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-sm text-[#22c0d4] hover:text-[#e70d69] font-medium transition-colors flex items-center gap-1"
+                            className="inline-flex min-h-11 min-w-6 items-center text-sm text-brand-turquoise-text hover:text-[#e70d69] font-medium transition-colors flex items-center gap-1"
                           >
                             <MessageCircle className="h-3 w-3" />
                             Live Support
@@ -385,7 +385,7 @@ const ContactPage = () => {
                         ) : provider.email ? (
                           <a
                             href={`mailto:${provider.email}`}
-                            className="text-sm text-[#22c0d4] hover:text-[#e70d69] font-medium transition-colors flex items-center gap-1"
+                            className="inline-flex min-h-11 min-w-6 items-center text-sm text-brand-turquoise-text hover:text-[#e70d69] font-medium transition-colors flex items-center gap-1"
                           >
                             <Mail className="h-3 w-3" />
                             {provider.email}

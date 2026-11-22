@@ -141,7 +141,7 @@ const SitemapPage = () => {
                 <div className="flex flex-col gap-3">
                   <Link
                     to="/search"
-                    className="text-sm font-medium text-[#0e9aac] hover:text-[#081129] hover:underline underline-offset-4 transition-colors"
+                    className="inline-flex min-h-6 items-center py-1 text-sm font-medium text-brand-turquoise-text hover:text-[#081129] hover:underline underline-offset-4 transition-colors"
                   >
                     Try intelligent search →
                   </Link>

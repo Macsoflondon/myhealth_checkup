@@ -1,3 +1,4 @@
+import { educationalCatalogueQuery } from "@/services/educational-test-catalogue";
 import { createFileRoute } from "@tanstack/react-router";
 import { buildRouteHead } from "@/lib/seo/route-head";
 import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
@@ -5,6 +6,7 @@ import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
 const LipidProfileTestPage = lazy(() => import("@/pages/LipidProfileTestPage"));
 
 export const Route = createFileRoute("/test/lipid-profile")({
+  loader: ({ context }) => context.queryClient.ensureQueryData(educationalCatalogueQuery),
   head: () =>
     buildRouteHead({
       title: "Lipid profile blood tests compared | myhealth checkup",

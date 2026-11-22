@@ -1,77 +1,31 @@
 import { AffiliateCommissionNote } from "@/components/compliance/AffiliateCommissionNote";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Link } from "@/lib/router-compat";
-import { TestProvider } from "@/types/TestPageTypes";
-interface ProviderComparisonSidebarProps {
-  providers: TestProvider[];
-}
-const ProviderComparisonSidebar = ({
-  providers,
-}: ProviderComparisonSidebarProps) => {
+import { EducationalProviderDetails } from "./educational-provider-details";
+import { formatCatalogueMoney, type EducationalProvider } from "@/services/educational-test-catalogue";
+
+export function ProviderComparisonSidebar({ providers }: { providers: EducationalProvider[] }) {
   return (
-    <Card className="sticky top-8 bg-[#081129] border-[#081129]">
-      <CardHeader>
-        <CardTitle className="text-center text-white">
-          Compare providers
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        {providers.map((provider, index) => (
-          <div
-            key={index}
-            className="border border-white/20 rounded-lg p-4 space-y-3"
-          >
-            <div className="flex justify-between items-start">
-              <h4 className="font-semibold text-white">{provider.name}</h4>
-              <div className="text-right">
-                <div className="text-xl font-bold text-[#22c0d4]">
-                  £{provider.price}
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-1">
-              {provider.features.map((feature, fIndex) => (
-                <div key={fIndex} className="flex items-center gap-2 text-sm">
-                  <CheckCircle className="w-4 h-4 text-[#22c0d4]" />
-                  <span className="text-white/90">{feature}</span>
-                </div>
-              ))}
-            </div>
-
-            <Button
-              size="sm"
-              className="w-full bg-[#22c0d4] hover:bg-[#e70d69] text-white"
-              asChild
-            >
-              <a
-                href={provider.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mx-[10px] px-0 py-0"
-              >
-                Book
-                <ExternalLink className="w-4 h-4 ml-2" />
-              </a>
+    <Card className="min-w-0 bg-brand-navy border-brand-navy lg:sticky lg:top-8">
+      <CardHeader><CardTitle className="text-center text-on-dark">Compare providers</CardTitle></CardHeader>
+      <CardContent className="min-w-0 space-y-4">
+        {providers.length === 0 && <p className="text-sm text-on-dark-muted">No matched catalogue tests available.</p>}
+        {providers.map((provider) => (
+          <div key={provider.id} className="min-w-0 space-y-3 rounded-lg border border-on-dark/20 p-4">
+            <h4 className="font-semibold text-on-dark break-words">{provider.name}</h4>
+            <p className="text-sm text-on-dark-muted break-words">{provider.testName}</p>
+            <div><p className="text-xs text-on-dark-muted">Total expected cost</p><p className="text-xl font-bold text-brand-turquoise">{formatCatalogueMoney(provider.price)}</p></div>
+            <EducationalProviderDetails provider={provider} />
+            <Button size="sm" className="min-h-11 w-full bg-brand-turquoise text-brand-navy hover:bg-brand-pink hover:text-on-dark" asChild>
+              <a href={provider.bookingUrl} target="_blank" rel="noopener sponsored">Book<ExternalLink className="ml-2 h-4 w-4" /></a>
             </Button>
-            <AffiliateCommissionNote className="mt-2 text-center" />
           </div>
         ))}
-
-        <div className="pt-4 border-t border-white/20">
-          <Button
-            variant="outline"
-            size="lg"
-            className="w-full border-white/30 text-white hover:bg-white/10"
-            asChild
-          >
-            <Link to="/compare">Compare all tests</Link>
-          </Button>
-        </div>
+        <AffiliateCommissionNote className="text-on-dark-muted" />
+        <div className="border-t border-on-dark/20 pt-4"><Button variant="outline" size="lg" className="w-full border-on-dark/30 text-on-dark hover:bg-on-dark/10" asChild><Link to="/compare">Compare all tests</Link></Button></div>
       </CardContent>
     </Card>
   );
-};
-export default ProviderComparisonSidebar;
+}

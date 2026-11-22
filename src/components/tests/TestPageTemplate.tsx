@@ -1,12 +1,11 @@
-import { withBrand } from "@/lib/seo/route-head";
-import { Helmet } from "react-helmet-async";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { educationalCatalogueQuery, selectEducationalProviders } from "@/services/educational-test-catalogue";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import ProviderComparisonSidebar from "@/components/compare/ProviderComparisonSidebar";
+import { ProviderComparisonSidebar } from "@/components/compare/ProviderComparisonSidebar";
 import SimilarTestsSection from "@/components/tests/SimilarTestsSection";
-import ProviderPriceComparison from "@/components/compare/ProviderPriceComparison";
-import TestStructuredData from "@/components/seo/TestStructuredData";
+import { ProviderPriceComparison } from "@/components/compare/ProviderPriceComparison";
 import PageHeading from "@/components/ui/page-heading";
 import { TestPageData } from "@/types/TestPageTypes";
 
@@ -15,25 +14,11 @@ interface TestPageTemplateProps {
 }
 
 const TestPageTemplate = ({ data }: TestPageTemplateProps) => {
-  // Prepare provider data for price comparison
-  const providersWithDetails = data.providers.map((p) => ({
-    name: p.name,
-    price: p.price,
-    turnaround: p.turnaround || "2-3 days",
-    biomarkers: p.biomarkers || 0,
-    bookingUrl: p.bookingUrl || p.url,
-  }));
+  const { data: catalogue } = useSuspenseQuery(educationalCatalogueQuery);
+  const providersWithDetails = selectEducationalProviders(catalogue, data.panel);
 
   return (
     <div className="min-h-screen bg-white">
-      <Helmet>
-        <title>{withBrand(data.metaTitle)}</title>
-        <meta name="description" content={data.metaDescription} />
-      </Helmet>
-
-      {/* JSON-LD Structured Data for SEO */}
-      <TestStructuredData data={data} />
-
       <Header />
 
       <main className="container mx-auto px-[20px] py-6">
@@ -41,7 +26,7 @@ const TestPageTemplate = ({ data }: TestPageTemplateProps) => {
 
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content */}
-          <div className="lg:col-span-2">
+          <div className="min-w-0 lg:col-span-2">
             <div className="mb-6 my-0 py-[20px] bg-white rounded-lg border border-border">
               <div className="flex items-start justify-between gap-4 mb-4 py-0 mx-[20px]">
                 <PageHeading
@@ -63,7 +48,7 @@ const TestPageTemplate = ({ data }: TestPageTemplateProps) => {
               </CardHeader>
               <CardContent>
                 <p className="mb-4 text-white/90 font-normal">
-                  This comprehensive test analyzes key biomarkers that give you
+                  This comprehensive test analyses key biomarkers that give you
                   insight into your health status.
                 </p>
 
@@ -145,15 +130,12 @@ const TestPageTemplate = ({ data }: TestPageTemplateProps) => {
             <SimilarTestsSection
               category={data.category}
               currentTestName={data.title}
-              currentProvider={data.providers[0]?.name
-                ?.toLowerCase()
-                .replace(/\s+/g, "-")}
             />
           </div>
 
           {/* Provider Comparison Sidebar */}
-          <div className="lg:col-span-1">
-            <ProviderComparisonSidebar providers={data.providers} />
+          <div className="min-w-0 lg:col-span-1">
+            <ProviderComparisonSidebar providers={providersWithDetails} />
           </div>
         </div>
       </main>

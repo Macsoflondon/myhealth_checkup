@@ -278,11 +278,13 @@ function RootComponent() {
               <AutoTranslatePage />
               {!isAdminArea && <AutoReveal />}
               {!isAdminArea && <GlobalComparisonBar />}
+              <div className={isAdminArea ? "contents" : "public-accessibility contents"}>
               <ErrorBoundary>
                 <Suspense fallback={<PageFallback />}>
                   <Outlet />
                 </Suspense>
               </ErrorBoundary>
+              </div>
             </HelmetProvider>
           </SessionSecurityProvider>
         </AuthProvider>

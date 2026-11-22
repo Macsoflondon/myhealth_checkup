@@ -63,24 +63,7 @@ const LipidProfileTestPage = () => {
       "Regular monitoring is recommended for adults",
     ],
 
-    providers: [
-      {
-        name: "Medichecks",
-        price: 49,
-        url: "https://medichecks.com/products/cholesterol-blood-test",
-        features: ["Full lipid panel", "3-4 day results", "Home collection"],
-      },
-      {
-        name: "London Medical Laboratory",
-        price: 55,
-        url: "https://londonmedicallaboratory.com/product/lipid-profile-test",
-        features: [
-          "Comprehensive lipids",
-          "Same day results",
-          "Clinic or home",
-        ],
-      },
-    ],
+    panel: "lipid-profile",
   };
 
   return <TestPageTemplate data={testData} />;

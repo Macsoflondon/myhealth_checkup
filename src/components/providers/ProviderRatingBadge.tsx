@@ -25,7 +25,7 @@ export function ProviderRatingBadge({ provider, className }: ProviderRatingBadge
       href={r.sourceUrl}
       target="_blank"
       rel="noopener noreferrer nofollow"
-      className="underline underline-offset-2 hover:text-brand-pink"
+      className="inline-flex min-h-6 min-w-6 items-center py-1 underline underline-offset-2 hover:text-brand-pink"
       onClick={(e) => e.stopPropagation()}
     >
       Trustpilot
@@ -35,14 +35,14 @@ export function ProviderRatingBadge({ provider, className }: ProviderRatingBadge
   );
   return (
     <span
-      className={cn("inline-flex flex-wrap items-center gap-x-1 gap-y-0.5", className)}
+      className={cn("inline-flex flex-wrap items-center text-xs gap-x-1 gap-y-0.5", className)}
       aria-label={`Rated ${stars} out of 5 from ${count} reviews on Trustpilot`}
     >
       <Star className="h-3 w-3 shrink-0 fill-[#D4A843] text-[#D4A843]" aria-hidden="true" />
       <span className="font-semibold">{stars}</span>
       <span>· {count} reviews ·</span>
       {link}
-      {checked && <span className="opacity-75">· checked {checked}</span>}
+      {checked && <span className="text-xs">· checked {checked}</span>}
     </span>
   );
 }

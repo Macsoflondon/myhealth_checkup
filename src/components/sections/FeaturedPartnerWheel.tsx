@@ -827,7 +827,7 @@ export default function FeaturedPartnerWheel({
                     style={{
                       fontFamily: HEAD,
                       fontWeight: 700,
-                      fontSize: 11,
+                      fontSize: 12,
                       letterSpacing: ".16em",
                       textTransform: "uppercase",
                       color: "#22C0D4",
@@ -1062,7 +1062,7 @@ export default function FeaturedPartnerWheel({
                     style={{
                       fontFamily: HEAD,
                       fontWeight: 700,
-                      fontSize: 11,
+                      fontSize: 12,
                       letterSpacing: ".16em",
                       textTransform: "uppercase",
                       color: "#22C0D4",
@@ -1145,7 +1145,7 @@ export default function FeaturedPartnerWheel({
                     style={{
                       fontFamily: HEAD,
                       fontWeight: 700,
-                      fontSize: 11,
+                      fontSize: 12,
                       letterSpacing: ".1em",
                       textTransform: "uppercase",
                       color: "#9aa4b2",

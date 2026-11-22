@@ -58,3 +58,7 @@
 - Anonymous visitors have no database write privileges; public writes go only through `/api/public/*` handlers using the server-only key with strict zod schemas, a 4 KB cap and the shared salted IP-hash limit in `src/lib/server/visitor-rate-limit.ts` (booking clicks: catalogue-validated, server-derived host, redirect to the catalogue URL only; quiz funnel: `/api/public/quiz-event`, known events and quiz node IDs only). Admin-only table writes carry restrictive aal2 policies. Why: public writes must pass server validation and admin edits must need two-factor sign-in.
 
 - Provider star ratings come only from `provider_ratings` via `useProviderRatings()` and render through `ProviderRatingBadge`, which shows nothing without a verified row. Why: hand-typed review figures went stale and must never be estimated.
+
+- Educational test comparisons share a deduplicated public catalogue service and route-prefetched query, with deterministic panel/biomarker matching and tracked product links. Why: guide pages must not invent prices, counts or provider destinations.
+- Similar-test queries resolve canonical category slugs or category IDs and stop when neither exists. Why: raw nullable display categories must never become catalogue filters.
+- Public accessibility overrides live under the route-aware public-accessibility boundary and exclude brand identity. Why: text and form floors must not resize deliberate wordmarks or admin surfaces.

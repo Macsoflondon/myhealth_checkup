@@ -426,7 +426,7 @@ const WellnessPage = () => {
                       >
                         <span
                           style={{
-                            fontSize: 10,
+                            fontSize: 12,
                             fontWeight: 700,
                             letterSpacing: "0.12em",
                             color: tagColors[cat.tag],

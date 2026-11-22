@@ -1469,7 +1469,7 @@ export const TestFinderQuiz = () => {
     <div className="bg-white border border-[#081129]/10 rounded-2xl p-5 sm:p-8 space-y-6">
       {/* Progress bar */}
       <div>
-        <div className="flex justify-between text-[11px] uppercase tracking-wide text-[#081129]/50 mb-2">
+        <div className="flex justify-between text-xs uppercase tracking-wide text-[#081129]/50 mb-2">
           <span style={{ fontFamily: "'Montserrat', sans-serif" }}>
             Step {stepCount}
           </span>

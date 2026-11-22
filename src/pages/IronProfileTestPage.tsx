@@ -64,20 +64,7 @@ const IronProfileTestPage = () => {
       "Can identify both deficiency and excess iron",
     ],
 
-    providers: [
-      {
-        name: "Medichecks",
-        price: 39,
-        url: "https://medichecks.com/products/iron-status-blood-test",
-        features: ["Full iron panel", "3-4 day results", "Finger-prick option"],
-      },
-      {
-        name: "London Medical Laboratory",
-        price: 45,
-        url: "https://londonmedicallaboratory.com/product/iron-profile-test",
-        features: ["Comprehensive iron", "Same day results", "Home or clinic"],
-      },
-    ],
+    panel: "iron-profile",
   };
 
   return <TestPageTemplate data={testData} />;

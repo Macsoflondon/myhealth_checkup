@@ -50,7 +50,7 @@ const sizeClasses: Record<
   { text: string; tracking: string; rule: string; gap: string }
 > = {
   sm: {
-    text: "text-[11px] sm:text-xs",
+    text: "text-xs sm:text-xs",
     tracking: "tracking-[0.2em] sm:tracking-[0.3em]",
     rule: "w-6 sm:w-10",
     gap: "gap-3 sm:gap-4",
@@ -64,7 +64,7 @@ const sizeClasses: Record<
 };
 
 const toneClasses: Record<EyebrowBadgeTone, string> = {
-  onLight: "text-[#22c0d4]",
+  onLight: "text-brand-turquoise-text",
   onDark: "text-brand-turquoise",
 };
 
@@ -73,9 +73,7 @@ export const EyebrowBadge = React.forwardRef<HTMLElement, EyebrowBadgeProps>(
     {
       label = (
         <>
-          <span className="block sm:inline">Accredited</span>
-          <span className="block sm:inline sm:mx-1">&amp;</span>
-          <span className="block sm:inline">Verified</span>
+          <span className="whitespace-nowrap">Accredited &amp; Verified</span>
         </>
       ),
       size = "sm",
@@ -101,7 +99,7 @@ export const EyebrowBadge = React.forwardRef<HTMLElement, EyebrowBadgeProps>(
       >
         <span
           aria-hidden="true"
-          className={cn("h-px shrink-0 bg-[#e70d69]", s.rule)}
+          className={cn("h-px shrink-0 bg-brand-pink max-[400px]:hidden", s.rule)}
         />
         <span
           className={cn(
@@ -115,7 +113,7 @@ export const EyebrowBadge = React.forwardRef<HTMLElement, EyebrowBadgeProps>(
         </span>
         <span
           aria-hidden="true"
-          className={cn("h-px shrink-0 bg-[#e70d69]", s.rule)}
+          className={cn("h-px shrink-0 bg-brand-pink max-[400px]:hidden", s.rule)}
         />
       </Tag>
     );

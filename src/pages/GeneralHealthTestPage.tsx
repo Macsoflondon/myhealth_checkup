@@ -47,26 +47,7 @@ const GeneralHealthTestPage = () => {
       "No GP referral required",
     ],
 
-    providers: [
-      {
-        name: "Medichecks",
-        price: 75,
-        url: "https://www.medichecks.com/products/general-health-blood-test?utm_source=myhealthcheckup&utm_medium=referral&utm_campaign=general-health",
-        features: ["24 biomarkers", "3-4 day results", "Venous collection"],
-      },
-      {
-        name: "Randox Health",
-        price: 75,
-        url: "https://randoxhealth.com/en-GB/?utm_source=myhealthcheckup&utm_medium=referral&utm_campaign=general-health",
-        features: ["24 data points", "Next day results", "At-home kit"],
-      },
-      {
-        name: "London Medical Laboratory",
-        price: 89,
-        url: "https://www.londonmedicallaboratory.com/product-category/general-health?utm_source=myhealthcheckup&utm_medium=referral&utm_campaign=general-health",
-        features: ["Comprehensive panel", "Same day results", "Home or clinic"],
-      },
-    ],
+    panel: "general-health",
   };
 
   return <TestPageTemplate data={testData} />;

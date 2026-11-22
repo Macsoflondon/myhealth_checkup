@@ -49,68 +49,7 @@ const FemaleHormonesTestPage = () => {
       "Guide treatment decisions with your GP",
     ],
 
-    providers: [
-      {
-        name: "Randox Health",
-        price: 43,
-        url: "https://randoxhealth.com/en-GB/product/female/clinic/female-hormone-test",
-        features: ["In-clinic visit", "Same-day results", "UKAS accredited"],
-        turnaround: "Same day",
-        biomarkers: 4,
-      },
-      {
-        name: "Medichecks",
-        price: 79,
-        url: "https://www.medichecks.com/products/female-hormone-check-blood-test",
-        features: ["4 key hormones", "Home collection kit", "Doctor report"],
-        turnaround: "3-4 days",
-        biomarkers: 4,
-      },
-      {
-        name: "London Medical Laboratory",
-        price: 99,
-        url: "https://www.londonmedicallaboratory.com/product/fertility-hormones-profile",
-        features: [
-          "5 fertility hormones",
-          "Home or clinic",
-          "Next-day results",
-        ],
-        turnaround: "1-2 days",
-        biomarkers: 5,
-      },
-      {
-        name: "Medichecks Advanced",
-        price: 99,
-        url: "https://www.medichecks.com/products/female-hormone-check-advanced-blood-test",
-        features: ["Extended panel", "Includes AMH", "Doctor review"],
-        turnaround: "3-4 days",
-        biomarkers: 8,
-      },
-      {
-        name: "Goodbody Clinic",
-        price: 119,
-        url: "https://health.goodbodyclinic.com/product/female-hormone-fertility-blood-test/",
-        features: [
-          "Complete hormone panel",
-          "Fertility markers",
-          "2-3 day results",
-        ],
-        turnaround: "2-3 days",
-        biomarkers: 6,
-      },
-      {
-        name: "Lola Health",
-        price: 140,
-        url: "https://lolahealth.co/products/female-active-boost",
-        features: [
-          "39 biomarkers",
-          "At-home phlebotomy",
-          "Doctor review included",
-        ],
-        turnaround: "2 days",
-        biomarkers: 39,
-      },
-    ],
+    panel: "female-hormones",
   };
 
   return <TestPageTemplate data={testData} />;

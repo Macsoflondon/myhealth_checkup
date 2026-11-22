@@ -177,7 +177,7 @@ const TestimonialCarousel = () => {
                     </p>
                     <p className="text-brand-navy text-xs">{t.detail}</p>
                     {t.context && (
-                      <span className="inline-block mt-1.5 text-[10px] font-medium tracking-wide uppercase text-white bg-brand-turquoise rounded-full px-2.5 py-0.5">
+                      <span className="inline-block mt-1.5 text-xs font-medium tracking-wide uppercase text-brand-navy bg-brand-turquoise rounded-full px-2.5 py-0.5">
                         {t.context}
                       </span>
                     )}

@@ -170,7 +170,7 @@ export const MoreDropdownMenu: React.FC<MoreDropdownMenuProps> = ({
 
           {sections.map((section) => (
             <div key={section.title}>
-              <h3 className="px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-[#081129]/40 mb-3">
+              <h3 className="px-3 text-xs font-bold uppercase tracking-[0.2em] text-[#081129]/40 mb-3">
                 {section.title}
               </h3>
               <div className="grid grid-cols-1 gap-2">

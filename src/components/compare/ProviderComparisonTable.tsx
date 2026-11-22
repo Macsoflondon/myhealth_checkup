@@ -364,7 +364,7 @@ export const ProviderComparisonTable: React.FC<
                                 <>
                                   {formatPrice(parts.total)}
                                   {parts.breakdown && (
-                                    <span className="mt-1 block text-[11px] font-medium leading-snug text-white/75">
+                                    <span className="mt-1 block text-xs font-medium leading-snug text-white/75">
                                       {parts.breakdown}
                                     </span>
                                   )}

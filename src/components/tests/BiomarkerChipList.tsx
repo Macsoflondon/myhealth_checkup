@@ -1,5 +1,7 @@
 import { useId, useState } from "react";
 
+import { Button } from "@/components/ui/button";
+
 const UTC_NAVY = "#081129";
 const UTC_TINT = "#f1f5f9";
 
@@ -64,15 +66,16 @@ export function BiomarkerChipList({
       <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2">
         <Heading>{headingLabel}</Heading>
         {hiddenCount > 0 && (
-          <button
+          <Button
+            variant="link"
             type="button"
             onClick={() => setExpanded((v) => !v)}
             aria-expanded={expanded}
             aria-controls={listId}
-            className="text-xs font-semibold text-[#22c0d4] underline underline-offset-2 hover:text-[#e70d69] transition-colors"
+            className="inline-flex min-h-6 min-w-6 h-auto px-0 py-1 items-center text-xs font-semibold text-brand-turquoise-text underline underline-offset-2 hover:text-[#e70d69] transition-colors"
           >
             {expanded ? "Show less" : `Show ${hiddenCount} more`}
-          </button>
+          </Button>
         )}
       </div>
       <div id={listId} className="flex flex-wrap gap-2">

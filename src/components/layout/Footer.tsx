@@ -143,11 +143,11 @@ const StayInformedSection = () => {
 
           {/* Copyright + Medical Disclaimer — pushed to bottom of column */}
           <div className="mt-6 sm:mt-auto w-full space-y-2 px-1">
-            <p className="text-[10px] sm:text-[11px] text-white/78 leading-snug text-center break-words">
+            <p className="text-xs text-white/78 leading-snug text-center break-words">
               © 2026 MYHEALTHCHECKUP LTD. Registered in England &amp; Wales,
               Company No. 16589056. All rights reserved.
             </p>
-            <p className="text-[10px] sm:text-[11px] text-white/78 leading-snug text-center break-words">
+            <p data-disclaimer className="text-[13px] text-on-dark-muted leading-snug text-center break-words">
               <span className="text-brand-pink-on-dark font-semibold">
                 Medical disclaimer:
               </span>{" "}
@@ -167,20 +167,14 @@ const StayInformedSection = () => {
                 Trust &amp; security
               </Link>
             </p>
-            <p className="text-[10px] sm:text-[11px] text-white/78 leading-snug text-center break-words">
+            <p className="text-xs text-white/78 leading-snug text-center break-words">
               <Link
                 to="/auth"
                 className="inline-block py-1.5 underline hover:text-brand-pink transition-colors"
               >
                 Sign in
               </Link>
-              {" · "}
-              <Link
-                to="/control"
-                className="inline-block py-1.5 underline hover:text-brand-pink transition-colors"
-              >
-                Crux Control
-              </Link>
+
             </p>
           </div>
         </div>
@@ -205,7 +199,7 @@ const StayInformedSection = () => {
                 onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                 placeholder="Your email address"
                 aria-label="Email address"
-                className="w-full rounded-lg min-h-11 px-3 py-2.5 text-white text-sm placeholder:text-white/35 outline-hidden transition-colors focus:border-brand-turquoise"
+                className="w-full rounded-lg min-h-11 px-3 py-2.5 text-white text-base sm:text-sm placeholder:text-on-dark-subtle outline-hidden transition-colors focus:border-brand-turquoise"
                 style={{
                   background: "rgba(255,255,255,0.08)",
                   border: `1.5px solid ${error ? "#e70d69" : "rgba(34,192,212,0.28)"}`,
@@ -221,7 +215,7 @@ const StayInformedSection = () => {
               {error && <p className="text-xs text-brand-pink mt-1">{error}</p>}
             </div>
           )}
-          <p className="mt-3 text-[10px] text-white/78 leading-relaxed">
+          <p className="mt-3 text-xs text-white/78 leading-relaxed">
             We will never share your email. Unsubscribe at any time.
           </p>
         </div>

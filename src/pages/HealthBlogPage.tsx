@@ -36,10 +36,10 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({
 
       <div className="absolute inset-0 bg-gradient-to-t from-[rgba(8,17,41,0.5)] via-transparent to-transparent" />
       <span
-        className="absolute left-3 bottom-3 inline-block rounded-full bg-[#22c0d4] text-white px-2.5 py-1 uppercase"
+        className="absolute left-3 bottom-3 inline-block rounded-full bg-brand-turquoise text-brand-navy px-2.5 py-1 uppercase"
         style={{
           fontFamily: "Montserrat, sans-serif",
-          fontSize: 10,
+          fontSize: 12,
           letterSpacing: "0.08em",
           fontWeight: 600,
         }}
@@ -52,7 +52,7 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({
         className="uppercase"
         style={{
           fontFamily: "Montserrat, sans-serif",
-          fontSize: 11,
+          fontSize: 12,
           color: "#94a3b8",
           letterSpacing: "0.08em",
         }}
@@ -96,11 +96,11 @@ const FeaturedCard: React.FC<FeaturedCardProps> = ({
           href={article.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:underline"
+          className="inline-flex min-h-6 items-center py-1 hover:underline"
           style={{
             fontFamily: "Montserrat, sans-serif",
             fontSize: 13,
-            color: "#22c0d4",
+            color: "var(--color-brand-turquoise-text)",
             fontWeight: 500,
           }}
         >

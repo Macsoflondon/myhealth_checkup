@@ -58,10 +58,10 @@ export const CategoryGuides: React.FC<CategoryGuidesProps> = ({
             <ArticleImage article={article} className="h-40" />
             <div className="flex flex-col flex-1 p-5">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-[#22c0d4]">
+                <span className="text-xs font-semibold uppercase tracking-wider text-[#22c0d4]">
                   {article.category}
                 </span>
-                <span className="text-[11px] text-[#081129]/50">
+                <span className="text-xs text-[#081129]/50">
                   {article.provider}
                 </span>
               </div>

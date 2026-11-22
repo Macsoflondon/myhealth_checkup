@@ -1,9 +1,9 @@
 import { Helmet } from "react-helmet-async";
-import { TestPageData } from "@/types/TestPageTypes";
+import { TestPageData, TestProvider } from "@/types/TestPageTypes";
 import { serializeJsonLd } from "@/lib/seo/json-ld";
 
 interface TestStructuredDataProps {
-  data: TestPageData;
+  data: TestPageData & { providers: TestProvider[] };
   url?: string;
 }
 

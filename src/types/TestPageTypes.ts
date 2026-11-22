@@ -1,3 +1,5 @@
+import type { EducationalPanel } from "@/services/educational-test-catalogue";
+
 export interface TestProvider {
   name: string;
   price: number;
@@ -44,5 +46,5 @@ export interface TestPageData {
   featureBadges: TestFeatureBadge[];
 
   // Providers
-  providers: TestProvider[];
+  panel: EducationalPanel;
 }

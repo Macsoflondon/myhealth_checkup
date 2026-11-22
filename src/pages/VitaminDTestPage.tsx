@@ -61,20 +61,7 @@ const VitaminDTestPage = () => {
       "Simple finger-prick test available",
     ],
 
-    providers: [
-      {
-        name: "Medichecks",
-        price: 29,
-        url: "https://medichecks.com/products/vitamin-d-blood-test",
-        features: ["Vitamin D3 level", "3-4 day results", "Home collection"],
-      },
-      {
-        name: "London Medical Laboratory",
-        price: 39,
-        url: "https://londonmedicallaboratory.com/product/vitamin-d-test",
-        features: ["25-hydroxyvitamin D", "Same day results", "Clinic or home"],
-      },
-    ],
+    panel: "vitamin-d",
   };
 
   return <TestPageTemplate data={testData} />;

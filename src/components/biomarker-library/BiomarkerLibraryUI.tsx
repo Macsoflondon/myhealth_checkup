@@ -128,7 +128,7 @@ const RangeBar = ({ bands }: { bands: RangeBand[] }) => (
           borderLeft: i > 0 ? "2px solid #fff" : "none",
           padding: "8px 10px",
           textAlign: "center",
-          fontSize: 11,
+          fontSize: 12,
           fontWeight: 800,
           color: BAND_COLOUR[b.key].fg,
           textTransform: "uppercase",
@@ -566,7 +566,7 @@ const BiomarkerCard = ({
                   color: COLORS.navy,
                   borderRadius: 6,
                   padding: "2px 8px",
-                  fontSize: 11,
+                  fontSize: 12,
                   fontWeight: 800,
                 }}
               >
@@ -894,7 +894,7 @@ export default function BiomarkerLibraryUI() {
                 right: 10,
                 top: "50%",
                 transform: "translateY(-50%)",
-                fontSize: 10,
+                fontSize: 12,
                 color: COLORS.muted,
                 pointerEvents: "none",
               }}

@@ -29,7 +29,7 @@ const FloatingNavDock = () => {
     "group/btn relative flex items-center justify-center !h-11 !w-11 sm:!h-9 sm:!w-9 rounded-lg border-2 border-[#e70d69] text-[#e70d69] bg-white/90 backdrop-blur-xs transition-all duration-300 hover:bg-[#e70d69] hover:text-white shadow-md";
 
   const labelBase =
-    "absolute right-full mr-2 px-2 py-1 rounded text-[10px] font-heading font-semibold uppercase tracking-wider bg-brand-navy text-white whitespace-nowrap opacity-0 scale-90 group-hover/btn:opacity-100 group-hover/btn:scale-100 transition-all duration-200 pointer-events-none shadow-md hidden sm:block";
+    "absolute right-full mr-2 px-2 py-1 rounded text-xs font-heading font-semibold uppercase tracking-wider bg-brand-navy text-white whitespace-nowrap opacity-0 scale-90 group-hover/btn:opacity-100 group-hover/btn:scale-100 transition-all duration-200 pointer-events-none shadow-md hidden sm:block";
 
   if (isHome) {
     return (

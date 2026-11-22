@@ -58,6 +58,14 @@
 
   /* Brand */
   --color-brand-turquoise: #22c0d4;
+  --color-brand-turquoise-text: #087f8c;
+  --color-addon-foreground: #92400e;
+  --color-quote-pink: #b61958;
+  --color-quote-teal: #087b70;
+  --color-quote-coral: #b44938;
+  --color-quote-green: #326d35;
+  --color-quote-blue: #2762b8;
+  --color-quote-red: #b52c29;
   --color-brand-pink: #e70d69;
   --color-brand-navy: #081129;
   /* Text on dark (navy) surfaces — WCAG AA safe floors */
@@ -1611,3 +1619,57 @@ html {
   }
   main [data-slot="button"] { min-height: 48px; font-size: 1rem; }
 }
+
+/* Public-only accessibility baseline; admin surfaces and brand identity are
+   deliberately outside these rules. Colour inherits the surrounding surface. */
+.public-accessibility {
+  --accessible-turquoise: var(--color-brand-turquoise-text);
+}
+.public-accessibility :where([class~="bg-brand-navy"], [class~="bg-section-dark"], [class~="bg-[#081129]"], [class~="bg-[#060d20]"], [style*="background: rgb(8, 17, 41)"], [style*="background: rgb(10, 17, 32)"]) {
+  --accessible-turquoise: var(--color-brand-turquoise);
+}
+.public-accessibility :where([class~="bg-white"], [class~="bg-card"], [class~="bg-background"], [style*="background: rgb(255, 255, 255)"]) {
+  --accessible-turquoise: var(--color-brand-turquoise-text);
+}
+.public-accessibility :where(main, footer) :is(p, span, a, summary, div, h3, h4):is([class~="text-primary"], [class~="text-brand-turquoise"], [class~="text-[#22c0d4]"], [class~="text-[#22C0D4]"]):not([data-testid="brand-bar"] *, [data-testid="sticky-menu-trigger"] *, [class~="text-xl"], [class~="text-2xl"], [class~="text-3xl"]) {
+  color: var(--accessible-turquoise);
+}
+.public-accessibility :where(main, footer) :is(a, button):is([class~="bg-brand-turquoise"], [class~="bg-[#22c0d4]"]) {
+  color: var(--color-brand-navy);
+}
+.public-accessibility :where(main, footer) :is(a, button):is([class~="bg-brand-turquoise"], [class~="bg-[#22c0d4]"]):is([class~="hover:bg-brand-pink"], [class~="hover:bg-[#e70d69]"]):hover {
+  color: var(--color-on-dark);
+}
+.public-accessibility :where(main, footer) label:has(input[type="checkbox"], [role="checkbox"]) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  cursor: pointer;
+}
+.public-accessibility :where(main, footer) input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+.public-accessibility :where(main, footer) :is(a, button):not([data-testid="brand-bar"] *, [data-testid="sticky-menu-trigger"] *) {
+  min-height: 24px;
+  min-width: 24px;
+}
+/* Legacy editorial quotes retain their hue with accessible ink. */
+.public-accessibility [style*="color: rgb(233, 37, 120)"] { color: var(--color-quote-pink) !important; }
+.public-accessibility [style*="color: rgb(25, 165, 152)"] { color: var(--color-quote-teal) !important; }
+.public-accessibility [style*="color: rgb(234, 112, 94)"] { color: var(--color-quote-coral) !important; }
+.public-accessibility [style*="color: rgb(67, 138, 71)"] { color: var(--color-quote-green) !important; }
+.public-accessibility [style*="color: rgb(79, 143, 247)"] { color: var(--color-quote-blue) !important; }
+.public-accessibility [style*="color: rgb(232, 77, 73)"] { color: var(--color-quote-red) !important; }
+
+@media (max-width: 639px) {
+  .public-accessibility input:not([type="checkbox"]):not([type="radio"]),
+  .public-accessibility select,
+  .public-accessibility textarea,
+  .public-accessibility [role="combobox"] {
+    font-size: 16px !important;
+  }
+}
+
+.public-accessibility :where(main, footer) :is(p, span, a, div):is([class*="text-[#081129]/50"], [class*="text-[#081129]/40"], [class*="text-[#081129]/60"], [class*="text-muted-foreground/"]) { color: var(--color-muted-foreground); }

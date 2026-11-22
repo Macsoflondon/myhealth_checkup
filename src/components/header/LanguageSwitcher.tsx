@@ -82,7 +82,7 @@ export const LanguageList = ({ onSelect }: { onSelect?: () => void } = {}) => {
           <span className="text-lg leading-none">{language.flag}</span>
           <span className="text-sm flex-1">{language.name}</span>
           {language.isBase && (
-            <span className="text-[10px] text-[#081129]/50 bg-[#081129]/5 px-1.5 py-0.5 rounded">
+            <span className="text-xs text-[#081129]/50 bg-[#081129]/5 px-1.5 py-0.5 rounded">
               Base
             </span>
           )}
@@ -179,7 +179,7 @@ export const LanguageSwitcher = ({
         <DropdownMenuSeparator />
         <LanguageList onSelect={() => setIsOpen(false)} />
         <DropdownMenuSeparator />
-        <div className="px-3 py-2 text-[10px] text-muted-foreground">
+        <div className="px-3 py-2 text-xs text-muted-foreground">
           Base language: British English (GB)
         </div>
       </DropdownMenuContent>

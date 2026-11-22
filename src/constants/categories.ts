@@ -514,7 +514,7 @@ export const compareCategories = [
   {
     id: "sports-performance-tests",
     name: "Sports performance tests",
-    description: "Athletic performance optimization and health monitoring",
+    description: "Athletic performance optimisation and health monitoring",
     searchTerms: [
       "sports",
       "athletic",

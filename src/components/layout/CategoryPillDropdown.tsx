@@ -219,7 +219,7 @@ export function CategoryPillDropdown({
                           {v.biomarkers.map((b) => (
                             <span
                               key={b}
-                              className="inline-flex items-center gap-1 rounded-full border border-brand-turquoise/40 bg-white px-2 py-0.5 font-[Montserrat] text-[10px] font-medium text-brand-navy"
+                              className="inline-flex items-center gap-1 rounded-full border border-brand-turquoise/40 bg-white px-2 py-0.5 font-[Montserrat] text-xs font-medium text-brand-navy"
                             >
                               <span className="h-1 w-1 rounded-[1px] bg-brand-turquoise" />
                               {b}
@@ -275,7 +275,7 @@ export function CategoryPillDropdown({
 
             <div className="flex items-center justify-between gap-3 border-t border-[#081129]/[0.07] bg-white px-4 py-3">
               <span
-                className="text-[10px] font-bold uppercase tracking-[0.18em]"
+                className="text-xs font-bold uppercase tracking-[0.18em]"
                 style={{ color: `${NAVY}66` }}
               >
                 {displayLabel(item.name)}
@@ -285,7 +285,7 @@ export function CategoryPillDropdown({
                   to={viewAll.path}
                   role="menuitem"
                   onClick={() => setOpen(false)}
-                  className="text-[11px] font-bold font-[Montserrat] no-underline hover:underline whitespace-nowrap"
+                  className="text-xs font-bold font-[Montserrat] no-underline hover:underline whitespace-nowrap"
                   style={{ color: PINK }}
                 >
                   {displayLabel(viewAll.name)}

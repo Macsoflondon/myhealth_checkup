@@ -49,7 +49,7 @@ export const SiteAssistant = () => {
             className="size-1.5 shrink-0 animate-pulse rounded-full bg-brand-turquoise"
             aria-hidden="true"
           />
-          <span className="font-heading text-[11px] font-semibold whitespace-nowrap text-white">
+          <span className="font-heading text-xs font-semibold whitespace-nowrap text-white">
             AI assistant chat
           </span>
           <span

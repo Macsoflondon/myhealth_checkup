@@ -81,6 +81,8 @@ export interface ProviderTestData {
   id: string;
   test_name: string;
   category: string;
+  canonical_category?: string | null;
+  category_ids?: string[] | null;
   description: string;
   url: string;
   /** provider_tests.url_verified: null = never checked, true = passed, false = last check failed. */
@@ -403,7 +405,7 @@ const BiomarkersSection = ({
             type="button"
             onClick={() => setShowAll((v) => !v)}
             aria-expanded={showAll}
-            className="mt-3 text-xs font-semibold text-[#22c0d4] underline underline-offset-2 hover:text-[#e70d69] transition-colors"
+            className="mt-3 inline-flex min-h-6 min-w-6 items-center py-1 text-xs font-semibold text-brand-turquoise-text underline underline-offset-2 hover:text-[#e70d69] transition-colors"
           >
             {showAll ? "Show less" : `Show ${hiddenCount} more`}
           </button>
@@ -999,7 +1001,8 @@ export default function ProviderTestDetailTemplate({
           {/* Similar Tests Section */}
           <div className="mb-12">
             <SimilarTestsSection
-              category={test.category}
+              category={test.canonical_category ?? null}
+              categoryIds={test.category_ids}
               currentTestName={test.test_name}
               currentProvider={providerConfig.id}
             />

@@ -254,7 +254,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
         },
         {
           bold: "Expert Care:",
-          text: "Professional consultation and personalized recommendations",
+          text: "Professional consultation and personalised recommendations",
         },
       ],
     },
@@ -293,7 +293,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
       },
       {
         title: "Mobile app results",
-        description: "Easy-to-use app with personalized insights",
+        description: "Easy-to-use app with personalised insights",
       },
     ],
     sampleOptions: [
@@ -323,7 +323,7 @@ export const providerConfigs: Record<string, ProviderConfig> = {
         },
         {
           bold: "Doctor-Reviewed Results:",
-          text: "Qualified doctors review all results with personalized insights",
+          text: "Qualified doctors review all results with personalised insights",
         },
         {
           bold: "Easy App Access:",

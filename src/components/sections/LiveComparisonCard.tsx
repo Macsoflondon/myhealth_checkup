@@ -218,11 +218,11 @@ const LiveComparisonCard = ({
         >
           <div className="px-5 py-3 border-b border-brand-navy bg-slate-50/70">
             <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
-              <span className="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-turquoise">
+              <span className="text-xs font-bold uppercase tracking-[0.16em] text-brand-turquoise">
                 {test.name}
               </span>
               {test.methodLabel && (
-                <span className="font-heading text-[11px] font-bold uppercase tracking-[0.16em] text-brand-navy">
+                <span className="font-heading text-xs font-bold uppercase tracking-[0.16em] text-brand-navy">
                   {test.methodLabel}
                 </span>
               )}
@@ -275,7 +275,7 @@ const LiveComparisonCard = ({
             </div>
           )}
           <div className="px-5 py-3 border-t border-brand-navy bg-slate-50/70">
-            <p className="text-[11px] text-brand-navy text-center m-0">
+            <p className="text-xs text-brand-navy text-center m-0">
               {formatVerified(test.lastScrapedAt)}
             </p>
           </div>

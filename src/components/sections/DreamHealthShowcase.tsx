@@ -297,7 +297,7 @@ const DreamHealthShowcase = () => {
                     className="relative flex flex-col h-full bg-white border border-black/5 shadow-lg hover:shadow-2xl transition-shadow rounded-2xl overflow-hidden"
                   >
                     {isMostChosen && (
-                      <span className="absolute top-3 left-3 z-10 text-[10px] font-semibold uppercase tracking-wider text-white bg-[#e70d69] px-2.5 py-1 rounded-full shadow-sm">
+                      <span className="absolute top-3 left-3 z-10 text-xs font-semibold uppercase tracking-wider text-white bg-[#e70d69] px-2.5 py-1 rounded-full shadow-sm">
                         Provider-listed popular
                       </span>
                     )}
@@ -315,7 +315,7 @@ const DreamHealthShowcase = () => {
                       />
                     </button>
                     <div className="p-5 flex flex-col flex-1">
-                      <p className="text-[11px] font-semibold tracking-wide uppercase text-[#22c0d4]">
+                      <p className="text-xs font-semibold tracking-wide uppercase text-[#22c0d4]">
                         {t.provider_name}
                       </p>
                       <button
@@ -336,7 +336,7 @@ const DreamHealthShowcase = () => {
                         <div className="mt-3 flex flex-wrap items-center gap-1.5 flex-1 content-start">
                           {typeof t.biomarker_count === "number" &&
                             t.biomarker_count > 0 && (
-                              <span className="inline-flex items-center rounded-full bg-[#22c0d4]/10 text-[#0b6b78] border border-[#22c0d4]/30 px-2.5 py-1 text-[11px] font-semibold">
+                              <span className="inline-flex items-center rounded-full bg-[#22c0d4]/10 text-[#0b6b78] border border-[#22c0d4]/30 px-2.5 py-1 text-xs font-semibold">
                                 {t.biomarker_count}{" "}
                                 {t.biomarker_count === 1
                                   ? "biomarker"
@@ -344,12 +344,12 @@ const DreamHealthShowcase = () => {
                               </span>
                             )}
                           {turnaroundLabel(t) && (
-                            <span className="inline-flex items-center rounded-full border border-black/10 bg-[#f6f7f9] px-2.5 py-1 text-[11px] font-medium text-[#081129]/70">
+                            <span className="inline-flex items-center rounded-full border border-black/10 bg-[#f6f7f9] px-2.5 py-1 text-xs font-medium text-[#081129]/70">
                               {turnaroundLabel(t)}
                             </span>
                           )}
                           {sampleLabel(t) && (
-                            <span className="inline-flex items-center rounded-full border border-black/10 bg-[#f6f7f9] px-2.5 py-1 text-[11px] font-medium text-[#081129]/70">
+                            <span className="inline-flex items-center rounded-full border border-black/10 bg-[#f6f7f9] px-2.5 py-1 text-xs font-medium text-[#081129]/70">
                               {sampleLabel(t)}
                             </span>
                           )}

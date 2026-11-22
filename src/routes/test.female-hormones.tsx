@@ -1,3 +1,4 @@
+import { educationalCatalogueQuery } from "@/services/educational-test-catalogue";
 import { createFileRoute } from "@tanstack/react-router";
 import { buildRouteHead } from "@/lib/seo/route-head";
 import { lazyWithRetry as lazy } from "@/lib/lazyWithRetry";
@@ -7,6 +8,7 @@ const FemaleHormonesTestPage = lazy(
 );
 
 export const Route = createFileRoute("/test/female-hormones")({
+  loader: ({ context }) => context.queryClient.ensureQueryData(educationalCatalogueQuery),
   head: () =>
     buildRouteHead({
       title: "Female hormone blood tests compared | myhealth checkup",

@@ -189,7 +189,7 @@ export const FeaturedPublications = () => {
                         decoding="async"
                       />
                     ) : (
-                      <span className="relative z-10 text-[10px] sm:text-xs md:text-sm font-semibold text-brand-navy uppercase tracking-[0.25em] text-center leading-tight whitespace-normal">
+                      <span className="relative z-10 text-xs sm:text-xs md:text-sm font-semibold text-brand-navy uppercase tracking-[0.25em] text-center leading-tight whitespace-normal">
                         {publication.name}
                       </span>
                     )}
