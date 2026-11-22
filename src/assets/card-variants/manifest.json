@@ -97,21 +97,21 @@
   {
     "original": "src/assets/providers/edge-test-kit.png.asset.json",
     "urls": [
-      "/__l5e/assets-v1/dd42ab1a-a460-4c74-817c-9c4d6dd0c127/edge-test-kit.png",
-      "/__l5e/assets-v1/ab249fc4-3b78-4694-8eca-669a5a94147b/edge-test-kit-326.webp",
-      "/__l5e/assets-v1/ba061f01-94fb-4533-b912-ac3b432934bf/edge-test-kit-652.webp"
+      "/__l5e/assets-v1/aca3b7a1-0900-49dd-bbe1-7bb8b2bd9994/edge-test-kit.png",
+      "/__l5e/assets-v1/3dad527b-5a2b-4d49-8332-6746b7eb72d6/edge-test-kit-326.webp",
+      "/__l5e/assets-v1/b703cdcd-4903-4d4e-b28a-a6d0432be7f0/edge-test-kit-652.webp"
     ],
-    "originalBytes": 46186,
+    "originalBytes": 79837,
     "width": 1440,
     "height": 660,
     "variants": {
       "320": {
         "file": "edge-test-kit-320.webp.asset.json",
-        "bytes": 862
+        "bytes": 1972
       },
       "640": {
         "file": "edge-test-kit-640.webp.asset.json",
-        "bytes": 1866
+        "bytes": 3656
       }
     }
   },
@@ -346,19 +346,19 @@
   {
     "original": "src/assets/providers/medical-diagnosis-kits/md-kit-3-hormones-mix-match.png.asset.json",
     "urls": [
-      "/__l5e/assets-v1/7ce4079f-bffd-4c27-a17b-1caa10c5ddd5/md-kit-3-hormones-mix-match.png"
+      "/__l5e/assets-v1/ddcef19c-eef1-4ae7-a3d6-037fbd2a9e56/md-kit-3-hormones-mix-match.png"
     ],
-    "originalBytes": 299970,
+    "originalBytes": 304269,
     "width": 768,
     "height": 896,
     "variants": {
       "320": {
         "file": "md-kit-3-hormones-mix-match-320.webp.asset.json",
-        "bytes": 3962
+        "bytes": 6338
       },
       "640": {
         "file": "md-kit-3-hormones-mix-match-640.webp.asset.json",
-        "bytes": 8216
+        "bytes": 13762
       }
     }
   },
